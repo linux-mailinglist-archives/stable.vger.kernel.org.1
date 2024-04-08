@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-36745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6F3489C1CC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:24:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C56E489C451
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C541B2872C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 541791F21814
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B427D40D;
-	Mon,  8 Apr 2024 13:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551A612AAD3;
+	Mon,  8 Apr 2024 13:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yuephu0C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lMMPqUob"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA94C7D408;
-	Mon,  8 Apr 2024 13:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1440412A171;
+	Mon,  8 Apr 2024 13:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582221; cv=none; b=AbIy2I/PLqUwHdkCH6ThYzldWuELCERmhn12U9/R7iFLtN8h271/HaXY0M+N0Z8cy1y1Hq+Dvc4HQPcXzxilZFh9k9HI0UI0d4zB2deaN3xIzI5OCk430nL3sVRXDn2/cOAoAiwGN4zam9A2dH5B8TbcxNz9aZS43wr1vOBqCo8=
+	t=1712583856; cv=none; b=rADV1k/riOvjjoiJH24qCzSuEkwC2qrBXNcJ5P3rjuBdslDH3o/qhbc5wtIJlcXuf2EL5CLxunFJ8Q2ry38BN+OVoxVwFzSk92OHFOFhAKTxDxx0mWlAYfmM8Czsps+3N5n5d4EsAMIBZDthMUSU+mC/H6vCck+6JP0qNKlS3Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582221; c=relaxed/simple;
-	bh=VHZ44TRLWmsp8d5+F2YfVriVZkUGFXclV9gqkZ7JIx0=;
+	s=arc-20240116; t=1712583856; c=relaxed/simple;
+	bh=6ucf0hpvKgO3/nQ/olBLZkHsAPP+miKtm+A27QEW6R0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c/+TwMDzioLbOqDRUxZYzGAJsBtpk7Fqpv5DGg4N1sIL9g98zHG48nD4FjQp8eyLRGETko4xIcvG2mV2mJOW8dyo//PfNpqFWt0N400twVuuFtEY6uOgxMXvfl6fhxCy1p2qTl605pO41MtxAARDA2RzbWKha2A/NzgETvxkYmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yuephu0C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F6DC433C7;
-	Mon,  8 Apr 2024 13:16:59 +0000 (UTC)
+	 MIME-Version; b=HN4z/qELAr/aJNpWJQ/l/eiuLLhAy9XkWC0Oz5PxGDrzteZnGf6iEq0CSNO2E1zbOQHNBIXvgyFIt4Jol78jVwaZ0wLFO0RYdIkhA8nCqTUHtHuacPR58+cHcRqcMtc9yeAAkIY1dzudW9okIUy0LQJ4OX84dif1pmfdtCDbIBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lMMPqUob; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FCD0C433F1;
+	Mon,  8 Apr 2024 13:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582220;
-	bh=VHZ44TRLWmsp8d5+F2YfVriVZkUGFXclV9gqkZ7JIx0=;
+	s=korg; t=1712583855;
+	bh=6ucf0hpvKgO3/nQ/olBLZkHsAPP+miKtm+A27QEW6R0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yuephu0CUtVsV228zZFlXwSSEqsU0idM2s7+SQ3xw4m8ZtO/9m9+1SI/6LFw8NvIK
-	 IwOXiz1bB76qgzoKcvnHMDxjwIINr3m460l15m03ssEMp5wr2BUP52M9bkguLpeEVi
-	 i7zxqT1SHPZFGArAvj1ydaKT2ll0Qefc+92EJ4/o=
+	b=lMMPqUobXi1RnJJqliACWeoAspOoj7Y6/EOCevF2MRBwI8DCRTaiYcARRTU5XqXzn
+	 FmLAP0EbArPChSwTVCdPdUWF+Ok23UIpP+2s/0YrF2hRjGGbCsUZsTKz+98t5gFlSh
+	 6R5THbvw9jtyOnb0ol7MtFLcXRSEL7CtlBtLobKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/138] KVM: SVM: Add support for allowing zero SEV ASIDs
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.8 227/273] ASoC: SOF: Intel: hda: Compensate LLP in case it is not reset
 Date: Mon,  8 Apr 2024 14:58:22 +0200
-Message-ID: <20240408125258.962150037@linuxfoundation.org>
+Message-ID: <20240408125316.459922752@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 0aa6b90ef9d75b4bd7b6d106d85f2a3437697f91 ]
+commit 1abc2642588e06f6180b3fbb21968cf5d0ba9e5f upstream.
 
-Some BIOSes allow the end user to set the minimum SEV ASID value
-(CPUID 0x8000001F_EDX) to be greater than the maximum number of
-encrypted guests, or maximum SEV ASID value (CPUID 0x8000001F_ECX)
-in order to dedicate all the SEV ASIDs to SEV-ES or SEV-SNP.
+During pause/reset or stop/start the LLP counter is not reset, which will
+result broken delay reporting.
 
-The SEV support, as coded, does not handle the case where the minimum
-SEV ASID value can be greater than the maximum SEV ASID value.
-As a result, the following confusing message is issued:
+Read the LLP value on STOP/PAUSE trigger and use it in LLP reading to
+normalize the LLP from the register.
 
-[   30.715724] kvm_amd: SEV enabled (ASIDs 1007 - 1006)
-
-Fix the support to properly handle this case.
-
-Fixes: 916391a2d1dc ("KVM: SVM: Add support for SEV-ES capability in KVM")
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-Cc: stable@vger.kernel.org
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/20240104190520.62510-1-Ashish.Kalra@amd.com
-Link: https://lore.kernel.org/r/20240131235609.4161407-4-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.8
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://msgid.link/r/20240321130814.4412-18-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c | 29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ sound/soc/sof/intel/hda-dai-ops.c |   11 +++++++++++
+ sound/soc/sof/intel/hda-pcm.c     |    8 ++++++++
+ sound/soc/sof/intel/hda-stream.c  |    9 ++++++++-
+ 3 files changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 9e50eaf967f22..d8e192ad59538 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -136,10 +136,21 @@ static void sev_misc_cg_uncharge(struct kvm_sev_info *sev)
+--- a/sound/soc/sof/intel/hda-dai-ops.c
++++ b/sound/soc/sof/intel/hda-dai-ops.c
+@@ -7,6 +7,7 @@
  
- static int sev_asid_new(struct kvm_sev_info *sev)
- {
--	unsigned int asid, min_asid, max_asid;
-+	/*
-+	 * SEV-enabled guests must use asid from min_sev_asid to max_sev_asid.
-+	 * SEV-ES-enabled guest can use from 1 to min_sev_asid - 1.
-+	 * Note: min ASID can end up larger than the max if basic SEV support is
-+	 * effectively disabled by disallowing use of ASIDs for SEV guests.
-+	 */
-+	unsigned int min_asid = sev->es_active ? 1 : min_sev_asid;
-+	unsigned int max_asid = sev->es_active ? min_sev_asid - 1 : max_sev_asid;
-+	unsigned int asid;
- 	bool retry = true;
- 	int ret;
- 
-+	if (min_asid > max_asid)
-+		return -ENOTTY;
+ #include <sound/pcm_params.h>
+ #include <sound/hdaudio_ext.h>
++#include <sound/hda_register.h>
+ #include <sound/hda-mlink.h>
+ #include <sound/sof/ipc4/header.h>
+ #include <uapi/sound/sof/header.h>
+@@ -362,6 +363,16 @@ static int hda_trigger(struct snd_sof_de
+ 	case SNDRV_PCM_TRIGGER_STOP:
+ 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
+ 		snd_hdac_ext_stream_clear(hext_stream);
 +
- 	WARN_ON(sev->misc_cg);
- 	sev->misc_cg = get_current_misc_cg();
- 	ret = sev_misc_cg_try_charge(sev);
-@@ -151,12 +162,6 @@ static int sev_asid_new(struct kvm_sev_info *sev)
++		/*
++		 * Save the LLP registers in case the stream is
++		 * restarting due PAUSE_RELEASE, or START without a pcm
++		 * close/open since in this case the LLP register is not reset
++		 * to 0 and the delay calculation will return with invalid
++		 * results.
++		 */
++		hext_stream->pplcllpl = readl(hext_stream->pplc_addr + AZX_REG_PPLCLLPL);
++		hext_stream->pplcllpu = readl(hext_stream->pplc_addr + AZX_REG_PPLCLLPU);
+ 		break;
+ 	default:
+ 		dev_err(sdev->dev, "unknown trigger command %d\n", cmd);
+--- a/sound/soc/sof/intel/hda-pcm.c
++++ b/sound/soc/sof/intel/hda-pcm.c
+@@ -282,6 +282,14 @@ int hda_dsp_pcm_open(struct snd_sof_dev
  
- 	mutex_lock(&sev_bitmap_lock);
+ 	/* binding pcm substream to hda stream */
+ 	substream->runtime->private_data = &dsp_stream->hstream;
++
++	/*
++	 * Reset the llp cache values (they are used for LLP compensation in
++	 * case the counter is not reset)
++	 */
++	dsp_stream->pplcllpl = 0;
++	dsp_stream->pplcllpu = 0;
++
+ 	return 0;
+ }
  
--	/*
--	 * SEV-enabled guests must use asid from min_sev_asid to max_sev_asid.
--	 * SEV-ES-enabled guest can use from 1 to min_sev_asid - 1.
--	 */
--	min_asid = sev->es_active ? 1 : min_sev_asid;
--	max_asid = sev->es_active ? min_sev_asid - 1 : max_sev_asid;
- again:
- 	asid = find_next_zero_bit(sev_asid_bitmap, max_asid + 1, min_asid);
- 	if (asid > max_asid) {
-@@ -2215,8 +2220,10 @@ void __init sev_hardware_setup(void)
- 		goto out;
- 	}
+--- a/sound/soc/sof/intel/hda-stream.c
++++ b/sound/soc/sof/intel/hda-stream.c
+@@ -1055,6 +1055,8 @@ snd_pcm_uframes_t hda_dsp_stream_get_pos
+ 	return pos;
+ }
  
--	sev_asid_count = max_sev_asid - min_sev_asid + 1;
--	WARN_ON_ONCE(misc_cg_set_capacity(MISC_CG_RES_SEV, sev_asid_count));
-+	if (min_sev_asid <= max_sev_asid) {
-+		sev_asid_count = max_sev_asid - min_sev_asid + 1;
-+		WARN_ON_ONCE(misc_cg_set_capacity(MISC_CG_RES_SEV, sev_asid_count));
-+	}
- 	sev_supported = true;
++#define merge_u64(u32_u, u32_l) (((u64)(u32_u) << 32) | (u32_l))
++
+ /**
+  * hda_dsp_get_stream_llp - Retrieve the LLP (Linear Link Position) of the stream
+  * @sdev: SOF device
+@@ -1084,7 +1086,12 @@ u64 hda_dsp_get_stream_llp(struct snd_so
+ 	llp_l = readl(hext_stream->pplc_addr + AZX_REG_PPLCLLPL);
+ 	llp_u = readl(hext_stream->pplc_addr + AZX_REG_PPLCLLPU);
  
- 	/* SEV-ES support requested? */
-@@ -2247,7 +2254,9 @@ void __init sev_hardware_setup(void)
- out:
- 	if (boot_cpu_has(X86_FEATURE_SEV))
- 		pr_info("SEV %s (ASIDs %u - %u)\n",
--			sev_supported ? "enabled" : "disabled",
-+			sev_supported ? min_sev_asid <= max_sev_asid ? "enabled" :
-+								       "unusable" :
-+								       "disabled",
- 			min_sev_asid, max_sev_asid);
- 	if (boot_cpu_has(X86_FEATURE_SEV_ES))
- 		pr_info("SEV-ES %s (ASIDs %u - %u)\n",
--- 
-2.43.0
-
+-	return ((u64)llp_u << 32) | llp_l;
++	/* Compensate the LLP counter with the saved offset */
++	if (hext_stream->pplcllpl || hext_stream->pplcllpu)
++		return merge_u64(llp_u, llp_l) -
++		       merge_u64(hext_stream->pplcllpu, hext_stream->pplcllpl);
++
++	return merge_u64(llp_u, llp_l);
+ }
+ 
+ /**
 
 
 
