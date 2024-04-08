@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-37680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F7289C5F7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D03F689C35A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 201211C23A8D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B4A828398E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0631C7F46F;
-	Mon,  8 Apr 2024 14:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D247A7CF1A;
+	Mon,  8 Apr 2024 13:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nuFRGnUp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILOClTtN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83CE7BB15;
-	Mon,  8 Apr 2024 14:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F4D524AF;
+	Mon,  8 Apr 2024 13:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584946; cv=none; b=afOorHk1r//bd6AS2+pVmaq+IuAyeV6xhwQosisPM+cNyyb9Ki15UtR9Lu6rsh4l93yxRNZvlracFQgHoN6M3cE7p7KwwduPzu2N9mD4nEyuc5WHMuiZkdXZnAEMwfJkVFrLFxp79IoDquL03fK3ZaJgDHRtOsj1yHOFsHR3O10=
+	t=1712583271; cv=none; b=EAgY9spFht+c9hVB/YQtRYLiSdqYWKYLOHgSXD6H1z+sv8Ffw8wDvmkEDYixITwvCXt8XEFFPjjT5V4hX3xuIx3FzXIgWS4P3YZ13lpmrw65YeEEEiG4tZdkwi8Ahtzy/J1gsla7OWaFZbFXvovZPrUuijMSdNCNtOgA4N5nbY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584946; c=relaxed/simple;
-	bh=TociAV7GPS3iMjz8NobOJR1fmHjVhyWfPV7nRnwpx2w=;
+	s=arc-20240116; t=1712583271; c=relaxed/simple;
+	bh=faAPl0wlLM8jRN7GLcUQ5/WzGH2VQ4rxlY+w/UCCzUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qqgojD+mRzZ9KmHcPI73MNN5UDV64w3ZOJzliS1+KLDCTB6D0JJRPgn0gNBbLzfu9lYSyuQrVBt/Hf2K9mPewSUSeQqzz3/XdAhDsnlNJTERlvA8toGUOyCS6DXmDcm7ZgUUDWq7kkrtiTOlK2cGqSX2XeU3mZEb75zsNbtOPBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nuFRGnUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1468AC43390;
-	Mon,  8 Apr 2024 14:02:25 +0000 (UTC)
+	 MIME-Version; b=QVsyaJZnPV07INhekBlcL/r+QrhEVITj2UkWQ/Bv+S3UUBEWeMBhgDbbnK2QUrz5WBmi0lpAbWgo/PmItiUxEpmaqpN33lZgMtH0CCUBXIZeBMs0t/gb2AuwIAR8XSo/IKlQd9O4gLRO2OBYOGBoKASGbO2sA45EA+HF3NyNPsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILOClTtN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20898C433F1;
+	Mon,  8 Apr 2024 13:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584946;
-	bh=TociAV7GPS3iMjz8NobOJR1fmHjVhyWfPV7nRnwpx2w=;
+	s=korg; t=1712583270;
+	bh=faAPl0wlLM8jRN7GLcUQ5/WzGH2VQ4rxlY+w/UCCzUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nuFRGnUpfFo2GgzcBR79OL0+j5GS5JI6sOzsn3mgPi5USacO6ZFAKw6r3U2nHLlS0
-	 PnKTGn0B6gGjoMZteTdWm2QPbBU3imPdn09L5buZqpMYbu/rHZ2EmlDUAU6v70fvXl
-	 kVmYQ57LFZgBECtD8263ZhmMzLnoFKvvRbk5snMI=
+	b=ILOClTtNF6m56BJ0zpvdym1hatmzSsbSxmhgeGq463l4Eei6/SXQnaePJA34nfWOQ
+	 Voc4gHrL5/o94TBz3e86xlK7vhdrqAogziYou3KBgQm7TahzQiO2XvDnzfT6sDhRSx
+	 DTH78fO3RKYU2ZNgW6Tnvu+JC8tJ71TPp8kUyS88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryosuke Yasuoka <ryasuoka@redhat.com>,
-	Jeremy Cline <jeremy@jcline.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com,
-	syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 609/690] nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet
+	Peter Griffin <peter.griffin@linaro.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 176/252] spi: s3c64xx: explicitly include <linux/bits.h>
 Date: Mon,  8 Apr 2024 14:57:55 +0200
-Message-ID: <20240408125421.660143872@linuxfoundation.org>
+Message-ID: <20240408125312.119914211@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,55 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryosuke Yasuoka <ryasuoka@redhat.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit d24b03535e5eb82e025219c2f632b485409c898f ]
+[ Upstream commit 4568fa574fcef3811a8140702979f076ef0f5bc0 ]
 
-syzbot reported the following uninit-value access issue [1][2]:
+The driver uses GENMASK() but does not include <linux/bits.h>.
 
-nci_rx_work() parses and processes received packet. When the payload
-length is zero, each message type handler reads uninitialized payload
-and KMSAN detects this issue. The receipt of a packet with a zero-size
-payload is considered unexpected, and therefore, such packets should be
-silently discarded.
+It is good practice to directly include all headers used, it avoids
+implicit dependencies and spurious breakage if someone rearranges
+headers and causes the implicit include to vanish.
 
-This patch resolved this issue by checking payload size before calling
-each message type handler codes.
+Include the missing header.
 
-Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
-Reported-and-tested-by: syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com
-Reported-and-tested-by: syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7ea9413ea6749baf5574 [1]
-Closes: https://syzkaller.appspot.com/bug?extid=29b5ca705d2e0f4a44d2 [2]
-Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
-Reviewed-by: Jeremy Cline <jeremy@jcline.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://lore.kernel.org/r/20240207120431.2766269-4-tudor.ambarus@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: a3d3eab627bb ("spi: s3c64xx: Use DMA mode from fifo size")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/nci/core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/spi/spi-s3c64xx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 419a1d0ba4c92..2a821f2b2ffe8 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1516,6 +1516,11 @@ static void nci_rx_work(struct work_struct *work)
- 		nfc_send_to_raw_sock(ndev->nfc_dev, skb,
- 				     RAW_PAYLOAD_NCI, NFC_DIRECTION_RX);
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 26d389d95af92..1e519b1537e71 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -3,6 +3,7 @@
+ // Copyright (c) 2009 Samsung Electronics Co., Ltd.
+ //      Jaswinder Singh <jassi.brar@samsung.com>
  
-+		if (!nci_plen(skb->data)) {
-+			kfree_skb(skb);
-+			break;
-+		}
-+
- 		/* Process frame */
- 		switch (nci_mt(skb->data)) {
- 		case NCI_MT_RSP_PKT:
++#include <linux/bits.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/dma-mapping.h>
 -- 
 2.43.0
 
