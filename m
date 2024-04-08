@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-36664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1EA89C1CB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:24:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 411A489C6A7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:16:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD6EAB28F55
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:18:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 424CBB2B5AF
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4D312AAF0;
-	Mon,  8 Apr 2024 13:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600DB7F474;
+	Mon,  8 Apr 2024 14:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nXXXxxi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DiryrQPQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE82412AAC3;
-	Mon,  8 Apr 2024 13:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD807D3FD;
+	Mon,  8 Apr 2024 14:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581984; cv=none; b=ByZzX8HJ32GEeK7jTerPDQtA3zymyEtwwZTZMmcm03hAnhQDqlo0z4MAJWb9AGZT1quxN21/Li+DEoV6dattmHExeIx9eBmwSlxvwkhiU4i6gRYYjPzqjCrQOkQErdZlZAj6CRw2zZMq8GxijbnCGHDIqm5w32mm2RJir8DoRtg=
+	t=1712585055; cv=none; b=T9Uz6icjwx8jV3m1z87GhF0li5zMtQfYlt+nCRb9WvkiVU6x2/Lpi5naoEq9eL2pyNB9/4rnVK+laYvXG0+wCvIhogXjiXWt9BYYby5XxteO0wwvUsAZJbCKbTDeZOm3K0KkQ0K2g0cBmbN91mCp2t37TYKLUi64RmNQATpG+qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581984; c=relaxed/simple;
-	bh=53GoV/pwJ4bSn+i7cYS7+6z+04RAKy1KMK84637uTGQ=;
+	s=arc-20240116; t=1712585055; c=relaxed/simple;
+	bh=mBlM/DLx2tHX/7zScewNnlrHhZmzRTsPfI2tmxUizE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cnb4d04rJ0lAjyPKjb2721LPSR2PGoRC7PRULlUfnM1PHYJNwZ43AU0j6BCQ/MpKQ249SmCELGLEmkliI9EywVIIw0xYaj0Lz9Aa0aZehgRi2zVkYpnuj8EtzvfsCKu8v46bNKrFmy/l3Fot59F9dN74YiGLZSKrmUA7sO7BMao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nXXXxxi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F16C43390;
-	Mon,  8 Apr 2024 13:13:04 +0000 (UTC)
+	 MIME-Version; b=i0/BisKqKieEB5P35Wc+wdjC7ZN33NRIL3UUDlneldgyz6/FQkoKMem218qoOb5E+sNPUp2mmgeYWXChhdcG/2I/S+crd4SUcpnnPN8suHJvCC+zVOlgI2AwFXa1vCPDJ0//7ST8XsaeuZV7rz7OlYRrkIBR3+hes5JYznGzRSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DiryrQPQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B6E7C433C7;
+	Mon,  8 Apr 2024 14:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581984;
-	bh=53GoV/pwJ4bSn+i7cYS7+6z+04RAKy1KMK84637uTGQ=;
+	s=korg; t=1712585055;
+	bh=mBlM/DLx2tHX/7zScewNnlrHhZmzRTsPfI2tmxUizE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2nXXXxxi6itwKIeJh79gFo0keWx1GX4gzM3CmlWu3zggx1DGfCpYQdvzKOm89/yaY
-	 CJsPWaEkVJzScPNeyQL+a/ees4BskZEcyJHCtt2J2zRs+jjF82b8mI1nUlD+nmyMKG
-	 ek29E9Qk6qoV3Kvfq6Z6BBebFmoMz7FabsPiBVTc=
+	b=DiryrQPQ/UeFRPV88mXTxxRaXAyghfmu31V9ibLd57IB72552kz63l8Ph9xbpWMDi
+	 k/WGg5rA7rfIBSpBspJg1opQOii2njsu1SgC6v4kqBfwYU+a0fzY5U/UnQHT8CqQ3K
+	 UAWHYupZVA8NPEzWKAZmnFlP2mqExnuGr6FMfK+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.1 069/138] usb: typec: ucsi: Check for notifications after init
+	David Thompson <davthompson@nvidia.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 617/690] mlxbf_gige: call request_irq() after NAPI initialized
 Date: Mon,  8 Apr 2024 14:58:03 +0200
-Message-ID: <20240408125258.365239039@linuxfoundation.org>
+Message-ID: <20240408125421.959407341@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: David Thompson <davthompson@nvidia.com>
 
-[ Upstream commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 ]
+[ Upstream commit f7442a634ac06b953fc1f7418f307b25acd4cfbc ]
 
-The completion notification for the final SET_NOTIFICATION_ENABLE
-command during initialization can include a connector change
-notification.  However, at the time this completion notification is
-processed, the ucsi struct is not ready to handle this notification.
-As a result the notification is ignored and the controller
-never sends an interrupt again.
+The mlxbf_gige driver encounters a NULL pointer exception in
+mlxbf_gige_open() when kdump is enabled.  The sequence to reproduce
+the exception is as follows:
+a) enable kdump
+b) trigger kdump via "echo c > /proc/sysrq-trigger"
+c) kdump kernel executes
+d) kdump kernel loads mlxbf_gige module
+e) the mlxbf_gige module runs its open() as the
+   the "oob_net0" interface is brought up
+f) mlxbf_gige module will experience an exception
+   during its open(), something like:
 
-Re-check CCI for a pending connector state change after
-initialization is complete. Adjust the corresponding debug
-message accordingly.
+     Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+     Mem abort info:
+       ESR = 0x0000000086000004
+       EC = 0x21: IABT (current EL), IL = 32 bits
+       SET = 0, FnV = 0
+       EA = 0, S1PTW = 0
+       FSC = 0x04: level 0 translation fault
+     user pgtable: 4k pages, 48-bit VAs, pgdp=00000000e29a4000
+     [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
+     Internal error: Oops: 0000000086000004 [#1] SMP
+     CPU: 0 PID: 812 Comm: NetworkManager Tainted: G           OE     5.15.0-1035-bluefield #37-Ubuntu
+     Hardware name: https://www.mellanox.com BlueField-3 SmartNIC Main Card/BlueField-3 SmartNIC Main Card, BIOS 4.6.0.13024 Jan 19 2024
+     pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+     pc : 0x0
+     lr : __napi_poll+0x40/0x230
+     sp : ffff800008003e00
+     x29: ffff800008003e00 x28: 0000000000000000 x27: 00000000ffffffff
+     x26: ffff000066027238 x25: ffff00007cedec00 x24: ffff800008003ec8
+     x23: 000000000000012c x22: ffff800008003eb7 x21: 0000000000000000
+     x20: 0000000000000001 x19: ffff000066027238 x18: 0000000000000000
+     x17: ffff578fcb450000 x16: ffffa870b083c7c0 x15: 0000aaab010441d0
+     x14: 0000000000000001 x13: 00726f7272655f65 x12: 6769675f6662786c
+     x11: 0000000000000000 x10: 0000000000000000 x9 : ffffa870b0842398
+     x8 : 0000000000000004 x7 : fe5a48b9069706ea x6 : 17fdb11fc84ae0d2
+     x5 : d94a82549d594f35 x4 : 0000000000000000 x3 : 0000000000400100
+     x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000066027238
+     Call trace:
+      0x0
+      net_rx_action+0x178/0x360
+      __do_softirq+0x15c/0x428
+      __irq_exit_rcu+0xac/0xec
+      irq_exit+0x18/0x2c
+      handle_domain_irq+0x6c/0xa0
+      gic_handle_irq+0xec/0x1b0
+      call_on_irq_stack+0x20/0x2c
+      do_interrupt_handler+0x5c/0x70
+      el1_interrupt+0x30/0x50
+      el1h_64_irq_handler+0x18/0x2c
+      el1h_64_irq+0x7c/0x80
+      __setup_irq+0x4c0/0x950
+      request_threaded_irq+0xf4/0x1bc
+      mlxbf_gige_request_irqs+0x68/0x110 [mlxbf_gige]
+      mlxbf_gige_open+0x5c/0x170 [mlxbf_gige]
+      __dev_open+0x100/0x220
+      __dev_change_flags+0x16c/0x1f0
+      dev_change_flags+0x2c/0x70
+      do_setlink+0x220/0xa40
+      __rtnl_newlink+0x56c/0x8a0
+      rtnl_newlink+0x58/0x84
+      rtnetlink_rcv_msg+0x138/0x3c4
+      netlink_rcv_skb+0x64/0x130
+      rtnetlink_rcv+0x20/0x30
+      netlink_unicast+0x2ec/0x360
+      netlink_sendmsg+0x278/0x490
+      __sock_sendmsg+0x5c/0x6c
+      ____sys_sendmsg+0x290/0x2d4
+      ___sys_sendmsg+0x84/0xd0
+      __sys_sendmsg+0x70/0xd0
+      __arm64_sys_sendmsg+0x2c/0x40
+      invoke_syscall+0x78/0x100
+      el0_svc_common.constprop.0+0x54/0x184
+      do_el0_svc+0x30/0xac
+      el0_svc+0x48/0x160
+      el0t_64_sync_handler+0xa4/0x12c
+      el0t_64_sync+0x1a4/0x1a8
+     Code: bad PC value
+     ---[ end trace 7d1c3f3bf9d81885 ]---
+     Kernel panic - not syncing: Oops: Fatal exception in interrupt
+     Kernel Offset: 0x2870a7a00000 from 0xffff800008000000
+     PHYS_OFFSET: 0x80000000
+     CPU features: 0x0,000005c1,a3332a5a
+     Memory Limit: none
+     ---[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
 
-Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The exception happens because there is a pending RX interrupt before the
+call to request_irq(RX IRQ) executes.  Then, the RX IRQ handler fires
+immediately after this request_irq() completes. The RX IRQ handler runs
+"napi_schedule()" before NAPI is fully initialized via "netif_napi_add()"
+and "napi_enable()", both which happen later in the open() logic.
+
+The logic in mlxbf_gige_open() must fully initialize NAPI before any calls
+to request_irq() execute.
+
+Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
+Link: https://lore.kernel.org/r/20240325183627.7641-1-davthompson@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ .../mellanox/mlxbf_gige/mlxbf_gige_main.c      | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-index 98f335cbbcdea..1fd4aaf348047 100644
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -855,7 +855,7 @@ void ucsi_connector_change(struct ucsi *ucsi, u8 num)
- 	struct ucsi_connector *con = &ucsi->connector[num - 1];
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+index 621594061fb57..6b93889900434 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+@@ -141,13 +141,10 @@ static int mlxbf_gige_open(struct net_device *netdev)
+ 	control |= MLXBF_GIGE_CONTROL_PORT_EN;
+ 	writeq(control, priv->base + MLXBF_GIGE_CONTROL);
  
- 	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
--		dev_dbg(ucsi->dev, "Bogus connector change event\n");
-+		dev_dbg(ucsi->dev, "Early connector change event\n");
- 		return;
- 	}
+-	err = mlxbf_gige_request_irqs(priv);
+-	if (err)
+-		return err;
+ 	mlxbf_gige_cache_stats(priv);
+ 	err = mlxbf_gige_clean_port(priv);
+ 	if (err)
+-		goto free_irqs;
++		return err;
  
-@@ -1248,6 +1248,7 @@ static int ucsi_init(struct ucsi *ucsi)
- {
- 	struct ucsi_connector *con, *connector;
- 	u64 command, ntfy;
-+	u32 cci;
- 	int ret;
- 	int i;
+ 	/* Clear driver's valid_polarity to match hardware,
+ 	 * since the above call to clean_port() resets the
+@@ -168,6 +165,10 @@ static int mlxbf_gige_open(struct net_device *netdev)
+ 	napi_enable(&priv->napi);
+ 	netif_start_queue(netdev);
  
-@@ -1300,6 +1301,13 @@ static int ucsi_init(struct ucsi *ucsi)
- 
- 	ucsi->connector = connector;
- 	ucsi->ntfy = ntfy;
++	err = mlxbf_gige_request_irqs(priv);
++	if (err)
++		goto napi_deinit;
 +
-+	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
-+	if (ret)
-+		return ret;
-+	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
-+		ucsi_connector_change(ucsi, cci);
-+
+ 	/* Set bits in INT_EN that we care about */
+ 	int_en = MLXBF_GIGE_INT_EN_HW_ACCESS_ERROR |
+ 		 MLXBF_GIGE_INT_EN_TX_CHECKSUM_INPUTS |
+@@ -184,14 +185,17 @@ static int mlxbf_gige_open(struct net_device *netdev)
+ 
  	return 0;
  
- err_unregister:
++napi_deinit:
++	netif_stop_queue(netdev);
++	napi_disable(&priv->napi);
++	netif_napi_del(&priv->napi);
++	mlxbf_gige_rx_deinit(priv);
++
+ tx_deinit:
+ 	mlxbf_gige_tx_deinit(priv);
+ 
+ phy_deinit:
+ 	phy_stop(phydev);
+-
+-free_irqs:
+-	mlxbf_gige_free_irqs(priv);
+ 	return err;
+ }
+ 
 -- 
 2.43.0
 
