@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-36528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B070A89C03B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8835889C148
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2E341C20F4A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 295301F21A2B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CE4745C5;
-	Mon,  8 Apr 2024 13:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF5681AAB;
+	Mon,  8 Apr 2024 13:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oYfQ4St1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NVo1zSIQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05192DF73;
-	Mon,  8 Apr 2024 13:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7A97B3EB;
+	Mon,  8 Apr 2024 13:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581588; cv=none; b=JCW0buP2Wkmk4OkeVw4cm0DJEv94QAMaMOMg2znl1TGp5Vv7K47rJhARquQrbCXBpCHazeqgnmYQebYW1uICiRacprf7Q3TDlFqagZs3l+zRO3AgAHrnFjh3VqDB+D9aKif6X7+PQQwYu3OPS8CauIq92XM8ogmUjrsjGzFJLWU=
+	t=1712582084; cv=none; b=gPFtfzCKMhucefi6eqiiQCH7H1y/vOZCdJewEdj0QEH1BsAIWZpjF8KCanCWSegowWEsDiY74BhUj3qcClyegqdKyHCxIZptRqQFgkJmdMnQWooR9m3rddAI8bYzbuBOjpJ2tEtiT2LMX5Uu9Om/D6QfVJe47VICxlBiPwbyL/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581588; c=relaxed/simple;
-	bh=FyyKzLMVvZye/P5jRAvzl+FPEZM6WBIREHXb1UC4vp8=;
+	s=arc-20240116; t=1712582084; c=relaxed/simple;
+	bh=hASHIezoWOzbpVDVkh9hc80xnCkCQNhEYRjtxGhHaJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oo9KTk5OCf5bnFehu68uCnvFWVmplTt+E1kDPFJKn+oa00xjG6beAz21O/FXfZLsvqwxuuhWajM93QONYcYbhwW9Ug3MZscQkH2e2RISLv+SgvVeyXQ356asfHzJ6JLZlq9yfGl3nTfyi2GKJ7laRMbxrtaw5GLTrUS+G7rCumI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYfQ4St1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36CB6C433F1;
-	Mon,  8 Apr 2024 13:06:28 +0000 (UTC)
+	 MIME-Version; b=K1Hj0wF15QUUoh4v4u2O9qVJf9Gf0C9XXiBxtYd7xVIaZIZva9G2FuRib8CGs+MUzcrMm8hFNjYJmnx3wsqpgyA5z+umwMqI+/hsECOcy1lX0SUpg9myWT2XXIzslZ1Ak8SPaOMnnBxOMULXj08vdNTeS5LpVQE4wmo/wvpT1aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NVo1zSIQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A9F0C43390;
+	Mon,  8 Apr 2024 13:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581588;
-	bh=FyyKzLMVvZye/P5jRAvzl+FPEZM6WBIREHXb1UC4vp8=;
+	s=korg; t=1712582083;
+	bh=hASHIezoWOzbpVDVkh9hc80xnCkCQNhEYRjtxGhHaJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oYfQ4St1xQptJWVxgws2PwoLPtAaYn6Iiay5YSg/r4qPGcMuHWXdesarKtS73gYwd
-	 JxUelxIR2Xqe0EjNKXi6H4w+ADPDOAZQJ6jvti9MZ8isTYZuDsRAjsIlAQBqToaMR6
-	 oMj3Ro5RqoWjk4g/TqCvKsCcQIT+zVC8/nKfAn20=
+	b=NVo1zSIQoSpKbGVeb4AGfKFkZCAjTgTRa+5iUrX4yxsC7dAr3n+CPIQw8c6RRf2r3
+	 FJK5WziyJ18x4gZoopiB0y19f9fS4ZAApm0CWW8D390Yo36TSg+56P4oXnUM9PUjFt
+	 1aQqgBfQLuNK4WcbYDasEFCm/idUNj3v9MnqIm9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/252] net: hsr: hsr_slave: Fix the promiscuous mode in offload mode
+Subject: [PATCH 6.8 045/273] netfilter: nf_tables: reject destroy command to remove basechain hooks
 Date: Mon,  8 Apr 2024 14:55:20 +0200
-Message-ID: <20240408125307.310551327@linuxfoundation.org>
+Message-ID: <20240408125310.697427057@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ravi Gunasekaran <r-gunasekaran@ti.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit b11c81731c810efe592e510bb0110e0db6877419 ]
+[ Upstream commit b32ca27fa238ff83427d23bef2a5b741e2a88a1e ]
 
-commit e748d0fd66ab ("net: hsr: Disable promiscuous mode in
-offload mode") disables promiscuous mode of slave devices
-while creating an HSR interface. But while deleting the
-HSR interface, it does not take care of it. It decreases the
-promiscuous mode count, which eventually enables promiscuous
-mode on the slave devices when creating HSR interface again.
+Report EOPNOTSUPP if NFT_MSG_DESTROYCHAIN is used to delete hooks in an
+existing netdev basechain, thus, only NFT_MSG_DELCHAIN is allowed.
 
-Fix this by not decrementing the promiscuous mode count while
-deleting the HSR interface when offload is enabled.
-
-Fixes: e748d0fd66ab ("net: hsr: Disable promiscuous mode in offload mode")
-Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20240322100447.27615-1-r-gunasekaran@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7d937b107108f ("netfilter: nf_tables: support for deleting devices in an existing netdev chain")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_slave.c | 3 ++-
+ net/netfilter/nf_tables_api.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-index e5742f2a2d522..1b6457f357bdb 100644
---- a/net/hsr/hsr_slave.c
-+++ b/net/hsr/hsr_slave.c
-@@ -220,7 +220,8 @@ void hsr_del_port(struct hsr_port *port)
- 		netdev_update_features(master->dev);
- 		dev_set_mtu(master->dev, hsr_get_max_mtu(hsr));
- 		netdev_rx_handler_unregister(port->dev);
--		dev_set_promiscuity(port->dev, -1);
-+		if (!port->hsr->fwd_offloaded)
-+			dev_set_promiscuity(port->dev, -1);
- 		netdev_upper_dev_unlink(port->dev, master->dev);
- 	}
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index ec6266c1972c0..00288b31f734c 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -2932,7 +2932,8 @@ static int nf_tables_delchain(struct sk_buff *skb, const struct nfnl_info *info,
+ 	nft_ctx_init(&ctx, net, skb, info->nlh, family, table, chain, nla);
  
+ 	if (nla[NFTA_CHAIN_HOOK]) {
+-		if (chain->flags & NFT_CHAIN_HW_OFFLOAD)
++		if (NFNL_MSG_TYPE(info->nlh->nlmsg_type) == NFT_MSG_DESTROYCHAIN ||
++		    chain->flags & NFT_CHAIN_HW_OFFLOAD)
+ 			return -EOPNOTSUPP;
+ 
+ 		if (nft_is_base_chain(chain)) {
 -- 
 2.43.0
 
