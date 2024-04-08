@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-36410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F2689BFBC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:01:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B15EB89C524
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 284FD1F23133
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:01:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E41051C2250C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0A47C086;
-	Mon,  8 Apr 2024 13:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF1B74438;
+	Mon,  8 Apr 2024 13:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTVNCU7h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHE/T0dq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB466CDA8;
-	Mon,  8 Apr 2024 13:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D253B6EB72;
+	Mon,  8 Apr 2024 13:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581202; cv=none; b=BaU7n+6mbKm5yEfsBmazb125YP5VaVQWZXA/GDpQwYnAbaddDxh38QWfX7FNjj5coMBdgUpvrtG/Jgg4cOMDva93kXwo5MublMQi771l9CaW9dLrH+BZe9SniHz4obN7a+LireVowQxN9PaAKLYIovK2UvIJgASfhRo4aHTSLYY=
+	t=1712584424; cv=none; b=oxUrnYq1BaY7JiNNDZT30GffIQ7vCe5yc547Oc53m4Z+9EDThrDVDuO9NQGzXp5Ds70Xg3q/+TWifzpxeOe4CsEDLc1+8k+dHBc6GvcrrKng98dAutdlzXIoW6pvzVDrRWLRtQLucH2G8qQ7Ai9hjiiVR3S6ptR6iCa72qluBzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581202; c=relaxed/simple;
-	bh=/aqEehLvgzIdQHJzIl+pw06xgpRAPjZYADYJMfxi8jM=;
+	s=arc-20240116; t=1712584424; c=relaxed/simple;
+	bh=q14isQLtueropXAEE7eWMIm3EZuj+eaOJalq2xgrKmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iOLUfuEmMjitA3l5a2tj4ZjZyOEPkvusOsRDucrLP5ZVLnTfsA/g2OPW+2ftyhdOEiGblkLYXiwwojhDlOqI/aj1yE/zanlLRK63OGT5Sc7KCBoR0o1n01ILW1sxfcH8Lzc/YLJzAidO5uEoWU0yLKb/VckO+aKlMjy2ZAXzSn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTVNCU7h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3931C43394;
-	Mon,  8 Apr 2024 13:00:01 +0000 (UTC)
+	 MIME-Version; b=ICECbl+ptVoqg0WYlzLeAQWzMZdRzLrGdPmDBnoj3OIwRcZunmWWNORN7Q0Y2qjOXIDChQZRXbOOFOs34hATlbK5qxTeeP/Laht/KFfQ1fO4R/tUEm6QhKmZ+EtTOloEa3S6zuceGua32U3LJizGdOHHC51Bcyxl4MwC/gNbtgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHE/T0dq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFD3C433C7;
+	Mon,  8 Apr 2024 13:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581202;
-	bh=/aqEehLvgzIdQHJzIl+pw06xgpRAPjZYADYJMfxi8jM=;
+	s=korg; t=1712584424;
+	bh=q14isQLtueropXAEE7eWMIm3EZuj+eaOJalq2xgrKmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eTVNCU7hbCHG3TkRk8Kbdmeph6+Vv33t2/K9s8lp2fz/f955YMrc7QNZcjWtpN6lV
-	 5M2qTMbAPp3AVj3CnDXS8ra0Z23xflyXrB+BJjQ7cIvDtqdxqTyPBq7h5viejIQAg1
-	 FVBQFvdFLArjcPS1SEKAkqUjsWhw2/cIQvGe9hrU=
+	b=sHE/T0dqDbLgepKbH4CDK4K7BwttCo7aari0bXoch3DK3kNbcrpYwRt6GTQPr5gFj
+	 bYdr/CI5Mf5b/9oOPWfCaK2J/BBr+pTIGGAJB99i4FId2QvKxUXpvR77xOnP1Gulij
+	 EmomH32mVVAjXWTpbLHw+Eh30yl4WXNmvJRH343o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 001/252] drm/i915/display: Use i915_gem_object_get_dma_address to get dma address
+	Dai Ngo <dai.ngo@oracle.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 434/690] NFSD: keep track of the number of courtesy clients in the system
 Date: Mon,  8 Apr 2024 14:55:00 +0200
-Message-ID: <20240408125306.691460305@linuxfoundation.org>
+Message-ID: <20240408125415.333469739@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +59,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit 7054b551de18e9875fbdf8d4f3baade428353545 ]
+[ Upstream commit 3a4ea23d86a317c4b68b9a69d51f7e84e1e04357 ]
 
-Works better for xe like that. obj is no longer const.
+Add counter nfs4_courtesy_client_count to nfsd_net to keep track
+of the number of courtesy clients in the system.
 
-Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231204134946.16219-1-maarten.lankhorst@linux.intel.com
-Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
-Stable-dep-of: 582dc04b0658 ("drm/i915: Pre-populate the cursor physical dma address")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/gpu/drm/i915/display/intel_cursor.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/nfsd/netns.h     |  2 ++
+ fs/nfsd/nfs4state.c | 17 ++++++++++++++++-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_cursor.c b/drivers/gpu/drm/i915/display/intel_cursor.c
-index b342fad180ca5..0d21c34f74990 100644
---- a/drivers/gpu/drm/i915/display/intel_cursor.c
-+++ b/drivers/gpu/drm/i915/display/intel_cursor.c
-@@ -23,6 +23,8 @@
- #include "intel_psr.h"
- #include "skl_watermark.h"
+diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
+index ffe17743cc74b..55c7006d6109a 100644
+--- a/fs/nfsd/netns.h
++++ b/fs/nfsd/netns.h
+@@ -192,6 +192,8 @@ struct nfsd_net {
  
-+#include "gem/i915_gem_object.h"
+ 	atomic_t		nfs4_client_count;
+ 	int			nfs4_max_clients;
 +
- /* Cursor formats */
- static const u32 intel_cursor_formats[] = {
- 	DRM_FORMAT_ARGB8888,
-@@ -33,11 +35,11 @@ static u32 intel_cursor_base(const struct intel_plane_state *plane_state)
- 	struct drm_i915_private *dev_priv =
- 		to_i915(plane_state->uapi.plane->dev);
- 	const struct drm_framebuffer *fb = plane_state->hw.fb;
--	const struct drm_i915_gem_object *obj = intel_fb_obj(fb);
-+	struct drm_i915_gem_object *obj = intel_fb_obj(fb);
- 	u32 base;
++	atomic_t		nfsd_courtesy_clients;
+ };
  
- 	if (DISPLAY_INFO(dev_priv)->cursor_needs_physical)
--		base = sg_dma_address(obj->mm.pages->sgl);
-+		base = i915_gem_object_get_dma_address(obj, 0);
- 	else
- 		base = intel_plane_ggtt_offset(plane_state);
+ /* Simple check to find out if a given net was properly initialized */
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 6cb654e308787..6a7a99511111d 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -160,6 +160,13 @@ static bool is_client_expired(struct nfs4_client *clp)
+ 	return clp->cl_time == 0;
+ }
  
++static void nfsd4_dec_courtesy_client_count(struct nfsd_net *nn,
++					struct nfs4_client *clp)
++{
++	if (clp->cl_state != NFSD4_ACTIVE)
++		atomic_add_unless(&nn->nfsd_courtesy_clients, -1, 0);
++}
++
+ static __be32 get_client_locked(struct nfs4_client *clp)
+ {
+ 	struct nfsd_net *nn = net_generic(clp->net, nfsd_net_id);
+@@ -169,6 +176,7 @@ static __be32 get_client_locked(struct nfs4_client *clp)
+ 	if (is_client_expired(clp))
+ 		return nfserr_expired;
+ 	atomic_inc(&clp->cl_rpc_users);
++	nfsd4_dec_courtesy_client_count(nn, clp);
+ 	clp->cl_state = NFSD4_ACTIVE;
+ 	return nfs_ok;
+ }
+@@ -190,6 +198,7 @@ renew_client_locked(struct nfs4_client *clp)
+ 
+ 	list_move_tail(&clp->cl_lru, &nn->client_lru);
+ 	clp->cl_time = ktime_get_boottime_seconds();
++	nfsd4_dec_courtesy_client_count(nn, clp);
+ 	clp->cl_state = NFSD4_ACTIVE;
+ }
+ 
+@@ -2248,6 +2257,7 @@ __destroy_client(struct nfs4_client *clp)
+ 	if (clp->cl_cb_conn.cb_xprt)
+ 		svc_xprt_put(clp->cl_cb_conn.cb_xprt);
+ 	atomic_add_unless(&nn->nfs4_client_count, -1, 0);
++	nfsd4_dec_courtesy_client_count(nn, clp);
+ 	free_client(clp);
+ 	wake_up_all(&expiry_wq);
+ }
+@@ -4375,6 +4385,8 @@ void nfsd4_init_leases_net(struct nfsd_net *nn)
+ 	max_clients = (u64)si.totalram * si.mem_unit / (1024 * 1024 * 1024);
+ 	max_clients *= NFS4_CLIENTS_PER_GB;
+ 	nn->nfs4_max_clients = max_t(int, max_clients, NFS4_CLIENTS_PER_GB);
++
++	atomic_set(&nn->nfsd_courtesy_clients, 0);
+ }
+ 
+ static void init_nfs4_replay(struct nfs4_replay *rp)
+@@ -5928,8 +5940,11 @@ nfs4_get_client_reaplist(struct nfsd_net *nn, struct list_head *reaplist,
+ 			goto exp_client;
+ 		if (!state_expired(lt, clp->cl_time))
+ 			break;
+-		if (!atomic_read(&clp->cl_rpc_users))
++		if (!atomic_read(&clp->cl_rpc_users)) {
++			if (clp->cl_state == NFSD4_ACTIVE)
++				atomic_inc(&nn->nfsd_courtesy_clients);
+ 			clp->cl_state = NFSD4_COURTESY;
++		}
+ 		if (!client_has_state(clp))
+ 			goto exp_client;
+ 		if (!nfs4_anylock_blockers(clp))
 -- 
 2.43.0
 
