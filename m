@@ -1,168 +1,164 @@
-Return-Path: <stable+bounces-37800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D5689CCE8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 22:19:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA34989CD00
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 22:40:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD5DDB22240
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 20:19:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FB97B21564
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 20:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62B0146D59;
-	Mon,  8 Apr 2024 20:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E557146D77;
+	Mon,  8 Apr 2024 20:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="S864YDvY"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EhlCUVlm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6059A146A9B;
-	Mon,  8 Apr 2024 20:19:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0599F143C59
+	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 20:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712607582; cv=none; b=XRiDURNjBdaJamR3wqEmw8zciYyidGqHGuHb6pwzCMvfn5/sACWXMGiFRi8RgTqEs+8GZnT9QWcjkE5wEoe4vUwONAWr8KCZDPq9InwKX0gnjFGfet1Rr/WUO5FaaYAIKdJPtd8vxbVOLQwmMX0fmrFpHoTqxsIWdtHJF6+bd+0=
+	t=1712608830; cv=none; b=HfTnFhcCdkKVXFbCYmdTK8wJo/oWr3D32BK3iy6uuRhb8esrbDQvUFmGf83LJSeCHUWFgJFnYa369SsDmrIlM9rFnMutfhtY7IZoVqogZIZ9nFU4Jzvmcy9t+Tihe/plFq7Z7NJmJiCFWtiK3FaU4QMfz8TILSieP1MAiNAlJpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712607582; c=relaxed/simple;
-	bh=yv0PD3sD2INH3fQr5EHOrqNLtXW3eyy10HE15uKsiZo=;
-	h=Date:To:From:Subject:Message-Id; b=L3cNUsjWZBsQesw+swNtvV47ebBniVm85gJSfsdCowxTueVXAJy/IJC/8g44j8exHh8HV3QPZx4A28BYgUXahcY8reXffKkuEYhT5/B6xNKGluWWiDbcL8k9hOdhjko6JrTwhkkQwWd7LGJ/lTrEXH2aLg8zt78duy90QXhQziI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=S864YDvY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55A1C433F1;
-	Mon,  8 Apr 2024 20:19:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1712607582;
-	bh=yv0PD3sD2INH3fQr5EHOrqNLtXW3eyy10HE15uKsiZo=;
-	h=Date:To:From:Subject:From;
-	b=S864YDvY+PfkZuw0T6QeMZ2ZnzoI/Zfh+oO/XpnL0XEeYnARau+aRbclchMC1c3Ej
-	 rklniYB850omLX6yn4M6ynO31suGw2wwGmpE8AG0OLPZuW6Y+3uvvcqXbMgmK0/S5A
-	 zQ7nhu6djOAQ7lMwMo+Z3BGAhnMc4YzfpdBDf780=
-Date: Mon, 08 Apr 2024 13:19:41 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,ghe@suse.com,gechangwei@live.cn,glass.su@suse.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ocfs2-use-coarse-time-for-new-created-files.patch added to mm-nonmm-unstable branch
-Message-Id: <20240408201941.E55A1C433F1@smtp.kernel.org>
+	s=arc-20240116; t=1712608830; c=relaxed/simple;
+	bh=/lzVzbK8GfEZQ9NiAPI6LOYjttXFw3I14FUKkVXEWbI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eLvcxbrx0lK09+KDTLic920OSDpPrUrAZpb9oEqWvbHr1a2ZElUshc9jHJQ6QVR4YeRNslqpdc1+thBfuCKbReKCIzhsQmcLKA1fy2LA36ScW9kgYdQ97uS+vDlUQagDbwXNO2dAINLIdTO3R5v0d9h3Gv3/QjyLf8XaL8Vab6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EhlCUVlm; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3458b699d6cso664912f8f.0
+        for <stable@vger.kernel.org>; Mon, 08 Apr 2024 13:40:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1712608827; x=1713213627; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YH7O1NXdJC03aNqvzATcinYdpPQ1XTxhwnXgM4me0RQ=;
+        b=EhlCUVlmUbhtFvx2FLjFMTRJAaOjGs//k9n6ku0vbawnPbLgm1/qiw2FfNVn4WOczP
+         CqaYJ6pWzNoezaZf8Q3MFTTF244F9pzPqck78JRsNCzLKiHeeHm5hLf7BeJlk71BPQBa
+         NA8mgoTOAZ0egfbAUYCJnDgS3UD2dxIyhYjTBrsenZlyP3dQgmbN94/LY2sezW3y+5Pw
+         lYt6HoAO+k2GTsanVew5K4X5WsEH59tAbLj1P4HtXM/3tn1E2+/2A2AqqdtErtJYonuR
+         kwmsi5QQ1jvTMrdYWfkqrozCi5w7zs4BN5KH0x9os9zHJ45uEU22NiQ5WaLXvfrZlE1/
+         qtNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712608827; x=1713213627;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YH7O1NXdJC03aNqvzATcinYdpPQ1XTxhwnXgM4me0RQ=;
+        b=AaQ4cfeV7iNHYHHoB2pyKCQK67xMDycML0Tdow/TX7Bli3kEBjzJFkkXhjyD10rXyW
+         U6QYrb8d0ct56K0XI2hY2ZJkGxWZIPC9JCSFLLOTwqpAs7HTcomgkKRs0yMjQOiQmwsD
+         NKN/oeBENbYXoKQrmzFeLKCFdCwUksNEJ4l9nT8YAfULQ8q2hCJOMjM8C3LxyM+jyWfU
+         PS73hSuQtW0x5xkZ9AHcsj4alfpjre4ggobld/GrK1EtuTWFxd1mLHXdiumfHLFk/083
+         7NBfgF7/7dkr3tpNf6cx3j2JrAJxkkY6OSEFs7lXjtHDbxSXpFPslzToUBLOeohSk7CF
+         CouQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVKNWH62HlvPvuCx7zw5bLarqwtN247bp8JRRCWqyqDfAJcy1I0rpYEQxRMgsfe3LwDSIOAVoWmyfqad3p4Lvz3urQjlY9K
+X-Gm-Message-State: AOJu0YxnXeOpyNPvwrInbHUAJTFaSp9pIPRrA8IQIHOWdNV9gzJ5+eFd
+	jdesuT9AjUcanpJkpAeL3oPBTjgllxfqswgYCQQM00j6w7N5QKNh7kl9YZWBt7TqV/Su41xKZhT
+	ZqGS25gbzI/oCoF6nzpHRZ8jwQaE4O9g1XywE
+X-Google-Smtp-Source: AGHT+IFxhfE/RzvX7+ulq0KbAkf7P5D6w45kxMVxgPiuAeYPn2IilZSRtVlEKwNMRCb0uRiYGJdYkTguNKiF7lfjQRE=
+X-Received: by 2002:a5d:4811:0:b0:343:d06e:51cb with SMTP id
+ l17-20020a5d4811000000b00343d06e51cbmr6748896wrq.19.1712608827286; Mon, 08
+ Apr 2024 13:40:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240405231920.1772199-1-peterx@redhat.com> <151c1981-f2ed-43fd-bec3-5ed63efe1c13@redhat.com>
+In-Reply-To: <151c1981-f2ed-43fd-bec3-5ed63efe1c13@redhat.com>
+From: Axel Rasmussen <axelrasmussen@google.com>
+Date: Mon, 8 Apr 2024 13:39:49 -0700
+Message-ID: <CAJHvVchiY9v2jkdFzbYukbiUYADCrZcAO-4pW-RwdbLetW8w7w@mail.gmail.com>
+Subject: Re: [PATCH] mm/userfaultfd: Allow hugetlb change protection upon
+ poison entry
+To: David Hildenbrand <david@redhat.com>
+Cc: peterx@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-stable <stable@vger.kernel.org>, 
+	syzbot+b07c8ac8eee3d4d8440f@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+
+Thanks for the fix, Peter!
 
 
-The patch titled
-     Subject: ocfs2: use coarse time for new created files
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     ocfs2-use-coarse-time-for-new-created-files.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-use-coarse-time-for-new-created-files.patch
-
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Su Yue <glass.su@suse.com>
-Subject: ocfs2: use coarse time for new created files
-Date: Mon, 8 Apr 2024 16:20:41 +0800
-
-The default atime related mount option is '-o realtime' which means file
-atime should be updated if atime <= ctime or atime <= mtime.  atime should
-be updated in the following scenario, but it is not:
-==========================================================
-$ rm /mnt/testfile;
-$ echo test > /mnt/testfile
-$ stat -c "%X %Y %Z" /mnt/testfile
-1711881646 1711881646 1711881646
-$ sleep 5
-$ cat /mnt/testfile > /dev/null
-$ stat -c "%X %Y %Z" /mnt/testfile
-1711881646 1711881646 1711881646
-==========================================================
-
-And the reason the atime in the test is not updated is that ocfs2 calls
-ktime_get_real_ts64() in __ocfs2_mknod_locked during file creation.  Then
-inode_set_ctime_current() is called in inode_set_ctime_current() calls
-ktime_get_coarse_real_ts64() to get current time.
-
-ktime_get_real_ts64() is more accurate than ktime_get_coarse_real_ts64(). 
-In my test box, I saw ctime set by ktime_get_coarse_real_ts64() is less
-than ktime_get_real_ts64() even ctime is set later.  The ctime of the new
-inode is smaller than atime.
-
-The call trace is like:
-
-ocfs2_create
-  ocfs2_mknod
-    __ocfs2_mknod_locked
-    ....
-
-      ktime_get_real_ts64 <------- set atime,ctime,mtime, more accurate
-      ocfs2_populate_inode
-    ...
-    ocfs2_init_acl
-      ocfs2_acl_set_mode
-        inode_set_ctime_current
-          current_time
-            ktime_get_coarse_real_ts64 <-------less accurate
-
-ocfs2_file_read_iter
-  ocfs2_inode_lock_atime
-    ocfs2_should_update_atime
-      atime <= ctime ? <-------- false, ctime < atime due to accuracy
-
-So here call ktime_get_coarse_real_ts64 to set inode time coarser while
-creating new files.  It may lower the accuracy of file times.  But it's
-not a big deal since we already use coarse time in other places like
-ocfs2_update_inode_atime and inode_set_ctime_current.
-
-Link: https://lkml.kernel.org/r/20240408082041.20925-5-glass.su@suse.com
-Fixes: c62c38f6b91b ("ocfs2: replace CURRENT_TIME macro")
-Signed-off-by: Su Yue <glass.su@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/ocfs2/namei.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/fs/ocfs2/namei.c~ocfs2-use-coarse-time-for-new-created-files
-+++ a/fs/ocfs2/namei.c
-@@ -566,7 +566,7 @@ static int __ocfs2_mknod_locked(struct i
- 	fe->i_last_eb_blk = 0;
- 	strcpy(fe->i_signature, OCFS2_INODE_SIGNATURE);
- 	fe->i_flags |= cpu_to_le32(OCFS2_VALID_FL);
--	ktime_get_real_ts64(&ts);
-+	ktime_get_coarse_real_ts64(&ts);
- 	fe->i_atime = fe->i_ctime = fe->i_mtime =
- 		cpu_to_le64(ts.tv_sec);
- 	fe->i_mtime_nsec = fe->i_ctime_nsec = fe->i_atime_nsec =
-_
-
-Patches currently in -mm which might be from glass.su@suse.com are
-
-ocfs2-update-inode-ctime-in-ocfs2_fileattr_set.patch
-ocfs2-return-real-error-code-in-ocfs2_dio_wr_get_block.patch
-ocfs2-fix-races-between-hole-punching-and-aiodio.patch
-ocfs2-update-inode-fsync-transaction-id-in-ocfs2_unlink-and-ocfs2_link.patch
-ocfs2-use-coarse-time-for-new-created-files.patch
-
+On Mon, Apr 8, 2024 at 11:59=E2=80=AFAM David Hildenbrand <david@redhat.com=
+> wrote:
+>
+> On 06.04.24 01:19, peterx@redhat.com wrote:
+> > From: Peter Xu <peterx@redhat.com>
+> >
+> > After UFFDIO_POISON, there can be two kinds of hugetlb pte markers, eit=
+her
+> > the POISON one or UFFD_WP one.
+> >
+> > Allow change protection to run on a poisoned marker just like !hugetlb
+> > cases, ignoring the marker irrelevant of the permission.
+> >
+> > Here the two bits are mutual exclusive. For example, when install a
+> > poisoned entry it must not be UFFD_WP already (by checking pte_none()
+> > before such install).  And it also means if UFFD_WP is set there must h=
+ave
+> > no POISON bit set.  It makes sense because UFFD_WP is a bit to reflect
+> > permission, and permissions do not apply if the pte is poisoned and
+> > destined to sigbus.
+> >
+> > So here we simply check uffd_wp bit set first, do nothing otherwise.
+> >
+> > Attach the Fixes to UFFDIO_POISON work, as before that it should not be
+> > possible to have poison entry for hugetlb (e.g., hugetlb doesn't do swa=
+p,
+> > so no chance of swapin errors).
+> >
+> > Cc: Axel Rasmussen <axelrasmussen@google.com>
+> > Cc: David Hildenbrand <david@redhat.com>
+> > Cc: linux-stable <stable@vger.kernel.org> # 6.6+
+> > Link: https://lore.kernel.org/r/000000000000920d5e0615602dd1@google.com
+> > Reported-by: syzbot+b07c8ac8eee3d4d8440f@syzkaller.appspotmail.com
+> > Fixes: fc71884a5f59 ("mm: userfaultfd: add new UFFDIO_POISON ioctl")
+> > Signed-off-by: Peter Xu <peterx@redhat.com>
+> > ---
+> >   mm/hugetlb.c | 10 +++++++---
+> >   1 file changed, 7 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> > index 8267e221ca5d..ba7162441adf 100644
+> > --- a/mm/hugetlb.c
+> > +++ b/mm/hugetlb.c
+> > @@ -6960,9 +6960,13 @@ long hugetlb_change_protection(struct vm_area_st=
+ruct *vma,
+> >                       if (!pte_same(pte, newpte))
+> >                               set_huge_pte_at(mm, address, ptep, newpte=
+, psize);
+> >               } else if (unlikely(is_pte_marker(pte))) {
+> > -                     /* No other markers apply for now. */
+> > -                     WARN_ON_ONCE(!pte_marker_uffd_wp(pte));
+> > -                     if (uffd_wp_resolve)
+> > +                     /*
+> > +                      * Do nothing on a poison marker; page is
+> > +                      * corrupted, permissons do not apply.  Here
+> > +                      * pte_marker_uffd_wp()=3D=3Dtrue implies !poison
+> > +                      * because they're mutual exclusive.
+> > +                      */
+> > +                     if (pte_marker_uffd_wp(pte) && uffd_wp_resolve)
+> >                               /* Safe to modify directly (non-present->=
+none). */
+> >                               huge_pte_clear(mm, address, ptep, psize);
+> >               } else if (!huge_pte_none(pte)) {
+>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+>
+> --
+> Cheers,
+>
+> David / dhildenb
+>
 
