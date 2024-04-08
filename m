@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-36486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF0D89C00B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:05:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14ED289C013
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:05:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2C631F20F78
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:05:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3D112811B3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794E17C6C5;
-	Mon,  8 Apr 2024 13:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27727745D6;
+	Mon,  8 Apr 2024 13:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9j9lWFr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9N1rQRx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A78D7C0AB;
-	Mon,  8 Apr 2024 13:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89557D07C;
+	Mon,  8 Apr 2024 13:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581466; cv=none; b=CwwYxEiOuBUbuPH78lvdIBoakdEAUhZfvpTXigusYChGtGCeuY5fooV2pl9+gdH6VkzRkHttVDW4qJ2pj3oEY8ZWm7lnxYfwkvkltAXMWFBfZve6dR0epaXfUUKrFng5OfvjsvTS8fJVl51oiihkXHwXijIATjn+uFzyG+L5oYo=
+	t=1712581474; cv=none; b=LMTuQz34EgZxGiD+OFO6i6Bvk4Tvzf31586NkP26DYjBE0oLvaG4o6ynnGp6cHejHi575UdTNABqRficK8JJCHiREIxpyZ4uGoce1G9OtavI2g/X7lBTjZNeC+BAsHqidzOxnGqoP8/b0Fg4sbO3JMyJZ7Yrxq6NYyQpSlBaM+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581466; c=relaxed/simple;
-	bh=GT9Kvt6/z1+7/Xpl2+cosILDoOcIZyYtUaXOIhzG+ro=;
+	s=arc-20240116; t=1712581474; c=relaxed/simple;
+	bh=SaA6Xj5WiaSyWzSfN+hAXEvx5u8Q4AuENMp1y3+kRZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DesRr72pCF9Q+hO7Rse2s7Lc++b4HoNU9nWS271jXgw75W2Num7oeqyMr+8uMGzrLnzEEOu4yt7DtFhDscOsS0angLDs8EPC05DNyIvZRhpH0eGK77xUjckOAbkqNuD/ZJmkgIIbT+vKwG8RbNGgNrf8EIFuteUGbA+XJa9DAXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9j9lWFr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68DFC433F1;
-	Mon,  8 Apr 2024 13:04:25 +0000 (UTC)
+	 MIME-Version; b=AqI0lFNwyQ+JpptT5d9S/bY1B28XRts2jvyiV5Iy3Rc1hox6JapD12XcbrvKD4QPyUVFx7cquJMcV75gT3cVOM0a0P5XMPxQJ//ebymPuwqeJRiiG3l7OhrYvHgwsdrmaqfp1s6ul1jkd9LwL2vUhKhdz1jGlFAUM3ZzHpZz9UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9N1rQRx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1F4C433F1;
+	Mon,  8 Apr 2024 13:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581466;
-	bh=GT9Kvt6/z1+7/Xpl2+cosILDoOcIZyYtUaXOIhzG+ro=;
+	s=korg; t=1712581474;
+	bh=SaA6Xj5WiaSyWzSfN+hAXEvx5u8Q4AuENMp1y3+kRZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y9j9lWFrNF7UqVvYWxXgEv0d2yivom7TMh5d3GjO3iaC73NcTiZMfW/jftxBoJ2jJ
-	 t/G9EakTMpKs1EVZph8PBC61Abc+0t47MsDLYY8JdemR4qAMyRgpW4daoG7p3jK/jS
-	 GR/KxNcealSfQWMtHW01Mlewuelme9vWWfWs8DtU=
+	b=P9N1rQRxDAUpk9QbPA66NcA4R8/P6OXdjEQoo8FCCNcgUdSfwKXMaGujNlmjUmlFs
+	 eoujPhOcTtFKsFuynk54eBwodB2Hhh9D5dubm3EJbl2/x8BNi5DZaE82zSXLdtYN+m
+	 ZKKa/MgiRgHb0kvqA2bTj3k5OA2hFpHmzbgBHJRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Antonio SJ Musumeci <trapexit@spawn.link>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 053/690] mmc: tmio: avoid concurrent runs of mmc_request_done()
-Date: Mon,  8 Apr 2024 14:48:39 +0200
-Message-ID: <20240408125401.442230827@linuxfoundation.org>
+Subject: [PATCH 5.15 054/690] fuse: fix root lookup with nonzero generation
+Date: Mon,  8 Apr 2024 14:48:40 +0200
+Message-ID: <20240408125401.476856946@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,49 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit e8d1b41e69d72c62865bebe8f441163ec00b3d44 ]
+[ Upstream commit 68ca1b49e430f6534d0774a94147a823e3b8b26e ]
 
-With the to-be-fixed commit, the reset_work handler cleared 'host->mrq'
-outside of the spinlock protected critical section. That leaves a small
-race window during execution of 'tmio_mmc_reset()' where the done_work
-handler could grab a pointer to the now invalid 'host->mrq'. Both would
-use it to call mmc_request_done() causing problems (see link below).
+The root inode has a fixed nodeid and generation (1, 0).
 
-However, 'host->mrq' cannot simply be cleared earlier inside the
-critical section. That would allow new mrqs to come in asynchronously
-while the actual reset of the controller still needs to be done. So,
-like 'tmio_mmc_set_ios()', an ERR_PTR is used to prevent new mrqs from
-coming in but still avoiding concurrency between work handlers.
+Prior to the commit 15db16837a35 ("fuse: fix illegal access to inode with
+reused nodeid") generation number on lookup was ignored.  After this commit
+lookup with the wrong generation number resulted in the inode being
+unhashed.  This is correct for non-root inodes, but replacing the root
+inode is wrong and results in weird behavior.
 
-Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
-Closes: https://lore.kernel.org/all/20240220061356.3001761-1-dirk.behme@de.bosch.com/
-Fixes: df3ef2d3c92c ("mmc: protect the tmio_mmc driver against a theoretical race")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
-Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: stable@vger.kernel.org # 3.0+
-Link: https://lore.kernel.org/r/20240305104423.3177-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fix by reverting to the old behavior if ignoring the generation for the
+root inode, but issuing a warning in dmesg.
+
+Reported-by: Antonio SJ Musumeci <trapexit@spawn.link>
+Closes: https://lore.kernel.org/all/CAOQ4uxhek5ytdN8Yz2tNEOg5ea4NkBb4nk0FGPjPk_9nz-VG3g@mail.gmail.com/
+Fixes: 15db16837a35 ("fuse: fix illegal access to inode with reused nodeid")
+Cc: <stable@vger.kernel.org> # v5.14
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/tmio_mmc_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/fuse/dir.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
-index 437048bb80273..5024cae411d3a 100644
---- a/drivers/mmc/host/tmio_mmc_core.c
-+++ b/drivers/mmc/host/tmio_mmc_core.c
-@@ -259,6 +259,8 @@ static void tmio_mmc_reset_work(struct work_struct *work)
- 	else
- 		mrq->cmd->error = -ETIMEDOUT;
+diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
+index 4ea52906ae150..44d1c8cc58a42 100644
+--- a/fs/fuse/dir.c
++++ b/fs/fuse/dir.c
+@@ -390,6 +390,10 @@ int fuse_lookup_name(struct super_block *sb, u64 nodeid, const struct qstr *name
+ 		goto out_put_forget;
+ 	if (fuse_invalid_attr(&outarg->attr))
+ 		goto out_put_forget;
++	if (outarg->nodeid == FUSE_ROOT_ID && outarg->generation != 0) {
++		pr_warn_once("root generation should be zero\n");
++		outarg->generation = 0;
++	}
  
-+	/* No new calls yet, but disallow concurrent tmio_mmc_done_work() */
-+	host->mrq = ERR_PTR(-EBUSY);
- 	host->cmd = NULL;
- 	host->data = NULL;
- 
+ 	*inode = fuse_iget(sb, outarg->nodeid, outarg->generation,
+ 			   &outarg->attr, entry_attr_timeout(outarg),
 -- 
 2.43.0
 
