@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-37413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB3089C4BE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9A189C4C0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EF351F2109B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 567F42822F1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8F17CF37;
-	Mon,  8 Apr 2024 13:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD1F7D062;
+	Mon,  8 Apr 2024 13:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhHNW3Zi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gzFpAFrf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5D77CF25;
-	Mon,  8 Apr 2024 13:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3E17C6C9;
+	Mon,  8 Apr 2024 13:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584159; cv=none; b=r2n2BlFHkMWWES3EQorvmCCEec67K+3Dwtn5ke4JOUHvXoZMhncZq6HvQixCzK6dP3bJfvFZFawDIyMnO7fGZKwjBQ+feqODoW1T130RE6LeqiPRLlfUuW4gZD6OJAqwaxQRRCHRkI1d2n0NHDeTdwPBCzmsizzijeFKwouFdrA=
+	t=1712584165; cv=none; b=peFQWdDJfqs/ljelqr8wjGoHt94KAPVarqCJpd7msCcX4NlluFLz+Umg9YghOaGv2SGYbaxDo1LHbsj9ay+ZiIfsQVDLPoEwDHgmHv+VAifC39VGa8D3KU/4m0MqKBtBHwzbiZkJMw0oRPST+hX1CD1o8bgbNMeB17zlVkjzaL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584159; c=relaxed/simple;
-	bh=YhRySYSd09zU1F/5bc9XWpPeuO/D7XEzZvEKcE8A6lI=;
+	s=arc-20240116; t=1712584165; c=relaxed/simple;
+	bh=BMydoNVYkSprmKMeKhzDTM9k+pdqIqnkz7GphRrQm3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xg1yp4HPl0kUiAScQi5XpKljGTOB5GTkON3niGne5L0dMkY9ICrOH3ZANANuk/XYSaEh1xeDNLi9KeTKOJOJoPGjkmw/jM3AckVSpZQN7Dq2/G9aklNbZVThvnjXqMclBSDLZB63fHRml3+2U5udR3jxoI4s9YXH00Uzv7MXdh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhHNW3Zi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DE2C433F1;
-	Mon,  8 Apr 2024 13:49:19 +0000 (UTC)
+	 MIME-Version; b=F4QefDnjlXFGc0qIyPL1ezIUKxSpUNpmkr1cZ8/FtUrB9jOMiqjDcGgv9ZxOchBmojFdnj9AAFSKjjB7A2WO6gUVmapYyML9gbI9Xkdmmc6pi1QfJMJPXHCvg9qv4A/FDmx2LJoSIcvqJDtDGFg76y2j+1Re0iIupEAW5gnbxkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzFpAFrf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E11C433C7;
+	Mon,  8 Apr 2024 13:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584159;
-	bh=YhRySYSd09zU1F/5bc9XWpPeuO/D7XEzZvEKcE8A6lI=;
+	s=korg; t=1712584165;
+	bh=BMydoNVYkSprmKMeKhzDTM9k+pdqIqnkz7GphRrQm3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PhHNW3ZiQVyF3bPOCA9HEnevtuzLJCxtOolVAaQQngxJYEEDPxeEF6/oh3FWy6b5b
-	 Q+GySZGK0wLwFygX3gib/c1pJWRaXzZlEB6Zhl8HEC4ajHpIcnJwfyLsTMJ3T5lnxe
-	 OMya1k28YLCjiD+zdjOXlPTLJZyTXgQUGIUZcea0=
+	b=gzFpAFrf8R5nEqSVol/i+CCbZ3ln2JQ+AAIhN7y1qEnKp1T9UQRoq4kfiQSsGC5/N
+	 zSsOhdz9zxBTOGTE7R7GWZxCkACsGypyH9yl3H0pBFPckkSOJJZi3PV+PmdBAA5X2j
+	 aJ5KM7uL6Ky3KlSBGgtyFszAJMn1dq20RcN8rnjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Jiaming <jiaming@nfschina.com>,
+	Colin Ian King <colin.i.king@gmail.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 343/690] NFSD: Fix space and spelling mistake
-Date: Mon,  8 Apr 2024 14:53:29 +0200
-Message-ID: <20240408125412.036771667@linuxfoundation.org>
+Subject: [PATCH 5.15 344/690] nfsd: remove redundant assignment to variable len
+Date: Mon,  8 Apr 2024 14:53:30 +0200
+Message-ID: <20240408125412.067998383@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -65,41 +65,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhang Jiaming <jiaming@nfschina.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit f532c9ff103897be0e2a787c0876683c3dc39ed3 ]
+[ Upstream commit 842e00ac3aa3b4a4f7f750c8ab54f8578fc875d3 ]
 
-Add a blank space after ','.
-Change 'succesful' to 'successful'.
+Variable len is being assigned a value zero and this is never
+read, it is being re-assigned later. The assignment is redundant
+and can be removed.
 
-Signed-off-by: Zhang Jiaming <jiaming@nfschina.com>
+Cleans up clang scan-build warning:
+fs/nfsd/nfsctl.c:636:2: warning: Value stored to 'len' is never read
+
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfs4proc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/nfsctl.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 5b56877c7fb57..d70c4e78f0b3f 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -828,7 +828,7 @@ nfsd4_create(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 			goto out_umask;
- 		status = nfsd_create(rqstp, &cstate->current_fh,
- 				     create->cr_name, create->cr_namelen,
--				     &create->cr_iattr,S_IFCHR, rdev, &resfh);
-+				     &create->cr_iattr, S_IFCHR, rdev, &resfh);
- 		break;
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index 0621c2faf2424..66c352bf61b1d 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -633,7 +633,6 @@ static ssize_t __write_versions(struct file *file, char *buf, size_t size)
+ 	}
  
- 	case NF4SOCK:
-@@ -2712,7 +2712,7 @@ nfsd4_proc_compound(struct svc_rqst *rqstp)
- 		if (op->opdesc->op_flags & OP_MODIFIES_SOMETHING) {
- 			/*
- 			 * Don't execute this op if we couldn't encode a
--			 * succesful reply:
-+			 * successful reply:
- 			 */
- 			u32 plen = op->opdesc->op_rsize_bop(rqstp, op);
- 			/*
+ 	/* Now write current state into reply buffer */
+-	len = 0;
+ 	sep = "";
+ 	remaining = SIMPLE_TRANSACTION_LIMIT;
+ 	for (num=2 ; num <= 4 ; num++) {
 -- 
 2.43.0
 
