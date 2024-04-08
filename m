@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2486589C2AA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B655D89C673
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA844B2A15B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37310B2BB9A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD217C0B0;
-	Mon,  8 Apr 2024 13:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5637F470;
+	Mon,  8 Apr 2024 13:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1YVlYlw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vp10MOs3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9DF2DF73;
-	Mon,  8 Apr 2024 13:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B28F7E0FF;
+	Mon,  8 Apr 2024 13:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582790; cv=none; b=sxp+JeWDAF3i/2JDPg/X3KuPSAOAe6GGpDZAjAqu6/1CIVDNITesCvnWpzLMO+CaYLbrPGVmFT5rDCzzbV23IJn5Zd52IQFzF2U0fYYHVwZcdNxtzwcpc0G/2zCS+OBctzGjd/HKbLME1CxeKwPiN5gpw4Q3g0K7bNhgjR85eHk=
+	t=1712584785; cv=none; b=kP4Er9tPX0aVvelI7LyQx2J8VyuoISnd3LIM8xz55ZfXdZFaGeybxpYx0EbSuh6MkUiQsoiNZjzngILKYwSSNtcoW1yqtWKKvEgkGyFoaUt8IR9l4L3N8O6bddcvYIeIgaiH+4JKQV7jTdI+RlrqdcqhmO0U6bAylJsVBpshm9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582790; c=relaxed/simple;
-	bh=abEaaUcRm6DvMHULovQuQuVujQJFuVb9n3BaRqBvXE8=;
+	s=arc-20240116; t=1712584785; c=relaxed/simple;
+	bh=UVWZXM5vGhM0RTB9BV24TkwWi4En8rbrS9ieM+E8VKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NBtAMVDUQMrlDB6KmkI/IyBaEfJ28QB3EZHLwGdcEDFsZL6CqgeNWrfOb3fOM0Kqycn1dKbdSlSYNUAgix/eJ8dDnwSAJGEfD0AcRGxvu6w/JnqKdw4PHrCErZqrdrb8xdqRMKLyGs9tVf2GPI8ge7gcDODUM+rPCdSay6i+uoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1YVlYlw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB969C433C7;
-	Mon,  8 Apr 2024 13:26:29 +0000 (UTC)
+	 MIME-Version; b=MGzxT5XaQUqiJh9fAQdj3mRI7ygttLSrJ7+sCWDXIPduefA1E61+MsLhC3aMlU+pR4826mH83i5anXtOKyBtgQEErH6RhqLESz7t8oBL5EJjJRYIs707MjIUBs56Q5u7XzR2dMecPbe38DdGOBEUx+6uyBZduGOtHbLKWybCXFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vp10MOs3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C91C43399;
+	Mon,  8 Apr 2024 13:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582790;
-	bh=abEaaUcRm6DvMHULovQuQuVujQJFuVb9n3BaRqBvXE8=;
+	s=korg; t=1712584785;
+	bh=UVWZXM5vGhM0RTB9BV24TkwWi4En8rbrS9ieM+E8VKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O1YVlYlwPLZDUPSMBhViTySh41BBJdZfipVuKtiON4U/wSmbB/Caol7knBAw1/17a
-	 dCbpLkczCyQn/w1O/X8e1s/gPfzvvBDUJAR2wuX1oOMARDDRMxTWfSpA6mDTUKD9TA
-	 Tq6c9Yyp0psCOgmjTNuxMlS0cCgFKk4YasO7ijcI=
+	b=vp10MOs3BKfc4QWdaREEK+IOkqnGWd+bGLvVUPNPapxHjT0fOJceQiaFC9OYnz2Fx
+	 bFnTMvHdRtHs3XiFAzJLh3PYbmQGNu8PkuGhE05H9z5mbPUeJ8WDIgGeueMg5jO445
+	 LEua8uXFd7zCtBjMohAdepyoJDTuinilgiK8zr3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 124/252] udp: do not transition UDP GRO fraglist partial checksums to unnecessary
+	Yang Jihong <yangjihong1@huawei.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 5.15 557/690] perf/core: Fix reentry problem in perf_output_read_group()
 Date: Mon,  8 Apr 2024 14:57:03 +0200
-Message-ID: <20240408125310.473126041@linuxfoundation.org>
+Message-ID: <20240408125419.799173871@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Yang Jihong <yangjihong1@huawei.com>
 
-commit f0b8c30345565344df2e33a8417a27503589247d upstream.
+commit 6b959ba22d34ca793ffdb15b5715457c78e38b1a upstream.
 
-UDP GRO validates checksums and in udp4/6_gro_complete fraglist packets
-are converted to CHECKSUM_UNNECESSARY to avoid later checks. However
-this is an issue for CHECKSUM_PARTIAL packets as they can be looped in
-an egress path and then their partial checksums are not fixed.
+perf_output_read_group may respond to IPI request of other cores and invoke
+__perf_install_in_context function. As a result, hwc configuration is modified.
+causing inconsistency and unexpected consequences.
 
-Different issues can be observed, from invalid checksum on packets to
-traces like:
+Interrupts are not disabled when perf_output_read_group reads PMU counter.
+In this case, IPI request may be received from other cores.
+As a result, PMU configuration is modified and an error occurs when
+reading PMU counter:
 
-  gen01: hw csum failure
-  skb len=3008 headroom=160 headlen=1376 tailroom=0
-  mac=(106,14) net=(120,40) trans=160
-  shinfo(txflags=0 nr_frags=0 gso(size=0 type=0 segs=0))
-  csum(0xffff232e ip_summed=2 complete_sw=0 valid=0 level=0)
-  hash(0x77e3d716 sw=1 l4=1) proto=0x86dd pkttype=0 iif=12
+		     CPU0                                         CPU1
+						      __se_sys_perf_event_open
+							perf_install_in_context
+  perf_output_read_group                                  smp_call_function_single
+    for_each_sibling_event(sub, leader) {                   generic_exec_single
+      if ((sub != event) &&                                   remote_function
+	  (sub->state == PERF_EVENT_STATE_ACTIVE))                    |
+  <enter IPI handler: __perf_install_in_context>   <----RAISE IPI-----+
+  __perf_install_in_context
+    ctx_resched
+      event_sched_out
+	armpmu_del
+	  ...
+	  hwc->idx = -1; // event->hwc.idx is set to -1
   ...
+  <exit IPI>
+	      sub->pmu->read(sub);
+		armpmu_read
+		  armv8pmu_read_counter
+		    armv8pmu_read_hw_counter
+		      int idx = event->hw.idx; // idx = -1
+		      u64 val = armv8pmu_read_evcntr(idx);
+			u32 counter = ARMV8_IDX_TO_COUNTER(idx); // invalid counter = 30
+			read_pmevcntrn(counter) // undefined instruction
 
-Fix this by only converting CHECKSUM_NONE packets to
-CHECKSUM_UNNECESSARY by reusing __skb_incr_checksum_unnecessary. All
-other checksum types are kept as-is, including CHECKSUM_COMPLETE as
-fraglist packets being segmented back would have their skb->csum valid.
-
-Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20220902082918.179248-1-yangjihong1@huawei.com
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/udp_offload.c |    8 +-------
- net/ipv6/udp_offload.c |    8 +-------
- 2 files changed, 2 insertions(+), 14 deletions(-)
+ kernel/events/core.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -722,13 +722,7 @@ INDIRECT_CALLABLE_SCOPE int udp4_gro_com
- 		skb_shinfo(skb)->gso_type |= (SKB_GSO_FRAGLIST|SKB_GSO_UDP_L4);
- 		skb_shinfo(skb)->gso_segs = NAPI_GRO_CB(skb)->count;
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -7119,9 +7119,16 @@ static void perf_output_read_group(struc
+ {
+ 	struct perf_event *leader = event->group_leader, *sub;
+ 	u64 read_format = event->attr.read_format;
++	unsigned long flags;
+ 	u64 values[6];
+ 	int n = 0;
  
--		if (skb->ip_summed == CHECKSUM_UNNECESSARY) {
--			if (skb->csum_level < SKB_MAX_CSUM_LEVEL)
--				skb->csum_level++;
--		} else {
--			skb->ip_summed = CHECKSUM_UNNECESSARY;
--			skb->csum_level = 0;
--		}
-+		__skb_incr_checksum_unnecessary(skb);
++	/*
++	 * Disabling interrupts avoids all counter scheduling
++	 * (context switches, timer based rotation and IPIs).
++	 */
++	local_irq_save(flags);
++
+ 	values[n++] = 1 + leader->nr_siblings;
  
- 		return 0;
+ 	if (read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
+@@ -7157,6 +7164,8 @@ static void perf_output_read_group(struc
+ 
+ 		__output_copy(handle, values, n * sizeof(u64));
  	}
---- a/net/ipv6/udp_offload.c
-+++ b/net/ipv6/udp_offload.c
-@@ -174,13 +174,7 @@ INDIRECT_CALLABLE_SCOPE int udp6_gro_com
- 		skb_shinfo(skb)->gso_type |= (SKB_GSO_FRAGLIST|SKB_GSO_UDP_L4);
- 		skb_shinfo(skb)->gso_segs = NAPI_GRO_CB(skb)->count;
++
++	local_irq_restore(flags);
+ }
  
--		if (skb->ip_summed == CHECKSUM_UNNECESSARY) {
--			if (skb->csum_level < SKB_MAX_CSUM_LEVEL)
--				skb->csum_level++;
--		} else {
--			skb->ip_summed = CHECKSUM_UNNECESSARY;
--			skb->csum_level = 0;
--		}
-+		__skb_incr_checksum_unnecessary(skb);
- 
- 		return 0;
- 	}
+ #define PERF_FORMAT_TOTAL_TIMES (PERF_FORMAT_TOTAL_TIME_ENABLED|\
 
 
 
