@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-37339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A915989C46F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38C2789C1A7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 651212844D3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9A4D282C2E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5847BB11;
-	Mon,  8 Apr 2024 13:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3ED8563C;
+	Mon,  8 Apr 2024 13:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBgeqQih"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJr2oHyC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9847BAFD;
-	Mon,  8 Apr 2024 13:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB7B7FBBC;
+	Mon,  8 Apr 2024 13:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583943; cv=none; b=WaTb9HJJQVQdYxNx1NDu6mAtOel7MBP46aRHNW3Sb3wGWwKBnz8C1m3GDkbjuzUpqXohEu5Aa0Yw631bITKUSiFfu/ybe5SFZguQR36VvxMXeOywlyj13jDjfYA1j+9tT/uhQh1uxDcjRNgQSczguM1DE1uBy4TqVoZseUcqNiA=
+	t=1712582337; cv=none; b=Z3j+i6OnZCc0698+nMkU19HW/0EaPXTmZow6dFIcgR4nzy534E8OCJ9vo5ua9msHhUGphuzQmR2TqQcZtIIKg0kGGotGCAoW+JT0e7ukV4w9Z11QYMMKdvd7roudOsdj39WoT6JozCkUDyBo4RbiIzO9rISQ3AJkx4M2hTR+Vu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583943; c=relaxed/simple;
-	bh=sKSzK1Tm9bpS6l/B7XY+KldpNJwPJflpym7ieBTHNCU=;
+	s=arc-20240116; t=1712582337; c=relaxed/simple;
+	bh=YDo+yPFrMVw9qtADFwIbxNTxhnhHLNNH1mUBHRRbSW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gK5LIL45VvJ37cwywvEG88sQ8ectAFr2/AkYau5wYmXznG0xJmwDLB/MfuhuVrbRH5bvDJGw/9vWttjOUebTL0wXo7z3bIPuLsmHQeSLC1rapltKgcP1TKEok3o9i0rzE2gp2VG0unQu3uqBrQfm6G11IKDCBlZ9l5eADgHodbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBgeqQih; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39B6C43399;
-	Mon,  8 Apr 2024 13:45:42 +0000 (UTC)
+	 MIME-Version; b=oPYmKSrdAAiNQlxx8emuJF/WaNrj22cVrTnCtDZCKCFmZcotcm1mL9c+lM4OZC2FujNpkFaFLNldavyx6adLxoNyGowQSvl9Mk/BobZb0UmOnEP/glpIv7hcslfaiMHoS7ZGxgUJ40PPRCHHk4lIvhWUX5VxfCh8Xi17YtXQHsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJr2oHyC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A0CC433F1;
+	Mon,  8 Apr 2024 13:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583943;
-	bh=sKSzK1Tm9bpS6l/B7XY+KldpNJwPJflpym7ieBTHNCU=;
+	s=korg; t=1712582337;
+	bh=YDo+yPFrMVw9qtADFwIbxNTxhnhHLNNH1mUBHRRbSW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qBgeqQihIrwkffLe/N0hBrgDmIwBrvyyESAMcj1ZcdDKlNNw25wo0USvh20tl0AFM
-	 Yycu27nRWy+BBmtr9ljN0/gkIeyKe+en/acocqf1BjHK10blflhUuBwOA8OfBSwjfj
-	 CVWuBK+RWKVduykZfWM7/zaGo0kTluU4AnuQpTkQ=
+	b=QJr2oHyCL0JAqowvgfopeb7l8j21Yvjtzp3A5q5/P5j19olckcub3Xc+E6A91ihWZ
+	 phZvU+3ic657ExRJ9YmwDHL9yphjlKdQZPK6yzEJlJsy5bwcsydD9ts6HdEqBANcs4
+	 8DGxwdFpuMSwtgz/LIeSWTexyGC1VND+KCn8DOx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Vineet Gupta <vgupta@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Andy Chiu <andy.chiu@sifive.com>,
-	Vineet Gupta <vineetg@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.8 236/273] riscv: Fix vector state restore in rt_sigreturn()
+	Arnd Bergmann <arnd@arndb.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 097/138] ata: sata_sx4: fix pdc20621_get_from_dimm() on 64-bit
 Date: Mon,  8 Apr 2024 14:58:31 +0200
-Message-ID: <20240408125316.759435540@linuxfoundation.org>
+Message-ID: <20240408125259.250118400@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +60,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit c27fa53b858b4ee6552a719aa599c250cf98a586 upstream.
+[ Upstream commit 52f80bb181a9a1530ade30bc18991900bbb9697f ]
 
-The RISC-V Vector specification states in "Appendix D: Calling
-Convention for Vector State" [1] that "Executing a system call causes
-all caller-saved vector registers (v0-v31, vl, vtype) and vstart to
-become unspecified.". In the RISC-V kernel this is called "discarding
-the vstate".
+gcc warns about a memcpy() with overlapping pointers because of an
+incorrect size calculation:
 
-Returning from a signal handler via the rt_sigreturn() syscall, vector
-discard is also performed. However, this is not an issue since the
-vector state should be restored from the sigcontext, and therefore not
-care about the vector discard.
+In file included from include/linux/string.h:369,
+                 from drivers/ata/sata_sx4.c:66:
+In function 'memcpy_fromio',
+    inlined from 'pdc20621_get_from_dimm.constprop' at drivers/ata/sata_sx4.c:962:2:
+include/linux/fortify-string.h:97:33: error: '__builtin_memcpy' accessing 4294934464 bytes at offsets 0 and [16, 16400] overlaps 6442385281 bytes at offset -2147450817 [-Werror=restrict]
+   97 | #define __underlying_memcpy     __builtin_memcpy
+      |                                 ^
+include/linux/fortify-string.h:620:9: note: in expansion of macro '__underlying_memcpy'
+  620 |         __underlying_##op(p, q, __fortify_size);                        \
+      |         ^~~~~~~~~~~~~
+include/linux/fortify-string.h:665:26: note: in expansion of macro '__fortify_memcpy_chk'
+  665 | #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,                  \
+      |                          ^~~~~~~~~~~~~~~~~~~~
+include/asm-generic/io.h:1184:9: note: in expansion of macro 'memcpy'
+ 1184 |         memcpy(buffer, __io_virt(addr), size);
+      |         ^~~~~~
 
-The "live state" is the actual vector register in the running context,
-and the "vstate" is the vector state of the task. A dirty live state,
-means that the vstate and live state are not in synch.
+The problem here is the overflow of an unsigned 32-bit number to a
+negative that gets converted into a signed 'long', keeping a large
+positive number.
 
-When vectorized user_from_copy() was introduced, an bug sneaked in at
-the restoration code, related to the discard of the live state.
+Replace the complex calculation with a more readable min() variant
+that avoids the warning.
 
-An example when this go wrong:
-
-  1. A userland application is executing vector code
-  2. The application receives a signal, and the signal handler is
-     entered.
-  3. The application returns from the signal handler, using the
-     rt_sigreturn() syscall.
-  4. The live vector state is discarded upon entering the
-     rt_sigreturn(), and the live state is marked as "dirty", indicating
-     that the live state need to be synchronized with the current
-     vstate.
-  5. rt_sigreturn() restores the vstate, except the Vector registers,
-     from the sigcontext
-  6. rt_sigreturn() restores the Vector registers, from the sigcontext,
-     and now the vectorized user_from_copy() is used. The dirty live
-     state from the discard is saved to the vstate, making the vstate
-     corrupt.
-  7. rt_sigreturn() returns to the application, which crashes due to
-     corrupted vstate.
-
-Note that the vectorized user_from_copy() is invoked depending on the
-value of CONFIG_RISCV_ISA_V_UCOPY_THRESHOLD. Default is 768, which
-means that vlen has to be larger than 128b for this bug to trigger.
-
-The fix is simply to mark the live state as non-dirty/clean prior
-performing the vstate restore.
-
-Link: https://github.com/riscv/riscv-isa-manual/releases/download/riscv-isa-release-8abdb41-2024-03-26/unpriv-isa-asciidoc.pdf # [1]
-Reported-by: Charlie Jenkins <charlie@rivosinc.com>
-Reported-by: Vineet Gupta <vgupta@kernel.org>
-Fixes: c2a658d41924 ("riscv: lib: vectorize copy_to_user/copy_from_user")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Andy Chiu <andy.chiu@sifive.com>
-Tested-by: Vineet Gupta <vineetg@rivosinc.com>
-Link: https://lore.kernel.org/r/20240403072638.567446-1-bjorn@kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/signal.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/ata/sata_sx4.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/arch/riscv/kernel/signal.c
-+++ b/arch/riscv/kernel/signal.c
-@@ -119,6 +119,13 @@ static long __restore_v_state(struct pt_
- 	struct __sc_riscv_v_state __user *state = sc_vec;
- 	void __user *datap;
+diff --git a/drivers/ata/sata_sx4.c b/drivers/ata/sata_sx4.c
+index 6ceec59cb2913..fa1966638c060 100644
+--- a/drivers/ata/sata_sx4.c
++++ b/drivers/ata/sata_sx4.c
+@@ -958,8 +958,7 @@ static void pdc20621_get_from_dimm(struct ata_host *host, void *psource,
  
-+	/*
-+	 * Mark the vstate as clean prior performing the actual copy,
-+	 * to avoid getting the vstate incorrectly clobbered by the
-+	 *  discarded vector state.
-+	 */
-+	riscv_v_vstate_set_restore(current, regs);
-+
- 	/* Copy everything of __sc_riscv_v_state except datap. */
- 	err = __copy_from_user(&current->thread.vstate, &state->v_state,
- 			       offsetof(struct __riscv_v_ext_state, datap));
-@@ -133,13 +140,7 @@ static long __restore_v_state(struct pt_
- 	 * Copy the whole vector content from user space datap. Use
- 	 * copy_from_user to prevent information leak.
- 	 */
--	err = copy_from_user(current->thread.vstate.datap, datap, riscv_v_vsize);
--	if (unlikely(err))
--		return err;
--
--	riscv_v_vstate_set_restore(current, regs);
--
--	return err;
-+	return copy_from_user(current->thread.vstate.datap, datap, riscv_v_vsize);
- }
- #else
- #define save_v_state(task, regs) (0)
+ 	offset -= (idx * window_size);
+ 	idx++;
+-	dist = ((long) (window_size - (offset + size))) >= 0 ? size :
+-		(long) (window_size - offset);
++	dist = min(size, window_size - offset);
+ 	memcpy_fromio(psource, dimm_mmio + offset / 4, dist);
+ 
+ 	psource += dist;
+@@ -1006,8 +1005,7 @@ static void pdc20621_put_to_dimm(struct ata_host *host, void *psource,
+ 	readl(mmio + PDC_DIMM_WINDOW_CTLR);
+ 	offset -= (idx * window_size);
+ 	idx++;
+-	dist = ((long)(s32)(window_size - (offset + size))) >= 0 ? size :
+-		(long) (window_size - offset);
++	dist = min(size, window_size - offset);
+ 	memcpy_toio(dimm_mmio + offset / 4, psource, dist);
+ 	writel(0x01, mmio + PDC_GENERAL_CTLR);
+ 	readl(mmio + PDC_GENERAL_CTLR);
+-- 
+2.43.0
+
 
 
 
