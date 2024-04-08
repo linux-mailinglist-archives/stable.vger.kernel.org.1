@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-36727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA6C89C160
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D453389C164
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E4631C21C7D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D43AEB295C5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901397BAFE;
-	Mon,  8 Apr 2024 13:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70647E59A;
+	Mon,  8 Apr 2024 13:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ibg3FmRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A3keJDhy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE527172F;
-	Mon,  8 Apr 2024 13:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652627E78B;
+	Mon,  8 Apr 2024 13:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582168; cv=none; b=rzmqlHFFdT1yQEGoz/AlAd4hKDcc2JHJIZqYhVEHf0A85gS5/l/zjYgKig6vmR1nm+Ls3bbtekFeHuEJj+JdhEIFAx/LKqS9EjK17NHXd7eZmTsx99/njFQiYf8D5ZmIBTOBk4cPR5Fb20FcQnKZ1sTWQ/8KQJmBA1pnHa59gBw=
+	t=1712581949; cv=none; b=t41OTK/hhqPv9UcnNhx9ib2Yq7O1LixjW6ON29NtEjXyQn9TNOOtRPht3IBYg4xefI+2HEUUYTltsF5u3sfZLJr7ITv0Gy3vFvHUYnl+yPkrP65ukoei8MigOHFAwJo55svOIEPllAfyXfW2abSJ3Qh8k5/5l5/tR2Q9VlNN3mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582168; c=relaxed/simple;
-	bh=8Eauqu2DPaLa+CyBiHUXBbzlFU3ZH9nerxdejMi9Pnk=;
+	s=arc-20240116; t=1712581949; c=relaxed/simple;
+	bh=4X8xvfDWKK7iJ8HJ2+2Z8ZYQi4piOj2H5rfklttg/rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPauNcOTTHrE9bSwxjzfhybcKIrBKCQaNaPEXMGGnmYuRLbK3nknrcufVLrCnYZUbgbJGdWAIoudkIMsrSR/VklGtsQ0hYb/Nkxn8ZlAMeAIYhK7b7EqzejulT02jlFR+5F78lpiM84ydtq1lfIXpyQbOzjufE3YEJh+9Sv1SMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ibg3FmRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA646C433C7;
-	Mon,  8 Apr 2024 13:16:07 +0000 (UTC)
+	 MIME-Version; b=pGVkrXbM6fR1UsJsL8Mf8hsMhZpv7OIQD+FyHMko8EpfrRtqivfJKT7fyRXQIxkWnA6sk+TwgZ8mJIxNEjS2zbj0cCT+8V9l9QbM2E7er5HT2fM8aKdqF8+ZxnTAC5aCAWt5bqL1Hti+UZaop1KqsFQgHZgl6GGB2IM5RyY613s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A3keJDhy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E8AC433C7;
+	Mon,  8 Apr 2024 13:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582168;
-	bh=8Eauqu2DPaLa+CyBiHUXBbzlFU3ZH9nerxdejMi9Pnk=;
+	s=korg; t=1712581949;
+	bh=4X8xvfDWKK7iJ8HJ2+2Z8ZYQi4piOj2H5rfklttg/rk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ibg3FmRra7tfxC0/lJZ6RtFg/GOl6amKLXRJ4MclU8SkHvTbmvW8elhSBe68g6yW+
-	 6Xm6zr36yQU3ONF4Qn9sLDL1k33HZ+g8ZJugwfjxOOo9x7PtkJaordWiXlBqcfOAUU
-	 Fj869eJ3FFEv9LuQCvdso7lixib+T5tXLVKDrels=
+	b=A3keJDhyHtnOmHZ2NxUHMBp0Qw8I3G1uxRcTSGdYq69zvgJhe+3XkZLgaRHqW+TCu
+	 ML7UgNetfqltt+Um5EiwxDzjCS/7yrIgGtHLLDqGFAce0dOlfP6mymgLdIsLVN2SpY
+	 8bKLmYsa51rHsNqzMVJQWB7bv2dGLVG4FrI6+/sM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	Maxime Ripard <mripard@kernel.org>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 098/690] drm/imx/ipuv3: do not return negative values from .get_modes()
-Date: Mon,  8 Apr 2024 14:49:24 +0200
-Message-ID: <20240408125403.036933588@linuxfoundation.org>
+Subject: [PATCH 5.15 099/690] drm/vc4: hdmi: do not return negative values from .get_modes()
+Date: Mon,  8 Apr 2024 14:49:25 +0200
+Message-ID: <20240408125403.078355607@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -69,43 +69,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit c2da9ada64962fcd2e6395ed9987b9874ea032d3 ]
+[ Upstream commit abf493988e380f25242c1023275c68bd3579c9ce ]
 
 The .get_modes() hooks aren't supposed to return negative error
 codes. Return 0 for no modes, whatever the reason.
 
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Maxime Ripard <mripard@kernel.org>
 Cc: stable@vger.kernel.org
-Acked-by: Philipp Zabel <p.zabel@pengutronix.de>
+Acked-by: Maxime Ripard <mripard@kernel.org>
 Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/311f6eec96d47949b16a670529f4d89fcd97aefa.1709913674.git.jani.nikula@intel.com
+Link: https://patchwork.freedesktop.org/patch/msgid/dcda6d4003e2c6192987916b35c7304732800e08.1709913674.git.jani.nikula@intel.com
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imx/parallel-display.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/imx/parallel-display.c b/drivers/gpu/drm/imx/parallel-display.c
-index 63ba2ad846791..5423ea4c1ef9a 100644
---- a/drivers/gpu/drm/imx/parallel-display.c
-+++ b/drivers/gpu/drm/imx/parallel-display.c
-@@ -70,14 +70,14 @@ static int imx_pd_connector_get_modes(struct drm_connector *connector)
- 		int ret;
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index 7a8353d7ab36a..88aa00a1891b3 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -222,7 +222,7 @@ static int vc4_hdmi_connector_get_modes(struct drm_connector *connector)
+ 	edid = drm_get_edid(connector, vc4_hdmi->ddc);
+ 	cec_s_phys_addr_from_edid(vc4_hdmi->cec_adap, edid);
+ 	if (!edid)
+-		return -ENODEV;
++		return 0;
  
- 		if (!mode)
--			return -EINVAL;
-+			return 0;
+ 	vc4_encoder->hdmi_monitor = drm_detect_hdmi_monitor(edid);
  
- 		ret = of_get_drm_display_mode(np, &imxpd->mode,
- 					      &imxpd->bus_flags,
- 					      OF_USE_NATIVE_MODE);
- 		if (ret) {
- 			drm_mode_destroy(connector->dev, mode);
--			return ret;
-+			return 0;
- 		}
- 
- 		drm_mode_copy(mode, &imxpd->mode);
 -- 
 2.43.0
 
