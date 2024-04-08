@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-36880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15AC389C22F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:28:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B52EE89C3FE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5ABF2835CA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E82451C22262
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FF980600;
-	Mon,  8 Apr 2024 13:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C656C7F46F;
+	Mon,  8 Apr 2024 13:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUd0Kt9N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5CU3o3N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90DD70CCB;
-	Mon,  8 Apr 2024 13:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846267C0A9;
+	Mon,  8 Apr 2024 13:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582611; cv=none; b=Fn6nsKvT2RVk/0K545qnw8UhdVVC+/TL1ZFBMS6edNXe0pZx6al2bKOp3EVM8633l90aQa9pKN1JbVpHtJHGuPVwqyuQ/fAa29bIjN8AwKNcQcw742iG0KSxASQGaY9W23g3zHDB0Msz0EBuLLY4jQWfdZo2fQSIV87uINZ55vA=
+	t=1712583669; cv=none; b=AOVnaoZ49YStt1xaZ4F/4HpjVyTE5mPoPcM+53lG2EXKplfhYwYdVcponlerIJdKNYjoNjr1UVWwmrkGgTDDumTrF/kMd8mE+b9tjn+SvVDzktVOvJiUJDkOyIDK/Azy34VG50PiU/y0XJ9exZJpZGrU+vKEcT6lF6CuScGowiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582611; c=relaxed/simple;
-	bh=OWzyGGVeWqMyWdr8xljKVR4waN5OKGzmjmSuznnexVw=;
+	s=arc-20240116; t=1712583669; c=relaxed/simple;
+	bh=EJfr6wn5e7TWApPw6sL45UxXsSsVe936q3D3zivJn2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nO4hfW7cbWgBYixdthe8UvfOCQd7rzORfXuXqwTkbuAqqoYq3NHJ1F+RDNRd+/hqxthJiUQGfiyZsEwxwEyVW1m5xeeoa6kv04vH+LF2NW29peijFsd98KgUiKcF6C1d/WihZVV757jhZGc1NzCKovNkR+tsKoaL9GljdwJ87fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUd0Kt9N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E53C433F1;
-	Mon,  8 Apr 2024 13:23:31 +0000 (UTC)
+	 MIME-Version; b=DqpEuVl7VtH6Khzkx0jUCpvofM/QGV1/jIP9WGW2G6JhIPyznjOFN90r8SU0bHYWMqK1FHzT52YbU7xjheBnF4FVJkfOiD/N3hLlFwecbx38fx24wXWqd0WfXOa2/Dn10RVAMX8wrqiAJ7qujFpjh1GksP8ppaQUcMIptkN/+uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5CU3o3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D712C433C7;
+	Mon,  8 Apr 2024 13:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582611;
-	bh=OWzyGGVeWqMyWdr8xljKVR4waN5OKGzmjmSuznnexVw=;
+	s=korg; t=1712583669;
+	bh=EJfr6wn5e7TWApPw6sL45UxXsSsVe936q3D3zivJn2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xUd0Kt9Nc7Po63f0A3d0jm3fivtze5oO8l3hJILGre+X+0wmQekKH2p6CfCh/E9sP
-	 YCZ0V0oZmdoUsrOplGYC2arwG6Yvf+rBGZ5NKihMAba7dLUcrtImeTv4mGsyVxevkf
-	 6iJ7+yAYSVTzAcAyz+UpDDWgwUhcwChFKAQyqQEg=
+	b=f5CU3o3NMTLn3J5gP46kgqz7Up7mCo+TbgHF6teTYbieN2YxOhryB/FRAPkGArxiM
+	 X1ILNI0DB6+IZ6ssgwgr4boi28g18pyK/9jLvrw3qoUtCMhFxnya0v35Cbbbz8QsTh
+	 Q7u23RM/iwcNsi71UB+Iwj6RANZB6IP8XC8fKInE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/138] s390/pai: cleanup event initialization
+	David Hildenbrand <david@redhat.com>,
+	xingwei lee <xrivendell7@gmail.com>,
+	yue sun <samsun1006219@gmail.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Miklos Szeredi <miklos@szeredi.hu>
+Subject: [PATCH 6.6 221/252] mm/secretmem: fix GUP-fast succeeding on secretmem folios
 Date: Mon,  8 Apr 2024 14:58:40 +0200
-Message-ID: <20240408125259.527373484@linuxfoundation.org>
+Message-ID: <20240408125313.516906759@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +67,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 4711b7b8f99583f6105a33e91f106125134beacb ]
+commit 65291dcfcf8936e1b23cfd7718fdfde7cfaf7706 upstream.
 
-Setting event::hw.last_tag to zero is not necessary. The memory
-for each event is dynamically allocated by the kernel common code and
-initialized to zero already.  Remove this unnecessary assignment.
-Move the comment to function paicrypt_start() for clarification.
+folio_is_secretmem() currently relies on secretmem folios being LRU
+folios, to save some cycles.
 
-Suggested-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Stable-dep-of: e9f3af02f639 ("s390/pai: fix sampling event removal for PMU device driver")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, folios might reside in a folio batch without the LRU flag set, or
+temporarily have their LRU flag cleared.  Consequently, the LRU flag is
+unreliable for this purpose.
+
+In particular, this is the case when secretmem_fault() allocates a fresh
+page and calls filemap_add_folio()->folio_add_lru().  The folio might be
+added to the per-cpu folio batch and won't get the LRU flag set until the
+batch was drained using e.g., lru_add_drain().
+
+Consequently, folio_is_secretmem() might not detect secretmem folios and
+GUP-fast can succeed in grabbing a secretmem folio, crashing the kernel
+when we would later try reading/writing to the folio, because the folio
+has been unmapped from the directmap.
+
+Fix it by removing that unreliable check.
+
+Link: https://lkml.kernel.org/r/20240326143210.291116-2-david@redhat.com
+Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Reported-by: yue sun <samsun1006219@gmail.com>
+Closes: https://lore.kernel.org/lkml/CABOYnLyevJeravW=QrH0JUPYEcDN160aZFb7kwndm-J2rmz0HQ@mail.gmail.com/
+Debugged-by: Miklos Szeredi <miklos@szeredi.hu>
+Tested-by: Miklos Szeredi <mszeredi@redhat.com>
+Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Lorenzo Stoakes <lstoakes@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/perf_pai_crypto.c | 11 +++++------
- arch/s390/kernel/perf_pai_ext.c    |  1 -
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ include/linux/secretmem.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
-index 4b773653a951b..3758e972bb5f9 100644
---- a/arch/s390/kernel/perf_pai_crypto.c
-+++ b/arch/s390/kernel/perf_pai_crypto.c
-@@ -207,12 +207,6 @@ static int paicrypt_event_init(struct perf_event *event)
- 	if (rc)
- 		return rc;
+--- a/include/linux/secretmem.h
++++ b/include/linux/secretmem.h
+@@ -13,10 +13,10 @@ static inline bool folio_is_secretmem(st
+ 	/*
+ 	 * Using folio_mapping() is quite slow because of the actual call
+ 	 * instruction.
+-	 * We know that secretmem pages are not compound and LRU so we can
++	 * We know that secretmem pages are not compound, so we can
+ 	 * save a couple of cycles here.
+ 	 */
+-	if (folio_test_large(folio) || !folio_test_lru(folio))
++	if (folio_test_large(folio))
+ 		return false;
  
--	/* Event initialization sets last_tag to 0. When later on the events
--	 * are deleted and re-added, do not reset the event count value to zero.
--	 * Events are added, deleted and re-added when 2 or more events
--	 * are active at the same time.
--	 */
--	event->hw.last_tag = 0;
- 	event->destroy = paicrypt_event_destroy;
- 
- 	if (a->sample_period) {
-@@ -246,6 +240,11 @@ static void paicrypt_start(struct perf_event *event, int flags)
- {
- 	u64 sum;
- 
-+	/* Event initialization sets last_tag to 0. When later on the events
-+	 * are deleted and re-added, do not reset the event count value to zero.
-+	 * Events are added, deleted and re-added when 2 or more events
-+	 * are active at the same time.
-+	 */
- 	if (!event->hw.last_tag) {
- 		event->hw.last_tag = 1;
- 		sum = paicrypt_getall(event);		/* Get current value */
-diff --git a/arch/s390/kernel/perf_pai_ext.c b/arch/s390/kernel/perf_pai_ext.c
-index 663cd37f8b293..53915401c3f63 100644
---- a/arch/s390/kernel/perf_pai_ext.c
-+++ b/arch/s390/kernel/perf_pai_ext.c
-@@ -267,7 +267,6 @@ static int paiext_event_init(struct perf_event *event)
- 	rc = paiext_alloc(a, event);
- 	if (rc)
- 		return rc;
--	event->hw.last_tag = 0;
- 	event->destroy = paiext_event_destroy;
- 
- 	if (a->sample_period) {
--- 
-2.43.0
-
+ 	mapping = (struct address_space *)
 
 
 
