@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-36876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3610F89C22D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:28:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB8389C28B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:31:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB7E31F2188F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 081E9B289B4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379117E580;
-	Mon,  8 Apr 2024 13:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA9B80605;
+	Mon,  8 Apr 2024 13:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ympYsbAl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARJn6NDa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95C679955;
-	Mon,  8 Apr 2024 13:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF13C80604;
+	Mon,  8 Apr 2024 13:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582600; cv=none; b=hAKYmx2jIAZKtQtZiKoHa8oWsprK1hhVSJfmc7O0hgkqLCw3vItH+QK/xDuaZsyp0Nc1Ul2KB1gJbZZuKv4HzyCRr0FX8UtCV1OKOu5DhYwu5kSet+/yBC5mvd184uCYC50vtvwE1/pnGB+slZn0k1otroEppFxQJ0GzZJ3yqdc=
+	t=1712582614; cv=none; b=bj2pL62LGoQxV2PAu1IuRgkq4H8Cluv6ouSnB3QD9euJGjEhlDb/O7B6p7vyCrvZ7NJQmDSAvXbIQSkBAKGxWSXX//WBA3iwOerWahwRLAh1N/3cynLIw84a95VooAgZLGsQdDFL7Q+6JzDabGX8AuLhTDVEgQXAoDUaxX4gAPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582600; c=relaxed/simple;
-	bh=auOb5L4ASL7DuuCh88X74wCWhmZuye7NRVCgtxQCGhQ=;
+	s=arc-20240116; t=1712582614; c=relaxed/simple;
+	bh=dOLHdskRVFsMZX4d5rOUvDTF5wqJi9U/NyRskaSRBtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RDL09YEgWWAGMTHiduhTDCUic+Bpxs2mzbXy9jqNtrPj+H3XbAcoUK4mCBj80zEC/v87sKiGndUxtNzUxr8Z+G8ZfjpHiMTRv7O3xfurDMHw7KCWFxICwQsjkDKPbdhNuQ1mSTY6l8TriQaHduBGoQjoxkd0NY01i0FZt8qJa70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ympYsbAl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1C6C433C7;
-	Mon,  8 Apr 2024 13:23:19 +0000 (UTC)
+	 MIME-Version; b=M7luIZnW6mi7RkEaZCNbyuqoACrhFgCCNQF9t9jToh7MUEG+NV5sstXJMSF2BppR6RTkK826BiHi/TwQL9Y3whPqK/MUh12JFa80PPlv+pJGUeHTBIUAdDQmeIVeOn6+lEeRC9VtFOVNQ2AsNfzN1WWOc7M+FtEzlDtMPUx/gzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARJn6NDa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440A2C433C7;
+	Mon,  8 Apr 2024 13:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582599;
-	bh=auOb5L4ASL7DuuCh88X74wCWhmZuye7NRVCgtxQCGhQ=;
+	s=korg; t=1712582614;
+	bh=dOLHdskRVFsMZX4d5rOUvDTF5wqJi9U/NyRskaSRBtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ympYsbAlMznESuGQ8eFjLC6FleYbRSgNfc4gcf5qwz1hzaEbWeF48ahY81nQol8aH
-	 R1+VlGrY2u7LtpI8cPuOPzmmswaKwaKSeqjEbwq13S861ySuczsEAI/LJ+MrXS95lZ
-	 2bfXDlOx0YLx7tjuQJirL6rGm9cOTF8ecL6zkL4I=
+	b=ARJn6NDaOIq99kn2gmREw8S92kMJnt3U9x22BeCrHSbXDbYmxNAJRXqLb/Lp3+S/P
+	 OT0D8b4aib+zX7FerxR0GdRLQiV4pAXsZwin2T97V8f5ZV/rYr8GRDdH7P5jmzbsPj
+	 v3yH0O8iwLjwtlkbtdcKKy5QN0p5GNMEYuT+qBM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyang Xuan <william.xuanziyang@huawei.com>,
 	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.8 089/273] netfilter: nf_tables: Fix potential data-race in __nft_flowtable_type_get()
-Date: Mon,  8 Apr 2024 14:56:04 +0200
-Message-ID: <20240408125312.068757558@linuxfoundation.org>
+Subject: [PATCH 6.8 090/273] netfilter: nf_tables: discard table flag update with pending basechain deletion
+Date: Mon,  8 Apr 2024 14:56:05 +0200
+Message-ID: <20240408125312.098046187@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
 References: <20240408125309.280181634@linuxfoundation.org>
@@ -65,59 +64,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 24225011d81b471acc0e1e315b7d9905459a6304 upstream.
+commit 1bc83a019bbe268be3526406245ec28c2458a518 upstream.
 
-nft_unregister_flowtable_type() within nf_flow_inet_module_exit() can
-concurrent with __nft_flowtable_type_get() within nf_tables_newflowtable().
-And thhere is not any protection when iterate over nf_tables_flowtables
-list in __nft_flowtable_type_get(). Therefore, there is pertential
-data-race of nf_tables_flowtables list entry.
+Hook unregistration is deferred to the commit phase, same occurs with
+hook updates triggered by the table dormant flag. When both commands are
+combined, this results in deleting a basechain while leaving its hook
+still registered in the core.
 
-Use list_for_each_entry_rcu() to iterate over nf_tables_flowtables list
-in __nft_flowtable_type_get(), and use rcu_read_lock() in the caller
-nft_flowtable_type_get() to protect the entire type query process.
-
-Fixes: 3b49e2e94e6e ("netfilter: nf_tables: add flow table netlink frontend")
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 --- a/net/netfilter/nf_tables_api.c
 +++ b/net/netfilter/nf_tables_api.c
-@@ -8292,11 +8292,12 @@ static int nft_flowtable_parse_hook(cons
- 	return err;
- }
+@@ -1207,10 +1207,11 @@ static bool nft_table_pending_update(con
+ 		return true;
  
-+/* call under rcu_read_lock */
- static const struct nf_flowtable_type *__nft_flowtable_type_get(u8 family)
- {
- 	const struct nf_flowtable_type *type;
- 
--	list_for_each_entry(type, &nf_tables_flowtables, list) {
-+	list_for_each_entry_rcu(type, &nf_tables_flowtables, list) {
- 		if (family == type->family)
- 			return type;
+ 	list_for_each_entry(trans, &nft_net->commit_list, list) {
+-		if ((trans->msg_type == NFT_MSG_NEWCHAIN ||
+-		     trans->msg_type == NFT_MSG_DELCHAIN) &&
+-		    trans->ctx.table == ctx->table &&
+-		    nft_trans_chain_update(trans))
++		if (trans->ctx.table == ctx->table &&
++		    ((trans->msg_type == NFT_MSG_NEWCHAIN &&
++		      nft_trans_chain_update(trans)) ||
++		     (trans->msg_type == NFT_MSG_DELCHAIN &&
++		      nft_is_base_chain(trans->ctx.chain))))
+ 			return true;
  	}
-@@ -8308,9 +8309,13 @@ nft_flowtable_type_get(struct net *net,
- {
- 	const struct nf_flowtable_type *type;
  
-+	rcu_read_lock();
- 	type = __nft_flowtable_type_get(family);
--	if (type != NULL && try_module_get(type->owner))
-+	if (type != NULL && try_module_get(type->owner)) {
-+		rcu_read_unlock();
- 		return type;
-+	}
-+	rcu_read_unlock();
- 
- 	lockdep_nfnl_nft_mutex_not_held();
- #ifdef CONFIG_MODULES
 
 
 
