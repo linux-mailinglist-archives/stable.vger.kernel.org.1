@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-37491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09BD189C644
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:06:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 844A589C4EE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DA88B220D9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:53:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F42E283A0F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA5D71B20;
-	Mon,  8 Apr 2024 13:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D7D6FE35;
+	Mon,  8 Apr 2024 13:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aShFpwir"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwvxTxSX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE070524AF;
-	Mon,  8 Apr 2024 13:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAF96A352;
+	Mon,  8 Apr 2024 13:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584389; cv=none; b=mJFx+6BD1vxAFB+u+UQ079GmNzLrp+nsJ8artUIcwvdL98A8DJWIQO7Rgt0GBcwuF4aKGiDDlXA8jUmJk5Cl3fGiEZjm/wvKgY1juWrUzFxfVNEkdVT+GLA3OA70NMz/gea6eMnfLqY41liDqneDyBiWbH5c4u2aVxsuVlJo5sY=
+	t=1712584297; cv=none; b=LCgcKXg8L9oL7D+yP9su3sBimDiKIzOses9Y8Y9iU/DjC+nxay0UlUI8fuB96JR1QEFYBP2qd46Y65Vjit/io32uPbWTcNU+Pgxj/d8EO/+4Lkkq8qoYvg1aedTzGyP9BiimqsgTtA6eVuisAD36dKOuwqQGonI2lvbuJ23HwTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584389; c=relaxed/simple;
-	bh=W3B9KNZ1H0D45coES5yApFeHoOw/ZZtMaqFGZmBJvCI=;
+	s=arc-20240116; t=1712584297; c=relaxed/simple;
+	bh=lgrA8UkB0u/0aCySqAFOySav8mJD0G87MQZB0BYDf8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E8T7zhjYFkwt49LP0NgBaBWWb/jkD82KeL/pZ5QBy7C7vABok6ZiCjdJIx/9WG8rIWqMNktZFkBWQ+2UyOBFOrW34fOV3urgkHXI5TjgNws6px1QqqHf/JjFXWCXccSw6l/+WgfQ0us9AheNObTx0Eplz+YiRR52IW7+Ai7/nTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aShFpwir; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42103C433F1;
-	Mon,  8 Apr 2024 13:53:09 +0000 (UTC)
+	 MIME-Version; b=YqFToezlsMLriX93/6rrXPj7IhA6JtJ7Uzg48aTzlkfFkCxLzwpx8gU7euQ2AFYMb835O/OQVVr20V/mh+b/5J71dagbiZoUindaaSo8yVrh4q8+dSY1Kyoqa1lQAm0L8XtKQGPykAZoV6LskZxoAjzKj/N7YJeUF9A17n0r87M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HwvxTxSX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED300C433C7;
+	Mon,  8 Apr 2024 13:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584389;
-	bh=W3B9KNZ1H0D45coES5yApFeHoOw/ZZtMaqFGZmBJvCI=;
+	s=korg; t=1712584297;
+	bh=lgrA8UkB0u/0aCySqAFOySav8mJD0G87MQZB0BYDf8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aShFpwirNiOj5LmgToZzdP56Yj/FAbYa8sAhkkD5MJNKk9Y5SscD/DUiiFAg5rrRu
-	 yzh0u7dl+UPj6lU1e8wlU6AP/qZu/8Rd+5UvAam2RVi1VR6kmtRb8YldAy+28M4VKV
-	 hq01UxL8CaRTZKKT638RHAe0AP+9nrFIDbirdvFY=
+	b=HwvxTxSXMskKUNFDUDQ+Wr1bif+wNGuYHxicw+llBh2jjFYFmJXDINzpxr8a/GPux
+	 45bEMoL9B2GhFsX/c9SrkpooNhBw6Y9hR+MldJ+MNuis96r5ixwR27CiNIqBLZz463
+	 2XeSd603TSMadnyYxSZz7cf6+AVuP5isx51kc/VE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 390/690] NFSD: Shrink size of struct nfsd4_copy_notify
-Date: Mon,  8 Apr 2024 14:54:16 +0200
-Message-ID: <20240408125413.669754388@linuxfoundation.org>
+Subject: [PATCH 5.15 391/690] NFSD: Shrink size of struct nfsd4_copy
+Date: Mon,  8 Apr 2024 14:54:17 +0200
+Message-ID: <20240408125413.700475728@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,91 +66,98 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 09426ef2a64ee189ca1e3298f1e874842dbf35ea ]
+[ Upstream commit 87689df694916c40e8e6c179ab1c8710f65cb6c6 ]
 
-struct nfsd4_copy_notify is part of struct nfsd4_op, which resides
-in an 8-element array.
+struct nfsd4_copy is part of struct nfsd4_op, which resides in an
+8-element array.
 
 sizeof(struct nfsd4_op):
-Before: /* size: 2208, cachelines: 35, members: 5 */
-After:  /* size: 1696, cachelines: 27, members: 5 */
+Before: /* size: 1696, cachelines: 27, members: 5 */
+After:  /* size: 672, cachelines: 11, members: 5 */
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfs4proc.c |  4 ++--
- fs/nfsd/nfs4xdr.c  | 12 ++++++++++--
- fs/nfsd/xdr4.h     |  4 ++--
- 3 files changed, 14 insertions(+), 6 deletions(-)
+ fs/nfsd/nfs4proc.c | 8 ++++++--
+ fs/nfsd/nfs4xdr.c  | 5 ++++-
+ fs/nfsd/xdr4.h     | 2 +-
+ 3 files changed, 11 insertions(+), 4 deletions(-)
 
 diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 5dce18fe99085..80ec51a89d5b5 100644
+index 80ec51a89d5b5..f0722d4ed0810 100644
 --- a/fs/nfsd/nfs4proc.c
 +++ b/fs/nfsd/nfs4proc.c
-@@ -1947,9 +1947,9 @@ nfsd4_copy_notify(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	/* For now, only return one server address in cpn_src, the
- 	 * address used by the client to connect to this server.
- 	 */
--	cn->cpn_src.nl4_type = NL4_NETADDR;
-+	cn->cpn_src->nl4_type = NL4_NETADDR;
- 	status = nfsd4_set_netaddr((struct sockaddr *)&rqstp->rq_daddr,
--				 &cn->cpn_src.u.nl4_addr);
-+				 &cn->cpn_src->u.nl4_addr);
- 	WARN_ON_ONCE(status);
- 	if (status) {
- 		nfs4_put_cpntf_state(nn, cps);
+@@ -1291,6 +1291,7 @@ void nfs4_put_copy(struct nfsd4_copy *copy)
+ {
+ 	if (!refcount_dec_and_test(&copy->refcount))
+ 		return;
++	kfree(copy->cp_src);
+ 	kfree(copy);
+ }
+ 
+@@ -1545,7 +1546,7 @@ nfsd4_setup_inter_ssc(struct svc_rqst *rqstp,
+ 	if (status)
+ 		goto out;
+ 
+-	status = nfsd4_interssc_connect(&copy->cp_src, rqstp, mount);
++	status = nfsd4_interssc_connect(copy->cp_src, rqstp, mount);
+ 	if (status)
+ 		goto out;
+ 
+@@ -1753,7 +1754,7 @@ static void dup_copy_fields(struct nfsd4_copy *src, struct nfsd4_copy *dst)
+ 		dst->nf_src = nfsd_file_get(src->nf_src);
+ 
+ 	memcpy(&dst->cp_stateid, &src->cp_stateid, sizeof(src->cp_stateid));
+-	memcpy(&dst->cp_src, &src->cp_src, sizeof(struct nl4_server));
++	memcpy(dst->cp_src, src->cp_src, sizeof(struct nl4_server));
+ 	memcpy(&dst->stateid, &src->stateid, sizeof(src->stateid));
+ 	memcpy(&dst->c_fh, &src->c_fh, sizeof(src->c_fh));
+ 	dst->ss_mnt = src->ss_mnt;
+@@ -1847,6 +1848,9 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 		async_copy = kzalloc(sizeof(struct nfsd4_copy), GFP_KERNEL);
+ 		if (!async_copy)
+ 			goto out_err;
++		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
++		if (!async_copy->cp_src)
++			goto out_err;
+ 		if (!nfs4_init_copy_state(nn, copy))
+ 			goto out_err;
+ 		refcount_set(&async_copy->refcount, 1);
 diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index fb891249694c3..515edc1b662e1 100644
+index 515edc1b662e1..dad744d44b0a2 100644
 --- a/fs/nfsd/nfs4xdr.c
 +++ b/fs/nfsd/nfs4xdr.c
-@@ -1952,10 +1952,17 @@ nfsd4_decode_copy_notify(struct nfsd4_compoundargs *argp,
- {
- 	__be32 status;
+@@ -1920,6 +1920,9 @@ nfsd4_decode_copy(struct nfsd4_compoundargs *argp, struct nfsd4_copy *copy)
  
-+	cn->cpn_src = svcxdr_tmpalloc(argp, sizeof(*cn->cpn_src));
-+	if (cn->cpn_src == NULL)
+ 	if (xdr_stream_decode_u32(argp->xdr, &count) < 0)
+ 		return nfserr_bad_xdr;
++	copy->cp_src = svcxdr_tmpalloc(argp, sizeof(*copy->cp_src));
++	if (copy->cp_src == NULL)
 +		return nfserr_jukebox;
-+	cn->cpn_dst = svcxdr_tmpalloc(argp, sizeof(*cn->cpn_dst));
-+	if (cn->cpn_dst == NULL)
-+		return nfserr_jukebox;
-+
- 	status = nfsd4_decode_stateid4(argp, &cn->cpn_src_stateid);
+ 	copy->cp_intra = false;
+ 	if (count == 0) { /* intra-server copy */
+ 		copy->cp_intra = true;
+@@ -1927,7 +1930,7 @@ nfsd4_decode_copy(struct nfsd4_compoundargs *argp, struct nfsd4_copy *copy)
+ 	}
+ 
+ 	/* decode all the supplied server addresses but use only the first */
+-	status = nfsd4_decode_nl4_server(argp, &copy->cp_src);
++	status = nfsd4_decode_nl4_server(argp, copy->cp_src);
  	if (status)
  		return status;
--	return nfsd4_decode_nl4_server(argp, &cn->cpn_dst);
-+	return nfsd4_decode_nl4_server(argp, cn->cpn_dst);
- }
  
- static __be32
-@@ -4903,7 +4910,8 @@ nfsd4_encode_copy_notify(struct nfsd4_compoundres *resp, __be32 nfserr,
- 
- 	*p++ = cpu_to_be32(1);
- 
--	return nfsd42_encode_nl4_server(resp, &cn->cpn_src);
-+	nfserr = nfsd42_encode_nl4_server(resp, cn->cpn_src);
-+	return nfserr;
- }
- 
- static __be32
 diff --git a/fs/nfsd/xdr4.h b/fs/nfsd/xdr4.h
-index 0737f81c1004e..6673c2980c77e 100644
+index 6673c2980c77e..ed90843a55293 100644
 --- a/fs/nfsd/xdr4.h
 +++ b/fs/nfsd/xdr4.h
-@@ -595,13 +595,13 @@ struct nfsd4_offload_status {
- struct nfsd4_copy_notify {
- 	/* request */
- 	stateid_t		cpn_src_stateid;
--	struct nl4_server	cpn_dst;
-+	struct nl4_server	*cpn_dst;
+@@ -540,7 +540,7 @@ struct nfsd4_copy {
+ 	u64			cp_src_pos;
+ 	u64			cp_dst_pos;
+ 	u64			cp_count;
+-	struct nl4_server	cp_src;
++	struct nl4_server	*cp_src;
+ 	bool			cp_intra;
  
- 	/* response */
- 	stateid_t		cpn_cnr_stateid;
- 	u64			cpn_sec;
- 	u32			cpn_nsec;
--	struct nl4_server	cpn_src;
-+	struct nl4_server	*cpn_src;
- };
- 
- struct nfsd4_op {
+ 	/* both */
 -- 
 2.43.0
 
