@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-36737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E615C89C170
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:21:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B00489C18A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24B0D1C21B8C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E7B91F2154A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C5A71B20;
-	Mon,  8 Apr 2024 13:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD79E7EEF0;
+	Mon,  8 Apr 2024 13:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A3QHQIyB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9xvUBMh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48407BB0C;
-	Mon,  8 Apr 2024 13:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE587EEE1;
+	Mon,  8 Apr 2024 13:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582197; cv=none; b=TfGts4Lo4eAgSu/21LEbG/j3xurSs60TMOoAYrF9RiD3vzPf93aWfAsPOiifPlQ4IhLH27Nhy+xAyzfC7dY8g8kWZATLaVmzHa6Ng+y3j/CPL8oemb7arYnyQjDPB18MmOxurCTgjwjI4GCgRDrCYr65cU+pTdc4zuTtkQBdmtc=
+	t=1712582261; cv=none; b=E7OeIeUeUnbXiyZqgixjxF7Xnyrupeukngg0Bc+l65lwSSNtOhHBULQzW09tYZi9XfwFGpSj18KtwHp3AhKeXuPsdZnkpMollB6YRmp0C12JTQNg/jvf9BLeVUn98pMt7GcWa4Xxcp4U9CP1yvrf1VpiQnh9sDli3pJESnIftK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582197; c=relaxed/simple;
-	bh=R53H/n4fI4G1TdhtXLRUPSmpSr7hLl1YLVIitmjPtrY=;
+	s=arc-20240116; t=1712582261; c=relaxed/simple;
+	bh=kNoZQCXHdIcJLEx+Na3fVs4ukIhvBybD6TPj1c/oZ58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxx84yxw5JOH9MGI3ypZiab1g4anSyNSn4CNHXVchpO70aoMJoF+BnCUsVchApMUqsfYskyOWtiJIkyEWQBr/lbKBqjkpXoiWbfEkcOL3xBe5YuWG1OnV6Z+bt2k9DwQLUHw68836e3rKx7BW5pOjMxCXnbPH+4uC5FyhnrkXOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A3QHQIyB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03165C433F1;
-	Mon,  8 Apr 2024 13:16:36 +0000 (UTC)
+	 MIME-Version; b=N175yMjcMI+3kz0LNaJtH3pTSm/B1DIMhI+dsZyi3RE7NveO+L8kJlVkwSmMfjUcmFI6MsKDABTJC7+K58EF569pqyG31W3qo3KXtJ3hHjo56+8LMTbm/h409Cf/JayaxpNqmHgLZG+QsBN1m6CF8PmNsLY32916NajhW2Z31Bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9xvUBMh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A078C433C7;
+	Mon,  8 Apr 2024 13:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582197;
-	bh=R53H/n4fI4G1TdhtXLRUPSmpSr7hLl1YLVIitmjPtrY=;
+	s=korg; t=1712582261;
+	bh=kNoZQCXHdIcJLEx+Na3fVs4ukIhvBybD6TPj1c/oZ58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A3QHQIyBJtK2MXdAiN9qXuHaHN0LwDykrDBk6Udw6tcrtgsUPJFOOzjLONpYMKfEl
-	 8kDTzIDNi11fDvrhqtWI8jNvlLyusaSpoSM+z7mNfAhlZQUdox1GRbNDL2QYMk7+m/
-	 SdggJ3f1qCVcZ01qfGR+tFby3Y1XN15JSbSwaI8o=
+	b=N9xvUBMh4JTvhzF306imMuMifR9TN9tS5jygluoyeXWZNNscC9GtVkKRW0YlojtYO
+	 ad2deJ4921GTBXgChp4UTdbPS1ghuNUqXWltX/lNIEd+7XGFU/JMnLgmd1gArV4vaK
+	 KvQC2d3VDYlTzyVAhxN0vwlulTb32E4951hDawUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lonial con <kongln9170@gmail.com>,
 	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 119/690] netfilter: nf_tables: disallow anonymous set with timeout flag
-Date: Mon,  8 Apr 2024 14:49:45 +0200
-Message-ID: <20240408125403.853776157@linuxfoundation.org>
+Subject: [PATCH 5.15 120/690] netfilter: nf_tables: reject constant set with timeout
+Date: Mon,  8 Apr 2024 14:49:46 +0200
+Message-ID: <20240408125403.903362654@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,14 +66,15 @@ Content-Transfer-Encoding: 8bit
 
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 16603605b667b70da974bea8216c93e7db043bf1 upstream.
+commit 5f4fc4bd5cddb4770ab120ce44f02695c4505562 upstream.
 
-Anonymous sets are never used with timeout from userspace, reject this.
-Exception to this rule is NFT_SET_EVAL to ensure legacy meters still work.
+This set combination is weird: it allows for elements to be
+added/deleted, but once bound to the rule it cannot be updated anymore.
+Eventually, all elements expire, leading to an empty set which cannot
+be updated anymore. Reject this flags combination.
 
 Cc: stable@vger.kernel.org
 Fixes: 761da2935d6e ("netfilter: nf_tables: add set timeout API support")
-Reported-by: lonial con <kongln9170@gmail.com>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -83,12 +83,12 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/net/netfilter/nf_tables_api.c
 +++ b/net/netfilter/nf_tables_api.c
-@@ -4641,6 +4641,9 @@ static int nf_tables_newset(struct sk_bu
- 		if ((flags & (NFT_SET_EVAL | NFT_SET_OBJECT)) ==
- 			     (NFT_SET_EVAL | NFT_SET_OBJECT))
+@@ -4644,6 +4644,9 @@ static int nf_tables_newset(struct sk_bu
+ 		if ((flags & (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT | NFT_SET_EVAL)) ==
+ 			     (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT))
  			return -EOPNOTSUPP;
-+		if ((flags & (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT | NFT_SET_EVAL)) ==
-+			     (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT))
++		if ((flags & (NFT_SET_CONSTANT | NFT_SET_TIMEOUT)) ==
++			     (NFT_SET_CONSTANT | NFT_SET_TIMEOUT))
 +			return -EOPNOTSUPP;
  	}
  
