@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-36964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7303189C2C9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:34:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 874F089C2FB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:38:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CD8EB2CADC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:31:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50DB9B2B9A3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACAF47EF14;
-	Mon,  8 Apr 2024 13:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0EAA7FBAA;
+	Mon,  8 Apr 2024 13:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtvSVfoV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCCyJQfV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7A07E59F;
-	Mon,  8 Apr 2024 13:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBDC7EF1F;
+	Mon,  8 Apr 2024 13:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582857; cv=none; b=X6swddSwHD3NPU1PMT05/a4ZZKbXJ5ptNV1V8gV5nmiFikSVetOHuUUAzGdz8yyABAVnFSp6XJe2ok0DZlt/cHnzi6xnjmF1MmcH3FCvwogl1nX0XJhjbbwKPXiRfgikYNRd5inyOcGGtVRYuoJKjzaoroyPKqDfcyyiRRbBz+A=
+	t=1712582869; cv=none; b=B++NcSHZkCPe8JTf3bvQER3l2gSBcGbNLDONBKBmqIIjcADb+cECW1c536JwBqEVMbXtvYSl8tysjho7yrQsdgiH7njf4lkjUFyAizwl4ewmB4Bk2xK2VeW734YhrJ/mwpHhvckXLdJRWyfbYE8/KoyS1dSLLqtlmdWpmABcC3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582857; c=relaxed/simple;
-	bh=s8n4J/x1/CX2olhdQd17vWJyzRcxIdRZQ4Ql5xV6vaU=;
+	s=arc-20240116; t=1712582869; c=relaxed/simple;
+	bh=Kz1g8AvD2axPeBN9UcMurfBm3GeXmMgV7ztFXp7vNqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=klSMy5G805oZeUNudR/yOKb5y+SYQdP3WdHCXoAhwE4a1nZZab7MCxWURPhaXZOwk5CCn5YgnyAivi3P8mlfeSl+F3BNc+Ozdiydz/dYotH/9H3mvlXjZkfloRTSpPSZeMAaTzVgFXuYKy3brGYtbji1mk2WdieFGryoF58Xswg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtvSVfoV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F2BC43390;
-	Mon,  8 Apr 2024 13:27:36 +0000 (UTC)
+	 MIME-Version; b=BwDOyFJ8Agm+TF3k3hXyyOh4nNIgZs1Cg1RulVaddqAzRK9C0rXpdh2tmM0p8HFnFCC2iiAVU8WLoIPnyjh0W9QKR4oNqVqLsxkrPvAuAhpYtZP3j6taEKxzNOEPZY6Ld4nyR+b7nGHZCVr2MNVHakbiXt+nmFTdMBUQZ8CdTgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCCyJQfV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95055C433F1;
+	Mon,  8 Apr 2024 13:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582857;
-	bh=s8n4J/x1/CX2olhdQd17vWJyzRcxIdRZQ4Ql5xV6vaU=;
+	s=korg; t=1712582869;
+	bh=Kz1g8AvD2axPeBN9UcMurfBm3GeXmMgV7ztFXp7vNqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WtvSVfoVC1yL70ByZ7K0RvQynDfOP53R9IAFZ9mg1hkjqc4E/0r7Lw6ECo+nQ5m9u
-	 nUyTPp20qK2SJW0IbTrGwn3nQjvXMsTAa4ORdzGaTv+lfCTkj5KsokXOpSaixVMw32
-	 C+cYUV4RqWjzYWKbpjbRWE5hOAQwRr0HH2lnAw0Q=
+	b=dCCyJQfVWzWl9KWM6T6y923gHzMw8ay2C1wPKwIV+uRUge0KcAKPnH6WtSfad1yXG
+	 3QJklnIIFP1xxopXUAEy3qh2CEraWepu0Jgw36YJpeh/E7+HclpCOdOxUk/PjGvjAd
+	 Bv1rxfTujP0aqEN5XpZXY97v54PZh0LkL/uefw08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jan Kara <jack@suse.cz>,
 	Gabriel Krisman Bertazi <krisman@collabora.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 181/690] fanotify: Require fid_mode for any non-fd event
-Date: Mon,  8 Apr 2024 14:50:47 +0200
-Message-ID: <20240408125406.112140623@linuxfoundation.org>
+Subject: [PATCH 5.15 182/690] fsnotify: Support FS_ERROR event type
+Date: Mon,  8 Apr 2024 14:50:48 +0200
+Message-ID: <20240408125406.143642307@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -69,64 +69,117 @@ Content-Transfer-Encoding: 8bit
 
 From: Gabriel Krisman Bertazi <krisman@collabora.com>
 
-[ Upstream commit 4fe595cf1c80e7a5af4d00c4da29def64aff57a2 ]
+[ Upstream commit 9daa811073fa19c08e8aad3b90f9235fed161acf ]
 
-Like inode events, FAN_FS_ERROR will require fid mode.  Therefore,
-convert the verification during fanotify_mark(2) to require fid for any
-non-fd event.  This means fid_mode will not only be required for inode
-events, but for any event that doesn't provide a descriptor.
+Expose a new type of fsnotify event for filesystems to report errors for
+userspace monitoring tools.  fanotify will send this type of
+notification for FAN_FS_ERROR events.  This also introduce a helper for
+generating the new event.
 
-Link: https://lore.kernel.org/r/20211025192746.66445-17-krisman@collabora.com
-Suggested-by: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20211025192746.66445-18-krisman@collabora.com
 Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
 Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/notify/fanotify/fanotify_user.c | 12 ++++++------
- include/linux/fanotify.h           |  3 +++
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ include/linux/fsnotify.h         | 13 +++++++++++++
+ include/linux/fsnotify_backend.h | 32 +++++++++++++++++++++++++++++++-
+ 2 files changed, 44 insertions(+), 1 deletion(-)
 
-diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
-index 8cf8e63a2c3e8..8598b00f7e9c8 100644
---- a/fs/notify/fanotify/fanotify_user.c
-+++ b/fs/notify/fanotify/fanotify_user.c
-@@ -1476,14 +1476,14 @@ static int do_fanotify_mark(int fanotify_fd, unsigned int flags, __u64 mask,
- 		goto fput_and_out;
+diff --git a/include/linux/fsnotify.h b/include/linux/fsnotify.h
+index a327a95fa68f1..67d6db6c8df8f 100644
+--- a/include/linux/fsnotify.h
++++ b/include/linux/fsnotify.h
+@@ -375,4 +375,17 @@ static inline void fsnotify_change(struct dentry *dentry, unsigned int ia_valid)
+ 		fsnotify_dentry(dentry, mask);
+ }
  
- 	/*
--	 * Events with data type inode do not carry enough information to report
--	 * event->fd, so we do not allow setting a mask for inode events unless
--	 * group supports reporting fid.
--	 * inode events are not supported on a mount mark, because they do not
--	 * carry enough information (i.e. path) to be filtered by mount point.
-+	 * Events that do not carry enough information to report
-+	 * event->fd require a group that supports reporting fid.  Those
-+	 * events are not supported on a mount mark, because they do not
-+	 * carry enough information (i.e. path) to be filtered by mount
-+	 * point.
- 	 */
- 	fid_mode = FAN_GROUP_FLAG(group, FANOTIFY_FID_BITS);
--	if (mask & FANOTIFY_INODE_EVENTS &&
-+	if (mask & ~(FANOTIFY_FD_EVENTS|FANOTIFY_EVENT_FLAGS) &&
- 	    (!fid_mode || mark_type == FAN_MARK_MOUNT))
- 		goto fput_and_out;
- 
-diff --git a/include/linux/fanotify.h b/include/linux/fanotify.h
-index eec3b7c408115..52d464802d99f 100644
---- a/include/linux/fanotify.h
-+++ b/include/linux/fanotify.h
-@@ -84,6 +84,9 @@ extern struct ctl_table fanotify_table[]; /* for sysctl */
-  */
- #define FANOTIFY_DIRENT_EVENTS	(FAN_MOVE | FAN_CREATE | FAN_DELETE)
- 
-+/* Events that can be reported with event->fd */
-+#define FANOTIFY_FD_EVENTS (FANOTIFY_PATH_EVENTS | FANOTIFY_PERM_EVENTS)
++static inline int fsnotify_sb_error(struct super_block *sb, struct inode *inode,
++				    int error)
++{
++	struct fs_error_report report = {
++		.error = error,
++		.inode = inode,
++		.sb = sb,
++	};
 +
- /* Events that can only be reported with data type FSNOTIFY_EVENT_INODE */
- #define FANOTIFY_INODE_EVENTS	(FANOTIFY_DIRENT_EVENTS | \
- 				 FAN_ATTRIB | FAN_MOVE_SELF | FAN_DELETE_SELF)
++	return fsnotify(FS_ERROR, &report, FSNOTIFY_EVENT_ERROR,
++			NULL, NULL, NULL, 0);
++}
++
+ #endif	/* _LINUX_FS_NOTIFY_H */
+diff --git a/include/linux/fsnotify_backend.h b/include/linux/fsnotify_backend.h
+index 3a7c314361824..00dbaafbcf953 100644
+--- a/include/linux/fsnotify_backend.h
++++ b/include/linux/fsnotify_backend.h
+@@ -42,6 +42,12 @@
+ 
+ #define FS_UNMOUNT		0x00002000	/* inode on umount fs */
+ #define FS_Q_OVERFLOW		0x00004000	/* Event queued overflowed */
++#define FS_ERROR		0x00008000	/* Filesystem Error (fanotify) */
++
++/*
++ * FS_IN_IGNORED overloads FS_ERROR.  It is only used internally by inotify
++ * which does not support FS_ERROR.
++ */
+ #define FS_IN_IGNORED		0x00008000	/* last inotify event here */
+ 
+ #define FS_OPEN_PERM		0x00010000	/* open event in an permission hook */
+@@ -95,7 +101,8 @@
+ #define ALL_FSNOTIFY_EVENTS (ALL_FSNOTIFY_DIRENT_EVENTS | \
+ 			     FS_EVENTS_POSS_ON_CHILD | \
+ 			     FS_DELETE_SELF | FS_MOVE_SELF | FS_DN_RENAME | \
+-			     FS_UNMOUNT | FS_Q_OVERFLOW | FS_IN_IGNORED)
++			     FS_UNMOUNT | FS_Q_OVERFLOW | FS_IN_IGNORED | \
++			     FS_ERROR)
+ 
+ /* Extra flags that may be reported with event or control handling of events */
+ #define ALL_FSNOTIFY_FLAGS  (FS_EXCL_UNLINK | FS_ISDIR | FS_IN_ONESHOT | \
+@@ -250,6 +257,13 @@ enum fsnotify_data_type {
+ 	FSNOTIFY_EVENT_PATH,
+ 	FSNOTIFY_EVENT_INODE,
+ 	FSNOTIFY_EVENT_DENTRY,
++	FSNOTIFY_EVENT_ERROR,
++};
++
++struct fs_error_report {
++	int error;
++	struct inode *inode;
++	struct super_block *sb;
+ };
+ 
+ static inline struct inode *fsnotify_data_inode(const void *data, int data_type)
+@@ -261,6 +275,8 @@ static inline struct inode *fsnotify_data_inode(const void *data, int data_type)
+ 		return d_inode(data);
+ 	case FSNOTIFY_EVENT_PATH:
+ 		return d_inode(((const struct path *)data)->dentry);
++	case FSNOTIFY_EVENT_ERROR:
++		return ((struct fs_error_report *)data)->inode;
+ 	default:
+ 		return NULL;
+ 	}
+@@ -300,6 +316,20 @@ static inline struct super_block *fsnotify_data_sb(const void *data,
+ 		return ((struct dentry *)data)->d_sb;
+ 	case FSNOTIFY_EVENT_PATH:
+ 		return ((const struct path *)data)->dentry->d_sb;
++	case FSNOTIFY_EVENT_ERROR:
++		return ((struct fs_error_report *) data)->sb;
++	default:
++		return NULL;
++	}
++}
++
++static inline struct fs_error_report *fsnotify_data_error_report(
++							const void *data,
++							int data_type)
++{
++	switch (data_type) {
++	case FSNOTIFY_EVENT_ERROR:
++		return (struct fs_error_report *) data;
+ 	default:
+ 		return NULL;
+ 	}
 -- 
 2.43.0
 
