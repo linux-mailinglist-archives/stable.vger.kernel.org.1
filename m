@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-37117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341B289C368
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 411FE89C61D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE7FD2838DF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 736D31C237F0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1005F7D094;
-	Mon,  8 Apr 2024 13:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A8F7F47C;
+	Mon,  8 Apr 2024 14:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iVh0kXbx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHxr6ZQ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEB07CF39;
-	Mon,  8 Apr 2024 13:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9353752F6E;
+	Mon,  8 Apr 2024 14:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583299; cv=none; b=LlW45/XbXZQkK2d7z80A6COODy7DLLFNNSV4AU4vhdyXBNCzRqkNemVxE9NrzCEuwn+6hOpTHnbGljjfGPjvDy4/9lyYrMMKwqHBNO2vfEx0QwB16O03+BEFehDoUOOHInBgeX0Qvcxw8NBkEuj7ppC3x1pHMCfvgK5mG8TQcQY=
+	t=1712585069; cv=none; b=hi/lk/hDxTCv+AD4DIiOZ/eFnqON90oDS8l0JwEDwPVPHp14SW8eStl84gbf1wRCUl7njC+XTgYNiJv48PV8+hgqPtlGwaeA8olrWjUGTg0RCjuKeoPVAqgv/ICBVCXW2LfJWHPjZZ01geExMXSZztV6lWNUJkFgik5alDre8lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583299; c=relaxed/simple;
-	bh=5M0mv19YUyxQ0C8kTJ9dSWNai5PtlCot+IqAL++E2/A=;
+	s=arc-20240116; t=1712585069; c=relaxed/simple;
+	bh=PToZ77PxY5OkzF+DTWSnfA3IEdNfywPzXLZXk7g/yVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XyHzMl7ckm7/yXC3dK1cvvkkATp+Dw7e8yw+DFI+YQRsScrMf/1PLZLuqV2RT6SU/qtmjQX/5Tq8MJjeC4yBV8qiSA3ZIhoxV3U6Qc2OvOd5P/AAyGKuBClE6lRxtYAlgH1Rt9UX4nv/8HZYq2VbeRZqfpW6ptt4WEvsk6rA1VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iVh0kXbx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D52C433F1;
-	Mon,  8 Apr 2024 13:34:59 +0000 (UTC)
+	 MIME-Version; b=i+lur7dR80VJBhvP7g5x4j87ZkRX69SVdfJxJ3DYqGGr9QYmy5/d29ljg6Y/VInX6xn8KHf6VCtftiWBjKuGShX0DCRsExrDpkWZIBJI9JOXEXySqItXekq+EkkRQ2HEp3ldIKtpuLtXgfxdOyIA1XKi0rsyMU7Wm8Kj6Qpda5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHxr6ZQ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C652C433F1;
+	Mon,  8 Apr 2024 14:04:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583299;
-	bh=5M0mv19YUyxQ0C8kTJ9dSWNai5PtlCot+IqAL++E2/A=;
+	s=korg; t=1712585069;
+	bh=PToZ77PxY5OkzF+DTWSnfA3IEdNfywPzXLZXk7g/yVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iVh0kXbxAlDau0NmZSs7x0wYLxDuX3ZiCLMbGfENk1caX3NxJSlwSULvRve1JOWu/
-	 DBRNRM+eCYwjPO5jRc+VLkGZAKh27ucp5E+rJUq7NpxIOniNWi6joatuOV0oxgGt6e
-	 kD5woSZi+KxmYC5yAZhXDSlLfXyxSJhm77/Uzgr0=
+	b=wHxr6ZQ8roDzqk2hTGpeEZU5n6WnQ3tavk+N51A0PBXubuIfBUPz90E742XDJ/Mx/
+	 HcKMXhIbpH6stDCAsGDBhjcpQYwD8JbNcYyFPhsh9e/Rp7n1jC4vsmzApXi0+A0Cmr
+	 Xk0ayQO2ZAuP0J/cVgpL5zmoMG5KXwmgPaHgfUpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 179/252] spi: s3c64xx: allow full FIFO masks
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Subject: [PATCH 5.15 612/690] wifi: iwlwifi: mvm: rfi: fix potential response leaks
 Date: Mon,  8 Apr 2024 14:57:58 +0200
-Message-ID: <20240408125312.214388047@linuxfoundation.org>
+Message-ID: <20240408125421.776781435@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,154 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit d6911cf27e5c8491cbfedd4ae2d1ee74a3e685b4 ]
+[ Upstream commit 06a093807eb7b5c5b29b6cff49f8174a4e702341 ]
 
-The driver is wrong because is using partial register field masks for the
-SPI_STATUS.{RX, TX}_FIFO_LVL register fields.
+If the rx payload length check fails, or if kmemdup() fails,
+we still need to free the command response. Fix that.
 
-We see s3c64xx_spi_port_config.fifo_lvl_mask with different values for
-different instances of the same IP. Take s5pv210_spi_port_config for
-example, it defines:
-	.fifo_lvl_mask  = { 0x1ff, 0x7F },
-
-fifo_lvl_mask is used to determine the FIFO depth of the instance of the
-IP. In this case, the integrator uses a 256 bytes FIFO for the first SPI
-instance of the IP, and a 64 bytes FIFO for the second instance. While
-the first mask reflects the SPI_STATUS.{RX, TX}_FIFO_LVL register
-fields, the second one is two bits short. Using partial field masks is
-misleading and can hide problems of the driver's logic.
-
-Allow platforms to specify the full FIFO mask, regardless of the FIFO
-depth.
-
-Introduce {rx, tx}_fifomask to represent the SPI_STATUS.{RX, TX}_FIFO_LVL
-register fields. It's a shifted mask defining the field's length and
-position. We'll be able to deprecate the use of @rx_lvl_offset, as the
-shift value can be determined from the mask. The existing compatibles
-shall start using {rx, tx}_fifomask so that they use the full field mask
-and to avoid shifting the mask to position, and then shifting it back to
-zero in the {TX, RX}_FIFO_LVL macros.
-
-@rx_lvl_offset will be deprecated in a further patch, after we have the
-infrastructure to deprecate @fifo_lvl_mask as well.
-
-No functional change intended.
-
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://msgid.link/r/20240216070555.2483977-4-tudor.ambarus@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: a3d3eab627bb ("spi: s3c64xx: Use DMA mode from fifo size")
+Fixes: 21254908cbe9 ("iwlwifi: mvm: add RFI-M support")
+Co-authored-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240319100755.db2fa0196aa7.I116293b132502ac68a65527330fa37799694b79c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-s3c64xx.c | 40 +++++++++++++++++++++++++++++++++++----
- 1 file changed, 36 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rfi.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 3da940e6299f0..688b8fad9e2fd 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -3,6 +3,7 @@
- // Copyright (c) 2009 Samsung Electronics Co., Ltd.
- //      Jaswinder Singh <jassi.brar@samsung.com>
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
+index 1954b4cdb90b4..4deb242df7b37 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
+@@ -104,13 +104,17 @@ struct iwl_rfi_freq_table_resp_cmd *iwl_rfi_get_freq_table(struct iwl_mvm *mvm)
+ 	if (ret)
+ 		return ERR_PTR(ret);
  
-+#include <linux/bitops.h>
- #include <linux/bits.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
-@@ -107,10 +108,10 @@
- #define FIFO_LVL_MASK(i) ((i)->port_conf->fifo_lvl_mask[i->port_id])
- #define S3C64XX_SPI_ST_TX_DONE(v, i) (((v) & \
- 				(1 << (i)->port_conf->tx_st_done)) ? 1 : 0)
--#define TX_FIFO_LVL(v, i) (((v) >> S3C64XX_SPI_ST_TX_FIFO_LVL_SHIFT) &	\
--			   FIFO_LVL_MASK(i))
--#define RX_FIFO_LVL(v, i) (((v) >> (i)->port_conf->rx_lvl_offset) & \
--					FIFO_LVL_MASK(i))
-+#define TX_FIFO_LVL(v, sdd)	(((v) & (sdd)->tx_fifomask) >>		\
-+				 __ffs((sdd)->tx_fifomask))
-+#define RX_FIFO_LVL(v, sdd)	(((v) & (sdd)->rx_fifomask) >>		\
-+				 __ffs((sdd)->rx_fifomask))
- #define FIFO_DEPTH(i) ((FIFO_LVL_MASK(i) >> 1) + 1)
+-	if (WARN_ON_ONCE(iwl_rx_packet_payload_len(cmd.resp_pkt) != resp_size))
++	if (WARN_ON_ONCE(iwl_rx_packet_payload_len(cmd.resp_pkt) !=
++			 resp_size)) {
++		iwl_free_resp(&cmd);
+ 		return ERR_PTR(-EIO);
++	}
  
- #define S3C64XX_SPI_MAX_TRAILCNT	0x3ff
-@@ -136,6 +137,10 @@ struct s3c64xx_spi_dma_data {
-  * struct s3c64xx_spi_port_config - SPI Controller hardware info
-  * @fifo_lvl_mask: Bit-mask for {TX|RX}_FIFO_LVL bits in SPI_STATUS register.
-  * @rx_lvl_offset: Bit offset of RX_FIFO_LVL bits in SPI_STATUS regiter.
-+ * @rx_fifomask: SPI_STATUS.RX_FIFO_LVL mask. Shifted mask defining the field's
-+ *               length and position.
-+ * @tx_fifomask: SPI_STATUS.TX_FIFO_LVL mask. Shifted mask defining the field's
-+ *               length and position.
-  * @tx_st_done: Bit offset of TX_DONE bit in SPI_STATUS regiter.
-  * @clk_div: Internal clock divider
-  * @quirks: Bitmask of known quirks
-@@ -153,6 +158,8 @@ struct s3c64xx_spi_dma_data {
- struct s3c64xx_spi_port_config {
- 	int	fifo_lvl_mask[MAX_SPI_PORTS];
- 	int	rx_lvl_offset;
-+	u32	rx_fifomask;
-+	u32	tx_fifomask;
- 	int	tx_st_done;
- 	int	quirks;
- 	int	clk_div;
-@@ -182,6 +189,10 @@ struct s3c64xx_spi_port_config {
-  * @tx_dma: Local transmit DMA data (e.g. chan and direction)
-  * @port_conf: Local SPI port configuartion data
-  * @port_id: Port identification number
-+ * @rx_fifomask: SPI_STATUS.RX_FIFO_LVL mask. Shifted mask defining the field's
-+ *               length and position.
-+ * @tx_fifomask: SPI_STATUS.TX_FIFO_LVL mask. Shifted mask defining the field's
-+ *               length and position.
-  */
- struct s3c64xx_spi_driver_data {
- 	void __iomem                    *regs;
-@@ -201,6 +212,8 @@ struct s3c64xx_spi_driver_data {
- 	struct s3c64xx_spi_dma_data	tx_dma;
- 	const struct s3c64xx_spi_port_config	*port_conf;
- 	unsigned int			port_id;
-+	u32				rx_fifomask;
-+	u32				tx_fifomask;
- };
+ 	resp = kmemdup(cmd.resp_pkt->data, resp_size, GFP_KERNEL);
++	iwl_free_resp(&cmd);
++
+ 	if (!resp)
+ 		return ERR_PTR(-ENOMEM);
  
- static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
-@@ -1145,6 +1158,23 @@ static inline const struct s3c64xx_spi_port_config *s3c64xx_spi_get_port_config(
- 	return (const struct s3c64xx_spi_port_config *)platform_get_device_id(pdev)->driver_data;
+-	iwl_free_resp(&cmd);
+ 	return resp;
  }
- 
-+static void s3c64xx_spi_set_fifomask(struct s3c64xx_spi_driver_data *sdd)
-+{
-+	const struct s3c64xx_spi_port_config *port_conf = sdd->port_conf;
-+
-+	if (port_conf->rx_fifomask)
-+		sdd->rx_fifomask = port_conf->rx_fifomask;
-+	else
-+		sdd->rx_fifomask = FIFO_LVL_MASK(sdd) <<
-+			port_conf->rx_lvl_offset;
-+
-+	if (port_conf->tx_fifomask)
-+		sdd->tx_fifomask = port_conf->tx_fifomask;
-+	else
-+		sdd->tx_fifomask = FIFO_LVL_MASK(sdd) <<
-+			S3C64XX_SPI_ST_TX_FIFO_LVL_SHIFT;
-+}
-+
- static int s3c64xx_spi_probe(struct platform_device *pdev)
- {
- 	struct resource	*mem_res;
-@@ -1190,6 +1220,8 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 		sdd->port_id = pdev->id;
- 	}
- 
-+	s3c64xx_spi_set_fifomask(sdd);
-+
- 	sdd->cur_bpw = 8;
- 
- 	sdd->tx_dma.direction = DMA_MEM_TO_DEV;
 -- 
 2.43.0
 
