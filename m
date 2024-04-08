@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-36735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5253289C16E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B8289C01C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DC01280D7A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 077CD2832CB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B05285276;
-	Mon,  8 Apr 2024 13:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4801768EA;
+	Mon,  8 Apr 2024 13:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQEKDYuF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zi2Ixenw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF0A84D35;
-	Mon,  8 Apr 2024 13:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634AF2E405;
+	Mon,  8 Apr 2024 13:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582191; cv=none; b=qSgWxyU9VHkhEGhlbaNl5tVuFTWpDj+CS6GTAkI8GhTPV7K0zWrAY8ELFAsZUkzRYhHth7mm07eBjEfm7Hm6qEW/tW5Nml8AQ96c0XLqzWlZq4PppHn2e/k7Z13vcLqhsnq5CD/oon4h+kLVjVtfExIDKDt8eIkL4sGCwMNTxvY=
+	t=1712581489; cv=none; b=ubfSM5sJtEAgAjWVpct12T2T3XXcddOSKYu/P2jo5owj5q2ldyXwF/cjDhtAYCtUmOSsCuy3iAbEx6RdcWinNyZXA2bMWsqPYnNCfiSPw36DgbeM6oOiz4rkn8SntwujaphmCGJTMfdBA09G7wuv9z+C2KC6utvRAgXvmIYk0rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582191; c=relaxed/simple;
-	bh=wIYT7nDJiNbgKvNPeCcWisb3qCDZzVqBvBY1AJQkJPI=;
+	s=arc-20240116; t=1712581489; c=relaxed/simple;
+	bh=Wztw/SiwYAU+WaCoZl6RPnI71v2MuIXHoFsasqLN8Rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kto3PYxget6jQe4wUrl2cxyyjKNUmELlTUEOmfKcyJOjC/YMXtIe1TYb9BZlvf2PPvSUaFLFzScLuolvzoGLN4Rs6mDfG/PiUsIoRKJaa6h1IGN1h4lyPmu/cl8UTvn+u9LrIRlwLOeE/wbbabgb9q8YCA2aQn5TYpln7AmLGp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQEKDYuF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436BFC433C7;
-	Mon,  8 Apr 2024 13:16:31 +0000 (UTC)
+	 MIME-Version; b=us9W+k0J69d0q2adC/ZxsHwOMmfd0BIW8xIuQqHTyKGOxURPJLwny6/IUyWO8SKIvikN2+RkBiZU1uovtTzqcxvBDCcNNjwx42hWdx8j1iiNvupHg3JOUBdI0ywi1NesfcObP3DlTOR1Io0yh8MbaYjTdK4j6JLdhNbLYFKE4Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zi2Ixenw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF762C433C7;
+	Mon,  8 Apr 2024 13:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582191;
-	bh=wIYT7nDJiNbgKvNPeCcWisb3qCDZzVqBvBY1AJQkJPI=;
+	s=korg; t=1712581489;
+	bh=Wztw/SiwYAU+WaCoZl6RPnI71v2MuIXHoFsasqLN8Rk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wQEKDYuF7aYERYnCPz7b7oDDZEDviGJMi/BpJtmQy34Dz8UEFN363176UzoQkgRBL
-	 zRA2dgV2X+/QGrrPeNKjdo8qlF7YLGT8DC7n29dR7HO4BOhPg+zVxHMqlwZVRQafE0
-	 5YGl+34MxngfLLZCbf8JbeSc3tL9EYkQlqinxXBw=
+	b=zi2IxenwDZCqCOxZ1fIkjgClPk1StnxyBpFo5Ni+dxRz4RDX6yYSNBZ0sB12p0vD6
+	 MQfO3xqBtxxu3ohuQu3OVKtyMKx95xFtG5R1TFAjEuriNHZ69rB0UcYR+AwJpQCeYL
+	 yxKrj7wrsPPQAKbV/VA6aH8Dm0ZiVx4sT7Mdcna8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Wang <wangjie125@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 034/273] net: hns3: fix index limit to support all queue stats
-Date: Mon,  8 Apr 2024 14:55:09 +0200
-Message-ID: <20240408125310.354180660@linuxfoundation.org>
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Subject: [PATCH 6.6 011/252] wifi: iwlwifi: mvm: rfi: fix potential response leaks
+Date: Mon,  8 Apr 2024 14:55:10 +0200
+Message-ID: <20240408125306.997494072@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,42 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Wang <wangjie125@huawei.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 47e39d213e09c6cae0d6b4d95e454ea404013312 ]
+[ Upstream commit 06a093807eb7b5c5b29b6cff49f8174a4e702341 ]
 
-Currently, hns hardware supports more than 512 queues and the index limit
-in hclge_comm_tqps_update_stats is wrong. So this patch removes it.
+If the rx payload length check fails, or if kmemdup() fails,
+we still need to free the command response. Fix that.
 
-Fixes: 287db5c40d15 ("net: hns3: create new set of common tqp stats APIs for PF and VF reuse")
-Signed-off-by: Jie Wang <wangjie125@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 21254908cbe9 ("iwlwifi: mvm: add RFI-M support")
+Co-authored-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240319100755.db2fa0196aa7.I116293b132502ac68a65527330fa37799694b79c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c  | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rfi.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c
-index f3c9395d8351c..618f66d9586b3 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c
-@@ -85,7 +85,7 @@ int hclge_comm_tqps_update_stats(struct hnae3_handle *handle,
- 		hclge_comm_cmd_setup_basic_desc(&desc, HCLGE_OPC_QUERY_TX_STATS,
- 						true);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
+index 2ecd32bed752f..045c862a8fc4f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
+@@ -132,14 +132,18 @@ struct iwl_rfi_freq_table_resp_cmd *iwl_rfi_get_freq_table(struct iwl_mvm *mvm)
+ 	if (ret)
+ 		return ERR_PTR(ret);
  
--		desc.data[0] = cpu_to_le32(tqp->index & 0x1ff);
-+		desc.data[0] = cpu_to_le32(tqp->index);
- 		ret = hclge_comm_cmd_send(hw, &desc, 1);
- 		if (ret) {
- 			dev_err(&hw->cmq.csq.pdev->dev,
+-	if (WARN_ON_ONCE(iwl_rx_packet_payload_len(cmd.resp_pkt) != resp_size))
++	if (WARN_ON_ONCE(iwl_rx_packet_payload_len(cmd.resp_pkt) !=
++			 resp_size)) {
++		iwl_free_resp(&cmd);
+ 		return ERR_PTR(-EIO);
++	}
+ 
+ 	resp = kmemdup(cmd.resp_pkt->data, resp_size, GFP_KERNEL);
++	iwl_free_resp(&cmd);
++
+ 	if (!resp)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	iwl_free_resp(&cmd);
+ 	return resp;
+ }
+ 
 -- 
 2.43.0
 
