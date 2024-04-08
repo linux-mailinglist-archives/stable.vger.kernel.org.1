@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-37160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D088889C41D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D04AF89C430
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0101BB28289
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86D92282A11
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770647E103;
-	Mon,  8 Apr 2024 13:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131708592C;
+	Mon,  8 Apr 2024 13:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Su032Z8j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzL0opzt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32717129E7C;
-	Mon,  8 Apr 2024 13:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CB07E115;
+	Mon,  8 Apr 2024 13:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583422; cv=none; b=QSUhSOvZ4Oj/A0ZVpxnX5FtUrbIanlrGe1eoJUIm2GNlY0vlarmguQl73MEyXjiC4nDxPp4rTFDmd/GzZyXdso+Ttc0Fe78ycvfTbpO8cO7q+ZaWygU2QE9V0sDPBmZ3Bvr0WkDhwE1SzLTqskLg+XicxPO7Jx8SIGm9S6hazQY=
+	t=1712583777; cv=none; b=ggoQf6Vco3WIbWfT7S4G73n7r6rdtdlg/TYrvkjGyAhaz73QW4LBIeb51cFOWnaQHxXlHNvaCgEFFwgsREVv9Qg4zkZP5moPHJzWFqRkHeS0+rRc50WQ0bRqaA3ite7ZDMK2eKmk6KNsKjBGIYwtNmopXuxaMTs4iZBcq9tATrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583422; c=relaxed/simple;
-	bh=Zqo1zTxMjH/dHOrP7LQWbz3djpDWjl7Cuu/ed4N+8m8=;
+	s=arc-20240116; t=1712583777; c=relaxed/simple;
+	bh=dM8ztpZYoKV3YycYALca6/mx3KmBedW9E5c8TTTnSKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IY/2RFvD/c7SSQ3kZESb0z97wr//eGPpgpMf15dvYfbL8tGbmFXNrVIyMVx6QHGza4MmlsRn6zjPkYM7lhIrEzHSYfm7MRBQq8tRTgbTDpWBEh92WAuWKHsuBzKA8Io5RIbPaMAJNBkyJJCLgqnKZFF8pumgcM/vzXC5qH22fNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Su032Z8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF03C43390;
-	Mon,  8 Apr 2024 13:37:01 +0000 (UTC)
+	 MIME-Version; b=AofuYS+Qekkwx/QDjfXAMsyXAPMBI2M+vP25JqfBzwPIHRMX7d7cMOp2Rddbxec1NkzUHEtJbGEG2Ltwnikzto+fmTsc9QaMkZz5Uj0zG8pYjyr/KtSZ4u2IT1G2Ht5d9sd5etRUlSh4TpebcyYTd0qM/somW/+rOCvDOvdsvnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzL0opzt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7DCC433C7;
+	Mon,  8 Apr 2024 13:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583422;
-	bh=Zqo1zTxMjH/dHOrP7LQWbz3djpDWjl7Cuu/ed4N+8m8=;
+	s=korg; t=1712583777;
+	bh=dM8ztpZYoKV3YycYALca6/mx3KmBedW9E5c8TTTnSKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Su032Z8jdFtrUFNsCnoGKVshNRF4yET5W36J0u9hLEzKLIrZ3V+KvakeKoJeS85Rh
-	 1jPGfhBP0ubFNkXSFD8jtdAZd4hNHEbl7hpiDMMOAh5IQV32QsodPmvGrKlEgJWO0X
-	 ui8NlfmNxB2tmdsOQ/PAOqnIfuPjmO9K17Ghygsc=
+	b=yzL0opztOdR1I7Jq5Hsz4YasCZwALIMyc83IP+iy42EzYqiAA7zmps8UZ0nHwg6WK
+	 BjEqeduWUa26/6ifyBcSvgBaqqkv/llmrOepn0XDtPHkMWbquG0fBc9C96UFNv23ZD
+	 ATtk2HLPlsKQxdS5NkBxHmIAFUGDQkNOk1EIyipU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 194/252] s390/pai: fix sampling event removal for PMU device driver
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.8 218/273] ASoC: SOF: Intel: Set the dai/host get frame/byte counter callbacks
 Date: Mon,  8 Apr 2024 14:58:13 +0200
-Message-ID: <20240408125312.677112733@linuxfoundation.org>
+Message-ID: <20240408125316.161919822@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit e9f3af02f63909f41b43c28330434cc437639c5c ]
+commit fd6f6a0632bc891673490bf4a92304172251825c upstream.
 
-In case of a sampling event, the PAI PMU device drivers need a
-reference to this event.  Currently to PMU device driver reference
-is removed when a sampling event is destroyed. This may lead to
-situations where the reference of the PMU device driver is removed
-while being used by a different sampling event.
-Reset the event reference pointer of the PMU device driver when
-a sampling event is deleted and before the next one might be added.
+Add implementation for reading the LDP (Linear DMA Position) to be used as
+get_host_byte_counter().
+The LDP is counting the number of bytes moved between the DSP and host
+memory.
 
-Fixes: 39d62336f5c1 ("s390/pai: add support for cryptography counters")
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Set the get_dai_frame_counter to hda_dsp_get_stream_llp, which is counting
+the frames on the link side of the DSP.
+
+Cc: stable@vger.kernel.org # 6.8
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://msgid.link/r/20240321130814.4412-8-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/perf_pai_crypto.c | 10 +++++++---
- arch/s390/kernel/perf_pai_ext.c    | 10 +++++++---
- 2 files changed, 14 insertions(+), 6 deletions(-)
+ sound/soc/sof/intel/hda-common-ops.c |    2 ++
+ sound/soc/sof/intel/hda-stream.c     |   31 +++++++++++++++++++++++++++++++
+ sound/soc/sof/intel/hda.h            |    3 +++
+ 3 files changed, 36 insertions(+)
 
-diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
-index 65cc74ab4cdd8..1eefbe2ff4189 100644
---- a/arch/s390/kernel/perf_pai_crypto.c
-+++ b/arch/s390/kernel/perf_pai_crypto.c
-@@ -53,7 +53,6 @@ static void paicrypt_event_destroy(struct perf_event *event)
- {
- 	struct paicrypt_map *cpump = per_cpu_ptr(&paicrypt_map, event->cpu);
+--- a/sound/soc/sof/intel/hda-common-ops.c
++++ b/sound/soc/sof/intel/hda-common-ops.c
+@@ -58,6 +58,8 @@ struct snd_sof_dsp_ops sof_hda_common_op
+ 	.pcm_ack	= hda_dsp_pcm_ack,
  
--	cpump->event = NULL;
- 	static_branch_dec(&pai_key);
- 	mutex_lock(&pai_reserve_mutex);
- 	debug_sprintf_event(cfm_dbg, 5, "%s event %#llx cpu %d users %d"
-@@ -278,10 +277,15 @@ static int paicrypt_add(struct perf_event *event, int flags)
+ 	.get_stream_position = hda_dsp_get_stream_llp,
++	.get_dai_frame_counter = hda_dsp_get_stream_llp,
++	.get_host_byte_counter = hda_dsp_get_stream_ldp,
  
- static void paicrypt_stop(struct perf_event *event, int flags)
- {
--	if (!event->attr.sample_period)	/* Counting */
-+	struct paicrypt_mapptr *mp = this_cpu_ptr(paicrypt_root.mapptr);
-+	struct paicrypt_map *cpump = mp->mapptr;
-+
-+	if (!event->attr.sample_period) {	/* Counting */
- 		paicrypt_read(event);
--	else				/* Sampling */
-+	} else {				/* Sampling */
- 		perf_sched_cb_dec(event->pmu);
-+		cpump->event = NULL;
-+	}
- 	event->hw.state = PERF_HES_STOPPED;
+ 	/* firmware loading */
+ 	.load_firmware = snd_sof_load_firmware_raw,
+--- a/sound/soc/sof/intel/hda-stream.c
++++ b/sound/soc/sof/intel/hda-stream.c
+@@ -1086,3 +1086,34 @@ u64 hda_dsp_get_stream_llp(struct snd_so
+ 
+ 	return ((u64)llp_u << 32) | llp_l;
  }
- 
-diff --git a/arch/s390/kernel/perf_pai_ext.c b/arch/s390/kernel/perf_pai_ext.c
-index bac95261ec46d..a9235071ca70b 100644
---- a/arch/s390/kernel/perf_pai_ext.c
-+++ b/arch/s390/kernel/perf_pai_ext.c
-@@ -122,7 +122,6 @@ static void paiext_event_destroy(struct perf_event *event)
- 	struct paiext_map *cpump = mp->mapptr;
- 
- 	mutex_lock(&paiext_reserve_mutex);
--	cpump->event = NULL;
- 	if (refcount_dec_and_test(&cpump->refcnt))	/* Last reference gone */
- 		paiext_free(mp);
- 	paiext_root_free();
-@@ -355,10 +354,15 @@ static int paiext_add(struct perf_event *event, int flags)
- 
- static void paiext_stop(struct perf_event *event, int flags)
- {
--	if (!event->attr.sample_period)	/* Counting */
-+	struct paiext_mapptr *mp = this_cpu_ptr(paiext_root.mapptr);
-+	struct paiext_map *cpump = mp->mapptr;
 +
-+	if (!event->attr.sample_period) {	/* Counting */
- 		paiext_read(event);
--	else				/* Sampling */
-+	} else {				/* Sampling */
- 		perf_sched_cb_dec(event->pmu);
-+		cpump->event = NULL;
-+	}
- 	event->hw.state = PERF_HES_STOPPED;
- }
++/**
++ * hda_dsp_get_stream_ldp - Retrieve the LDP (Linear DMA Position) of the stream
++ * @sdev: SOF device
++ * @component: ASoC component
++ * @substream: PCM substream
++ *
++ * Returns the raw Linear Link Position value
++ */
++u64 hda_dsp_get_stream_ldp(struct snd_sof_dev *sdev,
++			   struct snd_soc_component *component,
++			   struct snd_pcm_substream *substream)
++{
++	struct hdac_stream *hstream = substream->runtime->private_data;
++	struct hdac_ext_stream *hext_stream = stream_to_hdac_ext_stream(hstream);
++	u32 ldp_l, ldp_u;
++
++	/*
++	 * The pphc_addr have been calculated during probe in
++	 * hda_dsp_stream_init():
++	 * pphc_addr = sdev->bar[HDA_DSP_PP_BAR] +
++	 *	       SOF_HDA_PPHC_BASE +
++	 *	       SOF_HDA_PPHC_INTERVAL * stream_index
++	 *
++	 * Use this pre-calculated address to avoid repeated re-calculation.
++	 */
++	ldp_l = readl(hext_stream->pphc_addr + AZX_REG_PPHCLDPL);
++	ldp_u = readl(hext_stream->pphc_addr + AZX_REG_PPHCLDPU);
++
++	return ((u64)ldp_u << 32) | ldp_l;
++}
+--- a/sound/soc/sof/intel/hda.h
++++ b/sound/soc/sof/intel/hda.h
+@@ -660,6 +660,9 @@ snd_pcm_uframes_t hda_dsp_stream_get_pos
+ u64 hda_dsp_get_stream_llp(struct snd_sof_dev *sdev,
+ 			   struct snd_soc_component *component,
+ 			   struct snd_pcm_substream *substream);
++u64 hda_dsp_get_stream_ldp(struct snd_sof_dev *sdev,
++			   struct snd_soc_component *component,
++			   struct snd_pcm_substream *substream);
  
--- 
-2.43.0
-
+ struct hdac_ext_stream *
+ 	hda_dsp_stream_get(struct snd_sof_dev *sdev, int direction, u32 flags);
 
 
 
