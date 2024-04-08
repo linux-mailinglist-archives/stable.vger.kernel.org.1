@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-37564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A500489C576
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:58:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC3289C212
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D74A51C2155A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:58:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 819F41C21E24
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF117EF18;
-	Mon,  8 Apr 2024 13:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753A77E116;
+	Mon,  8 Apr 2024 13:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6rPRXYY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdF1ErYh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBCB7F470;
-	Mon,  8 Apr 2024 13:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CA32E405;
+	Mon,  8 Apr 2024 13:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584603; cv=none; b=HxH8Uui2P/vADcW3xNUuxKCIgkVu20R+UIeU/7vfAnw7bpBAgv5UwrCnSwn0D34vc+nGqDmfo4RkN+ylik1kp3lurZ7FWFx5yLW4AydvIGMGF/PMryTpqN9t/FgY43fsijxI6GktAqXUlpCx/+Tbq4r05X5AK4yEMY93MvbWjYg=
+	t=1712582562; cv=none; b=rXxxOh1qHZyqyJI4+Zpt7AT3q8MJ8MkcepUvWM5n0uwWPXuP/BiUiR3kVjE56d24eLH0LI3O9uKCRz3/HcjcZJe26LqD93VQJnU4Z7ratGnbVDOFtGD4eno0QOdDkebCwegXSCFjaQ6Q7bduRcbjH/5KE0h0pxZPC9O/c3lf7o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584603; c=relaxed/simple;
-	bh=IqrIh/TBJupQnGHF8kXKa7ev1uleuLe7R5UORg3CZLs=;
+	s=arc-20240116; t=1712582562; c=relaxed/simple;
+	bh=qYEKK/VewrCka+PKobrmFC5Rbe0TjDwioGDSkzwi6us=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fSYHu5MqJ7owNyYVz5gjEHBeyAEplKqsg0Nvhal1bTHeA9WyI+7q8DKRI1UyeVRvHOpy1qaBUSBqgDdhQyjYFiCL85Xg6QotSQ74TUsBcMYsu4xmRl8VxBFfXNRC0HWmNFXhkCd6KUXh2JndFUSpJ6WnQ88npJOEIbh6FNah+aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6rPRXYY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B438FC433C7;
-	Mon,  8 Apr 2024 13:56:42 +0000 (UTC)
+	 MIME-Version; b=gZTd68PNAWibG/7bk67hypl4k6dfKiVZkPh7XlFvIEV4WTow4kU+3v41MGX+q+I3P256OTIJBxCkcaQ2pZ+YqD3DgspruHALbqwERX/rYdr4QEKb9OqB36YbGvT0+tgQFT7R5oWzuSHapZPj75+64UkasQaaF9EXbqwVx45XOC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdF1ErYh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE9F9C433F1;
+	Mon,  8 Apr 2024 13:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584603;
-	bh=IqrIh/TBJupQnGHF8kXKa7ev1uleuLe7R5UORg3CZLs=;
+	s=korg; t=1712582562;
+	bh=qYEKK/VewrCka+PKobrmFC5Rbe0TjDwioGDSkzwi6us=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6rPRXYYJJWargPEH8dLqqa8NAQNIU2JQNiqrS7yP2QI/XpJ5l3x417WF2RciUkeV
-	 vN3nmmpFUqnQKgbnYAg+TCyGdTn6pGHCDbBOWmw6817z2rzLJprpirwCGQLvkqOZ85
-	 p+r1LSYg6CDmrbX1b5AObBH5L5WsIFuxK5Qqf90k=
+	b=qdF1ErYhLg4BboKMBantf13x8zUf1VK7FCxjYnVhXGpw6+z79z2RDhpBjCP7z77zm
+	 sFWp7QgjEM7yH7MH2k//m84e1IKfO5V3saxzjFtNtTKP1L918Px7mH34ETIhYzo5P3
+	 mjlx0v0xsTYgGDT5oBq0mRWoZO7h9v0kP/xDDRsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 495/690] nfsd: fix up the filecache laundrette scheduling
+	stable@vge.kernel.org,
+	Marco Pinna <marco.pinn95@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.8 086/273] vsock/virtio: fix packet delivery to tap device
 Date: Mon,  8 Apr 2024 14:56:01 +0200
-Message-ID: <20240408125417.575429430@linuxfoundation.org>
+Message-ID: <20240408125311.968911212@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Marco Pinna <marco.pinn95@gmail.com>
 
-[ Upstream commit 22ae4c114f77b55a4c5036e8f70409a0799a08f8 ]
+commit b32a09ea7c38849ff925489a6bf5bd8914bc45df upstream.
 
-We don't really care whether there are hashed entries when it comes to
-scheduling the laundrette. They might all be non-gc entries, after all.
-We only want to schedule it if there are entries on the LRU.
+Commit 82dfb540aeb2 ("VSOCK: Add virtio vsock vsockmon hooks") added
+virtio_transport_deliver_tap_pkt() for handing packets to the
+vsockmon device. However, in virtio_transport_send_pkt_work(),
+the function is called before actually sending the packet (i.e.
+before placing it in the virtqueue with virtqueue_add_sgs() and checking
+whether it returned successfully).
+Queuing the packet in the virtqueue can fail even multiple times.
+However, in virtio_transport_deliver_tap_pkt() we deliver the packet
+to the monitoring tap interface only the first time we call it.
+This certainly avoids seeing the same packet replicated multiple times
+in the monitoring interface, but it can show the packet sent with the
+wrong timestamp or even before we succeed to queue it in the virtqueue.
 
-Switch to using list_lru_count, and move the check into
-nfsd_file_gc_worker. The other callsite in nfsd_file_put doesn't need to
-count entries, since it only schedules the laundrette after adding an
-entry to the LRU.
+Move virtio_transport_deliver_tap_pkt() after calling virtqueue_add_sgs()
+and making sure it returned successfully.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 82dfb540aeb2 ("VSOCK: Add virtio vsock vsockmon hooks")
+Cc: stable@vge.kernel.org
+Signed-off-by: Marco Pinna <marco.pinn95@gmail.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://lore.kernel.org/r/20240329161259.411751-1-marco.pinn95@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/filecache.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ net/vmw_vsock/virtio_transport.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index fb7ada3f7410e..522e900a88605 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -210,12 +210,9 @@ static const struct rhashtable_params nfsd_file_rhash_params = {
- static void
- nfsd_file_schedule_laundrette(void)
- {
--	if ((atomic_read(&nfsd_file_rhash_tbl.nelems) == 0) ||
--	    test_bit(NFSD_FILE_CACHE_UP, &nfsd_file_flags) == 0)
--		return;
--
--	queue_delayed_work(system_wq, &nfsd_filecache_laundrette,
--			NFSD_LAUNDRETTE_DELAY);
-+	if (test_bit(NFSD_FILE_CACHE_UP, &nfsd_file_flags))
-+		queue_delayed_work(system_wq, &nfsd_filecache_laundrette,
-+				   NFSD_LAUNDRETTE_DELAY);
- }
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -120,7 +120,6 @@ virtio_transport_send_pkt_work(struct wo
+ 		if (!skb)
+ 			break;
  
- static void
-@@ -665,7 +662,8 @@ static void
- nfsd_file_gc_worker(struct work_struct *work)
- {
- 	nfsd_file_gc();
--	nfsd_file_schedule_laundrette();
-+	if (list_lru_count(&nfsd_file_lru))
-+		nfsd_file_schedule_laundrette();
- }
+-		virtio_transport_deliver_tap_pkt(skb);
+ 		reply = virtio_vsock_skb_reply(skb);
+ 		sgs = vsock->out_sgs;
+ 		sg_init_one(sgs[out_sg], virtio_vsock_hdr(skb),
+@@ -170,6 +169,8 @@ virtio_transport_send_pkt_work(struct wo
+ 			break;
+ 		}
  
- static unsigned long
--- 
-2.43.0
-
++		virtio_transport_deliver_tap_pkt(skb);
++
+ 		if (reply) {
+ 			struct virtqueue *rx_vq = vsock->vqs[VSOCK_VQ_RX];
+ 			int val;
 
 
 
