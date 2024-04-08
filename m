@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-36870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE4FC89C219
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2842489C5AC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0C251C21DBE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE2BA1F2118C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3C67E579;
-	Mon,  8 Apr 2024 13:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD357F489;
+	Mon,  8 Apr 2024 13:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkIZVNLV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvApxcwq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880FE78285;
-	Mon,  8 Apr 2024 13:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199437F481;
+	Mon,  8 Apr 2024 13:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582582; cv=none; b=BEkPpUk8VjrpxliMsHAouondYt5lNxFwz4VKyY3BUyKcRjqatnEYP+Rnb+zFm4B1D1HtE3V1TVYiSq7PggqSZaEBnR6G26menIPetWsLFBFe6RUF8pxfuwHVvWnutB3BAtKNhpp3XInLuZPmE4GwrwtxaJuqD2DYS5Dm+D+iBaM=
+	t=1712584733; cv=none; b=lfkE6mWMMP17wBTHPQ1xbHJZ21Ghv2cjyhdWWQ3NNK0U/ejZ9KQvC6l5e2JZ0zFqO+i811X1ma3K0+09mipa9ir4UwRnB07H4X+igHqDfROoQfeyoiT1Lejab6mj96aSSnqBoDyqwzK6HzuV1ZTz38i6bWrUoJU7kySJiiQLGfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582582; c=relaxed/simple;
-	bh=jBp6OQ12oxNGcnQ9O3YzgrlxiFgqEJma9yEkj4+RtZg=;
+	s=arc-20240116; t=1712584733; c=relaxed/simple;
+	bh=o2qg5pYoBS87sWX2ZIhKZUpmDS6cDoZ/xbXa3uWyew4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRhcIdG8Pxo6qDJdpOt7PxbKF+fqT61wYX4v72LxSl+YHTvh7UZCiyt9bWa++s6c6608NM8yooo9UAmNBTlVYW6NskzMRYHWSQltB4V3KrXlGkl5GMY7gOUEnVkHzfJOlpyr6hT7WiW/p811vxqc20gA/l5W1mZwP2XEN30ilsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkIZVNLV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA6AC433F1;
-	Mon,  8 Apr 2024 13:23:01 +0000 (UTC)
+	 MIME-Version; b=b/n9HtujQdq7puXLL/rdwldgcnzN5maYN6wcT0oeJGkrGOOucDrdJs4LI1I8/T7mNxcHn9Yhf8XtK3VgrG8hnCNGz6FQHXBNzlW170mebZLYiAf0YMPlBu61VPVoHgif4AXBQ1OlbAg4GpFSWlTveA5pzwzwpWB1fp3BgvKpm2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvApxcwq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E6EC43390;
+	Mon,  8 Apr 2024 13:58:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582582;
-	bh=jBp6OQ12oxNGcnQ9O3YzgrlxiFgqEJma9yEkj4+RtZg=;
+	s=korg; t=1712584733;
+	bh=o2qg5pYoBS87sWX2ZIhKZUpmDS6cDoZ/xbXa3uWyew4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PkIZVNLVl6OXZbczMh2gOQH2OjjxEhxDVyep9pzi3cUC/d5XKWkrNUQ9dQaTfW4eE
-	 zxfdlBf21ppOq8gxfZLGHz0VJsWAh83JfRwv2HaICmqgiuDsOGavquILPUQgy/ZzJQ
-	 EmYrV+OuExyL7vNrsPrk05SOYBwBwujQzsbT4jL0=
+	b=tvApxcwqReNM2/ekszdI+rhExD7DniO9otvByCnU7AfZzTXluIJCygqxFlOLkMKrl
+	 VcAOug/7tTnBC240f2YcuIJvWrWRbGypjeuwm7DQ2tQkrgERMH3UJ55zMKU98R7oSC
+	 RqQO0zwouBg6y5VZeT3MO93tzlDySx/138hkJT7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Michael Walle <mwalle@kernel.org>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 104/252] net: dsa: sja1105: Fix parameters order in sja1110_pcs_mdio_write_c45()
-Date: Mon,  8 Apr 2024 14:56:43 +0200
-Message-ID: <20240408125309.873658070@linuxfoundation.org>
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 538/690] nfsd: simplify the delayed disposal list code
+Date: Mon,  8 Apr 2024 14:56:44 +0200
+Message-ID: <20240408125419.151145936@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit c120209bce34c49dcaba32f15679574327d09f63 upstream.
+[ Upstream commit 92e4a6733f922f0fef1d0995f7b2d0eaff86c7ea ]
 
-The definition and declaration of sja1110_pcs_mdio_write_c45() don't have
-parameters in the same order.
+When queueing a dispose list to the appropriate "freeme" lists, it
+pointlessly queues the objects one at a time to an intermediate list.
 
-Knowing that sja1110_pcs_mdio_write_c45() is used as a function pointer
-in 'sja1105_info' structure with .pcs_mdio_write_c45, and that we have:
+Remove a few helpers and just open code a list_move to make it more
+clear and efficient. Better document the resulting functions with
+kerneldoc comments.
 
-   int (*pcs_mdio_write_c45)(struct mii_bus *bus, int phy, int mmd,
-				  int reg, u16 val);
-
-it is likely that the definition is the one to change.
-
-Found with cppcheck, funcArgOrderDifferent.
-
-Fixes: ae271547bba6 ("net: dsa: sja1105: C45 only transactions for PCS")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Michael Walle <mwalle@kernel.org>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/ff2a5af67361988b3581831f7bd1eddebfb4c48f.1712082763.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/net/dsa/sja1105/sja1105_mdio.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/filecache.c | 64 ++++++++++++++++-----------------------------
+ 1 file changed, 22 insertions(+), 42 deletions(-)
 
---- a/drivers/net/dsa/sja1105/sja1105_mdio.c
-+++ b/drivers/net/dsa/sja1105/sja1105_mdio.c
-@@ -94,7 +94,7 @@ int sja1110_pcs_mdio_read_c45(struct mii
- 	return tmp & 0xffff;
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index 52e67ec267965..6b8706f23eaf0 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -401,49 +401,26 @@ nfsd_file_dispose_list(struct list_head *dispose)
+ 	}
  }
  
--int sja1110_pcs_mdio_write_c45(struct mii_bus *bus, int phy, int reg, int mmd,
-+int sja1110_pcs_mdio_write_c45(struct mii_bus *bus, int phy, int mmd, int reg,
- 			       u16 val)
+-static void
+-nfsd_file_list_remove_disposal(struct list_head *dst,
+-		struct nfsd_fcache_disposal *l)
+-{
+-	spin_lock(&l->lock);
+-	list_splice_init(&l->freeme, dst);
+-	spin_unlock(&l->lock);
+-}
+-
+-static void
+-nfsd_file_list_add_disposal(struct list_head *files, struct net *net)
+-{
+-	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+-	struct nfsd_fcache_disposal *l = nn->fcache_disposal;
+-
+-	spin_lock(&l->lock);
+-	list_splice_tail_init(files, &l->freeme);
+-	spin_unlock(&l->lock);
+-	queue_work(nfsd_filecache_wq, &l->work);
+-}
+-
+-static void
+-nfsd_file_list_add_pernet(struct list_head *dst, struct list_head *src,
+-		struct net *net)
+-{
+-	struct nfsd_file *nf, *tmp;
+-
+-	list_for_each_entry_safe(nf, tmp, src, nf_lru) {
+-		if (nf->nf_net == net)
+-			list_move_tail(&nf->nf_lru, dst);
+-	}
+-}
+-
++/**
++ * nfsd_file_dispose_list_delayed - move list of dead files to net's freeme list
++ * @dispose: list of nfsd_files to be disposed
++ *
++ * Transfers each file to the "freeme" list for its nfsd_net, to eventually
++ * be disposed of by the per-net garbage collector.
++ */
+ static void
+ nfsd_file_dispose_list_delayed(struct list_head *dispose)
  {
- 	struct sja1105_mdio_private *mdio_priv = bus->priv;
+-	LIST_HEAD(list);
+-	struct nfsd_file *nf;
+-
+ 	while(!list_empty(dispose)) {
+-		nf = list_first_entry(dispose, struct nfsd_file, nf_lru);
+-		nfsd_file_list_add_pernet(&list, dispose, nf->nf_net);
+-		nfsd_file_list_add_disposal(&list, nf->nf_net);
++		struct nfsd_file *nf = list_first_entry(dispose,
++						struct nfsd_file, nf_lru);
++		struct nfsd_net *nn = net_generic(nf->nf_net, nfsd_net_id);
++		struct nfsd_fcache_disposal *l = nn->fcache_disposal;
++
++		spin_lock(&l->lock);
++		list_move_tail(&nf->nf_lru, &l->freeme);
++		spin_unlock(&l->lock);
++		queue_work(nfsd_filecache_wq, &l->work);
+ 	}
+ }
+ 
+@@ -664,8 +641,8 @@ nfsd_file_close_inode_sync(struct inode *inode)
+  * nfsd_file_delayed_close - close unused nfsd_files
+  * @work: dummy
+  *
+- * Walk the LRU list and destroy any entries that have not been used since
+- * the last scan.
++ * Scrape the freeme list for this nfsd_net, and then dispose of them
++ * all.
+  */
+ static void
+ nfsd_file_delayed_close(struct work_struct *work)
+@@ -674,7 +651,10 @@ nfsd_file_delayed_close(struct work_struct *work)
+ 	struct nfsd_fcache_disposal *l = container_of(work,
+ 			struct nfsd_fcache_disposal, work);
+ 
+-	nfsd_file_list_remove_disposal(&head, l);
++	spin_lock(&l->lock);
++	list_splice_init(&l->freeme, &head);
++	spin_unlock(&l->lock);
++
+ 	nfsd_file_dispose_list(&head);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
