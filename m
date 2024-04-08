@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-37640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45F8789C686
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:12:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E2BD89C367
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D5C9B2C0B8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A22E283650
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E4A7CF17;
-	Mon,  8 Apr 2024 14:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603507D085;
+	Mon,  8 Apr 2024 13:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F353ZsBB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGaxlpBO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7B87BAF5;
-	Mon,  8 Apr 2024 14:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5807BAE7;
+	Mon,  8 Apr 2024 13:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584827; cv=none; b=mKegvtMJzP7jahA4MYGIx5371u7LCfP2PGMFLdqnhico9ktfFKnBG6WajwmRlsoVDUXIcjbMWgsyT8aie4BY0faKcS+mwhacbNZVoSv4OVBef35yDVIl696ED8JvgdiQV15r8v+6x84YtClhplBn6HHABP388YAyedV0XoRa9aw=
+	t=1712583297; cv=none; b=lsKwSGuAkD5DV3jDzRUGLyn/hkPSw4YBv1jyB3ziwY+VNZ6RWI1Tl6mWzCDFzKAdFBxTkuTuxIBGLqFREeS5kQ+b/TNRBupv0mfj54SXs+mkFv+Do/ItpUdOWSSY986ZzY/Hma5nVYr4nsxxfjN3iANaZoqyJwM6bfM2E4VXD5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584827; c=relaxed/simple;
-	bh=73YBIqid9OpY9EU+N7UqEw0ahz3ThpgazvKs8wlqrFk=;
+	s=arc-20240116; t=1712583297; c=relaxed/simple;
+	bh=oBItHM/fNLUxLwNXZUoCt3zaXOxGBh9UEhC185lDc6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ph7SOZPV/Lf8Lq80givy6f5lgurrx/lcZQsPynuU3fpNs0SkvwPxdQOxyCnWqcv8LZLBlmxZAxHFFmE+gTRhWmnxsZ9cvejMkHGDy527U0jEGyGJzFJoum7A9nspKpT4GYEFUUPsZxsrLBu+Tau6rN5CkIULQRH2mZeqM4qXj7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F353ZsBB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55BFC433C7;
-	Mon,  8 Apr 2024 14:00:26 +0000 (UTC)
+	 MIME-Version; b=Xrh63tovIOcl0rdO6lXtAC/F3Wl+93brYajc8kfhGBBhtcpIhnbplHDhwhv0J+wxXt1YyutzDq2xHZ+UkZ4Kv+wvyhBcyRGGXOv5HajKXwHmAEwpASiUGbNud3thmg9FQ9vZAFooetp5nwMDPndyOeRHyepivq6gN/N2ezYCVKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGaxlpBO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D195C433C7;
+	Mon,  8 Apr 2024 13:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584827;
-	bh=73YBIqid9OpY9EU+N7UqEw0ahz3ThpgazvKs8wlqrFk=;
+	s=korg; t=1712583296;
+	bh=oBItHM/fNLUxLwNXZUoCt3zaXOxGBh9UEhC185lDc6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F353ZsBBOrRp1mbISzIxiT2zzd69JsRtQznTEbBUpQQciOC1RY59SxiVh7taPR6M+
-	 lKKBZlEnQnM5MM2YW0HW+Unv/Bc5pHVbmfThuJnhyAcacjq2p9wxkPwqzoxICMg7rq
-	 fD+at4tRpqQDBF0g6jq+qBobvQ8RBDWUIdP/0abQ=
+	b=PGaxlpBOt6yvLsn3TDa90+RLI9FOZu8p48v12KLLEyz/OGq9omlY3JbXeBf/HDQA3
+	 kto0xxnMdLT2553M13Ufbp/V+1V2UjBM9qdvS/JAo/fzqxzuniNFraHWWJYghGG/3S
+	 aAWqwZhR0rRfwrXksy1axpw6SRT7CJ6pQgqpbhq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WA AM <waautomata@gmail.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 570/690] btrfs: zoned: use zone aware sb location for scrub
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Chao Song <chao.song@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 161/273] ASoC: rt712-sdca-sdw: fix locking sequence
 Date: Mon,  8 Apr 2024 14:57:16 +0200
-Message-ID: <20240408125420.272809878@linuxfoundation.org>
+Message-ID: <20240408125314.270649546@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-commit 74098a989b9c3370f768140b7783a7aaec2759b3 upstream.
+[ Upstream commit c8b2e5c1b959d100990e4f0cbad38e7d047bb97c ]
 
-At the moment scrub_supers() doesn't grab the super block's location via
-the zoned device aware btrfs_sb_log_location() but via btrfs_sb_offset().
+The disable_irq_lock protects the 'disable_irq' value, we need to lock
+before testing it.
 
-This leads to checksum errors on 'scrub' as we're not accessing the
-correct location of the super block.
-
-So use btrfs_sb_log_location() for getting the super blocks location on
-scrub.
-
-Reported-by: WA AM <waautomata@gmail.com>
-Link: http://lore.kernel.org/linux-btrfs/CANU2Z0EvUzfYxczLgGUiREoMndE9WdQnbaawV5Fv5gNXptPUKw@mail.gmail.com
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7a8735c1551e ("ASoC: rt712-sdca: fix for JD event handling in ClockStop Mode0")
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Chao Song <chao.song@linux.intel.com>
+Link: https://msgid.link/r/20240325221817.206465-5-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/scrub.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ sound/soc/codecs/rt712-sdca-sdw.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -3972,7 +3972,17 @@ static noinline_for_stack int scrub_supe
- 		gen = fs_info->last_trans_committed;
+diff --git a/sound/soc/codecs/rt712-sdca-sdw.c b/sound/soc/codecs/rt712-sdca-sdw.c
+index 6b644a89c5890..ba877432cea61 100644
+--- a/sound/soc/codecs/rt712-sdca-sdw.c
++++ b/sound/soc/codecs/rt712-sdca-sdw.c
+@@ -438,13 +438,14 @@ static int __maybe_unused rt712_sdca_dev_resume(struct device *dev)
+ 		return 0;
  
- 	for (i = 0; i < BTRFS_SUPER_MIRROR_MAX; i++) {
--		bytenr = btrfs_sb_offset(i);
-+		ret = btrfs_sb_log_location(scrub_dev, i, 0, &bytenr);
-+		if (ret == -ENOENT)
-+			break;
+ 	if (!slave->unattach_request) {
++		mutex_lock(&rt712->disable_irq_lock);
+ 		if (rt712->disable_irq == true) {
+-			mutex_lock(&rt712->disable_irq_lock);
 +
-+		if (ret) {
-+			spin_lock(&sctx->stat_lock);
-+			sctx->stat.super_errors++;
-+			spin_unlock(&sctx->stat_lock);
-+			continue;
-+		}
-+
- 		if (bytenr + BTRFS_SUPER_INFO_SIZE >
- 		    scrub_dev->commit_total_bytes)
- 			break;
+ 			sdw_write_no_pm(slave, SDW_SCP_SDCA_INTMASK1, SDW_SCP_SDCA_INTMASK_SDCA_0);
+ 			sdw_write_no_pm(slave, SDW_SCP_SDCA_INTMASK2, SDW_SCP_SDCA_INTMASK_SDCA_8);
+ 			rt712->disable_irq = false;
+-			mutex_unlock(&rt712->disable_irq_lock);
+ 		}
++		mutex_unlock(&rt712->disable_irq_lock);
+ 		goto regmap_sync;
+ 	}
+ 
+-- 
+2.43.0
+
 
 
 
