@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-36993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A2789C2A4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F5D89C5A0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:59:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EA0A1C21930
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCCEB1F21EA6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533E280BF4;
-	Mon,  8 Apr 2024 13:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C142C7D3E6;
+	Mon,  8 Apr 2024 13:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xSt0Ufy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIfmpsw4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11467811FB;
-	Mon,  8 Apr 2024 13:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8F279F0;
+	Mon,  8 Apr 2024 13:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582942; cv=none; b=bcH1vN9CdpAGSVMUg1FYtg69Z1n8q5FDGjYnaXD9fGG6HVdU6uDeQuHgAW/P6yS+BruSh8T0tTKzQCQdGAMLet3Cusj2DzgKvQM5HzuoHTXmDHhbh0m6I0aiSmq/LWxm/UChRgzxdjnyTY3txmu0L3aiD8pRR+0RD+zmyk+rGKU=
+	t=1712584712; cv=none; b=LrL5YmmJ+uYBVYoAdd+190I7ICq8rFMJ2mLSqcT5fOX9wfS4vebSIAdPNscEWTgd/v4/rxK+pgESyXh4zurPD9lmELNAWu4WXcRa6T5cq7xwylcNv3g9+MvbPPp58hh+hCXlld8EDyyW2hcf2YHfzq49Q3x3+++D32IWJRsPAD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582942; c=relaxed/simple;
-	bh=xR7mfkdzsNPniI+1ZLWUbhrBY/7QGaE9qmmxTrQONOQ=;
+	s=arc-20240116; t=1712584712; c=relaxed/simple;
+	bh=EJKBdnmlUFF0i8weXBst+zhN7LXUMAybML/KHAVHTVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lYqnTXzJRnmnjDgLkyUTVyn+V5aYdQ+B8VFz+F7cu9AYeKcCRJBA7rqVIBIG0oOY+nfcOWBlEWvWQ7W4GIGn5eA2Pnck7NkyBjvRt1I3qhZiI5989zGrjpZ0XZFB4OAB0kXEGaZN1wOVnu9li8X+i+Dosbe11lJuvwx6e2qckuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xSt0Ufy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356E7C433F1;
-	Mon,  8 Apr 2024 13:29:01 +0000 (UTC)
+	 MIME-Version; b=tO3LFfnYn3NNDa4rBIhjKW9PPUWEq+ko9lEgSB+Y1yahktTfxFD2vNReTjPKNPawBACPPDdXnbwcgcSMEzED1psEQTl6zO4awKTE4OE0aVcUBJCbSEUQyYn52+du8QDO7re7bpkIrZ8NAqX2YLqEUx1FR8Rdt44oyANvezZmqfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIfmpsw4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A55C433F1;
+	Mon,  8 Apr 2024 13:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582941;
-	bh=xR7mfkdzsNPniI+1ZLWUbhrBY/7QGaE9qmmxTrQONOQ=;
+	s=korg; t=1712584712;
+	bh=EJKBdnmlUFF0i8weXBst+zhN7LXUMAybML/KHAVHTVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0xSt0UfyPKZD70YUES4oQYAVnGFiPKJjmq5iM23C1YYWIAxne9sOvlDiNg5MaAzj/
-	 ZuffKqMAQJc+QLbGSMVb6uFshqCSqBHuZhvekthbGhaOkwAoSq0WNbyRfTaVn8Xktn
-	 Js3oI9tTzLyZ1ZiOYWMftZB2uPIGWfAfNsOPLR80=
+	b=QIfmpsw4VajWx5EE0OcG8bIKdYJGOjqG8zPpTIdw4oJRT+vsNKCxst4+yesrUJJmK
+	 tstp8PBSnGg3wCYLRXH6jq75wDtH8lpCV4dXzu5ZcraZKNR7SF715HGiSx5ylKJKOG
+	 SqpFbWNbCZaaRU74rTYa09Z7T0N3R/tj6tqExzwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Antoine Tenart <atenart@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.8 123/273] udp: prevent local UDP tunnel packets from being GROed
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 532/690] nfsd: dont kill nfsd_files because of lease break error
 Date: Mon,  8 Apr 2024 14:56:38 +0200
-Message-ID: <20240408125313.114833115@linuxfoundation.org>
+Message-ID: <20240408125418.933509443@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 64235eabc4b5b18c507c08a1f16cdac6c5661220 upstream.
+[ Upstream commit c6593366c0bf222be9c7561354dfb921c611745e ]
 
-GRO has a fundamental issue with UDP tunnel packets as it can't detect
-those in a foolproof way and GRO could happen before they reach the
-tunnel endpoint. Previous commits have fixed issues when UDP tunnel
-packets come from a remote host, but if those packets are issued locally
-they could run into checksum issues.
+An error from break_lease is non-fatal, so we needn't destroy the
+nfsd_file in that case. Just put the reference like we normally would
+and return the error.
 
-If the inner packet has a partial checksum the information will be lost
-in the GRO logic, either in udp4/6_gro_complete or in
-udp_gro_complete_segment and packets will have an invalid checksum when
-leaving the host.
-
-Prevent local UDP tunnel packets from ever being GROed at the outer UDP
-level.
-
-Due to skb->encapsulation being wrongly used in some drivers this is
-actually only preventing UDP tunnel packets with a partial checksum to
-be GROed (see iptunnel_handle_offloads) but those were also the packets
-triggering issues so in practice this should be sufficient.
-
-Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
-Fixes: 36707061d6ba ("udp: allow forwarding of plain (non-fraglisted) UDP GRO packets")
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- net/ipv4/udp_offload.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/nfsd/filecache.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -559,6 +559,12 @@ struct sk_buff *udp_gro_receive(struct l
- 	 */
- 	NAPI_GRO_CB(skb)->is_flist = 0;
- 	if (!sk || !udp_sk(sk)->gro_receive) {
-+		/* If the packet was locally encapsulated in a UDP tunnel that
-+		 * wasn't detected above, do not GRO.
-+		 */
-+		if (skb->encapsulation)
-+			goto out;
-+
- 		if (skb->dev->features & NETIF_F_GRO_FRAGLIST)
- 			NAPI_GRO_CB(skb)->is_flist = sk ? !udp_test_bit(GRO_ENABLED, sk) : 1;
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index d61c8223082a4..43bb2fd47cf58 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -1101,7 +1101,7 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	nf = nfsd_file_alloc(&key, may_flags);
+ 	if (!nf) {
+ 		status = nfserr_jukebox;
+-		goto out_status;
++		goto out;
+ 	}
  
+ 	ret = rhashtable_lookup_insert_key(&nfsd_file_rhash_tbl,
+@@ -1110,13 +1110,11 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	if (likely(ret == 0))
+ 		goto open_file;
+ 
+-	nfsd_file_slab_free(&nf->nf_rcu);
+-	nf = NULL;
+ 	if (ret == -EEXIST)
+ 		goto retry;
+ 	trace_nfsd_file_insert_err(rqstp, key.inode, may_flags, ret);
+ 	status = nfserr_jukebox;
+-	goto out_status;
++	goto construction_err;
+ 
+ wait_for_construction:
+ 	wait_on_bit(&nf->nf_flags, NFSD_FILE_PENDING, TASK_UNINTERRUPTIBLE);
+@@ -1126,29 +1124,25 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 		trace_nfsd_file_cons_err(rqstp, key.inode, may_flags, nf);
+ 		if (!open_retry) {
+ 			status = nfserr_jukebox;
+-			goto out;
++			goto construction_err;
+ 		}
+ 		open_retry = false;
+-		if (refcount_dec_and_test(&nf->nf_ref))
+-			nfsd_file_free(nf);
+ 		goto retry;
+ 	}
+-
+ 	this_cpu_inc(nfsd_file_cache_hits);
+ 
+ 	status = nfserrno(nfsd_open_break_lease(file_inode(nf->nf_file), may_flags));
++	if (status != nfs_ok) {
++		nfsd_file_put(nf);
++		nf = NULL;
++	}
++
+ out:
+ 	if (status == nfs_ok) {
+ 		this_cpu_inc(nfsd_file_acquisitions);
+ 		nfsd_file_check_write_error(nf);
+ 		*pnf = nf;
+-	} else {
+-		if (refcount_dec_and_test(&nf->nf_ref))
+-			nfsd_file_free(nf);
+-		nf = NULL;
+ 	}
+-
+-out_status:
+ 	put_cred(key.cred);
+ 	trace_nfsd_file_acquire(rqstp, key.inode, may_flags, nf, status);
+ 	return status;
+@@ -1178,6 +1172,13 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	if (status != nfs_ok)
+ 		nfsd_file_unhash(nf);
+ 	clear_and_wake_up_bit(NFSD_FILE_PENDING, &nf->nf_flags);
++	if (status == nfs_ok)
++		goto out;
++
++construction_err:
++	if (refcount_dec_and_test(&nf->nf_ref))
++		nfsd_file_free(nf);
++	nf = NULL;
+ 	goto out;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
