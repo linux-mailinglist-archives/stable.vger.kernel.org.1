@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-36732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BFEA89C166
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D037089C24A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1D011F214CE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 702CC1F21B80
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2283B7C08C;
-	Mon,  8 Apr 2024 13:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2BC84D15;
+	Mon,  8 Apr 2024 13:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKtM568G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Dd4OpUX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D548B7C080;
-	Mon,  8 Apr 2024 13:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D003B7BAF4;
+	Mon,  8 Apr 2024 13:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582182; cv=none; b=tzP/uKGAGx0zW8ypRi4x59o7wPns9d04Uk6ivx8hGeRuffegaXK0wyS4/RGwgRSMhItHJLkoO5rqz3rNEG5rUCDd3nlhgJvFnXimBQYwVkiQjXbT34pCvAQMBGD/8yupSOFTuIA1ZuHVIjXl9ST0ZqTqzAi1JnhS6d00rWGdaMs=
+	t=1712582678; cv=none; b=L6y3hZk/5w3LfJAJ7/uzvt7VS+AwfJ5+xqAv3dQgSQEqARkrcgwnj2N+8JDiFmGxQdl6UhuTHFLtsEP2FoGhRRCtbtrCCrXUmVPdsF/2MJ+tjME3ozoTbJ73egfjyAFtw6jiSJdWgLZr56cE4UmlCLGMdSRDMGQC1tByffGCr5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582182; c=relaxed/simple;
-	bh=L4p8N32dkw3ikXBZIGVDKjn52DioWltro1h7fASP1IE=;
+	s=arc-20240116; t=1712582678; c=relaxed/simple;
+	bh=ddrxBgtjb2ub+SZuiQPZcvRSfEvXdKBYcRQtUZtByFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RwT++f2aAWoCtHHbvhr5yjADjeckzbLIUcAmn4aWO+edH9zxqW+P5qfa6Iq02iGVPimNDN4XTmCVQACddkx0r7VIOlRWRziT18nSMCGvkPIE9H4+qStwoepuHL6b4uSuznTDMfag1Ldx94RRT2BW1tP1AqRKxYdne5IPykb5JtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKtM568G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0F3C433C7;
-	Mon,  8 Apr 2024 13:16:22 +0000 (UTC)
+	 MIME-Version; b=nDE6eDEnsndpSkp7UXpZEgjeqCaB4u4Ck2+vG14BTsb2/wF4Ku52KgWUKfv94B7hHwxVOkkWv2KfWhgGz71qwdRpquok+HzwbGlkC6q1qpPd5nyGfGR9vXwejGYn5ajY1SFRZe7b9zH+kXWPfO+ZvVKTmEeNauQqMPgL8e4E9go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Dd4OpUX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F59DC433C7;
+	Mon,  8 Apr 2024 13:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582182;
-	bh=L4p8N32dkw3ikXBZIGVDKjn52DioWltro1h7fASP1IE=;
+	s=korg; t=1712582678;
+	bh=ddrxBgtjb2ub+SZuiQPZcvRSfEvXdKBYcRQtUZtByFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKtM568G7Eh1F8qK2Y5hN86tCsP+E+b0XRf+CN0tx+UAKm789vL2hQ0ObKoOh2rnI
-	 vwT/HUcCqSl+nAmr0uVDVTuG1zbmOa/6NRNVzdzLpGnVpQ6Z3hggB4RPR81aHVRMiW
-	 SvZ3T16j8eTGyFIdjcmLSgd7f8z1xDz7sGTZ8hLs=
+	b=2Dd4OpUXsLDGW1ZpCWaSK+0p2CzpwpVDM8TYmojW+sOcKvByb8NIc6uCz0u/jXjOp
+	 hKrozBK6LBtIxUdXa6tprBLZVK18i6wgJ2PpFZgR8a8MezS4U1EmrJGEQS26iosZkc
+	 Ru7xy3ZXCcHs7Y3Tq6ybGxyV9S+DGZpYVGAYUugE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anup Patel <apatel@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>
-Subject: [PATCH 6.6 070/252] RISC-V: KVM: Fix APLIC in_clrip[x] read emulation
-Date: Mon,  8 Apr 2024 14:56:09 +0200
-Message-ID: <20240408125308.807060879@linuxfoundation.org>
+	kernel test robot <oliver.sang@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.8 095/273] x86/retpoline: Do the necessary fixup to the Zen3/4 srso return thunk for !SRSO
+Date: Mon,  8 Apr 2024 14:56:10 +0200
+Message-ID: <20240408125312.249831350@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,80 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 8e936e98718f005c986be0bfa1ee6b355acf96be upstream.
+commit 0e110732473e14d6520e49d75d2c88ef7d46fe67 upstream.
 
-The reads to APLIC in_clrip[x] registers returns rectified input values
-of the interrupt sources.
+The srso_alias_untrain_ret() dummy thunk in the !CONFIG_MITIGATION_SRSO
+case is there only for the altenative in CALL_UNTRAIN_RET to have
+a symbol to resolve.
 
-A rectified input value of an interrupt source is defined by the section
-"4.5.2 Source configurations (sourcecfg[1]–sourcecfg[1023])" of the
-RISC-V AIA specification as:
+However, testing with kernels which don't have CONFIG_MITIGATION_SRSO
+enabled, leads to the warning in patch_return() to fire:
 
-    rectified input value = (incoming wire value) XOR (source is inverted)
+  missing return thunk: srso_alias_untrain_ret+0x0/0x10-0x0: eb 0e 66 66 2e
+  WARNING: CPU: 0 PID: 0 at arch/x86/kernel/alternative.c:826 apply_returns (arch/x86/kernel/alternative.c:826
 
-Update the riscv_aplic_input() implementation to match the above.
+Put in a plain "ret" there so that gcc doesn't put a return thunk in
+in its place which special and gets checked.
 
-Cc: stable@vger.kernel.org
-Fixes: 74967aa208e2 ("RISC-V: KVM: Add in-kernel emulation of AIA APLIC")
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Signed-off-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20240321085041.1955293-3-apatel@ventanamicro.com
+In addition:
+
+  ERROR: modpost: "srso_alias_untrain_ret" [arch/x86/kvm/kvm-amd.ko] undefined!
+  make[2]: *** [scripts/Makefile.modpost:145: Module.symvers] Chyba 1
+  make[1]: *** [/usr/src/linux-6.8.3/Makefile:1873: modpost] Chyba 2
+  make: *** [Makefile:240: __sub-make] Chyba 2
+
+since !SRSO builds would use the dummy return thunk as reported by
+petr.pisar@atlas.cz, https://bugzilla.kernel.org/show_bug.cgi?id=218679.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202404020901.da75a60f-oliver.sang@intel.com
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/all/202404020901.da75a60f-oliver.sang@intel.com/
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kvm/aia_aplic.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ arch/x86/lib/retpoline.S |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kvm/aia_aplic.c b/arch/riscv/kvm/aia_aplic.c
-index 5e842b92dc46..b467ba5ed910 100644
---- a/arch/riscv/kvm/aia_aplic.c
-+++ b/arch/riscv/kvm/aia_aplic.c
-@@ -197,16 +197,31 @@ static void aplic_write_enabled(struct aplic *aplic, u32 irq, bool enabled)
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -229,8 +229,11 @@ SYM_CODE_END(srso_return_thunk)
+ #define JMP_SRSO_UNTRAIN_RET "ud2"
+ /* Dummy for the alternative in CALL_UNTRAIN_RET. */
+ SYM_CODE_START(srso_alias_untrain_ret)
+-	RET
++	ANNOTATE_UNRET_SAFE
++	ret
++	int3
+ SYM_FUNC_END(srso_alias_untrain_ret)
++__EXPORT_THUNK(srso_alias_untrain_ret)
+ #endif /* CONFIG_CPU_SRSO */
  
- static bool aplic_read_input(struct aplic *aplic, u32 irq)
- {
--	bool ret;
--	unsigned long flags;
-+	u32 sourcecfg, sm, raw_input, irq_inverted;
- 	struct aplic_irq *irqd;
-+	unsigned long flags;
-+	bool ret = false;
- 
- 	if (!irq || aplic->nr_irqs <= irq)
- 		return false;
- 	irqd = &aplic->irqs[irq];
- 
- 	raw_spin_lock_irqsave(&irqd->lock, flags);
--	ret = (irqd->state & APLIC_IRQ_STATE_INPUT) ? true : false;
-+
-+	sourcecfg = irqd->sourcecfg;
-+	if (sourcecfg & APLIC_SOURCECFG_D)
-+		goto skip;
-+
-+	sm = sourcecfg & APLIC_SOURCECFG_SM_MASK;
-+	if (sm == APLIC_SOURCECFG_SM_INACTIVE)
-+		goto skip;
-+
-+	raw_input = (irqd->state & APLIC_IRQ_STATE_INPUT) ? 1 : 0;
-+	irq_inverted = (sm == APLIC_SOURCECFG_SM_LEVEL_LOW ||
-+			sm == APLIC_SOURCECFG_SM_EDGE_FALL) ? 1 : 0;
-+	ret = !!(raw_input ^ irq_inverted);
-+
-+skip:
- 	raw_spin_unlock_irqrestore(&irqd->lock, flags);
- 
- 	return ret;
--- 
-2.44.0
-
+ #ifdef CONFIG_CPU_UNRET_ENTRY
 
 
 
