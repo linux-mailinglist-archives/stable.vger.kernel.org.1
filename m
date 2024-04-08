@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-37602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C56B89C5DA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D478A89C19D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8F35B29899
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 126551C21622
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A218469E1C;
-	Mon,  8 Apr 2024 13:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594EB7FBAB;
+	Mon,  8 Apr 2024 13:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3Ptyfvd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="utsdRSL6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E36371742;
-	Mon,  8 Apr 2024 13:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184EC7D07E;
+	Mon,  8 Apr 2024 13:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584715; cv=none; b=FAiXivYr7rQzjAvI9jNyhnFTzJhsg/zXk3a2ou00xhRes28S87lt7XKBR6Q/XFFMmlv5Ls7RDA1WqafmSBUH1a0dekBKrd1kDZn+ddIFZ9zGPSkG1kBFkMYQp+JrMQeVV0S2MXafcaAgpqCINeMHWQqTv/PvrcYytYBoMiFDKY8=
+	t=1712582314; cv=none; b=ejSSkraqf95s9EesYDpB9TPxMl0/HZna8Fj+FCrYIkGlLO6fxXSN5MiJ0aE8q2ygIuwaX6CvUDx0HpyRS1vnQfh77OqtNky4dvpJ4lp/hGDDO+2uwUl6ReSIdUO8UNlqT9gQlMrl+1CkcHUy0/E9OQEvkTdarjfc4fd96KuyzJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584715; c=relaxed/simple;
-	bh=GNIVkZUNURupYhkK81LJEr8+Z0ArZvOjuKMeKDn3vJY=;
+	s=arc-20240116; t=1712582314; c=relaxed/simple;
+	bh=qQDZyz6jshTP1QXK56FgQFLsZVCg12xLuUz4jiRKRCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hk2sKy1JtDPnNM8FAB3naRsH1LhUGteoHBFBxqVTb51oQwwoMg0JITNaLLbsnVAC3uw7oiJhS9r2hJkk2ddDYpVmgwpBi/gqFLJRYrar0Mj1w8A9FIqZWLFm8KrPPwdpQxBHNnMpRhouz4lvxbVEJ8zLpc5y5//XhyABBSkuS8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3Ptyfvd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2E4C43394;
-	Mon,  8 Apr 2024 13:58:34 +0000 (UTC)
+	 MIME-Version; b=UacvXXmzTPabHl2YYMtZvmy8iB/BW2WkfeCcb9dE7321oQHDGz23W38wMiF1+s2ZadQalPoCT/kkwYjRwRq5JTDC3olTiH7FAU3pz074EMYJAolG7y3HbGma373rgc8F57JXKWaj78Q8GOoM22svI9UwDiqtHQwxKyWMBEUP5uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utsdRSL6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B2DC433F1;
+	Mon,  8 Apr 2024 13:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584715;
-	bh=GNIVkZUNURupYhkK81LJEr8+Z0ArZvOjuKMeKDn3vJY=;
+	s=korg; t=1712582314;
+	bh=qQDZyz6jshTP1QXK56FgQFLsZVCg12xLuUz4jiRKRCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y3PtyfvddMfuerHMILJIUDkn5h4AdRTs+UEJCBL7RGTvaI3Q/0ixWjvAHjMs5Dehc
-	 kwBETHl6icyV/vTAZtRnRA1TNAk8+U9iNWK7B6FKd4Qc26a4RUOUeCG7jReJHB8ZQs
-	 edhXt0e2blF+XvD1YphcC/oyDA35JxBbQEn1LPcM=
+	b=utsdRSL64u07yyJTlXxTxGNXR8ybvHL2UXB3dgPXlMkcQ2YZHA0f2WRPt3lVchKGu
+	 Dx4cqw3KCjDGtBhcA+BnopBRY3Yc1WKtlQFam8TQf9sWvn0uIu4pmf23+8iRZeQTmP
+	 C06LSVeNIb0BjMYcqyy5WQZjZv1sGiJFDPkTVyrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ruben Vestergaard <rubenv@drcmr.dk>,
-	Torkil Svensgaard <torkil@drcmr.dk>,
-	Shachar Kagan <skagan@nvidia.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 515/690] nfsd: dont free files unconditionally in __nfsd_file_cache_purge
-Date: Mon,  8 Apr 2024 14:56:21 +0200
-Message-ID: <20240408125418.307946959@linuxfoundation.org>
+	Kuan-Ting Chen <hexrabbit@devco.re>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.6 083/252] netfilter: nf_tables: release mutex after nft_gc_seq_end from abort path
+Date: Mon,  8 Apr 2024 14:56:22 +0200
+Message-ID: <20240408125309.214140983@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 4bdbba54e9b1c769da8ded9abd209d765715e1d6 ]
+commit 0d459e2ffb541841714839e8228b845458ed3b27 upstream.
 
-nfsd_file_cache_purge is called when the server is shutting down, in
-which case, tearing things down is generally fine, but it also gets
-called when the exports cache is flushed.
+The commit mutex should not be released during the critical section
+between nft_gc_seq_begin() and nft_gc_seq_end(), otherwise, async GC
+worker could collect expired objects and get the released commit lock
+within the same GC sequence.
 
-Instead of walking the cache and freeing everything unconditionally,
-handle it the same as when we have a notification of conflicting access.
+nf_tables_module_autoload() temporarily releases the mutex to load
+module dependencies, then it goes back to replay the transaction again.
+Move it at the end of the abort phase after nft_gc_seq_end() is called.
 
-Fixes: ac3a2585f018 ("nfsd: rework refcounting in filecache")
-Reported-by: Ruben Vestergaard <rubenv@drcmr.dk>
-Reported-by: Torkil Svensgaard <torkil@drcmr.dk>
-Reported-by: Shachar Kagan <skagan@nvidia.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Tested-by: Shachar Kagan <skagan@nvidia.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: stable@vger.kernel.org
+Fixes: 720344340fb9 ("netfilter: nf_tables: GC transaction race with abort path")
+Reported-by: Kuan-Ting Chen <hexrabbit@devco.re>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/filecache.c | 61 ++++++++++++++++++++++++++-------------------
- 1 file changed, 36 insertions(+), 25 deletions(-)
+ net/netfilter/nf_tables_api.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 6a62d95d5ce64..68c7c82f8b3bb 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -660,6 +660,39 @@ static struct shrinker	nfsd_file_shrinker = {
- 	.seeks = 1,
- };
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -10518,11 +10518,6 @@ static int __nf_tables_abort(struct net
+ 		nf_tables_abort_release(trans);
+ 	}
  
-+/**
-+ * nfsd_file_cond_queue - conditionally unhash and queue a nfsd_file
-+ * @nf: nfsd_file to attempt to queue
-+ * @dispose: private list to queue successfully-put objects
-+ *
-+ * Unhash an nfsd_file, try to get a reference to it, and then put that
-+ * reference. If it's the last reference, queue it to the dispose list.
-+ */
-+static void
-+nfsd_file_cond_queue(struct nfsd_file *nf, struct list_head *dispose)
-+	__must_hold(RCU)
-+{
-+	int decrement = 1;
-+
-+	/* If we raced with someone else unhashing, ignore it */
-+	if (!nfsd_file_unhash(nf))
-+		return;
-+
-+	/* If we can't get a reference, ignore it */
-+	if (!nfsd_file_get(nf))
-+		return;
-+
-+	/* Extra decrement if we remove from the LRU */
-+	if (nfsd_file_lru_remove(nf))
-+		++decrement;
-+
-+	/* If refcount goes to 0, then put on the dispose list */
-+	if (refcount_sub_and_test(decrement, &nf->nf_ref)) {
-+		list_add(&nf->nf_lru, dispose);
-+		trace_nfsd_file_closing(nf);
-+	}
-+}
-+
- /**
-  * nfsd_file_queue_for_close: try to close out any open nfsd_files for an inode
-  * @inode:   inode on which to close out nfsd_files
-@@ -687,30 +720,11 @@ nfsd_file_queue_for_close(struct inode *inode, struct list_head *dispose)
- 
- 	rcu_read_lock();
- 	do {
--		int decrement = 1;
+-	if (action == NFNL_ABORT_AUTOLOAD)
+-		nf_tables_module_autoload(net);
+-	else
+-		nf_tables_module_autoload_cleanup(net);
 -
- 		nf = rhashtable_lookup(&nfsd_file_rhash_tbl, &key,
- 				       nfsd_file_rhash_params);
- 		if (!nf)
- 			break;
--
--		/* If we raced with someone else unhashing, ignore it */
--		if (!nfsd_file_unhash(nf))
--			continue;
--
--		/* If we can't get a reference, ignore it */
--		if (!nfsd_file_get(nf))
--			continue;
--
--		/* Extra decrement if we remove from the LRU */
--		if (nfsd_file_lru_remove(nf))
--			++decrement;
--
--		/* If refcount goes to 0, then put on the dispose list */
--		if (refcount_sub_and_test(decrement, &nf->nf_ref)) {
--			list_add(&nf->nf_lru, dispose);
--			trace_nfsd_file_closing(nf);
--		}
-+		nfsd_file_cond_queue(nf, dispose);
- 	} while (1);
- 	rcu_read_unlock();
+ 	return err;
  }
-@@ -927,11 +941,8 @@ __nfsd_file_cache_purge(struct net *net)
  
- 		nf = rhashtable_walk_next(&iter);
- 		while (!IS_ERR_OR_NULL(nf)) {
--			if (!net || nf->nf_net == net) {
--				nfsd_file_unhash(nf);
--				nfsd_file_lru_remove(nf);
--				list_add(&nf->nf_lru, &dispose);
--			}
-+			if (!net || nf->nf_net == net)
-+				nfsd_file_cond_queue(nf, &dispose);
- 			nf = rhashtable_walk_next(&iter);
- 		}
+@@ -10539,6 +10534,14 @@ static int nf_tables_abort(struct net *n
  
--- 
-2.43.0
-
+ 	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
+ 
++	/* module autoload needs to happen after GC sequence update because it
++	 * temporarily releases and grabs mutex again.
++	 */
++	if (action == NFNL_ABORT_AUTOLOAD)
++		nf_tables_module_autoload(net);
++	else
++		nf_tables_module_autoload_cleanup(net);
++
+ 	mutex_unlock(&nft_net->commit_mutex);
+ 
+ 	return ret;
 
 
 
