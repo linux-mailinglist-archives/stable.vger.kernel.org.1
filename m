@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-37189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1778C89C575
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:58:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D890C89C345
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:40:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D09FB2C4B5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 173281C22105
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA84F13175E;
-	Mon,  8 Apr 2024 13:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EAC7C09F;
+	Mon,  8 Apr 2024 13:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmmpZXPb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bES8VubY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97DD97E58C;
-	Mon,  8 Apr 2024 13:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B516FE1A;
+	Mon,  8 Apr 2024 13:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583508; cv=none; b=AFL6I8MIhxrOG5ooWZmh4ojoZW+KVY7WTC+cuS102+MVRWe+eWF6eL3JnGiifYlR96bfpjW8d2WFaVwdhya3nMMCaVJNn/kQVXePBu6lYBdYnChQWgu2dc9kTOdTTeT0VLp6JdwBBmvQWPT48EUNHUh9XM6Z45JSSVSRUwX179I=
+	t=1712583221; cv=none; b=hZOz1ua/5wbxPotV9YpQzLz4q4cGI9dAmcsjsUGiMBvLpEQcP1pnNPrJ+mEXavKKAR3enJl7kFqXLoD06O6w06t3zbF6DM2sEGx2GMEeDda/sTA0h8iNdXT+cz2cEOIDKoHOIOcUBCZc7adHFmWYFOA1vNM6i7moZALknw8DX18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583508; c=relaxed/simple;
-	bh=ab5jvdAGkJ6JBAGBFHW5cIq6n+8LjgUgiK8mjwprRtM=;
+	s=arc-20240116; t=1712583221; c=relaxed/simple;
+	bh=NyJAEG/bExymQlPVNFZr4CiMG0Cd1UiWsus/ixV89nE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BhIS9FCPoErRkROuoEmADxNGGncKLtFUKMyomYrUy5oKkHJUjCCrTm59NTeQTjQkcGd2+koChcAGC1CHF9ujDmMHqsJkmhaDoqn0Qhjrs6HfY/GN1sXJVGXwYBtpHocgtQu7k57koCBRjVqbPPJN9rIj7YZX/OLvGNHw0tMEslo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmmpZXPb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED04C433F1;
-	Mon,  8 Apr 2024 13:38:27 +0000 (UTC)
+	 MIME-Version; b=FukUiMqQ/6AH9q4QDfE4Ntar1MfvbNQ857w+JDMCYCPm4ZkLB3yxSOEms6/07GufuGgrGcL/upkvloKFKFFYjjqQJ76wQu6Tfe79Oc8ZkNYTkGFRikZt2aAMmHgTI0lK7zydsMYUbMNNDGp5c1vakZMiELfBb1v8MI0HMbQINCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bES8VubY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA87C433C7;
+	Mon,  8 Apr 2024 13:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583508;
-	bh=ab5jvdAGkJ6JBAGBFHW5cIq6n+8LjgUgiK8mjwprRtM=;
+	s=korg; t=1712583220;
+	bh=NyJAEG/bExymQlPVNFZr4CiMG0Cd1UiWsus/ixV89nE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmmpZXPbo3l9M5oG23IHsTJMvJ7fmInTVj7n9doGepLOBlaqip6i7cjm7VWrVL3KD
-	 M7kJ8ahOthKVoufW6tgA3ECYNkbupn4Ust+i5HzX8idRe4eUBjAjQ7pSmv/xh4wsfY
-	 qV7eeZvys1macgy35Md3K1PRbDUDH90uYGXNtG6Y=
+	b=bES8VubYFoZN3ZQgSOwV2oNV+ZkxuUOgWAMYf5JJg2DUF553SJoJ1E9m4W8bbrb4E
+	 KQSs+VfqxTPojRegE0ArXPo7tI1m0Ag+KR+C2eQM3U8tdpT1wIj5t/bNJIzC6I/9kb
+	 fVvefIB47jEoDtTLU5B56nkslz3WJ0XP7g8fN1/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ivan Komarov <ivan.komarov@dfyz.info>,
+	Victor Isaev <isv@google.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 186/273] ASoC: SOF: amd: fix for false dsp interrupts
+Subject: [PATCH 6.6 162/252] RISC-V: Update AT_VECTOR_SIZE_ARCH for new AT_MINSIGSTKSZ
 Date: Mon,  8 Apr 2024 14:57:41 +0200
-Message-ID: <20240408125315.067549998@linuxfoundation.org>
+Message-ID: <20240408125311.681070756@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Victor Isaev <victor@torrio.net>
 
-[ Upstream commit b9846a386734e73a1414950ebfd50f04919f5e24 ]
+[ Upstream commit 13dddf9319808badd2c1f5d7007b4e82838a648e ]
 
-Before ACP firmware loading, DSP interrupts are not expected.
-Sometimes after reboot, it's observed that before ACP firmware is loaded
-false DSP interrupt is reported.
-Registering the interrupt handler before acp initialization causing false
-interrupts sometimes on reboot as ACP reset is not applied.
-Correct the sequence by invoking acp initialization sequence prior to
-registering interrupt handler.
+"riscv: signal: Report signal frame size to userspace via auxv" (e92f469)
+has added new constant AT_MINSIGSTKSZ but failed to increment the size of
+auxv, keeping AT_VECTOR_SIZE_ARCH at 9.
+This fix correctly increments AT_VECTOR_SIZE_ARCH to 10, following the
+approach in the commit 94b07c1 ("arm64: signal: Report signal frame size
+to userspace via auxv").
 
-Fixes: 738a2b5e2cc9 ("ASoC: SOF: amd: Add IPC support for ACP IP block")
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://msgid.link/r/20240404041717.430545-1-Vijendar.Mukunda@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/73883406.20231215232720@torrio.net
+Link: https://lore.kernel.org/all/20240102133617.3649-1-victor@torrio.net/
+Reported-by: Ivan Komarov <ivan.komarov@dfyz.info>
+Closes: https://lore.kernel.org/linux-riscv/CY3Z02NYV1C4.11BLB9PLVW9G1@fedora/
+Fixes: e92f469b0771 ("riscv: signal: Report signal frame size to userspace via auxv")
+Signed-off-by: Victor Isaev <isv@google.com>
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/amd/acp.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/riscv/include/uapi/asm/auxvec.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/amd/acp.c b/sound/soc/sof/amd/acp.c
-index 4db8cdc91daae..2c242ef9f23c1 100644
---- a/sound/soc/sof/amd/acp.c
-+++ b/sound/soc/sof/amd/acp.c
-@@ -537,6 +537,10 @@ int amd_sof_acp_probe(struct snd_sof_dev *sdev)
- 		goto unregister_dev;
- 	}
+diff --git a/arch/riscv/include/uapi/asm/auxvec.h b/arch/riscv/include/uapi/asm/auxvec.h
+index 10aaa83db89ef..95050ebe9ad00 100644
+--- a/arch/riscv/include/uapi/asm/auxvec.h
++++ b/arch/riscv/include/uapi/asm/auxvec.h
+@@ -34,7 +34,7 @@
+ #define AT_L3_CACHEGEOMETRY	47
  
-+	ret = acp_init(sdev);
-+	if (ret < 0)
-+		goto free_smn_dev;
-+
- 	sdev->ipc_irq = pci->irq;
- 	ret = request_threaded_irq(sdev->ipc_irq, acp_irq_handler, acp_irq_thread,
- 				   IRQF_SHARED, "AudioDSP", sdev);
-@@ -546,10 +550,6 @@ int amd_sof_acp_probe(struct snd_sof_dev *sdev)
- 		goto free_smn_dev;
- 	}
+ /* entries in ARCH_DLINFO */
+-#define AT_VECTOR_SIZE_ARCH	9
++#define AT_VECTOR_SIZE_ARCH	10
+ #define AT_MINSIGSTKSZ		51
  
--	ret = acp_init(sdev);
--	if (ret < 0)
--		goto free_ipc_irq;
--
- 	sdev->dsp_box.offset = 0;
- 	sdev->dsp_box.size = BOX_SIZE_512;
- 
+ #endif /* _UAPI_ASM_RISCV_AUXVEC_H */
 -- 
 2.43.0
 
