@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-37336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC7F89C46C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7118B89C470
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B722B1F2237D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A235F1C222A2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D3C7BAF3;
-	Mon,  8 Apr 2024 13:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845817BB1A;
+	Mon,  8 Apr 2024 13:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nF9Jqa0U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsoiFOao"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905B3745D6;
-	Mon,  8 Apr 2024 13:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C7C7B3E5;
+	Mon,  8 Apr 2024 13:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583934; cv=none; b=a27z0wnsr05cjrU1j8bquHazJT655HlleRqYGUbQzyIt8nIiG80PgbQ2Rl4SuXYWUkgc0ynVwhjN6d8WQ35Cc+ciUoMaJEZ830MUZ1qMCx9uFeqvfG+AL33Hk/VHTdG98u6khvid/HRSBoQj31K47r4octrB40LdLbDZ4qREIZ0=
+	t=1712583946; cv=none; b=SOynHFhE74LpYuObjvytPWUWrVOfkqtJIQb6dLrtsEBIu34iiOH0E9IL6mqClUFxvtLmKuB97/nmBKk57eKX37lQHYzxhd0dgoI9zfqX0A48TORb8aXCIqCqtm7N8AHXgYXfdZ9yi+WPf9eKC0TTgaIqKceGnAfuojtI5560nqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583934; c=relaxed/simple;
-	bh=gwy070tA5wVQT10/J5O3LA/YFdkYho1vop4u8twhLfI=;
+	s=arc-20240116; t=1712583946; c=relaxed/simple;
+	bh=jHvBzsK4zl4XHuugyjqixf7mD78SjsJUnDbfz9w3Mdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j9bVYoGix7rDTSbOOlJjQxpxDu2g4BuVHjrPEEj99e7DFvflWPlaQoKc4beP8ThaKY9+2xmasTG+ARQhqy0WP9/FG2JrcWUUdJ9ouctyxoGs9R8Z87k2aJWoAuf9d9Ijw5R2bCaSf4BmFb6RVF4mGohDjL3yWg+XLGpAwZJ+RDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nF9Jqa0U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19310C433C7;
-	Mon,  8 Apr 2024 13:45:33 +0000 (UTC)
+	 MIME-Version; b=evEfjJu+g3gnSrst7wI+IcJO0j2Roz9H92u4JY180po8+cf0/JH0WW/soJr4XV82Bi4flk4ddGl4okdsKvECz6rY51rJAFKZGxvqsp4JZYoE42c4b6sXXmjjjiUEsC7zUUL41FGgaX98V/LJUDvOhEwiPMW4edX1DKrksXXhIJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsoiFOao; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1E9C433F1;
+	Mon,  8 Apr 2024 13:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583934;
-	bh=gwy070tA5wVQT10/J5O3LA/YFdkYho1vop4u8twhLfI=;
+	s=korg; t=1712583946;
+	bh=jHvBzsK4zl4XHuugyjqixf7mD78SjsJUnDbfz9w3Mdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nF9Jqa0U7OdgVfLZN4/6QNMIP+4dUCRKz45OB0vO7crbomdScH/ZLdFpLxKGACJ01
-	 nQHSWcJ4fKYqpH4zpExLrQYPUBltvJ2yLMMhh1Ovw+JVCvjh4RKEMGBhe1B8OIwh+p
-	 zj8skcvZhaUH/S/CleqUo63ZXJ6qQMUCNfGeFltM=
+	b=dsoiFOao6OOqmfZAyQeWBCKghVyN+5ElCEg1vgemjCSCN8x9zl+5B+BppzTkGxsCi
+	 jt2GlrZ/fXTChxiEIXRNVvgKMvlclnlnIEeZJQ5MrjHLaFt4Ym49KY4cfJZGXjHon/
+	 3aaStRbBcIBgl4JnQ3lN7QZTjQrCL9pZIqBSGBd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.com>,
-	Amir Goldstein <amir73il@gmail.com>,
+	Vasily Averin <vvs@openvz.org>,
+	"Christian Brauner (Microsoft)" <brauner@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Jan Kara <jack@suse.cz>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 304/690] fsnotify: consistent behavior for parent not watching children
-Date: Mon,  8 Apr 2024 14:52:50 +0200
-Message-ID: <20240408125410.613172862@linuxfoundation.org>
+Subject: [PATCH 5.15 305/690] fanotify: fix incorrect fmode_t casts
+Date: Mon,  8 Apr 2024 14:52:51 +0200
+Message-ID: <20240408125410.643941340@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,128 +68,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Vasily Averin <vvs@openvz.org>
 
-[ Upstream commit e730558adffb88a52e562db089e969ee9510184a ]
+[ Upstream commit dccd855771b37820b6d976a99729c88259549f85 ]
 
-The logic for handling events on child in groups that have a mark on
-the parent inode, but without FS_EVENT_ON_CHILD flag in the mask is
-duplicated in several places and inconsistent.
+Fixes sparce warnings:
+fs/notify/fanotify/fanotify_user.c:267:63: sparse:
+ warning: restricted fmode_t degrades to integer
+fs/notify/fanotify/fanotify_user.c:1351:28: sparse:
+ warning: restricted fmode_t degrades to integer
 
-Move the logic into the preparation of mark type iterator, so that the
-parent mark type will be excluded from all mark type iterations in that
-case.
+FMODE_NONTIFY have bitwise fmode_t type and requires __force attribute
+for any casts.
 
-This results in several subtle changes of behavior, hopefully all
-desired changes of behavior, for example:
-
-- Group A has a mount mark with FS_MODIFY in mask
-- Group A has a mark with ignore mask that does not survive FS_MODIFY
-  and does not watch children on directory D.
-- Group B has a mark with FS_MODIFY in mask that does watch children
-  on directory D.
-- FS_MODIFY event on file D/foo should not clear the ignore mask of
-  group A, but before this change it does
-
-And if group A ignore mask was set to survive FS_MODIFY:
-- FS_MODIFY event on file D/foo should be reported to group A on account
-  of the mount mark, but before this change it is wrongly ignored
-
-Fixes: 2f02fd3fa13e ("fanotify: fix ignore mask logic for events on child and on dir")
-Reported-by: Jan Kara <jack@suse.com>
-Link: https://lore.kernel.org/linux-fsdevel/20220314113337.j7slrb5srxukztje@quack3.lan/
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Vasily Averin <vvs@openvz.org>
+Reviewed-by: Christian Brauner (Microsoft) <brauner@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20220511190213.831646-3-amir73il@gmail.com
+Link: https://lore.kernel.org/r/9adfd6ac-1b89-791e-796b-49ada3293985@openvz.org
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/notify/fanotify/fanotify.c | 10 +---------
- fs/notify/fsnotify.c          | 34 +++++++++++++++++++---------------
- 2 files changed, 20 insertions(+), 24 deletions(-)
+ fs/notify/fanotify/fanotify_user.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/notify/fanotify/fanotify.c b/fs/notify/fanotify/fanotify.c
-index 263d303d8f8f1..4f897e1095470 100644
---- a/fs/notify/fanotify/fanotify.c
-+++ b/fs/notify/fanotify/fanotify.c
-@@ -320,7 +320,7 @@ static u32 fanotify_group_event_mask(struct fsnotify_group *group,
- 	}
- 
- 	fsnotify_foreach_iter_mark_type(iter_info, mark, type) {
--		/* Apply ignore mask regardless of ISDIR and ON_CHILD flags */
-+		/* Apply ignore mask regardless of mark's ISDIR flag */
- 		marks_ignored_mask |= mark->ignored_mask;
- 
+diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
+index 4471043955f87..6db5a0b03a78d 100644
+--- a/fs/notify/fanotify/fanotify_user.c
++++ b/fs/notify/fanotify/fanotify_user.c
+@@ -260,7 +260,7 @@ static int create_fd(struct fsnotify_group *group, struct path *path,
+ 	 * originally opened O_WRONLY.
+ 	 */
+ 	new_file = dentry_open(path,
+-			       group->fanotify_data.f_flags | FMODE_NONOTIFY,
++			       group->fanotify_data.f_flags | __FMODE_NONOTIFY,
+ 			       current_cred());
+ 	if (IS_ERR(new_file)) {
  		/*
-@@ -330,14 +330,6 @@ static u32 fanotify_group_event_mask(struct fsnotify_group *group,
- 		if (event_mask & FS_ISDIR && !(mark->mask & FS_ISDIR))
- 			continue;
+@@ -1373,7 +1373,7 @@ SYSCALL_DEFINE2(fanotify_init, unsigned int, flags, unsigned int, event_f_flags)
+ 	    (!(fid_mode & FAN_REPORT_NAME) || !(fid_mode & FAN_REPORT_FID)))
+ 		return -EINVAL;
  
--		/*
--		 * If the event is on a child and this mark is on a parent not
--		 * watching children, don't send it!
--		 */
--		if (type == FSNOTIFY_ITER_TYPE_PARENT &&
--		    !(mark->mask & FS_EVENT_ON_CHILD))
--			continue;
--
- 		marks_mask |= mark->mask;
- 
- 		/* Record the mark types of this group that matched the event */
-diff --git a/fs/notify/fsnotify.c b/fs/notify/fsnotify.c
-index 35740a64ee453..0b3e74935cb4f 100644
---- a/fs/notify/fsnotify.c
-+++ b/fs/notify/fsnotify.c
-@@ -290,22 +290,15 @@ static int fsnotify_handle_event(struct fsnotify_group *group, __u32 mask,
- 	}
- 
- 	if (parent_mark) {
--		/*
--		 * parent_mark indicates that the parent inode is watching
--		 * children and interested in this event, which is an event
--		 * possible on child. But is *this mark* watching children and
--		 * interested in this event?
--		 */
--		if (parent_mark->mask & FS_EVENT_ON_CHILD) {
--			ret = fsnotify_handle_inode_event(group, parent_mark, mask,
--							  data, data_type, dir, name, 0);
--			if (ret)
--				return ret;
--		}
--		if (!inode_mark)
--			return 0;
-+		ret = fsnotify_handle_inode_event(group, parent_mark, mask,
-+						  data, data_type, dir, name, 0);
-+		if (ret)
-+			return ret;
- 	}
- 
-+	if (!inode_mark)
-+		return 0;
-+
- 	if (mask & FS_EVENT_ON_CHILD) {
- 		/*
- 		 * Some events can be sent on both parent dir and child marks
-@@ -422,8 +415,19 @@ static bool fsnotify_iter_select_report_types(
- 	iter_info->report_mask = 0;
- 	fsnotify_foreach_iter_type(type) {
- 		mark = iter_info->marks[type];
--		if (mark && mark->group == iter_info->current_group)
-+		if (mark && mark->group == iter_info->current_group) {
-+			/*
-+			 * FSNOTIFY_ITER_TYPE_PARENT indicates that this inode
-+			 * is watching children and interested in this event,
-+			 * which is an event possible on child.
-+			 * But is *this mark* watching children?
-+			 */
-+			if (type == FSNOTIFY_ITER_TYPE_PARENT &&
-+			    !(mark->mask & FS_EVENT_ON_CHILD))
-+				continue;
-+
- 			fsnotify_iter_set_report_type(iter_info, type);
-+		}
- 	}
- 
- 	return true;
+-	f_flags = O_RDWR | FMODE_NONOTIFY;
++	f_flags = O_RDWR | __FMODE_NONOTIFY;
+ 	if (flags & FAN_CLOEXEC)
+ 		f_flags |= O_CLOEXEC;
+ 	if (flags & FAN_NONBLOCK)
 -- 
 2.43.0
 
