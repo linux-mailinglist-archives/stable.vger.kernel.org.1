@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-36675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F04189C1DC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:25:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0202589C2BC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:33:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D479B2A314
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1BA72B28C68
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9FA8003B;
-	Mon,  8 Apr 2024 13:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5D871742;
+	Mon,  8 Apr 2024 13:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhhrxbOt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPtleZGi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB6A7F465;
-	Mon,  8 Apr 2024 13:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D62E762F7;
+	Mon,  8 Apr 2024 13:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582017; cv=none; b=ogaeyfZa2UI6b17Sgi4Qs73CuL/UKornFtK3SqTCzHHn4zOj6ShO7d10R44vtb7U+z/rqvuQ6bzwnh1POtvsdM0JnmOmh5Tn1slrTF6Bf1kRCZ4aoY2dUqECrU/TqePZDdHB8MYMym6CmqRY6v/jMMtXr7p7UD1hq8+XXprHGWA=
+	t=1712582509; cv=none; b=OJN5svllGttZLIQt4NV0J5+TCZOYhw7sbaTStRxbS9yCSBjjL4XJqs1EY7zQoVb6zMZ/SEvKtzKgt1h0uIviDVvtHYLxMcqUXAEbeX0F83MJTzMgcKwayd6nsw5HWwKphuOAAKLcvr7ylv+IbRXkya93gVkys6BUWZC3Q8B0Qx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582017; c=relaxed/simple;
-	bh=7U5rG+4oy1Yh+Ct3uuVdl9TXwt93h+ZMi9ZGPiSxwx0=;
+	s=arc-20240116; t=1712582509; c=relaxed/simple;
+	bh=eztxsFe4fwSiDeNDTTSYYR17KZJE2U1pr+0dQAbbUNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LfWtEwQrCt2+XfYw1/NA1tqmcXvcfe1dIEoxdz013KdwvqufPoJqKwIk5nfBbEY9wMBmz1JwLzbKZP9qe9RO1qHXj/lD76OKumFi6ojO+GFY2T1gFZcfn3HtqVAgUOwEvzjOaHp57d4bUgSV8pedBu6aSyOWpNg/WjlANEV6iQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhhrxbOt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65701C433C7;
-	Mon,  8 Apr 2024 13:13:36 +0000 (UTC)
+	 MIME-Version; b=Z09FhkD7e9fCaMF/UDjFpc7mqHanAIpV7lRLeknnua5hqmKA5UNCLauCq/CaS6JOPmMgjn3suIeuLM5Cu1B3PBJPimm+VzCKq/ClFfLJeZY+YyTA6GF4TxLNSNAfJHCQkZ5eSUJOuOJUGE0dStm+FA4WyNmu+i1b18Dr6rMNAR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPtleZGi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04FADC433F1;
+	Mon,  8 Apr 2024 13:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582016;
-	bh=7U5rG+4oy1Yh+Ct3uuVdl9TXwt93h+ZMi9ZGPiSxwx0=;
+	s=korg; t=1712582509;
+	bh=eztxsFe4fwSiDeNDTTSYYR17KZJE2U1pr+0dQAbbUNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FhhrxbOtQZFrwUrhjNHlSF6imkTXXcpXy1ghE+Irr9YDlIQ0A9gTsqZW1ZqnkuP6/
-	 J1y+le/o2z5z6XD/TcdJ/rpXSru/rv63EX7qHsl61VpcyJ2YyFWYSF75BDFzba/Og9
-	 WVqZJOZLN2mmB8fKMDBxcV6tD76cjakGz4kEef+I=
+	b=NPtleZGipss0H5gjl9zHXb03dhX7Ve5/HSaQ7USuOKwbmLv4VElIyJMN7Sxy5m+ar
+	 2x/1C1CB+01LzWIGVLaaWcl22ALfcXZFB3FZVS51QWrHblYwkGyz2k5eylwG/lKAsB
+	 EzAKXCm9/dxUltCT0/d4TVRURkXiz4ic+rlkMZmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/252] x86/CPU/AMD: Carve out the erratum 1386 fix
-Date: Mon,  8 Apr 2024 14:55:56 +0200
-Message-ID: <20240408125308.410329157@linuxfoundation.org>
+	Leonidas Spyropoulos <artafinde@archlinux.com>,
+	Arthur Borsboom <arthurborsboom@gmail.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.8 082/273] xen-netfront: Add missing skb_mark_for_recycle
+Date: Mon,  8 Apr 2024 14:55:57 +0200
+Message-ID: <20240408125311.847001433@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Jesper Dangaard Brouer <hawk@kernel.org>
 
-[ Upstream commit a7c32a1ae9ee43abfe884f5af376877c4301d166 ]
+commit 037965402a010898d34f4e35327d22c0a95cd51f upstream.
 
-Call it on the affected CPU generations.
+Notice that skb_mark_for_recycle() is introduced later than fixes tag in
+commit 6a5bcd84e886 ("page_pool: Allow drivers to hint on SKB recycling").
 
-No functional changes.
+It is believed that fixes tag were missing a call to page_pool_release_page()
+between v5.9 to v5.14, after which is should have used skb_mark_for_recycle().
+Since v6.6 the call page_pool_release_page() were removed (in
+commit 535b9c61bdef ("net: page_pool: hide page_pool_release_page()")
+and remaining callers converted (in commit 6bfef2ec0172 ("Merge branch
+'net-page_pool-remove-page_pool_release_page'")).
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: http://lore.kernel.org/r/20231120104152.13740-3-bp@alien8.de
-Stable-dep-of: c7b2edd8377b ("perf/x86/amd/core: Update and fix stalled-cycles-* events for Zen 2 and later")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This leak became visible in v6.8 via commit dba1b8a7ab68 ("mm/page_pool: catch
+page_pool memory leaks").
+
+Cc: stable@vger.kernel.org
+Fixes: 6c5aa6fc4def ("xen networking: add basic XDP support for xen-netfront")
+Reported-by: Leonidas Spyropoulos <artafinde@archlinux.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218654
+Reported-by: Arthur Borsboom <arthurborsboom@gmail.com>
+Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Link: https://lore.kernel.org/r/171154167446.2671062.9127105384591237363.stgit@firesoul
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/amd.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/net/xen-netfront.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 5391385707b3f..28c3a1045b060 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -988,6 +988,19 @@ static void init_amd_bd(struct cpuinfo_x86 *c)
- 	clear_rdrand_cpuid_bit(c);
- }
- 
-+static void fix_erratum_1386(struct cpuinfo_x86 *c)
-+{
-+	/*
-+	 * Work around Erratum 1386.  The XSAVES instruction malfunctions in
-+	 * certain circumstances on Zen1/2 uarch, and not all parts have had
-+	 * updated microcode at the time of writing (March 2023).
-+	 *
-+	 * Affected parts all have no supervisor XSAVE states, meaning that
-+	 * the XSAVEC instruction (which works fine) is equivalent.
-+	 */
-+	clear_cpu_cap(c, X86_FEATURE_XSAVES);
-+}
-+
- void init_spectral_chicken(struct cpuinfo_x86 *c)
- {
- #ifdef CONFIG_CPU_UNRET_ENTRY
-@@ -1008,15 +1021,6 @@ void init_spectral_chicken(struct cpuinfo_x86 *c)
- 		}
+--- a/drivers/net/xen-netfront.c
++++ b/drivers/net/xen-netfront.c
+@@ -285,6 +285,7 @@ static struct sk_buff *xennet_alloc_one_
+ 		return NULL;
  	}
- #endif
--	/*
--	 * Work around Erratum 1386.  The XSAVES instruction malfunctions in
--	 * certain circumstances on Zen1/2 uarch, and not all parts have had
--	 * updated microcode at the time of writing (March 2023).
--	 *
--	 * Affected parts all have no supervisor XSAVE states, meaning that
--	 * the XSAVEC instruction (which works fine) is equivalent.
--	 */
--	clear_cpu_cap(c, X86_FEATURE_XSAVES);
- }
+ 	skb_add_rx_frag(skb, 0, page, 0, 0, PAGE_SIZE);
++	skb_mark_for_recycle(skb);
  
- static void init_amd_zn(struct cpuinfo_x86 *c)
-@@ -1085,10 +1089,12 @@ static void zenbleed_check(struct cpuinfo_x86 *c)
- 
- static void init_amd_zen(struct cpuinfo_x86 *c)
- {
-+	fix_erratum_1386(c);
- }
- 
- static void init_amd_zen2(struct cpuinfo_x86 *c)
- {
-+	fix_erratum_1386(c);
- }
- 
- static void init_amd_zen3(struct cpuinfo_x86 *c)
--- 
-2.43.0
-
+ 	/* Align ip header to a 16 bytes boundary */
+ 	skb_reserve(skb, NET_IP_ALIGN);
 
 
 
