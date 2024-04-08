@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-36570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3003389C06E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:08:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E56489C613
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0408281685
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:08:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D733B26159
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D886F08B;
-	Mon,  8 Apr 2024 13:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4917F465;
+	Mon,  8 Apr 2024 14:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1qfyKKC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwr1bp1k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5843A2DF73;
-	Mon,  8 Apr 2024 13:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7D07EF14;
+	Mon,  8 Apr 2024 14:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581712; cv=none; b=EWC7H0U8Hv+G3qBOHZvnc/PdUsOmSlAySSudhrjkGzx/QI1Hn0roydyW9eKQVqQhSmpqfYbZu4mB0F/sv4tGicXbSpvWvjsN+nAJFo0+JVj4RNJY++soNEgWFCwtk8r0fo+8/vOLje2Aslg0Jh87WuQI8kfa4hM9lUFe3UIr94I=
+	t=1712584895; cv=none; b=TMQCfvHYHgvxnOeG8A0xQTFJTT3/bWTfABDOtNlRlyxXhQGpSDM/0cGwdlIq4Srx8gb5DZywQP0//RTZKoatiOKsSqIbROb7+WB11cUfrv1Q+XSkptoRV4YXF9ldOUXgNMHDCV7nWOIIuq+/abmW9ioa7nmE96NxD4rMcYHG4as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581712; c=relaxed/simple;
-	bh=CARApZojGPBwYxEmA951gFQ1GGSHExsjQHL2L/9Rvko=;
+	s=arc-20240116; t=1712584895; c=relaxed/simple;
+	bh=7Xq9nfBIm5wvVZgEgavrXSnldBFS0Zj6iN9GpK3GDBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nx17F/ZLJ28ed5nDY/qRH8/WsxzW57bI4xGTmwI0d3Mxxue43m3/KAvMBRKoVSiLdRNwsamO9fHowdzhRRRRgMKznTMZaa4fWgOk4Loxtp1likysTC6gwPe+hPX94JKj1uUhmGSdqoAFP9i/EjBH28i9/Hj2xVOv/xRPvl5531A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1qfyKKC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FC4C433C7;
-	Mon,  8 Apr 2024 13:08:31 +0000 (UTC)
+	 MIME-Version; b=f+xr3KpZ6Xkf6b9foFHOw+FLfYsnU9/EghZmpl6ggX7bykYKTmoQGmF/F0xtz2rBwK0m5pr1otp42ToRwXoHIhvn4toArNEBalkZCLnNNdT5MKEI0ELdOZaS5C/ntFKbaXjSDjtaV81ikz1QqBd5TZLi7ZpsSU+1jvF241p3/Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwr1bp1k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA96C433C7;
+	Mon,  8 Apr 2024 14:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581712;
-	bh=CARApZojGPBwYxEmA951gFQ1GGSHExsjQHL2L/9Rvko=;
+	s=korg; t=1712584894;
+	bh=7Xq9nfBIm5wvVZgEgavrXSnldBFS0Zj6iN9GpK3GDBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s1qfyKKCIkZp6+UL70yycM14xthKTTNWWZk/FstWY6+nhxGg30K3M9+XjMvEdkWwD
-	 NWaSRfITuvFTUcmPXnOrQq0o/ZvV6m0Szd87cJpk2TDy3Y849GB88884Vs04CWtr7r
-	 3CZWbrs3WzJ4DaR3XmZIhAlMbNS93JWKIRUXkaCg=
+	b=uwr1bp1kPtf1QC9hdIxzqpw07z27aWLc4gEfuK730ZjBs5422UfWsUU/Wr+KGYWZx
+	 TbQrreh8g2np+PoEw4s90zq2WXGo/P0uFJ7j77Di55r8zKiXd0tAlBFMvwBYolcdK7
+	 l+8tGtnBD04av2mAOD/S8ACFPKONsZY7WC4d8zhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 046/138] net/sched: act_skbmod: prevent kernel-infoleak
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 594/690] scsi: qla2xxx: Prevent command send on chip reset
 Date: Mon,  8 Apr 2024 14:57:40 +0200
-Message-ID: <20240408125257.661780919@linuxfoundation.org>
+Message-ID: <20240408125421.110670135@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,146 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Quinn Tran <qutran@marvell.com>
 
-commit d313eb8b77557a6d5855f42d2234bd592c7b50dd upstream.
+commit 4895009c4bb72f71f2e682f1e7d2c2d96e482087 upstream.
 
-syzbot found that tcf_skbmod_dump() was copying four bytes
-from kernel stack to user space [1].
+Currently IOCBs are allowed to push through while chip reset could be in
+progress. During chip reset the outstanding_cmds array is cleared
+twice. Once when any command on this array is returned as failed and
+secondly when the array is initialize to zero. If a command is inserted on
+to the array between these intervals, then the command will be lost.  Check
+for chip reset before sending IOCB.
 
-The issue here is that 'struct tc_skbmod' has a four bytes hole.
-
-We need to clear the structure before filling fields.
-
-[1]
-BUG: KMSAN: kernel-infoleak in instrument_copy_to_user include/linux/instrumented.h:114 [inline]
- BUG: KMSAN: kernel-infoleak in copy_to_user_iter lib/iov_iter.c:24 [inline]
- BUG: KMSAN: kernel-infoleak in iterate_ubuf include/linux/iov_iter.h:29 [inline]
- BUG: KMSAN: kernel-infoleak in iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
- BUG: KMSAN: kernel-infoleak in iterate_and_advance include/linux/iov_iter.h:271 [inline]
- BUG: KMSAN: kernel-infoleak in _copy_to_iter+0x366/0x2520 lib/iov_iter.c:185
-  instrument_copy_to_user include/linux/instrumented.h:114 [inline]
-  copy_to_user_iter lib/iov_iter.c:24 [inline]
-  iterate_ubuf include/linux/iov_iter.h:29 [inline]
-  iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
-  iterate_and_advance include/linux/iov_iter.h:271 [inline]
-  _copy_to_iter+0x366/0x2520 lib/iov_iter.c:185
-  copy_to_iter include/linux/uio.h:196 [inline]
-  simple_copy_to_iter net/core/datagram.c:532 [inline]
-  __skb_datagram_iter+0x185/0x1000 net/core/datagram.c:420
-  skb_copy_datagram_iter+0x5c/0x200 net/core/datagram.c:546
-  skb_copy_datagram_msg include/linux/skbuff.h:4050 [inline]
-  netlink_recvmsg+0x432/0x1610 net/netlink/af_netlink.c:1962
-  sock_recvmsg_nosec net/socket.c:1046 [inline]
-  sock_recvmsg+0x2c4/0x340 net/socket.c:1068
-  __sys_recvfrom+0x35a/0x5f0 net/socket.c:2242
-  __do_sys_recvfrom net/socket.c:2260 [inline]
-  __se_sys_recvfrom net/socket.c:2256 [inline]
-  __x64_sys_recvfrom+0x126/0x1d0 net/socket.c:2256
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-Uninit was stored to memory at:
-  pskb_expand_head+0x30f/0x19d0 net/core/skbuff.c:2253
-  netlink_trim+0x2c2/0x330 net/netlink/af_netlink.c:1317
-  netlink_unicast+0x9f/0x1260 net/netlink/af_netlink.c:1351
-  nlmsg_unicast include/net/netlink.h:1144 [inline]
-  nlmsg_notify+0x21d/0x2f0 net/netlink/af_netlink.c:2610
-  rtnetlink_send+0x73/0x90 net/core/rtnetlink.c:741
-  rtnetlink_maybe_send include/linux/rtnetlink.h:17 [inline]
-  tcf_add_notify net/sched/act_api.c:2048 [inline]
-  tcf_action_add net/sched/act_api.c:2071 [inline]
-  tc_ctl_action+0x146e/0x19d0 net/sched/act_api.c:2119
-  rtnetlink_rcv_msg+0x1737/0x1900 net/core/rtnetlink.c:6595
-  netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2559
-  rtnetlink_rcv+0x34/0x40 net/core/rtnetlink.c:6613
-  netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
-  netlink_unicast+0xf4c/0x1260 net/netlink/af_netlink.c:1361
-  netlink_sendmsg+0x10df/0x11f0 net/netlink/af_netlink.c:1905
-  sock_sendmsg_nosec net/socket.c:730 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:745
-  ____sys_sendmsg+0x877/0xb60 net/socket.c:2584
-  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
-  __sys_sendmsg net/socket.c:2667 [inline]
-  __do_sys_sendmsg net/socket.c:2676 [inline]
-  __se_sys_sendmsg net/socket.c:2674 [inline]
-  __x64_sys_sendmsg+0x307/0x4a0 net/socket.c:2674
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-Uninit was stored to memory at:
-  __nla_put lib/nlattr.c:1041 [inline]
-  nla_put+0x1c6/0x230 lib/nlattr.c:1099
-  tcf_skbmod_dump+0x23f/0xc20 net/sched/act_skbmod.c:256
-  tcf_action_dump_old net/sched/act_api.c:1191 [inline]
-  tcf_action_dump_1+0x85e/0x970 net/sched/act_api.c:1227
-  tcf_action_dump+0x1fd/0x460 net/sched/act_api.c:1251
-  tca_get_fill+0x519/0x7a0 net/sched/act_api.c:1628
-  tcf_add_notify_msg net/sched/act_api.c:2023 [inline]
-  tcf_add_notify net/sched/act_api.c:2042 [inline]
-  tcf_action_add net/sched/act_api.c:2071 [inline]
-  tc_ctl_action+0x1365/0x19d0 net/sched/act_api.c:2119
-  rtnetlink_rcv_msg+0x1737/0x1900 net/core/rtnetlink.c:6595
-  netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2559
-  rtnetlink_rcv+0x34/0x40 net/core/rtnetlink.c:6613
-  netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
-  netlink_unicast+0xf4c/0x1260 net/netlink/af_netlink.c:1361
-  netlink_sendmsg+0x10df/0x11f0 net/netlink/af_netlink.c:1905
-  sock_sendmsg_nosec net/socket.c:730 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:745
-  ____sys_sendmsg+0x877/0xb60 net/socket.c:2584
-  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
-  __sys_sendmsg net/socket.c:2667 [inline]
-  __do_sys_sendmsg net/socket.c:2676 [inline]
-  __se_sys_sendmsg net/socket.c:2674 [inline]
-  __x64_sys_sendmsg+0x307/0x4a0 net/socket.c:2674
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-Local variable opt created at:
-  tcf_skbmod_dump+0x9d/0xc20 net/sched/act_skbmod.c:244
-  tcf_action_dump_old net/sched/act_api.c:1191 [inline]
-  tcf_action_dump_1+0x85e/0x970 net/sched/act_api.c:1227
-
-Bytes 188-191 of 248 are uninitialized
-Memory access of size 248 starts at ffff888117697680
-Data copied to user address 00007ffe56d855f0
-
-Fixes: 86da71b57383 ("net_sched: Introduce skbmod action")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20240403130908.93421-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-2-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_skbmod.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/scsi/qla2xxx/qla_init.c |    8 ++++++--
+ drivers/scsi/qla2xxx/qla_iocb.c |   33 +++++++++++++++++++++++++++++++--
+ 2 files changed, 37 insertions(+), 4 deletions(-)
 
---- a/net/sched/act_skbmod.c
-+++ b/net/sched/act_skbmod.c
-@@ -239,13 +239,13 @@ static int tcf_skbmod_dump(struct sk_buf
- 	struct tcf_skbmod *d = to_skbmod(a);
- 	unsigned char *b = skb_tail_pointer(skb);
- 	struct tcf_skbmod_params  *p;
--	struct tc_skbmod opt = {
--		.index   = d->tcf_index,
--		.refcnt  = refcount_read(&d->tcf_refcnt) - ref,
--		.bindcnt = atomic_read(&d->tcf_bindcnt) - bind,
--	};
-+	struct tc_skbmod opt;
- 	struct tcf_t t;
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -1188,8 +1188,12 @@ int qla24xx_async_gnl(struct scsi_qla_ho
+ 	return rval;
  
-+	memset(&opt, 0, sizeof(opt));
-+	opt.index   = d->tcf_index;
-+	opt.refcnt  = refcount_read(&d->tcf_refcnt) - ref,
-+	opt.bindcnt = atomic_read(&d->tcf_bindcnt) - bind;
- 	spin_lock_bh(&d->tcf_lock);
- 	opt.action = d->tcf_action;
- 	p = rcu_dereference_protected(d->skbmod_p,
+ done_free_sp:
+-	/* ref: INIT */
+-	kref_put(&sp->cmd_kref, qla2x00_sp_release);
++	/*
++	 * use qla24xx_async_gnl_sp_done to purge all pending gnl request.
++	 * kref_put is call behind the scene.
++	 */
++	sp->u.iocb_cmd.u.mbx.in_mb[0] = MBS_COMMAND_ERROR;
++	qla24xx_async_gnl_sp_done(sp, QLA_COMMAND_ERROR);
+ 	fcport->flags &= ~(FCF_ASYNC_SENT);
+ done:
+ 	fcport->flags &= ~(FCF_ASYNC_ACTIVE);
+--- a/drivers/scsi/qla2xxx/qla_iocb.c
++++ b/drivers/scsi/qla2xxx/qla_iocb.c
+@@ -2588,6 +2588,33 @@ void
+ qla2x00_sp_release(struct kref *kref)
+ {
+ 	struct srb *sp = container_of(kref, struct srb, cmd_kref);
++	struct scsi_qla_host *vha = sp->vha;
++
++	switch (sp->type) {
++	case SRB_CT_PTHRU_CMD:
++		/* GPSC & GFPNID use fcport->ct_desc.ct_sns for both req & rsp */
++		if (sp->u.iocb_cmd.u.ctarg.req &&
++			(!sp->fcport ||
++			 sp->u.iocb_cmd.u.ctarg.req != sp->fcport->ct_desc.ct_sns)) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.req,
++			    sp->u.iocb_cmd.u.ctarg.req_dma);
++			sp->u.iocb_cmd.u.ctarg.req = NULL;
++		}
++		if (sp->u.iocb_cmd.u.ctarg.rsp &&
++			(!sp->fcport ||
++			 sp->u.iocb_cmd.u.ctarg.rsp != sp->fcport->ct_desc.ct_sns)) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.rsp,
++			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
++			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
++		}
++		break;
++	default:
++		break;
++	}
+ 
+ 	sp->free(sp);
+ }
+@@ -2693,7 +2720,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
+ 	 */
+ 	sp = qla2x00_get_sp(vha, fcport, GFP_KERNEL);
+ 	if (!sp) {
+-		kfree(fcport);
++		qla2x00_free_fcport(fcport);
+ 		ql_log(ql_log_info, vha, 0x70e6,
+ 		 "SRB allocation failed\n");
+ 		return -ENOMEM;
+@@ -2748,6 +2775,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
+ 	if (rval != QLA_SUCCESS) {
+ 		/* ref: INIT */
+ 		kref_put(&sp->cmd_kref, qla2x00_sp_release);
++		qla2x00_free_fcport(fcport);
+ 		return QLA_FUNCTION_FAILED;
+ 	}
+ 
+@@ -2757,6 +2785,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
+ 	    fcport->d_id.b.area, fcport->d_id.b.al_pa);
+ 
+ 	wait_for_completion(&elsio->u.els_logo.comp);
++	qla2x00_free_fcport(fcport);
+ 
+ 	/* ref: INIT */
+ 	kref_put(&sp->cmd_kref, qla2x00_sp_release);
+@@ -3916,7 +3945,7 @@ qla2x00_start_sp(srb_t *sp)
+ 		return -EAGAIN;
+ 	}
+ 
+-	pkt = __qla2x00_alloc_iocbs(sp->qpair, sp);
++	pkt = qla2x00_alloc_iocbs_ready(sp->qpair, sp);
+ 	if (!pkt) {
+ 		rval = -EAGAIN;
+ 		ql_log(ql_log_warn, vha, 0x700c,
 
 
 
