@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-37756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C480089C660
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:08:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7919289C4BD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41FD1B24EAE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:06:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D9DC1C22498
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1161181216;
-	Mon,  8 Apr 2024 14:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A327CF1A;
+	Mon,  8 Apr 2024 13:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QG5zO0g/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZ+JwSrm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF4280BE3;
-	Mon,  8 Apr 2024 14:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C8A7C6C8;
+	Mon,  8 Apr 2024 13:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585168; cv=none; b=W1FFAT6R5HZWczn1fiWpUZSwVlwIIu1MJZEX5AjaGP2+aSsljmj0Se09tcrsxQRvVHLjg91x89klrEI7q9nNVH6sXPzmSv0GNnZ7+ZAxzSd6fz6aoiu6dOQ1PW5wxVEHbDc5FIr0ZcywZ/J6aucp6jrvFuqXWrDUACfCySJQ+6c=
+	t=1712584156; cv=none; b=r3fOr9eTFi+m31wQbzivIHmSIqJB06GIIWONPOrDa+NrOphSI4kc3TRW2+uXOoCO5njiOWus5z2WWhqq/Je5Rp/HTCwzTtkfTO/yze7YG6GoBMUEO05qLvz8vrUeuCFvHr5PN3GYlw4eO8GBpodazEtcn7Ue5czye+wYM2Y+XAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585168; c=relaxed/simple;
-	bh=9PNiiKc3R7zTKY2h6OASs1wImB1DQ3qLtYf4OsnHXVQ=;
+	s=arc-20240116; t=1712584156; c=relaxed/simple;
+	bh=5+hH6tKnkCvPz4pZhqnYCW3bGWVWvwFb3nv4wis0s68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ghyeGYhlc+rEwHjMzt3MMzhCSKoQJEfwvMA/HQJn12hSHQQ+XP922doEiZlP6EbscANMEgIpM4Ite3PMuGeErSGEn/qQJ3iewuRqXwecyj5d4qy+yQnLgLX1E8WMbDluMAqhPtHJQKTMom+p6HBT15C6cu4EizAtjanZPM17d3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QG5zO0g/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1307EC433C7;
-	Mon,  8 Apr 2024 14:06:07 +0000 (UTC)
+	 MIME-Version; b=YeqbKPIx3URTWD29ctRhPPA3QslmtxXotofU+DyefC5uAXIkqMaHiIORAjmLGQY6GVj5O2kOPw9IDNo5iQJ2CtdWaCGOxNQojVLTV0NkZ2jUdma5MPZBqtE2vLkjMUFmSovmlYDUEgcHdnxWlkpFNaxAx44qbiHTm/fVZgAoKCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZ+JwSrm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB36C433C7;
+	Mon,  8 Apr 2024 13:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585168;
-	bh=9PNiiKc3R7zTKY2h6OASs1wImB1DQ3qLtYf4OsnHXVQ=;
+	s=korg; t=1712584156;
+	bh=5+hH6tKnkCvPz4pZhqnYCW3bGWVWvwFb3nv4wis0s68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QG5zO0g/Wivxz7WxY0qgXl4oi4bf2YuzKxcb7HrQMDoQtHRwOZaAAqKk1DfdqlZHC
-	 o6O8wthzEi7mOe2kNhfYVhHtJqYGX3hK+S8455RxnLP5uqRcYfIvenyJlfFzrXmfO/
-	 8xCfmQhZNkr/wbWYSrOr+eJnTDd0sJNRFXPGZ4JA=
+	b=HZ+JwSrmQKvRIGAoay5sPHodt6SKYhorpfj3Cq0sE1dbjj07LENkwyykQAhWiM7aQ
+	 WJnYEs2YLfZa3d2DP8ClcGk0Bb6hDxwmAdMNgvRonw4b2vnlIZiOKGUmRp9baQgSGq
+	 KZEnW8uHmaf2s8FAtOonDLD0bN5c63woDtMoWZOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Rob Herring <robh@kernel.org>
-Subject: [PATCH 5.15 679/690] driver core: Introduce device_link_wait_removal()
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>
+Subject: [PATCH 6.8 270/273] x86/boot: Move mem_encrypt= parsing to the decompressor
 Date: Mon,  8 Apr 2024 14:59:05 +0200
-Message-ID: <20240408125424.315663730@linuxfoundation.org>
+Message-ID: <20240408125317.887274393@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +62,200 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 0462c56c290a99a7f03e817ae5b843116dfb575c upstream.
+commit cd0d9d92c8bb46e77de62efd7df13069ddd61e7d upstream.
 
-The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
-introduces a workqueue to release the consumer and supplier devices used
-in the devlink.
-In the job queued, devices are release and in turn, when all the
-references to these devices are dropped, the release function of the
-device itself is called.
+The early SME/SEV code parses the command line very early, in order to
+decide whether or not memory encryption should be enabled, which needs
+to occur even before the initial page tables are created.
 
-Nothing is present to provide some synchronisation with this workqueue
-in order to ensure that all ongoing releasing operations are done and
-so, some other operations can be started safely.
+This is problematic for a number of reasons:
+- this early code runs from the 1:1 mapping provided by the decompressor
+  or firmware, which uses a different translation than the one assumed by
+  the linker, and so the code needs to be built in a special way;
+- parsing external input while the entire kernel image is still mapped
+  writable is a bad idea in general, and really does not belong in
+  security minded code;
+- the current code ignores the built-in command line entirely (although
+  this appears to be the case for the entire decompressor)
 
-For instance, in the following sequence:
-  1) of_platform_depopulate()
-  2) of_overlay_remove()
+Given that the decompressor/EFI stub is an intrinsic part of the x86
+bootable kernel image, move the command line parsing there and out of
+the core kernel. This removes the need to build lib/cmdline.o in a
+special way, or to use RIP-relative LEA instructions in inline asm
+blocks.
 
-During the step 1, devices are released and related devlinks are removed
-(jobs pushed in the workqueue).
-During the step 2, OF nodes are destroyed but, without any
-synchronisation with devlink removal jobs, of_overlay_remove() can raise
-warnings related to missing of_node_put():
-  ERROR: memory leak, expected refcount 1 instead of 2
+This involves a new xloadflag in the setup header to indicate
+that mem_encrypt=on appeared on the kernel command line.
 
-Indeed, the missing of_node_put() call is going to be done, too late,
-from the workqueue job execution.
-
-Introduce device_link_wait_removal() to offer a way to synchronize
-operations waiting for the end of devlink removals (i.e. end of
-workqueue jobs).
-Also, as a flushing operation is done on the workqueue, the workqueue
-used is moved from a system-wide workqueue to a local one.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Reviewed-by: Saravana Kannan <saravanak@google.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20240325152140.198219-2-herve.codina@bootlin.com
-Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/20240227151907.387873-17-ardb+git@google.com
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/core.c    |   26 +++++++++++++++++++++++---
- include/linux/device.h |    1 +
- 2 files changed, 24 insertions(+), 3 deletions(-)
+ arch/x86/boot/compressed/misc.c         |   15 +++++++++++++++
+ arch/x86/include/uapi/asm/bootparam.h   |    1 +
+ arch/x86/lib/Makefile                   |   13 -------------
+ arch/x86/mm/mem_encrypt_identity.c      |   32 +++-----------------------------
+ drivers/firmware/efi/libstub/x86-stub.c |    3 +++
+ 5 files changed, 22 insertions(+), 42 deletions(-)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -53,6 +53,7 @@ static unsigned int defer_sync_state_cou
- static DEFINE_MUTEX(fwnode_link_lock);
- static bool fw_devlink_is_permissive(void);
- static bool fw_devlink_drv_reg_done;
-+static struct workqueue_struct *device_link_wq;
- 
- /**
-  * fwnode_link_add - Create a link between two fwnode_handles.
-@@ -501,12 +502,26 @@ static void devlink_dev_release(struct d
- 	/*
- 	 * It may take a while to complete this work because of the SRCU
- 	 * synchronization in device_link_release_fn() and if the consumer or
--	 * supplier devices get deleted when it runs, so put it into the "long"
--	 * workqueue.
-+	 * supplier devices get deleted when it runs, so put it into the
-+	 * dedicated workqueue.
- 	 */
--	queue_work(system_long_wq, &link->rm_work);
-+	queue_work(device_link_wq, &link->rm_work);
+--- a/arch/x86/boot/compressed/misc.c
++++ b/arch/x86/boot/compressed/misc.c
+@@ -358,6 +358,19 @@ unsigned long decompress_kernel(unsigned
  }
  
-+/**
-+ * device_link_wait_removal - Wait for ongoing devlink removal jobs to terminate
+ /*
++ * Set the memory encryption xloadflag based on the mem_encrypt= command line
++ * parameter, if provided.
 + */
-+void device_link_wait_removal(void)
++static void parse_mem_encrypt(struct setup_header *hdr)
 +{
-+	/*
-+	 * devlink removal jobs are queued in the dedicated work queue.
-+	 * To be sure that all removal jobs are terminated, ensure that any
-+	 * scheduled work has run to completion.
-+	 */
-+	flush_workqueue(device_link_wq);
-+}
-+EXPORT_SYMBOL_GPL(device_link_wait_removal);
++	int on = cmdline_find_option_bool("mem_encrypt=on");
++	int off = cmdline_find_option_bool("mem_encrypt=off");
 +
- static struct class devlink_class = {
- 	.name = "devlink",
- 	.owner = THIS_MODULE,
-@@ -3825,9 +3840,14 @@ int __init devices_init(void)
- 	sysfs_dev_char_kobj = kobject_create_and_add("char", dev_kobj);
- 	if (!sysfs_dev_char_kobj)
- 		goto char_kobj_err;
-+	device_link_wq = alloc_workqueue("device_link_wq", 0, 0);
-+	if (!device_link_wq)
-+		goto wq_err;
++	if (on > off)
++		hdr->xloadflags |= XLF_MEM_ENCRYPTION;
++}
++
++/*
+  * The compressed kernel image (ZO), has been moved so that its position
+  * is against the end of the buffer used to hold the uncompressed kernel
+  * image (VO) and the execution environment (.bss, .brk), which makes sure
+@@ -387,6 +400,8 @@ asmlinkage __visible void *extract_kerne
+ 	/* Clear flags intended for solely in-kernel use. */
+ 	boot_params_ptr->hdr.loadflags &= ~KASLR_FLAG;
  
- 	return 0;
++	parse_mem_encrypt(&boot_params_ptr->hdr);
++
+ 	sanitize_boot_params(boot_params_ptr);
  
-+ wq_err:
-+	kobject_put(sysfs_dev_char_kobj);
-  char_kobj_err:
- 	kobject_put(sysfs_dev_block_kobj);
-  block_kobj_err:
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -971,6 +971,7 @@ void device_link_del(struct device_link
- void device_link_remove(void *consumer, struct device *supplier);
- void device_links_supplier_sync_state_pause(void);
- void device_links_supplier_sync_state_resume(void);
-+void device_link_wait_removal(void);
+ 	if (boot_params_ptr->screen_info.orig_video_mode == 7) {
+--- a/arch/x86/include/uapi/asm/bootparam.h
++++ b/arch/x86/include/uapi/asm/bootparam.h
+@@ -38,6 +38,7 @@
+ #define XLF_EFI_KEXEC			(1<<4)
+ #define XLF_5LEVEL			(1<<5)
+ #define XLF_5LEVEL_ENABLED		(1<<6)
++#define XLF_MEM_ENCRYPTION		(1<<7)
  
- extern __printf(3, 4)
- int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
+ #ifndef __ASSEMBLY__
+ 
+--- a/arch/x86/lib/Makefile
++++ b/arch/x86/lib/Makefile
+@@ -14,19 +14,6 @@ ifdef CONFIG_KCSAN
+ CFLAGS_REMOVE_delay.o = $(CC_FLAGS_FTRACE)
+ endif
+ 
+-# Early boot use of cmdline; don't instrument it
+-ifdef CONFIG_AMD_MEM_ENCRYPT
+-KCOV_INSTRUMENT_cmdline.o := n
+-KASAN_SANITIZE_cmdline.o  := n
+-KCSAN_SANITIZE_cmdline.o  := n
+-
+-ifdef CONFIG_FUNCTION_TRACER
+-CFLAGS_REMOVE_cmdline.o = -pg
+-endif
+-
+-CFLAGS_cmdline.o := -fno-stack-protector -fno-jump-tables
+-endif
+-
+ inat_tables_script = $(srctree)/arch/x86/tools/gen-insn-attr-x86.awk
+ inat_tables_maps = $(srctree)/arch/x86/lib/x86-opcode-map.txt
+ quiet_cmd_inat_tables = GEN     $@
+--- a/arch/x86/mm/mem_encrypt_identity.c
++++ b/arch/x86/mm/mem_encrypt_identity.c
+@@ -43,7 +43,6 @@
+ 
+ #include <asm/setup.h>
+ #include <asm/sections.h>
+-#include <asm/cmdline.h>
+ #include <asm/coco.h>
+ #include <asm/sev.h>
+ 
+@@ -95,9 +94,6 @@ struct sme_populate_pgd_data {
+  */
+ static char sme_workarea[2 * PMD_SIZE] __section(".init.scratch");
+ 
+-static char sme_cmdline_arg[] __initdata = "mem_encrypt";
+-static char sme_cmdline_on[]  __initdata = "on";
+-
+ static void __init sme_clear_pgd(struct sme_populate_pgd_data *ppd)
+ {
+ 	unsigned long pgd_start, pgd_end, pgd_size;
+@@ -504,11 +500,9 @@ void __init sme_encrypt_kernel(struct bo
+ 
+ void __init sme_enable(struct boot_params *bp)
+ {
+-	const char *cmdline_ptr, *cmdline_arg, *cmdline_on;
+ 	unsigned int eax, ebx, ecx, edx;
+ 	unsigned long feature_mask;
+ 	unsigned long me_mask;
+-	char buffer[16];
+ 	bool snp;
+ 	u64 msr;
+ 
+@@ -551,6 +545,9 @@ void __init sme_enable(struct boot_param
+ 
+ 	/* Check if memory encryption is enabled */
+ 	if (feature_mask == AMD_SME_BIT) {
++		if (!(bp->hdr.xloadflags & XLF_MEM_ENCRYPTION))
++			return;
++
+ 		/*
+ 		 * No SME if Hypervisor bit is set. This check is here to
+ 		 * prevent a guest from trying to enable SME. For running as a
+@@ -570,31 +567,8 @@ void __init sme_enable(struct boot_param
+ 		msr = __rdmsr(MSR_AMD64_SYSCFG);
+ 		if (!(msr & MSR_AMD64_SYSCFG_MEM_ENCRYPT))
+ 			return;
+-	} else {
+-		/* SEV state cannot be controlled by a command line option */
+-		goto out;
+ 	}
+ 
+-	/*
+-	 * Fixups have not been applied to phys_base yet and we're running
+-	 * identity mapped, so we must obtain the address to the SME command
+-	 * line argument data using rip-relative addressing.
+-	 */
+-	asm ("lea sme_cmdline_arg(%%rip), %0"
+-	     : "=r" (cmdline_arg)
+-	     : "p" (sme_cmdline_arg));
+-	asm ("lea sme_cmdline_on(%%rip), %0"
+-	     : "=r" (cmdline_on)
+-	     : "p" (sme_cmdline_on));
+-
+-	cmdline_ptr = (const char *)((u64)bp->hdr.cmd_line_ptr |
+-				     ((u64)bp->ext_cmd_line_ptr << 32));
+-
+-	if (cmdline_find_option(cmdline_ptr, cmdline_arg, buffer, sizeof(buffer)) < 0 ||
+-	    strncmp(buffer, cmdline_on, sizeof(buffer)))
+-		return;
+-
+-out:
+ 	RIP_REL_REF(sme_me_mask) = me_mask;
+ 	physical_mask &= ~me_mask;
+ 	cc_vendor = CC_VENDOR_AMD;
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -890,6 +890,9 @@ void __noreturn efi_stub_entry(efi_handl
+ 		}
+ 	}
+ 
++	if (efi_mem_encrypt > 0)
++		hdr->xloadflags |= XLF_MEM_ENCRYPTION;
++
+ 	status = efi_decompress_kernel(&kernel_entry);
+ 	if (status != EFI_SUCCESS) {
+ 		efi_err("Failed to decompress kernel\n");
 
 
 
