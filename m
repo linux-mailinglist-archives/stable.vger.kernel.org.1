@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-36496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA20289C01E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C3589C5F4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A7971F235CC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C2DBB2C05D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7132778285;
-	Mon,  8 Apr 2024 13:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644F97C0BF;
+	Mon,  8 Apr 2024 14:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZEohJ8p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6ksJqaK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314582DF73;
-	Mon,  8 Apr 2024 13:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D727BAF5;
+	Mon,  8 Apr 2024 14:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581495; cv=none; b=S/A8niX75FA9HKMyCBUK9CUnhvHYtqw6J3602qH7RptLlgQ40boLYTpOERqauApoaSpaRQJo2psMYx4ehmm23+rB1FThUU6+uKz+VwKsgfxW9awYuBHX4y5doSj2pMhA1uYyLMFF3bo4Np+BbHOu6BF29PLK6lBDUxzfvyRbHq8=
+	t=1712584824; cv=none; b=ts8FhMOzk9pKHzySg4AnGKfmvYiqqyp/1LOWEDWTJEah6a6BAlXEebsiOiwBYFgwr544lyz3oVf0N8/LN6+xRAIIgsBKfQnO6HuGiusMFDZFMbQzKmfo9ynDz2qfYi/3gbXvElxerALhgYmv3urSacsExtUzwq1VWWV/MMwAnnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581495; c=relaxed/simple;
-	bh=sq1AOi/vlHFXp+/2TFLzTGvJMDbxcbvWe4FOCoE+2sQ=;
+	s=arc-20240116; t=1712584824; c=relaxed/simple;
+	bh=9jgapzTSxP3WpY64By3FAnTMJnZgQQhZfSmkE69aZKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PSl2I2eiadopJSaHerrmiv9nFbHj+rcjNhGOcBuMF22jW2pofB+0BbaNzSVYCD2z4kosvlhvgoRYw/ELkxp30saq7EFBvPcmUa7VfMe/2GqopMS0gKPPY8Q2K3uondGk31qpdXzrDUP/48ZhgIn/jXRFLMoDFqCxKJP/SjDVrfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZEohJ8p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC659C433F1;
-	Mon,  8 Apr 2024 13:04:54 +0000 (UTC)
+	 MIME-Version; b=fIG8IN1wsbGEbaFYN6s9/10ySJhDStJxjqdBbeFk3FQh7A+CSfJTTtKTwNNjvpQs4k/RhwV2tM3fOYMvsF3dBHyKLjOESHpFfmzRo1btJnw1YSgW4zc/3ffgmZvF5fZUrAUD2I7exyEOuKnaHWPu5UcUSpT+OsPkyAOzhaoG1Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6ksJqaK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F24BC433F1;
+	Mon,  8 Apr 2024 14:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581495;
-	bh=sq1AOi/vlHFXp+/2TFLzTGvJMDbxcbvWe4FOCoE+2sQ=;
+	s=korg; t=1712584824;
+	bh=9jgapzTSxP3WpY64By3FAnTMJnZgQQhZfSmkE69aZKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PZEohJ8pz0k1Ni2nqpst8Sv0DAwdPloaWW3C8pWxAHV4mC1n+JJXuGYXKCssnf0lb
-	 hrp9hmp9WIN9POjXAfRjqgcanFIw9cIsDQ4FIOaUUn1+lT5JeHKxAwa4xGjvy83py4
-	 cvfAOaBljbFt3hLNPT/0P42LaqVzIZZPFSUsx6mw=
+	b=W6ksJqaKJ7kyZVo3r8kC7exHsyCX2qY1uDTH42maeSQQy4SGi2LA0nDzzxqQdV3Hi
+	 kgU2Zn3TEJEd6Xc5zeF9MZvGP4HBwJxdy9VTJoxmzLk9Om7SheUzTJFp+npC/gyc7y
+	 R3uICGizEp811ZmPNe1RhVzx5JrBBdoAgW7jvNAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/138] Octeontx2-af: fix pause frame configuration in GMP mode
+	John Sperbeck <jsperbeck@google.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 569/690] init: open /initrd.image with O_LARGEFILE
 Date: Mon,  8 Apr 2024 14:57:15 +0200
-Message-ID: <20240408125256.888812274@linuxfoundation.org>
+Message-ID: <20240408125420.234727194@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: John Sperbeck <jsperbeck@google.com>
 
-[ Upstream commit 40d4b4807cadd83fb3f46cc8cd67a945b5b25461 ]
+commit 4624b346cf67400ef46a31771011fb798dd2f999 upstream.
 
-The Octeontx2 MAC block (CGX) has separate data paths (SMU and GMP) for
-different speeds, allowing for efficient data transfer.
+If initrd data is larger than 2Gb, we'll eventually fail to write to the
+/initrd.image file when we hit that limit, unless O_LARGEFILE is set.
 
-The previous patch which added pause frame configuration has a bug due
-to which pause frame feature is not working in GMP mode.
-
-This patch fixes the issue by configurating appropriate registers.
-
-Fixes: f7e086e754fe ("octeontx2-af: Pause frame configuration at cgx")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240326052720.4441-1-hkelam@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240317221522.896040-1-jsperbeck@google.com
+Signed-off-by: John Sperbeck <jsperbeck@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ init/initramfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-index e6fe599f7bf3a..254cad45a555f 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-@@ -814,6 +814,11 @@ static int cgx_lmac_enadis_pause_frm(void *cgxd, int lmac_id,
- 	if (!is_lmac_valid(cgx, lmac_id))
- 		return -ENODEV;
+--- a/init/initramfs.c
++++ b/init/initramfs.c
+@@ -655,7 +655,7 @@ static void __init populate_initrd_image
  
-+	cfg = cgx_read(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL);
-+	cfg &= ~CGX_GMP_GMI_RXX_FRM_CTL_CTL_BCK;
-+	cfg |= rx_pause ? CGX_GMP_GMI_RXX_FRM_CTL_CTL_BCK : 0x0;
-+	cgx_write(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL, cfg);
-+
- 	cfg = cgx_read(cgx, lmac_id, CGXX_SMUX_RX_FRM_CTL);
- 	cfg &= ~CGX_SMUX_RX_FRM_CTL_CTL_BCK;
- 	cfg |= rx_pause ? CGX_SMUX_RX_FRM_CTL_CTL_BCK : 0x0;
--- 
-2.43.0
-
+ 	printk(KERN_INFO "rootfs image is not initramfs (%s); looks like an initrd\n",
+ 			err);
+-	file = filp_open("/initrd.image", O_WRONLY | O_CREAT, 0700);
++	file = filp_open("/initrd.image", O_WRONLY|O_CREAT|O_LARGEFILE, 0700);
+ 	if (IS_ERR(file))
+ 		return;
+ 
 
 
 
