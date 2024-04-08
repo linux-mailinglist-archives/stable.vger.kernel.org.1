@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-37113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0530C89C365
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B52FB89C2AE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36C851C22051
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7FFC1C21885
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D3A8594B;
-	Mon,  8 Apr 2024 13:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A7F81741;
+	Mon,  8 Apr 2024 13:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zif/j3wr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVFbyirU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A2C8593C;
-	Mon,  8 Apr 2024 13:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A017B3E5;
+	Mon,  8 Apr 2024 13:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583288; cv=none; b=jVgxZ8zLJ929ftOfd0d2lGSE7hn10MqHa3XELDCx6BYNdnvV2j994TCG2nRbfjfjIIV34Ux8CI08xf4w9OITV+i0rTgwqLBJmNZx8r4EkSukbmkSAHLEj0ks8fS4ElZjW3sRk5IlIt/SEgnqrhP+03sxHWM/9MIY7CoPDe6l+vo=
+	t=1712582968; cv=none; b=NZrjU33gIkOsOXTCNXG3/rLidvpvGOyphCShvcr07vuZFQWrWf1CU1DA/K5nfcIQZD3ddzB7rrwVNFc2X83VRbzG88Agdm5zjvjwPM/8BWO9HFQuJS8PuSGrfy4oHoyhcm5EnElFwPBnlrBBC93xT8pbP8Uwx1TJH4AVtcHwX78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583288; c=relaxed/simple;
-	bh=u01GUJB3z8HRCe7XLeIIRqh00aDyDB40cLgSs8CtYsI=;
+	s=arc-20240116; t=1712582968; c=relaxed/simple;
+	bh=jeiVoOkx/9LkAYveFcMOIcbByBH9Ujtyu1juird9of0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BLbNbNcdNc4mWsqLXf91kqkapGCizO/HC3OV6oAJpMqUxHa385vB2TT1nZkDcvEv3ZHynWepMSALo9uzEDKX0OKoCs72jFPswsIuiWhcg+qo8SFoJTtVtSL2TJ6lXGZyH47tPWv7BVi2/RLCx4mSrfdQphqjA+PPOtHhP+FUZ/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zif/j3wr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15F8C433C7;
-	Mon,  8 Apr 2024 13:34:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s9WnTK0PwI0nakcWPVJ21NgkcMPA2TABKxRW/h7wWX160ofRIJZ55DhD6XfMseh6/A/SbjxuP0iYV/LUV5j1fual+LrxFiG+HcX1QDj0JS9BAihnVseRkdefmzPhcWUq77Qz6TxvSsgxAxbk9kV+OZH7KkMsKb3fJzck6QOL4ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVFbyirU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE0FC433C7;
+	Mon,  8 Apr 2024 13:29:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583288;
-	bh=u01GUJB3z8HRCe7XLeIIRqh00aDyDB40cLgSs8CtYsI=;
+	s=korg; t=1712582967;
+	bh=jeiVoOkx/9LkAYveFcMOIcbByBH9Ujtyu1juird9of0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zif/j3wrynskidXMPIUZBz4l3wepSOC+F0Mco7v6UtbLVxTmKbAdfkKLjgG72XyKE
-	 R4PDoiDWoqm7tQ7rny1DBDDo2cbUMGiGhv52xA4GrA5JKmzdRj08t6BqL22lIZu9od
-	 MkSn+Z2svW7mWBwTIf1Q46NA4GfsL99m4SA5Xlm4=
+	b=WVFbyirUINGAZniPRJMrj2ixsAR1RB4L6Y1f2FlVDqeT1OVY27+MFLaDYRT15wp5N
+	 u0YJi/KA5yTA8EyeABkIwpIA7XQB1rJwWCpZjO0rwxLWV62ZmN899uVjBr5rnrJoe1
+	 AdN2WPDrsh2UGE3CgeodgsfbeCaLX13nn8G//M8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Chao Song <chao.song@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 160/273] ASoC: rt711-sdw: fix locking sequence
-Date: Mon,  8 Apr 2024 14:57:15 +0200
-Message-ID: <20240408125314.240751952@linuxfoundation.org>
+Subject: [PATCH 6.6 137/252] drm/amd: Add concept of running prepare_suspend() sequence for IP blocks
+Date: Mon,  8 Apr 2024 14:57:16 +0200
+Message-ID: <20240408125310.894521807@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit aae86cfd8790bcc7693a5a0894df58de5cb5128c ]
+[ Upstream commit cb11ca3233aa3303dc11dca25977d2e7f24be00f ]
 
-The disable_irq_lock protects the 'disable_irq' value, we need to lock
-before testing it.
+If any IP blocks allocate memory during their hw_fini() sequence
+this can cause the suspend to fail under memory pressure.  Introduce
+a new phase that IP blocks can use to allocate memory before suspend
+starts so that it can potentially be evicted into swap instead.
 
-Fixes: b69de265bd0e ("ASoC: rt711: fix for JD event handling in ClockStop Mode0")
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Chao Song <chao.song@linux.intel.com>
-Link: https://msgid.link/r/20240325221817.206465-4-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: ca299b4512d4 ("drm/amd: Flush GFXOFF requests in prepare stage")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt711-sdw.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 12 +++++++++++-
+ drivers/gpu/drm/amd/include/amd_shared.h   |  1 +
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/rt711-sdw.c b/sound/soc/codecs/rt711-sdw.c
-index 3f5773310ae8c..988451f24a756 100644
---- a/sound/soc/codecs/rt711-sdw.c
-+++ b/sound/soc/codecs/rt711-sdw.c
-@@ -536,12 +536,12 @@ static int __maybe_unused rt711_dev_resume(struct device *dev)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 707c17641c757..4ebe42395708f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4107,7 +4107,7 @@ static int amdgpu_device_evict_resources(struct amdgpu_device *adev)
+ int amdgpu_device_prepare(struct drm_device *dev)
+ {
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
+-	int r;
++	int i, r;
+ 
+ 	if (dev->switch_power_state == DRM_SWITCH_POWER_OFF)
  		return 0;
+@@ -4117,6 +4117,16 @@ int amdgpu_device_prepare(struct drm_device *dev)
+ 	if (r)
+ 		return r;
  
- 	if (!slave->unattach_request) {
-+		mutex_lock(&rt711->disable_irq_lock);
- 		if (rt711->disable_irq == true) {
--			mutex_lock(&rt711->disable_irq_lock);
- 			sdw_write_no_pm(slave, SDW_SCP_INTMASK1, SDW_SCP_INT1_IMPL_DEF);
- 			rt711->disable_irq = false;
--			mutex_unlock(&rt711->disable_irq_lock);
- 		}
-+		mutex_unlock(&rt711->disable_irq_lock);
- 		goto regmap_sync;
- 	}
++	for (i = 0; i < adev->num_ip_blocks; i++) {
++		if (!adev->ip_blocks[i].status.valid)
++			continue;
++		if (!adev->ip_blocks[i].version->funcs->prepare_suspend)
++			continue;
++		r = adev->ip_blocks[i].version->funcs->prepare_suspend((void *)adev);
++		if (r)
++			return r;
++	}
++
+ 	return 0;
+ }
  
+diff --git a/drivers/gpu/drm/amd/include/amd_shared.h b/drivers/gpu/drm/amd/include/amd_shared.h
+index abe829bbd54af..a9880fc531955 100644
+--- a/drivers/gpu/drm/amd/include/amd_shared.h
++++ b/drivers/gpu/drm/amd/include/amd_shared.h
+@@ -295,6 +295,7 @@ struct amd_ip_funcs {
+ 	int (*hw_init)(void *handle);
+ 	int (*hw_fini)(void *handle);
+ 	void (*late_fini)(void *handle);
++	int (*prepare_suspend)(void *handle);
+ 	int (*suspend)(void *handle);
+ 	int (*resume)(void *handle);
+ 	bool (*is_idle)(void *handle);
 -- 
 2.43.0
 
