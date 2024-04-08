@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-37240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B94189C3FA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42FF489C1A0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAEB3284456
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 756071C2144D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220337C09F;
-	Mon,  8 Apr 2024 13:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11AC67FBBB;
+	Mon,  8 Apr 2024 13:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUoztUzO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOSecuP+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34AD6A352;
-	Mon,  8 Apr 2024 13:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B0E768F0;
+	Mon,  8 Apr 2024 13:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583657; cv=none; b=lRtuJw+3BycIGDEhXNUbDdydPBE0AxhNA18WLAnOEwbpRvsYqFOs8glDtLT5hdi3Aty3NYZ4rhyWuTWGFtRlqng1pa2JQZyzWYm66hsRGLQHtGvCGA4/78BWpiMy2Z3mTCQ7e3gpYFkrafaua0tKQhEbHI6DCiWFvpmUTtr9B1g=
+	t=1712582322; cv=none; b=hcQezZ3igjnr5Y7arq1Wot4jI9W7npaAVGxBgOFCgLHCDuzh8QzF1WKIGP0MqCPGvB4/EQf8WnqDA5MbAbFCUKXcom1BN2u0x53PFF8NlpyAf+tn17QcJVUY/oAnenP8zSj3AcmrwYeCtOCwDui0SWDr2yTSZDOZt4nuMZWIHlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583657; c=relaxed/simple;
-	bh=WX5+aRYmF4S00B7AzIyoxRq1x7uTfLe581XSCTqmtDk=;
+	s=arc-20240116; t=1712582322; c=relaxed/simple;
+	bh=nCBl2FQTnfgqr/xz1AsOl6lBHUKafYY0q4/yRJZoJhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n/1R3tttTW/AKyftxRMJwNfdlO/jdjH2nEl8O1aQIlCvt8UY+nx1cO3x2K48HgJ29AQXPey6FN+ExXeQl74iehrK2e44Mfxpp5erN1EjfT1cQ049lwQ4ZO2/qR8ZZ8ADpLOr1kW0yMBWwfm8DGzZlZfG5N9nxv2e/ENbqp14OLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUoztUzO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B108C433F1;
-	Mon,  8 Apr 2024 13:40:57 +0000 (UTC)
+	 MIME-Version; b=clmEkeo1t4isHLZpDEml7l6+QUaO7qB9f487Gwo4INAuwbbBSTsEdmzgKF5YNZ/AFa5L3RYPP/kbiiVBs1+fnzjcZmk0g4uDRacQee1n3FSrS+pL6vMZQfrVP3+/t+hMx5MM2yYZ3OnjCkoB9RVcolq/jo6ZeMjm9R2AuTKN+jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JOSecuP+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B528C433F1;
+	Mon,  8 Apr 2024 13:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583657;
-	bh=WX5+aRYmF4S00B7AzIyoxRq1x7uTfLe581XSCTqmtDk=;
+	s=korg; t=1712582322;
+	bh=nCBl2FQTnfgqr/xz1AsOl6lBHUKafYY0q4/yRJZoJhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jUoztUzO/4hOOj96jaFeZd4JFuVv3G+LQ/ixNpbWdWQpWRelipYW53Bvyf3fuxzTK
-	 mqSHsikklrCgrFr5MBzlsJP14jnZZang3zSvNXezEuH9LxNmlFwUCBZLJlwYQZt+HM
-	 wDIN87+YWdXYSCotI5K2s2GLQDaZ76KTL7pPVpTU=
+	b=JOSecuP+vzZsucKEzeSQcDFuDoGypUJzpR5NpCjxGXzVr0NvXX2a1KNA02v63Zcjf
+	 oliTPn0/XoinQ7poGf+7/E+F/W290sdK6wMUh+WxkSOq125KhCsrGd/plNlyjrnbBZ
+	 vuDl0T2G/+h2iVvL5Tqe0cLCwGI+majniW7D37Ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 211/252] io_uring/kbuf: protect io_buffer_list teardown with a reference
+	Stephen Lee <slee08177@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 096/138] ASoC: ops: Fix wraparound for mask in snd_soc_get_volsw
 Date: Mon,  8 Apr 2024 14:58:30 +0200
-Message-ID: <20240408125313.201817428@linuxfoundation.org>
+Message-ID: <20240408125259.218619468@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,82 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Stephen Lee <slee08177@gmail.com>
 
-commit 6b69c4ab4f685327d9e10caf0d84217ba23a8c4b upstream.
+[ Upstream commit fc563aa900659a850e2ada4af26b9d7a3de6c591 ]
 
-No functional changes in this patch, just in preparation for being able
-to keep the buffer list alive outside of the ctx->uring_lock.
+In snd_soc_info_volsw(), mask is generated by figuring out the index of
+the most significant bit set in max and converting the index to a
+bitmask through bit shift 1. Unintended wraparound occurs when max is an
+integer value with msb bit set. Since the bit shift value 1 is treated
+as an integer type, the left shift operation will wraparound and set
+mask to 0 instead of all 1's. In order to fix this, we type cast 1 as
+`1ULL` to prevent the wraparound.
 
-Cc: stable@vger.kernel.org # v6.4+
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7077148fb50a ("ASoC: core: Split ops out of soc-core.c")
+Signed-off-by: Stephen Lee <slee08177@gmail.com>
+Link: https://msgid.link/r/20240326010131.6211-1-slee08177@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/kbuf.c |   15 +++++++++++----
- io_uring/kbuf.h |    2 ++
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ sound/soc/soc-ops.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -59,6 +59,7 @@ static int io_buffer_add_list(struct io_
- 	 * always under the ->uring_lock, but the RCU lookup from mmap does.
- 	 */
- 	bl->bgid = bgid;
-+	atomic_set(&bl->refs, 1);
- 	return xa_err(xa_store(&ctx->io_bl_xa, bgid, bl, GFP_KERNEL));
- }
- 
-@@ -272,6 +273,14 @@ static int __io_remove_buffers(struct io
- 	return i;
- }
- 
-+static void io_put_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl)
-+{
-+	if (atomic_dec_and_test(&bl->refs)) {
-+		__io_remove_buffers(ctx, bl, -1U);
-+		kfree_rcu(bl, rcu);
-+	}
-+}
-+
- void io_destroy_buffers(struct io_ring_ctx *ctx)
- {
- 	struct io_buffer_list *bl;
-@@ -279,8 +288,7 @@ void io_destroy_buffers(struct io_ring_c
- 
- 	xa_for_each(&ctx->io_bl_xa, index, bl) {
- 		xa_erase(&ctx->io_bl_xa, bl->bgid);
--		__io_remove_buffers(ctx, bl, -1U);
--		kfree_rcu(bl, rcu);
-+		io_put_bl(ctx, bl);
- 	}
- 
- 	while (!list_empty(&ctx->io_buffers_pages)) {
-@@ -676,9 +684,8 @@ int io_unregister_pbuf_ring(struct io_ri
- 	if (!bl->is_mapped)
- 		return -EINVAL;
- 
--	__io_remove_buffers(ctx, bl, -1U);
- 	xa_erase(&ctx->io_bl_xa, bl->bgid);
--	kfree_rcu(bl, rcu);
-+	io_put_bl(ctx, bl);
- 	return 0;
- }
- 
---- a/io_uring/kbuf.h
-+++ b/io_uring/kbuf.h
-@@ -25,6 +25,8 @@ struct io_buffer_list {
- 	__u16 head;
- 	__u16 mask;
- 
-+	atomic_t refs;
-+
- 	/* ring mapped provided buffers */
- 	__u8 is_mapped;
- 	/* ring mapped provided buffers, but mmap'ed by application */
+diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
+index 2d25748ca7066..b27e89ff6a167 100644
+--- a/sound/soc/soc-ops.c
++++ b/sound/soc/soc-ops.c
+@@ -263,7 +263,7 @@ int snd_soc_get_volsw(struct snd_kcontrol *kcontrol,
+ 	int max = mc->max;
+ 	int min = mc->min;
+ 	int sign_bit = mc->sign_bit;
+-	unsigned int mask = (1 << fls(max)) - 1;
++	unsigned int mask = (1ULL << fls(max)) - 1;
+ 	unsigned int invert = mc->invert;
+ 	int val;
+ 	int ret;
+-- 
+2.43.0
+
 
 
 
