@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-36927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E8289C263
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12B1F89C183
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:21:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3301C1F2318F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A73971F22057
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFF37BB11;
-	Mon,  8 Apr 2024 13:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282347E58F;
+	Mon,  8 Apr 2024 13:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yoBORV4x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i483n418"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5962F6A352;
-	Mon,  8 Apr 2024 13:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88C670CDA;
+	Mon,  8 Apr 2024 13:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582749; cv=none; b=WUJxwdszCghs7QQ1hJ/ZiLqBopMN9g0Wu7Az7FWDfH0WpOykxn02R+hmb2togICww4M2W9EjEF+77OP9kMCgWBVoie8vMiAmqSvezeb3c2BtHa6CfX8NOC9wg3WehATwyGkBAOWp695qp244KmOIrzrSvPSxGvTckZo3psoBov8=
+	t=1712582249; cv=none; b=jENP85DBCptbIrNsYQBGsLME5AN7pChbG0Ucpwt+d19QuyxR5znS4SU4B5l9ciyTT2wpE9tTmCcF0hFl7AAsonZV7QtvJbVrjj9kRuFz3u+KP0y3KUbW7j5yWRfOd5MGmtD9OjUzt+91sGCGfVG3ETByeOBA8mv3DA3bokoNFTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582749; c=relaxed/simple;
-	bh=RVQFmo1KufOWlFjgh6jxAM3MQX3w7XwC/3RydgHWQM8=;
+	s=arc-20240116; t=1712582249; c=relaxed/simple;
+	bh=U0/HVNlJl2RIz7ukhfD3Tm3NZwSL0/E+5OFF9WbeiXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otUCpp9AHSSdAeo2dkUigFvyATCfGZ9V5aaVYTB9nUKCOCEhglCCzg0RipyWq4Wmve5wx8mhVnI2+c1rOSAItkmCvDmrrIxUepTG+mjnMrjuGvxBr1CoEqodxdENO/EvSa4bOCa2FyYldI+XttpBOEsqCZsPXx6dnhGPLXNMaWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yoBORV4x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F7EC433C7;
-	Mon,  8 Apr 2024 13:25:48 +0000 (UTC)
+	 MIME-Version; b=lUtWXC0419kXMp5fKDMY9AoWisN0SW6K9mns2O64vmnezzuCV66Nezo5OuuNyeQc9DXUdVxINyHxgwJjUTcRpz5ORC8HUeGmnM9c7fapaiGjbvTjx6QkDkr3kvafkWKK8q1e7JU5lFEpQt5g0NTYpePs15sOmkkmoInj6s0akLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i483n418; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F34AC433F1;
+	Mon,  8 Apr 2024 13:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582749;
-	bh=RVQFmo1KufOWlFjgh6jxAM3MQX3w7XwC/3RydgHWQM8=;
+	s=korg; t=1712582249;
+	bh=U0/HVNlJl2RIz7ukhfD3Tm3NZwSL0/E+5OFF9WbeiXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yoBORV4xkKqvw/TD1hpDnu7bPDxclXMq06ZGDr547QCE6rHXdXJ4+5lCWcNwtXga3
-	 muYGMlTG+bz3WxnGN4Gd1gNYidM2TAki+fDucfYPBmmXCkZ9A99wk3QNcff5D1QqXn
-	 NFlXfB79vIKl9SvA63JQQmAxGMZCbAt7i6Tzycw0=
+	b=i483n418GZdU13AlhafmTTnKW/1mSx++0azZQNNPceq7FiirKOZLNg/LnH9YZYTqv
+	 8g8zk5F3S6neeHMj/8IIEsql0cZqC4TJG3bXLheAAEqEWUKAn9nykRaDMebz+jMJtj
+	 jG52ROEnF+seF/ThcZ8rzhB5WHJT1dIQs7SrAjts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Divya Koppera <divya.koppera@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.8 102/273] net: phy: micrel: lan8814: Fix when enabling/disabling 1-step timestamping
+	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+	Matthias Kaehlcke <mka@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Nikita Travkin <nikita@trvn.ru>
+Subject: [PATCH 6.6 078/252] Bluetooth: qca: fix device-address endianness
 Date: Mon,  8 Apr 2024 14:56:17 +0200
-Message-ID: <20240408125312.478026376@linuxfoundation.org>
+Message-ID: <20240408125309.060040158@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +65,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit de99e1ea3a35f23ff83a31d6b08f43d27b2c6345 upstream.
+commit 77f45cca8bc55d00520a192f5a7715133591c83e upstream.
 
-There are 2 issues with the blamed commit.
-1. When the phy is initialized, it would enable the disabled of UDPv4
-   checksums. The UDPv6 checksum is already enabled by default. So when
-   1-step is configured then it would clear these flags.
-2. After the 1-step is configured, then if 2-step is configured then the
-   1-step would be still configured because it is not clearing the flag.
-   So the sync frames will still have origin timestamps set.
+The WCN6855 firmware on the Lenovo ThinkPad X13s expects the Bluetooth
+device address in big-endian order when setting it using the
+EDL_WRITE_BD_ADDR_OPCODE command.
 
-Fix this by reading first the value of the register and then
-just change bit 12 as this one determines if the timestamp needs to
-be inserted in the frame, without changing any other bits.
+Presumably, this is the case for all non-ROME devices which all use the
+EDL_WRITE_BD_ADDR_OPCODE command for this (unlike the ROME devices which
+use a different command and expect the address in little-endian order).
 
-Fixes: ece19502834d ("net: phy: micrel: 1588 support for LAN8814 phy")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Divya Koppera <divya.koppera@microchip.com>
-Link: https://lore.kernel.org/r/20240402071634.2483524-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reverse the little-endian address before setting it to make sure that
+the address can be configured using tools like btmgmt or using the
+'local-bd-address' devicetree property.
+
+Note that this can potentially break systems with boot firmware which
+has started relying on the broken behaviour and is incorrectly passing
+the address via devicetree in big-endian order.
+
+The only device affected by this should be the WCN3991 used in some
+Chromebooks. As ChromeOS updates the kernel and devicetree in lockstep,
+the new 'qcom,local-bd-address-broken' property can be used to determine
+if the firmware is buggy so that the underlying driver bug can be fixed
+without breaking backwards compatibility.
+
+Set the HCI_QUIRK_BDADDR_PROPERTY_BROKEN quirk for such platforms so
+that the address is reversed when parsing the address property.
+
+Fixes: 5c0a1001c8be ("Bluetooth: hci_qca: Add helper to set device address")
+Cc: stable@vger.kernel.org      # 5.1
+Cc: Balakrishna Godavarthi <quic_bgodavar@quicinc.com>
+Cc: Matthias Kaehlcke <mka@chromium.org>
+Tested-by: Nikita Travkin <nikita@trvn.ru> # sc7180
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/micrel.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btqca.c   |    8 ++++++--
+ drivers/bluetooth/hci_qca.c |   10 ++++++++++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -2416,6 +2416,7 @@ static int lan8814_hwtstamp(struct mii_t
- 	struct lan8814_ptp_rx_ts *rx_ts, *tmp;
- 	int txcfg = 0, rxcfg = 0;
- 	int pkt_ts_enable;
-+	int tx_mod;
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -758,11 +758,15 @@ EXPORT_SYMBOL_GPL(qca_uart_setup);
  
- 	ptp_priv->hwts_tx_type = config->tx_type;
- 	ptp_priv->rx_filter = config->rx_filter;
-@@ -2462,9 +2463,14 @@ static int lan8814_hwtstamp(struct mii_t
- 	lanphy_write_page_reg(ptp_priv->phydev, 5, PTP_RX_TIMESTAMP_EN, pkt_ts_enable);
- 	lanphy_write_page_reg(ptp_priv->phydev, 5, PTP_TX_TIMESTAMP_EN, pkt_ts_enable);
+ int qca_set_bdaddr(struct hci_dev *hdev, const bdaddr_t *bdaddr)
+ {
++	bdaddr_t bdaddr_swapped;
+ 	struct sk_buff *skb;
+ 	int err;
  
--	if (ptp_priv->hwts_tx_type == HWTSTAMP_TX_ONESTEP_SYNC)
-+	tx_mod = lanphy_read_page_reg(ptp_priv->phydev, 5, PTP_TX_MOD);
-+	if (ptp_priv->hwts_tx_type == HWTSTAMP_TX_ONESTEP_SYNC) {
- 		lanphy_write_page_reg(ptp_priv->phydev, 5, PTP_TX_MOD,
--				      PTP_TX_MOD_TX_PTP_SYNC_TS_INSERT_);
-+				      tx_mod | PTP_TX_MOD_TX_PTP_SYNC_TS_INSERT_);
-+	} else if (ptp_priv->hwts_tx_type == HWTSTAMP_TX_ON) {
-+		lanphy_write_page_reg(ptp_priv->phydev, 5, PTP_TX_MOD,
-+				      tx_mod & ~PTP_TX_MOD_TX_PTP_SYNC_TS_INSERT_);
-+	}
+-	skb = __hci_cmd_sync_ev(hdev, EDL_WRITE_BD_ADDR_OPCODE, 6, bdaddr,
+-				HCI_EV_VENDOR, HCI_INIT_TIMEOUT);
++	baswap(&bdaddr_swapped, bdaddr);
++
++	skb = __hci_cmd_sync_ev(hdev, EDL_WRITE_BD_ADDR_OPCODE, 6,
++				&bdaddr_swapped, HCI_EV_VENDOR,
++				HCI_INIT_TIMEOUT);
+ 	if (IS_ERR(skb)) {
+ 		err = PTR_ERR(skb);
+ 		bt_dev_err(hdev, "QCA Change address cmd failed (%d)", err);
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -225,6 +225,7 @@ struct qca_serdev {
+ 	struct qca_power *bt_power;
+ 	u32 init_speed;
+ 	u32 oper_speed;
++	bool bdaddr_property_broken;
+ 	const char *firmware_name;
+ };
  
- 	if (config->rx_filter != HWTSTAMP_FILTER_NONE)
- 		lan8814_config_ts_intr(ptp_priv->phydev, true);
+@@ -1824,6 +1825,7 @@ static int qca_setup(struct hci_uart *hu
+ 	const char *firmware_name = qca_get_firmware_name(hu);
+ 	int ret;
+ 	struct qca_btsoc_version ver;
++	struct qca_serdev *qcadev;
+ 	const char *soc_name;
+ 
+ 	ret = qca_check_speeds(hu);
+@@ -1882,6 +1884,11 @@ retry:
+ 	case QCA_WCN6855:
+ 	case QCA_WCN7850:
+ 		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
++
++		qcadev = serdev_device_get_drvdata(hu->serdev);
++		if (qcadev->bdaddr_property_broken)
++			set_bit(HCI_QUIRK_BDADDR_PROPERTY_BROKEN, &hdev->quirks);
++
+ 		hci_set_aosp_capable(hdev);
+ 
+ 		ret = qca_read_soc_version(hdev, &ver, soc_type);
+@@ -2253,6 +2260,9 @@ static int qca_serdev_probe(struct serde
+ 	if (!qcadev->oper_speed)
+ 		BT_DBG("UART will pick default operating speed");
+ 
++	qcadev->bdaddr_property_broken = device_property_read_bool(&serdev->dev,
++			"qcom,local-bd-address-broken");
++
+ 	if (data)
+ 		qcadev->btsoc_type = data->soc_type;
+ 	else
 
 
 
