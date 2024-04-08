@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-36495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B76089C01D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5143089C021
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C1DC1C21733
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6F4A1F24B6F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14F8768FC;
-	Mon,  8 Apr 2024 13:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FFBA6F08B;
+	Mon,  8 Apr 2024 13:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6h9LYBb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgcU349P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11582DF73;
-	Mon,  8 Apr 2024 13:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4966CDA8;
+	Mon,  8 Apr 2024 13:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581492; cv=none; b=SEWer4N1Z2Yz84WB6UbwoVSH5cZ52QWEK5f0ln1gEu6IMKrSjnrfoYxgvmZvZS9BJyr83lCOfzW3jv88QTmetmqscBdTzw8Mof4qoKLjfUAHTaw1LgUUqg4GlQarN8Gt73Qdwj5uRhsvtBvz8q1OyN5JywIWaKeo4w3AkagjyJA=
+	t=1712581504; cv=none; b=FkSrpyCiv9d/5JwTSZVkqvuZSyxchvWjJpQsHIVxsXl9mC6wmCFaAcV7zARgp7TpHa7gUGfKzPw5n5A3hT5l9r+tfd0eUGiZ0GlLhgjKz2HflLjAfSdHIuuoO6FAoWtBXV1t329YGvNyoTHd94icMbiA4vS6bsd7hbnZ28Agzxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581492; c=relaxed/simple;
-	bh=4ztLEga/GUQA/wpWO29x0g4Uz/wcESVVt6gPb6o9RCs=;
+	s=arc-20240116; t=1712581504; c=relaxed/simple;
+	bh=UgIbFtA6XRmY5DObalqbB8UnGYfbTvufJ+2jmUY/Yvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YnWroXu2YRzEEC4PzIRRsXnRxxuXebkuTzs4Ok36Coe2BB7/BFKuRI8zmPuIMnimcXMMdbkztieFQXP9aZstKyhe4RrsUOfF8h42AOfJg6DaykYV984fnjvwXTG8qSsdRUFlu3/9k2duRvfRrB5ZyAcEahZrsE9jd5qoBYaXFBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6h9LYBb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6226C433F1;
-	Mon,  8 Apr 2024 13:04:51 +0000 (UTC)
+	 MIME-Version; b=nSxMvONvLgtQlOdS8ORA7dSGaLEM5xWGr6gie3XLrlyWHEqj3/ps3f/FhNmhmgYCRXDnMzZPuCaIIWnHhMdeHSzsPDtbTFAftDfteI0p/ZRyVasyCofB+Q3m/tQnQM0hZFmCX7PnnpA1x2wbNCNXte/HS9DgBbv0vBF2MC/X1QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgcU349P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 971CBC433C7;
+	Mon,  8 Apr 2024 13:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581492;
-	bh=4ztLEga/GUQA/wpWO29x0g4Uz/wcESVVt6gPb6o9RCs=;
+	s=korg; t=1712581504;
+	bh=UgIbFtA6XRmY5DObalqbB8UnGYfbTvufJ+2jmUY/Yvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m6h9LYBb2i3EQc07+QQivLRpKPG9OBNsSYGkEsdkzaGWaBqDc615Yes9AAS2y3LeD
-	 FsbmvpG+xOF6N0DBB6OTtjjxSa9YsRQP4ksxJCBhqQIOGMVh2a1oepaQTidJY6HlJ2
-	 2OvwXoFyQcJZjifOTKCcoZ6dSrqlJRrdEzBF+XeM=
+	b=mgcU349P3TGmK3oPEGpvYw4gQtcMs6C0sZys0IL1Yc721tuYx9NxwWa5+PfH6olZo
+	 0XgR6jdmcNJondq4uHV0dtVGhbGXmj19akTHSg59+nzIwCu//A4fKu6TsUZVJNSeQy
+	 Y6ClC6ewE2II0I4MmaEM2iAQggAFO0mWqItPJBds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benson Leung <bleung@chromium.org>,
-	Prashant Malani <pmalani@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Jameson Thies <jthies@google.com>,
+	Petr Mladek <pmladek@suse.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 056/690] usb: typec: ucsi: Clean up UCSI_CABLE_PROP macros
-Date: Mon,  8 Apr 2024 14:48:42 +0200
-Message-ID: <20240408125401.548368618@linuxfoundation.org>
+Subject: [PATCH 5.15 057/690] printk/console: Split out code that enables default console
+Date: Mon,  8 Apr 2024 14:48:43 +0200
+Message-ID: <20240408125401.585119811@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -68,45 +66,95 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jameson Thies <jthies@google.com>
+From: Petr Mladek <pmladek@suse.com>
 
-[ Upstream commit 4d0a5a9915793377c0fe1a8d78de6bcd92cea963 ]
+[ Upstream commit ed758b30d541e9bf713cd58612a4414e57dc6d73 ]
 
-Clean up UCSI_CABLE_PROP macros by fixing a bitmask shifting error for
-plug type and updating the modal support macro for consistent naming.
+Put the code enabling a console by default into a separate function
+called try_enable_default_console().
 
-Fixes: 3cf657f07918 ("usb: typec: ucsi: Remove all bit-fields")
-Cc: stable@vger.kernel.org
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Reviewed-by: Prashant Malani <pmalani@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Jameson Thies <jthies@google.com>
-Link: https://lore.kernel.org/r/20240305025804.1290919-2-jthies@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Rename try_enable_new_console() to try_enable_preferred_console() to
+make the purpose of the different variants more clear.
+
+It is a code refactoring without any functional change.
+
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Link: https://lore.kernel.org/r/20211122132649.12737-2-pmladek@suse.com
+Stable-dep-of: 801410b26a0e ("serial: Lock console when calling into driver before registration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/printk/printk.c | 38 +++++++++++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
-index cee666790907e..3dc3da8dbbdf8 100644
---- a/drivers/usb/typec/ucsi/ucsi.h
-+++ b/drivers/usb/typec/ucsi/ucsi.h
-@@ -220,12 +220,12 @@ struct ucsi_cable_property {
- #define UCSI_CABLE_PROP_FLAG_VBUS_IN_CABLE	BIT(0)
- #define UCSI_CABLE_PROP_FLAG_ACTIVE_CABLE	BIT(1)
- #define UCSI_CABLE_PROP_FLAG_DIRECTIONALITY	BIT(2)
--#define UCSI_CABLE_PROP_FLAG_PLUG_TYPE(_f_)	((_f_) & GENMASK(3, 0))
-+#define UCSI_CABLE_PROP_FLAG_PLUG_TYPE(_f_)	(((_f_) & GENMASK(4, 3)) >> 3)
- #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_A	0
- #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_B	1
- #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_C	2
- #define   UCSI_CABLE_PROPERTY_PLUG_OTHER	3
--#define UCSI_CABLE_PROP_MODE_SUPPORT		BIT(5)
-+#define UCSI_CABLE_PROP_FLAG_MODE_SUPPORT	BIT(5)
- 	u8 latency;
- } __packed;
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index 8b110b245d92c..4bef2963284af 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -2888,7 +2888,8 @@ early_param("keep_bootcon", keep_bootcon_setup);
+  * Care need to be taken with consoles that are statically
+  * enabled such as netconsole
+  */
+-static int try_enable_new_console(struct console *newcon, bool user_specified)
++static int try_enable_preferred_console(struct console *newcon,
++					bool user_specified)
+ {
+ 	struct console_cmdline *c;
+ 	int i, err;
+@@ -2936,6 +2937,23 @@ static int try_enable_new_console(struct console *newcon, bool user_specified)
+ 	return -ENOENT;
+ }
  
++/* Try to enable the console unconditionally */
++static void try_enable_default_console(struct console *newcon)
++{
++	if (newcon->index < 0)
++		newcon->index = 0;
++
++	if (newcon->setup && newcon->setup(newcon, NULL) != 0)
++		return;
++
++	newcon->flags |= CON_ENABLED;
++
++	if (newcon->device) {
++		newcon->flags |= CON_CONSDEV;
++		has_preferred_console = true;
++	}
++}
++
+ /*
+  * The console driver calls this routine during kernel initialization
+  * to register the console printing procedure with printk() and to
+@@ -2991,25 +3009,15 @@ void register_console(struct console *newcon)
+ 	 *	didn't select a console we take the first one
+ 	 *	that registers here.
+ 	 */
+-	if (!has_preferred_console) {
+-		if (newcon->index < 0)
+-			newcon->index = 0;
+-		if (newcon->setup == NULL ||
+-		    newcon->setup(newcon, NULL) == 0) {
+-			newcon->flags |= CON_ENABLED;
+-			if (newcon->device) {
+-				newcon->flags |= CON_CONSDEV;
+-				has_preferred_console = true;
+-			}
+-		}
+-	}
++	if (!has_preferred_console)
++		try_enable_default_console(newcon);
+ 
+ 	/* See if this console matches one we selected on the command line */
+-	err = try_enable_new_console(newcon, true);
++	err = try_enable_preferred_console(newcon, true);
+ 
+ 	/* If not, try to match against the platform default(s) */
+ 	if (err == -ENOENT)
+-		err = try_enable_new_console(newcon, false);
++		err = try_enable_preferred_console(newcon, false);
+ 
+ 	/* printk() messages are not printed to the Braille console. */
+ 	if (err || newcon->flags & CON_BRL)
 -- 
 2.43.0
 
