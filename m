@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-36935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A85A589C26A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C052089C69B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:14:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49CDE1F22C0C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93D34B242DE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A7C7C08D;
-	Mon,  8 Apr 2024 13:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7587B8120F;
+	Mon,  8 Apr 2024 14:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+eQlSnq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nu3rOALm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCA76A352;
-	Mon,  8 Apr 2024 13:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335AD74438;
+	Mon,  8 Apr 2024 14:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582773; cv=none; b=hoUb+i+ppjMxz3Le87zND/6uNenqBYVPXeUFvUV+iuh3AufTzkW/Z+7+7LCJr5nTjReGuiXNNEQcY52IE8bQhzLfMyGnBtK9CMwufnZCDOjBJy+ZGD4W90SnyQ8NLUHw140onZhU0dmueR+Cq/u24rV4pWaCWdZ9FP4mJ4zNXJE=
+	t=1712585180; cv=none; b=oURbS+CzpqUVNoRCevqg0lKqjTCsRxh8VnhiUE8wrPy53xZ8yf48Qa8RjVGdX3mnkAMDCVVpZf8D9WNkf34IM3aq19v/0gnPeR210gDpW49OZpdM4bKrZ/Q45WIyASjmuQKKXfgyGTHL8OgzUUWOMn/JRG9qB0qcKj5OqPwtIaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582773; c=relaxed/simple;
-	bh=VLoKsDDmisZ41LJbKFwe46JmbRgYOpaX8ckY+7cxdeI=;
+	s=arc-20240116; t=1712585180; c=relaxed/simple;
+	bh=/lPDgzCmyRdPVk0nIu1gokLXiuwvGgpMhYJDFNl9WxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sHc3HZYYpvggL4XwXMZ/oZVB7CujCtT1WN6XR2ElyBK4nm62dl6F1P4t04YwHRkw+J5eqKkXhW8DPEk521yJjmxFtZtUkOZGaV7PO+NG8WBi3A9+C7gdGJ9MtyphlaF2HiVovj7O+BXmn6eO19tIzpjEYHIojkGX7hM0qLycOAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+eQlSnq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD4DC433C7;
-	Mon,  8 Apr 2024 13:26:12 +0000 (UTC)
+	 MIME-Version; b=ThxkhN4mjttaNj+mfUt41zmdLUlxni+JMEbl2pvLu1lYLNU0QHxAgvEVzdI3KexuZwUJ/Y+pHAUsEWGlmTyC2bIKu/gNtUAALaW1fYi8gfi0semNWz6bPp5keWdk997n5hyY07jKZOaeFP1p5nd8cYyxsLtjAWzOMdXHuw5mr04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nu3rOALm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86F9C433F1;
+	Mon,  8 Apr 2024 14:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582772;
-	bh=VLoKsDDmisZ41LJbKFwe46JmbRgYOpaX8ckY+7cxdeI=;
+	s=korg; t=1712585180;
+	bh=/lPDgzCmyRdPVk0nIu1gokLXiuwvGgpMhYJDFNl9WxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+eQlSnqTcvAIMA5i3ajx8v/aHqEOvzfZVQqjU3/2Q+uC+3AFRdoYzFbcihxo1hux
-	 YqlUlmaDpWVnr5IaBCdYmH0lDJK13EI+1rDAaVjMG9OntXBFV5qvF1mz4XKAGekT6Y
-	 ePUiwQr2usIeHmajBBsuzULI3WUWsXj2Igq+IyM8=
+	b=Nu3rOALmSygV88A5gY1V1qZhuEDL0fM0CFwMmP2T/K20yHDICfFcKjgdGdfmbc3br
+	 JQuD1SuwJsNNT8Zu8Wy0W+1cOAxcvLBag9CL1ygakQj7W38tlxGG+38UaOBVzdtSDV
+	 maD+HQF1nRG7GkrSZnggfdQwuGirNo/tLws6EPyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 132/138] smb: client: fix potential UAF in smb2_is_network_name_deleted()
+	Herve Codina <herve.codina@bootlin.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Rob Herring <robh@kernel.org>
+Subject: [PATCH 5.15 680/690] of: dynamic: Synchronize of_changeset_destroy() with the devlink removals
 Date: Mon,  8 Apr 2024 14:59:06 +0200
-Message-ID: <20240408125300.335599953@linuxfoundation.org>
+Message-ID: <20240408125424.362888304@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-commit 63981561ffd2d4987807df4126f96a11e18b0c1d upstream.
+commit 8917e7385346bd6584890ed362985c219fe6ae84 upstream.
 
-Skip sessions that are being teared down (status == SES_EXITING) to
-avoid UAF.
+In the following sequence:
+  1) of_platform_depopulate()
+  2) of_overlay_remove()
 
+During the step 1, devices are destroyed and devlinks are removed.
+During the step 2, OF nodes are destroyed but
+__of_changeset_entry_destroy() can raise warnings related to missing
+of_node_put():
+  ERROR: memory leak, expected refcount 1 instead of 2 ...
+
+Indeed, during the devlink removals performed at step 1, the removal
+itself releasing the device (and the attached of_node) is done by a job
+queued in a workqueue and so, it is done asynchronously with respect to
+function calls.
+When the warning is present, of_node_put() will be called but wrongly
+too late from the workqueue job.
+
+In order to be sure that any ongoing devlink removals are done before
+the of_node destruction, synchronize the of_changeset_destroy() with the
+devlink removals.
+
+Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Saravana Kannan <saravanak@google.com>
+Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240325152140.198219-3-herve.codina@bootlin.com
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2ops.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/of/dynamic.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -2437,6 +2437,8 @@ smb2_is_network_name_deleted(char *buf,
+--- a/drivers/of/dynamic.c
++++ b/drivers/of/dynamic.c
+@@ -9,6 +9,7 @@
  
- 	spin_lock(&cifs_tcp_ses_lock);
- 	list_for_each_entry(ses, &pserver->smb_ses_list, smb_ses_list) {
-+		if (cifs_ses_exiting(ses))
-+			continue;
- 		list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
- 			if (tcon->tid == le32_to_cpu(shdr->Id.SyncId.TreeId)) {
- 				spin_lock(&tcon->tc_lock);
+ #define pr_fmt(fmt)	"OF: " fmt
+ 
++#include <linux/device.h>
+ #include <linux/of.h>
+ #include <linux/spinlock.h>
+ #include <linux/slab.h>
+@@ -678,6 +679,17 @@ void of_changeset_destroy(struct of_chan
+ {
+ 	struct of_changeset_entry *ce, *cen;
+ 
++	/*
++	 * When a device is deleted, the device links to/from it are also queued
++	 * for deletion. Until these device links are freed, the devices
++	 * themselves aren't freed. If the device being deleted is due to an
++	 * overlay change, this device might be holding a reference to a device
++	 * node that will be freed. So, wait until all already pending device
++	 * links are deleted before freeing a device node. This ensures we don't
++	 * free any device node that has a non-zero reference count.
++	 */
++	device_link_wait_removal();
++
+ 	list_for_each_entry_safe_reverse(ce, cen, &ocs->entries, node)
+ 		__of_changeset_entry_destroy(ce);
+ }
 
 
 
