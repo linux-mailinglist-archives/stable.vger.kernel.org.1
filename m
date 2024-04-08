@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-37238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 386EC89C3F8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEAC189C12E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AD711C22301
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0005B283EE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:17:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F2474BF5;
-	Mon,  8 Apr 2024 13:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5757EF00;
+	Mon,  8 Apr 2024 13:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXiIRSSU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDSKueLZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1185F6A352;
-	Mon,  8 Apr 2024 13:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C243E7E78B;
+	Mon,  8 Apr 2024 13:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583652; cv=none; b=QnDes9qy/sppspStf/ODSOf7Nqop/MXdjoPhim7tv5nIypUdIJ+nlPeQ5KtcJMduQGaVc8XeQUaxTRJclFHV65MZpYknI5u6E6S/AEA+Wr01RcUyDxf2ztd5klJfB8DSpyIesTfUVKDaFSmvUlVCTiHlrjzaxz4oR7wiUDdWYNw=
+	t=1712581946; cv=none; b=sahC6CXRQzaLFh6kRhvtkkf1HrAdrFHkjDR13yIwcTwbe1lQCcf9vQjQMHAaiRoNrtKabV78J3Pne7MgPbYkHNHXj7Dxn9FhBJpW/UjqmpH3PtsLw2gPaCrKG8wWe0VZdd6boAZIiz478KF3mFYB/9yHwU1+5KD1cIxl392WG1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583652; c=relaxed/simple;
-	bh=wcpnKYlSsxXwvGPDV99VpWpk6NCEDEJiRKW9Xa73dJQ=;
+	s=arc-20240116; t=1712581946; c=relaxed/simple;
+	bh=6kGF7VRvEahJBigVOfjKtvFGSnT1/SsvTBQcH77zM5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZApLbRPPUAaD6EQWli+TNxTBY/EwFvJqLUjI1CYCb/H3qWo3XcoHqgU4x+G46wtHykap/ZTfZfHRfijrca3lzak9ciuJIcCcsyArhf3yBduhuHGZInY3ggJ3seX3lw2g3ikJ9HF7jwpAGCnoo2RBfrDn24fhIqXN7HY231tc90k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXiIRSSU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B530C433F1;
-	Mon,  8 Apr 2024 13:40:51 +0000 (UTC)
+	 MIME-Version; b=Kxq4OneSLJ4ywtm08lN9HfE/yn7p0We2ZTuXG84bnfe/xGIXr9qNHJJOzaZjuuGgQ+5s17Dt2JS8LlJnhBYO7k2DDd0IT3f+jpGtBxEhwwYkxCfNvgVYEmDk7h3szxcLvOAXTfCoyYqYhYAPJ89l9nNIyGanUIVQgOnMeyJLB1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDSKueLZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F8CC433C7;
+	Mon,  8 Apr 2024 13:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583651;
-	bh=wcpnKYlSsxXwvGPDV99VpWpk6NCEDEJiRKW9Xa73dJQ=;
+	s=korg; t=1712581946;
+	bh=6kGF7VRvEahJBigVOfjKtvFGSnT1/SsvTBQcH77zM5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UXiIRSSUZP/JLIzHBr1Onn28T5jwRK78ga8aLgKlfdlMfUvPn8Yl3SKejzotYq4RD
-	 PbKuWXi3TxejhjdIqVpX1epxDvRh5uaXQAiDwJ/Y3WTSrftoUMAGK3SCO34i/it5zB
-	 tF2IoYUIRbkbPnytUKKXiMeOpDoU2F4dd2Iej+8s=
+	b=EDSKueLZylsCkL7LQxN/npF+EGJdM3R4svXiuQeBzkU1T8Bfl4lsNnKVg+cUYQEbi
+	 Q7XTR16hXobSzsz1uoUyH+qyLG4NM+f8Xq70+xz+J6BeR5bEjhN6VCgHdvV75cUPCg
+	 uCTE0LuPhcFj+6gLeEc20TyoVs8Bf9ZhHBiynfXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	I Gede Agastya Darma Laksana <gedeagas22@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.8 205/273] ALSA: hda/realtek: Update Panasonic CF-SZ6 quirk to support headset with microphone
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 066/138] octeontx2-af: Add array index check
 Date: Mon,  8 Apr 2024 14:58:00 +0200
-Message-ID: <20240408125315.704913514@linuxfoundation.org>
+Message-ID: <20240408125258.273174077@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: I Gede Agastya Darma Laksana <gedeagas22@gmail.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-commit 1576f263ee2147dc395531476881058609ad3d38 upstream.
+commit ef15ddeeb6bee87c044bf7754fac524545bf71e8 upstream.
 
-This patch addresses an issue with the Panasonic CF-SZ6's existing quirk,
-specifically its headset microphone functionality. Previously, the quirk
-used ALC269_FIXUP_HEADSET_MODE, which does not support the CF-SZ6's design
-of a single 3.5mm jack for both mic and audio output effectively. The
-device uses pin 0x19 for the headset mic without jack detection.
+In rvu_map_cgx_lmac_pf() the 'iter', which is used as an array index, can reach
+value (up to 14) that exceed the size (MAX_LMAC_COUNT = 8) of the array.
+Fix this bug by adding 'iter' value check.
 
-Following verification on the CF-SZ6 and discussions with the original
-patch author, i determined that the update to
-ALC269_FIXUP_ASPIRE_HEADSET_MIC is the appropriate solution. This change
-is custom-designed for the CF-SZ6's unique hardware setup, which includes
-a single 3.5mm jack for both mic and audio output, connecting the headset
-microphone to pin 0x19 without the use of jack detection.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 0fca97a29b83 ("ALSA: hda/realtek - Add Panasonic CF-SZ6 headset jack quirk")
-Signed-off-by: I Gede Agastya Darma Laksana <gedeagas22@gmail.com>
-Cc: <stable@vger.kernel.org>
-Message-ID: <20240401174602.14133-1-gedeagas22@gmail.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 91c6945ea1f9 ("octeontx2-af: cn10k: Add RPM MAC support")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10189,7 +10189,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x10ec, 0x1252, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x10ec, 0x1254, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x10ec, 0x12cc, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
--	SND_PCI_QUIRK(0x10f7, 0x8338, "Panasonic CF-SZ6", ALC269_FIXUP_HEADSET_MODE),
-+	SND_PCI_QUIRK(0x10f7, 0x8338, "Panasonic CF-SZ6", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x144d, 0xc109, "Samsung Ativ book 9 (NP900X3G)", ALC269_FIXUP_INV_DMIC),
- 	SND_PCI_QUIRK(0x144d, 0xc169, "Samsung Notebook 9 Pen (NP930SBE-K01US)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x144d, 0xc176, "Samsung Notebook 9 Pro (NP930MBE-K04US)", ALC298_FIXUP_SAMSUNG_AMP),
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+@@ -160,6 +160,8 @@ static int rvu_map_cgx_lmac_pf(struct rv
+ 			continue;
+ 		lmac_bmap = cgx_get_lmac_bmap(rvu_cgx_pdata(cgx, rvu));
+ 		for_each_set_bit(iter, &lmac_bmap, rvu->hw->lmac_per_cgx) {
++			if (iter >= MAX_LMAC_COUNT)
++				continue;
+ 			lmac = cgx_get_lmacid(rvu_cgx_pdata(cgx, rvu),
+ 					      iter);
+ 			rvu->pf2cgxlmac_map[pf] = cgxlmac_id_to_bmap(cgx, lmac);
 
 
 
