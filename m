@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-37003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D597989C2AF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 322CA89C5A5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:59:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12DFD1C21EBC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C88BC1F21D5C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532CD81751;
-	Mon,  8 Apr 2024 13:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F297E115;
+	Mon,  8 Apr 2024 13:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlBc0Tjc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsIH+xSE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E5874BE5;
-	Mon,  8 Apr 2024 13:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179417C090;
+	Mon,  8 Apr 2024 13:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582972; cv=none; b=kfJfG3AYl8LaSuxSCJm9hnaUV6awv4bn1lomPFAPCejBEcL8vQjFCpyilEtqk0KFCfmWsq6P1YrOQ0phEWRdgyy+OtKYpkhRpbIQTVopLB9VMT+rTBVE+n+CUHsxduPlJTysPN65h8s6Xqdclx8no46sOvhKpZl5AHR1nRRvL0U=
+	t=1712584724; cv=none; b=Zo6q0E2x8XQz6bcHeAdx4YWsLUx6Pk2LDEAmHY+OuODM77sHQuuBBTa1jEa1HqyPcBT7SXec7+EWyhu5V4gr+eJUbv1lpI1y411sZKw5lPxX4mswMrUyrrbQ5M1EP6SLAZIBisAq5I8y2MBRCvsb9yfumYU0O2/ztUTzaJ2DCFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582972; c=relaxed/simple;
-	bh=aX1d1FWvdpOT1LSvrRhbqRqfDJjF5trs+y/J+HeuRbs=;
+	s=arc-20240116; t=1712584724; c=relaxed/simple;
+	bh=NHRNbZyJmvn6//50Ez9sgxUkodWG81K3WgmG02gXRcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=olNYdsL3LiLAnHOw9T0pLmm0g9jV0wJEd2BQUqi2dSRacfiCTtu60Zcyxr+rZgbgbOSek+IhDNemGmHkHMH5BLSEOXZhsednkWT7+vTBGNgla+pZQVQPReXFBw/O59rmA4OWc5ri+5OfD+hEbO1V/0rKV88z2Vtkue3olLOQJ9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlBc0Tjc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4934EC433F1;
-	Mon,  8 Apr 2024 13:29:30 +0000 (UTC)
+	 MIME-Version; b=Bfy8g6lk7VHpKeIvKgJk42lES+VRXsrX3QFMWAT/5BeeAjgsfoh48ZFpbm5TERISla7sBWJJW8qXo3j24mmHv350n6N27rGUXctVzFwMHaTETW8FroYICQYrWBoM5M2NZwX3p8yhPGdZyPXIPIl9A5yg0n7JOs46R3jCOQzsHtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsIH+xSE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96174C433F1;
+	Mon,  8 Apr 2024 13:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582970;
-	bh=aX1d1FWvdpOT1LSvrRhbqRqfDJjF5trs+y/J+HeuRbs=;
+	s=korg; t=1712584724;
+	bh=NHRNbZyJmvn6//50Ez9sgxUkodWG81K3WgmG02gXRcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nlBc0TjcvkE1s7PAMBZ/oJ+gsod7UKOO9PKr83rmFGH1Iw1RJvLiNYSLVLliJHUYH
-	 4gmLqQ2iJ7zoK8gkQCTO+Y7Ye899h/qWO7QM1jzluApxpsqKTWtvz9cS8tYNIQ8oMB
-	 Y2z6l9zJDkA0deR74c4ZZJcXs0oVb0A3Xa1DPvtE=
+	b=jsIH+xSEhljislq3tCh182n2rErWvmppcwsqGhuQUDpsjvhVwKS0Fjtz8Rt6WuHbJ
+	 vk5lurC2ONvWJmDfOBAjPRUs54DQ425f6yTI5r+TXwtG0C85wAMujUh6u43C86agfI
+	 1HW+sFpZ8fMvtmz52mYdS5DSkm0WlhirzIRyQcq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.8 126/273] octeontx2-af: Add array index check
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 535/690] nfsd: update comment over __nfsd_file_cache_purge
 Date: Mon,  8 Apr 2024 14:56:41 +0200
-Message-ID: <20240408125313.207420207@linuxfoundation.org>
+Message-ID: <20240408125419.034041697@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit ef15ddeeb6bee87c044bf7754fac524545bf71e8 upstream.
+[ Upstream commit 972cc0e0924598cb293b919d39c848dc038b2c28 ]
 
-In rvu_map_cgx_lmac_pf() the 'iter', which is used as an array index, can reach
-value (up to 14) that exceed the size (MAX_LMAC_COUNT = 8) of the array.
-Fix this bug by adding 'iter' value check.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 91c6945ea1f9 ("octeontx2-af: cn10k: Add RPM MAC support")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/filecache.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-@@ -160,6 +160,8 @@ static int rvu_map_cgx_lmac_pf(struct rv
- 			continue;
- 		lmac_bmap = cgx_get_lmac_bmap(rvu_cgx_pdata(cgx, rvu));
- 		for_each_set_bit(iter, &lmac_bmap, rvu->hw->lmac_per_cgx) {
-+			if (iter >= MAX_LMAC_COUNT)
-+				continue;
- 			lmac = cgx_get_lmacid(rvu_cgx_pdata(cgx, rvu),
- 					      iter);
- 			rvu->pf2cgxlmac_map[pf] = cgxlmac_id_to_bmap(cgx, lmac);
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index 786e06cf107ff..1d4c0387c4192 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -906,7 +906,8 @@ nfsd_file_cache_init(void)
+  * @net: net-namespace to shut down the cache (may be NULL)
+  *
+  * Walk the nfsd_file cache and close out any that match @net. If @net is NULL,
+- * then close out everything. Called when an nfsd instance is being shut down.
++ * then close out everything. Called when an nfsd instance is being shut down,
++ * and when the exports table is flushed.
+  */
+ static void
+ __nfsd_file_cache_purge(struct net *net)
+-- 
+2.43.0
+
 
 
 
