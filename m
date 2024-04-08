@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC40789C26F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71ED389C598
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62B701F23125
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3C6F1C216E0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57A37C0A6;
-	Mon,  8 Apr 2024 13:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31F2768F0;
+	Mon,  8 Apr 2024 13:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ub29sgDb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qP+X0y+j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AC62DF73;
-	Mon,  8 Apr 2024 13:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8B97C6CA;
+	Mon,  8 Apr 2024 13:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582787; cv=none; b=tPufBsLTNUwtASzGpRlO0KdrvkAGYwIEX7kAY6EXKpHXScHb4gp1muueTgfuBy+dLtALQI+Le+KI6H6ZJdVhdxPJG8m/iiQpqc+qS1ShQKDlznZklrlIWRNM+E2U3aH4nfZ/LOLnaVOi0I60DxnYt4hkyIMny1yISQLxVvaGy3U=
+	t=1712584682; cv=none; b=cH8l1VOtndgcY5o+qmpPkMpdPvKES/aT6FuL1NOX33U9puAu9xyokYN+VHGLHdEYLCihFTx6O4QFq3HwqVs4xI2VdmoyoF55yKO/XljPyBCqui59DR+pZMvDjvCUuhQu6efZMzYjwUfKAIxMKmk22+9DNR0VBb0iMDiRcSm4sMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582787; c=relaxed/simple;
-	bh=yUOQCrDIhYzusdtcc0zSQ6G8QchPyuiLnfMutQKdxPM=;
+	s=arc-20240116; t=1712584682; c=relaxed/simple;
+	bh=ZXTev4ayTHSJQYKGuS6Oh94GJ8+V95M7ypfWSMQTvvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R6JNq59oBp6hzrZ22uOVvVHGtevmm4FuslDt8n9Z15XvyiD6pRV0v5Xkp7f3NVtTzt5QMsyysqtiouoziIuL+FIuX8bjKNLllM6u2IjxstJ2x+lXehHGjf0Ls7Skr1oDI2pnQlMMEWcYf1MfCIkt+B46uSJTU3sJqTej7OKE5Lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ub29sgDb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D580EC433F1;
-	Mon,  8 Apr 2024 13:26:26 +0000 (UTC)
+	 MIME-Version; b=bhkcQT4oC3NYqLzgMFP/s+f+bUXOK7Rni4fuiJHYwQ5HqMx8HhQveaardQnuGpsgoOZ72gZRknKAnmJX3CTKjN4DZTqFrQMhQWHmMaS/jB7wf/nkepp1MstCIFp1Het1hAuEsmYUohqRtcQf79pgA4UXiuPp8wUuOaJ6fz0FbPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qP+X0y+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0654FC433C7;
+	Mon,  8 Apr 2024 13:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582787;
-	bh=yUOQCrDIhYzusdtcc0zSQ6G8QchPyuiLnfMutQKdxPM=;
+	s=korg; t=1712584682;
+	bh=ZXTev4ayTHSJQYKGuS6Oh94GJ8+V95M7ypfWSMQTvvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ub29sgDbHqWrEWGL+/jkyL/CS6mQnf9nnNezRm5mW+3wxsdclZY7LIQ5R5+IDHJbp
-	 vQ1uDSysinhbMrf05yaC1VnA42eVSxf4SZgzw/OR74glfa5+8WhR1REXircTDwb1ig
-	 NcX3rHyniWrcPCJ2nlhR8Dw7tcbnIHmKzwfPPIMU=
+	b=qP+X0y+jMZptZcxjb7m8MdAzrySxnj3wrKQb0KxxL2ke4qixKsR6GrG/HMmpbY0kA
+	 16FO2VmvxUfWrX9jzIYrdNH3fWRg6z2AoBIGVGzodY3OUxr7OxWEj3mOnXiQKNaQO2
+	 eUUi1zDFNESQt/oLCjZrDBz+cTI0c+WumHRciba4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.8 105/273] net: phy: micrel: Fix potential null pointer dereference
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 514/690] NFSD: replace delayed_work with work_struct for nfsd_client_shrinker
 Date: Mon,  8 Apr 2024 14:56:20 +0200
-Message-ID: <20240408125312.568397973@linuxfoundation.org>
+Message-ID: <20240408125418.272557376@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-commit 96c155943a703f0655c0c4cab540f67055960e91 upstream.
+[ Upstream commit 7c24fa225081f31bc6da6a355c1ba801889ab29a ]
 
-In lan8814_get_sig_rx() and lan8814_get_sig_tx() ptp_parse_header() may
-return NULL as ptp_header due to abnormal packet type or corrupted packet.
-Fix this bug by adding ptp_header check.
+Since nfsd4_state_shrinker_count always calls mod_delayed_work with
+0 delay, we can replace delayed_work with work_struct to save some
+space and overhead.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Also add the call to cancel_work after unregister the shrinker
+in nfs4_state_shutdown_net.
 
-Fixes: ece19502834d ("net: phy: micrel: 1588 support for LAN8814 phy")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240329061631.33199-1-amishin@t-argos.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/net/phy/micrel.c |   21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ fs/nfsd/netns.h     | 2 +-
+ fs/nfsd/nfs4state.c | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -2528,7 +2528,7 @@ static void lan8814_txtstamp(struct mii_
- 	}
+diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
+index 8c854ba3285bb..51a4b7885cae2 100644
+--- a/fs/nfsd/netns.h
++++ b/fs/nfsd/netns.h
+@@ -195,7 +195,7 @@ struct nfsd_net {
+ 
+ 	atomic_t		nfsd_courtesy_clients;
+ 	struct shrinker		nfsd_client_shrinker;
+-	struct delayed_work	nfsd_shrinker_work;
++	struct work_struct	nfsd_shrinker_work;
+ };
+ 
+ /* Simple check to find out if a given net was properly initialized */
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index ca0a1816500c3..22799f5ce686e 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4411,7 +4411,7 @@ nfsd4_state_shrinker_count(struct shrinker *shrink, struct shrink_control *sc)
+ 	if (!count)
+ 		count = atomic_long_read(&num_delegations);
+ 	if (count)
+-		mod_delayed_work(laundry_wq, &nn->nfsd_shrinker_work, 0);
++		queue_work(laundry_wq, &nn->nfsd_shrinker_work);
+ 	return (unsigned long)count;
  }
  
--static void lan8814_get_sig_rx(struct sk_buff *skb, u16 *sig)
-+static bool lan8814_get_sig_rx(struct sk_buff *skb, u16 *sig)
+@@ -6228,8 +6228,7 @@ deleg_reaper(struct nfsd_net *nn)
+ static void
+ nfsd4_state_shrinker_worker(struct work_struct *work)
  {
- 	struct ptp_header *ptp_header;
- 	u32 type;
-@@ -2538,7 +2538,11 @@ static void lan8814_get_sig_rx(struct sk
- 	ptp_header = ptp_parse_header(skb, type);
- 	skb_pull_inline(skb, ETH_HLEN);
+-	struct delayed_work *dwork = to_delayed_work(work);
+-	struct nfsd_net *nn = container_of(dwork, struct nfsd_net,
++	struct nfsd_net *nn = container_of(work, struct nfsd_net,
+ 				nfsd_shrinker_work);
  
-+	if (!ptp_header)
-+		return false;
-+
- 	*sig = (__force u16)(ntohs(ptp_header->sequence_id));
-+	return true;
- }
+ 	courtesy_client_reaper(nn);
+@@ -8057,7 +8056,7 @@ static int nfs4_state_create_net(struct net *net)
+ 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
  
- static bool lan8814_match_rx_skb(struct kszphy_ptp_priv *ptp_priv,
-@@ -2550,7 +2554,8 @@ static bool lan8814_match_rx_skb(struct
- 	bool ret = false;
- 	u16 skb_sig;
+ 	INIT_DELAYED_WORK(&nn->laundromat_work, laundromat_main);
+-	INIT_DELAYED_WORK(&nn->nfsd_shrinker_work, nfsd4_state_shrinker_worker);
++	INIT_WORK(&nn->nfsd_shrinker_work, nfsd4_state_shrinker_worker);
+ 	get_net(net);
  
--	lan8814_get_sig_rx(skb, &skb_sig);
-+	if (!lan8814_get_sig_rx(skb, &skb_sig))
-+		return ret;
+ 	nn->nfsd_client_shrinker.scan_objects = nfsd4_state_shrinker_scan;
+@@ -8164,6 +8163,7 @@ nfs4_state_shutdown_net(struct net *net)
+ 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
  
- 	/* Iterate over all RX timestamps and match it with the received skbs */
- 	spin_lock_irqsave(&ptp_priv->rx_ts_lock, flags);
-@@ -2830,7 +2835,7 @@ static int lan8814_ptpci_adjfine(struct
- 	return 0;
- }
+ 	unregister_shrinker(&nn->nfsd_client_shrinker);
++	cancel_work(&nn->nfsd_shrinker_work);
+ 	cancel_delayed_work_sync(&nn->laundromat_work);
+ 	locks_end_grace(&nn->nfsd4_manager);
  
--static void lan8814_get_sig_tx(struct sk_buff *skb, u16 *sig)
-+static bool lan8814_get_sig_tx(struct sk_buff *skb, u16 *sig)
- {
- 	struct ptp_header *ptp_header;
- 	u32 type;
-@@ -2838,7 +2843,11 @@ static void lan8814_get_sig_tx(struct sk
- 	type = ptp_classify_raw(skb);
- 	ptp_header = ptp_parse_header(skb, type);
- 
-+	if (!ptp_header)
-+		return false;
-+
- 	*sig = (__force u16)(ntohs(ptp_header->sequence_id));
-+	return true;
- }
- 
- static void lan8814_match_tx_skb(struct kszphy_ptp_priv *ptp_priv,
-@@ -2852,7 +2861,8 @@ static void lan8814_match_tx_skb(struct
- 
- 	spin_lock_irqsave(&ptp_priv->tx_queue.lock, flags);
- 	skb_queue_walk_safe(&ptp_priv->tx_queue, skb, skb_tmp) {
--		lan8814_get_sig_tx(skb, &skb_sig);
-+		if (!lan8814_get_sig_tx(skb, &skb_sig))
-+			continue;
- 
- 		if (memcmp(&skb_sig, &seq_id, sizeof(seq_id)))
- 			continue;
-@@ -2906,7 +2916,8 @@ static bool lan8814_match_skb(struct ksz
- 
- 	spin_lock_irqsave(&ptp_priv->rx_queue.lock, flags);
- 	skb_queue_walk_safe(&ptp_priv->rx_queue, skb, skb_tmp) {
--		lan8814_get_sig_rx(skb, &skb_sig);
-+		if (!lan8814_get_sig_rx(skb, &skb_sig))
-+			continue;
- 
- 		if (memcmp(&skb_sig, &rx_ts->seq_id, sizeof(rx_ts->seq_id)))
- 			continue;
+-- 
+2.43.0
+
 
 
 
