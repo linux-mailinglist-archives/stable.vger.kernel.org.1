@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-37080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 910A789C338
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:40:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEBA989C5ED
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:02:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3BFB1C20E5D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:40:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CE081C23AC5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60EB28175E;
-	Mon,  8 Apr 2024 13:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73118061A;
+	Mon,  8 Apr 2024 14:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJhBQueo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idDiCKmS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5FD81AA1;
-	Mon,  8 Apr 2024 13:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C69580604;
+	Mon,  8 Apr 2024 14:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583195; cv=none; b=McB34cF9I7I5GbFKXwY947OKijQhKgR+ks1YQbaiFwYIOXMJE9GSMjTAMKZ8iO6JVLxMwMtHoFBMdPg1Ln2IYFy0Q498iLeTRMKSW6SQdx3IBDJSRaietDUr0AAXi2Sw/B4eMUlI1Udbi5bJ+tVxAdxgwdQGgHnhIaOo1h5OSoU=
+	t=1712584920; cv=none; b=EYjsCjTQ5yNugUaM+8DWAGz59fdkRSfVcXgM083uuVNwy7yPlO6a7vZfvTutgAEAogySmGonzECAPV5sPLqpYGE2tl4A9xjoVuM6UBfghdM4rUAexBZ/4CfR5SnJbQ59XDDyfe+trP1miIee7ItA9K2C5pdpjiAQY3dLYtUdZAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583195; c=relaxed/simple;
-	bh=qAqqE7Mv8VWcDOlk/dTmzTo6GT3BVHoEPYHQyIBgQKg=;
+	s=arc-20240116; t=1712584920; c=relaxed/simple;
+	bh=q/9k4SCPgGlf1ywM7We9/GsSgwN2dZXA3/FhwGkSuIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mkIEGOKxvpGDH07WifW24zBYR8dJ8imecXStRyfxz3NnJVI3dTur1xijHA+RYImg2DS5FEWkwMbID9PYjd9YzqvzIILM4DwyPtfqw7gp3xE3KAiqD9pT5J6so+mQQoekAWJkCj8cd1CdaN1HaBbapCEfkBwd3W+rCi38hVtEUqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJhBQueo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F8BC43390;
-	Mon,  8 Apr 2024 13:33:14 +0000 (UTC)
+	 MIME-Version; b=dKdjzAw9I3309M4Kq63HdX69EIcYDlRfPusIVZHfxBGGtLME7DMmaV0Q+CW2dYDqhOm1oLDwH4wou+F5QeeeYF96GtW7zdS7kpie2raGC/OiENccGsx3fAAcsJ2epO8Ild3jEWtrttf9ZvOgEXRSBnH5O+kE3mNJGhhBTiTUi0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idDiCKmS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF570C433F1;
+	Mon,  8 Apr 2024 14:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583195;
-	bh=qAqqE7Mv8VWcDOlk/dTmzTo6GT3BVHoEPYHQyIBgQKg=;
+	s=korg; t=1712584920;
+	bh=q/9k4SCPgGlf1ywM7We9/GsSgwN2dZXA3/FhwGkSuIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJhBQueosbNopKCBJLOW7IGwoZNfTI1zlvV5t8Ie1k1xjyuMC0oBKBRPhIz5o1rvU
-	 vrYCGFruEjtbtb/nRYBYWCTLxh1f5KS8iNM2S+Yb/bk4EDxoO44//RMqHFtA8nKO5C
-	 +5uqb/lWt959gLIRlSxCr9dN8BOwURaWK7sHFpf4=
+	b=idDiCKmSlJ5YOGl5fIFCB4+EHUgjd2sKd1qkCf3MLoF+dJjrIu88ejaQfAJOoy06w
+	 1u6/JwGKnHDkmWjYQfpmzVEs5GoyooAPVzh9pGvwA3G5PCBLrvErka1OaPL/uQVwSW
+	 79hyCYLAv0n4JBy779kP0tTwYfs9CLGbjdhPCL5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Chao Song <chao.song@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 168/252] ASoC: rt5682-sdw: fix locking sequence
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 601/690] scsi: qla2xxx: Delay I/O Abort on PCI error
 Date: Mon,  8 Apr 2024 14:57:47 +0200
-Message-ID: <20240408125311.876601769@linuxfoundation.org>
+Message-ID: <20240408125421.367370824@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit 310a5caa4e861616a27a83c3e8bda17d65026fa8 ]
+commit 591c1fdf2016d118b8fbde427b796fac13f3f070 upstream.
 
-The disable_irq_lock protects the 'disable_irq' value, we need to lock
-before testing it.
+Currently when PCI error is detected, I/O is aborted manually through the
+ABORT IOCB mechanism which is not guaranteed to succeed.
 
-Fixes: 02fb23d72720 ("ASoC: rt5682-sdw: fix for JD event handling in ClockStop Mode0")
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Chao Song <chao.song@linux.intel.com>
-Link: https://msgid.link/r/20240325221817.206465-2-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Instead, wait for the OS or system to notify driver to wind down I/O
+through the pci_error_handlers api.  Set eeh_busy flag to pause all traffic
+and wait for I/O to drain.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-11-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/rt5682-sdw.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_attr.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/rt5682-sdw.c b/sound/soc/codecs/rt5682-sdw.c
-index e67c2e19cb1a7..1fdbef5fd6cba 100644
---- a/sound/soc/codecs/rt5682-sdw.c
-+++ b/sound/soc/codecs/rt5682-sdw.c
-@@ -763,12 +763,12 @@ static int __maybe_unused rt5682_dev_resume(struct device *dev)
- 		return 0;
+--- a/drivers/scsi/qla2xxx/qla_attr.c
++++ b/drivers/scsi/qla2xxx/qla_attr.c
+@@ -2732,7 +2732,13 @@ qla2x00_dev_loss_tmo_callbk(struct fc_rp
+ 		return;
  
- 	if (!slave->unattach_request) {
-+		mutex_lock(&rt5682->disable_irq_lock);
- 		if (rt5682->disable_irq == true) {
--			mutex_lock(&rt5682->disable_irq_lock);
- 			sdw_write_no_pm(slave, SDW_SCP_INTMASK1, SDW_SCP_INT1_IMPL_DEF);
- 			rt5682->disable_irq = false;
--			mutex_unlock(&rt5682->disable_irq_lock);
- 		}
-+		mutex_unlock(&rt5682->disable_irq_lock);
- 		goto regmap_sync;
+ 	if (unlikely(pci_channel_offline(fcport->vha->hw->pdev))) {
+-		qla2x00_abort_all_cmds(fcport->vha, DID_NO_CONNECT << 16);
++		/* Will wait for wind down of adapter */
++		ql_dbg(ql_dbg_aer, fcport->vha, 0x900c,
++		    "%s pci offline detected (id %06x)\n", __func__,
++		    fcport->d_id.b24);
++		qla_pci_set_eeh_busy(fcport->vha);
++		qla2x00_eh_wait_for_pending_commands(fcport->vha, fcport->d_id.b24,
++		    0, WAIT_TARGET);
+ 		return;
  	}
+ }
+@@ -2754,7 +2760,11 @@ qla2x00_terminate_rport_io(struct fc_rpo
+ 	vha = fcport->vha;
  
--- 
-2.43.0
-
+ 	if (unlikely(pci_channel_offline(fcport->vha->hw->pdev))) {
+-		qla2x00_abort_all_cmds(fcport->vha, DID_NO_CONNECT << 16);
++		/* Will wait for wind down of adapter */
++		ql_dbg(ql_dbg_aer, fcport->vha, 0x900b,
++		    "%s pci offline detected (id %06x)\n", __func__,
++		    fcport->d_id.b24);
++		qla_pci_set_eeh_busy(vha);
+ 		qla2x00_eh_wait_for_pending_commands(fcport->vha, fcport->d_id.b24,
+ 			0, WAIT_TARGET);
+ 		return;
 
 
 
