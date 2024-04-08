@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-36742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1054C89C174
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:21:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62E2089C44B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE3EF282ABC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 190EE2813D5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD3A7D085;
-	Mon,  8 Apr 2024 13:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF28127B7B;
+	Mon,  8 Apr 2024 13:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJgrO+01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c60OI9Ui"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF63976058;
-	Mon,  8 Apr 2024 13:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6745A128370;
+	Mon,  8 Apr 2024 13:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582212; cv=none; b=BOt/JHShROqVgqAI9wrqo9vE29A303Hc1Kny/Ec9W7p1S1pCN6h6VgCjaFQsVOqu1LbsDFh5HPs7NZZyW7bbK93XZum2i/mKhHMX2cL2kbnJ9vcTp0NFykpayx9O1eVQfYzpn7YrK26kJXDMTpcoPb69Gsi7ODIRA+/MYsUi668=
+	t=1712583847; cv=none; b=t3aKfn19zjmJeZJTS5nBEFy8J8FMlPkG7O/Kfb/RoZeBj17IUPcZiKiqHhBOb11U63f3fYvyZwwwF0u5EjQgNAboTRBIo/yQrbcijZtKkxbuuhWfgOQhauI6XRUdq/7YQotse67J0RtZUwiSfxsLonM3LR0upIkhSI1x9z/VlQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582212; c=relaxed/simple;
-	bh=wbryKzqPkaebgv6vTOV5OT4IAkI9p0N7ky+5aeqU6DU=;
+	s=arc-20240116; t=1712583847; c=relaxed/simple;
+	bh=G2LoxT1Jhavfal1BsMsij5zWzZfC4EVjR3N+3aMsFV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cJ8aNvRLjar23YQxaOWLQuQ3HFf5HRe458I2bU3rhwDg+St3+GANaFwgDrJkHRD8cdLsA9g/QYeIVBLACL353R/htrXd3ntstKEQAyZz8bpgQXlMhHfprHaoTuRpoZiOBl3TdSfTidPR61w99crcD20ksDv5Z+beqcZTz8xYl9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJgrO+01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77137C433C7;
-	Mon,  8 Apr 2024 13:16:51 +0000 (UTC)
+	 MIME-Version; b=lhk32Ti0ULqbomkCfZXvbdiIbsuMGX1IiVhy91BN13zpFKl2qSbVx9l0wvnzPUVjtIiKBe2G4UWYjAlg6Vep0n1tv7tIMYeMmw8oiBxJ7a7P8kjpvHbUMAtzIMi2u5IuKS2Kqc6QKaUZTy0JkCHamuUBiTR05pn9HFLw+segNh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c60OI9Ui; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CE0C433F1;
+	Mon,  8 Apr 2024 13:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582211;
-	bh=wbryKzqPkaebgv6vTOV5OT4IAkI9p0N7ky+5aeqU6DU=;
+	s=korg; t=1712583847;
+	bh=G2LoxT1Jhavfal1BsMsij5zWzZfC4EVjR3N+3aMsFV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJgrO+01SEPQqbwLY6Z1dfAm0E1WMufsAT3sd14ushy7NOmE07Z9A4vMeUs+YYx8t
-	 InFnCVaDsvlrE85TLlosn74uo195cEOLHlN/unBFKIRROeV+xJug94D+FEGA9sWCRu
-	 RsD08fiaYCwNJyEuNf4/NIRar8A74nw+8Tve8mEc=
+	b=c60OI9UiXN5+pP+LbUQt4momztykQoD4pCsJoPGldfdLqdvApNN6alWyFY7qbzLXv
+	 Vzv4sVjrHT5QXYBsGqfWxaA+Uw2n9XD38DaYI375Zco5S1Y90X2Z6AjjH3cpRywYD7
+	 HCYLQAGzJR1d7xYDgt8EJsZVq78upXT631eN6Qug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/138] KVM: SVM: Use unsigned integers when dealing with ASIDs
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.8 226/273] ASoC: SOF: ipc4-pcm: Correct the delay calculation
 Date: Mon,  8 Apr 2024 14:58:21 +0200
-Message-ID: <20240408125258.931580758@linuxfoundation.org>
+Message-ID: <20240408125316.428561338@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,144 +63,297 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 466eec4a22a76c462781bf6d45cb02cbedf21a61 ]
+commit 0ea06680dfcb4464ac6c05968433d060efb44345 upstream.
 
-Convert all local ASID variables and parameters throughout the SEV code
-from signed integers to unsigned integers.  As ASIDs are fundamentally
-unsigned values, and the global min/max variables are appropriately
-unsigned integers, too.
+This patch improves the delay calculation by relying on the
+LLP (Linear Link Position) on the DAI side and the
+LDP (Linear Data Pointer) on the host side. The LDP provides the same DMA
+position as LPIB, but with a linear count instead of a position in the
+ALSA ring buffer. The LDP values are provided in bytes and must be
+converted to frames. The difference in units means that the host counter
+will wrap earlier than the LLP. We need to wrap the LLP at the same
+boundary as the host counter.
 
-Functionally, this is a glorified nop as KVM guarantees min_sev_asid is
-non-zero, and no CPU supports -1u as the _only_ asid, i.e. the signed vs.
-unsigned goof won't cause problems in practice.
+The ASoC framework relies on separate pointer and delay callback.
+Measurement errors can be reduced by processing all the counter values in
+the pointer callback. The delay value is stored, and will be reported to
+higher levels in the delay callback.
 
-Opportunistically use sev_get_asid() in sev_flush_encrypted_page() instead
-of open coding an equivalent.
+For playback, the firmware provides a stream_start offset to handle
+mixing/pause usages, where the DAI might have started earlier than the
+PCM device. The delay calculation must be special-cased when the link
+counter has not reached the start offset value, i.e. no valid audio has
+left the DSP.
 
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/20240131235609.4161407-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: 0aa6b90ef9d7 ("KVM: SVM: Add support for allowing zero SEV ASIDs")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.8
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://msgid.link/r/20240321130814.4412-16-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c | 18 ++++++++++--------
- arch/x86/kvm/trace.h   | 10 +++++-----
- 2 files changed, 15 insertions(+), 13 deletions(-)
+ sound/soc/sof/ipc4-pcm.c |  159 +++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 127 insertions(+), 32 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 0316fdf5040f7..9e50eaf967f22 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -76,9 +76,10 @@ struct enc_region {
+--- a/sound/soc/sof/ipc4-pcm.c
++++ b/sound/soc/sof/ipc4-pcm.c
+@@ -19,14 +19,22 @@
+  * struct sof_ipc4_timestamp_info - IPC4 timestamp info
+  * @host_copier: the host copier of the pcm stream
+  * @dai_copier: the dai copier of the pcm stream
+- * @stream_start_offset: reported by fw in memory window
++ * @stream_start_offset: reported by fw in memory window (converted to frames)
++ * @stream_end_offset: reported by fw in memory window (converted to frames)
+  * @llp_offset: llp offset in memory window
++ * @boundary: wrap boundary should be used for the LLP frame counter
++ * @delay: Calculated and stored in pointer callback. The stored value is
++ *	   returned in the delay callback.
+  */
+ struct sof_ipc4_timestamp_info {
+ 	struct sof_ipc4_copier *host_copier;
+ 	struct sof_ipc4_copier *dai_copier;
+ 	u64 stream_start_offset;
++	u64 stream_end_offset;
+ 	u32 llp_offset;
++
++	u64 boundary;
++	snd_pcm_sframes_t delay;
  };
  
- /* Called with the sev_bitmap_lock held, or on shutdown  */
--static int sev_flush_asids(int min_asid, int max_asid)
-+static int sev_flush_asids(unsigned int min_asid, unsigned int max_asid)
- {
--	int ret, asid, error = 0;
-+	int ret, error = 0;
-+	unsigned int asid;
+ static int sof_ipc4_set_multi_pipeline_state(struct snd_sof_dev *sdev, u32 state,
+@@ -709,6 +717,10 @@ static int sof_ipc4_pcm_setup(struct snd
+ 	if (abi_version < SOF_IPC4_FW_REGS_ABI_VER)
+ 		support_info = false;
  
- 	/* Check if there are any ASIDs to reclaim before performing a flush */
- 	asid = find_next_bit(sev_reclaim_asid_bitmap, nr_asids, min_asid);
-@@ -108,7 +109,7 @@ static inline bool is_mirroring_enc_context(struct kvm *kvm)
++	/* For delay reporting the get_host_byte_counter callback is needed */
++	if (!sof_ops(sdev) || !sof_ops(sdev)->get_host_byte_counter)
++		support_info = false;
++
+ 	for_each_pcm_streams(stream) {
+ 		pipeline_list = &spcm->stream[stream].pipeline_list;
+ 
+@@ -841,7 +853,6 @@ static int sof_ipc4_get_stream_start_off
+ 	struct sof_ipc4_copier *host_copier = time_info->host_copier;
+ 	struct sof_ipc4_copier *dai_copier = time_info->dai_copier;
+ 	struct sof_ipc4_pipeline_registers ppl_reg;
+-	u64 stream_start_position;
+ 	u32 dai_sample_size;
+ 	u32 ch, node_index;
+ 	u32 offset;
+@@ -858,38 +869,51 @@ static int sof_ipc4_get_stream_start_off
+ 	if (ppl_reg.stream_start_offset == SOF_IPC4_INVALID_STREAM_POSITION)
+ 		return -EINVAL;
+ 
+-	stream_start_position = ppl_reg.stream_start_offset;
+ 	ch = dai_copier->data.out_format.fmt_cfg;
+ 	ch = SOF_IPC4_AUDIO_FORMAT_CFG_CHANNELS_COUNT(ch);
+ 	dai_sample_size = (dai_copier->data.out_format.bit_depth >> 3) * ch;
+-	/* convert offset to sample count */
+-	do_div(stream_start_position, dai_sample_size);
+-	time_info->stream_start_offset = stream_start_position;
++
++	/* convert offsets to frame count */
++	time_info->stream_start_offset = ppl_reg.stream_start_offset;
++	do_div(time_info->stream_start_offset, dai_sample_size);
++	time_info->stream_end_offset = ppl_reg.stream_end_offset;
++	do_div(time_info->stream_end_offset, dai_sample_size);
++
++	/*
++	 * Calculate the wrap boundary need to be used for delay calculation
++	 * The host counter is in bytes, it will wrap earlier than the frames
++	 * based link counter.
++	 */
++	time_info->boundary = div64_u64(~((u64)0),
++					frames_to_bytes(substream->runtime, 1));
++	/* Initialize the delay value to 0 (no delay) */
++	time_info->delay = 0;
+ 
+ 	return 0;
  }
  
- /* Must be called with the sev_bitmap_lock held */
--static bool __sev_recycle_asids(int min_asid, int max_asid)
-+static bool __sev_recycle_asids(unsigned int min_asid, unsigned int max_asid)
+-static snd_pcm_sframes_t sof_ipc4_pcm_delay(struct snd_soc_component *component,
+-					    struct snd_pcm_substream *substream)
++static int sof_ipc4_pcm_pointer(struct snd_soc_component *component,
++				struct snd_pcm_substream *substream,
++				snd_pcm_uframes_t *pointer)
  {
- 	if (sev_flush_asids(min_asid, max_asid))
- 		return false;
-@@ -135,8 +136,9 @@ static void sev_misc_cg_uncharge(struct kvm_sev_info *sev)
- 
- static int sev_asid_new(struct kvm_sev_info *sev)
- {
--	int asid, min_asid, max_asid, ret;
-+	unsigned int asid, min_asid, max_asid;
- 	bool retry = true;
-+	int ret;
- 
- 	WARN_ON(sev->misc_cg);
- 	sev->misc_cg = get_current_misc_cg();
-@@ -179,7 +181,7 @@ static int sev_asid_new(struct kvm_sev_info *sev)
- 	return ret;
- }
- 
--static int sev_get_asid(struct kvm *kvm)
-+static unsigned int sev_get_asid(struct kvm *kvm)
- {
- 	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
- 
-@@ -276,8 +278,8 @@ static int sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 
- static int sev_bind_asid(struct kvm *kvm, unsigned int handle, int *error)
- {
-+	unsigned int asid = sev_get_asid(kvm);
- 	struct sev_data_activate activate;
--	int asid = sev_get_asid(kvm);
+ 	struct snd_sof_dev *sdev = snd_soc_component_get_drvdata(component);
+ 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+ 	struct sof_ipc4_timestamp_info *time_info;
+ 	struct sof_ipc4_llp_reading_slot llp;
+-	snd_pcm_uframes_t head_ptr, tail_ptr;
++	snd_pcm_uframes_t head_cnt, tail_cnt;
+ 	struct snd_sof_pcm_stream *stream;
++	u64 dai_cnt, host_cnt, host_ptr;
+ 	struct snd_sof_pcm *spcm;
+-	u64 tmp_ptr;
  	int ret;
  
- 	/* activate ASID on the given handle */
-@@ -2290,7 +2292,7 @@ int sev_cpu_init(struct svm_cpu_data *sd)
-  */
- static void sev_flush_encrypted_page(struct kvm_vcpu *vcpu, void *va)
- {
--	int asid = to_kvm_svm(vcpu->kvm)->sev_info.asid;
-+	unsigned int asid = sev_get_asid(vcpu->kvm);
+ 	spcm = snd_sof_find_spcm_dai(component, rtd);
+ 	if (!spcm)
+-		return 0;
++		return -EOPNOTSUPP;
+ 
+ 	stream = &spcm->stream[substream->stream];
+ 	time_info = stream->private;
+ 	if (!time_info)
+-		return 0;
++		return -EOPNOTSUPP;
  
  	/*
- 	 * Note!  The address must be a kernel address, as regular page walk
-@@ -2611,7 +2613,7 @@ void sev_es_unmap_ghcb(struct vcpu_svm *svm)
- void pre_sev_run(struct vcpu_svm *svm, int cpu)
- {
- 	struct svm_cpu_data *sd = per_cpu_ptr(&svm_data, cpu);
--	int asid = sev_get_asid(svm->vcpu.kvm);
-+	unsigned int asid = sev_get_asid(svm->vcpu.kvm);
+ 	 * stream_start_offset is updated to memory window by FW based on
+@@ -899,46 +923,116 @@ static snd_pcm_sframes_t sof_ipc4_pcm_de
+ 	if (time_info->stream_start_offset == SOF_IPC4_INVALID_STREAM_POSITION) {
+ 		ret = sof_ipc4_get_stream_start_offset(sdev, substream, stream, time_info);
+ 		if (ret < 0)
+-			return 0;
++			return -EOPNOTSUPP;
+ 	}
  
- 	/* Assign the asid allocated with this SEV guest */
- 	svm->asid = asid;
-diff --git a/arch/x86/kvm/trace.h b/arch/x86/kvm/trace.h
-index bc25589ad5886..6c1dcf44c4fa3 100644
---- a/arch/x86/kvm/trace.h
-+++ b/arch/x86/kvm/trace.h
-@@ -729,13 +729,13 @@ TRACE_EVENT(kvm_nested_intr_vmexit,
-  * Tracepoint for nested #vmexit because of interrupt pending
-  */
- TRACE_EVENT(kvm_invlpga,
--	    TP_PROTO(__u64 rip, int asid, u64 address),
-+	    TP_PROTO(__u64 rip, unsigned int asid, u64 address),
- 	    TP_ARGS(rip, asid, address),
++	/* For delay calculation we need the host counter */
++	host_cnt = snd_sof_pcm_get_host_byte_counter(sdev, component, substream);
++	host_ptr = host_cnt;
++
++	/* convert the host_cnt to frames */
++	host_cnt = div64_u64(host_cnt, frames_to_bytes(substream->runtime, 1));
++
+ 	/*
+ 	 * If the LLP counter is not reported by firmware in the SRAM window
+-	 * then read the dai (link) position via host accessible means if
++	 * then read the dai (link) counter via host accessible means if
+ 	 * available.
+ 	 */
+ 	if (!time_info->llp_offset) {
+-		tmp_ptr = snd_sof_pcm_get_dai_frame_counter(sdev, component, substream);
+-		if (!tmp_ptr)
+-			return 0;
++		dai_cnt = snd_sof_pcm_get_dai_frame_counter(sdev, component, substream);
++		if (!dai_cnt)
++			return -EOPNOTSUPP;
+ 	} else {
+ 		sof_mailbox_read(sdev, time_info->llp_offset, &llp, sizeof(llp));
+-		tmp_ptr = ((u64)llp.reading.llp_u << 32) | llp.reading.llp_l;
++		dai_cnt = ((u64)llp.reading.llp_u << 32) | llp.reading.llp_l;
+ 	}
++	dai_cnt += time_info->stream_end_offset;
  
- 	TP_STRUCT__entry(
--		__field(	__u64,	rip	)
--		__field(	int,	asid	)
--		__field(	__u64,	address	)
-+		__field(	__u64,		rip	)
-+		__field(	unsigned int,	asid	)
-+		__field(	__u64,		address	)
- 	),
+-	/* In two cases dai dma position is not accurate
++	/* In two cases dai dma counter is not accurate
+ 	 * (1) dai pipeline is started before host pipeline
+-	 * (2) multiple streams mixed into one. Each stream has the same dai dma position
++	 * (2) multiple streams mixed into one. Each stream has the same dai dma
++	 *     counter
++	 *
++	 * Firmware calculates correct stream_start_offset for all cases
++	 * including above two.
++	 * Driver subtracts stream_start_offset from dai dma counter to get
++	 * accurate one
++	 */
++
++	/*
++	 * On stream start the dai counter might not yet have reached the
++	 * stream_start_offset value which means that no frames have left the
++	 * DSP yet from the audio stream (on playback, capture streams have
++	 * offset of 0 as we start capturing right away).
++	 * In this case we need to adjust the distance between the counters by
++	 * increasing the host counter by (offset - dai_counter).
++	 * Otherwise the dai_counter needs to be adjusted to reflect the number
++	 * of valid frames passed on the DAI side.
+ 	 *
+-	 * Firmware calculates correct stream_start_offset for all cases including above two.
+-	 * Driver subtracts stream_start_offset from dai dma position to get accurate one
++	 * The delay is the difference between the counters on the two
++	 * sides of the DSP.
+ 	 */
+-	tmp_ptr -= time_info->stream_start_offset;
++	if (dai_cnt < time_info->stream_start_offset) {
++		host_cnt += time_info->stream_start_offset - dai_cnt;
++		dai_cnt = 0;
++	} else {
++		dai_cnt -= time_info->stream_start_offset;
++	}
++
++	/* Wrap the dai counter at the boundary where the host counter wraps */
++	div64_u64_rem(dai_cnt, time_info->boundary, &dai_cnt);
  
- 	TP_fast_assign(
-@@ -744,7 +744,7 @@ TRACE_EVENT(kvm_invlpga,
- 		__entry->address	=	address;
- 	),
+-	/* Calculate the delay taking into account that both pointer can wrap */
+-	div64_u64_rem(tmp_ptr, substream->runtime->boundary, &tmp_ptr);
+ 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
+-		head_ptr = substream->runtime->status->hw_ptr;
+-		tail_ptr = tmp_ptr;
++		head_cnt = host_cnt;
++		tail_cnt = dai_cnt;
+ 	} else {
+-		head_ptr = tmp_ptr;
+-		tail_ptr = substream->runtime->status->hw_ptr;
++		head_cnt = dai_cnt;
++		tail_cnt = host_cnt;
++	}
++
++	if (head_cnt < tail_cnt) {
++		time_info->delay = time_info->boundary - tail_cnt + head_cnt;
++		goto out;
+ 	}
  
--	TP_printk("rip: 0x%016llx asid: %d address: 0x%016llx",
-+	TP_printk("rip: 0x%016llx asid: %u address: 0x%016llx",
- 		  __entry->rip, __entry->asid, __entry->address)
- );
+-	if (head_ptr < tail_ptr)
+-		return substream->runtime->boundary - tail_ptr + head_ptr;
++	time_info->delay =  head_cnt - tail_cnt;
++
++out:
++	/*
++	 * Convert the host byte counter to PCM pointer which wraps in buffer
++	 * and it is in frames
++	 */
++	div64_u64_rem(host_ptr, snd_pcm_lib_buffer_bytes(substream), &host_ptr);
++	*pointer = bytes_to_frames(substream->runtime, host_ptr);
++
++	return 0;
++}
++
++static snd_pcm_sframes_t sof_ipc4_pcm_delay(struct snd_soc_component *component,
++					    struct snd_pcm_substream *substream)
++{
++	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
++	struct sof_ipc4_timestamp_info *time_info;
++	struct snd_sof_pcm_stream *stream;
++	struct snd_sof_pcm *spcm;
++
++	spcm = snd_sof_find_spcm_dai(component, rtd);
++	if (!spcm)
++		return 0;
++
++	stream = &spcm->stream[substream->stream];
++	time_info = stream->private;
++	/*
++	 * Report the stored delay value calculated in the pointer callback.
++	 * In the unlikely event that the calculation was skipped/aborted, the
++	 * default 0 delay returned.
++	 */
++	if (time_info)
++		return time_info->delay;
++
++	/* No delay information available, report 0 as delay */
++	return 0;
  
--- 
-2.43.0
-
+-	return head_ptr - tail_ptr;
+ }
+ 
+ const struct sof_ipc_pcm_ops ipc4_pcm_ops = {
+@@ -948,6 +1042,7 @@ const struct sof_ipc_pcm_ops ipc4_pcm_op
+ 	.dai_link_fixup = sof_ipc4_pcm_dai_link_fixup,
+ 	.pcm_setup = sof_ipc4_pcm_setup,
+ 	.pcm_free = sof_ipc4_pcm_free,
++	.pointer = sof_ipc4_pcm_pointer,
+ 	.delay = sof_ipc4_pcm_delay,
+ 	.ipc_first_on_start = true,
+ 	.platform_stop_during_hw_free = true,
 
 
 
