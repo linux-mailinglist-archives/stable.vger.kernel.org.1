@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-37601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F5D89C5A0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:59:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1DE089C213
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCCEB1F21EA6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDA2EB2AEE0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C142C7D3E6;
-	Mon,  8 Apr 2024 13:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7485D7D3E6;
+	Mon,  8 Apr 2024 13:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIfmpsw4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAcCDOlG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8F279F0;
-	Mon,  8 Apr 2024 13:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345A3763F1;
+	Mon,  8 Apr 2024 13:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584712; cv=none; b=LrL5YmmJ+uYBVYoAdd+190I7ICq8rFMJ2mLSqcT5fOX9wfS4vebSIAdPNscEWTgd/v4/rxK+pgESyXh4zurPD9lmELNAWu4WXcRa6T5cq7xwylcNv3g9+MvbPPp58hh+hCXlld8EDyyW2hcf2YHfzq49Q3x3+++D32IWJRsPAD8=
+	t=1712582518; cv=none; b=L9ifkvMeEMuqOA1vODMmDvc8sYEK7UtIUidFmsCOzu0+Qhrfy1b1QGqjMOUWFHx8CipQqa4WOOpNvzA/gmuQgfhlUqQtLOyN39wyYjmIP0Nd7/6rjFLkTpRIBA78vnNoI9TK9yiLyaokbwB+eKh4MEMc/ZzgX221BM3vB9keKzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584712; c=relaxed/simple;
-	bh=EJKBdnmlUFF0i8weXBst+zhN7LXUMAybML/KHAVHTVc=;
+	s=arc-20240116; t=1712582518; c=relaxed/simple;
+	bh=ZX/3hfjkvNS5BcR3N17+7zKhrCfE5BcoqEddllsqSlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tO3LFfnYn3NNDa4rBIhjKW9PPUWEq+ko9lEgSB+Y1yahktTfxFD2vNReTjPKNPawBACPPDdXnbwcgcSMEzED1psEQTl6zO4awKTE4OE0aVcUBJCbSEUQyYn52+du8QDO7re7bpkIrZ8NAqX2YLqEUx1FR8Rdt44oyANvezZmqfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIfmpsw4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A55C433F1;
-	Mon,  8 Apr 2024 13:58:31 +0000 (UTC)
+	 MIME-Version; b=tYECM0vl9TNszF/Bv3QSCQFqWmPbi062PA182TEvRnxJ2MMwQAFR6/b8MyDaXUQtsIHYbEFKTOVE+WSm+PrJKBfxpQFVOivn93QYwbWWJSlsD8qIHINy1HWimLg1bpisySPdIxrIkjQh3rGR0mTYkyWftmenI+luLmOEbGIOPQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAcCDOlG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0681C433F1;
+	Mon,  8 Apr 2024 13:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584712;
-	bh=EJKBdnmlUFF0i8weXBst+zhN7LXUMAybML/KHAVHTVc=;
+	s=korg; t=1712582518;
+	bh=ZX/3hfjkvNS5BcR3N17+7zKhrCfE5BcoqEddllsqSlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QIfmpsw4VajWx5EE0OcG8bIKdYJGOjqG8zPpTIdw4oJRT+vsNKCxst4+yesrUJJmK
-	 tstp8PBSnGg3wCYLRXH6jq75wDtH8lpCV4dXzu5ZcraZKNR7SF715HGiSx5ylKJKOG
-	 SqpFbWNbCZaaRU74rTYa09Z7T0N3R/tj6tqExzwU=
+	b=bAcCDOlG9tacMb4izKBHgQp5J0dQ5tof1ar76cUBoK981HHHU/03LDrPj8pqtq2t+
+	 2mHz2Sgn50+iFKnpSq1UmlCHwOonf6GtS75VrA7umB1tpMLuzQWSfVDN9LP13iWiZq
+	 hsjdF0KOnivIb+MwFdyPbee37U4xH0Wiz1JceX6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 532/690] nfsd: dont kill nfsd_files because of lease break error
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.6 099/252] vboxsf: Avoid an spurious warning if load_nls_xxx() fails
 Date: Mon,  8 Apr 2024 14:56:38 +0200
-Message-ID: <20240408125418.933509443@linuxfoundation.org>
+Message-ID: <20240408125309.721680299@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit c6593366c0bf222be9c7561354dfb921c611745e ]
+commit de3f64b738af57e2732b91a0774facc675b75b54 upstream.
 
-An error from break_lease is non-fatal, so we needn't destroy the
-nfsd_file in that case. Just put the reference like we normally would
-and return the error.
+If an load_nls_xxx() function fails a few lines above, the 'sbi->bdi_id' is
+still 0.
+So, in the error handling path, we will call ida_simple_remove(..., 0)
+which is not allocated yet.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+In order to prevent a spurious "ida_free called for id=0 which is not
+allocated." message, tweak the error handling path and add a new label.
+
+Fixes: 0fd169576648 ("fs: Add VirtualBox guest shared folder (vboxsf) support")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/d09eaaa4e2e08206c58a1a27ca9b3e81dc168773.1698835730.git.christophe.jaillet@wanadoo.fr
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/filecache.c | 29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ fs/vboxsf/super.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index d61c8223082a4..43bb2fd47cf58 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -1101,7 +1101,7 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	nf = nfsd_file_alloc(&key, may_flags);
- 	if (!nf) {
- 		status = nfserr_jukebox;
--		goto out_status;
-+		goto out;
- 	}
- 
- 	ret = rhashtable_lookup_insert_key(&nfsd_file_rhash_tbl,
-@@ -1110,13 +1110,11 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	if (likely(ret == 0))
- 		goto open_file;
- 
--	nfsd_file_slab_free(&nf->nf_rcu);
--	nf = NULL;
- 	if (ret == -EEXIST)
- 		goto retry;
- 	trace_nfsd_file_insert_err(rqstp, key.inode, may_flags, ret);
- 	status = nfserr_jukebox;
--	goto out_status;
-+	goto construction_err;
- 
- wait_for_construction:
- 	wait_on_bit(&nf->nf_flags, NFSD_FILE_PENDING, TASK_UNINTERRUPTIBLE);
-@@ -1126,29 +1124,25 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 		trace_nfsd_file_cons_err(rqstp, key.inode, may_flags, nf);
- 		if (!open_retry) {
- 			status = nfserr_jukebox;
--			goto out;
-+			goto construction_err;
+--- a/fs/vboxsf/super.c
++++ b/fs/vboxsf/super.c
+@@ -151,7 +151,7 @@ static int vboxsf_fill_super(struct supe
+ 		if (!sbi->nls) {
+ 			vbg_err("vboxsf: Count not load '%s' nls\n", nls_name);
+ 			err = -EINVAL;
+-			goto fail_free;
++			goto fail_destroy_idr;
  		}
- 		open_retry = false;
--		if (refcount_dec_and_test(&nf->nf_ref))
--			nfsd_file_free(nf);
- 		goto retry;
  	}
--
- 	this_cpu_inc(nfsd_file_cache_hits);
  
- 	status = nfserrno(nfsd_open_break_lease(file_inode(nf->nf_file), may_flags));
-+	if (status != nfs_ok) {
-+		nfsd_file_put(nf);
-+		nf = NULL;
-+	}
-+
- out:
- 	if (status == nfs_ok) {
- 		this_cpu_inc(nfsd_file_acquisitions);
- 		nfsd_file_check_write_error(nf);
- 		*pnf = nf;
--	} else {
--		if (refcount_dec_and_test(&nf->nf_ref))
--			nfsd_file_free(nf);
--		nf = NULL;
- 	}
--
--out_status:
- 	put_cred(key.cred);
- 	trace_nfsd_file_acquire(rqstp, key.inode, may_flags, nf, status);
- 	return status;
-@@ -1178,6 +1172,13 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	if (status != nfs_ok)
- 		nfsd_file_unhash(nf);
- 	clear_and_wake_up_bit(NFSD_FILE_PENDING, &nf->nf_flags);
-+	if (status == nfs_ok)
-+		goto out;
-+
-+construction_err:
-+	if (refcount_dec_and_test(&nf->nf_ref))
-+		nfsd_file_free(nf);
-+	nf = NULL;
- 	goto out;
- }
- 
--- 
-2.43.0
-
+@@ -224,6 +224,7 @@ fail_free:
+ 		ida_simple_remove(&vboxsf_bdi_ida, sbi->bdi_id);
+ 	if (sbi->nls)
+ 		unload_nls(sbi->nls);
++fail_destroy_idr:
+ 	idr_destroy(&sbi->ino_idr);
+ 	kfree(sbi);
+ 	return err;
 
 
 
