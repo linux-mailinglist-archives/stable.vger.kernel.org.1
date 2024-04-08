@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-37086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C1E89C341
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:40:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15B389BFF7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:04:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45B921F21DE4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:40:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CE48282D85
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156C38287F;
-	Mon,  8 Apr 2024 13:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99B1763F1;
+	Mon,  8 Apr 2024 13:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRVL2PH2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZtDzup9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C792582865;
-	Mon,  8 Apr 2024 13:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AC26FE1A;
+	Mon,  8 Apr 2024 13:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583209; cv=none; b=kWwyKcAhaJB2Wrt0Ntujc04AilZVR1E8Ec46w/p58bNKdNwvQP54Gs07J5EbOdfx0j57o3ORoh/A+4RgX/S6g17edTRFQWJLtxU/udZ28lwcqQ/quz+J+rN59AQArhJb0NWjwDJlA0AQ2EvxmXdj/tsDeOxNXnK5K6+yrAsSdQM=
+	t=1712581399; cv=none; b=RwY9ePs+Ev6TnJ4DQg4GYm0qHKcgarMNQlS1jEEbcnKPcHEh/1IdQrBeWH01Sc3m6UeOJGFKZvp1Q9GRwDBtmEC31j3dduXGOwzu4OC8flUswfMYIFVN6QG7/u43X/3tE5kO5iutBhoTD5anqJaMI1ctLLj0kB2Y01MXn/EnUU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583209; c=relaxed/simple;
-	bh=v1XyJRYidd9ymVZ5c97nYCRYeXB0iJIw++tu2Id5X68=;
+	s=arc-20240116; t=1712581399; c=relaxed/simple;
+	bh=doRiEzG7ocErcAySZhbXfoXxTXlYQXDuYfegwpzfrNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gQsbA+Dlc79ZA3gFrrraD5h6D+2Vqz1WlRMdTaBsqjeP3QWZ6o1NIj28mXyTPR/yQUmj6BfnVQPnqxKFkoKtqh/3uAlywG+F01EZTtNN4/Su+2swFbMVf3d/LDhYT5pXvAkHEjy0obvt2epd0i0QruIgfpbALcOv+oqSwh5Yrjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRVL2PH2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AB0C433F1;
-	Mon,  8 Apr 2024 13:33:28 +0000 (UTC)
+	 MIME-Version; b=DtRU4c257mRB+d7uXQrdhUD5Zimv8yNrdzA4tjvs1cJiQbnI4qfVuSmCLzvgpVDMUUZNZMAwaNVxzOX24z8weOtKeK4LyVjwiDz906A6ved+JuTQvYOrVHd+2ERC75Iaz2KMMBmoiXNzuGgRRUupsBWLWh7iMngOea+PAdVYz6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZtDzup9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01507C433F1;
+	Mon,  8 Apr 2024 13:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583209;
-	bh=v1XyJRYidd9ymVZ5c97nYCRYeXB0iJIw++tu2Id5X68=;
+	s=korg; t=1712581399;
+	bh=doRiEzG7ocErcAySZhbXfoXxTXlYQXDuYfegwpzfrNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rRVL2PH29NaBSinF9fmJhYffLFHjObblPsEPi4mK9TH5Pp1IXHfgKN4m9yObMLRvS
-	 53Blji1uTZRSq4+DJzBhFJmHyWYZlpcF9OVsQY8OAQjCjySjzkB/qUTkDtZTR9NPks
-	 tZgPZZx743eIaHjDK1/uK9YSTXv/HToIzyHUOd4w=
+	b=vZtDzup9dqeHSJgYDg7BkFyJvBleSQFEkXR6UDnKpKjDoLibyEDpYtnX0lj4/Ff/E
+	 CR2+FfZZFPAhZ8JPlCHYJN5Mbix+53xlNDv7VAxfs8USmJCFOig1jmv4xH6PTpR+ko
+	 6KD9+3JrfT3reRlVSVR90rTMCRn/fT2QkleWiSuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 152/273] ASoC: amd: acp: fix for acp pdm configuration check
-Date: Mon,  8 Apr 2024 14:57:07 +0200
-Message-ID: <20240408125314.000909064@linuxfoundation.org>
+Subject: [PATCH 6.1 014/138] tls: recv: process_rx_list shouldnt use an offset with kvec
+Date: Mon,  8 Apr 2024 14:57:08 +0200
+Message-ID: <20240408125256.674467195@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 4af565de9f8c74b9f6035924ce0d40adec211246 ]
+[ Upstream commit 7608a971fdeb4c3eefa522d1bfe8d4bc6b2481cc ]
 
-ACP PDM configuration has to be verified for all combinations.
-Remove FLAG_AMD_LEGACY_ONLY_DMIC check.
+Only MSG_PEEK needs to copy from an offset during the final
+process_rx_list call, because the bytes we copied at the beginning of
+tls_sw_recvmsg were left on the rx_list. In the KVEC case, we removed
+data from the rx_list as we were copying it, so there's no need to use
+an offset, just like in the normal case.
 
-Fixes: 3a94c8ad0aae ("ASoC: amd: acp: add code for scanning acp pdm controller")
-
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://msgid.link/r/20240327104657.3537664-2-Vijendar.Mukunda@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/e5487514f828e0347d2b92ca40002c62b58af73d.1711120964.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/acp-pci.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ net/tls/tls_sw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/acp/acp-pci.c b/sound/soc/amd/acp/acp-pci.c
-index 8c8b1dcac6281..440b91d4f261c 100644
---- a/sound/soc/amd/acp/acp-pci.c
-+++ b/sound/soc/amd/acp/acp-pci.c
-@@ -133,11 +133,9 @@ static int acp_pci_probe(struct pci_dev *pci, const struct pci_device_id *pci_id
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index bdb5153f3788a..e40f6ed65e6a2 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -2238,7 +2238,7 @@ int tls_sw_recvmsg(struct sock *sk,
  		}
- 	}
  
--	if (flag == FLAG_AMD_LEGACY_ONLY_DMIC) {
--		ret = check_acp_pdm(pci, chip);
--		if (ret < 0)
--			goto skip_pdev_creation;
--	}
-+	ret = check_acp_pdm(pci, chip);
-+	if (ret < 0)
-+		goto skip_pdev_creation;
- 
- 	chip->flag = flag;
- 	memset(&pdevinfo, 0, sizeof(pdevinfo));
+ 		/* Drain records from the rx_list & copy if required */
+-		if (is_peek || is_kvec)
++		if (is_peek)
+ 			err = process_rx_list(ctx, msg, &control, copied + peeked,
+ 					      decrypted - peeked, is_peek, NULL);
+ 		else
 -- 
 2.43.0
 
