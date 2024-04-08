@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-37083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 980F489C33A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:40:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51D3C89C284
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:30:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA7EC1C22144
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:40:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 846631C21E9C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61AD681AB1;
-	Mon,  8 Apr 2024 13:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005677E76F;
+	Mon,  8 Apr 2024 13:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMOZFER7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EITVZLDo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F7474BE5;
-	Mon,  8 Apr 2024 13:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B240A7E58E;
+	Mon,  8 Apr 2024 13:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583201; cv=none; b=BFvcDngSOiPTWqmcYRm4/dvvn+L9vpcPmnPytVtj80MqhcJoaf15PU5Vr1SYkZijL4vZBN+OS0c8C2uG8lwql4ivLT+Ht+GxEa7oeCRuaa2p26dofEnYlI6eD1IvRI0Y+QczPKhUnyOHrxOU42LDzHGOjdgwj5lm00ZwCwH5ZSE=
+	t=1712582842; cv=none; b=Py1SzOrYNSv2LYHmVRYgNjS9lk1GlribLuKk2jhvGQVxps7FhPewm5xT+00gz3uMrgt77TiYUd8UGnIieIbrhA1EbkrteKt7b+MGFAmpx+QEcbJNsgh3S0RyurWBi6qMt2RfACeRZ75S7M6gy86Fx3rzlhsxihXlQ8Ca30pxPD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583201; c=relaxed/simple;
-	bh=ZRCycMPPD/jZpX48ZH6ohdd2zHAa0klTgJDXW5f5wIM=;
+	s=arc-20240116; t=1712582842; c=relaxed/simple;
+	bh=k4plPOWPcH9YGQm4plbF/vUIeCDRjMndxdCYPnSE6kw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PXDq98shKGVgTSh22Qhuu04hZpFEdX5T5CCkrI9xorlBH5W+YlRgA8H3Jahi4yz7nYTd1LxUm/6oYS9UgaD1nPSl30ANzk422v9d8UmuumlY4eiK5i9uMRWIMnmretZ6k4A0yE+uGAnrerYnFs2P4rCfhFeiqyVawe6WGxYjxlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMOZFER7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA04C433F1;
-	Mon,  8 Apr 2024 13:33:20 +0000 (UTC)
+	 MIME-Version; b=doEOJjH/d6SMnhInJcRMZRfvHO0AFpMpd+YMzx4sIzQcC3DeBS7iscPPYpiiRdwevbNG4QlibfTcMpQ62Ny53zNYGdHxEIxgMoWcIGWnKW26zs+Jm+FzI/9R9gSBs6+OJEGsrFy9XV3edaACk6eyigwvr6OpaWQbjjOL+EukPtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EITVZLDo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B2BC433C7;
+	Mon,  8 Apr 2024 13:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583200;
-	bh=ZRCycMPPD/jZpX48ZH6ohdd2zHAa0klTgJDXW5f5wIM=;
+	s=korg; t=1712582842;
+	bh=k4plPOWPcH9YGQm4plbF/vUIeCDRjMndxdCYPnSE6kw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WMOZFER7ZPz4N4T3/Ne1J2ghjbi/J5SScG5NtlyaE5NWGXp/3Bt5MWdMkPwWjbGSX
-	 n6MyOt8ib1Tu9lh6x/7857rvRdcyIMLi68xDf6DraoGeMBRwrtkc+9CMsFLcOqrhOf
-	 rcciXpnOWlptYeU23xgM1Kvt9ahyAMqPbbTSKtQQ=
+	b=EITVZLDoEOLFKTCITVRC1pwekQ9H2rv16ojsrbEmzuU4UQR4QZeIHSv+x2OO5UBIO
+	 yPRpb52+XjtdKG7jycTnseCFmbGfvvh2T4Lcnla+b2Ts9X9GwRjSpQtJEGxQAZowgG
+	 AhTMyhUW25BZbv7J9fqbBzJR4vv2S/T9Mc7Ek4d8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Komarov <ivan.komarov@dfyz.info>,
-	Victor Isaev <isv@google.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 151/273] RISC-V: Update AT_VECTOR_SIZE_ARCH for new AT_MINSIGSTKSZ
-Date: Mon,  8 Apr 2024 14:57:06 +0200
-Message-ID: <20240408125313.972133691@linuxfoundation.org>
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 128/252] octeontx2-af: Add array index check
+Date: Mon,  8 Apr 2024 14:57:07 +0200
+Message-ID: <20240408125310.594902811@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Isaev <victor@torrio.net>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 13dddf9319808badd2c1f5d7007b4e82838a648e ]
+commit ef15ddeeb6bee87c044bf7754fac524545bf71e8 upstream.
 
-"riscv: signal: Report signal frame size to userspace via auxv" (e92f469)
-has added new constant AT_MINSIGSTKSZ but failed to increment the size of
-auxv, keeping AT_VECTOR_SIZE_ARCH at 9.
-This fix correctly increments AT_VECTOR_SIZE_ARCH to 10, following the
-approach in the commit 94b07c1 ("arm64: signal: Report signal frame size
-to userspace via auxv").
+In rvu_map_cgx_lmac_pf() the 'iter', which is used as an array index, can reach
+value (up to 14) that exceed the size (MAX_LMAC_COUNT = 8) of the array.
+Fix this bug by adding 'iter' value check.
 
-Link: https://lore.kernel.org/r/73883406.20231215232720@torrio.net
-Link: https://lore.kernel.org/all/20240102133617.3649-1-victor@torrio.net/
-Reported-by: Ivan Komarov <ivan.komarov@dfyz.info>
-Closes: https://lore.kernel.org/linux-riscv/CY3Z02NYV1C4.11BLB9PLVW9G1@fedora/
-Fixes: e92f469b0771 ("riscv: signal: Report signal frame size to userspace via auxv")
-Signed-off-by: Victor Isaev <isv@google.com>
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 91c6945ea1f9 ("octeontx2-af: cn10k: Add RPM MAC support")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/uapi/asm/auxvec.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/riscv/include/uapi/asm/auxvec.h b/arch/riscv/include/uapi/asm/auxvec.h
-index 10aaa83db89ef..95050ebe9ad00 100644
---- a/arch/riscv/include/uapi/asm/auxvec.h
-+++ b/arch/riscv/include/uapi/asm/auxvec.h
-@@ -34,7 +34,7 @@
- #define AT_L3_CACHEGEOMETRY	47
- 
- /* entries in ARCH_DLINFO */
--#define AT_VECTOR_SIZE_ARCH	9
-+#define AT_VECTOR_SIZE_ARCH	10
- #define AT_MINSIGSTKSZ		51
- 
- #endif /* _UAPI_ASM_RISCV_AUXVEC_H */
--- 
-2.43.0
-
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+@@ -160,6 +160,8 @@ static int rvu_map_cgx_lmac_pf(struct rv
+ 			continue;
+ 		lmac_bmap = cgx_get_lmac_bmap(rvu_cgx_pdata(cgx, rvu));
+ 		for_each_set_bit(iter, &lmac_bmap, rvu->hw->lmac_per_cgx) {
++			if (iter >= MAX_LMAC_COUNT)
++				continue;
+ 			lmac = cgx_get_lmacid(rvu_cgx_pdata(cgx, rvu),
+ 					      iter);
+ 			rvu->pf2cgxlmac_map[pf] = cgxlmac_id_to_bmap(cgx, lmac);
 
 
 
