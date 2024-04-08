@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-37626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B655D89C673
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:11:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0952C89C397
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37310B2BB9A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFCCBB2F5A8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5637F470;
-	Mon,  8 Apr 2024 13:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF1D80617;
+	Mon,  8 Apr 2024 13:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vp10MOs3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtMHgUxX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B28F7E0FF;
-	Mon,  8 Apr 2024 13:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD9F7BB15;
+	Mon,  8 Apr 2024 13:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584785; cv=none; b=kP4Er9tPX0aVvelI7LyQx2J8VyuoISnd3LIM8xz55ZfXdZFaGeybxpYx0EbSuh6MkUiQsoiNZjzngILKYwSSNtcoW1yqtWKKvEgkGyFoaUt8IR9l4L3N8O6bddcvYIeIgaiH+4JKQV7jTdI+RlrqdcqhmO0U6bAylJsVBpshm9c=
+	t=1712583181; cv=none; b=M7V0QvASMIFqKPeEf2ysw2uYx0TNVAyVKX4uXSuS3f5BIBbB9hc5Lm4ypV1lqDOd6LAQXS2dOnH9DqYYAKnpkkTG3V0sci6HN6oPX546IcmgYF+U1Fc2eUXFmPKTq3Wg9Mi8fCZEeYeI6yGvubn0TlwGBvBbvM3JKMVPe5MFwTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584785; c=relaxed/simple;
-	bh=UVWZXM5vGhM0RTB9BV24TkwWi4En8rbrS9ieM+E8VKw=;
+	s=arc-20240116; t=1712583181; c=relaxed/simple;
+	bh=hrJkgTH5YNjxYEx4hvz2V8HUCvhHPekUVHghyn/N8ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MGzxT5XaQUqiJh9fAQdj3mRI7ygttLSrJ7+sCWDXIPduefA1E61+MsLhC3aMlU+pR4826mH83i5anXtOKyBtgQEErH6RhqLESz7t8oBL5EJjJRYIs707MjIUBs56Q5u7XzR2dMecPbe38DdGOBEUx+6uyBZduGOtHbLKWybCXFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vp10MOs3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C91C43399;
-	Mon,  8 Apr 2024 13:59:44 +0000 (UTC)
+	 MIME-Version; b=eWc7yrYHH3Wq3kMwo6S2DA8H41hKfQ/tZj2RAF37Y17+TKxSG1xeQl2IYIfoOVwmJuLJ8BkPAy8lpFLhRd5dIA1YMBbjD6MTjby2RAP8j20emqPOyoU8U/LrlbXUuaVPF1CJgFyXz9omKruEQEPz9DtwA/sRIYmNQYRbvufzu04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtMHgUxX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C080C433C7;
+	Mon,  8 Apr 2024 13:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584785;
-	bh=UVWZXM5vGhM0RTB9BV24TkwWi4En8rbrS9ieM+E8VKw=;
+	s=korg; t=1712583180;
+	bh=hrJkgTH5YNjxYEx4hvz2V8HUCvhHPekUVHghyn/N8ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vp10MOs3BKfc4QWdaREEK+IOkqnGWd+bGLvVUPNPapxHjT0fOJceQiaFC9OYnz2Fx
-	 bFnTMvHdRtHs3XiFAzJLh3PYbmQGNu8PkuGhE05H9z5mbPUeJ8WDIgGeueMg5jO445
-	 LEua8uXFd7zCtBjMohAdepyoJDTuinilgiK8zr3Q=
+	b=xtMHgUxXofVU3TjdqtTT00/1pY8NXsHpbZ01gOPXjYqk99Kaemw3KLSYejwQSJNRX
+	 CdbxMNc4gPZT/vp4gPCcCoPmpOmjsNrSwpgjcbUW8svPsUmAEhO2xAkAmya/PgYlU2
+	 i5V31PsfMaNVlJ43/QVRUDr3Tc9tXCALdnSrU/FU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Jihong <yangjihong1@huawei.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 557/690] perf/core: Fix reentry problem in perf_output_read_group()
-Date: Mon,  8 Apr 2024 14:57:03 +0200
-Message-ID: <20240408125419.799173871@linuxfoundation.org>
+	Pu Lehui <pulehui@huawei.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 149/273] drivers/perf: riscv: Disable PERF_SAMPLE_BRANCH_* while not supported
+Date: Mon,  8 Apr 2024 14:57:04 +0200
+Message-ID: <20240408125313.911523129@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Jihong <yangjihong1@huawei.com>
+From: Pu Lehui <pulehui@huawei.com>
 
-commit 6b959ba22d34ca793ffdb15b5715457c78e38b1a upstream.
+[ Upstream commit ea6873118493019474abbf57d5a800da365734df ]
 
-perf_output_read_group may respond to IPI request of other cores and invoke
-__perf_install_in_context function. As a result, hwc configuration is modified.
-causing inconsistency and unexpected consequences.
+RISC-V perf driver does not yet support branch sampling. Although the
+specification is in the works [0], it is best to disable such events
+until support is available, otherwise we will get unexpected results.
+Due to this reason, two riscv bpf testcases get_branch_snapshot and
+perf_branches/perf_branches_hw fail.
 
-Interrupts are not disabled when perf_output_read_group reads PMU counter.
-In this case, IPI request may be received from other cores.
-As a result, PMU configuration is modified and an error occurs when
-reading PMU counter:
-
-		     CPU0                                         CPU1
-						      __se_sys_perf_event_open
-							perf_install_in_context
-  perf_output_read_group                                  smp_call_function_single
-    for_each_sibling_event(sub, leader) {                   generic_exec_single
-      if ((sub != event) &&                                   remote_function
-	  (sub->state == PERF_EVENT_STATE_ACTIVE))                    |
-  <enter IPI handler: __perf_install_in_context>   <----RAISE IPI-----+
-  __perf_install_in_context
-    ctx_resched
-      event_sched_out
-	armpmu_del
-	  ...
-	  hwc->idx = -1; // event->hwc.idx is set to -1
-  ...
-  <exit IPI>
-	      sub->pmu->read(sub);
-		armpmu_read
-		  armv8pmu_read_counter
-		    armv8pmu_read_hw_counter
-		      int idx = event->hw.idx; // idx = -1
-		      u64 val = armv8pmu_read_evcntr(idx);
-			u32 counter = ARMV8_IDX_TO_COUNTER(idx); // invalid counter = 30
-			read_pmevcntrn(counter) // undefined instruction
-
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20220902082918.179248-1-yangjihong1@huawei.com
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://github.com/riscv/riscv-control-transfer-records [0]
+Fixes: f5bfa23f576f ("RISC-V: Add a perf core library for pmu drivers")
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20240312012053.1178140-1-pulehui@huaweicloud.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/perf/riscv_pmu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -7119,9 +7119,16 @@ static void perf_output_read_group(struc
- {
- 	struct perf_event *leader = event->group_leader, *sub;
- 	u64 read_format = event->attr.read_format;
-+	unsigned long flags;
- 	u64 values[6];
- 	int n = 0;
+diff --git a/drivers/perf/riscv_pmu.c b/drivers/perf/riscv_pmu.c
+index c78a6fd6c57f6..b4efdddb2ad91 100644
+--- a/drivers/perf/riscv_pmu.c
++++ b/drivers/perf/riscv_pmu.c
+@@ -313,6 +313,10 @@ static int riscv_pmu_event_init(struct perf_event *event)
+ 	u64 event_config = 0;
+ 	uint64_t cmask;
  
-+	/*
-+	 * Disabling interrupts avoids all counter scheduling
-+	 * (context switches, timer based rotation and IPIs).
-+	 */
-+	local_irq_save(flags);
++	/* driver does not support branch stack sampling */
++	if (has_branch_stack(event))
++		return -EOPNOTSUPP;
 +
- 	values[n++] = 1 + leader->nr_siblings;
- 
- 	if (read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
-@@ -7157,6 +7164,8 @@ static void perf_output_read_group(struc
- 
- 		__output_copy(handle, values, n * sizeof(u64));
- 	}
-+
-+	local_irq_restore(flags);
- }
- 
- #define PERF_FORMAT_TOTAL_TIMES (PERF_FORMAT_TOTAL_TIME_ENABLED|\
+ 	hwc->flags = 0;
+ 	mapped_event = rvpmu->event_map(event, &event_config);
+ 	if (mapped_event < 0) {
+-- 
+2.43.0
+
 
 
 
