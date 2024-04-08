@@ -1,54 +1,51 @@
-Return-Path: <stable+bounces-37194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C9C89C435
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9019989C3C5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:44:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8EC0B2AF2D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C113B1C21BBB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB8A7EF1B;
-	Mon,  8 Apr 2024 13:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764AE4D5AB;
+	Mon,  8 Apr 2024 13:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqtK+YNY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AQPCPDG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792787D074;
-	Mon,  8 Apr 2024 13:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A4F7F46C;
+	Mon,  8 Apr 2024 13:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583523; cv=none; b=UvScgoyt8ODlH4zB9Hk1ZpD9XBQ95vgQgCg0vBQE7IBWz9Gh5WgZM+vWQwvO28MSPc18IYF+nZQH7PufdilBickFBZk7BHwFachusMnqGen69N9uvDKVSOUNL8MF5Shh3uV+MBUkhs60+w5HwOjwvYbdKxxIsQy9jGUgYRRogiA=
+	t=1712583532; cv=none; b=S36ybsLdrqqAuUZUiXsA5gWn9dzm1FPJBLlj+vL/Gxy5oXrBRey3PcDSv+hPezcyh+WQ9YOJT60/u1HrF9OhNjFipiso0vcNeNt8d5Z5S7/uzVYeektG8jE1yP9xHCwv1tCuw4teRIzOXfnZcc6ukuiVVUlDulXc8HNOOW65KOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583523; c=relaxed/simple;
-	bh=HjnMS+nk7a/XLqIsgMgYXJo25fEuCzyLMofd8jOoaHY=;
+	s=arc-20240116; t=1712583532; c=relaxed/simple;
+	bh=1In+65lKRZ26DXn5ujnZyFEnGMvF2wbUIOPKhz2/n2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gh2h2NxyWKN4tHHzbTJTnRjCAVvBH2Su0DMJkwP+SHWXd7JENoGNMEO4/G5ZcLy4lqdx2j3G+Y+c8ZZWgrDT3alpRh8PU8v4GUt3x00qHIXZt2/BN43GsU0XbDdxEETqUvaod8CJZ1Ixs2L6HvkLMKu3gdfrFTCrt4I4Xs85H84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqtK+YNY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F64C433F1;
-	Mon,  8 Apr 2024 13:38:42 +0000 (UTC)
+	 MIME-Version; b=OVn5v72wLtdOhL3Vjh+tPZRvWCrXRZvFQECIsxO+8pbwvyYtLkR6gEQncjoTLN14wk6wCjNesRNX5VNUH5wpBr+wNmkeDV8AjsGc4o2+VEKrrtleLd+lG+W0KaM2M/DuuQNk9TiPmcwNOF8nAQTQ3Oodz+HmjtMOe42SIBRglNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AQPCPDG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B034AC433F1;
+	Mon,  8 Apr 2024 13:38:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583523;
-	bh=HjnMS+nk7a/XLqIsgMgYXJo25fEuCzyLMofd8jOoaHY=;
+	s=korg; t=1712583532;
+	bh=1In+65lKRZ26DXn5ujnZyFEnGMvF2wbUIOPKhz2/n2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gqtK+YNYVJPudYUFsVXhA4wqVJ5z3tG540xrXP/6kuN1qIeIixzHhHNPOKg6dPtJM
-	 c+Q6QXt70phpcSsW2D17Fi07Pxx8hGgImbFDPDIOr2gf0be/g/PIQN2yewrSMEyzsB
-	 q3CSq+AfRjevjqLsK5QP3az7fXBn+0iAIUynQW3k=
+	b=0AQPCPDGJd6TgVDDSV+diXYDzgg6cUiqJiuF45aHRlnJjkOSKm6j0NwrYfnA6xLwJ
+	 2n4SDYEm/6BqS6sn/3PXBUe1IZ80LFckfvXpe2VG3eLm8SHu1YH91tecnLx85gEA8t
+	 h5qSreGSY/wAM8xn9UVJgKx5dizCD+AN/8SP/4uI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jeff.layton@primarydata.com>,
-	Lance Shelton <lance.shelton@hammerspace.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 256/690] nfsd: Retry once in nfsd_open on an -EOPENSTALE return
-Date: Mon,  8 Apr 2024 14:52:02 +0200
-Message-ID: <20240408125408.887864948@linuxfoundation.org>
+Subject: [PATCH 5.15 257/690] NFSD: Clean up nfsd_vfs_write()
+Date: Mon,  8 Apr 2024 14:52:03 +0200
+Message-ID: <20240408125408.924797990@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,68 +64,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jeff Layton <jeff.layton@primarydata.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 12bcbd40fd931472c7fc9cf3bfe66799ece93ed8 ]
+[ Upstream commit 33388b3aefefd4d83764dab8038cb54068161a44 ]
 
-If we get back -EOPENSTALE from an NFSv4 open, then we either got some
-unhandled error or the inode we got back was not the same as the one
-associated with the dentry.
+The RWF_SYNC and !RWF_SYNC arms are now exactly alike except that
+the RWF_SYNC arm resets the boot verifier twice in a row. Fix that
+redundancy and de-duplicate the code.
 
-We really have no recourse in that situation other than to retry the
-open, and if it fails to just return nfserr_stale back to the client.
-
-Signed-off-by: Jeff Layton <jeff.layton@primarydata.com>
-Signed-off-by: Lance Shelton <lance.shelton@hammerspace.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfsproc.c |  1 +
- fs/nfsd/vfs.c     | 10 +++++++++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ fs/nfsd/vfs.c | 21 +++++----------------
+ 1 file changed, 5 insertions(+), 16 deletions(-)
 
-diff --git a/fs/nfsd/nfsproc.c b/fs/nfsd/nfsproc.c
-index 406dc50fea7ba..f65eba938a57d 100644
---- a/fs/nfsd/nfsproc.c
-+++ b/fs/nfsd/nfsproc.c
-@@ -875,6 +875,7 @@ nfserrno (int errno)
- 		{ nfserr_serverfault, -ESERVERFAULT },
- 		{ nfserr_serverfault, -ENFILE },
- 		{ nfserr_io, -EREMOTEIO },
-+		{ nfserr_stale, -EOPENSTALE },
- 		{ nfserr_io, -EUCLEAN },
- 		{ nfserr_perm, -ENOKEY },
- 		{ nfserr_no_grace, -ENOGRACE},
 diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index 925aa08ca1075..bc025fe5a595b 100644
+index bc025fe5a595b..98d370dcca867 100644
 --- a/fs/nfsd/vfs.c
 +++ b/fs/nfsd/vfs.c
-@@ -791,6 +791,7 @@ nfsd_open(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type,
- 		int may_flags, struct file **filp)
- {
- 	__be32 err;
-+	bool retried = false;
+@@ -1009,22 +1009,11 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
  
- 	validate_process_creds();
- 	/*
-@@ -806,9 +807,16 @@ nfsd_open(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type,
- 	 */
- 	if (type == S_IFREG)
- 		may_flags |= NFSD_MAY_OWNER_OVERRIDE;
-+retry:
- 	err = fh_verify(rqstp, fhp, type, may_flags);
--	if (!err)
-+	if (!err) {
- 		err = __nfsd_open(rqstp, fhp, type, may_flags, filp);
-+		if (err == nfserr_stale && !retried) {
-+			retried = true;
-+			fh_put(fhp);
-+			goto retry;
-+		}
-+	}
- 	validate_process_creds();
- 	return err;
- }
+ 	iov_iter_kvec(&iter, WRITE, vec, vlen, *cnt);
+ 	since = READ_ONCE(file->f_wb_err);
+-	if (flags & RWF_SYNC) {
+-		if (verf)
+-			nfsd_copy_boot_verifier(verf,
+-					net_generic(SVC_NET(rqstp),
+-					nfsd_net_id));
+-		host_err = vfs_iter_write(file, &iter, &pos, flags);
+-		if (host_err < 0)
+-			nfsd_reset_boot_verifier(net_generic(SVC_NET(rqstp),
+-						 nfsd_net_id));
+-	} else {
+-		if (verf)
+-			nfsd_copy_boot_verifier(verf,
+-					net_generic(SVC_NET(rqstp),
+-					nfsd_net_id));
+-		host_err = vfs_iter_write(file, &iter, &pos, flags);
+-	}
++	if (verf)
++		nfsd_copy_boot_verifier(verf,
++				net_generic(SVC_NET(rqstp),
++				nfsd_net_id));
++	host_err = vfs_iter_write(file, &iter, &pos, flags);
+ 	if (host_err < 0) {
+ 		nfsd_reset_boot_verifier(net_generic(SVC_NET(rqstp),
+ 					 nfsd_net_id));
 -- 
 2.43.0
 
