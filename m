@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-36799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5CB89C1B6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:23:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CADE189C31E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC7712830D1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 932EFB2BEB8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9746080617;
-	Mon,  8 Apr 2024 13:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389E77FBC7;
+	Mon,  8 Apr 2024 13:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQWg0Pkh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+FXGEKn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D6162148;
-	Mon,  8 Apr 2024 13:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD5F7FBB2;
+	Mon,  8 Apr 2024 13:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582378; cv=none; b=MTBN38hjot8E70zG8T0uAthWkTRAlq/E5x8A7bDpD3fAR0uWFNs5pW/atDfAQYWFuZhTsl56jSljTd4UmuYK5LMIEgpJ9ScNiU0U37CNWEd33wye9K7/piAITAyTSsPG0h5l1R4mSq92GjRW0SHO+9mngS0euAThjhLM9sfqH6c=
+	t=1712582872; cv=none; b=dervgwzd6ng7sPLGOD8o8QjwYSCAg0Afh4Aa6ecNZpnNvTjNdDdl+GTFwJpeC6rBH0oyYYk+bITRblPQvUNGJf/fRKFR1bFT8yvCQFf+Xtq0d8cqVUS49lHK2yc2fKotdQ5gzhQ1RpgaGSALXmjDKEyawbJpbsMHyQmwLKSloC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582378; c=relaxed/simple;
-	bh=YLVeEKx1YmPCO7tiHvj9wNcR9WaZ2YJVai1Waejqfh0=;
+	s=arc-20240116; t=1712582872; c=relaxed/simple;
+	bh=sqD6pfYPeDyvHef/98gn5vtvLP/89OryUJrE+Q/CuEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ofeCCu6bLWB7SY97ZhOEjzvQMQeSvK4fKuSRB5GO9B5laVJah/YAgQ4eQtb6mGk7dJq3HOjRl9Z2dQHSQgZxv7wVG/XqPxUV3ael1BIGBrwEKetL3rGHSicLPBsLEeis67ThxisqjIsOtswrARa9qDaZ3zkYmxqvhpF7iSDm/nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQWg0Pkh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5429C433C7;
-	Mon,  8 Apr 2024 13:19:37 +0000 (UTC)
+	 MIME-Version; b=bAHaXAI/pBB7bmBbPiLmPsWUgR6tkATwpSsbXE3EsSliYe0ZyfR9xd5fw/w1h8RBG3luNiDb6rZqOuk5MlQtqFSg/QLstgj0T3df8eApTnrjr0Ix1TvlzRyX1fnQYR0ld9NqtrSRX+1y3wZbw8tpdoDfEhaoey/xN2mzoF4bhWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+FXGEKn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D34C433F1;
+	Mon,  8 Apr 2024 13:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582378;
-	bh=YLVeEKx1YmPCO7tiHvj9wNcR9WaZ2YJVai1Waejqfh0=;
+	s=korg; t=1712582871;
+	bh=sqD6pfYPeDyvHef/98gn5vtvLP/89OryUJrE+Q/CuEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQWg0PkhSX51FmyBBVYsX2o0IVf6M+n2MMaSme9LFS8Ed36W+Mc52itCmf3KrAaro
-	 gTPlN/Ta47yICtZFhPuNg/jgNEaqgruPiQDPcq6WNv2vMX48WFS05fZV7a9WQoKduc
-	 jNhvvz9003CXkOs0MALq9859nJhqcHMtBXTKDSe4=
+	b=J+FXGEKnASJh6pHRN2wswj4pnO5Z2eecOp0QH36o0dlGgZ68Lr7s1pUtfRkhtw3hj
+	 uuNVE5VUwajt/LJgsoTSObjYA3/gq0X0MEkTcSXbgoaUDKDoPeouCfriUlMtV2xoVP
+	 S8OCkxCC67W5GnghATZgmKkbOgOkNHyiSy240mA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Dexuan Cui <decui@microsoft.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 088/252] net: mana: Fix Rx DMA datasize and skb_over_panic
+Subject: [PATCH 6.8 112/273] tcp: Fix bind() regression for v6-only wildcard and v4-mapped-v6 non-wildcard addresses.
 Date: Mon,  8 Apr 2024 14:56:27 +0200
-Message-ID: <20240408125309.385834496@linuxfoundation.org>
+Message-ID: <20240408125312.779005573@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit c0de6ab920aafb56feab56058e46b688e694a246 upstream.
+commit ea111449501ea32bf6da82750de860243691efc7 upstream.
 
-mana_get_rxbuf_cfg() aligns the RX buffer's DMA datasize to be
-multiple of 64. So a packet slightly bigger than mtu+14, say 1536,
-can be received and cause skb_over_panic.
+Commit 5e07e672412b ("tcp: Use bhash2 for v4-mapped-v6 non-wildcard
+address.") introduced bind() regression for v4-mapped-v6 address.
 
-Sample dmesg:
-[ 5325.237162] skbuff: skb_over_panic: text:ffffffffc043277a len:1536 put:1536 head:ff1100018b517000 data:ff1100018b517100 tail:0x700 end:0x6ea dev:<NULL>
-[ 5325.243689] ------------[ cut here ]------------
-[ 5325.245748] kernel BUG at net/core/skbuff.c:192!
-[ 5325.247838] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-[ 5325.258374] RIP: 0010:skb_panic+0x4f/0x60
-[ 5325.302941] Call Trace:
-[ 5325.304389]  <IRQ>
-[ 5325.315794]  ? skb_panic+0x4f/0x60
-[ 5325.317457]  ? asm_exc_invalid_op+0x1f/0x30
-[ 5325.319490]  ? skb_panic+0x4f/0x60
-[ 5325.321161]  skb_put+0x4e/0x50
-[ 5325.322670]  mana_poll+0x6fa/0xb50 [mana]
-[ 5325.324578]  __napi_poll+0x33/0x1e0
-[ 5325.326328]  net_rx_action+0x12e/0x280
+When we bind() the following two addresses on the same port, the 2nd
+bind() should succeed but fails now.
 
-As discussed internally, this alignment is not necessary. To fix
-this bug, remove it from the code. So oversized packets will be
-marked as CQE_RX_TRUNCATED by NIC, and dropped.
+  1. [::] w/ IPV6_ONLY
+  2. ::ffff:127.0.0.1
 
-Cc: stable@vger.kernel.org
-Fixes: 2fbbd712baf1 ("net: mana: Enable RX path to handle various MTU sizes")
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Dexuan Cui <decui@microsoft.com>
-Link: https://lore.kernel.org/r/1712087316-20886-1-git-send-email-haiyangz@microsoft.com
+After the chagne, v4-mapped-v6 uses bhash2 instead of bhash to
+detect conflict faster, but I forgot to add a necessary change.
+
+During the 2nd bind(), inet_bind2_bucket_match_addr_any() returns
+the tb2 bucket of [::], and inet_bhash2_conflict() finally calls
+inet_bind_conflict(), which returns true, meaning conflict.
+
+  inet_bhash2_addr_any_conflict
+  |- inet_bind2_bucket_match_addr_any  <-- return [::] bucket
+  `- inet_bhash2_conflict
+     `- __inet_bhash2_conflict <-- checks IPV6_ONLY for AF_INET
+        |                          but not for v4-mapped-v6 address
+        `- inet_bind_conflict  <-- does not check address
+
+inet_bind_conflict() does not check socket addresses because
+__inet_bhash2_conflict() is expected to do so.
+
+However, it checks IPV6_V6ONLY attribute only against AF_INET
+socket, and not for v4-mapped-v6 address.
+
+As a result, v4-mapped-v6 address conflicts with v6-only wildcard
+address.
+
+To avoid that, let's add the missing test to use bhash2 for
+v4-mapped-v6 address.
+
+Fixes: 5e07e672412b ("tcp: Use bhash2 for v4-mapped-v6 non-wildcard address.")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240326204251.51301-2-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c |    2 +-
- include/net/mana/mana.h                       |    1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ net/ipv4/inet_connection_sock.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -601,7 +601,7 @@ static void mana_get_rxbuf_cfg(int mtu,
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index c038e28e2f1e..4184d45f890c 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -203,8 +203,15 @@ static bool __inet_bhash2_conflict(const struct sock *sk, struct sock *sk2,
+ 				   kuid_t sk_uid, bool relax,
+ 				   bool reuseport_cb_ok, bool reuseport_ok)
+ {
+-	if (sk->sk_family == AF_INET && ipv6_only_sock(sk2))
+-		return false;
++	if (ipv6_only_sock(sk2)) {
++		if (sk->sk_family == AF_INET)
++			return false;
++
++#if IS_ENABLED(CONFIG_IPV6)
++		if (ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr))
++			return false;
++#endif
++	}
  
- 	*alloc_size = mtu + MANA_RXBUF_PAD + *headroom;
- 
--	*datasize = ALIGN(mtu + ETH_HLEN, MANA_RX_DATA_ALIGN);
-+	*datasize = mtu + ETH_HLEN;
- }
- 
- static int mana_pre_alloc_rxbufs(struct mana_port_context *mpc, int new_mtu)
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -39,7 +39,6 @@ enum TRI_STATE {
- #define COMP_ENTRY_SIZE 64
- 
- #define RX_BUFFERS_PER_QUEUE 512
--#define MANA_RX_DATA_ALIGN 64
- 
- #define MAX_SEND_BUFFERS_PER_QUEUE 256
- 
+ 	return inet_bind_conflict(sk, sk2, sk_uid, relax,
+ 				  reuseport_cb_ok, reuseport_ok);
+-- 
+2.44.0
+
 
 
 
