@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-36698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8835889C148
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F11F89C041
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 295301F21A2B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B7EB1F23518
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF5681AAB;
-	Mon,  8 Apr 2024 13:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E17664CF2;
+	Mon,  8 Apr 2024 13:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NVo1zSIQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+Roq5bk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7A97B3EB;
-	Mon,  8 Apr 2024 13:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16622DF73;
+	Mon,  8 Apr 2024 13:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582084; cv=none; b=gPFtfzCKMhucefi6eqiiQCH7H1y/vOZCdJewEdj0QEH1BsAIWZpjF8KCanCWSegowWEsDiY74BhUj3qcClyegqdKyHCxIZptRqQFgkJmdMnQWooR9m3rddAI8bYzbuBOjpJ2tEtiT2LMX5Uu9Om/D6QfVJe47VICxlBiPwbyL/8=
+	t=1712581603; cv=none; b=Sn28tuwbJvXLz5eYn4Osxl/ZQhXlg4AyG6OfHAKzdz7ANzv8nyz4XIL7aD/m2M/RqtGJQec0WKOD3cVvRb1eo5/pLQojqp6FR2+rAn0436R9SpIdVAH+pIvpHQfVjW8S+Bbiwfgby+3DJ/OxmyEtq5cF1G7xFHt7+GwmZ6FiYv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582084; c=relaxed/simple;
-	bh=hASHIezoWOzbpVDVkh9hc80xnCkCQNhEYRjtxGhHaJU=;
+	s=arc-20240116; t=1712581603; c=relaxed/simple;
+	bh=JBugk8JeSbsPuB3Jhx+FEvuZowQjjdEiso3q2mTjjUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K1Hj0wF15QUUoh4v4u2O9qVJf9Gf0C9XXiBxtYd7xVIaZIZva9G2FuRib8CGs+MUzcrMm8hFNjYJmnx3wsqpgyA5z+umwMqI+/hsECOcy1lX0SUpg9myWT2XXIzslZ1Ak8SPaOMnnBxOMULXj08vdNTeS5LpVQE4wmo/wvpT1aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NVo1zSIQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A9F0C43390;
-	Mon,  8 Apr 2024 13:14:43 +0000 (UTC)
+	 MIME-Version; b=Nr5+ZtT1EBus+TmIC+12QA/ulAIHOkYQtoCzcMGwleXyKpwt0cXn5yrUJCXUGpISplyC8yB5q31jLavgsAtX22E1wypYkQalFYYivnbD5+n4XwWW4o4NNMKdJzhOmZnOgMCiOkcbswLOvSyn7yMYEqRN5lRRWb1vkEVVfWcRg3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+Roq5bk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C4FC433C7;
+	Mon,  8 Apr 2024 13:06:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582083;
-	bh=hASHIezoWOzbpVDVkh9hc80xnCkCQNhEYRjtxGhHaJU=;
+	s=korg; t=1712581603;
+	bh=JBugk8JeSbsPuB3Jhx+FEvuZowQjjdEiso3q2mTjjUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NVo1zSIQoSpKbGVeb4AGfKFkZCAjTgTRa+5iUrX4yxsC7dAr3n+CPIQw8c6RRf2r3
-	 FJK5WziyJ18x4gZoopiB0y19f9fS4ZAApm0CWW8D390Yo36TSg+56P4oXnUM9PUjFt
-	 1aQqgBfQLuNK4WcbYDasEFCm/idUNj3v9MnqIm9Y=
+	b=r+Roq5bkpIBrS/JM0f35q/zuRk18PiLCUF74rfuTWWJ4vzH8FRo30WN9Uy9cBX7NU
+	 wlzg1U+EGMfQldpy3QwXP/gJAgnY3G9jVypb2iwAkUwAJ0tklx/b48Km2timi8S3J0
+	 XEWaf9DVp+lfK4BIoVuwDuuDj5RWGfN+H+aiiSAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 045/273] netfilter: nf_tables: reject destroy command to remove basechain hooks
-Date: Mon,  8 Apr 2024 14:55:20 +0200
-Message-ID: <20240408125310.697427057@linuxfoundation.org>
+Subject: [PATCH 6.6 022/252] tcp: properly terminate timers for kernel sockets
+Date: Mon,  8 Apr 2024 14:55:21 +0200
+Message-ID: <20240408125307.340393931@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +64,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b32ca27fa238ff83427d23bef2a5b741e2a88a1e ]
+[ Upstream commit 151c9c724d05d5b0dd8acd3e11cb69ef1f2dbada ]
 
-Report EOPNOTSUPP if NFT_MSG_DESTROYCHAIN is used to delete hooks in an
-existing netdev basechain, thus, only NFT_MSG_DELCHAIN is allowed.
+We had various syzbot reports about tcp timers firing after
+the corresponding netns has been dismantled.
 
-Fixes: 7d937b107108f ("netfilter: nf_tables: support for deleting devices in an existing netdev chain")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fortunately Josef Bacik could trigger the issue more often,
+and could test a patch I wrote two years ago.
+
+When TCP sockets are closed, we call inet_csk_clear_xmit_timers()
+to 'stop' the timers.
+
+inet_csk_clear_xmit_timers() can be called from any context,
+including when socket lock is held.
+This is the reason it uses sk_stop_timer(), aka del_timer().
+This means that ongoing timers might finish much later.
+
+For user sockets, this is fine because each running timer
+holds a reference on the socket, and the user socket holds
+a reference on the netns.
+
+For kernel sockets, we risk that the netns is freed before
+timer can complete, because kernel sockets do not hold
+reference on the netns.
+
+This patch adds inet_csk_clear_xmit_timers_sync() function
+that using sk_stop_timer_sync() to make sure all timers
+are terminated before the kernel socket is released.
+Modules using kernel sockets close them in their netns exit()
+handler.
+
+Also add sock_not_owned_by_me() helper to get LOCKDEP
+support : inet_csk_clear_xmit_timers_sync() must not be called
+while socket lock is held.
+
+It is very possible we can revert in the future commit
+3a58f13a881e ("net: rds: acquire refcount on TCP sockets")
+which attempted to solve the issue in rds only.
+(net/smc/af_smc.c and net/mptcp/subflow.c have similar code)
+
+We probably can remove the check_net() tests from
+tcp_out_of_resources() and __tcp_close() in the future.
+
+Reported-by: Josef Bacik <josef@toxicpanda.com>
+Closes: https://lore.kernel.org/netdev/20240314210740.GA2823176@perftesting/
+Fixes: 26abe14379f8 ("net: Modify sk_alloc to not reference count the netns of kernel sockets.")
+Fixes: 8a68173691f0 ("net: sk_clone_lock() should only do get_net() if the parent is not a kernel socket")
+Link: https://lore.kernel.org/bpf/CANn89i+484ffqb93aQm1N-tjxxvb3WDKX0EbD7318RwRgsatjw@mail.gmail.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Tested-by: Josef Bacik <josef@toxicpanda.com>
+Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Link: https://lore.kernel.org/r/20240322135732.1535772-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/net/inet_connection_sock.h |  1 +
+ include/net/sock.h                 |  7 +++++++
+ net/ipv4/inet_connection_sock.c    | 14 ++++++++++++++
+ net/ipv4/tcp.c                     |  2 ++
+ 4 files changed, 24 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index ec6266c1972c0..00288b31f734c 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -2932,7 +2932,8 @@ static int nf_tables_delchain(struct sk_buff *skb, const struct nfnl_info *info,
- 	nft_ctx_init(&ctx, net, skb, info->nlh, family, table, chain, nla);
+diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
+index 01a73bf74fa19..6ecac01115d9c 100644
+--- a/include/net/inet_connection_sock.h
++++ b/include/net/inet_connection_sock.h
+@@ -173,6 +173,7 @@ void inet_csk_init_xmit_timers(struct sock *sk,
+ 			       void (*delack_handler)(struct timer_list *),
+ 			       void (*keepalive_handler)(struct timer_list *));
+ void inet_csk_clear_xmit_timers(struct sock *sk);
++void inet_csk_clear_xmit_timers_sync(struct sock *sk);
  
- 	if (nla[NFTA_CHAIN_HOOK]) {
--		if (chain->flags & NFT_CHAIN_HW_OFFLOAD)
-+		if (NFNL_MSG_TYPE(info->nlh->nlmsg_type) == NFT_MSG_DESTROYCHAIN ||
-+		    chain->flags & NFT_CHAIN_HW_OFFLOAD)
- 			return -EOPNOTSUPP;
+ static inline void inet_csk_schedule_ack(struct sock *sk)
+ {
+diff --git a/include/net/sock.h b/include/net/sock.h
+index e70c903b04f30..25780942ec8bf 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1808,6 +1808,13 @@ static inline void sock_owned_by_me(const struct sock *sk)
+ #endif
+ }
  
- 		if (nft_is_base_chain(chain)) {
++static inline void sock_not_owned_by_me(const struct sock *sk)
++{
++#ifdef CONFIG_LOCKDEP
++	WARN_ON_ONCE(lockdep_sock_is_held(sk) && debug_locks);
++#endif
++}
++
+ static inline bool sock_owned_by_user(const struct sock *sk)
+ {
+ 	sock_owned_by_me(sk);
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 762817d6c8d70..a587cb6be807c 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -774,6 +774,20 @@ void inet_csk_clear_xmit_timers(struct sock *sk)
+ }
+ EXPORT_SYMBOL(inet_csk_clear_xmit_timers);
+ 
++void inet_csk_clear_xmit_timers_sync(struct sock *sk)
++{
++	struct inet_connection_sock *icsk = inet_csk(sk);
++
++	/* ongoing timer handlers need to acquire socket lock. */
++	sock_not_owned_by_me(sk);
++
++	icsk->icsk_pending = icsk->icsk_ack.pending = 0;
++
++	sk_stop_timer_sync(sk, &icsk->icsk_retransmit_timer);
++	sk_stop_timer_sync(sk, &icsk->icsk_delack_timer);
++	sk_stop_timer_sync(sk, &sk->sk_timer);
++}
++
+ void inet_csk_delete_keepalive_timer(struct sock *sk)
+ {
+ 	sk_stop_timer(sk, &sk->sk_timer);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 68bb8d6bcc113..f8df35f7352a5 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2931,6 +2931,8 @@ void tcp_close(struct sock *sk, long timeout)
+ 	lock_sock(sk);
+ 	__tcp_close(sk, timeout);
+ 	release_sock(sk);
++	if (!sk->sk_net_refcnt)
++		inet_csk_clear_xmit_timers_sync(sk);
+ 	sock_put(sk);
+ }
+ EXPORT_SYMBOL(tcp_close);
 -- 
 2.43.0
 
