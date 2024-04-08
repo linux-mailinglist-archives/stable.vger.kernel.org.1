@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-37692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4EC489C601
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B08789C423
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 030FB1C22EE9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D0C51C222C1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420337D074;
-	Mon,  8 Apr 2024 14:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1527E0FF;
+	Mon,  8 Apr 2024 13:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGjiptB1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnf3MTBX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2AA17C0A9;
-	Mon,  8 Apr 2024 14:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5CF7D09F;
+	Mon,  8 Apr 2024 13:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584982; cv=none; b=Ohi+5bFBJwiPRDUnSsjDuHTo+2E88U6FpNCFoD8Sh+OmZOhXIb5T1nCAejTn4hLVPnpGthGbzdm3hBRYJpXt+G4ZZXf3D0ahrv8yUchiaZLohtBLXqhLqLbxu3DlmACnG3+K6qnT2pu1N+6D5gwLNw3BybfDngRf8r5gc+ZThXk=
+	t=1712583739; cv=none; b=TQOzQ0dlXnuW9NyBcGNmAV8VhplrUC5t6BMFfYFj3qz/kXcMtZpq1nd1Tr2pn8Fp+VOjW+hMwp1WR/I4/VQOf1b15J72cL2XedGkEVZ9ShbO5IxF8L6IkNGFH/h422hg0oBtk0KYFY1iUFr/OsJh8hKqHJJHNynzAI+W1MQdTl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584982; c=relaxed/simple;
-	bh=XZvkoUSc5ixEQxF5cTE17QwOVolg4qXNN/39Mqmf2Mo=;
+	s=arc-20240116; t=1712583739; c=relaxed/simple;
+	bh=AMIc4fQwZ7aKc6VRRVO8pATkimcMkc+xpp9xAb6nIpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LhYYkMRH1N5Fq6M2PxuoEZZ8jOzX/rAiRLkkuftPRVaa0uGD90MjNlXtmCq5s/lN87GniBADnL4/hHMu4wfTTgNlRjwlkvj9IZZlcWJdN5XppXamde5fzehQP1h384C/Soyc9tE1n4uSicpr9MD6uQBmEG0FcpYnA79XRDGQ8jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGjiptB1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78865C433F1;
-	Mon,  8 Apr 2024 14:03:01 +0000 (UTC)
+	 MIME-Version; b=hzBbeZZeYj7+uBfOxgm1Dah5r3vNygXhTePa8V0POxC7iD0svGnUKgBu3FBvm/WxbZ5hCcvPH0T0fqSHNYJ6LEpCwhzi6A2iMRJI+tUfJnnbBXjpow9Gyh4Oovn8Gj4GW97I5oK2K5MqzsNVlMY+gEWEp+DCxZKY7gTm0dkV3Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnf3MTBX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 518DFC433F1;
+	Mon,  8 Apr 2024 13:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584981;
-	bh=XZvkoUSc5ixEQxF5cTE17QwOVolg4qXNN/39Mqmf2Mo=;
+	s=korg; t=1712583739;
+	bh=AMIc4fQwZ7aKc6VRRVO8pATkimcMkc+xpp9xAb6nIpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oGjiptB1fleUtbWqbyc/PORIF3Keh1fnLjefwj4G5LHmKcXthY8/liY/7Tw7d+szF
-	 vypBZfNrIx3lbQtnpHuJs7SZnqFoL8uqC4gXRUW968AWO88aFcEXnHE4vy+99XfzF5
-	 eoQXPiTcOChTJSR2PMIF/v+ytGgJ1PuuCVnR1sN8=
+	b=wnf3MTBXRxqSFDbTNZatoG7hJ/oMFHl2YMAFgr01XgvHPnp/neV39Hw0SR6aYS4m0
+	 GxqdDRZlxjUhBlj1kJhLgCK5/oaOCIQhACQ5MJ6snKW33IushtN7IuN77HloHNUnOe
+	 nDowRURPKiU0Gj5mO7ksPTUf4wwRjyUwcavLqusk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sandipan Das <sandipan.das@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.15 623/690] x86/cpufeatures: Add CPUID_LNX_5 to track recently added Linux-defined word
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.8 214/273] ASoC: SOF: Intel: hda-pcm: Use dsp_max_burst_size_in_ms to place constraint
 Date: Mon,  8 Apr 2024 14:58:09 +0200
-Message-ID: <20240408125422.218692071@linuxfoundation.org>
+Message-ID: <20240408125316.018887102@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-commit 8cb4a9a82b21623dbb4b3051dd30d98356cf95bc upstream.
+commit fe76d2e75a6da97edd2b4ec5cfb9efd541be087a upstream.
 
-Add CPUID_LNX_5 to track cpufeatures' word 21, and add the appropriate
-compile-time assert in KVM to prevent direct lookups on the features in
-CPUID_LNX_5.  KVM uses X86_FEATURE_* flags to manage guest CPUID, and so
-must translate features that are scattered by Linux from the Linux-defined
-bit to the hardware-defined bit, i.e. should never try to directly access
-scattered features in guest CPUID.
+If the PCM have the dsp_max_burst_size_in_ms set then place a constraint
+to limit the minimum buffer time to avoid xruns caused by DMA bursts
+spinning on the ALSA buffer.
 
-Opportunistically add NR_CPUID_WORDS to enum cpuid_leafs, along with a
-compile-time assert in KVM's CPUID infrastructure to ensure that future
-additions update cpuid_leafs along with NCAPINTS.
-
-No functional change intended.
-
-Fixes: 7f274e609f3d ("x86/cpufeatures: Add new word for scattered features")
-Cc: Sandipan Das <sandipan.das@amd.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@vger.kernel.org # 6.8
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://msgid.link/r/20240321130814.4412-4-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/cpufeature.h |    2 ++
- arch/x86/kvm/reverse_cpuid.h      |    2 ++
- 2 files changed, 4 insertions(+)
+ sound/soc/sof/intel/hda-pcm.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/arch/x86/include/asm/cpufeature.h
-+++ b/arch/x86/include/asm/cpufeature.h
-@@ -33,6 +33,8 @@ enum cpuid_leafs
- 	CPUID_7_EDX,
- 	CPUID_8000_001F_EAX,
- 	CPUID_8000_0021_EAX,
-+	CPUID_LNX_5,
-+	NR_CPUID_WORDS,
- };
+diff --git a/sound/soc/sof/intel/hda-pcm.c b/sound/soc/sof/intel/hda-pcm.c
+index 18f07364d219..69fefcd1abc5 100644
+--- a/sound/soc/sof/intel/hda-pcm.c
++++ b/sound/soc/sof/intel/hda-pcm.c
+@@ -259,6 +259,27 @@ int hda_dsp_pcm_open(struct snd_sof_dev *sdev,
+ 		snd_pcm_hw_constraint_mask64(substream->runtime, SNDRV_PCM_HW_PARAM_FORMAT,
+ 					     SNDRV_PCM_FMTBIT_S16 | SNDRV_PCM_FMTBIT_S32);
  
- #ifdef CONFIG_X86_FEATURE_NAMES
---- a/arch/x86/kvm/reverse_cpuid.h
-+++ b/arch/x86/kvm/reverse_cpuid.h
-@@ -83,10 +83,12 @@ static const struct cpuid_reg reverse_cp
-  */
- static __always_inline void reverse_cpuid_check(unsigned int x86_leaf)
- {
-+	BUILD_BUG_ON(NR_CPUID_WORDS != NCAPINTS);
- 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_1);
- 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_2);
- 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_3);
- 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_4);
-+	BUILD_BUG_ON(x86_leaf == CPUID_LNX_5);
- 	BUILD_BUG_ON(x86_leaf >= ARRAY_SIZE(reverse_cpuid));
- 	BUILD_BUG_ON(reverse_cpuid[x86_leaf].function == 0);
- }
++	/*
++	 * The dsp_max_burst_size_in_ms is the length of the maximum burst size
++	 * of the host DMA in the ALSA buffer.
++	 *
++	 * On playback start the DMA will transfer dsp_max_burst_size_in_ms
++	 * amount of data in one initial burst to fill up the host DMA buffer.
++	 * Consequent DMA burst sizes are shorter and their length can vary.
++	 * To make sure that userspace allocate large enough ALSA buffer we need
++	 * to place a constraint on the buffer time.
++	 *
++	 * On capture the DMA will transfer 1ms chunks.
++	 *
++	 * Exact dsp_max_burst_size_in_ms constraint is racy, so set the
++	 * constraint to a minimum of 2x dsp_max_burst_size_in_ms.
++	 */
++	if (spcm->stream[direction].dsp_max_burst_size_in_ms)
++		snd_pcm_hw_constraint_minmax(substream->runtime,
++			SNDRV_PCM_HW_PARAM_BUFFER_TIME,
++			spcm->stream[direction].dsp_max_burst_size_in_ms * USEC_PER_MSEC * 2,
++			UINT_MAX);
++
+ 	/* binding pcm substream to hda stream */
+ 	substream->runtime->private_data = &dsp_stream->hstream;
+ 	return 0;
+-- 
+2.44.0
+
 
 
 
