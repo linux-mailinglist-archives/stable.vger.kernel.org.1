@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-36557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4996389C05F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0453D89C0E2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:14:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDDC01F218BE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F777B20C85
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A283E62148;
-	Mon,  8 Apr 2024 13:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBDF6FE1A;
+	Mon,  8 Apr 2024 13:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dB3wTKXl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzFenN6m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605C42DF73;
-	Mon,  8 Apr 2024 13:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7CA2E62C;
+	Mon,  8 Apr 2024 13:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581674; cv=none; b=MWWjWY1hzcNEjx5zedxB7iNuI+P6dI/YbHo0tAdZADP0QuoAsLUENVD2pi1zMGG0mTN/Dq338vKV672kCTKJPs/LEnGPGJle2UQlc/nCpwnkn2BbC0ECyEBgVX/lqbClLVMQabhcnRGcCB9QmBgbugT1/jxS9bUnJhaPcb8kWGc=
+	t=1712581785; cv=none; b=pnRQtM+mP7CnK+kTf5r5ZZRRIgpHv1dumFEbVqvRn7atak+Z6V33t2zBtHBXX0pA0mMlzXXtzIj9VVszjsL7db7L1GB60XW9HfVM73mmSL+cQHQfPUIyL63ExRQKpgKmnn/dYnH5yPtZ2vug7I7wY9gd1C/jT+uzyUdDFNcLOEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581674; c=relaxed/simple;
-	bh=vowLi28RGz4B4lFFx5PbihD5mmzuEJbHAYFvFsyuNEk=;
+	s=arc-20240116; t=1712581785; c=relaxed/simple;
+	bh=D0CJ4JPgAbyzYs6LaoWbKMjaREM5ThE9g5AMswOO3Ig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T7mtHWd6y9iGf/AEuAujuPn6lTt2YaqBXDdTZOnL5v/q/e+MD1H9WlPmgwMU/4uwxwK736Wy7acY1mQ5nYpVqxwfdmC3wMv9QTWoqd9gnNR8J2EI5V08OpOkUm8OX0TGr1hWyYeIjyDZkS4qWYKhv5lgGjOBiiq2+ZOIoryWT38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dB3wTKXl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F21C433C7;
-	Mon,  8 Apr 2024 13:07:53 +0000 (UTC)
+	 MIME-Version; b=qlh1BmRcEBlR5L79NYpwd55T7S6QPJfP6cnxbqsgitSGYiCuTia89ri7qRlDj4/Wov1DX+d6Rqj7hz6TuR049Bzcl4V1S6spLvOJ7vTgZclBmUzVlMAE54Fe5MpewXr0jSk3wkvybX9FTlqWN68+v2VmxCEsTOwgkIXf8BZt0jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzFenN6m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29023C433F1;
+	Mon,  8 Apr 2024 13:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581674;
-	bh=vowLi28RGz4B4lFFx5PbihD5mmzuEJbHAYFvFsyuNEk=;
+	s=korg; t=1712581785;
+	bh=D0CJ4JPgAbyzYs6LaoWbKMjaREM5ThE9g5AMswOO3Ig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dB3wTKXlp0NexbTih+CwZA1Tt/oyGCVtwI+pLW8hkR/nTi2EubNML22VYLnzRDBXP
-	 uESmIjcSl88naZpI6QRwJQJWM++K8WbPLpDY9bV/I0j6GXeqOMv3nzTNk9ySNQEbvU
-	 2uxtPiXlWXH9mG/1QvHaAZCIiws4cbEZXFMGvR/I=
+	b=jzFenN6mZK/eq6jO/uXHYYHDViKLvPWHmfNEXEJGE+dL9DRVG5hbUxSQulW/bqlc7
+	 hjFdDVqIlNPHckBvTS2zyoFuTuXqxXbUqXFxGCAPAWBR/ra0ZfGYlX6tzBJk2P6Cp/
+	 FKHrGtSq+NF5kIWm5PvRyo9apT8uhkVCya9/R+UA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Josua Mayer <josua@solid-run.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 072/690] landlock: Warn once if a Landlock action is requested while disabled
-Date: Mon,  8 Apr 2024 14:48:58 +0200
-Message-ID: <20240408125402.135982893@linuxfoundation.org>
+Subject: [PATCH 5.15 073/690] hwmon: (amc6821) add of_match table
+Date: Mon,  8 Apr 2024 14:48:59 +0200
+Message-ID: <20240408125402.165561269@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -61,85 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Josua Mayer <josua@solid-run.com>
 
-[ Upstream commit 782191c74875cc33b50263e21d76080b1411884d ]
+[ Upstream commit 3f003fda98a7a8d5f399057d92e6ed56b468657c ]
 
-Because sandboxing can be used as an opportunistic security measure,
-user space may not log unsupported features.  Let the system
-administrator know if an application tries to use Landlock but failed
-because it isn't enabled at boot time.  This may be caused by boot
-loader configurations with outdated "lsm" kernel's command-line
-parameter.
+Add of_match table for "ti,amc6821" compatible string.
+This fixes automatic driver loading by userspace when using device-tree,
+and if built as a module like major linux distributions do.
+
+While devices probe just fine with i2c_device_id table, userspace can't
+match the "ti,amc6821" compatible string from dt with the plain
+"amc6821" device id. As a result, the kernel module can not be loaded.
 
 Cc: stable@vger.kernel.org
-Fixes: 265885daf3e5 ("landlock: Add syscall implementations")
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Günther Noack <gnoack3000@gmail.com>
-Link: https://lore.kernel.org/r/20240227110550.3702236-2-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Link: https://lore.kernel.org/r/20240307-amc6821-of-match-v1-1-5f40464a3110@solid-run.com
+[groeck: Cleaned up patch description]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/landlock/syscalls.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/hwmon/amc6821.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/security/landlock/syscalls.c b/security/landlock/syscalls.c
-index 507d43827afed..229a6918b52f3 100644
---- a/security/landlock/syscalls.c
-+++ b/security/landlock/syscalls.c
-@@ -32,6 +32,18 @@
- #include "ruleset.h"
- #include "setup.h"
+diff --git a/drivers/hwmon/amc6821.c b/drivers/hwmon/amc6821.c
+index 6b1ce2242c618..60dfdb0f55231 100644
+--- a/drivers/hwmon/amc6821.c
++++ b/drivers/hwmon/amc6821.c
+@@ -934,10 +934,21 @@ static const struct i2c_device_id amc6821_id[] = {
  
-+static bool is_initialized(void)
-+{
-+	if (likely(landlock_initialized))
-+		return true;
+ MODULE_DEVICE_TABLE(i2c, amc6821_id);
+ 
++static const struct of_device_id __maybe_unused amc6821_of_match[] = {
++	{
++		.compatible = "ti,amc6821",
++		.data = (void *)amc6821,
++	},
++	{ }
++};
 +
-+	pr_warn_once(
-+		"Disabled but requested by user space. "
-+		"You should enable Landlock at boot time: "
-+		"https://docs.kernel.org/userspace-api/landlock.html#boot-time-configuration\n");
-+	return false;
-+}
++MODULE_DEVICE_TABLE(of, amc6821_of_match);
 +
- /**
-  * copy_min_struct_from_user - Safe future-proof argument copying
-  *
-@@ -165,7 +177,7 @@ SYSCALL_DEFINE3(landlock_create_ruleset,
- 	/* Build-time checks. */
- 	build_check_abi();
- 
--	if (!landlock_initialized)
-+	if (!is_initialized())
- 		return -EOPNOTSUPP;
- 
- 	if (flags) {
-@@ -311,7 +323,7 @@ SYSCALL_DEFINE4(landlock_add_rule, const int, ruleset_fd,
- 	struct landlock_ruleset *ruleset;
- 	int res, err;
- 
--	if (!landlock_initialized)
-+	if (!is_initialized())
- 		return -EOPNOTSUPP;
- 
- 	/* No flag for now. */
-@@ -402,7 +414,7 @@ SYSCALL_DEFINE2(landlock_restrict_self, const int, ruleset_fd, const __u32,
- 	struct landlock_cred_security *new_llcred;
- 	int err;
- 
--	if (!landlock_initialized)
-+	if (!is_initialized())
- 		return -EOPNOTSUPP;
- 
- 	/*
+ static struct i2c_driver amc6821_driver = {
+ 	.class = I2C_CLASS_HWMON,
+ 	.driver = {
+ 		.name	= "amc6821",
++		.of_match_table = of_match_ptr(amc6821_of_match),
+ 	},
+ 	.probe_new = amc6821_probe,
+ 	.id_table = amc6821_id,
 -- 
 2.43.0
 
