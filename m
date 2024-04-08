@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-37230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C42A89C3F1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A4089C3F4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A852F1C215AD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A77B01C2149B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05330811F2;
-	Mon,  8 Apr 2024 13:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A757C080;
+	Mon,  8 Apr 2024 13:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfPqxdND"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r9/BLzSv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70C780619;
-	Mon,  8 Apr 2024 13:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB307317D;
+	Mon,  8 Apr 2024 13:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583628; cv=none; b=hAd+lwDGort7GifOM61biMhJKtVEwHQEGnOHi5BmGhip8AxPdyOUVn4FOKF3Ey/QD7k7nBb7AMKHqD2Oqe3AOl52i++xFSu8sK5+YTDe0DM2zsBnEWwwoxIRgwRBqOrWcPURqaq/FYe4etECR7imPZPJPgOtllk6DZPdhc6Y2KM=
+	t=1712583637; cv=none; b=KZaHhqW7DX6hQOrEN1dwzzWGOFknAG4xyd1E+8h2qcuUKVIgM6nP+vx+uVE7US9S8HnItKGI1Kp8kpPb57LkK/wYhyYqQpiJNkb6iRw9vwkTwwoI853/0+rLhvbRV8oFDC4eND16+epLFblMSqNq2DbcQWkR6tkUXW8Lc5ZeRIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583628; c=relaxed/simple;
-	bh=QIxXb7wByVYZfI7WzX7qKqeiVM080+/8sTpeZt072TE=;
+	s=arc-20240116; t=1712583637; c=relaxed/simple;
+	bh=NWjxinMzkptG89dtxECLL31tPcGnW0GQS0g/67MJcIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqlHC/xVlmAch8n0QqFJTmj3nS59p/zcIUwApl9RD/T+yOOpPdIPlDHvcmjXkyA+pwW3Q9iAE/wmQz64Wpf/WTHOyF1LSr3jLAkFVlDEPR3nMl+5V7+F5gTT0wmCLScWi9nT+ezcngxJ1Hdr+88GqzFgJi98MznI/SrMaMKhBP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfPqxdND; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B66BC433C7;
-	Mon,  8 Apr 2024 13:40:28 +0000 (UTC)
+	 MIME-Version; b=la8wAz+KUyQkyk0NzHlNvXrLP2VxfTZZS0Q/WXn64AqHx0rZw+coA/WbYILFxZ1oNquCAl6sEvNjyacqfqjuZOezNa3p/vd1w8QklbW2aIt1BLoNggOuM2KDg+bvE89Xz9lcQuhaC2w7UvGCnbAXGx5XKB6paXcF+FF9Guez46w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r9/BLzSv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED02CC433C7;
+	Mon,  8 Apr 2024 13:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583628;
-	bh=QIxXb7wByVYZfI7WzX7qKqeiVM080+/8sTpeZt072TE=;
+	s=korg; t=1712583637;
+	bh=NWjxinMzkptG89dtxECLL31tPcGnW0GQS0g/67MJcIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MfPqxdND5+sKpDZdOXEW5tjwIaFh/Z7molQ+eJo5ChSQJfBTIPdhnyEy4Y0LbbJQF
-	 hy0A2bDi6KuTZbuFYxxk3JlQA2SmALY2eDFZtrcrZCNAh3lkPoCzjZMNe6Ow9p4l9V
-	 nmS0EEit1p0JtLyzzNSEG253lRftBIyoUZ5DSR+o=
+	b=r9/BLzSvhfR5zMQbpI3oL4FJ/kLKQ7q13H6EJZrAnDtATUZ0nb0Y0kgfDR1x4N6+H
+	 Tq2IBFDpVJnU7WgdBLmhquXwZezogeOCeCcgboma5nAKk10M7fzuhV75keXMYIWYRP
+	 1rLAtsNMRhohc94jhaeDvCFQtqDeUSjg8E8HqxnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 268/690] orDate: Thu Sep 30 19:19:57 2021 -0400
-Date: Mon,  8 Apr 2024 14:52:14 +0200
-Message-ID: <20240408125409.330662285@linuxfoundation.org>
+Subject: [PATCH 5.15 269/690] NFSD: Skip extra computation for RC_NOCACHE case
+Date: Mon,  8 Apr 2024 14:52:15 +0200
+Message-ID: <20240408125409.365391874@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,80 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-NFSD: De-duplicate hash bucket indexing
+[ Upstream commit 0f29ce32fbc56cfdb304eec8a4deb920ccfd89c3 ]
 
-[ Upstream commit 378a6109dd142a678f629b740f558365150f60f9 ]
-
-Clean up: The details of finding the right hash bucket are exactly
-the same in both nfsd_cache_lookup() and nfsd_cache_update().
+Force the compiler to skip unneeded initialization for cases that
+don't need those values. For example, NFSv4 COMPOUND operations are
+RC_NOCACHE.
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfscache.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ fs/nfsd/nfscache.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/fs/nfsd/nfscache.c b/fs/nfsd/nfscache.c
-index a838909502907..7880a2f2d29f6 100644
+index 7880a2f2d29f6..1523d2e3dae97 100644
 --- a/fs/nfsd/nfscache.c
 +++ b/fs/nfsd/nfscache.c
-@@ -84,12 +84,6 @@ nfsd_hashsize(unsigned int limit)
- 	return roundup_pow_of_two(limit / TARGET_BUCKET_SIZE);
- }
- 
--static u32
--nfsd_cache_hash(__be32 xid, struct nfsd_net *nn)
--{
--	return hash_32((__force u32)xid, nn->maskbits);
--}
--
- static struct svc_cacherep *
- nfsd_reply_cache_alloc(struct svc_rqst *rqstp, __wsum csum,
- 			struct nfsd_net *nn)
-@@ -241,6 +235,14 @@ lru_put_end(struct nfsd_drc_bucket *b, struct svc_cacherep *rp)
- 	list_move_tail(&rp->c_lru, &b->lru_head);
- }
- 
-+static noinline struct nfsd_drc_bucket *
-+nfsd_cache_bucket_find(__be32 xid, struct nfsd_net *nn)
-+{
-+	unsigned int hash = hash_32((__force u32)xid, nn->maskbits);
-+
-+	return &nn->drc_hashtbl[hash];
-+}
-+
- static long prune_bucket(struct nfsd_drc_bucket *b, struct nfsd_net *nn,
- 			 unsigned int max)
+@@ -421,10 +421,10 @@ nfsd_cache_insert(struct nfsd_drc_bucket *b, struct svc_cacherep *key,
+  */
+ int nfsd_cache_lookup(struct svc_rqst *rqstp)
  {
-@@ -421,10 +423,8 @@ int nfsd_cache_lookup(struct svc_rqst *rqstp)
- {
- 	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
+-	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
++	struct nfsd_net		*nn;
  	struct svc_cacherep	*rp, *found;
--	__be32			xid = rqstp->rq_xid;
  	__wsum			csum;
--	u32 hash = nfsd_cache_hash(xid, nn);
--	struct nfsd_drc_bucket *b = &nn->drc_hashtbl[hash];
-+	struct nfsd_drc_bucket	*b = nfsd_cache_bucket_find(rqstp->rq_xid, nn);
+-	struct nfsd_drc_bucket	*b = nfsd_cache_bucket_find(rqstp->rq_xid, nn);
++	struct nfsd_drc_bucket	*b;
  	int type = rqstp->rq_cachetype;
  	int rtn = RC_DOIT;
  
-@@ -528,7 +528,6 @@ void nfsd_cache_update(struct svc_rqst *rqstp, int cachetype, __be32 *statp)
- 	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
- 	struct svc_cacherep *rp = rqstp->rq_cacherep;
- 	struct kvec	*resv = &rqstp->rq_res.head[0], *cachv;
--	u32		hash;
- 	struct nfsd_drc_bucket *b;
- 	int		len;
- 	size_t		bufsize = 0;
-@@ -536,8 +535,7 @@ void nfsd_cache_update(struct svc_rqst *rqstp, int cachetype, __be32 *statp)
+@@ -440,10 +440,12 @@ int nfsd_cache_lookup(struct svc_rqst *rqstp)
+ 	 * Since the common case is a cache miss followed by an insert,
+ 	 * preallocate an entry.
+ 	 */
++	nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
+ 	rp = nfsd_reply_cache_alloc(rqstp, csum, nn);
  	if (!rp)
- 		return;
+ 		goto out;
  
--	hash = nfsd_cache_hash(rp->c_key.k_xid, nn);
--	b = &nn->drc_hashtbl[hash];
-+	b = nfsd_cache_bucket_find(rp->c_key.k_xid, nn);
- 
- 	len = resv->iov_len - ((char*)statp - (char*)resv->iov_base);
- 	len >>= 2;
++	b = nfsd_cache_bucket_find(rqstp->rq_xid, nn);
+ 	spin_lock(&b->cache_lock);
+ 	found = nfsd_cache_insert(b, rp, nn);
+ 	if (found != rp) {
 -- 
 2.43.0
 
