@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-37652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEAB589C5DE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D08DE89C03C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CF851C22143
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 683E7B2A525
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8F58061A;
-	Mon,  8 Apr 2024 14:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876FE7CF27;
+	Mon,  8 Apr 2024 13:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8LlJ/am"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwVzDA/0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8A67F7FE;
-	Mon,  8 Apr 2024 14:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466462E62C;
+	Mon,  8 Apr 2024 13:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584862; cv=none; b=Hgs1fvATeCNQ//SyJ+J7/noLlIncdwl/b7yGE4Qb8mWnDQdGZTDqwo93Hu13PTD5dF4aPNyxOYJlrvdph18fdhg9eW8E6LCTbsTQEIAvAkRhKj+hKJp2oO7MWPoJ4oIU3YLiK0BIE/gfnsOOLeG5y1E8Dz0J+8ikZ5gKT5LHTM0=
+	t=1712581332; cv=none; b=t+kKBCNmzrgWeOTcCwmYB24c3eHkQjPDKtJ12JDdf3WD4w+Zl/isr3ho7cRyQraIKOHOaj/pTWR1GNR9uMfKTUiEX+7W8OiOZSal7z6zpki6vBwVIR7t/sMft2XQUOTaivJdLwbbF4xK4CxecoHn1GR7yeO/GVVxsyb37vdRF9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584862; c=relaxed/simple;
-	bh=1qO7FjhlmI0/qI5p/w69t3y8/hHHw4u0uqOrjx2VjrE=;
+	s=arc-20240116; t=1712581332; c=relaxed/simple;
+	bh=kb865PHF6/l1egQdUK67it8Uk6iQUgau+tV1FK2ZAj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cosdyFBqhyiR4ERv39KRYSse4nDyuOxYpQ6hcawPo8SUork6okcI1crPM+N0YnnYFa3oR2oFVXzn3ld8dJDDUFUz6ocMFFKokZxqhi9/AClV88N4NfRIY4qvd7ww0ppYnn9t6dtcymfJLeOPgOmzWtd0eq1bz7CaZGlrvdLbtdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8LlJ/am; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8BFAC43399;
-	Mon,  8 Apr 2024 14:01:01 +0000 (UTC)
+	 MIME-Version; b=mvNYjAsxwy9zIa0dPOrdwsMMPgSHENPJwVXSp7nMtoBI/lzfFrEiBc+GorqtJpl12FFYfACbGIjduU2txMcvWBtZf4tGs+Db3IU/rLCOkxBv+XltV40+HLWUfQlbwdsZZ8hNpI2CmzL8Hl7U/cP2/QVAt6TaTODlwrI3g8n5Y80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwVzDA/0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C644C433F1;
+	Mon,  8 Apr 2024 13:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584862;
-	bh=1qO7FjhlmI0/qI5p/w69t3y8/hHHw4u0uqOrjx2VjrE=;
+	s=korg; t=1712581331;
+	bh=kb865PHF6/l1egQdUK67it8Uk6iQUgau+tV1FK2ZAj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a8LlJ/amXDb2USCbaHpLq1kco6+NlAXV6aqQCRWUULfquBuAFO7ma52gySNOm/7sK
-	 aNml44mYx3RlYuwwVI8UYMedycuzXbL2rgRIhGSw3pNiUBDjDIzbP87rNRjMlMxCFo
-	 dd3Xm3IEV4ynKN/5MKTKOZJ2bZfoejKwm0dSz6ew=
+	b=NwVzDA/0spS4vGw4KItPnxJyR7L5/gOrgJR3oZC2QPwAkVpuaEPhyxUqFLtSFry4z
+	 lfk9ii1/8voedesMcQL9TaGUnQ7z4Jw559LnQqU4Te2PZ3uE2YRDgu7zAR9uJmGgkJ
+	 sqLZnydaWcTiOaC38gXXHNQw/XFAmMAldOj9Rt1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhi Li <yieli@redhat.com>,
-	NeilBrown <neilb@suse.de>,
-	Jeffrey Layton <jlayton@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 552/690] nfsd: drop the nfsd_put helper
+	David Thompson <davthompson@nvidia.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 004/138] mlxbf_gige: stop PHY during open() error paths
 Date: Mon,  8 Apr 2024 14:56:58 +0200
-Message-ID: <20240408125419.622704589@linuxfoundation.org>
+Message-ID: <20240408125256.360396619@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,133 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: David Thompson <davthompson@nvidia.com>
 
-[ Upstream commit 64e6304169f1e1f078e7f0798033f80a7fb0ea46 ]
+[ Upstream commit d6c30c5a168f8586b8bcc0d8e42e2456eb05209b ]
 
-It's not safe to call nfsd_put once nfsd_last_thread has been called, as
-that function will zero out the nn->nfsd_serv pointer.
+The mlxbf_gige_open() routine starts the PHY as part of normal
+initialization.  The mlxbf_gige_open() routine must stop the
+PHY during its error paths.
 
-Drop the nfsd_put helper altogether and open-code the svc_put in its
-callers instead. That allows us to not be reliant on the value of that
-pointer when handling an error.
-
-Fixes: 2a501f55cd64 ("nfsd: call nfsd_last_thread() before final nfsd_put()")
-Reported-by: Zhi Li <yieli@redhat.com>
-Cc: NeilBrown <neilb@suse.de>
-Signed-off-by: Jeffrey Layton <jlayton@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsctl.c | 31 +++++++++++++++++--------------
- fs/nfsd/nfsd.h   |  7 -------
- 2 files changed, 17 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index eec442edb6556..f77f00c931723 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -709,6 +709,7 @@ static ssize_t __write_ports_addfd(char *buf, struct net *net, const struct cred
- 	char *mesg = buf;
- 	int fd, err;
- 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
-+	struct svc_serv *serv;
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+index 83c4659390fd5..113e3d9d33530 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+@@ -157,7 +157,7 @@ static int mlxbf_gige_open(struct net_device *netdev)
  
- 	err = get_int(&mesg, &fd);
- 	if (err != 0 || fd < 0)
-@@ -718,15 +719,15 @@ static ssize_t __write_ports_addfd(char *buf, struct net *net, const struct cred
- 	if (err != 0)
- 		return err;
+ 	err = mlxbf_gige_tx_init(priv);
+ 	if (err)
+-		goto free_irqs;
++		goto phy_deinit;
+ 	err = mlxbf_gige_rx_init(priv);
+ 	if (err)
+ 		goto tx_deinit;
+@@ -185,6 +185,9 @@ static int mlxbf_gige_open(struct net_device *netdev)
+ tx_deinit:
+ 	mlxbf_gige_tx_deinit(priv);
  
--	err = svc_addsock(nn->nfsd_serv, net, fd, buf, SIMPLE_TRANSACTION_LIMIT, cred);
-+	serv = nn->nfsd_serv;
-+	err = svc_addsock(serv, net, fd, buf, SIMPLE_TRANSACTION_LIMIT, cred);
- 
--	if (err < 0 && !nn->nfsd_serv->sv_nrthreads && !nn->keep_active)
-+	if (err < 0 && !serv->sv_nrthreads && !nn->keep_active)
- 		nfsd_last_thread(net);
--	else if (err >= 0 &&
--		 !nn->nfsd_serv->sv_nrthreads && !xchg(&nn->keep_active, 1))
--		svc_get(nn->nfsd_serv);
-+	else if (err >= 0 && !serv->sv_nrthreads && !xchg(&nn->keep_active, 1))
-+		svc_get(serv);
- 
--	nfsd_put(net);
-+	svc_put(serv);
++phy_deinit:
++	phy_stop(phydev);
++
+ free_irqs:
+ 	mlxbf_gige_free_irqs(priv);
  	return err;
- }
- 
-@@ -740,6 +741,7 @@ static ssize_t __write_ports_addxprt(char *buf, struct net *net, const struct cr
- 	struct svc_xprt *xprt;
- 	int port, err;
- 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
-+	struct svc_serv *serv;
- 
- 	if (sscanf(buf, "%15s %5u", transport, &port) != 2)
- 		return -EINVAL;
-@@ -751,32 +753,33 @@ static ssize_t __write_ports_addxprt(char *buf, struct net *net, const struct cr
- 	if (err != 0)
- 		return err;
- 
--	err = svc_xprt_create(nn->nfsd_serv, transport, net,
-+	serv = nn->nfsd_serv;
-+	err = svc_xprt_create(serv, transport, net,
- 			      PF_INET, port, SVC_SOCK_ANONYMOUS, cred);
- 	if (err < 0)
- 		goto out_err;
- 
--	err = svc_xprt_create(nn->nfsd_serv, transport, net,
-+	err = svc_xprt_create(serv, transport, net,
- 			      PF_INET6, port, SVC_SOCK_ANONYMOUS, cred);
- 	if (err < 0 && err != -EAFNOSUPPORT)
- 		goto out_close;
- 
--	if (!nn->nfsd_serv->sv_nrthreads && !xchg(&nn->keep_active, 1))
--		svc_get(nn->nfsd_serv);
-+	if (!serv->sv_nrthreads && !xchg(&nn->keep_active, 1))
-+		svc_get(serv);
- 
--	nfsd_put(net);
-+	svc_put(serv);
- 	return 0;
- out_close:
--	xprt = svc_find_xprt(nn->nfsd_serv, transport, net, PF_INET, port);
-+	xprt = svc_find_xprt(serv, transport, net, PF_INET, port);
- 	if (xprt != NULL) {
- 		svc_xprt_close(xprt);
- 		svc_xprt_put(xprt);
- 	}
- out_err:
--	if (!nn->nfsd_serv->sv_nrthreads && !nn->keep_active)
-+	if (!serv->sv_nrthreads && !nn->keep_active)
- 		nfsd_last_thread(net);
- 
--	nfsd_put(net);
-+	svc_put(serv);
- 	return err;
- }
- 
-diff --git a/fs/nfsd/nfsd.h b/fs/nfsd/nfsd.h
-index 3796015dc7656..013bfa24ced21 100644
---- a/fs/nfsd/nfsd.h
-+++ b/fs/nfsd/nfsd.h
-@@ -96,13 +96,6 @@ int		nfsd_pool_stats_open(struct inode *, struct file *);
- int		nfsd_pool_stats_release(struct inode *, struct file *);
- void		nfsd_shutdown_threads(struct net *net);
- 
--static inline void nfsd_put(struct net *net)
--{
--	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
--
--	svc_put(nn->nfsd_serv);
--}
--
- bool		i_am_nfsd(void);
- 
- struct nfsdfs_client {
 -- 
 2.43.0
 
