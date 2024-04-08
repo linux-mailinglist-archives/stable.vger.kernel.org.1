@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-36690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64BE989C13E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD2A589C145
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 169232819F6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E20601C21813
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96368121A;
-	Mon,  8 Apr 2024 13:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A828175E;
+	Mon,  8 Apr 2024 13:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+wkGEBr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDF77Ocq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A3E6FE35;
-	Mon,  8 Apr 2024 13:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BBB7F7CC;
+	Mon,  8 Apr 2024 13:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582060; cv=none; b=HgXpED7CwTXTNfGpbXSyu4LBCWgfWeJOVWxNzkQdzbFLIiPzYFte/dXNAHGkg69DaZLj5Jxghjf+9YcLtBARWIO4gIFgFawWEacNL7E6eznk3+T0TljFz3rnKShwM77M9+zCAMmYK8c3pueu1X1Z0CWl2fgjkJodw7HSzdgea0w=
+	t=1712582075; cv=none; b=dwqgyYcEHHdnTOFmS3dy+eisWQak0U4PQ9O1qK+hgMHKqT9y5KzPdDE5ZW+CkPCP7uidY8GR0u6Q2B7tcgMzrPz24Zdyqe0oU7V0Rl/ZOsomUS8pk0Z1jzRIMqJttrGV9Ql5HQ2YEfZ+HdgBaffTVE6rnz+6ZASVjvbdRXQTn7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582060; c=relaxed/simple;
-	bh=CBOG1Ry0SNoIdLryPafbByhynhxwFb66OtC/zwBoshY=;
+	s=arc-20240116; t=1712582075; c=relaxed/simple;
+	bh=OxR1Em4nZqm3OMeso8zVYvk041Sd0k3JiXT1PFsKJr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UjzHF9Sig0PpcJ2xV15wGM89iUaAehTlLRGxK9bhDDUls2hlhU59nDQ7iMf/rSsj9VBuD6TDA8yNTAljPp4E+xTHZJnjx3nhNsJzarrFsl1qWlmJY2POFy1xMZvSGPEPZYu91VnzbT+jPwYUklWYwFuzzVHwUKWY+atd11OyZ44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+wkGEBr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF3DFC433C7;
-	Mon,  8 Apr 2024 13:14:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t0gf12JAJKbPghOO84oHBoBRxN5iCPHjMFvUyf0KEQCyw22U836PtYXrYC1I7PqHwGkKThHYb7l0K3TyLK+WoEZkv5SU5k3cintlXqhYX2vi+QEmRq7/qM1/Dk/iBpsL0MSHNWEWCtSyhrZvR5Kjz5xpZT85rcVrozVza5Zn02I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDF77Ocq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15ACC433F1;
+	Mon,  8 Apr 2024 13:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582060;
-	bh=CBOG1Ry0SNoIdLryPafbByhynhxwFb66OtC/zwBoshY=;
+	s=korg; t=1712582075;
+	bh=OxR1Em4nZqm3OMeso8zVYvk041Sd0k3JiXT1PFsKJr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z+wkGEBr1V4FOKsbWIMycvFt0k1WzrrPGzq34GKXfSDblNJqwz25nY6ItnZFKc0C/
-	 XFXpiw6Kr492loEj1HbltruFg8WHpvMgsayb+eu3vfVqmjSePgFV8Fe25UxlzMchmP
-	 50JiLL1UUfB+SxhrRrRoffDA6Aq+n0bJkM8nP5c4=
+	b=TDF77OcqxmyVWEn2C5q1c1vMfJI1uZo2krvajS9kvF73coP++R7NlfvTPOD/BY37Z
+	 wa1nd5RvqORRwgx+quVupsfHnySyywWICzN8Rc+J01kO/DpgVM1UF9VOYkgQLk3TpE
+	 CkcgyzKilpqxQqlL4udLD63xfWw3bIP66A4huUr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Ferreira <hferreir@redhat.com>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Ivan Vecera <ivecera@redhat.com>,
-	Jesse Brandeburg <jesse.brandeburg@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.1 075/138] i40e: Enforce software interrupt during busy-poll exit
-Date: Mon,  8 Apr 2024 14:58:09 +0200
-Message-ID: <20240408125258.559637451@linuxfoundation.org>
+	Simon Horman <simon.horman@corigine.com>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	=?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 076/138] r8169: use spinlock to protect mac ocp register access
+Date: Mon,  8 Apr 2024 14:58:10 +0200
+Message-ID: <20240408125258.590975554@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
 References: <20240408125256.218368873@linuxfoundation.org>
@@ -64,324 +63,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit ea558de7238bb12c3435c47f0631e9d17bf4a09f ]
+[ Upstream commit 91c8643578a21e435c412ffbe902bb4b4773e262 ]
 
-As for ice bug fixed by commit b7306b42beaf ("ice: manage interrupts
-during poll exit") followed by commit 23be7075b318 ("ice: fix software
-generating extra interrupts") I'm seeing the similar issue also with
-i40e driver.
+For disabling ASPM during NAPI poll we'll have to access mac ocp
+registers in atomic context. This could result in races because
+a mac ocp read consists of a write to register OCPDR, followed
+by a read from the same register. Therefore add a spinlock to
+protect access to mac ocp registers.
 
-In certain situation when busy-loop is enabled together with adaptive
-coalescing, the driver occasionally misses that there are outstanding
-descriptors to clean when exiting busy poll.
-
-Try to catch the remaining work by triggering a software interrupt
-when exiting busy poll. No extra interrupts will be generated when
-busy polling is not used.
-
-The issue was found when running sockperf ping-pong tcp test with
-adaptive coalescing and busy poll enabled (50 as value busy_pool
-and busy_read sysctl knobs) and results in huge latency spikes
-with more than 100000us.
-
-The fix is inspired from the ice driver and do the following:
-1) During napi poll exit in case of busy-poll (napo_complete_done()
-   returns false) this is recorded to q_vector that we were in busy
-   loop.
-2) Extends i40e_buildreg_itr() to be able to add an enforced software
-   interrupt into built value
-2) In i40e_update_enable_itr() enforces a software interrupt trigger
-   if we are exiting busy poll to catch any pending clean-ups
-3) Reuses unused 3rd ITR (interrupt throttle) index and set it to
-   20K interrupts per second to limit the number of these sw interrupts.
-
-Test results
-============
-Prior:
-[root@dell-per640-07 net]# sockperf ping-pong -i 10.9.9.1 --tcp -m 1000 --mps=max -t 120
-sockperf: == version #3.10-no.git ==
-sockperf[CLIENT] send on:sockperf: using recvfrom() to block on socket(s)
-
-[ 0] IP = 10.9.9.1        PORT = 11111 # TCP
-sockperf: Warmup stage (sending a few dummy messages)...
-sockperf: Starting test...
-sockperf: Test end (interrupted by timer)
-sockperf: Test ended
-sockperf: [Total Run] RunTime=119.999 sec; Warm up time=400 msec; SentMessages=2438563; ReceivedMessages=2438562
-sockperf: ========= Printing statistics for Server No: 0
-sockperf: [Valid Duration] RunTime=119.549 sec; SentMessages=2429473; ReceivedMessages=2429473
-sockperf: ====> avg-latency=24.571 (std-dev=93.297, mean-ad=4.904, median-ad=1.510, siqr=1.063, cv=3.797, std-error=0.060, 99.0% ci=[24.417, 24.725])
-sockperf: # dropped messages = 0; # duplicated messages = 0; # out-of-order messages = 0
-sockperf: Summary: Latency is 24.571 usec
-sockperf: Total 2429473 observations; each percentile contains 24294.73 observations
-sockperf: ---> <MAX> observation = 103294.331
-sockperf: ---> percentile 99.999 =   45.633
-sockperf: ---> percentile 99.990 =   37.013
-sockperf: ---> percentile 99.900 =   35.910
-sockperf: ---> percentile 99.000 =   33.390
-sockperf: ---> percentile 90.000 =   28.626
-sockperf: ---> percentile 75.000 =   27.741
-sockperf: ---> percentile 50.000 =   26.743
-sockperf: ---> percentile 25.000 =   25.614
-sockperf: ---> <MIN> observation =   12.220
-
-After:
-[root@dell-per640-07 net]# sockperf ping-pong -i 10.9.9.1 --tcp -m 1000 --mps=max -t 120
-sockperf: == version #3.10-no.git ==
-sockperf[CLIENT] send on:sockperf: using recvfrom() to block on socket(s)
-
-[ 0] IP = 10.9.9.1        PORT = 11111 # TCP
-sockperf: Warmup stage (sending a few dummy messages)...
-sockperf: Starting test...
-sockperf: Test end (interrupted by timer)
-sockperf: Test ended
-sockperf: [Total Run] RunTime=119.999 sec; Warm up time=400 msec; SentMessages=2400055; ReceivedMessages=2400054
-sockperf: ========= Printing statistics for Server No: 0
-sockperf: [Valid Duration] RunTime=119.549 sec; SentMessages=2391186; ReceivedMessages=2391186
-sockperf: ====> avg-latency=24.965 (std-dev=5.934, mean-ad=4.642, median-ad=1.485, siqr=1.067, cv=0.238, std-error=0.004, 99.0% ci=[24.955, 24.975])
-sockperf: # dropped messages = 0; # duplicated messages = 0; # out-of-order messages = 0
-sockperf: Summary: Latency is 24.965 usec
-sockperf: Total 2391186 observations; each percentile contains 23911.86 observations
-sockperf: ---> <MAX> observation =  195.841
-sockperf: ---> percentile 99.999 =   45.026
-sockperf: ---> percentile 99.990 =   39.009
-sockperf: ---> percentile 99.900 =   35.922
-sockperf: ---> percentile 99.000 =   33.482
-sockperf: ---> percentile 90.000 =   28.902
-sockperf: ---> percentile 75.000 =   27.821
-sockperf: ---> percentile 50.000 =   26.860
-sockperf: ---> percentile 25.000 =   25.685
-sockperf: ---> <MIN> observation =   12.277
-
-Fixes: 0bcd952feec7 ("ethernet/intel: consolidate NAPI and NAPI exit")
-Reported-by: Hugo Ferreira <hferreir@redhat.com>
-Reviewed-by: Michal Schmidt <mschmidt@redhat.com>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Tested-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 5e864d90b208 ("r8169: skip DASH fw status checks when DASH is disabled")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e.h        |  1 +
- drivers/net/ethernet/intel/i40e/i40e_main.c   |  6 ++
- .../net/ethernet/intel/i40e/i40e_register.h   |  3 +
- drivers/net/ethernet/intel/i40e/i40e_txrx.c   | 82 ++++++++++++++-----
- drivers/net/ethernet/intel/i40e/i40e_txrx.h   |  1 +
- 5 files changed, 72 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 37 ++++++++++++++++++++---
+ 1 file changed, 33 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index 35862dedd59b5..5293fc00938cf 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -992,6 +992,7 @@ struct i40e_q_vector {
- 	struct rcu_head rcu;	/* to avoid race with update stats on free */
- 	char name[I40E_INT_NAME_STR_LEN];
- 	bool arm_wb_state;
-+	bool in_busy_poll;
- 	int irq_num;		/* IRQ assigned to this q_vector */
- } ____cacheline_internodealigned_in_smp;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 3dbcb311dcbf2..c7dd0eb94817f 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -615,6 +615,8 @@ struct rtl8169_private {
+ 		struct work_struct work;
+ 	} wk;
  
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index ee0d7c29e8f17..a9db1ed74d3fc 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -3891,6 +3891,12 @@ static void i40e_vsi_configure_msix(struct i40e_vsi *vsi)
- 		     q_vector->tx.target_itr >> 1);
- 		q_vector->tx.current_itr = q_vector->tx.target_itr;
- 
-+		/* Set ITR for software interrupts triggered after exiting
-+		 * busy-loop polling.
-+		 */
-+		wr32(hw, I40E_PFINT_ITRN(I40E_SW_ITR, vector - 1),
-+		     I40E_ITR_20K);
++	spinlock_t mac_ocp_lock;
 +
- 		wr32(hw, I40E_PFINT_RATEN(vector - 1),
- 		     i40e_intrl_usec_to_reg(vsi->int_rate_limit));
- 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_register.h b/drivers/net/ethernet/intel/i40e/i40e_register.h
-index 7339003aa17cd..694cb3e45c1ec 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_register.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_register.h
-@@ -328,8 +328,11 @@
- #define I40E_PFINT_DYN_CTLN_ITR_INDX_SHIFT 3
- #define I40E_PFINT_DYN_CTLN_ITR_INDX_MASK I40E_MASK(0x3, I40E_PFINT_DYN_CTLN_ITR_INDX_SHIFT)
- #define I40E_PFINT_DYN_CTLN_INTERVAL_SHIFT 5
-+#define I40E_PFINT_DYN_CTLN_INTERVAL_MASK I40E_MASK(0xFFF, I40E_PFINT_DYN_CTLN_INTERVAL_SHIFT)
- #define I40E_PFINT_DYN_CTLN_SW_ITR_INDX_ENA_SHIFT 24
- #define I40E_PFINT_DYN_CTLN_SW_ITR_INDX_ENA_MASK I40E_MASK(0x1, I40E_PFINT_DYN_CTLN_SW_ITR_INDX_ENA_SHIFT)
-+#define I40E_PFINT_DYN_CTLN_SW_ITR_INDX_SHIFT 25
-+#define I40E_PFINT_DYN_CTLN_SW_ITR_INDX_MASK I40E_MASK(0x3, I40E_PFINT_DYN_CTLN_SW_ITR_INDX_SHIFT)
- #define I40E_PFINT_ICR0 0x00038780 /* Reset: CORER */
- #define I40E_PFINT_ICR0_INTEVENT_SHIFT 0
- #define I40E_PFINT_ICR0_INTEVENT_MASK I40E_MASK(0x1, I40E_PFINT_ICR0_INTEVENT_SHIFT)
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-index 94cf82668efaa..3d83fccf742b1 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-@@ -2571,7 +2571,22 @@ static int i40e_clean_rx_irq(struct i40e_ring *rx_ring, int budget)
- 	return failure ? budget : (int)total_rx_packets;
+ 	unsigned supports_gmii:1;
+ 	unsigned aspm_manageable:1;
+ 	unsigned dash_enabled:1;
+@@ -850,7 +852,7 @@ static int r8168_phy_ocp_read(struct rtl8169_private *tp, u32 reg)
+ 		(RTL_R32(tp, GPHY_OCP) & 0xffff) : -ETIMEDOUT;
  }
  
--static inline u32 i40e_buildreg_itr(const int type, u16 itr)
-+/**
-+ * i40e_buildreg_itr - build a value for writing to I40E_PFINT_DYN_CTLN register
-+ * @itr_idx: interrupt throttling index
-+ * @interval: interrupt throttling interval value in usecs
-+ * @force_swint: force software interrupt
-+ *
-+ * The function builds a value for I40E_PFINT_DYN_CTLN register that
-+ * is used to update interrupt throttling interval for specified ITR index
-+ * and optionally enforces a software interrupt. If the @itr_idx is equal
-+ * to I40E_ITR_NONE then no interval change is applied and only @force_swint
-+ * parameter is taken into account. If the interval change and enforced
-+ * software interrupt are not requested then the built value just enables
-+ * appropriate vector interrupt.
-+ **/
-+static u32 i40e_buildreg_itr(enum i40e_dyn_idx itr_idx, u16 interval,
-+			     bool force_swint)
+-static void r8168_mac_ocp_write(struct rtl8169_private *tp, u32 reg, u32 data)
++static void __r8168_mac_ocp_write(struct rtl8169_private *tp, u32 reg, u32 data)
  {
- 	u32 val;
- 
-@@ -2585,23 +2600,33 @@ static inline u32 i40e_buildreg_itr(const int type, u16 itr)
- 	 * an event in the PBA anyway so we need to rely on the automask
- 	 * to hold pending events for us until the interrupt is re-enabled
- 	 *
--	 * The itr value is reported in microseconds, and the register
--	 * value is recorded in 2 microsecond units. For this reason we
--	 * only need to shift by the interval shift - 1 instead of the
--	 * full value.
-+	 * We have to shift the given value as it is reported in microseconds
-+	 * and the register value is recorded in 2 microsecond units.
- 	 */
--	itr &= I40E_ITR_MASK;
-+	interval >>= 1;
- 
-+	/* 1. Enable vector interrupt
-+	 * 2. Update the interval for the specified ITR index
-+	 *    (I40E_ITR_NONE in the register is used to indicate that
-+	 *     no interval update is requested)
-+	 */
- 	val = I40E_PFINT_DYN_CTLN_INTENA_MASK |
--	      (type << I40E_PFINT_DYN_CTLN_ITR_INDX_SHIFT) |
--	      (itr << (I40E_PFINT_DYN_CTLN_INTERVAL_SHIFT - 1));
-+	      FIELD_PREP(I40E_PFINT_DYN_CTLN_ITR_INDX_MASK, itr_idx) |
-+	      FIELD_PREP(I40E_PFINT_DYN_CTLN_INTERVAL_MASK, interval);
-+
-+	/* 3. Enforce software interrupt trigger if requested
-+	 *    (These software interrupts rate is limited by ITR2 that is
-+	 *     set to 20K interrupts per second)
-+	 */
-+	if (force_swint)
-+		val |= I40E_PFINT_DYN_CTLN_SWINT_TRIG_MASK |
-+		       I40E_PFINT_DYN_CTLN_SW_ITR_INDX_ENA_MASK |
-+		       FIELD_PREP(I40E_PFINT_DYN_CTLN_SW_ITR_INDX_MASK,
-+				  I40E_SW_ITR);
- 
- 	return val;
+ 	if (rtl_ocp_reg_failure(reg))
+ 		return;
+@@ -858,7 +860,16 @@ static void r8168_mac_ocp_write(struct rtl8169_private *tp, u32 reg, u32 data)
+ 	RTL_W32(tp, OCPDR, OCPAR_FLAG | (reg << 15) | data);
  }
  
--/* a small macro to shorten up some long lines */
--#define INTREG I40E_PFINT_DYN_CTLN
--
- /* The act of updating the ITR will cause it to immediately trigger. In order
-  * to prevent this from throwing off adaptive update statistics we defer the
-  * update so that it can only happen so often. So after either Tx or Rx are
-@@ -2620,8 +2645,10 @@ static inline u32 i40e_buildreg_itr(const int type, u16 itr)
- static inline void i40e_update_enable_itr(struct i40e_vsi *vsi,
- 					  struct i40e_q_vector *q_vector)
+-static u16 r8168_mac_ocp_read(struct rtl8169_private *tp, u32 reg)
++static void r8168_mac_ocp_write(struct rtl8169_private *tp, u32 reg, u32 data)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&tp->mac_ocp_lock, flags);
++	__r8168_mac_ocp_write(tp, reg, data);
++	spin_unlock_irqrestore(&tp->mac_ocp_lock, flags);
++}
++
++static u16 __r8168_mac_ocp_read(struct rtl8169_private *tp, u32 reg)
  {
-+	enum i40e_dyn_idx itr_idx = I40E_ITR_NONE;
- 	struct i40e_hw *hw = &vsi->back->hw;
--	u32 intval;
-+	u16 interval = 0;
-+	u32 itr_val;
+ 	if (rtl_ocp_reg_failure(reg))
+ 		return 0;
+@@ -868,12 +879,28 @@ static u16 r8168_mac_ocp_read(struct rtl8169_private *tp, u32 reg)
+ 	return RTL_R32(tp, OCPDR);
+ }
  
- 	/* If we don't have MSIX, then we only need to re-enable icr0 */
- 	if (!(vsi->back->flags & I40E_FLAG_MSIX_ENABLED)) {
-@@ -2643,8 +2670,8 @@ static inline void i40e_update_enable_itr(struct i40e_vsi *vsi,
- 	 */
- 	if (q_vector->rx.target_itr < q_vector->rx.current_itr) {
- 		/* Rx ITR needs to be reduced, this is highest priority */
--		intval = i40e_buildreg_itr(I40E_RX_ITR,
--					   q_vector->rx.target_itr);
-+		itr_idx = I40E_RX_ITR;
-+		interval = q_vector->rx.target_itr;
- 		q_vector->rx.current_itr = q_vector->rx.target_itr;
- 		q_vector->itr_countdown = ITR_COUNTDOWN_START;
- 	} else if ((q_vector->tx.target_itr < q_vector->tx.current_itr) ||
-@@ -2653,25 +2680,36 @@ static inline void i40e_update_enable_itr(struct i40e_vsi *vsi,
- 		/* Tx ITR needs to be reduced, this is second priority
- 		 * Tx ITR needs to be increased more than Rx, fourth priority
- 		 */
--		intval = i40e_buildreg_itr(I40E_TX_ITR,
--					   q_vector->tx.target_itr);
-+		itr_idx = I40E_TX_ITR;
-+		interval = q_vector->tx.target_itr;
- 		q_vector->tx.current_itr = q_vector->tx.target_itr;
- 		q_vector->itr_countdown = ITR_COUNTDOWN_START;
- 	} else if (q_vector->rx.current_itr != q_vector->rx.target_itr) {
- 		/* Rx ITR needs to be increased, third priority */
--		intval = i40e_buildreg_itr(I40E_RX_ITR,
--					   q_vector->rx.target_itr);
-+		itr_idx = I40E_RX_ITR;
-+		interval = q_vector->rx.target_itr;
- 		q_vector->rx.current_itr = q_vector->rx.target_itr;
- 		q_vector->itr_countdown = ITR_COUNTDOWN_START;
- 	} else {
- 		/* No ITR update, lowest priority */
--		intval = i40e_buildreg_itr(I40E_ITR_NONE, 0);
- 		if (q_vector->itr_countdown)
- 			q_vector->itr_countdown--;
- 	}
- 
--	if (!test_bit(__I40E_VSI_DOWN, vsi->state))
--		wr32(hw, INTREG(q_vector->reg_idx), intval);
-+	/* Do not update interrupt control register if VSI is down */
-+	if (test_bit(__I40E_VSI_DOWN, vsi->state))
-+		return;
++static u16 r8168_mac_ocp_read(struct rtl8169_private *tp, u32 reg)
++{
++	unsigned long flags;
++	u16 val;
 +
-+	/* Update ITR interval if necessary and enforce software interrupt
-+	 * if we are exiting busy poll.
-+	 */
-+	if (q_vector->in_busy_poll) {
-+		itr_val = i40e_buildreg_itr(itr_idx, interval, true);
-+		q_vector->in_busy_poll = false;
-+	} else {
-+		itr_val = i40e_buildreg_itr(itr_idx, interval, false);
-+	}
-+	wr32(hw, I40E_PFINT_DYN_CTLN(q_vector->reg_idx), itr_val);
++	spin_lock_irqsave(&tp->mac_ocp_lock, flags);
++	val = __r8168_mac_ocp_read(tp, reg);
++	spin_unlock_irqrestore(&tp->mac_ocp_lock, flags);
++
++	return val;
++}
++
+ static void r8168_mac_ocp_modify(struct rtl8169_private *tp, u32 reg, u16 mask,
+ 				 u16 set)
+ {
+-	u16 data = r8168_mac_ocp_read(tp, reg);
++	unsigned long flags;
++	u16 data;
+ 
+-	r8168_mac_ocp_write(tp, reg, (data & ~mask) | set);
++	spin_lock_irqsave(&tp->mac_ocp_lock, flags);
++	data = __r8168_mac_ocp_read(tp, reg);
++	__r8168_mac_ocp_write(tp, reg, (data & ~mask) | set);
++	spin_unlock_irqrestore(&tp->mac_ocp_lock, flags);
  }
  
- /**
-@@ -2778,6 +2816,8 @@ int i40e_napi_poll(struct napi_struct *napi, int budget)
- 	 */
- 	if (likely(napi_complete_done(napi, work_done)))
- 		i40e_update_enable_itr(vsi, q_vector);
-+	else
-+		q_vector->in_busy_poll = true;
+ /* Work around a hw issue with RTL8168g PHY, the quirk disables
+@@ -5232,6 +5259,8 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	tp->eee_adv = -1;
+ 	tp->ocp_base = OCP_STD_PHY_BASE;
  
- 	return min(work_done, budget - 1);
- }
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.h b/drivers/net/ethernet/intel/i40e/i40e_txrx.h
-index 602ddd956245e..6e567d343e031 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.h
-@@ -67,6 +67,7 @@ enum i40e_dyn_idx {
- /* these are indexes into ITRN registers */
- #define I40E_RX_ITR    I40E_IDX_ITR0
- #define I40E_TX_ITR    I40E_IDX_ITR1
-+#define I40E_SW_ITR    I40E_IDX_ITR2
- 
- /* Supported RSS offloads */
- #define I40E_DEFAULT_RSS_HENA ( \
++	spin_lock_init(&tp->mac_ocp_lock);
++
+ 	dev->tstats = devm_netdev_alloc_pcpu_stats(&pdev->dev,
+ 						   struct pcpu_sw_netstats);
+ 	if (!dev->tstats)
 -- 
 2.43.0
 
