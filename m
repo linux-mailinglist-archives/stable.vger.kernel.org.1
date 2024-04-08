@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-37212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2651189C3DC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BEE689C5EE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:02:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA9681F240FB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCBB92843C8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECDB78285;
-	Mon,  8 Apr 2024 13:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C0F8061D;
+	Mon,  8 Apr 2024 14:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWnNnXTv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7ucmK1L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE237C0AB;
-	Mon,  8 Apr 2024 13:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E98B80618;
+	Mon,  8 Apr 2024 14:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583576; cv=none; b=dGIbZHbl5ojcF+uXfhz4/uGjQyVDGBoZb0nctfKeVbB5jVL4UKlVQX3m3YvQ+A3Zw4wgVpOdi3a5r154BRaSyL2Jst3/HZWsaeaGVDqxGguExhZ8v9N/9xGy0lpSnTeXeoxAsrAuTG83M08zH7KbnwVnjhUc40Z5CzZDswZ8jq0=
+	t=1712584923; cv=none; b=HtyPC288FS4UOVLBb2VUVN771cLqieUY1t4HcWSmLBKrwhLK7T93WaqaNIZ8Mo3CMx2tGZ6QiGn4jgzjFPKkVjNp497q2G26HmfdxtK08JHu6tG7ypoEFNXohmL8kpcfXPWb8+JrRczAxeeVJLf2anRIkacZqwjkDe/OLSVe2ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583576; c=relaxed/simple;
-	bh=V3JpCMa86AIj6qslayMHkbMwuJR/cAHVta0EDLlXT5E=;
+	s=arc-20240116; t=1712584923; c=relaxed/simple;
+	bh=BhJj+y7ieDyawuA5Dzp4jFIpUPFaloLd5mgHI45VjWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o6CYwVGxb+RysZ3yqcU+PHbxGwTLD4wk3vhA9Zfx0gR6TZc43fuGT71w0Vv5ksrgVN3TK67uKQviYmo208agppQ1NWmKzJh38garxhTXbK9SSZLdrO05GGa2BmnPM6gdgA6jVZmRZRlIeIznyq0MrRGFPjPJ5qgtGnqYO1pUhxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWnNnXTv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F2CC43390;
-	Mon,  8 Apr 2024 13:39:35 +0000 (UTC)
+	 MIME-Version; b=UP58ggL5YuoIBqpYsuwimZjgF9cTDQHJoena7gZIsvHz/cguPrDuvjiQ1t5wPutrHGwrf/LTx3pALjiePb+9BzJg4xlGgD381kj9V3N+X83CZStv+PVSkm4dxJh1Ds7+eDkGOU6mWf226PUYj/lR5RdVL1RIQZ40relUpUQYP1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7ucmK1L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9C4C433C7;
+	Mon,  8 Apr 2024 14:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583576;
-	bh=V3JpCMa86AIj6qslayMHkbMwuJR/cAHVta0EDLlXT5E=;
+	s=korg; t=1712584923;
+	bh=BhJj+y7ieDyawuA5Dzp4jFIpUPFaloLd5mgHI45VjWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pWnNnXTve9nsG2w9ozIPSTpNti7vv68PwpoX1BuwwOrTrsBgQpIDgYX4Ti7rwx0yb
-	 dMH1hWk2C4Tfesq7YSLb8Ff60KdOkRWar1Z2dYouDvWd/TIM1XgGdkEHGk/uXriOX3
-	 1CQuSuymbStXCo/E/6On86fimuN0OKmAC7VrjWv0=
+	b=D7ucmK1Lvtc7kZZz5PIDmUCz2HDBWD5mtZxd8kYiXaja5qHwb7ItBvXdZ0Bvjfcye
+	 yUwDxzIqOw0R6RigwkEjXDA86DR7yZpF0Sz4GQZoh09iA2YuY1ibwE+2zJcCxk5OE7
+	 tCNzqC12pvUGbwIi0qc1m/aF4DpXvD+T0CMiFlc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Collingbourne <pcc@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Omar Sandoval <osandov@fb.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 193/273] stackdepot: rename pool_index to pool_index_plus_1
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Kim Phillips <kim.phillips@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.15 602/690] x86/cpu: Enable STIBP on AMD if Automatic IBRS is enabled
 Date: Mon,  8 Apr 2024 14:57:48 +0200
-Message-ID: <20240408125315.310219564@linuxfoundation.org>
+Message-ID: <20240408125421.407473033@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,89 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Collingbourne <pcc@google.com>
+From: Kim Phillips <kim.phillips@amd.com>
 
-[ Upstream commit a6c1d9cb9a68bfa4512248419c4f4d880d19fe90 ]
+commit fd470a8beed88440b160d690344fbae05a0b9b1b upstream.
 
-Commit 3ee34eabac2a ("lib/stackdepot: fix first entry having a 0-handle")
-changed the meaning of the pool_index field to mean "the pool index plus
-1".  This made the code accessing this field less self-documenting, as
-well as causing debuggers such as drgn to not be able to easily remain
-compatible with both old and new kernels, because they typically do that
-by testing for presence of the new field.  Because stackdepot is a
-debugging tool, we should make sure that it is debugger friendly.
-Therefore, give the field a different name to improve readability as well
-as enabling debugger backwards compatibility.
+Unlike Intel's Enhanced IBRS feature, AMD's Automatic IBRS does not
+provide protection to processes running at CPL3/user mode, see section
+"Extended Feature Enable Register (EFER)" in the APM v2 at
+https://bugzilla.kernel.org/attachment.cgi?id=304652
 
-This is needed in 6.9, which would otherwise become an odd release with
-the new semantics and old name so debuggers wouldn't recognize the new
-semantics there.
+Explicitly enable STIBP to protect against cross-thread CPL3
+branch target injections on systems with Automatic IBRS enabled.
 
-Fixes: 3ee34eabac2a ("lib/stackdepot: fix first entry having a 0-handle")
-Link: https://lkml.kernel.org/r/20240402001500.53533-1-pcc@google.com
-Link: https://linux-review.googlesource.com/id/Ib3e70c36c1d230dd0a118dc22649b33e768b9f88
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Acked-by: Marco Elver <elver@google.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Omar Sandoval <osandov@fb.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also update the relevant documentation.
+
+Fixes: e7862eda309e ("x86/cpu: Support AMD Automatic IBRS")
+Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230720194727.67022-1-kim.phillips@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/stackdepot.h | 7 +++----
- lib/stackdepot.c           | 4 ++--
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ Documentation/admin-guide/hw-vuln/spectre.rst |   11 +++++++----
+ arch/x86/kernel/cpu/bugs.c                    |   15 +++++++++------
+ 2 files changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/stackdepot.h b/include/linux/stackdepot.h
-index c4b5ad57c0660..bf0136891a0f2 100644
---- a/include/linux/stackdepot.h
-+++ b/include/linux/stackdepot.h
-@@ -44,10 +44,9 @@ typedef u32 depot_stack_handle_t;
- union handle_parts {
- 	depot_stack_handle_t handle;
- 	struct {
--		/* pool_index is offset by 1 */
--		u32 pool_index	: DEPOT_POOL_INDEX_BITS;
--		u32 offset	: DEPOT_OFFSET_BITS;
--		u32 extra	: STACK_DEPOT_EXTRA_BITS;
-+		u32 pool_index_plus_1	: DEPOT_POOL_INDEX_BITS;
-+		u32 offset		: DEPOT_OFFSET_BITS;
-+		u32 extra		: STACK_DEPOT_EXTRA_BITS;
- 	};
- };
+--- a/Documentation/admin-guide/hw-vuln/spectre.rst
++++ b/Documentation/admin-guide/hw-vuln/spectre.rst
+@@ -484,11 +484,14 @@ Spectre variant 2
  
-diff --git a/lib/stackdepot.c b/lib/stackdepot.c
-index ee4bbe6513aa4..ee830f14afb78 100644
---- a/lib/stackdepot.c
-+++ b/lib/stackdepot.c
-@@ -330,7 +330,7 @@ static struct stack_record *depot_pop_free_pool(void **prealloc, size_t size)
- 	stack = current_pool + pool_offset;
+    Systems which support enhanced IBRS (eIBRS) enable IBRS protection once at
+    boot, by setting the IBRS bit, and they're automatically protected against
+-   Spectre v2 variant attacks, including cross-thread branch target injections
+-   on SMT systems (STIBP). In other words, eIBRS enables STIBP too.
++   Spectre v2 variant attacks.
  
- 	/* Pre-initialize handle once. */
--	stack->handle.pool_index = pool_index + 1;
-+	stack->handle.pool_index_plus_1 = pool_index + 1;
- 	stack->handle.offset = pool_offset >> DEPOT_STACK_ALIGN;
- 	stack->handle.extra = 0;
- 	INIT_LIST_HEAD(&stack->hash_list);
-@@ -441,7 +441,7 @@ static struct stack_record *depot_fetch_stack(depot_stack_handle_t handle)
- 	const int pools_num_cached = READ_ONCE(pools_num);
- 	union handle_parts parts = { .handle = handle };
- 	void *pool;
--	u32 pool_index = parts.pool_index - 1;
-+	u32 pool_index = parts.pool_index_plus_1 - 1;
- 	size_t offset = parts.offset << DEPOT_STACK_ALIGN;
- 	struct stack_record *stack;
+-   Legacy IBRS systems clear the IBRS bit on exit to userspace and
+-   therefore explicitly enable STIBP for that
++   On Intel's enhanced IBRS systems, this includes cross-thread branch target
++   injections on SMT systems (STIBP). In other words, Intel eIBRS enables
++   STIBP, too.
++
++   AMD Automatic IBRS does not protect userspace, and Legacy IBRS systems clear
++   the IBRS bit on exit to userspace, therefore both explicitly enable STIBP.
  
--- 
-2.43.0
-
+    The retpoline mitigation is turned on by default on vulnerable
+    CPUs. It can be forced on or off by the administrator
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1354,19 +1354,21 @@ spectre_v2_user_select_mitigation(void)
+ 	}
+ 
+ 	/*
+-	 * If no STIBP, enhanced IBRS is enabled, or SMT impossible, STIBP
++	 * If no STIBP, Intel enhanced IBRS is enabled, or SMT impossible, STIBP
+ 	 * is not required.
+ 	 *
+-	 * Enhanced IBRS also protects against cross-thread branch target
++	 * Intel's Enhanced IBRS also protects against cross-thread branch target
+ 	 * injection in user-mode as the IBRS bit remains always set which
+ 	 * implicitly enables cross-thread protections.  However, in legacy IBRS
+ 	 * mode, the IBRS bit is set only on kernel entry and cleared on return
+-	 * to userspace. This disables the implicit cross-thread protection,
+-	 * so allow for STIBP to be selected in that case.
++	 * to userspace.  AMD Automatic IBRS also does not protect userspace.
++	 * These modes therefore disable the implicit cross-thread protection,
++	 * so allow for STIBP to be selected in those cases.
+ 	 */
+ 	if (!boot_cpu_has(X86_FEATURE_STIBP) ||
+ 	    !smt_possible ||
+-	    spectre_v2_in_eibrs_mode(spectre_v2_enabled))
++	    (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
++	     !boot_cpu_has(X86_FEATURE_AUTOIBRS)))
+ 		return;
+ 
+ 	/*
+@@ -2666,7 +2668,8 @@ static ssize_t rfds_show_state(char *buf
+ 
+ static char *stibp_state(void)
+ {
+-	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled))
++	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
++	    !boot_cpu_has(X86_FEATURE_AUTOIBRS))
+ 		return "";
+ 
+ 	switch (spectre_v2_user_stibp) {
 
 
 
