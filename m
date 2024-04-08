@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-36674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394CD89C130
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A33389C16C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B5DD1C21BBE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B68BFB2A533
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4196A80034;
-	Mon,  8 Apr 2024 13:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B9B80618;
+	Mon,  8 Apr 2024 13:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPABBSpl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XhK663Wi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34F077F1B;
-	Mon,  8 Apr 2024 13:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967C280045;
+	Mon,  8 Apr 2024 13:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582014; cv=none; b=L4RVsLB/hPlV3K5Mhheglg1OAU7f50vd01wsaLbEvdJrIWZwCbkKc5Y/sI0ccE1WKP0oWdz0/O5QCeetSuuX/IpBVbThdg0Mibegb+iGoZHtjp9kTOLsjJu09i8m9Xa5ligtpdXiuuLX0P6pGeJi+Ks5o1YcagQBqmXCLJulWdk=
+	t=1712582026; cv=none; b=rEego6PiJ1qW2wCDj2g+o/21Oq5gtOdtHQN1NBhkxTCoQfXktsS+nXqC1CrNd7P6axnZzeNfujRLcliDoC9EWqpaKUW3W7LcYkpkv/DEHBOFhkY+B707aNda/SjCsRX7fTuGM0qGR6bO0vSuEdnh7Q8eiQ/e29fsWQ95GQWPRJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582014; c=relaxed/simple;
-	bh=WQRUDgrJtiVurlZjtxnP/YehHUgAUIfnHsyrLN3QAiI=;
+	s=arc-20240116; t=1712582026; c=relaxed/simple;
+	bh=k3zjyJixK9aPP//mcX1SL+d4UZoPhK8TYhtyez7Rj0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LWJ5no/JwVYXwqEuBd8NYP+JItKwNJ3bB0IYGSuDm5+xvEQ2UVDbToQ4QJWlRwdtaCYv5nemaJq9AlA39mM3XNjkFGMMxLKViCkXqbBh6S9/T6yi3nPYzt08hmCQ2rGcMIEmfvduwSrNO6ySAxexKsIug1jk9DecLnIoeKOLmpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPABBSpl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E65C433C7;
-	Mon,  8 Apr 2024 13:13:33 +0000 (UTC)
+	 MIME-Version; b=f8JzTTxsj7PDkVkyStRWiUwVtmq27BzWnxnWBrT6/uhRdLs6fGgfAHfEbDVKmUTrBdKwjWrKiyVOtSfqzx+IOdyInlFfrYiJR5rjjRb88CMxHi3DjL2NJdVUg+Wh2n9+4JBtox623Ya4VgN7HZNQh2X44+ujdmZMJhL2jfM8aIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XhK663Wi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FCFAC433F1;
+	Mon,  8 Apr 2024 13:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582013;
-	bh=WQRUDgrJtiVurlZjtxnP/YehHUgAUIfnHsyrLN3QAiI=;
+	s=korg; t=1712582025;
+	bh=k3zjyJixK9aPP//mcX1SL+d4UZoPhK8TYhtyez7Rj0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QPABBSplCjcZm8VZGJVyojvy/88hXp+eA7XJ0cyRdVYjMzQWObm6phW8XlGmnNst+
-	 iBXJ5MUP2OTZgW7GMEPaesCsKYfGZnHOFUQ2HYLAe8ppA+oWz6Al7sKOJrTgwRjVI5
-	 T/fbRTIbrM4gy5Sl47T49azyg7G9fwF4F1n/F3Lo=
+	b=XhK663WiHBs40Ku9KB7ixBagkBDt/0xafnSUBW34UrxOX6cS/CSfwZXTo+Iel6hJI
+	 +iNLBVvmqHzFNF1vvI80kkh9973A18TjsqZyLjfwjHrKVCnJQXHA2xi6QarsujI7Jl
+	 j5fxtykxbj52Lrc4sbbZxzfivah1WgmY5uXVWdHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Neil Brown <neilb@suse.de>,
+	Olga Kornievskaia <kolga@netapp.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 104/690] x86/CPU/AMD: Update the Zenbleed microcode revisions
-Date: Mon,  8 Apr 2024 14:49:30 +0200
-Message-ID: <20240408125403.263580431@linuxfoundation.org>
+Subject: [PATCH 5.15 105/690] NFSD: Fix nfsd_clid_class use of __string_len() macro
+Date: Mon,  8 Apr 2024 14:49:31 +0200
+Message-ID: <20240408125403.305319478@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,42 +71,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 5c84b051bd4e777cf37aaff983277e58c99618d5 ]
+[ Upstream commit 9388a2aa453321bcf1ad2603959debea9e6ab6d4 ]
 
-Update them to the correct revision numbers.
+I'm working on restructuring the __string* macros so that it doesn't need
+to recalculate the string twice. That is, it will save it off when
+processing __string() and the __assign_str() will not need to do the work
+again as it currently does.
 
-Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Currently __string_len(item, src, len) doesn't actually use "src", but my
+changes will require src to be correct as that is where the __assign_str()
+will get its value from.
+
+The event class nfsd_clid_class has:
+
+  __string_len(name, name, clp->cl_name.len)
+
+But the second "name" does not exist and causes my changes to fail to
+build. That second parameter should be: clp->cl_name.data.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240222122828.3d8d213c@gandalf.local.home
+
+Cc: Neil Brown <neilb@suse.de>
+Cc: Olga Kornievskaia <kolga@netapp.com>
+Cc: Dai Ngo <Dai.Ngo@oracle.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: stable@vger.kernel.org
+Fixes: d27b74a8675ca ("NFSD: Use new __string_len C macros for nfsd_clid_class")
+Acked-by: Chuck Lever <chuck.lever@oracle.com>
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/amd.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/nfsd/trace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index dba7fe7ecea91..9fb890574f36b 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1021,11 +1021,11 @@ static bool cpu_has_zenbleed_microcode(void)
- 	u32 good_rev = 0;
- 
- 	switch (boot_cpu_data.x86_model) {
--	case 0x30 ... 0x3f: good_rev = 0x0830107a; break;
--	case 0x60 ... 0x67: good_rev = 0x0860010b; break;
--	case 0x68 ... 0x6f: good_rev = 0x08608105; break;
--	case 0x70 ... 0x7f: good_rev = 0x08701032; break;
--	case 0xa0 ... 0xaf: good_rev = 0x08a00008; break;
-+	case 0x30 ... 0x3f: good_rev = 0x0830107b; break;
-+	case 0x60 ... 0x67: good_rev = 0x0860010c; break;
-+	case 0x68 ... 0x6f: good_rev = 0x08608107; break;
-+	case 0x70 ... 0x7f: good_rev = 0x08701033; break;
-+	case 0xa0 ... 0xaf: good_rev = 0x08a00009; break;
- 
- 	default:
- 		return false;
+diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
+index 0fc1fa6f28e0b..7e7d0f1705ed3 100644
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -606,7 +606,7 @@ DECLARE_EVENT_CLASS(nfsd_clid_class,
+ 		__array(unsigned char, addr, sizeof(struct sockaddr_in6))
+ 		__field(unsigned long, flavor)
+ 		__array(unsigned char, verifier, NFS4_VERIFIER_SIZE)
+-		__string_len(name, name, clp->cl_name.len)
++		__string_len(name, clp->cl_name.data, clp->cl_name.len)
+ 	),
+ 	TP_fast_assign(
+ 		__entry->cl_boot = clp->cl_clientid.cl_boot;
 -- 
 2.43.0
 
