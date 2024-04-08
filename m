@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-36572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A5389C072
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:08:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9783489C079
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:08:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8E8D1F222D7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:08:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FB301F21AC9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF42D6F08B;
-	Mon,  8 Apr 2024 13:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5286F53D;
+	Mon,  8 Apr 2024 13:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F1RBlGG8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBjy5oYo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC832DF73;
-	Mon,  8 Apr 2024 13:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E592DF73;
+	Mon,  8 Apr 2024 13:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581718; cv=none; b=kzkWjAyHISi2eHwWJ4OWKMjUHtT5tmHcqdHUm1CmlLDatYy0hSp7I9EdfuoCSIqjS3SOWF0McP/37Yy3rHUELQSI34g2syiBgVCao+uwpYRy8fe0Ziz2Bookst8rU8FMcINqzdg53YCwOuoWNwMtCXGU2qBqZ+N64MeTjWmsg3Q=
+	t=1712581732; cv=none; b=d+QooIzDZAUYtMYprvl88S/8iBqyZOjkyVW2xtwSmtpDHvmAtyn4iFQM3n4K4cYKWKEgUyPFk3INtVNYZuImq1Qq5ZIY6Gn8FYZZDg6faRP4lffO/0yx3q6mGEIlqiy3V2uFndPttnJ2S9cQRb7oU/hD7iSOGlr0Wm+skOVXlpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581718; c=relaxed/simple;
-	bh=uwgc7IqYpjf++BrofXznungspzbCK1wReuU9Gd0MtLk=;
+	s=arc-20240116; t=1712581732; c=relaxed/simple;
+	bh=ZR0v06q28rSFl40Rf5cewsT0nGtYT5e9uP5dLgkqE4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bTIcPunffMrPaXyNjrP0Rt4+2hfLmbq4a8hsb93uZ6j+nzS+Y+e6+IRbSsN+Ax/va3qjtVx+MPZaILSHZFkHrxrvWZf4bLbGyt+spslc5eP6hVsQ9OBLakGlPgKhOhSxf8JpdPqigvAhRBgxuGBwNjGfw+prV8zvKsY3QupxSFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F1RBlGG8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC61EC433F1;
-	Mon,  8 Apr 2024 13:08:37 +0000 (UTC)
+	 MIME-Version; b=qkCaRi8CSwXGklqkkDY+m3OV0WqB1krRaWsuWeG4pvxagpOFYdVsFMHp1C+67ham/VzAg5awQRNRqPUCCuILi1169A3RgEuijseEqi12wukUQ95CKDiC59NUu2fAyPC9pnEi88jw2jTBeJ+eSqy1cNBqTMzyhPLMNfPZsfEVz0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBjy5oYo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FB9C433C7;
+	Mon,  8 Apr 2024 13:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581718;
-	bh=uwgc7IqYpjf++BrofXznungspzbCK1wReuU9Gd0MtLk=;
+	s=korg; t=1712581732;
+	bh=ZR0v06q28rSFl40Rf5cewsT0nGtYT5e9uP5dLgkqE4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F1RBlGG8WG9JQSqMR9sp6g+lzMWCLH+WFJA13E5Lkoi4aD40eXnokfzC4Tzgxbk1P
-	 lRBHwwuaBL8VfLUmjhZe5bYYogElYVfv/hOSfEMXKF1EBi4GywrfQoQ4EajOQ0M+j9
-	 AmNt4ftzCRNg+OjoWQ9ZGBQ/XhUyghtS3fJ6KyXY=
+	b=RBjy5oYoq9pdwW3CzEaK9zFpW5A6pQtBaz0GUJaQrYwB0dAljxN5WZSLjrFOmARsS
+	 TE5BwbD6n8f6wpXxqZjtJ5QybJVa5VC00VqJzSpxR7WNWgjf7s6G3iEMBzRWM8lgfX
+	 Ot2lkGy6i2BFowquVXlao0P33A9mML2b4+BfqzTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Wayne Chang <waynec@nvidia.com>,
 	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 077/690] phy: tegra: xusb: Add API to retrieve the port number of phy
-Date: Mon,  8 Apr 2024 14:49:03 +0200
-Message-ID: <20240408125402.293568736@linuxfoundation.org>
+Subject: [PATCH 5.15 078/690] usb: gadget: tegra-xudc: Fix USB3 PHY retrieval logic
+Date: Mon,  8 Apr 2024 14:49:04 +0200
+Message-ID: <20240408125402.323631289@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -68,64 +68,108 @@ Content-Transfer-Encoding: 8bit
 
 From: Wayne Chang <waynec@nvidia.com>
 
-[ Upstream commit d843f031d9e90462253015bc0bd9e3852d206bf2 ]
+[ Upstream commit 84fa943d93c31ee978355e6c6c69592dae3c9f59 ]
 
-This patch introduces a new API, tegra_xusb_padctl_get_port_number,
-to the Tegra XUSB Pad Controller driver. This API is used to identify
-the USB port that is associated with a given PHY.
+This commit resolves an issue in the tegra-xudc USB gadget driver that
+incorrectly fetched USB3 PHY instances. The problem stemmed from the
+assumption of a one-to-one correspondence between USB2 and USB3 PHY
+names and their association with physical USB ports in the device tree.
 
-The function takes a PHY pointer for either a USB2 PHY or USB3 PHY as input
-and returns the corresponding port number. If the PHY pointer is invalid,
-it returns -ENODEV.
+Previously, the driver associated USB3 PHY names directly with the USB3
+instance number, leading to mismatches when mapping the physical USB
+ports. For instance, if using USB3-1 PHY, the driver expect the
+corresponding PHY name as 'usb3-1'. However, the physical USB ports in
+the device tree were designated as USB2-0 and USB3-0 as we only have
+one device controller, causing a misalignment.
 
+This commit rectifies the issue by adjusting the PHY naming logic.
+Now, the driver correctly correlates the USB2 and USB3 PHY instances,
+allowing the USB2-0 and USB3-1 PHYs to form a physical USB port pair
+while accurately reflecting their configuration in the device tree by
+naming them USB2-0 and USB3-0, respectively.
+
+The change ensures that the PHY and PHY names align appropriately,
+resolving the mismatch between physical USB ports and their associated
+names in the device tree.
+
+Fixes: b4e19931c98a ("usb: gadget: tegra-xudc: Support multiple device modes")
 Cc: stable@vger.kernel.org
 Signed-off-by: Wayne Chang <waynec@nvidia.com>
 Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
 Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/20240307030328.1487748-2-waynec@nvidia.com
+Link: https://lore.kernel.org/r/20240307030328.1487748-3-waynec@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/tegra/xusb.c       | 13 +++++++++++++
- include/linux/phy/tegra/xusb.h |  1 +
- 2 files changed, 14 insertions(+)
+ drivers/usb/gadget/udc/tegra-xudc.c | 39 ++++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
-index 119e2c039225f..bf7706bf101a6 100644
---- a/drivers/phy/tegra/xusb.c
-+++ b/drivers/phy/tegra/xusb.c
-@@ -1485,6 +1485,19 @@ int tegra_xusb_padctl_get_usb3_companion(struct tegra_xusb_padctl *padctl,
- }
- EXPORT_SYMBOL_GPL(tegra_xusb_padctl_get_usb3_companion);
+diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
+index 52996bf2cc705..fdbb9d73aa8e4 100644
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -3480,8 +3480,8 @@ static void tegra_xudc_device_params_init(struct tegra_xudc *xudc)
  
-+int tegra_xusb_padctl_get_port_number(struct phy *phy)
-+{
-+	struct tegra_xusb_lane *lane;
-+
-+	if (!phy)
-+		return -ENODEV;
-+
-+	lane = phy_get_drvdata(phy);
-+
-+	return lane->index;
-+}
-+EXPORT_SYMBOL_GPL(tegra_xusb_padctl_get_port_number);
-+
- MODULE_AUTHOR("Thierry Reding <treding@nvidia.com>");
- MODULE_DESCRIPTION("Tegra XUSB Pad Controller driver");
- MODULE_LICENSE("GPL v2");
-diff --git a/include/linux/phy/tegra/xusb.h b/include/linux/phy/tegra/xusb.h
-index 3a35e74cdc617..b30343a1f47eb 100644
---- a/include/linux/phy/tegra/xusb.h
-+++ b/include/linux/phy/tegra/xusb.h
-@@ -24,6 +24,7 @@ int tegra_xusb_padctl_set_vbus_override(struct tegra_xusb_padctl *padctl,
- int tegra_phy_xusb_utmi_port_reset(struct phy *phy);
- int tegra_xusb_padctl_get_usb3_companion(struct tegra_xusb_padctl *padctl,
- 					 unsigned int port);
-+int tegra_xusb_padctl_get_port_number(struct phy *phy);
- int tegra_xusb_padctl_enable_phy_sleepwalk(struct tegra_xusb_padctl *padctl, struct phy *phy,
- 					   enum usb_device_speed speed);
- int tegra_xusb_padctl_disable_phy_sleepwalk(struct tegra_xusb_padctl *padctl, struct phy *phy);
+ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
+ {
+-	int err = 0, usb3;
+-	unsigned int i;
++	int err = 0, usb3_companion_port;
++	unsigned int i, j;
+ 
+ 	xudc->utmi_phy = devm_kcalloc(xudc->dev, xudc->soc->num_phys,
+ 					   sizeof(*xudc->utmi_phy), GFP_KERNEL);
+@@ -3509,7 +3509,7 @@ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
+ 		if (IS_ERR(xudc->utmi_phy[i])) {
+ 			err = PTR_ERR(xudc->utmi_phy[i]);
+ 			dev_err_probe(xudc->dev, err,
+-				      "failed to get usb2-%d PHY\n", i);
++				"failed to get PHY for phy-name usb2-%d\n", i);
+ 			goto clean_up;
+ 		} else if (xudc->utmi_phy[i]) {
+ 			/* Get usb-phy, if utmi phy is available */
+@@ -3528,19 +3528,30 @@ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
+ 		}
+ 
+ 		/* Get USB3 phy */
+-		usb3 = tegra_xusb_padctl_get_usb3_companion(xudc->padctl, i);
+-		if (usb3 < 0)
++		usb3_companion_port = tegra_xusb_padctl_get_usb3_companion(xudc->padctl, i);
++		if (usb3_companion_port < 0)
+ 			continue;
+ 
+-		snprintf(phy_name, sizeof(phy_name), "usb3-%d", usb3);
+-		xudc->usb3_phy[i] = devm_phy_optional_get(xudc->dev, phy_name);
+-		if (IS_ERR(xudc->usb3_phy[i])) {
+-			err = PTR_ERR(xudc->usb3_phy[i]);
+-			dev_err_probe(xudc->dev, err,
+-				      "failed to get usb3-%d PHY\n", usb3);
+-			goto clean_up;
+-		} else if (xudc->usb3_phy[i])
+-			dev_dbg(xudc->dev, "usb3-%d PHY registered", usb3);
++		for (j = 0; j < xudc->soc->num_phys; j++) {
++			snprintf(phy_name, sizeof(phy_name), "usb3-%d", j);
++			xudc->usb3_phy[i] = devm_phy_optional_get(xudc->dev, phy_name);
++			if (IS_ERR(xudc->usb3_phy[i])) {
++				err = PTR_ERR(xudc->usb3_phy[i]);
++				dev_err_probe(xudc->dev, err,
++					"failed to get PHY for phy-name usb3-%d\n", j);
++				goto clean_up;
++			} else if (xudc->usb3_phy[i]) {
++				int usb2_port =
++					tegra_xusb_padctl_get_port_number(xudc->utmi_phy[i]);
++				int usb3_port =
++					tegra_xusb_padctl_get_port_number(xudc->usb3_phy[i]);
++				if (usb3_port == usb3_companion_port) {
++					dev_dbg(xudc->dev, "USB2 port %d is paired with USB3 port %d for device mode port %d\n",
++					 usb2_port, usb3_port, i);
++					break;
++				}
++			}
++		}
+ 	}
+ 
+ 	return err;
 -- 
 2.43.0
 
