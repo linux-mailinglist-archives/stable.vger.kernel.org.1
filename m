@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-36506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC3589C027
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 563FA89C4BB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBD172862D2
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD42FB2D5A7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD47F7BAF0;
-	Mon,  8 Apr 2024 13:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99DB74BE8;
+	Mon,  8 Apr 2024 13:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQe9vf48"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTXNQCXG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2F02E62C;
-	Mon,  8 Apr 2024 13:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CA96D1A9;
+	Mon,  8 Apr 2024 13:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581524; cv=none; b=m4KV5hab8oqcJLVZQoqMcqhPrtaaZGWPPVc/law4qUilMQ49Zg9x5NOqK+LCm8LpfcJV4l2CT6LmyXYsS1VaADWgtw0rJiyswqOrYFZ/pjVSHvnqOMpGWkEYirdkNTjZES2MISeyKofyzKXXGrlFvqfe+kCrHQt6sPMgx9V2ioQ=
+	t=1712582985; cv=none; b=lV4YPmvNdH26yMD0PPgHhpm7e7gEfrlSGP8Bf1VXS8YgEotCYQYMBCC8/GMG/61w47RMK6futhYQoZWIssn31aRXCG/wqcuo9jNOKrFy4wBRugBYl8b4gdXfHrPcGp4TydZhgdLlWAOmqAYvhx3xIi9q+TOBHK5q11jWe5RMZsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581524; c=relaxed/simple;
-	bh=mwCexVm62qyAFVZLrUNHFcaRMkcfdKZpppuvxXX6a7Y=;
+	s=arc-20240116; t=1712582985; c=relaxed/simple;
+	bh=Pcj9/mJfk3+IC/53sbw1VlMQfN4nEWIj9+bmFViZLlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3DQwY7pKsT2HsEnQ+3FneNvAR5+ZdGV+0NGLhAAQ6MmyIqa6DE2LlA0+7cEuVS3MpGgl3KcXSA73D+XQukjQuGKEYpq8aKEFC4gbXshLSMlzoVU8M9tpHPFSnRZt+TR2FSpxHqaP2IPMFd87LikXRFKSKNsICFmL4zousp/n0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQe9vf48; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103DAC43390;
-	Mon,  8 Apr 2024 13:05:23 +0000 (UTC)
+	 MIME-Version; b=A+SZcfTfr3stF1RPmnjIA9lsriL5PH0P/uTr2UJkMYhDBc3dOAwcdv1oysn85AZAJbl/Wc6LGfMy2DDn4TbG2E91MI516QlUvO1Qvokp9Akm4xEL+AMX0JJbZ6UoXyzCzAl4Htp4VZPLVUSsRK5SxbGohfjIt2PT1jhOkb1b9hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTXNQCXG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA02DC43390;
+	Mon,  8 Apr 2024 13:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581524;
-	bh=mwCexVm62qyAFVZLrUNHFcaRMkcfdKZpppuvxXX6a7Y=;
+	s=korg; t=1712582985;
+	bh=Pcj9/mJfk3+IC/53sbw1VlMQfN4nEWIj9+bmFViZLlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mQe9vf48N7vwF42ui/NM87Atva92k/MA7cOYQLG5wTS511RVGni3rFoZdrx7U6Rzn
-	 nn+NX33kvXhcnKRwJEOxhK0lzZASj2E9ncQBNw1l6Bv14eAg4A5LY8ILx0UqCLDYF+
-	 SJ5ZE+/JpUGQoYU0xxrWNj83Jk/LyoLtExSA76pk=
+	b=zTXNQCXGtqrnKkMxVvGPZ7WUVF6WhlC+6vE2M54jqrVr9l2qhmofF6MgSLx7IcH35
+	 Slcd+xCwm9b+l/YSPEEVOcpwYapl+lPA1vGe3C8C4G6V9cv7PxdHWYoj0+6bP5Buce
+	 DcxuPF7UqNrOSAZHWXaj0fGyzqOfjIYRoI4/+PLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 030/138] arm64: dts: qcom: sc7180-trogdor: mark bluetooth address as broken
+	Ivan Vecera <ivecera@redhat.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.6 145/252] i40e: Move memory allocation structures to i40e_alloc.h
 Date: Mon,  8 Apr 2024 14:57:24 +0200
-Message-ID: <20240408125257.163931303@linuxfoundation.org>
+Message-ID: <20240408125311.153218764@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +66,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Ivan Vecera <ivecera@redhat.com>
 
-commit e12e28009e584c8f8363439f6a928ec86278a106 upstream.
+[ Upstream commit ef5d54078d451973f90e123fafa23fc95c2a08ae ]
 
-Several Qualcomm Bluetooth controllers lack persistent storage for the
-device address and instead one can be provided by the boot firmware
-using the 'local-bd-address' devicetree property.
+Structures i40e_dma_mem & i40e_virt_mem are defined i40e_osdep.h while
+memory allocation functions that use them are declared in i40e_alloc.h
+Move them there.
 
-The Bluetooth bindings clearly states that the address should be
-specified in little-endian order, but due to a long-standing bug in the
-Qualcomm driver which reversed the address some boot firmware has been
-providing the address in big-endian order instead.
-
-The boot firmware in SC7180 Trogdor Chromebooks is known to be affected
-so mark the 'local-bd-address' property as broken to maintain backwards
-compatibility with older firmware when fixing the underlying driver bug.
-
-Note that ChromeOS always updates the kernel and devicetree in lockstep
-so that there is no need to handle backwards compatibility with older
-devicetrees.
-
-Fixes: 7ec3e67307f8 ("arm64: dts: qcom: sc7180-trogdor: add initial trogdor and lazor dt")
-Cc: stable@vger.kernel.org      # 5.10
-Cc: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Bjorn Andersson <andersson@kernel.org>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: 6dbdd4de0362 ("e1000e: Workaround for sporadic MDI error on Meteor Lake systems")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_adminq.h |  1 +
+ drivers/net/ethernet/intel/i40e/i40e_alloc.h  | 14 ++++++++++++++
+ drivers/net/ethernet/intel/i40e/i40e_osdep.h  | 12 ------------
+ 3 files changed, 15 insertions(+), 12 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
-@@ -923,6 +923,8 @@ ap_spi_fp: &spi10 {
- 		vddrf-supply = <&pp1300_l2c>;
- 		vddch0-supply = <&pp3300_l10c>;
- 		max-speed = <3200000>;
-+
-+		qcom,local-bd-address-broken;
- 	};
- };
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_adminq.h b/drivers/net/ethernet/intel/i40e/i40e_adminq.h
+index 267f2e0a21ce8..1c3d2bc5c3f79 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_adminq.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_adminq.h
+@@ -4,6 +4,7 @@
+ #ifndef _I40E_ADMINQ_H_
+ #define _I40E_ADMINQ_H_
  
++#include "i40e_alloc.h"
+ #include "i40e_osdep.h"
+ #include "i40e_adminq_cmd.h"
+ 
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_alloc.h b/drivers/net/ethernet/intel/i40e/i40e_alloc.h
+index 4b2d8da048c64..e0dde326255d6 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_alloc.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_alloc.h
+@@ -4,8 +4,22 @@
+ #ifndef _I40E_ALLOC_H_
+ #define _I40E_ALLOC_H_
+ 
++#include <linux/types.h>
++
+ struct i40e_hw;
+ 
++/* memory allocation tracking */
++struct i40e_dma_mem {
++	void *va;
++	dma_addr_t pa;
++	u32 size;
++};
++
++struct i40e_virt_mem {
++	void *va;
++	u32 size;
++};
++
+ /* prototype for functions used for dynamic memory allocation */
+ int i40e_allocate_dma_mem(struct i40e_hw *hw,
+ 			  struct i40e_dma_mem *mem,
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_osdep.h b/drivers/net/ethernet/intel/i40e/i40e_osdep.h
+index 70cac3bb31ec3..fd18895cfb56b 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_osdep.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_osdep.h
+@@ -29,18 +29,6 @@ struct device *i40e_hw_to_dev(struct i40e_hw *hw);
+ #define rd64(a, reg)		readq((a)->hw_addr + (reg))
+ #define i40e_flush(a)		readl((a)->hw_addr + I40E_GLGEN_STAT)
+ 
+-/* memory allocation tracking */
+-struct i40e_dma_mem {
+-	void *va;
+-	dma_addr_t pa;
+-	u32 size;
+-};
+-
+-struct i40e_virt_mem {
+-	void *va;
+-	u32 size;
+-};
+-
+ #define i40e_debug(h, m, s, ...)				\
+ do {								\
+ 	if (((m) & (h)->debug_mask))				\
+-- 
+2.43.0
+
 
 
 
