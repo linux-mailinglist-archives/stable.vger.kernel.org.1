@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-37353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2FF089C59F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:59:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 727D189C1C4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:23:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E0A5B2934F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:56:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 140EB1F2121E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F477C6EB;
-	Mon,  8 Apr 2024 13:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783358175F;
+	Mon,  8 Apr 2024 13:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLePy6r5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqXUWDNf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BDC7C092;
-	Mon,  8 Apr 2024 13:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 353AA7173E;
+	Mon,  8 Apr 2024 13:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583984; cv=none; b=g5g2F2t97iTeiNjfnbcHWxibeWBVceoNOg1SpvYosBhReFt5BSrKYaIPt53crhD7d2wSGBVFN1NQqC70WFbtHuxgqzz9MQ/eEpBwopAa7CoiPnqEcBHHUytotlgCs82s/YwVqmba0SSMqOVVpOUUEuWU1OcstQYlOsvJaoKszEY=
+	t=1712582413; cv=none; b=kMIFH+c0Gppt9PgEUTwgQSi/Gi0YU2LjttoJzjgXScA1YikoQ6edEhvz+FknkZzVLX9Tl1rtUSQWvf6gw1uiQU0cc5wF2VwspRupjTUd0jDkccvMEeWO2Az2/90jK+GgCtpxItEweV+wUZMqVTQL4EiDsvV/9WuAqpB8KGzPV/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583984; c=relaxed/simple;
-	bh=TFOFUTjoq5AvmFApFGglUmCcMx49A2WDDaIXIGD6Dmw=;
+	s=arc-20240116; t=1712582413; c=relaxed/simple;
+	bh=YzvPJC9Di00qwqwvl9145bajP1dWuT57pSDMDzdI4sQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ErKRrBJ+Jb7MqNH4UcJociIFCJxzL4ZkN8XuQr+c3nN6e/5nCS47Pn5XPFxNDh52WZUiJzwtItcaQO0kMM4QUahZsrA+I56f1myJ7y9h4SScBCn3D1Dxqfyvf/NiL3hI5CDMEd2Zcw/xPFvoAAVGfbnxHI0C7eT6OPBNLuqkHUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLePy6r5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C324EC433F1;
-	Mon,  8 Apr 2024 13:46:23 +0000 (UTC)
+	 MIME-Version; b=JWMeDQ/eHNGE5rJhGHzTD1aCgr1ory4sP3jIUJATsTc+22Jh8MFZSf0k319W1SlfGLj0I2SLVTlQnJQuSVfySOpkQgT0uA8A3B34fBHX6t2l9K7QGElExj3s5ULt7itxXMZfvLfY0+fA6MpG32zE2JC4RUhthzOGEWyWymqoucs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqXUWDNf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7B8C433C7;
+	Mon,  8 Apr 2024 13:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583984;
-	bh=TFOFUTjoq5AvmFApFGglUmCcMx49A2WDDaIXIGD6Dmw=;
+	s=korg; t=1712582413;
+	bh=YzvPJC9Di00qwqwvl9145bajP1dWuT57pSDMDzdI4sQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FLePy6r5XOH/8UcFrwM6vZF+rpJ25liJCgk2XEB0w8OVkna+yJJ3TYhH3kDUF35sQ
-	 941qdTBsdX1y6qPFcWpJFEc8nMGuekbIm4LHmlQM6peZ9pXkeXu8tDCQm7W1tWpsbA
-	 cHEKF1VblP1IjjWwzTwMl2pXHtERsJzVT3rZjeNk=
+	b=wqXUWDNfTTwiUb0Yr63zpZIt80aN7jtRtior34w1YBPDNfZQ+rZpsdHhSaEIuDspG
+	 B8oN2hEjHbjAj1FCoXI1/mcNqrcpgUd18R/nsN6oQgRnU4Gbq/gEJslAu+BzcUkr2E
+	 X1CPDp5v/dbja/tme/g1Q4S0hnDba61Lhn4eS+Kg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan ORear <sorear@fastmail.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.8 242/273] riscv: process: Fix kernel gp leakage
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 103/138] s390/pai_ext: replace atomic_t with refcount_t
 Date: Mon,  8 Apr 2024 14:58:37 +0200
-Message-ID: <20240408125316.949618033@linuxfoundation.org>
+Message-ID: <20240408125259.434695895@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +63,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan O'Rear <sorear@fastmail.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-commit d14fa1fcf69db9d070e75f1c4425211fa619dfc8 upstream.
+[ Upstream commit 1f2597cd3686955a4d64e01909dbfe625a2a35a1 ]
 
-childregs represents the registers which are active for the new thread
-in user context. For a kernel thread, childregs->gp is never used since
-the kernel gp is not touched by switch_to. For a user mode helper, the
-gp value can be observed in user space after execve or possibly by other
-means.
+The s390 PMU of PAI extension 1 NNPA counters uses atomic_t for
+reference counting. Replace this with the proper data type
+refcount_t.
 
-[From the email thread]
+No functional change.
 
-The /* Kernel thread */ comment is somewhat inaccurate in that it is also used
-for user_mode_helper threads, which exec a user process, e.g. /sbin/init or
-when /proc/sys/kernel/core_pattern is a pipe. Such threads do not have
-PF_KTHREAD set and are valid targets for ptrace etc. even before they exec.
-
-childregs is the *user* context during syscall execution and it is observable
-from userspace in at least five ways:
-
-1. kernel_execve does not currently clear integer registers, so the starting
-   register state for PID 1 and other user processes started by the kernel has
-   sp = user stack, gp = kernel __global_pointer$, all other integer registers
-   zeroed by the memset in the patch comment.
-
-   This is a bug in its own right, but I'm unwilling to bet that it is the only
-   way to exploit the issue addressed by this patch.
-
-2. ptrace(PTRACE_GETREGSET): you can PTRACE_ATTACH to a user_mode_helper thread
-   before it execs, but ptrace requires SIGSTOP to be delivered which can only
-   happen at user/kernel boundaries.
-
-3. /proc/*/task/*/syscall: this is perfectly happy to read pt_regs for
-   user_mode_helpers before the exec completes, but gp is not one of the
-   registers it returns.
-
-4. PERF_SAMPLE_REGS_USER: LOCKDOWN_PERF normally prevents access to kernel
-   addresses via PERF_SAMPLE_REGS_INTR, but due to this bug kernel addresses
-   are also exposed via PERF_SAMPLE_REGS_USER which is permitted under
-   LOCKDOWN_PERF. I have not attempted to write exploit code.
-
-5. Much of the tracing infrastructure allows access to user registers. I have
-   not attempted to determine which forms of tracing allow access to user
-   registers without already allowing access to kernel registers.
-
-Fixes: 7db91e57a0ac ("RISC-V: Task implementation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stefan O'Rear <sorear@fastmail.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240327061258.2370291-1-sorear@fastmail.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Stable-dep-of: e9f3af02f639 ("s390/pai: fix sampling event removal for PMU device driver")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/process.c |    3 ---
- 1 file changed, 3 deletions(-)
+ arch/s390/kernel/perf_pai_ext.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
---- a/arch/riscv/kernel/process.c
-+++ b/arch/riscv/kernel/process.c
-@@ -27,8 +27,6 @@
- #include <asm/vector.h>
- #include <asm/cpufeature.h>
+diff --git a/arch/s390/kernel/perf_pai_ext.c b/arch/s390/kernel/perf_pai_ext.c
+index b4d89654183a2..d6bc919530143 100644
+--- a/arch/s390/kernel/perf_pai_ext.c
++++ b/arch/s390/kernel/perf_pai_ext.c
+@@ -56,7 +56,7 @@ struct paiext_map {
+ 	struct pai_userdata *save;	/* Area to store non-zero counters */
+ 	enum paiext_mode mode;		/* Type of event */
+ 	unsigned int active_events;	/* # of PAI Extension users */
+-	unsigned int refcnt;
++	refcount_t refcnt;
+ 	struct perf_event *event;	/* Perf event for sampling */
+ 	struct paiext_cb *paiext_cb;	/* PAI extension control block area */
+ };
+@@ -66,14 +66,14 @@ struct paiext_mapptr {
+ };
  
--register unsigned long gp_in_global __asm__("gp");
--
- #if defined(CONFIG_STACKPROTECTOR) && !defined(CONFIG_STACKPROTECTOR_PER_TASK)
- #include <linux/stackprotector.h>
- unsigned long __stack_chk_guard __read_mostly;
-@@ -207,7 +205,6 @@ int copy_thread(struct task_struct *p, c
- 	if (unlikely(args->fn)) {
- 		/* Kernel thread */
- 		memset(childregs, 0, sizeof(struct pt_regs));
--		childregs->gp = gp_in_global;
- 		/* Supervisor/Machine, irqs on: */
- 		childregs->status = SR_PP | SR_PIE;
+ static struct paiext_root {		/* Anchor to per CPU data */
+-	int refcnt;			/* Overall active events */
++	refcount_t refcnt;		/* Overall active events */
+ 	struct paiext_mapptr __percpu *mapptr;
+ } paiext_root;
  
+ /* Free per CPU data when the last event is removed. */
+ static void paiext_root_free(void)
+ {
+-	if (!--paiext_root.refcnt) {
++	if (refcount_dec_and_test(&paiext_root.refcnt)) {
+ 		free_percpu(paiext_root.mapptr);
+ 		paiext_root.mapptr = NULL;
+ 	}
+@@ -86,7 +86,7 @@ static void paiext_root_free(void)
+  */
+ static int paiext_root_alloc(void)
+ {
+-	if (++paiext_root.refcnt == 1) {
++	if (!refcount_inc_not_zero(&paiext_root.refcnt)) {
+ 		/* The memory is already zeroed. */
+ 		paiext_root.mapptr = alloc_percpu(struct paiext_mapptr);
+ 		if (!paiext_root.mapptr) {
+@@ -97,6 +97,7 @@ static int paiext_root_alloc(void)
+ 			 */
+ 			return -ENOMEM;
+ 		}
++		refcount_set(&paiext_root.refcnt, 1);
+ 	}
+ 	return 0;
+ }
+@@ -128,7 +129,7 @@ static void paiext_event_destroy(struct perf_event *event)
+ 
+ 	mutex_lock(&paiext_reserve_mutex);
+ 	cpump->event = NULL;
+-	if (!--cpump->refcnt)		/* Last reference gone */
++	if (refcount_dec_and_test(&cpump->refcnt))	/* Last reference gone */
+ 		paiext_free(mp);
+ 	paiext_root_free();
+ 	mutex_unlock(&paiext_reserve_mutex);
+@@ -169,7 +170,7 @@ static int paiext_alloc(struct perf_event_attr *a, struct perf_event *event)
+ 		rc = -ENOMEM;
+ 		cpump = kzalloc(sizeof(*cpump), GFP_KERNEL);
+ 		if (!cpump)
+-			goto unlock;
++			goto undo;
+ 
+ 		/* Allocate memory for counter area and counter extraction.
+ 		 * These are
+@@ -189,8 +190,9 @@ static int paiext_alloc(struct perf_event_attr *a, struct perf_event *event)
+ 					     GFP_KERNEL);
+ 		if (!cpump->save || !cpump->area || !cpump->paiext_cb) {
+ 			paiext_free(mp);
+-			goto unlock;
++			goto undo;
+ 		}
++		refcount_set(&cpump->refcnt, 1);
+ 		cpump->mode = a->sample_period ? PAI_MODE_SAMPLING
+ 					       : PAI_MODE_COUNTER;
+ 	} else {
+@@ -201,15 +203,15 @@ static int paiext_alloc(struct perf_event_attr *a, struct perf_event *event)
+ 		if (cpump->mode == PAI_MODE_SAMPLING ||
+ 		    (cpump->mode == PAI_MODE_COUNTER && a->sample_period)) {
+ 			rc = -EBUSY;
+-			goto unlock;
++			goto undo;
+ 		}
++		refcount_inc(&cpump->refcnt);
+ 	}
+ 
+ 	rc = 0;
+ 	cpump->event = event;
+-	++cpump->refcnt;
+ 
+-unlock:
++undo:
+ 	if (rc) {
+ 		/* Error in allocation of event, decrement anchor. Since
+ 		 * the event in not created, its destroy() function is never
+@@ -217,6 +219,7 @@ static int paiext_alloc(struct perf_event_attr *a, struct perf_event *event)
+ 		 */
+ 		paiext_root_free();
+ 	}
++unlock:
+ 	mutex_unlock(&paiext_reserve_mutex);
+ 	/* If rc is non-zero, no increment of counter/sampler was done. */
+ 	return rc;
+-- 
+2.43.0
+
 
 
 
