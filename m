@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-37662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F2489C5E6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:02:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE8B589C312
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A918C1C22B51
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C7351C22059
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4FA67E0F3;
-	Mon,  8 Apr 2024 14:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8768276413;
+	Mon,  8 Apr 2024 13:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Ue+Bryc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wdOsH4rv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6291326AC7;
-	Mon,  8 Apr 2024 14:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450E46CDA9;
+	Mon,  8 Apr 2024 13:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584892; cv=none; b=hgGkp0wGfkKdoPtb8TJfB5hwULfyPjApYpt/3Oa1RyZqFPJxpXdzrQzJZ1cQkmT8EVzDz8Y03UZhinQl2WcmiA0wHXESqb1OSVu0RYLM7IC74KPhiPTVGOMxl0lrzL9tUaUfvkRSHslrVqUZk5JxNTXurgmrN/hcnMjJzgUUcFM=
+	t=1712583133; cv=none; b=Rahb2rUhRhOmC+9TCgnSBJzCy/cK6tizxWaLwRglcRIoWr23xhkXi/vQeF9NLCh8tq2F13Froc/GAve582RKuAsvh5+BlFKtDaIWxakWpG1rbq2TTeo66D1LEVvidpUISSIgONlsDZxRnyU68BN4/hswLtl6ard2JMrVS5KicsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584892; c=relaxed/simple;
-	bh=5X3/T6q8/PiyFnLHyBhNsdZj8ppJGjNazCEfdkGLQeM=;
+	s=arc-20240116; t=1712583133; c=relaxed/simple;
+	bh=eN5+eRJ8vFUx4fa2H2jyOCsn2hlBQO4q8lM+UjtmllY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cvLTDRyyIxogrXINFEwJLEdD/uC8A7lZSEOqle43bHqgVf244rLELtbCL8pE406723RbIUEo8/UpghKkdlTjNxeqN9Jgs9F2/ABZn9FJuKEknjStzp/3oXXmhET0m3WP1ja2dbd8/CjobdLIGrxrrQYMGTjkJ2nslTnzN3RfEuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Ue+Bryc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74AA2C433F1;
-	Mon,  8 Apr 2024 14:01:31 +0000 (UTC)
+	 MIME-Version; b=BeeJpsYUs8zJ7JNMXEae970hjPYD0JJ6OGkA9tlgV/LgRWE+Gvef6pLGPBL5hUhHX7QhTL6LkyfbsaaV8rdXe08PR2TCq3Fnc1mOGec4otHMtnN5uu4ea7+MBeZSEKFYzIQPloueQCaSf/9lGT0MFcsrS0I2TPLlz5/3ZqBZNu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wdOsH4rv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2541C433F1;
+	Mon,  8 Apr 2024 13:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584891;
-	bh=5X3/T6q8/PiyFnLHyBhNsdZj8ppJGjNazCEfdkGLQeM=;
+	s=korg; t=1712583133;
+	bh=eN5+eRJ8vFUx4fa2H2jyOCsn2hlBQO4q8lM+UjtmllY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Ue+BrycJRTgs6lJ4QnkjHZHKqhiGukY3uNB56ghRPPtcQ24eOmxi7sknw6ZzHM60
-	 dk/VQ+R1lZd7bODVtSVCyVpd6pAk4MXsc2Nv9harqeRQSeyHdi/G/0RNsvQuyYtsTY
-	 R1E2PNYNyb6oJIvXJXWj7hMeYmw7+R/uyiW+dlxM=
+	b=wdOsH4rvGl/G9Ms7SHUpsUv0FxFJU0I+glXu9cLa6PL3nR0Axt6guXlime3pzpOU1
+	 M6kpSHBFwahW7HoV9Fpd4my7g069iUnPZQJlCYTtqALk+l4t7M6YJRflwrb8FbkOfI
+	 LtBLWZ+spq8KbRI8gDeaTsgcz0g9Vvi4HaqEoYDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 5.15 593/690] usb: typec: ucsi: Clear UCSI_CCI_RESET_COMPLETE before reset
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 160/252] ASoC: wm_adsp: Fix missing mutex_lock in wm_adsp_write_ctl()
 Date: Mon,  8 Apr 2024 14:57:39 +0200
-Message-ID: <20240408125421.079485520@linuxfoundation.org>
+Message-ID: <20240408125311.619391592@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-commit 3de4f996a0b5412aa451729008130a488f71563e upstream.
+[ Upstream commit f193957b0fbbba397c8bddedf158b3bf7e4850fc ]
 
-Check the UCSI_CCI_RESET_COMPLETE complete flag before starting
-another reset. Use a UCSI_SET_NOTIFICATION_ENABLE command to clear
-the flag if it is set.
+wm_adsp_write_ctl() must hold the pwr_lock mutex when calling
+cs_dsp_get_ctl().
 
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Link: https://lore.kernel.org/r/20240320073927.1641788-6-lk@c--e.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This was previously partially fixed by commit 781118bc2fc1
+("ASoC: wm_adsp: Fix missing locking in wm_adsp_[read|write]_ctl()")
+but this only put locking around the call to cs_dsp_coeff_write_ctrl(),
+missing the call to cs_dsp_get_ctl().
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: 781118bc2fc1 ("ASoC: wm_adsp: Fix missing locking in wm_adsp_[read|write]_ctl()")
+Link: https://msgid.link/r/20240307110227.41421-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |   36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ sound/soc/codecs/wm_adsp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -879,13 +879,47 @@ static int ucsi_reset_connector(struct u
- 
- static int ucsi_reset_ppm(struct ucsi *ucsi)
+diff --git a/sound/soc/codecs/wm_adsp.c b/sound/soc/codecs/wm_adsp.c
+index 72b90a7ee4b68..b9c20e29fe63e 100644
+--- a/sound/soc/codecs/wm_adsp.c
++++ b/sound/soc/codecs/wm_adsp.c
+@@ -683,11 +683,12 @@ static void wm_adsp_control_remove(struct cs_dsp_coeff_ctl *cs_ctl)
+ int wm_adsp_write_ctl(struct wm_adsp *dsp, const char *name, int type,
+ 		      unsigned int alg, void *buf, size_t len)
  {
--	u64 command = UCSI_PPM_RESET;
-+	u64 command;
- 	unsigned long tmo;
- 	u32 cci;
+-	struct cs_dsp_coeff_ctl *cs_ctl = cs_dsp_get_ctl(&dsp->cs_dsp, name, type, alg);
++	struct cs_dsp_coeff_ctl *cs_ctl;
+ 	struct wm_coeff_ctl *ctl;
  	int ret;
  
- 	mutex_lock(&ucsi->ppm_lock);
+ 	mutex_lock(&dsp->cs_dsp.pwr_lock);
++	cs_ctl = cs_dsp_get_ctl(&dsp->cs_dsp, name, type, alg);
+ 	ret = cs_dsp_coeff_write_ctrl(cs_ctl, 0, buf, len);
+ 	mutex_unlock(&dsp->cs_dsp.pwr_lock);
  
-+	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
-+	if (ret < 0)
-+		goto out;
-+
-+	/*
-+	 * If UCSI_CCI_RESET_COMPLETE is already set we must clear
-+	 * the flag before we start another reset. Send a
-+	 * UCSI_SET_NOTIFICATION_ENABLE command to achieve this.
-+	 * Ignore a timeout and try the reset anyway if this fails.
-+	 */
-+	if (cci & UCSI_CCI_RESET_COMPLETE) {
-+		command = UCSI_SET_NOTIFICATION_ENABLE;
-+		ret = ucsi->ops->async_write(ucsi, UCSI_CONTROL, &command,
-+					     sizeof(command));
-+		if (ret < 0)
-+			goto out;
-+
-+		tmo = jiffies + msecs_to_jiffies(UCSI_TIMEOUT_MS);
-+		do {
-+			ret = ucsi->ops->read(ucsi, UCSI_CCI,
-+					      &cci, sizeof(cci));
-+			if (ret < 0)
-+				goto out;
-+			if (cci & UCSI_CCI_COMMAND_COMPLETE)
-+				break;
-+			if (time_is_before_jiffies(tmo))
-+				break;
-+			msleep(20);
-+		} while (1);
-+
-+		WARN_ON(cci & UCSI_CCI_RESET_COMPLETE);
-+	}
-+
-+	command = UCSI_PPM_RESET;
- 	ret = ucsi->ops->async_write(ucsi, UCSI_CONTROL, &command,
- 				     sizeof(command));
- 	if (ret < 0)
+-- 
+2.43.0
+
 
 
 
