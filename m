@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-37103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 819A389C531
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:54:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA4689C359
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5639B2703F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77EDF283908
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782287CF0F;
-	Mon,  8 Apr 2024 13:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5304F85631;
+	Mon,  8 Apr 2024 13:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6Nrts2i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ophxcuDq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FA87C0B2;
-	Mon,  8 Apr 2024 13:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3AA7C6D4;
+	Mon,  8 Apr 2024 13:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583259; cv=none; b=O0mo+fkjmmgr+LXEz4RuV032PwKxD3kXAOebh/XDzvMIbhxWqVeXzRU8pS+QW5yimG/c6rSMjp7IW+69kyi/MltAS4v2k+xeClMfxz5Pdl1k88HeDkwCYaOz2+NLVzg6HtJ9PEZ6pPKrcGu+L4ZSVMBAZ9kg3FnoccaZMXIM2Ss=
+	t=1712583268; cv=none; b=dsiXycSauHa5+JeAlC3U+7Oom6airr6RhStaT7+COeSL1eC1BQD4CnBrxOzc5dYMfRt9rnm/4k/5zFZdaY/GPnijgXjD6kq5isHPwg0ZZrBjxCxkqPzpLWTgFoz1c6cCNsaz/+9D4exTIVkQM+CtqLRYemVh+EnL/4nFA8N2Fi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583259; c=relaxed/simple;
-	bh=79IiVutarEA1J029/bLwq2FbwXNE7FSfg3qo3CTMJV0=;
+	s=arc-20240116; t=1712583268; c=relaxed/simple;
+	bh=GPifiWNWE84n9VtwzqefCYLTMwCOGfmyu/WvuRHClXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSVFLu2TEXNogTv0sFxnbbAIkX4phMZTEz4rLukycG92Xt9kde14EHMaEnSwFAXyNykOMumcfcMMeEnfcxyfL840c1JaAQo7rcdTKyrd29epSdoDsSVwVEgUSPNBEyRN/eYmQ/HTJ1DfWeTCDAYeHiONgu4g5nVjHBU9kuMxNRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6Nrts2i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859E3C433C7;
-	Mon,  8 Apr 2024 13:34:18 +0000 (UTC)
+	 MIME-Version; b=W7+2HuRO//VsjznYVyOKpbwaAxz0JhPdn4KPjR/6egnlXfG4wFNj9oT+pGo7jwVqbPVvPNQmOlUO+m6PRvVKzPDfTP2T7jXkhbx6d8ypmQ4hQbKfChXQL43dOBOmvC+BMB8kL003CH8NVQQpUg2VxUQb5cJxu88ZMViSqt3T/8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ophxcuDq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39191C433F1;
+	Mon,  8 Apr 2024 13:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583258;
-	bh=79IiVutarEA1J029/bLwq2FbwXNE7FSfg3qo3CTMJV0=;
+	s=korg; t=1712583267;
+	bh=GPifiWNWE84n9VtwzqefCYLTMwCOGfmyu/WvuRHClXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o6Nrts2ii4hg9f76AsiEds8Eggp24ZnB3Hf/5rIZKa65sl02za20Rjhe1KrC7hXPF
-	 G2XnTox9n9l1VSoPI1+ZWNjCdBLkoOfYYx2v2fsYR2jGW/cjByxsj8ZSNKH4N3jkzX
-	 Dah685//p7S5vrHehEjsXXX8DZ1oyrbCAQguThCA=
+	b=ophxcuDq91rhymZq6M0Nebvb+9WL0KHUqGhTj8RtHLtBrwZby1IuqCJlmN5pLi8lX
+	 3vL/n8q4HpfGRyciHHm610rPS/J1NEgeQn4sBO0IWJpj/sHkvdxAHb2+vx2CWJbUzF
+	 Kuccb1OF1oWK9uCA1VGwq6hLIvMDKpGENuKVLLZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dominik Behr <dbehr@chromium.org>,
-	Rob Clark <robdclark@chromium.org>,
-	Simon Ser <contact@emersion.fr>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Chao Song <chao.song@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 157/273] drm/prime: Unbreak virtgpu dma-buf export
-Date: Mon,  8 Apr 2024 14:57:12 +0200
-Message-ID: <20240408125314.150074277@linuxfoundation.org>
+Subject: [PATCH 6.8 158/273] ASoC: rt5682-sdw: fix locking sequence
+Date: Mon,  8 Apr 2024 14:57:13 +0200
+Message-ID: <20240408125314.180247889@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
 References: <20240408125309.280181634@linuxfoundation.org>
@@ -67,44 +68,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit a4ec240f6b7c21cf846d10017c3ce423a0eae92c ]
+[ Upstream commit 310a5caa4e861616a27a83c3e8bda17d65026fa8 ]
 
-virtgpu "vram" GEM objects do not implement obj->get_sg_table().  But
-they also don't use drm_gem_map_dma_buf().  In fact they may not even
-have guest visible pages.  But it is perfectly fine to export and share
-with other virtual devices.
+The disable_irq_lock protects the 'disable_irq' value, we need to lock
+before testing it.
 
-Reported-by: Dominik Behr <dbehr@chromium.org>
-Fixes: 207395da5a97 ("drm/prime: reject DMA-BUF attach when get_sg_table is missing")
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Simon Ser <contact@emersion.fr>
-Signed-off-by: Simon Ser <contact@emersion.fr>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240322214801.319975-1-robdclark@gmail.com
+Fixes: 02fb23d72720 ("ASoC: rt5682-sdw: fix for JD event handling in ClockStop Mode0")
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Chao Song <chao.song@linux.intel.com>
+Link: https://msgid.link/r/20240325221817.206465-2-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_prime.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/soc/codecs/rt5682-sdw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_prime.c b/drivers/gpu/drm/drm_prime.c
-index 7352bde299d54..03bd3c7bd0dc2 100644
---- a/drivers/gpu/drm/drm_prime.c
-+++ b/drivers/gpu/drm/drm_prime.c
-@@ -582,7 +582,12 @@ int drm_gem_map_attach(struct dma_buf *dma_buf,
- {
- 	struct drm_gem_object *obj = dma_buf->priv;
+diff --git a/sound/soc/codecs/rt5682-sdw.c b/sound/soc/codecs/rt5682-sdw.c
+index e67c2e19cb1a7..1fdbef5fd6cba 100644
+--- a/sound/soc/codecs/rt5682-sdw.c
++++ b/sound/soc/codecs/rt5682-sdw.c
+@@ -763,12 +763,12 @@ static int __maybe_unused rt5682_dev_resume(struct device *dev)
+ 		return 0;
  
--	if (!obj->funcs->get_sg_table)
-+	/*
-+	 * drm_gem_map_dma_buf() requires obj->get_sg_table(), but drivers
-+	 * that implement their own ->map_dma_buf() do not.
-+	 */
-+	if (dma_buf->ops->map_dma_buf == drm_gem_map_dma_buf &&
-+	    !obj->funcs->get_sg_table)
- 		return -ENOSYS;
+ 	if (!slave->unattach_request) {
++		mutex_lock(&rt5682->disable_irq_lock);
+ 		if (rt5682->disable_irq == true) {
+-			mutex_lock(&rt5682->disable_irq_lock);
+ 			sdw_write_no_pm(slave, SDW_SCP_INTMASK1, SDW_SCP_INT1_IMPL_DEF);
+ 			rt5682->disable_irq = false;
+-			mutex_unlock(&rt5682->disable_irq_lock);
+ 		}
++		mutex_unlock(&rt5682->disable_irq_lock);
+ 		goto regmap_sync;
+ 	}
  
- 	return drm_gem_pin(obj);
 -- 
 2.43.0
 
