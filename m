@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-36949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA3C889C29F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75CE89C5B1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E089DB2C6F6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:30:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15A521C212BB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2437CF17;
-	Mon,  8 Apr 2024 13:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C857EF06;
+	Mon,  8 Apr 2024 13:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfX9aNkl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XubQfFie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7964D2E405;
-	Mon,  8 Apr 2024 13:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D647E572;
+	Mon,  8 Apr 2024 13:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582813; cv=none; b=FmJJp8MvY+yJRJslOY/IAxMUZ/gmGPHlURY6FqWX6lNdZ3Ug7BdT1NezSxywYFH85e7s/BWChLY97EWbVLHMXbMP4iu8qhjQS8Tm1iafjs1z119L9O/ffhUyZcnq01D1VOVdETDZg5sVcY9j2LF0vrUm5MmWOtzsQtAgUsOCptI=
+	t=1712584748; cv=none; b=JCCvfhpwJePWs69YfOxwy/dhojLfSAt4ZeTemoXVLvXTDjG34LJeOD9tydQwYQDV6fv4Jrepj292FdX5jGsd3eOUHztF1etoP0f65wc9mwAZn4eBwmw504ka0aQMJtLLVpinOx3lljP52YjO6m5j+nbG2zI9+rYI3wEG//+5WBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582813; c=relaxed/simple;
-	bh=Clgkv931SKIAnvc/0aDywO/CBBZbuK5gxpZUUTjL1CA=;
+	s=arc-20240116; t=1712584748; c=relaxed/simple;
+	bh=kWW/vn0irVchTGyua5shYOeqCyQjPcmaIT45qHkTDMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQ9kyTg7pgODM29ds+2zud60JetDfq7ZgUJVqavZThUE8NuCrlB5UNy73uxwlFDXiyIysOfU9IHbxHO8XyKRGAVycD53A16QY0+Lti3TMLxLcrUssEMNoNv0Gd2PZbBBnADMzrFJ3HDxYy6Q/6mnJrF6P7dUqwETu/dETggTx/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfX9aNkl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002ADC433C7;
-	Mon,  8 Apr 2024 13:26:52 +0000 (UTC)
+	 MIME-Version; b=rHNIkAND/nIh5Z6JFNUHG5FaHXrqjYlq56ySsEGf9MeakUIJ0avpNp+9yM/jFqYKWnyNyFGArLw4QjQquK8SjEfpxaqtPVQVw+fN7852zfZQ505M1dzLtS/HxzjgyckgXgog9Zl3mSDRj0ksFo+iQ/CAg2niXo7rUTwTY9AQKIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XubQfFie; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBF7C433F1;
+	Mon,  8 Apr 2024 13:59:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582813;
-	bh=Clgkv931SKIAnvc/0aDywO/CBBZbuK5gxpZUUTjL1CA=;
+	s=korg; t=1712584747;
+	bh=kWW/vn0irVchTGyua5shYOeqCyQjPcmaIT45qHkTDMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YfX9aNklcrD/nqVfHVPrs1L9jXscJqH2oqX1g6eQXwMC8Ji/S8FddpZ19oVznXRTo
-	 7pGXDlKmzx6J6+Wl6iS5/GSMMiVV+1tojPkzwVPEFD0Rda7xDRnRdCWE/mIy37eqMP
-	 qKB/afcwgt3ml3vGVjl/BQ2tXMr3LJd5g5LwYmHk=
+	b=XubQfFier1V8j5RGN7Y3gQyvlog2htmPIZ7Qkgv91h1DTYLsxcT0rOgGW0ObhAIJC
+	 I3sJ76hTZGf2UrVFOSw2CpmjhVccqo6sc/R978sFQ4rkacrXK1UCkAH8TGT74a5uqh
+	 umdEWmeZIXj80Oh/N+6ewbktgqxBTC7zc/LQIU7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.8 107/273] selftests: net: gro fwd: update vxlan GRO test expectations
+	JianHong Yin <jiyin@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 516/690] nfsd: dont destroy global nfs4_file table in per-net shutdown
 Date: Mon,  8 Apr 2024 14:56:22 +0200
-Message-ID: <20240408125312.628465219@linuxfoundation.org>
+Message-ID: <20240408125418.338949026@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 0fb101be97ca27850c5ecdbd1269423ce4d1f607 upstream.
+[ Upstream commit 4102db175b5d884d133270fdbd0e59111ce688fc ]
 
-UDP tunnel packets can't be GRO in-between their endpoints as this
-causes different issues. The UDP GRO fwd vxlan tests were relying on
-this and their expectations have to be fixed.
+The nfs4_file table is global, so shutting it down when a containerized
+nfsd is shut down is wrong and can lead to double-frees. Tear down the
+nfs4_file_rhltable in nfs4_state_shutdown instead of
+nfs4_state_shutdown_net.
 
-We keep both vxlan tests and expected no GRO from happening. The vxlan
-UDP GRO bench test was removed as it's not providing any valuable
-information now.
-
-Fixes: a062260a9d5f ("selftests: net: add UDP GRO forwarding self-tests")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d47b295e8d76 ("NFSD: Use rhashtable for managing nfs4_file objects")
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2169017
+Reported-by: JianHong Yin <jiyin@redhat.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- tools/testing/selftests/net/udpgro_fwd.sh |   10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ fs/nfsd/nfs4state.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/udpgro_fwd.sh
-+++ b/tools/testing/selftests/net/udpgro_fwd.sh
-@@ -241,7 +241,7 @@ for family in 4 6; do
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 22799f5ce686e..5c261cc807e8e 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -8183,7 +8183,6 @@ nfs4_state_shutdown_net(struct net *net)
  
- 	create_vxlan_pair
- 	ip netns exec $NS_DST ethtool -K veth$DST rx-gro-list on
--	run_test "GRO frag list over UDP tunnel" $OL_NET$DST 1 1
-+	run_test "GRO frag list over UDP tunnel" $OL_NET$DST 10 10
- 	cleanup
+ 	nfsd4_client_tracking_exit(net);
+ 	nfs4_state_destroy_net(net);
+-	rhltable_destroy(&nfs4_file_rhltable);
+ #ifdef CONFIG_NFSD_V4_2_INTER_SSC
+ 	nfsd4_ssc_shutdown_umount(nn);
+ #endif
+@@ -8193,6 +8192,7 @@ void
+ nfs4_state_shutdown(void)
+ {
+ 	nfsd4_destroy_callback_queue();
++	rhltable_destroy(&nfs4_file_rhltable);
+ }
  
- 	# use NAT to circumvent GRO FWD check
-@@ -254,13 +254,7 @@ for family in 4 6; do
- 	# load arp cache before running the test to reduce the amount of
- 	# stray traffic on top of the UDP tunnel
- 	ip netns exec $NS_SRC $PING -q -c 1 $OL_NET$DST_NAT >/dev/null
--	run_test "GRO fwd over UDP tunnel" $OL_NET$DST_NAT 1 1 $OL_NET$DST
--	cleanup
--
--	create_vxlan_pair
--	run_bench "UDP tunnel fwd perf" $OL_NET$DST
--	ip netns exec $NS_DST ethtool -K veth$DST rx-udp-gro-forwarding on
--	run_bench "UDP tunnel GRO fwd perf" $OL_NET$DST
-+	run_test "GRO fwd over UDP tunnel" $OL_NET$DST_NAT 10 10 $OL_NET$DST
- 	cleanup
- done
- 
+ static void
+-- 
+2.43.0
+
 
 
 
