@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-37742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F5689C62F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:05:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A0889C243
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:28:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A13071F2172C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:05:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A913C1F224CA
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2009880617;
-	Mon,  8 Apr 2024 14:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825F5823CB;
+	Mon,  8 Apr 2024 13:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NVE8hgkW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bd7OhW4B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A9280034;
-	Mon,  8 Apr 2024 14:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AE1823AE;
+	Mon,  8 Apr 2024 13:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585127; cv=none; b=mOwGOlrIBxCcehdXMLJMOOjfVGw5rFfWsd9HUyagYc0G2fShITAq2coa0pRhgO4XkP2XcEmnyyBcz2GQbYN6nHM8jLGjzHI1ntoc55HnQjQcYOcDlKz+qQO4R2nzJXotK+J2CRIkhlRA41AUr2tQWcIDvwDEYnlD1hkjBx9pKn8=
+	t=1712582667; cv=none; b=PGGwOG1LSY6UdzjmCzeMFF9d7Hrok56oIuxCLOg+6BOiQ9BdbSyxCkwGq9dZWKyw7HkBxZsT7TsOBc3xT/oFBkdtJTW+RHbIbRDT3jUqXndRdhZOz/MGlWgoodTTuKweMwcQ5b+okR2NoxiaUT8K5ylRf1ll+nsrk/SFFN2xTcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585127; c=relaxed/simple;
-	bh=SE60aKq+T0144ebmmKorBcy3Go1fPjHt5iDoL3zJmoc=;
+	s=arc-20240116; t=1712582667; c=relaxed/simple;
+	bh=cAGRjAZO/YAsjdwvwoNlRtUYV+ugwN6iOQn+ijnPbsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DYQ8N9WU/TrCIGFptvT+eWkcaBI9kZludcgMj6kwbMzmgoLVOfHGCqeyAFlI3hzJPCMM76UqLqfZRNCGXc6sT1qYpqO7uufEkUJhbrzJaVE5kFBk9qw8cMf8WPCf22w2FtZqWhKru5FSS9cBLej+d8JWBScRPVuDBKaNb2vKlwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NVE8hgkW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B647C433C7;
-	Mon,  8 Apr 2024 14:05:27 +0000 (UTC)
+	 MIME-Version; b=Jwzvw1nZUVcnE4Cv7V/47qko/lMpdHcSWKCQkcx1XHlPGFUGZqD3bttQy1rnHNAtC4rTWtIH/72z/bRCrSZTul+aABWk2XYYx/Rd2LF+FMwj+GxgdBZ4UnlAPxmHSEnVFZQ3SeCZJ13e8w3Ej5ElqGhHg6swxm5F9flWZtYPrPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bd7OhW4B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B565BC433F1;
+	Mon,  8 Apr 2024 13:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585127;
-	bh=SE60aKq+T0144ebmmKorBcy3Go1fPjHt5iDoL3zJmoc=;
+	s=korg; t=1712582667;
+	bh=cAGRjAZO/YAsjdwvwoNlRtUYV+ugwN6iOQn+ijnPbsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NVE8hgkWMGCVW9WlPWdGNA1hx44uJ12vV8soX0H/3uT6Jv42Zfdmykj1oMvX2lSbp
-	 bgNfobnYmjp43uzx8nrXczRm9qVldfFxCKNZxZwAqlUU7WIrgYMI4Xpbghb1ytiDzR
-	 BllYbsVnNdMgsSob4GOqiefuq+oyPVOe2v3FmdeY=
+	b=Bd7OhW4Bs2awtGaTn9zHxJu0Maghnf1koat5tuWJT5EtG021SBETsES4Qk3toq1Tz
+	 cEocL1AbfdSgXyM/TDwcVSb+EKjl8ZFuQHkpyMuhB6GIq8xUnM5a+jtKNfhGDadpW4
+	 siHUw/2usgnKGafDaNC7vaTzjGdStj9NQpMA4iK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 672/690] scsi: mylex: Fix sysfs buffer lengths
+	Stefan ORear <sorear@fastmail.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.1 124/138] riscv: process: Fix kernel gp leakage
 Date: Mon,  8 Apr 2024 14:58:58 +0200
-Message-ID: <20240408125424.053913948@linuxfoundation.org>
+Message-ID: <20240408125300.090131399@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,194 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Stefan O'Rear <sorear@fastmail.com>
 
-[ Upstream commit 1197c5b2099f716b3de327437fb50900a0b936c9 ]
+commit d14fa1fcf69db9d070e75f1c4425211fa619dfc8 upstream.
 
-The myrb and myrs drivers use an odd way of implementing their sysfs files,
-calling snprintf() with a fixed length of 32 bytes to print into a page
-sized buffer. One of the strings is actually longer than 32 bytes, which
-clang can warn about:
+childregs represents the registers which are active for the new thread
+in user context. For a kernel thread, childregs->gp is never used since
+the kernel gp is not touched by switch_to. For a user mode helper, the
+gp value can be observed in user space after execve or possibly by other
+means.
 
-drivers/scsi/myrb.c:1906:10: error: 'snprintf' will always be truncated; specified size is 32, but format string expands to at least 34 [-Werror,-Wformat-truncation]
-drivers/scsi/myrs.c:1089:10: error: 'snprintf' will always be truncated; specified size is 32, but format string expands to at least 34 [-Werror,-Wformat-truncation]
+[From the email thread]
 
-These could all be plain sprintf() without a length as the buffer is always
-long enough. On the other hand, sysfs files should not be overly long
-either, so just double the length to make sure the longest strings don't
-get truncated here.
+The /* Kernel thread */ comment is somewhat inaccurate in that it is also used
+for user_mode_helper threads, which exec a user process, e.g. /sbin/init or
+when /proc/sys/kernel/core_pattern is a pipe. Such threads do not have
+PF_KTHREAD set and are valid targets for ptrace etc. even before they exec.
 
-Fixes: 77266186397c ("scsi: myrs: Add Mylex RAID controller (SCSI interface)")
-Fixes: 081ff398c56c ("scsi: myrb: Add Mylex RAID controller (block interface)")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240326223825.4084412-8-arnd@kernel.org
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+childregs is the *user* context during syscall execution and it is observable
+from userspace in at least five ways:
+
+1. kernel_execve does not currently clear integer registers, so the starting
+   register state for PID 1 and other user processes started by the kernel has
+   sp = user stack, gp = kernel __global_pointer$, all other integer registers
+   zeroed by the memset in the patch comment.
+
+   This is a bug in its own right, but I'm unwilling to bet that it is the only
+   way to exploit the issue addressed by this patch.
+
+2. ptrace(PTRACE_GETREGSET): you can PTRACE_ATTACH to a user_mode_helper thread
+   before it execs, but ptrace requires SIGSTOP to be delivered which can only
+   happen at user/kernel boundaries.
+
+3. /proc/*/task/*/syscall: this is perfectly happy to read pt_regs for
+   user_mode_helpers before the exec completes, but gp is not one of the
+   registers it returns.
+
+4. PERF_SAMPLE_REGS_USER: LOCKDOWN_PERF normally prevents access to kernel
+   addresses via PERF_SAMPLE_REGS_INTR, but due to this bug kernel addresses
+   are also exposed via PERF_SAMPLE_REGS_USER which is permitted under
+   LOCKDOWN_PERF. I have not attempted to write exploit code.
+
+5. Much of the tracing infrastructure allows access to user registers. I have
+   not attempted to determine which forms of tracing allow access to user
+   registers without already allowing access to kernel registers.
+
+Fixes: 7db91e57a0ac ("RISC-V: Task implementation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Stefan O'Rear <sorear@fastmail.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240327061258.2370291-1-sorear@fastmail.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/myrb.c | 20 ++++++++++----------
- drivers/scsi/myrs.c | 24 ++++++++++++------------
- 2 files changed, 22 insertions(+), 22 deletions(-)
+ arch/riscv/kernel/process.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/scsi/myrb.c b/drivers/scsi/myrb.c
-index 386256369dfc3..2a61cb7268839 100644
---- a/drivers/scsi/myrb.c
-+++ b/drivers/scsi/myrb.c
-@@ -1775,9 +1775,9 @@ static ssize_t raid_state_show(struct device *dev,
+--- a/arch/riscv/kernel/process.c
++++ b/arch/riscv/kernel/process.c
+@@ -25,8 +25,6 @@
+ #include <asm/thread_info.h>
+ #include <asm/cpuidle.h>
  
- 		name = myrb_devstate_name(ldev_info->state);
- 		if (name)
--			ret = snprintf(buf, 32, "%s\n", name);
-+			ret = snprintf(buf, 64, "%s\n", name);
- 		else
--			ret = snprintf(buf, 32, "Invalid (%02X)\n",
-+			ret = snprintf(buf, 64, "Invalid (%02X)\n",
- 				       ldev_info->state);
- 	} else {
- 		struct myrb_pdev_state *pdev_info = sdev->hostdata;
-@@ -1796,9 +1796,9 @@ static ssize_t raid_state_show(struct device *dev,
- 		else
- 			name = myrb_devstate_name(pdev_info->state);
- 		if (name)
--			ret = snprintf(buf, 32, "%s\n", name);
-+			ret = snprintf(buf, 64, "%s\n", name);
- 		else
--			ret = snprintf(buf, 32, "Invalid (%02X)\n",
-+			ret = snprintf(buf, 64, "Invalid (%02X)\n",
- 				       pdev_info->state);
- 	}
- 	return ret;
-@@ -1886,11 +1886,11 @@ static ssize_t raid_level_show(struct device *dev,
+-register unsigned long gp_in_global __asm__("gp");
+-
+ #if defined(CONFIG_STACKPROTECTOR) && !defined(CONFIG_STACKPROTECTOR_PER_TASK)
+ #include <linux/stackprotector.h>
+ unsigned long __stack_chk_guard __read_mostly;
+@@ -170,7 +168,6 @@ int copy_thread(struct task_struct *p, c
+ 	if (unlikely(args->fn)) {
+ 		/* Kernel thread */
+ 		memset(childregs, 0, sizeof(struct pt_regs));
+-		childregs->gp = gp_in_global;
+ 		/* Supervisor/Machine, irqs on: */
+ 		childregs->status = SR_PP | SR_PIE;
  
- 		name = myrb_raidlevel_name(ldev_info->raid_level);
- 		if (!name)
--			return snprintf(buf, 32, "Invalid (%02X)\n",
-+			return snprintf(buf, 64, "Invalid (%02X)\n",
- 					ldev_info->state);
--		return snprintf(buf, 32, "%s\n", name);
-+		return snprintf(buf, 64, "%s\n", name);
- 	}
--	return snprintf(buf, 32, "Physical Drive\n");
-+	return snprintf(buf, 64, "Physical Drive\n");
- }
- static DEVICE_ATTR_RO(raid_level);
- 
-@@ -1903,15 +1903,15 @@ static ssize_t rebuild_show(struct device *dev,
- 	unsigned char status;
- 
- 	if (sdev->channel < myrb_logical_channel(sdev->host))
--		return snprintf(buf, 32, "physical device - not rebuilding\n");
-+		return snprintf(buf, 64, "physical device - not rebuilding\n");
- 
- 	status = myrb_get_rbld_progress(cb, &rbld_buf);
- 
- 	if (rbld_buf.ldev_num != sdev->id ||
- 	    status != MYRB_STATUS_SUCCESS)
--		return snprintf(buf, 32, "not rebuilding\n");
-+		return snprintf(buf, 64, "not rebuilding\n");
- 
--	return snprintf(buf, 32, "rebuilding block %u of %u\n",
-+	return snprintf(buf, 64, "rebuilding block %u of %u\n",
- 			rbld_buf.ldev_size - rbld_buf.blocks_left,
- 			rbld_buf.ldev_size);
- }
-diff --git a/drivers/scsi/myrs.c b/drivers/scsi/myrs.c
-index a4d244ee4548c..3f05f13fb107a 100644
---- a/drivers/scsi/myrs.c
-+++ b/drivers/scsi/myrs.c
-@@ -949,9 +949,9 @@ static ssize_t raid_state_show(struct device *dev,
- 
- 		name = myrs_devstate_name(ldev_info->dev_state);
- 		if (name)
--			ret = snprintf(buf, 32, "%s\n", name);
-+			ret = snprintf(buf, 64, "%s\n", name);
- 		else
--			ret = snprintf(buf, 32, "Invalid (%02X)\n",
-+			ret = snprintf(buf, 64, "Invalid (%02X)\n",
- 				       ldev_info->dev_state);
- 	} else {
- 		struct myrs_pdev_info *pdev_info;
-@@ -960,9 +960,9 @@ static ssize_t raid_state_show(struct device *dev,
- 		pdev_info = sdev->hostdata;
- 		name = myrs_devstate_name(pdev_info->dev_state);
- 		if (name)
--			ret = snprintf(buf, 32, "%s\n", name);
-+			ret = snprintf(buf, 64, "%s\n", name);
- 		else
--			ret = snprintf(buf, 32, "Invalid (%02X)\n",
-+			ret = snprintf(buf, 64, "Invalid (%02X)\n",
- 				       pdev_info->dev_state);
- 	}
- 	return ret;
-@@ -1068,13 +1068,13 @@ static ssize_t raid_level_show(struct device *dev,
- 		ldev_info = sdev->hostdata;
- 		name = myrs_raid_level_name(ldev_info->raid_level);
- 		if (!name)
--			return snprintf(buf, 32, "Invalid (%02X)\n",
-+			return snprintf(buf, 64, "Invalid (%02X)\n",
- 					ldev_info->dev_state);
- 
- 	} else
- 		name = myrs_raid_level_name(MYRS_RAID_PHYSICAL);
- 
--	return snprintf(buf, 32, "%s\n", name);
-+	return snprintf(buf, 64, "%s\n", name);
- }
- static DEVICE_ATTR_RO(raid_level);
- 
-@@ -1088,7 +1088,7 @@ static ssize_t rebuild_show(struct device *dev,
- 	unsigned char status;
- 
- 	if (sdev->channel < cs->ctlr_info->physchan_present)
--		return snprintf(buf, 32, "physical device - not rebuilding\n");
-+		return snprintf(buf, 64, "physical device - not rebuilding\n");
- 
- 	ldev_info = sdev->hostdata;
- 	ldev_num = ldev_info->ldev_num;
-@@ -1100,11 +1100,11 @@ static ssize_t rebuild_show(struct device *dev,
- 		return -EIO;
- 	}
- 	if (ldev_info->rbld_active) {
--		return snprintf(buf, 32, "rebuilding block %zu of %zu\n",
-+		return snprintf(buf, 64, "rebuilding block %zu of %zu\n",
- 				(size_t)ldev_info->rbld_lba,
- 				(size_t)ldev_info->cfg_devsize);
- 	} else
--		return snprintf(buf, 32, "not rebuilding\n");
-+		return snprintf(buf, 64, "not rebuilding\n");
- }
- 
- static ssize_t rebuild_store(struct device *dev,
-@@ -1192,7 +1192,7 @@ static ssize_t consistency_check_show(struct device *dev,
- 	unsigned short ldev_num;
- 
- 	if (sdev->channel < cs->ctlr_info->physchan_present)
--		return snprintf(buf, 32, "physical device - not checking\n");
-+		return snprintf(buf, 64, "physical device - not checking\n");
- 
- 	ldev_info = sdev->hostdata;
- 	if (!ldev_info)
-@@ -1200,11 +1200,11 @@ static ssize_t consistency_check_show(struct device *dev,
- 	ldev_num = ldev_info->ldev_num;
- 	myrs_get_ldev_info(cs, ldev_num, ldev_info);
- 	if (ldev_info->cc_active)
--		return snprintf(buf, 32, "checking block %zu of %zu\n",
-+		return snprintf(buf, 64, "checking block %zu of %zu\n",
- 				(size_t)ldev_info->cc_lba,
- 				(size_t)ldev_info->cfg_devsize);
- 	else
--		return snprintf(buf, 32, "not checking\n");
-+		return snprintf(buf, 64, "not checking\n");
- }
- 
- static ssize_t consistency_check_store(struct device *dev,
--- 
-2.43.0
-
 
 
 
