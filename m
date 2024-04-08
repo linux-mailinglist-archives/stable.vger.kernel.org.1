@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-37717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 411A489C6A7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:16:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15ADA89C379
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 424CBB2B5AF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAD7C1F21DE4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600DB7F474;
-	Mon,  8 Apr 2024 14:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF75286AC2;
+	Mon,  8 Apr 2024 13:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DiryrQPQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1q1pjyh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD807D3FD;
-	Mon,  8 Apr 2024 14:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCC17D401;
+	Mon,  8 Apr 2024 13:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585055; cv=none; b=T9Uz6icjwx8jV3m1z87GhF0li5zMtQfYlt+nCRb9WvkiVU6x2/Lpi5naoEq9eL2pyNB9/4rnVK+laYvXG0+wCvIhogXjiXWt9BYYby5XxteO0wwvUsAZJbCKbTDeZOm3K0KkQ0K2g0cBmbN91mCp2t37TYKLUi64RmNQATpG+qQ=
+	t=1712583346; cv=none; b=dx+mgpIH5HgzdCMfQRq4qakqVCo/+RKhdRJnQ1lVfMPBVuuy060+Rpf3tRMJ3fqn+GP5cd+Dlom/5fjF2uOMBTorpwpCF0N+5C5IuHmqhcGvjT5VUqXkV6PqolNMpDmipWZVGQs7lXPJYhqBMBDKKFVgoAbz28SbBYgogY08pOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585055; c=relaxed/simple;
-	bh=mBlM/DLx2tHX/7zScewNnlrHhZmzRTsPfI2tmxUizE8=;
+	s=arc-20240116; t=1712583346; c=relaxed/simple;
+	bh=g3IxR/V1WRB+ObeqX3zOi+My7XYKIzN14RrrdMyfKXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i0/BisKqKieEB5P35Wc+wdjC7ZN33NRIL3UUDlneldgyz6/FQkoKMem218qoOb5E+sNPUp2mmgeYWXChhdcG/2I/S+crd4SUcpnnPN8suHJvCC+zVOlgI2AwFXa1vCPDJ0//7ST8XsaeuZV7rz7OlYRrkIBR3+hes5JYznGzRSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DiryrQPQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B6E7C433C7;
-	Mon,  8 Apr 2024 14:04:14 +0000 (UTC)
+	 MIME-Version; b=tqVhsMnrCzrcdKNTD/cVRqsZvUc3jzFi/aCgmZ4pr3RIAgTX5Hdvx7bZhbT39zdNLnrvu2bpL1m/y3hiQPL9fcql2ddiF2Mwx57rbbFvJy04yaG6I79B1EnC0kG+KPUX2xuNpeYgq+KNzgJ6qQssdzUCsdsbRlL5TSvqZ3ZARNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1q1pjyh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C3FC433F1;
+	Mon,  8 Apr 2024 13:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585055;
-	bh=mBlM/DLx2tHX/7zScewNnlrHhZmzRTsPfI2tmxUizE8=;
+	s=korg; t=1712583346;
+	bh=g3IxR/V1WRB+ObeqX3zOi+My7XYKIzN14RrrdMyfKXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DiryrQPQ/UeFRPV88mXTxxRaXAyghfmu31V9ibLd57IB72552kz63l8Ph9xbpWMDi
-	 k/WGg5rA7rfIBSpBspJg1opQOii2njsu1SgC6v4kqBfwYU+a0fzY5U/UnQHT8CqQ3K
-	 UAWHYupZVA8NPEzWKAZmnFlP2mqExnuGr6FMfK+I=
+	b=V1q1pjyhBGNPoaysHr3Df0vInH2g6ZV4z6dLazDYu/G+XQmsHCIkM8dUHHF3bxF2h
+	 oVDE2ko1tBb+MsTgma3gZOaKd8+UiATpeSX2xHla/AuauevWLxzgmqDPFpgvMYNAGx
+	 5Ujele0hp0r/e2qQgjARXGCTeQ8jrQ+eN+WnySOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 617/690] mlxbf_gige: call request_irq() after NAPI initialized
+Subject: [PATCH 6.6 184/252] ata: sata_sx4: fix pdc20621_get_from_dimm() on 64-bit
 Date: Mon,  8 Apr 2024 14:58:03 +0200
-Message-ID: <20240408125421.959407341@linuxfoundation.org>
+Message-ID: <20240408125312.375958017@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,170 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f7442a634ac06b953fc1f7418f307b25acd4cfbc ]
+[ Upstream commit 52f80bb181a9a1530ade30bc18991900bbb9697f ]
 
-The mlxbf_gige driver encounters a NULL pointer exception in
-mlxbf_gige_open() when kdump is enabled.  The sequence to reproduce
-the exception is as follows:
-a) enable kdump
-b) trigger kdump via "echo c > /proc/sysrq-trigger"
-c) kdump kernel executes
-d) kdump kernel loads mlxbf_gige module
-e) the mlxbf_gige module runs its open() as the
-   the "oob_net0" interface is brought up
-f) mlxbf_gige module will experience an exception
-   during its open(), something like:
+gcc warns about a memcpy() with overlapping pointers because of an
+incorrect size calculation:
 
-     Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-     Mem abort info:
-       ESR = 0x0000000086000004
-       EC = 0x21: IABT (current EL), IL = 32 bits
-       SET = 0, FnV = 0
-       EA = 0, S1PTW = 0
-       FSC = 0x04: level 0 translation fault
-     user pgtable: 4k pages, 48-bit VAs, pgdp=00000000e29a4000
-     [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
-     Internal error: Oops: 0000000086000004 [#1] SMP
-     CPU: 0 PID: 812 Comm: NetworkManager Tainted: G           OE     5.15.0-1035-bluefield #37-Ubuntu
-     Hardware name: https://www.mellanox.com BlueField-3 SmartNIC Main Card/BlueField-3 SmartNIC Main Card, BIOS 4.6.0.13024 Jan 19 2024
-     pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-     pc : 0x0
-     lr : __napi_poll+0x40/0x230
-     sp : ffff800008003e00
-     x29: ffff800008003e00 x28: 0000000000000000 x27: 00000000ffffffff
-     x26: ffff000066027238 x25: ffff00007cedec00 x24: ffff800008003ec8
-     x23: 000000000000012c x22: ffff800008003eb7 x21: 0000000000000000
-     x20: 0000000000000001 x19: ffff000066027238 x18: 0000000000000000
-     x17: ffff578fcb450000 x16: ffffa870b083c7c0 x15: 0000aaab010441d0
-     x14: 0000000000000001 x13: 00726f7272655f65 x12: 6769675f6662786c
-     x11: 0000000000000000 x10: 0000000000000000 x9 : ffffa870b0842398
-     x8 : 0000000000000004 x7 : fe5a48b9069706ea x6 : 17fdb11fc84ae0d2
-     x5 : d94a82549d594f35 x4 : 0000000000000000 x3 : 0000000000400100
-     x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000066027238
-     Call trace:
-      0x0
-      net_rx_action+0x178/0x360
-      __do_softirq+0x15c/0x428
-      __irq_exit_rcu+0xac/0xec
-      irq_exit+0x18/0x2c
-      handle_domain_irq+0x6c/0xa0
-      gic_handle_irq+0xec/0x1b0
-      call_on_irq_stack+0x20/0x2c
-      do_interrupt_handler+0x5c/0x70
-      el1_interrupt+0x30/0x50
-      el1h_64_irq_handler+0x18/0x2c
-      el1h_64_irq+0x7c/0x80
-      __setup_irq+0x4c0/0x950
-      request_threaded_irq+0xf4/0x1bc
-      mlxbf_gige_request_irqs+0x68/0x110 [mlxbf_gige]
-      mlxbf_gige_open+0x5c/0x170 [mlxbf_gige]
-      __dev_open+0x100/0x220
-      __dev_change_flags+0x16c/0x1f0
-      dev_change_flags+0x2c/0x70
-      do_setlink+0x220/0xa40
-      __rtnl_newlink+0x56c/0x8a0
-      rtnl_newlink+0x58/0x84
-      rtnetlink_rcv_msg+0x138/0x3c4
-      netlink_rcv_skb+0x64/0x130
-      rtnetlink_rcv+0x20/0x30
-      netlink_unicast+0x2ec/0x360
-      netlink_sendmsg+0x278/0x490
-      __sock_sendmsg+0x5c/0x6c
-      ____sys_sendmsg+0x290/0x2d4
-      ___sys_sendmsg+0x84/0xd0
-      __sys_sendmsg+0x70/0xd0
-      __arm64_sys_sendmsg+0x2c/0x40
-      invoke_syscall+0x78/0x100
-      el0_svc_common.constprop.0+0x54/0x184
-      do_el0_svc+0x30/0xac
-      el0_svc+0x48/0x160
-      el0t_64_sync_handler+0xa4/0x12c
-      el0t_64_sync+0x1a4/0x1a8
-     Code: bad PC value
-     ---[ end trace 7d1c3f3bf9d81885 ]---
-     Kernel panic - not syncing: Oops: Fatal exception in interrupt
-     Kernel Offset: 0x2870a7a00000 from 0xffff800008000000
-     PHYS_OFFSET: 0x80000000
-     CPU features: 0x0,000005c1,a3332a5a
-     Memory Limit: none
-     ---[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
+In file included from include/linux/string.h:369,
+                 from drivers/ata/sata_sx4.c:66:
+In function 'memcpy_fromio',
+    inlined from 'pdc20621_get_from_dimm.constprop' at drivers/ata/sata_sx4.c:962:2:
+include/linux/fortify-string.h:97:33: error: '__builtin_memcpy' accessing 4294934464 bytes at offsets 0 and [16, 16400] overlaps 6442385281 bytes at offset -2147450817 [-Werror=restrict]
+   97 | #define __underlying_memcpy     __builtin_memcpy
+      |                                 ^
+include/linux/fortify-string.h:620:9: note: in expansion of macro '__underlying_memcpy'
+  620 |         __underlying_##op(p, q, __fortify_size);                        \
+      |         ^~~~~~~~~~~~~
+include/linux/fortify-string.h:665:26: note: in expansion of macro '__fortify_memcpy_chk'
+  665 | #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,                  \
+      |                          ^~~~~~~~~~~~~~~~~~~~
+include/asm-generic/io.h:1184:9: note: in expansion of macro 'memcpy'
+ 1184 |         memcpy(buffer, __io_virt(addr), size);
+      |         ^~~~~~
 
-The exception happens because there is a pending RX interrupt before the
-call to request_irq(RX IRQ) executes.  Then, the RX IRQ handler fires
-immediately after this request_irq() completes. The RX IRQ handler runs
-"napi_schedule()" before NAPI is fully initialized via "netif_napi_add()"
-and "napi_enable()", both which happen later in the open() logic.
+The problem here is the overflow of an unsigned 32-bit number to a
+negative that gets converted into a signed 'long', keeping a large
+positive number.
 
-The logic in mlxbf_gige_open() must fully initialize NAPI before any calls
-to request_irq() execute.
+Replace the complex calculation with a more readable min() variant
+that avoids the warning.
 
-Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Link: https://lore.kernel.org/r/20240325183627.7641-1-davthompson@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlxbf_gige/mlxbf_gige_main.c      | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/ata/sata_sx4.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-index 621594061fb57..6b93889900434 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-@@ -141,13 +141,10 @@ static int mlxbf_gige_open(struct net_device *netdev)
- 	control |= MLXBF_GIGE_CONTROL_PORT_EN;
- 	writeq(control, priv->base + MLXBF_GIGE_CONTROL);
+diff --git a/drivers/ata/sata_sx4.c b/drivers/ata/sata_sx4.c
+index b51d7a9d0d90c..a482741eb181f 100644
+--- a/drivers/ata/sata_sx4.c
++++ b/drivers/ata/sata_sx4.c
+@@ -957,8 +957,7 @@ static void pdc20621_get_from_dimm(struct ata_host *host, void *psource,
  
--	err = mlxbf_gige_request_irqs(priv);
--	if (err)
--		return err;
- 	mlxbf_gige_cache_stats(priv);
- 	err = mlxbf_gige_clean_port(priv);
- 	if (err)
--		goto free_irqs;
-+		return err;
+ 	offset -= (idx * window_size);
+ 	idx++;
+-	dist = ((long) (window_size - (offset + size))) >= 0 ? size :
+-		(long) (window_size - offset);
++	dist = min(size, window_size - offset);
+ 	memcpy_fromio(psource, dimm_mmio + offset / 4, dist);
  
- 	/* Clear driver's valid_polarity to match hardware,
- 	 * since the above call to clean_port() resets the
-@@ -168,6 +165,10 @@ static int mlxbf_gige_open(struct net_device *netdev)
- 	napi_enable(&priv->napi);
- 	netif_start_queue(netdev);
- 
-+	err = mlxbf_gige_request_irqs(priv);
-+	if (err)
-+		goto napi_deinit;
-+
- 	/* Set bits in INT_EN that we care about */
- 	int_en = MLXBF_GIGE_INT_EN_HW_ACCESS_ERROR |
- 		 MLXBF_GIGE_INT_EN_TX_CHECKSUM_INPUTS |
-@@ -184,14 +185,17 @@ static int mlxbf_gige_open(struct net_device *netdev)
- 
- 	return 0;
- 
-+napi_deinit:
-+	netif_stop_queue(netdev);
-+	napi_disable(&priv->napi);
-+	netif_napi_del(&priv->napi);
-+	mlxbf_gige_rx_deinit(priv);
-+
- tx_deinit:
- 	mlxbf_gige_tx_deinit(priv);
- 
- phy_deinit:
- 	phy_stop(phydev);
--
--free_irqs:
--	mlxbf_gige_free_irqs(priv);
- 	return err;
- }
- 
+ 	psource += dist;
+@@ -1005,8 +1004,7 @@ static void pdc20621_put_to_dimm(struct ata_host *host, void *psource,
+ 	readl(mmio + PDC_DIMM_WINDOW_CTLR);
+ 	offset -= (idx * window_size);
+ 	idx++;
+-	dist = ((long)(s32)(window_size - (offset + size))) >= 0 ? size :
+-		(long) (window_size - offset);
++	dist = min(size, window_size - offset);
+ 	memcpy_toio(dimm_mmio + offset / 4, psource, dist);
+ 	writel(0x01, mmio + PDC_GENERAL_CTLR);
+ 	readl(mmio + PDC_GENERAL_CTLR);
 -- 
 2.43.0
 
