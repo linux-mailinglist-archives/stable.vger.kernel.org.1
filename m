@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-37127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8809C89C374
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C8E89C630
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00F681F222AC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3048AB2C14C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792AA86130;
-	Mon,  8 Apr 2024 13:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5D37D3E6;
+	Mon,  8 Apr 2024 14:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sWGX6VR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkghc4ba"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3879085C6C;
-	Mon,  8 Apr 2024 13:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD91D7C08C;
+	Mon,  8 Apr 2024 14:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583326; cv=none; b=S4D74b/3V6bCh0a4JSYCj/FUAAuxKNTLJDXx75dKglX7U2X++Bu48HqeieqX2x8MjxZ0ojLfgHZOpIIck+iERgKvTlIeAX2N3uqA8k1i75NyZEa6EYo9Ri8V5TbCR6C5m9RdPI5+B4FDFmL3VCPQd8ZBF4xfSa8DbvxmN5V1Lsw=
+	t=1712584836; cv=none; b=Y2mPQEnQ7Ok3FCHYkRpz58Pt2mvqmmP5MnW6wnVxxeTW9R7UGjxtE4Y6j6iBqV/m8JJrDsPV8ExM5/RaJYiRjRhPl4AAJXXd2dDGiOcII/OL19SlsPRoh9occWfUxORtQlnjexK8CdEmzNEyMlJAxoVPCraMA7Jjs3qZs3QM+5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583326; c=relaxed/simple;
-	bh=lkwZkVhnYBIq0iICazwsS+mMr4nrJyjxJjKeJNqEiyU=;
+	s=arc-20240116; t=1712584836; c=relaxed/simple;
+	bh=QOk7UcphlCMllmAq0a6Lbliv7Hp6ZZeRr4WCXo/jG8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tdcxgcYvG2eblq/Dw2O6ogUr4Otkx7C+syLSDP+lKOqr/OwsAQsxhTZ3AKimHSKf74Piz+sw0SkmVz57nTCfxjrfLeeG8VwyESaehd1jZDKtoFf786i70Io2P38TRs2QNHDCqueNusLOReJFFRrixGjzM3q63A5fLCrU0wricbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sWGX6VR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83EFC43390;
-	Mon,  8 Apr 2024 13:35:25 +0000 (UTC)
+	 MIME-Version; b=JGSh8MphrjysPCxhPCT1MhRrY0HWtamE6/9QX+vVnCz/Rv63fcTkvKzINYVEnMVoZMuWk0+wJkjuB+ndI4Uz97s5BoPc8EBQU205sMvW2haB6I1PKFAKcVZfIX1iCHwC4+cdtG0R35KOhsohzJ8FbS3koezRX1FbY0XWJ9hj/jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkghc4ba; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683B8C433F1;
+	Mon,  8 Apr 2024 14:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583326;
-	bh=lkwZkVhnYBIq0iICazwsS+mMr4nrJyjxJjKeJNqEiyU=;
+	s=korg; t=1712584835;
+	bh=QOk7UcphlCMllmAq0a6Lbliv7Hp6ZZeRr4WCXo/jG8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1sWGX6VRM2GBv6uJjEqNc+HiNPTcHnOb2df2fmj+FV0ypLoKJp1cF5XwD9wcIOzMF
-	 8jDcep4lZw2GMJsujhKCBepyDQEpO2g9OqJWGDE+w96vFQdQdlQrQT+dMc+WuhDExA
-	 tJonZXIGGhJFuVPzIxc5Lshg3YWPhDGyedK2+S3U=
+	b=hkghc4baBr15+V4khZuEe8bQXKrn+CkReXUS9M5svLWwKFAxvYCzgvY95MPzVoFTz
+	 b/gLPD+Be/piHIj4siIkhVq053cuJeOqo7jMwX2cIZGAUYaujNucr2HCvpyxRXwy1u
+	 u7pXFJOZRdX1Z7+C7UFtGlJxAEgOOW2+9LzgT1T0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 164/273] spi: s3c64xx: Extract FIFO depth calculation to a dedicated macro
+	Nathan Chancellor <nathan@kernel.org>,
+	Brian Cain <bcain@quicinc.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 573/690] hexagon: vmlinux.lds.S: handle attributes section
 Date: Mon,  8 Apr 2024 14:57:19 +0200
-Message-ID: <20240408125314.362608681@linuxfoundation.org>
+Message-ID: <20240408125420.370545633@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Protsenko <semen.protsenko@linaro.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 460efee706c2b6a4daba62ec143fea29c2e7b358 ]
+commit 549aa9678a0b3981d4821bf244579d9937650562 upstream.
 
-Simplify the code by extracting all cases of FIFO depth calculation into
-a dedicated macro. No functional change.
+After the linked LLVM change, the build fails with
+CONFIG_LD_ORPHAN_WARN_LEVEL="error", which happens with allmodconfig:
 
-Signed-off-by: Sam Protsenko <semen.protsenko@linaro.org>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://msgid.link/r/20240120170001.3356-1-semen.protsenko@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: a3d3eab627bb ("spi: s3c64xx: Use DMA mode from fifo size")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  ld.lld: error: vmlinux.a(init/main.o):(.hexagon.attributes) is being placed in '.hexagon.attributes'
+
+Handle the attributes section in a similar manner as arm and riscv by
+adding it after the primary ELF_DETAILS grouping in vmlinux.lds.S, which
+fixes the error.
+
+Link: https://lkml.kernel.org/r/20240319-hexagon-handle-attributes-section-vmlinux-lds-s-v1-1-59855dab8872@kernel.org
+Fixes: 113616ec5b64 ("hexagon: select ARCH_WANT_LD_ORPHAN_WARN")
+Link: https://github.com/llvm/llvm-project/commit/31f4b329c8234fab9afa59494d7f8bdaeaefeaad
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Brian Cain <bcain@quicinc.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-s3c64xx.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ arch/hexagon/kernel/vmlinux.lds.S |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 0e48ffd499b9f..432ec60d35684 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -109,6 +109,7 @@
- #define TX_FIFO_LVL(v, i) (((v) >> 6) & FIFO_LVL_MASK(i))
- #define RX_FIFO_LVL(v, i) (((v) >> (i)->port_conf->rx_lvl_offset) & \
- 					FIFO_LVL_MASK(i))
-+#define FIFO_DEPTH(i) ((FIFO_LVL_MASK(i) >> 1) + 1)
+--- a/arch/hexagon/kernel/vmlinux.lds.S
++++ b/arch/hexagon/kernel/vmlinux.lds.S
+@@ -64,6 +64,7 @@ SECTIONS
+ 	STABS_DEBUG
+ 	DWARF_DEBUG
+ 	ELF_DETAILS
++	.hexagon.attributes 0 : { *(.hexagon.attributes) }
  
- #define S3C64XX_SPI_MAX_TRAILCNT	0x3ff
- #define S3C64XX_SPI_TRAILCNT_OFF	19
-@@ -406,7 +407,7 @@ static bool s3c64xx_spi_can_dma(struct spi_controller *host,
- 	struct s3c64xx_spi_driver_data *sdd = spi_controller_get_devdata(host);
- 
- 	if (sdd->rx_dma.ch && sdd->tx_dma.ch) {
--		return xfer->len > (FIFO_LVL_MASK(sdd) >> 1) + 1;
-+		return xfer->len > FIFO_DEPTH(sdd);
- 	} else {
- 		return false;
- 	}
-@@ -495,9 +496,7 @@ static u32 s3c64xx_spi_wait_for_timeout(struct s3c64xx_spi_driver_data *sdd,
- 	void __iomem *regs = sdd->regs;
- 	unsigned long val = 1;
- 	u32 status;
--
--	/* max fifo depth available */
--	u32 max_fifo = (FIFO_LVL_MASK(sdd) >> 1) + 1;
-+	u32 max_fifo = FIFO_DEPTH(sdd);
- 
- 	if (timeout_ms)
- 		val = msecs_to_loops(timeout_ms);
-@@ -604,7 +603,7 @@ static int s3c64xx_wait_for_pio(struct s3c64xx_spi_driver_data *sdd,
- 	 * For any size less than the fifo size the below code is
- 	 * executed atleast once.
- 	 */
--	loops = xfer->len / ((FIFO_LVL_MASK(sdd) >> 1) + 1);
-+	loops = xfer->len / FIFO_DEPTH(sdd);
- 	buf = xfer->rx_buf;
- 	do {
- 		/* wait for data to be received in the fifo */
-@@ -741,7 +740,7 @@ static int s3c64xx_spi_transfer_one(struct spi_controller *host,
- 				    struct spi_transfer *xfer)
- {
- 	struct s3c64xx_spi_driver_data *sdd = spi_controller_get_devdata(host);
--	const unsigned int fifo_len = (FIFO_LVL_MASK(sdd) >> 1) + 1;
-+	const unsigned int fifo_len = FIFO_DEPTH(sdd);
- 	const void *tx_buf = NULL;
- 	void *rx_buf = NULL;
- 	int target_len = 0, origin_len = 0;
-@@ -1280,7 +1279,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Targets attached\n",
- 					sdd->port_id, host->num_chipselect);
- 	dev_dbg(&pdev->dev, "\tIOmem=[%pR]\tFIFO %dbytes\n",
--					mem_res, (FIFO_LVL_MASK(sdd) >> 1) + 1);
-+					mem_res, FIFO_DEPTH(sdd));
- 
- 	pm_runtime_mark_last_busy(&pdev->dev);
- 	pm_runtime_put_autosuspend(&pdev->dev);
--- 
-2.43.0
-
+ 	DISCARDS
+ }
 
 
 
