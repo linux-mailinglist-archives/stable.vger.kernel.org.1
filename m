@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-36902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AFD889C249
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1DA89C68F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:13:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E2191C21B48
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD6B6B25481
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2739B81AA2;
-	Mon,  8 Apr 2024 13:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED667D408;
+	Mon,  8 Apr 2024 13:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUOjHaKM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjgpUhSI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADE47BAF4;
-	Mon,  8 Apr 2024 13:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFF5768F0;
+	Mon,  8 Apr 2024 13:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582675; cv=none; b=VFUe6tTy90kO6aKWHIbJBxMIrS2DmanGPOdFAoXmPSSSSsrt8c0A1UHJTEmKqP4l9hC0xLVxpaWmQWt1kl0hQna+mudiWMDF0NTUMG+bdgHi0O0j9MkzBzj/FQ5BbD73vg/FOYJA1BqwbuOGTxwIIZl0BzAuumOcj6Wws5dyHzw=
+	t=1712584665; cv=none; b=se+fLrws6SAuzEuSdEle6iIQXZao666ydioaQX1ymdMpw+9iH32oWgdQIaWk2Gwad6qSSKo/tdNFPpVuGsZjpMW11w4wYRZ8zMk4o/R5zXgZxRed6WXNMFRaTY+9PWoZNff25JC2WMJXj+elng9LP5V2q6LHyOjcq4hFW5Au5v0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582675; c=relaxed/simple;
-	bh=cPOSeFu2o20HZPPdE2IOxrha5ka2X4OF4zhL8efGMKY=;
+	s=arc-20240116; t=1712584665; c=relaxed/simple;
+	bh=FZ37+8H9VoHUmUYwJgytdPd0nwxy5/UD6AwVi28Qj8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iToZuIwTmCzRKfKVRr8a/HahaM7CnQ6kpLHlj4QBgzmpTqAuq3OfZFmGusv7A8xHk4b+6K1AQgyCw/1sEohnll9c5EYSENOhmhQRzIFyCbZ71RsuI6ocq7HdBe0xoX/ZCRiewOIu+FnAE1HG0VRrCKcvy8791HYuTouapcNRKFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUOjHaKM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 617D7C433A6;
-	Mon,  8 Apr 2024 13:24:35 +0000 (UTC)
+	 MIME-Version; b=KlhzlFTV2zZUtaZTypldTnqUqKwc55DK642Ubu3fLboyFZcuygUI3LHz83iZoEbAHpX2trXvCVYcqoSvqtm4nBBZtmtl7+CfnJWnYdO81IUdzLfOzVS6WCTukoVb/6OguR1gQYMjNTNWtXnosauyWYF9ocn8Up2aWSiOys/5thY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjgpUhSI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79119C433F1;
+	Mon,  8 Apr 2024 13:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582675;
-	bh=cPOSeFu2o20HZPPdE2IOxrha5ka2X4OF4zhL8efGMKY=;
+	s=korg; t=1712584664;
+	bh=FZ37+8H9VoHUmUYwJgytdPd0nwxy5/UD6AwVi28Qj8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OUOjHaKMWzJhQgj+ELRf0FKe0RxftN94Gfc1axjzv+UNPnAvYTmRxahrf0qmxSf88
-	 OxfwPMtPrykkizKPju/2uSB2FVmC2koyOUj1z/h8/e4bGHWqn5FsUWjG+jcrtA/2ei
-	 6Te+m/0adG60+FyJ/kiOecDArCEnBRkGUHqS5coE=
+	b=xjgpUhSI+xU7CRbGS3+U4smTD7JTdTAvjNmf0UzyVdTi4OEJBPztKLOUaPfj1jbXp
+	 ig4kuEJ+m8DiZ7Dnypka243pcNQXSbEZlFG9rJRwvXyhT73tZiIzAwKdUWMBKAkKwA
+	 6ytggQFLnvbIopieWkc9zWqDMpmvNQ61sksp7800=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Hui Wang <hui.wang@canonical.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.8 077/273] Bluetooth: hci_event: set the conn encrypted before conn establishes
+	Chuck Lever <chuck.lever@oracle.com>,
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 5.15 486/690] NFSD: Clean up nfsd4_init_file()
 Date: Mon,  8 Apr 2024 14:55:52 +0200
-Message-ID: <20240408125311.695951074@linuxfoundation.org>
+Message-ID: <20240408125417.245233094@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hui Wang <hui.wang@canonical.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit c569242cd49287d53b73a94233db40097d838535 upstream.
+[ Upstream commit 81a21fa3e7fdecb3c5b97014f0fc5a17d5806cae ]
 
-We have a BT headset (Lenovo Thinkplus XT99), the pairing and
-connecting has no problem, once this headset is paired, bluez will
-remember this device and will auto re-connect it whenever the device
-is powered on. The auto re-connecting works well with Windows and
-Android, but with Linux, it always fails. Through debugging, we found
-at the rfcomm connection stage, the bluetooth stack reports
-"Connection refused - security block (0x0003)".
+Name this function more consistently. I'm going to use nfsd4_file_
+and nfsd4_file_hash_ for these helpers.
 
-For this device, the re-connecting negotiation process is different
-from other BT headsets, it sends the Link_KEY_REQUEST command before
-the CONNECT_REQUEST completes, and it doesn't send ENCRYPT_CHANGE
-command during the negotiation. When the device sends the "connect
-complete" to hci, the ev->encr_mode is 1.
+Change the @fh parameter to be const pointer for better type safety.
 
-So here in the conn_complete_evt(), if ev->encr_mode is 1, link type
-is ACL and HCI_CONN_ENCRYPT is not set, we set HCI_CONN_ENCRYPT to
-this conn, and update conn->enc_key_size accordingly.
+Finally, move the hash insertion operation to the caller. This is
+typical for most other "init_object" type helpers, and it is where
+most of the other nfs4_file hash table operations are located.
 
-After this change, this BT headset could re-connect with Linux
-successfully. This is the btmon log after applying the patch, after
-receiving the "Connect Complete" with "Encryption: Enabled", will send
-the command to read encryption key size:
-> HCI Event: Connect Request (0x04) plen 10
-        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
-        Class: 0x240404
-          Major class: Audio/Video (headset, speaker, stereo, video, vcr)
-          Minor class: Wearable Headset Device
-          Rendering (Printing, Speaker)
-          Audio (Speaker, Microphone, Headset)
-        Link type: ACL (0x01)
-...
-> HCI Event: Link Key Request (0x17) plen 6
-        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
-< HCI Command: Link Key Request Reply (0x01|0x000b) plen 22
-        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
-        Link key: ${32-hex-digits-key}
-...
-> HCI Event: Connect Complete (0x03) plen 11
-        Status: Success (0x00)
-        Handle: 256
-        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
-        Link type: ACL (0x01)
-        Encryption: Enabled (0x01)
-< HCI Command: Read Encryption Key... (0x05|0x0008) plen 2
-        Handle: 256
-< ACL Data TX: Handle 256 flags 0x00 dlen 10
-      L2CAP: Information Request (0x0a) ident 1 len 2
-        Type: Extended features supported (0x0002)
-> HCI Event: Command Complete (0x0e) plen 7
-      Read Encryption Key Size (0x05|0x0008) ncmd 1
-        Status: Success (0x00)
-        Handle: 256
-        Key size: 16
-
-Cc: stable@vger.kernel.org
-Link: https://github.com/bluez/bluez/issues/704
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Signed-off-by: Hui Wang <hui.wang@canonical.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- net/bluetooth/hci_event.c |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ fs/nfsd/nfs4state.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3219,6 +3219,31 @@ static void hci_conn_complete_evt(struct
- 		if (test_bit(HCI_ENCRYPT, &hdev->flags))
- 			set_bit(HCI_CONN_ENCRYPT, &conn->flags);
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index aa7374933de77..1cb3ea90eb4ca 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4277,11 +4277,9 @@ static struct nfs4_file *nfsd4_alloc_file(void)
+ }
  
-+		/* "Link key request" completed ahead of "connect request" completes */
-+		if (ev->encr_mode == 1 && !test_bit(HCI_CONN_ENCRYPT, &conn->flags) &&
-+		    ev->link_type == ACL_LINK) {
-+			struct link_key *key;
-+			struct hci_cp_read_enc_key_size cp;
-+
-+			key = hci_find_link_key(hdev, &ev->bdaddr);
-+			if (key) {
-+				set_bit(HCI_CONN_ENCRYPT, &conn->flags);
-+
-+				if (!(hdev->commands[20] & 0x10)) {
-+					conn->enc_key_size = HCI_LINK_KEY_SIZE;
-+				} else {
-+					cp.handle = cpu_to_le16(conn->handle);
-+					if (hci_send_cmd(hdev, HCI_OP_READ_ENC_KEY_SIZE,
-+							 sizeof(cp), &cp)) {
-+						bt_dev_err(hdev, "sending read key size failed");
-+						conn->enc_key_size = HCI_LINK_KEY_SIZE;
-+					}
-+				}
-+
-+				hci_encrypt_cfm(conn, ev->status);
-+			}
-+		}
-+
- 		/* Get remote features */
- 		if (conn->type == ACL_LINK) {
- 			struct hci_cp_read_remote_features cp;
+ /* OPEN Share state helper functions */
+-static void nfsd4_init_file(struct svc_fh *fh, unsigned int hashval,
+-				struct nfs4_file *fp)
+-{
+-	lockdep_assert_held(&state_lock);
+ 
++static void nfsd4_file_init(const struct svc_fh *fh, struct nfs4_file *fp)
++{
+ 	refcount_set(&fp->fi_ref, 1);
+ 	spin_lock_init(&fp->fi_lock);
+ 	INIT_LIST_HEAD(&fp->fi_stateids);
+@@ -4299,7 +4297,6 @@ static void nfsd4_init_file(struct svc_fh *fh, unsigned int hashval,
+ 	INIT_LIST_HEAD(&fp->fi_lo_states);
+ 	atomic_set(&fp->fi_lo_recalls, 0);
+ #endif
+-	hlist_add_head_rcu(&fp->fi_hash, &file_hashtbl[hashval]);
+ }
+ 
+ void
+@@ -4717,7 +4714,8 @@ static struct nfs4_file *insert_file(struct nfs4_file *new, struct svc_fh *fh,
+ 			fp->fi_aliased = alias_found = true;
+ 	}
+ 	if (likely(ret == NULL)) {
+-		nfsd4_init_file(fh, hashval, new);
++		nfsd4_file_init(fh, new);
++		hlist_add_head_rcu(&new->fi_hash, &file_hashtbl[hashval]);
+ 		new->fi_aliased = alias_found;
+ 		ret = new;
+ 	}
+-- 
+2.43.0
+
 
 
 
