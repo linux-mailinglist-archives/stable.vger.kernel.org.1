@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-36789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3B489C1C7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:23:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FD7C89C472
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBA4BB2B08D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 722851C229AF
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2E980022;
-	Mon,  8 Apr 2024 13:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3AB757FF;
+	Mon,  8 Apr 2024 13:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFlXTWFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOJ7rzqT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357FE7E0E4;
-	Mon,  8 Apr 2024 13:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5C379F0;
+	Mon,  8 Apr 2024 13:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582349; cv=none; b=sYr4PkG3r3FmmgKpd9QMOv9TkUVHsTh6ahn2zXibp0AIRnVRZHzPUsCFMJ7QqdkLaI9edZW7Jn04T+C/lLf4ITNlLW4wN90XoI+LTIVHSJEUQ2Ch8spAfr1vIjGlvMpnTXJmoepbnowJ2OzxDBWgtBulcxKT7GVXLP1/imfRdKs=
+	t=1712583952; cv=none; b=LbMSsPFH9VnuPXzpHyowm+ip60EPOo4kn3UDE7WsXHNI8eV7kCvgs6efVlJwD/lRSNtkXb8nH/56AzVMlQgMJjI5oMPtiZTmeJ6Xkaf6MKoFjRIh9WbvfXd/O4x29lJN07JMGfuCvokCREujHFwOSq2Zhkr3eW25uYtjiawvhMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582349; c=relaxed/simple;
-	bh=BSJX+e9jGFMns0vhUPC9Trqh40r0BDZFBAzp9DgKsps=;
+	s=arc-20240116; t=1712583952; c=relaxed/simple;
+	bh=lktuGZ+v7Pqv8Gz8hgbXivd7xL5DJwFj4aapl22aJwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BFWl1oK+UbufGjOVRX6kdLIAMwmpzO9rjbsm/p9eQNjvwWoSoBElwQlQ5vDeu8TnQyvT59iaGJCXvhKhxMtN4Z0OGgWksMlnwxfgQNSrui+bFbjLQxNPwYOr6+KohzjGqV8Bu0fVql1MYBgvEgHW1y+1ip+3lQrh5Utp+wojfkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFlXTWFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2417C433C7;
-	Mon,  8 Apr 2024 13:19:08 +0000 (UTC)
+	 MIME-Version; b=qd26iLRh9O34TwE7rdwzdt/7Q0YMDYJPrWUmoKMDl1jIggLu+Zrq9TXYQ43zEJIjNtzAbRkxASeqLtvLg36eHyuaF7lnwDUnQP288vzYCO4Nb8pCtdBj0t8x2jfn6eGEKuavVtY+8c5z/4y/hZpgSSnin8Xb+ho3wiKB6cZhuB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOJ7rzqT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD01C433C7;
+	Mon,  8 Apr 2024 13:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582349;
-	bh=BSJX+e9jGFMns0vhUPC9Trqh40r0BDZFBAzp9DgKsps=;
+	s=korg; t=1712583952;
+	bh=lktuGZ+v7Pqv8Gz8hgbXivd7xL5DJwFj4aapl22aJwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BFlXTWFNffAJTsiPiXZfF5ppw/ek8EIS17rZJAIIj8QgMigX/xf1lUsbX8tM7VW2V
-	 roPRqjvqCQ7Z62JQZQnsS8QVBQxvk3z5f8cOnDXpE8USHIs9AYWA6toIzkRhwNuiwL
-	 R9SoRKvjd/SQcxU2VAQfgZTcnDTIVA3UhLq0iqa8=
+	b=kOJ7rzqTKH7ySG3aSudl/I9OQfxFtNJlLAsh4ye2zpzeClRpnk8IM3H7uvZmMAPU2
+	 cmTfEAvUnoFk8DvwOdavA86fLAKZ8phPRcxg9SbfJKjRLGUQNWmpegEgBW8prED2qC
+	 xalssm4Ch6TMRCVxiYF5qnPr6lVrYgfCA9OgVM9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/138] scsi: mylex: Fix sysfs buffer lengths
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.8 237/273] arm64/ptrace: Use saved floating point state type to determine SVE layout
 Date: Mon,  8 Apr 2024 14:58:32 +0200
-Message-ID: <20240408125259.281036806@linuxfoundation.org>
+Message-ID: <20240408125316.790034148@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,194 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 1197c5b2099f716b3de327437fb50900a0b936c9 ]
+commit b017a0cea627fcbe158fc2c214fe893e18c4d0c4 upstream.
 
-The myrb and myrs drivers use an odd way of implementing their sysfs files,
-calling snprintf() with a fixed length of 32 bytes to print into a page
-sized buffer. One of the strings is actually longer than 32 bytes, which
-clang can warn about:
+The SVE register sets have two different formats, one of which is a wrapped
+version of the standard FPSIMD register set and another with actual SVE
+register data. At present we check TIF_SVE to see if full SVE register
+state should be provided when reading the SVE regset but if we were in a
+syscall we may have saved only floating point registers even though that is
+set.
 
-drivers/scsi/myrb.c:1906:10: error: 'snprintf' will always be truncated; specified size is 32, but format string expands to at least 34 [-Werror,-Wformat-truncation]
-drivers/scsi/myrs.c:1089:10: error: 'snprintf' will always be truncated; specified size is 32, but format string expands to at least 34 [-Werror,-Wformat-truncation]
+Fix this and simplify the logic by checking and using the format which we
+recorded when deciding if we should use FPSIMD or SVE format.
 
-These could all be plain sprintf() without a length as the buffer is always
-long enough. On the other hand, sysfs files should not be overly long
-either, so just double the length to make sure the longest strings don't
-get truncated here.
-
-Fixes: 77266186397c ("scsi: myrs: Add Mylex RAID controller (SCSI interface)")
-Fixes: 081ff398c56c ("scsi: myrb: Add Mylex RAID controller (block interface)")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240326223825.4084412-8-arnd@kernel.org
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8c845e273104 ("arm64/sve: Leave SVE enabled on syscall if we don't context switch")
+Cc: <stable@vger.kernel.org> # 6.2.x
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240325-arm64-ptrace-fp-type-v1-1-8dc846caf11f@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/myrb.c | 20 ++++++++++----------
- drivers/scsi/myrs.c | 24 ++++++++++++------------
- 2 files changed, 22 insertions(+), 22 deletions(-)
+ arch/arm64/kernel/ptrace.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/myrb.c b/drivers/scsi/myrb.c
-index e885c1dbf61f9..e2f1b186efd00 100644
---- a/drivers/scsi/myrb.c
-+++ b/drivers/scsi/myrb.c
-@@ -1775,9 +1775,9 @@ static ssize_t raid_state_show(struct device *dev,
+--- a/arch/arm64/kernel/ptrace.c
++++ b/arch/arm64/kernel/ptrace.c
+@@ -729,7 +729,6 @@ static void sve_init_header_from_task(st
+ {
+ 	unsigned int vq;
+ 	bool active;
+-	bool fpsimd_only;
+ 	enum vec_type task_type;
  
- 		name = myrb_devstate_name(ldev_info->state);
- 		if (name)
--			ret = snprintf(buf, 32, "%s\n", name);
-+			ret = snprintf(buf, 64, "%s\n", name);
- 		else
--			ret = snprintf(buf, 32, "Invalid (%02X)\n",
-+			ret = snprintf(buf, 64, "Invalid (%02X)\n",
- 				       ldev_info->state);
- 	} else {
- 		struct myrb_pdev_state *pdev_info = sdev->hostdata;
-@@ -1796,9 +1796,9 @@ static ssize_t raid_state_show(struct device *dev,
- 		else
- 			name = myrb_devstate_name(pdev_info->state);
- 		if (name)
--			ret = snprintf(buf, 32, "%s\n", name);
-+			ret = snprintf(buf, 64, "%s\n", name);
- 		else
--			ret = snprintf(buf, 32, "Invalid (%02X)\n",
-+			ret = snprintf(buf, 64, "Invalid (%02X)\n",
- 				       pdev_info->state);
+ 	memset(header, 0, sizeof(*header));
+@@ -745,12 +744,10 @@ static void sve_init_header_from_task(st
+ 	case ARM64_VEC_SVE:
+ 		if (test_tsk_thread_flag(target, TIF_SVE_VL_INHERIT))
+ 			header->flags |= SVE_PT_VL_INHERIT;
+-		fpsimd_only = !test_tsk_thread_flag(target, TIF_SVE);
+ 		break;
+ 	case ARM64_VEC_SME:
+ 		if (test_tsk_thread_flag(target, TIF_SME_VL_INHERIT))
+ 			header->flags |= SVE_PT_VL_INHERIT;
+-		fpsimd_only = false;
+ 		break;
+ 	default:
+ 		WARN_ON_ONCE(1);
+@@ -758,7 +755,7 @@ static void sve_init_header_from_task(st
  	}
- 	return ret;
-@@ -1886,11 +1886,11 @@ static ssize_t raid_level_show(struct device *dev,
  
- 		name = myrb_raidlevel_name(ldev_info->raid_level);
- 		if (!name)
--			return snprintf(buf, 32, "Invalid (%02X)\n",
-+			return snprintf(buf, 64, "Invalid (%02X)\n",
- 					ldev_info->state);
--		return snprintf(buf, 32, "%s\n", name);
-+		return snprintf(buf, 64, "%s\n", name);
- 	}
--	return snprintf(buf, 32, "Physical Drive\n");
-+	return snprintf(buf, 64, "Physical Drive\n");
- }
- static DEVICE_ATTR_RO(raid_level);
- 
-@@ -1903,15 +1903,15 @@ static ssize_t rebuild_show(struct device *dev,
- 	unsigned char status;
- 
- 	if (sdev->channel < myrb_logical_channel(sdev->host))
--		return snprintf(buf, 32, "physical device - not rebuilding\n");
-+		return snprintf(buf, 64, "physical device - not rebuilding\n");
- 
- 	status = myrb_get_rbld_progress(cb, &rbld_buf);
- 
- 	if (rbld_buf.ldev_num != sdev->id ||
- 	    status != MYRB_STATUS_SUCCESS)
--		return snprintf(buf, 32, "not rebuilding\n");
-+		return snprintf(buf, 64, "not rebuilding\n");
- 
--	return snprintf(buf, 32, "rebuilding block %u of %u\n",
-+	return snprintf(buf, 64, "rebuilding block %u of %u\n",
- 			rbld_buf.ldev_size - rbld_buf.blocks_left,
- 			rbld_buf.ldev_size);
- }
-diff --git a/drivers/scsi/myrs.c b/drivers/scsi/myrs.c
-index 7eb8c39da3663..95e7c00cb7e54 100644
---- a/drivers/scsi/myrs.c
-+++ b/drivers/scsi/myrs.c
-@@ -947,9 +947,9 @@ static ssize_t raid_state_show(struct device *dev,
- 
- 		name = myrs_devstate_name(ldev_info->dev_state);
- 		if (name)
--			ret = snprintf(buf, 32, "%s\n", name);
-+			ret = snprintf(buf, 64, "%s\n", name);
- 		else
--			ret = snprintf(buf, 32, "Invalid (%02X)\n",
-+			ret = snprintf(buf, 64, "Invalid (%02X)\n",
- 				       ldev_info->dev_state);
- 	} else {
- 		struct myrs_pdev_info *pdev_info;
-@@ -958,9 +958,9 @@ static ssize_t raid_state_show(struct device *dev,
- 		pdev_info = sdev->hostdata;
- 		name = myrs_devstate_name(pdev_info->dev_state);
- 		if (name)
--			ret = snprintf(buf, 32, "%s\n", name);
-+			ret = snprintf(buf, 64, "%s\n", name);
- 		else
--			ret = snprintf(buf, 32, "Invalid (%02X)\n",
-+			ret = snprintf(buf, 64, "Invalid (%02X)\n",
- 				       pdev_info->dev_state);
- 	}
- 	return ret;
-@@ -1066,13 +1066,13 @@ static ssize_t raid_level_show(struct device *dev,
- 		ldev_info = sdev->hostdata;
- 		name = myrs_raid_level_name(ldev_info->raid_level);
- 		if (!name)
--			return snprintf(buf, 32, "Invalid (%02X)\n",
-+			return snprintf(buf, 64, "Invalid (%02X)\n",
- 					ldev_info->dev_state);
- 
- 	} else
- 		name = myrs_raid_level_name(MYRS_RAID_PHYSICAL);
- 
--	return snprintf(buf, 32, "%s\n", name);
-+	return snprintf(buf, 64, "%s\n", name);
- }
- static DEVICE_ATTR_RO(raid_level);
- 
-@@ -1086,7 +1086,7 @@ static ssize_t rebuild_show(struct device *dev,
- 	unsigned char status;
- 
- 	if (sdev->channel < cs->ctlr_info->physchan_present)
--		return snprintf(buf, 32, "physical device - not rebuilding\n");
-+		return snprintf(buf, 64, "physical device - not rebuilding\n");
- 
- 	ldev_info = sdev->hostdata;
- 	ldev_num = ldev_info->ldev_num;
-@@ -1098,11 +1098,11 @@ static ssize_t rebuild_show(struct device *dev,
- 		return -EIO;
- 	}
- 	if (ldev_info->rbld_active) {
--		return snprintf(buf, 32, "rebuilding block %zu of %zu\n",
-+		return snprintf(buf, 64, "rebuilding block %zu of %zu\n",
- 				(size_t)ldev_info->rbld_lba,
- 				(size_t)ldev_info->cfg_devsize);
- 	} else
--		return snprintf(buf, 32, "not rebuilding\n");
-+		return snprintf(buf, 64, "not rebuilding\n");
- }
- 
- static ssize_t rebuild_store(struct device *dev,
-@@ -1190,7 +1190,7 @@ static ssize_t consistency_check_show(struct device *dev,
- 	unsigned short ldev_num;
- 
- 	if (sdev->channel < cs->ctlr_info->physchan_present)
--		return snprintf(buf, 32, "physical device - not checking\n");
-+		return snprintf(buf, 64, "physical device - not checking\n");
- 
- 	ldev_info = sdev->hostdata;
- 	if (!ldev_info)
-@@ -1198,11 +1198,11 @@ static ssize_t consistency_check_show(struct device *dev,
- 	ldev_num = ldev_info->ldev_num;
- 	myrs_get_ldev_info(cs, ldev_num, ldev_info);
- 	if (ldev_info->cc_active)
--		return snprintf(buf, 32, "checking block %zu of %zu\n",
-+		return snprintf(buf, 64, "checking block %zu of %zu\n",
- 				(size_t)ldev_info->cc_lba,
- 				(size_t)ldev_info->cfg_devsize);
- 	else
--		return snprintf(buf, 32, "not checking\n");
-+		return snprintf(buf, 64, "not checking\n");
- }
- 
- static ssize_t consistency_check_store(struct device *dev,
--- 
-2.43.0
-
+ 	if (active) {
+-		if (fpsimd_only) {
++		if (target->thread.fp_type == FP_STATE_FPSIMD) {
+ 			header->flags |= SVE_PT_REGS_FPSIMD;
+ 		} else {
+ 			header->flags |= SVE_PT_REGS_SVE;
 
 
 
