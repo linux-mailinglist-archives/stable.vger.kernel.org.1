@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-37604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E136F89C5C0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0642489C2AB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CA1BB294D5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B506B283B4A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A4D7E0FF;
-	Mon,  8 Apr 2024 13:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602FB81AA1;
+	Mon,  8 Apr 2024 13:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EXPnQlm9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMTEHrpN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337387BB15;
-	Mon,  8 Apr 2024 13:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD317D3E0;
+	Mon,  8 Apr 2024 13:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584721; cv=none; b=YixvV4+kJt/QqcEOK9kUmpqc7z+xF+v88MMyBiQDdxuDjiuaq05VA4WvJfATdIalVVXGdce06IDjWDxh5RzOUTFAUdLXiIhCG9MiGqbOYI4+k5b64he7TrWOPvqs/sf0HO269wGQ2o16MM+2xfYFDDMCnJequFg3GfbfYtHgwBk=
+	t=1712582959; cv=none; b=GVjMdsSkrL7qopa2yFXjmns14ZkDZwkRbwKtu1H07fPD4PHGlqCADkaivhA2QKN75MQ72gwU7s/szu/l3LU+l34WxQqL3LwUJnqi68ZbEKb3siQENqzShOFZaXAJfUrmaHoZFoCgCFaUNbdotAWXB7Pxtfdo8KXoQ6HpeKz1UR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584721; c=relaxed/simple;
-	bh=KFnEVvaSHiDXLzhwc37wcz8PBb8fCNMBMrO+oFXz2gM=;
+	s=arc-20240116; t=1712582959; c=relaxed/simple;
+	bh=amTwSMTTKFcZDW6/YrT8jV3bJttj+MupJLFCD6bZw9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FFV082uU2vAVSuRaSy20nhcyr0tCGrBSaey4GJ7w2CKBhRmMabDAABTt8mPsPdSAalIlbdzKy7ybhOQhTE+bhYWHyoVTupNpXEGfiYSm/kJhH3IZRzdDYRv4CZkLbHGLtgXz7ybt1NROg8dvc8qJKt84CEwOBDljMJznE0s96GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EXPnQlm9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F14C433C7;
-	Mon,  8 Apr 2024 13:58:40 +0000 (UTC)
+	 MIME-Version; b=ZOiEFzrh2gAGSB0WOjNeu7QANZskJNzpLtmcposlloLgWJkQ+CjzM7In81IAKGsfKU3LS4eMGsLcwanROPlS7t4m/W3EPNtVl185FexwWWLqRDcvvkEydOxjfmqcNjUS2qeADGafF8GYGi9bJovwP2ic7XK51VbodPZ6H1SSpZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMTEHrpN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 992CEC433F1;
+	Mon,  8 Apr 2024 13:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584721;
-	bh=KFnEVvaSHiDXLzhwc37wcz8PBb8fCNMBMrO+oFXz2gM=;
+	s=korg; t=1712582959;
+	bh=amTwSMTTKFcZDW6/YrT8jV3bJttj+MupJLFCD6bZw9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EXPnQlm9LGFK/k3npFh3Xfhxezwi80WWwPDFC+4m7iBKTXurp8mA8+IiO3Arf6iip
-	 oJ8NkDqo2zvrHCpcRpTn80Xidh1sIORVNzqMf1vErTiofdF0KwMv2tG2x1AhTcqv/6
-	 oKS/BqgnkDcEkpX0GIAkDBIbmSG05Cdzu2mkmS0g=
+	b=mMTEHrpNhFTBcFyK8uXaMMnWjvFn7T7HjZUAmA6QbYWEfEMNrqKZ6mZP6jebKfNep
+	 jsCBH2n996UD5HsW0V5wJA6s0mLkhi1uZ/q8esE+zFl7Q+APVqoJP2j0538o+dIwz7
+	 uXWa5axnQGfbNYfjeWZ489/ePhEH+XK8i1oUJx1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 534/690] nfsd: dont take/put an extra reference when putting a file
+	Su Hui <suhui@nfschina.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.8 125/273] octeontx2-pf: check negative error code in otx2_open()
 Date: Mon,  8 Apr 2024 14:56:40 +0200
-Message-ID: <20240408125419.003511867@linuxfoundation.org>
+Message-ID: <20240408125313.176961267@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit b2ff1bd71db2a1b193a6dde0845adcd69cbcf75e ]
+commit e709acbd84fb6ef32736331b0147f027a3ef4c20 upstream.
 
-The last thing that filp_close does is an fput, so don't bother taking
-and putting the extra reference.
+otx2_rxtx_enable() return negative error code such as -EIO,
+check -EIO rather than EIO to fix this problem.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: c926252205c4 ("octeontx2-pf: Disable packet I/O for graceful exit")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Link: https://lore.kernel.org/r/20240328020620.4054692-1-suhui@nfschina.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/filecache.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index faa0c7d0253eb..786e06cf107ff 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -381,10 +381,8 @@ nfsd_file_free(struct nfsd_file *nf)
- 	if (nf->nf_mark)
- 		nfsd_file_mark_put(nf->nf_mark);
- 	if (nf->nf_file) {
--		get_file(nf->nf_file);
--		filp_close(nf->nf_file, NULL);
- 		nfsd_file_check_write_error(nf);
--		fput(nf->nf_file);
-+		filp_close(nf->nf_file, NULL);
- 	}
- 
- 	/*
--- 
-2.43.0
-
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -1933,7 +1933,7 @@ int otx2_open(struct net_device *netdev)
+ 	 * mcam entries are enabled to receive the packets. Hence disable the
+ 	 * packet I/O.
+ 	 */
+-	if (err == EIO)
++	if (err == -EIO)
+ 		goto err_disable_rxtx;
+ 	else if (err)
+ 		goto err_tx_stop_queues;
 
 
 
