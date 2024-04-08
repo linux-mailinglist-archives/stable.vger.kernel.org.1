@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-37386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B7F89C4A5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BCC289C62B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:05:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82F121F22CB4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 366171C2178A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345ED823DE;
-	Mon,  8 Apr 2024 13:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFD280603;
+	Mon,  8 Apr 2024 14:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x26aO29Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXhM5URe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B1E823A8;
-	Mon,  8 Apr 2024 13:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3007F49C;
+	Mon,  8 Apr 2024 14:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584081; cv=none; b=ivAzVdHuliFkEuUiwKJyI47Kps4CyDWmDfvkS7mmQfVhgn+Ap4fZnzxUxBRoMiIV23b6BZyk2EkMO3FsFGp6oFNdJ4eTAcIWK0SGEXZav1LGdevMX+lm0rFcqgh3gI1Q4kfLPGfURM652y38fw63EvrF/uN3uBKkyzFDV3RJKn8=
+	t=1712585113; cv=none; b=PvEaGTz+E2NFelrXWxZL5D7+EIZ2XUpuwgApGt6J6wnb8XX0XFnskukFsOYYuS4vqMw80hpudMsiJMrTUJQ48MMyym3+/+rPjlrlG2A/w9G4eRgBtK/VgWnqSBSEqtAiBAxMbsNkfF/epwtSmgy9BHaT8jGp6+sYc/Nzq68xWI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584081; c=relaxed/simple;
-	bh=wMo6FpBTf9J+JmB7orybW2Ctq9t9J4YpN9nSS+CBIzI=;
+	s=arc-20240116; t=1712585113; c=relaxed/simple;
+	bh=A6jvupesE99zNSHgNvonodd+hkdwjjva58FrrPYhL0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AVjWO+WCb8Wml8/qnVnoo17DqcqsJbD+o0GO06Bbqe0aeyg3rmTubVhygIzAAuSgMR8+721kM2Y6QfSypilGmdyWem/YEXq1gsGzq4aYyhpJHRb5SZ/wzGyu/WaWPTrv5psFLCWpCDe/Z5ka/WMaq1T8Pdxdeeg1DUR/JLPDzCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x26aO29Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1880BC43390;
-	Mon,  8 Apr 2024 13:47:59 +0000 (UTC)
+	 MIME-Version; b=PeRcsDD5j5CMA3b9m42tEwdONYvoVJrQrg/MpUmvor/h9xRTcCbTYUmGuNANRBSR0IEbMM+VXuFWzP9noHQ1Gm+09hssJ6Exd+oYgzHt2R0ezwfBXhMtp0XLaTx/WZjihyy7A8ZnnltsgUMe+aL6hq1bhA64eYSVxVLHSmT3avE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXhM5URe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F7EC433F1;
+	Mon,  8 Apr 2024 14:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584080;
-	bh=wMo6FpBTf9J+JmB7orybW2Ctq9t9J4YpN9nSS+CBIzI=;
+	s=korg; t=1712585113;
+	bh=A6jvupesE99zNSHgNvonodd+hkdwjjva58FrrPYhL0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x26aO29Z+NxuvuocOM/e5uCQ3ZdgottHcXEJs0JgQeV4xmIJxh3ant/3WtUbCymoM
-	 pRGoUIwdMT0qRoNhPJBiA/dU9ioKVl30RRK2d2Y+ZuP3KokPK+SFlAtrvYvu3oWjYj
-	 85BqYFSDIyn+iMFe7iZXmqUiK/kj6dbOaiqqax0w=
+	b=eXhM5UReCNfvQykJpzyJnbDYuawn+OBkMg5hh6Zq3AH5JQoMfKpsC+u0Bp5Dvqekh
+	 ocJqZyFhy13nSEEEeKZ/K/Q15SvVKnq7bMQvbeSMsjEJuPKvaot2sZUfrVwRtP/tzU
+	 YGN6rdBSkH+wGPZIf1FiVsNdRVeubOU+0surTjLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uma Shankar <uma.shankar@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.8 258/273] drm/i915/mst: Limit MST+DSC to TGL+
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Chao Song <chao.song@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 667/690] ASoC: rt5682-sdw: fix locking sequence
 Date: Mon,  8 Apr 2024 14:58:53 +0200
-Message-ID: <20240408125317.481385068@linuxfoundation.org>
+Message-ID: <20240408125423.848530963@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +62,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-commit 51bc63392e96ca45d7be98bc43c180b174ffca09 upstream.
+[ Upstream commit 310a5caa4e861616a27a83c3e8bda17d65026fa8 ]
 
-The MST code currently assumes that glk+ already supports MST+DSC,
-which is incorrect. We need to check for TGL+ actually. ICL does
-support SST+DSC, but supposedly it can't do MST+FEC which will
-also rule out MST+DSC.
+The disable_irq_lock protects the 'disable_irq' value, we need to lock
+before testing it.
 
-Note that a straight TGL+ check doesn't work here because DSC
-support can get fused out, so we do need to also check 'has_dsc'.
-
-Cc: stable@vger.kernel.org
-Fixes: d51f25eb479a ("drm/i915: Add DSC support to MST path")
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240402135148.23011-6-ville.syrjala@linux.intel.com
-(cherry picked from commit c9c92f286dbdf872390ef3e74dbe5f0641e46f55)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 02fb23d72720 ("ASoC: rt5682-sdw: fix for JD event handling in ClockStop Mode0")
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Chao Song <chao.song@linux.intel.com>
+Link: https://msgid.link/r/20240325221817.206465-2-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_device.h |    1 +
- drivers/gpu/drm/i915/display/intel_dp_mst.c         |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/codecs/rt5682-sdw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display_device.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_device.h
-@@ -47,6 +47,7 @@ struct drm_printer;
- #define HAS_DPT(i915)			(DISPLAY_VER(i915) >= 13)
- #define HAS_DSB(i915)			(DISPLAY_INFO(i915)->has_dsb)
- #define HAS_DSC(__i915)			(DISPLAY_RUNTIME_INFO(__i915)->has_dsc)
-+#define HAS_DSC_MST(__i915)		(DISPLAY_VER(__i915) >= 12 && HAS_DSC(__i915))
- #define HAS_FBC(i915)			(DISPLAY_RUNTIME_INFO(i915)->fbc_mask != 0)
- #define HAS_FPGA_DBG_UNCLAIMED(i915)	(DISPLAY_INFO(i915)->has_fpga_dbg)
- #define HAS_FW_BLC(i915)		(DISPLAY_VER(i915) >= 3)
---- a/drivers/gpu/drm/i915/display/intel_dp_mst.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp_mst.c
-@@ -1338,7 +1338,7 @@ intel_dp_mst_mode_valid_ctx(struct drm_c
+diff --git a/sound/soc/codecs/rt5682-sdw.c b/sound/soc/codecs/rt5682-sdw.c
+index 9fdd9afe00da4..f452245b210f6 100644
+--- a/sound/soc/codecs/rt5682-sdw.c
++++ b/sound/soc/codecs/rt5682-sdw.c
+@@ -787,12 +787,12 @@ static int __maybe_unused rt5682_dev_resume(struct device *dev)
  		return 0;
+ 
+ 	if (!slave->unattach_request) {
++		mutex_lock(&rt5682->disable_irq_lock);
+ 		if (rt5682->disable_irq == true) {
+-			mutex_lock(&rt5682->disable_irq_lock);
+ 			sdw_write_no_pm(slave, SDW_SCP_INTMASK1, SDW_SCP_INT1_IMPL_DEF);
+ 			rt5682->disable_irq = false;
+-			mutex_unlock(&rt5682->disable_irq_lock);
+ 		}
++		mutex_unlock(&rt5682->disable_irq_lock);
+ 		goto regmap_sync;
  	}
  
--	if (DISPLAY_VER(dev_priv) >= 10 &&
-+	if (HAS_DSC_MST(dev_priv) &&
- 	    drm_dp_sink_supports_dsc(intel_connector->dp.dsc_dpcd)) {
- 		/*
- 		 * TBD pass the connector BPC,
+-- 
+2.43.0
+
 
 
 
