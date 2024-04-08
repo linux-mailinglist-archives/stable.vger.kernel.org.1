@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-37689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 232C389C5FE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9A3789C395
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEB2528367E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBE9F1C22DBE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837737FBDA;
-	Mon,  8 Apr 2024 14:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5646512A171;
+	Mon,  8 Apr 2024 13:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1fl7M9E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPAB41TS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF527F499;
-	Mon,  8 Apr 2024 14:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111657E101;
+	Mon,  8 Apr 2024 13:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584973; cv=none; b=jJy4M87RbibK561Tqws/olPqxLqXu/VSCdxXIjx8b8j0wJPLysh+0Q4gF3dXI5m7T0MW6Rhnq8yKURIIQGP8PWajsGaIcerHP+eE9C11w33gCRENLgl9hI9duThjcFarfK15N4HFZyHeCSv8iFUTeUlGE6OAWoZwswU2qJOUQ7g=
+	t=1712583437; cv=none; b=khB5kzJbxGTwpvVwNTkF74+A1EFJ5GJHT5XWGYCPNImFRAdtAEn2sgq4afURVk/9BkCq/lsued1fDSv0LDXvpZ+rS8BIca/mF5670ze1xa25CmrYcmnzMgXX2YHgitW6o8QMYhrqXatr+EXIY/33mgzGdG6tdA8/blmqDrSUvEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584973; c=relaxed/simple;
-	bh=/TYVNtY1C1XGsRQZaaMq1IsN3METX0rWkMa2HOSKdX0=;
+	s=arc-20240116; t=1712583437; c=relaxed/simple;
+	bh=f7gS7ZnvLbNyayJdTvT0bAIHDKYaVidLHrCmI5IBvTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N4SKb/LZsUeJrJf7NoXINWpHbY/otWOYFnDThCsjsxJmZ40V1k2vhJ/8SVLvQEKH7SajkqD6sLJZBKOAywZV5Np2txKmjkKrn7v+qXckvnfBDHnNbQmiN7fdds8R0OzkBr7JIu+/rIfBF+xqdBl053DDCCkd7dlSo2tXCRsL7eU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1fl7M9E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB6EC433C7;
-	Mon,  8 Apr 2024 14:02:52 +0000 (UTC)
+	 MIME-Version; b=BKpIERYCyUbdG9olH15vi2ahytONRRVEtphqpli1QKx+5Ur2JBMVD21fPlH+ZY6q0iEKqLUyP+VbCIcOOI0fPJMfKu2mJ2IfV4LD/qa2Jh+rQ9r//yNre0gDbxzxTy7FkGCjPh4i8CNF1ppQZX9PsyMVGZ4gAEcoLKljfpksDM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPAB41TS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FBDAC433C7;
+	Mon,  8 Apr 2024 13:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584973;
-	bh=/TYVNtY1C1XGsRQZaaMq1IsN3METX0rWkMa2HOSKdX0=;
+	s=korg; t=1712583436;
+	bh=f7gS7ZnvLbNyayJdTvT0bAIHDKYaVidLHrCmI5IBvTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N1fl7M9EgXO2373a4h86f0lYcFZo3OpzLyMoQy8Tg00eTifgqYOuk5/gKmytydNvJ
-	 xmjNLMPdMQWFVOayh8ZySScohCxTho09UHWml9G8Ne6+3geEMw+OYjOqd/bZKgNEkU
-	 DZwfnWAZiswfuVfP4zXefsoBvbMcfjF8rOT4bYuE=
+	b=XPAB41TSaSwXC3mWxvOUJRvOFe631bdZJnY84DBSIWmwSbRjybG8H/kPAtuRlslfD
+	 rpXvBq1V7owdekTdAWh7U0GQPRhk9uuoi3Iql7QNHH87VN+zvbccp6CBWODpsAuewj
+	 5qTrXjxTCNLeGVi78i24qt52HVq+Oq6cPk99wVG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Leo Li <sunpeng.li@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 579/690] drm/amdgpu: Use drm_mode_copy()
+Subject: [PATCH 6.8 170/273] spi: s3c64xx: determine the fifo depth only once
 Date: Mon,  8 Apr 2024 14:57:25 +0200
-Message-ID: <20240408125420.579306553@linuxfoundation.org>
+Message-ID: <20240408125314.541760459@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,134 +60,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit 426c89aa203bcec9d9cf6eea36735eafa1b1f099 ]
+[ Upstream commit c6e776ab6abdfce5a1edcde7a22c639e76499939 ]
 
-struct drm_display_mode embeds a list head, so overwriting
-the full struct with another one will corrupt the list
-(if the destination mode is on a list). Use drm_mode_copy()
-instead which explicitly preserves the list head of
-the destination mode.
+Determine the FIFO depth only once, at probe time.
+``sdd->fifo_depth`` can be set later on with the FIFO depth
+specified in the device tree.
 
-Even if we know the destination mode is not on any list
-using drm_mode_copy() seems decent as it sets a good
-example. Bad examples of not using it might eventually
-get copied into code where preserving the list head
-actually matters.
-
-Obviously one case not covered here is when the mode
-itself is embedded in a larger structure and the whole
-structure is copied. But if we are careful when copying
-into modes embedded in structures I think we can be a
-little more reassured that bogus list heads haven't been
-propagated in.
-
-@is_mode_copy@
-@@
-drm_mode_copy(...)
-{
-...
-}
-
-@depends on !is_mode_copy@
-struct drm_display_mode *mode;
-expression E, S;
-@@
-(
-- *mode = E
-+ drm_mode_copy(mode, &E)
-|
-- memcpy(mode, E, S)
-+ drm_mode_copy(mode, E)
-)
-
-@depends on !is_mode_copy@
-struct drm_display_mode mode;
-expression E;
-@@
-(
-- mode = E
-+ drm_mode_copy(&mode, &E)
-|
-- memcpy(&mode, E, S)
-+ drm_mode_copy(&mode, E)
-)
-
-@@
-struct drm_display_mode *mode;
-@@
-- &*mode
-+ mode
-
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Leo Li <sunpeng.li@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: amd-gfx@lists.freedesktop.org
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 79f3e38f60e5 ("drm/amd/display: Preserve original aspect ratio in create stream")
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://msgid.link/r/20240216070555.2483977-5-tudor.ambarus@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: a3d3eab627bb ("spi: s3c64xx: Use DMA mode from fifo size")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c    | 4 ++--
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/spi/spi-s3c64xx.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
-index c777aff164b76..654f99f4107ea 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
-@@ -625,7 +625,7 @@ amdgpu_connector_fixup_lcd_native_mode(struct drm_encoder *encoder,
- 		if (mode->type & DRM_MODE_TYPE_PREFERRED) {
- 			if (mode->hdisplay != native_mode->hdisplay ||
- 			    mode->vdisplay != native_mode->vdisplay)
--				memcpy(native_mode, mode, sizeof(*mode));
-+				drm_mode_copy(native_mode, mode);
- 		}
- 	}
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 688b8fad9e2fd..e059fb9db1da1 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -189,6 +189,7 @@ struct s3c64xx_spi_port_config {
+  * @tx_dma: Local transmit DMA data (e.g. chan and direction)
+  * @port_conf: Local SPI port configuartion data
+  * @port_id: Port identification number
++ * @fifo_depth: depth of the FIFO.
+  * @rx_fifomask: SPI_STATUS.RX_FIFO_LVL mask. Shifted mask defining the field's
+  *               length and position.
+  * @tx_fifomask: SPI_STATUS.TX_FIFO_LVL mask. Shifted mask defining the field's
+@@ -212,6 +213,7 @@ struct s3c64xx_spi_driver_data {
+ 	struct s3c64xx_spi_dma_data	tx_dma;
+ 	const struct s3c64xx_spi_port_config	*port_conf;
+ 	unsigned int			port_id;
++	unsigned int			fifo_depth;
+ 	u32				rx_fifomask;
+ 	u32				tx_fifomask;
+ };
+@@ -422,7 +424,7 @@ static bool s3c64xx_spi_can_dma(struct spi_controller *host,
+ 	struct s3c64xx_spi_driver_data *sdd = spi_controller_get_devdata(host);
  
-@@ -634,7 +634,7 @@ amdgpu_connector_fixup_lcd_native_mode(struct drm_encoder *encoder,
- 		list_for_each_entry_safe(mode, t, &connector->probed_modes, head) {
- 			if (mode->hdisplay == native_mode->hdisplay &&
- 			    mode->vdisplay == native_mode->vdisplay) {
--				*native_mode = *mode;
-+				drm_mode_copy(native_mode, mode);
- 				drm_mode_set_crtcinfo(native_mode, CRTC_INTERLACE_HALVE_V);
- 				DRM_DEBUG_KMS("Determined LVDS native mode details from EDID\n");
- 				break;
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 7385efe699f88..9356decd14513 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6219,7 +6219,7 @@ get_highest_refresh_rate_mode(struct amdgpu_dm_connector *aconnector,
- 		}
- 	}
+ 	if (sdd->rx_dma.ch && sdd->tx_dma.ch)
+-		return xfer->len > FIFO_DEPTH(sdd);
++		return xfer->len > sdd->fifo_depth;
  
--	aconnector->freesync_vid_base = *m_pref;
-+	drm_mode_copy(&aconnector->freesync_vid_base, m_pref);
- 	return m_pref;
+ 	return false;
  }
+@@ -509,7 +511,7 @@ static u32 s3c64xx_spi_wait_for_timeout(struct s3c64xx_spi_driver_data *sdd,
+ 	void __iomem *regs = sdd->regs;
+ 	unsigned long val = 1;
+ 	u32 status;
+-	u32 max_fifo = FIFO_DEPTH(sdd);
++	u32 max_fifo = sdd->fifo_depth;
  
-@@ -6333,8 +6333,8 @@ create_stream_for_sink(struct amdgpu_dm_connector *aconnector,
- 				 is_freesync_video_mode(&mode, aconnector);
- 		if (recalculate_timing) {
- 			freesync_mode = get_highest_refresh_rate_mode(aconnector, false);
--			saved_mode = mode;
--			mode = *freesync_mode;
-+			drm_mode_copy(&saved_mode, &mode);
-+			drm_mode_copy(&mode, freesync_mode);
- 		} else {
- 			decide_crtc_timing_for_drm_display_mode(
- 				&mode, preferred_mode, scale);
+ 	if (timeout_ms)
+ 		val = msecs_to_loops(timeout_ms);
+@@ -616,7 +618,7 @@ static int s3c64xx_wait_for_pio(struct s3c64xx_spi_driver_data *sdd,
+ 	 * For any size less than the fifo size the below code is
+ 	 * executed atleast once.
+ 	 */
+-	loops = xfer->len / FIFO_DEPTH(sdd);
++	loops = xfer->len / sdd->fifo_depth;
+ 	buf = xfer->rx_buf;
+ 	do {
+ 		/* wait for data to be received in the fifo */
+@@ -753,7 +755,7 @@ static int s3c64xx_spi_transfer_one(struct spi_controller *host,
+ 				    struct spi_transfer *xfer)
+ {
+ 	struct s3c64xx_spi_driver_data *sdd = spi_controller_get_devdata(host);
+-	const unsigned int fifo_len = FIFO_DEPTH(sdd);
++	const unsigned int fifo_len = sdd->fifo_depth;
+ 	const void *tx_buf = NULL;
+ 	void *rx_buf = NULL;
+ 	int target_len = 0, origin_len = 0;
+@@ -1220,6 +1222,8 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 		sdd->port_id = pdev->id;
+ 	}
+ 
++	sdd->fifo_depth = FIFO_DEPTH(sdd);
++
+ 	s3c64xx_spi_set_fifomask(sdd);
+ 
+ 	sdd->cur_bpw = 8;
+@@ -1311,7 +1315,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Targets attached\n",
+ 					sdd->port_id, host->num_chipselect);
+ 	dev_dbg(&pdev->dev, "\tIOmem=[%pR]\tFIFO %dbytes\n",
+-					mem_res, FIFO_DEPTH(sdd));
++		mem_res, sdd->fifo_depth);
+ 
+ 	pm_runtime_mark_last_busy(&pdev->dev);
+ 	pm_runtime_put_autosuspend(&pdev->dev);
 -- 
 2.43.0
 
