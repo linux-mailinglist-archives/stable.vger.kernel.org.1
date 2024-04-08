@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC96889C1A2
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC4489C277
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:30:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE4BA1C21552
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AC4F282272
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE097FBCE;
-	Mon,  8 Apr 2024 13:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932647D080;
+	Mon,  8 Apr 2024 13:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siGoXXpZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNqHFeOd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1227D3F8;
-	Mon,  8 Apr 2024 13:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1882E405;
+	Mon,  8 Apr 2024 13:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582328; cv=none; b=eNiYD/GL5QQRT7yVMcKullOxO0fSnxxeiWuf1iFagvWbm4xbjeQ0xz+myAzYKNWqh4CVfPFcIcfcbPlJQNOVjMJfr0+IKGX8Lx4NdMvVIPGY03Lrx6TfwD0oyyBsR7v2Pn35YeBdhjaHq1FjYHAhN5DWKOcLzOMO2eR/U2yBs8M=
+	t=1712582825; cv=none; b=Q8D7EL0X/kLXohNpFNAlI19iXjJdV0hw/e1NHjdo5U6e7dOZ2lMth4U/lUMPfko8aY9gjlURK06EmbJZWtHjKZ3uXFHKUuZ105m44Ol57Rgv4e5exZyvG8+jQdiksLEQqtF/cmoOWs4cR12MXq8wanaQKncrEr72aEtkzSpgeQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582328; c=relaxed/simple;
-	bh=XwFTHgeW5oqiaQmyFpH26ODOAmlD+qQkq5HAjjnRbHQ=;
+	s=arc-20240116; t=1712582825; c=relaxed/simple;
+	bh=VuBCR92U/0DvCH5xQYa+uKVxVnhcj0uRCpgzUAkv7jE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJpPYo1I1w9PYtZkB3pgBFMW2oNpnm0n+yke7j0/gQXJDQ/pgucL02z5Xb8s0N2rut+PgT3vrMMi3fzVkHhKo9bri9jCHmS947pB07s1zQ33sUvdSO50M9BLvw4y/yyFa+aYKXK1o7jQZO7+uYY2sWCMJW944Tt71/8TkqQLjy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siGoXXpZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22CEAC433C7;
-	Mon,  8 Apr 2024 13:18:47 +0000 (UTC)
+	 MIME-Version; b=qU6Em0XRX0bnCMwdWAvo/H7V3427nPWyv8MtvF/+e0RzP1PiKMmlrX5wtOCElFHsGUFLYDVo31vMguBGD5Gfk8/BqqWNgl8W8yGNf3OxXQqYSK76NC2UvMyakmZ0+7U2LOppiuGVBpIMhVissO+TxA5jCQoy0KnAt1tAAhQhSHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNqHFeOd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95C3C433C7;
+	Mon,  8 Apr 2024 13:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582328;
-	bh=XwFTHgeW5oqiaQmyFpH26ODOAmlD+qQkq5HAjjnRbHQ=;
+	s=korg; t=1712582825;
+	bh=VuBCR92U/0DvCH5xQYa+uKVxVnhcj0uRCpgzUAkv7jE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=siGoXXpZJXAjo0JSpvsMocsjxxZLylSFIOFY8z17LG4Slz2xAJiVJf7bFvG6ylhZv
-	 NM/e7QPxrCEYH5t5x4f2sOkQd5UQjepfSgIU/qPEsSYgjqlc3y3hmBka9MetbSXtAV
-	 iRFwgvfjISwmqGvHx3jXc2bqt/ehTjaT3oYUljjA=
+	b=LNqHFeOd/UmqSuyI+GetVifQKSXt0I2SmySee1rSp7sIV8dVONgjXGnbaXe8066RB
+	 BKU1tQ2z0D2Z4OJazTL+/6I39+WP3HhORnpIGO6A9ZMFMOAkQad+Ake8oz4LcIg/m5
+	 jayKf64QtBMsYKL3vYmo+A4gS/uMwGeK20yeS1wU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 084/252] selftests: mptcp: join: fix dev in check_endpoint
+	Antoine Tenart <atenart@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.8 108/273] gro: fix ownership transfer
 Date: Mon,  8 Apr 2024 14:56:23 +0200
-Message-ID: <20240408125309.252660543@linuxfoundation.org>
+Message-ID: <20240408125312.658101895@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Antoine Tenart <atenart@kernel.org>
 
-commit 40061817d95bce6dd5634a61a65cd5922e6ccc92 upstream.
+commit ed4cccef64c1d0d5b91e69f7a8a6697c3a865486 upstream.
 
-There's a bug in pm_nl_check_endpoint(), 'dev' didn't be parsed correctly.
-If calling it in the 2nd test of endpoint_tests() too, it fails with an
-error like this:
+If packets are GROed with fraglist they might be segmented later on and
+continue their journey in the stack. In skb_segment_list those skbs can
+be reused as-is. This is an issue as their destructor was removed in
+skb_gro_receive_list but not the reference to their socket, and then
+they can't be orphaned. Fix this by also removing the reference to the
+socket.
 
- creation  [FAIL] expected '10.0.2.2 id 2 subflow dev dev' \
-                     found '10.0.2.2 id 2 subflow dev ns2eth2'
+For example this could be observed,
 
-The reason is '$2' should be set to 'dev', not '$1'. This patch fixes it.
+  kernel BUG at include/linux/skbuff.h:3131!  (skb_orphan)
+  RIP: 0010:ip6_rcv_core+0x11bc/0x19a0
+  Call Trace:
+   ipv6_list_rcv+0x250/0x3f0
+   __netif_receive_skb_list_core+0x49d/0x8f0
+   netif_receive_skb_list_internal+0x634/0xd40
+   napi_complete_done+0x1d2/0x7d0
+   gro_cell_poll+0x118/0x1f0
 
-Fixes: 69c6ce7b6eca ("selftests: mptcp: add implicit endpoint test case")
-Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240329-upstream-net-20240329-fallback-mib-v1-2-324a8981da48@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+A similar construction is found in skb_gro_receive, apply the same
+change there.
+
+Fixes: 5e10da5385d2 ("skbuff: allow 'slow_gro' for skb carring sock reference")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/core/gro.c         |    3 ++-
+ net/ipv4/udp_offload.c |    3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -796,7 +796,7 @@ pm_nl_check_endpoint()
- 			[ -n "$_flags" ]; flags="flags $_flags"
- 			shift
- 		elif [ $1 = "dev" ]; then
--			[ -n "$2" ]; dev="dev $1"
-+			[ -n "$2" ]; dev="dev $2"
- 			shift
- 		elif [ $1 = "id" ]; then
- 			_id=$2
-@@ -3507,6 +3507,8 @@ endpoint_tests()
- 		local tests_pid=$!
+--- a/net/core/gro.c
++++ b/net/core/gro.c
+@@ -195,8 +195,9 @@ int skb_gro_receive(struct sk_buff *p, s
+ 	}
  
- 		wait_mpj $ns2
-+		pm_nl_check_endpoint "creation" \
-+			$ns2 10.0.2.2 id 2 flags subflow dev ns2eth2
- 		chk_subflow_nr "before delete" 2
- 		chk_mptcp_info subflows 1 subflows 1
+ merge:
+-	/* sk owenrship - if any - completely transferred to the aggregated packet */
++	/* sk ownership - if any - completely transferred to the aggregated packet */
+ 	skb->destructor = NULL;
++	skb->sk = NULL;
+ 	delta_truesize = skb->truesize;
+ 	if (offset > headlen) {
+ 		unsigned int eat = offset - headlen;
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -449,8 +449,9 @@ static int skb_gro_receive_list(struct s
+ 	NAPI_GRO_CB(p)->count++;
+ 	p->data_len += skb->len;
+ 
+-	/* sk owenrship - if any - completely transferred to the aggregated packet */
++	/* sk ownership - if any - completely transferred to the aggregated packet */
+ 	skb->destructor = NULL;
++	skb->sk = NULL;
+ 	p->truesize += skb->truesize;
+ 	p->len += skb->len;
  
 
 
