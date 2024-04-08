@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-36771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A9CF89C1DE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:25:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 228C689C19C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 470C5B28571
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B78FD1F2182B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38C37F7E5;
-	Mon,  8 Apr 2024 13:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4BF7FBA5;
+	Mon,  8 Apr 2024 13:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhCXfVdX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cyt+BlU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825587E799;
-	Mon,  8 Apr 2024 13:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1037EF0A;
+	Mon,  8 Apr 2024 13:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582296; cv=none; b=lv3zxXal9kEAFmkF9YSiJIeLJasPpFe++ZlXzXi10AC86as75uICtSlcjP6WN4Qmzfif2S7mU5ueUwMzgbw9OYkSk9OkofgCPr38sMt4IzZMEFAJCjm1cDbOBmeaQz7y+v0VGE9jWMhrcQ1Wro/Y+eRRtG0Y54TxY70wxu1lrzc=
+	t=1712582308; cv=none; b=ghLH57af7ZL1Mytmsuzgj9hh+sxN+xPhqKh/pkyaaRatplnIV4Gpruz+1H+3Ws4RjqDecJO7HGVwVD8yKNsvZOnvUHaafBZG081N9xbRCJRfphZ04auQaSIp6B+tOrwAcU+HH3HGLduBI4Q+Rb+h6dOWGcMGO0CweyQ+7CbW3xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582296; c=relaxed/simple;
-	bh=Zvsw6dADyqFGrYlbQ3JW3x7d0pfOMrhSyBFcnDN0iCw=;
+	s=arc-20240116; t=1712582308; c=relaxed/simple;
+	bh=ET12j8L2nyVrEUuKofJkLF5T4B8um7j3hp605UrSQcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e62FoIFtODa8IclAAIF0BbDqofUjlzXlkK97yfchTP8LDToiZi8zmvdP30Xu8xPcXRcvwh47mLUs3cTtZIJuiu1Bhd6n/OvEuCzbBktMGbVx4dIHqG87OwrCojj6Ii6dvEy3i3GXup9VxU3nKsHOhyfzBY2qsyZzmcHPpVtJA0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhCXfVdX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078CBC433F1;
-	Mon,  8 Apr 2024 13:18:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ntaJYkvHq0BkWBbZMmkpNB49LsOd3gf1ANSQTl4laSCwzuoP9txpZv7ieXeHBpk5ihU9E6FYXdBMiKRbY9eWyWLxFzU1gIEtXjd4lnKpg/04tc1d/FEHZm7eVkr1pbzTx027lnciXE7XF6D5UjanHcwMGsrOmPrCTImBKYxiSVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cyt+BlU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7F5C43390;
+	Mon,  8 Apr 2024 13:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582296;
-	bh=Zvsw6dADyqFGrYlbQ3JW3x7d0pfOMrhSyBFcnDN0iCw=;
+	s=korg; t=1712582308;
+	bh=ET12j8L2nyVrEUuKofJkLF5T4B8um7j3hp605UrSQcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dhCXfVdXG337/hFGEvOc2RDT5osqYGShGHKoiCHG+lYtQv3hKnJFMQUnlHKl3Y5Hc
-	 Iw0AXbcX+1YiTsijOnkxvBODmiiUWG8MgB1i+gLQ8hGvRMzZbFpA5K0dbkpsQEavOB
-	 rLMvSuLzQafhyg4f0hH35LFkJiEOZTLjsxEHdULk=
+	b=1cyt+BlUgdZ6hPm7e0kDsrGbKBCxpYvvF2bdJAl8lo4KEqvz6POPCcREq28r4xFaq
+	 CB1uoDjTs69uOdit9EI5nmDNhfSwMl2QkXo1abV70RH5gWBimcW8+AoFBStHJamltT
+	 4VqEA7TteP4jKahFkYotMecoBV/WII4RIzlM1/RE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Kent Gibson <warthog618@gmail.com>
-Subject: [PATCH 6.8 063/273] gpio: cdev: sanitize the label before requesting the interrupt
-Date: Mon,  8 Apr 2024 14:55:38 +0200
-Message-ID: <20240408125311.259815208@linuxfoundation.org>
+	Anup Patel <apatel@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>
+Subject: [PATCH 6.8 064/273] RISC-V: KVM: Fix APLIC setipnum_le/be write emulation
+Date: Mon,  8 Apr 2024 14:55:39 +0200
+Message-ID: <20240408125311.288920669@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
 References: <20240408125309.280181634@linuxfoundation.org>
@@ -60,133 +59,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Anup Patel <apatel@ventanamicro.com>
 
-commit b34490879baa847d16fc529c8ea6e6d34f004b38 upstream.
+commit d8dd9f113e16bef3b29c9dcceb584a6f144f55e4 upstream.
 
-When an interrupt is requested, a procfs directory is created under
-"/proc/irq/<irqnum>/<label>" where <label> is the string passed to one of
-the request_irq() variants.
+The writes to setipnum_le/be register for APLIC in MSI-mode have special
+consideration for level-triggered interrupts as-per the section "4.9.2
+Special consideration for level-sensitive interrupt sources" of the RISC-V
+AIA specification.
 
-What follows is that the string must not contain the "/" character or
-the procfs mkdir operation will fail. We don't have such constraints for
-GPIO consumer labels which are used verbatim as interrupt labels for
-GPIO irqs. We must therefore sanitize the consumer string before
-requesting the interrupt.
+Particularly, the below text from the RISC-V AIA specification defines
+the behaviour of writes to setipnum_le/be register for level-triggered
+interrupts:
 
-Let's replace all "/" with ":".
+"A second option is for the interrupt service routine to write the
+APLIC’s source identity number for the interrupt to the domain’s
+setipnum register just before exiting. This will cause the interrupt’s
+pending bit to be set to one again if the source is still asserting
+an interrupt, but not if the source is not asserting an interrupt."
+
+Fix setipnum_le/be write emulation for in-kernel APLIC by implementing
+the above behaviour in aplic_write_pending() function.
 
 Cc: stable@vger.kernel.org
-Reported-by: Stefan Wahren <wahrenst@gmx.net>
-Closes: https://lore.kernel.org/linux-gpio/39fe95cb-aa83-4b8b-8cab-63947a726754@gmx.net/
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Kent Gibson <warthog618@gmail.com>
+Fixes: 74967aa208e2 ("RISC-V: KVM: Add in-kernel emulation of AIA APLIC")
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Signed-off-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/r/20240321085041.1955293-2-apatel@ventanamicro.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-cdev.c |   38 ++++++++++++++++++++++++++++++++------
- 1 file changed, 32 insertions(+), 6 deletions(-)
+ arch/riscv/kvm/aia_aplic.c |   16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -1089,10 +1089,20 @@ static u32 gpio_v2_line_config_debounce_
- 	return 0;
- }
+--- a/arch/riscv/kvm/aia_aplic.c
++++ b/arch/riscv/kvm/aia_aplic.c
+@@ -137,11 +137,21 @@ static void aplic_write_pending(struct a
+ 	raw_spin_lock_irqsave(&irqd->lock, flags);
  
-+static inline char *make_irq_label(const char *orig)
-+{
-+	return kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
-+}
-+
-+static inline void free_irq_label(const char *label)
-+{
-+	kfree(label);
-+}
-+
- static void edge_detector_stop(struct line *line)
- {
- 	if (line->irq) {
--		free_irq(line->irq, line);
-+		free_irq_label(free_irq(line->irq, line));
- 		line->irq = 0;
- 	}
+ 	sm = irqd->sourcecfg & APLIC_SOURCECFG_SM_MASK;
+-	if (!pending &&
+-	    ((sm == APLIC_SOURCECFG_SM_LEVEL_HIGH) ||
+-	     (sm == APLIC_SOURCECFG_SM_LEVEL_LOW)))
++	if (sm == APLIC_SOURCECFG_SM_INACTIVE)
+ 		goto skip_write_pending;
  
-@@ -1116,6 +1126,7 @@ static int edge_detector_setup(struct li
- 	unsigned long irqflags = 0;
- 	u64 eflags;
- 	int irq, ret;
-+	char *label;
- 
- 	eflags = edflags & GPIO_V2_LINE_EDGE_FLAGS;
- 	if (eflags && !kfifo_initialized(&line->req->events)) {
-@@ -1152,11 +1163,17 @@ static int edge_detector_setup(struct li
- 			IRQF_TRIGGER_RISING : IRQF_TRIGGER_FALLING;
- 	irqflags |= IRQF_ONESHOT;
- 
-+	label = make_irq_label(line->req->label);
-+	if (!label)
-+		return -ENOMEM;
-+
- 	/* Request a thread to read the events */
- 	ret = request_threaded_irq(irq, edge_irq_handler, edge_irq_thread,
--				   irqflags, line->req->label, line);
--	if (ret)
-+				   irqflags, label, line);
-+	if (ret) {
-+		free_irq_label(label);
- 		return ret;
-+	}
- 
- 	line->irq = irq;
- 	return 0;
-@@ -1979,7 +1996,7 @@ static void lineevent_free(struct lineev
- 		blocking_notifier_chain_unregister(&le->gdev->device_notifier,
- 						   &le->device_unregistered_nb);
- 	if (le->irq)
--		free_irq(le->irq, le);
-+		free_irq_label(free_irq(le->irq, le));
- 	if (le->desc)
- 		gpiod_free(le->desc);
- 	kfree(le->label);
-@@ -2120,6 +2137,7 @@ static int lineevent_create(struct gpio_
- 	int fd;
- 	int ret;
- 	int irq, irqflags = 0;
-+	char *label;
- 
- 	if (copy_from_user(&eventreq, ip, sizeof(eventreq)))
- 		return -EFAULT;
-@@ -2204,15 +2222,23 @@ static int lineevent_create(struct gpio_
- 	if (ret)
- 		goto out_free_le;
- 
-+	label = make_irq_label(le->label);
-+	if (!label) {
-+		ret = -ENOMEM;
-+		goto out_free_le;
++	if (sm == APLIC_SOURCECFG_SM_LEVEL_HIGH ||
++	    sm == APLIC_SOURCECFG_SM_LEVEL_LOW) {
++		if (!pending)
++			goto skip_write_pending;
++		if ((irqd->state & APLIC_IRQ_STATE_INPUT) &&
++		    sm == APLIC_SOURCECFG_SM_LEVEL_LOW)
++			goto skip_write_pending;
++		if (!(irqd->state & APLIC_IRQ_STATE_INPUT) &&
++		    sm == APLIC_SOURCECFG_SM_LEVEL_HIGH)
++			goto skip_write_pending;
 +	}
 +
- 	/* Request a thread to read the events */
- 	ret = request_threaded_irq(irq,
- 				   lineevent_irq_handler,
- 				   lineevent_irq_thread,
- 				   irqflags,
--				   le->label,
-+				   label,
- 				   le);
--	if (ret)
-+	if (ret) {
-+		free_irq_label(label);
- 		goto out_free_le;
-+	}
- 
- 	le->irq = irq;
- 
+ 	if (pending)
+ 		irqd->state |= APLIC_IRQ_STATE_PENDING;
+ 	else
 
 
 
