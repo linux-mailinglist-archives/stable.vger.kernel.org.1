@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-36957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E31A489C31C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB49989C651
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:06:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0EC6B2C8AB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:30:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6612B286C83
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3702D7E56B;
-	Mon,  8 Apr 2024 13:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04EE8121F;
+	Mon,  8 Apr 2024 14:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZkvMJeNo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEoQirCV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EDF7D07D;
-	Mon,  8 Apr 2024 13:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC08D8063B;
+	Mon,  8 Apr 2024 14:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582837; cv=none; b=r9GRvvV1AaAhdUmHik6dYEv0ucVrAztEZdMezhmNba2ubOJjU6v1BnLUsaYf0kZmTZfxKlSawou39BkR6iT9wM9vnoTROd51rMApq4cMuk62RYKAx3mRuw4uKLhoyJ6rG1C75LqQXXxIVOQmL8uA977OB6Q2G1iwJpd3eDILhCE=
+	t=1712585197; cv=none; b=J3KyA+o5CGWc1sR9cD9/3JbvhcH5+cM3BT4pBAUxFhD1b5PWo1EZ5VHNCLOmOIM1EMF9CYKbafQy9ygrLVuF07m3yw+RDcdCWq9gtOw5eRCAEq0CU1c2daQEutkZlFomOC0PlaVqv4mVwxbfhtb/jWOZxcE6u5AWWuSthzoQBDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582837; c=relaxed/simple;
-	bh=OJvyWPFM+Uisvzvkv5POpUlVz8xXncqH5N7PQ1UPico=;
+	s=arc-20240116; t=1712585197; c=relaxed/simple;
+	bh=ehOo5fyseOkjfBrngTTAHZyPAb2YHtYVhoPgMrpPL3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fOAg90KHMwhzZD4XUj5mPVtdithy7Dz9+lS74lj77W+6e1dot1OF6hu2BWUJCghPdDkkWWpCxUVw7pGUj5tf8uG6xIa8W3Voq5J+Rp59NkzhnyMdIm/vmONXXj9PANvW++IieI2d/8dRREtEMRj9MzlhL1efK9NBCX7dB0wZr/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZkvMJeNo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70716C433F1;
-	Mon,  8 Apr 2024 13:27:16 +0000 (UTC)
+	 MIME-Version; b=TY7g+qX9cN1w4JiLFjb9iqr9Bcp99ry5HuiVsrbEbjTuydmGfaigA+pmZKhQuo10w+XHoyqxPBO62+ZQtBS+XnwheAhsmPzCoqLMNlEMLMwJJny4u5FG9VyYbptlHc7cE4AiH7KyKG68ecDokUT7nl61HD9Qogl3dRTbXvLm0j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEoQirCV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33171C433C7;
+	Mon,  8 Apr 2024 14:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582836;
-	bh=OJvyWPFM+Uisvzvkv5POpUlVz8xXncqH5N7PQ1UPico=;
+	s=korg; t=1712585197;
+	bh=ehOo5fyseOkjfBrngTTAHZyPAb2YHtYVhoPgMrpPL3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZkvMJeNorwAL14OJGg5YZZA+Oq1aWFvMxSJ6alMlraTAc7viQrc+rIv7MdI4azQLE
-	 if5WVFXGIQCJPM9Q65J4yHwSF5iYwWUXJNAE+Ha+uioE9wKxa1s23B65vJDublyiG7
-	 tke9sY46bUJOinqcN4dmZGd4WR6Ks+6JHbYm90dg=
+	b=GEoQirCViY5kpvWIG4BqKNCItBAycMX7YbuVJ5koemrfdgn9HBeEn9jUQtsZ4kK41
+	 fTOZiXD2w0toIuo6L1K41etKT+9rUtYncn1pfdAEtk30jUUFzRzJO+wJ6HXTRnWR9l
+	 g0RM0c4R2lEOvAXDvzz7jJaw2L2h+rMdc9JQwR2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	xingwei lee <xrivendell7@gmail.com>,
-	yue sun <samsun1006219@gmail.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Lorenzo Stoakes <lstoakes@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Miklos Szeredi <miklos@szeredi.hu>
-Subject: [PATCH 6.1 137/138] mm/secretmem: fix GUP-fast succeeding on secretmem folios
-Date: Mon,  8 Apr 2024 14:59:11 +0200
-Message-ID: <20240408125300.488795726@linuxfoundation.org>
+	kernel test robot <oliver.sang@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.15 686/690] x86/retpoline: Do the necessary fixup to the Zen3/4 srso return thunk for !SRSO
+Date: Mon,  8 Apr 2024 14:59:12 +0200
+Message-ID: <20240408125424.583300187@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,66 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit 65291dcfcf8936e1b23cfd7718fdfde7cfaf7706 upstream.
+Commit 0e110732473e14d6520e49d75d2c88ef7d46fe67 upstream.
 
-folio_is_secretmem() currently relies on secretmem folios being LRU
-folios, to save some cycles.
+The srso_alias_untrain_ret() dummy thunk in the !CONFIG_MITIGATION_SRSO
+case is there only for the altenative in CALL_UNTRAIN_RET to have
+a symbol to resolve.
 
-However, folios might reside in a folio batch without the LRU flag set, or
-temporarily have their LRU flag cleared.  Consequently, the LRU flag is
-unreliable for this purpose.
+However, testing with kernels which don't have CONFIG_MITIGATION_SRSO
+enabled, leads to the warning in patch_return() to fire:
 
-In particular, this is the case when secretmem_fault() allocates a fresh
-page and calls filemap_add_folio()->folio_add_lru().  The folio might be
-added to the per-cpu folio batch and won't get the LRU flag set until the
-batch was drained using e.g., lru_add_drain().
+  missing return thunk: srso_alias_untrain_ret+0x0/0x10-0x0: eb 0e 66 66 2e
+  WARNING: CPU: 0 PID: 0 at arch/x86/kernel/alternative.c:826 apply_returns (arch/x86/kernel/alternative.c:826
 
-Consequently, folio_is_secretmem() might not detect secretmem folios and
-GUP-fast can succeed in grabbing a secretmem folio, crashing the kernel
-when we would later try reading/writing to the folio, because the folio
-has been unmapped from the directmap.
+Put in a plain "ret" there so that gcc doesn't put a return thunk in
+in its place which special and gets checked.
 
-Fix it by removing that unreliable check.
+In addition:
 
-Link: https://lkml.kernel.org/r/20240326143210.291116-2-david@redhat.com
-Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Reported-by: yue sun <samsun1006219@gmail.com>
-Closes: https://lore.kernel.org/lkml/CABOYnLyevJeravW=QrH0JUPYEcDN160aZFb7kwndm-J2rmz0HQ@mail.gmail.com/
-Debugged-by: Miklos Szeredi <miklos@szeredi.hu>
-Tested-by: Miklos Szeredi <mszeredi@redhat.com>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: David Hildenbrand <david@redhat.com>
+  ERROR: modpost: "srso_alias_untrain_ret" [arch/x86/kvm/kvm-amd.ko] undefined!
+  make[2]: *** [scripts/Makefile.modpost:145: Module.symvers] Chyba 1
+  make[1]: *** [/usr/src/linux-6.8.3/Makefile:1873: modpost] Chyba 2
+  make: *** [Makefile:240: __sub-make] Chyba 2
+
+since !SRSO builds would use the dummy return thunk as reported by
+petr.pisar@atlas.cz, https://bugzilla.kernel.org/show_bug.cgi?id=218679.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202404020901.da75a60f-oliver.sang@intel.com
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/all/202404020901.da75a60f-oliver.sang@intel.com/
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/secretmem.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/lib/retpoline.S |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/linux/secretmem.h
-+++ b/include/linux/secretmem.h
-@@ -14,10 +14,10 @@ static inline bool page_is_secretmem(str
- 	 * Using page_mapping() is quite slow because of the actual call
- 	 * instruction and repeated compound_head(page) inside the
- 	 * page_mapping() function.
--	 * We know that secretmem pages are not compound and LRU so we can
-+	 * We know that secretmem pages are not compound, so we can
- 	 * save a couple of cycles here.
- 	 */
--	if (PageCompound(page) || !PageLRU(page))
-+	if (PageCompound(page))
- 		return false;
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -108,6 +108,7 @@ SYM_START(srso_alias_untrain_ret, SYM_L_
+ 	ret
+ 	int3
+ SYM_FUNC_END(srso_alias_untrain_ret)
++__EXPORT_THUNK(srso_alias_untrain_ret)
+ #endif
  
- 	mapping = (struct address_space *)
+ SYM_START(srso_alias_safe_ret, SYM_L_GLOBAL, SYM_A_NONE)
 
 
 
