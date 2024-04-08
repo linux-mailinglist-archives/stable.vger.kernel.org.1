@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-37750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F051D89C63D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:05:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A287E89C47A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E4191C22A46
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:05:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF26D1C23255
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A28081216;
-	Mon,  8 Apr 2024 14:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00757C0A9;
+	Mon,  8 Apr 2024 13:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OqOFIvRq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qx0VNV5c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169AE80BFC;
-	Mon,  8 Apr 2024 14:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6587C092;
+	Mon,  8 Apr 2024 13:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585151; cv=none; b=YDjKHgi8ET2MjewraIJ8wIQnx0EhC2gW7rEIEq1YPRZeq0I/oHAeX6sJppvCLAH9G6e8kOafkEcjqLhKu6Rv7An2eHXg5Qk6AVvl4TJVYJNmzxaocjdRQnqhXJbZ3Yjck3sdPGQC3QmM7HHfy4pe1em7KexelYaBaGHFdvbLROo=
+	t=1712583978; cv=none; b=kmHy+SH7RR23ZUdzuRar8Ezxg6S3juBVkv4Ny4Ncj69qb2Ei1LyWa4t986W9KjkpuGRyH85P+JCgfFbXhL/2BUFvXrwh+jZ/T5N9oioLGfqQI9Mbl3qmjA+5h16oce8bSBVUifndO7ZkoOUebbRyJt9b7ZhPyJbyTArR1V89y6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585151; c=relaxed/simple;
-	bh=pnT9XAQcWnhl4XusK6VoVo5m0l8h63JBY0J3OQTCTmY=;
+	s=arc-20240116; t=1712583978; c=relaxed/simple;
+	bh=T4996eeippnpCifAlxMWQ2+lkfbwGcmrawYEsuN19Nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pYcdQY0NRFnBiu89vRFlbIr/NAgCntMfpxZS3hApSY2YZ6JatnkRZiwKYKWTmPGC1DzYherCdBT+uNai6iRroeMEoh7KSrGOa9AkhLv7BpDFI/n8anmSkTXBAWvYruCc4p2XQfr5MzXcpeXVeLJS0HShtmBQWy4Kyn+AMWSvdl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OqOFIvRq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB2BC433F1;
-	Mon,  8 Apr 2024 14:05:50 +0000 (UTC)
+	 MIME-Version; b=dtOgXIOpXjzLkH5qSRLRM7a1OVrIsJXlob//WkIib4e/stqVOuXR8ny6/TgIGxGGOJecs+yNbHR+jtB/k2lTuMBlFArg25L11PqoE0oyzqjgGAikWbDU8LL5IF8R84/ncidQxuNGO1omYaDEhrHDJu8xN1M2DcGu9aKgdg4JHwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qx0VNV5c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E967FC433C7;
+	Mon,  8 Apr 2024 13:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585151;
-	bh=pnT9XAQcWnhl4XusK6VoVo5m0l8h63JBY0J3OQTCTmY=;
+	s=korg; t=1712583978;
+	bh=T4996eeippnpCifAlxMWQ2+lkfbwGcmrawYEsuN19Nk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OqOFIvRqtRM9958XaLqi2zwgqXLpb5gwOklVUWwokBod8ZSdQuSIKeL/3sqQTkkPI
-	 cqp6gZtpb0awUrSHF1mhnTY3oHJukicKBNXCILT0xwZSvxnWvi8cCHWqR6+Qcvs+18
-	 tIs3nDDhaMLKe4V564yrUPi0gwJSej+4teIX5kjw=
+	b=Qx0VNV5cnSVZ/2ivZx9/cVwAFd0J4+bwYc7tDCeY40INQaCScxQ8h4rZCj7V7e+Ke
+	 uYKANwk9f9rnhdoy7IfHBnU50VusCzPCKv6Re1GXKc0g+DSz6Ysafx0btFqac4LbNO
+	 jNcPykJ2fUjohekKOIkSIyhHDWxbVEERBxK5ikOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 650/690] udp: do not transition UDP GRO fraglist partial checksums to unnecessary
+	Samuel Holland <samuel.holland@sifive.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.8 241/273] riscv: Fix spurious errors from __get/put_kernel_nofault
 Date: Mon,  8 Apr 2024 14:58:36 +0200
-Message-ID: <20240408125423.188017000@linuxfoundation.org>
+Message-ID: <20240408125316.918309300@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-commit f0b8c30345565344df2e33a8417a27503589247d upstream.
+commit d080a08b06b6266cc3e0e86c5acfd80db937cb6b upstream.
 
-UDP GRO validates checksums and in udp4/6_gro_complete fraglist packets
-are converted to CHECKSUM_UNNECESSARY to avoid later checks. However
-this is an issue for CHECKSUM_PARTIAL packets as they can be looped in
-an egress path and then their partial checksums are not fixed.
+These macros did not initialize __kr_err, so they could fail even if
+the access did not fault.
 
-Different issues can be observed, from invalid checksum on packets to
-traces like:
-
-  gen01: hw csum failure
-  skb len=3008 headroom=160 headlen=1376 tailroom=0
-  mac=(106,14) net=(120,40) trans=160
-  shinfo(txflags=0 nr_frags=0 gso(size=0 type=0 segs=0))
-  csum(0xffff232e ip_summed=2 complete_sw=0 valid=0 level=0)
-  hash(0x77e3d716 sw=1 l4=1) proto=0x86dd pkttype=0 iif=12
-  ...
-
-Fix this by only converting CHECKSUM_NONE packets to
-CHECKSUM_UNNECESSARY by reusing __skb_incr_checksum_unnecessary. All
-other checksum types are kept as-is, including CHECKSUM_COMPLETE as
-fraglist packets being segmented back would have their skb->csum valid.
-
-Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: stable@vger.kernel.org
+Fixes: d464118cdc41 ("riscv: implement __get_kernel_nofault and __put_user_nofault")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Link: https://lore.kernel.org/r/20240312022030.320789-1-samuel.holland@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/udp_offload.c |    8 +-------
- net/ipv6/udp_offload.c |    8 +-------
- 2 files changed, 2 insertions(+), 14 deletions(-)
+ arch/riscv/include/asm/uaccess.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -685,13 +685,7 @@ INDIRECT_CALLABLE_SCOPE int udp4_gro_com
- 		skb_shinfo(skb)->gso_type |= (SKB_GSO_FRAGLIST|SKB_GSO_UDP_L4);
- 		skb_shinfo(skb)->gso_segs = NAPI_GRO_CB(skb)->count;
+--- a/arch/riscv/include/asm/uaccess.h
++++ b/arch/riscv/include/asm/uaccess.h
+@@ -319,7 +319,7 @@ unsigned long __must_check clear_user(vo
  
--		if (skb->ip_summed == CHECKSUM_UNNECESSARY) {
--			if (skb->csum_level < SKB_MAX_CSUM_LEVEL)
--				skb->csum_level++;
--		} else {
--			skb->ip_summed = CHECKSUM_UNNECESSARY;
--			skb->csum_level = 0;
--		}
-+		__skb_incr_checksum_unnecessary(skb);
+ #define __get_kernel_nofault(dst, src, type, err_label)			\
+ do {									\
+-	long __kr_err;							\
++	long __kr_err = 0;						\
+ 									\
+ 	__get_user_nocheck(*((type *)(dst)), (type *)(src), __kr_err);	\
+ 	if (unlikely(__kr_err))						\
+@@ -328,7 +328,7 @@ do {									\
  
- 		return 0;
- 	}
---- a/net/ipv6/udp_offload.c
-+++ b/net/ipv6/udp_offload.c
-@@ -170,13 +170,7 @@ INDIRECT_CALLABLE_SCOPE int udp6_gro_com
- 		skb_shinfo(skb)->gso_type |= (SKB_GSO_FRAGLIST|SKB_GSO_UDP_L4);
- 		skb_shinfo(skb)->gso_segs = NAPI_GRO_CB(skb)->count;
- 
--		if (skb->ip_summed == CHECKSUM_UNNECESSARY) {
--			if (skb->csum_level < SKB_MAX_CSUM_LEVEL)
--				skb->csum_level++;
--		} else {
--			skb->ip_summed = CHECKSUM_UNNECESSARY;
--			skb->csum_level = 0;
--		}
-+		__skb_incr_checksum_unnecessary(skb);
- 
- 		return 0;
- 	}
+ #define __put_kernel_nofault(dst, src, type, err_label)			\
+ do {									\
+-	long __kr_err;							\
++	long __kr_err = 0;						\
+ 									\
+ 	__put_user_nocheck(*((type *)(src)), (type *)(dst), __kr_err);	\
+ 	if (unlikely(__kr_err))						\
 
 
 
