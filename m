@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-36749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1263F89C17F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:21:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A88BD89C544
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:55:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 237C11C21D16
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB5C51C224E8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957C17E580;
-	Mon,  8 Apr 2024 13:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4D0763F1;
+	Mon,  8 Apr 2024 13:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tyd23kqQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPsvQ7A+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394A67E57F;
-	Mon,  8 Apr 2024 13:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC6C6EB72;
+	Mon,  8 Apr 2024 13:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582232; cv=none; b=M3LG2QR/apOgTueUv/1DOhZWsEnZv0eK7UaMB08w+7T9Vv5C1g9KpXfWXAM6fRF7y6FhOr5F66DzCjgfxTo13UEXQXgsxJAvxdIwqyXTI3RBmEdSU4M59z+aH9hC1Iq2wlrCN08rvoTW+1L7kKpaH2SCjudOE59BSJxmbqlyKnw=
+	t=1712584521; cv=none; b=VE/mVPS654eyXX/BgjITE7V0V7xXIHqDk06bgeqwiXK0VLj5E6tz2HgFlFcRt1p+tS8Qr3M1kMQb3onYwsJOCoyVds5xXPOFeX0HVQdTJietHa6pyUZDvXunOEj7LDW7uqF1J43JHVzbKCVp0V6QAGhqYmcMxM5icxa3cfhNbu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582232; c=relaxed/simple;
-	bh=ET198wi5LGRCXZUxme0+u6qoA7OWQc0TP5gtEw1DO5I=;
+	s=arc-20240116; t=1712584521; c=relaxed/simple;
+	bh=jvTehpZsdRfGsbmZv/1uomecNF7CRGfDcX0TufUMZu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HH8LxnbmWeS55oCuy0Kshh9DstxTnRrstFZwlukkDiIGcvpt0APXXvjMpbzkY8BodsivPsIfeL2sU7nC2oX2bql9336QbsFym+MM6AVElaWD5fFKLzW4TEeacz12Siyw+mhmPz/J51+7/seqAOugk1LospFsnUm0bpHaJWwdBjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tyd23kqQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2FD0C43399;
-	Mon,  8 Apr 2024 13:17:11 +0000 (UTC)
+	 MIME-Version; b=PYOl5R3OSpxG9vRm4OPDckwjCk71qQk1dctpXPqEmvRTgH8tU5FW5bIPHUndbb+387SWTfIxYg0dDGvKFBGq/UNBo/YAk+HUsdW9igYM1dRgoBVwVFueh0iutyss8E5l6vYynd5VS92u8EdjUlLhfXDiR6LDeekb2PZaBXIudxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPsvQ7A+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216E6C433F1;
+	Mon,  8 Apr 2024 13:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582232;
-	bh=ET198wi5LGRCXZUxme0+u6qoA7OWQc0TP5gtEw1DO5I=;
+	s=korg; t=1712584521;
+	bh=jvTehpZsdRfGsbmZv/1uomecNF7CRGfDcX0TufUMZu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tyd23kqQysW2/IFffmEKwyxxN+2VNB98CM/aCf7mk2cjZGtuAthKHjwQIixeLkRPV
-	 40dZPbj9ImLPcsnrI/I7i+oDgVYd8jcg+WT0FzyQtvL2KRmnqvcbeX/U2kRkNuU1j/
-	 O+k2tnJX1H4Afm2e9OWkTvCMvMw04X2l0zj3G7kg=
+	b=CPsvQ7A+9E1PWYwrVnOUOAUZ/YLQO0bne55KFf5Ab9RuFAwT+h6IshwJ29UvClgd7
+	 y+NiMqRiYm4vYWDNPdlXWAdfqMWTPonyhnydW6YlFeDno7ksvPBAWNCR1i837zWe91
+	 lrWN9CJa3u3dP7iHgusIOzIL51vNuxYZ3iFg0hMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 058/273] dm integrity: fix out-of-range warning
+	Anders Blomdell <anders.blomdell@control.lth.se>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 467/690] NFSD: Fix reads with a non-zero offset that dont end on a page boundary
 Date: Mon,  8 Apr 2024 14:55:33 +0200
-Message-ID: <20240408125311.102274108@linuxfoundation.org>
+Message-ID: <20240408125416.534906159@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 8e91c2342351e0f5ef6c0a704384a7f6fc70c3b2 ]
+[ Upstream commit ac8db824ead0de2e9111337c401409d010fba2f0 ]
 
-Depending on the value of CONFIG_HZ, clang complains about a pointless
-comparison:
+This was found when virtual machines with nfs-mounted qcow2 disks
+failed to boot properly.
 
-drivers/md/dm-integrity.c:4085:12: error: result of comparison of
-                        constant 42949672950 with expression of type
-                        'unsigned int' is always false
-                        [-Werror,-Wtautological-constant-out-of-range-compare]
-                        if (val >= (uint64_t)UINT_MAX * 1000 / HZ) {
-
-As the check remains useful for other configurations, shut up the
-warning by adding a second type cast to uint64_t.
-
-Fixes: 468dfca38b1a ("dm integrity: add a bitmap mode")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Anders Blomdell <anders.blomdell@control.lth.se>
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2142132
+Fixes: bfbfb6182ad1 ("nfsd_splice_actor(): handle compound pages")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/md/dm-integrity.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/vfs.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
-index 47cf1ab34941f..3b4218a2e750d 100644
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -4221,7 +4221,7 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned int argc, char **argv
- 		} else if (sscanf(opt_string, "sectors_per_bit:%llu%c", &llval, &dummy) == 1) {
- 			log2_sectors_per_bitmap_bit = !llval ? 0 : __ilog2_u64(llval);
- 		} else if (sscanf(opt_string, "bitmap_flush_interval:%u%c", &val, &dummy) == 1) {
--			if (val >= (uint64_t)UINT_MAX * 1000 / HZ) {
-+			if ((uint64_t)val >= (uint64_t)UINT_MAX * 1000 / HZ) {
- 				r = -EINVAL;
- 				ti->error = "Invalid bitmap_flush_interval argument";
- 				goto bad;
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index d17377148b669..9215350ad095c 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -872,11 +872,11 @@ nfsd_splice_actor(struct pipe_inode_info *pipe, struct pipe_buffer *buf,
+ 	struct svc_rqst *rqstp = sd->u.data;
+ 	struct page *page = buf->page;	// may be a compound one
+ 	unsigned offset = buf->offset;
+-	int i;
++	struct page *last_page;
+ 
+-	page += offset / PAGE_SIZE;
+-	for (i = sd->len; i > 0; i -= PAGE_SIZE)
+-		svc_rqst_replace_page(rqstp, page++);
++	last_page = page + (offset + sd->len - 1) / PAGE_SIZE;
++	for (page += offset / PAGE_SIZE; page <= last_page; page++)
++		svc_rqst_replace_page(rqstp, page);
+ 	if (rqstp->rq_res.page_len == 0)	// first call
+ 		rqstp->rq_res.page_base = offset % PAGE_SIZE;
+ 	rqstp->rq_res.page_len += sd->len;
 -- 
 2.43.0
 
