@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-36995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA4289C2A7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8478D89C2A9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8948D1F24A91
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B54DF1C21EB4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2627C81724;
-	Mon,  8 Apr 2024 13:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB8781754;
+	Mon,  8 Apr 2024 13:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+G3Ex+k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyxL3F81"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94258172D;
-	Mon,  8 Apr 2024 13:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3FA81741;
+	Mon,  8 Apr 2024 13:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582947; cv=none; b=BYtqLUSxw13vaocRVbownVYNAc3x8mT0SWvOWF0eUvRoleNxPy4PRBz2QVU+sAvCYb9Z4zeo2R4JxomzDPbvKBUY7KC621+tyF3rd3MMbRiFMKr7pIu9QO3YzX0mwGNu++aq+63iNscC0kOk401IBir/tdzElwEZcPYq3BNqF+Y=
+	t=1712582956; cv=none; b=PPxo3ciVvX+LzK8FO5lRl7+GjLm28zEHpv3cu7HE52KEE351CkNteyNTG5DZAutM+5CrGfaKYniu3dmQ19YFnYHG6d5BMPEdXNK+o9rC3EkIa2ulHllGZW4rXDR9joh2O+waLJOy4qndCIHRfbusxARlqMCyq7wtVcVBvvP0Sjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582947; c=relaxed/simple;
-	bh=FL/oA1kust6SDV9HCQnJ+w1VgW5iABd9OcNMA9eRdBc=;
+	s=arc-20240116; t=1712582956; c=relaxed/simple;
+	bh=yYONrwwH4ykAM3hZzwi2yoG+A713hRh+GNUXjzRhTRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PaT5Z2Gx0fE7iQ4IE3jw5naDDJOLShHDpdSc8Y5QcH1lQVPk8HsOQ4cwo0W2ar6g2uUabA7kIL1MBOW0KzOb/57l18wTT3GD4dlCQz0R57/c036u3g7zp3cznuVwkNTOb9ErACkFGopWKfgH2T+ZdFENyDoDxVTmLE1u9EYJKu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+G3Ex+k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02771C433C7;
-	Mon,  8 Apr 2024 13:29:06 +0000 (UTC)
+	 MIME-Version; b=ipDHQkp5FyFOeGy0z3g8D6l3K/15ExTythWl/mk7Fggq2odrY+hm4fDW8gh3dMXl6f7Lg1QYyd3UW4rXGhWXXtYvLeP03+LGtJDEZeMC6KjubQYnEjXX/E5nKC7EJFWFzj1aWPPYCMC029bMclw9sY08keJBGwmUxhgo/LfZoik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyxL3F81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B767DC433C7;
+	Mon,  8 Apr 2024 13:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582947;
-	bh=FL/oA1kust6SDV9HCQnJ+w1VgW5iABd9OcNMA9eRdBc=;
+	s=korg; t=1712582956;
+	bh=yYONrwwH4ykAM3hZzwi2yoG+A713hRh+GNUXjzRhTRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v+G3Ex+kkEp1wnXyLPxFkBkQ3UAkbZfHxTka9cZb1oQRhd5+5A3XU/xns3RoYRX8G
-	 UZl8gneJctiqimYD/f5pp//Cd3g5rCxhZaEWKMY6hXZTVLjGi2Uvcb58Wk8nJPpp3l
-	 AnpMnVar8Db4fyGT1bQqDP2oQBhBlT1e03XDaCRc=
+	b=pyxL3F81nIQQO6Y0gAGwwPQmHn8QfuGwCUwIcX01QBo6SkFgQOXGVRawATSIXKBbn
+	 f1LVWpD46rh9BORd/x5FiMtwZBD1rb2iiJ0Zrat7KBg0ftCOFXSyp8uINUy5b/l2jb
+	 GycLN9juqwxl0OVNFHyLvkXBzZdNGfDvn/AQWhs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.6 141/252] i40e: Remove back pointer from i40e_hw structure
-Date: Mon,  8 Apr 2024 14:57:20 +0200
-Message-ID: <20240408125311.027967959@linuxfoundation.org>
+Subject: [PATCH 6.6 142/252] i40e: Refactor I40E_MDIO_CLAUSE* macros
+Date: Mon,  8 Apr 2024 14:57:21 +0200
+Message-ID: <20240408125311.059396702@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
 References: <20240408125306.643546457@linuxfoundation.org>
@@ -72,13 +72,14 @@ Content-Transfer-Encoding: 8bit
 
 From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit 39ec612acf6d075809c38a7262d7ad09314762f3 ]
+[ Upstream commit 8196b5fd6c7312d31775f77c7fff0253eb0ecdaa ]
 
-The .back field placed in i40e_hw is used to get pointer to i40e_pf
-instance but it is not necessary as the i40e_hw is a part of i40e_pf
-and containerof macro can be used to obtain the pointer to i40e_pf.
-Remove .back field from i40e_hw structure, introduce i40e_hw_to_pf()
-and i40e_hw_to_dev() helpers and use them.
+The macros I40E_MDIO_CLAUSE22* and I40E_MDIO_CLAUSE45* are using I40E_MASK
+together with the same values I40E_GLGEN_MSCA_STCODE_SHIFT and
+I40E_GLGEN_MSCA_OPCODE_SHIFT to define masks.
+Introduce I40E_GLGEN_MSCA_OPCODE_MASK and I40E_GLGEN_MSCA_STCODE_MASK
+for both shifts in i40e_register.h and use them to refactor the macros
+mentioned above.
 
 Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
@@ -89,125 +90,58 @@ Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Stable-dep-of: 6dbdd4de0362 ("e1000e: Workaround for sporadic MDI error on Meteor Lake systems")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e.h       | 11 ++++++++++
- drivers/net/ethernet/intel/i40e/i40e_main.c  | 22 ++++++++++++++------
- drivers/net/ethernet/intel/i40e/i40e_osdep.h |  8 +++----
- drivers/net/ethernet/intel/i40e/i40e_type.h  |  1 -
- 4 files changed, 31 insertions(+), 11 deletions(-)
+ .../net/ethernet/intel/i40e/i40e_register.h   |  2 ++
+ drivers/net/ethernet/intel/i40e/i40e_type.h   | 23 +++++++------------
+ 2 files changed, 10 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index 3cc0b87def3fa..6f08c8fe653bd 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -1322,4 +1322,15 @@ static inline u32 i40e_is_tc_mqprio_enabled(struct i40e_pf *pf)
- 	return pf->flags & I40E_FLAG_TC_MQPRIO;
- }
- 
-+/**
-+ * i40e_hw_to_pf - get pf pointer from the hardware structure
-+ * @hw: pointer to the device HW structure
-+ **/
-+static inline struct i40e_pf *i40e_hw_to_pf(struct i40e_hw *hw)
-+{
-+	return container_of(hw, struct i40e_pf, hw);
-+}
-+
-+struct device *i40e_hw_to_dev(struct i40e_hw *hw);
-+
- #endif /* _I40E_H_ */
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 8bfecf81d26f6..17ab6a1c53971 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -125,6 +125,17 @@ static void netdev_hw_addr_refcnt(struct i40e_mac_filter *f,
- 	}
- }
- 
-+/**
-+ * i40e_hw_to_dev - get device pointer from the hardware structure
-+ * @hw: pointer to the device HW structure
-+ **/
-+struct device *i40e_hw_to_dev(struct i40e_hw *hw)
-+{
-+	struct i40e_pf *pf = i40e_hw_to_pf(hw);
-+
-+	return &pf->pdev->dev;
-+}
-+
- /**
-  * i40e_allocate_dma_mem_d - OS specific memory alloc for shared code
-  * @hw:   pointer to the HW structure
-@@ -135,7 +146,7 @@ static void netdev_hw_addr_refcnt(struct i40e_mac_filter *f,
- int i40e_allocate_dma_mem_d(struct i40e_hw *hw, struct i40e_dma_mem *mem,
- 			    u64 size, u32 alignment)
- {
--	struct i40e_pf *pf = (struct i40e_pf *)hw->back;
-+	struct i40e_pf *pf = i40e_hw_to_pf(hw);
- 
- 	mem->size = ALIGN(size, alignment);
- 	mem->va = dma_alloc_coherent(&pf->pdev->dev, mem->size, &mem->pa,
-@@ -153,7 +164,7 @@ int i40e_allocate_dma_mem_d(struct i40e_hw *hw, struct i40e_dma_mem *mem,
-  **/
- int i40e_free_dma_mem_d(struct i40e_hw *hw, struct i40e_dma_mem *mem)
- {
--	struct i40e_pf *pf = (struct i40e_pf *)hw->back;
-+	struct i40e_pf *pf = i40e_hw_to_pf(hw);
- 
- 	dma_free_coherent(&pf->pdev->dev, mem->size, mem->va, mem->pa);
- 	mem->va = NULL;
-@@ -15653,10 +15664,10 @@ static int i40e_init_recovery_mode(struct i40e_pf *pf, struct i40e_hw *hw)
-  **/
- static inline void i40e_set_subsystem_device_id(struct i40e_hw *hw)
- {
--	struct pci_dev *pdev = ((struct i40e_pf *)hw->back)->pdev;
-+	struct i40e_pf *pf = i40e_hw_to_pf(hw);
- 
--	hw->subsystem_device_id = pdev->subsystem_device ?
--		pdev->subsystem_device :
-+	hw->subsystem_device_id = pf->pdev->subsystem_device ?
-+		pf->pdev->subsystem_device :
- 		(ushort)(rd32(hw, I40E_PFPCI_SUBSYSID) & USHRT_MAX);
- }
- 
-@@ -15726,7 +15737,6 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	set_bit(__I40E_DOWN, pf->state);
- 
- 	hw = &pf->hw;
--	hw->back = pf;
- 
- 	pf->ioremap_len = min_t(int, pci_resource_len(pdev, 0),
- 				I40E_MAX_CSR_SPACE);
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_osdep.h b/drivers/net/ethernet/intel/i40e/i40e_osdep.h
-index 2bd4de03dafa2..997569a4ad57b 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_osdep.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_osdep.h
-@@ -18,10 +18,10 @@
-  * actual OS primitives
-  */
- 
--#define hw_dbg(hw, S, A...)							\
--do {										\
--	dev_dbg(&((struct i40e_pf *)hw->back)->pdev->dev, S, ##A);		\
--} while (0)
-+struct i40e_hw;
-+struct device *i40e_hw_to_dev(struct i40e_hw *hw);
-+
-+#define hw_dbg(hw, S, A...) dev_dbg(i40e_hw_to_dev(hw), S, ##A)
- 
- #define wr32(a, reg, value)	writel((value), ((a)->hw_addr + (reg)))
- #define rd32(a, reg)		readl((a)->hw_addr + (reg))
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_register.h b/drivers/net/ethernet/intel/i40e/i40e_register.h
+index 694cb3e45c1ec..989c186824733 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_register.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_register.h
+@@ -202,7 +202,9 @@
+ #define I40E_GLGEN_MSCA_DEVADD_SHIFT 16
+ #define I40E_GLGEN_MSCA_PHYADD_SHIFT 21
+ #define I40E_GLGEN_MSCA_OPCODE_SHIFT 26
++#define I40E_GLGEN_MSCA_OPCODE_MASK(_i) I40E_MASK(_i, I40E_GLGEN_MSCA_OPCODE_SHIFT)
+ #define I40E_GLGEN_MSCA_STCODE_SHIFT 28
++#define I40E_GLGEN_MSCA_STCODE_MASK I40E_MASK(0x1, I40E_GLGEN_MSCA_STCODE_SHIFT)
+ #define I40E_GLGEN_MSCA_MDICMD_SHIFT 30
+ #define I40E_GLGEN_MSCA_MDICMD_MASK I40E_MASK(0x1, I40E_GLGEN_MSCA_MDICMD_SHIFT)
+ #define I40E_GLGEN_MSCA_MDIINPROGEN_SHIFT 31
 diff --git a/drivers/net/ethernet/intel/i40e/i40e_type.h b/drivers/net/ethernet/intel/i40e/i40e_type.h
-index 232131bedc3e7..658bc89132783 100644
+index 658bc89132783..d4c6afe84fdd2 100644
 --- a/drivers/net/ethernet/intel/i40e/i40e_type.h
 +++ b/drivers/net/ethernet/intel/i40e/i40e_type.h
-@@ -525,7 +525,6 @@ struct i40e_dcbx_config {
- /* Port hardware description */
- struct i40e_hw {
- 	u8 __iomem *hw_addr;
--	void *back;
+@@ -70,21 +70,14 @@ enum i40e_debug_mask {
+ 	I40E_DEBUG_ALL			= 0xFFFFFFFF
+ };
  
- 	/* subsystem structs */
- 	struct i40e_phy_info phy;
+-#define I40E_MDIO_CLAUSE22_STCODE_MASK	I40E_MASK(1, \
+-						  I40E_GLGEN_MSCA_STCODE_SHIFT)
+-#define I40E_MDIO_CLAUSE22_OPCODE_WRITE_MASK	I40E_MASK(1, \
+-						  I40E_GLGEN_MSCA_OPCODE_SHIFT)
+-#define I40E_MDIO_CLAUSE22_OPCODE_READ_MASK	I40E_MASK(2, \
+-						  I40E_GLGEN_MSCA_OPCODE_SHIFT)
+-
+-#define I40E_MDIO_CLAUSE45_STCODE_MASK	I40E_MASK(0, \
+-						  I40E_GLGEN_MSCA_STCODE_SHIFT)
+-#define I40E_MDIO_CLAUSE45_OPCODE_ADDRESS_MASK	I40E_MASK(0, \
+-						  I40E_GLGEN_MSCA_OPCODE_SHIFT)
+-#define I40E_MDIO_CLAUSE45_OPCODE_WRITE_MASK	I40E_MASK(1, \
+-						  I40E_GLGEN_MSCA_OPCODE_SHIFT)
+-#define I40E_MDIO_CLAUSE45_OPCODE_READ_MASK	I40E_MASK(3, \
+-						I40E_GLGEN_MSCA_OPCODE_SHIFT)
++#define I40E_MDIO_CLAUSE22_STCODE_MASK		I40E_GLGEN_MSCA_STCODE_MASK
++#define I40E_MDIO_CLAUSE22_OPCODE_WRITE_MASK	I40E_GLGEN_MSCA_OPCODE_MASK(1)
++#define I40E_MDIO_CLAUSE22_OPCODE_READ_MASK	I40E_GLGEN_MSCA_OPCODE_MASK(2)
++
++#define I40E_MDIO_CLAUSE45_STCODE_MASK		I40E_GLGEN_MSCA_STCODE_MASK
++#define I40E_MDIO_CLAUSE45_OPCODE_ADDRESS_MASK	I40E_GLGEN_MSCA_OPCODE_MASK(0)
++#define I40E_MDIO_CLAUSE45_OPCODE_WRITE_MASK	I40E_GLGEN_MSCA_OPCODE_MASK(1)
++#define I40E_MDIO_CLAUSE45_OPCODE_READ_MASK	I40E_GLGEN_MSCA_OPCODE_MASK(3)
+ 
+ #define I40E_PHY_COM_REG_PAGE                   0x1E
+ #define I40E_PHY_LED_LINK_MODE_MASK             0xF0
 -- 
 2.43.0
 
