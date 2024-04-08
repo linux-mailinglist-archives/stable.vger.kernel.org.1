@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-37411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D5889C4BC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB3089C4BE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A54FA1C2255B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EF351F2109B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C33C7CF17;
-	Mon,  8 Apr 2024 13:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8F17CF37;
+	Mon,  8 Apr 2024 13:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4n6drN+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhHNW3Zi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1DB7C6C8;
-	Mon,  8 Apr 2024 13:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5D77CF25;
+	Mon,  8 Apr 2024 13:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584154; cv=none; b=bDH3umThC+j4523K8cwrWJIK/FdbebxAY/TM6bwb6K3trb2oBINO8fLE1/KAGtHaNoibyE1N+Mqb8QPKd6OPsaKdjCyO5RwxLybynnhPgk7KP/J88p95mj4vYVbqfQdAi/rLsvM4iZ42PzmvmtDcoZV4LhyDtc2lhFoJE2aPCRs=
+	t=1712584159; cv=none; b=r2n2BlFHkMWWES3EQorvmCCEec67K+3Dwtn5ke4JOUHvXoZMhncZq6HvQixCzK6dP3bJfvFZFawDIyMnO7fGZKwjBQ+feqODoW1T130RE6LeqiPRLlfUuW4gZD6OJAqwaxQRRCHRkI1d2n0NHDeTdwPBCzmsizzijeFKwouFdrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584154; c=relaxed/simple;
-	bh=R9jQTtDJlqEcOD40B8MgNBdYjhSeDFhgv4x0SOvDUcU=;
+	s=arc-20240116; t=1712584159; c=relaxed/simple;
+	bh=YhRySYSd09zU1F/5bc9XWpPeuO/D7XEzZvEKcE8A6lI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VjQOa+eUCVlPhE0StKA1l4J+WRH0ayCX69KvAtI6/XWm+uS/d7rK256JIX8fbMm+Cq6n1pW4x06R01r3RWo/d+6nKOGjwvZJzBVTKgll3w0HOj9etF/L0mGunnS/Su3L0PWaTmkpWXxbD659UkoZfuzzdVqnQKZR1fT0ZhK5TSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4n6drN+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C631C433F1;
-	Mon,  8 Apr 2024 13:49:13 +0000 (UTC)
+	 MIME-Version; b=Xg1yp4HPl0kUiAScQi5XpKljGTOB5GTkON3niGne5L0dMkY9ICrOH3ZANANuk/XYSaEh1xeDNLi9KeTKOJOJoPGjkmw/jM3AckVSpZQN7Dq2/G9aklNbZVThvnjXqMclBSDLZB63fHRml3+2U5udR3jxoI4s9YXH00Uzv7MXdh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhHNW3Zi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DE2C433F1;
+	Mon,  8 Apr 2024 13:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584153;
-	bh=R9jQTtDJlqEcOD40B8MgNBdYjhSeDFhgv4x0SOvDUcU=;
+	s=korg; t=1712584159;
+	bh=YhRySYSd09zU1F/5bc9XWpPeuO/D7XEzZvEKcE8A6lI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4n6drN+yKpqfEPvg7SbTI+dihKPUDUVF6EpwsEU0vRtGo+XYI0X9SI8yPiSelF2v
-	 EiEZpm4iww5JVw7A/9r7aPdG+PUQowsW4cfwp4KPyJpA2BdON31/AFOB4ZTp9fe62W
-	 CmEcVGNRz68EDUO8Alq433e+CyL0RJFs5WOm6hJA=
+	b=PhHNW3ZiQVyF3bPOCA9HEnevtuzLJCxtOolVAaQQngxJYEEDPxeEF6/oh3FWy6b5b
+	 Q+GySZGK0wLwFygX3gib/c1pJWRaXzZlEB6Zhl8HEC4ajHpIcnJwfyLsTMJ3T5lnxe
+	 OMya1k28YLCjiD+zdjOXlPTLJZyTXgQUGIUZcea0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Zhang Jiaming <jiaming@nfschina.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 342/690] NFSD: Instrument fh_verify()
-Date: Mon,  8 Apr 2024 14:53:28 +0200
-Message-ID: <20240408125412.003210090@linuxfoundation.org>
+Subject: [PATCH 5.15 343/690] NFSD: Fix space and spelling mistake
+Date: Mon,  8 Apr 2024 14:53:29 +0200
+Message-ID: <20240408125412.036771667@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -64,100 +65,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Zhang Jiaming <jiaming@nfschina.com>
 
-[ Upstream commit 051382885552e12541cc0ebf82092be374a9ed2a ]
+[ Upstream commit f532c9ff103897be0e2a787c0876683c3dc39ed3 ]
 
-Capture file handles and how they map to local inodes. In particular,
-NFSv4 PUTFH uses fh_verify() so we can now observe which file handles
-are the target of OPEN, LOOKUP, RENAME, and so on.
+Add a blank space after ','.
+Change 'succesful' to 'successful'.
 
+Signed-off-by: Zhang Jiaming <jiaming@nfschina.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfsfh.c |  5 +++--
- fs/nfsd/trace.h | 46 ++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 49 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4proc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
-index c29baa03dfafd..5e2ed4b2a925c 100644
---- a/fs/nfsd/nfsfh.c
-+++ b/fs/nfsd/nfsfh.c
-@@ -331,8 +331,6 @@ fh_verify(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type, int access)
- 	struct dentry	*dentry;
- 	__be32		error;
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 5b56877c7fb57..d70c4e78f0b3f 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -828,7 +828,7 @@ nfsd4_create(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 			goto out_umask;
+ 		status = nfsd_create(rqstp, &cstate->current_fh,
+ 				     create->cr_name, create->cr_namelen,
+-				     &create->cr_iattr,S_IFCHR, rdev, &resfh);
++				     &create->cr_iattr, S_IFCHR, rdev, &resfh);
+ 		break;
  
--	dprintk("nfsd: fh_verify(%s)\n", SVCFH_fmt(fhp));
--
- 	if (!fhp->fh_dentry) {
- 		error = nfsd_set_fh_dentry(rqstp, fhp);
- 		if (error)
-@@ -340,6 +338,9 @@ fh_verify(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type, int access)
- 	}
- 	dentry = fhp->fh_dentry;
- 	exp = fhp->fh_export;
-+
-+	trace_nfsd_fh_verify(rqstp, fhp, type, access);
-+
- 	/*
- 	 * We still have to do all these permission checks, even when
- 	 * fh_dentry is already set:
-diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
-index 3cff3ada00a85..593218d8a54d0 100644
---- a/fs/nfsd/trace.h
-+++ b/fs/nfsd/trace.h
-@@ -171,6 +171,52 @@ TRACE_EVENT(nfsd_compound_encode_err,
- 		__entry->opnum, __entry->status)
- );
- 
-+#define show_fs_file_type(x) \
-+	__print_symbolic(x, \
-+		{ S_IFLNK,		"LNK" }, \
-+		{ S_IFREG,		"REG" }, \
-+		{ S_IFDIR,		"DIR" }, \
-+		{ S_IFCHR,		"CHR" }, \
-+		{ S_IFBLK,		"BLK" }, \
-+		{ S_IFIFO,		"FIFO" }, \
-+		{ S_IFSOCK,		"SOCK" })
-+
-+TRACE_EVENT(nfsd_fh_verify,
-+	TP_PROTO(
-+		const struct svc_rqst *rqstp,
-+		const struct svc_fh *fhp,
-+		umode_t type,
-+		int access
-+	),
-+	TP_ARGS(rqstp, fhp, type, access),
-+	TP_STRUCT__entry(
-+		__field(unsigned int, netns_ino)
-+		__sockaddr(server, rqstp->rq_xprt->xpt_remotelen)
-+		__sockaddr(client, rqstp->rq_xprt->xpt_remotelen)
-+		__field(u32, xid)
-+		__field(u32, fh_hash)
-+		__field(void *, inode)
-+		__field(unsigned long, type)
-+		__field(unsigned long, access)
-+	),
-+	TP_fast_assign(
-+		__entry->netns_ino = SVC_NET(rqstp)->ns.inum;
-+		__assign_sockaddr(server, &rqstp->rq_xprt->xpt_local,
-+		       rqstp->rq_xprt->xpt_locallen);
-+		__assign_sockaddr(client, &rqstp->rq_xprt->xpt_remote,
-+				  rqstp->rq_xprt->xpt_remotelen);
-+		__entry->xid = be32_to_cpu(rqstp->rq_xid);
-+		__entry->fh_hash = knfsd_fh_hash(&fhp->fh_handle);
-+		__entry->inode = d_inode(fhp->fh_dentry);
-+		__entry->type = type;
-+		__entry->access = access;
-+	),
-+	TP_printk("xid=0x%08x fh_hash=0x%08x inode=%p type=%s access=%s",
-+		__entry->xid, __entry->fh_hash, __entry->inode,
-+		show_fs_file_type(__entry->type),
-+		show_nfsd_may_flags(__entry->access)
-+	)
-+);
- 
- DECLARE_EVENT_CLASS(nfsd_fh_err_class,
- 	TP_PROTO(struct svc_rqst *rqstp,
+ 	case NF4SOCK:
+@@ -2712,7 +2712,7 @@ nfsd4_proc_compound(struct svc_rqst *rqstp)
+ 		if (op->opdesc->op_flags & OP_MODIFIES_SOMETHING) {
+ 			/*
+ 			 * Don't execute this op if we couldn't encode a
+-			 * succesful reply:
++			 * successful reply:
+ 			 */
+ 			u32 plen = op->opdesc->op_rsize_bop(rqstp, op);
+ 			/*
 -- 
 2.43.0
 
