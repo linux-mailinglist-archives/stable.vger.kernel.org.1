@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-37557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149D289C55C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:56:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D3389C155
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8F611F23336
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:56:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 876611C21B8B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111F07BAFF;
-	Mon,  8 Apr 2024 13:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE4F823A3;
+	Mon,  8 Apr 2024 13:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FCtKhq8j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/C1L+vG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A6379955;
-	Mon,  8 Apr 2024 13:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A14783A09;
+	Mon,  8 Apr 2024 13:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584582; cv=none; b=sQ4GLjO8G/4c+4/IZeM2iOjmxiyyl5yU20UAyyaUIfBOd/W5T4Ql0dRASO2mc/ldXmiFHzr5CFx8h1Kh8P3lmuTLqseVg6e0vv3nfKp2nHBQRx3dchVadEUV58AsCRZlZ0CgFvx+l+UHx7peUR7aMTTfccjODjoS2xprXKQ8QOg=
+	t=1712582133; cv=none; b=tze3YFXN3Fm+2ION+A/b9tXscSlIOQEoRBLGIxbbhNmEiUKXRo99aTwMpOhe7d7/tTQrAi6mvk+6PGVmcXu/Bm0/u4IcOgqlTnpRGsuedPzo21wgeWJjmxFWwP977nrz/zFJYky/7TmQe4DnHYeqBN77NNVpYdnAtpsRpO9ebbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584582; c=relaxed/simple;
-	bh=uFae4jTLDBWSijdfJzKgPhoopWZal7pXlfUnjPcYH5I=;
+	s=arc-20240116; t=1712582133; c=relaxed/simple;
+	bh=cIM3VulVvvane761z2vqbQPfLeYkSs3HWjSG7iWBLns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V0tl7EnTcNJgd4nuFiciEa3WzALE6kjlsqEgm90Ajo3kshjcyYH3tsJU3oScw9sJk3MAqbvzkIZYolXYOrnhKawzpldJuoOl3ExLmIZd3cGFzoSkZNC6DfFwF4nZZJ3z00s6zgJhpS2qDQ4LIhMMv52bxou6SVGPUc14Ap0maSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FCtKhq8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A758C433C7;
-	Mon,  8 Apr 2024 13:56:22 +0000 (UTC)
+	 MIME-Version; b=CLWN2At1WAu8U3wxrP3bYH05zmMThHwLA4+cwOjEPAn2YZpyT7vkNMs3RQdw3BAXLx2rm68TbZJ+o7K/alvrMBzIdecy0kkvIk1gXqUzp6GXtly1ve3Co6gP+WR9FRB6rXyXI30iBGgVkCkEWg92XfGrKfma36hf2aRtY09Bvjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/C1L+vG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F36ECC433C7;
+	Mon,  8 Apr 2024 13:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584582;
-	bh=uFae4jTLDBWSijdfJzKgPhoopWZal7pXlfUnjPcYH5I=;
+	s=korg; t=1712582133;
+	bh=cIM3VulVvvane761z2vqbQPfLeYkSs3HWjSG7iWBLns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FCtKhq8j/1X5BgUAzT0g6XUkJPMtAKykeHPDXBs6uh2SpricZj0eQKrKqUe74sDsM
-	 dyfvpxByg2FxpGIOS1PORs0sVbMdT0D74eI+Je7LynJySvNMVvqikal9HCmPkpoTEO
-	 76kIJEu4jzmWFPrefXj/vvGynSGsNlNUoNae1hYQ=
+	b=s/C1L+vG0G3das+OzWzVNe/VlFrg6vuzhGDlzv33cB+1xEj49opEqQPNUGwMF0SzP
+	 brqeUTxcu9x7NNWsLpT9jPLOfeG72UjYWA5/wPLMx8ViruM9GQfkbiDM35HgoHG1rc
+	 isuzfMLcYglAazkurAfPG82j7a7gMxdJxoUfiBIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Gaosheng Cui <cuigaosheng1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 457/690] fsnotify: remove unused declaration
-Date: Mon,  8 Apr 2024 14:55:23 +0200
-Message-ID: <20240408125416.192983292@linuxfoundation.org>
+	Justin Chen <justin.chen@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 049/273] net: bcmasp: Bring up unimac after PHY link up
+Date: Mon,  8 Apr 2024 14:55:24 +0200
+Message-ID: <20240408125310.818273704@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Justin Chen <justin.chen@broadcom.com>
 
-[ Upstream commit f847c74d6e89f10926db58649a05b99237258691 ]
+[ Upstream commit dfd222e2aef68818320a57b13a1c52a44c22bc80 ]
 
-fsnotify_alloc_event_holder() and fsnotify_destroy_event_holder()
-has been removed since commit 7053aee26a35 ("fsnotify: do not share
-events between notification groups"), so remove it.
+The unimac requires the PHY RX clk during reset or it may be put
+into a bad state. Bring up the unimac after link up to ensure the
+PHY RX clk exists.
 
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fsnotify.h | 4 ----
- 1 file changed, 4 deletions(-)
+ .../net/ethernet/broadcom/asp2/bcmasp_intf.c  | 28 +++++++++++++------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
 
-diff --git a/fs/notify/fsnotify.h b/fs/notify/fsnotify.h
-index 87d8a50ee8038..fde74eb333cc9 100644
---- a/fs/notify/fsnotify.h
-+++ b/fs/notify/fsnotify.h
-@@ -76,10 +76,6 @@ static inline void fsnotify_clear_marks_by_sb(struct super_block *sb)
-  */
- extern void __fsnotify_update_child_dentry_flags(struct inode *inode);
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+index 6ad1366270f79..78901e2e73032 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+@@ -391,7 +391,9 @@ static void umac_reset(struct bcmasp_intf *intf)
+ 	umac_wl(intf, 0x0, UMC_CMD);
+ 	umac_wl(intf, UMC_CMD_SW_RESET, UMC_CMD);
+ 	usleep_range(10, 100);
+-	umac_wl(intf, 0x0, UMC_CMD);
++	/* We hold the umac in reset and bring it out of
++	 * reset when phy link is up.
++	 */
+ }
  
--/* allocate and destroy and event holder to attach events to notification/access queues */
--extern struct fsnotify_event_holder *fsnotify_alloc_event_holder(void);
--extern void fsnotify_destroy_event_holder(struct fsnotify_event_holder *holder);
+ static void umac_set_hw_addr(struct bcmasp_intf *intf,
+@@ -411,6 +413,8 @@ static void umac_enable_set(struct bcmasp_intf *intf, u32 mask,
+ 	u32 reg;
+ 
+ 	reg = umac_rl(intf, UMC_CMD);
++	if (reg & UMC_CMD_SW_RESET)
++		return;
+ 	if (enable)
+ 		reg |= mask;
+ 	else
+@@ -429,7 +433,6 @@ static void umac_init(struct bcmasp_intf *intf)
+ 	umac_wl(intf, 0x800, UMC_FRM_LEN);
+ 	umac_wl(intf, 0xffff, UMC_PAUSE_CNTRL);
+ 	umac_wl(intf, 0x800, UMC_RX_MAX_PKT_SZ);
+-	umac_enable_set(intf, UMC_CMD_PROMISC, 1);
+ }
+ 
+ static int bcmasp_tx_poll(struct napi_struct *napi, int budget)
+@@ -656,6 +659,12 @@ static void bcmasp_adj_link(struct net_device *dev)
+ 			UMC_CMD_HD_EN | UMC_CMD_RX_PAUSE_IGNORE |
+ 			UMC_CMD_TX_PAUSE_IGNORE);
+ 		reg |= cmd_bits;
++		if (reg & UMC_CMD_SW_RESET) {
++			reg &= ~UMC_CMD_SW_RESET;
++			umac_wl(intf, reg, UMC_CMD);
++			udelay(2);
++			reg |= UMC_CMD_TX_EN | UMC_CMD_RX_EN | UMC_CMD_PROMISC;
++		}
+ 		umac_wl(intf, reg, UMC_CMD);
+ 
+ 		intf->eee.eee_active = phy_init_eee(phydev, 0) >= 0;
+@@ -1063,9 +1072,6 @@ static int bcmasp_netif_init(struct net_device *dev, bool phy_connect)
+ 
+ 	umac_init(intf);
+ 
+-	/* Disable the UniMAC RX/TX */
+-	umac_enable_set(intf, (UMC_CMD_RX_EN | UMC_CMD_TX_EN), 0);
 -
- extern struct kmem_cache *fsnotify_mark_connector_cachep;
+ 	umac_set_hw_addr(intf, dev->dev_addr);
  
- #endif	/* __FS_NOTIFY_FSNOTIFY_H_ */
+ 	intf->old_duplex = -1;
+@@ -1085,9 +1091,6 @@ static int bcmasp_netif_init(struct net_device *dev, bool phy_connect)
+ 
+ 	bcmasp_enable_rx(intf, 1);
+ 
+-	/* Turn on UniMAC TX/RX */
+-	umac_enable_set(intf, (UMC_CMD_RX_EN | UMC_CMD_TX_EN), 1);
+-
+ 	intf->crc_fwd = !!(umac_rl(intf, UMC_CMD) & UMC_CMD_CRC_FWD);
+ 
+ 	bcmasp_netif_start(dev);
+@@ -1324,7 +1327,14 @@ static void bcmasp_suspend_to_wol(struct bcmasp_intf *intf)
+ 	if (intf->wolopts & WAKE_FILTER)
+ 		bcmasp_netfilt_suspend(intf);
+ 
+-	/* UniMAC receive needs to be turned on */
++	/* Bring UniMAC out of reset if needed and enable RX */
++	reg = umac_rl(intf, UMC_CMD);
++	if (reg & UMC_CMD_SW_RESET)
++		reg &= ~UMC_CMD_SW_RESET;
++
++	reg |= UMC_CMD_RX_EN | UMC_CMD_PROMISC;
++	umac_wl(intf, reg, UMC_CMD);
++
+ 	umac_enable_set(intf, UMC_CMD_RX_EN, 1);
+ 
+ 	if (intf->parent->wol_irq > 0) {
 -- 
 2.43.0
 
