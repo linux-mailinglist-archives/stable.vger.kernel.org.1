@@ -1,95 +1,128 @@
-Return-Path: <stable+bounces-36305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3243889B5E2
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 04:17:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2777989B5ED
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 04:28:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4798F1C210B6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 02:17:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5835281693
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 02:28:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17ABF23A0;
-	Mon,  8 Apr 2024 02:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC90515C9;
+	Mon,  8 Apr 2024 02:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xw31DAgP"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZEBXz/GS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3731869;
-	Mon,  8 Apr 2024 02:17:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237CB15C3
+	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 02:28:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712542644; cv=none; b=MEvqzDIvcSyRNvUW010O7UCwELqvZ4E1AA1hFowZ7B8ky0tIjBBpcCG0qkftFL7kt7JkdYwrXA9oMX5gRgwxU2wfV0Y2fDHIxpGA5S1wsagtbEkuVocxtnv2dOsCwXJuy+AG544Vcz7BJ7J+9tmw4mu31WVNNkyQSeoIthblVmk=
+	t=1712543290; cv=none; b=TjA6xh9D4wI8fYm3s9UxB393UPSbQ14TR7MVOQzOJKTlbH20EQxh21tzxk8dEvK8w5QmTWx9J2qUfWN853nId8IrIjOENnL2zHJQqnf7X0W3P6uObYf731Uen1Gxg30kMeep0fr0eSWnGYamhR2dcSXRNbntPwcQmAqCgFQNL48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712542644; c=relaxed/simple;
-	bh=WtDgvDlc+GbWPmB0QumOcolOX2UmdmYlul8RYNISVpI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=shNQm0AHHKmu/PEShUjP++saPknjB1lPPuqoLtc1MCLPh4txnfHnEc0AnZ6PSKfr2tZkxfGzspKvfkQ1KBCBaSLpEtffEFfUEdbT6Ns3GN4vBXpxE/T658HujGaYFw05UR9LxX9r1TK0xzWTNr2I+AtCmtpQZn5KNAHcHmssEsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xw31DAgP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2A4C43399;
-	Mon,  8 Apr 2024 02:17:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712542644;
-	bh=WtDgvDlc+GbWPmB0QumOcolOX2UmdmYlul8RYNISVpI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xw31DAgPanrT9nhvRsg0hn1X2EkGJU3ITfExpWCi7zbB1Vz2IQLY9JHisrUjk+Wkt
-	 q3DC1/JfrfkoifnpctylGBu/v5gHEK4XwPb8K3JKDrywovGGWou2vznQBS9MtSwFyN
-	 LDWCu2QBaxNknniJUBW8JcKf+bYot2fTkHalxl3Yfltp9lydflvtixF1/da+OaYPTV
-	 il0ESQRwU+NHBUbAbTTMIzbY8tfLTVofP+N/R6ciq3/EDOkX9lRNaSvP+sSyhX/DZc
-	 wfFDU2SOoM+3iZ93ZBRc1uIIJFNid0MwRcndz1S8aIsUrglwiOpj4Tv2M6t/1joSli
-	 Wn47U3+ZUTgig==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1712543290; c=relaxed/simple;
+	bh=B1Hpyz4lUJHvybHSHC4hQtBEQLMqG6s34DbYXR9w238=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uLeFCYTTerwwjD2tkQx4NbE7P0Hd+QhqDzCsR2aULoK1f6yB2EW7vtHa8f9+72mH6Ktvwk5hj9sTvEoQv7wUHDTwQdiyBO2ELg0goJjaez9gc/etPJ5Y7SHDrD/I2By2ebxp3noOpunRcBDjUiqljub3YYGOeIsb88GqhxrnumI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZEBXz/GS; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-6ed2170d89fso452844b3a.1
+        for <stable@vger.kernel.org>; Sun, 07 Apr 2024 19:28:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1712543288; x=1713148088; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/UyEnRJ7Sv6c5TCjCFpEabTDcdegfRiMpEIjLnwomgc=;
+        b=ZEBXz/GSvzCv014FAuwNNCwmCQXxqG8q9ulX4MI9qT/XSh0hqimOhk1g9eSlK6+BWx
+         wEOoTc0UBPI4kHkb4raTVjR2DHoJGYwJFaYKiwH4AaDtc3j3vU5yr452WfQV+rQvT4ZI
+         /D1x1gcWptJcQ7rrmlsl/M3DYEikO7BOHnp8U=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712543288; x=1713148088;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/UyEnRJ7Sv6c5TCjCFpEabTDcdegfRiMpEIjLnwomgc=;
+        b=U7aAWjxgn0/vW/A67JE36lypsjOpnszTFrhoKZL364Pu2u+zT1iwqjagtf8nhSYKIa
+         iobq18nVc4ItiVdgq+sZcqIXTX+4tFT9kbIJ8tqnlQfJUNrWihbNJgz4555wekpc7sl6
+         eWXJAtQxOa8Inqsv/p/tFlPXsVS9zuLViYZddG9AOXhMK3/kwftko/IG0swieqAlyHo+
+         yN3pCDrEKU4CIldYZe8TGnh6s5UdryNWMEk5vHsrhN1qk8Gag+cE+x0X67mNPzJhla2O
+         n7qCUdM536Rf64H5Oa2Slh6taEyo4ZuNxZ6mYf06zxxu9Q6B2CXDUq9HNazN0USWpzR9
+         vksg==
+X-Forwarded-Encrypted: i=1; AJvYcCXEDBmc4fVvfaT7+IVzjZfmzPMtrP/rAIO1fesrTk4bSM8pWww0X7nnVrZjOoUuDeE2KCWKLwTHVqr2bbEvtwKUGe80XWNv
+X-Gm-Message-State: AOJu0YwXsRsdBSw3P39GM7CWEmMwRI+VmWsvm/WgjHvy9YvuEMYMQdNT
+	ODVdOu4YuqlXVifqDvnN2E7vEAjh9js3aujfobDYrgSB/bd42VVRlBVExJT59Q==
+X-Google-Smtp-Source: AGHT+IHsec30tzs8cC+COVqHUQmcffu/WcMahAp9hT1R4C3+zSwQKOi2Xw1G1u9gMiLXW5aJNbPZhQ==
+X-Received: by 2002:a05:6a20:da81:b0:1a7:6a4a:a663 with SMTP id iy1-20020a056a20da8100b001a76a4aa663mr2345789pzb.17.1712543288342;
+        Sun, 07 Apr 2024 19:28:08 -0700 (PDT)
+Received: from vertex.vmware.com (pool-173-49-113-140.phlapa.fios.verizon.net. [173.49.113.140])
+        by smtp.gmail.com with ESMTPSA id fa12-20020a056a002d0c00b006e694719fa0sm3477159pfb.147.2024.04.07.19.28.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Apr 2024 19:28:08 -0700 (PDT)
+From: Zack Rusin <zack.rusin@broadcom.com>
+To: dri-devel@lists.freedesktop.org
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	ian.forbes@broadcom.com,
+	martin.krastev@broadcom.com,
+	maaz.mombasawala@broadcom.com,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Ye Li <ye.li@broadcom.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 0/3] arm64: dts: qcom: Fix the msi-map entries
-Date: Sun,  7 Apr 2024 21:17:20 -0500
-Message-ID: <171254262026.648987.5589442883549909128.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240318-pci-bdf-sid-fix-v1-0-acca6c5d9cf1@linaro.org>
-References: <20240318-pci-bdf-sid-fix-v1-0-acca6c5d9cf1@linaro.org>
+Subject: [PATCH] drm/vmwgfx: Enable DMA mappings with SEV
+Date: Sun,  7 Apr 2024 22:28:02 -0400
+Message-Id: <20240408022802.358641-1-zack.rusin@broadcom.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
+Enable DMA mappings in vmwgfx after TTM has been fixed in commit
+3bf3710e3718 ("drm/ttm: Add a generic TTM memcpy move for page-based iomem")
 
-On Mon, 18 Mar 2024 12:49:02 +0530, Manivannan Sadhasivam wrote:
-> While adding the GIC ITS MSI support, it was found that the msi-map entries
-> needed to be swapped to receive MSIs from the endpoint.
-> 
-> But later it was identified that the swapping was needed due to a bug in
-> the Qualcomm PCIe controller driver. And since the bug is now fixed with
-> commit bf79e33cdd89 ("PCI: qcom: Enable BDF to SID translation properly"),
-> let's fix the msi-map entries also to reflect the actual mapping in the
-> hardware.
-> 
-> [...]
+This enables full guest-backed memory support and in particular allows
+usage of screen targets as the presentation mechanism.
 
-Applied, thanks!
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Reported-by: Ye Li <ye.li@broadcom.com>
+Tested-by: Ye Li <ye.li@broadcom.com>
+Fixes: 3b0d6458c705 ("drm/vmwgfx: Refuse DMA operation when SEV encryption is active")
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.6+
+---
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-[1/3] arm64: dts: qcom: sm8450: Fix the msi-map entries
-      commit: d6c0602429490ff90d3f79a431aec1be779650b7
-[2/3] arm64: dts: qcom: sm8550: Fix the msi-map entries
-      commit: 398b7c7dda6792c2646a2208a6cbab02da97d6e5
-[3/3] arm64: dts: qcom: sm8650: Fix the msi-map entries
-      commit: 3ac680a514b6e63428481b1e6fb069383e5b7add
-
-Best regards,
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+index 41ad13e45554..bdad93864b98 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+@@ -667,11 +667,12 @@ static int vmw_dma_select_mode(struct vmw_private *dev_priv)
+ 		[vmw_dma_map_populate] = "Caching DMA mappings.",
+ 		[vmw_dma_map_bind] = "Giving up DMA mappings early."};
+ 
+-	/* TTM currently doesn't fully support SEV encryption. */
+-	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+-		return -EINVAL;
+-
+-	if (vmw_force_coherent)
++	/*
++	 * When running with SEV we always want dma mappings, because
++	 * otherwise ttm tt pool pages will bounce through swiotlb running
++	 * out of available space.
++	 */
++	if (vmw_force_coherent || cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+ 		dev_priv->map_mode = vmw_dma_alloc_coherent;
+ 	else if (vmw_restrict_iommu)
+ 		dev_priv->map_mode = vmw_dma_map_bind;
 -- 
-Bjorn Andersson <andersson@kernel.org>
+2.40.1
+
 
