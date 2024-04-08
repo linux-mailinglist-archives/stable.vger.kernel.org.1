@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-36471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBBF489C0BD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:11:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF23089BFFD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:04:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FB54B2AF1F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AE5D28485C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5357BAF0;
-	Mon,  8 Apr 2024 13:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B997BB07;
+	Mon,  8 Apr 2024 13:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6L9akTj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PV4zeZGn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7BE6CDA8;
-	Mon,  8 Apr 2024 13:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6315864CF2;
+	Mon,  8 Apr 2024 13:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581422; cv=none; b=fxKpdLqXeiv5ObgU8DPUfqo7YfFiZ0BdgGk7E/n5Hl9ck5/UgIaCW8HtI+7UmV90b53Kv7UaHku337cwOxHQZVGLPJgcuJSRMSbmJ567YW31cpWvbpAjfFk2VLlkCL+ZqrNbpZtZATHisAr3N740Q1t75qnvcPnuFUUO0O6m064=
+	t=1712581431; cv=none; b=MyNLIjrQ6YNHfFfJ8Me2dRWSnlAPfgLX4OMkBNQb9kC9h1DsBxBW9gfPlg96m9WdwseKJQ5yuEpEnHrVZxLzaabgwq2q8UYHyL6RY8QYL9bz43IJmC7aCx1ApndIJfNbZBHKvGouSuWEkPi+aybOnZ0119TjjuJeZ2cG5Blu0To=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581422; c=relaxed/simple;
-	bh=csxZHofYfgG4soKkQR7XabC12xYM1UN6Zydqq/Ji8T8=;
+	s=arc-20240116; t=1712581431; c=relaxed/simple;
+	bh=nUdQS1Nt/aozzK3F/awDRc1O3sG8WtPQJeHbkuRz6xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rkSldArYPquUrkzmSHl4cl4291AoLacbKKtsZL1mMeBHPyA+ewBFTqCPSSOHQZ0sYIDr21oXJMPtYZ0/46Vu2bJsCKxhbWL2U0/9WS5IvcsaXaZJcLR0CD+Pkb9YRkmdzIRhTqaiIOOi45QbJzIm6OG1SBYkm+WFo4UivbCV5kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6L9akTj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 318B9C433F1;
-	Mon,  8 Apr 2024 13:03:42 +0000 (UTC)
+	 MIME-Version; b=uhZV+mgJWAjaYRGA27zhlhwm1N/1LRxd2/2toK4tbuBCcnd0OSjOJFKsL9de6WemOO2rouQW41Al5hD2XzqqrjpCw25AqtO3J3OU5jIBbL7AYszbGTx9HZ5bzSBE9mRq5gIMWGbNQ5z7HY/YQTYQQdQV5aXvAdqHe3yOAT7LTc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PV4zeZGn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDEE5C433C7;
+	Mon,  8 Apr 2024 13:03:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581422;
-	bh=csxZHofYfgG4soKkQR7XabC12xYM1UN6Zydqq/Ji8T8=;
+	s=korg; t=1712581431;
+	bh=nUdQS1Nt/aozzK3F/awDRc1O3sG8WtPQJeHbkuRz6xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h6L9akTjGLT1lBsGw/tfCIaFmJPLkB6J/+/f5RJtgJ9uw3o2kY3mvmsJwIwl5OPNO
-	 7YyRVP5+mQvNn8bVtkymu8TaQaX+g5b7Ih3Kc4ekVn4d1hHaxOVP9zc60JzDBt9aIx
-	 Tzzfj/uNuoYqJJ0aoz1TctoHSn0fn/ROzrUHYUNo=
+	b=PV4zeZGn6MPXzUrXEuAYtPXB7Pp3GdHdH67HNi4t2toYszziAoDU1461OYdrufBVE
+	 2jtM+aehB2vO5UNzdgNVMBF5PhzbH2tvpZd5qJN1ode/u2lFUl6YcuNWXrPj84KlHY
+	 pdWLumV8vHtZgGu7gucZYHkM9HwbDokEDDQT/kac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Michael Hofmann <mhofmann@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Quentin Monnet <qmo@kernel.org>,
+	Alejandro Colomar <alx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 002/252] drm/i915: Pre-populate the cursor physical dma address
-Date: Mon,  8 Apr 2024 14:55:01 +0200
-Message-ID: <20240408125306.722062553@linuxfoundation.org>
+Subject: [PATCH 6.6 003/252] scripts/bpf_doc: Use silent mode when exec make cmd
+Date: Mon,  8 Apr 2024 14:55:02 +0200
+Message-ID: <20240408125306.753301407@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
 References: <20240408125306.643546457@linuxfoundation.org>
@@ -62,100 +63,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 582dc04b0658ef3b90aeb49cbdd9747c2f1eccc3 ]
+[ Upstream commit 5384cc0d1a88c27448a6a4e65b8abe6486de8012 ]
 
-Calling i915_gem_object_get_dma_address() from the vblank
-evade critical section triggers might_sleep().
+When getting kernel version via make, the result may be polluted by other
+output, like directory change info. e.g.
 
-While we know that we've already pinned the framebuffer
-and thus i915_gem_object_get_dma_address() will in fact
-not sleep in this case, it seems reasonable to keep the
-unconditional might_sleep() for maximum coverage.
+  $ export MAKEFLAGS="-w"
+  $ make kernelversion
+  make: Entering directory '/home/net'
+  6.8.0
+  make: Leaving directory '/home/net'
 
-So let's instead pre-populate the dma address during
-fb pinning, which all happens before we enter the
-vblank evade critical section.
+This will distort the reStructuredText output and make latter rst2man
+failed like:
 
-We can use u32 for the dma address as this class of
-hardware doesn't support >32bit addresses.
+  [...]
+  bpf-helpers.rst:20: (WARNING/2) Field list ends without a blank line; unexpected unindent.
+  [...]
 
-Cc: stable@vger.kernel.org
-Fixes: 0225a90981c8 ("drm/i915: Make cursor plane registers unlocked")
-Reported-by: Borislav Petkov <bp@alien8.de>
-Closes: https://lore.kernel.org/intel-gfx/20240227100342.GAZd2zfmYcPS_SndtO@fat_crate.local/
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240325175738.3440-1-ville.syrjala@linux.intel.com
-Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-(cherry picked from commit c1289a5c3594cf04caa94ebf0edeb50c62009f1f)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Using silent mode would help. e.g.
+
+  $ make -s --no-print-directory kernelversion
+  6.8.0
+
+Fixes: fd0a38f9c37d ("scripts/bpf: Set version attribute for bpf-helpers(7) man page")
+Signed-off-by: Michael Hofmann <mhofmann@redhat.com>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Acked-by: Alejandro Colomar <alx@kernel.org>
+Link: https://lore.kernel.org/bpf/20240315023443.2364442-1-liuhangbin@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_cursor.c        |  4 +---
- drivers/gpu/drm/i915/display/intel_display_types.h |  1 +
- drivers/gpu/drm/i915/display/intel_fb_pin.c        | 10 ++++++++++
- 3 files changed, 12 insertions(+), 3 deletions(-)
+ scripts/bpf_doc.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_cursor.c b/drivers/gpu/drm/i915/display/intel_cursor.c
-index 0d21c34f74990..61df6cd3f3778 100644
---- a/drivers/gpu/drm/i915/display/intel_cursor.c
-+++ b/drivers/gpu/drm/i915/display/intel_cursor.c
-@@ -34,12 +34,10 @@ static u32 intel_cursor_base(const struct intel_plane_state *plane_state)
- {
- 	struct drm_i915_private *dev_priv =
- 		to_i915(plane_state->uapi.plane->dev);
--	const struct drm_framebuffer *fb = plane_state->hw.fb;
--	struct drm_i915_gem_object *obj = intel_fb_obj(fb);
- 	u32 base;
- 
- 	if (DISPLAY_INFO(dev_priv)->cursor_needs_physical)
--		base = i915_gem_object_get_dma_address(obj, 0);
-+		base = plane_state->phys_dma_addr;
- 	else
- 		base = intel_plane_ggtt_offset(plane_state);
- 
-diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/drivers/gpu/drm/i915/display/intel_display_types.h
-index 7fc92b1474cc4..8b0dc2b75da4a 100644
---- a/drivers/gpu/drm/i915/display/intel_display_types.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_types.h
-@@ -701,6 +701,7 @@ struct intel_plane_state {
- #define PLANE_HAS_FENCE BIT(0)
- 
- 	struct intel_fb_view view;
-+	u32 phys_dma_addr; /* for cursor_needs_physical */
- 
- 	/* Plane pxp decryption state */
- 	bool decrypt;
-diff --git a/drivers/gpu/drm/i915/display/intel_fb_pin.c b/drivers/gpu/drm/i915/display/intel_fb_pin.c
-index fffd568070d41..a131656757f2b 100644
---- a/drivers/gpu/drm/i915/display/intel_fb_pin.c
-+++ b/drivers/gpu/drm/i915/display/intel_fb_pin.c
-@@ -254,6 +254,16 @@ int intel_plane_pin_fb(struct intel_plane_state *plane_state)
- 			return PTR_ERR(vma);
- 
- 		plane_state->ggtt_vma = vma;
-+
-+		/*
-+		 * Pre-populate the dma address before we enter the vblank
-+		 * evade critical section as i915_gem_object_get_dma_address()
-+		 * will trigger might_sleep() even if it won't actually sleep,
-+		 * which is the case when the fb has already been pinned.
-+		 */
-+		if (phys_cursor)
-+			plane_state->phys_dma_addr =
-+				i915_gem_object_get_dma_address(intel_fb_obj(fb), 0);
- 	} else {
- 		struct intel_framebuffer *intel_fb = to_intel_framebuffer(fb);
- 
+diff --git a/scripts/bpf_doc.py b/scripts/bpf_doc.py
+index 0669bac5e900e..3f899cc7e99a9 100755
+--- a/scripts/bpf_doc.py
++++ b/scripts/bpf_doc.py
+@@ -414,8 +414,8 @@ class PrinterRST(Printer):
+             version = version.stdout.decode().rstrip()
+         except:
+             try:
+-                version = subprocess.run(['make', 'kernelversion'], cwd=linuxRoot,
+-                                         capture_output=True, check=True)
++                version = subprocess.run(['make', '-s', '--no-print-directory', 'kernelversion'],
++                                         cwd=linuxRoot, capture_output=True, check=True)
+                 version = version.stdout.decode().rstrip()
+             except:
+                 return 'Linux'
 -- 
 2.43.0
 
