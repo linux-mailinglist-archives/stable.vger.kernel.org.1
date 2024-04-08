@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-37551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA1A289C556
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:56:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B8D989C1C3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:23:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BCA01F237AE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:56:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 086FF283112
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C007BAE4;
-	Mon,  8 Apr 2024 13:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9876481748;
+	Mon,  8 Apr 2024 13:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gC9nAX2P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSkTRUWM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459F179955;
-	Mon,  8 Apr 2024 13:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5786B62148;
+	Mon,  8 Apr 2024 13:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584565; cv=none; b=ZILfaKcYw85nli/CyWRAhtO/6ZB4ZwNn/7p2keNWxdSRqqlmo/4K93g6QWRC/lD70VHMJJofKxf16gsGMG0K++CZckwzF8xSOYBDrvkakU1FaXqHryTR0X9qm5mz2Wi0FY3kxKMqkNIxmYoWrpK7329gqzIhDSF3RFW4fTRUsgU=
+	t=1712582410; cv=none; b=N0Rbffufc+Mdxj93Byns24sPEIx3gHwJliiL5Fei9PYHWzWujxuuBf7iB3LVxFdHU6SmTazC2us4THzaf4mhYrMBz4GgbiUPMXAwXuLc84DJxPYUHijjl5ShcEk7vJg5H2b6iArqKaRCtHg94LaLXqjTjIjRXlZHbQopWMMGTRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584565; c=relaxed/simple;
-	bh=wMNyMdjz8bCLJR06HWA5o+kxzcbwvMtqF+e+uGHQ4bk=;
+	s=arc-20240116; t=1712582410; c=relaxed/simple;
+	bh=tcaWZzWcJxGQoYUVbBZCX92pF5fs8f7xezT9dhZnpeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H/e7e3cuQIKT8C/Q/kYkAF6H/Gl27jP+LW6lwlDCgwuACC5nYRTlakNQLNMrDZWDwm8xZFYf285pu5PE2tt6IGmxDX437MWC0MuWH/fH/dVdeovL9+judO4WLdHOMOK0fsuTRGpR0qNskTdcjL1GaO1P/KKPx7MfYCJ/+XIGsIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gC9nAX2P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3987C433C7;
-	Mon,  8 Apr 2024 13:56:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FWhHr/IiyRiBzmP23fpKFyh1Pbk3CzRbMK46vs222zfJ7Ag5kotbry1lKW63GZTbsIWn1XUtShiVkHC5s5XSWAWeM6LSGRoBmS7hFsz3XckUw5HE4QrKhQD8+LJNAHoaBLKayWDJa0YbvUb/eHqsQFsfx+IISQIdHBllqGxc0+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSkTRUWM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA801C433F1;
+	Mon,  8 Apr 2024 13:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584565;
-	bh=wMNyMdjz8bCLJR06HWA5o+kxzcbwvMtqF+e+uGHQ4bk=;
+	s=korg; t=1712582410;
+	bh=tcaWZzWcJxGQoYUVbBZCX92pF5fs8f7xezT9dhZnpeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gC9nAX2PtivnqFd2vfA4iMwTZD7XsVvW5d2FRK8CPhSuMg7BJjfSlS7n72TtgzS/T
-	 iFzSWZspHc0eX5SrgyqFGXuMNJMmIOvPGkH25qLCbW1sV9KPI/zbf2jSD7obowgqVC
-	 /C3cBJLVmm58nu+kfbL8ZQrIzbAqLWG5jCwEJqd8=
+	b=YSkTRUWMo/YMBHVcT0ohAqlbCyOP423EuYiRI9qabk8Rx5tEt9hZu2j+IELC4AKZV
+	 9PWu/9vTsZZQelrAX1RuDy7C/ax0/D4nT+JuX+vn8+GWlnpKQ7NTMjMC6rAMMcNX6J
+	 mUgVItZkTSoY891ya+VlcywneYV7C3deE1HjOBgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 5.15 480/690] NFSD: Flesh out a documenting comment for filecache.c
-Date: Mon,  8 Apr 2024 14:55:46 +0200
-Message-ID: <20240408125417.007929279@linuxfoundation.org>
+	=?UTF-8?q?Joan=20Bruguera=20Mic=C3=B3?= <joanbrugueram@gmail.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>
+Subject: [PATCH 6.8 072/273] x86/bpf: Fix IP after emitting call depth accounting
+Date: Mon,  8 Apr 2024 14:55:47 +0200
+Message-ID: <20240408125311.536613958@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,65 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit b3276c1f5b268ff56622e9e125b792b4c3dc03ac ]
+commit 9d98aa088386aee3db1b7b60b800c0fde0654a4a upstream.
 
-Record what we've learned recently about the NFSD filecache in a
-documenting comment so our future selves don't forget what all this
-is for.
+Adjust the IP passed to `emit_patch` so it calculates the correct offset
+for the CALL instruction if `x86_call_depth_emit_accounting` emits code.
+Otherwise we will skip some instructions and most likely crash.
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: b2e9dfe54be4 ("x86/bpf: Emit call depth accounting if required")
+Link: https://lore.kernel.org/lkml/20230105214922.250473-1-joanbrugueram@gmail.com/
+Co-developed-by: Joan Bruguera Micó <joanbrugueram@gmail.com>
+Signed-off-by: Joan Bruguera Micó <joanbrugueram@gmail.com>
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/r/20240401185821.224068-2-ubizjak@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/filecache.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ arch/x86/net/bpf_jit_comp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 13a25503b80e1..d681faf48cf85 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -2,6 +2,30 @@
-  * Open file cache.
-  *
-  * (c) 2015 - Jeff Layton <jeff.layton@primarydata.com>
-+ *
-+ * An nfsd_file object is a per-file collection of open state that binds
-+ * together:
-+ *   - a struct file *
-+ *   - a user credential
-+ *   - a network namespace
-+ *   - a read-ahead context
-+ *   - monitoring for writeback errors
-+ *
-+ * nfsd_file objects are reference-counted. Consumers acquire a new
-+ * object via the nfsd_file_acquire API. They manage their interest in
-+ * the acquired object, and hence the object's reference count, via
-+ * nfsd_file_get and nfsd_file_put. There are two varieties of nfsd_file
-+ * object:
-+ *
-+ *  * non-garbage-collected: When a consumer wants to precisely control
-+ *    the lifetime of a file's open state, it acquires a non-garbage-
-+ *    collected nfsd_file. The final nfsd_file_put releases the open
-+ *    state immediately.
-+ *
-+ *  * garbage-collected: When a consumer does not control the lifetime
-+ *    of open state, it acquires a garbage-collected nfsd_file. The
-+ *    final nfsd_file_put allows the open state to linger for a period
-+ *    during which it may be re-used.
-  */
+--- a/arch/x86/net/bpf_jit_comp.c
++++ b/arch/x86/net/bpf_jit_comp.c
+@@ -466,7 +466,7 @@ static int emit_call(u8 **pprog, void *f
+ static int emit_rsb_call(u8 **pprog, void *func, void *ip)
+ {
+ 	OPTIMIZER_HIDE_VAR(func);
+-	x86_call_depth_emit_accounting(pprog, func);
++	ip += x86_call_depth_emit_accounting(pprog, func);
+ 	return emit_patch(pprog, func, ip, 0xE8);
+ }
  
- #include <linux/hash.h>
--- 
-2.43.0
-
 
 
 
