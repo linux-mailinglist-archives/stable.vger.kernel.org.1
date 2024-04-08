@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-37028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EC2E89C2EE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:37:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 883E589C03A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AF0C282049
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:37:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA9EA1C21729
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBA912F58B;
-	Mon,  8 Apr 2024 13:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1260E6F53D;
+	Mon,  8 Apr 2024 13:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0I2XzDP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1mI/tch"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0EF12F391;
-	Mon,  8 Apr 2024 13:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FAB2DF73;
+	Mon,  8 Apr 2024 13:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583045; cv=none; b=g4nnVEXrB+NIXvnvQCIosv6x94NVJdprLEihwneBp5LPOby+KbkmAb/rVt7L7USAw/hfR3BjXLtvf9NIFniFTYGJ3VE2RHRD+xGTtkGSHe03rd/4xeT15XYBikB7bPm5v7q4WtS1w32xhqh0bpb8Yq1Em/SLFWNOgqj6dDxkafY=
+	t=1712581585; cv=none; b=BqM83Mdmqj0mut3GY3+HVopEOPqFoB19morsw3gVzLA5vsA+53fG0tfHaXxen3HWVlrIxQgbSz1JNmozv3+upuKkvOSq7WDBO84oUuY18WyZ3vc9gPoBrgUrk2oJqU2LBS0+fBy424Cy0u/wZyJ51/dVtHEIe+adtaqXwP+Rq98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583045; c=relaxed/simple;
-	bh=CrrOBdpqkjQfO8/qaLM2Qag4mibMaJiTGzK1EYuyVrY=;
+	s=arc-20240116; t=1712581585; c=relaxed/simple;
+	bh=MddQ+DGLXQ+JJXN/9mHBE2V3F9WZGAS81LvzOvJy7xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=meaB8EHKM0vJjSTvTYTKll9LhCdMgJtwCSyyn3sv2aBfQXDvhvUUCLlJSJ9TjoPPNt+XML3A7qprvH/TDkFxnhJljSOjnBWCUhC2R5tJS6Is2uoXJKAKFU9TLlfBKIxRRWRC1/PyfjFwC1i3Xdnl5AqojOh8BUi2z5pT8M7uic8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0I2XzDP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1B7C433C7;
-	Mon,  8 Apr 2024 13:30:43 +0000 (UTC)
+	 MIME-Version; b=PdQfz7Hq/kxiK+KWd8a+EcUeUQbp7HxPpy6hXAq9A2dTAvn5zd+KUXUXi5lgauAy+/+iuRJGyVgQxw5bukT28E2i0mw/je1crs0533lilbYei5WND0wo5PaIeEDmIuyTlJ1tGyT1NEj9m5oZR5s8XpOl+6qEmIZQ/FsuKqnG3bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1mI/tch; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF29C433F1;
+	Mon,  8 Apr 2024 13:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583044;
-	bh=CrrOBdpqkjQfO8/qaLM2Qag4mibMaJiTGzK1EYuyVrY=;
+	s=korg; t=1712581585;
+	bh=MddQ+DGLXQ+JJXN/9mHBE2V3F9WZGAS81LvzOvJy7xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0I2XzDPBi6liQppV36leVSmHMjTx8J8sCY2JbTttpiKAscjCWDjql6QJkHDnMLjC
-	 nXsu6DRXbZoint7XDph/qDvVYsLIyWgRzcqAegqo1i4VeCfJvaPw4rPUTSPxGJxw3/
-	 V80MBHwJ9cIZ8M0bCL5ZTfGBwblU7VzTlOH9IIEY=
+	b=Q1mI/tchFf1S0EUggtDaj+ZPpQJXwYgHYyeN2MOPB7hCgl+kaDabcB5W2UALr5DWA
+	 d2mA7flVFcn9cxT2eSDQ52c4gfNvkJeIunGxptK2jpaGOtKsTu4Z5MwU1nt76N4T7U
+	 1GfBZJd7yWGb5JFiWTQBYqcIflhBlpmpcYaMMtDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Naama Meir <naamax.meir@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 151/252] e1000e: Minor flow correction in e1000_shutdown function
+	Mahmoud Adam <mngyadam@amazon.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 036/138] net/rds: fix possible cp null dereference
 Date: Mon,  8 Apr 2024 14:57:30 +0200
-Message-ID: <20240408125311.342583874@linuxfoundation.org>
+Message-ID: <20240408125257.346681762@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Mahmoud Adam <mngyadam@amazon.com>
 
-[ Upstream commit 662200e324daebe6859c1f0f3ea1538b0561425a ]
+commit 62fc3357e079a07a22465b9b6ef71bb6ea75ee4b upstream.
 
-Add curly braces to avoid entering to an if statement where it is not
-always required in e1000_shutdown function.
-This improves code readability and might prevent non-deterministic
-behaviour in the future.
+cp might be null, calling cp->cp_conn would produce null dereference
 
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20240301184806.2634508-5-anthony.l.nguyen@intel.com
+[Simon Horman adds:]
+
+Analysis:
+
+* cp is a parameter of __rds_rdma_map and is not reassigned.
+
+* The following call-sites pass a NULL cp argument to __rds_rdma_map()
+
+  - rds_get_mr()
+  - rds_get_mr_for_dest
+
+* Prior to the code above, the following assumes that cp may be NULL
+  (which is indicative, but could itself be unnecessary)
+
+	trans_private = rs->rs_transport->get_mr(
+		sg, nents, rs, &mr->r_key, cp ? cp->cp_conn : NULL,
+		args->vec.addr, args->vec.bytes,
+		need_odp ? ODP_ZEROBASED : ODP_NOT_NEEDED);
+
+* The code modified by this patch is guarded by IS_ERR(trans_private),
+  where trans_private is assigned as per the previous point in this analysis.
+
+  The only implementation of get_mr that I could locate is rds_ib_get_mr()
+  which can return an ERR_PTR if the conn (4th) argument is NULL.
+
+* ret is set to PTR_ERR(trans_private).
+  rds_ib_get_mr can return ERR_PTR(-ENODEV) if the conn (4th) argument is NULL.
+  Thus ret may be -ENODEV in which case the code in question will execute.
+
+Conclusion:
+* cp may be NULL at the point where this patch adds a check;
+  this patch does seem to address a possible bug
+
+Fixes: c055fc00c07b ("net/rds: fix WARNING in rds_conn_connect_if_down")
+Cc: stable@vger.kernel.org # v4.19+
+Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240326153132.55580-1-mngyadam@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 861e8086029e ("e1000e: move force SMBUS from enable ulp function to avoid PHY loss issue")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/e1000e/netdev.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/rds/rdma.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index af5d9d97a0d6c..cc8c531ec3dff 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -6688,14 +6688,14 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
- 	if (adapter->hw.phy.type == e1000_phy_igp_3) {
- 		e1000e_igp3_phy_powerdown_workaround_ich8lan(&adapter->hw);
- 	} else if (hw->mac.type >= e1000_pch_lpt) {
--		if (wufc && !(wufc & (E1000_WUFC_EX | E1000_WUFC_MC | E1000_WUFC_BC)))
-+		if (wufc && !(wufc & (E1000_WUFC_EX | E1000_WUFC_MC | E1000_WUFC_BC))) {
- 			/* ULP does not support wake from unicast, multicast
- 			 * or broadcast.
- 			 */
- 			retval = e1000_enable_ulp_lpt_lp(hw, !runtime);
--
--		if (retval)
--			return retval;
-+			if (retval)
-+				return retval;
-+		}
+--- a/net/rds/rdma.c
++++ b/net/rds/rdma.c
+@@ -302,7 +302,7 @@ static int __rds_rdma_map(struct rds_soc
+ 		}
+ 		ret = PTR_ERR(trans_private);
+ 		/* Trigger connection so that its ready for the next retry */
+-		if (ret == -ENODEV)
++		if (ret == -ENODEV && cp)
+ 			rds_conn_connect_if_down(cp->cp_conn);
+ 		goto out;
  	}
- 
- 	/* Ensure that the appropriate bits are set in LPI_CTRL
--- 
-2.43.0
-
 
 
 
