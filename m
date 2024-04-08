@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-37596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F88089C681
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:12:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA7C89C31A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8869B236E8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 897651F21E5E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:39:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C9A7D074;
-	Mon,  8 Apr 2024 13:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6C97FBDD;
+	Mon,  8 Apr 2024 13:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUqYFAGR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SffaSROb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FB37C085;
-	Mon,  8 Apr 2024 13:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA9B7FBD3;
+	Mon,  8 Apr 2024 13:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584697; cv=none; b=Siqkd0l429QWCGcnn8qXWFiwQtGQ8BqQ+DV1fUJznMrOEAAZoSGM8BEUffJzhIHVZB1nnsDzOUvA0q0yleA4x0d8Y/1JGalfptdolmURyE4SYeDQL6e40YWZ/kZLpJrFAPjd5ohmMiebesXA3zgMjI2fqgCoMdeuKmG5ZYoA4wk=
+	t=1712583154; cv=none; b=g56Hfw/j/NWiXStmicQpGwCmZa0QfmUJ7XY7zkHxjgCwrEDU+48MwI4wdAMhm3HDN5yqPLnnRA1gruF3rJMYcy9e2spP+SiwHRftn4M533ScV5rLLHsIXcDm7KlwIfDbEsMPGX0V1H+V+yi3YiEetTWue0Ynwq2ZR3yA3FX5hdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584697; c=relaxed/simple;
-	bh=Q8UQSgsKKjEaPM//4mxazwFHJ+BbaDOsrEYV6zjivSI=;
+	s=arc-20240116; t=1712583154; c=relaxed/simple;
+	bh=IySIGsMeS3AdL6uIJiPnPi/9LhYoK/vvd7BGYtUMoHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lFP4F7m/g5SnCisrAK77bEK6LXLwqMMvCfpRHWZISaaqH2AFYOQvwUnMO6JWIaMMdrU8694KmUrSTKT0pEPS6qIihOQDpVKBkue9frTRyKrF1hMBpyw4pS0ryesL38x66VPU/n1TyXckSbufFANi4ls+r9OpJY/MGv/v3ibohtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUqYFAGR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2303BC433F1;
-	Mon,  8 Apr 2024 13:58:16 +0000 (UTC)
+	 MIME-Version; b=LfABKBcdSJa/tVtkuI96KTlerXfvRj8g+ZmNbl1GBw4C9ZcaqOxz3mGX+ZUN8OZrzKh893BT/OmZtyABIp2QgGvli0w4THUSSt7UA6ITaPVNracA40wg2ifMyj18yLTbui72JHZ+B7jcU9+M4wjpVorN/AYvWfe3vHlP95ZjqzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SffaSROb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39C4C433F1;
+	Mon,  8 Apr 2024 13:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584697;
-	bh=Q8UQSgsKKjEaPM//4mxazwFHJ+BbaDOsrEYV6zjivSI=;
+	s=korg; t=1712583154;
+	bh=IySIGsMeS3AdL6uIJiPnPi/9LhYoK/vvd7BGYtUMoHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eUqYFAGR+xvk39oNAdCjoqf0YLmw0r7ZJkXZunAdfS2lSRNKNrSdyY9h7jCp/vIIM
-	 nek0Yhh/NHIbtVFKPzAdFRIpcst9dyJkOwgKT6dNzqYEp56dJtAC4809DG4luuZ8Hl
-	 9lAAps+v87Kr8aaPxJoGJBAJgonmhMN+m898Lt7Y=
+	b=SffaSRObjZuLpCYehEBUGh+PCLu6kfHEJ5Fj8p+PNGa6vpg9tP3GB6lUYeM0NTGHC
+	 uFLtl+e2+AedkLGLrQQhwIfve+FibqNNtWkV234PJmGOyzHepvC8xHlmgl2bPesCiW
+	 yX9peQTrIEfn07G6O2AlubmCKAySe3M8PQvFUFcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Dario Lesca <d.lesca@solinos.it>,
-	David Critch <dcritch@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 527/690] nfsd: dont replace page in rq_pages if its a continuation of last page
+	syzkaller <syzkaller@googlegroups.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.8 118/273] ipv6: Fix infinite recursion in fib6_dump_done().
 Date: Mon,  8 Apr 2024 14:56:33 +0200
-Message-ID: <20240408125418.744324107@linuxfoundation.org>
+Message-ID: <20240408125312.964049415@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +64,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 27c934dd8832dd40fd34776f916dc201e18b319b ]
+commit d21d40605bca7bd5fc23ef03d4c1ca1f48bc2cae upstream.
 
-The splice read calls nfsd_splice_actor to put the pages containing file
-data into the svc_rqst->rq_pages array. It's possible however to get a
-splice result that only has a partial page at the end, if (e.g.) the
-filesystem hands back a short read that doesn't cover the whole page.
+syzkaller reported infinite recursive calls of fib6_dump_done() during
+netlink socket destruction.  [1]
 
-nfsd_splice_actor will plop the partial page into its rq_pages array and
-return. Then later, when nfsd_splice_actor is called again, the
-remainder of the page may end up being filled out. At this point,
-nfsd_splice_actor will put the page into the array _again_ corrupting
-the reply. If this is done enough times, rq_next_page will overrun the
-array and corrupt the trailing fields -- the rq_respages and
-rq_next_page pointers themselves.
+>From the log, syzkaller sent an AF_UNSPEC RTM_GETROUTE message, and then
+the response was generated.  The following recvmmsg() resumed the dump
+for IPv6, but the first call of inet6_dump_fib() failed at kzalloc() due
+to the fault injection.  [0]
 
-If we've already added the page to the array in the last pass, don't add
-it to the array a second time when dealing with a splice continuation.
-This was originally handled properly in nfsd_splice_actor, but commit
-91e23b1c3982 ("NFSD: Clean up nfsd_splice_actor()") removed the check
-for it.
+  12:01:34 executing program 3:
+  r0 = socket$nl_route(0x10, 0x3, 0x0)
+  sendmsg$nl_route(r0, ... snip ...)
+  recvmmsg(r0, ... snip ...) (fail_nth: 8)
 
-Fixes: 91e23b1c3982 ("NFSD: Clean up nfsd_splice_actor()")
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Reported-by: Dario Lesca <d.lesca@solinos.it>
-Tested-by: David Critch <dcritch@redhat.com>
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2150630
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Here, fib6_dump_done() was set to nlk_sk(sk)->cb.done, and the next call
+of inet6_dump_fib() set it to nlk_sk(sk)->cb.args[3].  syzkaller stopped
+receiving the response halfway through, and finally netlink_sock_destruct()
+called nlk_sk(sk)->cb.done().
+
+fib6_dump_done() calls fib6_dump_end() and nlk_sk(sk)->cb.done() if it
+is still not NULL.  fib6_dump_end() rewrites nlk_sk(sk)->cb.done() by
+nlk_sk(sk)->cb.args[3], but it has the same function, not NULL, calling
+itself recursively and hitting the stack guard page.
+
+To avoid the issue, let's set the destructor after kzalloc().
+
+[0]:
+FAULT_INJECTION: forcing a failure.
+name failslab, interval 1, probability 0, space 0, times 0
+CPU: 1 PID: 432110 Comm: syz-executor.3 Not tainted 6.8.0-12821-g537c2e91d354-dirty #11
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl (lib/dump_stack.c:117)
+ should_fail_ex (lib/fault-inject.c:52 lib/fault-inject.c:153)
+ should_failslab (mm/slub.c:3733)
+ kmalloc_trace (mm/slub.c:3748 mm/slub.c:3827 mm/slub.c:3992)
+ inet6_dump_fib (./include/linux/slab.h:628 ./include/linux/slab.h:749 net/ipv6/ip6_fib.c:662)
+ rtnl_dump_all (net/core/rtnetlink.c:4029)
+ netlink_dump (net/netlink/af_netlink.c:2269)
+ netlink_recvmsg (net/netlink/af_netlink.c:1988)
+ ____sys_recvmsg (net/socket.c:1046 net/socket.c:2801)
+ ___sys_recvmsg (net/socket.c:2846)
+ do_recvmmsg (net/socket.c:2943)
+ __x64_sys_recvmmsg (net/socket.c:3041 net/socket.c:3034 net/socket.c:3034)
+
+[1]:
+BUG: TASK stack guard page was hit at 00000000f2fa9af1 (stack is 00000000b7912430..000000009a436beb)
+stack guard page: 0000 [#1] PREEMPT SMP KASAN
+CPU: 1 PID: 223719 Comm: kworker/1:3 Not tainted 6.8.0-12821-g537c2e91d354-dirty #11
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+Workqueue: events netlink_sock_destruct_work
+RIP: 0010:fib6_dump_done (net/ipv6/ip6_fib.c:570)
+Code: 3c 24 e8 f3 e9 51 fd e9 28 fd ff ff 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 41 57 41 56 41 55 41 54 55 48 89 fd <53> 48 8d 5d 60 e8 b6 4d 07 fd 48 89 da 48 b8 00 00 00 00 00 fc ff
+RSP: 0018:ffffc9000d980000 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffffffff84405990 RCX: ffffffff844059d3
+RDX: ffff8881028e0000 RSI: ffffffff84405ac2 RDI: ffff88810c02f358
+RBP: ffff88810c02f358 R08: 0000000000000007 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000224 R12: 0000000000000000
+R13: ffff888007c82c78 R14: ffff888007c82c68 R15: ffff888007c82c68
+FS:  0000000000000000(0000) GS:ffff88811b100000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffc9000d97fff8 CR3: 0000000102309002 CR4: 0000000000770ef0
+PKRU: 55555554
+Call Trace:
+ <#DF>
+ </#DF>
+ <TASK>
+ fib6_dump_done (net/ipv6/ip6_fib.c:572 (discriminator 1))
+ fib6_dump_done (net/ipv6/ip6_fib.c:572 (discriminator 1))
+ ...
+ fib6_dump_done (net/ipv6/ip6_fib.c:572 (discriminator 1))
+ fib6_dump_done (net/ipv6/ip6_fib.c:572 (discriminator 1))
+ netlink_sock_destruct (net/netlink/af_netlink.c:401)
+ __sk_destruct (net/core/sock.c:2177 (discriminator 2))
+ sk_destruct (net/core/sock.c:2224)
+ __sk_free (net/core/sock.c:2235)
+ sk_free (net/core/sock.c:2246)
+ process_one_work (kernel/workqueue.c:3259)
+ worker_thread (kernel/workqueue.c:3329 kernel/workqueue.c:3416)
+ kthread (kernel/kthread.c:388)
+ ret_from_fork (arch/x86/kernel/process.c:153)
+ ret_from_fork_asm (arch/x86/entry/entry_64.S:256)
+Modules linked in:
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240401211003.25274-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/vfs.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ net/ipv6/ip6_fib.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index 690191b3d997c..71788a5e4a55c 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -938,8 +938,15 @@ nfsd_splice_actor(struct pipe_inode_info *pipe, struct pipe_buffer *buf,
- 	struct page *last_page;
- 
- 	last_page = page + (offset + sd->len - 1) / PAGE_SIZE;
--	for (page += offset / PAGE_SIZE; page <= last_page; page++)
-+	for (page += offset / PAGE_SIZE; page <= last_page; page++) {
-+		/*
-+		 * Skip page replacement when extending the contents
-+		 * of the current page.
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -645,19 +645,19 @@ static int inet6_dump_fib(struct sk_buff
+ 	if (!w) {
+ 		/* New dump:
+ 		 *
+-		 * 1. hook callback destructor.
+-		 */
+-		cb->args[3] = (long)cb->done;
+-		cb->done = fib6_dump_done;
+-
+-		/*
+-		 * 2. allocate and initialize walker.
++		 * 1. allocate and initialize walker.
+ 		 */
+ 		w = kzalloc(sizeof(*w), GFP_ATOMIC);
+ 		if (!w)
+ 			return -ENOMEM;
+ 		w->func = fib6_dump_node;
+ 		cb->args[2] = (long)w;
++
++		/* 2. hook callback destructor.
 +		 */
-+		if (page == *(rqstp->rq_next_page - 1))
-+			continue;
- 		svc_rqst_replace_page(rqstp, page);
-+	}
- 	if (rqstp->rq_res.page_len == 0)	// first call
- 		rqstp->rq_res.page_base = offset % PAGE_SIZE;
- 	rqstp->rq_res.page_len += sd->len;
--- 
-2.43.0
-
++		cb->args[3] = (long)cb->done;
++		cb->done = fib6_dump_done;
++
+ 	}
+ 
+ 	arg.skb = skb;
 
 
 
