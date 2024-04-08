@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-37285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A4189C434
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C4C89C393
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84C761C22660
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B868928344A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C3185C41;
-	Mon,  8 Apr 2024 13:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C61812A14E;
+	Mon,  8 Apr 2024 13:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YcJhPbcF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhDD0zlW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651207D414;
-	Mon,  8 Apr 2024 13:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7597E101;
+	Mon,  8 Apr 2024 13:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583789; cv=none; b=h7jmj/mMnhR97vX9dBGgJWA96ZwvAb56/3bsRIR+WFylBURwfsjoPm7YFwUhES9xBX6AMVvKiI0ASxyzfvWx6o/MnDPF1UMXGwnp/vEg3oEfPVcjY4V1gyHT8qfW87QuwOchCFupzI+nweotJa6nmhj2cbgfr8+xnD+zdgsaYPg=
+	t=1712583431; cv=none; b=ocQaXfB6tXqDZFh67JytGu8ZOTJ/az9elvW+mQVdAzGJyuCB9IpH8LiytOftya0o9nohRgtLUW1l0A7dhiTnLhDn43Ue+za5oqR/UUt+gNV7sF+AphjdJ7Hvcn5/Dz6y7/Zt/2ppq1lRC+CqlTqCeI5O8Tnk+v5kStXZgqGUC88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583789; c=relaxed/simple;
-	bh=L1f0ankWjk8cVffmAezo81gnONLIjxy/AZdt94fQTic=;
+	s=arc-20240116; t=1712583431; c=relaxed/simple;
+	bh=oO+9lmZXogbRjNDgXbIdDHaO04+xg84rhkifudas5a8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t7xlFt2pL82CZJVj3CIoVZS7LzMfRfteFCFtlTwkFTbemdonBgAwr1tBFtoYRodo/JRs/KKc0AhSCC12VEYvJ2w7AoKAoafEIGey5/ljNe9Y3HuekttWGY0DePQpYpIeBPM5pKfu4eBXC469WIq0/lAPf4fN+6QwUJg7gW4nvG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YcJhPbcF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF911C433F1;
-	Mon,  8 Apr 2024 13:43:08 +0000 (UTC)
+	 MIME-Version; b=NjMO+LDvjeyOW8bVzDL9I8Mz5I/o7MZII9OPUFTBueGAFlPSdE6GeLtxB8dRt3rLAuJn5QolOQgJIfCXT+/e92pStHoomvJYlDiEcCHXjFxS/WYARxWK/TX4mIb/vXFhRHsS0Q7L7iVMP6yCk9q9TOxHC8xKm4Oti5IS2RWY3mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhDD0zlW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D14C43390;
+	Mon,  8 Apr 2024 13:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583789;
-	bh=L1f0ankWjk8cVffmAezo81gnONLIjxy/AZdt94fQTic=;
+	s=korg; t=1712583430;
+	bh=oO+9lmZXogbRjNDgXbIdDHaO04+xg84rhkifudas5a8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YcJhPbcFpVAl9qyQxWBNC3eEja8vE/mLKNZbhCLBhf5KiY4sMAT+dgQzSN0pnum6A
-	 eJp7FjVpR/uG0yrguvSsd8nj4XmfhlbMhO0Xn50beYzWejiPUhx/CbnV1ASH941m+c
-	 N8xsCHuTXEcFl8ycQ8r0gPBEwUVoqG7T1zWbeSsc=
+	b=DhDD0zlWnJao1/wlXXHDPbEzQ1X6pdMym/6z8rdBsPBkUfeg4HnyzhuUOJo78GJKb
+	 9UoHoUI7wzzjVfgfVS5AFhtkt4TMnH2ArQyD8cZhTt+Ks86YP8eWu8KUesT24vHcn/
+	 hLfNXDcO5kyWONBltMdj5gEZu/Xr9CnYg8+bCZYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.8 219/273] ASoC: SOF: Intel: hda-common-ops: Do not set the get_stream_position callback
+	Arnd Bergmann <arnd@arndb.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 195/252] ata: sata_mv: Fix PCI device ID table declaration compilation warning
 Date: Mon,  8 Apr 2024 14:58:14 +0200
-Message-ID: <20240408125316.192769819@linuxfoundation.org>
+Message-ID: <20240408125312.707094076@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 4ab6c38c664442c1fc9911eb3c5c6953d3dbcca5 upstream.
+[ Upstream commit 3137b83a90646917c90951d66489db466b4ae106 ]
 
-The get_stream_position has been replaced by get_dai_frame_counter, it
-should not be set to allow it to be dropped from core code.
+Building with W=1 shows a warning for an unused variable when CONFIG_PCI
+is diabled:
 
-Cc: stable@vger.kernel.org # 6.8
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://msgid.link/r/20240321130814.4412-10-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/ata/sata_mv.c:790:35: error: unused variable 'mv_pci_tbl' [-Werror,-Wunused-const-variable]
+static const struct pci_device_id mv_pci_tbl[] = {
+
+Move the table into the same block that containsn the pci_driver
+definition.
+
+Fixes: 7bb3c5290ca0 ("sata_mv: Remove PCI dependency")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda-common-ops.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/ata/sata_mv.c | 63 +++++++++++++++++++++----------------------
+ 1 file changed, 31 insertions(+), 32 deletions(-)
 
-diff --git a/sound/soc/sof/intel/hda-common-ops.c b/sound/soc/sof/intel/hda-common-ops.c
-index 4d7ea18604ee..d71bb66b9991 100644
---- a/sound/soc/sof/intel/hda-common-ops.c
-+++ b/sound/soc/sof/intel/hda-common-ops.c
-@@ -57,7 +57,6 @@ struct snd_sof_dsp_ops sof_hda_common_ops = {
- 	.pcm_pointer	= hda_dsp_pcm_pointer,
- 	.pcm_ack	= hda_dsp_pcm_ack,
+diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
+index 45e48d653c60b..80a45e11fb5b6 100644
+--- a/drivers/ata/sata_mv.c
++++ b/drivers/ata/sata_mv.c
+@@ -787,37 +787,6 @@ static const struct ata_port_info mv_port_info[] = {
+ 	},
+ };
  
--	.get_stream_position = hda_dsp_get_stream_llp,
- 	.get_dai_frame_counter = hda_dsp_get_stream_llp,
- 	.get_host_byte_counter = hda_dsp_get_stream_ldp,
+-static const struct pci_device_id mv_pci_tbl[] = {
+-	{ PCI_VDEVICE(MARVELL, 0x5040), chip_504x },
+-	{ PCI_VDEVICE(MARVELL, 0x5041), chip_504x },
+-	{ PCI_VDEVICE(MARVELL, 0x5080), chip_5080 },
+-	{ PCI_VDEVICE(MARVELL, 0x5081), chip_508x },
+-	/* RocketRAID 1720/174x have different identifiers */
+-	{ PCI_VDEVICE(TTI, 0x1720), chip_6042 },
+-	{ PCI_VDEVICE(TTI, 0x1740), chip_6042 },
+-	{ PCI_VDEVICE(TTI, 0x1742), chip_6042 },
+-
+-	{ PCI_VDEVICE(MARVELL, 0x6040), chip_604x },
+-	{ PCI_VDEVICE(MARVELL, 0x6041), chip_604x },
+-	{ PCI_VDEVICE(MARVELL, 0x6042), chip_6042 },
+-	{ PCI_VDEVICE(MARVELL, 0x6080), chip_608x },
+-	{ PCI_VDEVICE(MARVELL, 0x6081), chip_608x },
+-
+-	{ PCI_VDEVICE(ADAPTEC2, 0x0241), chip_604x },
+-
+-	/* Adaptec 1430SA */
+-	{ PCI_VDEVICE(ADAPTEC2, 0x0243), chip_7042 },
+-
+-	/* Marvell 7042 support */
+-	{ PCI_VDEVICE(MARVELL, 0x7042), chip_7042 },
+-
+-	/* Highpoint RocketRAID PCIe series */
+-	{ PCI_VDEVICE(TTI, 0x2300), chip_7042 },
+-	{ PCI_VDEVICE(TTI, 0x2310), chip_7042 },
+-
+-	{ }			/* terminate list */
+-};
+-
+ static const struct mv_hw_ops mv5xxx_ops = {
+ 	.phy_errata		= mv5_phy_errata,
+ 	.enable_leds		= mv5_enable_leds,
+@@ -4300,6 +4269,36 @@ static int mv_pci_init_one(struct pci_dev *pdev,
+ static int mv_pci_device_resume(struct pci_dev *pdev);
+ #endif
+ 
++static const struct pci_device_id mv_pci_tbl[] = {
++	{ PCI_VDEVICE(MARVELL, 0x5040), chip_504x },
++	{ PCI_VDEVICE(MARVELL, 0x5041), chip_504x },
++	{ PCI_VDEVICE(MARVELL, 0x5080), chip_5080 },
++	{ PCI_VDEVICE(MARVELL, 0x5081), chip_508x },
++	/* RocketRAID 1720/174x have different identifiers */
++	{ PCI_VDEVICE(TTI, 0x1720), chip_6042 },
++	{ PCI_VDEVICE(TTI, 0x1740), chip_6042 },
++	{ PCI_VDEVICE(TTI, 0x1742), chip_6042 },
++
++	{ PCI_VDEVICE(MARVELL, 0x6040), chip_604x },
++	{ PCI_VDEVICE(MARVELL, 0x6041), chip_604x },
++	{ PCI_VDEVICE(MARVELL, 0x6042), chip_6042 },
++	{ PCI_VDEVICE(MARVELL, 0x6080), chip_608x },
++	{ PCI_VDEVICE(MARVELL, 0x6081), chip_608x },
++
++	{ PCI_VDEVICE(ADAPTEC2, 0x0241), chip_604x },
++
++	/* Adaptec 1430SA */
++	{ PCI_VDEVICE(ADAPTEC2, 0x0243), chip_7042 },
++
++	/* Marvell 7042 support */
++	{ PCI_VDEVICE(MARVELL, 0x7042), chip_7042 },
++
++	/* Highpoint RocketRAID PCIe series */
++	{ PCI_VDEVICE(TTI, 0x2300), chip_7042 },
++	{ PCI_VDEVICE(TTI, 0x2310), chip_7042 },
++
++	{ }			/* terminate list */
++};
+ 
+ static struct pci_driver mv_pci_driver = {
+ 	.name			= DRV_NAME,
+@@ -4312,6 +4311,7 @@ static struct pci_driver mv_pci_driver = {
+ #endif
+ 
+ };
++MODULE_DEVICE_TABLE(pci, mv_pci_tbl);
+ 
+ /**
+  *      mv_print_info - Dump key info to kernel log for perusal.
+@@ -4484,7 +4484,6 @@ static void __exit mv_exit(void)
+ MODULE_AUTHOR("Brett Russ");
+ MODULE_DESCRIPTION("SCSI low-level driver for Marvell SATA controllers");
+ MODULE_LICENSE("GPL v2");
+-MODULE_DEVICE_TABLE(pci, mv_pci_tbl);
+ MODULE_VERSION(DRV_VERSION);
+ MODULE_ALIAS("platform:" DRV_NAME);
  
 -- 
-2.44.0
+2.43.0
 
 
 
