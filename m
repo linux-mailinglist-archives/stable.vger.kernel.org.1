@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-37374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C0F89C497
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B942689C498
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D91501F22A83
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD7FD1C21A79
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404D580617;
-	Mon,  8 Apr 2024 13:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B74380619;
+	Mon,  8 Apr 2024 13:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LvR5B0Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgrhuYiI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CFB8005E;
-	Mon,  8 Apr 2024 13:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8FD7E0E8;
+	Mon,  8 Apr 2024 13:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584046; cv=none; b=dFVWLnlMkRyQI4zLb6MUfWoqM/VhxwSHRTWG02uA8rEISsgAMZKmu6mh6gspjinx+r2tPa/X5+C3Kpmhm+yhzAscNhUXonr/Fzmo0ThLV9sZWHQMG8lBOOsuaGVHSjYx9kvN0pD8Gl6TPyxWm4gedEC6ELQEeoc8mwfGIvkJ03I=
+	t=1712584052; cv=none; b=pamMa/TNvH3xkw6Acv0QTkGxVJz5gVqTw6dWuQozYMtPtj4XBjxpew8xiZkfJ36JhUeSHqRydtxnrAlEkdz0ktFRRzi1sZpQS75FYual010/wK4msbNvIv/DIl5rOO4R9idrkbE8iWrkOiKtQpeYYrnygsw0sgUPTACAB8SwdxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584046; c=relaxed/simple;
-	bh=iyp3iTt+I6Fj8jsaygGKcPb9yWy1TN2YNRG5vTqTfsk=;
+	s=arc-20240116; t=1712584052; c=relaxed/simple;
+	bh=pUZTaR+ErnBFkLVfvJWct/mPOMGES2+u6S9ulrnjyjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rfupoxqNxT8j3TZLSqioyaEUV34NmSANsTdnL5FEwo1P3n0JM6Tz4g/cKpZJqDYTuLspoiUM13KOf0y0zQraOf6FvS+3dcjWQAsexFzMLpsi8RrTUVGGRQ7B8d299gWGF3+Puew65is7Is23QwR6p59deMS7Ch68upFT4PovQK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LvR5B0Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BE5C433C7;
-	Mon,  8 Apr 2024 13:47:25 +0000 (UTC)
+	 MIME-Version; b=lJw1HQo22GBTp1M8mKvEfQvqu4FDU+3OPAU+YRPDLI2lovlf9D6h+yYQ/l32y72qQpr36P6hxbAzyfS75vaSSNl1MNNvci1xDRCiO+o0fGIXS4dnwTnLPzwCKfOG4wkYh/pdp3L6lru+C1wqhp5V2xVfgcI1HrH//rgeKRRrXc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgrhuYiI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ADE8C43399;
+	Mon,  8 Apr 2024 13:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584045;
-	bh=iyp3iTt+I6Fj8jsaygGKcPb9yWy1TN2YNRG5vTqTfsk=;
+	s=korg; t=1712584051;
+	bh=pUZTaR+ErnBFkLVfvJWct/mPOMGES2+u6S9ulrnjyjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1LvR5B0QDyY/w0K4oR+cATacrlt8Ymiy+Pl4g3YAGtsRkgGXsp/SfyNJiTpZ1ZiUn
-	 Vj1zBj9dfVJXyGE/tSa0e1asjAoDrSfXTrh4QLljyF2P2+R2/56M2VYYW5N9SmAZ/H
-	 JtYd/oYuX8IiIghsymLjY0T9AyED/RS+R2vzeZC4=
+	b=wgrhuYiIM2d+9QB0hp71VZiH9buz1ln97VdIjt7rzqhqtPH4KHdYHBmw+itt6SKSi
+	 rdJga3EcEMh1jUZOIUoAcn85y4e4lWne08HUmn5gjUSc3AXDStSz2U3n8kgy+ChJ/V
+	 laRuTgjB53hTp3wOTLXg82PrEEQVzKXgPix1R10I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 325/690] NFSD: Trace filecache opens
-Date: Mon,  8 Apr 2024 14:53:11 +0200
-Message-ID: <20240408125411.385301641@linuxfoundation.org>
+Subject: [PATCH 5.15 326/690] SUNRPC: Use RMW bitops in single-threaded hot paths
+Date: Mon,  8 Apr 2024 14:53:12 +0200
+Message-ID: <20240408125411.417833396@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,74 +66,168 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 0122e882119ddbd9efa6edfeeac3f5c704a7aeea ]
+[ Upstream commit 28df0988815f63e2af5e6718193c9f68681ad7ff ]
 
-Instrument calls to nfsd_open_verified() to get a sense of the
-filecache hit rate.
+I noticed CPU pipeline stalls while using perf.
+
+Once an svc thread is scheduled and executing an RPC, no other
+processes will touch svc_rqst::rq_flags. Thus bus-locked atomics are
+not needed outside the svc thread scheduler.
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/filecache.c |  5 +++--
- fs/nfsd/trace.h     | 28 ++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4proc.c                       | 7 ++++---
+ fs/nfsd/nfs4xdr.c                        | 2 +-
+ net/sunrpc/auth_gss/svcauth_gss.c        | 4 ++--
+ net/sunrpc/svc.c                         | 6 +++---
+ net/sunrpc/svc_xprt.c                    | 2 +-
+ net/sunrpc/svcsock.c                     | 8 ++++----
+ net/sunrpc/xprtrdma/svc_rdma_transport.c | 2 +-
+ 7 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 045f5a869ddc7..0863bf5050935 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -976,10 +976,11 @@ nfsd_do_file_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 3ac2978c596ae..5b56877c7fb57 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -970,7 +970,7 @@ nfsd4_read(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	 * the client wants us to do more in this compound:
+ 	 */
+ 	if (!nfsd4_last_compound_op(rqstp))
+-		clear_bit(RQ_SPLICE_OK, &rqstp->rq_flags);
++		__clear_bit(RQ_SPLICE_OK, &rqstp->rq_flags);
  
- 	nf->nf_mark = nfsd_file_mark_find_or_create(nf);
- 	if (nf->nf_mark) {
--		if (open)
-+		if (open) {
- 			status = nfsd_open_verified(rqstp, fhp, may_flags,
- 						    &nf->nf_file);
--		else
-+			trace_nfsd_file_open(nf, status);
-+		} else
- 			status = nfs_ok;
- 	} else
- 		status = nfserr_jukebox;
-diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
-index 7f3f40f6c0ff3..3cff3ada00a85 100644
---- a/fs/nfsd/trace.h
-+++ b/fs/nfsd/trace.h
-@@ -775,6 +775,34 @@ TRACE_EVENT(nfsd_file_acquire,
- 			__entry->nf_file, __entry->status)
- );
- 
-+TRACE_EVENT(nfsd_file_open,
-+	TP_PROTO(struct nfsd_file *nf, __be32 status),
-+	TP_ARGS(nf, status),
-+	TP_STRUCT__entry(
-+		__field(unsigned int, nf_hashval)
-+		__field(void *, nf_inode)	/* cannot be dereferenced */
-+		__field(int, nf_ref)
-+		__field(unsigned long, nf_flags)
-+		__field(unsigned long, nf_may)
-+		__field(void *, nf_file)	/* cannot be dereferenced */
-+	),
-+	TP_fast_assign(
-+		__entry->nf_hashval = nf->nf_hashval;
-+		__entry->nf_inode = nf->nf_inode;
-+		__entry->nf_ref = refcount_read(&nf->nf_ref);
-+		__entry->nf_flags = nf->nf_flags;
-+		__entry->nf_may = nf->nf_may;
-+		__entry->nf_file = nf->nf_file;
-+	),
-+	TP_printk("hash=0x%x inode=%p ref=%d flags=%s may=%s file=%p",
-+		__entry->nf_hashval,
-+		__entry->nf_inode,
-+		__entry->nf_ref,
-+		show_nf_flags(__entry->nf_flags),
-+		show_nfsd_may_flags(__entry->nf_may),
-+		__entry->nf_file)
-+)
+ 	/* check stateid */
+ 	status = nfs4_preprocess_stateid_op(rqstp, cstate, &cstate->current_fh,
+@@ -2644,11 +2644,12 @@ nfsd4_proc_compound(struct svc_rqst *rqstp)
+ 	cstate->minorversion = args->minorversion;
+ 	fh_init(current_fh, NFS4_FHSIZE);
+ 	fh_init(save_fh, NFS4_FHSIZE);
 +
- DECLARE_EVENT_CLASS(nfsd_file_search_class,
- 	TP_PROTO(struct inode *inode, unsigned int hash, int found),
- 	TP_ARGS(inode, hash, found),
+ 	/*
+ 	 * Don't use the deferral mechanism for NFSv4; compounds make it
+ 	 * too hard to avoid non-idempotency problems.
+ 	 */
+-	clear_bit(RQ_USEDEFERRAL, &rqstp->rq_flags);
++	__clear_bit(RQ_USEDEFERRAL, &rqstp->rq_flags);
+ 
+ 	/*
+ 	 * According to RFC3010, this takes precedence over all other errors.
+@@ -2770,7 +2771,7 @@ nfsd4_proc_compound(struct svc_rqst *rqstp)
+ out:
+ 	cstate->status = status;
+ 	/* Reset deferral mechanism for RPC deferrals */
+-	set_bit(RQ_USEDEFERRAL, &rqstp->rq_flags);
++	__set_bit(RQ_USEDEFERRAL, &rqstp->rq_flags);
+ 	return rpc_success;
+ }
+ 
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index 771d3057577ef..96d41b1cc2d17 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -2408,7 +2408,7 @@ nfsd4_decode_compound(struct nfsd4_compoundargs *argp)
+ 	argp->rqstp->rq_cachetype = cachethis ? RC_REPLBUFF : RC_NOCACHE;
+ 
+ 	if (readcount > 1 || max_reply > PAGE_SIZE - auth_slack)
+-		clear_bit(RQ_SPLICE_OK, &argp->rqstp->rq_flags);
++		__clear_bit(RQ_SPLICE_OK, &argp->rqstp->rq_flags);
+ 
+ 	return true;
+ }
+diff --git a/net/sunrpc/auth_gss/svcauth_gss.c b/net/sunrpc/auth_gss/svcauth_gss.c
+index 48b608cb5f5ec..2381c5d1b0710 100644
+--- a/net/sunrpc/auth_gss/svcauth_gss.c
++++ b/net/sunrpc/auth_gss/svcauth_gss.c
+@@ -900,7 +900,7 @@ unwrap_integ_data(struct svc_rqst *rqstp, struct xdr_buf *buf, u32 seq, struct g
+ 	 * rejecting the server-computed MIC in this somewhat rare case,
+ 	 * do not use splice with the GSS integrity service.
+ 	 */
+-	clear_bit(RQ_SPLICE_OK, &rqstp->rq_flags);
++	__clear_bit(RQ_SPLICE_OK, &rqstp->rq_flags);
+ 
+ 	/* Did we already verify the signature on the original pass through? */
+ 	if (rqstp->rq_deferred)
+@@ -972,7 +972,7 @@ unwrap_priv_data(struct svc_rqst *rqstp, struct xdr_buf *buf, u32 seq, struct gs
+ 	int pad, remaining_len, offset;
+ 	u32 rseqno;
+ 
+-	clear_bit(RQ_SPLICE_OK, &rqstp->rq_flags);
++	__clear_bit(RQ_SPLICE_OK, &rqstp->rq_flags);
+ 
+ 	priv_len = svc_getnl(&buf->head[0]);
+ 	if (rqstp->rq_deferred) {
+diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
+index 87da3ff46ce9a..f2a8c1ee8530e 100644
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -1281,10 +1281,10 @@ svc_process_common(struct svc_rqst *rqstp, struct kvec *argv, struct kvec *resv)
+ 		goto err_short_len;
+ 
+ 	/* Will be turned off by GSS integrity and privacy services */
+-	set_bit(RQ_SPLICE_OK, &rqstp->rq_flags);
++	__set_bit(RQ_SPLICE_OK, &rqstp->rq_flags);
+ 	/* Will be turned off only when NFSv4 Sessions are used */
+-	set_bit(RQ_USEDEFERRAL, &rqstp->rq_flags);
+-	clear_bit(RQ_DROPME, &rqstp->rq_flags);
++	__set_bit(RQ_USEDEFERRAL, &rqstp->rq_flags);
++	__clear_bit(RQ_DROPME, &rqstp->rq_flags);
+ 
+ 	svc_putu32(resv, rqstp->rq_xid);
+ 
+diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
+index 67ccf1a6459ae..39acef5134f5c 100644
+--- a/net/sunrpc/svc_xprt.c
++++ b/net/sunrpc/svc_xprt.c
+@@ -1251,7 +1251,7 @@ static struct cache_deferred_req *svc_defer(struct cache_req *req)
+ 	trace_svc_defer(rqstp);
+ 	svc_xprt_get(rqstp->rq_xprt);
+ 	dr->xprt = rqstp->rq_xprt;
+-	set_bit(RQ_DROPME, &rqstp->rq_flags);
++	__set_bit(RQ_DROPME, &rqstp->rq_flags);
+ 
+ 	dr->handle.revisit = svc_revisit;
+ 	return &dr->handle;
+diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+index be7081284a098..46cea0e413aeb 100644
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -298,9 +298,9 @@ static void svc_sock_setbufsize(struct svc_sock *svsk, unsigned int nreqs)
+ static void svc_sock_secure_port(struct svc_rqst *rqstp)
+ {
+ 	if (svc_port_is_privileged(svc_addr(rqstp)))
+-		set_bit(RQ_SECURE, &rqstp->rq_flags);
++		__set_bit(RQ_SECURE, &rqstp->rq_flags);
+ 	else
+-		clear_bit(RQ_SECURE, &rqstp->rq_flags);
++		__clear_bit(RQ_SECURE, &rqstp->rq_flags);
+ }
+ 
+ /*
+@@ -1005,9 +1005,9 @@ static int svc_tcp_recvfrom(struct svc_rqst *rqstp)
+ 	rqstp->rq_xprt_ctxt   = NULL;
+ 	rqstp->rq_prot	      = IPPROTO_TCP;
+ 	if (test_bit(XPT_LOCAL, &svsk->sk_xprt.xpt_flags))
+-		set_bit(RQ_LOCAL, &rqstp->rq_flags);
++		__set_bit(RQ_LOCAL, &rqstp->rq_flags);
+ 	else
+-		clear_bit(RQ_LOCAL, &rqstp->rq_flags);
++		__clear_bit(RQ_LOCAL, &rqstp->rq_flags);
+ 
+ 	p = (__be32 *)rqstp->rq_arg.head[0].iov_base;
+ 	calldir = p[1];
+diff --git a/net/sunrpc/xprtrdma/svc_rdma_transport.c b/net/sunrpc/xprtrdma/svc_rdma_transport.c
+index f776f0cb471f0..ac147304fb0e9 100644
+--- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
+@@ -602,7 +602,7 @@ static int svc_rdma_has_wspace(struct svc_xprt *xprt)
+ 
+ static void svc_rdma_secure_port(struct svc_rqst *rqstp)
+ {
+-	set_bit(RQ_SECURE, &rqstp->rq_flags);
++	__set_bit(RQ_SECURE, &rqstp->rq_flags);
+ }
+ 
+ static void svc_rdma_kill_temp_xprt(struct svc_xprt *xprt)
 -- 
 2.43.0
 
