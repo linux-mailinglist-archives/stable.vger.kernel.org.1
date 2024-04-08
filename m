@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-36990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C9B389C29D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE0EE89C636
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:05:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 455081C21949
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E1A5B2B156
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B3680604;
-	Mon,  8 Apr 2024 13:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E49E7EF03;
+	Mon,  8 Apr 2024 14:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wu7oEGq8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+FNtqqG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC66C79F0;
-	Mon,  8 Apr 2024 13:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388AC7C092;
+	Mon,  8 Apr 2024 14:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582933; cv=none; b=rfjs84r4RmSiDUAEIjjSSsBHtW/mLxOthw8psZQdoUcASZ430no3cfk6akdHduTQ7UasnQ84c0AokTwCm2hpN8s5ot+rn88AAfYh2IetOrtOb5CGDBR2YLaR7FB09mK0hCn9p7z++L69s6WHHLDWFOaTDspdvK+0aHFLQEGHwQQ=
+	t=1712584874; cv=none; b=tzCuZMkFmTrdRlZS7AS1IlxAJZVcjaOC6IWUd8FIlMcC2JkXxHTiqqqnwQs4zkx44CYGLrZNbsUNYz5exubD1jNgfwIIOdNDMBEImc403mWJgNmceE6LOk2YbiPawLBEaGekXDilMPw38/XZWwyU+kZRPe8c36UtXfay04rGVEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582933; c=relaxed/simple;
-	bh=904XqTgLBm95N27F7oZmjRTe/yRrKHOjAO0aods+2Zg=;
+	s=arc-20240116; t=1712584874; c=relaxed/simple;
+	bh=uid/OMQJ312PcQM4dt5mc1HmzNYdV+VOSr3UmNWQkwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kd6MC++C/mer2sh1FgNbsxSZO+9vJ+n7MPo8mW2kHNQCEoJvyk+ENMLHbEkzJYys6aCapigvYeCB6n3HcSRFbOyxs83uWkRyJs84NkVvzku4Itu7A3vEWJC5+k1Xpvh2+g+wPTjyR+9WHxEAjxNbfBJrxSomsQHRy+1K0mOUcQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wu7oEGq8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715D7C433C7;
-	Mon,  8 Apr 2024 13:28:52 +0000 (UTC)
+	 MIME-Version; b=WnbYKZ1PS2XkAru5LN58aafs4fueaJpmprArHJUkdzzdIKio/24C9DFLfF9qKlfBtnkiqLKGe/zTJ/hU0uwbR0hc5QQomloPAv6+UyrwVDn++mvzSI+d5xNbz5Aw85fyUW3/S9LQ8RWf2uddme7RYsp8Qf/iDQYkLeEx7C/nVwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+FNtqqG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719F8C433C7;
+	Mon,  8 Apr 2024 14:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582932;
-	bh=904XqTgLBm95N27F7oZmjRTe/yRrKHOjAO0aods+2Zg=;
+	s=korg; t=1712584873;
+	bh=uid/OMQJ312PcQM4dt5mc1HmzNYdV+VOSr3UmNWQkwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wu7oEGq8VFiOMLNFIelibPnPxZ+CHPvk+LZqLY/DB7FwEaQrXxZ3CmjL5q0+rBAG8
-	 AfeYFJK+gOvOlKjvWzvHLzxCDiEOYb7BLwg7fO1FuSG2luxy7DpPcCdyL4GKPFl7gY
-	 8gkUNN/i5szSOxFK4oIKN6hBPMRrS8LIFK12wlGI=
+	b=H+FNtqqGgQsBdUi+EgnsNVfWqohcjJJInEAhv8JhlWiiqBtlL1jGqnqhzlusDJ5Kf
+	 l/kA79f9OGL9SI49p5YeDuFiVBhqo26Q/gg2qLgEHqgccSUu3FHMt5CFVKUWt4UG8e
+	 /qC7oyk02FzXYAixuHycncHC4d+RQZTbr6wZ8WBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 113/252] gro: fix ownership transfer
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 546/690] nfsd: Simplify code around svc_exit_thread() call in nfsd()
 Date: Mon,  8 Apr 2024 14:56:52 +0200
-Message-ID: <20240408125310.143550801@linuxfoundation.org>
+Message-ID: <20240408125419.428394000@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: NeilBrown <neilb@suse.de>
 
-commit ed4cccef64c1d0d5b91e69f7a8a6697c3a865486 upstream.
+[ Upstream commit 18e4cf915543257eae2925671934937163f5639b ]
 
-If packets are GROed with fraglist they might be segmented later on and
-continue their journey in the stack. In skb_segment_list those skbs can
-be reused as-is. This is an issue as their destructor was removed in
-skb_gro_receive_list but not the reference to their socket, and then
-they can't be orphaned. Fix this by also removing the reference to the
-socket.
+Previously a thread could exit asynchronously (due to a signal) so some
+care was needed to hold nfsd_mutex over the last svc_put() call.  Now a
+thread can only exit when svc_set_num_threads() is called, and this is
+always called under nfsd_mutex.  So no care is needed.
 
-For example this could be observed,
+Not only is the mutex held when a thread exits now, but the svc refcount
+is elevated, so the svc_put() in svc_exit_thread() will never be a final
+put, so the mutex isn't even needed at this point in the code.
 
-  kernel BUG at include/linux/skbuff.h:3131!  (skb_orphan)
-  RIP: 0010:ip6_rcv_core+0x11bc/0x19a0
-  Call Trace:
-   ipv6_list_rcv+0x250/0x3f0
-   __netif_receive_skb_list_core+0x49d/0x8f0
-   netif_receive_skb_list_internal+0x634/0xd40
-   napi_complete_done+0x1d2/0x7d0
-   gro_cell_poll+0x118/0x1f0
-
-A similar construction is found in skb_gro_receive, apply the same
-change there.
-
-Fixes: 5e10da5385d2 ("skbuff: allow 'slow_gro' for skb carring sock reference")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- net/core/gro.c         |    3 ++-
- net/ipv4/udp_offload.c |    3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ fs/nfsd/nfssvc.c           | 23 -----------------------
+ include/linux/sunrpc/svc.h | 13 -------------
+ 2 files changed, 36 deletions(-)
 
---- a/net/core/gro.c
-+++ b/net/core/gro.c
-@@ -195,8 +195,9 @@ int skb_gro_receive(struct sk_buff *p, s
- 	}
+diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
+index 8063fab2c0279..8907dba22c3f2 100644
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -979,31 +979,8 @@ nfsd(void *vrqstp)
+ 	atomic_dec(&nfsdstats.th_cnt);
  
- merge:
--	/* sk owenrship - if any - completely transferred to the aggregated packet */
-+	/* sk ownership - if any - completely transferred to the aggregated packet */
- 	skb->destructor = NULL;
-+	skb->sk = NULL;
- 	delta_truesize = skb->truesize;
- 	if (offset > headlen) {
- 		unsigned int eat = offset - headlen;
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -449,8 +449,9 @@ static int skb_gro_receive_list(struct s
- 	NAPI_GRO_CB(p)->count++;
- 	p->data_len += skb->len;
+ out:
+-	/* Take an extra ref so that the svc_put in svc_exit_thread()
+-	 * doesn't call svc_destroy()
+-	 */
+-	svc_get(nn->nfsd_serv);
+-
+ 	/* Release the thread */
+ 	svc_exit_thread(rqstp);
+-
+-	/* We need to drop a ref, but may not drop the last reference
+-	 * without holding nfsd_mutex, and we cannot wait for nfsd_mutex as that
+-	 * could deadlock with nfsd_shutdown_threads() waiting for us.
+-	 * So three options are:
+-	 * - drop a non-final reference,
+-	 * - get the mutex without waiting
+-	 * - sleep briefly andd try the above again
+-	 */
+-	while (!svc_put_not_last(nn->nfsd_serv)) {
+-		if (mutex_trylock(&nfsd_mutex)) {
+-			nfsd_put(net);
+-			mutex_unlock(&nfsd_mutex);
+-			break;
+-		}
+-		msleep(20);
+-	}
+-
+ 	return 0;
+ }
  
--	/* sk owenrship - if any - completely transferred to the aggregated packet */
-+	/* sk ownership - if any - completely transferred to the aggregated packet */
- 	skb->destructor = NULL;
-+	skb->sk = NULL;
- 	p->truesize += skb->truesize;
- 	p->len += skb->len;
+diff --git a/include/linux/sunrpc/svc.h b/include/linux/sunrpc/svc.h
+index 53405c282209f..6e48c1c88f1bb 100644
+--- a/include/linux/sunrpc/svc.h
++++ b/include/linux/sunrpc/svc.h
+@@ -123,19 +123,6 @@ static inline void svc_put(struct svc_serv *serv)
+ 	kref_put(&serv->sv_refcnt, svc_destroy);
+ }
  
+-/**
+- * svc_put_not_last - decrement non-final reference count on SUNRPC serv
+- * @serv:  the svc_serv to have count decremented
+- *
+- * Returns: %true is refcount was decremented.
+- *
+- * If the refcount is 1, it is not decremented and instead failure is reported.
+- */
+-static inline bool svc_put_not_last(struct svc_serv *serv)
+-{
+-	return refcount_dec_not_one(&serv->sv_refcnt.refcount);
+-}
+-
+ /*
+  * Maximum payload size supported by a kernel RPC server.
+  * This is use to determine the max number of pages nfsd is
+-- 
+2.43.0
+
 
 
 
