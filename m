@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-37458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D684C89C4EA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:51:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5159689C465
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02E531C2249B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:51:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CEB72840A2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE1624D5AB;
-	Mon,  8 Apr 2024 13:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E07F7F481;
+	Mon,  8 Apr 2024 13:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfNIwoEg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVfP7Wuz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF6079F0;
-	Mon,  8 Apr 2024 13:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3C97EF06;
+	Mon,  8 Apr 2024 13:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584291; cv=none; b=ONe+xw4Oa3mmu2gaZBa1VUPMztWMOXAScwZTMQ6AT7TeCfhValkZQu9u54j24NEJxeudrolRMnvTKuIf62HIA6VU5hmTGPiyEEm4hw+RcQdNGDMPzVBI5VTz6hAr6FLrixt7l8tvJGc+jMlvQiwpI3STsSjpzMk5lzUkhMZvYQc=
+	t=1712583911; cv=none; b=VbJyIt4AByl2Ec0Md+p5eNoNIeRarqdzQf+f65LSIIUi/XLNP4BO2aIszShIzlFU23Bk+o9g8Fs/oZs4xZ5XnWnesQRMIKITqfoFdEbc9uB/bzJW5Fp91QtvM87rjns7ELa3RJ6ftrh3tSxXyyF4wUdcGz8zpHy8ZnHdP+1t4t4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584291; c=relaxed/simple;
-	bh=I9DbmkRui9jcLajOVU4z91ZS7agT2j8NEaQB2fqooCw=;
+	s=arc-20240116; t=1712583911; c=relaxed/simple;
+	bh=frRbsWdKE2Ou1pqA59yH7vpZwkCJ0FWcLZG3Em+KfFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J5euQZehN3nK2cTEtzIKQUJWMSC3IQqIeYeeO/CKuQ3pMV/yyIo+VtanvhhPyY/TgILtIQou2qkOaQJGJwNguZzv3rPACN1SYlFqDE5iEGBW5896LBEdWRAn2edwnPp+3TJg2qzvMtCq1qpCYo6o9p1sWztPPw46rOvML5EJSZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfNIwoEg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E698C433C7;
-	Mon,  8 Apr 2024 13:51:30 +0000 (UTC)
+	 MIME-Version; b=KIdqYi/DNxtfz3IlKJZzwi1p1bsngweEq73Le1YI/EGteKpPROdDqxMrMjUEO8rWt2oSyHQHoHHZ42bXHpl69lOaI47glM+Yj8QY17BgBIeI2Ga+eZmAnlre/kORXsayW+ibZOkttdefgnRXGptHnO8+yDBnSj7FtTrWAaKzqBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVfP7Wuz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B793AC433C7;
+	Mon,  8 Apr 2024 13:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584291;
-	bh=I9DbmkRui9jcLajOVU4z91ZS7agT2j8NEaQB2fqooCw=;
+	s=korg; t=1712583911;
+	bh=frRbsWdKE2Ou1pqA59yH7vpZwkCJ0FWcLZG3Em+KfFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MfNIwoEgcfqR7LbR+ntjaddPp+c7JI6bCOjUINwvetaU7WKY/GdS4qJYzl24w+6Zw
-	 ZdAe7u28REUPer/BRLbHGsUaw8SobSNinGzjlfpA0hyeFqc6WaW9cid6wio91vf2/Q
-	 NiMLV8+wIYa6jBbpR0jhUE6oUrxIBqlJGxCaE7wY=
+	b=oVfP7Wuzrr7XdfkJlI4uPj/+yR01A3Cuy3aoEC23OD/Zb5wS8slV5udy14wbf7QkX
+	 XYLhuv1fGjfq6lV5dkeVTckPUu6ut09VS7K4KRAhC2M4zbdhyrgjVRnTgBeKuW0x9Z
+	 Oi3qrPuApMv4KkqAI2xdtUyd95UT1W55bFolDHgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: [PATCH 6.8 272/273] x86/sev: Move early startup code into .head.text section
+	Hou Wenlong <houwenlong.hwl@antgroup.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.6 248/252] x86/head/64: Move the __head definition to <asm/init.h>
 Date: Mon,  8 Apr 2024 14:59:07 +0200
-Message-ID: <20240408125317.950498866@linuxfoundation.org>
+Message-ID: <20240408125314.354577702@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,199 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Hou Wenlong <houwenlong.hwl@antgroup.com>
 
-commit 428080c9b19bfda37c478cd626dbd3851db1aff9 upstream.
+commit d2a285d65bfde3218fd0c3b88794d0135ced680b upstream.
 
-In preparation for implementing rigorous build time checks to enforce
-that only code that can support it will be called from the early 1:1
-mapping of memory, move SEV init code that is called in this manner to
-the .head.text section.
+Move the __head section definition to a header to widen its use.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/20240227151907.387873-19-ardb+git@google.com
+An upcoming patch will mark the code as __head in mem_encrypt_identity.c too.
+
+Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/0583f57977be184689c373fe540cbd7d85ca2047.1697525407.git.houwenlong.hwl@antgroup.com
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/sev.c |    3 +++
- arch/x86/include/asm/sev.h     |   10 +++++-----
- arch/x86/kernel/sev-shared.c   |   23 ++++++++++-------------
- arch/x86/kernel/sev.c          |   14 ++++++++------
- 4 files changed, 26 insertions(+), 24 deletions(-)
+ arch/x86/include/asm/init.h |    2 ++
+ arch/x86/kernel/head64.c    |    3 +--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -116,6 +116,9 @@ static bool fault_in_kernel_space(unsign
- #undef __init
- #define __init
+--- a/arch/x86/include/asm/init.h
++++ b/arch/x86/include/asm/init.h
+@@ -2,6 +2,8 @@
+ #ifndef _ASM_X86_INIT_H
+ #define _ASM_X86_INIT_H
  
-+#undef __head
-+#define __head
++#define __head	__section(".head.text")
 +
- #define __BOOT_COMPRESSED
- 
- /* Basic instruction decoding support needed */
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -199,15 +199,15 @@ static inline int pvalidate(unsigned lon
- struct snp_guest_request_ioctl;
- 
- void setup_ghcb(void);
--void __init early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
--					 unsigned long npages);
--void __init early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
--					unsigned long npages);
-+void early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
-+				  unsigned long npages);
-+void early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
-+				 unsigned long npages);
- void snp_set_memory_shared(unsigned long vaddr, unsigned long npages);
- void snp_set_memory_private(unsigned long vaddr, unsigned long npages);
- void snp_set_wakeup_secondary_cpu(void);
- bool snp_init(struct boot_params *bp);
--void __init __noreturn snp_abort(void);
-+void __noreturn snp_abort(void);
- void snp_dmi_setup(void);
- int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, struct snp_guest_request_ioctl *rio);
- void snp_accept_memory(phys_addr_t start, phys_addr_t end);
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -89,7 +89,8 @@ static bool __init sev_es_check_cpu_feat
- 	return true;
- }
- 
--static void __noreturn sev_es_terminate(unsigned int set, unsigned int reason)
-+static void __head __noreturn
-+sev_es_terminate(unsigned int set, unsigned int reason)
- {
- 	u64 val = GHCB_MSR_TERM_REQ;
- 
-@@ -326,13 +327,7 @@ static int sev_cpuid_hv(struct ghcb *ghc
-  */
- static const struct snp_cpuid_table *snp_cpuid_get_table(void)
- {
--	void *ptr;
--
--	asm ("lea cpuid_table_copy(%%rip), %0"
--	     : "=r" (ptr)
--	     : "p" (&cpuid_table_copy));
--
--	return ptr;
-+	return &RIP_REL_REF(cpuid_table_copy);
- }
+ struct x86_mapping_info {
+ 	void *(*alloc_pgt_page)(void *); /* allocate buf for page table */
+ 	void *context;			 /* context for alloc_pgt_page */
+--- a/arch/x86/kernel/head64.c
++++ b/arch/x86/kernel/head64.c
+@@ -41,6 +41,7 @@
+ #include <asm/trapnr.h>
+ #include <asm/sev.h>
+ #include <asm/tdx.h>
++#include <asm/init.h>
  
  /*
-@@ -391,7 +386,7 @@ static u32 snp_cpuid_calc_xsave_size(u64
- 	return xsave_size;
- }
+  * Manage page tables very early on.
+@@ -84,8 +85,6 @@ static struct desc_ptr startup_gdt_descr
+ 	.address = 0,
+ };
  
--static bool
-+static bool __head
- snp_cpuid_get_validated_func(struct cpuid_leaf *leaf)
+-#define __head	__section(".head.text")
+-
+ static void __head *fixup_pointer(void *ptr, unsigned long physaddr)
  {
- 	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
-@@ -528,7 +523,8 @@ static int snp_cpuid_postprocess(struct
-  * Returns -EOPNOTSUPP if feature not enabled. Any other non-zero return value
-  * should be treated as fatal by caller.
-  */
--static int snp_cpuid(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
-+static int __head
-+snp_cpuid(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
- {
- 	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
- 
-@@ -570,7 +566,7 @@ static int snp_cpuid(struct ghcb *ghcb,
-  * page yet, so it only supports the MSR based communication with the
-  * hypervisor and only the CPUID exit-code.
-  */
--void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
-+void __head do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
- {
- 	unsigned int subfn = lower_bits(regs->cx, 32);
- 	unsigned int fn = lower_bits(regs->ax, 32);
-@@ -1016,7 +1012,8 @@ struct cc_setup_data {
-  * Search for a Confidential Computing blob passed in as a setup_data entry
-  * via the Linux Boot Protocol.
-  */
--static struct cc_blob_sev_info *find_cc_blob_setup_data(struct boot_params *bp)
-+static __head
-+struct cc_blob_sev_info *find_cc_blob_setup_data(struct boot_params *bp)
- {
- 	struct cc_setup_data *sd = NULL;
- 	struct setup_data *hdr;
-@@ -1043,7 +1040,7 @@ static struct cc_blob_sev_info *find_cc_
-  * mapping needs to be updated in sync with all the changes to virtual memory
-  * layout and related mapping facilities throughout the boot process.
-  */
--static void __init setup_cpuid_table(const struct cc_blob_sev_info *cc_info)
-+static void __head setup_cpuid_table(const struct cc_blob_sev_info *cc_info)
- {
- 	const struct snp_cpuid_table *cpuid_table_fw, *cpuid_table;
- 	int i;
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -26,6 +26,7 @@
- #include <linux/dmi.h>
- #include <uapi/linux/sev-guest.h>
- 
-+#include <asm/init.h>
- #include <asm/cpu_entry_area.h>
- #include <asm/stacktrace.h>
- #include <asm/sev.h>
-@@ -683,8 +684,9 @@ static u64 __init get_jump_table_addr(vo
- 	return ret;
- }
- 
--static void early_set_pages_state(unsigned long vaddr, unsigned long paddr,
--				  unsigned long npages, enum psc_op op)
-+static void __head
-+early_set_pages_state(unsigned long vaddr, unsigned long paddr,
-+		      unsigned long npages, enum psc_op op)
- {
- 	unsigned long paddr_end;
- 	u64 val;
-@@ -740,7 +742,7 @@ e_term:
- 	sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
- }
- 
--void __init early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
-+void __head early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
- 					 unsigned long npages)
- {
- 	/*
-@@ -2045,7 +2047,7 @@ fail:
-  *
-  * Scan for the blob in that order.
-  */
--static __init struct cc_blob_sev_info *find_cc_blob(struct boot_params *bp)
-+static __head struct cc_blob_sev_info *find_cc_blob(struct boot_params *bp)
- {
- 	struct cc_blob_sev_info *cc_info;
- 
-@@ -2071,7 +2073,7 @@ found_cc_info:
- 	return cc_info;
- }
- 
--bool __init snp_init(struct boot_params *bp)
-+bool __head snp_init(struct boot_params *bp)
- {
- 	struct cc_blob_sev_info *cc_info;
- 
-@@ -2093,7 +2095,7 @@ bool __init snp_init(struct boot_params
- 	return true;
- }
- 
--void __init __noreturn snp_abort(void)
-+void __head __noreturn snp_abort(void)
- {
- 	sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
- }
+ 	return ptr - (void *)_text + (void *)physaddr;
 
 
 
