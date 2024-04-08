@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-37612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDE5E89C5B0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F97F89C2F0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:37:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EE311F21DE3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81FC21C214CE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E37D7F498;
-	Mon,  8 Apr 2024 13:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC2C130AC9;
+	Mon,  8 Apr 2024 13:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lu5A5niy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqE8V111"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01D27BB1A;
-	Mon,  8 Apr 2024 13:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B53130A5C;
+	Mon,  8 Apr 2024 13:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584744; cv=none; b=h9QQmuiAD1iOKock5DEtV0f2Kgnmo9BScIIg56DdTfcGU1poJtawHLl/FwWLahHUlccEtFGNEZaXLD2eOn8rcQ15GTqpB5HgTRiwP/DibGHUG4Gqgmof34LWJci1g4MJEw9lIP33MiY5HCVuTP00yblfHvS4equekydjSKIhXOA=
+	t=1712583048; cv=none; b=Y/RzsgRNNXZVJ46YUjsulaFH0X3ruYey+v8dVJxUH+hBufPHBzsxwKske+huCFZZO5xRf/c27kEDcMl4DAS6phW8od2FaetcMXNv3ktvxcTlcoBbRM2fXKF+nrxQisYeIBFv+o3Vb8AH/I/CB+XATvKe2ZBhqJ8pRNVUyhlrrGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584744; c=relaxed/simple;
-	bh=ScBKePcjDSlTgB7JOMEqZI5R0lbfNZGiHBlsqRU281M=;
+	s=arc-20240116; t=1712583048; c=relaxed/simple;
+	bh=E06cRZtZjF8aW4faUtdf7bhGBZy/r6+MMG8JVOmELoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdg4bWFCNs5in/Zhu9ukI5t0/ZOF5v0xM+V4C9+y+o9rP4+8R3ofyQk3nJNBgXQRtGzf0p6zhoUGycPMUm/hsBGCHuHlztcSLcNKXLCBuSRnMcsu8/+f/ZfMGhafhfJLYDJtlrED9JAUJgXhg1OxX9sBd1UzOg4D9csp5sxT6B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lu5A5niy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56113C433C7;
-	Mon,  8 Apr 2024 13:59:04 +0000 (UTC)
+	 MIME-Version; b=HsEEV50w+7DVsHwJcZAd3NGdT8xnhaT/6UNkZX9S2eY4enMLg+4wNIynxBbN//Sd/8EIS81JpIJ7ahGJpm9wl69AW4N7SKfUuilyUdWww5zCXbuyMNqB2Mk/D1/aJhirsI45XkttxDWO0u1kWdCpYnRBhUGnEp2TPWuwOSONmbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqE8V111; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204B4C433C7;
+	Mon,  8 Apr 2024 13:30:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584744;
-	bh=ScBKePcjDSlTgB7JOMEqZI5R0lbfNZGiHBlsqRU281M=;
+	s=korg; t=1712583047;
+	bh=E06cRZtZjF8aW4faUtdf7bhGBZy/r6+MMG8JVOmELoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lu5A5niyHxtH8qCDLK9b+mJaMnqxXjUVCGHRLe4qsjzcVw7h5tQcDvNXjRAu1Y5Ps
-	 PRvsirz1Hg6opOvS4Kr4NYso8Tbrs6I7JOyZvxqqr6tsUhKcLiqPjJdm37ljlgy80q
-	 pJGn0pQC+n1T8iZDgUdSEQ1hg4PzkBejZZ1Ih9Ic=
+	b=dqE8V1111pmo1e8Z8KnM8GqcfaWQiAic4yeclgpUjZ0bBx5ievDEeidtUri4gkocv
+	 jZ4uYPK6vng8U5YTrOTfs3YgI95kMjvjVks/FqpPT2xFMFrnGo0VXwZUadruOnJ2Fl
+	 E3nl5D6BTQSsI9s0zu+vRITFEhkDV0n07NFp+wcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@idosch.org>,
-	NeilBrown <neilb@suse.de>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 542/690] lockd: drop inappropriate svc_get() from locked_get()
-Date: Mon,  8 Apr 2024 14:56:48 +0200
-Message-ID: <20240408125419.284707801@linuxfoundation.org>
+	Dima Ruinskiy <dima.ruinskiy@intel.com>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Naama Meir <naamax.meir@linux.intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 134/273] e1000e: move force SMBUS from enable ulp function to avoid PHY loss issue
+Date: Mon,  8 Apr 2024 14:56:49 +0200
+Message-ID: <20240408125313.456523306@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-[ Upstream commit 665e89ab7c5af1f2d260834c861a74b01a30f95f ]
+[ Upstream commit 861e8086029e003305750b4126ecd6617465f5c7 ]
 
-The below-mentioned patch was intended to simplify refcounting on the
-svc_serv used by locked.  The goal was to only ever have a single
-reference from the single thread.  To that end we dropped a call to
-lockd_start_svc() (except when creating thread) which would take a
-reference, and dropped the svc_put(serv) that would drop that reference.
+Forcing SMBUS inside the ULP enabling flow leads to sporadic PHY loss on
+some systems. It is suspected to be caused by initiating PHY transactions
+before the interface settles.
 
-Unfortunately we didn't also remove the svc_get() from
-lockd_create_svc() in the case where the svc_serv already existed.
-So after the patch:
- - on the first call the svc_serv was allocated and the one reference
-   was given to the thread, so there are no extra references
- - on subsequent calls svc_get() was called so there is now an extra
-   reference.
-This is clearly not consistent.
+Separating this configuration from the ULP enabling flow and moving it to
+the shutdown function allows enough time for the interface to settle and
+avoids adding a delay.
 
-The inconsistency is also clear in the current code in lockd_get()
-takes *two* references, one on nlmsvc_serv and one by incrementing
-nlmsvc_users.   This clearly does not match lockd_put().
-
-So: drop that svc_get() from lockd_get() (which used to be in
-lockd_create_svc().
-
-Reported-by: Ido Schimmel <idosch@idosch.org>
-Closes: https://lore.kernel.org/linux-nfs/ZHsI%2FH16VX9kJQX1@shredder/T/#u
-Fixes: b73a2972041b ("lockd: move lockd_start_svc() call into lockd_create_svc()")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 6607c99e7034 ("e1000e: i219 - fix to enable both ULP and EEE in Sx state")
+Co-developed-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
+Signed-off-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/lockd/svc.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/intel/e1000e/ich8lan.c | 19 -------------------
+ drivers/net/ethernet/intel/e1000e/netdev.c  | 18 ++++++++++++++++++
+ 2 files changed, 18 insertions(+), 19 deletions(-)
 
-diff --git a/fs/lockd/svc.c b/fs/lockd/svc.c
-index 59ef8a1f843f3..5579e67da17db 100644
---- a/fs/lockd/svc.c
-+++ b/fs/lockd/svc.c
-@@ -355,7 +355,6 @@ static int lockd_get(void)
- 	int error;
+diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+index d8e97669f31b0..f9e94be36e97f 100644
+--- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
++++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+@@ -1165,25 +1165,6 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
+ 	if (ret_val)
+ 		goto out;
  
- 	if (nlmsvc_serv) {
--		svc_get(nlmsvc_serv);
- 		nlmsvc_users++;
- 		return 0;
+-	/* Switching PHY interface always returns MDI error
+-	 * so disable retry mechanism to avoid wasting time
+-	 */
+-	e1000e_disable_phy_retry(hw);
+-
+-	/* Force SMBus mode in PHY */
+-	ret_val = e1000_read_phy_reg_hv_locked(hw, CV_SMB_CTRL, &phy_reg);
+-	if (ret_val)
+-		goto release;
+-	phy_reg |= CV_SMB_CTRL_FORCE_SMBUS;
+-	e1000_write_phy_reg_hv_locked(hw, CV_SMB_CTRL, phy_reg);
+-
+-	e1000e_enable_phy_retry(hw);
+-
+-	/* Force SMBus mode in MAC */
+-	mac_reg = er32(CTRL_EXT);
+-	mac_reg |= E1000_CTRL_EXT_FORCE_SMBUS;
+-	ew32(CTRL_EXT, mac_reg);
+-
+ 	/* Si workaround for ULP entry flow on i127/rev6 h/w.  Enable
+ 	 * LPLU and disable Gig speed when entering ULP
+ 	 */
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index cc8c531ec3dff..3692fce201959 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -6623,6 +6623,7 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
+ 	struct e1000_hw *hw = &adapter->hw;
+ 	u32 ctrl, ctrl_ext, rctl, status, wufc;
+ 	int retval = 0;
++	u16 smb_ctrl;
+ 
+ 	/* Runtime suspend should only enable wakeup for link changes */
+ 	if (runtime)
+@@ -6696,6 +6697,23 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
+ 			if (retval)
+ 				return retval;
+ 		}
++
++		/* Force SMBUS to allow WOL */
++		/* Switching PHY interface always returns MDI error
++		 * so disable retry mechanism to avoid wasting time
++		 */
++		e1000e_disable_phy_retry(hw);
++
++		e1e_rphy(hw, CV_SMB_CTRL, &smb_ctrl);
++		smb_ctrl |= CV_SMB_CTRL_FORCE_SMBUS;
++		e1e_wphy(hw, CV_SMB_CTRL, smb_ctrl);
++
++		e1000e_enable_phy_retry(hw);
++
++		/* Force SMBus mode in MAC */
++		ctrl_ext = er32(CTRL_EXT);
++		ctrl_ext |= E1000_CTRL_EXT_FORCE_SMBUS;
++		ew32(CTRL_EXT, ctrl_ext);
  	}
+ 
+ 	/* Ensure that the appropriate bits are set in LPI_CTRL
 -- 
 2.43.0
 
