@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-37642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35EF789C5CD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8809C89C374
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9D9E1F20594
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00F681F222AC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A2B7D062;
-	Mon,  8 Apr 2024 14:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792AA86130;
+	Mon,  8 Apr 2024 13:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ae+YpD1H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sWGX6VR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057877A15C;
-	Mon,  8 Apr 2024 14:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3879085C6C;
+	Mon,  8 Apr 2024 13:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584833; cv=none; b=c/xIg7woKxTSSjAUjRoi/PMnu2DEZ6H0eBTZsntymlnPVuW5IUOGu+v0CMNs0HbDSu8Frt+HfVKOQkxHjjhPwCzW+6kQeONFyr3eucAoAYWoUOW8IKReKZn5SVeZWwWLxhC5uYXPRmzWa/XvYIhymLXsKWvcAcEfBVSoqPNi/is=
+	t=1712583326; cv=none; b=S4D74b/3V6bCh0a4JSYCj/FUAAuxKNTLJDXx75dKglX7U2X++Bu48HqeieqX2x8MjxZ0ojLfgHZOpIIck+iERgKvTlIeAX2N3uqA8k1i75NyZEa6EYo9Ri8V5TbCR6C5m9RdPI5+B4FDFmL3VCPQd8ZBF4xfSa8DbvxmN5V1Lsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584833; c=relaxed/simple;
-	bh=AdDgtgVKir0MMPIs9G5Hyr5PTPJJ7L1b77fIJ9uoaWg=;
+	s=arc-20240116; t=1712583326; c=relaxed/simple;
+	bh=lkwZkVhnYBIq0iICazwsS+mMr4nrJyjxJjKeJNqEiyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rJNAkqVqbfANNZusFlC9Y+6M8IzYRrRkQpi8T8STHEJY7PNK1oQcNUhl4vv/20qhLPiVyE8+t3suUusDU+L4z5A4gAqP+xXqS9m85906rQ1K+dEcX1/6MZWOWQsz/WfCv+P1O2zrYmhYpKYm2cH0mlMdFHezAVBBuVvaF07EKik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ae+YpD1H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81AD3C433F1;
-	Mon,  8 Apr 2024 14:00:32 +0000 (UTC)
+	 MIME-Version; b=tdcxgcYvG2eblq/Dw2O6ogUr4Otkx7C+syLSDP+lKOqr/OwsAQsxhTZ3AKimHSKf74Piz+sw0SkmVz57nTCfxjrfLeeG8VwyESaehd1jZDKtoFf786i70Io2P38TRs2QNHDCqueNusLOReJFFRrixGjzM3q63A5fLCrU0wricbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sWGX6VR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83EFC43390;
+	Mon,  8 Apr 2024 13:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584832;
-	bh=AdDgtgVKir0MMPIs9G5Hyr5PTPJJ7L1b77fIJ9uoaWg=;
+	s=korg; t=1712583326;
+	bh=lkwZkVhnYBIq0iICazwsS+mMr4nrJyjxJjKeJNqEiyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ae+YpD1HkSB/u5rnAPgIdF/H6svbTodFz7qerkc93zG5gf2Fycva+sSjfOc5W2fbK
-	 oXBdbiVFsIrJyVf8fn5uqY7KUEVPTu8B84pIchI7JUhJvTo703+wLIx6Rr9EVAISs3
-	 oNb7dt6Q1Po8mp7MhTT2+ZL8Tlmkua+Pz9k3Smt0=
+	b=1sWGX6VRM2GBv6uJjEqNc+HiNPTcHnOb2df2fmj+FV0ypLoKJp1cF5XwD9wcIOzMF
+	 8jDcep4lZw2GMJsujhKCBepyDQEpO2g9OqJWGDE+w96vFQdQdlQrQT+dMc+WuhDExA
+	 tJonZXIGGhJFuVPzIxc5Lshg3YWPhDGyedK2+S3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH 5.15 572/690] exec: Fix NOMMU linux_binprm::exec in transfer_args_to_stack()
-Date: Mon,  8 Apr 2024 14:57:18 +0200
-Message-ID: <20240408125420.333409232@linuxfoundation.org>
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 164/273] spi: s3c64xx: Extract FIFO depth calculation to a dedicated macro
+Date: Mon,  8 Apr 2024 14:57:19 +0200
+Message-ID: <20240408125314.362608681@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Filippov <jcmvbkbc@gmail.com>
+From: Sam Protsenko <semen.protsenko@linaro.org>
 
-commit 2aea94ac14d1e0a8ae9e34febebe208213ba72f7 upstream.
+[ Upstream commit 460efee706c2b6a4daba62ec143fea29c2e7b358 ]
 
-In NOMMU kernel the value of linux_binprm::p is the offset inside the
-temporary program arguments array maintained in separate pages in the
-linux_binprm::page. linux_binprm::exec being a copy of linux_binprm::p
-thus must be adjusted when that array is copied to the user stack.
-Without that adjustment the value passed by the NOMMU kernel to the ELF
-program in the AT_EXECFN entry of the aux array doesn't make any sense
-and it may break programs that try to access memory pointed to by that
-entry.
+Simplify the code by extracting all cases of FIFO depth calculation into
+a dedicated macro. No functional change.
 
-Adjust linux_binprm::exec before the successful return from the
-transfer_args_to_stack().
-
-Cc: <stable@vger.kernel.org>
-Fixes: b6a2fea39318 ("mm: variable length argument support")
-Fixes: 5edc2a5123a7 ("binfmt_elf_fdpic: wire up AT_EXECFD, AT_EXECFN, AT_SECURE")
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-Link: https://lore.kernel.org/r/20240320182607.1472887-1-jcmvbkbc@gmail.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sam Protsenko <semen.protsenko@linaro.org>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://msgid.link/r/20240120170001.3356-1-semen.protsenko@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: a3d3eab627bb ("spi: s3c64xx: Use DMA mode from fifo size")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exec.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-s3c64xx.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -888,6 +888,7 @@ int transfer_args_to_stack(struct linux_
- 			goto out;
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 0e48ffd499b9f..432ec60d35684 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -109,6 +109,7 @@
+ #define TX_FIFO_LVL(v, i) (((v) >> 6) & FIFO_LVL_MASK(i))
+ #define RX_FIFO_LVL(v, i) (((v) >> (i)->port_conf->rx_lvl_offset) & \
+ 					FIFO_LVL_MASK(i))
++#define FIFO_DEPTH(i) ((FIFO_LVL_MASK(i) >> 1) + 1)
+ 
+ #define S3C64XX_SPI_MAX_TRAILCNT	0x3ff
+ #define S3C64XX_SPI_TRAILCNT_OFF	19
+@@ -406,7 +407,7 @@ static bool s3c64xx_spi_can_dma(struct spi_controller *host,
+ 	struct s3c64xx_spi_driver_data *sdd = spi_controller_get_devdata(host);
+ 
+ 	if (sdd->rx_dma.ch && sdd->tx_dma.ch) {
+-		return xfer->len > (FIFO_LVL_MASK(sdd) >> 1) + 1;
++		return xfer->len > FIFO_DEPTH(sdd);
+ 	} else {
+ 		return false;
  	}
+@@ -495,9 +496,7 @@ static u32 s3c64xx_spi_wait_for_timeout(struct s3c64xx_spi_driver_data *sdd,
+ 	void __iomem *regs = sdd->regs;
+ 	unsigned long val = 1;
+ 	u32 status;
+-
+-	/* max fifo depth available */
+-	u32 max_fifo = (FIFO_LVL_MASK(sdd) >> 1) + 1;
++	u32 max_fifo = FIFO_DEPTH(sdd);
  
-+	bprm->exec += *sp_location - MAX_ARG_PAGES * PAGE_SIZE;
- 	*sp_location = sp;
+ 	if (timeout_ms)
+ 		val = msecs_to_loops(timeout_ms);
+@@ -604,7 +603,7 @@ static int s3c64xx_wait_for_pio(struct s3c64xx_spi_driver_data *sdd,
+ 	 * For any size less than the fifo size the below code is
+ 	 * executed atleast once.
+ 	 */
+-	loops = xfer->len / ((FIFO_LVL_MASK(sdd) >> 1) + 1);
++	loops = xfer->len / FIFO_DEPTH(sdd);
+ 	buf = xfer->rx_buf;
+ 	do {
+ 		/* wait for data to be received in the fifo */
+@@ -741,7 +740,7 @@ static int s3c64xx_spi_transfer_one(struct spi_controller *host,
+ 				    struct spi_transfer *xfer)
+ {
+ 	struct s3c64xx_spi_driver_data *sdd = spi_controller_get_devdata(host);
+-	const unsigned int fifo_len = (FIFO_LVL_MASK(sdd) >> 1) + 1;
++	const unsigned int fifo_len = FIFO_DEPTH(sdd);
+ 	const void *tx_buf = NULL;
+ 	void *rx_buf = NULL;
+ 	int target_len = 0, origin_len = 0;
+@@ -1280,7 +1279,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Targets attached\n",
+ 					sdd->port_id, host->num_chipselect);
+ 	dev_dbg(&pdev->dev, "\tIOmem=[%pR]\tFIFO %dbytes\n",
+-					mem_res, (FIFO_LVL_MASK(sdd) >> 1) + 1);
++					mem_res, FIFO_DEPTH(sdd));
  
- out:
+ 	pm_runtime_mark_last_busy(&pdev->dev);
+ 	pm_runtime_put_autosuspend(&pdev->dev);
+-- 
+2.43.0
+
 
 
 
