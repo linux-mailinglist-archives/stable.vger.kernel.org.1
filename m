@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-37641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9031589C5CC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 590A889C36B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2C601C22B24
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE5D81F222B5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3E67C6C9;
-	Mon,  8 Apr 2024 14:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C289C7D09D;
+	Mon,  8 Apr 2024 13:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vqu4g8MY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABAMR3Uu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1871B7A15C;
-	Mon,  8 Apr 2024 14:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803837CF29;
+	Mon,  8 Apr 2024 13:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584830; cv=none; b=Z3V4Xu7F0F58gg26e+5BG1OeGRLmE5rybIt8jGFyaIM7cXs0eX/wo07jyBcz14YYUu7nyg9orj+zdGjZ9Cqxqx+bv7EAlB+nRabM3xNkjpd35+Dirxezym23DdTe2EvN9uTx8wsucR8s2+OsdKjJ9flbP61zhJNQZxYywVrWwbk=
+	t=1712583305; cv=none; b=P6dxx3QN8NER2GfmYSgBNV9DeVKWI05NYE8LToCS7Qo9CXoLZMTlAikZgFqA5tgbRSooE/lmk8Owi8L+LEDVlTxWDBkNqZzrLhJPMT2ob54YO+Y3UYjjruedm2C0q8RfrpZAn7+jzTs+MkP59v9WUG5B+/mEP02QLVQ3S69f4ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584830; c=relaxed/simple;
-	bh=WoDeIiGR8+I9ON1Y2ROoS2d92EXcqGow8woKO01llwU=;
+	s=arc-20240116; t=1712583305; c=relaxed/simple;
+	bh=3lrdOp5x6O77jQ+7ObWFJ1qiQZl0eH2NlTaXcXJwfWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WB7pSq5i+JR/lqkvylQf+y7sjcN6Z4ptXuBawCNfT6FrNcTzUtuz8lZ/nRg7UG1IIqQtXy6qF4Zs/7gTwWtUk6O8RWHWqSY1GRWqLrQcpnT5z5L7aHNyExlMmFwxBEO2MrinAGgHRhUhLinYAUpmqdcf5ubF+l/EaaFxeV/SY68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vqu4g8MY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FA0C433C7;
-	Mon,  8 Apr 2024 14:00:29 +0000 (UTC)
+	 MIME-Version; b=VGXiolQplVudFmovuMWW4WdLJD9A/QW8m3vYB+jCo8XvKwxDPZVaFnH185mfNL5hvZ5Gg6920HhKCLYhqMJFuVnTdL64tn9LiAFVSk2LmnIyFRucxH6xL8Q/CVqxPN1Q3yc2+jkrA77bjz9k4wnyAVci6UMbu+sfyZX60T+TZ1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABAMR3Uu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09134C433F1;
+	Mon,  8 Apr 2024 13:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584830;
-	bh=WoDeIiGR8+I9ON1Y2ROoS2d92EXcqGow8woKO01llwU=;
+	s=korg; t=1712583305;
+	bh=3lrdOp5x6O77jQ+7ObWFJ1qiQZl0eH2NlTaXcXJwfWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vqu4g8MY5K/jD+Rzxr+4I/D1FllzeE1NzgTVdyb2B3rydV964utmy6L0uRZx1RMyw
-	 QJRPLHZ02SDU0X9P7rN6IleqhFjeDGG+Z2Gibd1tc9+PlimelISXLEq32g7TOz8qlq
-	 cn+DmSp7yRjQGuYQ1GSYrnZFV1NX/JenFr+sZH9s=
+	b=ABAMR3UuVdkNEwDv2PanB9KaoDwOUin9abU6wZipq5kmUL7/hoHaDIbYXDbFrPjkw
+	 7DzgcCXWxVow5iwnwHPjBVXgBxfHl6CwEj2PTmhjVznYNT5fV4uzH4CNVqcS/HmrnJ
+	 qV9JUF4CBm7rat9ABlk7EaAy+KGAqwDicr65syWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ranygh@riseup.net,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 571/690] wifi: mac80211: check/clear fast rx for non-4addr sta VLAN changes
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Chao Song <chao.song@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 162/273] ASoC: rt722-sdca-sdw: fix locking sequence
 Date: Mon,  8 Apr 2024 14:57:17 +0200
-Message-ID: <20240408125420.303384648@linuxfoundation.org>
+Message-ID: <20240408125314.301506222@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-commit 4f2bdb3c5e3189297e156b3ff84b140423d64685 upstream.
+[ Upstream commit adb354bbc231b23d3a05163ce35c1d598512ff64 ]
 
-When moving a station out of a VLAN and deleting the VLAN afterwards, the
-fast_rx entry still holds a pointer to the VLAN's netdev, which can cause
-use-after-free bugs. Fix this by immediately calling ieee80211_check_fast_rx
-after the VLAN change.
+The disable_irq_lock protects the 'disable_irq' value, we need to lock
+before testing it.
 
-Cc: stable@vger.kernel.org
-Reported-by: ranygh@riseup.net
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://msgid.link/20240316074336.40442-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a0b7c59ac1a9 ("ASoC: rt722-sdca: fix for JD event handling in ClockStop Mode0")
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Chao Song <chao.song@linux.intel.com>
+Link: https://msgid.link/r/20240325221817.206465-6-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ sound/soc/codecs/rt722-sdca-sdw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1845,15 +1845,14 @@ static int ieee80211_change_station(stru
+diff --git a/sound/soc/codecs/rt722-sdca-sdw.c b/sound/soc/codecs/rt722-sdca-sdw.c
+index e24b9cbdc10c9..e33836fffd5f2 100644
+--- a/sound/soc/codecs/rt722-sdca-sdw.c
++++ b/sound/soc/codecs/rt722-sdca-sdw.c
+@@ -467,13 +467,13 @@ static int __maybe_unused rt722_sdca_dev_resume(struct device *dev)
+ 		return 0;
+ 
+ 	if (!slave->unattach_request) {
++		mutex_lock(&rt722->disable_irq_lock);
+ 		if (rt722->disable_irq == true) {
+-			mutex_lock(&rt722->disable_irq_lock);
+ 			sdw_write_no_pm(slave, SDW_SCP_SDCA_INTMASK1, SDW_SCP_SDCA_INTMASK_SDCA_6);
+ 			sdw_write_no_pm(slave, SDW_SCP_SDCA_INTMASK2, SDW_SCP_SDCA_INTMASK_SDCA_8);
+ 			rt722->disable_irq = false;
+-			mutex_unlock(&rt722->disable_irq_lock);
  		}
++		mutex_unlock(&rt722->disable_irq_lock);
+ 		goto regmap_sync;
+ 	}
  
- 		if (sta->sdata->vif.type == NL80211_IFTYPE_AP_VLAN &&
--		    sta->sdata->u.vlan.sta) {
--			ieee80211_clear_fast_rx(sta);
-+		    sta->sdata->u.vlan.sta)
- 			RCU_INIT_POINTER(sta->sdata->u.vlan.sta, NULL);
--		}
- 
- 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED))
- 			ieee80211_vif_dec_num_mcast(sta->sdata);
- 
- 		sta->sdata = vlansdata;
-+		ieee80211_check_fast_rx(sta);
- 		ieee80211_check_fast_xmit(sta);
- 
- 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED)) {
+-- 
+2.43.0
+
 
 
 
