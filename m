@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE3089C047
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3DB189C510
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:52:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D6731F23C9A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE2941F23323
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F55D6CDA8;
-	Mon,  8 Apr 2024 13:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A636EB72;
+	Mon,  8 Apr 2024 13:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qi6JX/hE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1lJsP+BQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D554481A6;
-	Mon,  8 Apr 2024 13:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4146442046;
+	Mon,  8 Apr 2024 13:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581618; cv=none; b=UuJzWXZHXXFGbMag3U91AEDHIFKz5for/YvdhEpYsTcvjfwO0S+G0T0u1Fx5393sUXFcMKW+vUX3pJV8IEc/v2IAjCZuTRRXy69HtMOQchV0Jrj2bkS8Oelt06dtE62oMTdmLB/LEEeU+1du0z5tXJZt6zN6cy8xZmUJnr+eb6U=
+	t=1712584372; cv=none; b=OliUc/osgmUG4BfoDLsWZpQrhHU8QZp5DE1UJpfJ/zrpUI6p/rRCX0v1buZEEjvExdiLu52FVc8j0g9h7L+Wa1je7ZDxknobJCi4RXqXComBw/nE08R95g6Wjmivgy8nzAt/PsqWAtG2+P81b6MpCxOx2ywrq22tyCo1j2xiNHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581618; c=relaxed/simple;
-	bh=nhzibUf5RDel8Lz9xVoBBV9Plo9GJ+MHbcsPkEAiP24=;
+	s=arc-20240116; t=1712584372; c=relaxed/simple;
+	bh=YaFpXzc41gsFWvHTHGrzZjb6BRAjMPBC2XvKASQVo4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VjClxy74+iOvsbwXegTMaM7E20hg0sySA9Wzx+zN4a8P5enUzAtol9InnS+elCTl7zWAqX0rWQhipS3Fh1W/+BS0rGexPvi4HvntOoJcfOExqpV3ySVFfZSghPfuilXVcbIO10utzYvybSi3nEwYt7lOsMN5maTnJOe7clIBKH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qi6JX/hE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D879FC433F1;
-	Mon,  8 Apr 2024 13:06:57 +0000 (UTC)
+	 MIME-Version; b=aG6PAdL1dmx31IGiVc7k2ROCNk74VrH+D7wF8tOYRScoBccMhOTwvM5Bov+0Ntd8guikMGWYX4Hqvn6csFgjTy19D9IKFfbbjWIEjiMKxgqXwJ97LWacHyFCbAdBiiW2IAZSRMdP0Zj0QLOJFxr2DwJ4PW9mN+e5wRmjW+g6p0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1lJsP+BQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A4DC433C7;
+	Mon,  8 Apr 2024 13:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581618;
-	bh=nhzibUf5RDel8Lz9xVoBBV9Plo9GJ+MHbcsPkEAiP24=;
+	s=korg; t=1712584372;
+	bh=YaFpXzc41gsFWvHTHGrzZjb6BRAjMPBC2XvKASQVo4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qi6JX/hE+qdQYefX5X7N8XvrzJoop0tH1NTkswI1yEStr3d8noNj1bno3FSOjfDBT
-	 Li2nA05eoF4cXKsmzNbzMCRgl1wSJYAxQIe7qqFTuDX6ofuIVN+xLWjvkY9vfNCbmd
-	 76xJtg2rcoWktZUMtlS2GzRIX+M70RRYqPgvwPwY=
+	b=1lJsP+BQYWc8E86dz62kSWdiEr19FSBv+ay/1/aS2REGQqc37CIdMrsXbwz3eN24y
+	 kATCXFx3U0X/5rylUT5KVp8bt0EOrJSzDpA+T4epsD10K4y3FOB5JeqnXpfi+X/wjz
+	 SUnUAlVSwAIy5uCvz0tSl9fUYE6CgkxxbCuoK6pY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Sakharov <p.sakharov@ispras.ru>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 005/273] dma-buf: Fix NULL pointer dereference in sanitycheck()
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 414/690] NFSD: fix regression with setting ACLs.
 Date: Mon,  8 Apr 2024 14:54:40 +0200
-Message-ID: <20240408125309.450758356@linuxfoundation.org>
+Message-ID: <20240408125414.587326363@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Sakharov <p.sakharov@ispras.ru>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 2295bd846765c766701e666ed2e4b35396be25e6 ]
+[ Upstream commit 00801cd92d91e94aa04d687f9bb9a9104e7c3d46 ]
 
-If due to a memory allocation failure mock_chain() returns NULL, it is
-passed to dma_fence_enable_sw_signaling() resulting in NULL pointer
-dereference there.
+A recent patch moved ACL setting into nfsd_setattr().
+Unfortunately it didn't work as nfsd_setattr() aborts early if
+iap->ia_valid is 0.
 
-Call dma_fence_enable_sw_signaling() only if mock_chain() succeeds.
+Remove this test, and instead avoid calling notify_change() when
+ia_valid is 0.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This means that nfsd_setattr() will now *always* lock the inode.
+Previously it didn't if only a ATTR_MODE change was requested on a
+symlink (see Commit 15b7a1b86d66 ("[PATCH] knfsd: fix setattr-on-symlink
+error return")). I don't think this change really matters.
 
-Fixes: d62c43a953ce ("dma-buf: Enable signaling on fence for selftests")
-Signed-off-by: Pavel Sakharov <p.sakharov@ispras.ru>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240319231527.1821372-1-p.sakharov@ispras.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c0cbe70742f4 ("NFSD: add posix ACLs to struct nfsd_attrs")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/dma-buf/st-dma-fence-chain.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nfsd/vfs.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/dma-buf/st-dma-fence-chain.c b/drivers/dma-buf/st-dma-fence-chain.c
-index 9c2a0c082a768..ed4b323886e43 100644
---- a/drivers/dma-buf/st-dma-fence-chain.c
-+++ b/drivers/dma-buf/st-dma-fence-chain.c
-@@ -84,11 +84,11 @@ static int sanitycheck(void *arg)
- 		return -ENOMEM;
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 66d4a126f20ab..ad689215b1f37 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -299,6 +299,10 @@ commit_metadata(struct svc_fh *fhp)
+ static void
+ nfsd_sanitize_attrs(struct inode *inode, struct iattr *iap)
+ {
++	/* Ignore mode updates on symlinks */
++	if (S_ISLNK(inode->i_mode))
++		iap->ia_valid &= ~ATTR_MODE;
++
+ 	/* sanitize the mode change */
+ 	if (iap->ia_valid & ATTR_MODE) {
+ 		iap->ia_mode &= S_IALLUGO;
+@@ -354,7 +358,7 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	int		accmode = NFSD_MAY_SATTR;
+ 	umode_t		ftype = 0;
+ 	__be32		err;
+-	int		host_err;
++	int		host_err = 0;
+ 	bool		get_write_count;
+ 	bool		size_change = (iap->ia_valid & ATTR_SIZE);
  
- 	chain = mock_chain(NULL, f, 1);
--	if (!chain)
-+	if (chain)
-+		dma_fence_enable_sw_signaling(chain);
-+	else
- 		err = -ENOMEM;
+@@ -392,13 +396,6 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	dentry = fhp->fh_dentry;
+ 	inode = d_inode(dentry);
  
--	dma_fence_enable_sw_signaling(chain);
+-	/* Ignore any mode updates on symlinks */
+-	if (S_ISLNK(inode->i_mode))
+-		iap->ia_valid &= ~ATTR_MODE;
 -
- 	dma_fence_signal(f);
- 	dma_fence_put(f);
+-	if (!iap->ia_valid)
+-		return 0;
+-
+ 	nfsd_sanitize_attrs(inode, iap);
  
+ 	if (check_guard && guardtime != inode->i_ctime.tv_sec)
+@@ -449,8 +446,10 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 			goto out_unlock;
+ 	}
+ 
+-	iap->ia_valid |= ATTR_CTIME;
+-	host_err = notify_change(&init_user_ns, dentry, iap, NULL);
++	if (iap->ia_valid) {
++		iap->ia_valid |= ATTR_CTIME;
++		host_err = notify_change(&init_user_ns, dentry, iap, NULL);
++	}
+ 
+ out_unlock:
+ 	if (attr->na_seclabel && attr->na_seclabel->len)
 -- 
 2.43.0
 
