@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-37514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1448E89C52F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:54:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C2389C119
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:17:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4661D1C227DE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D547284508
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 586447BAE3;
-	Mon,  8 Apr 2024 13:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4BC7F496;
+	Mon,  8 Apr 2024 13:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X3ze11jX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GkmUUdSF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F8278286;
-	Mon,  8 Apr 2024 13:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC31F128833;
+	Mon,  8 Apr 2024 13:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584457; cv=none; b=EQaMdfDSjL8IlylAb7uh247gHZ2fXKvTqafCTrVtYqTwAYOlBUTwv/rgXE0UfYxziP4PBN4C6WZJ7jz3EMYRVdBcCMGpK8yIvwkaTb4r64AA1pR1Qj07qMtjVmm3fd+DG+V5ZR0J8hXXeeUiH461AVp9pA1CfgX58vP/sV0Chl0=
+	t=1712581966; cv=none; b=XNBe5OjVNdC22ehUBkkEGBhdNZHFusS0GjEZCETH4j2oDX00rWqcurGr1AHPswrbrXLYf4CfxdLnW+rlCsyDOPnmdVFMbBjEdpU6+LieSdmcZakU2PkJe1ibeTYGSXYlnXQRucrSmSZu6F+iAGOKx05j7O3naO8/sujw8sU3jOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584457; c=relaxed/simple;
-	bh=Li+ilXs9n2LQYMyGjFXbF5jXQuAtyH+YeG594nL+Iog=;
+	s=arc-20240116; t=1712581966; c=relaxed/simple;
+	bh=CnDTn5CdeQmon+OpeOAEE8NY5TF6vfvxumaQyLzFQ0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VRR7YTn/UNgFbQk9mFM897h/ru7m/eHCaKIwo05c0odYMLm/D1Yl/dG5IUpzKQajANW06dttjleNiJW+WtrGXE1guDxZiNzdhyLMFPtiTgurgIemjxIni2uJ2HX8DEG2/9cAG7tDaSXTrjNjihVXQL6YNTlOSY1CNHYdwcct4cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X3ze11jX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90678C43394;
-	Mon,  8 Apr 2024 13:54:16 +0000 (UTC)
+	 MIME-Version; b=rj6fSwu+M/XotXXtPKc6gsHbsc4fSFV5EzT3jOYCElDMPm3Mddhm6ygkAAwtUjMJWSOt9Z5Rw+NHkp1POp3q7+j3gC05fQrgKOz3lKsORl4rkqSDfj4cIti1ngD7zDTmuKkyliUcfcAZrCsdHNMORe1RZUkEaGT9tqqBIDrH1yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GkmUUdSF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 654D3C433C7;
+	Mon,  8 Apr 2024 13:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584457;
-	bh=Li+ilXs9n2LQYMyGjFXbF5jXQuAtyH+YeG594nL+Iog=;
+	s=korg; t=1712581966;
+	bh=CnDTn5CdeQmon+OpeOAEE8NY5TF6vfvxumaQyLzFQ0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X3ze11jXNbDNNY2IKMgpwEzUtr7kZyT23XYvoWm6jJgu4YvpRYLTLRL17EEk3MvOZ
-	 WJQk/rp1aYwG7xZaR5YLB4Qbl4NwKy9Fsb1jxHe5TwQwHSpiGJD7zKY37BdFvJT2R4
-	 6dYhynh2dgzqzgxxukjPqbSTnBeGTtwUERsDLx2o=
+	b=GkmUUdSFR+x2zM5VCnL060qSHEuJggEsIKNMwydkHIlXi0XKBXnUhQtCaou6HrzvJ
+	 YyrigKUKf//uDk62lKJ6qUmfb31jSK5tqDEyZFZ1W/ey+nBhfMhhtr0qm3nEUDVXWz
+	 /jmknqEhCvNY4mxmPhbZLuWul7bhGtzCrs+qvmRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 444/690] NFSD: Pack struct nfsd4_compoundres
-Date: Mon,  8 Apr 2024 14:55:10 +0200
-Message-ID: <20240408125415.728702645@linuxfoundation.org>
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 036/273] net: hns3: mark unexcuted loopback test result as UNEXECUTED
+Date: Mon,  8 Apr 2024 14:55:11 +0200
+Message-ID: <20240408125310.414141497@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,35 +65,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Jian Shen <shenjian15@huawei.com>
 
-[ Upstream commit 9f553e61bd36c1048543ac2f6945103dd2f742be ]
+[ Upstream commit 5bd088d6c21a45ee70e6116879310e54174d75eb ]
 
-Remove a couple of 4-byte holes on platforms with 64-bit pointers.
+Currently, loopback test may be skipped when resetting, but the test
+result will still show as 'PASS', because the driver doesn't set
+ETH_TEST_FL_FAILED flag. Fix it by setting the flag and
+initializating the value to UNEXECUTED.
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 4c8dab1c709c ("net: hns3: reconstruct function hns3_self_test")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/xdr4.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ethernet/hisilicon/hns3/hns3_ethtool.c    | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/xdr4.h b/fs/nfsd/xdr4.h
-index b2bc85421b507..0eb00105d845b 100644
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -732,8 +732,8 @@ struct nfsd4_compoundres {
- 	struct svc_rqst *		rqstp;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
+index 999a0ee162a64..941cb529d671f 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
+@@ -78,6 +78,9 @@ static const struct hns3_stats hns3_rxq_stats[] = {
+ #define HNS3_NIC_LB_TEST_NO_MEM_ERR	1
+ #define HNS3_NIC_LB_TEST_TX_CNT_ERR	2
+ #define HNS3_NIC_LB_TEST_RX_CNT_ERR	3
++#define HNS3_NIC_LB_TEST_UNEXECUTED	4
++
++static int hns3_get_sset_count(struct net_device *netdev, int stringset);
  
- 	__be32				*statusp;
--	u32				taglen;
- 	char *				tag;
-+	u32				taglen;
- 	u32				opcnt;
+ static int hns3_lp_setup(struct net_device *ndev, enum hnae3_loop loop, bool en)
+ {
+@@ -418,18 +421,26 @@ static void hns3_do_external_lb(struct net_device *ndev,
+ static void hns3_self_test(struct net_device *ndev,
+ 			   struct ethtool_test *eth_test, u64 *data)
+ {
++	int cnt = hns3_get_sset_count(ndev, ETH_SS_TEST);
+ 	struct hns3_nic_priv *priv = netdev_priv(ndev);
+ 	struct hnae3_handle *h = priv->ae_handle;
+ 	int st_param[HNAE3_LOOP_NONE][2];
+ 	bool if_running = netif_running(ndev);
++	int i;
++
++	/* initialize the loopback test result, avoid marking an unexcuted
++	 * loopback test as PASS.
++	 */
++	for (i = 0; i < cnt; i++)
++		data[i] = HNS3_NIC_LB_TEST_UNEXECUTED;
  
- 	struct nfsd4_compound_state	cstate;
+ 	if (hns3_nic_resetting(ndev)) {
+ 		netdev_err(ndev, "dev resetting!");
+-		return;
++		goto failure;
+ 	}
+ 
+ 	if (!(eth_test->flags & ETH_TEST_FL_OFFLINE))
+-		return;
++		goto failure;
+ 
+ 	if (netif_msg_ifdown(h))
+ 		netdev_info(ndev, "self test start\n");
+@@ -451,6 +462,10 @@ static void hns3_self_test(struct net_device *ndev,
+ 
+ 	if (netif_msg_ifdown(h))
+ 		netdev_info(ndev, "self test end\n");
++	return;
++
++failure:
++	eth_test->flags |= ETH_TEST_FL_FAILED;
+ }
+ 
+ static void hns3_update_limit_promisc_mode(struct net_device *netdev,
 -- 
 2.43.0
 
