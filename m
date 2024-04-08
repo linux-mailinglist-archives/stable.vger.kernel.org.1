@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3212E89C132
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EDE889C139
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 639C01C21BA2
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AAF9281A59
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E9A8061A;
-	Mon,  8 Apr 2024 13:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B0FE8120C;
+	Mon,  8 Apr 2024 13:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aD8qUvSg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yey2WBMj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A6980045;
-	Mon,  8 Apr 2024 13:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAED67867D;
+	Mon,  8 Apr 2024 13:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582031; cv=none; b=WBvGDf7WtWr3iXJxfNQLiqNeK6H9d/mv4E2DfT1NzG3RE9ak6aKrq4NGBkxoBIGygigoLxTZrdmLGCAxOvE1KTSXH+EAi7BGuv4b+0RpvcoUzxSZIiyF55sbF855GDVMIkLc5qzxZGIitsx4QuUdQlmG2V7npUmXXBohkdOjXsY=
+	t=1712582046; cv=none; b=WTFdCVsnVZ6UBnGPtZYyK1ViB7pWqZ0Qoo2mD8STaaXCT1FrMdsnbRGwXMEdKH/rW1eFKjCDQQ/U4cDOYp0wZYhS5XtHOtbrExs2ZkOj5xNdpKDFhEAcIWnMr+J2OngeO+8QZIDn/VVo/wOglvDuEFocJHqNR/jDfQrW9dgqs5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582031; c=relaxed/simple;
-	bh=ebCXqAqj/85FU2Y2jIzYrBEw6RD9YZXEFnzm69qNw48=;
+	s=arc-20240116; t=1712582046; c=relaxed/simple;
+	bh=frOEcItHtFOURjvSZppRp7YA9aXPb2YPPWFvQvHbE20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LrgNRSzVUTmvwLPGuELlEo6kEILZ0SvnyqD3Lovd4oYwA9A8b8VUfYBu1Ey+kHhsTNHw/HHtF0yv0zR3oUjX9eTSw6rPdxF3rtDIN85HK4T2YTS65qb9DHiPQakuCwUihl2roQsbKDp3dxFTqD3X6la6fpghQeh4K5vmlJHi1K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aD8qUvSg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96D8C433C7;
-	Mon,  8 Apr 2024 13:13:50 +0000 (UTC)
+	 MIME-Version; b=sl6yNNauk0y5uavZ7yruE7jPefUicGlVl0PYTIlxFKa280oLBd8c5uLIwvUqYX1mgXGPgXuJr9k/MyzIc3Q9LVTCu8ig4YoGviSSNz0iMNZe5eEZD1eGpwU58lIiloMWfZBUHfKZFREXoZSiBo6wGYX2dfa1Dvo305e08Q8rPBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yey2WBMj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71657C433C7;
+	Mon,  8 Apr 2024 13:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582031;
-	bh=ebCXqAqj/85FU2Y2jIzYrBEw6RD9YZXEFnzm69qNw48=;
+	s=korg; t=1712582045;
+	bh=frOEcItHtFOURjvSZppRp7YA9aXPb2YPPWFvQvHbE20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aD8qUvSgk1p6wOk3N/C0k+daYnq4uUXGglTcrysZr1fTJfUVpWBXEX8YsF6+od+DZ
-	 kxEA08j/LpSp3d5cdwwj0NS7I5f4afKwP4eOnSPdxjhfGlXIqIvhbFrZXWjkfu3N09
-	 XdSQIgyOTv4wOMdBT8onL80yHPlOECgMcjD0ocD4=
+	b=Yey2WBMjE9iH0oNc5UAqGj/FFYEoGXfheZlOMxT2SKmQrYjYflV+L4qb93j9xaK3x
+	 eSP4V8qIAYjbXhZCSsctJdDSRfmk3C8NdtMF1cJl8aMf5E4/vKTMTcGHTVrjoQaDnr
+	 laXjTmC3F6GYDY2PH+m/kFO8a+E8WgxaR1S/GFy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Bunea <ovidiu.bunea@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Taimur Hassan <syed.hassan@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 041/273] drm/amd/display: Update P010 scaling cap
-Date: Mon,  8 Apr 2024 14:55:16 +0200
-Message-ID: <20240408125310.566702685@linuxfoundation.org>
+Subject: [PATCH 6.8 042/273] drm/amd/display: Send DTBCLK disable message on first commit
+Date: Mon,  8 Apr 2024 14:55:17 +0200
+Message-ID: <20240408125310.596769248@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
 References: <20240408125309.280181634@linuxfoundation.org>
@@ -69,82 +69,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Charlene Liu <charlene.liu@amd.com>
+From: Taimur Hassan <syed.hassan@amd.com>
 
-[ Upstream commit 038c532346418fb5ab09c8fc6d650283d9a02966 ]
+[ Upstream commit f341055b10bd8be55c3c995dff5f770b236b8ca9 ]
 
 [Why]
-Keep the same as previous APU and also insert clock dump
+Previous patch to allow DTBCLK disable didn't address boot case. Driver
+thinks DTBCLK is disabled by default, so we don't send disable message to
+PMFW. DTBCLK is then enabled at idle desktop on boot, burning power.
 
-Reviewed-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Charlene Liu <charlene.liu@amd.com>
+[How]
+Set dtbclk_en to true on boot so that disable message is sent during first
+commit.
+
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Taimur Hassan <syed.hassan@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: f341055b10bd ("drm/amd/display: Send DTBCLK disable message on first commit")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c  | 25 +++++++++----------
- .../dc/resource/dcn35/dcn35_resource.c        |  2 +-
- 2 files changed, 13 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-index 3db46bdc71a35..9cbab880c6233 100644
+index 9cbab880c6233..f07629694ec5e 100644
 --- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
 +++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -384,19 +384,6 @@ static void dcn35_enable_pme_wa(struct clk_mgr *clk_mgr_base)
- 	dcn35_smu_enable_pme_wa(clk_mgr);
- }
+@@ -415,6 +415,7 @@ void dcn35_init_clocks(struct clk_mgr *clk_mgr)
+ 	memset(&(clk_mgr->clks), 0, sizeof(struct dc_clocks));
  
--void dcn35_init_clocks(struct clk_mgr *clk_mgr)
--{
--	uint32_t ref_dtbclk = clk_mgr->clks.ref_dtbclk_khz;
--
--	memset(&(clk_mgr->clks), 0, sizeof(struct dc_clocks));
--
--	// Assumption is that boot state always supports pstate
--	clk_mgr->clks.ref_dtbclk_khz = ref_dtbclk;	// restore ref_dtbclk
--	clk_mgr->clks.p_state_change_support = true;
--	clk_mgr->clks.prev_p_state_change_support = true;
--	clk_mgr->clks.pwr_state = DCN_PWR_STATE_UNKNOWN;
--	clk_mgr->clks.zstate_support = DCN_ZSTATE_SUPPORT_UNKNOWN;
--}
- 
- bool dcn35_are_clock_states_equal(struct dc_clocks *a,
- 		struct dc_clocks *b)
-@@ -421,7 +408,19 @@ static void dcn35_dump_clk_registers(struct clk_state_registers_and_bypass *regs
- 		struct clk_mgr_dcn35 *clk_mgr)
- {
- }
-+void dcn35_init_clocks(struct clk_mgr *clk_mgr)
-+{
-+	uint32_t ref_dtbclk = clk_mgr->clks.ref_dtbclk_khz;
- 
-+	memset(&(clk_mgr->clks), 0, sizeof(struct dc_clocks));
-+
-+	// Assumption is that boot state always supports pstate
-+	clk_mgr->clks.ref_dtbclk_khz = ref_dtbclk;	// restore ref_dtbclk
-+	clk_mgr->clks.p_state_change_support = true;
-+	clk_mgr->clks.prev_p_state_change_support = true;
-+	clk_mgr->clks.pwr_state = DCN_PWR_STATE_UNKNOWN;
-+	clk_mgr->clks.zstate_support = DCN_ZSTATE_SUPPORT_UNKNOWN;
-+}
- static struct clk_bw_params dcn35_bw_params = {
- 	.vram_type = Ddr4MemType,
- 	.num_channels = 1,
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-index 5fdcda8f86026..04d230aa8861f 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-@@ -701,7 +701,7 @@ static const struct dc_plane_cap plane_cap = {
- 
- 	// 6:1 downscaling ratio: 1000/6 = 166.666
- 	.max_downscale_factor = {
--			.argb8888 = 167,
-+			.argb8888 = 250,
- 			.nv12 = 167,
- 			.fp16 = 167
- 	},
+ 	// Assumption is that boot state always supports pstate
++	clk_mgr->clks.dtbclk_en = true;
+ 	clk_mgr->clks.ref_dtbclk_khz = ref_dtbclk;	// restore ref_dtbclk
+ 	clk_mgr->clks.p_state_change_support = true;
+ 	clk_mgr->clks.prev_p_state_change_support = true;
 -- 
 2.43.0
 
