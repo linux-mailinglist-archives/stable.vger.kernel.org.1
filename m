@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-37120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8D889C36D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E1F489C5FF
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2DE91F222FD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1967A284967
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F2385C42;
-	Mon,  8 Apr 2024 13:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2C67E772;
+	Mon,  8 Apr 2024 14:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ls5OZfqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1DYimfG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACF285954;
-	Mon,  8 Apr 2024 13:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299B77F47E;
+	Mon,  8 Apr 2024 14:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583308; cv=none; b=fuG1VsIRE87JlyH4kZOilot0ivJW6qrtDsEhMcSuyMYPKmbX8+4yr26OhDD8BTe/D7LDUbkm2qSLC7FlWNkocjbTxdyNWxdfNPNFd9R/Yx/uYUL/1iG9WmNYN3B8B22jVTC8SgmqqvJsLOZxMk4iib+U+Bj2DoaCPe1iDRdYh8o=
+	t=1712584976; cv=none; b=sVQ7bHDitxUG7gStmS988Grj4Nm2WIQIdq54HkwGOlVOCM40V6xtANOfJHWyNGllwfFej4/6qKcUneW3S5eqaZsDgRp6ko2JRZ+a7rrr8AEp1v7zEHY9tENq9Pnq4EHVnsAPaqCfJ+pfQ7qeQS9o3Gvx5FcFdbZhBZQ81yYfCsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583308; c=relaxed/simple;
-	bh=76jSRDjt/gUpQCD1SP2SVdeI+vQetbnk/Rfu8KpmGFw=;
+	s=arc-20240116; t=1712584976; c=relaxed/simple;
+	bh=tIyMiilCakTcREAAMw92VTc0GP8yqyJERcxqY3ZqC60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ItMZA4Q+WUCB7IYK8pufLwviuBfZPjsiNhIzfDiq9/ZPLnHJyX+GlFHhMv5celcRP8uGu3sbzznWEvx7BUn1uFjt8MIECZnmDiW4e6eRxsjLrnXpIlA00mvC7EngOzBQZU75ZHbqcksMFTj6dfZiOtBc5PAsEZqgeHm2xx2KzIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ls5OZfqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5BAAC433C7;
-	Mon,  8 Apr 2024 13:35:07 +0000 (UTC)
+	 MIME-Version; b=FhaAAA/jskv7KVH0fHCai4nzcvHXLJYUEHfV2V9I2rbueXp3MGDxdcUKH+n1x1OiuigFlrizYQlzXm9eOrjZmJeNmyNegid6k/hPlRLl4EdpxZk6BuGIhP4MuQRksGUJ8jcvsnX6Ba8dg32H5TXtEpbjDENOGEtVoBmCLCCodig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1DYimfG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63F2C433C7;
+	Mon,  8 Apr 2024 14:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583308;
-	bh=76jSRDjt/gUpQCD1SP2SVdeI+vQetbnk/Rfu8KpmGFw=;
+	s=korg; t=1712584976;
+	bh=tIyMiilCakTcREAAMw92VTc0GP8yqyJERcxqY3ZqC60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ls5OZfqtcT0WXE2j++B1u6Bm4iQ9EQxBkrIIysWr9olMxyzf6K8xwCmFVk9cpo/KH
-	 5YQtvPPXaBYkZf3mpPmwBu/30HqwdDNZUopShGB3r4N5cWa5uGhe3xUaqUTVGJnQre
-	 KIeXrqanZ0YpoMXlxeTQZXdGC5R0ixjL6gADMmu4=
+	b=f1DYimfGLUdFMRFzV1/7DulHeyjmGkuX4vox8ETpT0qS0BZ3x4D2gFk15VRdvjsiN
+	 M54SZLguhuiDA3r5dTQdB6tcd6dVmbTlqx2BLZ/oMrusM4FFxlbaLtskecnjjX87iw
+	 nsu55Babv85cNPg8Y0SA5J2u0G+sTocOLFjJ3ieY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 180/252] spi: s3c64xx: determine the fifo depth only once
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.15 613/690] ixgbe: avoid sleeping allocation in ixgbe_ipsec_vf_add_sa()
 Date: Mon,  8 Apr 2024 14:57:59 +0200
-Message-ID: <20240408125312.244304572@linuxfoundation.org>
+Message-ID: <20240408125421.823464374@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +66,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
-[ Upstream commit c6e776ab6abdfce5a1edcde7a22c639e76499939 ]
+[ Upstream commit aec806fb4afba5fe80b09e29351379a4292baa43 ]
 
-Determine the FIFO depth only once, at probe time.
-``sdd->fifo_depth`` can be set later on with the FIFO depth
-specified in the device tree.
+Change kzalloc() flags used in ixgbe_ipsec_vf_add_sa() to GFP_ATOMIC, to
+avoid sleeping in IRQ context.
 
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://msgid.link/r/20240216070555.2483977-5-tudor.ambarus@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: a3d3eab627bb ("spi: s3c64xx: Use DMA mode from fifo size")
+Dan Carpenter, with the help of Smatch, has found following issue:
+The patch eda0333ac293: "ixgbe: add VF IPsec management" from Aug 13,
+2018 (linux-next), leads to the following Smatch static checker
+warning: drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c:917 ixgbe_ipsec_vf_add_sa()
+	warn: sleeping in IRQ context
+
+The call tree that Smatch is worried about is:
+ixgbe_msix_other() <- IRQ handler
+-> ixgbe_msg_task()
+   -> ixgbe_rcv_msg_from_vf()
+      -> ixgbe_ipsec_vf_add_sa()
+
+Fixes: eda0333ac293 ("ixgbe: add VF IPsec management")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/intel-wired-lan/db31a0b0-4d9f-4e6b-aed8-88266eb5665c@moroto.mountain
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-s3c64xx.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 688b8fad9e2fd..e059fb9db1da1 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -189,6 +189,7 @@ struct s3c64xx_spi_port_config {
-  * @tx_dma: Local transmit DMA data (e.g. chan and direction)
-  * @port_conf: Local SPI port configuartion data
-  * @port_id: Port identification number
-+ * @fifo_depth: depth of the FIFO.
-  * @rx_fifomask: SPI_STATUS.RX_FIFO_LVL mask. Shifted mask defining the field's
-  *               length and position.
-  * @tx_fifomask: SPI_STATUS.TX_FIFO_LVL mask. Shifted mask defining the field's
-@@ -212,6 +213,7 @@ struct s3c64xx_spi_driver_data {
- 	struct s3c64xx_spi_dma_data	tx_dma;
- 	const struct s3c64xx_spi_port_config	*port_conf;
- 	unsigned int			port_id;
-+	unsigned int			fifo_depth;
- 	u32				rx_fifomask;
- 	u32				tx_fifomask;
- };
-@@ -422,7 +424,7 @@ static bool s3c64xx_spi_can_dma(struct spi_controller *host,
- 	struct s3c64xx_spi_driver_data *sdd = spi_controller_get_devdata(host);
- 
- 	if (sdd->rx_dma.ch && sdd->tx_dma.ch)
--		return xfer->len > FIFO_DEPTH(sdd);
-+		return xfer->len > sdd->fifo_depth;
- 
- 	return false;
- }
-@@ -509,7 +511,7 @@ static u32 s3c64xx_spi_wait_for_timeout(struct s3c64xx_spi_driver_data *sdd,
- 	void __iomem *regs = sdd->regs;
- 	unsigned long val = 1;
- 	u32 status;
--	u32 max_fifo = FIFO_DEPTH(sdd);
-+	u32 max_fifo = sdd->fifo_depth;
- 
- 	if (timeout_ms)
- 		val = msecs_to_loops(timeout_ms);
-@@ -616,7 +618,7 @@ static int s3c64xx_wait_for_pio(struct s3c64xx_spi_driver_data *sdd,
- 	 * For any size less than the fifo size the below code is
- 	 * executed atleast once.
- 	 */
--	loops = xfer->len / FIFO_DEPTH(sdd);
-+	loops = xfer->len / sdd->fifo_depth;
- 	buf = xfer->rx_buf;
- 	do {
- 		/* wait for data to be received in the fifo */
-@@ -753,7 +755,7 @@ static int s3c64xx_spi_transfer_one(struct spi_controller *host,
- 				    struct spi_transfer *xfer)
- {
- 	struct s3c64xx_spi_driver_data *sdd = spi_controller_get_devdata(host);
--	const unsigned int fifo_len = FIFO_DEPTH(sdd);
-+	const unsigned int fifo_len = sdd->fifo_depth;
- 	const void *tx_buf = NULL;
- 	void *rx_buf = NULL;
- 	int target_len = 0, origin_len = 0;
-@@ -1220,6 +1222,8 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 		sdd->port_id = pdev->id;
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c
+index 69d11ff7677d6..ac198c00b44f5 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c
+@@ -909,7 +909,13 @@ int ixgbe_ipsec_vf_add_sa(struct ixgbe_adapter *adapter, u32 *msgbuf, u32 vf)
+ 		goto err_out;
  	}
  
-+	sdd->fifo_depth = FIFO_DEPTH(sdd);
+-	xs = kzalloc(sizeof(*xs), GFP_KERNEL);
++	algo = xfrm_aead_get_byname(aes_gcm_name, IXGBE_IPSEC_AUTH_BITS, 1);
++	if (unlikely(!algo)) {
++		err = -ENOENT;
++		goto err_out;
++	}
 +
- 	s3c64xx_spi_set_fifomask(sdd);
++	xs = kzalloc(sizeof(*xs), GFP_ATOMIC);
+ 	if (unlikely(!xs)) {
+ 		err = -ENOMEM;
+ 		goto err_out;
+@@ -925,14 +931,8 @@ int ixgbe_ipsec_vf_add_sa(struct ixgbe_adapter *adapter, u32 *msgbuf, u32 vf)
+ 		memcpy(&xs->id.daddr.a4, sam->addr, sizeof(xs->id.daddr.a4));
+ 	xs->xso.dev = adapter->netdev;
  
- 	sdd->cur_bpw = 8;
-@@ -1311,7 +1315,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Targets attached\n",
- 					sdd->port_id, host->num_chipselect);
- 	dev_dbg(&pdev->dev, "\tIOmem=[%pR]\tFIFO %dbytes\n",
--					mem_res, FIFO_DEPTH(sdd));
-+		mem_res, sdd->fifo_depth);
- 
- 	pm_runtime_mark_last_busy(&pdev->dev);
- 	pm_runtime_put_autosuspend(&pdev->dev);
+-	algo = xfrm_aead_get_byname(aes_gcm_name, IXGBE_IPSEC_AUTH_BITS, 1);
+-	if (unlikely(!algo)) {
+-		err = -ENOENT;
+-		goto err_xs;
+-	}
+-
+ 	aead_len = sizeof(*xs->aead) + IXGBE_IPSEC_KEY_BITS / 8;
+-	xs->aead = kzalloc(aead_len, GFP_KERNEL);
++	xs->aead = kzalloc(aead_len, GFP_ATOMIC);
+ 	if (unlikely(!xs->aead)) {
+ 		err = -ENOMEM;
+ 		goto err_xs;
 -- 
 2.43.0
 
