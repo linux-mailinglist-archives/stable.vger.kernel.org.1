@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-37371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3333C89C494
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C0F89C497
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C81501F20EF3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D91501F22A83
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF4F80045;
-	Mon,  8 Apr 2024 13:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404D580617;
+	Mon,  8 Apr 2024 13:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXAxQVEb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LvR5B0Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8457E10B;
-	Mon,  8 Apr 2024 13:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CFB8005E;
+	Mon,  8 Apr 2024 13:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584036; cv=none; b=pcg1o0uuaT1Yy9TEl3Ye1mj/i2d7OWmEd+P8hahqySpao7sVz/jJrASw0efNaCj8GiLbM5p5Cg5eZSGXp0339G6ER2h+Uufjk4P8gHBoQ3khSNIGfe43stQaT0cV1ogKYemfqgE6k/FzVoFC48Wo83tYSRzgyrGE0/l7FSpVJW8=
+	t=1712584046; cv=none; b=dFVWLnlMkRyQI4zLb6MUfWoqM/VhxwSHRTWG02uA8rEISsgAMZKmu6mh6gspjinx+r2tPa/X5+C3Kpmhm+yhzAscNhUXonr/Fzmo0ThLV9sZWHQMG8lBOOsuaGVHSjYx9kvN0pD8Gl6TPyxWm4gedEC6ELQEeoc8mwfGIvkJ03I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584036; c=relaxed/simple;
-	bh=NOScHutPeaM20eOCwsOOxkNdCKp2jiJefR2jcPn9sSo=;
+	s=arc-20240116; t=1712584046; c=relaxed/simple;
+	bh=iyp3iTt+I6Fj8jsaygGKcPb9yWy1TN2YNRG5vTqTfsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jxoOTnh7ekO4duFdK9107taJib5ZeI3RDaryrK8t6/wqhTnEzKMaFatVL51WdJ2sEO2S2Zw0217phmpiJ0hXR07TzlVdN23CggeVR6i6j+PaqbNCplzAGvX29QuREqsnWr5DUkO9wB84QUOguj2B+UN+DlydP4BL9U+EROHlfSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXAxQVEb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4454DC433C7;
-	Mon,  8 Apr 2024 13:47:16 +0000 (UTC)
+	 MIME-Version; b=rfupoxqNxT8j3TZLSqioyaEUV34NmSANsTdnL5FEwo1P3n0JM6Tz4g/cKpZJqDYTuLspoiUM13KOf0y0zQraOf6FvS+3dcjWQAsexFzMLpsi8RrTUVGGRQ7B8d299gWGF3+Puew65is7Is23QwR6p59deMS7Ch68upFT4PovQK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LvR5B0Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BE5C433C7;
+	Mon,  8 Apr 2024 13:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584036;
-	bh=NOScHutPeaM20eOCwsOOxkNdCKp2jiJefR2jcPn9sSo=;
+	s=korg; t=1712584045;
+	bh=iyp3iTt+I6Fj8jsaygGKcPb9yWy1TN2YNRG5vTqTfsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eXAxQVEb4Bg6sp/DP4zCSKhsis/cCOWfiXzPkPOUU6CMqnOv6RZ8SQ+UW9r7BdkAE
-	 XtDVOJtk9jzIwLNAfBme0FEN4N/oE4s+5eWFAPW7dW5cdQ8f1gHcGZVXn/Hw1VuQBK
-	 pvXjog+McrjHQl5zDuM8LGG8EwzKykRvDNbLJkkg=
+	b=1LvR5B0QDyY/w0K4oR+cATacrlt8Ymiy+Pl4g3YAGtsRkgGXsp/SfyNJiTpZ1ZiUn
+	 Vj1zBj9dfVJXyGE/tSa0e1asjAoDrSfXTrh4QLljyF2P2+R2/56M2VYYW5N9SmAZ/H
+	 JtYd/oYuX8IiIghsymLjY0T9AyED/RS+R2vzeZC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 324/690] NFSD: Move documenting comment for nfsd4_process_open2()
-Date: Mon,  8 Apr 2024 14:53:10 +0200
-Message-ID: <20240408125411.355058318@linuxfoundation.org>
+Subject: [PATCH 5.15 325/690] NFSD: Trace filecache opens
+Date: Mon,  8 Apr 2024 14:53:11 +0200
+Message-ID: <20240408125411.385301641@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,58 +66,74 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 7e2ce0cc15a509b859199235a2bad9cece00f67a ]
+[ Upstream commit 0122e882119ddbd9efa6edfeeac3f5c704a7aeea ]
 
-Clean up nfsd4_open() by converting a large comment at the only
-call site for nfsd4_process_open2() to a kerneldoc comment in
-front of that function.
+Instrument calls to nfsd_open_verified() to get a sense of the
+filecache hit rate.
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfs4proc.c  |  6 +-----
- fs/nfsd/nfs4state.c | 12 ++++++++++++
- 2 files changed, 13 insertions(+), 5 deletions(-)
+ fs/nfsd/filecache.c |  5 +++--
+ fs/nfsd/trace.h     | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 6a9c7e6a23ba5..3ac2978c596ae 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -628,11 +628,7 @@ nfsd4_open(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 		status = nfserr_inval;
- 		goto out;
- 	}
--	/*
--	 * nfsd4_process_open2() does the actual opening of the file.  If
--	 * successful, it (1) truncates the file if open->op_truncate was
--	 * set, (2) sets open->op_stateid, (3) sets open->op_delegation.
--	 */
-+
- 	status = nfsd4_process_open2(rqstp, resfh, open);
- 	WARN(status && open->op_created,
- 	     "nfsd4_process_open2 failed to open newly-created file! status=%u\n",
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index f9681a4d116ad..d79b736019d49 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -5465,6 +5465,18 @@ static void nfsd4_deleg_xgrade_none_ext(struct nfsd4_open *open,
- 	 */
- }
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index 045f5a869ddc7..0863bf5050935 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -976,10 +976,11 @@ nfsd_do_file_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
  
-+/**
-+ * nfsd4_process_open2 - finish open processing
-+ * @rqstp: the RPC transaction being executed
-+ * @current_fh: NFSv4 COMPOUND's current filehandle
-+ * @open: OPEN arguments
-+ *
-+ * If successful, (1) truncate the file if open->op_truncate was
-+ * set, (2) set open->op_stateid, (3) set open->op_delegation.
-+ *
-+ * Returns %nfs_ok on success; otherwise an nfs4stat value in
-+ * network byte order is returned.
-+ */
- __be32
- nfsd4_process_open2(struct svc_rqst *rqstp, struct svc_fh *current_fh, struct nfsd4_open *open)
- {
+ 	nf->nf_mark = nfsd_file_mark_find_or_create(nf);
+ 	if (nf->nf_mark) {
+-		if (open)
++		if (open) {
+ 			status = nfsd_open_verified(rqstp, fhp, may_flags,
+ 						    &nf->nf_file);
+-		else
++			trace_nfsd_file_open(nf, status);
++		} else
+ 			status = nfs_ok;
+ 	} else
+ 		status = nfserr_jukebox;
+diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
+index 7f3f40f6c0ff3..3cff3ada00a85 100644
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -775,6 +775,34 @@ TRACE_EVENT(nfsd_file_acquire,
+ 			__entry->nf_file, __entry->status)
+ );
+ 
++TRACE_EVENT(nfsd_file_open,
++	TP_PROTO(struct nfsd_file *nf, __be32 status),
++	TP_ARGS(nf, status),
++	TP_STRUCT__entry(
++		__field(unsigned int, nf_hashval)
++		__field(void *, nf_inode)	/* cannot be dereferenced */
++		__field(int, nf_ref)
++		__field(unsigned long, nf_flags)
++		__field(unsigned long, nf_may)
++		__field(void *, nf_file)	/* cannot be dereferenced */
++	),
++	TP_fast_assign(
++		__entry->nf_hashval = nf->nf_hashval;
++		__entry->nf_inode = nf->nf_inode;
++		__entry->nf_ref = refcount_read(&nf->nf_ref);
++		__entry->nf_flags = nf->nf_flags;
++		__entry->nf_may = nf->nf_may;
++		__entry->nf_file = nf->nf_file;
++	),
++	TP_printk("hash=0x%x inode=%p ref=%d flags=%s may=%s file=%p",
++		__entry->nf_hashval,
++		__entry->nf_inode,
++		__entry->nf_ref,
++		show_nf_flags(__entry->nf_flags),
++		show_nfsd_may_flags(__entry->nf_may),
++		__entry->nf_file)
++)
++
+ DECLARE_EVENT_CLASS(nfsd_file_search_class,
+ 	TP_PROTO(struct inode *inode, unsigned int hash, int found),
+ 	TP_ARGS(inode, hash, found),
 -- 
 2.43.0
 
