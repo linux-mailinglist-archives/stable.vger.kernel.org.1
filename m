@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-37589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89BE89C689
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:12:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE13289C1FE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FC1DB26096
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF7C21C219B7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F069E7C0BF;
-	Mon,  8 Apr 2024 13:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85AA7D09A;
+	Mon,  8 Apr 2024 13:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eh0qj9+E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMrZ8L4x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB88D768F0;
-	Mon,  8 Apr 2024 13:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEF871742;
+	Mon,  8 Apr 2024 13:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584676; cv=none; b=LWBv5thKYnZQ0GqemIBvfsBEKN1PtWbd3/ccfh8MNlAWitlmVEXYSYcuFvJSnWCJVkTvz04YRbzrmHw+6otuNMylOCP2dfWilPHnfDjJ8S0Qr5Sl4Ske9CFy6ohcbieho2iQXDLAkP9YvKlm5GwlOZYutdL+RBnR+YMCAKJwVhc=
+	t=1712582498; cv=none; b=Zimh0VW0j6ymzci9YNUjdu81b0wtMC0zqJjX8ino4gRoIfQ/6xnRZGOJYzr7zogNvKB8Rr0f8J7cciUsP9l5eZNBlTQlUvkskHF7iqFWjRl63EVCxf99LW9dO/CUP3t7kHEV8yJ5lO8ihY9+Uz4m0xio5IsNLDDi8Jteeg8mcXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584676; c=relaxed/simple;
-	bh=5PnNqHx7vHtG5rGsevtSBFHeIDFE9ZQ8u1DhsEpspMU=;
+	s=arc-20240116; t=1712582498; c=relaxed/simple;
+	bh=xRRxZWgaYADFwRE4uEQY+cVTDH/G9WuKUMmT7sFCfGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o2fkyfLWCiWcA89b1O9Ydi9X/iqlRy5UsshKXOENmCBWrlEksD0edMHrRF19OXEd/oL5uc2o0JC9xEUgqzvY43BSmk8m75UzLdqi0KtBDccfxTUbjatMk0sbrQ3kKPEPnh1jj2TxeUTWmwOCRDDqnMllUm1a9HWwjIUkv/ZXhbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eh0qj9+E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329A4C433C7;
-	Mon,  8 Apr 2024 13:57:56 +0000 (UTC)
+	 MIME-Version; b=UHBIaV7S8aOdr9FDGxmG0rqg8gzGsAqpiGZGsiWCDFmKDWJm8n4ZQ8zN1pBAXCCU9xdhWJFcX6zbGxTRfIyUD94bzbxzDyNyGf9U8oerfMk0q98fmDpF8TR0TUVIGholx12TKj+zimBMh52c+Fc3Q8wh3X8LB8An8LIqOLJZ+k0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMrZ8L4x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65077C433C7;
+	Mon,  8 Apr 2024 13:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584676;
-	bh=5PnNqHx7vHtG5rGsevtSBFHeIDFE9ZQ8u1DhsEpspMU=;
+	s=korg; t=1712582497;
+	bh=xRRxZWgaYADFwRE4uEQY+cVTDH/G9WuKUMmT7sFCfGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eh0qj9+EUzYf3Pv2AhUZUQtCU3zEDun2VbyGn81FHZpxS9DcpgMtASV6/kgK4/38i
-	 lMMHPhhEJHT6x2c0IU6upMAavw403nrn8sVx0Df9kivMB/8PBV0rxrOXJbouoTvd8U
-	 kQc14m/lcmCcq9xI5c/EviFuWp+0QfOIy9KKq9ok=
+	b=JMrZ8L4xeBCZqp0ja3fDwouyK5aCLo1o6+mYpNE3f12z3jLXbdthbSfVglwRIk09k
+	 +W/bQ9Vxv+JyLqDylXC+IIVUB5itqtktOiYngOcLrYsA0JjpkoUyL3akpiCLTIBQzT
+	 fXqbOvOfqGcoNBQ4qMs0O1NrOkrKb06UVWwcMyC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 5.15 490/690] NFSD: Use rhashtable for managing nfs4_file objects
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.8 081/273] selftests: mptcp: join: fix dev in check_endpoint
 Date: Mon,  8 Apr 2024 14:55:56 +0200
-Message-ID: <20240408125417.385509660@linuxfoundation.org>
+Message-ID: <20240408125311.816451733@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,255 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit d47b295e8d76a4d69f0e2ea0cd8a79c9d3488280 ]
+commit 40061817d95bce6dd5634a61a65cd5922e6ccc92 upstream.
 
-fh_match() is costly, especially when filehandles are large (as is
-the case for NFSv4). It needs to be used sparingly when searching
-data structures. Unfortunately, with common workloads, I see
-multiple thousands of objects stored in file_hashtbl[], which has
-just 256 buckets, making its bucket hash chains quite lengthy.
+There's a bug in pm_nl_check_endpoint(), 'dev' didn't be parsed correctly.
+If calling it in the 2nd test of endpoint_tests() too, it fails with an
+error like this:
 
-Walking long hash chains with the state_lock held blocks other
-activity that needs that lock. Sizable hash chains are a common
-occurrance once the server has handed out some delegations, for
-example -- IIUC, each delegated file is held open on the server by
-an nfs4_file object.
+ creation  [FAIL] expected '10.0.2.2 id 2 subflow dev dev' \
+                     found '10.0.2.2 id 2 subflow dev ns2eth2'
 
-To help mitigate the cost of searching with fh_match(), replace the
-nfs4_file hash table with an rhashtable, which can dynamically
-resize its bucket array to minimize hash chain length.
+The reason is '$2' should be set to 'dev', not '$1'. This patch fixes it.
 
-The result of this modification is an improvement in the latency of
-NFSv4 operations, and the reduction of nfsd CPU utilization due to
-eliminating the cost of multiple calls to fh_match() and reducing
-the CPU cache misses incurred while walking long hash chains in the
-nfs4_file hash table.
-
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 69c6ce7b6eca ("selftests: mptcp: add implicit endpoint test case")
+Cc: stable@vger.kernel.org
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240329-upstream-net-20240329-fallback-mib-v1-2-324a8981da48@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c | 97 +++++++++++++++++++++++++++++----------------
- fs/nfsd/state.h     |  5 +--
- 2 files changed, 63 insertions(+), 39 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 4f2ad5bf1f1b8..39b315e3471f5 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -44,7 +44,9 @@
- #include <linux/jhash.h>
- #include <linux/string_helpers.h>
- #include <linux/fsnotify.h>
-+#include <linux/rhashtable.h>
- #include <linux/nfs_ssc.h>
-+
- #include "xdr4.h"
- #include "xdr4cb.h"
- #include "vfs.h"
-@@ -589,11 +591,8 @@ static void nfsd4_free_file_rcu(struct rcu_head *rcu)
- void
- put_nfs4_file(struct nfs4_file *fi)
- {
--	might_lock(&state_lock);
--
--	if (refcount_dec_and_lock(&fi->fi_ref, &state_lock)) {
-+	if (refcount_dec_and_test(&fi->fi_ref)) {
- 		nfsd4_file_hash_remove(fi);
--		spin_unlock(&state_lock);
- 		WARN_ON_ONCE(!list_empty(&fi->fi_clnt_odstate));
- 		WARN_ON_ONCE(!list_empty(&fi->fi_delegations));
- 		call_rcu(&fi->fi_rcu, nfsd4_free_file_rcu);
-@@ -718,19 +717,20 @@ static unsigned int ownerstr_hashval(struct xdr_netobj *ownername)
- 	return ret & OWNER_HASH_MASK;
- }
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -773,7 +773,7 @@ pm_nl_check_endpoint()
+ 			[ -n "$_flags" ]; flags="flags $_flags"
+ 			shift
+ 		elif [ $1 = "dev" ]; then
+-			[ -n "$2" ]; dev="dev $1"
++			[ -n "$2" ]; dev="dev $2"
+ 			shift
+ 		elif [ $1 = "id" ]; then
+ 			_id=$2
+@@ -3589,6 +3589,8 @@ endpoint_tests()
+ 		local tests_pid=$!
  
--/* hash table for nfs4_file */
--#define FILE_HASH_BITS                   8
--#define FILE_HASH_SIZE                  (1 << FILE_HASH_BITS)
--
--static unsigned int file_hashval(const struct svc_fh *fh)
--{
--	struct inode *inode = d_inode(fh->fh_dentry);
-+static struct rhltable nfs4_file_rhltable ____cacheline_aligned_in_smp;
+ 		wait_mpj $ns2
++		pm_nl_check_endpoint "creation" \
++			$ns2 10.0.2.2 id 2 flags subflow dev ns2eth2
+ 		chk_subflow_nr "before delete" 2
+ 		chk_mptcp_info subflows 1 subflows 1
  
--	/* XXX: why not (here & in file cache) use inode? */
--	return (unsigned int)hash_long(inode->i_ino, FILE_HASH_BITS);
--}
-+static const struct rhashtable_params nfs4_file_rhash_params = {
-+	.key_len		= sizeof_field(struct nfs4_file, fi_inode),
-+	.key_offset		= offsetof(struct nfs4_file, fi_inode),
-+	.head_offset		= offsetof(struct nfs4_file, fi_rlist),
- 
--static struct hlist_head file_hashtbl[FILE_HASH_SIZE];
-+	/*
-+	 * Start with a single page hash table to reduce resizing churn
-+	 * on light workloads.
-+	 */
-+	.min_size		= 256,
-+	.automatic_shrinking	= true,
-+};
- 
- /*
-  * Check if courtesy clients have conflicting access and resolve it if possible
-@@ -4685,12 +4685,14 @@ move_to_close_lru(struct nfs4_ol_stateid *s, struct net *net)
- static noinline_for_stack struct nfs4_file *
- nfsd4_file_hash_lookup(const struct svc_fh *fhp)
- {
--	unsigned int hashval = file_hashval(fhp);
-+	struct inode *inode = d_inode(fhp->fh_dentry);
-+	struct rhlist_head *tmp, *list;
- 	struct nfs4_file *fi;
- 
- 	rcu_read_lock();
--	hlist_for_each_entry_rcu(fi, &file_hashtbl[hashval], fi_hash,
--				 lockdep_is_held(&state_lock)) {
-+	list = rhltable_lookup(&nfs4_file_rhltable, &inode,
-+			       nfs4_file_rhash_params);
-+	rhl_for_each_entry_rcu(fi, tmp, list, fi_rlist) {
- 		if (fh_match(&fi->fi_fhandle, &fhp->fh_handle)) {
- 			if (refcount_inc_not_zero(&fi->fi_ref)) {
- 				rcu_read_unlock();
-@@ -4704,40 +4706,56 @@ nfsd4_file_hash_lookup(const struct svc_fh *fhp)
- 
- /*
-  * On hash insertion, identify entries with the same inode but
-- * distinct filehandles. They will all be in the same hash bucket
-- * because nfs4_file's are hashed by the address in the fi_inode
-- * field.
-+ * distinct filehandles. They will all be on the list returned
-+ * by rhltable_lookup().
-+ *
-+ * inode->i_lock prevents racing insertions from adding an entry
-+ * for the same inode/fhp pair twice.
-  */
- static noinline_for_stack struct nfs4_file *
- nfsd4_file_hash_insert(struct nfs4_file *new, const struct svc_fh *fhp)
- {
--	unsigned int hashval = file_hashval(fhp);
-+	struct inode *inode = d_inode(fhp->fh_dentry);
-+	struct rhlist_head *tmp, *list;
- 	struct nfs4_file *ret = NULL;
- 	bool alias_found = false;
- 	struct nfs4_file *fi;
-+	int err;
- 
--	spin_lock(&state_lock);
--	hlist_for_each_entry_rcu(fi, &file_hashtbl[hashval], fi_hash,
--				 lockdep_is_held(&state_lock)) {
-+	rcu_read_lock();
-+	spin_lock(&inode->i_lock);
-+
-+	list = rhltable_lookup(&nfs4_file_rhltable, &inode,
-+			       nfs4_file_rhash_params);
-+	rhl_for_each_entry_rcu(fi, tmp, list, fi_rlist) {
- 		if (fh_match(&fi->fi_fhandle, &fhp->fh_handle)) {
- 			if (refcount_inc_not_zero(&fi->fi_ref))
- 				ret = fi;
--		} else if (d_inode(fhp->fh_dentry) == fi->fi_inode)
-+		} else
- 			fi->fi_aliased = alias_found = true;
- 	}
--	if (likely(ret == NULL)) {
--		nfsd4_file_init(fhp, new);
--		hlist_add_head_rcu(&new->fi_hash, &file_hashtbl[hashval]);
--		new->fi_aliased = alias_found;
--		ret = new;
--	}
--	spin_unlock(&state_lock);
-+	if (ret)
-+		goto out_unlock;
-+
-+	nfsd4_file_init(fhp, new);
-+	err = rhltable_insert(&nfs4_file_rhltable, &new->fi_rlist,
-+			      nfs4_file_rhash_params);
-+	if (err)
-+		goto out_unlock;
-+
-+	new->fi_aliased = alias_found;
-+	ret = new;
-+
-+out_unlock:
-+	spin_unlock(&inode->i_lock);
-+	rcu_read_unlock();
- 	return ret;
- }
- 
- static noinline_for_stack void nfsd4_file_hash_remove(struct nfs4_file *fi)
- {
--	hlist_del_rcu(&fi->fi_hash);
-+	rhltable_remove(&nfs4_file_rhltable, &fi->fi_rlist,
-+			nfs4_file_rhash_params);
- }
- 
- /*
-@@ -5628,6 +5646,8 @@ nfsd4_process_open2(struct svc_rqst *rqstp, struct svc_fh *current_fh, struct nf
- 	 * If not found, create the nfs4_file struct
- 	 */
- 	fp = nfsd4_file_hash_insert(open->op_file, current_fh);
-+	if (unlikely(!fp))
-+		return nfserr_jukebox;
- 	if (fp != open->op_file) {
- 		status = nfs4_check_deleg(cl, open, &dp);
- 		if (status)
-@@ -8040,10 +8060,16 @@ nfs4_state_start(void)
- {
- 	int ret;
- 
--	ret = nfsd4_create_callback_queue();
-+	ret = rhltable_init(&nfs4_file_rhltable, &nfs4_file_rhash_params);
- 	if (ret)
- 		return ret;
- 
-+	ret = nfsd4_create_callback_queue();
-+	if (ret) {
-+		rhltable_destroy(&nfs4_file_rhltable);
-+		return ret;
-+	}
-+
- 	set_max_delegations();
- 	return 0;
- }
-@@ -8074,6 +8100,7 @@ nfs4_state_shutdown_net(struct net *net)
- 
- 	nfsd4_client_tracking_exit(net);
- 	nfs4_state_destroy_net(net);
-+	rhltable_destroy(&nfs4_file_rhltable);
- #ifdef CONFIG_NFSD_V4_2_INTER_SSC
- 	nfsd4_ssc_shutdown_umount(nn);
- #endif
-diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
-index e2daef3cc0034..eadd7f465bf52 100644
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -536,16 +536,13 @@ struct nfs4_clnt_odstate {
-  * inode can have multiple filehandles associated with it, so there is
-  * (potentially) a many to one relationship between this struct and struct
-  * inode.
-- *
-- * These are hashed by filehandle in the file_hashtbl, which is protected by
-- * the global state_lock spinlock.
-  */
- struct nfs4_file {
- 	refcount_t		fi_ref;
- 	struct inode *		fi_inode;
- 	bool			fi_aliased;
- 	spinlock_t		fi_lock;
--	struct hlist_node       fi_hash;	/* hash on fi_fhandle */
-+	struct rhlist_head	fi_rlist;
- 	struct list_head        fi_stateids;
- 	union {
- 		struct list_head	fi_delegations;
--- 
-2.43.0
-
 
 
 
