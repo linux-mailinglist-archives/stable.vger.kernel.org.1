@@ -1,137 +1,72 @@
-Return-Path: <stable+bounces-36308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46FD089B705
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 06:58:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8865589B7E9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 08:48:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCAB21F21EFD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 04:58:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7C73B230EC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 06:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD896FBE;
-	Mon,  8 Apr 2024 04:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6B7200BA;
+	Mon,  8 Apr 2024 06:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNE2CNH9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PB6WFMUB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC27B1FC8;
-	Mon,  8 Apr 2024 04:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AFCE2B9B5;
+	Mon,  8 Apr 2024 06:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712552279; cv=none; b=KcgUAd2bks3cfj8E656pH93hNai2QFTBNtii0flyEj0/C4asCfl8555cW+uW9MMLEQiTOyuckOXgCofBvmoS/roXEfpaU/OayKDxLau+uyAd7GAEp16P8lJSYEICM1BuB4tYQB+O3mWsvPYxyO/qRrNNVTUsJEwy2gbDGlj3YUY=
+	t=1712558928; cv=none; b=e2JXsFshDOwnJ2PYXgD9ng76j3uf8cTCgFLq5MG/G3HqpeYuAnY21npLaT2j1CM6Cgfr4PitmcMX3MusiW7YpLBY5vJhREdxI06UQOSIq+Sp6c/ubEiAZDUYpcklqaxz2BFr9Ugh2EFjbXdgMaXRUpcOk1srAwWgtDnpN81V37k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712552279; c=relaxed/simple;
-	bh=anUXvL392fO2+AfT73Jft+wzb/H/McYFkz8oCkEBIk8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MTkBPu9iGKvZCDpT7pEE4eEmv8WjeUKSIaZ1iqp1KixMC6ypjkn82cptQZEo8Eg5KJK7cQlj9pLbiSfd+Xq90+67tPyMGEbwkT7YTReUcVtLGLNo+9FY4I5qK3ysmZeJkIpQG8tJvfjHTnlmsSit9qbi7MXiCLDYnY9+ubfvGW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNE2CNH9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE15C433F1;
-	Mon,  8 Apr 2024 04:57:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712552278;
-	bh=anUXvL392fO2+AfT73Jft+wzb/H/McYFkz8oCkEBIk8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uNE2CNH9FTFL0oHNz+X301D5F9RO25oTn8BzvyhVTKpGAr2pMGEi11x0QCj9f+Cgq
-	 E/sy4kSY568kDzXlc80p+7F4ZSXiAGWy4a4TuVDHSXaZZk6FD8fP/AbarpYW5KCGjS
-	 43fAG/SYkv+WRX4bJy1e54e9FeCfiiNw9jImlxQU=
-Date: Mon, 8 Apr 2024 06:57:56 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Wang Yugui <wangyugui@e16-tech.com>
-Cc: Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] btrfs: fix wrong block_start calculation for
- btrfs_drop_extent_map_range()
-Message-ID: <2024040851-uptown-splashing-951c@gregkh>
-References: <4240e179e2439dd1698798e2de79ec59990cbaa0.1712452660.git.wqu@suse.com>
- <20240408080014.74B2.409509F4@e16-tech.com>
+	s=arc-20240116; t=1712558928; c=relaxed/simple;
+	bh=fdlmo9nLEZZM0AajDxaXARTs2D2/fr2yANRzgsov9XQ=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=BvLT0SpLt5BDeEwDmXiCVE+mJELSt7LP9CnHR+Qk2rXJ7LniDD3lhf6s6Iwp9Yg0PHtua2okGJZoY5QLEN0kOskGL2JJmon7sIN9P+Wsd2RXYczWwqshWgf/Ykg8uBgfj6AihHpr2QcZdZ8+BhGQatG3RzkgZUjUtaNtOBllt6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PB6WFMUB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9475BC433F1;
+	Mon,  8 Apr 2024 06:48:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712558927;
+	bh=fdlmo9nLEZZM0AajDxaXARTs2D2/fr2yANRzgsov9XQ=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=PB6WFMUBsWePt6MPDVGzjykATl5kIcolPq/DLxwqs//oBCb1C/Yk/z9Of2FEs0bUq
+	 fZ16EyAYreDRW37w6FaiAvs2FGG/zKeNxkM9ELyV7TGrlAjgYOQhS0tpvW6YAFyvz8
+	 IcLsT5SP1jheavN5f5UTTd16JvwjoedFC105oS5BIhBsmy5m1+9jYm2BUcRUYI5zHw
+	 4v2XQKaZD04yAuzuIxJZArCpAwgwrEjtH4YIxP2SrAuwLAsDLwvOWtcN1FysAPMDhq
+	 +Xe9ooN4viv3dsoHK4nSFO5xV2lrZOsCxpZn1KiW3Vgep887kUpfBcp+GKVmGxpUWh
+	 1GGXb/AIOeKcA==
+Message-ID: <5b88fb4c1e02303bcbc59b92496735c9.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240408080014.74B2.409509F4@e16-tech.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <87frw2a2e4.fsf@oltmanns.dev>
+References: <20240310-pinephone-pll-fixes-v4-0-46fc80c83637@oltmanns.dev> <87frw2a2e4.fsf@oltmanns.dev>
+Subject: Re: [PATCH v4 0/5] Pinephone video out fixes (flipping between two frames)
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: Guido =?utf-8?q?G=C3=BCnther?= <agx@sigxcpu.org>, Purism Kernel Team <kernel@puri.sm>, Ondrej Jirman <megi@xff.cz>, Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, stable@vger.kernel.org, Diego Roversi <diegor@tiscali.it>, Erico Nunes <nunes.erico@gmail.com>
+To: Chen-Yu Tsai <wens@csie.org>, Frank Oltmanns <frank@oltmanns.dev>, Jernej Skrabec <jernej.skrabec@gmail.com>, Maxime Ripard <mripard@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Samuel Holland <samuel@sholland.org>
+Date: Sun, 07 Apr 2024 23:48:45 -0700
+User-Agent: alot/0.10
 
-On Mon, Apr 08, 2024 at 08:00:15AM +0800, Wang Yugui wrote:
-> Hi,
-> 
-> > [BUG]
-> > During my extent_map cleanup/refactor, with more than too strict sanity
-> > checks, extent-map-tests::test_case_7() would crash my extent_map sanity
-> > checks.
-> > 
-> > The problem is, after btrfs_drop_extent_map_range(), the resulted
-> > extent_map has a @block_start way too large.
-> > Meanwhile my btrfs_file_extent_item based members are returning a
-> > correct @disk_bytenr along with correct @offset.
-> > 
-> > The extent map layout looks like this:
-> > 
-> >      0        16K    32K       48K
-> >      | PINNED |      | Regular |
-> > 
-> > The regular em at [32K, 48K) also has 32K @block_start.
-> > 
-> > Then drop range [0, 36K), which should shrink the regular one to be
-> > [36K, 48K).
-> > However the @block_start is incorrect, we expect 32K + 4K, but got 52K.
-> > 
-> > [CAUSE]
-> > Inside btrfs_drop_extent_map_range() function, if we hit an extent_map
-> > that covers the target range but is still beyond it, we need to split
-> > that extent map into half:
-> > 
-> > 	|<-- drop range -->|
-> > 		 |<----- existing extent_map --->|
-> > 
-> > And if the extent map is not compressed, we need to forward
-> > extent_map::block_start by the difference between the end of drop range
-> > and the extent map start.
-> > 
-> > However in that particular case, the difference is calculated using
-> > (start + len - em->start).
-> > 
-> > The problem is @start can be modified if the drop range covers any
-> > pinned extent.
-> > 
-> > This leads to wrong calculation, and would be caught by my later
-> > extent_map sanity checks, which checks the em::block_start against
-> > btrfs_file_extent_item::disk_bytenr + btrfs_file_extent_item::offset.
-> > 
-> > And unfortunately this is going to cause data corruption, as the
-> > splitted em is pointing an incorrect location, can cause either
-> > unexpected read error or wild writes.
-> > 
-> > [FIX]
-> > Fix it by avoiding using @start completely, and use @end - em->start
-> > instead, which @end is exclusive bytenr number.
-> > 
-> > And update the test case to verify the @block_start to prevent such
-> > problem from happening.
-> > 
-> > CC: stable@vger.kernel.org # 6.7+
-> > Fixes: c962098ca4af ("btrfs: fix incorrect splitting in btrfs_drop_extent_map_range")
-> > Signed-off-by: Qu Wenruo <wqu@suse.com>
-> 
-> $ git describe --contains c962098ca4af
-> v6.5-rc7~4^2
-> 
-> so it should be
-> CC: stable@vger.kernel.org # 6.5+
+Quoting Frank Oltmanns (2024-04-03 08:31:47)
+> Dear clk and sunxi-ng maintainers,
+>=20
+> Patches 1-4 have been reviewed and there are no pending issues. If there
+> is something else you need me to do to get this applied, please let me
+> know.
+>=20
 
-As the "Fixes:" commit was backported to the following kernel releases:
-	6.1.47 6.4.12
-it should go back to 6.1+ as well :)
-
-But we can handle that when it hits Linus's tree.
-
-thanks,
-
-greg k-h
+I'm assuming sunxi maintainers will pick up the clk patches and send
+them to clk tree in a PR.
 
