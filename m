@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-37620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DE5489C5B8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A5CB89C1B6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:23:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 280C5282411
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC7712830D1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4677C08C;
-	Mon,  8 Apr 2024 13:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9746080617;
+	Mon,  8 Apr 2024 13:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWp8nEbm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQWg0Pkh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066EA3A1C7;
-	Mon,  8 Apr 2024 13:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D6162148;
+	Mon,  8 Apr 2024 13:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584768; cv=none; b=FEol43WD/tfY53vylV6AIDmvbW1aDJ/FFHao/wj7/vbA9N8cK3OfIQ9K4EVEk71l6W+cYZc/bimkkbhXeXIoOuOCN8whvwJR8eZCMDkYRgp57MMoAvCGrmW0x55SPHQ5Me4v1JcKI98xR0dDNU+r7FwdufLWwevUWd1lwBaz2NI=
+	t=1712582378; cv=none; b=MTBN38hjot8E70zG8T0uAthWkTRAlq/E5x8A7bDpD3fAR0uWFNs5pW/atDfAQYWFuZhTsl56jSljTd4UmuYK5LMIEgpJ9ScNiU0U37CNWEd33wye9K7/piAITAyTSsPG0h5l1R4mSq92GjRW0SHO+9mngS0euAThjhLM9sfqH6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584768; c=relaxed/simple;
-	bh=awCUgaLxusFNQ3x6Wv7fz6IiILHF30U1xYXWa99iIsc=;
+	s=arc-20240116; t=1712582378; c=relaxed/simple;
+	bh=YLVeEKx1YmPCO7tiHvj9wNcR9WaZ2YJVai1Waejqfh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WG1yAj95sJx50+CFoG+HXIGcmfs1nuJ/l6XyaC8hV3uA79Heu6+7aeBdLfszFIkkGbEXznurXBSNwRbdblj0rTYGBS0KGkdKQmN2PrT78cJs0ryB/VDbg1AQ2UqeiQyb4+QidQPAvGCDADWL5T0Sw/+6tqVrHw+W//KLSdoMc1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWp8nEbm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8082FC433C7;
-	Mon,  8 Apr 2024 13:59:27 +0000 (UTC)
+	 MIME-Version; b=ofeCCu6bLWB7SY97ZhOEjzvQMQeSvK4fKuSRB5GO9B5laVJah/YAgQ4eQtb6mGk7dJq3HOjRl9Z2dQHSQgZxv7wVG/XqPxUV3ael1BIGBrwEKetL3rGHSicLPBsLEeis67ThxisqjIsOtswrARa9qDaZ3zkYmxqvhpF7iSDm/nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQWg0Pkh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5429C433C7;
+	Mon,  8 Apr 2024 13:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584767;
-	bh=awCUgaLxusFNQ3x6Wv7fz6IiILHF30U1xYXWa99iIsc=;
+	s=korg; t=1712582378;
+	bh=YLVeEKx1YmPCO7tiHvj9wNcR9WaZ2YJVai1Waejqfh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wWp8nEbmrYqhbUDlPwPMp3GsvJgjgaddJlHLU4S8d4rqppqaSYR0C8qp56xXmPN/v
-	 nHIiFHICPT9QE0tgaczmVzlmaFPSQiZgsWDIbr66jX7s/UJBA7ewP3zdzRPzQE9N1T
-	 uLvRxTktwrQFYidEa7S2tvKq/+165eOtcHmqNaWw=
+	b=oQWg0PkhSX51FmyBBVYsX2o0IVf6M+n2MMaSme9LFS8Ed36W+Mc52itCmf3KrAaro
+	 gTPlN/Ta47yICtZFhPuNg/jgNEaqgruPiQDPcq6WNv2vMX48WFS05fZV7a9WQoKduc
+	 jNhvvz9003CXkOs0MALq9859nJhqcHMtBXTKDSe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 520/690] NFSD: fix leaked reference count of nfsd4_ssc_umount_item
-Date: Mon,  8 Apr 2024 14:56:26 +0200
-Message-ID: <20240408125418.486456966@linuxfoundation.org>
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 088/252] net: mana: Fix Rx DMA datasize and skb_over_panic
+Date: Mon,  8 Apr 2024 14:56:27 +0200
+Message-ID: <20240408125309.385834496@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-[ Upstream commit 34e8f9ec4c9ac235f917747b23a200a5e0ec857b ]
+commit c0de6ab920aafb56feab56058e46b688e694a246 upstream.
 
-The reference count of nfsd4_ssc_umount_item is not decremented
-on error conditions. This prevents the laundromat from unmounting
-the vfsmount of the source file.
+mana_get_rxbuf_cfg() aligns the RX buffer's DMA datasize to be
+multiple of 64. So a packet slightly bigger than mtu+14, say 1536,
+can be received and cause skb_over_panic.
 
-This patch decrements the reference count of nfsd4_ssc_umount_item
-on error.
+Sample dmesg:
+[ 5325.237162] skbuff: skb_over_panic: text:ffffffffc043277a len:1536 put:1536 head:ff1100018b517000 data:ff1100018b517100 tail:0x700 end:0x6ea dev:<NULL>
+[ 5325.243689] ------------[ cut here ]------------
+[ 5325.245748] kernel BUG at net/core/skbuff.c:192!
+[ 5325.247838] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+[ 5325.258374] RIP: 0010:skb_panic+0x4f/0x60
+[ 5325.302941] Call Trace:
+[ 5325.304389]  <IRQ>
+[ 5325.315794]  ? skb_panic+0x4f/0x60
+[ 5325.317457]  ? asm_exc_invalid_op+0x1f/0x30
+[ 5325.319490]  ? skb_panic+0x4f/0x60
+[ 5325.321161]  skb_put+0x4e/0x50
+[ 5325.322670]  mana_poll+0x6fa/0xb50 [mana]
+[ 5325.324578]  __napi_poll+0x33/0x1e0
+[ 5325.326328]  net_rx_action+0x12e/0x280
 
-Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+As discussed internally, this alignment is not necessary. To fix
+this bug, remove it from the code. So oversized packets will be
+marked as CQE_RX_TRUNCATED by NIC, and dropped.
+
+Cc: stable@vger.kernel.org
+Fixes: 2fbbd712baf1 ("net: mana: Enable RX path to handle various MTU sizes")
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Dexuan Cui <decui@microsoft.com>
+Link: https://lore.kernel.org/r/1712087316-20886-1-git-send-email-haiyangz@microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c |    2 +-
+ include/net/mana/mana.h                       |    1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index ada46ef5a093d..c95e7ec5fb530 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1813,13 +1813,17 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	release_copy_files(copy);
- 	return status;
- out_err:
-+	if (nfsd4_ssc_is_inter(copy)) {
-+		/*
-+		 * Source's vfsmount of inter-copy will be unmounted
-+		 * by the laundromat. Use copy instead of async_copy
-+		 * since async_copy->ss_nsui might not be set yet.
-+		 */
-+		refcount_dec(&copy->ss_nsui->nsui_refcnt);
-+	}
- 	if (async_copy)
- 		cleanup_async_copy(async_copy);
- 	status = nfserrno(-ENOMEM);
--	/*
--	 * source's vfsmount of inter-copy will be unmounted
--	 * by the laundromat
--	 */
- 	goto out;
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -601,7 +601,7 @@ static void mana_get_rxbuf_cfg(int mtu,
+ 
+ 	*alloc_size = mtu + MANA_RXBUF_PAD + *headroom;
+ 
+-	*datasize = ALIGN(mtu + ETH_HLEN, MANA_RX_DATA_ALIGN);
++	*datasize = mtu + ETH_HLEN;
  }
  
--- 
-2.43.0
-
+ static int mana_pre_alloc_rxbufs(struct mana_port_context *mpc, int new_mtu)
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -39,7 +39,6 @@ enum TRI_STATE {
+ #define COMP_ENTRY_SIZE 64
+ 
+ #define RX_BUFFERS_PER_QUEUE 512
+-#define MANA_RX_DATA_ALIGN 64
+ 
+ #define MAX_SEND_BUFFERS_PER_QUEUE 256
+ 
 
 
 
