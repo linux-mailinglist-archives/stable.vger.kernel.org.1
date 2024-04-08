@@ -1,141 +1,124 @@
-Return-Path: <stable+bounces-37770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC0689C717
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:30:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A301489C73D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:40:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B5751C21262
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:30:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B62B91C21151
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB71E13A87A;
-	Mon,  8 Apr 2024 14:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785E313E8AE;
+	Mon,  8 Apr 2024 14:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Tjk8btpd"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DvciASTP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943D713A3EC
-	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 14:30:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C65613CFAF;
+	Mon,  8 Apr 2024 14:40:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712586634; cv=none; b=pfBn2+izz/69fIMswr2Bj3S0C7A0IsvCvBVbic6pz0kMxQyL2h2wHFaTQEAB1wyR5VNMNJrFgGLUIwJbeqoxQpxnds/vrTSb+hF4EUzve4Ws89V6NeqU2BWljsxf9ZENKzxhg7sA6hZMA489DShGX2pLrfH4djPj+dmCyJ3tWhQ=
+	t=1712587241; cv=none; b=F2314xs8XmhCU4FTsZEIe5XlRIMQYYFi/HLtWgPmhKbwENXeluBte9ldYx67ibNKfskAmrEtoGRZanIOzldmTmT2I+Rzm5MuvqD99zq0jc6n2lFhbqKncQqJCki7KlzWu75BHlTFhE/IYgp9f94JkM9Sa1h12K48rRIlBxw7W94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712586634; c=relaxed/simple;
-	bh=RgNAfYk0IeW8ozwHqAQ2FZbXTFcFsxgUeSwFe0Lwusw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WwPP7Hp/XQ8s/jeGkpatfcRJCDSynuWW81CuJGKuMhrTEZZAfVpQWKN469xCaz8eZb5WWYJF9TxYhPhJu5w6q8pVMvYVYOsUkdE79Z/ryTBF1IbRjfbJ/FSil5dLWmQq2kb29Xx/SdqwqmupXMUmjGo//opGCsIlal73t/poimU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Tjk8btpd; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-516d536f6f2so3126003e87.2
-        for <stable@vger.kernel.org>; Mon, 08 Apr 2024 07:30:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712586629; x=1713191429; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JbNAL/GJwarHvPTE1x3HLG2P6WbYMjHYM5jL5CYr4Ds=;
-        b=Tjk8btpdi8oW0O+vu/IgWiRPrT2YVgIyDH4UIsNfcAsIA4tOamR/FL4mvfheKSGZP0
-         2GS+uW6COhiteIFmi5kAOQ7AoK8nwHfyFlvGelOc1vEv25DUVaIxCK0cfQud5Fu1Tfm3
-         w7nOQVC7i2x75W9+NrOb+jgEejxxF+1Cy+5HghURx8ipA8dUPb3Fln2PslCMRBKz2zFF
-         T8sW/ZkQfioWl9a7v7TvGEfFzLFDE/d/Oxu6oFFTka76t3VypUJOh1HagnjzAtkoxpLX
-         5CPcj2U24khPVGBfzuP93lWhJ7j5iT53P87dqsF/srPk/VBNx20F4QVAfqEtdzovKS2n
-         q6nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712586629; x=1713191429;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JbNAL/GJwarHvPTE1x3HLG2P6WbYMjHYM5jL5CYr4Ds=;
-        b=pC02dcReu57yvAf3RpDMVmLrEGBtXcS4r23UTL/yf9f945pjT+31Q5gKVDJadx/66K
-         c+3aLFa5MB/bvJw8Ee1PJW4aDFa2x+c+u6NOQ5SZFS5Z05UsjT5zV7LTBxOU5UyAIdxg
-         3eQMOaZ5gfi9i2EYOIxsuWF2GbdSAradNM3A+/BP4nWWKGzlzAUO5CbhQ8DWDHd8pGPh
-         7fqCPbpyJ/RY5odM+vUEKSUTKceEvMGQO8EgWTQYCLss2j8xohFz8PvetPORndQP7eAA
-         lpbmgYub8Huf/mihaP/WzPJod6sOXrAUdLdFue4vvd14BkMpckcRwGttUpXPnDdaeLYz
-         ZWdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXSVEQQjZvrhDTk1+n6uhHXs0NiclKk5HWDOMarIMqSgPVd46QP2p5OsLC6iKpkCxVSmNelf/UvBIHjBbJTbfAdr4xWLgqg
-X-Gm-Message-State: AOJu0YybKgTwS2FR3KJcUvenJ3TTpIfx+OFWitD+cU8W76pmC0c/b04x
-	9Q5KAcNS9e71jsOWATMyNQG2oKU54wRTU1Hd943U74AJNLnsfRA96CtJyQIMCbo=
-X-Google-Smtp-Source: AGHT+IHC2GoNZnZz63pJWddMfVDcEqhdjGlleVnBgtGQ2PFqmRbP3jcpGS5qBPiJXHTsSKRRqsifyA==
-X-Received: by 2002:a19:2d43:0:b0:516:d18b:eae8 with SMTP id t3-20020a192d43000000b00516d18beae8mr5691961lft.41.1712586628967;
-        Mon, 08 Apr 2024 07:30:28 -0700 (PDT)
-Received: from [172.30.204.201] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id q20-20020a194314000000b00516c5eef5c7sm1209811lfa.243.2024.04.08.07.30.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Apr 2024 07:30:28 -0700 (PDT)
-Message-ID: <dbe5562d-9850-4a25-b279-f8fcffd9291e@linaro.org>
-Date: Mon, 8 Apr 2024 16:30:26 +0200
+	s=arc-20240116; t=1712587241; c=relaxed/simple;
+	bh=8X0MVOWlSi+HfrtqF9UetPVZ+u7e6t0GGlZGIkUh+fk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Bjae0jqq1p6PbtJt2NPuMiz+dMZO64+KrVv22oNzLuwMQ15o29FlerLxep3GbpPdHCHsJE302vto9RvvYA+liTsNPsqDGsamNpR1j7DmbaBLGSoil9dQta8ZNUvigCYO9fwL1sOYMrJgU9IdjSYbsO/I0DJNs3FrHOBdxgDtc1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DvciASTP; arc=none smtp.client-ip=217.70.178.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from relay2-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::222])
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id DDD8EC21C2;
+	Mon,  8 Apr 2024 14:40:30 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8B7B040007;
+	Mon,  8 Apr 2024 14:40:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1712587223;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zzXXIjVTOW/GVigtP+lIc6F2DTSKnHcKv5KIDE8o188=;
+	b=DvciASTPrZ7p7Twm4rU2E4rW4lwWEthuTrCWrALitdoFetUariBc6YaLP5P1QuXkTH72o8
+	lFgYvuKSTDWF86pLjBeklcMgY1o7Rule2Ql2sLReXfJDQRxHNdurKAwxB0fiAugeGi9AyK
+	7XNEnw5JOfyLxFe5+khimRumVJUNQQWd35/VXJgTxinocaGKvxPOw3PE+skzhNmQKQejst
+	ljkO6IEcgNx6EictOEMWWBeN+rYwocHW28XKzo+lUTexugKjee92FovMPgiO7qgpvGZtnZ
+	MsEESdrndAf6HcAnMgljkhI+oUl8L2FJh0K6kaEF9T/sxaY+od6OXu2B0KSTfQ==
+Date: Mon, 8 Apr 2024 16:40:21 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Saravana Kannan <saravanak@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand
+ <frowand.list@gmail.com>, Shawn Guo <shawnguo@kernel.org>, Wolfram Sang
+ <wsa@kernel.org>, Mark Brown <broonie@kernel.org>, Geert Uytterhoeven
+ <geert+renesas@glider.be>, Rob Herring <robh@kernel.org>,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Luca Ceresoli
+ <luca.ceresoli@bootlin.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org, Android Kernel Team
+ <kernel-team@android.com>
+Subject: Re: [PATCH 2/2] of: property: fw_devlink: Fix links to supplier
+ when created from phandles
+Message-ID: <20240408164021.6f13bf66@bootlin.com>
+In-Reply-To: <CAGETcx-oMbjtgW-sqzP6GPuM9BwgQrYJawpui3QMf1A-ETHpvg@mail.gmail.com>
+References: <20240220111044.133776-1-herve.codina@bootlin.com>
+	<20240220111044.133776-3-herve.codina@bootlin.com>
+	<CAGETcx_xkVJn1NvCmztAv13N-7ZGqZ+KfkFg-Xn__skEBiYtHw@mail.gmail.com>
+	<20240221095137.616d2aaa@bootlin.com>
+	<CAGETcx9eFuqwJTSrGz9Or8nfHCN3=kNO5KpXwdUxQ4Z7FxHZug@mail.gmail.com>
+	<20240321125904.3ed99eb5@bootlin.com>
+	<CAGETcx-oMbjtgW-sqzP6GPuM9BwgQrYJawpui3QMf1A-ETHpvg@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] firmware: qcom: uefisecapp: Fix memory related IO
- errors and crashes
-To: Maximilian Luz <luzmaximilian@gmail.com>,
- Bjorn Andersson <andersson@kernel.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
- Johan Hovold <johan+linaro@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Guru Das Srinagesh <quic_gurus@quicinc.com>, Ard Biesheuvel
- <ardb@kernel.org>, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240406130125.1047436-1-luzmaximilian@gmail.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20240406130125.1047436-1-luzmaximilian@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 
+Hi Sarava,
 
+On Fri, 22 Mar 2024 19:00:03 -0700
+Saravana Kannan <saravanak@google.com> wrote:
 
-On 4/6/24 15:01, Maximilian Luz wrote:
-> It turns out that while the QSEECOM APP_SEND command has specific fields
-> for request and response buffers, uefisecapp expects them both to be in
-> a single memory region. Failure to adhere to this has (so far) resulted
-> in either no response being written to the response buffer (causing an
-> EIO to be emitted down the line), the SCM call to fail with EINVAL
-> (i.e., directly from TZ/firmware), or the device to be hard-reset.
+> On Thu, Mar 21, 2024 at 4:59 AM Herve Codina <herve.codina@bootlin.com> wrote:
+> >
+> > Hi Saravana,
+> >
+> > On Mon, 4 Mar 2024 23:14:13 -0800
+> > Saravana Kannan <saravanak@google.com> wrote:
+> >
+> > ...  
+> > >
+> > > Thanks for the example. Let me think about this a bit on how we could
+> > > fix this and get back to you.
+> > >
+> > > Please do ping me if I don't get back in a week or two.
+> > >  
+> >
+> > This is my ping.
+> > Do you move forward ?  
 > 
-> While this issue can be triggered deterministically, in the current form
-> it seems to happen rather sporadically (which is why it has gone
-> unnoticed during earlier testing). This is likely due to the two
-> kzalloc() calls (for request and response) being directly after each
-> other. Which means that those likely return consecutive regions most of
-> the time, especially when not much else is going on in the system.
+> Thanks for the ping. I thought about it a bit. I think the right fix
+> it to undo the overlay fix I had suggested to Geert and then make the
+> overlay code call __fw_devlink_pickup_dangling_consumers() on the
+> parent device of the top level overlay nodes that get added that don't
+> have a device created for them.
 > 
-> Fix this by allocating a single memory region for both request and
-> response buffers, properly aligning both structs inside it. This
-> unfortunately also means that the qcom_scm_qseecom_app_send() interface
-> needs to be restructured, as it should no longer map the DMA regions
-> separately. Therefore, move the responsibility of DMA allocation (or
-> mapping) to the caller.
+> I'll try to wrap up a patch for this on Monday. But if you want to
+> take a shot at this, that's ok too.
 > 
-> Fixes: 759e7a2b62eb ("firmware: Add support for Qualcomm UEFI Secure Application")
-> Cc: stable@vger.kernel.org  # 6.7
-> Tested-by: Johan Hovold <johan+linaro@kernel.org>
-> Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-> Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
-> ---
-> 
-> Changes in v2:
-> - rename DMA related variables
->    - replace _phys suffix with _dma
->    - drop _virt suffix
-> - use DMA-based naming in comments instead of referring to physical
->    addresses/memory
-> 
-> ---
 
-Tested-by: Konrad Dybcio <konrad.dybcio@linaro.org> # X13s
+I didn't see anything on this topic. Maybe I missed the related modifications.
+Did you move forward on that patch ?
 
-I've been running this for quite some time now, no explosions so far
-
-Konrad
+Best regards,
+Hervé
 
