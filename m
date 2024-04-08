@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-37058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB2889C311
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB31F89C36F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF9BE1F21B66
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:39:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE3B91C220FA
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD8837EF1F;
-	Mon,  8 Apr 2024 13:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE0A85C51;
+	Mon,  8 Apr 2024 13:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ns92A5HC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDUzW/ME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2E26FE35;
-	Mon,  8 Apr 2024 13:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2557D3FE;
+	Mon,  8 Apr 2024 13:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583130; cv=none; b=ZcHxcjZ0jZ6XB4glVMYELX9Ng7GmKrKdzBKWHigAMSY4FljgxRh/z4uqDdtcNAL4CpxipS7+uWkKOqQcESaCXzVUE+ayWS+XVsN8uV1P647lF9PVpEpMdbAa47Tjobi5W6xCnHlBOki/lIq3KLmo+DhYzEkZxYOohm7r4/BmqUs=
+	t=1712583314; cv=none; b=pGI2IGq9pMrP+lqhj6058kTqq795JVZYsAnqtX2kup52XsYXGxKD7tuh2EDvCbgDE8qZilV4B3FYveFSqBRshH59qHgQpIlK+VfAjNmXn3JG6JmlQYS1+uhwAz5VaTNdKPDPfNieKOlkull4/1TVcGH8zqgKFgNeRQN9Selh5fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583130; c=relaxed/simple;
-	bh=yR8AElbDfOT6dQ3Hr2zh9Nbex6HEyXnNfnGsbu/VlDs=;
+	s=arc-20240116; t=1712583314; c=relaxed/simple;
+	bh=28HHMVpsX9IC94/cdaRo7lL2hwYHPf7zYk+NvL6IPmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uJmvkm6o4Zf1atcxRlzOGwvo1qybB7DkxDOvMmALIk2r9AKLBwY5QshiUyLImkwODwwQrei7dLiouKQ/BRW+9C4LIg9ZHS0mzkWgmJSW5S4AUFp1j4p/LWN/sfZsLPXUgnZjn9IGAnnYGJa+J+Va/JkW32FN4qsny6QjhwucnfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ns92A5HC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47E5C433F1;
-	Mon,  8 Apr 2024 13:32:09 +0000 (UTC)
+	 MIME-Version; b=EXAZxWeMnJPQ1UrqW+bljMMza7Oq8VVkYR9LNg8p3H/zqBdBndToCAhYUhKYWWNkWCpQFZTWBTkiF6cjXEhbPFpkVm40dvXHRhLegt0pDVZOwOrdU4EtZPJghUnNHf2r5jfIdBx9bx4rIaMJxHscoV58Qa7oL7UavZwNaS8VT90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDUzW/ME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2D6C433C7;
+	Mon,  8 Apr 2024 13:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583130;
-	bh=yR8AElbDfOT6dQ3Hr2zh9Nbex6HEyXnNfnGsbu/VlDs=;
+	s=korg; t=1712583314;
+	bh=28HHMVpsX9IC94/cdaRo7lL2hwYHPf7zYk+NvL6IPmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ns92A5HCzKiXDzKfurTYnZ9ZeG2xsOAOs6NrQLZb07Vv6gvMBpWcCGqco01AZbe7V
-	 q17QxBQnwJNbe0Qhqckh7QPmlPHoYlHx6MxwfUgtHhtNay2Nd3UGhgB4dT44Sy8d72
-	 7NZXckXcQuRJS5uXsRlZaVJPkg3F1aeOYnGjXF3o=
+	b=WDUzW/ME4of9qEWXdfwO6DDymWaaM/GfmoHw+vdBOdpaetADbcNJv7X1EqtrMwnc2
+	 COwNy+jK7N/sFktwvi+Qly025Tc9QexxhaYNz3K75MtCvvtXkzz5vdJLzdOE7YbQ1D
+	 7dq2TuDr/XM748DiP5WFKrxDiRjODE73QjSLsJPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Vecera <ivecera@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.6 139/252] i40e: Remove _t suffix from enum type names
+	Stephen Lee <slee08177@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 163/273] ASoC: ops: Fix wraparound for mask in snd_soc_get_volsw
 Date: Mon,  8 Apr 2024 14:57:18 +0200
-Message-ID: <20240408125310.960597039@linuxfoundation.org>
+Message-ID: <20240408125314.332751847@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Stephen Lee <slee08177@gmail.com>
 
-[ Upstream commit addca9175e5f74cf29e8ad918c38c09b8663b5b8 ]
+[ Upstream commit fc563aa900659a850e2ada4af26b9d7a3de6c591 ]
 
-Enum type names should not be suffixed by '_t'. Either to use
-'typedef enum name name_t' to so plain 'name_t var' instead of
-'enum name_t var'.
+In snd_soc_info_volsw(), mask is generated by figuring out the index of
+the most significant bit set in max and converting the index to a
+bitmask through bit shift 1. Unintended wraparound occurs when max is an
+integer value with msb bit set. Since the bit shift value 1 is treated
+as an integer type, the left shift operation will wraparound and set
+mask to 0 instead of all 1's. In order to fix this, we type cast 1 as
+`1ULL` to prevent the wraparound.
 
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20231113231047.548659-6-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: ea558de7238b ("i40e: Enforce software interrupt during busy-poll exit")
+Fixes: 7077148fb50a ("ASoC: core: Split ops out of soc-core.c")
+Signed-off-by: Stephen Lee <slee08177@gmail.com>
+Link: https://msgid.link/r/20240326010131.6211-1-slee08177@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e.h      | 4 ++--
- drivers/net/ethernet/intel/i40e/i40e_ptp.c  | 6 +++---
- drivers/net/ethernet/intel/i40e/i40e_txrx.h | 4 ++--
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ sound/soc/soc-ops.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index 55bb0b5310d5b..bc353da3ed41d 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -108,7 +108,7 @@
- #define I40E_MAX_BW_INACTIVE_ACCUM	4 /* accumulate 4 credits max */
- 
- /* driver state flags */
--enum i40e_state_t {
-+enum i40e_state {
- 	__I40E_TESTING,
- 	__I40E_CONFIG_BUSY,
- 	__I40E_CONFIG_DONE,
-@@ -156,7 +156,7 @@ enum i40e_state_t {
- 	BIT_ULL(__I40E_PF_RESET_AND_REBUILD_REQUESTED)
- 
- /* VSI state flags */
--enum i40e_vsi_state_t {
-+enum i40e_vsi_state {
- 	__I40E_VSI_DOWN,
- 	__I40E_VSI_NEEDS_RESTART,
- 	__I40E_VSI_SYNCING_FILTERS,
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_ptp.c b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-index 8a26811140b47..cac9584debb1d 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-@@ -34,7 +34,7 @@ enum i40e_ptp_pin {
- 	GPIO_4
- };
- 
--enum i40e_can_set_pins_t {
-+enum i40e_can_set_pins {
- 	CANT_DO_PINS = -1,
- 	CAN_SET_PINS,
- 	CAN_DO_PINS
-@@ -192,7 +192,7 @@ static bool i40e_is_ptp_pin_dev(struct i40e_hw *hw)
-  * return CAN_DO_PINS if pins can be manipulated within a NIC or
-  * return CANT_DO_PINS otherwise.
-  **/
--static enum i40e_can_set_pins_t i40e_can_set_pins(struct i40e_pf *pf)
-+static enum i40e_can_set_pins i40e_can_set_pins(struct i40e_pf *pf)
- {
- 	if (!i40e_is_ptp_pin_dev(&pf->hw)) {
- 		dev_warn(&pf->pdev->dev,
-@@ -1070,7 +1070,7 @@ static void i40e_ptp_set_pins_hw(struct i40e_pf *pf)
- static int i40e_ptp_set_pins(struct i40e_pf *pf,
- 			     struct i40e_ptp_pins_settings *pins)
- {
--	enum i40e_can_set_pins_t pin_caps = i40e_can_set_pins(pf);
-+	enum i40e_can_set_pins pin_caps = i40e_can_set_pins(pf);
- 	int i = 0;
- 
- 	if (pin_caps == CANT_DO_PINS)
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.h b/drivers/net/ethernet/intel/i40e/i40e_txrx.h
-index 900b0d9ede9f5..84e4dacde6f58 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.h
-@@ -57,7 +57,7 @@ static inline u16 i40e_intrl_usec_to_reg(int intrl)
-  * mentioning ITR_INDX, ITR_NONE cannot be used as an index 'n' into any
-  * register but instead is a special value meaning "don't update" ITR0/1/2.
-  */
--enum i40e_dyn_idx_t {
-+enum i40e_dyn_idx {
- 	I40E_IDX_ITR0 = 0,
- 	I40E_IDX_ITR1 = 1,
- 	I40E_IDX_ITR2 = 2,
-@@ -305,7 +305,7 @@ struct i40e_rx_queue_stats {
- 	u64 page_busy_count;
- };
- 
--enum i40e_ring_state_t {
-+enum i40e_ring_state {
- 	__I40E_TX_FDIR_INIT_DONE,
- 	__I40E_TX_XPS_INIT_DONE,
- 	__I40E_RING_STATE_NBITS /* must be last */
+diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
+index 2d25748ca7066..b27e89ff6a167 100644
+--- a/sound/soc/soc-ops.c
++++ b/sound/soc/soc-ops.c
+@@ -263,7 +263,7 @@ int snd_soc_get_volsw(struct snd_kcontrol *kcontrol,
+ 	int max = mc->max;
+ 	int min = mc->min;
+ 	int sign_bit = mc->sign_bit;
+-	unsigned int mask = (1 << fls(max)) - 1;
++	unsigned int mask = (1ULL << fls(max)) - 1;
+ 	unsigned int invert = mc->invert;
+ 	int val;
+ 	int ret;
 -- 
 2.43.0
 
