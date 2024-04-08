@@ -1,81 +1,111 @@
-Return-Path: <stable+bounces-37822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7786489CD88
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 23:23:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C8F89CDCE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 23:48:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8598B2216C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 21:23:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B3A51C21DFE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 21:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7641482E6;
-	Mon,  8 Apr 2024 21:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D83148820;
+	Mon,  8 Apr 2024 21:47:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="LIQRiZQY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4089C1474AF;
-	Mon,  8 Apr 2024 21:23:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.188.207
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1878D11725;
+	Mon,  8 Apr 2024 21:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712611410; cv=none; b=nkW/YodG2u8a8SYx9gFHz1ZSqRWLSPEpRYngMeY3H9TJ+6NAVmoQToREl7yneu5/vUBi6UZhgDx7DexfjGxnUmmKt30xip5IE4rbBwx5KuS29/B/GFwBDnLC5Gkj80bX3rNtMXJED2FedLGIyPtUjk3ob/q3NzKMwainWj0f6jI=
+	t=1712612877; cv=none; b=BeCaecC4+9+wwSU9dz57DETbX7/7NppxvWU8wFlwfdAc7lhw/Mbq3x4YxNnvxz99wEM+32n+knt5DKE85MNzVPSLQ8pzbumNqSwciScpI8Ey8OhysRUk3P3HSnv6yFuEe/xH8URopSiX6TaYB6ApNqTU+eqV3GNGRTtZLfZjh4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712611410; c=relaxed/simple;
-	bh=OzlEQ0/BCiGtWj2oEcDZzZlHF+f/MV9Cu5k4PrQiQfE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wv+v3fiPuEffSfsK3AL/PwwGf7PEBjfnIU/2PY6XySg0Q0bjVepENrQGoahq0I1ZZymbSc8EbKgFmcyh71cMjHbeGH3hh/wNR/b3Spqq08zpwyyU9YcS9vEBoo6wp821OPnt/T0ePc0VqEHVZ975kLOdUU+MCeBSlksxVcg8cE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=217.70.188.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-Date: Mon, 8 Apr 2024 23:23:25 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: stable@vger.kernel.org, gregkh@linuxfoundation.org, sashal@kernel.org
-Subject: Re: [PATCH -stable,5.10.x 0/3] Netfilter fixes for -stable
-Message-ID: <ZhRgTdwFtFwBSIsB@calendula>
-References: <20240408212042.312221-1-pablo@netfilter.org>
+	s=arc-20240116; t=1712612877; c=relaxed/simple;
+	bh=KsMcGgnYpOkBnyUVNH0sXZj0vS5Ooyn1csyDsVRybZg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Cc:Subject:
+	 References:In-Reply-To; b=Hu9dzJT2HmZNQe3sws7f4Jgd15Vwr3SAJiZPA/fhfxDdzJssEopJrq0aaKPrJIp1L+tyG4Tru0U7qDjMhNQCw6OdaRimYhuFQm1zmlXkvrFDTBrzBDZt1vgE47TjoclRvSrl5oKMi01iTRKCzl/F08GZT3lSerEt504IlzcOnkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=LIQRiZQY; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
+	serial F5FD910E8FE2121B897F7E55B84E351D
+	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
+	auth type TLS.CUNI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
+	s=submission; t=1712612844; x=1713912844;
+	bh=KsMcGgnYpOkBnyUVNH0sXZj0vS5Ooyn1csyDsVRybZg=; h=From;
+	b=LIQRiZQY0V2qO9N/8l1U9ZH3YsE1FtxdEFFxBB+2O4pWV5kO2uHc6bSAxnrPNroif
+	 k59n0J/+wulO+vjI51EpT3khxRxabkY346yeJpUI4w+fnVAyMD39mI99y/BOneXzKN
+	 GWDhC+6mUmAhOeqFthzrnLcCJhekvRe/f99egXlxwqN7dzKcfwTDYdKe23g4s7iB6J
+	 yR9E8qK8vEj2HZOiIpDS1iIjD1AWWDtarS8h7AEeoFgWLNfhMq3rQXs534WYk9Mc5i
+	 1X1ttT7YYFLk3p4VdR4TVPhDx0iuZBuqOeqV76LZCMuAFTSTX2q+lGxFb1yx92s8yg
+	 G+Vw1e8GTg9zQ==
+Received: from localhost (koleje-wifi-0017.koleje.cuni.cz [78.128.191.17])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 438LlN06005664
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Mon, 8 Apr 2024 23:47:24 +0200 (CEST)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240408212042.312221-1-pablo@netfilter.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 08 Apr 2024 23:47:57 +0200
+Message-Id: <D0F2LIG40N4N.100NU783PULAH@matfyz.cz>
+To: "Sasha Levin" <sashal@kernel.org>
+From: "Karel Balej" <balejk@matfyz.cz>
+Cc: "Markuss Broks" <markuss.broks@gmail.com>,
+        "Dmitry Torokhov"
+ <dmitry.torokhov@gmail.com>,
+        <linux-input@vger.kernel.org>, <duje.mihanovic@skole.hr>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH AUTOSEL 6.8 78/98] input/touchscreen: imagis: add
+ support for IST3032C
+References: <20240329123919.3087149-1-sashal@kernel.org>
+ <20240329123919.3087149-78-sashal@kernel.org>
+ <D06ZCKKYTQM5.3OJ6HCLHW3DZ9@matfyz.cz> <ZhMw3fwiSrbw9r6P@sashalap>
+In-Reply-To: <ZhMw3fwiSrbw9r6P@sashalap>
 
-On Mon, Apr 08, 2024 at 11:20:37PM +0200, Pablo Neira Ayuso wrote:
-> Hi Greg, Sasha,
-> 
-> This batch contains a backport for recent fixes already upstream for 5.10.x,
-> to add them on top of your enqueued patches:
-> 
-> 994209ddf4f4 ("netfilter: nf_tables: reject new basechain after table flag update")
-> 24cea9677025 ("netfilter: nf_tables: flush pending destroy work before exit_net release")
-> a45e6889575c ("netfilter: nf_tables: release batch on table validation from abort path")
-> 0d459e2ffb54 ("netfilter: nf_tables: release mutex after nft_gc_seq_end from abort path")
-> 1bc83a019bbe ("netfilter: nf_tables: discard table flag update with pending basechain deletion")
+Sasha Levin, 2024-04-07T19:48:45-04:00:
+[...]
+> >sorry if I'm missing something, but I don't see why this should be
+> >backported: it doesn't fix anything, it's just adding support for new
+> >hardware.
+> >
+> >I can see that adding a device ID is permitted for -stable [1], but I
+> >thought it still has to bear some signs of a fix, such as maybe here
+> >[2].
+>
+> It does not need to be a fix, it could just be plain device enablement.
 
-Side note: this batch indeed contains 5 patches, subject should be:
+OK, thank you, although I'm afraid I still don't follow the rationale
+behind this, except maybe for some really trivial additions which do not
+require any other changes.
 
-        [PATCH -stable,5.10.x 0/5] Netfilter fixes for -stable
+I was also initially having a hard time understanding what your email
+means -- I found no mention of AUTOSEL in the Documentation and was
+unsure whether this is already the review cycle or not. Only later I
+came across this article [1] which confirmed some of my suspicions and
+made things slightly clearer.
 
-I can resend if needed.
+If I were to add a few words to briefly mention AUTOSEL to the
+stable-kernel-rules document according to my current understanding,
+would you take such patch?
 
-> Please, apply, thanks.
-> 
-> Pablo Neira Ayuso (5):
->   netfilter: nf_tables: reject new basechain after table flag update
->   netfilter: nf_tables: flush pending destroy work before exit_net release
->   netfilter: nf_tables: release batch on table validation from abort path
->   netfilter: nf_tables: release mutex after nft_gc_seq_end from abort path
->   netfilter: nf_tables: discard table flag update with pending basechain deletion
-> 
->  net/netfilter/nf_tables_api.c | 51 ++++++++++++++++++++++++++++-------
->  1 file changed, 41 insertions(+), 10 deletions(-)
-> 
-> -- 
-> 2.30.2
-> 
-> 
+Alternatively, I suggest adding some sort of brief
+description/explanation to these patches as is the case for patches from
+the review cycle.
+
+[1] https://lwn.net/Articles/825536/
+
+Best regards,
+K. B.
 
