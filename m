@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-37740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F38DB89C62D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:05:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A76D89C4F3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:51:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADC76285F01
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:05:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48FA2B2655F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2698005E;
-	Mon,  8 Apr 2024 14:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4512C7BAE4;
+	Mon,  8 Apr 2024 13:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLcLFayQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D51wQ19d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFCA80034;
-	Mon,  8 Apr 2024 14:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B5A6FE35;
+	Mon,  8 Apr 2024 13:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585122; cv=none; b=Esa0lOfKFsxbPyLojC/L3jZwrt8zgv1ggF7LagtkLQBjJOIVYWDgM/NrSTn80VYFjPSKQ03s6wSm7iY/w33+WPkflZsEIhBAUF7PF6JB5dEKOjeLgXK7OG1+TGcbjwcb7QG9t1OAWLBVABGu81XA+ZdMvKLChXqcD0I8tqdYXXg=
+	t=1712584098; cv=none; b=WqOn7KEhnwf+5DzEwfuOqCsYwTm+170mUMVWeUHYCC5Ai07niCg0DngyvY3fVNhueufDoBqGrDbThVjyzd9ySL7FHTZYxyTimHUmEN1FnZ8nuWC/u40T3MzJGs+XsXujp+o09HU4yONkHZ0P3FUA6d0T36mgMp7z1pdKEqedYIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585122; c=relaxed/simple;
-	bh=2/Mt5RY+vt9z0+N1MI0LVkaZkvNY4lwrgF9QTceYHO8=;
+	s=arc-20240116; t=1712584098; c=relaxed/simple;
+	bh=s6SL3yp0hCiKbUBzU8Y6vZLIsmOP+Hzrq1NAkLu4gvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hIADteasSZ5Xvg9EoQGE/P4dm/ogjokkSUZFtdScGVSXgala1krnqDigGpr+virFTkebV5prvVvZiT7mOnOanaXPbepkqy8i+v9RwAsgyCvGskUkVAVpLQ0W2dSbZrRkiaraTOuu8vn135pANEesVru9s7vm87Hj4Xy1vZgrdTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLcLFayQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B5BC433F1;
-	Mon,  8 Apr 2024 14:05:21 +0000 (UTC)
+	 MIME-Version; b=Jr1+fekPMqvqYLFeRI85L49OOCocPBVXFri6mzQQ2kgCSSMtcUG5ECdNY1vrddAdbTTtKV5UvkYZyft1adQhulMllHAvQZ8D4JlBaeLmVq7nD1CohnKK6D1ZgbS9pEHPWHjJCJXDt4AJoWwj6mtBe/9sGn8pwhY6PvlfgSo/39M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D51wQ19d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF90C433F1;
+	Mon,  8 Apr 2024 13:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585122;
-	bh=2/Mt5RY+vt9z0+N1MI0LVkaZkvNY4lwrgF9QTceYHO8=;
+	s=korg; t=1712584097;
+	bh=s6SL3yp0hCiKbUBzU8Y6vZLIsmOP+Hzrq1NAkLu4gvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NLcLFayQxZ6TgzFJCo3lavH2hDEVsynd6VetH+sjzoDquJYLsyQIDA0cfsDKNETlL
-	 fbrUkVlEXq8jp/FqQ1+VNkJ5MmrVg8+q71CBXuAHBRzmNTUeto3dVfnueHv2bWjve2
-	 MmW72ltGzimr5fC3/t5ePCdK0A4KGETzaOzMnCfQ=
+	b=D51wQ19dEPQHrh8EQEtJodZdM3Y0xq+mCut8avkoneu20Ma2JBH+wLPg1NTqbm6tY
+	 EFqSLcihs2z4OjBLoRHofZ5bIWzrL4lJF5fDwFk5JqvO6odsqmklhM67t1mo3XccnY
+	 Xgtc8VPUdHeSOP9oLVAFkjFCG+T0qYF8atmYEmdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Lee <slee08177@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 670/690] ASoC: ops: Fix wraparound for mask in snd_soc_get_volsw
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Michal Mrozek <michal.mrozek@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.8 261/273] drm/i915/gt: Disable HW load balancing for CCS
 Date: Mon,  8 Apr 2024 14:58:56 +0200
-Message-ID: <20240408125423.987312849@linuxfoundation.org>
+Message-ID: <20240408125317.588608919@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +65,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Lee <slee08177@gmail.com>
+From: Andi Shyti <andi.shyti@linux.intel.com>
 
-[ Upstream commit fc563aa900659a850e2ada4af26b9d7a3de6c591 ]
+commit bc9a1ec01289e6e7259dc5030b413a9c6654a99a upstream.
 
-In snd_soc_info_volsw(), mask is generated by figuring out the index of
-the most significant bit set in max and converting the index to a
-bitmask through bit shift 1. Unintended wraparound occurs when max is an
-integer value with msb bit set. Since the bit shift value 1 is treated
-as an integer type, the left shift operation will wraparound and set
-mask to 0 instead of all 1's. In order to fix this, we type cast 1 as
-`1ULL` to prevent the wraparound.
+The hardware should not dynamically balance the load between CCS
+engines. Wa_14019159160 recommends disabling it across all
+platforms.
 
-Fixes: 7077148fb50a ("ASoC: core: Split ops out of soc-core.c")
-Signed-off-by: Stephen Lee <slee08177@gmail.com>
-Link: https://msgid.link/r/20240326010131.6211-1-slee08177@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: <stable@vger.kernel.org> # v6.2+
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Acked-by: Michal Mrozek <michal.mrozek@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240328073409.674098-2-andi.shyti@linux.intel.com
+(cherry picked from commit f5d2904cf814f20b79e3e4c1b24a4ccc2411b7e0)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/soc-ops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/gt/intel_gt_regs.h     |    1 +
+ drivers/gpu/drm/i915/gt/intel_workarounds.c |   23 +++++++++++++++++++++--
+ 2 files changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index c56379fac9272..57caa91a4376e 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -246,7 +246,7 @@ int snd_soc_get_volsw(struct snd_kcontrol *kcontrol,
- 	int max = mc->max;
- 	int min = mc->min;
- 	int sign_bit = mc->sign_bit;
--	unsigned int mask = (1 << fls(max)) - 1;
-+	unsigned int mask = (1ULL << fls(max)) - 1;
- 	unsigned int invert = mc->invert;
- 	int val;
- 	int ret;
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
++++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
+@@ -1477,6 +1477,7 @@
+ #define   ECOBITS_PPGTT_CACHE4B			(0 << 8)
+ 
+ #define GEN12_RCU_MODE				_MMIO(0x14800)
++#define   XEHP_RCU_MODE_FIXED_SLICE_CCS_MODE	REG_BIT(1)
+ #define   GEN12_RCU_MODE_CCS_ENABLE		REG_BIT(0)
+ 
+ #define CHV_FUSE_GT				_MMIO(VLV_GUNIT_BASE + 0x2168)
+--- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
++++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+@@ -51,7 +51,8 @@
+  *   registers belonging to BCS, VCS or VECS should be implemented in
+  *   xcs_engine_wa_init(). Workarounds for registers not belonging to a specific
+  *   engine's MMIO range but that are part of of the common RCS/CCS reset domain
+- *   should be implemented in general_render_compute_wa_init().
++ *   should be implemented in general_render_compute_wa_init(). The settings
++ *   about the CCS load balancing should be added in ccs_engine_wa_mode().
+  *
+  * - GT workarounds: the list of these WAs is applied whenever these registers
+  *   revert to their default values: on GPU reset, suspend/resume [1]_, etc.
+@@ -2850,6 +2851,22 @@ add_render_compute_tuning_settings(struc
+ 		wa_write_clr(wal, GEN8_GARBCNTL, GEN12_BUS_HASH_CTL_BIT_EXC);
+ }
+ 
++static void ccs_engine_wa_mode(struct intel_engine_cs *engine, struct i915_wa_list *wal)
++{
++	struct intel_gt *gt = engine->gt;
++
++	if (!IS_DG2(gt->i915))
++		return;
++
++	/*
++	 * Wa_14019159160: This workaround, along with others, leads to
++	 * significant challenges in utilizing load balancing among the
++	 * CCS slices. Consequently, an architectural decision has been
++	 * made to completely disable automatic CCS load balancing.
++	 */
++	wa_masked_en(wal, GEN12_RCU_MODE, XEHP_RCU_MODE_FIXED_SLICE_CCS_MODE);
++}
++
+ /*
+  * The workarounds in this function apply to shared registers in
+  * the general render reset domain that aren't tied to a
+@@ -3000,8 +3017,10 @@ engine_init_workarounds(struct intel_eng
+ 	 * to a single RCS/CCS engine's workaround list since
+ 	 * they're reset as part of the general render domain reset.
+ 	 */
+-	if (engine->flags & I915_ENGINE_FIRST_RENDER_COMPUTE)
++	if (engine->flags & I915_ENGINE_FIRST_RENDER_COMPUTE) {
+ 		general_render_compute_wa_init(engine, wal);
++		ccs_engine_wa_mode(engine, wal);
++	}
+ 
+ 	if (engine->class == COMPUTE_CLASS)
+ 		ccs_engine_wa_init(engine, wal);
 
 
 
