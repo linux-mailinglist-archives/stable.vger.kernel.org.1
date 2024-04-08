@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-36700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B217D89C14A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C96B289C14D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CF13282199
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68E591F216C4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FB97B3FA;
-	Mon,  8 Apr 2024 13:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9ADC823A2;
+	Mon,  8 Apr 2024 13:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPxulRF7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUjvB3hC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186847B3E5;
-	Mon,  8 Apr 2024 13:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6395B81AC9;
+	Mon,  8 Apr 2024 13:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582090; cv=none; b=eWCmXSH9RK1OkFPlbFGJ8MHqPZmrw9m8N+jTEcQ55jpaiv46nQFyJw65s2+KvX26FT2Tk6y/HbOdUeXWdUBefvR4H1d7IOj+cZRKd9m29GKriP/8LRZe3s5nTygU4NaTgytJZkUd/6v6ow2I/W2icdglqmd982ngoH4mUjf6SnA=
+	t=1712582101; cv=none; b=kZWbcl9e1qAq8LW2f7gGCMRW6QL42KtaUZdoAT9YM5zyOQIeKmOjADSmrcAAvOqGwJyxGG4rNvDZvYTjopTKWixcScLWLUXqBxtsxk/loQSB1vKQ9jYWc71lETsD6ZiApq5nnihnJHLTkxHYgdPsx4I8OvkBPcfcXEFW6lwr60M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582090; c=relaxed/simple;
-	bh=0iIRDluz93Rbp/stYHM7ESl0RtbGOaHeT3gWZ+8nnmk=;
+	s=arc-20240116; t=1712582101; c=relaxed/simple;
+	bh=XVpYYfq8Xw+Gjm/0fh7UWwr6YTEP2120pKKSOHJyTE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iTJ0U8v5CA3NaNs/9BX36eVG/C2a2rnJAGXCKgwxXKBvxMbGpMnTLJ2C74Hl2l043xQd52P6yLaKRxMwMzL5t4/QzwE/n/yzrL4esKOvyAVnzK8A+/AHY+ynQCXWggsEtoTVlw//36FLRm5i4HKHzlsyGlXWULSTcen7t0dUHNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPxulRF7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F57FC433C7;
-	Mon,  8 Apr 2024 13:14:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eDhuvk6eC1ckCGO0AsN/Pipp/JYAqsTTth7TR6s+8+5YVT7LmoUGQz9Q9nKAaSvh/f6/IGNgeEN9vFEohSVAbN0uULFi+fG6s9dwTSn+QLD8Y6FOhSheElQjSXIt+mlTIvgD5MpQ+EdxpubtKvl9aSkcy1OkDPSHZTFKwgwTVuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUjvB3hC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD27C433F1;
+	Mon,  8 Apr 2024 13:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582089;
-	bh=0iIRDluz93Rbp/stYHM7ESl0RtbGOaHeT3gWZ+8nnmk=;
+	s=korg; t=1712582101;
+	bh=XVpYYfq8Xw+Gjm/0fh7UWwr6YTEP2120pKKSOHJyTE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lPxulRF7R88O3rn6+bqg4CrGmxW8Nt/v2sBHPRK2XaB3ehWqpt1sORJSCLJXtJGrD
-	 zwN2A3TX9vqdtJpGAvXPh/vyvMejlcejwMolO6gdMmwWLXqg99Q2+mLZj4QA3XeH0N
-	 ymskc17+wcAKbDhHJmqKjPgBww15yo+/FeiyaXDw=
+	b=oUjvB3hC7olX+L/B7uX3/U0i5obaTUQyCE7QXReiVdu7OakVw71quaOLd9A+3juJg
+	 faW2SUvZvHxfwiqIYMQjvhM7kesMtME3g06yN48mqMpHVezDKDY/femOgYI8wEAO0n
+	 IK55ui3JLPOverDCgQXwsZNGYFj2X2czAUe2R3Ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt <cryptearth@googlemail.com>,
-	Conrad Kostecki <conikost@gentoo.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Philip Yang <Philip.Yang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 110/690] ahci: asm1064: asm1166: dont limit reported ports
-Date: Mon,  8 Apr 2024 14:49:36 +0200
-Message-ID: <20240408125403.510278334@linuxfoundation.org>
+Subject: [PATCH 5.15 111/690] drm/amdgpu: amdgpu_ttm_gart_bind set gtt bound flag
+Date: Mon,  8 Apr 2024 14:49:37 +0200
+Message-ID: <20240408125403.546212853@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -62,93 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conrad Kostecki <conikost@gentoo.org>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit 6cd8adc3e18960f6e59d797285ed34ef473cc896 ]
+[ Upstream commit 6c6064cbe58b43533e3451ad6a8ba9736c109ac3 ]
 
-Previously, patches have been added to limit the reported count of SATA
-ports for asm1064 and asm1166 SATA controllers, as those controllers do
-report more ports than physically having.
+Otherwise after the GTT bo is released, the GTT and gart space is freed
+but amdgpu_ttm_backend_unbind will not clear the gart page table entry
+and leave valid mapping entry pointing to the stale system page. Then
+if GPU access the gart address mistakely, it will read undefined value
+instead page fault, harder to debug and reproduce the real issue.
 
-While it is allowed to report more ports than physically having in CAP.NP,
-it is not allowed to report more ports than physically having in the PI
-(Ports Implemented) register, which is what these HBAs do.
-(This is a AHCI spec violation.)
-
-Unfortunately, it seems that the PMP implementation in these ASMedia HBAs
-is also violating the AHCI and SATA-IO PMP specification.
-
-What these HBAs do is that they do not report that they support PMP
-(CAP.SPM (Supports Port Multiplier) is not set).
-
-Instead, they have decided to add extra "virtual" ports in the PI register
-that is used if a port multiplier is connected to any of the physical
-ports of the HBA.
-
-Enumerating the devices behind the PMP as specified in the AHCI and
-SATA-IO specifications, by using PMP READ and PMP WRITE commands to the
-physical ports of the HBA is not possible, you have to use the "virtual"
-ports.
-
-This is of course bad, because this gives us no way to detect the device
-and vendor ID of the PMP actually connected to the HBA, which means that
-we can not apply the proper PMP quirks for the PMP that is connected to
-the HBA.
-
-Limiting the port map will thus stop these controllers from working with
-SATA Port Multipliers.
-
-This patch reverts both patches for asm1064 and asm1166, so old behavior
-is restored and SATA PMP will work again, but it will also reintroduce the
-(minutes long) extra boot time for the ASMedia controllers that do not
-have a PMP connected (either on the PCIe card itself, or an external PMP).
-
-However, a longer boot time for some, is the lesser evil compared to some
-other users not being able to detect their drives at all.
-
-Fixes: 0077a504e1a4 ("ahci: asm1166: correct count of reported ports")
-Fixes: 9815e3961754 ("ahci: asm1064: correct count of reported ports")
 Cc: stable@vger.kernel.org
-Reported-by: Matt <cryptearth@googlemail.com>
-Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-[cassel: rewrote commit message]
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 2d1f5cede60b2..7807c7b9f37ab 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -666,19 +666,6 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
- static void ahci_pci_save_initial_config(struct pci_dev *pdev,
- 					 struct ahci_host_priv *hpriv)
- {
--	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA) {
--		switch (pdev->device) {
--		case 0x1166:
--			dev_info(&pdev->dev, "ASM1166 has only six ports\n");
--			hpriv->saved_port_map = 0x3f;
--			break;
--		case 0x1064:
--			dev_info(&pdev->dev, "ASM1064 has only four ports\n");
--			hpriv->saved_port_map = 0xf;
--			break;
--		}
--	}
--
- 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
- 		dev_info(&pdev->dev, "JMB361 has only one port\n");
- 		hpriv->force_port_map = 1;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+index b06fb1fa411b4..9a1b19e3d4378 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -859,6 +859,7 @@ static int amdgpu_ttm_gart_bind(struct amdgpu_device *adev,
+ 		r = amdgpu_gart_bind(adev, gtt->offset, ttm->num_pages,
+ 				     gtt->ttm.dma_address, flags);
+ 	}
++	gtt->bound = true;
+ 
+ gart_bind_fail:
+ 	if (r)
 -- 
 2.43.0
 
