@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-36726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3068B89C15F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3200E89C165
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62EE91C21BC9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C76781F2232F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7F57BB07;
-	Mon,  8 Apr 2024 13:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB467C082;
+	Mon,  8 Apr 2024 13:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbWuOg2x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2cSNuvnt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7C07172F;
-	Mon,  8 Apr 2024 13:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF26A71B3D;
+	Mon,  8 Apr 2024 13:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582165; cv=none; b=oGIQGEPsDFTZkKq3qPVDkwnOYzLUxnvoXWvGEBCCVY1uMhY4FC8gJlkMyE+hvDExBLkx2TM+n8IveDd4+5fYZJiS0SqrdO2bqkip0FtZfTtAHlKNQYKmDRY2NSJsyc9Z+A0E642iWG+JaDGa7ki+nop6t+Hht5nAjtJ5XOcHQjQ=
+	t=1712582180; cv=none; b=L6dCe5jHzRmGN07ARMyJS+K6oRRdJp5Fe3KovAFeHTv48cAewNRlYNkG2EbDaY5CM4Bd5lxX/tZu0MhisMVixGXAsY9uJnFchkNVYowU8J6YguPLxNlGhFrZ6is9IL8ek2zeSriA1TDQYOMbUFFPjlDc3UqM+myLVVNV4wZK/EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582165; c=relaxed/simple;
-	bh=Gvj5QVuqTtYzDab1K8J5jWyFdXSGcxUvYowTFHHQRcw=;
+	s=arc-20240116; t=1712582180; c=relaxed/simple;
+	bh=FwM4uMpGE0UqxwwAqQrI7HqtbqOK94bRADjBluvuBB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fppb+Q4bh+2NXlnnRUZnmi5reQkd4y2KGIuiGVrnZNebtcxBu6Kl/9M28dRcMto5eMHDFPqkG24yGhR5tgX+KJhp5HW9bcguz+/jzWdXurrB8Q4ofnBhSW4//tJs4YtOw4TCpuiMRpV5XnClhqtpswDmKu3wKZb3G3oLrw7EFCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbWuOg2x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E40E6C433F1;
-	Mon,  8 Apr 2024 13:16:04 +0000 (UTC)
+	 MIME-Version; b=imW/APbvuxzu3YVhwHETguU1AN8YHKB0ypGRODO9XvVodJB7/gA9Osl2genVYbcZ6aWNInCx1Dp86u4YJWjoKfsTApCbInM4NTz5xMR9EgzP7fZ6mXku8K5VGr+5vPGTRCz5XMDWpxVf6Ry4oR4QIJ9Ebe5xDvGTcZ7ngIo/pPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2cSNuvnt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C19C433F1;
+	Mon,  8 Apr 2024 13:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582165;
-	bh=Gvj5QVuqTtYzDab1K8J5jWyFdXSGcxUvYowTFHHQRcw=;
+	s=korg; t=1712582179;
+	bh=FwM4uMpGE0UqxwwAqQrI7HqtbqOK94bRADjBluvuBB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HbWuOg2xLv8XbRXIs+7ZYL2OWMiOICtV0GjWzl1Fmp0bUBWUZH0AhzU+JPNzXXu40
-	 qXuV3LFvxL+XEVp+qbsVfkjtIE1QlSQEA6kCRAwCv3qySjl4jb8x0fCmQRMwx+vdwH
-	 Xs5XjFzEh0FIxW9f3r2YmkduJGgcD0eLJtIV/P+U=
+	b=2cSNuvntDweks4tK0ykU5BiTZ3ElDXkYMtT4L/6OW8ZMDvcEMNfJQTG6X2tKBYR2E
+	 qLy0QnmJj0iF6+OUzTzvgxz/ELSsRwa7IEGe4R4or/x7iqPSRuVETZ9DcJd4TomfHX
+	 snlSBN9zJsIDsbQrzs5YmaTCi1r+7pV6sID/XAbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 116/690] net: ravb: Add R-Car Gen4 support
-Date: Mon,  8 Apr 2024 14:49:42 +0200
-Message-ID: <20240408125403.741318124@linuxfoundation.org>
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Anastasia Belova <abelova@astralinux.ru>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 117/690] cpufreq: brcmstb-avs-cpufreq: fix up "add check for cpufreq_cpu_gets return value"
+Date: Mon,  8 Apr 2024 14:49:43 +0200
+Message-ID: <20240408125403.773152465@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,35 +68,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 949f252a8594a860007e7035a0cb1c19a4e218b0 upstream.
+In commit d951cf510fb0 ("cpufreq: brcmstb-avs-cpufreq: add check for
+cpufreq_cpu_get's return value"), build warnings occur because a
+variable is created after some logic, resulting in:
 
-Add support for the Renesas Ethernet AVB (EtherAVB-IF) blocks on R-Car
-Gen4 SoCs (e.g. R-Car V4H) by matching on a family-specific compatible
-value.
+drivers/cpufreq/brcmstb-avs-cpufreq.c: In function 'brcm_avs_cpufreq_get':
+drivers/cpufreq/brcmstb-avs-cpufreq.c:486:9: error: ISO C90 forbids mixed
+declarations and code [-Werror=declaration-after-statement]
+  486 |         struct private_data *priv = policy->driver_data;
+      |         ^~~~~~
+cc1: all warnings being treated as errors
+make[2]: *** [scripts/Makefile.build:289:
+drivers/cpufreq/brcmstb-avs-cpufreq.o] Error 1
+make[1]: *** [scripts/Makefile.build:552: drivers/cpufreq] Error 2
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:1907: drivers] Error 2
 
-These are treated the same as EtherAVB on R-Car Gen3.
+Fix this up.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/2ee968890feba777e627d781128b074b2c43cddb.1662718171.git.geert+renesas@glider.be
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/e114d9e5-26af-42be-9baa-72c3a6ec8fe5@oracle.com
+Link: https://lore.kernel.org/stable/20240327015023.GC7502@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net/T/#m15bff0fe96986ef780e848b4fff362bf8ea03f08
+Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Fixes: d951cf510fb0 ("cpufreq: brcmstb-avs-cpufreq: add check for cpufreq_cpu_get's return value")
+Cc: Anastasia Belova <abelova@astralinux.ru>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/cpufreq/brcmstb-avs-cpufreq.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2067,6 +2067,7 @@ static const struct of_device_id ravb_ma
- 	{ .compatible = "renesas,etheravb-rcar-gen2", .data = &ravb_gen2_hw_info },
- 	{ .compatible = "renesas,etheravb-r8a7795", .data = &ravb_gen3_hw_info },
- 	{ .compatible = "renesas,etheravb-rcar-gen3", .data = &ravb_gen3_hw_info },
-+	{ .compatible = "renesas,etheravb-rcar-gen4", .data = &ravb_gen3_hw_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, ravb_match_table);
+--- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
++++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+@@ -481,10 +481,11 @@ static bool brcm_avs_is_firmware_loaded(
+ static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
+ {
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
++	struct private_data *priv;
++
+ 	if (!policy)
+ 		return 0;
+-	struct private_data *priv = policy->driver_data;
+-
++	priv = policy->driver_data;
+ 	cpufreq_cpu_put(policy);
+ 
+ 	return brcm_avs_get_frequency(priv->base);
 
 
 
