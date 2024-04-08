@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-37696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FCCA89C682
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:12:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FBC89C161
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CE28B20A8D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3856DB211C3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0BD27F494;
-	Mon,  8 Apr 2024 14:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447F67BAEC;
+	Mon,  8 Apr 2024 13:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgp1KYIK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BeUpRll4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8ACF7F47A;
-	Mon,  8 Apr 2024 14:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025257B3E5;
+	Mon,  8 Apr 2024 13:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584993; cv=none; b=KJOfVX6LBuQHdA9NNTRrwv+HlSQoklthLpIl/S9gd8eZ/Z8mBLpozuO2x3cHV2NsBZNSAWgrmQ4wcp8t1Cwo7O2T473Rh1UukMuYT9Ncq43NiqRvbD/1Wmvw37sPolNul0yS4OqmlwzLSrRtf3NqRjmRCU0kUsQ0XPuZEX2Q/II=
+	t=1712582113; cv=none; b=Q+HNJRUJ2ew3Up2d27wdxdXVPOsvl5pxY1WBeI0zV4cOoaSgEacNxXhvF5EPvYvw/KzYHM4v6lxtrCZ1kemIQ5CyrzGgOlY92Rw2nmKqc1PnA85WfDfJT311S/cwqBVSX6TtqPfpOx69diW5pHdGjmW5qBd3vJiFu5zvipnqU3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584993; c=relaxed/simple;
-	bh=6NrhKXS8tWmwRqz3JgQoiuLA7IbcI5gjBUBHJnEeGC0=;
+	s=arc-20240116; t=1712582113; c=relaxed/simple;
+	bh=g32IY/klt5O9Ji3XXqcbOcyE8QHvprkXHdr01Lthukk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=beokJbr1Og4+7nvi+z8ttDe0TYyLoy4+f7Hp8fVFDJPloM4N9ilxmMBUyxpMRI9KkLPhjPXCOYA0bKxyxSYrPcdBTk5oSBNB09QgkrDByIFeFvvV7W7+ldBsGbLM1IzDhp+lSvlhW3WHgFtmbMJjejiKpg7hDqRFwVlNmYkENwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lgp1KYIK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E6CC433C7;
-	Mon,  8 Apr 2024 14:03:13 +0000 (UTC)
+	 MIME-Version; b=AP5mmhxQAc2KJbwzPxGxT7V+XXK860d3xLSYJFn7+aF+IFTOlev7X0u7WF2onDqjLfIteu5fuI8E7zJ/BRa+NGfSyMW6rNb8+pDy0zVnzVyLweM2fwbviZHYLXQw7b0Y3pXhazUWI8Ys5yaf2Lzv/prePPurhKWVhXED4hs0ky4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BeUpRll4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8011AC433C7;
+	Mon,  8 Apr 2024 13:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584993;
-	bh=6NrhKXS8tWmwRqz3JgQoiuLA7IbcI5gjBUBHJnEeGC0=;
+	s=korg; t=1712582112;
+	bh=g32IY/klt5O9Ji3XXqcbOcyE8QHvprkXHdr01Lthukk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lgp1KYIKUMmgkg0GaBROEIGyQ3xBYT9J9gOJqxN/8k7x3Ae/mzCjEfXQwznU4gRax
-	 DC/4nHz7nIDJFc9iJ4mFUhJ3vjCY4VU4XigcBTTGoDEWoZxPrTJTM8UpsIy1Z+6x6I
-	 /G+Dw7j6QikYz9Eg4TZT7XACP+4/CvaMQUlRxg1o=
+	b=BeUpRll4w3009fl4gR2/BwbeRtmZUiZOe6tGFrqmDbVfQYGMolSAwwudbPD6e5e4v
+	 W9tYahSGhQqfffAzfyaPSq4EaHztx9B+YDB0lvQGSansOq82w5p+z3m/PpJuFpZ1I8
+	 MWQnnx8jU+muuvLdy4Czx5v3ctCe0WSsL4MpSQSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leonidas Spyropoulos <artafinde@archlinux.com>,
-	Arthur Borsboom <arthurborsboom@gmail.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 627/690] xen-netfront: Add missing skb_mark_for_recycle
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Jianguo Wu <wujianguo106@163.com>
+Subject: [PATCH 6.1 079/138] tcp: Fix bind() regression for v6-only wildcard and v4(-mapped-v6) non-wildcard addresses.
 Date: Mon,  8 Apr 2024 14:58:13 +0200
-Message-ID: <20240408125422.376640263@linuxfoundation.org>
+Message-ID: <20240408125258.684268968@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesper Dangaard Brouer <hawk@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 037965402a010898d34f4e35327d22c0a95cd51f upstream.
+[ Upstream commit d91ef1e1b55f730bee8ce286b02b7bdccbc42973 ]
 
-Notice that skb_mark_for_recycle() is introduced later than fixes tag in
-commit 6a5bcd84e886 ("page_pool: Allow drivers to hint on SKB recycling").
+Jianguo Wu reported another bind() regression introduced by bhash2.
 
-It is believed that fixes tag were missing a call to page_pool_release_page()
-between v5.9 to v5.14, after which is should have used skb_mark_for_recycle().
-Since v6.6 the call page_pool_release_page() were removed (in
-commit 535b9c61bdef ("net: page_pool: hide page_pool_release_page()")
-and remaining callers converted (in commit 6bfef2ec0172 ("Merge branch
-'net-page_pool-remove-page_pool_release_page'")).
+Calling bind() for the following 3 addresses on the same port, the
+3rd one should fail but now succeeds.
 
-This leak became visible in v6.8 via commit dba1b8a7ab68 ("mm/page_pool: catch
-page_pool memory leaks").
+  1. 0.0.0.0 or ::ffff:0.0.0.0
+  2. [::] w/ IPV6_V6ONLY
+  3. IPv4 non-wildcard address or v4-mapped-v6 non-wildcard address
 
-Cc: stable@vger.kernel.org
-Fixes: 6c5aa6fc4def ("xen networking: add basic XDP support for xen-netfront")
-Reported-by: Leonidas Spyropoulos <artafinde@archlinux.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218654
-Reported-by: Arthur Borsboom <arthurborsboom@gmail.com>
-Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Link: https://lore.kernel.org/r/171154167446.2671062.9127105384591237363.stgit@firesoul
+The first two bind() create tb2 like this:
+
+  bhash2 -> tb2(:: w/ IPV6_V6ONLY) -> tb2(0.0.0.0)
+
+The 3rd bind() will match with the IPv6 only wildcard address bucket
+in inet_bind2_bucket_match_addr_any(), however, no conflicting socket
+exists in the bucket.  So, inet_bhash2_conflict() will returns false,
+and thus, inet_bhash2_addr_any_conflict() returns false consequently.
+
+As a result, the 3rd bind() bypasses conflict check, which should be
+done against the IPv4 wildcard address bucket.
+
+So, in inet_bhash2_addr_any_conflict(), we must iterate over all buckets.
+
+Note that we cannot add ipv6_only flag for inet_bind2_bucket as it
+would confuse the following patetrn.
+
+  1. [::] w/ SO_REUSE{ADDR,PORT} and IPV6_V6ONLY
+  2. [::] w/ SO_REUSE{ADDR,PORT}
+  3. IPv4 non-wildcard address or v4-mapped-v6 non-wildcard address
+
+The first bind() would create a bucket with ipv6_only flag true,
+the second bind() would add the [::] socket into the same bucket,
+and the third bind() could succeed based on the wrong assumption
+that ipv6_only bucket would not conflict with v4(-mapped-v6) address.
+
+Fixes: 28044fc1d495 ("net: Add a bhash2 table hashed by port and address")
+Diagnosed-by: Jianguo Wu <wujianguo106@163.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240326204251.51301-3-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/xen-netfront.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/inet_connection_sock.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -287,6 +287,7 @@ static struct sk_buff *xennet_alloc_one_
- 		return NULL;
- 	}
- 	skb_add_rx_frag(skb, 0, page, 0, 0, PAGE_SIZE);
-+	skb_mark_for_recycle(skb);
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index f7832d4253820..8407098a59391 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -289,6 +289,7 @@ static bool inet_bhash2_addr_any_conflict(const struct sock *sk, int port, int l
+ 	struct sock_reuseport *reuseport_cb;
+ 	struct inet_bind_hashbucket *head2;
+ 	struct inet_bind2_bucket *tb2;
++	bool conflict = false;
+ 	bool reuseport_cb_ok;
  
- 	/* Align ip header to a 16 bytes boundary */
- 	skb_reserve(skb, NET_IP_ALIGN);
+ 	rcu_read_lock();
+@@ -301,18 +302,20 @@ static bool inet_bhash2_addr_any_conflict(const struct sock *sk, int port, int l
+ 
+ 	spin_lock(&head2->lock);
+ 
+-	inet_bind_bucket_for_each(tb2, &head2->chain)
+-		if (inet_bind2_bucket_match_addr_any(tb2, net, port, l3mdev, sk))
+-			break;
++	inet_bind_bucket_for_each(tb2, &head2->chain) {
++		if (!inet_bind2_bucket_match_addr_any(tb2, net, port, l3mdev, sk))
++			continue;
+ 
+-	if (tb2 && inet_bhash2_conflict(sk, tb2, uid, relax, reuseport_cb_ok,
+-					reuseport_ok)) {
+-		spin_unlock(&head2->lock);
+-		return true;
++		if (!inet_bhash2_conflict(sk, tb2, uid, relax, reuseport_cb_ok,	reuseport_ok))
++			continue;
++
++		conflict = true;
++		break;
+ 	}
+ 
+ 	spin_unlock(&head2->lock);
+-	return false;
++
++	return conflict;
+ }
+ 
+ /*
+-- 
+2.43.0
+
 
 
 
