@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-36678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A33389C16C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC2A89C136
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B68BFB2A533
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 349231F21527
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B9B80618;
-	Mon,  8 Apr 2024 13:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB5180BE7;
+	Mon,  8 Apr 2024 13:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XhK663Wi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWdrtV0R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967C280045;
-	Mon,  8 Apr 2024 13:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546197E772;
+	Mon,  8 Apr 2024 13:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582026; cv=none; b=rEego6PiJ1qW2wCDj2g+o/21Oq5gtOdtHQN1NBhkxTCoQfXktsS+nXqC1CrNd7P6axnZzeNfujRLcliDoC9EWqpaKUW3W7LcYkpkv/DEHBOFhkY+B707aNda/SjCsRX7fTuGM0qGR6bO0vSuEdnh7Q8eiQ/e29fsWQ95GQWPRJs=
+	t=1712582037; cv=none; b=Y3Bzqj2ijvMq9FG/nrYRxuuLj/41+qU4c5e8I8dzd90eFzKY5IbVC8cU8mC2woMkzZT8gGXKNb3YMTEM5Jk2vUiJyPjOcZV0JOOJzaU7IsNRItaWreMFeY//oMRC1D8/j+sZhskvZY035ONnT11WdAXPd4nd5GDGUTVS/dU6rmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582026; c=relaxed/simple;
-	bh=k3zjyJixK9aPP//mcX1SL+d4UZoPhK8TYhtyez7Rj0o=;
+	s=arc-20240116; t=1712582037; c=relaxed/simple;
+	bh=v2J71xiz+hiPivYyvZa7MRtATMew/0rG5UlSA6Z8V/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f8JzTTxsj7PDkVkyStRWiUwVtmq27BzWnxnWBrT6/uhRdLs6fGgfAHfEbDVKmUTrBdKwjWrKiyVOtSfqzx+IOdyInlFfrYiJR5rjjRb88CMxHi3DjL2NJdVUg+Wh2n9+4JBtox623Ya4VgN7HZNQh2X44+ujdmZMJhL2jfM8aIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XhK663Wi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FCFAC433F1;
-	Mon,  8 Apr 2024 13:13:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ur0XmfGxcSF/X2PByzuSU64V5qE/r7q6j2IBTDjPgRRFjLE9/jAAfXbNIKQV4RW6qY+qfnd9GiLGAs7aTHWyS0+pqfZKQnCPFGYOgBMkkikA96NQP+XBfBfyGXmOHqICmN/xdWENckLmI+RhGL6sIgxFsT9YFUEa1vngUpf5NH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWdrtV0R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A5DC433C7;
+	Mon,  8 Apr 2024 13:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582025;
-	bh=k3zjyJixK9aPP//mcX1SL+d4UZoPhK8TYhtyez7Rj0o=;
+	s=korg; t=1712582037;
+	bh=v2J71xiz+hiPivYyvZa7MRtATMew/0rG5UlSA6Z8V/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XhK663WiHBs40Ku9KB7ixBagkBDt/0xafnSUBW34UrxOX6cS/CSfwZXTo+Iel6hJI
-	 +iNLBVvmqHzFNF1vvI80kkh9973A18TjsqZyLjfwjHrKVCnJQXHA2xi6QarsujI7Jl
-	 j5fxtykxbj52Lrc4sbbZxzfivah1WgmY5uXVWdHI=
+	b=JWdrtV0RGxBsX3jEhGystd61hms8K0NESZc0WQxNYw2yQiQyWPlyepDfvzwBZCuRM
+	 mNA391ptzPwZ6Re0zNTupw3eWQ+cQHPk+2RDcnQqiUscwpB9FJ9zLfS+FUCKlUAAIp
+	 idv77L2XJTDzwA/BiArWN33Not8Ga3F047i9LJHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Brown <neilb@suse.de>,
-	Olga Kornievskaia <kolga@netapp.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
+	netdev <netdev@vger.kernel.org>,
+	Yisen Zhuang <yisen.zhuang@huawei.com>,
+	Salil Mehta <salil.mehta@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Yufeng Mo <moyufeng@huawei.com>,
+	Huazhong Tan <tanhuazhong@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jijie Shao <shaojijie@huawei.com>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 105/690] NFSD: Fix nfsd_clid_class use of __string_len() macro
-Date: Mon,  8 Apr 2024 14:49:31 +0200
-Message-ID: <20240408125403.305319478@linuxfoundation.org>
+Subject: [PATCH 5.15 106/690] net: hns3: tracing: fix hclgevf trace event strings
+Date: Mon,  8 Apr 2024 14:49:32 +0200
+Message-ID: <20240408125403.340520082@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -65,6 +69,7 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
@@ -73,53 +78,146 @@ Content-Transfer-Encoding: 8bit
 
 From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 9388a2aa453321bcf1ad2603959debea9e6ab6d4 ]
+[ Upstream commit 3f9952e8d80cca2da3b47ecd5ad9ec16cfd1a649 ]
 
-I'm working on restructuring the __string* macros so that it doesn't need
-to recalculate the string twice. That is, it will save it off when
-processing __string() and the __assign_str() will not need to do the work
-again as it currently does.
+The __string() and __assign_str() helper macros of the TRACE_EVENT() macro
+are going through some optimizations where only the source string of
+__string() will be used and the __assign_str() source will be ignored and
+later removed.
 
-Currently __string_len(item, src, len) doesn't actually use "src", but my
-changes will require src to be correct as that is where the __assign_str()
-will get its value from.
+To make sure that there's no issues, a new check is added between the
+__string() src argument and the __assign_str() src argument that does a
+strcmp() to make sure they are the same string.
 
-The event class nfsd_clid_class has:
+The hclgevf trace events have:
 
-  __string_len(name, name, clp->cl_name.len)
+  __assign_str(devname, &hdev->nic.kinfo.netdev->name);
 
-But the second "name" does not exist and causes my changes to fail to
-build. That second parameter should be: clp->cl_name.data.
+Which triggers the warning:
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240222122828.3d8d213c@gandalf.local.home
+hclgevf_trace.h:34:39: error: passing argument 1 of ‘strcmp’ from incompatible pointer type [-Werror=incompatible-pointer-types]
+   34 |                 __assign_str(devname, &hdev->nic.kinfo.netdev->name);
+ [..]
+arch/x86/include/asm/string_64.h:75:24: note: expected ‘const char *’ but argument is of type ‘char (*)[16]’
+   75 | int strcmp(const char *cs, const char *ct);
+      |            ~~~~~~~~~~~~^~
 
-Cc: Neil Brown <neilb@suse.de>
-Cc: Olga Kornievskaia <kolga@netapp.com>
-Cc: Dai Ngo <Dai.Ngo@oracle.com>
-Cc: Tom Talpey <tom@talpey.com>
+Because __assign_str() now has:
+
+	WARN_ON_ONCE(__builtin_constant_p(src) ?		\
+		     strcmp((src), __data_offsets.dst##_ptr_) :	\
+		     (src) != __data_offsets.dst##_ptr_);	\
+
+The problem is the '&' on hdev->nic.kinfo.netdev->name. That's because
+that name is:
+
+	char			name[IFNAMSIZ]
+
+Where passing an address '&' of a char array is not compatible with strcmp().
+
+The '&' is not necessary, remove it.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240313093454.3909afe7@gandalf.local.home
+
+Cc: netdev <netdev@vger.kernel.org>
+Cc: Yisen Zhuang <yisen.zhuang@huawei.com>
+Cc: Salil Mehta <salil.mehta@huawei.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Yufeng Mo <moyufeng@huawei.com>
+Cc: Huazhong Tan <tanhuazhong@huawei.com>
 Cc: stable@vger.kernel.org
-Fixes: d27b74a8675ca ("NFSD: Use new __string_len C macros for nfsd_clid_class")
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
-Acked-by: Jeff Layton <jlayton@kernel.org>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Jijie Shao <shaojijie@huawei.com>
+Fixes: d8355240cf8fb ("net: hns3: add trace event support for PF/VF mailbox")
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h  | 8 ++++----
+ .../net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h    | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
-index 0fc1fa6f28e0b..7e7d0f1705ed3 100644
---- a/fs/nfsd/trace.h
-+++ b/fs/nfsd/trace.h
-@@ -606,7 +606,7 @@ DECLARE_EVENT_CLASS(nfsd_clid_class,
- 		__array(unsigned char, addr, sizeof(struct sockaddr_in6))
- 		__field(unsigned long, flavor)
- 		__array(unsigned char, verifier, NFS4_VERIFIER_SIZE)
--		__string_len(name, name, clp->cl_name.len)
-+		__string_len(name, clp->cl_name.data, clp->cl_name.len)
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h
+index 8510b88d49820..f3cd5a376eca9 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h
+@@ -24,7 +24,7 @@ TRACE_EVENT(hclge_pf_mbx_get,
+ 		__field(u8, code)
+ 		__field(u8, subcode)
+ 		__string(pciname, pci_name(hdev->pdev))
+-		__string(devname, &hdev->vport[0].nic.kinfo.netdev->name)
++		__string(devname, hdev->vport[0].nic.kinfo.netdev->name)
+ 		__array(u32, mbx_data, PF_GET_MBX_LEN)
  	),
- 	TP_fast_assign(
- 		__entry->cl_boot = clp->cl_clientid.cl_boot;
+ 
+@@ -33,7 +33,7 @@ TRACE_EVENT(hclge_pf_mbx_get,
+ 		__entry->code = req->msg.code;
+ 		__entry->subcode = req->msg.subcode;
+ 		__assign_str(pciname, pci_name(hdev->pdev));
+-		__assign_str(devname, &hdev->vport[0].nic.kinfo.netdev->name);
++		__assign_str(devname, hdev->vport[0].nic.kinfo.netdev->name);
+ 		memcpy(__entry->mbx_data, req,
+ 		       sizeof(struct hclge_mbx_vf_to_pf_cmd));
+ 	),
+@@ -56,7 +56,7 @@ TRACE_EVENT(hclge_pf_mbx_send,
+ 		__field(u8, vfid)
+ 		__field(u16, code)
+ 		__string(pciname, pci_name(hdev->pdev))
+-		__string(devname, &hdev->vport[0].nic.kinfo.netdev->name)
++		__string(devname, hdev->vport[0].nic.kinfo.netdev->name)
+ 		__array(u32, mbx_data, PF_SEND_MBX_LEN)
+ 	),
+ 
+@@ -64,7 +64,7 @@ TRACE_EVENT(hclge_pf_mbx_send,
+ 		__entry->vfid = req->dest_vfid;
+ 		__entry->code = le16_to_cpu(req->msg.code);
+ 		__assign_str(pciname, pci_name(hdev->pdev));
+-		__assign_str(devname, &hdev->vport[0].nic.kinfo.netdev->name);
++		__assign_str(devname, hdev->vport[0].nic.kinfo.netdev->name);
+ 		memcpy(__entry->mbx_data, req,
+ 		       sizeof(struct hclge_mbx_pf_to_vf_cmd));
+ 	),
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h
+index 5d4895bb57a17..b259e95dd53c2 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h
+@@ -23,7 +23,7 @@ TRACE_EVENT(hclge_vf_mbx_get,
+ 		__field(u8, vfid)
+ 		__field(u16, code)
+ 		__string(pciname, pci_name(hdev->pdev))
+-		__string(devname, &hdev->nic.kinfo.netdev->name)
++		__string(devname, hdev->nic.kinfo.netdev->name)
+ 		__array(u32, mbx_data, VF_GET_MBX_LEN)
+ 	),
+ 
+@@ -31,7 +31,7 @@ TRACE_EVENT(hclge_vf_mbx_get,
+ 		__entry->vfid = req->dest_vfid;
+ 		__entry->code = le16_to_cpu(req->msg.code);
+ 		__assign_str(pciname, pci_name(hdev->pdev));
+-		__assign_str(devname, &hdev->nic.kinfo.netdev->name);
++		__assign_str(devname, hdev->nic.kinfo.netdev->name);
+ 		memcpy(__entry->mbx_data, req,
+ 		       sizeof(struct hclge_mbx_pf_to_vf_cmd));
+ 	),
+@@ -55,7 +55,7 @@ TRACE_EVENT(hclge_vf_mbx_send,
+ 		__field(u8, code)
+ 		__field(u8, subcode)
+ 		__string(pciname, pci_name(hdev->pdev))
+-		__string(devname, &hdev->nic.kinfo.netdev->name)
++		__string(devname, hdev->nic.kinfo.netdev->name)
+ 		__array(u32, mbx_data, VF_SEND_MBX_LEN)
+ 	),
+ 
+@@ -64,7 +64,7 @@ TRACE_EVENT(hclge_vf_mbx_send,
+ 		__entry->code = req->msg.code;
+ 		__entry->subcode = req->msg.subcode;
+ 		__assign_str(pciname, pci_name(hdev->pdev));
+-		__assign_str(devname, &hdev->nic.kinfo.netdev->name);
++		__assign_str(devname, hdev->nic.kinfo.netdev->name);
+ 		memcpy(__entry->mbx_data, req,
+ 		       sizeof(struct hclge_mbx_vf_to_pf_cmd));
+ 	),
 -- 
 2.43.0
 
