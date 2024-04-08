@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-37528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 151F789C53D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:55:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E6C89C15A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47A151C22A20
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BA6C1C2153E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7815F74BF5;
-	Mon,  8 Apr 2024 13:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 439788288F;
+	Mon,  8 Apr 2024 13:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1yJovdgd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMstUIDF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3659F42046;
-	Mon,  8 Apr 2024 13:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40207BAEE;
+	Mon,  8 Apr 2024 13:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584498; cv=none; b=WbDc+Jbmtav4SCZY0LoeQLVTgzAbXsJkAHSZp2jCIFS/Psup/dvKwbJ9eH+RIxzR08AbsbObh8HbtMLdfEHtBPwm0ptzh7QgvyJq6qFUsW882Wa9SNPC3lGm9wEge3g2B3fJlfEJ9vOjSAGBCZyO/mGVBGWzKMpe6jZn2ra2558=
+	t=1712582148; cv=none; b=FilbJfO5gbVlxOa2ukEc6fE3sD/xss8zziEqHFjb89okW05HGeVhVbEkMDdtcHAOxn5oLckVcQuBvJrRoplNIksANem8utK6XcAWvP9AEEs4zW1eS/gFgTIsqiVh/QyYvHX2bMGne61oTelsRTvVYehe/ffRmDN3q1330sodTW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584498; c=relaxed/simple;
-	bh=qDdxELZs5RVbs8Z4j/SsSZHWh8ymJyVaAsQGJNQ8xCU=;
+	s=arc-20240116; t=1712582148; c=relaxed/simple;
+	bh=k5hCFbJ3X6de+KjSa399A4heGYSbbtSQo/vcDxeEkB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UfmrJ7rItaoy6ue99JMFBONHu5zrtLTYHFd89cpz6l0nY2/k20213Yg5qlsvmKJ/Rpd5Dt0szZgRHFYHM538NyGpf2cSHF3SbLISIBIpe8e8/ffEky9HDyQiuB1wkLBjFkPLreT+IJKY1/bxEYo1mK76p7WTFbq5ShRQ4TfQbFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1yJovdgd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A78C433C7;
-	Mon,  8 Apr 2024 13:54:57 +0000 (UTC)
+	 MIME-Version; b=JoHAHnDDpZmkVqM0xC8x+rz1h7TQuCaAXCBDUttZ/2hTPSbl/px/2xMoQ6pemQj2FoZl5c/1Y4wu9uH6vbDE+1n5si2adbf1BEItw5dG/8OZ9trZLDsO5kpc6JzAHOXgoJG39Qczlh4QBmI5KE5LkjCfKZpwYxwdknzxpkyGQZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMstUIDF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ACBEC43390;
+	Mon,  8 Apr 2024 13:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584498;
-	bh=qDdxELZs5RVbs8Z4j/SsSZHWh8ymJyVaAsQGJNQ8xCU=;
+	s=korg; t=1712582147;
+	bh=k5hCFbJ3X6de+KjSa399A4heGYSbbtSQo/vcDxeEkB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1yJovdgdc9rEPwL/RptbR+GWR+s5FyvOg8893mOC9wow2bS+qrt8qQyecuq+FMrul
-	 gmuLNdfKQQ8YL55sfSxdlDwcZZbKVZnlmPN0Y37LLK9GwNBkOEc8pLjXT1Z5s0TPBy
-	 zKrSqjqAx12S4LvDeOBcWCdO6dK3GWYkSm/gU4VA=
+	b=JMstUIDFI9gVtcitqthV3ku1XBIFnCN4B5nBXwzUnoV7NM5pjr2fZlJzig1I2kciE
+	 GTd+tbRIEyLyTwJD17zLjyGuF+FSdE/a71DWkp9sLX4SoH0/lHEvVwoqgoH53Rm+pJ
+	 Wzyc8DU5e20PqWbgnU0/xk+hwsi/IEo0KPrC6Ews=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 459/690] nfsd: fix nfsd_file_unhash_and_dispose
+	Raju Lakkaraju <Raju.Lakkaraju@microchip.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 050/273] net: lan743x: Add set RFE read fifo threshold for PCI1x1x chips
 Date: Mon,  8 Apr 2024 14:55:25 +0200
-Message-ID: <20240408125416.253259758@linuxfoundation.org>
+Message-ID: <20240408125310.848545615@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,126 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
 
-[ Upstream commit 8d0d254b15cc5b7d46d85fb7ab8ecede9575e672 ]
+[ Upstream commit e4a58989f5c839316ac63675e8800b9eed7dbe96 ]
 
-nfsd_file_unhash_and_dispose() is called for two reasons:
+PCI11x1x Rev B0 devices might drop packets when receiving back to back frames
+at 2.5G link speed. Change the B0 Rev device's Receive filtering Engine FIFO
+threshold parameter from its hardware default of 4 to 3 dwords to prevent the
+problem. Rev C0 and later hardware already defaults to 3 dwords.
 
-We're either shutting down and purging the filecache, or we've gotten a
-notification about a file delete, so we want to go ahead and unhash it
-so that it'll get cleaned up when we close.
-
-We're either walking the hashtable or doing a lookup in it and we
-don't take a reference in either case. What we want to do in both cases
-is to try and unhash the object and put it on the dispose list if that
-was successful. If it's no longer hashed, then we don't want to touch
-it, with the assumption being that something else is already cleaning
-up the sentinel reference.
-
-Instead of trying to selectively decrement the refcount in this
-function, just unhash it, and if that was successful, move it to the
-dispose list. Then, the disposal routine will just clean that up as
-usual.
-
-Also, just make this a void function, drop the WARN_ON_ONCE, and the
-comments about deadlocking since the nature of the purported deadlock
-is no longer clear.
-
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: bb4f6bffe33c ("net: lan743x: Add PCI11010 / PCI11414 device IDs")
+Signed-off-by: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240326065805.686128-1-Raju.Lakkaraju@microchip.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/filecache.c | 36 +++++++-----------------------------
- 1 file changed, 7 insertions(+), 29 deletions(-)
+ drivers/net/ethernet/microchip/lan743x_main.c | 18 ++++++++++++++++++
+ drivers/net/ethernet/microchip/lan743x_main.h |  4 ++++
+ 2 files changed, 22 insertions(+)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index fa8e1546e0206..a0d93e797cdce 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -404,22 +404,15 @@ nfsd_file_unhash(struct nfsd_file *nf)
- 	return false;
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index 45e209a7d0831..6bf3367404eba 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -25,6 +25,8 @@
+ #define PCS_POWER_STATE_DOWN	0x6
+ #define PCS_POWER_STATE_UP	0x4
+ 
++#define RFE_RD_FIFO_TH_3_DWORDS	0x3
++
+ static void pci11x1x_strap_get_status(struct lan743x_adapter *adapter)
+ {
+ 	u32 chip_rev;
+@@ -3272,6 +3274,21 @@ static void lan743x_full_cleanup(struct lan743x_adapter *adapter)
+ 	lan743x_pci_cleanup(adapter);
  }
  
--/*
-- * Return true if the file was unhashed.
-- */
--static bool
-+static void
- nfsd_file_unhash_and_dispose(struct nfsd_file *nf, struct list_head *dispose)
- {
- 	trace_nfsd_file_unhash_and_dispose(nf);
--	if (!nfsd_file_unhash(nf))
--		return false;
--	/* keep final reference for nfsd_file_lru_dispose */
--	if (refcount_dec_not_one(&nf->nf_ref))
--		return true;
--
--	nfsd_file_lru_remove(nf);
--	list_add(&nf->nf_lru, dispose);
--	return true;
-+	if (nfsd_file_unhash(nf)) {
-+		/* caller must call nfsd_file_dispose_list() later */
-+		nfsd_file_lru_remove(nf);
-+		list_add(&nf->nf_lru, dispose);
++static void pci11x1x_set_rfe_rd_fifo_threshold(struct lan743x_adapter *adapter)
++{
++	u16 rev = adapter->csr.id_rev & ID_REV_CHIP_REV_MASK_;
++
++	if (rev == ID_REV_CHIP_REV_PCI11X1X_B0_) {
++		u32 misc_ctl;
++
++		misc_ctl = lan743x_csr_read(adapter, MISC_CTL_0);
++		misc_ctl &= ~MISC_CTL_0_RFE_READ_FIFO_MASK_;
++		misc_ctl |= FIELD_PREP(MISC_CTL_0_RFE_READ_FIFO_MASK_,
++				       RFE_RD_FIFO_TH_3_DWORDS);
++		lan743x_csr_write(adapter, MISC_CTL_0, misc_ctl);
 +	}
- }
- 
- static void
-@@ -561,8 +554,6 @@ nfsd_file_dispose_list_delayed(struct list_head *dispose)
-  * @lock: LRU list lock (unused)
-  * @arg: dispose list
-  *
-- * Note this can deadlock with nfsd_file_cache_purge.
-- *
-  * Return values:
-  *   %LRU_REMOVED: @item was removed from the LRU
-  *   %LRU_ROTATE: @item is to be moved to the LRU tail
-@@ -747,8 +738,6 @@ nfsd_file_close_inode(struct inode *inode)
-  *
-  * Walk the LRU list and close any entries that have not been used since
-  * the last scan.
-- *
-- * Note this can deadlock with nfsd_file_cache_purge.
-  */
- static void
- nfsd_file_delayed_close(struct work_struct *work)
-@@ -890,16 +879,12 @@ nfsd_file_cache_init(void)
- 	goto out;
- }
- 
--/*
-- * Note this can deadlock with nfsd_file_lru_cb.
-- */
- static void
- __nfsd_file_cache_purge(struct net *net)
++}
++
+ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
+ 				 struct pci_dev *pdev)
  {
- 	struct rhashtable_iter iter;
- 	struct nfsd_file *nf;
- 	LIST_HEAD(dispose);
--	bool del;
+@@ -3287,6 +3304,7 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
+ 		pci11x1x_strap_get_status(adapter);
+ 		spin_lock_init(&adapter->eth_syslock_spinlock);
+ 		mutex_init(&adapter->sgmii_rw_lock);
++		pci11x1x_set_rfe_rd_fifo_threshold(adapter);
+ 	} else {
+ 		adapter->max_tx_channels = LAN743X_MAX_TX_CHANNELS;
+ 		adapter->used_tx_channels = LAN743X_USED_TX_CHANNELS;
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
+index be79cb0ae5af3..645bc048e52ef 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.h
++++ b/drivers/net/ethernet/microchip/lan743x_main.h
+@@ -26,6 +26,7 @@
+ #define ID_REV_CHIP_REV_MASK_		(0x0000FFFF)
+ #define ID_REV_CHIP_REV_A0_		(0x00000000)
+ #define ID_REV_CHIP_REV_B0_		(0x00000010)
++#define ID_REV_CHIP_REV_PCI11X1X_B0_	(0x000000B0)
  
- 	rhashtable_walk_enter(&nfsd_file_rhash_tbl, &iter);
- 	do {
-@@ -909,14 +894,7 @@ __nfsd_file_cache_purge(struct net *net)
- 		while (!IS_ERR_OR_NULL(nf)) {
- 			if (net && nf->nf_net != net)
- 				continue;
--			del = nfsd_file_unhash_and_dispose(nf, &dispose);
--
--			/*
--			 * Deadlock detected! Something marked this entry as
--			 * unhased, but hasn't removed it from the hash list.
--			 */
--			WARN_ON_ONCE(!del);
--
-+			nfsd_file_unhash_and_dispose(nf, &dispose);
- 			nf = rhashtable_walk_next(&iter);
- 		}
+ #define FPGA_REV			(0x04)
+ #define FPGA_REV_GET_MINOR_(fpga_rev)	(((fpga_rev) >> 8) & 0x000000FF)
+@@ -311,6 +312,9 @@
+ #define SGMII_CTL_LINK_STATUS_SOURCE_	BIT(8)
+ #define SGMII_CTL_SGMII_POWER_DN_	BIT(1)
  
++#define MISC_CTL_0			(0x920)
++#define MISC_CTL_0_RFE_READ_FIFO_MASK_	GENMASK(6, 4)
++
+ /* Vendor Specific SGMII MMD details */
+ #define SR_VSMMD_PCS_ID1		0x0004
+ #define SR_VSMMD_PCS_ID2		0x0005
 -- 
 2.43.0
 
