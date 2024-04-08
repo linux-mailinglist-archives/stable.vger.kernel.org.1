@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-37223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7852089C3EA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B9D389C3ED
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 191D11F20F97
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B05A61F21FC3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9307C74438;
-	Mon,  8 Apr 2024 13:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF5D7B3FD;
+	Mon,  8 Apr 2024 13:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6RcD79Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkyM1nI0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9738061F;
-	Mon,  8 Apr 2024 13:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D9E8061F;
+	Mon,  8 Apr 2024 13:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583608; cv=none; b=QdR2NI+NN4qCRqNmxeJRSyWL0aq12Ilf9nxRhUxWsjXIUmfPRivxaJB/06lOzvOzSdBMTXRiwCWFAfhVeYHWMdn8sA3hXGN0PqQrojBS/9HnrOc8O5W7PVC5Y/nj12sPCm/odJg2JTT2je6S0swUaS8hDuwvA9iQY/OZQeGrGBc=
+	t=1712583617; cv=none; b=TAF5cQ1fBzILXXc9+N8FOw5hnQGfKcmgTNhKl2OVbpmNcxU1/LDI2yYklkRAbi2wHS3zcGr/8MvTaCeif4ygm66+wGIsdzBBCx9KfgL/eZnWgq2RawlsOD1tOhmoWryUpF8CerADoj8WVEEMzj9n/TK7TCx1pfOpvY39FXD/xRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583608; c=relaxed/simple;
-	bh=IxaIgn25F1vSPL7NsgJvWYT9mNtXZtq9fN08vKWiPNc=;
+	s=arc-20240116; t=1712583617; c=relaxed/simple;
+	bh=oFepeX86pvylI+KE3BcPJcSTbAv5jTOEzJb8QX3rVzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9WCeluX7dgPj1SIX0MDG5vTphJ9Kw0CZNPeEmB38gPsG7ygRCNX5YO0rHSzgqHdCUhIGRBxT36w/lpFDMgM2i6hB7maZdOVEE+N2w7tdxUSRhMiJdHM8qewMbX/W+3ddbeqZHwoeFPtFStFRBlZQss/yy/YiM1BkXHaaurVugg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6RcD79Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E35C433C7;
-	Mon,  8 Apr 2024 13:40:07 +0000 (UTC)
+	 MIME-Version; b=YST3Zns0xL7jbeyAuvVJJMw6h5+du2BPZ09SvfUKWyDjUHfGNT71BqFW+QlIZy+rrJztvSGfHdosAkdiMJYsGp7CFGijZUPN50IhdIQX3qBPexVYWQ/9SB7zPcqBDHDIw0D0ewBockLT1ckmh/ENFOUW1gGryC++duEPC+we2lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkyM1nI0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84586C433F1;
+	Mon,  8 Apr 2024 13:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583608;
-	bh=IxaIgn25F1vSPL7NsgJvWYT9mNtXZtq9fN08vKWiPNc=;
+	s=korg; t=1712583616;
+	bh=oFepeX86pvylI+KE3BcPJcSTbAv5jTOEzJb8QX3rVzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b6RcD79YHYadTdd79TFkqqyeD0Vjn3MTyAxX7iDWQVNIWSrKgVi2oH8ag3vtv3VvL
-	 vTBdQfUX/DoloWu6PKfU7JuDzsouOvykL6tTgWg9w30yvyCXvTooDMGzuVJabIfg7a
-	 lgfyWlyevHsFqrwvK0W9UAKxyHuxkuYJ6G81AJfM=
+	b=HkyM1nI03fElwyTWXXsGUkzDstRDu5lk7Xi80lSMK8GQbZ1p4ivNmXEQk4u8kmz5p
+	 uDFYijaNkEj67H67rbtM5gIpmyM8PlmOSSygelBqR/RdPfs6ChVjcwucIkUQ4uOuuU
+	 p9005zF/o8QeHVPH1wkI4WfDxK52aY+dewATzpuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Bruce Fields <bfields@fieldses.org>,
+	Ondrej Valousek <ondrej.valousek.xm@renesas.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 266/690] NFSD: Deprecate NFS_OFFSET_MAX
-Date: Mon,  8 Apr 2024 14:52:12 +0200
-Message-ID: <20240408125409.254493178@linuxfoundation.org>
+Subject: [PATCH 5.15 267/690] nfsd: Add support for the birth time attribute
+Date: Mon,  8 Apr 2024 14:52:13 +0200
+Message-ID: <20240408125409.291227022@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -64,66 +66,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Ondrej Valousek <ondrej.valousek.xm@renesas.com>
 
-[ Upstream commit c306d737691ef84305d4ed0d302c63db2932f0bb ]
+[ Upstream commit e377a3e698fb56cb63f6bddbebe7da76dc37e316 ]
 
-NFS_OFFSET_MAX was introduced way back in Linux v2.3.y before there
-was a kernel-wide OFFSET_MAX value. As a clean up, replace the last
-few uses of it with its generic equivalent, and get rid of it.
+For filesystems that supports "btime" timestamp (i.e. most modern
+filesystems do) we share it via kernel nfsd. Btime support for NFS
+client has already been added by Trond recently.
 
+Suggested-by: Bruce Fields <bfields@fieldses.org>
+Signed-off-by: Ondrej Valousek <ondrej.valousek.xm@renesas.com>
+[ cel: addressed some whitespace/checkpatch nits ]
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfs3xdr.c   | 2 +-
- fs/nfsd/nfs4xdr.c   | 2 +-
- include/linux/nfs.h | 8 --------
- 3 files changed, 2 insertions(+), 10 deletions(-)
+ fs/nfsd/nfs4xdr.c | 10 ++++++++++
+ fs/nfsd/nfsd.h    |  2 +-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs3xdr.c b/fs/nfsd/nfs3xdr.c
-index 2e47a07029f1d..0293b8d65f10f 100644
---- a/fs/nfsd/nfs3xdr.c
-+++ b/fs/nfsd/nfs3xdr.c
-@@ -1060,7 +1060,7 @@ svcxdr_encode_entry3_common(struct nfsd3_readdirres *resp, const char *name,
- 		return false;
- 	/* cookie */
- 	resp->cookie_offset = dirlist->len;
--	if (xdr_stream_encode_u64(xdr, NFS_OFFSET_MAX) < 0)
-+	if (xdr_stream_encode_u64(xdr, OFFSET_MAX) < 0)
- 		return false;
- 
- 	return true;
 diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 4459722259fb2..19ddd80239944 100644
+index 19ddd80239944..771d3057577ef 100644
 --- a/fs/nfsd/nfs4xdr.c
 +++ b/fs/nfsd/nfs4xdr.c
-@@ -3492,7 +3492,7 @@ nfsd4_encode_dirent(void *ccdv, const char *name, int namlen,
- 	p = xdr_reserve_space(xdr, 3*4 + namlen);
- 	if (!p)
- 		goto fail;
--	p = xdr_encode_hyper(p, NFS_OFFSET_MAX);    /* offset of next entry */
-+	p = xdr_encode_hyper(p, OFFSET_MAX);        /* offset of next entry */
- 	p = xdr_encode_array(p, name, namlen);      /* name length & name */
+@@ -2851,6 +2851,9 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
+ 	err = vfs_getattr(&path, &stat, STATX_BASIC_STATS, AT_STATX_SYNC_AS_STAT);
+ 	if (err)
+ 		goto out_nfserr;
++	if (!(stat.result_mask & STATX_BTIME))
++		/* underlying FS does not offer btime so we can't share it */
++		bmval1 &= ~FATTR4_WORD1_TIME_CREATE;
+ 	if ((bmval0 & (FATTR4_WORD0_FILES_AVAIL | FATTR4_WORD0_FILES_FREE |
+ 			FATTR4_WORD0_FILES_TOTAL | FATTR4_WORD0_MAXNAME)) ||
+ 	    (bmval1 & (FATTR4_WORD1_SPACE_AVAIL | FATTR4_WORD1_SPACE_FREE |
+@@ -3251,6 +3254,13 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
+ 		p = xdr_encode_hyper(p, (s64)stat.mtime.tv_sec);
+ 		*p++ = cpu_to_be32(stat.mtime.tv_nsec);
+ 	}
++	if (bmval1 & FATTR4_WORD1_TIME_CREATE) {
++		p = xdr_reserve_space(xdr, 12);
++		if (!p)
++			goto out_resource;
++		p = xdr_encode_hyper(p, (s64)stat.btime.tv_sec);
++		*p++ = cpu_to_be32(stat.btime.tv_nsec);
++	}
+ 	if (bmval1 & FATTR4_WORD1_MOUNTED_ON_FILEID) {
+ 		struct kstat parent_stat;
+ 		u64 ino = stat.ino;
+diff --git a/fs/nfsd/nfsd.h b/fs/nfsd/nfsd.h
+index 3e5008b475ff0..4fc1fd639527a 100644
+--- a/fs/nfsd/nfsd.h
++++ b/fs/nfsd/nfsd.h
+@@ -364,7 +364,7 @@ void		nfsd_lockd_shutdown(void);
+  | FATTR4_WORD1_OWNER	        | FATTR4_WORD1_OWNER_GROUP  | FATTR4_WORD1_RAWDEV           \
+  | FATTR4_WORD1_SPACE_AVAIL     | FATTR4_WORD1_SPACE_FREE   | FATTR4_WORD1_SPACE_TOTAL      \
+  | FATTR4_WORD1_SPACE_USED      | FATTR4_WORD1_TIME_ACCESS  | FATTR4_WORD1_TIME_ACCESS_SET  \
+- | FATTR4_WORD1_TIME_DELTA   | FATTR4_WORD1_TIME_METADATA    \
++ | FATTR4_WORD1_TIME_DELTA      | FATTR4_WORD1_TIME_METADATA   | FATTR4_WORD1_TIME_CREATE      \
+  | FATTR4_WORD1_TIME_MODIFY     | FATTR4_WORD1_TIME_MODIFY_SET | FATTR4_WORD1_MOUNTED_ON_FILEID)
  
- 	nfserr = nfsd4_encode_dirent_fattr(xdr, cd, name, namlen);
-diff --git a/include/linux/nfs.h b/include/linux/nfs.h
-index 0dc7ad38a0da4..b06375e88e589 100644
---- a/include/linux/nfs.h
-+++ b/include/linux/nfs.h
-@@ -36,14 +36,6 @@ static inline void nfs_copy_fh(struct nfs_fh *target, const struct nfs_fh *sourc
- 	memcpy(target->data, source->data, source->size);
- }
- 
--
--/*
-- * This is really a general kernel constant, but since nothing like
-- * this is defined in the kernel headers, I have to do it here.
-- */
--#define NFS_OFFSET_MAX		((__s64)((~(__u64)0) >> 1))
--
--
- enum nfs3_stable_how {
- 	NFS_UNSTABLE = 0,
- 	NFS_DATA_SYNC = 1,
+ #define NFSD4_SUPPORTED_ATTRS_WORD2 0
 -- 
 2.43.0
 
