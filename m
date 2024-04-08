@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-37510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58DDD89C52B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:54:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8EE89C04B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15D3D28467D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B20D71F22AC7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A4976058;
-	Mon,  8 Apr 2024 13:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640D66FE1A;
+	Mon,  8 Apr 2024 13:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QxgembB3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EbPAaKN6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2A96EB72;
-	Mon,  8 Apr 2024 13:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220D26A352;
+	Mon,  8 Apr 2024 13:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584445; cv=none; b=B7iSh2lc6xKc3iQimWwO4m9yt2fILurr/0RIoHlITs4rN78YfqCW/WfPtn0U99CwTqpdldNijyBLrOosY1j1g01t74GKwB/1DzOLuj666oSvmqr9Gx2pL2JRpFu+WhaxmHcI90JIX6txPNJo7vu+/5tsO+fq4E+PniB8q7vo5vc=
+	t=1712581624; cv=none; b=lFejSUeI8vUSEfAgXRf0UJHTvE4oLG2n7mcCH9Lespz2HtHqpElmHXOK9JEeqbjYqW74kCrWmU4WwHYiSpXy2R4PIUvcR281Y56z97uChQPh2VAI8lSWqeBC+Bo1a3rbgK5odvbwZzjAwrXiza1TM4u4ylxV8boswk+hkbPH/ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584445; c=relaxed/simple;
-	bh=Wpq55/5/Nos2HA/on0NFf83bmY9DULuotQsKK/pMv8o=;
+	s=arc-20240116; t=1712581624; c=relaxed/simple;
+	bh=92+ksTdS7lE3nO5uVcTupTgfRFhkCTLJqMwKDAsFsVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AD3mqFroiBU4SDErSvUSpKfHsj8pQmKrcrxws/SYXoaqNGxP7chILNXRqqyr1SRmu9MrgBJ2Dp6/gp+I06Ko7r2norEBR9/KquPNv7LE5amEWEP0fI6KgQ/IotN2QIabBwxiLrVxiIUGh1YqkGRafFKZfonObh3vu38dduWLnU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QxgembB3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D65C433F1;
-	Mon,  8 Apr 2024 13:54:04 +0000 (UTC)
+	 MIME-Version; b=LNCRyo6as+Z8bCmyexXaanJjkVZGaqDW1bEbMFhRmVLEvt/Y0xlheQ5c7Mz/W0233YvXhD4Wwbtj/B3H6ZoeF2pZTFZwTTtl5WPlhcABL0CO9ln3zivHZ3u40v46SO4hggElpyV/YbkYKzCCZ47FjycWneUx7viUJ05YW7ZH1BU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EbPAaKN6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5C3C433C7;
+	Mon,  8 Apr 2024 13:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584445;
-	bh=Wpq55/5/Nos2HA/on0NFf83bmY9DULuotQsKK/pMv8o=;
+	s=korg; t=1712581624;
+	bh=92+ksTdS7lE3nO5uVcTupTgfRFhkCTLJqMwKDAsFsVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QxgembB3f6uWeJE5S5ArZkaI2ipF357bRnO+eFzfdUZnkPjf1zY9ierCf/AwS5V9X
-	 4r1fSa/f97L+ATKUucJlTOlJHHfcO+tvsh2V3lxOxauzt6COqPmLopZf3myJklUdOl
-	 epA/fcnOsg0f2tA9yTr5gxBABPMy7Z+A3o8PGh6U=
+	b=EbPAaKN6VLMoKNbdlZ4cup52a8tYCzzeenUNBJZ29bNQvOvX9Jp/AZiPNLGbYdot5
+	 9WtUpZDHA1loyP6lGxI9q9ByJnXd3aGPLZqBncKIEBhN4hDn+HDFgGCJAR0KyMtz8o
+	 G89NBEDmmKHnsMf+IBYQZnSMr7oriEh0nyFPyZRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 440/690] NFSD: Clean up WRITE arg decoders
+	Artem Savkov <asavkov@redhat.com>,
+	Puranjay Mohan <puranjay12@gmail.com>,
+	Xu Kuohai <xukuohai@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 007/252] arm64: bpf: fix 32bit unconditional bswap
 Date: Mon,  8 Apr 2024 14:55:06 +0200
-Message-ID: <20240408125415.580637379@linuxfoundation.org>
+Message-ID: <20240408125306.874743959@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Artem Savkov <asavkov@redhat.com>
 
-[ Upstream commit d4da5baa533215b14625458e645056baf646bb2e ]
+[ Upstream commit a51cd6bf8e10793103c5870ff9e4db295a843604 ]
 
-xdr_stream_subsegment() already returns a boolean value.
+In case when is64 == 1 in emit(A64_REV32(is64, dst, dst), ctx) the
+generated insn reverses byte order for both high and low 32-bit words,
+resuling in an incorrect swap as indicated by the jit test:
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ 9757.262607] test_bpf: #312 BSWAP 16: 0x0123456789abcdef -> 0xefcd jited:1 8 PASS
+[ 9757.264435] test_bpf: #313 BSWAP 32: 0x0123456789abcdef -> 0xefcdab89 jited:1 ret 1460850314 != -271733879 (0x5712ce8a != 0xefcdab89)FAIL (1 times)
+[ 9757.266260] test_bpf: #314 BSWAP 64: 0x0123456789abcdef -> 0x67452301 jited:1 8 PASS
+[ 9757.268000] test_bpf: #315 BSWAP 64: 0x0123456789abcdef >> 32 -> 0xefcdab89 jited:1 8 PASS
+[ 9757.269686] test_bpf: #316 BSWAP 16: 0xfedcba9876543210 -> 0x1032 jited:1 8 PASS
+[ 9757.271380] test_bpf: #317 BSWAP 32: 0xfedcba9876543210 -> 0x10325476 jited:1 ret -1460850316 != 271733878 (0xa8ed3174 != 0x10325476)FAIL (1 times)
+[ 9757.273022] test_bpf: #318 BSWAP 64: 0xfedcba9876543210 -> 0x98badcfe jited:1 7 PASS
+[ 9757.274721] test_bpf: #319 BSWAP 64: 0xfedcba9876543210 >> 32 -> 0x10325476 jited:1 9 PASS
+
+Fix this by forcing 32bit variant of rev32.
+
+Fixes: 1104247f3f979 ("bpf, arm64: Support unconditional bswap")
+Signed-off-by: Artem Savkov <asavkov@redhat.com>
+Tested-by: Puranjay Mohan <puranjay12@gmail.com>
+Acked-by: Puranjay Mohan <puranjay12@gmail.com>
+Acked-by: Xu Kuohai <xukuohai@huawei.com>
+Message-ID: <20240321081809.158803-1-asavkov@redhat.com>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs3xdr.c | 4 +---
- fs/nfsd/nfsxdr.c  | 4 +---
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ arch/arm64/net/bpf_jit_comp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs3xdr.c b/fs/nfsd/nfs3xdr.c
-index 71e32cf288854..3308dd671ef0b 100644
---- a/fs/nfsd/nfs3xdr.c
-+++ b/fs/nfsd/nfs3xdr.c
-@@ -571,10 +571,8 @@ nfs3svc_decode_writeargs(struct svc_rqst *rqstp, struct xdr_stream *xdr)
- 		args->count = max_blocksize;
- 		args->len = max_blocksize;
- 	}
--	if (!xdr_stream_subsegment(xdr, &args->payload, args->count))
--		return false;
- 
--	return true;
-+	return xdr_stream_subsegment(xdr, &args->payload, args->count);
- }
- 
- bool
-diff --git a/fs/nfsd/nfsxdr.c b/fs/nfsd/nfsxdr.c
-index aba8520b4b8b6..caf6355b18fa9 100644
---- a/fs/nfsd/nfsxdr.c
-+++ b/fs/nfsd/nfsxdr.c
-@@ -338,10 +338,8 @@ nfssvc_decode_writeargs(struct svc_rqst *rqstp, struct xdr_stream *xdr)
- 		return false;
- 	if (args->len > NFSSVC_MAXBLKSIZE_V2)
- 		return false;
--	if (!xdr_stream_subsegment(xdr, &args->payload, args->len))
--		return false;
- 
--	return true;
-+	return xdr_stream_subsegment(xdr, &args->payload, args->len);
- }
- 
- bool
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index 5fe4d8b3fdc89..29196dce9b91d 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -876,7 +876,7 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
+ 			emit(A64_UXTH(is64, dst, dst), ctx);
+ 			break;
+ 		case 32:
+-			emit(A64_REV32(is64, dst, dst), ctx);
++			emit(A64_REV32(0, dst, dst), ctx);
+ 			/* upper 32 bits already cleared */
+ 			break;
+ 		case 64:
 -- 
 2.43.0
 
