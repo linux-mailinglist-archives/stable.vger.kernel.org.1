@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-37697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C10BC89C604
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35BBB89C152
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BA7D28451B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E65B628109C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81817F49C;
-	Mon,  8 Apr 2024 14:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2380C8286D;
+	Mon,  8 Apr 2024 13:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAY7Y26d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ki6pOqfm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B987EF00;
-	Mon,  8 Apr 2024 14:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE24F7B3E5;
+	Mon,  8 Apr 2024 13:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584996; cv=none; b=lTGNb2AJTs1yALeU3GqOT8Zo3xpR+AvgRlr7JmXJCY058Yz2UdYLLybDPo1F9kH421Wp0q1zTwu7m0gY6rxk+6TBjzO37mqjQ/R6veWT+XMycNbM1uBAa9QoD2qRsmd1YcyurvTCSZyqErrdsEVGMswpUiisotdzwtB8KvZK4lo=
+	t=1712582124; cv=none; b=QCgpO+XJ1x3GJ3k+z+DGwmLUJVEALxORcXSzF1yw8+5kAVvxSmdl1NkQwEVTCdWg977S5sCCM9FBiwON6HqMeqxm2Z8bW/h6eLdlnASJdGRxnUjVMQY+aqPzDqtuM/XziTXwY/PRA8UTKFuaJ9FMv2rWYbfrAwT4L4SVGeyPWHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584996; c=relaxed/simple;
-	bh=MkT1pwEIAxPA6Sr1YTmSwL85GeJCoOHWEIUjJr/wBLs=;
+	s=arc-20240116; t=1712582124; c=relaxed/simple;
+	bh=+Qc7XtZpDgOveubuvJSn4arihzMIVGLLvbek/przUKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DqT9AMWMv8KyaYLRc9yVpH5GA/aN3fTzQ864dKKi10Nr2KI84/NVh0wxSYGvXN07v550DkTke2/kbTeq7zausDdWaoYNr/6KFm3Cswo3ruyeHo/EBcB6+5k43BOFUCWFgWczMqFLyUNANYJpyBcMqRxglLs2vy3rZpsdPbB3shE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAY7Y26d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFB3C433C7;
-	Mon,  8 Apr 2024 14:03:15 +0000 (UTC)
+	 MIME-Version; b=lddzU9tTMhq5oJh4qNXP70/eqgboUnTEUnpbTAvYNraKMYCkZzWpN8mY3wGyJp2s/M4gUuFFRQ+V5kdqs2kz856TQu1WNUo739TO9KqIJ4wnv4kBggALrUSjkBR3yW3yrUSzH/y/ADPO5lA0elL810ZVPUElrAcdUx7XGxJSIIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ki6pOqfm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D617C43390;
+	Mon,  8 Apr 2024 13:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584996;
-	bh=MkT1pwEIAxPA6Sr1YTmSwL85GeJCoOHWEIUjJr/wBLs=;
+	s=korg; t=1712582124;
+	bh=+Qc7XtZpDgOveubuvJSn4arihzMIVGLLvbek/przUKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jAY7Y26d2t9R74sphwf/15giSEhaZ/8Qkb4BEsLIk8zdUihXCBQr/zaWq0811+qMu
-	 7IsGUDwNw55RGjV3fJ7siCrAYOZcg98/u9/2/QTUYf9AmZV6FB8zrrQY7/U4mhjv/9
-	 6USRojJFbXO+aAaSUnvQnMCKemQ8fpTaiIJyFLUY=
+	b=ki6pOqfm9lEbzxWwiVOXgGa6GaDpVXKe7edKVz1CpHtxaS/iu7yD5/dlfVJ7m6muB
+	 eUxLav63AyUS5vFc95KIQjVxk7ttzmi4zQ0ZC+xZ3V7zyeWTZIv/eEXhlY5HoRIerV
+	 Bj7G5APxhat+/BU5gFiKscv20fZIvC3Sr7byGrew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahmoud Adam <mngyadam@amazon.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 628/690] net/rds: fix possible cp null dereference
+	Dennis Kirjanov <dkirjanov@suse.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 080/138] drivers: net: convert to boolean for the mac_managed_pm flag
 Date: Mon,  8 Apr 2024 14:58:14 +0200
-Message-ID: <20240408125422.412376565@linuxfoundation.org>
+Message-ID: <20240408125258.714038773@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahmoud Adam <mngyadam@amazon.com>
+From: Denis Kirjanov <dkirjanov@suse.de>
 
-commit 62fc3357e079a07a22465b9b6ef71bb6ea75ee4b upstream.
+[ Upstream commit eca485d22165695587bed02d8b9d0f7f44246c4a ]
 
-cp might be null, calling cp->cp_conn would produce null dereference
-
-[Simon Horman adds:]
-
-Analysis:
-
-* cp is a parameter of __rds_rdma_map and is not reassigned.
-
-* The following call-sites pass a NULL cp argument to __rds_rdma_map()
-
-  - rds_get_mr()
-  - rds_get_mr_for_dest
-
-* Prior to the code above, the following assumes that cp may be NULL
-  (which is indicative, but could itself be unnecessary)
-
-	trans_private = rs->rs_transport->get_mr(
-		sg, nents, rs, &mr->r_key, cp ? cp->cp_conn : NULL,
-		args->vec.addr, args->vec.bytes,
-		need_odp ? ODP_ZEROBASED : ODP_NOT_NEEDED);
-
-* The code modified by this patch is guarded by IS_ERR(trans_private),
-  where trans_private is assigned as per the previous point in this analysis.
-
-  The only implementation of get_mr that I could locate is rds_ib_get_mr()
-  which can return an ERR_PTR if the conn (4th) argument is NULL.
-
-* ret is set to PTR_ERR(trans_private).
-  rds_ib_get_mr can return ERR_PTR(-ENODEV) if the conn (4th) argument is NULL.
-  Thus ret may be -ENODEV in which case the code in question will execute.
-
-Conclusion:
-* cp may be NULL at the point where this patch adds a check;
-  this patch does seem to address a possible bug
-
-Fixes: c055fc00c07b ("net/rds: fix WARNING in rds_conn_connect_if_down")
-Cc: stable@vger.kernel.org # v4.19+
-Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240326153132.55580-1-mngyadam@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dennis Kirjanov <dkirjanov@suse.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: cbc17e7802f5 ("net: fec: Set mac_managed_pm during probe")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/rdma.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fec_main.c | 2 +-
+ drivers/net/ethernet/realtek/r8169_main.c | 2 +-
+ drivers/net/usb/asix_devices.c            | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/rds/rdma.c
-+++ b/net/rds/rdma.c
-@@ -302,7 +302,7 @@ static int __rds_rdma_map(struct rds_soc
- 		}
- 		ret = PTR_ERR(trans_private);
- 		/* Trigger connection so that its ready for the next retry */
--		if (ret == -ENODEV)
-+		if (ret == -ENODEV && cp)
- 			rds_conn_connect_if_down(cp->cp_conn);
- 		goto out;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 97d12c7eea772..51eb30c20c7cf 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -2236,7 +2236,7 @@ static int fec_enet_mii_probe(struct net_device *ndev)
+ 	fep->link = 0;
+ 	fep->full_duplex = 0;
+ 
+-	phy_dev->mac_managed_pm = 1;
++	phy_dev->mac_managed_pm = true;
+ 
+ 	phy_attached_info(phy_dev);
+ 
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 256630f57ffe1..6e3417712e402 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -5148,7 +5148,7 @@ static int r8169_mdio_register(struct rtl8169_private *tp)
+ 		return -EUNATCH;
  	}
+ 
+-	tp->phydev->mac_managed_pm = 1;
++	tp->phydev->mac_managed_pm = true;
+ 
+ 	phy_support_asym_pause(tp->phydev);
+ 
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index 6eacbf17f1c0c..34cd568b27f19 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -714,7 +714,7 @@ static int ax88772_init_phy(struct usbnet *dev)
+ 	}
+ 
+ 	phy_suspend(priv->phydev);
+-	priv->phydev->mac_managed_pm = 1;
++	priv->phydev->mac_managed_pm = true;
+ 
+ 	phy_attached_info(priv->phydev);
+ 
+@@ -734,7 +734,7 @@ static int ax88772_init_phy(struct usbnet *dev)
+ 		return -ENODEV;
+ 	}
+ 
+-	priv->phydev_int->mac_managed_pm = 1;
++	priv->phydev_int->mac_managed_pm = true;
+ 	phy_suspend(priv->phydev_int);
+ 
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
