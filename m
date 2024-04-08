@@ -1,75 +1,137 @@
-Return-Path: <stable+bounces-36307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D2B889B667
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 05:29:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46FD089B705
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 06:58:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 701331C20D4A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 03:29:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCAB21F21EFD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 04:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048EF1860;
-	Mon,  8 Apr 2024 03:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD896FBE;
+	Mon,  8 Apr 2024 04:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DpcLU0vn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNE2CNH9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8123524F;
-	Mon,  8 Apr 2024 03:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC27B1FC8;
+	Mon,  8 Apr 2024 04:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712546957; cv=none; b=EoYr4LV88nXFkHAj+JV7TDbQZz3G0LEDEFFJnZK8Lt34kgjkzj9u7S0HIEvpu7WGiBwYVAtUN8gN2M1taZDyJFpJ1wvi31IJeY2kR+plYH5bVb/tMMkhzqatXA293eJJ6qKq/u0UpqsfUoR4cbC4lQzhHIiFsCy6WaVNiP1VLF8=
+	t=1712552279; cv=none; b=KcgUAd2bks3cfj8E656pH93hNai2QFTBNtii0flyEj0/C4asCfl8555cW+uW9MMLEQiTOyuckOXgCofBvmoS/roXEfpaU/OayKDxLau+uyAd7GAEp16P8lJSYEICM1BuB4tYQB+O3mWsvPYxyO/qRrNNVTUsJEwy2gbDGlj3YUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712546957; c=relaxed/simple;
-	bh=dx9iqr5tIkbizzXBEuqix5gqYfDy6aTqS79L4wrySxc=;
-	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
-	 Subject:From:Cc:To:Date; b=G37whAOOXXKTDrKQkpqNf4rvjaYR7SKWM1Q0LLWn7M8lB+WOBAXDh/oLCSWbtswoJT65VORkBUuKBWZqNHnqfnevdqhoOFJsHoPKqaUQC+JDjE+IOTGjzPbPNPYZ3Qith6c6QyWVp7Q0WoBt1fr5bI8kYz04HsofgKctJXMbzq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DpcLU0vn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A139C433C7;
-	Mon,  8 Apr 2024 03:29:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712546957;
-	bh=dx9iqr5tIkbizzXBEuqix5gqYfDy6aTqS79L4wrySxc=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=DpcLU0vnehQGDHiCm9qrkV2adCskw7Ej6mCs5eCwR1m+6MtZ37rJD7ma9jQ5qbmN6
-	 sdmJ9ea7XG1v2mNB7QBjgtS+O3MrvItER8TD+/PyT8xYbKSnS/9zLYNzsL+I2IgKMU
-	 BmYxwhiJjoRy2UpMhMQCxJHrhFtedUBE1NCTL8Amqe4KtVEpXwbMppoq1P1jD2eGMw
-	 H37sSp4j8BBNdXwNZzwWsm/gcaWSE+iTE5MsBjuqlEZHcIStwCq5te52UD9FmLLeGV
-	 c141LGe8PEIl/cAUamndrIV5y+0CzsBi4SysqhI5DSCfKMfjC4Mc592HCX692gR/nH
-	 8Qz9Pg6/H/eog==
-Message-ID: <1f89ebad6dcb2161188354f990d3dad1.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1712552279; c=relaxed/simple;
+	bh=anUXvL392fO2+AfT73Jft+wzb/H/McYFkz8oCkEBIk8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MTkBPu9iGKvZCDpT7pEE4eEmv8WjeUKSIaZ1iqp1KixMC6ypjkn82cptQZEo8Eg5KJK7cQlj9pLbiSfd+Xq90+67tPyMGEbwkT7YTReUcVtLGLNo+9FY4I5qK3ysmZeJkIpQG8tJvfjHTnlmsSit9qbi7MXiCLDYnY9+ubfvGW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNE2CNH9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE15C433F1;
+	Mon,  8 Apr 2024 04:57:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712552278;
+	bh=anUXvL392fO2+AfT73Jft+wzb/H/McYFkz8oCkEBIk8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uNE2CNH9FTFL0oHNz+X301D5F9RO25oTn8BzvyhVTKpGAr2pMGEi11x0QCj9f+Cgq
+	 E/sy4kSY568kDzXlc80p+7F4ZSXiAGWy4a4TuVDHSXaZZk6FD8fP/AbarpYW5KCGjS
+	 43fAG/SYkv+WRX4bJy1e54e9FeCfiiNw9jImlxQU=
+Date: Mon, 8 Apr 2024 06:57:56 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Wang Yugui <wangyugui@e16-tech.com>
+Cc: Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] btrfs: fix wrong block_start calculation for
+ btrfs_drop_extent_map_range()
+Message-ID: <2024040851-uptown-splashing-951c@gregkh>
+References: <4240e179e2439dd1698798e2de79ec59990cbaa0.1712452660.git.wqu@suse.com>
+ <20240408080014.74B2.409509F4@e16-tech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20240228185116.1269-1-vamshigajjela@google.com>
-References: <20240228185116.1269-1-vamshigajjela@google.com>
-Subject: Re: [PATCH] spmi: hisi-spmi-controller: Do not override device identifier
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: Caleb Connolly <caleb.connolly@linaro.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, Vamshi Gajjela <vamshigajjela@google.com>
-To: Johan Hovold <johan+linaro@kernel.org>, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Vamshi Gajjela <vamshigajjela@google.com>
-Date: Sun, 07 Apr 2024 20:29:15 -0700
-User-Agent: alot/0.10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240408080014.74B2.409509F4@e16-tech.com>
 
-Quoting Vamshi Gajjela (2024-02-28 10:51:16)
-> 'nr' member of struct spmi_controller, which serves as an identifier
-> for the controller/bus. This value is a dynamic ID assigned in
-> spmi_controller_alloc, and overriding it from the driver results in an
-> ida_free error "ida_free called for id=3Dxx which is not allocated".
->=20
-> Signed-off-by: Vamshi Gajjela <vamshigajjela@google.com>
-> Fixes: 70f59c90c819 ("staging: spmi: add Hikey 970 SPMI controller driver=
-")
-> Cc: stable@vger.kernel.org
-> ---
+On Mon, Apr 08, 2024 at 08:00:15AM +0800, Wang Yugui wrote:
+> Hi,
+> 
+> > [BUG]
+> > During my extent_map cleanup/refactor, with more than too strict sanity
+> > checks, extent-map-tests::test_case_7() would crash my extent_map sanity
+> > checks.
+> > 
+> > The problem is, after btrfs_drop_extent_map_range(), the resulted
+> > extent_map has a @block_start way too large.
+> > Meanwhile my btrfs_file_extent_item based members are returning a
+> > correct @disk_bytenr along with correct @offset.
+> > 
+> > The extent map layout looks like this:
+> > 
+> >      0        16K    32K       48K
+> >      | PINNED |      | Regular |
+> > 
+> > The regular em at [32K, 48K) also has 32K @block_start.
+> > 
+> > Then drop range [0, 36K), which should shrink the regular one to be
+> > [36K, 48K).
+> > However the @block_start is incorrect, we expect 32K + 4K, but got 52K.
+> > 
+> > [CAUSE]
+> > Inside btrfs_drop_extent_map_range() function, if we hit an extent_map
+> > that covers the target range but is still beyond it, we need to split
+> > that extent map into half:
+> > 
+> > 	|<-- drop range -->|
+> > 		 |<----- existing extent_map --->|
+> > 
+> > And if the extent map is not compressed, we need to forward
+> > extent_map::block_start by the difference between the end of drop range
+> > and the extent map start.
+> > 
+> > However in that particular case, the difference is calculated using
+> > (start + len - em->start).
+> > 
+> > The problem is @start can be modified if the drop range covers any
+> > pinned extent.
+> > 
+> > This leads to wrong calculation, and would be caught by my later
+> > extent_map sanity checks, which checks the em::block_start against
+> > btrfs_file_extent_item::disk_bytenr + btrfs_file_extent_item::offset.
+> > 
+> > And unfortunately this is going to cause data corruption, as the
+> > splitted em is pointing an incorrect location, can cause either
+> > unexpected read error or wild writes.
+> > 
+> > [FIX]
+> > Fix it by avoiding using @start completely, and use @end - em->start
+> > instead, which @end is exclusive bytenr number.
+> > 
+> > And update the test case to verify the @block_start to prevent such
+> > problem from happening.
+> > 
+> > CC: stable@vger.kernel.org # 6.7+
+> > Fixes: c962098ca4af ("btrfs: fix incorrect splitting in btrfs_drop_extent_map_range")
+> > Signed-off-by: Qu Wenruo <wqu@suse.com>
+> 
+> $ git describe --contains c962098ca4af
+> v6.5-rc7~4^2
+> 
+> so it should be
+> CC: stable@vger.kernel.org # 6.5+
 
-Applied to spmi-next
+As the "Fixes:" commit was backported to the following kernel releases:
+	6.1.47 6.4.12
+it should go back to 6.1+ as well :)
+
+But we can handle that when it hits Linus's tree.
+
+thanks,
+
+greg k-h
 
