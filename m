@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-36963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E0E89C3D6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:44:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8380289C5C5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0907CB2CABC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:31:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B57721C21B2F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0ED87EF03;
-	Mon,  8 Apr 2024 13:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE4648003B;
+	Mon,  8 Apr 2024 14:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFcpFiRL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZ2/R9F5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACD17E0E4;
-	Mon,  8 Apr 2024 13:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78ED180039;
+	Mon,  8 Apr 2024 14:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582854; cv=none; b=UxquRPyN9g4kedT3wXanv1ax3QDdTcf8DZqGA7NM2q3O3CBPP1mPGZClSJtd9BSw46ps9BUIMpmq/vL1xe8p4x+E29tCo6XpZew1xMzsUYZtDKRcmKJdY621SObFvhMUYU+z4Zz4mezV32DSC05/f54UG0gGqE4vgXMpCJsZmIk=
+	t=1712584803; cv=none; b=RSnQroSBsLhttvvtVSwwJ8LkiFY+oAg1HNKRvUIqUghFjzrPULZIstKm+7nensU1PiLpZzoa33TjitwNAO84Acn/6O5zS+Oz9RHdsXj55dkQCGGhdGjwd7zp04lTL7uvrdZ2ha6SGmt9JdKAgC0wDb4xQyQd7ZB7yGKfbLQJ2WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582854; c=relaxed/simple;
-	bh=xPmTm84NxUAUAWZHHiD+NSkb5F96RVbrHcxgAm8fzHw=;
+	s=arc-20240116; t=1712584803; c=relaxed/simple;
+	bh=J9xC5gW2KoYFAhUw+B79OTfB6bcVW0VU9OPHAPakxJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=czwLL4JHgI06iMTKF/JMN371mbOpXhgxfLKqUtNmcBk/RW4lbr2+jahCv1v9vsUb6s8CICOpKvHOIFym2d7aaZHncDEAuPnMuisGZKgtuXJUY1zbxJmN+Z/dteA1qvDr261ayVTtL9ThpJHCbPk0R3+++6mFxn/6J8+X741J1sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFcpFiRL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0980BC433C7;
-	Mon,  8 Apr 2024 13:27:33 +0000 (UTC)
+	 MIME-Version; b=aOOL6vwImS6OMHDFxxHvRNpTBq03Eh42mKjb/lbotncYuDhF/fMMkUx78azjCOSQbFzWUuAyvFu0U6GZ1MY5zFJK3sRLj1u1mkJ5E2nSRFLGSMJWE/sEzFxfYz6jKUA84WC/c8I+bia9OEKw6kiYLjIcQiu9PjwSh4xqbUf76sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZ2/R9F5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1BAFC433F1;
+	Mon,  8 Apr 2024 14:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582854;
-	bh=xPmTm84NxUAUAWZHHiD+NSkb5F96RVbrHcxgAm8fzHw=;
+	s=korg; t=1712584803;
+	bh=J9xC5gW2KoYFAhUw+B79OTfB6bcVW0VU9OPHAPakxJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gFcpFiRLUQn9gM8h/H8fCcfcj3UPGi2wiiv+0GND7sYzup1bLktGEszIb6TBjxXgt
-	 5AhU+scn5YYqwhWcvuTssa9DkjeJthfr4uI1ENVOygbH/4Fel+7Ubce8ByZatbr488
-	 Ze86XB+DKzEHgB0z3L36YuSyWkwoVUKcAz/2LUSU=
+	b=KZ2/R9F5k1YeOHFoNUcqKBJ6OoqlUv8cMWaDe6CLw4ofJSHWjsldtAefJTzx6ZMUN
+	 e5un3Lvj0Bjg/ptMo8MrE1usCgRG2dJE0KVj/FeOsCGmq8hqaufQvkOiSxTDDVt2Mt
+	 oVEpLFXK+re5/Qfav3r82Wuo2AmWomFnB316qsV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.6 129/252] i40e: fix i40e_count_filters() to count only active/new filters
-Date: Mon,  8 Apr 2024 14:57:08 +0200
-Message-ID: <20240408125310.625524080@linuxfoundation.org>
+	Kevin Tian <kevin.tian@intel.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 5.15 563/690] vfio: Introduce interface to flush virqfd inject workqueue
+Date: Mon,  8 Apr 2024 14:57:09 +0200
+Message-ID: <20240408125420.030220993@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-commit eb58c598ce45b7e787568fe27016260417c3d807 upstream.
+[ Upstream commit b620ecbd17a03cacd06f014a5d3f3a11285ce053 ]
 
-The bug usually affects untrusted VFs, because they are limited to 18 MACs,
-it affects them badly, not letting to create MAC all filters.
-Not stable to reproduce, it happens when VF user creates MAC filters
-when other MACVLAN operations are happened in parallel.
-But consequence is that VF can't receive desired traffic.
+In order to synchronize changes that can affect the thread callback,
+introduce an interface to force a flush of the inject workqueue.  The
+irqfd pointer is only valid under spinlock, but the workqueue cannot
+be flushed under spinlock.  Therefore the flush work for the irqfd is
+queued under spinlock.  The vfio_irqfd_cleanup_wq workqueue is re-used
+for queuing this work such that flushing the workqueue is also ordered
+relative to shutdown.
 
-Fix counter to be bumped only for new or active filters.
-
-Fixes: 621650cabee5 ("i40e: Refactoring VF MAC filters counting to make more reliable")
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20240308230557.805580-4-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/vfio/virqfd.c |   21 +++++++++++++++++++++
+ include/linux/vfio.h  |    2 ++
+ 2 files changed, 23 insertions(+)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -1249,8 +1249,11 @@ int i40e_count_filters(struct i40e_vsi *
- 	int bkt;
- 	int cnt = 0;
- 
--	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist)
--		++cnt;
-+	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist) {
-+		if (f->state == I40E_FILTER_NEW ||
-+		    f->state == I40E_FILTER_ACTIVE)
-+			++cnt;
-+	}
- 
- 	return cnt;
+--- a/drivers/vfio/virqfd.c
++++ b/drivers/vfio/virqfd.c
+@@ -104,6 +104,13 @@ static void virqfd_inject(struct work_st
+ 		virqfd->thread(virqfd->opaque, virqfd->data);
  }
+ 
++static void virqfd_flush_inject(struct work_struct *work)
++{
++	struct virqfd *virqfd = container_of(work, struct virqfd, flush_inject);
++
++	flush_work(&virqfd->inject);
++}
++
+ int vfio_virqfd_enable(void *opaque,
+ 		       int (*handler)(void *, void *),
+ 		       void (*thread)(void *, void *),
+@@ -127,6 +134,7 @@ int vfio_virqfd_enable(void *opaque,
+ 
+ 	INIT_WORK(&virqfd->shutdown, virqfd_shutdown);
+ 	INIT_WORK(&virqfd->inject, virqfd_inject);
++	INIT_WORK(&virqfd->flush_inject, virqfd_flush_inject);
+ 
+ 	irqfd = fdget(fd);
+ 	if (!irqfd.file) {
+@@ -217,6 +225,19 @@ void vfio_virqfd_disable(struct virqfd *
+ }
+ EXPORT_SYMBOL_GPL(vfio_virqfd_disable);
+ 
++void vfio_virqfd_flush_thread(struct virqfd **pvirqfd)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&virqfd_lock, flags);
++	if (*pvirqfd && (*pvirqfd)->thread)
++		queue_work(vfio_irqfd_cleanup_wq, &(*pvirqfd)->flush_inject);
++	spin_unlock_irqrestore(&virqfd_lock, flags);
++
++	flush_workqueue(vfio_irqfd_cleanup_wq);
++}
++EXPORT_SYMBOL_GPL(vfio_virqfd_flush_thread);
++
+ module_init(vfio_virqfd_init);
+ module_exit(vfio_virqfd_exit);
+ 
+--- a/include/linux/vfio.h
++++ b/include/linux/vfio.h
+@@ -243,6 +243,7 @@ struct virqfd {
+ 	wait_queue_entry_t		wait;
+ 	poll_table		pt;
+ 	struct work_struct	shutdown;
++	struct work_struct	flush_inject;
+ 	struct virqfd		**pvirqfd;
+ };
+ 
+@@ -251,5 +252,6 @@ extern int vfio_virqfd_enable(void *opaq
+ 			      void (*thread)(void *, void *),
+ 			      void *data, struct virqfd **pvirqfd, int fd);
+ extern void vfio_virqfd_disable(struct virqfd **pvirqfd);
++void vfio_virqfd_flush_thread(struct virqfd **pvirqfd);
+ 
+ #endif /* VFIO_H */
 
 
 
