@@ -1,164 +1,68 @@
-Return-Path: <stable+bounces-37801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA34989CD00
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 22:40:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F291789CD57
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 23:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FB97B21564
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 20:40:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE4CD281D38
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 21:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E557146D77;
-	Mon,  8 Apr 2024 20:40:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EhlCUVlm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297B0147C79;
+	Mon,  8 Apr 2024 21:18:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0599F143C59
-	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 20:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C77C7482;
+	Mon,  8 Apr 2024 21:18:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.188.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712608830; cv=none; b=HfTnFhcCdkKVXFbCYmdTK8wJo/oWr3D32BK3iy6uuRhb8esrbDQvUFmGf83LJSeCHUWFgJFnYa369SsDmrIlM9rFnMutfhtY7IZoVqogZIZ9nFU4Jzvmcy9t+Tihe/plFq7Z7NJmJiCFWtiK3FaU4QMfz8TILSieP1MAiNAlJpY=
+	t=1712611126; cv=none; b=dhbn+0RXWPwdZD2odF4Q0hr+cbxkvYiFZAKgcOjO9u2/NKkjtP6N7vsScpxDK38bIVDcpIMe9NeT2zX8JvXUcJkIOGEqd6PVXsBOXgJOMZ7lUCoVH584dckYVs50G7F7qRsEvqN/VR+UHPtTPi1A5Yg+OtYU5mGT6n/5wTRcjY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712608830; c=relaxed/simple;
-	bh=/lzVzbK8GfEZQ9NiAPI6LOYjttXFw3I14FUKkVXEWbI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eLvcxbrx0lK09+KDTLic920OSDpPrUrAZpb9oEqWvbHr1a2ZElUshc9jHJQ6QVR4YeRNslqpdc1+thBfuCKbReKCIzhsQmcLKA1fy2LA36ScW9kgYdQ97uS+vDlUQagDbwXNO2dAINLIdTO3R5v0d9h3Gv3/QjyLf8XaL8Vab6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EhlCUVlm; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3458b699d6cso664912f8f.0
-        for <stable@vger.kernel.org>; Mon, 08 Apr 2024 13:40:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712608827; x=1713213627; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YH7O1NXdJC03aNqvzATcinYdpPQ1XTxhwnXgM4me0RQ=;
-        b=EhlCUVlmUbhtFvx2FLjFMTRJAaOjGs//k9n6ku0vbawnPbLgm1/qiw2FfNVn4WOczP
-         CqaYJ6pWzNoezaZf8Q3MFTTF244F9pzPqck78JRsNCzLKiHeeHm5hLf7BeJlk71BPQBa
-         NA8mgoTOAZ0egfbAUYCJnDgS3UD2dxIyhYjTBrsenZlyP3dQgmbN94/LY2sezW3y+5Pw
-         lYt6HoAO+k2GTsanVew5K4X5WsEH59tAbLj1P4HtXM/3tn1E2+/2A2AqqdtErtJYonuR
-         kwmsi5QQ1jvTMrdYWfkqrozCi5w7zs4BN5KH0x9os9zHJ45uEU22NiQ5WaLXvfrZlE1/
-         qtNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712608827; x=1713213627;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YH7O1NXdJC03aNqvzATcinYdpPQ1XTxhwnXgM4me0RQ=;
-        b=AaQ4cfeV7iNHYHHoB2pyKCQK67xMDycML0Tdow/TX7Bli3kEBjzJFkkXhjyD10rXyW
-         U6QYrb8d0ct56K0XI2hY2ZJkGxWZIPC9JCSFLLOTwqpAs7HTcomgkKRs0yMjQOiQmwsD
-         NKN/oeBENbYXoKQrmzFeLKCFdCwUksNEJ4l9nT8YAfULQ8q2hCJOMjM8C3LxyM+jyWfU
-         PS73hSuQtW0x5xkZ9AHcsj4alfpjre4ggobld/GrK1EtuTWFxd1mLHXdiumfHLFk/083
-         7NBfgF7/7dkr3tpNf6cx3j2JrAJxkkY6OSEFs7lXjtHDbxSXpFPslzToUBLOeohSk7CF
-         CouQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVKNWH62HlvPvuCx7zw5bLarqwtN247bp8JRRCWqyqDfAJcy1I0rpYEQxRMgsfe3LwDSIOAVoWmyfqad3p4Lvz3urQjlY9K
-X-Gm-Message-State: AOJu0YxnXeOpyNPvwrInbHUAJTFaSp9pIPRrA8IQIHOWdNV9gzJ5+eFd
-	jdesuT9AjUcanpJkpAeL3oPBTjgllxfqswgYCQQM00j6w7N5QKNh7kl9YZWBt7TqV/Su41xKZhT
-	ZqGS25gbzI/oCoF6nzpHRZ8jwQaE4O9g1XywE
-X-Google-Smtp-Source: AGHT+IFxhfE/RzvX7+ulq0KbAkf7P5D6w45kxMVxgPiuAeYPn2IilZSRtVlEKwNMRCb0uRiYGJdYkTguNKiF7lfjQRE=
-X-Received: by 2002:a5d:4811:0:b0:343:d06e:51cb with SMTP id
- l17-20020a5d4811000000b00343d06e51cbmr6748896wrq.19.1712608827286; Mon, 08
- Apr 2024 13:40:27 -0700 (PDT)
+	s=arc-20240116; t=1712611126; c=relaxed/simple;
+	bh=/CWr52yAcLFZfVd7/0sVqogaWieMIAQlyCOgGSO5+xg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ri3p4A4r36A3tnS1lODpWnppZ7Tiv3WV+5iQiX2ElyoiiE3tvNNI3nqYrXjhFcNIIRqXg3Iw6hbNahTvj8JnpFfHZt/RnIm63An+V1GVHYYs5m67ujKHgKhLzs6Ck3NAM3JHqUkUMv4mLYcbOGi6dhygDzR/tPYIQodFBThbrS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=217.70.188.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	sashal@kernel.org
+Subject: [PATCH -stable 6.1.x 0/3] Netfilter fixes for -stable
+Date: Mon,  8 Apr 2024 23:18:31 +0200
+Message-Id: <20240408211834.311982-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240405231920.1772199-1-peterx@redhat.com> <151c1981-f2ed-43fd-bec3-5ed63efe1c13@redhat.com>
-In-Reply-To: <151c1981-f2ed-43fd-bec3-5ed63efe1c13@redhat.com>
-From: Axel Rasmussen <axelrasmussen@google.com>
-Date: Mon, 8 Apr 2024 13:39:49 -0700
-Message-ID: <CAJHvVchiY9v2jkdFzbYukbiUYADCrZcAO-4pW-RwdbLetW8w7w@mail.gmail.com>
-Subject: Re: [PATCH] mm/userfaultfd: Allow hugetlb change protection upon
- poison entry
-To: David Hildenbrand <david@redhat.com>
-Cc: peterx@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-stable <stable@vger.kernel.org>, 
-	syzbot+b07c8ac8eee3d4d8440f@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+Hi Greg, Sasha,
 
-Thanks for the fix, Peter!
+This batch contains a backport for recent fixes already upstream for 6.1.x,
+to add them on top of enqueued patches:
 
+a45e6889575c ("netfilter: nf_tables: release batch on table validation from abort path")
+0d459e2ffb54 ("netfilter: nf_tables: release mutex after nft_gc_seq_end from abort path")
+1bc83a019bbe ("netfilter: nf_tables: discard table flag update with pending basechain deletion")
 
-On Mon, Apr 8, 2024 at 11:59=E2=80=AFAM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> On 06.04.24 01:19, peterx@redhat.com wrote:
-> > From: Peter Xu <peterx@redhat.com>
-> >
-> > After UFFDIO_POISON, there can be two kinds of hugetlb pte markers, eit=
-her
-> > the POISON one or UFFD_WP one.
-> >
-> > Allow change protection to run on a poisoned marker just like !hugetlb
-> > cases, ignoring the marker irrelevant of the permission.
-> >
-> > Here the two bits are mutual exclusive. For example, when install a
-> > poisoned entry it must not be UFFD_WP already (by checking pte_none()
-> > before such install).  And it also means if UFFD_WP is set there must h=
-ave
-> > no POISON bit set.  It makes sense because UFFD_WP is a bit to reflect
-> > permission, and permissions do not apply if the pte is poisoned and
-> > destined to sigbus.
-> >
-> > So here we simply check uffd_wp bit set first, do nothing otherwise.
-> >
-> > Attach the Fixes to UFFDIO_POISON work, as before that it should not be
-> > possible to have poison entry for hugetlb (e.g., hugetlb doesn't do swa=
-p,
-> > so no chance of swapin errors).
-> >
-> > Cc: Axel Rasmussen <axelrasmussen@google.com>
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: linux-stable <stable@vger.kernel.org> # 6.6+
-> > Link: https://lore.kernel.org/r/000000000000920d5e0615602dd1@google.com
-> > Reported-by: syzbot+b07c8ac8eee3d4d8440f@syzkaller.appspotmail.com
-> > Fixes: fc71884a5f59 ("mm: userfaultfd: add new UFFDIO_POISON ioctl")
-> > Signed-off-by: Peter Xu <peterx@redhat.com>
-> > ---
-> >   mm/hugetlb.c | 10 +++++++---
-> >   1 file changed, 7 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> > index 8267e221ca5d..ba7162441adf 100644
-> > --- a/mm/hugetlb.c
-> > +++ b/mm/hugetlb.c
-> > @@ -6960,9 +6960,13 @@ long hugetlb_change_protection(struct vm_area_st=
-ruct *vma,
-> >                       if (!pte_same(pte, newpte))
-> >                               set_huge_pte_at(mm, address, ptep, newpte=
-, psize);
-> >               } else if (unlikely(is_pte_marker(pte))) {
-> > -                     /* No other markers apply for now. */
-> > -                     WARN_ON_ONCE(!pte_marker_uffd_wp(pte));
-> > -                     if (uffd_wp_resolve)
-> > +                     /*
-> > +                      * Do nothing on a poison marker; page is
-> > +                      * corrupted, permissons do not apply.  Here
-> > +                      * pte_marker_uffd_wp()=3D=3Dtrue implies !poison
-> > +                      * because they're mutual exclusive.
-> > +                      */
-> > +                     if (pte_marker_uffd_wp(pte) && uffd_wp_resolve)
-> >                               /* Safe to modify directly (non-present->=
-none). */
-> >                               huge_pte_clear(mm, address, ptep, psize);
-> >               } else if (!huge_pte_none(pte)) {
->
-> Reviewed-by: David Hildenbrand <david@redhat.com>
->
-> --
-> Cheers,
->
-> David / dhildenb
->
+Please, apply, thanks.
+
+Pablo Neira Ayuso (3):
+  netfilter: nf_tables: release batch on table validation from abort path
+  netfilter: nf_tables: release mutex after nft_gc_seq_end from abort path
+  netfilter: nf_tables: discard table flag update with pending basechain deletion
+
+ net/netfilter/nf_tables_api.c | 47 +++++++++++++++++++++++++++--------
+ 1 file changed, 36 insertions(+), 11 deletions(-)
+
+-- 
+2.30.2
+
 
