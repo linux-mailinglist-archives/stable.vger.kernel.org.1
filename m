@@ -1,53 +1,62 @@
-Return-Path: <stable+bounces-36478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78B589C004
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:05:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF7089C08D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 678D71F223AD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:05:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F8DCB2B29A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398E770CCB;
-	Mon,  8 Apr 2024 13:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DE771B3D;
+	Mon,  8 Apr 2024 13:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkODEshO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJ7J2wuY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6ED2E62C;
-	Mon,  8 Apr 2024 13:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5092E62C;
+	Mon,  8 Apr 2024 13:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581443; cv=none; b=SIZ4+WOtoVOu/ZNovUGtyW60QuEshgg8xpLAl7r8i0yxcNJ3q2sRbbHo2hPgxxKNaSEkwG/gVcnrHJGUuR/C4EbDxrVQuSJAnTEUpdbda6BCmj0D5qU0/nmkxvJ6h1O7JcMwkekjiRd4kKnNbIRwZVedBkARVWN0KVss/wTEWzQ=
+	t=1712581448; cv=none; b=a09AepmVjbLzQDLCaFEsGRSzKPXgs1zzvpmFkPNbjiaBgI2La0qV4sfpPcldfo13rWSseFK+y0aiqqjBWLE7wVUz4d+FKMS9b3PV733oqPMkXdJCtjxYOt6zsUz4Q3O+k3HJIyVAUjQGwPgfUMdCmNKqN05ONpOZUPEoKadCIAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581443; c=relaxed/simple;
-	bh=QwphQmeUoj4SArJT2eKVySVvRttUbF0UIAYuQwjh7PM=;
+	s=arc-20240116; t=1712581448; c=relaxed/simple;
+	bh=77MVwSq0bPpA7rFgxiaRn7wCOFilcBBd7hT8/iqM5fM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/OOd++6EIi9OMOMX6T9ARJtBHB9Zqlq4DPgt4sf/oIbkU+Kx7NWWPowLT8XQZC2IXnrQ6yF8x0Gtyv+/QdjihL5rnQdzXcH8B8ABjoHkGU/f/U8eSLwTrv/enuL3o0U5w7wfPAZq/47U1dgHKTPgfczNJIDZbSke2vHEtXjM+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkODEshO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720C2C433C7;
-	Mon,  8 Apr 2024 13:04:02 +0000 (UTC)
+	 MIME-Version; b=f6WAY4L9nHuYO5aoqjz5Zhg2XA+Dc4lcu+PqZg1zMW/3civwlTX+EmaJlCCb/iXWdGKFyquUftby0FqQMN+XXIJVPyDU2srdpGaoCMZv/ojDlHB5tH8sSKmYNsqft0rUijp3QTHTPViA0VjHcqanB6xt+ODgRNVe6v9LpXJHIRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJ7J2wuY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E75C433C7;
+	Mon,  8 Apr 2024 13:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581442;
-	bh=QwphQmeUoj4SArJT2eKVySVvRttUbF0UIAYuQwjh7PM=;
+	s=korg; t=1712581448;
+	bh=77MVwSq0bPpA7rFgxiaRn7wCOFilcBBd7hT8/iqM5fM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bkODEshONiiFi8Jju+chUML4UuVKgAkkg6mCzNi/7Ij3mpGa46BOgYtl8koqGOg/w
-	 THPA4k2v8FRbFVcXrxtdbjvyKzknhY/9+JE+TlRtACZVCvoq0TsqLEekw4ML5lNcg0
-	 HOinzhaD1V4pnbiRaEWIWkl6LiC6jj/T6n1qYqFE=
+	b=zJ7J2wuYACna4VEsYKnFvK2rHAybh8dQyiWSn6lkHTR9OvaDDNQ0p8ECx52rQ1dc4
+	 I7GfgRaGBerVeHeUSQkY43t9vysnduG2HosQ5qlq7y5vfgnvd5noucXpIRA7AmP8UR
+	 71yYNnMxtErRaJ5W7vvzdBUos+dW8hTIw4ihsSJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Peter Collingbourne <pcc@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Marco Elver <elver@google.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Evgenii Stepanov <eugenis@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 026/690] block: Clear zone limits for a non-zoned stacked queue
-Date: Mon,  8 Apr 2024 14:48:12 +0200
-Message-ID: <20240408125400.517137604@linuxfoundation.org>
+Subject: [PATCH 5.15 027/690] kasan: test: add memcpy test that avoids out-of-bounds write
+Date: Mon,  8 Apr 2024 14:48:13 +0200
+Message-ID: <20240408125400.547268136@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,42 +75,101 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Peter Collingbourne <pcc@google.com>
 
-[ Upstream commit c8f6f88d25929ad2f290b428efcae3b526f3eab0 ]
+[ Upstream commit 758cabae312d3aded781aacc6d0c946b299c52df ]
 
-Device mapper may create a non-zoned mapped device out of a zoned device
-(e.g., the dm-zoned target). In such case, some queue limit such as the
-max_zone_append_sectors and zone_write_granularity endup being non zero
-values for a block device that is not zoned. Avoid this by clearing
-these limits in blk_stack_limits() when the stacked zoned limit is
-false.
+With HW tag-based KASAN, error checks are performed implicitly by the
+load and store instructions in the memcpy implementation.  A failed
+check results in tag checks being disabled and execution will keep
+going.  As a result, under HW tag-based KASAN, prior to commit
+1b0668be62cf ("kasan: test: disable kmalloc_memmove_invalid_size for
+HW_TAGS"), this memcpy would end up corrupting memory until it hits an
+inaccessible page and causes a kernel panic.
 
-Fixes: 3093a479727b ("block: inherit the zoned characteristics in blk_stack_limits")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20240222131724.1803520-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This is a pre-existing issue that was revealed by commit 285133040e6c
+("arm64: Import latest memcpy()/memmove() implementation") which changed
+the memcpy implementation from using signed comparisons (incorrectly,
+resulting in the memcpy being terminated early for negative sizes) to
+using unsigned comparisons.
+
+It is unclear how this could be handled by memcpy itself in a reasonable
+way.  One possibility would be to add an exception handler that would
+force memcpy to return if a tag check fault is detected -- this would
+make the behavior roughly similar to generic and SW tag-based KASAN.
+However, this wouldn't solve the problem for asynchronous mode and also
+makes memcpy behavior inconsistent with manually copying data.
+
+This test was added as a part of a series that taught KASAN to detect
+negative sizes in memory operations, see commit 8cceeff48f23 ("kasan:
+detect negative size in memory operation function").  Therefore we
+should keep testing for negative sizes with generic and SW tag-based
+KASAN.  But there is some value in testing small memcpy overflows, so
+let's add another test with memcpy that does not destabilize the kernel
+by performing out-of-bounds writes, and run it in all modes.
+
+Link: https://linux-review.googlesource.com/id/I048d1e6a9aff766c4a53f989fb0c83de68923882
+Link: https://lkml.kernel.org/r/20210910211356.3603758-1-pcc@google.com
+Signed-off-by: Peter Collingbourne <pcc@google.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Acked-by: Marco Elver <elver@google.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Evgenii Stepanov <eugenis@google.com>
+Cc: Alexander Potapenko <glider@google.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: e10aea105e9e ("kasan/test: avoid gcc warning for intentional overflow")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-settings.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ lib/test_kasan.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index 959b5c1e6d3b7..1b92e66249518 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -647,6 +647,10 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
- 	t->zone_write_granularity = max(t->zone_write_granularity,
- 					b->zone_write_granularity);
- 	t->zoned = max(t->zoned, b->zoned);
-+	if (!t->zoned) {
-+		t->zone_write_granularity = 0;
-+		t->max_zone_append_sectors = 0;
-+	}
- 	return ret;
+diff --git a/lib/test_kasan.c b/lib/test_kasan.c
+index 89f444cabd4a8..f0b8b05ccf194 100644
+--- a/lib/test_kasan.c
++++ b/lib/test_kasan.c
+@@ -500,7 +500,7 @@ static void kmalloc_oob_in_memset(struct kunit *test)
+ 	kfree(ptr);
  }
- EXPORT_SYMBOL(blk_stack_limits);
+ 
+-static void kmalloc_memmove_invalid_size(struct kunit *test)
++static void kmalloc_memmove_negative_size(struct kunit *test)
+ {
+ 	char *ptr;
+ 	size_t size = 64;
+@@ -522,6 +522,21 @@ static void kmalloc_memmove_invalid_size(struct kunit *test)
+ 	kfree(ptr);
+ }
+ 
++static void kmalloc_memmove_invalid_size(struct kunit *test)
++{
++	char *ptr;
++	size_t size = 64;
++	volatile size_t invalid_size = size;
++
++	ptr = kmalloc(size, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
++
++	memset((char *)ptr, 0, 64);
++	KUNIT_EXPECT_KASAN_FAIL(test,
++		memmove((char *)ptr, (char *)ptr + 4, invalid_size));
++	kfree(ptr);
++}
++
+ static void kmalloc_uaf(struct kunit *test)
+ {
+ 	char *ptr;
+@@ -1139,6 +1154,7 @@ static struct kunit_case kasan_kunit_test_cases[] = {
+ 	KUNIT_CASE(kmalloc_oob_memset_4),
+ 	KUNIT_CASE(kmalloc_oob_memset_8),
+ 	KUNIT_CASE(kmalloc_oob_memset_16),
++	KUNIT_CASE(kmalloc_memmove_negative_size),
+ 	KUNIT_CASE(kmalloc_memmove_invalid_size),
+ 	KUNIT_CASE(kmalloc_uaf),
+ 	KUNIT_CASE(kmalloc_uaf_memset),
 -- 
 2.43.0
 
