@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-36692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5B989C140
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A500489C576
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:58:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C10ED1F21515
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D74A51C2155A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D3A81725;
-	Mon,  8 Apr 2024 13:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF117EF18;
+	Mon,  8 Apr 2024 13:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9pHXaZ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6rPRXYY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5376D76413;
-	Mon,  8 Apr 2024 13:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBCB7F470;
+	Mon,  8 Apr 2024 13:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582066; cv=none; b=aoxATZHmbtdOwxtIaPvsUb4ti4I504HnB6tfBJY22I/siE8fhymdoN12Uua2rc1J95fiWiOmdG01gCGpS5jylCfcRDCeLdfsNnKq45f7xe3W5pJniGb2pEu58sCpC/pB67otLofW1oeiU6caRttJZGCcsLbvtteQofUNjSoTmSE=
+	t=1712584603; cv=none; b=HxH8Uui2P/vADcW3xNUuxKCIgkVu20R+UIeU/7vfAnw7bpBAgv5UwrCnSwn0D34vc+nGqDmfo4RkN+ylik1kp3lurZ7FWFx5yLW4AydvIGMGF/PMryTpqN9t/FgY43fsijxI6GktAqXUlpCx/+Tbq4r05X5AK4yEMY93MvbWjYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582066; c=relaxed/simple;
-	bh=bB6paYrKwv2ucRSkxcFpnCM7sCW/TZZDbXBPirs3/Bs=;
+	s=arc-20240116; t=1712584603; c=relaxed/simple;
+	bh=IqrIh/TBJupQnGHF8kXKa7ev1uleuLe7R5UORg3CZLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SiDHR+T+2Wa8MPTFIo54X4e5zS/pUXYKfBEHGhN3Noy+yj9Vx/sEhZARae79O8LL2IZ7s5H4fYnJSeSErM+/2/uYS/pUF6KfYXke1YlFsQpOBUMgzMLJletdhem8VVN1EJ583JvzyQlO5wtZ+0sQ/rWwrKrFNx+WuA11HYkI4t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9pHXaZ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF04C433F1;
-	Mon,  8 Apr 2024 13:14:25 +0000 (UTC)
+	 MIME-Version; b=fSYHu5MqJ7owNyYVz5gjEHBeyAEplKqsg0Nvhal1bTHeA9WyI+7q8DKRI1UyeVRvHOpy1qaBUSBqgDdhQyjYFiCL85Xg6QotSQ74TUsBcMYsu4xmRl8VxBFfXNRC0HWmNFXhkCd6KUXh2JndFUSpJ6WnQ88npJOEIbh6FNah+aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6rPRXYY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B438FC433C7;
+	Mon,  8 Apr 2024 13:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582066;
-	bh=bB6paYrKwv2ucRSkxcFpnCM7sCW/TZZDbXBPirs3/Bs=;
+	s=korg; t=1712584603;
+	bh=IqrIh/TBJupQnGHF8kXKa7ev1uleuLe7R5UORg3CZLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T9pHXaZ+6/6guu/hIJQV+Qmf70H6+syAmHX9NJfMD1m/1kVi4E+UMRSJGCalf4ypt
-	 YKoxM5e3t456qV9HQpWdamFuNcrARDc4TSYREGzxQENaArvv2D1866xLQby8yXTYQg
-	 ENxl1bqFkE/oCwIZjzAiNA1K5zRxMFeebwYbzJaE=
+	b=L6rPRXYYJJWargPEH8dLqqa8NAQNIU2JQNiqrS7yP2QI/XpJ5l3x417WF2RciUkeV
+	 vN3nmmpFUqnQKgbnYAg+TCyGdTn6pGHCDbBOWmw6817z2rzLJprpirwCGQLvkqOZ85
+	 p+r1LSYg6CDmrbX1b5AObBH5L5WsIFuxK5Qqf90k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/252] x86/CPU/AMD: Get rid of amd_erratum_1054[]
-Date: Mon,  8 Apr 2024 14:56:00 +0200
-Message-ID: <20240408125308.534293330@linuxfoundation.org>
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 495/690] nfsd: fix up the filecache laundrette scheduling
+Date: Mon,  8 Apr 2024 14:56:01 +0200
+Message-ID: <20240408125417.575429430@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 54c33e23f75d5c9925495231c57d3319336722ef ]
+[ Upstream commit 22ae4c114f77b55a4c5036e8f70409a0799a08f8 ]
 
-No functional changes.
+We don't really care whether there are hashed entries when it comes to
+scheduling the laundrette. They might all be non-gc entries, after all.
+We only want to schedule it if there are entries on the LRU.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: http://lore.kernel.org/r/20231120104152.13740-10-bp@alien8.de
-Stable-dep-of: c7b2edd8377b ("perf/x86/amd/core: Update and fix stalled-cycles-* events for Zen 2 and later")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Switch to using list_lru_count, and move the check into
+nfsd_file_gc_worker. The other callsite in nfsd_file_put doesn't need to
+count entries, since it only schedules the laundrette after adding an
+entry to the LRU.
+
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- arch/x86/kernel/cpu/amd.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ fs/nfsd/filecache.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index f4373530c7de0..98fa23ef97df2 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -66,10 +66,6 @@ static const int amd_erratum_400[] =
- static const int amd_erratum_383[] =
- 	AMD_OSVW_ERRATUM(3, AMD_MODEL_RANGE(0x10, 0, 0, 0xff, 0xf));
- 
--/* #1054: Instructions Retired Performance Counter May Be Inaccurate */
--static const int amd_erratum_1054[] =
--	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x17, 0, 0, 0x2f, 0xf));
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index fb7ada3f7410e..522e900a88605 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -210,12 +210,9 @@ static const struct rhashtable_params nfsd_file_rhash_params = {
+ static void
+ nfsd_file_schedule_laundrette(void)
+ {
+-	if ((atomic_read(&nfsd_file_rhash_tbl.nelems) == 0) ||
+-	    test_bit(NFSD_FILE_CACHE_UP, &nfsd_file_flags) == 0)
+-		return;
 -
- static const int amd_erratum_1485[] =
- 	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x19, 0x10, 0x0, 0x1f, 0xf),
- 			   AMD_MODEL_RANGE(0x19, 0x60, 0x0, 0xaf, 0xf));
-@@ -1194,7 +1190,7 @@ static void init_amd(struct cpuinfo_x86 *c)
- 	 * Counter May Be Inaccurate".
- 	 */
- 	if (cpu_has(c, X86_FEATURE_IRPERF) &&
--	    !cpu_has_amd_erratum(c, amd_erratum_1054))
-+	    (boot_cpu_has(X86_FEATURE_ZEN) && c->x86_model > 0x2f))
- 		msr_set_bit(MSR_K7_HWCR, MSR_K7_HWCR_IRPERF_EN_BIT);
+-	queue_delayed_work(system_wq, &nfsd_filecache_laundrette,
+-			NFSD_LAUNDRETTE_DELAY);
++	if (test_bit(NFSD_FILE_CACHE_UP, &nfsd_file_flags))
++		queue_delayed_work(system_wq, &nfsd_filecache_laundrette,
++				   NFSD_LAUNDRETTE_DELAY);
+ }
  
- 	check_null_seg_clears_base(c);
+ static void
+@@ -665,7 +662,8 @@ static void
+ nfsd_file_gc_worker(struct work_struct *work)
+ {
+ 	nfsd_file_gc();
+-	nfsd_file_schedule_laundrette();
++	if (list_lru_count(&nfsd_file_lru))
++		nfsd_file_schedule_laundrette();
+ }
+ 
+ static unsigned long
 -- 
 2.43.0
 
