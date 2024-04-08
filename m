@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-37286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F2189C57C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:58:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4C489C485
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43EB0B25D4B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06485284457
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FA385C51;
-	Mon,  8 Apr 2024 13:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0FE17D3FE;
+	Mon,  8 Apr 2024 13:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sh0VxAFK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6+E4vTg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552588595F;
-	Mon,  8 Apr 2024 13:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2107CF34;
+	Mon,  8 Apr 2024 13:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583792; cv=none; b=azsK3umEpiqRwNNukxTq2pn1olJlzTh+Y3k7iwXJ0jdu6m+ttYqSX3pCqXf5PeOHy4Y0Prl+o+DYmkB2vRC5eqxgE+KGdaa5nl1ye4L7/vB8AQKasfv4v5g93ejLg7SkA+Suq5heJ5YKlIlAd6xi4qKGJKYV4j1lRXDaujOsNTA=
+	t=1712584007; cv=none; b=meLuPl6bTNqSuKvODbfaeF8yFPMftRqwqyhfoRBpeUYTTbCZtTWn1vH7ml4Xd00qeRj/VmL/9PfArqtfh843bGppapR3PlQPxMpNcAn4C1ITDR6CbMY4qQpP+8aqvX4AmgjhSW1xbruVg8+POF5SL6jjW9N6ZXEV4QB00X7VTYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583792; c=relaxed/simple;
-	bh=pENROCP0L8hJt7flZbZQDhY7HlrCb/u2VWQP8WvYoEU=;
+	s=arc-20240116; t=1712584007; c=relaxed/simple;
+	bh=8J4oDKbySQlTYMS/csrEa0R1frejEQWprLIVLr1CSuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHl0uMyF0lxbz0Jfkp5gE9PFFD9xGHl8sChm+cv5Kh4IZ6aS+zblx12nqDWJUVDaxubK/1ag7R9ap5QGN9cuL86G5tukaD7q5wBaLR8mArNj7r9kojkcLtapRz1yOZ8VnJEH1+vCWaqgErBIaNTDojaqbz1od6FPJmgYDyvCBhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sh0VxAFK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06E8C433C7;
-	Mon,  8 Apr 2024 13:43:11 +0000 (UTC)
+	 MIME-Version; b=fByoL/aPkyf50CoYTiCRklRrBBIih4ROfBypv7iRBJom0LAs3dFnZBuCpe2D1cpmxgEixdI3PjWti6B5kzUiK4n031Xrx5aQ1qXNnFaTn6bF8ezwr0kd1ycGuWsCCwFtw/1ieBlLCwmJ5Kl8TxjghAwI3LfXnmcYzqyJf6deR58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6+E4vTg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02DD0C433F1;
+	Mon,  8 Apr 2024 13:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583792;
-	bh=pENROCP0L8hJt7flZbZQDhY7HlrCb/u2VWQP8WvYoEU=;
+	s=korg; t=1712584007;
+	bh=8J4oDKbySQlTYMS/csrEa0R1frejEQWprLIVLr1CSuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sh0VxAFKstSoQmUl7g/DiStqhKhR4yXSCrMjUkSRGbiyjbUY7QBdjYjILFARjrnSP
-	 P57p3tq38fU1JCwwgwaRWlx1omKQ0iH0xwefmh/4/OEayntA9UML+lBxjSeQd8iaZa
-	 ZeqKAovISLcTTj7MQthyTFQ20Z/QrElTnQ178rvQ=
+	b=T6+E4vTg8px2FF/on095OX7+MwrQJr3vPD0hfTZN9dPp0DtWCfV1YjqWWJFfPQxr6
+	 oJYnhizvtBOA/CNDYnliGUZZqOCo+amjpzOwiejVOoA5ng2ppbyhbKnya1VHlWzPHa
+	 CqylFU8ZPozvduJSoj4EsWVsF2gXGE3WfeafTWyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bang Li <libang.linuxer@gmail.com>,
 	Jan Kara <jack@suse.cz>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 285/690] fsnotify: remove redundant parameter judgment
-Date: Mon,  8 Apr 2024 14:52:31 +0200
-Message-ID: <20240408125409.945147360@linuxfoundation.org>
+Subject: [PATCH 5.15 286/690] nfsd: Fix a write performance regression
+Date: Mon,  8 Apr 2024 14:52:32 +0200
+Message-ID: <20240408125409.975833879@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,45 +66,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bang Li <libang.linuxer@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit f92ca72b0263d601807bbd23ed25cbe6f4da89f4 ]
+[ Upstream commit 6b8a94332ee4f7d9a8ae0cbac7609f79c212f06c ]
 
-iput() has already judged the incoming parameter, so there is no need to
-repeat the judgment here.
+The call to filemap_flush() in nfsd_file_put() is there to ensure that
+we clear out any writes belonging to a NFSv3 client relatively quickly
+and avoid situations where the file can't be evicted by the garbage
+collector. It also ensures that we detect write errors quickly.
 
-Link: https://lore.kernel.org/r/20220311151240.62045-1-libang.linuxer@gmail.com
-Signed-off-by: Bang Li <libang.linuxer@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
+The problem is this causes a regression in performance for some
+workloads.
+
+So try to improve matters by deferring writeback until we're ready to
+close the file, and need to detect errors so that we can force the
+client to resend.
+
+Tested-by: Jan Kara <jack@suse.cz>
+Fixes: b6669305d35a ("nfsd: Reduce the number of calls to nfsd_file_gc()")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Link: https://lore.kernel.org/all/20220330103457.r4xrhy2d6nhtouzk@quack3.lan
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/notify/fsnotify.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/nfsd/filecache.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/fs/notify/fsnotify.c b/fs/notify/fsnotify.c
-index 494f653efbc6e..70a8516b78bc5 100644
---- a/fs/notify/fsnotify.c
-+++ b/fs/notify/fsnotify.c
-@@ -70,8 +70,7 @@ static void fsnotify_unmount_inodes(struct super_block *sb)
- 		spin_unlock(&inode->i_lock);
- 		spin_unlock(&sb->s_inode_list_lock);
- 
--		if (iput_inode)
--			iput(iput_inode);
-+		iput(iput_inode);
- 
- 		/* for each watch, send FS_UNMOUNT and then remove it */
- 		fsnotify_inode(inode, FS_UNMOUNT);
-@@ -85,8 +84,7 @@ static void fsnotify_unmount_inodes(struct super_block *sb)
- 	}
- 	spin_unlock(&sb->s_inode_list_lock);
- 
--	if (iput_inode)
--		iput(iput_inode);
-+	iput(iput_inode);
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index 94157b82b60e1..6cde6ef68996e 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -229,6 +229,13 @@ nfsd_file_check_write_error(struct nfsd_file *nf)
+ 	return filemap_check_wb_err(file->f_mapping, READ_ONCE(file->f_wb_err));
  }
  
- void fsnotify_sb_delete(struct super_block *sb)
++static void
++nfsd_file_flush(struct nfsd_file *nf)
++{
++	if (nf->nf_file && vfs_fsync(nf->nf_file, 1) != 0)
++		nfsd_reset_write_verifier(net_generic(nf->nf_net, nfsd_net_id));
++}
++
+ static void
+ nfsd_file_do_unhash(struct nfsd_file *nf)
+ {
+@@ -296,11 +303,14 @@ nfsd_file_put(struct nfsd_file *nf)
+ 		return;
+ 	}
+ 
+-	filemap_flush(nf->nf_file->f_mapping);
+ 	is_hashed = test_bit(NFSD_FILE_HASHED, &nf->nf_flags) != 0;
+-	nfsd_file_put_noref(nf);
+-	if (is_hashed)
++	if (!is_hashed) {
++		nfsd_file_flush(nf);
++		nfsd_file_put_noref(nf);
++	} else {
++		nfsd_file_put_noref(nf);
+ 		nfsd_file_schedule_laundrette();
++	}
+ 	if (atomic_long_read(&nfsd_filecache_count) >= NFSD_FILE_LRU_LIMIT)
+ 		nfsd_file_gc();
+ }
+@@ -321,6 +331,7 @@ nfsd_file_dispose_list(struct list_head *dispose)
+ 	while(!list_empty(dispose)) {
+ 		nf = list_first_entry(dispose, struct nfsd_file, nf_lru);
+ 		list_del(&nf->nf_lru);
++		nfsd_file_flush(nf);
+ 		nfsd_file_put_noref(nf);
+ 	}
+ }
+@@ -334,6 +345,7 @@ nfsd_file_dispose_list_sync(struct list_head *dispose)
+ 	while(!list_empty(dispose)) {
+ 		nf = list_first_entry(dispose, struct nfsd_file, nf_lru);
+ 		list_del(&nf->nf_lru);
++		nfsd_file_flush(nf);
+ 		if (!refcount_dec_and_test(&nf->nf_ref))
+ 			continue;
+ 		if (nfsd_file_free(nf))
 -- 
 2.43.0
 
