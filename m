@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-36437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCED489C0B3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:11:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6673189BFE6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:03:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E3D9B24916
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:03:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07F081F24B1F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F8D7C6EB;
-	Mon,  8 Apr 2024 13:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE0A7CF1B;
+	Mon,  8 Apr 2024 13:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/s2jCmJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Mymemwm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272A52E62C;
-	Mon,  8 Apr 2024 13:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5D32E405;
+	Mon,  8 Apr 2024 13:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581323; cv=none; b=IYzkDcyGLc4ZFzXljovt1w8/wB/Fa253zYJD4l04Ma5yBjLfLHiJDR2QYsNA2JyVeeDQ5q/5kMWdGLkYYtMR36iq6p+UE5AM0NDOE44MjSKU+l1XCbN6TpcWMR2dYeQs6c36InMw2Nh4AJ6YHdr9MHTM6QWBzFUGOm0n0W+OCkI=
+	t=1712581329; cv=none; b=DqazS1+y6PlBMgacUSGfIyvpbqh9GDf/s+zjRQRODw92JyQ5X/eYs+lYeMcsMpT4GjVkzCzLPPivUnpLREdtWOZaqcjKBkzPThL0uL7cBgSOpDjLsybHnqkSPFrxKw3sa6eW4qvs87soooEwcW3TMiBZj5uUNg/As178EFU+hPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581323; c=relaxed/simple;
-	bh=GQlp+sf4Mp7EJd/xKo3cdeCdPo3aUmt/+bhLRAqkiaA=;
+	s=arc-20240116; t=1712581329; c=relaxed/simple;
+	bh=fLu6PSOuBDF8bbLuSg9XQZsT83PhkWpesps3vBVtGsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BUp78MgpBjtYe0EfKCLAi3GchlLgMeN5WU2lPqYMnEur7hkKxEsvorycyPhVzqb59LY0aOcZPKqESnBhLszWL2o/r3JSv8TwyX2w/Qx+TA3Hq8t9rukhXzmZpyLi6parLo9Dd7pOWM5vlMDWas+9Cl5VY3hZtSvwejTugSSCFxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/s2jCmJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37C2C433F1;
-	Mon,  8 Apr 2024 13:02:02 +0000 (UTC)
+	 MIME-Version; b=KUnXn3usSvtCObDDxT+no60YuB0u1q0PGmJizeKDnpTQkfdjoGGb7VKMnLRSjxcVp5BN3CtAR66vw70GOZ57MHHiA9F4PAwIRuF2XPb0W0ltrIIrEdwU7bRU6du23OVjrQCzQCS+m1NA1PVUHlq0WHLZ137/zitld+b3WCwldcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Mymemwm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED2AC433F1;
+	Mon,  8 Apr 2024 13:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581323;
-	bh=GQlp+sf4Mp7EJd/xKo3cdeCdPo3aUmt/+bhLRAqkiaA=;
+	s=korg; t=1712581329;
+	bh=fLu6PSOuBDF8bbLuSg9XQZsT83PhkWpesps3vBVtGsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F/s2jCmJx8zEI+sS1H2/h6YKsxlJPHFtZujjj882EmJqaqPOd5Kj3Pr5qq8EuvRZK
-	 QfevMGm7tUP/ISEJZVL2auFIznj5X3orW7d+LsFYAAjxibr35S2oxXBd3sLZ8TSS+D
-	 fcS+5UC4UIvwZQN+ik+jgwMv2Ldbu2eEJESyvovw=
+	b=2MymemwmTSjSF/TFL6RIQpJmufPjvkDZau10if3FSz8xqM+GZbT/1/AMX+8N9HeYV
+	 tLZlxPmfPKLN8OsG5QuclyPo7RuL86UZlU5+kGY5hgFa/TeGtwsJu4wuPfbS+4Pac5
+	 fy+Gxob/tWPe/z51NPG05U35y15Io0UVUgDsJwA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <cy54@illinois.edu>,
-	Richard Weinberger <richard@nod.at>,
+	Zhang Yi <yi.zhang@huawei.com>,
 	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 032/690] ubi: Check for too small LEB size in VTBL code
-Date: Mon,  8 Apr 2024 14:48:18 +0200
-Message-ID: <20240408125400.717833241@linuxfoundation.org>
+Subject: [PATCH 5.15 033/690] ubi: correct the calculation of fastmap size
+Date: Mon,  8 Apr 2024 14:48:19 +0200
+Message-ID: <20240408125400.748792599@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,43 +67,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Richard Weinberger <richard@nod.at>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 68a24aba7c593eafa8fd00f2f76407b9b32b47a9 ]
+[ Upstream commit 7f174ae4f39e8475adcc09d26c5a43394689ad6c ]
 
-If the LEB size is smaller than a volume table record we cannot
-have volumes.
-In this case abort attaching.
+Now that the calculation of fastmap size in ubi_calc_fm_size() is
+incorrect since it miss each user volume's ubi_fm_eba structure and the
+Internal UBI volume info. Let's correct the calculation.
 
-Cc: Chenyuan Yang <cy54@illinois.edu>
 Cc: stable@vger.kernel.org
-Fixes: 801c135ce73d ("UBI: Unsorted Block Images")
-Reported-by: Chenyuan Yang <cy54@illinois.edu>
-Closes: https://lore.kernel.org/linux-mtd/1433EB7A-FC89-47D6-8F47-23BE41B263B3@illinois.edu/
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
 Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/ubi/vtbl.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mtd/ubi/fastmap.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/ubi/vtbl.c b/drivers/mtd/ubi/vtbl.c
-index f700f0e4f2ec4..6e5489e233dd2 100644
---- a/drivers/mtd/ubi/vtbl.c
-+++ b/drivers/mtd/ubi/vtbl.c
-@@ -791,6 +791,12 @@ int ubi_read_volume_table(struct ubi_device *ubi, struct ubi_attach_info *ai)
- 	 * The number of supported volumes is limited by the eraseblock size
- 	 * and by the UBI_MAX_VOLUMES constant.
- 	 */
-+
-+	if (ubi->leb_size < UBI_VTBL_RECORD_SIZE) {
-+		ubi_err(ubi, "LEB size too small for a volume record");
-+		return -EINVAL;
-+	}
-+
- 	ubi->vtbl_slots = ubi->leb_size / UBI_VTBL_RECORD_SIZE;
- 	if (ubi->vtbl_slots > UBI_MAX_VOLUMES)
- 		ubi->vtbl_slots = UBI_MAX_VOLUMES;
+diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
+index 6e95c4b1473e6..8081fc760d34f 100644
+--- a/drivers/mtd/ubi/fastmap.c
++++ b/drivers/mtd/ubi/fastmap.c
+@@ -86,9 +86,10 @@ size_t ubi_calc_fm_size(struct ubi_device *ubi)
+ 		sizeof(struct ubi_fm_scan_pool) +
+ 		sizeof(struct ubi_fm_scan_pool) +
+ 		(ubi->peb_count * sizeof(struct ubi_fm_ec)) +
+-		(sizeof(struct ubi_fm_eba) +
+-		(ubi->peb_count * sizeof(__be32))) +
+-		sizeof(struct ubi_fm_volhdr) * UBI_MAX_VOLUMES;
++		((sizeof(struct ubi_fm_eba) +
++		  sizeof(struct ubi_fm_volhdr)) *
++		 (UBI_MAX_VOLUMES + UBI_INT_VOL_COUNT)) +
++		(ubi->peb_count * sizeof(__be32));
+ 	return roundup(size, ubi->leb_size);
+ }
+ 
 -- 
 2.43.0
 
