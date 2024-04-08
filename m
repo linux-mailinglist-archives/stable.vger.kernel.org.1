@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-37245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D1689C3FF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F1EA89C1CB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:24:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F3DA282A25
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:46:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD6EAB28F55
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1380781724;
-	Mon,  8 Apr 2024 13:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4D312AAF0;
+	Mon,  8 Apr 2024 13:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKHbKgUh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nXXXxxi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F496EB72;
-	Mon,  8 Apr 2024 13:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE82412AAC3;
+	Mon,  8 Apr 2024 13:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583672; cv=none; b=G6nTsDyD2nDMn7rE7+BtZqy0uOHOSmBCAE5V99NghK/rAEZtVwNi1gjbjtszpmS0WgNS0VFV7yYCdX9SmvxxWur+eBCvqeiEle2QPtsmD6qqwUrF/cUYNDvaqBK8FFP4dvbmlzSatW4h/bmL3/psLwKh9zRFwUUj31Z/uHIzyXk=
+	t=1712581984; cv=none; b=ByZzX8HJ32GEeK7jTerPDQtA3zymyEtwwZTZMmcm03hAnhQDqlo0z4MAJWb9AGZT1quxN21/Li+DEoV6dattmHExeIx9eBmwSlxvwkhiU4i6gRYYjPzqjCrQOkQErdZlZAj6CRw2zZMq8GxijbnCGHDIqm5w32mm2RJir8DoRtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583672; c=relaxed/simple;
-	bh=pcu65RC9iHNzrg8wBRadJso/2GvDtQRmPYjJppy5eZU=;
+	s=arc-20240116; t=1712581984; c=relaxed/simple;
+	bh=53GoV/pwJ4bSn+i7cYS7+6z+04RAKy1KMK84637uTGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pJwpyJU1bw9OKBxB3pDcUogawzg4a3bOlz8HfmboL841wp+XFba7eTcoMdoj94bLaGmQ3Rpqe3uX73ME6wO7lpORryqn/KUEchCAmKNUPoKoYPRTw67qoBKJVHlIDtTET469PMGpLJFeWm7jFrENmoNHcxzTLDDP/JOPqUu3+54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKHbKgUh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB80C433C7;
-	Mon,  8 Apr 2024 13:41:11 +0000 (UTC)
+	 MIME-Version; b=Cnb4d04rJ0lAjyPKjb2721LPSR2PGoRC7PRULlUfnM1PHYJNwZ43AU0j6BCQ/MpKQ249SmCELGLEmkliI9EywVIIw0xYaj0Lz9Aa0aZehgRi2zVkYpnuj8EtzvfsCKu8v46bNKrFmy/l3Fot59F9dN74YiGLZSKrmUA7sO7BMao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nXXXxxi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F16C43390;
+	Mon,  8 Apr 2024 13:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583672;
-	bh=pcu65RC9iHNzrg8wBRadJso/2GvDtQRmPYjJppy5eZU=;
+	s=korg; t=1712581984;
+	bh=53GoV/pwJ4bSn+i7cYS7+6z+04RAKy1KMK84637uTGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OKHbKgUhES2a8bBiJhxaVY2IrEksVvsRyJKxPxBwk4YiDyOQYje2Ou8DhkU2aLBRH
-	 Q7O9vryHblD7EB7J32vgvwsvATUAXVQU2IYDqQHeCOZDWDGCHeBOXt3esjqxsMPzig
-	 aqtdcaqCbZla465BNsNf1SiQew9T1VuOeU3+dpnE=
+	b=2nXXXxxi6itwKIeJh79gFo0keWx1GX4gzM3CmlWu3zggx1DGfCpYQdvzKOm89/yaY
+	 CJsPWaEkVJzScPNeyQL+a/ees4BskZEcyJHCtt2J2zRs+jjF82b8mI1nUlD+nmyMKG
+	 ek29E9Qk6qoV3Kvfq6Z6BBebFmoMz7FabsPiBVTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.8 207/273] io_uring/kbuf: get rid of bl->is_ready
-Date: Mon,  8 Apr 2024 14:58:02 +0200
-Message-ID: <20240408125315.776192625@linuxfoundation.org>
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.1 069/138] usb: typec: ucsi: Check for notifications after init
+Date: Mon,  8 Apr 2024 14:58:03 +0200
+Message-ID: <20240408125258.365239039@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-commit 3b80cff5a4d117c53d38ce805823084eaeffbde6 upstream.
+[ Upstream commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 ]
 
-Now that xarray is being exclusively used for the buffer_list lookup,
-this check is no longer needed. Get rid of it and the is_ready member.
+The completion notification for the final SET_NOTIFICATION_ENABLE
+command during initialization can include a connector change
+notification.  However, at the time this completion notification is
+processed, the ucsi struct is not ready to handle this notification.
+As a result the notification is ignored and the controller
+never sends an interrupt again.
 
-Cc: stable@vger.kernel.org # v6.4+
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Re-check CCI for a pending connector state change after
+initialization is complete. Adjust the corresponding debug
+message accordingly.
+
+Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/kbuf.c |    8 --------
- io_uring/kbuf.h |    2 --
- 2 files changed, 10 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -61,7 +61,6 @@ static int io_buffer_add_list(struct io_
- 	 * always under the ->uring_lock, but the RCU lookup from mmap does.
- 	 */
- 	bl->bgid = bgid;
--	smp_store_release(&bl->is_ready, 1);
- 	return xa_err(xa_store(&ctx->io_bl_xa, bgid, bl, GFP_KERNEL));
- }
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 98f335cbbcdea..1fd4aaf348047 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -855,7 +855,7 @@ void ucsi_connector_change(struct ucsi *ucsi, u8 num)
+ 	struct ucsi_connector *con = &ucsi->connector[num - 1];
  
-@@ -730,13 +729,6 @@ void *io_pbuf_get_address(struct io_ring
+ 	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
+-		dev_dbg(ucsi->dev, "Bogus connector change event\n");
++		dev_dbg(ucsi->dev, "Early connector change event\n");
+ 		return;
+ 	}
  
- 	if (!bl || !bl->is_mmap)
- 		return NULL;
--	/*
--	 * Ensure the list is fully setup. Only strictly needed for RCU lookup
--	 * via mmap, and in that case only for the array indexed groups. For
--	 * the xarray lookups, it's either visible and ready, or not at all.
--	 */
--	if (!smp_load_acquire(&bl->is_ready))
--		return NULL;
+@@ -1248,6 +1248,7 @@ static int ucsi_init(struct ucsi *ucsi)
+ {
+ 	struct ucsi_connector *con, *connector;
+ 	u64 command, ntfy;
++	u32 cci;
+ 	int ret;
+ 	int i;
  
- 	return bl->buf_ring;
- }
---- a/io_uring/kbuf.h
-+++ b/io_uring/kbuf.h
-@@ -29,8 +29,6 @@ struct io_buffer_list {
- 	__u8 is_mapped;
- 	/* ring mapped provided buffers, but mmap'ed by application */
- 	__u8 is_mmap;
--	/* bl is visible from an RCU point of view for lookup */
--	__u8 is_ready;
- };
+@@ -1300,6 +1301,13 @@ static int ucsi_init(struct ucsi *ucsi)
  
- struct io_buffer {
+ 	ucsi->connector = connector;
+ 	ucsi->ntfy = ntfy;
++
++	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
++	if (ret)
++		return ret;
++	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
++		ucsi_connector_change(ucsi, cci);
++
+ 	return 0;
+ 
+ err_unregister:
+-- 
+2.43.0
+
 
 
 
