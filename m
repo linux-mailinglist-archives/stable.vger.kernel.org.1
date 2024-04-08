@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-36640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC94689C108
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:16:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B1989C05D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C15CE1C21BF6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:16:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36782B2453D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD967E0EB;
-	Mon,  8 Apr 2024 13:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59517BAF5;
+	Mon,  8 Apr 2024 13:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSGaCUzC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IgWlQoc0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2597D417;
-	Mon,  8 Apr 2024 13:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D0C2E62C;
+	Mon,  8 Apr 2024 13:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581917; cv=none; b=kchftN/kCbFDcuF+F57viQOVTqhKs4kTr80aIURKFYKaYj6KnXYBRCSYi4+b9hv10dezPkGVmQRpEQYyxTmuEu8tHs8nkERuOk3jiiU+PNsewRPejZBTQM4KXMH/aMyLPiU/5lXq8JEW3yUqp+zqMjtwkLO37CSAlPApmV55knQ=
+	t=1712581527; cv=none; b=C1/jYLIxwUW0Ubf09q7vM8hSUTmdtjcZa2S6ljUW4Rmpay08PtN7kqDyxz5gkPV2JkIkMWYrut/IjQZyt4lX1uFnrrCbyT/J5c2FkeENA8Iy3z62sk7oVmRALfjUVms29agVmbrl1zTTCaNm2LnLWWcXOFGLbo1Rpcit9Lqbk8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581917; c=relaxed/simple;
-	bh=hNJpPvtYDFACIqVA0e0ziCVUGh3TgdEBImGOWw8/1so=;
+	s=arc-20240116; t=1712581527; c=relaxed/simple;
+	bh=OqtFJB7z8G3BfQrbmVuM7QDgZee8QG0XRnhHw89Qd6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ouUaSQ7/rf9usNLnrxK/7QZn8mcNv/rNa1fLr1NG3rgtXbi4LIrjQC169SWoG1AIg/pmNkHrx7Swq0A5lg+FAPuo9doa6rdF8F936Az2VA/9Uf1NkHDGpvF0noChln+DzdLV+ix6/r5LBQk37iIMLT4vCuHsOXQ8vrLnwMdnlnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSGaCUzC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1E2C433C7;
-	Mon,  8 Apr 2024 13:11:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OpLSsKReuMEwHE/k7imjFwP/XHBCTOZ+z6J6B0qRxcOD3TaGVhmuT74tEtesc0GMvg50pdIZm6NSSEJlOrRkPV925t74gKazU5387KXcnfenpMnCS5TOQeAzgRYQjT+urEd7bzzah0D+lKtzKysnjTyW4NYhIJvIPAAJN6TiDyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IgWlQoc0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED651C433C7;
+	Mon,  8 Apr 2024 13:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581916;
-	bh=hNJpPvtYDFACIqVA0e0ziCVUGh3TgdEBImGOWw8/1so=;
+	s=korg; t=1712581527;
+	bh=OqtFJB7z8G3BfQrbmVuM7QDgZee8QG0XRnhHw89Qd6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vSGaCUzCeE1ttjzI+zldhrIpnGakIdpcwSkWedjHEx/qb4mgk6oLnROPc0BLRkeVE
-	 hMIOmXqZym83P//vl/NUjoairqly9tuR0/B+VqC2HY3Gd1+poNKFVPnVtMiaPzD6K1
-	 Xg20sudzYS1cZ+6nSMVRbgGBIAWflWjRlVO6/hXE=
+	b=IgWlQoc0QOkrwDjArHIHPry4GBC+jtLqQ2IF/v0bOWMOsXWB+G3neZZgdA+X5hMOC
+	 cGb1UUwiiUm+zR270wOWYPlZ8CaHg1gEkoBVn24gNjQHieC2BVhHrVx95nTsDKPwSM
+	 eJSZZl/0U65b7v2BCyzV5jgAjsj+ojdzW6jAx6WA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Pavel Sakharov <p.sakharov@ispras.ru>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 030/273] drm/rockchip: vop2: Remove AR30 and AB30 format support
+Subject: [PATCH 6.6 006/252] dma-buf: Fix NULL pointer dereference in sanitycheck()
 Date: Mon,  8 Apr 2024 14:55:05 +0200
-Message-ID: <20240408125310.224732679@linuxfoundation.org>
+Message-ID: <20240408125306.844364559@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Pavel Sakharov <p.sakharov@ispras.ru>
 
-[ Upstream commit 905f7d53a1bc105b22d9ffd03dc11b6b42ec6ba6 ]
+[ Upstream commit 2295bd846765c766701e666ed2e4b35396be25e6 ]
 
-The Alpha blending for 30 bit RGB/BGR are not
-functioning properly for rk3568/rk3588, so remove
-it from the format list.
+If due to a memory allocation failure mock_chain() returns NULL, it is
+passed to dma_fence_enable_sw_signaling() resulting in NULL pointer
+dereference there.
 
-Fixes: bfd8a5c228fa ("drm/rockchip: vop2: Add more supported 10bit formats")
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240304100952.3592984-1-andyshrk@163.com
+Call dma_fence_enable_sw_signaling() only if mock_chain() succeeds.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: d62c43a953ce ("dma-buf: Enable signaling on fence for selftests")
+Signed-off-by: Pavel Sakharov <p.sakharov@ispras.ru>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240319231527.1821372-1-p.sakharov@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_vop2_reg.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/dma-buf/st-dma-fence-chain.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_vop2_reg.c b/drivers/gpu/drm/rockchip/rockchip_vop2_reg.c
-index 48170694ac6b8..18efb3fe1c000 100644
---- a/drivers/gpu/drm/rockchip/rockchip_vop2_reg.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_vop2_reg.c
-@@ -17,9 +17,7 @@
+diff --git a/drivers/dma-buf/st-dma-fence-chain.c b/drivers/dma-buf/st-dma-fence-chain.c
+index c0979c8049b5a..661de4add4c72 100644
+--- a/drivers/dma-buf/st-dma-fence-chain.c
++++ b/drivers/dma-buf/st-dma-fence-chain.c
+@@ -84,11 +84,11 @@ static int sanitycheck(void *arg)
+ 		return -ENOMEM;
  
- static const uint32_t formats_cluster[] = {
- 	DRM_FORMAT_XRGB2101010,
--	DRM_FORMAT_ARGB2101010,
- 	DRM_FORMAT_XBGR2101010,
--	DRM_FORMAT_ABGR2101010,
- 	DRM_FORMAT_XRGB8888,
- 	DRM_FORMAT_ARGB8888,
- 	DRM_FORMAT_XBGR8888,
+ 	chain = mock_chain(NULL, f, 1);
+-	if (!chain)
++	if (chain)
++		dma_fence_enable_sw_signaling(chain);
++	else
+ 		err = -ENOMEM;
+ 
+-	dma_fence_enable_sw_signaling(chain);
+-
+ 	dma_fence_signal(f);
+ 	dma_fence_put(f);
+ 
 -- 
 2.43.0
 
