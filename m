@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-37538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F0789C547
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:55:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E59C489C236
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:28:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A43161C229AD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:55:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66188B29E75
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A804C7B3FD;
-	Mon,  8 Apr 2024 13:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2865B7E582;
+	Mon,  8 Apr 2024 13:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGOQxJZ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGd4K3JW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672456EB72;
-	Mon,  8 Apr 2024 13:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8BA6F53D;
+	Mon,  8 Apr 2024 13:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584527; cv=none; b=cVeduN17KchQh5VoETNqbSYVKsmtVCZF6YJBucuJhyumEqy7+nJyClADF3+lXeZy8d7HyVU3re49/J7xEdHCD3tWTJn2ljqfDLQsT26bsIrn876OABKBobnJB+PUTtdJuW5RehX0diLxkOw/Z++JhVVyfE518Zharbek9glumig=
+	t=1712582243; cv=none; b=BwpZW8iCyinHk3d3BYFZtP836zLaJS0hemORzt7uRh6kbhf4gzSqa3iivzyZI8g+fkqQ4xQa3Xm3Z5ssNOMuZtV/Vwjn+w5dah3aQk5QA/vpM2apeyijymS1e8b5o6M30zDNo4e07bB88QqSkG1H6mRbP9gZ/RWwK84CpQYYm5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584527; c=relaxed/simple;
-	bh=SyHEGmNRf8YRDqn3YzeLS/3ww9sZqwrsWpiGV2+XlIY=;
+	s=arc-20240116; t=1712582243; c=relaxed/simple;
+	bh=G+Z3o+K20x1szapsqAgYdxv1J1lgGiYdcl+wWxgJBbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hf0N72KzqI23xwSS0pZeteqcu6EcS9vf+R2mfkKqXHwNxlYNu5zOaiHjBHCv4EwNhRmeuISn0pTt/iWPVurOeR4qN1wmZc1Uc667jGX9QKht6XaIJhqep+yaeYBFFwj1pTBM92yBTR/1YJoZDgixTb+NEZ6GM36Mb7xqLgt4BXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGOQxJZ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9887C433F1;
-	Mon,  8 Apr 2024 13:55:26 +0000 (UTC)
+	 MIME-Version; b=fGzbcJB6hEZ3A2F1d9VwQaqc0rKKqFHdNghb2iCyn514Akdx5hCCMWlHSW9EacZlkArt8b0Ce3VIOA7uFO+iFf+vhGb6w7ttt5cVJHDvuVxgYobT/5W8P8HD8IEQH/ShOHn2R9gxnfhk9PnLN/YnCZ+aFRNm1w/Up+rvyFwsvQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGd4K3JW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629A2C433C7;
+	Mon,  8 Apr 2024 13:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584527;
-	bh=SyHEGmNRf8YRDqn3YzeLS/3ww9sZqwrsWpiGV2+XlIY=;
+	s=korg; t=1712582243;
+	bh=G+Z3o+K20x1szapsqAgYdxv1J1lgGiYdcl+wWxgJBbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cGOQxJZ5o18eLs3zydLD3tnOHgU56aTFMJRYA4xo7r8NVUNGSa22qBYEbYobYcgps
-	 Zv3Sx/WQjhOPk0JLrG+ceopT0MbcMTuqlr8AihEcw9GGBQLrLui7gZ1I5oE1+67SDd
-	 SdpAHzOrJo11UoySSg6cci6tRdwKJ5EQP3b16ro8=
+	b=eGd4K3JW4KQLpEnn+zZtlxG+KHGLJ1HjXmbzP+E8UsXyPy4bF5uRgDBGOmblubjX7
+	 7dgRnmdZoOUBKLg6HWcRIrpmoRjbUR9+2cNJ7V/Eetcsrx6/gilvzYTps6vX7gcnbU
+	 nj1aTKztQeiwPcCfVBLsA2XOwEY5fhI21xOneHSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 5.15 468/690] lockd: use locks_inode_context helper
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 059/273] modpost: do not make find_tosym() return NULL
 Date: Mon,  8 Apr 2024 14:55:34 +0200
-Message-ID: <20240408125416.564811863@linuxfoundation.org>
+Message-ID: <20240408125311.132255302@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 98b41ffe0afdfeaa1439a5d6bd2db4a94277e31b ]
+[ Upstream commit 1102f9f85bf66b1a7bd6a40afb40efbbe05dfc05 ]
 
-lockd currently doesn't access i_flctx safely. This requires a
-smp_load_acquire, as the pointer is set via cmpxchg (a release
-operation).
+As mentioned in commit 397586506c3d ("modpost: Add '.ltext' and
+'.ltext.*' to TEXT_SECTIONS"), modpost can result in a segmentation
+fault due to a NULL pointer dereference in default_mismatch_handler().
 
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>
-Cc: Anna Schumaker <anna@kernel.org>
-Cc: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+find_tosym() can return the original symbol pointer instead of NULL
+if a better one is not found.
+
+This fixes the reported segmentation fault.
+
+Fixes: a23e7584ecf3 ("modpost: unify 'sym' and 'to' in default_mismatch_handler()")
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/lockd/svcsubs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/mod/modpost.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/lockd/svcsubs.c b/fs/lockd/svcsubs.c
-index 3515f17eaf3fb..e3b6229e7ae5c 100644
---- a/fs/lockd/svcsubs.c
-+++ b/fs/lockd/svcsubs.c
-@@ -210,7 +210,7 @@ nlm_traverse_locks(struct nlm_host *host, struct nlm_file *file,
- {
- 	struct inode	 *inode = nlmsvc_file_inode(file);
- 	struct file_lock *fl;
--	struct file_lock_context *flctx = inode->i_flctx;
-+	struct file_lock_context *flctx = locks_inode_context(inode);
- 	struct nlm_host	 *lockhost;
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index 267b9a0a3abcd..6568f8177e392 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -1007,6 +1007,8 @@ static Elf_Sym *find_fromsym(struct elf_info *elf, Elf_Addr addr,
  
- 	if (!flctx || list_empty_careful(&flctx->flc_posix))
-@@ -265,7 +265,7 @@ nlm_file_inuse(struct nlm_file *file)
+ static Elf_Sym *find_tosym(struct elf_info *elf, Elf_Addr addr, Elf_Sym *sym)
  {
- 	struct inode	 *inode = nlmsvc_file_inode(file);
- 	struct file_lock *fl;
--	struct file_lock_context *flctx = inode->i_flctx;
-+	struct file_lock_context *flctx = locks_inode_context(inode);
++	Elf_Sym *new_sym;
++
+ 	/* If the supplied symbol has a valid name, return it */
+ 	if (is_valid_name(elf, sym))
+ 		return sym;
+@@ -1015,8 +1017,9 @@ static Elf_Sym *find_tosym(struct elf_info *elf, Elf_Addr addr, Elf_Sym *sym)
+ 	 * Strive to find a better symbol name, but the resulting name may not
+ 	 * match the symbol referenced in the original code.
+ 	 */
+-	return symsearch_find_nearest(elf, addr, get_secindex(elf, sym),
+-				      true, 20);
++	new_sym = symsearch_find_nearest(elf, addr, get_secindex(elf, sym),
++					 true, 20);
++	return new_sym ? new_sym : sym;
+ }
  
- 	if (file->f_count || !list_empty(&file->f_blocks) || file->f_shares)
- 		return 1;
+ static bool is_executable_section(struct elf_info *elf, unsigned int secndx)
 -- 
 2.43.0
 
