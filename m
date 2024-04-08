@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-37748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6143A89C638
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:05:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6CC189C4B8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93D661C212BB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:05:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EC832842C0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E74080630;
-	Mon,  8 Apr 2024 14:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E097C08D;
+	Mon,  8 Apr 2024 13:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Wn/2P/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6lDqtw8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E08680603;
-	Mon,  8 Apr 2024 14:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A6679F0;
+	Mon,  8 Apr 2024 13:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585145; cv=none; b=p2FDF8PN75QoeOXnkJtRwhY/F5tiJaDc1TzaH9Evij1tcA9SBNkW9aeK+o1DkRjx86t2cfiwU68kOo9wOSOxQViFg5Lh8Z00ONiAEA6wm9khRKbRIxDMrji5p4jb1pMbWHzAfhhyWuECEDT6ZuGoqgeC6WUfW8yjRKAXBjZUNVY=
+	t=1712584145; cv=none; b=PPP4G3DtvvnulAsZgHWdm0/HuFOqzT/9/eMmkplp50n7z2t7ql6exSC/HmI4C/RXpOkm9cTf8ieUAKFAfv+aE30/bS7f4gMFKyVvAzxLzuWok2iZq86LTrDN697raNuaoZnYV6TsEsS6Fw24GQ5erfqBUbQEtVS61lV/v5tUkQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585145; c=relaxed/simple;
-	bh=kQsR7o+W2GLyhsJU0qCw0IG5QPazfMqIf+CezEz/EqU=;
+	s=arc-20240116; t=1712584145; c=relaxed/simple;
+	bh=WwyFZO5TQyer23VKESiXblpmHu3cL7P8Xv0vf+VjcZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vAz4k/SDRdya8WpvFeuafB6YKLaBonpHYqU6SYO2Mo6LnP8LAUvobIwE0FSI6AHLXNROTdKuWb09w/cFX1Sr0Pm9CYEGl1QE9zUYQ849YgEkh1YHXjGh7uKwvdT75m9NFiAz40FdPue7t2VCqwcAddzzHzBOm8nPUoFym1WFRFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Wn/2P/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C3EC433F1;
-	Mon,  8 Apr 2024 14:05:44 +0000 (UTC)
+	 MIME-Version; b=ndyUBqBc1JAtFEvoe5dAQM7nmbONE4wXG7TXXfJvSMYEpiJ9VRuJzzlsebEqS+tAR+11LDJ1dRb/2TCzdK33m1s+Fvcksii4RKJezWRb0R9Zl0eZZOMxYypq8VNY+3UUSovqKlLXOQ96RzuMXSryMHZVP4FqtbcWwY8yetWaLtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6lDqtw8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46777C433C7;
+	Mon,  8 Apr 2024 13:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585145;
-	bh=kQsR7o+W2GLyhsJU0qCw0IG5QPazfMqIf+CezEz/EqU=;
+	s=korg; t=1712584144;
+	bh=WwyFZO5TQyer23VKESiXblpmHu3cL7P8Xv0vf+VjcZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Wn/2P/tCMqBY43gjqw6IwGcxymXcOFnWa7ucKuuiO0GEya2AaGf2kQE/q74KC4e4
-	 EXegMzvLHgEB1MjClZfp+syn8MG+yF6oQv78630l3s7xXivRoem8dvWgABd6m4fnAf
-	 keu4u6fnB2Aj2ZycknYlhPxL5TyC19t2JQkpuDeg=
+	b=w6lDqtw8owG6eM8MEuT3mfDbcYlFt6qafjq53YMseiItP/b563XS9sfEnnNcttIh0
+	 HTE3oMbeXB6TDPzeRQljzexPESZlCQkB5J+pjcFFAVe/tjxQaGNWTvVNxKFHqu4juO
+	 sLh3uPcsa/fwVvB/iWyaSQH44U7NubTEDWfuAv8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+011e4ea1da6692cf881c@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 677/690] fs/pipe: Fix lockdep false-positive in watchqueue pipe_write()
+	syzbot+981935d9485a560bfbcb@syzkaller.appspotmail.com,
+	syzbot+2cb5a6c573e98db598cc@syzkaller.appspotmail.com,
+	syzbot+62d8b26793e8a2bd0516@syzkaller.appspotmail.com,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.8 268/273] bpf: support deferring bpf_link dealloc to after RCU grace period
 Date: Mon,  8 Apr 2024 14:59:03 +0200
-Message-ID: <20240408125424.243001626@linuxfoundation.org>
+Message-ID: <20240408125317.817336581@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +65,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 055ca83559912f2cfd91c9441427bac4caf3c74e ]
+commit 1a80dbcb2dbaf6e4c216e62e30fa7d3daa8001ce upstream.
 
-When you try to splice between a normal pipe and a notification pipe,
-get_pipe_info(..., true) fails, so splice() falls back to treating the
-notification pipe like a normal pipe - so we end up in
-iter_file_splice_write(), which first locks the input pipe, then calls
-vfs_iter_write(), which locks the output pipe.
+BPF link for some program types is passed as a "context" which can be
+used by those BPF programs to look up additional information. E.g., for
+multi-kprobes and multi-uprobes, link is used to fetch BPF cookie values.
 
-Lockdep complains about that, because we're taking a pipe lock while
-already holding another pipe lock.
+Because of this runtime dependency, when bpf_link refcnt drops to zero
+there could still be active BPF programs running accessing link data.
 
-I think this probably (?) can't actually lead to deadlocks, since you'd
-need another way to nest locking a normal pipe into locking a
-watch_queue pipe, but the lockdep annotations don't make that clear.
+This patch adds generic support to defer bpf_link dealloc callback to
+after RCU GP, if requested. This is done by exposing two different
+deallocation callbacks, one synchronous and one deferred. If deferred
+one is provided, bpf_link_free() will schedule dealloc_deferred()
+callback to happen after RCU GP.
 
-Bail out earlier in pipe_write() for notification pipes, before taking
-the pipe lock.
+BPF is using two flavors of RCU: "classic" non-sleepable one and RCU
+tasks trace one. The latter is used when sleepable BPF programs are
+used. bpf_link_free() accommodates that by checking underlying BPF
+program's sleepable flag, and goes either through normal RCU GP only for
+non-sleepable, or through RCU tasks trace GP *and* then normal RCU GP
+(taking into account rcu_trace_implies_rcu_gp() optimization), if BPF
+program is sleepable.
 
-Reported-and-tested-by: <syzbot+011e4ea1da6692cf881c@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=011e4ea1da6692cf881c
-Fixes: c73be61cede5 ("pipe: Add general notification queue support")
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20231124150822.2121798-1-jannh@google.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We use this for multi-kprobe and multi-uprobe links, which dereference
+link during program run. We also preventively switch raw_tp link to use
+deferred dealloc callback, as upcoming changes in bpf-next tree expose
+raw_tp link data (specifically, cookie value) to BPF program at runtime
+as well.
+
+Fixes: 0dcac2725406 ("bpf: Add multi kprobe link")
+Fixes: 89ae89f53d20 ("bpf: Add multi uprobe link")
+Reported-by: syzbot+981935d9485a560bfbcb@syzkaller.appspotmail.com
+Reported-by: syzbot+2cb5a6c573e98db598cc@syzkaller.appspotmail.com
+Reported-by: syzbot+62d8b26793e8a2bd0516@syzkaller.appspotmail.com
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20240328052426.3042617-2-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/pipe.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ include/linux/bpf.h      |   16 +++++++++++++++-
+ kernel/bpf/syscall.c     |   35 ++++++++++++++++++++++++++++++++---
+ kernel/trace/bpf_trace.c |    4 ++--
+ 3 files changed, 49 insertions(+), 6 deletions(-)
 
-diff --git a/fs/pipe.c b/fs/pipe.c
-index a8b8ef2dae7b7..0a8095070b70e 100644
---- a/fs/pipe.c
-+++ b/fs/pipe.c
-@@ -423,6 +423,18 @@ pipe_write(struct kiocb *iocb, struct iov_iter *from)
- 	bool was_empty = false;
- 	bool wake_next_writer = false;
- 
-+	/*
-+	 * Reject writing to watch queue pipes before the point where we lock
-+	 * the pipe.
-+	 * Otherwise, lockdep would be unhappy if the caller already has another
-+	 * pipe locked.
-+	 * If we had to support locking a normal pipe and a notification pipe at
-+	 * the same time, we could set up lockdep annotations for that, but
-+	 * since we don't actually need that, it's simpler to just bail here.
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -1568,12 +1568,26 @@ struct bpf_link {
+ 	enum bpf_link_type type;
+ 	const struct bpf_link_ops *ops;
+ 	struct bpf_prog *prog;
+-	struct work_struct work;
++	/* rcu is used before freeing, work can be used to schedule that
++	 * RCU-based freeing before that, so they never overlap
 +	 */
-+	if (pipe_has_watch_queue(pipe))
-+		return -EXDEV;
-+
- 	/* Null write succeeds. */
- 	if (unlikely(total_len == 0))
- 		return 0;
-@@ -435,11 +447,6 @@ pipe_write(struct kiocb *iocb, struct iov_iter *from)
- 		goto out;
- 	}
++	union {
++		struct rcu_head rcu;
++		struct work_struct work;
++	};
+ };
  
--	if (pipe_has_watch_queue(pipe)) {
--		ret = -EXDEV;
--		goto out;
--	}
--
- 	/*
- 	 * If it wasn't empty we try to merge new data into
- 	 * the last buffer.
--- 
-2.43.0
-
+ struct bpf_link_ops {
+ 	void (*release)(struct bpf_link *link);
++	/* deallocate link resources callback, called without RCU grace period
++	 * waiting
++	 */
+ 	void (*dealloc)(struct bpf_link *link);
++	/* deallocate link resources callback, called after RCU grace period;
++	 * if underlying BPF program is sleepable we go through tasks trace
++	 * RCU GP and then "classic" RCU GP
++	 */
++	void (*dealloc_deferred)(struct bpf_link *link);
+ 	int (*detach)(struct bpf_link *link);
+ 	int (*update_prog)(struct bpf_link *link, struct bpf_prog *new_prog,
+ 			   struct bpf_prog *old_prog);
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -2895,17 +2895,46 @@ void bpf_link_inc(struct bpf_link *link)
+ 	atomic64_inc(&link->refcnt);
+ }
+ 
++static void bpf_link_defer_dealloc_rcu_gp(struct rcu_head *rcu)
++{
++	struct bpf_link *link = container_of(rcu, struct bpf_link, rcu);
++
++	/* free bpf_link and its containing memory */
++	link->ops->dealloc_deferred(link);
++}
++
++static void bpf_link_defer_dealloc_mult_rcu_gp(struct rcu_head *rcu)
++{
++	if (rcu_trace_implies_rcu_gp())
++		bpf_link_defer_dealloc_rcu_gp(rcu);
++	else
++		call_rcu(rcu, bpf_link_defer_dealloc_rcu_gp);
++}
++
+ /* bpf_link_free is guaranteed to be called from process context */
+ static void bpf_link_free(struct bpf_link *link)
+ {
++	bool sleepable = false;
++
+ 	bpf_link_free_id(link->id);
+ 	if (link->prog) {
++		sleepable = link->prog->aux->sleepable;
+ 		/* detach BPF program, clean up used resources */
+ 		link->ops->release(link);
+ 		bpf_prog_put(link->prog);
+ 	}
+-	/* free bpf_link and its containing memory */
+-	link->ops->dealloc(link);
++	if (link->ops->dealloc_deferred) {
++		/* schedule BPF link deallocation; if underlying BPF program
++		 * is sleepable, we need to first wait for RCU tasks trace
++		 * sync, then go through "classic" RCU grace period
++		 */
++		if (sleepable)
++			call_rcu_tasks_trace(&link->rcu, bpf_link_defer_dealloc_mult_rcu_gp);
++		else
++			call_rcu(&link->rcu, bpf_link_defer_dealloc_rcu_gp);
++	}
++	if (link->ops->dealloc)
++		link->ops->dealloc(link);
+ }
+ 
+ static void bpf_link_put_deferred(struct work_struct *work)
+@@ -3415,7 +3444,7 @@ static int bpf_raw_tp_link_fill_link_inf
+ 
+ static const struct bpf_link_ops bpf_raw_tp_link_lops = {
+ 	.release = bpf_raw_tp_link_release,
+-	.dealloc = bpf_raw_tp_link_dealloc,
++	.dealloc_deferred = bpf_raw_tp_link_dealloc,
+ 	.show_fdinfo = bpf_raw_tp_link_show_fdinfo,
+ 	.fill_link_info = bpf_raw_tp_link_fill_link_info,
+ };
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2713,7 +2713,7 @@ static int bpf_kprobe_multi_link_fill_li
+ 
+ static const struct bpf_link_ops bpf_kprobe_multi_link_lops = {
+ 	.release = bpf_kprobe_multi_link_release,
+-	.dealloc = bpf_kprobe_multi_link_dealloc,
++	.dealloc_deferred = bpf_kprobe_multi_link_dealloc,
+ 	.fill_link_info = bpf_kprobe_multi_link_fill_link_info,
+ };
+ 
+@@ -3227,7 +3227,7 @@ static int bpf_uprobe_multi_link_fill_li
+ 
+ static const struct bpf_link_ops bpf_uprobe_multi_link_lops = {
+ 	.release = bpf_uprobe_multi_link_release,
+-	.dealloc = bpf_uprobe_multi_link_dealloc,
++	.dealloc_deferred = bpf_uprobe_multi_link_dealloc,
+ 	.fill_link_info = bpf_uprobe_multi_link_fill_link_info,
+ };
+ 
 
 
 
