@@ -1,53 +1,50 @@
-Return-Path: <stable+bounces-36402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B3089BE3B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70AC989BE89
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB4291C21BF7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 11:41:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1084B226C8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 11:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197F769DEE;
-	Mon,  8 Apr 2024 11:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 597526A037;
+	Mon,  8 Apr 2024 11:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SX5Bjqzg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfB07VEO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA95C1E497;
-	Mon,  8 Apr 2024 11:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A8C6A323
+	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 11:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712576499; cv=none; b=Cm5QYxXdxH1mQtzrqRkr2IBA51tI8ZLmtMNXomOYgGoWcBFC9YbrqGmA068h5K2iMcXzTkoMpMp+k91hxjbWBC4vss5ehdv3bJeTzMrTMU/QpaO340g3hyfg3m0TeXlMWpQ1sEkhsApbxRemkvzw4eBs/49IsEJP2vQ+4vkLOUI=
+	t=1712577590; cv=none; b=Idwj6klnYmC0291uR90arQI1iQ/6XqzcKK8RSdm86Ifq75NniQUfCdn76vtGDUUBhlZZyljn9msJJbMf/ENL5C9xMaAjAafXdOEExwU61Gu+jCNusyxYcEKo7IHBDLkAOiJlqFJm0xRCJckZDWK86T3B/o6yK18Jl6JeyerDZSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712576499; c=relaxed/simple;
-	bh=mCE7RTdwBqXjX+4d8ESnt/ctiwZdNz3fDuMQS5Tqz90=;
+	s=arc-20240116; t=1712577590; c=relaxed/simple;
+	bh=r1EYDebxHShgLyRhepDhxYOGFd6LAFgywT/wfezu1uQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kja00qzX1OQh+VjfK5jglhqcpww1mtQklbdciOvoDVuPyl12eW4Yd/UQ/Ytgnnu8zxF88vj/nsThtAGYcUmVWZOu2AA9Bh/Usv0Ech7bP8wlxABKIYyT7AR29n2FmJ3uEzNcqZo+rUD3PXII6x/Rv2/NtcZS2nzkaYjQOnsP0fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SX5Bjqzg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D13C43390;
-	Mon,  8 Apr 2024 11:41:38 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZoLCTJjAWapOH0mLRoMCMQ1PdEFn0xV773WH73hZ1wrT6dEMLhdpQtr7v5DKI8C8vqOEW6R5V/5DVBW2irE3KdkfVdQIW/IQN7S4A8Cf3zXAyvYX1TjS1RIKoqskzVZxEhn/Wil2pBmeXUSeBsnwAOgZccHW2TmlACOhI6udkwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cfB07VEO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5C6C433C7;
+	Mon,  8 Apr 2024 11:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712576499;
-	bh=mCE7RTdwBqXjX+4d8ESnt/ctiwZdNz3fDuMQS5Tqz90=;
+	s=korg; t=1712577589;
+	bh=r1EYDebxHShgLyRhepDhxYOGFd6LAFgywT/wfezu1uQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SX5Bjqzg8Q+TcAXxcy4swShJwpD1dIjsCQEANaW90mLGNG0CW7mGJeO64VSMMqSGS
-	 TyYA98UNnDVrXipDVidajxFwEzQWGrkDyR46/A05GZHQWqmBTF0FGtxKsZNlX+Qg8Y
-	 PJQS1JRcxyB3IYie1t+yguu7iWUuT3iEi6AK4RJk=
-Date: Mon, 8 Apr 2024 13:41:36 +0200
+	b=cfB07VEOab0UWFWKzM/KyM1swGCWSnBnqEzkY8w2zr9PDiYzyaawp12/9HL0p54nS
+	 6JPrcZ7LznUnQ6pXd/loXQdPw+o+24cNewtgXaWqCNKWkelHfrZ5lvIKG6EW1ttEdw
+	 EqSLNNuQjGBGHakt3ZJVimvMmoHDFjh5qCw8oMgU=
+Date: Mon, 8 Apr 2024 13:59:46 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Andrii Nakryiko <andrii@kernel.org>
-Cc: stable@vger.kernel.org, bpf@vger.kernel.org,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: Re: [PATCH 6.6.y 1/2] bpf: put uprobe link's path and task in
- release callback
-Message-ID: <2024040824-moody-halt-f864@gregkh>
-References: <2024040548-lid-mahogany-fd86@gregkh>
- <20240405163806.45495-1-andrii@kernel.org>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: stable@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH -for-stable-v6.6+ 0/6] EFI/x86 updates for secure boot
+Message-ID: <2024040834-reborn-devoutly-c2ae@gregkh>
+References: <20240408064917.3391405-8-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,28 +53,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240405163806.45495-1-andrii@kernel.org>
+In-Reply-To: <20240408064917.3391405-8-ardb+git@google.com>
 
-On Fri, Apr 05, 2024 at 09:38:05AM -0700, Andrii Nakryiko wrote:
-> There is no need to delay putting either path or task to deallocation
-> step. It can be done right after bpf_uprobe_unregister. Between release
-> and dealloc, there could be still some running BPF programs, but they
-> don't access either task or path, only data in link->uprobes, so it is
-> safe to do.
+On Mon, Apr 08, 2024 at 08:49:18AM +0200, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
 > 
-> On the other hand, doing path_put() in dealloc callback makes this
-> dealloc sleepable because path_put() itself might sleep. Which is
-> problematic due to the need to call uprobe's dealloc through call_rcu(),
-> which is what is done in the next bug fix patch. So solve the problem by
-> releasing these resources early.
+> Please merge the attached series into stable branches v6.6 and v6.8.
+> They backport changes that are part of the work to harden the EFI stub
+> and make it compatible with MS requirements on EFI memory protections on
+> secure boot enabled systems.
 > 
-> Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-> Link: https://lore.kernel.org/r/20240328052426.3042617-1-andrii@kernel.org
-> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-> (cherry picked from commit e9c856cabefb71d47b2eeb197f72c9c88e9b45b0)
-> ---
->  kernel/trace/bpf_trace.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> Note that the first patch by Hou Wenlong is already in v6.8. The
+> remaining ones should apply equally to v6.6 and v6.8. Only patch #5 was
+> tweaked for context changes due to backports that overtook this one.
 
 All now queued up, thanks.
 
