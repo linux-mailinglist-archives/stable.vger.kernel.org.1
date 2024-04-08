@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-37699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 980A589C60A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B87F789C15B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA1431C23996
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 750A6281143
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10CB80604;
-	Mon,  8 Apr 2024 14:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B77A84D07;
+	Mon,  8 Apr 2024 13:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgU2dWR3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsqBcC6I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E99680045;
-	Mon,  8 Apr 2024 14:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCB77BAF5;
+	Mon,  8 Apr 2024 13:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585002; cv=none; b=FlBgZzfLT5O49WT/am+fQ112Mp8FYuotH3G+SB5XvWgmekCkwGT4cHwZwBDSvqxs6gR7E+vBvkjvorWLcKl5JWGETODXI+2mflyZapb+DJiBL3Jwv5yt3ALBr+WQPItn81JCpWeoxnOkgnyrw2Y59StpdNEluVB6lRX981l6Gxk=
+	t=1712582151; cv=none; b=IW4yxtI9pKkclGhqYBhNaxj19Rfk9T3fkJAFipyLFtjZ127P8Ea3Q/z2rpPWzSLIgwxVWNFXv0vi76Wz9F8MaKY95Bwq77gA0M6hONKDXJXqTfkJ2xIDQPG6Xy0lZhpr7jliNW0IwtTn9IFZlKALe+DW+KQBkXw7QrYNpSirBgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585002; c=relaxed/simple;
-	bh=Youz7XcCmZoP2GCRjumSyhA1GiHfWM7HxlsmCrAuC48=;
+	s=arc-20240116; t=1712582151; c=relaxed/simple;
+	bh=X8D8cdg5i19atHGCaLhVWygbdG5PSnY0k6+Chze4fiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HxVuUa5ZRnbC3/zKbt+IXQv8KRI56O43oL9+jsLOzT+l7oMMRhMEvUijwCNbEC0g+zfTxAkE5VT02NAFJTfhsFeEdTBIU75ZC9ZK+67LrtZvpQhO2dhLO3lgeeLLRGKqwyqjVmG8fGKfQBn12uBnWDJSD31aJofX1VPExJoRWDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgU2dWR3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF441C433A6;
-	Mon,  8 Apr 2024 14:03:21 +0000 (UTC)
+	 MIME-Version; b=hxzMqHi8WoEbDKrDLqR95yAhugmXTTWHHGJpmA6MIExTjTMjYGvvO979X15umNtCZ+DHIQ9rxZ8E28ZE8n/ljE7+g9M/GKvl7XPGZ/NM3kT+Jf8kOuYGElelOMmhaLmsqhwY9rVUfZf5CJ5oACUmSU6tzp11FhoRgYhFC/vSrPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsqBcC6I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D97DC433F1;
+	Mon,  8 Apr 2024 13:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585002;
-	bh=Youz7XcCmZoP2GCRjumSyhA1GiHfWM7HxlsmCrAuC48=;
+	s=korg; t=1712582150;
+	bh=X8D8cdg5i19atHGCaLhVWygbdG5PSnY0k6+Chze4fiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QgU2dWR3jasQ59hjmSefQEjZUJvvQr+4G5dD2hSjfqKTWcNEP03NJPk9Dd1/u0s/c
-	 AAJNoNlxwKlPiT3KVB+ztZRjZqeDRdvEAiTnXAF91ROy1nWeFIFKIvCPYhb6RBcohI
-	 QwIesm7/ENHyreoGG5Vc1LTuChLgx0A1npQyiJW8=
+	b=EsqBcC6IbuBiLMA/1isddbg0klW80lRHdsTCwC/eCaGCu/lJhfxRerpqGKMy17vWx
+	 0Dgc61hYxOkuDilSestgb8MHq6gtPBkUKDIsrG3R2IGD79k7PQynorpuOfp9fZ5ZHO
+	 EDR7vN1G9cjBVzXNMCgI/TE18whamO7rvWfH7Y4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.15 630/690] io_uring: ensure 0 is returned on file registration success
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 082/138] net: ravb: Let IP-specific receive function to interrogate descriptors
 Date: Mon,  8 Apr 2024 14:58:16 +0200
-Message-ID: <20240408125422.483370130@linuxfoundation.org>
+Message-ID: <20240408125258.776005484@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,34 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-A previous backport mistakenly removed code that cleared 'ret' to zero,
-as the SCM logging was performed. Fix up the return value so we don't
-return an errant error on fixed file registration.
+[ Upstream commit 2b993bfdb47b3aaafd8fe9cd5038b5e297b18ee1 ]
 
-Fixes: d909d381c315 ("io_uring: drop any code related to SCM_RIGHTS")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ravb_poll() initial code used to interrogate the first descriptor of the
+RX queue in case gPTP is false to determine if ravb_rx() should be called.
+This is done for non-gPTP IPs. For gPTP IPs the driver PTP-specific
+information was used to determine if receive function should be called. As
+every IP has its own receive function that interrogates the RX descriptors
+list in the same way the ravb_poll() was doing there is no need to double
+check this in ravb_poll(). Removing the code from ravb_poll() leads to a
+cleaner code.
+
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 596a4254915f ("net: ravb: Always process TX descriptor ring")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -8422,7 +8422,7 @@ static int io_sqe_files_register(struct
- 	}
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index e7b70006261f7..36e2718c564ac 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1290,25 +1290,16 @@ static int ravb_poll(struct napi_struct *napi, int budget)
+ 	struct net_device *ndev = napi->dev;
+ 	struct ravb_private *priv = netdev_priv(ndev);
+ 	const struct ravb_hw_info *info = priv->info;
+-	bool gptp = info->gptp || info->ccc_gac;
+-	struct ravb_rx_desc *desc;
+ 	unsigned long flags;
+ 	int q = napi - priv->napi;
+ 	int mask = BIT(q);
+ 	int quota = budget;
+-	unsigned int entry;
  
- 	io_rsrc_node_switch(ctx, NULL);
--	return ret;
-+	return 0;
- out_fput:
- 	for (i = 0; i < ctx->nr_user_files; i++) {
- 		file = io_file_from_index(ctx, i);
+-	if (!gptp) {
+-		entry = priv->cur_rx[q] % priv->num_rx_ring[q];
+-		desc = &priv->gbeth_rx_ring[entry];
+-	}
+ 	/* Processing RX Descriptor Ring */
+ 	/* Clear RX interrupt */
+ 	ravb_write(ndev, ~(mask | RIS0_RESERVED), RIS0);
+-	if (gptp || desc->die_dt != DT_FEMPTY) {
+-		if (ravb_rx(ndev, &quota, q))
+-			goto out;
+-	}
++	if (ravb_rx(ndev, &quota, q))
++		goto out;
+ 
+ 	/* Processing TX Descriptor Ring */
+ 	spin_lock_irqsave(&priv->lock, flags);
+-- 
+2.43.0
+
 
 
 
