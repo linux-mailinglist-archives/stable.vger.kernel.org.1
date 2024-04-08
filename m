@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-37271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73BEE89C426
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C55189C602
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A637F1C223C4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC34C2837B0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA83E85632;
-	Mon,  8 Apr 2024 13:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0907F474;
+	Mon,  8 Apr 2024 14:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhejvihW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffvUOQyY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784252DF73;
-	Mon,  8 Apr 2024 13:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC04A7F465;
+	Mon,  8 Apr 2024 14:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583748; cv=none; b=TYK4bRAeqeRzKc/+0oCT0+eer76iq0vlHm68UmsZ42Df6F6uw0MPHMmuHJYpb8iLMfvic5yd17LqY54z7wn1OfqzBsbgZTG1+qLQcjlAgFZ7q2c1VUVdGTnTH5XLhrks7lgu7ad0yYlMeTv1m7L+Pk+3TtMGimypeyiZXXSUh1U=
+	t=1712584987; cv=none; b=ZYTPTHbh59xd5ZYjDKP0Y/Kgz1rIRMC1yEl41utghYWQ7JqUDmWeXwB07NwrhSlb9aLy/8PYbNC32e+H40oC445DhY5aEjYlLgx7E0IYzzUR7YRkg4vl2J0kErnQbbj1AznlPIcCQvWVI6b31masnFNc1/5Yn3YVDzkoKS6i/XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583748; c=relaxed/simple;
-	bh=KOygjfRjr4BVPPj5vjcfCnGPnafNvObA8GCFoKGvSAo=;
+	s=arc-20240116; t=1712584987; c=relaxed/simple;
+	bh=Ar2ZlbZg306hAuknfIGwvRyA/Ies6ibP/m86o5vIn7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M8VHRqkazgBH98UDop60Cr4gqLc+7W7XCgkxgEMiBaVp3qVYBBKK1mqyctz5ffJgY5wdK4UDcXK/qxdsZhp6MP0uPL+ukbSa4mU3FXSRGXj3pKGn9C6Q7bvMEkouYxgzTV/gE6NvXkR2y9GlGx2u6rjCK3IIFQZ0INGoiOO+kb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhejvihW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00910C433F1;
-	Mon,  8 Apr 2024 13:42:27 +0000 (UTC)
+	 MIME-Version; b=CSpdeVkuVhslephEmnsCbHNwicELjQTefCScWjf0a1qjqhINazD6xl33AOspMCP0abO366lMo0tfGjPUGbAV+3vYBgNGADLWELfK/g0t2Q93IApFqx1JJw8sB2oJPgHeBhBiYmCaZ1aC4NDtR9S3CPRbpg3DtnfZexYOKU86Kkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffvUOQyY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52717C433F1;
+	Mon,  8 Apr 2024 14:03:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583748;
-	bh=KOygjfRjr4BVPPj5vjcfCnGPnafNvObA8GCFoKGvSAo=;
+	s=korg; t=1712584987;
+	bh=Ar2ZlbZg306hAuknfIGwvRyA/Ies6ibP/m86o5vIn7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QhejvihWQMW1ImNVDcIwGc182iN93cdLuZr1vndSaIJ4Lp3bkXtPIK51xO7vX8qZd
-	 6iYG2c3XXh+BogflgiTiRp+azVs1xUO74rv+rrICzveK+i4LFZsdDdlVZEb16eTQxW
-	 L3TU5ZWgy5kfItHjyucs2srAcISt6W98+UpPGrG8=
+	b=ffvUOQyYtsD4DTbxLRbY2YQIISLMPTmedBRScCDhjXGWfQ46RdLc/BrOgCvqv/AAM
+	 ZikwlcByAEwqmY0QCKt23N5ZQO8KPbKsd0POjOQNMyB+49SlW9yTGN/5apt/jVDTfg
+	 rL5VZswTVl85oTAEz/oKAWTY3fwGal3JA1J0avqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Rander Wang <rander.wang@intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.8 215/273] ASoC: SOF: Intel: hda: Implement get_stream_position (Linear Link Position)
-Date: Mon,  8 Apr 2024 14:58:10 +0200
-Message-ID: <20240408125316.060060932@linuxfoundation.org>
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Hui Wang <hui.wang@canonical.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.15 625/690] Bluetooth: hci_event: set the conn encrypted before conn establishes
+Date: Mon,  8 Apr 2024 14:58:11 +0200
+Message-ID: <20240408125422.283436124@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Hui Wang <hui.wang@canonical.com>
 
-commit 67b182bea08a8d1092b91b57aefdfe420fce1634 upstream.
+commit c569242cd49287d53b73a94233db40097d838535 upstream.
 
-When the Linear Link Position is not available in firmware SRAM window we
-use the host accessible position registers to read it.
-The address of the PPLCLLPL/U registers depend on the number of streams
-(playback+capture).
-At probe time the pplc_addr is calculated for each stream and we can use
-it to read the LLP without the need of address re-calculation.
+We have a BT headset (Lenovo Thinkplus XT99), the pairing and
+connecting has no problem, once this headset is paired, bluez will
+remember this device and will auto re-connect it whenever the device
+is powered on. The auto re-connecting works well with Windows and
+Android, but with Linux, it always fails. Through debugging, we found
+at the rfcomm connection stage, the bluetooth stack reports
+"Connection refused - security block (0x0003)".
 
-Set the get_stream_position callback in sof_hda_common_ops for all
-platforms:
-The callback is used for IPC4 delay calculations only but the register is
-a generic HDA register, not tied to any specific IPC version.
+For this device, the re-connecting negotiation process is different
+from other BT headsets, it sends the Link_KEY_REQUEST command before
+the CONNECT_REQUEST completes, and it doesn't send ENCRYPT_CHANGE
+command during the negotiation. When the device sends the "connect
+complete" to hci, the ev->encr_mode is 1.
 
-Cc: stable@vger.kernel.org # 6.8
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Rander Wang <rander.wang@intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://msgid.link/r/20240321130814.4412-5-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+So here in the conn_complete_evt(), if ev->encr_mode is 1, link type
+is ACL and HCI_CONN_ENCRYPT is not set, we set HCI_CONN_ENCRYPT to
+this conn, and update conn->enc_key_size accordingly.
+
+After this change, this BT headset could re-connect with Linux
+successfully. This is the btmon log after applying the patch, after
+receiving the "Connect Complete" with "Encryption: Enabled", will send
+the command to read encryption key size:
+> HCI Event: Connect Request (0x04) plen 10
+        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
+        Class: 0x240404
+          Major class: Audio/Video (headset, speaker, stereo, video, vcr)
+          Minor class: Wearable Headset Device
+          Rendering (Printing, Speaker)
+          Audio (Speaker, Microphone, Headset)
+        Link type: ACL (0x01)
+...
+> HCI Event: Link Key Request (0x17) plen 6
+        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
+< HCI Command: Link Key Request Reply (0x01|0x000b) plen 22
+        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
+        Link key: ${32-hex-digits-key}
+...
+> HCI Event: Connect Complete (0x03) plen 11
+        Status: Success (0x00)
+        Handle: 256
+        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
+        Link type: ACL (0x01)
+        Encryption: Enabled (0x01)
+< HCI Command: Read Encryption Key... (0x05|0x0008) plen 2
+        Handle: 256
+< ACL Data TX: Handle 256 flags 0x00 dlen 10
+      L2CAP: Information Request (0x0a) ident 1 len 2
+        Type: Extended features supported (0x0002)
+> HCI Event: Command Complete (0x0e) plen 7
+      Read Encryption Key Size (0x05|0x0008) ncmd 1
+        Status: Success (0x00)
+        Handle: 256
+        Key size: 16
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/bluez/bluez/issues/704
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Signed-off-by: Hui Wang <hui.wang@canonical.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/intel/hda-common-ops.c |    2 ++
- sound/soc/sof/intel/hda-stream.c     |   32 ++++++++++++++++++++++++++++++++
- sound/soc/sof/intel/hda.h            |    3 +++
- 3 files changed, 37 insertions(+)
+ net/bluetooth/hci_event.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
---- a/sound/soc/sof/intel/hda-common-ops.c
-+++ b/sound/soc/sof/intel/hda-common-ops.c
-@@ -57,6 +57,8 @@ struct snd_sof_dsp_ops sof_hda_common_op
- 	.pcm_pointer	= hda_dsp_pcm_pointer,
- 	.pcm_ack	= hda_dsp_pcm_ack,
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -2729,6 +2729,31 @@ static void hci_conn_complete_evt(struct
+ 		if (test_bit(HCI_ENCRYPT, &hdev->flags))
+ 			set_bit(HCI_CONN_ENCRYPT, &conn->flags);
  
-+	.get_stream_position = hda_dsp_get_stream_llp,
++		/* "Link key request" completed ahead of "connect request" completes */
++		if (ev->encr_mode == 1 && !test_bit(HCI_CONN_ENCRYPT, &conn->flags) &&
++		    ev->link_type == ACL_LINK) {
++			struct link_key *key;
++			struct hci_cp_read_enc_key_size cp;
 +
- 	/* firmware loading */
- 	.load_firmware = snd_sof_load_firmware_raw,
- 
---- a/sound/soc/sof/intel/hda-stream.c
-+++ b/sound/soc/sof/intel/hda-stream.c
-@@ -1054,3 +1054,35 @@ snd_pcm_uframes_t hda_dsp_stream_get_pos
- 
- 	return pos;
- }
++			key = hci_find_link_key(hdev, &ev->bdaddr);
++			if (key) {
++				set_bit(HCI_CONN_ENCRYPT, &conn->flags);
 +
-+/**
-+ * hda_dsp_get_stream_llp - Retrieve the LLP (Linear Link Position) of the stream
-+ * @sdev: SOF device
-+ * @component: ASoC component
-+ * @substream: PCM substream
-+ *
-+ * Returns the raw Linear Link Position value
-+ */
-+u64 hda_dsp_get_stream_llp(struct snd_sof_dev *sdev,
-+			   struct snd_soc_component *component,
-+			   struct snd_pcm_substream *substream)
-+{
-+	struct hdac_stream *hstream = substream->runtime->private_data;
-+	struct hdac_ext_stream *hext_stream = stream_to_hdac_ext_stream(hstream);
-+	u32 llp_l, llp_u;
++				if (!(hdev->commands[20] & 0x10)) {
++					conn->enc_key_size = HCI_LINK_KEY_SIZE;
++				} else {
++					cp.handle = cpu_to_le16(conn->handle);
++					if (hci_send_cmd(hdev, HCI_OP_READ_ENC_KEY_SIZE,
++							 sizeof(cp), &cp)) {
++						bt_dev_err(hdev, "sending read key size failed");
++						conn->enc_key_size = HCI_LINK_KEY_SIZE;
++					}
++				}
 +
-+	/*
-+	 * The pplc_addr have been calculated during probe in
-+	 * hda_dsp_stream_init():
-+	 * pplc_addr = sdev->bar[HDA_DSP_PP_BAR] +
-+	 *	       SOF_HDA_PPLC_BASE +
-+	 *	       SOF_HDA_PPLC_MULTI * total_stream +
-+	 *	       SOF_HDA_PPLC_INTERVAL * stream_index
-+	 *
-+	 * Use this pre-calculated address to avoid repeated re-calculation.
-+	 */
-+	llp_l = readl(hext_stream->pplc_addr + AZX_REG_PPLCLLPL);
-+	llp_u = readl(hext_stream->pplc_addr + AZX_REG_PPLCLLPU);
++				hci_encrypt_cfm(conn, ev->status);
++			}
++		}
 +
-+	return ((u64)llp_u << 32) | llp_l;
-+}
---- a/sound/soc/sof/intel/hda.h
-+++ b/sound/soc/sof/intel/hda.h
-@@ -657,6 +657,9 @@ bool hda_dsp_check_stream_irq(struct snd
- 
- snd_pcm_uframes_t hda_dsp_stream_get_position(struct hdac_stream *hstream,
- 					      int direction, bool can_sleep);
-+u64 hda_dsp_get_stream_llp(struct snd_sof_dev *sdev,
-+			   struct snd_soc_component *component,
-+			   struct snd_pcm_substream *substream);
- 
- struct hdac_ext_stream *
- 	hda_dsp_stream_get(struct snd_sof_dev *sdev, int direction, u32 flags);
+ 		/* Get remote features */
+ 		if (conn->type == ACL_LINK) {
+ 			struct hci_cp_read_remote_features cp;
 
 
 
