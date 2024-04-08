@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-36352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E06EE89BCE3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 12:19:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 941B989BCE5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 12:19:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EFEB1C21228
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 10:19:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CAE4BB237CD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 10:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A1152F83;
-	Mon,  8 Apr 2024 10:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E3952F86;
+	Mon,  8 Apr 2024 10:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsaeOmS2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fE8UpH5c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478D654645
-	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 10:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977C852F82
+	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 10:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712571576; cv=none; b=VYNwsnpwNpckH79Y4NNl9+P0LmrjJ+ysp6MoqJaM5gCD17x3TXx1ng93GeSIwl1RQ/3GK9jdw7KjDXidRWfpkXJ+hLtFG7uJiDd4LonQyRHc2FUDGyrp2jtHWevFdoSAOYX8YdLA/R0cTtSxZWCILOAK28I8I/LUJnWue/q6kuc=
+	t=1712571585; cv=none; b=UxzIFboCyd6d3B9JBDmWLsvzbYjBMhDL+6AunGQcjW3qV+KgIu2DcrGzkvJ3Lyncz17665SlabQ/lUOacMQtAZ6F5inBHJUoV5JQr7jYG8ih4GGuBidLIzE4jhvZ1veOQwNW9hKS0x3qjHmelngGx5nawTUn4NNector2p+NRCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712571576; c=relaxed/simple;
-	bh=K5EqlIiuxybQgAfOAHkA/09sU5cUx+6ZHU8v4g0HqDE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HGC/DIYbA+2OTufw7xwOtyMlucDIatIvLjq46MEnm8G8Zd60fSjjdnD6+s7ntKGt8ODbNKftFe4gHK4ome7jDhEaCM4GpbcOp1LU6RIE8E2Aqzrt5vp358G2iodfLHH18DiXXZhsjNrOebs0rISx08Aazn44uGvmpmIKngc+gbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsaeOmS2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D30C433F1;
-	Mon,  8 Apr 2024 10:19:35 +0000 (UTC)
+	s=arc-20240116; t=1712571585; c=relaxed/simple;
+	bh=wMH2QdKtRi0ef5kTJRhh4FTFM4wr70ljalFe9Zn3Z1s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eBaWYAV8VP4Uttc9QI7r0Oj/ITuR8egaNtznKvV+CRD8pZwiNuGflMrRVZnPJPZsYU3ecUraQJjNPvRnzj9e10Sto5QBUdgkThl1kytHxMBdXwLX4JpRNAsX+eLjwjnTuB7tTBNN5iiXfZlTTBlK3wA+V9aS3FYa0mcGCDx2Rz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fE8UpH5c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B2BC433C7;
+	Mon,  8 Apr 2024 10:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712571575;
-	bh=K5EqlIiuxybQgAfOAHkA/09sU5cUx+6ZHU8v4g0HqDE=;
+	s=korg; t=1712571585;
+	bh=wMH2QdKtRi0ef5kTJRhh4FTFM4wr70ljalFe9Zn3Z1s=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zsaeOmS2/Aamf8gcQuGvAVBI+j5Pfwl19+HS9p7nRAG5pOQWzIKa+12hwciuhuELx
-	 dwptcJUz5nN8sQafcnUwye9Zqnm97SniMgvdgElxctyjiKs60moTnduTDjRgejdByR
-	 foapYQ0t9ZCKaxsPvk9E6fKOt4HbTazc7H9cMQaQ=
-Subject: FAILED: patch "[PATCH] smb: client: fix UAF in smb2_reconnect_server()" failed to apply to 6.6-stable tree
+	b=fE8UpH5ciKupN2iUD4Xg0YZPZTaczyoz65sYqsCVDeo31TarutjG0fD8t8qEXZx8S
+	 9iYxUb/YxUXqsUx7r6bMKnz3bCJldW4SjLW+4J+o0+p8z/MbMiHqgocRvSLFQUJ2hN
+	 3dPQ2RaXFRJFlGre01zPcBIZtai9nmb6oPlVw7WQ=
+Subject: FAILED: patch "[PATCH] smb: client: fix UAF in smb2_reconnect_server()" failed to apply to 6.1-stable tree
 To: pc@manguebit.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 08 Apr 2024 12:19:32 +0200
-Message-ID: <2024040832-episode-phrasing-9e1a@gregkh>
+Date: Mon, 08 Apr 2024 12:19:35 +0200
+Message-ID: <2024040834-magazine-audience-8aa4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 24a9799aa8efecd0eb55a75e35f9d8e6400063aa
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040832-episode-phrasing-9e1a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040834-magazine-audience-8aa4@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,17 @@ Possible dependencies:
 fa1d0508bdd4 ("cifs: account for primary channel in the interface list")
 a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
 c37ed2d7d098 ("smb: client: remove extra @chan_count check in __cifs_put_smb_ses()")
+ff7d80a9f271 ("cifs: fix session state transition to avoid use-after-free issue")
+38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
+943fb67b0902 ("cifs: missing lock when updating session status")
+bc962159e8e3 ("cifs: avoid race conditions with parallel reconnects")
+1bcd548d935a ("cifs: prevent data race in cifs_reconnect_tcon()")
+e77978de4765 ("cifs: update ip_addr for ses only for primary chan setup")
+3c0070f54b31 ("cifs: prevent data race in smb2_reconnect()")
+05844bd661d9 ("cifs: print last update time for interface list")
+25cf01b7c920 ("cifs: set correct status of tcon ipc when reconnecting")
+abdb1742a312 ("cifs: get rid of mount options string parsing")
+9fd29a5bae6e ("cifs: use fs_context for automounts")
 
 thanks,
 
