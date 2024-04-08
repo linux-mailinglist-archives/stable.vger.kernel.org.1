@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-36582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62A289C07E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:09:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6442889C578
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:58:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56EAA1F21728
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:09:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73FB3B24507
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D70656FE35;
-	Mon,  8 Apr 2024 13:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C747B71753;
+	Mon,  8 Apr 2024 13:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPCqZK6X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oNTDLktd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F002DF73;
-	Mon,  8 Apr 2024 13:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87563524AF;
+	Mon,  8 Apr 2024 13:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581747; cv=none; b=UfKGJtWYTZ+5SBd1nSctWYV50kp7eb12npp/X0FKstf/FVT1eEhP1xphtkhFmGRxNvmH5bL01ogrpBi54pVB/irMoFN4QLKaYxv6rmZ0o96EL5/5C7TUfRGcknyomow0pI/QVg2AZvOiExwziaqjZ/55Kfn9FDO5r+n+MbPZKBM=
+	t=1712584404; cv=none; b=orYO0f7YHGvSuGCUWnup5KNcq/atNDrYZwc3jncfn2vrwznjvhkPUBHoOtlkdlVi64rlLhhjB8qhq3m8Cddflvo9m7LA+tdW4fr0+NS5HDdRhpAKQm0nHoGoRztxhlVHiZTKWd6nfeg5pvf9h6PMBGFKyMZwOFx6Yj2bmE8u4C0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581747; c=relaxed/simple;
-	bh=3IKvIMv6e7cdIr67xFQxLqNsLTbCR0bLP7AzPs+byXM=;
+	s=arc-20240116; t=1712584404; c=relaxed/simple;
+	bh=OuI2/mbQbLdL7I8ptjNmLhzHpTME7q4SOoXXePxxeVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VR0UOljyItYJU3TtA5W87pD+5j70wJTPd5q4XBeRpiBNdYoRqHluC/NP7YtKxNZGAAOOONNcXHbGPqNNyCnYLywaTWhDfy02LOd7rPkIOLqQXkfKZVacPaJYGyx7Yb32uqmHMwC7re9jO2KX3C15AFnSEfDVzyh9WBOONHg+Vw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPCqZK6X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CBAC433F1;
-	Mon,  8 Apr 2024 13:09:06 +0000 (UTC)
+	 MIME-Version; b=NTpg+Tce73vDW8RzEVhdpImvL+AUSe72gPF0L/8F2xHZ6+ARZNpaSNIWCW414XxgRCoTjJgwnqPATM9VviRnsW4xZmjlVF0Q0oC4Nhq7s8dl5NmL6vU9qM+XjmPYPTMvw9jqtn3T8yROA0oxvjkmF7jJFS8ekaDtRR0LoVu04Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oNTDLktd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB33C433F1;
+	Mon,  8 Apr 2024 13:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581747;
-	bh=3IKvIMv6e7cdIr67xFQxLqNsLTbCR0bLP7AzPs+byXM=;
+	s=korg; t=1712584404;
+	bh=OuI2/mbQbLdL7I8ptjNmLhzHpTME7q4SOoXXePxxeVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vPCqZK6XgoUTWrIdIEjqlZNU+qofWJKioTSvPXcCJPRyk3Xap1Ic4A/l6dFUQ14Mh
-	 MW1zh+jK94p2/RFWFFBesssfqmV/kLdKWKRDndRHPx0GzkluGE9ScfkgcYxJQYOPS1
-	 voVUZ6E4JHKpGIo+VEe7cg9j3Blz0mwIgg7Q7iGk=
+	b=oNTDLktdEG4cAJoqMoB03g6BMJ1mf+LhmwMzKybdfoj/D5zoAiZtSOZ7tqj9W661G
+	 ictGAg+Wf+PFIxkw9ooOMuKjeh+q4KBKI1pptX75eAXQerVMWczoqx7ssI627O2ZV9
+	 plnO7lwB8qhSXYN03bEE7U4p3sfFk2jApcrw8SNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.8 017/273] ixgbe: avoid sleeping allocation in ixgbe_ipsec_vf_add_sa()
-Date: Mon,  8 Apr 2024 14:54:52 +0200
-Message-ID: <20240408125309.830348877@linuxfoundation.org>
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 5.15 427/690] NFSD: Trace NFSv4 COMPOUND tags
+Date: Mon,  8 Apr 2024 14:54:53 +0200
+Message-ID: <20240408125415.061314207@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit aec806fb4afba5fe80b09e29351379a4292baa43 ]
+[ Upstream commit de29cf7e6cbbe236c3a51999c188fcd467762899 ]
 
-Change kzalloc() flags used in ixgbe_ipsec_vf_add_sa() to GFP_ATOMIC, to
-avoid sleeping in IRQ context.
+The Linux NFSv4 client implementation does not use COMPOUND tags,
+but the Solaris and MacOS implementations do, and so does pynfs.
+Record these eye-catchers in the server's trace buffer to annotate
+client requests while troubleshooting.
 
-Dan Carpenter, with the help of Smatch, has found following issue:
-The patch eda0333ac293: "ixgbe: add VF IPsec management" from Aug 13,
-2018 (linux-next), leads to the following Smatch static checker
-warning: drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c:917 ixgbe_ipsec_vf_add_sa()
-	warn: sleeping in IRQ context
-
-The call tree that Smatch is worried about is:
-ixgbe_msix_other() <- IRQ handler
--> ixgbe_msg_task()
-   -> ixgbe_rcv_msg_from_vf()
-      -> ixgbe_ipsec_vf_add_sa()
-
-Fixes: eda0333ac293 ("ixgbe: add VF IPsec management")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/intel-wired-lan/db31a0b0-4d9f-4e6b-aed8-88266eb5665c@moroto.mountain
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ fs/nfsd/nfs4proc.c |  2 +-
+ fs/nfsd/trace.h    | 21 ++++++++++++++-------
+ 2 files changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c
-index 13a6fca31004a..866024f2b9eeb 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c
-@@ -914,7 +914,13 @@ int ixgbe_ipsec_vf_add_sa(struct ixgbe_adapter *adapter, u32 *msgbuf, u32 vf)
- 		goto err_out;
- 	}
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 69d3013fb1b26..e4c0dc577fe35 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -2637,7 +2637,7 @@ nfsd4_proc_compound(struct svc_rqst *rqstp)
  
--	xs = kzalloc(sizeof(*xs), GFP_KERNEL);
-+	algo = xfrm_aead_get_byname(aes_gcm_name, IXGBE_IPSEC_AUTH_BITS, 1);
-+	if (unlikely(!algo)) {
-+		err = -ENOENT;
-+		goto err_out;
-+	}
-+
-+	xs = kzalloc(sizeof(*xs), GFP_ATOMIC);
- 	if (unlikely(!xs)) {
- 		err = -ENOMEM;
- 		goto err_out;
-@@ -930,14 +936,8 @@ int ixgbe_ipsec_vf_add_sa(struct ixgbe_adapter *adapter, u32 *msgbuf, u32 vf)
- 		memcpy(&xs->id.daddr.a4, sam->addr, sizeof(xs->id.daddr.a4));
- 	xs->xso.dev = adapter->netdev;
+ 	rqstp->rq_lease_breaker = (void **)&cstate->clp;
  
--	algo = xfrm_aead_get_byname(aes_gcm_name, IXGBE_IPSEC_AUTH_BITS, 1);
--	if (unlikely(!algo)) {
--		err = -ENOENT;
--		goto err_xs;
--	}
--
- 	aead_len = sizeof(*xs->aead) + IXGBE_IPSEC_KEY_BITS / 8;
--	xs->aead = kzalloc(aead_len, GFP_KERNEL);
-+	xs->aead = kzalloc(aead_len, GFP_ATOMIC);
- 	if (unlikely(!xs->aead)) {
- 		err = -ENOMEM;
- 		goto err_xs;
+-	trace_nfsd_compound(rqstp, args->client_opcnt);
++	trace_nfsd_compound(rqstp, args->tag, args->taglen, args->client_opcnt);
+ 	while (!status && resp->opcnt < args->opcnt) {
+ 		op = &args->ops[resp->opcnt++];
+ 
+diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
+index 297bf9ddc5090..c5d4a258680c3 100644
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -84,19 +84,26 @@ DEFINE_NFSD_XDR_ERR_EVENT(cant_encode);
+ 		{ NFSD_MAY_64BIT_COOKIE,	"64BIT_COOKIE" })
+ 
+ TRACE_EVENT(nfsd_compound,
+-	TP_PROTO(const struct svc_rqst *rqst,
+-		 u32 args_opcnt),
+-	TP_ARGS(rqst, args_opcnt),
++	TP_PROTO(
++		const struct svc_rqst *rqst,
++		const char *tag,
++		u32 taglen,
++		u32 opcnt
++	),
++	TP_ARGS(rqst, tag, taglen, opcnt),
+ 	TP_STRUCT__entry(
+ 		__field(u32, xid)
+-		__field(u32, args_opcnt)
++		__field(u32, opcnt)
++		__string_len(tag, tag, taglen)
+ 	),
+ 	TP_fast_assign(
+ 		__entry->xid = be32_to_cpu(rqst->rq_xid);
+-		__entry->args_opcnt = args_opcnt;
++		__entry->opcnt = opcnt;
++		__assign_str_len(tag, tag, taglen);
+ 	),
+-	TP_printk("xid=0x%08x opcnt=%u",
+-		__entry->xid, __entry->args_opcnt)
++	TP_printk("xid=0x%08x opcnt=%u tag=%s",
++		__entry->xid, __entry->opcnt, __get_str(tag)
++	)
+ )
+ 
+ TRACE_EVENT(nfsd_compound_status,
 -- 
 2.43.0
 
