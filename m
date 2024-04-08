@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-37063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2F0789C4F9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:52:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66F4189BFE8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:03:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0CE5B2C0D2
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:39:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06A981F24B70
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2327FBBB;
-	Mon,  8 Apr 2024 13:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225A37CF37;
+	Mon,  8 Apr 2024 13:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjVGwWW4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwbdQEg/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6EB78285;
-	Mon,  8 Apr 2024 13:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34F57D062;
+	Mon,  8 Apr 2024 13:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583145; cv=none; b=SYzTYothQ4nLgz5GM9Pvby7GG4XlUXeeyVlDDU1GOkK+Dp0jybobsniCEUS8/3puxofOfrAckANNElqHq1cDPyL/6NNXH8QoqjsXIyCnofosQKPu5QlAS01ZPDyo8bUlxUE0AfikMbm6G0iEY/GVLMvLbUCRUltStUeshJCkCxw=
+	t=1712581337; cv=none; b=uhPPsFvG/SYJBt8NG6I46LlOvTaMgphhbVMuTNKDW8yC7//Ad+/m0Z2Ms4PY+4vrmg9mGhndvfbehSlHExGu4z/2RAsCVJKbbxZ0YpdDtEYFdwCX7I+U55hRI1PJQAkHfNcbwl3DEJVA7FPCfJczLuBmQjjCAaITAPSXlTgPOrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583145; c=relaxed/simple;
-	bh=wazc6BUyByF5cso3vspqbD8dRoKIuK5j+TLtKHCkkbs=;
+	s=arc-20240116; t=1712581337; c=relaxed/simple;
+	bh=d5WtnGIwY/ty292BDhUut9H23IG009q8FeeOKUYdjzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OBoz8GsFNuC4iThKt3VOirI3GbvcausiAlMCPXi1dDGhYFUo1OzllKysTxRUOIRVLs2GhjsFm4rl8+Mtdn0zn7/DpHKuFcLUY20KwR2cAog21ea9wh8YZeOHNI2SE7G5uKOu0jhVD0zd+f24PgnPrRHybq4q07AZ7Ygx0umlYkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjVGwWW4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95980C433C7;
-	Mon,  8 Apr 2024 13:32:24 +0000 (UTC)
+	 MIME-Version; b=b17/KvO04DLZ0sFiex635re27iDQj9KqAsEswzs27p19mW5/FpkkVibNt+ou3MFgS9axurbMFHMUsd05/d/q55HiePhdE3u5uJo3tdeLteRMXIjPAGtojkKb9MVTWsStBTRY73ixez2sVUZ9i9571HlWYG5aZiULiwmcwfT3eU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwbdQEg/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D9EC433C7;
+	Mon,  8 Apr 2024 13:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583145;
-	bh=wazc6BUyByF5cso3vspqbD8dRoKIuK5j+TLtKHCkkbs=;
+	s=korg; t=1712581337;
+	bh=d5WtnGIwY/ty292BDhUut9H23IG009q8FeeOKUYdjzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mjVGwWW4/nRp+EfFdX8wcmc5kTycEZokd9LWBfdKhKW9dN6844KwV6/4onrb07CY4
-	 cHsNNAYwDZbX2PtzmCavOiQsImwRIA6cG4WPEtluypG1ZxA4ni30jVybI49KBjNXUX
-	 I9RdEpz3kvnmq/0PvP5TGdFsAp5GxDjTzU9amL+I=
+	b=iwbdQEg/5s55erjWOQ7BOqMsiJ9DzzyrVkFZ7AX6SvyZDqhSTIQ+m5UkFulnfl/qr
+	 FmZQVwFAIruGWxOsgNm2d+YeUSqHP0G7Kj03TTu45KpcUEm3ZkTxOa9k3kz90Rkluw
+	 /DPbbv4jl1CUb4fbhPIO5k2gXjm1Td3r6icAJbLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 144/273] 9p: Fix read/write debug statements to report server reply
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Subject: [PATCH 6.1 005/138] wifi: iwlwifi: mvm: rfi: fix potential response leaks
 Date: Mon,  8 Apr 2024 14:56:59 +0200
-Message-ID: <20240408125313.760940165@linuxfoundation.org>
+Message-ID: <20240408125256.391470964@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <asmadeus@codewreck.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit be3193e58ec210b2a72fb1134c2a0695088a911d ]
+[ Upstream commit 06a093807eb7b5c5b29b6cff49f8174a4e702341 ]
 
-Previous conversion to iov missed these debug statements which would now
-always print the requested size instead of the actual server reply.
+If the rx payload length check fails, or if kmemdup() fails,
+we still need to free the command response. Fix that.
 
-Write also added a loop in a much older commit but we didn't report
-these, while reads do report each iteration -- it's more coherent to
-keep reporting all requests to server so move that at the same time.
-
-Fixes: 7f02464739da ("9p: convert to advancing variant of iov_iter_get_pages_alloc()")
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Message-ID: <20240109-9p-rw-trace-v1-1-327178114257@codewreck.org>
+Fixes: 21254908cbe9 ("iwlwifi: mvm: add RFI-M support")
+Co-authored-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240319100755.db2fa0196aa7.I116293b132502ac68a65527330fa37799694b79c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/client.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rfi.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/9p/client.c b/net/9p/client.c
-index e265a0ca6bddd..f7e90b4769bba 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -1583,7 +1583,7 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
- 		received = rsize;
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
+index bb77bc9aa8218..fb2408c0551d2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
+@@ -122,14 +122,18 @@ struct iwl_rfi_freq_table_resp_cmd *iwl_rfi_get_freq_table(struct iwl_mvm *mvm)
+ 	if (ret)
+ 		return ERR_PTR(ret);
  
--	p9_debug(P9_DEBUG_9P, "<<< RREAD count %d\n", count);
-+	p9_debug(P9_DEBUG_9P, "<<< RREAD count %d\n", received);
+-	if (WARN_ON_ONCE(iwl_rx_packet_payload_len(cmd.resp_pkt) != resp_size))
++	if (WARN_ON_ONCE(iwl_rx_packet_payload_len(cmd.resp_pkt) !=
++			 resp_size)) {
++		iwl_free_resp(&cmd);
+ 		return ERR_PTR(-EIO);
++	}
  
- 	if (non_zc) {
- 		int n = copy_to_iter(dataptr, received, to);
-@@ -1609,9 +1609,6 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
- 	int total = 0;
- 	*err = 0;
- 
--	p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu count %zd\n",
--		 fid->fid, offset, iov_iter_count(from));
--
- 	while (iov_iter_count(from)) {
- 		int count = iov_iter_count(from);
- 		int rsize = fid->iounit;
-@@ -1623,6 +1620,9 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
- 		if (count < rsize)
- 			rsize = count;
- 
-+		p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu count %d (/%d)\n",
-+			 fid->fid, offset, rsize, count);
+ 	resp = kmemdup(cmd.resp_pkt->data, resp_size, GFP_KERNEL);
++	iwl_free_resp(&cmd);
 +
- 		/* Don't bother zerocopy for small IO (< 1024) */
- 		if (clnt->trans_mod->zc_request && rsize > 1024) {
- 			req = p9_client_zc_rpc(clnt, P9_TWRITE, NULL, from, 0,
-@@ -1650,7 +1650,7 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
- 			written = rsize;
- 		}
+ 	if (!resp)
+ 		return ERR_PTR(-ENOMEM);
  
--		p9_debug(P9_DEBUG_9P, "<<< RWRITE count %d\n", count);
-+		p9_debug(P9_DEBUG_9P, "<<< RWRITE count %d\n", written);
+-	iwl_free_resp(&cmd);
+ 	return resp;
+ }
  
- 		p9_req_put(clnt, req);
- 		iov_iter_revert(from, count - written - iov_iter_count(from));
 -- 
 2.43.0
 
