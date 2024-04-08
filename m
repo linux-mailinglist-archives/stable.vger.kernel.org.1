@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-37562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911CE89C571
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:57:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D3C89C207
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0722D1F23B45
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:57:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4C491C21BB2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC3B2DF73;
-	Mon,  8 Apr 2024 13:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D717D416;
+	Mon,  8 Apr 2024 13:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Et+RYthH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4Ik5OXD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3587E58C;
-	Mon,  8 Apr 2024 13:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62317D3E5;
+	Mon,  8 Apr 2024 13:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584597; cv=none; b=tZiU5mYqMOC4Rxd2vYMCQDQjoGhyeALrLXCyjbzgr8iCYdndByfgdFpu9RzNZnQjLyMTlW8jExv0zWUyPhhGzz6+3j3iHyev+qIIF6grk7hFxcDPKqGcVB2B3gJodTNMLAy4kkJf2Q6hytQOZIAzpq+PMetkwZ1A3LE73jUanx8=
+	t=1712582535; cv=none; b=sji7VJgfHpCHQ6/+XGyGAUDxHTwlGXGH1N3iyZs/GYoaPDxADGS23QAvTuHw+KYksxXEAm0Wrl0JFzDQgOpm6Ct7azVsGXapHh58lvbCb8eNv1Ap6k367ftQ0jztnFbw2wDb8n2j0xbSXe4UQlxXSU9TwPS6xm/GrTxQcqLM0pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584597; c=relaxed/simple;
-	bh=Gt3InxlGt9oG/JhSJZXBCHCZ7ZULnfOK4fRETbNJ4rk=;
+	s=arc-20240116; t=1712582535; c=relaxed/simple;
+	bh=4y1F6vR+bMp4qayeMuBXMyDF9E+v6tBmqLCGAV2T0RY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YystvzPgdGJZBP2Mh4avxszoaKstY0FR6saOeMmEuYLDOGNtq7hsCr7/npAK/9GBY4iqbihWBjTW3YEa9ODarcCvISnzuJDA/gWF1IWLcNTHCvbbf2w9+FF/leS9rKTwBuyVSnJdcqMTv1rTn96QXbzhXJdWjJTy3d368REC4bU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Et+RYthH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F7CC433C7;
-	Mon,  8 Apr 2024 13:56:36 +0000 (UTC)
+	 MIME-Version; b=nYEis10+XLzh1R6m3gdRJ/DbNkLtxodNILRLvIyvkL5cdsPKZV891vmiV54sTcLDAJqUH8RAheb1llNXRAFR6d8equOv0kb39O/EJ/+mHwoyZdujFSzuyCRMfUfQnYFxG6rOIEieI/t1YmvKt9njgGKk0XId6Rz0bdL+z7JmPLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4Ik5OXD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6EBC433C7;
+	Mon,  8 Apr 2024 13:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584597;
-	bh=Gt3InxlGt9oG/JhSJZXBCHCZ7ZULnfOK4fRETbNJ4rk=;
+	s=korg; t=1712582535;
+	bh=4y1F6vR+bMp4qayeMuBXMyDF9E+v6tBmqLCGAV2T0RY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Et+RYthHlAfmpnugl9Z6SNDgefK8EaKq748Eb+JikzGAFrkzUUNkK6GsNEokQBvPB
-	 FNkDomF3B4PJj2tCO/N7t5qozEFUb16VL/3X96J8cyUrbvRMbWGy+l61s0w58Ijsne
-	 Oqiz5pyItR5KlR9lmm6eO2pGRyzxHVmWokwi75o8=
+	b=Z4Ik5OXDMDi/+aXnZ9nd/n7zNI1nyBT7pZ864tPsAkbCjKW05R2AAb7sSut4iEP+f
+	 omctMLNmoiAHSO3kbnV3t7dxjeYnMfn36jvzjNWXE2pwNwOM/xTAp7qQH/n/h80ffh
+	 UisOZBYOqXtRf/nGeahDbuF+2ChKeofd+43dVW3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 493/690] nfsd: reorganize filecache.c
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.8 084/273] net: usb: ax88179_178a: avoid the interface always configured as random address
 Date: Mon,  8 Apr 2024 14:55:59 +0200
-Message-ID: <20240408125417.492684243@linuxfoundation.org>
+Message-ID: <20240408125311.908763957@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,243 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-[ Upstream commit 8214118589881b2d390284410c5ff275e7a5e03c ]
+commit 2e91bb99b9d4f756e92e83c4453f894dda220f09 upstream.
 
-In a coming patch, we're going to rework how the filecache refcounting
-works. Move some code around in the function to reduce the churn in the
-later patches, and rename some of the functions with (hopefully) clearer
-names: nfsd_file_flush becomes nfsd_file_fsync, and
-nfsd_file_unhash_and_dispose is renamed to nfsd_file_unhash_and_queue.
+After the commit d2689b6a86b9 ("net: usb: ax88179_178a: avoid two
+consecutive device resets"), reset is not executed from bind operation and
+mac address is not read from the device registers or the devicetree at that
+moment. Since the check to configure if the assigned mac address is random
+or not for the interface, happens after the bind operation from
+usbnet_probe, the interface keeps configured as random address, although the
+address is correctly read and set during open operation (the only reset
+now).
 
-Also, the nfsd_file_put_final tracepoint is renamed to nfsd_file_free,
-to better match the name of the function from which it's called.
+In order to keep only one reset for the device and to avoid the interface
+always configured as random address, after reset, configure correctly the
+suitable field from the driver, if the mac address is read successfully from
+the device registers or the devicetree. Take into account if a locally
+administered address (random) was previously stored.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+cc: stable@vger.kernel.org # 6.6+
+Fixes: d2689b6a86b9 ("net: usb: ax88179_178a: avoid two consecutive device resets")
+Reported-by: Dave Stevenson  <dave.stevenson@raspberrypi.com>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240403132158.344838-1-jtornosm@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/filecache.c | 111 ++++++++++++++++++++++----------------------
- fs/nfsd/trace.h     |   4 +-
- 2 files changed, 58 insertions(+), 57 deletions(-)
+ drivers/net/usb/ax88179_178a.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index b95b1be5b2e43..fb7ada3f7410e 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -334,16 +334,59 @@ nfsd_file_alloc(struct nfsd_file_lookup_key *key, unsigned int may)
- 	return nf;
- }
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -1273,6 +1273,8 @@ static void ax88179_get_mac_addr(struct
  
-+static void
-+nfsd_file_fsync(struct nfsd_file *nf)
-+{
-+	struct file *file = nf->nf_file;
-+
-+	if (!file || !(file->f_mode & FMODE_WRITE))
-+		return;
-+	if (vfs_fsync(file, 1) != 0)
-+		nfsd_reset_write_verifier(net_generic(nf->nf_net, nfsd_net_id));
-+}
-+
-+static int
-+nfsd_file_check_write_error(struct nfsd_file *nf)
-+{
-+	struct file *file = nf->nf_file;
-+
-+	if (!file || !(file->f_mode & FMODE_WRITE))
-+		return 0;
-+	return filemap_check_wb_err(file->f_mapping, READ_ONCE(file->f_wb_err));
-+}
-+
-+static void
-+nfsd_file_hash_remove(struct nfsd_file *nf)
-+{
-+	trace_nfsd_file_unhash(nf);
-+
-+	if (nfsd_file_check_write_error(nf))
-+		nfsd_reset_write_verifier(net_generic(nf->nf_net, nfsd_net_id));
-+	rhashtable_remove_fast(&nfsd_file_rhash_tbl, &nf->nf_rhash,
-+			       nfsd_file_rhash_params);
-+}
-+
-+static bool
-+nfsd_file_unhash(struct nfsd_file *nf)
-+{
-+	if (test_and_clear_bit(NFSD_FILE_HASHED, &nf->nf_flags)) {
-+		nfsd_file_hash_remove(nf);
-+		return true;
-+	}
-+	return false;
-+}
-+
- static bool
- nfsd_file_free(struct nfsd_file *nf)
- {
- 	s64 age = ktime_to_ms(ktime_sub(ktime_get(), nf->nf_birthtime));
- 	bool flush = false;
- 
-+	trace_nfsd_file_free(nf);
-+
- 	this_cpu_inc(nfsd_file_releases);
- 	this_cpu_add(nfsd_file_total_age, age);
- 
--	trace_nfsd_file_put_final(nf);
- 	if (nf->nf_mark)
- 		nfsd_file_mark_put(nf->nf_mark);
- 	if (nf->nf_file) {
-@@ -377,27 +420,6 @@ nfsd_file_check_writeback(struct nfsd_file *nf)
- 		mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK);
- }
- 
--static int
--nfsd_file_check_write_error(struct nfsd_file *nf)
--{
--	struct file *file = nf->nf_file;
--
--	if (!file || !(file->f_mode & FMODE_WRITE))
--		return 0;
--	return filemap_check_wb_err(file->f_mapping, READ_ONCE(file->f_wb_err));
--}
--
--static void
--nfsd_file_flush(struct nfsd_file *nf)
--{
--	struct file *file = nf->nf_file;
--
--	if (!file || !(file->f_mode & FMODE_WRITE))
--		return;
--	if (vfs_fsync(file, 1) != 0)
--		nfsd_reset_write_verifier(net_generic(nf->nf_net, nfsd_net_id));
--}
--
- static void nfsd_file_lru_add(struct nfsd_file *nf)
- {
- 	set_bit(NFSD_FILE_REFERENCED, &nf->nf_flags);
-@@ -411,31 +433,18 @@ static void nfsd_file_lru_remove(struct nfsd_file *nf)
- 		trace_nfsd_file_lru_del(nf);
- }
- 
--static void
--nfsd_file_hash_remove(struct nfsd_file *nf)
--{
--	trace_nfsd_file_unhash(nf);
--
--	if (nfsd_file_check_write_error(nf))
--		nfsd_reset_write_verifier(net_generic(nf->nf_net, nfsd_net_id));
--	rhashtable_remove_fast(&nfsd_file_rhash_tbl, &nf->nf_rhash,
--			       nfsd_file_rhash_params);
--}
--
--static bool
--nfsd_file_unhash(struct nfsd_file *nf)
-+struct nfsd_file *
-+nfsd_file_get(struct nfsd_file *nf)
- {
--	if (test_and_clear_bit(NFSD_FILE_HASHED, &nf->nf_flags)) {
--		nfsd_file_hash_remove(nf);
--		return true;
--	}
--	return false;
-+	if (likely(refcount_inc_not_zero(&nf->nf_ref)))
-+		return nf;
-+	return NULL;
- }
- 
- static void
--nfsd_file_unhash_and_dispose(struct nfsd_file *nf, struct list_head *dispose)
-+nfsd_file_unhash_and_queue(struct nfsd_file *nf, struct list_head *dispose)
- {
--	trace_nfsd_file_unhash_and_dispose(nf);
-+	trace_nfsd_file_unhash_and_queue(nf);
- 	if (nfsd_file_unhash(nf)) {
- 		/* caller must call nfsd_file_dispose_list() later */
- 		nfsd_file_lru_remove(nf);
-@@ -473,7 +482,7 @@ nfsd_file_put(struct nfsd_file *nf)
- 		nfsd_file_unhash_and_put(nf);
- 
- 	if (!test_bit(NFSD_FILE_HASHED, &nf->nf_flags)) {
--		nfsd_file_flush(nf);
-+		nfsd_file_fsync(nf);
- 		nfsd_file_put_noref(nf);
- 	} else if (nf->nf_file && test_bit(NFSD_FILE_GC, &nf->nf_flags)) {
- 		nfsd_file_put_noref(nf);
-@@ -482,14 +491,6 @@ nfsd_file_put(struct nfsd_file *nf)
- 		nfsd_file_put_noref(nf);
- }
- 
--struct nfsd_file *
--nfsd_file_get(struct nfsd_file *nf)
--{
--	if (likely(refcount_inc_not_zero(&nf->nf_ref)))
--		return nf;
--	return NULL;
--}
--
- static void
- nfsd_file_dispose_list(struct list_head *dispose)
- {
-@@ -498,7 +499,7 @@ nfsd_file_dispose_list(struct list_head *dispose)
- 	while(!list_empty(dispose)) {
- 		nf = list_first_entry(dispose, struct nfsd_file, nf_lru);
- 		list_del_init(&nf->nf_lru);
--		nfsd_file_flush(nf);
-+		nfsd_file_fsync(nf);
- 		nfsd_file_put_noref(nf);
- 	}
- }
-@@ -512,7 +513,7 @@ nfsd_file_dispose_list_sync(struct list_head *dispose)
- 	while(!list_empty(dispose)) {
- 		nf = list_first_entry(dispose, struct nfsd_file, nf_lru);
- 		list_del_init(&nf->nf_lru);
--		nfsd_file_flush(nf);
-+		nfsd_file_fsync(nf);
- 		if (!refcount_dec_and_test(&nf->nf_ref))
- 			continue;
- 		if (nfsd_file_free(nf))
-@@ -712,7 +713,7 @@ __nfsd_file_close_inode(struct inode *inode, struct list_head *dispose)
- 				       nfsd_file_rhash_params);
- 		if (!nf)
- 			break;
--		nfsd_file_unhash_and_dispose(nf, dispose);
-+		nfsd_file_unhash_and_queue(nf, dispose);
- 		count++;
- 	} while (1);
- 	rcu_read_unlock();
-@@ -914,7 +915,7 @@ __nfsd_file_cache_purge(struct net *net)
- 		nf = rhashtable_walk_next(&iter);
- 		while (!IS_ERR_OR_NULL(nf)) {
- 			if (!net || nf->nf_net == net)
--				nfsd_file_unhash_and_dispose(nf, &dispose);
-+				nfsd_file_unhash_and_queue(nf, &dispose);
- 			nf = rhashtable_walk_next(&iter);
- 		}
- 
-diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
-index d50d4d6e822df..2c72a666aa9c2 100644
---- a/fs/nfsd/trace.h
-+++ b/fs/nfsd/trace.h
-@@ -905,10 +905,10 @@ DEFINE_EVENT(nfsd_file_class, name, \
- 	TP_PROTO(struct nfsd_file *nf), \
- 	TP_ARGS(nf))
- 
--DEFINE_NFSD_FILE_EVENT(nfsd_file_put_final);
-+DEFINE_NFSD_FILE_EVENT(nfsd_file_free);
- DEFINE_NFSD_FILE_EVENT(nfsd_file_unhash);
- DEFINE_NFSD_FILE_EVENT(nfsd_file_put);
--DEFINE_NFSD_FILE_EVENT(nfsd_file_unhash_and_dispose);
-+DEFINE_NFSD_FILE_EVENT(nfsd_file_unhash_and_queue);
- 
- TRACE_EVENT(nfsd_file_alloc,
- 	TP_PROTO(
--- 
-2.43.0
-
+ 	if (is_valid_ether_addr(mac)) {
+ 		eth_hw_addr_set(dev->net, mac);
++		if (!is_local_ether_addr(mac))
++			dev->net->addr_assign_type = NET_ADDR_PERM;
+ 	} else {
+ 		netdev_info(dev->net, "invalid MAC address, using random\n");
+ 		eth_hw_addr_random(dev->net);
 
 
 
