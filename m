@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-36741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66EEE89C1FC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 850E789C178
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:21:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6587B258BB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40F2E281212
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9877D094;
-	Mon,  8 Apr 2024 13:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06C37D3F4;
+	Mon,  8 Apr 2024 13:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EenrzUKX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDaBL5qu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1888A76058;
-	Mon,  8 Apr 2024 13:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE730762DA;
+	Mon,  8 Apr 2024 13:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582209; cv=none; b=o3d2VKgPGDKU01C5ixMrr/iEq8prA+voJ4hsygar4VVuwwFA8EqARKFf4XJoHwqDPfugBvofni0S9yTlP0ZhFHtfzL/MQBxsAno6tFDEQh9HuNmub4N2slpSuwpaWcm6/tkHivin0LhmCU3GTABUxoKvK1DwsHWiwE+pbO3VhEI=
+	t=1712582217; cv=none; b=pkOlgQtYk558YD5o/PrEBosJHoiSkeV4fqu8EsoJKNEIibyKrP2yX9T5HaR3mT229BzNKcgSLtDsI4dIWVT8zkz1zY4taqPm7SitMjKd/tmtkd8qhn3WWr9YTP5UQSctLW2zEyzvJEheqevo+wMYQOED2iKFIPuQhV2qNDWcW6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582209; c=relaxed/simple;
-	bh=fiICyYnrnpQL9udXb8CQKbHcAZd1oz/HJFNc0Bmwzw8=;
+	s=arc-20240116; t=1712582217; c=relaxed/simple;
+	bh=6D++A2YjSPcrP85himGLW48Jse9hQw1guWVUbeZEJLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UOxK+0BYn2tUs7SPSHl5k6qMdbH4uFzIjvFeUsFOhyKculr9AGfy6Vw1XRB6pFXEV5cpcXVsodg/L7J89GrNVTmbJpa1Pt+FxYfSFZ8kTNZuNtPD/rP93Y8uVQJqIPs7knid3PwK1qhDSVtyejfLy9PzKY7HR+ykyJ8fFAjniAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EenrzUKX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C638C433F1;
-	Mon,  8 Apr 2024 13:16:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JwR0JAJC4Y73eBWJAcnlOnVeltLjfsNBpm1VbgBW963iMFU7eBd4ex+uQO8MvL4pZgTWlZEQA8cCuhDGyR9bJlS1bIT/3ZfczsaXCa/s6CPNStCmksUu7a4Odri1YyvIcGB9qKS2d7QHL5aJceMZCjGj43++47kYbGLCGBE7PqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDaBL5qu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35984C433F1;
+	Mon,  8 Apr 2024 13:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582209;
-	bh=fiICyYnrnpQL9udXb8CQKbHcAZd1oz/HJFNc0Bmwzw8=;
+	s=korg; t=1712582217;
+	bh=6D++A2YjSPcrP85himGLW48Jse9hQw1guWVUbeZEJLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EenrzUKXamlmQamYpP3PIkd4c9prLffllth3743kNzNpTC57LY9CuklRZCR01uPcY
-	 Yi0ZQkns85FJD0MIPQ3EqR3dTSxuNT8sh953cCz16dmvB3sH64aqGTiWJMydF5fgkO
-	 8M58ol4qXf129ui/m0E26nJT5FpLrMUp89LIBYx8=
+	b=tDaBL5qupDfv2pISz/Lnj90EHzoA/u0aC4FEVP6AeSFmTrPpJFKFdm83utmJqCxTF
+	 qEf3m2jjfbKLxkcBLCuNgsJIGTvIgmU4HtLcerPEn6UrCNR1SffsPM2vBwZSUQ6MY/
+	 0eXtYVYfBhY8BP0eLwOt0HzbQUdCZefw7t4XQfv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
+	Alan Previn <alan.previn.teres.alexis@intel.com>,
+	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 056/273] drm/i915/mtl: Update workaround 14018575942
-Date: Mon,  8 Apr 2024 14:55:31 +0200
-Message-ID: <20240408125311.042147132@linuxfoundation.org>
+Subject: [PATCH 6.8 057/273] drm/i915: Do not print pxp init failed with 0 when it succeed
+Date: Mon,  8 Apr 2024 14:55:32 +0200
+Message-ID: <20240408125311.071999967@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
 References: <20240408125309.280181634@linuxfoundation.org>
@@ -62,52 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+From: José Roberto de Souza <jose.souza@intel.com>
 
-[ Upstream commit 186bce682772e7346bf7ced5325b5f4ff050ccfb ]
+[ Upstream commit d392e1b9c2e8c60550a2a467732107f0f98b8e97 ]
 
-Applying WA 14018575942 only on Compute engine has impact on
-some apps like chrome. Updating this WA to apply on Render
-engine as well as it is helping with performance on Chrome.
+It is misleading, if the intention was to also print something
+in case it succeed it should have a different string.
 
-Note: There is no concern from media team thus not applying
-WA on media engines. We will revisit if any issues reported
-from media team.
-
-V2(Matt):
- - Use correct WA number
-
-Fixes: 668f37e1ee11 ("drm/i915/mtl: Update workaround 14018778641")
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240228103738.2018458-1-tejas.upadhyay@intel.com
-(cherry picked from commit 71271280175aa0ed6673e40cce7c01296bcd05f6)
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
+Fixes: 698e19da2914 ("drm/i915: Skip pxp init if gt is wedged")
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240320210547.71937-1-jose.souza@intel.com
+(cherry picked from commit d437099ab21cd4c6ce5d578b765df642d759c929)
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_workarounds.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/i915_driver.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_workarounds.c b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-index 72dac27d9332f..c7561d7c55f5e 100644
---- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
-+++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-@@ -1649,6 +1649,7 @@ static void
- xelpg_gt_workarounds_init(struct intel_gt *gt, struct i915_wa_list *wal)
- {
- 	/* Wa_14018575942 / Wa_18018781329 */
-+	wa_mcr_write_or(wal, RENDER_MOD_CTRL, FORCE_MISS_FTLB);
- 	wa_mcr_write_or(wal, COMP_MOD_CTRL, FORCE_MISS_FTLB);
+diff --git a/drivers/gpu/drm/i915/i915_driver.c b/drivers/gpu/drm/i915/i915_driver.c
+index c7d7c3b7ecc63..9967148aedf15 100644
+--- a/drivers/gpu/drm/i915/i915_driver.c
++++ b/drivers/gpu/drm/i915/i915_driver.c
+@@ -799,7 +799,7 @@ int i915_driver_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		goto out_cleanup_modeset2;
  
- 	/* Wa_22016670082 */
+ 	ret = intel_pxp_init(i915);
+-	if (ret != -ENODEV)
++	if (ret && ret != -ENODEV)
+ 		drm_dbg(&i915->drm, "pxp init failed with %d\n", ret);
+ 
+ 	ret = intel_display_driver_probe(i915);
 -- 
 2.43.0
 
