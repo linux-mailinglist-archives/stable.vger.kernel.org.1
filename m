@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-37687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4AF789C5FD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D9D489C32C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EFB3284728
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0732B2683F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81807FBB2;
-	Mon,  8 Apr 2024 14:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15C47F467;
+	Mon,  8 Apr 2024 13:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjT0SHLs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtbZ534X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74FB87F499;
-	Mon,  8 Apr 2024 14:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790E47EF1B;
+	Mon,  8 Apr 2024 13:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584967; cv=none; b=OEkeMKF+q0hkamJ0J5Dmd4y4fEzB0CiQeJdPIzYTKxFqVl6znri78C0n9dM64h57b4wL0Rm/x0K+tzLEYLtfaJzT+9YH005poxFOzFEeYOHm6/gOdWVUmm5QBJB1R7kP0sFGJhBFekAm6PbnA4+gwK1zTkkkqAYo8hDemXL638A=
+	t=1712583074; cv=none; b=UEn9OwlVxNeBWIIsBsmXWHVCqJ/vkmlZfPTze4Ng+IGLFkj/Ko3nTsbeywDertkE5og0Sv+LVov9IEl7FknRpV29Ubib9wQ+uM11OF0vJvG43OPMvDNYBvvI0tDgN3XuAgwyqL8z3FVAP3CUjiTV8GiATqSBJVTJg8XP8KimMvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584967; c=relaxed/simple;
-	bh=dosxHNO6cpOl/mWc8bmZnwuivaWM30oSq8+kHkroJu4=;
+	s=arc-20240116; t=1712583074; c=relaxed/simple;
+	bh=8kHpTRoViLbK8EtwmSnXxjn0vbB5iG0Uk1GMJtkyD3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+n79IXXyfqbNilQkqBUq+P/VBxg/xjvkfSBHRnmwELZ841YJ2DjK+Jvp9fNmRmveyTbIomNcg2kO1KvD0CXWxFOMLOEztgpy58XtCi+Pb4BB5muVtkaKMUzFEBdVNrbk8t10QBByigr0a4zSU1BJHAXM+iJTIygw03BlhI5Hz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjT0SHLs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFFA8C433C7;
-	Mon,  8 Apr 2024 14:02:46 +0000 (UTC)
+	 MIME-Version; b=sSRvRENFM2YaeWbFRTeqsf2XMmI+6tXjv2GIkL//zOG+u7T7P4r+7kB4S5caaVUW4ius9XNvOkYpmpSD0JQPdyfHwcWU0M6s1i1c9r4G+UQNUGE8V3EGzzOKY0ewamsnMolr0PvW0WvnnUUeiTZXCf2oZd9WUG6qpfw55wpTY/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtbZ534X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB55C433F1;
+	Mon,  8 Apr 2024 13:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584967;
-	bh=dosxHNO6cpOl/mWc8bmZnwuivaWM30oSq8+kHkroJu4=;
+	s=korg; t=1712583074;
+	bh=8kHpTRoViLbK8EtwmSnXxjn0vbB5iG0Uk1GMJtkyD3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zjT0SHLscaSgNojTZVWU6TTeYPFnmp/3JfkIlnUDXdPiludIZ9VEdSdWkpTAU6aJ4
-	 DYd0MMKaICTZ4UiiLuCwhflr6y/cTgh0GpWo/twJvbe6LIDKHEZS7avVxjYjEe4/wE
-	 uEGN2tIeDpMAg5uZYjzLqKfIEdmqjhTcV+Sco2Vo=
+	b=TtbZ534X799ABEV+frJsr1uxo0HWbjBOQU6UxSLlBOYVv3USfc0sDGAmkYRD1fpA8
+	 LmmisJdf6lClr0f+xEeCadu0O9FHmDeQ/u662Q+ZmViHvE3ifCNI1EWN4o/g21Hc43
+	 SaEf48OG52z7rTKWdQSmpRofIUnQ1N6GCaFlCiT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Subject: [PATCH 5.15 587/690] usb: dwc2: host: Fix hibernation flow
+	Paul Barker <paul.barker.ct@bp.renesas.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 154/252] net: ravb: Always process TX descriptor ring
 Date: Mon,  8 Apr 2024 14:57:33 +0200
-Message-ID: <20240408125420.845506481@linuxfoundation.org>
+Message-ID: <20240408125311.439287743@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,99 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+From: Paul Barker <paul.barker.ct@bp.renesas.com>
 
-commit 3c7b9856a82227db01a20171d2e24c7ce305d59b upstream.
+[ Upstream commit 596a4254915f94c927217fe09c33a6828f33fb25 ]
 
-Added to backup/restore registers HFLBADDR, HCCHARi, HCSPLTi,
-HCTSIZi, HCDMAi and HCDMABi.
+The TX queue should be serviced each time the poll function is called,
+even if the full RX work budget has been consumed. This prevents
+starvation of the TX queue when RX bandwidth usage is high.
 
-Fixes: 58e52ff6a6c3 ("usb: dwc2: Move register save and restore functions")
-Fixes: d17ee77b3044 ("usb: dwc2: add controller hibernation support")
-CC: stable@vger.kernel.org
-Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Link: https://lore.kernel.org/r/c2d10ee6098b9b009a8e94191e046004747d3bdd.1708945444.git.Minas.Harutyunyan@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20240402145305.82148-1-paul.barker.ct@bp.renesas.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/core.h |   12 ++++++++++++
- drivers/usb/dwc2/hcd.c  |   18 ++++++++++++++++--
- 2 files changed, 28 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/dwc2/core.h
-+++ b/drivers/usb/dwc2/core.h
-@@ -755,8 +755,14 @@ struct dwc2_dregs_backup {
-  * struct dwc2_hregs_backup - Holds host registers state before
-  * entering partial power down
-  * @hcfg:		Backup of HCFG register
-+ * @hflbaddr:		Backup of HFLBADDR register
-  * @haintmsk:		Backup of HAINTMSK register
-+ * @hcchar:		Backup of HCCHAR register
-+ * @hcsplt:		Backup of HCSPLT register
-  * @hcintmsk:		Backup of HCINTMSK register
-+ * @hctsiz:		Backup of HCTSIZ register
-+ * @hdma:		Backup of HCDMA register
-+ * @hcdmab:		Backup of HCDMAB register
-  * @hprt0:		Backup of HPTR0 register
-  * @hfir:		Backup of HFIR register
-  * @hptxfsiz:		Backup of HPTXFSIZ register
-@@ -764,8 +770,14 @@ struct dwc2_dregs_backup {
-  */
- struct dwc2_hregs_backup {
- 	u32 hcfg;
-+	u32 hflbaddr;
- 	u32 haintmsk;
-+	u32 hcchar[MAX_EPS_CHANNELS];
-+	u32 hcsplt[MAX_EPS_CHANNELS];
- 	u32 hcintmsk[MAX_EPS_CHANNELS];
-+	u32 hctsiz[MAX_EPS_CHANNELS];
-+	u32 hcidma[MAX_EPS_CHANNELS];
-+	u32 hcidmab[MAX_EPS_CHANNELS];
- 	u32 hprt0;
- 	u32 hfir;
- 	u32 hptxfsiz;
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -5437,9 +5437,16 @@ int dwc2_backup_host_registers(struct dw
- 	/* Backup Host regs */
- 	hr = &hsotg->hr_backup;
- 	hr->hcfg = dwc2_readl(hsotg, HCFG);
-+	hr->hflbaddr = dwc2_readl(hsotg, HFLBADDR);
- 	hr->haintmsk = dwc2_readl(hsotg, HAINTMSK);
--	for (i = 0; i < hsotg->params.host_channels; ++i)
-+	for (i = 0; i < hsotg->params.host_channels; ++i) {
-+		hr->hcchar[i] = dwc2_readl(hsotg, HCCHAR(i));
-+		hr->hcsplt[i] = dwc2_readl(hsotg, HCSPLT(i));
- 		hr->hcintmsk[i] = dwc2_readl(hsotg, HCINTMSK(i));
-+		hr->hctsiz[i] = dwc2_readl(hsotg, HCTSIZ(i));
-+		hr->hcidma[i] = dwc2_readl(hsotg, HCDMA(i));
-+		hr->hcidmab[i] = dwc2_readl(hsotg, HCDMAB(i));
-+	}
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index b87e9252ea176..14595d23b1903 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1292,12 +1292,12 @@ static int ravb_poll(struct napi_struct *napi, int budget)
+ 	int q = napi - priv->napi;
+ 	int mask = BIT(q);
+ 	int quota = budget;
++	bool unmask;
  
- 	hr->hprt0 = dwc2_read_hprt0(hsotg);
- 	hr->hfir = dwc2_readl(hsotg, HFIR);
-@@ -5473,10 +5480,17 @@ int dwc2_restore_host_registers(struct d
- 	hr->valid = false;
+ 	/* Processing RX Descriptor Ring */
+ 	/* Clear RX interrupt */
+ 	ravb_write(ndev, ~(mask | RIS0_RESERVED), RIS0);
+-	if (ravb_rx(ndev, &quota, q))
+-		goto out;
++	unmask = !ravb_rx(ndev, &quota, q);
  
- 	dwc2_writel(hsotg, hr->hcfg, HCFG);
-+	dwc2_writel(hsotg, hr->hflbaddr, HFLBADDR);
- 	dwc2_writel(hsotg, hr->haintmsk, HAINTMSK);
+ 	/* Processing TX Descriptor Ring */
+ 	spin_lock_irqsave(&priv->lock, flags);
+@@ -1307,6 +1307,9 @@ static int ravb_poll(struct napi_struct *napi, int budget)
+ 	netif_wake_subqueue(ndev, q);
+ 	spin_unlock_irqrestore(&priv->lock, flags);
  
--	for (i = 0; i < hsotg->params.host_channels; ++i)
-+	for (i = 0; i < hsotg->params.host_channels; ++i) {
-+		dwc2_writel(hsotg, hr->hcchar[i], HCCHAR(i));
-+		dwc2_writel(hsotg, hr->hcsplt[i], HCSPLT(i));
- 		dwc2_writel(hsotg, hr->hcintmsk[i], HCINTMSK(i));
-+		dwc2_writel(hsotg, hr->hctsiz[i], HCTSIZ(i));
-+		dwc2_writel(hsotg, hr->hcidma[i], HCDMA(i));
-+		dwc2_writel(hsotg, hr->hcidmab[i], HCDMAB(i));
-+	}
++	if (!unmask)
++		goto out;
++
+ 	napi_complete(napi);
  
- 	dwc2_writel(hsotg, hr->hprt0, HPRT0);
- 	dwc2_writel(hsotg, hr->hfir, HFIR);
+ 	/* Re-enable RX/TX interrupts */
+-- 
+2.43.0
+
 
 
 
