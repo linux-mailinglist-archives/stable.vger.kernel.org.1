@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-37130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828CB89C4ED
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:51:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1E689C5CE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C41EDB2B5BD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D2CB1C22B16
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163C87D408;
-	Mon,  8 Apr 2024 13:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401E07D3FD;
+	Mon,  8 Apr 2024 14:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yq35Lcam"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvcQV9Nc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1988612E;
-	Mon,  8 Apr 2024 13:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F3A7D3FE;
+	Mon,  8 Apr 2024 14:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583334; cv=none; b=b5Gvg5ohAldzcvAS5i/d1MnN2AXjA8PFreLz/j7m3dhY7LgxPhccoopIV6w/27NCIzuZOl2ipa9fsbvQoUy8/2J0UEtQq8x4jPQb9vIght1IXKRBL4nlaJJYuPvDMV72RK2Iy1dvIxOaXMpAlLFYp10C2c7hAaXfPVmm1LPf1fc=
+	t=1712584839; cv=none; b=VOyAgHoQ2G4N61aSmAkSgg2GJez5Fx6uomtzGgfPiCCI6WvJB1BSsJyDr9opwhr2NtqvN6GdOoBj5Osij+HplTxhA8HkwUg00vKsIE5P8zD5MqW/DbF4hJ1BOGT8ilW5GHJAeXakr1r8/HcdHbCXzeLjBq3jU1KqIjJ0J6XmxSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583334; c=relaxed/simple;
-	bh=QIukKv4ugaC1uOqYK0dKvdYozhGycVYDeQJMb3TwaGs=;
+	s=arc-20240116; t=1712584839; c=relaxed/simple;
+	bh=ck9yslNbH32fFjOuFv9blUBipVQ8O1WmxQW3SD+D7Tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/MDfd7ZAjhWyxNehW430zeU55HRLc2WpXDvUOhpD51kcDXyf8m9n6RleGr3IOkEbgy2pmOkK3WwYL4dKTamyQkI10u2qgdpJtwvQMq21ve1zxbhxvqsAcM1nUkRkcjrdpILUCxH406gqzV/vrIPeuTXEbxVd4PcVpZ2jf+VsX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yq35Lcam; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489F6C433F1;
-	Mon,  8 Apr 2024 13:35:34 +0000 (UTC)
+	 MIME-Version; b=uLBrTS9umX4QSPxRKHKMLESwbc7qKMvx133cZcCh5lB96nY/cMty6MuGFwgtYAt3T5q3XCONd0y9lRjaRuOHqi3BIxibseTLs4BOT3plGYuMZ2hkiggTkLV00B6bbncr3dN5aZA5Rxgzo9EraYJFGY2kod0fosKQlbkFpf01SWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvcQV9Nc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785FFC433C7;
+	Mon,  8 Apr 2024 14:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583334;
-	bh=QIukKv4ugaC1uOqYK0dKvdYozhGycVYDeQJMb3TwaGs=;
+	s=korg; t=1712584838;
+	bh=ck9yslNbH32fFjOuFv9blUBipVQ8O1WmxQW3SD+D7Tg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yq35Lcamvxhrr8TvYwD1DMhv1z0hyDkbaowwK9WQLL1EgdwOgalRi66rQ4rjAB/pk
-	 K7wkSTFz/TgQ+rt8ZEXP8sZi455DVs7TFUaBcVnTOgvIANIq7tCjpy6A9qREtvPRKj
-	 lwB3fiEgSIrq0LmKb4zzZ6XQfYStkbORAQzxnaPs=
+	b=FvcQV9Ncxbdvksfy+eX24qbVH/aFn3/FRhd6a62aRLyVSY/LfhJ0dSCTFLJT7cHTe
+	 T40fGFXRdiMvKFeFG6Hba4I8t1hQQy0rn0Bn3CSmxhkhEN0X10+57mz4zh2FdclTIj
+	 1JghQkDnm959V+lB3vA3g8e5ks/uIuf+mPpzD2PQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 165/273] spi: s3c64xx: sort headers alphabetically
+	Mikko Rapeli <mikko.rapeli@linaro.org>,
+	Avri Altman <avri.altman@wdc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 574/690] mmc: core: Initialize mmc_blk_ioc_data
 Date: Mon,  8 Apr 2024 14:57:20 +0200
-Message-ID: <20240408125314.392039308@linuxfoundation.org>
+Message-ID: <20240408125420.401737858@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Mikko Rapeli <mikko.rapeli@linaro.org>
 
-[ Upstream commit a77ce80f63f06d7ae933c332ed77c79136fa69b0 ]
+commit 0cdfe5b0bf295c0dee97436a8ed13336933a0211 upstream.
 
-Sorting headers alphabetically helps locating duplicates,
-and makes it easier to figure out where to insert new headers.
+Commit 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu") adds
+flags uint to struct mmc_blk_ioc_data, but it does not get initialized for
+RPMB ioctls which now fails.
 
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://lore.kernel.org/r/20240207120431.2766269-2-tudor.ambarus@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: a3d3eab627bb ("spi: s3c64xx: Use DMA mode from fifo size")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Let's fix this by always initializing the struct and flags to zero.
+
+Fixes: 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218587
+Link: https://lore.kernel.org/all/20231129092535.3278-1-avri.altman@wdc.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://lore.kernel.org/r/20240313133744.2405325-1-mikko.rapeli@linaro.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-s3c64xx.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/mmc/core/block.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 432ec60d35684..26d389d95af92 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -3,19 +3,18 @@
- // Copyright (c) 2009 Samsung Electronics Co., Ltd.
- //      Jaswinder Singh <jassi.brar@samsung.com>
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -412,7 +412,7 @@ static struct mmc_blk_ioc_data *mmc_blk_
+ 	struct mmc_blk_ioc_data *idata;
+ 	int err;
  
--#include <linux/init.h>
--#include <linux/module.h>
--#include <linux/interrupt.h>
--#include <linux/delay.h>
- #include <linux/clk.h>
-+#include <linux/delay.h>
- #include <linux/dma-mapping.h>
- #include <linux/dmaengine.h>
-+#include <linux/init.h>
-+#include <linux/interrupt.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/platform_data/spi-s3c64xx.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/spi/spi.h>
--#include <linux/of.h>
--
--#include <linux/platform_data/spi-s3c64xx.h>
- 
- #define MAX_SPI_PORTS		12
- #define S3C64XX_SPI_QUIRK_CS_AUTO	(1 << 1)
--- 
-2.43.0
-
+-	idata = kmalloc(sizeof(*idata), GFP_KERNEL);
++	idata = kzalloc(sizeof(*idata), GFP_KERNEL);
+ 	if (!idata) {
+ 		err = -ENOMEM;
+ 		goto out;
 
 
 
