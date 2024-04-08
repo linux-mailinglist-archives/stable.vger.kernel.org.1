@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-36347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 662FE89BCC3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 12:14:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F8189BCC4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 12:14:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88AD61C2239C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 10:14:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91165B22936
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 10:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8823A52F6A;
-	Mon,  8 Apr 2024 10:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F378C52F7E;
+	Mon,  8 Apr 2024 10:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LN+yOVS5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHwSqBMq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207B2537FB
-	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 10:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C0652F7D
+	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 10:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712571264; cv=none; b=RsIETyd2E+E6a1YA3J2d7uCPQ5BgHQgZRbKsu8weRpBm2+t7ZabH5NwICAPMnTig+oSYG+WrhkVQKw+ntEZz0JdzYxS5+RwcMcwPU9GaADlFhiLKrE1AEun4Zv9mJnqv51zOvVL7QS2N28qmha/ftlMbw/C+ynhdXdAJ27N8bC8=
+	t=1712571268; cv=none; b=nBI6OzOAV/4mux8hKGOpvcKXGNwVSO4YCuXyKNdUeuR/s4DBuKAicirRl5RUeun7jjJ5wzoArqwpsymoSmZRHl3lGEt84E/RqlQ2yq+vAamkosy6gp/vFZQWYngKn52F1jdt4vY1MVcOVrez+WM+zFx73o11P0oDs5RA/qDIvV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712571264; c=relaxed/simple;
-	bh=UOpAZ8D3HaJ6exHxURqMyvaWB1prQjExaL1DMkJMWcU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=k/cxMPgk9WNvDFeRtQFYQcsiuLEwHoiNDjc1gFb5eiFcQacgV8W9ckrawUhlrT+fYoQenveqa03Z7EZ80T2cHbNWGPlHQeDGLuCslaoBWiuVxSVG3MxvePnTVHozbMV1stsgZsL4Of6RG6pn39GQa2lZxPzQ48vcjOUqgDYshKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LN+yOVS5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A6EC433F1;
-	Mon,  8 Apr 2024 10:14:22 +0000 (UTC)
+	s=arc-20240116; t=1712571268; c=relaxed/simple;
+	bh=8WC15mKeV00Zj4Ka+rqTm/z/iuLSCrtV4yU8Sk/1rDc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PczHrhN28tzR9eQuC1AKuAq19k2glGxRLfltKabf0WJYHJDx2BXAfn81IQXrG2TVxLJAoVAvc1mbR2gIneyrg/cReiIzLhgCg5P80VLFfS2fD54bhhyVjer88gwl0XHt701J1Bh332Dg+8poDnB0dGPCK9Yugh3rlNN70l25wrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHwSqBMq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2D5C43390;
+	Mon,  8 Apr 2024 10:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712571263;
-	bh=UOpAZ8D3HaJ6exHxURqMyvaWB1prQjExaL1DMkJMWcU=;
+	s=korg; t=1712571268;
+	bh=8WC15mKeV00Zj4Ka+rqTm/z/iuLSCrtV4yU8Sk/1rDc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=LN+yOVS5pj5eqteziqbHdLEoP3IitlHASFRoaPk3ShdSZC/KRB8bFoow/ebr1KlFM
-	 EiwcWf9OAG3KPxIKpeZWu6oE3JB+XSved76MYv9jyfv1ufWwHdDyI4liohOLBLiQck
-	 jaDrnIjujF9W9IDnlezLsVnGwDivHc4UlJGGgWbc=
-Subject: FAILED: patch "[PATCH] mm/secretmem: fix GUP-fast succeeding on secretmem folios" failed to apply to 6.1-stable tree
+	b=VHwSqBMqG2N408oLoS+O1Pb7CDon7NV+XojWUAVlldjjhF6Yah3fWphOH7/D8JBOc
+	 AwDBvRzv1/7CVLMDX2y6FM065T7fgCNWk3WmDrmPDo+SEuxiyDj+aVplPhL8p1dmdM
+	 Ka1QPM829gWq2kDjpHxcSyLNvpqlBtygsf8lFU8I=
+Subject: FAILED: patch "[PATCH] mm/secretmem: fix GUP-fast succeeding on secretmem folios" failed to apply to 5.15-stable tree
 To: david@redhat.com,akpm@linux-foundation.org,lstoakes@gmail.com,miklos@szeredi.hu,mszeredi@redhat.com,rppt@kernel.org,samsun1006219@gmail.com,stable@vger.kernel.org,xrivendell7@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 08 Apr 2024 12:14:19 +0200
-Message-ID: <2024040819-elf-bamboo-00f6@gregkh>
+Date: Mon, 08 Apr 2024 12:14:24 +0200
+Message-ID: <2024040823-spilt-marsupial-8d2f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 65291dcfcf8936e1b23cfd7718fdfde7cfaf7706
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040819-elf-bamboo-00f6@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040823-spilt-marsupial-8d2f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 65291dcfcf89 ("mm/secretmem: fix GUP-fast succeeding on secretmem folios")
 8f9ff2deb8b9 ("secretmem: convert page_is_secretmem() to folio_is_secretmem()")
+b0496fe4effd ("mm/gup: Convert gup_pte_range() to use a folio")
 
 thanks,
 
