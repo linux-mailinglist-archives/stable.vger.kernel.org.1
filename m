@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-36632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A546389C0FE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:16:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C471389C356
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 456811F213B5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:16:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F9E9283AE1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DABB7CF34;
-	Mon,  8 Apr 2024 13:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C5682D7A;
+	Mon,  8 Apr 2024 13:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCgx8QnD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNzX/Sl9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED007CF17;
-	Mon,  8 Apr 2024 13:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B847C6D4;
+	Mon,  8 Apr 2024 13:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581894; cv=none; b=WFXv6e626MaKg3f8jtEe+HQOG6o7mLXkRvGfzRdidfVBo6uRVCgf+mHZfB0XSLDwY6jBoAC0FOqn/wv03a8c/1kM3A2h2TkyDrss6G2pdRaQMGz+nPgaoTnDxme5O+EIfuUC5NX7Ec+WrkxBSEMb0gG6ExQ86QkQV0Ex6mXbE3M=
+	t=1712583262; cv=none; b=GQhHBxe9dIXu5jdMWpCDjnaaQSN/hcm73h0NX5zglXiizG2SIubqHzt1j07w7sg/hu1mnDUDR27HGo0bevZlzjVNncmtJaD++g4hwk9RiNLMYDKp+XtqUcyVK9WeXeXd0Bo1B03L+k5BFsLUa9sVgHp9m47dRLZJsI+CADFJFwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581894; c=relaxed/simple;
-	bh=V3xQqMMz721X7T6Cq+kRzZ1IfXbaTvDCUTWo/2/rdSo=;
+	s=arc-20240116; t=1712583262; c=relaxed/simple;
+	bh=jsLbfJxp+SBExdJjWGHypuulvtM7qXNk8xf8nA9YRXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=smf1AEyD+eP334KAzi4/SviCicsIIC0fCz9EDGmJDyfHKeAVo0qYnN2pL6t+vFV8w6VFcLGGttESc7I0D6yCNGRUWUqV2tAo8l51WoonhqDs7JYQqTzGq+8RiY9EVujgCiCXhUqda8HIX1GWxdKjz+sJz2Kdy5feoaKsM7QVag0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCgx8QnD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C567C433F1;
-	Mon,  8 Apr 2024 13:11:32 +0000 (UTC)
+	 MIME-Version; b=Hq8wtLWiql9xUFutmmAGuZuOiP92lU/0gmbb2yqAIvdS7Zi4KYK16B181Ru9DvAvtAtnRb+HyG073f1Qw/eDM+xYwjKuzUJF7ktKF560CXrka2C/b77JRQkJQfnq71ZbZfezV03oCPVdhvFntnUNGgU8HxZAN7MHq03h5fY0tNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNzX/Sl9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD8DC433F1;
+	Mon,  8 Apr 2024 13:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581893;
-	bh=V3xQqMMz721X7T6Cq+kRzZ1IfXbaTvDCUTWo/2/rdSo=;
+	s=korg; t=1712583261;
+	bh=jsLbfJxp+SBExdJjWGHypuulvtM7qXNk8xf8nA9YRXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eCgx8QnDW3q2bM+uM709HVH1guyX+S1kJUOrnRwD9XyP7q41T7pK5ZObbs8YJw+Ot
-	 7uwi+xhGywF3daTerXz5Ja6UXYONfMGaxrJYzONt1yBNyGb73gL/nVxTu53up3Deab
-	 xaRcR5EiprOLfNAxp7IvduKQM9Xgx+R1FUn/Xjco=
+	b=pNzX/Sl9akprv0UK8pk8GlfI5tQ0y0LapsdY80M63WM4evSnpMGTGgxsUPG562MFm
+	 7Sq14db6AmlzgN23Q37alMGUsk7YOY0Ik4jDiZUQ1F+v31wEavlPihtY5AQDrCraUD
+	 /hhVjtL6vaaa6dRG1JVrKkK2VPNz1oG3FSA6lrFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Atlas Yu <atlas.yu@canonical.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 060/138] r8169: skip DASH fw status checks when DASH is disabled
+	Andi Shyti <andi.shyti@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 175/252] spi: s3c64xx: sort headers alphabetically
 Date: Mon,  8 Apr 2024 14:57:54 +0200
-Message-ID: <20240408125258.088500262@linuxfoundation.org>
+Message-ID: <20240408125312.089201463@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Atlas Yu <atlas.yu@canonical.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-commit 5e864d90b20803edf6bd44a99fb9afa7171785f2 upstream.
+[ Upstream commit a77ce80f63f06d7ae933c332ed77c79136fa69b0 ]
 
-On devices that support DASH, the current code in the "rtl_loop_wait" function
-raises false alarms when DASH is disabled. This occurs because the function
-attempts to wait for the DASH firmware to be ready, even though it's not
-relevant in this case.
+Sorting headers alphabetically helps locating duplicates,
+and makes it easier to figure out where to insert new headers.
 
-r8169 0000:0c:00.0 eth0: RTL8168ep/8111ep, 38:7c:76:49:08:d9, XID 502, IRQ 86
-r8169 0000:0c:00.0 eth0: jumbo features [frames: 9194 bytes, tx checksumming: ko]
-r8169 0000:0c:00.0 eth0: DASH disabled
-...
-r8169 0000:0c:00.0 eth0: rtl_ep_ocp_read_cond == 0 (loop: 30, delay: 10000).
-
-This patch modifies the driver start/stop functions to skip checking the DASH
-firmware status when DASH is explicitly disabled. This prevents unnecessary
-delays and false alarms.
-
-The patch has been tested on several ThinkStation P8/PX workstations.
-
-Fixes: 0ab0c45d8aae ("r8169: add handling DASH when DASH is disabled")
-Signed-off-by: Atlas Yu <atlas.yu@canonical.com>
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/20240328055152.18443-1-atlas.yu@canonical.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://lore.kernel.org/r/20240207120431.2766269-2-tudor.ambarus@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: a3d3eab627bb ("spi: s3c64xx: Use DMA mode from fifo size")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |   31 ++++++++++++++++++++++++++----
- 1 file changed, 27 insertions(+), 4 deletions(-)
+ drivers/spi/spi-s3c64xx.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -1135,17 +1135,40 @@ static void rtl8168ep_stop_cmac(struct r
- 	RTL_W8(tp, IBCR0, RTL_R8(tp, IBCR0) & ~0x01);
- }
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 432ec60d35684..26d389d95af92 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -3,19 +3,18 @@
+ // Copyright (c) 2009 Samsung Electronics Co., Ltd.
+ //      Jaswinder Singh <jassi.brar@samsung.com>
  
-+static void rtl_dash_loop_wait(struct rtl8169_private *tp,
-+			       const struct rtl_cond *c,
-+			       unsigned long usecs, int n, bool high)
-+{
-+	if (!tp->dash_enabled)
-+		return;
-+	rtl_loop_wait(tp, c, usecs, n, high);
-+}
-+
-+static void rtl_dash_loop_wait_high(struct rtl8169_private *tp,
-+				    const struct rtl_cond *c,
-+				    unsigned long d, int n)
-+{
-+	rtl_dash_loop_wait(tp, c, d, n, true);
-+}
-+
-+static void rtl_dash_loop_wait_low(struct rtl8169_private *tp,
-+				   const struct rtl_cond *c,
-+				   unsigned long d, int n)
-+{
-+	rtl_dash_loop_wait(tp, c, d, n, false);
-+}
-+
- static void rtl8168dp_driver_start(struct rtl8169_private *tp)
- {
- 	r8168dp_oob_notify(tp, OOB_CMD_DRIVER_START);
--	rtl_loop_wait_high(tp, &rtl_dp_ocp_read_cond, 10000, 10);
-+	rtl_dash_loop_wait_high(tp, &rtl_dp_ocp_read_cond, 10000, 10);
- }
+-#include <linux/init.h>
+-#include <linux/module.h>
+-#include <linux/interrupt.h>
+-#include <linux/delay.h>
+ #include <linux/clk.h>
++#include <linux/delay.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dmaengine.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/platform_data/spi-s3c64xx.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/spi/spi.h>
+-#include <linux/of.h>
+-
+-#include <linux/platform_data/spi-s3c64xx.h>
  
- static void rtl8168ep_driver_start(struct rtl8169_private *tp)
- {
- 	r8168ep_ocp_write(tp, 0x01, 0x180, OOB_CMD_DRIVER_START);
- 	r8168ep_ocp_write(tp, 0x01, 0x30, r8168ep_ocp_read(tp, 0x30) | 0x01);
--	rtl_loop_wait_high(tp, &rtl_ep_ocp_read_cond, 10000, 30);
-+	rtl_dash_loop_wait_high(tp, &rtl_ep_ocp_read_cond, 10000, 30);
- }
- 
- static void rtl8168_driver_start(struct rtl8169_private *tp)
-@@ -1159,7 +1182,7 @@ static void rtl8168_driver_start(struct
- static void rtl8168dp_driver_stop(struct rtl8169_private *tp)
- {
- 	r8168dp_oob_notify(tp, OOB_CMD_DRIVER_STOP);
--	rtl_loop_wait_low(tp, &rtl_dp_ocp_read_cond, 10000, 10);
-+	rtl_dash_loop_wait_low(tp, &rtl_dp_ocp_read_cond, 10000, 10);
- }
- 
- static void rtl8168ep_driver_stop(struct rtl8169_private *tp)
-@@ -1167,7 +1190,7 @@ static void rtl8168ep_driver_stop(struct
- 	rtl8168ep_stop_cmac(tp);
- 	r8168ep_ocp_write(tp, 0x01, 0x180, OOB_CMD_DRIVER_STOP);
- 	r8168ep_ocp_write(tp, 0x01, 0x30, r8168ep_ocp_read(tp, 0x30) | 0x01);
--	rtl_loop_wait_low(tp, &rtl_ep_ocp_read_cond, 10000, 10);
-+	rtl_dash_loop_wait_low(tp, &rtl_ep_ocp_read_cond, 10000, 10);
- }
- 
- static void rtl8168_driver_stop(struct rtl8169_private *tp)
+ #define MAX_SPI_PORTS		12
+ #define S3C64XX_SPI_QUIRK_CS_AUTO	(1 << 1)
+-- 
+2.43.0
+
 
 
 
