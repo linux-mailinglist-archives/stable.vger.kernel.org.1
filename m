@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-37106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA4689C359
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7AF89C000
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:05:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77EDF283908
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5073284992
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5304F85631;
-	Mon,  8 Apr 2024 13:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73AD97BB1F;
+	Mon,  8 Apr 2024 13:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ophxcuDq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+KT8TTL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3AA7C6D4;
-	Mon,  8 Apr 2024 13:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A5564CF2;
+	Mon,  8 Apr 2024 13:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583268; cv=none; b=dsiXycSauHa5+JeAlC3U+7Oom6airr6RhStaT7+COeSL1eC1BQD4CnBrxOzc5dYMfRt9rnm/4k/5zFZdaY/GPnijgXjD6kq5isHPwg0ZZrBjxCxkqPzpLWTgFoz1c6cCNsaz/+9D4exTIVkQM+CtqLRYemVh+EnL/4nFA8N2Fi8=
+	t=1712581437; cv=none; b=FJU1eIUF9183cmgDNKPVNWIlJGT3+Zwd9b4v+z6G/REXl3cT0zLopkzOzH/y2ubCOmIEQPO9cEbsKbJxOfx3NAMWJM/s7akSePdfy++DUVa4mm+26F2aDuRrBm+ZkVQeP0o2W6IOvXJfhKTtMy/dkaykHL0slAfVWpiw3YQbIrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583268; c=relaxed/simple;
-	bh=GPifiWNWE84n9VtwzqefCYLTMwCOGfmyu/WvuRHClXw=;
+	s=arc-20240116; t=1712581437; c=relaxed/simple;
+	bh=Nx84nNful3EhSCX9GDP3HZbAXgF2FzEiBKfHlDAeiw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W7+2HuRO//VsjznYVyOKpbwaAxz0JhPdn4KPjR/6egnlXfG4wFNj9oT+pGo7jwVqbPVvPNQmOlUO+m6PRvVKzPDfTP2T7jXkhbx6d8ypmQ4hQbKfChXQL43dOBOmvC+BMB8kL003CH8NVQQpUg2VxUQb5cJxu88ZMViSqt3T/8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ophxcuDq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39191C433F1;
-	Mon,  8 Apr 2024 13:34:27 +0000 (UTC)
+	 MIME-Version; b=J+kwZYvBA0e/WeiPWdrCtqiIdsXl5lW3NXwwJZNw35pY3kmiNxwu2zxRHPJVPQLgjWMM9IyiabmCd7rbo1UBV73hlk7zFkInw2E8xUVWnAkpjY9ohy1TlGC3Tprv4e1SNjOBGbNPvD2d6r8iTJBuo/hCKSww0lH8yvYLokWQ1kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+KT8TTL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10DFC433C7;
+	Mon,  8 Apr 2024 13:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583267;
-	bh=GPifiWNWE84n9VtwzqefCYLTMwCOGfmyu/WvuRHClXw=;
+	s=korg; t=1712581437;
+	bh=Nx84nNful3EhSCX9GDP3HZbAXgF2FzEiBKfHlDAeiw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ophxcuDq91rhymZq6M0Nebvb+9WL0KHUqGhTj8RtHLtBrwZby1IuqCJlmN5pLi8lX
-	 3vL/n8q4HpfGRyciHHm610rPS/J1NEgeQn4sBO0IWJpj/sHkvdxAHb2+vx2CWJbUzF
-	 Kuccb1OF1oWK9uCA1VGwq6hLIvMDKpGENuKVLLZU=
+	b=T+KT8TTLx84PkHk8YMW5QmyJFiQm6emyaGbV+Pl+nyLjK9pDCjkp2KsFng2UdHs3x
+	 uD9TznLOaPcjzgwD0fNO7Y624EIzCwiZDCUVMv4Q6J+sAxMxp9ZQUnVdAu/C375Ybb
+	 DXcAqzE0hrQzsWAwdYir8EznKR5K7IoOEBC9IJEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Chao Song <chao.song@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Rohith Surabattula <rohiths.msft@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 158/273] ASoC: rt5682-sdw: fix locking sequence
+Subject: [PATCH 6.1 019/138] cifs: Fix duplicate fscache cookie warnings
 Date: Mon,  8 Apr 2024 14:57:13 +0200
-Message-ID: <20240408125314.180247889@linuxfoundation.org>
+Message-ID: <20240408125256.827989943@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +68,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 310a5caa4e861616a27a83c3e8bda17d65026fa8 ]
+[ Upstream commit 8876a37277cb832e1861c35f8c661825179f73f5 ]
 
-The disable_irq_lock protects the 'disable_irq' value, we need to lock
-before testing it.
+fscache emits a lot of duplicate cookie warnings with cifs because the
+index key for the fscache cookies does not include everything that the
+cifs_find_inode() function does.  The latter is used with iget5_locked() to
+distinguish between inodes in the local inode cache.
 
-Fixes: 02fb23d72720 ("ASoC: rt5682-sdw: fix for JD event handling in ClockStop Mode0")
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Chao Song <chao.song@linux.intel.com>
-Link: https://msgid.link/r/20240325221817.206465-2-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix this by adding the creation time and file type to the fscache cookie
+key.
+
+Additionally, add a couple of comments to note that if one is changed the
+other must be also.
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+Fixes: 70431bfd825d ("cifs: Support fscache indexing rewrite")
+cc: Shyam Prasad N <nspmangalore@gmail.com>
+cc: Rohith Surabattula <rohiths.msft@gmail.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5682-sdw.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/fscache.c | 16 +++++++++++++++-
+ fs/smb/client/inode.c   |  2 ++
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/rt5682-sdw.c b/sound/soc/codecs/rt5682-sdw.c
-index e67c2e19cb1a7..1fdbef5fd6cba 100644
---- a/sound/soc/codecs/rt5682-sdw.c
-+++ b/sound/soc/codecs/rt5682-sdw.c
-@@ -763,12 +763,12 @@ static int __maybe_unused rt5682_dev_resume(struct device *dev)
+diff --git a/fs/smb/client/fscache.c b/fs/smb/client/fscache.c
+index f64bad513ba6d..6df4ab2a6e5dc 100644
+--- a/fs/smb/client/fscache.c
++++ b/fs/smb/client/fscache.c
+@@ -12,6 +12,16 @@
+ #include "cifs_fs_sb.h"
+ #include "cifsproto.h"
+ 
++/*
++ * Key for fscache inode.  [!] Contents must match comparisons in cifs_find_inode().
++ */
++struct cifs_fscache_inode_key {
++
++	__le64  uniqueid;	/* server inode number */
++	__le64  createtime;	/* creation time on server */
++	u8	type;		/* S_IFMT file type */
++} __packed;
++
+ static void cifs_fscache_fill_volume_coherency(
+ 	struct cifs_tcon *tcon,
+ 	struct cifs_fscache_volume_coherency_data *cd)
+@@ -97,15 +107,19 @@ void cifs_fscache_release_super_cookie(struct cifs_tcon *tcon)
+ void cifs_fscache_get_inode_cookie(struct inode *inode)
+ {
+ 	struct cifs_fscache_inode_coherency_data cd;
++	struct cifs_fscache_inode_key key;
+ 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
+ 	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
+ 
++	key.uniqueid	= cpu_to_le64(cifsi->uniqueid);
++	key.createtime	= cpu_to_le64(cifsi->createtime);
++	key.type	= (inode->i_mode & S_IFMT) >> 12;
+ 	cifs_fscache_fill_coherency(&cifsi->netfs.inode, &cd);
+ 
+ 	cifsi->netfs.cache =
+ 		fscache_acquire_cookie(tcon->fscache, 0,
+-				       &cifsi->uniqueid, sizeof(cifsi->uniqueid),
++				       &key, sizeof(key),
+ 				       &cd, sizeof(cd),
+ 				       i_size_read(&cifsi->netfs.inode));
+ 	if (cifsi->netfs.cache)
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index 5343898bac8a6..634f28f0d331e 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -1274,6 +1274,8 @@ cifs_find_inode(struct inode *inode, void *opaque)
+ {
+ 	struct cifs_fattr *fattr = opaque;
+ 
++	/* [!] The compared values must be the same in struct cifs_fscache_inode_key. */
++
+ 	/* don't match inode with different uniqueid */
+ 	if (CIFS_I(inode)->uniqueid != fattr->cf_uniqueid)
  		return 0;
- 
- 	if (!slave->unattach_request) {
-+		mutex_lock(&rt5682->disable_irq_lock);
- 		if (rt5682->disable_irq == true) {
--			mutex_lock(&rt5682->disable_irq_lock);
- 			sdw_write_no_pm(slave, SDW_SCP_INTMASK1, SDW_SCP_INT1_IMPL_DEF);
- 			rt5682->disable_irq = false;
--			mutex_unlock(&rt5682->disable_irq_lock);
- 		}
-+		mutex_unlock(&rt5682->disable_irq_lock);
- 		goto regmap_sync;
- 	}
- 
 -- 
 2.43.0
 
