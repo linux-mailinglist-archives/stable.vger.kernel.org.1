@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-37351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A287E89C47A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C441089C3F2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF26D1C23255
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 819D7284397
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00757C0A9;
-	Mon,  8 Apr 2024 13:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF52B8120F;
+	Mon,  8 Apr 2024 13:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qx0VNV5c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0d/knd4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6587C092;
-	Mon,  8 Apr 2024 13:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0F979F0;
+	Mon,  8 Apr 2024 13:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583978; cv=none; b=kmHy+SH7RR23ZUdzuRar8Ezxg6S3juBVkv4Ny4Ncj69qb2Ei1LyWa4t986W9KjkpuGRyH85P+JCgfFbXhL/2BUFvXrwh+jZ/T5N9oioLGfqQI9Mbl3qmjA+5h16oce8bSBVUifndO7ZkoOUebbRyJt9b7ZhPyJbyTArR1V89y6E=
+	t=1712583631; cv=none; b=Zj88zeXWKYz6NGArJ1dmDa7FIgtfkfB1vcdxqIvWCsKSVecZvNpV796FxFR3XXxSR6QEifb/vhR9OeVxekozi7hx5JwR+4fF0+8dCfyC+2MUgHU35Vj9b4ZTl+NkusSqn3p9apBfOAcuPU0RxST3LYZ459lmL/m7p/BK1/Po4kY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583978; c=relaxed/simple;
-	bh=T4996eeippnpCifAlxMWQ2+lkfbwGcmrawYEsuN19Nk=;
+	s=arc-20240116; t=1712583631; c=relaxed/simple;
+	bh=LaFkEdmmUKQytOx5Pi1b4quWl4GCMDnOB9llZ5BW09M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dtOgXIOpXjzLkH5qSRLRM7a1OVrIsJXlob//WkIib4e/stqVOuXR8ny6/TgIGxGGOJecs+yNbHR+jtB/k2lTuMBlFArg25L11PqoE0oyzqjgGAikWbDU8LL5IF8R84/ncidQxuNGO1omYaDEhrHDJu8xN1M2DcGu9aKgdg4JHwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qx0VNV5c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E967FC433C7;
-	Mon,  8 Apr 2024 13:46:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X7ofBBG4mh2cnQUVnPmZScOI9NmJHltJdbp66uOKKysYrip+xkDCBYW2zbjnrnYRqX+Tpo2vKXGzJ9kCpXZ+KZ5nB6+n1B24iMUqD9O49DZOZy5RVV3aWxRONHNc+KH2r06MlsWQ/I97IvcGZKjvt4N6gtD6Y/AnZngZew6wVq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0d/knd4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F1CC433C7;
+	Mon,  8 Apr 2024 13:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583978;
-	bh=T4996eeippnpCifAlxMWQ2+lkfbwGcmrawYEsuN19Nk=;
+	s=korg; t=1712583631;
+	bh=LaFkEdmmUKQytOx5Pi1b4quWl4GCMDnOB9llZ5BW09M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qx0VNV5cnSVZ/2ivZx9/cVwAFd0J4+bwYc7tDCeY40INQaCScxQ8h4rZCj7V7e+Ke
-	 uYKANwk9f9rnhdoy7IfHBnU50VusCzPCKv6Re1GXKc0g+DSz6Ysafx0btFqac4LbNO
-	 jNcPykJ2fUjohekKOIkSIyhHDWxbVEERBxK5ikOc=
+	b=Q0d/knd4HWvzT09xkuYy+G6V9eZnEF+okrwxxIIF16CWeG9VKRyN6A6LrQ5NTOc0G
+	 R3JWWxf5Hy16oJb5e0Pw5nVuNlv6vLTdWmT+LtlDBaDyNZBO4xGDDL8nrNX5yT3tQ/
+	 T4IMOHEKjKyErmARxl66gAbrJoHamK6aFv8Y1gWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.8 241/273] riscv: Fix spurious errors from __get/put_kernel_nofault
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.6 217/252] x86/mce: Make sure to grab mce_sysfs_mutex in set_bank()
 Date: Mon,  8 Apr 2024 14:58:36 +0200
-Message-ID: <20240408125316.918309300@linuxfoundation.org>
+Message-ID: <20240408125313.394893381@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +59,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit d080a08b06b6266cc3e0e86c5acfd80db937cb6b upstream.
+commit 3ddf944b32f88741c303f0b21459dbb3872b8bc5 upstream.
 
-These macros did not initialize __kr_err, so they could fail even if
-the access did not fault.
+Modifying a MCA bank's MCA_CTL bits which control which error types to
+be reported is done over
 
-Cc: stable@vger.kernel.org
-Fixes: d464118cdc41 ("riscv: implement __get_kernel_nofault and __put_user_nofault")
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Link: https://lore.kernel.org/r/20240312022030.320789-1-samuel.holland@sifive.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+  /sys/devices/system/machinecheck/
+  ├── machinecheck0
+  │   ├── bank0
+  │   ├── bank1
+  │   ├── bank10
+  │   ├── bank11
+  ...
+
+sysfs nodes by writing the new bit mask of events to enable.
+
+When the write is accepted, the kernel deletes all current timers and
+reinits all banks.
+
+Doing that in parallel can lead to initializing a timer which is already
+armed and in the timer wheel, i.e., in use already:
+
+  ODEBUG: init active (active state 0) object: ffff888063a28000 object
+  type: timer_list hint: mce_timer_fn+0x0/0x240 arch/x86/kernel/cpu/mce/core.c:2642
+  WARNING: CPU: 0 PID: 8120 at lib/debugobjects.c:514
+  debug_print_object+0x1a0/0x2a0 lib/debugobjects.c:514
+
+Fix that by grabbing the sysfs mutex as the rest of the MCA sysfs code
+does.
+
+Reported by: Yue Sun <samsun1006219@gmail.com>
+Reported by: xingwei lee <xrivendell7@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/CAEkJfYNiENwQY8yV1LYJ9LjJs%2Bx_-PqMv98gKig55=2vbzffRw@mail.gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/uaccess.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/riscv/include/asm/uaccess.h
-+++ b/arch/riscv/include/asm/uaccess.h
-@@ -319,7 +319,7 @@ unsigned long __must_check clear_user(vo
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -2468,12 +2468,14 @@ static ssize_t set_bank(struct device *s
+ 		return -EINVAL;
  
- #define __get_kernel_nofault(dst, src, type, err_label)			\
- do {									\
--	long __kr_err;							\
-+	long __kr_err = 0;						\
- 									\
- 	__get_user_nocheck(*((type *)(dst)), (type *)(src), __kr_err);	\
- 	if (unlikely(__kr_err))						\
-@@ -328,7 +328,7 @@ do {									\
+ 	b = &per_cpu(mce_banks_array, s->id)[bank];
+-
+ 	if (!b->init)
+ 		return -ENODEV;
  
- #define __put_kernel_nofault(dst, src, type, err_label)			\
- do {									\
--	long __kr_err;							\
-+	long __kr_err = 0;						\
- 									\
- 	__put_user_nocheck(*((type *)(src)), (type *)(dst), __kr_err);	\
- 	if (unlikely(__kr_err))						\
+ 	b->ctl = new;
++
++	mutex_lock(&mce_sysfs_mutex);
+ 	mce_restart();
++	mutex_unlock(&mce_sysfs_mutex);
+ 
+ 	return size;
+ }
 
 
 
