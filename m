@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-36793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B37389C1AB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:23:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E628489C54F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:55:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3779928300A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 169A11C22633
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:55:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304DF80038;
-	Mon,  8 Apr 2024 13:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91B87BAE3;
+	Mon,  8 Apr 2024 13:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3f5Kqnb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLKqeEb+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E361374C09;
-	Mon,  8 Apr 2024 13:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BDA6EB72;
+	Mon,  8 Apr 2024 13:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582361; cv=none; b=Ms6rPjCLDw/+3k9iP8+HsjsAB0McKFux+7Y1eZNgvugZVi9DPrEb4gLESzCFmLA+GqrdYHCfj2r8urJfaqZArcSAsAJhE9uxRBrIn0ntZLh0sTdlB309GjfFXxaa963+W+eNhONSJ9Vwa9Bb/Pm7VbDTcPHKVLdxbF4OGHyvJlk=
+	t=1712584553; cv=none; b=ZOHDtOP8XgSnn93tLaxvhNMaxoyECpFu7tnxlGWmZLprq5ldPzfljdAF7mp4i27tQmVl+eXqHVQsLz7EMoSunHPG/IMxHWx23rEHCyd12XYJDNwej+QNswzLTFwsnO9grX3LlCYIiDVp4BnqejK7jJY/B9ESIbO7CdG5ATkw7pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582361; c=relaxed/simple;
-	bh=h1dt10nipVLswfPO1OQcz4tSFVg75PnC5MLqRjamSaI=;
+	s=arc-20240116; t=1712584553; c=relaxed/simple;
+	bh=Fy9WWaeHMKyBLlF63fhlrI7FdEXEqkU5FekW9pIK4+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KZWBAYhK7yEY1Bwx+Nkws8rVywIzCYbAooyVxaJ6pSNU8pqltrahkXlaEgT6PWvT/a84RQhD4fYO8n/ekBTntbktvC8TjAMXy91RTuBUwoAa1wNZYXqXVggpLXyfIdBFCcwmhS0w7/Hk2HDla5BH31yHN9CgSX1dBvfoCgpWxW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3f5Kqnb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696F3C43390;
-	Mon,  8 Apr 2024 13:19:20 +0000 (UTC)
+	 MIME-Version; b=E1GDFQr/Nou3mSKXmqIJHOYx/feV/gvVwPwcM22USPeVBEKl8TeXxKnkVW2i0RhWY7gyFoCd7yvzH/VU5Wo1eI7jNAb7h2AyPg47Sv4dxrWRvHHrnCqfB/xAou8gcv66Silbq1mN1YmmqUwZsNnfc3riopiX/nWpkYI8aldHmqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WLKqeEb+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC72C433C7;
+	Mon,  8 Apr 2024 13:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582360;
-	bh=h1dt10nipVLswfPO1OQcz4tSFVg75PnC5MLqRjamSaI=;
+	s=korg; t=1712584553;
+	bh=Fy9WWaeHMKyBLlF63fhlrI7FdEXEqkU5FekW9pIK4+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3f5KqnbTFvLdPlDG+R9Bhx7Ih7qiRxgzVt1acoq+MQtJwGcBygsHQNbLjAGfn+Q7
-	 mAXFbriSrfcXkV3EZkcHbJ6NFvVVNBWLW+pwD9BIaaP19jGojRZMvPPM5dq8WDrjdk
-	 iC4zjm6gu1xmJ13cCFBAi4UG8pGZwesll0WSlwJ4=
+	b=WLKqeEb+50qkzqWVSQutGf3HeNyhZUv9mGBhyE46Btqq8BpO8+JHuV93Ptdw93sKm
+	 LvIYKR7+VAkU4Dbp/KZJcXEQopG9Y7U9ZxYlfG7TnLI1eR0W9SXUjiQPxqSSJCR+cN
+	 KnF5G76Pf71temxMgrS4S6fYVGvn4fyBf9Rt54A4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.8 068/273] selinux: avoid dereference of garbage after mount failure
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neilb@suse.de>
+Subject: [PATCH 5.15 477/690] NFSD: Pass the target nfsd_file to nfsd_commit()
 Date: Mon,  8 Apr 2024 14:55:43 +0200
-Message-ID: <20240408125311.415746960@linuxfoundation.org>
+Message-ID: <20240408125416.896296280@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,67 +60,159 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Göttsche <cgzones@googlemail.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 37801a36b4d68892ce807264f784d818f8d0d39b upstream.
+[ Upstream commit c252849082ff525af18b4f253b3c9ece94e951ed ]
 
-In case kern_mount() fails and returns an error pointer return in the
-error branch instead of continuing and dereferencing the error pointer.
+In a moment I'm going to introduce separate nfsd_file types, one of
+which is garbage-collected; the other, not. The garbage-collected
+variety is to be used by NFSv2 and v3, and the non-garbage-collected
+variety is to be used by NFSv4.
 
-While on it drop the never read static variable selinuxfs_mount.
+nfsd_commit() is invoked by both NFSv3 and NFSv4 consumers. We want
+nfsd_commit() to find and use the correct variety of cached
+nfsd_file object for the NFS version that is in use.
 
-Cc: stable@vger.kernel.org
-Fixes: 0619f0f5e36f ("selinux: wrap selinuxfs state")
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Tested-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- security/selinux/selinuxfs.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ fs/nfsd/nfs3proc.c | 10 +++++++++-
+ fs/nfsd/nfs4proc.c | 11 ++++++++++-
+ fs/nfsd/vfs.c      | 15 ++++-----------
+ fs/nfsd/vfs.h      |  3 ++-
+ 4 files changed, 25 insertions(+), 14 deletions(-)
 
---- a/security/selinux/selinuxfs.c
-+++ b/security/selinux/selinuxfs.c
-@@ -2123,7 +2123,6 @@ static struct file_system_type sel_fs_ty
- 	.kill_sb	= sel_kill_sb,
- };
+diff --git a/fs/nfsd/nfs3proc.c b/fs/nfsd/nfs3proc.c
+index 923d9a80df92c..ff29205463332 100644
+--- a/fs/nfsd/nfs3proc.c
++++ b/fs/nfsd/nfs3proc.c
+@@ -13,6 +13,7 @@
+ #include "cache.h"
+ #include "xdr3.h"
+ #include "vfs.h"
++#include "filecache.h"
  
--static struct vfsmount *selinuxfs_mount __ro_after_init;
- struct path selinux_null __ro_after_init;
+ #define NFSDDBG_FACILITY		NFSDDBG_PROC
  
- static int __init init_sel_fs(void)
-@@ -2145,18 +2144,21 @@ static int __init init_sel_fs(void)
- 		return err;
- 	}
+@@ -763,6 +764,7 @@ nfsd3_proc_commit(struct svc_rqst *rqstp)
+ {
+ 	struct nfsd3_commitargs *argp = rqstp->rq_argp;
+ 	struct nfsd3_commitres *resp = rqstp->rq_resp;
++	struct nfsd_file *nf;
  
--	selinux_null.mnt = selinuxfs_mount = kern_mount(&sel_fs_type);
--	if (IS_ERR(selinuxfs_mount)) {
-+	selinux_null.mnt = kern_mount(&sel_fs_type);
-+	if (IS_ERR(selinux_null.mnt)) {
- 		pr_err("selinuxfs:  could not mount!\n");
--		err = PTR_ERR(selinuxfs_mount);
--		selinuxfs_mount = NULL;
-+		err = PTR_ERR(selinux_null.mnt);
-+		selinux_null.mnt = NULL;
-+		return err;
- 	}
+ 	dprintk("nfsd: COMMIT(3)   %s %u@%Lu\n",
+ 				SVCFH_fmt(&argp->fh),
+@@ -770,8 +772,14 @@ nfsd3_proc_commit(struct svc_rqst *rqstp)
+ 				(unsigned long long) argp->offset);
+ 
+ 	fh_copy(&resp->fh, &argp->fh);
+-	resp->status = nfsd_commit(rqstp, &resp->fh, argp->offset,
++	resp->status = nfsd_file_acquire(rqstp, &resp->fh, NFSD_MAY_WRITE |
++					 NFSD_MAY_NOT_BREAK_LEASE, &nf);
++	if (resp->status)
++		goto out;
++	resp->status = nfsd_commit(rqstp, &resp->fh, nf, argp->offset,
+ 				   argp->count, resp->verf);
++	nfsd_file_put(nf);
++out:
+ 	return rpc_success;
+ }
+ 
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 2e8f8b9fa3aeb..6ed0baa119433 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -731,10 +731,19 @@ nfsd4_commit(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	     union nfsd4_op_u *u)
+ {
+ 	struct nfsd4_commit *commit = &u->commit;
++	struct nfsd_file *nf;
++	__be32 status;
+ 
+-	return nfsd_commit(rqstp, &cstate->current_fh, commit->co_offset,
++	status = nfsd_file_acquire(rqstp, &cstate->current_fh, NFSD_MAY_WRITE |
++				   NFSD_MAY_NOT_BREAK_LEASE, &nf);
++	if (status != nfs_ok)
++		return status;
 +
- 	selinux_null.dentry = d_hash_and_lookup(selinux_null.mnt->mnt_root,
- 						&null_name);
- 	if (IS_ERR(selinux_null.dentry)) {
- 		pr_err("selinuxfs:  could not lookup null!\n");
- 		err = PTR_ERR(selinux_null.dentry);
- 		selinux_null.dentry = NULL;
-+		return err;
- 	}
++	status = nfsd_commit(rqstp, &cstate->current_fh, nf, commit->co_offset,
+ 			     commit->co_count,
+ 			     (__be32 *)commit->co_verf.data);
++	nfsd_file_put(nf);
++	return status;
+ }
  
+ static __be32
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 70a967789a611..3c43a51e17865 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1197,6 +1197,7 @@ nfsd_write(struct svc_rqst *rqstp, struct svc_fh *fhp, loff_t offset,
+  * nfsd_commit - Commit pending writes to stable storage
+  * @rqstp: RPC request being processed
+  * @fhp: NFS filehandle
++ * @nf: target file
+  * @offset: raw offset from beginning of file
+  * @count: raw count of bytes to sync
+  * @verf: filled in with the server's current write verifier
+@@ -1213,19 +1214,13 @@ nfsd_write(struct svc_rqst *rqstp, struct svc_fh *fhp, loff_t offset,
+  *   An nfsstat value in network byte order.
+  */
+ __be32
+-nfsd_commit(struct svc_rqst *rqstp, struct svc_fh *fhp, u64 offset,
+-	    u32 count, __be32 *verf)
++nfsd_commit(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
++	    u64 offset, u32 count, __be32 *verf)
+ {
++	__be32			err = nfs_ok;
+ 	u64			maxbytes;
+ 	loff_t			start, end;
+ 	struct nfsd_net		*nn;
+-	struct nfsd_file	*nf;
+-	__be32			err;
+-
+-	err = nfsd_file_acquire(rqstp, fhp,
+-			NFSD_MAY_WRITE|NFSD_MAY_NOT_BREAK_LEASE, &nf);
+-	if (err)
+-		goto out;
+ 
+ 	/*
+ 	 * Convert the client-provided (offset, count) range to a
+@@ -1266,8 +1261,6 @@ nfsd_commit(struct svc_rqst *rqstp, struct svc_fh *fhp, u64 offset,
+ 	} else
+ 		nfsd_copy_write_verifier(verf, nn);
+ 
+-	nfsd_file_put(nf);
+-out:
  	return err;
+ }
+ 
+diff --git a/fs/nfsd/vfs.h b/fs/nfsd/vfs.h
+index 8ddd687f83599..dbdfef7ae85bb 100644
+--- a/fs/nfsd/vfs.h
++++ b/fs/nfsd/vfs.h
+@@ -89,7 +89,8 @@ __be32		nfsd_access(struct svc_rqst *, struct svc_fh *, u32 *, u32 *);
+ __be32		nfsd_create_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 				struct svc_fh *resfhp, struct nfsd_attrs *iap);
+ __be32		nfsd_commit(struct svc_rqst *rqst, struct svc_fh *fhp,
+-				u64 offset, u32 count, __be32 *verf);
++				struct nfsd_file *nf, u64 offset, u32 count,
++				__be32 *verf);
+ #ifdef CONFIG_NFSD_V4
+ __be32		nfsd_getxattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 			    char *name, void **bufp, int *lenp);
+-- 
+2.43.0
+
 
 
 
