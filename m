@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-37592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0129689C669
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:10:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C50789C1C1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:23:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6E3BB2ADC9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E01721F2182B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C287EF18;
-	Mon,  8 Apr 2024 13:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF21B8173C;
+	Mon,  8 Apr 2024 13:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOhdFX8p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pgo8Mc8h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054AE79F0;
-	Mon,  8 Apr 2024 13:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD5376413;
+	Mon,  8 Apr 2024 13:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584686; cv=none; b=ua1qZhvvT5x4W675w+sJzytspJSz/2W+qxOmF1TeQH2MGUIjpGsMOlqvAWvm1crTjWfFGA5oymeZQ3CXfqyyqDS2tMMpYMPaQb0XsKZ7/pRfND1Nx7OqA9LWlh/991Roy9DEwDkWYp/mtOPXS9+SYEhrPAlJ3M2EusnRCoC/b2g=
+	t=1712582404; cv=none; b=XZEY8F6xU80RGBlH6GkQV4k+f2ZY3ossCbLhv9J/6XaePXvbp1ROC1nmJRbFtEPnDqa8d1db1wVomfr9NbNThA+xWHHf7prZycefxnGQjQ4ob/nxsf0cRJNBopjN9RTUXfXWbffc72PceJZPawjBRIBb+GccoUnO9+HwGDIPLCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584686; c=relaxed/simple;
-	bh=//dVmfkLb0H6/WiA0WDwH9/cvZfhOLbSuDLndDDA6gM=;
+	s=arc-20240116; t=1712582404; c=relaxed/simple;
+	bh=EsMjF/jGRJV7B+mHSlJdtJ4xvH75osOu6hj7QRLMEHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WDB6mMxEcJXh4QFhymWPR+6K8Kx5fvPFTWxG+Iuv+CVpgB8hwtTykjwBF6IHdyHhc7e/AnvZ/NzYZBmBQB7ZcsYFuJKjAd4PVX36LS3LLjYCVt+HQ7OjSJt/RDAUtU9jrTtYKlfVIP/lzmNoEGfB17dL41/pilmYutvXmr1S/E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOhdFX8p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15BFEC433F1;
-	Mon,  8 Apr 2024 13:58:04 +0000 (UTC)
+	 MIME-Version; b=aWjxaROHrw1EKsh1kBD92LdHdUdJ72zPxfPsxTf8jyd+XCwB+ntLJL9cItbe3Zf39yXCFQLYA+96wX5GGnvOcmOA7Aczv9ll5+UOgiXlD3ws3R0tXBHwauhsPDXfjIfU8HX7epq4PPheZUXY9apf1JmtxHA0hvy2TM8tu7QVB+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pgo8Mc8h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D0FC433C7;
+	Mon,  8 Apr 2024 13:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584685;
-	bh=//dVmfkLb0H6/WiA0WDwH9/cvZfhOLbSuDLndDDA6gM=;
+	s=korg; t=1712582404;
+	bh=EsMjF/jGRJV7B+mHSlJdtJ4xvH75osOu6hj7QRLMEHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qOhdFX8pM6KKS7tBqf1ISRU9sDxdf/YZl07hG2/5cwH0Xmz+tRVnIgKkrjfTX8Uje
-	 i8H9ryQj0pFciLkLx6nnFBIS8GKfBQG4LHi3wm/sjeLqADVgS7TdDQAeG8h1rbEb0m
-	 JoubE4pSQ7j7trykfqZa+SGbFEFVi2k2uv9WMly8=
+	b=Pgo8Mc8hQialghxV2spSiVoBcMRVkwZLI81h1wJuE1LdIOJM3B4xv3Bs+pTTRrjO3
+	 h6uZzOIz5qcz0wL1U89JaSqsbSauwKjILTFo2L+cS5kvuG6RQ1/va9db8wnNvjWuwn
+	 FMlVQ+u9zCHeDAIR274M8q67WBcey+bBZ12vSYzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=E5=BC=B5=E6=99=BA=E8=AB=BA?= <cc85nod@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 523/690] nfsd: fix courtesy client with deny mode handling in nfs4_upgrade_open
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 090/252] x86/srso: Improve i-cache locality for alias mitigation
 Date: Mon,  8 Apr 2024 14:56:29 +0200
-Message-ID: <20240408125418.585982298@linuxfoundation.org>
+Message-ID: <20240408125309.446964844@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit dcd779dc46540e174a6ac8d52fbed23593407317 ]
+Commit aa730cff0c26244e88066b5b461a9f5fbac13823 upstream.
 
-The nested if statements here make no sense, as you can never reach
-"else" branch in the nested statement. Fix the error handling for
-when there is a courtesy client that holds a conflicting deny mode.
+Move srso_alias_return_thunk() to the same section as
+srso_alias_safe_ret() so they can share a cache line.
 
-Fixes: 3d6942715180 ("NFSD: add support for share reservation conflict to courteous server")
-Reported-by: 張智諺 <cc85nod@gmail.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Dai Ngo <dai.ngo@oracle.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/eadaf5530b46a7ae8b936522da45ae555d2b3393.1693889988.git.jpoimboe@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ arch/x86/lib/retpoline.S |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index fab5805b3ca74..69bc4622a95a4 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -5300,16 +5300,17 @@ nfs4_upgrade_open(struct svc_rqst *rqstp, struct nfs4_file *fp,
- 	/* test and set deny mode */
- 	spin_lock(&fp->fi_lock);
- 	status = nfs4_file_check_deny(fp, open->op_share_deny);
--	if (status == nfs_ok) {
--		if (status != nfserr_share_denied) {
--			set_deny(open->op_share_deny, stp);
--			fp->fi_share_deny |=
--				(open->op_share_deny & NFS4_SHARE_DENY_BOTH);
--		} else {
--			if (nfs4_resolve_deny_conflicts_locked(fp, false,
--					stp, open->op_share_deny, false))
--				status = nfserr_jukebox;
--		}
-+	switch (status) {
-+	case nfs_ok:
-+		set_deny(open->op_share_deny, stp);
-+		fp->fi_share_deny |=
-+			(open->op_share_deny & NFS4_SHARE_DENY_BOTH);
-+		break;
-+	case nfserr_share_denied:
-+		if (nfs4_resolve_deny_conflicts_locked(fp, false,
-+				stp, open->op_share_deny, false))
-+			status = nfserr_jukebox;
-+		break;
- 	}
- 	spin_unlock(&fp->fi_lock);
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -177,15 +177,14 @@ SYM_START(srso_alias_safe_ret, SYM_L_GLO
+ 	int3
+ SYM_FUNC_END(srso_alias_safe_ret)
  
--- 
-2.43.0
-
+-	.section .text..__x86.return_thunk
+-
+-SYM_CODE_START(srso_alias_return_thunk)
++SYM_CODE_START_NOALIGN(srso_alias_return_thunk)
+ 	UNWIND_HINT_FUNC
+ 	ANNOTATE_NOENDBR
+ 	call srso_alias_safe_ret
+ 	ud2
+ SYM_CODE_END(srso_alias_return_thunk)
+ 
++	.section .text..__x86.return_thunk
+ /*
+  * Some generic notes on the untraining sequences:
+  *
 
 
 
