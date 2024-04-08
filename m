@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-37305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7904D89C44A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F5B89C632
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 364B3280CF5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0775C1C20CD1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52E9129A75;
-	Mon,  8 Apr 2024 13:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA2B80619;
+	Mon,  8 Apr 2024 14:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S543U6xX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slCTdI3i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8C5128370;
-	Mon,  8 Apr 2024 13:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2078060C;
+	Mon,  8 Apr 2024 14:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583844; cv=none; b=XAMYqTMoyH1s2bB62pI2CaZfsu88ZX8C8UdkMdPpdbmK7gHPc02XcPjG7/rPOxPjY+NWACsutSGZRuMGa95pt69fQyXqUOrri6gLpEtVE2GxUdq5v3kl2U8zLw59ndNH26hZbySr1zxca7/NMCh2Rtbb+R8iBaJctqWPOMQS37g=
+	t=1712585133; cv=none; b=rWTAXmmvK2dUrBlZng9OTJdYiQKT5/Jtl2J/+eVaY583I2V4vV6VrhxitJ9pppdtUU/96QygHQ7UclQQI0aR68XpP5beXXumkPTooVnZ00VuFx01z1NYQPr0/xcLYEVknMay3y/FQ6MRfXUX8rONlJXVAp1lWP/rHAjBjgBZeW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583844; c=relaxed/simple;
-	bh=SDStYoPgA+FgODYjNPDRT43YBUnnCmjgB7BuIamYU3w=;
+	s=arc-20240116; t=1712585133; c=relaxed/simple;
+	bh=jq+SpbQ8tnnq0L1d8RFpgKWrBugLUQX9XxDuwoUcuhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pbvhvQX6xUU7CdibsVTYzTzNno7os165X0ORSg1iOZ9iYEFHCZsY0sfO17aSLGPPUAxrdJjm1xOXjk8nwG37t1tnOn9ihoreb55LN9JJNtzsiFjbIRtUHbuChTLCPv2Tm3viibYy2sIRIwprkkV8J6cXOg5YdhcRr5f6VIMER1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S543U6xX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022F4C433F1;
-	Mon,  8 Apr 2024 13:44:03 +0000 (UTC)
+	 MIME-Version; b=Js5xTCLWiTNXxL3ZmtkX473F855vcFyCbP7l8gPRHCew8jP/18EcLMuVlmpy853X+giOozKTwBcnbsSmOsv/7rdMW4IqEPY+SgD0kUkDencT/etBNnbvK58tb31Guuh0U5DmsXiHGTC946AJNA/7Wp+le6Vlqi7P8y20wrZwl/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slCTdI3i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36533C43390;
+	Mon,  8 Apr 2024 14:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583844;
-	bh=SDStYoPgA+FgODYjNPDRT43YBUnnCmjgB7BuIamYU3w=;
+	s=korg; t=1712585133;
+	bh=jq+SpbQ8tnnq0L1d8RFpgKWrBugLUQX9XxDuwoUcuhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S543U6xX0+fwGZYI0COXypGmvb9vh1hRMxoWWXtUEwFbz/bAHY+33ZqmhEnC2wJLh
-	 PzAzaVRLURN5Q/ano0dnynVxXf0V8P1+zxCv+96hjYKm0Da/o+QikGAhxZkA/Sm/DT
-	 SOZ0bmZgSgEXqjaUK+Ih14dDeaLBxzZBm3LLQM2I=
+	b=slCTdI3iTnxCud5p3nzb2KAU4i7dh0SwmVZvSs8UIcxwO01wBNMajsI6KlfUYUU42
+	 DC5/CqbQAh3QWox8V4IHcvHm51eBGR0jvrAoQPfT5ep2627SK/FBsD2Zi3IbpaFk9e
+	 dr9WC5DufuF+TuFdwbASbVzJ3pMd5DqzXYnn8GJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfgang Walter <linux@stwm.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Vladimir Benes <vbenes@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 241/252] Revert "x86/mpparse: Register APIC address only once"
+Subject: [PATCH 5.15 674/690] nfsd: hold a lighter-weight client reference over CB_RECALL_ANY
 Date: Mon,  8 Apr 2024 14:59:00 +0200
-Message-ID: <20240408125314.129555371@linuxfoundation.org>
+Message-ID: <20240408125424.126475973@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Jeff Layton <jlayton@kernel.org>
 
-This reverts commit bebb5af001dc6cb4f505bb21c4d5e2efbdc112e2 which is
-commit f2208aa12c27bfada3c15c550c03ca81d42dcac2 upstream.
+[ Upstream commit 10396f4df8b75ff6ab0aa2cd74296565466f2c8d ]
 
-It is reported to cause problems in the stable branches, so revert it.
+Currently the CB_RECALL_ANY job takes a cl_rpc_users reference to the
+client. While a callback job is technically an RPC that counter is
+really more for client-driven RPCs, and this has the effect of
+preventing the client from being unhashed until the callback completes.
 
-Link: https://lore.kernel.org/r/899b7c1419a064a2b721b78eade06659@stwm.de
-Reported-by: Wolfgang Walter <linux@stwm.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If nfsd decides to send a CB_RECALL_ANY just as the client reboots, we
+can end up in a situation where the callback can't complete on the (now
+dead) callback channel, but the new client can't connect because the old
+client can't be unhashed. This usually manifests as a NFS4ERR_DELAY
+return on the CREATE_SESSION operation.
+
+The job is only holding a reference to the client so it can clear a flag
+after the RPC completes. Fix this by having CB_RECALL_ANY instead hold a
+reference to the cl_nfsdfs.cl_ref. Typically we only take that sort of
+reference when dealing with the nfsdfs info files, but it should work
+appropriately here to ensure that the nfs4_client doesn't disappear.
+
+Fixes: 44df6f439a17 ("NFSD: add delegation reaper to react to low memory condition")
+Reported-by: Vladimir Benes <vbenes@redhat.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/mpparse.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/nfsd/nfs4state.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/arch/x86/kernel/mpparse.c
-+++ b/arch/x86/kernel/mpparse.c
-@@ -196,12 +196,12 @@ static int __init smp_read_mpc(struct mp
- 	if (!smp_check_mpc(mpc, oem, str))
- 		return 0;
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index ccc235a8bc1b4..40b5b226e504d 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -2889,12 +2889,9 @@ static void
+ nfsd4_cb_recall_any_release(struct nfsd4_callback *cb)
+ {
+ 	struct nfs4_client *clp = cb->cb_clp;
+-	struct nfsd_net *nn = net_generic(clp->net, nfsd_net_id);
  
--	if (early) {
--		/* Initialize the lapic mapping */
--		if (!acpi_lapic)
--			register_lapic_address(mpc->lapic);
-+	/* Initialize the lapic mapping */
-+	if (!acpi_lapic)
-+		register_lapic_address(mpc->lapic);
-+
-+	if (early)
- 		return 1;
--	}
+-	spin_lock(&nn->client_lock);
+ 	clear_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags);
+-	put_client_renew_locked(clp);
+-	spin_unlock(&nn->client_lock);
++	drop_client(clp);
+ }
  
- 	/* Now process the configuration blocks. */
- 	while (count < mpc->length) {
+ static const struct nfsd4_callback_ops nfsd4_cb_recall_any_ops = {
+@@ -6234,7 +6231,7 @@ deleg_reaper(struct nfsd_net *nn)
+ 		list_add(&clp->cl_ra_cblist, &cblist);
+ 
+ 		/* release in nfsd4_cb_recall_any_release */
+-		atomic_inc(&clp->cl_rpc_users);
++		kref_get(&clp->cl_nfsdfs.cl_ref);
+ 		set_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags);
+ 		clp->cl_ra_time = ktime_get_boottime_seconds();
+ 	}
+-- 
+2.43.0
+
 
 
 
