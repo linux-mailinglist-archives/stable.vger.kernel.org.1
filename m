@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-37354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F7589C553
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:56:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5327B89C480
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D8ECB25F45
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F0EB284260
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF127CF1B;
-	Mon,  8 Apr 2024 13:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B8B7C6C5;
+	Mon,  8 Apr 2024 13:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wp8U/UJr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hp07uLO7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F967C6C5;
-	Mon,  8 Apr 2024 13:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE0D7CF34;
+	Mon,  8 Apr 2024 13:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583987; cv=none; b=sh3aSAaK8tt//WuQZEwXtvJ42FTR80x/ZuT73MdtNNBfuiygGz8/HT4XwkeWBpA0etN75wvKFFNnARYg5v89jruYZyBzAVJ9YbL20RZbb81xF6FbRgchka4n44ma77eps7RVF8jGpXHI6icTkfpxuQXqquLtgTwPAH1WVdJu7Vk=
+	t=1712583993; cv=none; b=uhhYwbWUNe0T0f5kN6FLBBi3aGSLAIJ8AxI2J2vjIiBCZ8V0DFM9TRRjanvWa+7O6zWEnwwrVuFmFFEUwM5u9CzXXyHp5TN8JQpzCqfwARDY45igAEiNEtAsJKBMersbiKqbqTD/9sK4tV2FDV/kD/Sxgba+O4zcTnP3wOfYxME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583987; c=relaxed/simple;
-	bh=EfQ9DHszRWRE9bRKc8p9OMITwnTPK4tDw81p9UDnylY=;
+	s=arc-20240116; t=1712583993; c=relaxed/simple;
+	bh=iQYS2IpbvwnOYTmxJDFuG86OVoylxAtVyjo+SQQHHAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RiMbVZPGQqbridDK8W6LQ6v28LJnEdzFNUUFl7EAkq5AQQkwCVjv0kegkLUu4O8IdIBEVyZZ1K2+6dqiKSpzMgz/rM+o0N6Iuld1fOI86YaUIlQ5KmJCoENAeaGpBXazXslJYf6l6Goj5VDZyB97tgSLYvgoKjJZ1rrZkk0mURI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wp8U/UJr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A261DC433F1;
-	Mon,  8 Apr 2024 13:46:26 +0000 (UTC)
+	 MIME-Version; b=OyQa8n7o5hDKc0DXcVJCgBiWosdp9t7d6FosIlF+wHjL83eIbVz5ltLoucf7v+IJot0phacwnQ/lohViMgKlNNca6bI8Z8wvJ8sOvIqO3kxwYTjUyDYO3meIstnpUUztk8ObLdy94eA64W3jkS50sIyHJNyBC6LZB1aRtMcRbEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hp07uLO7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E26C43390;
+	Mon,  8 Apr 2024 13:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583987;
-	bh=EfQ9DHszRWRE9bRKc8p9OMITwnTPK4tDw81p9UDnylY=;
+	s=korg; t=1712583992;
+	bh=iQYS2IpbvwnOYTmxJDFuG86OVoylxAtVyjo+SQQHHAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wp8U/UJrLiU7ZrNviWUa4w+sbDYRiMkCBH9hrC0ZyA47aCeBFsTlorYVdZqy89Irk
-	 GTzLYotlKHgT9PXtoyPYPaC1W2kunhLbp9MPxRm92w9pJj1rt9Ldm7fTpOGMQl8/8S
-	 jmeVv2s8r2Wm2ADwBeNNfzRGgM8csXQgWrNML410=
+	b=Hp07uLO7zuxoPqyItrVYpNYtNun2T2OWPC4stuePq7snaBBgHW9a5oN8AchypaqyY
+	 6OViiotxG+hlTCSaDDMUydWlF1rh3hVDlXCObpTRF1lYkhQDPEr7cqXBQiWYASrp6I
+	 lW1pV4k/9um3xM8FQUhyPTvAz+djX10Xb49D52Bk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	"J. Bruce Fields" <bfields@fieldses.org>,
 	Dai Ngo <dai.ngo@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 5.15 311/690] fs/lock: add 2 callbacks to lock_manager_operations to resolve conflict
-Date: Mon,  8 Apr 2024 14:52:57 +0200
-Message-ID: <20240408125410.859012521@linuxfoundation.org>
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 312/690] NFSD: add support for lock conflict to courteous server
+Date: Mon,  8 Apr 2024 14:52:58 +0200
+Message-ID: <20240408125410.897282854@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -69,161 +68,140 @@ Content-Transfer-Encoding: 8bit
 
 From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit 2443da2259e97688f93d64d17ab69b15f466078a ]
+[ Upstream commit 27431affb0dbc259ac6ffe6071243a576c8f38f1 ]
 
-Add 2 new callbacks, lm_lock_expirable and lm_expire_lock, to
-lock_manager_operations to allow the lock manager to take appropriate
-action to resolve the lock conflict if possible.
+This patch allows expired client with lock state to be in COURTESY
+state. Lock conflict with COURTESY client is resolved by the fs/lock
+code using the lm_lock_expirable and lm_expire_lock callback in the
+struct lock_manager_operations.
 
-A new field, lm_mod_owner, is also added to lock_manager_operations.
-The lm_mod_owner is used by the fs/lock code to make sure the lock
-manager module such as nfsd, is not freed while lock conflict is being
-resolved.
-
-lm_lock_expirable checks and returns true to indicate that the lock
-conflict can be resolved else return false. This callback must be
-called with the flc_lock held so it can not block.
-
-lm_expire_lock is called to resolve the lock conflict if the returned
-value from lm_lock_expirable is true. This callback is called without
-the flc_lock held since it's allowed to block. Upon returning from
-this callback, the lock conflict should be resolved and the caller is
-expected to restart the conflict check from the beginnning of the list.
-
-Lock manager, such as NFSv4 courteous server, uses this callback to
-resolve conflict by destroying lock owner, or the NFSv4 courtesy client
-(client that has expired but allowed to maintains its states) that owns
-the lock.
+If conflict client is in COURTESY state, set it to EXPIRABLE and
+schedule the laundromat to run immediately to expire the client. The
+callback lm_expire_lock waits for the laundromat to flush its work
+queue before returning to caller.
 
 Reviewed-by: J. Bruce Fields <bfields@fieldses.org>
 Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- Documentation/filesystems/locking.rst |  4 ++++
- fs/locks.c                            | 33 ++++++++++++++++++++++++---
- include/linux/fs.h                    |  3 +++
- 3 files changed, 37 insertions(+), 3 deletions(-)
+ fs/nfsd/nfs4state.c | 70 ++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 54 insertions(+), 16 deletions(-)
 
-diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
-index e2a27bb5dc411..dabf4f7c755ed 100644
---- a/Documentation/filesystems/locking.rst
-+++ b/Documentation/filesystems/locking.rst
-@@ -442,6 +442,8 @@ prototypes::
- 	void (*lm_break)(struct file_lock *); /* break_lease callback */
- 	int (*lm_change)(struct file_lock **, int);
- 	bool (*lm_breaker_owns_lease)(struct file_lock *);
-+        bool (*lm_lock_expirable)(struct file_lock *);
-+        void (*lm_expire_lock)(void);
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 582c9c7ba60a8..447faa4348227 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -5731,39 +5731,51 @@ static void nfsd4_ssc_expire_umount(struct nfsd_net *nn)
+ }
+ #endif
  
- locking rules:
- 
-@@ -453,6 +455,8 @@ lm_grant:		no		no			no
- lm_break:		yes		no			no
- lm_change		yes		no			no
- lm_breaker_owns_lease:	yes     	no			no
-+lm_lock_expirable	yes		no			no
-+lm_expire_lock		no		no			yes
- ======================	=============	=================	=========
- 
- buffer_head
-diff --git a/fs/locks.c b/fs/locks.c
-index f8c4844ebcce4..317c2ec17b943 100644
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -982,6 +982,8 @@ posix_test_lock(struct file *filp, struct file_lock *fl)
- 	struct file_lock *cfl;
- 	struct file_lock_context *ctx;
- 	struct inode *inode = locks_inode(filp);
-+	void *owner;
-+	void (*func)(void);
- 
- 	ctx = smp_load_acquire(&inode->i_flctx);
- 	if (!ctx || list_empty_careful(&ctx->flc_posix)) {
-@@ -989,12 +991,23 @@ posix_test_lock(struct file *filp, struct file_lock *fl)
- 		return;
- 	}
- 
-+retry:
- 	spin_lock(&ctx->flc_lock);
- 	list_for_each_entry(cfl, &ctx->flc_posix, fl_list) {
--		if (posix_locks_conflict(fl, cfl)) {
--			locks_copy_conflock(fl, cfl);
--			goto out;
-+		if (!posix_locks_conflict(fl, cfl))
++/* Check if any lock belonging to this lockowner has any blockers */
+ static bool
+-nfs4_has_any_locks(struct nfs4_client *clp)
++nfs4_lockowner_has_blockers(struct nfs4_lockowner *lo)
++{
++	struct file_lock_context *ctx;
++	struct nfs4_ol_stateid *stp;
++	struct nfs4_file *nf;
++
++	list_for_each_entry(stp, &lo->lo_owner.so_stateids, st_perstateowner) {
++		nf = stp->st_stid.sc_file;
++		ctx = nf->fi_inode->i_flctx;
++		if (!ctx)
 +			continue;
-+		if (cfl->fl_lmops && cfl->fl_lmops->lm_lock_expirable
-+			&& (*cfl->fl_lmops->lm_lock_expirable)(cfl)) {
-+			owner = cfl->fl_lmops->lm_mod_owner;
-+			func = cfl->fl_lmops->lm_expire_lock;
-+			__module_get(owner);
-+			spin_unlock(&ctx->flc_lock);
-+			(*func)();
-+			module_put(owner);
-+			goto retry;
- 		}
-+		locks_copy_conflock(fl, cfl);
-+		goto out;
- 	}
- 	fl->fl_type = F_UNLCK;
- out:
-@@ -1168,6 +1181,8 @@ static int posix_lock_inode(struct inode *inode, struct file_lock *request,
- 	int error;
- 	bool added = false;
- 	LIST_HEAD(dispose);
-+	void *owner;
-+	void (*func)(void);
++		if (locks_owner_has_blockers(ctx, lo))
++			return true;
++	}
++	return false;
++}
++
++static bool
++nfs4_anylock_blockers(struct nfs4_client *clp)
+ {
+ 	int i;
+ 	struct nfs4_stateowner *so;
++	struct nfs4_lockowner *lo;
  
- 	ctx = locks_get_lock_context(inode, request->fl_type);
- 	if (!ctx)
-@@ -1186,6 +1201,7 @@ static int posix_lock_inode(struct inode *inode, struct file_lock *request,
- 		new_fl2 = locks_alloc_lock();
- 	}
- 
-+retry:
- 	percpu_down_read(&file_rwsem);
- 	spin_lock(&ctx->flc_lock);
- 	/*
-@@ -1197,6 +1213,17 @@ static int posix_lock_inode(struct inode *inode, struct file_lock *request,
- 		list_for_each_entry(fl, &ctx->flc_posix, fl_list) {
- 			if (!posix_locks_conflict(request, fl))
++	if (atomic_read(&clp->cl_delegs_in_recall))
++		return true;
+ 	spin_lock(&clp->cl_lock);
+ 	for (i = 0; i < OWNER_HASH_SIZE; i++) {
+ 		list_for_each_entry(so, &clp->cl_ownerstr_hashtbl[i],
+ 				so_strhash) {
+ 			if (so->so_is_open_owner)
  				continue;
-+			if (fl->fl_lmops && fl->fl_lmops->lm_lock_expirable
-+				&& (*fl->fl_lmops->lm_lock_expirable)(fl)) {
-+				owner = fl->fl_lmops->lm_mod_owner;
-+				func = fl->fl_lmops->lm_expire_lock;
-+				__module_get(owner);
-+				spin_unlock(&ctx->flc_lock);
-+				percpu_up_read(&file_rwsem);
-+				(*func)();
-+				module_put(owner);
-+				goto retry;
+-			spin_unlock(&clp->cl_lock);
+-			return true;
++			lo = lockowner(so);
++			if (nfs4_lockowner_has_blockers(lo)) {
++				spin_unlock(&clp->cl_lock);
++				return true;
 +			}
- 			if (conflock)
- 				locks_copy_conflock(conflock, fl);
- 			error = -EAGAIN;
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 9b7ce642d4f08..371d67c9221c5 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -1066,6 +1066,7 @@ struct file_lock_operations {
+ 		}
+ 	}
+ 	spin_unlock(&clp->cl_lock);
+ 	return false;
+ }
+ 
+-/*
+- * place holder for now, no check for lock blockers yet
+- */
+-static bool
+-nfs4_anylock_blockers(struct nfs4_client *clp)
+-{
+-	if (atomic_read(&clp->cl_delegs_in_recall) ||
+-			!list_empty(&clp->async_copies) ||
+-			nfs4_has_any_locks(clp))
+-		return true;
+-	return false;
+-}
+-
+ static void
+ nfs4_get_client_reaplist(struct nfsd_net *nn, struct list_head *reaplist,
+ 				struct laundry_time *lt)
+@@ -6729,6 +6741,29 @@ nfsd4_lm_put_owner(fl_owner_t owner)
+ 		nfs4_put_stateowner(&lo->lo_owner);
+ }
+ 
++/* return pointer to struct nfs4_client if client is expirable */
++static bool
++nfsd4_lm_lock_expirable(struct file_lock *cfl)
++{
++	struct nfs4_lockowner *lo = (struct nfs4_lockowner *)cfl->fl_owner;
++	struct nfs4_client *clp = lo->lo_owner.so_client;
++	struct nfsd_net *nn;
++
++	if (try_to_expire_client(clp)) {
++		nn = net_generic(clp->net, nfsd_net_id);
++		mod_delayed_work(laundry_wq, &nn->laundromat_work, 0);
++		return true;
++	}
++	return false;
++}
++
++/* schedule laundromat to run immediately and wait for it to complete */
++static void
++nfsd4_lm_expire_lock(void)
++{
++	flush_workqueue(laundry_wq);
++}
++
+ static void
+ nfsd4_lm_notify(struct file_lock *fl)
+ {
+@@ -6755,9 +6790,12 @@ nfsd4_lm_notify(struct file_lock *fl)
+ }
+ 
+ static const struct lock_manager_operations nfsd_posix_mng_ops  = {
++	.lm_mod_owner = THIS_MODULE,
+ 	.lm_notify = nfsd4_lm_notify,
+ 	.lm_get_owner = nfsd4_lm_get_owner,
+ 	.lm_put_owner = nfsd4_lm_put_owner,
++	.lm_lock_expirable = nfsd4_lm_lock_expirable,
++	.lm_expire_lock = nfsd4_lm_expire_lock,
  };
  
- struct lock_manager_operations {
-+	void *lm_mod_owner;
- 	fl_owner_t (*lm_get_owner)(fl_owner_t);
- 	void (*lm_put_owner)(fl_owner_t);
- 	void (*lm_notify)(struct file_lock *);	/* unblock callback */
-@@ -1074,6 +1075,8 @@ struct lock_manager_operations {
- 	int (*lm_change)(struct file_lock *, int, struct list_head *);
- 	void (*lm_setup)(struct file_lock *, void **);
- 	bool (*lm_breaker_owns_lease)(struct file_lock *);
-+	bool (*lm_lock_expirable)(struct file_lock *cfl);
-+	void (*lm_expire_lock)(void);
- };
- 
- struct lock_manager {
+ static inline void
 -- 
 2.43.0
 
