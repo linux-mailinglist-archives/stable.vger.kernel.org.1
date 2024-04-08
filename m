@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-37268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B08789C423
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A5D89C386
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D0C51C222C1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A70C1C21978
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1527E0FF;
-	Mon,  8 Apr 2024 13:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA154127B54;
+	Mon,  8 Apr 2024 13:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnf3MTBX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0z4/xRX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5CF7D09F;
-	Mon,  8 Apr 2024 13:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E75768EA;
+	Mon,  8 Apr 2024 13:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583739; cv=none; b=TQOzQ0dlXnuW9NyBcGNmAV8VhplrUC5t6BMFfYFj3qz/kXcMtZpq1nd1Tr2pn8Fp+VOjW+hMwp1WR/I4/VQOf1b15J72cL2XedGkEVZ9ShbO5IxF8L6IkNGFH/h422hg0oBtk0KYFY1iUFr/OsJh8hKqHJJHNynzAI+W1MQdTl0=
+	t=1712583384; cv=none; b=a5fwhE8dvUwmnNo9etcg1PSkopOHVph7VWtiKJ3c+3IYf69WeU2uKiDF7WzK/oLNhevJT++u+yroBQi8QpC+7T94nQ581R9zjIsgV6e5BElo/to251gc2n8b2qqwKp7Qs3qZzOmbm2Zsap/RAqK2TEpT/JzX67WgOt+88YbY4AA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583739; c=relaxed/simple;
-	bh=AMIc4fQwZ7aKc6VRRVO8pATkimcMkc+xpp9xAb6nIpI=;
+	s=arc-20240116; t=1712583384; c=relaxed/simple;
+	bh=wRtUrOFBDDKViwfFonpCvvj5kNjqk0rv+Vcu9fLfi6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hzBbeZZeYj7+uBfOxgm1Dah5r3vNygXhTePa8V0POxC7iD0svGnUKgBu3FBvm/WxbZ5hCcvPH0T0fqSHNYJ6LEpCwhzi6A2iMRJI+tUfJnnbBXjpow9Gyh4Oovn8Gj4GW97I5oK2K5MqzsNVlMY+gEWEp+DCxZKY7gTm0dkV3Bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnf3MTBX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 518DFC433F1;
-	Mon,  8 Apr 2024 13:42:19 +0000 (UTC)
+	 MIME-Version; b=eR4MfXulF9cDMBMOj6WZ5E/WKJsyLOtW66GO3DVBmoxXh8q8fyDA8O5HfxkJqPfILs1ZzjWZtcj2JiAMfaBYccyIa2XykscufOBiQU+3MuiFR6mabfHNadlCOPLnTZFrThHL5K+CqGL4H1EW89bqjKcDHifPB9FnH+6TI+QBRX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0z4/xRX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35E7C433F1;
+	Mon,  8 Apr 2024 13:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583739;
-	bh=AMIc4fQwZ7aKc6VRRVO8pATkimcMkc+xpp9xAb6nIpI=;
+	s=korg; t=1712583384;
+	bh=wRtUrOFBDDKViwfFonpCvvj5kNjqk0rv+Vcu9fLfi6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wnf3MTBXRxqSFDbTNZatoG7hJ/oMFHl2YMAFgr01XgvHPnp/neV39Hw0SR6aYS4m0
-	 GxqdDRZlxjUhBlj1kJhLgCK5/oaOCIQhACQ5MJ6snKW33IushtN7IuN77HloHNUnOe
-	 nDowRURPKiU0Gj5mO7ksPTUf4wwRjyUwcavLqusk=
+	b=Z0z4/xRXm1ey3U9PIJYWu812FW3rN0vJCg505m7xzCDUPk2ORmguRaRU67oAj6U9E
+	 5fMeg+sA3ftnJ4K2L9tdM/fOcRGVAh7jREKXgOJeoEZlN8FjzXaYTgjA53YAn5cdwK
+	 vLBJY3NQa/vsxP0Ti6CrTQoFILP9qCBtvUJ6r7Cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.8 214/273] ASoC: SOF: Intel: hda-pcm: Use dsp_max_burst_size_in_ms to place constraint
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 190/252] s390/pai: initialize event count once at initialization
 Date: Mon,  8 Apr 2024 14:58:09 +0200
-Message-ID: <20240408125316.018887102@linuxfoundation.org>
+Message-ID: <20240408125312.556571613@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-commit fe76d2e75a6da97edd2b4ec5cfb9efd541be087a upstream.
+[ Upstream commit b286997e83dcf7b498329a66a8a22fc8a5bf50f0 ]
 
-If the PCM have the dsp_max_burst_size_in_ms set then place a constraint
-to limit the minimum buffer time to avoid xruns caused by DMA bursts
-spinning on the ALSA buffer.
+Event count value is initialized and set to zero in function
+paicrypt_start().  This function is called once per CPU when an
+event is started on that CPU. This leads to event count value
+being set to zero as many times as there are online CPUs.
+This is not necessary. The event count value is bound to the event
+and it is sufficient to initialize the event counter once at
+event creation time. This is done when the event structure
+is dynamicly allocated with __GFP_ZERO flag. This sets
+member count to zero.
 
-Cc: stable@vger.kernel.org # 6.8
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://msgid.link/r/20240321130814.4412-4-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Stable-dep-of: e9f3af02f639 ("s390/pai: fix sampling event removal for PMU device driver")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda-pcm.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ arch/s390/kernel/perf_pai_crypto.c | 1 -
+ arch/s390/kernel/perf_pai_ext.c    | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/sound/soc/sof/intel/hda-pcm.c b/sound/soc/sof/intel/hda-pcm.c
-index 18f07364d219..69fefcd1abc5 100644
---- a/sound/soc/sof/intel/hda-pcm.c
-+++ b/sound/soc/sof/intel/hda-pcm.c
-@@ -259,6 +259,27 @@ int hda_dsp_pcm_open(struct snd_sof_dev *sdev,
- 		snd_pcm_hw_constraint_mask64(substream->runtime, SNDRV_PCM_HW_PARAM_FORMAT,
- 					     SNDRV_PCM_FMTBIT_S16 | SNDRV_PCM_FMTBIT_S32);
+diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
+index 4a4e914c283c8..0921cea849125 100644
+--- a/arch/s390/kernel/perf_pai_crypto.c
++++ b/arch/s390/kernel/perf_pai_crypto.c
+@@ -253,7 +253,6 @@ static void paicrypt_start(struct perf_event *event, int flags)
+ 	if (!event->hw.last_tag) {
+ 		event->hw.last_tag = 1;
+ 		sum = paicrypt_getall(event);		/* Get current value */
+-		local64_set(&event->count, 0);
+ 		local64_set(&event->hw.prev_count, sum);
+ 	}
+ }
+diff --git a/arch/s390/kernel/perf_pai_ext.c b/arch/s390/kernel/perf_pai_ext.c
+index b5febe22d0546..ac32107167eac 100644
+--- a/arch/s390/kernel/perf_pai_ext.c
++++ b/arch/s390/kernel/perf_pai_ext.c
+@@ -327,7 +327,6 @@ static void paiext_start(struct perf_event *event, int flags)
+ 	event->hw.last_tag = 1;
+ 	sum = paiext_getall(event);		/* Get current value */
+ 	local64_set(&event->hw.prev_count, sum);
+-	local64_set(&event->count, 0);
+ }
  
-+	/*
-+	 * The dsp_max_burst_size_in_ms is the length of the maximum burst size
-+	 * of the host DMA in the ALSA buffer.
-+	 *
-+	 * On playback start the DMA will transfer dsp_max_burst_size_in_ms
-+	 * amount of data in one initial burst to fill up the host DMA buffer.
-+	 * Consequent DMA burst sizes are shorter and their length can vary.
-+	 * To make sure that userspace allocate large enough ALSA buffer we need
-+	 * to place a constraint on the buffer time.
-+	 *
-+	 * On capture the DMA will transfer 1ms chunks.
-+	 *
-+	 * Exact dsp_max_burst_size_in_ms constraint is racy, so set the
-+	 * constraint to a minimum of 2x dsp_max_burst_size_in_ms.
-+	 */
-+	if (spcm->stream[direction].dsp_max_burst_size_in_ms)
-+		snd_pcm_hw_constraint_minmax(substream->runtime,
-+			SNDRV_PCM_HW_PARAM_BUFFER_TIME,
-+			spcm->stream[direction].dsp_max_burst_size_in_ms * USEC_PER_MSEC * 2,
-+			UINT_MAX);
-+
- 	/* binding pcm substream to hda stream */
- 	substream->runtime->private_data = &dsp_stream->hstream;
- 	return 0;
+ static int paiext_add(struct perf_event *event, int flags)
 -- 
-2.44.0
+2.43.0
 
 
 
