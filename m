@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-36920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C65289C25A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A01B89C261
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EDB81C21813
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C0DF1C21DC4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA6682D7A;
-	Mon,  8 Apr 2024 13:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5D47BAFD;
+	Mon,  8 Apr 2024 13:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gx0AA4cM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0tJ2Dk2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EC782D62;
-	Mon,  8 Apr 2024 13:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0628481A6;
+	Mon,  8 Apr 2024 13:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582728; cv=none; b=VpfW/Fr9L3siOjWMWiNoEMcIrEA/xDiTzCCdQ4iMHgDp716bHmUINwng5tSPBxg0InEflpUtRTB+z1iIZwSBhWWbhIUjQ/Pxjs1g0RsN+JIZ+lg0mn46MnjsRV3xGDfw3xvobr6CGz6jFtLvH6WLkdzxYQB28hCd5ofL4wrsAB8=
+	t=1712582744; cv=none; b=SwLaZAYVMQCZQqwuFin+Op04djBt8xpkTxNIbBe0E2gVCSrW5pyXMnr1EmDGaDg03XCEm9xzgTHU9imQQ7IFeiRIk/ZRkvn7dZmGLUUON++yQ5MDc609YClkobgmrmhY4pDsASjXl0xEcjLU/641LwBq6F2t/rcik4Zb3K3GwRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582728; c=relaxed/simple;
-	bh=kWTC9hWVLwjHPH6+Uq5I0/DyGz+ksvnMPs94yirdalU=;
+	s=arc-20240116; t=1712582744; c=relaxed/simple;
+	bh=eNMQeopq75lRztzjDC02Knl0lmleE3JZvshGWotNfQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AiQ+Yh8qZNEvj8r1HysqnSSuU1kOrEZvtZeMT3KFX4RWUBu8LrObE2uN+j8VMsJXz32uwwj78qJUltMg35iNSQlRd4T1NaVPImCrWHDoHO60/FWVjMiAe4poHdMF2B2iqdFGyt0Nj96/uy0AAl3iqXJXij9FUFLNOKW+NOsDrS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gx0AA4cM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A1EC433F1;
-	Mon,  8 Apr 2024 13:25:27 +0000 (UTC)
+	 MIME-Version; b=kMf3lJCQXE0+LBQQEKPiD7nEOH1sE1mR3l3tuHGrWvuozoJPPvYtoMQVKNjFrcBj6QCkZlsg43+m4GGiajZswAlE+RTt+f0IF5fiGxKotjWm1E5IhEZFOxjqIlX/ZSyjHwAn08MPaQxJvEEKMQgfdOlzPTRPCKS9J39wugsMKUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0tJ2Dk2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067ABC433C7;
+	Mon,  8 Apr 2024 13:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582728;
-	bh=kWTC9hWVLwjHPH6+Uq5I0/DyGz+ksvnMPs94yirdalU=;
+	s=korg; t=1712582743;
+	bh=eNMQeopq75lRztzjDC02Knl0lmleE3JZvshGWotNfQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gx0AA4cM04F6jFEBJxNppwhWnzl2xW0FA6Hcde30EjUNqlg1/5Xg79/0/QyGyHLmj
-	 4x3Bb5IQp/L0y9lKh9baashYwV8RQVZrG9xb7b8sjM8+Axhd8z5vimJH8B8Y2cYerf
-	 KeH6m8HsWng7QYd09RXKy7+0fcWtMhzKy2sjZ3S0=
+	b=q0tJ2Dk2bL7Jv6jHKB1fDOxJf5PDDsgjROpKSt2hIt7u4fq5P9TBYFuar6PzIX8L1
+	 9w29/G3iETipjUwmstxUFL2v95OAQZKMzdCrewqaHl6zmK0R/c2WdMCowxwbywHWa0
+	 XBZS2VbOoJqzUCMJp9/uFl6og4zbMJ++fpPEzueU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jan Kara <jack@suse.cz>,
 	Gabriel Krisman Bertazi <krisman@collabora.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 171/690] fanotify: Split fsid check from other fid mode checks
-Date: Mon,  8 Apr 2024 14:50:37 +0200
-Message-ID: <20240408125405.759940555@linuxfoundation.org>
+Subject: [PATCH 5.15 172/690] inotify: Dont force FS_IN_IGNORED
+Date: Mon,  8 Apr 2024 14:50:38 +0200
+Message-ID: <20240408125405.789573512@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -69,98 +69,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Gabriel Krisman Bertazi <krisman@collabora.com>
 
-[ Upstream commit 8299212cbdb01a5867e230e961f82e5c02a6de34 ]
+[ Upstream commit e0462f91d24756916fded4313d508e0fc52f39c9 ]
 
-FAN_FS_ERROR will require fsid, but not necessarily require the
-filesystem to expose a file handle.  Split those checks into different
-functions, so they can be used separately when setting up an event.
+According to Amir:
 
-While there, update a comment about tmpfs having 0 fsid, which is no
-longer true.
+"FS_IN_IGNORED is completely internal to inotify and there is no need
+to set it in i_fsnotify_mask at all, so if we remove the bit from the
+output of inotify_arg_to_mask() no functionality will change and we will
+be able to overload the event bit for FS_ERROR."
 
-Link: https://lore.kernel.org/r/20211025192746.66445-7-krisman@collabora.com
+This is done in preparation to overload FS_ERROR with the notification
+mechanism in fanotify.
+
+Link: https://lore.kernel.org/r/20211025192746.66445-8-krisman@collabora.com
+Suggested-by: Amir Goldstein <amir73il@gmail.com>
 Reviewed-by: Amir Goldstein <amir73il@gmail.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
 Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/notify/fanotify/fanotify_user.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ fs/notify/inotify/inotify_user.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
-index 20b743b05b997..8cf8e63a2c3e8 100644
---- a/fs/notify/fanotify/fanotify_user.c
-+++ b/fs/notify/fanotify/fanotify_user.c
-@@ -1300,16 +1300,15 @@ SYSCALL_DEFINE2(fanotify_init, unsigned int, flags, unsigned int, event_f_flags)
- 	return fd;
- }
- 
--/* Check if filesystem can encode a unique fid */
--static int fanotify_test_fid(struct path *path, __kernel_fsid_t *fsid)
-+static int fanotify_test_fsid(struct dentry *dentry, __kernel_fsid_t *fsid)
- {
- 	__kernel_fsid_t root_fsid;
- 	int err;
+diff --git a/fs/notify/inotify/inotify_user.c b/fs/notify/inotify/inotify_user.c
+index 9fb7701d2f8a0..b87759b8402be 100644
+--- a/fs/notify/inotify/inotify_user.c
++++ b/fs/notify/inotify/inotify_user.c
+@@ -94,10 +94,10 @@ static inline __u32 inotify_arg_to_mask(struct inode *inode, u32 arg)
+ 	__u32 mask;
  
  	/*
--	 * Make sure path is not in filesystem with zero fsid (e.g. tmpfs).
-+	 * Make sure dentry is not of a filesystem with zero fsid (e.g. fuse).
+-	 * Everything should accept their own ignored and should receive events
+-	 * when the inode is unmounted.  All directories care about children.
++	 * Everything should receive events when the inode is unmounted.
++	 * All directories care about children.
  	 */
--	err = vfs_get_fsid(path->dentry, fsid);
-+	err = vfs_get_fsid(dentry, fsid);
- 	if (err)
- 		return err;
- 
-@@ -1317,10 +1316,10 @@ static int fanotify_test_fid(struct path *path, __kernel_fsid_t *fsid)
- 		return -ENODEV;
- 
- 	/*
--	 * Make sure path is not inside a filesystem subvolume (e.g. btrfs)
-+	 * Make sure dentry is not of a filesystem subvolume (e.g. btrfs)
- 	 * which uses a different fsid than sb root.
- 	 */
--	err = vfs_get_fsid(path->dentry->d_sb->s_root, &root_fsid);
-+	err = vfs_get_fsid(dentry->d_sb->s_root, &root_fsid);
- 	if (err)
- 		return err;
- 
-@@ -1328,6 +1327,12 @@ static int fanotify_test_fid(struct path *path, __kernel_fsid_t *fsid)
- 	    root_fsid.val[1] != fsid->val[1])
- 		return -EXDEV;
- 
-+	return 0;
-+}
-+
-+/* Check if filesystem can encode a unique fid */
-+static int fanotify_test_fid(struct dentry *dentry)
-+{
- 	/*
- 	 * We need to make sure that the file system supports at least
- 	 * encoding a file handle so user can use name_to_handle_at() to
-@@ -1335,8 +1340,8 @@ static int fanotify_test_fid(struct path *path, __kernel_fsid_t *fsid)
- 	 * objects. However, name_to_handle_at() requires that the
- 	 * filesystem also supports decoding file handles.
- 	 */
--	if (!path->dentry->d_sb->s_export_op ||
--	    !path->dentry->d_sb->s_export_op->fh_to_dentry)
-+	if (!dentry->d_sb->s_export_op ||
-+	    !dentry->d_sb->s_export_op->fh_to_dentry)
- 		return -EOPNOTSUPP;
- 
- 	return 0;
-@@ -1505,7 +1510,11 @@ static int do_fanotify_mark(int fanotify_fd, unsigned int flags, __u64 mask,
- 	}
- 
- 	if (fid_mode) {
--		ret = fanotify_test_fid(&path, &__fsid);
-+		ret = fanotify_test_fsid(path.dentry, &__fsid);
-+		if (ret)
-+			goto path_put_and_out;
-+
-+		ret = fanotify_test_fid(path.dentry);
- 		if (ret)
- 			goto path_put_and_out;
+-	mask = (FS_IN_IGNORED | FS_UNMOUNT);
++	mask = (FS_UNMOUNT);
+ 	if (S_ISDIR(inode->i_mode))
+ 		mask |= FS_EVENT_ON_CHILD;
  
 -- 
 2.43.0
