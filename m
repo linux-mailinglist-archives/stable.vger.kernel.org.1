@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-36348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31F8189BCC4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 12:14:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4604F89BCD0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 12:16:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91165B22936
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 10:14:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A593EB21B76
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 10:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F378C52F7E;
-	Mon,  8 Apr 2024 10:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1FB535DC;
+	Mon,  8 Apr 2024 10:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHwSqBMq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7btYF0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C0652F7D
-	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 10:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2F7535D0
+	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 10:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712571268; cv=none; b=nBI6OzOAV/4mux8hKGOpvcKXGNwVSO4YCuXyKNdUeuR/s4DBuKAicirRl5RUeun7jjJ5wzoArqwpsymoSmZRHl3lGEt84E/RqlQ2yq+vAamkosy6gp/vFZQWYngKn52F1jdt4vY1MVcOVrez+WM+zFx73o11P0oDs5RA/qDIvV0=
+	t=1712571377; cv=none; b=mPrZbhH7dpSxtyKBWkxrc28QA24ORkB56EQY1zV5aWvmtYN/cwelF19HFusv6NClCtqo5+P769np9hHGP6nhUoaovxcnZivzwiexFBR53/g3E+xpHSdU60MYP18LUdsPUJ+qh++tB9sX2vg8sfd9Y6k5dDydtBmlLJNvcq4ZWWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712571268; c=relaxed/simple;
-	bh=8WC15mKeV00Zj4Ka+rqTm/z/iuLSCrtV4yU8Sk/1rDc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PczHrhN28tzR9eQuC1AKuAq19k2glGxRLfltKabf0WJYHJDx2BXAfn81IQXrG2TVxLJAoVAvc1mbR2gIneyrg/cReiIzLhgCg5P80VLFfS2fD54bhhyVjer88gwl0XHt701J1Bh332Dg+8poDnB0dGPCK9Yugh3rlNN70l25wrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHwSqBMq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2D5C43390;
-	Mon,  8 Apr 2024 10:14:27 +0000 (UTC)
+	s=arc-20240116; t=1712571377; c=relaxed/simple;
+	bh=i2eMamP5RxtgXAdYW2Hf3e1Lq3jM7EHpB0nVPfbvCgM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qhsJFl+RrLuaKuhVNkOFEgDgv9IMlI2bxRcSwvHgjPbqaf1WHo5IC4Uyyb5E1rerhxmSmtlwu63ReITt4sYuMWvqQrYq+zF/unnGcmBVp2l1lI37MRK+40z7jnOPH7tfOAc666PRNYV8QhSP+26fZhn1sAh//seVCL/dr8e6c8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7btYF0d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F606C43390;
+	Mon,  8 Apr 2024 10:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712571268;
-	bh=8WC15mKeV00Zj4Ka+rqTm/z/iuLSCrtV4yU8Sk/1rDc=;
+	s=korg; t=1712571376;
+	bh=i2eMamP5RxtgXAdYW2Hf3e1Lq3jM7EHpB0nVPfbvCgM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=VHwSqBMqG2N408oLoS+O1Pb7CDon7NV+XojWUAVlldjjhF6Yah3fWphOH7/D8JBOc
-	 AwDBvRzv1/7CVLMDX2y6FM065T7fgCNWk3WmDrmPDo+SEuxiyDj+aVplPhL8p1dmdM
-	 Ka1QPM829gWq2kDjpHxcSyLNvpqlBtygsf8lFU8I=
-Subject: FAILED: patch "[PATCH] mm/secretmem: fix GUP-fast succeeding on secretmem folios" failed to apply to 5.15-stable tree
-To: david@redhat.com,akpm@linux-foundation.org,lstoakes@gmail.com,miklos@szeredi.hu,mszeredi@redhat.com,rppt@kernel.org,samsun1006219@gmail.com,stable@vger.kernel.org,xrivendell7@gmail.com
+	b=T7btYF0dyFyDhg4YTvE5HQ6QI3xl2zvjWDLfgeLMHFliWnHs2RfiLlJgR1o+cgajt
+	 kf0BTARcUD27/pPb509dsK21u6ETt5E8KYwORZvTixHuKWJvzl3ZElPL2TZqTtveJs
+	 ldEoUjuZeTsDxp7olR7X4tmb4JLvi+/liQ1Oknac=
+Subject: FAILED: patch "[PATCH] riscv: process: Fix kernel gp leakage" failed to apply to 5.10-stable tree
+To: sorear@fastmail.com,alexghiti@rivosinc.com,palmer@rivosinc.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 08 Apr 2024 12:14:24 +0200
-Message-ID: <2024040823-spilt-marsupial-8d2f@gregkh>
+Date: Mon, 08 Apr 2024 12:16:13 +0200
+Message-ID: <2024040813-decline-blinker-ebc3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 65291dcfcf8936e1b23cfd7718fdfde7cfaf7706
+git cherry-pick -x d14fa1fcf69db9d070e75f1c4425211fa619dfc8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040823-spilt-marsupial-8d2f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040813-decline-blinker-ebc3@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-65291dcfcf89 ("mm/secretmem: fix GUP-fast succeeding on secretmem folios")
-8f9ff2deb8b9 ("secretmem: convert page_is_secretmem() to folio_is_secretmem()")
-b0496fe4effd ("mm/gup: Convert gup_pte_range() to use a folio")
+d14fa1fcf69d ("riscv: process: Fix kernel gp leakage")
+fea2fed201ee ("riscv: Enable per-task stack canaries")
 
 thanks,
 
@@ -79,59 +78,79 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 65291dcfcf8936e1b23cfd7718fdfde7cfaf7706 Mon Sep 17 00:00:00 2001
-From: David Hildenbrand <david@redhat.com>
-Date: Tue, 26 Mar 2024 15:32:08 +0100
-Subject: [PATCH] mm/secretmem: fix GUP-fast succeeding on secretmem folios
+From d14fa1fcf69db9d070e75f1c4425211fa619dfc8 Mon Sep 17 00:00:00 2001
+From: Stefan O'Rear <sorear@fastmail.com>
+Date: Wed, 27 Mar 2024 02:12:58 -0400
+Subject: [PATCH] riscv: process: Fix kernel gp leakage
 
-folio_is_secretmem() currently relies on secretmem folios being LRU
-folios, to save some cycles.
+childregs represents the registers which are active for the new thread
+in user context. For a kernel thread, childregs->gp is never used since
+the kernel gp is not touched by switch_to. For a user mode helper, the
+gp value can be observed in user space after execve or possibly by other
+means.
 
-However, folios might reside in a folio batch without the LRU flag set, or
-temporarily have their LRU flag cleared.  Consequently, the LRU flag is
-unreliable for this purpose.
+[From the email thread]
 
-In particular, this is the case when secretmem_fault() allocates a fresh
-page and calls filemap_add_folio()->folio_add_lru().  The folio might be
-added to the per-cpu folio batch and won't get the LRU flag set until the
-batch was drained using e.g., lru_add_drain().
+The /* Kernel thread */ comment is somewhat inaccurate in that it is also used
+for user_mode_helper threads, which exec a user process, e.g. /sbin/init or
+when /proc/sys/kernel/core_pattern is a pipe. Such threads do not have
+PF_KTHREAD set and are valid targets for ptrace etc. even before they exec.
 
-Consequently, folio_is_secretmem() might not detect secretmem folios and
-GUP-fast can succeed in grabbing a secretmem folio, crashing the kernel
-when we would later try reading/writing to the folio, because the folio
-has been unmapped from the directmap.
+childregs is the *user* context during syscall execution and it is observable
+from userspace in at least five ways:
 
-Fix it by removing that unreliable check.
+1. kernel_execve does not currently clear integer registers, so the starting
+   register state for PID 1 and other user processes started by the kernel has
+   sp = user stack, gp = kernel __global_pointer$, all other integer registers
+   zeroed by the memset in the patch comment.
 
-Link: https://lkml.kernel.org/r/20240326143210.291116-2-david@redhat.com
-Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Reported-by: yue sun <samsun1006219@gmail.com>
-Closes: https://lore.kernel.org/lkml/CABOYnLyevJeravW=QrH0JUPYEcDN160aZFb7kwndm-J2rmz0HQ@mail.gmail.com/
-Debugged-by: Miklos Szeredi <miklos@szeredi.hu>
-Tested-by: Miklos Szeredi <mszeredi@redhat.com>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+   This is a bug in its own right, but I'm unwilling to bet that it is the only
+   way to exploit the issue addressed by this patch.
 
-diff --git a/include/linux/secretmem.h b/include/linux/secretmem.h
-index 35f3a4a8ceb1..acf7e1a3f3de 100644
---- a/include/linux/secretmem.h
-+++ b/include/linux/secretmem.h
-@@ -13,10 +13,10 @@ static inline bool folio_is_secretmem(struct folio *folio)
- 	/*
- 	 * Using folio_mapping() is quite slow because of the actual call
- 	 * instruction.
--	 * We know that secretmem pages are not compound and LRU so we can
-+	 * We know that secretmem pages are not compound, so we can
- 	 * save a couple of cycles here.
- 	 */
--	if (folio_test_large(folio) || !folio_test_lru(folio))
-+	if (folio_test_large(folio))
- 		return false;
+2. ptrace(PTRACE_GETREGSET): you can PTRACE_ATTACH to a user_mode_helper thread
+   before it execs, but ptrace requires SIGSTOP to be delivered which can only
+   happen at user/kernel boundaries.
+
+3. /proc/*/task/*/syscall: this is perfectly happy to read pt_regs for
+   user_mode_helpers before the exec completes, but gp is not one of the
+   registers it returns.
+
+4. PERF_SAMPLE_REGS_USER: LOCKDOWN_PERF normally prevents access to kernel
+   addresses via PERF_SAMPLE_REGS_INTR, but due to this bug kernel addresses
+   are also exposed via PERF_SAMPLE_REGS_USER which is permitted under
+   LOCKDOWN_PERF. I have not attempted to write exploit code.
+
+5. Much of the tracing infrastructure allows access to user registers. I have
+   not attempted to determine which forms of tracing allow access to user
+   registers without already allowing access to kernel registers.
+
+Fixes: 7db91e57a0ac ("RISC-V: Task implementation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Stefan O'Rear <sorear@fastmail.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240327061258.2370291-1-sorear@fastmail.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+
+diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
+index 6abeecbfc51d..e4bc61c4e58a 100644
+--- a/arch/riscv/kernel/process.c
++++ b/arch/riscv/kernel/process.c
+@@ -27,8 +27,6 @@
+ #include <asm/vector.h>
+ #include <asm/cpufeature.h>
  
- 	mapping = (struct address_space *)
+-register unsigned long gp_in_global __asm__("gp");
+-
+ #if defined(CONFIG_STACKPROTECTOR) && !defined(CONFIG_STACKPROTECTOR_PER_TASK)
+ #include <linux/stackprotector.h>
+ unsigned long __stack_chk_guard __read_mostly;
+@@ -207,7 +205,6 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+ 	if (unlikely(args->fn)) {
+ 		/* Kernel thread */
+ 		memset(childregs, 0, sizeof(struct pt_regs));
+-		childregs->gp = gp_in_global;
+ 		/* Supervisor/Machine, irqs on: */
+ 		childregs->status = SR_PP | SR_PIE;
+ 
 
 
