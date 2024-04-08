@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-37195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B164489C3C4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:44:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4474A89C65F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:08:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E358D1C214E1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84938B2C6BA
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A507E7F464;
-	Mon,  8 Apr 2024 13:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C227F492;
+	Mon,  8 Apr 2024 14:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pghfxaa+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytehxcBD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639577D074;
-	Mon,  8 Apr 2024 13:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56937E105;
+	Mon,  8 Apr 2024 14:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583526; cv=none; b=Bsbi3yFP3qFMWavb5dwhEbR5Lbr9EcH3WcLZudn8XvWijppyBRezRQxaosWmj2noJ52Q6788/U5ApfUZpn1asFt/eHV5JGPGxUiLEoswbCesCkzDjrDwZpw3lHq9DsiteZpMOh0YCO3rkF/9r/Uo3Xoe/dj6yVFozZ+qsuW3Uk0=
+	t=1712584905; cv=none; b=cbLZCXrf+22O9vVjK6yaZ3BoLe0HNuX48R+utyz2s1t+vVicbcHaI23L3Qqa8DvjyUOuW7P5x0W3Gzuij0iXybnCy5sVsVFIqbt+eYRY/TsFZhPpzGQ59bAMmQWfWp7d3PzThMgdPwqQ8P1qGiV1n7+pFUa0NS56nljYjP5vZBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583526; c=relaxed/simple;
-	bh=+0pDmkOV3j7V8e00X6TxZEpW/DIDcA6vgMtAVVZPnVc=;
+	s=arc-20240116; t=1712584905; c=relaxed/simple;
+	bh=MA1coPkUkRMVR9n3kNLEnqoZ+CzpLxSxiXZgQHWRR64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOsTBl+9KRYvpJ/3fay0QNbAuafnfNRRpcgBXMCi7VLLmScsdFSIwO14+FtfNAMSNX5KcL5eF7QWimsihNw/LRTk9Vjufw7dyAxDZ7S1e7tW4AcZgA8lkAjssQWSvEyC+XrcTCr5qidDSsZVVfjTiZJry/TWbhAIG8+0IF63OSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pghfxaa+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE339C433C7;
-	Mon,  8 Apr 2024 13:38:45 +0000 (UTC)
+	 MIME-Version; b=GElMZTyuptaqUUegXc+aZTFnFTf5iUsiwAzhuf7t3xwnD57EPu4hMC8H1bjs5nbPjZctNAW2k0XebwksZ92ptFF+LCwtn1QZEGEPVtqKwZUuUgKU4S4LPOdrVYuXEqqKaFIG6q9cqni14lnKKy8xI1oa+BNx9nWxzkJ7qK5wNT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytehxcBD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E9F5C433F1;
+	Mon,  8 Apr 2024 14:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583526;
-	bh=+0pDmkOV3j7V8e00X6TxZEpW/DIDcA6vgMtAVVZPnVc=;
+	s=korg; t=1712584904;
+	bh=MA1coPkUkRMVR9n3kNLEnqoZ+CzpLxSxiXZgQHWRR64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pghfxaa+Nuae3HhI4xQAuC8nGDx0wf2HDhX+zst3KWcqlNmWQiRFdXrEZ04qC6dzB
-	 FsYbAgHnvn4HeMxoNxyKfgbypqXNJXjXKh48/+jxvtoTk/x3g2oyipVNCJT6SX+yOL
-	 TqpChyLjWj6LKlSNY4TldbhzHZPtDIGi0ZoARXE8=
+	b=ytehxcBDyVqy9QhwNFS7ZfvctLv4N1GBFTJ6tgcXnyukePD3zYzDP4wWtiiZKLL9X
+	 otPN/5B5YdMwtLT4H/iDrd2EnbiGDe/6OQrtLhA81wQmUCO6LiFFNjh20h6+ZlljkG
+	 wXRkDkal8KHXqJU531rPhG48wFF1cgqHLsCaMK6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Schwab <schwab@suse.de>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Yunhui Cui <cuiyunhui@bytedance.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 188/273] riscv: use KERN_INFO in do_trap
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 597/690] scsi: qla2xxx: NVME|FCP prefer flag not being honored
 Date: Mon,  8 Apr 2024 14:57:43 +0200
-Message-ID: <20240408125315.129745497@linuxfoundation.org>
+Message-ID: <20240408125421.220171052@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Schwab <schwab@suse.de>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit dd33e5dc7247041b565014f66286c9566b0e32b6 ]
+commit 69aecdd410106dc3a8f543a4f7ec6379b995b8d0 upstream.
 
-Print the instruction dump with info instead of emergency level.  The
-unhandled signal message is only for informational purpose.
+Changing of [FCP|NVME] prefer flag in flash has no effect on driver. For
+device that supports both FCP + NVMe over the same connection, driver
+continues to connect to this device using the previous successful login
+mode.
 
-Fixes: b8a03a634129 ("riscv: add userland instruction dump to RISC-V splats")
-Signed-off-by: Andreas Schwab <schwab@suse.de>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Reviewed-by: Yunhui Cui <cuiyunhui@bytedance.com>
-Link: https://lore.kernel.org/r/mvmy1aegrhm.fsf@suse.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On completion of flash update, adapter will be reset. Driver will
+reset the prefer flag based on setting from flash.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-6-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/traps.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_init.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-index a1b9be3c4332d..142f5f5168fb1 100644
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -121,7 +121,7 @@ void do_trap(struct pt_regs *regs, int signo, int code, unsigned long addr)
- 		print_vma_addr(KERN_CONT " in ", instruction_pointer(regs));
- 		pr_cont("\n");
- 		__show_regs(regs);
--		dump_instr(KERN_EMERG, regs);
-+		dump_instr(KERN_INFO, regs);
- 	}
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -7582,6 +7582,7 @@ qla2x00_abort_isp(scsi_qla_host_t *vha)
+ 	struct scsi_qla_host *vp, *tvp;
+ 	struct req_que *req = ha->req_q_map[0];
+ 	unsigned long flags;
++	fc_port_t *fcport;
  
- 	force_sig_fault(signo, code, (void __user *)addr);
--- 
-2.43.0
-
+ 	if (vha->flags.online) {
+ 		qla2x00_abort_isp_cleanup(vha);
+@@ -7647,6 +7648,15 @@ qla2x00_abort_isp(scsi_qla_host_t *vha)
+ 			       "ISP Abort - ISP reg disconnect post nvmram config, exiting.\n");
+ 			return status;
+ 		}
++
++		/* User may have updated [fcp|nvme] prefer in flash */
++		list_for_each_entry(fcport, &vha->vp_fcports, list) {
++			if (NVME_PRIORITY(ha, fcport))
++				fcport->do_prli_nvme = 1;
++			else
++				fcport->do_prli_nvme = 0;
++		}
++
+ 		if (!qla2x00_restart_isp(vha)) {
+ 			clear_bit(RESET_MARKER_NEEDED, &vha->dpc_flags);
+ 
+@@ -7717,6 +7727,14 @@ qla2x00_abort_isp(scsi_qla_host_t *vha)
+ 				atomic_inc(&vp->vref_count);
+ 				spin_unlock_irqrestore(&ha->vport_slock, flags);
+ 
++				/* User may have updated [fcp|nvme] prefer in flash */
++				list_for_each_entry(fcport, &vp->vp_fcports, list) {
++					if (NVME_PRIORITY(ha, fcport))
++						fcport->do_prli_nvme = 1;
++					else
++						fcport->do_prli_nvme = 0;
++				}
++
+ 				qla2x00_vp_abort_isp(vp);
+ 
+ 				spin_lock_irqsave(&ha->vport_slock, flags);
 
 
 
