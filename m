@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-37646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF1F89C661
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:08:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F60E89C307
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D57AEB2B6D7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E46B91F21BCC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D707E115;
-	Mon,  8 Apr 2024 14:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B6D7F7CB;
+	Mon,  8 Apr 2024 13:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgWvmD3Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m67urGrr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9787D3FE;
-	Mon,  8 Apr 2024 14:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A097F494;
+	Mon,  8 Apr 2024 13:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584844; cv=none; b=XQfyVowq/q1QocBWdparxWoKrcBXXUattZMPvjV3XHHCXMsXmO9moAA62+B0zTWxJt7lXH9Sz/TcdFBCmzu8yMwdAkC0ahXjxk2BroNT16S26w4M/FgFNXDYPkSf+V0e5jPlPXIdMsIaW90PiqFsEhj4x8YSag5E+NviQt6Bd58=
+	t=1712583107; cv=none; b=H0MbAJsrd3EUIvBS4IqfpRrl0k7RaOUywi4h8ocg5ByV2IuTIA69ZHNDWPB/GxmR80eUqzzdeGeudeswlICx6GMrWk/SItaUHDTRsYX+7+FQziDWWU7OBbr/BjknP5haTzYjaGCk76vIXS0bkT0DTGkejghw+ZjxVGLet3jkPho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584844; c=relaxed/simple;
-	bh=ea8aiDlL4oIE2vsqvWd1mxRa6jomX9pvUdgOEUiFRWw=;
+	s=arc-20240116; t=1712583107; c=relaxed/simple;
+	bh=A6RNwQyHRgabfNddpVJQQX+T1dVrn3Csw4G5hAmdTiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rWidVUwLKpJTyI4K7aN8jnb/bVnpibs70O6Y6Szn14W5mwZfLDDyfgSmWOHJSCDwIRrm1G/8pOdgouuqz56SZJ3mpIF/WEp2ejo2wRjYasdRyj9k3IRoDZQ/Sz/XhXF/a5KDqyrxrr+qCIesTmpZSYVDt/alKghhm0NnUzTWsCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgWvmD3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45039C433F1;
-	Mon,  8 Apr 2024 14:00:44 +0000 (UTC)
+	 MIME-Version; b=ajEACKJWpK4Fn7tvp8GCdOBXFz7pAK1SA3i/7bEKfWqRo79pKpIlwGGSDkEXqNDZP67j7qiEcApfzArUJsQUSZ3ZysHkCjvlcNeIiMe6piJAVD3cfoVZ5GyAmOlkEcjph1rPHy/dTOooYyIuj3jY3pk1dEa6sxGh6nWyMo6jMDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m67urGrr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3ABC433F1;
+	Mon,  8 Apr 2024 13:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584844;
-	bh=ea8aiDlL4oIE2vsqvWd1mxRa6jomX9pvUdgOEUiFRWw=;
+	s=korg; t=1712583106;
+	bh=A6RNwQyHRgabfNddpVJQQX+T1dVrn3Csw4G5hAmdTiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vgWvmD3QHqV84/KypMUCeZMCUpTi4Rs4sa9Xrcs3nZeQQYjOWvqOChjVtfK8uTzxG
-	 x7z4hDkXrsUfsOGGpsZrh9LYgVneAAfa4GpXomywjYaFeAja2wlMT0qlwYzaPUwXfh
-	 ReDKAimif5T8hC15vUtUMCyDwqNLjJgIY8DDGrgY=
+	b=m67urGrrEspLzkJdEG3Asz1NeuK/StE3VU+g4BrIGn6Dfs5nQQOZbbjkJZ3+ZRoMg
+	 0fYJ6UyF8o4ZYnyqlke9PScfriS3igDq180yFdN4ITJyHUlBMRBu+yK1P+6FimSI7x
+	 gTq7lGz2NPjYSCil2vsMjpFkyozPQj09r8X4KM6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 549/690] NFSD: fix possible oops when nfsd/pool_stats is closed.
+	Sean Christopherson <seanjc@google.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 140/273] KVM: SVM: Add support for allowing zero SEV ASIDs
 Date: Mon,  8 Apr 2024 14:56:55 +0200
-Message-ID: <20240408125419.518748990@linuxfoundation.org>
+Message-ID: <20240408125313.638227183@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-[ Upstream commit 88956eabfdea7d01d550535af120d4ef265b1d02 ]
+[ Upstream commit 0aa6b90ef9d75b4bd7b6d106d85f2a3437697f91 ]
 
-If /proc/fs/nfsd/pool_stats is open when the last nfsd thread exits, then
-when the file is closed a NULL pointer is dereferenced.
-This is because nfsd_pool_stats_release() assumes that the
-pointer to the svc_serv cannot become NULL while a reference is held.
+Some BIOSes allow the end user to set the minimum SEV ASID value
+(CPUID 0x8000001F_EDX) to be greater than the maximum number of
+encrypted guests, or maximum SEV ASID value (CPUID 0x8000001F_ECX)
+in order to dedicate all the SEV ASIDs to SEV-ES or SEV-SNP.
 
-This used to be the case but a recent patch split nfsd_last_thread() out
-from nfsd_put(), and clearing the pointer is done in nfsd_last_thread().
+The SEV support, as coded, does not handle the case where the minimum
+SEV ASID value can be greater than the maximum SEV ASID value.
+As a result, the following confusing message is issued:
 
-This is easily reproduced by running
-   rpc.nfsd 8 ; ( rpc.nfsd 0;true) < /proc/fs/nfsd/pool_stats
+[   30.715724] kvm_amd: SEV enabled (ASIDs 1007 - 1006)
 
-Fortunately nfsd_pool_stats_release() has easy access to the svc_serv
-pointer, and so can call svc_put() on it directly.
+Fix the support to properly handle this case.
 
-Fixes: 9f28a971ee9f ("nfsd: separate nfsd_last_thread() from nfsd_put()")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 916391a2d1dc ("KVM: SVM: Add support for SEV-ES capability in KVM")
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+Cc: stable@vger.kernel.org
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/20240104190520.62510-1-Ashish.Kalra@amd.com
+Link: https://lore.kernel.org/r/20240131235609.4161407-4-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfssvc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/sev.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
-index ee5713fca1870..2a1dd580dfb94 100644
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -1084,11 +1084,12 @@ int nfsd_pool_stats_open(struct inode *inode, struct file *file)
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 4c841610277dc..86088d1250b3d 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -144,10 +144,21 @@ static void sev_misc_cg_uncharge(struct kvm_sev_info *sev)
  
- int nfsd_pool_stats_release(struct inode *inode, struct file *file)
+ static int sev_asid_new(struct kvm_sev_info *sev)
  {
-+	struct seq_file *seq = file->private_data;
-+	struct svc_serv *serv = seq->private;
- 	int ret = seq_release(inode, file);
--	struct net *net = inode->i_sb->s_fs_info;
+-	unsigned int asid, min_asid, max_asid;
++	/*
++	 * SEV-enabled guests must use asid from min_sev_asid to max_sev_asid.
++	 * SEV-ES-enabled guest can use from 1 to min_sev_asid - 1.
++	 * Note: min ASID can end up larger than the max if basic SEV support is
++	 * effectively disabled by disallowing use of ASIDs for SEV guests.
++	 */
++	unsigned int min_asid = sev->es_active ? 1 : min_sev_asid;
++	unsigned int max_asid = sev->es_active ? min_sev_asid - 1 : max_sev_asid;
++	unsigned int asid;
+ 	bool retry = true;
+ 	int ret;
  
- 	mutex_lock(&nfsd_mutex);
--	nfsd_put(net);
-+	svc_put(serv);
- 	mutex_unlock(&nfsd_mutex);
- 	return ret;
- }
++	if (min_asid > max_asid)
++		return -ENOTTY;
++
+ 	WARN_ON(sev->misc_cg);
+ 	sev->misc_cg = get_current_misc_cg();
+ 	ret = sev_misc_cg_try_charge(sev);
+@@ -159,12 +170,6 @@ static int sev_asid_new(struct kvm_sev_info *sev)
+ 
+ 	mutex_lock(&sev_bitmap_lock);
+ 
+-	/*
+-	 * SEV-enabled guests must use asid from min_sev_asid to max_sev_asid.
+-	 * SEV-ES-enabled guest can use from 1 to min_sev_asid - 1.
+-	 */
+-	min_asid = sev->es_active ? 1 : min_sev_asid;
+-	max_asid = sev->es_active ? min_sev_asid - 1 : max_sev_asid;
+ again:
+ 	asid = find_next_zero_bit(sev_asid_bitmap, max_asid + 1, min_asid);
+ 	if (asid > max_asid) {
+@@ -2239,8 +2244,10 @@ void __init sev_hardware_setup(void)
+ 		goto out;
+ 	}
+ 
+-	sev_asid_count = max_sev_asid - min_sev_asid + 1;
+-	WARN_ON_ONCE(misc_cg_set_capacity(MISC_CG_RES_SEV, sev_asid_count));
++	if (min_sev_asid <= max_sev_asid) {
++		sev_asid_count = max_sev_asid - min_sev_asid + 1;
++		WARN_ON_ONCE(misc_cg_set_capacity(MISC_CG_RES_SEV, sev_asid_count));
++	}
+ 	sev_supported = true;
+ 
+ 	/* SEV-ES support requested? */
+@@ -2271,7 +2278,9 @@ void __init sev_hardware_setup(void)
+ out:
+ 	if (boot_cpu_has(X86_FEATURE_SEV))
+ 		pr_info("SEV %s (ASIDs %u - %u)\n",
+-			sev_supported ? "enabled" : "disabled",
++			sev_supported ? min_sev_asid <= max_sev_asid ? "enabled" :
++								       "unusable" :
++								       "disabled",
+ 			min_sev_asid, max_sev_asid);
+ 	if (boot_cpu_has(X86_FEATURE_SEV_ES))
+ 		pr_info("SEV-ES %s (ASIDs %u - %u)\n",
 -- 
 2.43.0
 
