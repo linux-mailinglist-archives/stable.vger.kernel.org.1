@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-37193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535D089C3C3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:44:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 364CD89C422
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E72581F24CCB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AED0AB25B29
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3407EEF3;
-	Mon,  8 Apr 2024 13:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5337F469;
+	Mon,  8 Apr 2024 13:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzUVU8v8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cugKGSzz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E297D074;
-	Mon,  8 Apr 2024 13:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1634D5AB;
+	Mon,  8 Apr 2024 13:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583520; cv=none; b=pRrjYfLChoSiTeQOJgMJJbvviX2Rh2LfpxRpSycvsh86/sFlN3JxIYuDiRcu0SnHEBUKJ+X8GBjHUG/GriR5ZpTIH9LGsBglM7SiI+pc0/mJRzCfE/GwApJL/WGr72TG6NW96SGHtBt8h30U4CWh5hlfm7kThp5aohoX/YZzoeE=
+	t=1712583529; cv=none; b=gM5Y1RRqYM8bYH52YYityljGhWVfKH244jN25mlLj+IBFaI2mr1aYM2JFmDBhmvimniX6e5YaR4T7+RN7tMxsZu2AzHgo/saysU0MPP9izuJSyhWHguDtZJ8JUcvHHlhcIOP6hMt6OVBlqWeQ+Q7p3lg2HJJgtN+90EpsDB7OlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583520; c=relaxed/simple;
-	bh=yHv5mdT59vw3+AB+ZUJyz5T4+mXcTnciHILng9eHs1Y=;
+	s=arc-20240116; t=1712583529; c=relaxed/simple;
+	bh=fbLNr2HrVWyL+ayQwE7FMOZjFmpCwI53uFePQtDc3MM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V5+4O0OjCNDZ2TaWZORcLJAFEB1CniM30LT88rpv4HKO/L1WeBRBeLz0hM9ZcJ2chHWrFoxkZyuZPi2Jv46k9AJZ6Qr8Xj0AkaCGAwVrtzlspVjjLycINCfGB77751w2J70j6Yh2mmq86fYJMpM0q1u0/uGL2YRO0UHzh5pz67o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzUVU8v8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F954C433C7;
-	Mon,  8 Apr 2024 13:38:39 +0000 (UTC)
+	 MIME-Version; b=pHTsq8WDLKsqVRtJ/Q6Eialy4hwYpAdR3jACZNDvEgmoh6qors3isrcSXl1ji69TRvfVXybmBe0Hd+yhZ9kPXKzY9hJ5UYssR3A6bHhXQJeVsOu2WQsAbTu/t1rBi8mPv8IqxQ65mlLVCASX/woLnnU/4x2ZHtSyeRO9TS+yvGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cugKGSzz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D76C433C7;
+	Mon,  8 Apr 2024 13:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583520;
-	bh=yHv5mdT59vw3+AB+ZUJyz5T4+mXcTnciHILng9eHs1Y=;
+	s=korg; t=1712583529;
+	bh=fbLNr2HrVWyL+ayQwE7FMOZjFmpCwI53uFePQtDc3MM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KzUVU8v8T8Dbqj7aaz0gruWSZTt9VwYpew/ymFwB9Oku4cGT26aDtXdisYYQb8HSz
-	 wxtLioM0xIKweOKuYImCozyt4wE0OuzjW2JGqKKK4NMr5kIWzHEXOYUeBmuPN5zWHc
-	 wGXlh+qiLdzNwpfnrH5tvmdC92G+X269IsUZ7Yho=
+	b=cugKGSzzQ8QB6dm7bkcwwL1KvSoE6SaemBzNfok4qqlWHW01L8YGhKAUuzctAclhC
+	 Xy6D7CfQgydIHq0J376mhghETyiN20RD02HNhFSrTxFfAFEy1VDE2qnIBIoXdaSE9F
+	 ciACqXPpYCa1IKzr7PwBfNsVI6GXMlF/pShJFEa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Chao Ma <machao2019@gmail.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 204/252] ksmbd: dont send oplock break if rename fails
-Date: Mon,  8 Apr 2024 14:58:23 +0200
-Message-ID: <20240408125312.984402061@linuxfoundation.org>
+Subject: [PATCH 6.6 205/252] ksmbd: validate payload size in ipc response
+Date: Mon,  8 Apr 2024 14:58:24 +0200
+Message-ID: <20240408125313.014753772@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
 References: <20240408125306.643546457@linuxfoundation.org>
@@ -67,32 +68,119 @@ Content-Transfer-Encoding: 8bit
 
 From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit c1832f67035dc04fb89e6b591b64e4d515843cda upstream.
+commit a677ebd8ca2f2632ccdecbad7b87641274e15aac upstream.
 
-Don't send oplock break if rename fails. This patch fix
-smb2.oplock.batch20 test.
+If installing malicious ksmbd-tools, ksmbd.mountd can return invalid ipc
+response to ksmbd kernel server. ksmbd should validate payload size of
+ipc response from ksmbd.mountd to avoid memory overrun or
+slab-out-of-bounds. This patch validate 3 ipc response that has payload.
 
 Cc: stable@vger.kernel.org
+Reported-by: Chao Ma <machao2019@gmail.com>
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/server/ksmbd_netlink.h     |    3 ++-
+ fs/smb/server/mgmt/share_config.c |    7 ++++++-
+ fs/smb/server/transport_ipc.c     |   37 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 45 insertions(+), 2 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -5631,8 +5631,9 @@ static int smb2_rename(struct ksmbd_work
- 	if (!file_info->ReplaceIfExists)
- 		flags = RENAME_NOREPLACE;
+--- a/fs/smb/server/ksmbd_netlink.h
++++ b/fs/smb/server/ksmbd_netlink.h
+@@ -166,7 +166,8 @@ struct ksmbd_share_config_response {
+ 	__u16	force_uid;
+ 	__u16	force_gid;
+ 	__s8	share_name[KSMBD_REQ_MAX_SHARE_NAME];
+-	__u32	reserved[112];		/* Reserved room */
++	__u32	reserved[111];		/* Reserved room */
++	__u32	payload_sz;
+ 	__u32	veto_list_sz;
+ 	__s8	____payload[];
+ };
+--- a/fs/smb/server/mgmt/share_config.c
++++ b/fs/smb/server/mgmt/share_config.c
+@@ -158,7 +158,12 @@ static struct ksmbd_share_config *share_
+ 	share->name = kstrdup(name, GFP_KERNEL);
  
--	smb_break_all_levII_oplock(work, fp, 0);
- 	rc = ksmbd_vfs_rename(work, &fp->filp->f_path, new_name, flags);
-+	if (!rc)
-+		smb_break_all_levII_oplock(work, fp, 0);
+ 	if (!test_share_config_flag(share, KSMBD_SHARE_FLAG_PIPE)) {
+-		share->path = kstrdup(ksmbd_share_config_path(resp),
++		int path_len = PATH_MAX;
++
++		if (resp->payload_sz)
++			path_len = resp->payload_sz - resp->veto_list_sz;
++
++		share->path = kstrndup(ksmbd_share_config_path(resp), path_len,
+ 				      GFP_KERNEL);
+ 		if (share->path)
+ 			share->path_sz = strlen(share->path);
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -65,6 +65,7 @@ struct ipc_msg_table_entry {
+ 	struct hlist_node	ipc_table_hlist;
+ 
+ 	void			*response;
++	unsigned int		msg_sz;
+ };
+ 
+ static struct delayed_work ipc_timer_work;
+@@ -275,6 +276,7 @@ static int handle_response(int type, voi
+ 		}
+ 
+ 		memcpy(entry->response, payload, sz);
++		entry->msg_sz = sz;
+ 		wake_up_interruptible(&entry->wait);
+ 		ret = 0;
+ 		break;
+@@ -453,6 +455,34 @@ out:
+ 	return ret;
+ }
+ 
++static int ipc_validate_msg(struct ipc_msg_table_entry *entry)
++{
++	unsigned int msg_sz = entry->msg_sz;
++
++	if (entry->type == KSMBD_EVENT_RPC_REQUEST) {
++		struct ksmbd_rpc_command *resp = entry->response;
++
++		msg_sz = sizeof(struct ksmbd_rpc_command) + resp->payload_sz;
++	} else if (entry->type == KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST) {
++		struct ksmbd_spnego_authen_response *resp = entry->response;
++
++		msg_sz = sizeof(struct ksmbd_spnego_authen_response) +
++				resp->session_key_len + resp->spnego_blob_len;
++	} else if (entry->type == KSMBD_EVENT_SHARE_CONFIG_REQUEST) {
++		struct ksmbd_share_config_response *resp = entry->response;
++
++		if (resp->payload_sz) {
++			if (resp->payload_sz < resp->veto_list_sz)
++				return -EINVAL;
++
++			msg_sz = sizeof(struct ksmbd_share_config_response) +
++					resp->payload_sz;
++		}
++	}
++
++	return entry->msg_sz != msg_sz ? -EINVAL : 0;
++}
++
+ static void *ipc_msg_send_request(struct ksmbd_ipc_msg *msg, unsigned int handle)
+ {
+ 	struct ipc_msg_table_entry entry;
+@@ -477,6 +507,13 @@ static void *ipc_msg_send_request(struct
+ 	ret = wait_event_interruptible_timeout(entry.wait,
+ 					       entry.response != NULL,
+ 					       IPC_WAIT_TIMEOUT);
++	if (entry.response) {
++		ret = ipc_validate_msg(&entry);
++		if (ret) {
++			kvfree(entry.response);
++			entry.response = NULL;
++		}
++	}
  out:
- 	kfree(new_name);
- 	return rc;
+ 	down_write(&ipc_msg_table_lock);
+ 	hash_del(&entry.ipc_table_hlist);
 
 
 
