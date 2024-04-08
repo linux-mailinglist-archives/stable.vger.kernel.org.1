@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-37572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC86F89C5BB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19CC589C1D6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 554F4B2611F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:58:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89F6BB22A88
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E99C762DA;
-	Mon,  8 Apr 2024 13:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771227172F;
+	Mon,  8 Apr 2024 13:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXfavVaa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tO6nJbOH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AEF3A1C7;
-	Mon,  8 Apr 2024 13:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C9B7442A;
+	Mon,  8 Apr 2024 13:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584626; cv=none; b=k84nhYTyr1HP2lXE0CltHC21qCq45hwhx7cvVWQbQ8v674hdMdMR8UDIHkj8f9z1XsFZwdtuItbthKCjMtYIKo/0wo8pYBTla+tzlPEVBefkfZ8wzf3Swvb5DNhLQuvcTWQRVvD0udRlSTN9apEOMIWeau/4zMRn77vgYX9dTq4=
+	t=1712582171; cv=none; b=XyD+4RdIG6+qkrlyIIy72drTC2fPJ0+ydMRaQrOzgOeus9l/zF7YexW7ffXvEiGantvLbizYKNDR94eylNydVhpF5rdVt5PnPrIyjq3OJn0A8uPHOlqEQd+pkfRpgnhwbvVF0GEcscLu4BRqfaxU/mZlmEm5vCD7w2e8zyenJQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584626; c=relaxed/simple;
-	bh=/jKoPCst/MzWXCktYnYSP1wrvYZ4g4rZu/VSrTyltMg=;
+	s=arc-20240116; t=1712582171; c=relaxed/simple;
+	bh=Agax1ddfWYFn3szZzVoXOw7uRIX6Ibn/a9O3+UfBJCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7Iyfqyf98Q88CD1zzbK3kEqVgUBFzGIrzpj18xjebpS9lFu404Xvf3sg56ycXaNNJ6d0fJrOW4EHs0msyZZMTZwM8mDtlXFA8JDL4YCGX0nF6eapIcTwfH0WbT/8jL/4wQV7k5HKSeAh0bb0Rjj2TJAvnIrGGfpZnAZ1XWRQjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXfavVaa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076EDC433F1;
-	Mon,  8 Apr 2024 13:57:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fq5wyw0Xxw5q8Ch7icEIdZZSTwo1oRe+S8G5TFbZo8raBjq4DCKrievZGjmF6Lfw0JfAJNcI8l+VqmLR4/tvUg45SPtMErS8CK/QwYmNPeIZ7e69XFm28tczNgWAwi372MKTh+F3oBIWHdg3dDfl5TE/nUDdvREkvqh7W7CeNz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tO6nJbOH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0EDDC433C7;
+	Mon,  8 Apr 2024 13:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584626;
-	bh=/jKoPCst/MzWXCktYnYSP1wrvYZ4g4rZu/VSrTyltMg=;
+	s=korg; t=1712582171;
+	bh=Agax1ddfWYFn3szZzVoXOw7uRIX6Ibn/a9O3+UfBJCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DXfavVaaDinj1O+Z2/d5wJYvgZydeLgmg3bDikY/0wrYYcrC6TqzOPNCPVh3oYKxO
-	 x8nuF8eO0u2XhVrtApJ5iTimT+THr++DDDvb6MSwMwc58K0H7Y7SuTc8OG+BFBw7te
-	 dFWqHwZ6xOPkqNZ1iEP67OnASGCykAJtefdOcSmU=
+	b=tO6nJbOH3lAbLrFCWMaQd/4Q88rt0p2IF2mw98bUcY31RHUmbcUOjrxTBVXSxxbJa
+	 5wyrF7hn9J28gWQIl+w8Gij2meaADHtbb9H0jekGxdwXiXbVakuZlPNw1ZUsnYVAnr
+	 HK1OS26K+p7ncxojkFK7+H4xf7Qukrj6p4NaOOLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>
-Subject: [PATCH 5.15 502/690] trace: Relocate event helper files
+	Anup Patel <apatel@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>
+Subject: [PATCH 6.6 069/252] RISC-V: KVM: Fix APLIC setipnum_le/be write emulation
 Date: Mon,  8 Apr 2024 14:56:08 +0200
-Message-ID: <20240408125417.827960911@linuxfoundation.org>
+Message-ID: <20240408125308.776659069@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,193 +59,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Anup Patel <apatel@ventanamicro.com>
 
-[ Upstream commit 247c01ff5f8d66e62a404c91733be52fecb8b7f6 ]
+commit d8dd9f113e16bef3b29c9dcceb584a6f144f55e4 upstream.
 
-Steven Rostedt says:
-> The include/trace/events/ directory should only hold files that
-> are to create events, not headers that hold helper functions.
->
-> Can you please move them out of include/trace/events/ as that
-> directory is "special" in the creation of events.
+The writes to setipnum_le/be register for APLIC in MSI-mode have special
+consideration for level-triggered interrupts as-per the section "4.9.2
+Special consideration for level-sensitive interrupt sources" of the RISC-V
+AIA specification.
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Acked-by: Leon Romanovsky <leonro@nvidia.com>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Acked-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Stable-dep-of: 638593be55c0 ("NFSD: add CB_RECALL_ANY tracepoints")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Particularly, the below text from the RISC-V AIA specification defines
+the behaviour of writes to setipnum_le/be register for level-triggered
+interrupts:
+
+"A second option is for the interrupt service routine to write the
+APLIC’s source identity number for the interrupt to the domain’s
+setipnum register just before exiting. This will cause the interrupt’s
+pending bit to be set to one again if the source is still asserting
+an interrupt, but not if the source is not asserting an interrupt."
+
+Fix setipnum_le/be write emulation for in-kernel APLIC by implementing
+the above behaviour in aplic_write_pending() function.
+
+Cc: stable@vger.kernel.org
+Fixes: 74967aa208e2 ("RISC-V: KVM: Add in-kernel emulation of AIA APLIC")
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Signed-off-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/r/20240321085041.1955293-2-apatel@ventanamicro.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- MAINTAINERS                                           | 7 +++++++
- drivers/infiniband/core/cm_trace.h                    | 2 +-
- drivers/infiniband/core/cma_trace.h                   | 2 +-
- fs/nfs/nfs4trace.h                                    | 6 +++---
- fs/nfs/nfstrace.h                                     | 6 +++---
- include/trace/events/rpcgss.h                         | 2 +-
- include/trace/events/rpcrdma.h                        | 4 ++--
- include/trace/events/sunrpc.h                         | 2 +-
- include/trace/{events => misc}/fs.h                   | 0
- include/trace/{events => misc}/nfs.h                  | 0
- include/trace/{events => misc}/rdma.h                 | 0
- include/trace/{events/sunrpc_base.h => misc/sunrpc.h} | 0
- 12 files changed, 19 insertions(+), 12 deletions(-)
- rename include/trace/{events => misc}/fs.h (100%)
- rename include/trace/{events => misc}/nfs.h (100%)
- rename include/trace/{events => misc}/rdma.h (100%)
- rename include/trace/{events/sunrpc_base.h => misc/sunrpc.h} (100%)
+ arch/riscv/kvm/aia_aplic.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9216b9c85ce92..6bfc75861c8c0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9200,6 +9200,7 @@ F:	drivers/infiniband/
- F:	include/rdma/
- F:	include/trace/events/ib_mad.h
- F:	include/trace/events/ib_umad.h
-+F:	include/trace/misc/rdma.h
- F:	include/uapi/linux/if_infiniband.h
- F:	include/uapi/rdma/
- F:	samples/bpf/ibumad_kern.c
-@@ -10181,6 +10182,12 @@ F:	fs/nfs_common/
- F:	fs/nfsd/
- F:	include/linux/lockd/
- F:	include/linux/sunrpc/
-+F:	include/trace/events/rpcgss.h
-+F:	include/trace/events/rpcrdma.h
-+F:	include/trace/events/sunrpc.h
-+F:	include/trace/misc/fs.h
-+F:	include/trace/misc/nfs.h
-+F:	include/trace/misc/sunrpc.h
- F:	include/uapi/linux/nfsd/
- F:	include/uapi/linux/sunrpc/
- F:	net/sunrpc/
-diff --git a/drivers/infiniband/core/cm_trace.h b/drivers/infiniband/core/cm_trace.h
-index e9d282679ef15..944d9071245d2 100644
---- a/drivers/infiniband/core/cm_trace.h
-+++ b/drivers/infiniband/core/cm_trace.h
-@@ -16,7 +16,7 @@
+diff --git a/arch/riscv/kvm/aia_aplic.c b/arch/riscv/kvm/aia_aplic.c
+index 39e72aa016a4..5e842b92dc46 100644
+--- a/arch/riscv/kvm/aia_aplic.c
++++ b/arch/riscv/kvm/aia_aplic.c
+@@ -137,11 +137,21 @@ static void aplic_write_pending(struct aplic *aplic, u32 irq, bool pending)
+ 	raw_spin_lock_irqsave(&irqd->lock, flags);
  
- #include <linux/tracepoint.h>
- #include <rdma/ib_cm.h>
--#include <trace/events/rdma.h>
-+#include <trace/misc/rdma.h>
+ 	sm = irqd->sourcecfg & APLIC_SOURCECFG_SM_MASK;
+-	if (!pending &&
+-	    ((sm == APLIC_SOURCECFG_SM_LEVEL_HIGH) ||
+-	     (sm == APLIC_SOURCECFG_SM_LEVEL_LOW)))
++	if (sm == APLIC_SOURCECFG_SM_INACTIVE)
+ 		goto skip_write_pending;
  
- /*
-  * enum ib_cm_state, from include/rdma/ib_cm.h
-diff --git a/drivers/infiniband/core/cma_trace.h b/drivers/infiniband/core/cma_trace.h
-index e45264267bcc9..47f3c6e4be893 100644
---- a/drivers/infiniband/core/cma_trace.h
-+++ b/drivers/infiniband/core/cma_trace.h
-@@ -15,7 +15,7 @@
- #define _TRACE_RDMA_CMA_H
- 
- #include <linux/tracepoint.h>
--#include <trace/events/rdma.h>
-+#include <trace/misc/rdma.h>
- 
- 
- DECLARE_EVENT_CLASS(cma_fsm_class,
-diff --git a/fs/nfs/nfs4trace.h b/fs/nfs/nfs4trace.h
-index 635f13a8d44aa..8565fa654f59a 100644
---- a/fs/nfs/nfs4trace.h
-+++ b/fs/nfs/nfs4trace.h
-@@ -9,10 +9,10 @@
- #define _TRACE_NFS4_H
- 
- #include <linux/tracepoint.h>
--#include <trace/events/sunrpc_base.h>
-+#include <trace/misc/sunrpc.h>
- 
--#include <trace/events/fs.h>
--#include <trace/events/nfs.h>
-+#include <trace/misc/fs.h>
-+#include <trace/misc/nfs.h>
- 
- #define show_nfs_fattr_flags(valid) \
- 	__print_flags((unsigned long)valid, "|", \
-diff --git a/fs/nfs/nfstrace.h b/fs/nfs/nfstrace.h
-index f6013d3b110b8..6804ca2efbf99 100644
---- a/fs/nfs/nfstrace.h
-+++ b/fs/nfs/nfstrace.h
-@@ -11,9 +11,9 @@
- #include <linux/tracepoint.h>
- #include <linux/iversion.h>
- 
--#include <trace/events/fs.h>
--#include <trace/events/nfs.h>
--#include <trace/events/sunrpc_base.h>
-+#include <trace/misc/fs.h>
-+#include <trace/misc/nfs.h>
-+#include <trace/misc/sunrpc.h>
- 
- #define nfs_show_cache_validity(v) \
- 	__print_flags(v, "|", \
-diff --git a/include/trace/events/rpcgss.h b/include/trace/events/rpcgss.h
-index 3ba63319af3cd..b8fd13303ee7e 100644
---- a/include/trace/events/rpcgss.h
-+++ b/include/trace/events/rpcgss.h
-@@ -13,7 +13,7 @@
- 
- #include <linux/tracepoint.h>
- 
--#include <trace/events/sunrpc_base.h>
-+#include <trace/misc/sunrpc.h>
- 
- /**
-  ** GSS-API related trace events
-diff --git a/include/trace/events/rpcrdma.h b/include/trace/events/rpcrdma.h
-index 28ea73bba4e78..513c09774e4f3 100644
---- a/include/trace/events/rpcrdma.h
-+++ b/include/trace/events/rpcrdma.h
-@@ -15,8 +15,8 @@
- #include <linux/tracepoint.h>
- #include <rdma/ib_cm.h>
- 
--#include <trace/events/rdma.h>
--#include <trace/events/sunrpc_base.h>
-+#include <trace/misc/rdma.h>
-+#include <trace/misc/sunrpc.h>
- 
- /**
-  ** Event classes
-diff --git a/include/trace/events/sunrpc.h b/include/trace/events/sunrpc.h
-index 68ae89c9a1c20..e8eb83315f4f2 100644
---- a/include/trace/events/sunrpc.h
-+++ b/include/trace/events/sunrpc.h
-@@ -14,7 +14,7 @@
- #include <linux/net.h>
- #include <linux/tracepoint.h>
- 
--#include <trace/events/sunrpc_base.h>
-+#include <trace/misc/sunrpc.h>
- 
- TRACE_DEFINE_ENUM(SOCK_STREAM);
- TRACE_DEFINE_ENUM(SOCK_DGRAM);
-diff --git a/include/trace/events/fs.h b/include/trace/misc/fs.h
-similarity index 100%
-rename from include/trace/events/fs.h
-rename to include/trace/misc/fs.h
-diff --git a/include/trace/events/nfs.h b/include/trace/misc/nfs.h
-similarity index 100%
-rename from include/trace/events/nfs.h
-rename to include/trace/misc/nfs.h
-diff --git a/include/trace/events/rdma.h b/include/trace/misc/rdma.h
-similarity index 100%
-rename from include/trace/events/rdma.h
-rename to include/trace/misc/rdma.h
-diff --git a/include/trace/events/sunrpc_base.h b/include/trace/misc/sunrpc.h
-similarity index 100%
-rename from include/trace/events/sunrpc_base.h
-rename to include/trace/misc/sunrpc.h
++	if (sm == APLIC_SOURCECFG_SM_LEVEL_HIGH ||
++	    sm == APLIC_SOURCECFG_SM_LEVEL_LOW) {
++		if (!pending)
++			goto skip_write_pending;
++		if ((irqd->state & APLIC_IRQ_STATE_INPUT) &&
++		    sm == APLIC_SOURCECFG_SM_LEVEL_LOW)
++			goto skip_write_pending;
++		if (!(irqd->state & APLIC_IRQ_STATE_INPUT) &&
++		    sm == APLIC_SOURCECFG_SM_LEVEL_HIGH)
++			goto skip_write_pending;
++	}
++
+ 	if (pending)
+ 		irqd->state |= APLIC_IRQ_STATE_PENDING;
+ 	else
 -- 
-2.43.0
+2.44.0
 
 
 
