@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-37222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8116689C3E9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F7289C5F7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2396C1F22FF0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 201211C23A8D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29837BB07;
-	Mon,  8 Apr 2024 13:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0631C7F46F;
+	Mon,  8 Apr 2024 14:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UoSfCQZK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nuFRGnUp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7145C79F0;
-	Mon,  8 Apr 2024 13:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83CE7BB15;
+	Mon,  8 Apr 2024 14:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583605; cv=none; b=XvaoRtMzBL8iPWFZAuYvjYqAR7zUPWxx10eV3gTxxhUfxZ+hnTg4byjGjoky3A4iZHHO+/FoHSeVvcpCSmee7pUUhgQigfl2K8SzjM1OwoRJtkb3BpMrXVxUIsf3P1mNveRWzJeOjNt1YZf3WBV0+AQthiAIS++1OuYvY3W0xqk=
+	t=1712584946; cv=none; b=afOorHk1r//bd6AS2+pVmaq+IuAyeV6xhwQosisPM+cNyyb9Ki15UtR9Lu6rsh4l93yxRNZvlracFQgHoN6M3cE7p7KwwduPzu2N9mD4nEyuc5WHMuiZkdXZnAEMwfJkVFrLFxp79IoDquL03fK3ZaJgDHRtOsj1yHOFsHR3O10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583605; c=relaxed/simple;
-	bh=Fg+8P4Bxb04RGK196v/C3FCNf/fGvrO8nhDbdCqa2l0=;
+	s=arc-20240116; t=1712584946; c=relaxed/simple;
+	bh=TociAV7GPS3iMjz8NobOJR1fmHjVhyWfPV7nRnwpx2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AjdWPiGGCg+8QCytmHYsSppBxMxIPb3DUG/vHyru5iPK5l47TvBBZ3u/xcCqaZIWPJi99SbV/44gVtjYPyDdsJ3C7kYGYELBTf3joHrRgyugpxCz57cYzP0OrXJ0uAmyZ0pwh4OXInLr6C8MjrEtwVpciz5H4M5lad3krlxAKzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UoSfCQZK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED362C433C7;
-	Mon,  8 Apr 2024 13:40:04 +0000 (UTC)
+	 MIME-Version; b=qqgojD+mRzZ9KmHcPI73MNN5UDV64w3ZOJzliS1+KLDCTB6D0JJRPgn0gNBbLzfu9lYSyuQrVBt/Hf2K9mPewSUSeQqzz3/XdAhDsnlNJTERlvA8toGUOyCS6DXmDcm7ZgUUDWq7kkrtiTOlK2cGqSX2XeU3mZEb75zsNbtOPBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nuFRGnUp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1468AC43390;
+	Mon,  8 Apr 2024 14:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583605;
-	bh=Fg+8P4Bxb04RGK196v/C3FCNf/fGvrO8nhDbdCqa2l0=;
+	s=korg; t=1712584946;
+	bh=TociAV7GPS3iMjz8NobOJR1fmHjVhyWfPV7nRnwpx2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UoSfCQZKMU/gx64vXwdOFmcfWTQNsornQzXC1JC2yREwJTewY4zWOZDOqPOeQ6fkH
-	 ygreUQbtuq+c6+OMCyb7ptPQwnHgYq7c+lEqQYfgyxS3WIbdzpB3rSvLAqNV8IxZLz
-	 4jpApJXmdOyidH4JXTey2+7hbxejtVU22NUtC21E=
+	b=nuFRGnUpfFo2GgzcBR79OL0+j5GS5JI6sOzsn3mgPi5USacO6ZFAKw6r3U2nHLlS0
+	 PnKTGn0B6gGjoMZteTdWm2QPbBU3imPdn09L5buZqpMYbu/rHZ2EmlDUAU6v70fvXl
+	 kVmYQ57LFZgBECtD8263ZhmMzLnoFKvvRbk5snMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Christopher Adduono <jc@adduono.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.8 200/273] ksmbd: do not set SMB2_GLOBAL_CAP_ENCRYPTION for SMB 3.1.1
+	Ryosuke Yasuoka <ryasuoka@redhat.com>,
+	Jeremy Cline <jeremy@jcline.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com,
+	syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 609/690] nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet
 Date: Mon,  8 Apr 2024 14:57:55 +0200
-Message-ID: <20240408125315.534572770@linuxfoundation.org>
+Message-ID: <20240408125421.660143872@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +66,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Ryosuke Yasuoka <ryasuoka@redhat.com>
 
-commit 5ed11af19e56f0434ce0959376d136005745a936 upstream.
+[ Upstream commit d24b03535e5eb82e025219c2f632b485409c898f ]
 
-SMB2_GLOBAL_CAP_ENCRYPTION flag should be used only for 3.0 and
-3.0.2 dialects. This flags set cause compatibility problems with
-other SMB clients.
+syzbot reported the following uninit-value access issue [1][2]:
 
-Reported-by: James Christopher Adduono <jc@adduono.com>
-Tested-by: James Christopher Adduono <jc@adduono.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+nci_rx_work() parses and processes received packet. When the payload
+length is zero, each message type handler reads uninitialized payload
+and KMSAN detects this issue. The receipt of a packet with a zero-size
+payload is considered unexpected, and therefore, such packets should be
+silently discarded.
+
+This patch resolved this issue by checking payload size before calling
+each message type handler codes.
+
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Reported-and-tested-by: syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com
+Reported-and-tested-by: syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7ea9413ea6749baf5574 [1]
+Closes: https://syzkaller.appspot.com/bug?extid=29b5ca705d2e0f4a44d2 [2]
+Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
+Reviewed-by: Jeremy Cline <jeremy@jcline.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2ops.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/nfc/nci/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/smb/server/smb2ops.c
-+++ b/fs/smb/server/smb2ops.c
-@@ -228,6 +228,11 @@ void init_smb3_0_server(struct ksmbd_con
- 	    conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION)
- 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_ENCRYPTION;
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 419a1d0ba4c92..2a821f2b2ffe8 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1516,6 +1516,11 @@ static void nci_rx_work(struct work_struct *work)
+ 		nfc_send_to_raw_sock(ndev->nfc_dev, skb,
+ 				     RAW_PAYLOAD_NCI, NFC_DIRECTION_RX);
  
-+	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION ||
-+	    (!(server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION_OFF) &&
-+	     conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION))
-+		conn->vals->capabilities |= SMB2_GLOBAL_CAP_ENCRYPTION;
++		if (!nci_plen(skb->data)) {
++			kfree_skb(skb);
++			break;
++		}
 +
- 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB3_MULTICHANNEL)
- 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_MULTI_CHANNEL;
- }
-@@ -275,11 +280,6 @@ int init_smb3_11_server(struct ksmbd_con
- 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING |
- 			SMB2_GLOBAL_CAP_DIRECTORY_LEASING;
- 
--	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION ||
--	    (!(server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION_OFF) &&
--	     conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION))
--		conn->vals->capabilities |= SMB2_GLOBAL_CAP_ENCRYPTION;
--
- 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB3_MULTICHANNEL)
- 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_MULTI_CHANNEL;
- 
+ 		/* Process frame */
+ 		switch (nci_mt(skb->data)) {
+ 		case NCI_MT_RSP_PKT:
+-- 
+2.43.0
+
 
 
 
