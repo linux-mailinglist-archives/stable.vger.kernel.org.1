@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-36563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4475389C065
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:08:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66EEE89C1FC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFE6328364D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:08:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6587B258BB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755E36F08B;
-	Mon,  8 Apr 2024 13:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9877D094;
+	Mon,  8 Apr 2024 13:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t3/oUjEx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EenrzUKX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0D2481A6;
-	Mon,  8 Apr 2024 13:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1888A76058;
+	Mon,  8 Apr 2024 13:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581692; cv=none; b=cCGcoWnngN3ydm73d3MbU9e99w9rqa5ZRWZwaOgwldKZZ04V/F8CRJxSys22aHCECZCKqLXQFw18gmAZ56oB8iUQA5/G11Gbhx1qC+0GqDhBIa7LPq4TpktL7Z37aTtIFhTLSZCgDYnHfCxH2bZFZU6oOf7BofG/y6BEgy7BrH8=
+	t=1712582209; cv=none; b=o3d2VKgPGDKU01C5ixMrr/iEq8prA+voJ4hsygar4VVuwwFA8EqARKFf4XJoHwqDPfugBvofni0S9yTlP0ZhFHtfzL/MQBxsAno6tFDEQh9HuNmub4N2slpSuwpaWcm6/tkHivin0LhmCU3GTABUxoKvK1DwsHWiwE+pbO3VhEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581692; c=relaxed/simple;
-	bh=/kNCf/i76SL7H1u+1BJqAx3iqw+7Vao8bTYMjMdGl0Y=;
+	s=arc-20240116; t=1712582209; c=relaxed/simple;
+	bh=fiICyYnrnpQL9udXb8CQKbHcAZd1oz/HJFNc0Bmwzw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KgMXUlTsIf6e/khwLDrp/c3lDrusGq919Lb9dcq3YztKnaFg/b5gYs6nDpDCshhZVyssEuS+5EUfxxVG7XPr2xYUCzCdlqjXHk2vAhlhSbbBuRdttR+4X292NErENMG0oCsx3PRZSEbM8i81dhhXUo2WsBEFmFbbHureZ/GI00k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t3/oUjEx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3DFC433F1;
-	Mon,  8 Apr 2024 13:08:11 +0000 (UTC)
+	 MIME-Version; b=UOxK+0BYn2tUs7SPSHl5k6qMdbH4uFzIjvFeUsFOhyKculr9AGfy6Vw1XRB6pFXEV5cpcXVsodg/L7J89GrNVTmbJpa1Pt+FxYfSFZ8kTNZuNtPD/rP93Y8uVQJqIPs7knid3PwK1qhDSVtyejfLy9PzKY7HR+ykyJ8fFAjniAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EenrzUKX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C638C433F1;
+	Mon,  8 Apr 2024 13:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581691;
-	bh=/kNCf/i76SL7H1u+1BJqAx3iqw+7Vao8bTYMjMdGl0Y=;
+	s=korg; t=1712582209;
+	bh=fiICyYnrnpQL9udXb8CQKbHcAZd1oz/HJFNc0Bmwzw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t3/oUjExrkPCNNjJR4OQHSoaLmulR3HBNUXcfp5ES7H5JTMQV7p/Hs/Kysns4AIDm
-	 nEioEOvgE8DEoo5eG/WYFHLmj5kEgJ6HlNDYS2FdQyVFHtzAifhpggD3OBD7iAR9GW
-	 OaU11thtDRla7L1xocjX9aljtp+6h3ITh9bTk5vI=
+	b=EenrzUKXamlmQamYpP3PIkd4c9prLffllth3743kNzNpTC57LY9CuklRZCR01uPcY
+	 Yi0ZQkns85FJD0MIPQ3EqR3dTSxuNT8sh953cCz16dmvB3sH64aqGTiWJMydF5fgkO
+	 8M58ol4qXf129ui/m0E26nJT5FpLrMUp89LIBYx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/252] mlxbf_gige: call request_irq() after NAPI initialized
+Subject: [PATCH 6.8 056/273] drm/i915/mtl: Update workaround 14018575942
 Date: Mon,  8 Apr 2024 14:55:31 +0200
-Message-ID: <20240408125307.642525288@linuxfoundation.org>
+Message-ID: <20240408125311.042147132@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,170 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: Tejas Upadhyay <tejas.upadhyay@intel.com>
 
-[ Upstream commit f7442a634ac06b953fc1f7418f307b25acd4cfbc ]
+[ Upstream commit 186bce682772e7346bf7ced5325b5f4ff050ccfb ]
 
-The mlxbf_gige driver encounters a NULL pointer exception in
-mlxbf_gige_open() when kdump is enabled.  The sequence to reproduce
-the exception is as follows:
-a) enable kdump
-b) trigger kdump via "echo c > /proc/sysrq-trigger"
-c) kdump kernel executes
-d) kdump kernel loads mlxbf_gige module
-e) the mlxbf_gige module runs its open() as the
-   the "oob_net0" interface is brought up
-f) mlxbf_gige module will experience an exception
-   during its open(), something like:
+Applying WA 14018575942 only on Compute engine has impact on
+some apps like chrome. Updating this WA to apply on Render
+engine as well as it is helping with performance on Chrome.
 
-     Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-     Mem abort info:
-       ESR = 0x0000000086000004
-       EC = 0x21: IABT (current EL), IL = 32 bits
-       SET = 0, FnV = 0
-       EA = 0, S1PTW = 0
-       FSC = 0x04: level 0 translation fault
-     user pgtable: 4k pages, 48-bit VAs, pgdp=00000000e29a4000
-     [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
-     Internal error: Oops: 0000000086000004 [#1] SMP
-     CPU: 0 PID: 812 Comm: NetworkManager Tainted: G           OE     5.15.0-1035-bluefield #37-Ubuntu
-     Hardware name: https://www.mellanox.com BlueField-3 SmartNIC Main Card/BlueField-3 SmartNIC Main Card, BIOS 4.6.0.13024 Jan 19 2024
-     pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-     pc : 0x0
-     lr : __napi_poll+0x40/0x230
-     sp : ffff800008003e00
-     x29: ffff800008003e00 x28: 0000000000000000 x27: 00000000ffffffff
-     x26: ffff000066027238 x25: ffff00007cedec00 x24: ffff800008003ec8
-     x23: 000000000000012c x22: ffff800008003eb7 x21: 0000000000000000
-     x20: 0000000000000001 x19: ffff000066027238 x18: 0000000000000000
-     x17: ffff578fcb450000 x16: ffffa870b083c7c0 x15: 0000aaab010441d0
-     x14: 0000000000000001 x13: 00726f7272655f65 x12: 6769675f6662786c
-     x11: 0000000000000000 x10: 0000000000000000 x9 : ffffa870b0842398
-     x8 : 0000000000000004 x7 : fe5a48b9069706ea x6 : 17fdb11fc84ae0d2
-     x5 : d94a82549d594f35 x4 : 0000000000000000 x3 : 0000000000400100
-     x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000066027238
-     Call trace:
-      0x0
-      net_rx_action+0x178/0x360
-      __do_softirq+0x15c/0x428
-      __irq_exit_rcu+0xac/0xec
-      irq_exit+0x18/0x2c
-      handle_domain_irq+0x6c/0xa0
-      gic_handle_irq+0xec/0x1b0
-      call_on_irq_stack+0x20/0x2c
-      do_interrupt_handler+0x5c/0x70
-      el1_interrupt+0x30/0x50
-      el1h_64_irq_handler+0x18/0x2c
-      el1h_64_irq+0x7c/0x80
-      __setup_irq+0x4c0/0x950
-      request_threaded_irq+0xf4/0x1bc
-      mlxbf_gige_request_irqs+0x68/0x110 [mlxbf_gige]
-      mlxbf_gige_open+0x5c/0x170 [mlxbf_gige]
-      __dev_open+0x100/0x220
-      __dev_change_flags+0x16c/0x1f0
-      dev_change_flags+0x2c/0x70
-      do_setlink+0x220/0xa40
-      __rtnl_newlink+0x56c/0x8a0
-      rtnl_newlink+0x58/0x84
-      rtnetlink_rcv_msg+0x138/0x3c4
-      netlink_rcv_skb+0x64/0x130
-      rtnetlink_rcv+0x20/0x30
-      netlink_unicast+0x2ec/0x360
-      netlink_sendmsg+0x278/0x490
-      __sock_sendmsg+0x5c/0x6c
-      ____sys_sendmsg+0x290/0x2d4
-      ___sys_sendmsg+0x84/0xd0
-      __sys_sendmsg+0x70/0xd0
-      __arm64_sys_sendmsg+0x2c/0x40
-      invoke_syscall+0x78/0x100
-      el0_svc_common.constprop.0+0x54/0x184
-      do_el0_svc+0x30/0xac
-      el0_svc+0x48/0x160
-      el0t_64_sync_handler+0xa4/0x12c
-      el0t_64_sync+0x1a4/0x1a8
-     Code: bad PC value
-     ---[ end trace 7d1c3f3bf9d81885 ]---
-     Kernel panic - not syncing: Oops: Fatal exception in interrupt
-     Kernel Offset: 0x2870a7a00000 from 0xffff800008000000
-     PHYS_OFFSET: 0x80000000
-     CPU features: 0x0,000005c1,a3332a5a
-     Memory Limit: none
-     ---[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
+Note: There is no concern from media team thus not applying
+WA on media engines. We will revisit if any issues reported
+from media team.
 
-The exception happens because there is a pending RX interrupt before the
-call to request_irq(RX IRQ) executes.  Then, the RX IRQ handler fires
-immediately after this request_irq() completes. The RX IRQ handler runs
-"napi_schedule()" before NAPI is fully initialized via "netif_napi_add()"
-and "napi_enable()", both which happen later in the open() logic.
+V2(Matt):
+ - Use correct WA number
 
-The logic in mlxbf_gige_open() must fully initialize NAPI before any calls
-to request_irq() execute.
-
-Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Link: https://lore.kernel.org/r/20240325183627.7641-1-davthompson@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 668f37e1ee11 ("drm/i915/mtl: Update workaround 14018778641")
+Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240228103738.2018458-1-tejas.upadhyay@intel.com
+(cherry picked from commit 71271280175aa0ed6673e40cce7c01296bcd05f6)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlxbf_gige/mlxbf_gige_main.c      | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_workarounds.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-index 044ff5f87b5e8..f1fa5f10051f2 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-@@ -139,13 +139,10 @@ static int mlxbf_gige_open(struct net_device *netdev)
- 	control |= MLXBF_GIGE_CONTROL_PORT_EN;
- 	writeq(control, priv->base + MLXBF_GIGE_CONTROL);
+diff --git a/drivers/gpu/drm/i915/gt/intel_workarounds.c b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+index 72dac27d9332f..c7561d7c55f5e 100644
+--- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
++++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+@@ -1649,6 +1649,7 @@ static void
+ xelpg_gt_workarounds_init(struct intel_gt *gt, struct i915_wa_list *wal)
+ {
+ 	/* Wa_14018575942 / Wa_18018781329 */
++	wa_mcr_write_or(wal, RENDER_MOD_CTRL, FORCE_MISS_FTLB);
+ 	wa_mcr_write_or(wal, COMP_MOD_CTRL, FORCE_MISS_FTLB);
  
--	err = mlxbf_gige_request_irqs(priv);
--	if (err)
--		return err;
- 	mlxbf_gige_cache_stats(priv);
- 	err = mlxbf_gige_clean_port(priv);
- 	if (err)
--		goto free_irqs;
-+		return err;
- 
- 	/* Clear driver's valid_polarity to match hardware,
- 	 * since the above call to clean_port() resets the
-@@ -166,6 +163,10 @@ static int mlxbf_gige_open(struct net_device *netdev)
- 	napi_enable(&priv->napi);
- 	netif_start_queue(netdev);
- 
-+	err = mlxbf_gige_request_irqs(priv);
-+	if (err)
-+		goto napi_deinit;
-+
- 	/* Set bits in INT_EN that we care about */
- 	int_en = MLXBF_GIGE_INT_EN_HW_ACCESS_ERROR |
- 		 MLXBF_GIGE_INT_EN_TX_CHECKSUM_INPUTS |
-@@ -182,14 +183,17 @@ static int mlxbf_gige_open(struct net_device *netdev)
- 
- 	return 0;
- 
-+napi_deinit:
-+	netif_stop_queue(netdev);
-+	napi_disable(&priv->napi);
-+	netif_napi_del(&priv->napi);
-+	mlxbf_gige_rx_deinit(priv);
-+
- tx_deinit:
- 	mlxbf_gige_tx_deinit(priv);
- 
- phy_deinit:
- 	phy_stop(phydev);
--
--free_irqs:
--	mlxbf_gige_free_irqs(priv);
- 	return err;
- }
- 
+ 	/* Wa_22016670082 */
 -- 
 2.43.0
 
