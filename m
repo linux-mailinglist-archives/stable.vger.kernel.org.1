@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-37762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71DE089C685
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:12:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E62BC89C468
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7704B2958E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:06:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23FE91C237BD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C37180BF8;
-	Mon,  8 Apr 2024 14:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D94D7BAF5;
+	Mon,  8 Apr 2024 13:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOmzklwn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arcg+E1K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D6180BF3;
-	Mon,  8 Apr 2024 14:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1711745D6;
+	Mon,  8 Apr 2024 13:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585186; cv=none; b=tMdgALQ6dJfmJ6yYtWV6wK+CxKYeuwqJsfxEC8iv6rmVw+BcLTxH3FzyJ99avY8gjMAMQUHDmqE2+GbfpDpa02SVBbixOtptbK7dJ9rhLxLZaVJKtazp1uTEpR3W/S01rLuSDZd5W69gbAh66SufWXsB4PyDWtqjiZr7vqYYX2Y=
+	t=1712583920; cv=none; b=f8/ZPUbwcWxPJGkg6f9CX4xTqGnPCmWH7q4AjWvyKR4u8DnRMIte4jxvElqCh78i9ocgAnyGO3wYQ0IhFb4Erk0iMSlplN/hRASlD/bi+gaZCfYNCdXYP2tItxbtpO/IHLoESCOru/6kSzbO00lQJ/nIsuRVDCUykvZ3pVCBqi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585186; c=relaxed/simple;
-	bh=nvN5SQ+jjbjMmizusGpgRHSKSkS0l+3MhGVwklqrq/A=;
+	s=arc-20240116; t=1712583920; c=relaxed/simple;
+	bh=eMs8QAUHdZoo3JHSiCgbYpdOj4YlIqcpQjsX/DBJaYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bCnnso2N+yE3cIIqnhYfVJkmDzQFsu4lquCnY8ClGVSRRFrVRj4e5gAJTHqDvd4Pgt7N3ZNN9u7SMZ/1NDHTb1n0hm8xKeIG5v9DR0OvDRQKp4VZQXfz4NR4AJSs+xRBaaF/mFxjmgZw7RWx1Ny8wLPmnNu9uanzl275K2Udy50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOmzklwn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805ADC433C7;
-	Mon,  8 Apr 2024 14:06:25 +0000 (UTC)
+	 MIME-Version; b=oLAy+HN1rakhDbxE4Q3TbPExhjt4f3tw4lLz9idDXcxGntx8qdrzchcNiw2szl0eEZkGshisWFj1Ln+KXfFQI/JoJwlH0CR3VbjWIOS+sVmut0Lz2Tvt7pY1vj4RUV+/qShzXzEa0WgqW9HUHZnlPyU78oSImSLGMdLS3ingFSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arcg+E1K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771D9C433C7;
+	Mon,  8 Apr 2024 13:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585185;
-	bh=nvN5SQ+jjbjMmizusGpgRHSKSkS0l+3MhGVwklqrq/A=;
+	s=korg; t=1712583919;
+	bh=eMs8QAUHdZoo3JHSiCgbYpdOj4YlIqcpQjsX/DBJaYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bOmzklwnyuYLLsf68/ky5oLP4pA+4bbVJKAwo3vcwGmWy82QDnTL4ha3Up02TLArI
-	 QmUdNw3SwNPI9gdWgmbNbg+s+JjyP/Idi+AqPcgwNB4wIA0mEAzHJoe1HbDamrS4nh
-	 2+aoSVxyd3Qi5Jf94LH/4BoBCblEbEcXraHjxigU=
+	b=arcg+E1KZrN33prt2sFHBh0XEEOTfqkCzjmPLyAyjIm8IyUrKMJ5QdOO+RQrCB/ZE
+	 jn7dYO8+eTn+l83CbHswPO0ZASIFvZy/eLc1EQwIPLDIzD0GNwdUO5qdQh4ZKXSK2V
+	 5XU8x83zyLTJM6dGmnRPpo6B8pvOKglDB1zP/8L0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ulrich Weigand <ulrich.weigand@de.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 5.15 682/690] s390/entry: align system call table on 8 bytes
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>
+Subject: [PATCH 6.6 249/252] efi/libstub: Add generic support for parsing mem_encrypt=
 Date: Mon,  8 Apr 2024 14:59:08 +0200
-Message-ID: <20240408125424.432126203@linuxfoundation.org>
+Message-ID: <20240408125314.384775944@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,38 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 378ca2d2ad410a1cd5690d06b46c5e2297f4c8c0 upstream.
+commit 7205f06e847422b66c1506eee01b9998ffc75d76 upstream.
 
-Align system call table on 8 bytes. With sys_call_table entry size
-of 8 bytes that eliminates the possibility of a system call pointer
-crossing cache line boundary.
+Parse the mem_encrypt= command line parameter from the EFI stub if
+CONFIG_ARCH_HAS_MEM_ENCRYPT=y, so that it can be passed to the early
+boot code by the arch code in the stub.
 
-Cc: stable@kernel.org
-Suggested-by: Ulrich Weigand <ulrich.weigand@de.ibm.com>
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+This avoids the need for the core kernel to do any string parsing very
+early in the boot.
+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/20240227151907.387873-16-ardb+git@google.com
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/entry.S |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/efi/libstub/efi-stub-helper.c |    8 ++++++++
+ drivers/firmware/efi/libstub/efistub.h         |    2 +-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
---- a/arch/s390/kernel/entry.S
-+++ b/arch/s390/kernel/entry.S
-@@ -685,6 +685,7 @@ ENDPROC(stack_overflow)
- .Lthis_cpu:	.short	0
- .Lstosm_tmp:	.byte	0
- 	.section .rodata, "a"
-+	.balign	8
- #define SYSCALL(esame,emu)	.quad __s390x_ ## esame
- 	.globl	sys_call_table
- sys_call_table:
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -24,6 +24,8 @@ static bool efi_noinitrd;
+ static bool efi_nosoftreserve;
+ static bool efi_disable_pci_dma = IS_ENABLED(CONFIG_EFI_DISABLE_PCI_DMA);
+ 
++int efi_mem_encrypt;
++
+ bool __pure __efi_soft_reserve_enabled(void)
+ {
+ 	return !efi_nosoftreserve;
+@@ -75,6 +77,12 @@ efi_status_t efi_parse_options(char cons
+ 			efi_noinitrd = true;
+ 		} else if (IS_ENABLED(CONFIG_X86_64) && !strcmp(param, "no5lvl")) {
+ 			efi_no5lvl = true;
++		} else if (IS_ENABLED(CONFIG_ARCH_HAS_MEM_ENCRYPT) &&
++			   !strcmp(param, "mem_encrypt") && val) {
++			if (parse_option_str(val, "on"))
++				efi_mem_encrypt = 1;
++			else if (parse_option_str(val, "off"))
++				efi_mem_encrypt = -1;
+ 		} else if (!strcmp(param, "efi") && val) {
+ 			efi_nochunk = parse_option_str(val, "nochunk");
+ 			efi_novamap |= parse_option_str(val, "novamap");
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -37,8 +37,8 @@ extern bool efi_no5lvl;
+ extern bool efi_nochunk;
+ extern bool efi_nokaslr;
+ extern int efi_loglevel;
++extern int efi_mem_encrypt;
+ extern bool efi_novamap;
+-
+ extern const efi_system_table_t *efi_system_table;
+ 
+ typedef union efi_dxe_services_table efi_dxe_services_table_t;
 
 
 
