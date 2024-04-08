@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-37535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B29A689C574
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:57:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE9289C06A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:08:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72E6BB25D9D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:55:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48327283CB1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F056778286;
-	Mon,  8 Apr 2024 13:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC52A6F08B;
+	Mon,  8 Apr 2024 13:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTkCrV0p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x377Kn2v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF12D6FE35;
-	Mon,  8 Apr 2024 13:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0912DF73;
+	Mon,  8 Apr 2024 13:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584518; cv=none; b=NIl6zypotRGPPpqdJkHpaeTIkViXEcg+grH9MaFujMQQqeWRdkLcZ/zuOKPVBKdQP3E1bDPyspw4ALqFH2Y2FoMnh7esHO/flpZh2gF0+7DbXGu7QzXXfpxVdroEA/LMjmyQK62gutfWt1vTMRsKp9MgPH9n07P0X1iCQgxsyU8=
+	t=1712581703; cv=none; b=CEgqYsHR1OXROsoUyK3vwR+fjvt4txZv3fotjLTGrC7WPWDH8qqCc2ZctCr/VWUmkt9rMmAe8ZvtIilsosg2+8MpWpiI5IXlg6B2AUq9Kf/BOBWOPet7p7j47Ya/OZHgSaUL1M4b83dVJer5D/nGUw2jMyrCvbj/cVLjGYib6TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584518; c=relaxed/simple;
-	bh=AWGW4Nnb+mswLHNJV2uRrZJMDWkafBCkKvUal+6XKvg=;
+	s=arc-20240116; t=1712581703; c=relaxed/simple;
+	bh=L1teBPjZXxBiihp4GgERmW1qkgreN5gAQmRlvfZH2Dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lGiejSvwYl6+GA14LSukLZ28xBI7WUykJF+kEwqgXLJ68HaJPuiA/i/pwvSYm2B54rLnOTNwkUJSCtIp+BVs5wHIusUovnIswuolhKLtc7D8E0yYJ4clsFc6S/gotXY/7ylw5Bmf6Yt8fa4F1psfqPQ9O6Diiw/IR+oCtPmW5dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTkCrV0p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B655C433C7;
-	Mon,  8 Apr 2024 13:55:18 +0000 (UTC)
+	 MIME-Version; b=Zi8DWu5mKeHYT1BaW7lPlUYsmx16BcjXYP+oBjikD1smOn3IbtYfAbYhrxTjrjHXuklA44dUJwS3e6fhFRrfAALJJEQfvDoOpJfZ48L8GFGyfkExXuu36COY8eVjZ+gpgkfwNLCHT5JvdxNHgtQdiu69kHP/P/Kylfvk0DVTza0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x377Kn2v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E5BC43390;
+	Mon,  8 Apr 2024 13:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584518;
-	bh=AWGW4Nnb+mswLHNJV2uRrZJMDWkafBCkKvUal+6XKvg=;
+	s=korg; t=1712581703;
+	bh=L1teBPjZXxBiihp4GgERmW1qkgreN5gAQmRlvfZH2Dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZTkCrV0pabkzYxJP7JNfVuyAdQRqoU41Oy1vyh5rF3TNX+xGH2NCyhFG/qfhtoARM
-	 UTOvBm6HZKfETxJR6BUFypq9/aoVw4PyFka5YgH2dfgO0gfcmabchzHhtcEhZ9yjc8
-	 u+7kiv+WEjTtjPOg4Ve+caakwtyc0PTAszRdZfho=
+	b=x377Kn2vgXLjT8iby2KEJ/aUk1nk9xQ3q7O9BLXiCo5Hz7JQAVneKyL/j3xNZ+Pga
+	 dkEtgY42TNasjub1NIEeT2aLznyschUbE6FmYetc5aqPDuwb5LZwfY5JBIwFtGvZe/
+	 Pb1GWmPjL3sIoWwJRwrzCEE0pZhuaJcxqsHQdrpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 5.15 466/690] NFSD: Fix trace_nfsd_fh_verify_err() crasher
+	syzbot+33f4297b5f927648741a@syzkaller.appspotmail.com,
+	syzbot+aafd0513053a1cbf52ef@syzkaller.appspotmail.com,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Andrei Matei <andreimatei1@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 033/252] bpf: Protect against int overflow for stack access size
 Date: Mon,  8 Apr 2024 14:55:32 +0200
-Message-ID: <20240408125416.504988384@linuxfoundation.org>
+Message-ID: <20240408125307.672496912@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Andrei Matei <andreimatei1@gmail.com>
 
-[ Upstream commit 5a01c805441bdc86e7af206d8a03735cc9394ffb ]
+[ Upstream commit ecc6a2101840177e57c925c102d2d29f260d37c8 ]
 
-Now that the nfsd_fh_verify_err() tracepoint is always called on
-error, it needs to handle cases where the filehandle is not yet
-fully formed.
+This patch re-introduces protection against the size of access to stack
+memory being negative; the access size can appear negative as a result
+of overflowing its signed int representation. This should not actually
+happen, as there are other protections along the way, but we should
+protect against it anyway. One code path was missing such protections
+(fixed in the previous patch in the series), causing out-of-bounds array
+accesses in check_stack_range_initialized(). This patch causes the
+verification of a program with such a non-sensical access size to fail.
 
-Fixes: 93c128e709ae ("nfsd: ensure we always call fh_verify_error tracepoint")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+This check used to exist in a more indirect way, but was inadvertendly
+removed in a833a17aeac7.
+
+Fixes: a833a17aeac7 ("bpf: Fix verification of indirect var-off stack access")
+Reported-by: syzbot+33f4297b5f927648741a@syzkaller.appspotmail.com
+Reported-by: syzbot+aafd0513053a1cbf52ef@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/CAADnVQLORV5PT0iTAhRER+iLBTkByCYNBYyvBSgjN1T31K+gOw@mail.gmail.com/
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Andrei Matei <andreimatei1@gmail.com>
+Link: https://lore.kernel.org/r/20240327024245.318299-3-andreimatei1@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/trace.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/bpf/verifier.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
-index 1229502b6e9e0..72aa7435d55bd 100644
---- a/fs/nfsd/trace.h
-+++ b/fs/nfsd/trace.h
-@@ -254,7 +254,10 @@ TRACE_EVENT_CONDITION(nfsd_fh_verify_err,
- 				  rqstp->rq_xprt->xpt_remotelen);
- 		__entry->xid = be32_to_cpu(rqstp->rq_xid);
- 		__entry->fh_hash = knfsd_fh_hash(&fhp->fh_handle);
--		__entry->inode = d_inode(fhp->fh_dentry);
-+		if (fhp->fh_dentry)
-+			__entry->inode = d_inode(fhp->fh_dentry);
-+		else
-+			__entry->inode = NULL;
- 		__entry->type = type;
- 		__entry->access = access;
- 		__entry->error = be32_to_cpu(error);
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 396c4c66932f2..c9fc734989c68 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -6637,6 +6637,11 @@ static int check_stack_access_within_bounds(
+ 	err = check_stack_slot_within_bounds(env, min_off, state, type);
+ 	if (!err && max_off > 0)
+ 		err = -EINVAL; /* out of stack access into non-negative offsets */
++	if (!err && access_size < 0)
++		/* access_size should not be negative (or overflow an int); others checks
++		 * along the way should have prevented such an access.
++		 */
++		err = -EFAULT; /* invalid negative access size; integer overflow? */
+ 
+ 	if (err) {
+ 		if (tnum_is_const(reg->var_off)) {
 -- 
 2.43.0
 
