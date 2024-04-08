@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-37698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A37B89C60E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19FDB89C437
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAC7CB2BB92
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A7CB1C228FB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE4157E772;
-	Mon,  8 Apr 2024 14:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D3C85C6F;
+	Mon,  8 Apr 2024 13:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPsk3Xa7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04O6B1d5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BBCF7F492;
-	Mon,  8 Apr 2024 14:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3BF7D414;
+	Mon,  8 Apr 2024 13:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584999; cv=none; b=d1YcL+8eqB5o5upeqvALx949N7j8FLCRvy4dm45qX7R9pBpDe/GxhfwjjyfCkU5JuLkNoiyvV8/QVeAa6u6OeEemZJUP3Gc1l3EydUtEuStZ0vwd8b3/3mPHRRnF1Oqwn6CknmPvkwOB5oHpWKPwvcbRP9pajOkTKFtTvwE3f3k=
+	t=1712583798; cv=none; b=dD8T73i86iw8fQo68VBR8J4GNRq0rNw3QtYCe4n33MCwcZKN28UjUD2hBEXZ8ffQZ/bwN817rJq9kRFFw3+aBvnvlqXmyOHEJRSWZa3VA/noo1oVUPlT8VGvivdWncfSwXI3yPZIebHEzyYoj1g2/HPzU0pHf8MAxIcoGi1VdvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584999; c=relaxed/simple;
-	bh=74JCT4EIqqZFrnyW3bFHlnIHj8XoDjUw/KbuTzr3EXs=;
+	s=arc-20240116; t=1712583798; c=relaxed/simple;
+	bh=GiyBUYcgj0awTwlQuZYYvUV3jVebOYEG+uLzBrID6ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBaB3rM+l5dbAeKtgGX4skWVBBp7yvGTXC8emVmotDzxOELvN/X7njBP4mKacOVjKnnnIw+C1YnrSFUdpataR21wUl5EYcAuNKhXgkZciD5uzN372YSx/C5XBPkx77W17Qi8lVEsXkzu5SCxmpT+czm2opdL8exs5yz+0/WQScU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPsk3Xa7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033EDC433C7;
-	Mon,  8 Apr 2024 14:03:18 +0000 (UTC)
+	 MIME-Version; b=HiBkBq0OQyRRi3lZoLzxCDJ160fJKooy2TnfoceJ+IyQd11cSF0uQYmHHcFbMvRcqEr4K3vAS2Jfa+gzJP5yDe2QSsut3mwz5BxzlXGu/E+dQmk+HeROK5KHgGeQRJ00us4zCHl93W4m088Z67miRwjada/UqtnJGX5gxaMq6to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04O6B1d5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACD7C433C7;
+	Mon,  8 Apr 2024 13:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584999;
-	bh=74JCT4EIqqZFrnyW3bFHlnIHj8XoDjUw/KbuTzr3EXs=;
+	s=korg; t=1712583798;
+	bh=GiyBUYcgj0awTwlQuZYYvUV3jVebOYEG+uLzBrID6ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPsk3Xa7WnYEBJTqkgA2ERVgGUKas5wDD94I5A60XCzIXzLUocQqxALVpGPNKrbjH
-	 HAT/yv7xp7EOWz1LxN3JtDf9OsSQXQ/3mfJrTuwZsFfszqo3ELJt/bICchw61Ua07u
-	 6e/MkC+rLLyeNL6rgqUukH/GKAvhQi2gyOn25wu0=
+	b=04O6B1d5gl9Xq635lHUFyrqg2GDG1iF71TB9Ve825X2K2jH8P0s8Xq3FTrE2FP7W1
+	 CLfMa09Cd7KT9ec4yMpk+5YZ6/GKux6TA80hjymO4oCO+oyOvRhx5p//o3Ht1badB8
+	 7Ek89zcKbTNFQEpZhfjfcQdRUZWrF8AQ2OcczvJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Waiman Long <longman@redhat.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH 5.15 629/690] locking/rwsem: Disable preemption while trying for rwsem lock
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.8 220/273] ASoC: SOF: ipc4-pcm: Use the snd_sof_pcm_get_dai_frame_counter() for pcm_delay
 Date: Mon,  8 Apr 2024 14:58:15 +0200
-Message-ID: <20240408125422.444420264@linuxfoundation.org>
+Message-ID: <20240408125316.225735030@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-commit 48dfb5d2560d36fb16c7d430c229d1604ea7d185 upstream.
+commit 37679a1bd372c8308a3faccf3438c9df642565b3 upstream.
 
-Make the region inside the rwsem_write_trylock non preemptible.
+Switch to the new callback to retrieve the DAI (link) frame counter.
 
-We observe RT task is hogging CPU when trying to acquire rwsem lock
-which was acquired by a kworker task but before the rwsem owner was set.
-
-Here is the scenario:
-1. CFS task (affined to a particular CPU) takes rwsem lock.
-
-2. CFS task gets preempted by a RT task before setting owner.
-
-3. RT task (FIFO) is trying to acquire the lock, but spinning until
-RT throttling happens for the lock as the lock was taken by CFS task.
-
-This patch attempts to fix the above issue by disabling preemption
-until owner is set for the lock. While at it also fix the issues
-at the places where rwsem_{set,clear}_owner() are called.
-
-This also adds lockdep annotation of preemption disable in
-rwsem_{set,clear}_owner() on Peter Z. suggestion.
-
-Signed-off-by: Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>
-Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Link: https://lore.kernel.org/r/1662661467-24203-1-git-send-email-quic_mojha@quicinc.com
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: stable@vger.kernel.org # 6.8
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://msgid.link/r/20240321130814.4412-9-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/locking/rwsem.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ sound/soc/sof/ipc4-pcm.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/kernel/locking/rwsem.c
-+++ b/kernel/locking/rwsem.c
-@@ -133,14 +133,19 @@
-  * the owner value concurrently without lock. Read from owner, however,
-  * may not need READ_ONCE() as long as the pointer value is only used
-  * for comparison and isn't being dereferenced.
-+ *
-+ * Both rwsem_{set,clear}_owner() functions should be in the same
-+ * preempt disable section as the atomic op that changes sem->count.
-  */
- static inline void rwsem_set_owner(struct rw_semaphore *sem)
- {
-+	lockdep_assert_preemption_disabled();
- 	atomic_long_set(&sem->owner, (long)current);
- }
- 
- static inline void rwsem_clear_owner(struct rw_semaphore *sem)
- {
-+	lockdep_assert_preemption_disabled();
- 	atomic_long_set(&sem->owner, 0);
- }
- 
-@@ -251,13 +256,16 @@ static inline bool rwsem_read_trylock(st
- static inline bool rwsem_write_trylock(struct rw_semaphore *sem)
- {
- 	long tmp = RWSEM_UNLOCKED_VALUE;
-+	bool ret = false;
- 
-+	preempt_disable();
- 	if (atomic_long_try_cmpxchg_acquire(&sem->count, &tmp, RWSEM_WRITER_LOCKED)) {
- 		rwsem_set_owner(sem);
--		return true;
-+		ret = true;
+--- a/sound/soc/sof/ipc4-pcm.c
++++ b/sound/soc/sof/ipc4-pcm.c
+@@ -880,11 +880,12 @@ static snd_pcm_sframes_t sof_ipc4_pcm_de
  	}
  
--	return false;
-+	preempt_enable();
-+	return ret;
- }
- 
- /*
-@@ -1341,8 +1349,10 @@ static inline void __up_write(struct rw_
- 	DEBUG_RWSEMS_WARN_ON((rwsem_owner(sem) != current) &&
- 			    !rwsem_test_oflags(sem, RWSEM_NONSPINNABLE), sem);
- 
-+	preempt_disable();
- 	rwsem_clear_owner(sem);
- 	tmp = atomic_long_fetch_add_release(-RWSEM_WRITER_LOCKED, &sem->count);
-+	preempt_enable();
- 	if (unlikely(tmp & RWSEM_FLAG_WAITERS))
- 		rwsem_wake(sem);
- }
+ 	/*
+-	 * HDaudio links don't support the LLP counter reported by firmware
+-	 * the link position is read directly from hardware registers.
++	 * If the LLP counter is not reported by firmware in the SRAM window
++	 * then read the dai (link) position via host accessible means if
++	 * available.
+ 	 */
+ 	if (!time_info->llp_offset) {
+-		tmp_ptr = snd_sof_pcm_get_stream_position(sdev, component, substream);
++		tmp_ptr = snd_sof_pcm_get_dai_frame_counter(sdev, component, substream);
+ 		if (!tmp_ptr)
+ 			return 0;
+ 	} else {
 
 
 
