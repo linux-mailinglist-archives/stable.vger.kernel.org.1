@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-37176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48AE389C3A3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F367B89C61B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03040283B2E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9498E1F210D9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0885212BF08;
-	Mon,  8 Apr 2024 13:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E64A7F47F;
+	Mon,  8 Apr 2024 14:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlGaQRWk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fl5IpkMR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3737D414;
-	Mon,  8 Apr 2024 13:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19CC7F470;
+	Mon,  8 Apr 2024 14:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583469; cv=none; b=k46JmjWvMjQEHiBefvT7fS/IMc/q7obhH9ewP2yyrgfFm4Gaj8TD0gRniqnE61YRBnJEuqlP70kr/zPVpKZWEwt0Uxi1rCrrahEbBAskZLI+ZB50tyQRRU+bu7s5xEpyyPAHLToTzosAJ9/DBhYmHWHjXjiML9h3tlCXPSY/QXk=
+	t=1712585063; cv=none; b=nNNU698+6mrbOw005UO4gjGg5LFYi2qBCK1+YbRl1EBR7sp0M7JFWADI6D8fZ5n9Mn4cTcBm4ql1qgd7inbpANPuNkJUJkh3VOdn1bE/b+weJgxYREXtm+5S6vZ4pL8/CbECg9uJQaTDUOl9aoYqd9ndZ0T6854JkX7ycXzQIpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583469; c=relaxed/simple;
-	bh=QeoSi8vrkwftq80rPE6SUNfyH8RKkw37JG1q6Su8QQs=;
+	s=arc-20240116; t=1712585063; c=relaxed/simple;
+	bh=Bi7gqDYRBFmi/RjvUQVDMeNewEdtZCehkLBzGmzJ3zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KcEmvDjzDCt6R6ImsoXUz4sWNM9CUF1uuOGPimNJ76GSGsPu6Bq1go2uFO+R9gxxQc+fBS4ZRRse7F6uhyGvkZFGV6m0bDPiuXSSw2OpJ9uHTmgWIsHAZDkK908LBo+A7OxMWKAaHbMbZflTiuLk0vL2HGxkn/0VvsOFQNDxuwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlGaQRWk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42126C433F1;
-	Mon,  8 Apr 2024 13:37:49 +0000 (UTC)
+	 MIME-Version; b=ZLkqfXOIeiVMKS1whe5CX0bB24om/zWvOjlwL5W/pk/WRXtuvginKlEn3xU60UGincJUUG7UGYIj3v5xqCNb5k4dDvjPoIUj6V6B207ZKqBu/+8erC/Vopc3GO6rDkCaEDqqCKZb9qxcJX9zZaT13GpK7b3AT7L2dDhljaV8Fec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fl5IpkMR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596BEC433C7;
+	Mon,  8 Apr 2024 14:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583469;
-	bh=QeoSi8vrkwftq80rPE6SUNfyH8RKkw37JG1q6Su8QQs=;
+	s=korg; t=1712585063;
+	bh=Bi7gqDYRBFmi/RjvUQVDMeNewEdtZCehkLBzGmzJ3zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FlGaQRWkpWFsl3yVP6C4MPDBWwaOjnJNcK1tI5dq+fa8PqLvF9NP1IvADPaxXAzUZ
-	 uniDGZePDQ4Yr/Oe7bVNwLQa5wsrYbN90lrYXGR6hwc9bo4pdJ9/2UkP/K+AjY7ioZ
-	 nfINfxE9jWFFA+rYXufroMt3UpesPbgoBDsFC41c=
+	b=fl5IpkMR3AxUb9lEFV6cv2Hrr5baGhEvUi99NuyhPxiYTkOhho7oVuC7jJE5DVneV
+	 c9lbsWTAuWlj4QqSyvCp2R56UD7A4cPiaZdJ73U9jbtmin6aXhxER+AWKll/uNTPPb
+	 EkhFhm+LQchwdVRmaFwUbUBYAqScOy+T3OJaHXSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
-	Takashi Iwai <tiwai@suse.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Mike Snitzer <snitzer@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 187/252] Revert "ALSA: emu10k1: fix synthesizer sample playback position and caching"
+Subject: [PATCH 5.15 620/690] dm integrity: fix out-of-range warning
 Date: Mon,  8 Apr 2024 14:58:06 +0200
-Message-ID: <20240408125312.466208475@linuxfoundation.org>
+Message-ID: <20240408125422.094059048@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 03f56ed4ead162551ac596c9e3076ff01f1c5836 ]
+[ Upstream commit 8e91c2342351e0f5ef6c0a704384a7f6fc70c3b2 ]
 
-As already anticipated in the original commit, playback was broken for
-very short samples. I just didn't expect it to be an actual problem,
-because we're talking about less than 1.5 milliseconds here. But clearly
-such wavetable samples do actually exist.
+Depending on the value of CONFIG_HZ, clang complains about a pointless
+comparison:
 
-The problem was that for such short samples we'd set the current
-position beyond the end of the loop, so we'd run off the end of the
-sample and play garbage.
-This is a bigger (more audible) problem than the original one, which was
-that we'd start playback with garbage (whatever was still in the cache),
-which would be mostly masked by the note's attack phase.
+drivers/md/dm-integrity.c:4085:12: error: result of comparison of
+                        constant 42949672950 with expression of type
+                        'unsigned int' is always false
+                        [-Werror,-Wtautological-constant-out-of-range-compare]
+                        if (val >= (uint64_t)UINT_MAX * 1000 / HZ) {
 
-So revert to the old behavior for now. We'll subsequently fix it
-properly with a bigger patch series.
-Note that this isn't a full revert - the dead code is not re-introduced,
-because that would be silly.
+As the check remains useful for other configurations, shut up the
+warning by adding a second type cast to uint64_t.
 
-Fixes: df335e9a8bcb ("ALSA: emu10k1: fix synthesizer sample playback position and caching")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218625
-Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
-Message-ID: <20240401145805.528794-1-oswald.buddenhagen@gmx.de>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 468dfca38b1a ("dm integrity: add a bitmap mode")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/emu10k1/emu10k1_callback.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/md/dm-integrity.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/emu10k1/emu10k1_callback.c b/sound/pci/emu10k1/emu10k1_callback.c
-index d36234b88fb42..941bfbf812ed3 100644
---- a/sound/pci/emu10k1/emu10k1_callback.c
-+++ b/sound/pci/emu10k1/emu10k1_callback.c
-@@ -255,7 +255,7 @@ lookup_voices(struct snd_emux *emu, struct snd_emu10k1 *hw,
- 		/* check if sample is finished playing (non-looping only) */
- 		if (bp != best + V_OFF && bp != best + V_FREE &&
- 		    (vp->reg.sample_mode & SNDRV_SFNT_SAMPLE_SINGLESHOT)) {
--			val = snd_emu10k1_ptr_read(hw, CCCA_CURRADDR, vp->ch) - 64;
-+			val = snd_emu10k1_ptr_read(hw, CCCA_CURRADDR, vp->ch);
- 			if (val >= vp->reg.loopstart)
- 				bp = best + V_OFF;
- 		}
-@@ -362,7 +362,7 @@ start_voice(struct snd_emux_voice *vp)
- 
- 	map = (hw->silent_page.addr << hw->address_mode) | (hw->address_mode ? MAP_PTI_MASK1 : MAP_PTI_MASK0);
- 
--	addr = vp->reg.start + 64;
-+	addr = vp->reg.start;
- 	temp = vp->reg.parm.filterQ;
- 	ccca = (temp << 28) | addr;
- 	if (vp->apitch < 0xe400)
-@@ -430,9 +430,6 @@ start_voice(struct snd_emux_voice *vp)
- 		/* Q & current address (Q 4bit value, MSB) */
- 		CCCA, ccca,
- 
--		/* cache */
--		CCR, REG_VAL_PUT(CCR_CACHEINVALIDSIZE, 64),
--
- 		/* reset volume */
- 		VTFT, vtarget | vp->ftarget,
- 		CVCF, vtarget | CVCF_CURRENTFILTER_MASK,
+diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
+index df743650d8a9d..ae372bc44fbfc 100644
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -4083,7 +4083,7 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
+ 		} else if (sscanf(opt_string, "sectors_per_bit:%llu%c", &llval, &dummy) == 1) {
+ 			log2_sectors_per_bitmap_bit = !llval ? 0 : __ilog2_u64(llval);
+ 		} else if (sscanf(opt_string, "bitmap_flush_interval:%u%c", &val, &dummy) == 1) {
+-			if (val >= (uint64_t)UINT_MAX * 1000 / HZ) {
++			if ((uint64_t)val >= (uint64_t)UINT_MAX * 1000 / HZ) {
+ 				r = -EINVAL;
+ 				ti->error = "Invalid bitmap_flush_interval argument";
+ 				goto bad;
 -- 
 2.43.0
 
