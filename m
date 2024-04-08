@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE13289C1FE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F04189C1DC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:25:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF7C21C219B7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D479B2A314
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85AA7D09A;
-	Mon,  8 Apr 2024 13:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9FA8003B;
+	Mon,  8 Apr 2024 13:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMrZ8L4x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhhrxbOt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEF871742;
-	Mon,  8 Apr 2024 13:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB6A7F465;
+	Mon,  8 Apr 2024 13:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582498; cv=none; b=Zimh0VW0j6ymzci9YNUjdu81b0wtMC0zqJjX8ino4gRoIfQ/6xnRZGOJYzr7zogNvKB8Rr0f8J7cciUsP9l5eZNBlTQlUvkskHF7iqFWjRl63EVCxf99LW9dO/CUP3t7kHEV8yJ5lO8ihY9+Uz4m0xio5IsNLDDi8Jteeg8mcXY=
+	t=1712582017; cv=none; b=ogaeyfZa2UI6b17Sgi4Qs73CuL/UKornFtK3SqTCzHHn4zOj6ShO7d10R44vtb7U+z/rqvuQ6bzwnh1POtvsdM0JnmOmh5Tn1slrTF6Bf1kRCZ4aoY2dUqECrU/TqePZDdHB8MYMym6CmqRY6v/jMMtXr7p7UD1hq8+XXprHGWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582498; c=relaxed/simple;
-	bh=xRRxZWgaYADFwRE4uEQY+cVTDH/G9WuKUMmT7sFCfGY=;
+	s=arc-20240116; t=1712582017; c=relaxed/simple;
+	bh=7U5rG+4oy1Yh+Ct3uuVdl9TXwt93h+ZMi9ZGPiSxwx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UHBIaV7S8aOdr9FDGxmG0rqg8gzGsAqpiGZGsiWCDFmKDWJm8n4ZQ8zN1pBAXCCU9xdhWJFcX6zbGxTRfIyUD94bzbxzDyNyGf9U8oerfMk0q98fmDpF8TR0TUVIGholx12TKj+zimBMh52c+Fc3Q8wh3X8LB8An8LIqOLJZ+k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMrZ8L4x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65077C433C7;
-	Mon,  8 Apr 2024 13:21:37 +0000 (UTC)
+	 MIME-Version; b=LfWtEwQrCt2+XfYw1/NA1tqmcXvcfe1dIEoxdz013KdwvqufPoJqKwIk5nfBbEY9wMBmz1JwLzbKZP9qe9RO1qHXj/lD76OKumFi6ojO+GFY2T1gFZcfn3HtqVAgUOwEvzjOaHp57d4bUgSV8pedBu6aSyOWpNg/WjlANEV6iQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhhrxbOt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65701C433C7;
+	Mon,  8 Apr 2024 13:13:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582497;
-	bh=xRRxZWgaYADFwRE4uEQY+cVTDH/G9WuKUMmT7sFCfGY=;
+	s=korg; t=1712582016;
+	bh=7U5rG+4oy1Yh+Ct3uuVdl9TXwt93h+ZMi9ZGPiSxwx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JMrZ8L4xeBCZqp0ja3fDwouyK5aCLo1o6+mYpNE3f12z3jLXbdthbSfVglwRIk09k
-	 +W/bQ9Vxv+JyLqDylXC+IIVUB5itqtktOiYngOcLrYsA0JjpkoUyL3akpiCLTIBQzT
-	 fXqbOvOfqGcoNBQ4qMs0O1NrOkrKb06UVWwcMyC4=
+	b=FhhrxbOtQZFrwUrhjNHlSF6imkTXXcpXy1ghE+Irr9YDlIQ0A9gTsqZW1ZqnkuP6/
+	 J1y+le/o2z5z6XD/TcdJ/rpXSru/rv63EX7qHsl61VpcyJ2YyFWYSF75BDFzba/Og9
+	 WVqZJOZLN2mmB8fKMDBxcV6tD76cjakGz4kEef+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.8 081/273] selftests: mptcp: join: fix dev in check_endpoint
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 057/252] x86/CPU/AMD: Carve out the erratum 1386 fix
 Date: Mon,  8 Apr 2024 14:55:56 +0200
-Message-ID: <20240408125311.816451733@linuxfoundation.org>
+Message-ID: <20240408125308.410329157@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 40061817d95bce6dd5634a61a65cd5922e6ccc92 upstream.
+[ Upstream commit a7c32a1ae9ee43abfe884f5af376877c4301d166 ]
 
-There's a bug in pm_nl_check_endpoint(), 'dev' didn't be parsed correctly.
-If calling it in the 2nd test of endpoint_tests() too, it fails with an
-error like this:
+Call it on the affected CPU generations.
 
- creation  [FAIL] expected '10.0.2.2 id 2 subflow dev dev' \
-                     found '10.0.2.2 id 2 subflow dev ns2eth2'
+No functional changes.
 
-The reason is '$2' should be set to 'dev', not '$1'. This patch fixes it.
-
-Fixes: 69c6ce7b6eca ("selftests: mptcp: add implicit endpoint test case")
-Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240329-upstream-net-20240329-fallback-mib-v1-2-324a8981da48@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: http://lore.kernel.org/r/20231120104152.13740-3-bp@alien8.de
+Stable-dep-of: c7b2edd8377b ("perf/x86/amd/core: Update and fix stalled-cycles-* events for Zen 2 and later")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/amd.c | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -773,7 +773,7 @@ pm_nl_check_endpoint()
- 			[ -n "$_flags" ]; flags="flags $_flags"
- 			shift
- 		elif [ $1 = "dev" ]; then
--			[ -n "$2" ]; dev="dev $1"
-+			[ -n "$2" ]; dev="dev $2"
- 			shift
- 		elif [ $1 = "id" ]; then
- 			_id=$2
-@@ -3589,6 +3589,8 @@ endpoint_tests()
- 		local tests_pid=$!
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 5391385707b3f..28c3a1045b060 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -988,6 +988,19 @@ static void init_amd_bd(struct cpuinfo_x86 *c)
+ 	clear_rdrand_cpuid_bit(c);
+ }
  
- 		wait_mpj $ns2
-+		pm_nl_check_endpoint "creation" \
-+			$ns2 10.0.2.2 id 2 flags subflow dev ns2eth2
- 		chk_subflow_nr "before delete" 2
- 		chk_mptcp_info subflows 1 subflows 1
++static void fix_erratum_1386(struct cpuinfo_x86 *c)
++{
++	/*
++	 * Work around Erratum 1386.  The XSAVES instruction malfunctions in
++	 * certain circumstances on Zen1/2 uarch, and not all parts have had
++	 * updated microcode at the time of writing (March 2023).
++	 *
++	 * Affected parts all have no supervisor XSAVE states, meaning that
++	 * the XSAVEC instruction (which works fine) is equivalent.
++	 */
++	clear_cpu_cap(c, X86_FEATURE_XSAVES);
++}
++
+ void init_spectral_chicken(struct cpuinfo_x86 *c)
+ {
+ #ifdef CONFIG_CPU_UNRET_ENTRY
+@@ -1008,15 +1021,6 @@ void init_spectral_chicken(struct cpuinfo_x86 *c)
+ 		}
+ 	}
+ #endif
+-	/*
+-	 * Work around Erratum 1386.  The XSAVES instruction malfunctions in
+-	 * certain circumstances on Zen1/2 uarch, and not all parts have had
+-	 * updated microcode at the time of writing (March 2023).
+-	 *
+-	 * Affected parts all have no supervisor XSAVE states, meaning that
+-	 * the XSAVEC instruction (which works fine) is equivalent.
+-	 */
+-	clear_cpu_cap(c, X86_FEATURE_XSAVES);
+ }
  
+ static void init_amd_zn(struct cpuinfo_x86 *c)
+@@ -1085,10 +1089,12 @@ static void zenbleed_check(struct cpuinfo_x86 *c)
+ 
+ static void init_amd_zen(struct cpuinfo_x86 *c)
+ {
++	fix_erratum_1386(c);
+ }
+ 
+ static void init_amd_zen2(struct cpuinfo_x86 *c)
+ {
++	fix_erratum_1386(c);
+ }
+ 
+ static void init_amd_zen3(struct cpuinfo_x86 *c)
+-- 
+2.43.0
+
 
 
 
