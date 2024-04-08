@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-37075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0952C89C397
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEB3D89BFEF
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFCCBB2F5A8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:39:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F45B1F24D81
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF1D80617;
-	Mon,  8 Apr 2024 13:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8490277F1B;
+	Mon,  8 Apr 2024 13:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtMHgUxX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1k0RCcs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD9F7BB15;
-	Mon,  8 Apr 2024 13:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C3D7175B;
+	Mon,  8 Apr 2024 13:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583181; cv=none; b=M7V0QvASMIFqKPeEf2ysw2uYx0TNVAyVKX4uXSuS3f5BIBbB9hc5Lm4ypV1lqDOd6LAQXS2dOnH9DqYYAKnpkkTG3V0sci6HN6oPX546IcmgYF+U1Fc2eUXFmPKTq3Wg9Mi8fCZEeYeI6yGvubn0TlwGBvBbvM3JKMVPe5MFwTY=
+	t=1712581370; cv=none; b=pO5ASjl5nrCPYNshyAd8n5F7MYCqht6Ta9f/HBPa3HW5JxemG8jjXRPFp/8dr1asajgJk6MRJuR0XHlOK52gGRRP73TW9Jl6ZG3SWFt2+t62D/U0vq26k4fWLK/Nv2IUNQx3MjfVoSDxt8qbAXoB8rgR0oDjIBpchlBJnwaaaDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583181; c=relaxed/simple;
-	bh=hrJkgTH5YNjxYEx4hvz2V8HUCvhHPekUVHghyn/N8ao=;
+	s=arc-20240116; t=1712581370; c=relaxed/simple;
+	bh=OqzVzNcjKbDLw09MWA7w3x7e7kGDfXAn2XY1iatP1LY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eWc7yrYHH3Wq3kMwo6S2DA8H41hKfQ/tZj2RAF37Y17+TKxSG1xeQl2IYIfoOVwmJuLJ8BkPAy8lpFLhRd5dIA1YMBbjD6MTjby2RAP8j20emqPOyoU8U/LrlbXUuaVPF1CJgFyXz9omKruEQEPz9DtwA/sRIYmNQYRbvufzu04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtMHgUxX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C080C433C7;
-	Mon,  8 Apr 2024 13:32:59 +0000 (UTC)
+	 MIME-Version; b=tQ0dBxjxY5V9E+ERuy7z4sAKYHbiBGR5e3mvp631XCdHOWKILxLKDvIXEhsuv3eVclymyqjjL5JaECxfsQ9Q1pc1+DXwYueKTbNRgyN+chQaQxLTj4HXyZt8H9KV7FC631d2wXs1DG+8DX+2Ag/WJPU2zNqIC1CtFJEiuGlWvoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1k0RCcs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF237C433C7;
+	Mon,  8 Apr 2024 13:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583180;
-	bh=hrJkgTH5YNjxYEx4hvz2V8HUCvhHPekUVHghyn/N8ao=;
+	s=korg; t=1712581370;
+	bh=OqzVzNcjKbDLw09MWA7w3x7e7kGDfXAn2XY1iatP1LY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xtMHgUxXofVU3TjdqtTT00/1pY8NXsHpbZ01gOPXjYqk99Kaemw3KLSYejwQSJNRX
-	 CdbxMNc4gPZT/vp4gPCcCoPmpOmjsNrSwpgjcbUW8svPsUmAEhO2xAkAmya/PgYlU2
-	 i5V31PsfMaNVlJ43/QVRUDr3Tc9tXCALdnSrU/FU=
+	b=r1k0RCcsuuvIbmHmu/NFRE84eeXsEp9ygRvRWjoL92e3WH/pLjDpZQANNjvuUFacv
+	 OGZw9YLGkdnE9W7XNPy+p0qpwqZGZST28DQRAgJ+DvHJHcEMC6La6hBCG9L7Gitc8X
+	 ucPPKmVemtIhVRXqIWs/mh+ivC8ix/k9c/BY9mzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pu Lehui <pulehui@huawei.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Nikita Kiryushin <kiryushin@ancud.ru>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 149/273] drivers/perf: riscv: Disable PERF_SAMPLE_BRANCH_* while not supported
+Subject: [PATCH 6.1 010/138] ACPICA: debugger: check status of acpi_evaluate_object() in acpi_db_walk_for_fields()
 Date: Mon,  8 Apr 2024 14:57:04 +0200
-Message-ID: <20240408125313.911523129@linuxfoundation.org>
+Message-ID: <20240408125256.549310191@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Nikita Kiryushin <kiryushin@ancud.ru>
 
-[ Upstream commit ea6873118493019474abbf57d5a800da365734df ]
+[ Upstream commit 40e2710860e57411ab57a1529c5a2748abbe8a19 ]
 
-RISC-V perf driver does not yet support branch sampling. Although the
-specification is in the works [0], it is best to disable such events
-until support is available, otherwise we will get unexpected results.
-Due to this reason, two riscv bpf testcases get_branch_snapshot and
-perf_branches/perf_branches_hw fail.
+ACPICA commit 9061cd9aa131205657c811a52a9f8325a040c6c9
 
-Link: https://github.com/riscv/riscv-control-transfer-records [0]
-Fixes: f5bfa23f576f ("RISC-V: Add a perf core library for pmu drivers")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20240312012053.1178140-1-pulehui@huaweicloud.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Errors in acpi_evaluate_object() can lead to incorrect state of buffer.
+
+This can lead to access to data in previously ACPI_FREEd buffer and
+secondary ACPI_FREE to the same buffer later.
+
+Handle errors in acpi_evaluate_object the same way it is done earlier
+with acpi_ns_handle_to_pathname.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Link: https://github.com/acpica/acpica/commit/9061cd9a
+Fixes: 5fd033288a86 ("ACPICA: debugger: add command to dump all fields of particular subtype")
+Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/riscv_pmu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/acpi/acpica/dbnames.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/perf/riscv_pmu.c b/drivers/perf/riscv_pmu.c
-index c78a6fd6c57f6..b4efdddb2ad91 100644
---- a/drivers/perf/riscv_pmu.c
-+++ b/drivers/perf/riscv_pmu.c
-@@ -313,6 +313,10 @@ static int riscv_pmu_event_init(struct perf_event *event)
- 	u64 event_config = 0;
- 	uint64_t cmask;
+diff --git a/drivers/acpi/acpica/dbnames.c b/drivers/acpi/acpica/dbnames.c
+index b91155ea9c343..c9131259f717b 100644
+--- a/drivers/acpi/acpica/dbnames.c
++++ b/drivers/acpi/acpica/dbnames.c
+@@ -550,8 +550,12 @@ acpi_db_walk_for_fields(acpi_handle obj_handle,
+ 	ACPI_FREE(buffer.pointer);
  
-+	/* driver does not support branch stack sampling */
-+	if (has_branch_stack(event))
-+		return -EOPNOTSUPP;
-+
- 	hwc->flags = 0;
- 	mapped_event = rvpmu->event_map(event, &event_config);
- 	if (mapped_event < 0) {
+ 	buffer.length = ACPI_ALLOCATE_LOCAL_BUFFER;
+-	acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
+-
++	status = acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
++	if (ACPI_FAILURE(status)) {
++		acpi_os_printf("Could Not evaluate object %p\n",
++			       obj_handle);
++		return (AE_OK);
++	}
+ 	/*
+ 	 * Since this is a field unit, surround the output in braces
+ 	 */
 -- 
 2.43.0
 
