@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-36689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3115689C13D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 292F589C142
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD4A828102E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE0DE1F211AB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E1B81728;
-	Mon,  8 Apr 2024 13:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989678173B;
+	Mon,  8 Apr 2024 13:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0V6HXsw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0j1ILcB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CA381726;
-	Mon,  8 Apr 2024 13:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA8B7A15C;
+	Mon,  8 Apr 2024 13:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582057; cv=none; b=s0UrQSfCXVSLhzpozEhI0H8V/QfkrQt0TBzv5+lErbWE0tGUeuIeAZmlWjgnNb9el8tX7yrnfBG6zY29KDjhKHk6gfmlqBCwb/Md1GWZcnYAgr7ehXkFwYtOmvByrRne9rKHeoEuFBbPJQkYsHh1huxYJ2MQdjdYtgjEZ90uIS4=
+	t=1712582069; cv=none; b=Rt11RtjuqhvpDSia8WPI5h3Atk+ATLZYSBp7YpVmbj5fvvkR/irBIDFBgKQpIFCUb0lQmin7mc8YB8ZR5/C3HQSTJOiOspwi3e+c3E+661x8Bj+Gl1Fjiw5ZuM2JQCC4Kszwxm2rYyjtnib3uZf45IVCzDRkHLdp6HtZbBzy5a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582057; c=relaxed/simple;
-	bh=F+N9VqxhkRWC8R7rt1KJ48w8s/e8V7gpSR1r73Gib3c=;
+	s=arc-20240116; t=1712582069; c=relaxed/simple;
+	bh=KVVH/6mRI716M5uJlDS5Ou9WITiJtYKXES+jHkpQgJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aWYoUe/6Tb/1UsyDXHlaehWrjv046IcqLmKJT8nODjU9A0KQuRLDPdq9p+H/FYaptENB94IVq0wqAvZ3Krpv/lrLEf2tqDG9zXIxASl3ZdZPOOLE1lkHy1J/euOImUTUKbnKyaG+fGlWJUDpSx3A+bWGNPQ9Gr+SxudZoB4na6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0V6HXsw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A8EFC433C7;
-	Mon,  8 Apr 2024 13:14:16 +0000 (UTC)
+	 MIME-Version; b=TkQsVLQJJyGRZaFbi2E6XyADhMeu7wBQxLtkUyZeDJnOR4JTCsIIbd3kjCkxgc9MhPd0G9woyjRhyoZRYZKcyQcHuYk/bYbQh1Fj3p65HQKhmX+FCmVETE8bCbsNJ90P3NJWi3j8t3LigHdoZTggdDn6ou8cJAT+TrtrK05Wn1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0j1ILcB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD44BC433C7;
+	Mon,  8 Apr 2024 13:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582057;
-	bh=F+N9VqxhkRWC8R7rt1KJ48w8s/e8V7gpSR1r73Gib3c=;
+	s=korg; t=1712582069;
+	bh=KVVH/6mRI716M5uJlDS5Ou9WITiJtYKXES+jHkpQgJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o0V6HXswyovdgcwAvRtojC2Lmul7pH8GQdtLWG7TGs1UPdEr+uvtskLVDW/bfX086
-	 yYpGi6Aywj1I9x3VDyXqvm26w8YPOWX9Q2NQEaAt9XDa6Q5uA0fCuGI+lekl5NRvyU
-	 ynrvXuFNrgaFZKOj0ZhAAvTp/T3Evg234eGb78To=
+	b=Z0j1ILcBdpNmuveFGh5j2SWEhHmG0fLWvkDTwmtP9obq33LeXC+zylSKD2PWnyQCb
+	 Gtt3D4ilvZWZZnbqo98vWl9cMgH7LvVtF4S6mrR5J9ubIwhjLxsVwTdtwqjPhKg3nr
+	 f03wWlZ3q3Z2eouDLEwpOhZZRt2Wcx3EJPRHJzPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+33f4297b5f927648741a@syzkaller.appspotmail.com,
-	syzbot+aafd0513053a1cbf52ef@syzkaller.appspotmail.com,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Andrei Matei <andreimatei1@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Rohith Surabattula <rohiths.msft@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 043/273] bpf: Protect against int overflow for stack access size
-Date: Mon,  8 Apr 2024 14:55:18 +0200
-Message-ID: <20240408125310.626999629@linuxfoundation.org>
+Subject: [PATCH 6.8 044/273] cifs: Fix duplicate fscache cookie warnings
+Date: Mon,  8 Apr 2024 14:55:19 +0200
+Message-ID: <20240408125310.667062546@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
 References: <20240408125309.280181634@linuxfoundation.org>
@@ -69,51 +72,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrei Matei <andreimatei1@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit ecc6a2101840177e57c925c102d2d29f260d37c8 ]
+[ Upstream commit 8876a37277cb832e1861c35f8c661825179f73f5 ]
 
-This patch re-introduces protection against the size of access to stack
-memory being negative; the access size can appear negative as a result
-of overflowing its signed int representation. This should not actually
-happen, as there are other protections along the way, but we should
-protect against it anyway. One code path was missing such protections
-(fixed in the previous patch in the series), causing out-of-bounds array
-accesses in check_stack_range_initialized(). This patch causes the
-verification of a program with such a non-sensical access size to fail.
+fscache emits a lot of duplicate cookie warnings with cifs because the
+index key for the fscache cookies does not include everything that the
+cifs_find_inode() function does.  The latter is used with iget5_locked() to
+distinguish between inodes in the local inode cache.
 
-This check used to exist in a more indirect way, but was inadvertendly
-removed in a833a17aeac7.
+Fix this by adding the creation time and file type to the fscache cookie
+key.
 
-Fixes: a833a17aeac7 ("bpf: Fix verification of indirect var-off stack access")
-Reported-by: syzbot+33f4297b5f927648741a@syzkaller.appspotmail.com
-Reported-by: syzbot+aafd0513053a1cbf52ef@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/bpf/CAADnVQLORV5PT0iTAhRER+iLBTkByCYNBYyvBSgjN1T31K+gOw@mail.gmail.com/
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Andrei Matei <andreimatei1@gmail.com>
-Link: https://lore.kernel.org/r/20240327024245.318299-3-andreimatei1@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Additionally, add a couple of comments to note that if one is changed the
+other must be also.
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+Fixes: 70431bfd825d ("cifs: Support fscache indexing rewrite")
+cc: Shyam Prasad N <nspmangalore@gmail.com>
+cc: Rohith Surabattula <rohiths.msft@gmail.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/smb/client/fscache.c | 16 +++++++++++++++-
+ fs/smb/client/inode.c   |  2 ++
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index ddea9567f7559..19e575e6b7fe0 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -6618,6 +6618,11 @@ static int check_stack_access_within_bounds(
- 	err = check_stack_slot_within_bounds(env, min_off, state, type);
- 	if (!err && max_off > 0)
- 		err = -EINVAL; /* out of stack access into non-negative offsets */
-+	if (!err && access_size < 0)
-+		/* access_size should not be negative (or overflow an int); others checks
-+		 * along the way should have prevented such an access.
-+		 */
-+		err = -EFAULT; /* invalid negative access size; integer overflow? */
+diff --git a/fs/smb/client/fscache.c b/fs/smb/client/fscache.c
+index c4a3cb736881a..340efce8f0529 100644
+--- a/fs/smb/client/fscache.c
++++ b/fs/smb/client/fscache.c
+@@ -12,6 +12,16 @@
+ #include "cifs_fs_sb.h"
+ #include "cifsproto.h"
  
- 	if (err) {
- 		if (tnum_is_const(reg->var_off)) {
++/*
++ * Key for fscache inode.  [!] Contents must match comparisons in cifs_find_inode().
++ */
++struct cifs_fscache_inode_key {
++
++	__le64  uniqueid;	/* server inode number */
++	__le64  createtime;	/* creation time on server */
++	u8	type;		/* S_IFMT file type */
++} __packed;
++
+ static void cifs_fscache_fill_volume_coherency(
+ 	struct cifs_tcon *tcon,
+ 	struct cifs_fscache_volume_coherency_data *cd)
+@@ -97,15 +107,19 @@ void cifs_fscache_release_super_cookie(struct cifs_tcon *tcon)
+ void cifs_fscache_get_inode_cookie(struct inode *inode)
+ {
+ 	struct cifs_fscache_inode_coherency_data cd;
++	struct cifs_fscache_inode_key key;
+ 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
+ 	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
+ 
++	key.uniqueid	= cpu_to_le64(cifsi->uniqueid);
++	key.createtime	= cpu_to_le64(cifsi->createtime);
++	key.type	= (inode->i_mode & S_IFMT) >> 12;
+ 	cifs_fscache_fill_coherency(&cifsi->netfs.inode, &cd);
+ 
+ 	cifsi->netfs.cache =
+ 		fscache_acquire_cookie(tcon->fscache, 0,
+-				       &cifsi->uniqueid, sizeof(cifsi->uniqueid),
++				       &key, sizeof(key),
+ 				       &cd, sizeof(cd),
+ 				       i_size_read(&cifsi->netfs.inode));
+ 	if (cifsi->netfs.cache)
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index 7f28edf4b20f3..4c3dec384f922 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -1414,6 +1414,8 @@ cifs_find_inode(struct inode *inode, void *opaque)
+ {
+ 	struct cifs_fattr *fattr = opaque;
+ 
++	/* [!] The compared values must be the same in struct cifs_fscache_inode_key. */
++
+ 	/* don't match inode with different uniqueid */
+ 	if (CIFS_I(inode)->uniqueid != fattr->cf_uniqueid)
+ 		return 0;
 -- 
 2.43.0
 
