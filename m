@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-37580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 727CD89C586
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:58:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E8289C263
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEA421F21125
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:58:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3301C1F2318F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96AF069E1C;
-	Mon,  8 Apr 2024 13:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFF37BB11;
+	Mon,  8 Apr 2024 13:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tbuk5LF2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yoBORV4x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522807C090;
-	Mon,  8 Apr 2024 13:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5962F6A352;
+	Mon,  8 Apr 2024 13:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584650; cv=none; b=O9V3TS6KaqBN61C18TNqg3b9Lpn1EEPqMyE8waDuVr4LYxZIQlBUaRLSkmwC0rKUvuhL/aYr2ToCdfe8N3dPcSZ6/wyO1UAOnmr4R6WggqW8vDKu8fisR0Z7HqWcHXt3QHhEBVTn23rpdAowzR6lRkY8pYwg1Pttw213VgIV/2A=
+	t=1712582749; cv=none; b=WUJxwdszCghs7QQ1hJ/ZiLqBopMN9g0Wu7Az7FWDfH0WpOykxn02R+hmb2togICww4M2W9EjEF+77OP9kMCgWBVoie8vMiAmqSvezeb3c2BtHa6CfX8NOC9wg3WehATwyGkBAOWp695qp244KmOIrzrSvPSxGvTckZo3psoBov8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584650; c=relaxed/simple;
-	bh=a6hkio8IckEXUTlDBuI3VxyusE21vDLzRnE16n2wbi0=;
+	s=arc-20240116; t=1712582749; c=relaxed/simple;
+	bh=RVQFmo1KufOWlFjgh6jxAM3MQX3w7XwC/3RydgHWQM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBiSWz2/1UkoJnK6JP6YAURnH2MgBH4CId/sQRxqHwc168lG6p1BVbz79ns/OwjFOqv9tD4ZjQdxzSLr5suqijUS0QSl/uB0yh/V1icaLBP75yNM1UWtVsfhRgYtcqHGRDzJNYn0odYMQhKzkJD7ZpkcTkCmM74cdpNrQpQ0hTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tbuk5LF2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9347C433A6;
-	Mon,  8 Apr 2024 13:57:29 +0000 (UTC)
+	 MIME-Version; b=otUCpp9AHSSdAeo2dkUigFvyATCfGZ9V5aaVYTB9nUKCOCEhglCCzg0RipyWq4Wmve5wx8mhVnI2+c1rOSAItkmCvDmrrIxUepTG+mjnMrjuGvxBr1CoEqodxdENO/EvSa4bOCa2FyYldI+XttpBOEsqCZsPXx6dnhGPLXNMaWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yoBORV4x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F7EC433C7;
+	Mon,  8 Apr 2024 13:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584650;
-	bh=a6hkio8IckEXUTlDBuI3VxyusE21vDLzRnE16n2wbi0=;
+	s=korg; t=1712582749;
+	bh=RVQFmo1KufOWlFjgh6jxAM3MQX3w7XwC/3RydgHWQM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tbuk5LF2u089opbQNBkuSpge6jiiIAqDgsRnAlpiUqedy8Cc4ZqXXEkowYqP8opUX
-	 HBiqqAtR1IsH7+A+iV1CinCuizZslfwxo/TCzjSSHLLZqt68JCfNNe/qpd7y69c+qF
-	 ob0R3vmrkxQdQZkLCcuwJEcI9n1vWEyl1PoIiGEw=
+	b=yoBORV4xkKqvw/TD1hpDnu7bPDxclXMq06ZGDr547QCE6rHXdXJ4+5lCWcNwtXga3
+	 muYGMlTG+bz3WxnGN4Gd1gNYidM2TAki+fDucfYPBmmXCkZ9A99wk3QNcff5D1QqXn
+	 NFlXfB79vIKl9SvA63JQQmAxGMZCbAt7i6Tzycw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trondmy@hammerspace.com>,
-	Stanislav Saner <ssaner@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Ruben Vestergaard <rubenv@drcmr.dk>,
-	Torkil Svensgaard <torkil@drcmr.dk>
-Subject: [PATCH 5.15 510/690] nfsd: fix handling of cached open files in nfsd4_open codepath
-Date: Mon,  8 Apr 2024 14:56:16 +0200
-Message-ID: <20240408125418.124051893@linuxfoundation.org>
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Divya Koppera <divya.koppera@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.8 102/273] net: phy: micrel: lan8814: Fix when enabling/disabling 1-step timestamping
+Date: Mon,  8 Apr 2024 14:56:17 +0200
+Message-ID: <20240408125312.478026376@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,277 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 0b3a551fa58b4da941efeb209b3770868e2eddd7 ]
+commit de99e1ea3a35f23ff83a31d6b08f43d27b2c6345 upstream.
 
-Commit fb70bf124b05 ("NFSD: Instantiate a struct file when creating a
-regular NFSv4 file") added the ability to cache an open fd over a
-compound. There are a couple of problems with the way this currently
-works:
+There are 2 issues with the blamed commit.
+1. When the phy is initialized, it would enable the disabled of UDPv4
+   checksums. The UDPv6 checksum is already enabled by default. So when
+   1-step is configured then it would clear these flags.
+2. After the 1-step is configured, then if 2-step is configured then the
+   1-step would be still configured because it is not clearing the flag.
+   So the sync frames will still have origin timestamps set.
 
-It's racy, as a newly-created nfsd_file can end up with its PENDING bit
-cleared while the nf is hashed, and the nf_file pointer is still zeroed
-out. Other tasks can find it in this state and they expect to see a
-valid nf_file, and can oops if nf_file is NULL.
+Fix this by reading first the value of the register and then
+just change bit 12 as this one determines if the timestamp needs to
+be inserted in the frame, without changing any other bits.
 
-Also, there is no guarantee that we'll end up creating a new nfsd_file
-if one is already in the hash. If an extant entry is in the hash with a
-valid nf_file, nfs4_get_vfs_file will clobber its nf_file pointer with
-the value of op_file and the old nf_file will leak.
-
-Fix both issues by making a new nfsd_file_acquirei_opened variant that
-takes an optional file pointer. If one is present when this is called,
-we'll take a new reference to it instead of trying to open the file. If
-the nfsd_file already has a valid nf_file, we'll just ignore the
-optional file and pass the nfsd_file back as-is.
-
-Also rework the tracepoints a bit to allow for an "opened" variant and
-don't try to avoid counting acquisitions in the case where we already
-have a cached open file.
-
-Fixes: fb70bf124b05 ("NFSD: Instantiate a struct file when creating a regular NFSv4 file")
-Cc: Trond Myklebust <trondmy@hammerspace.com>
-Reported-by: Stanislav Saner <ssaner@redhat.com>
-Reported-and-Tested-by: Ruben Vestergaard <rubenv@drcmr.dk>
-Reported-and-Tested-by: Torkil Svensgaard <torkil@drcmr.dk>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: ece19502834d ("net: phy: micrel: 1588 support for LAN8814 phy")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Divya Koppera <divya.koppera@microchip.com>
+Link: https://lore.kernel.org/r/20240402071634.2483524-1-horatiu.vultur@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/filecache.c | 40 ++++++++++++++++++----------------
- fs/nfsd/filecache.h |  5 +++--
- fs/nfsd/nfs4state.c | 16 ++++----------
- fs/nfsd/trace.h     | 52 ++++++++++++---------------------------------
- 4 files changed, 42 insertions(+), 71 deletions(-)
+ drivers/net/phy/micrel.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 140094a44cc40..6a62d95d5ce64 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -1070,8 +1070,8 @@ nfsd_file_is_cached(struct inode *inode)
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -2416,6 +2416,7 @@ static int lan8814_hwtstamp(struct mii_t
+ 	struct lan8814_ptp_rx_ts *rx_ts, *tmp;
+ 	int txcfg = 0, rxcfg = 0;
+ 	int pkt_ts_enable;
++	int tx_mod;
  
- static __be32
- nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
--		     unsigned int may_flags, struct nfsd_file **pnf,
--		     bool open, bool want_gc)
-+		     unsigned int may_flags, struct file *file,
-+		     struct nfsd_file **pnf, bool want_gc)
- {
- 	struct nfsd_file_lookup_key key = {
- 		.type	= NFSD_FILE_KEY_FULL,
-@@ -1146,8 +1146,7 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	status = nfserrno(nfsd_open_break_lease(file_inode(nf->nf_file), may_flags));
- out:
- 	if (status == nfs_ok) {
--		if (open)
--			this_cpu_inc(nfsd_file_acquisitions);
-+		this_cpu_inc(nfsd_file_acquisitions);
- 		*pnf = nf;
- 	} else {
- 		if (refcount_dec_and_test(&nf->nf_ref))
-@@ -1157,20 +1156,23 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	ptp_priv->hwts_tx_type = config->tx_type;
+ 	ptp_priv->rx_filter = config->rx_filter;
+@@ -2462,9 +2463,14 @@ static int lan8814_hwtstamp(struct mii_t
+ 	lanphy_write_page_reg(ptp_priv->phydev, 5, PTP_RX_TIMESTAMP_EN, pkt_ts_enable);
+ 	lanphy_write_page_reg(ptp_priv->phydev, 5, PTP_TX_TIMESTAMP_EN, pkt_ts_enable);
  
- out_status:
- 	put_cred(key.cred);
--	if (open)
--		trace_nfsd_file_acquire(rqstp, key.inode, may_flags, nf, status);
-+	trace_nfsd_file_acquire(rqstp, key.inode, may_flags, nf, status);
- 	return status;
+-	if (ptp_priv->hwts_tx_type == HWTSTAMP_TX_ONESTEP_SYNC)
++	tx_mod = lanphy_read_page_reg(ptp_priv->phydev, 5, PTP_TX_MOD);
++	if (ptp_priv->hwts_tx_type == HWTSTAMP_TX_ONESTEP_SYNC) {
+ 		lanphy_write_page_reg(ptp_priv->phydev, 5, PTP_TX_MOD,
+-				      PTP_TX_MOD_TX_PTP_SYNC_TS_INSERT_);
++				      tx_mod | PTP_TX_MOD_TX_PTP_SYNC_TS_INSERT_);
++	} else if (ptp_priv->hwts_tx_type == HWTSTAMP_TX_ON) {
++		lanphy_write_page_reg(ptp_priv->phydev, 5, PTP_TX_MOD,
++				      tx_mod & ~PTP_TX_MOD_TX_PTP_SYNC_TS_INSERT_);
++	}
  
- open_file:
- 	trace_nfsd_file_alloc(nf);
- 	nf->nf_mark = nfsd_file_mark_find_or_create(nf, key.inode);
- 	if (nf->nf_mark) {
--		if (open) {
-+		if (file) {
-+			get_file(file);
-+			nf->nf_file = file;
-+			status = nfs_ok;
-+			trace_nfsd_file_opened(nf, status);
-+		} else {
- 			status = nfsd_open_verified(rqstp, fhp, may_flags,
- 						    &nf->nf_file);
- 			trace_nfsd_file_open(nf, status);
--		} else
--			status = nfs_ok;
-+		}
- 	} else
- 		status = nfserr_jukebox;
- 	/*
-@@ -1206,7 +1208,7 @@ __be32
- nfsd_file_acquire_gc(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 		     unsigned int may_flags, struct nfsd_file **pnf)
- {
--	return nfsd_file_do_acquire(rqstp, fhp, may_flags, pnf, true, true);
-+	return nfsd_file_do_acquire(rqstp, fhp, may_flags, NULL, pnf, true);
- }
- 
- /**
-@@ -1227,28 +1229,30 @@ __be32
- nfsd_file_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 		  unsigned int may_flags, struct nfsd_file **pnf)
- {
--	return nfsd_file_do_acquire(rqstp, fhp, may_flags, pnf, true, false);
-+	return nfsd_file_do_acquire(rqstp, fhp, may_flags, NULL, pnf, false);
- }
- 
- /**
-- * nfsd_file_create - Get a struct nfsd_file, do not open
-+ * nfsd_file_acquire_opened - Get a struct nfsd_file using existing open file
-  * @rqstp: the RPC transaction being executed
-  * @fhp: the NFS filehandle of the file just created
-  * @may_flags: NFSD_MAY_ settings for the file
-+ * @file: cached, already-open file (may be NULL)
-  * @pnf: OUT: new or found "struct nfsd_file" object
-  *
-- * The nfsd_file_object returned by this API is reference-counted
-- * but not garbage-collected. The object is released immediately
-- * one RCU grace period after the final nfsd_file_put().
-+ * Acquire a nfsd_file object that is not GC'ed. If one doesn't already exist,
-+ * and @file is non-NULL, use it to instantiate a new nfsd_file instead of
-+ * opening a new one.
-  *
-  * Returns nfs_ok and sets @pnf on success; otherwise an nfsstat in
-  * network byte order is returned.
-  */
- __be32
--nfsd_file_create(struct svc_rqst *rqstp, struct svc_fh *fhp,
--		 unsigned int may_flags, struct nfsd_file **pnf)
-+nfsd_file_acquire_opened(struct svc_rqst *rqstp, struct svc_fh *fhp,
-+			 unsigned int may_flags, struct file *file,
-+			 struct nfsd_file **pnf)
- {
--	return nfsd_file_do_acquire(rqstp, fhp, may_flags, pnf, false, false);
-+	return nfsd_file_do_acquire(rqstp, fhp, may_flags, file, pnf, false);
- }
- 
- /*
-diff --git a/fs/nfsd/filecache.h b/fs/nfsd/filecache.h
-index b7efb2c3ddb18..41516a4263ea5 100644
---- a/fs/nfsd/filecache.h
-+++ b/fs/nfsd/filecache.h
-@@ -60,7 +60,8 @@ __be32 nfsd_file_acquire_gc(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 		  unsigned int may_flags, struct nfsd_file **nfp);
- __be32 nfsd_file_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 		  unsigned int may_flags, struct nfsd_file **nfp);
--__be32 nfsd_file_create(struct svc_rqst *rqstp, struct svc_fh *fhp,
--		  unsigned int may_flags, struct nfsd_file **nfp);
-+__be32 nfsd_file_acquire_opened(struct svc_rqst *rqstp, struct svc_fh *fhp,
-+		  unsigned int may_flags, struct file *file,
-+		  struct nfsd_file **nfp);
- int nfsd_file_cache_stats_show(struct seq_file *m, void *v);
- #endif /* _FS_NFSD_FILECACHE_H */
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 8bb75adbd4e6a..485e7055e52ec 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -5262,18 +5262,10 @@ static __be32 nfs4_get_vfs_file(struct svc_rqst *rqstp, struct nfs4_file *fp,
- 	if (!fp->fi_fds[oflag]) {
- 		spin_unlock(&fp->fi_lock);
- 
--		if (!open->op_filp) {
--			status = nfsd_file_acquire(rqstp, cur_fh, access, &nf);
--			if (status != nfs_ok)
--				goto out_put_access;
--		} else {
--			status = nfsd_file_create(rqstp, cur_fh, access, &nf);
--			if (status != nfs_ok)
--				goto out_put_access;
--			nf->nf_file = open->op_filp;
--			open->op_filp = NULL;
--			trace_nfsd_file_create(rqstp, access, nf);
--		}
-+		status = nfsd_file_acquire_opened(rqstp, cur_fh, access,
-+						  open->op_filp, &nf);
-+		if (status != nfs_ok)
-+			goto out_put_access;
- 
- 		spin_lock(&fp->fi_lock);
- 		if (!fp->fi_fds[oflag]) {
-diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
-index 77be39fcb3d44..5fb7e153ca865 100644
---- a/fs/nfsd/trace.h
-+++ b/fs/nfsd/trace.h
-@@ -980,43 +980,6 @@ TRACE_EVENT(nfsd_file_acquire,
- 	)
- );
- 
--TRACE_EVENT(nfsd_file_create,
--	TP_PROTO(
--		const struct svc_rqst *rqstp,
--		unsigned int may_flags,
--		const struct nfsd_file *nf
--	),
--
--	TP_ARGS(rqstp, may_flags, nf),
--
--	TP_STRUCT__entry(
--		__field(const void *, nf_inode)
--		__field(const void *, nf_file)
--		__field(unsigned long, may_flags)
--		__field(unsigned long, nf_flags)
--		__field(unsigned long, nf_may)
--		__field(unsigned int, nf_ref)
--		__field(u32, xid)
--	),
--
--	TP_fast_assign(
--		__entry->nf_inode = nf->nf_inode;
--		__entry->nf_file = nf->nf_file;
--		__entry->may_flags = may_flags;
--		__entry->nf_flags = nf->nf_flags;
--		__entry->nf_may = nf->nf_may;
--		__entry->nf_ref = refcount_read(&nf->nf_ref);
--		__entry->xid = be32_to_cpu(rqstp->rq_xid);
--	),
--
--	TP_printk("xid=0x%x inode=%p may_flags=%s ref=%u nf_flags=%s nf_may=%s nf_file=%p",
--		__entry->xid, __entry->nf_inode,
--		show_nfsd_may_flags(__entry->may_flags),
--		__entry->nf_ref, show_nf_flags(__entry->nf_flags),
--		show_nfsd_may_flags(__entry->nf_may), __entry->nf_file
--	)
--);
--
- TRACE_EVENT(nfsd_file_insert_err,
- 	TP_PROTO(
- 		const struct svc_rqst *rqstp,
-@@ -1078,8 +1041,8 @@ TRACE_EVENT(nfsd_file_cons_err,
- 	)
- );
- 
--TRACE_EVENT(nfsd_file_open,
--	TP_PROTO(struct nfsd_file *nf, __be32 status),
-+DECLARE_EVENT_CLASS(nfsd_file_open_class,
-+	TP_PROTO(const struct nfsd_file *nf, __be32 status),
- 	TP_ARGS(nf, status),
- 	TP_STRUCT__entry(
- 		__field(void *, nf_inode)	/* cannot be dereferenced */
-@@ -1103,6 +1066,17 @@ TRACE_EVENT(nfsd_file_open,
- 		__entry->nf_file)
- )
- 
-+#define DEFINE_NFSD_FILE_OPEN_EVENT(name)					\
-+DEFINE_EVENT(nfsd_file_open_class, name,					\
-+	TP_PROTO(							\
-+		const struct nfsd_file *nf,				\
-+		__be32 status						\
-+	),								\
-+	TP_ARGS(nf, status))
-+
-+DEFINE_NFSD_FILE_OPEN_EVENT(nfsd_file_open);
-+DEFINE_NFSD_FILE_OPEN_EVENT(nfsd_file_opened);
-+
- TRACE_EVENT(nfsd_file_is_cached,
- 	TP_PROTO(
- 		const struct inode *inode,
--- 
-2.43.0
-
+ 	if (config->rx_filter != HWTSTAMP_FILTER_NONE)
+ 		lan8814_config_ts_intr(ptp_priv->phydev, true);
 
 
 
