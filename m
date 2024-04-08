@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-37111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FEB189C361
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63D0E89C366
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5190C1C221D4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 056991F21B6F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A494A85654;
-	Mon,  8 Apr 2024 13:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8A87D07F;
+	Mon,  8 Apr 2024 13:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+ASCvR5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0n+dQhJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F4F7CF37;
-	Mon,  8 Apr 2024 13:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1507CF39;
+	Mon,  8 Apr 2024 13:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583282; cv=none; b=uHJTKeecBzytMtZK52P6D2jJt3FhZWI0h2XVPVAK7tmq6BlH62ba7JY3yA5pRtCa+Oj3QZG1thq1agIpSUfkjX52RIvLkaqpThnq5ZZQawdaprdKVgtADi9hA1Xa/ShLsqeNx6KbxfdO9Zd2DyEMglZxlXasi17vNHEhN98cj1c=
+	t=1712583294; cv=none; b=mHpvu5Y4m7+BU6ZpPmjFY2MT8zFaROCLCPQLjAp0PjYRsxBacvJaPdjanLZl/refsrRIXV6AcYYkAK0wsc3/t32Or/pEmBBsdzzv0fYQYo4aAcvubxgZLQNe3SL9JKCgBUHXzh/A0Br6mFZeKYKiQRS0FWXabwrQistkPIZiWig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583282; c=relaxed/simple;
-	bh=ffJThTbpfIjt9qLDbSqspTKYvX3X6N20FUVL4k9zdMQ=;
+	s=arc-20240116; t=1712583294; c=relaxed/simple;
+	bh=L5RpJcHwsu+kPsnvbYI7scbphDlpF7z5jH+G9jY99cE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=idpFvlojXsd8V2o9Bik4k6NmVhtiMR/tzXKn+BB0Bu+VlOrJywpH4oWfinBsnMRBu3eoc72tYzGyR9BxwARAtr/xUzdsXuHpnnNJSkqXStNkqaJmdkUIy6fQHt3++H2CSQnpzTm29iyPaC0/IhmtUGsvIqgLHyNQgveBSInAK7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+ASCvR5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D314FC433C7;
-	Mon,  8 Apr 2024 13:34:41 +0000 (UTC)
+	 MIME-Version; b=Wwji+cSLR7Jea+OHiwXp7LrA4GBQV48QbMO1Ayv8cHwFa/NOG6u/ZM+GaMsrkIA9ZJZtR0xTv8ts8EM9fwb5+jgVi2B4CUJXPqKbBbFv1WLs05+MT9Sxqc7JWDc1bIr4yBxQ9qdJ9Sx2ve6QQxMO4qhf4uJbJX/x14EoMCv7VqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0n+dQhJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD9EC433F1;
+	Mon,  8 Apr 2024 13:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583282;
-	bh=ffJThTbpfIjt9qLDbSqspTKYvX3X6N20FUVL4k9zdMQ=;
+	s=korg; t=1712583293;
+	bh=L5RpJcHwsu+kPsnvbYI7scbphDlpF7z5jH+G9jY99cE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+ASCvR5U10RSh4he8KFhCc/AcJt8ZWAgzu+DF+y3cU4O1VDTXYExHSf7tfhDC1Xv
-	 q9nKmHqNyjCfqBpxSEXVfgJwOFLMoEfkB49Bt74A2f4o1DMC5Fs2D8PHSNkM/w5pIs
-	 6NQeG+p4csKq521AENEAKKlnmq0Mi2DLKW2uUqQQ=
+	b=f0n+dQhJ8R949hlbtBZhfwUTImG6fDXAMJNxbvlyGwPN/glGTy/YzACAPd7Kwir5h
+	 Z/Ng0pr7BFNzD30FSSeC5kMx38n9rtFN68mZXRSOi9cJjXjXzhYcvUPmK+dq6auTNG
+	 OlhGNsABjfiXRGc+Uv9wfdyNn+FGUBlHoGPzxPis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	NeilBrown <neilb@suse.de>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 230/690] nfsd: make nfsd_stats.th_cnt atomic_t
-Date: Mon,  8 Apr 2024 14:51:36 +0200
-Message-ID: <20240408125407.956154072@linuxfoundation.org>
+Subject: [PATCH 5.15 231/690] SUNRPC: use sv_lock to protect updates to sv_nrthreads.
+Date: Mon,  8 Apr 2024 14:51:37 +0200
+Message-ID: <20240408125407.986854671@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,82 +67,76 @@ Content-Transfer-Encoding: 8bit
 
 From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 9b6c8c9bebccd5fb785c306b948c08874a88874d ]
+[ Upstream commit 2a36395fac3b72771f87c3ee4387e3a96d85a7cc ]
 
-This allows us to move the updates for th_cnt out of the mutex.
-This is a step towards reducing mutex coverage in nfsd().
+Using sv_lock means we don't need to hold the service mutex over these
+updates.
+
+In particular,  svc_exit_thread() no longer requires synchronisation, so
+threads can exit asynchronously.
+
+Note that we could use an atomic_t, but as there are many more read
+sites than writes, that would add unnecessary noise to the code.
+Some reads are already racy, and there is no need for them to not be.
 
 Signed-off-by: NeilBrown <neilb@suse.de>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfssvc.c | 6 +++---
- fs/nfsd/stats.c  | 2 +-
- fs/nfsd/stats.h  | 4 +---
- 3 files changed, 5 insertions(+), 7 deletions(-)
+ fs/nfsd/nfssvc.c | 5 ++---
+ net/sunrpc/svc.c | 9 +++++++--
+ 2 files changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
-index 141d884fee4f4..32f2c46a38323 100644
+index 32f2c46a38323..16884a90e1ab0 100644
 --- a/fs/nfsd/nfssvc.c
 +++ b/fs/nfsd/nfssvc.c
-@@ -57,7 +57,7 @@ static __be32			nfsd_init_request(struct svc_rqst *,
+@@ -55,9 +55,8 @@ static __be32			nfsd_init_request(struct svc_rqst *,
+ 						struct svc_process_info *);
+ 
  /*
-  * nfsd_mutex protects nn->nfsd_serv -- both the pointer itself and the members
-  * of the svc_serv struct. In particular, ->sv_nrthreads but also to some
-- * extent ->sv_temp_socks and ->sv_permsocks. It also protects nfsdstats.th_cnt
-+ * extent ->sv_temp_socks and ->sv_permsocks.
+- * nfsd_mutex protects nn->nfsd_serv -- both the pointer itself and the members
+- * of the svc_serv struct. In particular, ->sv_nrthreads but also to some
+- * extent ->sv_temp_socks and ->sv_permsocks.
++ * nfsd_mutex protects nn->nfsd_serv -- both the pointer itself and some members
++ * of the svc_serv struct such as ->sv_temp_socks and ->sv_permsocks.
   *
   * If (out side the lock) nn->nfsd_serv is non-NULL, then it must point to a
   * properly initialised 'struct svc_serv' with ->sv_nrthreads > 0 (unless
-@@ -955,8 +955,8 @@ nfsd(void *vrqstp)
- 	allow_signal(SIGINT);
- 	allow_signal(SIGQUIT);
+diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
+index 6cde8c87e5733..c8a0649e5cdf1 100644
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -523,7 +523,7 @@ EXPORT_SYMBOL_GPL(svc_shutdown_net);
  
--	nfsdstats.th_cnt++;
- 	mutex_unlock(&nfsd_mutex);
-+	atomic_inc(&nfsdstats.th_cnt);
+ /*
+  * Destroy an RPC service. Should be called with appropriate locking to
+- * protect the sv_nrthreads, sv_permsocks and sv_tempsocks.
++ * protect sv_permsocks and sv_tempsocks.
+  */
+ void
+ svc_destroy(struct kref *ref)
+@@ -639,7 +639,10 @@ svc_prepare_thread(struct svc_serv *serv, struct svc_pool *pool, int node)
+ 		return ERR_PTR(-ENOMEM);
  
- 	set_freezable();
+ 	svc_get(serv);
+-	serv->sv_nrthreads++;
++	spin_lock_bh(&serv->sv_lock);
++	serv->sv_nrthreads += 1;
++	spin_unlock_bh(&serv->sv_lock);
++
+ 	spin_lock_bh(&pool->sp_lock);
+ 	pool->sp_nrthreads++;
+ 	list_add_rcu(&rqstp->rq_all, &pool->sp_all_threads);
+@@ -884,7 +887,9 @@ svc_exit_thread(struct svc_rqst *rqstp)
+ 		list_del_rcu(&rqstp->rq_all);
+ 	spin_unlock_bh(&pool->sp_lock);
  
-@@ -983,8 +983,8 @@ nfsd(void *vrqstp)
- 	/* Clear signals before calling svc_exit_thread() */
- 	flush_signals(current);
++	spin_lock_bh(&serv->sv_lock);
+ 	serv->sv_nrthreads -= 1;
++	spin_unlock_bh(&serv->sv_lock);
+ 	svc_sock_update_bufs(serv);
  
-+	atomic_dec(&nfsdstats.th_cnt);
- 	mutex_lock(&nfsd_mutex);
--	nfsdstats.th_cnt --;
- 
- out:
- 	/* Take an extra ref so that the svc_put in svc_exit_thread()
-diff --git a/fs/nfsd/stats.c b/fs/nfsd/stats.c
-index 1d3b881e73821..a8c5a02a84f04 100644
---- a/fs/nfsd/stats.c
-+++ b/fs/nfsd/stats.c
-@@ -45,7 +45,7 @@ static int nfsd_proc_show(struct seq_file *seq, void *v)
- 		   percpu_counter_sum_positive(&nfsdstats.counter[NFSD_STATS_IO_WRITE]));
- 
- 	/* thread usage: */
--	seq_printf(seq, "th %u 0", nfsdstats.th_cnt);
-+	seq_printf(seq, "th %u 0", atomic_read(&nfsdstats.th_cnt));
- 
- 	/* deprecated thread usage histogram stats */
- 	for (i = 0; i < 10; i++)
-diff --git a/fs/nfsd/stats.h b/fs/nfsd/stats.h
-index 51ecda852e23b..9b43dc3d99913 100644
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -29,11 +29,9 @@ enum {
- struct nfsd_stats {
- 	struct percpu_counter	counter[NFSD_STATS_COUNTERS_NUM];
- 
--	/* Protected by nfsd_mutex */
--	unsigned int	th_cnt;		/* number of available threads */
-+	atomic_t	th_cnt;		/* number of available threads */
- };
- 
--
- extern struct nfsd_stats	nfsdstats;
- 
- extern struct svc_stat		nfsd_svcstats;
+ 	svc_rqst_free(rqstp);
 -- 
 2.43.0
 
