@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-36898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E1C789C241
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:28:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BFEA89C166
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F29A11F2229C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1D011F214CE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C3881ACA;
-	Mon,  8 Apr 2024 13:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2283B7C08C;
+	Mon,  8 Apr 2024 13:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8TauiRp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKtM568G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9396381AC1;
-	Mon,  8 Apr 2024 13:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D548B7C080;
+	Mon,  8 Apr 2024 13:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582664; cv=none; b=jzEEBtLOEgZKA3uF1IRIoVUiiDR2a7cyT7C2DkjbLKmw4GrIqwL9njsAW6VzIqRm6l0dBN6Dbnu3+TQM4anmv8SSwtpv1pIco8hlq/iQLaUK5QEnrQbFh4JL6OnNxIm/28St7UWdaw4bi3ejuffv9fiUmjUDdFC+6Dk2DU05agk=
+	t=1712582182; cv=none; b=tzP/uKGAGx0zW8ypRi4x59o7wPns9d04Uk6ivx8hGeRuffegaXK0wyS4/RGwgRSMhItHJLkoO5rqz3rNEG5rUCDd3nlhgJvFnXimBQYwVkiQjXbT34pCvAQMBGD/8yupSOFTuIA1ZuHVIjXl9ST0ZqTqzAi1JnhS6d00rWGdaMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582664; c=relaxed/simple;
-	bh=SKd3VH/u8CmEqyypMLdf3FftggQGYyZIPKZEWBbfdYY=;
+	s=arc-20240116; t=1712582182; c=relaxed/simple;
+	bh=L4p8N32dkw3ikXBZIGVDKjn52DioWltro1h7fASP1IE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tAGHkj/3ZIQgO3Ta2WYZgViRoDhquRGaF3L8TdfNjDYOHbtUcLmevBOuo9HuQ5rWkAoSrmpt0zu5MAsJ7FOu34i46rKKsniF03PfoOuPYFXVpq/8NCKl04JK06XU9ZA7Mmv0tbFXIkmF9aHxYhjI5Omy44+Iwf01DARNWk7rkXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8TauiRp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC66FC433C7;
-	Mon,  8 Apr 2024 13:24:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RwT++f2aAWoCtHHbvhr5yjADjeckzbLIUcAmn4aWO+edH9zxqW+P5qfa6Iq02iGVPimNDN4XTmCVQACddkx0r7VIOlRWRziT18nSMCGvkPIE9H4+qStwoepuHL6b4uSuznTDMfag1Ldx94RRT2BW1tP1AqRKxYdne5IPykb5JtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKtM568G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0F3C433C7;
+	Mon,  8 Apr 2024 13:16:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582664;
-	bh=SKd3VH/u8CmEqyypMLdf3FftggQGYyZIPKZEWBbfdYY=;
+	s=korg; t=1712582182;
+	bh=L4p8N32dkw3ikXBZIGVDKjn52DioWltro1h7fASP1IE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8TauiRpJelVCreV4JlQif73mL6xrtyyw81ogBRefOZjgwkCStiAJZzVA504RyXKh
-	 +xmEvjNeLfnOYvp8PftAGMi5g35jXr5Gj/+Qqf4kLnOMgkh5/uiPW5Bf5G8TzwOx6c
-	 TveqHziYuPG2E1du7NApEIISsop55TMJv0AaFR2g=
+	b=UKtM568G7Eh1F8qK2Y5hN86tCsP+E+b0XRf+CN0tx+UAKm789vL2hQ0ObKoOh2rnI
+	 vwT/HUcCqSl+nAmr0uVDVTuG1zbmOa/6NRNVzdzLpGnVpQ6Z3hggB4RPR81aHVRMiW
+	 SvZ3T16j8eTGyFIdjcmLSgd7f8z1xDz7sGTZ8hLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.8 094/273] mptcp: prevent BPF accessing lowat from a subflow socket.
+	Anup Patel <apatel@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>
+Subject: [PATCH 6.6 070/252] RISC-V: KVM: Fix APLIC in_clrip[x] read emulation
 Date: Mon,  8 Apr 2024 14:56:09 +0200
-Message-ID: <20240408125312.219734618@linuxfoundation.org>
+Message-ID: <20240408125308.807060879@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +59,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Anup Patel <apatel@ventanamicro.com>
 
-commit fcf4692fa39e86a590c14a4af2de704e1d20a3b5 upstream.
+commit 8e936e98718f005c986be0bfa1ee6b355acf96be upstream.
 
-Alexei reported the following splat:
+The reads to APLIC in_clrip[x] registers returns rectified input values
+of the interrupt sources.
 
- WARNING: CPU: 32 PID: 3276 at net/mptcp/subflow.c:1430 subflow_data_ready+0x147/0x1c0
- Modules linked in: dummy bpf_testmod(O) [last unloaded: bpf_test_no_cfi(O)]
- CPU: 32 PID: 3276 Comm: test_progs Tainted: GO       6.8.0-12873-g2c43c33bfd23
- Call Trace:
-  <TASK>
-  mptcp_set_rcvlowat+0x79/0x1d0
-  sk_setsockopt+0x6c0/0x1540
-  __bpf_setsockopt+0x6f/0x90
-  bpf_sock_ops_setsockopt+0x3c/0x90
-  bpf_prog_509ce5db2c7f9981_bpf_test_sockopt_int+0xb4/0x11b
-  bpf_prog_dce07e362d941d2b_bpf_test_socket_sockopt+0x12b/0x132
-  bpf_prog_348c9b5faaf10092_skops_sockopt+0x954/0xe86
-  __cgroup_bpf_run_filter_sock_ops+0xbc/0x250
-  tcp_connect+0x879/0x1160
-  tcp_v6_connect+0x50c/0x870
-  mptcp_connect+0x129/0x280
-  __inet_stream_connect+0xce/0x370
-  inet_stream_connect+0x36/0x50
-  bpf_trampoline_6442491565+0x49/0xef
-  inet_stream_connect+0x5/0x50
-  __sys_connect+0x63/0x90
-  __x64_sys_connect+0x14/0x20
+A rectified input value of an interrupt source is defined by the section
+"4.5.2 Source configurations (sourcecfg[1]–sourcecfg[1023])" of the
+RISC-V AIA specification as:
 
-The root cause of the issue is that bpf allows accessing mptcp-level
-proto_ops from a tcp subflow scope.
+    rectified input value = (incoming wire value) XOR (source is inverted)
 
-Fix the issue detecting the problematic call and preventing any action.
+Update the riscv_aplic_input() implementation to match the above.
 
-Reported-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/482
-Fixes: 5684ab1a0eff ("mptcp: give rcvlowat some love")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/d8cb7d8476d66cb0812a6e29cd1e626869d9d53e.1711738080.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 74967aa208e2 ("RISC-V: KVM: Add in-kernel emulation of AIA APLIC")
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Signed-off-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/r/20240321085041.1955293-3-apatel@ventanamicro.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/sockopt.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/riscv/kvm/aia_aplic.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -1500,6 +1500,10 @@ int mptcp_set_rcvlowat(struct sock *sk,
- 	struct mptcp_subflow_context *subflow;
- 	int space, cap;
+diff --git a/arch/riscv/kvm/aia_aplic.c b/arch/riscv/kvm/aia_aplic.c
+index 5e842b92dc46..b467ba5ed910 100644
+--- a/arch/riscv/kvm/aia_aplic.c
++++ b/arch/riscv/kvm/aia_aplic.c
+@@ -197,16 +197,31 @@ static void aplic_write_enabled(struct aplic *aplic, u32 irq, bool enabled)
  
-+	/* bpf can land here with a wrong sk type */
-+	if (sk->sk_protocol == IPPROTO_TCP)
-+		return -EINVAL;
+ static bool aplic_read_input(struct aplic *aplic, u32 irq)
+ {
+-	bool ret;
+-	unsigned long flags;
++	u32 sourcecfg, sm, raw_input, irq_inverted;
+ 	struct aplic_irq *irqd;
++	unsigned long flags;
++	bool ret = false;
+ 
+ 	if (!irq || aplic->nr_irqs <= irq)
+ 		return false;
+ 	irqd = &aplic->irqs[irq];
+ 
+ 	raw_spin_lock_irqsave(&irqd->lock, flags);
+-	ret = (irqd->state & APLIC_IRQ_STATE_INPUT) ? true : false;
 +
- 	if (sk->sk_userlocks & SOCK_RCVBUF_LOCK)
- 		cap = sk->sk_rcvbuf >> 1;
- 	else
++	sourcecfg = irqd->sourcecfg;
++	if (sourcecfg & APLIC_SOURCECFG_D)
++		goto skip;
++
++	sm = sourcecfg & APLIC_SOURCECFG_SM_MASK;
++	if (sm == APLIC_SOURCECFG_SM_INACTIVE)
++		goto skip;
++
++	raw_input = (irqd->state & APLIC_IRQ_STATE_INPUT) ? 1 : 0;
++	irq_inverted = (sm == APLIC_SOURCECFG_SM_LEVEL_LOW ||
++			sm == APLIC_SOURCECFG_SM_EDGE_FALL) ? 1 : 0;
++	ret = !!(raw_input ^ irq_inverted);
++
++skip:
+ 	raw_spin_unlock_irqrestore(&irqd->lock, flags);
+ 
+ 	return ret;
+-- 
+2.44.0
+
 
 
 
