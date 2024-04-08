@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-37350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2B289C590
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:58:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B5289C47B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C50D7B212A0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70CBA284421
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCBFC7C097;
-	Mon,  8 Apr 2024 13:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02667C6C9;
+	Mon,  8 Apr 2024 13:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/cHjKg3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mH54EwZh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797A679F0;
-	Mon,  8 Apr 2024 13:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5BD7C6C5;
+	Mon,  8 Apr 2024 13:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583975; cv=none; b=Iyee11awLPlEbrpY7Y7Zxnnzsm5J5qAHPnr6Ws7zXFWt3sRXUDvj7fI4Eg6X1UPFJ1STokYL0sOYowoW1q7gdTeTN0uXlOF6rdPF8/rpFPHlITgaHltd7vwK/ERBR8ds6LLHJvhPB/0T+3pEm895SBGesg8OGEBLiYZ4iK4kv8k=
+	t=1712583981; cv=none; b=HLWfoStR6RJA7gIbSmSCBOx/88G/0s6Oh84gEM1aE203hpUcOe9lbM6nqypVXTSfzrhmx6jlq1t5HzGCztqVzkznt/InV2yTTFdzzdGRYXQUfYDvV02+CoBA08fNUJ4K1uOtbWAuoo1MzCG+pA0VYaH7xoNbkHjLwejZAoshayo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583975; c=relaxed/simple;
-	bh=zKr9pPGd7+xRH47SZGe6c4wZ6rat+6tIFfGJPO2OR40=;
+	s=arc-20240116; t=1712583981; c=relaxed/simple;
+	bh=ToATflDgHrTJHE1YZuViVgzeD+a9JuhRgQ03zQEIbfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eSmms6EjgsmaNRDfsAzkeIp4RBhR1xwQyWuLJeQ1mpUnPAkVjRKy6x048da9CH1bZA4clIvy4AXmOfQWyeAsKPnoPe1BNAZ8XWoPTPJYaI6MFcfSRHkZ69aU5+V8NK4o33ENIsw8ynRQIIE8SloIKQYDfhGZo5OSJixc/9purVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/cHjKg3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00235C433C7;
-	Mon,  8 Apr 2024 13:46:14 +0000 (UTC)
+	 MIME-Version; b=fZiaLHUo/SuUvVJjKvGqY+iYtRSAELvP9a4TF/JyGndRH2Zl/IoJ9+f/UY+H4eF8xQTdnUnpGRsgqgxwvbvRA0n90cUM/XIWNC5uKrPo2RQZUeiqeY8zh5RxoPSInX+tTJyj/FcLT4vL9e3SJW2La/hKJtcshk+sJlIdXQAJPhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mH54EwZh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6475C433F1;
+	Mon,  8 Apr 2024 13:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583975;
-	bh=zKr9pPGd7+xRH47SZGe6c4wZ6rat+6tIFfGJPO2OR40=;
+	s=korg; t=1712583981;
+	bh=ToATflDgHrTJHE1YZuViVgzeD+a9JuhRgQ03zQEIbfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U/cHjKg3eDrYKsfsPQjQoxdagND+cCVx8A6Mn8VuyWMpvsU72GS8PmqOo51ATBmVq
-	 QtExedeRdSqRwz6UBu8i2w5GmSvnS7h7iAGRtWsEBGt2KszBJ4ZG7+1efT255yPgzV
-	 Pk5t8hY9m6ezuUBgrZpj21vxLbjz568cU5cGIun0=
+	b=mH54EwZh4I8Vbx6uqY2j49VaHLNpAK88CEPO9wRYn/FDLtOhcHPqjByZH4zYreqzx
+	 FgVRTrLPO+qmA1/pY6fqSQuyT12YJ0LWUf6eGbnLDNOwsvaowV0Gx1yMiKE9g76Twq
+	 cx11ntmAPYB/Y1mQzZSzN0pBl3+2cwvRNl1TW8us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	"J. Bruce Fields" <bfields@fieldses.org>,
 	Dai Ngo <dai.ngo@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 309/690] NFSD: move create/destroy of laundry_wq to init_nfsd and exit_nfsd
-Date: Mon,  8 Apr 2024 14:52:55 +0200
-Message-ID: <20240408125410.791280362@linuxfoundation.org>
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 5.15 310/690] fs/lock: add helper locks_owner_has_blockers to check for blockers
+Date: Mon,  8 Apr 2024 14:52:56 +0200
+Message-ID: <20240408125410.821039427@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -68,124 +69,85 @@ Content-Transfer-Encoding: 8bit
 
 From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit d76cc46b37e123e8d245cc3490978dbda56f979d ]
+[ Upstream commit 591502c5cb325b1c6ec59ab161927d606b918aa0 ]
 
-This patch moves create/destroy of laundry_wq from nfs4_state_start
-and nfs4_state_shutdown_net to init_nfsd and exit_nfsd to prevent
-the laundromat from being freed while a thread is processing a
-conflicting lock.
+Add helper locks_owner_has_blockers to check if there is any blockers
+for a given lockowner.
 
 Reviewed-by: J. Bruce Fields <bfields@fieldses.org>
 Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfs4state.c | 28 ++++++++++++++++------------
- fs/nfsd/nfsctl.c    |  4 ++++
- fs/nfsd/nfsd.h      |  4 ++++
- 3 files changed, 24 insertions(+), 12 deletions(-)
+ fs/locks.c         | 28 ++++++++++++++++++++++++++++
+ include/linux/fs.h |  7 +++++++
+ 2 files changed, 35 insertions(+)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 3dfdd9e1c5028..582c9c7ba60a8 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -127,6 +127,21 @@ static const struct nfsd4_callback_ops nfsd4_cb_notify_lock_ops;
+diff --git a/fs/locks.c b/fs/locks.c
+index 4899a4666f24d..f8c4844ebcce4 100644
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -376,6 +376,34 @@ void locks_release_private(struct file_lock *fl)
+ }
+ EXPORT_SYMBOL_GPL(locks_release_private);
  
- static struct workqueue_struct *laundry_wq;
- 
-+int nfsd4_create_laundry_wq(void)
++/**
++ * locks_owner_has_blockers - Check for blocking lock requests
++ * @flctx: file lock context
++ * @owner: lock owner
++ *
++ * Return values:
++ *   %true: @owner has at least one blocker
++ *   %false: @owner has no blockers
++ */
++bool locks_owner_has_blockers(struct file_lock_context *flctx,
++		fl_owner_t owner)
 +{
-+	int rc = 0;
++	struct file_lock *fl;
 +
-+	laundry_wq = alloc_workqueue("%s", WQ_UNBOUND, 0, "nfsd4");
-+	if (laundry_wq == NULL)
-+		rc = -ENOMEM;
-+	return rc;
++	spin_lock(&flctx->flc_lock);
++	list_for_each_entry(fl, &flctx->flc_posix, fl_list) {
++		if (fl->fl_owner != owner)
++			continue;
++		if (!list_empty(&fl->fl_blocked_requests)) {
++			spin_unlock(&flctx->flc_lock);
++			return true;
++		}
++	}
++	spin_unlock(&flctx->flc_lock);
++	return false;
 +}
++EXPORT_SYMBOL_GPL(locks_owner_has_blockers);
 +
-+void nfsd4_destroy_laundry_wq(void)
+ /* Free a lock which is not in use. */
+ void locks_free_lock(struct file_lock *fl)
+ {
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index f32723d937fb5..9b7ce642d4f08 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1212,6 +1212,8 @@ extern void lease_unregister_notifier(struct notifier_block *);
+ struct files_struct;
+ extern void show_fd_locks(struct seq_file *f,
+ 			 struct file *filp, struct files_struct *files);
++extern bool locks_owner_has_blockers(struct file_lock_context *flctx,
++			fl_owner_t owner);
+ #else /* !CONFIG_FILE_LOCKING */
+ static inline int fcntl_getlk(struct file *file, unsigned int cmd,
+ 			      struct flock __user *user)
+@@ -1352,6 +1354,11 @@ static inline int lease_modify(struct file_lock *fl, int arg,
+ struct files_struct;
+ static inline void show_fd_locks(struct seq_file *f,
+ 			struct file *filp, struct files_struct *files) {}
++static inline bool locks_owner_has_blockers(struct file_lock_context *flctx,
++			fl_owner_t owner)
 +{
-+	destroy_workqueue(laundry_wq);
++	return false;
 +}
-+
- static bool is_session_dead(struct nfsd4_session *ses)
- {
- 	return ses->se_flags & NFS4_SESSION_DEAD;
-@@ -7761,22 +7776,12 @@ nfs4_state_start(void)
- {
- 	int ret;
+ #endif /* !CONFIG_FILE_LOCKING */
  
--	laundry_wq = alloc_workqueue("%s", WQ_UNBOUND, 0, "nfsd4");
--	if (laundry_wq == NULL) {
--		ret = -ENOMEM;
--		goto out;
--	}
- 	ret = nfsd4_create_callback_queue();
- 	if (ret)
--		goto out_free_laundry;
-+		return ret;
- 
- 	set_max_delegations();
- 	return 0;
--
--out_free_laundry:
--	destroy_workqueue(laundry_wq);
--out:
--	return ret;
- }
- 
- void
-@@ -7813,7 +7818,6 @@ nfs4_state_shutdown_net(struct net *net)
- void
- nfs4_state_shutdown(void)
- {
--	destroy_workqueue(laundry_wq);
- 	nfsd4_destroy_callback_queue();
- }
- 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index 16920e4512bde..322a208878f2c 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1542,6 +1542,9 @@ static int __init init_nfsd(void)
- 	if (retval < 0)
- 		goto out_free_filesystem;
- 	retval = register_cld_notifier();
-+	if (retval)
-+		goto out_free_all;
-+	retval = nfsd4_create_laundry_wq();
- 	if (retval)
- 		goto out_free_all;
- 	return 0;
-@@ -1566,6 +1569,7 @@ static int __init init_nfsd(void)
- 
- static void __exit exit_nfsd(void)
- {
-+	nfsd4_destroy_laundry_wq();
- 	unregister_cld_notifier();
- 	unregister_pernet_subsys(&nfsd_net_ops);
- 	nfsd_drc_slab_free();
-diff --git a/fs/nfsd/nfsd.h b/fs/nfsd/nfsd.h
-index 23996c6ca75e3..847b482155ae9 100644
---- a/fs/nfsd/nfsd.h
-+++ b/fs/nfsd/nfsd.h
-@@ -162,6 +162,8 @@ void nfs4_state_shutdown_net(struct net *net);
- int nfs4_reset_recoverydir(char *recdir);
- char * nfs4_recoverydir(void);
- bool nfsd4_spo_must_allow(struct svc_rqst *rqstp);
-+int nfsd4_create_laundry_wq(void);
-+void nfsd4_destroy_laundry_wq(void);
- #else
- static inline int nfsd4_init_slabs(void) { return 0; }
- static inline void nfsd4_free_slabs(void) { }
-@@ -175,6 +177,8 @@ static inline bool nfsd4_spo_must_allow(struct svc_rqst *rqstp)
- {
- 	return false;
- }
-+static inline int nfsd4_create_laundry_wq(void) { return 0; };
-+static inline void nfsd4_destroy_laundry_wq(void) {};
- #endif
- 
- /*
+ static inline struct inode *file_inode(const struct file *f)
 -- 
 2.43.0
 
