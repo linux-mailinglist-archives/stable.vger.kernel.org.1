@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-37399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB7489C4B0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48DE789C631
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:05:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A083F1C21099
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B9AB1C21693
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DEB71B3D;
-	Mon,  8 Apr 2024 13:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE5C8061A;
+	Mon,  8 Apr 2024 14:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VyBeTWl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVWcIPdP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B576A352;
-	Mon,  8 Apr 2024 13:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E16A80034;
+	Mon,  8 Apr 2024 14:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584119; cv=none; b=e/kJ16KjKnpaMCVE+LDCPsJrHfymuYNXgzj5KI7zH5I1yP+OgIFZ6f8jtE/o/GHsGME9UJFd5RY/6svYO3x0yjmBv0KqXfTtVN5F/NZ2OzFnlf70W8AODDsV4GqWcwEHgPQW12LBnWlTNBkJtK3ky10TxmF8EA81Vg8SpyXHmBc=
+	t=1712585131; cv=none; b=SJt0aY6BS/elIxlvtHv6IIFcQ1kDeD3Ts+ZvNWlJVjcgJ1i3CrVwh/yI5i4aMf/rVCAeh0+MnbrZXGNwchVe/01OjPU0C9DfoUA8p5AdL+MqNe2c5ka6GxWmzJpZavJ4+7IwS3NN6bdpowccMFvgMmxz3G6AKIGcjd+SGs04L1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584119; c=relaxed/simple;
-	bh=ZDPr7JPWDc9dBZxxn4STGVF+K9HJY6iq32jVLKgFw4c=;
+	s=arc-20240116; t=1712585131; c=relaxed/simple;
+	bh=3Dwh6Lo+sO9UBQ2iXDyU6Qss/X1uNzLS5ZJi88Eph8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Db7MPvI/Y95YgHsIf/k7y9I74aB4uR1Dj6ZyHRC4r03Y9YzHyPreSKSglqzhwUCBx00ZtU/wAhVt8cg4QE44h3Fsf9omoPjHIkL2j1/tOh4ZscL+Nd82EiG73VxDs0Zo+oorJQ92TYyrAzpvrKgsw+BUHWTS3gJz8nvD+9ICvuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VyBeTWl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034ACC433F1;
-	Mon,  8 Apr 2024 13:48:37 +0000 (UTC)
+	 MIME-Version; b=oc6M+o5jAoMNNLiWRC8xdpMF1jYkvPzGCBxu1AzdiJSH2k6e6kx3+lKHyrkr0M6oV+tF/K7J9zC5wH5cPI+U0mXnWNyONi7chJ3x3iDVsXEDgcc8fTq7hQKT12B79vazd6WEWxPeZOGcnlZfkJX/6TBqXX3cNAzhPgcBFttf22g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVWcIPdP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437B7C43390;
+	Mon,  8 Apr 2024 14:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584118;
-	bh=ZDPr7JPWDc9dBZxxn4STGVF+K9HJY6iq32jVLKgFw4c=;
+	s=korg; t=1712585130;
+	bh=3Dwh6Lo+sO9UBQ2iXDyU6Qss/X1uNzLS5ZJi88Eph8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0VyBeTWlPHUCkQuD6RzkFA1R/8OeNhxJ9OrpE8MLJf/TxdLYGv1QRLv2WWkrvfRun
-	 C6azKu61+7d7PErIIQolcr+2GZC+t4hxl9Lh7mx3OAFVTTz5COF4ARBHz29qQh2Eoy
-	 745t2DXt8lpO/EHdEJYPeNsTzM84LfTBRyL6YZ2s=
+	b=PVWcIPdPN26a9znbc/a9BneP1ykwhEUZvKMgkYmZK2PKio2Ndx2OZXo2qbyXqv1hU
+	 9zEVtbUN1azFLxUKFm7cR5U+KVPYmXmLzOPiTx+A/wmFmqkGjo0Ixqvc0ovcm7r2+M
+	 tGDAKaImM9NAACBDA3bLk9LyzKIfEz//AEH4iXTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.8 264/273] drm/xe: Use ring ops TLB invalidation for rebinds
+	Arnd Bergmann <arnd@arndb.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 673/690] ata: sata_mv: Fix PCI device ID table declaration compilation warning
 Date: Mon,  8 Apr 2024 14:58:59 +0200
-Message-ID: <20240408125317.696497974@linuxfoundation.org>
+Message-ID: <20240408125424.093452081@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,179 +60,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 3c88b8f471ee9512bc4ef02bebafdc53fb7c5d9e upstream.
+[ Upstream commit 3137b83a90646917c90951d66489db466b4ae106 ]
 
-For each rebind we insert a GuC TLB invalidation and add a
-corresponding unordered TLB invalidation fence. This might
-add a huge number of TLB invalidation fences to wait for so
-rather than doing that, defer the TLB invalidation to the
-next ring ops for each affected exec queue. Since the TLB
-is invalidated on exec_queue switch, we need to invalidate
-once for each affected exec_queue.
+Building with W=1 shows a warning for an unused variable when CONFIG_PCI
+is diabled:
 
-v2:
-- Simplify if-statements around the tlb_flush_seqno.
-  (Matthew Brost)
-- Add some comments and asserts.
+drivers/ata/sata_mv.c:790:35: error: unused variable 'mv_pci_tbl' [-Werror,-Wunused-const-variable]
+static const struct pci_device_id mv_pci_tbl[] = {
 
-Fixes: 5387e865d90e ("drm/xe: Add TLB invalidation fence after rebinds issued from execs")
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240327091136.3271-2-thomas.hellstrom@linux.intel.com
-(cherry picked from commit 4fc4899e86f7afbd09f4bcb899f0fc57e0296e62)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Move the table into the same block that containsn the pci_driver
+definition.
+
+Fixes: 7bb3c5290ca0 ("sata_mv: Remove PCI dependency")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_exec_queue_types.h |    5 +++++
- drivers/gpu/drm/xe/xe_pt.c               |    6 ++++--
- drivers/gpu/drm/xe/xe_ring_ops.c         |   11 ++++-------
- drivers/gpu/drm/xe/xe_sched_job.c        |   10 ++++++++++
- drivers/gpu/drm/xe/xe_sched_job_types.h  |    2 ++
- drivers/gpu/drm/xe/xe_vm_types.h         |    5 +++++
- 6 files changed, 30 insertions(+), 9 deletions(-)
+ drivers/ata/sata_mv.c | 63 +++++++++++++++++++++----------------------
+ 1 file changed, 31 insertions(+), 32 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_exec_queue_types.h
-+++ b/drivers/gpu/drm/xe/xe_exec_queue_types.h
-@@ -159,6 +159,11 @@ struct xe_exec_queue {
- 	const struct xe_ring_ops *ring_ops;
- 	/** @entity: DRM sched entity for this exec queue (1 to 1 relationship) */
- 	struct drm_sched_entity *entity;
-+	/**
-+	 * @tlb_flush_seqno: The seqno of the last rebind tlb flush performed
-+	 * Protected by @vm's resv. Unused if @vm == NULL.
-+	 */
-+	u64 tlb_flush_seqno;
- 	/** @lrc: logical ring context for this exec queue */
- 	struct xe_lrc lrc[];
+diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
+index c53633d47bfb3..1c9dde51d456c 100644
+--- a/drivers/ata/sata_mv.c
++++ b/drivers/ata/sata_mv.c
+@@ -787,37 +787,6 @@ static const struct ata_port_info mv_port_info[] = {
+ 	},
  };
---- a/drivers/gpu/drm/xe/xe_pt.c
-+++ b/drivers/gpu/drm/xe/xe_pt.c
-@@ -1255,11 +1255,13 @@ __xe_pt_bind_vma(struct xe_tile *tile, s
- 	 * non-faulting LR, in particular on user-space batch buffer chaining,
- 	 * it needs to be done here.
- 	 */
--	if ((rebind && !xe_vm_in_lr_mode(vm) && !vm->batch_invalidate_tlb) ||
--	    (!rebind && xe_vm_has_scratch(vm) && xe_vm_in_preempt_fence_mode(vm))) {
-+	if ((!rebind && xe_vm_has_scratch(vm) && xe_vm_in_preempt_fence_mode(vm))) {
- 		ifence = kzalloc(sizeof(*ifence), GFP_KERNEL);
- 		if (!ifence)
- 			return ERR_PTR(-ENOMEM);
-+	} else if (rebind && !xe_vm_in_lr_mode(vm)) {
-+		/* We bump also if batch_invalidate_tlb is true */
-+		vm->tlb_flush_seqno++;
- 	}
  
- 	rfence = kzalloc(sizeof(*rfence), GFP_KERNEL);
---- a/drivers/gpu/drm/xe/xe_ring_ops.c
-+++ b/drivers/gpu/drm/xe/xe_ring_ops.c
-@@ -227,10 +227,9 @@ static void __emit_job_gen12_simple(stru
- {
- 	u32 dw[MAX_JOB_SIZE_DW], i = 0;
- 	u32 ppgtt_flag = get_ppgtt_flag(job);
--	struct xe_vm *vm = job->q->vm;
- 	struct xe_gt *gt = job->q->gt;
+-static const struct pci_device_id mv_pci_tbl[] = {
+-	{ PCI_VDEVICE(MARVELL, 0x5040), chip_504x },
+-	{ PCI_VDEVICE(MARVELL, 0x5041), chip_504x },
+-	{ PCI_VDEVICE(MARVELL, 0x5080), chip_5080 },
+-	{ PCI_VDEVICE(MARVELL, 0x5081), chip_508x },
+-	/* RocketRAID 1720/174x have different identifiers */
+-	{ PCI_VDEVICE(TTI, 0x1720), chip_6042 },
+-	{ PCI_VDEVICE(TTI, 0x1740), chip_6042 },
+-	{ PCI_VDEVICE(TTI, 0x1742), chip_6042 },
+-
+-	{ PCI_VDEVICE(MARVELL, 0x6040), chip_604x },
+-	{ PCI_VDEVICE(MARVELL, 0x6041), chip_604x },
+-	{ PCI_VDEVICE(MARVELL, 0x6042), chip_6042 },
+-	{ PCI_VDEVICE(MARVELL, 0x6080), chip_608x },
+-	{ PCI_VDEVICE(MARVELL, 0x6081), chip_608x },
+-
+-	{ PCI_VDEVICE(ADAPTEC2, 0x0241), chip_604x },
+-
+-	/* Adaptec 1430SA */
+-	{ PCI_VDEVICE(ADAPTEC2, 0x0243), chip_7042 },
+-
+-	/* Marvell 7042 support */
+-	{ PCI_VDEVICE(MARVELL, 0x7042), chip_7042 },
+-
+-	/* Highpoint RocketRAID PCIe series */
+-	{ PCI_VDEVICE(TTI, 0x2300), chip_7042 },
+-	{ PCI_VDEVICE(TTI, 0x2310), chip_7042 },
+-
+-	{ }			/* terminate list */
+-};
+-
+ static const struct mv_hw_ops mv5xxx_ops = {
+ 	.phy_errata		= mv5_phy_errata,
+ 	.enable_leds		= mv5_enable_leds,
+@@ -4311,6 +4280,36 @@ static int mv_pci_init_one(struct pci_dev *pdev,
+ static int mv_pci_device_resume(struct pci_dev *pdev);
+ #endif
  
--	if (vm && vm->batch_invalidate_tlb) {
-+	if (job->ring_ops_flush_tlb) {
- 		dw[i++] = preparser_disable(true);
- 		i = emit_flush_imm_ggtt(xe_lrc_start_seqno_ggtt_addr(lrc),
- 					seqno, true, dw, i);
-@@ -278,7 +277,6 @@ static void __emit_job_gen12_video(struc
- 	struct xe_gt *gt = job->q->gt;
- 	struct xe_device *xe = gt_to_xe(gt);
- 	bool decode = job->q->class == XE_ENGINE_CLASS_VIDEO_DECODE;
--	struct xe_vm *vm = job->q->vm;
- 
- 	dw[i++] = preparser_disable(true);
- 
-@@ -290,13 +288,13 @@ static void __emit_job_gen12_video(struc
- 			i = emit_aux_table_inv(gt, VE0_AUX_INV, dw, i);
- 	}
- 
--	if (vm && vm->batch_invalidate_tlb)
-+	if (job->ring_ops_flush_tlb)
- 		i = emit_flush_imm_ggtt(xe_lrc_start_seqno_ggtt_addr(lrc),
- 					seqno, true, dw, i);
- 
- 	dw[i++] = preparser_disable(false);
- 
--	if (!vm || !vm->batch_invalidate_tlb)
-+	if (!job->ring_ops_flush_tlb)
- 		i = emit_store_imm_ggtt(xe_lrc_start_seqno_ggtt_addr(lrc),
- 					seqno, dw, i);
- 
-@@ -325,7 +323,6 @@ static void __emit_job_gen12_render_comp
- 	struct xe_gt *gt = job->q->gt;
- 	struct xe_device *xe = gt_to_xe(gt);
- 	bool lacks_render = !(gt->info.engine_mask & XE_HW_ENGINE_RCS_MASK);
--	struct xe_vm *vm = job->q->vm;
- 	u32 mask_flags = 0;
- 
- 	dw[i++] = preparser_disable(true);
-@@ -335,7 +332,7 @@ static void __emit_job_gen12_render_comp
- 		mask_flags = PIPE_CONTROL_3D_ENGINE_FLAGS;
- 
- 	/* See __xe_pt_bind_vma() for a discussion on TLB invalidations. */
--	i = emit_pipe_invalidate(mask_flags, vm && vm->batch_invalidate_tlb, dw, i);
-+	i = emit_pipe_invalidate(mask_flags, job->ring_ops_flush_tlb, dw, i);
- 
- 	/* hsdes: 1809175790 */
- 	if (has_aux_ccs(xe))
---- a/drivers/gpu/drm/xe/xe_sched_job.c
-+++ b/drivers/gpu/drm/xe/xe_sched_job.c
-@@ -250,6 +250,16 @@ bool xe_sched_job_completed(struct xe_sc
- 
- void xe_sched_job_arm(struct xe_sched_job *job)
- {
-+	struct xe_exec_queue *q = job->q;
-+	struct xe_vm *vm = q->vm;
++static const struct pci_device_id mv_pci_tbl[] = {
++	{ PCI_VDEVICE(MARVELL, 0x5040), chip_504x },
++	{ PCI_VDEVICE(MARVELL, 0x5041), chip_504x },
++	{ PCI_VDEVICE(MARVELL, 0x5080), chip_5080 },
++	{ PCI_VDEVICE(MARVELL, 0x5081), chip_508x },
++	/* RocketRAID 1720/174x have different identifiers */
++	{ PCI_VDEVICE(TTI, 0x1720), chip_6042 },
++	{ PCI_VDEVICE(TTI, 0x1740), chip_6042 },
++	{ PCI_VDEVICE(TTI, 0x1742), chip_6042 },
 +
-+	if (vm && !xe_sched_job_is_migration(q) && !xe_vm_in_lr_mode(vm) &&
-+	    (vm->batch_invalidate_tlb || vm->tlb_flush_seqno != q->tlb_flush_seqno)) {
-+		xe_vm_assert_held(vm);
-+		q->tlb_flush_seqno = vm->tlb_flush_seqno;
-+		job->ring_ops_flush_tlb = true;
-+	}
++	{ PCI_VDEVICE(MARVELL, 0x6040), chip_604x },
++	{ PCI_VDEVICE(MARVELL, 0x6041), chip_604x },
++	{ PCI_VDEVICE(MARVELL, 0x6042), chip_6042 },
++	{ PCI_VDEVICE(MARVELL, 0x6080), chip_608x },
++	{ PCI_VDEVICE(MARVELL, 0x6081), chip_608x },
 +
- 	drm_sched_job_arm(&job->drm);
- }
++	{ PCI_VDEVICE(ADAPTEC2, 0x0241), chip_604x },
++
++	/* Adaptec 1430SA */
++	{ PCI_VDEVICE(ADAPTEC2, 0x0243), chip_7042 },
++
++	/* Marvell 7042 support */
++	{ PCI_VDEVICE(MARVELL, 0x7042), chip_7042 },
++
++	/* Highpoint RocketRAID PCIe series */
++	{ PCI_VDEVICE(TTI, 0x2300), chip_7042 },
++	{ PCI_VDEVICE(TTI, 0x2310), chip_7042 },
++
++	{ }			/* terminate list */
++};
  
---- a/drivers/gpu/drm/xe/xe_sched_job_types.h
-+++ b/drivers/gpu/drm/xe/xe_sched_job_types.h
-@@ -39,6 +39,8 @@ struct xe_sched_job {
- 	} user_fence;
- 	/** @migrate_flush_flags: Additional flush flags for migration jobs */
- 	u32 migrate_flush_flags;
-+	/** @ring_ops_flush_tlb: The ring ops need to flush TLB before payload. */
-+	bool ring_ops_flush_tlb;
- 	/** @batch_addr: batch buffer address of job */
- 	u64 batch_addr[];
+ static struct pci_driver mv_pci_driver = {
+ 	.name			= DRV_NAME,
+@@ -4323,6 +4322,7 @@ static struct pci_driver mv_pci_driver = {
+ #endif
+ 
  };
---- a/drivers/gpu/drm/xe/xe_vm_types.h
-+++ b/drivers/gpu/drm/xe/xe_vm_types.h
-@@ -282,6 +282,11 @@ struct xe_vm {
- 		bool capture_once;
- 	} error_capture;
++MODULE_DEVICE_TABLE(pci, mv_pci_tbl);
  
-+	/**
-+	 * @tlb_flush_seqno: Required TLB flush seqno for the next exec.
-+	 * protected by the vm resv.
-+	 */
-+	u64 tlb_flush_seqno;
- 	/** @batch_invalidate_tlb: Always invalidate TLB before batch start */
- 	bool batch_invalidate_tlb;
- 	/** @xef: XE file handle for tracking this VM's drm client */
+ /**
+  *      mv_print_info - Dump key info to kernel log for perusal.
+@@ -4495,7 +4495,6 @@ static void __exit mv_exit(void)
+ MODULE_AUTHOR("Brett Russ");
+ MODULE_DESCRIPTION("SCSI low-level driver for Marvell SATA controllers");
+ MODULE_LICENSE("GPL v2");
+-MODULE_DEVICE_TABLE(pci, mv_pci_tbl);
+ MODULE_VERSION(DRV_VERSION);
+ MODULE_ALIAS("platform:" DRV_NAME);
+ 
+-- 
+2.43.0
+
 
 
 
