@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-37031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C740889C2F6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:38:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A6089C3B4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:43:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8430B282049
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:38:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AC3CB26D2C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FCC313541F;
-	Mon,  8 Apr 2024 13:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9F813A242;
+	Mon,  8 Apr 2024 13:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7aCyshu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GdbHRrwx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F021353E3;
-	Mon,  8 Apr 2024 13:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C417E105;
+	Mon,  8 Apr 2024 13:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583053; cv=none; b=FPfNqOCeryUMAB6UkB3iI56EEU+7e3AetlvtORuuhPz8tfeRqPoa7BN0bTbj3WLEhOZGKmEgInCu34OMdJahh44sIpRe3RPQQZSAWH1Km8s996xVDeRWRC6h2m27owDWOxDkeevhj8JVi1p/G38VDl2F+EXkjGXd4JH61XBbva8=
+	t=1712583062; cv=none; b=sgsAiCquE1GVty/LTwdNGGdcfKiWX2KOLwVRIzqmIcrGybIqj7C74yX/sRxfFqbxv//k28K/2zRhli82qepfNQMIb91Bk2pTB5tIN2ECojVVfI/CCFDk7lfSN1e+upYhWnNM+UIGYFLyDhuf9uaojZuqW4VJ2oVDU54UwJ+WMpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583053; c=relaxed/simple;
-	bh=jZVlPYcVTrdH4ogniJ3BFZ8tcPCzAG6xMv9rvP1Z6WM=;
+	s=arc-20240116; t=1712583062; c=relaxed/simple;
+	bh=eDcJp8VzDlNHdEH02hVEiNfa0iGN1rVYKyoXlQt/DWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fE2OK07nHIQ+8QhZUSIaI9U/QRvDBrdtYYxRr2plhhx3DtUbi+UiAQwCXuTDwYlWqvoRY4t7uDwgNWcfV1Nt8Kk2F48QFuLNmj3AV9JFTxn6Keq2BU52dlFHXNm2F/YEhwUAZ59smjtITvXYUfRuIaf9u3ezBUjTYqQ4MmuXULA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l7aCyshu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD86C433F1;
-	Mon,  8 Apr 2024 13:30:52 +0000 (UTC)
+	 MIME-Version; b=FvFhM6qbntne/Lw41vGRq1cnzXJuYKR4F9WEMioyNEo7CC9UiElULOjLZxdqifmdh1UfDm/+EST2Gl6Wo8FiI8Y+Fqfj30+3FlbHosfEPEp5J6LpJbqNSboMvSeCOvSMmZs76xPwgy8gMAWYADCqdgQkFbVR7LauCBX8tCoAulU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GdbHRrwx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDACFC43394;
+	Mon,  8 Apr 2024 13:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583053;
-	bh=jZVlPYcVTrdH4ogniJ3BFZ8tcPCzAG6xMv9rvP1Z6WM=;
+	s=korg; t=1712583062;
+	bh=eDcJp8VzDlNHdEH02hVEiNfa0iGN1rVYKyoXlQt/DWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l7aCyshu3L0m9Jzrk5PhjqF3Tlv7JUywM/c6HGinsnCR4HfLzv4JQfBQFQpEEEQNU
-	 69pA0ZugVvcWYo3wa5IkeAdAGZhi2xsbaquJOElxkY7T2Y1zgq/S7CRhB4VdC1wBQs
-	 wOhNuAI1mV71/8FlKVhNWIIE8k/9uxQoyNTHwIEg=
+	b=GdbHRrwx50X2hUsIpGO8S1illtNWpxLIJMxfASntdk6j39Y6E2Z1DKi7aZvegjU2P
+	 fuDOgpKD6tBizuNwt8QV5pw/YeiVasxBgOBegAGGMExMrZiB6uo011SsZe+qtQoYgP
+	 r36lWu09EXFvF53+nLdeBvpuiYChbCjM3nYO1HHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dima Ruinskiy <dima.ruinskiy@intel.com>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Naama Meir <naamax.meir@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 152/252] e1000e: move force SMBUS from enable ulp function to avoid PHY loss issue
-Date: Mon,  8 Apr 2024 14:57:31 +0200
-Message-ID: <20240408125311.373767008@linuxfoundation.org>
+Subject: [PATCH 6.6 153/252] net: ravb: Let IP-specific receive function to interrogate descriptors
+Date: Mon,  8 Apr 2024 14:57:32 +0200
+Message-ID: <20240408125311.409565127@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
 References: <20240408125306.643546457@linuxfoundation.org>
@@ -68,96 +67,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 861e8086029e003305750b4126ecd6617465f5c7 ]
+[ Upstream commit 2b993bfdb47b3aaafd8fe9cd5038b5e297b18ee1 ]
 
-Forcing SMBUS inside the ULP enabling flow leads to sporadic PHY loss on
-some systems. It is suspected to be caused by initiating PHY transactions
-before the interface settles.
+ravb_poll() initial code used to interrogate the first descriptor of the
+RX queue in case gPTP is false to determine if ravb_rx() should be called.
+This is done for non-gPTP IPs. For gPTP IPs the driver PTP-specific
+information was used to determine if receive function should be called. As
+every IP has its own receive function that interrogates the RX descriptors
+list in the same way the ravb_poll() was doing there is no need to double
+check this in ravb_poll(). Removing the code from ravb_poll() leads to a
+cleaner code.
 
-Separating this configuration from the ULP enabling flow and moving it to
-the shutdown function allows enough time for the interface to settle and
-avoids adding a delay.
-
-Fixes: 6607c99e7034 ("e1000e: i219 - fix to enable both ULP and EEE in Sx state")
-Co-developed-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
-Signed-off-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 596a4254915f ("net: ravb: Always process TX descriptor ring")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/ich8lan.c | 19 -------------------
- drivers/net/ethernet/intel/e1000e/netdev.c  | 18 ++++++++++++++++++
- 2 files changed, 18 insertions(+), 19 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-index 717c52913e84b..4d83c9a0c023a 100644
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-@@ -1165,25 +1165,6 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
- 	if (ret_val)
- 		goto out;
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 8fec0dbbbe7bb..b87e9252ea176 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1288,25 +1288,16 @@ static int ravb_poll(struct napi_struct *napi, int budget)
+ 	struct net_device *ndev = napi->dev;
+ 	struct ravb_private *priv = netdev_priv(ndev);
+ 	const struct ravb_hw_info *info = priv->info;
+-	bool gptp = info->gptp || info->ccc_gac;
+-	struct ravb_rx_desc *desc;
+ 	unsigned long flags;
+ 	int q = napi - priv->napi;
+ 	int mask = BIT(q);
+ 	int quota = budget;
+-	unsigned int entry;
  
--	/* Switching PHY interface always returns MDI error
--	 * so disable retry mechanism to avoid wasting time
--	 */
--	e1000e_disable_phy_retry(hw);
--
--	/* Force SMBus mode in PHY */
--	ret_val = e1000_read_phy_reg_hv_locked(hw, CV_SMB_CTRL, &phy_reg);
--	if (ret_val)
--		goto release;
--	phy_reg |= CV_SMB_CTRL_FORCE_SMBUS;
--	e1000_write_phy_reg_hv_locked(hw, CV_SMB_CTRL, phy_reg);
--
--	e1000e_enable_phy_retry(hw);
--
--	/* Force SMBus mode in MAC */
--	mac_reg = er32(CTRL_EXT);
--	mac_reg |= E1000_CTRL_EXT_FORCE_SMBUS;
--	ew32(CTRL_EXT, mac_reg);
--
- 	/* Si workaround for ULP entry flow on i127/rev6 h/w.  Enable
- 	 * LPLU and disable Gig speed when entering ULP
- 	 */
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index cc8c531ec3dff..3692fce201959 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -6623,6 +6623,7 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
- 	struct e1000_hw *hw = &adapter->hw;
- 	u32 ctrl, ctrl_ext, rctl, status, wufc;
- 	int retval = 0;
-+	u16 smb_ctrl;
+-	if (!gptp) {
+-		entry = priv->cur_rx[q] % priv->num_rx_ring[q];
+-		desc = &priv->gbeth_rx_ring[entry];
+-	}
+ 	/* Processing RX Descriptor Ring */
+ 	/* Clear RX interrupt */
+ 	ravb_write(ndev, ~(mask | RIS0_RESERVED), RIS0);
+-	if (gptp || desc->die_dt != DT_FEMPTY) {
+-		if (ravb_rx(ndev, &quota, q))
+-			goto out;
+-	}
++	if (ravb_rx(ndev, &quota, q))
++		goto out;
  
- 	/* Runtime suspend should only enable wakeup for link changes */
- 	if (runtime)
-@@ -6696,6 +6697,23 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
- 			if (retval)
- 				return retval;
- 		}
-+
-+		/* Force SMBUS to allow WOL */
-+		/* Switching PHY interface always returns MDI error
-+		 * so disable retry mechanism to avoid wasting time
-+		 */
-+		e1000e_disable_phy_retry(hw);
-+
-+		e1e_rphy(hw, CV_SMB_CTRL, &smb_ctrl);
-+		smb_ctrl |= CV_SMB_CTRL_FORCE_SMBUS;
-+		e1e_wphy(hw, CV_SMB_CTRL, smb_ctrl);
-+
-+		e1000e_enable_phy_retry(hw);
-+
-+		/* Force SMBus mode in MAC */
-+		ctrl_ext = er32(CTRL_EXT);
-+		ctrl_ext |= E1000_CTRL_EXT_FORCE_SMBUS;
-+		ew32(CTRL_EXT, ctrl_ext);
- 	}
- 
- 	/* Ensure that the appropriate bits are set in LPI_CTRL
+ 	/* Processing TX Descriptor Ring */
+ 	spin_lock_irqsave(&priv->lock, flags);
 -- 
 2.43.0
 
