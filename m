@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC4A089C03E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1568889C50F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:52:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 268BF1F2392F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 394B11C2222D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1774174BF5;
-	Mon,  8 Apr 2024 13:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CDB71B20;
+	Mon,  8 Apr 2024 13:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elRgAI//"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FsL7QbPm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74506A352;
-	Mon,  8 Apr 2024 13:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241CA524AF;
+	Mon,  8 Apr 2024 13:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581594; cv=none; b=AcF5OslmKoWDHAehsKWMNuE7cGB+M2qwEFT6DtMF4aFxsxC1VqdbPdWA6FpG4Uy1oA2n0/Bc40qWz8YJEJY0Q0UpgE/MkTU0Qvw9riC3KHwSRSEjufi3N+P22cuu2lg57mGpBbAf8jOVrzsK5hJxqzbiDYuxJ+oK/u4SZL0AioU=
+	t=1712584369; cv=none; b=njQiLgEhpUuQFlWSTQE/8Z2EH/PrEMIitoh88byLvbCmP5S98VMOqokZqypUUqoeovFlj3Jgfv5KUsb4gyKFhaV9Y6+xpEU6OwjTPyP0rcchrC30WZ1JFC63ljgwk2C60F2kaBsuji95aDOR2TPJzLCJApsJiZVTt8w8U5+xJdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581594; c=relaxed/simple;
-	bh=ooPP8yh6x0BW3pj+Q8Rv4Nv1+VSP2x5BaBS8F4ZmKWs=;
+	s=arc-20240116; t=1712584369; c=relaxed/simple;
+	bh=fuEjd+zyqv02gxqnW0iE52vCJTdbo/8jKGVCUsQNV+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TdqbFwXL03kl+OZW4cIeLztCWHUdcAoIasBBPn0bJgdqi3twVaRidoYsTX9PRAtnrEAhXpgKhvDMzdAzsx8ILxMFalKzTwK1GG8fcjyp/iOgb9xXPUiyJ57biv75Wk6nQHTfBMA+62uRw42qZOUHMW6DVd802IOElfsF6qsbHc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elRgAI//; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4786BC433C7;
-	Mon,  8 Apr 2024 13:06:34 +0000 (UTC)
+	 MIME-Version; b=WjDtE7h2Ej8uSQIOlY8Qm3cSaFOevN1snSVDyoxx5IcXJ6pIbO/1ZUwDG4u0boCskPQs5heefQeDrAEvC8HRHR+86t61YsGTrBdO5LlH7x+By3GQg3zEpx42QGu/BryZ6YQciV2snfE07cFNlQm0f/elQzC97l+6h2hGi821VmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FsL7QbPm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5E7C433F1;
+	Mon,  8 Apr 2024 13:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581594;
-	bh=ooPP8yh6x0BW3pj+Q8Rv4Nv1+VSP2x5BaBS8F4ZmKWs=;
+	s=korg; t=1712584369;
+	bh=fuEjd+zyqv02gxqnW0iE52vCJTdbo/8jKGVCUsQNV+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=elRgAI//DvDpQCQ3ri4bOfwXNyHXEpYgs+MYj3y9ieKFjGTXsbjUy22o8fyu0mmVB
-	 RzAC6ksVx6AlHAvZhbXoX4VqFrM927sSSodcA1B/9aKz+xDAuIpSEWe98JJGpYnfma
-	 yrUyvu5dmHtxVfNSHoW6EuKCtTR7grnp+EYnPgB0=
+	b=FsL7QbPmnIyuuCQivpZty3CfkgJq7Yr59WlS7lRYUoj4u62lCii6ZOElEOLDOfnJu
+	 sb91v7VOUlKeb/SduSHfaK8P6zTXJ+T+2NKtkKwsFG4frfN1fg37ztD1uAzjb/OlJQ
+	 em3IzUUxAtYTYYoiTN8RRxnrcK0QHZBVzZjTNu3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 003/273] s390/bpf: Fix bpf_plt pointer arithmetic
-Date: Mon,  8 Apr 2024 14:54:38 +0200
-Message-ID: <20240408125309.389289720@linuxfoundation.org>
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 413/690] NFSD: discard fh_locked flag and fh_lock/fh_unlock
+Date: Mon,  8 Apr 2024 14:54:39 +0200
+Message-ID: <20240408125414.550541481@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,165 +62,190 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 7ded842b356d151ece8ac4985940438e6d3998bb ]
+[ Upstream commit dd8dd403d7b223cc77ee89d8d09caf045e90e648 ]
 
-Kui-Feng Lee reported a crash on s390x triggered by the
-dummy_st_ops/dummy_init_ptr_arg test [1]:
+As all inode locking is now fully balanced, fh_put() does not need to
+call fh_unlock().
+fh_lock() and fh_unlock() are no longer used, so discard them.
+These are the only real users of ->fh_locked, so discard that too.
 
-  [<0000000000000002>] 0x2
-  [<00000000009d5cde>] bpf_struct_ops_test_run+0x156/0x250
-  [<000000000033145a>] __sys_bpf+0xa1a/0xd00
-  [<00000000003319dc>] __s390x_sys_bpf+0x44/0x50
-  [<0000000000c4382c>] __do_syscall+0x244/0x300
-  [<0000000000c59a40>] system_call+0x70/0x98
-
-This is caused by GCC moving memcpy() after assignments in
-bpf_jit_plt(), resulting in NULL pointers being written instead of
-the return and the target addresses.
-
-Looking at the GCC internals, the reordering is allowed because the
-alias analysis thinks that the memcpy() destination and the assignments'
-left-hand-sides are based on different objects: new_plt and
-bpf_plt_ret/bpf_plt_target respectively, and therefore they cannot
-alias.
-
-This is in turn due to a violation of the C standard:
-
-  When two pointers are subtracted, both shall point to elements of the
-  same array object, or one past the last element of the array object
-  ...
-
->From the C's perspective, bpf_plt_ret and bpf_plt are distinct objects
-and cannot be subtracted. In the practical terms, doing so confuses the
-GCC's alias analysis.
-
-The code was written this way in order to let the C side know a few
-offsets defined in the assembly. While nice, this is by no means
-necessary. Fix the noncompliance by hardcoding these offsets.
-
-[1] https://lore.kernel.org/bpf/c9923c1d-971d-4022-8dc8-1364e929d34c@gmail.com/
-
-Fixes: f1d5df84cd8c ("s390/bpf: Implement bpf_arch_text_poke()")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-ID: <20240320015515.11883-1-iii@linux.ibm.com>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- arch/s390/net/bpf_jit_comp.c | 46 ++++++++++++++++--------------------
- 1 file changed, 20 insertions(+), 26 deletions(-)
+ fs/nfsd/nfsfh.c |  3 +--
+ fs/nfsd/nfsfh.h | 56 ++++---------------------------------------------
+ fs/nfsd/vfs.c   | 17 +--------------
+ 3 files changed, 6 insertions(+), 70 deletions(-)
 
-diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
-index b418333bb0863..5af0402e94b88 100644
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -516,11 +516,12 @@ static void bpf_skip(struct bpf_jit *jit, int size)
-  * PLT for hotpatchable calls. The calling convention is the same as for the
-  * ftrace hotpatch trampolines: %r0 is return address, %r1 is clobbered.
-  */
--extern const char bpf_plt[];
--extern const char bpf_plt_ret[];
--extern const char bpf_plt_target[];
--extern const char bpf_plt_end[];
--#define BPF_PLT_SIZE 32
-+struct bpf_plt {
-+	char code[16];
-+	void *ret;
-+	void *target;
-+} __packed;
-+extern const struct bpf_plt bpf_plt;
- asm(
- 	".pushsection .rodata\n"
- 	"	.balign 8\n"
-@@ -531,15 +532,14 @@ asm(
- 	"	.balign 8\n"
- 	"bpf_plt_ret: .quad 0\n"
- 	"bpf_plt_target: .quad 0\n"
--	"bpf_plt_end:\n"
- 	"	.popsection\n"
- );
+diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
+index cd2946a88d727..a5b71526cee0f 100644
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -549,7 +549,7 @@ fh_compose(struct svc_fh *fhp, struct svc_export *exp, struct dentry *dentry,
+ 	if (ref_fh == fhp)
+ 		fh_put(ref_fh);
  
--static void bpf_jit_plt(void *plt, void *ret, void *target)
-+static void bpf_jit_plt(struct bpf_plt *plt, void *ret, void *target)
+-	if (fhp->fh_locked || fhp->fh_dentry) {
++	if (fhp->fh_dentry) {
+ 		printk(KERN_ERR "fh_compose: fh %pd2 not initialized!\n",
+ 		       dentry);
+ 	}
+@@ -700,7 +700,6 @@ fh_put(struct svc_fh *fhp)
+ 	struct dentry * dentry = fhp->fh_dentry;
+ 	struct svc_export * exp = fhp->fh_export;
+ 	if (dentry) {
+-		fh_unlock(fhp);
+ 		fhp->fh_dentry = NULL;
+ 		dput(dentry);
+ 		fh_clear_pre_post_attrs(fhp);
+diff --git a/fs/nfsd/nfsfh.h b/fs/nfsd/nfsfh.h
+index 28a4f9a94e2c8..c3ae6414fc5cf 100644
+--- a/fs/nfsd/nfsfh.h
++++ b/fs/nfsd/nfsfh.h
+@@ -81,7 +81,6 @@ typedef struct svc_fh {
+ 	struct dentry *		fh_dentry;	/* validated dentry */
+ 	struct svc_export *	fh_export;	/* export pointer */
+ 
+-	bool			fh_locked;	/* inode locked by us */
+ 	bool			fh_want_write;	/* remount protection taken */
+ 	bool			fh_no_wcc;	/* no wcc data needed */
+ 	bool			fh_no_atomic_attr;
+@@ -93,7 +92,7 @@ typedef struct svc_fh {
+ 	bool			fh_post_saved;	/* post-op attrs saved */
+ 	bool			fh_pre_saved;	/* pre-op attrs saved */
+ 
+-	/* Pre-op attributes saved during fh_lock */
++	/* Pre-op attributes saved when inode is locked */
+ 	__u64			fh_pre_size;	/* size before operation */
+ 	struct timespec64	fh_pre_mtime;	/* mtime before oper */
+ 	struct timespec64	fh_pre_ctime;	/* ctime before oper */
+@@ -103,7 +102,7 @@ typedef struct svc_fh {
+ 	 */
+ 	u64			fh_pre_change;
+ 
+-	/* Post-op attributes saved in fh_unlock */
++	/* Post-op attributes saved in fh_fill_post_attrs() */
+ 	struct kstat		fh_post_attr;	/* full attrs after operation */
+ 	u64			fh_post_change; /* nfsv4 change; see above */
+ } svc_fh;
+@@ -223,8 +222,8 @@ void	fh_put(struct svc_fh *);
+ static __inline__ struct svc_fh *
+ fh_copy(struct svc_fh *dst, struct svc_fh *src)
  {
--	memcpy(plt, bpf_plt, BPF_PLT_SIZE);
--	*(void **)((char *)plt + (bpf_plt_ret - bpf_plt)) = ret;
--	*(void **)((char *)plt + (bpf_plt_target - bpf_plt)) = target ?: ret;
-+	memcpy(plt, &bpf_plt, sizeof(*plt));
-+	plt->ret = ret;
-+	plt->target = target;
+-	WARN_ON(src->fh_dentry || src->fh_locked);
+-			
++	WARN_ON(src->fh_dentry);
++
+ 	*dst = *src;
+ 	return dst;
  }
- 
- /*
-@@ -662,9 +662,9 @@ static void bpf_jit_epilogue(struct bpf_jit *jit, u32 stack_depth)
- 	jit->prg = ALIGN(jit->prg, 8);
- 	jit->prologue_plt = jit->prg;
- 	if (jit->prg_buf)
--		bpf_jit_plt(jit->prg_buf + jit->prg,
-+		bpf_jit_plt((struct bpf_plt *)(jit->prg_buf + jit->prg),
- 			    jit->prg_buf + jit->prologue_plt_ret, NULL);
--	jit->prg += BPF_PLT_SIZE;
-+	jit->prg += sizeof(struct bpf_plt);
- }
- 
- static int get_probe_mem_regno(const u8 *insn)
-@@ -2040,9 +2040,6 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 	struct bpf_jit jit;
- 	int pass;
- 
--	if (WARN_ON_ONCE(bpf_plt_end - bpf_plt != BPF_PLT_SIZE))
--		return orig_fp;
+@@ -323,51 +322,4 @@ static inline u64 nfsd4_change_attribute(struct kstat *stat,
+ extern void fh_fill_pre_attrs(struct svc_fh *fhp);
+ extern void fh_fill_post_attrs(struct svc_fh *fhp);
+ extern void fh_fill_both_attrs(struct svc_fh *fhp);
 -
- 	if (!fp->jit_requested)
- 		return orig_fp;
+-/*
+- * Lock a file handle/inode
+- * NOTE: both fh_lock and fh_unlock are done "by hand" in
+- * vfs.c:nfsd_rename as it needs to grab 2 i_mutex's at once
+- * so, any changes here should be reflected there.
+- */
+-
+-static inline void
+-fh_lock_nested(struct svc_fh *fhp, unsigned int subclass)
+-{
+-	struct dentry	*dentry = fhp->fh_dentry;
+-	struct inode	*inode;
+-
+-	BUG_ON(!dentry);
+-
+-	if (fhp->fh_locked) {
+-		printk(KERN_WARNING "fh_lock: %pd2 already locked!\n",
+-			dentry);
+-		return;
+-	}
+-
+-	inode = d_inode(dentry);
+-	inode_lock_nested(inode, subclass);
+-	fh_fill_pre_attrs(fhp);
+-	fhp->fh_locked = true;
+-}
+-
+-static inline void
+-fh_lock(struct svc_fh *fhp)
+-{
+-	fh_lock_nested(fhp, I_MUTEX_NORMAL);
+-}
+-
+-/*
+- * Unlock a file handle/inode
+- */
+-static inline void
+-fh_unlock(struct svc_fh *fhp)
+-{
+-	if (fhp->fh_locked) {
+-		fh_fill_post_attrs(fhp);
+-		inode_unlock(d_inode(fhp->fh_dentry));
+-		fhp->fh_locked = false;
+-	}
+-}
+-
+ #endif /* _LINUX_NFSD_NFSFH_H */
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 73a153be6a5ad..66d4a126f20ab 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1266,13 +1266,6 @@ nfsd_create_locked(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	dirp = d_inode(dentry);
  
-@@ -2148,14 +2145,11 @@ bool bpf_jit_supports_far_kfunc_call(void)
- int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type t,
- 		       void *old_addr, void *new_addr)
- {
-+	struct bpf_plt expected_plt, current_plt, new_plt, *plt;
- 	struct {
- 		u16 opc;
- 		s32 disp;
- 	} __packed insn;
--	char expected_plt[BPF_PLT_SIZE];
--	char current_plt[BPF_PLT_SIZE];
--	char new_plt[BPF_PLT_SIZE];
--	char *plt;
- 	char *ret;
- 	int err;
- 
-@@ -2174,18 +2168,18 @@ int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type t,
- 		 */
- 	} else {
- 		/* Verify the PLT. */
--		plt = (char *)ip + (insn.disp << 1);
--		err = copy_from_kernel_nofault(current_plt, plt, BPF_PLT_SIZE);
-+		plt = ip + (insn.disp << 1);
-+		err = copy_from_kernel_nofault(&current_plt, plt,
-+					       sizeof(current_plt));
- 		if (err < 0)
- 			return err;
- 		ret = (char *)ip + 6;
--		bpf_jit_plt(expected_plt, ret, old_addr);
--		if (memcmp(current_plt, expected_plt, BPF_PLT_SIZE))
-+		bpf_jit_plt(&expected_plt, ret, old_addr);
-+		if (memcmp(&current_plt, &expected_plt, sizeof(current_plt)))
- 			return -EINVAL;
- 		/* Adjust the call address. */
--		bpf_jit_plt(new_plt, ret, new_addr);
--		s390_kernel_write(plt + (bpf_plt_target - bpf_plt),
--				  new_plt + (bpf_plt_target - bpf_plt),
-+		bpf_jit_plt(&new_plt, ret, new_addr);
-+		s390_kernel_write(&plt->target, &new_plt.target,
- 				  sizeof(void *));
+ 	dchild = dget(resfhp->fh_dentry);
+-	if (!fhp->fh_locked) {
+-		WARN_ONCE(1, "nfsd_create: parent %pd2 not locked!\n",
+-				dentry);
+-		err = nfserr_io;
+-		goto out;
+-	}
+-
+ 	err = nfsd_permission(rqstp, fhp->fh_export, dentry, NFSD_MAY_CREATE);
+ 	if (err)
+ 		goto out;
+@@ -1641,10 +1634,7 @@ nfsd_rename(struct svc_rqst *rqstp, struct svc_fh *ffhp, char *fname, int flen,
+ 		goto out;
  	}
  
+-	/* cannot use fh_lock as we need deadlock protective ordering
+-	 * so do it by hand */
+ 	trap = lock_rename(tdentry, fdentry);
+-	ffhp->fh_locked = tfhp->fh_locked = true;
+ 	fh_fill_pre_attrs(ffhp);
+ 	fh_fill_pre_attrs(tfhp);
+ 
+@@ -1694,17 +1684,12 @@ nfsd_rename(struct svc_rqst *rqstp, struct svc_fh *ffhp, char *fname, int flen,
+ 	dput(odentry);
+  out_nfserr:
+ 	err = nfserrno(host_err);
+-	/*
+-	 * We cannot rely on fh_unlock on the two filehandles,
+-	 * as that would do the wrong thing if the two directories
+-	 * were the same, so again we do it by hand.
+-	 */
++
+ 	if (!close_cached) {
+ 		fh_fill_post_attrs(ffhp);
+ 		fh_fill_post_attrs(tfhp);
+ 	}
+ 	unlock_rename(tdentry, fdentry);
+-	ffhp->fh_locked = tfhp->fh_locked = false;
+ 	fh_drop_write(ffhp);
+ 
+ 	/*
 -- 
 2.43.0
 
