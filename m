@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-37389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7EDF89C4A8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69CAD89C4A9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 891511F22D9A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ED372841DB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3AE47EF0E;
-	Mon,  8 Apr 2024 13:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676EA7BAEC;
+	Mon,  8 Apr 2024 13:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I783YBoG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+V72YX2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8104D7EF02;
-	Mon,  8 Apr 2024 13:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2233F6FE35;
+	Mon,  8 Apr 2024 13:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584090; cv=none; b=HiZNvNn+paNXu1CtmIfvGy9a7VN7O76oj7Rrk0aZKoqT/2cygj2ejNYt/SOczYEZ6V223igLDgFHdJOPjDu0OdOhKtN1yBwRQf/G1VpYnd/iS4k2oem08pTTZi3EA70PBCIknefoUN7ohcmHaN7c2OCd4H5JX2MeFzSIAsgP5QM=
+	t=1712584095; cv=none; b=bxjLTEQe4UITj+dKqz1tzWg0goiLsnwaUHzTjdyU1ld+am+8ZfB/tx0Vi4p9e+awNaaOIpJ2XNzfFR6coY1IdzNaGxtNrPoSxQuNV3EnQ6zzFVjLUNDJHMkSoHAP0Yr0HaizJdwVAFUxMlNe22SxLRnpiVEQC23K/j6HYFFcbfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584090; c=relaxed/simple;
-	bh=qqMelK+x0EpMJ8l1YYUBZcDdrL3Qm/8YB/s6+W5URXo=;
+	s=arc-20240116; t=1712584095; c=relaxed/simple;
+	bh=gE7WlArNqyFRuzuNOr0CJDIS8pOKJkArp1uBEutpVJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zbc7KVUwnKxdIITDswpNBP7jbThNUHRwOKkCZiy01z+emaU2cRG8eb3MZir0UmT95D8KHgL84+bBgA2u7gXPguZ5cKoIOMJo2x5wUN9xDz/QEp1eleMZX7FeU+ohbdCHyQtQZJw3MSzjX/pRu7ZRIO9I4I4miWwaUpUdS+tw7UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I783YBoG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC23C433F1;
-	Mon,  8 Apr 2024 13:48:08 +0000 (UTC)
+	 MIME-Version; b=hKibaJyh1SI4NsKjynX6yVcCuJAqQgxkMWCVlUIOL5fVStgsX40e4/gBxkkWSpX+sbD01qx+CNbRm4MTMR1ZKRLwLEA99npOtXZEPVZLve580SMIL134HtnRNiGVgRf5VbKH65LcBJWwrpCITa5IJmnhIyfwGh51JfSafqC3llU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+V72YX2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99214C433C7;
+	Mon,  8 Apr 2024 13:48:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584089;
-	bh=qqMelK+x0EpMJ8l1YYUBZcDdrL3Qm/8YB/s6+W5URXo=;
+	s=korg; t=1712584095;
+	bh=gE7WlArNqyFRuzuNOr0CJDIS8pOKJkArp1uBEutpVJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I783YBoGIaGbXlTUa2mSYl8/fJ3uUSn0ju1+oYn+imbXqUimuDOCJvioIhdfLs/S+
-	 PXBvbCClxeIgtmolbpxDzLxWHnMhDIVZCgzBrTM9uKa6EB2f7ynUytByeFAgTcmqpk
-	 OX/PP7s/z0G32/1PfJDiQXjs7cVRGCqcLJrk+zAo=
+	b=R+V72YX2CHV3TrxlEO8DDpGjFMXyckI22+qgZfE4O2JXyAjU1oLjFBRwYbO9+jMGc
+	 xcMLR4nUysS1nbIg+t7jVABslrlJh6MGQ7QUR8l0m8mjYNiKfwZLJnmlc0bD+U/8/K
+	 9B2MhWRLxvY51B0uXhTekfOKTV/T+xQyXHBc67zw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trondmy@hammerspace.com>,
+	NeilBrown <neilb@suse.de>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 332/690] NFSD: Fix potential use-after-free in nfsd_file_put()
-Date: Mon,  8 Apr 2024 14:53:18 +0200
-Message-ID: <20240408125411.630313466@linuxfoundation.org>
+Subject: [PATCH 5.15 333/690] NFS: restore module put when manager exits.
+Date: Mon,  8 Apr 2024 14:53:19 +0200
+Message-ID: <20240408125411.664822917@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -65,40 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit b6c71c66b0ad8f2b59d9bc08c7a5079b110bec01 ]
+[ Upstream commit 080abad71e99d2becf38c978572982130b927a28 ]
 
-nfsd_file_put_noref() can free @nf, so don't dereference @nf
-immediately upon return from nfsd_file_put_noref().
+Commit f49169c97fce ("NFSD: Remove svc_serv_ops::svo_module") removed
+calls to module_put_and_kthread_exit() from threads that acted as SUNRPC
+servers and had a related svc_serv_ops structure.  This was correct.
 
-Suggested-by: Trond Myklebust <trondmy@hammerspace.com>
-Fixes: 999397926ab3 ("nfsd: Clean up nfsd_file_put()")
+It ALSO removed the module_put_and_kthread_exit() call from
+nfs4_run_state_manager() which is NOT a SUNRPC service.
+
+Consequently every time the NFSv4 state manager runs the module count
+increments and won't be decremented.  So the nfsv4 module cannot be
+unloaded.
+
+So restore the module_put_and_kthread_exit() call.
+
+Fixes: f49169c97fce ("NFSD: Remove svc_serv_ops::svo_module")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/filecache.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ fs/nfs/nfs4state.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 27952e2f3aa14..1d3d13b78be0e 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -302,11 +302,12 @@ nfsd_file_put(struct nfsd_file *nf)
- 	if (test_bit(NFSD_FILE_HASHED, &nf->nf_flags) == 0) {
- 		nfsd_file_flush(nf);
- 		nfsd_file_put_noref(nf);
--	} else {
-+	} else if (nf->nf_file) {
- 		nfsd_file_put_noref(nf);
--		if (nf->nf_file)
--			nfsd_file_schedule_laundrette();
--	}
-+		nfsd_file_schedule_laundrette();
-+	} else
-+		nfsd_file_put_noref(nf);
-+
- 	if (atomic_long_read(&nfsd_filecache_count) >= NFSD_FILE_LRU_LIMIT)
- 		nfsd_file_gc();
+diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
+index 61050ffac93ef..d7868cc527805 100644
+--- a/fs/nfs/nfs4state.c
++++ b/fs/nfs/nfs4state.c
+@@ -2766,5 +2766,6 @@ static int nfs4_run_state_manager(void *ptr)
+ 		goto again;
+ 
+ 	nfs_put_client(clp);
++	module_put_and_kthread_exit(0);
+ 	return 0;
  }
 -- 
 2.43.0
