@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-37574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DA789C65A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:07:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A43789C17E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:21:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2804CB2A683
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:58:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1266F282A65
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015777D096;
-	Mon,  8 Apr 2024 13:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E88384D35;
+	Mon,  8 Apr 2024 13:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4GG7Smy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebGPaVBr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41997A15C;
-	Mon,  8 Apr 2024 13:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3D27E56B;
+	Mon,  8 Apr 2024 13:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584632; cv=none; b=QIzu7mH2cmo4PlbpnzLc7YoOjks8CEGp9Ppmh04548IBmFd1r1K5+hgP4fh5uqFt5EaHKe8WRdqMRHCVyTqn1AuUBQ+CdtK1sEamnOpjX+yt93Rbd1KJcPIwls4S7VSVTJk7pQtvxEbg8cBl69H+bmU8dVhLSQ/2RiiB3o5ho3g=
+	t=1712582229; cv=none; b=YMoLYkvVFmvTu3cTuTVllX9pM2tz5/cpxX2hHl1O1ycyBkt60KnQbgXt1f3TZapVCgkrdbCYlRJ1LwikSQEFWxvKnEpFfFPDe9LrWDMLrgTc0SHsFHbjerljp4ortnXmAfnLT9abZgGYWhfUQomoPuxptceUisgsSne7pben58U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584632; c=relaxed/simple;
-	bh=yLQpUj3Jc3djj4T2r+ISJUPcpI5fIWeGq2glROi9ECk=;
+	s=arc-20240116; t=1712582229; c=relaxed/simple;
+	bh=GzLaC5EbcS9c63zcdtro13xSVwdKDZHFhoqX4RUmGZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bSra/c+XPo1WVPlZSubGzeQ3ZJKCEZyIaJTg6x4IE28RDCFIxb4tw1Ad49w7BDG7tMUztg43DX1DmVlPE7BGvlKktPX0wJpyKmL0/X1lFLw4xmiiQslZuKqR/hR88K34a+QGtA2E1vtpBQkAcHCgPwh2TuE1CJdop/pTVgsGB2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4GG7Smy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD893C433F1;
-	Mon,  8 Apr 2024 13:57:11 +0000 (UTC)
+	 MIME-Version; b=BYN+oS8OA+xj0Wj3R3h4PYfgzpTUYG1/qO1D9weluzbrs4mra9NN+OLs8Vabhknivz3wnMNN2kp5OepYuC/Zzq9D6f3qtDycGgtaJ0yrWlmVNHA9/f0PWHfcM2xxNrJUAq04WbqtabfYCOrHO80FvX84UUnTAXAqn9pT1aU1Hlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebGPaVBr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E03C433C7;
+	Mon,  8 Apr 2024 13:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584632;
-	bh=yLQpUj3Jc3djj4T2r+ISJUPcpI5fIWeGq2glROi9ECk=;
+	s=korg; t=1712582229;
+	bh=GzLaC5EbcS9c63zcdtro13xSVwdKDZHFhoqX4RUmGZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a4GG7Smyof9zPPf7OhgVDlj8SSThqji1c+l0Sw9RD1cL6TMOSjqtJ6Ut0VYgDKKV4
-	 S921uSIv7BKjOuZHT/8MXzQmlMrLguYpc4SH0ltexCGG7iXhbu5gaHA6tBtf6+v4pQ
-	 PbB3cCXRTxtBhwKVqFkGC+K0OUZkN3wtdPkSksUw=
+	b=ebGPaVBrtP8gevRMmVqSGn7Z7RqHDvUv1OOTz6OxiE7+CdjoVMXPOZ2FewFQSHPG+
+	 L7ZOULedHM9HUESX5EiO+pPR0gyD+eWyKcbxrO8ULtWdh/508699n9CgG7XQ1UR3oA
+	 6duAMLRePus3xQUuuN7RK19L2IAa9DiYm00zrAXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 504/690] NFSD: add support for sending CB_RECALL_ANY
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.6 071/252] KVM: arm64: Fix host-programmed guest events in nVHE
 Date: Mon,  8 Apr 2024 14:56:10 +0200
-Message-ID: <20240408125417.898928527@linuxfoundation.org>
+Message-ID: <20240408125308.836967513@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,180 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-[ Upstream commit 3959066b697b5dfbb7141124ae9665337d4bc638 ]
+commit e89c928bedd77d181edc2df01cb6672184775140 upstream.
 
-Add XDR encode and decode function for CB_RECALL_ANY.
+Programming PMU events in the host that count during guest execution is
+a feature supported by perf, e.g.
 
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+  perf stat -e cpu_cycles:G ./lkvm run
+
+While this works for VHE, the guest/host event bitmaps are not carried
+through to the hypervisor in the nVHE configuration. Make
+kvm_pmu_update_vcpu_events() conditional on whether or not _hardware_
+supports PMUv3 rather than if the vCPU as vPMU enabled.
+
+Cc: stable@vger.kernel.org
+Fixes: 84d751a019a9 ("KVM: arm64: Pass pmu events to hyp via vcpu")
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240305184840.636212-3-oliver.upton@linux.dev
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4callback.c | 72 ++++++++++++++++++++++++++++++++++++++++++
- fs/nfsd/state.h        |  1 +
- fs/nfsd/xdr4.h         |  5 +++
- fs/nfsd/xdr4cb.h       |  6 ++++
- 4 files changed, 84 insertions(+)
+ include/kvm/arm_pmu.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4callback.c b/fs/nfsd/nfs4callback.c
-index 39989c14c8a1e..4eae2c5af2edf 100644
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -76,6 +76,17 @@ static __be32 *xdr_encode_empty_array(__be32 *p)
-  * 1 Protocol"
+--- a/include/kvm/arm_pmu.h
++++ b/include/kvm/arm_pmu.h
+@@ -86,7 +86,7 @@ void kvm_vcpu_pmu_resync_el0(void);
   */
+ #define kvm_pmu_update_vcpu_events(vcpu)				\
+ 	do {								\
+-		if (!has_vhe() && kvm_vcpu_has_pmu(vcpu))		\
++		if (!has_vhe() && kvm_arm_support_pmu_v3())		\
+ 			vcpu->arch.pmu.events = *kvm_get_pmu_events();	\
+ 	} while (0)
  
-+static void encode_uint32(struct xdr_stream *xdr, u32 n)
-+{
-+	WARN_ON_ONCE(xdr_stream_encode_u32(xdr, n) < 0);
-+}
-+
-+static void encode_bitmap4(struct xdr_stream *xdr, const __u32 *bitmap,
-+			   size_t len)
-+{
-+	WARN_ON_ONCE(xdr_stream_encode_uint32_array(xdr, bitmap, len) < 0);
-+}
-+
- /*
-  *	nfs_cb_opnum4
-  *
-@@ -328,6 +339,24 @@ static void encode_cb_recall4args(struct xdr_stream *xdr,
- 	hdr->nops++;
- }
- 
-+/*
-+ * CB_RECALLANY4args
-+ *
-+ *	struct CB_RECALLANY4args {
-+ *		uint32_t	craa_objects_to_keep;
-+ *		bitmap4		craa_type_mask;
-+ *	};
-+ */
-+static void
-+encode_cb_recallany4args(struct xdr_stream *xdr,
-+	struct nfs4_cb_compound_hdr *hdr, struct nfsd4_cb_recall_any *ra)
-+{
-+	encode_nfs_cb_opnum4(xdr, OP_CB_RECALL_ANY);
-+	encode_uint32(xdr, ra->ra_keep);
-+	encode_bitmap4(xdr, ra->ra_bmval, ARRAY_SIZE(ra->ra_bmval));
-+	hdr->nops++;
-+}
-+
- /*
-  * CB_SEQUENCE4args
-  *
-@@ -482,6 +511,26 @@ static void nfs4_xdr_enc_cb_recall(struct rpc_rqst *req, struct xdr_stream *xdr,
- 	encode_cb_nops(&hdr);
- }
- 
-+/*
-+ * 20.6. Operation 8: CB_RECALL_ANY - Keep Any N Recallable Objects
-+ */
-+static void
-+nfs4_xdr_enc_cb_recall_any(struct rpc_rqst *req,
-+		struct xdr_stream *xdr, const void *data)
-+{
-+	const struct nfsd4_callback *cb = data;
-+	struct nfsd4_cb_recall_any *ra;
-+	struct nfs4_cb_compound_hdr hdr = {
-+		.ident = cb->cb_clp->cl_cb_ident,
-+		.minorversion = cb->cb_clp->cl_minorversion,
-+	};
-+
-+	ra = container_of(cb, struct nfsd4_cb_recall_any, ra_cb);
-+	encode_cb_compound4args(xdr, &hdr);
-+	encode_cb_sequence4args(xdr, cb, &hdr);
-+	encode_cb_recallany4args(xdr, &hdr, ra);
-+	encode_cb_nops(&hdr);
-+}
- 
- /*
-  * NFSv4.0 and NFSv4.1 XDR decode functions
-@@ -520,6 +569,28 @@ static int nfs4_xdr_dec_cb_recall(struct rpc_rqst *rqstp,
- 	return decode_cb_op_status(xdr, OP_CB_RECALL, &cb->cb_status);
- }
- 
-+/*
-+ * 20.6. Operation 8: CB_RECALL_ANY - Keep Any N Recallable Objects
-+ */
-+static int
-+nfs4_xdr_dec_cb_recall_any(struct rpc_rqst *rqstp,
-+				  struct xdr_stream *xdr,
-+				  void *data)
-+{
-+	struct nfsd4_callback *cb = data;
-+	struct nfs4_cb_compound_hdr hdr;
-+	int status;
-+
-+	status = decode_cb_compound4res(xdr, &hdr);
-+	if (unlikely(status))
-+		return status;
-+	status = decode_cb_sequence4res(xdr, cb);
-+	if (unlikely(status || cb->cb_seq_status))
-+		return status;
-+	status =  decode_cb_op_status(xdr, OP_CB_RECALL_ANY, &cb->cb_status);
-+	return status;
-+}
-+
- #ifdef CONFIG_NFSD_PNFS
- /*
-  * CB_LAYOUTRECALL4args
-@@ -783,6 +854,7 @@ static const struct rpc_procinfo nfs4_cb_procedures[] = {
- #endif
- 	PROC(CB_NOTIFY_LOCK,	COMPOUND,	cb_notify_lock,	cb_notify_lock),
- 	PROC(CB_OFFLOAD,	COMPOUND,	cb_offload,	cb_offload),
-+	PROC(CB_RECALL_ANY,	COMPOUND,	cb_recall_any,	cb_recall_any),
- };
- 
- static unsigned int nfs4_cb_counts[ARRAY_SIZE(nfs4_cb_procedures)];
-diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
-index eadd7f465bf52..e30882f8b8516 100644
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -636,6 +636,7 @@ enum nfsd4_cb_op {
- 	NFSPROC4_CLNT_CB_OFFLOAD,
- 	NFSPROC4_CLNT_CB_SEQUENCE,
- 	NFSPROC4_CLNT_CB_NOTIFY_LOCK,
-+	NFSPROC4_CLNT_CB_RECALL_ANY,
- };
- 
- /* Returns true iff a is later than b: */
-diff --git a/fs/nfsd/xdr4.h b/fs/nfsd/xdr4.h
-index 0eb00105d845b..4fd2cf6d1d2dc 100644
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -896,5 +896,10 @@ struct nfsd4_operation {
- 			union nfsd4_op_u *);
- };
- 
-+struct nfsd4_cb_recall_any {
-+	struct nfsd4_callback	ra_cb;
-+	u32			ra_keep;
-+	u32			ra_bmval[1];
-+};
- 
- #endif
-diff --git a/fs/nfsd/xdr4cb.h b/fs/nfsd/xdr4cb.h
-index 547cf07cf4e08..0d39af1b00a0f 100644
---- a/fs/nfsd/xdr4cb.h
-+++ b/fs/nfsd/xdr4cb.h
-@@ -48,3 +48,9 @@
- #define NFS4_dec_cb_offload_sz		(cb_compound_dec_hdr_sz  +      \
- 					cb_sequence_dec_sz +            \
- 					op_dec_sz)
-+#define NFS4_enc_cb_recall_any_sz	(cb_compound_enc_hdr_sz +       \
-+					cb_sequence_enc_sz +            \
-+					1 + 1 + 1)
-+#define NFS4_dec_cb_recall_any_sz	(cb_compound_dec_hdr_sz  +      \
-+					cb_sequence_dec_sz +            \
-+					op_dec_sz)
--- 
-2.43.0
-
 
 
 
