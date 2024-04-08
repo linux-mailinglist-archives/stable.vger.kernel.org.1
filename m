@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-37172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3857989C39E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72CED89C05B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A4011C2381B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D138282E25
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594AF7E11E;
-	Mon,  8 Apr 2024 13:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E620F64CF2;
+	Mon,  8 Apr 2024 13:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLGnQQK5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="taUusbAk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D9D7E111;
-	Mon,  8 Apr 2024 13:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A391F2DF73;
+	Mon,  8 Apr 2024 13:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583458; cv=none; b=drAO43PzwCkz7jhERHuHlPV0kIT6B2M2qVKnCaHENndXFnY6BIXp3PUguZxMjj82MWeF61rBhTReq/W/+fW+gBtyW9TBITJi9kSve7DwbcYajqAC+II0mlD3NE+R88YbxgIXwRsR4nfxuq42AMZ48VDQtLdPrvjRosPNQp39pQY=
+	t=1712581665; cv=none; b=QZs64urGK8Dbmm4BZxtrFAyVkOTIYxqOoDDfJEwgH79loY3zJm3rgYr6STDDKCr+jYOFJxkDqss0AbbjQgdprfBaDGGnBuvdTykTFD9nwvc9sLSLztZyM7cJA8zgSD1iSujqKKoc6kwJup9Bab+i63jAM7RPVIWhufWlgFSgMi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583458; c=relaxed/simple;
-	bh=lMRRwgkYR+f//CGPQzeUe35HyB90mwHamWP9wKjjZBQ=;
+	s=arc-20240116; t=1712581665; c=relaxed/simple;
+	bh=kTS1yH+O4ga5knILrZ1annxfQcwEP7vkLcJCC+27ON4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GwjAPvJAOr4wOSuhKqDyLvEewcf+Wmu5KskYDY3Cpt+O1U+dc0Dvpm68p1Q5ISklp/kUlwThZ1EhryDJnA0m/zLvnkco7sTuumqB9tpUbA7nnzkspAWtRQze6fnQukNWNH2EYRm8ykDiPqVRicNgqtA8xcrEJ6qOhDNFzlfyNVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLGnQQK5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D7DC433F1;
-	Mon,  8 Apr 2024 13:37:37 +0000 (UTC)
+	 MIME-Version; b=bAt18flcevMVFXeTC4cTrsye0RV9cXu21XoEumFcJuQgAJaWVFkFVkXRWlQla5VKWzuBC6P+F6K+v28Xy+g29QOKoKMc8EKAYxAB18fOLI/P9QdplZK30OnnKJKfIP3XO/pyEZj8QGBsHgEqLZiUdkISoOAiEF0RKEa7Mo0uQ8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=taUusbAk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2B6C433C7;
+	Mon,  8 Apr 2024 13:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583458;
-	bh=lMRRwgkYR+f//CGPQzeUe35HyB90mwHamWP9wKjjZBQ=;
+	s=korg; t=1712581665;
+	bh=kTS1yH+O4ga5knILrZ1annxfQcwEP7vkLcJCC+27ON4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XLGnQQK5/aDc9zOtW5yr2NMgo3iVqcVrYT8PUofubVusmovjwkcdDgEHa+WmxjFLt
-	 sZpwl28XZHbCNdWnbydFwMBCVl0hCRGbX1AltOQMYUsYTyNnJlvPe/zSlOSNywe8Vd
-	 WI2/l+BxYL13dEOv0PVTGrINcW4YnengRwikxCuU=
+	b=taUusbAkgMjmQhUVXlV74BVRCoujokjOhpAhx5S4p0cMIBIp5uFy0OQHU7I9k/DcL
+	 26QP1ngO7735ncBmTJCBZHs3g/xG2/FV32+5oBVz/7DrlhK4D/YtUO/gdVPjsQppGy
+	 R9WTm7bdqJX+pXTFczeHO0WJ35l9wCJrxqMIwZ2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 181/273] s390/pai: fix sampling event removal for PMU device driver
+	Ziyang Xuan <william.xuanziyang@huawei.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.1 042/138] netfilter: nf_tables: Fix potential data-race in __nft_flowtable_type_get()
 Date: Mon,  8 Apr 2024 14:57:36 +0200
-Message-ID: <20240408125314.908560468@linuxfoundation.org>
+Message-ID: <20240408125257.537747327@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-[ Upstream commit e9f3af02f63909f41b43c28330434cc437639c5c ]
+commit 24225011d81b471acc0e1e315b7d9905459a6304 upstream.
 
-In case of a sampling event, the PAI PMU device drivers need a
-reference to this event.  Currently to PMU device driver reference
-is removed when a sampling event is destroyed. This may lead to
-situations where the reference of the PMU device driver is removed
-while being used by a different sampling event.
-Reset the event reference pointer of the PMU device driver when
-a sampling event is deleted and before the next one might be added.
+nft_unregister_flowtable_type() within nf_flow_inet_module_exit() can
+concurrent with __nft_flowtable_type_get() within nf_tables_newflowtable().
+And thhere is not any protection when iterate over nf_tables_flowtables
+list in __nft_flowtable_type_get(). Therefore, there is pertential
+data-race of nf_tables_flowtables list entry.
 
-Fixes: 39d62336f5c1 ("s390/pai: add support for cryptography counters")
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use list_for_each_entry_rcu() to iterate over nf_tables_flowtables list
+in __nft_flowtable_type_get(), and use rcu_read_lock() in the caller
+nft_flowtable_type_get() to protect the entire type query process.
+
+Fixes: 3b49e2e94e6e ("netfilter: nf_tables: add flow table netlink frontend")
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/perf_pai_crypto.c | 10 +++++++---
- arch/s390/kernel/perf_pai_ext.c    | 10 +++++++---
- 2 files changed, 14 insertions(+), 6 deletions(-)
+ net/netfilter/nf_tables_api.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
-index 522a5ea0a9f49..335e3f5d71f74 100644
---- a/arch/s390/kernel/perf_pai_crypto.c
-+++ b/arch/s390/kernel/perf_pai_crypto.c
-@@ -90,7 +90,6 @@ static void paicrypt_event_destroy(struct perf_event *event)
- 						 event->cpu);
- 	struct paicrypt_map *cpump = mp->mapptr;
- 
--	cpump->event = NULL;
- 	static_branch_dec(&pai_key);
- 	mutex_lock(&pai_reserve_mutex);
- 	debug_sprintf_event(cfm_dbg, 5, "%s event %#llx cpu %d users %d"
-@@ -348,10 +347,15 @@ static int paicrypt_add(struct perf_event *event, int flags)
- 
- static void paicrypt_stop(struct perf_event *event, int flags)
- {
--	if (!event->attr.sample_period)	/* Counting */
-+	struct paicrypt_mapptr *mp = this_cpu_ptr(paicrypt_root.mapptr);
-+	struct paicrypt_map *cpump = mp->mapptr;
-+
-+	if (!event->attr.sample_period) {	/* Counting */
- 		paicrypt_read(event);
--	else				/* Sampling */
-+	} else {				/* Sampling */
- 		perf_sched_cb_dec(event->pmu);
-+		cpump->event = NULL;
-+	}
- 	event->hw.state = PERF_HES_STOPPED;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7841,11 +7841,12 @@ static int nft_flowtable_parse_hook(cons
+ 	return err;
  }
  
-diff --git a/arch/s390/kernel/perf_pai_ext.c b/arch/s390/kernel/perf_pai_ext.c
-index 95d1a890640a3..db37c38ddcee4 100644
---- a/arch/s390/kernel/perf_pai_ext.c
-+++ b/arch/s390/kernel/perf_pai_ext.c
-@@ -121,7 +121,6 @@ static void paiext_event_destroy(struct perf_event *event)
- 	struct paiext_map *cpump = mp->mapptr;
- 
- 	mutex_lock(&paiext_reserve_mutex);
--	cpump->event = NULL;
- 	if (refcount_dec_and_test(&cpump->refcnt))	/* Last reference gone */
- 		paiext_free(mp);
- 	paiext_root_free();
-@@ -355,10 +354,15 @@ static int paiext_add(struct perf_event *event, int flags)
- 
- static void paiext_stop(struct perf_event *event, int flags)
++/* call under rcu_read_lock */
+ static const struct nf_flowtable_type *__nft_flowtable_type_get(u8 family)
  {
--	if (!event->attr.sample_period)	/* Counting */
-+	struct paiext_mapptr *mp = this_cpu_ptr(paiext_root.mapptr);
-+	struct paiext_map *cpump = mp->mapptr;
-+
-+	if (!event->attr.sample_period) {	/* Counting */
- 		paiext_read(event);
--	else				/* Sampling */
-+	} else {				/* Sampling */
- 		perf_sched_cb_dec(event->pmu);
-+		cpump->event = NULL;
-+	}
- 	event->hw.state = PERF_HES_STOPPED;
- }
+ 	const struct nf_flowtable_type *type;
  
--- 
-2.43.0
-
+-	list_for_each_entry(type, &nf_tables_flowtables, list) {
++	list_for_each_entry_rcu(type, &nf_tables_flowtables, list) {
+ 		if (family == type->family)
+ 			return type;
+ 	}
+@@ -7857,9 +7858,13 @@ nft_flowtable_type_get(struct net *net,
+ {
+ 	const struct nf_flowtable_type *type;
+ 
++	rcu_read_lock();
+ 	type = __nft_flowtable_type_get(family);
+-	if (type != NULL && try_module_get(type->owner))
++	if (type != NULL && try_module_get(type->owner)) {
++		rcu_read_unlock();
+ 		return type;
++	}
++	rcu_read_unlock();
+ 
+ 	lockdep_nfnl_nft_mutex_not_held();
+ #ifdef CONFIG_MODULES
 
 
 
