@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-37079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8C889C336
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:40:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8593389C27C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:30:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C3C1281E5A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:40:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B72531C21E14
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:30:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EB681748;
-	Mon,  8 Apr 2024 13:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 754B37D3F5;
+	Mon,  8 Apr 2024 13:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b663T9mL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBe7gkhU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B8074BE5;
-	Mon,  8 Apr 2024 13:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329287D3F7;
+	Mon,  8 Apr 2024 13:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583192; cv=none; b=bP01DiusdMmTDmePWB9yb1/Oy+MwXM4Xfqhe2WbRpqOkWdINEMAIIA2p/lAV7mfsdyMDegtlJnZMncM4B+XyZTbGtNERqZT3dmYFtd9l7prdXrXb1iVkTiluPNH4yhgqoC+GSLEP3nAGbbKGt6hP3U/3il3O+boIusX5wNuO844=
+	t=1712582828; cv=none; b=VOYH7uZo9ORQYXtCrnFrHvlX7gDmJIVIngZTVRRrRiHkTwna/VKeHnGXwf/1lhWVnHQkwHk6TQLyhJxmll3C/iT9bYaF/kUku6b5/95robgWg7eFUkFR879mQhaFuCJmkBxPOKe12KgufrCmGMkBEZOe78DAvCx2PK1KKgNw7hA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583192; c=relaxed/simple;
-	bh=xZv5gxMhnDdJE8tSoAwkfkTqp8Jti+Lk6ge6InMl0Jw=;
+	s=arc-20240116; t=1712582828; c=relaxed/simple;
+	bh=sM1sIl563BEP+ismBOHzlBSjxo6AhSyC7SrYq2hAl3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DRgLFtxiyTrEwFwgURqKLzFHY7/ZKzugx+NxeSeM5tEezvo/ZpC5sAl21ienl/+q1QaiLOV1uM40RQqGWMJ+XF3TK3yVc2mwUk98DNc3a65ptVa6p+KTKZ4/Xv24zSETMp9xJ89LBV2VXh/4yZ9DGu1zkM/6CF4zBqHt8j3gsH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b663T9mL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F6CC433C7;
-	Mon,  8 Apr 2024 13:33:11 +0000 (UTC)
+	 MIME-Version; b=t9HP+xyXx3GAvFQGMP8mFwkeu0HvX7if8LtpCRh4E5RGEpixZb6ZqZ0t9Ak7I/XW+41uJdfUzjMcrPli8vkJWuGkoB+CkrBlOKRW5v/z/cUc1Vr/ZwKH6bVphjHAcoFcBu00c7hDNJLXux/upDPHsV0Cg7VUYAbzKAK3Mi4+7Nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBe7gkhU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DA6C433C7;
+	Mon,  8 Apr 2024 13:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583192;
-	bh=xZv5gxMhnDdJE8tSoAwkfkTqp8Jti+Lk6ge6InMl0Jw=;
+	s=korg; t=1712582828;
+	bh=sM1sIl563BEP+ismBOHzlBSjxo6AhSyC7SrYq2hAl3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b663T9mLatmh2VR2UKD4GJcysdX1ySUpay8s11C9WqsMH/vBuyGFbe0V1Q9iIdHxt
-	 nreQo7zS648dD5YKTJYHX+JexlxMpKfNjbuTOLJsKuDKgUKMxYn3dXfd53Cs4P/szX
-	 r6gdS/Ry4bf86fRSB16LVXJsoSaML5e7cKtLkEo8=
+	b=qBe7gkhU2aJ/RggmMBZb18ZQLdEhxTHM3MR+/4DHNhU5CUM/Au4lNqmW4QBKQ2+dB
+	 2/FG1yAwVIWJwZ6u/n8aZaDTuwBxv9PQ3r5Rk6VR8UfsvKnnMXCuyyy71bwzYOruTQ
+	 OPYtDBBn5gRAfmPQnAXriH+VddNgr1UheP5mjV5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 150/273] block: count BLK_OPEN_RESTRICT_WRITES openers
-Date: Mon,  8 Apr 2024 14:57:05 +0200
-Message-ID: <20240408125313.941904629@linuxfoundation.org>
+	Su Hui <suhui@nfschina.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 127/252] octeontx2-pf: check negative error code in otx2_open()
+Date: Mon,  8 Apr 2024 14:57:06 +0200
+Message-ID: <20240408125310.564788039@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 3ff56e285de5a375fbfab3c3f1af81bbd23db36d ]
+commit e709acbd84fb6ef32736331b0147f027a3ef4c20 upstream.
 
-The original changes in v6.8 do allow for a block device to be reopened
-with BLK_OPEN_RESTRICT_WRITES provided the same holder is used as per
-bdev_may_open(). I think this has a bug.
+otx2_rxtx_enable() return negative error code such as -EIO,
+check -EIO rather than EIO to fix this problem.
 
-The first opener @f1 of that block device will set bdev->bd_writers to
--1. The second opener @f2 using the same holder will pass the check in
-bdev_may_open() that bdev->bd_writers must not be greater than zero.
-
-The first opener @f1 now closes the block device and in bdev_release()
-will end up calling bdev_yield_write_access() which calls
-bdev_writes_blocked() and sets bdev->bd_writers to 0 again.
-
-Now @f2 holds a file to that block device which was opened with
-exclusive write access but bdev->bd_writers has been reset to 0.
-
-So now @f3 comes along and succeeds in opening the block device with
-BLK_OPEN_WRITE betraying @f2's request to have exclusive write access.
-
-This isn't a practical issue yet because afaict there's no codepath
-inside the kernel that reopenes the same block device with
-BLK_OPEN_RESTRICT_WRITES but it will be if there is.
-
-Fix this by counting the number of BLK_OPEN_RESTRICT_WRITES openers. So
-we only allow writes again once all BLK_OPEN_RESTRICT_WRITES openers are
-done.
-
-Link: https://lore.kernel.org/r/20240323-abtauchen-klauen-c2953810082d@brauner
-Fixes: ed5cc702d311 ("block: Add config option to not allow writing to mounted devices")
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c926252205c4 ("octeontx2-pf: Disable packet I/O for graceful exit")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Link: https://lore.kernel.org/r/20240328020620.4054692-1-suhui@nfschina.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/bdev.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/bdev.c b/block/bdev.c
-index e9f1b12bd75c7..678807bcd0034 100644
---- a/block/bdev.c
-+++ b/block/bdev.c
-@@ -738,17 +738,17 @@ void blkdev_put_no_open(struct block_device *bdev)
- 
- static bool bdev_writes_blocked(struct block_device *bdev)
- {
--	return bdev->bd_writers == -1;
-+	return bdev->bd_writers < 0;
- }
- 
- static void bdev_block_writes(struct block_device *bdev)
- {
--	bdev->bd_writers = -1;
-+	bdev->bd_writers--;
- }
- 
- static void bdev_unblock_writes(struct block_device *bdev)
- {
--	bdev->bd_writers = 0;
-+	bdev->bd_writers++;
- }
- 
- static bool bdev_may_open(struct block_device *bdev, blk_mode_t mode)
--- 
-2.43.0
-
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -1933,7 +1933,7 @@ int otx2_open(struct net_device *netdev)
+ 	 * mcam entries are enabled to receive the packets. Hence disable the
+ 	 * packet I/O.
+ 	 */
+-	if (err == EIO)
++	if (err == -EIO)
+ 		goto err_disable_rxtx;
+ 	else if (err)
+ 		goto err_tx_stop_queues;
 
 
 
