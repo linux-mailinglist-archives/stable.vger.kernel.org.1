@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-37141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F4389C380
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B164489C3C4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:44:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 568D61F22228
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E358D1C214E1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024BC1272A2;
-	Mon,  8 Apr 2024 13:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A507E7F464;
+	Mon,  8 Apr 2024 13:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4y4sot4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pghfxaa+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B162F7D09F;
-	Mon,  8 Apr 2024 13:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639577D074;
+	Mon,  8 Apr 2024 13:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583366; cv=none; b=OZYFTemDFwN65NDiMdFzMTXw5hEHcZvaGJx4RSHODdt21bxjt7IyW2rCNBIsujCp3UiPeSDLJg3p1Tr15W6wLMRcfhJrQxm7CGY7PSGkiQVZoXxOG7vhlimsdq1coZfX6F4BC4tK81pcOa5lX3Z1E+KFolpwWQz9lWJyLJFP5to=
+	t=1712583526; cv=none; b=Bsbi3yFP3qFMWavb5dwhEbR5Lbr9EcH3WcLZudn8XvWijppyBRezRQxaosWmj2noJ52Q6788/U5ApfUZpn1asFt/eHV5JGPGxUiLEoswbCesCkzDjrDwZpw3lHq9DsiteZpMOh0YCO3rkF/9r/Uo3Xoe/dj6yVFozZ+qsuW3Uk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583366; c=relaxed/simple;
-	bh=v9Yyugpl5ZGZ6XRnT9lsWxmTVQ+yP7RjTNwrcj0p7tU=;
+	s=arc-20240116; t=1712583526; c=relaxed/simple;
+	bh=+0pDmkOV3j7V8e00X6TxZEpW/DIDcA6vgMtAVVZPnVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mqoCxBE+P5kyGeexjY5PWPzvNLF9YCmtBPgI1ozDXQFUB8aQO9davSlrHMlgZRyFHCQcYfiNDuc4NCTiC8l+WxOLR0bm7JgBnqj9X4PPxbHOurnpqGAvVS2DXj+ahXKvOEqdRmZpialUiJJiLXKiXU1j0OTPs+lef17szYkQ0VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4y4sot4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A963C433C7;
-	Mon,  8 Apr 2024 13:36:06 +0000 (UTC)
+	 MIME-Version; b=AOsTBl+9KRYvpJ/3fay0QNbAuafnfNRRpcgBXMCi7VLLmScsdFSIwO14+FtfNAMSNX5KcL5eF7QWimsihNw/LRTk9Vjufw7dyAxDZ7S1e7tW4AcZgA8lkAjssQWSvEyC+XrcTCr5qidDSsZVVfjTiZJry/TWbhAIG8+0IF63OSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pghfxaa+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE339C433C7;
+	Mon,  8 Apr 2024 13:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583366;
-	bh=v9Yyugpl5ZGZ6XRnT9lsWxmTVQ+yP7RjTNwrcj0p7tU=;
+	s=korg; t=1712583526;
+	bh=+0pDmkOV3j7V8e00X6TxZEpW/DIDcA6vgMtAVVZPnVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s4y4sot467lkNlpcED1bWHHZ2KQKz7oNGPAzW1oDqxBLI7hkvncxiyPHLxLf+E5j9
-	 j8vGdoVHcxs74k4Z7EMHJJPJoIBrr+aYJZ9oUDbp8C69YLVLANZrij40/mdw00h2t3
-	 99HBRfBW+hzvgYGclx0/jeG/clKd87QJtbF2uOW4=
+	b=pghfxaa+Nuae3HhI4xQAuC8nGDx0wf2HDhX+zst3KWcqlNmWQiRFdXrEZ04qC6dzB
+	 FsYbAgHnvn4HeMxoNxyKfgbypqXNJXjXKh48/+jxvtoTk/x3g2oyipVNCJT6SX+yOL
+	 TqpChyLjWj6LKlSNY4TldbhzHZPtDIGi0ZoARXE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Andreas Schwab <schwab@suse.de>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Yunhui Cui <cuiyunhui@bytedance.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 164/252] ALSA: hda: cs35l56: Add ACPI device match tables
+Subject: [PATCH 6.8 188/273] riscv: use KERN_INFO in do_trap
 Date: Mon,  8 Apr 2024 14:57:43 +0200
-Message-ID: <20240408125311.740628407@linuxfoundation.org>
+Message-ID: <20240408125315.129745497@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +65,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Andreas Schwab <schwab@suse.de>
 
-[ Upstream commit 2d0401ee38d43ab0e4cdd02dfc9d402befb2b5c8 ]
+[ Upstream commit dd33e5dc7247041b565014f66286c9566b0e32b6 ]
 
-Adding the ACPI HIDs to the match table triggers the cs35l56-hda modules
-to be loaded on boot so that Serial Multi Instantiate can add the
-devices to the bus and begin the driver init sequence.
+Print the instruction dump with info instead of emergency level.  The
+unhandled signal message is only for informational purpose.
 
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Fixes: 73cfbfa9caea ("ALSA: hda/cs35l56: Add driver for Cirrus Logic CS35L56 amplifier")
-Message-ID: <20240328121355.18972-1-simont@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: b8a03a634129 ("riscv: add userland instruction dump to RISC-V splats")
+Signed-off-by: Andreas Schwab <schwab@suse.de>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Reviewed-by: Yunhui Cui <cuiyunhui@bytedance.com>
+Link: https://lore.kernel.org/r/mvmy1aegrhm.fsf@suse.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/cs35l56_hda_i2c.c | 13 +++++++++++--
- sound/pci/hda/cs35l56_hda_spi.c | 13 +++++++++++--
- 2 files changed, 22 insertions(+), 4 deletions(-)
+ arch/riscv/kernel/traps.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/cs35l56_hda_i2c.c b/sound/pci/hda/cs35l56_hda_i2c.c
-index 757a4d193e0fb..c31f60b0421e5 100644
---- a/sound/pci/hda/cs35l56_hda_i2c.c
-+++ b/sound/pci/hda/cs35l56_hda_i2c.c
-@@ -49,10 +49,19 @@ static const struct i2c_device_id cs35l56_hda_i2c_id[] = {
- 	{}
- };
+diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
+index a1b9be3c4332d..142f5f5168fb1 100644
+--- a/arch/riscv/kernel/traps.c
++++ b/arch/riscv/kernel/traps.c
+@@ -121,7 +121,7 @@ void do_trap(struct pt_regs *regs, int signo, int code, unsigned long addr)
+ 		print_vma_addr(KERN_CONT " in ", instruction_pointer(regs));
+ 		pr_cont("\n");
+ 		__show_regs(regs);
+-		dump_instr(KERN_EMERG, regs);
++		dump_instr(KERN_INFO, regs);
+ 	}
  
-+static const struct acpi_device_id cs35l56_acpi_hda_match[] = {
-+	{ "CSC3554", 0 },
-+	{ "CSC3556", 0 },
-+	{ "CSC3557", 0 },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(acpi, cs35l56_acpi_hda_match);
-+
- static struct i2c_driver cs35l56_hda_i2c_driver = {
- 	.driver = {
--		.name		= "cs35l56-hda",
--		.pm		= &cs35l56_hda_pm_ops,
-+		.name		  = "cs35l56-hda",
-+		.acpi_match_table = cs35l56_acpi_hda_match,
-+		.pm		  = &cs35l56_hda_pm_ops,
- 	},
- 	.id_table	= cs35l56_hda_i2c_id,
- 	.probe		= cs35l56_hda_i2c_probe,
-diff --git a/sound/pci/hda/cs35l56_hda_spi.c b/sound/pci/hda/cs35l56_hda_spi.c
-index 756aec342eab7..52c9e04b3c55f 100644
---- a/sound/pci/hda/cs35l56_hda_spi.c
-+++ b/sound/pci/hda/cs35l56_hda_spi.c
-@@ -49,10 +49,19 @@ static const struct spi_device_id cs35l56_hda_spi_id[] = {
- 	{}
- };
- 
-+static const struct acpi_device_id cs35l56_acpi_hda_match[] = {
-+	{ "CSC3554", 0 },
-+	{ "CSC3556", 0 },
-+	{ "CSC3557", 0 },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(acpi, cs35l56_acpi_hda_match);
-+
- static struct spi_driver cs35l56_hda_spi_driver = {
- 	.driver = {
--		.name		= "cs35l56-hda",
--		.pm		= &cs35l56_hda_pm_ops,
-+		.name		  = "cs35l56-hda",
-+		.acpi_match_table = cs35l56_acpi_hda_match,
-+		.pm		  = &cs35l56_hda_pm_ops,
- 	},
- 	.id_table	= cs35l56_hda_spi_id,
- 	.probe		= cs35l56_hda_spi_probe,
+ 	force_sig_fault(signo, code, (void __user *)addr);
 -- 
 2.43.0
 
