@@ -1,54 +1,63 @@
-Return-Path: <stable+bounces-37688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E02689C62C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:05:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D11689C398
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD189B2D5B7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 338A6283C7C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EC47F7F8;
-	Mon,  8 Apr 2024 14:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281C712AADF;
+	Mon,  8 Apr 2024 13:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAF7Ql+0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MU4xNdzI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534577E105;
-	Mon,  8 Apr 2024 14:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD587F7DB;
+	Mon,  8 Apr 2024 13:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584970; cv=none; b=Jfj3H0YgAKJIh4kqQgAuQcO0GHQAJsX+3rpgm+GtI9YvF2MlXNT4/BJIueCTfZR633lTHq7tuLGHjU0cDhq0ZLciTefaHXvr6WvBxxw9170HP31fRtI1M8UaFPyZEtb8eQsgDAGKlQx/C7Edg+Q6ElIAWmHSbZGKaYAMDFIjB3U=
+	t=1712583439; cv=none; b=JAc0xYy2yfUz5EGeZ8HT4OcJKNKj+he4JDstwbMjh013UCAycS0D6/qzlWEorctgGtsjEnfTF+JvZ+pYm+doogYPagv/9JlpIEdqUs0rezneE4j8THs49qckACDPAq+aMACgr7b2/kg2KEC1t1nPc1CiymdCYR8oKWh97HiS6eM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584970; c=relaxed/simple;
-	bh=r01Ji3t9FrpPuXGQaDAcJkXMhfrDiXxn0rFN/u6puC8=;
+	s=arc-20240116; t=1712583439; c=relaxed/simple;
+	bh=aUpnEhLZkHEK7BjO2NlX1kxJnUSh9ZWUKOZfSqk9s+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Il8rhP2Z+Gz9kKxHR8iUxmH0WL+UqJLUs37B/FVORzYn/371OK3ljVxSJ73hKGKEP5hKeKwrlhhtpLp6qkjOFwWY8np0BbQb1RIypTBJ8YSCA87tqueUWA88vVdc05cnWLnwzjSFynZ+nDhEaWnIpRFsaWCJGDd9m98XZ4nOBms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAF7Ql+0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFEB0C433C7;
-	Mon,  8 Apr 2024 14:02:49 +0000 (UTC)
+	 MIME-Version; b=VSzTrHKG/zRpS1mDkXJ2VFriFdwp68TGISl4ue5gDVTKdvT01+cWGFJ7RR8S0QeYac5MOWNhAsegsiS7EBbLBE6hijot/+yz+3blsu4N/tPxVjMFuCZ2WsPYLHhgTeQ4kHlrwKOeYce3pQIRbLpc2+xFO6w19JhJhYuoxlNrJKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MU4xNdzI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E708C433C7;
+	Mon,  8 Apr 2024 13:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584970;
-	bh=r01Ji3t9FrpPuXGQaDAcJkXMhfrDiXxn0rFN/u6puC8=;
+	s=korg; t=1712583439;
+	bh=aUpnEhLZkHEK7BjO2NlX1kxJnUSh9ZWUKOZfSqk9s+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iAF7Ql+0pkccClns79n7n2UB0Fh09CuYtPzxEXcl3ReOspJae4D1u+pn/31UDdIuu
-	 Q+gpiT7ElY2001AfE7yRDBbFKw84lkvney8u/iGwa6Yx5e1dPN470+8BXbaCADgbWA
-	 CEz8Y950e5CaTbHBX3vamRpyeoHeRkb0p10/ZWl8=
+	b=MU4xNdzIoABKZOqc/HII/r7gWKST3sdZ2nRAPkX/V1a1wFNn/ieMRZZiMpcU39yHR
+	 xguGwS+Yt8iEu3aVzN1GOfX+slNDkQ0MykWe//MSkPC8T9zzUBO02rg3Dm9AZapLA5
+	 utBUkWfKK2h+MpGWxSsLtOBwfo7tH8cmkG6ZT3fA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Subject: [PATCH 5.15 588/690] usb: dwc2: host: Fix ISOC flow in DDMA mode
+	David Howells <dhowells@redhat.com>,
+	Steve French <sfrench@samba.org>,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Rohith Surabattula <rohiths.msft@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 179/273] cifs: Fix caching to try to do open O_WRONLY as rdwr on server
 Date: Mon,  8 Apr 2024 14:57:34 +0200
-Message-ID: <20240408125420.879155676@linuxfoundation.org>
+Message-ID: <20240408125314.831583040@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,139 +69,256 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+From: David Howells <dhowells@redhat.com>
 
-commit b258e42688501cadb1a6dd658d6f015df9f32d8f upstream.
+[ Upstream commit e9e62243a3e2322cf639f653a0b0a88a76446ce7 ]
 
-Fixed ISOC completion flow in DDMA mode. Added isoc
-descriptor actual length value and update urb's start_frame
-value.
-Fixed initialization of ISOC DMA descriptors flow.
+When we're engaged in local caching of a cifs filesystem, we cannot perform
+caching of a partially written cache granule unless we can read the rest of
+the granule.  This can result in unexpected access errors being reported to
+the user.
 
-Fixes: 56f5b1cff22a ("staging: Core files for the DWC2 driver")
-Fixes: 20f2eb9c4cf8 ("staging: dwc2: add microframe scheduler from downstream Pi kernel")
-Fixes: c17b337c1ea4 ("usb: dwc2: host: program descriptor for next frame")
-Fixes: dc4c76e7b22c ("staging: HCD descriptor DMA support for the DWC2 driver")
-Fixes: 762d3a1a9cd7 ("usb: dwc2: host: process all completed urbs")
-CC: stable@vger.kernel.org
-Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Link: https://lore.kernel.org/r/a8b1e1711cc6cabfb45d92ede12e35445c66f06c.1708944698.git.Minas.Harutyunyan@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by the following: if a file is opened O_WRONLY locally, but the
+mount was given the "-o fsc" flag, try first opening the remote file with
+GENERIC_READ|GENERIC_WRITE and if that returns -EACCES, try dropping the
+GENERIC_READ and doing the open again.  If that last succeeds, invalidate
+the cache for that file as for O_DIRECT.
+
+Fixes: 70431bfd825d ("cifs: Support fscache indexing rewrite")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Steve French <sfrench@samba.org>
+cc: Shyam Prasad N <nspmangalore@gmail.com>
+cc: Rohith Surabattula <rohiths.msft@gmail.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/hcd.c      |   12 ++++++++++--
- drivers/usb/dwc2/hcd_ddma.c |   17 +++++++++++------
- drivers/usb/dwc2/hw.h       |    2 +-
- 3 files changed, 22 insertions(+), 9 deletions(-)
+ fs/smb/client/dir.c     | 15 +++++++++++++
+ fs/smb/client/file.c    | 48 ++++++++++++++++++++++++++++++++---------
+ fs/smb/client/fscache.h |  6 ++++++
+ 3 files changed, 59 insertions(+), 10 deletions(-)
 
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -2734,8 +2734,11 @@ enum dwc2_transaction_type dwc2_hcd_sele
- 			hsotg->available_host_channels--;
- 		}
- 		qh = list_entry(qh_ptr, struct dwc2_qh, qh_list_entry);
--		if (dwc2_assign_and_init_hc(hsotg, qh))
-+		if (dwc2_assign_and_init_hc(hsotg, qh)) {
-+			if (hsotg->params.uframe_sched)
-+				hsotg->available_host_channels++;
- 			break;
-+		}
+diff --git a/fs/smb/client/dir.c b/fs/smb/client/dir.c
+index 89333d9bce36e..37897b919dd5a 100644
+--- a/fs/smb/client/dir.c
++++ b/fs/smb/client/dir.c
+@@ -189,6 +189,7 @@ static int cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned
+ 	int disposition;
+ 	struct TCP_Server_Info *server = tcon->ses->server;
+ 	struct cifs_open_parms oparms;
++	int rdwr_for_fscache = 0;
  
- 		/*
- 		 * Move the QH from the periodic ready schedule to the
-@@ -2768,8 +2771,11 @@ enum dwc2_transaction_type dwc2_hcd_sele
- 			hsotg->available_host_channels--;
- 		}
- 
--		if (dwc2_assign_and_init_hc(hsotg, qh))
-+		if (dwc2_assign_and_init_hc(hsotg, qh)) {
-+			if (hsotg->params.uframe_sched)
-+				hsotg->available_host_channels++;
- 			break;
-+		}
- 
- 		/*
- 		 * Move the QH from the non-periodic inactive schedule to the
-@@ -4176,6 +4182,8 @@ void dwc2_host_complete(struct dwc2_hsot
- 			 urb->actual_length);
- 
- 	if (usb_pipetype(urb->pipe) == PIPE_ISOCHRONOUS) {
-+		if (!hsotg->params.dma_desc_enable)
-+			urb->start_frame = qtd->qh->start_active_frame;
- 		urb->error_count = dwc2_hcd_urb_get_error_count(qtd->urb);
- 		for (i = 0; i < urb->number_of_packets; ++i) {
- 			urb->iso_frame_desc[i].actual_length =
---- a/drivers/usb/dwc2/hcd_ddma.c
-+++ b/drivers/usb/dwc2/hcd_ddma.c
-@@ -589,7 +589,7 @@ static void dwc2_init_isoc_dma_desc(stru
- 	idx = qh->td_last;
- 	inc = qh->host_interval;
- 	hsotg->frame_number = dwc2_hcd_get_frame_number(hsotg);
--	cur_idx = dwc2_frame_list_idx(hsotg->frame_number);
-+	cur_idx = idx;
- 	next_idx = dwc2_desclist_idx_inc(qh->td_last, inc, qh->dev_speed);
- 
- 	/*
-@@ -896,6 +896,8 @@ static int dwc2_cmpl_host_isoc_dma_desc(
- {
- 	struct dwc2_dma_desc *dma_desc;
- 	struct dwc2_hcd_iso_packet_desc *frame_desc;
-+	u16 frame_desc_idx;
-+	struct urb *usb_urb = qtd->urb->priv;
- 	u16 remain = 0;
- 	int rc = 0;
- 
-@@ -908,8 +910,11 @@ static int dwc2_cmpl_host_isoc_dma_desc(
- 				DMA_FROM_DEVICE);
- 
- 	dma_desc = &qh->desc_list[idx];
-+	frame_desc_idx = (idx - qtd->isoc_td_first) & (usb_urb->number_of_packets - 1);
- 
--	frame_desc = &qtd->urb->iso_descs[qtd->isoc_frame_index_last];
-+	frame_desc = &qtd->urb->iso_descs[frame_desc_idx];
-+	if (idx == qtd->isoc_td_first)
-+		usb_urb->start_frame = dwc2_hcd_get_frame_number(hsotg);
- 	dma_desc->buf = (u32)(qtd->urb->dma + frame_desc->offset);
- 	if (chan->ep_is_in)
- 		remain = (dma_desc->status & HOST_DMA_ISOC_NBYTES_MASK) >>
-@@ -930,7 +935,7 @@ static int dwc2_cmpl_host_isoc_dma_desc(
- 		frame_desc->status = 0;
+ 	*oplock = 0;
+ 	if (tcon->ses->server->oplocks)
+@@ -200,6 +201,10 @@ static int cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned
+ 		return PTR_ERR(full_path);
  	}
  
--	if (++qtd->isoc_frame_index == qtd->urb->packet_count) {
-+	if (++qtd->isoc_frame_index == usb_urb->number_of_packets) {
- 		/*
- 		 * urb->status is not used for isoc transfers here. The
- 		 * individual frame_desc status are used instead.
-@@ -1035,11 +1040,11 @@ static void dwc2_complete_isoc_xfer_ddma
- 				return;
- 			idx = dwc2_desclist_idx_inc(idx, qh->host_interval,
- 						    chan->speed);
--			if (!rc)
-+			if (rc == 0)
- 				continue;
++	/* If we're caching, we need to be able to fill in around partial writes. */
++	if (cifs_fscache_enabled(inode) && (oflags & O_ACCMODE) == O_WRONLY)
++		rdwr_for_fscache = 1;
++
+ #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+ 	if (tcon->unix_ext && cap_unix(tcon->ses) && !tcon->broken_posix_open &&
+ 	    (CIFS_UNIX_POSIX_PATH_OPS_CAP &
+@@ -276,6 +281,8 @@ static int cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned
+ 		desired_access |= GENERIC_READ; /* is this too little? */
+ 	if (OPEN_FMODE(oflags) & FMODE_WRITE)
+ 		desired_access |= GENERIC_WRITE;
++	if (rdwr_for_fscache == 1)
++		desired_access |= GENERIC_READ;
  
--			if (rc == DWC2_CMPL_DONE)
--				break;
-+			if (rc == DWC2_CMPL_DONE || rc == DWC2_CMPL_STOP)
-+				goto stop_scan;
+ 	disposition = FILE_OVERWRITE_IF;
+ 	if ((oflags & (O_CREAT | O_EXCL)) == (O_CREAT | O_EXCL))
+@@ -304,6 +311,7 @@ static int cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned
+ 	if (!tcon->unix_ext && (mode & S_IWUGO) == 0)
+ 		create_options |= CREATE_OPTION_READONLY;
  
- 			/* rc == DWC2_CMPL_STOP */
++retry_open:
+ 	oparms = (struct cifs_open_parms) {
+ 		.tcon = tcon,
+ 		.cifs_sb = cifs_sb,
+@@ -317,8 +325,15 @@ static int cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned
+ 	rc = server->ops->open(xid, &oparms, oplock, buf);
+ 	if (rc) {
+ 		cifs_dbg(FYI, "cifs_create returned 0x%x\n", rc);
++		if (rc == -EACCES && rdwr_for_fscache == 1) {
++			desired_access &= ~GENERIC_READ;
++			rdwr_for_fscache = 2;
++			goto retry_open;
++		}
+ 		goto out;
+ 	}
++	if (rdwr_for_fscache == 2)
++		cifs_invalidate_cache(inode, FSCACHE_INVAL_DIO_WRITE);
  
---- a/drivers/usb/dwc2/hw.h
-+++ b/drivers/usb/dwc2/hw.h
-@@ -728,7 +728,7 @@
- #define TXSTS_QTOP_TOKEN_MASK		(0x3 << 25)
- #define TXSTS_QTOP_TOKEN_SHIFT		25
- #define TXSTS_QTOP_TERMINATE		BIT(24)
--#define TXSTS_QSPCAVAIL_MASK		(0xff << 16)
-+#define TXSTS_QSPCAVAIL_MASK		(0x7f << 16)
- #define TXSTS_QSPCAVAIL_SHIFT		16
- #define TXSTS_FSPCAVAIL_MASK		(0xffff << 0)
- #define TXSTS_FSPCAVAIL_SHIFT		0
+ #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+ 	/*
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 9d42a39009076..9ec835320f8a7 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -206,12 +206,12 @@ cifs_mark_open_files_invalid(struct cifs_tcon *tcon)
+ 	 */
+ }
+ 
+-static inline int cifs_convert_flags(unsigned int flags)
++static inline int cifs_convert_flags(unsigned int flags, int rdwr_for_fscache)
+ {
+ 	if ((flags & O_ACCMODE) == O_RDONLY)
+ 		return GENERIC_READ;
+ 	else if ((flags & O_ACCMODE) == O_WRONLY)
+-		return GENERIC_WRITE;
++		return rdwr_for_fscache == 1 ? (GENERIC_READ | GENERIC_WRITE) : GENERIC_WRITE;
+ 	else if ((flags & O_ACCMODE) == O_RDWR) {
+ 		/* GENERIC_ALL is too much permission to request
+ 		   can cause unnecessary access denied on create */
+@@ -348,11 +348,16 @@ static int cifs_nt_open(const char *full_path, struct inode *inode, struct cifs_
+ 	int create_options = CREATE_NOT_DIR;
+ 	struct TCP_Server_Info *server = tcon->ses->server;
+ 	struct cifs_open_parms oparms;
++	int rdwr_for_fscache = 0;
+ 
+ 	if (!server->ops->open)
+ 		return -ENOSYS;
+ 
+-	desired_access = cifs_convert_flags(f_flags);
++	/* If we're caching, we need to be able to fill in around partial writes. */
++	if (cifs_fscache_enabled(inode) && (f_flags & O_ACCMODE) == O_WRONLY)
++		rdwr_for_fscache = 1;
++
++	desired_access = cifs_convert_flags(f_flags, rdwr_for_fscache);
+ 
+ /*********************************************************************
+  *  open flag mapping table:
+@@ -389,6 +394,7 @@ static int cifs_nt_open(const char *full_path, struct inode *inode, struct cifs_
+ 	if (f_flags & O_DIRECT)
+ 		create_options |= CREATE_NO_BUFFER;
+ 
++retry_open:
+ 	oparms = (struct cifs_open_parms) {
+ 		.tcon = tcon,
+ 		.cifs_sb = cifs_sb,
+@@ -400,8 +406,16 @@ static int cifs_nt_open(const char *full_path, struct inode *inode, struct cifs_
+ 	};
+ 
+ 	rc = server->ops->open(xid, &oparms, oplock, buf);
+-	if (rc)
++	if (rc) {
++		if (rc == -EACCES && rdwr_for_fscache == 1) {
++			desired_access = cifs_convert_flags(f_flags, 0);
++			rdwr_for_fscache = 2;
++			goto retry_open;
++		}
+ 		return rc;
++	}
++	if (rdwr_for_fscache == 2)
++		cifs_invalidate_cache(inode, FSCACHE_INVAL_DIO_WRITE);
+ 
+ 	/* TODO: Add support for calling posix query info but with passing in fid */
+ 	if (tcon->unix_ext)
+@@ -834,11 +848,11 @@ int cifs_open(struct inode *inode, struct file *file)
+ use_cache:
+ 	fscache_use_cookie(cifs_inode_cookie(file_inode(file)),
+ 			   file->f_mode & FMODE_WRITE);
+-	if (file->f_flags & O_DIRECT &&
+-	    (!((file->f_flags & O_ACCMODE) != O_RDONLY) ||
+-	     file->f_flags & O_APPEND))
+-		cifs_invalidate_cache(file_inode(file),
+-				      FSCACHE_INVAL_DIO_WRITE);
++	if (!(file->f_flags & O_DIRECT))
++		goto out;
++	if ((file->f_flags & (O_ACCMODE | O_APPEND)) == O_RDONLY)
++		goto out;
++	cifs_invalidate_cache(file_inode(file), FSCACHE_INVAL_DIO_WRITE);
+ 
+ out:
+ 	free_dentry_path(page);
+@@ -903,6 +917,7 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
+ 	int disposition = FILE_OPEN;
+ 	int create_options = CREATE_NOT_DIR;
+ 	struct cifs_open_parms oparms;
++	int rdwr_for_fscache = 0;
+ 
+ 	xid = get_xid();
+ 	mutex_lock(&cfile->fh_mutex);
+@@ -966,7 +981,11 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
+ 	}
+ #endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
+ 
+-	desired_access = cifs_convert_flags(cfile->f_flags);
++	/* If we're caching, we need to be able to fill in around partial writes. */
++	if (cifs_fscache_enabled(inode) && (cfile->f_flags & O_ACCMODE) == O_WRONLY)
++		rdwr_for_fscache = 1;
++
++	desired_access = cifs_convert_flags(cfile->f_flags, rdwr_for_fscache);
+ 
+ 	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
+ 	if (cfile->f_flags & O_SYNC)
+@@ -978,6 +997,7 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
+ 	if (server->ops->get_lease_key)
+ 		server->ops->get_lease_key(inode, &cfile->fid);
+ 
++retry_open:
+ 	oparms = (struct cifs_open_parms) {
+ 		.tcon = tcon,
+ 		.cifs_sb = cifs_sb,
+@@ -1003,6 +1023,11 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
+ 		/* indicate that we need to relock the file */
+ 		oparms.reconnect = true;
+ 	}
++	if (rc == -EACCES && rdwr_for_fscache == 1) {
++		desired_access = cifs_convert_flags(cfile->f_flags, 0);
++		rdwr_for_fscache = 2;
++		goto retry_open;
++	}
+ 
+ 	if (rc) {
+ 		mutex_unlock(&cfile->fh_mutex);
+@@ -1011,6 +1036,9 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
+ 		goto reopen_error_exit;
+ 	}
+ 
++	if (rdwr_for_fscache == 2)
++		cifs_invalidate_cache(inode, FSCACHE_INVAL_DIO_WRITE);
++
+ #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+ reopen_success:
+ #endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
+diff --git a/fs/smb/client/fscache.h b/fs/smb/client/fscache.h
+index a3d73720914f8..1f2ea9f5cc9a8 100644
+--- a/fs/smb/client/fscache.h
++++ b/fs/smb/client/fscache.h
+@@ -109,6 +109,11 @@ static inline void cifs_readahead_to_fscache(struct inode *inode,
+ 		__cifs_readahead_to_fscache(inode, pos, len);
+ }
+ 
++static inline bool cifs_fscache_enabled(struct inode *inode)
++{
++	return fscache_cookie_enabled(cifs_inode_cookie(inode));
++}
++
+ #else /* CONFIG_CIFS_FSCACHE */
+ static inline
+ void cifs_fscache_fill_coherency(struct inode *inode,
+@@ -124,6 +129,7 @@ static inline void cifs_fscache_release_inode_cookie(struct inode *inode) {}
+ static inline void cifs_fscache_unuse_inode_cookie(struct inode *inode, bool update) {}
+ static inline struct fscache_cookie *cifs_inode_cookie(struct inode *inode) { return NULL; }
+ static inline void cifs_invalidate_cache(struct inode *inode, unsigned int flags) {}
++static inline bool cifs_fscache_enabled(struct inode *inode) { return false; }
+ 
+ static inline int cifs_fscache_query_occupancy(struct inode *inode,
+ 					       pgoff_t first, unsigned int nr_pages,
+-- 
+2.43.0
+
 
 
 
