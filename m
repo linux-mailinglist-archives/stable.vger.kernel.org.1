@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-37419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFBFE89C56E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:57:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 326F589C1F7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:25:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66F72B26F79
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6496E1C21C72
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:25:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A080B7D413;
-	Mon,  8 Apr 2024 13:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2877C6E9;
+	Mon,  8 Apr 2024 13:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rx13ya2h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lRMMw7pQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600287C092;
-	Mon,  8 Apr 2024 13:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084E2762E5;
+	Mon,  8 Apr 2024 13:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584177; cv=none; b=Q+wM/RIySVh1CMVlM8g1oyI0ZNic5tMaQ6jhGNr73gYKYUThO7eiyblf74X4+lMBTUE4JPopy1TPdLioFOmJZT4vJnSS2H8SYywsmWmY7ZYEXD2lBOL6iMRYgCO+AXolylrYmWqtZNZk+77lE6inQj55F2xRh9Jmwe+kVCkF2KQ=
+	t=1712582475; cv=none; b=ftlQsS3ix+6OZWWHhjW2ugnXH3dHfL9HwTa1qAUrbh/fmQkw/By/6M5TbqvztxeifVeYoHqkqMQJvXezqoFaeB/SjAzIYsgHWd/7XYdyrT2t5TiSBUi2jjEcMDWwRgUzwliD3SMUj9OoE8og/2jB4GHROjTw81qz/BQgeoRk1d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584177; c=relaxed/simple;
-	bh=C9uNpwT6j98kbrbIYRHc0+quXDJqfZ6r3WrmMsM6xL4=;
+	s=arc-20240116; t=1712582475; c=relaxed/simple;
+	bh=sKNIh643/3mpeII46zPupH+qo0h3tjH4PCu2avk/A7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZWRoo9Yy/JDsyDuhY+kBt0yjUoHYLLLREKwKFKSiZa0z+KBgNfpoDJlFsZtKOA6y8KTXrcFZpUjI7HIo07dnQHnU9LGgVHILKuMxk7J4JIJe82CUe/YjD+32NKASRFQ9Sbm0pwwI5aKQUnMwI+GM7PaBjfoZJdC1sFNyceA/e0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rx13ya2h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3B8C433C7;
-	Mon,  8 Apr 2024 13:49:36 +0000 (UTC)
+	 MIME-Version; b=uP1ZYMGZstLlsQsa+vSbWoI838zRafr6a8N5tnwNgfsxUK734L29/vdxhAIb9M8mbYYXubbW5FCHELyjWMiDjsgiUFPIGL31dCgvycs9i+SNOllJrRJG1E0jXj56p2Q6jK/2hQ9hvl2mcROKSS42ZsqLV6eQkgqqLc0foyQqpSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lRMMw7pQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4BCC43390;
+	Mon,  8 Apr 2024 13:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584177;
-	bh=C9uNpwT6j98kbrbIYRHc0+quXDJqfZ6r3WrmMsM6xL4=;
+	s=korg; t=1712582474;
+	bh=sKNIh643/3mpeII46zPupH+qo0h3tjH4PCu2avk/A7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rx13ya2hYqP134v35xpxdOhb2IdaldkxSMm7qdpQ2QWIdeo81hZBJC6ThxdqpSouW
-	 rQTnzwHFLFvRwxZxvrZ4A8ZPdg6hScvYVcaBaX+/215QNtqEyxnTdIL3hGALcVg4k8
-	 S6qH1cxXEGBYpZN5Bc0QZW3zaAoTTzVWbVqrQjUk=
+	b=lRMMw7pQxWYhPZg5EtLq+yFytldcQ++oLAN2znG9MMzxcLfNDPNvfEbbekc3Il5dr
+	 4+qWEyBcARM+Mr7xkp3bt93BSTPjmKxK8ZRpskDqNxHj6faH+4byRBCDxFqTzNklIQ
+	 yxV5ucAenfvR759vHdPhZoMzrVmqPY8IRSnMMjkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.8 247/273] smb: client: serialise cifs_construct_tcon() with cifs_mount_mutex
-Date: Mon,  8 Apr 2024 14:58:42 +0200
-Message-ID: <20240408125317.122571678@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 109/138] ata: sata_mv: Fix PCI device ID table declaration compilation warning
+Date: Mon,  8 Apr 2024 14:58:43 +0200
+Message-ID: <20240408125259.622980821@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +62,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 93cee45ccfebc62a3bb4cd622b89e00c8c7d8493 upstream.
+[ Upstream commit 3137b83a90646917c90951d66489db466b4ae106 ]
 
-Serialise cifs_construct_tcon() with cifs_mount_mutex to handle
-parallel mounts that may end up reusing the session and tcon created
-by it.
+Building with W=1 shows a warning for an unused variable when CONFIG_PCI
+is diabled:
 
-Cc: stable@vger.kernel.org # 6.4+
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/ata/sata_mv.c:790:35: error: unused variable 'mv_pci_tbl' [-Werror,-Wunused-const-variable]
+static const struct pci_device_id mv_pci_tbl[] = {
+
+Move the table into the same block that containsn the pci_driver
+definition.
+
+Fixes: 7bb3c5290ca0 ("sata_mv: Remove PCI dependency")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c    |   13 ++++++++++++-
- fs/smb/client/fs_context.c |    6 +++---
- fs/smb/client/fs_context.h |   12 ++++++++++++
- 3 files changed, 27 insertions(+), 4 deletions(-)
+ drivers/ata/sata_mv.c | 63 +++++++++++++++++++++----------------------
+ 1 file changed, 31 insertions(+), 32 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -3989,7 +3989,7 @@ cifs_set_vol_auth(struct smb3_fs_context
- }
+diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
+index 17f9062b0eaa5..9cf540017a5e5 100644
+--- a/drivers/ata/sata_mv.c
++++ b/drivers/ata/sata_mv.c
+@@ -787,37 +787,6 @@ static const struct ata_port_info mv_port_info[] = {
+ 	},
+ };
  
- static struct cifs_tcon *
--cifs_construct_tcon(struct cifs_sb_info *cifs_sb, kuid_t fsuid)
-+__cifs_construct_tcon(struct cifs_sb_info *cifs_sb, kuid_t fsuid)
- {
- 	int rc;
- 	struct cifs_tcon *master_tcon = cifs_sb_master_tcon(cifs_sb);
-@@ -4087,6 +4087,17 @@ out:
- 	return tcon;
- }
- 
-+static struct cifs_tcon *
-+cifs_construct_tcon(struct cifs_sb_info *cifs_sb, kuid_t fsuid)
-+{
-+	struct cifs_tcon *ret;
-+
-+	cifs_mount_lock();
-+	ret = __cifs_construct_tcon(cifs_sb, fsuid);
-+	cifs_mount_unlock();
-+	return ret;
-+}
-+
- struct cifs_tcon *
- cifs_sb_master_tcon(struct cifs_sb_info *cifs_sb)
- {
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -37,7 +37,7 @@
- #include "rfc1002pdu.h"
- #include "fs_context.h"
- 
--static DEFINE_MUTEX(cifs_mount_mutex);
-+DEFINE_MUTEX(cifs_mount_mutex);
- 
- static const match_table_t cifs_smb_version_tokens = {
- 	{ Smb_1, SMB1_VERSION_STRING },
-@@ -753,9 +753,9 @@ static int smb3_get_tree(struct fs_conte
- 
- 	if (err)
- 		return err;
--	mutex_lock(&cifs_mount_mutex);
-+	cifs_mount_lock();
- 	ret = smb3_get_tree_common(fc);
--	mutex_unlock(&cifs_mount_mutex);
-+	cifs_mount_unlock();
- 	return ret;
- }
- 
---- a/fs/smb/client/fs_context.h
-+++ b/fs/smb/client/fs_context.h
-@@ -295,4 +295,16 @@ extern void smb3_update_mnt_flags(struct
- #define MAX_CACHED_FIDS 16
- extern char *cifs_sanitize_prepath(char *prepath, gfp_t gfp);
- 
-+extern struct mutex cifs_mount_mutex;
-+
-+static inline void cifs_mount_lock(void)
-+{
-+	mutex_lock(&cifs_mount_mutex);
-+}
-+
-+static inline void cifs_mount_unlock(void)
-+{
-+	mutex_unlock(&cifs_mount_mutex);
-+}
-+
+-static const struct pci_device_id mv_pci_tbl[] = {
+-	{ PCI_VDEVICE(MARVELL, 0x5040), chip_504x },
+-	{ PCI_VDEVICE(MARVELL, 0x5041), chip_504x },
+-	{ PCI_VDEVICE(MARVELL, 0x5080), chip_5080 },
+-	{ PCI_VDEVICE(MARVELL, 0x5081), chip_508x },
+-	/* RocketRAID 1720/174x have different identifiers */
+-	{ PCI_VDEVICE(TTI, 0x1720), chip_6042 },
+-	{ PCI_VDEVICE(TTI, 0x1740), chip_6042 },
+-	{ PCI_VDEVICE(TTI, 0x1742), chip_6042 },
+-
+-	{ PCI_VDEVICE(MARVELL, 0x6040), chip_604x },
+-	{ PCI_VDEVICE(MARVELL, 0x6041), chip_604x },
+-	{ PCI_VDEVICE(MARVELL, 0x6042), chip_6042 },
+-	{ PCI_VDEVICE(MARVELL, 0x6080), chip_608x },
+-	{ PCI_VDEVICE(MARVELL, 0x6081), chip_608x },
+-
+-	{ PCI_VDEVICE(ADAPTEC2, 0x0241), chip_604x },
+-
+-	/* Adaptec 1430SA */
+-	{ PCI_VDEVICE(ADAPTEC2, 0x0243), chip_7042 },
+-
+-	/* Marvell 7042 support */
+-	{ PCI_VDEVICE(MARVELL, 0x7042), chip_7042 },
+-
+-	/* Highpoint RocketRAID PCIe series */
+-	{ PCI_VDEVICE(TTI, 0x2300), chip_7042 },
+-	{ PCI_VDEVICE(TTI, 0x2310), chip_7042 },
+-
+-	{ }			/* terminate list */
+-};
+-
+ static const struct mv_hw_ops mv5xxx_ops = {
+ 	.phy_errata		= mv5_phy_errata,
+ 	.enable_leds		= mv5_enable_leds,
+@@ -4301,6 +4270,36 @@ static int mv_pci_init_one(struct pci_dev *pdev,
+ static int mv_pci_device_resume(struct pci_dev *pdev);
  #endif
+ 
++static const struct pci_device_id mv_pci_tbl[] = {
++	{ PCI_VDEVICE(MARVELL, 0x5040), chip_504x },
++	{ PCI_VDEVICE(MARVELL, 0x5041), chip_504x },
++	{ PCI_VDEVICE(MARVELL, 0x5080), chip_5080 },
++	{ PCI_VDEVICE(MARVELL, 0x5081), chip_508x },
++	/* RocketRAID 1720/174x have different identifiers */
++	{ PCI_VDEVICE(TTI, 0x1720), chip_6042 },
++	{ PCI_VDEVICE(TTI, 0x1740), chip_6042 },
++	{ PCI_VDEVICE(TTI, 0x1742), chip_6042 },
++
++	{ PCI_VDEVICE(MARVELL, 0x6040), chip_604x },
++	{ PCI_VDEVICE(MARVELL, 0x6041), chip_604x },
++	{ PCI_VDEVICE(MARVELL, 0x6042), chip_6042 },
++	{ PCI_VDEVICE(MARVELL, 0x6080), chip_608x },
++	{ PCI_VDEVICE(MARVELL, 0x6081), chip_608x },
++
++	{ PCI_VDEVICE(ADAPTEC2, 0x0241), chip_604x },
++
++	/* Adaptec 1430SA */
++	{ PCI_VDEVICE(ADAPTEC2, 0x0243), chip_7042 },
++
++	/* Marvell 7042 support */
++	{ PCI_VDEVICE(MARVELL, 0x7042), chip_7042 },
++
++	/* Highpoint RocketRAID PCIe series */
++	{ PCI_VDEVICE(TTI, 0x2300), chip_7042 },
++	{ PCI_VDEVICE(TTI, 0x2310), chip_7042 },
++
++	{ }			/* terminate list */
++};
+ 
+ static struct pci_driver mv_pci_driver = {
+ 	.name			= DRV_NAME,
+@@ -4313,6 +4312,7 @@ static struct pci_driver mv_pci_driver = {
+ #endif
+ 
+ };
++MODULE_DEVICE_TABLE(pci, mv_pci_tbl);
+ 
+ /**
+  *      mv_print_info - Dump key info to kernel log for perusal.
+@@ -4485,7 +4485,6 @@ static void __exit mv_exit(void)
+ MODULE_AUTHOR("Brett Russ");
+ MODULE_DESCRIPTION("SCSI low-level driver for Marvell SATA controllers");
+ MODULE_LICENSE("GPL v2");
+-MODULE_DEVICE_TABLE(pci, mv_pci_tbl);
+ MODULE_VERSION(DRV_VERSION);
+ MODULE_ALIAS("platform:" DRV_NAME);
+ 
+-- 
+2.43.0
+
 
 
 
