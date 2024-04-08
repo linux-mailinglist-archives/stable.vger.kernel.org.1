@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5DA789C1F1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:25:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A567B89C595
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:59:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3792F28274E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:25:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46B751F2178C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7979C7C0B0;
-	Mon,  8 Apr 2024 13:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2848B7EF06;
+	Mon,  8 Apr 2024 13:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5kEGrj/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDt0Urr7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362282DF73;
-	Mon,  8 Apr 2024 13:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D911D2DF73;
+	Mon,  8 Apr 2024 13:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582460; cv=none; b=sZuLbbG5FwfNZBPEwysIHEepmTzBYIwyBQre0UrWrvSUgBCsyzzeUw2gFeCt9Ty1TUZSlBk6x/yAm1rkrJpI9tpd1GyinLCzmdw4VJKC5y+yiw4pF/JnpeWV6enjiAlg80fQ70lKezwlRELT8wuEnYd580qYFfsPCsXj9dbkEhI=
+	t=1712584667; cv=none; b=OhyQc5uY1aDLgOlBcud6mGZYKRK4cBbylb60+HH2nj3SBZv2m2BHI1yvm9+oZCXfPFhfNezbZBlA8AaZtCm3Nj/sJ916mjRSoETbrj1SfERje6PwOsovmuGaVlTtqWlGVJOb1S+f/nMdpGVcpZEr5xLkKjjWuT0hnwrwjERwnMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582460; c=relaxed/simple;
-	bh=DAWfp3pVypxaYaTxJIkRW0sheVno3zg9DVClXrmXneg=;
+	s=arc-20240116; t=1712584667; c=relaxed/simple;
+	bh=sXpLGAkmVhPDr7XWxl38LotfgWIfkVTapoO/YiJfDds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UfHUiNcOYitUDKzsHdQSc2PPpM4FBl5oxEMrycjQvgC53YYeXv9ppzC145TYRcm5wan4oNJ18E44QN6IsArXwnUbhKS0erDFQvKrZoNh4t/1tLPDefel67lvpdaiYAyFGEKPqxmkQiHRSfl34O6KUjKd9aVhrR1gAjD6fPSUJUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5kEGrj/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B60BFC433C7;
-	Mon,  8 Apr 2024 13:20:59 +0000 (UTC)
+	 MIME-Version; b=dgFMBN1US8+ujPzrqULiK77L9eBvqf9XfI4VSDwZ9swROlepycMaac/yc7sABrM5rLaEV+jY34aBRYl6/7itP3gCVQbeqNm3dZXYOH6n6JCEfc6zmvNfLkw2RmAFRaS0kHJAr4NAwNB9oPwuweSJY8jGal6UV8EgyqZaSbq2ecI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDt0Urr7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 634FEC433F1;
+	Mon,  8 Apr 2024 13:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582460;
-	bh=DAWfp3pVypxaYaTxJIkRW0sheVno3zg9DVClXrmXneg=;
+	s=korg; t=1712584667;
+	bh=sXpLGAkmVhPDr7XWxl38LotfgWIfkVTapoO/YiJfDds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o5kEGrj/zHQwYWDZiDnFdHowuKiGrSZG79yNihbzivupZP6yDONjpDnmOSs8QJ249
-	 q4S6u3VzY62FoPtDpcacmhXMhk6zFMtEuQFKpIPmbsVdXPxGD9FppzMzF39C6kx6u7
-	 9kbl3hgid1J/6UIaxqQ6QuosHvj8FfJTusXwh6Cg=
+	b=eDt0Urr7tPgSN6MF0pg9VOWPEDj5qZsabkYBcv03GbQ+Db3eVEsG94/DmMGrLc3wH
+	 q6zVKiS38s1UnB4mfDbUz2oXTXjOdBkT86Q6BGV9c13uAI0Oj9uZ8c5ouFtR4HCqYc
+	 Q7fSqQp1B80yHEmgnnKc30dN4WKAaJzcNzFl7Ehs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <2045gemini@gmail.com>,
-	Bastien Nocera <hadess@hadess.net>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.8 078/273] Bluetooth: Fix TOCTOU in HCI debugfs implementation
+	Chuck Lever <chuck.lever@oracle.com>,
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 5.15 487/690] NFSD: Add a nfsd4_file_hash_remove() helper
 Date: Mon,  8 Apr 2024 14:55:53 +0200
-Message-ID: <20240408125311.726244335@linuxfoundation.org>
+Message-ID: <20240408125417.287035840@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,197 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bastien Nocera <hadess@hadess.net>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 7835fcfd132eb88b87e8eb901f88436f63ab60f7 upstream.
+[ Upstream commit 3341678f2fd6106055cead09e513fad6950a0d19 ]
 
-struct hci_dev members conn_info_max_age, conn_info_min_age,
-le_conn_max_interval, le_conn_min_interval, le_adv_max_interval,
-and le_adv_min_interval can be modified from the HCI core code, as well
-through debugfs.
+Refactor to relocate hash deletion operation to a helper function
+that is close to most other nfs4_file data structure operations.
 
-The debugfs implementation, that's only available to privileged users,
-will check for boundaries, making sure that the minimum value being set
-is strictly above the maximum value that already exists, and vice-versa.
+The "noinline" annotation will become useful in a moment when the
+hlist_del_rcu() is replaced with a more complex rhash remove
+operation. It also guarantees that hash remove operations can be
+traced with "-p function -l remove_nfs4_file_locked".
 
-However, as both minimum and maximum values can be changed concurrently
-to us modifying them, we need to make sure that the value we check is
-the value we end up using.
+This also simplifies the organization of forward declarations: the
+to-be-added rhashtable and its param structure will be defined
+/after/ put_nfs4_file().
 
-For example, with ->conn_info_max_age set to 10, conn_info_min_age_set()
-gets called from vfs handlers to set conn_info_min_age to 8.
-
-In conn_info_min_age_set(), this goes through:
-	if (val == 0 || val > hdev->conn_info_max_age)
-		return -EINVAL;
-
-Concurrently, conn_info_max_age_set() gets called to set to set the
-conn_info_max_age to 7:
-	if (val == 0 || val > hdev->conn_info_max_age)
-		return -EINVAL;
-That check will also pass because we used the old value (10) for
-conn_info_max_age.
-
-After those checks that both passed, the struct hci_dev access
-is mutex-locked, disabling concurrent access, but that does not matter
-because the invalid value checks both passed, and we'll end up with
-conn_info_min_age = 8 and conn_info_max_age = 7
-
-To fix this problem, we need to lock the structure access before so the
-check and assignment are not interrupted.
-
-This fix was originally devised by the BassCheck[1] team, and
-considered the problem to be an atomicity one. This isn't the case as
-there aren't any concerns about the variable changing while we check it,
-but rather after we check it parallel to another change.
-
-This patch fixes CVE-2024-24858 and CVE-2024-24857.
-
-[1] https://sites.google.com/view/basscheck/
-
-Co-developed-by: Gui-Dong Han <2045gemini@gmail.com>
-Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
-Link: https://lore.kernel.org/linux-bluetooth/20231222161317.6255-1-2045gemini@gmail.com/
-Link: https://nvd.nist.gov/vuln/detail/CVE-2024-24858
-Link: https://lore.kernel.org/linux-bluetooth/20231222162931.6553-1-2045gemini@gmail.com/
-Link: https://lore.kernel.org/linux-bluetooth/20231222162310.6461-1-2045gemini@gmail.com/
-Link: https://nvd.nist.gov/vuln/detail/CVE-2024-24857
-Fixes: 31ad169148df ("Bluetooth: Add conn info lifetime parameters to debugfs")
-Fixes: 729a1051da6f ("Bluetooth: Expose default LE advertising interval via debugfs")
-Fixes: 71c3b60ec6d2 ("Bluetooth: Move BR/EDR debugfs file creation into hci_debugfs.c")
-Signed-off-by: Bastien Nocera <hadess@hadess.net>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- net/bluetooth/hci_debugfs.c |   48 +++++++++++++++++++++++++++++---------------
- 1 file changed, 32 insertions(+), 16 deletions(-)
+ fs/nfsd/nfs4state.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/hci_debugfs.c
-+++ b/net/bluetooth/hci_debugfs.c
-@@ -218,10 +218,12 @@ static int conn_info_min_age_set(void *d
- {
- 	struct hci_dev *hdev = data;
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 1cb3ea90eb4ca..f723d7d5e1557 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -84,6 +84,7 @@ static bool check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner)
+ static void nfs4_free_ol_stateid(struct nfs4_stid *stid);
+ void nfsd4_end_grace(struct nfsd_net *nn);
+ static void _free_cpntf_state_locked(struct nfsd_net *nn, struct nfs4_cpntf_state *cps);
++static void nfsd4_file_hash_remove(struct nfs4_file *fi);
  
--	if (val == 0 || val > hdev->conn_info_max_age)
-+	hci_dev_lock(hdev);
-+	if (val == 0 || val > hdev->conn_info_max_age) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
+ /* Locking: */
  
--	hci_dev_lock(hdev);
- 	hdev->conn_info_min_age = val;
- 	hci_dev_unlock(hdev);
+@@ -591,7 +592,7 @@ put_nfs4_file(struct nfs4_file *fi)
+ 	might_lock(&state_lock);
  
-@@ -246,10 +248,12 @@ static int conn_info_max_age_set(void *d
- {
- 	struct hci_dev *hdev = data;
+ 	if (refcount_dec_and_lock(&fi->fi_ref, &state_lock)) {
+-		hlist_del_rcu(&fi->fi_hash);
++		nfsd4_file_hash_remove(fi);
+ 		spin_unlock(&state_lock);
+ 		WARN_ON_ONCE(!list_empty(&fi->fi_clnt_odstate));
+ 		WARN_ON_ONCE(!list_empty(&fi->fi_delegations));
+@@ -4749,6 +4750,11 @@ find_or_add_file(struct nfs4_file *new, struct svc_fh *fh)
+ 	return insert_file(new, fh, hashval);
+ }
  
--	if (val == 0 || val < hdev->conn_info_min_age)
-+	hci_dev_lock(hdev);
-+	if (val == 0 || val < hdev->conn_info_min_age) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->conn_info_max_age = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -567,10 +571,12 @@ static int sniff_min_interval_set(void *
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val == 0 || val % 2 || val > hdev->sniff_max_interval)
-+	hci_dev_lock(hdev);
-+	if (val == 0 || val % 2 || val > hdev->sniff_max_interval) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->sniff_min_interval = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -595,10 +601,12 @@ static int sniff_max_interval_set(void *
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val == 0 || val % 2 || val < hdev->sniff_min_interval)
-+	hci_dev_lock(hdev);
-+	if (val == 0 || val % 2 || val < hdev->sniff_min_interval) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->sniff_max_interval = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -850,10 +858,12 @@ static int conn_min_interval_set(void *d
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val < 0x0006 || val > 0x0c80 || val > hdev->le_conn_max_interval)
-+	hci_dev_lock(hdev);
-+	if (val < 0x0006 || val > 0x0c80 || val > hdev->le_conn_max_interval) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->le_conn_min_interval = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -878,10 +888,12 @@ static int conn_max_interval_set(void *d
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val < 0x0006 || val > 0x0c80 || val < hdev->le_conn_min_interval)
-+	hci_dev_lock(hdev);
-+	if (val < 0x0006 || val > 0x0c80 || val < hdev->le_conn_min_interval) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->le_conn_max_interval = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -990,10 +1002,12 @@ static int adv_min_interval_set(void *da
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val < 0x0020 || val > 0x4000 || val > hdev->le_adv_max_interval)
-+	hci_dev_lock(hdev);
-+	if (val < 0x0020 || val > 0x4000 || val > hdev->le_adv_max_interval) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->le_adv_min_interval = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -1018,10 +1032,12 @@ static int adv_max_interval_set(void *da
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val < 0x0020 || val > 0x4000 || val < hdev->le_adv_min_interval)
-+	hci_dev_lock(hdev);
-+	if (val < 0x0020 || val > 0x4000 || val < hdev->le_adv_min_interval) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->le_adv_max_interval = val;
- 	hci_dev_unlock(hdev);
- 
++static noinline_for_stack void nfsd4_file_hash_remove(struct nfs4_file *fi)
++{
++	hlist_del_rcu(&fi->fi_hash);
++}
++
+ /*
+  * Called to check deny when READ with all zero stateid or
+  * WRITE with all zero or all one stateid
+-- 
+2.43.0
+
 
 
 
