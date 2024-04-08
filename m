@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565FD89C391
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E71189C1CF
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:24:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0963B2CF76
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24F15282B8C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D0C80020;
-	Mon,  8 Apr 2024 13:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1FD785655;
+	Mon,  8 Apr 2024 13:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2MyvWXR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2M3EgEe5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A5278286;
-	Mon,  8 Apr 2024 13:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC4C82D7F;
+	Mon,  8 Apr 2024 13:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582901; cv=none; b=hDL2Ynm5dPRsvjicwoev9eKF3X5zAqkjfZs01xi5Y7y2AWNXbM4BbHr0eopo2rWNpWSNh+0hM024nlZ1FetrkBwMh/wt0jy+7wNwFrNzxgnHBzP0m/xB9J1w4KFEstX6Tl2y0fbqmFfBeg87SHuW07I2joAOE9EwhYBy8ugCyJ4=
+	t=1712582416; cv=none; b=kv0+aTwrgJfcwulIBzOooUWbwikqLYta8Lhs2l0HDI8vk8Qp54K6UTE1MD6LWH0IyyMPduezjFo+69yYsMtKGTHLRMGdPyMZpicOdqSSOoogStDOae84dHflWrB7/d6GuwuOxGrij5m21LVpd4KeaChOl//H+puH80cYUle84iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582901; c=relaxed/simple;
-	bh=fgfTGo0BxIgykw9kaDiGGc+QVB/zzE0uNZJzB05uQgE=;
+	s=arc-20240116; t=1712582416; c=relaxed/simple;
+	bh=Bq64CYr4mhcnQZ9DdlN4HE3eOmsYmGvetxG5S45GFkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T4bGhkonNJt6jJENkQnJf2urcYnd2yW0kYLhBjbSsImJLO6XH8vr4MTsV1o4PHwhIPuYtSMqmeXsEPi8GSA1xbo1Q+wLpYRiBy3n1wMi+XmfiaNDgG+h+Brwtxu5isavfeZ/4wPAKKKUwnhDT6QzFP2q+0V78KDMIVOOhNcUztE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2MyvWXR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C843C433C7;
-	Mon,  8 Apr 2024 13:28:20 +0000 (UTC)
+	 MIME-Version; b=UzWuegjwcwMGFdh5C8GL66CTZt0x1CWD5ybovr6Y/U5quP/caHJ5bPFx4+BmhdzhYrrL+QaQcW4j3+mG6EbUiQ5a1evIaYR7BZPVVUOzvv1D+t01aCNG24GzJ9muSqdKEWwpFsTHW8xJyJQJHJCHRPLkmtmsR0MpAraWW6BNtLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2M3EgEe5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFCDC433C7;
+	Mon,  8 Apr 2024 13:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582900;
-	bh=fgfTGo0BxIgykw9kaDiGGc+QVB/zzE0uNZJzB05uQgE=;
+	s=korg; t=1712582416;
+	bh=Bq64CYr4mhcnQZ9DdlN4HE3eOmsYmGvetxG5S45GFkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2MyvWXRHJl46x3qSc4p0KXneW7tv2oIDF3JXktU+GH7EViDr1nL1uGcOyNv8nIJB
-	 uDcH8qGXuieqk2ZtcPTFM2UhHIK62Ynd9LSQ+R4rOPhjrpFyMI07y0X5VcjfJs23qo
-	 DVLTEQ6AvNvc4JBGGYNQAkRbBj2z2Bmdyi97ROK4=
+	b=2M3EgEe5ufEHCEC+9BcVp4StpimumYbQL9+ywcxhQ+x7ZqgPutlSWqixbWuJaWZLi
+	 30gKJikOITVHRT+kvnYw2LxQIRrvVE0CURcVUu8PsQSzh2fXmKVNxxVcD1l36fzu6+
+	 GFeSkhIf+yFLMaG/+XUD5fLdXj/UGfIbtweK2DYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jianguo Wu <wujianguo106@163.com>
-Subject: [PATCH 6.8 115/273] tcp: Fix bind() regression for v6-only wildcard and v4(-mapped-v6) non-wildcard addresses.
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 091/252] x86/srso: Disentangle rethunk-dependent options
 Date: Mon,  8 Apr 2024 14:56:30 +0200
-Message-ID: <20240408125312.873315390@linuxfoundation.org>
+Message-ID: <20240408125309.479400550@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +62,349 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit d91ef1e1b55f730bee8ce286b02b7bdccbc42973 upstream.
+Commit 34a3cae7474c6e6f4a85aad4a7b8191b8b35cdcd upstream.
 
-Jianguo Wu reported another bind() regression introduced by bhash2.
+CONFIG_RETHUNK, CONFIG_CPU_UNRET_ENTRY and CONFIG_CPU_SRSO are all
+tangled up.  De-spaghettify the code a bit.
 
-Calling bind() for the following 3 addresses on the same port, the
-3rd one should fail but now succeeds.
+Some of the rethunk-related code has been shuffled around within the
+'.text..__x86.return_thunk' section, but otherwise there are no
+functional changes.  srso_alias_untrain_ret() and srso_alias_safe_ret()
+((which are very address-sensitive) haven't moved.
 
-  1. 0.0.0.0 or ::ffff:0.0.0.0
-  2. [::] w/ IPV6_V6ONLY
-  3. IPv4 non-wildcard address or v4-mapped-v6 non-wildcard address
-
-The first two bind() create tb2 like this:
-
-  bhash2 -> tb2(:: w/ IPV6_V6ONLY) -> tb2(0.0.0.0)
-
-The 3rd bind() will match with the IPv6 only wildcard address bucket
-in inet_bind2_bucket_match_addr_any(), however, no conflicting socket
-exists in the bucket.  So, inet_bhash2_conflict() will returns false,
-and thus, inet_bhash2_addr_any_conflict() returns false consequently.
-
-As a result, the 3rd bind() bypasses conflict check, which should be
-done against the IPv4 wildcard address bucket.
-
-So, in inet_bhash2_addr_any_conflict(), we must iterate over all buckets.
-
-Note that we cannot add ipv6_only flag for inet_bind2_bucket as it
-would confuse the following patetrn.
-
-  1. [::] w/ SO_REUSE{ADDR,PORT} and IPV6_V6ONLY
-  2. [::] w/ SO_REUSE{ADDR,PORT}
-  3. IPv4 non-wildcard address or v4-mapped-v6 non-wildcard address
-
-The first bind() would create a bucket with ipv6_only flag true,
-the second bind() would add the [::] socket into the same bucket,
-and the third bind() could succeed based on the wrong assumption
-that ipv6_only bucket would not conflict with v4(-mapped-v6) address.
-
-Fixes: 28044fc1d495 ("net: Add a bhash2 table hashed by port and address")
-Diagnosed-by: Jianguo Wu <wujianguo106@163.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240326204251.51301-3-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/2845084ed303d8384905db3b87b77693945302b4.1693889988.git.jpoimboe@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/inet_connection_sock.c |   21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ arch/x86/include/asm/nospec-branch.h |   25 +++--
+ arch/x86/kernel/cpu/bugs.c           |    5 -
+ arch/x86/kernel/vmlinux.lds.S        |    7 -
+ arch/x86/lib/retpoline.S             |  158 +++++++++++++++++++----------------
+ 4 files changed, 109 insertions(+), 86 deletions(-)
 
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -294,6 +294,7 @@ static bool inet_bhash2_addr_any_conflic
- 	struct sock_reuseport *reuseport_cb;
- 	struct inet_bind_hashbucket *head2;
- 	struct inet_bind2_bucket *tb2;
-+	bool conflict = false;
- 	bool reuseport_cb_ok;
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -289,19 +289,17 @@
+  * where we have a stack but before any RET instruction.
+  */
+ .macro UNTRAIN_RET
+-#if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
+-	defined(CONFIG_CALL_DEPTH_TRACKING) || defined(CONFIG_CPU_SRSO)
++#if defined(CONFIG_RETHUNK) || defined(CONFIG_CPU_IBPB_ENTRY)
+ 	VALIDATE_UNRET_END
+ 	ALTERNATIVE_3 "",						\
+ 		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
+ 		      "call entry_ibpb", X86_FEATURE_ENTRY_IBPB,	\
+-		      __stringify(RESET_CALL_DEPTH), X86_FEATURE_CALL_DEPTH
++		     __stringify(RESET_CALL_DEPTH), X86_FEATURE_CALL_DEPTH
+ #endif
+ .endm
  
- 	rcu_read_lock();
-@@ -306,18 +307,20 @@ static bool inet_bhash2_addr_any_conflic
+ .macro UNTRAIN_RET_VM
+-#if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
+-	defined(CONFIG_CALL_DEPTH_TRACKING) || defined(CONFIG_CPU_SRSO)
++#if defined(CONFIG_RETHUNK) || defined(CONFIG_CPU_IBPB_ENTRY)
+ 	VALIDATE_UNRET_END
+ 	ALTERNATIVE_3 "",						\
+ 		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
+@@ -311,8 +309,7 @@
+ .endm
  
- 	spin_lock(&head2->lock);
+ .macro UNTRAIN_RET_FROM_CALL
+-#if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
+-	defined(CONFIG_CALL_DEPTH_TRACKING) || defined(CONFIG_CPU_SRSO)
++#if defined(CONFIG_RETHUNK) || defined(CONFIG_CPU_IBPB_ENTRY)
+ 	VALIDATE_UNRET_END
+ 	ALTERNATIVE_3 "",						\
+ 		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
+@@ -359,6 +356,20 @@ extern void __x86_return_thunk(void);
+ static inline void __x86_return_thunk(void) {}
+ #endif
  
--	inet_bind_bucket_for_each(tb2, &head2->chain)
--		if (inet_bind2_bucket_match_addr_any(tb2, net, port, l3mdev, sk))
--			break;
++#ifdef CONFIG_CPU_UNRET_ENTRY
++extern void retbleed_return_thunk(void);
++#else
++static inline void retbleed_return_thunk(void) {}
++#endif
++
++#ifdef CONFIG_CPU_SRSO
++extern void srso_return_thunk(void);
++extern void srso_alias_return_thunk(void);
++#else
++static inline void srso_return_thunk(void) {}
++static inline void srso_alias_return_thunk(void) {}
++#endif
++
+ extern void retbleed_return_thunk(void);
+ extern void srso_return_thunk(void);
+ extern void srso_alias_return_thunk(void);
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -63,7 +63,7 @@ EXPORT_SYMBOL_GPL(x86_pred_cmd);
+ 
+ static DEFINE_MUTEX(spec_ctrl_mutex);
+ 
+-void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
++void (*x86_return_thunk)(void) __ro_after_init = __x86_return_thunk;
+ 
+ /* Update SPEC_CTRL MSR and its cached copy unconditionally */
+ static void update_spec_ctrl(u64 val)
+@@ -1108,8 +1108,7 @@ do_cmd_auto:
+ 		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
+ 		setup_force_cpu_cap(X86_FEATURE_UNRET);
+ 
+-		if (IS_ENABLED(CONFIG_RETHUNK))
+-			x86_return_thunk = retbleed_return_thunk;
++		x86_return_thunk = retbleed_return_thunk;
+ 
+ 		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
+ 		    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -139,10 +139,7 @@ SECTIONS
+ 		STATIC_CALL_TEXT
+ 
+ 		ALIGN_ENTRY_TEXT_BEGIN
+-#ifdef CONFIG_CPU_SRSO
+ 		*(.text..__x86.rethunk_untrain)
+-#endif
 -
--	if (tb2 && inet_bhash2_conflict(sk, tb2, uid, relax, reuseport_cb_ok,
--					reuseport_ok)) {
--		spin_unlock(&head2->lock);
--		return true;
-+	inet_bind_bucket_for_each(tb2, &head2->chain) {
-+		if (!inet_bind2_bucket_match_addr_any(tb2, net, port, l3mdev, sk))
-+			continue;
-+
-+		if (!inet_bhash2_conflict(sk, tb2, uid, relax, reuseport_cb_ok,	reuseport_ok))
-+			continue;
-+
-+		conflict = true;
-+		break;
- 	}
+ 		ENTRY_TEXT
  
- 	spin_unlock(&head2->lock);
--	return false;
-+
-+	return conflict;
- }
+ #ifdef CONFIG_CPU_SRSO
+@@ -520,12 +517,12 @@ INIT_PER_CPU(irq_stack_backing_store);
+            "fixed_percpu_data is not at start of per-cpu area");
+ #endif
  
+-#ifdef CONFIG_RETHUNK
++#ifdef CONFIG_CPU_UNRET_ENTRY
+ . = ASSERT((retbleed_return_thunk & 0x3f) == 0, "retbleed_return_thunk not cacheline-aligned");
+-. = ASSERT((srso_safe_ret & 0x3f) == 0, "srso_safe_ret not cacheline-aligned");
+ #endif
+ 
+ #ifdef CONFIG_CPU_SRSO
++. = ASSERT((srso_safe_ret & 0x3f) == 0, "srso_safe_ret not cacheline-aligned");
  /*
+  * GNU ld cannot do XOR until 2.41.
+  * https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=f6f78318fca803c4907fb8d7f6ded8295f1947b1
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -126,12 +126,13 @@ SYM_CODE_END(__x86_indirect_jump_thunk_a
+ #include <asm/GEN-for-each-reg.h>
+ #undef GEN
+ #endif
+-/*
+- * This function name is magical and is used by -mfunction-return=thunk-extern
+- * for the compiler to generate JMPs to it.
+- */
++
+ #ifdef CONFIG_RETHUNK
+ 
++	.section .text..__x86.return_thunk
++
++#ifdef CONFIG_CPU_SRSO
++
+ /*
+  * srso_alias_untrain_ret() and srso_alias_safe_ret() are placed at
+  * special addresses:
+@@ -147,9 +148,7 @@ SYM_CODE_END(__x86_indirect_jump_thunk_a
+  *
+  * As a result, srso_alias_safe_ret() becomes a safe return.
+  */
+-#ifdef CONFIG_CPU_SRSO
+-	.section .text..__x86.rethunk_untrain
+-
++	.pushsection .text..__x86.rethunk_untrain
+ SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
+ 	UNWIND_HINT_FUNC
+ 	ANNOTATE_NOENDBR
+@@ -158,17 +157,9 @@ SYM_START(srso_alias_untrain_ret, SYM_L_
+ 	jmp srso_alias_return_thunk
+ SYM_FUNC_END(srso_alias_untrain_ret)
+ __EXPORT_THUNK(srso_alias_untrain_ret)
++	.popsection
+ 
+-	.section .text..__x86.rethunk_safe
+-#else
+-/* dummy definition for alternatives */
+-SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
+-	ANNOTATE_UNRET_SAFE
+-	ret
+-	int3
+-SYM_FUNC_END(srso_alias_untrain_ret)
+-#endif
+-
++	.pushsection .text..__x86.rethunk_safe
+ SYM_START(srso_alias_safe_ret, SYM_L_GLOBAL, SYM_A_NONE)
+ 	lea 8(%_ASM_SP), %_ASM_SP
+ 	UNWIND_HINT_FUNC
+@@ -183,8 +174,58 @@ SYM_CODE_START_NOALIGN(srso_alias_return
+ 	call srso_alias_safe_ret
+ 	ud2
+ SYM_CODE_END(srso_alias_return_thunk)
++	.popsection
++
++/*
++ * SRSO untraining sequence for Zen1/2, similar to retbleed_untrain_ret()
++ * above. On kernel entry, srso_untrain_ret() is executed which is a
++ *
++ * movabs $0xccccc30824648d48,%rax
++ *
++ * and when the return thunk executes the inner label srso_safe_ret()
++ * later, it is a stack manipulation and a RET which is mispredicted and
++ * thus a "safe" one to use.
++ */
++	.align 64
++	.skip 64 - (srso_safe_ret - srso_untrain_ret), 0xcc
++SYM_START(srso_untrain_ret, SYM_L_LOCAL, SYM_A_NONE)
++	ANNOTATE_NOENDBR
++	.byte 0x48, 0xb8
++
++/*
++ * This forces the function return instruction to speculate into a trap
++ * (UD2 in srso_return_thunk() below).  This RET will then mispredict
++ * and execution will continue at the return site read from the top of
++ * the stack.
++ */
++SYM_INNER_LABEL(srso_safe_ret, SYM_L_GLOBAL)
++	lea 8(%_ASM_SP), %_ASM_SP
++	ret
++	int3
++	int3
++	/* end of movabs */
++	lfence
++	call srso_safe_ret
++	ud2
++SYM_CODE_END(srso_safe_ret)
++SYM_FUNC_END(srso_untrain_ret)
++
++SYM_CODE_START(srso_return_thunk)
++	UNWIND_HINT_FUNC
++	ANNOTATE_NOENDBR
++	call srso_safe_ret
++	ud2
++SYM_CODE_END(srso_return_thunk)
++
++#define JMP_SRSO_UNTRAIN_RET "jmp srso_untrain_ret"
++#define JMP_SRSO_ALIAS_UNTRAIN_RET "jmp srso_alias_untrain_ret"
++#else /* !CONFIG_CPU_SRSO */
++#define JMP_SRSO_UNTRAIN_RET "ud2"
++#define JMP_SRSO_ALIAS_UNTRAIN_RET "ud2"
++#endif /* CONFIG_CPU_SRSO */
++
++#ifdef CONFIG_CPU_UNRET_ENTRY
+ 
+-	.section .text..__x86.return_thunk
+ /*
+  * Some generic notes on the untraining sequences:
+  *
+@@ -265,65 +306,21 @@ SYM_CODE_END(retbleed_return_thunk)
+ SYM_FUNC_END(retbleed_untrain_ret)
+ __EXPORT_THUNK(retbleed_untrain_ret)
+ 
+-/*
+- * SRSO untraining sequence for Zen1/2, similar to retbleed_untrain_ret()
+- * above. On kernel entry, srso_untrain_ret() is executed which is a
+- *
+- * movabs $0xccccc30824648d48,%rax
+- *
+- * and when the return thunk executes the inner label srso_safe_ret()
+- * later, it is a stack manipulation and a RET which is mispredicted and
+- * thus a "safe" one to use.
+- */
+-	.align 64
+-	.skip 64 - (srso_safe_ret - srso_untrain_ret), 0xcc
+-SYM_START(srso_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
+-	ANNOTATE_NOENDBR
+-	.byte 0x48, 0xb8
++#define JMP_RETBLEED_UNTRAIN_RET "jmp retbleed_untrain_ret"
++#else /* !CONFIG_CPU_UNRET_ENTRY */
++#define JMP_RETBLEED_UNTRAIN_RET "ud2"
++#endif /* CONFIG_CPU_UNRET_ENTRY */
+ 
+-/*
+- * This forces the function return instruction to speculate into a trap
+- * (UD2 in srso_return_thunk() below).  This RET will then mispredict
+- * and execution will continue at the return site read from the top of
+- * the stack.
+- */
+-SYM_INNER_LABEL(srso_safe_ret, SYM_L_GLOBAL)
+-	lea 8(%_ASM_SP), %_ASM_SP
+-	ret
+-	int3
+-	int3
+-	/* end of movabs */
+-	lfence
+-	call srso_safe_ret
+-	ud2
+-SYM_CODE_END(srso_safe_ret)
+-SYM_FUNC_END(srso_untrain_ret)
+-__EXPORT_THUNK(srso_untrain_ret)
+-
+-SYM_CODE_START(srso_return_thunk)
+-	UNWIND_HINT_FUNC
+-	ANNOTATE_NOENDBR
+-	call srso_safe_ret
+-	ud2
+-SYM_CODE_END(srso_return_thunk)
++#if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_SRSO)
+ 
+ SYM_FUNC_START(entry_untrain_ret)
+-	ALTERNATIVE_2 "jmp retbleed_untrain_ret", \
+-		      "jmp srso_untrain_ret", X86_FEATURE_SRSO, \
+-		      "jmp srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
++	ALTERNATIVE_2 JMP_RETBLEED_UNTRAIN_RET,				\
++		      JMP_SRSO_UNTRAIN_RET, X86_FEATURE_SRSO,		\
++		      JMP_SRSO_ALIAS_UNTRAIN_RET, X86_FEATURE_SRSO_ALIAS
+ SYM_FUNC_END(entry_untrain_ret)
+ __EXPORT_THUNK(entry_untrain_ret)
+ 
+-SYM_CODE_START(__x86_return_thunk)
+-	UNWIND_HINT_FUNC
+-	ANNOTATE_NOENDBR
+-	ANNOTATE_UNRET_SAFE
+-	ret
+-	int3
+-SYM_CODE_END(__x86_return_thunk)
+-EXPORT_SYMBOL(__x86_return_thunk)
+-
+-#endif /* CONFIG_RETHUNK */
++#endif /* CONFIG_CPU_UNRET_ENTRY || CONFIG_CPU_SRSO */
+ 
+ #ifdef CONFIG_CALL_DEPTH_TRACKING
+ 
+@@ -358,3 +355,22 @@ SYM_FUNC_START(__x86_return_skl)
+ SYM_FUNC_END(__x86_return_skl)
+ 
+ #endif /* CONFIG_CALL_DEPTH_TRACKING */
++
++/*
++ * This function name is magical and is used by -mfunction-return=thunk-extern
++ * for the compiler to generate JMPs to it.
++ *
++ * This code is only used during kernel boot or module init.  All
++ * 'JMP __x86_return_thunk' sites are changed to something else by
++ * apply_returns().
++ */
++SYM_CODE_START(__x86_return_thunk)
++	UNWIND_HINT_FUNC
++	ANNOTATE_NOENDBR
++	ANNOTATE_UNRET_SAFE
++	ret
++	int3
++SYM_CODE_END(__x86_return_thunk)
++EXPORT_SYMBOL(__x86_return_thunk)
++
++#endif /* CONFIG_RETHUNK */
 
 
 
