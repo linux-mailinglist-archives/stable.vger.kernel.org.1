@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-37002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52FB89C2AE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F8789C686
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:12:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7FFC1C21885
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D5C9B2C0B8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A7F81741;
-	Mon,  8 Apr 2024 13:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E4A7CF17;
+	Mon,  8 Apr 2024 14:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVFbyirU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F353ZsBB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A017B3E5;
-	Mon,  8 Apr 2024 13:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7B87BAF5;
+	Mon,  8 Apr 2024 14:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582968; cv=none; b=NZrjU33gIkOsOXTCNXG3/rLidvpvGOyphCShvcr07vuZFQWrWf1CU1DA/K5nfcIQZD3ddzB7rrwVNFc2X83VRbzG88Agdm5zjvjwPM/8BWO9HFQuJS8PuSGrfy4oHoyhcm5EnElFwPBnlrBBC93xT8pbP8Uwx1TJH4AVtcHwX78=
+	t=1712584827; cv=none; b=mKegvtMJzP7jahA4MYGIx5371u7LCfP2PGMFLdqnhico9ktfFKnBG6WajwmRlsoVDUXIcjbMWgsyT8aie4BY0faKcS+mwhacbNZVoSv4OVBef35yDVIl696ED8JvgdiQV15r8v+6x84YtClhplBn6HHABP388YAyedV0XoRa9aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582968; c=relaxed/simple;
-	bh=jeiVoOkx/9LkAYveFcMOIcbByBH9Ujtyu1juird9of0=;
+	s=arc-20240116; t=1712584827; c=relaxed/simple;
+	bh=73YBIqid9OpY9EU+N7UqEw0ahz3ThpgazvKs8wlqrFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s9WnTK0PwI0nakcWPVJ21NgkcMPA2TABKxRW/h7wWX160ofRIJZ55DhD6XfMseh6/A/SbjxuP0iYV/LUV5j1fual+LrxFiG+HcX1QDj0JS9BAihnVseRkdefmzPhcWUq77Qz6TxvSsgxAxbk9kV+OZH7KkMsKb3fJzck6QOL4ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVFbyirU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE0FC433C7;
-	Mon,  8 Apr 2024 13:29:27 +0000 (UTC)
+	 MIME-Version; b=Ph7SOZPV/Lf8Lq80givy6f5lgurrx/lcZQsPynuU3fpNs0SkvwPxdQOxyCnWqcv8LZLBlmxZAxHFFmE+gTRhWmnxsZ9cvejMkHGDy527U0jEGyGJzFJoum7A9nspKpT4GYEFUUPsZxsrLBu+Tau6rN5CkIULQRH2mZeqM4qXj7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F353ZsBB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55BFC433C7;
+	Mon,  8 Apr 2024 14:00:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582967;
-	bh=jeiVoOkx/9LkAYveFcMOIcbByBH9Ujtyu1juird9of0=;
+	s=korg; t=1712584827;
+	bh=73YBIqid9OpY9EU+N7UqEw0ahz3ThpgazvKs8wlqrFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WVFbyirUINGAZniPRJMrj2ixsAR1RB4L6Y1f2FlVDqeT1OVY27+MFLaDYRT15wp5N
-	 u0YJi/KA5yTA8EyeABkIwpIA7XQB1rJwWCpZjO0rwxLWV62ZmN899uVjBr5rnrJoe1
-	 AdN2WPDrsh2UGE3CgeodgsfbeCaLX13nn8G//M8A=
+	b=F353ZsBBOrRp1mbISzIxiT2zzd69JsRtQznTEbBUpQQciOC1RY59SxiVh7taPR6M+
+	 lKKBZlEnQnM5MM2YW0HW+Unv/Bc5pHVbmfThuJnhyAcacjq2p9wxkPwqzoxICMg7rq
+	 fD+at4tRpqQDBF0g6jq+qBobvQ8RBDWUIdP/0abQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 137/252] drm/amd: Add concept of running prepare_suspend() sequence for IP blocks
+	WA AM <waautomata@gmail.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 570/690] btrfs: zoned: use zone aware sb location for scrub
 Date: Mon,  8 Apr 2024 14:57:16 +0200
-Message-ID: <20240408125310.894521807@linuxfoundation.org>
+Message-ID: <20240408125420.272809878@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +62,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit cb11ca3233aa3303dc11dca25977d2e7f24be00f ]
+commit 74098a989b9c3370f768140b7783a7aaec2759b3 upstream.
 
-If any IP blocks allocate memory during their hw_fini() sequence
-this can cause the suspend to fail under memory pressure.  Introduce
-a new phase that IP blocks can use to allocate memory before suspend
-starts so that it can potentially be evicted into swap instead.
+At the moment scrub_supers() doesn't grab the super block's location via
+the zoned device aware btrfs_sb_log_location() but via btrfs_sb_offset().
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: ca299b4512d4 ("drm/amd: Flush GFXOFF requests in prepare stage")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This leads to checksum errors on 'scrub' as we're not accessing the
+correct location of the super block.
+
+So use btrfs_sb_log_location() for getting the super blocks location on
+scrub.
+
+Reported-by: WA AM <waautomata@gmail.com>
+Link: http://lore.kernel.org/linux-btrfs/CANU2Z0EvUzfYxczLgGUiREoMndE9WdQnbaawV5Fv5gNXptPUKw@mail.gmail.com
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 12 +++++++++++-
- drivers/gpu/drm/amd/include/amd_shared.h   |  1 +
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ fs/btrfs/scrub.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 707c17641c757..4ebe42395708f 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4107,7 +4107,7 @@ static int amdgpu_device_evict_resources(struct amdgpu_device *adev)
- int amdgpu_device_prepare(struct drm_device *dev)
- {
- 	struct amdgpu_device *adev = drm_to_adev(dev);
--	int r;
-+	int i, r;
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -3972,7 +3972,17 @@ static noinline_for_stack int scrub_supe
+ 		gen = fs_info->last_trans_committed;
  
- 	if (dev->switch_power_state == DRM_SWITCH_POWER_OFF)
- 		return 0;
-@@ -4117,6 +4117,16 @@ int amdgpu_device_prepare(struct drm_device *dev)
- 	if (r)
- 		return r;
- 
-+	for (i = 0; i < adev->num_ip_blocks; i++) {
-+		if (!adev->ip_blocks[i].status.valid)
-+			continue;
-+		if (!adev->ip_blocks[i].version->funcs->prepare_suspend)
-+			continue;
-+		r = adev->ip_blocks[i].version->funcs->prepare_suspend((void *)adev);
-+		if (r)
-+			return r;
-+	}
+ 	for (i = 0; i < BTRFS_SUPER_MIRROR_MAX; i++) {
+-		bytenr = btrfs_sb_offset(i);
++		ret = btrfs_sb_log_location(scrub_dev, i, 0, &bytenr);
++		if (ret == -ENOENT)
++			break;
 +
- 	return 0;
- }
- 
-diff --git a/drivers/gpu/drm/amd/include/amd_shared.h b/drivers/gpu/drm/amd/include/amd_shared.h
-index abe829bbd54af..a9880fc531955 100644
---- a/drivers/gpu/drm/amd/include/amd_shared.h
-+++ b/drivers/gpu/drm/amd/include/amd_shared.h
-@@ -295,6 +295,7 @@ struct amd_ip_funcs {
- 	int (*hw_init)(void *handle);
- 	int (*hw_fini)(void *handle);
- 	void (*late_fini)(void *handle);
-+	int (*prepare_suspend)(void *handle);
- 	int (*suspend)(void *handle);
- 	int (*resume)(void *handle);
- 	bool (*is_idle)(void *handle);
--- 
-2.43.0
-
++		if (ret) {
++			spin_lock(&sctx->stat_lock);
++			sctx->stat.super_errors++;
++			spin_unlock(&sctx->stat_lock);
++			continue;
++		}
++
+ 		if (bytenr + BTRFS_SUPER_INFO_SIZE >
+ 		    scrub_dev->commit_total_bytes)
+ 			break;
 
 
 
