@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-37242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A5389C3FC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDAA89C375
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0019A1C2227B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F340E1C221ED
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0832F8121B;
-	Mon,  8 Apr 2024 13:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C05A7D3F7;
+	Mon,  8 Apr 2024 13:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4q0fDgy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tM2u4Gau"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04B17C0B0;
-	Mon,  8 Apr 2024 13:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0845085C6C;
+	Mon,  8 Apr 2024 13:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583663; cv=none; b=o5Sfz3RlUWjOaHljod19ErSLY4lhXcjtdU1yzXW1vUOlYuFI1F378vWqNKXoLlTmTS4QddASOMTxi4+T48rZx9MaLJs++vkS9F25Z8btfXYLVWHeIsTwCUWeuI7eHGADg7bqMhNVvPlkVGD1+6aDjMGBm3IV9yg7ZbWchQb3L0w=
+	t=1712583329; cv=none; b=XKyzOcEyBj9VbX9v5K5AjDZ8w5MtlbdkagdEmMOHqaifikpA/Nc5T42KlNFs0ZnfGmmMkeYMPz2OR1oyZd1v/VvcjDvv4dbj0yJ86L4mSByntwr4y1swBtNOgXAGli95Wma1d/r5hxUU1BSM5LZyBhU17Nd2INYxJ6XCIdJFg34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583663; c=relaxed/simple;
-	bh=8QoLCFxDapXQEwE5Kbmj+3wRjX6DfQGcmEtjesZhDVg=;
+	s=arc-20240116; t=1712583329; c=relaxed/simple;
+	bh=txEtT6kt2rbURRHmbTTNja6eRIiM2QzeVJ+tm0MSfq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RDtkjOqQIulttd1KuUl+eXNMnKitpJfnWOyu0ESJ7eePTxlknSY3Fl5zhK2Rg6+uQGjCw0hvDFppDGSJWybuXShSpPY+TrcRd1KBoV5LabLo30PEDiJ0Bcwthzh4pv9weHhA4QNsbc/igLSn9DNgZh2AirlVMkRG57rpwWZbXQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x4q0fDgy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 381F6C433F1;
-	Mon,  8 Apr 2024 13:41:03 +0000 (UTC)
+	 MIME-Version; b=ntNCdBBPygBfsbF2h9HLoEu1pokcQ9htHNhalwWKWBLtqIwzHQAeQy3kRZAQFUzh9XOkcmgb9jCSQAk1uwQY3ptqYmzXIlm0viZoSqMRlF8vZjqJpmEbghuPdggyPJom2lM9etpxqLrwn+b24oJBnCo3WhoVhcjqitQkJGtPCUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tM2u4Gau; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869EBC433C7;
+	Mon,  8 Apr 2024 13:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583663;
-	bh=8QoLCFxDapXQEwE5Kbmj+3wRjX6DfQGcmEtjesZhDVg=;
+	s=korg; t=1712583328;
+	bh=txEtT6kt2rbURRHmbTTNja6eRIiM2QzeVJ+tm0MSfq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x4q0fDgy2ayF0Kv/DffR9PoLH3kyHL+yETBM063ivBwh952vOD4Lbdi+glsi1piGL
-	 6ElvMuFdCKd0428mkCY8aRb7hjLmBCm7CR6W1sY0H0ZNwiG7J5QOfuzIdwh1yTbZx8
-	 2w/wHhjADVUS88cGGTSfzqJD9mq3iAUKr77GxKu8=
+	b=tM2u4GauwimWvy/n4zx6v7JjHw1tB4dLy5/vi7hwAV57Oh00OBdbtJ4yIfdzeNin0
+	 wXhzZ2OyVgZL4hLoyCcgwacrWP4DWIh9Jg29SRXOZQszASz/rUopauBSEg8/MmwGuy
+	 WO6ywIkKM7STSwyxRStmb78anyvYXPz7NLMKZzTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.8 206/273] io_uring/kbuf: get rid of lower BGID lists
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 182/252] ASoC: amd: acp: fix for acp_init function error handling
 Date: Mon,  8 Apr 2024 14:58:01 +0200
-Message-ID: <20240408125315.736040409@linuxfoundation.org>
+Message-ID: <20240408125312.314768629@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,205 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-commit 09ab7eff38202159271534d2f5ad45526168f2a5 upstream.
+[ Upstream commit 2c603a4947a1247102ccb008d5eb6f37a4043c98 ]
 
-Just rely on the xarray for any kind of bgid. This simplifies things, and
-it really doesn't bring us much, if anything.
+If acp_init() fails, acp pci driver probe should return error.
+Add acp_init() function return value check logic.
 
-Cc: stable@vger.kernel.org # v6.4+
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e61b415515d3 ("ASoC: amd: acp: refactor the acp init and de-init sequence")
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://lore.kernel.org/r/20240329053815.2373979-1-Vijendar.Mukunda@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/io_uring_types.h |    1 
- io_uring/io_uring.c            |    2 -
- io_uring/kbuf.c                |   70 ++++-------------------------------------
- 3 files changed, 8 insertions(+), 65 deletions(-)
+ sound/soc/amd/acp/acp-pci.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/include/linux/io_uring_types.h
-+++ b/include/linux/io_uring_types.h
-@@ -281,7 +281,6 @@ struct io_ring_ctx {
- 
- 		struct io_submit_state	submit_state;
- 
--		struct io_buffer_list	*io_bl;
- 		struct xarray		io_bl_xa;
- 
- 		struct io_hash_table	cancel_table_locked;
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -353,7 +353,6 @@ static __cold struct io_ring_ctx *io_rin
- err:
- 	kfree(ctx->cancel_table.hbs);
- 	kfree(ctx->cancel_table_locked.hbs);
--	kfree(ctx->io_bl);
- 	xa_destroy(&ctx->io_bl_xa);
- 	kfree(ctx);
- 	return NULL;
-@@ -2906,7 +2905,6 @@ static __cold void io_ring_ctx_free(stru
- 		io_wq_put_hash(ctx->hash_map);
- 	kfree(ctx->cancel_table.hbs);
- 	kfree(ctx->cancel_table_locked.hbs);
--	kfree(ctx->io_bl);
- 	xa_destroy(&ctx->io_bl_xa);
- 	kfree(ctx);
- }
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -17,8 +17,6 @@
- 
- #define IO_BUFFER_LIST_BUF_PER_PAGE (PAGE_SIZE / sizeof(struct io_uring_buf))
- 
--#define BGID_ARRAY	64
--
- /* BIDs are addressed by a 16-bit field in a CQE */
- #define MAX_BIDS_PER_BGID (1 << 16)
- 
-@@ -40,13 +38,9 @@ struct io_buf_free {
- 	int				inuse;
- };
- 
--static struct io_buffer_list *__io_buffer_get_list(struct io_ring_ctx *ctx,
--						   struct io_buffer_list *bl,
--						   unsigned int bgid)
-+static inline struct io_buffer_list *__io_buffer_get_list(struct io_ring_ctx *ctx,
-+							  unsigned int bgid)
- {
--	if (bl && bgid < BGID_ARRAY)
--		return &bl[bgid];
--
- 	return xa_load(&ctx->io_bl_xa, bgid);
- }
- 
-@@ -55,7 +49,7 @@ static inline struct io_buffer_list *io_
- {
- 	lockdep_assert_held(&ctx->uring_lock);
- 
--	return __io_buffer_get_list(ctx, ctx->io_bl, bgid);
-+	return __io_buffer_get_list(ctx, bgid);
- }
- 
- static int io_buffer_add_list(struct io_ring_ctx *ctx,
-@@ -68,10 +62,6 @@ static int io_buffer_add_list(struct io_
- 	 */
- 	bl->bgid = bgid;
- 	smp_store_release(&bl->is_ready, 1);
--
--	if (bgid < BGID_ARRAY)
--		return 0;
--
- 	return xa_err(xa_store(&ctx->io_bl_xa, bgid, bl, GFP_KERNEL));
- }
- 
-@@ -217,24 +207,6 @@ void __user *io_buffer_select(struct io_
- 	return ret;
- }
- 
--static __cold int io_init_bl_list(struct io_ring_ctx *ctx)
--{
--	struct io_buffer_list *bl;
--	int i;
--
--	bl = kcalloc(BGID_ARRAY, sizeof(struct io_buffer_list), GFP_KERNEL);
--	if (!bl)
--		return -ENOMEM;
--
--	for (i = 0; i < BGID_ARRAY; i++) {
--		INIT_LIST_HEAD(&bl[i].buf_list);
--		bl[i].bgid = i;
--	}
--
--	smp_store_release(&ctx->io_bl, bl);
--	return 0;
--}
--
- /*
-  * Mark the given mapped range as free for reuse
-  */
-@@ -309,13 +281,6 @@ void io_destroy_buffers(struct io_ring_c
- 	struct list_head *item, *tmp;
- 	struct io_buffer *buf;
- 	unsigned long index;
--	int i;
--
--	for (i = 0; i < BGID_ARRAY; i++) {
--		if (!ctx->io_bl)
--			break;
--		__io_remove_buffers(ctx, &ctx->io_bl[i], -1U);
--	}
- 
- 	xa_for_each(&ctx->io_bl_xa, index, bl) {
- 		xa_erase(&ctx->io_bl_xa, bl->bgid);
-@@ -498,12 +463,6 @@ int io_provide_buffers(struct io_kiocb *
- 
- 	io_ring_submit_lock(ctx, issue_flags);
- 
--	if (unlikely(p->bgid < BGID_ARRAY && !ctx->io_bl)) {
--		ret = io_init_bl_list(ctx);
--		if (ret)
--			goto err;
--	}
--
- 	bl = io_buffer_get_list(ctx, p->bgid);
- 	if (unlikely(!bl)) {
- 		bl = kzalloc(sizeof(*bl), GFP_KERNEL_ACCOUNT);
-@@ -516,14 +475,9 @@ int io_provide_buffers(struct io_kiocb *
- 		if (ret) {
- 			/*
- 			 * Doesn't need rcu free as it was never visible, but
--			 * let's keep it consistent throughout. Also can't
--			 * be a lower indexed array group, as adding one
--			 * where lookup failed cannot happen.
-+			 * let's keep it consistent throughout.
- 			 */
--			if (p->bgid >= BGID_ARRAY)
--				kfree_rcu(bl, rcu);
--			else
--				WARN_ON_ONCE(1);
-+			kfree_rcu(bl, rcu);
- 			goto err;
- 		}
+diff --git a/sound/soc/amd/acp/acp-pci.c b/sound/soc/amd/acp/acp-pci.c
+index a32c14a109b77..223238f662f83 100644
+--- a/sound/soc/amd/acp/acp-pci.c
++++ b/sound/soc/amd/acp/acp-pci.c
+@@ -107,7 +107,10 @@ static int acp_pci_probe(struct pci_dev *pci, const struct pci_device_id *pci_id
+ 		goto unregister_dmic_dev;
  	}
-@@ -688,12 +642,6 @@ int io_register_pbuf_ring(struct io_ring
- 	if (reg.ring_entries >= 65536)
- 		return -EINVAL;
  
--	if (unlikely(reg.bgid < BGID_ARRAY && !ctx->io_bl)) {
--		int ret = io_init_bl_list(ctx);
--		if (ret)
--			return ret;
--	}
--
- 	bl = io_buffer_get_list(ctx, reg.bgid);
- 	if (bl) {
- 		/* if mapped buffer ring OR classic exists, don't allow */
-@@ -743,10 +691,8 @@ int io_unregister_pbuf_ring(struct io_ri
- 		return -EINVAL;
- 
- 	__io_remove_buffers(ctx, bl, -1U);
--	if (bl->bgid >= BGID_ARRAY) {
--		xa_erase(&ctx->io_bl_xa, bl->bgid);
--		kfree_rcu(bl, rcu);
--	}
-+	xa_erase(&ctx->io_bl_xa, bl->bgid);
-+	kfree_rcu(bl, rcu);
- 	return 0;
- }
- 
-@@ -780,7 +726,7 @@ void *io_pbuf_get_address(struct io_ring
- {
- 	struct io_buffer_list *bl;
- 
--	bl = __io_buffer_get_list(ctx, smp_load_acquire(&ctx->io_bl), bgid);
-+	bl = __io_buffer_get_list(ctx, bgid);
- 
- 	if (!bl || !bl->is_mmap)
- 		return NULL;
+-	acp_init(chip);
++	ret = acp_init(chip);
++	if (ret)
++		goto unregister_dmic_dev;
++
+ 	res = devm_kcalloc(&pci->dev, num_res, sizeof(struct resource), GFP_KERNEL);
+ 	if (!res) {
+ 		ret = -ENOMEM;
+-- 
+2.43.0
+
 
 
 
