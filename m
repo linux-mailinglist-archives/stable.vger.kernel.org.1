@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-36566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9D2C89C069
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:08:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F2489C5E6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:02:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75847283CA2
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:08:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A918C1C22B51
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F42E6A352;
-	Mon,  8 Apr 2024 13:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4FA67E0F3;
+	Mon,  8 Apr 2024 14:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J913nXrv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Ue+Bryc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C064D2DF73;
-	Mon,  8 Apr 2024 13:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6291326AC7;
+	Mon,  8 Apr 2024 14:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581700; cv=none; b=qb3ay1BtDPZvnYoSoDH6xdTQqlNRUliPxrzx/m9YrSJaY/S5g/1t/XZhYqQX8Oo/ApGVFmr+kSq8qkak+TLLLlfqDH0VEnyJvusFGOTp8IXIB+lfupKK9dlQqhauGkicxqalzZp48CPmwlYKGpp9v1eC0/iGtZNjVXcXwla7zlE=
+	t=1712584892; cv=none; b=hgGkp0wGfkKdoPtb8TJfB5hwULfyPjApYpt/3Oa1RyZqFPJxpXdzrQzJZ1cQkmT8EVzDz8Y03UZhinQl2WcmiA0wHXESqb1OSVu0RYLM7IC74KPhiPTVGOMxl0lrzL9tUaUfvkRSHslrVqUZk5JxNTXurgmrN/hcnMjJzgUUcFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581700; c=relaxed/simple;
-	bh=sOCntd393LIs/gGnBT+c/J29lBHtmWTyrObYxRU4R6Y=;
+	s=arc-20240116; t=1712584892; c=relaxed/simple;
+	bh=5X3/T6q8/PiyFnLHyBhNsdZj8ppJGjNazCEfdkGLQeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IdLmN/Niayge5yorUnKqieDgtxHqoS6GHn+i13A8czywiQgUSWVigkCbQKpH30mTIBw+Q/FwcSwyGrhNVKWSeH2dmuepSbI8vkRmpHznfcW8HJEu5Acdm2kjwm4LfNRaiav0ohtQvCpPBBiA1d4zV4JwlGi2UrS9KMOeYZvb93I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J913nXrv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2E6C433C7;
-	Mon,  8 Apr 2024 13:08:20 +0000 (UTC)
+	 MIME-Version; b=cvLTDRyyIxogrXINFEwJLEdD/uC8A7lZSEOqle43bHqgVf244rLELtbCL8pE406723RbIUEo8/UpghKkdlTjNxeqN9Jgs9F2/ABZn9FJuKEknjStzp/3oXXmhET0m3WP1ja2dbd8/CjobdLIGrxrrQYMGTjkJ2nslTnzN3RfEuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Ue+Bryc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74AA2C433F1;
+	Mon,  8 Apr 2024 14:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581700;
-	bh=sOCntd393LIs/gGnBT+c/J29lBHtmWTyrObYxRU4R6Y=;
+	s=korg; t=1712584891;
+	bh=5X3/T6q8/PiyFnLHyBhNsdZj8ppJGjNazCEfdkGLQeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J913nXrvhjuh4QI2Gn6yRsGkRli+MLtKqfhGOxmeHuZSYZ5XwccJyeL6JYz2EullP
-	 P/+LiDBRKv9z744Qd8c/RhtnY5EQSD/bV+qF0yvnfw6y89bAp3rCJYYtbyhVo33aQS
-	 MEzt9pAlwEnzxYFFRzMYd5lLOA/7gBOito85qBtM=
+	b=0Ue+BrycJRTgs6lJ4QnkjHZHKqhiGukY3uNB56ghRPPtcQ24eOmxi7sknw6ZzHM60
+	 dk/VQ+R1lZd7bODVtSVCyVpd6pAk4MXsc2Nv9harqeRQSeyHdi/G/0RNsvQuyYtsTY
+	 R1E2PNYNyb6oJIvXJXWj7hMeYmw7+R/uyiW+dlxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xingwei lee <xrivendell7@gmail.com>,
-	yue sun <samsun1006219@gmail.com>,
-	syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com,
-	syzbot+d4066896495db380182e@syzkaller.appspotmail.com,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>
-Subject: [PATCH 6.1 045/138] bpf, sockmap: Prevent lock inversion deadlock in map delete elem
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	stable <stable@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 5.15 593/690] usb: typec: ucsi: Clear UCSI_CCI_RESET_COMPLETE before reset
 Date: Mon,  8 Apr 2024 14:57:39 +0200
-Message-ID: <20240408125257.630365536@linuxfoundation.org>
+Message-ID: <20240408125421.079485520@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Sitnicki <jakub@cloudflare.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-commit ff91059932401894e6c86341915615c5eb0eca48 upstream.
+commit 3de4f996a0b5412aa451729008130a488f71563e upstream.
 
-syzkaller started using corpuses where a BPF tracing program deletes
-elements from a sockmap/sockhash map. Because BPF tracing programs can be
-invoked from any interrupt context, locks taken during a map_delete_elem
-operation must be hardirq-safe. Otherwise a deadlock due to lock inversion
-is possible, as reported by lockdep:
+Check the UCSI_CCI_RESET_COMPLETE complete flag before starting
+another reset. Use a UCSI_SET_NOTIFICATION_ENABLE command to clear
+the flag if it is set.
 
-       CPU0                    CPU1
-       ----                    ----
-  lock(&htab->buckets[i].lock);
-                               local_irq_disable();
-                               lock(&host->lock);
-                               lock(&htab->buckets[i].lock);
-  <Interrupt>
-    lock(&host->lock);
-
-Locks in sockmap are hardirq-unsafe by design. We expects elements to be
-deleted from sockmap/sockhash only in task (normal) context with interrupts
-enabled, or in softirq context.
-
-Detect when map_delete_elem operation is invoked from a context which is
-_not_ hardirq-unsafe, that is interrupts are disabled, and bail out with an
-error.
-
-Note that map updates are not affected by this issue. BPF verifier does not
-allow updating sockmap/sockhash from a BPF tracing program today.
-
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Reported-by: yue sun <samsun1006219@gmail.com>
-Reported-by: syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com
-Reported-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=d4066896495db380182e
-Closes: https://syzkaller.appspot.com/bug?extid=bc922f476bd65abbd466
-Link: https://lore.kernel.org/bpf/20240402104621.1050319-1-jakub@cloudflare.com
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Link: https://lore.kernel.org/r/20240320073927.1641788-6-lk@c--e.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock_map.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/typec/ucsi/ucsi.c |   36 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -413,6 +413,9 @@ static int __sock_map_delete(struct bpf_
- 	struct sock *sk;
- 	int err = 0;
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -879,13 +879,47 @@ static int ucsi_reset_connector(struct u
  
-+	if (irqs_disabled())
-+		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
+ static int ucsi_reset_ppm(struct ucsi *ucsi)
+ {
+-	u64 command = UCSI_PPM_RESET;
++	u64 command;
+ 	unsigned long tmo;
+ 	u32 cci;
+ 	int ret;
+ 
+ 	mutex_lock(&ucsi->ppm_lock);
+ 
++	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
++	if (ret < 0)
++		goto out;
 +
- 	raw_spin_lock_bh(&stab->lock);
- 	sk = *psk;
- 	if (!sk_test || sk_test == sk)
-@@ -926,6 +929,9 @@ static int sock_hash_delete_elem(struct
- 	struct bpf_shtab_elem *elem;
- 	int ret = -ENOENT;
- 
-+	if (irqs_disabled())
-+		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
++	/*
++	 * If UCSI_CCI_RESET_COMPLETE is already set we must clear
++	 * the flag before we start another reset. Send a
++	 * UCSI_SET_NOTIFICATION_ENABLE command to achieve this.
++	 * Ignore a timeout and try the reset anyway if this fails.
++	 */
++	if (cci & UCSI_CCI_RESET_COMPLETE) {
++		command = UCSI_SET_NOTIFICATION_ENABLE;
++		ret = ucsi->ops->async_write(ucsi, UCSI_CONTROL, &command,
++					     sizeof(command));
++		if (ret < 0)
++			goto out;
 +
- 	hash = sock_hash_bucket_hash(key, key_size);
- 	bucket = sock_hash_select_bucket(htab, hash);
- 
++		tmo = jiffies + msecs_to_jiffies(UCSI_TIMEOUT_MS);
++		do {
++			ret = ucsi->ops->read(ucsi, UCSI_CCI,
++					      &cci, sizeof(cci));
++			if (ret < 0)
++				goto out;
++			if (cci & UCSI_CCI_COMMAND_COMPLETE)
++				break;
++			if (time_is_before_jiffies(tmo))
++				break;
++			msleep(20);
++		} while (1);
++
++		WARN_ON(cci & UCSI_CCI_RESET_COMPLETE);
++	}
++
++	command = UCSI_PPM_RESET;
+ 	ret = ucsi->ops->async_write(ucsi, UCSI_CONTROL, &command,
+ 				     sizeof(command));
+ 	if (ret < 0)
 
 
 
