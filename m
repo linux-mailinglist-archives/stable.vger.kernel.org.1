@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-36996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB51789C2A8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB41F89C206
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1797A1C2199C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E7BB1F21BB6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE94F81732;
-	Mon,  8 Apr 2024 13:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9A07D40E;
+	Mon,  8 Apr 2024 13:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVK1y6YD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjAMI6hI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0B281728;
-	Mon,  8 Apr 2024 13:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474AD7D3E5;
+	Mon,  8 Apr 2024 13:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582950; cv=none; b=nlv/yf3G7+qo6XieGjGWlbozOgV0rA2lPSURaY/74s8RDhfl/NI0ojdDSm8VSou+nZ4L3SlCQGbBLeUnkxy2I+YeHbNEI35UAQOeVyDjncJ8f4sges1EBeV0k5FvC2mgZhkbNej/WiY31AQQyxVq4FAPQwk5hHCMsVF3c5NNp8M=
+	t=1712582530; cv=none; b=oiaUQ/m0weEtsk7HpGXiK0uua83wcIAKvY5iX5yd6wRvZR4dRfLI4dSI7qlxrMvP0sGyaDgJpb+JiBHWCbRAr0GzSRPhyhqb0gMSshNJ5CkczYebvDIXbtGW6cDHOpcjCkdSwkD6sXTyHkPXK+Et8NeVU75EmtX6nu0Olq8kJuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582950; c=relaxed/simple;
-	bh=QcLZYLvwrVDEYv7VYt3wKhX8sJM2VDFqp9myo7TaY68=;
+	s=arc-20240116; t=1712582530; c=relaxed/simple;
+	bh=DzMUNnUQ4owUxpb5ZOLHtBgi3n+srZ8EG3HGVLCvWiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rqtJlytEzvhyeo+6fFw7CLKH8VnOmoh5KejZQO+osUJGT/qgNFa+dMssax36elgKIoVqN6A6wlc36PyIiwECZ+uVY17oMO9F+5XiFl/PI0+CnTWg8hEZ/2hr4NFMNzf7n1FUgVzJwN83Qh4RujkKFQolh9zqIeA3lZvj+Eptns8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVK1y6YD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19C4C433C7;
-	Mon,  8 Apr 2024 13:29:09 +0000 (UTC)
+	 MIME-Version; b=hJpJ/lfBvqXoSwMyQgqKLF37nA1xTcHqQoeyS9ljfjqfnd9HXZ+aOTzJRHDFeoB4mSV3988Eez+O0nv33UzHLuED+bt0b/OVZCOwVtx6mrRveWTcuoEmMN7iB5mlFOmNtURdDs5Tp5hQXX0p6eyjMoa9wJII6lAoarXJ6DKOKso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjAMI6hI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B77C433F1;
+	Mon,  8 Apr 2024 13:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582950;
-	bh=QcLZYLvwrVDEYv7VYt3wKhX8sJM2VDFqp9myo7TaY68=;
+	s=korg; t=1712582529;
+	bh=DzMUNnUQ4owUxpb5ZOLHtBgi3n+srZ8EG3HGVLCvWiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AVK1y6YDoxqfFCtp8CysoD0/Cz/+SPasiIbEhm55dKOlhQGR6ujLNQ8Ubnwx0Czyd
-	 ueiCvHKP4HmDpb9YvoKgA/xk2ksoCp4n8upOywpTGSLBslQ0B7k1qm586b3FpYwkEY
-	 PMmJPWCzgTrNuTqXNrxd+R0oxvUJAANE9r1QHyLE=
+	b=EjAMI6hISBYmC0LqIC10snd8MxBdD3yyVURiKEPQBtlAVwcmWmE5vr5GdbuPQWfQt
+	 j4G15+ylMdRXesL89GjseaMrelGWx/72yhEmXaKhvlFbP7SmIFDJ89/dRhnV/0A1+I
+	 wSTgmsGi/AM3nJX9mHchUz9MEFASChv3rGwZ1jcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.8 124/273] octeontx2-af: Fix issue with loading coalesced KPU profiles
+	xingwei lee <xrivendell7@gmail.com>,
+	yue sun <samsun1006219@gmail.com>,
+	syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com,
+	syzbot+d4066896495db380182e@syzkaller.appspotmail.com,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>
+Subject: [PATCH 6.6 100/252] bpf, sockmap: Prevent lock inversion deadlock in map delete elem
 Date: Mon,  8 Apr 2024 14:56:39 +0200
-Message-ID: <20240408125313.145450134@linuxfoundation.org>
+Message-ID: <20240408125309.751802671@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +66,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Jakub Sitnicki <jakub@cloudflare.com>
 
-commit 0ba80d96585662299d4ea4624043759ce9015421 upstream.
+commit ff91059932401894e6c86341915615c5eb0eca48 upstream.
 
-The current implementation for loading coalesced KPU profiles has
-a limitation.  The "offset" field, which is used to locate profiles
-within the profile is restricted to a u16.
+syzkaller started using corpuses where a BPF tracing program deletes
+elements from a sockmap/sockhash map. Because BPF tracing programs can be
+invoked from any interrupt context, locks taken during a map_delete_elem
+operation must be hardirq-safe. Otherwise a deadlock due to lock inversion
+is possible, as reported by lockdep:
 
-This restricts the number of profiles that can be loaded. This patch
-addresses this limitation by increasing the size of the "offset" field.
+       CPU0                    CPU1
+       ----                    ----
+  lock(&htab->buckets[i].lock);
+                               local_irq_disable();
+                               lock(&host->lock);
+                               lock(&htab->buckets[i].lock);
+  <Interrupt>
+    lock(&host->lock);
 
-Fixes: 11c730bfbf5b ("octeontx2-af: support for coalescing KPU profiles")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Locks in sockmap are hardirq-unsafe by design. We expects elements to be
+deleted from sockmap/sockhash only in task (normal) context with interrupts
+enabled, or in softirq context.
+
+Detect when map_delete_elem operation is invoked from a context which is
+_not_ hardirq-unsafe, that is interrupts are disabled, and bail out with an
+error.
+
+Note that map updates are not affected by this issue. BPF verifier does not
+allow updating sockmap/sockhash from a BPF tracing program today.
+
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Reported-by: yue sun <samsun1006219@gmail.com>
+Reported-by: syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com
+Reported-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
+Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=d4066896495db380182e
+Closes: https://syzkaller.appspot.com/bug?extid=bc922f476bd65abbd466
+Link: https://lore.kernel.org/bpf/20240402104621.1050319-1-jakub@cloudflare.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/sock_map.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -1657,7 +1657,7 @@ static int npc_fwdb_detect_load_prfl_img
- 	struct npc_coalesced_kpu_prfl *img_data = NULL;
- 	int i = 0, rc = -EINVAL;
- 	void __iomem *kpu_prfl_addr;
--	u16 offset;
-+	u32 offset;
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -411,6 +411,9 @@ static int __sock_map_delete(struct bpf_
+ 	struct sock *sk;
+ 	int err = 0;
  
- 	img_data = (struct npc_coalesced_kpu_prfl __force *)rvu->kpu_prfl_addr;
- 	if (le64_to_cpu(img_data->signature) == KPU_SIGN &&
++	if (irqs_disabled())
++		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
++
+ 	spin_lock_bh(&stab->lock);
+ 	sk = *psk;
+ 	if (!sk_test || sk_test == sk)
+@@ -933,6 +936,9 @@ static long sock_hash_delete_elem(struct
+ 	struct bpf_shtab_elem *elem;
+ 	int ret = -ENOENT;
+ 
++	if (irqs_disabled())
++		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
++
+ 	hash = sock_hash_bucket_hash(key, key_size);
+ 	bucket = sock_hash_select_bucket(htab, hash);
+ 
 
 
 
