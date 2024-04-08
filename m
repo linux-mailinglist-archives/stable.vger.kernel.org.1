@@ -1,60 +1,53 @@
-Return-Path: <stable+bounces-36787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5BA989C1AA
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07AF289C1A9
 	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:23:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40AC61F2234A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A0CA1C217D6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A646C7FBDD;
-	Mon,  8 Apr 2024 13:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59ACB80027;
+	Mon,  8 Apr 2024 13:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ff7FqjED"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VaNpSo7H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655797F7F1;
-	Mon,  8 Apr 2024 13:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CFF7E0E4;
+	Mon,  8 Apr 2024 13:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582343; cv=none; b=TEoQqSEeeUyntfx4q0cnhC7NZ2WVCWc0tgvw5B1wIk+P25tExpbitnaftqQ4KnIzr8pvoNp6zjZAonzxS81/kmxol0ZJxRmxiJnybz2TsqsNE6EdMYvizUOEvK68uFZqifRBSB3ZpbGr8AhkWt7tN9NrBynHUoHytzJpdoEmDQA=
+	t=1712582355; cv=none; b=uFZe2M7p4Zrt0xNdi6s+MvZDEd3X9kaSjaF9uuZYQp9k/AGOkMtbe9JgfN0RWm9h3PaodwM5WWTHCl7GpuSeG1oDuwSPt4WFaiyvuI85yoQ7tshl5njup59rERP8V7tmwIGO3rKHUo1+ZQwzk6gaJnCvk55cqhq5L9rKNqKAzLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582343; c=relaxed/simple;
-	bh=b4piI4W7lFWbtKCR0urq/MAcPgXULxFqOYFgClKXnRw=;
+	s=arc-20240116; t=1712582355; c=relaxed/simple;
+	bh=fP06mTCRRo+X2Q8rO1kWK/Vjk7ig4McT+GY14vlZSKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lGk9Be7vMtx6YsR7BUO9+UAk3T90Vk+ol/BNaq4aW5MZCiLa6/FOyHZF6gU6m4t+eDhW4LtqgkNf0ziCGeg5Vlk1/uIvkjrMPheBmS44Gx/rLbL3uiFh8LquVndpikUvsymAm9GB8UuJo1mwXSE+31roEIztfArG7G6LxecYJfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ff7FqjED; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11C3C433F1;
-	Mon,  8 Apr 2024 13:19:02 +0000 (UTC)
+	 MIME-Version; b=n5GRtuCF5XrNyqtZyaym+c4CZIGQb6ZSarnujlVLhg7hse8bZq7m/qaFbpbuvSyuHTACGAqxxlE770U3Y1SaQOOfXyg77XUSVpUFDMlg0cxETQXt60GTOpFzv5yhWVJaAOjc8W01YXITV8Ge66pnXQwS4zHH23GDfm2aHyh0HNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VaNpSo7H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A1AC433F1;
+	Mon,  8 Apr 2024 13:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582343;
-	bh=b4piI4W7lFWbtKCR0urq/MAcPgXULxFqOYFgClKXnRw=;
+	s=korg; t=1712582355;
+	bh=fP06mTCRRo+X2Q8rO1kWK/Vjk7ig4McT+GY14vlZSKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ff7FqjEDlYSPZplkyppgiaj2vwKn9fuXJeStJIcVywumSvt6UQV5QW+XX4A9fbZgP
-	 wbIld3N5Mir7ilmknc9cc+tTP59dG+8EuQAh6Brna0EcbY7Ft9j03HmxuPyzQTrDbI
-	 YU/PH8xEM6zHpkAO/+HzHosJsnh7ZNcTRg9y4MJE=
+	b=VaNpSo7HANLvM6buCrkEvqXcrur9xGI6c3ybDyHWCFY+QeMTYIZAUilcmbxmjOlXS
+	 FGS1eks4B1DPoulRKPgj6p1O0+j4ZTJzz614Q1KigQikJl/FkZFpvNq7BMYpz9gDH1
+	 Tf9SRVAY9lbrPdY7lJLUKc+MsYpv6rQlIOiUxVos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Benjamin LaHaise <ben@communityfibre.ca>,
-	Eric Biggers <ebiggers@google.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Avi Kivity <avi@scylladb.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.15 134/690] fs/aio: Check IOCB_AIO_RW before the struct aio_kiocb conversion
-Date: Mon,  8 Apr 2024 14:50:00 +0200
-Message-ID: <20240408125404.385533203@linuxfoundation.org>
+	Mikko Rapeli <mikko.rapeli@linaro.org>,
+	Sumit Garg <sumit.garg@linaro.org>,
+	Jens Wiklander <jens.wiklander@linaro.org>
+Subject: [PATCH 5.15 135/690] tee: optee: Fix kernel panic caused by incorrect error handling
+Date: Mon,  8 Apr 2024 14:50:01 +0200
+Message-ID: <20240408125404.417318374@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -73,64 +66,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Sumit Garg <sumit.garg@linaro.org>
 
-commit 961ebd120565cb60cebe21cb634fbc456022db4a upstream.
+commit 95915ba4b987cf2b222b0f251280228a1ff977ac upstream.
 
-The first kiocb_set_cancel_fn() argument may point at a struct kiocb
-that is not embedded inside struct aio_kiocb. With the current code,
-depending on the compiler, the req->ki_ctx read happens either before
-the IOCB_AIO_RW test or after that test. Move the req->ki_ctx read such
-that it is guaranteed that the IOCB_AIO_RW test happens first.
+The error path while failing to register devices on the TEE bus has a
+bug leading to kernel panic as follows:
 
-Reported-by: Eric Biggers <ebiggers@kernel.org>
-Cc: Benjamin LaHaise <ben@communityfibre.ca>
-Cc: Eric Biggers <ebiggers@google.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Avi Kivity <avi@scylladb.com>
-Cc: Sandeep Dhavale <dhavale@google.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
+[   15.398930] Unable to handle kernel paging request at virtual address ffff07ed00626d7c
+[   15.406913] Mem abort info:
+[   15.409722]   ESR = 0x0000000096000005
+[   15.413490]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   15.418814]   SET = 0, FnV = 0
+[   15.421878]   EA = 0, S1PTW = 0
+[   15.425031]   FSC = 0x05: level 1 translation fault
+[   15.429922] Data abort info:
+[   15.432813]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+[   15.438310]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[   15.443372]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[   15.448697] swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000000d9e3e000
+[   15.455413] [ffff07ed00626d7c] pgd=1800000bffdf9003, p4d=1800000bffdf9003, pud=0000000000000000
+[   15.464146] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+
+Commit 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
+lead to the introduction of this bug. So fix it appropriately.
+
+Reported-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218542
+Fixes: 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
 Cc: stable@vger.kernel.org
-Fixes: b820de741ae4 ("fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240304235715.3790858-1-bvanassche@acm.org
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Reviewed-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/aio.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/tee/optee/device.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/aio.c
-+++ b/fs/aio.c
-@@ -564,8 +564,8 @@ static int aio_setup_ring(struct kioctx
+--- a/drivers/tee/optee/device.c
++++ b/drivers/tee/optee/device.c
+@@ -90,13 +90,14 @@ static int optee_register_device(const u
+ 	if (rc) {
+ 		pr_err("device registration failed, err: %d\n", rc);
+ 		put_device(&optee_device->dev);
++		return rc;
+ 	}
  
- void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
- {
--	struct aio_kiocb *req = container_of(iocb, struct aio_kiocb, rw);
--	struct kioctx *ctx = req->ki_ctx;
-+	struct aio_kiocb *req;
-+	struct kioctx *ctx;
- 	unsigned long flags;
+ 	if (func == PTA_CMD_GET_DEVICES_SUPP)
+ 		device_create_file(&optee_device->dev,
+ 				   &dev_attr_need_supplicant);
  
- 	/*
-@@ -575,9 +575,13 @@ void kiocb_set_cancel_fn(struct kiocb *i
- 	if (!(iocb->ki_flags & IOCB_AIO_RW))
- 		return;
+-	return rc;
++	return 0;
+ }
  
-+	req = container_of(iocb, struct aio_kiocb, rw);
-+
- 	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
- 		return;
- 
-+	ctx = req->ki_ctx;
-+
- 	spin_lock_irqsave(&ctx->ctx_lock, flags);
- 	list_add_tail(&req->ki_list, &ctx->active_reqs);
- 	req->ki_cancel = cancel;
+ static int __optee_enumerate_devices(u32 func)
 
 
 
