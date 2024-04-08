@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-37531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A7FF89C540
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:55:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C865189C064
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0DAF1F23449
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:55:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84845283276
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C1276413;
-	Mon,  8 Apr 2024 13:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C24D2E62C;
+	Mon,  8 Apr 2024 13:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EROsOmT/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLo6Wc4T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FE742046;
-	Mon,  8 Apr 2024 13:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDFC2DF73;
+	Mon,  8 Apr 2024 13:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584507; cv=none; b=oiW0+eawtyvg/0kpUnqEl8gI2kTxEI1ugSyvBJugDNyqQKkqI918i70IFpLXNpODaFyK7DqdT1Rk853fZlRZlcfpJ561GdS00O847ETOUF4FYT+/HqhIlHYPDUDQmVZKnT480ak4xX8j3RnqWQ4+ZR2hWdIuyvAf3BgLUiNE7GI=
+	t=1712581689; cv=none; b=BI6R3C8eJPW5YBhpfMlJK2wGzQewNILFx+4kjEQmOWTg/X7qJ9ftk0pPM9dyg/uJDys9D87wcTrFJ5+aG3ttEEhcGQH5nvaSOUlPjOq2j0S2YcrwcK79L+/6cs/djp/AVQJTpE4GCsWOexUP7WKviRyTO2kZstItTvIcphl/P6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584507; c=relaxed/simple;
-	bh=HiTDD1Alminbu0TF4f1BSLVgJ7VkehASixOasFvUZ2Q=;
+	s=arc-20240116; t=1712581689; c=relaxed/simple;
+	bh=3Usgp80R/BtBJHiNBDci0RAyltHMk0FuXT7bzXO0WYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EzG4bp5n7Wov77g8EbFMA+ure0qXHsZ5fvahvq90PX4WYc2VouZTjWpwkqysPD/TTvs9HWm4ahKml+spTUJDpoEsepbOWd7veY+bfVqHUJguJ0CxIQw0eBezUFVRTs9+c7KLBA50iyypkPD/X+vsonJZSJPQyIml7RApmTmnJzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EROsOmT/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D351C43390;
-	Mon,  8 Apr 2024 13:55:06 +0000 (UTC)
+	 MIME-Version; b=CrtukOHH/wrUmrxZhJD5KVV1OQfz3EV+RBwJE2S6KL5NbYDg1tI2IXST//ngmnbAjjP9qcvNcZVS8cal7uVC/SkvkwE98ZAAQ+LwcxMxnRdkUqiyJv7xnbNakBrjzj4TncGgZB6Yc32SQh8GvZC6TdEy6v0OF4sdtHTos3uOqWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLo6Wc4T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74986C433F1;
+	Mon,  8 Apr 2024 13:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584506;
-	bh=HiTDD1Alminbu0TF4f1BSLVgJ7VkehASixOasFvUZ2Q=;
+	s=korg; t=1712581688;
+	bh=3Usgp80R/BtBJHiNBDci0RAyltHMk0FuXT7bzXO0WYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EROsOmT/Buj6H7pk0TsqyYWZlbklrIiZ9NhWDW6so+UQ8Ec4lM1ggX98Hq8uggBya
-	 Jb+jf0kMy+mGBrqSaPcFQYZcBfHnJuT7eylkzZhd5vUKkqAuwuVjadItqeKFlKz1NK
-	 Vd/bD3VEZWvMCq+e8b5eKpagdK79xwur6rB+0eZo=
+	b=ZLo6Wc4TY1rAvHBMT3fV0YWNzCzLAmuYXUIGou80YCisqlpbUM/QWwWFrSeW466Iz
+	 KThpqIRYc33y8J+nJnEamTMQ83uxF1QbINvrAQtq4RbcdNpqMXCma1byCdDfNyyG7F
+	 Peh8d9rJFBdEGOwlXRTXKnXqLkM6vdE9PZAQ72W4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 462/690] nfsd: ensure we always call fh_verify_error tracepoint
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 029/252] tls: recv: process_rx_list shouldnt use an offset with kvec
 Date: Mon,  8 Apr 2024 14:55:28 +0200
-Message-ID: <20240408125416.364325243@linuxfoundation.org>
+Message-ID: <20240408125307.552064922@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 93c128e709aec23b10f3a2f78a824080d4085318 ]
+[ Upstream commit 7608a971fdeb4c3eefa522d1bfe8d4bc6b2481cc ]
 
-This is a conditional tracepoint. Call it every time, not just when
-nfs_permission fails.
+Only MSG_PEEK needs to copy from an offset during the final
+process_rx_list call, because the bytes we copied at the beginning of
+tls_sw_recvmsg were left on the rx_list. In the KVEC case, we removed
+data from the rx_list as we were copying it, so there's no need to use
+an offset, just like in the normal case.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/e5487514f828e0347d2b92ca40002c62b58af73d.1711120964.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsfh.c | 2 +-
+ net/tls/tls_sw.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
-index d73434200df98..8c52b6c9d31a2 100644
---- a/fs/nfsd/nfsfh.c
-+++ b/fs/nfsd/nfsfh.c
-@@ -392,8 +392,8 @@ fh_verify(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type, int access)
- skip_pseudoflavor_check:
- 	/* Finally, check access permissions. */
- 	error = nfsd_permission(rqstp, exp, dentry, access);
--	trace_nfsd_fh_verify_err(rqstp, fhp, type, access, error);
- out:
-+	trace_nfsd_fh_verify_err(rqstp, fhp, type, access, error);
- 	if (error == nfserr_stale)
- 		nfsd_stats_fh_stale_inc(exp);
- 	return error;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index acf5bb74fd386..8e753d10e694a 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -2152,7 +2152,7 @@ int tls_sw_recvmsg(struct sock *sk,
+ 		}
+ 
+ 		/* Drain records from the rx_list & copy if required */
+-		if (is_peek || is_kvec)
++		if (is_peek)
+ 			err = process_rx_list(ctx, msg, &control, copied + peeked,
+ 					      decrypted - peeked, is_peek, NULL);
+ 		else
 -- 
 2.43.0
 
