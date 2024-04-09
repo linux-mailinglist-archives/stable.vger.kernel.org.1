@@ -1,106 +1,90 @@
-Return-Path: <stable+bounces-37899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B11E689E235
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 20:10:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B8389E299
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 20:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D28C01C21E8B
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 18:10:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3467BB22838
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 18:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4153C156975;
-	Tue,  9 Apr 2024 18:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92FCC156C6F;
+	Tue,  9 Apr 2024 18:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=svenjoac@gmx.de header.b="R4MTHzzT"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="XyeLBRX9"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB88715665B;
-	Tue,  9 Apr 2024 18:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BFE79CF;
+	Tue,  9 Apr 2024 18:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712686205; cv=none; b=B4NyP6C36ZjBbXgM4WQLh8qTxedMr37ACWg7N5r9k3ky2ki+6gSkcg0R4pYkzyIB8eUfqCyIv8tP/jiaeI5HPsio0rovU7k1HgmqXXdANXpC4tipN4a/TRrIlhNLxM/bOl/vtxXtYay9LGy+Mv1f+gtE6ovn82caCeupeRYATeM=
+	t=1712687557; cv=none; b=FzwU/wzxyOAK2I8WIyv+lor6EZBGK2uh8v0YhLVHiRfqmRCUXPQHuYVHinGY4vPLlSmVtgd7zrtk64rXkj8kTNJgNJspu0U14jIJGTIUapYZ805DdfMKE5fBzoIJgoe4MSyL8IvFIqIN5zS8SWTa85+/uQ0rh0hqbLZcjf4xjy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712686205; c=relaxed/simple;
-	bh=GWZMNv/jp14YM5KipnCUWg6RYgfSYcRiFQqZSRxASho=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ZVtc7zXejJzD6RApA++JNnf7DOhUvxzkTxxP9HiHHzfMuBxMejEj8lPl+FAk7DUORPB/tbOnf/1VUweldYLHnbt+/H8oggFwif6IZPHKsJeYI3/kyxV/La+zzyozPN3MyhfuGEvKxN3WpLg36cs+m4Ws2RWZzv+EpiQqAqBsJV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=svenjoac@gmx.de header.b=R4MTHzzT; arc=none smtp.client-ip=212.227.17.20
+	s=arc-20240116; t=1712687557; c=relaxed/simple;
+	bh=dmMdDLN3YgL1qMEqV22WwccWKGPvTDnUyQtKaq9KA84=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=qp3ESlQTu3BYCz6qGVtQPAFZ//TkU2Ad4dJ3Bu69714jyuExLf8mfeyoQnlRBwxUmUfi8eYtCdRF5K3v7jXBFDn++Bf61xowAYJKVRKXLIFViKCQqEirZfJbA0zS8KyWzO9juGoEpexEIf77QbI4sZbEjlptTLKSPovNi02heE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=XyeLBRX9; arc=none smtp.client-ip=212.227.17.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1712686169; x=1713290969; i=svenjoac@gmx.de;
-	bh=B1Gs2gI4M4O38Do9MzvVjCBuAgBbEJZ0/QWS9rcgkQI=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:In-Reply-To:References:
-	 Date;
-	b=R4MTHzzTFqgqWm8n4CjPgP5QaBJYtcKXtYqhYIgq3TAQyaVE1m9IJN7/yAW1+GT/
-	 P8qMGg1aTEGVeJuO/YYKgmK+q6IhmpXVchyS2urqc8bME2H15FKyCTTM1DEw3fbNe
-	 0E9JDl2xqMFqdy/1GqKXJ3vHy9FLd0ABVwWo7DadbbXoXpxXQQnAnL/PfZKIAz76Z
-	 534SQrVMRp+A69rnzZLQVlC9ki4ydc3rX3QTcKMEePgtEgQkK/kOdCZV7e76WCkxq
-	 XXD/Jl3ALt19EB23iYsF61E7l/m/9Qt3uy6JPVozJhaBRFJlPrOriraLUP/USfoAe
-	 O9kvx6LKEX4MCQS6DQ==
+	s=s31663417; t=1712687552; x=1713292352; i=rwarsow@gmx.de;
+	bh=dmMdDLN3YgL1qMEqV22WwccWKGPvTDnUyQtKaq9KA84=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+	b=XyeLBRX9Qx/FsPcjAYMu8xyhFgLp2cnsX7n6uBhlQzMIa5mzySCoNFphlScCZUTZ
+	 CTBwXHa2kx29A6Ov7fXldpSfKEl0x+du0mFjfqdUYy2b7d0LewkjFGIr0wSCw8QCX
+	 ewejgu5nEl5F9Jp1sC+WnhskaDAxyFjyXxZXG73xlNuUOi+cxzr6CHGkTOg3HH5bX
+	 WEcKEWHTtyzRNXnyRMSo+KeKO1LGHSf7bJrcauxNz6QvURnfwiqOCo7TUaLs4ijwm
+	 5v8SvWcknPd5vCkgxWX4KkjhFxt2v9seJPjAdtGOBaPxZib0U34LU6fK/H8kcusxt
+	 Wwe/BjrBXG9y2vCHCA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from localhost.localdomain ([79.203.81.120]) by mail.gmx.net
- (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1MTRMi-1sLrS10Cwm-00TlCf; Tue, 09 Apr 2024 20:09:29 +0200
-Received: by localhost.localdomain (Postfix, from userid 1000)
-	id B07B680119; Tue, 09 Apr 2024 20:09:26 +0200 (CEST)
-From: Sven Joachim <svenjoac@gmx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org,  patches@lists.linux.dev,
-  linux-kernel@vger.kernel.org,  torvalds@linux-foundation.org,
-  akpm@linux-foundation.org,  linux@roeck-us.net,  shuah@kernel.org,
-  patches@kernelci.org,  lkft-triage@lists.linaro.org,  pavel@denx.de,
-  jonathanh@nvidia.com,  f.fainelli@gmail.com,  sudipm.mukherjee@gmail.com,
-  srw@sladewatkins.net,  rwarsow@gmx.de,  conor@kernel.org,
-  allen.lkml@gmail.com,  broonie@kernel.org
-Subject: Re: [PATCH 6.1 000/138] 6.1.85-rc1 review
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org> (Greg
-	Kroah-Hartman's message of "Mon, 8 Apr 2024 14:56:54 +0200")
-References: <20240408125256.218368873@linuxfoundation.org>
-Date: Tue, 09 Apr 2024 20:09:26 +0200
-Message-ID: <87h6ga4dd5.fsf@turtle.gmx.de>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+Received: from [192.168.100.20] ([87.122.66.78]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MyKDU-1shhZE0yj6-00yhOI; Tue, 09
+ Apr 2024 20:32:32 +0200
+Message-ID: <2da62874-d10b-4149-ad9f-c1b6a936e2cd@gmx.de>
+Date: Tue, 9 Apr 2024 20:32:31 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Provags-ID: V03:K1:vL3vQt9Kk7zU9G9u353BTGfpG3FcgCdgMal5QikDGdQ/TIK7B6Y
- qYNnCdQcPbxzdYMWidnlfEKgoz5Ss63nlM4OUlsIj77oLhXeaHhw7EGCL1gicRZHy3VQVrG
- YXesvfvTkE/+fv0dN9iqnlBd11PoUBNWxSOsbotRk9NepHcT5kqk2R1UiZ+WQ4G6d2CMw4+
- DPWDVivTIIkveS5HywT0Q==
+User-Agent: Mozilla Thunderbird
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.8 000/280] 6.8.5-rc3 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:HYzSsak6QFYH/SaDDIC4psBVJP+6Bv4e0pRHtTf1syWoGPfWnQS
+ BqUgnTwI1b9fqjeyH2eqK/5Vs7JT7epMWbSpwi8/Jxs4l6KkudJ8dadLcwxfC+byFl1UQPP
+ z5CFfaJaPEMmLpeawFR/GGQjmee4j8pW1MqWVRPWRJ1qXywqFk412Lqz9GSjqPFlxMTz+KM
+ yx2107ClnlgTxhYKyQQuw==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:B7si3eCXGUo=;T1DtpOEuBV7WOHPFyReILsyI+Fg
- 5+YkKuPmyS7Mnp1Fbvo86yRDqrYX2vZMxQIEw5niq21k9KtN+zU2Gdb4n4RZ1XcJdXXG/5nYA
- b4iadaFmTO1R+xr85tgR3qkxZAdpdYvz3vPgI0ZRybZREtXMOuxaOUGcQdphpUhx0KvAHhnkW
- tMig7CiZPw3ND7yJh/wL5fyqkIDAHxiJ/z6IRInZUs07G1QMscuU4pyPGSDh5bcUx0+oBRLz0
- 2ID0oYlpu6NvUghFaFW/FGntjIL7cPo8hVYvSU2SeHo5q+IxPTAVJ+tMEhwAwX60mgNRDrTwI
- uXVMNdFTZvh3CiCX38e2ZZKUr7LTJrYWVSKGYpb7AooL+RjAGQF2oBTRRxSDQYvRa4HI6MnMX
- uP06dRSaCVECFxzzg8De778R63UvUT3/Vg42SSf15EY0Cfmlkn9pGySqUcvOQTAEswmV+c8L2
- 0iQLbbTvCf/O+jklW5VVQ56+aNG9yxcwSryF+zzx2qay8+bIm8V50r/+Dq85bVt8FA7fTpISy
- tZFLZp/nGlDcRoJyerPPX1Y3k1LbkQbMkCMPPio2qLxUjjwmNbgpWuE1xENv6UAwWaKoD93Rs
- 3LWpI8KOh4Wn1KbvPJIYe5Mxcrtnhk5kK6Sa3c4TKCVb104OsSs7tjM3cpHq3TZrx0+7mt3V4
- wX+Idqn8prOlieyaozF1HwzFoGw7s2hha6pMPb2Hty/K7Xr5q6NYIU7674XwVdpNOKye6dj3h
- /+6pTkCwV0Jry9c61xkUpSC9XHFn8AoY+M7S+ncBdjSDbDgV0kBHT7Fy7QI/e3sT7kBTVPqST
- sHZFHdu2f9CxGD3G1YnS/7fFkjeJ9Tpmj+GnUBVBm4FlA=
+UI-OutboundReport: notjunk:1;M01:P0:t5PNVBFZ2LE=;7JDAWgS7WHLvaloa5ktDAndqYga
+ 6otbbBU3Bg2Rn7pcLUNpeurO6e//8cXH7q/KOkUU7RBWdS7znV3Kh9mGb672itrqEvMgOTIvP
+ bG04HCGS0sXx1JFEXlk0DH/JRvnw00dyk9+CFNdilbtWZ9ff8aT+zJ5Yo7U/TYm756vt4GAVD
+ DHwtIrZeadm1+hACJBDY+lmiVQq/jFeJ8j9lKOmnbeEoBTe+2wvYxWcWEm2d0ZreVGdx4rX8k
+ 94+fkeRDxOx+RBidc51Vx+IaP4TRSzqGbsjPiw7XVQoTEZGa7cDYvvSh3SO1BuzTmXk3oGNUm
+ 6pyCwbugjM4xWzNU6nq5CVnhPLjpSgkeeAKxyTEIOdSxx4dGWlAYrw8KXkp8iB3i6TkoB8e5a
+ T9UdeEoG0/UylfqGg3UaiH68lNymi46g2tuBoe16TqSmU3BVU3cUUvMle4c0LT9vBOV97JLUN
+ OupMjpN8xX7RNnF67hQdcDORTEEDdOoTCq8D9gF4GG00yiI4nsMwa5EI6YS6D+PpZgGVG06y4
+ mOGdvIa7R2mq6TUK1sv1PhN6EP1JzEMbe2z1d8yZ4WFJ8wtuVSHcy1HNJWysgUzzFl5Ldk8sj
+ pvM6AwrBeJz8cIoXR+nJDWrAbazFcrdrBRb5wxu0yP4zf56n6bLsAR+cRvEHs1lmwQyOzPaBa
+ 74f+HP1Qi+8TValxYeJ9iLFdhQKVpus33GLkeYqZY5SEtIpIZKXwLfaED9H1th56s6Prl8Shw
+ c+sMguh6WEQVBkrCisoJ7DsJz9kyZmlIUhkb1mlqTmNGFxyUwl/0+rfeT66i4v5F36tfZLZW/
+ RpeMTsuI8MIl1eRdNqWedDC+O5Lla4Ejw2xMrKzgoS3SA=
 
-On 2024-04-08 14:56 +0200, Greg Kroah-Hartman wrote:
+Hi Greg
 
-> This is the start of the stable review cycle for the 6.1.85 release.
-> There are 138 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+*no* regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-Works fine for me on x86_64.
+Thanks
 
-Tested-by: Sven Joachim <svenjoac@gmx.de>
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
-Cheers,
-       Sven
 
