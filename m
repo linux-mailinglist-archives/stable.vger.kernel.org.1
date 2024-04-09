@@ -1,120 +1,143 @@
-Return-Path: <stable+bounces-37903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 180A189E2DF
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 21:01:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B627389E320
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 21:13:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 497E31C21DE4
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 19:01:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 376CAB23589
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 19:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91992156C5F;
-	Tue,  9 Apr 2024 19:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D85D146D48;
+	Tue,  9 Apr 2024 19:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kfzjsuns"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="iLVIzVdi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B14156C7A;
-	Tue,  9 Apr 2024 19:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2436153587;
+	Tue,  9 Apr 2024 19:11:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712689294; cv=none; b=U2rtbsmCpHAstomQKOJyl/HIXH2vf6uZpL0+5um0l/WLWac/uDk3UJzsJUHiiJ1DAhwNncLxf9b8e4LbFAdXmDHullbNdjnezPvmag5C6kpSUzxOYO7d0ssBVxS4JHbpgqztV2TWJ+RrWgzh8o97+IFRYggMWHx/L6CUFnOkgeQ=
+	t=1712689917; cv=none; b=OVhmwvlaJJTQzKMyWMunJogDD0v1OMARSQzyfjG0DufaxqgWXgrFVEx7dDM0/YdSmx6nfjCZCZYnrkl/jKWSVnKW1yxxrbBfA4MCDcL8PrZrRpoXPBlSGCBNu+GvaanHFWnlIPAc3Ff8MnIizFq5yDxwW7N+xOqziiTZ81gCpZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712689294; c=relaxed/simple;
-	bh=EhGuBWVPdQK8VKnXlzCuljD9IuU49Ti00ETnt24k/44=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JIpceoTaN+w74zM0AKhakxVPT1sfdOFX0Fsf8V2M2eAjvb2wkq/v7fAcZPZspuugCWix+2vGA93tbuxdOuXtyr3/ElngXksUYHiPsuV1BICUlJ/2+jCDINKyuRYxbOAd9hcPpWnAzBY61I+6PMBfbvs6Vh2w4QFrGvtGrn04KYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kfzjsuns; arc=none smtp.client-ip=209.85.161.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5aa369179e1so1961479eaf.3;
-        Tue, 09 Apr 2024 12:01:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712689292; x=1713294092; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gyZTN6gVoSJHHT6RAxRzhdFNsxF/9gYB/Bq8Q2JUTRs=;
-        b=kfzjsunsoNHglBJF2Edd4ZLum86ngIcJUgXQM039eCizn/M+n/VfRLj6rpzhiYfK4E
-         Erev/Lx3qUg5XqQQePT6lX51aVBW2orwtR1DkppAfxDEVSlgBXKsb/7Mk1Vjq3XNwqYc
-         b1tpULGbVvlIOBur8D6PTFt6Wp0gHR39CY9aAWVzA38NzdcVwRneEFblwXr6h8jh79Bz
-         g56srkg4yOnggML2tgu6NOYJg71s+NFWOm0D5TeWZadIiZmQBqdIv8COYN4h3m0uMpC4
-         P/sokc85URtQdvxGP1tGkHdmX0Ks6HTdv9NPCYS+loLxPJOnpPCLykvEmnKpYUxJmLfz
-         0EpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712689292; x=1713294092;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gyZTN6gVoSJHHT6RAxRzhdFNsxF/9gYB/Bq8Q2JUTRs=;
-        b=gk3KTCpQSg0N7k5DcBq39gNMz1XZypkKUaZRRook/fNOvCE2TXTTSHmwlqxAJYjLhY
-         WjFCOOQZpQnpLQMTXSLrJ78HdrlSMMDUqHcnDjDecTHEvaxaV25uFp8Pwu/hMke/8XOe
-         GO1VimXV9A0xN60YFcT0c9iVBW5S/CuTPPwjdbRKg23u8qztugt6EKzdJCaDjS84iyjH
-         USUXXG1i5zE4u2+2MQiHyUVT7Hn0eKLyV/eYaSjErTC1GYb/L7GLtx0SCySoMHMBEWgA
-         lFKg5jXBrWTzWN2r5ZbBzNu5YjTHmbi8t7+LjwsjGkRAvsz86C1hMQVqeHtt9M36TtoZ
-         yOdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQGrn6Kp6HWLSY/ielge5hrQV8ZcP7v1K8sLOYV4N39YGk+Stq0kLxN5oR0RUbzhcDaO1Ul1tUPKwOp+5mDdUokyQjvaLvD0bvq43fQf2NHtCxIm/ZwVjljdQp3ZrZGsED7nS0
-X-Gm-Message-State: AOJu0Yx7jn7MGIpmtwaeAHWZdz1Gh49H7kGE6dzT2VJX8vR/F4pUiF2j
-	//DSWD/8i7f7rg6olakqXN7P5h0qbgvDsHJpPg4YrbHpotrMozCJ
-X-Google-Smtp-Source: AGHT+IGXEceHQ3ia8cXGq7qrTT29qTSyLJnD1/Tp5AB1LA19tFqRpEuIfFqVqRoPHWdWDkQcyKBF6w==
-X-Received: by 2002:a05:6870:972a:b0:21f:a11a:e251 with SMTP id n42-20020a056870972a00b0021fa11ae251mr539900oaq.5.1712689291600;
-        Tue, 09 Apr 2024 12:01:31 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id l2-20020a05620a0c0200b0078d349b102dsm4366977qki.92.2024.04.09.12.01.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Apr 2024 12:01:30 -0700 (PDT)
-Message-ID: <e1390768-7dd4-44d4-bb57-b91cd3d73fdb@gmail.com>
-Date: Tue, 9 Apr 2024 12:01:24 -0700
+	s=arc-20240116; t=1712689917; c=relaxed/simple;
+	bh=R1nSz58tf2v/T5b/9sE+VidpxPictCXJf+alYVGWDVA=;
+	h=Date:To:From:Subject:Message-Id; b=KOzzESQgnoj6Rrc/sO5pmd3hHZfuHXYfqXcthhuY9qfSiFu73pBI42yb69gPGtzMy8FAoye1J//diP9G+V+ci3Bm1sk2V7VpECxNfDlZUFD74E/y5YZ+knEgYWKJjPfANCQ7vC1/I54e9WNpFJESVDZhGui8ZXEOqSyKrQMqpzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=iLVIzVdi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22265C433C7;
+	Tue,  9 Apr 2024 19:11:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1712689917;
+	bh=R1nSz58tf2v/T5b/9sE+VidpxPictCXJf+alYVGWDVA=;
+	h=Date:To:From:Subject:From;
+	b=iLVIzVdir8JdegVXrtD4D01ZHWgU3zRpDoyy1JG65upw+FysQNK4RwAWzbc1y7xzH
+	 MFFe0bR1OzuhlIoUmTG7DAofIrxlm1K2WC7Nbvpw3m+6KmTMt2xj0/LzW9GAHr5UbB
+	 KautthX7SQDyXAjnRf+ZfzqmJ+f/e3dUIuGLZTOE=
+Date: Tue, 09 Apr 2024 12:11:56 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,bugreport@ubisectech.com,brauner@kernel.org,phillip@squashfs.org.uk,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + squashfs-check-the-inode-number-is-not-the-invalid-value-of-zero.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240409191157.22265C433C7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/138] 6.1.85-rc3 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240409173524.517362803@linuxfoundation.org>
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240409173524.517362803@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 4/9/24 10:44, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.85 release.
-> There are 138 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 11 Apr 2024 17:35:00 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.85-rc3.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+The patch titled
+     Subject: Squashfs: check the inode number is not the invalid value of zero
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     squashfs-check-the-inode-number-is-not-the-invalid-value-of-zero.patch
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/squashfs-check-the-inode-number-is-not-the-invalid-value-of-zero.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Phillip Lougher <phillip@squashfs.org.uk>
+Subject: Squashfs: check the inode number is not the invalid value of zero
+Date: Mon, 8 Apr 2024 23:02:06 +0100
+
+Syskiller has produced an out of bounds access in fill_meta_index().
+
+That out of bounds access is ultimately caused because the inode
+has an inode number with the invalid value of zero, which was not checked.
+
+The reason this causes the out of bounds access is due to following
+sequence of events:
+
+1. Fill_meta_index() is called to allocate (via empty_meta_index())
+   and fill a metadata index.  It however suffers a data read error
+   and aborts, invalidating the newly returned empty metadata index.
+   It does this by setting the inode number of the index to zero,
+   which means unused (zero is not a valid inode number).
+
+2. When fill_meta_index() is subsequently called again on another
+   read operation, locate_meta_index() returns the previous index
+   because it matches the inode number of 0.  Because this index
+   has been returned it is expected to have been filled, and because
+   it hasn't been, an out of bounds access is performed.
+
+This patch adds a sanity check which checks that the inode number
+is not zero when the inode is created and returns -EINVAL if it is.
+
+Link: https://lkml.kernel.org/r/20240408220206.435788-1-phillip@squashfs.org.uk
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Reported-by: "Ubisectech Sirius" <bugreport@ubisectech.com>
+Closes: https://lore.kernel.org/lkml/87f5c007-b8a5-41ae-8b57-431e924c5915.bugreport@ubisectech.com/
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/squashfs/inode.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+--- a/fs/squashfs/inode.c~squashfs-check-the-inode-number-is-not-the-invalid-value-of-zero
++++ a/fs/squashfs/inode.c
+@@ -48,6 +48,10 @@ static int squashfs_new_inode(struct sup
+ 	gid_t i_gid;
+ 	int err;
+ 
++	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
++	if(inode->i_ino == 0)
++		return -EINVAL;
++
+ 	err = squashfs_get_id(sb, le16_to_cpu(sqsh_ino->uid), &i_uid);
+ 	if (err)
+ 		return err;
+@@ -58,7 +62,6 @@ static int squashfs_new_inode(struct sup
+ 
+ 	i_uid_write(inode, i_uid);
+ 	i_gid_write(inode, i_gid);
+-	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
+ 	inode_set_mtime(inode, le32_to_cpu(sqsh_ino->mtime), 0);
+ 	inode_set_atime(inode, inode_get_mtime_sec(inode), 0);
+ 	inode_set_ctime(inode, inode_get_mtime_sec(inode), 0);
+_
+
+Patches currently in -mm which might be from phillip@squashfs.org.uk are
+
+squashfs-check-the-inode-number-is-not-the-invalid-value-of-zero.patch
+squashfs-remove-deprecated-strncpy-by-not-copying-the-string.patch
 
 
