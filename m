@@ -1,149 +1,118 @@
-Return-Path: <stable+bounces-37905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE5D89E32B
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 21:20:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E3C89E3B2
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 21:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E3841F23300
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 19:20:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CADF287090
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 19:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9321156F58;
-	Tue,  9 Apr 2024 19:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B3515749A;
+	Tue,  9 Apr 2024 19:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="g8dvfkM5"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="PRYAca2e"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5624D1386C0;
-	Tue,  9 Apr 2024 19:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D9815699E;
+	Tue,  9 Apr 2024 19:37:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712690404; cv=none; b=l/W0zOvqLtS3jN25H4m4CITe8/2aDpZFxuYwKFEjLazmoTElibArZAQn5qvTUcy4obgmnI3PekeaE+Krq19d1VCR0GLJcpNkyabcoN7pUUrRGqSaHhaXCtLY/GSPOGY/LNTM8n+8YdfoZurCGfTdD9p5YhDzuN/5scimD6mRsV4=
+	t=1712691460; cv=none; b=heOztq0xiYRqqUiaHIBMb9A1rwyw+ywN+yLD+yj+FJcX0Ji3ko2Zvzor9zvVfJS5QKWsvzWmqMQCZk9R9Xfb62xcwI4IPXtNjo0qU9bDLaPUR4aLiFXTqtf9fQGKVNz1WNO24pCS1OYii2IlCkdfdcVktQrcWkdICjeUfvMZQYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712690404; c=relaxed/simple;
-	bh=HTt+Pl8E3LeGv1J+tQ5NYlwq11WIQ4kjxMdnjuZFQzs=;
-	h=Date:To:From:Subject:Message-Id; b=UwaVRK29P+NRfTDqNj64qcYxLKWytuRPY1zxATKCXJ7KlTwp5BTAg9oLUfF54nvVW16c1rz+npT2TpJy4fB27Zokgn4hfu8Ol4DfQ5ZFeX1zYtn/r2R6FMnCnRKKjnYG7RAmX6/Mn8a5XptBs2D0auV0L/Y5RV3R6Ryf7rLHj+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=g8dvfkM5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF6DDC433C7;
-	Tue,  9 Apr 2024 19:20:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1712690403;
-	bh=HTt+Pl8E3LeGv1J+tQ5NYlwq11WIQ4kjxMdnjuZFQzs=;
-	h=Date:To:From:Subject:From;
-	b=g8dvfkM5EXdCBKJGDtjcZT36peLWPjYiHCTfspfQgVxRUpYfZLZsIxyiidwEnfXbJ
-	 zSlif9zy7cUtxtj/R4zNBVSqMMH6wiaXv/J+TvgFqz7YWj9kq2ZAzhxownmfLXHXpd
-	 07vP/7hjRv11G6QFSlPlbyKX6eJ4jBN8QvPxqhyo=
-Date: Tue, 09 Apr 2024 12:20:03 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,jirislaby@kernel.org,bhe@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kexec-fix-the-unexpected-kexec_dprintk-macro.patch added to mm-nonmm-unstable branch
-Message-Id: <20240409192003.BF6DDC433C7@smtp.kernel.org>
+	s=arc-20240116; t=1712691460; c=relaxed/simple;
+	bh=RpsZ/E5woailLraq+rLciStxEis1JoVdknqghnMqJKk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SjW2JVtx+HORjZ45yu0WHNySa2RvqMdIAtzkbipifhKucO8vvxiiL/GoD9j74dnA6smzP7cOENSddYJmZ1U/U/hfzMvVLQu2mYflyFYRhN1fykl5AqmS3ufYwLDX1afpx/Xa57EFXYk6imHFAg2LDNjtAXM7g34PzL169LjsdcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=PRYAca2e; arc=none smtp.client-ip=198.47.19.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 439JbKUr034799;
+	Tue, 9 Apr 2024 14:37:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1712691440;
+	bh=jtWSn0QUC1RtGshhNU5i07HfuZDjb28710CEBnY+WlA=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=PRYAca2efendeUx7t/5SnqNwdjdwOpHYWdUa0qH/jrynSpb7uMcMkgZTC++rm8G4Y
+	 EXSVqwl1r/ZHaBykhoZUfPsaUcw+X1ZrdG3DAvacMgaS99DGknOaYQM6wt+5wZ+rgI
+	 cxcBXVdesNu2PVtCeTe8CT8Z8+lEPj2qhpE3Hv2w=
+Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 439JbKBP012948
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 9 Apr 2024 14:37:20 -0500
+Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 9
+ Apr 2024 14:37:20 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 9 Apr 2024 14:37:20 -0500
+Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 439JbKQ2090612;
+	Tue, 9 Apr 2024 14:37:20 -0500
+From: Nishanth Menon <nm@ti.com>
+To: <max.krummenacher@toradex.com>, <max.oss.09@gmail.com>
+CC: Nishanth Menon <nm@ti.com>, <conor+dt@kernel.org>,
+        <devicetree@vger.kernel.org>, <francesco.dolcini@toradex.com>,
+        <kristo@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <robh+dt@kernel.org>, <vigneshr@ti.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] arm64: dts: ti: verdin-am62: Set memory size to 2gb
+Date: Tue, 9 Apr 2024 14:37:18 -0500
+Message-ID: <171269142225.642948.2709707830763732879.b4-ty@ti.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240320142937.2028707-1-max.oss.09@gmail.com>
+References: <20240320142937.2028707-1-max.oss.09@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
+Hi max.oss.09@gmail.com,
 
-The patch titled
-     Subject: kexec: fix the unexpected kexec_dprintk() macro
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     kexec-fix-the-unexpected-kexec_dprintk-macro.patch
+On Wed, 20 Mar 2024 15:29:37 +0100, max.oss.09@gmail.com wrote:
+> The maximum DDR RAM size stuffed on the Verdin AM62 is 2GB,
+> correct the memory node accordingly.
+> 
+> 
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kexec-fix-the-unexpected-kexec_dprintk-macro.patch
+I have applied the following to branch ti-k3-dts-next on [1].
+Thank you!
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+[1/1] arm64: dts: ti: verdin-am62: Set memory size to 2gb
+      commit: 7e8eddc5291f5c94dd28227a73b7573b671f4a05
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-------------------------------------------------------
-From: Baoquan He <bhe@redhat.com>
-Subject: kexec: fix the unexpected kexec_dprintk() macro
-Date: Tue, 9 Apr 2024 12:22:38 +0800
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Jiri reported that the current kexec_dprintk() always prints out debugging
-message whenever kexec/kdmmp loading is triggered.  That is not wanted. 
-The debugging message is supposed to be printed out when 'kexec -s -d' is
-specified for kexec/kdump loading.
-
-After investigating, the reason is the current kexec_dprintk() takes
-printk(KERN_INFO) or printk(KERN_DEBUG) depending on whether '-d' is
-specified.  However, distros usually have defaulg log level like below:
-
- [~]# cat /proc/sys/kernel/printk
- 7       4      1       7
-
-So, even though '-d' is not specified, printk(KERN_DEBUG) also always
-prints out.  I thought printk(KERN_DEBUG) is equal to pr_debug(), it's
-not.
-
-Fix it by changing to use pr_info() instead which are expected to work.
-
-Link: https://lkml.kernel.org/r/20240409042238.1240462-1-bhe@redhat.com
-Fixes: cbc2fe9d9cb2 ("kexec_file: add kexec_file flag to control debug printing")
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Reported-by: Jiri Slaby <jirislaby@kernel.org>
-Closes: https://lore.kernel.org/all/4c775fca-5def-4a2d-8437-7130b02722a2@kernel.org
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/kexec.h |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
---- a/include/linux/kexec.h~kexec-fix-the-unexpected-kexec_dprintk-macro
-+++ a/include/linux/kexec.h
-@@ -461,10 +461,8 @@ static inline void arch_kexec_pre_free_p
- 
- extern bool kexec_file_dbg_print;
- 
--#define kexec_dprintk(fmt, ...)					\
--	printk("%s" fmt,					\
--	       kexec_file_dbg_print ? KERN_INFO : KERN_DEBUG,	\
--	       ##__VA_ARGS__)
-+#define kexec_dprintk(fmt, arg...) \
-+        do { if (kexec_file_dbg_print) pr_info(fmt, ##arg); } while (0)
- 
- #else /* !CONFIG_KEXEC_CORE */
- struct pt_regs;
-_
-
-Patches currently in -mm which might be from bhe@redhat.com are
-
-mm-vmallocc-optimize-to-reduce-arguments-of-alloc_vmap_area.patch
-x86-remove-unneeded-memblock_find_dma_reserve.patch
-mm-mm_initc-remove-the-useless-dma_reserve.patch
-mm-mm_initc-add-new-function-calc_nr_all_pages.patch
-mm-mm_initc-remove-meaningless-calculation-of-zone-managed_pages-in-free_area_init_core.patch
-mm-mm_initc-remove-meaningless-calculation-of-zone-managed_pages-in-free_area_init_core-v3.patch
-mm-mm_initc-remove-unneeded-calc_memmap_size.patch
-mm-mm_initc-remove-arch_reserved_kernel_pages.patch
-mm-move-array-mem_section-init-code-out-of-memory_present.patch
-mm-init-remove-the-unnecessary-special-treatment-for-memory-less-node.patch
-mm-make-__absent_pages_in_range-as-static.patch
-mm-page_allocc-remove-unneeded-codes-in-numa-version-of-build_zonelists.patch
-mm-page_allocc-remove-unneeded-codes-in-numa-version-of-build_zonelists-v2.patch
-mm-mm_initc-remove-the-outdated-code-comment-above-deferred_grow_zone.patch
-mm-page_allocc-dont-show-protection-in-zones-lowmem_reserve-for-empty-zone.patch
-mm-page_allocc-change-the-array-length-to-migrate_pcptypes.patch
-arch-loongarch-clean-up-the-left-code-and-kconfig-item-related-to-crash_core.patch
-documentation-kdump-clean-up-the-outdated-description.patch
-kexec-fix-the-unexpected-kexec_dprintk-macro.patch
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
+-- 
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
 
 
