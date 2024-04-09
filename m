@@ -1,152 +1,120 @@
-Return-Path: <stable+bounces-37909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E0689E51F
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 23:44:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A7789E523
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 23:45:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13EF6284F3F
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 21:44:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B39041C22714
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 21:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5A5158D6B;
-	Tue,  9 Apr 2024 21:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8AC158A31;
+	Tue,  9 Apr 2024 21:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="UuoZFzbS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y39dcCrD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D13158A3C;
-	Tue,  9 Apr 2024 21:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6AF1EA8F;
+	Tue,  9 Apr 2024 21:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712699062; cv=none; b=nRIDsIOGvnKE5xrnzeDLaQONp1HxRAtvcg2gu1IceRZ0ICVhmFTyjDXld7ZmA+XpfeV0S40H/Gdcd04fAT7NmH+DBIfDUHoiRAVqMR/qOSzEOdDxCe9hAxYxjATBSku2cKRJsZ+/DxrYBlZsODs/6BUyPYAVqv/7yhZyQSUvOLk=
+	t=1712699134; cv=none; b=fdX0LOTYdrf1WxfvTmugrBm958UVuK+MK1KL7pXfj1O62iw3eQEwX2ghRvIMBtNE3RVEXVpZOnvfoPYsxMeas2pIoGAIi8Yq18eu61P9wr464swdZuIQWQYg7hyKIh6hXkAfrtx1V6J1S8budArAxDNPjFMxOeK5EXN9m7MhcfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712699062; c=relaxed/simple;
-	bh=WlgV8ZE83HkQBQ1grsjbK3R4bx/ooSuKTLkQQ6IS9lI=;
-	h=Date:To:From:Subject:Message-Id; b=d3P6olqOt61VyBIqtTSOTFQQm8PbEOJ+ys5ylJzJ87x4oLNI5YXjPKmwZhrmFKKG2fwmSpafSENTu1guRCqrvc2oKVaGObTowR2fMuabWhW3QB7Muw9/BoMowBHL0GMk7KdWvKApySs/Syi0QKRjSvH/26DEDMFepAEKVxCmMf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=UuoZFzbS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8ABC433C7;
-	Tue,  9 Apr 2024 21:44:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1712699062;
-	bh=WlgV8ZE83HkQBQ1grsjbK3R4bx/ooSuKTLkQQ6IS9lI=;
-	h=Date:To:From:Subject:From;
-	b=UuoZFzbSVXIulaUJ1nStgRG1bQNbVeHMcoup4OtVNPxo/J0a/lfTH1k9qdEl4xT3N
-	 67scRHYp1GSEyg7swReRADEea8ZACqv3IS+7fkishgQkC6mjz2yJXyqHBBsoAfHrhu
-	 4GbAfmnFWyTNGbi9YKthydCz0cCghTNU8DmzXHhA=
-Date: Tue, 09 Apr 2024 14:44:21 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,iii@linux.ibm.com,hughd@google.com,hca@linux.ibm.com,gor@linux.ibm.com,agordeev@linux.ibm.com,sumanthk@linux.ibm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-shmem-inline-shmem_is_huge-for-disabled-transparent-hugepages.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240409214422.2E8ABC433C7@smtp.kernel.org>
+	s=arc-20240116; t=1712699134; c=relaxed/simple;
+	bh=BvDvYnOOXVplEXAKZS/pyR1MTJ4xfUq5mSJLxWWLxOo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q7rjdhcO+AGoOpmm0yqEAmLQtARzdTwwq8dgaQ9BMmEChoMhWHw8Y7mzhSKSgrWRDW7kLkhPscT88eSgAsRut/vyKvaKGt4TkkVtNBrxhV4OmroSCwOZIRPs0nifPG1MAfXh4IN7x+0vgBof5+WJ0ILDOVkHoIugAq4Z9SC7o8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y39dcCrD; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2a559928f46so1307649a91.0;
+        Tue, 09 Apr 2024 14:45:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712699132; x=1713303932; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iVtDfwwG8gLboGM4jqgJ+puQVYBzgA3lQVXohAbNgTI=;
+        b=Y39dcCrDxkEbb87UMYJkApVHYwMTXoeHzjBGYPDB7fO68znjERmbzO5gTlvbhbmL8u
+         LAGpa2GAB7orAK3kE0grER5YVO/ynKfnP52a0xzCm3Uucpc9DkELpIjQ125rtjzf5u8F
+         opPdVPYGE/fsvKvo8N4isqKOEnjYAkECcs5GsNYJmnfEU+k7HMWhJ/KO31JheZMNmkor
+         9OslkTrlCWGRxifcV6kCl3E3nxUmEii8W7Ps0Ln87Zj1u0U6q1pm6p8bs/c9IUNwnaQW
+         07Qf9LRV0cYtBH/7Bbx0uebgIUkKKznqOsBrY7c3BFMREWsGGuiUF/ya1Hi72Imhn3fY
+         U7nQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712699132; x=1713303932;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iVtDfwwG8gLboGM4jqgJ+puQVYBzgA3lQVXohAbNgTI=;
+        b=hQQWYoECz0zGipURGgj9NKMuPJDQwYJQUgqs/Lm3G+uYYBrESc0hT2RSoq0l8NdqdB
+         t+k3Q2jZFDYfzmAIXrLLtgSgkhGVwPfeJ1mXfJmmku8uoSveVqgCYjLiE/o06gqZ3S4X
+         eIK7zOvbxZk+xdfu3IwccE14VAOHYKTOddd1Zhk1oM0mBNrLS5l5uhelea50FVVVJNKs
+         BeY5/YCGIAtJPbyhOdMoQvx8YZKFA/Hq8LKL9ht5s1xtznXtKMTyLANfpDWud7S1lvVv
+         FrnmLqTq2EPvgDbXWwwpRV2f8Dm6C2FJayO5XvjhJg7Fljo0QRv4nZ/FzEvFT+MB0C43
+         fb6w==
+X-Forwarded-Encrypted: i=1; AJvYcCVePjLz2BOiYU+vhTwzhqp4PhueF1Ah0bU1BwdUetJ9ky+zgxKIG21w+RRWwJKJCWtc0aJyaVmxe5wLCnS10YkBhgaB42tkOdAQZ7282OYhTeboAdv8zovqPYC1F0AhBYaKgHE4
+X-Gm-Message-State: AOJu0Yyt98tBk/LkoMapuTE0i/Gv9Df2BKurrWBUtJLY2BlbB7+TQxTX
+	6npwA3z/Pq5o31a5hdCrSaLTQL1Ksn1O1nCL2zTsluc1k5Z/GeXY
+X-Google-Smtp-Source: AGHT+IGq3sKA+G3xXmhaBew7ljkWLI4OQDEMZ/2WB/CMVm/z9wg/DswFuMYeCmjPuq067hOiftgEUA==
+X-Received: by 2002:a17:90b:3cb:b0:2a5:3637:1968 with SMTP id go11-20020a17090b03cb00b002a536371968mr1002437pjb.9.1712699131931;
+        Tue, 09 Apr 2024 14:45:31 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id mg4-20020a17090b370400b002a043efdea6sm73077pjb.11.2024.04.09.14.45.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Apr 2024 14:45:29 -0700 (PDT)
+Message-ID: <90403017-ecf1-40cb-8455-045bd04247e8@gmail.com>
+Date: Tue, 9 Apr 2024 14:45:25 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.8 000/280] 6.8.5-rc3 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240409173543.596615037@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240409173543.596615037@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 4/9/24 10:44, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.8.5 release.
+> There are 280 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 11 Apr 2024 17:35:00 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.8.5-rc3.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.8.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-The patch titled
-     Subject: mm/shmem: Inline shmem_is_huge() for disabled transparent hugepages
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-shmem-inline-shmem_is_huge-for-disabled-transparent-hugepages.patch
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-shmem-inline-shmem_is_huge-for-disabled-transparent-hugepages.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Subject: mm/shmem: Inline shmem_is_huge() for disabled transparent hugepages
-Date: Tue, 9 Apr 2024 17:54:07 +0200
-
-In order to  minimize code size (CONFIG_CC_OPTIMIZE_FOR_SIZE=y),
-compiler might choose to make a regular function call (out-of-line) for
-shmem_is_huge() instead of inlining it. When transparent hugepages are
-disabled (CONFIG_TRANSPARENT_HUGEPAGE=n), it can cause compilation
-error.
-
-mm/shmem.c: In function `shmem_getattr':
-./include/linux/huge_mm.h:383:27: note: in expansion of macro `BUILD_BUG'
-  383 | #define HPAGE_PMD_SIZE ({ BUILD_BUG(); 0; })
-      |                           ^~~~~~~~~
-mm/shmem.c:1148:33: note: in expansion of macro `HPAGE_PMD_SIZE'
- 1148 |                 stat->blksize = HPAGE_PMD_SIZE;
-
-To prevent the possible error, always inline shmem_is_huge() when
-transparent hugepages are disabled.
-
-Link: https://lkml.kernel.org/r/20240409155407.2322714-1-sumanthk@linux.ibm.com
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/shmem_fs.h |    9 +++++++++
- mm/shmem.c               |    6 ------
- 2 files changed, 9 insertions(+), 6 deletions(-)
-
---- a/include/linux/shmem_fs.h~mm-shmem-inline-shmem_is_huge-for-disabled-transparent-hugepages
-+++ a/include/linux/shmem_fs.h
-@@ -110,8 +110,17 @@ extern struct page *shmem_read_mapping_p
- extern void shmem_truncate_range(struct inode *inode, loff_t start, loff_t end);
- int shmem_unuse(unsigned int type);
- 
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- extern bool shmem_is_huge(struct inode *inode, pgoff_t index, bool shmem_huge_force,
- 			  struct mm_struct *mm, unsigned long vm_flags);
-+#else
-+static __always_inline bool shmem_is_huge(struct inode *inode, pgoff_t index, bool shmem_huge_force,
-+					  struct mm_struct *mm, unsigned long vm_flags)
-+{
-+	return false;
-+}
-+#endif
-+
- #ifdef CONFIG_SHMEM
- extern unsigned long shmem_swap_usage(struct vm_area_struct *vma);
- #else
---- a/mm/shmem.c~mm-shmem-inline-shmem_is_huge-for-disabled-transparent-hugepages
-+++ a/mm/shmem.c
-@@ -748,12 +748,6 @@ static long shmem_unused_huge_count(stru
- 
- #define shmem_huge SHMEM_HUGE_DENY
- 
--bool shmem_is_huge(struct inode *inode, pgoff_t index, bool shmem_huge_force,
--		   struct mm_struct *mm, unsigned long vm_flags)
--{
--	return false;
--}
--
- static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
- 		struct shrink_control *sc, unsigned long nr_to_split)
- {
-_
-
-Patches currently in -mm which might be from sumanthk@linux.ibm.com are
-
-mm-shmem-inline-shmem_is_huge-for-disabled-transparent-hugepages.patch
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
 
