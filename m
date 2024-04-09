@@ -1,280 +1,100 @@
-Return-Path: <stable+bounces-37871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD32F89D9C8
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 15:07:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 345AF89D9CD
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 15:08:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 233B71F2237B
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 13:07:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65BEC1C21DD0
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 13:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249C212EBD8;
-	Tue,  9 Apr 2024 13:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20D412EBE7;
+	Tue,  9 Apr 2024 13:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NbYmwGb4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jEUwV5u/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D494F12E1F0
-	for <stable@vger.kernel.org>; Tue,  9 Apr 2024 13:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A7F12E1F0;
+	Tue,  9 Apr 2024 13:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712668059; cv=none; b=DNSJ2qVasBDNVLzHUv6QkTbllzNnZGF35ZUxprb4oKnvQa1QiftYd/wkMPBG3KmrcfOxZ1FVyP3pc0MQlwCSVVb4ddIApPnxneWM+bBNA/fKGJ0EZKSIxt1AChMjz1N0FTu2Ikbsjw2hPAX8wLcQ4gUabK/gHt4JkDEkGpU+1Uo=
+	t=1712668073; cv=none; b=t35JGuB4g17+QzGq0i4A4F+H+pa/j3DORaACAYBaPNm0ytzsxrxUHmpyzKKq9oVfIf7z1L2EtIOfnLb7yLw9/M4soBjS7yhl46LvFmfH6SrQ7Z3lFTo3jASlCSbMHNO4tZdG2gQyO0kLOGpkXIG2HkLBSE3V0dG/v8tarOqwjL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712668059; c=relaxed/simple;
-	bh=G3jbVa1nPrSiku3hJVPy36PZnzjb2nMSty0D8FL1iGs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=efC/q66f8dro9DYGVPJre7Rq4uK5TfKjyHVRM71DoDA8JLO3Cco0kcjPmFq7BfDAGXw5llYpGXuVPfH4ZtIqg/rS4d1dQGNrs6Tq/JwU7SRN6bHydAmPzpXwku4qNmbiW2wq324dXi57hIX678KHjcScLvLiccO3xfyGNbVsYhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NbYmwGb4; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-696315c9da5so46480236d6.2
-        for <stable@vger.kernel.org>; Tue, 09 Apr 2024 06:07:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712668056; x=1713272856; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xx6iswnEmfLHSA6533FOJGeKIsKx3ue2M+OGxVH6aHA=;
-        b=NbYmwGb4UQ70+7VarrPVP3QXMLJD7RdVG8EzNqpwAccPXNyIwdnOipf1ZB9Lrc2po/
-         zFGC6eajnVNr9/1Neo1xUwafive/QbhMc5nsrxOubbcOX2wSHyd7zE++BsTi+q3PvPcR
-         ZxowMWIKvqt8Z31j8bk0e6Wa3lU9LcAvQbl8UGlqRM4Vy6Tk16dgNy7mGuLW8Qkokczz
-         hviIXLK6l5w5L+NRL8u3ISrYJtWeAeWX85WEHdm7JmP1KsJ1FgO9Vj+AVbF1YPqvlpBE
-         RyiQyP7o5+4T1os44WTCZN2hQUv1mVeiYFB2bZvo/ssz1bpFYlF1sUsrtFlrcKbpmjTT
-         rw9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712668056; x=1713272856;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Xx6iswnEmfLHSA6533FOJGeKIsKx3ue2M+OGxVH6aHA=;
-        b=a2lnzucx4H0nIvJpYFLt2uZL3aNVC+uZ1p29F6v2snUMmId463p/hPxORD7whlZA5I
-         4a3QYzVANuuf+9cbfQqCn1wib/ROiudW6SukK/hupYH/sdnQB1jv/uVgB7sHH0+0Ncrh
-         OtPH5h0+roysYQ3/0mG3S6NUyB5BiotfPHPRgUvGPBgdNHMJgxlt93lw7+F83ZZQU6gi
-         RTKbXsOrjRN4PnMWp1m0DtXqinV8pAx2fKci/HnwFEXuCjFK3f3dIXbuAxEdhjnsc9uG
-         iVBB+xo0ZkmTcS2MW61yhNTUnb+30rlzjQMTrsGgtDrTOTy3vI9CCIlFpWjbz91xxvUr
-         ejXw==
-X-Gm-Message-State: AOJu0Yw4FEenvK8vV5ddoxP+/T0VKfq005NaGoMfgr+nDvYn6bItMgh1
-	OCOVX8SK8kWDCiDsATNwbINfQdyDVQT3sIpX7nEw9M3q/pgcz+c47n6HDnWBKWiDmrCI12ZRRuL
-	p1Hq7sqDvybvtlZghRBSVHd3RZ7H375TrvaL+tg==
-X-Google-Smtp-Source: AGHT+IELKVLoxp4BdP2Pp63hR/9HZLVoc3REPE9/2r7IFJMyKZvh+BKa08KlhiCXdL3Nk+SwD4ToJ3np3su3u+WMsGk=
-X-Received: by 2002:a05:6214:4106:b0:69b:247b:a4f9 with SMTP id
- kc6-20020a056214410600b0069b247ba4f9mr3745285qvb.6.1712668055704; Tue, 09 Apr
- 2024 06:07:35 -0700 (PDT)
+	s=arc-20240116; t=1712668073; c=relaxed/simple;
+	bh=ouy2Y6x2V5/uoESyJnNA235PE5cU8gwdY/QEcC9jK9Q=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=EE/X0h0p5ji8I2AzMRveXJmNfE0yJmrqn3Vvki3iop1wUPq2Yve4v0lWgBpxBqhz7rp34eJTKhOctiTcLshynXfMFStPL08h84Y/iDzT5F9oCIJCdVYROVTQoB2I+V/5s4f0ln9N8eG0y5O0QmVvNiZ7Pf8FJNqLut4Jc8KgM6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jEUwV5u/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E36BC433F1;
+	Tue,  9 Apr 2024 13:07:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712668073;
+	bh=ouy2Y6x2V5/uoESyJnNA235PE5cU8gwdY/QEcC9jK9Q=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=jEUwV5u/RKtUi7ai+UUBmn1fKwYn+9jGR2SXBlyansUuEsQgR8HXXtm31IPJtost4
+	 QfA5GafyjBNcPOXqu+NrYi77jpsDrC+ZuPMcgFZjTNJ+6ARc7lsuGc+VDs3KHokycl
+	 sjHX+BV6Xn0IZ6E58P/whNgejKdwbqyK/FHtL0JhYcEYQJ/ZPhUYN/Mag1ER44pINz
+	 iYhCsEWtBBeCdWMpB+Ps65LDRILWcvdXg+bv4ZuENQJ92eGqXeL8GqUGSixfQTnUGJ
+	 oERhOfzi6CyWML3nUoZ3EoWjnwuaFCYcfFNquEqpZiDWcaCVocaTD01T/liOD92UYh
+	 ejo3unZrpJgIg==
+From: Mark Brown <broonie@kernel.org>
+To: linux-sound@vger.kernel.org, alsa-devel@alsa-project.org, 
+ Sameer Pujar <spujar@nvidia.com>
+Cc: linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ lgirdwood@gmail.com, thierry.reding@gmail.com, jonathanh@nvidia.com, 
+ mkumard@nvidia.com, stable@vger.kernel.org
+In-Reply-To: <20240405104306.551036-1-spujar@nvidia.com>
+References: <20240405104306.551036-1-spujar@nvidia.com>
+Subject: Re: [RESEND PATCH v2] ASoC: tegra: Fix DSPK 16-bit playback
+Message-Id: <171266807089.28088.2212378797581391571.b4-ty@kernel.org>
+Date: Tue, 09 Apr 2024 14:07:50 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240408125309.280181634@linuxfoundation.org>
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-From: Anders Roxell <anders.roxell@linaro.org>
-Date: Tue, 9 Apr 2024 15:07:24 +0200
-Message-ID: <CADYN=9KoZSBy_sbKR9ZTzcUXuUgA+PwdhAMuA5BEHP-BHjdnNg@mail.gmail.com>
-Subject: Re: [PATCH 6.8 000/273] 6.8.5-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, bvanassche@acm.org, 
-	Alexander@wetzel-home.de
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev
 
-On Mon, 8 Apr 2024 at 15:00, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.8.5 release.
-> There are 273 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 10 Apr 2024 12:52:23 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.8.5-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.8.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Fri, 05 Apr 2024 10:43:06 +0000, Sameer Pujar wrote:
+> DSPK configuration is wrong for 16-bit playback and this happens because
+> the client config is always fixed at 24-bit in hw_params(). Fix this by
+> updating the client config to 16-bit for the respective playback.
+> 
+> 
 
-Results from Linaro's test farm.
-Regressions on x86_64, and i386.
+Applied to
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Following kernel warnings have been noticed on  x86_64, qemu-x86_64 and
-qemu-i386 while running LTP cve ioctl_sg01 tests the kernel with stable-rc
-6.6.26-rc1 and 6.8.5-rc1.
+Thanks!
 
-Reverted this patch and I couldn't see the repoted warning.
-scsi: sg: Avoid sg device teardown race
-[ Upstream commit 27f58c04a8f438078583041468ec60597841284d ]
+[1/1] ASoC: tegra: Fix DSPK 16-bit playback
+      commit: 2e93a29b48a017c777d4fcbfcc51aba4e6a90d38
 
-This has been reported on stable-rc 6.8.3-rc1 [1].
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-tst_test.c:1709: TINFO: LTP version: 20240129
-tst_test.c:1593: TINFO: Timeout per run is 1h 02m 30s
-<4>[   47.841092] ------------[ cut here ]------------
-<4>[   47.846033] WARNING: CPU: 1 PID: 23 at drivers/scsi/sg.c:2236
-sg_remove_sfp_usercontext+0x146/0x150
-<4>[   47.848749] Modules linked in:
-<4>[   47.851081] CPU: 1 PID: 23 Comm: kworker/1:0 Not tainted 6.8.5-rc1 #1
-<4>[   47.852690] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
-BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-<4>[   47.854570] Workqueue: events sg_remove_sfp_usercontext
-<4>[   47.855851] RIP: 0010:sg_remove_sfp_usercontext+0x146/0x150
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-<trim>
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-<4>[   47.867679] Call Trace:
-<4>[   47.868114]  <TASK>
-<4>[   47.868608]  ? show_regs+0x69/0x80
-<4>[   47.869035]  ? __warn+0x8d/0x150
-<4>[   47.869454]  ? sg_remove_sfp_usercontext+0x146/0x150
-<4>[   47.869882]  ? report_bug+0x171/0x1a0
-<4>[   47.870386]  ? handle_bug+0x43/0x80
-<4>[   47.870720]  ? exc_invalid_op+0x1c/0x80
-<4>[   47.871046]  ? asm_exc_invalid_op+0x1f/0x30
-<4>[   47.871537]  ? __call_rcu_common.constprop.0+0x281/0x3c0
-<4>[   47.872033]  ? sg_remove_sfp_usercontext+0x146/0x150
-<4>[   47.872643]  process_one_work+0x143/0x300
-<4>[   47.873029]  worker_thread+0x2f6/0x440
-<4>[   47.873507]  ? __pfx_worker_thread+0x10/0x10
-<4>[   47.873855]  kthread+0xf4/0x120
-<4>[   47.874274]  ? __pfx_kthread+0x10/0x10
-<4>[   47.874612]  ret_from_fork+0x41/0x60
-<4>[   47.874952]  ? __pfx_kthread+0x10/0x10
-<4>[   47.875412]  ret_from_fork_asm+0x1b/0x30
-<4>[   47.875865]  </TASK>
-<4>[   47.876335] ---[ end trace 0000000000000000 ]---
-ioctl_sg01.c:81: TINFO: Found SCSI device /dev/sg0
-ioctl_sg01.c:122: TPASS: Output buffer is empty, no data leaked
+Thanks,
+Mark
 
-
-[1]
- - https://lore.kernel.org/stable/CA+G9fYs5MZaPV+tTukfUbJtdztQMExfixo=ZwbBr1A6Oga+OLQ@mail.gmail.com/
-
-[2]
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.8.y/build/v6.8.4-274-g51d60edf2813/testrun/23350725/suite/log-parser-test/test/check-kernel-warning-baa412705664036587615ec565701ad300aa78b0e977d057b0a9de2be870cf86/log
-
-## Build
-* kernel: 6.8.5-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.8.y
-* git commit: 51d60edf281355bf4653c327050d7a5aeedb9b0d
-* git describe: v6.8.4-274-g51d60edf2813
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.8.y/build/v6.8.4-274-g51d60edf2813
-
-## Test result summary
-total: 173708, pass: 150838, fail: 2030, skip: 20672, xfail: 168
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 126 total, 126 passed, 0 failed
-* arm64: 37 total, 37 passed, 0 failed
-* i386: 28 total, 28 passed, 0 failed
-* mips: 24 total, 24 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 34 total, 34 passed, 0 failed
-* riscv: 15 total, 15 passed, 0 failed
-* s390: 12 total, 12 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 32 total, 32 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kunit
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-sm[
-* ltp-smoke
-* ltp-smoketest
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
