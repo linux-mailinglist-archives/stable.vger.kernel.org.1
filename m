@@ -1,199 +1,214 @@
-Return-Path: <stable+bounces-37857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD59889D718
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 12:36:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC7D589D78B
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 13:03:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CA7A28638A
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 10:36:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 586091F24DBD
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 11:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A0F1EB46;
-	Tue,  9 Apr 2024 10:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C13C84FCE;
+	Tue,  9 Apr 2024 11:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="cS39/ljx";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="IooIRLhT";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="In64Oyrx";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="814UwSI4"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="sefPRXwB";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="sefPRXwB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7C77F47E
-	for <stable@vger.kernel.org>; Tue,  9 Apr 2024 10:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D176F7C0B0;
+	Tue,  9 Apr 2024 11:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712658987; cv=none; b=Xdqy/oFGDXwzru9av5SRGQepN3Vey5abWS0yAf7/0F8fX6Ir/K8trG3s7lyrixwwQRkAi4+Xi53LRtHgn+oVeAW6ugD+iMvVY/0yjt0F7AcShnpReYkZyYmEXjd2d+grLKy+n86JWXbK/XRppIFfTuAR99qh42yRbs3+FXt/qsg=
+	t=1712660577; cv=none; b=sTAWdoc0S9eG9YyXIwz7XiqknpLsHOAve5Aes8/KtljTLUFAuf8M8HT5tBfYiY9NYA7Co9l0L8UVyWZ+OAudt0LaU2daisNpY6TCHdGhBW820T5URbVnPM27IUDVKhXz8KCz91O/MUxP9BU7lPKD4yKi8i2Qw4tz9Q2vTseuoFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712658987; c=relaxed/simple;
-	bh=clZSYCm8yXjhSe/lZxlEFYTsVgJZsBuEBgajoRImvtE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gd6NdQ+Bi8/9MbOWlv9/Z2tBz3fmNTUnNMbYqzGxtPSF4J4wRZ9DTIHbO8bRw69wqHyyB3uKnAuFvfzj5jS1NIBpahwytcbXk/HKHAzV2LXWiJ11OYwYPWJewS9IrHZFdCrhQVLlSQ4l0P/QzpU0wTx0+3KrGgtk1YDggvBGBbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=cS39/ljx; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=IooIRLhT; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=In64Oyrx; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=814UwSI4; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1712660577; c=relaxed/simple;
+	bh=pYyuJ9ISMWsuY+oEZ/aX4xJmk9+Fpawxw2k2/RaUYfU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EU2xqSg+fB+M/0JVzQcopfqOlTpE0rfCNER9Uy0dZAS0r+tLhBRRVHomFCtkXTH6KFpiWan4IH1JTKRA+HArhDQ9lsKfgGR3fwv2I46HX8y/daF5mCwLowV3iyaD4AW1PCY4Bia1VQr0hziOEda6uJdAdihqCdz22fUItp96Soc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=sefPRXwB; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=sefPRXwB; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E8DD420927;
-	Tue,  9 Apr 2024 10:36:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1712658983;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SNz315dAJsBY0YA8qRy+0csxXa2onvzGzH++1Aawdpg=;
-	b=cS39/ljxvJ8zWcgDnlVndRNktsDau24qbWNcTG73VnBWRZQ0JuRCdMIV8G8c9LAI0YL8V8
-	NbUZ8DdlfP4J57NYu4Fz/16zrmcWpKC0RHAWYdHHkp+vN6OhnRLN5/z8ssx/ZiUZdowg5c
-	5cVmTozODZHjTLCZ4T3kDWOJr41FPrU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1712658983;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SNz315dAJsBY0YA8qRy+0csxXa2onvzGzH++1Aawdpg=;
-	b=IooIRLhTJXroRMD94hjqcFkiemn88gaSjf/LU8rW7RimV/rUfr2/8WAMasTfnnPR1rKLna
-	obigvZViLnWr3jBQ==
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1749F2094B;
+	Tue,  9 Apr 2024 11:02:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1712660574; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=R+soQub59ruqI3xbzBPsOOqvCkHX2sSGQ4UJI06UDKY=;
+	b=sefPRXwBub57fyY5WpRLQmAVae+xMzuPKjETDSIGiGuYBPuYqAagyL+h0HaeNcheO4Wtnc
+	1TYkGckIOjwlELeA0sAlaa6MlY8hiPMk0dlDX50SzuW97A6sypGzJhBSZ4mEr5LARufgDw
+	YlUNmX8xnsK10VJ11oJbvuFqvNyqtD8=
 Authentication-Results: smtp-out2.suse.de;
 	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1712658982;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SNz315dAJsBY0YA8qRy+0csxXa2onvzGzH++1Aawdpg=;
-	b=In64Oyrx8rX1KH5u8laLFOb/D/ZMzBUDza5s3Sw9wlTPCjsFLPGTcEmCS1VZysiVUa9cGM
-	5xg4eRd2ZVK2GtVYU+F0iCszdMRnZz1EF9sbUZsaDtXo5wUZKPd/1PF1emGoVLiXsHnaEX
-	N4qlc+shclSUehsAU1JWgnwa9zFqB7Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1712658982;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SNz315dAJsBY0YA8qRy+0csxXa2onvzGzH++1Aawdpg=;
-	b=814UwSI4+ZCC+5snx1K0jl8zr9va87//PTO5TFm2w7CF21j1codM7XFop/9oVHE1+ptqLS
-	u9U3yqA+7kH9whCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1712660574; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=R+soQub59ruqI3xbzBPsOOqvCkHX2sSGQ4UJI06UDKY=;
+	b=sefPRXwBub57fyY5WpRLQmAVae+xMzuPKjETDSIGiGuYBPuYqAagyL+h0HaeNcheO4Wtnc
+	1TYkGckIOjwlELeA0sAlaa6MlY8hiPMk0dlDX50SzuW97A6sypGzJhBSZ4mEr5LARufgDw
+	YlUNmX8xnsK10VJ11oJbvuFqvNyqtD8=
 Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id BF4FE13253;
-	Tue,  9 Apr 2024 10:36:22 +0000 (UTC)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 80F761332F;
+	Tue,  9 Apr 2024 11:02:52 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
 	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id ZYNQLSYaFWajVQAAn2gu4w
-	(envelope-from <pvorel@suse.cz>); Tue, 09 Apr 2024 10:36:22 +0000
-Date: Tue, 9 Apr 2024 12:36:21 +0200
-From: Petr Vorel <pvorel@suse.cz>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: Re: [PATCH 5.15 463/690] nfsd: fix net-namespace logic in
- __nfsd_file_cache_purge
-Message-ID: <20240409103621.GA110810@pevik>
-Reply-To: Petr Vorel <pvorel@suse.cz>
-References: <20240408125359.506372836@linuxfoundation.org>
- <20240408125416.405210374@linuxfoundation.org>
- <20240409064222.GA83048@pevik>
- <2024040933-patio-impotent-7a0a@gregkh>
+	id dep1DVwgFWYoWwAAn2gu4w
+	(envelope-from <wqu@suse.com>); Tue, 09 Apr 2024 11:02:52 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Filipe Manana <fdmanana@suse.com>
+Subject: [PATCH v3] btrfs: fix wrong block_start calculation for btrfs_drop_extent_map_range()
+Date: Tue,  9 Apr 2024 20:32:34 +0930
+Message-ID: <2975263064f93759a96eb36e5795b9f3cc2ce423.1712660483.git.wqu@suse.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024040933-patio-impotent-7a0a@gregkh>
+Content-Transfer-Encoding: 8bit
 X-Spam-Level: 
-X-Spamd-Result: default: False [-3.50 / 50.00];
+X-Spamd-Result: default: False [-2.80 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	HAS_REPLYTO(0.30)[pvorel@suse.cz];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap2.dmz-prg2.suse.org:helo,imap2.dmz-prg2.suse.org:rdns,oracle.com:email,suse.cz:replyto,suse.cz:email];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
 	FROM_EQ_ENVFROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	RCVD_COUNT_TWO(0.00)[2];
-	REPLYTO_EQ_FROM(0.00)[]
-X-Spam-Score: -3.50
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
 X-Spam-Flag: NO
 
-> On Tue, Apr 09, 2024 at 08:42:22AM +0200, Petr Vorel wrote:
-> > Hi all,
+[BUG]
+During my extent_map cleanup/refactor, with extra sanity checks,
+extent-map-tests::test_case_7() would not pass the checks.
 
-> > > 5.15-stable review patch.  If anyone has any objections, please let me know.
+The problem is, after btrfs_drop_extent_map_range(), the resulted
+extent_map has a @block_start way too large.
+Meanwhile my btrfs_file_extent_item based members are returning a
+correct @disk_bytenr/@offset combination.
 
-> > > ------------------
+The extent map layout looks like this:
 
-> > > From: Jeff Layton <jlayton@kernel.org>
+     0        16K    32K       48K
+     | PINNED |      | Regular |
 
-> > > [ Upstream commit d3aefd2b29ff5ffdeb5c06a7d3191a027a18cdb8 ]
+The regular em at [32K, 48K) also has 32K @block_start.
 
-> > > If the namespace doesn't match the one in "net", then we'll continue,
-> > > but that doesn't cause another rhashtable_walk_next call, so it will
-> > > loop infinitely.
+Then drop range [0, 36K), which should shrink the regular one to be
+[36K, 48K).
+However the @block_start is incorrect, we expect 32K + 4K, but got 52K.
 
-> > > Fixes: ce502f81ba88 ("NFSD: Convert the filecache to use rhashtable")
-> > > Reported-by: Petr Vorel <pvorel@suse.cz>
-> > > Link: https://lore.kernel.org/ltp/Y1%2FP8gDAcWC%2F+VR3@pevik/
-> > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> > > Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-> > > ---
-> > >  fs/nfsd/filecache.c | 5 ++---
-> > >  1 file changed, 2 insertions(+), 3 deletions(-)
+[CAUSE]
+Inside btrfs_drop_extent_map_range() function, if we hit an extent_map
+that covers the target range but is still beyond it, we need to split
+that extent map into half:
 
-> > > diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-> > > index 0b19eb015c6c8..024adcbe67e95 100644
-> > > --- a/fs/nfsd/filecache.c
-> > > +++ b/fs/nfsd/filecache.c
-> > > @@ -892,9 +892,8 @@ __nfsd_file_cache_purge(struct net *net)
+	|<-- drop range -->|
+		 |<----- existing extent_map --->|
 
-> > >  		nf = rhashtable_walk_next(&iter);
-> > >  		while (!IS_ERR_OR_NULL(nf)) {
-> > > -			if (net && nf->nf_net != net)
-> > > -				continue;
-> > > -			nfsd_file_unhash_and_dispose(nf, &dispose);
-> > I don't know the context (whether the fix is needed for 5.15 and older), but
-> > patch does not apply because nfsd_file_unhash_and_dispose() was introduced in
-> > ce502f81ba88 ("NFSD: Convert the filecache to use rhashtable") in v6.0-rc1.  It
-> > was actually renamed from nfsd_file_unhash_and_release_locked() in that commit.
-> > Also the context changed - nfsd_file_unhash_and_dispose() was introduced in the
-> > commit which is supposed to be fixed in this commit, one would say that this fix
-> > is not needed in older kernels (5.15, 5.10 and 5.4; 4.19 has completely
-> > different code). But that's a question for Jeff or Chuck.
+And if the extent map is not compressed, we need to forward
+extent_map::block_start by the difference between the end of drop range
+and the extent map start.
 
-> This is part of a very large backport of nfsd patches to 5.15 to resolve
-> a lot of reported issues, so that might be why it looks odd here.  It
-> does seem to compile and boot ok for me, so maybe it's not an issue here
-> as you aren't seeing the other patches in this series?
+However in that particular case, the difference is calculated using
+(start + len - em->start).
 
-Hi Greg,
+The problem is @start can be modified if the drop range covers any
+pinned extent.
 
-I'm sorry, I should realize that one of the 462 previous patches might have
-changed the context. If it compiles and boots as whole it should be ok. I'm
-sorry for the noise.
+This leads to wrong calculation, and would be caught by my later
+extent_map sanity checks, which checks the em::block_start against
+btrfs_file_extent_item::disk_bytenr + btrfs_file_extent_item::offset.
 
-Kind regards,
-Petr
+This is a regression caused by commit c962098ca4af ("btrfs: fix
+incorrect splitting in btrfs_drop_extent_map_range"), which removed the
+@len update for pinned extents.
 
-> thanks,
+[FIX]
+Fix it by avoiding using @start completely, and use @end - em->start
+instead, which @end is exclusive bytenr number.
 
-> greg k-h
+And update the test case to verify the @block_start to prevent such
+problem from happening.
+
+Thankfully this is not going to lead to any data corruption, as IO path
+does not utilize btrfs_drop_extent_map_range() with @skip_pinned set.
+
+So this fix is only here for the sake of consistency/correctness.
+
+CC: stable@vger.kernel.org # 6.5+
+Fixes: c962098ca4af ("btrfs: fix incorrect splitting in btrfs_drop_extent_map_range")
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+---
+Changelog:
+v2:
+- Remove the mention of possible corruption
+  Thankfully this bug does not affect IO path thus it's fine.
+
+- Explain why c962098ca4af is the cause
+
+v3:
+- Fix an accidental removal of a newline
+---
+ fs/btrfs/extent_map.c             | 2 +-
+ fs/btrfs/tests/extent-map-tests.c | 5 +++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/fs/btrfs/extent_map.c b/fs/btrfs/extent_map.c
+index 471654cb65b0..955ce300e5a1 100644
+--- a/fs/btrfs/extent_map.c
++++ b/fs/btrfs/extent_map.c
+@@ -799,7 +799,7 @@ void btrfs_drop_extent_map_range(struct btrfs_inode *inode, u64 start, u64 end,
+ 					split->block_len = em->block_len;
+ 					split->orig_start = em->orig_start;
+ 				} else {
+-					const u64 diff = start + len - em->start;
++					const u64 diff = end - em->start;
+ 
+ 					split->block_len = split->len;
+ 					split->block_start += diff;
+diff --git a/fs/btrfs/tests/extent-map-tests.c b/fs/btrfs/tests/extent-map-tests.c
+index 253cce7ffecf..47b5d301038e 100644
+--- a/fs/btrfs/tests/extent-map-tests.c
++++ b/fs/btrfs/tests/extent-map-tests.c
+@@ -847,6 +847,11 @@ static int test_case_7(struct btrfs_fs_info *fs_info)
+ 		goto out;
+ 	}
+ 
++	if (em->block_start != SZ_32K + SZ_4K) {
++		test_err("em->block_start is %llu, expected 36K", em->block_start);
++		goto out;
++	}
++
+ 	free_extent_map(em);
+ 
+ 	read_lock(&em_tree->lock);
+-- 
+2.44.0
+
 
