@@ -1,139 +1,124 @@
-Return-Path: <stable+bounces-37852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83ED489D4FD
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 10:58:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB5BD89D530
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 11:13:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F27A28414A
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 08:58:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55819B22BC1
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 09:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C607E783;
-	Tue,  9 Apr 2024 08:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gN/ulS46"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A697EF06;
+	Tue,  9 Apr 2024 09:13:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCEF3BBD8;
-	Tue,  9 Apr 2024 08:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6137E777
+	for <stable@vger.kernel.org>; Tue,  9 Apr 2024 09:13:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712653123; cv=none; b=IkezKwz5Z2Rs+/3bvV0NAOtdeW/SRQWwSgLZvWFXVvYYK5MfBNqa5JeIRvx9lBzbcG0p/FeTFyxhpOO7FI6wZKu6D049pR0snnBwecDkjlDGhVdwAAAam4EuIv+aEm9EyGIEv1hS0oAVZgCZtHCcqWahJhSip1sveqifFYxHz5k=
+	t=1712654012; cv=none; b=C75cZQ+AQX4mHuFGajOxsncLQ4F3Doab/30hzNA0cvk3iJkEqZj3+17TR/SPfalhS9+SjZn1fr+KBvN2gioQQLQkqEhPmNf8ShV9E5nj4yPW+0WZUILAhry3TF4GJGUuj73uH6K+4EaEjIIXx0UokogsKtl0R9n9p9Qg1j8wqAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712653123; c=relaxed/simple;
-	bh=JDxyj/NgzAYMyhn1+wlwKA00gRutP6a+/Ptcd7/a/Hw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dub6HAVhO177+XsEpez46hn3QJNTtI1Xra1R5TxAzT+A7aUFkTvoa9hrnGkUBdmOI4s1QozG/RzK0Xy9aB10jiYB0+HqDD5sAwJ8NDBkB5i6/mZNsPjScS9mOGmk7QoxyGeau++dJEUROk8vpcHuWgh+I2AOLvUkHjeAmkiTNzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gN/ulS46; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2d87660d5dbso31511201fa.3;
-        Tue, 09 Apr 2024 01:58:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712653120; x=1713257920; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9wA4gp3d79zniHSDsbeCG83X8AoE16ampJ2TK82Zm3A=;
-        b=gN/ulS46ndJbELXoAr+iOT9QpZQvtagXXaHuTYWaBfb2UHvw1UbJrirAflnuk8GuQs
-         aHOoNrcB5a6Uf4bRD4e98IGao6cRGzAf6eoi4ACdoe4ZPipQGNpgDVFrw5L9/Z0Hj6BW
-         HL/DEmsb/FCC3b+grt50O1+312dkWeIzLJsCGzaHJrCYKonJdylQQ4ip/CPDOaxU28U1
-         lGBzpWxeTcf/LkaUankCRriOZk0H5WMrCgQKGxELYCARK2P8EPEnO74lBFIiIuTOW6El
-         ZiL7mOhsrpiBvKD933idU/LTxfHo714CvgroqjHIjOz/SQD+ejkqYRKUunDEyaYbNWwa
-         sP2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712653120; x=1713257920;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9wA4gp3d79zniHSDsbeCG83X8AoE16ampJ2TK82Zm3A=;
-        b=uB5HnijO8VL+rHvFS8sUEVaFgZ1EDs5piI16Ogb1ackA56ypU1HikyTiBAc33dsOye
-         HtjJTkF+Ksm5i9/1PSYficXKkXp5QpaoduXiROMszhjUrXwMiTYOa+3Cfcnp1lJbLmPT
-         G+Y4bnAhCerS/jTnd8BPXXTkMH7zEy005K7lP7+iIp3FOxeeOGxvAW4pJ6xRGco75yyb
-         6LLYg6/xQNrSkAz05Cu+0hzUMgBDl7MmvZ0JL4NKwg+OXnw3CSQcjRIe2G9MFV3lVwZ1
-         /ngIUP6GJsvneJWTR9KT09q0o7Ow7m0HxdllX4/LDlPBUt9EcTunJzuXi0/9CMRL929w
-         qwRA==
-X-Forwarded-Encrypted: i=1; AJvYcCXHKdUIwJybqVEKVCkrlDkUx4QeJVeQD+0eK7Em6Em3EAvCWfuemx57c11d+GJLsQ1+kn37j6aznMfdaxoleyVvbjxF/FbM/Jf1yyWjLHBrfp7tUExBZXSkWs4I57fATjj191Ofls/LXSFJAkMRy4yW5TUmLExjPPJvtwq1q3Sr0w==
-X-Gm-Message-State: AOJu0YwSv+UfpR+LXGz7H1G+wBPMYHRIiHcAcGslRIGRs+lWCTz/ZxzK
-	4VtYjh3/9RLKWuFh2aOZUfus1iV9K+a+Tn5bavrGtSYPUg16t1ah
-X-Google-Smtp-Source: AGHT+IEjfbApJzDOYJitN5OvVuZobmLyPYbuqFDauaji15QV2g9+W2qksUw6WlXX6jS03WEbDawyiw==
-X-Received: by 2002:a2e:9b85:0:b0:2d8:4890:c0fa with SMTP id z5-20020a2e9b85000000b002d84890c0famr7754716lji.35.1712653119923;
-        Tue, 09 Apr 2024 01:58:39 -0700 (PDT)
-Received: from vitor-nb.. ([2001:8a0:e622:f700:2455:df03:b036:54c9])
-        by smtp.gmail.com with ESMTPSA id m1-20020a05600c4f4100b0041665d968f1sm7688160wmq.47.2024.04.09.01.58.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Apr 2024 01:58:39 -0700 (PDT)
-From: Vitor Soares <ivitro@gmail.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Vitor Soares <vitor.soares@toradex.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Lucas Stach <l.stach@pengutronix.de>,
-	stable@vger.kernel.org
-Subject: [PATCH v1] arm64: dts: imx8mm: fix missing pgc_vpu_* power domain parent
-Date: Tue,  9 Apr 2024 09:58:02 +0100
-Message-Id: <20240409085802.290439-1-ivitro@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1712654012; c=relaxed/simple;
+	bh=DDDP1MRm7J507ibgfXCuV7RGp0XeST5hGJXpspFd8rM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Lcp+BzzQxXvWfiVnTfDAQIojE9cQE9HW6szOyjkWkwxIIxojHmOA+ZPDRpP2PlCR8sMmzza7j6/Vd0Zu6RfZmIknfEHF2V6sj8YjX9Z+uC1X2or/wdGzdiL7R3ppKEQ18Y9ofMLPAX6uNOfD92pb4nE5irWUB9aloie17zNoavs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1ru7XW-0004PQ-Cr; Tue, 09 Apr 2024 11:13:14 +0200
+Message-ID: <9ce35b9bb5a15891f6bd01bd54b7dc84b3ba4021.camel@pengutronix.de>
+Subject: Re: [PATCH v1] arm64: dts: imx8mm: fix missing pgc_vpu_* power
+ domain parent
+From: Lucas Stach <l.stach@pengutronix.de>
+To: Vitor Soares <ivitro@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Vitor Soares <vitor.soares@toradex.com>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Tue, 09 Apr 2024 11:13:13 +0200
+In-Reply-To: <20240409085802.290439-1-ivitro@gmail.com>
+References: <20240409085802.290439-1-ivitro@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-From: Vitor Soares <vitor.soares@toradex.com>
+Hi Vitor,
 
-The pgc_vpu_* nodes miss the reference to the power domain parent,
-leading the system to hang during the resume.
+Am Dienstag, dem 09.04.2024 um 09:58 +0100 schrieb Vitor Soares:
+> From: Vitor Soares <vitor.soares@toradex.com>
+>=20
+> The pgc_vpu_* nodes miss the reference to the power domain parent,
+> leading the system to hang during the resume.
+>=20
+This change is not correct. The vpumix domain is controlled through the
+imx8mm-vpu-blk-ctrl and must not be directly triggered by the child
+domains in order to guarantee proper power sequencing.
 
-As these PU domains are nested inside the vpumix domain, let's reference
-it accordingly. After this change, the suspend/resume is working.
+If the sequencing is incorrect for resume, it needs to be fixed in the
+blk-ctrl driver. I'll happily assist if you have any questions about
+this intricate mix between GPC and blk-ctrl hardware/drivers.
 
-Cc: Lucas Stach <l.stach@pengutronix.de>
-Cc: <stable@vger.kernel.org>
-Closes: https://lore.kernel.org/all/fccbb040330a706a4f7b34875db1d896a0bf81c8.camel@gmail.com/
-Fixes: d39d4bb15310 ("arm64: dts: imx8mm: add GPC node")
-Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
----
- arch/arm64/boot/dts/freescale/imx8mm.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+Regards,
+Lucas
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-index 8a1b42b94dce..97d0c6d23ad8 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-@@ -739,16 +739,19 @@ pgc_vpumix: power-domain@6 {
- 					pgc_vpu_g1: power-domain@7 {
- 						#power-domain-cells = <0>;
- 						reg = <IMX8MM_POWER_DOMAIN_VPUG1>;
-+						power-domains = <&pgc_vpumix>;
- 					};
- 
- 					pgc_vpu_g2: power-domain@8 {
- 						#power-domain-cells = <0>;
- 						reg = <IMX8MM_POWER_DOMAIN_VPUG2>;
-+						power-domains = <&pgc_vpumix>;
- 					};
- 
- 					pgc_vpu_h1: power-domain@9 {
- 						#power-domain-cells = <0>;
- 						reg = <IMX8MM_POWER_DOMAIN_VPUH1>;
-+						power-domains = <&pgc_vpumix>;
- 					};
- 
- 					pgc_dispmix: power-domain@10 {
--- 
-2.34.1
+> As these PU domains are nested inside the vpumix domain, let's reference
+> it accordingly. After this change, the suspend/resume is working.
+>=20
+> Cc: Lucas Stach <l.stach@pengutronix.de>
+> Cc: <stable@vger.kernel.org>
+> Closes: https://lore.kernel.org/all/fccbb040330a706a4f7b34875db1d896a0bf8=
+1c8.camel@gmail.com/
+> Fixes: d39d4bb15310 ("arm64: dts: imx8mm: add GPC node")
+> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mm.dtsi | 3 +++
+>  1 file changed, 3 insertions(+)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/=
+dts/freescale/imx8mm.dtsi
+> index 8a1b42b94dce..97d0c6d23ad8 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+> @@ -739,16 +739,19 @@ pgc_vpumix: power-domain@6 {
+>  					pgc_vpu_g1: power-domain@7 {
+>  						#power-domain-cells =3D <0>;
+>  						reg =3D <IMX8MM_POWER_DOMAIN_VPUG1>;
+> +						power-domains =3D <&pgc_vpumix>;
+>  					};
+> =20
+>  					pgc_vpu_g2: power-domain@8 {
+>  						#power-domain-cells =3D <0>;
+>  						reg =3D <IMX8MM_POWER_DOMAIN_VPUG2>;
+> +						power-domains =3D <&pgc_vpumix>;
+>  					};
+> =20
+>  					pgc_vpu_h1: power-domain@9 {
+>  						#power-domain-cells =3D <0>;
+>  						reg =3D <IMX8MM_POWER_DOMAIN_VPUH1>;
+> +						power-domains =3D <&pgc_vpumix>;
+>  					};
+> =20
+>  					pgc_dispmix: power-domain@10 {
 
 
