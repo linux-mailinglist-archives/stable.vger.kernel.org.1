@@ -1,245 +1,188 @@
-Return-Path: <stable+bounces-37881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FDA689DDB5
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 17:04:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41AC989DE89
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 17:16:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C35E41C22B07
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 15:04:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E70BD289B6A
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 15:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5760130AF1;
-	Tue,  9 Apr 2024 15:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FE412F367;
+	Tue,  9 Apr 2024 15:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z2BH0nhn"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="chw1H8nw";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="c5rhrnZx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D7412FB38;
-	Tue,  9 Apr 2024 15:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712675047; cv=none; b=pkuLgo4UHs+Wer9patxYhNz3CRVbS5PY5g4U2cYTF+n6sqPBbFk8wDJhYoIw7JjLilAWAeyz03ADOzo+ovrEtitvaCsvs2jYigh7IgLnKIpc7E0ibnSPXwkO3nRPb35Oz/CIx/wHKZGwfxY+EAVpOuvyJx/P3boKpNWQ0PVFJNE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712675047; c=relaxed/simple;
-	bh=stGqVLqm6JDHrMYa+Oq4yheQA8EP2CaEwMcOfDNIzgY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WOZSfGV8embwubW8WTysAdMhiXH5jgkl2ngIYw+crd6OnU4zDd7/cucnS1u1D075tDP54+UCLnS20goxq5ghCyqUqj0CDAKx0VTPlhVieym6V/LDWKCZde1ZeMZCro3tlOn1Yupx+fypBXK7bj7EXakHbFtkaO4PJLPh3iRNz24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z2BH0nhn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2708FC433F1;
-	Tue,  9 Apr 2024 15:04:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712675047;
-	bh=stGqVLqm6JDHrMYa+Oq4yheQA8EP2CaEwMcOfDNIzgY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Z2BH0nhnoLIntiE7aHPpPYiK5Fgy6OslAFs0hkifEXiVGXkFiI9eTcoSObyvWrzrJ
-	 A1UXyuYZ8H3eRF0IAJeqV8sLk/Eq9R6XYeTmbCu4rO+yleaUcKVtndwI3XTPcLJJeg
-	 +/faq3vzJXyTV6R5tIjnTJ+SAZGEBufDFeE6FgyBM72TaWyqtN8uWnY8eRmpaZJSd7
-	 865XiWBwKMBc5RIPyFfvjOyY5IqIuQAW76+1Mf+sWaTEuvpzvDSM3J7dl8WqpwRANB
-	 Kn8gtr9+1x9aMjPi6yH5jYYK9/5yaZ1w8eSEJQTs/eXe4K34XRSLFfFrCRNlJtZuPN
-	 BLLmWW4uNiHFw==
-Message-ID: <af60b8c3-e3c4-48b2-a4c6-f2f430aa9c68@kernel.org>
-Date: Tue, 9 Apr 2024 17:04:02 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEAE12D210;
+	Tue,  9 Apr 2024 15:12:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712675546; cv=fail; b=cVkmYlEJH75jKxRxCCw1XkODPhARK29QweIOSwuU8728yBQgsEjixTcUUI+yEw8Nq2r4VUlHFr1sMj4lHa126elYnIrPOa3sshQXYdZNm/kiakyTLgynj3C/HPyEMXFY4PzSLEF3TIpgzyK//mmvwSNhrhgf5iZe5hcE5rMng2k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712675546; c=relaxed/simple;
+	bh=IaL9LVArVF8Ccyyf/JLwRIZsc8nekmIFW1Xd8T6iR4w=;
+	h=To:Cc:Subject:From:In-Reply-To:Message-ID:References:Date:
+	 Content-Type:MIME-Version; b=lXgbCvm4GJC8YvWXAaYm5gY2sSWENssaa/Q0Y02iLERyybCkkBCZU0Kmf1FJg9F8KMMO0kYos9+mLsAWzpDaNvv/b9Lj7jvLDAfiGYERAjShkcDCd1m7votMSN57qE6oXYYEYNwNEzY3cfiYmsP47yeNl9/q5a/+R1ofdSIStnE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=chw1H8nw; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=c5rhrnZx; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 439BYsFP004461;
+	Tue, 9 Apr 2024 15:11:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : in-reply-to : message-id : references : date : content-type :
+ mime-version; s=corp-2023-11-20;
+ bh=HgGPOMHNGysPXKS5s4T+4Nx0CgRhP4NXdwni67kByxY=;
+ b=chw1H8nwu5wFVcy0q3mH9NmDcG1Kz2t6g5x8gWNZVfQE6/bE6fmUEohae4J1YSi43cC1
+ DuEa5Nkw6GSpo4RHAfeq7NWyqPMjT3IHwuAHo4/OoxutMLFma8iHkA2kpR+bdf4ErFFe
+ lDEP9GrosfzMfJJrCmHg9W7rRlllahXYton5MJdMCfxpaKpRVGgqHReNDTKFGgDPfG+G
+ 4AWqJO/czXs+7a/Lwf7mAtmWLcNGp/gZnrnsmxzPIsYSiDpWp4L/KQpP2Pbwa5NCCWj0
+ iddLjPRdNNOdF8GFzG9/af5p7g2yDiXwYLGekekDhtGN3Udt3rpP/PwVGKXk/3MC/Dqa Aw== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xaxxvd77d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 09 Apr 2024 15:11:48 +0000
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 439F98oN039976;
+	Tue, 9 Apr 2024 15:11:47 GMT
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2100.outbound.protection.outlook.com [104.47.55.100])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3xavud4eyh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 09 Apr 2024 15:11:47 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AJsySVe8oEjOzdobAhv5OO5mUjSkWxJ5nOt5wTeU2dbrotNcywOvqbP7+V4zaj2mDTLOi57ePyMMH8xkbrhrkGZABW7NZc3t/8EnFRAwNUDW7uBCJuhEtOOqkRaQeIh1ja4Z5ApMkrd3sNhpiwHeCu/ysK5IxAPITFNOvM610CwEux46otsW7g36sEPUOl3e+Ef38FplzHL+RemhCoclKnVT7Vxb+tt9w2TV4rdMvGoPy9Cuhytj4TBx0YH1yk60ouDnqvvqeaFsrxtn3glxKWeoESulxO6n7fRODuRtFFvff2OCyYP0fh1Ekf3cpLqiFYXvTH9PiZtcvpihYOTyfw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HgGPOMHNGysPXKS5s4T+4Nx0CgRhP4NXdwni67kByxY=;
+ b=g8x7/xIHbXc8LXFNfm27jbBAlIRaGJ/KjMbpSgK8e0GbCT6HfYh5IBFt4/6x7765MnQsTyt4IT9qe0grQDCcIlchBDbe9Du3xd+uFYmZiFlLHHFmLl8NIJLMtEBsZ7lJ5tAbJEemqyKPaR9U+CEA4v2oILJnXGi8CUq3afupaBuObmyC6Zh6qXP4D157zczodyK2HQV/flHKEWvtTpDDP8takPWxYBVOB8FUKaBG4St/JvTadY203egrE5tKh5UVTCrFXYjHygFr9ktHzNhs+5I/XV4Jjw28yEvAwAQfX+k39UShcBgUQSCkxmea6uC0UDC7UyOmdWWIu59jfVn0dA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HgGPOMHNGysPXKS5s4T+4Nx0CgRhP4NXdwni67kByxY=;
+ b=c5rhrnZxPxcfVx9cn7Q8EtXgVgfBdgyyT+n8D3Rr/0ADZBLzK1xsEOfv68cGE7ef0BtPTY8Atp6COyhwxFKwhy6+mQ0elCuK8qpK7BcYACfofDrqLGcY9hM4AW8nZ9FmuUzSobC8UbtPoZ6MpNO7hBN568m+EMBtt0Khzi+o1nA=
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
+ by IA0PR10MB6747.namprd10.prod.outlook.com (2603:10b6:208:43d::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Tue, 9 Apr
+ 2024 15:11:43 +0000
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::7856:8db7:c1f6:fc59]) by PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::7856:8db7:c1f6:fc59%4]) with mapi id 15.20.7409.042; Tue, 9 Apr 2024
+ 15:11:43 +0000
+To: Anders Roxell <anders.roxell@linaro.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+        rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
+        broonie@kernel.org, "Martin K. Petersen"
+ <martin.petersen@oracle.com>,
+        bvanassche@acm.org, Alexander@wetzel-home.de
+Subject: Re: [PATCH 6.8 000/273] 6.8.5-rc1 review
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+In-Reply-To: <CADYN=9KoZSBy_sbKR9ZTzcUXuUgA+PwdhAMuA5BEHP-BHjdnNg@mail.gmail.com>
+	(Anders Roxell's message of "Tue, 9 Apr 2024 15:07:24 +0200")
+Organization: Oracle Corporation
+Message-ID: <yq1cyqyo9o3.fsf@ca-mkp.ca.oracle.com>
+References: <20240408125309.280181634@linuxfoundation.org>
+	<CADYN=9KoZSBy_sbKR9ZTzcUXuUgA+PwdhAMuA5BEHP-BHjdnNg@mail.gmail.com>
+Date: Tue, 09 Apr 2024 11:11:41 -0400
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0112.namprd03.prod.outlook.com
+ (2603:10b6:a03:333::27) To PH0PR10MB4759.namprd10.prod.outlook.com
+ (2603:10b6:510:3d::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 6.6.y 3/5] selftests: mptcp: use += operator to append
- strings
-Content-Language: en-GB
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: mptcp@lists.linux.dev, stable@vger.kernel.org,
- Geliang Tang <tanggeliang@kylinos.cn>, Jakub Kicinski <kuba@kernel.org>
-References: <2024040520-unselect-antitrust-a41b@gregkh>
- <20240405153636.958019-10-matttbe@kernel.org>
- <2024040801-undaunted-boastful-5a01@gregkh>
- <26b5e6f5-6da2-44ff-adbd-c1c1eda3ccba@kernel.org>
- <2024040902-syrup-sneezing-62c4@gregkh>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <2024040902-syrup-sneezing-62c4@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-Hi Greg,
-
-On 09/04/2024 14:16, Greg KH wrote:
-> On Mon, Apr 08, 2024 at 06:10:38PM +0200, Matthieu Baerts wrote:
->> Hi Greg,
->>
->> On 08/04/2024 13:31, Greg KH wrote:
->>> On Fri, Apr 05, 2024 at 05:36:40PM +0200, Matthieu Baerts (NGI0) wrote:
->>>> From: Geliang Tang <tanggeliang@kylinos.cn>
->>>>
->>>> This patch uses addition assignment operator (+=) to append strings
->>>> instead of duplicating the variable name in mptcp_connect.sh and
->>>> mptcp_join.sh.
->>>>
->>>> This can make the statements shorter.
->>>>
->>>> Note: in mptcp_connect.sh, add a local variable extra in do_transfer to
->>>> save the various extra warning logs, using += to append it. And add a
->>>> new variable tc_info to save various tc info, also using += to append it.
->>>> This can make the code more readable and prepare for the next commit.
->>>>
->>>> Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
->>>> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
->>>> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
->>>> Link: https://lore.kernel.org/r/20240308-upstream-net-next-20240308-selftests-mptcp-unification-v1-8-4f42c347b653@kernel.org
->>>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->>>> (cherry picked from commit e7c42bf4d320affe37337aa83ae0347832b3f568)
->>>> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
->>>> ---
->>>>  .../selftests/net/mptcp/mptcp_connect.sh      | 53 ++++++++++---------
->>>>  .../testing/selftests/net/mptcp/mptcp_join.sh | 30 +++++------
->>>>  2 files changed, 43 insertions(+), 40 deletions(-)
->>>
->>> Odd, this one did not apply.
->>
->> Indeed, that's odd. Do you use a different merge strategy?
-> 
-> I do not use any merge strategy at all, I use 'patch' to apply patches
-> (well, that's what quilt does), so git is not involved here.
-
-Ah OK, thank you for the explanation. I thought git was used to do the
-cherry-pick + generate the patch for quilt.
-
-I'm still surprised quilt didn't accept these patches generated on top
-of the 6.6-y branch. (By "chance", did you not have conflicts because
-the patch 1/5 (commit 629b35a225b0 ("selftests: mptcp: display simult in
-extra_msg")) didn't get backported by accident? It is strange it is also
-missing in the v6.6.y branch.)
-
->> I just tried on my side with the default merge strategy coming with Git
->> 2.43.0, and it works:
->>
->>   $ git fetch
->> git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
->> refs/heads/linux-6.6.y
->>   $ git switch -c tmp FETCH_HEAD
->>   $ git rebase -i 2f39e4380e73~ ## to drop these 3 patches you added:
->>     # 2f39e4380e73 selftests: mptcp: connect: fix shellcheck warnings
->>
->>
->>
->>     # bd3b5b0fff75 mptcp: don't overwrite sock_ops in mptcp_is_tcpsk()
->>
->>
->>
->>     # f723f9449193 mptcp: don't account accept() of non-MPC client (...)
->>   $ git cherry-pick -xs \
->>     629b35a225b0 e3aae1098f10 e7c42bf4d320 8e2b8a9fa512 7a1b3490f47e
->>   Auto-merging tools/testing/selftests/net/mptcp/mptcp_join.sh
->>   (...)
->>   $ echo $?
->>   0
->>
->> But if I try the 3 patches you selected
->>
->>   $ git reset --hard HEAD~5
->>   $ git cherry-pick -xs e3aae1098f10 8e2b8a9fa512 7a1b3490f47e
->>   Auto-merging tools/testing/selftests/net/mptcp/mptcp_connect.sh
->>   (...)
->>   CONFLICT (content): Merge conflict in
->> tools/testing/selftests/net/mptcp/mptcp_connect.sh
->>   error: could not apply 7a1b3490f47e... mptcp: don't account accept()
->> of non-MPC client as fallback to TCP
->>
->>
->> And the conflict makes sense: with the version that is currently in
->> linux-6.6.y branch, the new check is done after having printed "OK", so
->> that's not correct.
->>
->>
->> I can share the 5 patches I applied without conflicts on top of the
->> current linux-6.6.y branch, without the 3 patches you added today if it
->> can help.
-> 
-> How about just resending this one patch after the next 6.6.y release
-> that comes out in a day or so.
-
-No hurry, that can indeed wait for the next 6.6.y release.
-
-Just to be sure we are aligned: I suggested backporting these 5 commits:
-
-- 629b35a225b0 ("selftests: mptcp: display simult in extra_msg")
-- e3aae1098f10 ("selftests: mptcp: connect: fix shellcheck warnings")
-- e7c42bf4d320 ("selftests: mptcp: use += operator to append strings")
-- 8e2b8a9fa512 ("mptcp: don't overwrite sock_ops in mptcp_is_tcpsk()")
-- 7a1b3490f47e ("mptcp: don't account accept() of non-MPC client as
-fallback to TCP")
-
-But only these 3 got backported to 6.6.y:
-
-- e3aae1098f10 ("selftests: mptcp: connect: fix shellcheck warnings")
-- 8e2b8a9fa512 ("mptcp: don't overwrite sock_ops in mptcp_is_tcpsk()")
-- 7a1b3490f47e ("mptcp: don't account accept() of non-MPC client as
-fallback to TCP")
-
-The last commit ("mptcp: don't account accept() of non-MPC client as
-fallback to TCP") has a small problem in 6.6.y (only):
-
-- In case of issue, a message will say that the subtest is OK and not
-OK, and the TAP report will report that everything is OK with this
-subtest => that's OK, nothing critical, that's the tests.
-- We can solve that in the next 6.6 version by manually backporting
-commit e7c42bf4d320 ("selftests: mptcp: use += operator to append
-strings") and its dependence: commit 629b35a225b0 ("selftests: mptcp:
-display simult in extra_msg").
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4759:EE_|IA0PR10MB6747:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	oigkfdSs4lX6RuybLaeyl6P1FxFN0KO+GXefXFp3r6RSFWkxlQdJotqaa2sqPjqvfUchgDbAEGnqn8YlBYVAi0JVgBRXSYBabCIzhJg+oxeZZJc0k0NY27J7LmwB9JhctyelMrEbl28u3rqhN+I9q3V/3urb63XJJwKUTM/wYGMy95tdtS0l4QPDga2fyQG9xumnS65Xh5ScnPZkF4DMArtC+7zd1Zr8e+XwAKlnaVyaWgOMby1eNy8LxDmk1rLlhhvRNPhipy3lfjcK1ir4/liQxbEiEQAfzCEU3bfZojojMCkhav/9SyglviDIW/lvcC0LPQN/JBPuwZCmv2SaIRmY4dgaKPBVm9aY+Fg1FlQ6AuLJj4TIJF+y+cG4lF/Gw+4F5oVXa86PWEBts+K8uyl72CLkxZ/Pwoe7EF1r/S9+qhTzZqx750jNten+bRaBrggJnMGF8LzpTnjlZqNZiqz41SUcdMZlbIDm26XLvrI/SAvqnzAFiy1FrllBI2aQhnv261ZJ9NP4Wtej0tY0x188P4WkR8byv9tE2dAyd6GaGKET/aAe3769BGRHtrpcXkfEe9+cXMSsrZpHrPESneKJf/IBaMxLx4QGMUSkbUmLPCWxxC/xM2EoLLBnvAQZUfjka49q8lptXhbwoUw4xOd9XAo2Zp8antmS2qBh8Yw=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(376005)(366007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?us-ascii?Q?euRU7B1tnvL5bqw5ROun10vyebAoW7sHUcfEaNPxauUCJu4UmA0fUMKiWNAA?=
+ =?us-ascii?Q?YBZz7v6/Q5XZlz9nrqWdLjKb29O99CziW7dbIcjawxFoBa0sa+fgwM5Jiuaf?=
+ =?us-ascii?Q?qjCmiNY4kSgJXF2R16l8dkSzmh488d8WCa6MV0TayI418B5JQQ5Vqioz+GIe?=
+ =?us-ascii?Q?V+GeuNKy+RBvZZ/8TVowra49aOYLAoYBPqzS86jL3A7ha8kNhAWTX1WtinGk?=
+ =?us-ascii?Q?JM46nWCsL2yV6t6TwZlcWluQ7NtXygGRbveX8uhI+XqpqeTSDs8Def8W/T1Z?=
+ =?us-ascii?Q?4pBsQfy+hgCdxwxTOl6LuEn/ZBaBosmvamO+pJseW0kcG1vBlYTqN+uiW/Fz?=
+ =?us-ascii?Q?JR6VOV4Jw6z1OBS72N7SduTyvLwdya56LGcQ1Ok7vD2YEilLkjuq+c/RxFIy?=
+ =?us-ascii?Q?AE0GjDgZ0v4nQqyOHPryymr/5f9fmbzXTJLGFUc+sYvymdXGeP5RXW9uzrV7?=
+ =?us-ascii?Q?8Qfi5CjXptIsi3OICHbKBBnQJENnys7VaBssfbsUq5pD2f2tMy3XUcNuCWyh?=
+ =?us-ascii?Q?VfIgLJ1rWm7GPrLx3HJnJ6qS6+XgudLBo1AS0DPIwC+2d2y/2+5wTplPuGpV?=
+ =?us-ascii?Q?0aOq8vcROGGVF9vwe7HmAY4wmmR55lKbf9eAoptFA3c6P939Y8tZh7SZXggx?=
+ =?us-ascii?Q?TrvLzvvuK1NZ803I7y5mBCLFI8p5WEu9ZNFLp361rNyaIWqt/m5YOl8F0f7e?=
+ =?us-ascii?Q?xr3To9wcHLPLzq42w/XBL6pVjOiDtOEVaJKCxS61XDJ9jjFDORkqY0dosQRY?=
+ =?us-ascii?Q?tXYCzPYQwLLaQc621Uit6pbTbIVr9PvspDGB31S5CWaBaiNuUp11NwsAC72q?=
+ =?us-ascii?Q?iPYCGgyBj9GxSbaceIi7OodS/B0Hx9bwwzB0Pgi9eA2ZC9Ae4MYRNWqdAHTM?=
+ =?us-ascii?Q?9GYvm1E5vv/udCEF1A2AJXvwokJxbuI/Gli0SGUGnq4x3glqIYU0eC86/WG/?=
+ =?us-ascii?Q?0Uu/trs7x/aSpk+Ck9LCU1+ro/lZl3GFRV3hySWapUFVJ70Gxmg0DQgT7P81?=
+ =?us-ascii?Q?F6X+4XBgpSStBdzZXUisjdE8mS/HMADjYkeksj4krSdZdm7rd+MEeTdS4XN4?=
+ =?us-ascii?Q?BnfgWqCHhkYBzbXwOsfYAht09846Vm40HRr5880unyjIXVgZ7atsHt/EH9l3?=
+ =?us-ascii?Q?ahVeFMfUxkIkbA+I+N6Jq+Hwhd9XhKztC1uX/EYCskM1i5F4goNz3r5jx4g3?=
+ =?us-ascii?Q?qYDKxaL9J9fRWoCIZOr50KS1Efv4yAdc2SH1v9CxtfpEyNo8l+GedIh2hP+B?=
+ =?us-ascii?Q?ijC130ba3w0yiCeGNG5SyN4ljmftstVqk/HU19PRf5WCMsmA1L4ofP/nb6+9?=
+ =?us-ascii?Q?GZz6oAUjyE8dZTQBQOC7o1+/+wwU+cxgBcaUbifQbJQfK4MGyN1BloR1GEfM?=
+ =?us-ascii?Q?ca4RFx1YA6Bim5bWVoMCpm1tjaHGUz5rif1LDePOXRqLg10ckcASEjUw4TK/?=
+ =?us-ascii?Q?aQcbPSPQQ1Uate+4KvJXhlsCuztCSHYW4Met5LfFHs63vtUl9sPE663YrNat?=
+ =?us-ascii?Q?JVtC80vx/uE0594YLNdOOsAKW/gyFoUXXptIKX63gMkMV54j5XiZV7XRFb3K?=
+ =?us-ascii?Q?8qXiVOCGQp52UBLw8TUNC/Pdmtz0YRCrzTDfO6MO5G+4Zb8GJ8IBZO20unZU?=
+ =?us-ascii?Q?eg=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	vFMZgqxv+sNUfUgD1bLQ0TNBKjeHIRvhlWEhtXcg9BTPjj/iXu12h8LKNg9OZMZohLwYl4cciJ10ETplnasAZzkDg0oG7DKOgj9Z0tTCCW2VYiqGindch0yQ96dBsHMIGCZZFFND8PW065i+tSBOncL6/kAZAXzr1+WsfieieS3WnWwS+uaGhy5UNkCUvffqeVTvdFH5y6BQXqz2Y1y9JfQWlhI4sZ+XdyZRyQGpdQua1jP6SmpWMGldsk3QcTqfkNzWKcwfOv8RI08nDWL10RjVymmbde2N0GAZmerzRJ/JtXmIaA34NMKt5AZMIWBA7+DeIpvVXIb6B0ZFrF+9EFILuEK6VRMgtO8Vq07wIumcoZQeGkc0VN68zS4TQGsq+gD+aOapOaQZs4cJBtpVUh0OOdMT0WIIlwgTC0EW8ukNUtZ0bqjjbVNyF6kHVTL0gheWN347QoTMxghozjzMwBcLOWMQV61JJO9MzU9ZOXt3aMzJYrSNKaJ7Ft+p1VXnNxDnQqicEnkwfbXaVp/eoNiDDfDWRBz00PTwOmw3PTVir0FJlFkUQJv852Giiu6shc8KpCoN8pNxR7q9xo/gmj8lyUvrlIbTStTby2KFlpg=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8883515a-5447-43f1-eb54-08dc58a75dce
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2024 15:11:43.7487
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xlvLTb4RJJ9lpkw/8bq/W3wj3VTjBSU0InB3+qLNM87uvaW7G5kgpdI9Dc3xyEv9lUq7Jncjc/qP87hmQugraKMY4uDG3Nibuyj5FNxIxO0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR10MB6747
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-09_10,2024-04-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 mlxlogscore=771
+ bulkscore=0 suspectscore=0 adultscore=0 spamscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2404010000
+ definitions=main-2404090099
+X-Proofpoint-ORIG-GUID: LHKKIe8x_3sjHPpH1rS_7CD2FKSLVlnx
+X-Proofpoint-GUID: LHKKIe8x_3sjHPpH1rS_7CD2FKSLVlnx
 
 
-Cheers,
-Matt
+Anders,
+
+> Reverted this patch and I couldn't see the repoted warning.
+> scsi: sg: Avoid sg device teardown race
+> [ Upstream commit 27f58c04a8f438078583041468ec60597841284d ]
+
+Fix is here:
+
+  https://git.kernel.org/mkp/scsi/c/d4e655c49f47
+
 -- 
-Sponsored by the NGI0 Core fund.
-
+Martin K. Petersen	Oracle Linux Engineering
 
