@@ -1,124 +1,101 @@
-Return-Path: <stable+bounces-37853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5BD89D530
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 11:13:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF8F89D5F6
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 11:50:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55819B22BC1
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 09:13:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FA2E1F24328
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 09:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A697EF06;
-	Tue,  9 Apr 2024 09:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE5780025;
+	Tue,  9 Apr 2024 09:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=walle.cc header.i=@walle.cc header.b="UA764w1y"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mail.3ffe.de (0001.3ffe.de [159.69.201.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6137E777
-	for <stable@vger.kernel.org>; Tue,  9 Apr 2024 09:13:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCD27F478;
+	Tue,  9 Apr 2024 09:50:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.201.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712654012; cv=none; b=C75cZQ+AQX4mHuFGajOxsncLQ4F3Doab/30hzNA0cvk3iJkEqZj3+17TR/SPfalhS9+SjZn1fr+KBvN2gioQQLQkqEhPmNf8ShV9E5nj4yPW+0WZUILAhry3TF4GJGUuj73uH6K+4EaEjIIXx0UokogsKtl0R9n9p9Qg1j8wqAg=
+	t=1712656220; cv=none; b=uq1729g1ezaKQXMMaW1QgBqOb5VzfNv/aV/Q/L3gKrFFICdajJOJBGFnvFusuMrARBUOluqxYq9s9PoWCthp/+Vw+f+xjhJDoEOZ+GLUAe1eDqMHH8o678z8Djdss+whlNa4SaAZIIGdk/2jfP6vkMB84/LD/l3/EEofbFyT/ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712654012; c=relaxed/simple;
-	bh=DDDP1MRm7J507ibgfXCuV7RGp0XeST5hGJXpspFd8rM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Lcp+BzzQxXvWfiVnTfDAQIojE9cQE9HW6szOyjkWkwxIIxojHmOA+ZPDRpP2PlCR8sMmzza7j6/Vd0Zu6RfZmIknfEHF2V6sj8YjX9Z+uC1X2or/wdGzdiL7R3ppKEQ18Y9ofMLPAX6uNOfD92pb4nE5irWUB9aloie17zNoavs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1ru7XW-0004PQ-Cr; Tue, 09 Apr 2024 11:13:14 +0200
-Message-ID: <9ce35b9bb5a15891f6bd01bd54b7dc84b3ba4021.camel@pengutronix.de>
-Subject: Re: [PATCH v1] arm64: dts: imx8mm: fix missing pgc_vpu_* power
- domain parent
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Vitor Soares <ivitro@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: Vitor Soares <vitor.soares@toradex.com>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Tue, 09 Apr 2024 11:13:13 +0200
-In-Reply-To: <20240409085802.290439-1-ivitro@gmail.com>
-References: <20240409085802.290439-1-ivitro@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	s=arc-20240116; t=1712656220; c=relaxed/simple;
+	bh=B1hRF4wh5KsEIlNYnlONjUnwHiM/6l8Y0AGg+VjQqrI=;
+	h=Content-Type:Date:Message-Id:Subject:Cc:From:To:References:
+	 In-Reply-To; b=KBDO37dvkSqLpzGiADsY5gqgGVhszuv8AonQw41FiVVf39mQwSrCSsMqo16Yzo1KMEnJB6g8G0czNjr2TSDrND0mTnkGnVzF+rUKM65u0zXBrYQnx/xskClaPThMy6tPdtuwd01o+4V2t6YMX6aloY1AtUK2O7b/c1Y+dNSAmW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=walle.cc; spf=pass smtp.mailfrom=walle.cc; dkim=pass (2048-bit key) header.d=walle.cc header.i=@walle.cc header.b=UA764w1y; arc=none smtp.client-ip=159.69.201.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=walle.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=walle.cc
+Received: from localhost (unknown [213.135.10.150])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.3ffe.de (Postfix) with ESMTPSA id 148E53D5;
+	Tue,  9 Apr 2024 11:41:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2022082101;
+	t=1712655668;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:content-type:content-type:in-reply-to:in-reply-to:
+	 references:references; bh=B1hRF4wh5KsEIlNYnlONjUnwHiM/6l8Y0AGg+VjQqrI=;
+	b=UA764w1yQyVsuLGF6Lk+kfDHdZhFDibWXIrnwXcrK/b2vDlQVDhehSpZhGld8VTQlDT5Wg
+	/Qx/N2KRJ477RGmQv9Qs4s+qZgpmV3kF2VXlzJ1yXarTQI6ZHpKhcmWK2pcoVjLkk/uT+N
+	gUNtI6X20YBPuXVlye++Tk8wqiJNKOv1DWOd1OYjYhYdLsPLMictRnyQ4PgWPize3PBlTP
+	7HhYb+Npmmfr3nHQOVCb12am3FVBBNbLiqS26vXz5qdBAV6GOCUyOxpSY/NzofXcM/ijeI
+	JWZpOTz2HdNwueoVBML8t6clo2yQJl34olPUELkWXN3iMANTaurzrMmE3qVrhA==
+Content-Type: multipart/signed;
+ boundary=8a32cdc00bd7bdcde487afcf8d9f9ed3c2c6e755e2a918de1ef16595d7db;
+ micalg=pgp-sha384; protocol="application/pgp-signature"
+Date: Tue, 09 Apr 2024 11:41:06 +0200
+Message-Id: <D0FHRJG05LJN.1GU1N7J0BH6S4@walle.cc>
+Subject: Re: [PATCH v4] mtd: limit OTP NVMEM Cell parse to non Nand devices
+Cc: <stable@vger.kernel.org>
+From: "Michael Walle" <michael@walle.cc>
+To: "Christian Marangi" <ansuelsmth@gmail.com>,
+ =?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>, "Miquel Raynal"
+ <miquel.raynal@bootlin.com>, "Richard Weinberger" <richard@nod.at>,
+ "Vignesh Raghavendra" <vigneshr@ti.com>, <linux-mtd@lists.infradead.org>,
+ <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.16.0
+References: <20240402212331.27328-1-ansuelsmth@gmail.com>
+In-Reply-To: <20240402212331.27328-1-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
 
-Hi Vitor,
+--8a32cdc00bd7bdcde487afcf8d9f9ed3c2c6e755e2a918de1ef16595d7db
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-Am Dienstag, dem 09.04.2024 um 09:58 +0100 schrieb Vitor Soares:
-> From: Vitor Soares <vitor.soares@toradex.com>
->=20
-> The pgc_vpu_* nodes miss the reference to the power domain parent,
-> leading the system to hang during the resume.
->=20
-This change is not correct. The vpumix domain is controlled through the
-imx8mm-vpu-blk-ctrl and must not be directly triggered by the child
-domains in order to guarantee proper power sequencing.
+Hi,
 
-If the sequencing is incorrect for resume, it needs to be fixed in the
-blk-ctrl driver. I'll happily assist if you have any questions about
-this intricate mix between GPC and blk-ctrl hardware/drivers.
+just a quick (non-technical) nitpick if you do a new version or
+maybe Miquel will fix it during applying:
 
-Regards,
-Lucas
+> Subject: [PATCH v4] mtd: limit OTP NVMEM Cell parse to non Nand devices
 
-> As these PU domains are nested inside the vpumix domain, let's reference
-> it accordingly. After this change, the suspend/resume is working.
->=20
-> Cc: Lucas Stach <l.stach@pengutronix.de>
-> Cc: <stable@vger.kernel.org>
-> Closes: https://lore.kernel.org/all/fccbb040330a706a4f7b34875db1d896a0bf8=
-1c8.camel@gmail.com/
-> Fixes: d39d4bb15310 ("arm64: dts: imx8mm: add GPC node")
-> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8mm.dtsi | 3 +++
->  1 file changed, 3 insertions(+)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/=
-dts/freescale/imx8mm.dtsi
-> index 8a1b42b94dce..97d0c6d23ad8 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-> @@ -739,16 +739,19 @@ pgc_vpumix: power-domain@6 {
->  					pgc_vpu_g1: power-domain@7 {
->  						#power-domain-cells =3D <0>;
->  						reg =3D <IMX8MM_POWER_DOMAIN_VPUG1>;
-> +						power-domains =3D <&pgc_vpumix>;
->  					};
-> =20
->  					pgc_vpu_g2: power-domain@8 {
->  						#power-domain-cells =3D <0>;
->  						reg =3D <IMX8MM_POWER_DOMAIN_VPUG2>;
-> +						power-domains =3D <&pgc_vpumix>;
->  					};
-> =20
->  					pgc_vpu_h1: power-domain@9 {
->  						#power-domain-cells =3D <0>;
->  						reg =3D <IMX8MM_POWER_DOMAIN_VPUH1>;
-> +						power-domains =3D <&pgc_vpumix>;
->  					};
-> =20
->  					pgc_dispmix: power-domain@10 {
+subject should be "non-NAND", also cell could be lower case :)
 
+-michael
+
+--8a32cdc00bd7bdcde487afcf8d9f9ed3c2c6e755e2a918de1ef16595d7db
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iKcEABMJAC8WIQTIVZIcOo5wfU/AngkSJzzuPgIf+AUCZhUNMhEcbWljaGFlbEB3
+YWxsZS5jYwAKCRASJzzuPgIf+LymAYDD9wmmYfgy26EJDv13ae+bC0ut1EyeUTAm
+lJ9YqLRePNYZ6DdNEEPblZqfBNUTD04BfR6m8Yg0Y/LiFSrhkmPFkcOGZroghen/
+hXr19Rz/FouCSXF2uoJ0y/cdSqW5pYZJKg==
+=wSoG
+-----END PGP SIGNATURE-----
+
+--8a32cdc00bd7bdcde487afcf8d9f9ed3c2c6e755e2a918de1ef16595d7db--
 
