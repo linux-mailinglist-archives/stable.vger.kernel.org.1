@@ -1,133 +1,122 @@
-Return-Path: <stable+bounces-37859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 785E289D7BB
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 13:19:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8410F89D7ED
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 13:34:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18F811F25EF0
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 11:19:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B549C1C244C5
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 11:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E75126F2A;
-	Tue,  9 Apr 2024 11:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BE61272CA;
+	Tue,  9 Apr 2024 11:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="1Jkrsrvy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOeaC/Zb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6060C85C73
-	for <stable@vger.kernel.org>; Tue,  9 Apr 2024 11:19:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278ED86269;
+	Tue,  9 Apr 2024 11:31:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712661579; cv=none; b=fYwVr058aQOVTQ93O8wVf1tdqK1DKfN7fIvs8XI9qYGgCqAbRGzNg7Rvg8fOWJxsIBl8FWGzt7rMQnbokQ7EciuT+J2SynrJt/ouZpE6YfmDMa2gmUyI0we0DbriDGIv1Q/wIjpY7w4jn/+DO7zmHceEBNbW0vrVgmyRFhocV6g=
+	t=1712662264; cv=none; b=paCMH/ICHq0pQDkFDvsMp3+0z2mqeedS8yEafbcrRY1PSLGXjZ/94YnYJuZyB3XpFLOzJvCa4IvDMMGffpbkjQkSfXLMTSjtMv8Tlc+KtKZND9KL+xoq7PbKYCrU0OmPoXZD0dZc0lSAmP9Dip5vkt1xKN8HHM3hQKx7ExYI2HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712661579; c=relaxed/simple;
-	bh=T2ZN1fcFBKzVjK4bQW41mMKN3tCyZQojwExRN2pmPi0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qvW++MEwzL/CMWGaYRNg5+E1BbaaXIoiKzstJV79neh/eZJzOL4PURT79fkJjOf95O9h3o/dRuwgPXaTg2a7yi2eAVJqtBAlA5pYUWdKnE7C4BEFMHaAQKJg+4/QjU6fz7Q10sxIHQ7jp9VigZB48+U/gHGIrazDvTyms+wWXes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=1Jkrsrvy; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6ecec796323so5074881b3a.3
-        for <stable@vger.kernel.org>; Tue, 09 Apr 2024 04:19:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1712661578; x=1713266378; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oKGPr03TnWQbKb2+d6UQO6L19uRixEs4WkWvOdztkEU=;
-        b=1JkrsrvyWzLEjR63ZG+manb0L/MuP19jWbXhG+MjR5jdSIgcENODtTOBx4WXsFmTtQ
-         eJ7GoTgSJRui/mK6g/DR7M3QIvlOckXuCvxLGva/8fgqx2M7AAkbcNRFwZ3AZN/mHaML
-         bokNcJXx4OQ61s37TOCKsG3Kk4oXgXR0DhmRCK1z1GmPT7Z0o5bwIGDsE5fr+4EuOo2m
-         0G5uRIYqPI4mxHCDS03JQt11ZqLZ5ZcNVGnVHQ5XwflUKD6pujoI1t7DftLrBK6Yb5gh
-         PI7Ej20WDKkwPFSdVL5665lI5+hKA/A77FOzGbsnf+LunPvfTFOBvwma5sZBtaskevmv
-         Iovg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712661578; x=1713266378;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oKGPr03TnWQbKb2+d6UQO6L19uRixEs4WkWvOdztkEU=;
-        b=T5COku2wZuPQ/9fcLi4YOl2P/ninsQkb4FMMDFzEnRIMlp4QmRxsutDr8aHeC+iG4D
-         GK05kpdVa9qM/4lvSRuTzz9/f7oee51/urGUMdYxby4drJMmfu9o5vYIXYFy8lMY5C7Z
-         PZvOn4M84YyhFEO2icVSH/hdMmSSQwchfbFC/3tq1Rs0p9NncNMon8pTx7fRoa0wKLkQ
-         azdjkiaf5syXLJXQk/H5SuLjBTN+EbR12F3n8bH2N35gw1LCZBPuE1et8yz1u7YYFMcr
-         FR91/p4xFZsiHvJTu5S6iRgC71f6TOjW2RIo/6JWHNVezsivkuzxWcAytMZq4baSMONh
-         Q0mg==
-X-Gm-Message-State: AOJu0Yzql8s8BAETV5dgDrJoOK3N6rH2pfJ6D7oGwcTeyCSt7ESpqmwX
-	H1y/Ce+rC6fwEmVd+DHHFibdGpwGh0zOLObd8IRKFswdjAJKym/Yjnx0A7/0vMOqApYEzrPWqFX
-	EqsbdVpmBCzTTU2xEc36sX3jFlYed09qfO0tkcQaBKjx7aB9xXk8=
-X-Google-Smtp-Source: AGHT+IFYVza6STxF9UXGu/0jGiQJfaimoc1s/2/nhDZ7qqm817g4DPhfwqBgbtR8wIeNhe4Qttdd+G+PzX658TMBJUo=
-X-Received: by 2002:a05:6a20:da95:b0:1a7:a86a:113a with SMTP id
- iy21-20020a056a20da9500b001a7a86a113amr1813290pzb.6.1712661577550; Tue, 09
- Apr 2024 04:19:37 -0700 (PDT)
+	s=arc-20240116; t=1712662264; c=relaxed/simple;
+	bh=o7n4wqg2Y9p0Uni/nKyeds+zg1zOiA+aNEQQSeIs3mM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fdEZcrfzm/txBCJS5hwkQZWf6I1PbY2nA0w7qOBp6K3hSMMdqNF8y5C2r45rGb9cXlfPkNzgV6w5kZbPePPtB08niUJyQe+29ZhCTDU4Eg9CLuUbEIOYDGBWn4du/RaXC/hQTkGaifmteUO0CIcXcGWWxw0UOlgBPwUMHLDc258=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOeaC/Zb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A9CC433C7;
+	Tue,  9 Apr 2024 11:31:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712662263;
+	bh=o7n4wqg2Y9p0Uni/nKyeds+zg1zOiA+aNEQQSeIs3mM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qOeaC/ZbZHLthcE8m01gwyI0o3SlQzI4nxTsPx7HwIiDdoh6RMr079dnTlVOM1eOz
+	 Pm7vlBT9tjrYfgI87EeyYydosi7o/nkh2FAGgXx2lfo2bz4KGuAbtFSDgjTxf7T2yj
+	 CPX1K5sm1GdA+rQChvKBvhzW+pKJtAyMumVj0zbE=
+Date: Tue, 9 Apr 2024 13:31:00 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Petr Vorel <pvorel@suse.cz>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: Re: [PATCH 5.15 463/690] nfsd: fix net-namespace logic in
+ __nfsd_file_cache_purge
+Message-ID: <2024040952-riches-railcar-40bd@gregkh>
+References: <20240408125359.506372836@linuxfoundation.org>
+ <20240408125416.405210374@linuxfoundation.org>
+ <20240409064222.GA83048@pevik>
+ <2024040933-patio-impotent-7a0a@gregkh>
+ <20240409103621.GA110810@pevik>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240408125306.643546457@linuxfoundation.org>
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Tue, 9 Apr 2024 20:19:26 +0900
-Message-ID: <CAKL4bV6ANTv+DwtQAjQYFW+9d4Ur_yk_xdm_PQ2HQiZW+vbjdg@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/252] 6.6.26-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240409103621.GA110810@pevik>
 
-Hi Greg
+On Tue, Apr 09, 2024 at 12:36:21PM +0200, Petr Vorel wrote:
+> > On Tue, Apr 09, 2024 at 08:42:22AM +0200, Petr Vorel wrote:
+> > > Hi all,
+> 
+> > > > 5.15-stable review patch.  If anyone has any objections, please let me know.
+> 
+> > > > ------------------
+> 
+> > > > From: Jeff Layton <jlayton@kernel.org>
+> 
+> > > > [ Upstream commit d3aefd2b29ff5ffdeb5c06a7d3191a027a18cdb8 ]
+> 
+> > > > If the namespace doesn't match the one in "net", then we'll continue,
+> > > > but that doesn't cause another rhashtable_walk_next call, so it will
+> > > > loop infinitely.
+> 
+> > > > Fixes: ce502f81ba88 ("NFSD: Convert the filecache to use rhashtable")
+> > > > Reported-by: Petr Vorel <pvorel@suse.cz>
+> > > > Link: https://lore.kernel.org/ltp/Y1%2FP8gDAcWC%2F+VR3@pevik/
+> > > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> > > > Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+> > > > ---
+> > > >  fs/nfsd/filecache.c | 5 ++---
+> > > >  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> > > > diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+> > > > index 0b19eb015c6c8..024adcbe67e95 100644
+> > > > --- a/fs/nfsd/filecache.c
+> > > > +++ b/fs/nfsd/filecache.c
+> > > > @@ -892,9 +892,8 @@ __nfsd_file_cache_purge(struct net *net)
+> 
+> > > >  		nf = rhashtable_walk_next(&iter);
+> > > >  		while (!IS_ERR_OR_NULL(nf)) {
+> > > > -			if (net && nf->nf_net != net)
+> > > > -				continue;
+> > > > -			nfsd_file_unhash_and_dispose(nf, &dispose);
+> > > I don't know the context (whether the fix is needed for 5.15 and older), but
+> > > patch does not apply because nfsd_file_unhash_and_dispose() was introduced in
+> > > ce502f81ba88 ("NFSD: Convert the filecache to use rhashtable") in v6.0-rc1.  It
+> > > was actually renamed from nfsd_file_unhash_and_release_locked() in that commit.
+> > > Also the context changed - nfsd_file_unhash_and_dispose() was introduced in the
+> > > commit which is supposed to be fixed in this commit, one would say that this fix
+> > > is not needed in older kernels (5.15, 5.10 and 5.4; 4.19 has completely
+> > > different code). But that's a question for Jeff or Chuck.
+> 
+> > This is part of a very large backport of nfsd patches to 5.15 to resolve
+> > a lot of reported issues, so that might be why it looks odd here.  It
+> > does seem to compile and boot ok for me, so maybe it's not an issue here
+> > as you aren't seeing the other patches in this series?
+> 
+> Hi Greg,
+> 
+> I'm sorry, I should realize that one of the 462 previous patches might have
+> changed the context. If it compiles and boots as whole it should be ok. I'm
+> sorry for the noise.
 
-On Mon, Apr 8, 2024 at 10:00=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.26 release.
-> There are 252 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 10 Apr 2024 12:52:23 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.26-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
-
-6.6.26-rc1 tested.
-
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
-
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
-
-[    0.000000] Linux version 6.6.26-rc1rv
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 13.2.1 20230801, GNU ld (GNU
-Binutils) 2.42.0) #1 SMP PREEMPT_DYNAMIC Tue Apr  9 18:54:11 JST 2024
-
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+No noise at all, reviews are good!
 
