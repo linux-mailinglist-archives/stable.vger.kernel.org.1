@@ -1,100 +1,98 @@
-Return-Path: <stable+bounces-37872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 345AF89D9CD
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 15:08:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54BE489D9DE
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 15:11:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65BEC1C21DD0
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 13:08:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 180D62820D7
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 13:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20D412EBE7;
-	Tue,  9 Apr 2024 13:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0A912EBE6;
+	Tue,  9 Apr 2024 13:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jEUwV5u/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ltzu6DzW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A7F12E1F0;
-	Tue,  9 Apr 2024 13:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8041912EBD4;
+	Tue,  9 Apr 2024 13:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712668073; cv=none; b=t35JGuB4g17+QzGq0i4A4F+H+pa/j3DORaACAYBaPNm0ytzsxrxUHmpyzKKq9oVfIf7z1L2EtIOfnLb7yLw9/M4soBjS7yhl46LvFmfH6SrQ7Z3lFTo3jASlCSbMHNO4tZdG2gQyO0kLOGpkXIG2HkLBSE3V0dG/v8tarOqwjL4=
+	t=1712668267; cv=none; b=Kx6sB6erOLWGG1d4ws5CNLXiYLdG1QnkBhmVxn765D9vR3/ifdj3ZJznyallYxHIX+ssWVCUgSSka0GUwjOD51+UVQo4461h5S8250qRj2H8SOYjl3YR7UZqo5NJ4V41XssIY76vaPgu2y/abKp2okZ2ZOI9WLh6iXeeRlZrneI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712668073; c=relaxed/simple;
-	bh=ouy2Y6x2V5/uoESyJnNA235PE5cU8gwdY/QEcC9jK9Q=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=EE/X0h0p5ji8I2AzMRveXJmNfE0yJmrqn3Vvki3iop1wUPq2Yve4v0lWgBpxBqhz7rp34eJTKhOctiTcLshynXfMFStPL08h84Y/iDzT5F9oCIJCdVYROVTQoB2I+V/5s4f0ln9N8eG0y5O0QmVvNiZ7Pf8FJNqLut4Jc8KgM6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jEUwV5u/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E36BC433F1;
-	Tue,  9 Apr 2024 13:07:51 +0000 (UTC)
+	s=arc-20240116; t=1712668267; c=relaxed/simple;
+	bh=Xe412WLq6VSlNpe0tAVJDmryM5F6qp2XSmWQjeaKIsg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RO3dmbSUMT9KV16Cb6tXA13yFYk/KQDXTxI3FzF7jpxXD2hKauJ91Tt8gce9xOIKS17P+IPEw4MLomV2qiLeOvaG9id+unoyxcSJfHQLFbkPBnMnuwczthEEejdiwcVwwG6xQ4sdow93suCIrXMrMCLkVab9FZUgJt84SU1gKp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ltzu6DzW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E34DC433F1;
+	Tue,  9 Apr 2024 13:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712668073;
-	bh=ouy2Y6x2V5/uoESyJnNA235PE5cU8gwdY/QEcC9jK9Q=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=jEUwV5u/RKtUi7ai+UUBmn1fKwYn+9jGR2SXBlyansUuEsQgR8HXXtm31IPJtost4
-	 QfA5GafyjBNcPOXqu+NrYi77jpsDrC+ZuPMcgFZjTNJ+6ARc7lsuGc+VDs3KHokycl
-	 sjHX+BV6Xn0IZ6E58P/whNgejKdwbqyK/FHtL0JhYcEYQJ/ZPhUYN/Mag1ER44pINz
-	 iYhCsEWtBBeCdWMpB+Ps65LDRILWcvdXg+bv4ZuENQJ92eGqXeL8GqUGSixfQTnUGJ
-	 oERhOfzi6CyWML3nUoZ3EoWjnwuaFCYcfFNquEqpZiDWcaCVocaTD01T/liOD92UYh
-	 ejo3unZrpJgIg==
+	s=k20201202; t=1712668267;
+	bh=Xe412WLq6VSlNpe0tAVJDmryM5F6qp2XSmWQjeaKIsg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ltzu6DzWbBEWIDPImHphPjr3jQphZhgJZ1bkCxEcJtNjj2NmxQpI4TOXLiyQnzD5k
+	 7cJvrper1tnBGJ65pI3+7RYkZjz0fA9USoFDjC/o9p3Hw1okUxU/7grhzR9O8/O0Qk
+	 yw1dE3Rtidq6LJYOTcHVpZWJGGYQS58AxQg5oIbdwsPSXmmm0GDVX+NlVGy5TqeAUe
+	 6egrNQBJ2Lafvoqwm48tDIo9LORxCEV6zyV8GAcriayNrDJbe7NAyrPlctq1sW3Doe
+	 54pZCzUHOzU5EX/mD7j+DasB7+quXjtbtHERPxKRZYgu57G2C9tVXQqVGVUGsfEVIT
+	 IFZ/fZMrzQp3g==
+Date: Tue, 9 Apr 2024 14:11:00 +0100
 From: Mark Brown <broonie@kernel.org>
-To: linux-sound@vger.kernel.org, alsa-devel@alsa-project.org, 
- Sameer Pujar <spujar@nvidia.com>
-Cc: linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org, 
- lgirdwood@gmail.com, thierry.reding@gmail.com, jonathanh@nvidia.com, 
- mkumard@nvidia.com, stable@vger.kernel.org
-In-Reply-To: <20240405104306.551036-1-spujar@nvidia.com>
-References: <20240405104306.551036-1-spujar@nvidia.com>
-Subject: Re: [RESEND PATCH v2] ASoC: tegra: Fix DSPK 16-bit playback
-Message-Id: <171266807089.28088.2212378797581391571.b4-ty@kernel.org>
-Date: Tue, 09 Apr 2024 14:07:50 +0100
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.1 000/138] 6.1.85-rc1 review
+Message-ID: <bd00e632-fcef-44b9-b13b-2db417c7bce9@sirena.org.uk>
+References: <20240408125256.218368873@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14-dev
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="7lrLzgHKE8psHx2h"
+Content-Disposition: inline
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+X-Cookie: Everything you know is wrong!
 
-On Fri, 05 Apr 2024 10:43:06 +0000, Sameer Pujar wrote:
-> DSPK configuration is wrong for 16-bit playback and this happens because
-> the client config is always fixed at 24-bit in hw_params(). Fix this by
-> updating the client config to 16-bit for the respective playback.
-> 
-> 
 
-Applied to
+--7lrLzgHKE8psHx2h
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+On Mon, Apr 08, 2024 at 02:56:54PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.85 release.
+> There are 138 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Thanks!
+Tested-by: Mark Brown <broonie@kernel.org>
 
-[1/1] ASoC: tegra: Fix DSPK 16-bit playback
-      commit: 2e93a29b48a017c777d4fcbfcc51aba4e6a90d38
+--7lrLzgHKE8psHx2h
+Content-Type: application/pgp-signature; name="signature.asc"
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-----BEGIN PGP SIGNATURE-----
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmYVPmQACgkQJNaLcl1U
+h9C0agf/S12JQN0DPDRzIILPQcGeyCoDujAyjG7ulDwQm3GzCeG5idQSyPrm3s0R
+CRltvjpMCxjLrrRmPr/dtQ3f5YCmiHOoSH2ToUjQNtmdcFDcAbGPnMCfPfDmuX6R
+821RSxomNKIyGIMsgqaCWoAVlLw4RUdAHv59ZxSD5ZZewKEw/ROkvb28zvSMq5lU
+4haBi4u7Kwq1fRUS3jK91oDjO7z7caLHI5aCo8uVdyrbuukW8oM71+GuSmGtdPnF
+5FuhvRaE4oaznDfLNYwapvOwzr4HlZf9kcxLj50gQxYX14uJh4OHNmMquWcn3VKw
+auNOFrxPyvGrMh/S2yNI1Rq5sd6h6g==
+=wLop
+-----END PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+--7lrLzgHKE8psHx2h--
 
