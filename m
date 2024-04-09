@@ -1,289 +1,165 @@
-Return-Path: <stable+bounces-37889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C49289E0A0
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 18:39:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D79389E0AB
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 18:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 917AA1F24369
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 16:39:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C79BC286DDA
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 16:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0414153586;
-	Tue,  9 Apr 2024 16:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79E0153812;
+	Tue,  9 Apr 2024 16:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="rn/8KInD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vbklh3fZ"
 X-Original-To: stable@vger.kernel.org
-Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D7212FB38
-	for <stable@vger.kernel.org>; Tue,  9 Apr 2024 16:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC03F15358E;
+	Tue,  9 Apr 2024 16:44:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712680738; cv=none; b=IHWnjpq+sOYuiLCqwDL7dNmEosfhoUNN7hLg5BKn7vS4qW2BJREvM157jIp8TVHw9pbenATuOD3w5F+m0N7HSlIhCZmFE8rksQnpoaNYAuucGqLCzoX7r5adsu3ruxvSmY1GexKYNTjuvw0w47jCf1+qlDSGxPu2UCczqeSAJ38=
+	t=1712681082; cv=none; b=kHnyt69nye5XczOTIVUsekhI2bhD9zMIbiLlyVlYib8SJA2A0Lzpxb1kNSWUBB5ATk7IsUt3djNi5FEhXU5mXewpFY4ul8lf2KLFSDSFKw4UrjevXrFPUa7n6KRl2NU3QgnWECMEXX/fUU2Yb3rNjj+3/LvVy95veeMAWFDbXFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712680738; c=relaxed/simple;
-	bh=qRtkAgaN4Lb+qn/3KSd46ZsCG7YCmm4KuRGmnz4jCtA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q+YV7JhAcsfvd+wnukoRfP9nmiFM+/T6PBRH8z0yTOyJOCMkYNgwe6XO9o68eytrbBzw4DaCaiq9GHbGzmBr4NjE8pEoCgNukwtrrEqpt4s+4dRBY/5GA8n55qdGKZ/sf3qeiZB5fi6Lu5RLPV7WJtIIJutQHxdAhx42WfveRH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=rn/8KInD; arc=none smtp.client-ip=213.190.28.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
-	s=dkim_2024-02-03; t=1712680734;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cqMVO9k5+54X6UY1REXjyd335+oRZro3n1lllOsjgQQ=;
-	b=rn/8KInD36YS2BaxeheBZZd5TY5vPz9KbneKqijOiOhlktJ2PfPLkh7p9fHgHxOk48Hjkw
-	CqJg5oXGR6k63yCA==
-Message-ID: <76489f58-6b60-4afd-9585-9f56960f7759@hardfalcon.net>
-Date: Tue, 9 Apr 2024 18:38:53 +0200
+	s=arc-20240116; t=1712681082; c=relaxed/simple;
+	bh=39YyZmAfdf4vHb3K8iCAxVV01Zal5LvvE4zzi2uoc7o=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZOG27ZWpauDiRZTV0QhNw1vSqbbebo7qsYPVJA0yFkV4F7i454ttTdRgW1ffXDBd3r9AW/qo48MpyrwiwWwcdNhiXiUrqx2UlBxTEhlE4v80vE8bOhqXkeYORidY5P3/1BRgQ7Gk6WK/IqwmWsV9Z1Wj5knVcVVXYB9XIu/sayg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vbklh3fZ; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-343c891bca5so3737440f8f.2;
+        Tue, 09 Apr 2024 09:44:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712681079; x=1713285879; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=39YyZmAfdf4vHb3K8iCAxVV01Zal5LvvE4zzi2uoc7o=;
+        b=Vbklh3fZq1hRUg0OaYoT730emGfW8d6EJRM2hOSMEtY6FPoNh4bPBovS70DXPCwk66
+         bxMjcdH7036sSJSy616l3Z8VpsUmeUkodxTMgtowP33bgjFJCF52tUrrVFCT+tqo3XS8
+         /M1EGmX1YL3kOLvxrrhSYjH/QXF2bYQn9PoNgXVfufcjgQ6UopFIqfbRrsmT3uI292Qt
+         dQXz4fHIdjtuH2Xo5y6jxcUQlvhlG2MjfKVYiXtryjV4FJ9zGrTM/XMtzePuBRIGPuOe
+         BGwFwF/A2NW8xxcv5y7T5FTAmjI/QzFnQrL6cQj0O4GxcLq9ifDJoUhxtf84PCcwhXic
+         Mdww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712681079; x=1713285879;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=39YyZmAfdf4vHb3K8iCAxVV01Zal5LvvE4zzi2uoc7o=;
+        b=mcLHKWIMys5/z/6fZ0lXH/1INpMIzMtHe0/jq2D0f00kLLy85IhmNx/kbgZkqRCyLJ
+         sPHVTkn2yNQtDoKa9HLJxslz3lB2TOGlmvD7rRUGYiio5cY0568x24lVKJTUR3yMpj5j
+         3bgWXCthDZZcTUDwi6lvKFANaqwJq4zUqD2QDBGdG5fKi2MBA1RE4jbjoNUdkSFF2FQ7
+         czMTRNF5V1PBqQcLgnJTPjAKBHxmgWKBHDIl6Da4nhihuc6uulFnn2jI9e/EeBSJl8xo
+         J9bAWNVkvJfkxJ19E7P3nGAtPP4Yrvxh+cx1aKQOVTkJ8r5U7/ZcG/fQ4PBQSuYcsAUw
+         CxUg==
+X-Forwarded-Encrypted: i=1; AJvYcCVt5hN+YK+LNok8RqP9MR3exYLEyvG6rENhQIUWMwqUs9z5ehr2GhEqGKrgGrhYZuulbIbsMJqZ8kzaO99/3cFCvlWyIBxkLGglcGk6t6HTzQSpV82AyfrnzygSU4EkbWhL9FgZpSG1PsjehRHEveN4O8jJ+EJe4PMBUhpVq+X+5g==
+X-Gm-Message-State: AOJu0YyyCj4cObqS1jSzfnHDTzVhEVkGHFoWqkfRiffiHICTz68sT0Sa
+	RUgGnmzZljHeBFaEMtnrft/gHrsy5RIWZdm0ljcLHwfiRNeFY7elasigEiY4t6I=
+X-Google-Smtp-Source: AGHT+IG9oCRp8KNYrcpRgvkxjASB4B9j7CiacUqJAP6Fnj2ZHjCz12vzOT6sXYOQlWJouTexhhWtPw==
+X-Received: by 2002:adf:f3d0:0:b0:341:8412:a6e7 with SMTP id g16-20020adff3d0000000b003418412a6e7mr188242wrp.18.1712681078763;
+        Tue, 09 Apr 2024 09:44:38 -0700 (PDT)
+Received: from ?IPv6:2001:8a0:e622:f700:5844:d7c8:2851:cad9? ([2001:8a0:e622:f700:5844:d7c8:2851:cad9])
+        by smtp.gmail.com with ESMTPSA id e27-20020a5d595b000000b003445bb2362esm9308419wri.65.2024.04.09.09.44.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Apr 2024 09:44:38 -0700 (PDT)
+Message-ID: <bd4d7198e58bd89b46a4c721546f6975b287a5fc.camel@gmail.com>
+Subject: Re: [PATCH v1] arm64: dts: imx8mm: fix missing pgc_vpu_* power
+ domain parent
+From: Vitor Soares <ivitro@gmail.com>
+To: Lucas Stach <l.stach@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Vitor Soares <vitor.soares@toradex.com>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Tue, 09 Apr 2024 17:44:37 +0100
+In-Reply-To: <fcd6acc268b8642371cf289149b2b1c3e90c7f45.camel@pengutronix.de>
+References: <20240409085802.290439-1-ivitro@gmail.com>
+	 <9ce35b9bb5a15891f6bd01bd54b7dc84b3ba4021.camel@pengutronix.de>
+	 <e1552a3008a30ef7ed9097b4b80cda23ccb9e840.camel@gmail.com>
+	 <fcd6acc268b8642371cf289149b2b1c3e90c7f45.camel@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 6.8 271/273] x86/sme: Move early SME kernel encryption
- handling into .head.text
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
- "Borislav Petkov (AMD)" <bp@alien8.de>,
- Tom Lendacky <thomas.lendacky@amd.com>
-References: <20240408125309.280181634@linuxfoundation.org>
- <20240408125317.917032769@linuxfoundation.org>
-Content-Language: en-US
-From: Pascal Ernster <git@hardfalcon.net>
-In-Reply-To: <20240408125317.917032769@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-[2024-04-08 14:59] Greg Kroah-Hartman:
-> 6.8-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Ard Biesheuvel <ardb@kernel.org>
-> 
-> commit 48204aba801f1b512b3abed10b8e1a63e03f3dd1 upstream.
-> 
-> The .head.text section is the initial primary entrypoint of the core
-> kernel, and is entered with the CPU executing from a 1:1 mapping of
-> memory. Such code must never access global variables using absolute
-> references, as these are based on the kernel virtual mapping which is
-> not active yet at this point.
-> 
-> Given that the SME startup code is also called from this early execution
-> context, move it into .head.text as well. This will allow more thorough
-> build time checks in the future to ensure that early startup code only
-> uses RIP-relative references to global variables.
-> 
-> Also replace some occurrences of __pa_symbol() [which relies on the
-> compiler generating an absolute reference, which is not guaranteed] and
-> an open coded RIP-relative access with RIP_REL_REF().
-> 
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Link: https://lore.kernel.org/r/20240227151907.387873-18-ardb+git@google.com
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->   arch/x86/include/asm/mem_encrypt.h |    8 +++----
->   arch/x86/mm/mem_encrypt_identity.c |   42 ++++++++++++++-----------------------
->   2 files changed, 21 insertions(+), 29 deletions(-)
-> 
-> --- a/arch/x86/include/asm/mem_encrypt.h
-> +++ b/arch/x86/include/asm/mem_encrypt.h
-> @@ -47,8 +47,8 @@ void __init sme_unmap_bootdata(char *rea
->   
->   void __init sme_early_init(void);
->   
-> -void __init sme_encrypt_kernel(struct boot_params *bp);
-> -void __init sme_enable(struct boot_params *bp);
-> +void sme_encrypt_kernel(struct boot_params *bp);
-> +void sme_enable(struct boot_params *bp);
->   
->   int __init early_set_memory_decrypted(unsigned long vaddr, unsigned long size);
->   int __init early_set_memory_encrypted(unsigned long vaddr, unsigned long size);
-> @@ -81,8 +81,8 @@ static inline void __init sme_unmap_boot
->   
->   static inline void __init sme_early_init(void) { }
->   
-> -static inline void __init sme_encrypt_kernel(struct boot_params *bp) { }
-> -static inline void __init sme_enable(struct boot_params *bp) { }
-> +static inline void sme_encrypt_kernel(struct boot_params *bp) { }
-> +static inline void sme_enable(struct boot_params *bp) { }
->   
->   static inline void sev_es_init_vc_handling(void) { }
->   
-> --- a/arch/x86/mm/mem_encrypt_identity.c
-> +++ b/arch/x86/mm/mem_encrypt_identity.c
-> @@ -41,6 +41,7 @@
->   #include <linux/mem_encrypt.h>
->   #include <linux/cc_platform.h>
->   
-> +#include <asm/init.h>
->   #include <asm/setup.h>
->   #include <asm/sections.h>
->   #include <asm/coco.h>
-> @@ -94,7 +95,7 @@ struct sme_populate_pgd_data {
->    */
->   static char sme_workarea[2 * PMD_SIZE] __section(".init.scratch");
->   
-> -static void __init sme_clear_pgd(struct sme_populate_pgd_data *ppd)
-> +static void __head sme_clear_pgd(struct sme_populate_pgd_data *ppd)
->   {
->   	unsigned long pgd_start, pgd_end, pgd_size;
->   	pgd_t *pgd_p;
-> @@ -109,7 +110,7 @@ static void __init sme_clear_pgd(struct
->   	memset(pgd_p, 0, pgd_size);
->   }
->   
-> -static pud_t __init *sme_prepare_pgd(struct sme_populate_pgd_data *ppd)
-> +static pud_t __head *sme_prepare_pgd(struct sme_populate_pgd_data *ppd)
->   {
->   	pgd_t *pgd;
->   	p4d_t *p4d;
-> @@ -146,7 +147,7 @@ static pud_t __init *sme_prepare_pgd(str
->   	return pud;
->   }
->   
-> -static void __init sme_populate_pgd_large(struct sme_populate_pgd_data *ppd)
-> +static void __head sme_populate_pgd_large(struct sme_populate_pgd_data *ppd)
->   {
->   	pud_t *pud;
->   	pmd_t *pmd;
-> @@ -162,7 +163,7 @@ static void __init sme_populate_pgd_larg
->   	set_pmd(pmd, __pmd(ppd->paddr | ppd->pmd_flags));
->   }
->   
-> -static void __init sme_populate_pgd(struct sme_populate_pgd_data *ppd)
-> +static void __head sme_populate_pgd(struct sme_populate_pgd_data *ppd)
->   {
->   	pud_t *pud;
->   	pmd_t *pmd;
-> @@ -188,7 +189,7 @@ static void __init sme_populate_pgd(stru
->   		set_pte(pte, __pte(ppd->paddr | ppd->pte_flags));
->   }
->   
-> -static void __init __sme_map_range_pmd(struct sme_populate_pgd_data *ppd)
-> +static void __head __sme_map_range_pmd(struct sme_populate_pgd_data *ppd)
->   {
->   	while (ppd->vaddr < ppd->vaddr_end) {
->   		sme_populate_pgd_large(ppd);
-> @@ -198,7 +199,7 @@ static void __init __sme_map_range_pmd(s
->   	}
->   }
->   
-> -static void __init __sme_map_range_pte(struct sme_populate_pgd_data *ppd)
-> +static void __head __sme_map_range_pte(struct sme_populate_pgd_data *ppd)
->   {
->   	while (ppd->vaddr < ppd->vaddr_end) {
->   		sme_populate_pgd(ppd);
-> @@ -208,7 +209,7 @@ static void __init __sme_map_range_pte(s
->   	}
->   }
->   
-> -static void __init __sme_map_range(struct sme_populate_pgd_data *ppd,
-> +static void __head __sme_map_range(struct sme_populate_pgd_data *ppd,
->   				   pmdval_t pmd_flags, pteval_t pte_flags)
->   {
->   	unsigned long vaddr_end;
-> @@ -232,22 +233,22 @@ static void __init __sme_map_range(struc
->   	__sme_map_range_pte(ppd);
->   }
->   
-> -static void __init sme_map_range_encrypted(struct sme_populate_pgd_data *ppd)
-> +static void __head sme_map_range_encrypted(struct sme_populate_pgd_data *ppd)
->   {
->   	__sme_map_range(ppd, PMD_FLAGS_ENC, PTE_FLAGS_ENC);
->   }
->   
-> -static void __init sme_map_range_decrypted(struct sme_populate_pgd_data *ppd)
-> +static void __head sme_map_range_decrypted(struct sme_populate_pgd_data *ppd)
->   {
->   	__sme_map_range(ppd, PMD_FLAGS_DEC, PTE_FLAGS_DEC);
->   }
->   
-> -static void __init sme_map_range_decrypted_wp(struct sme_populate_pgd_data *ppd)
-> +static void __head sme_map_range_decrypted_wp(struct sme_populate_pgd_data *ppd)
->   {
->   	__sme_map_range(ppd, PMD_FLAGS_DEC_WP, PTE_FLAGS_DEC_WP);
->   }
->   
-> -static unsigned long __init sme_pgtable_calc(unsigned long len)
-> +static unsigned long __head sme_pgtable_calc(unsigned long len)
->   {
->   	unsigned long entries = 0, tables = 0;
->   
-> @@ -284,7 +285,7 @@ static unsigned long __init sme_pgtable_
->   	return entries + tables;
->   }
->   
-> -void __init sme_encrypt_kernel(struct boot_params *bp)
-> +void __head sme_encrypt_kernel(struct boot_params *bp)
->   {
->   	unsigned long workarea_start, workarea_end, workarea_len;
->   	unsigned long execute_start, execute_end, execute_len;
-> @@ -319,9 +320,8 @@ void __init sme_encrypt_kernel(struct bo
->   	 *     memory from being cached.
->   	 */
->   
-> -	/* Physical addresses gives us the identity mapped virtual addresses */
-> -	kernel_start = __pa_symbol(_text);
-> -	kernel_end = ALIGN(__pa_symbol(_end), PMD_SIZE);
-> +	kernel_start = (unsigned long)RIP_REL_REF(_text);
-> +	kernel_end = ALIGN((unsigned long)RIP_REL_REF(_end), PMD_SIZE);
->   	kernel_len = kernel_end - kernel_start;
->   
->   	initrd_start = 0;
-> @@ -339,14 +339,6 @@ void __init sme_encrypt_kernel(struct bo
->   #endif
->   
->   	/*
-> -	 * We're running identity mapped, so we must obtain the address to the
-> -	 * SME encryption workarea using rip-relative addressing.
-> -	 */
-> -	asm ("lea sme_workarea(%%rip), %0"
-> -	     : "=r" (workarea_start)
-> -	     : "p" (sme_workarea));
-> -
-> -	/*
->   	 * Calculate required number of workarea bytes needed:
->   	 *   executable encryption area size:
->   	 *     stack page (PAGE_SIZE)
-> @@ -355,7 +347,7 @@ void __init sme_encrypt_kernel(struct bo
->   	 *   pagetable structures for the encryption of the kernel
->   	 *   pagetable structures for workarea (in case not currently mapped)
->   	 */
-> -	execute_start = workarea_start;
-> +	execute_start = workarea_start = (unsigned long)RIP_REL_REF(sme_workarea);
->   	execute_end = execute_start + (PAGE_SIZE * 2) + PMD_SIZE;
->   	execute_len = execute_end - execute_start;
->   
-> @@ -498,7 +490,7 @@ void __init sme_encrypt_kernel(struct bo
->   	native_write_cr3(__native_read_cr3());
->   }
->   
-> -void __init sme_enable(struct boot_params *bp)
-> +void __head sme_enable(struct boot_params *bp)
->   {
->   	unsigned int eax, ebx, ecx, edx;
->   	unsigned long feature_mask;
+On Tue, 2024-04-09 at 16:36 +0200, Lucas Stach wrote:
+> Am Dienstag, dem 09.04.2024 um 14:22 +0100 schrieb Vitor Soares:
+> > Hi Lucas,
+> >=20
+> > Thanks for your feedback.
+> >=20
+> > On Tue, 2024-04-09 at 11:13 +0200, Lucas Stach wrote:
+> > > Hi Vitor,
+> > >=20
+> > > Am Dienstag, dem 09.04.2024 um 09:58 +0100 schrieb Vitor Soares:
+> > > > From: Vitor Soares <vitor.soares@toradex.com>
+> > > >=20
+> > > > The pgc_vpu_* nodes miss the reference to the power domain
+> > > > parent,
+> > > > leading the system to hang during the resume.
+> > > >=20
+> > > This change is not correct. The vpumix domain is controlled
+> > > through
+> > > the
+> > > imx8mm-vpu-blk-ctrl and must not be directly triggered by the
+> > > child
+> > > domains in order to guarantee proper power sequencing.
+> > >=20
+> > > If the sequencing is incorrect for resume, it needs to be fixed
+> > > in
+> > > the
+> > > blk-ctrl driver. I'll happily assist if you have any questions
+> > > about
+> > > this intricate mix between GPC and blk-ctrl hardware/drivers.
+> > =C2=A0
+> > I'm new into the topic, so I tried to follow same approach as in
+> > imx8mp
+> > DT.
+> >=20
+> That's a good hint, the 8MP VPU GPC node additions missed my radar.
+> The
+> direct dependency there between the GPC domains is equally wrong.
+>=20
+> > I also checked the imx8mq DT and it only have one domain for the
+> > VPU in the GPC. It seem blk-ctrl also dependes on pgc_vpu_* to work
+> > properly.
+> >=20
+> > The blk-ctrl driver hangs on imx8m_blk_ctrl_power_on() when access
+> > the
+> > ip registers for the soft reset. I tried to power-up the before the
+> > soft reset, but it didn't work.
+> >=20
+> The runtime_pm_get_sync() at the start of that function should ensure
+> that bus GPC domain aka vpumix is powered up. Can you check if that
+> is
+> happening?
+
+I checked bc->bus_power_dev->power.runtime_status and it is RPM_ACTIVE.
+
+Am I looking to on the right thing? It is RPM_ACTIVE event before
+runtime_pm_get_sync().
 
 
-Just to make sure this doesn't get lost: This patch causes the kernel to 
-not boot on several x86_64 VMs of mine (I haven't tested it on a bare 
-metal machine). For details and a kernel config to reproduce the issue, 
-see 
-https://lore.kernel.org/stable/fd186a2b-0c62-4942-bed3-a27d72930310@hardfalcon.net/
+>=20
+> Regards,
+> Lucas
+>=20
+> > Do you have an idea how we can address this within blk-ctrl?
+> >=20
+> > Best regards,
+> > Vitor
 
-
-Regards
-Pascal
 
