@@ -1,206 +1,199 @@
-Return-Path: <stable+bounces-37856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3BD889D6FE
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 12:30:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD59889D718
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 12:36:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CE051F22172
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 10:30:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CA7A28638A
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 10:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1126C8563F;
-	Tue,  9 Apr 2024 10:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A0F1EB46;
+	Tue,  9 Apr 2024 10:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qoxqj3v8"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="cS39/ljx";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="IooIRLhT";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="In64Oyrx";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="814UwSI4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEC87441A;
-	Tue,  9 Apr 2024 10:30:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7C77F47E
+	for <stable@vger.kernel.org>; Tue,  9 Apr 2024 10:36:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712658608; cv=none; b=QB1JJxSQQmyMgYoAC9u3aRaVNe/LK6mWeT3nJipBLzbBBkKNelIlIii6fixRNQCSxO4ICsa5X8AoTPP68qjDUI668LDD4azQm53B55a4ysOCNS1XmFPYI6bE7rewM8eenfNEsFchFbRiSl4QoN3W8INVM+JgEvis10G+zlUVVE4=
+	t=1712658987; cv=none; b=Xdqy/oFGDXwzru9av5SRGQepN3Vey5abWS0yAf7/0F8fX6Ir/K8trG3s7lyrixwwQRkAi4+Xi53LRtHgn+oVeAW6ugD+iMvVY/0yjt0F7AcShnpReYkZyYmEXjd2d+grLKy+n86JWXbK/XRppIFfTuAR99qh42yRbs3+FXt/qsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712658608; c=relaxed/simple;
-	bh=1na2OPcbjVkMfnpKNFakytcG2eeZOeCtOBK4ia0Rqrs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=D1pzsCUM0ZNuLR4jh3VAOjthdw5ur2HiFFidX+4NEZYcrJrGhD3qtOTsomopaJRhph8XImnbz0L/B3dVR9fj/5gmGfK2/3LwDHTwQp4Jc0KXG1vHvijtYV9NEupJj0UfX9eVkH8plBG5A8pCRdWa3WymSq54j8U0wTw1a6Aw2QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qoxqj3v8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C313C433F1;
-	Tue,  9 Apr 2024 10:30:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712658608;
-	bh=1na2OPcbjVkMfnpKNFakytcG2eeZOeCtOBK4ia0Rqrs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Qoxqj3v8l9o8mvYbNu5mbdNXvkBcO/0TWhIpJKb75C9eqocSoHDuOeuRyHSem9QBV
-	 x5FiYkD9Z+kNyTalYM1X2/qfcx+bQFhQXys7QmntGetg2E6ayZQmQ7lmAV+uFbhoPd
-	 59x+LrL3XE2C2UxXvJ5r4G8Ji2ioUVHIHvnRu8ClDPiWwRaryiXVYcoDn9R+Y7HpFe
-	 lEhLQOsbk/EpsbB/RuKWKFiG4OhyZ0qIdr8hjcpSZBJKRLCm7cUkntqAqx1JkZt7xx
-	 MwW3bR/1JDki1KTaTztLhyV4+XRHawaTnwyj2g0ACrZ/MM8my0vohsQYzNkT3b1YWq
-	 szUrYO3MqO73g==
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-563cb3ba9daso5403129a12.3;
-        Tue, 09 Apr 2024 03:30:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWl8gr/Zl33dykdpLUAdg2cTOROIc1cuig8EklAeCM6+RcTfpmWPUSXlzKVdl3AXeqvS5lzrlz+ISdsJCjpgiHRse/mWSpJ
-X-Gm-Message-State: AOJu0YxD2SEsw6SzHhNs4spa3kpcQGwfssTrTAKM3HtO55J/sA1sp3Qo
-	P9noSLfNkSpaTsquR1kYBaskWx0qStPqDTcMCdHEwQCB9krt327cJvVhFQQ19H/vBrSjzWUjVL+
-	cHliOrLh3intm838jepROYJP9eV4=
-X-Google-Smtp-Source: AGHT+IHsmEjdjWVXb35P42/rrHd9VLOE3C2fBJlmIkW4J2tDfz60zAsEkJnzQEZqopTeiXDA4nDaEV+LsZuaWkmIH9A=
-X-Received: by 2002:a17:907:9444:b0:a51:d70f:b5f2 with SMTP id
- dl4-20020a170907944400b00a51d70fb5f2mr4993820ejc.20.1712658606849; Tue, 09
- Apr 2024 03:30:06 -0700 (PDT)
+	s=arc-20240116; t=1712658987; c=relaxed/simple;
+	bh=clZSYCm8yXjhSe/lZxlEFYTsVgJZsBuEBgajoRImvtE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gd6NdQ+Bi8/9MbOWlv9/Z2tBz3fmNTUnNMbYqzGxtPSF4J4wRZ9DTIHbO8bRw69wqHyyB3uKnAuFvfzj5jS1NIBpahwytcbXk/HKHAzV2LXWiJ11OYwYPWJewS9IrHZFdCrhQVLlSQ4l0P/QzpU0wTx0+3KrGgtk1YDggvBGBbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=cS39/ljx; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=IooIRLhT; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=In64Oyrx; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=814UwSI4; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E8DD420927;
+	Tue,  9 Apr 2024 10:36:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1712658983;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SNz315dAJsBY0YA8qRy+0csxXa2onvzGzH++1Aawdpg=;
+	b=cS39/ljxvJ8zWcgDnlVndRNktsDau24qbWNcTG73VnBWRZQ0JuRCdMIV8G8c9LAI0YL8V8
+	NbUZ8DdlfP4J57NYu4Fz/16zrmcWpKC0RHAWYdHHkp+vN6OhnRLN5/z8ssx/ZiUZdowg5c
+	5cVmTozODZHjTLCZ4T3kDWOJr41FPrU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1712658983;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SNz315dAJsBY0YA8qRy+0csxXa2onvzGzH++1Aawdpg=;
+	b=IooIRLhTJXroRMD94hjqcFkiemn88gaSjf/LU8rW7RimV/rUfr2/8WAMasTfnnPR1rKLna
+	obigvZViLnWr3jBQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1712658982;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SNz315dAJsBY0YA8qRy+0csxXa2onvzGzH++1Aawdpg=;
+	b=In64Oyrx8rX1KH5u8laLFOb/D/ZMzBUDza5s3Sw9wlTPCjsFLPGTcEmCS1VZysiVUa9cGM
+	5xg4eRd2ZVK2GtVYU+F0iCszdMRnZz1EF9sbUZsaDtXo5wUZKPd/1PF1emGoVLiXsHnaEX
+	N4qlc+shclSUehsAU1JWgnwa9zFqB7Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1712658982;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SNz315dAJsBY0YA8qRy+0csxXa2onvzGzH++1Aawdpg=;
+	b=814UwSI4+ZCC+5snx1K0jl8zr9va87//PTO5TFm2w7CF21j1codM7XFop/9oVHE1+ptqLS
+	u9U3yqA+7kH9whCQ==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id BF4FE13253;
+	Tue,  9 Apr 2024 10:36:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id ZYNQLSYaFWajVQAAn2gu4w
+	(envelope-from <pvorel@suse.cz>); Tue, 09 Apr 2024 10:36:22 +0000
+Date: Tue, 9 Apr 2024 12:36:21 +0200
+From: Petr Vorel <pvorel@suse.cz>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: Re: [PATCH 5.15 463/690] nfsd: fix net-namespace logic in
+ __nfsd_file_cache_purge
+Message-ID: <20240409103621.GA110810@pevik>
+Reply-To: Petr Vorel <pvorel@suse.cz>
+References: <20240408125359.506372836@linuxfoundation.org>
+ <20240408125416.405210374@linuxfoundation.org>
+ <20240409064222.GA83048@pevik>
+ <2024040933-patio-impotent-7a0a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <f6e36de0cc45247c30c645764f3ffe4f6a487007.1712621026.git.wqu@suse.com>
-In-Reply-To: <f6e36de0cc45247c30c645764f3ffe4f6a487007.1712621026.git.wqu@suse.com>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Tue, 9 Apr 2024 11:29:28 +0100
-X-Gmail-Original-Message-ID: <CAL3q7H6HV5JKfQLYUfRcJ98kMeJJXEeZhx7xWunNjhZF-QCasQ@mail.gmail.com>
-Message-ID: <CAL3q7H6HV5JKfQLYUfRcJ98kMeJJXEeZhx7xWunNjhZF-QCasQ@mail.gmail.com>
-Subject: Re: [PATCH v2] btrfs: fix wrong block_start calculation for btrfs_drop_extent_map_range()
-To: Qu Wenruo <wqu@suse.com>
-Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024040933-patio-impotent-7a0a@gregkh>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.50 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	HAS_REPLYTO(0.30)[pvorel@suse.cz];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap2.dmz-prg2.suse.org:helo,imap2.dmz-prg2.suse.org:rdns,oracle.com:email,suse.cz:replyto,suse.cz:email];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_TWO(0.00)[2];
+	REPLYTO_EQ_FROM(0.00)[]
+X-Spam-Score: -3.50
+X-Spam-Flag: NO
 
-On Tue, Apr 9, 2024 at 1:06=E2=80=AFAM Qu Wenruo <wqu@suse.com> wrote:
->
-> [BUG]
-> During my extent_map cleanup/refactor, with extra sanity checks,
-> extent-map-tests::test_case_7() would not pass the checks.
->
-> The problem is, after btrfs_drop_extent_map_range(), the resulted
-> extent_map has a @block_start way too large.
-> Meanwhile my btrfs_file_extent_item based members are returning a
-> correct @disk_bytenr/@offset combination.
->
-> The extent map layout looks like this:
->
->      0        16K    32K       48K
->      | PINNED |      | Regular |
->
-> The regular em at [32K, 48K) also has 32K @block_start.
->
-> Then drop range [0, 36K), which should shrink the regular one to be
-> [36K, 48K).
-> However the @block_start is incorrect, we expect 32K + 4K, but got 52K.
->
-> [CAUSE]
-> Inside btrfs_drop_extent_map_range() function, if we hit an extent_map
-> that covers the target range but is still beyond it, we need to split
-> that extent map into half:
->
->         |<-- drop range -->|
->                  |<----- existing extent_map --->|
->
-> And if the extent map is not compressed, we need to forward
-> extent_map::block_start by the difference between the end of drop range
-> and the extent map start.
->
-> However in that particular case, the difference is calculated using
-> (start + len - em->start).
->
-> The problem is @start can be modified if the drop range covers any
-> pinned extent.
->
-> This leads to wrong calculation, and would be caught by my later
-> extent_map sanity checks, which checks the em::block_start against
-> btrfs_file_extent_item::disk_bytenr + btrfs_file_extent_item::offset.
->
-> This is a regression caused by commit c962098ca4af ("btrfs: fix
-> incorrect splitting in btrfs_drop_extent_map_range"), which removed the
-> @len update for pinned extents.
->
-> [FIX]
-> Fix it by avoiding using @start completely, and use @end - em->start
-> instead, which @end is exclusive bytenr number.
->
-> And update the test case to verify the @block_start to prevent such
-> problem from happening.
->
-> Thankfully this is not going to lead to any data corruption, as IO path
-> does not utilize btrfs_drop_extent_map_range() with @skip_pinned set.
->
-> So this fix is only here for the sake of consistency/correctness.
->
-> CC: stable@vger.kernel.org # 6.5+
-> Fixes: c962098ca4af ("btrfs: fix incorrect splitting in btrfs_drop_extent=
-_map_range")
-> Signed-off-by: Qu Wenruo <wqu@suse.com>
-> ---
-> Changelog:
-> v2:
-> - Remove the mention of possible corruption
->   Thankfully this bug does not affect IO path thus it's fine.
->
-> - Explain why c962098ca4af is the cause
-> ---
->  fs/btrfs/extent_map.c             | 2 +-
->  fs/btrfs/tests/extent-map-tests.c | 6 +++++-
->  2 files changed, 6 insertions(+), 2 deletions(-)
->
-> diff --git a/fs/btrfs/extent_map.c b/fs/btrfs/extent_map.c
-> index 471654cb65b0..955ce300e5a1 100644
-> --- a/fs/btrfs/extent_map.c
-> +++ b/fs/btrfs/extent_map.c
-> @@ -799,7 +799,7 @@ void btrfs_drop_extent_map_range(struct btrfs_inode *=
-inode, u64 start, u64 end,
->                                         split->block_len =3D em->block_le=
-n;
->                                         split->orig_start =3D em->orig_st=
-art;
->                                 } else {
-> -                                       const u64 diff =3D start + len - =
-em->start;
-> +                                       const u64 diff =3D end - em->star=
-t;
->
->                                         split->block_len =3D split->len;
->                                         split->block_start +=3D diff;
-> diff --git a/fs/btrfs/tests/extent-map-tests.c b/fs/btrfs/tests/extent-ma=
-p-tests.c
-> index 253cce7ffecf..80e71c5cb7ab 100644
-> --- a/fs/btrfs/tests/extent-map-tests.c
-> +++ b/fs/btrfs/tests/extent-map-tests.c
-> @@ -818,7 +818,6 @@ static int test_case_7(struct btrfs_fs_info *fs_info)
->                 test_err("em->len is %llu, expected 16K", em->len);
->                 goto out;
->         }
-> -
->         free_extent_map(em);
+> On Tue, Apr 09, 2024 at 08:42:22AM +0200, Petr Vorel wrote:
+> > Hi all,
 
-As pointed out before, please avoid such accidental and unrelated
-changes like this.
+> > > 5.15-stable review patch.  If anyone has any objections, please let me know.
 
-With that fixed:
+> > > ------------------
 
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
+> > > From: Jeff Layton <jlayton@kernel.org>
 
+> > > [ Upstream commit d3aefd2b29ff5ffdeb5c06a7d3191a027a18cdb8 ]
 
->
->         read_lock(&em_tree->lock);
-> @@ -847,6 +846,11 @@ static int test_case_7(struct btrfs_fs_info *fs_info=
-)
->                 goto out;
->         }
->
-> +       if (em->block_start !=3D SZ_32K + SZ_4K) {
-> +               test_err("em->block_start is %llu, expected 36K", em->blo=
-ck_start);
-> +               goto out;
-> +       }
-> +
->         free_extent_map(em);
->
->         read_lock(&em_tree->lock);
-> --
-> 2.44.0
->
->
+> > > If the namespace doesn't match the one in "net", then we'll continue,
+> > > but that doesn't cause another rhashtable_walk_next call, so it will
+> > > loop infinitely.
+
+> > > Fixes: ce502f81ba88 ("NFSD: Convert the filecache to use rhashtable")
+> > > Reported-by: Petr Vorel <pvorel@suse.cz>
+> > > Link: https://lore.kernel.org/ltp/Y1%2FP8gDAcWC%2F+VR3@pevik/
+> > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> > > Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+> > > ---
+> > >  fs/nfsd/filecache.c | 5 ++---
+> > >  1 file changed, 2 insertions(+), 3 deletions(-)
+
+> > > diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+> > > index 0b19eb015c6c8..024adcbe67e95 100644
+> > > --- a/fs/nfsd/filecache.c
+> > > +++ b/fs/nfsd/filecache.c
+> > > @@ -892,9 +892,8 @@ __nfsd_file_cache_purge(struct net *net)
+
+> > >  		nf = rhashtable_walk_next(&iter);
+> > >  		while (!IS_ERR_OR_NULL(nf)) {
+> > > -			if (net && nf->nf_net != net)
+> > > -				continue;
+> > > -			nfsd_file_unhash_and_dispose(nf, &dispose);
+> > I don't know the context (whether the fix is needed for 5.15 and older), but
+> > patch does not apply because nfsd_file_unhash_and_dispose() was introduced in
+> > ce502f81ba88 ("NFSD: Convert the filecache to use rhashtable") in v6.0-rc1.  It
+> > was actually renamed from nfsd_file_unhash_and_release_locked() in that commit.
+> > Also the context changed - nfsd_file_unhash_and_dispose() was introduced in the
+> > commit which is supposed to be fixed in this commit, one would say that this fix
+> > is not needed in older kernels (5.15, 5.10 and 5.4; 4.19 has completely
+> > different code). But that's a question for Jeff or Chuck.
+
+> This is part of a very large backport of nfsd patches to 5.15 to resolve
+> a lot of reported issues, so that might be why it looks odd here.  It
+> does seem to compile and boot ok for me, so maybe it's not an issue here
+> as you aren't seeing the other patches in this series?
+
+Hi Greg,
+
+I'm sorry, I should realize that one of the 462 previous patches might have
+changed the context. If it compiles and boots as whole it should be ok. I'm
+sorry for the noise.
+
+Kind regards,
+Petr
+
+> thanks,
+
+> greg k-h
 
