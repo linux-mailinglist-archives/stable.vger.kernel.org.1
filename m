@@ -1,122 +1,142 @@
-Return-Path: <stable+bounces-37860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8410F89D7ED
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 13:34:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3E8589D89A
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 13:57:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B549C1C244C5
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 11:34:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66311286319
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 11:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BE61272CA;
-	Tue,  9 Apr 2024 11:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7600F128826;
+	Tue,  9 Apr 2024 11:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOeaC/Zb"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="g0qO9pre"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278ED86269;
-	Tue,  9 Apr 2024 11:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7231642053
+	for <stable@vger.kernel.org>; Tue,  9 Apr 2024 11:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712662264; cv=none; b=paCMH/ICHq0pQDkFDvsMp3+0z2mqeedS8yEafbcrRY1PSLGXjZ/94YnYJuZyB3XpFLOzJvCa4IvDMMGffpbkjQkSfXLMTSjtMv8Tlc+KtKZND9KL+xoq7PbKYCrU0OmPoXZD0dZc0lSAmP9Dip5vkt1xKN8HHM3hQKx7ExYI2HE=
+	t=1712663822; cv=none; b=lBB5XT6fW2Vdanlxvn9AkYI1erN3pwk1fUIsvDpVUyiSfAtBj37SmejFj7HI9vjOJY/Qz8LaOc587uWAweAu4jVTtiCICHzRLxg1bv/dW5dCfCCpET58uTbKTF5VTiZFqI3aute/ndiTvgLnBvv3wyHBF5NkEeAqt78orZM7bwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712662264; c=relaxed/simple;
-	bh=o7n4wqg2Y9p0Uni/nKyeds+zg1zOiA+aNEQQSeIs3mM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fdEZcrfzm/txBCJS5hwkQZWf6I1PbY2nA0w7qOBp6K3hSMMdqNF8y5C2r45rGb9cXlfPkNzgV6w5kZbPePPtB08niUJyQe+29ZhCTDU4Eg9CLuUbEIOYDGBWn4du/RaXC/hQTkGaifmteUO0CIcXcGWWxw0UOlgBPwUMHLDc258=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOeaC/Zb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A9CC433C7;
-	Tue,  9 Apr 2024 11:31:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712662263;
-	bh=o7n4wqg2Y9p0Uni/nKyeds+zg1zOiA+aNEQQSeIs3mM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qOeaC/ZbZHLthcE8m01gwyI0o3SlQzI4nxTsPx7HwIiDdoh6RMr079dnTlVOM1eOz
-	 Pm7vlBT9tjrYfgI87EeyYydosi7o/nkh2FAGgXx2lfo2bz4KGuAbtFSDgjTxf7T2yj
-	 CPX1K5sm1GdA+rQChvKBvhzW+pKJtAyMumVj0zbE=
-Date: Tue, 9 Apr 2024 13:31:00 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Petr Vorel <pvorel@suse.cz>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: Re: [PATCH 5.15 463/690] nfsd: fix net-namespace logic in
- __nfsd_file_cache_purge
-Message-ID: <2024040952-riches-railcar-40bd@gregkh>
-References: <20240408125359.506372836@linuxfoundation.org>
- <20240408125416.405210374@linuxfoundation.org>
- <20240409064222.GA83048@pevik>
- <2024040933-patio-impotent-7a0a@gregkh>
- <20240409103621.GA110810@pevik>
+	s=arc-20240116; t=1712663822; c=relaxed/simple;
+	bh=BMyHz9lMrtU6g3gre9pjiuAZXWqRIYfT4Q9Rp6YAScY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CwhZR4GqsV6P1KFjD7C0xDsu47cZ44g9NP2oLyZDFXuT8+eEmTgNQ1iBPRqPBOHyD10LJOqaMQcWnOVaiQUXz8znlSeogTXwvB25GhirzB+56AMT+7S9iupahnQ78uVTsxqKd6hwtuBjS+0jIQZgOG1YAR9By10Giqlim3HUeAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=g0qO9pre; arc=none smtp.client-ip=209.85.166.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-7d6230233f9so14337539f.2
+        for <stable@vger.kernel.org>; Tue, 09 Apr 2024 04:57:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1712663819; x=1713268619; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h+sFwXoYlvmaRLKdHU2OL3LD5t7Xm+RlcJkwNqyQM6E=;
+        b=g0qO9premgqK6R0qnTuI9RdQt9qP2azANWBEDCwS0u9UpYkwQk4rJTEfPSu/ZlJeEJ
+         g23+0c4eo8fEizeqtyg2ahIw6ReO/T2Gk6PPCGmvd+9EXhI029RPGul6/+SxO+aBC5wJ
+         lUC/hHqiIXpnxm7xax/C52iPBV0MJZMViSGN4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712663819; x=1713268619;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h+sFwXoYlvmaRLKdHU2OL3LD5t7Xm+RlcJkwNqyQM6E=;
+        b=fxJDyyfVBMOdpzPU5Jhnv1Q0PgqcNqoNpx01lFY+uXLzFVO3e9gRGZ/CKhfiJDZdB6
+         QxMm/9nwnCeq4TmWE340K0qppa7y6+btubXpZlehgHLCsB8y+o3BWGhQwoOy0qeQSQc9
+         6X9hQqCxF7E/25aVqMj4A7OrYkgFrLSxQQ7PXumX6RQC/V/YawV/b/chcCfVwK0se8Lt
+         OwqKNXhOKocApKr2DtQeZfZ7uaRtKNgLK+disJ+LBiwMUxkpbzzxP8xe8XkUkWGYVfPb
+         lCDBpD9FmXhgdPYwPsVbFRA1WTCaeiuq/DScvfPOX28VK7jlETD4QfXRoiN0K6Z7lTuw
+         kcuA==
+X-Forwarded-Encrypted: i=1; AJvYcCWVNyJ8JTvdS/UtRjNBLjPtmRF7FvoMVppvdmPbvTHB5uj8xUceW23RlbhXimKjsNOdPuzTjCmobpa8dZu5ojTy/gsZl+Bv
+X-Gm-Message-State: AOJu0Yx4adY36Y0f96mIrWs3kMRfBdShvUKarfSR4OjDUwmaKMjiA2k+
+	NjRYXXaXN2IXSCnvqOBF49mxuFDqbYiYmaH+swVRiyMRaASoqg+6msQVUjWXek+UTS9hjIvXoAJ
+	0Xaen0oinliMWyXkWQOb4eP9TD6KEYyi3+aFs
+X-Google-Smtp-Source: AGHT+IFvIS8zDpgMDAGoXg7iiAGympjAvHb7hn6f+MJNaHDU7uc/jMvy5XAao/Ems5jMBEJEP23RHiuUh6azxOBbuXc=
+X-Received: by 2002:a05:6602:c8c:b0:7d5:efd9:3c87 with SMTP id
+ fp12-20020a0566020c8c00b007d5efd93c87mr4700135iob.5.1712663819589; Tue, 09
+ Apr 2024 04:56:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240409103621.GA110810@pevik>
+References: <20240408022802.358641-1-zack.rusin@broadcom.com>
+In-Reply-To: <20240408022802.358641-1-zack.rusin@broadcom.com>
+From: Martin Krastev <martin.krastev@broadcom.com>
+Date: Tue, 9 Apr 2024 14:56:48 +0300
+Message-ID: <CAKLwHdU8cv8sBQN0PYG-2w7RnE0CF_AyGnZEV+kJFOABoUb_UA@mail.gmail.com>
+Subject: Re: [PATCH] drm/vmwgfx: Enable DMA mappings with SEV
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, ian.forbes@broadcom.com, 
+	maaz.mombasawala@broadcom.com, Ye Li <ye.li@broadcom.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 09, 2024 at 12:36:21PM +0200, Petr Vorel wrote:
-> > On Tue, Apr 09, 2024 at 08:42:22AM +0200, Petr Vorel wrote:
-> > > Hi all,
-> 
-> > > > 5.15-stable review patch.  If anyone has any objections, please let me know.
-> 
-> > > > ------------------
-> 
-> > > > From: Jeff Layton <jlayton@kernel.org>
-> 
-> > > > [ Upstream commit d3aefd2b29ff5ffdeb5c06a7d3191a027a18cdb8 ]
-> 
-> > > > If the namespace doesn't match the one in "net", then we'll continue,
-> > > > but that doesn't cause another rhashtable_walk_next call, so it will
-> > > > loop infinitely.
-> 
-> > > > Fixes: ce502f81ba88 ("NFSD: Convert the filecache to use rhashtable")
-> > > > Reported-by: Petr Vorel <pvorel@suse.cz>
-> > > > Link: https://lore.kernel.org/ltp/Y1%2FP8gDAcWC%2F+VR3@pevik/
-> > > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> > > > Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-> > > > ---
-> > > >  fs/nfsd/filecache.c | 5 ++---
-> > > >  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> > > > diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-> > > > index 0b19eb015c6c8..024adcbe67e95 100644
-> > > > --- a/fs/nfsd/filecache.c
-> > > > +++ b/fs/nfsd/filecache.c
-> > > > @@ -892,9 +892,8 @@ __nfsd_file_cache_purge(struct net *net)
-> 
-> > > >  		nf = rhashtable_walk_next(&iter);
-> > > >  		while (!IS_ERR_OR_NULL(nf)) {
-> > > > -			if (net && nf->nf_net != net)
-> > > > -				continue;
-> > > > -			nfsd_file_unhash_and_dispose(nf, &dispose);
-> > > I don't know the context (whether the fix is needed for 5.15 and older), but
-> > > patch does not apply because nfsd_file_unhash_and_dispose() was introduced in
-> > > ce502f81ba88 ("NFSD: Convert the filecache to use rhashtable") in v6.0-rc1.  It
-> > > was actually renamed from nfsd_file_unhash_and_release_locked() in that commit.
-> > > Also the context changed - nfsd_file_unhash_and_dispose() was introduced in the
-> > > commit which is supposed to be fixed in this commit, one would say that this fix
-> > > is not needed in older kernels (5.15, 5.10 and 5.4; 4.19 has completely
-> > > different code). But that's a question for Jeff or Chuck.
-> 
-> > This is part of a very large backport of nfsd patches to 5.15 to resolve
-> > a lot of reported issues, so that might be why it looks odd here.  It
-> > does seem to compile and boot ok for me, so maybe it's not an issue here
-> > as you aren't seeing the other patches in this series?
-> 
-> Hi Greg,
-> 
-> I'm sorry, I should realize that one of the 462 previous patches might have
-> changed the context. If it compiles and boots as whole it should be ok. I'm
-> sorry for the noise.
+On Mon, Apr 8, 2024 at 5:28=E2=80=AFAM Zack Rusin <zack.rusin@broadcom.com>=
+ wrote:
+>
+> Enable DMA mappings in vmwgfx after TTM has been fixed in commit
+> 3bf3710e3718 ("drm/ttm: Add a generic TTM memcpy move for page-based iome=
+m")
+>
+> This enables full guest-backed memory support and in particular allows
+> usage of screen targets as the presentation mechanism.
+>
+> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+> Reported-by: Ye Li <ye.li@broadcom.com>
+> Tested-by: Ye Li <ye.li@broadcom.com>
+> Fixes: 3b0d6458c705 ("drm/vmwgfx: Refuse DMA operation when SEV encryptio=
+n is active")
+> Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadc=
+om.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.6+
+> ---
+>  drivers/gpu/drm/vmwgfx/vmwgfx_drv.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c b/drivers/gpu/drm/vmwgfx=
+/vmwgfx_drv.c
+> index 41ad13e45554..bdad93864b98 100644
+> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+> @@ -667,11 +667,12 @@ static int vmw_dma_select_mode(struct vmw_private *=
+dev_priv)
+>                 [vmw_dma_map_populate] =3D "Caching DMA mappings.",
+>                 [vmw_dma_map_bind] =3D "Giving up DMA mappings early."};
+>
+> -       /* TTM currently doesn't fully support SEV encryption. */
+> -       if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+> -               return -EINVAL;
+> -
+> -       if (vmw_force_coherent)
+> +       /*
+> +        * When running with SEV we always want dma mappings, because
+> +        * otherwise ttm tt pool pages will bounce through swiotlb runnin=
+g
+> +        * out of available space.
+> +        */
+> +       if (vmw_force_coherent || cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+>                 dev_priv->map_mode =3D vmw_dma_alloc_coherent;
+>         else if (vmw_restrict_iommu)
+>                 dev_priv->map_mode =3D vmw_dma_map_bind;
+> --
+> 2.40.1
 
-No noise at all, reviews are good!
+
+LGTM!
+
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+
+Regards,
+Martin
 
