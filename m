@@ -1,224 +1,97 @@
-Return-Path: <stable+bounces-37826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64DA689CF2A
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 02:06:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C21E89CF36
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 02:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D03FC1F233A0
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 00:06:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFD8F1F232FF
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 00:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A2F19B;
-	Tue,  9 Apr 2024 00:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D18829A9;
+	Tue,  9 Apr 2024 00:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="WNV5wAyG";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="WNV5wAyG"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LlkLyyHX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E1A370;
-	Tue,  9 Apr 2024 00:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC2E2566
+	for <stable@vger.kernel.org>; Tue,  9 Apr 2024 00:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712621181; cv=none; b=Dqd//k9UKJRcJZMGKrxey765oHAb/2MG6DUJRZQc+Fup2hQe9QY87NGhw8SjA5freYHTsWBjziRh78VBI7Zvpscw9YUTeds89PUcyHzwUz/fxMTWi0MjyjrxkFksnt61ylJleLa/JF8Sx7Yn2cvU83j7eVUGRM+gj7gN1UQYfX8=
+	t=1712621462; cv=none; b=swtJmrNR54fVS2Q41mPKc9rS6wKb4QQLq0n8soTQmQckHusUFo/cSSmnbf6ts4fBt/o6oc/CIUbZqKsXFt9jttlYCX5ViqDnAQUEIEnJQJ06O5vyjltli2zk/NbVKljdnjNK2hMg5GbSh/n9oYMjyP4h71oBPxBTLjNLr2cJ1gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712621181; c=relaxed/simple;
-	bh=y27PhrCaVviptffe0v4Ndes0B1MlEF2u32PvBAqdJwA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PQWmwQjnxgOPXVfSPP+nCFvGOxPRl6+ykGLajg46YRu2jsTgtP8rnkQ13lQpwUPSJub/h7iEo/40HR4u8IRW3p/5zINesMGuLNI/5qSC8eNXTxlicSkZUcbgDNDq0ASN+oPPdgQc3jbuWMW1VG33f87I64/DfNOViwHA98URBKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=WNV5wAyG; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=WNV5wAyG; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id F31AE20666;
-	Tue,  9 Apr 2024 00:06:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1712621177; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=DGpvuEssG0+e8y0f5Ti0Sl29gMmDI+6BYc8lFPvzKJ0=;
-	b=WNV5wAyGQcd/Pv4L8Ti0olwsPqpZbB3OAiKwe5Nu5VzKPbSg3tPULzOqxRH6/6HPnwWeg9
-	SjpiCXf2VbE65N02YEwphlQtoPfPa+Mn+JP59ikWnXrlh5gP5z8iH0EeRxF99w93SKqDJ5
-	j8WAa3usqxPvc2mqGlpkTLmOn3ALfto=
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=WNV5wAyG
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1712621177; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=DGpvuEssG0+e8y0f5Ti0Sl29gMmDI+6BYc8lFPvzKJ0=;
-	b=WNV5wAyGQcd/Pv4L8Ti0olwsPqpZbB3OAiKwe5Nu5VzKPbSg3tPULzOqxRH6/6HPnwWeg9
-	SjpiCXf2VbE65N02YEwphlQtoPfPa+Mn+JP59ikWnXrlh5gP5z8iH0EeRxF99w93SKqDJ5
-	j8WAa3usqxPvc2mqGlpkTLmOn3ALfto=
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id AE4141376F;
-	Tue,  9 Apr 2024 00:06:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id LP7CFXeGFGZ8XQAAn2gu4w
-	(envelope-from <wqu@suse.com>); Tue, 09 Apr 2024 00:06:15 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH v2] btrfs: fix wrong block_start calculation for btrfs_drop_extent_map_range()
-Date: Tue,  9 Apr 2024 09:36:12 +0930
-Message-ID: <f6e36de0cc45247c30c645764f3ffe4f6a487007.1712621026.git.wqu@suse.com>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1712621462; c=relaxed/simple;
+	bh=jHhcISfvM5hw7cGoH7GmgOSBwsHp6ACYR2aJyOjpY8g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qLnBs9VY+4rZA6zMlxNDKlkjoC4h8w0WBTyoV9j7YlKiRbRfCoHgd2aWMEXnnz76E3MgDH5PD135i6UCJZYNUpUkOhsX2InNEMlJwyFyzX+7cQoRGkhIGg+iZRw9IMbx8XfbC54Dt211LNrpsLxan/EQWyCSu923w3Sw3Zz4gBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LlkLyyHX; arc=none smtp.client-ip=91.218.175.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <737ae55d-3cd0-40fb-b3e9-3b676f1f735f@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1712621457;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Sjp5f9oGLEoLkHdn8mA9hv760wrE2Mtc0mHWY7INqz8=;
+	b=LlkLyyHXayvJ2oLUWrzshr7bf5ZTEEuDnUEiflTdRU6YK2A8fJZjfrRUB941Uh3Kbm7m8d
+	Mr0BddGphdRLxPPg0PvAWC5py9I3f4EJ27htGz7irp1grKnHhVR2ILg1xXbsg0rJvvjT+J
+	26y6vC662TUE6I6neMclRoL6ja/jbm4=
+Date: Mon, 8 Apr 2024 17:10:48 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:98:from];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email];
-	RCPT_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DKIM_TRACE(0.00)[suse.com:+]
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: F31AE20666
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
+Subject: Re: [PATCH] bpf: dereference of null in __cgroup_bpf_query() function
+To: Mikhail Lobanov <m.lobanov@rosalinux.ru>
+Cc: Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Song Liu <song@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ bpf@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240406151457.4774-1-m.lobanov@rosalinux.ru>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+In-Reply-To: <20240406151457.4774-1-m.lobanov@rosalinux.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-[BUG]
-During my extent_map cleanup/refactor, with extra sanity checks,
-extent-map-tests::test_case_7() would not pass the checks.
+On 4/6/24 8:14 AM, Mikhail Lobanov wrote:
+> In the __cgroup_bpf_query() function, it is possible to dereference
+> the null pointer in the line id = prog->aux->id; since there is no
+> check for a non-zero value of the variable prog.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Fixes: af6eea57437a ("bpf: Implement bpf_link-based cgroup BPF program attachment")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mikhail Lobanov <m.lobanov@rosalinux.ru>
+> ---
+>   kernel/bpf/cgroup.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
+> index 491d20038cbe..7f2db96f0c6a 100644
+> --- a/kernel/bpf/cgroup.c
+> +++ b/kernel/bpf/cgroup.c
+> @@ -1092,6 +1092,8 @@ static int __cgroup_bpf_query(struct cgroup *cgrp, const union bpf_attr *attr,
+>   			i = 0;
+>   			hlist_for_each_entry(pl, progs, node) {
+>   				prog = prog_list_prog(pl);
+> +               	       	if (!prog_list_prog(pl))
 
-The problem is, after btrfs_drop_extent_map_range(), the resulted
-extent_map has a @block_start way too large.
-Meanwhile my btrfs_file_extent_item based members are returning a
-correct @disk_bytenr/@offset combination.
+prog cannot be null. It is under cgroup_lock().
 
-The extent map layout looks like this:
-
-     0        16K    32K       48K
-     | PINNED |      | Regular |
-
-The regular em at [32K, 48K) also has 32K @block_start.
-
-Then drop range [0, 36K), which should shrink the regular one to be
-[36K, 48K).
-However the @block_start is incorrect, we expect 32K + 4K, but got 52K.
-
-[CAUSE]
-Inside btrfs_drop_extent_map_range() function, if we hit an extent_map
-that covers the target range but is still beyond it, we need to split
-that extent map into half:
-
-	|<-- drop range -->|
-		 |<----- existing extent_map --->|
-
-And if the extent map is not compressed, we need to forward
-extent_map::block_start by the difference between the end of drop range
-and the extent map start.
-
-However in that particular case, the difference is calculated using
-(start + len - em->start).
-
-The problem is @start can be modified if the drop range covers any
-pinned extent.
-
-This leads to wrong calculation, and would be caught by my later
-extent_map sanity checks, which checks the em::block_start against
-btrfs_file_extent_item::disk_bytenr + btrfs_file_extent_item::offset.
-
-This is a regression caused by commit c962098ca4af ("btrfs: fix
-incorrect splitting in btrfs_drop_extent_map_range"), which removed the
-@len update for pinned extents.
-
-[FIX]
-Fix it by avoiding using @start completely, and use @end - em->start
-instead, which @end is exclusive bytenr number.
-
-And update the test case to verify the @block_start to prevent such
-problem from happening.
-
-Thankfully this is not going to lead to any data corruption, as IO path
-does not utilize btrfs_drop_extent_map_range() with @skip_pinned set.
-
-So this fix is only here for the sake of consistency/correctness.
-
-CC: stable@vger.kernel.org # 6.5+
-Fixes: c962098ca4af ("btrfs: fix incorrect splitting in btrfs_drop_extent_map_range")
-Signed-off-by: Qu Wenruo <wqu@suse.com>
----
-Changelog:
-v2:
-- Remove the mention of possible corruption
-  Thankfully this bug does not affect IO path thus it's fine.
-
-- Explain why c962098ca4af is the cause
----
- fs/btrfs/extent_map.c             | 2 +-
- fs/btrfs/tests/extent-map-tests.c | 6 +++++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/fs/btrfs/extent_map.c b/fs/btrfs/extent_map.c
-index 471654cb65b0..955ce300e5a1 100644
---- a/fs/btrfs/extent_map.c
-+++ b/fs/btrfs/extent_map.c
-@@ -799,7 +799,7 @@ void btrfs_drop_extent_map_range(struct btrfs_inode *inode, u64 start, u64 end,
- 					split->block_len = em->block_len;
- 					split->orig_start = em->orig_start;
- 				} else {
--					const u64 diff = start + len - em->start;
-+					const u64 diff = end - em->start;
- 
- 					split->block_len = split->len;
- 					split->block_start += diff;
-diff --git a/fs/btrfs/tests/extent-map-tests.c b/fs/btrfs/tests/extent-map-tests.c
-index 253cce7ffecf..80e71c5cb7ab 100644
---- a/fs/btrfs/tests/extent-map-tests.c
-+++ b/fs/btrfs/tests/extent-map-tests.c
-@@ -818,7 +818,6 @@ static int test_case_7(struct btrfs_fs_info *fs_info)
- 		test_err("em->len is %llu, expected 16K", em->len);
- 		goto out;
- 	}
--
- 	free_extent_map(em);
- 
- 	read_lock(&em_tree->lock);
-@@ -847,6 +846,11 @@ static int test_case_7(struct btrfs_fs_info *fs_info)
- 		goto out;
- 	}
- 
-+	if (em->block_start != SZ_32K + SZ_4K) {
-+		test_err("em->block_start is %llu, expected 36K", em->block_start);
-+		goto out;
-+	}
-+
- 	free_extent_map(em);
- 
- 	read_lock(&em_tree->lock);
--- 
-2.44.0
+> +				continue;
+>   				id = prog->aux->id;
+>   				if (copy_to_user(prog_ids + i, &id, sizeof(id)))
+>   					return -EFAULT;
 
 
