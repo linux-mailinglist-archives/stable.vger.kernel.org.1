@@ -1,150 +1,243 @@
-Return-Path: <stable+bounces-37882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 693D689DE88
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 17:16:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E6689DED3
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 17:21:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9ABC01C2084B
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 15:16:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38DF8299546
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 15:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02770130A4F;
-	Tue,  9 Apr 2024 15:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E103B136986;
+	Tue,  9 Apr 2024 15:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="DlX5x66o"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="v2Kc+JvN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F759130A6F
-	for <stable@vger.kernel.org>; Tue,  9 Apr 2024 15:12:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033D21369AF
+	for <stable@vger.kernel.org>; Tue,  9 Apr 2024 15:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712675545; cv=none; b=k837cy6GCDOw53qNcLjTJ/H9m8E7Dx8o4w66+YaQ52S8zgo4pUOlwu/DRKrHKezWNUls7k0MDKAx9Pk/ZG5GxNQsRznS4/0WzCpBlLViMaz3tBAGI4j4LQGJ0bAOTKPFqPqN5MrHbfLfLogNWECdavBfNzlv0n3HcBfam2/Hlxo=
+	t=1712676003; cv=none; b=afhPNqU5s8bncxoihPHovg6pmFXsyNMH8RQIpop1lxvxtbamlzA6E3ivaepUm1sxpHBSa1o2J1mAmKNcEFwWCnl0HVCgxue1fH4BVHhiBQEnYx4NyqsalrNe4gVN51N6yDFMqLlsI76tskz8b6soWliWrcM/Y+MsiM8VGgJqqx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712675545; c=relaxed/simple;
-	bh=2yOosKCd1oezWyRCcfAahdXsM8b0FYSs24dKvuMAck0=;
+	s=arc-20240116; t=1712676003; c=relaxed/simple;
+	bh=w7MuII56KC0l/QaxAt8QU+nRcQzqyGN/UzjQcR8OalE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QBvrF9hR3U7odjWdquyoR36ZbT3xYsacXgi01PJJAyyDDy9eRaV5+D02BwK2BA4cGs+8s8OyaAtmi9ALhTmnSR9cV7qxjJaf0zLdWDE+9oH283hDMkrJGpjnwPLF7j3r6bwMs1MNPQq/Zz6MxX0Kugw4QEtdx2YIzzb758AgScs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=DlX5x66o; arc=none smtp.client-ip=209.85.210.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-6ea128e4079so1791134a34.3
-        for <stable@vger.kernel.org>; Tue, 09 Apr 2024 08:12:23 -0700 (PDT)
+	 To:Cc:Content-Type; b=PeXhgG6/3BemIuw1ksKj08uWnC3sj4ovA8RvxBeuKDnLvvzR4knbEH7Lmi++b50tq/nbo8YOmAzm8rCe6N9Stz/BNfhClC2vgjMc2k304wIi9qnUV+saEI0r4cBoW6YXJQ61Q/wscNI6UPZqfx+jZsR80Feh02+gm7ktNwHX2fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=v2Kc+JvN; arc=none smtp.client-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-6ea243406f0so369823a34.2
+        for <stable@vger.kernel.org>; Tue, 09 Apr 2024 08:20:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1712675543; x=1713280343; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MkgbrKSauyCf/3PInxYz8jAVnMgt0m3ACMNsW0viOZ8=;
-        b=DlX5x66oKjbBSrYCn4dVvTTUVYsTRa5jzGZu54IgEqdUtfC3ISxZamguzuhPItXZme
-         sUP5AboucHYIS+7gnwpvHopSeL6XXTlRP7Q0A3kMMxVcylfvC1dz1/MK7t73etyl7RJb
-         L+pjoRwoD7Jbocs2XoHcIGNDTjBur1xHuNAug=
+        d=linaro.org; s=google; t=1712676001; x=1713280801; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9zgd5TOBqXIkHIiprpxWQW1KnXD2wR1OrXXzWmsDxa0=;
+        b=v2Kc+JvN7N4+j168VyVTUYLaJZLVVvRytodIBPqdeqekuaMHZCzP7f884HDG6r9hGA
+         z9xtP+CfEZW6tD0ehD7fA2jpwebiwS/J435h1hSsZv1IHQ5vGN4V9YR9+yTjXaXyej0C
+         u4+MpwON4GVocIZV6P+khFA3nKuM4+h+Y/e8dPTXfhAwBTzt/DYUBu3VVTYaKAb8tPpc
+         QENuISY2Briipw4KZElKRLzdwlSOcyk/ISIaWJVarjkPkP3/q8aYI+VafNLjc00na0y7
+         1gwwGDbByw9lCPYBHkwi3Rr6/h6pHJwM6owlpd7HmKJycEs1OPmX/+K2n9sULBoGtoZ2
+         Qxvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712675543; x=1713280343;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MkgbrKSauyCf/3PInxYz8jAVnMgt0m3ACMNsW0viOZ8=;
-        b=oEKuxJNuYY0/de/XPIKBKWWOPQCsa3xxNGtgeSYBeR4adlbHHtMmUknMhuB1yBapmu
-         eQxpYaFAGLFACsOiRTBDNRRzooaSJB+nl2gw3RtIEHk1vtLJDgTGOizbo4wLsBQw1ygo
-         XK59Id7gbiNI74n3/n6wasg+wFxHYm0yxmPSg1B4nY+vEFJyVJ8XOIcnVGEGol45LAod
-         CdiSq50cEJFdV/btOtFU3mPTeERqSwgXBAWbwP55Wh5UpoC/EAnfx7fkC9QsShZqffo4
-         Vam8CBVdgXO+HY6EFXJcj26gubTBR5kQO7IgPxoZhZWobtgCpHTfMRx35zecGQJOSH4i
-         68oA==
-X-Forwarded-Encrypted: i=1; AJvYcCVB87bV9iwvHZfmKfyklu64qWxaro9LRwcuIAn61EPpHpKlVbkvbYSkaagT/vUS7yUusgClAj2XijlIpBIOpBnK0yyJO4RL
-X-Gm-Message-State: AOJu0YzLzIsdDV/cq8oSGYTVPshRSDAef+tOt1wMLuVSQtbsb3FnruHb
-	ZCtY8mhPPh5PIH6DSrS9m2gnMaRaVR6Y6PikpPsz9vNgUyz0HBerUmhBHnQa49BkFjkBy7vL8yv
-	qeJDtPVfDXRdZ0lWbortPy+cS6nBbwgi9CZ1a
-X-Google-Smtp-Source: AGHT+IECKU1EPnNzb6lDQEeMoJ4Wz9rQUce2PyviuJOfmoaRaDNhK6tPPDrV21C7KSRv5dYJyZugNQnzC08W1FGtU3M=
-X-Received: by 2002:a05:6808:219:b0:3c5:f87b:684 with SMTP id
- l25-20020a056808021900b003c5f87b0684mr4495529oie.15.1712675543217; Tue, 09
- Apr 2024 08:12:23 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712676001; x=1713280801;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9zgd5TOBqXIkHIiprpxWQW1KnXD2wR1OrXXzWmsDxa0=;
+        b=q5wJoBYXuOIhnZGswdHRGdGfFCX0GQ6qPNeQwjZHM3xRV1I25eMKotz/NFikgsN9LC
+         4HWkWX6Iu9OvPV9RyX3KsrNV0H60/4nNmPk3UGcogdFCuUeU58U/YRwM/7kyNIaSBiaj
+         mPTEA2S0FQosNysHdcU67l/of8Pxgt0xnzrJPU1qWrap9dJt6cxe75YHujxYyKzOb6ql
+         A5Ia1QXFgCIEBIsRqkADBE1icAv/JOE3mAwGsQedWCoo3KKKSVxBuqZGoee2jRTin6YP
+         fJQSayk6zuT0O03Iq4vcxiA+ET2Syham+om0yzcy2cJtKvrbZXQSMPHpcvgMNR06sA+L
+         qy9A==
+X-Gm-Message-State: AOJu0YweSwL5A+FFlv9t/gsnu8eEruIJXsRf35jKEZEaNSH6OTB6nb72
+	HWO0gpQLUIHx3SH1lvqsJflsJ+LfrYZ+EnRglJ4QMq58CipuyOIIFuZuG2TAG1gl6LxMgA1fSp0
+	jAdA2jaly7xWUpq4oM796bxeGZ2mQqd1FcosffS/rfGp9371GkB/Tgg==
+X-Google-Smtp-Source: AGHT+IHKRpHG9aqg3EiqE7UWmS5TF1Qw8G9pqcFx4N4CGX2gg1iJ1IwAhNWZo4wswyDMmaLjPUjJowwHQpkrkt5BEUg=
+X-Received: by 2002:a05:6830:18f4:b0:6ea:133a:8eed with SMTP id
+ d20-20020a05683018f400b006ea133a8eedmr38112otf.36.1712676001063; Tue, 09 Apr
+ 2024 08:20:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240402232813.2670131-1-zack.rusin@broadcom.com> <20240402232813.2670131-5-zack.rusin@broadcom.com>
-In-Reply-To: <20240402232813.2670131-5-zack.rusin@broadcom.com>
-From: Martin Krastev <martin.krastev@broadcom.com>
-Date: Tue, 9 Apr 2024 18:12:11 +0300
-Message-ID: <CAKLwHdVWS4sVQuoi7MUzZVMQiGniOkAfApbWj__TjL9EJqi4EQ@mail.gmail.com>
-Subject: Re: [PATCH 4/5] drm/vmwgfx: Fix crtc's atomic check conditional
-To: Zack Rusin <zack.rusin@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, ian.forbes@broadcom.com, 
-	maaz.mombasawala@broadcom.com, stable@vger.kernel.org
+References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+From: Anders Roxell <anders.roxell@linaro.org>
+Date: Tue, 9 Apr 2024 17:19:50 +0200
+Message-ID: <CADYN=9Lzq62s+LpXyZhGHThtVpTntsZ+huB9pUxSjComPTj5EQ@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/690] 5.15.154-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 3, 2024 at 2:28=E2=80=AFAM Zack Rusin <zack.rusin@broadcom.com>=
- wrote:
+On Mon, 8 Apr 2024 at 15:00, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> The conditional was supposed to prevent enabling of a crtc state
-> without a set primary plane. Accidently it also prevented disabling
-> crtc state with a set primary plane. Neither is correct.
+> This is the start of the stable review cycle for the 5.15.154 release.
+> There are 690 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Fix the conditional and just driver-warn when a crtc state has been
-> enabled without a primary plane which will help debug broken userspace.
+> Responses should be made by Wed, 10 Apr 2024 12:52:23 +0000.
+> Anything received after that time might be too late.
 >
-> Fixes IGT's kms_atomic_interruptible and kms_atomic_transition tests.
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.154-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
 >
-> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-> Fixes: 06ec41909e31 ("drm/vmwgfx: Add and connect CRTC helper functions")
-> Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadc=
-om.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v4.12+
-> ---
->  drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
+> thanks,
 >
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx=
-/vmwgfx_kms.c
-> index e33e5993d8fc..13b2820cae51 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-> @@ -931,6 +931,7 @@ int vmw_du_cursor_plane_atomic_check(struct drm_plane=
- *plane,
->  int vmw_du_crtc_atomic_check(struct drm_crtc *crtc,
->                              struct drm_atomic_state *state)
->  {
-> +       struct vmw_private *vmw =3D vmw_priv(crtc->dev);
->         struct drm_crtc_state *new_state =3D drm_atomic_get_new_crtc_stat=
-e(state,
->                                                                          =
-crtc);
->         struct vmw_display_unit *du =3D vmw_crtc_to_du(new_state->crtc);
-> @@ -938,9 +939,13 @@ int vmw_du_crtc_atomic_check(struct drm_crtc *crtc,
->         bool has_primary =3D new_state->plane_mask &
->                            drm_plane_mask(crtc->primary);
->
-> -       /* We always want to have an active plane with an active CRTC */
-> -       if (has_primary !=3D new_state->enable)
-> -               return -EINVAL;
-> +       /*
-> +        * This is fine in general, but broken userspace might expect
-> +        * some actual rendering so give a clue as why it's blank.
-> +        */
-> +       if (new_state->enable && !has_primary)
-> +               drm_dbg_driver(&vmw->drm,
-> +                              "CRTC without a primary plane will be blan=
-k.\n");
->
->
->         if (new_state->connector_mask !=3D connector_mask &&
-> --
-> 2.40.1
->
+> greg k-h
 
-LGTM!
+Results from Linaro's test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Regards,
-Martin
+## Build
+* kernel: 5.15.154-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.15.y
+* git commit: bfeab055fa437e2ad39c8b6a2e464da144479566
+* git describe: v5.15.153-691-gbfeab055fa43
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.153-691-gbfeab055fa43
+
+## Test result summary
+total: 90684, pass: 72346, fail: 2213, skip: 16060, xfail: 65
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 104 total, 104 passed, 0 failed
+* arm64: 31 total, 31 passed, 0 failed
+* i386: 25 total, 25 passed, 0 failed
+* mips: 22 total, 22 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 24 total, 24 passed, 0 failed
+* riscv: 8 total, 8 passed, 0 failed
+* s390: 9 total, 9 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 27 total, 27 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
