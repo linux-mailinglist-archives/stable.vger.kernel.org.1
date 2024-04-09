@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-37830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6157689D047
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 04:11:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2178D89D048
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 04:11:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5EF72840D2
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 02:11:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C1971C224EA
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 02:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D534A4F218;
-	Tue,  9 Apr 2024 02:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C964EB5E;
+	Tue,  9 Apr 2024 02:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ACumvpei"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MCJGA8EJ"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from out-185.mta1.migadu.com (out-185.mta1.migadu.com [95.215.58.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EED4EB50
-	for <stable@vger.kernel.org>; Tue,  9 Apr 2024 02:11:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B2D4E1C8
+	for <stable@vger.kernel.org>; Tue,  9 Apr 2024 02:11:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712628673; cv=none; b=ipqxKCOUHArr+flUOkdYhWhsvoRKzjYUVVttAHUYvGM5dqoTsDfwXtnr/GHZeCJ61PzyOSpy5VsLBtV8/amaJtwtqDVdW1/HhmX1O122AFgY0TMj3KmKqRut0TiWWbdNPbBDOzs+LDOQWqzKJMIslVXs0+qECnT3/WHjeQ6cDuA=
+	t=1712628689; cv=none; b=Fj93ioyVhkiyTgH9c72TxFYOWi0fDPLiePlIkHC1GueASeaTgd00i1tP175Ex8DdgcYS6a6PCmaAzryYv0RYGUVveWMt8ct8RzwCpvnFBgc3F72uLcnzc4FSR0frbNuP3jd4WdvScmrhKX7GdU9SdREqo0VV0/fsg82mAALU7/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712628673; c=relaxed/simple;
-	bh=AWi+BFYg1RdJVL92k06KrlEqwOUd9BeA30N8YykZoRo=;
+	s=arc-20240116; t=1712628689; c=relaxed/simple;
+	bh=zZ7FuXpocETLgADGrxrJPw94JnTp2tAU/bKYweVWAuQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qwpeedW0yehyovSdKrjQValtvG/YspGsxkChfSV3uGbbhScEJHAAelmWlG2H8KaoZS0fXUko9q0zSHzmClWujPN9ALUrmXrUfaXtsJCCATIRH6xVnbqRp79cydY0G+RIMlddnIfx0D7/150lVtZHCbFGxs4VsTmYZLjrcO1rZAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ACumvpei; arc=none smtp.client-ip=95.215.58.189
+	 MIME-Version; b=naC2K9zdnvyjyn6m7JbMFdikMGHyCfVj8/jYApaEUfGa6hsitBCPqQEF++pDckLhsXn2otx8AHamcuQ2lqCmpJHkCYA0c6sOLjygMHkKdrH7UQG1q02IGoFzyjdOsiYOOAHBRd8hLC9PoiZ2n/fW0ii5v1VD7HGzHAUfPkMzIBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MCJGA8EJ; arc=none smtp.client-ip=95.215.58.185
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1712628669;
+	t=1712628683;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rm5/EOrfNCEnxFcxBB/lQUdVNdmBDIDkEMulE2sTY4g=;
-	b=ACumvpeiKTIG84kHmfvnWHUsSK7BC17jjSWwWVP5IccM1kaLz225bjmkdKmUl7rj8anfwQ
-	2cORhZEA0o7nx061zILd7we0+wUEuD2HPGQsDwtb7c8Rp27EEmghveGJc1Z6co8159qYpW
-	z8ynOXPqaXN1Fn+Nmu/xqCqHg7Ip2rw=
+	bh=zpVc/zK5nmY4DgmW9aWJej0iiTBsRpqPqcrIfJ6B3oI=;
+	b=MCJGA8EJMkQSnHe4otmUGCJWiAhUKB++oh3TTlpnVf4B5QfoRgdH3x1REqe4OeSXE5Q4Jo
+	gvngmiTD16y7IDcqDuWIdbVXWiFnhdyDoGH0807y+f/G5wUXc9GDfwL4Mz997am8rAsejg
+	MGxyYe1TvAc0KIxAiUxSBTbjG0pf4+0=
 From: George Guo <dongtai.guo@linux.dev>
 To: gregkh@linuxfoundation.org,
 	tom.zanussi@linux.intel.com
 Cc: stable@vger.kernel.org,
 	George Guo <guodongtai@kylinos.cn>
-Subject: [PATCH 4.19.y v3 1/2] tracing: Remove unnecessary hist_data destroy in destroy_synth_var_refs()
-Date: Tue,  9 Apr 2024 10:10:37 +0800
-Message-Id: <20240409021038.1695963-2-dongtai.guo@linux.dev>
+Subject: [PATCH 4.19.y v3 2/2] tracing: Remove unnecessary var destroy in onmax_destroy()
+Date: Tue,  9 Apr 2024 10:10:38 +0800
+Message-Id: <20240409021038.1695963-3-dongtai.guo@linux.dev>
 In-Reply-To: <20240409021038.1695963-1-dongtai.guo@linux.dev>
 References: <20240409021038.1695963-1-dongtai.guo@linux.dev>
 Precedence: bulk
@@ -63,37 +63,40 @@ X-Migadu-Flow: FLOW_OUT
 
 From: George Guo <guodongtai@kylinos.cn>
 
-commit 912201345f7c39e6b0ac283207be2b6641fa47b9 upstream.
+commit ff9d31d0d46672e201fc9ff59c42f1eef5f00c77 upstream.
 
-The destroy_synth_var_refs() destroyed hist_data, casusing a double-free
-error flagged by KASAN.
+The onmax_destroy() destroyed the onmax var, casusing a double-free error
+flagged by KASAN.
 
 This is tested via "./ftracetest test.d/trigger/inter-event/
-trigger-field-variable-support.tc"
+trigger-onmatch-onmax-action-hist.tc".
 
 ==================================================================
-BUG: KASAN: use-after-free in destroy_hist_field+0x115/0x140
-Read of size 4 at addr ffff888012e95318 by task ftracetest/1858
+BUG: KASAN: use-after-free in destroy_hist_field+0x1c2/0x200
+Read of size 8 at addr ffff88800a4ad100 by task ftracetest/4731
 
-CPU: 1 PID: 1858 Comm: ftracetest Kdump: loaded Tainted: GE 4.19.90-89 #24
+CPU: 0 PID: 4731 Comm: ftracetest Kdump: loaded Tainted: GE 4.19.90-89 #77
 Source Version: Unknown
 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0
 Call Trace:
  dump_stack+0xcb/0x10b
  print_address_description.cold+0x54/0x249
  kasan_report_error.cold+0x63/0xab
- ? destroy_hist_field+0x115/0x140
- __asan_report_load4_noabort+0x8d/0xa0
- ? destroy_hist_field+0x115/0x140
- destroy_hist_field+0x115/0x140
- destroy_hist_data+0x4e4/0x9a0
+ ? destroy_hist_field+0x1c2/0x200
+ ? hist_trigger_elt_data_alloc+0x5a0/0x5a0
+ __asan_report_load8_noabort+0x8d/0xa0
+ ? destroy_hist_field+0x1c2/0x200
+ destroy_hist_field+0x1c2/0x200
+ onmax_destroy+0x72/0x1e0
+ ? hist_trigger_elt_data_alloc+0x5a0/0x5a0
+ destroy_hist_data+0x236/0xa40
  event_hist_trigger_free+0x212/0x2f0
  ? update_cond_flag+0x128/0x170
  ? event_hist_trigger_func+0x2880/0x2880
  hist_unregister_trigger+0x2f2/0x4f0
  event_hist_trigger_func+0x168c/0x2880
- ? tracing_map_read_var_once+0xd0/0xd0
- ? create_key_field+0x520/0x520
+ ? tracing_map_cmp_u64+0xa0/0xa0
+ ? onmatch_create.constprop.0+0xf50/0xf50
  ? __mutex_lock_slowpath+0x10/0x10
  event_trigger_write+0x2f4/0x490
  ? trigger_start+0x180/0x180
@@ -107,88 +110,55 @@ Call Trace:
  ? __close_fd+0x1d3/0x280
  do_syscall_64+0xe3/0x2d0
  entry_SYSCALL_64_after_hwframe+0x5c/0xc1
-RIP: 0033:0x7efdd342ee04
-Code: 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b3 0f 1f 80 00 00 00 00 48
-8d 05 39 34 0c 00 8b 00 85 c0 75 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff
-ff 77 54 f3 c3 66 90 41 54 55 49 89 d4 53 48 89 f5
-RSP: 002b:00007ffda01f5e08 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00000000000000b4 RCX: 00007efdd342ee04
-RDX: 00000000000000b4 RSI: 000055c5b41b1e90 RDI: 0000000000000001
-RBP: 000055c5b41b1e90 R08: 000000000000000a R09: 0000000000000000
-R10: 000000000000000a R11: 0000000000000246 R12: 00007efdd34ed5c0
-R13: 00000000000000b4 R14: 00007efdd34ed7c0 R15: 00000000000000b4
+RIP: 0033:0x7fd7f4c44e04
+Code: 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b3 0f 1f 80 00 00 00 00
+48 8d 05 39 34 0c 00 8b 00 85 c0 75 13 b8 01 00 00 00 0f 05 <48> 3d 00
+f0 ff ff 77 54 f3 c3 66 90 41 54 55 49 89 d4 53 48 89 f5
+RSP: 002b:00007fff10370df8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 000000000000010f RCX: 00007fd7f4c44e04
+RDX: 000000000000010f RSI: 000055fa765df650 RDI: 0000000000000001
+RBP: 000055fa765df650 R08: 000000000000000a R09: 0000000000000000
+R10: 000000000000000a R11: 0000000000000246 R12: 00007fd7f4d035c0
+R13: 000000000000010f R14: 00007fd7f4d037c0 R15: 000000000000010f
 ==================================================================
 
-So remove the destroy_synth_var_refs() call for that hist_data.
+So remove the onmax_destroy() destroy_hist_field() call for that var.
 
-Fixes: c282a386a397 ("tracing: Add 'onmatch' hist trigger action support")
+Fixes: 50450603ec9c ("tracing: Add 'onmax' hist trigger action support")
 Signed-off-by: George Guo <guodongtai@kylinos.cn>
 ---
- kernel/trace/trace_events_hist.c | 23 ++---------------------
- 1 file changed, 2 insertions(+), 21 deletions(-)
+ kernel/trace/trace_events_hist.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index e004daf8cad5..7dcb96305e56 100644
+index 7dcb96305e56..58b8a2575b8c 100644
 --- a/kernel/trace/trace_events_hist.c
 +++ b/kernel/trace/trace_events_hist.c
-@@ -280,8 +280,6 @@ struct hist_trigger_data {
- 	struct action_data		*actions[HIST_ACTIONS_MAX];
- 	unsigned int			n_actions;
+@@ -337,7 +337,6 @@ struct action_data {
+ 			char			*fn_name;
+ 			unsigned int		max_var_ref_idx;
+ 			struct hist_field	*max_var;
+-			struct hist_field	*var;
+ 		} onmax;
+ 	};
+ };
+@@ -3489,7 +3488,6 @@ static void onmax_destroy(struct action_data *data)
+ 	unsigned int i;
  
--	struct hist_field               *synth_var_refs[SYNTH_FIELDS_MAX];
--	unsigned int                    n_synth_var_refs;
- 	struct field_var		*field_vars[SYNTH_FIELDS_MAX];
- 	unsigned int			n_field_vars;
- 	unsigned int			n_field_var_str;
-@@ -1363,8 +1361,8 @@ static struct hist_field *find_var_ref(struct hist_trigger_data *hist_data,
- 			return found;
- 	}
+ 	destroy_hist_field(data->onmax.max_var, 0);
+-	destroy_hist_field(data->onmax.var, 0);
  
--	for (i = 0; i < hist_data->n_synth_var_refs; i++) {
--		hist_field = hist_data->synth_var_refs[i];
-+	for (i = 0; i < hist_data->n_var_refs; i++) {
-+		hist_field = hist_data->var_refs[i];
- 		found = check_field_for_var_refs(hist_data, hist_field,
- 						 var_data, var_idx, 0);
- 		if (found)
-@@ -3707,21 +3705,6 @@ static void save_field_var(struct hist_trigger_data *hist_data,
- 		hist_data->n_field_var_str++;
- }
+ 	kfree(data->onmax.var_str);
+ 	kfree(data->onmax.fn_name);
+@@ -3528,8 +3526,6 @@ static int onmax_create(struct hist_trigger_data *hist_data,
+ 	if (!ref_field)
+ 		return -ENOMEM;
  
+-	data->onmax.var = ref_field;
 -
--static void destroy_synth_var_refs(struct hist_trigger_data *hist_data)
--{
--	unsigned int i;
--
--	for (i = 0; i < hist_data->n_synth_var_refs; i++)
--		destroy_hist_field(hist_data->synth_var_refs[i], 0);
--}
--
--static void save_synth_var_ref(struct hist_trigger_data *hist_data,
--			 struct hist_field *var_ref)
--{
--	hist_data->synth_var_refs[hist_data->n_synth_var_refs++] = var_ref;
--}
--
- static int check_synth_field(struct synth_event *event,
- 			     struct hist_field *hist_field,
- 			     unsigned int field_pos)
-@@ -3884,7 +3867,6 @@ static int onmatch_create(struct hist_trigger_data *hist_data,
- 				goto err;
- 			}
- 
--			save_synth_var_ref(hist_data, var_ref);
- 			field_pos++;
- 			kfree(p);
- 			continue;
-@@ -4631,7 +4613,6 @@ static void destroy_hist_data(struct hist_trigger_data *hist_data)
- 	destroy_actions(hist_data);
- 	destroy_field_vars(hist_data);
- 	destroy_field_var_hists(hist_data);
--	destroy_synth_var_refs(hist_data);
- 
- 	kfree(hist_data);
- }
+ 	data->fn = onmax_save;
+ 	data->onmax.max_var_ref_idx = var_ref_idx;
+ 	max_var = create_var(hist_data, file, "max", sizeof(u64), "u64");
 -- 
 2.34.1
 
