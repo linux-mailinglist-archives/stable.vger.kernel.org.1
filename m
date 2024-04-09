@@ -1,226 +1,280 @@
-Return-Path: <stable+bounces-37870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B079789D953
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 14:44:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD32F89D9C8
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 15:07:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF7201C21D99
-	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 12:44:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 233B71F2237B
+	for <lists+stable@lfdr.de>; Tue,  9 Apr 2024 13:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589DA12D748;
-	Tue,  9 Apr 2024 12:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249C212EBD8;
+	Tue,  9 Apr 2024 13:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="FOK53AVS";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="uSdLuixV";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="CRqjH85r";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="jwngiTl+"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NbYmwGb4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5FB127B5A;
-	Tue,  9 Apr 2024 12:43:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D494F12E1F0
+	for <stable@vger.kernel.org>; Tue,  9 Apr 2024 13:07:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712666642; cv=none; b=mjjkhCi9jC/fgw00hv4X8hjhXwa5NjpuZxn5+Mdnn6YbO0mRsao3cI7FeWmpEi0xMgJicOr/oVn1iuWzMS/Len9GRUXzrfnHYvtB8sioLGjvkJVD3i4tfGmeRk7nxarD/bu/7/eEqeNIF38Xh2udapC1bketHNo0f6LFdsGU6aI=
+	t=1712668059; cv=none; b=DNSJ2qVasBDNVLzHUv6QkTbllzNnZGF35ZUxprb4oKnvQa1QiftYd/wkMPBG3KmrcfOxZ1FVyP3pc0MQlwCSVVb4ddIApPnxneWM+bBNA/fKGJ0EZKSIxt1AChMjz1N0FTu2Ikbsjw2hPAX8wLcQ4gUabK/gHt4JkDEkGpU+1Uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712666642; c=relaxed/simple;
-	bh=x+S2KHRsaA8GnnXnOQ/WlaWaU7zCukg83XoBxc4+lPs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TVfUrLxO7wFsPw/0lXJL3Fdsd31xwrrj0OLkVRACvDGr1sj7Lev/VF3hK5lNgpDhZAs/5fA9dHY+RoDy2m2Gd1gjtwSE7JySXnCszcBOYqWfXT2yTEP66hHgOTr57VR2Hn+6hiHpIDE1xtJzC6wtWON798Pa55e0sbSxlXvPMaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=FOK53AVS; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=uSdLuixV; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=CRqjH85r; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=jwngiTl+; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id DFED0209C5;
-	Tue,  9 Apr 2024 12:43:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1712666638;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t3D36Viv3DWefVaDEGTYJvb6ESqXVVvfRXWOznlJFgE=;
-	b=FOK53AVSYJqlFApnCqdgQtpl4lEyf2Mrr1VPdP+rrb2Ue0UCvvfQhNq9U3RdlZLhEVAL1O
-	mcnhwz5Awu1uid8QIL/DglddMACOJnb8sZteQAfBs+gPONMcZ8FSRbu8ZFQoBhNfJMlNN1
-	oq5Jb9ZXw3tai5O0HtU3Q5icERWTHDQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1712666638;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t3D36Viv3DWefVaDEGTYJvb6ESqXVVvfRXWOznlJFgE=;
-	b=uSdLuixVQ2O3zbsZ68Uu11VlLTthJwx96T8QW9LtrjeodSFOwX8Z6/gdrbnae3Krlanhvk
-	iA4RQDB6RT4SXDBA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CRqjH85r;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jwngiTl+
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1712666637;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t3D36Viv3DWefVaDEGTYJvb6ESqXVVvfRXWOznlJFgE=;
-	b=CRqjH85rdMqNLpnknVNqbpJn3gVmqJCA1VwC/aeWdIRMsMKS4h1nBn6+fAfo6VUyQ+2O+s
-	BHwWD1EJMb/0DylVxSwosg4YDK1soOafEWFqCC6nOGVeOOvS9L85xempyBrbQNTIHLrokL
-	oVUcpld0d/MrYI6OYnpsAThp3I7EjBM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1712666637;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t3D36Viv3DWefVaDEGTYJvb6ESqXVVvfRXWOznlJFgE=;
-	b=jwngiTl+C0iz2wc8mA+TyhYtQL/KlaUyh2cHle6gDajiWNhCfxRuCH+stEsh2M/p8JLxgm
-	wHyW/RnEhSNxroAQ==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id B715613253;
-	Tue,  9 Apr 2024 12:43:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id cPGJLA04FWb/cQAAn2gu4w
-	(envelope-from <dsterba@suse.cz>); Tue, 09 Apr 2024 12:43:57 +0000
-Date: Tue, 9 Apr 2024 14:36:28 +0200
-From: David Sterba <dsterba@suse.cz>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Wang Yugui <wangyugui@e16-tech.com>, Qu Wenruo <wqu@suse.com>,
-	linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] btrfs: fix wrong block_start calculation for
- btrfs_drop_extent_map_range()
-Message-ID: <20240409123628.GD3492@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <4240e179e2439dd1698798e2de79ec59990cbaa0.1712452660.git.wqu@suse.com>
- <20240408080014.74B2.409509F4@e16-tech.com>
- <2024040851-uptown-splashing-951c@gregkh>
+	s=arc-20240116; t=1712668059; c=relaxed/simple;
+	bh=G3jbVa1nPrSiku3hJVPy36PZnzjb2nMSty0D8FL1iGs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=efC/q66f8dro9DYGVPJre7Rq4uK5TfKjyHVRM71DoDA8JLO3Cco0kcjPmFq7BfDAGXw5llYpGXuVPfH4ZtIqg/rS4d1dQGNrs6Tq/JwU7SRN6bHydAmPzpXwku4qNmbiW2wq324dXi57hIX678KHjcScLvLiccO3xfyGNbVsYhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NbYmwGb4; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-696315c9da5so46480236d6.2
+        for <stable@vger.kernel.org>; Tue, 09 Apr 2024 06:07:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712668056; x=1713272856; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xx6iswnEmfLHSA6533FOJGeKIsKx3ue2M+OGxVH6aHA=;
+        b=NbYmwGb4UQ70+7VarrPVP3QXMLJD7RdVG8EzNqpwAccPXNyIwdnOipf1ZB9Lrc2po/
+         zFGC6eajnVNr9/1Neo1xUwafive/QbhMc5nsrxOubbcOX2wSHyd7zE++BsTi+q3PvPcR
+         ZxowMWIKvqt8Z31j8bk0e6Wa3lU9LcAvQbl8UGlqRM4Vy6Tk16dgNy7mGuLW8Qkokczz
+         hviIXLK6l5w5L+NRL8u3ISrYJtWeAeWX85WEHdm7JmP1KsJ1FgO9Vj+AVbF1YPqvlpBE
+         RyiQyP7o5+4T1os44WTCZN2hQUv1mVeiYFB2bZvo/ssz1bpFYlF1sUsrtFlrcKbpmjTT
+         rw9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712668056; x=1713272856;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Xx6iswnEmfLHSA6533FOJGeKIsKx3ue2M+OGxVH6aHA=;
+        b=a2lnzucx4H0nIvJpYFLt2uZL3aNVC+uZ1p29F6v2snUMmId463p/hPxORD7whlZA5I
+         4a3QYzVANuuf+9cbfQqCn1wib/ROiudW6SukK/hupYH/sdnQB1jv/uVgB7sHH0+0Ncrh
+         OtPH5h0+roysYQ3/0mG3S6NUyB5BiotfPHPRgUvGPBgdNHMJgxlt93lw7+F83ZZQU6gi
+         RTKbXsOrjRN4PnMWp1m0DtXqinV8pAx2fKci/HnwFEXuCjFK3f3dIXbuAxEdhjnsc9uG
+         iVBB+xo0ZkmTcS2MW61yhNTUnb+30rlzjQMTrsGgtDrTOTy3vI9CCIlFpWjbz91xxvUr
+         ejXw==
+X-Gm-Message-State: AOJu0Yw4FEenvK8vV5ddoxP+/T0VKfq005NaGoMfgr+nDvYn6bItMgh1
+	OCOVX8SK8kWDCiDsATNwbINfQdyDVQT3sIpX7nEw9M3q/pgcz+c47n6HDnWBKWiDmrCI12ZRRuL
+	p1Hq7sqDvybvtlZghRBSVHd3RZ7H375TrvaL+tg==
+X-Google-Smtp-Source: AGHT+IELKVLoxp4BdP2Pp63hR/9HZLVoc3REPE9/2r7IFJMyKZvh+BKa08KlhiCXdL3Nk+SwD4ToJ3np3su3u+WMsGk=
+X-Received: by 2002:a05:6214:4106:b0:69b:247b:a4f9 with SMTP id
+ kc6-20020a056214410600b0069b247ba4f9mr3745285qvb.6.1712668055704; Tue, 09 Apr
+ 2024 06:07:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024040851-uptown-splashing-951c@gregkh>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spam-Flag: NO
-X-Spam-Score: -4.21
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: DFED0209C5
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.21 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:98:from];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap2.dmz-prg2.suse.org:helo,imap2.dmz-prg2.suse.org:rdns,suse.com:email];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[suse.cz:+]
+References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+From: Anders Roxell <anders.roxell@linaro.org>
+Date: Tue, 9 Apr 2024 15:07:24 +0200
+Message-ID: <CADYN=9KoZSBy_sbKR9ZTzcUXuUgA+PwdhAMuA5BEHP-BHjdnNg@mail.gmail.com>
+Subject: Re: [PATCH 6.8 000/273] 6.8.5-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, bvanassche@acm.org, 
+	Alexander@wetzel-home.de
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Apr 08, 2024 at 06:57:56AM +0200, Greg KH wrote:
-> On Mon, Apr 08, 2024 at 08:00:15AM +0800, Wang Yugui wrote:
-> > Hi,
-> > 
-> > > [BUG]
-> > > During my extent_map cleanup/refactor, with more than too strict sanity
-> > > checks, extent-map-tests::test_case_7() would crash my extent_map sanity
-> > > checks.
-> > > 
-> > > The problem is, after btrfs_drop_extent_map_range(), the resulted
-> > > extent_map has a @block_start way too large.
-> > > Meanwhile my btrfs_file_extent_item based members are returning a
-> > > correct @disk_bytenr along with correct @offset.
-> > > 
-> > > The extent map layout looks like this:
-> > > 
-> > >      0        16K    32K       48K
-> > >      | PINNED |      | Regular |
-> > > 
-> > > The regular em at [32K, 48K) also has 32K @block_start.
-> > > 
-> > > Then drop range [0, 36K), which should shrink the regular one to be
-> > > [36K, 48K).
-> > > However the @block_start is incorrect, we expect 32K + 4K, but got 52K.
-> > > 
-> > > [CAUSE]
-> > > Inside btrfs_drop_extent_map_range() function, if we hit an extent_map
-> > > that covers the target range but is still beyond it, we need to split
-> > > that extent map into half:
-> > > 
-> > > 	|<-- drop range -->|
-> > > 		 |<----- existing extent_map --->|
-> > > 
-> > > And if the extent map is not compressed, we need to forward
-> > > extent_map::block_start by the difference between the end of drop range
-> > > and the extent map start.
-> > > 
-> > > However in that particular case, the difference is calculated using
-> > > (start + len - em->start).
-> > > 
-> > > The problem is @start can be modified if the drop range covers any
-> > > pinned extent.
-> > > 
-> > > This leads to wrong calculation, and would be caught by my later
-> > > extent_map sanity checks, which checks the em::block_start against
-> > > btrfs_file_extent_item::disk_bytenr + btrfs_file_extent_item::offset.
-> > > 
-> > > And unfortunately this is going to cause data corruption, as the
-> > > splitted em is pointing an incorrect location, can cause either
-> > > unexpected read error or wild writes.
-> > > 
-> > > [FIX]
-> > > Fix it by avoiding using @start completely, and use @end - em->start
-> > > instead, which @end is exclusive bytenr number.
-> > > 
-> > > And update the test case to verify the @block_start to prevent such
-> > > problem from happening.
-> > > 
-> > > CC: stable@vger.kernel.org # 6.7+
-> > > Fixes: c962098ca4af ("btrfs: fix incorrect splitting in btrfs_drop_extent_map_range")
-> > > Signed-off-by: Qu Wenruo <wqu@suse.com>
-> > 
-> > $ git describe --contains c962098ca4af
-> > v6.5-rc7~4^2
-> > 
-> > so it should be
-> > CC: stable@vger.kernel.org # 6.5+
-> 
-> As the "Fixes:" commit was backported to the following kernel releases:
-> 	6.1.47 6.4.12
-> it should go back to 6.1+ as well :)
+On Mon, 8 Apr 2024 at 15:00, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.8.5 release.
+> There are 273 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 10 Apr 2024 12:52:23 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.8.5-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.8.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Determining all the versions requires one extra step to scan the
-stable-queue.git for the commit. I think everybody does 'git describe
---contains COMMITID' based on Fixes: and then pick the version for CC:.
-This is "best" we can promise for an average developer.
+Results from Linaro's test farm.
+Regressions on x86_64, and i386.
 
-> But we can handle that when it hits Linus's tree.
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-I think it's easier for you to queue the patch to other versions at the
-time you pick it from mails or Linus' tree, but from what I've seen so
-far this is how it works.
+Following kernel warnings have been noticed on  x86_64, qemu-x86_64 and
+qemu-i386 while running LTP cve ioctl_sg01 tests the kernel with stable-rc
+6.6.26-rc1 and 6.8.5-rc1.
+
+Reverted this patch and I couldn't see the repoted warning.
+scsi: sg: Avoid sg device teardown race
+[ Upstream commit 27f58c04a8f438078583041468ec60597841284d ]
+
+This has been reported on stable-rc 6.8.3-rc1 [1].
+
+
+tst_test.c:1709: TINFO: LTP version: 20240129
+tst_test.c:1593: TINFO: Timeout per run is 1h 02m 30s
+<4>[   47.841092] ------------[ cut here ]------------
+<4>[   47.846033] WARNING: CPU: 1 PID: 23 at drivers/scsi/sg.c:2236
+sg_remove_sfp_usercontext+0x146/0x150
+<4>[   47.848749] Modules linked in:
+<4>[   47.851081] CPU: 1 PID: 23 Comm: kworker/1:0 Not tainted 6.8.5-rc1 #1
+<4>[   47.852690] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
+BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+<4>[   47.854570] Workqueue: events sg_remove_sfp_usercontext
+<4>[   47.855851] RIP: 0010:sg_remove_sfp_usercontext+0x146/0x150
+
+<trim>
+
+<4>[   47.867679] Call Trace:
+<4>[   47.868114]  <TASK>
+<4>[   47.868608]  ? show_regs+0x69/0x80
+<4>[   47.869035]  ? __warn+0x8d/0x150
+<4>[   47.869454]  ? sg_remove_sfp_usercontext+0x146/0x150
+<4>[   47.869882]  ? report_bug+0x171/0x1a0
+<4>[   47.870386]  ? handle_bug+0x43/0x80
+<4>[   47.870720]  ? exc_invalid_op+0x1c/0x80
+<4>[   47.871046]  ? asm_exc_invalid_op+0x1f/0x30
+<4>[   47.871537]  ? __call_rcu_common.constprop.0+0x281/0x3c0
+<4>[   47.872033]  ? sg_remove_sfp_usercontext+0x146/0x150
+<4>[   47.872643]  process_one_work+0x143/0x300
+<4>[   47.873029]  worker_thread+0x2f6/0x440
+<4>[   47.873507]  ? __pfx_worker_thread+0x10/0x10
+<4>[   47.873855]  kthread+0xf4/0x120
+<4>[   47.874274]  ? __pfx_kthread+0x10/0x10
+<4>[   47.874612]  ret_from_fork+0x41/0x60
+<4>[   47.874952]  ? __pfx_kthread+0x10/0x10
+<4>[   47.875412]  ret_from_fork_asm+0x1b/0x30
+<4>[   47.875865]  </TASK>
+<4>[   47.876335] ---[ end trace 0000000000000000 ]---
+ioctl_sg01.c:81: TINFO: Found SCSI device /dev/sg0
+ioctl_sg01.c:122: TPASS: Output buffer is empty, no data leaked
+
+
+[1]
+ - https://lore.kernel.org/stable/CA+G9fYs5MZaPV+tTukfUbJtdztQMExfixo=ZwbBr1A6Oga+OLQ@mail.gmail.com/
+
+[2]
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.8.y/build/v6.8.4-274-g51d60edf2813/testrun/23350725/suite/log-parser-test/test/check-kernel-warning-baa412705664036587615ec565701ad300aa78b0e977d057b0a9de2be870cf86/log
+
+## Build
+* kernel: 6.8.5-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.8.y
+* git commit: 51d60edf281355bf4653c327050d7a5aeedb9b0d
+* git describe: v6.8.4-274-g51d60edf2813
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.8.y/build/v6.8.4-274-g51d60edf2813
+
+## Test result summary
+total: 173708, pass: 150838, fail: 2030, skip: 20672, xfail: 168
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 126 total, 126 passed, 0 failed
+* arm64: 37 total, 37 passed, 0 failed
+* i386: 28 total, 28 passed, 0 failed
+* mips: 24 total, 24 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 34 total, 34 passed, 0 failed
+* riscv: 15 total, 15 passed, 0 failed
+* s390: 12 total, 12 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 32 total, 32 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-sm[
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
