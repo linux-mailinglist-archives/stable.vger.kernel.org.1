@@ -1,243 +1,116 @@
-Return-Path: <stable+bounces-38015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C4F89FFD7
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 20:30:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 421128A0039
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 21:03:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 965C21C2588A
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 18:30:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 733591C229EA
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 19:02:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74EC21802AC;
-	Wed, 10 Apr 2024 18:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC07180A6F;
+	Wed, 10 Apr 2024 19:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=noahloomans.com header.i=@noahloomans.com header.b="nrvZCq6v";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cJ61S3u+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YeqkVP/Z"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh8-smtp.messagingengine.com (fhigh8-smtp.messagingengine.com [103.168.172.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A36E1802A1;
-	Wed, 10 Apr 2024 18:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA71134CC2
+	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 19:02:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712773795; cv=none; b=UVKZZH7a2ZuN7SKEGdH4Q4+3xyWGg8DJc3L0d01QehF+PEQVzB99ZnpB4Ccug1qMtzY1ssWAAGo/tw+0Mopxm+GSYAr1zON0+g9Rt0MEMD72tDxld5bYPqYewgii9iwirr8rx9qFgYrSfwivb0SLVz5sX7mY353/4hRDh4TEAB0=
+	t=1712775776; cv=none; b=VyZ+ax7wxMfMTl1zNYafUTVz4il01OZx89TB58FjGmT7Pj/L7eNN+ACNuz74RJnQn32xcfBPLobYWlROWq7IQFiD0RuToOFQrmdbo6JHNXiiBlc5z2xqZtqozj4pIlDEIuxtKEgpLuPpsTR1wK99yS5wsZjhEL97NchHwTg2+hE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712773795; c=relaxed/simple;
-	bh=SQCDWCsQ5RNLOnzg0m93ZoSRZmhabER90bEkvWudsp0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NG1jurEktWddgHtjaqtJxqZJZFjxy0tTHTjIEqARdExr/am19JrOkAkkokk5kXk3YY5JWcUTdYwqsA/YQrlKDKy+GFO+cvv47QAwkirD6kHdzIASMZobABWwEEMNrjsVu7M/6PKogpbKhegvEIs3dlBh3ZzzxrCSotB7IGbIkjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=noahloomans.com; spf=pass smtp.mailfrom=noahloomans.com; dkim=pass (2048-bit key) header.d=noahloomans.com header.i=@noahloomans.com header.b=nrvZCq6v; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=cJ61S3u+; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=noahloomans.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=noahloomans.com
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 092251140153;
-	Wed, 10 Apr 2024 14:29:51 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute7.internal (MEProxy); Wed, 10 Apr 2024 14:29:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=noahloomans.com;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm3; t=1712773791; x=1712860191; bh=LbUIMEaLar
-	j+aDrxCGb4vfWzJ9bAenM4+MVOHeGEsfE=; b=nrvZCq6voGlzTaAYlA7+V89VmA
-	i6rDnIWF0oWMi+3YUNi1MpAXl0dGmRNkU+zQE5vLm47h67n7O0Gy6pLnkuexOH5D
-	EH4wr4evQOd35b4FdJdp11Q0BC1sxuld9Ac64UHe0feh8HACjKU3ruhNsyUONAO+
-	tgLAewXORydyCiim/WXIHOLVb67jP7j05oI/C0rwcs0wfrK7LUV8XL5CvnZwvn5v
-	3kPUQ4knBO2shraPC8ThOCwhrmAJkAY9V7un0EWlsPelbaqecQETkJEzwsWj/liJ
-	gCSOW7Xc+zhsgzuTK0HVLi6ws9+ettC+uBr1v9czwP2/hfFYNN/0d7M/XfNg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1712773791; x=1712860191; bh=LbUIMEaLarj+aDrxCGb4vfWzJ9bA
-	enM4+MVOHeGEsfE=; b=cJ61S3u+6iCgepsfGMIsDn03EcpAJ1IIOQmOzoy239AZ
-	UFrYCzJ/qQPqNzGZvBGU+7+zwMg8Py8N4yK/+Uo/6o+Fo05HCS1ri71qlkHxmqav
-	kekxy4+hK0taK6gwf5TnWrcklAbWg1ZthCvLY4h57BSMIJOC5+vuSLkq4+fE6YTw
-	9rRgPFyBLJw1QEKUdg2AA7rFq6RVDbS2r//x8xJIVGW94g7HNdramBJOQEmucsBt
-	mSlZptI23Lr95MGe8YxxI5yRkvOmW+aqr37RZn0eCx41VWcQSoosMI8+Ftfq4rt2
-	JC7N2zrejh0Q2Q4YPvD4EXcSFl3nMW9VvjsuiB3iJg==
-X-ME-Sender: <xms:ntoWZlfiLI-CBoRsZZ6qpc8e8zs54GtnOc7wMEqhzCAyTw3lzoYv_Q>
-    <xme:ntoWZjOloKtj9ry8F7be-E7RMHu4hoxm7hOLJ8AuzQetgpfezyQpc-rrzE51fWQpI
-    PAC4RVubl8GbSiyThY>
-X-ME-Received: <xmr:ntoWZuiANuQ_JuoRAJYqidY1cpvBmKANhG96B_l-jKJoCdBlHXXuOcTgFswr3WmcjiVsnkZRWQclCkrh4apJwfiRfhc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehiedguddvfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpefpohgrhhcu
-    nfhoohhmrghnshcuoehnohgrhhesnhhorghhlhhoohhmrghnshdrtghomheqnecuggftrf
-    grthhtvghrnhepkeetieeguedvkeevfeekleehuedtjeefkeffledvhffhhefgtdejffeh
-    gfehgeetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epnhhorghhsehnohgrhhhlohhomhgrnhhsrdgtohhm
-X-ME-Proxy: <xmx:ntoWZu--yG2cRuNUCy5zzoqSVuK-Sf-_AaIdiWWElExPV5yJLEGYQw>
-    <xmx:ntoWZhvKm5wbamPVImMs5YnRYTlg4gLAuuzVeiwuQEsv2X4ns8BOog>
-    <xmx:ntoWZtHrs-H09CKPy3wLh6Ba3Kh8Kk1EG-KIpmISK4K_TXlSKRvYSw>
-    <xmx:ntoWZoO_wtTnCJ36wbjvoRNIKOmQ_ySfNNNKRmM7irG1Ct8gKW8aIg>
-    <xmx:n9oWZnJ517JfIsduQ8q1S6ljhzW1Sc9g5yreNR3StMOjUPJorw3FISpZ>
-Feedback-ID: i93394469:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 10 Apr 2024 14:29:49 -0400 (EDT)
-From: Noah Loomans <noah@noahloomans.com>
-To: Bhanu Prakash Maiya <bhanumaiya@chromium.org>
-Cc: Benson Leung <bleung@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Guenter Roeck <groeck@chromium.org>,
-	Robert Zieba <robertzieba@google.com>,
-	chrome-platform@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Noah Loomans <noah@noahloomans.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] platform/chrome: cros_ec_uart: properly fix race condition
-Date: Wed, 10 Apr 2024 20:26:19 +0200
-Message-ID: <20240410182618.169042-2-noah@noahloomans.com>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1712775776; c=relaxed/simple;
+	bh=rcson0HIWpMY/Eo7CQk/xSTDyifnEqHArIQzBD8MLGg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=pF6p1yUj4fM25jH6RyRQfuGVa2C0L/OnBit2/VKbIRH3TCy2hmYySoSepKRyhqi0dpUExB+F6Vy9SPSawms6vBFpsL8t76Y54VJybqN6o9RJSejE92ba7Y9v9oIR808ZqyRGZMqVgJEKyeIRyBJJOWV8Ch+gMNxi8NJ0GXHmKew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YeqkVP/Z; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-56e136cbcecso9999077a12.3
+        for <stable@vger.kernel.org>; Wed, 10 Apr 2024 12:02:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712775772; x=1713380572; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=fnTK0VljTiID9eF3fp8HQQoO6TG3murWizIgGbMC1jI=;
+        b=YeqkVP/ZHUkm5RqBGPxZKXPmJZ/NIZ52guHYzYj+e2l2FYlyetZfHDt0KP4d5+U/s5
+         IYDNAztCobDBPxTWQ+nLCADYiTGWpyvPD9kuxP4KYlUNHGCp5HdN5v6wG8wT3shTdXXs
+         G5vZe0Ji5P+lPwNdTzGXMpYCNjRkPgbCR4Ps0lmtvsjZvi8xpXTmtILZ9nBbiBneQ49Y
+         6FRrghDBKEnRZsH06ACYWoL2uOVeBDP0bH4c0ssTxvM03UGuYs5JaT9t20bzysQMup6T
+         IEEP8APsfSExbF6OPRsMESnyXOeVlIpt8RoCBW4PYTOB7tWH41eaHlfg5aRXDTtwTYgF
+         eEjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712775772; x=1713380572;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fnTK0VljTiID9eF3fp8HQQoO6TG3murWizIgGbMC1jI=;
+        b=Q6ey1G+BOl0lxPL+MHUUH7DOwbheVuVkjsSgqAz6s3EJeTTe7yJibYE3Z8yo0lH4Ap
+         ycf9kYLtjDpehbt/ALVvgNcp7IuovSFghmRwkOmW9H4ZZDfD3eIqFJ1DqVD9W9fhXfVh
+         sC3adDafv+ozeD9b6UoEKtomw1AwcQ2VBWhxpP4RwK64IJb/hlw+DT1BPwAerKTxDgbv
+         wMIXvUgattjkPej7XgaxdYqexiCai2ha7Ai/7dOs4BlummDsjHRiaZLm+spDUef6Pi3G
+         HfKD2f/eTW4dTkuUc3k6wMaPkhudQN8ePzBomcEGPHkew5OKIND6wRBgwu2xSU8BOS1F
+         OLIA==
+X-Gm-Message-State: AOJu0YxLPwJzcCA1F0FSRuechkQJcqMd1JbJUX78qXVQnQ2Eqj/3JXVa
+	4XbZNjl/KoKF+3Xguv+VkPgQ9hGRCQ+97vbQvLqaX3bboRc2u+sxdSd09H03lzM=
+X-Google-Smtp-Source: AGHT+IEcJPLwr463Wir3eQZDc7L+FRRobSqQ9mFH+CqCzCieSL3wmRcoITI0dHXDlABn0gdYcIn8Vg==
+X-Received: by 2002:a50:9b1e:0:b0:56e:2daf:1ed9 with SMTP id o30-20020a509b1e000000b0056e2daf1ed9mr2688182edi.23.1712775772308;
+        Wed, 10 Apr 2024 12:02:52 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id ee42-20020a056402292a00b0056e637f188fsm3657148edb.11.2024.04.10.12.02.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Apr 2024 12:02:51 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id DC4DFBE2EE8; Wed, 10 Apr 2024 21:02:50 +0200 (CEST)
+Date: Wed, 10 Apr 2024 21:02:50 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: stable <stable@vger.kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+Subject: Backport of 67c37756898a ("tty: n_gsm: require CAP_NET_ADMIN to
+ attach N_GSM0710 ldisc") to older stable series? (at least 6.1.y)
+Message-ID: <ZhbiWp9DexB_gJh_@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The cros_ec_uart_probe() function calls devm_serdev_device_open() before
-it calls serdev_device_set_client_ops(). This can trigger a NULL pointer
-dereference:
+Hi Greg, Sasha, Thadeu,
 
-    BUG: kernel NULL pointer dereference, address: 0000000000000000
-    ...
-    CPU: 5 PID: 103 Comm: kworker/u16:3 Not tainted 6.8.4-zen1-1-zen #1 4a88f2661038c2a3bb69aa70fb41a5735338823c
-    Hardware name: Google Morphius/Morphius, BIOS MrChromebox-4.22.2-1-g2a93624aebf 01/22/2024
-    Workqueue: events_unbound flush_to_ldisc
-    RIP: 0010:ttyport_receive_buf+0x3f/0xf0
-    ...
-    Call Trace:
-     <TASK>
-     ? __die+0x10f/0x120
-     ? page_fault_oops+0x171/0x4e0
-     ? srso_return_thunk+0x5/0x5f
-     ? exc_page_fault+0x7f/0x180
-     ? asm_exc_page_fault+0x26/0x30
-     ? ttyport_receive_buf+0x3f/0xf0
-     flush_to_ldisc+0x9b/0x1c0
-     process_one_work+0x17b/0x340
-     worker_thread+0x301/0x490
-     ? __pfx_worker_thread+0x10/0x10
-     kthread+0xe8/0x120
-     ? __pfx_kthread+0x10/0x10
-     ret_from_fork+0x34/0x50
-     ? __pfx_kthread+0x10/0x10
-     ret_from_fork_asm+0x1b/0x30
-     </TASK>
+Today there was mentioning of 
 
-A simplified version of crashing code is as follows:
+https://www.jmpeax.dev/The-tale-of-a-GSM-Kernel-LPE.html
 
-    static inline size_t serdev_controller_receive_buf(struct serdev_controller *ctrl,
-                                                      const u8 *data,
-                                                      size_t count)
-    {
-            struct serdev_device *serdev = ctrl->serdev;
+a LPE from the n_gsm module. I do realize, Thadeu mentioned the
+possible attack surface already back in
 
-            if (!serdev || !serdev->ops->receive_buf) // CRASH!
-                return 0;
+https://lore.kernel.org/all/ZMuRoDbMcQrsCs3m@quatroqueijos.cascardo.eti.br/#t
 
-            return serdev->ops->receive_buf(serdev, data, count);
-    }
+Published exploits are referenced as well through the potential
+initial finder in https://github.com/YuriiCrimson/ExploitGSM .
 
-    static size_t ttyport_receive_buf(struct tty_port *port, const u8 *cp,
-                                      const u8 *fp, size_t count)
-    {
-            struct serdev_controller *ctrl = port->client_data;
-            [...]
+While 67c37756898a ("tty: n_gsm: require CAP_NET_ADMIN to attach
+N_GSM0710 ldisc") is not the fix itself, it helps mitigating against
+this issue.
 
-            if (!test_bit(SERPORT_ACTIVE, &serport->flags))
-                    return 0;
+Thus can you consider applying this still to the stable series as
+needed? I think it should go at least back to 5.15.y but if
+Iunderstood Thadeu correctly then even further back to the still
+supported stable branches.
 
-            ret = serdev_controller_receive_buf(ctrl, cp, count);
+What do you think?
 
-            [...]
-            return ret;
-    }
-
-It assumes that if SERPORT_ACTIVE is set and serdev exists, serdev->ops
-will also exist. This conflicts with the existing cros_ec_uart_probe()
-logic, as it first calls devm_serdev_device_open() (which sets
-SERPORT_ACTIVE), and only later sets serdev->ops via
-serdev_device_set_client_ops().
-
-Commit 01f95d42b8f4 ("platform/chrome: cros_ec_uart: fix race
-condition") attempted to fix a similar race condition, but while doing
-so, made the window of error for this race condition to happen much
-wider.
-
-Attempt to fix the race condition again, making sure we fully setup
-before calling devm_serdev_device_open().
-
-Fixes: 01f95d42b8f4 ("platform/chrome: cros_ec_uart: fix race condition")
-Cc: stable@vger.kernel.org
-Signed-off-by: Noah Loomans <noah@noahloomans.com>
----
-
-This is my first time contributing to Linux, I hope this is a good
-patch. Feedback on how to improve is welcome!
-
- drivers/platform/chrome/cros_ec_uart.c | 28 +++++++++++++-------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/platform/chrome/cros_ec_uart.c b/drivers/platform/chrome/cros_ec_uart.c
-index 8ea867c2a01a..62bc24f6dcc7 100644
---- a/drivers/platform/chrome/cros_ec_uart.c
-+++ b/drivers/platform/chrome/cros_ec_uart.c
-@@ -263,12 +263,6 @@ static int cros_ec_uart_probe(struct serdev_device *serdev)
- 	if (!ec_dev)
- 		return -ENOMEM;
- 
--	ret = devm_serdev_device_open(dev, serdev);
--	if (ret) {
--		dev_err(dev, "Unable to open UART device");
--		return ret;
--	}
--
- 	serdev_device_set_drvdata(serdev, ec_dev);
- 	init_waitqueue_head(&ec_uart->response.wait_queue);
- 
-@@ -280,14 +274,6 @@ static int cros_ec_uart_probe(struct serdev_device *serdev)
- 		return ret;
- 	}
- 
--	ret = serdev_device_set_baudrate(serdev, ec_uart->baudrate);
--	if (ret < 0) {
--		dev_err(dev, "Failed to set up host baud rate (%d)", ret);
--		return ret;
--	}
--
--	serdev_device_set_flow_control(serdev, ec_uart->flowcontrol);
--
- 	/* Initialize ec_dev for cros_ec  */
- 	ec_dev->phys_name = dev_name(dev);
- 	ec_dev->dev = dev;
-@@ -301,6 +287,20 @@ static int cros_ec_uart_probe(struct serdev_device *serdev)
- 
- 	serdev_device_set_client_ops(serdev, &cros_ec_uart_client_ops);
- 
-+	ret = devm_serdev_device_open(dev, serdev);
-+	if (ret) {
-+		dev_err(dev, "Unable to open UART device");
-+		return ret;
-+	}
-+
-+	ret = serdev_device_set_baudrate(serdev, ec_uart->baudrate);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to set up host baud rate (%d)", ret);
-+		return ret;
-+	}
-+
-+	serdev_device_set_flow_control(serdev, ec_uart->flowcontrol);
-+
- 	return cros_ec_register(ec_dev);
- }
- 
--- 
-2.44.0
-
+Regards,
+Salvatore
 
