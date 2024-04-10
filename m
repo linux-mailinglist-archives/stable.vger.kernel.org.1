@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-37948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157A789EF46
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 11:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B1AE89EF49
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 11:55:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69C99B216F3
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 09:54:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1C78B217A5
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 09:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC7A1553AC;
-	Wed, 10 Apr 2024 09:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3287B156996;
+	Wed, 10 Apr 2024 09:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZICLvvsZ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QhnEY1sK"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935DB13D28F
-	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 09:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF4D156C69
+	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 09:55:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712742875; cv=none; b=BUfcgsTCAeZgRZCFhWcWKNRN2EK6fH39kJQT8sH4J30ilLCGfRXCRXLgggjJP48nGmUR6wdZXEjmXM7ybRvns3+igVjSX8XaRBcz5AAszwUFEDDqddJsJit+k6FvwB/Hk6P0FYqDfppXltIypmez5Nrvvq3g+fc/fjcKOlqAziA=
+	t=1712742920; cv=none; b=ojsSO4lUgHFgWEwxiPCvvYup0uhGrRdb68cqig0vtfSuP4yMoEP+gWMl8caH3BlBcI6OlT94yI1tzbQluHduwkh9VhK5NlWw7VaaUsMqcrA0IF2lR4iGUaY98VJ4SkSvpD78hQIpkLFOQRhLGdBGdS/AZehPSgIg04mgT9pKLY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712742875; c=relaxed/simple;
-	bh=0NC5BpOthNIbdGv1lIYM23IKlC83X1DzF9HHGxCQ4SA=;
+	s=arc-20240116; t=1712742920; c=relaxed/simple;
+	bh=d6OEyYNDD64dVQ3XXT5KYL2ezTjgm/GCSFyIzalImD8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f+6XmIXSR12v5gUV97OcnLkWdwndo6sKjJ9KcLPXRF/woxA1mZnuSMZkp39eHvrQo68Jh9u0DIhoBNyg17g836zXHo2+0mnp7P4pYFlhNK6+TT4eG7kkU4d0GtvgoTaNxFPP+ndkQZlXcnO7Vt+qvrpVXUDOsxJydP3yM/ofAlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZICLvvsZ; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=WiUE13QLFywWcAbO34Esgw2x8PVp3RpkzsqkU8kIWhbb/bb8BP21JWKPhiF7Y79pwO4KLHFdr9aAaTgBHxnqtl56b9N2686pi2tUbJuUHrqribLvsP976X/yU80VrBGTTP1AuplqzWDQn6Pd+DlcOT24/ZA662NO0yA9iUs697k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QhnEY1sK; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712742872;
+	s=mimecast20190719; t=1712742917;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MGqJvx4+F9X5M32QY16t4qGbYeihGQqrwO8ABS7SiF0=;
-	b=ZICLvvsZYokdnxlfJNXtL+vm4K2C1/4xnxtvEfctFm/nUVRwf8vwU4xEDJ+5w2F0UGD7B7
-	TbIQkImwlrNeESA5sPN+eRNT7LGHmWLyHkwNwUfHiUC8iSbGVlxzkSQS5HjcCrMh6l0X3K
-	kgBtrYgqXeixriaNPKef9bgjetqF1Sg=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=mzAf1XnytkV8qyJXTEKwNB9aEHmFUdDadZM9tsbmtu4=;
+	b=QhnEY1sKmUHgvvjvw+Q7AWTj0OTK8mfPloFK9YvUk5QpcaZaNS6YbPisU7uW/gq/Epx+nF
+	fP9v+puwDuzhc8LzFJepGIgn3pVR1mRMfV52cWpa2HYxS3Bpybjk+gohPq3pvV1iGHUyR3
+	DBjbGxVuIGQkB8j6dOX3rImOSy4unaA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-534-pdUEAii3O0ebrj1KM33p0Q-1; Wed, 10 Apr 2024 05:54:30 -0400
-X-MC-Unique: pdUEAii3O0ebrj1KM33p0Q-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-343c86edeb7so3468163f8f.1
-        for <stable@vger.kernel.org>; Wed, 10 Apr 2024 02:54:30 -0700 (PDT)
+ us-mta-605-ZRGow8rwOSSywhw_2sKbVA-1; Wed, 10 Apr 2024 05:55:15 -0400
+X-MC-Unique: ZRGow8rwOSSywhw_2sKbVA-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-41485831b2dso49085665e9.3
+        for <stable@vger.kernel.org>; Wed, 10 Apr 2024 02:55:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712742869; x=1713347669;
+        d=1e100.net; s=20230601; t=1712742914; x=1713347714;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=MGqJvx4+F9X5M32QY16t4qGbYeihGQqrwO8ABS7SiF0=;
-        b=k+it0Jn83+gK7TXhCHzWv6vcHcwNFwp/2CYB+cZmhgfAGsAFYuU/6F/bwqatOQ8One
-         NyIf4nUZUlQf8pe8aNvCprK8qFaBhUa0rIBqSRXKHmVjH5Z0CvAzctif2OcmK5pdynqm
-         NWJO9N97WBH2h/5XVKqK3uHGdWNhUXd9kUtAY/M/WDX6Y7p8v4tNsjVwHsi58B/Soxv4
-         0e5riHFrmSFgH6yFraReQfa8PYOdUhRofnDR9MJ85mynAZZGPRcj4WMDrpmeuTpnJK86
-         8+7TlRXUoCHIsMexhbqTsisNTY/ViBa8dLcVNN234RvK2d1Wd9j9UPpVLPfQf9yrEbn1
-         vF3g==
-X-Gm-Message-State: AOJu0Yw28OIMaZLRIH4EMsy1LC9GrEaGOzbK0sWm6kK51z2PqORsBTX9
-	ZxzXxN8hiEDnh149x7IhU9kNd+wjSQ8WcbZuFwBjgcW1XZAUgFOU5GzBdnPXb4W6PX0M16vAJyf
-	cOiacgrC9ux6AD6ae7i2Nx9uya0BMAbkMJAxpDQG/IydccgrmSBjBHurDOCzpH0mIGS2Zz/pMke
-	sXihfPphIdTqN3Bwb1Cm2dqOUnCoLupF4u3Q==
-X-Received: by 2002:a5d:4ed1:0:b0:345:c169:8808 with SMTP id s17-20020a5d4ed1000000b00345c1698808mr1579544wrv.4.1712742869691;
-        Wed, 10 Apr 2024 02:54:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG0SWSgJzdtQbSjA8op324mVNmlCbtD8FS/onjvVO7gRtRsmBj7cccP4m986Yb0lLlLGZ1v5Q==
-X-Received: by 2002:a5d:4ed1:0:b0:345:c169:8808 with SMTP id s17-20020a5d4ed1000000b00345c1698808mr1579523wrv.4.1712742869198;
-        Wed, 10 Apr 2024 02:54:29 -0700 (PDT)
+        bh=mzAf1XnytkV8qyJXTEKwNB9aEHmFUdDadZM9tsbmtu4=;
+        b=EyWmc+Kt2qpv40FhQfyA6OPAgF5XQmybh6KQRNLYnkk7kAZiA3edop+kYLDY7xJ1qR
+         SkKH+Qv97o+Veys3eyUCy2S03ogVi5H0IFbPUmtdKMqDiIf0YrlTdAhel4m3ySemLBCO
+         nQ8HG1aErkfOEQ+AEazR7tIaCUsYcmSZQCl1yiXY44FmNEONZ2zN1iwLpSEBGofi+piM
+         hXAUTrSr5Yeh+rnP0efgiWcZQmM9WxUBlaqmq7CKRJqks1nE7iIkJF+CiEH01HAtLtg3
+         ikvxRUVlYMv3y46PHyAzAm6VDcEpdSUbT2807+jCLaTpDkEEuus1sW3z4szVfANXb32s
+         F3cQ==
+X-Gm-Message-State: AOJu0YxJvsKOuZHGwi6CVCF5hwlnb++SBXHco5sXs0uSJxxDJJDvoxPc
+	gpbNCaq330tgiDgZEwnAqOn1+vllqOZpCif+71qv8HKY2hn+KmcpnjF1FE6rzXLQ6eycmxk0jyZ
+	CsSnkCuWbfh354qZeXLXZGkASUaSnbIvr6ZsOC1ZV/mzUHTSHXvxrGBRK+GZhHOdvk7KxVs9oJy
+	cZwyif32yROSzTwd2ZH5bMrehFLzjK67gYMQ==
+X-Received: by 2002:a05:600c:154b:b0:416:4641:5947 with SMTP id f11-20020a05600c154b00b0041646415947mr2158052wmg.34.1712742914201;
+        Wed, 10 Apr 2024 02:55:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGtLZvQvYCcuKFWhjFfDwsHMRH7CAT5Rk/jRJDf053IJNf36+Kfj/mkgIe6mO+lgaETbI4AQ==
+X-Received: by 2002:a05:600c:154b:b0:416:4641:5947 with SMTP id f11-20020a05600c154b00b0041646415947mr2158026wmg.34.1712742913739;
+        Wed, 10 Apr 2024 02:55:13 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c712:fa00:38eb:93ad:be38:d469? (p200300cbc712fa0038eb93adbe38d469.dip0.t-ipconnect.de. [2003:cb:c712:fa00:38eb:93ad:be38:d469])
-        by smtp.gmail.com with ESMTPSA id r12-20020a5d498c000000b00343e8968917sm13018442wrq.1.2024.04.10.02.54.28
+        by smtp.gmail.com with ESMTPSA id t14-20020a5d6a4e000000b0033b48190e5esm13387534wrw.67.2024.04.10.02.55.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Apr 2024 02:54:28 -0700 (PDT)
-Message-ID: <473796cf-1e54-47d8-8425-42fb2a24f28c@redhat.com>
-Date: Wed, 10 Apr 2024 11:54:27 +0200
+        Wed, 10 Apr 2024 02:55:13 -0700 (PDT)
+Message-ID: <3469eb7f-96b5-4efa-b3de-82c956809038@redhat.com>
+Date: Wed, 10 Apr 2024 11:55:12 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,15 +83,15 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4.19.y] x86/mm/pat: fix VM_PAT handling in COW mappings
+Subject: Re: [PATCH 5.10.y] x86/mm/pat: fix VM_PAT handling in COW mappings
 To: stable@vger.kernel.org
 Cc: Wupeng Ma <mawupeng1@huawei.com>, Ingo Molnar <mingo@kernel.org>,
  Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
  <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
  Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>,
  "H. Peter Anvin" <hpa@zytor.com>
-References: <2024040851-hamster-canary-7b07@gregkh>
- <20240410095131.201579-1-david@redhat.com>
+References: <2024040843-utmost-staff-773b@gregkh>
+ <20240410094355.182476-1-david@redhat.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -139,11 +139,11 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240410095131.201579-1-david@redhat.com>
+In-Reply-To: <20240410094355.182476-1-david@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 10.04.24 11:51, David Hildenbrand wrote:
+On 10.04.24 11:43, David Hildenbrand wrote:
 > PAT handling won't do the right thing in COW mappings: the first PTE (or,
 > in fact, all PTEs) can be replaced during write faults to point at anon
 > folios.  Reliably recovering the correct PFN and cachemode using
@@ -266,11 +266,10 @@ On 10.04.24 11:51, David Hildenbrand wrote:
 > ---
 
 Backport notes:
-(1) #include "../../mm/internal.h" to make it compile
+(1) #include "../....//mm/internal.h" to make it compile
 (2) vm_normal_folio -> vm_normal_page
 (3) follow_phys() is also used in generic_access_phys(), where we would
      now also reject anon pages. I don't think we care.
-
 
 -- 
 Cheers,
