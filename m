@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-37943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE63389EF00
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 11:35:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2290189EF10
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 11:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E17E6B24439
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 09:35:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 845851F21AB7
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 09:44:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F9C155737;
-	Wed, 10 Apr 2024 09:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1432D155389;
+	Wed, 10 Apr 2024 09:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HMbhbe9q"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O7nXMDaz"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0627515531D
-	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 09:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1143714F113
+	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 09:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712741695; cv=none; b=NkwtXAjd8rZWsSc46aHhyQ9BiFzTDSsP/Vigzf5w0VKRIKy8aK38MNXuqzSoPcWaa1+teXfevLnQIVZStCa5AghoLpmqtI5/V6BUOFoETzVjFLHznQUJFPMvulZXuLdzfn8z2ATBc0zwWSb0m1Z7J0PzGTADZpLYl36Jr/QieRk=
+	t=1712742267; cv=none; b=LnvFDzwTOHkvE1NAsdVRdZpt7dI1j9JwqGauawNdF5PktV6grBYhUlXWxGQjMRTmBgXfUSXFM3jM6ot/MPxXH2HaVygFjxEwO8XbWdaLYgtYc8qEDW6+T0bEUsIAxIqL5Z/paUvcWgzj7W/lUxRrbQwsebGe+tRpcNCRgumxfvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712741695; c=relaxed/simple;
-	bh=GGOncXBcBBz1RxaUHmjcrKkKV0l9br76mUdPr+v5TeM=;
+	s=arc-20240116; t=1712742267; c=relaxed/simple;
+	bh=RJx7ATSVbZDeN01FfdsMF2baK+p0fHyapbCXwN+lVlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IdE/gbfydzVTWQqqVu7+Mj0AyNur+DAmaXgqUW9KvLQyCGSeAeO943k5xHU4d2cP7974M87hNDyvxg/F9Uz/VVF/ibBZr5u33pywKTMGoYU4Ojqmlhiv3btac8FEdRbgKziPbotJHLB8K/LLNNBRbfFh+/Arwq2sQIsA7DRXNpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HMbhbe9q; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=emTOu+nHX12jHz7bmbUxgO/it/ysE/pIOA5YytuaUBTtiTAVBVwYxvntvyYL+K8gCHiavaazeVwZrThedB1dpMVBp/NAz1JxrxKb8K53JBP1NRsNUXRwXcJ+hsCktfpKoX9ktX/rdlJ639F4smt2wZ/UYpsjAqdDXEhWz5cy+uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O7nXMDaz; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712741693;
+	s=mimecast20190719; t=1712742265;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HBoe6TbaO6yGvmmR9MxIzQCjSxKlYLDQ6+2QaQjejvo=;
-	b=HMbhbe9q1dwYmuLv8Pl5LMA9o2DivJuwWJVuzxpgj6SdEDz0K8WqmWRy2peIkk9SAEBm5e
-	B+hp9HKDDxK2s8xEbwHOgYfJMWHUyFOrq74Ih7JWcgc0zcSw4nYCxbH7PUp3mZZFY9fkPb
-	5cciydhgNpDVtORnd/HErcKkvh76nCg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-167-NDV3_pb-No2drA-6MHMGFg-1; Wed,
- 10 Apr 2024 05:34:47 -0400
-X-MC-Unique: NDV3_pb-No2drA-6MHMGFg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	bh=TtqR4pDtJueQcoE7awIew4xZIZ0wpXGlSOJUB6mUKdE=;
+	b=O7nXMDazXA08zW/M972lA4vvwTx5g0Be0chXGD/CQi3DJFWsLK22yQjgo3+46lfq4YN6Wc
+	SHFc8xoaWQAnqtH5+8RwWxMhGZG+f61rCr8omkqEr38Z9n5scpyb8CMXbCNOtAMSvR72Xv
+	bwTpKuTtsMBLs7+PLSxGi9eq+8HamJI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-595-bkH3rjT0NlyX_o-RPJ2UZg-1; Wed, 10 Apr 2024 05:44:19 -0400
+X-MC-Unique: bkH3rjT0NlyX_o-RPJ2UZg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4F1372800C3C;
-	Wed, 10 Apr 2024 09:34:38 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 20DC48007AD;
+	Wed, 10 Apr 2024 09:44:19 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.193.162])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id B1A441C20F40;
-	Wed, 10 Apr 2024 09:34:35 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 86F3847F;
+	Wed, 10 Apr 2024 09:44:16 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: stable@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -66,11 +66,11 @@ Cc: David Hildenbrand <david@redhat.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Borislav Petkov <bp@alien8.de>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH 5.15.y] x86/mm/pat: fix VM_PAT handling in COW mappings
-Date: Wed, 10 Apr 2024 11:34:29 +0200
-Message-ID: <20240410093429.162502-1-david@redhat.com>
-In-Reply-To: <2024040850-wildly-gyration-12ff@gregkh>
-References: <2024040850-wildly-gyration-12ff@gregkh>
+Subject: [PATCH 5.10.y] x86/mm/pat: fix VM_PAT handling in COW mappings
+Date: Wed, 10 Apr 2024 11:43:55 +0200
+Message-ID: <20240410094355.182476-1-david@redhat.com>
+In-Reply-To: <2024040843-utmost-staff-773b@gregkh>
+References: <2024040843-utmost-staff-773b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,7 +78,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 
 PAT handling won't do the right thing in COW mappings: the first PTE (or,
 in fact, all PTEs) can be replaced during write faults to point at anon
@@ -200,15 +200,23 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 (cherry picked from commit 04c35ab3bdae7fefbd7c7a7355f29fa03a035221)
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/x86/mm/pat/memtype.c | 49 ++++++++++++++++++++++++++++-----------
+ arch/x86/mm/pat/memtype.c | 50 ++++++++++++++++++++++++++++-----------
  mm/memory.c               |  4 ++++
- 2 files changed, 39 insertions(+), 14 deletions(-)
+ 2 files changed, 40 insertions(+), 14 deletions(-)
 
 diff --git a/arch/x86/mm/pat/memtype.c b/arch/x86/mm/pat/memtype.c
-index d5ef64ddd35e..f6466022954b 100644
+index f9c53a710740..adc76b4133ab 100644
 --- a/arch/x86/mm/pat/memtype.c
 +++ b/arch/x86/mm/pat/memtype.c
-@@ -989,6 +989,38 @@ static void free_pfn_range(u64 paddr, unsigned long size)
+@@ -56,6 +56,7 @@
+ 
+ #include "memtype.h"
+ #include "../mm_internal.h"
++#include "../../../mm/internal.h"	/* is_cow_mapping() */
+ 
+ #undef pr_fmt
+ #define pr_fmt(fmt) "" fmt
+@@ -987,6 +988,38 @@ static void free_pfn_range(u64 paddr, unsigned long size)
  		memtype_free(paddr, paddr + size);
  }
  
@@ -247,7 +255,7 @@ index d5ef64ddd35e..f6466022954b 100644
  /*
   * track_pfn_copy is called when vma that is covering the pfnmap gets
   * copied through copy_page_range().
-@@ -999,20 +1031,13 @@ static void free_pfn_range(u64 paddr, unsigned long size)
+@@ -997,20 +1030,13 @@ static void free_pfn_range(u64 paddr, unsigned long size)
  int track_pfn_copy(struct vm_area_struct *vma)
  {
  	resource_size_t paddr;
@@ -270,7 +278,7 @@ index d5ef64ddd35e..f6466022954b 100644
  		return reserve_pfn_range(paddr, vma_size, &pgprot, 1);
  	}
  
-@@ -1087,7 +1112,6 @@ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
+@@ -1085,7 +1111,6 @@ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
  		 unsigned long size)
  {
  	resource_size_t paddr;
@@ -278,7 +286,7 @@ index d5ef64ddd35e..f6466022954b 100644
  
  	if (vma && !(vma->vm_flags & VM_PAT))
  		return;
-@@ -1095,11 +1119,8 @@ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
+@@ -1093,11 +1118,8 @@ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
  	/* free the chunk starting from pfn or the whole chunk */
  	paddr = (resource_size_t)pfn << PAGE_SHIFT;
  	if (!paddr && !size) {
@@ -292,10 +300,10 @@ index d5ef64ddd35e..f6466022954b 100644
  	}
  	free_pfn_range(paddr, size);
 diff --git a/mm/memory.c b/mm/memory.c
-index 6044d9a4bcd6..99d15abe4a06 100644
+index 1d101aeae416..2183003687ce 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -5086,6 +5086,10 @@ int follow_phys(struct vm_area_struct *vma,
+@@ -4934,6 +4934,10 @@ int follow_phys(struct vm_area_struct *vma,
  		goto out;
  	pte = *ptep;
  
