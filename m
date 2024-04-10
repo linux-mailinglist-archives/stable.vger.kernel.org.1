@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-37940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D70389EEB1
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 11:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25FA089EEBA
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 11:25:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D78561F2187D
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 09:22:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC0491F2117D
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 09:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9260D154BFE;
-	Wed, 10 Apr 2024 09:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B1D155389;
+	Wed, 10 Apr 2024 09:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Wj/StwPp"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GQFZ1SzL"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B631B13C9D4
-	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 09:22:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9273155382
+	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 09:25:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712740974; cv=none; b=K/nAVa/bZ6WiQrfG6WJdvs3kh8EKt/Ik5JAMBAVBmIh7aUyvpXPT6Ms+IZ1MLmVQz799iVruZvPdXglrnjbmcMUmhQEI0zGG2dH7eiPIfUlxrh2tPm0H+GeaNYyLSZ62jk2p6b9ger3vNrQMeqkrM00v+edaTLQ87cHL7qBhVLo=
+	t=1712741153; cv=none; b=LMar+xV9eQNai3JI9yde/eEthwls1XB2VdPa0I17QALklw7UQVpQRpozlu2CDPAdLr2okiw0KvAHyRza2wOeball/zN/b7FqnTnPIkdLiz5pq2fxQDg4O2he9DpidmUmJmsefYtQLa9pWsBl+aH230wBGWaJ/BfpAHB4up2XDgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712740974; c=relaxed/simple;
-	bh=rPvpBjhTMYZt2XjL/4VKtOSA7yifsh/S9bYTRE+e2Fs=;
+	s=arc-20240116; t=1712741153; c=relaxed/simple;
+	bh=G3RFxpADr7+9bFCx1LDFtoeiDnPcQTzAEYiUHczdSs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ey/do9TUqs71OOKiJeJw5snK68vcel7ljUhBWk6P/mmjWXZekoOeWHU7ZCoWyGUqjVrqzphj1XgrioK5Y0UtaN6ZPiIfaHJeOVIixzSI+MXpahwlkUhy9XLDFnPMUUvgmuOlGzPLdwlyp4wenHOG28h8tHnhq8NSPvCBiBPxPsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Wj/StwPp; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=X9J5MadUD7fn5JTI5oBXf4vEPZERXwZeqzgem62W957PYs5W2vrScePvZ0L3ddiQQ08imGWNQULNm/LLk8Gt3cYKJ1gmVWWp/+zq9mz+h2RgkNNHSDtHow+NrkMxpnGlPnUWajv5DMCm/fEMDTx32LhM3p3CQ9hXY+Y2PhEWdgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GQFZ1SzL; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712740971;
+	s=mimecast20190719; t=1712741150;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Yt7esB0v89/kJ69vQ+82coDonarBbmAN6dZcwz4GMQs=;
-	b=Wj/StwPpZwNQ8tD94lDfPOKqP0UlNUGU+llSFs8lMcXIrd9MhNKt3Q1l5CMyplKAqAo5c0
-	NtZCa/1pQG/t53j2yRuKDlru2Cd06KNW8tyWNvaZU7jK2EjafZy7XllSyOK0LAmMWGHMUK
-	1M8V/ou9PwOr30E8QRroJSj8nVR7QEk=
+	bh=lH6O5SJfzwQhcNuCT957VIyUzkGWkJyXDBbSG+hsK58=;
+	b=GQFZ1SzLlt4pPEosP0dozOYbB9GUxgLCjyyadnG5mpUAV2HySllZjwAsfcLED4TUroZbMz
+	eFtEYZ4Aryp/qmGjPNIWcg0umnnd0hbOffdYJSo6ujnhjCxPat8mkSU+K2XAAjQPVeBivh
+	RHuiY/5Imcne5wJ4HNGThzCsY666Gps=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-49-IgFrP4T1N0qvABXMSow-zQ-1; Wed, 10 Apr 2024 05:22:48 -0400
-X-MC-Unique: IgFrP4T1N0qvABXMSow-zQ-1
+ us-mta-418-_IsAH6bZNm2zn5U7rUEevA-1; Wed, 10 Apr 2024 05:25:46 -0400
+X-MC-Unique: _IsAH6bZNm2zn5U7rUEevA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 86F6C10499A1;
-	Wed, 10 Apr 2024 09:22:47 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7C69E188E9C3;
+	Wed, 10 Apr 2024 09:25:45 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.193.162])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 54BA717AB1;
-	Wed, 10 Apr 2024 09:22:44 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 888F517AB3;
+	Wed, 10 Apr 2024 09:25:43 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: stable@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -62,11 +62,11 @@ Cc: David Hildenbrand <david@redhat.com>,
 	"Michael S. Tsirkin" <mst@redhat.com>,
 	Jason Wang <jasowang@redhat.com>,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Subject: [PATCH 5.10.y] virtio: reenable config if freezing device failed
-Date: Wed, 10 Apr 2024 11:22:39 +0200
-Message-ID: <20240410092239.139735-1-david@redhat.com>
-In-Reply-To: <20240327121908.2834962-1-sashal@kernel.org>
-References: <20240327121908.2834962-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] virtio: reenable config if freezing device failed
+Date: Wed, 10 Apr 2024 11:25:37 +0200
+Message-ID: <20240410092537.145487-1-david@redhat.com>
+In-Reply-To: <20240327121550.2832232-1-sashal@kernel.org>
+References: <20240327121550.2832232-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,10 +100,10 @@ Signed-off-by: David Hildenbrand <david@redhat.com>
  1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
-index 441bc057896f..5df51095d8e1 100644
+index c2b733ef95b0..2f8f3bd56b00 100644
 --- a/drivers/virtio/virtio.c
 +++ b/drivers/virtio/virtio.c
-@@ -403,13 +403,19 @@ EXPORT_SYMBOL_GPL(unregister_virtio_device);
+@@ -455,13 +455,19 @@ EXPORT_SYMBOL_GPL(unregister_virtio_device);
  int virtio_device_freeze(struct virtio_device *dev)
  {
  	struct virtio_driver *drv = drv_to_virtio(dev->dev.driver);
