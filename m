@@ -1,90 +1,98 @@
-Return-Path: <stable+bounces-37966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F3189F3CC
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 15:16:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB8D89F976
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 16:08:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04FBE1C20CF8
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 13:16:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C77361F2628D
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 14:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8E915E213;
-	Wed, 10 Apr 2024 13:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F4316F0E1;
+	Wed, 10 Apr 2024 14:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QVWcVJUQ"
 X-Original-To: stable@vger.kernel.org
-Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4DE15B576
-	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 13:15:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB0716F0D6;
+	Wed, 10 Apr 2024 14:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712754960; cv=none; b=XyGzeXZ4dLG/AlClbaf3bUV4FKCs1ykiWRywdae6qhFkj67hD1MrSVkPG9MKUMjAGLYVWi4uNsXE4KRWeL/WyRVUjWdMOCp1JSaz6A+CdgHa7A53d9EKtecN5o2tV90e0tHiUCkm1u06msBUHiv0g7zcsWsHd7uGlW+bqBQnYcw=
+	t=1712757764; cv=none; b=DE9pP6ME7xQq9r4qOR2gr7Kn35CreHrT8RXehwFTiiSDZwWHCRvKp9BqOJGdouWW3QropobyQV+lpJ/QOL921GnaCN/qjjrdDg47iJEu60viJmTzh2rEVw816zkHup0p3zv5A5FWyWKAoRIzlNdg7hkoFjp4AI2w0e967umz1UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712754960; c=relaxed/simple;
-	bh=nAp19hE2qmJ8QmKNGUvM9X6JTkwldoY5+mFadWwSgTI=;
-	h=From:Date:Subject:To:Cc:Message-Id; b=qKFbbHRAqyijN5/EpihbtXqxl04T0Z5FVhrCPqOd1cGjtzzEeCRFNe1sauWhw27K6zirSdh9WhZdEKnpQrx5Qrp9el6q99MaYAXmQWsISZu+sCX3gqbU72OdZSgd+IcT4HDNj46tKr5wlwvVzVl6P0h91qBx5/Ia1mBIgY9OvZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
-Received: from hverkuil by linuxtv.org with local (Exim 4.96)
-	(envelope-from <hverkuil@linuxtv.org>)
-	id 1ruXnx-0001Bg-2C;
-	Wed, 10 Apr 2024 13:15:57 +0000
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date: Wed, 10 Apr 2024 13:15:31 +0000
-Subject: [git:media_stage/master] media: mc: Fix graph walk in media_pipeline_start
-To: linuxtv-commits@linuxtv.org
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, stable@vger.kernel.org, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1ruXnx-0001Bg-2C@linuxtv.org>
+	s=arc-20240116; t=1712757764; c=relaxed/simple;
+	bh=4zhqss8uTGqSHt36ubbv26Mh2WbiSU4l9Omqg6Gn0c4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u56K9/6Xtmt1n0Xm0F/JTYzQZiJqWauZKwllBrO6EqOcQujoAjOUIFRsT13JtDskyGh2X/YZFHMV7q7uQfMTHzCvP2Qc3nyk/sthhha+z11ZBfiw5PP7q1EKghzPE/AGVOFdYuqOP/9ME3NlP97M81/Q5oLPfPS6uwios1M4Hc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QVWcVJUQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70176C433F1;
+	Wed, 10 Apr 2024 14:02:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712757764;
+	bh=4zhqss8uTGqSHt36ubbv26Mh2WbiSU4l9Omqg6Gn0c4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QVWcVJUQ4z3KcwOYkUnG1j7Jt1CcKPVxlf/LijpC/EFD9aPRWb5TIc59OjJSafijD
+	 y5kEk7Yaaa/JKrP/HV9LwTFL4/z/VwohEA99PfhgF3FTEmEmaLhnUQ5qBK9QlLdPjP
+	 GCZkfNURSGiHYpjR2gLRPT/NC+Fc4CKCSqOjOHxroFKWLWSu3+RHY8JiHzirtW0DVL
+	 2K1Jk13P/rBPO8PQsDhEk9SkBw+aEbIwMyZsWhqDh8iBgcpMQq7SBOg08YBF1RCuOs
+	 ynLXBSVMtrwQG8uWh9IuBfjdlakKYBqbHJPYKLvBdaOnDZvFTzMUdNhJZ+1GXcv/td
+	 jROJpXlrGC6ug==
+Date: Wed, 10 Apr 2024 15:02:37 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.1 000/138] 6.1.85-rc3 review
+Message-ID: <d984acc3-1d71-48e1-9c19-6a12d04a961d@sirena.org.uk>
+References: <20240409173524.517362803@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="f3j2YIWb/e4DVzpL"
+Content-Disposition: inline
+In-Reply-To: <20240409173524.517362803@linuxfoundation.org>
+X-Cookie: A bachelor is an unaltared male.
 
-This is an automatic generated email to let you know that the following patch were queued:
 
-Subject: media: mc: Fix graph walk in media_pipeline_start
-Author:  Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Date:    Mon Mar 18 11:50:59 2024 +0200
+--f3j2YIWb/e4DVzpL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The graph walk tries to follow all links, even if they are not between
-pads. This causes a crash with, e.g. a MEDIA_LNK_FL_ANCILLARY_LINK link.
+On Tue, Apr 09, 2024 at 07:44:28PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.85 release.
+> There are 138 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Fix this by allowing the walk to proceed only for MEDIA_LNK_FL_DATA_LINK
-links.
+Tested-by: Mark Brown <broonie@kernel.org>
 
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc: stable@vger.kernel.org # for 6.1 and later
-Fixes: ae219872834a ("media: mc: entity: Rewrite media_pipeline_start()")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+--f3j2YIWb/e4DVzpL
+Content-Type: application/pgp-signature; name="signature.asc"
 
- drivers/media/mc/mc-entity.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+-----BEGIN PGP SIGNATURE-----
 
----
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmYWm/wACgkQJNaLcl1U
+h9AEigf+PgmA1giOX1CBp9WWISgNcB+Yesgua5iN7XNrA3fS7WnNjuN9h+kWyYtf
+FqZCbTKsIIdJU5vdbqjekKqKLhyoR0CO07ms1+OEWuHpDgKVxDAETeeQeStKQ271
+qivE48l48OavAty9F5jtGWCqKWIt5+4cn5hLO5/Bcr5zyrZ5zfkYSzxvyt+W8E52
+F8jrDQrhP9CIJsiy2RGnj4VHPSJTK+IU4v55hS6KtX+j6UFEiiEBRHNUqK0kc39a
+w6hQHEijf24PMnHF1fiqscLnd7gxgsirCpApw5A3Z0zJZ821A2pqDHQt6DaHuZXV
+uBqRbOpCnfHxTI6oa5kCfAbaVfm3hA==
+=K+GY
+-----END PGP SIGNATURE-----
 
-diff --git a/drivers/media/mc/mc-entity.c b/drivers/media/mc/mc-entity.c
-index 0e28b9a7936e..96dd0f6ccd0d 100644
---- a/drivers/media/mc/mc-entity.c
-+++ b/drivers/media/mc/mc-entity.c
-@@ -619,6 +619,12 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
- 	link = list_entry(entry->links, typeof(*link), list);
- 	last_link = media_pipeline_walk_pop(walk);
- 
-+	if ((link->flags & MEDIA_LNK_FL_LINK_TYPE) != MEDIA_LNK_FL_DATA_LINK) {
-+		dev_dbg(walk->mdev->dev,
-+			"media pipeline: skipping link (not data-link)\n");
-+		return 0;
-+	}
-+
- 	dev_dbg(walk->mdev->dev,
- 		"media pipeline: exploring link '%s':%u -> '%s':%u\n",
- 		link->source->entity->name, link->source->index,
+--f3j2YIWb/e4DVzpL--
 
