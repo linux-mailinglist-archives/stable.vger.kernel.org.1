@@ -1,325 +1,124 @@
-Return-Path: <stable+bounces-38024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D9CB8A01C4
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 23:12:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A1C38A02D3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 00:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50D431C247A5
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 21:12:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E35761F23772
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 22:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC6A1836CF;
-	Wed, 10 Apr 2024 21:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C73F18411E;
+	Wed, 10 Apr 2024 22:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2+ZlXqGn"
+	dkim=pass (2048-bit key) header.d=noahloomans.com header.i=@noahloomans.com header.b="k/FASzBH";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pSuCmUaH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout6-smtp.messagingengine.com (fout6-smtp.messagingengine.com [103.168.172.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2657E16E87A
-	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 21:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915D818410C;
+	Wed, 10 Apr 2024 22:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712783528; cv=none; b=oIGL7KTBYFmAfVUAnx1kbeDgw2aPkmRlYJBYK6uvnyrDHu/TEmfSlW00IrrZIcrIPDHq0+KHawvWOw+tUQucf9Z4HMGJfLi1mkauzNQWI/fybM/jfxpXTdQZyIag5ug0qtY6+SrGzwNXXaqbSWn147zaZNpt7o9URZSChATCRFI=
+	t=1712786803; cv=none; b=IHiQW/QLcC3sjoEdMk+DE19zjw0UiR7Ah2K9jNlKAPWA/AYd557FskP3t1ZquIRbuSNdaUCpmM6yxkj/80gxBs69YZET3sVDoZbdJJAgftO20jxCaPVD2NyUsqlQ0ViQLHqgfzZX4/O1EeESxlNj0vumz8EJ48fI8PkFIYt1loY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712783528; c=relaxed/simple;
-	bh=/LLo1AXRGmGK6vk5KP6wU+ZJ9RLYp9FcgGGnd7hSOnQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HE+X62RrLa8wka3HlUV8N/PFa0GruIHGxevTo2GLO7wKhtN7QJhxXjURsdzZVkpk/9FK/yi8L9oO2ItBkGKr+2Hf0NWxiMJCdPjLnG7GMYO8zqTmSrGmYgYJ8n5qNRloIXw2jl9MhwxhIMti8I9Y7QFJpHKD1COSw5HKjCuT6MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2+ZlXqGn; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-41641a889ccso9175e9.1
-        for <stable@vger.kernel.org>; Wed, 10 Apr 2024 14:12:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712783524; x=1713388324; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f/UHQzscbXfp6d3taFX11Sxu71IaLE12E0S/qUfdgX4=;
-        b=2+ZlXqGn6A/bR1AtXKR1LR4TPA9l2LMocAwLYkUZcCIKF+t/M8SLONj7HTyp4rqI/f
-         KEJem0ppIg+HOQMrlLLW3vi62Kkk7cHlYDmhXd4xN19eHEgIfyxpRYPtTJX91ieLb6UK
-         mspNKiXk6Ipo11vNIeWnwT2D8OK2rxOe7N4S5zPTepnjyEYGTblZwHDU8eLTl1Tnk9+H
-         bTvGcuqLLGnseDNDY0CVvYVG/2ABFqX7EnKkGCaLO3LKGozVihqOocheNfgBd7hzrXgH
-         xiEok0RDKfqcYZee/EiQKMzGPJfASz5vox7m4qjyy7mrub3sVrzOxr5EUP3XVKlB+jmu
-         Xq7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712783524; x=1713388324;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=f/UHQzscbXfp6d3taFX11Sxu71IaLE12E0S/qUfdgX4=;
-        b=ahc3Als4LS5ouCz4QJPomrXANS6xBGkkr49NDGIXBchO4aMFuVJPVE2YOmN+Afn6go
-         3BaoGgGhnqXy08/coCo2XyI2Kf9l3guu9EYGiocNpvjMMGgm2WhX27OfsAmNW6C4aMss
-         q1ljyavR9vXPZ0YePJqw3tv3T+V1y/I0527T3G0DGSGcuBCogXkDR8G9wATKEPiM6jxe
-         ZH27NDlkXKzTHYTNtfo+qyNMgQZfyJfC7EXnijtUdCSeb8lWVIroRJSXO8WHluizN9QJ
-         INzvqngk4hPrar/km9Tjgoe56eTH8RpEMpgrYyIP6B3UKhy/oecDlEnaGV6NRBthBaTR
-         MEnw==
-X-Gm-Message-State: AOJu0YykRUNet3Nx6Y0DVc4FlvN5rvRwtahxfmcGvTV8rgClD+zUR3h2
-	X4SL/7gxHLv7d5gc1jWsunD3zAmBLakDzhrjrxid+cIqNYrT0msK2AZkZCItFRmnCWX14EApjxu
-	xMg2foeNcrQtQh8VUR3on1u3YJUJuIivWRmva
-X-Google-Smtp-Source: AGHT+IHSipiM6QF4aaZa9YIT1wVL1fkdiAlKOwIZS5dLlTuUi6xe5zso1j+Burkts9ijBAGg/Eg6bElUqNIyEbylhTo=
-X-Received: by 2002:a05:600c:1c0f:b0:416:b76e:b9ad with SMTP id
- j15-20020a05600c1c0f00b00416b76eb9admr13134wms.7.1712783524227; Wed, 10 Apr
- 2024 14:12:04 -0700 (PDT)
+	s=arc-20240116; t=1712786803; c=relaxed/simple;
+	bh=hDr6Y9+XNRCuD5B6N5g7dzpvSY/j6WUCAujonwGLJBQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=Q4EJiGcfVsJLaXQbFaajTbTGWxD1Ti9AFV2GG8zGxEUwNs7/vJEX0UTkac6zurg0BHLtzV6NQ5ILVdhlGtI5Ev21PwwlrqCiL2z789cvnX4iPY0Q1gBjaNh+qViWQK+SsEyDvMkwpS2lfWxqawPk+vYpfco1giZ45RnZFVKhOhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=noahloomans.com; spf=pass smtp.mailfrom=noahloomans.com; dkim=pass (2048-bit key) header.d=noahloomans.com header.i=@noahloomans.com header.b=k/FASzBH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pSuCmUaH; arc=none smtp.client-ip=103.168.172.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=noahloomans.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=noahloomans.com
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 6B4AA1380059;
+	Wed, 10 Apr 2024 18:06:39 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute7.internal (MEProxy); Wed, 10 Apr 2024 18:06:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=noahloomans.com;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
+	 t=1712786799; x=1712873199; bh=hDr6Y9+XNRCuD5B6N5g7dzpvSY/j6WUC
+	AujonwGLJBQ=; b=k/FASzBHZ+y5S2Xb4n+1dhgDrinbaAnfbBOkMOTkdHXuFhBR
+	XY9y3kQCKR985aIw8u8PLMNHmcgdppdo0poKf8zvb1x9AGjqqR9C1sBxP6eFqkGi
+	cD/lbG64yw1a5CcxkNv7R0+/UusYaQXy/JdnPCG+EkkQXD1xT84y+4mkJvycfxTz
+	a8h+LzTTJko3i8sJScUlJqz4bGTg5Q91jAQLQoKR+wb0R7X7/Wm92V4BHaDP6hzy
+	zfuDtyLFdsT5qC3nRfsxiAAMagjZUIbl8djfn6FCyv2tvogWQq7nDV5/249M4e0q
+	satODWrMc2PDYqHHS5snrEapRzJxOZxfCm/vFA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1712786799; x=
+	1712873199; bh=hDr6Y9+XNRCuD5B6N5g7dzpvSY/j6WUCAujonwGLJBQ=; b=p
+	SuCmUaHe17M4eLknY80Qv61Qm+xxC3FaKf3661SLoVko4ue37UJvyPWYxqx9vBGg
+	bb+7gErJRJw7XTLZXmoIB+pNReDnPXWxU9ytakhcIV8KZYH5LLa8X5/FbrDhN9OE
+	lXWizuq8TG88xUDKgunBY7bZ+MM9N4zjBX612NrVrdY1/LA703ioKUv8pS6Dnh4P
+	5nbYbfLuIi7harRfx3iUqBODvIL5sj/UVbrXT8CF0+J770vXmt3ygBBpTUTwJDAY
+	ta8hvQl4BB5D7GjHFqpJajCwlDWQauzGv5AtiTqCNXhDOp1+JWVpTXBw5QABt0z0
+	i2EB+FwULA/EPL9YwH02Q==
+X-ME-Sender: <xms:bg0XZlrJnCOcls6IjcMw70ozNf8tEoF3Postpr-Yu22Fa6tk2sWY-g>
+    <xme:bg0XZnqzlvlmnW3bwp4tsUO9r652PaseMPer6zmAIzplEivCZcvCaAjyq8qKO47dB
+    37MJWxtzsNFS0VwD9A>
+X-ME-Received: <xmr:bg0XZiNfQuKKLGLAYZZ3apnzIHZdgBvCMR00gpnX4jFkjO9kQMfxeeX21DDtLTOkBZHTuj-wyeVAdYLz6aIhww>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehjedgtdejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepggfgtgffkffuhffvvefofhgjsehtqhertdertdejnecuhfhrohhmpedfpfho
+    rghhucfnohhomhgrnhhsfdcuoehnohgrhhesnhhorghhlhhoohhmrghnshdrtghomheqne
+    cuggftrfgrthhtvghrnhepvdeijeehteeggfefkeehleehkeevgfdvtdehgefgledtieff
+    ueeuleeffeeuhefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+    hfrhhomhepnhhorghhsehnohgrhhhlohhomhgrnhhsrdgtohhm
+X-ME-Proxy: <xmx:bw0XZg5g40prx91R4lNAhgMe1gsbCC9THmEVprxNF2Yngq24lhcS_A>
+    <xmx:bw0XZk4-SBi_0pcalrQhF8F-NZzHHiFi1uoe_LzN-M98o1iIf4zszQ>
+    <xmx:bw0XZog3i9MOc0NizI0X0NQ6C3H5RNjOd9xAfNem76vJiR6BkOx1Lg>
+    <xmx:bw0XZm5mKLr8aMDUJ5NchY-8cWs7cs9juvuJqkYY-5cShdW4W2oQyQ>
+    <xmx:bw0XZlGg6K0TA8HL5HdhzDeGa9m6bSERYDe3NAy6Vw6uJbld6qM9d9Jl>
+Feedback-ID: i93394469:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 10 Apr 2024 18:06:36 -0400 (EDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <PH0PR06MB75605BCCB343F06F5E93580094062@PH0PR06MB7560.namprd06.prod.outlook.com>
-In-Reply-To: <PH0PR06MB75605BCCB343F06F5E93580094062@PH0PR06MB7560.namprd06.prod.outlook.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 10 Apr 2024 23:11:51 +0200
-Message-ID: <CANn89iKj9DsT-j3dxFRTk9ZzbL7a1gNC9g0GqaQc61m1kFowdw@mail.gmail.com>
-Subject: Re: KASAN: slab-out-of-bounds Write in ops_init
-To: Cem Topcuoglu <topcuoglu.c@northeastern.edu>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, Parthik Bhardwaj <bhardwaj.p@northeastern.edu>, 
-	Changming Liu <liu.changm@northeastern.edu>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>, "davem@davemloft.net" <davem@davemloft.net>, 
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 11 Apr 2024 00:06:33 +0200
+Message-Id: <D0GS8UL1WKI5.1PLEUUWOD7B8@noahloomans.com>
+Subject: Re: [PATCH] platform/chrome: cros_ec_uart: properly fix race
+ condition
+From: "Noah Loomans" <noah@noahloomans.com>
+To: "Guenter Roeck" <groeck@google.com>
+Cc: "Bhanu Prakash Maiya" <bhanumaiya@chromium.org>, "Benson Leung"
+ <bleung@chromium.org>, "Tzung-Bi Shih" <tzungbi@kernel.org>, "Guenter
+ Roeck" <groeck@chromium.org>, "Robert Zieba" <robertzieba@google.com>,
+ <chrome-platform@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <stable@vger.kernel.org>
+X-Mailer: aerc 0.17.0
+References: <20240410182618.169042-2-noah@noahloomans.com>
+ <CABXOdTe02ALsv6sghnhWMkn7-7kidXhjvWzpDn7dGh4zKEkO8g@mail.gmail.com>
+In-Reply-To: <CABXOdTe02ALsv6sghnhWMkn7-7kidXhjvWzpDn7dGh4zKEkO8g@mail.gmail.com>
 
-On Wed, Apr 10, 2024 at 10:31=E2=80=AFPM Cem Topcuoglu
-<topcuoglu.c@northeastern.edu> wrote:
+On 2024-04-10 at 21:48 UTC+02, Guenter Roeck wrote:
+> On Wed, Apr 10, 2024 at 11:29=E2=80=AFAM Noah Loomans <noah@noahloomans.c=
+om> wrote:
+> > This is my first time contributing to Linux, I hope this is a good
+> > patch. Feedback on how to improve is welcome!
 >
-> Hi,
->
->
->
-> We encountered a bug labelled =E2=80=9CKASAN: slab-out-of-bounds Write in=
- ops_init=E2=80=9D while fuzzing kernel version 5.15.124 with Syzkaller (li=
-nes exist in 5.15.154 as well).
->
->
->
-> In the net_namespace.c file, we have an if condition at line 89. Subseque=
-ntly, Syzkaller encounters the bug at line 90.
->
->
->
-> 89           if (old_ng->s.len > id) {
->
-> 90                                           old_ng->ptr[id] =3D data;
->
-> 91                                           return 0;
->
-> 92           }
->
->
->
-> Upon inspecting the net_generic struct, we noticed that this struct uses =
-union which puts the array and the header (including the array length infor=
-mation) together.
->
-> We suspect that with this union, modifying the ng->ptr[0] is essentially =
-modifying ng->s.len, which might fail the check in 89. This might be the ca=
-use for Syzkaller detecting this slab-out-of-bound.
->
+> The commit message is a bit long, but the patch itself looks good to me.
 
-Look for MIN_PERNET_OPS_ID   (this should be 3)
+Hmm yeah it's a bit on a long side. I'm not sure what could be removed
+though, it all seems relevant for understanding the bug and the fix.
 
-ng->ptr[0] , [1], [2] can not be overwritten.
+> Reviewed-by: Guenter Roeck <groeck@chromium.org>
 
-Do you have a repro ?
+Thanks!
 
-Also please use the latest stable (5.15.154).
-
-> Since we are CS PhD students and Linux hobbyists, we do not have a full u=
-nderstanding of what could lead to this. We would really appreciate if you =
-guys can share some insights into this matter : )
->
->
->
-> We attached the syzkaller=E2=80=99s bug report below.
->
->
->
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> BUG: KASAN: slab-out-of-bounds in net_assign_generic
->
-> usr/src/kernel/net/core/net_namespace.c:90 [inline]
->
-> BUG: KASAN: slab-out-of-bounds in ops_init+0x44b/0x4d0
->
-> usr/src/kernel/net/core/net_namespace.c:129
->
-> Write of size 8 at addr ffff888043c62ae8 by task (coredump)/5424
->
-> CPU: 1 PID: 5424 Comm: (coredump) Not tainted 5.15.124-yocto-standard #1
->
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1ubunt=
-u1 04/01/2014
->
-> Call Trace:
->
-> <TASK>
->
-> __dump_stack usr/src/kernel/lib/dump_stack.c:88 [inline]
->
-> dump_stack_lvl+0x51/0x70 usr/src/kernel/lib/dump_stack.c:106
->
-> print_address_description.constprop.0+0x24/0x140 usr/src/kernel/mm/kasan/=
-report.c:248
->
-> __kasan_report usr/src/kernel/mm/kasan/report.c:434 [inline]
->
-> kasan_report.cold+0x7d/0x117 usr/src/kernel/mm/kasan/report.c:451
->
-> __asan_report_store8_noabort+0x17/0x20 usr/src/kernel/mm/kasan/report_gen=
-eric.c:314
->
-> net_assign_generic usr/src/kernel/net/core/net_namespace.c:90 [inline]
->
-> ops_init+0x44b/0x4d0 usr/src/kernel/net/core/net_namespace.c:129
->
-> setup_net+0x40a/0x970 usr/src/kernel/net/core/net_namespace.c:329
->
-> copy_net_ns+0x2ac/0x680 usr/src/kernel/net/core/net_namespace.c:473
->
-> create_new_namespaces+0x390/0xa50 usr/src/kernel/kernel/nsproxy.c:110
->
-> unshare_nsproxy_namespaces+0xb0/0x1d0 usr/src/kernel/kernel/nsproxy.c:226
->
-> ksys_unshare+0x30c/0x850 usr/src/kernel/kernel/fork.c:3094
->
-> __do_sys_unshare usr/src/kernel/kernel/fork.c:3168 [inline]
->
-> __se_sys_unshare usr/src/kernel/kernel/fork.c:3166 [inline]
->
-> __x64_sys_unshare+0x36/0x50 usr/src/kernel/kernel/fork.c:3166
->
-> do_syscall_x64 usr/src/kernel/arch/x86/entry/common.c:50 [inline]
->
-> do_syscall_64+0x40/0x90 usr/src/kernel/arch/x86/entry/common.c:80
->
-> entry_SYSCALL_64_after_hwframe+0x61/0xcb
->
-> RIP: 0033:0x7fbafce1b39b
->
-> Code: 73 01 c3 48 8b 0d 85 2a 0e 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0=
-f 1f 84 00 00 00 00
->
-> 00 90 f3 0f 1e fa b8 10 01 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b=
- 0d 55 2a 0e 00 f7
->
-> d8 64 89 01 48
->
-> RSP: 002b:00007ffddc8dfda8 EFLAGS: 00000246 ORIG_RAX: 0000000000000110
->
-> RAX: ffffffffffffffda RBX: 0000557e645dd018 RCX: 00007fbafce1b39b
->
-> RDX: 0000000000000000 RSI: 00007ffddc8dfd10 RDI: 0000000040000000
->
-> RBP: 00007ffddc8dfde0 R08: 0000000000000000 R09: 00007ffd00000067
->
-> R10: 0000000000000000 R11: 0000000000000246 R12: 00000000fffffff5
->
-> R13: 00007fbafd26ba60 R14: 0000000040000000 R15: 0000000000000000
->
-> </TASK>
->
-> Allocated by task 5424:
->
-> kasan_save_stack+0x26/0x60 usr/src/kernel/mm/kasan/common.c:38
->
-> kasan_set_track usr/src/kernel/mm/kasan/common.c:46 [inline]
->
-> set_alloc_info usr/src/kernel/mm/kasan/common.c:434 [inline]
->
-> ____kasan_kmalloc usr/src/kernel/mm/kasan/common.c:513 [inline]
->
-> ____kasan_kmalloc usr/src/kernel/mm/kasan/common.c:472 [inline]
->
-> __kasan_kmalloc+0xae/0xe0 usr/src/kernel/mm/kasan/common.c:522
->
-> kasan_kmalloc usr/src/kernel/include/linux/kasan.h:264 [inline]
->
-> __kmalloc+0x308/0x560 usr/src/kernel/mm/slub.c:4407
->
-> kmalloc usr/src/kernel/include/linux/slab.h:596 [inline]
->
-> kzalloc usr/src/kernel/include/linux/slab.h:721 [inline]
->
-> net_alloc_generic+0x28/0x80 usr/src/kernel/net/core/net_namespace.c:74
->
-> net_alloc usr/src/kernel/net/core/net_namespace.c:401 [inline]
->
-> copy_net_ns+0xc3/0x680 usr/src/kernel/net/core/net_namespace.c:460
->
-> create_new_namespaces+0x390/0xa50 usr/src/kernel/kernel/nsproxy.c:110
->
-> unshare_nsproxy_namespaces+0xb0/0x1d0 usr/src/kernel/kernel/nsproxy.c:226
->
-> ksys_unshare+0x30c/0x850 usr/src/kernel/kernel/fork.c:3094
->
-> __do_sys_unshare usr/src/kernel/kernel/fork.c:3168 [inline]
->
-> __se_sys_unshare usr/src/kernel/kernel/fork.c:3166 [inline]
->
-> __x64_sys_unshare+0x36/0x50 usr/src/kernel/kernel/fork.c:3166
->
-> do_syscall_x64 usr/src/kernel/arch/x86/entry/common.c:50 [inline]
->
-> do_syscall_64+0x40/0x90 usr/src/kernel/arch/x86/entry/common.c:80
->
-> entry_SYSCALL_64_after_hwframe+0x61/0xcb
->
-> The buggy address belongs to the object at ffff888043c62a00
->
-> which belongs to the cache kmalloc-256 of size 256
->
-> The buggy address is located 232 bytes inside of
->
-> 256-byte region [ffff888043c62a00, ffff888043c62b00)
->
-> The buggy address belongs to the page:
->
-> page:000000008dd0a6b6 refcount:1 mapcount:0 mapping:0000000000000000 inde=
-x:0x0 pfn:0x43c62
->
-> head:000000008dd0a6b6 order:1 compound_mapcount:0
->
-> flags: 0x4000000000010200(slab|head|zone=3D1)
->
-> raw: 4000000000010200 ffffea0001108f00 0000000700000007 ffff888001041b40
->
-> raw: 0000000000000000 0000000000100010 00000001ffffffff 0000000000000000
->
-> page dumped because: kasan: bad access detected
->
-> Memory state around the buggy address:
->
-> ffff888043c62980: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->
-> ffff888043c62a00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->
-> >ffff888043c62a80: 00 00 00 00 00 00 00 00 00 00 00 00 00 fc fc fc
->
-> ^
->
-> ffff888043c62b00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->
-> ffff888043c62b80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> kmemleak: 2 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
->
->
->
-> Best
->
->
+-Noah
 
