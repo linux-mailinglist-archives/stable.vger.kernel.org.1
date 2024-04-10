@@ -1,72 +1,76 @@
-Return-Path: <stable+bounces-37942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB2789EEC1
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 11:28:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE63389EF00
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 11:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D42671F22437
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 09:28:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E17E6B24439
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 09:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53B71553B3;
-	Wed, 10 Apr 2024 09:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F9C155737;
+	Wed, 10 Apr 2024 09:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ab7xUUpj"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HMbhbe9q"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159E6155382
-	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 09:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0627515531D
+	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 09:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712741306; cv=none; b=HGGMzpPg2F5S8Cw7GA2cM37mTFAcOHimfPXGj06M1cOmNGrNSjY/1TjuwyiA50dqdkt6IrFnJMQqs6wLW9Bs56ryY66fUewhIKMMfb2etTyO56vIgodmFHLqaqlZbT2i6S1/9IO9nDd4UvwQ4hXl1Q6F1R8fMYND7/1vebo5heo=
+	t=1712741695; cv=none; b=NkwtXAjd8rZWsSc46aHhyQ9BiFzTDSsP/Vigzf5w0VKRIKy8aK38MNXuqzSoPcWaa1+teXfevLnQIVZStCa5AghoLpmqtI5/V6BUOFoETzVjFLHznQUJFPMvulZXuLdzfn8z2ATBc0zwWSb0m1Z7J0PzGTADZpLYl36Jr/QieRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712741306; c=relaxed/simple;
-	bh=ihxocs4L+0u8Qpv7JFZ2S2feQgaBHnrGvRBq5uho7Jc=;
+	s=arc-20240116; t=1712741695; c=relaxed/simple;
+	bh=GGOncXBcBBz1RxaUHmjcrKkKV0l9br76mUdPr+v5TeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VPFs1GKPxOd3f2WgmcretnLoKQwLiY0f36/CuWeT3vYNxJM1Z8xWJx1Qw7iwsLjLUQOivPf5BA6d0X3/6FrkrMRJ53RTeWqRZY17t/1LiCreKTza3tnVLmEz7f6fM4EClAm8tcVYTJ4nqVnud/yZ2JbdsrzwXD0Wo/rKNaE2UfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ab7xUUpj; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=IdE/gbfydzVTWQqqVu7+Mj0AyNur+DAmaXgqUW9KvLQyCGSeAeO943k5xHU4d2cP7974M87hNDyvxg/F9Uz/VVF/ibBZr5u33pywKTMGoYU4Ojqmlhiv3btac8FEdRbgKziPbotJHLB8K/LLNNBRbfFh+/Arwq2sQIsA7DRXNpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HMbhbe9q; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712741304;
+	s=mimecast20190719; t=1712741693;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LX44MUKvcpSEChLo9G7WUkRYx9xFu+RolCUg58OZstg=;
-	b=ab7xUUpjxoDr8CebPVTyrQF5xDZ7ZJAG4R/kyNK2QFlHHmQ2HShOg7lp6JUue/KCDQ+Te5
-	LAFwE7/LRGggWJzIsCROA1fAE8jjaR0IzP5YHq/ZRVmA5/1VC1JIAYzf5wDl7zQiUb6LJW
-	T0WNS/ZdWJZXBdYdnCTipRctruM/Fyc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-3QEcbHnsOnu78piYQTipnw-1; Wed, 10 Apr 2024 05:28:20 -0400
-X-MC-Unique: 3QEcbHnsOnu78piYQTipnw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+	bh=HBoe6TbaO6yGvmmR9MxIzQCjSxKlYLDQ6+2QaQjejvo=;
+	b=HMbhbe9q1dwYmuLv8Pl5LMA9o2DivJuwWJVuzxpgj6SdEDz0K8WqmWRy2peIkk9SAEBm5e
+	B+hp9HKDDxK2s8xEbwHOgYfJMWHUyFOrq74Ih7JWcgc0zcSw4nYCxbH7PUp3mZZFY9fkPb
+	5cciydhgNpDVtORnd/HErcKkvh76nCg=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-167-NDV3_pb-No2drA-6MHMGFg-1; Wed,
+ 10 Apr 2024 05:34:47 -0400
+X-MC-Unique: NDV3_pb-No2drA-6MHMGFg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 08C2C802A6F;
-	Wed, 10 Apr 2024 09:28:20 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4F1372800C3C;
+	Wed, 10 Apr 2024 09:34:38 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.193.162])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 365D9C0157E;
-	Wed, 10 Apr 2024 09:28:03 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id B1A441C20F40;
+	Wed, 10 Apr 2024 09:34:35 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: stable@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
-	stable@kernel.org,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Subject: [PATCH 6.1.y] virtio: reenable config if freezing device failed
-Date: Wed, 10 Apr 2024 11:27:58 +0200
-Message-ID: <20240410092758.151321-1-david@redhat.com>
-In-Reply-To: <20240327121237.2829658-1-sashal@kernel.org>
-References: <20240327121237.2829658-1-sashal@kernel.org>
+	Wupeng Ma <mawupeng1@huawei.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH 5.15.y] x86/mm/pat: fix VM_PAT handling in COW mappings
+Date: Wed, 10 Apr 2024 11:34:29 +0200
+Message-ID: <20240410093429.162502-1-david@redhat.com>
+In-Reply-To: <2024040850-wildly-gyration-12ff@gregkh>
+References: <2024040850-wildly-gyration-12ff@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,57 +78,234 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 
-Currently, we don't reenable the config if freezing the device failed.
+PAT handling won't do the right thing in COW mappings: the first PTE (or,
+in fact, all PTEs) can be replaced during write faults to point at anon
+folios.  Reliably recovering the correct PFN and cachemode using
+follow_phys() from PTEs will not work in COW mappings.
 
-For example, virtio-mem currently doesn't support suspend+resume, and
-trying to freeze the device will always fail. Afterwards, the device
-will no longer respond to resize requests, because it won't get notified
-about config changes.
+Using follow_phys(), we might just get the address+protection of the anon
+folio (which is very wrong), or fail on swap/nonswap entries, failing
+follow_phys() and triggering a WARN_ON_ONCE() in untrack_pfn() and
+track_pfn_copy(), not properly calling free_pfn_range().
 
-Let's fix this by re-enabling the config if freezing fails.
+In free_pfn_range(), we either wouldn't call memtype_free() or would call
+it with the wrong range, possibly leaking memory.
 
-Fixes: 22b7050a024d ("virtio: defer config changed notifications")
-Cc: <stable@kernel.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To fix that, let's update follow_phys() to refuse returning anon folios,
+and fallback to using the stored PFN inside vma->vm_pgoff for COW mappings
+if we run into that.
+
+We will now properly handle untrack_pfn() with COW mappings, where we
+don't need the cachemode.  We'll have to fail fork()->track_pfn_copy() if
+the first page was replaced by an anon folio, though: we'd have to store
+the cachemode in the VMA to make this work, likely growing the VMA size.
+
+For now, lets keep it simple and let track_pfn_copy() just fail in that
+case: it would have failed in the past with swap/nonswap entries already,
+and it would have done the wrong thing with anon folios.
+
+Simple reproducer to trigger the WARN_ON_ONCE() in untrack_pfn():
+
+<--- C reproducer --->
+ #include <stdio.h>
+ #include <sys/mman.h>
+ #include <unistd.h>
+ #include <liburing.h>
+
+ int main(void)
+ {
+         struct io_uring_params p = {};
+         int ring_fd;
+         size_t size;
+         char *map;
+
+         ring_fd = io_uring_setup(1, &p);
+         if (ring_fd < 0) {
+                 perror("io_uring_setup");
+                 return 1;
+         }
+         size = p.sq_off.array + p.sq_entries * sizeof(unsigned);
+
+         /* Map the submission queue ring MAP_PRIVATE */
+         map = mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE,
+                    ring_fd, IORING_OFF_SQ_RING);
+         if (map == MAP_FAILED) {
+                 perror("mmap");
+                 return 1;
+         }
+
+         /* We have at least one page. Let's COW it. */
+         *map = 0;
+         pause();
+         return 0;
+ }
+<--- C reproducer --->
+
+On a system with 16 GiB RAM and swap configured:
+ # ./iouring &
+ # memhog 16G
+ # killall iouring
+[  301.552930] ------------[ cut here ]------------
+[  301.553285] WARNING: CPU: 7 PID: 1402 at arch/x86/mm/pat/memtype.c:1060 untrack_pfn+0xf4/0x100
+[  301.553989] Modules linked in: binfmt_misc nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_g
+[  301.558232] CPU: 7 PID: 1402 Comm: iouring Not tainted 6.7.5-100.fc38.x86_64 #1
+[  301.558772] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebu4
+[  301.559569] RIP: 0010:untrack_pfn+0xf4/0x100
+[  301.559893] Code: 75 c4 eb cf 48 8b 43 10 8b a8 e8 00 00 00 3b 6b 28 74 b8 48 8b 7b 30 e8 ea 1a f7 000
+[  301.561189] RSP: 0018:ffffba2c0377fab8 EFLAGS: 00010282
+[  301.561590] RAX: 00000000ffffffea RBX: ffff9208c8ce9cc0 RCX: 000000010455e047
+[  301.562105] RDX: 07fffffff0eb1e0a RSI: 0000000000000000 RDI: ffff9208c391d200
+[  301.562628] RBP: 0000000000000000 R08: ffffba2c0377fab8 R09: 0000000000000000
+[  301.563145] R10: ffff9208d2292d50 R11: 0000000000000002 R12: 00007fea890e0000
+[  301.563669] R13: 0000000000000000 R14: ffffba2c0377fc08 R15: 0000000000000000
+[  301.564186] FS:  0000000000000000(0000) GS:ffff920c2fbc0000(0000) knlGS:0000000000000000
+[  301.564773] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  301.565197] CR2: 00007fea88ee8a20 CR3: 00000001033a8000 CR4: 0000000000750ef0
+[  301.565725] PKRU: 55555554
+[  301.565944] Call Trace:
+[  301.566148]  <TASK>
+[  301.566325]  ? untrack_pfn+0xf4/0x100
+[  301.566618]  ? __warn+0x81/0x130
+[  301.566876]  ? untrack_pfn+0xf4/0x100
+[  301.567163]  ? report_bug+0x171/0x1a0
+[  301.567466]  ? handle_bug+0x3c/0x80
+[  301.567743]  ? exc_invalid_op+0x17/0x70
+[  301.568038]  ? asm_exc_invalid_op+0x1a/0x20
+[  301.568363]  ? untrack_pfn+0xf4/0x100
+[  301.568660]  ? untrack_pfn+0x65/0x100
+[  301.568947]  unmap_single_vma+0xa6/0xe0
+[  301.569247]  unmap_vmas+0xb5/0x190
+[  301.569532]  exit_mmap+0xec/0x340
+[  301.569801]  __mmput+0x3e/0x130
+[  301.570051]  do_exit+0x305/0xaf0
+...
+
+Link: https://lkml.kernel.org/r/20240403212131.929421-3-david@redhat.com
 Signed-off-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20240213135425.795001-1-david@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 310227f42882c52356b523e2f4e11690eebcd2ab)
+Reported-by: Wupeng Ma <mawupeng1@huawei.com>
+Closes: https://lkml.kernel.org/r/20240227122814.3781907-1-mawupeng1@huawei.com
+Fixes: b1a86e15dc03 ("x86, pat: remove the dependency on 'vm_pgoff' in track/untrack pfn vma routines")
+Fixes: 5899329b1910 ("x86: PAT: implement track/untrack of pfnmap regions for x86 - v3")
+Acked-by: Ingo Molnar <mingo@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 04c35ab3bdae7fefbd7c7a7355f29fa03a035221)
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- drivers/virtio/virtio.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/x86/mm/pat/memtype.c | 49 ++++++++++++++++++++++++++++-----------
+ mm/memory.c               |  4 ++++
+ 2 files changed, 39 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
-index 828ced060742..1ef094427f29 100644
---- a/drivers/virtio/virtio.c
-+++ b/drivers/virtio/virtio.c
-@@ -489,13 +489,19 @@ EXPORT_SYMBOL_GPL(unregister_virtio_device);
- int virtio_device_freeze(struct virtio_device *dev)
- {
- 	struct virtio_driver *drv = drv_to_virtio(dev->dev.driver);
-+	int ret;
- 
- 	virtio_config_disable(dev);
- 
- 	dev->failed = dev->config->get_status(dev) & VIRTIO_CONFIG_S_FAILED;
- 
--	if (drv && drv->freeze)
--		return drv->freeze(dev);
-+	if (drv && drv->freeze) {
-+		ret = drv->freeze(dev);
-+		if (ret) {
-+			virtio_config_enable(dev);
-+			return ret;
-+		}
-+	}
- 
- 	return 0;
+diff --git a/arch/x86/mm/pat/memtype.c b/arch/x86/mm/pat/memtype.c
+index d5ef64ddd35e..f6466022954b 100644
+--- a/arch/x86/mm/pat/memtype.c
++++ b/arch/x86/mm/pat/memtype.c
+@@ -989,6 +989,38 @@ static void free_pfn_range(u64 paddr, unsigned long size)
+ 		memtype_free(paddr, paddr + size);
  }
+ 
++static int get_pat_info(struct vm_area_struct *vma, resource_size_t *paddr,
++		pgprot_t *pgprot)
++{
++	unsigned long prot;
++
++	VM_WARN_ON_ONCE(!(vma->vm_flags & VM_PAT));
++
++	/*
++	 * We need the starting PFN and cachemode used for track_pfn_remap()
++	 * that covered the whole VMA. For most mappings, we can obtain that
++	 * information from the page tables. For COW mappings, we might now
++	 * suddenly have anon folios mapped and follow_phys() will fail.
++	 *
++	 * Fallback to using vma->vm_pgoff, see remap_pfn_range_notrack(), to
++	 * detect the PFN. If we need the cachemode as well, we're out of luck
++	 * for now and have to fail fork().
++	 */
++	if (!follow_phys(vma, vma->vm_start, 0, &prot, paddr)) {
++		if (pgprot)
++			*pgprot = __pgprot(prot);
++		return 0;
++	}
++	if (is_cow_mapping(vma->vm_flags)) {
++		if (pgprot)
++			return -EINVAL;
++		*paddr = (resource_size_t)vma->vm_pgoff << PAGE_SHIFT;
++		return 0;
++	}
++	WARN_ON_ONCE(1);
++	return -EINVAL;
++}
++
+ /*
+  * track_pfn_copy is called when vma that is covering the pfnmap gets
+  * copied through copy_page_range().
+@@ -999,20 +1031,13 @@ static void free_pfn_range(u64 paddr, unsigned long size)
+ int track_pfn_copy(struct vm_area_struct *vma)
+ {
+ 	resource_size_t paddr;
+-	unsigned long prot;
+ 	unsigned long vma_size = vma->vm_end - vma->vm_start;
+ 	pgprot_t pgprot;
+ 
+ 	if (vma->vm_flags & VM_PAT) {
+-		/*
+-		 * reserve the whole chunk covered by vma. We need the
+-		 * starting address and protection from pte.
+-		 */
+-		if (follow_phys(vma, vma->vm_start, 0, &prot, &paddr)) {
+-			WARN_ON_ONCE(1);
++		if (get_pat_info(vma, &paddr, &pgprot))
+ 			return -EINVAL;
+-		}
+-		pgprot = __pgprot(prot);
++		/* reserve the whole chunk covered by vma. */
+ 		return reserve_pfn_range(paddr, vma_size, &pgprot, 1);
+ 	}
+ 
+@@ -1087,7 +1112,6 @@ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
+ 		 unsigned long size)
+ {
+ 	resource_size_t paddr;
+-	unsigned long prot;
+ 
+ 	if (vma && !(vma->vm_flags & VM_PAT))
+ 		return;
+@@ -1095,11 +1119,8 @@ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
+ 	/* free the chunk starting from pfn or the whole chunk */
+ 	paddr = (resource_size_t)pfn << PAGE_SHIFT;
+ 	if (!paddr && !size) {
+-		if (follow_phys(vma, vma->vm_start, 0, &prot, &paddr)) {
+-			WARN_ON_ONCE(1);
++		if (get_pat_info(vma, &paddr, NULL))
+ 			return;
+-		}
+-
+ 		size = vma->vm_end - vma->vm_start;
+ 	}
+ 	free_pfn_range(paddr, size);
+diff --git a/mm/memory.c b/mm/memory.c
+index 6044d9a4bcd6..99d15abe4a06 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5086,6 +5086,10 @@ int follow_phys(struct vm_area_struct *vma,
+ 		goto out;
+ 	pte = *ptep;
+ 
++	/* Never return PFNs of anon folios in COW mappings. */
++	if (vm_normal_page(vma, address, pte))
++		goto unlock;
++
+ 	if ((flags & FOLL_WRITE) && !pte_write(pte))
+ 		goto unlock;
+ 
 -- 
 2.44.0
 
