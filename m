@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-37947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1223389EF45
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 11:54:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 157A789EF46
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 11:54:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95FCE1F214AA
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 09:54:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69C99B216F3
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 09:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5674415530C;
-	Wed, 10 Apr 2024 09:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC7A1553AC;
+	Wed, 10 Apr 2024 09:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bdx1rI2z"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZICLvvsZ"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3871553AC
-	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 09:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935DB13D28F
+	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 09:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712742860; cv=none; b=pTJuo6SMMQ5bcWjQiEpji7dC7Ik3alMGMtCm0j2yqm386+vY405IOvSwyPrtfBL2I06k+irVUzt31ePFz7hsyLFLtKtb3g3DieCAyGiEuSUDR/KfLv30D0qF9ApBYqg8VyF4eJy5F74p/VG/YXDCGYKt6dLH9wNVukRunr8y6CE=
+	t=1712742875; cv=none; b=BUfcgsTCAeZgRZCFhWcWKNRN2EK6fH39kJQT8sH4J30ilLCGfRXCRXLgggjJP48nGmUR6wdZXEjmXM7ybRvns3+igVjSX8XaRBcz5AAszwUFEDDqddJsJit+k6FvwB/Hk6P0FYqDfppXltIypmez5Nrvvq3g+fc/fjcKOlqAziA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712742860; c=relaxed/simple;
-	bh=veOhYHa9XSE6pea72aR5uZPoCriOkuV4L+uPWUDLm5o=;
+	s=arc-20240116; t=1712742875; c=relaxed/simple;
+	bh=0NC5BpOthNIbdGv1lIYM23IKlC83X1DzF9HHGxCQ4SA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S3yu9setiNIrPyJyqgswjafrlp9Fk01PaHm+gYAS79upwu2bcnxRzKvqpLek3iZYt33iahok0fTjYvuhEO9jl9YGie5pFy6Fcq8NfQJSnD+DNMyWH5AXR4zCqUPtY6JoJyUiRkOZVuQigRc/E+Dnz3p4fRv0RaZmi54Ahv3H1nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bdx1rI2z; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=f+6XmIXSR12v5gUV97OcnLkWdwndo6sKjJ9KcLPXRF/woxA1mZnuSMZkp39eHvrQo68Jh9u0DIhoBNyg17g836zXHo2+0mnp7P4pYFlhNK6+TT4eG7kkU4d0GtvgoTaNxFPP+ndkQZlXcnO7Vt+qvrpVXUDOsxJydP3yM/ofAlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZICLvvsZ; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712742857;
+	s=mimecast20190719; t=1712742872;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=CcAcjLQA9hc726fdBxIXp01QetVNq0Y5HTLbj2XBp+I=;
-	b=bdx1rI2zVhktgknJtVNuQjSCCwZ3ZrmknZMvqu1WTNA64dfC6HHhOaYTf4SeQK2YSfC9hg
-	LrsUI0A92xX+7AFqX2D3zcDQSbN1o1bFdA1zNPQWDkWlhrtvYakbUxgvve4KdF61z7WyGE
-	X01R7dA5XPOZGYUpb6PwvrEqeQH475s=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=MGqJvx4+F9X5M32QY16t4qGbYeihGQqrwO8ABS7SiF0=;
+	b=ZICLvvsZYokdnxlfJNXtL+vm4K2C1/4xnxtvEfctFm/nUVRwf8vwU4xEDJ+5w2F0UGD7B7
+	TbIQkImwlrNeESA5sPN+eRNT7LGHmWLyHkwNwUfHiUC8iSbGVlxzkSQS5HjcCrMh6l0X3K
+	kgBtrYgqXeixriaNPKef9bgjetqF1Sg=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-j16kJJvwPHa9lcohpOobdA-1; Wed, 10 Apr 2024 05:54:15 -0400
-X-MC-Unique: j16kJJvwPHa9lcohpOobdA-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-416664de900so23225275e9.2
-        for <stable@vger.kernel.org>; Wed, 10 Apr 2024 02:54:15 -0700 (PDT)
+ us-mta-534-pdUEAii3O0ebrj1KM33p0Q-1; Wed, 10 Apr 2024 05:54:30 -0400
+X-MC-Unique: pdUEAii3O0ebrj1KM33p0Q-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-343c86edeb7so3468163f8f.1
+        for <stable@vger.kernel.org>; Wed, 10 Apr 2024 02:54:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712742854; x=1713347654;
+        d=1e100.net; s=20230601; t=1712742869; x=1713347669;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=CcAcjLQA9hc726fdBxIXp01QetVNq0Y5HTLbj2XBp+I=;
-        b=CmnmPj2KYNeK0juAJFz1UFkwXYC4wVKHsbsVq3JW+3bjV+4F88fQ4R5wXakkKQtf3H
-         LMNShf+qkiSEYV62/tkasC3+qEQVWTcSTyZp1Azhawcx4ypcoOm0PgHqtBerE+arC8HZ
-         bMZqzRczbz+NhkOFRcZdBTIMPT2V/lgADiRF0qXE4Y8pkBmOtzEMe9BL0CxuQp7NHScl
-         VtQqbU2nf9+fIYMosT6sqDWrntn2h4DUH7EMnGukLwv5abrGhp0hwCq7QIn2B6SL7tr0
-         TTvcWHQ9n9ntcScWM/c9VI00kBVuV7JGLE/RhpwbJ+GIVOmJIlmtpLEW66DYGzc4pKBd
-         3JIw==
-X-Gm-Message-State: AOJu0YxpZw/8IJvT3T14J/7pmEtuGx3U2rRqe3T4py9Di0yP5ft9mend
-	0hOznCxfcBOQahQ2joEUVCedFL9OlGgEidafx8Zwgyz9tWEcbL/42SkDBAZUWOlSImcR531i785
-	WXycgAGnaarunf5uAAEnuE/p5ksvbXRhazSpvBVIW1C8vRXFNMXdWNU+orpMfa93EsIiuR5b13X
-	3M5OafLioWaDXYs/uWH/qATWtAUV5cmD1q/A==
-X-Received: by 2002:a05:600c:4586:b0:416:b21e:22bb with SMTP id r6-20020a05600c458600b00416b21e22bbmr2162019wmo.31.1712742853858;
-        Wed, 10 Apr 2024 02:54:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IElM3sYLctA6vqChtlxna/rUOfQ9T0x0KsYtLIewZPeARgxCRmiYPLzs6/NOIBFhTiM6P7wUA==
-X-Received: by 2002:a05:600c:4586:b0:416:b21e:22bb with SMTP id r6-20020a05600c458600b00416b21e22bbmr2161987wmo.31.1712742853326;
-        Wed, 10 Apr 2024 02:54:13 -0700 (PDT)
+        bh=MGqJvx4+F9X5M32QY16t4qGbYeihGQqrwO8ABS7SiF0=;
+        b=k+it0Jn83+gK7TXhCHzWv6vcHcwNFwp/2CYB+cZmhgfAGsAFYuU/6F/bwqatOQ8One
+         NyIf4nUZUlQf8pe8aNvCprK8qFaBhUa0rIBqSRXKHmVjH5Z0CvAzctif2OcmK5pdynqm
+         NWJO9N97WBH2h/5XVKqK3uHGdWNhUXd9kUtAY/M/WDX6Y7p8v4tNsjVwHsi58B/Soxv4
+         0e5riHFrmSFgH6yFraReQfa8PYOdUhRofnDR9MJ85mynAZZGPRcj4WMDrpmeuTpnJK86
+         8+7TlRXUoCHIsMexhbqTsisNTY/ViBa8dLcVNN234RvK2d1Wd9j9UPpVLPfQf9yrEbn1
+         vF3g==
+X-Gm-Message-State: AOJu0Yw28OIMaZLRIH4EMsy1LC9GrEaGOzbK0sWm6kK51z2PqORsBTX9
+	ZxzXxN8hiEDnh149x7IhU9kNd+wjSQ8WcbZuFwBjgcW1XZAUgFOU5GzBdnPXb4W6PX0M16vAJyf
+	cOiacgrC9ux6AD6ae7i2Nx9uya0BMAbkMJAxpDQG/IydccgrmSBjBHurDOCzpH0mIGS2Zz/pMke
+	sXihfPphIdTqN3Bwb1Cm2dqOUnCoLupF4u3Q==
+X-Received: by 2002:a5d:4ed1:0:b0:345:c169:8808 with SMTP id s17-20020a5d4ed1000000b00345c1698808mr1579544wrv.4.1712742869691;
+        Wed, 10 Apr 2024 02:54:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG0SWSgJzdtQbSjA8op324mVNmlCbtD8FS/onjvVO7gRtRsmBj7cccP4m986Yb0lLlLGZ1v5Q==
+X-Received: by 2002:a5d:4ed1:0:b0:345:c169:8808 with SMTP id s17-20020a5d4ed1000000b00345c1698808mr1579523wrv.4.1712742869198;
+        Wed, 10 Apr 2024 02:54:29 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c712:fa00:38eb:93ad:be38:d469? (p200300cbc712fa0038eb93adbe38d469.dip0.t-ipconnect.de. [2003:cb:c712:fa00:38eb:93ad:be38:d469])
-        by smtp.gmail.com with ESMTPSA id d2-20020a05600c34c200b004155387c08esm1768933wmq.27.2024.04.10.02.54.12
+        by smtp.gmail.com with ESMTPSA id r12-20020a5d498c000000b00343e8968917sm13018442wrq.1.2024.04.10.02.54.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Apr 2024 02:54:12 -0700 (PDT)
-Message-ID: <a668f85e-d6bd-4af0-a8b8-8f709cc0072e@redhat.com>
-Date: Wed, 10 Apr 2024 11:54:11 +0200
+        Wed, 10 Apr 2024 02:54:28 -0700 (PDT)
+Message-ID: <473796cf-1e54-47d8-8425-42fb2a24f28c@redhat.com>
+Date: Wed, 10 Apr 2024 11:54:27 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,15 +83,15 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4.y] x86/mm/pat: fix VM_PAT handling in COW mappings
+Subject: Re: [PATCH 4.19.y] x86/mm/pat: fix VM_PAT handling in COW mappings
 To: stable@vger.kernel.org
 Cc: Wupeng Ma <mawupeng1@huawei.com>, Ingo Molnar <mingo@kernel.org>,
  Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
  <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
  Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>,
  "H. Peter Anvin" <hpa@zytor.com>
-References: <2024040847-departure-lining-fed7@gregkh>
- <20240410094908.191993-1-david@redhat.com>
+References: <2024040851-hamster-canary-7b07@gregkh>
+ <20240410095131.201579-1-david@redhat.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -139,11 +139,11 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240410094908.191993-1-david@redhat.com>
+In-Reply-To: <20240410095131.201579-1-david@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 10.04.24 11:49, David Hildenbrand wrote:
+On 10.04.24 11:51, David Hildenbrand wrote:
 > PAT handling won't do the right thing in COW mappings: the first PTE (or,
 > in fact, all PTEs) can be replaced during write faults to point at anon
 > folios.  Reliably recovering the correct PFN and cachemode using
