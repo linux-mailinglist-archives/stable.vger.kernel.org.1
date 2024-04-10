@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-37945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E76C589EF29
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 11:49:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2119689EF36
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 11:51:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F0652821E5
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 09:49:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 446A41C20E88
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 09:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F30C156C6A;
-	Wed, 10 Apr 2024 09:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320521552F7;
+	Wed, 10 Apr 2024 09:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Esn2y6qK"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ev3CRlH9"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6EF156C61
-	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 09:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D8A13D28F
+	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 09:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712742581; cv=none; b=aStx9kBwbovHfmvHo6lQXejVbbJUEvmSi491r2ya5y5s58jsv8fZ+hw+XmDHa4d0r32odfnaq//qf49+zOIU5u/HIr3uOQ8QhKDWCiEEd/5SepuWqna1LFCuGuN/40Vf4Vkk7S9hnKf72rwPvR8MkyD20uNEqCMvTuVuM2t3Xc0=
+	t=1712742708; cv=none; b=ReBcNL7Y3xZh9Awh0gGQaAPHk4nQugSqE+YoFD2BH4N7jEL8QCuf/4ECwqleQ3lbu1QrIfj6tLcTVU/owEFdATsUx4TMCAG84k9pMWWauj5e4xbBl6odHgx3JKjuE+p9uBK+a4sywuTl/pzphDVDpSXwnDv+Xm2mBcppZuMdH5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712742581; c=relaxed/simple;
-	bh=Dz0U4MtKKt62/93kSPJLvqY+NprcC08lHXPgjHscEu4=;
+	s=arc-20240116; t=1712742708; c=relaxed/simple;
+	bh=yymPheyh9jRmexdvjg8AMxTZpLFzolZLVV3U11/LrPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l7Wb9CF2OPwPYMxgZFVcel4ZvVDjKkVdIzu5syZx0ZMIe36XLpTdXrbOIGN1jUctMFEgB/R/XWHC62qpXzEkEQ+pDRbu4wZfc8ZhxppjMnllPj7U2ZJZRKIDXr5+9v/KfAr+g6FAw05qsy7YfOuEHo2NjSFqkiz8DTNgLGT51Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Esn2y6qK; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=bek3rEinmBnbRGYEdYNydrjQ+TWO1u4YX+1ipSm++eIWaM+s5hXmHnc9iwQ/aCF91gpo7aIBCIlX6YVfqmGtA0d4YhBPJkLGaStYvywj9JnJnc52ny+HD69f28E42+WFCdVhnyXV4XSCcW7fW2450SLD2pwBNCd6Ti4CQOfAvj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ev3CRlH9; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712742576;
+	s=mimecast20190719; t=1712742705;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SLgkdtKP5xEvuxJfv510L2IZoMaLRA49O3EEV48gyjg=;
-	b=Esn2y6qK5MmBjO+fYXetg8/0aIqkwcF/6QpYTngaNNJb0L+7OS1Y4YN970H/UK2PRGsv6H
-	GLKOwi1UqH2CflgY/KWPoP6hFChN+BMT7d6R0MRr6sNd4t056BOVVOgFgG9Ku9P70vnQFp
-	3gEMt/uhFr8Xhvf4NZtDJMeAwMK4b0Y=
+	bh=oa+/yEjmYZGfW260C3hI8Ryr/x7m+jvF2HumbH4iUME=;
+	b=Ev3CRlH9IEjKGTY9sF5fzf+w8kiJuYxOgrUgE//SR7XhoVPJ4G6ALLRo3rHVV6sdT22s58
+	aOCVVs3oEe+ESwp9TdHwkVnCL4o0sguZM92AgftK4B5bVb2kPSjtmmPjPhlclwrnRc72Kl
+	bVJH9PlAylM5UcBV2aJx/CTDBlW9CGA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-112-SrgoXWhqN_ehkFSCzEqENw-1; Wed, 10 Apr 2024 05:49:33 -0400
-X-MC-Unique: SrgoXWhqN_ehkFSCzEqENw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+ us-mta-386-fy2t4ZUXMPmu1mHx3Blp8Q-1; Wed, 10 Apr 2024 05:51:39 -0400
+X-MC-Unique: fy2t4ZUXMPmu1mHx3Blp8Q-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8B3AA180A577;
-	Wed, 10 Apr 2024 09:49:32 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9D1AA10499A2;
+	Wed, 10 Apr 2024 09:51:38 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.193.162])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id DB4E1490F9;
-	Wed, 10 Apr 2024 09:49:29 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 1617E1121306;
+	Wed, 10 Apr 2024 09:51:35 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: stable@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -66,11 +66,11 @@ Cc: David Hildenbrand <david@redhat.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Borislav Petkov <bp@alien8.de>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH 5.4.y] x86/mm/pat: fix VM_PAT handling in COW mappings
-Date: Wed, 10 Apr 2024 11:49:08 +0200
-Message-ID: <20240410094908.191993-1-david@redhat.com>
-In-Reply-To: <2024040847-departure-lining-fed7@gregkh>
-References: <2024040847-departure-lining-fed7@gregkh>
+Subject: [PATCH 4.19.y] x86/mm/pat: fix VM_PAT handling in COW mappings
+Date: Wed, 10 Apr 2024 11:51:31 +0200
+Message-ID: <20240410095131.201579-1-david@redhat.com>
+In-Reply-To: <2024040851-hamster-canary-7b07@gregkh>
+References: <2024040851-hamster-canary-7b07@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,7 +78,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
 PAT handling won't do the right thing in COW mappings: the first PTE (or,
 in fact, all PTEs) can be replaced during write faults to point at anon
@@ -205,10 +205,10 @@ Signed-off-by: David Hildenbrand <david@redhat.com>
  2 files changed, 40 insertions(+), 14 deletions(-)
 
 diff --git a/arch/x86/mm/pat.c b/arch/x86/mm/pat.c
-index c7c4e2f8c6a5..39d1c35e7491 100644
+index b33304c0042a..3467dbf085ae 100644
 --- a/arch/x86/mm/pat.c
 +++ b/arch/x86/mm/pat.c
-@@ -34,6 +34,7 @@
+@@ -33,6 +33,7 @@
  
  #include "pat_internal.h"
  #include "mm_internal.h"
@@ -216,7 +216,7 @@ index c7c4e2f8c6a5..39d1c35e7491 100644
  
  #undef pr_fmt
  #define pr_fmt(fmt) "" fmt
-@@ -955,6 +956,38 @@ static void free_pfn_range(u64 paddr, unsigned long size)
+@@ -954,6 +955,38 @@ static void free_pfn_range(u64 paddr, unsigned long size)
  		free_memtype(paddr, paddr + size);
  }
  
@@ -255,7 +255,7 @@ index c7c4e2f8c6a5..39d1c35e7491 100644
  /*
   * track_pfn_copy is called when vma that is covering the pfnmap gets
   * copied through copy_page_range().
-@@ -965,20 +998,13 @@ static void free_pfn_range(u64 paddr, unsigned long size)
+@@ -964,20 +997,13 @@ static void free_pfn_range(u64 paddr, unsigned long size)
  int track_pfn_copy(struct vm_area_struct *vma)
  {
  	resource_size_t paddr;
@@ -278,7 +278,7 @@ index c7c4e2f8c6a5..39d1c35e7491 100644
  		return reserve_pfn_range(paddr, vma_size, &pgprot, 1);
  	}
  
-@@ -1053,7 +1079,6 @@ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
+@@ -1052,7 +1078,6 @@ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
  		 unsigned long size)
  {
  	resource_size_t paddr;
@@ -286,7 +286,7 @@ index c7c4e2f8c6a5..39d1c35e7491 100644
  
  	if (vma && !(vma->vm_flags & VM_PAT))
  		return;
-@@ -1061,11 +1086,8 @@ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
+@@ -1060,11 +1085,8 @@ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
  	/* free the chunk starting from pfn or the whole chunk */
  	paddr = (resource_size_t)pfn << PAGE_SHIFT;
  	if (!paddr && !size) {
@@ -300,10 +300,10 @@ index c7c4e2f8c6a5..39d1c35e7491 100644
  	}
  	free_pfn_range(paddr, size);
 diff --git a/mm/memory.c b/mm/memory.c
-index d514f69d9717..f8d76c66311d 100644
+index 1e108db4405c..65601ce49642 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -4428,6 +4428,10 @@ int follow_phys(struct vm_area_struct *vma,
+@@ -4612,6 +4612,10 @@ int follow_phys(struct vm_area_struct *vma,
  		goto out;
  	pte = *ptep;
  
