@@ -1,131 +1,94 @@
-Return-Path: <stable+bounces-37931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70CA289ED62
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 10:16:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE46389EDF0
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 10:45:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24C351F22A10
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 08:16:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B9BEB2269D
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 08:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588D013D533;
-	Wed, 10 Apr 2024 08:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC291586CD;
+	Wed, 10 Apr 2024 08:44:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A53101C5;
-	Wed, 10 Apr 2024 08:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B3B156C78;
+	Wed, 10 Apr 2024 08:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712736976; cv=none; b=eJQ8cHxoNcZMfVFY2bUM1gucXK91Rfa2Txb4xM4v1AcxQts42j2PBuorwaGz1gXqWSiA6kRXfcFSx32WThHmcTtc8XILUskyya0wySl205ppCcwOv2qycWGFVzSK4N6EbYKTsDHazWS3+caaHCPwSgalmEfgltdeL+b/wAZK/UA=
+	t=1712738674; cv=none; b=rCC8IHrNRT4cwMPct6VaPZJ6WIXb9y9ql9pVzuCf3Lg8O+KPaO0nR/x7IifWgIg33qC91MHXQLtba79+bf/8CfP9MdNFB2h6wLab+fzCJVuxP/jnq7P0gB/pOfayE0k4SmiOr7qRulHW1KwhOYMVZ7PfozM9wtWfsHITWfeCsCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712736976; c=relaxed/simple;
-	bh=+BMKLZOsQbr0VOgMzU++BDRC6fIbczsfsXJLxYo5OFw=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=eS54BDt3UArSQ9IjaZntkon6PI0EqH6CkHF5YvYnLfFPVfHRlJJgsdbL+1avDXBUpDEWaWGu7e3u2hdCbQeQ5mQVYgwjOMO7lQxF90RBmeZlUxD0HBiGTQZHN+DrmP05BwtTSAjXnsHz8x9ckzckVnQPTTV0a3oekEdmJGbEK1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4VDwYq151qzWmjq;
-	Wed, 10 Apr 2024 16:13:03 +0800 (CST)
-Received: from canpemm500002.china.huawei.com (unknown [7.192.104.244])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3EE1C14044F;
-	Wed, 10 Apr 2024 16:16:11 +0800 (CST)
-Received: from [10.173.135.154] (10.173.135.154) by
- canpemm500002.china.huawei.com (7.192.104.244) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 10 Apr 2024 16:16:10 +0800
-Subject: Re: [PATCH] mm,swapops: Update check in is_pfn_swap_entry for
- hwpoison entries
-To: Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, David Hildenbrand <david@redhat.com>,
-	<stable@vger.kernel.org>, Tony Luck <tony.luck@intel.com>, Naoya Horiguchi
-	<naoya.horiguchi@nec.com>
-References: <20240407130537.16977-1-osalvador@suse.de>
- <ZhKmAecilbb2oSD9@localhost.localdomain> <ZhLx3fwzQNPDbBei@x1n>
- <ZhMCvynFUDr-8DpX@localhost.localdomain>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <5b730a9c-440d-6527-a761-e15c9670af83@huawei.com>
-Date: Wed, 10 Apr 2024 16:16:10 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	s=arc-20240116; t=1712738674; c=relaxed/simple;
+	bh=jObAB9SuCF4+h2GbtDz7KIEP21tJ4jsDgL10qVI0/tQ=;
+	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
+	 Message-ID:Subject; b=QraSEiTbRRyFxvc4GGdzaJtZIxjtAA8rOwuqimmMRaisIxlY8RTkRoCQHe87aWZrvvFHm5if9rIJw0MC1N4pU+Dr44HzeXofd9rIVMYarqdfV5BhxT9+Pap4RbQm8FHtpY7KO1081fbMzES1iodLfp37P8N9uVY0LT4iETb92LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Received: from harlem.collaboradmins.com (harlem.collaboradmins.com [IPv6:2a01:4f8:1c0c:5936::1])
+	by madrid.collaboradmins.com (Postfix) with ESMTP id 59E183781453;
+	Wed, 10 Apr 2024 08:44:29 +0000 (UTC)
+From: "Shreeya Patel" <shreeya.patel@collabora.com>
+In-Reply-To: <20240409172805.638917723@linuxfoundation.org>
+Content-Type: text/plain; charset="utf-8"
+X-Forward: 127.0.0.1
+References: <20240409172805.638917723@linuxfoundation.org>
+Date: Wed, 10 Apr 2024 09:44:29 +0100
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org, "Gustavo Padovan" <gustavo.padovan@collabora.com>, "kernelci-regressions mailing list" <kernelci-regressions@lists.collabora.co.uk>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <ZhMCvynFUDr-8DpX@localhost.localdomain>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- canpemm500002.china.huawei.com (7.192.104.244)
+Message-ID: <3c0c9c-66165180-b-194ac52@218875419>
+Subject: =?utf-8?q?Re=3A?= [PATCH =?utf-8?q?6=2E1?= 000/137] 
+ =?utf-8?q?6=2E1=2E85-rc2?= review
+User-Agent: SOGoMail 5.10.0
+Content-Transfer-Encoding: quoted-printable
 
-On 2024/4/8 4:31, Oscar Salvador wrote:
->> Totally unexpected, as this commit even removed hwpoison_entry_to_pfn().
->> Obviously even until now I assumed hwpoison is accounted as pfn swap entry
->> but it's just missing..
->>
->> Since this commit didn't really change is_pfn_swap_entry() itself, I was
->> thinking maybe an older fix tag would apply, but then I noticed the old
->> code indeed should work well even if hwpoison entry is missing.  For
->> example, it's a grey area on whether a hwpoisoned page should be accounted
->> in smaps.  So I think the Fixes tag is correct, and thanks for fixing this.
->>
->> Reviewed-by: Peter Xu <peterx@redhat.com>
-> 
-> Thanks Peter
+On Tuesday, April 09, 2024 23:00 IST, Greg Kroah-Hartman <gregkh@linuxf=
+oundation.org> wrote:
 
-Thanks both.
+> This is the start of the stable review cycle for the 6.1.85 release.
+> There are 137 patches in this series, all will be posted as a respons=
+e
+> to this one.  If anyone has any issues with these being applied, plea=
+se
+> let me know.
+>=20
+> Responses should be made by Thu, 11 Apr 2024 17:27:40 +0000.
+> Anything received after that time might be too late.
+>=20
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1=
+.85-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc=
+.git linux-6.1.y
+> and the diffstat can be found below.
+>=20
 
-> 
->> Fedora stopped having DEBUG_VM for some time, but not sure about when it's
->> still in the 6.1 trees.  It looks like cc stable is still reasonable from
->> that regard.
-> 
-> Good to know, thanks for the info.
-> 
->> A side note is that when I'm looking at this, I went back and see why in
->> some cases we need the pfn maintained for the poisoned, then I saw the only
->> user is check_hwpoisoned_entry() who wants to do fast kills in some
->> contexts and that includes a double check on the pfns in a poisoned entry.
->> Then afaict this path is just too rarely used and buggy.
-> 
-> Yes, unfortunately memory-failure code does not get exercised that much,
-> and so there might be subtly bugs lurking in there for quite some time.
+## stable-rc HEAD for linux-6.1.y:
+Date: 2024-04-10
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.=
+git/log/?h=3D9b31003bbfa73ce6dd6722b8b44180e2f2cb0745
 
-There're many memory-failure testcases but some code paths still didn't get
-exercised. That's a pity. :(
+## Build failures:
+No build failures seen for the stable-rc/linux-6.1.y commit head \o/
 
-> 
->> A few things we may need fixing, maybe someone in the loop would have time
->> to have a look:
->>
->> - check_hwpoisoned_entry()
->>   - pte_none check is missing
->>   - all the rest swap types are missing (e.g., we want to kill the proc too
->>     if the page is during migration)
+## Boot failures:
+No **new** boot failures seen for the stable-rc/linux-6.1.y commit head=
+ \o/
 
-Firstly, I thought rest swap types just won't exist in this code path. But after second thought,
-it seems it's possible. For example, when page is being isolated for migration, memory_failure
-will fails to isolate it. And the second MCE event will goes to kill_accessing_process() and
-see a migrate swap entry.
+Tested-by: kernelci.org bot <bot@kernelci.org>
 
->> - check_hwpoisoned_pmd_entry()
->>   - need similar care like above (pmd_none is covered not others)
-> 
-> I will have a look and see what needs fixing, thanks for bringing it up.
-
-Thanks for your time.
-.
-
-> 
-> 
+Thanks,
+Shreeya Patel
 
 
