@@ -1,51 +1,74 @@
-Return-Path: <stable+bounces-38009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DF889FE5A
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 19:23:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75D889FF4C
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 19:58:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 434E2B29E24
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 17:18:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65267B264DE
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 17:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3134717BB0D;
-	Wed, 10 Apr 2024 17:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA8617F38F;
+	Wed, 10 Apr 2024 17:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b="nRgG8DJh"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QbQ6q4AG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout.efficios.com (smtpout.efficios.com [167.114.26.122])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFAF15B0E4;
-	Wed, 10 Apr 2024 17:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.114.26.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4EB17F365
+	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 17:58:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712769498; cv=none; b=oWCLReUF8GCARojV+bP6g8lhF9wAxezZ+LSbjv/lTlepUVS+jNpxmz7LkLvD9tyTXqSauQsQ4vEVzwN/JJ44NW+amDE4n5G1Vn5xLKXRaxjzLQ9JAruY/OSDrQqMo4zyKMMtRtxaGgW5MYRPzEoGhIOQNz9CxvFRy5mOs+NQ50Q=
+	t=1712771925; cv=none; b=iJpct0fEW8QO/5ItrxPzFg5ZFkzJaQzep+nIJbo1Zd14NprVGzRifbnfdtho/rbgqy8eC3eqN5FgtqSJrM4RSa7pA+qux1REDa72qWVXu6tgFLXCjsB7bnUjGxoYwTzfwykq3SgZ/w6Ujq5nL9hsvpZWEdnhF+2u8bM2ahkgYxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712769498; c=relaxed/simple;
-	bh=pze+/ST5lcAZTgLL3MfKRc3IpTaWq5E06McQnCfjJ/Y=;
+	s=arc-20240116; t=1712771925; c=relaxed/simple;
+	bh=YwYXMXs0IVxwk6DATVGOErw+hkjBmJdEIaxZBT6Ct/o=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Yb7fjTG2VUQNwQJYK/NJvxV7xbZKLrG7/k/IxLKb8p0W+nqbbAYM2tCWHpEyS/ubUGL5jrrUrYFJXg+6AaZzEXvvjJ8q7qPqtU3igI9gVaxMVO2sgEAsiICmN99SQ7v7F7fZtg9AcEuj6SBYtpG2wgf70WjwVaTw5nHkw2DFfQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com; spf=pass smtp.mailfrom=efficios.com; dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b=nRgG8DJh; arc=none smtp.client-ip=167.114.26.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=efficios.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
-	s=smtpout1; t=1712769494;
-	bh=pze+/ST5lcAZTgLL3MfKRc3IpTaWq5E06McQnCfjJ/Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nRgG8DJhJ13BdD61Q3w8naE9a2X1LePlOfIzh/QEHhsIgxml+OllqXJnI2aGkkCUU
-	 IW7pyhy7e8muOfPAlLZu3CvUOil600Ss2GqkwF11seZ+g6see0sF0jmRlul+zp14gL
-	 QhGquyTurkELLfrh/zYxo3ZjedAgEEmCYLpoT6Yg4IEZrj3hThU6MMMlqwVrBBK0sM
-	 OfLal2lbNT3Wn8a8JHi8lzAuG0KlcOpKuVT09QrTTKHD4TghBp1cDNKeSYLfIZMLqG
-	 NpVSCoHphmq9wtRTOhxpexDt50+5h3r9rpvEUVT0s7XqRVLg7sWib6mzNMj3Bb15JN
-	 Hc9Fgt6sBa10Q==
-Received: from [172.16.0.134] (192-222-143-198.qc.cable.ebox.net [192.222.143.198])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4VF8fs2KdQzrmj;
-	Wed, 10 Apr 2024 13:18:13 -0400 (EDT)
-Message-ID: <18f5d6e7-9e33-419a-bd15-fd4fa34a69c8@efficios.com>
-Date: Wed, 10 Apr 2024 13:18:45 -0400
+	 In-Reply-To:Content-Type; b=JcsDyeuyREolRuu1bzgfdl0Y4SPvbU43ZXraf0giol2rxIpGV3NngHMkctoXFmMHOTUN3kOovbwf/D+uco4Dr3al5CRHoL9LEDNaOBym3UqVPX1J91jJb5jiKXcO/oFo9T5e3l4Fqif3jsuRKgXTzvJC6lg4qLMc4m4PAtG1DeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QbQ6q4AG; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2d87660d5dbso50383041fa.3
+        for <stable@vger.kernel.org>; Wed, 10 Apr 2024 10:58:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712771922; x=1713376722; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cZfESw/9OR2lnetOyNgUHG3OZQhlip53uNIlAUytWmY=;
+        b=QbQ6q4AGy+czhv78IqIaEbpMIYYhRPBH2y9EcMBgYFQuV8FUPn3x/aiNyizEJn+3ZW
+         yHrIN0uvPyx2vevp7g5KS8V4qyB6PlHOzGdsYdVr6EKY3dG1eL7QnG1mVAF2whELEyOI
+         7jVmrwEa7Kd9uqUmFaaauCicRvC+DqPBzGQoFPUyx3fg41nu4auFTJrQZGmfYkN7B5tg
+         x8arWIg4zcG5OckTVT2xuhcsTDWSo5mCQW3kAD7FoNDydPcug0Y/LIobDhPNm0lCJXYp
+         viFrLxoVMjd5+KiVLBQKh327madBm5ok0xQTI3VArDb7cLSMcZ9f2Quax0ICnoXaIfCx
+         L8Lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712771922; x=1713376722;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cZfESw/9OR2lnetOyNgUHG3OZQhlip53uNIlAUytWmY=;
+        b=l2C2xbXo4fxFrlQ7V9MKpr6/ucAUOlHWRQ4q9qGJnzzfwBxhgX2BpUJGnw2Dt+ZW7x
+         o3FawapaCqIUe/V3YgGeheO8ENglsU+SjN47x4emXl/2pJAoJwjYJzTEek/0mmdpgbNc
+         8Rd6ZbnDT3yc9p+Lw9PrydEO4n+T3eywqir4SNwwwFX6n2aMXqagaXrHmZypqWOFpqrW
+         WwKioIVybGzxwu/6zbDkGGDa8UVZJYSovm6nxBAEVnwTDIwGNbaHecbnz5snvP4uuxSX
+         KSxEgLdRxil8oGL8H4q/bRwjUAp+35MQvI93I0znqs9acB4wCDtCsWq3fG1x0DZ1HC4J
+         ujgQ==
+X-Gm-Message-State: AOJu0Yy9LXaKxo6+8MjxbBRlWoUoNTyskTpb8adGPEn/1zpMHsAfypj5
+	TRqB6IhdsJVu+uucjvP3I4buFlyiC/Mw6odKwLMkA1vHhBhUoziK5wmhZPnNMYnoyQTATTPuHle
+	ha0g=
+X-Google-Smtp-Source: AGHT+IHuPz9eKSloG3aQH7ciBR5TQDfDencMS58CGvG0dkNQ9r6hcdHyVqXbSZfKVuohartThR/MwQ==
+X-Received: by 2002:a2e:978c:0:b0:2d7:447b:c30c with SMTP id y12-20020a2e978c000000b002d7447bc30cmr2323385lji.48.1712771921923;
+        Wed, 10 Apr 2024 10:58:41 -0700 (PDT)
+Received: from [172.30.205.26] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
+        by smtp.gmail.com with ESMTPSA id q10-20020a2e84ca000000b002d8ed1c8245sm37727ljh.67.2024.04.10.10.58.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Apr 2024 10:58:41 -0700 (PDT)
+Message-ID: <e06402a9-584f-4f0c-a61e-d415a8b0c441@linaro.org>
+Date: Wed, 10 Apr 2024 19:58:40 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,176 +76,30 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] sched: Add missing memory barrier in switch_mm_cid
-To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>
-Cc: linux-kernel@vger.kernel.org, "levi . yun" <yeoreum.yun@arm.com>,
- stable@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
- <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
- Daniel Bristot de Oliveira <bristot@redhat.com>,
- Valentin Schneider <vschneid@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>,
- Aaron Lu <aaron.lu@intel.com>
-References: <20240308150719.676738-1-mathieu.desnoyers@efficios.com>
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: Re: Patch "arm64: dts: qcom: Add support for Xiaomi Redmi Note 9S"
+ has been added to the 6.8-stable tree
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+ buddyjojo06@outlook.com
+Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Johan Hovold <johan+linaro@kernel.org>
+References: <20240410155728.1729320-1-sashal@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20240308150719.676738-1-mathieu.desnoyers@efficios.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20240410155728.1729320-1-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-This fix has received an Acked-by from ARM64 maintainer Catalin Marinas. [1]
 
-I'm CCing x86 maintainers whom are not also scheduler maintainers
-as well so they can give their input.
 
-This is still waiting for feedback from scheduler maintainers.
+On 4/10/24 17:57, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+> 
+>      arm64: dts: qcom: Add support for Xiaomi Redmi Note 9S
 
-[1] https://lore.kernel.org/lkml/ZhUVpwwqKxWKgU0Q@arm.com/
+autosel has been reeaaaaaly going over the top lately, particularly
+with dts patches.. I'm not sure adding support for a device is
+something that should go to stable
 
-On 2024-03-08 10:07, Mathieu Desnoyers wrote:
-> Many architectures' switch_mm() (e.g. arm64) do not have an smp_mb()
-> which the core scheduler code has depended upon since commit:
-> 
->      commit 223baf9d17f25 ("sched: Fix performance regression introduced by mm_cid")
-> 
-> If switch_mm() doesn't call smp_mb(), sched_mm_cid_remote_clear() can
-> unset the actively used cid when it fails to observe active task after it
-> sets lazy_put.
-> 
-> There *is* a memory barrier between storing to rq->curr and _return to
-> userspace_ (as required by membarrier), but the rseq mm_cid has stricter
-> requirements: the barrier needs to be issued between store to rq->curr
-> and switch_mm_cid(), which happens earlier than:
-> 
-> - spin_unlock(),
-> - switch_to().
-> 
-> So it's fine when the architecture switch_mm happens to have that barrier
-> already, but less so when the architecture only provides the full barrier
-> in switch_to() or spin_unlock().
-> 
-> It is a bug in the rseq switch_mm_cid() implementation. All architectures
-> that don't have memory barriers in switch_mm(), but rather have the full
-> barrier either in finish_lock_switch() or switch_to() have them too late
-> for the needs of switch_mm_cid().
-> 
-> Introduce a new smp_mb__after_switch_mm(), defined as smp_mb() in the
-> generic barrier.h header, and use it in switch_mm_cid() for scheduler
-> transitions where switch_mm() is expected to provide a memory barrier.
-> 
-> Architectures can override smp_mb__after_switch_mm() if their
-> switch_mm() implementation provides an implicit memory barrier.
-> Override it with a no-op on x86 which implicitly provide this memory
-> barrier by writing to CR3.
-> 
-> Link: https://lore.kernel.org/lkml/20240305145335.2696125-1-yeoreum.yun@arm.com/
-> Reported-by: levi.yun <yeoreum.yun@arm.com>
-> Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
-> Cc: <stable@vger.kernel.org> # 6.4.x
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Vincent Guittot <vincent.guittot@linaro.org>
-> Cc: Juri Lelli <juri.lelli@redhat.com>
-> Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-> Cc: Ben Segall <bsegall@google.com>
-> Cc: Mel Gorman <mgorman@suse.de>
-> Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
-> Cc: Valentin Schneider <vschneid@redhat.com>
-> Cc: levi.yun <yeoreum.yun@arm.com>
-> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Aaron Lu <aaron.lu@intel.com>
-> ---
->   arch/x86/include/asm/barrier.h |  3 +++
->   include/asm-generic/barrier.h  |  8 ++++++++
->   kernel/sched/sched.h           | 20 ++++++++++++++------
->   3 files changed, 25 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/barrier.h b/arch/x86/include/asm/barrier.h
-> index 35389b2af88e..0d5e54201eb2 100644
-> --- a/arch/x86/include/asm/barrier.h
-> +++ b/arch/x86/include/asm/barrier.h
-> @@ -79,6 +79,9 @@ do {									\
->   #define __smp_mb__before_atomic()	do { } while (0)
->   #define __smp_mb__after_atomic()	do { } while (0)
->   
-> +/* Writing to CR3 provides a full memory barrier in switch_mm(). */
-> +#define smp_mb__after_switch_mm()	do { } while (0)
-> +
->   #include <asm-generic/barrier.h>
->   
->   /*
-> diff --git a/include/asm-generic/barrier.h b/include/asm-generic/barrier.h
-> index 961f4d88f9ef..5a6c94d7a598 100644
-> --- a/include/asm-generic/barrier.h
-> +++ b/include/asm-generic/barrier.h
-> @@ -296,5 +296,13 @@ do {									\
->   #define io_stop_wc() do { } while (0)
->   #endif
->   
-> +/*
-> + * Architectures that guarantee an implicit smp_mb() in switch_mm()
-> + * can override smp_mb__after_switch_mm.
-> + */
-> +#ifndef smp_mb__after_switch_mm
-> +#define smp_mb__after_switch_mm()	smp_mb()
-> +#endif
-> +
->   #endif /* !__ASSEMBLY__ */
->   #endif /* __ASM_GENERIC_BARRIER_H */
-> diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-> index 2e5a95486a42..044d842c696c 100644
-> --- a/kernel/sched/sched.h
-> +++ b/kernel/sched/sched.h
-> @@ -79,6 +79,8 @@
->   # include <asm/paravirt_api_clock.h>
->   #endif
->   
-> +#include <asm/barrier.h>
-> +
->   #include "cpupri.h"
->   #include "cpudeadline.h"
->   
-> @@ -3481,13 +3483,19 @@ static inline void switch_mm_cid(struct rq *rq,
->   		 * between rq->curr store and load of {prev,next}->mm->pcpu_cid[cpu].
->   		 * Provide it here.
->   		 */
-> -		if (!prev->mm)                          // from kernel
-> +		if (!prev->mm) {                        // from kernel
->   			smp_mb();
-> -		/*
-> -		 * user -> user transition guarantees a memory barrier through
-> -		 * switch_mm() when current->mm changes. If current->mm is
-> -		 * unchanged, no barrier is needed.
-> -		 */
-> +		} else {				// from user
-> +			/*
-> +			 * user -> user transition relies on an implicit
-> +			 * memory barrier in switch_mm() when
-> +			 * current->mm changes. If the architecture
-> +			 * switch_mm() does not have an implicit memory
-> +			 * barrier, it is emitted here.  If current->mm
-> +			 * is unchanged, no barrier is needed.
-> +			 */
-> +			smp_mb__after_switch_mm();
-> +		}
->   	}
->   	if (prev->mm_cid_active) {
->   		mm_cid_snapshot_time(rq, prev->mm);
-
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
-
+Konrad
 
