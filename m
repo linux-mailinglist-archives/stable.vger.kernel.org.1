@@ -1,221 +1,248 @@
-Return-Path: <stable+bounces-38021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A988A00DD
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 21:49:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 995618A00D2
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 21:49:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA48A1C21F92
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 19:49:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 500C2282D4B
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 19:49:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2460D181D0C;
-	Wed, 10 Apr 2024 19:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D97F181B8E;
+	Wed, 10 Apr 2024 19:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="SSCtRnD/"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pG6NEfN8"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82465181CF2;
-	Wed, 10 Apr 2024 19:49:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A45181338
+	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 19:49:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712778547; cv=none; b=iAXdn69fgIVwDOYnfLBWt914EtXjecsHsrO8lbEb1HBOlcqICvJIVrtL+XzPff2XEhddUiwvY1Lm+CMXP+vkCAf6G6zRhQR3PHUrbt0/jP6PpU1ApXbMRgUwMhkngndPZmyeZ560ZvHYoaGy6f/sW+Gn9WBaU5w9lNBOV0RVaaU=
+	t=1712778542; cv=none; b=P7mO1nliEzRJ4UXgHIjpu9llJjc8SjRvibLlbGLxPshC9Ra7427J8dUEz+S5juEN3h+43Izs/BD+cqXC75Qkj6sKv9jyRixOwE41v4vUMtJPWwYEcr7PA1HAUQgMxjvKkYBOs6l0CcGmESDZtNyrn0O/Fy3h6x0LSfANU/yLHMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712778547; c=relaxed/simple;
-	bh=63JP6mRsPQF+sdjTdy07y7KOtlByYMY51Dn2cnAOUqs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dLatP5fhjVEwdeZppb285VGA5JoQZgdm0k5RM7Jbb2zDZhVDbsjrNIeogGbjU6exULWvPou3w2d1qTPgZUBUi2C+68T8b3bjR1bjCQaE6aRL+jC1EGfEhph9tJ5sJCYcGJv04vgJfowR+8hZGwEepBH2L5mOP3iWuT0kSC6lk1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=SSCtRnD/; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43AJbXRG024982;
-	Wed, 10 Apr 2024 19:48:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version; s=pp1; bh=DO4vQFzy+fNYLVv6aADU9FRdEvi0odABEDpPhQWAZpk=;
- b=SSCtRnD/5mipnkIMs7DSLXS84s9tRCe8DxYH656M/p8z9SogUy0FK0fxwasL8JoQ4ufQ
- TFdcMhVsytTnKdF9i19HNc34u2470UBI0pRk696GypJ1f5BvV/BGMn/YuQvFunGAE+Sl
- SGcqgNO4VWzHp9+5YXtkuU/5sX5Mr5jxFGy3o5hYIpvNmm6sngaJJnivvBH0mHiNXFCi
- vKxVQ8ESfIfxFNKdMjIDqwWG5Lvli9Lz24qn3PV+Jw/Clk4hjM9nMGIWhOZu+DZ5OzZ5
- TiT++xuw3a3lysueGL/sTwL/ff7UvRunvnpE+lhp2CH/dNEIHD9r95J9Mvh52S8d4kfk 8w== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xe139g0q1-3
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Apr 2024 19:48:29 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43AH29JY029904;
-	Wed, 10 Apr 2024 19:36:26 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xbj7mer4n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Apr 2024 19:36:26 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 43AJaNLv21431036
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Apr 2024 19:36:25 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 849025805F;
-	Wed, 10 Apr 2024 19:36:23 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CA3B05805A;
-	Wed, 10 Apr 2024 19:36:20 +0000 (GMT)
-Received: from lingrow.int.hansenpartnership.com (unknown [9.67.87.107])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 10 Apr 2024 19:36:20 +0000 (GMT)
-Message-ID: <0655cea93e52928d3e4a12b4fe2d2a4375492ed3.camel@linux.ibm.com>
-Subject: Re: [REGRESSION] Loss of some SMART information in v6.1.81
-From: James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To: Cyril Brulebois <kibi@debian.org>, regressions@lists.linux.dev,
-        stable@vger.kernel.org
-Cc: Mike Christie <michael.christie@oracle.com>,
-        "Martin K. Petersen"
- <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>, gregkh@linuxfoundation.org,
-        Bart Van Assche <bvanassche@acm.org>, Christoph
- Hellwig <hch@lst.de>,
-        John Garry <john.g.garry@oracle.com>, linux-scsi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Diederik de Haas
- <didi.debian@cknow.org>,
-        Salvatore Bonaccorso <carnil@debian.org>
-Date: Wed, 10 Apr 2024 15:36:18 -0400
-In-Reply-To: <20240410193207.qnb75osxuk4ovvm6@mraw.org>
-References: <20240410193207.qnb75osxuk4ovvm6@mraw.org>
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-jIeTBq4V93wWqSdiIOVb"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1712778542; c=relaxed/simple;
+	bh=xEoGedRNiXJoGnqajnhf1BwPxOUbcpaoDU2aUMU/6xw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QkBNW3jisTX6vqLSP4Z7yD5vxhtT/8Jl5AqWfAWghqLI2fi0bPyqlGqjdMiMECQ/bl6bmoknKCcH6Xnq0rQ3fbb+9/8tY4bKEQKQ/Pvi3mwJ45uZH9SvpH8ckRc6lzQcPRVGVZ+FCB3nVeV3JKCln4GPtYExJAmFflONNbdOLog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pG6NEfN8; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-434b5abbb0dso6981cf.0
+        for <stable@vger.kernel.org>; Wed, 10 Apr 2024 12:49:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1712778539; x=1713383339; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DWCShh/bRGRzeO22yeBjtZLPhJ0/AGFCyE+KkcrS+ds=;
+        b=pG6NEfN8H1FXyjhB6zgMz+V9P0x2RFFQyiTdsFO1L8VKpRZzyjbysiRD2ExCnRgOyP
+         0jWXnJGQfToi03nmPxhOzvQ8GnFe5PYQ0eFRMbLuEO2dmusAPuDSUWSmQy4lRYpfQqn3
+         D5g/7wYHgv2woKEaU8vyxaJA0v9b4Ck0ZrI83pGenx0LyuKCSGX+Wcd+3hXZ7zxJaBc8
+         H4CMDij5YMRVFiHWUjfY91MVCf6HqD6Oo4llx3di1Ic8N0DMtoXfSng3m4FadtQU3GmD
+         c+WWawmeJOMxjmCBk+zt62kiil76RJEDKkXGg6mfVbbsT8OAXlGYWUnrZ1X76kBP5kkz
+         bE1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712778539; x=1713383339;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DWCShh/bRGRzeO22yeBjtZLPhJ0/AGFCyE+KkcrS+ds=;
+        b=hpCXmOhu7Gb8xrooCBP8A+VOHuIV4zb2Ve1EzxcVp0NlBy5noCEkkUD4qcMsh3PEuR
+         BuvLLTQsEP+yiYb6fyflUQm2bp4C9DY3dE1LM68tsVnAS9JKi84ydX+EP8jaZn4Hg7w4
+         vxWbgtiOUKFn8mN7vyYnpgTZtt8hyummHv4YHMmU0/JWjDwThDgBtPV73w+lNhsWfsIU
+         vYc1rgQo8+zqK4VAhlMptyymSC0qvl9OFjvtC4LUBjToPpxcxjeHz5jaOOetMGKcYcdO
+         ARI4Ef9HL29QnqzILwULQm3qfR0vABJLZZydZvp0h1dHHRPeYtKeSlY1h2vVzaLe1aeZ
+         rhDw==
+X-Forwarded-Encrypted: i=1; AJvYcCXIz1I94r3qpy6HWvAxMbxrNMrlVoO2t2Jj9yvqBC104sMIkw6C3wHCuahMzp3WvoOdSn1ENhzWfYIT6KDKUzd+TVzzEwO1
+X-Gm-Message-State: AOJu0YzizuGLCSI6M6+n7qdl2zQ8vFzf+OUUMJBIOW4Rg1TomHihB2Ec
+	mHkI3kBRP/2YpypqzANxOawnlCEWmqIy7Es+dA1zAXxkFjMSPDJ5hln+4CWEeSoRZRic8XP30Pn
+	wc2bAHvwqA05ORRI/2gt4kwvepajcgWBhCV6K
+X-Google-Smtp-Source: AGHT+IGa6MOnKjfghS1aRAZ4F4MxrT/E1DKiGKtukJn/QsQjBmlT/f6kggLbge9jt3UM+LRGc/z5WVALVplB0eqXhqc=
+X-Received: by 2002:a05:622a:5c13:b0:434:61ad:8c1b with SMTP id
+ gd19-20020a05622a5c1300b0043461ad8c1bmr55230qtb.28.1712778539135; Wed, 10 Apr
+ 2024 12:48:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Fa6KIsnDCJKpkh_os9z_dR5k-l7EUFJp
-X-Proofpoint-ORIG-GUID: Fa6KIsnDCJKpkh_os9z_dR5k-l7EUFJp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-10_04,2024-04-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
- priorityscore=1501 lowpriorityscore=0 malwarescore=0 bulkscore=0
- spamscore=0 impostorscore=0 mlxscore=0 phishscore=0 suspectscore=0
- adultscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2404010000 definitions=main-2404100144
-
-
---=-jIeTBq4V93wWqSdiIOVb
+References: <20240410182618.169042-2-noah@noahloomans.com>
+In-Reply-To: <20240410182618.169042-2-noah@noahloomans.com>
+From: Guenter Roeck <groeck@google.com>
+Date: Wed, 10 Apr 2024 12:48:46 -0700
+Message-ID: <CABXOdTe02ALsv6sghnhWMkn7-7kidXhjvWzpDn7dGh4zKEkO8g@mail.gmail.com>
+Subject: Re: [PATCH] platform/chrome: cros_ec_uart: properly fix race condition
+To: Noah Loomans <noah@noahloomans.com>
+Cc: Bhanu Prakash Maiya <bhanumaiya@chromium.org>, Benson Leung <bleung@chromium.org>, 
+	Tzung-Bi Shih <tzungbi@kernel.org>, Guenter Roeck <groeck@chromium.org>, 
+	Robert Zieba <robertzieba@google.com>, chrome-platform@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2024-04-10 at 21:32 +0200, Cyril Brulebois wrote:
-> Hi,
->=20
-> Munin uses the following command to get sensor-type information out
-> of SMART-aware disks (e.g. temperature):
->=20
-> =C2=A0=C2=A0=C2=A0 /usr/sbin/smartctl -A --nocheck=3Dstandby -d ata /dev/=
-sda
->=20
-> This broke following an upgrade from v6.1.76 (as found in Debian 12)
-> to v6.1.82 (as currently found in the proposed-updates repository for
-> the next point release of Debian 12), with smartctl's now reporting:
->=20
-> =C2=A0=C2=A0=C2=A0 smartctl 7.3 2022-02-28 r5338 [x86_64-linux-6.1.0-19-a=
-md64]
-> (local build)
-> =C2=A0=C2=A0=C2=A0 Copyright (C) 2002-22, Bruce Allen, Christian Franke,
-> www.smartmontools.org
-> =C2=A0=C2=A0=C2=A0=20
-> =C2=A0=C2=A0=C2=A0 Device is in SLEEP mode, exit(2)
->=20
-> This happens on baremetal with 2 pairs of disks:
-> =C2=A0- 2=C3=97ST4000VN008-2DR1 (sda, sdb)
-> =C2=A0- 2=C3=97ST8000VN004-2M21 (sdc, sdd)
->=20
-> and that's an obvious lie with one pair doing system stuff and the
-> other
-> one doing media stuff.
->=20
-> This also happens within a Debian 12 QEMU VM running on a Debian 12
-> libvirt host, when using a SATA disk, which is what I've used to test
-> various builds from the stable/linux-6.1.y branch and associated
-> tags.
->=20
-> Building stable releases, I pinpointed it as a regression between
-> v6.1.80 and v6.1.81, then pinpointed it to commit cf33e6ca12d8.
->=20
-> #regzbot introduced: v6.1.80..v6.1.81
-> #regzbot introduced: cf33e6ca12d8
->=20
-> This is also affecting v6.1.84 and v6.1.85 (released during my git
-> bisect session).
->=20
-> Reported in Debian via: https://bugs.debian.org/1068675=C2=A0(which
-> included a trace with the distribution-provided v6.1.82 package).
->=20
-> Most recent trace, with v6.1.85 (mainline, using the distribution's
-> config but without any patches):
->=20
-> =C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 30.547027] ------------[ cut here ]-----=
--------
-> =C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 30.547034] WARNING: CPU: 0 PID: 697 at
-> drivers/scsi/scsi_lib.c:214 scsi_execute_cmd+0x42/0x2c0 [scsi_mod]
-> =C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 30.547082] Modules linked in: tls tun in=
-tel_rapl_msr
-> intel_rapl_common kvm_intel kvm irqbypass ghash_clmulni_intel
-> sha512_ssse3 sha512_generic sha256_ssse3 sha1_ssse3
-> snd_hda_codec_generic ledtrig_audio snd_hda_intel snd_intel_dspcfg
-> snd_intel_sdw_acpi aesni_intel snd_hda_codec crypto_simd cryptd rapl
-> snd_hda_core snd_hwdep bochs drm_vram_helper pcspkr drm_ttm_helper
-> snd_pcm iTCO_wdt snd_timer intel_pmc_bxt ttm iTCO_vendor_support snd
-> watchdog soundcore virtio_console virtio_balloon drm_kms_helper
-> button joydev evdev serio_raw sg binfmt_misc fuse loop drm efi_pstore
-> dm_mod configfs qemu_fw_cfg virtio_rng ip_tables x_tables autofs4
-> ext4 crc32c_generic crc16 mbcache jbd2 hid_generic usbhid hid sd_mod
-> t10_pi crc64_rocksoft crc64 crc_t10dif crct10dif_generic ahci libahci
-> virtio_scsi virtio_blk virtio_net net_failover failover xhci_pci
-> crct10dif_pclmul crct10dif_common crc32_pclmul libata crc32c_intel
-> xhci_hcd psmouse i2c_i801 i2c_smbus scsi_mod scsi_common lpc_ich
-> virtio_pci
-> =C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 30.547194]=C2=A0 virtio_pci_legacy_dev v=
-irtio_pci_modern_dev
-> usbcore usb_common virtio virtio_ring
-> =C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 30.547205] CPU: 0 PID: 697 Comm: smartct=
-l Not tainted 6.1.85
-> #1
-> =C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 30.547210] Hardware name: QEMU Standard =
-PC (Q35 + ICH9,
-> 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-> =C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 30.547217] RIP: 0010:scsi_execute_cmd+0x=
-42/0x2c0 [scsi_mod]
+On Wed, Apr 10, 2024 at 11:29=E2=80=AFAM Noah Loomans <noah@noahloomans.com=
+> wrote:
+>
+> The cros_ec_uart_probe() function calls devm_serdev_device_open() before
+> it calls serdev_device_set_client_ops(). This can trigger a NULL pointer
+> dereference:
+>
+>     BUG: kernel NULL pointer dereference, address: 0000000000000000
+>     ...
+>     CPU: 5 PID: 103 Comm: kworker/u16:3 Not tainted 6.8.4-zen1-1-zen #1 4=
+a88f2661038c2a3bb69aa70fb41a5735338823c
+>     Hardware name: Google Morphius/Morphius, BIOS MrChromebox-4.22.2-1-g2=
+a93624aebf 01/22/2024
+>     Workqueue: events_unbound flush_to_ldisc
+>     RIP: 0010:ttyport_receive_buf+0x3f/0xf0
+>     ...
+>     Call Trace:
+>      <TASK>
+>      ? __die+0x10f/0x120
+>      ? page_fault_oops+0x171/0x4e0
+>      ? srso_return_thunk+0x5/0x5f
+>      ? exc_page_fault+0x7f/0x180
+>      ? asm_exc_page_fault+0x26/0x30
+>      ? ttyport_receive_buf+0x3f/0xf0
+>      flush_to_ldisc+0x9b/0x1c0
+>      process_one_work+0x17b/0x340
+>      worker_thread+0x301/0x490
+>      ? __pfx_worker_thread+0x10/0x10
+>      kthread+0xe8/0x120
+>      ? __pfx_kthread+0x10/0x10
+>      ret_from_fork+0x34/0x50
+>      ? __pfx_kthread+0x10/0x10
+>      ret_from_fork_asm+0x1b/0x30
+>      </TASK>
+>
+> A simplified version of crashing code is as follows:
+>
+>     static inline size_t serdev_controller_receive_buf(struct serdev_cont=
+roller *ctrl,
+>                                                       const u8 *data,
+>                                                       size_t count)
+>     {
+>             struct serdev_device *serdev =3D ctrl->serdev;
+>
+>             if (!serdev || !serdev->ops->receive_buf) // CRASH!
+>                 return 0;
+>
+>             return serdev->ops->receive_buf(serdev, data, count);
+>     }
+>
+>     static size_t ttyport_receive_buf(struct tty_port *port, const u8 *cp=
+,
+>                                       const u8 *fp, size_t count)
+>     {
+>             struct serdev_controller *ctrl =3D port->client_data;
+>             [...]
+>
+>             if (!test_bit(SERPORT_ACTIVE, &serport->flags))
+>                     return 0;
+>
+>             ret =3D serdev_controller_receive_buf(ctrl, cp, count);
+>
+>             [...]
+>             return ret;
+>     }
+>
+> It assumes that if SERPORT_ACTIVE is set and serdev exists, serdev->ops
+> will also exist. This conflicts with the existing cros_ec_uart_probe()
+> logic, as it first calls devm_serdev_device_open() (which sets
+> SERPORT_ACTIVE), and only later sets serdev->ops via
+> serdev_device_set_client_ops().
+>
+> Commit 01f95d42b8f4 ("platform/chrome: cros_ec_uart: fix race
+> condition") attempted to fix a similar race condition, but while doing
+> so, made the window of error for this race condition to happen much
+> wider.
+>
+> Attempt to fix the race condition again, making sure we fully setup
+> before calling devm_serdev_device_open().
+>
+> Fixes: 01f95d42b8f4 ("platform/chrome: cros_ec_uart: fix race condition")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Noah Loomans <noah@noahloomans.com>
+> ---
+>
+> This is my first time contributing to Linux, I hope this is a good
+> patch. Feedback on how to improve is welcome!
+>
 
-This is a different manifestation of the same bug in stable that was
-introduced by a backport of scsi_execute_cmd.  The proposed fix for the
-domain validation problem here will also sort out this problem:
+The commit message is a bit long, but the patch itself looks good to me.
 
-https://lore.kernel.org/linux-scsi/yq1frvvpymp.fsf@ca-mkp.ca.oracle.com/
+Reviewed-by: Guenter Roeck <groeck@chromium.org>
 
-James
+Guenter
 
-
---=-jIeTBq4V93wWqSdiIOVb
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABMIAB0WIQTnYEDbdso9F2cI+arnQslM7pishQUCZhbqMgAKCRDnQslM7pis
-hW3aAP9cB50hV7umpS8AXMm+EU6/C3B+X0AS2f7y6wZIGUfgDAEA02ZobSW6RlRI
-1kbTb8SI4lt+YAiluDoI19ehkVz4rvI=
-=JIJn
------END PGP SIGNATURE-----
-
---=-jIeTBq4V93wWqSdiIOVb--
-
+>  drivers/platform/chrome/cros_ec_uart.c | 28 +++++++++++++-------------
+>  1 file changed, 14 insertions(+), 14 deletions(-)
+>
+> diff --git a/drivers/platform/chrome/cros_ec_uart.c b/drivers/platform/ch=
+rome/cros_ec_uart.c
+> index 8ea867c2a01a..62bc24f6dcc7 100644
+> --- a/drivers/platform/chrome/cros_ec_uart.c
+> +++ b/drivers/platform/chrome/cros_ec_uart.c
+> @@ -263,12 +263,6 @@ static int cros_ec_uart_probe(struct serdev_device *=
+serdev)
+>         if (!ec_dev)
+>                 return -ENOMEM;
+>
+> -       ret =3D devm_serdev_device_open(dev, serdev);
+> -       if (ret) {
+> -               dev_err(dev, "Unable to open UART device");
+> -               return ret;
+> -       }
+> -
+>         serdev_device_set_drvdata(serdev, ec_dev);
+>         init_waitqueue_head(&ec_uart->response.wait_queue);
+>
+> @@ -280,14 +274,6 @@ static int cros_ec_uart_probe(struct serdev_device *=
+serdev)
+>                 return ret;
+>         }
+>
+> -       ret =3D serdev_device_set_baudrate(serdev, ec_uart->baudrate);
+> -       if (ret < 0) {
+> -               dev_err(dev, "Failed to set up host baud rate (%d)", ret)=
+;
+> -               return ret;
+> -       }
+> -
+> -       serdev_device_set_flow_control(serdev, ec_uart->flowcontrol);
+> -
+>         /* Initialize ec_dev for cros_ec  */
+>         ec_dev->phys_name =3D dev_name(dev);
+>         ec_dev->dev =3D dev;
+> @@ -301,6 +287,20 @@ static int cros_ec_uart_probe(struct serdev_device *=
+serdev)
+>
+>         serdev_device_set_client_ops(serdev, &cros_ec_uart_client_ops);
+>
+> +       ret =3D devm_serdev_device_open(dev, serdev);
+> +       if (ret) {
+> +               dev_err(dev, "Unable to open UART device");
+> +               return ret;
+> +       }
+> +
+> +       ret =3D serdev_device_set_baudrate(serdev, ec_uart->baudrate);
+> +       if (ret < 0) {
+> +               dev_err(dev, "Failed to set up host baud rate (%d)", ret)=
+;
+> +               return ret;
+> +       }
+> +
+> +       serdev_device_set_flow_control(serdev, ec_uart->flowcontrol);
+> +
+>         return cros_ec_register(ec_dev);
+>  }
+>
+> --
+> 2.44.0
+>
 
