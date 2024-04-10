@@ -1,133 +1,191 @@
-Return-Path: <stable+bounces-37954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E9989F026
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 12:48:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA3989F04F
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 13:01:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C9291C22726
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 10:48:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A0F41F21E82
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 11:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47083156F2F;
-	Wed, 10 Apr 2024 10:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6151315957F;
+	Wed, 10 Apr 2024 11:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="B99zIrzF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QPVcsxuJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBCA159576
-	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 10:48:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E27D15956F;
+	Wed, 10 Apr 2024 11:01:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712746101; cv=none; b=kOtsh3J1eG5MABD1gM1zhDQ20zhiES0IzqMbOZGVBeHR3xHmr7AzX7XdSt4VNyj8cmKW8O9J69UKE5QYyTwFaZRQ5OdPUH7/wIAQZdoD2t6Zs/PvbTTNm+g5RXjek4ZHf0BgjFAqkT/X8ip8nVMwYhLptebBffG+OYNx8Gdv5zo=
+	t=1712746905; cv=none; b=rsZluHJbupMd0uDl6JQwr9K8XiP2kaEecCxO7rBDDEypnCmliaQE95k1hMlsGpcTzZITXy2qvNI/LFtLnSkI4I081Qnq5G9AmEn/V8nx+AEgbDTQ97fKR5mDNaAmtZCSSgOolwiqg3FUJB1jFwUL2tpWrvlTHFbhbAqdWCcMres=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712746101; c=relaxed/simple;
-	bh=eik9m6cp2uZohOzU8Oz+3bZ4OUinbaNDJ9WanhK7KSg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=asemuTQ+L+NmXp52VgpBYLQxMFCFuFBwmzfrAbm2SNXrVNH+OqKraXb6ynRM2LEG8MO3t6bVhuvh8/eFQKfYf4c04BfYma9cQBLxfLA4x2eWdz6SmoD3YTmLrOGFjfcbDNKdeFmDij/6S7dju5AynuVo2soOqUYGynECsAonlP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=B99zIrzF; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2a28b11db68so4168047a91.2
-        for <stable@vger.kernel.org>; Wed, 10 Apr 2024 03:48:18 -0700 (PDT)
+	s=arc-20240116; t=1712746905; c=relaxed/simple;
+	bh=0GIExPDDJmkcKoTRQsN7KJdje7gDkY/f7sV07NtyAj8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=kG+8wmUg9sZ6WTqMgov9NC1bm1S6qkZLfwD1zh5FWFNNzzc5HM+Vzv9GB/9aBvwSn8SQZ70p+LJyfPyTHloxfqYemEL2l3zROTEiZvOVPkdUEqa2PGcyO6YVNtKT36oMAEbmrGLRZ4k/YAFBxbSAN1WTI/bZ969P2cP7si0Pr30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QPVcsxuJ; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4167fce0a41so16149465e9.0;
+        Wed, 10 Apr 2024 04:01:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1712746097; x=1713350897; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MNqD10j5CZpBny7jQPfQMEvtKqWfKf6kWfbDUoXBuJM=;
-        b=B99zIrzFlflE2Bzqw9bXXwdpeUXPRgvt4k1P3JL+kXEeZhyvMcvokLmpY5sAgedsx9
-         Krtvctsrbn2hfOOP0yWcIqIisZe6+qk4DQQdA2tN4KCVeASk2ss3deTGafUytwmN7APW
-         Qp+CLood6X6PbFSTsoV5bR7VXYEoPzzOCkyzgMf8CCtt0XJIiW6iXzqJ70q4LObGnSa6
-         C3vukccb7zzx9GczTo1qP1lRW5KKl9GgMWlE2/cCoFYedb9mSCwJvIqIOmUrXIF+PHoT
-         8FP6/7UimXXA6DygEM9so9DdHFjQrKPFAi59GORhmvO3fxgGoc08ptBOh/AZgle7bg9a
-         nXbQ==
+        d=gmail.com; s=20230601; t=1712746902; x=1713351702; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=0GIExPDDJmkcKoTRQsN7KJdje7gDkY/f7sV07NtyAj8=;
+        b=QPVcsxuJL+1+AhCn2gC7lJaC4QAYnu7VfGsVMZTy/QPA/cWuSTymF0hhpEJYdp1mK4
+         X4ZgAEFnFHtLDJnMaz27R4Xwyi8yE9himgi/HftpXqxoK+wtd2QBm+YOOiQrqPS+zkdX
+         ulWc/86AzP4vdMwXQjgIqAdd7tsCA9Xt+upomAL1ykPXtA1P6R1rt57X01xp/L+Kv4jz
+         Hg15mW5SCNJTOQAYL+KJ+Z4925A14nXNin6/2VKUpnkithD+7FdfOjMBYAr+VV5NCnCv
+         fxfgHxFrg3kiirKjtzERjjSzt4tkVCBk/P3bHsetFMnp3m1sBY86GUCZ/guUBQfVnA14
+         wkGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712746097; x=1713350897;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MNqD10j5CZpBny7jQPfQMEvtKqWfKf6kWfbDUoXBuJM=;
-        b=s8oyLe9tC+sns1ZuGkLp6TotaNLdM2P9p6m8ga2oYyMrWLbGGfCJMX4eVS58A5Rwu+
-         QrnEcAirD/cpmCeFaCRbWac7+Iupdaok8BKfcJVupqfVoc6nY2LsV9eoEEXglof0UAUE
-         I7SG82dH1nuNck2tCneTpPb9QpT/YIedb7z8QCm6KiMSnY8BEzkmJNcLrBX4oCiy/ilm
-         LOnSIFkwK17iw3hDTQJqbRQbfnU5j9kuiv0f94SBv4e2ACNviby9vwKlCbZvtdUolrZh
-         euD5Lx9HNt/rL2DDmpAVz2hxJ4xPB5JZOJ9RARulPWk3wu1kbxm2XzQFn99dsSOz0AcD
-         9ioQ==
-X-Gm-Message-State: AOJu0Yz+H7MjMwyru4+3qHCXOsrX817vrSixjF2pdtCT+XRgXoDsACmO
-	NwyZnc+o+V33HeC5KdsRuG9lcaO6qYHjmVrWxjR5m9hcSJ4VmW11kYeUNrM1jJp4LodRZ3oBscq
-	XHirYHjBy18v4nqOkSLoRa/BTDkqMtU//x2Hi5A==
-X-Google-Smtp-Source: AGHT+IEOi7A+jM3agseYiE2tgGFF/lIKAomfhvj5GEMdbiDzHPEJRuS+/3WJ05h17I71ATBjBeaOThBJ5VRShOGE6pM=
-X-Received: by 2002:a17:90a:6b07:b0:2a5:3438:a31b with SMTP id
- v7-20020a17090a6b0700b002a53438a31bmr2111883pjj.37.1712746097485; Wed, 10 Apr
- 2024 03:48:17 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712746902; x=1713351702;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0GIExPDDJmkcKoTRQsN7KJdje7gDkY/f7sV07NtyAj8=;
+        b=DpJjDpV+LpWzh+/beaGBfU0ZnuLYD8CA5HIw8cF7Itfacn3y1yJMJRChavqr5BJll4
+         htz51qAv5n1tbD701wOB1s07MKiR7zQcd3t+826cReNRaqRx7qtm/7cWBuDPxRsvKWf7
+         7c/e5NmgNxjVHc4MqS1Dc6SWWwm9XDPcnUstqbuAmhc0Q9ZVDTNXXT/ZFYl9O1MLfHHh
+         i6wzyieMO3aor/nYJqwnM6j0BlPSwT4uaj4O8OmVtO5uvkSwQoBwpCam/eZCznD48Pn+
+         MU9dogzilIwI3PJf05HKgEWMGXScxAvV3CeSSzY1OwL05EMElYNsjv8ypVopqPqx/6vx
+         c7uw==
+X-Forwarded-Encrypted: i=1; AJvYcCUA8XqRTbi1Z9HVNUyIxe3mRaAfTPVSMsfEFMbZCeEI9PRPR6AGskowCPSngORWPU601QCHgKzp55pGmRQAuLkoHmIiD17HH9pe1Y6DyBoPgGNWVERyQEHUkF5tIDwCBSgKzzNE/zPHV47Ly68AEDQnNIlnTY/oaI0pIfM0qLmNpA==
+X-Gm-Message-State: AOJu0Yy9cSRY08KZYdMCepW4QnHfIbXXT7YhIgDTjt1er/VoAJ5XuaTm
+	JQvoUiV1fbrKsPe/nnBicSeyjo4xEmqOg+7a3R7oK0BbSjeHupPs
+X-Google-Smtp-Source: AGHT+IHKoa80tndzG5LjQajNgoSTiqx34Q91ukfSPKmqksag+EAzMft0lIfxggHx5b0NmLu7IA3Azw==
+X-Received: by 2002:a05:600c:4ed0:b0:416:2bb6:cbea with SMTP id g16-20020a05600c4ed000b004162bb6cbeamr4583319wmq.19.1712746901595;
+        Wed, 10 Apr 2024 04:01:41 -0700 (PDT)
+Received: from ?IPv6:2001:8a0:e622:f700:5844:d7c8:2851:cad9? ([2001:8a0:e622:f700:5844:d7c8:2851:cad9])
+        by smtp.gmail.com with ESMTPSA id g12-20020a05600c310c00b00416b64fa212sm1895234wmo.34.2024.04.10.04.01.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Apr 2024 04:01:41 -0700 (PDT)
+Message-ID: <c76d98a300a9d65d236d334da62916a7d658ef27.camel@gmail.com>
+Subject: Re: [PATCH v1] arm64: dts: imx8mm: fix missing pgc_vpu_* power
+ domain parent
+From: Vitor Soares <ivitro@gmail.com>
+To: Lucas Stach <l.stach@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Vitor Soares <vitor.soares@toradex.com>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Wed, 10 Apr 2024 12:01:39 +0100
+In-Reply-To: <bd4d7198e58bd89b46a4c721546f6975b287a5fc.camel@gmail.com>
+References: <20240409085802.290439-1-ivitro@gmail.com>
+	 <9ce35b9bb5a15891f6bd01bd54b7dc84b3ba4021.camel@pengutronix.de>
+	 <e1552a3008a30ef7ed9097b4b80cda23ccb9e840.camel@gmail.com>
+	 <fcd6acc268b8642371cf289149b2b1c3e90c7f45.camel@pengutronix.de>
+	 <bd4d7198e58bd89b46a4c721546f6975b287a5fc.camel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240409173540.185904475@linuxfoundation.org>
-In-Reply-To: <20240409173540.185904475@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Wed, 10 Apr 2024 19:48:06 +0900
-Message-ID: <CAKL4bV4Ltkhh=jBBoy4CbnLOG25Eb4eEpLC5usBmeJFXZEf28w@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/255] 6.6.26-rc3 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Greg
+Hi Lucas,
 
-On Wed, Apr 10, 2024 at 2:44=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.26 release.
-> There are 255 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 11 Apr 2024 17:35:00 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.26-rc3.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+On Tue, 2024-04-09 at 17:44 +0100, Vitor Soares wrote:
+> On Tue, 2024-04-09 at 16:36 +0200, Lucas Stach wrote:
+> > Am Dienstag, dem 09.04.2024 um 14:22 +0100 schrieb Vitor Soares:
+> > > Hi Lucas,
+> > >=20
+> > > Thanks for your feedback.
+> > >=20
+> > > On Tue, 2024-04-09 at 11:13 +0200, Lucas Stach wrote:
+> > > > Hi Vitor,
+> > > >=20
+> > > > Am Dienstag, dem 09.04.2024 um 09:58 +0100 schrieb Vitor
+> > > > Soares:
+> > > > > From: Vitor Soares <vitor.soares@toradex.com>
+> > > > >=20
+> > > > > The pgc_vpu_* nodes miss the reference to the power domain
+> > > > > parent,
+> > > > > leading the system to hang during the resume.
+> > > > >=20
+> > > > This change is not correct. The vpumix domain is controlled
+> > > > through
+> > > > the
+> > > > imx8mm-vpu-blk-ctrl and must not be directly triggered by the
+> > > > child
+> > > > domains in order to guarantee proper power sequencing.
+> > > >=20
+> > > > If the sequencing is incorrect for resume, it needs to be fixed
+> > > > in
+> > > > the
+> > > > blk-ctrl driver. I'll happily assist if you have any questions
+> > > > about
+> > > > this intricate mix between GPC and blk-ctrl hardware/drivers.
+> > > =C2=A0
+> > > I'm new into the topic, so I tried to follow same approach as in
+> > > imx8mp
+> > > DT.
+> > >=20
+> > That's a good hint, the 8MP VPU GPC node additions missed my radar.
+> > The
+> > direct dependency there between the GPC domains is equally wrong.
+> >=20
+> > > I also checked the imx8mq DT and it only have one domain for the
+> > > VPU in the GPC. It seem blk-ctrl also dependes on pgc_vpu_* to
+> > > work
+> > > properly.
+> > >=20
+> > > The blk-ctrl driver hangs on imx8m_blk_ctrl_power_on() when
+> > > access
+> > > the
+> > > ip registers for the soft reset. I tried to power-up the before
+> > > the
+> > > soft reset, but it didn't work.
+> > >=20
+> > The runtime_pm_get_sync() at the start of that function should
+> > ensure
+> > that bus GPC domain aka vpumix is powered up. Can you check if that
+> > is
+> > happening?
+>=20
+> I checked bc->bus_power_dev->power.runtime_status and it is
+> RPM_ACTIVE.
+>=20
+> Am I looking to on the right thing? It is RPM_ACTIVE event before
+> runtime_pm_get_sync().
 
-6.6.26-rc3 tested.
+During the probe I can see that
+bus_power_dev->power.runtime_status =3D RPM_SUSPENDED and then vpumix is
+powered up on GPC driver.
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+On resume routine I can't see this flow. bus_power_dev-
+>power.runtime_status =3D RPM_ACTIVE and vpumix end up not being powered-
+up.
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+I checked the suspend flow and the GPC tries to poweroff vpumix.
 
-[    0.000000] Linux version 6.6.26-rc3rv
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 13.2.1 20230801, GNU ld (GNU
-Binutils) 2.42.0) #1 SMP PREEMPT_DYNAMIC Wed Apr 10 18:40:29 JST 2024
 
-Thanks
+Best regards,
+Vitor Soares
 
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+>=20
+>=20
+> >=20
+> > Regards,
+> > Lucas
+> >=20
+> > > Do you have an idea how we can address this within blk-ctrl?
+> > >=20
+> > > Best regards,
+> > > Vitor
+>=20
+
 
