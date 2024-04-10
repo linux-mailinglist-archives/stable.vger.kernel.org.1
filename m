@@ -1,182 +1,94 @@
-Return-Path: <stable+bounces-37982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6F1B89FA8B
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 16:52:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B304A89FAC4
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 16:57:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87EA92830FA
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 14:52:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A71C1F311F4
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 14:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F38172BA3;
-	Wed, 10 Apr 2024 14:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079F1172BBA;
+	Wed, 10 Apr 2024 14:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KGxAbC6m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJjOxpNd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8331C172786
-	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 14:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58EC16D9D0;
+	Wed, 10 Apr 2024 14:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712760352; cv=none; b=JXzu7YZaoIcDuHUcMRolosUdWeLp8qZuMP8i2nZmYEuYF9+dKOBceajIVnQ3GxcQoeX47oGAkk/aKlRFwEkk4BGDLgE5iVWw/HOvReEDwe0IcQSYJFAKXccfu0OGQJZtaIT/2MFuomTTRl1NU31E2/eRRPFR91Q84AXlExpAEo4=
+	t=1712760918; cv=none; b=lgh1s7itqOMYwF8ibt59TyEyfX4HOMDxZVVBRP3t11rAWHr1a8QKH/+Qq4o3Tq13vQAPkBhzBuLrM6e1R+PhDDO5HAGSCEyNdr4jOcJWKhrs8ysB+6yP+1lmwl3MFBy5dxrt6GrTcE1oCALNkje1iAGL+crMg4CseqgFTux1QIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712760352; c=relaxed/simple;
-	bh=/LpV/NSlELhYNs91+VUWaqfz1SJEzpM+9qAGyGg3cJg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZUa7PH/ZdsQ1MR4SsyfG4Oyk1fuwrgA4paIm+tXFAxhllwJJvrI7lyIZy1XfGQDyhXWYcESEWgdU9/jJ073+hrpxPyAgc1UjvMC5GbmiZ2xGb/9TSVx/PA/t33l1pO02omoR4um4Rb26haCGAuSS7Y0wF5CIIwr9NFwRA+GyJdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KGxAbC6m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E746C43399
-	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 14:45:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712760352;
-	bh=/LpV/NSlELhYNs91+VUWaqfz1SJEzpM+9qAGyGg3cJg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KGxAbC6mHliHfDdiAgjypbsT3F1biW7zflpoSeofgGrm94ilCX6BnvF9i5reKPz7x
-	 aV0L92gfRqDA8pdVI0v/qlpjPynTNtoYfDcTocVU9Jn1RLQRiCQGnsjLvyK26KwyTU
-	 Y58GQSlbH0xZo2J9LFyULTrddIfH4Pmgflh14MfhsiiosIcRHG4ydSZnNMIxeuv5l8
-	 j12Ewml/d9L4RIcktHnFgzpVKm6H9QuELeZTV15KUuqteoU6DLBQV7oWrK33MBhR5P
-	 H67mRsZOi+9z3OClb7IEmT0ycWySZQpcuGbLUVmzVNux1THrwWeTAgdrE5vKr+n/Af
-	 C/4tP4MLYnD6w==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2d8743ecebdso49391581fa.1
-        for <stable@vger.kernel.org>; Wed, 10 Apr 2024 07:45:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVpBhPpuwSdGoCQscB1dwyxB/HiA313AktupBL8sG029/++qoGig2HuKbnHxo/Vmw443qrSScI+L4qXdg+INRQsrH6dgEhH
-X-Gm-Message-State: AOJu0YwH12s/9XfghpJbJUPbfTT7uKdXBzUDi/DjbHxH4eST2lechb8a
-	Af9F95acM4vdftRFMnKmJNXOlB1NXmnXXgBzoDW0RIq3FVgSWOWFTMAyxeM/xhXk1Xn02H5Nksb
-	D4DI0Ud3+htzRQhim6Q8USbvfxbU=
-X-Google-Smtp-Source: AGHT+IEoo2sjT11HlsMdC3qu72n6ZmWXyQWbTkM5kKXp7547HmGrE6sDFnbNlP4c2eLK1VyJPJlP8nPmFpN5w2vT1Do=
-X-Received: by 2002:a2e:a7ca:0:b0:2d8:9fd7:859a with SMTP id
- x10-20020a2ea7ca000000b002d89fd7859amr3083153ljp.34.1712760350427; Wed, 10
- Apr 2024 07:45:50 -0700 (PDT)
+	s=arc-20240116; t=1712760918; c=relaxed/simple;
+	bh=2DXWRdM4JWN1yquezudUA2x+3OsG7lc1uBx3OGxBfiY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KraL9PAEng0fmTkRQgKHL/ZFapFkre0HBls3MG5vlGPhniDjozRyEXhE0tffEXvVLqvj+ltSA7tsH1sd96aMAmzEGKehU46zM3idCyPVkJAx4yJaJN6VCow9mrKpeVsRPOS4qQ7ZnFL+hWsZbdR9q4eYuvz3THm3DyRykvqpYMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJjOxpNd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89B1C433F1;
+	Wed, 10 Apr 2024 14:55:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712760918;
+	bh=2DXWRdM4JWN1yquezudUA2x+3OsG7lc1uBx3OGxBfiY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gJjOxpNdU/V9lCLjYi/bMtnmMMg4VywlzrHK8TPgtQkzruD33U9ckrWSA+EwWrtuw
+	 +VZS2YnfNYKDYLAim0grruqn8r2vWLb0c2c2WxXGVFvojJ6XN9h3c4YsVJdj1//uvi
+	 qPBULd2OqeGF35vR8gV4l3Sooh87+mNlhDS8fCUQ=
+Date: Wed, 10 Apr 2024 16:55:15 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Vladimir Oltean <olteanv@gmail.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, xu <xu.xin.sc@gmail.com>,
+	stable@vger.kernel.org, vladimir.oltean@nxp.com,
+	LinoSanfilippo@gmx.de, andrew@lunn.ch, daniel.klauer@gin.de,
+	davem@davemloft.net, f.fainelli@gmail.com, kuba@kernel.org,
+	netdev@vger.kernel.org, rafael.richter@gin.de,
+	vivien.didelot@gmail.com, xu.xin16@zte.com.cn
+Subject: Re: Some questions Re: [PATCH net] net: dsa: fix panic when DSA
+ master device unbinds on shutdown
+Message-ID: <2024041011-kindness-clumsy-3f7b@gregkh>
+References: <20220209120433.1942242-1-vladimir.oltean@nxp.com>
+ <20240410090644.130032-1-xu.xin16@zte.com.cn>
+ <09f0fc793f5fe808341e034dadc958dbfe21be8c.camel@redhat.com>
+ <20240410143419.ptupie3hyivjuzqf@skbuf>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240408125309.280181634@linuxfoundation.org> <20240408125317.917032769@linuxfoundation.org>
- <76489f58-6b60-4afd-9585-9f56960f7759@hardfalcon.net> <20240410053433.GAZhYk6Q8Ybk_DyGbi@fat_crate.local>
- <25704cce-2d6e-4904-a42d-47c96056459d@hardfalcon.net> <CAMj1kXH+xOB3cLHL5XHAxMHeN8oOXYaqdExx2+Tij6vwZwhkiQ@mail.gmail.com>
- <CAMj1kXFQfgAOSdPd1aYW8TDi8mkExK9G4buviysu85YsQaQPdw@mail.gmail.com> <3ef518a6-6c9b-42f0-a3e0-22a306185a9a@hardfalcon.net>
-In-Reply-To: <3ef518a6-6c9b-42f0-a3e0-22a306185a9a@hardfalcon.net>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 10 Apr 2024 16:45:39 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXE-Yt+zVgZ5Y=jEssrna+pUYAOOEr5cXLiXMkmRqEKwhQ@mail.gmail.com>
-Message-ID: <CAMj1kXE-Yt+zVgZ5Y=jEssrna+pUYAOOEr5cXLiXMkmRqEKwhQ@mail.gmail.com>
-Subject: Re: [PATCH 6.8 271/273] x86/sme: Move early SME kernel encryption
- handling into .head.text
-To: Pascal Ernster <git@hardfalcon.net>
-Cc: Borislav Petkov <bp@alien8.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
-	patches@lists.linux.dev, Tom Lendacky <thomas.lendacky@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240410143419.ptupie3hyivjuzqf@skbuf>
 
-On Wed, 10 Apr 2024 at 16:30, Pascal Ernster <git@hardfalcon.net> wrote:
->
-> [2024-04-10 12:06] Ard Biesheuvel:
-> > On Wed, 10 Apr 2024 at 11:03, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >>
-> >> On Wed, 10 Apr 2024 at 09:00, Pascal Ernster <git@hardfalcon.net> wrote:
-> >>>
-> >>> [2024-04-10 07:34] Borislav Petkov:
-> >>>> On Tue, Apr 09, 2024 at 06:38:53PM +0200, Pascal Ernster wrote:
-> >>>>> Just to make sure this doesn't get lost: This patch causes the kernel to not
-> >>>>> boot on several x86_64 VMs of mine (I haven't tested it on a bare metal
-> >>>>> machine). For details and a kernel config to reproduce the issue, see https://lore.kernel.org/stable/fd186a2b-0c62-4942-bed3-a27d72930310@hardfalcon.net/
-> >>>>
-> >>
-> >
-> > Based on your XML description, I have extracted the command line
-> > below, to boot a kernel built from the config you provided (but not
-> > using the arch build scripts). I am using the same x86 initramfs I use
-> > for all my boot testing, but that shouldn't make a difference here.
-> >
-> > Both your 'working' and 'broken' kernels work fine for me, both with
-> > and without OVMF firmware, so I'm a bit stuck here. Could you please
-> > try to reproduce using the command line below?
-> >
-> >
-> > /usr/bin/qemu-system-x86_64 -name guest=kernel_issue,debug-threads=on
-> > -machine pc-q35-8.2,usb=off,smm=on,dump-guest-core=off,memory-backend=pc.ram,hpet=off,acpi=on
-> > -accel kvm -cpu host,migratable=on -m size=2097152k -object
-> > '{"qom-type":"memory-backend-ram","id":"pc.ram","size":2147483648}'
-> > -overcommit mem-lock=off -smp 1,sockets=1,cores=1,threads=1 -uuid
-> > 3ef94585-9ed2-464c-97ca-546fe9b42e2d -display none -no-user-config
-> > -nodefaults  -rtc base=utc,driftfix=slew -global
-> > kvm-pit.lost_tick_policy=delay -no-shutdown -global
-> > ICH9-LPC.disable_s3=1 -global ICH9-LPC.disable_s4=1 -boot strict=on
-> > -kernel /usr/local/google/home/ardb/linux-build/arch/x86/boot/bzImage
-> > -initrd /usr/local/google/home/ardb/rootfs-x86.cpio.gz -append
-> > 'console=ttyS0,115200 intel_iommu=on lockdown=confidentiality
-> > ia32_emulation=0 usbcore.nousb loglevel=7
-> > earlyprintk=serial,ttyS0,115200' -device
-> > '{"driver":"pcie-root-port","port":8,"chassis":1,"id":"pci.1","bus":"pcie.0","multifunction":true,"addr":"0x1"}'
-> > -device '{"driver":"pcie-root-port","port":9,"chassis":2,"id":"pci.2","bus":"pcie.0","addr":"0x1.0x1"}'
-> > -device '{"driver":"pcie-root-port","port":10,"chassis":3,"id":"pci.3","bus":"pcie.0","addr":"0x1.0x2"}'
-> > -device '{"driver":"pcie-root-port","port":11,"chassis":4,"id":"pci.4","bus":"pcie.0","addr":"0x1.0x3"}'
-> > -device '{"driver":"pcie-root-port","port":12,"chassis":5,"id":"pci.5","bus":"pcie.0","addr":"0x1.0x4"}'
-> > -device '{"driver":"pcie-root-port","port":13,"chassis":6,"id":"pci.6","bus":"pcie.0","addr":"0x1.0x5"}'
-> > -chardev stdio,id=charserial0 -device
-> > '{"driver":"isa-serial","chardev":"charserial0","id":"serial0","index":0}'
-> > -audiodev '{"id":"audio1","driver":"none"}' -global
-> > ICH9-LPC.noreboot=off -watchdog-action reset -device
-> > '{"driver":"virtio-balloon-pci","id":"balloon0","bus":"pci.4","addr":"0x0"}'
-> > -sandbox on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny
-> > -msg timestamp=on
->
->
-> The error also seems to occur with the /usr/bin/qemu-system-x86_64
-> command you posted. I can't see the serial output, but I can see the
-> persistent 100% CPU load that only occurs with the broken kernel but not
-> with the kernel where your patch was reverted.
->
-> I've written a shell script that should allow you to reproduce
-> everything, and I've trimmed down the kernel config (included within the
-> shell script) even further to reduce compile times. Whilst writing the
-> script, I've found that the issue seems to only occur when I boot
-> bzImage, but not when I boot the vmlinux image.
->
-> Regarding the linker used: When building the kernel using my PKGBUILD, I
-> used mold as linker, but when writing the attached reproducer script, I
-> used the "normal" ld from the Archlinux binutils 2.42-2 package, and I
-> can confirm that the issue also does also occur when binutils is used
-> instead of mold.
->
-> Running the script in tmpfs takes about 10-15 minutes on an Intel i5
-> 8500 with sufficient RAM, and it compiles both the "normal" version of
-> the kernel and a version with your patch reverted.
->
+On Wed, Apr 10, 2024 at 05:34:19PM +0300, Vladimir Oltean wrote:
+> On Wed, Apr 10, 2024 at 11:14:09AM +0200, Paolo Abeni wrote:
+> > On Wed, 2024-04-10 at 09:06 +0000, xu wrote:
+> > > Hi! Excuse me, I'm wondering why this patch was not merged into the 5.15 stable branch.
+> > 
+> > Because it lacked the CC: stable tag?
+> > 
+> > You can still ask (or do) an explicit backport, please have a look at:
+> > 
+> > Documentation/process/stable-kernel-rules.rst
+> > 
+> > Cheers,
+> > 
+> > Paolo
+> > 
+> 
+> My email records say that it was backported to 5.16:
+> https://lore.kernel.org/lkml/20220214092515.419944498@linuxfoundation.org/
+> On 5.15 I have no idea why not (no email).
+> 
+> Anyway, on linux-5.15.y, "git cherry-pick -xs ee534378f00561207656663d93907583958339ae"
+> does apply (it says "auto-merging"), so maybe Greg can just pick up the fix with one command?
+> 
 
-Thanks, this is very helpful.
+Now queued up, thanks.
 
-However, both bzImage-fixed and bzImage-broken boot happily for me.
-
-I am using
-
-$ gcc -v
-Using built-in specs.
-COLLECT_GCC=gcc
-COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper
-OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa
-OFFLOAD_TARGET_DEFAULT=1
-Target: x86_64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Debian
-13.2.0-10' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs
---enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2
---prefix=/usr --with-gc6
-Thread model: posix
-Supported LTO compression algorithms: zlib zstd
-gcc version 13.2.0 (Debian 13.2.0-10)
-
-$ ld -v
-GNU ld (GNU Binutils for Debian) 2.41.90.20240122
-
-$ qemu-system-x86_64 --version
-QEMU emulator version 8.2.1 (Debian 1:8.2.1+ds-1)
-Copyright (c) 2003-2023 Fabrice Bellard and the QEMU Project developers
-
-You can grab my bzImage here:
-http://files.workofard.com/bzImage-broken
+greg k-h
 
