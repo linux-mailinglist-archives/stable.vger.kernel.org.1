@@ -1,248 +1,185 @@
-Return-Path: <stable+bounces-38020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 995618A00D2
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 21:49:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E8E8A012B
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 22:21:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 500C2282D4B
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 19:49:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03D611C225D2
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 20:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D97F181B8E;
-	Wed, 10 Apr 2024 19:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD541802C8;
+	Wed, 10 Apr 2024 20:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pG6NEfN8"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="JiMnAAqr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A45181338
-	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 19:49:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E831DFC7;
+	Wed, 10 Apr 2024 20:20:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712778542; cv=none; b=P7mO1nliEzRJ4UXgHIjpu9llJjc8SjRvibLlbGLxPshC9Ra7427J8dUEz+S5juEN3h+43Izs/BD+cqXC75Qkj6sKv9jyRixOwE41v4vUMtJPWwYEcr7PA1HAUQgMxjvKkYBOs6l0CcGmESDZtNyrn0O/Fy3h6x0LSfANU/yLHMo=
+	t=1712780459; cv=none; b=PB58VKs+MI8BBwOZi5dL9KsDUTe9M0FQbf0zat5e7BSoVQnGbU4VrnMKan6Ixut+BZvsj/FFNRD1ESTewj7tx7lZYtPcoK4Dd7pc2t4fAqwjry4eWXx9xr0qyzfadxDMRtA2gM9EfDwZnTntikNBfky4HLmNOEkCy1OhQziyNVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712778542; c=relaxed/simple;
-	bh=xEoGedRNiXJoGnqajnhf1BwPxOUbcpaoDU2aUMU/6xw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QkBNW3jisTX6vqLSP4Z7yD5vxhtT/8Jl5AqWfAWghqLI2fi0bPyqlGqjdMiMECQ/bl6bmoknKCcH6Xnq0rQ3fbb+9/8tY4bKEQKQ/Pvi3mwJ45uZH9SvpH8ckRc6lzQcPRVGVZ+FCB3nVeV3JKCln4GPtYExJAmFflONNbdOLog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pG6NEfN8; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-434b5abbb0dso6981cf.0
-        for <stable@vger.kernel.org>; Wed, 10 Apr 2024 12:49:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712778539; x=1713383339; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DWCShh/bRGRzeO22yeBjtZLPhJ0/AGFCyE+KkcrS+ds=;
-        b=pG6NEfN8H1FXyjhB6zgMz+V9P0x2RFFQyiTdsFO1L8VKpRZzyjbysiRD2ExCnRgOyP
-         0jWXnJGQfToi03nmPxhOzvQ8GnFe5PYQ0eFRMbLuEO2dmusAPuDSUWSmQy4lRYpfQqn3
-         D5g/7wYHgv2woKEaU8vyxaJA0v9b4Ck0ZrI83pGenx0LyuKCSGX+Wcd+3hXZ7zxJaBc8
-         H4CMDij5YMRVFiHWUjfY91MVCf6HqD6Oo4llx3di1Ic8N0DMtoXfSng3m4FadtQU3GmD
-         c+WWawmeJOMxjmCBk+zt62kiil76RJEDKkXGg6mfVbbsT8OAXlGYWUnrZ1X76kBP5kkz
-         bE1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712778539; x=1713383339;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DWCShh/bRGRzeO22yeBjtZLPhJ0/AGFCyE+KkcrS+ds=;
-        b=hpCXmOhu7Gb8xrooCBP8A+VOHuIV4zb2Ve1EzxcVp0NlBy5noCEkkUD4qcMsh3PEuR
-         BuvLLTQsEP+yiYb6fyflUQm2bp4C9DY3dE1LM68tsVnAS9JKi84ydX+EP8jaZn4Hg7w4
-         vxWbgtiOUKFn8mN7vyYnpgTZtt8hyummHv4YHMmU0/JWjDwThDgBtPV73w+lNhsWfsIU
-         vYc1rgQo8+zqK4VAhlMptyymSC0qvl9OFjvtC4LUBjToPpxcxjeHz5jaOOetMGKcYcdO
-         ARI4Ef9HL29QnqzILwULQm3qfR0vABJLZZydZvp0h1dHHRPeYtKeSlY1h2vVzaLe1aeZ
-         rhDw==
-X-Forwarded-Encrypted: i=1; AJvYcCXIz1I94r3qpy6HWvAxMbxrNMrlVoO2t2Jj9yvqBC104sMIkw6C3wHCuahMzp3WvoOdSn1ENhzWfYIT6KDKUzd+TVzzEwO1
-X-Gm-Message-State: AOJu0YzizuGLCSI6M6+n7qdl2zQ8vFzf+OUUMJBIOW4Rg1TomHihB2Ec
-	mHkI3kBRP/2YpypqzANxOawnlCEWmqIy7Es+dA1zAXxkFjMSPDJ5hln+4CWEeSoRZRic8XP30Pn
-	wc2bAHvwqA05ORRI/2gt4kwvepajcgWBhCV6K
-X-Google-Smtp-Source: AGHT+IGa6MOnKjfghS1aRAZ4F4MxrT/E1DKiGKtukJn/QsQjBmlT/f6kggLbge9jt3UM+LRGc/z5WVALVplB0eqXhqc=
-X-Received: by 2002:a05:622a:5c13:b0:434:61ad:8c1b with SMTP id
- gd19-20020a05622a5c1300b0043461ad8c1bmr55230qtb.28.1712778539135; Wed, 10 Apr
- 2024 12:48:59 -0700 (PDT)
+	s=arc-20240116; t=1712780459; c=relaxed/simple;
+	bh=x+u0sZaPD3FIAjuBF4ZC5Hl9+7I5kNg2LpJKIORwZWc=;
+	h=Date:To:From:Subject:Message-Id; b=Ne/zW67vscXOi4T2szCRdJ7bm9qyzyC0IFHQf5BSjRweBHDgWzWndXS6g1bj34TIkhpKAeSrkoGt0G8FN4cDHaDG/b2BlADScuDUFB+pjdSvE3OrZOcgQ+lMiClrRmR0WH+REGp6uF98qhs5670t211iq0ZJnmhmdD0NqbKen08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=JiMnAAqr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5A4C433F1;
+	Wed, 10 Apr 2024 20:20:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1712780459;
+	bh=x+u0sZaPD3FIAjuBF4ZC5Hl9+7I5kNg2LpJKIORwZWc=;
+	h=Date:To:From:Subject:From;
+	b=JiMnAAqrpEuGR0zVPmDsCtGNlSxUZ9btsaNvZt12an5Ief+ZlXFCtBwmFlUD34Ryf
+	 pEMo3nB92jSGB0HgEWhbtqYmVwUs9vVLUiPsah2/bwaBUKMojTg2rlnFmdhKv3UTU1
+	 Xm6aXouUbRmRmUng5wekEPnLVC/BWe7sgQLK1yNI=
+Date: Wed, 10 Apr 2024 13:20:58 -0700
+To: mm-commits@vger.kernel.org,zhangpeng.00@bytedance.com,willy@infradead.org,thorvald@google.com,tandersen@netflix.com,stable@vger.kernel.org,oleg@redhat.com,muchun.song@linux.dev,mjguzik@gmail.com,Liam.Howlett@oracle.com,kent.overstreet@linux.dev,jane.chu@oracle.com,hca@linux.ibm.com,brauner@kernel.org,linmiaohe@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + fork-defer-linking-file-vma-until-vma-is-fully-initialized.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240410202059.1E5A4C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240410182618.169042-2-noah@noahloomans.com>
-In-Reply-To: <20240410182618.169042-2-noah@noahloomans.com>
-From: Guenter Roeck <groeck@google.com>
-Date: Wed, 10 Apr 2024 12:48:46 -0700
-Message-ID: <CABXOdTe02ALsv6sghnhWMkn7-7kidXhjvWzpDn7dGh4zKEkO8g@mail.gmail.com>
-Subject: Re: [PATCH] platform/chrome: cros_ec_uart: properly fix race condition
-To: Noah Loomans <noah@noahloomans.com>
-Cc: Bhanu Prakash Maiya <bhanumaiya@chromium.org>, Benson Leung <bleung@chromium.org>, 
-	Tzung-Bi Shih <tzungbi@kernel.org>, Guenter Roeck <groeck@chromium.org>, 
-	Robert Zieba <robertzieba@google.com>, chrome-platform@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 10, 2024 at 11:29=E2=80=AFAM Noah Loomans <noah@noahloomans.com=
-> wrote:
->
-> The cros_ec_uart_probe() function calls devm_serdev_device_open() before
-> it calls serdev_device_set_client_ops(). This can trigger a NULL pointer
-> dereference:
->
->     BUG: kernel NULL pointer dereference, address: 0000000000000000
->     ...
->     CPU: 5 PID: 103 Comm: kworker/u16:3 Not tainted 6.8.4-zen1-1-zen #1 4=
-a88f2661038c2a3bb69aa70fb41a5735338823c
->     Hardware name: Google Morphius/Morphius, BIOS MrChromebox-4.22.2-1-g2=
-a93624aebf 01/22/2024
->     Workqueue: events_unbound flush_to_ldisc
->     RIP: 0010:ttyport_receive_buf+0x3f/0xf0
->     ...
->     Call Trace:
->      <TASK>
->      ? __die+0x10f/0x120
->      ? page_fault_oops+0x171/0x4e0
->      ? srso_return_thunk+0x5/0x5f
->      ? exc_page_fault+0x7f/0x180
->      ? asm_exc_page_fault+0x26/0x30
->      ? ttyport_receive_buf+0x3f/0xf0
->      flush_to_ldisc+0x9b/0x1c0
->      process_one_work+0x17b/0x340
->      worker_thread+0x301/0x490
->      ? __pfx_worker_thread+0x10/0x10
->      kthread+0xe8/0x120
->      ? __pfx_kthread+0x10/0x10
->      ret_from_fork+0x34/0x50
->      ? __pfx_kthread+0x10/0x10
->      ret_from_fork_asm+0x1b/0x30
->      </TASK>
->
-> A simplified version of crashing code is as follows:
->
->     static inline size_t serdev_controller_receive_buf(struct serdev_cont=
-roller *ctrl,
->                                                       const u8 *data,
->                                                       size_t count)
->     {
->             struct serdev_device *serdev =3D ctrl->serdev;
->
->             if (!serdev || !serdev->ops->receive_buf) // CRASH!
->                 return 0;
->
->             return serdev->ops->receive_buf(serdev, data, count);
->     }
->
->     static size_t ttyport_receive_buf(struct tty_port *port, const u8 *cp=
-,
->                                       const u8 *fp, size_t count)
->     {
->             struct serdev_controller *ctrl =3D port->client_data;
->             [...]
->
->             if (!test_bit(SERPORT_ACTIVE, &serport->flags))
->                     return 0;
->
->             ret =3D serdev_controller_receive_buf(ctrl, cp, count);
->
->             [...]
->             return ret;
->     }
->
-> It assumes that if SERPORT_ACTIVE is set and serdev exists, serdev->ops
-> will also exist. This conflicts with the existing cros_ec_uart_probe()
-> logic, as it first calls devm_serdev_device_open() (which sets
-> SERPORT_ACTIVE), and only later sets serdev->ops via
-> serdev_device_set_client_ops().
->
-> Commit 01f95d42b8f4 ("platform/chrome: cros_ec_uart: fix race
-> condition") attempted to fix a similar race condition, but while doing
-> so, made the window of error for this race condition to happen much
-> wider.
->
-> Attempt to fix the race condition again, making sure we fully setup
-> before calling devm_serdev_device_open().
->
-> Fixes: 01f95d42b8f4 ("platform/chrome: cros_ec_uart: fix race condition")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Noah Loomans <noah@noahloomans.com>
-> ---
->
-> This is my first time contributing to Linux, I hope this is a good
-> patch. Feedback on how to improve is welcome!
->
 
-The commit message is a bit long, but the patch itself looks good to me.
+The patch titled
+     Subject: fork: defer linking file vma until vma is fully initialized
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     fork-defer-linking-file-vma-until-vma-is-fully-initialized.patch
 
-Reviewed-by: Guenter Roeck <groeck@chromium.org>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fork-defer-linking-file-vma-until-vma-is-fully-initialized.patch
 
-Guenter
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
->  drivers/platform/chrome/cros_ec_uart.c | 28 +++++++++++++-------------
->  1 file changed, 14 insertions(+), 14 deletions(-)
->
-> diff --git a/drivers/platform/chrome/cros_ec_uart.c b/drivers/platform/ch=
-rome/cros_ec_uart.c
-> index 8ea867c2a01a..62bc24f6dcc7 100644
-> --- a/drivers/platform/chrome/cros_ec_uart.c
-> +++ b/drivers/platform/chrome/cros_ec_uart.c
-> @@ -263,12 +263,6 @@ static int cros_ec_uart_probe(struct serdev_device *=
-serdev)
->         if (!ec_dev)
->                 return -ENOMEM;
->
-> -       ret =3D devm_serdev_device_open(dev, serdev);
-> -       if (ret) {
-> -               dev_err(dev, "Unable to open UART device");
-> -               return ret;
-> -       }
-> -
->         serdev_device_set_drvdata(serdev, ec_dev);
->         init_waitqueue_head(&ec_uart->response.wait_queue);
->
-> @@ -280,14 +274,6 @@ static int cros_ec_uart_probe(struct serdev_device *=
-serdev)
->                 return ret;
->         }
->
-> -       ret =3D serdev_device_set_baudrate(serdev, ec_uart->baudrate);
-> -       if (ret < 0) {
-> -               dev_err(dev, "Failed to set up host baud rate (%d)", ret)=
-;
-> -               return ret;
-> -       }
-> -
-> -       serdev_device_set_flow_control(serdev, ec_uart->flowcontrol);
-> -
->         /* Initialize ec_dev for cros_ec  */
->         ec_dev->phys_name =3D dev_name(dev);
->         ec_dev->dev =3D dev;
-> @@ -301,6 +287,20 @@ static int cros_ec_uart_probe(struct serdev_device *=
-serdev)
->
->         serdev_device_set_client_ops(serdev, &cros_ec_uart_client_ops);
->
-> +       ret =3D devm_serdev_device_open(dev, serdev);
-> +       if (ret) {
-> +               dev_err(dev, "Unable to open UART device");
-> +               return ret;
-> +       }
-> +
-> +       ret =3D serdev_device_set_baudrate(serdev, ec_uart->baudrate);
-> +       if (ret < 0) {
-> +               dev_err(dev, "Failed to set up host baud rate (%d)", ret)=
-;
-> +               return ret;
-> +       }
-> +
-> +       serdev_device_set_flow_control(serdev, ec_uart->flowcontrol);
-> +
->         return cros_ec_register(ec_dev);
->  }
->
-> --
-> 2.44.0
->
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Miaohe Lin <linmiaohe@huawei.com>
+Subject: fork: defer linking file vma until vma is fully initialized
+Date: Wed, 10 Apr 2024 17:14:41 +0800
+
+Thorvald reported a WARNING [1]. And the root cause is below race:
+
+ CPU 1					CPU 2
+ fork					hugetlbfs_fallocate
+  dup_mmap				 hugetlbfs_punch_hole
+   i_mmap_lock_write(mapping);
+   vma_interval_tree_insert_after -- Child vma is visible through i_mmap tree.
+   i_mmap_unlock_write(mapping);
+   hugetlb_dup_vma_private -- Clear vma_lock outside i_mmap_rwsem!
+					 i_mmap_lock_write(mapping);
+   					 hugetlb_vmdelete_list
+					  vma_interval_tree_foreach
+					   hugetlb_vma_trylock_write -- Vma_lock is cleared.
+   tmp->vm_ops->open -- Alloc new vma_lock outside i_mmap_rwsem!
+					   hugetlb_vma_unlock_write -- Vma_lock is assigned!!!
+					 i_mmap_unlock_write(mapping);
+
+hugetlb_dup_vma_private() and hugetlb_vm_op_open() are called outside
+i_mmap_rwsem lock while vma lock can be used in the same time.  Fix this
+by deferring linking file vma until vma is fully initialized.  Those vmas
+should be initialized first before they can be used.
+
+Link: https://lkml.kernel.org/r/20240410091441.3539905-1-linmiaohe@huawei.com
+Fixes: 8d9bfb260814 ("hugetlb: add vma based lock for pmd sharing")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Reported-by: Thorvald Natvig <thorvald@google.com>
+Closes: https://lore.kernel.org/linux-mm/20240129161735.6gmjsswx62o4pbja@revolver/T/ [1]
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Peng Zhang <zhangpeng.00@bytedance.com>
+Cc: Tycho Andersen <tandersen@netflix.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ kernel/fork.c |   33 +++++++++++++++++----------------
+ 1 file changed, 17 insertions(+), 16 deletions(-)
+
+--- a/kernel/fork.c~fork-defer-linking-file-vma-until-vma-is-fully-initialized
++++ a/kernel/fork.c
+@@ -714,6 +714,23 @@ static __latent_entropy int dup_mmap(str
+ 		} else if (anon_vma_fork(tmp, mpnt))
+ 			goto fail_nomem_anon_vma_fork;
+ 		vm_flags_clear(tmp, VM_LOCKED_MASK);
++		/*
++		 * Copy/update hugetlb private vma information.
++		 */
++		if (is_vm_hugetlb_page(tmp))
++			hugetlb_dup_vma_private(tmp);
++
++		/*
++		 * Link the vma into the MT. After using __mt_dup(), memory
++		 * allocation is not necessary here, so it cannot fail.
++		 */
++		vma_iter_bulk_store(&vmi, tmp);
++
++		mm->map_count++;
++
++		if (tmp->vm_ops && tmp->vm_ops->open)
++			tmp->vm_ops->open(tmp);
++
+ 		file = tmp->vm_file;
+ 		if (file) {
+ 			struct address_space *mapping = file->f_mapping;
+@@ -730,25 +747,9 @@ static __latent_entropy int dup_mmap(str
+ 			i_mmap_unlock_write(mapping);
+ 		}
+ 
+-		/*
+-		 * Copy/update hugetlb private vma information.
+-		 */
+-		if (is_vm_hugetlb_page(tmp))
+-			hugetlb_dup_vma_private(tmp);
+-
+-		/*
+-		 * Link the vma into the MT. After using __mt_dup(), memory
+-		 * allocation is not necessary here, so it cannot fail.
+-		 */
+-		vma_iter_bulk_store(&vmi, tmp);
+-
+-		mm->map_count++;
+ 		if (!(tmp->vm_flags & VM_WIPEONFORK))
+ 			retval = copy_page_range(tmp, mpnt);
+ 
+-		if (tmp->vm_ops && tmp->vm_ops->open)
+-			tmp->vm_ops->open(tmp);
+-
+ 		if (retval) {
+ 			mpnt = vma_next(&vmi);
+ 			goto loop_out;
+_
+
+Patches currently in -mm which might be from linmiaohe@huawei.com are
+
+mm-memory-failure-fix-deadlock-when-hugetlb_optimize_vmemmap-is-enabled.patch
+fork-defer-linking-file-vma-until-vma-is-fully-initialized.patch
+
 
