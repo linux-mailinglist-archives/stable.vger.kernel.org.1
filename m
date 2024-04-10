@@ -1,105 +1,123 @@
-Return-Path: <stable+bounces-38010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D75D889FF4C
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 19:58:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F81589FF5F
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 20:02:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65267B264DE
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 17:58:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27A731F29CF4
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 18:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA8617F38F;
-	Wed, 10 Apr 2024 17:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1306D17F385;
+	Wed, 10 Apr 2024 18:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QbQ6q4AG"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="OWTRqp9O";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="N1SVnxgv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wfout4-smtp.messagingengine.com (wfout4-smtp.messagingengine.com [64.147.123.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4EB17F365
-	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 17:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5EF1168DC;
+	Wed, 10 Apr 2024 18:02:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712771925; cv=none; b=iJpct0fEW8QO/5ItrxPzFg5ZFkzJaQzep+nIJbo1Zd14NprVGzRifbnfdtho/rbgqy8eC3eqN5FgtqSJrM4RSa7pA+qux1REDa72qWVXu6tgFLXCjsB7bnUjGxoYwTzfwykq3SgZ/w6Ujq5nL9hsvpZWEdnhF+2u8bM2ahkgYxY=
+	t=1712772159; cv=none; b=HmAbsFwB883IhtcxSTQeU0506Os6iyV8MQVpYPxKMC55snJ2NFo2U/Zj+FXEeKS61hHP13qBQ7tjBuLrTeNGaXV41SrUyw7XPChdCBVuC4vg2EHGoKZjlTpGa0iRYnmnc4Hyp6HWHk3Ui110lk26E8Jww4WO0ByWMDIM+0Av1Ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712771925; c=relaxed/simple;
-	bh=YwYXMXs0IVxwk6DATVGOErw+hkjBmJdEIaxZBT6Ct/o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JcsDyeuyREolRuu1bzgfdl0Y4SPvbU43ZXraf0giol2rxIpGV3NngHMkctoXFmMHOTUN3kOovbwf/D+uco4Dr3al5CRHoL9LEDNaOBym3UqVPX1J91jJb5jiKXcO/oFo9T5e3l4Fqif3jsuRKgXTzvJC6lg4qLMc4m4PAtG1DeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QbQ6q4AG; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2d87660d5dbso50383041fa.3
-        for <stable@vger.kernel.org>; Wed, 10 Apr 2024 10:58:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712771922; x=1713376722; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cZfESw/9OR2lnetOyNgUHG3OZQhlip53uNIlAUytWmY=;
-        b=QbQ6q4AGy+czhv78IqIaEbpMIYYhRPBH2y9EcMBgYFQuV8FUPn3x/aiNyizEJn+3ZW
-         yHrIN0uvPyx2vevp7g5KS8V4qyB6PlHOzGdsYdVr6EKY3dG1eL7QnG1mVAF2whELEyOI
-         7jVmrwEa7Kd9uqUmFaaauCicRvC+DqPBzGQoFPUyx3fg41nu4auFTJrQZGmfYkN7B5tg
-         x8arWIg4zcG5OckTVT2xuhcsTDWSo5mCQW3kAD7FoNDydPcug0Y/LIobDhPNm0lCJXYp
-         viFrLxoVMjd5+KiVLBQKh327madBm5ok0xQTI3VArDb7cLSMcZ9f2Quax0ICnoXaIfCx
-         L8Lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712771922; x=1713376722;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cZfESw/9OR2lnetOyNgUHG3OZQhlip53uNIlAUytWmY=;
-        b=l2C2xbXo4fxFrlQ7V9MKpr6/ucAUOlHWRQ4q9qGJnzzfwBxhgX2BpUJGnw2Dt+ZW7x
-         o3FawapaCqIUe/V3YgGeheO8ENglsU+SjN47x4emXl/2pJAoJwjYJzTEek/0mmdpgbNc
-         8Rd6ZbnDT3yc9p+Lw9PrydEO4n+T3eywqir4SNwwwFX6n2aMXqagaXrHmZypqWOFpqrW
-         WwKioIVybGzxwu/6zbDkGGDa8UVZJYSovm6nxBAEVnwTDIwGNbaHecbnz5snvP4uuxSX
-         KSxEgLdRxil8oGL8H4q/bRwjUAp+35MQvI93I0znqs9acB4wCDtCsWq3fG1x0DZ1HC4J
-         ujgQ==
-X-Gm-Message-State: AOJu0Yy9LXaKxo6+8MjxbBRlWoUoNTyskTpb8adGPEn/1zpMHsAfypj5
-	TRqB6IhdsJVu+uucjvP3I4buFlyiC/Mw6odKwLMkA1vHhBhUoziK5wmhZPnNMYnoyQTATTPuHle
-	ha0g=
-X-Google-Smtp-Source: AGHT+IHuPz9eKSloG3aQH7ciBR5TQDfDencMS58CGvG0dkNQ9r6hcdHyVqXbSZfKVuohartThR/MwQ==
-X-Received: by 2002:a2e:978c:0:b0:2d7:447b:c30c with SMTP id y12-20020a2e978c000000b002d7447bc30cmr2323385lji.48.1712771921923;
-        Wed, 10 Apr 2024 10:58:41 -0700 (PDT)
-Received: from [172.30.205.26] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id q10-20020a2e84ca000000b002d8ed1c8245sm37727ljh.67.2024.04.10.10.58.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Apr 2024 10:58:41 -0700 (PDT)
-Message-ID: <e06402a9-584f-4f0c-a61e-d415a8b0c441@linaro.org>
-Date: Wed, 10 Apr 2024 19:58:40 +0200
+	s=arc-20240116; t=1712772159; c=relaxed/simple;
+	bh=mmflYIeLFfZFjKHyKfkl9MZClho18bCOL5WKZR1USlo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hj0RTgiCp05c5sgWGjYA95WrEHpSL2nwvtSigd44xIauBF/3EYjE4oDNj2DqpPygK0rIq/T2H3KZ/dxHn2Zv/X3GUmWwxappnzmIpiLWH3Z62smBxR5q9GgqCYUn8WLI61P2KG17ezxM4WFuxlKoW1ouAln/pk3DJy6Db1MAXB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=OWTRqp9O; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=N1SVnxgv; arc=none smtp.client-ip=64.147.123.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.west.internal (Postfix) with ESMTP id 965041C000E5;
+	Wed, 10 Apr 2024 14:02:35 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Wed, 10 Apr 2024 14:02:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1712772154; x=1712858554; bh=YertHYiXkl
+	pQluikonf6IgljfvBl94hixkNDFTaI/fM=; b=OWTRqp9OQGAiIGiRwGBcu2yRl1
+	GUQKqKJarBiTmj7/QDni0Wlbzn5ofHbXxWHv+Gi1u4lRt/p7IuD+9NvNqQv2GOzr
+	/tM/VlzFvGIK8HoNOH3XURNV0g1wxmd9D1289e9p1oT+Vv3ufQyDL28gTWLPaKDT
+	Xp4qHliw2OgOkeGz0Miw1XCLSxJu1Mkr3NLkDyx7Xdvs+BAxwe1BOzqCY2gguoXy
+	pYwv9bvx7rfI37X4KGYFoPzEZvdcqZE7P904arOX/md3WcbTiGUTHZp35kprnq9l
+	pnBgmEwaevXsyJMqLeTFmWH/ARrWcBbBrz4tOFFA8E0TEq7kxbHjBx2MV4vQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1712772154; x=1712858554; bh=YertHYiXklpQluikonf6IgljfvBl
+	94hixkNDFTaI/fM=; b=N1SVnxgvn2W8d0UdSl8/d9z1aanvw35HlGkHnjskUvh8
+	cjxpUH3RbInjgcm7uqjh1EhoUfSDjasJvnhoP4RNvYknT86/01LCLxphOodIKu7q
+	+drK5xjKnMNyYRX/LI2QvQ/jy9RdI7J+aNaqlpohzXsZ01nPflhj8yXamVSWYvJW
+	vufjiGT1AHWKZCHGSgf4i7LrzK49b8ezDrPfTj+QR38nKgjZ8Qj/um4ycJ5wd0p1
+	Rxo45UoG/F/e+j/t6Och8OO2aqTfjMr2i4WjM2vL8FhEpQY1SCnfBZN/Zw+QKYjv
+	RqvGO1wlIIvKdAJ/uV/LD0/Z7kGl4G9hZjm8ZUn+QA==
+X-ME-Sender: <xms:OtQWZiPfZ_YIPFHA4pQqLCVKtY8O3MQ_1RCgOgz-8U_BxdByWt3dxQ>
+    <xme:OtQWZg-Q7ZLaMB4-2wzK4tLlTsPucKSn8c9JD8EPBvG7pLbjBqe_-NZ2SFVDxoRrF
+    evagdD3c0CQWA>
+X-ME-Received: <xmr:OtQWZpQoyMXqZ-g9KMaOPgiHQytC2ZWgOAWs_77uKUPRs0uB24DC-Ot-bwQTh6bDQ4iTZes4NTn_j5g5eqHNlib0qzRQD1dDVKA13A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehiedguddujecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
+    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehge
+    dvvedvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhu
+    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhroh
+    grhhdrtghomh
+X-ME-Proxy: <xmx:OtQWZiurARBEfZ9CAjiQzRGzVv9n3FNDdhScid1Bw7Cfn5HQSyD4Kw>
+    <xmx:OtQWZqdHZqJDApPDNpB5GJbgp_S1FuSXqW4K08VvW9Twxe84HoWZLQ>
+    <xmx:OtQWZm0ox2qgglZs4Z-c5V2Bz0HuglKMHuAFnPnjts3wQ2yh1j5AtA>
+    <xmx:OtQWZu-1N6LZdyS6gDUdMGo08Xt3MT-0bptShvOwCGFcs9p0rLHUAA>
+    <xmx:OtQWZtWkyc8yc3R6TvZP6F4zmykMVavVdoC_zK23EuhgbcPyMNWCDWiP>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 10 Apr 2024 14:02:33 -0400 (EDT)
+Date: Wed, 10 Apr 2024 20:02:32 +0200
+From: Greg KH <greg@kroah.com>
+To: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	buddyjojo06@outlook.com, Bjorn Andersson <andersson@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>
+Subject: Re: Patch "arm64: dts: qcom: Add support for Xiaomi Redmi Note 9S"
+ has been added to the 6.8-stable tree
+Message-ID: <2024041016-scope-unfair-2b6a@gregkh>
+References: <20240410155728.1729320-1-sashal@kernel.org>
+ <e06402a9-584f-4f0c-a61e-d415a8b0c441@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "arm64: dts: qcom: Add support for Xiaomi Redmi Note 9S"
- has been added to the 6.8-stable tree
-To: stable@vger.kernel.org, stable-commits@vger.kernel.org,
- buddyjojo06@outlook.com
-Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Johan Hovold <johan+linaro@kernel.org>
-References: <20240410155728.1729320-1-sashal@kernel.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20240410155728.1729320-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e06402a9-584f-4f0c-a61e-d415a8b0c441@linaro.org>
 
-
-
-On 4/10/24 17:57, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
+On Wed, Apr 10, 2024 at 07:58:40PM +0200, Konrad Dybcio wrote:
 > 
->      arm64: dts: qcom: Add support for Xiaomi Redmi Note 9S
+> 
+> On 4/10/24 17:57, Sasha Levin wrote:
+> > This is a note to let you know that I've just added the patch titled
+> > 
+> >      arm64: dts: qcom: Add support for Xiaomi Redmi Note 9S
+> 
+> autosel has been reeaaaaaly going over the top lately, particularly
+> with dts patches.. I'm not sure adding support for a device is
+> something that should go to stable
 
-autosel has been reeaaaaaly going over the top lately, particularly
-with dts patches.. I'm not sure adding support for a device is
-something that should go to stable
+Simple device ids and quirks have always been stable material.
 
-Konrad
+thanks,
+
+greg k-h
 
