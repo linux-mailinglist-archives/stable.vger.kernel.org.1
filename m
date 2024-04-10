@@ -1,114 +1,107 @@
-Return-Path: <stable+bounces-37980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D137089F9F1
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 16:34:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC18789FB0C
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 17:06:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86C5328590A
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 14:34:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CCECB30A96
+	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 14:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57ED116C6AD;
-	Wed, 10 Apr 2024 14:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6BCE16D30E;
+	Wed, 10 Apr 2024 14:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jj0JxiS1"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="S2KAQAy4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CFB43AB5;
-	Wed, 10 Apr 2024 14:34:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EAD15EFA0
+	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 14:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712759666; cv=none; b=AbyqU5pH7IWNd1O6SHJ4iDu4GJFVAh+cJvOTiC60WlJpVBM02OhcYpJVNbGYlDPwBNDYH6ACM+b2U+rOp6JiVCbRbPdEBZlR9q5EnVfr3EC2MouQjJCgqwcNtKcHMO1r9bGPqEOKqfKbu+Z2iE5HAkqatAYmLO5X1ERGzK1M8Lw=
+	t=1712759827; cv=none; b=l53xmoeK4av/87fAqxQQBgb/coYLv80GcT8GRxu94IWDA/n/JlCs+AyPv8a14ugvOhwgmGw53PeSHIhVpJb4QYViAZcu9l3EsDN4UX2llXFJapBF2sULhLNcSt9EhyBS6XVurDCumZPED2YMJ2yWqtH5iQt8ZXZBIAfzVj82mZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712759666; c=relaxed/simple;
-	bh=bz/oHKSjEf6FgXoa8fCr/785oUgiXRozlZrE1+Asp1E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jJwS78j+jy4LPhT+eF7AUYup0dJC7tTNKVl1hUTlDjLyugv3BvwVr79n2ZOX4BsUe6jba43almGop51GWaTdX1wxN31Fa2uTYXg61uLYcvCZqUqZmn6Db3kdO17+9T0mLeTJn3NS3rBz8P91hgpPUs4DDRXM0GudORk0646+f+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jj0JxiS1; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-56e1bbdb362so8362034a12.1;
-        Wed, 10 Apr 2024 07:34:24 -0700 (PDT)
+	s=arc-20240116; t=1712759827; c=relaxed/simple;
+	bh=6OX0SbCwsu8LIWphrnQnLPawTJzDR8G9knX00oqYF+A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bvnlYXM/PaMK7Jp+2HhhUGgCCtt4+8FdqbmUuOG8cC3IrQ9pAvzjW+tknMWI3oqXILQgYwssiE9g48ETtH6gn6rZ4LQu4ti9OJnDYtQCP9jXTZ7KcE3h603QPTkx9jE21P9czGN2i4AhU8XlDNzAJcYHBK0sIbF5bqwIFb/nLfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=S2KAQAy4; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-416422e2acbso22288455e9.1
+        for <stable@vger.kernel.org>; Wed, 10 Apr 2024 07:37:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712759663; x=1713364463; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XsY9i5J1DKu25sfuXNOnGVtCjVYnBq3+YDHmrpnhBN4=;
-        b=jj0JxiS1am0gN26rk3OTGE+wu/suPzx/eCTA+P16zM91PPtuR3AUCMQ7cMEjOb4JNQ
-         3e7AUf6QOJubI7OKVu3DRxms/b+sbo10Y3XPNvg04TW1dwTHq9SAADiD0k4vgk7xEhSJ
-         4nCalp4mR8QoGGofbgRXFHGcx9gyaR2LWokoEe0IHNeYt9fdcEiC41kYuqZG3oDM1pZR
-         oG2pJC9l/6m/kcGRBZm+TtahSVd0pKrbxKxw2TUs3BxQvq9cXxmMI4hxT60yk65wzUC8
-         XiO4dXCf2glPP/FjIdX8yfkEQwGRwxfhv/sm6k1JNNv6N1ncMYE4xG+ANb3xAxupdGH5
-         U3cA==
+        d=tuxon.dev; s=google; t=1712759824; x=1713364624; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0k3G+fCKFtAvuxTFmw21CseTXlCWIYCbwZlcENKBATk=;
+        b=S2KAQAy4rDTcmhX4/W1EfJCd6u2Emxfq1OhXktYOA+Wjvrcb2jHG+ssHcTDReRI1Tw
+         qicsHsaXanwG3ml9QB/+EBsaAb/pwosGP9nC7WJf58N2D0S6kHvEbR+sDurP2J7WxuhB
+         CnTxX6lscfPwELN2NlDiyy28XmJXi/W7fnEtIxuT8S5762YlEF72z31qGBXMMD7PMJ0D
+         Chaue1AKATVQjI4yOIYJiND3Izj3hcaUivzMZL1DHacfK67PVaXLAI3AHhDsIiQz7PAg
+         csbIxcGlQkX3GUGl8Pdts+b7NAb3vAzTrTv5pCf2vzXDIdTwdeoAF90TxZPuYAinIIY0
+         j//A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712759663; x=1713364463;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XsY9i5J1DKu25sfuXNOnGVtCjVYnBq3+YDHmrpnhBN4=;
-        b=mrNA5GFAvwT655VaTlgn7mCWa7MUmDMUA2dq94ZRHsH2Uu91eR3/0MOtxLbnZ0/SOf
-         e2QbGhdrr+rh1ABS07ld6jO0XMk9XifWvr8u709LqB1gBKI2TOTd87nYmzyyipWeSLp6
-         2jodOy/I6nClqQv96JhHtEkgbZLWjzmqtkZ5/QjTIDvuuZDvldsRryy4yANtGqyZiGmQ
-         v7uaUP6xap0W17jhV4yIvugOm//JYOTqp5e+kuEen74VO46e/TWtKshJe2vNymx3BeUD
-         fLG0lKsXFj4Z+gKw4A5iAk9e1iJPvOgHmjympXL1HE3L58ypZEygSwHjYv3r4awakScY
-         EgzA==
-X-Forwarded-Encrypted: i=1; AJvYcCUPzEBMNpxKu1WH7YAJdKMuXr9deecj4L6vnMmCeFX/+ttbjA7Vh+/u7d3dSn1r4LE9a+iFhZLmWtJ+F3bzvMkwqD49IotRXPSDm8fPLQ/Tu2orzuvgGb5v7jABiSmF
-X-Gm-Message-State: AOJu0YwVOofKMW7/yerBlBcd0jyiYn96uhvTlruGc2M+EVlYAlRBQ6Rj
-	4tpscZnvoZ6yL8uXmT3tJGB5Z/HRNMmYTWFmG0d+32jlvWmkX152
-X-Google-Smtp-Source: AGHT+IFOYaxjNyCn31D0+/QWIPwRWdtitFLndjB6ISZxp48/Czt91R/WG8+dyf3qtL2w4e2a7aLgVw==
-X-Received: by 2002:a50:cc8f:0:b0:56e:2db0:c7b6 with SMTP id q15-20020a50cc8f000000b0056e2db0c7b6mr1912881edi.42.1712759662724;
-        Wed, 10 Apr 2024 07:34:22 -0700 (PDT)
-Received: from skbuf ([2a02:2f04:d201:1f00::b2c])
-        by smtp.gmail.com with ESMTPSA id w17-20020aa7da51000000b0056e66f1fe9bsm3106393eds.23.2024.04.10.07.34.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Apr 2024 07:34:22 -0700 (PDT)
-Date: Wed, 10 Apr 2024 17:34:19 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Paolo Abeni <pabeni@redhat.com>, gregkh@linuxfoundation.org
-Cc: xu <xu.xin.sc@gmail.com>, stable@vger.kernel.org,
-	vladimir.oltean@nxp.com, LinoSanfilippo@gmx.de, andrew@lunn.ch,
-	daniel.klauer@gin.de, davem@davemloft.net, f.fainelli@gmail.com,
-	kuba@kernel.org, netdev@vger.kernel.org, rafael.richter@gin.de,
-	vivien.didelot@gmail.com, xu.xin16@zte.com.cn
-Subject: Re: Some questions Re: [PATCH net] net: dsa: fix panic when DSA
- master device unbinds on shutdown
-Message-ID: <20240410143419.ptupie3hyivjuzqf@skbuf>
-References: <20220209120433.1942242-1-vladimir.oltean@nxp.com>
- <20240410090644.130032-1-xu.xin16@zte.com.cn>
- <09f0fc793f5fe808341e034dadc958dbfe21be8c.camel@redhat.com>
+        d=1e100.net; s=20230601; t=1712759824; x=1713364624;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0k3G+fCKFtAvuxTFmw21CseTXlCWIYCbwZlcENKBATk=;
+        b=pjxPWKInwnk9tcuXR9SPsEaPRUVXcCZRrg4a4cumdKdHWGpbLtNG3pRT4Iuk2hC0gs
+         tKpzNiAbvs5//taXYzFVX5gTm9k55CxFr3SFcs8BmEiXN4oJu1dRzXMXF4K/lsJSuFDM
+         KVdVoYSNyNTnh0ITE+VUHWweRbH+rVQANdbUzP2PL5zcR5jf8FjUXwWKmMXnjFcQat3/
+         3WytbK5XwUkj1TdjZ1YWKSGZWscxWQ+LgMOsM1r3bwXbB9v/ubgIdTi5IRDOELvuoFii
+         XriIBC7+mjIW2NSWvI+N075urX4fX0DM4pN4pqh17VAs5Evx8xy0hAnzgKpCNYNNVhVw
+         qtew==
+X-Gm-Message-State: AOJu0Yx4nG1kqGn8Pj9kr3+uD0Sr4xqFsweaFvljtuH+gWVAfkrmwxRn
+	sux86/zxugvi5CRVlNEzELU03O9tDY3ynVeIFaKpjacyc61qyaDb4QxMoX7OqpY=
+X-Google-Smtp-Source: AGHT+IE/CFg7oWpEBQoBcQF4Crl7uPXpfOLatvhe35kZM381B9IbnefPddohUlOA5xHLQy0pbaT9rw==
+X-Received: by 2002:a5d:5848:0:b0:33d:754c:8daf with SMTP id i8-20020a5d5848000000b0033d754c8dafmr3177799wrf.10.1712759824076;
+        Wed, 10 Apr 2024 07:37:04 -0700 (PDT)
+Received: from [192.168.50.4] ([82.78.167.8])
+        by smtp.gmail.com with ESMTPSA id o15-20020a5d47cf000000b0034353b9c26bsm14188483wrc.9.2024.04.10.07.37.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Apr 2024 07:37:03 -0700 (PDT)
+Message-ID: <a81512d9-2831-4dc3-a127-9255916cf8a7@tuxon.dev>
+Date: Wed, 10 Apr 2024 17:37:02 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <09f0fc793f5fe808341e034dadc958dbfe21be8c.camel@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Backport commit ed4adc07207d ("net: ravb: Count packets instead
+ of descriptors in GbEth RX path")
+Content-Language: en-US
+To: Greg KH <gregkh@linuxfoundation.org>,
+ Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <TYCPR01MB64780A9ED53818F6A9D062ED9F072@TYCPR01MB6478.jpnprd01.prod.outlook.com>
+ <2024040959-freckles-bling-36b6@gregkh>
+From: claudiu beznea <claudiu.beznea@tuxon.dev>
+In-Reply-To: <2024040959-freckles-bling-36b6@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 10, 2024 at 11:14:09AM +0200, Paolo Abeni wrote:
-> On Wed, 2024-04-10 at 09:06 +0000, xu wrote:
-> > Hi! Excuse me, I'm wondering why this patch was not merged into the 5.15 stable branch.
+
+
+On 09.04.2024 17:53, Greg KH wrote:
+> On Tue, Apr 09, 2024 at 02:47:02PM +0000, Claudiu Beznea wrote:
+>> Legal Disclaimer: This e-mail communication (and any attachment/s) is confidential and contains proprietary information, some or all of which may be legally privileged. It is intended solely for the use of the individual or entity to which it is addressed. Access to this email by anyone else is unauthorized. If you are not the intended recipient, any disclosure, copying, distribution or any action taken or omitted to be taken in reliance on it, is prohibited and may be unlawful.
+>>
 > 
-> Because it lacked the CC: stable tag?
+> Now deleted.
 > 
-> You can still ask (or do) an explicit backport, please have a look at:
-> 
-> Documentation/process/stable-kernel-rules.rst
-> 
-> Cheers,
-> 
-> Paolo
 > 
 
-My email records say that it was backported to 5.16:
-https://lore.kernel.org/lkml/20220214092515.419944498@linuxfoundation.org/
-On 5.15 I have no idea why not (no email).
+Sorry for that. It was automatically added by the corporate email system. I
+wasn't aware of it.
 
-Anyway, on linux-5.15.y, "git cherry-pick -xs ee534378f00561207656663d93907583958339ae"
-does apply (it says "auto-merging"), so maybe Greg can just pick up the fix with one command?
+Thank you,
+Claudiu Beznea
 
