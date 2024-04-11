@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC51B8A0EE1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:18:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E52C8A0DD9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:08:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69ABEB24332
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:18:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 094542865C7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:08:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3E014601D;
-	Thu, 11 Apr 2024 10:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63DB0145B0A;
+	Thu, 11 Apr 2024 10:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VP6dqYdX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aseznwd8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E52E140E3D;
-	Thu, 11 Apr 2024 10:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232D613B5B9;
+	Thu, 11 Apr 2024 10:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830727; cv=none; b=P0CEl6JgNr2F/Pt2s27973BWBt4A29+koZzrZu9lVaYrhqNkB5pouywgN3jquMZaUSFkO1t/5hbnN1jSMOTgFW9nZNHZjKINkETTb73EnQ5iV30nfincQPZYZDSXOoLYjVlUU+FVIBxnNQ/lnEhknPOT1+KshowV6dc+GCMbjMc=
+	t=1712830108; cv=none; b=Wms/mB+mLSommapho2ROZzySs0tWk8KbZ2UYfgv8qCnSo2YZyBrHTUkWXGMRr1n4/x/XZ4XFNmtMtaVwqPCphEmpVtQn6RlaYHGE4zyW+0pgHvDnTK8AMGazRW1y90g99h6gft3/IOoSoZj4fAI1ZaHq65zaLkZMrYDXQ8sHUEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830727; c=relaxed/simple;
-	bh=hgl3E0tupiuzSLFq45IhqZwz5LHpYUitZ/XcrUzGREw=;
+	s=arc-20240116; t=1712830108; c=relaxed/simple;
+	bh=7q9fZThaEXYNcB3jQUHqempUIahxqZBS0uh24bNhbu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RKoRNCuNzY9W23atFU5bLgSQbzweB2t6IO2ckSugprFfzYgs8WPoWn3DJxDFT+pE3SSNRoBgDqDRarnWCed88zgApOQyEH+f3urqYnimhDVl+sv8Le+CahzaM+pYyxrEcRC1eY3cXUQKP49h2fMJ6bqHIM2JAlIZwcWJa2VSYkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VP6dqYdX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E99C433F1;
-	Thu, 11 Apr 2024 10:18:46 +0000 (UTC)
+	 MIME-Version; b=QDpd8XzZM/9kKus2D0CW7FJh/CI0VozXuWe1Y5vi4DsgnYB0gnpSrp4GIMn5c5bCsRubwv0P1sfNUGqf9M7/7YSLNBd9KwsiAfeEuZmXGsNtzJqxYD7LFcy6A5oO6TC4AW6VMxumPjl7zPL9z0Iis2yTDkpj9hMtBP+be2870DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aseznwd8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA5BC433F1;
+	Thu, 11 Apr 2024 10:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830727;
-	bh=hgl3E0tupiuzSLFq45IhqZwz5LHpYUitZ/XcrUzGREw=;
+	s=korg; t=1712830108;
+	bh=7q9fZThaEXYNcB3jQUHqempUIahxqZBS0uh24bNhbu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VP6dqYdXgUrnMJGR3yYZgmm6Rbr9BHX9rYGxgRomR3h81M1FlQkcasnWq8I9ZrtBh
-	 FTe0Mo7Je58gnoi7F4rVUo+0QjzAoYMhQf+N6/8HSVDVTnUnTlAPHH+6BgS2Ragfka
-	 58CcpfCdZ1DBTtCdHJTV/SnEP25hf2k2dU3zBbKc=
+	b=aseznwd8uceiikpKQmO4lYIDwtVXFnjXU2hHtx4mxFEhMTgNoZB+4p4h2euvYD8bC
+	 AVb8vFA3eu2VdZbk6zB7/P/+9bOPtRalEmSH26XBJE89MYg1bU7EwgqfUAWt94QIn8
+	 YygEkStyan6z2E56vh0juhcNYv/5Ct8oJndxmkIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	Petr Mladek <pmladek@suse.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 096/215] printk: Update @console_may_schedule in console_trylock_spinning()
+Subject: [PATCH 6.8 037/143] ACPI: x86: Add DELL0501 handling to acpi_quirk_skip_serdev_enumeration()
 Date: Thu, 11 Apr 2024 11:55:05 +0200
-Message-ID: <20240411095427.785439974@linuxfoundation.org>
+Message-ID: <20240411095422.028801950@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 8076972468584d4a21dab9aa50e388b3ea9ad8c7 ]
+[ Upstream commit 99b572e6136eab69a8c91d72cf8595b256e304b5 ]
 
-console_trylock_spinning() may takeover the console lock from a
-schedulable context. Update @console_may_schedule to make sure it
-reflects a trylock acquire.
+Some recent(ish) Dell AIO devices have a backlight controller board
+connected to an UART.
 
-Reported-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Closes: https://lore.kernel.org/lkml/20240222090538.23017-1-quic_mojha@quicinc.com
-Fixes: dbdda842fe96 ("printk: Add console owner and waiter logic to load balance console writes")
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/875xybmo2z.fsf@jogness.linutronix.de
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+This UART has a DELL0501 HID with CID set to PNP0501 so that the UART is
+still handled by 8250_pnp.c. Unfortunately there is no separate ACPI device
+with an UartSerialBusV2() resource to model the backlight-controller.
+This causes the kernel to create a /dev/ttyS0 char-device for the UART
+instead of creating an in kernel serdev-controller + serdev-device pair
+for a kernel backlight driver.
+
+Use the existing acpi_quirk_skip_serdev_enumeration() mechanism to work
+around this by returning skip=true for tty-ctrl parents with a HID
+of DELL0501.
+
+Like other cases where the UartSerialBusV2() resource is missing or broken
+this will only create the serdev-controller device and the serdev-device
+itself will need to be instantiated by platform code.
+
+Unfortunately in this case there is no device for the platform-code
+instantiating the serdev-device to bind to. So also create
+a platform_device for this.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/printk/printk.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/acpi/x86/utils.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index bb2198b40756d..ae1a97dd0c3cb 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -1787,6 +1787,12 @@ static int console_trylock_spinning(void)
- 	 */
- 	mutex_acquire(&console_lock_dep_map, 0, 1, _THIS_IP_);
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index 8829a907eee02..90c3d2eab9e99 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -484,8 +484,28 @@ static int acpi_dmi_skip_serdev_enumeration(struct device *controller_parent, bo
+ 
+ int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *skip)
+ {
++	struct acpi_device *adev = ACPI_COMPANION(controller_parent);
++
+ 	*skip = false;
  
 +	/*
-+	 * Update @console_may_schedule for trylock because the previous
-+	 * owner may have been schedulable.
++	 * The DELL0501 ACPI HID represents an UART (CID is set to PNP0501) with
++	 * a backlight-controller attached. There is no separate ACPI device with
++	 * an UartSerialBusV2() resource to model the backlight-controller.
++	 * Set skip to true so that the tty core creates a serdev ctrl device.
++	 * The backlight driver will manually create the serdev client device.
 +	 */
-+	console_may_schedule = 0;
++	if (acpi_dev_hid_match(adev, "DELL0501")) {
++		*skip = true;
++		/*
++		 * Create a platform dev for dell-uart-backlight to bind to.
++		 * This is a static device, so no need to store the result.
++		 */
++		platform_device_register_simple("dell-uart-backlight", PLATFORM_DEVID_NONE,
++						NULL, 0);
++		return 0;
++	}
 +
- 	return 1;
+ 	return acpi_dmi_skip_serdev_enumeration(controller_parent, skip);
  }
- 
+ EXPORT_SYMBOL_GPL(acpi_quirk_skip_serdev_enumeration);
 -- 
 2.43.0
 
