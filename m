@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-38423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 589DD8A0E86
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:15:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A968A0CEF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:58:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A2261C22112
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:15:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 822971C20928
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6855C1465A2;
-	Thu, 11 Apr 2024 10:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5B7145B05;
+	Thu, 11 Apr 2024 09:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7k/9T7T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAX/h301"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260FF14600E;
-	Thu, 11 Apr 2024 10:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF0213DDDD;
+	Thu, 11 Apr 2024 09:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830528; cv=none; b=RymjtGEXO2pVxGEY/zvliVv8jgtjnWFKF9Tlzx0wDKoedAIyxt9NYZhfK+Jzyg5/3DMO7OKzWX6OqC2gkudQmxF+pabhz5vGPWS7RXA9QVI5cAY+pzhG2a/6Lll92Mr7doQ8J995SR8vCAilyb7BkES5ZRKmebYV7hVShWuE42A=
+	t=1712829505; cv=none; b=QnIcyGGUZExUFzlEud5K7UJhmWlS2GJOMlkXAPkiDcUxOvpxk/J/2y7bTcQmcsa3F0TrjFTjdeU4/BaFGZG3OmRRHblSeHBFIG4rv7ULnSmOk+SwLtN1Sz/YMet9tyxWBeTWrlU+kKQikw7nCzRm1KxEM5Us/oX8GqrNIv8XLVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830528; c=relaxed/simple;
-	bh=MNHt9bC8Sm/Qqsb7gVRvqAH9e2M0QIPuwvTvEE1Y4OY=;
+	s=arc-20240116; t=1712829505; c=relaxed/simple;
+	bh=cnEit3hnvk1oiKmlrEnmZ61BoNQONgEbpX3+GKGfAEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DpD8zM1Pa6EgVMYFBLzrqDu32KH5ETjTaJc5XOpuL9cZx3eKti3e24Mynd7DofdqMh4QECQcAksW3NNFL6SY0xD6FELK8oNJ4H6bA7p/dMHUyUUb2pyprK4JchQW3C4eCy0l6t/t6WomU76hsWFO55D+U4tTVP66QcFxTnxlqOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7k/9T7T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98260C433F1;
-	Thu, 11 Apr 2024 10:15:27 +0000 (UTC)
+	 MIME-Version; b=BiL/Dq4LU2w2rNpYkbW6IyUR/6L6mHozGoj9A6h8ug2qXWF8Tnprz36gMxR4b3aLEYxQDmwuxsWQKR9msRpRmZ1UsNbrQR/KQTYI2/CeFLhNIDOTojNFXwlVf+qUtPMEemZX5JdfsAEQYKZn/n5qRQ1iIUTal8TkAnASbFBU2Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cAX/h301; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325D5C433F1;
+	Thu, 11 Apr 2024 09:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830528;
-	bh=MNHt9bC8Sm/Qqsb7gVRvqAH9e2M0QIPuwvTvEE1Y4OY=;
+	s=korg; t=1712829504;
+	bh=cnEit3hnvk1oiKmlrEnmZ61BoNQONgEbpX3+GKGfAEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b7k/9T7TMyHxrZvPI2VDady1nsVGnW2R97sXY1CkRPG7T9l/h1Oqy2ErXGmPYK01D
-	 O2X0ixaRGr96Kb4CR5zOxuyzB7c16YNBZwB1TTW6pIgzHSzRLKT63ZCZ9uSqcmLHaA
-	 WUlKjKISO/gEZumy4VT455Pthea/bQaAyDI+wSrk=
+	b=cAX/h3010gNeetmj4bFc5NtojPfqS56AzBwBnrAOxciZl0NHpqo2B2O90o5bLl+UK
+	 6LV2mWZeOyiaTweQ5AybCuNWy4UnTGFivVpnkNNNzSKwl8xF+cM7ysmiwhA5RtFdTT
+	 gMt2Z7gVQNwjzS/xONNeOTzH2AYqBRZ6QoKiwf8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3ce5dea5b1539ff36769@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Zheng Wang <zyytlz.wz@163.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 023/215] fat: fix uninitialized field in nostale filehandles
-Date: Thu, 11 Apr 2024 11:53:52 +0200
-Message-ID: <20240411095425.580772789@linuxfoundation.org>
+Subject: [PATCH 4.19 010/175] wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach
+Date: Thu, 11 Apr 2024 11:53:53 +0200
+Message-ID: <20240411095419.852635828@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit fde2497d2bc3a063d8af88b258dbadc86bd7b57c ]
+[ Upstream commit 0f7352557a35ab7888bc7831411ec8a3cbe20d78 ]
 
-When fat_encode_fh_nostale() encodes file handle without a parent it
-stores only first 10 bytes of the file handle. However the length of the
-file handle must be a multiple of 4 so the file handle is actually 12
-bytes long and the last two bytes remain uninitialized. This is not
-great at we potentially leak uninitialized information with the handle
-to userspace. Properly initialize the full handle length.
+This is the candidate patch of CVE-2023-47233 :
+https://nvd.nist.gov/vuln/detail/CVE-2023-47233
 
-Link: https://lkml.kernel.org/r/20240205122626.13701-1-jack@suse.cz
-Reported-by: syzbot+3ce5dea5b1539ff36769@syzkaller.appspotmail.com
-Fixes: ea3983ace6b7 ("fat: restructure export_operations")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Acked-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
-Cc: Amir Goldstein <amir73il@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+In brcm80211 driver,it starts with the following invoking chain
+to start init a timeout worker:
+
+->brcmf_usb_probe
+  ->brcmf_usb_probe_cb
+    ->brcmf_attach
+      ->brcmf_bus_started
+        ->brcmf_cfg80211_attach
+          ->wl_init_priv
+            ->brcmf_init_escan
+              ->INIT_WORK(&cfg->escan_timeout_work,
+		  brcmf_cfg80211_escan_timeout_worker);
+
+If we disconnect the USB by hotplug, it will call
+brcmf_usb_disconnect to make cleanup. The invoking chain is :
+
+brcmf_usb_disconnect
+  ->brcmf_usb_disconnect_cb
+    ->brcmf_detach
+      ->brcmf_cfg80211_detach
+        ->kfree(cfg);
+
+While the timeout woker may still be running. This will cause
+a use-after-free bug on cfg in brcmf_cfg80211_escan_timeout_worker.
+
+Fix it by deleting the timer and canceling the worker in
+brcmf_cfg80211_detach.
+
+Fixes: e756af5b30b0 ("brcmfmac: add e-scan support.")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Cc: stable@vger.kernel.org
+[arend.vanspriel@broadcom.com: keep timer delete as is and cancel work just before free]
+Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240107072504.392713-1-arend.vanspriel@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fat/nfs.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/fat/nfs.c b/fs/fat/nfs.c
-index af191371c3529..bab63eeaf9cbc 100644
---- a/fs/fat/nfs.c
-+++ b/fs/fat/nfs.c
-@@ -130,6 +130,12 @@ fat_encode_fh_nostale(struct inode *inode, __u32 *fh, int *lenp,
- 		fid->parent_i_gen = parent->i_generation;
- 		type = FILEID_FAT_WITH_PARENT;
- 		*lenp = FAT_FID_SIZE_WITH_PARENT;
-+	} else {
-+		/*
-+		 * We need to initialize this field because the fh is actually
-+		 * 12 bytes long
-+		 */
-+		fid->parent_i_pos_hi = 0;
- 	}
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 1827be85f115f..fe8f1134a5f3e 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -690,8 +690,7 @@ s32 brcmf_notify_escan_complete(struct brcmf_cfg80211_info *cfg,
+ 	scan_request = cfg->scan_request;
+ 	cfg->scan_request = NULL;
  
- 	return type;
+-	if (timer_pending(&cfg->escan_timeout))
+-		del_timer_sync(&cfg->escan_timeout);
++	timer_delete_sync(&cfg->escan_timeout);
+ 
+ 	if (fw_abort) {
+ 		/* Do a scan abort to stop the driver's scan engine */
+@@ -7093,6 +7092,7 @@ void brcmf_cfg80211_detach(struct brcmf_cfg80211_info *cfg)
+ 	wiphy_unregister(cfg->wiphy);
+ 	kfree(cfg->ops);
+ 	wl_deinit_priv(cfg);
++	cancel_work_sync(&cfg->escan_timeout_work);
+ 	brcmf_free_wiphy(cfg->wiphy);
+ 	kfree(cfg);
+ }
 -- 
 2.43.0
 
