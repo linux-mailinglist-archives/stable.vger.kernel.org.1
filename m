@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-38084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B7A28A0CF3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:58:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 747A98A107E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:36:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C96E1C20B42
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:58:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 144991F2C0FD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCA59145342;
-	Thu, 11 Apr 2024 09:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AEDD14BFA5;
+	Thu, 11 Apr 2024 10:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHHjdfqk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntIEcvAp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EEE13DDDD;
-	Thu, 11 Apr 2024 09:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DEA14B067;
+	Thu, 11 Apr 2024 10:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829516; cv=none; b=n5PcaU3Mwtg0ycGmqaQyrPuwLGC6ASqnrVE+Z6VAQVqasNyx2XIqQ2k4ZjH4Qiq5CKSJC5zso7vQGS1TkhJ8enxCEKnb/kt5DOmRprdVLXNVJpTYq7XPn/AcnUOwQOX4q1JOGPyvtmOpV0ZsMUGjZvswmKiZo2yEuI2WkFC2pXQ=
+	t=1712831633; cv=none; b=YwY3vis2VLOGTAXi4WPGF2vZ7zhOfLPlPtrvmLWshYO40pefuMddSIHdLq3aejExMIKnLwO3DdPUN/X4JovIQRp6/Ellsf5PGBdBSLT52LbmCZGvSnhKl/9hBelc3nj84xMukmgwBRaL+gLIJzqPQdc65SMBUjVKhbUol5rnJeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829516; c=relaxed/simple;
-	bh=TO3EZxnJEeUGUrKyp8V5mTUU3gA9nKvmUbiLYj1BGFo=;
+	s=arc-20240116; t=1712831633; c=relaxed/simple;
+	bh=gHHoTKgloJZ8m9eHChbnXRR4FZ7Rg0XA5cYRuPevRs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U5LrQYs4Ijwapd+VevW30t9cgBEKi4Oh2Wqwo/NJengFZ+yM+mS7edCetLKs9ArdKYY/PUu/achLaDGXVp+sEoo0cusG9lUNPc3stY0fVgUdu4VMKNSPcgaPtkhz/5T9cAiyGli6GgP+sP5Y5B9M3YbXZKHeEDWMPNTRFxQTzKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHHjdfqk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07750C433C7;
-	Thu, 11 Apr 2024 09:58:35 +0000 (UTC)
+	 MIME-Version; b=gu6o5gmHSy6c+2YV8y3mCyIq4Oam8Eqm3/UOsJUCeRXXoUTWLzie+WFoK2ug+bXpBgZ9np016J/WDU9uKqWccI12ZQZqFv/zFLbNKmFF2Iol1w9LTCYcjcuDRekB0yLfz2mnfhjIG1KBAjl2vCVroFAmXi74o0/YpzNXyNN5tLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntIEcvAp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31D7C433C7;
+	Thu, 11 Apr 2024 10:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829516;
-	bh=TO3EZxnJEeUGUrKyp8V5mTUU3gA9nKvmUbiLYj1BGFo=;
+	s=korg; t=1712831633;
+	bh=gHHoTKgloJZ8m9eHChbnXRR4FZ7Rg0XA5cYRuPevRs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fHHjdfqk4zoYXokv+p5COf+N1esSvN979rstTJcRVEIswAFJpAC2zSKHEtyX7BT8t
-	 qzOwrmgNTR1PRb/WTLDru/R9cAVOSfWxw56SPoAavON7Psirb8mZZ5npBdGTOoXc39
-	 v3p0oXNB/47S2umQf336lk10DfVYgVTwQQGdNFi4=
+	b=ntIEcvApatxrwf2n1kCO1PjEiXTc+72oq2gk0ddUiB7jeJqcTzuA8ao1RdhIa9LlR
+	 BiWbzVgKn5ozW9Yj9X468I1OwZ6pOm2hr54OP/alyHBV0ErU00hhwzMXkaa/lEFhtS
+	 xaT4AacqZn0qS49SouZ7SXYUrlbdtM152e7U/yuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Stable@vger.kernel.org,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 014/175] arm: dts: marvell: Fix maxium->maxim typo in brownstone dts
-Date: Thu, 11 Apr 2024 11:53:57 +0200
-Message-ID: <20240411095419.974143060@linuxfoundation.org>
+Subject: [PATCH 5.10 075/294] nvmem: meson-efuse: fix function pointer type mismatch
+Date: Thu, 11 Apr 2024 11:53:58 +0200
+Message-ID: <20240411095437.949016055@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +64,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duje Mihanović <duje.mihanovic@skole.hr>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 831e0cd4f9ee15a4f02ae10b67e7fdc10eb2b4fc ]
+[ Upstream commit cbd38332c140829ab752ba4e727f98be5c257f18 ]
 
-Fix an obvious spelling error in the PMIC compatible in the MMP2
-Brownstone DTS file.
+clang-16 warns about casting functions to incompatible types, as is done
+here to call clk_disable_unprepare:
 
-Fixes: 58f1193e6210 ("mfd: max8925: Add dts")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
-Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Closes: https://lore.kernel.org/linux-devicetree/1410884282-18041-1-git-send-email-k.kozlowski@samsung.com/
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240125-brownstone-typo-fix-v2-1-45bc48a0c81c@skole.hr
-[krzysztof: Just 10 years to take a patch, not bad! Rephrased commit
- msg]
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+drivers/nvmem/meson-efuse.c:78:12: error: cast from 'void (*)(struct clk *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+   78 |                                        (void(*)(void *))clk_disable_unprepare,
+
+The pattern of getting, enabling and setting a disable callback for a
+clock can be replaced with devm_clk_get_enabled(), which also fixes
+this warning.
+
+Fixes: 611fbca1c861 ("nvmem: meson-efuse: add peripheral clock")
+Cc: Stable@vger.kernel.org
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240224114023.85535-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/mmp2-brownstone.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvmem/meson-efuse.c | 25 +++----------------------
+ 1 file changed, 3 insertions(+), 22 deletions(-)
 
-diff --git a/arch/arm/boot/dts/mmp2-brownstone.dts b/arch/arm/boot/dts/mmp2-brownstone.dts
-index 0fdcc2edcf4b6..f12d5aa773f30 100644
---- a/arch/arm/boot/dts/mmp2-brownstone.dts
-+++ b/arch/arm/boot/dts/mmp2-brownstone.dts
-@@ -30,7 +30,7 @@ &uart3 {
- &twsi1 {
- 	status = "okay";
- 	pmic: max8925@3c {
--		compatible = "maxium,max8925";
-+		compatible = "maxim,max8925";
- 		reg = <0x3c>;
- 		interrupts = <1>;
- 		interrupt-parent = <&intcmux4>;
+diff --git a/drivers/nvmem/meson-efuse.c b/drivers/nvmem/meson-efuse.c
+index d6b533497ce1a..ba2714bef8d0e 100644
+--- a/drivers/nvmem/meson-efuse.c
++++ b/drivers/nvmem/meson-efuse.c
+@@ -47,7 +47,6 @@ static int meson_efuse_probe(struct platform_device *pdev)
+ 	struct nvmem_config *econfig;
+ 	struct clk *clk;
+ 	unsigned int size;
+-	int ret;
+ 
+ 	sm_np = of_parse_phandle(pdev->dev.of_node, "secure-monitor", 0);
+ 	if (!sm_np) {
+@@ -60,27 +59,9 @@ static int meson_efuse_probe(struct platform_device *pdev)
+ 	if (!fw)
+ 		return -EPROBE_DEFER;
+ 
+-	clk = devm_clk_get(dev, NULL);
+-	if (IS_ERR(clk)) {
+-		ret = PTR_ERR(clk);
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(dev, "failed to get efuse gate");
+-		return ret;
+-	}
+-
+-	ret = clk_prepare_enable(clk);
+-	if (ret) {
+-		dev_err(dev, "failed to enable gate");
+-		return ret;
+-	}
+-
+-	ret = devm_add_action_or_reset(dev,
+-				       (void(*)(void *))clk_disable_unprepare,
+-				       clk);
+-	if (ret) {
+-		dev_err(dev, "failed to add disable callback");
+-		return ret;
+-	}
++	clk = devm_clk_get_enabled(dev, NULL);
++	if (IS_ERR(clk))
++		return dev_err_probe(dev, PTR_ERR(clk), "failed to get efuse gate");
+ 
+ 	if (meson_sm_call(fw, SM_EFUSE_USER_MAX, &size, 0, 0, 0, 0, 0) < 0) {
+ 		dev_err(dev, "failed to get max user");
 -- 
 2.43.0
 
