@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-38192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ABB38A0D6F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:04:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C38B8A0E07
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEFD61F22389
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:04:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDD0E1C20B10
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0F7145B04;
-	Thu, 11 Apr 2024 10:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C58145B26;
+	Thu, 11 Apr 2024 10:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1MiUdOA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gKM4+29+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A0B1422C4;
-	Thu, 11 Apr 2024 10:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B870C142624;
+	Thu, 11 Apr 2024 10:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829835; cv=none; b=QVAMTRccKKQRBMIcOCUd0JukwyYMxycfm2iF9ax8WDosv1mS5TlYxfLtOFShe4lhRieY1kpup0S9QabVi9iETUHKsKy/gy5pJlVT4pjeGoTseu2LhLKY3T2oyKvzWy4TmKGHrVyMWIle1jNGTcKx7YKaW/Dlrr/ae+t4gfRzIVU=
+	t=1712830219; cv=none; b=sWLPbKYGfDqBFnXsqeKZtwGBM57fFJB1lUtHg4oZtKXh2z5iNNY60Us85mwYB29kY/X0P8kxQcX3ujOswiApgJ/bC/OnFuFJxPq1aCZa3qcEqrf9ZgclETTdbLjI0aZGV6rtfn+HnDxmS8ZpfUnOgtt759TXW1zU9jrpo/KapVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829835; c=relaxed/simple;
-	bh=B9mVScBMIITGR4ZQYB33sTtbLxyAavgGG4s4iy3OEsw=;
+	s=arc-20240116; t=1712830219; c=relaxed/simple;
+	bh=CinONC1eDjdb6R7fgi0qGJyGYBqBZPqfRCV6CROOJOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sD4uNEmfCAhoPSZQXslVUtnwOPDg2riQ4ue2iqJIe7TmCkrkAs0RJIpFs/9ThjYYt9z+1wAL2fguTQP2ZE6BUdBWYOB2ZtfH/NHuT91buvNbt9i+GwXFsrI2SJFRYVOEMwIaWP2G3QBr7F0n4IL+vEZJkhwVYHMjdBhH3/5RaYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1MiUdOA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BFDC43390;
-	Thu, 11 Apr 2024 10:03:54 +0000 (UTC)
+	 MIME-Version; b=Q3QDnYPJosOiBJRP2cg9IplwiKtgNFZKud7JKVRxmkRT8nOUMkpIQ2aMHMqMuu7AlU08DR1FIJVMucygRLlObcOqwYdaN2BZgcYqRXmX36ghmQrQM5fSa93SGy0IsBWkXtPiA12u5K15hVyuIVT8xoVMvROsbpq3Gb2WLE3nlTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gKM4+29+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4117EC433C7;
+	Thu, 11 Apr 2024 10:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829835;
-	bh=B9mVScBMIITGR4ZQYB33sTtbLxyAavgGG4s4iy3OEsw=;
+	s=korg; t=1712830219;
+	bh=CinONC1eDjdb6R7fgi0qGJyGYBqBZPqfRCV6CROOJOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L1MiUdOAoXrqmZdRU3ywN8uP0MoW7QgvGMcCSxyw73JfRdF7XOyc3Wkb34wLUcpEm
-	 FG1F/GNrAdTv43toJ1cbxHz+plAKw8HKkOtq0qZ96ICykEkY3ptTATwceKc0DRwnwG
-	 2od8y1e/S8QibVYMyVuEZYqOMxWkMbugT6kRtlX4=
+	b=gKM4+29+f/yPbTljSviAKImItlSBrsrF8rM8XwazjhHuxPVuX32RxmFyoSH3XjR/p
+	 9uXUi0FrZs/xuuKC+2BhtnOAd6avQ1fwxZz4DB88CZvHy7WQa3YLU1Ct3o41HT+krk
+	 u7LDs8fspNfy6cp8Dh3/oaERFGyjmJ5PXIRG8LSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahmoud Adam <mngyadam@amazon.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 119/175] net/rds: fix possible cp null dereference
-Date: Thu, 11 Apr 2024 11:55:42 +0200
-Message-ID: <20240411095423.149076261@linuxfoundation.org>
+	Mike Marshall <hubcap@omnibond.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 075/143] Julia Lawall reported this null pointer dereference, this should fix it.
+Date: Thu, 11 Apr 2024 11:55:43 +0200
+Message-ID: <20240411095423.171513114@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahmoud Adam <mngyadam@amazon.com>
+From: Mike Marshall <hubcap@omnibond.com>
 
-commit 62fc3357e079a07a22465b9b6ef71bb6ea75ee4b upstream.
+[ Upstream commit 9bf93dcfc453fae192fe5d7874b89699e8f800ac ]
 
-cp might be null, calling cp->cp_conn would produce null dereference
-
-[Simon Horman adds:]
-
-Analysis:
-
-* cp is a parameter of __rds_rdma_map and is not reassigned.
-
-* The following call-sites pass a NULL cp argument to __rds_rdma_map()
-
-  - rds_get_mr()
-  - rds_get_mr_for_dest
-
-* Prior to the code above, the following assumes that cp may be NULL
-  (which is indicative, but could itself be unnecessary)
-
-	trans_private = rs->rs_transport->get_mr(
-		sg, nents, rs, &mr->r_key, cp ? cp->cp_conn : NULL,
-		args->vec.addr, args->vec.bytes,
-		need_odp ? ODP_ZEROBASED : ODP_NOT_NEEDED);
-
-* The code modified by this patch is guarded by IS_ERR(trans_private),
-  where trans_private is assigned as per the previous point in this analysis.
-
-  The only implementation of get_mr that I could locate is rds_ib_get_mr()
-  which can return an ERR_PTR if the conn (4th) argument is NULL.
-
-* ret is set to PTR_ERR(trans_private).
-  rds_ib_get_mr can return ERR_PTR(-ENODEV) if the conn (4th) argument is NULL.
-  Thus ret may be -ENODEV in which case the code in question will execute.
-
-Conclusion:
-* cp may be NULL at the point where this patch adds a check;
-  this patch does seem to address a possible bug
-
-Fixes: c055fc00c07b ("net/rds: fix WARNING in rds_conn_connect_if_down")
-Cc: stable@vger.kernel.org # v4.19+
-Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240326153132.55580-1-mngyadam@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/rdma.c |    2 +-
+ fs/orangefs/super.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/rds/rdma.c
-+++ b/net/rds/rdma.c
-@@ -279,7 +279,7 @@ static int __rds_rdma_map(struct rds_soc
- 		kfree(sg);
- 		ret = PTR_ERR(trans_private);
- 		/* Trigger connection so that its ready for the next retry */
--		if (ret == -ENODEV)
-+		if (ret == -ENODEV && cp)
- 			rds_conn_connect_if_down(cp->cp_conn);
- 		goto out;
+diff --git a/fs/orangefs/super.c b/fs/orangefs/super.c
+index 5254256a224d7..4ca8ed410c3cf 100644
+--- a/fs/orangefs/super.c
++++ b/fs/orangefs/super.c
+@@ -527,7 +527,7 @@ struct dentry *orangefs_mount(struct file_system_type *fst,
+ 	sb->s_fs_info = kzalloc(sizeof(struct orangefs_sb_info_s), GFP_KERNEL);
+ 	if (!ORANGEFS_SB(sb)) {
+ 		d = ERR_PTR(-ENOMEM);
+-		goto free_sb_and_op;
++		goto free_op;
  	}
+ 
+ 	ret = orangefs_fill_sb(sb,
+-- 
+2.43.0
+
 
 
 
