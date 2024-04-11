@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C8AB8A0F92
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1E628A0E01
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E1A61C216BB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F9191C21B7F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93AC9146A71;
-	Thu, 11 Apr 2024 10:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629B5145B2C;
+	Thu, 11 Apr 2024 10:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQAWZ3Rc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpzK3dqV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5137313FD94;
-	Thu, 11 Apr 2024 10:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20672145B08;
+	Thu, 11 Apr 2024 10:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831108; cv=none; b=Cy7A+eyd8sbJxaj/2DzaoRY85wt+LYDi8fDDECQI7WV/d0j4N1xDTU4KTvgTX6ZGI+skRkYrYgd4M7WgN0drFgYQhBrxfiTY/yEnwlmzV9f0t7m48umZubx6Mc+StQTDXoQquzp3xdo/CzZZM/feCeMgQZuA572GWeEngfgKbso=
+	t=1712830202; cv=none; b=k+BMIcftHoti9QMb/b5CzvCNKIzA3+SPwsts5cmI2L3XPVjKtplM2ORpLVx402qCntfR9L9AFw3HroAbKiQGjVx034lhgkptAn2sFKHTB/tZYNliJnsnDIByCT1NXijiL9AvwktG8sowDiI1Qe4aRtNoK1PS8Ldc3mAGEQqe8LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831108; c=relaxed/simple;
-	bh=vewVte+JXcjnRJ506q8VE2N7M/3fflX/0yPAMw1ugiI=;
+	s=arc-20240116; t=1712830202; c=relaxed/simple;
+	bh=cHyxFyDkF5DYQA5XAbVDATPpjtkga6+ew0tSny4m3Dg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lxr5GmxHemy4StXBRy8tfDAyj8MW7Hrc4KSDQxR+BQfAvG3U/uWPasgaxAKPzh7GZYRZ13KnZrluOW+v5TQI1z3rRk1oH4JxPkJ2YX9eHeGV6wX/cmb510fFQIzcUBwPEFMZPHtVFmOEI/cM5350MACmWMkvmE66tKIbTlnyIUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQAWZ3Rc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9284C433F1;
-	Thu, 11 Apr 2024 10:25:07 +0000 (UTC)
+	 MIME-Version; b=A8sLkFi4OlMWsxzV3zpAlptET9C22VZ36v3jVILucvTOlwGKQSCL8kmSwT6BK1HoPiKyVASJBb7c74f/wZZbEkOKTEulTtmBWLv0i97O+8UvoIKuZU/lqUo7QwuduA8AtuPAy0zYPHlxP4sYxA2wUFZ9dyAzrpN+Sf5Vv220cPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpzK3dqV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9198BC433F1;
+	Thu, 11 Apr 2024 10:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831108;
-	bh=vewVte+JXcjnRJ506q8VE2N7M/3fflX/0yPAMw1ugiI=;
+	s=korg; t=1712830202;
+	bh=cHyxFyDkF5DYQA5XAbVDATPpjtkga6+ew0tSny4m3Dg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XQAWZ3RcnlzbQKxRIiBdgpOcSOJ7SfOvtOCuD0vuN8W4NKSzf8GXn8ZCFsuwN4LZZ
-	 gmEi730oiGHwoUHZMsmFQQpRu0bh2S9YTBGrlbGeby1WnzwjwwmSipTbEhNzIrx/B0
-	 nX50blveigT4sAkF6r7lVaF6yD4KxC6Usc24U04E=
+	b=DpzK3dqVrWjAzbLWIIfDgViy1X2no/elfaPQPXc7DG398onFH38BSJPRcVz6H21wB
+	 g64IuhcMKC1vh4zfGEr4Dvz/wV6WBcPkYyAYOUwFt9Z99B9rhwgKA3IQkSQVOnbfRL
+	 qvHl/pGnxax+zFTcPLpHvCyQG1vdsNUELuLYAdTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ogness <john.ogness@linutronix.de>,
-	Petr Mladek <pmladek@suse.com>,
+	Alex Henrie <alexhenrie24@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/114] printk: For @suppress_panic_printk check for other CPU in panic
+Subject: [PATCH 6.8 070/143] isofs: handle CDs with bad root inode but good Joliet root directory
 Date: Thu, 11 Apr 2024 11:55:38 +0200
-Message-ID: <20240411095417.205690243@linuxfoundation.org>
+Message-ID: <20240411095423.021774999@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Alex Henrie <alexhenrie24@gmail.com>
 
-[ Upstream commit 0ab7cdd00491b532591ef065be706301de7e448f ]
+[ Upstream commit 4243bf80c79211a8ca2795401add9c4a3b1d37ca ]
 
-Currently @suppress_panic_printk is checked along with
-non-matching @panic_cpu and current CPU. This works
-because @suppress_panic_printk is only set when
-panic_in_progress() is true.
+I have a CD copy of the original Tom Clancy's Ghost Recon game from
+2001. The disc mounts without error on Windows, but on Linux mounting
+fails with the message "isofs_fill_super: get root inode failed". The
+error originates in isofs_read_inode, which returns -EIO because de_len
+is 0. The superblock on this disc appears to be intentionally corrupt as
+a form of copy protection.
 
-Rather than relying on the @suppress_panic_printk semantics,
-use the concise helper function other_cpu_in_progress(). The
-helper function exists to avoid open coding such tests.
+When the root inode is unusable, instead of giving up immediately, try
+to continue with the Joliet file table. This fixes the Ghost Recon CD
+and probably other copy-protected CDs too.
 
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20240207134103.1357162-7-john.ogness@linutronix.de
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20240208022134.451490-1-alexhenrie24@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/printk/printk.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/isofs/inode.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 35d32d66fb114..0fca282c0a254 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2309,8 +2309,7 @@ asmlinkage int vprintk_emit(int facility, int level,
- 	if (unlikely(suppress_printk))
- 		return 0;
+diff --git a/fs/isofs/inode.c b/fs/isofs/inode.c
+index 3e4d53e26f947..379c9edc907cf 100644
+--- a/fs/isofs/inode.c
++++ b/fs/isofs/inode.c
+@@ -908,8 +908,22 @@ static int isofs_fill_super(struct super_block *s, void *data, int silent)
+ 	 * we then decide whether to use the Joliet descriptor.
+ 	 */
+ 	inode = isofs_iget(s, sbi->s_firstdatazone, 0);
+-	if (IS_ERR(inode))
+-		goto out_no_root;
++
++	/*
++	 * Fix for broken CDs with a corrupt root inode but a correct Joliet
++	 * root directory.
++	 */
++	if (IS_ERR(inode)) {
++		if (joliet_level && sbi->s_firstdatazone != first_data_zone) {
++			printk(KERN_NOTICE
++			       "ISOFS: root inode is unusable. "
++			       "Disabling Rock Ridge and switching to Joliet.");
++			sbi->s_rock = 0;
++			inode = NULL;
++		} else {
++			goto out_no_root;
++		}
++	}
  
--	if (unlikely(suppress_panic_printk) &&
--	    atomic_read(&panic_cpu) != raw_smp_processor_id())
-+	if (unlikely(suppress_panic_printk) && other_cpu_in_panic())
- 		return 0;
- 
- 	if (level == LOGLEVEL_SCHED) {
+ 	/*
+ 	 * Fix for broken CDs with Rock Ridge and empty ISO root directory but
 -- 
 2.43.0
 
