@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-38826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7E68A1098
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D09D98A0E9F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:16:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18B891C23A21
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08CBF1C21CD8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179E91465A5;
-	Thu, 11 Apr 2024 10:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6583146597;
+	Thu, 11 Apr 2024 10:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGO5dRKz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNpHDMvK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99E779FD;
-	Thu, 11 Apr 2024 10:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741ED13F452;
+	Thu, 11 Apr 2024 10:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831703; cv=none; b=UNxqHNIDAaxSAzlaaB8phGerrxZvt5n+zlJtkn16N6LM2W7UeavOhsMW5RjyIJaT8wgWNXH16HG3y16STl7Ae5SWKL56x1224WKgPG4Tcm9v7UgMgAWd5SoTlmOXqL8/QfMygyqYjL2x094Km4AfR/auMpIh+2aNDhFZLu6HXD0=
+	t=1712830590; cv=none; b=jz12mRq5L+TRznqiHgAJa9uf0iKwyl5Mz1o9MdoDgXo3doX/LFV9rNyaNPOMYXchMSKDXBaAj5myU7qLxvBD5uc+pBsbYSEu4UQH+IYX5rmGFkT6hQbtaylq7ck95lZE+Z01W93aFQZEVBLWkR+37jf66Mzp9qPLqymNFXpqI28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831703; c=relaxed/simple;
-	bh=AF1oUdv3ksbf/oM5TFgfIroi0vMQKA0eiDmMzhDYI6w=;
+	s=arc-20240116; t=1712830590; c=relaxed/simple;
+	bh=NJXwEbQn6Mr3tqLU6mwMpSRTqigbd7Kfav77pSy2ax4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a/zdNsgahmHpfUhkrF+zdmPjObz4cxCn/7WV0AQm5mT1rSHQedGCMIcHE82bJ2uokiONwKTYqaxc4ZH2CIslv8lREerldJnkgBQDQFtD5+66Bizh7XoDxAiXZUxPh2z5XCUh0S73c7A+hpvY9t/8Ttr2hh9H2NonckaE2pxTbiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGO5dRKz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F153C433F1;
-	Thu, 11 Apr 2024 10:35:03 +0000 (UTC)
+	 MIME-Version; b=lAmRAwqlJt0ah9q+v21T6dzszQ+kSeDIytCWqDRQp9X5Id8sgdAJ7+W1GpzE6z2AflIOsaDfYfTTzyq5o+u0TGsZYbgr8v0PmltC9iNx4LIsptbrORhJf6zyHgwutLDSCI6BmDoPFepp1kwU4IZMVTCyC0lV1t8JtuGvTmYFRYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNpHDMvK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9EA6C433F1;
+	Thu, 11 Apr 2024 10:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831703;
-	bh=AF1oUdv3ksbf/oM5TFgfIroi0vMQKA0eiDmMzhDYI6w=;
+	s=korg; t=1712830590;
+	bh=NJXwEbQn6Mr3tqLU6mwMpSRTqigbd7Kfav77pSy2ax4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FGO5dRKzfSTdWGW3RKDwa/1hRxqGKkKQ+3Fo9HJ3Gpnfju0Ak2p9HaYug2Ue8aM8i
-	 Qloy90fS3SqE9i8N4Ydd1a+SZKTeTmHhWAygVBi+6XSXywF2OhA4eskZadL18Hcjel
-	 +VAVDk7c6J4Lz/mEYEwyatcw8ky6ALZypnTVrh/8=
+	b=qNpHDMvK8Zhf8KWk5vR5tX5xjqvcp5kds7Ucq6ND1CVtkmr0gfu2p9IY+abjDLXIr
+	 oe2qwQLuJ8qEHHqxciCEtiXC3LDHNPyxmmlEBbqAfsEJlyRFTBLBq9PAHU2Ut0g2Ff
+	 bvIlpT+1UtTTH6A8XikDQeVSKqm9X+q4gF6bRBR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Inki Dae <inki.dae@samsung.com>,
-	Seung-Woo Kim <sw0312.kim@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Dan Moulding <dan@danm.net>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 097/294] drm/exynos: do not return negative values from .get_modes()
+Subject: [PATCH 5.4 051/215] Revert "Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d""
 Date: Thu, 11 Apr 2024 11:54:20 +0200
-Message-ID: <20240411095438.596096651@linuxfoundation.org>
+Message-ID: <20240411095426.427145773@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Song Liu <song@kernel.org>
 
-[ Upstream commit 13d5b040363c7ec0ac29c2de9cf661a24a8aa531 ]
+[ Upstream commit 3445139e3a594be77eff48bc17eff67cf983daed ]
 
-The .get_modes() hooks aren't supposed to return negative error
-codes. Return 0 for no modes, whatever the reason.
+This reverts commit bed9e27baf52a09b7ba2a3714f1e24e17ced386d.
 
-Cc: Inki Dae <inki.dae@samsung.com>
-Cc: Seung-Woo Kim <sw0312.kim@samsung.com>
-Cc: Kyungmin Park <kyungmin.park@samsung.com>
-Cc: stable@vger.kernel.org
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/d8665f620d9c252aa7d5a4811ff6b16e773903a2.1709913674.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+The original set [1][2] was expected to undo a suboptimal fix in [2], and
+replace it with a better fix [1]. However, as reported by Dan Moulding [2]
+causes an issue with raid5 with journal device.
+
+Revert [2] for now to close the issue. We will follow up on another issue
+reported by Juxiao Bi, as [2] is expected to fix it. We believe this is a
+good trade-off, because the latter issue happens less freqently.
+
+In the meanwhile, we will NOT revert [1], as it contains the right logic.
+
+[1] commit d6e035aad6c0 ("md: bypass block throttle for superblock update")
+[2] commit bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
+
+Reported-by: Dan Moulding <dan@danm.net>
+Closes: https://lore.kernel.org/linux-raid/20240123005700.9302-1-dan@danm.net/
+Fixes: bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
+Cc: stable@vger.kernel.org # v5.19+
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240125082131.788600-1-song@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_vidi.c | 4 ++--
- drivers/gpu/drm/exynos/exynos_hdmi.c     | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/md/raid5.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-index e96436e11a36c..e1ffe8a28b649 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-@@ -315,14 +315,14 @@ static int vidi_get_modes(struct drm_connector *connector)
- 	 */
- 	if (!ctx->raw_edid) {
- 		DRM_DEV_DEBUG_KMS(ctx->dev, "raw_edid is null.\n");
--		return -EFAULT;
-+		return 0;
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index 0bea103f63d55..f3d60c4b34b8c 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -36,6 +36,7 @@
+  */
+ 
+ #include <linux/blkdev.h>
++#include <linux/delay.h>
+ #include <linux/kthread.h>
+ #include <linux/raid/pq.h>
+ #include <linux/async_tx.h>
+@@ -6334,7 +6335,18 @@ static void raid5d(struct md_thread *thread)
+ 			spin_unlock_irq(&conf->device_lock);
+ 			md_check_recovery(mddev);
+ 			spin_lock_irq(&conf->device_lock);
++
++			/*
++			 * Waiting on MD_SB_CHANGE_PENDING below may deadlock
++			 * seeing md_check_recovery() is needed to clear
++			 * the flag when using mdmon.
++			 */
++			continue;
+ 		}
++
++		wait_event_lock_irq(mddev->sb_wait,
++			!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags),
++			conf->device_lock);
  	}
+ 	pr_debug("%d stripes handled\n", handled);
  
- 	edid_len = (1 + ctx->raw_edid->extensions) * EDID_LENGTH;
- 	edid = kmemdup(ctx->raw_edid, edid_len, GFP_KERNEL);
- 	if (!edid) {
- 		DRM_DEV_DEBUG_KMS(ctx->dev, "failed to allocate edid\n");
--		return -ENOMEM;
-+		return 0;
- 	}
- 
- 	drm_connector_update_edid_property(connector, edid);
-diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
-index 981bffacda243..576fcf1807164 100644
---- a/drivers/gpu/drm/exynos/exynos_hdmi.c
-+++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
-@@ -878,11 +878,11 @@ static int hdmi_get_modes(struct drm_connector *connector)
- 	int ret;
- 
- 	if (!hdata->ddc_adpt)
--		return -ENODEV;
-+		return 0;
- 
- 	edid = drm_get_edid(connector, hdata->ddc_adpt);
- 	if (!edid)
--		return -ENODEV;
-+		return 0;
- 
- 	hdata->dvi_mode = !drm_detect_hdmi_monitor(edid);
- 	DRM_DEV_DEBUG_KMS(hdata->dev, "%s : width[%d] x height[%d]\n",
 -- 
 2.43.0
 
