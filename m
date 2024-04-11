@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E298A0D8C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 026828A0F67
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 137FA285FB7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF60128711F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C570145B26;
-	Thu, 11 Apr 2024 10:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33439146582;
+	Thu, 11 Apr 2024 10:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sn7Ue50P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E2VyqsXu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD811145B13;
-	Thu, 11 Apr 2024 10:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4243140E3D;
+	Thu, 11 Apr 2024 10:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829897; cv=none; b=LeVDPxDnlq4nYxuzS5pMxfFfzPICN2bpbmKS/muM0A0BgUQ9Fy38pHf/J+f+ID+NNcFMSzJguGNxfUBTbz8C1gBX3AJoe2ZfkE/HfprlzlyCfPBjMQXqObDHycq8gy8qqOqCT7s31EXBF/GNhk01ndOIvs48TMURTVDlX4Hvpeo=
+	t=1712831014; cv=none; b=mddOxrFPrSldtws6lC2mqFt/2T+aR9OxW+2fIu3Y1bu4KcwDXK/VEJXNWNWvjSD6zdTAA3BG6xBden/8VNnZLubMElG7QZDNd+28WjcJJnDT2B2xZbVKobDUps14CX6cET+6GVw/YBHlnhCWqeHmx0pTz/HrxY1bBP3kTmrx480=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829897; c=relaxed/simple;
-	bh=FiO5yeMABczJ3oaN9YVC7LFMdqRfUVcyeMBz4ti/070=;
+	s=arc-20240116; t=1712831014; c=relaxed/simple;
+	bh=1eKpx6CWaokosMV6nwBiYrd9VlsdX1EIAx9umwNeuyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+LOWIOJvEinAeXWtPX+TQM6BUyH1EUw49XBYBMwYLfKqCtb3qMeafLSJqSwaDrD72RKdQH6svNsCHFrO+kDma7rU9E5VJYLiGlXCfJBlxdYOSXJXXyqtM4PuMvsJ2sawMMvLtv6Av07E1aMKRSak98FNM6Nj0nNlQKgonnDvQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sn7Ue50P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6114AC433C7;
-	Thu, 11 Apr 2024 10:04:56 +0000 (UTC)
+	 MIME-Version; b=GZCzmpPI3fPcMBto1wme+At0wXwclpdD6aXMmuzicYbaawmra4fgv1nHGZTbGznoldDfCXIsJNGxpympSr2Ox3wvaRO8ns+KHm3BgD22rnJuQWg3KNzsxoQO9AxCvzWlAQ4BVxl0KoRDYGcoTEqGsgGKR8e58w4iIMM/mx/75NQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E2VyqsXu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EB3C433F1;
+	Thu, 11 Apr 2024 10:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829896;
-	bh=FiO5yeMABczJ3oaN9YVC7LFMdqRfUVcyeMBz4ti/070=;
+	s=korg; t=1712831013;
+	bh=1eKpx6CWaokosMV6nwBiYrd9VlsdX1EIAx9umwNeuyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sn7Ue50P/ssL4eHWRxnU8z3a/2/gAHrj4pOLu+EpS3SYsOJFDvsG7RLEKhk5sU83+
-	 5raYXRkbLIND1sxgZjOwRZz4/ayuZM8zi4Jndp+ixGaxm6D2TkTdDOGp0cZPXUVq9x
-	 P6YGtrIVTcfLOA233iKcFb338L8fcZgFgTLkdQKo=
+	b=E2VyqsXu9U9xr0gzr/Rx1pSB+eA3zUlYq7f4c+2+9PdrlJx/EPPciN6cruI7rtWZ5
+	 F6QNu6LFR7xbUi7GH7E5nSRImVoOIfQoKRTGUIuOpi7+jF+MWb+SplQQH5m/UekHbR
+	 ok0/T3K/gtysDi6odbseKzmUC30imwEI5CtNlg9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Arnd Bergmann <arnd@arndb.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 142/175] ata: sata_mv: Fix PCI device ID table declaration compilation warning
+Subject: [PATCH 5.4 156/215] staging: vc04_services: changen strncpy() to strscpy_pad()
 Date: Thu, 11 Apr 2024 11:56:05 +0200
-Message-ID: <20240411095423.839634361@linuxfoundation.org>
+Message-ID: <20240411095429.569694703@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,126 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 3137b83a90646917c90951d66489db466b4ae106 ]
+[ Upstream commit ef25725b7f8aaffd7756974d3246ec44fae0a5cf ]
 
-Building with W=1 shows a warning for an unused variable when CONFIG_PCI
-is diabled:
+gcc-14 warns about this strncpy() that results in a non-terminated
+string for an overflow:
 
-drivers/ata/sata_mv.c:790:35: error: unused variable 'mv_pci_tbl' [-Werror,-Wunused-const-variable]
-static const struct pci_device_id mv_pci_tbl[] = {
+In file included from include/linux/string.h:369,
+                 from drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c:20:
+In function 'strncpy',
+    inlined from 'create_component' at drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c:940:2:
+include/linux/fortify-string.h:108:33: error: '__builtin_strncpy' specified bound 128 equals destination size [-Werror=stringop-truncation]
 
-Move the table into the same block that containsn the pci_driver
-definition.
+Change it to strscpy_pad(), which produces a properly terminated and
+zero-padded string.
 
-Fixes: 7bb3c5290ca0 ("sata_mv: Remove PCI dependency")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240313163712.224585-1-arnd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: f37e76abd614 ("staging: vc04_services: fix information leak in create_component()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/sata_mv.c | 63 +++++++++++++++++++++----------------------
- 1 file changed, 31 insertions(+), 32 deletions(-)
+ drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
-index 84ea284502d53..001656642fffa 100644
---- a/drivers/ata/sata_mv.c
-+++ b/drivers/ata/sata_mv.c
-@@ -796,37 +796,6 @@ static const struct ata_port_info mv_port_info[] = {
- 	},
- };
+diff --git a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
+index 23d869ba12e69..fab119c60cb12 100644
+--- a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
++++ b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
+@@ -929,8 +929,8 @@ static int create_component(struct vchiq_mmal_instance *instance,
+ 	/* build component create message */
+ 	m.h.type = MMAL_MSG_TYPE_COMPONENT_CREATE;
+ 	m.u.component_create.client_component = component->client_component;
+-	strncpy(m.u.component_create.name, name,
+-		sizeof(m.u.component_create.name));
++	strscpy_pad(m.u.component_create.name, name,
++		    sizeof(m.u.component_create.name));
  
--static const struct pci_device_id mv_pci_tbl[] = {
--	{ PCI_VDEVICE(MARVELL, 0x5040), chip_504x },
--	{ PCI_VDEVICE(MARVELL, 0x5041), chip_504x },
--	{ PCI_VDEVICE(MARVELL, 0x5080), chip_5080 },
--	{ PCI_VDEVICE(MARVELL, 0x5081), chip_508x },
--	/* RocketRAID 1720/174x have different identifiers */
--	{ PCI_VDEVICE(TTI, 0x1720), chip_6042 },
--	{ PCI_VDEVICE(TTI, 0x1740), chip_6042 },
--	{ PCI_VDEVICE(TTI, 0x1742), chip_6042 },
--
--	{ PCI_VDEVICE(MARVELL, 0x6040), chip_604x },
--	{ PCI_VDEVICE(MARVELL, 0x6041), chip_604x },
--	{ PCI_VDEVICE(MARVELL, 0x6042), chip_6042 },
--	{ PCI_VDEVICE(MARVELL, 0x6080), chip_608x },
--	{ PCI_VDEVICE(MARVELL, 0x6081), chip_608x },
--
--	{ PCI_VDEVICE(ADAPTEC2, 0x0241), chip_604x },
--
--	/* Adaptec 1430SA */
--	{ PCI_VDEVICE(ADAPTEC2, 0x0243), chip_7042 },
--
--	/* Marvell 7042 support */
--	{ PCI_VDEVICE(MARVELL, 0x7042), chip_7042 },
--
--	/* Highpoint RocketRAID PCIe series */
--	{ PCI_VDEVICE(TTI, 0x2300), chip_7042 },
--	{ PCI_VDEVICE(TTI, 0x2310), chip_7042 },
--
--	{ }			/* terminate list */
--};
--
- static const struct mv_hw_ops mv5xxx_ops = {
- 	.phy_errata		= mv5_phy_errata,
- 	.enable_leds		= mv5_enable_leds,
-@@ -4320,6 +4289,36 @@ static int mv_pci_init_one(struct pci_dev *pdev,
- static int mv_pci_device_resume(struct pci_dev *pdev);
- #endif
- 
-+static const struct pci_device_id mv_pci_tbl[] = {
-+	{ PCI_VDEVICE(MARVELL, 0x5040), chip_504x },
-+	{ PCI_VDEVICE(MARVELL, 0x5041), chip_504x },
-+	{ PCI_VDEVICE(MARVELL, 0x5080), chip_5080 },
-+	{ PCI_VDEVICE(MARVELL, 0x5081), chip_508x },
-+	/* RocketRAID 1720/174x have different identifiers */
-+	{ PCI_VDEVICE(TTI, 0x1720), chip_6042 },
-+	{ PCI_VDEVICE(TTI, 0x1740), chip_6042 },
-+	{ PCI_VDEVICE(TTI, 0x1742), chip_6042 },
-+
-+	{ PCI_VDEVICE(MARVELL, 0x6040), chip_604x },
-+	{ PCI_VDEVICE(MARVELL, 0x6041), chip_604x },
-+	{ PCI_VDEVICE(MARVELL, 0x6042), chip_6042 },
-+	{ PCI_VDEVICE(MARVELL, 0x6080), chip_608x },
-+	{ PCI_VDEVICE(MARVELL, 0x6081), chip_608x },
-+
-+	{ PCI_VDEVICE(ADAPTEC2, 0x0241), chip_604x },
-+
-+	/* Adaptec 1430SA */
-+	{ PCI_VDEVICE(ADAPTEC2, 0x0243), chip_7042 },
-+
-+	/* Marvell 7042 support */
-+	{ PCI_VDEVICE(MARVELL, 0x7042), chip_7042 },
-+
-+	/* Highpoint RocketRAID PCIe series */
-+	{ PCI_VDEVICE(TTI, 0x2300), chip_7042 },
-+	{ PCI_VDEVICE(TTI, 0x2310), chip_7042 },
-+
-+	{ }			/* terminate list */
-+};
- 
- static struct pci_driver mv_pci_driver = {
- 	.name			= DRV_NAME,
-@@ -4332,6 +4331,7 @@ static struct pci_driver mv_pci_driver = {
- #endif
- 
- };
-+MODULE_DEVICE_TABLE(pci, mv_pci_tbl);
- 
- /* move to PCI layer or libata core? */
- static int pci_go_64(struct pci_dev *pdev)
-@@ -4534,7 +4534,6 @@ static void __exit mv_exit(void)
- MODULE_AUTHOR("Brett Russ");
- MODULE_DESCRIPTION("SCSI low-level driver for Marvell SATA controllers");
- MODULE_LICENSE("GPL v2");
--MODULE_DEVICE_TABLE(pci, mv_pci_tbl);
- MODULE_VERSION(DRV_VERSION);
- MODULE_ALIAS("platform:" DRV_NAME);
- 
+ 	ret = send_synchronous_mmal_msg(instance, &m,
+ 					sizeof(m.u.component_create),
 -- 
 2.43.0
 
