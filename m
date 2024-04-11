@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019828A0F9A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B7858A10E3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84402B2329A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15020B21D78
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD07146A71;
-	Thu, 11 Apr 2024 10:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427ED148FFF;
+	Thu, 11 Apr 2024 10:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ArSebLjO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7RzlMzm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E21140E3D;
-	Thu, 11 Apr 2024 10:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011211465BF;
+	Thu, 11 Apr 2024 10:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831131; cv=none; b=ZKhJJ8p/mByErprrvsgVmCF5YsTKS7zNFRWIMlkhJk8r/td+Np2UE+k+HDfVOPQz6MKx5fieyJFlOlpGj7Pp1p7p7y9mZmFiQnJLZ/wMvwg1zklTRO40hGe5rlX8NGFXW0nZwyQYK8f5o7hHB3Wh+SrHmNjQzmV1aUSQ1mpRHWM=
+	t=1712831907; cv=none; b=SlSfqZKsAzjCPE2mTRkuxAutfP9JE7WfgohHf04RucQv+NxBsybbVtj7s45/Q19eXjcBGvxQoWvZ8nO+2bXrGjljsT6JanIDqXV9K8TP+hbND9hhwbSxEgh+E/1XIX07eiMMkmA/YEP5/Da3aGKpFsjE74npFoE12zuY6RVcwoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831131; c=relaxed/simple;
-	bh=FK6iNNZKAFWoQF6Pwvw+/vMlwUZ1Ozto8HUy/kpOzrQ=;
+	s=arc-20240116; t=1712831907; c=relaxed/simple;
+	bh=LRwgfnCugkiZof7lE2CgNVS7MwdUXJu/3xidjX0Jikg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/0sRFmSiRlltYSM1M1CYrcppPTdiaLth02JuXO5WH4AwEPfX2c/D/fQQf4jR8YxnHmhWDxYK7cJuFlohyMcdLeyTiyfeMDkwRHFFek5/NKFpS0GPLSJ+p/kfK6rrJUVSbsSb8voaF27tF1ZvmnbcrwYitfBla2hBFFIs/tTLyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ArSebLjO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29129C433F1;
-	Thu, 11 Apr 2024 10:25:30 +0000 (UTC)
+	 MIME-Version; b=ZpW5GwIQa91n8zW56mUCUkQYSxvm6H/kf8QsZQjfDxhLUGDF44t4EoeU5fs9TsAR9813EvbLS+V2d6paCe//6lT900/p+SpVqJ98maKIf9hMVHgPz0PUHyyREyPiHdlVz1G0RJ6qkvNx1WjsH2aDD+9HfPER2+WaBFKdNAwdnG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7RzlMzm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72791C433F1;
+	Thu, 11 Apr 2024 10:38:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831131;
-	bh=FK6iNNZKAFWoQF6Pwvw+/vMlwUZ1Ozto8HUy/kpOzrQ=;
+	s=korg; t=1712831906;
+	bh=LRwgfnCugkiZof7lE2CgNVS7MwdUXJu/3xidjX0Jikg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ArSebLjOxOjkRdqT/ZGM9EQ36zLD9W5ctdE3fyxv/ZbztwGKKsl8ry86KX11xwJZb
-	 9mqAdjwjkcjldIPNqfF56hYukvRnmh1m136cTND2LS+wI09FnrJfCSdsDcUUUJhvZG
-	 AAciUr+xeOWVe/j4msZwgONKt4/gqFikY7Z1ch3I=
+	b=j7RzlMzmN1vbha6LlbjtoRKFFQPmfxm/HqKDJxx5J9vgYmLna7KX079W9GSU4Hkuu
+	 Vt0Ysgw/xymqIrcTeVoaXIWYeHRc4TymWRbU5+1kKocj3XMLoJrqLHV4CHSy6wMA+b
+	 q/MObpz31qreXpy3dmYY5imADy18yE0+agxwFMRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Po-Hao Huang <phhuang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 002/114] wifi: rtw89: fix null pointer access when abort scan
+	stable <stable@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH 5.10 166/294] staging: vc04_services: fix information leak in create_component()
 Date: Thu, 11 Apr 2024 11:55:29 +0200
-Message-ID: <20240411095416.932648929@linuxfoundation.org>
+Message-ID: <20240411095440.637287430@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Po-Hao Huang <phhuang@realtek.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 7e11a2966f51695c0af0b1f976a32d64dee243b2 ]
+commit f37e76abd614b68987abc8e5c22d986013349771 upstream.
 
-During cancel scan we might use vif that weren't scanning.
-Fix this by using the actual scanning vif.
+The m.u.component_create.pid field is for debugging and in the mainline
+kernel it's not used anything.  However, it still needs to be set to
+something to prevent disclosing uninitialized stack data.  Set it to
+zero.
 
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240119081501.25223-6-pkshih@realtek.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7b3ad5abf027 ("staging: Import the BCM2835 MMAL-based V4L2 camera driver.")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/2d972847-9ebd-481b-b6f9-af390f5aabd3@moroto.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw89/mac80211.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
-index e70757e4dc2c1..8aed0d101bf3b 100644
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -422,7 +422,7 @@ static void rtw89_ops_bss_info_changed(struct ieee80211_hw *hw,
- 			 * when disconnected by peer
- 			 */
- 			if (rtwdev->scanning)
--				rtw89_hw_scan_abort(rtwdev, vif);
-+				rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
- 		}
- 	}
+--- a/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
++++ b/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
+@@ -942,6 +942,7 @@ static int create_component(struct vchiq
+ 	m.u.component_create.client_component = component->client_component;
+ 	strscpy_pad(m.u.component_create.name, name,
+ 		    sizeof(m.u.component_create.name));
++	m.u.component_create.pid = 0;
  
-@@ -971,7 +971,7 @@ static int rtw89_ops_remain_on_channel(struct ieee80211_hw *hw,
- 	}
- 
- 	if (rtwdev->scanning)
--		rtw89_hw_scan_abort(rtwdev, vif);
-+		rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
- 
- 	if (type == IEEE80211_ROC_TYPE_MGMT_TX)
- 		roc->state = RTW89_ROC_MGMT;
--- 
-2.43.0
-
+ 	ret = send_synchronous_mmal_msg(instance, &m,
+ 					sizeof(m.u.component_create),
 
 
 
