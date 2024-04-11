@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340788A0F56
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F0B38A0E42
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:12:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C88CC1F27425
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 354E128323F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC5C146A70;
-	Thu, 11 Apr 2024 10:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C45145B26;
+	Thu, 11 Apr 2024 10:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wytjAI2Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zIJ4rNsV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B717145353;
-	Thu, 11 Apr 2024 10:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C7B1F5FA;
+	Thu, 11 Apr 2024 10:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830977; cv=none; b=XEv5ZNIGMWMSq23FM62gvd3ri2+/dt7Mc+48UMTLj76zWQfttgMgibSoZ5qvdvF55Lv0DAquL1ppnZadY1kq8Rt/SgEC390Y6EmktfQHcmvWgeY7GS6p38LthOxzfmPrNgTrr4SgKVwGGsMSLv868Wl0SBNVx3b2tF8ZV8kBdHY=
+	t=1712830374; cv=none; b=npdmf2s5gtXDH45dtn9a9EUjLs4mL1WCvxO6oxe9LREnYkshmiDuUExoYG+VjSUx/jQQl7XJOFjYS2LdYLcqHw7B+lK2owLHA4UPIzGzmDTu+weXF54IDjjWvY6kqrPgJ026Xbnnyb64vC8QuBbP7hOEJDGhuYSV2X0gnjOVY+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830977; c=relaxed/simple;
-	bh=ORZsXPmfcLgBi4n1HAzya7vmNuBKnKdUg1CM2uV02SU=;
+	s=arc-20240116; t=1712830374; c=relaxed/simple;
+	bh=t7X61JXqRaAuBtgs5FHoutJjqssun7aXOS9TDzHj9ZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dO8PHf0CBTtoaFrxXIIh/dpMLKj/WYXlFvXwmzCUzI47vIG8Hht3X4TmsMw6orM3iKvhN19iEDO+QT2lxEwFrnjbC8PmIuUaV9mB5+DRiemJcxWvrwbfZpwFXz5mQqj57L21b7mVKqfnnwrtMZqdIksG32vBi9sXTr+/zf10DcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wytjAI2Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F84C433F1;
-	Thu, 11 Apr 2024 10:22:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qK0fQtiscFGutv7xF0/O2he/Rfcl/es+WCxvLrOEjBvz9Z0kLy1DA+/EM8qVksia9+Cak9J90GOdgdRRu5mk0JgJT9IIuwn34x+loJZqWTyo9hRHPgoQy7KKmIJKJ0rxVkuLIEG2RzkxrkunSSYuOdoV9zoYk4ByIOrfqsNoOO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zIJ4rNsV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1186C433C7;
+	Thu, 11 Apr 2024 10:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830977;
-	bh=ORZsXPmfcLgBi4n1HAzya7vmNuBKnKdUg1CM2uV02SU=;
+	s=korg; t=1712830374;
+	bh=t7X61JXqRaAuBtgs5FHoutJjqssun7aXOS9TDzHj9ZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wytjAI2Y8PtsdcedwRn22Wz8kT5lZA6oWXxnS80iRM8XPuK31UwiCl7U+fSykKPpN
-	 HFRYSelalan1JW8ggl4sihdvVnO04p/FpeDmCvcrD9TqCi/a4n34CSrii4R2/oamF2
-	 A+x8lELByYV1pqd1sqlnSEylVp4L8ZNPj0/r0+Eo=
+	b=zIJ4rNsVdVWTgAfHIH6B9ldFTe7ySFtSO2vM5H/1DNf5En+ocWEADtyQGElm54Y6w
+	 DdmlKD9tDzb/sBvfVmmN1KH8FhK7ztd8ZR070TlKt4FSTA3WjjsQDK2S6YCxZvIL1H
+	 0Gg8XAaij4v5+sIQarU8vS5IcNIdoVHUrCYi9gkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>,
+	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 181/215] btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()
-Date: Thu, 11 Apr 2024 11:56:30 +0200
-Message-ID: <20240411095430.309516230@linuxfoundation.org>
+Subject: [PATCH 6.8 123/143] x86/xen: attempt to inflate the memory balloon on PVH
+Date: Thu, 11 Apr 2024 11:56:31 +0200
+Message-ID: <20240411095424.608106858@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,327 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-[ Upstream commit 7411055db5ce64f836aaffd422396af0075fdc99 ]
+[ Upstream commit 38620fc4e8934f1801c7811ef39a041914ac4c1d ]
 
-The unhandled case in btrfs_relocate_sys_chunks() loop is a corruption,
-as it could be caused only by two impossible conditions:
+When running as PVH or HVM Linux will use holes in the memory map as scratch
+space to map grants, foreign domain pages and possibly miscellaneous other
+stuff.  However the usage of such memory map holes for Xen purposes can be
+problematic.  The request of holesby Xen happen quite early in the kernel boot
+process (grant table setup already uses scratch map space), and it's possible
+that by then not all devices have reclaimed their MMIO space.  It's not
+unlikely for chunks of Xen scratch map space to end up using PCI bridge MMIO
+window memory, which (as expected) causes quite a lot of issues in the system.
 
-- at first the search key is set up to look for a chunk tree item, with
-  offset -1, this is an inexact search and the key->offset will contain
-  the correct offset upon a successful search, a valid chunk tree item
-  cannot have an offset -1
+At least for PVH dom0 we have the possibility of using regions marked as
+UNUSABLE in the e820 memory map.  Either if the region is UNUSABLE in the
+native memory map, or it has been converted into UNUSABLE in order to hide RAM
+regions from dom0, the second stage translation page-tables can populate those
+areas without issues.
 
-- after first successful search, the found_key corresponds to a chunk
-  item, the offset is decremented by 1 before the next loop, it's
-  impossible to find a chunk item there due to alignment and size
-  constraints
+PV already has this kind of logic, where the balloon driver is inflated at
+boot.  Re-use the current logic in order to also inflate it when running as
+PVH.  onvert UNUSABLE regions up to the ratio specified in EXTRA_MEM_RATIO to
+RAM, while reserving them using xen_add_extra_mem() (which is also moved so
+it's no longer tied to CONFIG_PV).
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+[jgross: fixed build for CONFIG_PVH without CONFIG_XEN_PVH]
+
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20240220174341.56131-1-roger.pau@citrix.com
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/xen/hypervisor.h |  5 ++
+ arch/x86/platform/pvh/enlighten.c     |  3 ++
+ arch/x86/xen/enlighten.c              | 32 +++++++++++++
+ arch/x86/xen/enlighten_pvh.c          | 68 +++++++++++++++++++++++++++
+ arch/x86/xen/setup.c                  | 44 -----------------
+ arch/x86/xen/xen-ops.h                | 14 ++++++
+ drivers/xen/balloon.c                 |  2 -
+ 7 files changed, 122 insertions(+), 46 deletions(-)
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index 5539e672d70a3..d7014b2b28d6a 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -3268,7 +3268,17 @@ static int btrfs_relocate_sys_chunks(struct btrfs_fs_info *fs_info)
- 			mutex_unlock(&fs_info->delete_unused_bgs_mutex);
- 			goto error;
- 		}
--		BUG_ON(ret == 0); /* Corruption */
-+		if (ret == 0) {
-+			/*
-+			 * On the first search we would find chunk tree with
-+			 * offset -1, which is not possible. On subsequent
-+			 * loops this would find an existing item on an invalid
-+			 * offset (one less than the previous one, wrong
-+			 * alignment and size).
-+			 */
-+			ret = -EUCLEAN;
-+			goto error;
-+		}
+diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
+index a9088250770f2..64fbd2dbc5b76 100644
+--- a/arch/x86/include/asm/xen/hypervisor.h
++++ b/arch/x86/include/asm/xen/hypervisor.h
+@@ -62,6 +62,11 @@ void xen_arch_unregister_cpu(int num);
+ #ifdef CONFIG_PVH
+ void __init xen_pvh_init(struct boot_params *boot_params);
+ void __init mem_map_via_hcall(struct boot_params *boot_params_p);
++#ifdef CONFIG_XEN_PVH
++void __init xen_reserve_extra_memory(struct boot_params *bootp);
++#else
++static inline void xen_reserve_extra_memory(struct boot_params *bootp) { }
++#endif
+ #endif
  
- 		ret = btrfs_previous_item(chunk_root, path, key.objectid,
- 					  key.type);
+ /* Lazy mode for batching updates / context switch */
+diff --git a/arch/x86/platform/pvh/enlighten.c b/arch/x86/platform/pvh/enlighten.c
+index 00a92cb2c8147..a12117f3d4de7 100644
+--- a/arch/x86/platform/pvh/enlighten.c
++++ b/arch/x86/platform/pvh/enlighten.c
+@@ -74,6 +74,9 @@ static void __init init_pvh_bootparams(bool xen_guest)
+ 	} else
+ 		xen_raw_printk("Warning: Can fit ISA range into e820\n");
+ 
++	if (xen_guest)
++		xen_reserve_extra_memory(&pvh_bootparams);
++
+ 	pvh_bootparams.hdr.cmd_line_ptr =
+ 		pvh_start_info.cmdline_paddr;
+ 
+diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
+index 3c61bb98c10e2..a01ca255b0c64 100644
+--- a/arch/x86/xen/enlighten.c
++++ b/arch/x86/xen/enlighten.c
+@@ -6,6 +6,7 @@
+ #include <linux/console.h>
+ #include <linux/cpu.h>
+ #include <linux/kexec.h>
++#include <linux/memblock.h>
+ #include <linux/slab.h>
+ #include <linux/panic_notifier.h>
+ 
+@@ -350,3 +351,34 @@ void xen_arch_unregister_cpu(int num)
+ }
+ EXPORT_SYMBOL(xen_arch_unregister_cpu);
+ #endif
++
++/* Amount of extra memory space we add to the e820 ranges */
++struct xen_memory_region xen_extra_mem[XEN_EXTRA_MEM_MAX_REGIONS] __initdata;
++
++void __init xen_add_extra_mem(unsigned long start_pfn, unsigned long n_pfns)
++{
++	unsigned int i;
++
++	/*
++	 * No need to check for zero size, should happen rarely and will only
++	 * write a new entry regarded to be unused due to zero size.
++	 */
++	for (i = 0; i < XEN_EXTRA_MEM_MAX_REGIONS; i++) {
++		/* Add new region. */
++		if (xen_extra_mem[i].n_pfns == 0) {
++			xen_extra_mem[i].start_pfn = start_pfn;
++			xen_extra_mem[i].n_pfns = n_pfns;
++			break;
++		}
++		/* Append to existing region. */
++		if (xen_extra_mem[i].start_pfn + xen_extra_mem[i].n_pfns ==
++		    start_pfn) {
++			xen_extra_mem[i].n_pfns += n_pfns;
++			break;
++		}
++	}
++	if (i == XEN_EXTRA_MEM_MAX_REGIONS)
++		printk(KERN_WARNING "Warning: not enough extra memory regions\n");
++
++	memblock_reserve(PFN_PHYS(start_pfn), PFN_PHYS(n_pfns));
++}
+diff --git a/arch/x86/xen/enlighten_pvh.c b/arch/x86/xen/enlighten_pvh.c
+index ada3868c02c23..c28f073c1df52 100644
+--- a/arch/x86/xen/enlighten_pvh.c
++++ b/arch/x86/xen/enlighten_pvh.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <linux/acpi.h>
+ #include <linux/export.h>
++#include <linux/mm.h>
+ 
+ #include <xen/hvc-console.h>
+ 
+@@ -72,3 +73,70 @@ void __init mem_map_via_hcall(struct boot_params *boot_params_p)
+ 	}
+ 	boot_params_p->e820_entries = memmap.nr_entries;
+ }
++
++/*
++ * Reserve e820 UNUSABLE regions to inflate the memory balloon.
++ *
++ * On PVH dom0 the host memory map is used, RAM regions available to dom0 are
++ * located as the same place as in the native memory map, but since dom0 gets
++ * less memory than the total amount of host RAM the ranges that can't be
++ * populated are converted from RAM -> UNUSABLE.  Use such regions (up to the
++ * ratio signaled in EXTRA_MEM_RATIO) in order to inflate the balloon driver at
++ * boot.  Doing so prevents the guest (even if just temporary) from using holes
++ * in the memory map in order to map grants or foreign addresses, and
++ * hopefully limits the risk of a clash with a device MMIO region.  Ideally the
++ * hypervisor should notify us which memory ranges are suitable for creating
++ * foreign mappings, but that's not yet implemented.
++ */
++void __init xen_reserve_extra_memory(struct boot_params *bootp)
++{
++	unsigned int i, ram_pages = 0, extra_pages;
++
++	for (i = 0; i < bootp->e820_entries; i++) {
++		struct boot_e820_entry *e = &bootp->e820_table[i];
++
++		if (e->type != E820_TYPE_RAM)
++			continue;
++		ram_pages += PFN_DOWN(e->addr + e->size) - PFN_UP(e->addr);
++	}
++
++	/* Max amount of extra memory. */
++	extra_pages = EXTRA_MEM_RATIO * ram_pages;
++
++	/*
++	 * Convert UNUSABLE ranges to RAM and reserve them for foreign mapping
++	 * purposes.
++	 */
++	for (i = 0; i < bootp->e820_entries && extra_pages; i++) {
++		struct boot_e820_entry *e = &bootp->e820_table[i];
++		unsigned long pages;
++
++		if (e->type != E820_TYPE_UNUSABLE)
++			continue;
++
++		pages = min(extra_pages,
++			PFN_DOWN(e->addr + e->size) - PFN_UP(e->addr));
++
++		if (pages != (PFN_DOWN(e->addr + e->size) - PFN_UP(e->addr))) {
++			struct boot_e820_entry *next;
++
++			if (bootp->e820_entries ==
++			    ARRAY_SIZE(bootp->e820_table))
++				/* No space left to split - skip region. */
++				continue;
++
++			/* Split entry. */
++			next = e + 1;
++			memmove(next, e,
++				(bootp->e820_entries - i) * sizeof(*e));
++			bootp->e820_entries++;
++			next->addr = PAGE_ALIGN(e->addr) + PFN_PHYS(pages);
++			e->size = next->addr - e->addr;
++			next->size -= e->size;
++		}
++		e->type = E820_TYPE_RAM;
++		extra_pages -= pages;
++
++		xen_add_extra_mem(PFN_UP(e->addr), pages);
++	}
++}
+diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
+index b3e37961065a2..380591028cb8f 100644
+--- a/arch/x86/xen/setup.c
++++ b/arch/x86/xen/setup.c
+@@ -38,9 +38,6 @@
+ 
+ #define GB(x) ((uint64_t)(x) * 1024 * 1024 * 1024)
+ 
+-/* Amount of extra memory space we add to the e820 ranges */
+-struct xen_memory_region xen_extra_mem[XEN_EXTRA_MEM_MAX_REGIONS] __initdata;
+-
+ /* Number of pages released from the initial allocation. */
+ unsigned long xen_released_pages;
+ 
+@@ -64,18 +61,6 @@ static struct {
+ } xen_remap_buf __initdata __aligned(PAGE_SIZE);
+ static unsigned long xen_remap_mfn __initdata = INVALID_P2M_ENTRY;
+ 
+-/*
+- * The maximum amount of extra memory compared to the base size.  The
+- * main scaling factor is the size of struct page.  At extreme ratios
+- * of base:extra, all the base memory can be filled with page
+- * structures for the extra memory, leaving no space for anything
+- * else.
+- *
+- * 10x seems like a reasonable balance between scaling flexibility and
+- * leaving a practically usable system.
+- */
+-#define EXTRA_MEM_RATIO		(10)
+-
+ static bool xen_512gb_limit __initdata = IS_ENABLED(CONFIG_XEN_512GB);
+ 
+ static void __init xen_parse_512gb(void)
+@@ -96,35 +81,6 @@ static void __init xen_parse_512gb(void)
+ 	xen_512gb_limit = val;
+ }
+ 
+-static void __init xen_add_extra_mem(unsigned long start_pfn,
+-				     unsigned long n_pfns)
+-{
+-	int i;
+-
+-	/*
+-	 * No need to check for zero size, should happen rarely and will only
+-	 * write a new entry regarded to be unused due to zero size.
+-	 */
+-	for (i = 0; i < XEN_EXTRA_MEM_MAX_REGIONS; i++) {
+-		/* Add new region. */
+-		if (xen_extra_mem[i].n_pfns == 0) {
+-			xen_extra_mem[i].start_pfn = start_pfn;
+-			xen_extra_mem[i].n_pfns = n_pfns;
+-			break;
+-		}
+-		/* Append to existing region. */
+-		if (xen_extra_mem[i].start_pfn + xen_extra_mem[i].n_pfns ==
+-		    start_pfn) {
+-			xen_extra_mem[i].n_pfns += n_pfns;
+-			break;
+-		}
+-	}
+-	if (i == XEN_EXTRA_MEM_MAX_REGIONS)
+-		printk(KERN_WARNING "Warning: not enough extra memory regions\n");
+-
+-	memblock_reserve(PFN_PHYS(start_pfn), PFN_PHYS(n_pfns));
+-}
+-
+ static void __init xen_del_extra_mem(unsigned long start_pfn,
+ 				     unsigned long n_pfns)
+ {
+diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
+index a87ab36889e76..79cf93f2c92f1 100644
+--- a/arch/x86/xen/xen-ops.h
++++ b/arch/x86/xen/xen-ops.h
+@@ -163,4 +163,18 @@ void xen_hvm_post_suspend(int suspend_cancelled);
+ static inline void xen_hvm_post_suspend(int suspend_cancelled) {}
+ #endif
+ 
++/*
++ * The maximum amount of extra memory compared to the base size.  The
++ * main scaling factor is the size of struct page.  At extreme ratios
++ * of base:extra, all the base memory can be filled with page
++ * structures for the extra memory, leaving no space for anything
++ * else.
++ *
++ * 10x seems like a reasonable balance between scaling flexibility and
++ * leaving a practically usable system.
++ */
++#define EXTRA_MEM_RATIO		(10)
++
++void xen_add_extra_mem(unsigned long start_pfn, unsigned long n_pfns);
++
+ #endif /* XEN_OPS_H */
+diff --git a/drivers/xen/balloon.c b/drivers/xen/balloon.c
+index 976c6cdf9ee67..aaf2514fcfa46 100644
+--- a/drivers/xen/balloon.c
++++ b/drivers/xen/balloon.c
+@@ -672,7 +672,6 @@ EXPORT_SYMBOL(xen_free_ballooned_pages);
+ 
+ static void __init balloon_add_regions(void)
+ {
+-#if defined(CONFIG_XEN_PV)
+ 	unsigned long start_pfn, pages;
+ 	unsigned long pfn, extra_pfn_end;
+ 	unsigned int i;
+@@ -696,7 +695,6 @@ static void __init balloon_add_regions(void)
+ 
+ 		balloon_stats.total_pages += extra_pfn_end - start_pfn;
+ 	}
+-#endif
+ }
+ 
+ static int __init balloon_init(void)
 -- 
 2.43.0
 
