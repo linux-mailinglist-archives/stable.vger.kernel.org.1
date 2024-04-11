@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-39016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12EAA8A117A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE4FB8A1183
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C184C2869B6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68FDD287A09
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714DE1448C8;
-	Thu, 11 Apr 2024 10:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFCC145B28;
+	Thu, 11 Apr 2024 10:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GpA8o5Yq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MihgQEO2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C1E6BB29;
-	Thu, 11 Apr 2024 10:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA7D1448C8;
+	Thu, 11 Apr 2024 10:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832269; cv=none; b=Xzv7zg8nuVHWXkjd8l4Xm+HAqu+RMA8+ijzfVXPhHDdrVhXPxbt3uv/nOnAzTfNj14pqF2zbTsKa8Sbey3aeBTQWJHPqUj9OPn5g5dtNhReW4iiRPIRiTMpww0h+YoUAurdyykmhaHBJW2Xz++6p7amPr5kz3N3OI20FgpEIFsw=
+	t=1712832295; cv=none; b=qfnMeJMNWB+ud39+/zx21dZ3IisCMuH/jguzUv1asYxUHzAGjRVEJvKFMWCgzeNRCID/J53NdJ7NBwEqhvPcGd8DMflk/mU5FX6YN1zTeFkOAeZYiD1k/mtqpevy/teJ1fpxNw4MNFyJha79tRsAF47LQo/ryKEohmXrYDklQf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832269; c=relaxed/simple;
-	bh=abNHeGH4hIn8pkBoQY3VLqPq+lIrtapJ01R7HAau/Fc=;
+	s=arc-20240116; t=1712832295; c=relaxed/simple;
+	bh=5pcvOLRdddtcJdudyOU/WqsIJVfkUpKgnGWbos1CeTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mismsagszXBmK0vFXaAgKO+fx23RDfV6u6Rskpbra1wrIea1P5Z6vUX/gwUT/N094IWKh2vWx8X2noAJzbshJIATllKiGE3OnapnXX6lc7F6Yy82t00cyRdJoXQ3xnbEbFHDtwmUaew6YyUQxPtmja1g1GxgwiFmBHdDNeqrmEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GpA8o5Yq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D2CC433F1;
-	Thu, 11 Apr 2024 10:44:28 +0000 (UTC)
+	 MIME-Version; b=I6J5O22U/PWlLkyAk+iLaihDVgFI1Ygir4oiy0msQ/rmABZxivboi9tcnq1HvZSutpsNtjwr/LneL/g8pLETi5KUFyihoP4fBAtRXiGe+q39yyVKBPO3Pxfqv3jZI4bAzSqzX7w6hS7c+TNYdeGlp55wuDtcRQAMUTCB3HfK4LM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MihgQEO2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE068C433F1;
+	Thu, 11 Apr 2024 10:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832269;
-	bh=abNHeGH4hIn8pkBoQY3VLqPq+lIrtapJ01R7HAau/Fc=;
+	s=korg; t=1712832295;
+	bh=5pcvOLRdddtcJdudyOU/WqsIJVfkUpKgnGWbos1CeTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GpA8o5Yqo2bg6/dyoLke8wcJxZzE/xxy4j3AlSUrV9+3K/VDU1ld+PjddoKwrLGOT
-	 3ZxQjP2JIqymnlOnQoZPF5s+06R4Ipspgj19w0zhhSy9guBogxhTv8iwL6ia+nXG0q
-	 mvo/v5BnnkfLdGS4HGoGMNeUUTVQyxVgXE2QvMyI=
+	b=MihgQEO2e0eyJvtJxiEMRh3z3V5YdgH+3icLvPFDJh/ovW6qooZDiHCHcIKADFTa0
+	 gWLkewynC0T5uyN/SbUaP0DUFEwV2mBvHuQKzCrXXYpQ2gYJ8eqf6ZZgkw7m7tMnKI
+	 pO520Wd2gcqNPZ42KdXu/mlXFQWgAif2uVRJkFBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Yang Jihong <yangjihong1@huawei.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 269/294] libperf evlist: Avoid out-of-bounds access
-Date: Thu, 11 Apr 2024 11:57:12 +0200
-Message-ID: <20240411095443.650201310@linuxfoundation.org>
+Subject: [PATCH 5.10 270/294] block: prevent division by zero in blk_rq_stat_sum()
+Date: Thu, 11 Apr 2024 11:57:13 +0200
+Message-ID: <20240411095443.679461606@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
 References: <20240411095435.633465671@linuxfoundation.org>
@@ -67,123 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-[ Upstream commit 1947b92464c3268381604bbe2ac977a3fd78192f ]
+[ Upstream commit 93f52fbeaf4b676b21acfe42a5152620e6770d02 ]
 
-Parallel testing appears to show a race between allocating and setting
-evsel ids. As there is a bounds check on the xyarray it yields a segv
-like:
+The expression dst->nr_samples + src->nr_samples may
+have zero value on overflow. It is necessary to add
+a check to avoid division by zero.
 
-```
-AddressSanitizer:DEADLYSIGNAL
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-=================================================================
-
-==484408==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000010
-
-==484408==The signal is caused by a WRITE memory access.
-
-==484408==Hint: address points to the zero page.
-
-    #0 0x55cef5d4eff4 in perf_evlist__id_hash tools/lib/perf/evlist.c:256
-    #1 0x55cef5d4f132 in perf_evlist__id_add tools/lib/perf/evlist.c:274
-    #2 0x55cef5d4f545 in perf_evlist__id_add_fd tools/lib/perf/evlist.c:315
-    #3 0x55cef5a1923f in store_evsel_ids util/evsel.c:3130
-    #4 0x55cef5a19400 in evsel__store_ids util/evsel.c:3147
-    #5 0x55cef5888204 in __run_perf_stat tools/perf/builtin-stat.c:832
-    #6 0x55cef5888c06 in run_perf_stat tools/perf/builtin-stat.c:960
-    #7 0x55cef58932db in cmd_stat tools/perf/builtin-stat.c:2878
-...
-```
-
-Avoid this crash by early exiting the perf_evlist__id_add_fd and
-perf_evlist__id_add is the access is out-of-bounds.
-
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240229070757.796244-1-irogers@google.com
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20240305134509.23108-1-r.smirnov@omp.ru
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/perf/evlist.c                  | 18 ++++++++++++------
- tools/lib/perf/include/internal/evlist.h |  4 ++--
- 2 files changed, 14 insertions(+), 8 deletions(-)
+ block/blk-stat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/perf/evlist.c b/tools/lib/perf/evlist.c
-index f76b1a9d5a6e1..53cff32b2cb80 100644
---- a/tools/lib/perf/evlist.c
-+++ b/tools/lib/perf/evlist.c
-@@ -226,10 +226,10 @@ u64 perf_evlist__read_format(struct perf_evlist *evlist)
- 
- static void perf_evlist__id_hash(struct perf_evlist *evlist,
- 				 struct perf_evsel *evsel,
--				 int cpu, int thread, u64 id)
-+				 int cpu_map_idx, int thread, u64 id)
+diff --git a/block/blk-stat.c b/block/blk-stat.c
+index ae3dd1fb8e61d..6e602f9b966e4 100644
+--- a/block/blk-stat.c
++++ b/block/blk-stat.c
+@@ -28,7 +28,7 @@ void blk_rq_stat_init(struct blk_rq_stat *stat)
+ /* src is a per-cpu stat, mean isn't initialized */
+ void blk_rq_stat_sum(struct blk_rq_stat *dst, struct blk_rq_stat *src)
  {
- 	int hash;
--	struct perf_sample_id *sid = SID(evsel, cpu, thread);
-+	struct perf_sample_id *sid = SID(evsel, cpu_map_idx, thread);
+-	if (!src->nr_samples)
++	if (dst->nr_samples + src->nr_samples <= dst->nr_samples)
+ 		return;
  
- 	sid->id = id;
- 	sid->evsel = evsel;
-@@ -239,21 +239,27 @@ static void perf_evlist__id_hash(struct perf_evlist *evlist,
- 
- void perf_evlist__id_add(struct perf_evlist *evlist,
- 			 struct perf_evsel *evsel,
--			 int cpu, int thread, u64 id)
-+			 int cpu_map_idx, int thread, u64 id)
- {
--	perf_evlist__id_hash(evlist, evsel, cpu, thread, id);
-+	if (!SID(evsel, cpu_map_idx, thread))
-+		return;
-+
-+	perf_evlist__id_hash(evlist, evsel, cpu_map_idx, thread, id);
- 	evsel->id[evsel->ids++] = id;
- }
- 
- int perf_evlist__id_add_fd(struct perf_evlist *evlist,
- 			   struct perf_evsel *evsel,
--			   int cpu, int thread, int fd)
-+			   int cpu_map_idx, int thread, int fd)
- {
- 	u64 read_data[4] = { 0, };
- 	int id_idx = 1; /* The first entry is the counter value */
- 	u64 id;
- 	int ret;
- 
-+	if (!SID(evsel, cpu_map_idx, thread))
-+		return -1;
-+
- 	ret = ioctl(fd, PERF_EVENT_IOC_ID, &id);
- 	if (!ret)
- 		goto add;
-@@ -282,7 +288,7 @@ int perf_evlist__id_add_fd(struct perf_evlist *evlist,
- 	id = read_data[id_idx];
- 
- add:
--	perf_evlist__id_add(evlist, evsel, cpu, thread, id);
-+	perf_evlist__id_add(evlist, evsel, cpu_map_idx, thread, id);
- 	return 0;
- }
- 
-diff --git a/tools/lib/perf/include/internal/evlist.h b/tools/lib/perf/include/internal/evlist.h
-index 2d0fa02b036f6..8999f2cc8ee44 100644
---- a/tools/lib/perf/include/internal/evlist.h
-+++ b/tools/lib/perf/include/internal/evlist.h
-@@ -118,10 +118,10 @@ u64 perf_evlist__read_format(struct perf_evlist *evlist);
- 
- void perf_evlist__id_add(struct perf_evlist *evlist,
- 			 struct perf_evsel *evsel,
--			 int cpu, int thread, u64 id);
-+			 int cpu_map_idx, int thread, u64 id);
- 
- int perf_evlist__id_add_fd(struct perf_evlist *evlist,
- 			   struct perf_evsel *evsel,
--			   int cpu, int thread, int fd);
-+			   int cpu_map_idx, int thread, int fd);
- 
- #endif /* __LIBPERF_INTERNAL_EVLIST_H */
+ 	dst->min = min(dst->min, src->min);
 -- 
 2.43.0
 
