@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B178A0FB9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 813D18A0E29
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:11:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58C621C22ACB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 208511F21275
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC90A1465BE;
-	Thu, 11 Apr 2024 10:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F347145B07;
+	Thu, 11 Apr 2024 10:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPv29PB/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQc8nbLy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5731422CE;
-	Thu, 11 Apr 2024 10:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBEF1448EF;
+	Thu, 11 Apr 2024 10:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831208; cv=none; b=XEDrdHmLCSjOVsqsD+logSB6pCXNEFr3iEoyRgICbhKYhkKTWbTKPrUod7elqDGOWQ9Q8fM6GNujybl2V4KVnpxbIJQB+k7h+luxyEK8fBAq6hAotvsnOExwShX34jIdbL4DV5Ocbrl4SmdJr8qJyErBXDSIA77jFEeMqDlQil8=
+	t=1712830299; cv=none; b=SS8AuPQasyyg49DMcnrKW2kJa2Lr92XTDwHW4INjSJ3w4Vh20Dr9vp88mjkjm+A8ZHvg5aHpoWSI1tT36Cux/ajQMyu6DD9NT2DzY3vdZEKMdWpcJhUHhJxFd6nml3sRZCvUi/XYA4Ng6WEBafS31zIXvO17KHuaYkgUJT5QwXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831208; c=relaxed/simple;
-	bh=KLHg4jQlea+Pmp5K1aqEVPVRDZ6sSHhKfaMPVSXspsw=;
+	s=arc-20240116; t=1712830299; c=relaxed/simple;
+	bh=obBQv44/uyazFttoLg2ylLM9H35w3CTwk9SbERmwFxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G6wNsp/A67mOjGHtGeRO9OW1FgKUHKsfl9o3nSnxiVufk/Q3ToQeonb26QLGbiZ6zHGSq8kRizcmO4ZrdF6rnxbUsa3+PCDPCfabbWPV/+v58VwnfqVX7eRxJj0a9Fjagu/Wu0/rzd2oZYLkf1y/DXVlqtyOqGAy+XP74G6QwLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPv29PB/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9889EC433C7;
-	Thu, 11 Apr 2024 10:26:47 +0000 (UTC)
+	 MIME-Version; b=Gkjfh6E8zYq4Xu68/TUbLVMMMzA83tgBUUcbvoe7Qc2HiMFebr7gbyZO5iQYZ4GF7mEIc30kGkpLxtCjoTtqoikrpHirRtwpvHbQ3x0K4P5T+1U8nAiQskmtQRE9EI2aqXEP0iBwqzlbxAvRMPNfNk3Kt7BqtzLvaaWtufNhav4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQc8nbLy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B5CCC433F1;
+	Thu, 11 Apr 2024 10:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831208;
-	bh=KLHg4jQlea+Pmp5K1aqEVPVRDZ6sSHhKfaMPVSXspsw=;
+	s=korg; t=1712830299;
+	bh=obBQv44/uyazFttoLg2ylLM9H35w3CTwk9SbERmwFxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPv29PB/eU+Hy5UJJlPFixYRZX1YGBKdaFPt53rDGIfY6N06k3uDShhKCTzxHMIRh
-	 sk1Dmwv2L3HvIGTdTB2+6qVd7uwLVmt/Un/ARIlcwn8+R+mdNsaWBINTTDhzT4ijxz
-	 Ng4hM4XWZkuuIfVAIfKZK7oMgj7IfFJ32tMOI/qU=
+	b=mQc8nbLymblslWi7sbpGCLZqCkSM77KpKe1RmaZRy1fYo1dDSM0HUq0OX1qviJIAQ
+	 RXqgH7H7c2oZcyokeM6+Mvaq/tnHAYCeyCJE0Mz++DJUID0gpiB6ctoCMB+jFqYdUO
+	 reHWgobXL05oRMuw3HPE/4zyfN9jUqhrI/v0UJp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sandipan Das <sandipan.das@amd.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/114] Bluetooth: btmtk: Add MODULE_FIRMWARE() for MT7922
+Subject: [PATCH 6.8 103/143] perf/x86/amd/lbr: Discard erroneous branch entries
 Date: Thu, 11 Apr 2024 11:56:11 +0200
-Message-ID: <20240411095418.212187438@linuxfoundation.org>
+Message-ID: <20240411095424.008480203@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Sandipan Das <sandipan.das@amd.com>
 
-[ Upstream commit 3e465a07cdf444140f16bc57025c23fcafdde997 ]
+[ Upstream commit 29297ffffb0bf388778bd4b581a43cee6929ae65 ]
 
-Since dracut refers to the module info for defining the required
-firmware files and btmtk driver doesn't provide the firmware info for
-MT7922, the generate initrd misses the firmware, resulting in the
-broken Bluetooth.
+The Revision Guide for AMD Family 19h Model 10-1Fh processors declares
+Erratum 1452 which states that non-branch entries may erroneously be
+recorded in the Last Branch Record (LBR) stack with the valid and
+spec bits set.
 
-This patch simply adds the MODULE_FIRMWARE() for the missing entry
-for covering that.
+Such entries can be recognized by inspecting bit 61 of the corresponding
+LastBranchStackToIp register. This bit is currently reserved but if found
+to be set, the associated branch entry should be discarded.
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1214133
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://bugzilla.kernel.org/attachment.cgi?id=305518
+Link: https://lore.kernel.org/r/3ad2aa305f7396d41a40e3f054f740d464b16b7f.1706526029.git.sandipan.das@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btmtk.c | 1 +
- drivers/bluetooth/btmtk.h | 1 +
- 2 files changed, 2 insertions(+)
+ arch/x86/events/amd/lbr.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
-index 285418dbb43f5..ac8ebccd35075 100644
---- a/drivers/bluetooth/btmtk.c
-+++ b/drivers/bluetooth/btmtk.c
-@@ -422,5 +422,6 @@ MODULE_LICENSE("GPL");
- MODULE_FIRMWARE(FIRMWARE_MT7622);
- MODULE_FIRMWARE(FIRMWARE_MT7663);
- MODULE_FIRMWARE(FIRMWARE_MT7668);
-+MODULE_FIRMWARE(FIRMWARE_MT7922);
- MODULE_FIRMWARE(FIRMWARE_MT7961);
- MODULE_FIRMWARE(FIRMWARE_MT7925);
-diff --git a/drivers/bluetooth/btmtk.h b/drivers/bluetooth/btmtk.h
-index 56f5502baadf9..cbcdb99a22e6d 100644
---- a/drivers/bluetooth/btmtk.h
-+++ b/drivers/bluetooth/btmtk.h
-@@ -4,6 +4,7 @@
- #define FIRMWARE_MT7622		"mediatek/mt7622pr2h.bin"
- #define FIRMWARE_MT7663		"mediatek/mt7663pr2h.bin"
- #define FIRMWARE_MT7668		"mediatek/mt7668pr2h.bin"
-+#define FIRMWARE_MT7922		"mediatek/BT_RAM_CODE_MT7922_1_1_hdr.bin"
- #define FIRMWARE_MT7961		"mediatek/BT_RAM_CODE_MT7961_1_2_hdr.bin"
- #define FIRMWARE_MT7925		"mediatek/mt7925/BT_RAM_CODE_MT7925_1_1_hdr.bin"
+diff --git a/arch/x86/events/amd/lbr.c b/arch/x86/events/amd/lbr.c
+index eb31f850841a8..4a1e600314d5d 100644
+--- a/arch/x86/events/amd/lbr.c
++++ b/arch/x86/events/amd/lbr.c
+@@ -173,9 +173,11 @@ void amd_pmu_lbr_read(void)
  
+ 		/*
+ 		 * Check if a branch has been logged; if valid = 0, spec = 0
+-		 * then no branch was recorded
++		 * then no branch was recorded; if reserved = 1 then an
++		 * erroneous branch was recorded (see Erratum 1452)
+ 		 */
+-		if (!entry.to.split.valid && !entry.to.split.spec)
++		if ((!entry.to.split.valid && !entry.to.split.spec) ||
++		    entry.to.split.reserved)
+ 			continue;
+ 
+ 		perf_clear_branch_entry_bitfields(br + out);
 -- 
 2.43.0
 
