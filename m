@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-39046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF3708A119E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0DEF8A114F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 694A4281B66
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80A081F27244
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23B01465BE;
-	Thu, 11 Apr 2024 10:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56328145B05;
+	Thu, 11 Apr 2024 10:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0AKjjUG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfLdPm4L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FA5145B26;
-	Thu, 11 Apr 2024 10:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C9A142624;
+	Thu, 11 Apr 2024 10:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832357; cv=none; b=FjbDroDPRwB1MAgk0HtSHLyE7GGI3Yuvpe+aNCq+U+3hVtUJKVFbcJ0NI9K1iAkAzEeR6CoM8mj4S5qmn4+Degt6fWLBrl2J4eUUXDGA2pg7mASG7eNnULQJPExHjaQRCyrrGOxD6gW1Bf/uJpa34wFapTffFH3ieVVtOz60fXc=
+	t=1712832163; cv=none; b=gBITu14E+L/DQfqVcS3GPRalLvkPn08MF7nr6XiESyVFbIWuQPkOJHjNUxrXmpxiENe8LIMBowLXMkxsNlkh4TsFWl6pL4GjLeiXUznx87NRZmy8ZbjLjEmwTFqPQE21BboonCRVvBmlZTKmoeEl7HmicTGI8ggkr5r0FXKDWrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832357; c=relaxed/simple;
-	bh=CvlCilbwdSlwvtXWSPwDRBP6qyEWh6ykVFr0cQvBMoY=;
+	s=arc-20240116; t=1712832163; c=relaxed/simple;
+	bh=UTgfpIma/Bxd8SNRyDpP5x2WABspy2pTry2ZpNBIBcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O30OhmEdw77+ssiyB36ay/1M+Qtda4ayRTuw79fZqW2JD62MEAcFhQayLcfXYmsbjG7oe3edhnUmF6PJfjZvLvM2/4kK9vxDwF9q0mO1lcDfXFpXAofYVDcCr2Jm634Rn8JmWggAN5CZPrmzqaprFtSidUUuNDuw/TeRxakZovg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0AKjjUG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02E4C433C7;
-	Thu, 11 Apr 2024 10:45:56 +0000 (UTC)
+	 MIME-Version; b=JvMkgEvfZoqMWfTL+CdAku3bqKZu22h362x5304phFo5ZL+b5aR74nsLobLpXeSSBLd8+w/0agKlU78dXTsypGuionCJyjiOxWrcIDLiXnugAridMgwuLutWvlHg3wGxfU1C2FjN8Dyx2SLjmYGmuW5GjAZDsAXrgcfwKnloagU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfLdPm4L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EF6C433F1;
+	Thu, 11 Apr 2024 10:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832357;
-	bh=CvlCilbwdSlwvtXWSPwDRBP6qyEWh6ykVFr0cQvBMoY=;
+	s=korg; t=1712832162;
+	bh=UTgfpIma/Bxd8SNRyDpP5x2WABspy2pTry2ZpNBIBcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0AKjjUGPlhL1Mk3pKK5Uu+9zweCMZ3HYJYUqX9ZzpvnArAKZU5R5/G42Giy0nv0y
-	 0HloB0O2vQH80kEPGpy7ou860TLpLpEFM5Ba0pkHLUUQfCyLROITmOTnyKpJAYwYOg
-	 FFOUJ72cKNieHkD16Mt8NLKjIJcxWICyuhKPjvj8=
+	b=wfLdPm4L4cN4/bfpxVM6wpXbGt8Lmc7hcAp/3F/PSDttP4VS9U1WFB0SNl4/mD1nl
+	 tyXbT7w7AzgQeidPuXtVf9gMI9xXgwcz03oaqVk8VB557zf4JZRJKHUBcYcnic2qg9
+	 ZsfrBc51rP+a0zMiI3qoqr7B+fVAAxs/cZGCnXp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>,
-	Roman Stratiienko <r.stratiienko@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Dhruva Gole <d-gole@ti.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 21/83] cpufreq: Dont unregister cpufreq cooling on CPU hotplug
+Subject: [PATCH 5.10 250/294] ionic: set adminq irq affinity
 Date: Thu, 11 Apr 2024 11:56:53 +0200
-Message-ID: <20240411095413.317205916@linuxfoundation.org>
+Message-ID: <20240411095443.095629549@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit c4d61a529db788d2e52654f5b02c8d1de4952c5b ]
+[ Upstream commit c699f35d658f3c21b69ed24e64b2ea26381e941d ]
 
-Offlining a CPU and bringing it back online is a common operation and it
-happens frequently during system suspend/resume, where the non-boot CPUs
-are hotplugged out during suspend and brought back at resume.
+We claim to have the AdminQ on our irq0 and thus cpu id 0,
+but we need to be sure we set the affinity hint to try to
+keep it there.
 
-The cpufreq core already tries to make this path as fast as possible as
-the changes are only temporary in nature and full cleanup of resources
-isn't required in this case. For example the drivers can implement
-online()/offline() callbacks to avoid a lot of tear down of resources.
-
-On similar lines, there is no need to unregister the cpufreq cooling
-device during suspend / resume, but only while the policy is getting
-removed.
-
-Moreover, unregistering the cpufreq cooling device is resulting in an
-unwanted outcome, where the system suspend is eventually aborted in the
-process.  Currently, during system suspend the cpufreq core unregisters
-the cooling device, which in turn removes a kobject using device_del()
-and that generates a notification to the userspace via uevent broadcast.
-This causes system suspend to abort in some setups.
-
-This was also earlier reported (indirectly) by Roman [1]. Maybe there is
-another way around to fixing that problem properly, but this change
-makes sense anyways.
-
-Move the registering and unregistering of the cooling device to policy
-creation and removal times onlyy.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218521
-Reported-by: Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
-Reported-by: Roman Stratiienko <r.stratiienko@gmail.com>
-Link: https://patchwork.kernel.org/project/linux-pm/patch/20220710164026.541466-1-r.stratiienko@gmail.com/ [1]
-Tested-by: Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index c8912756fc06d..91efa23e0e8f3 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -1525,7 +1525,8 @@ static int cpufreq_online(unsigned int cpu)
- 	if (cpufreq_driver->ready)
- 		cpufreq_driver->ready(policy);
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index 49c28134ac2cc..a37ca4b1e5665 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -2708,9 +2708,12 @@ static int ionic_lif_adminq_init(struct ionic_lif *lif)
  
--	if (cpufreq_thermal_control_enabled(cpufreq_driver))
-+	/* Register cpufreq cooling only for a new policy */
-+	if (new_policy && cpufreq_thermal_control_enabled(cpufreq_driver))
- 		policy->cdev = of_cpufreq_cooling_register(policy);
+ 	napi_enable(&qcq->napi);
  
- 	pr_debug("initialization complete\n");
-@@ -1609,11 +1610,6 @@ static void __cpufreq_offline(unsigned int cpu, struct cpufreq_policy *policy)
- 	else
- 		policy->last_policy = policy->policy;
- 
--	if (cpufreq_thermal_control_enabled(cpufreq_driver)) {
--		cpufreq_cooling_unregister(policy->cdev);
--		policy->cdev = NULL;
--	}
--
- 	if (has_target())
- 		cpufreq_exit_governor(policy);
- 
-@@ -1674,6 +1670,15 @@ static void cpufreq_remove_dev(struct device *dev, struct subsys_interface *sif)
- 		return;
- 	}
- 
-+	/*
-+	 * Unregister cpufreq cooling once all the CPUs of the policy are
-+	 * removed.
-+	 */
-+	if (cpufreq_thermal_control_enabled(cpufreq_driver)) {
-+		cpufreq_cooling_unregister(policy->cdev);
-+		policy->cdev = NULL;
+-	if (qcq->flags & IONIC_QCQ_F_INTR)
++	if (qcq->flags & IONIC_QCQ_F_INTR) {
++		irq_set_affinity_hint(qcq->intr.vector,
++				      &qcq->intr.affinity_mask);
+ 		ionic_intr_mask(idev->intr_ctrl, qcq->intr.index,
+ 				IONIC_INTR_MASK_CLEAR);
 +	}
-+
- 	/* We did light-weight exit earlier, do full tear down now */
- 	if (cpufreq_driver->offline)
- 		cpufreq_driver->exit(policy);
+ 
+ 	qcq->flags |= IONIC_QCQ_F_INITED;
+ 
 -- 
 2.43.0
 
