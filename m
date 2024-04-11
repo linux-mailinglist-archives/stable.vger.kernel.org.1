@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-38511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C858A0EFB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:19:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C480A8A0D5C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A638F1C21A47
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:19:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63A571F21EC6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0500E146582;
-	Thu, 11 Apr 2024 10:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9D8145B16;
+	Thu, 11 Apr 2024 10:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpYeyoy6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGIhRW8i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F71140E3D;
-	Thu, 11 Apr 2024 10:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4AA145B05;
+	Thu, 11 Apr 2024 10:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830788; cv=none; b=HHVknV526rzVhnHhY9nLjwFiFyz+Au2QC/EVkFx+9xcRZzjFprRX+MRxgrOqczbCEcjeqTP1eA/f/dDM0lpz3z1/fW8MFYc4Lws6b70iQ5rQ9HTp6FZZTult/HUr8/GzbVSTeVh1cGDkORw3CiwNSlZ1IOPnRyLSa8Yv3rskvxk=
+	t=1712829788; cv=none; b=nQcjRS7KsiFeBYBQWgZdJqk6ssKY0JyR2P9yru6yLGMan5a500z96p2sBxVu0w54eSVVgIO0/7O+A7Sx2Y5yKe03Fzp6ibACjOCNPE7t3QofXf1+KNeS/sXwW08rgkfMRQXeHeLN5dv6OuHr7ZoICWRdzVcWWKlD1+bZ4+QsjUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830788; c=relaxed/simple;
-	bh=1mg21Uzz9+zqBYXkpHxnKRaR0eYb/3uY2cwhdzzdKDM=;
+	s=arc-20240116; t=1712829788; c=relaxed/simple;
+	bh=MGj5TR4E1pTqcowLUvx3fQAzTfkx+hn4GfE8ncuXnNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cBY0Hm9VJs5QVwm4CA8PfRn7YnkYjVs2WzFmKSVTyut0Nl6ajBYCfsPRk8TElim54TyrUG0voDugVw5avqql/7hFoaNF4DhfAxx3jqfuis1rmW5ViN92JD4Ug+3hjVA/tbsjkAHGgqr2wKOWZVCrnwHujSpP3tHo11LY85y3ZiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpYeyoy6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D8CC433F1;
-	Thu, 11 Apr 2024 10:19:48 +0000 (UTC)
+	 MIME-Version; b=nqbStiPOjCCRl6F1hWtmGp/U6h56Mn04v4ryRb5PPXUDNFdE+AiR6fla0dpFzv4AuILZNnpM2QwaDwaTbFtD/VfcdU7zAlDsA8M6gj+7bd+bFGJxPWH1yIdQIN2lpd+/Zat6woIXWT8cGTM2IPIQtPC4ccS/0q3Zz5e3/X6QX3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGIhRW8i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0651C433F1;
+	Thu, 11 Apr 2024 10:03:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830788;
-	bh=1mg21Uzz9+zqBYXkpHxnKRaR0eYb/3uY2cwhdzzdKDM=;
+	s=korg; t=1712829788;
+	bh=MGj5TR4E1pTqcowLUvx3fQAzTfkx+hn4GfE8ncuXnNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rpYeyoy6hVFOEQUBYVQdSYCHXbehbT/ScDaQw4IWYQV/rhUSEbEVzSD3EIR/RH5MJ
-	 M0Kkm/zKaVcJtnyYOZhXn5N6dZpSZ4x+n8c8zrrFYQcNwXTJjDgJGMohsYvbBk0R2X
-	 J7qOPQoRdUEcwd4R8Bk9QInEdsxSra7qMDowlJGs=
+	b=PGIhRW8i9RqI6DXuz59BWdRQ3HTMKV+NoV1db0nuqY6OXguu5v8GpxMkbSc3fLM7w
+	 FE8T1gK7OnHZh24JeTTFVaukMsaPKb0UVb+hFaPSjG1Yz1iBHcv51+spUmnHZE1wVF
+	 hVekU+tNpi10pCs5Or6yAbf+ExCPRxDu2zaft2Sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c645abf505ed21f931b5@syzkaller.appspotmail.com,
-	Bart Van Assche <bvanassche@acm.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.4 119/215] scsi: core: Fix unremoved procfs host directory regression
+	Alan Stern <stern@rowland.harvard.edu>,
+	yuan linyu <yuanlinyu@hihonor.com>
+Subject: [PATCH 4.19 105/175] usb: udc: remove warning when queue disabled ep
 Date: Thu, 11 Apr 2024 11:55:28 +0200
-Message-ID: <20240411095428.479769729@linuxfoundation.org>
+Message-ID: <20240411095422.730357804@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: yuan linyu <yuanlinyu@hihonor.com>
 
-commit f23a4d6e07570826fe95023ca1aa96a011fa9f84 upstream.
+commit 2a587a035214fa1b5ef598aea0b81848c5b72e5e upstream.
 
-Commit fc663711b944 ("scsi: core: Remove the /proc/scsi/${proc_name}
-directory earlier") fixed a bug related to modules loading/unloading, by
-adding a call to scsi_proc_hostdir_rm() on scsi_remove_host(). But that led
-to a potential duplicate call to the hostdir_rm() routine, since it's also
-called from scsi_host_dev_release(). That triggered a regression report,
-which was then fixed by commit be03df3d4bfe ("scsi: core: Fix a procfs host
-directory removal regression"). The fix just dropped the hostdir_rm() call
-from dev_release().
+It is possible trigger below warning message from mass storage function,
 
-But it happens that this proc directory is created on scsi_host_alloc(),
-and that function "pairs" with scsi_host_dev_release(), while
-scsi_remove_host() pairs with scsi_add_host(). In other words, it seems the
-reason for removing the proc directory on dev_release() was meant to cover
-cases in which a SCSI host structure was allocated, but the call to
-scsi_add_host() didn't happen. And that pattern happens to exist in some
-error paths, for example.
+WARNING: CPU: 6 PID: 3839 at drivers/usb/gadget/udc/core.c:294 usb_ep_queue+0x7c/0x104
+pc : usb_ep_queue+0x7c/0x104
+lr : fsg_main_thread+0x494/0x1b3c
 
-Syzkaller causes that by using USB raw gadget device, error'ing on
-usb-storage driver, at usb_stor_probe2(). By checking that path, we can see
-that the BadDevice label leads to a scsi_host_put() after a SCSI host
-allocation, but there's no call to scsi_add_host() in such path. That leads
-to messages like this in dmesg (and a leak of the SCSI host proc
-structure):
+Root cause is mass storage function try to queue request from main thread,
+but other thread may already disable ep when function disable.
 
-usb-storage 4-1:87.51: USB Mass Storage device detected
-proc_dir_entry 'scsi/usb-storage' already registered
-WARNING: CPU: 1 PID: 3519 at fs/proc/generic.c:377 proc_register+0x347/0x4e0 fs/proc/generic.c:376
+As there is no function failure in the driver, in order to avoid effort
+to fix warning, change WARN_ON_ONCE() in usb_ep_queue() to pr_debug().
 
-The proper fix seems to still call scsi_proc_hostdir_rm() on dev_release(),
-but guard that with the state check for SHOST_CREATED; there is even a
-comment in scsi_host_dev_release() detailing that: such conditional is
-meant for cases where the SCSI host was allocated but there was no calls to
-{add,remove}_host(), like the usb-storage case.
-
-This is what we propose here and with that, the error path of usb-storage
-does not trigger the warning anymore.
-
-Reported-by: syzbot+c645abf505ed21f931b5@syzkaller.appspotmail.com
-Fixes: be03df3d4bfe ("scsi: core: Fix a procfs host directory removal regression")
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
 Cc: stable@vger.kernel.org
-Cc: Bart Van Assche <bvanassche@acm.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Link: https://lore.kernel.org/r/20240313113006.2834799-1-gpiccoli@igalia.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: yuan linyu <yuanlinyu@hihonor.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20240315020144.2715575-1-yuanlinyu@hihonor.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/hosts.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/udc/core.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/hosts.c
-+++ b/drivers/scsi/hosts.c
-@@ -331,12 +331,13 @@ static void scsi_host_dev_release(struct
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -273,7 +273,9 @@ int usb_ep_queue(struct usb_ep *ep,
+ {
+ 	int ret = 0;
  
- 	if (shost->shost_state == SHOST_CREATED) {
- 		/*
--		 * Free the shost_dev device name here if scsi_host_alloc()
--		 * and scsi_host_put() have been called but neither
-+		 * Free the shost_dev device name and remove the proc host dir
-+		 * here if scsi_host_{alloc,put}() have been called but neither
- 		 * scsi_host_add() nor scsi_host_remove() has been called.
- 		 * This avoids that the memory allocated for the shost_dev
--		 * name is leaked.
-+		 * name as well as the proc dir structure are leaked.
- 		 */
-+		scsi_proc_hostdir_rm(shost->hostt);
- 		kfree(dev_name(&shost->shost_dev));
+-	if (WARN_ON_ONCE(!ep->enabled && ep->address)) {
++	if (!ep->enabled && ep->address) {
++		pr_debug("USB gadget: queue request to disabled ep 0x%x (%s)\n",
++				 ep->address, ep->name);
+ 		ret = -ESHUTDOWN;
+ 		goto out;
  	}
- 
 
 
 
