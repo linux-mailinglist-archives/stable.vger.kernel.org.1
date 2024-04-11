@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-39005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F398A116F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C57F8A11EE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9602E1C212E1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 427F71F25D05
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C331474BE;
-	Thu, 11 Apr 2024 10:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25B6146A70;
+	Thu, 11 Apr 2024 10:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdbASPby"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubtWRCBF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506481474B9;
-	Thu, 11 Apr 2024 10:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A100C64CC0;
+	Thu, 11 Apr 2024 10:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832236; cv=none; b=DfQrfGZk6Q/9B6DKo90vjG6XSXhUEpbxvJVvErZZwKXlOwPfs9vKRFW+SxdGZqtIsVc2NRTgwZ4veoeaB4rjd9NBTdMMlicfTZvwbpAzZ+ZirfYvgXO0Ax3P0w3BlLTyhQYMiHbZhrck4CKVMmV08grdt+FLWfR4kwcjqUuGAC8=
+	t=1712832525; cv=none; b=Xs0aW44C+ZTENuTTeMPaISQiXQSjgELm5qORcH+xWJTalOES8R6osQhxZGdscvHtSofugUUK+A3ichhWiIP0R36GuzOt64cepTG0lnABHOP6/Q6S7hWUmGsYIFuMHP9gkEBfnL3zMIciusg8+TeNRHonJU7XEBEO3z6HuEVvAzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832236; c=relaxed/simple;
-	bh=8xuUXfZtYRmxIyn9AkXPwPAcl8/b3X+1SJpKbs+bPyk=;
+	s=arc-20240116; t=1712832525; c=relaxed/simple;
+	bh=4/MLqR1ULrSjc9ISx+Ch1b5u3fd2cURrR110pgpNEFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cu8ozGeq0i4bXLFjRGI/x+IdZQvhzK7sqfQOFp/94RfvbjSPwC4dRK+/XkT0W/m4wF7aLrNJNhtEHVMfwfzVkhvCphyBWP/qcpI8OAAe+/xBUcy8nsDWoC9t4Ph/7bqcv7r1I65ZzHOBilrZPtMaa5GwTgnA7lnVEA+2LW44Dtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdbASPby; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF10C433F1;
-	Thu, 11 Apr 2024 10:43:55 +0000 (UTC)
+	 MIME-Version; b=YGQM1gwEoVghOUuYu60ZRx9kh/Mzh4Gw/bphK9A+6KwsSrypQWdSg/wDASVjO2J5MI4EaWoSaePGprtzM2cB7sPsalBOouaAWiakjA7jbI3SaEUwn6w3x/TslPPnxTI5QNFPy8g9SKi1MgMpqa+NkHHzYuq9HsfD7eC1YUfOJLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubtWRCBF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26E2BC433F1;
+	Thu, 11 Apr 2024 10:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832236;
-	bh=8xuUXfZtYRmxIyn9AkXPwPAcl8/b3X+1SJpKbs+bPyk=;
+	s=korg; t=1712832525;
+	bh=4/MLqR1ULrSjc9ISx+Ch1b5u3fd2cURrR110pgpNEFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PdbASPby8yR+mmWZBw70e/9PNEw87HqIxzP4POZDGAlguHzPuY9mr8TqHAmfWQrW4
-	 Kpj41ZUjgIGwwPNg7HcqH1jxgrXk0oIHylFunqbkv3kSeia7UPTaJpcKa6F/YhanPD
-	 P78pBIv/ekT+wCBcIJJZ8rMZnxuDelbIHCd+7Ok4=
+	b=ubtWRCBF51D8CShAIy8WUtUN4rMjEs26ep0jpjA8EETX4tPLaCe2aOQ5CCbhs/Arx
+	 tSE+7TrITi11frWKLcl1CDg2JeZdetNxMsU5dQPXtLsCjngpv/YrlRUN6Ha5sGXaRO
+	 Rfa5FjBmwCh6xFdOrZtE7ZUDNtbY3uFJGMtYJQYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Drake <drake@endlessos.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jian-Hong Pan <jhp@endlessos.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 268/294] Revert "ACPI: PM: Block ASUS B1400CEAE from suspend to idle by default"
+Subject: [PATCH 6.1 39/83] media: sta2x11: fix irq handler cast
 Date: Thu, 11 Apr 2024 11:57:11 +0200
-Message-ID: <20240411095443.621475180@linuxfoundation.org>
+Message-ID: <20240411095413.859234433@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Drake <drake@endlessos.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit cb98555fcd8eee98c30165537c7e394f3a66e809 ]
+[ Upstream commit 3de49ae81c3a0f83a554ecbce4c08e019f30168e ]
 
-This reverts commit d52848620de00cde4a3a5df908e231b8c8868250, which was
-originally put in place to work around a s2idle failure on this platform
-where the NVMe device was inaccessible upon resume.
+clang-16 warns about casting incompatible function pointers:
 
-After extended testing, we found that the firmware's implementation of S3
-is buggy and intermittently fails to wake up the system. We need to revert
-to s2idle mode.
+drivers/media/pci/sta2x11/sta2x11_vip.c:1057:6: error: cast from 'irqreturn_t (*)(int, struct sta2x11_vip *)' (aka 'enum irqreturn (*)(int, struct sta2x11_vip *)') to 'irq_handler_t' (aka 'enum irqreturn (*)(int, void *)') converts to incompatible function type [-Werror,-Wcast-function-type-strict]
 
-The NVMe issue has now been solved more precisely in the commit titled
-"PCI: Disable D3cold on Asus B1400 PCI-NVMe bridge"
+Change the prototype of the irq handler to the regular version with a
+local variable to adjust the argument type.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=215742
-Link: https://lore.kernel.org/r/20240228075316.7404-2-drake@endlessos.org
-Signed-off-by: Daniel Drake <drake@endlessos.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Jian-Hong Pan <jhp@endlessos.org>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[hverkuil: update argument documentation]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/sleep.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ drivers/media/pci/sta2x11/sta2x11_vip.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-index 097a5b5f46ab0..e79c004ca0b24 100644
---- a/drivers/acpi/sleep.c
-+++ b/drivers/acpi/sleep.c
-@@ -385,18 +385,6 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "20GGA00L00"),
- 		},
- 	},
--	/*
--	 * ASUS B1400CEAE hangs on resume from suspend (see
--	 * https://bugzilla.kernel.org/show_bug.cgi?id=215742).
--	 */
--	{
--	.callback = init_default_s3,
--	.ident = "ASUS B1400CEAE",
--	.matches = {
--		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--		DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK B1400CEAE"),
--		},
--	},
- 	{},
- };
+diff --git a/drivers/media/pci/sta2x11/sta2x11_vip.c b/drivers/media/pci/sta2x11/sta2x11_vip.c
+index 8535e49a4c4f9..1f7ab56de4a00 100644
+--- a/drivers/media/pci/sta2x11/sta2x11_vip.c
++++ b/drivers/media/pci/sta2x11/sta2x11_vip.c
+@@ -756,7 +756,7 @@ static const struct video_device video_dev_template = {
+ /**
+  * vip_irq - interrupt routine
+  * @irq: Number of interrupt ( not used, correct number is assumed )
+- * @vip: local data structure containing all information
++ * @data: local data structure containing all information
+  *
+  * check for both frame interrupts set ( top and bottom ).
+  * check FIFO overflow, but limit number of log messages after open.
+@@ -766,8 +766,9 @@ static const struct video_device video_dev_template = {
+  *
+  * IRQ_HANDLED, interrupt done.
+  */
+-static irqreturn_t vip_irq(int irq, struct sta2x11_vip *vip)
++static irqreturn_t vip_irq(int irq, void *data)
+ {
++	struct sta2x11_vip *vip = data;
+ 	unsigned int status;
  
+ 	status = reg_read(vip, DVP_ITS);
+@@ -1049,9 +1050,7 @@ static int sta2x11_vip_init_one(struct pci_dev *pdev,
+ 
+ 	spin_lock_init(&vip->slock);
+ 
+-	ret = request_irq(pdev->irq,
+-			  (irq_handler_t) vip_irq,
+-			  IRQF_SHARED, KBUILD_MODNAME, vip);
++	ret = request_irq(pdev->irq, vip_irq, IRQF_SHARED, KBUILD_MODNAME, vip);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "request_irq failed\n");
+ 		ret = -ENODEV;
 -- 
 2.43.0
 
