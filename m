@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76A268A0F1F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:21:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E03F8A1139
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C5851F25E1A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:21:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F238E1F2D028
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85904146A77;
-	Thu, 11 Apr 2024 10:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E97146A8D;
+	Thu, 11 Apr 2024 10:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vj1TEZ/M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7qyi9y5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443F4145FF0;
-	Thu, 11 Apr 2024 10:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D9F145323;
+	Thu, 11 Apr 2024 10:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830868; cv=none; b=UlMebL8bwQDGGLSmK6hC58aKnbKilf/uqxezczTh4+oMCeTfJAJW7NuPk4tMnCIIPIxn8jqbL1BDoji077O5r7mTaN6u1dCD2kcaiBe/hiTA90e2De4tPT4PNR/NAkkGmr5HWCu9OyWx2vWaWVEPXG/ZK51XvvAqrNdvUHTvr1E=
+	t=1712832101; cv=none; b=W5Vxj+fCurweUzF+v3QzGXBRUdSzbahvG/mWRjL/mivhuI9jD7JbGLNINpswB8qlK22bBReYguPWi77hRQs+KJOXAXw1Nlgg7yxzPnsbZFlWCbhA9hwT5L7GZSdk8SRhJmJIo1X3RMUMe/A4f2p672/J3lyv4hAaKldlOaN05mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830868; c=relaxed/simple;
-	bh=rvU0X+qAb9wgG1+a3Hs9zW22W+TmgWV+2iDZ5LDQdWo=;
+	s=arc-20240116; t=1712832101; c=relaxed/simple;
+	bh=WlEAcdx4dAp6Xfnqk2dX70F0g0b4N5ykyYyKlD9kdkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/nDAG//qx4WEAmw/XjCxNzO5EEim4rAso5zoL9zxp4Riyq3TPqrFFe8rw8nS2CmjTf181kpmV/k3kwNEOvapt7lFOJMo67lPnvJ54TdqbUUMo2IbTWHUEJQQN7lA2YRfPye4hEed1H4hNIITF4ibr8BsaFS2DwCNJ+etAaSkqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vj1TEZ/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD29C43390;
-	Thu, 11 Apr 2024 10:21:07 +0000 (UTC)
+	 MIME-Version; b=Vds3MCQAYwMq3IRWFzI1WP34UmL7JrUkAiAmAwjusAo65zfqP+mEByJVhsH4zYosueq+WloMJzWnmGh/OesRToffiXVdIo3RTxwZuhQSsh+VFc/8ST9Sx7S3TPjG6zXkzpDZ98/MPmh1ryPVGyon5O9QNrTLlI2SHnUkMEaHuOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7qyi9y5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D171C433C7;
+	Thu, 11 Apr 2024 10:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830868;
-	bh=rvU0X+qAb9wgG1+a3Hs9zW22W+TmgWV+2iDZ5LDQdWo=;
+	s=korg; t=1712832101;
+	bh=WlEAcdx4dAp6Xfnqk2dX70F0g0b4N5ykyYyKlD9kdkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vj1TEZ/MTmpg/FuoWxc2zqCsRCvQ+d8En3daD7qSZvw702YKq779+mQNg3Ds52xNr
-	 Txm3d3ZIoZ6EY0U+WAavQwwcnAt/8sejDHQZlr8IiMgAwb1/BP5zyhlSft00Vv2reI
-	 eRpxh9dkfQllXxrXdrsqdrD5wJjkbNQrjvBflnFs=
+	b=d7qyi9y53njQTEu0dmWLqE1ElRV18TEWaNeZisnQaIa2Cwge5pvxcPXKn0zF963J7
+	 /ynN7CsGXeo3XFXvSMRa3vCK8ejU2hAQ52EEypiHrB3mwUnut1l1iezAQbj8T7vDAQ
+	 wRcewmrpXx+EIVBqfwLHYI/dOq3mk26rtxFdOVr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Molnar <mingo@kernel.org>,
-	Russ Anderson <rja@hpe.com>,
-	Steve Wahl <steve.wahl@hpe.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 5.4 144/215] Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."
+	Sandipan Das <sandipan.das@amd.com>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 5.10 190/294] x86/cpufeatures: Add new word for scattered features
 Date: Thu, 11 Apr 2024 11:55:53 +0200
-Message-ID: <20240411095429.218977420@linuxfoundation.org>
+Message-ID: <20240411095441.335387559@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ingo Molnar <mingo@kernel.org>
+From: Sandipan Das <sandipan.das@amd.com>
 
-commit c567f2948f57bdc03ed03403ae0234085f376b7d upstream.
+commit 7f274e609f3d5f45c22b1dd59053f6764458b492 upstream.
 
-This reverts commit d794734c9bbfe22f86686dc2909c25f5ffe1a572.
+Add a new word for scattered features because all free bits among the
+existing Linux-defined auxiliary flags have been exhausted.
 
-While the original change tries to fix a bug, it also unintentionally broke
-existing systems, see the regressions reported at:
-
-  https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
-
-Since d794734c9bbf was also marked for -stable, let's back it out before
-causing more damage.
-
-Note that due to another upstream change the revert was not 100% automatic:
-
-  0a845e0f6348 mm/treewide: replace pud_large() with pud_leaf()
-
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: <stable@vger.kernel.org>
-Cc: Russ Anderson <rja@hpe.com>
-Cc: Steve Wahl <steve.wahl@hpe.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
-Fixes: d794734c9bbf ("x86/mm/ident_map: Use gbpages only where full GB page should be mapped.")
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Link: https://lore.kernel.org/r/8380d2a0da469a1f0ad75b8954a79fb689599ff6.1711091584.git.sandipan.das@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/ident_map.c |   23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ arch/x86/include/asm/cpufeature.h        |    6 ++++--
+ arch/x86/include/asm/cpufeatures.h       |    2 +-
+ arch/x86/include/asm/disabled-features.h |    3 ++-
+ arch/x86/include/asm/required-features.h |    3 ++-
+ 4 files changed, 9 insertions(+), 5 deletions(-)
 
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -26,31 +26,18 @@ static int ident_pud_init(struct x86_map
- 	for (; addr < end; addr = next) {
- 		pud_t *pud = pud_page + pud_index(addr);
- 		pmd_t *pmd;
--		bool use_gbpage;
+--- a/arch/x86/include/asm/cpufeature.h
++++ b/arch/x86/include/asm/cpufeature.h
+@@ -93,8 +93,9 @@ extern const char * const x86_bug_flags[
+ 	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 18, feature_bit) ||	\
+ 	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 19, feature_bit) ||	\
+ 	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 20, feature_bit) ||	\
++	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 21, feature_bit) ||	\
+ 	   REQUIRED_MASK_CHECK					  ||	\
+-	   BUILD_BUG_ON_ZERO(NCAPINTS != 21))
++	   BUILD_BUG_ON_ZERO(NCAPINTS != 22))
  
- 		next = (addr & PUD_MASK) + PUD_SIZE;
- 		if (next > end)
- 			next = end;
+ #define DISABLED_MASK_BIT_SET(feature_bit)				\
+ 	 ( CHECK_BIT_IN_MASK_WORD(DISABLED_MASK,  0, feature_bit) ||	\
+@@ -118,8 +119,9 @@ extern const char * const x86_bug_flags[
+ 	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 18, feature_bit) ||	\
+ 	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 19, feature_bit) ||	\
+ 	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 20, feature_bit) ||	\
++	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 21, feature_bit) ||	\
+ 	   DISABLED_MASK_CHECK					  ||	\
+-	   BUILD_BUG_ON_ZERO(NCAPINTS != 21))
++	   BUILD_BUG_ON_ZERO(NCAPINTS != 22))
  
--		/* if this is already a gbpage, this portion is already mapped */
--		if (pud_large(*pud))
--			continue;
--
--		/* Is using a gbpage allowed? */
--		use_gbpage = info->direct_gbpages;
--
--		/* Don't use gbpage if it maps more than the requested region. */
--		/* at the begining: */
--		use_gbpage &= ((addr & ~PUD_MASK) == 0);
--		/* ... or at the end: */
--		use_gbpage &= ((next & ~PUD_MASK) == 0);
--
--		/* Never overwrite existing mappings */
--		use_gbpage &= !pud_present(*pud);
--
--		if (use_gbpage) {
-+		if (info->direct_gbpages) {
- 			pud_t pudval;
+ #define cpu_has(c, bit)							\
+ 	(__builtin_constant_p(bit) && REQUIRED_MASK_BIT_SET(bit) ? 1 :	\
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -13,7 +13,7 @@
+ /*
+  * Defines x86 CPU feature bits
+  */
+-#define NCAPINTS			21	   /* N 32-bit words worth of info */
++#define NCAPINTS			22	   /* N 32-bit words worth of info */
+ #define NBUGINTS			2	   /* N 32-bit bug flags */
  
-+			if (pud_present(*pud))
-+				continue;
-+
-+			addr &= PUD_MASK;
- 			pudval = __pud((addr - info->offset) | info->page_flag);
- 			set_pud(pud, pudval);
- 			continue;
+ /*
+--- a/arch/x86/include/asm/disabled-features.h
++++ b/arch/x86/include/asm/disabled-features.h
+@@ -103,6 +103,7 @@
+ #define DISABLED_MASK18	0
+ #define DISABLED_MASK19	0
+ #define DISABLED_MASK20	0
+-#define DISABLED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 21)
++#define DISABLED_MASK21	0
++#define DISABLED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 22)
+ 
+ #endif /* _ASM_X86_DISABLED_FEATURES_H */
+--- a/arch/x86/include/asm/required-features.h
++++ b/arch/x86/include/asm/required-features.h
+@@ -103,6 +103,7 @@
+ #define REQUIRED_MASK18	0
+ #define REQUIRED_MASK19	0
+ #define REQUIRED_MASK20	0
+-#define REQUIRED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 21)
++#define REQUIRED_MASK21	0
++#define REQUIRED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 22)
+ 
+ #endif /* _ASM_X86_REQUIRED_FEATURES_H */
 
 
 
