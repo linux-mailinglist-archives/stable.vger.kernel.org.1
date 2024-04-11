@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1ACD8A10EE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D12DD8A0D67
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 624E81F2CBF8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C6041F217BA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECE01474C6;
-	Thu, 11 Apr 2024 10:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED514145FE6;
+	Thu, 11 Apr 2024 10:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcEApB4y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KjLH3z2D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9B91474B4;
-	Thu, 11 Apr 2024 10:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB33014532F;
+	Thu, 11 Apr 2024 10:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831930; cv=none; b=ijt1Ox0pofrc4iET1qZnUbOHbLVlip+rdYpbcqbq6RYj51fi1oVh3eIjwOgjPOodZP8XAX1cImfBZiuTAAqt7EoAcpbDwGER1NaF4IaEkyARnAilIbwl+c41LkhcF2P/sTsAIb0DwB9jYaGXrY1dE9qUn1DzDhVKno99PNDEkbk=
+	t=1712829814; cv=none; b=FoMhoBupifEANF/xetZ8qy064/nQ6k1f3g7zLzXscVxfo1mVo17yfMUvnPNK4A2zPDY6H8dSJXI0Fclovs6Ez8Y+AT0aYLZkqe8TZ2AiPdTdkiE7ga4S18jRCX9D97AK2t3XQgn3lpSDtSQ6aZjrYSF2Hkr5mIGcGMlZ4A0YiAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831930; c=relaxed/simple;
-	bh=I6ABjbBaFjpWrF29IDj66s7NxWZYvx6MYqYJXshtFxc=;
+	s=arc-20240116; t=1712829814; c=relaxed/simple;
+	bh=+TnLpotENgedPlxOBJNOkTTBicJz1QEOr3L/NNxAfxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KfX0nJ3+CGNyte88q02rl84n/HgN3247SfclhZ26vc6KOaWaOoVUr3vEO6w5ektSYsKzKvHY/0P1Ie2wIWqjPNAW44v0McUL9dJUV+lQ5rEDUtM6uY9gi9vT8Z9veVZm1aZTHQH1X0kqA4qZ+FmWoDJyneF32kciihaR+HhJiO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcEApB4y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF33EC433F1;
-	Thu, 11 Apr 2024 10:38:49 +0000 (UTC)
+	 MIME-Version; b=UX/0EunD6CdlzIZfCKYjYqu66lC31apt/TuXCl9QXtC/EX2P4y7oJOOKis3EojxQ22g8N3aVofSe9OTjTA1XgbUsLtOinoF/nOnYX2+h1ZBArdnYfMmp+bS2Ilu6PTYlG+NpT0MqJjW+82zhXAv5tNr+j53xUoLskHSj0ep2oTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjLH3z2D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F407C433F1;
+	Thu, 11 Apr 2024 10:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831930;
-	bh=I6ABjbBaFjpWrF29IDj66s7NxWZYvx6MYqYJXshtFxc=;
+	s=korg; t=1712829814;
+	bh=+TnLpotENgedPlxOBJNOkTTBicJz1QEOr3L/NNxAfxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HcEApB4ytX7Q5LloOEnvafibsaIeM6/QERHKy7brJ9l3kdbvj3DlZFLvri7ilpuYj
-	 eudhSM1vjYoajWSLEYL+tjbVTCONTeBipMaB23fKyxYuEnGP2UCXQh1INWyF2BR8MU
-	 tk8XwaaG2x92NlOHsngHGMdCi5wITzVy445Tnz2s=
+	b=KjLH3z2DJvO+OJHnvYxZ4IB747DJRBHNh3FKmVQ/Hb7mhRF4VIcIc3HBG1jcAUFW1
+	 GdszisnJ4fdF0A7C2wS/SvkovBcwbK9Vt9N98ONZ8TavcYLzxAII0tHN0V/6YpSj1F
+	 +rQtr+cYaglJS+kQOz1zZIyWG4YOfOpZfQwT8+zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 5.10 173/294] usb: typec: ucsi: Ack unsupported commands
+	Paolo Abeni <pabeni@redhat.com>,
+	Geliang Tang <geliangtang@gmail.com>,
+	Mat Martineau <mathew.j.martineau@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 113/175] mptcp: add sk_stop_timer_sync helper
 Date: Thu, 11 Apr 2024 11:55:36 +0200
-Message-ID: <20240411095440.839552358@linuxfoundation.org>
+Message-ID: <20240411095422.969807312@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Geliang Tang <geliangtang@gmail.com>
 
-commit 6b5c85ddeea77d18c4b69e3bda60e9374a20c304 upstream.
+[ Upstream commit 08b81d873126b413cda511b1ea1cbb0e99938bbd ]
 
-If a command completes the OPM must send an ack. This applies
-to unsupported commands, too.
+This patch added a new helper sk_stop_timer_sync, it deactivates a timer
+like sk_stop_timer, but waits for the handler to finish.
 
-Send the required ACK for unsupported commands.
-
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Link: https://lore.kernel.org/r/20240320073927.1641788-4-lk@c--e.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Geliang Tang <geliangtang@gmail.com>
+Reviewed-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 151c9c724d05 ("tcp: properly terminate timers for kernel sockets")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/net/sock.h | 2 ++
+ net/core/sock.c    | 7 +++++++
+ 2 files changed, 9 insertions(+)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -138,8 +138,12 @@ static int ucsi_exec_command(struct ucsi
- 	if (!(cci & UCSI_CCI_COMMAND_COMPLETE))
- 		return -EIO;
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 81888513b3b93..8eea17a41c1ca 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2194,6 +2194,8 @@ void sk_reset_timer(struct sock *sk, struct timer_list *timer,
  
--	if (cci & UCSI_CCI_NOT_SUPPORTED)
-+	if (cci & UCSI_CCI_NOT_SUPPORTED) {
-+		if (ucsi_acknowledge_command(ucsi) < 0)
-+			dev_err(ucsi->dev,
-+				"ACK of unsupported command failed\n");
- 		return -EOPNOTSUPP;
-+	}
+ void sk_stop_timer(struct sock *sk, struct timer_list *timer);
  
- 	if (cci & UCSI_CCI_ERROR) {
- 		if (cmd == UCSI_GET_ERROR_STATUS)
++void sk_stop_timer_sync(struct sock *sk, struct timer_list *timer);
++
+ int __sk_queue_drop_skb(struct sock *sk, struct sk_buff_head *sk_queue,
+ 			struct sk_buff *skb, unsigned int flags,
+ 			void (*destructor)(struct sock *sk,
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 62d169bcfcfa1..eaa6f1ca414d0 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2804,6 +2804,13 @@ void sk_stop_timer(struct sock *sk, struct timer_list* timer)
+ }
+ EXPORT_SYMBOL(sk_stop_timer);
+ 
++void sk_stop_timer_sync(struct sock *sk, struct timer_list *timer)
++{
++	if (del_timer_sync(timer))
++		__sock_put(sk);
++}
++EXPORT_SYMBOL(sk_stop_timer_sync);
++
+ void sock_init_data(struct socket *sock, struct sock *sk)
+ {
+ 	sk_init_common(sk);
+-- 
+2.43.0
+
 
 
 
