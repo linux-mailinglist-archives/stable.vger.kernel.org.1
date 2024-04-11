@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC368A115B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2A08A0F84
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B01221C23F78
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B29A284CD2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B39413C9A5;
-	Thu, 11 Apr 2024 10:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F68F146A64;
+	Thu, 11 Apr 2024 10:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBG1TFX1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKgyZFyW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6FB2EAE5;
-	Thu, 11 Apr 2024 10:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F301145B1A;
+	Thu, 11 Apr 2024 10:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832198; cv=none; b=H6Nbx/6RQ+EFEl5UemKW6HaOAiVVx37i9x5sRQgrPhVrZwtmWeT3R+FQyp1a3RpUIOukZ3Id+m0ljfYJMMa62+qpTWgCgZaYIR9a66c0v7hH9Pk9n1bFoAgPSG3eWYvGR9mL63xZdmr9jo6cySCFMW/I/PX6NagHgjaP2LmVI3k=
+	t=1712831076; cv=none; b=Vrm7eOdGkWPuMnbUfDzfm1LU0ZH6RAmgufblaVEvUWBkBYUyRrW9Cd6upMzZ0hCrrHZSwWh2C8ztrIaWOWCmYsjSBA0i5pkt7aBKONCPo8MmN/zhqJ52XFLHuKICz9ZQ3qup3LZ6t6RRUv9/u7qflBiruqObYTkYsyKMzxDz/nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832198; c=relaxed/simple;
-	bh=E4QDoxWKSFKDYHgcVWRRWYRx2li0r4Otq2xOOVHbDF8=;
+	s=arc-20240116; t=1712831076; c=relaxed/simple;
+	bh=RA+e22XWW9HiXLzEXpECSi/XckXvBdmbwq8nS4S3p8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qpn14wDcEjTzWaL4O1/axvdSPY/wagQ8S3UwYmfTVGnqIUXznFbaM2GcJySZwSWvIZh114Fn6Ue6kbz4jgsV2YYIGWW21nXa+Awb83meCvdIXOAQiOQtL7R7MqOZXP2n5V6MT2d0f//lmTS2UR6IOxKW6dKtjaK/fkz8NdM50bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBG1TFX1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6984C433F1;
-	Thu, 11 Apr 2024 10:43:17 +0000 (UTC)
+	 MIME-Version; b=DtXPOvk84qa1SqnnkhB8NdGlKYHyIQjG2bLhZW0D+nR4xaHfjfT/s6QaUYjeRIbW7b0aRmjjKWZ0m+3QWBI7vvoVE/zCR2aJbFW+ytqer5lIMMnpYGns42ZGjIjsHigJa5l8DFm/VeH8nTc85AB4nbvGRaJb1TJnbuDg6P0wJZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKgyZFyW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800BEC433C7;
+	Thu, 11 Apr 2024 10:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832198;
-	bh=E4QDoxWKSFKDYHgcVWRRWYRx2li0r4Otq2xOOVHbDF8=;
+	s=korg; t=1712831075;
+	bh=RA+e22XWW9HiXLzEXpECSi/XckXvBdmbwq8nS4S3p8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GBG1TFX1329mbrZ00nvjXgsib3w3ZgsUxFaNSdXAuIV3wWMvpJTk4sRULEh6oSc4V
-	 YYhJhk7qdQSRmCEjxhCDkiaqvUaHfMwOGSKwkzQxtHtwhzj7ShtNpjWPuH3raAQXtj
-	 kp9SvwXlB3pjpfUfiF16fHSuxJVS57urNIKbmxCs=
+	b=lKgyZFyW2fvKmhTJzOyLkNnBT1XeQTypCFVoD8USLU/hUcV7vqUBAg4qyryvz5ANH
+	 Z1fgbHQ88tGGuLKQ/vFOF/AtwJdW1Rgue0IhMzhdWC7zQlBh+lNttDr+gcdbfUBhPe
+	 v7np8BI/aPkjnuyV23z5eHRIDrW0mBf0N2C2lAQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 261/294] scsi: lpfc: Fix possible memory leak in lpfc_rcv_padisc()
+	Zhang Shurong <zhang_shurong@foxmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 5.4 215/215] firmware: meson_sm: fix to avoid potential NULL pointer dereference
 Date: Thu, 11 Apr 2024 11:57:04 +0200
-Message-ID: <20240411095443.417846992@linuxfoundation.org>
+Message-ID: <20240411095431.324173590@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit 2ae917d4bcab80ab304b774d492e2fcd6c52c06b ]
+commit f2ed165619c16577c02b703a114a1f6b52026df4 upstream.
 
-The call to lpfc_sli4_resume_rpi() in lpfc_rcv_padisc() may return an
-unsuccessful status.  In such cases, the elsiocb is not issued, the
-completion is not called, and thus the elsiocb resource is leaked.
+of_match_device() may fail and returns a NULL pointer.
 
-Check return value after calling lpfc_sli4_resume_rpi() and conditionally
-release the elsiocb resource.
+Fix this by checking the return value of of_match_device.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240131185112.149731-3-justintee8345@gmail.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8cde3c2153e8 ("firmware: meson_sm: Rework driver as a proper platform driver")
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/tencent_AA08AAA6C4F34D53ADCE962E188A879B8206@qq.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_nportdisc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/firmware/meson/meson_sm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc_nportdisc.c b/drivers/scsi/lpfc/lpfc_nportdisc.c
-index 1e22364a31fcf..d6287c58d5045 100644
---- a/drivers/scsi/lpfc/lpfc_nportdisc.c
-+++ b/drivers/scsi/lpfc/lpfc_nportdisc.c
-@@ -784,8 +784,10 @@ lpfc_rcv_padisc(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
- 				/* Save the ELS cmd */
- 				elsiocb->drvrTimeout = cmd;
+--- a/drivers/firmware/meson/meson_sm.c
++++ b/drivers/firmware/meson/meson_sm.c
+@@ -302,6 +302,8 @@ static int __init meson_sm_probe(struct
+ 		return -ENOMEM;
  
--				lpfc_sli4_resume_rpi(ndlp,
--					lpfc_mbx_cmpl_resume_rpi, elsiocb);
-+				if (lpfc_sli4_resume_rpi(ndlp,
-+						lpfc_mbx_cmpl_resume_rpi,
-+						elsiocb))
-+					kfree(elsiocb);
- 				goto out;
- 			}
- 		}
--- 
-2.43.0
-
+ 	chip = of_match_device(meson_sm_ids, dev)->data;
++	if (!chip)
++		return -EINVAL;
+ 
+ 	if (chip->cmd_shmem_in_base) {
+ 		fw->sm_shmem_in_base = meson_sm_map_shmem(chip->cmd_shmem_in_base,
 
 
 
