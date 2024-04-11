@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-38242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D02D18A0DAA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:06:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 633948A0E45
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B5BC2863B7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:06:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9576C1C216DB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8E0145B0D;
-	Thu, 11 Apr 2024 10:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB24F145B26;
+	Thu, 11 Apr 2024 10:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLT4+a4a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHl4DAo4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAAB4145B05;
-	Thu, 11 Apr 2024 10:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A503C1DDE9;
+	Thu, 11 Apr 2024 10:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829980; cv=none; b=Xac2xJKiCR3T6a0pIMUYlLD8LSLYLpoe78/y0CDA2mXNw0qUVHfIu6d/9Cc5Q7aN5MixnB/mVfeJcu6ArlAn2sNuIKI5ISZsoBeqM6gKxrrmvE8R4ikXu0RHqjH7nAnFrV6lUXaYsv4U4w7Z8rz1Hv2j0YMgtueXqgVgo3hK4tc=
+	t=1712830383; cv=none; b=PFBpIow4jRz2Lp+XGga8c3HH8YJ3SXRSmZUhjDJeAKxSfvpm0cwNh4dtMoBt/Nl9ig5O37TaADGi6P9uFkeRunBhg0uI35PGXnqdBL39MteUVw/JoHepUvmnLts/CZiYv3x6yIWHxCOTFhye+7iRsVqbRLNaKyaZ4kbDLN3mjbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829980; c=relaxed/simple;
-	bh=nlUTp/O79DLUsaC/AM/cIJrhs8qzpMFsVeGOpAT0kT4=;
+	s=arc-20240116; t=1712830383; c=relaxed/simple;
+	bh=RrgRRlamKe0OW0G8DDpHmPSdxOpKqxAPgLGO/kvGANk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g1AOWUfzfNi6MV4rvBTZY0DBBggcJMDzANXGBwCwRvXLEAhAyEpIKiqWLt1QeiJuXMbqQWblb3GK3agxO14TQec6tg6EgNcqUp4//hNMX/inPIs5TIp5V+YSh/xzwtazE2Z034GMQ0keL2BfDMGXeqHANwsbkwPXuNptffjJDUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLT4+a4a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEC2C433C7;
-	Thu, 11 Apr 2024 10:06:20 +0000 (UTC)
+	 MIME-Version; b=QqM8VS4G4FOjnDsP/jbPKeOiY7WkgYLmeepmpFi+xm7cmzVcEGpgL2sY14MxQNo94gCdqIoMp+SoMqpMiBW3D7eGGL062chJrBnAEhtFabwx9SvRoNr6a4wI41hGP08ZRMlsE8lt7nr/BU6qw7UXUP7JrCvLRigzWatgsVvcQtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHl4DAo4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2C7C433F1;
+	Thu, 11 Apr 2024 10:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829980;
-	bh=nlUTp/O79DLUsaC/AM/cIJrhs8qzpMFsVeGOpAT0kT4=;
+	s=korg; t=1712830383;
+	bh=RrgRRlamKe0OW0G8DDpHmPSdxOpKqxAPgLGO/kvGANk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LLT4+a4azQxth8m7VqZe4LMd7mfIChvYSWu5DZehhTU2YuOsGkwkYlxJM4xGnrSZT
-	 RCo2UKiD8vu/4HTiZOV7cPykzv0BYXBGGqVk8itddmXV1nc02JLecVcQmlA6BxM//b
-	 +myuz34hXaSNylIvKfp8JXpUY2aJ0oQPi4WfKbzg=
+	b=hHl4DAo4KR75I2PheD+9ewIlrUkI9K3iDJhcOC0CBzOxDT5ZWT7Sb1+FDzu4Kioil
+	 4mO+5MAeztSDzNrGUhF1AVvUIFrN/ZB/sTBOilAWEdyEAZGcKi2SFGjzubSnVE6L03
+	 twaVxhETwHu3EALDLxLiE2aFi59VP6NfUmFQE7Tg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 4.19 171/175] Bluetooth: btintel: Fixe build regression
+	Max Kellermann <max.kellermann@ionos.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 126/143] modpost: fix null pointer dereference
 Date: Thu, 11 Apr 2024 11:56:34 +0200
-Message-ID: <20240411095424.712124322@linuxfoundation.org>
+Message-ID: <20240411095424.698209649@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-commit 6e62ebfb49eb65bdcbfc5797db55e0ce7f79c3dd upstream.
+[ Upstream commit 23dfd914d2bfc4c9938b0084dffd7105de231d98 ]
 
-This fixes the following build regression:
+If the find_fromsym() call fails and returns NULL, the warn() call
+will dereference this NULL pointer and cause the program to crash.
 
-drivers-bluetooth-btintel.c-btintel_read_version()-warn:
-passing-zero-to-PTR_ERR
+This happened when I tried to build with "test_user_copy" module.
+With this fix, it prints lots of warnings like this:
 
-Fixes: b79e04091010 ("Bluetooth: btintel: Fix null ptr deref in btintel_read_version")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ WARNING: modpost: lib/test_user_copy: section mismatch in reference: (unknown)+0x4 (section: .text.fixup) -> (unknown) (section: .init.text)
+
+masahiroy@kernel.org:
+ The issue is reproduced with ARCH=arm allnoconfig + CONFIG_MODULES=y +
+ CONFIG_RUNTIME_TESTING_MENU=y + CONFIG_TEST_USER_COPY=m
+
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btintel.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/mod/modpost.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/bluetooth/btintel.c
-+++ b/drivers/bluetooth/btintel.c
-@@ -355,13 +355,13 @@ int btintel_read_version(struct hci_dev
- 	struct sk_buff *skb;
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index 6568f8177e392..ce686ebf5591f 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -1053,7 +1053,9 @@ static void default_mismatch_handler(const char *modname, struct elf_info *elf,
+ 	sec_mismatch_count++;
  
- 	skb = __hci_cmd_sync(hdev, 0xfc05, 0, NULL, HCI_CMD_TIMEOUT);
--	if (IS_ERR_OR_NULL(skb)) {
-+	if (IS_ERR(skb)) {
- 		bt_dev_err(hdev, "Reading Intel version information failed (%ld)",
- 			   PTR_ERR(skb));
- 		return PTR_ERR(skb);
- 	}
+ 	warn("%s: section mismatch in reference: %s+0x%x (section: %s) -> %s (section: %s)\n",
+-	     modname, fromsym, (unsigned int)(faddr - from->st_value), fromsec, tosym, tosec);
++	     modname, fromsym,
++	     (unsigned int)(faddr - (from ? from->st_value : 0)),
++	     fromsec, tosym, tosec);
  
--	if (skb->len != sizeof(*ver)) {
-+	if (!skb || skb->len != sizeof(*ver)) {
- 		bt_dev_err(hdev, "Intel version event size mismatch");
- 		kfree_skb(skb);
- 		return -EILSEQ;
+ 	if (mismatch->mismatch == EXTABLE_TO_NON_TEXT) {
+ 		if (match(tosec, mismatch->bad_tosec))
+-- 
+2.43.0
+
 
 
 
