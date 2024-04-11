@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-39195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FEBC8A1572
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 15:24:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F3378A16EE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 16:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39515284496
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 13:24:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDC5528941A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 14:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33BA114C5B5;
-	Thu, 11 Apr 2024 13:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B8D1509A5;
+	Thu, 11 Apr 2024 14:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcEaIz9k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3MFGY6E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F15335BC;
-	Thu, 11 Apr 2024 13:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011E814F9F2;
+	Thu, 11 Apr 2024 14:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712841839; cv=none; b=ra3WszG6uoBKbapQLt3iIcP3rptdXbbYWUR+4njYz5hOsyulxrTyvAkBPQD191b3dJmUh8sEcRDuzKN3mQdc0fDSwU8+u2syzRBLyqKHw2+HdOfut2dWzR7Hx6CSyFpfOY/JXxcSHwvhpylE3IqCNhPBwmV9IBTQaqFB2SYHXF8=
+	t=1712844949; cv=none; b=T/KKaJl9TbMLPU+ErmFxIGqJuIYC02/H8QqOQ2fTgvKmy34zW0pxEJuh93y8qgatblejwyrCFSuItLvLydfKvzur/ywrhPpMGp7KsveMsPQkEFNaZqi239W9a0ShTJhPMMRaKItyRgt3pYWPerSBfWzC1V67w9aq49dErC6m/Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712841839; c=relaxed/simple;
-	bh=ETgA5noj6Ysp52fHUsZ5Xahb/AFo+afbTPHONR6SsNw=;
+	s=arc-20240116; t=1712844949; c=relaxed/simple;
+	bh=f3WgQJepv3I935Ux7AoYeAMSMCATyrlhQv6obAngiD4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tyiXmoe2QIg2UKz2k7L2uoCU6Sob+R40C+z8BVJUV2n75OBm//k4NmwIcnvMnYlRisxka0CS5elsABJuPfYThlA2dTaqW/KPJQXgWULOBvoqujv+x7nNvfCKS/YKOCTG61bDyWo/Ze66HjE645i4PfftXcCgU2xfFFmrZ6N5Rws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcEaIz9k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0663C4AF50;
-	Thu, 11 Apr 2024 13:23:57 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=G7RILUnDRSQqLAkf5B4EPXAzE27CQXV6+7jFLtRfMzIHBy2Srp7UpaQg2cF03bDcpX4pOwBKTbjWgc+Y9xUrSfV80rp199HhkSEUe9mztZqR3EmBchQHBS3XEkxKkIxa1IRZAdep58bEMmr1kdDGI9yePEs4kRielkKalIyRxUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3MFGY6E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E421AC113CE;
+	Thu, 11 Apr 2024 14:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712841838;
-	bh=ETgA5noj6Ysp52fHUsZ5Xahb/AFo+afbTPHONR6SsNw=;
+	s=korg; t=1712844948;
+	bh=f3WgQJepv3I935Ux7AoYeAMSMCATyrlhQv6obAngiD4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fcEaIz9k3Q4JpS8tEx7maD/lLU7Byeg3qH88bJrZZw/ILHbrSyNdM7ycqQP5KsEcL
-	 jrpF+rlPaTDPwUDOjZhOj36XxyuV/vqh2JeflTu+H0P1DHQrndWZTYedLVJHfMurle
-	 hCBMWSqVKtPKQSlxm1lyi9wNYaDVytKVB4NStey8=
-Date: Thu, 11 Apr 2024 15:23:55 +0200
+	b=Z3MFGY6E+LA/q+FY4yR6DIj3BbXWlUkNJxoiDLE5cmzOjMHbOHOqCMhD2ho8gG0XR
+	 A2sBNmNjaY1t9FhE7E6oJKDYcX/wvL7AOVOV2acVU0XteJsICmQquYEgPDTGgpsmXS
+	 3la3jKLhTTCbywbgj4Vh5Cr8vn5Jybcp3nZUrt2Y=
+Date: Thu, 11 Apr 2024 16:15:45 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Lizhi Hou <lizhi.hou@amd.com>,
-	Rob Herring <robh@kernel.org>, Max Zhen <max.zhen@amd.com>,
-	Sonal Santan <sonal.santan@amd.com>,
-	Stefano Stabellini <stefano.stabellini@xilinx.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] PCI: of: Attach created of_node to existing device
-Message-ID: <2024041142-applause-spearman-bd38@gregkh>
-References: <20240325153919.199337-1-herve.codina@bootlin.com>
- <20240325153919.199337-3-herve.codina@bootlin.com>
+To: Pavel Machek <pavel@denx.de>
+Cc: elfring@users.sourceforge.net, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.1 00/83] 6.1.86-rc1 review
+Message-ID: <2024041136-demystify-destitute-cfd5@gregkh>
+References: <20240411095412.671665933@linuxfoundation.org>
+ <ZhfQjMUvOI1QXtDN@duo.ucw.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,43 +61,24 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240325153919.199337-3-herve.codina@bootlin.com>
+In-Reply-To: <ZhfQjMUvOI1QXtDN@duo.ucw.cz>
 
-On Mon, Mar 25, 2024 at 04:39:15PM +0100, Herve Codina wrote:
-> The commit 407d1a51921e ("PCI: Create device tree node for bridge")
-> creates of_node for PCI devices.
+On Thu, Apr 11, 2024 at 01:59:08PM +0200, Pavel Machek wrote:
+> Hi!
 > 
-> During the insertion handling of these new DT nodes done by of_platform,
-> new devices (struct device) are created. For each PCI devices a struct
-> device is already present (created and handled by the PCI core).
-> Having a second struct device to represent the exact same PCI device is
-> not correct.
+> > This is the start of the stable review cycle for the 6.1.86 release.
+> > There are 83 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
 > 
-> On the of_node creation:
-> - tell the of_platform that there is no need to create a device for this
->   node (OF_POPULATED flag),
-> - link this newly created of_node to the already present device,
-> - tell fwnode that the device attached to this of_node is ready using
->   fwnode_dev_initialized().
+> > Markus Elfring <elfring@users.sourceforge.net>
+> >     batman-adv: Improve exception handling in batadv_throw_uevent()
+> > 
+> > Markus Elfring <elfring@users.sourceforge.net>
+> >     batman-adv: Return directly after a failed batadv_dat_select_candidates() in batadv_dat_forward_data()
+> >
 > 
-> With this fix, the of_node are available in the sysfs device tree:
-> /sys/devices/platform/soc/d0070000.pcie/
-> + of_node -> .../devicetree/base/soc/pcie@d0070000
-> + pci0000:00
->   + 0000:00:00.0
->     + of_node -> .../devicetree/base/soc/pcie@d0070000/pci@0,0
->     + 0000:01:00.0
->       + of_node -> .../devicetree/base/soc/pcie@d0070000/pci@0,0/dev@0,0
-> 
-> On the of_node removal, revert the operations.
-> 
-> Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Questionable cleanups, untested, do not fix any bug, please drop.
 
-I need an ack from the maintainer here before I can take this.
-
-thanks,
-
-greg k-h
+good point, now dropped.
 
