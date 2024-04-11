@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0632A8A0E02
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E3808A0D69
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFB541F21027
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C97922861A6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4645C145B3E;
-	Thu, 11 Apr 2024 10:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D84145B05;
+	Thu, 11 Apr 2024 10:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HgYO4GbS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+ozhDOX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0306A145B07;
-	Thu, 11 Apr 2024 10:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC2A145B04;
+	Thu, 11 Apr 2024 10:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830205; cv=none; b=Co+0X7nNycwQzZ+bjXj1MCT2ZY7Zp5d31Trk7sr8B7LLGX0BIonUKNbI2oUCEhFzUAB8M+uV2PoDU/kXQJ7lxquDgBMzJpIRR1/0mJ0mbzR4fvLRA4rUquv6YFsNITm7RYG4boOUtdG2rb4MPzhcrZOHBReTwRZtfCGBfMnx1Y0=
+	t=1712829823; cv=none; b=TKI3+G9WzFOylL+KeGdvOFIqKJEsv8q7ZfVcsKTItWFaMLfvT3crIt9hn3mPhL7n8WGwbcMXX9c3gP82uG+wdkFQ1YtBAkeAn5fsxnRhxYRVETLcsBY3TjXi//XXiaRywo6RQdKFcVxxp4KGHhZlbimYLmQH7cQf9sLHNiCEibo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830205; c=relaxed/simple;
-	bh=fDv47FkCYUnjH1Wa8jgj9qbc8CdehNNsQoLojAxD5BA=;
+	s=arc-20240116; t=1712829823; c=relaxed/simple;
+	bh=XCMOBc1hhruSr/n/csosEXB83eD7M1qO6i92857LblM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NChf5DyNovS2+uS8FKcHjxr/kpGHa228rsuWhbSu7tP6yQ4ZB2BZpZRlIawmPXUuyJ91y6Cs8DOGYzRckZ/6/XzknpA0fN9ApeALaotblztS6HdJu/DkNZnsrBlN3qKtdSp+kCCA0XBAlLNvjO1MhP8fQmPaXgNwhL5sXb2Bk4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HgYO4GbS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C898C433F1;
-	Thu, 11 Apr 2024 10:10:04 +0000 (UTC)
+	 MIME-Version; b=eh+mmDhw1A30WiV6eR3iIRln1BbY8yl9ZtK+dLImp2h3WioI049SDB2l9EuV8NXo/jFWG1+L2CQULsAn0lJSoJzzJkKjxxv4ut/xSdkqBIK7sJ84kWdOFEwpOxmpP/0K+/Od38MT67EAa2oTdL2KPr4yOi5arNvo9tMQ4ohVKfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+ozhDOX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91A5C433C7;
+	Thu, 11 Apr 2024 10:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830204;
-	bh=fDv47FkCYUnjH1Wa8jgj9qbc8CdehNNsQoLojAxD5BA=;
+	s=korg; t=1712829823;
+	bh=XCMOBc1hhruSr/n/csosEXB83eD7M1qO6i92857LblM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HgYO4GbSZvaPDQ6w66fdFBo4h+H7TsOWSGDfGemVtDR0iPHihGAtRsYdkGDWKS8ZY
-	 Iq9Y5gGZ0UZYwqRkxUTfLzQWpS3Q90J8aA2hv0HKrCiEagnbCba/zVrd0yJQdUuZyT
-	 F60xnVdta0OQqthjgPgL+9EVBYYWa4YACiAB6pkM=
+	b=Y+ozhDOXjbftKqr+pc03Rp7km0yDZmI4ZIHJxeh8xJThxEUNqJj9YjFE7JhfSsH6A
+	 Qj70tac5sX6CW9nQ+14Fw7TX8RKxZVI3/wWF9oG/eVXMbX0xbnk2rpUyny1v99lNX4
+	 v917NCchGX9soP0AwkapA5dEUGlWsnWy3JOuWViw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Brent Lu <brent.lu@intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 071/143] ASoC: Intel: sof_rt5682: dmi quirk cleanup for mtl boards
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Hui Wang <hui.wang@canonical.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 4.19 116/175] Bluetooth: hci_event: set the conn encrypted before conn establishes
 Date: Thu, 11 Apr 2024 11:55:39 +0200
-Message-ID: <20240411095423.052027638@linuxfoundation.org>
+Message-ID: <20240411095423.058814671@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brent Lu <brent.lu@intel.com>
+From: Hui Wang <hui.wang@canonical.com>
 
-[ Upstream commit 7a2a8730d51f95b263a1e8b888598dc6395220dc ]
+commit c569242cd49287d53b73a94233db40097d838535 upstream.
 
-Some dmi quirks are duplicated since codec and amplifier type are
-removed from board quirk. Remove redundant quirks.
+We have a BT headset (Lenovo Thinkplus XT99), the pairing and
+connecting has no problem, once this headset is paired, bluez will
+remember this device and will auto re-connect it whenever the device
+is powered on. The auto re-connecting works well with Windows and
+Android, but with Linux, it always fails. Through debugging, we found
+at the rfcomm connection stage, the bluetooth stack reports
+"Connection refused - security block (0x0003)".
 
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Brent Lu <brent.lu@intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240208165545.93811-7-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For this device, the re-connecting negotiation process is different
+from other BT headsets, it sends the Link_KEY_REQUEST command before
+the CONNECT_REQUEST completes, and it doesn't send ENCRYPT_CHANGE
+command during the negotiation. When the device sends the "connect
+complete" to hci, the ev->encr_mode is 1.
+
+So here in the conn_complete_evt(), if ev->encr_mode is 1, link type
+is ACL and HCI_CONN_ENCRYPT is not set, we set HCI_CONN_ENCRYPT to
+this conn, and update conn->enc_key_size accordingly.
+
+After this change, this BT headset could re-connect with Linux
+successfully. This is the btmon log after applying the patch, after
+receiving the "Connect Complete" with "Encryption: Enabled", will send
+the command to read encryption key size:
+> HCI Event: Connect Request (0x04) plen 10
+        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
+        Class: 0x240404
+          Major class: Audio/Video (headset, speaker, stereo, video, vcr)
+          Minor class: Wearable Headset Device
+          Rendering (Printing, Speaker)
+          Audio (Speaker, Microphone, Headset)
+        Link type: ACL (0x01)
+...
+> HCI Event: Link Key Request (0x17) plen 6
+        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
+< HCI Command: Link Key Request Reply (0x01|0x000b) plen 22
+        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
+        Link key: ${32-hex-digits-key}
+...
+> HCI Event: Connect Complete (0x03) plen 11
+        Status: Success (0x00)
+        Handle: 256
+        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
+        Link type: ACL (0x01)
+        Encryption: Enabled (0x01)
+< HCI Command: Read Encryption Key... (0x05|0x0008) plen 2
+        Handle: 256
+< ACL Data TX: Handle 256 flags 0x00 dlen 10
+      L2CAP: Information Request (0x0a) ident 1 len 2
+        Type: Extended features supported (0x0002)
+> HCI Event: Command Complete (0x0e) plen 7
+      Read Encryption Key Size (0x05|0x0008) ncmd 1
+        Status: Success (0x00)
+        Handle: 256
+        Key size: 16
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/bluez/bluez/issues/704
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Signed-off-by: Hui Wang <hui.wang@canonical.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/sof_rt5682.c | 40 -----------------------------
- 1 file changed, 40 deletions(-)
+ net/bluetooth/hci_event.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/sound/soc/intel/boards/sof_rt5682.c b/sound/soc/intel/boards/sof_rt5682.c
-index cd50f26d1edbe..02705034e5713 100644
---- a/sound/soc/intel/boards/sof_rt5682.c
-+++ b/sound/soc/intel/boards/sof_rt5682.c
-@@ -154,46 +154,6 @@ static const struct dmi_system_id sof_rt5682_quirk_table[] = {
- 					SOF_RT5682_SSP_AMP(2) |
- 					SOF_RT5682_NUM_HDMIDEV(4)),
- 	},
--	{
--		.callback = sof_rt5682_quirk_cb,
--		.matches = {
--			DMI_MATCH(DMI_PRODUCT_FAMILY, "Google_Rex"),
--			DMI_MATCH(DMI_OEM_STRING, "AUDIO-MAX98360_ALC5682I_I2S"),
--		},
--		.driver_data = (void *)(SOF_RT5682_MCLK_EN |
--					SOF_RT5682_SSP_CODEC(2) |
--					SOF_RT5682_SSP_AMP(0) |
--					SOF_RT5682_NUM_HDMIDEV(3) |
--					SOF_BT_OFFLOAD_SSP(1) |
--					SOF_SSP_BT_OFFLOAD_PRESENT
--					),
--	},
--	{
--		.callback = sof_rt5682_quirk_cb,
--		.matches = {
--			DMI_MATCH(DMI_PRODUCT_FAMILY, "Google_Rex"),
--			DMI_MATCH(DMI_OEM_STRING, "AUDIO-MAX98360_ALC5682I_DISCRETE_I2S_BT"),
--		},
--		.driver_data = (void *)(SOF_RT5682_MCLK_EN |
--					SOF_RT5682_SSP_CODEC(2) |
--					SOF_RT5682_SSP_AMP(0) |
--					SOF_RT5682_NUM_HDMIDEV(3) |
--					SOF_BT_OFFLOAD_SSP(1) |
--					SOF_SSP_BT_OFFLOAD_PRESENT
--					),
--	},
--	{
--		.callback = sof_rt5682_quirk_cb,
--		.matches = {
--			DMI_MATCH(DMI_PRODUCT_FAMILY, "Google_Rex"),
--			DMI_MATCH(DMI_OEM_STRING, "AUDIO-ALC1019_ALC5682I_I2S"),
--		},
--		.driver_data = (void *)(SOF_RT5682_MCLK_EN |
--					SOF_RT5682_SSP_CODEC(2) |
--					SOF_RT5682_SSP_AMP(0) |
--					SOF_RT5682_NUM_HDMIDEV(3)
--					),
--	},
- 	{
- 		.callback = sof_rt5682_quirk_cb,
- 		.matches = {
--- 
-2.43.0
-
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -2453,6 +2453,31 @@ static void hci_conn_complete_evt(struct
+ 		if (test_bit(HCI_ENCRYPT, &hdev->flags))
+ 			set_bit(HCI_CONN_ENCRYPT, &conn->flags);
+ 
++		/* "Link key request" completed ahead of "connect request" completes */
++		if (ev->encr_mode == 1 && !test_bit(HCI_CONN_ENCRYPT, &conn->flags) &&
++		    ev->link_type == ACL_LINK) {
++			struct link_key *key;
++			struct hci_cp_read_enc_key_size cp;
++
++			key = hci_find_link_key(hdev, &ev->bdaddr);
++			if (key) {
++				set_bit(HCI_CONN_ENCRYPT, &conn->flags);
++
++				if (!(hdev->commands[20] & 0x10)) {
++					conn->enc_key_size = HCI_LINK_KEY_SIZE;
++				} else {
++					cp.handle = cpu_to_le16(conn->handle);
++					if (hci_send_cmd(hdev, HCI_OP_READ_ENC_KEY_SIZE,
++							 sizeof(cp), &cp)) {
++						bt_dev_err(hdev, "sending read key size failed");
++						conn->enc_key_size = HCI_LINK_KEY_SIZE;
++					}
++				}
++
++				hci_encrypt_cfm(conn, ev->status);
++			}
++		}
++
+ 		/* Get remote features */
+ 		if (conn->type == ACL_LINK) {
+ 			struct hci_cp_read_remote_features cp;
 
 
 
