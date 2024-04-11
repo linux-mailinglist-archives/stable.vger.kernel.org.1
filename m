@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-39087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 076C68A11DB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC0228A11DE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 385D81C22316
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 292B31C20749
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA3C13BC33;
-	Thu, 11 Apr 2024 10:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF7564CC0;
+	Thu, 11 Apr 2024 10:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nP/MJb80"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nE/5AEWD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E44179FD;
-	Thu, 11 Apr 2024 10:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0FE624;
+	Thu, 11 Apr 2024 10:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832478; cv=none; b=jUGGlQppfJMmugYYXedaXYMY2XQYXcxBfegsi+tFWVD5oyVHJjSiduuiyBwMIz+yLPwOgLUtb5MaeUndcSmmvTFgSK61VJlbOeR24bOtS7Bfo+A1gVYntIhBd4h1+piQFIPlXCeQ/Etp5Y+x0M+Ch8n4QRRP0FhXPGkKXc4vfnU=
+	t=1712832484; cv=none; b=XgA2/AKj2HmBPyH8QGR5pieL9pMQZva8jb91RXkOcOY62Hvmwn8lsYuxiuvwcGITmjB+hZfE15ni6tVdeGzSBBmHtvGT7iNKEWt1kZXlwu/UmtTvrBmaWNZPGxwrkvuZ1hCDFruf+h4rc6M+7HnaNPaLgwLaOuumMWp7jLJ+Qm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832478; c=relaxed/simple;
-	bh=4Wl6PCx7H7loai6wHxATPpbaoXbr8dvxpjm9KuU+e+M=;
+	s=arc-20240116; t=1712832484; c=relaxed/simple;
+	bh=R9C6O6AbP3biOgpAKb4Tz7aKWBUGi76srQoaoJL43zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1FzgxkwhixUbvAmkUvZfv0fv6LbI7BiA4ZAHX7p/PbzkmUVxUdpbQ51cxcBLIC8KftCqlJLYlh2XGqJIFY1rfgc2uoh/mbLfsi0RTPdC8bcUbuzzhNDqKoJASR5E0nGVt72zh1yFJ8UX0gObmetCgr9Fg1Fz1forKBwfGAXx6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nP/MJb80; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3D7C433F1;
-	Thu, 11 Apr 2024 10:47:57 +0000 (UTC)
+	 MIME-Version; b=hRL6jbEI/RkApXqONxW6n2OPmhJqdvnB12xddboAeC2Jdrt/cZ3z5EPp0rrFrttkcnD01NNAySGnbn1f0NJSzLezSpFvBGD0eRtKFG4tG7Tz7g3F8m0CmfFYc8k8wyV+9iJWaO55w0tQKQrwbzilxkYZ9XIWkCmnMByIiwJdmio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nE/5AEWD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C21C433C7;
+	Thu, 11 Apr 2024 10:48:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832478;
-	bh=4Wl6PCx7H7loai6wHxATPpbaoXbr8dvxpjm9KuU+e+M=;
+	s=korg; t=1712832484;
+	bh=R9C6O6AbP3biOgpAKb4Tz7aKWBUGi76srQoaoJL43zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nP/MJb80cuiFvdz+wEVu6v6F9hxpnnx4IGuaQbPU3cXkl023lUuw7AgzdFcyL1+hO
-	 /zCf2xtx9f8JOuatyGTNN19vPlHJbNIieNl7ayNZhp0t5B5LzOd70nqIbLLM9C3hnC
-	 9uLjONf6+lnFOl0ADKstQLkut5eEHLHzTF5I7rhw=
+	b=nE/5AEWDrSac2aP6rDdDbvSrLeUeDhhaajakP8fRdyvGQ8mPcjAQ1a3TFwVEsns6w
+	 nQmwG6Vok2XsMU6UT7SRxUm2qcjQra5xikZclKQn4ZYjhqBO4LH0sGyjBQ6WAOSBX4
+	 LugGAAw2uaRUbe84wcQRyAoX433i1DSvfsbE/ksI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 62/83] usb: sl811-hcd: only defined function checkdone if QUIRK2 is defined
-Date: Thu, 11 Apr 2024 11:57:34 +0200
-Message-ID: <20240411095414.551251192@linuxfoundation.org>
+Subject: [PATCH 6.1 63/83] thermal/of: Assume polling-delay(-passive) 0 when absent
+Date: Thu, 11 Apr 2024 11:57:35 +0200
+Message-ID: <20240411095414.581258893@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
 References: <20240411095412.671665933@linuxfoundation.org>
@@ -65,45 +68,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 12f371e2b6cb4b79c788f1f073992e115f4ca918 ]
+[ Upstream commit 488164006a281986d95abbc4b26e340c19c4c85b ]
 
-Function checkdone is only required if QUIRK2 is defined, so add
-appropriate #if / #endif around the function.
+Currently, thermal zones associated with providers that have interrupts
+for signaling hot/critical trips are required to set a polling-delay
+of 0 to indicate no polling. This feels a bit backwards.
 
-Cleans up clang scan build warning:
-drivers/usb/host/sl811-hcd.c:588:18: warning: unused function
-'checkdone' [-Wunused-function]
+Change the code such that "no polling delay" also means "no polling".
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Link: https://lore.kernel.org/r/20240307111351.1982382-1-colin.i.king@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20240125-topic-thermal-v1-2-3c9d4dced138@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/sl811-hcd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/thermal/thermal_of.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/host/sl811-hcd.c b/drivers/usb/host/sl811-hcd.c
-index b8b90eec91078..48478eb712119 100644
---- a/drivers/usb/host/sl811-hcd.c
-+++ b/drivers/usb/host/sl811-hcd.c
-@@ -585,6 +585,7 @@ done(struct sl811 *sl811, struct sl811h_ep *ep, u8 bank)
- 		finish_request(sl811, ep, urb, urbstat);
- }
+diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+index 4104743dbc17e..202dce0d2e309 100644
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -337,14 +337,18 @@ static int thermal_of_monitor_init(struct device_node *np, int *delay, int *pdel
+ 	int ret;
  
-+#ifdef QUIRK2
- static inline u8 checkdone(struct sl811 *sl811)
- {
- 	u8	ctl;
-@@ -616,6 +617,7 @@ static inline u8 checkdone(struct sl811 *sl811)
- #endif
- 	return irqstat;
- }
-+#endif
+ 	ret = of_property_read_u32(np, "polling-delay-passive", pdelay);
+-	if (ret < 0) {
+-		pr_err("%pOFn: missing polling-delay-passive property\n", np);
++	if (ret == -EINVAL) {
++		*pdelay = 0;
++	} else if (ret < 0) {
++		pr_err("%pOFn: Couldn't get polling-delay-passive: %d\n", np, ret);
+ 		return ret;
+ 	}
  
- static irqreturn_t sl811h_irq(struct usb_hcd *hcd)
- {
+ 	ret = of_property_read_u32(np, "polling-delay", delay);
+-	if (ret < 0) {
+-		pr_err("%pOFn: missing polling-delay property\n", np);
++	if (ret == -EINVAL) {
++		*delay = 0;
++	} else if (ret < 0) {
++		pr_err("%pOFn: Couldn't get polling-delay: %d\n", np, ret);
+ 		return ret;
+ 	}
+ 
 -- 
 2.43.0
 
