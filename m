@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-38130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA0918A0D27
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:00:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 539F48A10AD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EC71285D1B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:00:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 850A41C23D8C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90FC3145B1E;
-	Thu, 11 Apr 2024 10:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC9B147C9D;
+	Thu, 11 Apr 2024 10:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1UQ54Fje"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbDuCbA1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8AA2EAE5;
-	Thu, 11 Apr 2024 10:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175421474CA;
+	Thu, 11 Apr 2024 10:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829652; cv=none; b=rboqI/mvESR+mQ4stYMlQvpAToNvfXX5QQqIJtyzB4t0AHxkuLtTV3vU6agBe3Ih1MmAIwkF3eyGHaE+EJtBjBUNZdHr1/QEhIUrg52wHf1JUAC2X9Lnba0obsU1BYrpNNzaDolE+CUBsT8FKhaLoqGtiVQA4uz2f004CfKWBkY=
+	t=1712831765; cv=none; b=dWg2S6X06le8AZWd/3+O92pBshQPgpBR1UZI1oHr3w7Q/9u6U4lhwmjKacohY25sBiUgMWUUSWRDvVzxGSsob3EXe2WbWB0dJqWb7mrS7WRbuw8QV++n1Y03WC5US417IA9bkzeCvvX8n2ykgbgwghTZJi34V+kHHLLKMVgjcbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829652; c=relaxed/simple;
-	bh=UvGcaGw3J0975VjgPE7EdMngo7vFiOSXyVSzH6MRuWU=;
+	s=arc-20240116; t=1712831765; c=relaxed/simple;
+	bh=HtEFblNrTDDNVXAFYDQQX8Gh9dWI8vHg9k8+MBmYC4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K6SroJDojdSOZXYxG2Ad7r0bnl0rRAAt2qs75U7voXlJMnGd5Cp6fJTHjcfQ6F6qJrk1wU5KTiW7ebNYq/0sUxp+p5PHLFzFBTAAZEC5byoMWREK9eHiLX3oqM6t4KZfn8gcMCiS7tpD8oLQEVKI3VdwLSb2LfSiW4YynU0dtNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1UQ54Fje; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5713C433F1;
-	Thu, 11 Apr 2024 10:00:51 +0000 (UTC)
+	 MIME-Version; b=KSVFbHC7ckEnmqW8Jw8kcJi1bcgA36AMSoxWq1ZbVePTErLdxs+CqQD2XjoUDXbhc+2EL35+IDGnE3nus27sQozvRXhPfAYgfHH0Vk/dqDdqmvCkKw0/5/RvSQJwtRNt0avgLKijysvcS0QtgRVLqxWYqj6jWYhYOGadRcJq5Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbDuCbA1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9D6C433F1;
+	Thu, 11 Apr 2024 10:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829652;
-	bh=UvGcaGw3J0975VjgPE7EdMngo7vFiOSXyVSzH6MRuWU=;
+	s=korg; t=1712831765;
+	bh=HtEFblNrTDDNVXAFYDQQX8Gh9dWI8vHg9k8+MBmYC4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1UQ54FjemO3nnnp+gnnv2+9xNPUhfZseRRWIbOiiQnthnGfcq2Os6bmXIYd49i+Yk
-	 h3lP9hZCW9SZUWttYR3jZa4now+/d4yR1o+OH1nrFMMWRIcYhIsBbRX5VijJlJFsd9
-	 bF4I+l5CaE25lZB6TPG6Op0451ZAPFTbqmV1iXOs=
+	b=qbDuCbA1ZIuLdCQZYVp8/NnOddGZyKTg+ryuFmDQR05zucfYHwWwBKdwOEFLYHvSv
+	 vHI4Y9s7jVPQqU5ShWd/dbkyjtHSHqYwrPE5W3DGibyccdSA36vxZDYnl2LwPOqKE1
+	 4UHiwbUwHQuFobbeXKl/IdooQ/YByFlf0RICL3/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 059/175] drm/imx: pd: Use bus format/flags provided by the bridge when available
+	Mingi Cho <mgcho.minic@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 119/294] netfilter: nf_tables: mark set as dead when unbinding anonymous set with timeout
 Date: Thu, 11 Apr 2024 11:54:42 +0200
-Message-ID: <20240411095421.343366883@linuxfoundation.org>
+Message-ID: <20240411095439.250166967@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,315 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit fe141cedc4333e3b76307f096e02b2c1e60f65d5 ]
+commit 552705a3650bbf46a22b1adedc1b04181490fc36 upstream.
 
-Now that bridges can expose the bus format/flags they expect, we can
-use those instead of the relying on the display_info provided by the
-connector (which is only valid if the encoder is directly connected
-to bridge element driving the panel/display).
+While the rhashtable set gc runs asynchronously, a race allows it to
+collect elements from anonymous sets with timeouts while it is being
+released from the commit path.
 
-We also explicitly expose the bus formats supported by our encoder by
-filling encoder->output_bus_caps with proper info.
+Mingi Cho originally reported this issue in a different path in 6.1.x
+with a pipapo set with low timeouts which is not possible upstream since
+7395dfacfff6 ("netfilter: nf_tables: use timestamp to check for set
+element timeout").
 
-v10:
-* Add changelog to the commit message
-* Use kmalloc() instead of kcalloc()
-* Add a dev_warn() when unsupported flags are requested
+Fix this by setting on the dead flag for anonymous sets to skip async gc
+in this case.
 
-v8 -> v9:
-* No changes
+According to 08e4c8c5919f ("netfilter: nf_tables: mark newset as dead on
+transaction abort"), Florian plans to accelerate abort path by releasing
+objects via workqueue, therefore, this sets on the dead flag for abort
+path too.
 
-v7:
-* Add an imx_pd_format_supported() helper (suggested by Philipp)
-* Simplify imx_pd_bridge_atomic_get_output_bus_fmts() (suggested by Philipp)
-* Simplify imx_pd_bridge_atomic_get_input_bus_fmts()
-* Explicitly set the duplicate/destro_state() and reset() hooks
-
-v4 -> v6:
-* Patch was not part of the series
-
-v3 (all suggested by Philipp):
-* Adjust to match core changes
-* Propagate output format to input format
-* Pick a default value when output_fmt = _FIXED
-* Add missing BGR888 and GBR888 fmts to imx_pd_bus_fmts[]
-
-v2:
-* Adjust things to match the new bus-format negotiation infra
-
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20200128135514.108171-8-boris.brezillon@collabora.com
-Stable-dep-of: c2da9ada6496 ("drm/imx/ipuv3: do not return negative values from .get_modes()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Reported-by: Mingi Cho <mgcho.minic@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/imx/parallel-display.c | 176 +++++++++++++++++++++----
- 1 file changed, 151 insertions(+), 25 deletions(-)
+ net/netfilter/nf_tables_api.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/imx/parallel-display.c b/drivers/gpu/drm/imx/parallel-display.c
-index e9dff31b377c4..a96d99cbec4d0 100644
---- a/drivers/gpu/drm/imx/parallel-display.c
-+++ b/drivers/gpu/drm/imx/parallel-display.c
-@@ -29,6 +29,7 @@
- struct imx_parallel_display {
- 	struct drm_connector connector;
- 	struct drm_encoder encoder;
-+	struct drm_bridge bridge;
- 	struct device *dev;
- 	void *edid;
- 	int edid_len;
-@@ -36,7 +37,7 @@ struct imx_parallel_display {
- 	u32 bus_flags;
- 	struct drm_display_mode mode;
- 	struct drm_panel *panel;
--	struct drm_bridge *bridge;
-+	struct drm_bridge *next_bridge;
- };
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4754,6 +4754,7 @@ static void nf_tables_unbind_set(const s
  
- static inline struct imx_parallel_display *con_to_imxpd(struct drm_connector *c)
-@@ -49,6 +50,11 @@ static inline struct imx_parallel_display *enc_to_imxpd(struct drm_encoder *e)
- 	return container_of(e, struct imx_parallel_display, encoder);
- }
- 
-+static inline struct imx_parallel_display *bridge_to_imxpd(struct drm_bridge *b)
-+{
-+	return container_of(b, struct imx_parallel_display, bridge);
-+}
-+
- static int imx_pd_connector_get_modes(struct drm_connector *connector)
- {
- 	struct imx_parallel_display *imxpd = con_to_imxpd(connector);
-@@ -99,37 +105,148 @@ static struct drm_encoder *imx_pd_connector_best_encoder(
- 	return &imxpd->encoder;
- }
- 
--static void imx_pd_encoder_enable(struct drm_encoder *encoder)
-+static void imx_pd_bridge_enable(struct drm_bridge *bridge)
- {
--	struct imx_parallel_display *imxpd = enc_to_imxpd(encoder);
-+	struct imx_parallel_display *imxpd = bridge_to_imxpd(bridge);
- 
- 	drm_panel_prepare(imxpd->panel);
- 	drm_panel_enable(imxpd->panel);
- }
- 
--static void imx_pd_encoder_disable(struct drm_encoder *encoder)
-+static void imx_pd_bridge_disable(struct drm_bridge *bridge)
- {
--	struct imx_parallel_display *imxpd = enc_to_imxpd(encoder);
-+	struct imx_parallel_display *imxpd = bridge_to_imxpd(bridge);
- 
- 	drm_panel_disable(imxpd->panel);
- 	drm_panel_unprepare(imxpd->panel);
- }
- 
--static int imx_pd_encoder_atomic_check(struct drm_encoder *encoder,
--				       struct drm_crtc_state *crtc_state,
--				       struct drm_connector_state *conn_state)
-+static const u32 imx_pd_bus_fmts[] = {
-+	MEDIA_BUS_FMT_RGB888_1X24,
-+	MEDIA_BUS_FMT_BGR888_1X24,
-+	MEDIA_BUS_FMT_GBR888_1X24,
-+	MEDIA_BUS_FMT_RGB666_1X18,
-+	MEDIA_BUS_FMT_RGB666_1X24_CPADHI,
-+	MEDIA_BUS_FMT_RGB565_1X16,
-+};
-+
-+static u32 *
-+imx_pd_bridge_atomic_get_output_bus_fmts(struct drm_bridge *bridge,
-+					 struct drm_bridge_state *bridge_state,
-+					 struct drm_crtc_state *crtc_state,
-+					 struct drm_connector_state *conn_state,
-+					 unsigned int *num_output_fmts)
- {
--	struct imx_crtc_state *imx_crtc_state = to_imx_crtc_state(crtc_state);
- 	struct drm_display_info *di = &conn_state->connector->display_info;
--	struct imx_parallel_display *imxpd = enc_to_imxpd(encoder);
-+	struct imx_parallel_display *imxpd = bridge_to_imxpd(bridge);
-+	u32 *output_fmts;
- 
--	if (!imxpd->bus_format && di->num_bus_formats) {
--		imx_crtc_state->bus_flags = di->bus_flags;
--		imx_crtc_state->bus_format = di->bus_formats[0];
--	} else {
--		imx_crtc_state->bus_flags = imxpd->bus_flags;
--		imx_crtc_state->bus_format = imxpd->bus_format;
-+	if (!imxpd->bus_format && !di->num_bus_formats) {
-+		*num_output_fmts = ARRAY_SIZE(imx_pd_bus_fmts);
-+		return kmemdup(imx_pd_bus_fmts, sizeof(imx_pd_bus_fmts),
-+			       GFP_KERNEL);
-+	}
-+
-+	*num_output_fmts = 1;
-+	output_fmts = kmalloc(sizeof(*output_fmts), GFP_KERNEL);
-+	if (!output_fmts)
-+		return NULL;
-+
-+	if (!imxpd->bus_format && di->num_bus_formats)
-+		output_fmts[0] = di->bus_formats[0];
-+	else
-+		output_fmts[0] = imxpd->bus_format;
-+
-+	return output_fmts;
-+}
-+
-+static bool imx_pd_format_supported(u32 output_fmt)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(imx_pd_bus_fmts); i++) {
-+		if (imx_pd_bus_fmts[i] == output_fmt)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+static u32 *
-+imx_pd_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
-+					struct drm_bridge_state *bridge_state,
-+					struct drm_crtc_state *crtc_state,
-+					struct drm_connector_state *conn_state,
-+					u32 output_fmt,
-+					unsigned int *num_input_fmts)
-+{
-+	struct imx_parallel_display *imxpd = bridge_to_imxpd(bridge);
-+	u32 *input_fmts;
-+
-+	/*
-+	 * If the next bridge does not support bus format negotiation, let's
-+	 * use the static bus format definition (imxpd->bus_format) if it's
-+	 * specified, RGB888 when it's not.
-+	 */
-+	if (output_fmt == MEDIA_BUS_FMT_FIXED)
-+		output_fmt = imxpd->bus_format ? : MEDIA_BUS_FMT_RGB888_1X24;
-+
-+	/* Now make sure the requested output format is supported. */
-+	if ((imxpd->bus_format && imxpd->bus_format != output_fmt) ||
-+	    !imx_pd_format_supported(output_fmt)) {
-+		*num_input_fmts = 0;
-+		return NULL;
-+	}
-+
-+	*num_input_fmts = 1;
-+	input_fmts = kmalloc(sizeof(*input_fmts), GFP_KERNEL);
-+	if (!input_fmts)
-+		return NULL;
-+
-+	input_fmts[0] = output_fmt;
-+	return input_fmts;
-+}
-+
-+static int imx_pd_bridge_atomic_check(struct drm_bridge *bridge,
-+				      struct drm_bridge_state *bridge_state,
-+				      struct drm_crtc_state *crtc_state,
-+				      struct drm_connector_state *conn_state)
-+{
-+	struct imx_crtc_state *imx_crtc_state = to_imx_crtc_state(crtc_state);
-+	struct drm_display_info *di = &conn_state->connector->display_info;
-+	struct imx_parallel_display *imxpd = bridge_to_imxpd(bridge);
-+	struct drm_bridge_state *next_bridge_state = NULL;
-+	struct drm_bridge *next_bridge;
-+	u32 bus_flags, bus_fmt;
-+
-+	next_bridge = drm_bridge_get_next_bridge(bridge);
-+	if (next_bridge)
-+		next_bridge_state = drm_atomic_get_new_bridge_state(crtc_state->state,
-+								    next_bridge);
-+
-+	if (next_bridge_state)
-+		bus_flags = next_bridge_state->input_bus_cfg.flags;
-+	else if (!imxpd->bus_format && di->num_bus_formats)
-+		bus_flags = di->bus_flags;
-+	else
-+		bus_flags = imxpd->bus_flags;
-+
-+	bus_fmt = bridge_state->input_bus_cfg.format;
-+	if (!imx_pd_format_supported(bus_fmt))
-+		return -EINVAL;
-+
-+	if (bus_flags &
-+	    ~(DRM_BUS_FLAG_DE_LOW | DRM_BUS_FLAG_DE_HIGH |
-+	      DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE |
-+	      DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE)) {
-+		dev_warn(imxpd->dev, "invalid bus_flags (%x)\n", bus_flags);
-+		return -EINVAL;
- 	}
-+
-+	bridge_state->output_bus_cfg.flags = bus_flags;
-+	bridge_state->input_bus_cfg.flags = bus_flags;
-+	imx_crtc_state->bus_flags = bus_flags;
-+	imx_crtc_state->bus_format = bridge_state->input_bus_cfg.format;
- 	imx_crtc_state->di_hsync_pin = 2;
- 	imx_crtc_state->di_vsync_pin = 3;
- 
-@@ -153,10 +270,15 @@ static const struct drm_encoder_funcs imx_pd_encoder_funcs = {
- 	.destroy = imx_drm_encoder_destroy,
- };
- 
--static const struct drm_encoder_helper_funcs imx_pd_encoder_helper_funcs = {
--	.enable = imx_pd_encoder_enable,
--	.disable = imx_pd_encoder_disable,
--	.atomic_check = imx_pd_encoder_atomic_check,
-+static const struct drm_bridge_funcs imx_pd_bridge_funcs = {
-+	.enable = imx_pd_bridge_enable,
-+	.disable = imx_pd_bridge_disable,
-+	.atomic_reset = drm_atomic_helper_bridge_reset,
-+	.atomic_duplicate_state = drm_atomic_helper_bridge_duplicate_state,
-+	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
-+	.atomic_check = imx_pd_bridge_atomic_check,
-+	.atomic_get_input_bus_fmts = imx_pd_bridge_atomic_get_input_bus_fmts,
-+	.atomic_get_output_bus_fmts = imx_pd_bridge_atomic_get_output_bus_fmts,
- };
- 
- static int imx_pd_register(struct drm_device *drm,
-@@ -176,11 +298,13 @@ static int imx_pd_register(struct drm_device *drm,
- 	 */
- 	imxpd->connector.dpms = DRM_MODE_DPMS_OFF;
- 
--	drm_encoder_helper_add(encoder, &imx_pd_encoder_helper_funcs);
- 	drm_encoder_init(drm, encoder, &imx_pd_encoder_funcs,
- 			 DRM_MODE_ENCODER_NONE, NULL);
- 
--	if (!imxpd->bridge) {
-+	imxpd->bridge.funcs = &imx_pd_bridge_funcs;
-+	drm_bridge_attach(encoder, &imxpd->bridge, NULL);
-+
-+	if (!imxpd->next_bridge) {
- 		drm_connector_helper_add(&imxpd->connector,
- 				&imx_pd_connector_helper_funcs);
- 		drm_connector_init(drm, &imxpd->connector,
-@@ -191,8 +315,9 @@ static int imx_pd_register(struct drm_device *drm,
- 	if (imxpd->panel)
- 		drm_panel_attach(imxpd->panel, &imxpd->connector);
- 
--	if (imxpd->bridge) {
--		ret = drm_bridge_attach(encoder, imxpd->bridge, NULL);
-+	if (imxpd->next_bridge) {
-+		ret = drm_bridge_attach(encoder, imxpd->next_bridge,
-+					&imxpd->bridge);
- 		if (ret < 0) {
- 			dev_err(imxpd->dev, "failed to attach bridge: %d\n",
- 				ret);
-@@ -237,7 +362,8 @@ static int imx_pd_bind(struct device *dev, struct device *master, void *data)
- 	imxpd->bus_format = bus_format;
- 
- 	/* port@1 is the output port */
--	ret = drm_of_find_panel_or_bridge(np, 1, 0, &imxpd->panel, &imxpd->bridge);
-+	ret = drm_of_find_panel_or_bridge(np, 1, 0, &imxpd->panel,
-+					  &imxpd->next_bridge);
- 	if (ret && ret != -ENODEV)
- 		return ret;
- 
--- 
-2.43.0
-
+ 	if (list_empty(&set->bindings) && nft_set_is_anonymous(set)) {
+ 		list_del_rcu(&set->list);
++		set->dead = 1;
+ 		if (event)
+ 			nf_tables_set_notify(ctx, set, NFT_MSG_DELSET,
+ 					     GFP_KERNEL);
 
 
 
