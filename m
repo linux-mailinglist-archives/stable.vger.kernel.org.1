@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B3F8A10D1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9628A0D72
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86CA8B258BC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F19B2B264BE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6FCE140E3C;
-	Thu, 11 Apr 2024 10:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B9B14535A;
+	Thu, 11 Apr 2024 10:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12LRXLcU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbjkKfnG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8602763A2;
-	Thu, 11 Apr 2024 10:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E471422C4;
+	Thu, 11 Apr 2024 10:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831859; cv=none; b=cuNuzBWCBRXeSB9UbYn0yE82HF63FuhYEUtvqoaN93DuKahUqIXggY/9fFPewCtpwQwKNU8HZf2y++ifePtcCgHBPm1ykdyxW8kb/5uRHoeKOLoooG0E8hS3uy5fPd2nToJplHE1A7iX3xsEcm7QDg3tMutDop1Fu18fBGHexho=
+	t=1712829838; cv=none; b=oEgTYzexDfJxSoFNi1cXY2rLQol9dd/ltp362XXlv9M/msoupsLJOX0TbyVIKJKxRJtARx1SElbbvkXeeUA4TZ6TDIuaNSAvdvtX6+cTOlbc242WQfNmaP54qw6Aeg6mjE2d9LPW43jU0cWd/E+abyQ7rtsRFmihi5rp0H3va2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831859; c=relaxed/simple;
-	bh=XaFOv2Hby/3JHgy+nhPdw5XZgc6yrAdFVXkQWvQEJXA=;
+	s=arc-20240116; t=1712829838; c=relaxed/simple;
+	bh=Smlr/XAt+0Y+PE8041GPeWkpFafOAdIknsQmO4/CQLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N5Cs3syCtgL1n0qgGvNqt9RhZ7e7hZ4mRDn2IgMvBN1PF78zAVTDOD9TTDkVJu3x9cNb1hqdc2TQTwlen1UiZi5zHptb+kaUm5SF1gdksry3czDZgRYj/Nb4YzCCZE1NKk7E7fteR8w2x5NOMfFZTV21b8WZAwcabOoy+p5FtBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12LRXLcU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA4CC433F1;
-	Thu, 11 Apr 2024 10:37:38 +0000 (UTC)
+	 MIME-Version; b=hnzsDAZH+dvS5TNDRdGHCSRxQ5N8xPfHUIXJFigOrF8DybScXdxcPEOTQUJ33H7JOFBODN6CI6DguBUrJybSortEV5ntZSvhsiamx1DAyxrNguo7phuGfzWenOuAKhw1X97K2/wfIK2+hmxYnOWuTQNEy22nnqCMNye/qGLgc1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbjkKfnG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C97DC433C7;
+	Thu, 11 Apr 2024 10:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831859;
-	bh=XaFOv2Hby/3JHgy+nhPdw5XZgc6yrAdFVXkQWvQEJXA=;
+	s=korg; t=1712829837;
+	bh=Smlr/XAt+0Y+PE8041GPeWkpFafOAdIknsQmO4/CQLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=12LRXLcUARKV9dN1W+cJA1Yr/zjLD7g1z30+Sa0mBTXUkK1Z1eZ2J4GD9o/sskhjt
-	 NDR32IgVKOzS9E5/aKVsUhX9CGHrkrf9u2iAOLEIwX002lkexxcovlCGGNTeY3VfnL
-	 9ytN8gvdJEbGNZ5ZNSjGFleuAUts0yxdPC6LjcP4=
+	b=wbjkKfnGvh/i+M91IOU49oR0yAc5MQpdZzeR+a7aD5F2QQd7AbQjLKfb6bpSbTrjK
+	 Fqu9uykOB5yhZcE/cc+4YgQYCu/1Qnj1ugHDpdc6xRPYBAm0WVZtVOfKHM3gDPXwMU
+	 I1a4LHVkfUS8fWVzJ3kguVfUw9hJRqASf1pCR1eM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>
-Subject: [PATCH 5.10 143/294] KVM/VMX: Use BT+JNC, i.e. EFLAGS.CF to select VMRESUME vs. VMLAUNCH
-Date: Thu, 11 Apr 2024 11:55:06 +0200
-Message-ID: <20240411095439.959936805@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 4.19 084/175] usb: cdc-wdm: close race between read and workqueue
+Date: Thu, 11 Apr 2024 11:55:07 +0200
+Message-ID: <20240411095422.091282703@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-From: Sean Christopherson <seanjc@google.com>
+commit 339f83612f3a569b194680768b22bf113c26a29d upstream.
 
-commit 706a189dcf74d3b3f955e9384785e726ed6c7c80 upstream.
+wdm_read() cannot race with itself. However, in
+service_outstanding_interrupt() it can race with the
+workqueue, which can be triggered by error handling.
 
-Use EFLAGS.CF instead of EFLAGS.ZF to track whether to use VMRESUME versus
-VMLAUNCH.  Freeing up EFLAGS.ZF will allow doing VERW, which clobbers ZF,
-for MDS mitigations as late as possible without needing to duplicate VERW
-for both paths.
+Hence we need to make sure that the WDM_RESPONDING
+flag is not just only set but tested.
 
-  [ pawan: resolved merge conflict in __vmx_vcpu_run in backport. ]
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: https://lore.kernel.org/all/20240213-delay-verw-v8-5-a6216d83edb7%40linux.intel.com
+Fixes: afba937e540c9 ("USB: CDC WDM driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20240314115132.3907-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/run_flags.h |    7 +++++--
- arch/x86/kvm/vmx/vmenter.S   |    6 +++---
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/usb/class/cdc-wdm.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/vmx/run_flags.h
-+++ b/arch/x86/kvm/vmx/run_flags.h
-@@ -2,7 +2,10 @@
- #ifndef __KVM_X86_VMX_RUN_FLAGS_H
- #define __KVM_X86_VMX_RUN_FLAGS_H
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -471,6 +471,7 @@ out_free_mem:
+ static int service_outstanding_interrupt(struct wdm_device *desc)
+ {
+ 	int rv = 0;
++	int used;
  
--#define VMX_RUN_VMRESUME	(1 << 0)
--#define VMX_RUN_SAVE_SPEC_CTRL	(1 << 1)
-+#define VMX_RUN_VMRESUME_SHIFT		0
-+#define VMX_RUN_SAVE_SPEC_CTRL_SHIFT	1
+ 	/* submit read urb only if the device is waiting for it */
+ 	if (!desc->resp_count || !--desc->resp_count)
+@@ -485,7 +486,10 @@ static int service_outstanding_interrupt
+ 		goto out;
+ 	}
+ 
+-	set_bit(WDM_RESPONDING, &desc->flags);
++	used = test_and_set_bit(WDM_RESPONDING, &desc->flags);
++	if (used)
++		goto out;
 +
-+#define VMX_RUN_VMRESUME		BIT(VMX_RUN_VMRESUME_SHIFT)
-+#define VMX_RUN_SAVE_SPEC_CTRL		BIT(VMX_RUN_SAVE_SPEC_CTRL_SHIFT)
- 
- #endif /* __KVM_X86_VMX_RUN_FLAGS_H */
---- a/arch/x86/kvm/vmx/vmenter.S
-+++ b/arch/x86/kvm/vmx/vmenter.S
-@@ -77,7 +77,7 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	mov (%_ASM_SP), %_ASM_AX
- 
- 	/* Check if vmlaunch or vmresume is needed */
--	testb $VMX_RUN_VMRESUME, %bl
-+	bt   $VMX_RUN_VMRESUME_SHIFT, %bx
- 
- 	/* Load guest registers.  Don't clobber flags. */
- 	mov VCPU_RCX(%_ASM_AX), %_ASM_CX
-@@ -99,8 +99,8 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	/* Load guest RAX.  This kills the @regs pointer! */
- 	mov VCPU_RAX(%_ASM_AX), %_ASM_AX
- 
--	/* Check EFLAGS.ZF from 'testb' above */
--	jz .Lvmlaunch
-+	/* Check EFLAGS.CF from the VMX_RUN_VMRESUME bit test above. */
-+	jnc .Lvmlaunch
- 
- 	/*
- 	 * After a successful VMRESUME/VMLAUNCH, control flow "magically"
+ 	spin_unlock_irq(&desc->iuspin);
+ 	rv = usb_submit_urb(desc->response, GFP_KERNEL);
+ 	spin_lock_irq(&desc->iuspin);
 
 
 
