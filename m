@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-38838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB0D8A10A5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A88F18A0DBE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05B7D28ADD4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8CC61C2132E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76EE1474BE;
-	Thu, 11 Apr 2024 10:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E211448F3;
+	Thu, 11 Apr 2024 10:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXO8DfgD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXVq/j5p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41521474AB;
-	Thu, 11 Apr 2024 10:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4D9145B08;
+	Thu, 11 Apr 2024 10:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831741; cv=none; b=PJiBwzAlCvjQF0CxDUum1Tmu+fNAz7kc+x0qwC/CgYSxknQ8QRx8fzeBenQzfjPwHOb2MCn1mKU1fpYSS0TvV4y/nlo5cgRK+2SxUChFeaRfXQHLBaZX4siBoX7YZ7XRDJeIDed7E/2QTOGdEO9CE1fTgEeSovKiuPG2BhSAIWo=
+	t=1712830037; cv=none; b=p3E7wG3Dn5rM03w4Dm7T9UQbmYlTu3TGR/uGE6edhSMZtD2JiOU3wmaA+JX/36aUm+8Bj6rp0o2zpYuhjPw0e8X5LlzXE2agOpHglqLyiMuA56ST8owf2ttCowNbp+Rsgvg4q38VQdQ6EIBiKA+waBLNE/qwM0IcbrpsJgYLUNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831741; c=relaxed/simple;
-	bh=m3KZ3Rn/ejPwwd/TF5QxWks1xOHgj3tt07fLDHw1kuw=;
+	s=arc-20240116; t=1712830037; c=relaxed/simple;
+	bh=Iw5R1mbIkW1YYTydc9sQ8OSbcufWC9RiQPGAFaccReQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gl7Xa1buQwX4DaHfpuTRmSNQPyRkSRqgrbe6v5NLQT/Mq1PwnXQIh0KZO9ZahRFudPgeSZfs9znBTbaEjF9WSgTqv31r014TqU2NTccTQp6Zjm/53+m/UBbTPo5Ov3tWWuo6aL8yKD2uImv5Yi3VebTpfoQLvgWBh/lv13CFxow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXO8DfgD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37B8C43390;
-	Thu, 11 Apr 2024 10:35:40 +0000 (UTC)
+	 MIME-Version; b=jvmLsvJvNbm+EkXcQwdQVJaBnE1g5buK5FBd89usA8GR7+fpLqYHtHD4ooipDDASlXGCi/CK8DKR1DoxFe+vBjRJFrY71cBx2fRYiqGNu4ZVDQhGmWwx9klryDB8WmRlUd+pSZS/unU6NKdVGUPg2c8zxyocwuj7mVCG1fKLjMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXVq/j5p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7DDC43394;
+	Thu, 11 Apr 2024 10:07:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831741;
-	bh=m3KZ3Rn/ejPwwd/TF5QxWks1xOHgj3tt07fLDHw1kuw=;
+	s=korg; t=1712830036;
+	bh=Iw5R1mbIkW1YYTydc9sQ8OSbcufWC9RiQPGAFaccReQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LXO8DfgDck3IikRboWyzHTTPy4I2rMYLamYifBW0oy++6qEm8AWxvp1N4wcJGQLvV
-	 GSj64T2nNl7aB3J9GS82IMz3mYS/i4C6I9FXmFhT1ikxGoFMfocOplFHj3C1/WmGoC
-	 LVr7DhLMLjdAgRYwOjtQ5pGHi7uUsk61YYPngmxA=
+	b=AXVq/j5pbcL8bKudUCJLzCGRG5PF/D0sGoDRyaJX/sIYAMnmEz0ehDd2bsg0Ynrhf
+	 oYeK2zOMgdKpUJzM65lEydy30uA2h1JcjnNZPm0LKimN4kF/rdA8XRRfLX0y7PZ2Zc
+	 NaLigFIe3pf2Jahvwd+snmwCRqTAI3UuBo+VGqwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Leo Ma <hanghong.ma@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 111/294] drm/amd/display: Fix noise issue on HDMI AV mute
+Subject: [PATCH 6.8 006/143] net: stmmac: dwmac-starfive: Add support for JH7100 SoC
 Date: Thu, 11 Apr 2024 11:54:34 +0200
-Message-ID: <20240411095439.011887159@linuxfoundation.org>
+Message-ID: <20240411095421.100262500@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,61 +65,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Ma <hanghong.ma@amd.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 69e3be6893a7e668660b05a966bead82bbddb01d ]
+[ Upstream commit 8d4597b871210429bda0f5c3a8816b7d9b6daf7e ]
 
-[Why]
-When mode switching is triggered there is momentary noise visible on
-some HDMI TV or displays.
+Add a missing quirk to enable support for the StarFive JH7100 SoC.
 
-[How]
-Wait for 2 frames to make sure we have enough time to send out AV mute
-and sink receives a full frame.
+Additionally, for greater flexibility in operation, allow using the
+rgmii-rxid and rgmii-txid phy modes.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Leo Ma <hanghong.ma@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Co-developed-by: Emil Renner Berthing <kernel@esmil.dk>
+Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/Kconfig   |  6 ++--
+ .../ethernet/stmicro/stmmac/dwmac-starfive.c  | 32 ++++++++++++++++---
+ 2 files changed, 31 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-index 22c77e96f6a54..02d22f62c0031 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-@@ -641,10 +641,20 @@ void dcn30_set_avmute(struct pipe_ctx *pipe_ctx, bool enable)
- 	if (pipe_ctx == NULL)
- 		return;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+index 85dcda51df052..4ec61f1ee71a2 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
++++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+@@ -165,9 +165,9 @@ config DWMAC_STARFIVE
+ 	help
+ 	  Support for ethernet controllers on StarFive RISC-V SoCs
  
--	if (dc_is_hdmi_tmds_signal(pipe_ctx->stream->signal) && pipe_ctx->stream_res.stream_enc != NULL)
-+	if (dc_is_hdmi_tmds_signal(pipe_ctx->stream->signal) && pipe_ctx->stream_res.stream_enc != NULL) {
- 		pipe_ctx->stream_res.stream_enc->funcs->set_avmute(
- 				pipe_ctx->stream_res.stream_enc,
- 				enable);
+-	  This selects the StarFive platform specific glue layer support for
+-	  the stmmac device driver. This driver is used for StarFive JH7110
+-	  ethernet controller.
++	  This selects the StarFive platform specific glue layer support
++	  for the stmmac device driver. This driver is used for the
++	  StarFive JH7100 and JH7110 ethernet controllers.
+ 
+ config DWMAC_STI
+ 	tristate "STi GMAC support"
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
+index 5d630affb4d15..4e1076faee0cd 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
+@@ -15,13 +15,20 @@
+ 
+ #include "stmmac_platform.h"
+ 
+-#define STARFIVE_DWMAC_PHY_INFT_RGMII	0x1
+-#define STARFIVE_DWMAC_PHY_INFT_RMII	0x4
+-#define STARFIVE_DWMAC_PHY_INFT_FIELD	0x7U
++#define STARFIVE_DWMAC_PHY_INFT_RGMII		0x1
++#define STARFIVE_DWMAC_PHY_INFT_RMII		0x4
++#define STARFIVE_DWMAC_PHY_INFT_FIELD		0x7U
 +
-+		/* Wait for two frame to make sure AV mute is sent out */
-+		if (enable) {
-+			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VACTIVE);
-+			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VBLANK);
-+			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VACTIVE);
-+			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VBLANK);
-+			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VACTIVE);
-+		}
++#define JH7100_SYSMAIN_REGISTER49_DLYCHAIN	0xc8
++
++struct starfive_dwmac_data {
++	unsigned int gtxclk_dlychain;
++};
+ 
+ struct starfive_dwmac {
+ 	struct device *dev;
+ 	struct clk *clk_tx;
++	const struct starfive_dwmac_data *data;
+ };
+ 
+ static void starfive_dwmac_fix_mac_speed(void *priv, unsigned int speed, unsigned int mode)
+@@ -67,6 +74,8 @@ static int starfive_dwmac_set_mode(struct plat_stmmacenet_data *plat_dat)
+ 
+ 	case PHY_INTERFACE_MODE_RGMII:
+ 	case PHY_INTERFACE_MODE_RGMII_ID:
++	case PHY_INTERFACE_MODE_RGMII_RXID:
++	case PHY_INTERFACE_MODE_RGMII_TXID:
+ 		mode = STARFIVE_DWMAC_PHY_INFT_RGMII;
+ 		break;
+ 
+@@ -89,6 +98,14 @@ static int starfive_dwmac_set_mode(struct plat_stmmacenet_data *plat_dat)
+ 	if (err)
+ 		return dev_err_probe(dwmac->dev, err, "error setting phy mode\n");
+ 
++	if (dwmac->data) {
++		err = regmap_write(regmap, JH7100_SYSMAIN_REGISTER49_DLYCHAIN,
++				   dwmac->data->gtxclk_dlychain);
++		if (err)
++			return dev_err_probe(dwmac->dev, err,
++					     "error selecting gtxclk delay chain\n");
 +	}
++
+ 	return 0;
  }
  
- void dcn30_update_info_frame(struct pipe_ctx *pipe_ctx)
+@@ -114,6 +131,8 @@ static int starfive_dwmac_probe(struct platform_device *pdev)
+ 	if (!dwmac)
+ 		return -ENOMEM;
+ 
++	dwmac->data = device_get_match_data(&pdev->dev);
++
+ 	dwmac->clk_tx = devm_clk_get_enabled(&pdev->dev, "tx");
+ 	if (IS_ERR(dwmac->clk_tx))
+ 		return dev_err_probe(&pdev->dev, PTR_ERR(dwmac->clk_tx),
+@@ -144,8 +163,13 @@ static int starfive_dwmac_probe(struct platform_device *pdev)
+ 	return stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
+ }
+ 
++static const struct starfive_dwmac_data jh7100_data = {
++	.gtxclk_dlychain = 4,
++};
++
+ static const struct of_device_id starfive_dwmac_match[] = {
+-	{ .compatible = "starfive,jh7110-dwmac"	},
++	{ .compatible = "starfive,jh7100-dwmac", .data = &jh7100_data },
++	{ .compatible = "starfive,jh7110-dwmac" },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, starfive_dwmac_match);
 -- 
 2.43.0
 
