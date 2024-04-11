@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-39013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D668B8A1176
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B12618A11D5
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:47:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13E641C216AE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67BA01F21473
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25565145B26;
-	Thu, 11 Apr 2024 10:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F541E48E;
+	Thu, 11 Apr 2024 10:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGZsfM1w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDzYSwJI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A431448C8;
-	Thu, 11 Apr 2024 10:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD1F79FD;
+	Thu, 11 Apr 2024 10:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832260; cv=none; b=p8F6U+I1iiqpLJMa1Rw/cqQgEpmkhJCbZECanAeyfcQwyL+aISn45kkvGYv8bewEpJ1ch6lO8iYJnr6NzoW8b/JoEDMfekfKKRB2BeaomnP1cUG2JJUz7cWMr0Ij/rb4t0HAEVuzIhD23syftP2gykTYK/Go7xXcr2mbUY6W3ec=
+	t=1712832457; cv=none; b=arvDG2dlJnW3KnND9KwATxbNDvUz3LuvN5tQImH1xc5C4pt3SiQJRt4x5WT9DiKO3jeioF1RsNI5e1ryBSuEAlRlY0KK1K1CjsyR6cTYTE4YLnKh84AQOjIUK4tbUI2tiW5rBUgOO8Lve+PC/veUf4wgGZFiw2/c9YwYOauu61I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832260; c=relaxed/simple;
-	bh=lE+KimLROdpJh55G1IyNff9LFxHjn62OKHfy26o0ZrU=;
+	s=arc-20240116; t=1712832457; c=relaxed/simple;
+	bh=8JOz6/ydZGS0MribYS8bs8gV1rZH0VT+Xsqj03Kkyw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=enLteI+QYKYb6APZuXsH7EEdgwoT0gWHo4+XPIGtZlcvXfvSeqgsYhl6wSXATToBXbdDMsSRklBMaBWKEyDj+LRJtv/4C9wkS6hoU0H7wHzO6JODzXPTy21fwvIRlH/5LY5bgoQ5pssYH4OQKQz01hf+b2hUmyf/zUHMYnNtFrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGZsfM1w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D723AC433F1;
-	Thu, 11 Apr 2024 10:44:19 +0000 (UTC)
+	 MIME-Version; b=hYVqmf+dAnvpS7GqYmNmohuXdMD2v7nXzCZ/psjC84RXqNINt2Pik89JETodr/qYyp11lyYBjUCKYDaW9rCGdH8xiwKjH/vcfUYhnTY3LhTz1/hF5rYAel9nUrIREHYUH1yZry4EaNwVKeKpIK5ckPZoh/bKNvZ2Cp6dD+KUPsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDzYSwJI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5518AC433C7;
+	Thu, 11 Apr 2024 10:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832260;
-	bh=lE+KimLROdpJh55G1IyNff9LFxHjn62OKHfy26o0ZrU=;
+	s=korg; t=1712832457;
+	bh=8JOz6/ydZGS0MribYS8bs8gV1rZH0VT+Xsqj03Kkyw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BGZsfM1wLtnZ+chp99bc/vIHtpikJ/D+1hUKZLH2f3wn92C9Mo8iwGuKJjQtxQuIA
-	 C29cwFaWHsOkYEDVvCTIuBTSinAJbw4U2Zoeyq2Y4pnRZ0u2CQgPrO6ZCn/1focU3C
-	 yFs56j2pldXSsj1CWUQa5f2P4eDdqNO2JPXcHAu4=
+	b=jDzYSwJIk5sqADewR9eqR0anR/ly8DKJnQchpCm4ueu4Jymu1XrfvaiLbQXuJPfbo
+	 +wh7e6D5JZTwTOYjDTX+bVd3q1sxkdYj2LI4yh1QX3NAalH8J0KinEnMLAsZsSniiO
+	 /FVOA4VwvmTo8mJZmR7sryQx1vw4GlZb4ZQZEfpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	John Hawley <warthog9@eaglescrag.net>,
+	"Ricardo B. Marliere" <ricardo@marliere.net>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 284/294] netfilter: nf_tables: discard table flag update with pending basechain deletion
+Subject: [PATCH 6.1 55/83] ktest: force $buildonly = 1 for make_warnings_file test type
 Date: Thu, 11 Apr 2024 11:57:27 +0200
-Message-ID: <20240411095444.085346905@linuxfoundation.org>
+Message-ID: <20240411095414.340652443@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Ricardo B. Marliere <ricardo@marliere.net>
 
-commit 1bc83a019bbe268be3526406245ec28c2458a518 upstream.
+[ Upstream commit 07283c1873a4d0eaa0e822536881bfdaea853910 ]
 
-Hook unregistration is deferred to the commit phase, same occurs with
-hook updates triggered by the table dormant flag. When both commands are
-combined, this results in deleting a basechain while leaving its hook
-still registered in the core.
+The test type "make_warnings_file" should have no mandatory configuration
+parameters other than the ones required by the "build" test type, because
+its purpose is to create a file with build warnings that may or may not be
+used by other subsequent tests. Currently, the only way to use it as a
+stand-alone test is by setting POWER_CYCLE, CONSOLE, SSH_USER,
+BUILD_TARGET, TARGET_IMAGE, REBOOT_TYPE and GRUB_MENU.
 
-Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://lkml.kernel.org/r/20240315-ktest-v2-1-c5c20a75f6a3@marliere.net
+
+Cc: John Hawley <warthog9@eaglescrag.net>
+Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ tools/testing/ktest/ktest.pl | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index ef271628975a9..ab7f7e45b9846 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1084,6 +1084,24 @@ static void nf_tables_table_disable(struct net *net, struct nft_table *table)
- #define __NFT_TABLE_F_UPDATE		(__NFT_TABLE_F_WAS_DORMANT | \
- 					 __NFT_TABLE_F_WAS_AWAKEN)
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index e6c381498e632..449e45bd69665 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -836,6 +836,7 @@ sub set_value {
+     if ($lvalue =~ /^(TEST|BISECT|CONFIG_BISECT)_TYPE(\[.*\])?$/ &&
+ 	$prvalue !~ /^(config_|)bisect$/ &&
+ 	$prvalue !~ /^build$/ &&
++	$prvalue !~ /^make_warnings_file$/ &&
+ 	$buildonly) {
  
-+static bool nft_table_pending_update(const struct nft_ctx *ctx)
-+{
-+	struct nftables_pernet *nft_net = net_generic(ctx->net, nf_tables_net_id);
-+	struct nft_trans *trans;
-+
-+	if (ctx->table->flags & __NFT_TABLE_F_UPDATE)
-+		return true;
-+
-+	list_for_each_entry(trans, &nft_net->commit_list, list) {
-+		if (trans->ctx.table == ctx->table &&
-+		    trans->msg_type == NFT_MSG_DELCHAIN &&
-+		    nft_is_base_chain(trans->ctx.chain))
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static int nf_tables_updtable(struct nft_ctx *ctx)
- {
- 	struct nft_trans *trans;
-@@ -1101,7 +1119,7 @@ static int nf_tables_updtable(struct nft_ctx *ctx)
- 		return 0;
- 
- 	/* No dormant off/on/off/on games in single transaction */
--	if (ctx->table->flags & __NFT_TABLE_F_UPDATE)
-+	if (nft_table_pending_update(ctx))
- 		return -EINVAL;
- 
- 	trans = nft_trans_alloc(ctx, NFT_MSG_NEWTABLE,
+ 	# Note if a test is something other than build, then we
 -- 
 2.43.0
 
