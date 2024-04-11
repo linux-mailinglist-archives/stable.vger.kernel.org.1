@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C563C8A0E92
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:16:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3758A108F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8177B283EF7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:16:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B13FB1C222F0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F43145B08;
-	Thu, 11 Apr 2024 10:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F1A13BACD;
+	Thu, 11 Apr 2024 10:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYRZ3guK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llaMPxob"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24F513F452;
-	Thu, 11 Apr 2024 10:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7701474B0;
+	Thu, 11 Apr 2024 10:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830563; cv=none; b=Ri/N8d8n5XCv2kE2e3J/s3Ixe2tjY8Ib4fb92NmzkOKr56KToqxQspJwRIkgtHW2iI5LZvRdRBdZC1Sd0FwQcucPKGNqTYG2y4Y/YGAjREwGSLobdzPBqMiEDYgGCh1ZgXC9NfZcVF1ZcCvz3xhClANT3B8beUmHFqMK0XfAoys=
+	t=1712831674; cv=none; b=FbdPEz2ETSjqUjcraONVvdqPPb8X+M36TEvMiU2qgjEGEMo5KvXnQ+yXN5mHsJCsvK4VzMB89yroD6xeCEkeBDWSflACyAe9S/XALETfl+P/yqv76nx2a3dOwJlRfxVU/m4hMfhDP9HHxQSoSET3wbizx2wV4Mq4biZ0EX53Tho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830563; c=relaxed/simple;
-	bh=zD9vhlldqA1nCo7Ceb5Mr/ZY57Wl38P0IUgPOfJDofo=;
+	s=arc-20240116; t=1712831674; c=relaxed/simple;
+	bh=Oq+BfmrDP7XQosqCh/P4zavSoxF0/xDp01yav11hSz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i2ur+Ls7DL0yD6AvVMvunDg/GXo7Cf2htTVxr3jEI8H4tU3idEjwo1aTtgqFf3elJQJrjfeYvuFtBldDYcE0q/LfASgWVwpaqQbYG1gaCUyUV7qslNjsdWW+reFZutwqFfkVJCyXsZgbwk9YZsWWVZ5tTGS2HYCnopJlqReMF3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYRZ3guK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E306C433C7;
-	Thu, 11 Apr 2024 10:16:02 +0000 (UTC)
+	 MIME-Version; b=lyyjbWoeDbwT56K+aXkkzEHbsS1M24oMHj67x9dqTZ/Cm5Mnl5Wh1P5kdwjlK13T8QnvOo9UHH3qPWGBhAQH0c8xE+x1hlsUC8LDkpNKu5yiJnQy4NMTYsOVGcF/KAemtiM4byRZQUB+OUgiG49zDLGFT3sAju+dVHDL1BUgrNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=llaMPxob; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA79EC433F1;
+	Thu, 11 Apr 2024 10:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830563;
-	bh=zD9vhlldqA1nCo7Ceb5Mr/ZY57Wl38P0IUgPOfJDofo=;
+	s=korg; t=1712831674;
+	bh=Oq+BfmrDP7XQosqCh/P4zavSoxF0/xDp01yav11hSz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mYRZ3guKvXOmQhVcZuMgPv55/DzDFbWeb8wYnwi9a+RIs8WsDtXiuTkWy6U6fNAv1
-	 bMGOemaoeHn2DPb2qulMv71FyOXZ+gdN2TuAlY1xk01pu/Iz4vVph8mjH+sT9HmIv7
-	 3J1tQ2eF+s+mXT+d5ZelF444gCSO9U8jlfl6k1AE=
+	b=llaMPxobyRStq4b5Bf3MyOcnzFwe4SYDgbCMsGND3bf3lWbDt7hZ5+5Quww9eLJV2
+	 CA0OOoE1tn/a+940B9oCE8j0HN46qmCucHPaNsxeNSuqIPPn3FzLuvPuDTTh5k1AI4
+	 f6N5ILuksof8tdNMlIT+1tLOkoJS0yQDBTBNUlFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Toru Katagiri <Toru.Katagiri@tdk.com>,
-	Johan Hovold <johan@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 042/215] USB: serial: cp210x: add pid/vid for TDK NC0110013M and MM0110113M
+Subject: [PATCH 5.10 088/294] ring-buffer: Do not set shortest_full when full target is hit
 Date: Thu, 11 Apr 2024 11:54:11 +0200
-Message-ID: <20240411095426.159652220@linuxfoundation.org>
+Message-ID: <20240411095438.332572399@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toru Katagiri <Toru.Katagiri@tdk.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit b1a8da9ff1395c4879b4bd41e55733d944f3d613 ]
+[ Upstream commit 761d9473e27f0c8782895013a3e7b52a37c8bcfc ]
 
-TDK NC0110013M and MM0110113M have custom USB IDs for CP210x,
-so we need to add them to the driver.
+The rb_watermark_hit() checks if the amount of data in the ring buffer is
+above the percentage level passed in by the "full" variable. If it is, it
+returns true.
 
-Signed-off-by: Toru Katagiri <Toru.Katagiri@tdk.com>
+But it also sets the "shortest_full" field of the cpu_buffer that informs
+writers that it needs to call the irq_work if the amount of data on the
+ring buffer is above the requested amount.
+
+The rb_watermark_hit() always sets the shortest_full even if the amount in
+the ring buffer is what it wants. As it is not going to wait, because it
+has what it wants, there's no reason to set shortest_full.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240312115641.6aa8ba08@gandalf.local.home
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: 42fb0a1e84ff5 ("tracing/ring-buffer: Have polling block on watermark")
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/cp210x.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/trace/ring_buffer.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
-index 88659a75f30f9..5353fa7e59696 100644
---- a/drivers/usb/serial/cp210x.c
-+++ b/drivers/usb/serial/cp210x.c
-@@ -57,6 +57,8 @@ static const struct usb_device_id id_table[] = {
- 	{ USB_DEVICE(0x0471, 0x066A) }, /* AKTAKOM ACE-1001 cable */
- 	{ USB_DEVICE(0x0489, 0xE000) }, /* Pirelli Broadband S.p.A, DP-L10 SIP/GSM Mobile */
- 	{ USB_DEVICE(0x0489, 0xE003) }, /* Pirelli Broadband S.p.A, DP-L10 SIP/GSM Mobile */
-+	{ USB_DEVICE(0x04BF, 0x1301) }, /* TDK Corporation NC0110013M - Network Controller */
-+	{ USB_DEVICE(0x04BF, 0x1303) }, /* TDK Corporation MM0110113M - i3 Micro Module */
- 	{ USB_DEVICE(0x0745, 0x1000) }, /* CipherLab USB CCD Barcode Scanner 1000 */
- 	{ USB_DEVICE(0x0846, 0x1100) }, /* NetGear Managed Switch M4100 series, M5300 series, M7100 series */
- 	{ USB_DEVICE(0x08e6, 0x5501) }, /* Gemalto Prox-PU/CU contactless smartcard reader */
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 936b560989a3e..5b665e5991bf7 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -887,9 +887,10 @@ static bool rb_watermark_hit(struct trace_buffer *buffer, int cpu, int full)
+ 		pagebusy = cpu_buffer->reader_page == cpu_buffer->commit_page;
+ 		ret = !pagebusy && full_hit(buffer, cpu, full);
+ 
+-		if (!cpu_buffer->shortest_full ||
+-		    cpu_buffer->shortest_full > full)
+-			cpu_buffer->shortest_full = full;
++		if (!ret && (!cpu_buffer->shortest_full ||
++			     cpu_buffer->shortest_full > full)) {
++		    cpu_buffer->shortest_full = full;
++		}
+ 		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+ 	}
+ 	return ret;
 -- 
 2.43.0
 
