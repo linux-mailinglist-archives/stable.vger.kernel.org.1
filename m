@@ -1,108 +1,118 @@
-Return-Path: <stable+bounces-38070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66FC18A0B24
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A91E8A0BFD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:12:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CDA51F22F96
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 08:27:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B7351F28C8E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B9713E3FE;
-	Thu, 11 Apr 2024 08:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AF51411FE;
+	Thu, 11 Apr 2024 09:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dIwmkpeK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQrSxKAz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320BC1DDE9;
-	Thu, 11 Apr 2024 08:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F3313FD68;
+	Thu, 11 Apr 2024 09:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712824036; cv=none; b=fwQ7wbR1QS3Q9SJiagwWYf4B+wz8PGs3Pi9sOo8mdHMrrz/v5vxjtSvHMoOkmpzOQvCsejDIQY8gFypSQ5rEvMTad9DjHwSv831hH5SVdy/HBAMdpM4ts9DBe25F9plmY3NP0tNUX6tF6QaThOBYlx3PUbh+NwAzQSlGr74KMmA=
+	t=1712826754; cv=none; b=ren2+HWqrwZ5gvZUiROBCOhpZ3mSqgO0orZWrqIQBF8YTi33pb7b/gjHvQOTvutXr9k6cyjQIxSvm56Yp9TodZL9QUdT2D1kBxAT0DxVvSDDVmWF4b3XOnC0oyPWovKaPP0VNpXlYHKZnUkNm9XwLqOY6YG6jm/wRhu71d1EYns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712824036; c=relaxed/simple;
-	bh=VMUO6AMXMVsqgIqjVZgZBXBiEDcMtP9Oe9mg/oobPXQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RT3Aas+MjFdQOXjCtuYgxf0V4NIHrU1hmMhjBVyK1Idy0rUyUUl/gmaM5ifA7yjKIr2XXg4KS6W+tDcXEd6hMcpHnB+PvO0jGMjlhewFfO8Z+ttAkEUWolxcKNude5DyYPTRR5fVl5QY6czU9/2S3sK8IYYQ3MZhoXu3pYsYNQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dIwmkpeK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B86B5C433F1;
-	Thu, 11 Apr 2024 08:27:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712824035;
-	bh=VMUO6AMXMVsqgIqjVZgZBXBiEDcMtP9Oe9mg/oobPXQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=dIwmkpeKIe0q3pu/9q9xha9+2F3jhvYAe6frodg+nYsYZR9w3dcCsivNFDwRdfcfP
-	 rFXtnXXjGORHgV0IkkbqQhujoGdfST2cskNIzur4QJRNUvb3N0znbHS5WwH9mu1eUo
-	 nTlBjsBnb1CXWn0TzVG/PsHmnNWpx4bZ6p8xe2xtlRC1mRmy6B1lx5Ad6DuKJI8rP4
-	 uz0/QE//dOGFAM44jYtcC5pp9z9CXcgvfgKoviD35qme4MYpH3mPU1PDtOLMPtTwcm
-	 A+t2jxWi9C4U1DSChlNPpAc7R+qqsRatBlPS0+oMMq2mtCGJXVcYCwyIiTa3yDgKdK
-	 bSpNHi3Zkq4yQ==
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2d48d75ab70so103088301fa.0;
-        Thu, 11 Apr 2024 01:27:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVU0+of1qNpG+a37hgQhtcb+sSDa+4o1btpmPDOKiDWj1UY58Yjc4xZxBZP07RlZGFFLawRdptNhvOX/vvVC9d2VoCWMRvcD+E7tXyQ53r5iIrMXpluS44RwqyvnSKLl2jqoDjh
-X-Gm-Message-State: AOJu0YyVnrg1WosAg4M1MBhEYa9dxE0Wy5C61l6CV/yGOpk3tp4zNAPb
-	ouFjWJhzLd6C/QZAQJ7dLC7q73cX6iijQVfdNqMFV7VlFf5UBDOm/lMWcvYYhGH9gVs6RQizkFa
-	irmGI1xZkKrFsskmZDTeG2IGlnNs=
-X-Google-Smtp-Source: AGHT+IE6Jig5oeL04Ih0wDkMGruvLCBbhVbwekOG/N1Wn4x19B/cJ/cmRCJzfm1GiXipeKhO2KtEAU/LKwGLMVfOZ4g=
-X-Received: by 2002:a2e:9516:0:b0:2d8:59cb:89ef with SMTP id
- f22-20020a2e9516000000b002d859cb89efmr3147956ljh.24.1712824033916; Thu, 11
- Apr 2024 01:27:13 -0700 (PDT)
+	s=arc-20240116; t=1712826754; c=relaxed/simple;
+	bh=oAdF9BAOzsQlP5Z5RlY9ZCxROtx8t5/sKMr5ONaoe0U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MMbXF2TCt5vJ5nG7Yc2S3jktKwru8je2KKEQVyezTenon2QRz4XfVfLb5wLLDAm9QvbZ6zHGMa2CHaJpMXztnEwyLlNgU+kA0rtlLC2Jt/U4AdvtmgTh9jpfh6gEvLkI7CU81Xb62H35TsVdf5RVUgSCX/9CraU3Fu8QOz+xYMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQrSxKAz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA938C43390;
+	Thu, 11 Apr 2024 09:12:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712826753;
+	bh=oAdF9BAOzsQlP5Z5RlY9ZCxROtx8t5/sKMr5ONaoe0U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vQrSxKAzz+d0ZhvaZIFmGfhMeMR8AAuXQFsEUl3DIYM6nHrg1RnzmSv9U702TiZRk
+	 vvgV7vggHoIokb7j4IuGm/pT4C+SIkEj4kPbPDjVoUINWakhmfetvoCfRwVZOrwtoQ
+	 SVw67TLlHxLHNDDSyKjDSzFJFvqWAqxclMQyv2II=
+Date: Thu, 11 Apr 2024 11:12:29 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de
+Subject: Re: [PATCH 4.19 00/41] 4.19.310-rc1 review
+Message-ID: <2024041118-slingshot-contented-1586@gregkh>
+References: <20240313170435.616724-1-sashal@kernel.org>
+ <305ed269-b7f0-4ba2-9f63-ea15480fefc0@roeck-us.net>
+ <ccf81903-b991-459a-9a3a-8d46efd909b8@roeck-us.net>
+ <2024033031-imperfect-jukebox-ea4f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <3c6e6172-cf64-4230-bcc5-7682b4d64a8a@gmx.de> <4e2ff80c-9e3f-433e-8783-cb9729c30bb2@leemhuis.info>
-In-Reply-To: <4e2ff80c-9e3f-433e-8783-cb9729c30bb2@leemhuis.info>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 11 Apr 2024 10:27:02 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHgvv0FYZXsFm8KisXuR6t47-nXtgOs0Gyva4MJEJ_4Ow@mail.gmail.com>
-Message-ID: <CAMj1kXHgvv0FYZXsFm8KisXuR6t47-nXtgOs0Gyva4MJEJ_4Ow@mail.gmail.com>
-Subject: Re: 6.8.5 does not boot (regression)
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: =?UTF-8?Q?Toralf_F=C3=B6rster?= <toralf.foerster@gmx.de>, 
-	Linux Kernel <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, Greg KH <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2024033031-imperfect-jukebox-ea4f@gregkh>
 
-On Thu, 11 Apr 2024 at 10:19, Linux regression tracking (Thorsten
-Leemhuis) <regressions@leemhuis.info> wrote:
->
-> On 11.04.24 09:20, Toralf F=C3=B6rster wrote:
-> > It is a remote system, nothing in the logs, system is a hardened Gentoo
-> > Linux, 6.8.4 was fine.
-> >
-> > Linux mr-fox 6.8.4 #4 SMP Thu Apr  4 22:10:47 UTC 2024 x86_64 AMD Ryzen
-> > 9 5950X 16-Core Processor AuthenticAMD GNU/Linux
-> >
-> > Another Gentoo dev reported problems too.
-> >
-> > config is below.
->
-> Thx for the report, but the harsh reality is: nearly no developer will
-> see your initial report, as you just sent it to LKML, which nearly
-> nobody ready. I CCed a few lists, which might help. But that is
-> unlikely, as this could be cause by all sorts of changes. Which is why
-> we likely need a bisection (
-> https://docs.kernel.org/admin-guide/verify-bugs-and-bisect-regressions.ht=
-ml
-> ) from somebody affected to make some progress here.
->
-> That being said: there are a few EFI changes in there that in a case
-> like this are a suspect. I CCed the developer, maybe something rings a be=
-ll.
->
+On Sat, Mar 30, 2024 at 10:19:56AM +0100, Greg KH wrote:
+> On Tue, Mar 19, 2024 at 07:24:37AM -0700, Guenter Roeck wrote:
+> > On 3/16/24 13:57, Guenter Roeck wrote:
+> > > On 3/13/24 10:03, Sasha Levin wrote:
+> > > > 
+> > > > This is the start of the stable review cycle for the 4.19.310 release.
+> > > > There are 41 patches in this series, all will be posted as a response
+> > > > to this one.  If anyone has any issues with these being applied, please
+> > > > let me know.
+> > > > 
+> > > > Responses should be made by Fri Mar 15 05:04:34 PM UTC 2024.
+> > > > Anything received after that time might be too late.
+> > > > 
+> > > > The whole patch series can be found in one patch at:
+> > > >          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-4.19.y&id2=v4.19.309
+> > > > or in the git tree and branch at:
+> > > >          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+> > > > and the diffstat can be found below.
+> > > > 
+> > > > Thanks,
+> > > > Sasha
+> > > > 
+> > > > -------------
+> > > > Pseudo-Shortlog of commits:
+> > > > 
+> > > > Arnd Bergmann (1):
+> > > >    y2038: rusage: use __kernel_old_timeval
+> > > > 
+> > > 
+> > > Guess this wasn't build tested on alpha, making it unbuildable on v4.19.y.
+> > > 
+> > > Building alpha:defconfig ... failed
+> > > --------------
+> > > Error log:
+> > > arch/alpha/kernel/osf_sys.c: In function '__do_sys_old_adjtimex':
+> > > arch/alpha/kernel/osf_sys.c:1274:43: error: passing argument 2 of 'put_tv_to_tv32' from incompatible pointer type
+> > > 
+> > 
+> > Following up on this, I now dropped build and boot testing of 'alpha'
+> > targets for v4.19.y.
+> 
+> Ok, let me go unwind this and try to fix this up in the next set of 4.19
+> stable -rc updates...
 
-This is a known issue, and will be fixed in the next 6.8.y release.
+I tried, and it's just too messy.  Given that alpha really is a dead
+architecture, and 4.19.y is only going to be around for a few more
+months, and that the 2-3 alpha users out there can move to 5.4 (and
+really should not be using 4.19 anyway), I'm just going to leave this
+as-is (i.e. broken.)
 
-In the mean time, you can apply
+thanks,
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-id=3De7d24c0aa8e678f41457d1304e2091cac6fd1a2e
+greg k-h
 
