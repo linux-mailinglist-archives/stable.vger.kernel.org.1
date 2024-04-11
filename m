@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49AC18A0D93
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 059D58A0FBA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD7BD1F2306A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36B901C21C83
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D7F146015;
-	Thu, 11 Apr 2024 10:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99435145B13;
+	Thu, 11 Apr 2024 10:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvLL51bs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6rEYy4c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C9014600A;
-	Thu, 11 Apr 2024 10:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B6813FD94;
+	Thu, 11 Apr 2024 10:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829918; cv=none; b=WcIakStyT6dlTtaKbwQKBUX1BB6yEZnaT6ye3nRMSnBd9N0YV4Sm80atd1W9xx1pY9IJ79ydqQ+/9s4EhJcWxWzwytc7PsiiDBe7MBBDIkoDFonY+TQoj5vNVw+Lx43t97yx8acjXCCJxmCmY52jL9tj/qrbSstjSTARgqmTTq4=
+	t=1712831211; cv=none; b=JRfPI1mY0wLXu9C1R9XVtOB/zFLGjqvv+ExS0wGbzX/Gm2kj/dnNMsa5x+yaWzKuPt+nnRQ+6dhmG2NHRNd9UQ6C1GknTgV55ErHykm0RAhFalvNLkZrELGjep0Ym3VfB0g616WuKH581EsoorSfGQvuPktQth/6qTwfFBz3Qf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829918; c=relaxed/simple;
-	bh=w24IojX4/Q/DJ/EQR880p51X+eH7bv7IROuRn+sWal4=;
+	s=arc-20240116; t=1712831211; c=relaxed/simple;
+	bh=yVSzrilAZd0l8tZLcvDqEH70Fs5cZ78KSfEHVORbalU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKMhT3/lOKaHDVeronFAxHUpa8vg9V5gOTlYmF8+STqBLgwjSTpMS2lDSZQZvTjfwZvp+BmpKKL0q0W/xrA6NtqggYUnUeff5lNme2J0nLa3knfSiS7ByC9kVmfhe5KedRgtxQmn/zygbGbX5RWBQimjb1Islnqvxx30Jni6OZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvLL51bs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30170C433F1;
-	Thu, 11 Apr 2024 10:05:17 +0000 (UTC)
+	 MIME-Version; b=Rk5iHp1ByAPxBPkW+1EFZrcNProF3bkyBqk1n9oMBuOnRSOHb8WHUGmzVS3HvkwstQNDp7Ko8+1mnK7lw9axty+PQvRBDuQeD/74rjDGYfmpkETBMa1Bgq6+upqAwNxtSzgEL/yluCFPyUVamlBradMNqsfQlItH7Tp6pkMahiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6rEYy4c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C055C433C7;
+	Thu, 11 Apr 2024 10:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829917;
-	bh=w24IojX4/Q/DJ/EQR880p51X+eH7bv7IROuRn+sWal4=;
+	s=korg; t=1712831210;
+	bh=yVSzrilAZd0l8tZLcvDqEH70Fs5cZ78KSfEHVORbalU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lvLL51bstx+JKK7qBU6WbefhdEc17XchJ71iYi+DHkZtQNPjgKRCQCxstOgaSCCTy
-	 nd652MW6+5yn72k5XMOPuHfgzVnFRNw0NeFw4R8LTVDV7BxCja0P13QQ+VXcCw3DVP
-	 uuNpdg0napLUme6LwMZZV0HCUgJOgy6r9jegd+SQ=
+	b=y6rEYy4cGaKqdLlhgNcvVnV3kJsq7+goup+zMS7ij/7yRUmTfJrSIJDJJn15Zr2fc
+	 D2cs8UhbhessVWeh6NIu4V3c6sZPaY1pxuCZrHIrqyFupaLkoW5qG9pZnVJzCw3/My
+	 uEtfjtuv45lwG/d93NYLpKYNS+SDqHcbWsnrye7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>,
+	Vinicius Peixoto <nukelet64@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 149/175] btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()
+Subject: [PATCH 6.6 045/114] Bluetooth: Add new quirk for broken read key length on ATS2851
 Date: Thu, 11 Apr 2024 11:56:12 +0200
-Message-ID: <20240411095424.048475234@linuxfoundation.org>
+Message-ID: <20240411095418.242150039@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Vinicius Peixoto <nukelet64@gmail.com>
 
-[ Upstream commit 7411055db5ce64f836aaffd422396af0075fdc99 ]
+[ Upstream commit 48201a3b3f398be6a01f78a14b18bd5d31c47458 ]
 
-The unhandled case in btrfs_relocate_sys_chunks() loop is a corruption,
-as it could be caused only by two impossible conditions:
+The ATS2851 controller erroneously reports support for the "Read
+Encryption Key Length" HCI command. This makes it unable to connect
+to any devices, since this command is issued by the kernel during the
+connection process in response to an "Encryption Change" HCI event.
 
-- at first the search key is set up to look for a chunk tree item, with
-  offset -1, this is an inexact search and the key->offset will contain
-  the correct offset upon a successful search, a valid chunk tree item
-  cannot have an offset -1
+Add a new quirk (HCI_QUIRK_BROKEN_ENC_KEY_SIZE) to hint that the command
+is unsupported, preventing it from interrupting the connection process.
 
-- after first successful search, the found_key corresponds to a chunk
-  item, the offset is decremented by 1 before the next loop, it's
-  impossible to find a chunk item there due to alignment and size
-  constraints
+This is the error log from btmon before this patch:
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+> HCI Event: Encryption Change (0x08) plen 4
+        Status: Success (0x00)
+        Handle: 2048 Address: ...
+        Encryption: Enabled with E0 (0x01)
+< HCI Command: Read Encryption Key Size (0x05|0x0008) plen 2
+        Handle: 2048 Address: ...
+> HCI Event: Command Status (0x0f) plen 4
+      Read Encryption Key Size (0x05|0x0008) ncmd 1
+        Status: Unknown HCI Command (0x01)
+
+Signed-off-by: Vinicius Peixoto <nukelet64@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btusb.c   | 1 +
+ include/net/bluetooth/hci.h | 8 ++++++++
+ net/bluetooth/hci_event.c   | 3 ++-
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index ceced5e56c5a9..30b5646b2c0de 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -2948,7 +2948,17 @@ static int btrfs_relocate_sys_chunks(struct btrfs_fs_info *fs_info)
- 			mutex_unlock(&fs_info->delete_unused_bgs_mutex);
- 			goto error;
- 		}
--		BUG_ON(ret == 0); /* Corruption */
-+		if (ret == 0) {
-+			/*
-+			 * On the first search we would find chunk tree with
-+			 * offset -1, which is not possible. On subsequent
-+			 * loops this would find an existing item on an invalid
-+			 * offset (one less than the previous one, wrong
-+			 * alignment and size).
-+			 */
-+			ret = -EUCLEAN;
-+			goto error;
-+		}
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 8dbdc51976e7b..1976593bc804e 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -4477,6 +4477,7 @@ static int btusb_probe(struct usb_interface *intf,
+ 		set_bit(HCI_QUIRK_BROKEN_READ_TRANSMIT_POWER, &hdev->quirks);
+ 		set_bit(HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT, &hdev->quirks);
+ 		set_bit(HCI_QUIRK_BROKEN_EXT_SCAN, &hdev->quirks);
++		set_bit(HCI_QUIRK_BROKEN_READ_ENC_KEY_SIZE, &hdev->quirks);
+ 	}
  
- 		ret = btrfs_previous_item(chunk_root, path, key.objectid,
- 					  key.type);
+ 	if (!reset)
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index 03e68a8e229f5..35c5f75a3a5ee 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -339,6 +339,14 @@ enum {
+ 	 * during the hdev->setup vendor callback.
+ 	 */
+ 	HCI_QUIRK_BROKEN_LE_CODED,
++
++	/*
++	 * When this quirk is set, the HCI_OP_READ_ENC_KEY_SIZE command is
++	 * skipped during an HCI_EV_ENCRYPT_CHANGE event. This is required
++	 * for Actions Semiconductor ATS2851 based controllers, which erroneously
++	 * claim to support it.
++	 */
++	HCI_QUIRK_BROKEN_READ_ENC_KEY_SIZE,
+ };
+ 
+ /* HCI device flags */
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index bb0e5902a3e60..80e71ce32f09f 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -3679,7 +3679,8 @@ static void hci_encrypt_change_evt(struct hci_dev *hdev, void *data,
+ 		 * controller really supports it. If it doesn't, assume
+ 		 * the default size (16).
+ 		 */
+-		if (!(hdev->commands[20] & 0x10)) {
++		if (!(hdev->commands[20] & 0x10) ||
++		    test_bit(HCI_QUIRK_BROKEN_READ_ENC_KEY_SIZE, &hdev->quirks)) {
+ 			conn->enc_key_size = HCI_LINK_KEY_SIZE;
+ 			goto notify;
+ 		}
 -- 
 2.43.0
 
