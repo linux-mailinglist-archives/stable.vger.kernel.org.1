@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2BC68A1149
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 345368A0F57
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D7FF2870E1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDBE01F27442
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62BB71474D8;
-	Thu, 11 Apr 2024 10:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2342146A64;
+	Thu, 11 Apr 2024 10:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0YAhgTo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJbnVsYu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF3B1474AB;
-	Thu, 11 Apr 2024 10:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61247145353;
+	Thu, 11 Apr 2024 10:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832148; cv=none; b=Kc/G+IIbJSr+AogpMKV8dtrfEnSOUtZy8CtHywB8X2s7s0S6EV6p3JInkBMDhvlcwKcIYMpy7WIXOwhFVi+PFf9yrniel8iDW+H/hB1M5X6xYlpegLDth8VZy5QSnDDaJG7UaRNuyq8BEsWGEovBx9UMnLJn/hP0B5mVXhyr9ZU=
+	t=1712830980; cv=none; b=k+g3UVCFGj0k9Hq2SK1XvUZmqsOL14gJALsRhQwY1bx/S5ay7w6YWLZkQVeOSr1VW5x5ikRMtyCIsYe4UxyOXm9bHRfkoEPYlg5I1x4vl369VQj6KHvAqJ/3PvLlxUIK+/zgvaBlWbU3PEABISzKUONQyJuKC6dH8gmCobbaWSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832148; c=relaxed/simple;
-	bh=K+4SZ1TCz88hEPe+oN0MFSxBbEt222aDiCHa5r2u168=;
+	s=arc-20240116; t=1712830980; c=relaxed/simple;
+	bh=MNZN/a8gLjd04aEFkWN9zml/9quXTTwSM7hRnFuArV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N3Z6EF53pj1Wvt8QHpgPmt4rcsl3Eduhc3v68y8HK5pB5+NQDMKIlh35JbnoXy4ZzYWkHRU/8ldIkzu49OQiDN57SmjbI/Pvf8IFDvFBpcEBh8WY2d+a6r10aaj2TqS4NcZA5iKdD98mcGBadxS4tAs8OWmWYjBAWCDjn/+D52E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0YAhgTo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9172BC43390;
-	Thu, 11 Apr 2024 10:42:27 +0000 (UTC)
+	 MIME-Version; b=gAwDyh7LZlJCSl5O+Ldcfy7Cn6FZjZEr5PhWj/+GD8hWPgRe4QIvVT9lQv3cUUPojpbagCmbqAp5BVQ2dDyr6AUIqvwqNPpYvyOEAp/ZjuPctLyp2ULL12RnTY414CK8H0Sr0pMQN8x9gUFPgR28iC7kDawyOmIyhzRkUt05Bcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJbnVsYu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB748C433C7;
+	Thu, 11 Apr 2024 10:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832148;
-	bh=K+4SZ1TCz88hEPe+oN0MFSxBbEt222aDiCHa5r2u168=;
+	s=korg; t=1712830980;
+	bh=MNZN/a8gLjd04aEFkWN9zml/9quXTTwSM7hRnFuArV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q0YAhgToI4qtMs8aM7LyY2CNnOUFJPfxWH2fQ1QFgjeGMxPXtNMuTIL7LpbNXKXBW
-	 eM4juHivPkWGnifgg9Ou9O22fcrW2tnAHrmyTWnFSBpYiowpXjpg3ZFcy2Y4xCUoRS
-	 3ZJvJlp5aJaXtzqEhgWLEsurEVPbozGjT37LOeMQ=
+	b=JJbnVsYum3/oExXja9e18HSYcKW1y/iAyNTfY19yzUSVIcVzX7C0sL63LF0ljFoZ1
+	 AcvmDacW5YanBkjBHXKnDSYTYGV5gzN7XIHvTQjc7errXeuQEvl49cy/pcKlcKdxwS
+	 rF7lRUJ7YC3SL0loE442BC9A+K4sUFVIBEWiGUTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Lee <slee08177@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 228/294] ASoC: ops: Fix wraparound for mask in snd_soc_get_volsw
+Subject: [PATCH 5.4 182/215] btrfs: export: handle invalid inode or root reference in btrfs_get_parent()
 Date: Thu, 11 Apr 2024 11:56:31 +0200
-Message-ID: <20240411095442.450994206@linuxfoundation.org>
+Message-ID: <20240411095430.339346612@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Lee <slee08177@gmail.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit fc563aa900659a850e2ada4af26b9d7a3de6c591 ]
+[ Upstream commit 26b66d1d366a375745755ca7365f67110bbf6bd5 ]
 
-In snd_soc_info_volsw(), mask is generated by figuring out the index of
-the most significant bit set in max and converting the index to a
-bitmask through bit shift 1. Unintended wraparound occurs when max is an
-integer value with msb bit set. Since the bit shift value 1 is treated
-as an integer type, the left shift operation will wraparound and set
-mask to 0 instead of all 1's. In order to fix this, we type cast 1 as
-`1ULL` to prevent the wraparound.
+The get_parent handler looks up a parent of a given dentry, this can be
+either a subvolume or a directory. The search is set up with offset -1
+but it's never expected to find such item, as it would break allowed
+range of inode number or a root id. This means it's a corruption (ext4
+also returns this error code).
 
-Fixes: 7077148fb50a ("ASoC: core: Split ops out of soc-core.c")
-Signed-off-by: Stephen Lee <slee08177@gmail.com>
-Link: https://msgid.link/r/20240326010131.6211-1-slee08177@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-ops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/export.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index daecd386d5ec8..a83cd8d8a9633 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -246,7 +246,7 @@ int snd_soc_get_volsw(struct snd_kcontrol *kcontrol,
- 	int max = mc->max;
- 	int min = mc->min;
- 	int sign_bit = mc->sign_bit;
--	unsigned int mask = (1 << fls(max)) - 1;
-+	unsigned int mask = (1ULL << fls(max)) - 1;
- 	unsigned int invert = mc->invert;
- 	int val;
- 	int ret;
+diff --git a/fs/btrfs/export.c b/fs/btrfs/export.c
+index 6e4727304b7b4..08d1d456e2f0f 100644
+--- a/fs/btrfs/export.c
++++ b/fs/btrfs/export.c
+@@ -182,8 +182,15 @@ struct dentry *btrfs_get_parent(struct dentry *child)
+ 	ret = btrfs_search_slot(NULL, root, &key, path, 0, 0);
+ 	if (ret < 0)
+ 		goto fail;
++	if (ret == 0) {
++		/*
++		 * Key with offset of -1 found, there would have to exist an
++		 * inode with such number or a root with such id.
++		 */
++		ret = -EUCLEAN;
++		goto fail;
++	}
+ 
+-	BUG_ON(ret == 0); /* Key with offset of -1 found */
+ 	if (path->slots[0] == 0) {
+ 		ret = -ENOENT;
+ 		goto fail;
 -- 
 2.43.0
 
