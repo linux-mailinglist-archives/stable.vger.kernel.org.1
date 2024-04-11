@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 037138A1138
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC4B8A0FD1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 330CB1C23CB6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12EAAB22AC3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71AE1146A95;
-	Thu, 11 Apr 2024 10:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2469E146D79;
+	Thu, 11 Apr 2024 10:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKOe2Q01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zlmErJ5X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0AF146A90;
-	Thu, 11 Apr 2024 10:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D773D146D6D;
+	Thu, 11 Apr 2024 10:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832098; cv=none; b=aDjgiA2TUqfMMf+/d3Tc60dvsGz5pQK+ghVBVO78r1Z/N/dlDbal+OI18FRGwQwItFr7uBnyYdoaNbqmWjiNnA09AJ9vVnCUbf/hIOLiHUR+1VmNtMA1+UCtEqah7EBO9UG4NrcS/ZXaJbHNYQnrDEqppQoKULteNN4JGoGCphc=
+	t=1712831266; cv=none; b=iCSp8ckL3reKBZiFCfjpUifzq2k0PQADNOOWUAYTjIzamalceaikTh5M7J5bbN/HXKZGKSqXCkr1W/pTskkphkMOkfvS8nJj/aHue5IlBH4kfJWlONKFsp37Aal8rcEYEfz+3rp3MO1VqVQpPR9CAQu+q17SDmp8rPpO0GqGg48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832098; c=relaxed/simple;
-	bh=fpS5Want0dFfhhXKGJff2M7XxRLwAcAmK9+KqUngcz8=;
+	s=arc-20240116; t=1712831266; c=relaxed/simple;
+	bh=EHUkWvZWxGLkNFI0tzJXcw1AbDP85DUApjNnZF3jWFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L26qe2MRQ1ueCGownvJWsvzJTa/HLJl2dKMNUIDsVpZItx8yBfJ5I/BJbgU39tArrHpSZi7nF8gn072SyUD+P5q95p92kR77FrqeuSCUmrKWbzp/zlxynk5hnozcnWtUJZ9MDPy5KtC0kUgMpNKUk+PPBtEFlHaX0u67fMZYfkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKOe2Q01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73BEC433F1;
-	Thu, 11 Apr 2024 10:41:37 +0000 (UTC)
+	 MIME-Version; b=gCDEB9BcMQ5haIfunMY6LqPO0b/Cgr19+doTe9sB6d4H1Yoi0gY8HMH0Zbg78izLP53hzjB/IiHa3k3anp0lE6/1tW0+yOHKC8cLK+llrifnwVvzNd/Edn0vFPapu+vr9NjEXXB4ver57FUnXv2s0U1+bDbexxq2oGbhZY45FT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zlmErJ5X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A056C43390;
+	Thu, 11 Apr 2024 10:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832098;
-	bh=fpS5Want0dFfhhXKGJff2M7XxRLwAcAmK9+KqUngcz8=;
+	s=korg; t=1712831266;
+	bh=EHUkWvZWxGLkNFI0tzJXcw1AbDP85DUApjNnZF3jWFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cKOe2Q01G4nAho/Igj4Drmq4qra1EhOqPhemDVPdgMqiwVgf1BFrvWcEsg/BNdsSt
-	 S3yB+/I4JKRTFJzqdhw8Q5FDSoEW/uQ86jkH7xz0MIZY+SJiyfDm6nq3PGOGxZVtz6
-	 1M+qJiOrWc7g7KXzifdpzhhNmSgCBkDmPZQKs44Q=
+	b=zlmErJ5XKTV3HGx0WoQV6fhR9I21uULI8F4leTMVe25+TKggGKNi9yIStuZreF3ng
+	 h6oFgHqknYdsRFVuuGZJvyqDWCxMnIEs8ivbF7i56bCJWbdSKLwEmLMmEdM4a3dKqV
+	 FNSZdH7lSCsHuPcYECPMeFaJivi3b4sh95LF7l8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 189/294] r8169: fix issue caused by buggy BIOS on certain boards with RTL8168d
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Peter Chiu <chui-hao.chiu@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 025/114] wifi: mt76: mt7915: add locking for accessing mapped registers
 Date: Thu, 11 Apr 2024 11:55:52 +0200
-Message-ID: <20240411095441.306190743@linuxfoundation.org>
+Message-ID: <20240411095417.629618344@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Shayne Chen <shayne.chen@mediatek.com>
 
-commit 5d872c9f46bd2ea3524af3c2420a364a13667135 upstream.
+[ Upstream commit 0937f95ab07af6e663ae932d592f630d9eb591da ]
 
-On some boards with this chip version the BIOS is buggy and misses
-to reset the PHY page selector. This results in the PHY ID read
-accessing registers on a different page, returning a more or
-less random value. Fix this by resetting the page selector first.
+Sicne the mapping is global, mapped register access needs to be protected
+against concurrent access, otherwise a race condition might cause the reads
+or writes to go towards the wrong register
 
-Fixes: f1e911d5d0df ("r8169: add basic phylib support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/64f2055e-98b8-45ec-8568-665e3d54d4e6@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ .../net/wireless/mediatek/mt76/mt7915/mmio.c  | 45 ++++++++++++++++---
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  1 +
+ 2 files changed, 41 insertions(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -5181,6 +5181,15 @@ static int r8169_mdio_register(struct rt
- 	struct mii_bus *new_bus;
- 	int ret;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+index f4ad7219f94f4..a306a42777d78 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+@@ -490,6 +490,11 @@ static u32 __mt7915_reg_addr(struct mt7915_dev *dev, u32 addr)
+ 		return dev->reg.map[i].maps + ofs;
+ 	}
  
-+	/* On some boards with this chip version the BIOS is buggy and misses
-+	 * to reset the PHY page selector. This results in the PHY ID read
-+	 * accessing registers on a different page, returning a more or
-+	 * less random value. Fix this by resetting the page selector first.
-+	 */
-+	if (tp->mac_version == RTL_GIGA_MAC_VER_25 ||
-+	    tp->mac_version == RTL_GIGA_MAC_VER_26)
-+		r8169_mdio_write(tp, 0x1f, 0);
++	return 0;
++}
 +
- 	new_bus = devm_mdiobus_alloc(&pdev->dev);
- 	if (!new_bus)
- 		return -ENOMEM;
++static u32 __mt7915_reg_remap_addr(struct mt7915_dev *dev, u32 addr)
++{
+ 	if ((addr >= MT_INFRA_BASE && addr < MT_WFSYS0_PHY_START) ||
+ 	    (addr >= MT_WFSYS0_PHY_START && addr < MT_WFSYS1_PHY_START) ||
+ 	    (addr >= MT_WFSYS1_PHY_START && addr <= MT_WFSYS1_PHY_END))
+@@ -514,15 +519,30 @@ void mt7915_memcpy_fromio(struct mt7915_dev *dev, void *buf, u32 offset,
+ {
+ 	u32 addr = __mt7915_reg_addr(dev, offset);
+ 
+-	memcpy_fromio(buf, dev->mt76.mmio.regs + addr, len);
++	if (addr) {
++		memcpy_fromio(buf, dev->mt76.mmio.regs + addr, len);
++		return;
++	}
++
++	spin_lock_bh(&dev->reg_lock);
++	memcpy_fromio(buf, dev->mt76.mmio.regs +
++			   __mt7915_reg_remap_addr(dev, offset), len);
++	spin_unlock_bh(&dev->reg_lock);
+ }
+ 
+ static u32 mt7915_rr(struct mt76_dev *mdev, u32 offset)
+ {
+ 	struct mt7915_dev *dev = container_of(mdev, struct mt7915_dev, mt76);
+-	u32 addr = __mt7915_reg_addr(dev, offset);
++	u32 addr = __mt7915_reg_addr(dev, offset), val;
+ 
+-	return dev->bus_ops->rr(mdev, addr);
++	if (addr)
++		return dev->bus_ops->rr(mdev, addr);
++
++	spin_lock_bh(&dev->reg_lock);
++	val = dev->bus_ops->rr(mdev, __mt7915_reg_remap_addr(dev, offset));
++	spin_unlock_bh(&dev->reg_lock);
++
++	return val;
+ }
+ 
+ static void mt7915_wr(struct mt76_dev *mdev, u32 offset, u32 val)
+@@ -530,7 +550,14 @@ static void mt7915_wr(struct mt76_dev *mdev, u32 offset, u32 val)
+ 	struct mt7915_dev *dev = container_of(mdev, struct mt7915_dev, mt76);
+ 	u32 addr = __mt7915_reg_addr(dev, offset);
+ 
+-	dev->bus_ops->wr(mdev, addr, val);
++	if (addr) {
++		dev->bus_ops->wr(mdev, addr, val);
++		return;
++	}
++
++	spin_lock_bh(&dev->reg_lock);
++	dev->bus_ops->wr(mdev, __mt7915_reg_remap_addr(dev, offset), val);
++	spin_unlock_bh(&dev->reg_lock);
+ }
+ 
+ static u32 mt7915_rmw(struct mt76_dev *mdev, u32 offset, u32 mask, u32 val)
+@@ -538,7 +565,14 @@ static u32 mt7915_rmw(struct mt76_dev *mdev, u32 offset, u32 mask, u32 val)
+ 	struct mt7915_dev *dev = container_of(mdev, struct mt7915_dev, mt76);
+ 	u32 addr = __mt7915_reg_addr(dev, offset);
+ 
+-	return dev->bus_ops->rmw(mdev, addr, mask, val);
++	if (addr)
++		return dev->bus_ops->rmw(mdev, addr, mask, val);
++
++	spin_lock_bh(&dev->reg_lock);
++	val = dev->bus_ops->rmw(mdev, __mt7915_reg_remap_addr(dev, offset), mask, val);
++	spin_unlock_bh(&dev->reg_lock);
++
++	return val;
+ }
+ 
+ #ifdef CONFIG_NET_MEDIATEK_SOC_WED
+@@ -813,6 +847,7 @@ static int mt7915_mmio_init(struct mt76_dev *mdev,
+ 
+ 	dev = container_of(mdev, struct mt7915_dev, mt76);
+ 	mt76_mmio_init(&dev->mt76, mem_base);
++	spin_lock_init(&dev->reg_lock);
+ 
+ 	switch (device_id) {
+ 	case 0x7915:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 21984e9723709..e192211d4b23e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -287,6 +287,7 @@ struct mt7915_dev {
+ 
+ 	struct list_head sta_rc_list;
+ 	struct list_head twt_list;
++	spinlock_t reg_lock;
+ 
+ 	u32 hw_pattern;
+ 
+-- 
+2.43.0
+
 
 
 
