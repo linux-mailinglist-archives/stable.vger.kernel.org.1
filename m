@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 464B08A0FE7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E24C18A0E60
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:14:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 022B7281A5C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FFBE1C219F4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB4E146A71;
-	Thu, 11 Apr 2024 10:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7032F146009;
+	Thu, 11 Apr 2024 10:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuCxX+Kj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IapuUB3W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A83D143C76;
-	Thu, 11 Apr 2024 10:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C870145B0E;
+	Thu, 11 Apr 2024 10:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831322; cv=none; b=Rebsxuto0IHS0tpv0NW9u1D9/NDaDce/B/gT0daFieSUdvl00p8J92GB49HFI6SrxOfMWvTly0ZehX1BB+g9xUZBupD7PPk6wwTzrfXLYEWEWk7mj3pKk4IuZpoH+ZQch5nLCItkph93DN1Raz1nFVZjr4BR3h2Wz+iDlJjBch8=
+	t=1712830449; cv=none; b=GFYYP3wW3wONVoemX5DSiP7I2JYEsLRPG2BFQGnyX0GwD4uHtKfS6QKDiHTS8YiHKv9WfFMbE9oHJEjMC5oEdDibfWv8cFOoOKHhbOYa0TqnBM09W7hyP8mvBPSIG6Uw/lUqgS+H1RSyrH3DhmMptsF/zjiZuFejitCSDZ5bHxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831322; c=relaxed/simple;
-	bh=nPHAh0pd8KRDgMf0D5grRZG9GVts7ZkyU72XMF9qwG8=;
+	s=arc-20240116; t=1712830449; c=relaxed/simple;
+	bh=ubdrJUNkFDSFUFFTw1mnZEvV9P1QRza1dyPgv7H/HDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpsVPGziS/4czXiGAmaA1vUW9DQBOU/FWouhyOUAVQnLoVPgUjSP3CylRPUXwc3HtGvESLJVFXo32mWQ+vzIf/nN56/TpI0H+ZKun0c47lkAsZIHyhppjMXHJFnYHHn6+/7+Mm9JO0lg43yXaqttgrvkUHYRrMhpknhNFlQeTtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuCxX+Kj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38BDC433F1;
-	Thu, 11 Apr 2024 10:28:41 +0000 (UTC)
+	 MIME-Version; b=IoVOg6oUJsCCN7QsroB7GvGNYr8KsNvqYMS0ZFi46A9+mCs5gBVo0VRaf5SddWP9XIYin5snh6+4CH+vt+Z9eX2sk5kZzxdJXDb7f7lBoL8EdlZ26xuZ4q7ub76VMTeb6t6ZNWOiOJ1vPalZvE8PxMLyHebpIPa4qtW76wb6Llg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IapuUB3W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92440C433C7;
+	Thu, 11 Apr 2024 10:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831322;
-	bh=nPHAh0pd8KRDgMf0D5grRZG9GVts7ZkyU72XMF9qwG8=;
+	s=korg; t=1712830449;
+	bh=ubdrJUNkFDSFUFFTw1mnZEvV9P1QRza1dyPgv7H/HDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uuCxX+KjGWYHXfwDHzjZwGfbxO57NX2q+BmMPa5FHuXcplUze1r3ZUFme9fUIMJk1
-	 6qYcGPrxKoqYFWvyjd43EriB51Y1a3iJvNq+SgYBcHuX2VPL4XxLGKbTVZicyLxCmP
-	 OJ+kR2DTbwCWZR/lkzEpD7+0vHX1X44ihb6XeOqA=
+	b=IapuUB3WTobfJCI5UwpFkNgR5uNbQQ+iUAJ/+wDZgdF64DCYwdlfV8QcJDmqpBzcq
+	 nlCZZNBcPJlFayxTtoBTmLPkuxnjVIF48Fu5o+zQp/VirF0Q9ty/D2B/nAxE3z9IaW
+	 VFIvDphRrDy7J5xbVylqHImX+iEmTEfTkCtPoKr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hawley <warthog9@eaglescrag.net>,
-	"Ricardo B. Marliere" <ricardo@marliere.net>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/114] ktest: force $buildonly = 1 for make_warnings_file test type
+	kernel test robot <oliver.sang@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.8 142/143] x86/vdso: Fix rethunk patching for vdso-image-x32.o too
 Date: Thu, 11 Apr 2024 11:56:50 +0200
-Message-ID: <20240411095419.394514665@linuxfoundation.org>
+Message-ID: <20240411095425.172877606@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marliere <ricardo@marliere.net>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-[ Upstream commit 07283c1873a4d0eaa0e822536881bfdaea853910 ]
+commit 4969d75dd9077e19e175e60f3c5a6c7653252e63 upstream.
 
-The test type "make_warnings_file" should have no mandatory configuration
-parameters other than the ones required by the "build" test type, because
-its purpose is to create a file with build warnings that may or may not be
-used by other subsequent tests. Currently, the only way to use it as a
-stand-alone test is by setting POWER_CYCLE, CONSOLE, SSH_USER,
-BUILD_TARGET, TARGET_IMAGE, REBOOT_TYPE and GRUB_MENU.
+In a similar fashion to
 
-Link: https://lkml.kernel.org/r/20240315-ktest-v2-1-c5c20a75f6a3@marliere.net
+  b388e57d4628 ("x86/vdso: Fix rethunk patching for vdso-image-{32,64}.o")
 
-Cc: John Hawley <warthog9@eaglescrag.net>
-Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+annotate vdso-image-x32.o too for objtool so that it gets annotated
+properly and the unused return thunk warning doesn't fire.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202403251454.23df6278-lkp@intel.com
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/202403251454.23df6278-lkp@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/ktest/ktest.pl | 1 +
+ arch/x86/entry/vdso/Makefile |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index 829f5bdfd2e43..24451f8f42910 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -843,6 +843,7 @@ sub set_value {
-     if ($lvalue =~ /^(TEST|BISECT|CONFIG_BISECT)_TYPE(\[.*\])?$/ &&
- 	$prvalue !~ /^(config_|)bisect$/ &&
- 	$prvalue !~ /^build$/ &&
-+	$prvalue !~ /^make_warnings_file$/ &&
- 	$buildonly) {
+--- a/arch/x86/entry/vdso/Makefile
++++ b/arch/x86/entry/vdso/Makefile
+@@ -37,6 +37,7 @@ KCSAN_SANITIZE_vma.o			:= y
  
- 	# Note if a test is something other than build, then we
--- 
-2.43.0
-
+ OBJECT_FILES_NON_STANDARD_extable.o		:= n
+ OBJECT_FILES_NON_STANDARD_vdso-image-32.o 	:= n
++OBJECT_FILES_NON_STANDARD_vdso-image-x32.o	:= n
+ OBJECT_FILES_NON_STANDARD_vdso-image-64.o 	:= n
+ OBJECT_FILES_NON_STANDARD_vdso32-setup.o	:= n
+ OBJECT_FILES_NON_STANDARD_vma.o			:= n
 
 
 
