@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-38517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56AF88A0F03
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:20:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A49F88A0F12
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:20:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87D2E1C21E99
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:20:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D67F91C226A0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF5C14601D;
-	Thu, 11 Apr 2024 10:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2D6145353;
+	Thu, 11 Apr 2024 10:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0qHfVFp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPhkXVzP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C08146586;
-	Thu, 11 Apr 2024 10:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE71C1465AA;
+	Thu, 11 Apr 2024 10:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830806; cv=none; b=KHUGVW/r0XDFJIHPfO30OVUn1DJc0Zj0ok2XrLEvd1LYNFOUyO+i5O9fTgza86TbN4EzA8v0hMsKvf9ab4XwODFVDdOGnM452nimasC40+IbNm49++W3DCMtgqaFNqats8kvi0jUqwgRiQ1bGH9bcCa/Pd+pemzwfS5/7YhEKTk=
+	t=1712830839; cv=none; b=NvsUAW5JMoK6+Sxk1xOrsNesHBkqKgri3ZaryvlCkWynvf4Go80/yYmDDZxNnMTdEG6wC72i4hiGiSHSvce0xFCDfrjENIsInKJB8MZuq72DH0RPkswhmPI5m9T8qTVjNI0h3EWehjWJYxw9Ain60ia2uN9xn1BQgScVooIWX14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830806; c=relaxed/simple;
-	bh=H0D2eJv4we1rGZQ3ssGvWWIcdWSE0lCyC6oCum9SxuE=;
+	s=arc-20240116; t=1712830839; c=relaxed/simple;
+	bh=A4z9y3yVKgCZWTjtXs4b+n+a3xUMNA2CstzSDr9SgLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bqxxmozgNM1N/BGyo4lA6lQecmB5NT4o0kaiu4BE4xZWg2Mx52vyZo62PVfg3uyYAIh0nszpoVq1wHUo8BotonfHc+XU8XhT8nAwpX1Q9+qFtY+f2/SPwSuMUQjxe6oceehgfrYWyeIG9TWAtT8o8Ku7eyNAuYY99hCUfjcxh2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0qHfVFp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62EBC433F1;
-	Thu, 11 Apr 2024 10:20:05 +0000 (UTC)
+	 MIME-Version; b=O4gDDhrNXtHrqV36bhCZpfN8hLYd0D5Kil79bqy2nFEd+95U8ebusHrZFlutuEc6k/XnqZAGY/9PhBWJHAlyYOlr9aRQ5pE8Q91y4fHLvjMZHW/B7MsPx67un61lCwpix2bhz5oRfUzBPfH/bJAHsdQapeub11xIRaePimsb+Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPhkXVzP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC1EC433F1;
+	Thu, 11 Apr 2024 10:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830806;
-	bh=H0D2eJv4we1rGZQ3ssGvWWIcdWSE0lCyC6oCum9SxuE=;
+	s=korg; t=1712830838;
+	bh=A4z9y3yVKgCZWTjtXs4b+n+a3xUMNA2CstzSDr9SgLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j0qHfVFpJEr7glxSSNDP1wKBBGP3CJH7jmH5fpFUcwb+whHe3jOJaxA0SkZ7F+s93
-	 Kyo4vSagFzmp8iA54DcntjaKH7X0sN5Fj/YrBctA/aoGPns0wMEHliikDg4qo53MFz
-	 nCMmEz1FQhIzRo25pwtmt/lxsKaxEr3htqd1nvrM=
+	b=jPhkXVzPR53OVB8OiWo0usaq9CcKzMWcs3chfd+BAexJEOv5EAlaP2yMRqskGfG0n
+	 fAoNxGHQUBXUuwmdiIToJC41RgfM5DcnoqvkBtLWY0lrkwX9JKab1LkDlx4A9fWRts
+	 Fv7TrJwhS/WLqjI9LMIvSjQLNsmWlFEeSCDWXBWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Schumacher <timschumi@gmx.de>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 5.4 107/215] efivarfs: Request at most 512 bytes for variable names
-Date: Thu, 11 Apr 2024 11:55:16 +0200
-Message-ID: <20240411095428.127073300@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.4 108/215] powerpc: xor_vmx: Add -mhard-float to CFLAGS
+Date: Thu, 11 Apr 2024 11:55:17 +0200
+Message-ID: <20240411095428.156431035@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
 References: <20240411095424.875421572@linuxfoundation.org>
@@ -65,77 +65,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tim Schumacher <timschumi@gmx.de>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit f45812cc23fb74bef62d4eb8a69fe7218f4b9f2a upstream.
+commit 35f20786c481d5ced9283ff42de5c69b65e5ed13 upstream.
 
-Work around a quirk in a few old (2011-ish) UEFI implementations, where
-a call to `GetNextVariableName` with a buffer size larger than 512 bytes
-will always return EFI_INVALID_PARAMETER.
+arch/powerpc/lib/xor_vmx.o is built with '-msoft-float' (from the main
+powerpc Makefile) and '-maltivec' (from its CFLAGS), which causes an
+error when building with clang after a recent change in main:
 
-There is some lore around EFI variable names being up to 1024 bytes in
-size, but this has no basis in the UEFI specification, and the upper
-bounds are typically platform specific, and apply to the entire variable
-(name plus payload).
+  error: option '-msoft-float' cannot be specified with '-maltivec'
+  make[6]: *** [scripts/Makefile.build:243: arch/powerpc/lib/xor_vmx.o] Error 1
 
-Given that Linux does not permit creating files with names longer than
-NAME_MAX (255) bytes, 512 bytes (== 256 UTF-16 characters) is a
-reasonable limit.
+Explicitly add '-mhard-float' before '-maltivec' in xor_vmx.o's CFLAGS
+to override the previous inclusion of '-msoft-float' (as the last option
+wins), which matches how other areas of the kernel use '-maltivec', such
+as AMDGPU.
 
-Cc: <stable@vger.kernel.org> # 6.1+
-Signed-off-by: Tim Schumacher <timschumi@gmx.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-[timschumi@gmx.de: adjusted diff for changed context and code move]
-Signed-off-by: Tim Schumacher <timschumi@gmx.de>
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1986
+Link: https://github.com/llvm/llvm-project/commit/4792f912b232141ecba4cbae538873be3c28556c
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240127-ppc-xor_vmx-drop-msoft-float-v1-1-f24140e81376@kernel.org
+[nathan: Fixed conflicts due to lack of 04e85bbf71c9 in older trees]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/vars.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ arch/powerpc/lib/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/firmware/efi/vars.c
-+++ b/drivers/firmware/efi/vars.c
-@@ -427,7 +427,7 @@ int efivar_init(int (*func)(efi_char16_t
- 		void *data, bool duplicates, struct list_head *head)
- {
- 	const struct efivar_operations *ops;
--	unsigned long variable_name_size = 1024;
-+	unsigned long variable_name_size = 512;
- 	efi_char16_t *variable_name;
- 	efi_status_t status;
- 	efi_guid_t vendor_guid;
-@@ -450,12 +450,13 @@ int efivar_init(int (*func)(efi_char16_t
- 	}
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -61,6 +61,6 @@ obj-$(CONFIG_PPC_LIB_RHEAP) += rheap.o
+ obj-$(CONFIG_FTR_FIXUP_SELFTEST) += feature-fixups-test.o
  
- 	/*
--	 * Per EFI spec, the maximum storage allocated for both
--	 * the variable name and variable data is 1024 bytes.
-+	 * A small set of old UEFI implementations reject sizes
-+	 * above a certain threshold, the lowest seen in the wild
-+	 * is 512.
- 	 */
+ obj-$(CONFIG_ALTIVEC)	+= xor_vmx.o xor_vmx_glue.o
+-CFLAGS_xor_vmx.o += -maltivec $(call cc-option,-mabi=altivec)
++CFLAGS_xor_vmx.o += -mhard-float -maltivec $(call cc-option,-mabi=altivec)
  
- 	do {
--		variable_name_size = 1024;
-+		variable_name_size = 512;
- 
- 		status = ops->get_next_variable(&variable_name_size,
- 						variable_name,
-@@ -499,9 +500,13 @@ int efivar_init(int (*func)(efi_char16_t
- 			break;
- 		case EFI_NOT_FOUND:
- 			break;
-+		case EFI_BUFFER_TOO_SMALL:
-+			pr_warn("efivars: Variable name size exceeds maximum (%lu > 512)\n",
-+				variable_name_size);
-+			status = EFI_NOT_FOUND;
-+			break;
- 		default:
--			printk(KERN_WARNING "efivars: get_next_variable: status=%lx\n",
--				status);
-+			pr_warn("efivars: get_next_variable: status=%lx\n", status);
- 			status = EFI_NOT_FOUND;
- 			break;
- 		}
+ obj-$(CONFIG_PPC64) += $(obj64-y)
 
 
 
