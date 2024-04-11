@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-39036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00DCB8A1192
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E0628A0F8C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3214E1C211B3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C03131C212B1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972AB145323;
-	Thu, 11 Apr 2024 10:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D26146A72;
+	Thu, 11 Apr 2024 10:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcEoXMzY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+JIqOqE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485056BB29;
-	Thu, 11 Apr 2024 10:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AFE140E3D;
+	Thu, 11 Apr 2024 10:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832328; cv=none; b=FuwV2VShnQdM/f2M4MqTEPWjH3N5Q9cfR5e2mRI8+5xq1a27Eixt0Ecb0GkNQUzxGGdCR2U6MgaoCPP+HCpVUZsNzoDQRzQIQxVsYqbiHqcOvp8nLk77qO8JD7ZlXK19yt1KJyGjW3taxccP5hPXkRG6ZK+eVFvBdxeXNR+B/Pw=
+	t=1712831091; cv=none; b=nQ/6pwv6SruRKBE1IdLjanYdvxvAS7a75N3uJPNvPzxw5aIkhjApJKZ+3nFgdw1elx4a7T0k1zaBC8nKVU6ZsaYGNLFvupaKQ8aO1rhLuxTQfMUP24LaT8YFnqEYgsNi8yPgV1xBMQDZ5z8H8TRuSOaT9MigrFhLHmchSX5fi8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832328; c=relaxed/simple;
-	bh=W+JT74PLmwCkOXX545XBT2/AFroeXO0MCwlgZiifpPU=;
+	s=arc-20240116; t=1712831091; c=relaxed/simple;
+	bh=7rrb036arbG4HXlLeM04ulNPRgH/aGWcH9SI35UzofE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hcjzuxuCEfBneuzSnCCH97H4uEXT5eZnjEfy4GbJcMFOHKiQXGK9Sb4bcYltI1M8WovCG1U/vwfOXpcu1ZhUT28onT0Hk5+csExCBJgHkCCE67oRgi+n8pSZa83I8tyUIwdKGZsDBEg5kpPZllloZeBz0lo45r7KtEoKEySP8/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcEoXMzY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596D9C433F1;
-	Thu, 11 Apr 2024 10:45:27 +0000 (UTC)
+	 MIME-Version; b=dq+UL9EmWYkI/PdJK2MYKX36zsh6vt9++eNaNz6zhBUvJ8XQny5EpxbaUxJphwoIwWoIGVQqFaK0nTNjn0pa1hgXttYjZ7HitblICq2L6TL5xgE9tFBHWaUaaj1bdboWuhXdq79Pa+iD02WoMJMxlCg2kZaRyxs7Vu5p6sIOmqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+JIqOqE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3FEC433C7;
+	Thu, 11 Apr 2024 10:24:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832327;
-	bh=W+JT74PLmwCkOXX545XBT2/AFroeXO0MCwlgZiifpPU=;
+	s=korg; t=1712831090;
+	bh=7rrb036arbG4HXlLeM04ulNPRgH/aGWcH9SI35UzofE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kcEoXMzYWiKU5GJyrfFadTc3CEYhEiX2RpDNWLan4puq/ANL9igg84gmrw8LyZQSk
-	 U5fu2pOfu2U20gdcCQmdbF+6HGoD15jPMBQNZM4Y/mV+2/h5kR3wyVMHxa+yNW6k9P
-	 cZWbavvQIBbEifcaTm1+FfKDoPa1yfVFnGk48XfA=
+	b=O+JIqOqE0SY7/h6GySLGFFihf4Top6igUE14q2NXGfMKUbdo+RwRDkyVs+BdLZf3T
+	 ljgLmjoxxGPPxVhK2AeVOGeavxihKjta5EoDf2CzVZFmVjyzBj8H+JJvaq/KDYYjcK
+	 smlNF0RlRhKwsAwCHKUgo0dGSaFUBzGZsZWz5gDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	John Hawley <warthog9@eaglescrag.net>,
+	"Ricardo B. Marliere" <ricardo@marliere.net>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 12/83] ionic: set adminq irq affinity
+Subject: [PATCH 5.4 195/215] ktest: force $buildonly = 1 for make_warnings_file test type
 Date: Thu, 11 Apr 2024 11:56:44 +0200
-Message-ID: <20240411095413.047495959@linuxfoundation.org>
+Message-ID: <20240411095430.723491111@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Ricardo B. Marliere <ricardo@marliere.net>
 
-[ Upstream commit c699f35d658f3c21b69ed24e64b2ea26381e941d ]
+[ Upstream commit 07283c1873a4d0eaa0e822536881bfdaea853910 ]
 
-We claim to have the AdminQ on our irq0 and thus cpu id 0,
-but we need to be sure we set the affinity hint to try to
-keep it there.
+The test type "make_warnings_file" should have no mandatory configuration
+parameters other than the ones required by the "build" test type, because
+its purpose is to create a file with build warnings that may or may not be
+used by other subsequent tests. Currently, the only way to use it as a
+stand-alone test is by setting POWER_CYCLE, CONSOLE, SSH_USER,
+BUILD_TARGET, TARGET_IMAGE, REBOOT_TYPE and GRUB_MENU.
 
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lkml.kernel.org/r/20240315-ktest-v2-1-c5c20a75f6a3@marliere.net
+
+Cc: John Hawley <warthog9@eaglescrag.net>
+Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/ktest/ktest.pl | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index fcc3faecb0600..d33cf8ee7c336 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -3216,9 +3216,12 @@ static int ionic_lif_adminq_init(struct ionic_lif *lif)
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index 698b99e25f980..d36612c620981 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -768,6 +768,7 @@ sub set_value {
+     if ($lvalue =~ /^(TEST|BISECT|CONFIG_BISECT)_TYPE(\[.*\])?$/ &&
+ 	$prvalue !~ /^(config_|)bisect$/ &&
+ 	$prvalue !~ /^build$/ &&
++	$prvalue !~ /^make_warnings_file$/ &&
+ 	$buildonly) {
  
- 	napi_enable(&qcq->napi);
- 
--	if (qcq->flags & IONIC_QCQ_F_INTR)
-+	if (qcq->flags & IONIC_QCQ_F_INTR) {
-+		irq_set_affinity_hint(qcq->intr.vector,
-+				      &qcq->intr.affinity_mask);
- 		ionic_intr_mask(idev->intr_ctrl, qcq->intr.index,
- 				IONIC_INTR_MASK_CLEAR);
-+	}
- 
- 	qcq->flags |= IONIC_QCQ_F_INITED;
- 
+ 	# Note if a test is something other than build, then we
 -- 
 2.43.0
 
