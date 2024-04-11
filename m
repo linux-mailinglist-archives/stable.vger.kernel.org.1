@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-38346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 306CC8A0E22
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:11:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 337DA8A10DF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54AAB1C2225A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:11:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64A861C224F4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE095145B3E;
-	Thu, 11 Apr 2024 10:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600EE1487C3;
+	Thu, 11 Apr 2024 10:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJB1XYvY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8lJnc47"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D35013AD0C;
-	Thu, 11 Apr 2024 10:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED9413D24D;
+	Thu, 11 Apr 2024 10:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830284; cv=none; b=FvzFWTBFL3b8cg/QopquC3Z63a434SezS1X2xtXzF5gwsrASI3rrpDMhNLyIeRBY0TJXbE3LIEINGgB6ovyJbU0tlGjZTLY3/dim/4+YpZ6FMegt4vM03NA/tmEfoqtlZIde8oE66x5Dg7P79sCm+p0h39EcWHNh3Od6eIIdmmM=
+	t=1712831901; cv=none; b=k7a4vHmL68UrpSjMTXXU4qPfRVktwFci4vg4u2knpJq0sMjROZWFiNy0OtchBLEO1orYdYmwRuBBloEXOK7XHiO7U9Ra4Np6dys37Qyf6YlCsv68gJ1sh94Pfier2NnthyHC2WASb5WemAYf90KbhHeCH2SVuY1r2K901FhIw2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830284; c=relaxed/simple;
-	bh=fe2ze4O1m0HiUfP9+lye0sMPFFyQkJZH9xVBBcylFNM=;
+	s=arc-20240116; t=1712831901; c=relaxed/simple;
+	bh=BknUlDcP0ijkgIhf7Xa8R0ktH6zoJCXLrZT4tfqTDA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3SCSuBNUw6d/isKqql79gy7PWAzUz+p1ISYU1UO0dzYn2AicY++yGuCNdpFBtDuNq/HoL4OJhFnbppcHj54P20HCpnRXvS1IzC3uexrvzGDZ2JSmzvsfINA2jozxLGVq+QRg8Nf7lUTAaEy7eW3MjskeckkMJTOQCFKTazxdT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJB1XYvY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C64C433C7;
-	Thu, 11 Apr 2024 10:11:23 +0000 (UTC)
+	 MIME-Version; b=PZULAOV6FN2j61m8LPhePayDp/o3a+4PbKoPGzocpeZ2J5PxkHVFlsvGcsXvIVvymL/Ouzunkd9NsIIF3PxwvnJ/YkqA/pL8Yzg4OUw1VlXCp0HUnAMST08dkqK02PEDgGn4XvfFr1RzOivPEPe4nHJnmdLnxEj9EgYWNiDWBNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8lJnc47; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969B7C433F1;
+	Thu, 11 Apr 2024 10:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830284;
-	bh=fe2ze4O1m0HiUfP9+lye0sMPFFyQkJZH9xVBBcylFNM=;
+	s=korg; t=1712831901;
+	bh=BknUlDcP0ijkgIhf7Xa8R0ktH6zoJCXLrZT4tfqTDA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iJB1XYvYEKT4vfd7CrQkDoXMSTb4CMXBR1a2ZcZFAggNNIWw3NKx/cQSu66sIuxgM
-	 bQ3ZxuJJKDex4PEe9nkWAB9+hwpEJvYrvRcsWE+/+U5G1KeXPzcjaSRKrXQujQpB/w
-	 ad9zUOtn4sRJj7ooRTkS3O5BjQbOGke6hQY7LosI=
+	b=W8lJnc47TQc0dY9QIVAj/P4QjYsE68nRms8/eTWRQK/MKFKCiWkEeNctGRYRLHlmR
+	 AM2xXVl7GIqjK+M+W/sk+eV2EaR0qF1z5glsegsWeyr+FLXEklX1NtYkbB75Va1GWk
+	 wWOoUlSu8E6DhtuBRuhdCAoNOckCGlICOYASKzn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Stanley.Yang" <Stanley.Yang@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 059/143] drm/amdgpu: Skip do PCI error slot reset during RAS recovery
+	syzbot+c645abf505ed21f931b5@syzkaller.appspotmail.com,
+	Bart Van Assche <bvanassche@acm.org>,
+	John Garry <john.g.garry@oracle.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 164/294] scsi: core: Fix unremoved procfs host directory regression
 Date: Thu, 11 Apr 2024 11:55:27 +0200
-Message-ID: <20240411095422.692924784@linuxfoundation.org>
+Message-ID: <20240411095440.578855687@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +65,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanley.Yang <Stanley.Yang@amd.com>
+From: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-[ Upstream commit 601429cca96b4af3be44172c3b64e4228515dbe1 ]
+commit f23a4d6e07570826fe95023ca1aa96a011fa9f84 upstream.
 
-Why:
-    The PCI error slot reset maybe triggered after inject ue to UMC multi times, this
-    caused system hang.
-    [  557.371857] amdgpu 0000:af:00.0: amdgpu: GPU reset succeeded, trying to resume
-    [  557.373718] [drm] PCIE GART of 512M enabled.
-    [  557.373722] [drm] PTB located at 0x0000031FED700000
-    [  557.373788] [drm] VRAM is lost due to GPU reset!
-    [  557.373789] [drm] PSP is resuming...
-    [  557.547012] mlx5_core 0000:55:00.0: mlx5_pci_err_detected Device state = 1 pci_status: 0. Exit, result = 3, need reset
-    [  557.547067] [drm] PCI error: detected callback, state(1)!!
-    [  557.547069] [drm] No support for XGMI hive yet...
-    [  557.548125] mlx5_core 0000:55:00.0: mlx5_pci_slot_reset Device state = 1 pci_status: 0. Enter
-    [  557.607763] mlx5_core 0000:55:00.0: wait vital counter value 0x16b5b after 1 iterations
-    [  557.607777] mlx5_core 0000:55:00.0: mlx5_pci_slot_reset Device state = 1 pci_status: 1. Exit, err = 0, result = 5, recovered
-    [  557.610492] [drm] PCI error: slot reset callback!!
-    ...
-    [  560.689382] amdgpu 0000:3f:00.0: amdgpu: GPU reset(2) succeeded!
-    [  560.689546] amdgpu 0000:5a:00.0: amdgpu: GPU reset(2) succeeded!
-    [  560.689562] general protection fault, probably for non-canonical address 0x5f080b54534f611f: 0000 [#1] SMP NOPTI
-    [  560.701008] CPU: 16 PID: 2361 Comm: kworker/u448:9 Tainted: G           OE     5.15.0-91-generic #101-Ubuntu
-    [  560.712057] Hardware name: Microsoft C278A/C278A, BIOS C2789.5.BS.1C11.AG.1 11/08/2023
-    [  560.720959] Workqueue: amdgpu-reset-hive amdgpu_ras_do_recovery [amdgpu]
-    [  560.728887] RIP: 0010:amdgpu_device_gpu_recover.cold+0xbf1/0xcf5 [amdgpu]
-    [  560.736891] Code: ff 41 89 c6 e9 1b ff ff ff 44 0f b6 45 b0 e9 4f ff ff ff be 01 00 00 00 4c 89 e7 e8 76 c9 8b ff 44 0f b6 45 b0 e9 3c fd ff ff <48> 83 ba 18 02 00 00 00 0f 84 6a f8 ff ff 48 8d 7a 78 be 01 00 00
-    [  560.757967] RSP: 0018:ffa0000032e53d80 EFLAGS: 00010202
-    [  560.763848] RAX: ffa00000001dfd10 RBX: ffa0000000197090 RCX: ffa0000032e53db0
-    [  560.771856] RDX: 5f080b54534f5f07 RSI: 0000000000000000 RDI: ff11000128100010
-    [  560.779867] RBP: ffa0000032e53df0 R08: 0000000000000000 R09: ffffffffffe77f08
-    [  560.787879] R10: 0000000000ffff0a R11: 0000000000000001 R12: 0000000000000000
-    [  560.795889] R13: ffa0000032e53e00 R14: 0000000000000000 R15: 0000000000000000
-    [  560.803889] FS:  0000000000000000(0000) GS:ff11007e7e800000(0000) knlGS:0000000000000000
-    [  560.812973] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-    [  560.819422] CR2: 000055a04c118e68 CR3: 0000000007410005 CR4: 0000000000771ee0
-    [  560.827433] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-    [  560.835433] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
-    [  560.843444] PKRU: 55555554
-    [  560.846480] Call Trace:
-    [  560.849225]  <TASK>
-    [  560.851580]  ? show_trace_log_lvl+0x1d6/0x2ea
-    [  560.856488]  ? show_trace_log_lvl+0x1d6/0x2ea
-    [  560.861379]  ? amdgpu_ras_do_recovery+0x1b2/0x210 [amdgpu]
-    [  560.867778]  ? show_regs.part.0+0x23/0x29
-    [  560.872293]  ? __die_body.cold+0x8/0xd
-    [  560.876502]  ? die_addr+0x3e/0x60
-    [  560.880238]  ? exc_general_protection+0x1c5/0x410
-    [  560.885532]  ? asm_exc_general_protection+0x27/0x30
-    [  560.891025]  ? amdgpu_device_gpu_recover.cold+0xbf1/0xcf5 [amdgpu]
-    [  560.898323]  amdgpu_ras_do_recovery+0x1b2/0x210 [amdgpu]
-    [  560.904520]  process_one_work+0x228/0x3d0
-How:
-    In RAS recovery, mode-1 reset is issued from RAS fatal error handling and expected
-    all the nodes in a hive to be reset. no need to issue another mode-1 during this procedure.
+Commit fc663711b944 ("scsi: core: Remove the /proc/scsi/${proc_name}
+directory earlier") fixed a bug related to modules loading/unloading, by
+adding a call to scsi_proc_hostdir_rm() on scsi_remove_host(). But that led
+to a potential duplicate call to the hostdir_rm() routine, since it's also
+called from scsi_host_dev_release(). That triggered a regression report,
+which was then fixed by commit be03df3d4bfe ("scsi: core: Fix a procfs host
+directory removal regression"). The fix just dropped the hostdir_rm() call
+from dev_release().
 
-Signed-off-by: Stanley.Yang <Stanley.Yang@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But it happens that this proc directory is created on scsi_host_alloc(),
+and that function "pairs" with scsi_host_dev_release(), while
+scsi_remove_host() pairs with scsi_add_host(). In other words, it seems the
+reason for removing the proc directory on dev_release() was meant to cover
+cases in which a SCSI host structure was allocated, but the call to
+scsi_add_host() didn't happen. And that pattern happens to exist in some
+error paths, for example.
+
+Syzkaller causes that by using USB raw gadget device, error'ing on
+usb-storage driver, at usb_stor_probe2(). By checking that path, we can see
+that the BadDevice label leads to a scsi_host_put() after a SCSI host
+allocation, but there's no call to scsi_add_host() in such path. That leads
+to messages like this in dmesg (and a leak of the SCSI host proc
+structure):
+
+usb-storage 4-1:87.51: USB Mass Storage device detected
+proc_dir_entry 'scsi/usb-storage' already registered
+WARNING: CPU: 1 PID: 3519 at fs/proc/generic.c:377 proc_register+0x347/0x4e0 fs/proc/generic.c:376
+
+The proper fix seems to still call scsi_proc_hostdir_rm() on dev_release(),
+but guard that with the state check for SHOST_CREATED; there is even a
+comment in scsi_host_dev_release() detailing that: such conditional is
+meant for cases where the SCSI host was allocated but there was no calls to
+{add,remove}_host(), like the usb-storage case.
+
+This is what we propose here and with that, the error path of usb-storage
+does not trigger the warning anymore.
+
+Reported-by: syzbot+c645abf505ed21f931b5@syzkaller.appspotmail.com
+Fixes: be03df3d4bfe ("scsi: core: Fix a procfs host directory removal regression")
+Cc: stable@vger.kernel.org
+Cc: Bart Van Assche <bvanassche@acm.org>
+Cc: John Garry <john.g.garry@oracle.com>
+Cc: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Link: https://lore.kernel.org/r/20240313113006.2834799-1-gpiccoli@igalia.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/scsi/hosts.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 1fbaf7b81d69a..d0afb9ba3789c 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -6109,6 +6109,20 @@ pci_ers_result_t amdgpu_pci_slot_reset(struct pci_dev *pdev)
- 	struct amdgpu_reset_context reset_context;
- 	u32 memsize;
- 	struct list_head device_list;
-+	struct amdgpu_hive_info *hive;
-+	int hive_ras_recovery = 0;
-+	struct amdgpu_ras *ras;
-+
-+	/* PCI error slot reset should be skipped During RAS recovery */
-+	hive = amdgpu_get_xgmi_hive(adev);
-+	if (hive) {
-+		hive_ras_recovery = atomic_read(&hive->ras_recovery);
-+		amdgpu_put_xgmi_hive(hive);
-+	}
-+	ras = amdgpu_ras_get_context(adev);
-+	if ((amdgpu_ip_version(adev, GC_HWIP, 0) == IP_VERSION(9, 4, 3)) &&
-+		 ras && (atomic_read(&ras->in_recovery) || hive_ras_recovery))
-+		return PCI_ERS_RESULT_RECOVERED;
+--- a/drivers/scsi/hosts.c
++++ b/drivers/scsi/hosts.c
+@@ -334,12 +334,13 @@ static void scsi_host_dev_release(struct
  
- 	DRM_INFO("PCI error: slot reset callback!!\n");
+ 	if (shost->shost_state == SHOST_CREATED) {
+ 		/*
+-		 * Free the shost_dev device name here if scsi_host_alloc()
+-		 * and scsi_host_put() have been called but neither
++		 * Free the shost_dev device name and remove the proc host dir
++		 * here if scsi_host_{alloc,put}() have been called but neither
+ 		 * scsi_host_add() nor scsi_host_remove() has been called.
+ 		 * This avoids that the memory allocated for the shost_dev
+-		 * name is leaked.
++		 * name as well as the proc dir structure are leaked.
+ 		 */
++		scsi_proc_hostdir_rm(shost->hostt);
+ 		kfree(dev_name(&shost->shost_dev));
+ 	}
  
--- 
-2.43.0
-
 
 
 
