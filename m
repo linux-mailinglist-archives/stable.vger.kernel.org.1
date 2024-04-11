@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-38604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 048A18A0F7E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 441C38A0FF1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:29:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3658B1C21680
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75F441C21B43
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DDE146A71;
-	Thu, 11 Apr 2024 10:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D562E146A71;
+	Thu, 11 Apr 2024 10:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vckrM5ED"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqluGGZX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BE8140E3D;
-	Thu, 11 Apr 2024 10:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F8A1D558;
+	Thu, 11 Apr 2024 10:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831061; cv=none; b=hofvYXUNHj4aM7i3SzkTInw1K0B4n6e2CY7RzcszY75L9d87/4EImx2blIaLWMyrm8yEzd/qIiBsW75OTD8P6k1mUmP9XlfNjI9AP7OrSOKb9EPWiAmzTLP6A+bojHGcktBdjhJVWS6qbyPlMYoo1oEe3wD945tndtl/S0GuAVI=
+	t=1712831351; cv=none; b=XLFv9JKVzxRPegq7ROigmFm4netthpShI/9uBJBhuzribUyekxEbnIZUnoHYB8oZoq1cj1LIXs4XLfC0DzYsMw6FjRlPrQiju62Tg1sNeeWOQlYmOixOpCWP3TOVrzRcoIR/AzRviXs+yQpdfWdYrVbU6MoUElWPNj5ZSnhhb5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831061; c=relaxed/simple;
-	bh=eki8F65VhaZE9R0ilwaMfRZCBomq5fhfnQNFFudJano=;
+	s=arc-20240116; t=1712831351; c=relaxed/simple;
+	bh=0rXZEDwpQNVvVr14kMdM/UO1dF9Ei4YjVaSakf0FeDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AXoshTr/kMyUksPkJ5JASHm7OLn6HcdRi1Q+0d60yQemD1srmn0DCpLF03+w91ohmDsW2k0zcqXCHu4LNb7NE/DWbtQjOm/R8Az+q5+zSyjgFSLOkaUpgP1WqS3fwee89Hy08WJKR4k/AEVI6qI7tcqbkv1fsgxKJ89b4wTh3/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vckrM5ED; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ABCAC433F1;
-	Thu, 11 Apr 2024 10:24:20 +0000 (UTC)
+	 MIME-Version; b=oPG4Ij3656KeHUxjKVwGYF4acMTciGJFzPJuE6JZY/hVDnozoV10jtvGTpSWX0V8KXppqtYoeHr4hPuD6ta4wdkXutQPHN6CzIkqyLP820IWxPB+N36sbnuA6x39NQmznU7NVgmEyR8YgJ8Iqfi9SqCBNCTzgDWlYmS/naAONyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqluGGZX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B14FC433F1;
+	Thu, 11 Apr 2024 10:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831060;
-	bh=eki8F65VhaZE9R0ilwaMfRZCBomq5fhfnQNFFudJano=;
+	s=korg; t=1712831351;
+	bh=0rXZEDwpQNVvVr14kMdM/UO1dF9Ei4YjVaSakf0FeDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vckrM5EDAFpH+R9xr43jSi8ZwfRgDWozSChh7h0dF1ue4JOLYYTY2j5lrSBeBvkFo
-	 H3UbSeEvg7AF+8mj9J5ArlFqyv0leLLXjrd2FtneEtmClPBCk7KL35tdjW5HpzGdW4
-	 K8KDB0+Y2mGPwsfVuMwKtgnPJ6NuCX+cbiKyBkgY=
+	b=sqluGGZX3EtGlQabxavjCxbZ9Z99Txs7wGVXpGhpnQ6lQZ788+ppMaOSfPL52xK0w
+	 Oa7OTglrIeEO01r5Sc00SxQDJ4E2MbCfijAv3jN1Kc3ucGB4NTVXLPEUTvmrgzM/WW
+	 KunwIJ8MuYF5TSFUvx3EFHBXbEiKAOPBdquReDYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.4 210/215] x86/alternative: Dont call text_poke() in lazy TLB mode
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 092/114] usb: typec: tcpci: add generic tcpci fallback compatible
 Date: Thu, 11 Apr 2024 11:56:59 +0200
-Message-ID: <20240411095431.176416321@linuxfoundation.org>
+Message-ID: <20240411095419.669009630@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-commit abee7c494d8c41bb388839bccc47e06247f0d7de upstream.
+[ Upstream commit 8774ea7a553e2aec323170d49365b59af0a2b7e0 ]
 
-When running in lazy TLB mode the currently active page tables might
-be the ones of a previous process, e.g. when running a kernel thread.
+The driver already support the tcpci binding for the i2c_device_id so
+add the support for the of_device_id too.
 
-This can be problematic in case kernel code is being modified via
-text_poke() in a kernel thread, and on another processor exit_mmap()
-is active for the process which was running on the first cpu before
-the kernel thread.
-
-As text_poke() is using a temporary address space and the former
-address space (obtained via cpu_tlbstate.loaded_mm) is restored
-afterwards, there is a race possible in case the cpu on which
-exit_mmap() is running wants to make sure there are no stale
-references to that address space on any cpu active (this e.g. is
-required when running as a Xen PV guest, where this problem has been
-observed and analyzed).
-
-In order to avoid that, drop off TLB lazy mode before switching to the
-temporary address space.
-
-Fixes: cefa929c034eb5d ("x86/mm: Introduce temporary mm structs")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20201009144225.12019-1-jgross@suse.com
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240222210903.208901-3-m.felsch@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/mmu_context.h |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/usb/typec/tcpm/tcpci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/include/asm/mmu_context.h
-+++ b/arch/x86/include/asm/mmu_context.h
-@@ -379,6 +379,15 @@ static inline temp_mm_state_t use_tempor
- 	temp_mm_state_t temp_state;
- 
- 	lockdep_assert_irqs_disabled();
-+
-+	/*
-+	 * Make sure not to be in TLB lazy mode, as otherwise we'll end up
-+	 * with a stale address space WITHOUT being in lazy mode after
-+	 * restoring the previous mm.
-+	 */
-+	if (this_cpu_read(cpu_tlbstate.is_lazy))
-+		leave_mm(smp_processor_id());
-+
- 	temp_state.mm = this_cpu_read(cpu_tlbstate.loaded_mm);
- 	switch_mm_irqs_off(NULL, mm, current);
- 
+diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
+index 0ee3e6e29bb17..7118551827f6a 100644
+--- a/drivers/usb/typec/tcpm/tcpci.c
++++ b/drivers/usb/typec/tcpm/tcpci.c
+@@ -889,6 +889,7 @@ MODULE_DEVICE_TABLE(i2c, tcpci_id);
+ #ifdef CONFIG_OF
+ static const struct of_device_id tcpci_of_match[] = {
+ 	{ .compatible = "nxp,ptn5110", },
++	{ .compatible = "tcpci", },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, tcpci_of_match);
+-- 
+2.43.0
+
 
 
 
