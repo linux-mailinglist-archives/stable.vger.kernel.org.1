@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 352B38A0D21
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:00:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA1B98A0EEC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:19:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9503B261F2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:00:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC3FA1C21C23
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C104A14532F;
-	Thu, 11 Apr 2024 10:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2455314601D;
+	Thu, 11 Apr 2024 10:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXhkp5pQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPtZxjd0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E553143C72;
-	Thu, 11 Apr 2024 10:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D688114601B;
+	Thu, 11 Apr 2024 10:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829634; cv=none; b=RxMppz4Sna8oKD7aNesxmxLpZMy+UOqce6uPNdOQdceNBnU25fQOeIHhYuxHnADbHbiPH6hd1gi9u4KgoPpIRGG/4aeiMXIapPUo9b74QWmrBd+bmHKuUJk1gw7UOXEcyxpD+YnubXp2xTGP8rStWAY4WeoidliUShEwq631RNk=
+	t=1712830750; cv=none; b=S5nl0b2WXfdpoOOAnl1tcbzX2k7/smPjFBZNeZZgI0mErb01LyIgqHk9SsHYtxeE6HlFHW982A2tjA1o5I3NPPePT6h3zy0Il4vzDO7QzeMI3VFbaBLpMdA1jwTxn/oNukYFahOo+xl9k6b9aPAwooyuriW/QrY75++q4Fn4cow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829634; c=relaxed/simple;
-	bh=CYOYXO+zfNpkvJzdXNnqKyaG2nGc4P3wInfcBbAqZYw=;
+	s=arc-20240116; t=1712830750; c=relaxed/simple;
+	bh=KkHvbiOE/uS1JwBUKhs52Xmi0zAFvG16YRFSXcQJsrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qki2BX67NJuqwWkmyZ+U9Siyqe4np9bJPCrWxNne97fLPbnMeuXIpAJtSDr7811OzlZsSEd8cku3vE1aDSACK6PNqSah82epFvPJcBmBjfL4yWRbl1zbYq8z+Mk1NJPunX86dG933fwn1wzhduobTlZg/esCu9xRt62GTB6EwnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXhkp5pQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05205C433C7;
-	Thu, 11 Apr 2024 10:00:33 +0000 (UTC)
+	 MIME-Version; b=ab5uyl2/LcTgnPzxj/cKpX7paG/npeHPtABwTBQwz1IZrNwRHJjTgvTkFSHd8Fv1Hsubmjsdxu1Wsaxxl9Hyt5dGravtVo3tmJdmdeI0mFB4jrzQlr4ZMotToojPSExZhi/oBXDGVx355RONWGUEjbzFq1DKxyF0CzDy34iath4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPtZxjd0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AFD3C433C7;
+	Thu, 11 Apr 2024 10:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829634;
-	bh=CYOYXO+zfNpkvJzdXNnqKyaG2nGc4P3wInfcBbAqZYw=;
+	s=korg; t=1712830750;
+	bh=KkHvbiOE/uS1JwBUKhs52Xmi0zAFvG16YRFSXcQJsrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pXhkp5pQLbODCBNK6aeGxLid6+UChLrYmPoikLvtHlt+UxO7CyVu8NoZhklInmis4
-	 Ew54dsvkAxNvN+yyKM1c62+7LVtXaNm2fY8E9R6WwH7M4tq9qFw8g0xePBnJ5sSHKe
-	 6yvNs+9riuZ76Fwnq87LS4JwJbAYwG2iYcUN5K3w=
+	b=cPtZxjd05actYHmm2a0L0TMohj5bN/P6R7uqo9FwkPlV7SpQFGHJuVW+CiGsH2+zG
+	 Rb9bowUQfXD7IDVqZXKMEG9pAvH/+9hGbdOHjt3PDa2aGAvh/M3GWQ47V9gFdnIxV0
+	 mPH8+KOuyrA+zh6HAFtF/ooamaDQV3PnfKtGdOLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Camelia Groza <camelia.groza@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 054/175] soc: fsl: qbman: Always disable interrupts when taking cgr_lock
+Subject: [PATCH 5.4 068/215] s390/zcrypt: fix reference counting on zcrypt card objects
 Date: Thu, 11 Apr 2024 11:54:37 +0200
-Message-ID: <20240411095421.193903246@linuxfoundation.org>
+Message-ID: <20240411095426.943343171@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Harald Freudenberger <freude@linux.ibm.com>
 
-[ Upstream commit 584c2a9184a33a40fceee838f856de3cffa19be3 ]
+[ Upstream commit 50ed48c80fecbe17218afed4f8bed005c802976c ]
 
-smp_call_function_single disables IRQs when executing the callback. To
-prevent deadlocks, we must disable IRQs when taking cgr_lock elsewhere.
-This is already done by qman_update_cgr and qman_delete_cgr; fix the
-other lockers.
+Tests with hot-plugging crytpo cards on KVM guests with debug
+kernel build revealed an use after free for the load field of
+the struct zcrypt_card. The reason was an incorrect reference
+handling of the zcrypt card object which could lead to a free
+of the zcrypt card object while it was still in use.
 
-Fixes: 96f413f47677 ("soc/fsl/qbman: fix issue in qman_delete_cgr_safe()")
-CC: stable@vger.kernel.org
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Camelia Groza <camelia.groza@nxp.com>
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This is an example of the slab message:
+
+    kernel: 0x00000000885a7512-0x00000000885a7513 @offset=1298. First byte 0x68 instead of 0x6b
+    kernel: Allocated in zcrypt_card_alloc+0x36/0x70 [zcrypt] age=18046 cpu=3 pid=43
+    kernel:  kmalloc_trace+0x3f2/0x470
+    kernel:  zcrypt_card_alloc+0x36/0x70 [zcrypt]
+    kernel:  zcrypt_cex4_card_probe+0x26/0x380 [zcrypt_cex4]
+    kernel:  ap_device_probe+0x15c/0x290
+    kernel:  really_probe+0xd2/0x468
+    kernel:  driver_probe_device+0x40/0xf0
+    kernel:  __device_attach_driver+0xc0/0x140
+    kernel:  bus_for_each_drv+0x8c/0xd0
+    kernel:  __device_attach+0x114/0x198
+    kernel:  bus_probe_device+0xb4/0xc8
+    kernel:  device_add+0x4d2/0x6e0
+    kernel:  ap_scan_adapter+0x3d0/0x7c0
+    kernel:  ap_scan_bus+0x5a/0x3b0
+    kernel:  ap_scan_bus_wq_callback+0x40/0x60
+    kernel:  process_one_work+0x26e/0x620
+    kernel:  worker_thread+0x21c/0x440
+    kernel: Freed in zcrypt_card_put+0x54/0x80 [zcrypt] age=9024 cpu=3 pid=43
+    kernel:  kfree+0x37e/0x418
+    kernel:  zcrypt_card_put+0x54/0x80 [zcrypt]
+    kernel:  ap_device_remove+0x4c/0xe0
+    kernel:  device_release_driver_internal+0x1c4/0x270
+    kernel:  bus_remove_device+0x100/0x188
+    kernel:  device_del+0x164/0x3c0
+    kernel:  device_unregister+0x30/0x90
+    kernel:  ap_scan_adapter+0xc8/0x7c0
+    kernel:  ap_scan_bus+0x5a/0x3b0
+    kernel:  ap_scan_bus_wq_callback+0x40/0x60
+    kernel:  process_one_work+0x26e/0x620
+    kernel:  worker_thread+0x21c/0x440
+    kernel:  kthread+0x150/0x168
+    kernel:  __ret_from_fork+0x3c/0x58
+    kernel:  ret_from_fork+0xa/0x30
+    kernel: Slab 0x00000372022169c0 objects=20 used=18 fp=0x00000000885a7c88 flags=0x3ffff00000000a00(workingset|slab|node=0|zone=1|lastcpupid=0x1ffff)
+    kernel: Object 0x00000000885a74b8 @offset=1208 fp=0x00000000885a7c88
+    kernel: Redzone  00000000885a74b0: bb bb bb bb bb bb bb bb                          ........
+    kernel: Object   00000000885a74b8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
+    kernel: Object   00000000885a74c8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
+    kernel: Object   00000000885a74d8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
+    kernel: Object   00000000885a74e8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
+    kernel: Object   00000000885a74f8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
+    kernel: Object   00000000885a7508: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 68 4b 6b 6b 6b a5  kkkkkkkkkkhKkkk.
+    kernel: Redzone  00000000885a7518: bb bb bb bb bb bb bb bb                          ........
+    kernel: Padding  00000000885a756c: 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a              ZZZZZZZZZZZZ
+    kernel: CPU: 0 PID: 387 Comm: systemd-udevd Not tainted 6.8.0-HF #2
+    kernel: Hardware name: IBM 3931 A01 704 (KVM/Linux)
+    kernel: Call Trace:
+    kernel:  [<00000000ca5ab5b8>] dump_stack_lvl+0x90/0x120
+    kernel:  [<00000000c99d78bc>] check_bytes_and_report+0x114/0x140
+    kernel:  [<00000000c99d53cc>] check_object+0x334/0x3f8
+    kernel:  [<00000000c99d820c>] alloc_debug_processing+0xc4/0x1f8
+    kernel:  [<00000000c99d852e>] get_partial_node.part.0+0x1ee/0x3e0
+    kernel:  [<00000000c99d94ec>] ___slab_alloc+0xaf4/0x13c8
+    kernel:  [<00000000c99d9e38>] __slab_alloc.constprop.0+0x78/0xb8
+    kernel:  [<00000000c99dc8dc>] __kmalloc+0x434/0x590
+    kernel:  [<00000000c9b4c0ce>] ext4_htree_store_dirent+0x4e/0x1c0
+    kernel:  [<00000000c9b908a2>] htree_dirblock_to_tree+0x17a/0x3f0
+    kernel:  [<00000000c9b919dc>] ext4_htree_fill_tree+0x134/0x400
+    kernel:  [<00000000c9b4b3d0>] ext4_dx_readdir+0x160/0x2f0
+    kernel:  [<00000000c9b4bedc>] ext4_readdir+0x5f4/0x760
+    kernel:  [<00000000c9a7efc4>] iterate_dir+0xb4/0x280
+    kernel:  [<00000000c9a7f1ea>] __do_sys_getdents64+0x5a/0x120
+    kernel:  [<00000000ca5d6946>] __do_syscall+0x256/0x310
+    kernel:  [<00000000ca5eea10>] system_call+0x70/0x98
+    kernel: INFO: lockdep is turned off.
+    kernel: FIX kmalloc-96: Restoring Poison 0x00000000885a7512-0x00000000885a7513=0x6b
+    kernel: FIX kmalloc-96: Marking all objects used
+
+The fix is simple: Before use of the queue not only the queue object
+but also the card object needs to increase it's reference count
+with a call to zcrypt_card_get(). Similar after use of the queue
+not only the queue but also the card object's reference count is
+decreased with zcrypt_card_put().
+
+Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
+Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qbman/qman.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/s390/crypto/zcrypt_api.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
-index d7bf456fd10e4..17f72d7ed3103 100644
---- a/drivers/soc/fsl/qbman/qman.c
-+++ b/drivers/soc/fsl/qbman/qman.c
-@@ -1369,11 +1369,11 @@ static void qm_congestion_task(struct work_struct *work)
- 	union qm_mc_result *mcr;
- 	struct qman_cgr *cgr;
- 
--	spin_lock(&p->cgr_lock);
-+	spin_lock_irq(&p->cgr_lock);
- 	qm_mc_start(&p->p);
- 	qm_mc_commit(&p->p, QM_MCC_VERB_QUERYCONGESTION);
- 	if (!qm_mc_result_timeout(&p->p, &mcr)) {
--		spin_unlock(&p->cgr_lock);
-+		spin_unlock_irq(&p->cgr_lock);
- 		dev_crit(p->config->dev, "QUERYCONGESTION timeout\n");
- 		qman_p_irqsource_add(p, QM_PIRQ_CSCI);
- 		return;
-@@ -1389,7 +1389,7 @@ static void qm_congestion_task(struct work_struct *work)
- 	list_for_each_entry(cgr, &p->cgr_cbs, node)
- 		if (cgr->cb && qman_cgrs_get(&c, cgr->cgrid))
- 			cgr->cb(p, cgr, qman_cgrs_get(&rr, cgr->cgrid));
--	spin_unlock(&p->cgr_lock);
-+	spin_unlock_irq(&p->cgr_lock);
- 	qman_p_irqsource_add(p, QM_PIRQ_CSCI);
+diff --git a/drivers/s390/crypto/zcrypt_api.c b/drivers/s390/crypto/zcrypt_api.c
+index f376dfcd7dbeb..69c1df560e2f1 100644
+--- a/drivers/s390/crypto/zcrypt_api.c
++++ b/drivers/s390/crypto/zcrypt_api.c
+@@ -574,6 +574,7 @@ static inline struct zcrypt_queue *zcrypt_pick_queue(struct zcrypt_card *zc,
+ {
+ 	if (!zq || !try_module_get(zq->queue->ap_dev.drv->driver.owner))
+ 		return NULL;
++	zcrypt_card_get(zc);
+ 	zcrypt_queue_get(zq);
+ 	get_device(&zq->queue->ap_dev.device);
+ 	atomic_add(weight, &zc->load);
+@@ -593,6 +594,7 @@ static inline void zcrypt_drop_queue(struct zcrypt_card *zc,
+ 	atomic_sub(weight, &zq->load);
+ 	put_device(&zq->queue->ap_dev.device);
+ 	zcrypt_queue_put(zq);
++	zcrypt_card_put(zc);
+ 	module_put(mod);
  }
  
-@@ -2346,7 +2346,7 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
- 	preempt_enable();
- 
- 	cgr->chan = p->config->channel;
--	spin_lock(&p->cgr_lock);
-+	spin_lock_irq(&p->cgr_lock);
- 
- 	if (opts) {
- 		struct qm_mcc_initcgr local_opts = *opts;
-@@ -2383,7 +2383,7 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
- 	    qman_cgrs_get(&p->cgrs[1], cgr->cgrid))
- 		cgr->cb(p, cgr, 1);
- out:
--	spin_unlock(&p->cgr_lock);
-+	spin_unlock_irq(&p->cgr_lock);
- 	put_affine_portal();
- 	return ret;
- }
 -- 
 2.43.0
 
