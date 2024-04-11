@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB918A0E4D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B801E8A1142
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 173F1286745
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2392CB22902
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49DF14601D;
-	Thu, 11 Apr 2024 10:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E223A1465BF;
+	Thu, 11 Apr 2024 10:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HggVMTLi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+HX2ay7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7AD14600A;
-	Thu, 11 Apr 2024 10:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE9B134CC2;
+	Thu, 11 Apr 2024 10:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830401; cv=none; b=oCD5/5eKGKiVduWLn/UxuKcEoHJ6Va8E3XhrFbbhUPl5yL99TMOD/o+iGgWvi1gUsqYzbWR8ADH9qG5Yc8SHz5t4ObGdw2yX5Pub0Dro0SdGnvMN8g0FPTxky0ZVNooe7gQ4lOm0k40gaTHoDoyJpAqSqZWzM1q5bbZrOqcUO2Y=
+	t=1712832121; cv=none; b=npBO3IZliV2oIxlLNbb+o6eQj0pqGNTprnzk/BLQEs1SJ8rjPvMpT6tICTgd1Mc2qGbVQp7rxGn8O7ioD/EnbwY5JxAx/PLnbOybuDoIuwo5zpwfHIPX6SRFU5BUWV9OdTZXMfmGVl5Ra/SBNsODN8Nz0sHjlIiUQuuM5DoWKXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830401; c=relaxed/simple;
-	bh=T1QbLgV34B2+REhVeVlDZM5hVVVa0DNa32qiGKJ23C4=;
+	s=arc-20240116; t=1712832121; c=relaxed/simple;
+	bh=vg111jf8dj9+kW0acMQaCJhgnBLSpOwh00bvaOfiwTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ogMy6tbxlqXiUst15fc5VZZv0v2JECKVoTvSTO35a68F/FcuDVLnAvwK2BYJYPFv/Oxsli5AFHni/zab/kCXqd0JypH80uqjiWOezs0kDF+aII/FHnKlET6DyXEZenZ+lvuzV5iTo3K+uA+T310UTmlwJZb0gLvgww2DhmWCT7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HggVMTLi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBCDFC43390;
-	Thu, 11 Apr 2024 10:13:20 +0000 (UTC)
+	 MIME-Version; b=H3w0fa3ZO4eWJMgZxtTMXZjV0Cq2+GLpPjeANyN4jFaAt3vdQ+rkgr+2cjsnZGhv/Ck2nE/nDAoZJ4C4qDX4O3nAJzNz0K4sCk8pp4gptubpgIaVxDjfkHqYvisjj96M57x9xbsEOzU3eWqprSIn8FfQ6pHHmOjQuJhRr2jU63w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+HX2ay7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25156C433C7;
+	Thu, 11 Apr 2024 10:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830401;
-	bh=T1QbLgV34B2+REhVeVlDZM5hVVVa0DNa32qiGKJ23C4=;
+	s=korg; t=1712832121;
+	bh=vg111jf8dj9+kW0acMQaCJhgnBLSpOwh00bvaOfiwTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HggVMTLibT1MdFCHnYjiOq3ryFtr5+iGfqDZex4oWvSn75GL/IK5VONyKaQiwFPQm
-	 DiHBP4Re3Pk1pchy1Ulh/P20SJEaS06nIMnYsbLou9N09XCJNSpEVz17YaPGQyLNxm
-	 m///rLxTtxeaZ2tFqOtKKgSU2aHNMYnJPO3P7CJk=
+	b=s+HX2ay7qskOBzIjjopFO02H+aJ7tG5O/3KHy7h/Rp0DvZMndd0jOBA0irujhSSOB
+	 js6XcdVFCcvR1cxZeW/GXaGDKh8CrBdMPuXy0UspNPiLeSAdieNH/Yq+2LwfWsIT+K
+	 LQnN81bDgaDPhLjcdAMbsGi0qoPMNe4EOVvRN4og=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 132/143] media: mediatek: vcodec: Fix oops when HEVC init fails
+	Samuel Holland <samuel.holland@sifive.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 5.10 237/294] riscv: Fix spurious errors from __get/put_kernel_nofault
 Date: Thu, 11 Apr 2024 11:56:40 +0200
-Message-ID: <20240411095424.877215700@linuxfoundation.org>
+Message-ID: <20240411095442.712245344@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-[ Upstream commit 97c75ee5de060d271d80109b0c47cb6008439e5b ]
+commit d080a08b06b6266cc3e0e86c5acfd80db937cb6b upstream.
 
-The stateless HEVC decoder saves the instance pointer in the context
-regardless if the initialization worked or not. This caused a use after
-free, when the pointer is freed in case of a failure in the deinit
-function.
-Only store the instance pointer when the initialization was successful,
-to solve this issue.
+These macros did not initialize __kr_err, so they could fail even if
+the access did not fault.
 
- Hardware name: Acer Tomato (rev3 - 4) board (DT)
- pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : vcodec_vpu_send_msg+0x4c/0x190 [mtk_vcodec_dec]
- lr : vcodec_send_ap_ipi+0x78/0x170 [mtk_vcodec_dec]
- sp : ffff80008750bc20
- x29: ffff80008750bc20 x28: ffff1299f6d70000 x27: 0000000000000000
- x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
- x23: ffff80008750bc98 x22: 000000000000a003 x21: ffffd45c4cfae000
- x20: 0000000000000010 x19: ffff1299fd668310 x18: 000000000000001a
- x17: 000000040044ffff x16: ffffd45cb15dc648 x15: 0000000000000000
- x14: ffff1299c08da1c0 x13: ffffd45cb1f87a10 x12: ffffd45cb2f5fe80
- x11: 0000000000000001 x10: 0000000000001b30 x9 : ffffd45c4d12b488
- x8 : 1fffe25339380d81 x7 : 0000000000000001 x6 : ffff1299c9c06c00
- x5 : 0000000000000132 x4 : 0000000000000000 x3 : 0000000000000000
- x2 : 0000000000000010 x1 : ffff80008750bc98 x0 : 0000000000000000
- Call trace:
-  vcodec_vpu_send_msg+0x4c/0x190 [mtk_vcodec_dec]
-  vcodec_send_ap_ipi+0x78/0x170 [mtk_vcodec_dec]
-  vpu_dec_deinit+0x1c/0x30 [mtk_vcodec_dec]
-  vdec_hevc_slice_deinit+0x30/0x98 [mtk_vcodec_dec]
-  vdec_if_deinit+0x38/0x68 [mtk_vcodec_dec]
-  mtk_vcodec_dec_release+0x20/0x40 [mtk_vcodec_dec]
-  fops_vcodec_release+0x64/0x118 [mtk_vcodec_dec]
-  v4l2_release+0x7c/0x100
-  __fput+0x80/0x2d8
-  __fput_sync+0x58/0x70
-  __arm64_sys_close+0x40/0x90
-  invoke_syscall+0x50/0x128
-  el0_svc_common.constprop.0+0x48/0xf0
-  do_el0_svc+0x24/0x38
-  el0_svc+0x38/0xd8
-  el0t_64_sync_handler+0xc0/0xc8
-  el0t_64_sync+0x1a8/0x1b0
- Code: d503201f f9401660 b900127f b900227f (f9400400)
-
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Fixes: 2674486aac7d ("media: mediatek: vcodec: support stateless hevc decoder")
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d464118cdc41 ("riscv: implement __get_kernel_nofault and __put_user_nofault")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Link: https://lore.kernel.org/r/20240312022030.320789-1-samuel.holland@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mediatek/vcodec/decoder/vdec/vdec_hevc_req_multi_if.c       | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/include/asm/uaccess.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_hevc_req_multi_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_hevc_req_multi_if.c
-index 06ed47df693bf..21836dd6ef85a 100644
---- a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_hevc_req_multi_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_hevc_req_multi_if.c
-@@ -869,7 +869,6 @@ static int vdec_hevc_slice_init(struct mtk_vcodec_dec_ctx *ctx)
- 	inst->vpu.codec_type = ctx->current_codec;
- 	inst->vpu.capture_type = ctx->capture_fourcc;
+--- a/arch/riscv/include/asm/uaccess.h
++++ b/arch/riscv/include/asm/uaccess.h
+@@ -468,7 +468,7 @@ unsigned long __must_check clear_user(vo
  
--	ctx->drv_handle = inst;
- 	err = vpu_dec_init(&inst->vpu);
- 	if (err) {
- 		mtk_vdec_err(ctx, "vdec_hevc init err=%d", err);
-@@ -898,6 +897,7 @@ static int vdec_hevc_slice_init(struct mtk_vcodec_dec_ctx *ctx)
- 	mtk_vdec_debug(ctx, "lat hevc instance >> %p, codec_type = 0x%x",
- 		       inst, inst->vpu.codec_type);
+ #define __get_kernel_nofault(dst, src, type, err_label)			\
+ do {									\
+-	long __kr_err;							\
++	long __kr_err = 0;						\
+ 									\
+ 	__get_user_nocheck(*((type *)(dst)), (type *)(src), __kr_err);	\
+ 	if (unlikely(__kr_err))						\
+@@ -477,7 +477,7 @@ do {									\
  
-+	ctx->drv_handle = inst;
- 	return 0;
- error_free_inst:
- 	kfree(inst);
--- 
-2.43.0
-
+ #define __put_kernel_nofault(dst, src, type, err_label)			\
+ do {									\
+-	long __kr_err;							\
++	long __kr_err = 0;						\
+ 									\
+ 	__put_user_nocheck(*((type *)(src)), (type *)(dst), __kr_err);	\
+ 	if (unlikely(__kr_err))						\
 
 
 
