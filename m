@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6693F8A1103
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 477E58A0EEA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:19:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2263D285C53
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2B691F220E4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1EE142624;
-	Thu, 11 Apr 2024 10:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506A214600A;
+	Thu, 11 Apr 2024 10:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIhaMqUb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ks0s+6/Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0B113CF89;
-	Thu, 11 Apr 2024 10:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1F2140E3D;
+	Thu, 11 Apr 2024 10:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831969; cv=none; b=bs0AoMVodP4sO+iGKQ5vgNTaEsY36alsv3/hIk7ftZ8mTEzWwg8ofN9kwukIf3cphDNBb1iARwf5seeFwc//gHJ2ZyeWtXcy/ys26mkOim8xvE+wo+w0ncL3itQpaFSAtueWF2aSloGFYRhiaDvWRGbHEeJA1kgOjhmF5yhBbu4=
+	t=1712830745; cv=none; b=oI0Ynh2Jqr4XIwqeiCgzAvytd4EWts40P99Dd2/cH34f2lyX5Gdp1xGbhPE7Z7HaVMYlUKgO0/mk+/L0S2ZOf2dNGWGJaJBVjzmLpIcb8YuLAAdiH1K3qsIJQpvNHe6RrKb6rI0TiGh2hkxhrPQOVikDTZhBTb0bsGNfyEbccV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831969; c=relaxed/simple;
-	bh=H7rMOgZidHQEtZxXLuBY0F56V+PMi3/3qxSUYi06b8Q=;
+	s=arc-20240116; t=1712830745; c=relaxed/simple;
+	bh=OwjHn/zBrSQzXzKeUVCNQO1L1OG5Q9fVLnWSnUxp8II=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eFjT6iX3bdanfMdXbOv1b59434jeb7g/RpqJJZtisfXwGAMLTM1FLThJc7m/B9MxEkRYblZxrY6FBEyWVU+hcQJpM4FNkygMNfO2L6x7tLq84O0cftJyNvl8Ixy3MBIYYpxIuff2+mncDkkyL9XuBXFxiWKTDXDu4/sqv1D+rr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIhaMqUb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530E6C43390;
-	Thu, 11 Apr 2024 10:39:28 +0000 (UTC)
+	 MIME-Version; b=pxOw/Kdh3wYU1IiHRc1Ic1zBncIXAWjG2snHHP2ex2syH+vJPUZPmZZ/kDqZvSocOphdmAlfL4sQIi7V4WByAv2AbzFZrIWH6oXvHNoxW1Arx7JWXK5k9KkSQ3g/h+Nq09kVHIYw9AAimVmzeqUsNTjZDvy35O028A5Gnr8sKRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ks0s+6/Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D248C433C7;
+	Thu, 11 Apr 2024 10:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831968;
-	bh=H7rMOgZidHQEtZxXLuBY0F56V+PMi3/3qxSUYi06b8Q=;
+	s=korg; t=1712830744;
+	bh=OwjHn/zBrSQzXzKeUVCNQO1L1OG5Q9fVLnWSnUxp8II=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jIhaMqUbhgQZVZdUr7d76uR7TjlNuGOcbJCkoiciIaI7OzPY/nHI81CI1iPr6vjeG
-	 BcQciPxULMRCPBMGdRTm0BzzSqVfsbC+fkbiJuo7RIif1L5cOVpRhmZl5izyxMtjHI
-	 lPhZDcDHNvW91fCoQSndMpcspxfzjPaPMHNPeW+0=
+	b=Ks0s+6/ZS765gnq56pgRAXKi46YBE29+KFKVCIbkSQspwuysHdZTDc0BVy0M0Hia4
+	 esclKlJchu/4Pcov2LkqMIedw6MJTfeyDrUYmAPI5JoCFBzuisjJorRddWktocWV07
+	 86uoC/xkyAJtVQkk83kcR1wcTIb9LT9lp7tk2DH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 5.10 148/294] KVM/x86: Export RFDS_NO and RFDS_CLEAR to guests
+	Martijn Coenen <maco@android.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Genjian Zhang <zhanggenjian@kylinos.cn>
+Subject: [PATCH 5.4 102/215] loop: Refactor loop_set_status() size calculation
 Date: Thu, 11 Apr 2024 11:55:11 +0200
-Message-ID: <20240411095440.108837016@linuxfoundation.org>
+Message-ID: <20240411095427.977242185@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Martijn Coenen <maco@android.com>
 
-commit 2a0180129d726a4b953232175857d442651b55a0 upstream.
+[ Upstream commit b0bd158dd630bd47640e0e418c062cda1e0da5ad ]
 
-Mitigation for RFDS requires RFDS_CLEAR capability which is enumerated
-by MSR_IA32_ARCH_CAPABILITIES bit 27. If the host has it set, export it
-to guests so that they can deploy the mitigation.
+figure_loop_size() calculates the loop size based on the passed in
+parameters, but at the same time it updates the offset and sizelimit
+parameters in the loop device configuration. That is a somewhat
+unexpected side effect of a function with this name, and it is only only
+needed by one of the two callers of this function - loop_set_status().
 
-RFDS_NO indicates that the system is not vulnerable to RFDS, export it
-to guests so that they don't deploy the mitigation unnecessarily. When
-the host is not affected by X86_BUG_RFDS, but has RFDS_NO=0, synthesize
-RFDS_NO to the guest.
+Move the lo_offset and lo_sizelimit assignment back into loop_set_status(),
+and use the newly factored out functions to validate and apply the newly
+calculated size. This allows us to get rid of figure_loop_size() in a
+follow-up commit.
 
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Martijn Coenen <maco@android.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/block/loop.c |   37 +++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1389,7 +1389,8 @@ static unsigned int num_msr_based_featur
- 	 ARCH_CAP_SKIP_VMENTRY_L1DFLUSH | ARCH_CAP_SSB_NO | ARCH_CAP_MDS_NO | \
- 	 ARCH_CAP_PSCHANGE_MC_NO | ARCH_CAP_TSX_CTRL_MSR | ARCH_CAP_TAA_NO | \
- 	 ARCH_CAP_SBDR_SSDP_NO | ARCH_CAP_FBSDP_NO | ARCH_CAP_PSDP_NO | \
--	 ARCH_CAP_FB_CLEAR | ARCH_CAP_RRSBA | ARCH_CAP_PBRSB_NO | ARCH_CAP_GDS_NO)
-+	 ARCH_CAP_FB_CLEAR | ARCH_CAP_RRSBA | ARCH_CAP_PBRSB_NO | ARCH_CAP_GDS_NO | \
-+	 ARCH_CAP_RFDS_NO | ARCH_CAP_RFDS_CLEAR)
- 
- static u64 kvm_get_arch_capabilities(void)
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -249,11 +249,6 @@ figure_loop_size(struct loop_device *lo,
  {
-@@ -1426,6 +1427,8 @@ static u64 kvm_get_arch_capabilities(voi
- 		data |= ARCH_CAP_SSB_NO;
- 	if (!boot_cpu_has_bug(X86_BUG_MDS))
- 		data |= ARCH_CAP_MDS_NO;
-+	if (!boot_cpu_has_bug(X86_BUG_RFDS))
-+		data |= ARCH_CAP_RFDS_NO;
+ 	loff_t size = get_size(offset, sizelimit, lo->lo_backing_file);
  
- 	if (!boot_cpu_has(X86_FEATURE_RTM)) {
- 		/*
+-	if (lo->lo_offset != offset)
+-		lo->lo_offset = offset;
+-	if (lo->lo_sizelimit != sizelimit)
+-		lo->lo_sizelimit = sizelimit;
+-
+ 	loop_set_size(lo, size);
+ }
+ 
+@@ -1271,6 +1266,7 @@ loop_set_status(struct loop_device *lo,
+ 	kuid_t uid = current_uid();
+ 	struct block_device *bdev;
+ 	bool partscan = false;
++	bool size_changed = false;
+ 
+ 	err = mutex_lock_killable(&loop_ctl_mutex);
+ 	if (err)
+@@ -1292,6 +1288,7 @@ loop_set_status(struct loop_device *lo,
+ 
+ 	if (lo->lo_offset != info->lo_offset ||
+ 	    lo->lo_sizelimit != info->lo_sizelimit) {
++		size_changed = true;
+ 		sync_blockdev(lo->lo_device);
+ 		invalidate_bdev(lo->lo_device);
+ 	}
+@@ -1299,6 +1296,15 @@ loop_set_status(struct loop_device *lo,
+ 	/* I/O need to be drained during transfer transition */
+ 	blk_mq_freeze_queue(lo->lo_queue);
+ 
++	if (size_changed && lo->lo_device->bd_inode->i_mapping->nrpages) {
++		/* If any pages were dirtied after invalidate_bdev(), try again */
++		err = -EAGAIN;
++		pr_warn("%s: loop%d (%s) has still dirty pages (nrpages=%lu)\n",
++			__func__, lo->lo_number, lo->lo_file_name,
++			lo->lo_device->bd_inode->i_mapping->nrpages);
++		goto out_unfreeze;
++	}
++
+ 	err = loop_release_xfer(lo);
+ 	if (err)
+ 		goto out_unfreeze;
+@@ -1322,19 +1328,8 @@ loop_set_status(struct loop_device *lo,
+ 	if (err)
+ 		goto out_unfreeze;
+ 
+-	if (lo->lo_offset != info->lo_offset ||
+-	    lo->lo_sizelimit != info->lo_sizelimit) {
+-		/* kill_bdev should have truncated all the pages */
+-		if (lo->lo_device->bd_inode->i_mapping->nrpages) {
+-			err = -EAGAIN;
+-			pr_warn("%s: loop%d (%s) has still dirty pages (nrpages=%lu)\n",
+-				__func__, lo->lo_number, lo->lo_file_name,
+-				lo->lo_device->bd_inode->i_mapping->nrpages);
+-			goto out_unfreeze;
+-		}
+-		figure_loop_size(lo, info->lo_offset, info->lo_sizelimit);
+-	}
+-
++	lo->lo_offset = info->lo_offset;
++	lo->lo_sizelimit = info->lo_sizelimit;
+ 	memcpy(lo->lo_file_name, info->lo_file_name, LO_NAME_SIZE);
+ 	memcpy(lo->lo_crypt_name, info->lo_crypt_name, LO_NAME_SIZE);
+ 	lo->lo_file_name[LO_NAME_SIZE-1] = 0;
+@@ -1358,6 +1353,12 @@ loop_set_status(struct loop_device *lo,
+ 		lo->lo_key_owner = uid;
+ 	}
+ 
++	if (size_changed) {
++		loff_t new_size = get_size(lo->lo_offset, lo->lo_sizelimit,
++					   lo->lo_backing_file);
++		loop_set_size(lo, new_size);
++	}
++
+ 	loop_config_discard(lo);
+ 
+ 	/* update dio if lo_offset or transfer is changed */
 
 
 
