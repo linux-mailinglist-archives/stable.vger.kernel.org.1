@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-38392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5678A0E5A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 873D08A1144
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38EA528681E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E61C1F2D14E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1EB14600A;
-	Thu, 11 Apr 2024 10:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60A81474B5;
+	Thu, 11 Apr 2024 10:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKKRXvOk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJXC5SpP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F89145B3E;
-	Thu, 11 Apr 2024 10:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838571474B0;
+	Thu, 11 Apr 2024 10:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830431; cv=none; b=Xw9jeqe+KpUiMbaJOTEu9MsG8NxtNuv/JLFoIpX4npptFBM19wtPb1t8ocu3X2QdQZQPbsHzdynCfo2tF9TQvjUMX8K7QbJVgk5eQxwI7yXfxFdIz12CZhIQcXb04nOPEw93YD14vTGy/iq7N70WfnjxiUIf7WnqR6N8aYimacc=
+	t=1712832133; cv=none; b=pdJMj6XZ7FtZtnG5rK37J2IZANVWb10kLGUvO4PDaUIrOFW/qpJpGze0L87btX5vy0SuWz9R4bYw+FRTHIZAQHauyORqs8m/8kd+RBXjl5/ftGAgWMVbiek1ty+WFTbXQAQGqRLHKD+Tv18dtTe1zTthvLutiZGGVdBQLg2ZMFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830431; c=relaxed/simple;
-	bh=YWX2S+HjNFw83l2qMWmYvU7adSh2VxY4GL45toYwhLg=;
+	s=arc-20240116; t=1712832133; c=relaxed/simple;
+	bh=H/DI7RwuIdJlRMftocURoonEJsHtqtxaJkocpYEzq9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E7x8cD/RmE/ze0CTjER2N9kNDk5SVyW3fxQnHZLadogtqoA19weENKDG2qTQyQhaEQbTdEjYOp1CSygB0FzgTpja1JjNzj1tFbPMUWLYuIWXxsUlFyBtni3pa8CddFKKFSR+gZd1yoW9bLf5kbjVQhOLA51hmWOMXA1+fYFhxw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKKRXvOk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A139FC433F1;
-	Thu, 11 Apr 2024 10:13:50 +0000 (UTC)
+	 MIME-Version; b=jQ/YMo1PxZTlHM94TOWsEfEt40i5diUGeED0HbwtTOsBvrKPJD4Ep1b3zJ4P4+/Sz1Lsh8yXF8nn5DQmrVPfbkHC4DNq3qTA9wES8VQOxzmQ8BtLoZ/VFEs4BdozcuMqDEkgRYrQBDK6oynXz2auI/xipRBg3uFWwCf/pydli3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJXC5SpP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D5BC433C7;
+	Thu, 11 Apr 2024 10:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830431;
-	bh=YWX2S+HjNFw83l2qMWmYvU7adSh2VxY4GL45toYwhLg=;
+	s=korg; t=1712832133;
+	bh=H/DI7RwuIdJlRMftocURoonEJsHtqtxaJkocpYEzq9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DKKRXvOktIjPNSAnwq8FUD3ipXlDDrDZt8SDMMXVNBALYuppuokqJkHHs4dDJYwYV
-	 wDoe0b8Zc1WMRnnUkyjHYgdnuv8lVPM831maeregy+FPzVcVwn+ss3x9gGZhnHNXT7
-	 CLBEIr7FajeWA5OuJhmXHoF/9nu1BeR5f82O1s7I=
+	b=TJXC5SpPvV3sQPTOJiQ4+ndMMItGyB7bItWl6oQlGLztxt/pwzmh0swo0n5LUaE+P
+	 HLCLrpF5EWv06mTxeQScSqtfub0GyPGY5ufLi/FLsRLN43BXGV4/BIWvE1y/kDzI1R
+	 KzVSpWTkBQGSGV1no3Li+I9i/Ft9XLcfb4KDt1IU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David McFarland <corngood@gmail.com>,
-	Enrik Berkhan <Enrik.Berkhan@inka.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 136/143] platform/x86/intel/hid: Dont wake on 5-button releases
+	Sandipan Das <sandipan.das@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Subject: [PATCH 5.10 241/294] x86/cpufeatures: Add CPUID_LNX_5 to track recently added Linux-defined word
 Date: Thu, 11 Apr 2024 11:56:44 +0200
-Message-ID: <20240411095424.995498714@linuxfoundation.org>
+Message-ID: <20240411095442.829808083@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David McFarland <corngood@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 5864e479ca4344f3a5df8074524da24c960f440b ]
+commit 8cb4a9a82b21623dbb4b3051dd30d98356cf95bc upstream.
 
-If, for example, the power button is configured to suspend, holding it
-and releasing it after the machine has suspended, will wake the machine.
+Add CPUID_LNX_5 to track cpufeatures' word 21, and add the appropriate
+compile-time assert in KVM to prevent direct lookups on the features in
+CPUID_LNX_5.  KVM uses X86_FEATURE_* flags to manage guest CPUID, and so
+must translate features that are scattered by Linux from the Linux-defined
+bit to the hardware-defined bit, i.e. should never try to directly access
+scattered features in guest CPUID.
 
-Also on some machines, power button release events are sent during
-hibernation, even if the button wasn't used to hibernate the machine.
-This causes hibernation to be aborted.
+Opportunistically add NR_CPUID_WORDS to enum cpuid_leafs, along with a
+compile-time assert in KVM's CPUID infrastructure to ensure that future
+additions update cpuid_leafs along with NCAPINTS.
 
-Fixes: 0c4cae1bc00d ("PM: hibernate: Avoid missing wakeup events during hibernation")
-Signed-off-by: David McFarland <corngood@gmail.com>
-Tested-by: Enrik Berkhan <Enrik.Berkhan@inka.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/878r1tpd6u.fsf_-_@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+No functional change intended.
+
+Fixes: 7f274e609f3d ("x86/cpufeatures: Add new word for scattered features")
+Cc: Sandipan Das <sandipan.das@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/hid.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/cpufeature.h |    2 ++
+ arch/x86/kvm/cpuid.h              |    2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
-index 7457ca2b27a60..9ffbdc988fe50 100644
---- a/drivers/platform/x86/intel/hid.c
-+++ b/drivers/platform/x86/intel/hid.c
-@@ -504,6 +504,7 @@ static void notify_handler(acpi_handle handle, u32 event, void *context)
- 	struct platform_device *device = context;
- 	struct intel_hid_priv *priv = dev_get_drvdata(&device->dev);
- 	unsigned long long ev_index;
-+	struct key_entry *ke;
- 	int err;
+--- a/arch/x86/include/asm/cpufeature.h
++++ b/arch/x86/include/asm/cpufeature.h
+@@ -33,6 +33,8 @@ enum cpuid_leafs
+ 	CPUID_7_EDX,
+ 	CPUID_8000_001F_EAX,
+ 	CPUID_8000_0021_EAX,
++	CPUID_LNX_5,
++	NR_CPUID_WORDS,
+ };
  
- 	/*
-@@ -545,11 +546,15 @@ static void notify_handler(acpi_handle handle, u32 event, void *context)
- 		if (event == 0xc0 || !priv->array)
- 			return;
- 
--		if (!sparse_keymap_entry_from_scancode(priv->array, event)) {
-+		ke = sparse_keymap_entry_from_scancode(priv->array, event);
-+		if (!ke) {
- 			dev_info(&device->dev, "unknown event 0x%x\n", event);
- 			return;
- 		}
- 
-+		if (ke->type == KE_IGNORE)
-+			return;
-+
- wakeup:
- 		pm_wakeup_hard_event(&device->dev);
- 
--- 
-2.43.0
-
+ #ifdef CONFIG_X86_FEATURE_NAMES
+--- a/arch/x86/kvm/cpuid.h
++++ b/arch/x86/kvm/cpuid.h
+@@ -76,10 +76,12 @@ static const struct cpuid_reg reverse_cp
+  */
+ static __always_inline void reverse_cpuid_check(unsigned int x86_leaf)
+ {
++	BUILD_BUG_ON(NR_CPUID_WORDS != NCAPINTS);
+ 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_1);
+ 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_2);
+ 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_3);
+ 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_4);
++	BUILD_BUG_ON(x86_leaf == CPUID_LNX_5);
+ 	BUILD_BUG_ON(x86_leaf >= ARRAY_SIZE(reverse_cpuid));
+ 	BUILD_BUG_ON(reverse_cpuid[x86_leaf].function == 0);
+ }
 
 
 
