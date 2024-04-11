@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7CDA8A0F6D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A968A1148
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E5B51F27BBB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3ED77B2128C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5480146A70;
-	Thu, 11 Apr 2024 10:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845A61474C3;
+	Thu, 11 Apr 2024 10:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbeDDuye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isLVT1C9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A891465BE;
-	Thu, 11 Apr 2024 10:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D7E145B26;
+	Thu, 11 Apr 2024 10:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831025; cv=none; b=MEl+nTHix3cL9pl2PSFoR9RaLnWnhoRX3OGgS+JLwgt9mxICwpFpWeTV/HDGOpif0FjJbOffW23vtpaG8m0cfZsV4Vix3oudWzVNZChu5GGbrMl5hnRHF5shqtbw5gj5OYVfieyLgqbS22bJj6LHTf59BeZsr2geqiHhmwYvZHk=
+	t=1712832145; cv=none; b=PKN1NOY7cDxpcGQbjc0BHcfyQFkvCNwSVhg0fCymTy/CbF3NWVhAbB2EUqV4G29qzZpqczkM6MLYu8k2mAheL11Jz41X8afM6QIOHYX2Pj7FKxVt5OC/4tUSaFKyY6+2tA6hnw5XQ38BExyBJiyWxMvQ4z5+3xemmuyCDEssdjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831025; c=relaxed/simple;
-	bh=HY3cxfi5qaAw1qB3JDSsDbF+hdXB7lU5cKLEaQjyc8U=;
+	s=arc-20240116; t=1712832145; c=relaxed/simple;
+	bh=ypiLW34PhB5CWlA7UkvwJjpkFmdCNzS4bckBONJ94vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FGi9QbEgT48IY/7GeZglAuU1/3/aMgo0f6WHiJeR/+cXKF7vVlWFr7CzmROnCdxr45fLj7Qf0VMqh8CE8iWp4Dc4SxqksjVVrTR3xz97BBZrda5KF5GVAX94MXJh/TvD1Fw353X8STCr7zm75X852Wvg01UuLudUYvicdga1an4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbeDDuye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE54EC43390;
-	Thu, 11 Apr 2024 10:23:44 +0000 (UTC)
+	 MIME-Version; b=ehlQKEE/xFf8yRRqpf4248juiiFtqjtfO6y7yKjVo+anQhgvL0WrGu7t1liHgE5OJCm6qz/96ykayESd7whkplIvUjIVR+Btu6mHykIBDeVM0GUdrFcJW+8rhT1k7LQimW4l8WfRUS2H/27WjlRauDSvalW71JtnD1q1TQfU7Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isLVT1C9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0C1C433F1;
+	Thu, 11 Apr 2024 10:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831025;
-	bh=HY3cxfi5qaAw1qB3JDSsDbF+hdXB7lU5cKLEaQjyc8U=;
+	s=korg; t=1712832145;
+	bh=ypiLW34PhB5CWlA7UkvwJjpkFmdCNzS4bckBONJ94vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sbeDDuye0lmtyj14ZAu+B7+g/H0kbp5XV5yvsxRjb5/WV1UIdxV8ocsOgUabJWqMv
-	 v0GxsGjBwWzAsiy7s44F/sfGag2jilpTafDvrqmcf23Yu0v6GsLQoQMdq/d04djRcd
-	 2jbciWSFob0GHNCNCJ1txMNoJGJgUJpvh48g2wDI=
+	b=isLVT1C9N3D2g4yRpTB0CcP70st0q5yhXNJPlnQRccAl4mIRaTsRi94EaAPzn4Ycv
+	 PNRcLtHH0p4hzDJHRVyOtJ0atz+6vM2r3HpQrubBLtN5DGZjkMWlwbTOX26O5SyLkk
+	 K4bc29aEKB9LGimeNc6ibRHiODSWO0nsRWomzhHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Burakov <a.burakov@rosalinux.ru>,
-	Helge Deller <deller@gmx.de>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 199/215] fbdev: viafb: fix typo in hw_bitblt_1 and hw_bitblt_2
+Subject: [PATCH 5.10 245/294] batman-adv: Improve exception handling in batadv_throw_uevent()
 Date: Thu, 11 Apr 2024 11:56:48 +0200
-Message-ID: <20240411095430.840167098@linuxfoundation.org>
+Message-ID: <20240411095442.945444767@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Burakov <a.burakov@rosalinux.ru>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit bc87bb342f106a0402186bcb588fcbe945dced4b ]
+[ Upstream commit 5593e9abf1cf2bf096366d8c7fd933bc69d561ce ]
 
-There are some actions with value 'tmp' but 'dst_addr' is checked instead.
-It is obvious that a copy-paste error was made here and the value
-of variable 'tmp' should be checked here.
+The kfree() function was called in up to three cases by
+the batadv_throw_uevent() function during error handling
+even if the passed variable contained a null pointer.
+This issue was detected by using the Coccinelle software.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+* Thus adjust jump targets.
 
-Signed-off-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
-Signed-off-by: Helge Deller <deller@gmx.de>
+* Reorder kfree() calls at the end.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Acked-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/via/accel.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/batman-adv/main.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/video/fbdev/via/accel.c b/drivers/video/fbdev/via/accel.c
-index 0a1bc7a4d7853..1e04026f08091 100644
---- a/drivers/video/fbdev/via/accel.c
-+++ b/drivers/video/fbdev/via/accel.c
-@@ -115,7 +115,7 @@ static int hw_bitblt_1(void __iomem *engine, u8 op, u32 width, u32 height,
+diff --git a/net/batman-adv/main.c b/net/batman-adv/main.c
+index 9f267b190779f..ac3ebdba83040 100644
+--- a/net/batman-adv/main.c
++++ b/net/batman-adv/main.c
+@@ -732,29 +732,31 @@ int batadv_throw_uevent(struct batadv_priv *bat_priv, enum batadv_uev_type type,
+ 				  "%s%s", BATADV_UEV_TYPE_VAR,
+ 				  batadv_uev_type_str[type]);
+ 	if (!uevent_env[0])
+-		goto out;
++		goto report_error;
  
- 	if (op != VIA_BITBLT_FILL) {
- 		tmp = src_mem ? 0 : src_addr;
--		if (dst_addr & 0xE0000007) {
-+		if (tmp & 0xE0000007) {
- 			printk(KERN_WARNING "hw_bitblt_1: Unsupported source "
- 				"address %X\n", tmp);
- 			return -EINVAL;
-@@ -260,7 +260,7 @@ static int hw_bitblt_2(void __iomem *engine, u8 op, u32 width, u32 height,
- 		writel(tmp, engine + 0x18);
+ 	uevent_env[1] = kasprintf(GFP_ATOMIC,
+ 				  "%s%s", BATADV_UEV_ACTION_VAR,
+ 				  batadv_uev_action_str[action]);
+ 	if (!uevent_env[1])
+-		goto out;
++		goto free_first_env;
  
- 		tmp = src_mem ? 0 : src_addr;
--		if (dst_addr & 0xE0000007) {
-+		if (tmp & 0xE0000007) {
- 			printk(KERN_WARNING "hw_bitblt_2: Unsupported source "
- 				"address %X\n", tmp);
- 			return -EINVAL;
+ 	/* If the event is DEL, ignore the data field */
+ 	if (action != BATADV_UEV_DEL) {
+ 		uevent_env[2] = kasprintf(GFP_ATOMIC,
+ 					  "%s%s", BATADV_UEV_DATA_VAR, data);
+ 		if (!uevent_env[2])
+-			goto out;
++			goto free_second_env;
+ 	}
+ 
+ 	ret = kobject_uevent_env(bat_kobj, KOBJ_CHANGE, uevent_env);
+-out:
+-	kfree(uevent_env[0]);
+-	kfree(uevent_env[1]);
+ 	kfree(uevent_env[2]);
++free_second_env:
++	kfree(uevent_env[1]);
++free_first_env:
++	kfree(uevent_env[0]);
+ 
+ 	if (ret)
++report_error:
+ 		batadv_dbg(BATADV_DBG_BATMAN, bat_priv,
+ 			   "Impossible to send uevent for (%s,%s,%s) event (err: %d)\n",
+ 			   batadv_uev_type_str[type],
 -- 
 2.43.0
 
