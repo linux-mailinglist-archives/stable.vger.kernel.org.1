@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-38729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4105D8A1011
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:30:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C778A1206
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64A1A1C22F39
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:30:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02CBC1F21E87
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE29A1474AB;
-	Thu, 11 Apr 2024 10:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE6D13BACD;
+	Thu, 11 Apr 2024 10:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bgusywX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zj6q3xZq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF57140E3C;
-	Thu, 11 Apr 2024 10:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9E079FD;
+	Thu, 11 Apr 2024 10:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831421; cv=none; b=m/YdPZ4TI6ioMzlPrKdYLhfgtpCaZWoQOvS2sZGbakw8e5uXJj1LPHuZj1HdiQbfKDNs3KWq8qLHiyq3lvPlLfFY16fDONxRdhbAzoPDPyB28CP0go0wOzFRc+Lan/oVMl6AVLvZdlXkDDnDxl58jgw+RIl4vQRdjfNMplvlzIo=
+	t=1712832593; cv=none; b=qdL7i11+/Fg30GPvDJ5ndhNo7VtYtCIPIzYkZMMk7ldqE4a8YMnTjpcgGVVqeG0RviGnwTPOyd+3t690HtzEUTC+OBvQxhoreX3Bi+HfXqtld1IA/kXVNZsH3Vv7fowKvrQrWFn7wsSNdHYlfKYSWtpJocgECmgvpzvs7BALfDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831421; c=relaxed/simple;
-	bh=aTXPC+yTIvbvpJHMz2HGO7AydgG3Cmqz+A4N+OA0Rk8=;
+	s=arc-20240116; t=1712832593; c=relaxed/simple;
+	bh=dc1RS/R3fnz/OD0CYRYDepUgqR3+ownl+b5i0TCNqxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/UlBLhz8sSQo4iQ4wo9L0yn2cutHz5PcDpMvX1MtOXWwmfpYfiO0oiMz4cK1rHKhiICZXqa5rdUqx6jq+QSx9STUcQwpog+I95Ad34UPpVZKwlwhqd0L99gCMG2bKx15GCVHSwUeeU1xuuaB/Uua+Mc6BH7j8qO8i8mAXTKEoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bgusywX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F46C433C7;
-	Thu, 11 Apr 2024 10:30:21 +0000 (UTC)
+	 MIME-Version; b=mhxKvGDpzNVy1bw/XnpDyOKXf++BnfEmAQUyz+miJJlYb5PqKHT4A5HZFPE5PUGA/zEbtnyf2MikYZKF2e61hDkk8zDAdDFuZyD3CAm18Ne2pdY1WPNR4JVQMXMEaN40fJKeATc7L4bFLeODIvVI1pt53olx3+iJGv51kEOUG9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zj6q3xZq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BADA3C433F1;
+	Thu, 11 Apr 2024 10:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831421;
-	bh=aTXPC+yTIvbvpJHMz2HGO7AydgG3Cmqz+A4N+OA0Rk8=;
+	s=korg; t=1712832593;
+	bh=dc1RS/R3fnz/OD0CYRYDepUgqR3+ownl+b5i0TCNqxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0bgusywXvN3/WkedXPNKecEKrqLhKfU7bJpnQsCeZA0Z3oPLeRwskjxzpnj+sGJNo
-	 mTfoSMlXRV4Bre5uzVnujRHgd2zd+kLA/X5z6CCl5H0jV1uX7kGG6J0rd4TJCP3ZYE
-	 pa8dZU/EhMh6flstGOiKGq5ufp8ay6UrpCuXPXaI=
+	b=Zj6q3xZqn2gnk7vSF/vDsiEAErKMd6IQGgRXJ70K3ZU+W66RcZF21F+wvuPkhc2EJ
+	 BDTA4NsWiefQm8xFDb1wE6JUyaNKDedDW2dknbbzdWveMNBxckwLO0BkClQSz6fsgH
+	 Cqj7YEv0Rb5Wjt+a2zKxOnwmiMAYYORPhVYHCBCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunfei Dong <yunfei.dong@mediatek.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	C Cheng <C.Cheng@mediatek.com>,
+	Bo Ye <bo.ye@mediatek.com>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 108/114] media: mediatek: vcodec: adding lock to protect encoder context list
+Subject: [PATCH 5.15 07/57] cpuidle: Avoid potential overflow in integer multiplication
 Date: Thu, 11 Apr 2024 11:57:15 +0200
-Message-ID: <20240411095420.152628554@linuxfoundation.org>
+Message-ID: <20240411095408.213066049@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+References: <20240411095407.982258070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,122 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunfei Dong <yunfei.dong@mediatek.com>
+From: C Cheng <C.Cheng@mediatek.com>
 
-[ Upstream commit afaaf3a0f647a24a7bf6a2145d8ade37baaf75ad ]
+[ Upstream commit 88390dd788db485912ee7f9a8d3d56fc5265d52f ]
 
-Add a lock for the ctx_list, to avoid accessing a NULL pointer
-within the 'vpu_enc_ipi_handler' function when the ctx_list has
-been deleted due to an unexpected behavior on the SCP IP block.
+In detail:
 
-Fixes: 1972e32431ed ("media: mediatek: vcodec: Fix possible invalid memory access for encoder")
-Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+In C language, when you perform a multiplication operation, if
+both operands are of int type, the multiplication operation is
+performed on the int type, and then the result is converted to
+the target type. This means that if the product of int type
+multiplication exceeds the range that int type can represent,
+an overflow will occur even if you store the result in a
+variable of int64_t type.
+
+For a multiplication of two int values, it is better to use
+mul_u32_u32() rather than s->exit_latency_ns = s->exit_latency *
+NSEC_PER_USEC to avoid potential overflow happenning.
+
+Signed-off-by: C Cheng <C.Cheng@mediatek.com>
+Signed-off-by: Bo Ye <bo.ye@mediatek.com>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[ rjw: New subject ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c      | 4 ++--
- .../platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c    | 5 +++++
- .../platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h    | 2 ++
- drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c | 2 ++
- 4 files changed, 11 insertions(+), 2 deletions(-)
+ drivers/cpuidle/driver.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
-index 831ec3d48b274..42ce58c41e4f4 100644
---- a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
-+++ b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
-@@ -65,12 +65,12 @@ static void mtk_vcodec_vpu_reset_enc_handler(void *priv)
+diff --git a/drivers/cpuidle/driver.c b/drivers/cpuidle/driver.c
+index f70aa17e2a8e0..c594e28adddf3 100644
+--- a/drivers/cpuidle/driver.c
++++ b/drivers/cpuidle/driver.c
+@@ -16,6 +16,7 @@
+ #include <linux/cpumask.h>
+ #include <linux/tick.h>
+ #include <linux/cpu.h>
++#include <linux/math64.h>
  
- 	dev_err(&dev->plat_dev->dev, "Watchdog timeout!!");
+ #include "cpuidle.h"
  
--	mutex_lock(&dev->dev_mutex);
-+	mutex_lock(&dev->dev_ctx_lock);
- 	list_for_each_entry(ctx, &dev->ctx_list, list) {
- 		ctx->state = MTK_STATE_ABORT;
- 		mtk_v4l2_vdec_dbg(0, ctx, "[%d] Change to state MTK_STATE_ABORT", ctx->id);
+@@ -185,7 +186,7 @@ static void __cpuidle_driver_init(struct cpuidle_driver *drv)
+ 			s->target_residency_ns = 0;
+ 
+ 		if (s->exit_latency > 0)
+-			s->exit_latency_ns = s->exit_latency * NSEC_PER_USEC;
++			s->exit_latency_ns = mul_u32_u32(s->exit_latency, NSEC_PER_USEC);
+ 		else if (s->exit_latency_ns < 0)
+ 			s->exit_latency_ns =  0;
  	}
--	mutex_unlock(&dev->dev_mutex);
-+	mutex_unlock(&dev->dev_ctx_lock);
- }
- 
- static const struct mtk_vcodec_fw_ops mtk_vcodec_vpu_msg = {
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
-index 6319f24bc714b..3cb8a16222220 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
-@@ -177,7 +177,9 @@ static int fops_vcodec_open(struct file *file)
- 	mtk_v4l2_venc_dbg(2, ctx, "Create instance [%d]@%p m2m_ctx=%p ",
- 			  ctx->id, ctx, ctx->m2m_ctx);
- 
-+	mutex_lock(&dev->dev_ctx_lock);
- 	list_add(&ctx->list, &dev->ctx_list);
-+	mutex_unlock(&dev->dev_ctx_lock);
- 
- 	mutex_unlock(&dev->dev_mutex);
- 	mtk_v4l2_venc_dbg(0, ctx, "%s encoder [%d]", dev_name(&dev->plat_dev->dev),
-@@ -212,7 +214,9 @@ static int fops_vcodec_release(struct file *file)
- 	v4l2_fh_exit(&ctx->fh);
- 	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
- 
-+	mutex_lock(&dev->dev_ctx_lock);
- 	list_del_init(&ctx->list);
-+	mutex_unlock(&dev->dev_ctx_lock);
- 	kfree(ctx);
- 	mutex_unlock(&dev->dev_mutex);
- 	return 0;
-@@ -294,6 +298,7 @@ static int mtk_vcodec_probe(struct platform_device *pdev)
- 
- 	mutex_init(&dev->enc_mutex);
- 	mutex_init(&dev->dev_mutex);
-+	mutex_init(&dev->dev_ctx_lock);
- 	spin_lock_init(&dev->irqlock);
- 
- 	snprintf(dev->v4l2_dev.name, sizeof(dev->v4l2_dev.name), "%s",
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h
-index a042f607ed8d1..0bd85d0fb379a 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h
-@@ -178,6 +178,7 @@ struct mtk_vcodec_enc_ctx {
-  *
-  * @enc_mutex: encoder hardware lock.
-  * @dev_mutex: video_device lock
-+ * @dev_ctx_lock: the lock of context list
-  * @encode_workqueue: encode work queue
-  *
-  * @enc_irq: h264 encoder irq resource
-@@ -205,6 +206,7 @@ struct mtk_vcodec_enc_dev {
- 	/* encoder hardware mutex lock */
- 	struct mutex enc_mutex;
- 	struct mutex dev_mutex;
-+	struct mutex dev_ctx_lock;
- 	struct workqueue_struct *encode_workqueue;
- 
- 	int enc_irq;
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c b/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c
-index 84ad1cc6ad171..51bb7ee141b9e 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c
-@@ -47,12 +47,14 @@ static bool vpu_enc_check_ap_inst(struct mtk_vcodec_enc_dev *enc_dev, struct ven
- 	struct mtk_vcodec_enc_ctx *ctx;
- 	int ret = false;
- 
-+	mutex_lock(&enc_dev->dev_ctx_lock);
- 	list_for_each_entry(ctx, &enc_dev->ctx_list, list) {
- 		if (!IS_ERR_OR_NULL(ctx) && ctx->vpu_inst == vpu) {
- 			ret = true;
- 			break;
- 		}
- 	}
-+	mutex_unlock(&enc_dev->dev_ctx_lock);
- 
- 	return ret;
- }
 -- 
 2.43.0
 
