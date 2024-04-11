@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 646D78A0EE2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:18:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6218A0D70
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:04:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 212DF28437F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:18:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE012B21235
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B2614600A;
-	Thu, 11 Apr 2024 10:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994A2145FED;
+	Thu, 11 Apr 2024 10:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JrZp0GGr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BlMcldXD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596A6140E3D;
-	Thu, 11 Apr 2024 10:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565EC1422C4;
+	Thu, 11 Apr 2024 10:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830730; cv=none; b=TrprqOB55QhxCY6avEoZP8chk94Wf14IFnzMDcZefdHCKGOdDynFH2mfna3VU17HOicTpZXDoWpAu4GFYDbPfy5sTD7sOt/WkaDJQmpwQGbKnk+QnE5gsIWnEBW1yYAFeIMEHftFJBGltCLqQU4wQUTl/xCRw+axjQ0758U0S2o=
+	t=1712829832; cv=none; b=SelSj7JCeNFdgzNOw1i5a8DMg4Vuquq3T0UGGvszHRmc/JQbi1pAEqKCYYyE/3SwcqRY7MUAPyB/gil7gl8ewxCkasBNPeDE1HY40A1iUTSrRZKMeWlLA+Nl5PPTQhmpyCUtnRqGj3EchzGYDTcTPjWb87TF8UBf0NIaemojUIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830730; c=relaxed/simple;
-	bh=UtbJF9Esk7sePNK0YPnoIi/kCqaZLrVE/M8tTPfcrkg=;
+	s=arc-20240116; t=1712829832; c=relaxed/simple;
+	bh=gY/ywS09wo5lT7oqShNhI0ZYFETI8848Vyycf0wMdHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dA8XTwMTAXtH9oqJsTt/sx5x430NrbxayvWjxlo/rWjwRcSHE8REOEBYdrI4qPiCEWaVKZK4DU/qn+pZ6AB2Zb6s5dzahMFBgvPWZ7iUHTlByqXzxUymL5GEhxMM2sf16rbhmgydEozp3H+9XxEZej3WPBgpmlDt3DyZGC6f4Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JrZp0GGr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA141C433F1;
-	Thu, 11 Apr 2024 10:18:49 +0000 (UTC)
+	 MIME-Version; b=SRLjCQLUTZiJlIP/5i4X+os6NmzE2XvIqvSjF8qlvHRrrdFsMaklATcUfOqyR0yrVeKSRRGQC8AxYCjCuG+/YdJbQNOyC5RKNLgbbL1w1AOG1kfPFJD9UTlfn0BctfRX2qFJkkICzOTdFUvONgHK4X32sUme8KXHjq+X3UO9PpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BlMcldXD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BDEDC433F1;
+	Thu, 11 Apr 2024 10:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830730;
-	bh=UtbJF9Esk7sePNK0YPnoIi/kCqaZLrVE/M8tTPfcrkg=;
+	s=korg; t=1712829832;
+	bh=gY/ywS09wo5lT7oqShNhI0ZYFETI8848Vyycf0wMdHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JrZp0GGrrF8D7YBN73f9l5nDmrx3oIWi6VPpouY6CrV8M6d8kNDpqCME/6MVKENHY
-	 Uy2UYiDyD+Eq2eK1pYYLpUhnsCaForuSE3TMG06AEmkdxrlBs0PUeIwBcdn36Db+pb
-	 6NDbpxArtjF2sZB8yHpiUlFl+S42Sf88JnEyHME0=
+	b=BlMcldXDFOfiGMytwVnfq7w3LyTuoK3VUUWoQa+EknHDTuwNIYeQAynRQ1UCW7iPJ
+	 JuNN6Wg+anb2/hUWeMQ5jUzjDhtld5MhhCscWamC2IgDfqBfUVSfM26Ll3UU2IKSKo
+	 QAVuOZp53tWA7nuLCFd4DNkG9B6eCc2DAuNQNq9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anand Jain <anand.jain@oracle.com>,
-	Goldwyn Rodrigues <rgoldwyn@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Maximilian Heyne <mheyne@amazon.de>
-Subject: [PATCH 5.4 097/215] btrfs: allocate btrfs_ioctl_defrag_range_args on stack
+	Max Filippov <jcmvbkbc@gmail.com>,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 4.19 083/175] exec: Fix NOMMU linux_binprm::exec in transfer_args_to_stack()
 Date: Thu, 11 Apr 2024 11:55:06 +0200
-Message-ID: <20240411095427.815637343@linuxfoundation.org>
+Message-ID: <20240411095422.061715739@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Goldwyn Rodrigues <rgoldwyn@suse.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-commit c853a5783ebe123847886d432354931874367292 upstream.
+commit 2aea94ac14d1e0a8ae9e34febebe208213ba72f7 upstream.
 
-Instead of using kmalloc() to allocate btrfs_ioctl_defrag_range_args,
-allocate btrfs_ioctl_defrag_range_args on stack, the size is reasonably
-small and ioctls are called in process context.
+In NOMMU kernel the value of linux_binprm::p is the offset inside the
+temporary program arguments array maintained in separate pages in the
+linux_binprm::page. linux_binprm::exec being a copy of linux_binprm::p
+thus must be adjusted when that array is copied to the user stack.
+Without that adjustment the value passed by the NOMMU kernel to the ELF
+program in the AT_EXECFN entry of the aux array doesn't make any sense
+and it may break programs that try to access memory pointed to by that
+entry.
 
-sizeof(btrfs_ioctl_defrag_range_args) = 48
+Adjust linux_binprm::exec before the successful return from the
+transfer_args_to_stack().
 
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ This patch is needed to fix a memory leak of "range" that was
-introduced when commit 173431b274a9 ("btrfs: defrag: reject unknown
-flags of btrfs_ioctl_defrag_range_args") was backported to kernels
-lacking this patch. Now with these two patches applied in reverse order,
-range->flags needed to change back to range.flags.
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.]
-Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Cc: <stable@vger.kernel.org>
+Fixes: b6a2fea39318 ("mm: variable length argument support")
+Fixes: 5edc2a5123a7 ("binfmt_elf_fdpic: wire up AT_EXECFD, AT_EXECFN, AT_SECURE")
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Link: https://lore.kernel.org/r/20240320182607.1472887-1-jcmvbkbc@gmail.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ioctl.c |   25 ++++++++-----------------
- 1 file changed, 8 insertions(+), 17 deletions(-)
+ fs/exec.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -3057,7 +3057,7 @@ static int btrfs_ioctl_defrag(struct fil
- {
- 	struct inode *inode = file_inode(file);
- 	struct btrfs_root *root = BTRFS_I(inode)->root;
--	struct btrfs_ioctl_defrag_range_args *range;
-+	struct btrfs_ioctl_defrag_range_args range = {0};
- 	int ret;
- 
- 	ret = mnt_want_write_file(file);
-@@ -3089,37 +3089,28 @@ static int btrfs_ioctl_defrag(struct fil
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -823,6 +823,7 @@ int transfer_args_to_stack(struct linux_
  			goto out;
- 		}
+ 	}
  
--		range = kzalloc(sizeof(*range), GFP_KERNEL);
--		if (!range) {
--			ret = -ENOMEM;
--			goto out;
--		}
--
- 		if (argp) {
--			if (copy_from_user(range, argp,
--					   sizeof(*range))) {
-+			if (copy_from_user(&range, argp, sizeof(range))) {
- 				ret = -EFAULT;
--				kfree(range);
- 				goto out;
- 			}
--			if (range->flags & ~BTRFS_DEFRAG_RANGE_FLAGS_SUPP) {
-+			if (range.flags & ~BTRFS_DEFRAG_RANGE_FLAGS_SUPP) {
- 				ret = -EOPNOTSUPP;
- 				goto out;
- 			}
- 			/* compression requires us to start the IO */
--			if ((range->flags & BTRFS_DEFRAG_RANGE_COMPRESS)) {
--				range->flags |= BTRFS_DEFRAG_RANGE_START_IO;
--				range->extent_thresh = (u32)-1;
-+			if ((range.flags & BTRFS_DEFRAG_RANGE_COMPRESS)) {
-+				range.flags |= BTRFS_DEFRAG_RANGE_START_IO;
-+				range.extent_thresh = (u32)-1;
- 			}
- 		} else {
- 			/* the rest are all set to zero by kzalloc */
--			range->len = (u64)-1;
-+			range.len = (u64)-1;
- 		}
- 		ret = btrfs_defrag_file(file_inode(file), file,
--					range, BTRFS_OLDEST_GENERATION, 0);
-+					&range, BTRFS_OLDEST_GENERATION, 0);
- 		if (ret > 0)
- 			ret = 0;
--		kfree(range);
- 		break;
- 	default:
- 		ret = -EINVAL;
++	bprm->exec += *sp_location - MAX_ARG_PAGES * PAGE_SIZE;
+ 	*sp_location = sp;
+ 
+ out:
 
 
 
