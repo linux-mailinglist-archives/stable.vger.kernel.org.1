@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-39025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE4FB8A1183
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F828A1204
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68FDD287A09
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5756D1F21AAE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFCC145B28;
-	Thu, 11 Apr 2024 10:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF74813BACD;
+	Thu, 11 Apr 2024 10:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MihgQEO2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y22ktpiU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA7D1448C8;
-	Thu, 11 Apr 2024 10:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D84579FD;
+	Thu, 11 Apr 2024 10:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832295; cv=none; b=qfnMeJMNWB+ud39+/zx21dZ3IisCMuH/jguzUv1asYxUHzAGjRVEJvKFMWCgzeNRCID/J53NdJ7NBwEqhvPcGd8DMflk/mU5FX6YN1zTeFkOAeZYiD1k/mtqpevy/teJ1fpxNw4MNFyJha79tRsAF47LQo/ryKEohmXrYDklQf0=
+	t=1712832587; cv=none; b=WN9eTeyzwKUxalReHnEzBD3G2n/+mQ9TFzPczDOH2L/Ds0xEXcKVJJmbOKiTo3CvIdIc2qXj58Vj4INamraUJ6IokM25v9U5BiFRPw2e3+gI8iUMtJtIVOJ0uT78yt7JWg4H4ir5OLDLy/8UTD9uwbagdh6aCPdwJUCYqGCKsG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832295; c=relaxed/simple;
-	bh=5pcvOLRdddtcJdudyOU/WqsIJVfkUpKgnGWbos1CeTI=;
+	s=arc-20240116; t=1712832587; c=relaxed/simple;
+	bh=O2fdcscBA3c3capcWmCUI/IV9rmygdNl/DlLmB7PQ/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I6J5O22U/PWlLkyAk+iLaihDVgFI1Ygir4oiy0msQ/rmABZxivboi9tcnq1HvZSutpsNtjwr/LneL/g8pLETi5KUFyihoP4fBAtRXiGe+q39yyVKBPO3Pxfqv3jZI4bAzSqzX7w6hS7c+TNYdeGlp55wuDtcRQAMUTCB3HfK4LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MihgQEO2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE068C433F1;
-	Thu, 11 Apr 2024 10:44:54 +0000 (UTC)
+	 MIME-Version; b=Jya9WKMudrwsJmeDviovYNO3EPQ9HkreDoQVQ2qXVZE3DG06kZeB5EKnj2nJo5ZrIoF4CCt634hKeXb9IjQwiu1B/VAxGlFEXy88BZXeY55br/XxBTh05Lts648CRpyibeHUXfzSKm4derAkRt30Sqtdsx6Mqlham8i+y65Sk0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y22ktpiU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E4BC433F1;
+	Thu, 11 Apr 2024 10:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832295;
-	bh=5pcvOLRdddtcJdudyOU/WqsIJVfkUpKgnGWbos1CeTI=;
+	s=korg; t=1712832587;
+	bh=O2fdcscBA3c3capcWmCUI/IV9rmygdNl/DlLmB7PQ/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MihgQEO2e0eyJvtJxiEMRh3z3V5YdgH+3icLvPFDJh/ovW6qooZDiHCHcIKADFTa0
-	 gWLkewynC0T5uyN/SbUaP0DUFEwV2mBvHuQKzCrXXYpQ2gYJ8eqf6ZZgkw7m7tMnKI
-	 pO520Wd2gcqNPZ42KdXu/mlXFQWgAif2uVRJkFBw=
+	b=Y22ktpiUbgn9oHqD3q/DF+ZrHWuVvV9MJrwiVQosuNvn6ojNb/xwExq1wCdDUFRKp
+	 hzT3w1q8gAqees8QDTuq+eGP++zfh2kY9Vxxzhkux1OF4Qy+Lw695Or3WEGGe2OeyW
+	 ksVpkR1Uvlan2rrdOANR9TJfLbIcxXLYYUYm8BwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Smirnov <r.smirnov@omp.ru>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Jens Axboe <axboe@kernel.dk>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Kees Cook <keescook@chromium.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 270/294] block: prevent division by zero in blk_rq_stat_sum()
+Subject: [PATCH 5.15 05/57] VMCI: Fix memcpy() run-time warning in dg_dispatch_as_host()
 Date: Thu, 11 Apr 2024 11:57:13 +0200
-Message-ID: <20240411095443.679461606@linuxfoundation.org>
+Message-ID: <20240411095408.151230810@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+References: <20240411095407.982258070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +66,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Smirnov <r.smirnov@omp.ru>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-[ Upstream commit 93f52fbeaf4b676b21acfe42a5152620e6770d02 ]
+[ Upstream commit 19b070fefd0d024af3daa7329cbc0d00de5302ec ]
 
-The expression dst->nr_samples + src->nr_samples may
-have zero value on overflow. It is necessary to add
-a check to avoid division by zero.
+Syzkaller hit 'WARNING in dg_dispatch_as_host' bug.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+memcpy: detected field-spanning write (size 56) of single field "&dg_info->msg"
+at drivers/misc/vmw_vmci/vmci_datagram.c:237 (size 24)
 
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20240305134509.23108-1-r.smirnov@omp.ru
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+WARNING: CPU: 0 PID: 1555 at drivers/misc/vmw_vmci/vmci_datagram.c:237
+dg_dispatch_as_host+0x88e/0xa60 drivers/misc/vmw_vmci/vmci_datagram.c:237
+
+Some code commentry, based on my understanding:
+
+544 #define VMCI_DG_SIZE(_dg) (VMCI_DG_HEADERSIZE + (size_t)(_dg)->payload_size)
+/// This is 24 + payload_size
+
+memcpy(&dg_info->msg, dg, dg_size);
+	Destination = dg_info->msg ---> this is a 24 byte
+					structure(struct vmci_datagram)
+	Source = dg --> this is a 24 byte structure (struct vmci_datagram)
+	Size = dg_size = 24 + payload_size
+
+{payload_size = 56-24 =32} -- Syzkaller managed to set payload_size to 32.
+
+ 35 struct delayed_datagram_info {
+ 36         struct datagram_entry *entry;
+ 37         struct work_struct work;
+ 38         bool in_dg_host_queue;
+ 39         /* msg and msg_payload must be together. */
+ 40         struct vmci_datagram msg;
+ 41         u8 msg_payload[];
+ 42 };
+
+So those extra bytes of payload are copied into msg_payload[], a run time
+warning is seen while fuzzing with Syzkaller.
+
+One possible way to fix the warning is to split the memcpy() into
+two parts -- one -- direct assignment of msg and second taking care of payload.
+
+Gustavo quoted:
+"Under FORTIFY_SOURCE we should not copy data across multiple members
+in a structure."
+
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Suggested-by: Vegard Nossum <vegard.nossum@oracle.com>
+Suggested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240105164001.2129796-2-harshit.m.mogalapalli@oracle.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-stat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/vmw_vmci/vmci_datagram.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-stat.c b/block/blk-stat.c
-index ae3dd1fb8e61d..6e602f9b966e4 100644
---- a/block/blk-stat.c
-+++ b/block/blk-stat.c
-@@ -28,7 +28,7 @@ void blk_rq_stat_init(struct blk_rq_stat *stat)
- /* src is a per-cpu stat, mean isn't initialized */
- void blk_rq_stat_sum(struct blk_rq_stat *dst, struct blk_rq_stat *src)
- {
--	if (!src->nr_samples)
-+	if (dst->nr_samples + src->nr_samples <= dst->nr_samples)
- 		return;
+diff --git a/drivers/misc/vmw_vmci/vmci_datagram.c b/drivers/misc/vmw_vmci/vmci_datagram.c
+index f50d22882476f..d1d8224c8800c 100644
+--- a/drivers/misc/vmw_vmci/vmci_datagram.c
++++ b/drivers/misc/vmw_vmci/vmci_datagram.c
+@@ -234,7 +234,8 @@ static int dg_dispatch_as_host(u32 context_id, struct vmci_datagram *dg)
  
- 	dst->min = min(dst->min, src->min);
+ 			dg_info->in_dg_host_queue = true;
+ 			dg_info->entry = dst_entry;
+-			memcpy(&dg_info->msg, dg, dg_size);
++			dg_info->msg = *dg;
++			memcpy(&dg_info->msg_payload, dg + 1, dg->payload_size);
+ 
+ 			INIT_WORK(&dg_info->work, dg_delayed_dispatch);
+ 			schedule_work(&dg_info->work);
 -- 
 2.43.0
 
