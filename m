@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-38271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A49A8A0DCA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7108C8A0D34
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:01:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CD92B2483F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7A9DB2301B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F362C145B32;
-	Thu, 11 Apr 2024 10:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7C0145B07;
+	Thu, 11 Apr 2024 10:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfG/z87A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOxQSJq4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B313F1448F3;
-	Thu, 11 Apr 2024 10:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DE5145323;
+	Thu, 11 Apr 2024 10:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830063; cv=none; b=hdXJtKRUv9OMCTSVeuMhN4jLd7YOEFC9NlouugkXX1RC1UEIDneXPdWftomOkRE6dNQNpg8mnkRJ96ngiHaSBNzu02uwMj98Egx/idAiuiXzSZSBwTTjkVuMFFEaiKQeHOnl6AkLRafyMQEgo0GW1fJCmNUFX0ifF3YdFEwBHc4=
+	t=1712829682; cv=none; b=QaQCik0+xkFO7GhS4y2Y8ELi8VbhQOw4l44k+F8gihW5qCNrlOzBJmisQ5OtUIDN5i1ThCxmVJihLxEw8CBWSCujFpxuKw412x51YKJ/K/HBel6jmev9oIuc2YIuBc2AW/m5vGFrHNkp/OTQa4HJUwInd5/3r+n1x8F5yGIHFaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830063; c=relaxed/simple;
-	bh=k/vL9GZP7WqFXkLuJhrnceOeiYI94/ooliWMB8qokQ0=;
+	s=arc-20240116; t=1712829682; c=relaxed/simple;
+	bh=uxe4VfcQShIk31+9NHCUKDjdN3MmLbALErRTpJEhK2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqH5VMlV6PsI+UnhgwW6a2sk+lHpJLsWZItDymSKK13te36QWt4l2OjzSeNPtRClcByGA+PucRSPWvtu4g/hsDqepwBVL2+b5PvLw0TBIwMnKJPtcN2SozXZ2GqpiKCEpo5QdtBphHzBcKpCS3AD6lDtsrElAHIVT7jN59zG05A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfG/z87A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C004C433C7;
-	Thu, 11 Apr 2024 10:07:43 +0000 (UTC)
+	 MIME-Version; b=WJGNpPyKLq8tcSv0MSPaLQUv7f532gQKNZhhA5d0O+grUMEA4fY63VKFhxnxn85zubQMtVgl44FXyhQR4F4hXMOksAZKUPfi3ET8C+1rzTpPIdXBx//rezGc8SL/MXXMuGuZbb10/Dh6jOggyx22h2wkNnm7t+o1pHuM7oiphmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOxQSJq4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91345C433F1;
+	Thu, 11 Apr 2024 10:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830063;
-	bh=k/vL9GZP7WqFXkLuJhrnceOeiYI94/ooliWMB8qokQ0=;
+	s=korg; t=1712829682;
+	bh=uxe4VfcQShIk31+9NHCUKDjdN3MmLbALErRTpJEhK2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YfG/z87AoPs42f1nIIECVA25K1uEgKBGrEczR8hQUcjJrOf7iup/xdHHiBaGnAFy8
-	 E6jcsk9ltWTO4kcgkrJJiQPEz0fI3T/0HpAqwJgPLnDVv4oRWq6SQ04C859Z2YtLzg
-	 +Etm3lZFu3FPl5ydIxTbpEJK9pHrRFM337Y+W9/s=
+	b=uOxQSJq4VqzAD2X4Upo+wIDdR4djSotkmxacGaCfeHrSjD4zG2p7UnIRDAJNd/mOJ
+	 9IoOxVN3iBvui1BaI4MpcuCAJ19wwCUnf5CLHTkPswVifWi71FyAQl37RvN/f4/mAq
+	 nDD6WJb5G/GJTQvlIEMrEt9Bz/LV9RyisIosBctw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Jonker <jbx6244@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Matt <cryptearth@googlemail.com>,
+	Conrad Kostecki <conikost@gentoo.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 023/143] arm64: dts: rockchip: fix rk3399 hdmi ports node
+Subject: [PATCH 4.19 068/175] ahci: asm1064: asm1166: dont limit reported ports
 Date: Thu, 11 Apr 2024 11:54:51 +0200
-Message-ID: <20240411095421.609170708@linuxfoundation.org>
+Message-ID: <20240411095421.611995549@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Jonker <jbx6244@gmail.com>
+From: Conrad Kostecki <conikost@gentoo.org>
 
-[ Upstream commit f051b6ace7ffcc48d6d1017191f167c0a85799f6 ]
+[ Upstream commit 6cd8adc3e18960f6e59d797285ed34ef473cc896 ]
 
-Fix rk3399 hdmi ports node so that it matches the
-rockchip,dw-hdmi.yaml binding.
+Previously, patches have been added to limit the reported count of SATA
+ports for asm1064 and asm1166 SATA controllers, as those controllers do
+report more ports than physically having.
 
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Link: https://lore.kernel.org/r/a6ab6f75-3b80-40b1-bd30-3113e14becdd@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+While it is allowed to report more ports than physically having in CAP.NP,
+it is not allowed to report more ports than physically having in the PI
+(Ports Implemented) register, which is what these HBAs do.
+(This is a AHCI spec violation.)
+
+Unfortunately, it seems that the PMP implementation in these ASMedia HBAs
+is also violating the AHCI and SATA-IO PMP specification.
+
+What these HBAs do is that they do not report that they support PMP
+(CAP.SPM (Supports Port Multiplier) is not set).
+
+Instead, they have decided to add extra "virtual" ports in the PI register
+that is used if a port multiplier is connected to any of the physical
+ports of the HBA.
+
+Enumerating the devices behind the PMP as specified in the AHCI and
+SATA-IO specifications, by using PMP READ and PMP WRITE commands to the
+physical ports of the HBA is not possible, you have to use the "virtual"
+ports.
+
+This is of course bad, because this gives us no way to detect the device
+and vendor ID of the PMP actually connected to the HBA, which means that
+we can not apply the proper PMP quirks for the PMP that is connected to
+the HBA.
+
+Limiting the port map will thus stop these controllers from working with
+SATA Port Multipliers.
+
+This patch reverts both patches for asm1064 and asm1166, so old behavior
+is restored and SATA PMP will work again, but it will also reintroduce the
+(minutes long) extra boot time for the ASMedia controllers that do not
+have a PMP connected (either on the PCIe card itself, or an external PMP).
+
+However, a longer boot time for some, is the lesser evil compared to some
+other users not being able to detect their drives at all.
+
+Fixes: 0077a504e1a4 ("ahci: asm1166: correct count of reported ports")
+Fixes: 9815e3961754 ("ahci: asm1064: correct count of reported ports")
+Cc: stable@vger.kernel.org
+Reported-by: Matt <cryptearth@googlemail.com>
+Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+[cassel: rewrote commit message]
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399.dtsi | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/ata/ahci.c | 13 -------------
+ 1 file changed, 13 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-index 6e12c5a920cab..fe818a2700aa7 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-@@ -1956,6 +1956,7 @@ simple-audio-card,codec {
- 	hdmi: hdmi@ff940000 {
- 		compatible = "rockchip,rk3399-dw-hdmi";
- 		reg = <0x0 0xff940000 0x0 0x20000>;
-+		reg-io-width = <4>;
- 		interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH 0>;
- 		clocks = <&cru PCLK_HDMI_CTRL>,
- 			 <&cru SCLK_HDMI_SFR>,
-@@ -1964,13 +1965,16 @@ hdmi: hdmi@ff940000 {
- 			 <&cru PLL_VPLL>;
- 		clock-names = "iahb", "isfr", "cec", "grf", "ref";
- 		power-domains = <&power RK3399_PD_HDCP>;
--		reg-io-width = <4>;
- 		rockchip,grf = <&grf>;
- 		#sound-dai-cells = <0>;
- 		status = "disabled";
- 
- 		ports {
--			hdmi_in: port {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			hdmi_in: port@0 {
-+				reg = <0>;
- 				#address-cells = <1>;
- 				#size-cells = <0>;
- 
-@@ -1983,6 +1987,10 @@ hdmi_in_vopl: endpoint@1 {
- 					remote-endpoint = <&vopl_out_hdmi>;
- 				};
- 			};
-+
-+			hdmi_out: port@1 {
-+				reg = <1>;
-+			};
- 		};
- 	};
- 
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 6b1562fed85ed..ab3ea47ecce3a 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -634,19 +634,6 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
+ static void ahci_pci_save_initial_config(struct pci_dev *pdev,
+ 					 struct ahci_host_priv *hpriv)
+ {
+-	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA) {
+-		switch (pdev->device) {
+-		case 0x1166:
+-			dev_info(&pdev->dev, "ASM1166 has only six ports\n");
+-			hpriv->saved_port_map = 0x3f;
+-			break;
+-		case 0x1064:
+-			dev_info(&pdev->dev, "ASM1064 has only four ports\n");
+-			hpriv->saved_port_map = 0xf;
+-			break;
+-		}
+-	}
+-
+ 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
+ 		dev_info(&pdev->dev, "JMB361 has only one port\n");
+ 		hpriv->force_port_map = 1;
 -- 
 2.43.0
 
