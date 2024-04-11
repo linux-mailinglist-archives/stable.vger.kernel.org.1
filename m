@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AABEE8A0FBE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 147F38A1124
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66EDB281A62
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C18A4283135
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A8F145B13;
-	Thu, 11 Apr 2024 10:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97E01474B0;
+	Thu, 11 Apr 2024 10:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yN1lwx+e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUm3d6SL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CD213FD94;
-	Thu, 11 Apr 2024 10:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DC4146D7E;
+	Thu, 11 Apr 2024 10:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831225; cv=none; b=lMz+JVztdd7HodecGGIPiHP4iz+Pmh/aI01FsE1lEtDIagZAZlVeTebf5x0ts2Nu+DCO+9vHxWgs0ooQ/DfFt7HD/JzZjUblrGA68S7cIr9pypC8o88HFHMQv4JcmFQTXodSFYXUrft/RfTeVd8yRITolKPFJV+7vNmSAzSBCE8=
+	t=1712832047; cv=none; b=UuT+w/K6WxddgcPSQqT3tSWovsyN+70SJR2WH6boz1cAu+WPN8Hc9OV7aF6n0GJLkY1n9Eu3DhCJom5DSsMob8wAoNg/jMN/cf+io6akgvOBxt82VAEk4DuugtCmtJvoZNBDeaKscpAL5raazERmttWSe3Ny/WmE8LkQcrlkT9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831225; c=relaxed/simple;
-	bh=lem2TuFQrcbn+mzTpjiAizGcuH6dcVXmKT8HGpDssbw=;
+	s=arc-20240116; t=1712832047; c=relaxed/simple;
+	bh=C7Sk73tK9eVD27Efq6jQI0HXqlKX03FaUNwHl7edxD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GSeEXbB9Fj0iRbZNgw3cKAeab7dXrDtoCp7XSkiZ4McVodwpris+xVPD55mAWs7DctgTCQrZ5+vcmiD5hpmBK5JiYY2Tkw6y4LZ9jv2+2oPGe/fsx0uBmas/wpU9z8aMj+wCv0t/P2AxadOePwp6JPeUgVa/yjze2eGSgHLbJ1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yN1lwx+e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F76C433C7;
-	Thu, 11 Apr 2024 10:27:04 +0000 (UTC)
+	 MIME-Version; b=DJpEXumIMGLXflFPgK29ADuWKlYTb/KvSM/mBa/FqwjehBhbYT3k/+P8Onb8PtuGhvRonzMA1HIx157jiHyaKYpYtD/2Y17xvjcxU7rMJrc0IXRq/OdtrGbOH7YWSoI0Tkq484cELbAGKjDPtv1zLOiv1FXofw/vwjHlmEDSmls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUm3d6SL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC7DC433F1;
+	Thu, 11 Apr 2024 10:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831225;
-	bh=lem2TuFQrcbn+mzTpjiAizGcuH6dcVXmKT8HGpDssbw=;
+	s=korg; t=1712832047;
+	bh=C7Sk73tK9eVD27Efq6jQI0HXqlKX03FaUNwHl7edxD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yN1lwx+eyGYsUmb2mvfrwOZm+8WSL/Z6hl0XXUg+3AQFvZKPjEKWnuH9EXr/pyDAR
-	 rkxcS42Z/3LychQ4v0aOapN2CRcKOnpeuNXz/Du0jYu4easGkkGrGOQkOkG7PAjoEz
-	 oyaUm7pHWrvgl+laH5rkkdw0WWDyXVAA9SqZD7dg=
+	b=BUm3d6SLn0/w0G3s7lfPy3PmajdG5qLNbFF1OPUPJyA5B4QfQ5g/tnjqrDMrf4gul
+	 dHX9T54LgG6uHejgQJakSPE4+9f9pihYbpXXWQWnWhcJtjuNxtbs/VDY9HDq95Z5y0
+	 P/kSq0mhp7W3ZCAA85DzbEs8KcgqBj6Xs275vDRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Emil Velikov <emil.velikov@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/114] ASoC: SOF: amd: Optimize quirk for Valve Galileo
+	Piotr Wejman <piotrwejman90@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 213/294] net: stmmac: fix rx queue priority assignment
 Date: Thu, 11 Apr 2024 11:56:16 +0200
-Message-ID: <20240411095418.365444309@linuxfoundation.org>
+Message-ID: <20240411095442.007723718@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Piotr Wejman <piotrwejman90@gmail.com>
 
-[ Upstream commit a13f0c3c0e8fb3e61fbfd99c6b350cf9be0c4660 ]
+commit b3da86d432b7cd65b025a11f68613e333d2483db upstream.
 
-Valve's Steam Deck OLED is uniquely identified by vendor and product
-name (Galileo) DMI fields.
+The driver should ensure that same priority is not mapped to multiple
+rx queues. From DesignWare Cores Ethernet Quality-of-Service
+Databook, section 17.1.29 MAC_RxQ_Ctrl2:
+"[...]The software must ensure that the content of this field is
+mutually exclusive to the PSRQ fields for other queues, that is,
+the same priority is not mapped to multiple Rx queues[...]"
 
-Simplify the quirk by removing the unnecessary match on product family.
+Previously rx_queue_priority() function was:
+- clearing all priorities from a queue
+- adding new priorities to that queue
+After this patch it will:
+- first assign new priorities to a queue
+- then remove those priorities from all other queues
+- keep other priorities previously assigned to that queue
 
-Additionally, fix the related comment as it points to the old product
-variant.
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Reviewed-by: Emil Velikov <emil.velikov@collabora.com>
-Link: https://msgid.link/r/20231219030728.2431640-7-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a8f5102af2a7 ("net: stmmac: TX and RX queue priority configuration")
+Fixes: 2142754f8b9c ("net: stmmac: Add MAC related callbacks for XGMAC2")
+Signed-off-by: Piotr Wejman <piotrwejman90@gmail.com>
+Link: https://lore.kernel.org/r/20240401192239.33942-1-piotrwejman90@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/amd/acp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c   |   40 +++++++++++++++-----
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c |   38 +++++++++++++++----
+ 2 files changed, 62 insertions(+), 16 deletions(-)
 
-diff --git a/sound/soc/sof/amd/acp.c b/sound/soc/sof/amd/acp.c
-index cc006d7038d97..add386f749ae9 100644
---- a/sound/soc/sof/amd/acp.c
-+++ b/sound/soc/sof/amd/acp.c
-@@ -28,11 +28,10 @@ MODULE_PARM_DESC(enable_fw_debug, "Enable Firmware debug");
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+@@ -75,19 +75,41 @@ static void dwmac4_rx_queue_priority(str
+ 				     u32 prio, u32 queue)
+ {
+ 	void __iomem *ioaddr = hw->pcsr;
+-	u32 base_register;
+-	u32 value;
++	u32 clear_mask = 0;
++	u32 ctrl2, ctrl3;
++	int i;
  
- const struct dmi_system_id acp_sof_quirk_table[] = {
- 	{
--		/* Valve Jupiter device */
-+		/* Steam Deck OLED device */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Valve"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Galileo"),
--			DMI_MATCH(DMI_PRODUCT_FAMILY, "Sephiroth"),
- 		},
- 		.driver_data = (void *)SECURED_FIRMWARE,
- 	},
--- 
-2.43.0
-
+-	base_register = (queue < 4) ? GMAC_RXQ_CTRL2 : GMAC_RXQ_CTRL3;
+-	if (queue >= 4)
+-		queue -= 4;
++	ctrl2 = readl(ioaddr + GMAC_RXQ_CTRL2);
++	ctrl3 = readl(ioaddr + GMAC_RXQ_CTRL3);
++
++	/* The software must ensure that the same priority
++	 * is not mapped to multiple Rx queues
++	 */
++	for (i = 0; i < 4; i++)
++		clear_mask |= ((prio << GMAC_RXQCTRL_PSRQX_SHIFT(i)) &
++						GMAC_RXQCTRL_PSRQX_MASK(i));
+ 
+-	value = readl(ioaddr + base_register);
++	ctrl2 &= ~clear_mask;
++	ctrl3 &= ~clear_mask;
+ 
+-	value &= ~GMAC_RXQCTRL_PSRQX_MASK(queue);
+-	value |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
++	/* First assign new priorities to a queue, then
++	 * clear them from others queues
++	 */
++	if (queue < 4) {
++		ctrl2 |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
+ 						GMAC_RXQCTRL_PSRQX_MASK(queue);
+-	writel(value, ioaddr + base_register);
++
++		writel(ctrl2, ioaddr + GMAC_RXQ_CTRL2);
++		writel(ctrl3, ioaddr + GMAC_RXQ_CTRL3);
++	} else {
++		queue -= 4;
++
++		ctrl3 |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
++						GMAC_RXQCTRL_PSRQX_MASK(queue);
++
++		writel(ctrl3, ioaddr + GMAC_RXQ_CTRL3);
++		writel(ctrl2, ioaddr + GMAC_RXQ_CTRL2);
++	}
+ }
+ 
+ static void dwmac4_tx_queue_priority(struct mac_device_info *hw,
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -97,17 +97,41 @@ static void dwxgmac2_rx_queue_prio(struc
+ 				   u32 queue)
+ {
+ 	void __iomem *ioaddr = hw->pcsr;
+-	u32 value, reg;
++	u32 clear_mask = 0;
++	u32 ctrl2, ctrl3;
++	int i;
+ 
+-	reg = (queue < 4) ? XGMAC_RXQ_CTRL2 : XGMAC_RXQ_CTRL3;
+-	if (queue >= 4)
++	ctrl2 = readl(ioaddr + XGMAC_RXQ_CTRL2);
++	ctrl3 = readl(ioaddr + XGMAC_RXQ_CTRL3);
++
++	/* The software must ensure that the same priority
++	 * is not mapped to multiple Rx queues
++	 */
++	for (i = 0; i < 4; i++)
++		clear_mask |= ((prio << XGMAC_PSRQ_SHIFT(i)) &
++						XGMAC_PSRQ(i));
++
++	ctrl2 &= ~clear_mask;
++	ctrl3 &= ~clear_mask;
++
++	/* First assign new priorities to a queue, then
++	 * clear them from others queues
++	 */
++	if (queue < 4) {
++		ctrl2 |= (prio << XGMAC_PSRQ_SHIFT(queue)) &
++						XGMAC_PSRQ(queue);
++
++		writel(ctrl2, ioaddr + XGMAC_RXQ_CTRL2);
++		writel(ctrl3, ioaddr + XGMAC_RXQ_CTRL3);
++	} else {
+ 		queue -= 4;
+ 
+-	value = readl(ioaddr + reg);
+-	value &= ~XGMAC_PSRQ(queue);
+-	value |= (prio << XGMAC_PSRQ_SHIFT(queue)) & XGMAC_PSRQ(queue);
++		ctrl3 |= (prio << XGMAC_PSRQ_SHIFT(queue)) &
++						XGMAC_PSRQ(queue);
+ 
+-	writel(value, ioaddr + reg);
++		writel(ctrl3, ioaddr + XGMAC_RXQ_CTRL3);
++		writel(ctrl2, ioaddr + XGMAC_RXQ_CTRL2);
++	}
+ }
+ 
+ static void dwxgmac2_tx_queue_prio(struct mac_device_info *hw, u32 prio,
 
 
 
