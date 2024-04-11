@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-38458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 922418A0EB1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB638A0D1B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:00:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4D33B2170F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C73D91F2198F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6681F14600E;
-	Thu, 11 Apr 2024 10:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 854F8145B13;
+	Thu, 11 Apr 2024 10:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEr/i0mV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNPnl+Z1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25218145B28;
-	Thu, 11 Apr 2024 10:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E6B1448EF;
+	Thu, 11 Apr 2024 10:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830632; cv=none; b=CjwQ8JRosNCp3JrIoRs+fOqGwHrgXgPenmP6pVB+m/+cBDpAsF8FgOCW4AccLLpETdNzROy3FoMptJwtCkqxSwCr85oQDgx5LVMsTZVlowynyWyfBijZgRXpj9u3wOsNFTdDCAfRBK6wLJ+TzJsRNumRVGJA/Jcy2oJwYIDRlko=
+	t=1712829620; cv=none; b=tzcLOBwLvxqVofH1CYpTwOMlagAdeeFWyRYTHoQG7cjlOWrMnmZQ+X77StKWeo1yJLEfVo38sVL27RcoyLZh0b8Tigse6SSsNDvcOsOGZz1EEIcdfEkORL/RY3OeeJtm7tlNnr/URo49lYt5WBUr4SrJ5BLoUmZkJlcUmeY9pOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830632; c=relaxed/simple;
-	bh=J27mTxf3/0/GxUQiNsgmNXFSWrrWUQCCUS5vHb5p/xc=;
+	s=arc-20240116; t=1712829620; c=relaxed/simple;
+	bh=j5JqO3hlFNjGR/k5FHK/fsUypI7tlxTw6dMUfvBAOa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rcnZeubEA6Oj6m90HnFp2sinpYzf7lQtJPsV9eOzVN6odtlYU9M2h5ffYgMxh9cLYMakcCcN5bfDmHNVIzObEYn4i2AgN3xA9XTO87Xyds5U3AFDaBjQN2iWOnK7vjPc+x/pwxK8lKwM7TnO+LFn7UXVMfAqibMNBg8DjmvgLFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEr/i0mV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987A7C433F1;
-	Thu, 11 Apr 2024 10:17:11 +0000 (UTC)
+	 MIME-Version; b=ciaR/MAmliILz2uFX4FiXMN+IIc4eX/ahqXX1qviYi2ogOjq5UOwEOsrl481cOjKJMPg9yfWuDkETv/twBTIz+372iCdYjcUek0dmKC8+DXPVCrDkkttmoPnHT4ktjvE7WJ2zwpVjePVTOn2rKPID9jqIkahdvtwYh7Q1KL2MJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNPnl+Z1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A7A7C433C7;
+	Thu, 11 Apr 2024 10:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830632;
-	bh=J27mTxf3/0/GxUQiNsgmNXFSWrrWUQCCUS5vHb5p/xc=;
+	s=korg; t=1712829619;
+	bh=j5JqO3hlFNjGR/k5FHK/fsUypI7tlxTw6dMUfvBAOa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TEr/i0mV7O1Kod0UFuHXCWwPg5ncI8UzlRL9FpotjFj/jlRPd0bqQLwlccxzjxLeg
-	 CxxYOS3YyV/54ri+jMQB2SKQakJlk3fKU21C864nYi5sRTRZ8uz2XPjTyHqs2FNv0u
-	 YLjLzPe8SeZ2d9Be5L7xbp+yGCuE7FHVkjcvN0ho=
+	b=hNPnl+Z1XoutEjRVZk2MP09FAoFNs+1wTLHNCgOfwRAAR74wV2z4fZ2jywMozxcWo
+	 2DA3+uY8tmvdBJx3Zj4BB9tUKz9zNnkyxeBEquJg3OW09P1+6+4yzIjoxW8E8+1BNM
+	 T6eUrLhGZtZuVA3RJregCIxqATTHv40VJ1Stg3Ds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Maximilian Heyne <mheyne@amazon.de>,
+	Srivathsa Dara <srivathsa.d.dara@oracle.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 063/215] ring-buffer: Fix full_waiters_pending in poll
+Subject: [PATCH 4.19 049/175] ext4: fix corruption during on-line resize
 Date: Thu, 11 Apr 2024 11:54:32 +0200
-Message-ID: <20240411095426.790279279@linuxfoundation.org>
+Message-ID: <20240411095421.043966932@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,140 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Maximilian Heyne <mheyne@amazon.de>
 
-[ Upstream commit 8145f1c35fa648da662078efab299c4467b85ad5 ]
+[ Upstream commit a6b3bfe176e8a5b05ec4447404e412c2a3fc92cc ]
 
-If a reader of the ring buffer is doing a poll, and waiting for the ring
-buffer to hit a specific watermark, there could be a case where it gets
-into an infinite ping-pong loop.
+We observed a corruption during on-line resize of a file system that is
+larger than 16 TiB with 4k block size. With having more then 2^32 blocks
+resize_inode is turned off by default by mke2fs. The issue can be
+reproduced on a smaller file system for convenience by explicitly
+turning off resize_inode. An on-line resize across an 8 GiB boundary (the
+size of a meta block group in this setup) then leads to a corruption:
 
-The poll code has:
+  dev=/dev/<some_dev> # should be >= 16 GiB
+  mkdir -p /corruption
+  /sbin/mke2fs -t ext4 -b 4096 -O ^resize_inode $dev $((2 * 2**21 - 2**15))
+  mount -t ext4 $dev /corruption
 
-  rbwork->full_waiters_pending = true;
-  if (!cpu_buffer->shortest_full ||
-      cpu_buffer->shortest_full > full)
-         cpu_buffer->shortest_full = full;
+  dd if=/dev/zero bs=4096 of=/corruption/test count=$((2*2**21 - 4*2**15))
+  sha1sum /corruption/test
+  # 79d2658b39dcfd77274e435b0934028adafaab11  /corruption/test
 
-The writer will see full_waiters_pending and check if the ring buffer is
-filled over the percentage of the shortest_full value. If it is, it calls
-an irq_work to wake up all the waiters.
+  /sbin/resize2fs $dev $((2*2**21))
+  # drop page cache to force reload the block from disk
+  echo 1 > /proc/sys/vm/drop_caches
 
-But the code could get into a circular loop:
+  sha1sum /corruption/test
+  # 3c2abc63cbf1a94c9e6977e0fbd72cd832c4d5c3  /corruption/test
 
-	CPU 0					CPU 1
-	-----					-----
- [ Poll ]
-   [ shortest_full = 0 ]
-   rbwork->full_waiters_pending = true;
-					  if (rbwork->full_waiters_pending &&
-					      [ buffer percent ] > shortest_full) {
-					         rbwork->wakeup_full = true;
-					         [ queue_irqwork ]
+2^21 = 2^15*2^6 equals 8 GiB whereof 2^15 is the number of blocks per
+block group and 2^6 are the number of block groups that make a meta
+block group.
 
-   cpu_buffer->shortest_full = full;
+The last checksum might be different depending on how the file is laid
+out across the physical blocks. The actual corruption occurs at physical
+block 63*2^15 = 2064384 which would be the location of the backup of the
+meta block group's block descriptor. During the on-line resize the file
+system will be converted to meta_bg starting at s_first_meta_bg which is
+2 in the example - meaning all block groups after 16 GiB. However, in
+ext4_flex_group_add we might add block groups that are not part of the
+first meta block group yet. In the reproducer we achieved this by
+substracting the size of a whole block group from the point where the
+meta block group would start. This must be considered when updating the
+backup block group descriptors to follow the non-meta_bg layout. The fix
+is to add a test whether the group to add is already part of the meta
+block group or not.
 
-					  [ IRQ work ]
-					  if (rbwork->wakeup_full) {
-					        cpu_buffer->shortest_full = 0;
-					        wakeup poll waiters;
-  [woken]
-   if ([ buffer percent ] > full)
-      break;
-   rbwork->full_waiters_pending = true;
-					  if (rbwork->full_waiters_pending &&
-					      [ buffer percent ] > shortest_full) {
-					         rbwork->wakeup_full = true;
-					         [ queue_irqwork ]
-
-   cpu_buffer->shortest_full = full;
-
-					  [ IRQ work ]
-					  if (rbwork->wakeup_full) {
-					        cpu_buffer->shortest_full = 0;
-					        wakeup poll waiters;
-  [woken]
-
- [ Wash, rinse, repeat! ]
-
-In the poll, the shortest_full needs to be set before the
-full_pending_waiters, as once that is set, the writer will compare the
-current shortest_full (which is incorrect) to decide to call the irq_work,
-which will reset the shortest_full (expecting the readers to update it).
-
-Also move the setting of full_waiters_pending after the check if the ring
-buffer has the required percentage filled. There's no reason to tell the
-writer to wake up waiters if there are no waiters.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240312131952.630922155@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 42fb0a1e84ff5 ("tracing/ring-buffer: Have polling block on watermark")
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 01f795f9e0d67 ("ext4: add online resizing support for meta_bg and 64-bit file systems")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Tested-by: Srivathsa Dara <srivathsa.d.dara@oracle.com>
+Reviewed-by: Srivathsa Dara <srivathsa.d.dara@oracle.com>
+Link: https://lore.kernel.org/r/20240215155009.94493-1-mheyne@amazon.de
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ fs/ext4/resize.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index a9c90088af780..d2dba546fbbe1 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -761,16 +761,32 @@ __poll_t ring_buffer_poll_wait(struct ring_buffer *buffer, int cpu,
- 		poll_wait(filp, &rbwork->full_waiters, poll_table);
- 
- 		raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
--		rbwork->full_waiters_pending = true;
- 		if (!cpu_buffer->shortest_full ||
- 		    cpu_buffer->shortest_full > full)
- 			cpu_buffer->shortest_full = full;
- 		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
--	} else {
--		poll_wait(filp, &rbwork->waiters, poll_table);
--		rbwork->waiters_pending = true;
-+		if (full_hit(buffer, cpu, full))
-+			return EPOLLIN | EPOLLRDNORM;
-+		/*
-+		 * Only allow full_waiters_pending update to be seen after
-+		 * the shortest_full is set. If the writer sees the
-+		 * full_waiters_pending flag set, it will compare the
-+		 * amount in the ring buffer to shortest_full. If the amount
-+		 * in the ring buffer is greater than the shortest_full
-+		 * percent, it will call the irq_work handler to wake up
-+		 * this list. The irq_handler will reset shortest_full
-+		 * back to zero. That's done under the reader_lock, but
-+		 * the below smp_mb() makes sure that the update to
-+		 * full_waiters_pending doesn't leak up into the above.
-+		 */
-+		smp_mb();
-+		rbwork->full_waiters_pending = true;
-+		return 0;
- 	}
- 
-+	poll_wait(filp, &rbwork->waiters, poll_table);
-+	rbwork->waiters_pending = true;
-+
- 	/*
- 	 * There's a tight race between setting the waiters_pending and
- 	 * checking if the ring buffer is empty.  Once the waiters_pending bit
-@@ -786,9 +802,6 @@ __poll_t ring_buffer_poll_wait(struct ring_buffer *buffer, int cpu,
- 	 */
- 	smp_mb();
- 
--	if (full)
--		return full_hit(buffer, cpu, full) ? EPOLLIN | EPOLLRDNORM : 0;
--
- 	if ((cpu == RING_BUFFER_ALL_CPUS && !ring_buffer_empty(buffer)) ||
- 	    (cpu != RING_BUFFER_ALL_CPUS && !ring_buffer_empty_cpu(buffer, cpu)))
- 		return EPOLLIN | EPOLLRDNORM;
+diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
+index 97af09d6e7e6c..7d615c00b632b 100644
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -1567,7 +1567,8 @@ static int ext4_flex_group_add(struct super_block *sb,
+ 		int gdb_num = group / EXT4_DESC_PER_BLOCK(sb);
+ 		int gdb_num_end = ((group + flex_gd->count - 1) /
+ 				   EXT4_DESC_PER_BLOCK(sb));
+-		int meta_bg = ext4_has_feature_meta_bg(sb);
++		int meta_bg = ext4_has_feature_meta_bg(sb) &&
++			      gdb_num >= le32_to_cpu(es->s_first_meta_bg);
+ 		sector_t padding_blocks = meta_bg ? 0 : sbi->s_sbh->b_blocknr -
+ 					 ext4_group_first_block_no(sb, 0);
+ 		sector_t old_gdb = 0;
 -- 
 2.43.0
 
