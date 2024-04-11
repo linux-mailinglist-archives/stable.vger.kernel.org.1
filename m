@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 579308A112B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 834168A0D9E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 109DE28451F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 383CB1F216DA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC8D147C69;
-	Thu, 11 Apr 2024 10:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903E3145B07;
+	Thu, 11 Apr 2024 10:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjbjGQNs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kd/5CX5e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590311465BE;
-	Thu, 11 Apr 2024 10:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6132EAE5;
+	Thu, 11 Apr 2024 10:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832073; cv=none; b=SYftN2SdLk6fGgebiACP/E9u+yYH+rAva6bNMoJVd306E7PQRliimh7m1iB7Of8T5VhDIeh3ZIHPTDQT8KSlxcYVE2cBI4aV26KwUC6zdJeVKZ6JtQQey9vZDG1D+ncupZoXIPShiKKg2uvISNRa4ziMuSsql+Cdcj4nWVQw+m0=
+	t=1712829950; cv=none; b=S6zqG1QbLH2BbM5bsV7xxGzpTeV50dxm2OB6zQ4FUP4jBoioijwYjw8opxxo2Cnync/GvJuUNu42mlir4xAjrXM1ZP++JLnTL5aJl+eFD7RrKXm0jG9OVrmgqg4Ii5CxGMLLlEtdpWrFnGFyvaK8yMzg8eALujCN/uRUNNuFHRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832073; c=relaxed/simple;
-	bh=vOUB4b8QvhPRVfiziry1Vb4LfXx4UnjXkuhRFKOTUpA=;
+	s=arc-20240116; t=1712829950; c=relaxed/simple;
+	bh=5A75gWcdm7NUliMQMye0Kz7Ql4jhAtfj9A0o3O74Vzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TiQ3mrUAMdNwmWhVg9jp2NeknP6kUdPBQ50nbKPRzPUk2rt1JlpWXYgrvKRPdOcLrX5IopvHX+3Wz2+W9jF8zvBFU9MQn6lpIk/qAFwCree9eS3Uh+IyBVnHKqCqMJzmYO2dQahZs8MkljYRIxdhnMJxfJd9c56zK7hmye7uu9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjbjGQNs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9406EC43390;
-	Thu, 11 Apr 2024 10:41:12 +0000 (UTC)
+	 MIME-Version; b=s9dzWOPtVF9GP5Lxtxz8lTL38U8OlHZG7f/ezun/DLM/fp7A81y1SURYPA5Mi1Sd4+zTKGSaswzBZdQfqKD87bGzu+oNVGqIgC6/muDtQu6WoUwjqwr574YlYooG0C7Q+xTvG5OrF7SWIE1GFFNLCBm32h00mLg8NfHUCMBWsL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kd/5CX5e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45D9C433C7;
+	Thu, 11 Apr 2024 10:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832073;
-	bh=vOUB4b8QvhPRVfiziry1Vb4LfXx4UnjXkuhRFKOTUpA=;
+	s=korg; t=1712829950;
+	bh=5A75gWcdm7NUliMQMye0Kz7Ql4jhAtfj9A0o3O74Vzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EjbjGQNsvxsiiPhgLsGtAN5R3jLMpBs5hXfsVTGDQyL/AbPtYja8OpuBETStFJOcP
-	 rdXJcquo7e38usAo/qwGsEdxly9mpKPT4AUgBO/g1O4WiitWtNAXPBI+y0mR2UuOSe
-	 t1XONHHvCKZfNoIzXkmzp8+Tb0nIBUDMpenwuL6k=
+	b=kd/5CX5eiSFs6WngfcsLfQY9GnxeiOOF7ZxmAaWDl3QlVVF2BZ8YtzbnDL7hmbdk0
+	 Hq1xN3BJzw7I/VTIjeyy76QXEsY2gHY1nihAP1acSadLhSkulUZIItb9+0ItIqeR5d
+	 YiMjuFbEHs4nmDfusbnsvSIrE1IVWlen8Nj3Jv3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 5.10 219/294] i40e: fix i40e_count_filters() to count only active/new filters
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 159/175] SUNRPC: increase size of rpc_wait_queue.qlen from unsigned short to unsigned int
 Date: Thu, 11 Apr 2024 11:56:22 +0200
-Message-ID: <20240411095442.188071870@linuxfoundation.org>
+Message-ID: <20240411095424.351916196@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-commit eb58c598ce45b7e787568fe27016260417c3d807 upstream.
+[ Upstream commit 2c35f43b5a4b9cdfaa6fdd946f5a212615dac8eb ]
 
-The bug usually affects untrusted VFs, because they are limited to 18 MACs,
-it affects them badly, not letting to create MAC all filters.
-Not stable to reproduce, it happens when VF user creates MAC filters
-when other MACVLAN operations are happened in parallel.
-But consequence is that VF can't receive desired traffic.
+When the NFS client is under extreme load the rpc_wait_queue.qlen counter
+can be overflowed. Here is an instant of the backlog queue overflow in a
+real world environment shown by drgn helper:
 
-Fix counter to be bumped only for new or active filters.
+rpc_task_stats(rpc_clnt):
+-------------------------
+rpc_clnt: 0xffff92b65d2bae00
+rpc_xprt: 0xffff9275db64f000
+  Queue:  sending[64887] pending[524] backlog[30441] binding[0]
+XMIT task: 0xffff925c6b1d8e98
+     WRITE: 750654
+        __dta_call_status_580: 65463
+        __dta_call_transmit_status_579: 1
+        call_reserveresult: 685189
+        nfs_client_init_is_complete: 1
+    COMMIT: 584
+        call_reserveresult: 573
+        __dta_call_status_580: 11
+    ACCESS: 1
+        __dta_call_status_580: 1
+   GETATTR: 10
+        __dta_call_status_580: 4
+        call_reserveresult: 6
+751249 tasks for server 111.222.333.444
+Total tasks: 751249
 
-Fixes: 621650cabee5 ("i40e: Refactoring VF MAC filters counting to make more reliable")
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+count_rpc_wait_queues(xprt):
+----------------------------
+**** rpc_xprt: 0xffff9275db64f000 num_reqs: 65511
+wait_queue: xprt_binding[0] cnt: 0
+wait_queue: xprt_binding[1] cnt: 0
+wait_queue: xprt_binding[2] cnt: 0
+wait_queue: xprt_binding[3] cnt: 0
+rpc_wait_queue[xprt_binding].qlen: 0 maxpriority: 0
+wait_queue: xprt_sending[0] cnt: 0
+wait_queue: xprt_sending[1] cnt: 64887
+wait_queue: xprt_sending[2] cnt: 0
+wait_queue: xprt_sending[3] cnt: 0
+rpc_wait_queue[xprt_sending].qlen: 64887 maxpriority: 3
+wait_queue: xprt_pending[0] cnt: 524
+wait_queue: xprt_pending[1] cnt: 0
+wait_queue: xprt_pending[2] cnt: 0
+wait_queue: xprt_pending[3] cnt: 0
+rpc_wait_queue[xprt_pending].qlen: 524 maxpriority: 0
+wait_queue: xprt_backlog[0] cnt: 0
+wait_queue: xprt_backlog[1] cnt: 685801
+wait_queue: xprt_backlog[2] cnt: 0
+wait_queue: xprt_backlog[3] cnt: 0
+rpc_wait_queue[xprt_backlog].qlen: 30441 maxpriority: 3 [task cnt mismatch]
+
+There is no effect on operations when this overflow occurs. However
+it causes confusion when trying to diagnose the performance problem.
+
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ include/linux/sunrpc/sched.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -1230,8 +1230,11 @@ int i40e_count_filters(struct i40e_vsi *
- 	int bkt;
- 	int cnt = 0;
- 
--	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist)
--		++cnt;
-+	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist) {
-+		if (f->state == I40E_FILTER_NEW ||
-+		    f->state == I40E_FILTER_ACTIVE)
-+			++cnt;
-+	}
- 
- 	return cnt;
- }
+diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
+index 96837ae07822b..ca0a568fd8244 100644
+--- a/include/linux/sunrpc/sched.h
++++ b/include/linux/sunrpc/sched.h
+@@ -190,7 +190,7 @@ struct rpc_wait_queue {
+ 	unsigned char		maxpriority;		/* maximum priority (0 if queue is not a priority queue) */
+ 	unsigned char		priority;		/* current priority */
+ 	unsigned char		nr;			/* # tasks remaining for cookie */
+-	unsigned short		qlen;			/* total # tasks waiting in queue */
++	unsigned int		qlen;			/* total # tasks waiting in queue */
+ 	struct rpc_timer	timer_list;
+ #if IS_ENABLED(CONFIG_SUNRPC_DEBUG) || IS_ENABLED(CONFIG_TRACEPOINTS)
+ 	const char *		name;
+-- 
+2.43.0
+
 
 
 
