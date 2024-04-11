@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 578FC8A0E3E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:12:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3855F8A100B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:30:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8949A1C20AEA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:12:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A2711C21C44
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A24145B26;
-	Thu, 11 Apr 2024 10:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C79143C76;
+	Thu, 11 Apr 2024 10:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0QSKje4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npa6BWIT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9973B1448EF;
-	Thu, 11 Apr 2024 10:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3931C146D68;
+	Thu, 11 Apr 2024 10:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830357; cv=none; b=sGUCV8g95Qt/eeF1XXO4bYbBBLWOyhNU+ScgSH5s0dzUKvtZWKVIzVbuQJ9gvygPCV5Iv+44cpc/XKkNMbXW2iOgDLShuocOdQQrAGsy8+ADEspjwxUQ9LS79gNr/8R1It+hb0DSgNOR65wYCUnG+9w29PL4DQv7z+woHIfQhAM=
+	t=1712831401; cv=none; b=HKiZnyFj/lkeBpjQ36Oz2dF2SRMhdx2NxF246KH0ccGr/I+D+HncWG/fyr5VIRu2yYVnO+AaQ12xr7pY32RT2d47+Ott9N6+cYNqHMr7ke/2jQQFC7Jkc4vfLyMFeENAbHe7sPKP6ZYS7HM6TC33SNuexJX19MMpwp3b1s2t+qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830357; c=relaxed/simple;
-	bh=B350X+Vr+rkEP1k4wSmkDF9YQu3ieBqPuLvHVM4h4+k=;
+	s=arc-20240116; t=1712831401; c=relaxed/simple;
+	bh=m112fI/7Hj2R83kn0nZmb64KNy1G0SRdr5vIbnR5S0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yz2ceAPGjfpJz7eI2UVHFpA9m7m5FjRyEkA3ot0Az1/bMIzWQtHubk0PELgvtLEyWZ0xkYtLE4YoQAQlrMRjRwEMKlSrfZkIrtMEZrDZnw+g7pFvQlx3dOT304XZhXhkjneJIRUWEyoEErVq/erEz/a9OJ7tUsZJYfg0RBYCwMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0QSKje4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242CAC433C7;
-	Thu, 11 Apr 2024 10:12:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q7EJImEySgW3KNZviIm8vGJPkwacx+nQpjKB/4HuWEdTaMwbmL8K+qlWUWnfsewOcy3snwxqoZpGv/k47trzXlPdc1vFJMXXZKYz8UHt0iTn1IwPenpXAIiW9xj3HSW2Ym4oFDJGWWMzx2bguCu5ttxrhIToL/uOt8CdtryX2Sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npa6BWIT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30A2C433F1;
+	Thu, 11 Apr 2024 10:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830357;
-	bh=B350X+Vr+rkEP1k4wSmkDF9YQu3ieBqPuLvHVM4h4+k=;
+	s=korg; t=1712831401;
+	bh=m112fI/7Hj2R83kn0nZmb64KNy1G0SRdr5vIbnR5S0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V0QSKje4EvpMrT6QdzilBImoyki9mFw1UT1HZ7C8D222qxWK0R6UuBKZB71T+GVpy
-	 BLGvgk/zhnNLr2yiM7fulsgX3oJRiZrO+kmY35T92qaWFbzU0AtvgBdyRAxQ5a0iYh
-	 efkuHvWpum9KSAs8PuZgTYUOqVHUATNNYm3y9zD4=
+	b=npa6BWITQ/jiMe75YZDvqIxEmFNEVBy5W7FVxmP/bRwXy1zHRuixierkmUav4yhqS
+	 JYnKMvmXHoCP/btsSU9VX5F4oY5TJKaOC3y1+rC0DMKRMOIcpZGrFsCElbWaJbKTqR
+	 34WhYRT68jgByvhYI7NTODMfnSTSjYkhCYceK34E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mitch Cooley <m.cooley.198@gmail.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 120/143] ASoC: amd: yc: Fix non-functional mic on ASUS M7600RE
+Subject: [PATCH 6.6 061/114] ASoC: Intel: avs: Populate board selection with new I2S entries
 Date: Thu, 11 Apr 2024 11:56:28 +0200
-Message-ID: <20240411095424.518771122@linuxfoundation.org>
+Message-ID: <20240411095418.728338125@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,134 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: M Cooley <m.cooley.198@gmail.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit db185362fca554b201e2c62beb15a02bb39a064b ]
+[ Upstream commit 5b417fe0cded0b5917683398e6519aae8045cd40 ]
 
-The ASUS M7600RE (Vivobook Pro 16X OLED) needs a quirks-table entry for the
-internal microphone to function properly.
+Update board selection with tables specifying supported I2S
+configurations. DMIC/HDAudio board selection require no update as
+dmic/hdaudio machine boards are generic and not tied to any specific
+codec.
 
-Signed-off-by: Mitch Cooley <m.cooley.198@gmail.com>
-
-Link: https://msgid.link/r/CALijGznExWW4fujNWwMzmn_K=wo96sGzV_2VkT7NjvEUdkg7Gw@mail.gmail.com
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://msgid.link/r/20240220115035.770402-11-cezary.rojewski@intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/soc/intel/avs/board_selection.c | 85 +++++++++++++++++++++++++++
+ 1 file changed, 85 insertions(+)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 1d1452c29ed02..69c68d8e7a6b5 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -311,6 +311,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "E1504FA"),
- 		}
- 	},
+diff --git a/sound/soc/intel/avs/board_selection.c b/sound/soc/intel/avs/board_selection.c
+index 59a13feec57b2..0db5e530a8de2 100644
+--- a/sound/soc/intel/avs/board_selection.c
++++ b/sound/soc/intel/avs/board_selection.c
+@@ -227,6 +227,82 @@ static struct snd_soc_acpi_mach avs_gml_i2s_machines[] = {
+ 	{},
+ };
+ 
++static struct snd_soc_acpi_mach avs_cnl_i2s_machines[] = {
 +	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "M7600RE"),
-+		}
++		.id = "INT34C2",
++		.drv_name = "avs_rt274",
++		.mach_params = {
++			.i2s_link_mask = AVS_SSP(0),
++		},
++		.tplg_filename = "rt274-tplg.bin",
 +	},
++	{
++		.id = "10EC5682",
++		.drv_name = "avs_rt5682",
++		.mach_params = {
++			.i2s_link_mask = AVS_SSP(1),
++		},
++		.tplg_filename = "rt5682-tplg.bin",
++	},
++	{},
++};
++
++static struct snd_soc_acpi_mach avs_icl_i2s_machines[] = {
++	{
++		.id = "INT343A",
++		.drv_name = "avs_rt298",
++		.mach_params = {
++			.i2s_link_mask = AVS_SSP(0),
++		},
++		.tplg_filename = "rt298-tplg.bin",
++	},
++	{
++		.id = "INT34C2",
++		.drv_name = "avs_rt274",
++		.mach_params = {
++			.i2s_link_mask = AVS_SSP(0),
++		},
++		.tplg_filename = "rt274-tplg.bin",
++	},
++	{},
++};
++
++static struct snd_soc_acpi_mach avs_tgl_i2s_machines[] = {
++	{
++		.id = "INT34C2",
++		.drv_name = "avs_rt274",
++		.mach_params = {
++			.i2s_link_mask = AVS_SSP(0),
++		},
++		.tplg_filename = "rt274-tplg.bin",
++	},
++	{
++		.id = "10EC0298",
++		.drv_name = "avs_rt298",
++		.mach_params = {
++			.i2s_link_mask = AVS_SSP(0),
++		},
++		.tplg_filename = "rt298-tplg.bin",
++	},
++	{
++		.id = "10EC1308",
++		.drv_name = "avs_rt1308",
++		.mach_params = {
++			.i2s_link_mask = AVS_SSP(1),
++		},
++		.tplg_filename = "rt1308-tplg.bin",
++	},
++	{
++		.id = "ESSX8336",
++		.drv_name = "avs_es8336",
++		.mach_params = {
++			.i2s_link_mask = AVS_SSP(0),
++		},
++		.tplg_filename = "es8336-tplg.bin",
++	},
++	{},
++};
++
+ static struct snd_soc_acpi_mach avs_test_i2s_machines[] = {
  	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+ 		.drv_name = "avs_i2s_test",
+@@ -287,6 +363,15 @@ static const struct avs_acpi_boards i2s_boards[] = {
+ 	AVS_MACH_ENTRY(HDA_KBL_LP, avs_kbl_i2s_machines),
+ 	AVS_MACH_ENTRY(HDA_APL, avs_apl_i2s_machines),
+ 	AVS_MACH_ENTRY(HDA_GML, avs_gml_i2s_machines),
++	AVS_MACH_ENTRY(HDA_CNL_LP,	avs_cnl_i2s_machines),
++	AVS_MACH_ENTRY(HDA_CNL_H,	avs_cnl_i2s_machines),
++	AVS_MACH_ENTRY(HDA_CML_LP,	avs_cnl_i2s_machines),
++	AVS_MACH_ENTRY(HDA_ICL_LP,	avs_icl_i2s_machines),
++	AVS_MACH_ENTRY(HDA_TGL_LP,	avs_tgl_i2s_machines),
++	AVS_MACH_ENTRY(HDA_EHL_0,	avs_tgl_i2s_machines),
++	AVS_MACH_ENTRY(HDA_ADL_P,	avs_tgl_i2s_machines),
++	AVS_MACH_ENTRY(HDA_RPL_P_0,	avs_tgl_i2s_machines),
++	AVS_MACH_ENTRY(HDA_RPL_M,	avs_tgl_i2s_machines),
+ 	{},
+ };
+ 
 -- 
 2.43.0
 
