@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-38914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A7EC8A1100
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CCE8A0E0B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B47A1C239DB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32C771C21DED
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D0C143C76;
-	Thu, 11 Apr 2024 10:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4E91465A4;
+	Thu, 11 Apr 2024 10:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdkOLbzi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kS1qAKTa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226A2148842;
-	Thu, 11 Apr 2024 10:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A56B144D34;
+	Thu, 11 Apr 2024 10:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831960; cv=none; b=krk3+cgXLi2J4VQXsr8EdwwW+IKeeKWsdeMUZEiyr54HyCRIJ80mCu4964At/cCgBryg6phmwwVIWPzTQd6eVUSfY/+v3vL0HzeSfYOS2ZNswBjc5UtXnCtgdjZBAxNerEjsF5SKzhxk+33iCDG1UZqWagnAgz/2UZaYYX/54ts=
+	t=1712830228; cv=none; b=GhyHHIanYSls6cu9GvloMtMRdQvVPsktexGdaTBxejdeJIl+Hqw0BlIFXd3HqzwbUrCSGJMDKGFBg53RwA0EscVAzeS/Q7XbeD8NuPK95RzR75CnUU5DGaXpCd6f/3H9VZm2p7E94z4SE1ppKScGx6lOXZFVx9j741p76y6AcP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831960; c=relaxed/simple;
-	bh=lqkmrD50xV9mKe07RR8siSEu144pXGFxikHHy8UAMx8=;
+	s=arc-20240116; t=1712830228; c=relaxed/simple;
+	bh=K/FPAT8IM8xiFafTdSQ5Jk6EWK4G2oHWTVG8w3XjPSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HAPkTaoZCxuSzs8NnM6a3c2etOneMx9ec2OjqVcd3kuX6rh/YnMzP5XvCflCN9U9F9jwmaA1HAeVX2Z2zSnO0qlk5OTL0DXM9ic/hjUly0AXGED5mi2XGKc5vlMvK1Ohg5rYNInzvCn0ozeypyd725SxABwQT1iO6+AIJyLteaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdkOLbzi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD67C433F1;
-	Thu, 11 Apr 2024 10:39:19 +0000 (UTC)
+	 MIME-Version; b=BlYic3EBiYPsvfGYFqLHSom3enM4kLoKZcx/zmX3NimuHIWTyrCVy1gXZqk4BDxQfQzLSqeVCbMTvu7z9lX8xOrgskbxKJOV0SUAz1cx2fKIYlNt9P6xQvTA93fsdbRr8WeDbPjHkZFYV+oMLhjx10Ec2Taa1yI1Y4aCT/IMVoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kS1qAKTa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05F2CC433C7;
+	Thu, 11 Apr 2024 10:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831960;
-	bh=lqkmrD50xV9mKe07RR8siSEu144pXGFxikHHy8UAMx8=;
+	s=korg; t=1712830228;
+	bh=K/FPAT8IM8xiFafTdSQ5Jk6EWK4G2oHWTVG8w3XjPSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NdkOLbzi1m9M6QAmcM4zA+fJfH+plMGimn+1mHcxefGPNQ0cNW0QPommfKjOcCOZL
-	 qU5TtAntnDiK5MTmTMdtidnlMhG2Y4rC8WELJrxXAdhiK+fFqP1kNa30yzxMVjHz1m
-	 Mv4V8vqoxg9/S/8eAfTrXtqzymT8nHrDKObYht/o=
+	b=kS1qAKTaNbtXaBkWrvYuNiMxzqQxhy1SYk4ZbnBIz+5Rq3SoLm9G3/TEiDN1qmiah
+	 NiwkcVX2lhMFQsJmuTzJKF+F8ormacm0cDA0tBcGoYVemveknG778nbmBgx763owcI
+	 zAOCjskdcRx+1qXxvm+u8GUjCS6i/372vHI3Ywoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryosuke Yasuoka <ryasuoka@redhat.com>,
-	Jeremy Cline <jeremy@jcline.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com,
-	syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 182/294] nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet
-Date: Thu, 11 Apr 2024 11:55:45 +0200
-Message-ID: <20240411095441.100597637@linuxfoundation.org>
+	Conor Dooley <conor.dooley@microchip.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 078/143] drm/panel: simple: Add BOE BP082WX1-100 8.2" panel
+Date: Thu, 11 Apr 2024 11:55:46 +0200
+Message-ID: <20240411095423.261678185@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,55 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryosuke Yasuoka <ryasuoka@redhat.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit d24b03535e5eb82e025219c2f632b485409c898f ]
+[ Upstream commit dc90214ff58be575fdceb549f901506cdef5d093 ]
 
-syzbot reported the following uninit-value access issue [1][2]:
+The BOE BP082WX1-100 is a 8.2" panel similar to the 10.1" panel
+BP101WX1-100. Both panels use the same timings.
 
-nci_rx_work() parses and processes received packet. When the payload
-length is zero, each message type handler reads uninitialized payload
-and KMSAN detects this issue. The receipt of a packet with a zero-size
-payload is considered unexpected, and therefore, such packets should be
-silently discarded.
-
-This patch resolved this issue by checking payload size before calling
-each message type handler codes.
-
-Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
-Reported-and-tested-by: syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com
-Reported-and-tested-by: syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7ea9413ea6749baf5574 [1]
-Closes: https://syzkaller.appspot.com/bug?extid=29b5ca705d2e0f4a44d2 [2]
-Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
-Reviewed-by: Jeremy Cline <jeremy@jcline.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20240211111703.7567-2-tony@atomide.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240211111703.7567-2-tony@atomide.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/nci/core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/panel/panel-simple.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 5bfaf06f7be7f..d8002065baaef 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1502,6 +1502,11 @@ static void nci_rx_work(struct work_struct *work)
- 		nfc_send_to_raw_sock(ndev->nfc_dev, skb,
- 				     RAW_PAYLOAD_NCI, NFC_DIRECTION_RX);
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index d493ee735c734..72fdab8adb088 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1367,6 +1367,23 @@ static const struct drm_display_mode boe_bp101wx1_100_mode = {
+ 	.vtotal = 800 + 6 + 8 + 2,
+ };
  
-+		if (!nci_plen(skb->data)) {
-+			kfree_skb(skb);
-+			break;
-+		}
++static const struct panel_desc boe_bp082wx1_100 = {
++	.modes = &boe_bp101wx1_100_mode,
++	.num_modes = 1,
++	.bpc = 8,
++	.size = {
++		.width = 177,
++		.height = 110,
++	},
++	.delay = {
++		.enable = 50,
++		.disable = 50,
++	},
++	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_JEIDA,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
++	.connector_type = DRM_MODE_CONNECTOR_LVDS,
++};
 +
- 		/* Process frame */
- 		switch (nci_mt(skb->data)) {
- 		case NCI_MT_RSP_PKT:
+ static const struct panel_desc boe_bp101wx1_100 = {
+ 	.modes = &boe_bp101wx1_100_mode,
+ 	.num_modes = 1,
+@@ -4345,6 +4362,9 @@ static const struct of_device_id platform_of_match[] = {
+ 	}, {
+ 		.compatible = "bananapi,s070wv20-ct16",
+ 		.data = &bananapi_s070wv20_ct16,
++	}, {
++		.compatible = "boe,bp082wx1-100",
++		.data = &boe_bp082wx1_100,
+ 	}, {
+ 		.compatible = "boe,bp101wx1-100",
+ 		.data = &boe_bp101wx1_100,
 -- 
 2.43.0
 
