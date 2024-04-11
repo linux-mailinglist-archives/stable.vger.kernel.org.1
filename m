@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-38795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC2BA8A1073
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 939DA8A103B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:33:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 768921F2BC29
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:36:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32CF51F283C6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF824149DE0;
-	Thu, 11 Apr 2024 10:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B13F149C61;
+	Thu, 11 Apr 2024 10:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gg5D0pxE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYIMGdje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE6F1474CF;
-	Thu, 11 Apr 2024 10:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3754814B067;
+	Thu, 11 Apr 2024 10:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831612; cv=none; b=O863WZS4PJ1xIpYTFd3gVpXLTmQHw+uKJjj0M9s1d4DnVKuoLdw3CIB24xdqa4W3vZYM0t2wxv/GVNQ9gVIN8zC6dSJIvY3kubRGfmqe6yVUl7PsHtotBcCySlVaXMZctEM3pXi76RfwBGGq9R0UKOEJmW9yc2UN6W7yY1hAcoU=
+	t=1712831492; cv=none; b=beYNQ1GwA9q6qnY1sQAy+NqyHu0JjKkbs3ORL+C4wquv9WZtkK3JPRfpjXScBgnvJv2MkPpCfGK1c3DVQmZ0dJCiiA1pE0xinONfh5l14XRvtovI7MYeYqVQaumcodLhV+4497294xVp4NDdr66sVDMs/INErffyoO6qiqrLJTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831612; c=relaxed/simple;
-	bh=O/9/pTgTbBNjMdGqDx1qnhUnqqVhaqH67h5Nwg7iQio=;
+	s=arc-20240116; t=1712831492; c=relaxed/simple;
+	bh=bs2EK7FIw0v7D0Uw2GG32QpG+LpofW2uvKV6/IFHepc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H4oFZC7x46EqrATdPSeHnk/YfcgMC6CgT7TnvdQ/UxO0Tz5d/cVAiS2BzGsxRZbUAHTj6LXXy5dwUJHQUMayAaDnjS51bpxHlHt5vIG65qQkSLt9hjTx+wcnOeQWTEru+zpEvDvwP3vH5yNS/LgQuimGEAnnxbPCpPk/h619mwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gg5D0pxE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD13C433C7;
-	Thu, 11 Apr 2024 10:33:31 +0000 (UTC)
+	 MIME-Version; b=FjviYn9HtGhmHHYt4dt0zpUDN0XHyic5ohjRmJTgHj5edpBAnNIca4WJGKEtT7iBNPFYBEKOCcW6JtBVVd/v5+bKiomwSBxESPYQkoWI9+r2/j0dw8qi8+UZVlnd8zudpflzpMOadOxJrCVz40U6wrGjrumYUHQo6Qq53Ad2S8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYIMGdje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C65C43390;
+	Thu, 11 Apr 2024 10:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831612;
-	bh=O/9/pTgTbBNjMdGqDx1qnhUnqqVhaqH67h5Nwg7iQio=;
+	s=korg; t=1712831492;
+	bh=bs2EK7FIw0v7D0Uw2GG32QpG+LpofW2uvKV6/IFHepc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gg5D0pxEy9zQ57oO/tS1pEtQ/e45xkvbbAZx3KyHoLcoS447jhLLKsMW4SN5k2qop
-	 aL5KfEZigZLJZMFENNUj47S8Tddjd+2WbWbDy8Vc98V2yM+h+DOMdtKtJyg9yila+l
-	 TZoxJ1wz0A/Zy04QLmPcfsxZzFfNPpjbf7Xt2AhY=
+	b=aYIMGdjeAMu7PK7Rc8f+KVq9zxbFLYuwKcwIK21CKO5SeXQHB772w3yxtJn5knFEz
+	 nQ2iaowZN2q0InyJct+8xzDh2QLtbJhYWtskDZIZwViDBv6oSEDkJKaiiPR23WVcM5
+	 m/dTS8Dh9tcsNa/nSMWX6mG/hVUPkqwiEJxoHl9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	BassCheck <bass@buaa.edu.cn>,
+	Gui-Dong Han <2045gemini@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 018/294] serial: max310x: fix NULL pointer dereference in I2C instantiation
-Date: Thu, 11 Apr 2024 11:53:01 +0200
-Message-ID: <20240411095436.182334522@linuxfoundation.org>
+Subject: [PATCH 5.10 019/294] media: xc4000: Fix atomicity violation in xc4000_get_frequency
+Date: Thu, 11 Apr 2024 11:53:02 +0200
+Message-ID: <20240411095436.211836205@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
 References: <20240411095435.633465671@linuxfoundation.org>
@@ -66,60 +67,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Gui-Dong Han <2045gemini@gmail.com>
 
-[ Upstream commit 0d27056c24efd3d63a03f3edfbcfc4827086b110 ]
+[ Upstream commit 36d503ad547d1c75758a6fcdbec2806f1b6aeb41 ]
 
-When trying to instantiate a max14830 device from userspace:
+In xc4000_get_frequency():
+	*freq = priv->freq_hz + priv->freq_offset;
+The code accesses priv->freq_hz and priv->freq_offset without holding any
+lock.
 
-    echo max14830 0x60 > /sys/bus/i2c/devices/i2c-2/new_device
+In xc4000_set_params():
+	// Code that updates priv->freq_hz and priv->freq_offset
+	...
 
-we get the following error:
+xc4000_get_frequency() and xc4000_set_params() may execute concurrently,
+risking inconsistent reads of priv->freq_hz and priv->freq_offset. Since
+these related data may update during reading, it can result in incorrect
+frequency calculation, leading to atomicity violations.
 
-    Unable to handle kernel NULL pointer dereference at virtual address...
-    ...
-    Call trace:
-        max310x_i2c_probe+0x48/0x170 [max310x]
-        i2c_device_probe+0x150/0x2a0
-    ...
+This possible bug is found by an experimental static analysis tool
+developed by our team, BassCheck[1]. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations. The above
+possible bug is reported when our tool analyzes the source code of
+Linux 6.2.
 
-Add check for validity of devtype to prevent the error, and abort probe
-with a meaningful error message.
+To address this issue, it is proposed to add a mutex lock pair in
+xc4000_get_frequency() to ensure atomicity. With this patch applied, our
+tool no longer reports the possible bug, with the kernel configuration
+allyesconfig for x86_64. Due to the lack of associated hardware, we cannot
+test the patch in runtime testing, and just verify it according to the
+code logic.
 
-Fixes: 2e1f2d9a9bdb ("serial: max310x: implement I2C support")
+[1] https://sites.google.com/view/basscheck/
+
+Fixes: 4c07e32884ab ("[media] xc4000: Fix get_frequency()")
 Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240118152213.2644269-2-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: BassCheck <bass@buaa.edu.cn>
+Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/max310x.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/media/tuners/xc4000.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
-index 5570fd3b84e15..363b68555fe62 100644
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -1636,13 +1636,16 @@ static unsigned short max310x_i2c_slave_addr(unsigned short addr,
- 
- static int max310x_i2c_probe(struct i2c_client *client)
+diff --git a/drivers/media/tuners/xc4000.c b/drivers/media/tuners/xc4000.c
+index ef9af052007cb..849df4d1c573c 100644
+--- a/drivers/media/tuners/xc4000.c
++++ b/drivers/media/tuners/xc4000.c
+@@ -1517,10 +1517,10 @@ static int xc4000_get_frequency(struct dvb_frontend *fe, u32 *freq)
  {
--	const struct max310x_devtype *devtype =
--			device_get_match_data(&client->dev);
-+	const struct max310x_devtype *devtype;
- 	struct i2c_client *port_client;
- 	struct regmap *regmaps[4];
- 	unsigned int i;
- 	u8 port_addr;
+ 	struct xc4000_priv *priv = fe->tuner_priv;
  
-+	devtype = device_get_match_data(&client->dev);
-+	if (!devtype)
-+		return dev_err_probe(&client->dev, -ENODEV, "Failed to match device\n");
-+
- 	if (client->addr < devtype->slave_addr.min ||
- 		client->addr > devtype->slave_addr.max)
- 		return dev_err_probe(&client->dev, -EINVAL,
++	mutex_lock(&priv->lock);
+ 	*freq = priv->freq_hz + priv->freq_offset;
+ 
+ 	if (debug) {
+-		mutex_lock(&priv->lock);
+ 		if ((priv->cur_fw.type
+ 		     & (BASE | FM | DTV6 | DTV7 | DTV78 | DTV8)) == BASE) {
+ 			u16	snr = 0;
+@@ -1531,8 +1531,8 @@ static int xc4000_get_frequency(struct dvb_frontend *fe, u32 *freq)
+ 				return 0;
+ 			}
+ 		}
+-		mutex_unlock(&priv->lock);
+ 	}
++	mutex_unlock(&priv->lock);
+ 
+ 	dprintk(1, "%s()\n", __func__);
+ 
 -- 
 2.43.0
 
