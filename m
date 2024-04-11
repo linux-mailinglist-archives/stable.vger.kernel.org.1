@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-38937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F5028A111C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B178A0FB9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B01DC1F2CF88
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58C621C22ACB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555BD149DF3;
-	Thu, 11 Apr 2024 10:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC90A1465BE;
+	Thu, 11 Apr 2024 10:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDgcuGcL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPv29PB/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F64149004;
-	Thu, 11 Apr 2024 10:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5731422CE;
+	Thu, 11 Apr 2024 10:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832030; cv=none; b=aCJBWePb4pNpU5ZE6pXzjcqyTPxv3t5wVFtejWW4KxEMUZeLiGJU6wcOrFkQ53vP780bu8fTXveooqUGv+28WziuRkmSJXqcPBX5FRBAio/iBOcM2jJfO0zk2oxuOHx3XJ0R/E0OV7spO8BqK1gDmqC066w59Sr5IbMML18oVeo=
+	t=1712831208; cv=none; b=XEDrdHmLCSjOVsqsD+logSB6pCXNEFr3iEoyRgICbhKYhkKTWbTKPrUod7elqDGOWQ9Q8fM6GNujybl2V4KVnpxbIJQB+k7h+luxyEK8fBAq6hAotvsnOExwShX34jIdbL4DV5Ocbrl4SmdJr8qJyErBXDSIA77jFEeMqDlQil8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832030; c=relaxed/simple;
-	bh=i4tph5Z6FDcRCr57nfeZCTti1nlwdKhW1Ye6edR14Sc=;
+	s=arc-20240116; t=1712831208; c=relaxed/simple;
+	bh=KLHg4jQlea+Pmp5K1aqEVPVRDZ6sSHhKfaMPVSXspsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZziQ1oFTHa9LwWdnmGci6AAcCZCqFC7AVSLkmPwPpp6Yzohb/Dj4wME38Ftsy1vtA4CHlkRy1WrlETgb7AifNLijzO/XdlRTjK6EqbxFvmh701vi8TI4VR4/Ea+zDBKhhtfTuQpuP3GMG9lDIbO0swzeS6/sZDj0Nf825xYDWYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDgcuGcL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F40BC433C7;
-	Thu, 11 Apr 2024 10:40:29 +0000 (UTC)
+	 MIME-Version; b=G6wNsp/A67mOjGHtGeRO9OW1FgKUHKsfl9o3nSnxiVufk/Q3ToQeonb26QLGbiZ6zHGSq8kRizcmO4ZrdF6rnxbUsa3+PCDPCfabbWPV/+v58VwnfqVX7eRxJj0a9Fjagu/Wu0/rzd2oZYLkf1y/DXVlqtyOqGAy+XP74G6QwLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPv29PB/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9889EC433C7;
+	Thu, 11 Apr 2024 10:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832029;
-	bh=i4tph5Z6FDcRCr57nfeZCTti1nlwdKhW1Ye6edR14Sc=;
+	s=korg; t=1712831208;
+	bh=KLHg4jQlea+Pmp5K1aqEVPVRDZ6sSHhKfaMPVSXspsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gDgcuGcLlM4NnSYAVNxU7wpK2U7M9DLSn1+HPVz7I94Ep82y23OKAR52s9d9IgLW3
-	 jSLQG6+Hf35tIWNzgojxvNqXeXpnuRwxOsu7KwkRBkINDgQD5xDFoh7s44eaXCLsKO
-	 iONtfO5i5aX3pDf7q2CbFTLGwyr/k32zoI4qERKQ=
+	b=BPv29PB/eU+Hy5UJJlPFixYRZX1YGBKdaFPt53rDGIfY6N06k3uDShhKCTzxHMIRh
+	 sk1Dmwv2L3HvIGTdTB2+6qVd7uwLVmt/Un/ARIlcwn8+R+mdNsaWBINTTDhzT4ijxz
+	 Ng4hM4XWZkuuIfVAIfKZK7oMgj7IfFJ32tMOI/qU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 207/294] netfilter: nf_tables: flush pending destroy work before exit_net release
-Date: Thu, 11 Apr 2024 11:56:10 +0200
-Message-ID: <20240411095441.831836966@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 044/114] Bluetooth: btmtk: Add MODULE_FIRMWARE() for MT7922
+Date: Thu, 11 Apr 2024 11:56:11 +0200
+Message-ID: <20240411095418.212187438@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,130 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 24cea9677025e0de419989ecb692acd4bb34cac2 upstream.
+[ Upstream commit 3e465a07cdf444140f16bc57025c23fcafdde997 ]
 
-Similar to 2c9f0293280e ("netfilter: nf_tables: flush pending destroy
-work before netlink notifier") to address a race between exit_net and
-the destroy workqueue.
+Since dracut refers to the module info for defining the required
+firmware files and btmtk driver doesn't provide the firmware info for
+MT7922, the generate initrd misses the firmware, resulting in the
+broken Bluetooth.
 
-The trace below shows an element to be released via destroy workqueue
-while exit_net path (triggered via module removal) has already released
-the set that is used in such transaction.
+This patch simply adds the MODULE_FIRMWARE() for the missing entry
+for covering that.
 
-[ 1360.547789] BUG: KASAN: slab-use-after-free in nf_tables_trans_destroy_work+0x3f5/0x590 [nf_tables]
-[ 1360.547861] Read of size 8 at addr ffff888140500cc0 by task kworker/4:1/152465
-[ 1360.547870] CPU: 4 PID: 152465 Comm: kworker/4:1 Not tainted 6.8.0+ #359
-[ 1360.547882] Workqueue: events nf_tables_trans_destroy_work [nf_tables]
-[ 1360.547984] Call Trace:
-[ 1360.547991]  <TASK>
-[ 1360.547998]  dump_stack_lvl+0x53/0x70
-[ 1360.548014]  print_report+0xc4/0x610
-[ 1360.548026]  ? __virt_addr_valid+0xba/0x160
-[ 1360.548040]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-[ 1360.548054]  ? nf_tables_trans_destroy_work+0x3f5/0x590 [nf_tables]
-[ 1360.548176]  kasan_report+0xae/0xe0
-[ 1360.548189]  ? nf_tables_trans_destroy_work+0x3f5/0x590 [nf_tables]
-[ 1360.548312]  nf_tables_trans_destroy_work+0x3f5/0x590 [nf_tables]
-[ 1360.548447]  ? __pfx_nf_tables_trans_destroy_work+0x10/0x10 [nf_tables]
-[ 1360.548577]  ? _raw_spin_unlock_irq+0x18/0x30
-[ 1360.548591]  process_one_work+0x2f1/0x670
-[ 1360.548610]  worker_thread+0x4d3/0x760
-[ 1360.548627]  ? __pfx_worker_thread+0x10/0x10
-[ 1360.548640]  kthread+0x16b/0x1b0
-[ 1360.548653]  ? __pfx_kthread+0x10/0x10
-[ 1360.548665]  ret_from_fork+0x2f/0x50
-[ 1360.548679]  ? __pfx_kthread+0x10/0x10
-[ 1360.548690]  ret_from_fork_asm+0x1a/0x30
-[ 1360.548707]  </TASK>
-
-[ 1360.548719] Allocated by task 192061:
-[ 1360.548726]  kasan_save_stack+0x20/0x40
-[ 1360.548739]  kasan_save_track+0x14/0x30
-[ 1360.548750]  __kasan_kmalloc+0x8f/0xa0
-[ 1360.548760]  __kmalloc_node+0x1f1/0x450
-[ 1360.548771]  nf_tables_newset+0x10c7/0x1b50 [nf_tables]
-[ 1360.548883]  nfnetlink_rcv_batch+0xbc4/0xdc0 [nfnetlink]
-[ 1360.548909]  nfnetlink_rcv+0x1a8/0x1e0 [nfnetlink]
-[ 1360.548927]  netlink_unicast+0x367/0x4f0
-[ 1360.548935]  netlink_sendmsg+0x34b/0x610
-[ 1360.548944]  ____sys_sendmsg+0x4d4/0x510
-[ 1360.548953]  ___sys_sendmsg+0xc9/0x120
-[ 1360.548961]  __sys_sendmsg+0xbe/0x140
-[ 1360.548971]  do_syscall_64+0x55/0x120
-[ 1360.548982]  entry_SYSCALL_64_after_hwframe+0x55/0x5d
-
-[ 1360.548994] Freed by task 192222:
-[ 1360.548999]  kasan_save_stack+0x20/0x40
-[ 1360.549009]  kasan_save_track+0x14/0x30
-[ 1360.549019]  kasan_save_free_info+0x3b/0x60
-[ 1360.549028]  poison_slab_object+0x100/0x180
-[ 1360.549036]  __kasan_slab_free+0x14/0x30
-[ 1360.549042]  kfree+0xb6/0x260
-[ 1360.549049]  __nft_release_table+0x473/0x6a0 [nf_tables]
-[ 1360.549131]  nf_tables_exit_net+0x170/0x240 [nf_tables]
-[ 1360.549221]  ops_exit_list+0x50/0xa0
-[ 1360.549229]  free_exit_list+0x101/0x140
-[ 1360.549236]  unregister_pernet_operations+0x107/0x160
-[ 1360.549245]  unregister_pernet_subsys+0x1c/0x30
-[ 1360.549254]  nf_tables_module_exit+0x43/0x80 [nf_tables]
-[ 1360.549345]  __do_sys_delete_module+0x253/0x370
-[ 1360.549352]  do_syscall_64+0x55/0x120
-[ 1360.549360]  entry_SYSCALL_64_after_hwframe+0x55/0x5d
-
-(gdb) list *__nft_release_table+0x473
-0x1e033 is in __nft_release_table (net/netfilter/nf_tables_api.c:11354).
-11349           list_for_each_entry_safe(flowtable, nf, &table->flowtables, list) {
-11350                   list_del(&flowtable->list);
-11351                   nft_use_dec(&table->use);
-11352                   nf_tables_flowtable_destroy(flowtable);
-11353           }
-11354           list_for_each_entry_safe(set, ns, &table->sets, list) {
-11355                   list_del(&set->list);
-11356                   nft_use_dec(&table->use);
-11357                   if (set->flags & (NFT_SET_MAP | NFT_SET_OBJECT))
-11358                           nft_map_deactivate(&ctx, set);
-(gdb)
-
-[ 1360.549372] Last potentially related work creation:
-[ 1360.549376]  kasan_save_stack+0x20/0x40
-[ 1360.549384]  __kasan_record_aux_stack+0x9b/0xb0
-[ 1360.549392]  __queue_work+0x3fb/0x780
-[ 1360.549399]  queue_work_on+0x4f/0x60
-[ 1360.549407]  nft_rhash_remove+0x33b/0x340 [nf_tables]
-[ 1360.549516]  nf_tables_commit+0x1c6a/0x2620 [nf_tables]
-[ 1360.549625]  nfnetlink_rcv_batch+0x728/0xdc0 [nfnetlink]
-[ 1360.549647]  nfnetlink_rcv+0x1a8/0x1e0 [nfnetlink]
-[ 1360.549671]  netlink_unicast+0x367/0x4f0
-[ 1360.549680]  netlink_sendmsg+0x34b/0x610
-[ 1360.549690]  ____sys_sendmsg+0x4d4/0x510
-[ 1360.549697]  ___sys_sendmsg+0xc9/0x120
-[ 1360.549706]  __sys_sendmsg+0xbe/0x140
-[ 1360.549715]  do_syscall_64+0x55/0x120
-[ 1360.549725]  entry_SYSCALL_64_after_hwframe+0x55/0x5d
-
-Fixes: 0935d5588400 ("netfilter: nf_tables: asynchronous release")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1214133
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/bluetooth/btmtk.c | 1 +
+ drivers/bluetooth/btmtk.h | 1 +
+ 2 files changed, 2 insertions(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -9796,6 +9796,7 @@ static void __exit nf_tables_module_exit
- 	unregister_netdevice_notifier(&nf_tables_flowtable_notifier);
- 	nft_chain_filter_fini();
- 	nft_chain_route_fini();
-+	nf_tables_trans_destroy_flush_work();
- 	unregister_pernet_subsys(&nf_tables_net_ops);
- 	cancel_work_sync(&trans_gc_work);
- 	cancel_work_sync(&trans_destroy_work);
+diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
+index 285418dbb43f5..ac8ebccd35075 100644
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -422,5 +422,6 @@ MODULE_LICENSE("GPL");
+ MODULE_FIRMWARE(FIRMWARE_MT7622);
+ MODULE_FIRMWARE(FIRMWARE_MT7663);
+ MODULE_FIRMWARE(FIRMWARE_MT7668);
++MODULE_FIRMWARE(FIRMWARE_MT7922);
+ MODULE_FIRMWARE(FIRMWARE_MT7961);
+ MODULE_FIRMWARE(FIRMWARE_MT7925);
+diff --git a/drivers/bluetooth/btmtk.h b/drivers/bluetooth/btmtk.h
+index 56f5502baadf9..cbcdb99a22e6d 100644
+--- a/drivers/bluetooth/btmtk.h
++++ b/drivers/bluetooth/btmtk.h
+@@ -4,6 +4,7 @@
+ #define FIRMWARE_MT7622		"mediatek/mt7622pr2h.bin"
+ #define FIRMWARE_MT7663		"mediatek/mt7663pr2h.bin"
+ #define FIRMWARE_MT7668		"mediatek/mt7668pr2h.bin"
++#define FIRMWARE_MT7922		"mediatek/BT_RAM_CODE_MT7922_1_1_hdr.bin"
+ #define FIRMWARE_MT7961		"mediatek/BT_RAM_CODE_MT7961_1_2_hdr.bin"
+ #define FIRMWARE_MT7925		"mediatek/mt7925/BT_RAM_CODE_MT7925_1_1_hdr.bin"
+ 
+-- 
+2.43.0
+
 
 
 
