@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159BE8A0D0C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:59:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD6D8A0E9B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:16:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C596C284351
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:59:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F21AB21722
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D5B145345;
-	Thu, 11 Apr 2024 09:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7FA145B28;
+	Thu, 11 Apr 2024 10:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6M3zsKo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RulKqysJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3348513DDDD;
-	Thu, 11 Apr 2024 09:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F11713F452;
+	Thu, 11 Apr 2024 10:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829584; cv=none; b=IpA3nk/HYu7GgQ50sZ0I+vKZFF9kns3/qxMJkkHno0uAqXwm+teS5uQeYPXV1dlDnkN6INKYjzXp0+jdOZqmjPFmqIuAIiOS8QwRBomJq51+yNZPUSVFY6b/3yf0PdsaPpGQeFs/aaiO4lqPdm7m2uM8/rpVU+oolqt0G1xBAV4=
+	t=1712830584; cv=none; b=WQYWntZzgyU3+RDcg/FFO1M6BFoPcx8CxnBTGboIcydw5rvdKjmUmrqEgDjwE2M055BMhkEKuf2RJ1G+t7KZrtNYG7xD6vchF3zUNuE8sXvQa5KixOyD9itcsU+ikXNk6yzOGcvN89ZiLlInRTjmM1qhuscn4U+HHPGGink38Tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829584; c=relaxed/simple;
-	bh=mrF3Lx3Ncznp9XHpTQnWlTqv/RlRep1o6C0BXDqlBE4=;
+	s=arc-20240116; t=1712830584; c=relaxed/simple;
+	bh=XqimEGl2SR7j19ktFTjW7+mb38QGvzf+xCcl2PGMMPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o2ra7v+mQIXuye45Syo1klTxJf52b9aIo17bp/VXnGgf2stqnmKfxYI9EJixYdiKOieZGbFTxiAzFakAkignZZl22v3npeevztVg2GPVxHzLJfrvD2LviddioxWRtXhfQrZBk+rovUzXTkczNSVy9qac5gBkhK2ncyO9c7LNmqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6M3zsKo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF0A9C43390;
-	Thu, 11 Apr 2024 09:59:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Xxk/Xjac1OvbHw3Q/dUx17M04oddM8I+Sj1M109QmNBiM6SFLc7VzjEN3uXlgRpKVG7hM/KaenvQO09Fh/K+/uyesZdjGjIM5R0IVybtFyfObCL2KFnMuI0WRQqyp4bB+oUOz6uMP7/lCSrD34IZMey4p4zaT/BG3YQcFOd9gDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RulKqysJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7991C433C7;
+	Thu, 11 Apr 2024 10:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829584;
-	bh=mrF3Lx3Ncznp9XHpTQnWlTqv/RlRep1o6C0BXDqlBE4=;
+	s=korg; t=1712830584;
+	bh=XqimEGl2SR7j19ktFTjW7+mb38QGvzf+xCcl2PGMMPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E6M3zsKoXOnpVbYmYo+jkqVGfIHJL3RENvPMgNdVqCblWXLpwc+6KaOYF6sqnosRw
-	 OrDdsIqhSPYgfym4P+mD/SF15/bRXIyibDKWb5/pz9eesLFdLAZUEu37v/6QRr960n
-	 F/ypJ+2Fj9JgAjE/XpngzDx6YTUljloF3OWTZM2A=
+	b=RulKqysJAh5sNXLJ33J6c+PdK5qQfg+EKWarv5lXDGR+6lKHbOhIX6uYQEw7tAMdM
+	 IWOXHGE5JZjdoRjagFDxhdOnzfm1xWEEcnahZ1LvD3c6D+PyncNO3upGiG0Rwrqlhg
+	 hB3hxvS25hfkuJ18Pi8F/UbaSUBSeT0mpCkicRfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Vogelbacher <daniel@chaospixel.com>,
-	Johan Hovold <johan@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 035/175] USB: serial: ftdi_sio: add support for GMC Z216C Adapter IR-USB
+Subject: [PATCH 5.4 049/215] PCI: Drop pci_device_remove() test of pci_dev->driver
 Date: Thu, 11 Apr 2024 11:54:18 +0200
-Message-ID: <20240411095420.614899537@linuxfoundation.org>
+Message-ID: <20240411095426.369334276@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Vogelbacher <daniel@chaospixel.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 3fb7bc4f3a98c48981318b87cf553c5f115fd5ca ]
+[ Upstream commit 097d9d414433315122f759ee6c2d8a7417a8ff0f ]
 
-The GMC IR-USB adapter cable utilizes a FTDI FT232R chip.
+When the driver core calls pci_device_remove(), there is a driver bound
+to the device, so pci_dev->driver is never NULL.
 
-Add VID/PID for this adapter so it can be used as serial device via
-ftdi_sio.
+Remove the unnecessary test of pci_dev->driver.
 
-Signed-off-by: Daniel Vogelbacher <daniel@chaospixel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20211004125935.2300113-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Stable-dep-of: 9d5286d4e7f6 ("PCI/PM: Drain runtime-idle callbacks before driver removal")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/ftdi_sio.c     | 2 ++
- drivers/usb/serial/ftdi_sio_ids.h | 6 ++++++
- 2 files changed, 8 insertions(+)
+ drivers/pci/pci-driver.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/usb/serial/ftdi_sio.c b/drivers/usb/serial/ftdi_sio.c
-index 6d4c572807a41..755cbc9525a1b 100644
---- a/drivers/usb/serial/ftdi_sio.c
-+++ b/drivers/usb/serial/ftdi_sio.c
-@@ -1045,6 +1045,8 @@ static const struct usb_device_id id_table_combined[] = {
- 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
- 	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_UNBUF_PID),
- 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
-+	/* GMC devices */
-+	{ USB_DEVICE(GMC_VID, GMC_Z216C_PID) },
- 	{ }					/* Terminating entry */
- };
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index 70c8584b3ffcc..7644a282bfdb8 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -439,16 +439,14 @@ static int pci_device_remove(struct device *dev)
+ 	struct pci_dev *pci_dev = to_pci_dev(dev);
+ 	struct pci_driver *drv = pci_dev->driver;
  
-diff --git a/drivers/usb/serial/ftdi_sio_ids.h b/drivers/usb/serial/ftdi_sio_ids.h
-index 9a0f9fc991246..b2aec1106678a 100644
---- a/drivers/usb/serial/ftdi_sio_ids.h
-+++ b/drivers/usb/serial/ftdi_sio_ids.h
-@@ -1599,3 +1599,9 @@
- #define UBLOX_VID			0x1546
- #define UBLOX_C099F9P_ZED_PID		0x0502
- #define UBLOX_C099F9P_ODIN_PID		0x0503
-+
-+/*
-+ * GMC devices
-+ */
-+#define GMC_VID				0x1cd7
-+#define GMC_Z216C_PID			0x0217 /* GMC Z216C Adapter IR-USB */
+-	if (drv) {
+-		if (drv->remove) {
+-			pm_runtime_get_sync(dev);
+-			drv->remove(pci_dev);
+-			pm_runtime_put_noidle(dev);
+-		}
+-		pcibios_free_irq(pci_dev);
+-		pci_dev->driver = NULL;
+-		pci_iov_remove(pci_dev);
++	if (drv->remove) {
++		pm_runtime_get_sync(dev);
++		drv->remove(pci_dev);
++		pm_runtime_put_noidle(dev);
+ 	}
++	pcibios_free_irq(pci_dev);
++	pci_dev->driver = NULL;
++	pci_iov_remove(pci_dev);
+ 
+ 	/* Undo the runtime PM settings in local_pci_probe() */
+ 	pm_runtime_put_sync(dev);
 -- 
 2.43.0
 
