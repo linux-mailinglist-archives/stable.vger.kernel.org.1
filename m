@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 441C38A0FF1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:29:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DBA58A11A5
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:46:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75F441C21B43
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:29:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC3582854A1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D562E146A71;
-	Thu, 11 Apr 2024 10:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B190145B28;
+	Thu, 11 Apr 2024 10:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqluGGZX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHwwSRAM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F8A1D558;
-	Thu, 11 Apr 2024 10:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09AC8142624;
+	Thu, 11 Apr 2024 10:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831351; cv=none; b=XLFv9JKVzxRPegq7ROigmFm4netthpShI/9uBJBhuzribUyekxEbnIZUnoHYB8oZoq1cj1LIXs4XLfC0DzYsMw6FjRlPrQiju62Tg1sNeeWOQlYmOixOpCWP3TOVrzRcoIR/AzRviXs+yQpdfWdYrVbU6MoUElWPNj5ZSnhhb5s=
+	t=1712832375; cv=none; b=U+cfUUngN4+p1yJjh1VqG7YuEJcVKoLK5WG2mSiVrImgYbL30atw4yJvXRshtsWa4xyZVHQWjQ5jsBl6clDQMyq8u6zVtPimHBqU3ymPzxEkDgi6Ts2bqgolzCZl2P3agiEk4xVQO3jaKAnOlCTIRh40z/O+jI8sQyhb+htqDKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831351; c=relaxed/simple;
-	bh=0rXZEDwpQNVvVr14kMdM/UO1dF9Ei4YjVaSakf0FeDc=;
+	s=arc-20240116; t=1712832375; c=relaxed/simple;
+	bh=6sythqzJ2xsLx+P8uIZeymCkq/HN/UF1mGufEmIooNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPG4Ij3656KeHUxjKVwGYF4acMTciGJFzPJuE6JZY/hVDnozoV10jtvGTpSWX0V8KXppqtYoeHr4hPuD6ta4wdkXutQPHN6CzIkqyLP820IWxPB+N36sbnuA6x39NQmznU7NVgmEyR8YgJ8Iqfi9SqCBNCTzgDWlYmS/naAONyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqluGGZX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B14FC433F1;
-	Thu, 11 Apr 2024 10:29:10 +0000 (UTC)
+	 MIME-Version; b=MhUCoBNKPXqmQaIp5dl/UE0PPixluhfexXqIf5LnmLyOJRCnHKJAAvYxfUkAyFzGq9Z0buVEK44sEpdJzWFDe6i/ACJijKV34QeSceLxjH/bKCuYEghoXQEQQfRMS9/3nGwTcICgtUtfbuVuYtqP/7R8WSFEC3m1z9mkRuOP2CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHwwSRAM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E23C433F1;
+	Thu, 11 Apr 2024 10:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831351;
-	bh=0rXZEDwpQNVvVr14kMdM/UO1dF9Ei4YjVaSakf0FeDc=;
+	s=korg; t=1712832374;
+	bh=6sythqzJ2xsLx+P8uIZeymCkq/HN/UF1mGufEmIooNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sqluGGZX3EtGlQabxavjCxbZ9Z99Txs7wGVXpGhpnQ6lQZ788+ppMaOSfPL52xK0w
-	 Oa7OTglrIeEO01r5Sc00SxQDJ4E2MbCfijAv3jN1Kc3ucGB4NTVXLPEUTvmrgzM/WW
-	 KunwIJ8MuYF5TSFUvx3EFHBXbEiKAOPBdquReDYQ=
+	b=GHwwSRAMZj2jz9iNln04iArEJO+JSyYAVDLvKBvPmz0B6PUSIJ0BpCoNnKg6ODBNa
+	 FuxGUVrHmdA2iEh0eHwjRkwEd0kf/zhvfiCca3CvHsUuCeJLuBGou6S/Yy7TmFIFM6
+	 cKNUdEwrOhTIMNcJWBWqfyl00+tLVSXvO+GxFRBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/114] usb: typec: tcpci: add generic tcpci fallback compatible
+	Edward Adam Davis <eadavis@qq.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+830d9e3fa61968246abd@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 27/83] Bluetooth: btintel: Fix null ptr deref in btintel_read_version
 Date: Thu, 11 Apr 2024 11:56:59 +0200
-Message-ID: <20240411095419.669009630@linuxfoundation.org>
+Message-ID: <20240411095413.495433512@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Felsch <m.felsch@pengutronix.de>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 8774ea7a553e2aec323170d49365b59af0a2b7e0 ]
+[ Upstream commit b79e040910101b020931ba0c9a6b77e81ab7f645 ]
 
-The driver already support the tcpci binding for the i2c_device_id so
-add the support for the of_device_id too.
+If hci_cmd_sync_complete() is triggered and skb is NULL, then
+hdev->req_skb is NULL, which will cause this issue.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240222210903.208901-3-m.felsch@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-and-tested-by: syzbot+830d9e3fa61968246abd@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/bluetooth/btintel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-index 0ee3e6e29bb17..7118551827f6a 100644
---- a/drivers/usb/typec/tcpm/tcpci.c
-+++ b/drivers/usb/typec/tcpm/tcpci.c
-@@ -889,6 +889,7 @@ MODULE_DEVICE_TABLE(i2c, tcpci_id);
- #ifdef CONFIG_OF
- static const struct of_device_id tcpci_of_match[] = {
- 	{ .compatible = "nxp,ptn5110", },
-+	{ .compatible = "tcpci", },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, tcpci_of_match);
+diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
+index bbad1207cdfd8..c77c06b84d86c 100644
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -405,7 +405,7 @@ int btintel_read_version(struct hci_dev *hdev, struct intel_version *ver)
+ 	struct sk_buff *skb;
+ 
+ 	skb = __hci_cmd_sync(hdev, 0xfc05, 0, NULL, HCI_CMD_TIMEOUT);
+-	if (IS_ERR(skb)) {
++	if (IS_ERR_OR_NULL(skb)) {
+ 		bt_dev_err(hdev, "Reading Intel version information failed (%ld)",
+ 			   PTR_ERR(skb));
+ 		return PTR_ERR(skb);
 -- 
 2.43.0
 
