@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC2CC8A113C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 845B18A0E1C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:11:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13CBC1C23D15
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B545A1C21FBF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C77142624;
-	Thu, 11 Apr 2024 10:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CBA14659A;
+	Thu, 11 Apr 2024 10:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjh0Ig/O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euGU3Lr5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB83143C76;
-	Thu, 11 Apr 2024 10:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DA1145323;
+	Thu, 11 Apr 2024 10:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832110; cv=none; b=WFFD/kM80TQl5pKOTAp+RTGgr2Cz7DlEW031eXrd8kcDNmMqvlmLbiL/m0S3mjV/nNzKZUYMqguJxqfxb96exVQ26YM2kH++ys3HOcPictNDaGPvaMJ/YwCBxc0MeGguClk3rkMhbjw6VH7NTDjnvlk6sMV+hGD/YZyxb3HTKtM=
+	t=1712830263; cv=none; b=d6yHwealO/Zwo2/h31S8w+ZBeSTN/L4l574SJxb4pfEvkl7lwB5v1m5LiOqkdMiLtA7ddZQU+uECC4sV3u9Uocp2YyJPgwlYyKMgAFM3+jcA/VlIcQtKqki23n3MNeh6B9pBZn50AIR9llLOnGlFQLSG8/p4NH+TkjFqg/ZLi1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832110; c=relaxed/simple;
-	bh=ROHqbR43eXWi0lrpmcHHybRzxbd+G8PnOBoH+YOKcd0=;
+	s=arc-20240116; t=1712830263; c=relaxed/simple;
+	bh=qqCnSq7ue1fgY3FIhhXFbfmDBJykL/2BtGTgZ+kgbHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qKd+tH5TSPjnsGdRB4NjRtrQdXo+5oXr8xPfS/DOPA6lQdwYSj4fZP4rtjdUxnjPz9rKjBbER6AXpH5SM82LppMULRX3zyjTtqT+QZqpXBJPp5kh0s5BB7BEOt4D6IDc1QTvbN8i/1YLyacWuod9MTKYfbWD93QiDi454n3QG28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjh0Ig/O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817B0C433F1;
-	Thu, 11 Apr 2024 10:41:49 +0000 (UTC)
+	 MIME-Version; b=JvN5s/TnioIWaS44Xu5cND6+GECJZhu8W08UNg6d62QFA6jXfG/7PRNhDJ7grgxuvzUTl3eTqlC9lEjB4J5oVCse7TYm6CQQo/u6C1nhZ1AUJqEhCkPvXIlHtGTqgEMd93aMOvLg/oFjxX6lO1N7mbdlDLA42xgSqQdNMol3kdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euGU3Lr5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA5FC433C7;
+	Thu, 11 Apr 2024 10:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832109;
-	bh=ROHqbR43eXWi0lrpmcHHybRzxbd+G8PnOBoH+YOKcd0=;
+	s=korg; t=1712830263;
+	bh=qqCnSq7ue1fgY3FIhhXFbfmDBJykL/2BtGTgZ+kgbHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yjh0Ig/OHhw6UiMEw/2m0ovFEzj2nE5yskKBoitFfoFXGzDpMGYHHslrwKKbdXJ3V
-	 ddxwUKmqDtLDSi1zWpiVL6Bh25+0TUajI1XQ/4xlbNN1ssBJQg8iSTgPrjsURIPwtw
-	 +VWFgWKoDURTpQzvgGkVNt33R0uN9RTQOA942w4U=
+	b=euGU3Lr5u8DUowWUHMQ4TF2rISxSsDIO9Sv50fCv9fgVxIXzAKrPT46/+1gilMqDd
+	 YNCm8/XcfGlYT1wEkaMm3ng9G5NGYGWTDrZmVgimBGKRrTwIE7afNS6n1gKpLGKE/5
+	 TFsQgIOthFYnK0wqagvH8ILCFv+2CW8OmY3/PFwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH 5.10 193/294] netfilter: nf_tables: disallow timeout for anonymous sets
-Date: Thu, 11 Apr 2024 11:55:56 +0200
-Message-ID: <20240411095441.423480695@linuxfoundation.org>
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 089/143] SUNRPC: increase size of rpc_wait_queue.qlen from unsigned short to unsigned int
+Date: Thu, 11 Apr 2024 11:55:57 +0200
+Message-ID: <20240411095423.588289065@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-commit e26d3009efda338f19016df4175f354a9bd0a4ab upstream.
+[ Upstream commit 2c35f43b5a4b9cdfaa6fdd946f5a212615dac8eb ]
 
-Never used from userspace, disallow these parameters.
+When the NFS client is under extreme load the rpc_wait_queue.qlen counter
+can be overflowed. Here is an instant of the backlog queue overflow in a
+real world environment shown by drgn helper:
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-[Keerthana: code surrounding the patch is different
-because nft_set_desc is not present in v4.19-v5.10]
-Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+rpc_task_stats(rpc_clnt):
+-------------------------
+rpc_clnt: 0xffff92b65d2bae00
+rpc_xprt: 0xffff9275db64f000
+  Queue:  sending[64887] pending[524] backlog[30441] binding[0]
+XMIT task: 0xffff925c6b1d8e98
+     WRITE: 750654
+        __dta_call_status_580: 65463
+        __dta_call_transmit_status_579: 1
+        call_reserveresult: 685189
+        nfs_client_init_is_complete: 1
+    COMMIT: 584
+        call_reserveresult: 573
+        __dta_call_status_580: 11
+    ACCESS: 1
+        __dta_call_status_580: 1
+   GETATTR: 10
+        __dta_call_status_580: 4
+        call_reserveresult: 6
+751249 tasks for server 111.222.333.444
+Total tasks: 751249
+
+count_rpc_wait_queues(xprt):
+----------------------------
+**** rpc_xprt: 0xffff9275db64f000 num_reqs: 65511
+wait_queue: xprt_binding[0] cnt: 0
+wait_queue: xprt_binding[1] cnt: 0
+wait_queue: xprt_binding[2] cnt: 0
+wait_queue: xprt_binding[3] cnt: 0
+rpc_wait_queue[xprt_binding].qlen: 0 maxpriority: 0
+wait_queue: xprt_sending[0] cnt: 0
+wait_queue: xprt_sending[1] cnt: 64887
+wait_queue: xprt_sending[2] cnt: 0
+wait_queue: xprt_sending[3] cnt: 0
+rpc_wait_queue[xprt_sending].qlen: 64887 maxpriority: 3
+wait_queue: xprt_pending[0] cnt: 524
+wait_queue: xprt_pending[1] cnt: 0
+wait_queue: xprt_pending[2] cnt: 0
+wait_queue: xprt_pending[3] cnt: 0
+rpc_wait_queue[xprt_pending].qlen: 524 maxpriority: 0
+wait_queue: xprt_backlog[0] cnt: 0
+wait_queue: xprt_backlog[1] cnt: 685801
+wait_queue: xprt_backlog[2] cnt: 0
+wait_queue: xprt_backlog[3] cnt: 0
+rpc_wait_queue[xprt_backlog].qlen: 30441 maxpriority: 3 [task cnt mismatch]
+
+There is no effect on operations when this overflow occurs. However
+it causes confusion when trying to diagnose the performance problem.
+
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ include/linux/sunrpc/sched.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4457,6 +4457,9 @@ static int nf_tables_newset(struct net *
- 		if (!(flags & NFT_SET_TIMEOUT))
- 			return -EINVAL;
- 
-+		if (flags & NFT_SET_ANONYMOUS)
-+			return -EOPNOTSUPP;
-+
- 		err = nf_msecs_to_jiffies64(nla[NFTA_SET_TIMEOUT], &timeout);
- 		if (err)
- 			return err;
-@@ -4465,6 +4468,10 @@ static int nf_tables_newset(struct net *
- 	if (nla[NFTA_SET_GC_INTERVAL] != NULL) {
- 		if (!(flags & NFT_SET_TIMEOUT))
- 			return -EINVAL;
-+
-+		if (flags & NFT_SET_ANONYMOUS)
-+			return -EOPNOTSUPP;
-+
- 		gc_int = ntohl(nla_get_be32(nla[NFTA_SET_GC_INTERVAL]));
- 	}
- 
+diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
+index 2d61987b35456..0c77ba488bbae 100644
+--- a/include/linux/sunrpc/sched.h
++++ b/include/linux/sunrpc/sched.h
+@@ -197,7 +197,7 @@ struct rpc_wait_queue {
+ 	unsigned char		maxpriority;		/* maximum priority (0 if queue is not a priority queue) */
+ 	unsigned char		priority;		/* current priority */
+ 	unsigned char		nr;			/* # tasks remaining for cookie */
+-	unsigned short		qlen;			/* total # tasks waiting in queue */
++	unsigned int		qlen;			/* total # tasks waiting in queue */
+ 	struct rpc_timer	timer_list;
+ #if IS_ENABLED(CONFIG_SUNRPC_DEBUG) || IS_ENABLED(CONFIG_TRACEPOINTS)
+ 	const char *		name;
+-- 
+2.43.0
+
 
 
 
