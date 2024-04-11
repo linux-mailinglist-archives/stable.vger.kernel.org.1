@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CACE8A0FE8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB4BA8A114D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E72C1C21B43
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 758542869E9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B18814600E;
-	Thu, 11 Apr 2024 10:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF201448C8;
+	Thu, 11 Apr 2024 10:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/yyKExy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t0ntJUN7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A54C1D558;
-	Thu, 11 Apr 2024 10:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98BB146A72;
+	Thu, 11 Apr 2024 10:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831325; cv=none; b=K2JX3x7mP69uiNWryBwFVjvRT8It0KxhVUYR/0BzHAuYKI2YPOAmVkQ/i564pmrMTdSp/Lr6tmY7IIZMBqOlBqF/o0K5F3GiAiDd4wMDLtp4GGt0JxlvsWgi1hB1T0No3immN0MUVbTqmim+XKyd1Kp05HH+y9iTMpJcj6RQm08=
+	t=1712832156; cv=none; b=Wf7MLhYd1IzJ3vFIe938DAlD33rnZ+f2QMd8yizmAJWWHwM7C7dW2YPoKxP2ztG1tuAeKZADUqgFG5daEbboP/5fC6ZFfQaahYOXgjWZjq1VAiZiJnqo7MqFU8JiOIkO/YTKEDHJZ26pP5jRpSD0t6E3N1pdc4curP/pbLu0WJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831325; c=relaxed/simple;
-	bh=yYeS7sFsVkuad5w3Ots0wO0zLL6WY0KOeTvA6NjdMN4=;
+	s=arc-20240116; t=1712832156; c=relaxed/simple;
+	bh=tUTrQshlfNfPU/lSoVQpDyuTeUpxihIIAn6y3zuiwyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rGsZ3kXa6uh+X4B6QnGEvYHm/psX8GHKOTbqEdl50a2cGh18RZzHDENjhph8nun8pkojSeHWTDTIvye88GEbrDn8ctm3E3jdb73ep8fcI59WioQJgAkEHbHpSEGwINQEgnXexVD907cXcEspf8zwK+lb+FqpQbMinkauNmu+aSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/yyKExy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C87F8C433F1;
-	Thu, 11 Apr 2024 10:28:44 +0000 (UTC)
+	 MIME-Version; b=YtzpNV2fOZwVfmn5aYBQB6+0BFDBR8UYa4jS9d0CGe+cYJ0LmPz3rVcvA3Rp++RXaNj71xTrTB7b12k7g2ZE++QJfkh1BRAR/qAQIzGGlSf540llfPxtEjrUOJAAczNYZUlmEqPcW+Pe8CkFEMY1bnRpgO2Za2wbfpWLGGrJrcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t0ntJUN7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509C6C433F1;
+	Thu, 11 Apr 2024 10:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831325;
-	bh=yYeS7sFsVkuad5w3Ots0wO0zLL6WY0KOeTvA6NjdMN4=;
+	s=korg; t=1712832156;
+	bh=tUTrQshlfNfPU/lSoVQpDyuTeUpxihIIAn6y3zuiwyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/yyKExyMygd4ixXIUZ0BlZ2xOxBb36frjaXkdA0PoLvssKGRoq371PO/CjENOyOe
-	 2ejWFHiQLQZkjAk3it3qKuluz35PHXdEXz8cJoUxqh3pqbH3WYNOWU3tLjlFmFakk8
-	 seFpFmfmSoF9wf+1LOHFK5skX/Tw8iJdcP/QhbPU=
+	b=t0ntJUN7c5NsZTeX6d2YY1KPZEp2clXbRlNP8hqdT6BlFYZPD13Y+dgeaYueeA1gt
+	 1vdQOdAoqGK2d6+1o0jGFJotxccaCC7p1iMMwYBXMF13b+lJNAbgWFNLzO/tSU2lxV
+	 fFG1dSkpqn0oQHZIk4Ad4PBQ39T+vJsbcrO3CMOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Scialabba <matt.git@fastmail.fm>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/114] Input: xpad - add support for Snakebyte GAMEPADs
+Subject: [PATCH 5.10 248/294] arm64: dts: rockchip: fix rk3328 hdmi ports node
 Date: Thu, 11 Apr 2024 11:56:51 +0200
-Message-ID: <20240411095419.425265071@linuxfoundation.org>
+Message-ID: <20240411095443.032907976@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Scialabba <matt.git@fastmail.fm>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit 81c32343d04f8ca974681d5fb5d939d2e1f58851 ]
+[ Upstream commit 1d00ba4700d1e0f88ae70d028d2e17e39078fa1c ]
 
-Add Snakebyte GAMEPAD BASE X and Snakebyte GAMEPAD RGB X to the list
-of supported devices.
+Fix rk3328 hdmi ports node so that it matches the
+rockchip,dw-hdmi.yaml binding.
 
-Signed-off-by: Matt Scialabba <matt.git@fastmail.fm>
-Link: https://lore.kernel.org/r/efbfb428-06b0-48f9-8701-db291c2a9d65@app.fastmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/e5dea3b7-bf84-4474-9530-cc2da3c41104@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3328.dtsi | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index c11af4441cf25..9206253422016 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -366,6 +366,8 @@ static const struct xpad_device {
- 	{ 0x24c6, 0x5d04, "Razer Sabertooth", 0, XTYPE_XBOX360 },
- 	{ 0x24c6, 0xfafe, "Rock Candy Gamepad for Xbox 360", 0, XTYPE_XBOX360 },
- 	{ 0x2563, 0x058d, "OneXPlayer Gamepad", 0, XTYPE_XBOX360 },
-+	{ 0x294b, 0x3303, "Snakebyte GAMEPAD BASE X", 0, XTYPE_XBOXONE },
-+	{ 0x294b, 0x3404, "Snakebyte GAMEPAD RGB X", 0, XTYPE_XBOXONE },
- 	{ 0x2dc8, 0x2000, "8BitDo Pro 2 Wired Controller fox Xbox", 0, XTYPE_XBOXONE },
- 	{ 0x2dc8, 0x3106, "8BitDo Pro 2 Wired Controller", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1100, "Wooting One", 0, XTYPE_XBOX360 },
-@@ -507,6 +509,7 @@ static const struct usb_device_id xpad_table[] = {
- 	XPAD_XBOXONE_VENDOR(0x24c6),		/* PowerA controllers */
- 	XPAD_XBOX360_VENDOR(0x2563),		/* OneXPlayer Gamepad */
- 	XPAD_XBOX360_VENDOR(0x260d),		/* Dareu H101 */
-+       XPAD_XBOXONE_VENDOR(0x294b),            /* Snakebyte */
- 	XPAD_XBOX360_VENDOR(0x2c22),		/* Qanba Controllers */
- 	XPAD_XBOX360_VENDOR(0x2dc8),            /* 8BitDo Pro 2 Wired Controller */
- 	XPAD_XBOXONE_VENDOR(0x2dc8),		/* 8BitDo Pro 2 Wired Controller for Xbox */
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+index 72112fe05a5c4..10df6636a6b6c 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+@@ -732,11 +732,20 @@ hdmi: hdmi@ff3c0000 {
+ 		status = "disabled";
+ 
+ 		ports {
+-			hdmi_in: port {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			hdmi_in: port@0 {
++				reg = <0>;
++
+ 				hdmi_in_vop: endpoint {
+ 					remote-endpoint = <&vop_out_hdmi>;
+ 				};
+ 			};
++
++			hdmi_out: port@1 {
++				reg = <1>;
++			};
+ 		};
+ 	};
+ 
 -- 
 2.43.0
 
