@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA7D8A0EF2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:19:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23CDA8A0DEB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEEAC283507
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:19:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1C2B286A69
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A270F1465A6;
-	Thu, 11 Apr 2024 10:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19FB145FE0;
+	Thu, 11 Apr 2024 10:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRHYbesu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zh73towJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD6D140E3D;
-	Thu, 11 Apr 2024 10:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CE91F5FA;
+	Thu, 11 Apr 2024 10:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830768; cv=none; b=aSI84DES1biOmtS7PW8DlSm2E47YHxLDyUBhqBdRZe+eqU1KL1pXDqAUtDqUVWdcfjdnUQAxyC9cqnaJj+aGN0kbyYgxtIWviQN7/UU80J5kAVnNz/D6Hi2Io5dVdn9Nn4/rZa1XsOwmXuXr4UQ/8d82E8Gz02IIYeugaK82bH4=
+	t=1712830149; cv=none; b=VSM5e/PNExgZcmoWxIOQyi0tMjO7PdsYdfM/M++ScoIEQtL4ILbbOZcAS3AnpUkAtmvnk4qcdpqTPRiu+HsqGS2ulebUwFKYGhSe7WWbSHLZp8qzJiwV/56/i4QnU5pFjd0axRhBgkDRud1JlpLwmAFc81l1lH+8e61a4xwVz5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830768; c=relaxed/simple;
-	bh=oWryXuoUytwqpiwJA2FamzqQTWqXTr6uNMqHCwAi9Uw=;
+	s=arc-20240116; t=1712830149; c=relaxed/simple;
+	bh=1nK4DLRJz96xlUlyIDAoHvAoU92devbINLKH2z0iugI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W3Dcq4HgRYWX+llknPAKUKdeHRWqcbI09h6Nf23Tq3eOfU7woRxL+XZEhSQerD6rp1BEey/wWK3cB43hwc92iXYB2wUDaK3+Y6TNe3P6lmvZfXaG83kRDP/z7I8UuhNMmLT/m2wBgP0CR5gLre1IFQ0B97eR64rbp90E33huCpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRHYbesu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D35C433F1;
-	Thu, 11 Apr 2024 10:19:27 +0000 (UTC)
+	 MIME-Version; b=NngqrOTKy3GZU0InOFbvbx3Q7N1xMaQvVW6QClwt4ZJ2pBUmzYIJvJKkPEVIYGs09twj7SZyJ5bU0NT2GrBLEkSXfoZalx1d/xCI4A9t9AdA/48U/cUhNlFl9S/rd4JXuELXbfxsJ6aZoz0vfoejHM/1yM2dSb4jL8zBOltni5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zh73towJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F27C433C7;
+	Thu, 11 Apr 2024 10:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830768;
-	bh=oWryXuoUytwqpiwJA2FamzqQTWqXTr6uNMqHCwAi9Uw=;
+	s=korg; t=1712830149;
+	bh=1nK4DLRJz96xlUlyIDAoHvAoU92devbINLKH2z0iugI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uRHYbesuMmJtBnu96UNi8SYreIn6vPPcrqzOQyhwXBbHyaey4CNm42IJaygb27Jku
-	 8G1qj6SevUTWlTLNGUVl5vEutYI2xY891HyNcgxxHflTyWoyxCb48bgHv4g6yi/uWY
-	 ZdeH4KXDBPuHoBIKoi2Ae4I/cvcHW33acpKGP2+8=
+	b=Zh73towJ7yE8++tzU5D+v0LnlT8pYZTcYyI5ZRxQ7oQsMU5Yri3Wq50tqRwSPg/Nk
+	 ykv4dhaG4JD482xn60ISaPp6Bm5ITpEW9RmPn9LWvfcjtnaIo1OXSuUwmU0YrD+Au8
+	 IvVTTFh/rYtOKdKQeKL30TVLXXRPFG41T1+vXj1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+cfed5b56649bddf80d6e@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 073/215] nilfs2: fix failure to detect DAT corruption in btree and direct mappings
+Subject: [PATCH 6.8 014/143] arm64: dts: qcom: qrb2210-rb1: disable cluster power domains
 Date: Thu, 11 Apr 2024 11:54:42 +0200
-Message-ID: <20240411095427.093475543@linuxfoundation.org>
+Message-ID: <20240411095421.340186865@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit f2f26b4a84a0ef41791bd2d70861c8eac748f4ba ]
+[ Upstream commit 7f492d48f08207e4ee23edc926b11de9f720aa61 ]
 
-Patch series "nilfs2: fix kernel bug at submit_bh_wbc()".
+If cluster domain idle state is enabled on the RB1, the board becomes
+significantly less responsive. Under certain circumstances (if some of
+the devices are disabled in kernel config) the board can even lock up.
 
-This resolves a kernel BUG reported by syzbot.  Since there are two
-flaws involved, I've made each one a separate patch.
+It seems this is caused by the MPM not updating wakeup timer during CPU
+idle (in the same way the RPMh updates it when cluster idle state is
+entered).
 
-The first patch alone resolves the syzbot-reported bug, but I think
-both fixes should be sent to stable, so I've tagged them as such.
+Disable cluster domain idle for the RB1 board until MPM driver is fixed
+to cooperate with the CPU idle states.
 
-This patch (of 2):
-
-Syzbot has reported a kernel bug in submit_bh_wbc() when writing file data
-to a nilfs2 file system whose metadata is corrupted.
-
-There are two flaws involved in this issue.
-
-The first flaw is that when nilfs_get_block() locates a data block using
-btree or direct mapping, if the disk address translation routine
-nilfs_dat_translate() fails with internal code -ENOENT due to DAT metadata
-corruption, it can be passed back to nilfs_get_block().  This causes
-nilfs_get_block() to misidentify an existing block as non-existent,
-causing both data block lookup and insertion to fail inconsistently.
-
-The second flaw is that nilfs_get_block() returns a successful status in
-this inconsistent state.  This causes the caller __block_write_begin_int()
-or others to request a read even though the buffer is not mapped,
-resulting in a BUG_ON check for the BH_Mapped flag in submit_bh_wbc()
-failing.
-
-This fixes the first issue by changing the return value to code -EINVAL
-when a conversion using DAT fails with code -ENOENT, avoiding the
-conflicting condition that leads to the kernel bug described above.  Here,
-code -EINVAL indicates that metadata corruption was detected during the
-block lookup, which will be properly handled as a file system error and
-converted to -EIO when passing through the nilfs2 bmap layer.
-
-Link: https://lkml.kernel.org/r/20240313105827.5296-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20240313105827.5296-2-konishi.ryusuke@gmail.com
-Fixes: c3a7abf06ce7 ("nilfs2: support contiguous lookup of blocks")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+cfed5b56649bddf80d6e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=cfed5b56649bddf80d6e
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240130-rb1-suspend-cluster-v2-1-5bc1109b0869@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/btree.c  | 9 +++++++--
- fs/nilfs2/direct.c | 9 +++++++--
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/qrb2210-rb1.dts | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
-index a0e37530dcf30..1ab5db17e8248 100644
---- a/fs/nilfs2/btree.c
-+++ b/fs/nilfs2/btree.c
-@@ -724,7 +724,7 @@ static int nilfs_btree_lookup_contig(const struct nilfs_bmap *btree,
- 		dat = nilfs_bmap_get_dat(btree);
- 		ret = nilfs_dat_translate(dat, ptr, &blocknr);
- 		if (ret < 0)
--			goto out;
-+			goto dat_error;
- 		ptr = blocknr;
- 	}
- 	cnt = 1;
-@@ -743,7 +743,7 @@ static int nilfs_btree_lookup_contig(const struct nilfs_bmap *btree,
- 			if (dat) {
- 				ret = nilfs_dat_translate(dat, ptr2, &blocknr);
- 				if (ret < 0)
--					goto out;
-+					goto dat_error;
- 				ptr2 = blocknr;
- 			}
- 			if (ptr2 != ptr + cnt || ++cnt == maxblocks)
-@@ -782,6 +782,11 @@ static int nilfs_btree_lookup_contig(const struct nilfs_bmap *btree,
-  out:
- 	nilfs_btree_free_path(path);
- 	return ret;
+diff --git a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
+index 64b2ab2862793..6e9dd0312adc5 100644
+--- a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
++++ b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
+@@ -177,6 +177,24 @@ vph_pwr: regulator-vph-pwr {
+ 	};
+ };
+ 
++&CPU_PD0 {
++	/delete-property/ power-domains;
++};
 +
-+ dat_error:
-+	if (ret == -ENOENT)
-+		ret = -EINVAL;  /* Notify bmap layer of metadata corruption */
-+	goto out;
- }
- 
- static void nilfs_btree_promote_key(struct nilfs_bmap *btree,
-diff --git a/fs/nilfs2/direct.c b/fs/nilfs2/direct.c
-index 533e24ea3a88d..8d769c5dd5dc6 100644
---- a/fs/nilfs2/direct.c
-+++ b/fs/nilfs2/direct.c
-@@ -66,7 +66,7 @@ static int nilfs_direct_lookup_contig(const struct nilfs_bmap *direct,
- 		dat = nilfs_bmap_get_dat(direct);
- 		ret = nilfs_dat_translate(dat, ptr, &blocknr);
- 		if (ret < 0)
--			return ret;
-+			goto dat_error;
- 		ptr = blocknr;
- 	}
- 
-@@ -79,7 +79,7 @@ static int nilfs_direct_lookup_contig(const struct nilfs_bmap *direct,
- 		if (dat) {
- 			ret = nilfs_dat_translate(dat, ptr2, &blocknr);
- 			if (ret < 0)
--				return ret;
-+				goto dat_error;
- 			ptr2 = blocknr;
- 		}
- 		if (ptr2 != ptr + cnt)
-@@ -87,6 +87,11 @@ static int nilfs_direct_lookup_contig(const struct nilfs_bmap *direct,
- 	}
- 	*ptrp = ptr;
- 	return cnt;
++&CPU_PD1 {
++	/delete-property/ power-domains;
++};
 +
-+ dat_error:
-+	if (ret == -ENOENT)
-+		ret = -EINVAL;  /* Notify bmap layer of metadata corruption */
-+	return ret;
- }
- 
- static __u64
++&CPU_PD2 {
++	/delete-property/ power-domains;
++};
++
++&CPU_PD3 {
++	/delete-property/ power-domains;
++};
++
++/delete-node/ &CLUSTER_PD;
++
+ &gpi_dma0 {
+ 	status = "okay";
+ };
 -- 
 2.43.0
 
