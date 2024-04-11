@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D7C8A0FA0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD8518A0DFC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6D832810D8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 843C91F211FB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7925D146A77;
-	Thu, 11 Apr 2024 10:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934BE145FF0;
+	Thu, 11 Apr 2024 10:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O09RWU+3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jH2Rrg8O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391F913FD94;
-	Thu, 11 Apr 2024 10:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515D8145B2C;
+	Thu, 11 Apr 2024 10:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831146; cv=none; b=HWf/zk7TnWaCmML6SOAfGI1wnPo7y2ojgujgwzthYpkHiQbD3WQ+FhZNEFBPc7KWg/Nl+FPDzX/h4YyfqGX+3dKnubEeOPM70EWlRzthB+ipwyCbzePW4itxgY/pxGknIdcEuPOeTL07n3HpENysVt/2ZlzgsYz08ORDTvnSeSQ=
+	t=1712830190; cv=none; b=lBttIi0aWMIea/jFMuQ1VhhbBf3J2jP1Hws9bK6BgeihbJXEsbuZPU+OjRXGa0F+C01aHZkLnqgGY1+6ARx2p3VKdakmzFS5NSxZliCBPCFw+4xOoURBDfYv0ZMKbDcSgz+fcGv3RgBbbqYwbETNApqrxmkaiLkQ4Sgs3/HOUXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831146; c=relaxed/simple;
-	bh=i4SIUc7psiq5UoLEav83SwRvgrsj+ezk+9OI8OHqUng=;
+	s=arc-20240116; t=1712830190; c=relaxed/simple;
+	bh=t984g4jlyexiD/IGKRvOxt/fzhXDeUIBS1Ss3z+UceI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WH97yO+1/gmFUk3KmzxTaylHox+xRUXTtR1Qp8CRsXce3IfurEVTemY/y7pNVzzaWP0nswojr/rB06WdHf2NBmrjO0cIZOUhprACizqjG6Qki8kr2FdPqpyc9BEkZAA7Z8cCDHfSY5flcSjUxGa7AWIIgihirm5rnSCMZKwVeSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O09RWU+3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB169C433C7;
-	Thu, 11 Apr 2024 10:25:45 +0000 (UTC)
+	 MIME-Version; b=CeCDHUF4hUESVBcpxqBAyWacVTmB4Nx6HWGpV8XODoZIEYA0cZCTuBhS27KJxfmtQvOuZkDGzXI21VDw2YyTg9hLOU4h6K09bvfxysrTl4b8Php4zW1vh86036jgxP52p1+nvkdQxaSi9n1/XdYYMBypsX4S3SPoXdJLvt3rh/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jH2Rrg8O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE86C433C7;
+	Thu, 11 Apr 2024 10:09:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831146;
-	bh=i4SIUc7psiq5UoLEav83SwRvgrsj+ezk+9OI8OHqUng=;
+	s=korg; t=1712830190;
+	bh=t984g4jlyexiD/IGKRvOxt/fzhXDeUIBS1Ss3z+UceI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O09RWU+3eCH7k7YIIVMu3zTxMaxEwjRIlSey6XK56JlNclo0gQDvIjGVTYl20vvIS
-	 0+AURnIvq6DOkbfK2W7T9tQlmxtVB3NR9yRcYRirSitnQLJ9Zli8HdFZsF8OzxIfrA
-	 lunpsZyPiaegyDhX5b5CBTfZTvgl1zQ2eWDzqqj4=
+	b=jH2Rrg8ONrkbVBvDRQ5ffhuSziofVu6papOGALtYBVsAsvDZ6MT/VowctPlaJ9eal
+	 WWuK1wKWFVgjjWYt/nZ5yfn++7G3q2K+qOIa8YSIr6ZYWA5DbjeYLIxNlLEB8UOIBZ
+	 vVahbJ4v8kg3/91+6hQ6IZN6hATan3O+w+a14Gao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Werner <andre.werner@systec-electronic.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/114] net: phy: phy_device: Prevent nullptr exceptions on ISR
+Subject: [PATCH 6.8 066/143] pinctrl: renesas: checker: Limit cfg reg enum checks to provided IDs
 Date: Thu, 11 Apr 2024 11:55:34 +0200
-Message-ID: <20240411095417.085013925@linuxfoundation.org>
+Message-ID: <20240411095422.902963458@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Werner <andre.werner@systec-electronic.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 61c81872815f46006982bb80460c0c80a949b35b ]
+[ Upstream commit 3803584a4e9b65bb5b013f862f55c5055aa86c25 ]
 
-If phydev->irq is set unconditionally, check
-for valid interrupt handler or fall back to polling mode to prevent
-nullptr exceptions in interrupt service routine.
+If the number of provided enum IDs in a variable width config register
+description does not match the expected number, the checker uses the
+expected number for validating the individual enum IDs.
 
-Signed-off-by: Andre Werner <andre.werner@systec-electronic.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240129135734.18975-2-andre.werner@systec-electronic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+However, this may cause out-of-bounds accesses on the array holding the
+enum IDs, leading to bogus enum_id conflict warnings.  Worse, if the bug
+is an incorrect bit field description (e.g. accidentally using "12"
+instead of "-12" for a reserved field), thousands of warnings may be
+printed, overflowing the kernel log buffer.
+
+Fix this by limiting the enum ID check to the number of provided enum
+IDs.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/c7385f44f2faebb8856bcbb4e908d846fc1531fb.1705930809.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_device.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/pinctrl/renesas/core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 813b753e21dec..c895cd178e6a1 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1411,6 +1411,11 @@ int phy_sfp_probe(struct phy_device *phydev,
- }
- EXPORT_SYMBOL(phy_sfp_probe);
+diff --git a/drivers/pinctrl/renesas/core.c b/drivers/pinctrl/renesas/core.c
+index d1e92bbed33ad..757bbc549b0e2 100644
+--- a/drivers/pinctrl/renesas/core.c
++++ b/drivers/pinctrl/renesas/core.c
+@@ -909,9 +909,11 @@ static void __init sh_pfc_check_cfg_reg(const char *drvname,
+ 		sh_pfc_err("reg 0x%x: var_field_width declares %u instead of %u bits\n",
+ 			   cfg_reg->reg, rw, cfg_reg->reg_width);
  
-+static bool phy_drv_supports_irq(struct phy_driver *phydrv)
-+{
-+	return phydrv->config_intr && phydrv->handle_interrupt;
-+}
-+
- /**
-  * phy_attach_direct - attach a network device to a given PHY device pointer
-  * @dev: network device to attach
-@@ -1525,6 +1530,9 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 	if (phydev->dev_flags & PHY_F_NO_IRQ)
- 		phydev->irq = PHY_POLL;
+-	if (n != cfg_reg->nr_enum_ids)
++	if (n != cfg_reg->nr_enum_ids) {
+ 		sh_pfc_err("reg 0x%x: enum_ids[] has %u instead of %u values\n",
+ 			   cfg_reg->reg, cfg_reg->nr_enum_ids, n);
++		n = cfg_reg->nr_enum_ids;
++	}
  
-+	if (!phy_drv_supports_irq(phydev->drv) && phy_interrupt_is_valid(phydev))
-+		phydev->irq = PHY_POLL;
-+
- 	/* Port is set to PORT_TP by default and the actual PHY driver will set
- 	 * it to different value depending on the PHY configuration. If we have
- 	 * the generic PHY driver we can't figure it out, thus set the old
-@@ -2987,11 +2995,6 @@ s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
- }
- EXPORT_SYMBOL(phy_get_internal_delay);
- 
--static bool phy_drv_supports_irq(struct phy_driver *phydrv)
--{
--	return phydrv->config_intr && phydrv->handle_interrupt;
--}
--
- static int phy_led_set_brightness(struct led_classdev *led_cdev,
- 				  enum led_brightness value)
- {
+ check_enum_ids:
+ 	sh_pfc_check_reg_enums(drvname, cfg_reg->reg, cfg_reg->enum_ids, n);
 -- 
 2.43.0
 
