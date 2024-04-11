@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988468A1106
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B408E8A0DE3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3831C1F2CFB2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EA0C286597
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E99146D4D;
-	Thu, 11 Apr 2024 10:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB94A145B08;
+	Thu, 11 Apr 2024 10:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+6PTsy9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IvFVrvhH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23EE13C9A5;
-	Thu, 11 Apr 2024 10:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6817A1F5FA;
+	Thu, 11 Apr 2024 10:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831977; cv=none; b=EQEH3fdOqHzhBp41f7do/hZTfSEf2Jw7p7lMeqVRlCAa76DkAJpE/t3bzLtC+lQperxR/nSE5Ajymz0rV+AxDxgIvIvAJh56Tu2+1CcAIXEp1k3ICoAn4pRuW6i5ln9i6oztbzY1RlJ6y2PU75TBV+eUubhmtZsoHyp6O/dYQgU=
+	t=1712830137; cv=none; b=tICwDtga/5RpgrDueoeJnGcom4REyHparDJZmeLnnTUVdlVoClWn+qFRk+rix2Q3F3NTTn2yVggOiogMkBYyTyJHMd3shfm3oiZnzm8JdQl/43ikgYccMaNbuWxuCtyDqp1f/Eu3f/HZuDXzGBbeC4VSHj4A2ch4Fd1jx8T2amQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831977; c=relaxed/simple;
-	bh=PjfAb4dPOyG91O9oOFjaDHW4cPtBZWJ6t1MRjzseOb0=;
+	s=arc-20240116; t=1712830137; c=relaxed/simple;
+	bh=wMthF4Rksx5V0oHIyVOhqj6ZUsLIJQntiKDll4BJTn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rbvuTfuY0We4Qh8WLT3w2zWeDs1jEk8fNnE+bGZw+UJ4ZCQYxYuEbOSs6ldp0Eg32gwL6UmabAZgSjbvOyrBDNNJFyDFiByYxSyoJWujkdLnEYVVn3+hZk/FSBrtnIybwzD3FO7LGVgs+tqMdDDzPgdD1zc6k1kgqh/CExVGIeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+6PTsy9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A9F5C43390;
-	Thu, 11 Apr 2024 10:39:37 +0000 (UTC)
+	 MIME-Version; b=GLXMRAqfaRwbl0iCrYJV9EUtLQYLLtF2zPx45NW0eh3SdSH52zwuIvOIn2RYElDlMVWsWb/VrY9U6PAtzYVbSePyeUeUwODV4+pQ+qR8AsLp4RK1qKkfFmdvBiQHI8hAO/Kor6jVeDj1ruoHkuXJr0JjpABaHc4WkHI899ozfoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IvFVrvhH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E91C433C7;
+	Thu, 11 Apr 2024 10:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831977;
-	bh=PjfAb4dPOyG91O9oOFjaDHW4cPtBZWJ6t1MRjzseOb0=;
+	s=korg; t=1712830137;
+	bh=wMthF4Rksx5V0oHIyVOhqj6ZUsLIJQntiKDll4BJTn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y+6PTsy9KoQD/EtnHHQmOS2vZX3OVIs0XZ2Dd8rpm/A6Qb/ijkG6rl0AO6GQDhq8w
-	 TH7pwJTkm6d/LhfIYTCFk9+N9Vt9lRwGnEfwYMOwVvSCsPKpP4NkzNqmnC5v9MdH6h
-	 lNPpTrMfbxhtDpplx5x71VFqynEyCoCVv8MuM24E=
+	b=IvFVrvhHyVgNfMEx5H5iO7BK3RZG9pXJScqrkOodKkThJLHezql9S4tuppzbKtFr9
+	 F3UY5OpeEcQWLQXHu/jiqoJeIBuGI3AgqpDsq9Ji7ghK4VNP95FOGkqhm7GBdkvjLU
+	 AySX9dZnDNUBmy1VZrqTNNfl7f8uyB9pJkIVkqNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 5.10 151/294] powerpc: xor_vmx: Add -mhard-float to CFLAGS
+	Takashi Iwai <tiwai@suse.de>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 046/143] wifi: iwlwifi: Add missing MODULE_FIRMWARE() for *.pnvm
 Date: Thu, 11 Apr 2024 11:55:14 +0200
-Message-ID: <20240411095440.197504497@linuxfoundation.org>
+Message-ID: <20240411095422.302479529@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 35f20786c481d5ced9283ff42de5c69b65e5ed13 upstream.
+[ Upstream commit 4223675d2b5912060a85e48fd8fee51207e00957 ]
 
-arch/powerpc/lib/xor_vmx.o is built with '-msoft-float' (from the main
-powerpc Makefile) and '-maltivec' (from its CFLAGS), which causes an
-error when building with clang after a recent change in main:
+A few models require *.pnvm files while we don't declare them via
+MODULE_FIRMWARE().  This resulted in the breakage of WiFi on the
+system that relies on the information from modinfo (e.g. openSUSE
+installer image).
 
-  error: option '-msoft-float' cannot be specified with '-maltivec'
-  make[6]: *** [scripts/Makefile.build:243: arch/powerpc/lib/xor_vmx.o] Error 1
+This patch adds those missing MODULE_FIRMWARE() entries for *.pnvm
+files.
 
-Explicitly add '-mhard-float' before '-maltivec' in xor_vmx.o's CFLAGS
-to override the previous inclusion of '-msoft-float' (as the last option
-wins), which matches how other areas of the kernel use '-maltivec', such
-as AMDGPU.
+type=feature
+ticket=none
 
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1986
-Link: https://github.com/llvm/llvm-project/commit/4792f912b232141ecba4cbae538873be3c28556c
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240127-ppc-xor_vmx-drop-msoft-float-v1-1-f24140e81376@kernel.org
-[nathan: Fixed conflicts due to lack of 04e85bbf71c9 in older trees]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.opensuse.org/show_bug.cgi?id=1207553
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://msgid.link/20240228163837.4320-1-tiwai@suse.de
+[move to appropriate files]
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/lib/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/cfg/ax210.c | 6 ++++++
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c    | 2 ++
+ 2 files changed, 8 insertions(+)
 
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -67,6 +67,6 @@ obj-$(CONFIG_PPC_LIB_RHEAP) += rheap.o
- obj-$(CONFIG_FTR_FIXUP_SELFTEST) += feature-fixups-test.o
- 
- obj-$(CONFIG_ALTIVEC)	+= xor_vmx.o xor_vmx_glue.o
--CFLAGS_xor_vmx.o += -maltivec $(call cc-option,-mabi=altivec)
-+CFLAGS_xor_vmx.o += -mhard-float -maltivec $(call cc-option,-mabi=altivec)
- 
- obj-$(CONFIG_PPC64) += $(obj64-y)
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
+index 134635c70ce85..73cbb120a49b4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
+@@ -299,3 +299,9 @@ MODULE_FIRMWARE(IWL_MA_B_HR_B_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_MA_B_GF_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_MA_B_GF4_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_MA_B_MR_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
++
++MODULE_FIRMWARE("iwlwifi-so-a0-gf-a0.pnvm");
++MODULE_FIRMWARE("iwlwifi-so-a0-gf4-a0.pnvm");
++MODULE_FIRMWARE("iwlwifi-ty-a0-gf-a0.pnvm");
++MODULE_FIRMWARE("iwlwifi-ma-b0-gf-a0.pnvm");
++MODULE_FIRMWARE("iwlwifi-ma-b0-gf4-a0.pnvm");
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+index 82da957adcf6e..1b6249561cd58 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+@@ -179,3 +179,5 @@ MODULE_FIRMWARE(IWL_BZ_A_FM_C_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_BZ_A_FM4_B_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_GL_B_FM_B_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_GL_C_FM_C_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
++
++MODULE_FIRMWARE("iwlwifi-gl-c0-fm-c0.pnvm");
+-- 
+2.43.0
+
 
 
 
