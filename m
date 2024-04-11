@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-38486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 595FF8A0EDD
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:18:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9662B8A0D75
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:04:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B227EB244CC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:18:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E32C0B2200D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D82145FFA;
-	Thu, 11 Apr 2024 10:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A964145B04;
+	Thu, 11 Apr 2024 10:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLSKk7up"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoTniZLq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A27140366;
-	Thu, 11 Apr 2024 10:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0B11422C4;
+	Thu, 11 Apr 2024 10:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830715; cv=none; b=j6OrL/OOo9RK/uOIJw3ftpcFfbFf8wRWtl4zSuhsrSgRPfIJaJhb1WXKbxyt31rkpMOpoLfyQKnFiyUW3jUJL9l4AOLLmTU+8MlKeqF9LM1oiTtjRv9vQBhxt0cUnVi6SQlkmygEkbjHvjMluW/NbPoK13/kdSfzCV0ez+Oo9rs=
+	t=1712829853; cv=none; b=BwNL+oFMl/JlINCkrXAEoWhkdiRNm0uzw3TQhxhJ2624His/YNCbUqgtfJ2uxgqyamchkKBXAfAuWJLlR+KIYrbOFeH5PfwR90PDgHWu8fIXsR7fMucL085ZS30t3j/bgMPEo2t+0krDZ1kjnbd9DGyNMsYWdEdwVfe13iok6Qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830715; c=relaxed/simple;
-	bh=tqpNguA73gpptXMCQPikUAAS3/DMyWpGW/WrbTdnleY=;
+	s=arc-20240116; t=1712829853; c=relaxed/simple;
+	bh=0fYX16WN25ghJGIO4jIgzDwjRTEpSc6penTLr1Q4u94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FtKCScQNwJEG/j5FesuuvK7yXT6T13kywi1gw9AOqXmO/AiXXVSoCibZMDIfohJ1RPjHbMIJT9pl4haJXscDo/LJqNl5i2Ni54QW9wn4WEkxqqkZtWjDnIkPty2D+py54TcqlOEp4tr21U5Wn1MGVRtILUJebmPcQtUyv5kgoRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLSKk7up; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4B6C433F1;
-	Thu, 11 Apr 2024 10:18:35 +0000 (UTC)
+	 MIME-Version; b=tILKg9E6Kyep804nR99QQyrgFUpEK8cJR0QUeyvRE5syPzQ5hYQ1OAh2nUVM77pjz6QKgoabLKytKAkH5g1iB5bONczA8Tnqq5aDAXBRyxOUY0O1FPJRNcYfUsbFwxmR6o080j86vN9FEmR2H+ZSNsqTf7AcbQVgzGwoFCI0C/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoTniZLq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE85C433C7;
+	Thu, 11 Apr 2024 10:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830715;
-	bh=tqpNguA73gpptXMCQPikUAAS3/DMyWpGW/WrbTdnleY=;
+	s=korg; t=1712829852;
+	bh=0fYX16WN25ghJGIO4jIgzDwjRTEpSc6penTLr1Q4u94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BLSKk7up3W/4Cu2+8rYLZED6nngvTL5Xxpxs6k+dwUUUByFP6pY4rvc8zaIeQdjXd
-	 APhjovlZBxnHF+lSAwbancjssyeatazhJyXfsdfJGMCcT/B/e80e60O0yvy9Yh5tRc
-	 r2qdG3TPTxLNY5S1AQEYpviZC2893dIX50N3Jwio=
+	b=DoTniZLqp5Mi3/SfdMfJQYcTna17RtixlBLtxcxiCvESGTdB2E1Tj01ySsWm37ewx
+	 Efy95MtxIepy8Fu53iUpe8FvLkYToFrRd7+7OJhy9W1sfwIgLK9Vyt74UeN/iPKDsU
+	 a3+rTOHNRVBiemEhYxRLknOXA2o+wlDsHXZ8mWGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Chartre <alexandre.chartre@oracle.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Miroslav Benes <mbenes@suse.cz>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Rui Qi <qirui.001@bytedance.com>
-Subject: [PATCH 5.4 093/215] objtool: Add support for intra-function calls
+	stable <stable@kernel.org>,
+	Yangxi Xiang <xyangxi5@gmail.com>,
+	Kuntal Nayak <kuntal.nayak@broadcom.com>
+Subject: [PATCH 4.19 079/175] vt: fix memory overlapping when deleting chars in the buffer
 Date: Thu, 11 Apr 2024 11:55:02 +0200
-Message-ID: <20240411095427.696786483@linuxfoundation.org>
+Message-ID: <20240411095421.941153311@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,180 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Chartre <alexandre.chartre@oracle.com>
+From: Yangxi Xiang <xyangxi5@gmail.com>
 
-commit 8aa8eb2a8f5b3305a95f39957dd2b715fa668e21 upstream.
+commit 39cdb68c64d84e71a4a717000b6e5de208ee60cc upstream.
 
-Change objtool to support intra-function calls. On x86, an intra-function
-call is represented in objtool as a push onto the stack (of the return
-address), and a jump to the destination address. That way the stack
-information is correctly updated and the call flow is still accurate.
+A memory overlapping copy occurs when deleting a long line. This memory
+overlapping copy can cause data corruption when scr_memcpyw is optimized
+to memcpy because memcpy does not ensure its behavior if the destination
+buffer overlaps with the source buffer. The line buffer is not always
+broken, because the memcpy utilizes the hardware acceleration, whose
+result is not deterministic.
 
-Signed-off-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Miroslav Benes <mbenes@suse.cz>
-Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200414103618.12657-4-alexandre.chartre@oracle.com
-Signed-off-by: Rui Qi <qirui.001@bytedance.com>
+Fix this problem by using replacing the scr_memcpyw with scr_memmovew.
+
+Fixes: 81732c3b2fed ("tty vt: Fix line garbage in virtual console on command line edition")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Yangxi Xiang <xyangxi5@gmail.com>
+Link: https://lore.kernel.org/r/20220628093322.5688-1-xyangxi5@gmail.com
+[ KN: vc_state is not a separate structure in LTS v4.19, v5.4. Adjusted the patch
+  accordingly by using vc_x instead of state.x for backport. ]
+Signed-off-by: Kuntal Nayak <kuntal.nayak@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/frame.h                            |   11 ++++
- tools/objtool/Documentation/stack-validation.txt |    8 ++
- tools/objtool/arch/x86/decode.c                  |    6 ++
- tools/objtool/check.c                            |   62 +++++++++++++++++++++--
- 4 files changed, 83 insertions(+), 4 deletions(-)
+ drivers/tty/vt/vt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/frame.h
-+++ b/include/linux/frame.h
-@@ -15,9 +15,20 @@
- 	static void __used __section(.discard.func_stack_frame_non_standard) \
- 		*__func_stack_frame_non_standard_##func = func
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -855,7 +855,7 @@ static void delete_char(struct vc_data *
+ 	unsigned short *p = (unsigned short *) vc->vc_pos;
  
-+/*
-+ * This macro indicates that the following intra-function call is valid.
-+ * Any non-annotated intra-function call will cause objtool to issue a warning.
-+ */
-+#define ANNOTATE_INTRA_FUNCTION_CALL				\
-+	999:							\
-+	.pushsection .discard.intra_function_calls;		\
-+	.long 999b;						\
-+	.popsection;
-+
- #else /* !CONFIG_STACK_VALIDATION */
- 
- #define STACK_FRAME_NON_STANDARD(func)
-+#define ANNOTATE_INTRA_FUNCTION_CALL
- 
- #endif /* CONFIG_STACK_VALIDATION */
- 
---- a/tools/objtool/Documentation/stack-validation.txt
-+++ b/tools/objtool/Documentation/stack-validation.txt
-@@ -290,6 +290,14 @@ they mean, and suggestions for how to fi
-       https://gcc.gnu.org/bugzilla/show_bug.cgi?id=70646
- 
- 
-+11. file.o: warning: unannotated intra-function call
-+
-+   This warning means that a direct call is done to a destination which
-+   is not at the beginning of a function. If this is a legit call, you
-+   can remove this warning by putting the ANNOTATE_INTRA_FUNCTION_CALL
-+   directive right before the call.
-+
-+
- If the error doesn't seem to make sense, it could be a bug in objtool.
- Feel free to ask the objtool maintainer for help.
- 
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -437,6 +437,12 @@ int arch_decode_instruction(struct elf *
- 
- 	case 0xe8:
- 		*type = INSN_CALL;
-+		/*
-+		 * For the impact on the stack, a CALL behaves like
-+		 * a PUSH of an immediate value (the return address).
-+		 */
-+			op->src.type = OP_SRC_CONST;
-+			op->dest.type = OP_DEST_PUSH;
- 		break;
- 
- 	case 0xfc:
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -645,6 +645,7 @@ static int add_jump_destinations(struct
- 	return 0;
- }
- 
-+
- /*
-  * Find the destination instructions for all calls.
-  */
-@@ -666,10 +667,7 @@ static int add_call_destinations(struct
- 								dest_off);
- 
- 			if (!insn->call_dest && !insn->ignore) {
--				WARN_FUNC("unsupported intra-function call",
--					  insn->sec, insn->offset);
--				if (retpoline)
--					WARN("If this is a retpoline, please patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALTERNATIVE.");
-+				WARN_FUNC("unannotated intra-function call", insn->sec, insn->offset);
- 				return -1;
- 			}
- 
-@@ -1291,6 +1289,58 @@ static int read_retpoline_hints(struct o
- 	return 0;
- }
- 
-+
-+static int read_intra_function_calls(struct objtool_file *file)
-+{
-+	struct instruction *insn;
-+	struct section *sec;
-+	struct rela *rela;
-+
-+	sec = find_section_by_name(file->elf, ".rela.discard.intra_function_calls");
-+	if (!sec)
-+		return 0;
-+
-+	list_for_each_entry(rela, &sec->rela_list, list) {
-+		unsigned long dest_off;
-+
-+		if (rela->sym->type != STT_SECTION) {
-+			WARN("unexpected relocation symbol type in %s",
-+			     sec->name);
-+			return -1;
-+		}
-+
-+		insn = find_insn(file, rela->sym->sec, rela->addend);
-+		if (!insn) {
-+			WARN("bad .discard.intra_function_call entry");
-+			return -1;
-+		}
-+
-+		if (insn->type != INSN_CALL) {
-+			WARN_FUNC("intra_function_call not a direct call",
-+				  insn->sec, insn->offset);
-+			return -1;
-+		}
-+
-+		/*
-+		 * Treat intra-function CALLs as JMPs, but with a stack_op.
-+		 * See add_call_destinations(), which strips stack_ops from
-+		 * normal CALLs.
-+		 */
-+		insn->type = INSN_JUMP_UNCONDITIONAL;
-+
-+		dest_off = insn->offset + insn->len + insn->immediate;
-+		insn->jump_dest = find_insn(file, insn->sec, dest_off);
-+		if (!insn->jump_dest) {
-+			WARN_FUNC("can't find call dest at %s+0x%lx",
-+				  insn->sec, insn->offset,
-+				  insn->sec->name, dest_off);
-+			return -1;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static void mark_rodata(struct objtool_file *file)
- {
- 	struct section *sec;
-@@ -1346,6 +1396,10 @@ static int decode_sections(struct objtoo
- 	if (ret)
- 		return ret;
- 
-+	ret = read_intra_function_calls(file);
-+	if (ret)
-+		return ret;
-+
- 	ret = add_call_destinations(file);
- 	if (ret)
- 		return ret;
+ 	vc_uniscr_delete(vc, nr);
+-	scr_memcpyw(p, p + nr, (vc->vc_cols - vc->vc_x - nr) * 2);
++	scr_memmovew(p, p + nr, (vc->vc_cols - vc->vc_x - nr) * 2);
+ 	scr_memsetw(p + vc->vc_cols - vc->vc_x - nr, vc->vc_video_erase_char,
+ 			nr * 2);
+ 	vc->vc_need_wrap = 0;
 
 
 
