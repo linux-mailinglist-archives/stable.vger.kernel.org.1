@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-38083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A2A08A0CF2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:58:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E1DC8A0EB3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09D9B1F219C8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:58:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C303A1F2212A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC962145B05;
-	Thu, 11 Apr 2024 09:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4002E14600E;
+	Thu, 11 Apr 2024 10:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTL5En/e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvpwy+Ko"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97DC513DDDD;
-	Thu, 11 Apr 2024 09:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4032145353;
+	Thu, 11 Apr 2024 10:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829513; cv=none; b=piCITP1tZwABQT0bPLcQVnPzyl6Et2kYBE37QVXHmmZYpsASy80kYQYKlFA1VPhP8OWyIuga0a18pfzFBG3jbvpCZvRUbkY1Gc5hExogfAedAkG8HUm563f7fDmMeYmXI4D/g30nDYuUkDqJkYFT2z5hflk+BWJY4L+fkI6I420=
+	t=1712830638; cv=none; b=V1kT8Lln5eW7Zuwc8+URZfsMGC6PSHPTIaNEt8zZRtouxxPv/KXZGAsYcMEAO/PxHugKFd37K0KsQ/gkR6+aByUcNPsbecPRTfHZ+AWtZMIc5JD6326ebTbC603dnf5M3aCTR+Fr34eOwrxwg5Kb3c1jcHROe3eDatdhT+a9hDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829513; c=relaxed/simple;
-	bh=n8GFU4UKgVOTqct6aZt/EuiDIaxlW/Ddi4EhZRiYTSc=;
+	s=arc-20240116; t=1712830638; c=relaxed/simple;
+	bh=RV8JGvfKQxF/z0WUPsRmFzLhSYSP4lbH7gY7C8EGP+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJjdhkrweOe5lr1xA8myDMkKML1M8GXi1cGhVuNnZ/cFP4pq9He5YKutrrPl+LjK6snhM/B8ctJXAorx0BgHkEj8rSuNbYInTc5G/u09gDYRUFiZc6QnqiYUHnjQ57fcfqansw19lcBUMBlBVBecoCcsgN9egoot1vFeAGOq65A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTL5En/e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10DBBC433C7;
-	Thu, 11 Apr 2024 09:58:32 +0000 (UTC)
+	 MIME-Version; b=lWISDcs+p5cvzYwRJGT6AyGS2x3PtZPlYuixofR5EE5wh1XAAD2fLEVnmCcJoTNofUP6pysM4H/DiBtRKul4tflxrlT6Bzl7YPsWttE0g7H0VMBhXcU97Ay5UqCi/+PTCVSMa1hqcZ60jajmFqdWGYB8tQw8SdnjJ3We60X+/so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvpwy+Ko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715C0C433C7;
+	Thu, 11 Apr 2024 10:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829513;
-	bh=n8GFU4UKgVOTqct6aZt/EuiDIaxlW/Ddi4EhZRiYTSc=;
+	s=korg; t=1712830637;
+	bh=RV8JGvfKQxF/z0WUPsRmFzLhSYSP4lbH7gY7C8EGP+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bTL5En/e4iAUUyz7+HKR6yTp/1O2GiigfWmTNzhAr8QuffBmu1SKaVO4bOxCJ2GwV
-	 ajHIQyMGUdLrmpqkfYxR7hz6toymX4S1lEg6O8fgnWom0IMrf8I+alwk1ri0lUGel1
-	 MLwctRyPug+z94d7W+Qd5Ay9Fud4h+WxHwX9Q9h8=
+	b=fvpwy+KoeEJwk55BPS0+JAA6v9+qwRPSaDBwhbUJeAEF5WmaIfApx96uyfiAkBB90
+	 UFfiOXoJ2T9eEsly/lWFOqf55J28kVDHTGecYn7EnGkGwEDNq0NoxkUd6x/0sJgEUU
+	 V6Pa5OTLTEICZOqD4wJI8X9MtpRdOuyE7FWlPNIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lubomir Rintel <lkundrak@v3.sk>,
-	Rob Herring <robh@kernel.org>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 013/175] ARM: dts: mmp2-brownstone: Dont redeclare phandle references
-Date: Thu, 11 Apr 2024 11:53:56 +0200
-Message-ID: <20240411095419.944257508@linuxfoundation.org>
+Subject: [PATCH 5.4 028/215] parisc: Do not hardcode registers in checksum functions
+Date: Thu, 11 Apr 2024 11:53:57 +0200
+Message-ID: <20240411095425.739349493@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,373 +61,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lubomir Rintel <lkundrak@v3.sk>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 5a56cf3e8738f5d31d8c024d0c62a4c2bfe76fb2 ]
+[ Upstream commit 52b2d91752a82d9350981eb3b3ffc4b325c84ba9 ]
 
-Extend the nodes by their phandle references instead of recreating the
-tree and declaring references of the same names.
+Do not hardcode processor registers r19 to r22 as scratch registers.
+Instead let the compiler decide, which may give better optimization
+results when the functions get inlined.
 
-Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20200320174107.29406-5-lkundrak@v3.sk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 831e0cd4f9ee ("arm: dts: marvell: Fix maxium->maxim typo in brownstone dts")
+Signed-off-by: Helge Deller <deller@gmx.de>
+Stable-dep-of: a2abae8f0b63 ("parisc: Fix ip_fast_csum")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/mmp2-brownstone.dts | 332 +++++++++++++-------------
- 1 file changed, 165 insertions(+), 167 deletions(-)
+ arch/parisc/include/asm/checksum.h | 101 +++++++++++++++--------------
+ 1 file changed, 52 insertions(+), 49 deletions(-)
 
-diff --git a/arch/arm/boot/dts/mmp2-brownstone.dts b/arch/arm/boot/dts/mmp2-brownstone.dts
-index 350208c5e1ed2..0fdcc2edcf4b6 100644
---- a/arch/arm/boot/dts/mmp2-brownstone.dts
-+++ b/arch/arm/boot/dts/mmp2-brownstone.dts
-@@ -21,176 +21,174 @@ chosen {
- 	memory {
- 		reg = <0x00000000 0x08000000>;
- 	};
-+};
-+
-+&uart3 {
-+	status = "okay";
-+};
+diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
+index 3cbf1f1c1188e..c1c22819a04d1 100644
+--- a/arch/parisc/include/asm/checksum.h
++++ b/arch/parisc/include/asm/checksum.h
+@@ -42,31 +42,32 @@ extern __wsum csum_partial_copy_from_user(const void __user *src,
+ static inline __sum16 ip_fast_csum(const void *iph, unsigned int ihl)
+ {
+ 	unsigned int sum;
++	unsigned long t0, t1, t2;
  
--	soc {
--		apb@d4000000 {
--			uart3: uart@d4018000 {
--				status = "okay";
--			};
--			twsi1: i2c@d4011000 {
--				status = "okay";
--				pmic: max8925@3c {
--					compatible = "maxium,max8925";
--					reg = <0x3c>;
--					interrupts = <1>;
--					interrupt-parent = <&intcmux4>;
--					interrupt-controller;
--					#interrupt-cells = <1>;
--					maxim,tsc-irq = <0>;
-+&twsi1 {
-+	status = "okay";
-+	pmic: max8925@3c {
-+		compatible = "maxium,max8925";
-+		reg = <0x3c>;
-+		interrupts = <1>;
-+		interrupt-parent = <&intcmux4>;
-+		interrupt-controller;
-+		#interrupt-cells = <1>;
-+		maxim,tsc-irq = <0>;
+ 	__asm__ __volatile__ (
+ "	ldws,ma		4(%1), %0\n"
+ "	addib,<=	-4, %2, 2f\n"
+ "\n"
+-"	ldws		4(%1), %%r20\n"
+-"	ldws		8(%1), %%r21\n"
+-"	add		%0, %%r20, %0\n"
+-"	ldws,ma		12(%1), %%r19\n"
+-"	addc		%0, %%r21, %0\n"
+-"	addc		%0, %%r19, %0\n"
+-"1:	ldws,ma		4(%1), %%r19\n"
++"	ldws		4(%1), %4\n"
++"	ldws		8(%1), %5\n"
++"	add		%0, %4, %0\n"
++"	ldws,ma		12(%1), %3\n"
++"	addc		%0, %5, %0\n"
++"	addc		%0, %3, %0\n"
++"1:	ldws,ma		4(%1), %3\n"
+ "	addib,<		0, %2, 1b\n"
+-"	addc		%0, %%r19, %0\n"
++"	addc		%0, %3, %0\n"
+ "\n"
+-"	extru		%0, 31, 16, %%r20\n"
+-"	extru		%0, 15, 16, %%r21\n"
+-"	addc		%%r20, %%r21, %0\n"
+-"	extru		%0, 15, 16, %%r21\n"
+-"	add		%0, %%r21, %0\n"
++"	extru		%0, 31, 16, %4\n"
++"	extru		%0, 15, 16, %5\n"
++"	addc		%4, %5, %0\n"
++"	extru		%0, 15, 16, %5\n"
++"	add		%0, %5, %0\n"
+ "	subi		-1, %0, %0\n"
+ "2:\n"
+-	: "=r" (sum), "=r" (iph), "=r" (ihl)
++	: "=r" (sum), "=r" (iph), "=r" (ihl), "=r" (t0), "=r" (t1), "=r" (t2)
+ 	: "1" (iph), "2" (ihl)
+-	: "r19", "r20", "r21", "memory");
++	: "memory");
  
--					regulators {
--						SDV1 {
--							regulator-min-microvolt = <637500>;
--							regulator-max-microvolt = <1425000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						SDV2 {
--							regulator-min-microvolt = <650000>;
--							regulator-max-microvolt = <2225000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						SDV3 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO1 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO2 {
--							regulator-min-microvolt = <650000>;
--							regulator-max-microvolt = <2250000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO3 {
--							regulator-min-microvolt = <650000>;
--							regulator-max-microvolt = <2250000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO4 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO5 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO6 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO7 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO8 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO9 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO10 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--						};
--						LDO11 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO12 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO13 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO14 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO15 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO16 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO17 {
--							regulator-min-microvolt = <650000>;
--							regulator-max-microvolt = <2250000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO18 {
--							regulator-min-microvolt = <650000>;
--							regulator-max-microvolt = <2250000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO19 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--						LDO20 {
--							regulator-min-microvolt = <750000>;
--							regulator-max-microvolt = <3900000>;
--							regulator-boot-on;
--							regulator-always-on;
--						};
--					};
--					backlight {
--						maxim,max8925-dual-string = <0>;
--					};
--					charger {
--						batt-detect = <0>;
--						topoff-threshold = <1>;
--						fast-charge = <7>;
--						no-temp-support = <0>;
--						no-insert-detect = <0>;
--					};
--				};
--			};
--			rtc: rtc@d4010000 {
--				status = "okay";
-+		regulators {
-+			SDV1 {
-+				regulator-min-microvolt = <637500>;
-+				regulator-max-microvolt = <1425000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			SDV2 {
-+				regulator-min-microvolt = <650000>;
-+				regulator-max-microvolt = <2225000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			SDV3 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO1 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO2 {
-+				regulator-min-microvolt = <650000>;
-+				regulator-max-microvolt = <2250000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO3 {
-+				regulator-min-microvolt = <650000>;
-+				regulator-max-microvolt = <2250000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO4 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO5 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO6 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO7 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO8 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO9 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO10 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
- 			};
-+			LDO11 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO12 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO13 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO14 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO15 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO16 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO17 {
-+				regulator-min-microvolt = <650000>;
-+				regulator-max-microvolt = <2250000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO18 {
-+				regulator-min-microvolt = <650000>;
-+				regulator-max-microvolt = <2250000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO19 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+			LDO20 {
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <3900000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+		};
-+		backlight {
-+			maxim,max8925-dual-string = <0>;
-+		};
-+		charger {
-+			batt-detect = <0>;
-+			topoff-threshold = <1>;
-+			fast-charge = <7>;
-+			no-temp-support = <0>;
-+			no-insert-detect = <0>;
- 		};
- 	};
- };
+ 	return (__force __sum16)sum;
+ }
+@@ -126,6 +127,10 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ 					  __u32 len, __u8 proto,
+ 					  __wsum sum)
+ {
++	unsigned long t0, t1, t2, t3;
 +
-+&rtc {
-+	status = "okay";
-+};
++	len += proto;	/* add 16-bit proto + len */
++
+ 	__asm__ __volatile__ (
+ 
+ #if BITS_PER_LONG > 32
+@@ -136,20 +141,19 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ 	** Try to keep 4 registers with "live" values ahead of the ALU.
+ 	*/
+ 
+-"	ldd,ma		8(%1), %%r19\n"	/* get 1st saddr word */
+-"	ldd,ma		8(%2), %%r20\n"	/* get 1st daddr word */
+-"	add		%8, %3, %3\n"/* add 16-bit proto + len */
+-"	add		%%r19, %0, %0\n"
+-"	ldd,ma		8(%1), %%r21\n"	/* 2cd saddr */
+-"	ldd,ma		8(%2), %%r22\n"	/* 2cd daddr */
+-"	add,dc		%%r20, %0, %0\n"
+-"	add,dc		%%r21, %0, %0\n"
+-"	add,dc		%%r22, %0, %0\n"
++"	ldd,ma		8(%1), %4\n"	/* get 1st saddr word */
++"	ldd,ma		8(%2), %5\n"	/* get 1st daddr word */
++"	add		%4, %0, %0\n"
++"	ldd,ma		8(%1), %6\n"	/* 2nd saddr */
++"	ldd,ma		8(%2), %7\n"	/* 2nd daddr */
++"	add,dc		%5, %0, %0\n"
++"	add,dc		%6, %0, %0\n"
++"	add,dc		%7, %0, %0\n"
+ "	add,dc		%3, %0, %0\n"  /* fold in proto+len | carry bit */
+-"	extrd,u		%0, 31, 32, %%r19\n"	/* copy upper half down */
+-"	depdi		0, 31, 32, %0\n"	/* clear upper half */
+-"	add		%%r19, %0, %0\n"	/* fold into 32-bits */
+-"	addc		0, %0, %0\n"		/* add carry */
++"	extrd,u		%0, 31, 32, %4\n"/* copy upper half down */
++"	depdi		0, 31, 32, %0\n"/* clear upper half */
++"	add		%4, %0, %0\n"	/* fold into 32-bits */
++"	addc		0, %0, %0\n"	/* add carry */
+ 
+ #else
+ 
+@@ -158,30 +162,29 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ 	** Insn stream is serialized on the carry bit here too.
+ 	** result from the previous operation (eg r0 + x)
+ 	*/
+-
+-"	ldw,ma		4(%1), %%r19\n"	/* get 1st saddr word */
+-"	ldw,ma		4(%2), %%r20\n"	/* get 1st daddr word */
+-"	add		%8, %3, %3\n"	/* add 16-bit proto + len */
+-"	add		%%r19, %0, %0\n"
+-"	ldw,ma		4(%1), %%r21\n"	/* 2cd saddr */
+-"	addc		%%r20, %0, %0\n"
+-"	ldw,ma		4(%2), %%r22\n"	/* 2cd daddr */
+-"	addc		%%r21, %0, %0\n"
+-"	ldw,ma		4(%1), %%r19\n"	/* 3rd saddr */
+-"	addc		%%r22, %0, %0\n"
+-"	ldw,ma		4(%2), %%r20\n"	/* 3rd daddr */
+-"	addc		%%r19, %0, %0\n"
+-"	ldw,ma		4(%1), %%r21\n"	/* 4th saddr */
+-"	addc		%%r20, %0, %0\n"
+-"	ldw,ma		4(%2), %%r22\n"	/* 4th daddr */
+-"	addc		%%r21, %0, %0\n"
+-"	addc		%%r22, %0, %0\n"
++"	ldw,ma		4(%1), %4\n"	/* get 1st saddr word */
++"	ldw,ma		4(%2), %5\n"	/* get 1st daddr word */
++"	add		%4, %0, %0\n"
++"	ldw,ma		4(%1), %6\n"	/* 2nd saddr */
++"	addc		%5, %0, %0\n"
++"	ldw,ma		4(%2), %7\n"	/* 2nd daddr */
++"	addc		%6, %0, %0\n"
++"	ldw,ma		4(%1), %4\n"	/* 3rd saddr */
++"	addc		%7, %0, %0\n"
++"	ldw,ma		4(%2), %5\n"	/* 3rd daddr */
++"	addc		%4, %0, %0\n"
++"	ldw,ma		4(%1), %6\n"	/* 4th saddr */
++"	addc		%5, %0, %0\n"
++"	ldw,ma		4(%2), %7\n"	/* 4th daddr */
++"	addc		%6, %0, %0\n"
++"	addc		%7, %0, %0\n"
+ "	addc		%3, %0, %0\n"	/* fold in proto+len, catch carry */
+ 
+ #endif
+-	: "=r" (sum), "=r" (saddr), "=r" (daddr), "=r" (len)
+-	: "0" (sum), "1" (saddr), "2" (daddr), "3" (len), "r" (proto)
+-	: "r19", "r20", "r21", "r22", "memory");
++	: "=r" (sum), "=r" (saddr), "=r" (daddr), "=r" (len),
++	  "=r" (t0), "=r" (t1), "=r" (t2), "=r" (t3)
++	: "0" (sum), "1" (saddr), "2" (daddr), "3" (len)
++	: "memory");
+ 	return csum_fold(sum);
+ }
+ 
 -- 
 2.43.0
 
