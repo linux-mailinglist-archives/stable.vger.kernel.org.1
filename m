@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-38967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 067B38A1140
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D908A0E51
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37FF71C23EF0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C8421C21EA0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135551448F3;
-	Thu, 11 Apr 2024 10:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F38145FFB;
+	Thu, 11 Apr 2024 10:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2H83YoYu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jMRdJ4pS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C616E2EAE5;
-	Thu, 11 Apr 2024 10:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63772145B28;
+	Thu, 11 Apr 2024 10:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832124; cv=none; b=JJwQcEB4+Dyx6zC0bYuIL079+A14n4exVNsXjdlMMwS2fwcbIcxdU92IRMz/tcZq3ZXZky8hj6OTcfbbev5Swa2KfawuT0L9Q0cIH8psWVYhxScHTsY/X4vDzsz/R/6daOHOioSTxEwX2hoC3o7rNljJdcA/1TqqPg07QXXqFgg=
+	t=1712830407; cv=none; b=B9z7ZA6UfDGVeQ+dKPvpiSpCz09RUILQQzqOfW/d5b/beHrEeimtS93jY0lJ7dsHqbAf82jI/xEA/bSmSBDvdJZI1r4+H9K5fDhvvkCXSvoOObU7VLEtfsI4TkF6m4EF2M6VLO5IxsPFF55BUtW5V9y+d0yXzEh4u1MROyLkNrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832124; c=relaxed/simple;
-	bh=2xfm2Me9Ic/kOKuUM+ld2p5K0nKSj1ZVNCVpAkTWWWg=;
+	s=arc-20240116; t=1712830407; c=relaxed/simple;
+	bh=aJ0B7x8RcLyyY5QPhkcOeuH6yJLzWzHbMAI2FDU3/aM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TpVE0pDVPga3OmDK+tI4kXy+8JpJ1WXpfy2T4kkEOMUSimmmoSkvhDgMf1s08hy6eKzYBJECdlPISVoweEC8XTnVhYdN84pRGK73+awnSYAbHsVCqvN3FmB5kc7bcUMTYnfgJ8m6ae7vEEhUPN3H+25mW1ho3JGrHWeA3aokVeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2H83YoYu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAB8C433C7;
-	Thu, 11 Apr 2024 10:42:03 +0000 (UTC)
+	 MIME-Version; b=EH5WVaWsntB3ICDZBUNzLxeDIgmIrHq4Iv069jY/UIjXicew6HHp0TZNvfclvQIOwSr043ySgzqak97iv0y5TUhu934LkB4dbtX4DDppOuASN2gyjOdSCKtEy+yVvSzDeb51jZfXjRtVOioOSgiw2d9Zp6GMUUaXMKY33BnQRFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jMRdJ4pS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC052C43399;
+	Thu, 11 Apr 2024 10:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832124;
-	bh=2xfm2Me9Ic/kOKuUM+ld2p5K0nKSj1ZVNCVpAkTWWWg=;
+	s=korg; t=1712830407;
+	bh=aJ0B7x8RcLyyY5QPhkcOeuH6yJLzWzHbMAI2FDU3/aM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2H83YoYu5ErRhn10Ny9teyr0k6URLDrZqUQ3WApX7rQkrlTQHuUu9gEyF2ws4U1c5
-	 3GJY07VWf/KOteA046b2vtUIrYl68BlYqQd3p5Fugh1IvXVqAIpxVUvoKZUoLrSJBK
-	 Lium4s0nBecfNkM64GwHBIkDqkGUwn1VPf++kx10=
+	b=jMRdJ4pSVePAVboqdeGBwRI+04tGffLsAZcrUp+rr2Yx4LOvVLUPKizz6CaxKLB+s
+	 6KSGsVVCAkGwcyYs734S+mXGJWTxyawrv3dJdhGOrZofbF0ijnQcEfMyRXtRsuqDEr
+	 vnTxRsUzztUL4ECbGIxb18+GtWRvQsBds1w+GLQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	stable@kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.10 238/294] x86/bugs: Fix the SRSO mitigation on Zen3/4
+	Yunfei Dong <yunfei.dong@mediatek.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 133/143] media: mediatek: vcodec: adding lock to protect decoder context list
 Date: Thu, 11 Apr 2024 11:56:41 +0200
-Message-ID: <20240411095442.740587176@linuxfoundation.org>
+Message-ID: <20240411095424.906714274@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +65,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Yunfei Dong <yunfei.dong@mediatek.com>
 
-Commit 4535e1a4174c4111d92c5a9a21e542d232e0fcaa upstream.
+[ Upstream commit 6467cda18c9f9b5f2f9a0aa1e2861c653e41f382 ]
 
-The original version of the mitigation would patch in the calls to the
-untraining routines directly.  That is, the alternative() in UNTRAIN_RET
-will patch in the CALL to srso_alias_untrain_ret() directly.
+Add a lock for the ctx_list, to avoid accessing a NULL pointer
+within the 'vpu_dec_ipi_handler' function when the ctx_list has
+been deleted due to an unexpected behavior on the SCP IP block.
 
-However, even if commit e7c25c441e9e ("x86/cpu: Cleanup the untrain
-mess") meant well in trying to clean up the situation, due to micro-
-architectural reasons, the untraining routine srso_alias_untrain_ret()
-must be the target of a CALL instruction and not of a JMP instruction as
-it is done now.
+Hardware name: Google juniper sku16 board (DT)
+pstate: 20400005 (nzCv daif +PAN -UAO -TCO BTYPE=--)
+pc : vpu_dec_ipi_handler+0x58/0x1f8 [mtk_vcodec_dec]
+lr : scp_ipi_handler+0xd0/0x194 [mtk_scp]
+sp : ffffffc0131dbbd0
+x29: ffffffc0131dbbd0 x28: 0000000000000000
+x27: ffffff9bb277f348 x26: ffffff9bb242ad00
+x25: ffffffd2d440d3b8 x24: ffffffd2a13ff1d4
+x23: ffffff9bb7fe85a0 x22: ffffffc0133fbdb0
+x21: 0000000000000010 x20: ffffff9b050ea328
+x19: ffffffc0131dbc08 x18: 0000000000001000
+x17: 0000000000000000 x16: ffffffd2d461c6e0
+x15: 0000000000000242 x14: 000000000000018f
+x13: 000000000000004d x12: 0000000000000000
+x11: 0000000000000001 x10: fffffffffffffff0
+x9 : ffffff9bb6e793a8 x8 : 0000000000000000
+x7 : 0000000000000000 x6 : 000000000000003f
+x5 : 0000000000000040 x4 : fffffffffffffff0
+x3 : 0000000000000020 x2 : ffffff9bb6e79080
+x1 : 0000000000000010 x0 : ffffffc0131dbc08
+Call trace:
+vpu_dec_ipi_handler+0x58/0x1f8 [mtk_vcodec_dec (HASH:6c3f 2)]
+scp_ipi_handler+0xd0/0x194 [mtk_scp (HASH:7046 3)]
+mt8183_scp_irq_handler+0x44/0x88 [mtk_scp (HASH:7046 3)]
+scp_irq_handler+0x48/0x90 [mtk_scp (HASH:7046 3)]
+irq_thread_fn+0x38/0x94
+irq_thread+0x100/0x1c0
+kthread+0x140/0x1fc
+ret_from_fork+0x10/0x30
+Code: 54000088 f94ca50a eb14015f 54000060 (f9400108)
+---[ end trace ace43ce36cbd5c93 ]---
+Kernel panic - not syncing: Oops: Fatal exception
+SMP: stopping secondary CPUs
+Kernel Offset: 0x12c4000000 from 0xffffffc010000000
+PHYS_OFFSET: 0xffffffe580000000
+CPU features: 0x08240002,2188200c
+Memory Limit: none
 
-Reshuffle the alternative macros to accomplish that.
-
-Fixes: e7c25c441e9e ("x86/cpu: Cleanup the untrain mess")
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@kernel.org
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 655b86e52eac ("media: mediatek: vcodec: Fix possible invalid memory access for decoder")
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/asm-prototypes.h |    1 +
- arch/x86/include/asm/nospec-branch.h  |   20 ++++++++++++++------
- arch/x86/lib/retpoline.S              |    4 +---
- 3 files changed, 16 insertions(+), 9 deletions(-)
+ .../platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c      | 4 ++--
+ .../platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.c    | 5 +++++
+ .../platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.h    | 2 ++
+ drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c | 2 ++
+ 4 files changed, 11 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/asm-prototypes.h
-+++ b/arch/x86/include/asm/asm-prototypes.h
-@@ -12,6 +12,7 @@
- #include <asm/special_insns.h>
- #include <asm/preempt.h>
- #include <asm/asm.h>
-+#include <asm/nospec-branch.h>
+diff --git a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
+index 4c34344dc7dcb..62cafe25fed94 100644
+--- a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
++++ b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
+@@ -50,12 +50,12 @@ static void mtk_vcodec_vpu_reset_dec_handler(void *priv)
  
- #ifndef CONFIG_X86_CMPXCHG64
- extern void cmpxchg8b_emu(void);
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -155,11 +155,20 @@
- .Lskip_rsb_\@:
- .endm
+ 	dev_err(&dev->plat_dev->dev, "Watchdog timeout!!");
  
-+/*
-+ * The CALL to srso_alias_untrain_ret() must be patched in directly at
-+ * the spot where untraining must be done, ie., srso_alias_untrain_ret()
-+ * must be the target of a CALL instruction instead of indirectly
-+ * jumping to a wrapper which then calls it. Therefore, this macro is
-+ * called outside of __UNTRAIN_RET below, for the time being, before the
-+ * kernel can support nested alternatives with arbitrary nesting.
-+ */
-+.macro CALL_UNTRAIN_RET
- #ifdef CONFIG_CPU_UNRET_ENTRY
--#define CALL_UNTRAIN_RET	"call entry_untrain_ret"
--#else
--#define CALL_UNTRAIN_RET	""
-+	ALTERNATIVE_2 "", "call entry_untrain_ret", X86_FEATURE_UNRET, \
-+		          "call srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
- #endif
-+.endm
+-	mutex_lock(&dev->dev_mutex);
++	mutex_lock(&dev->dev_ctx_lock);
+ 	list_for_each_entry(ctx, &dev->ctx_list, list) {
+ 		ctx->state = MTK_STATE_ABORT;
+ 		mtk_v4l2_vdec_dbg(0, ctx, "[%d] Change to state MTK_STATE_ABORT", ctx->id);
+ 	}
+-	mutex_unlock(&dev->dev_mutex);
++	mutex_unlock(&dev->dev_ctx_lock);
+ }
  
- /*
-  * Mitigate RETBleed for AMD/Hygon Zen uarch. Requires KERNEL CR3 because the
-@@ -176,9 +185,8 @@
- #if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
- 	defined(CONFIG_CPU_SRSO)
- 	ANNOTATE_UNRET_END
--	ALTERNATIVE_2 "",						\
--		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
--		      "call entry_ibpb", X86_FEATURE_ENTRY_IBPB
-+	CALL_UNTRAIN_RET
-+	ALTERNATIVE "", "call entry_ibpb", X86_FEATURE_ENTRY_IBPB
- #endif
- .endm
+ static void mtk_vcodec_vpu_reset_enc_handler(void *priv)
+diff --git a/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.c b/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.c
+index f47c98faf068b..2073781ccadb1 100644
+--- a/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.c
++++ b/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.c
+@@ -268,7 +268,9 @@ static int fops_vcodec_open(struct file *file)
  
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -249,9 +249,7 @@ SYM_CODE_START(srso_return_thunk)
- SYM_CODE_END(srso_return_thunk)
+ 	ctx->dev->vdec_pdata->init_vdec_params(ctx);
  
- SYM_FUNC_START(entry_untrain_ret)
--	ALTERNATIVE_2 "jmp retbleed_untrain_ret", \
--		      "jmp srso_untrain_ret", X86_FEATURE_SRSO, \
--		      "jmp srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
-+	ALTERNATIVE "jmp retbleed_untrain_ret", "jmp srso_untrain_ret", X86_FEATURE_SRSO
- SYM_FUNC_END(entry_untrain_ret)
- __EXPORT_THUNK(entry_untrain_ret)
++	mutex_lock(&dev->dev_ctx_lock);
+ 	list_add(&ctx->list, &dev->ctx_list);
++	mutex_unlock(&dev->dev_ctx_lock);
+ 	mtk_vcodec_dbgfs_create(ctx);
  
+ 	mutex_unlock(&dev->dev_mutex);
+@@ -311,7 +313,9 @@ static int fops_vcodec_release(struct file *file)
+ 	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
+ 
+ 	mtk_vcodec_dbgfs_remove(dev, ctx->id);
++	mutex_lock(&dev->dev_ctx_lock);
+ 	list_del_init(&ctx->list);
++	mutex_unlock(&dev->dev_ctx_lock);
+ 	kfree(ctx);
+ 	mutex_unlock(&dev->dev_mutex);
+ 	return 0;
+@@ -404,6 +408,7 @@ static int mtk_vcodec_probe(struct platform_device *pdev)
+ 	for (i = 0; i < MTK_VDEC_HW_MAX; i++)
+ 		mutex_init(&dev->dec_mutex[i]);
+ 	mutex_init(&dev->dev_mutex);
++	mutex_init(&dev->dev_ctx_lock);
+ 	spin_lock_init(&dev->irqlock);
+ 
+ 	snprintf(dev->v4l2_dev.name, sizeof(dev->v4l2_dev.name), "%s",
+diff --git a/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.h b/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.h
+index 849b89dd205c2..85b2c0d3d8bcd 100644
+--- a/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.h
++++ b/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.h
+@@ -241,6 +241,7 @@ struct mtk_vcodec_dec_ctx {
+  *
+  * @dec_mutex: decoder hardware lock
+  * @dev_mutex: video_device lock
++ * @dev_ctx_lock: the lock of context list
+  * @decode_workqueue: decode work queue
+  *
+  * @irqlock: protect data access by irq handler and work thread
+@@ -282,6 +283,7 @@ struct mtk_vcodec_dec_dev {
+ 	/* decoder hardware mutex lock */
+ 	struct mutex dec_mutex[MTK_VDEC_HW_MAX];
+ 	struct mutex dev_mutex;
++	struct mutex dev_ctx_lock;
+ 	struct workqueue_struct *decode_workqueue;
+ 
+ 	spinlock_t irqlock;
+diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c
+index 82e57ae983d55..da6be556727bb 100644
+--- a/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c
++++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c
+@@ -77,12 +77,14 @@ static bool vpu_dec_check_ap_inst(struct mtk_vcodec_dec_dev *dec_dev, struct vde
+ 	struct mtk_vcodec_dec_ctx *ctx;
+ 	int ret = false;
+ 
++	mutex_lock(&dec_dev->dev_ctx_lock);
+ 	list_for_each_entry(ctx, &dec_dev->ctx_list, list) {
+ 		if (!IS_ERR_OR_NULL(ctx) && ctx->vpu_inst == vpu) {
+ 			ret = true;
+ 			break;
+ 		}
+ 	}
++	mutex_unlock(&dec_dev->dev_ctx_lock);
+ 
+ 	return ret;
+ }
+-- 
+2.43.0
+
 
 
 
