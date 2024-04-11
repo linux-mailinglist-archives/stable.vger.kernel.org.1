@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA1B98A0EEC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33DE98A10A8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC3FA1C21C23
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:19:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 637611C23D00
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2455314601D;
-	Thu, 11 Apr 2024 10:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F8B147C6E;
+	Thu, 11 Apr 2024 10:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPtZxjd0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tA1SF8Ks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D688114601B;
-	Thu, 11 Apr 2024 10:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F18E1474AB;
+	Thu, 11 Apr 2024 10:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830750; cv=none; b=S5nl0b2WXfdpoOOAnl1tcbzX2k7/smPjFBZNeZZgI0mErb01LyIgqHk9SsHYtxeE6HlFHW982A2tjA1o5I3NPPePT6h3zy0Il4vzDO7QzeMI3VFbaBLpMdA1jwTxn/oNukYFahOo+xl9k6b9aPAwooyuriW/QrY75++q4Fn4cow=
+	t=1712831753; cv=none; b=qkOexQVYrkMFQGsxgn6vOkBl9J5bahBqBBj/ZMj9LghtnP4TbgNGFzf23S9U77+IO3i3lsZ0Y9+kArodAFpjKMaYGYmxkRhAJzM35uLCWXVJVWBONY8YFDiGzwjQEsdP1Iu61WQ6MRep39q4U12+a3HgWphGR4QImihJCd9Oc+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830750; c=relaxed/simple;
-	bh=KkHvbiOE/uS1JwBUKhs52Xmi0zAFvG16YRFSXcQJsrw=;
+	s=arc-20240116; t=1712831753; c=relaxed/simple;
+	bh=LEGn1uqA35ohCNL00+b9G/2efZ1tTe7sVMH46uJloOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ab5uyl2/LcTgnPzxj/cKpX7paG/npeHPtABwTBQwz1IZrNwRHJjTgvTkFSHd8Fv1Hsubmjsdxu1Wsaxxl9Hyt5dGravtVo3tmJdmdeI0mFB4jrzQlr4ZMotToojPSExZhi/oBXDGVx355RONWGUEjbzFq1DKxyF0CzDy34iath4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPtZxjd0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AFD3C433C7;
-	Thu, 11 Apr 2024 10:19:10 +0000 (UTC)
+	 MIME-Version; b=SMVXLM5R0Q42N9qjlB9wSSURvr+X96IguOLbgoeFr6OlL1Z0OO4awR40U8OJvoRtpgTyxRW9PB63R0vYxVca9JVQuh9z4ymhbqRCXcJ3WF00EyJwTB3g7LtoBY+8qIg/29nri7SvNHYqDcVFxTA7wamMIEYr18ShNG+/QEJyfVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tA1SF8Ks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FD9C433C7;
+	Thu, 11 Apr 2024 10:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830750;
-	bh=KkHvbiOE/uS1JwBUKhs52Xmi0zAFvG16YRFSXcQJsrw=;
+	s=korg; t=1712831753;
+	bh=LEGn1uqA35ohCNL00+b9G/2efZ1tTe7sVMH46uJloOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cPtZxjd05actYHmm2a0L0TMohj5bN/P6R7uqo9FwkPlV7SpQFGHJuVW+CiGsH2+zG
-	 Rb9bowUQfXD7IDVqZXKMEG9pAvH/+9hGbdOHjt3PDa2aGAvh/M3GWQ47V9gFdnIxV0
-	 mPH8+KOuyrA+zh6HAFtF/ooamaDQV3PnfKtGdOLA=
+	b=tA1SF8KsOI9/E7OWNT/rQuaVLvp5HSzDOyeeC3t+CduktimdH6Iv8MxfcnZrtD69q
+	 3bOq5IBeoqQWVv9qfFEbkpQgLeu29q9HHZG2tgZ/levdAq0ocoz6JRkgPtjHsxGJHS
+	 ZeWU7BPOM3PuMkJEG/bBnXM4RxXn07K9AOsdF8Ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Anton Altaparmakov <anton@tuxera.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 068/215] s390/zcrypt: fix reference counting on zcrypt card objects
-Date: Thu, 11 Apr 2024 11:54:37 +0200
-Message-ID: <20240411095426.943343171@linuxfoundation.org>
+Subject: [PATCH 5.10 115/294] x86/pm: Work around false positive kmemleak report in msr_build_context()
+Date: Thu, 11 Apr 2024 11:54:38 +0200
+Message-ID: <20240411095439.130497801@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,125 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+From: Anton Altaparmakov <anton@tuxera.com>
 
-[ Upstream commit 50ed48c80fecbe17218afed4f8bed005c802976c ]
+[ Upstream commit e3f269ed0accbb22aa8f25d2daffa23c3fccd407 ]
 
-Tests with hot-plugging crytpo cards on KVM guests with debug
-kernel build revealed an use after free for the load field of
-the struct zcrypt_card. The reason was an incorrect reference
-handling of the zcrypt card object which could lead to a free
-of the zcrypt card object while it was still in use.
+Since:
 
-This is an example of the slab message:
+  7ee18d677989 ("x86/power: Make restore_processor_context() sane")
 
-    kernel: 0x00000000885a7512-0x00000000885a7513 @offset=1298. First byte 0x68 instead of 0x6b
-    kernel: Allocated in zcrypt_card_alloc+0x36/0x70 [zcrypt] age=18046 cpu=3 pid=43
-    kernel:  kmalloc_trace+0x3f2/0x470
-    kernel:  zcrypt_card_alloc+0x36/0x70 [zcrypt]
-    kernel:  zcrypt_cex4_card_probe+0x26/0x380 [zcrypt_cex4]
-    kernel:  ap_device_probe+0x15c/0x290
-    kernel:  really_probe+0xd2/0x468
-    kernel:  driver_probe_device+0x40/0xf0
-    kernel:  __device_attach_driver+0xc0/0x140
-    kernel:  bus_for_each_drv+0x8c/0xd0
-    kernel:  __device_attach+0x114/0x198
-    kernel:  bus_probe_device+0xb4/0xc8
-    kernel:  device_add+0x4d2/0x6e0
-    kernel:  ap_scan_adapter+0x3d0/0x7c0
-    kernel:  ap_scan_bus+0x5a/0x3b0
-    kernel:  ap_scan_bus_wq_callback+0x40/0x60
-    kernel:  process_one_work+0x26e/0x620
-    kernel:  worker_thread+0x21c/0x440
-    kernel: Freed in zcrypt_card_put+0x54/0x80 [zcrypt] age=9024 cpu=3 pid=43
-    kernel:  kfree+0x37e/0x418
-    kernel:  zcrypt_card_put+0x54/0x80 [zcrypt]
-    kernel:  ap_device_remove+0x4c/0xe0
-    kernel:  device_release_driver_internal+0x1c4/0x270
-    kernel:  bus_remove_device+0x100/0x188
-    kernel:  device_del+0x164/0x3c0
-    kernel:  device_unregister+0x30/0x90
-    kernel:  ap_scan_adapter+0xc8/0x7c0
-    kernel:  ap_scan_bus+0x5a/0x3b0
-    kernel:  ap_scan_bus_wq_callback+0x40/0x60
-    kernel:  process_one_work+0x26e/0x620
-    kernel:  worker_thread+0x21c/0x440
-    kernel:  kthread+0x150/0x168
-    kernel:  __ret_from_fork+0x3c/0x58
-    kernel:  ret_from_fork+0xa/0x30
-    kernel: Slab 0x00000372022169c0 objects=20 used=18 fp=0x00000000885a7c88 flags=0x3ffff00000000a00(workingset|slab|node=0|zone=1|lastcpupid=0x1ffff)
-    kernel: Object 0x00000000885a74b8 @offset=1208 fp=0x00000000885a7c88
-    kernel: Redzone  00000000885a74b0: bb bb bb bb bb bb bb bb                          ........
-    kernel: Object   00000000885a74b8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-    kernel: Object   00000000885a74c8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-    kernel: Object   00000000885a74d8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-    kernel: Object   00000000885a74e8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-    kernel: Object   00000000885a74f8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-    kernel: Object   00000000885a7508: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 68 4b 6b 6b 6b a5  kkkkkkkkkkhKkkk.
-    kernel: Redzone  00000000885a7518: bb bb bb bb bb bb bb bb                          ........
-    kernel: Padding  00000000885a756c: 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a              ZZZZZZZZZZZZ
-    kernel: CPU: 0 PID: 387 Comm: systemd-udevd Not tainted 6.8.0-HF #2
-    kernel: Hardware name: IBM 3931 A01 704 (KVM/Linux)
-    kernel: Call Trace:
-    kernel:  [<00000000ca5ab5b8>] dump_stack_lvl+0x90/0x120
-    kernel:  [<00000000c99d78bc>] check_bytes_and_report+0x114/0x140
-    kernel:  [<00000000c99d53cc>] check_object+0x334/0x3f8
-    kernel:  [<00000000c99d820c>] alloc_debug_processing+0xc4/0x1f8
-    kernel:  [<00000000c99d852e>] get_partial_node.part.0+0x1ee/0x3e0
-    kernel:  [<00000000c99d94ec>] ___slab_alloc+0xaf4/0x13c8
-    kernel:  [<00000000c99d9e38>] __slab_alloc.constprop.0+0x78/0xb8
-    kernel:  [<00000000c99dc8dc>] __kmalloc+0x434/0x590
-    kernel:  [<00000000c9b4c0ce>] ext4_htree_store_dirent+0x4e/0x1c0
-    kernel:  [<00000000c9b908a2>] htree_dirblock_to_tree+0x17a/0x3f0
-    kernel:  [<00000000c9b919dc>] ext4_htree_fill_tree+0x134/0x400
-    kernel:  [<00000000c9b4b3d0>] ext4_dx_readdir+0x160/0x2f0
-    kernel:  [<00000000c9b4bedc>] ext4_readdir+0x5f4/0x760
-    kernel:  [<00000000c9a7efc4>] iterate_dir+0xb4/0x280
-    kernel:  [<00000000c9a7f1ea>] __do_sys_getdents64+0x5a/0x120
-    kernel:  [<00000000ca5d6946>] __do_syscall+0x256/0x310
-    kernel:  [<00000000ca5eea10>] system_call+0x70/0x98
-    kernel: INFO: lockdep is turned off.
-    kernel: FIX kmalloc-96: Restoring Poison 0x00000000885a7512-0x00000000885a7513=0x6b
-    kernel: FIX kmalloc-96: Marking all objects used
+kmemleak reports this issue:
 
-The fix is simple: Before use of the queue not only the queue object
-but also the card object needs to increase it's reference count
-with a call to zcrypt_card_get(). Similar after use of the queue
-not only the queue but also the card object's reference count is
-decreased with zcrypt_card_put().
+  unreferenced object 0xf68241e0 (size 32):
+    comm "swapper/0", pid 1, jiffies 4294668610 (age 68.432s)
+    hex dump (first 32 bytes):
+      00 cc cc cc 29 10 01 c0 00 00 00 00 00 00 00 00  ....)...........
+      00 42 82 f6 cc cc cc cc cc cc cc cc cc cc cc cc  .B..............
+    backtrace:
+      [<461c1d50>] __kmem_cache_alloc_node+0x106/0x260
+      [<ea65e13b>] __kmalloc+0x54/0x160
+      [<c3858cd2>] msr_build_context.constprop.0+0x35/0x100
+      [<46635aff>] pm_check_save_msr+0x63/0x80
+      [<6b6bb938>] do_one_initcall+0x41/0x1f0
+      [<3f3add60>] kernel_init_freeable+0x199/0x1e8
+      [<3b538fde>] kernel_init+0x1a/0x110
+      [<938ae2b2>] ret_from_fork+0x1c/0x28
 
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
+Which is a false positive.
+
+Reproducer:
+
+  - Run rsync of whole kernel tree (multiple times if needed).
+  - start a kmemleak scan
+  - Note this is just an example: a lot of our internal tests hit these.
+
+The root cause is similar to the fix in:
+
+  b0b592cf0836 x86/pm: Fix false positive kmemleak report in msr_build_context()
+
+ie. the alignment within the packed struct saved_context
+which has everything unaligned as there is only "u16 gs;" at start of
+struct where in the past there were four u16 there thus aligning
+everything afterwards.  The issue is with the fact that Kmemleak only
+searches for pointers that are aligned (see how pointers are scanned in
+kmemleak.c) so when the struct members are not aligned it doesn't see
+them.
+
+Testing:
+
+We run a lot of tests with our CI, and after applying this fix we do not
+see any kmemleak issues any more whilst without it we see hundreds of
+the above report. From a single, simple test run consisting of 416 individual test
+cases on kernel 5.10 x86 with kmemleak enabled we got 20 failures due to this,
+which is quite a lot. With this fix applied we get zero kmemleak related failures.
+
+Fixes: 7ee18d677989 ("x86/power: Make restore_processor_context() sane")
+Signed-off-by: Anton Altaparmakov <anton@tuxera.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20240314142656.17699-1-anton@tuxera.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/crypto/zcrypt_api.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/include/asm/suspend_32.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/s390/crypto/zcrypt_api.c b/drivers/s390/crypto/zcrypt_api.c
-index f376dfcd7dbeb..69c1df560e2f1 100644
---- a/drivers/s390/crypto/zcrypt_api.c
-+++ b/drivers/s390/crypto/zcrypt_api.c
-@@ -574,6 +574,7 @@ static inline struct zcrypt_queue *zcrypt_pick_queue(struct zcrypt_card *zc,
- {
- 	if (!zq || !try_module_get(zq->queue->ap_dev.drv->driver.owner))
- 		return NULL;
-+	zcrypt_card_get(zc);
- 	zcrypt_queue_get(zq);
- 	get_device(&zq->queue->ap_dev.device);
- 	atomic_add(weight, &zc->load);
-@@ -593,6 +594,7 @@ static inline void zcrypt_drop_queue(struct zcrypt_card *zc,
- 	atomic_sub(weight, &zq->load);
- 	put_device(&zq->queue->ap_dev.device);
- 	zcrypt_queue_put(zq);
-+	zcrypt_card_put(zc);
- 	module_put(mod);
- }
+diff --git a/arch/x86/include/asm/suspend_32.h b/arch/x86/include/asm/suspend_32.h
+index a800abb1a9925..d8416b3bf832e 100644
+--- a/arch/x86/include/asm/suspend_32.h
++++ b/arch/x86/include/asm/suspend_32.h
+@@ -12,11 +12,6 @@
+ 
+ /* image of the saved processor state */
+ struct saved_context {
+-	/*
+-	 * On x86_32, all segment registers except gs are saved at kernel
+-	 * entry in pt_regs.
+-	 */
+-	u16 gs;
+ 	unsigned long cr0, cr2, cr3, cr4;
+ 	u64 misc_enable;
+ 	struct saved_msrs saved_msrs;
+@@ -27,6 +22,11 @@ struct saved_context {
+ 	unsigned long tr;
+ 	unsigned long safety;
+ 	unsigned long return_address;
++	/*
++	 * On x86_32, all segment registers except gs are saved at kernel
++	 * entry in pt_regs.
++	 */
++	u16 gs;
+ 	bool misc_enable_saved;
+ } __attribute__((packed));
  
 -- 
 2.43.0
