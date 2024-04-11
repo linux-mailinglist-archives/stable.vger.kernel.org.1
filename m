@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 834168A0D9E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F68F8A0FC5
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:27:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 383CB1F216DA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40CAD1C22D0C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903E3145B07;
-	Thu, 11 Apr 2024 10:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D03145B1A;
+	Thu, 11 Apr 2024 10:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kd/5CX5e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exJ8ZU+I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6132EAE5;
-	Thu, 11 Apr 2024 10:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A6613FD94;
+	Thu, 11 Apr 2024 10:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829950; cv=none; b=S6zqG1QbLH2BbM5bsV7xxGzpTeV50dxm2OB6zQ4FUP4jBoioijwYjw8opxxo2Cnync/GvJuUNu42mlir4xAjrXM1ZP++JLnTL5aJl+eFD7RrKXm0jG9OVrmgqg4Ii5CxGMLLlEtdpWrFnGFyvaK8yMzg8eALujCN/uRUNNuFHRA=
+	t=1712831243; cv=none; b=bJUW5SjZlhhcRJdV9nvak2On9YJBaKbsqnhPj2nxBTU9D/FSjuVE9iXnQvxl/ikWPnGQBWxpoSi8zUDEkktAQEpkOlt3jVRi+pSBOJKissUSyuETSoaMtZSg0uq+GGIGlRHeKZQSVr/ie+S50zcYHpA2Q4I6CrT5mLjF8+j3PXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829950; c=relaxed/simple;
-	bh=5A75gWcdm7NUliMQMye0Kz7Ql4jhAtfj9A0o3O74Vzg=;
+	s=arc-20240116; t=1712831243; c=relaxed/simple;
+	bh=ab/4DiKWfo0TU71+3UCS3Cwlgm9+TOp2gakCgMwJDKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s9dzWOPtVF9GP5Lxtxz8lTL38U8OlHZG7f/ezun/DLM/fp7A81y1SURYPA5Mi1Sd4+zTKGSaswzBZdQfqKD87bGzu+oNVGqIgC6/muDtQu6WoUwjqwr574YlYooG0C7Q+xTvG5OrF7SWIE1GFFNLCBm32h00mLg8NfHUCMBWsL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kd/5CX5e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45D9C433C7;
-	Thu, 11 Apr 2024 10:05:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mzwoWiIs4FBpskeDxLukgtf/iABDdnleeBba0J8MXHFcmemA5PXGuLRG+Ya+7lmy2G9AEy0+1HsoM1gTKvqFDLtXTsrFK5s9Sszhts8VHZP8XXbFeeRTPbEs7RxGMExVMZb0MnswnOYgpMA9CSfshjo/cqwLvzAsBVwL9wIv4Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exJ8ZU+I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA482C433F1;
+	Thu, 11 Apr 2024 10:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829950;
-	bh=5A75gWcdm7NUliMQMye0Kz7Ql4jhAtfj9A0o3O74Vzg=;
+	s=korg; t=1712831243;
+	bh=ab/4DiKWfo0TU71+3UCS3Cwlgm9+TOp2gakCgMwJDKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kd/5CX5eiSFs6WngfcsLfQY9GnxeiOOF7ZxmAaWDl3QlVVF2BZ8YtzbnDL7hmbdk0
-	 Hq1xN3BJzw7I/VTIjeyy76QXEsY2gHY1nihAP1acSadLhSkulUZIItb9+0ItIqeR5d
-	 YiMjuFbEHs4nmDfusbnsvSIrE1IVWlen8Nj3Jv3w=
+	b=exJ8ZU+I4BTBpVjzrfeaCZS0bbp0/v1WuFWEZmTb5IKdyuKGassqlEftKGtgJyb9F
+	 smw+puW4q80is/cZ4A+uqa+ICwBP/+xkG1s0vrIAL0QychWLy7Qa/eQEyAZiO+GwHy
+	 Vsd/0718caaV73BrBjCTBzegY5zMKdXQvKWC/2uU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	=?UTF-8?q?M=C3=A1t=C3=A9=20Mosonyi?= <mosomate@gmail.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 159/175] SUNRPC: increase size of rpc_wait_queue.qlen from unsigned short to unsigned int
+Subject: [PATCH 6.6 055/114] ASoC: Intel: common: DMI remap for rebranded Intel NUC M15 (LAPRC710) laptops
 Date: Thu, 11 Apr 2024 11:56:22 +0200
-Message-ID: <20240411095424.351916196@linuxfoundation.org>
+Message-ID: <20240411095418.545372193@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +62,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: mosomate <mosomate@gmail.com>
 
-[ Upstream commit 2c35f43b5a4b9cdfaa6fdd946f5a212615dac8eb ]
+[ Upstream commit c13e03126a5be90781084437689724254c8226e1 ]
 
-When the NFS client is under extreme load the rpc_wait_queue.qlen counter
-can be overflowed. Here is an instant of the backlog queue overflow in a
-real world environment shown by drgn helper:
+Added DMI quirk to handle the rebranded variants of Intel NUC M15
+(LAPRC710) laptops. The DMI matching is based on motherboard
+attributes.
 
-rpc_task_stats(rpc_clnt):
--------------------------
-rpc_clnt: 0xffff92b65d2bae00
-rpc_xprt: 0xffff9275db64f000
-  Queue:  sending[64887] pending[524] backlog[30441] binding[0]
-XMIT task: 0xffff925c6b1d8e98
-     WRITE: 750654
-        __dta_call_status_580: 65463
-        __dta_call_transmit_status_579: 1
-        call_reserveresult: 685189
-        nfs_client_init_is_complete: 1
-    COMMIT: 584
-        call_reserveresult: 573
-        __dta_call_status_580: 11
-    ACCESS: 1
-        __dta_call_status_580: 1
-   GETATTR: 10
-        __dta_call_status_580: 4
-        call_reserveresult: 6
-751249 tasks for server 111.222.333.444
-Total tasks: 751249
-
-count_rpc_wait_queues(xprt):
-----------------------------
-**** rpc_xprt: 0xffff9275db64f000 num_reqs: 65511
-wait_queue: xprt_binding[0] cnt: 0
-wait_queue: xprt_binding[1] cnt: 0
-wait_queue: xprt_binding[2] cnt: 0
-wait_queue: xprt_binding[3] cnt: 0
-rpc_wait_queue[xprt_binding].qlen: 0 maxpriority: 0
-wait_queue: xprt_sending[0] cnt: 0
-wait_queue: xprt_sending[1] cnt: 64887
-wait_queue: xprt_sending[2] cnt: 0
-wait_queue: xprt_sending[3] cnt: 0
-rpc_wait_queue[xprt_sending].qlen: 64887 maxpriority: 3
-wait_queue: xprt_pending[0] cnt: 524
-wait_queue: xprt_pending[1] cnt: 0
-wait_queue: xprt_pending[2] cnt: 0
-wait_queue: xprt_pending[3] cnt: 0
-rpc_wait_queue[xprt_pending].qlen: 524 maxpriority: 0
-wait_queue: xprt_backlog[0] cnt: 0
-wait_queue: xprt_backlog[1] cnt: 685801
-wait_queue: xprt_backlog[2] cnt: 0
-wait_queue: xprt_backlog[3] cnt: 0
-rpc_wait_queue[xprt_backlog].qlen: 30441 maxpriority: 3 [task cnt mismatch]
-
-There is no effect on operations when this overflow occurs. However
-it causes confusion when trying to diagnose the performance problem.
-
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Link: https://github.com/thesofproject/linux/issues/4218
+Signed-off-by: Máté Mosonyi <mosomate@gmail.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20240208165545.93811-20-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/sched.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soundwire/dmi-quirks.c   |  8 ++++++++
+ sound/soc/intel/boards/sof_sdw.c | 11 +++++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
-index 96837ae07822b..ca0a568fd8244 100644
---- a/include/linux/sunrpc/sched.h
-+++ b/include/linux/sunrpc/sched.h
-@@ -190,7 +190,7 @@ struct rpc_wait_queue {
- 	unsigned char		maxpriority;		/* maximum priority (0 if queue is not a priority queue) */
- 	unsigned char		priority;		/* current priority */
- 	unsigned char		nr;			/* # tasks remaining for cookie */
--	unsigned short		qlen;			/* total # tasks waiting in queue */
-+	unsigned int		qlen;			/* total # tasks waiting in queue */
- 	struct rpc_timer	timer_list;
- #if IS_ENABLED(CONFIG_SUNRPC_DEBUG) || IS_ENABLED(CONFIG_TRACEPOINTS)
- 	const char *		name;
+diff --git a/drivers/soundwire/dmi-quirks.c b/drivers/soundwire/dmi-quirks.c
+index 9ebdd0cd0b1cf..91ab97a456fa9 100644
+--- a/drivers/soundwire/dmi-quirks.c
++++ b/drivers/soundwire/dmi-quirks.c
+@@ -130,6 +130,14 @@ static const struct dmi_system_id adr_remap_quirk_table[] = {
+ 		},
+ 		.driver_data = (void *)intel_rooks_county,
+ 	},
++	{
++		/* quirk used for NUC15 LAPRC710 skew */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
++			DMI_MATCH(DMI_BOARD_NAME, "LAPRC710"),
++		},
++		.driver_data = (void *)intel_rooks_county,
++	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
+diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
+index 9ed572141fe5b..0ea7812125fee 100644
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -243,6 +243,17 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
+ 					SOF_SDW_PCH_DMIC |
+ 					RT711_JD2_100K),
+ 	},
++	{
++		/* NUC15 LAPRC710 skews */
++		.callback = sof_sdw_quirk_cb,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
++			DMI_MATCH(DMI_BOARD_NAME, "LAPRC710"),
++		},
++		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
++					SOF_SDW_PCH_DMIC |
++					RT711_JD2_100K),
++	},
+ 	/* TigerLake-SDCA devices */
+ 	{
+ 		.callback = sof_sdw_quirk_cb,
 -- 
 2.43.0
 
