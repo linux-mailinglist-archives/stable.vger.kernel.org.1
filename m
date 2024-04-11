@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-38322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 970D38A0E05
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B7D8A0F0F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:20:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DA7A281444
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50DBC2863E5
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2784C145B26;
-	Thu, 11 Apr 2024 10:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE06146A77;
+	Thu, 11 Apr 2024 10:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6XH4T7J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6ArQAmZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F05142624;
-	Thu, 11 Apr 2024 10:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39593146586;
+	Thu, 11 Apr 2024 10:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830213; cv=none; b=oVph5+bLiYif2ndhoyAOHq+rE95c3UFq8mjxBZ54evC4KT2q7Kh7dT9VOo9Ocinq3wW8FPv/obikP1NsAhfLV4vsgdHBTYgq+ZqCcJiQDwWr9v09LxFi627GezoMe7u1zR4MuqDq1F8yId18MOvvl7V2s8L3Nnj+jzq958WhdsI=
+	t=1712830830; cv=none; b=srHo5Y/8w7xrpn7xIedpcOBsPNqX04SLb6lBk8V+uLay3BeGOE2O9ghcJBTmN6Y3J3kK459BirVWw/6HgvWzylTY4bPKE9sILdhksXUmm4QC3d9dI1mESu0+0hpZIrDb+1JdKpeDJswPdfI3rD7fVSnq5tz5i69qzWQ6Ki6zm9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830213; c=relaxed/simple;
-	bh=vdgNzU18Ars3YX0l3Jaan7p/zEq+KU1OTmZDOMpSxR4=;
+	s=arc-20240116; t=1712830830; c=relaxed/simple;
+	bh=tjPoWvlI1Y4PHX3KhEVJSy2qaq8TA+BpIvYF8epeV24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F0dXtGCCrO8mMz/6iWNPjV3Pz5pukdph2Pgo2bgYsI0D2x7yxL9gR4Utkmtdz5OCzAq5l6Z7tJZFxpjiFB64ghZJtEUwVmJEB9FHelGc6LOA1xk3RifgKPRF58iezBoBIonoX50G+QiJzx3FfVlmkI5781G1HtglYeCTZQQZqrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6XH4T7J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F35EC433F1;
-	Thu, 11 Apr 2024 10:10:13 +0000 (UTC)
+	 MIME-Version; b=IvXq1IdDj7olzGypk6UV5D1lvn3Xo+8lrcQxzNgCOsdywNzPAkvBh8+fEStjtsveR3Sxfkc08WXgVRlTRS5QyNdF9L5aA6ZVln4sTkYimam805IB4EiAr2f3tHgykF4wVtge6Iwxd/LaSx/tz0suBePRcK/f5E6G3tZhrljr6EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6ArQAmZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E75C433F1;
+	Thu, 11 Apr 2024 10:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830213;
-	bh=vdgNzU18Ars3YX0l3Jaan7p/zEq+KU1OTmZDOMpSxR4=;
+	s=korg; t=1712830830;
+	bh=tjPoWvlI1Y4PHX3KhEVJSy2qaq8TA+BpIvYF8epeV24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K6XH4T7JoKRuQNRWicYr7T8T0xN8uJ5gxRdhz83As3VwnBEvDEBy8G6ytnD4PgEyR
-	 nrdgn1f/16RHS2xAkmmHmO+/uayzlZY+DEPY2ek5X/bUtR5aLlTicX4/lupeGQrIYM
-	 +wqW2NW+YAgErsDaf8K51P0iDwrTbT4yHAKC4bws=
+	b=p6ArQAmZwwuxXBYRid2RUrTBdR7NjgQRvNbvXPnxDHhDHywiqhNWUi5skjaP/7I9V
+	 FFJWXva04z5zOAPUOfbFw2wo4Xeo/UtsYHaX6ANfCChj8do7wqw4z5pn96t4gnj9Ms
+	 53AaIgEsorpYhVHDApSiaP9MAA8rQ7dlMvTsbsPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Mike Snitzer <snitzer@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 073/143] rcu/nocb: Fix WARN_ON_ONCE() in the rcu_nocb_bypass_lock()
+Subject: [PATCH 5.4 132/215] dm integrity: fix out-of-range warning
 Date: Thu, 11 Apr 2024 11:55:41 +0200
-Message-ID: <20240411095423.111499543@linuxfoundation.org>
+Message-ID: <20240411095428.863718949@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit dda98810b552fc6bf650f4270edeebdc2f28bd3f ]
+[ Upstream commit 8e91c2342351e0f5ef6c0a704384a7f6fc70c3b2 ]
 
-For the kernels built with CONFIG_RCU_NOCB_CPU_DEFAULT_ALL=y and
-CONFIG_RCU_LAZY=y, the following scenarios will trigger WARN_ON_ONCE()
-in the rcu_nocb_bypass_lock() and rcu_nocb_wait_contended() functions:
+Depending on the value of CONFIG_HZ, clang complains about a pointless
+comparison:
 
-        CPU2                                               CPU11
-kthread
-rcu_nocb_cb_kthread                                       ksys_write
-rcu_do_batch                                              vfs_write
-rcu_torture_timer_cb                                      proc_sys_write
-__kmem_cache_free                                         proc_sys_call_handler
-kmemleak_free                                             drop_caches_sysctl_handler
-delete_object_full                                        drop_slab
-__delete_object                                           shrink_slab
-put_object                                                lazy_rcu_shrink_scan
-call_rcu                                                  rcu_nocb_flush_bypass
-__call_rcu_commn                                            rcu_nocb_bypass_lock
-                                                            raw_spin_trylock(&rdp->nocb_bypass_lock) fail
-                                                            atomic_inc(&rdp->nocb_lock_contended);
-rcu_nocb_wait_contended                                     WARN_ON_ONCE(smp_processor_id() != rdp->cpu);
- WARN_ON_ONCE(atomic_read(&rdp->nocb_lock_contended))                                          |
-                            |_ _ _ _ _ _ _ _ _ _same rdp and rdp->cpu != 11_ _ _ _ _ _ _ _ _ __|
+drivers/md/dm-integrity.c:4085:12: error: result of comparison of
+                        constant 42949672950 with expression of type
+                        'unsigned int' is always false
+                        [-Werror,-Wtautological-constant-out-of-range-compare]
+                        if (val >= (uint64_t)UINT_MAX * 1000 / HZ) {
 
-Reproduce this bug with "echo 3 > /proc/sys/vm/drop_caches".
+As the check remains useful for other configurations, shut up the
+warning by adding a second type cast to uint64_t.
 
-This commit therefore uses rcu_nocb_try_flush_bypass() instead of
-rcu_nocb_flush_bypass() in lazy_rcu_shrink_scan().  If the nocb_bypass
-queue is being flushed, then rcu_nocb_try_flush_bypass will return
-directly.
-
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Fixes: 468dfca38b1a ("dm integrity: add a bitmap mode")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree_nocb.h | 2 +-
+ drivers/md/dm-integrity.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/tree_nocb.h b/kernel/rcu/tree_nocb.h
-index 4efbf7333d4e1..d430b4656f59e 100644
---- a/kernel/rcu/tree_nocb.h
-+++ b/kernel/rcu/tree_nocb.h
-@@ -1383,7 +1383,7 @@ lazy_rcu_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
- 			rcu_nocb_unlock_irqrestore(rdp, flags);
- 			continue;
- 		}
--		WARN_ON_ONCE(!rcu_nocb_flush_bypass(rdp, NULL, jiffies, false));
-+		rcu_nocb_try_flush_bypass(rdp, jiffies);
- 		rcu_nocb_unlock_irqrestore(rdp, flags);
- 		wake_nocb_gp(rdp, false);
- 		sc->nr_to_scan -= _count;
+diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
+index f3246f7407d61..4b634633b4a5e 100644
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -3755,7 +3755,7 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
+ 		} else if (sscanf(opt_string, "sectors_per_bit:%llu%c", &llval, &dummy) == 1) {
+ 			log2_sectors_per_bitmap_bit = !llval ? 0 : __ilog2_u64(llval);
+ 		} else if (sscanf(opt_string, "bitmap_flush_interval:%u%c", &val, &dummy) == 1) {
+-			if (val >= (uint64_t)UINT_MAX * 1000 / HZ) {
++			if ((uint64_t)val >= (uint64_t)UINT_MAX * 1000 / HZ) {
+ 				r = -EINVAL;
+ 				ti->error = "Invalid bitmap_flush_interval argument";
+ 				goto bad;
 -- 
 2.43.0
 
