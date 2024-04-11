@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABA1C8A1061
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:35:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4D468A0E83
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:15:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD5641C21C21
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:35:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F8D628617F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C1E1474BA;
-	Thu, 11 Apr 2024 10:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5273C145B3E;
+	Thu, 11 Apr 2024 10:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VP9jiEog"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PIMtkFRN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182C464CC0;
-	Thu, 11 Apr 2024 10:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110C21448F6;
+	Thu, 11 Apr 2024 10:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831577; cv=none; b=pDlXdKw+SuKinEKonWkwkAudmiMm/KcKGbAMbnpTPT9+0phc485DJnQvyUnJ6g2PcNf8fLjV59QDyr5Z/AbMywa51pj5olz1tAPJbl/DR/dD1Gw8ba+CJnBsKn6WBSrNZsGV5iSje8WbKl3qkcyonNSh9b+focJho9ngX6eIBDM=
+	t=1712830522; cv=none; b=Eng6fMxFEXPQNGdtW0te4wUDHi6GhrYjVl03JL2hCwdMkw59qq7+Oj2zx+poIigZZnstWYxUNzwop2i8TO+WPZw2Wxh0VreE/JtaPawdVgqhoEEmmGfNDyWiZcI9fVJrOxJjUPWpW5FkdeXMOBSKTB3180zknDr8Q9392Hsao4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831577; c=relaxed/simple;
-	bh=FsPtQw5PWUvTiXfiaqWwk8k+pd46SAX0jW2HnzHtXCc=;
+	s=arc-20240116; t=1712830522; c=relaxed/simple;
+	bh=nF6xNc5s10cKCEIp982nrpiZaKq0tTR01c99qS34il0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dwnFbpcdzdPC1Js97QbBz7r6qxFn7TMmoJQobmSVhn4MGKylHSE9HCE3609a5nNwx/RRok42K1wIF6TLMIvlp3lG50YSwWt3pK18n6JWOZLo3N1Iin9ns+FrLeqvv3uuClvrNdd8Ds2b2utnjhMcCj9cHeq5JvpiGHrgtNwaY20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VP9jiEog; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9106FC433C7;
-	Thu, 11 Apr 2024 10:32:56 +0000 (UTC)
+	 MIME-Version; b=h79B3aeERCGrk83/O9p9LtgCjN9ORec1E9sTr9y1MSimoSjJfdieBgJ/xoIGGRgjm3+dCsV5OOoRzGbyi/dQuHLJ708LsIWkNUinJ43Ybw0de1r3bmtQd/nxTCdU9F9ouh1/ACxJEvIDv8VUblvmb17xmrUEEDuhxXhNa2MS1ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PIMtkFRN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8985DC433C7;
+	Thu, 11 Apr 2024 10:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831577;
-	bh=FsPtQw5PWUvTiXfiaqWwk8k+pd46SAX0jW2HnzHtXCc=;
+	s=korg; t=1712830521;
+	bh=nF6xNc5s10cKCEIp982nrpiZaKq0tTR01c99qS34il0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VP9jiEogXz39joqjbUU3MxNFftrcRa5w0tOCAlrveEk7NbuHU7kFOwH/HP9U0N7yX
-	 KTRnPvcpGyyiTvLmzt9OMZhbxTqKZnaDYrQJLIt4Ab2sftFCaRxW21QnpyhPcRKzql
-	 A4bY+pKkdAH/DxzC/+eLG/14gofMVSVMhNElZVyQ=
+	b=PIMtkFRNCTf/juMvBS8gBTM+8279xyUYH/fIDGQ+ek0khdgDyx7raR6ROS5sxOdRp
+	 T22OyfIQNeE+WtlHOGApAlVuTYT6/7kowPt6YtxT4uD/HiW7c6S+hR+wcLfP2bgKjO
+	 8adiESZbgdkv6cMqweYoBVbCTHBAtbi/jiigUab0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Amit Pundir <amit.pundir@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 054/294] fuse: dont unhash root
-Date: Thu, 11 Apr 2024 11:53:37 +0200
-Message-ID: <20240411095437.268156905@linuxfoundation.org>
+Subject: [PATCH 5.4 009/215] clk: qcom: gcc-sdm845: Add soft dependency on rpmhpd
+Date: Thu, 11 Apr 2024 11:53:38 +0200
+Message-ID: <20240411095425.162289530@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Amit Pundir <amit.pundir@linaro.org>
 
-[ Upstream commit b1fe686a765e6c0d71811d825b5a1585a202b777 ]
+[ Upstream commit 1d9054e3a4fd36e2949e616f7360bdb81bcc1921 ]
 
-The root inode is assumed to be always hashed.  Do not unhash the root
-inode even if it is marked BAD.
+With the addition of RPMh power domain to the GCC node in
+device tree, we noticed a significant delay in getting the
+UFS driver probed on AOSP which futher led to mount failures
+because Android do not support rootwait. So adding a soft
+dependency on RPMh power domain which informs modprobe to
+load rpmhpd module before gcc-sdm845.
 
-Fixes: 5d069dbe8aaf ("fuse: fix bad inode")
-Cc: <stable@vger.kernel.org> # v5.11
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Cc: stable@vger.kernel.org # v5.4+
+Fixes: 4b6ea15c0a11 ("arm64: dts: qcom: sdm845: Add missing RPMh power domain to GCC")
+Suggested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20240123062814.2555649-1-amit.pundir@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/fuse_i.h | 1 -
- fs/fuse/inode.c  | 7 +++++--
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/clk/qcom/gcc-sdm845.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
-index ceaa6868386e6..33eb5fefc06b4 100644
---- a/fs/fuse/fuse_i.h
-+++ b/fs/fuse/fuse_i.h
-@@ -873,7 +873,6 @@ static inline bool fuse_stale_inode(const struct inode *inode, int generation,
- 
- static inline void fuse_make_bad(struct inode *inode)
- {
--	remove_inode_hash(inode);
- 	set_bit(FUSE_I_BAD, &get_fuse_inode(inode)->state);
- }
- 
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index 9ea175ff9c8e6..4a7ebccd359ee 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -352,8 +352,11 @@ struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
- 	} else if (fuse_stale_inode(inode, generation, attr)) {
- 		/* nodeid was reused, any I/O on the old inode should fail */
- 		fuse_make_bad(inode);
--		iput(inode);
--		goto retry;
-+		if (inode != d_inode(sb->s_root)) {
-+			remove_inode_hash(inode);
-+			iput(inode);
-+			goto retry;
-+		}
- 	}
- done:
- 	fi = get_fuse_inode(inode);
+diff --git a/drivers/clk/qcom/gcc-sdm845.c b/drivers/clk/qcom/gcc-sdm845.c
+index 56d22dd225c9d..a8810a628e710 100644
+--- a/drivers/clk/qcom/gcc-sdm845.c
++++ b/drivers/clk/qcom/gcc-sdm845.c
+@@ -3646,3 +3646,4 @@ module_exit(gcc_sdm845_exit);
+ MODULE_DESCRIPTION("QTI GCC SDM845 Driver");
+ MODULE_LICENSE("GPL v2");
+ MODULE_ALIAS("platform:gcc-sdm845");
++MODULE_SOFTDEP("pre: rpmhpd");
 -- 
 2.43.0
 
