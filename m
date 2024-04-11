@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-38156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC4F8A0D45
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:02:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A78B28A0EAD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29AC0B25A85
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:02:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D93DC1C21EAE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCC714535A;
-	Thu, 11 Apr 2024 10:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1ACE14600E;
+	Thu, 11 Apr 2024 10:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCNywlL6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDNBgFf5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B03214430D;
-	Thu, 11 Apr 2024 10:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E6F145353;
+	Thu, 11 Apr 2024 10:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829729; cv=none; b=PLwICf4A6Qp6ByuQj9BekhQQVXUkNZAfKHEyD7C3oZw4uJH7A5DrQwrw+x4E6BuwZYcMBBpX6tBOTDbxDAqBHLocBOWyZK25D8VB8ZNj3d5wVaXOVHrogHUL1OTHLhKFEK7P4NyRDXXynUXTgmOL4QACWI33mIChk8YiyG0C3qI=
+	t=1712830620; cv=none; b=Tkwy+0wTElHsqZs2AFbSfIx6P5j9zAaHayp13kuLUoY7z19VTAQgiCdBIOeRp1AcVlBurIqm4seEjjHtibPxjmGWfm2zNb8e4DQvYDkX2NJZzx5jnXRE/DsOeNhmbkPB7yGv/NBrLJ8b2VxEFFGUCHsn60EZU7+Ms3LvYoSE8uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829729; c=relaxed/simple;
-	bh=shXsfHiIAhJOhAF4i/TD9/eZBsvJovvs7v9ZQov50Dg=;
+	s=arc-20240116; t=1712830620; c=relaxed/simple;
+	bh=o78f7YRO4Qj19Xpah9nxaUompouEIWGQhTH4xhgeI7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S1L2581prP/GDvz7g2C+OFFWqa2fbeS2yB3qkdK6yNPo0toTm0I7T/dSHCK9pFuR8gL7KesHp7M9TaM/t49k1w6dUMxmtGT+EW7UMmJLv4qYY5z0NTfPOv/GkJF8PaPynNkDEFURiCim0nKS/r6Gffx+dFcdDgYHw2rqzjy58ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCNywlL6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F82C433C7;
-	Thu, 11 Apr 2024 10:02:08 +0000 (UTC)
+	 MIME-Version; b=MCQLpDnz15ihygsH5IzK9yMFUuUi7h0Iw32Ui5Zd1TArGpPgAXADIOfgwQQKIIkEYvs2qnTU9hSySIML+9LNmmENtzaq0O4JWpWKfGXTdaY1h0g9FzzyVOTv+X0qpfFq89sN8TfTzuGmbETf+zQFFYowNUu5/loUM+VwL9Nu2uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDNBgFf5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97661C433C7;
+	Thu, 11 Apr 2024 10:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829729;
-	bh=shXsfHiIAhJOhAF4i/TD9/eZBsvJovvs7v9ZQov50Dg=;
+	s=korg; t=1712830620;
+	bh=o78f7YRO4Qj19Xpah9nxaUompouEIWGQhTH4xhgeI7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BCNywlL6CdVhUlddDQgIYIF8rbJArBVs8N4D/qWrdcP5TDbu1SDWTXJAHwyoWwE62
-	 1u1G/19gnMnZ8M7fpdBxFgbNqa7Q56Pk9VGewNyfaOBNj2BMBdKNm72Si4BwjxwKuz
-	 JJ8SkxZpC8sYqtorMIxZS24Q6EdwI5O6i6oR06xs=
+	b=YDNBgFf5Vu/b6KPnWe/M0nIqdLp6KtzsRQ9f8ggBO7Ix9JAeIGUu0sJB0leSPmo5y
+	 5XdwV8NBwaH8y9AJ4kwfNcQrKveeDBlGQsVRWS8f94bdzkSpEWxXN1a6dtoJhn0T5A
+	 pFdbItCG/oEXe+S3LSP0Ev1OF/g6pTU03oiC/ANQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Xiao Ni <xni@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 046/175] dm-raid: fix lockdep waring in "pers->hot_add_disk"
+Subject: [PATCH 5.4 060/215] kbuild: Move -Wenum-{compare-conditional,enum-conversion} into W=1
 Date: Thu, 11 Apr 2024 11:54:29 +0200
-Message-ID: <20240411095420.952080315@linuxfoundation.org>
+Message-ID: <20240411095426.701000032@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 95009ae904b1e9dca8db6f649f2d7c18a6e42c75 ]
+[ Upstream commit 75b5ab134bb5f657ef7979a59106dce0657e8d87 ]
 
-The lockdep assert is added by commit a448af25becf ("md/raid10: remove
-rcu protection to access rdev from conf") in print_conf(). And I didn't
-notice that dm-raid is calling "pers->hot_add_disk" without holding
-'reconfig_mutex'.
+Clang enables -Wenum-enum-conversion and -Wenum-compare-conditional
+under -Wenum-conversion. A recent change in Clang strengthened these
+warnings and they appear frequently in common builds, primarily due to
+several instances in common headers but there are quite a few drivers
+that have individual instances as well.
 
-"pers->hot_add_disk" read and write many fields that is protected by
-'reconfig_mutex', and raid_resume() already grab the lock in other
-contex. Hence fix this problem by protecting "pers->host_add_disk"
-with the lock.
+  include/linux/vmstat.h:508:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+    508 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+        |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+    509 |                            item];
+        |                            ~~~~
 
-Fixes: 9092c02d9435 ("DM RAID: Add ability to restore transiently failed devices on resume")
-Fixes: a448af25becf ("md/raid10: remove rcu protection to access rdev from conf")
-Cc: stable@vger.kernel.org # v6.7+
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Xiao Ni <xni@redhat.com>
-Acked-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240305072306.2562024-10-yukuai1@huaweicloud.com
+  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:955:24: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
+    955 |                 flags |= is_new_rate ? IWL_MAC_BEACON_CCK
+        |                                      ^ ~~~~~~~~~~~~~~~~~~
+    956 |                           : IWL_MAC_BEACON_CCK_V1;
+        |                             ~~~~~~~~~~~~~~~~~~~~~
+  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:1120:21: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
+   1120 |                                                0) > 10 ?
+        |                                                        ^
+   1121 |                         IWL_MAC_BEACON_FILS :
+        |                         ~~~~~~~~~~~~~~~~~~~
+   1122 |                         IWL_MAC_BEACON_FILS_V1;
+        |                         ~~~~~~~~~~~~~~~~~~~~~~
+
+Doing arithmetic between or returning two different types of enums could
+be a bug, so each of the instance of the warning needs to be evaluated.
+Unfortunately, as mentioned above, there are many instances of this
+warning in many different configurations, which can break the build when
+CONFIG_WERROR is enabled.
+
+To avoid introducing new instances of the warnings while cleaning up the
+disruption for the majority of users, disable these warnings for the
+default build while leaving them on for W=1 builds.
+
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2002
+Link: https://github.com/llvm/llvm-project/commit/8c2ae42b3e1c6aa7c18f873edcebff7c0b45a37e
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-raid.c | 2 ++
+ scripts/Makefile.extrawarn | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
-index 1759134fce824..2a8746f9c6d87 100644
---- a/drivers/md/dm-raid.c
-+++ b/drivers/md/dm-raid.c
-@@ -4023,7 +4023,9 @@ static void raid_resume(struct dm_target *ti)
- 		 * Take this opportunity to check whether any failed
- 		 * devices are reachable again.
- 		 */
-+		mddev_lock_nointr(mddev);
- 		attempt_restore_of_faulty_devices(rs);
-+		mddev_unlock(mddev);
- 	}
+diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
+index 6a78afc6f13b4..a51193485c50f 100644
+--- a/scripts/Makefile.extrawarn
++++ b/scripts/Makefile.extrawarn
+@@ -51,6 +51,8 @@ KBUILD_CFLAGS += -Wno-format-zero-length
+ KBUILD_CFLAGS += $(call cc-disable-warning, pointer-to-enum-cast)
+ KBUILD_CFLAGS += $(call cc-disable-warning, unaligned-access)
+ KBUILD_CFLAGS += $(call cc-disable-warning, cast-function-type-strict)
++KBUILD_CFLAGS += -Wno-enum-compare-conditional
++KBUILD_CFLAGS += -Wno-enum-enum-conversion
+ endif
  
- 	if (test_and_clear_bit(RT_FLAG_RS_SUSPENDED, &rs->runtime_flags)) {
+ endif
 -- 
 2.43.0
 
