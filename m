@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DB528A0F37
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5E78A111F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEAB8286745
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:22:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A5251F2CEFE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922B914600A;
-	Thu, 11 Apr 2024 10:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239D7145B28;
+	Thu, 11 Apr 2024 10:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MikucEAP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyuk+URF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51048140E3D;
-	Thu, 11 Apr 2024 10:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1BB140E3C;
+	Thu, 11 Apr 2024 10:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830921; cv=none; b=RSJ+vFATniJDSc5CXYJMHwCGJ2vBpLj8H3wQuHQcwuiR1y4PrfYGGGtNULkUTsOSfnbcj3FD26hWkJCpoD4DKmOXIiv8EKZSG4DFxCOsFFLmWVL3rxK8qXxyJRvuF2s4ykC0gKhUONWACtUIti4z2k3azC7LhvL07WKSl3GNPe0=
+	t=1712832038; cv=none; b=eRas0434hcjP8ARVDDd6CCkiaKs6iyAFU5t0JjHOQlcRP+2VPu41GUtfUkTtU0pp5Fl5Ne1Ia7oOENEJ3kPVyKrIqW0cCyfDV/oWPrnlnDtxNa7h7JcMUSlqWQjcHkehSzoHV2x2BVI8QCMuffs56PhV/+/53yGb0ob059W9jY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830921; c=relaxed/simple;
-	bh=VY4U1vEraptKK82Z4NF7UN+hZIm/vOn/5UZUk11pc3o=;
+	s=arc-20240116; t=1712832038; c=relaxed/simple;
+	bh=BF7Q4n4Hic6C+DKjfpyyuM+q39+cIDfDiZB50tOIMvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HHDGq8PVh3AmSpotBYjfIqW0lNUOqgnDCehS/d88EvvUodsD/s9xAgRZ/qIne0AESHZQbSwZDxtLE2ohQfF1Ep2gnSS3DDKraqM8UAIoAlEYaPxjwUISVPYMcXT2YV71D64LKTPm4j44jZ73Wis51k+wq48CvQFEqlgLsAnrMuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MikucEAP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92480C433C7;
-	Thu, 11 Apr 2024 10:22:00 +0000 (UTC)
+	 MIME-Version; b=EhTRiR3/jZpV4NwNehybKnEqGogZ51hF6aLM+HocWxsqO9Hq4Xm9mqb5ixu8pte81lTXjZerxEORfhEv5YDvk85LUjdwIEnMzXbSAK7KdeVmDFIAq29ax96Ui/m6IrrHfjtxmmPCM34UGgCeCpL2o762ui+CmXlbBHJXnaygNDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyuk+URF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5154CC433C7;
+	Thu, 11 Apr 2024 10:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830921;
-	bh=VY4U1vEraptKK82Z4NF7UN+hZIm/vOn/5UZUk11pc3o=;
+	s=korg; t=1712832038;
+	bh=BF7Q4n4Hic6C+DKjfpyyuM+q39+cIDfDiZB50tOIMvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MikucEAPRkoxfAEHxLWH+vGSMGsOv6cSiJh6I/ywsi/TYa0yx/O+q+3bAToCiwbzp
-	 A4miR8ghu37irQnRxgdHB4hmQGTl3rNpuISa7pm8iz5JViARQPQUChb2ePyPts1EeN
-	 d4SNr+V5UV8p8Xx4Skjjg6eIgtF2olDkbBQUGPFk=
+	b=dyuk+URF5bTB+ldBeoygV+q/KZ6fXdan4K3ZAifOL33iK/aWlPVqhbXZ173ByWvzJ
+	 +GRuhSIuhsYM//chHvUxOl4o1swDx06UbZxnMHzsvIB2aS6q0q5R2H4EP76FdyK8W1
+	 JmWKURXj8DiYlzicbb1CLCyC7gFfrw+EyyPQd7eM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Barker <paul.barker.ct@bp.renesas.com>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 164/215] net: ravb: Always process TX descriptor ring
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 5.10 210/294] vboxsf: Avoid an spurious warning if load_nls_xxx() fails
 Date: Thu, 11 Apr 2024 11:56:13 +0200
-Message-ID: <20240411095429.805417168@linuxfoundation.org>
+Message-ID: <20240411095441.920222419@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Barker <paul.barker.ct@bp.renesas.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 596a4254915f94c927217fe09c33a6828f33fb25 ]
+commit de3f64b738af57e2732b91a0774facc675b75b54 upstream.
 
-The TX queue should be serviced each time the poll function is called,
-even if the full RX work budget has been consumed. This prevents
-starvation of the TX queue when RX bandwidth usage is high.
+If an load_nls_xxx() function fails a few lines above, the 'sbi->bdi_id' is
+still 0.
+So, in the error handling path, we will call ida_simple_remove(..., 0)
+which is not allocated yet.
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20240402145305.82148-1-paul.barker.ct@bp.renesas.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In order to prevent a spurious "ida_free called for id=0 which is not
+allocated." message, tweak the error handling path and add a new label.
+
+Fixes: 0fd169576648 ("fs: Add VirtualBox guest shared folder (vboxsf) support")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/d09eaaa4e2e08206c58a1a27ca9b3e81dc168773.1698835730.git.christophe.jaillet@wanadoo.fr
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/vboxsf/super.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 53b9c77c7f6a7..3cc312a526d9b 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -911,12 +911,12 @@ static int ravb_poll(struct napi_struct *napi, int budget)
- 	int q = napi - priv->napi;
- 	int mask = BIT(q);
- 	int quota = budget;
-+	bool unmask;
+--- a/fs/vboxsf/super.c
++++ b/fs/vboxsf/super.c
+@@ -151,7 +151,7 @@ static int vboxsf_fill_super(struct supe
+ 		if (!sbi->nls) {
+ 			vbg_err("vboxsf: Count not load '%s' nls\n", nls_name);
+ 			err = -EINVAL;
+-			goto fail_free;
++			goto fail_destroy_idr;
+ 		}
+ 	}
  
- 	/* Processing RX Descriptor Ring */
- 	/* Clear RX interrupt */
- 	ravb_write(ndev, ~(mask | RIS0_RESERVED), RIS0);
--	if (ravb_rx(ndev, &quota, q))
--		goto out;
-+	unmask = !ravb_rx(ndev, &quota, q);
- 
- 	/* Processing RX Descriptor Ring */
- 	spin_lock_irqsave(&priv->lock, flags);
-@@ -926,6 +926,9 @@ static int ravb_poll(struct napi_struct *napi, int budget)
- 	netif_wake_subqueue(ndev, q);
- 	spin_unlock_irqrestore(&priv->lock, flags);
- 
-+	if (!unmask)
-+		goto out;
-+
- 	napi_complete(napi);
- 
- 	/* Re-enable RX/TX interrupts */
--- 
-2.43.0
-
+@@ -224,6 +224,7 @@ fail_free:
+ 		ida_simple_remove(&vboxsf_bdi_ida, sbi->bdi_id);
+ 	if (sbi->nls)
+ 		unload_nls(sbi->nls);
++fail_destroy_idr:
+ 	idr_destroy(&sbi->ino_idr);
+ 	kfree(sbi);
+ 	return err;
 
 
 
