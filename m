@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-38453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B6DA8A0EAB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 410928A0D44
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:02:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 481C028180B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B828DB22EAA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765501465A5;
-	Thu, 11 Apr 2024 10:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC56D145B07;
+	Thu, 11 Apr 2024 10:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3opTaWW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vtKmS+6g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323361465A2;
-	Thu, 11 Apr 2024 10:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1B814430D;
+	Thu, 11 Apr 2024 10:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830617; cv=none; b=M5Z5gnYBj0ilcLmPOPQHkZz1PJh/JVMCxkjmfDuMKcn+c+UjhyoOlZp70QbJOVL84nUhMBxcEH1XejSKegrNmrOpzDPS5XhJx57QNx7/Fk5w3yZF9XQtqsDa/kzK06do3bthIaOkKOgQnRigSJDIli04f52q7q9roy4k9AKdeSY=
+	t=1712829726; cv=none; b=t5XBnGwYfRubxEb5Ef3V9Y63pSmm40t/KmAFPgDtzLVWJ6mxwke4CRiCDscDRYuhPSaGBDTApOTjSRIKODRs3xVa2Km74YaggMClE8+K5oO/2uBLCi/BDpXj4SyzUQAo31dGnxh9Lhc0FSLwDiy8VDcCuTbucrRb4/VvUFjOrtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830617; c=relaxed/simple;
-	bh=8sCP1b8Y3TB6pZ0dKmFjSsDhlBwu1yDUqwW32p5IVKk=;
+	s=arc-20240116; t=1712829726; c=relaxed/simple;
+	bh=Dh3sgDXUwaXOjXNqozKv+uLOGj6xuPRNtHi+/Pvmy+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GLQeBdp+DJSWt25T9cGo63mzcUmBFLmBH0VRiAMyrW1Ch/foNV/iWZpkQNlrWtqSTGHGNcziUPKPCTx8aE3e3vfVMIea1he/xknozIdo+5iphlNVSwG8c0KKJpxpC3fKlqKKGAUKNvBPFcpTGYKrrQFthMqk10i5+L1taMTFpWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3opTaWW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6EAC433C7;
-	Thu, 11 Apr 2024 10:16:56 +0000 (UTC)
+	 MIME-Version; b=glOFHogweUHG+YTLLjtff3ntDsNOvaichsj0ZwxrKXMv13BWqCNCGjWXmiO8841N1SlB6a63LsXT8xkntph71tJD8VtAOYx8ai6beXt7gpGCLrpmwGXYmeQQKyBzVu2x9Lq8xJ+MuI5QdNNs0p1hjEebNmLMs6HwbUqS7Go9rNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vtKmS+6g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53C7C433F1;
+	Thu, 11 Apr 2024 10:02:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830617;
-	bh=8sCP1b8Y3TB6pZ0dKmFjSsDhlBwu1yDUqwW32p5IVKk=;
+	s=korg; t=1712829726;
+	bh=Dh3sgDXUwaXOjXNqozKv+uLOGj6xuPRNtHi+/Pvmy+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l3opTaWWwU4GdSFgm8RWngff+RS98GwkSWwwkA9YhYzRwJiooEsA6qupxDzxYvncx
-	 Ae3TiQMJmOEFr8dNFVBN+S/Ri6jwx2knHAYPJFxZi5hqLALZWYB3RYT5SmTCWW1zpA
-	 qgKH4dsqR2qiH9poOaxkXjiHn7uf1UMPGU3IDAZ8=
+	b=vtKmS+6glH2JrWB74Cw2b22ujGyOnpstf7IEHGGvlflgRukk3JHnLIyyY4MlEOod3
+	 Zlske83WZY94iafI+sK341orfbo47H6tTnRZum2XkI1yT2mWwR0wPQrJZ2lEdiI46t
+	 90Pm8OXgCfbvOv/FT6gDOVckzXjIO/OzvR/6L4Ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Thibault <samuel.thibault@ens-lyon.org>,
+	Dan Moulding <dan@danm.net>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 059/215] speakup: Fix 8bit characters from direct synth
+Subject: [PATCH 4.19 045/175] Revert "Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d""
 Date: Thu, 11 Apr 2024 11:54:28 +0200
-Message-ID: <20240411095426.669999039@linuxfoundation.org>
+Message-ID: <20240411095420.921200520@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Thibault <samuel.thibault@ens-lyon.org>
+From: Song Liu <song@kernel.org>
 
-[ Upstream commit b6c8dafc9d86eb77e502bb018ec4105e8d2fbf78 ]
+[ Upstream commit 3445139e3a594be77eff48bc17eff67cf983daed ]
 
-When userland echoes 8bit characters to /dev/synth with e.g.
+This reverts commit bed9e27baf52a09b7ba2a3714f1e24e17ced386d.
 
-echo -e '\xe9' > /dev/synth
+The original set [1][2] was expected to undo a suboptimal fix in [2], and
+replace it with a better fix [1]. However, as reported by Dan Moulding [2]
+causes an issue with raid5 with journal device.
 
-synth_write would get characters beyond 0x7f, and thus negative when
-char is signed.  When given to synth_buffer_add which takes a u16, this
-would sign-extend and produce a U+ffxy character rather than U+xy.
-Users thus get garbled text instead of accents in their output.
+Revert [2] for now to close the issue. We will follow up on another issue
+reported by Juxiao Bi, as [2] is expected to fix it. We believe this is a
+good trade-off, because the latter issue happens less freqently.
 
-Let's fix this by making sure that we read unsigned characters.
+In the meanwhile, we will NOT revert [1], as it contains the right logic.
 
-Signed-off-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
-Fixes: 89fc2ae80bb1 ("speakup: extend synth buffer to 16bit unicode characters")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240204155736.2oh4ot7tiaa2wpbh@begin
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] commit d6e035aad6c0 ("md: bypass block throttle for superblock update")
+[2] commit bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
+
+Reported-by: Dan Moulding <dan@danm.net>
+Closes: https://lore.kernel.org/linux-raid/20240123005700.9302-1-dan@danm.net/
+Fixes: bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
+Cc: stable@vger.kernel.org # v5.19+
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240125082131.788600-1-song@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/speakup/synth.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/md/raid5.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/staging/speakup/synth.c b/drivers/staging/speakup/synth.c
-index 3568bfb89912c..b5944e7bdbf67 100644
---- a/drivers/staging/speakup/synth.c
-+++ b/drivers/staging/speakup/synth.c
-@@ -208,8 +208,10 @@ void spk_do_flush(void)
- 	wake_up_process(speakup_task);
- }
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index e2fcc09a18cdb..b98abe927d06b 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -44,6 +44,7 @@
+  */
  
--void synth_write(const char *buf, size_t count)
-+void synth_write(const char *_buf, size_t count)
- {
-+	const unsigned char *buf = (const unsigned char *) _buf;
+ #include <linux/blkdev.h>
++#include <linux/delay.h>
+ #include <linux/kthread.h>
+ #include <linux/raid/pq.h>
+ #include <linux/async_tx.h>
+@@ -6329,7 +6330,18 @@ static void raid5d(struct md_thread *thread)
+ 			spin_unlock_irq(&conf->device_lock);
+ 			md_check_recovery(mddev);
+ 			spin_lock_irq(&conf->device_lock);
 +
- 	while (count--)
- 		synth_buffer_add(*buf++);
- 	synth_start();
++			/*
++			 * Waiting on MD_SB_CHANGE_PENDING below may deadlock
++			 * seeing md_check_recovery() is needed to clear
++			 * the flag when using mdmon.
++			 */
++			continue;
+ 		}
++
++		wait_event_lock_irq(mddev->sb_wait,
++			!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags),
++			conf->device_lock);
+ 	}
+ 	pr_debug("%d stripes handled\n", handled);
+ 
 -- 
 2.43.0
 
