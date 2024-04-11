@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-38874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77C528A10CB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B3788A0EB0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A96DC1C2398B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D986C283DD5
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF67A1465BF;
-	Thu, 11 Apr 2024 10:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7999814601B;
+	Thu, 11 Apr 2024 10:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5vP8YGA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="up82PH3i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD78143C76;
-	Thu, 11 Apr 2024 10:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393A4145353;
+	Thu, 11 Apr 2024 10:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831847; cv=none; b=TYBZkhmhWux0PSWfRcqIt+mDSnBA4mmpPHdxra78x47hftqn2vIEcyKeWVr6dEnm0U0NWgitFGMbQfoGV/EVZFoxK8yrM97e/0YvKPTj+YoxRppKGXFEj3e7ip1VcBObb0ma2mEdssxTyTUNkE1AzBDcDnCe2O+YjJ3HSD0JVRU=
+	t=1712830629; cv=none; b=TzaYu8r7AaYk0uuUedy2LSUqZPelk/YhWAwovYrbYQwmvhkeBB/2hzOiF7TLLge3bR2KZ7xr2rE2IhGXNUWtTsGabEqYReHsoi2JWP+CHRXB7xk7excBSGAu575XX2NUMBvMaAmj6sRoTe3zh9DbLjTBGtfIRguYsihaNbBTX1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831847; c=relaxed/simple;
-	bh=5PU73dAONDUPJtz80vD2WiNSB30Z67jM35R98FEvQAE=;
+	s=arc-20240116; t=1712830629; c=relaxed/simple;
+	bh=nGeBabdMIOcdtX4xCxR32GUOqv26NO4i5h5SyhtxRZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mUWS9G/loTdo4nCX7rbSQaPKjUP38MJcyCve9TGQpCFwxAk/tNeZXQkPxMWbzNY+udOv9+avDVpVTwKJ/Ro7fweRWxaRxlYmS1TQbXnDZTE3oLbkLPsstyX0yoYF0YwZ6pU/Gz2awW3pzmhOSs0KJpywdaD968d+avnIQTeBaRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5vP8YGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B09C433C7;
-	Thu, 11 Apr 2024 10:37:27 +0000 (UTC)
+	 MIME-Version; b=ASzfPtiK163irwSDcuUJI4R5ueePCehBPlN1snt6Uqv9FhR2xEtansd9o4FxfdgEgYVf+ichggp4MzzrXwnrW45nPtu/Dod7jWj3KP4yjDNPiY/PwpOlIGpofZZyeTm9fHKHkwVhNcDxkj/K+Ui6yhNS14/tNMk5+MH0Qpq7tO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=up82PH3i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 810F0C43394;
+	Thu, 11 Apr 2024 10:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831847;
-	bh=5PU73dAONDUPJtz80vD2WiNSB30Z67jM35R98FEvQAE=;
+	s=korg; t=1712830629;
+	bh=nGeBabdMIOcdtX4xCxR32GUOqv26NO4i5h5SyhtxRZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n5vP8YGAZa+eKugtnbu4Nm8JRkq1TiLCodIdUs851e+FEqXnBXhM+0aIHfOS6AcZh
-	 o5tfSP8UZgabfb+RB+HHFaBdHGHFHnwyc+AHvRKw3lUy/wi94BOnT3Sstiz8TRlCiJ
-	 181lM9KhE77nXEEal/EdK+GXRbdIwRNGQnIiAews=
+	b=up82PH3iRPM1OGawsSEdYd85x6oLtKT7kO5rATaGSsJkf54ZtItjnJ5By2rYsiR8E
+	 dFPOSmIm8i2DsRT494vtrAyNhdpLo1wY7JZMjrDarH0FJjtrMNbWvFzXOwxwGL1oPv
+	 ijm71QFua5z0RgGxTp9YasgzDZ3Icd8d3BRNmC6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Andrey Jr. Melnikov" <temnota.am@gmail.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linke li <lilinke99@qq.com>,
+	Rabin Vincent <rabin@rab.in>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 108/294] ahci: asm1064: correct count of reported ports
+Subject: [PATCH 5.4 062/215] ring-buffer: Fix resetting of shortest_full
 Date: Thu, 11 Apr 2024 11:54:31 +0200
-Message-ID: <20240411095438.921592290@linuxfoundation.org>
+Message-ID: <20240411095426.760704706@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +68,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Jr. Melnikov <temnota.am@gmail.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 9815e39617541ef52d0dfac4be274ad378c6dc09 ]
+[ Upstream commit 68282dd930ea38b068ce2c109d12405f40df3f93 ]
 
-The ASM1064 SATA host controller always reports wrongly,
-that it has 24 ports. But in reality, it only has four ports.
+The "shortest_full" variable is used to keep track of the waiter that is
+waiting for the smallest amount on the ring buffer before being woken up.
+When a tasks waits on the ring buffer, it passes in a "full" value that is
+a percentage. 0 means wake up on any data. 1-100 means wake up from 1% to
+100% full buffer.
 
-before:
-ahci 0000:04:00.0: SSS flag set, parallel bus scan disabled
-ahci 0000:04:00.0: AHCI 0001.0301 32 slots 24 ports 6 Gbps 0xffff0f impl SATA mode
-ahci 0000:04:00.0: flags: 64bit ncq sntf stag pm led only pio sxs deso sadm sds apst
+As all waiters are on the same wait queue, the wake up happens for the
+waiter with the smallest percentage.
 
-after:
-ahci 0000:04:00.0: ASM1064 has only four ports
-ahci 0000:04:00.0: forcing port_map 0xffff0f -> 0xf
-ahci 0000:04:00.0: SSS flag set, parallel bus scan disabled
-ahci 0000:04:00.0: AHCI 0001.0301 32 slots 24 ports 6 Gbps 0xf impl SATA mode
-ahci 0000:04:00.0: flags: 64bit ncq sntf stag pm led only pio sxs deso sadm sds apst
+The problem is that the smallest_full on the cpu_buffer that stores the
+smallest amount doesn't get reset when all the waiters are woken up. It
+does get reset when the ring buffer is reset (echo > /sys/kernel/tracing/trace).
 
-Signed-off-by: "Andrey Jr. Melnikov" <temnota.am@gmail.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Stable-dep-of: 6cd8adc3e189 ("ahci: asm1064: asm1166: don't limit reported ports")
+This means that tasks may be woken up more often then when they want to
+be. Instead, have the shortest_full field get reset just before waking up
+all the tasks. If the tasks wait again, they will update the shortest_full
+before sleeping.
+
+Also add locking around setting of shortest_full in the poll logic, and
+change "work" to "rbwork" to match the variable name for rb_irq_work
+structures that are used in other places.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240308202431.948914369@goodmis.org
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linke li <lilinke99@qq.com>
+Cc: Rabin Vincent <rabin@rab.in>
+Fixes: 2c2b0a78b3739 ("ring-buffer: Add percentage of ring buffer full to wake up reader")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: 8145f1c35fa6 ("ring-buffer: Fix full_waiters_pending in poll")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ kernel/trace/ring_buffer.c | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 6f7f8e41404dc..5df344e26c110 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -662,9 +662,17 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
- static void ahci_pci_save_initial_config(struct pci_dev *pdev,
- 					 struct ahci_host_priv *hpriv)
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index ed505c6de7cae..a9c90088af780 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -601,8 +601,19 @@ static void rb_wake_up_waiters(struct irq_work *work)
+ 
+ 	wake_up_all(&rbwork->waiters);
+ 	if (rbwork->full_waiters_pending || rbwork->wakeup_full) {
++		/* Only cpu_buffer sets the above flags */
++		struct ring_buffer_per_cpu *cpu_buffer =
++			container_of(rbwork, struct ring_buffer_per_cpu, irq_work);
++
++		/* Called from interrupt context */
++		raw_spin_lock(&cpu_buffer->reader_lock);
+ 		rbwork->wakeup_full = false;
+ 		rbwork->full_waiters_pending = false;
++
++		/* Waking up all waiters, they will reset the shortest full */
++		cpu_buffer->shortest_full = 0;
++		raw_spin_unlock(&cpu_buffer->reader_lock);
++
+ 		wake_up_all(&rbwork->full_waiters);
+ 	}
+ }
+@@ -731,28 +742,33 @@ __poll_t ring_buffer_poll_wait(struct ring_buffer *buffer, int cpu,
+ 			  struct file *filp, poll_table *poll_table, int full)
  {
--	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA && pdev->device == 0x1166) {
--		dev_info(&pdev->dev, "ASM1166 has only six ports\n");
--		hpriv->saved_port_map = 0x3f;
-+	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA) {
-+		switch (pdev->device) {
-+		case 0x1166:
-+			dev_info(&pdev->dev, "ASM1166 has only six ports\n");
-+			hpriv->saved_port_map = 0x3f;
-+			break;
-+		case 0x1064:
-+			dev_info(&pdev->dev, "ASM1064 has only four ports\n");
-+			hpriv->saved_port_map = 0xf;
-+			break;
-+		}
+ 	struct ring_buffer_per_cpu *cpu_buffer;
+-	struct rb_irq_work *work;
++	struct rb_irq_work *rbwork;
+ 
+ 	if (cpu == RING_BUFFER_ALL_CPUS) {
+-		work = &buffer->irq_work;
++		rbwork = &buffer->irq_work;
+ 		full = 0;
+ 	} else {
+ 		if (!cpumask_test_cpu(cpu, buffer->cpumask))
+ 			return EPOLLERR;
+ 
+ 		cpu_buffer = buffer->buffers[cpu];
+-		work = &cpu_buffer->irq_work;
++		rbwork = &cpu_buffer->irq_work;
  	}
  
- 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
+ 	if (full) {
+-		poll_wait(filp, &work->full_waiters, poll_table);
+-		work->full_waiters_pending = true;
++		unsigned long flags;
++
++		poll_wait(filp, &rbwork->full_waiters, poll_table);
++
++		raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
++		rbwork->full_waiters_pending = true;
+ 		if (!cpu_buffer->shortest_full ||
+ 		    cpu_buffer->shortest_full > full)
+ 			cpu_buffer->shortest_full = full;
++		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+ 	} else {
+-		poll_wait(filp, &work->waiters, poll_table);
+-		work->waiters_pending = true;
++		poll_wait(filp, &rbwork->waiters, poll_table);
++		rbwork->waiters_pending = true;
+ 	}
+ 
+ 	/*
 -- 
 2.43.0
 
