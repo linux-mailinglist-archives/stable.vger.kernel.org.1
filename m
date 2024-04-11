@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566C88A0E12
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B6F8A1125
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82AA91C21DBD
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D0781C23C0D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD4A145B08;
-	Thu, 11 Apr 2024 10:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BACF6142624;
+	Thu, 11 Apr 2024 10:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="InBa1XjQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VX0bf/7O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBBB145FE7;
-	Thu, 11 Apr 2024 10:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7955F140366;
+	Thu, 11 Apr 2024 10:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830243; cv=none; b=GD1vyWavIHiQRT+DNEiItFPeMqnguUF45DrbB5SMhNnDNsKVnT6jTXGofmkcYU9D3EVaHEGHcBGmVactSyxtDW8dzUxHXUOcMUbwttnKYv9+8iJjrC50VtBKLoKeudLiTDEnDgrlrHiU6oOZ4BwTAR8Cq8fts+eXfct8HpXsUaA=
+	t=1712832050; cv=none; b=OnovWxY6qP3Q/keZ7+/XtyOpuQzDQ+r5qCAU1H2PnCZoXkvThj5VGhZv6V4VbTRHErRrW/xhfQAYiVJN+5gWkc+0NiyXrlHQhj0FOuiUCaF5R4Hs3HY3/hpVSTAPXEbuVkqYZsmKXZgB5rKeY3fib84ly0Y1rgSB9CYx4jHYyOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830243; c=relaxed/simple;
-	bh=hhzokIM22OKjrGyRjg6h+/+XlUfXgNUr2AJwg8gVsfU=;
+	s=arc-20240116; t=1712832050; c=relaxed/simple;
+	bh=PMz/YMsfnHaB5uvA8HVd7aDFDDawaou6gfa08Q0whYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GGxAthC0DRtKi1duaK6JcmDhH1Y1cH9wWYI7OAnt5DdL7Pm7lag3J6qc/BomIwAAXxv34J9+Ws2BW0rkKiht4iRyekHo8RQRgfRgGdZKE51WYseZFwhTMggGxpdzojNirWLfZRuCZsPB0PpwLM+SJCbTFHS2cUboD3wAWwTZUCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InBa1XjQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C637C433C7;
-	Thu, 11 Apr 2024 10:10:42 +0000 (UTC)
+	 MIME-Version; b=iSEaUEMDMnr17TM3b8Jkyd+dicKU/nd9iAYKrzyxxbbS+7mSmMqvwppL5jET34R4DYdhuWenRNskRU/DhcJ53moxX9dLL78VMxYPaFMTkA7YbV40H4Se9U48dsylP3mU6oHuaMmW9nDS8kSguScnmwFkYSMDrd4qGrDwWfyuSJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VX0bf/7O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01252C433C7;
+	Thu, 11 Apr 2024 10:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830243;
-	bh=hhzokIM22OKjrGyRjg6h+/+XlUfXgNUr2AJwg8gVsfU=;
+	s=korg; t=1712832050;
+	bh=PMz/YMsfnHaB5uvA8HVd7aDFDDawaou6gfa08Q0whYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=InBa1XjQXIqzlJ8HyQwz2yaW8Nxoom3FLTapc7rrZJjeFgZU4C/lu9YtWWD9jOYrS
-	 WMIMXdz+atwGKzgfDQpetMJ7/0UZd9/jjqLxYPXXLoHw5IQg0jUn2nJX5KFmX7+o8V
-	 0cb8X/ShC2qUJqMehSljZs0FMpUYcajMbLHIWdiU=
+	b=VX0bf/7OJ/2pUaCRUy125hxHdoh8fvhwoI1aFcitpL9TR55T9Egu8TrkKnVH+L/UL
+	 Y1Y60TEM3tJ0XjVLk3DN4PcrF5zg3K7q3bNbJGcXJ8lg3laSN/BGBxXBzmPdovGJdV
+	 UPFVFO5snPXvF/Ts2Ri18W6yUXdVw8wHXtlvrmAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 082/143] ext4: forbid commit inconsistent quota data when errors=remount-ro
+Subject: [PATCH 5.10 187/294] Octeontx2-af: fix pause frame configuration in GMP mode
 Date: Thu, 11 Apr 2024 11:55:50 +0200
-Message-ID: <20240411095423.381102282@linuxfoundation.org>
+Message-ID: <20240411095441.247698130@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit d8b945fa475f13d787df00c26a6dc45a3e2e1d1d ]
+[ Upstream commit 40d4b4807cadd83fb3f46cc8cd67a945b5b25461 ]
 
-There's issue as follows When do IO fault injection test:
-Quota error (device dm-3): find_block_dqentry: Quota for id 101 referenced but not present
-Quota error (device dm-3): qtree_read_dquot: Can't read quota structure for id 101
-Quota error (device dm-3): do_check_range: Getting block 2021161007 out of range 1-186
-Quota error (device dm-3): qtree_read_dquot: Can't read quota structure for id 661
+The Octeontx2 MAC block (CGX) has separate data paths (SMU and GMP) for
+different speeds, allowing for efficient data transfer.
 
-Now, ext4_write_dquot()/ext4_acquire_dquot()/ext4_release_dquot() may commit
-inconsistent quota data even if process failed. This may lead to filesystem
-corruption.
-To ensure filesystem consistent when errors=remount-ro there is need to call
-ext4_handle_error() to abort journal.
+The previous patch which added pause frame configuration has a bug due
+to which pause frame feature is not working in GMP mode.
 
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240119062908.3598806-1-yebin10@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+This patch fixes the issue by configurating appropriate registers.
+
+Fixes: f7e086e754fe ("octeontx2-af: Pause frame configuration at cgx")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240326052720.4441-1-hkelam@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 32bd83adf0bb8..4866657c6d41f 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -6864,6 +6864,10 @@ static int ext4_write_dquot(struct dquot *dquot)
- 	if (IS_ERR(handle))
- 		return PTR_ERR(handle);
- 	ret = dquot_commit(dquot);
-+	if (ret < 0)
-+		ext4_error_err(dquot->dq_sb, -ret,
-+			       "Failed to commit dquot type %d",
-+			       dquot->dq_id.type);
- 	err = ext4_journal_stop(handle);
- 	if (!ret)
- 		ret = err;
-@@ -6880,6 +6884,10 @@ static int ext4_acquire_dquot(struct dquot *dquot)
- 	if (IS_ERR(handle))
- 		return PTR_ERR(handle);
- 	ret = dquot_acquire(dquot);
-+	if (ret < 0)
-+		ext4_error_err(dquot->dq_sb, -ret,
-+			      "Failed to acquire dquot type %d",
-+			      dquot->dq_id.type);
- 	err = ext4_journal_stop(handle);
- 	if (!ret)
- 		ret = err;
-@@ -6899,6 +6907,10 @@ static int ext4_release_dquot(struct dquot *dquot)
- 		return PTR_ERR(handle);
- 	}
- 	ret = dquot_release(dquot);
-+	if (ret < 0)
-+		ext4_error_err(dquot->dq_sb, -ret,
-+			       "Failed to release dquot type %d",
-+			       dquot->dq_id.type);
- 	err = ext4_journal_stop(handle);
- 	if (!ret)
- 		ret = err;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+index 55dfe1a20bc99..7f82baf8e7403 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -403,6 +403,11 @@ int cgx_lmac_set_pause_frm(void *cgxd, int lmac_id,
+ 	if (!cgx || lmac_id >= cgx->lmac_count)
+ 		return -ENODEV;
+ 
++	cfg = cgx_read(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL);
++	cfg &= ~CGX_GMP_GMI_RXX_FRM_CTL_CTL_BCK;
++	cfg |= rx_pause ? CGX_GMP_GMI_RXX_FRM_CTL_CTL_BCK : 0x0;
++	cgx_write(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL, cfg);
++
+ 	cfg = cgx_read(cgx, lmac_id, CGXX_SMUX_RX_FRM_CTL);
+ 	cfg &= ~CGX_SMUX_RX_FRM_CTL_CTL_BCK;
+ 	cfg |= rx_pause ? CGX_SMUX_RX_FRM_CTL_CTL_BCK : 0x0;
 -- 
 2.43.0
 
