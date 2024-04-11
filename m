@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-38529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A608A0F13
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:20:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B644E8A0D77
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:04:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B59E31F254F5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:20:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7A6A1C21932
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:04:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275EE1465AA;
-	Thu, 11 Apr 2024 10:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2227A145B14;
+	Thu, 11 Apr 2024 10:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKZNahKl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mM8CVS2e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97F5146A8F;
-	Thu, 11 Apr 2024 10:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33211448F3;
+	Thu, 11 Apr 2024 10:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830841; cv=none; b=k5xe6iA7dFNIydCQdEnyx3eGndDD9U2ObQBBCqxoIZwMIDu0Biolav5MZZTB/tMHFGkiKeor5Uk6Z0Mw6Ulso1H6bqPNUCRqnLMY12lbCnR48sDMbx1VR5yO3rOrk+aUKkIaGo725kZQqR5AcrE2KelgUi6BP1upp4pXFamZ8Ts=
+	t=1712829855; cv=none; b=PRQHa+cg/44hL/KxxsHzmvrBpfXjotjFNojZpAImOSsO8HqPto7eME2/ce4356IPejNlenubUyWatdIaihn2iSZz9SUJ4SfM2QqXzyqMhCaEf5Q2xLRVQY2UUAYNyQsLaFQ5yO25wGONeBD99YWgQCXu9l5c3+KEuIn0gsOBahk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830841; c=relaxed/simple;
-	bh=DqtuvfKP9+a7wQ9xuhrKLKqx120tJQenJYRjG1NDatc=;
+	s=arc-20240116; t=1712829855; c=relaxed/simple;
+	bh=tMuW5jDGsZVUbxwJHppwbp4WHuaguFcHzqCxhOoseGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nz+byzOJDDujFuDykaUFcrrL1NLhnhYt6Uualgrww1zX7EdIIVLOeOzInuz9EK9IHYE7YjCtIIirdqq50EMXxZ9T72KWQmc9bLwD1eT2IInA71iqJm+MM1P6f5KWaQXDisKPt4KPOiigwsLvy8g4P0cOtJrzSuAg0IrQ55CpwXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKZNahKl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F1FDC433F1;
-	Thu, 11 Apr 2024 10:20:41 +0000 (UTC)
+	 MIME-Version; b=ovmSQtZCSv6L/SkGQKWvMekGIedpMhUd4VBCGs/eYLRfFXCMC2F1EHdw4F/hoiyZ537G8waAhtrvgtiAGM9itxDFEP9hEiwYwe7yvPnCbYgKv/tMMVDiUFfNm1Zv5CAgT0EOP7NkJSeariAgsikwq5QVA/LNzdDhxnT3AvYjffY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mM8CVS2e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CCDC43390;
+	Thu, 11 Apr 2024 10:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830841;
-	bh=DqtuvfKP9+a7wQ9xuhrKLKqx120tJQenJYRjG1NDatc=;
+	s=korg; t=1712829855;
+	bh=tMuW5jDGsZVUbxwJHppwbp4WHuaguFcHzqCxhOoseGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cKZNahKlVyjt3gGYky5t6yhxT6VFCM/jPNro1NZgXEfBOu0q16MfTSYJVH4nCFOvt
-	 nV4wxX22FppmrejaMNopMbm8YoeZIEzh0zxP1xDv1XMPA/EIMvzmY3OtKIEHGWhmy0
-	 BpFBq5e3iuREpMyo4lRyIn9Tbn9RG0ACM0Eq3Tz0=
+	b=mM8CVS2e4Cy9F+EZztjmuJ2/n5buPtFdGDTSVVpptB7WVbQtsOengFtyEdFqw23n6
+	 3IoAzMzGt/II5wQlUn8bWhvQQ17rzY1PBqPB1GQVkk50qyBWV9+nW2ZChjDl0QPkOo
+	 Sc/1zPO25wmQxJ5Tte0sCfbP2RtWtj7WYhwKEbWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Hui Wang <hui.wang@canonical.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.4 135/215] Bluetooth: hci_event: set the conn encrypted before conn establishes
+	Vlastimil Babka <vbabka@suse.cz>,
+	Sven van Ashbrook <svenva@chromium.org>,
+	Karthikeyan Ramasubramanian <kramasub@chromium.org>,
+	Brian Geffon <bgeffon@google.com>,
+	Curtis Malainey <cujomalainey@chromium.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Michal Hocko <mhocko@kernel.org>,
+	Takashi Iwai <tiwai@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 121/175] mm, vmscan: prevent infinite loop for costly GFP_NOIO | __GFP_RETRY_MAYFAIL allocations
 Date: Thu, 11 Apr 2024 11:55:44 +0200
-Message-ID: <20240411095428.952351211@linuxfoundation.org>
+Message-ID: <20240411095423.210066915@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +69,193 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hui Wang <hui.wang@canonical.com>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-commit c569242cd49287d53b73a94233db40097d838535 upstream.
+commit 803de9000f334b771afacb6ff3e78622916668b0 upstream.
 
-We have a BT headset (Lenovo Thinkplus XT99), the pairing and
-connecting has no problem, once this headset is paired, bluez will
-remember this device and will auto re-connect it whenever the device
-is powered on. The auto re-connecting works well with Windows and
-Android, but with Linux, it always fails. Through debugging, we found
-at the rfcomm connection stage, the bluetooth stack reports
-"Connection refused - security block (0x0003)".
+Sven reports an infinite loop in __alloc_pages_slowpath() for costly order
+__GFP_RETRY_MAYFAIL allocations that are also GFP_NOIO.  Such combination
+can happen in a suspend/resume context where a GFP_KERNEL allocation can
+have __GFP_IO masked out via gfp_allowed_mask.
 
-For this device, the re-connecting negotiation process is different
-from other BT headsets, it sends the Link_KEY_REQUEST command before
-the CONNECT_REQUEST completes, and it doesn't send ENCRYPT_CHANGE
-command during the negotiation. When the device sends the "connect
-complete" to hci, the ev->encr_mode is 1.
+Quoting Sven:
 
-So here in the conn_complete_evt(), if ev->encr_mode is 1, link type
-is ACL and HCI_CONN_ENCRYPT is not set, we set HCI_CONN_ENCRYPT to
-this conn, and update conn->enc_key_size accordingly.
+1. try to do a "costly" allocation (order > PAGE_ALLOC_COSTLY_ORDER)
+   with __GFP_RETRY_MAYFAIL set.
 
-After this change, this BT headset could re-connect with Linux
-successfully. This is the btmon log after applying the patch, after
-receiving the "Connect Complete" with "Encryption: Enabled", will send
-the command to read encryption key size:
-> HCI Event: Connect Request (0x04) plen 10
-        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
-        Class: 0x240404
-          Major class: Audio/Video (headset, speaker, stereo, video, vcr)
-          Minor class: Wearable Headset Device
-          Rendering (Printing, Speaker)
-          Audio (Speaker, Microphone, Headset)
-        Link type: ACL (0x01)
-...
-> HCI Event: Link Key Request (0x17) plen 6
-        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
-< HCI Command: Link Key Request Reply (0x01|0x000b) plen 22
-        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
-        Link key: ${32-hex-digits-key}
-...
-> HCI Event: Connect Complete (0x03) plen 11
-        Status: Success (0x00)
-        Handle: 256
-        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
-        Link type: ACL (0x01)
-        Encryption: Enabled (0x01)
-< HCI Command: Read Encryption Key... (0x05|0x0008) plen 2
-        Handle: 256
-< ACL Data TX: Handle 256 flags 0x00 dlen 10
-      L2CAP: Information Request (0x0a) ident 1 len 2
-        Type: Extended features supported (0x0002)
-> HCI Event: Command Complete (0x0e) plen 7
-      Read Encryption Key Size (0x05|0x0008) ncmd 1
-        Status: Success (0x00)
-        Handle: 256
-        Key size: 16
+2. page alloc's __alloc_pages_slowpath tries to get a page from the
+   freelist. This fails because there is nothing free of that costly
+   order.
 
-Cc: stable@vger.kernel.org
-Link: https://github.com/bluez/bluez/issues/704
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Signed-off-by: Hui Wang <hui.wang@canonical.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+3. page alloc tries to reclaim by calling __alloc_pages_direct_reclaim,
+   which bails out because a zone is ready to be compacted; it pretends
+   to have made a single page of progress.
+
+4. page alloc tries to compact, but this always bails out early because
+   __GFP_IO is not set (it's not passed by the snd allocator, and even
+   if it were, we are suspending so the __GFP_IO flag would be cleared
+   anyway).
+
+5. page alloc believes reclaim progress was made (because of the
+   pretense in item 3) and so it checks whether it should retry
+   compaction. The compaction retry logic thinks it should try again,
+   because:
+    a) reclaim is needed because of the early bail-out in item 4
+    b) a zonelist is suitable for compaction
+
+6. goto 2. indefinite stall.
+
+(end quote)
+
+The immediate root cause is confusing the COMPACT_SKIPPED returned from
+__alloc_pages_direct_compact() (step 4) due to lack of __GFP_IO to be
+indicating a lack of order-0 pages, and in step 5 evaluating that in
+should_compact_retry() as a reason to retry, before incrementing and
+limiting the number of retries.  There are however other places that
+wrongly assume that compaction can happen while we lack __GFP_IO.
+
+To fix this, introduce gfp_compaction_allowed() to abstract the __GFP_IO
+evaluation and switch the open-coded test in try_to_compact_pages() to use
+it.
+
+Also use the new helper in:
+- compaction_ready(), which will make reclaim not bail out in step 3, so
+  there's at least one attempt to actually reclaim, even if chances are
+  small for a costly order
+- in_reclaim_compaction() which will make should_continue_reclaim()
+  return false and we don't over-reclaim unnecessarily
+- in __alloc_pages_slowpath() to set a local variable can_compact,
+  which is then used to avoid retrying reclaim/compaction for costly
+  allocations (step 5) if we can't compact and also to skip the early
+  compaction attempt that we do in some cases
+
+Link: https://lkml.kernel.org/r/20240221114357.13655-2-vbabka@suse.cz
+Fixes: 3250845d0526 ("Revert "mm, oom: prevent premature OOM killer invocation for high order request"")
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Reported-by: Sven van Ashbrook <svenva@chromium.org>
+Closes: https://lore.kernel.org/all/CAG-rBihs_xMKb3wrMO1%2B-%2Bp4fowP9oy1pa_OTkfxBzPUVOZF%2Bg@mail.gmail.com/
+Tested-by: Karthikeyan Ramasubramanian <kramasub@chromium.org>
+Cc: Brian Geffon <bgeffon@google.com>
+Cc: Curtis Malainey <cujomalainey@chromium.org>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ include/linux/gfp.h |    9 +++++++++
+ mm/compaction.c     |    7 +------
+ mm/page_alloc.c     |   10 ++++++----
+ mm/vmscan.c         |    5 ++++-
+ 4 files changed, 20 insertions(+), 11 deletions(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -2537,6 +2537,31 @@ static void hci_conn_complete_evt(struct
- 		if (test_bit(HCI_ENCRYPT, &hdev->flags))
- 			set_bit(HCI_CONN_ENCRYPT, &conn->flags);
+--- a/include/linux/gfp.h
++++ b/include/linux/gfp.h
+@@ -608,6 +608,15 @@ static inline bool pm_suspended_storage(
+ }
+ #endif /* CONFIG_PM_SLEEP */
  
-+		/* "Link key request" completed ahead of "connect request" completes */
-+		if (ev->encr_mode == 1 && !test_bit(HCI_CONN_ENCRYPT, &conn->flags) &&
-+		    ev->link_type == ACL_LINK) {
-+			struct link_key *key;
-+			struct hci_cp_read_enc_key_size cp;
++/*
++ * Check if the gfp flags allow compaction - GFP_NOIO is a really
++ * tricky context because the migration might require IO.
++ */
++static inline bool gfp_compaction_allowed(gfp_t gfp_mask)
++{
++	return IS_ENABLED(CONFIG_COMPACTION) && (gfp_mask & __GFP_IO);
++}
 +
-+			key = hci_find_link_key(hdev, &ev->bdaddr);
-+			if (key) {
-+				set_bit(HCI_CONN_ENCRYPT, &conn->flags);
+ #if (defined(CONFIG_MEMORY_ISOLATION) && defined(CONFIG_COMPACTION)) || defined(CONFIG_CMA)
+ /* The below functions must be run on a range from a single zone. */
+ extern int alloc_contig_range(unsigned long start, unsigned long end,
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -1751,16 +1751,11 @@ enum compact_result try_to_compact_pages
+ 		unsigned int alloc_flags, const struct alloc_context *ac,
+ 		enum compact_priority prio)
+ {
+-	int may_perform_io = gfp_mask & __GFP_IO;
+ 	struct zoneref *z;
+ 	struct zone *zone;
+ 	enum compact_result rc = COMPACT_SKIPPED;
+ 
+-	/*
+-	 * Check if the GFP flags allow compaction - GFP_NOIO is really
+-	 * tricky context because the migration might require IO
+-	 */
+-	if (!may_perform_io)
++	if (!gfp_compaction_allowed(gfp_mask))
+ 		return COMPACT_SKIPPED;
+ 
+ 	trace_mm_compaction_try_to_compact_pages(order, gfp_mask, prio);
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4099,6 +4099,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, u
+ 						struct alloc_context *ac)
+ {
+ 	bool can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
++	bool can_compact = gfp_compaction_allowed(gfp_mask);
+ 	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
+ 	struct page *page = NULL;
+ 	unsigned int alloc_flags;
+@@ -4164,7 +4165,7 @@ restart:
+ 	 * Don't try this for allocations that are allowed to ignore
+ 	 * watermarks, as the ALLOC_NO_WATERMARKS attempt didn't yet happen.
+ 	 */
+-	if (can_direct_reclaim &&
++	if (can_direct_reclaim && can_compact &&
+ 			(costly_order ||
+ 			   (order > 0 && ac->migratetype != MIGRATE_MOVABLE))
+ 			&& !gfp_pfmemalloc_allowed(gfp_mask)) {
+@@ -4251,9 +4252,10 @@ retry:
+ 
+ 	/*
+ 	 * Do not retry costly high order allocations unless they are
+-	 * __GFP_RETRY_MAYFAIL
++	 * __GFP_RETRY_MAYFAIL and we can compact
+ 	 */
+-	if (costly_order && !(gfp_mask & __GFP_RETRY_MAYFAIL))
++	if (costly_order && (!can_compact ||
++			     !(gfp_mask & __GFP_RETRY_MAYFAIL)))
+ 		goto nopage;
+ 
+ 	if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
+@@ -4266,7 +4268,7 @@ retry:
+ 	 * implementation of the compaction depends on the sufficient amount
+ 	 * of free memory (see __compaction_suitable)
+ 	 */
+-	if (did_some_progress > 0 &&
++	if (did_some_progress > 0 && can_compact &&
+ 			should_compact_retry(ac, order, alloc_flags,
+ 				compact_result, &compact_priority,
+ 				&compaction_retries))
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -2595,7 +2595,7 @@ static void shrink_node_memcg(struct pgl
+ /* Use reclaim/compaction for costly allocs or under memory pressure */
+ static bool in_reclaim_compaction(struct scan_control *sc)
+ {
+-	if (IS_ENABLED(CONFIG_COMPACTION) && sc->order &&
++	if (gfp_compaction_allowed(sc->gfp_mask) && sc->order &&
+ 			(sc->order > PAGE_ALLOC_COSTLY_ORDER ||
+ 			 sc->priority < DEF_PRIORITY - 2))
+ 		return true;
+@@ -2869,6 +2869,9 @@ static inline bool compaction_ready(stru
+ 	unsigned long watermark;
+ 	enum compact_result suitable;
+ 
++	if (!gfp_compaction_allowed(sc->gfp_mask))
++		return false;
 +
-+				if (!(hdev->commands[20] & 0x10)) {
-+					conn->enc_key_size = HCI_LINK_KEY_SIZE;
-+				} else {
-+					cp.handle = cpu_to_le16(conn->handle);
-+					if (hci_send_cmd(hdev, HCI_OP_READ_ENC_KEY_SIZE,
-+							 sizeof(cp), &cp)) {
-+						bt_dev_err(hdev, "sending read key size failed");
-+						conn->enc_key_size = HCI_LINK_KEY_SIZE;
-+					}
-+				}
-+
-+				hci_encrypt_cfm(conn, ev->status);
-+			}
-+		}
-+
- 		/* Get remote features */
- 		if (conn->type == ACL_LINK) {
- 			struct hci_cp_read_remote_features cp;
+ 	suitable = compaction_suitable(zone, sc->order, 0, sc->reclaim_idx);
+ 	if (suitable == COMPACT_SUCCESS)
+ 		/* Allocation should succeed already. Don't reclaim. */
 
 
 
