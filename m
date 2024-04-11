@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-39111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E6E8A11F7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA208A1226
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:51:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0704D1C2160C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D8111F21B14
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:51:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501031474B4;
-	Thu, 11 Apr 2024 10:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2E613DDD6;
+	Thu, 11 Apr 2024 10:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T35IBuZi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n3KCKK2E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF011474AA;
-	Thu, 11 Apr 2024 10:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1151E48E;
+	Thu, 11 Apr 2024 10:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832549; cv=none; b=TZY1QliOO8E5mt31ZE8+iGsNT21Y2cc4R9pXRU7lj3YGSdH6oXmh9ml2PUZxCcYOkkkCA1zfQJo0zthjR6iCDhjnartD5P+jQKuMCwYQU3+ExFkuzaFpD0QVJruIxjZ4iW3og/OfrqDQtdoseQqwCkHkmpSxkyVds4NIcIp84w8=
+	t=1712832676; cv=none; b=gi/ZR0csjG9PmOeebubf+MOo+x+Blsacrwlg29gxbQ4Dw9RoDwOuetQgr4yvTeLMPw/sZp4FXxDWZBAFWYoc498RscqLebDkqWLrp6/0D6GtinqORZIfrC985k4G5CuVe0r2HwnUPBMmoWB8kxLRks32mMLNJxfhQKQhOYJwxH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832549; c=relaxed/simple;
-	bh=z6NzAjFYDVyjqQt7X1kjT19rd98CSCD9Fvlogbu5ezw=;
+	s=arc-20240116; t=1712832676; c=relaxed/simple;
+	bh=cofsqJButqda6DprpQ1Vot88h1tmFzPe/ErbHTKcmXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fwmEdCWOyBTPrJWU6n9O685DMBH6wAkIR37Og/rbYOsD7Rfyoyxb8OjCuexIiMPRgNxQbS6r+M3OR0vTERRCLzPbJLNQzdTCZwp5lYeXJZKK1vOHxN7D6IcvZbyCU44AHz5R/C8kfFPia4VKtghM3l0LHx9qjlc11EXusud5ZuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T35IBuZi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874EFC433B1;
-	Thu, 11 Apr 2024 10:49:08 +0000 (UTC)
+	 MIME-Version; b=KiTeaSN5ulqeZ6hFtUpFMMZZN+ut1Z1/Wio/pLOlqKeWUQkQCTkRpFHJRFWGf/KD4gs6qLbG5wWXDKUTWsXn0AzRF3/aoiTE9cfN/R4kki8csyU21v9XhiOU8tQwKoGYE9za8JdiH60j/pb66wjuaSUkOdMV2VTWkdUHoKC6Q0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n3KCKK2E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30953C433F1;
+	Thu, 11 Apr 2024 10:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832548;
-	bh=z6NzAjFYDVyjqQt7X1kjT19rd98CSCD9Fvlogbu5ezw=;
+	s=korg; t=1712832676;
+	bh=cofsqJButqda6DprpQ1Vot88h1tmFzPe/ErbHTKcmXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T35IBuZidWMF2Q+FRoPUzVRrJE5vfG3oEJ79cnZeIePE3E+Dkxs7lA2tz4FF6xWbJ
-	 ickf2W8dd4doBeZrtZ+ASaPokU+7NgFnpMnTLIMR1CVH9xr+dw7zS5bnK2UWzRm4oO
-	 CTeBzkeCZ8J217YwheC6j3cmjC0pI4kXVkJljdDU=
+	b=n3KCKK2En5nGgq6YRMQXuI/qPnC/65cDsaRFWvRpqBkQg2SBwrNqsFd/1si56NpZ9
+	 LZYe3DiOzHVmOjQbjBMAWY1/7I8Y9jUfJ8koPaIoEdMdNb0Tv9ur5ZipwOjhWQGx2u
+	 /pjUP1FxcXgdlduNACqUiXah7F9aAiyQXiUFHpHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gwendal Grignou <gwendal@chromium.org>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jiawei Fu <i@ibugone.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 79/83] platform/x86: intel-vbtn: Update tablet mode switch at end of probe
-Date: Thu, 11 Apr 2024 11:57:51 +0200
-Message-ID: <20240411095415.066032299@linuxfoundation.org>
+Subject: [PATCH 5.15 44/57] drivers/nvme: Add quirks for device 126f:2262
+Date: Thu, 11 Apr 2024 11:57:52 +0200
+Message-ID: <20240411095409.322504043@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+References: <20240411095407.982258070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +62,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gwendal Grignou <gwendal@chromium.org>
+From: Jiawei Fu (iBug) <i@ibugone.com>
 
-[ Upstream commit 434e5781d8cd2d0ed512d920c6cdeba4b33a2e81 ]
+[ Upstream commit e89086c43f0500bc7c4ce225495b73b8ce234c1f ]
 
-ACER Vivobook Flip (TP401NAS) virtual intel switch is implemented as
-follow:
+This commit adds NVME_QUIRK_NO_DEEPEST_PS and NVME_QUIRK_BOGUS_NID for
+device [126f:2262], which appears to be a generic VID:PID pair used for
+many SSDs based on the Silicon Motion SM2262/SM2262EN controller.
 
-   Device (VGBI)
-   {
-       Name (_HID, EisaId ("INT33D6") ...
-       Name (VBDS, Zero)
-       Method (_STA, 0, Serialized)  // _STA: Status ...
-       Method (VBDL, 0, Serialized)
-       {
-           PB1E |= 0x20
-           VBDS |= 0x40
-       }
-       Method (VGBS, 0, Serialized)
-       {
-           Return (VBDS) /* \_SB_.PCI0.SBRG.EC0_.VGBI.VBDS */
-       }
-       ...
-    }
+Two of my SSDs with this VID:PID pair exhibit the same behavior:
 
-By default VBDS is set to 0. At boot it is set to clamshell (bit 6 set)
-only after method VBDL is executed.
+  * They frequently have trouble exiting the deepest power state (5),
+    resulting in the entire disk unresponsive.
+    Verified by setting nvme_core.default_ps_max_latency_us=10000 and
+    observing them behaving normally.
+  * They produce all-zero nguid and eui64 with `nvme id-ns` command.
 
-Since VBDL is now evaluated in the probe routine later, after the device
-is registered, the retrieved value of VBDS was still 0 ("tablet mode")
-when setting up the virtual switch.
+The offending products are:
 
-Make sure to evaluate VGBS after VBDL, to ensure the
-convertible boots in clamshell mode, the expected default.
+  * HP SSD EX950 1TB
+  * HIKVISION C2000Pro 2TB
 
-Fixes: 26173179fae1 ("platform/x86: intel-vbtn: Eval VBDL after registering our notifier")
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240329143206.2977734-3-gwendal@chromium.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Jiawei Fu <i@ibugone.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/vbtn.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/nvme/host/pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/platform/x86/intel/vbtn.c b/drivers/platform/x86/intel/vbtn.c
-index c10c99a31a90a..224139006a433 100644
---- a/drivers/platform/x86/intel/vbtn.c
-+++ b/drivers/platform/x86/intel/vbtn.c
-@@ -136,8 +136,6 @@ static int intel_vbtn_input_setup(struct platform_device *device)
- 	priv->switches_dev->id.bustype = BUS_HOST;
- 
- 	if (priv->has_switches) {
--		detect_tablet_mode(&device->dev);
--
- 		ret = input_register_device(priv->switches_dev);
- 		if (ret)
- 			return ret;
-@@ -316,6 +314,9 @@ static int intel_vbtn_probe(struct platform_device *device)
- 		if (ACPI_FAILURE(status))
- 			dev_err(&device->dev, "Error VBDL failed with ACPI status %d\n", status);
- 	}
-+	// Check switches after buttons since VBDL may have side effects.
-+	if (has_switches)
-+		detect_tablet_mode(&device->dev);
- 
- 	device_init_wakeup(&device->dev, true);
- 	/*
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index fd20f3fdb1592..7bb74112fef37 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -3339,6 +3339,9 @@ static const struct pci_device_id nvme_id_table[] = {
+ 				NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_VDEVICE(REDHAT, 0x0010),	/* Qemu emulated controller */
+ 		.driver_data = NVME_QUIRK_BOGUS_NID, },
++	{ PCI_DEVICE(0x126f, 0x2262),	/* Silicon Motion generic */
++		.driver_data = NVME_QUIRK_NO_DEEPEST_PS |
++				NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_DEVICE(0x126f, 0x2263),	/* Silicon Motion unidentified */
+ 		.driver_data = NVME_QUIRK_NO_NS_DESC_LIST, },
+ 	{ PCI_DEVICE(0x1bb1, 0x0100),   /* Seagate Nytro Flash Storage */
 -- 
 2.43.0
 
