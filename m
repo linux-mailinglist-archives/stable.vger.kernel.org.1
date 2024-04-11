@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-38598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C1598A0F75
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C9F8A1150
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 069F3B2199D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F992288579
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB37C146A72;
-	Thu, 11 Apr 2024 10:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C18140366;
+	Thu, 11 Apr 2024 10:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1NQ0xdI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3/vEelz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B6714600A;
-	Thu, 11 Apr 2024 10:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F7B134CC2;
+	Thu, 11 Apr 2024 10:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831043; cv=none; b=jWjWHzdFEf3QuAfPGxXWPBEVzQwq2GlPGYMzyOYjZ34SB4CNX0xrLBZ/elTzbh6QW0Jct10MDBQV0VDhyEZYT9N6qFffflZCLY0kRJk4xccEO0sw6j5hDU2kyerfs724iIM8cVbDYQPhiAZL+W9iVMqljxVl8e34ybjIfGdrC7w=
+	t=1712832165; cv=none; b=T4iIMYyqEHHxArkF/5Q3x3ycoHu6QxzPLX11ll0wnBtFhEAvNTS/7wKEkFT7KTvnKeuDrBWAulkAitn2Z4sdP/nYQhxGK4bAA2ooSzr70Z7bNsWHXDR0BreSiCHvOvUySUSv7H0yPedMdSbZ8C7U0EhrpKE8GprL+uqxQPglR/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831043; c=relaxed/simple;
-	bh=6Qj69E2loqQwfbMEASHXVjPGPTyUfpSgWrMITPDlsFM=;
+	s=arc-20240116; t=1712832165; c=relaxed/simple;
+	bh=Qoo6vFnBIsoGSnUdd8Z6tVpIk6/xym3E80mdj3wBkzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lalEX6RlHn+aiLk2hoQpxfURbaiIIeZ86NISnRdXZ37PpxMN8HVEgKdpxc0RJx+q7IZKj/HsaUeCLuajB5+xpQRbSm3LtAorDGgsDBhBz+31BpNPtXdUkqgzUYz5QXQEgF2er/iMPi/Hw6sR5eTeAY37+sOp7GVtT0RbXWtAWSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1NQ0xdI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50B2C433F1;
-	Thu, 11 Apr 2024 10:24:02 +0000 (UTC)
+	 MIME-Version; b=FGWZDalTc+bk4fxljMkz6wdpHAqapQpnlc0VVRnf34bAx8yzKWvteFU7gakWoSu23ZEPSfNNjT65x2oYWg0WBOoGaRY7CeiT1UamgU05goXeqBL7B5ZpqPABlT35umfny8bYXkUd+Izo06VC+oCdL4MHjOFZv08T2nNU1tPefpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3/vEelz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D753C433F1;
+	Thu, 11 Apr 2024 10:42:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831043;
-	bh=6Qj69E2loqQwfbMEASHXVjPGPTyUfpSgWrMITPDlsFM=;
+	s=korg; t=1712832165;
+	bh=Qoo6vFnBIsoGSnUdd8Z6tVpIk6/xym3E80mdj3wBkzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z1NQ0xdI9ba19gLBb6j9p32Alytyp4WKZx+F9pRd2qCugUPdIiKmnlLNksWeAGyny
-	 4RAVmEhAWtvs2iSHWOLx2gtox8xVdD8f6dM/UmchbUV9uoCmBQq1vTKERp7/8TdDwA
-	 ncIRoduS19eFFW0YCgTIpqtnCfw/3wmVdeqaUj/Y=
+	b=E3/vEelznsBHLrMfjpVS/3H6S2Y2bh7Eq6plBCEsgVeI3jZKCwwvaFp34N/NNXiCN
+	 NpBM7q+N9dBrzDqTjG45ddLS3N3xKDbiH/SEWsaJR1/IDGCKcqktgHsTu1SejnSICf
+	 HOThRQ9N4suQZ261hjtR/h9yCQsT9fmrBbc6OBm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-Subject: [PATCH 5.4 205/215] tty: n_gsm: require CAP_NET_ADMIN to attach N_GSM0710 ldisc
+	Kunwu Chan <chentao@kylinos.cn>,
+	Kees Cook <keescook@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 251/294] pstore/zone: Add a null pointer check to the psz_kmsg_read
 Date: Thu, 11 Apr 2024 11:56:54 +0200
-Message-ID: <20240411095431.016412467@linuxfoundation.org>
+Message-ID: <20240411095443.125390361@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-commit 67c37756898a5a6b2941a13ae7260c89b54e0d88 upstream.
+[ Upstream commit 98bc7e26e14fbb26a6abf97603d59532475e97f8 ]
 
-Any unprivileged user can attach N_GSM0710 ldisc, but it requires
-CAP_NET_ADMIN to create a GSM network anyway.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure. Ensure the allocation was successful
+by checking the pointer validity.
 
-Require initial namespace CAP_NET_ADMIN to do that.
-
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-Link: https://lore.kernel.org/r/20230731185942.279611-1-cascardo@canonical.com
-From: Salvatore Bonaccorso <carnil@debian.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Link: https://lore.kernel.org/r/20240118100206.213928-1-chentao@kylinos.cn
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/n_gsm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/pstore/zone.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -2567,6 +2567,9 @@ static int gsmld_open(struct tty_struct
- 	struct gsm_mux *gsm;
- 	int ret;
- 
-+	if (!capable(CAP_NET_ADMIN))
-+		return -EPERM;
-+
- 	if (tty->ops->write == NULL)
- 		return -EINVAL;
- 
+diff --git a/fs/pstore/zone.c b/fs/pstore/zone.c
+index b50fc33f2ab29..2426fb6794fd3 100644
+--- a/fs/pstore/zone.c
++++ b/fs/pstore/zone.c
+@@ -973,6 +973,8 @@ static ssize_t psz_kmsg_read(struct pstore_zone *zone,
+ 		char *buf = kasprintf(GFP_KERNEL, "%s: Total %d times\n",
+ 				      kmsg_dump_reason_str(record->reason),
+ 				      record->count);
++		if (!buf)
++			return -ENOMEM;
+ 		hlen = strlen(buf);
+ 		record->buf = krealloc(buf, hlen + size, GFP_KERNEL);
+ 		if (!record->buf) {
+-- 
+2.43.0
+
 
 
 
