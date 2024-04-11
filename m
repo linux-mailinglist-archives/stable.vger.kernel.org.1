@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-39023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E2A8A1182
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 692E58A11E0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB6A6B26145
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA8EBB270C8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEAA8145B13;
-	Thu, 11 Apr 2024 10:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7201164CC0;
+	Thu, 11 Apr 2024 10:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUID9Amm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3bPPvud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1156BB29;
-	Thu, 11 Apr 2024 10:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCBC624;
+	Thu, 11 Apr 2024 10:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832289; cv=none; b=irnHkN0q94ofUMXFJi/suIlVdYR7h+KuqEeYPTcwgEOu4NOi6JeiLavJn3RGlQjrmENNSZa8xebnb3UIv2lNYAU+Tn+AbJjzhVDT33xoYLv13b9eEg9PXlQyARTcfraJ8YZVf+aiZ2KUJKby0msWFR4sMdS6sXYb9YZOAEY4y6c=
+	t=1712832487; cv=none; b=FKz6gDrPqHcg122MT8QUAeyeKQJlcqof7Cy+7k8PEpy6/y0IgCsPx+wpmUc8amfCjuY/ew9WkGf0ctkDi+ri6NsI72cci9QmUnF1egOpwY9Mw2LBqJvHNMulPgjSGJ71MONxi2IeXBCmgy2ixntutuSzwr6SXkSqGbxqDJqALTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832289; c=relaxed/simple;
-	bh=eRXSwxHjmOLn0x0Y4vZ5hUAjQCRCjwFspH5QqM9XD64=;
+	s=arc-20240116; t=1712832487; c=relaxed/simple;
+	bh=jhqAz2YVuA7GpbS4Fj6ORXSRFXwgSmT4yxym6d6mhvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dlUq0XZOVjmYFta9Hk0rmmKz21MQ8LqA/x/yrE61YgaPwg3e3OCW3fJy9PueyiVl5rvkcdX2ZroJcWcVQgfqfuJsQ5E5LQndnwgyBrftlCMkCx6MwtkOHVcx+Vz5KpNV1WHQRbM8SL7KKRW2pJsN+R1OzvBcKIlMiUvScO2awAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUID9Amm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C30CC433C7;
-	Thu, 11 Apr 2024 10:44:48 +0000 (UTC)
+	 MIME-Version; b=C+eBXYREZpM6rRb/dBZWr5tPA5bwKddBQGfOzs5O/a4N2yHcKIP/Sja8bD9pwqUSda9p5yJMylRxJ+L6S6WnsAa4Md+NrTxmyx8cTxf87vUuH3Y7pHZrduSzeO82nmnasl3rTXzjPJ37/CWfVJ9YrdyBo8xQkL139oJ5JvD0fcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3bPPvud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A061BC433F1;
+	Thu, 11 Apr 2024 10:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832289;
-	bh=eRXSwxHjmOLn0x0Y4vZ5hUAjQCRCjwFspH5QqM9XD64=;
+	s=korg; t=1712832487;
+	bh=jhqAz2YVuA7GpbS4Fj6ORXSRFXwgSmT4yxym6d6mhvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oUID9Amm+Dsc6t7YxSaC9VC8/uhke0McgDOV+4d9dJ+uTl7rh4rXRC2SFXC0WEfcO
-	 dkrQei5+DlK223+BGE+uc2ZyVPdh2szcG62l3t0n7puuS5J9Pz8aSMgPQRWybkiKJ0
-	 jYsrClV9cFh5rQ1qWfZkpExgttgsRNtQEYQeGyf0=
+	b=D3bPPvudDqmwgsprYz8GQIhBmIM9q0HDkG1SPjEnPWQnFgfu1t3kmi2jgZsRjKEOb
+	 YqJdDrt9Jz0diwwcV2X+tH+TvC9jsOzVtL3NQ2kNzQ9bVEn8SPFbVe9c8Ui/lI8ITs
+	 0HaIDw/3RH7llTQiyehGf20u5K/wIN+sKXoM7RGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.10 293/294] x86/retpoline: Add NOENDBR annotation to the SRSO dummy return thunk
+	Zhipeng Wang <zhipeng.wang_1@nxp.com>,
+	Chancel Liu <chancel.liu@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 64/83] ASoC: soc-core.c: Skip dummy codec when adding platforms
 Date: Thu, 11 Apr 2024 11:57:36 +0200
-Message-ID: <20240411095444.355094653@linuxfoundation.org>
+Message-ID: <20240411095414.611457932@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Chancel Liu <chancel.liu@nxp.com>
 
-commit b377c66ae3509ccea596512d6afb4777711c4870 upstream.
+[ Upstream commit 23fb6bc2696119391ec3a92ccaffe50e567c515e ]
 
-srso_alias_untrain_ret() is special code, even if it is a dummy
-which is called in the !SRSO case, so annotate it like its real
-counterpart, to address the following objtool splat:
+When pcm_runtime is adding platform components it will scan all
+registered components. In case of DPCM FE/BE some DAI links will
+configure dummy platform. However both dummy codec and dummy platform
+are using "snd-soc-dummy" as component->name. Dummy codec should be
+skipped when adding platforms otherwise there'll be overflow and UBSAN
+complains.
 
-  vmlinux.o: warning: objtool: .export_symbol+0x2b290: data relocation to !ENDBR: srso_alias_untrain_ret+0x0
-
-Fixes: 4535e1a4174c ("x86/bugs: Fix the SRSO mitigation on Zen3/4")
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240405144637.17908-1-bp@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+Link: https://msgid.link/r/20240305065606.3778642-1-chancel.liu@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/lib/retpoline.S |    1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/soc-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -258,6 +258,7 @@ SYM_CODE_START(__x86_return_thunk)
- 	UNWIND_HINT_FUNC
- 	ANNOTATE_NOENDBR
- 	ANNOTATE_UNRET_SAFE
-+	ANNOTATE_NOENDBR
- 	ret
- 	int3
- SYM_CODE_END(__x86_return_thunk)
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index a409fbed8f34c..6a4101dc15a54 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -1020,6 +1020,9 @@ int snd_soc_add_pcm_runtime(struct snd_soc_card *card,
+ 			if (!snd_soc_is_matching_component(platform, component))
+ 				continue;
+ 
++			if (snd_soc_component_is_dummy(component) && component->num_dai)
++				continue;
++
+ 			snd_soc_rtd_add_component(rtd, component);
+ 		}
+ 	}
+-- 
+2.43.0
+
 
 
 
