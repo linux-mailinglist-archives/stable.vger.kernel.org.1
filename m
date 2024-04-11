@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A418A113D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F6358A0E0C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F40701F2D230
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA2C41F21820
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37EC0146D76;
-	Thu, 11 Apr 2024 10:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E635145B0E;
+	Thu, 11 Apr 2024 10:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gipI0ph/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gfopb2KZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54632EAE5;
-	Thu, 11 Apr 2024 10:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06D0144D34;
+	Thu, 11 Apr 2024 10:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832113; cv=none; b=omF0GR8jq6v1LCByW4OemYBHsjhg9OhO7BegojK21V+DOiMtKCBVSxqKP+wCHvADw3/vbzMu3X2DBHAbCBHOGlbCm4KoHL3+/zpNXGkjg1gtqUt6TiRCwAnD9BlQuHbwnxwxZJgllx1jWUAMNcFai8pz6WXMmkbbcg0SeJEWXcE=
+	t=1712830231; cv=none; b=kRHesa32Dho6dD7PTRVl1s4DS2CA+g41HW0NYCKlwfhuNi9++xE9Ti8EjKehTvMytmRhQJ4ghDmrCIqEiga3qlqzGy30C0vVenbAktxhbT6bPVc+mEcwnJAW/Vg6vQA11GPrUHGDZIHH+5wQRpnvqSdMpSFuhn0bWasdp4eMSso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832113; c=relaxed/simple;
-	bh=Ns+sD9JnhADGpfBoaSpGGqW+DMydvINLv3vj7EzXvY8=;
+	s=arc-20240116; t=1712830231; c=relaxed/simple;
+	bh=la6xAYIMM2eTAQd4v44zRDD0woJA7ENMWwl/Dw2oPZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e1Z1fTXoyi7lmu/hrTtEwUXkmCZZeL7Wx8FQPbwqmURmibOOpdJA/PJIruFE2DiMBEQ/zc2NOkool9PDJu16RdAFtL+/g8/ZLNwBL248qnuWE0XSkk5H1Z0f0Fc/mzoUTkE/H8lSQ6TF9WRf1ilqU5Ep4CxK4AIVImKFUxRncOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gipI0ph/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6D2C433C7;
-	Thu, 11 Apr 2024 10:41:52 +0000 (UTC)
+	 MIME-Version; b=bDIZB4I5K+I82qcYCzYMOb0tvKxHgmk5KuhigBUU6W8y3zIQf2MZIUow+CN6oxAqHeYrNR/Xa1h5gO/oTAinrefX+n7vZCT/p6UdtakfedpAhyKtpRyYltSw7u8J7hYZwGkhOcsFIQ96KYchpSRwkiosWMz/gYDfsKDk1GXMGpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gfopb2KZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D11C433F1;
+	Thu, 11 Apr 2024 10:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832112;
-	bh=Ns+sD9JnhADGpfBoaSpGGqW+DMydvINLv3vj7EzXvY8=;
+	s=korg; t=1712830231;
+	bh=la6xAYIMM2eTAQd4v44zRDD0woJA7ENMWwl/Dw2oPZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gipI0ph/PGDeTqxhnfUhvpru0Q0dEvfzlPuovFaLDj6SuR/c+FZh8D0GEKvNZgKdM
-	 IF9rDHJSdAlerWIZoV+/9hE6ci1fEiiFKMIz+8EPuooDhM/xD8Ifd8CXDQhFOo7sao
-	 8Odj8AOGARypjRX02UmkPltbvmy4tdIfi8QB5w2A=
+	b=Gfopb2KZlkrSxXcpW0SVPUqj3jhlBR4DxvY+Mt3P+ewGCEQMXoF3FhCWLhOSKve7a
+	 XKupKEtvJ6foV+u00mqf257fl7Sp3Mo+ZoOjuJ2SOyE+MYR2XFQLLzho138oLHp6n4
+	 qMjbKnxLYgR3BZC06JqDqP7yroRpzz25JT4q4p04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 184/294] tcp: properly terminate timers for kernel sockets
+Subject: [PATCH 6.8 079/143] x86/vdso: Fix rethunk patching for vdso-image-{32,64}.o
 Date: Thu, 11 Apr 2024 11:55:47 +0200
-Message-ID: <20240411095441.161171915@linuxfoundation.org>
+Message-ID: <20240411095423.291849264@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 151c9c724d05d5b0dd8acd3e11cb69ef1f2dbada ]
+[ Upstream commit b388e57d4628eb22782bdad4cd5b83ca87a1b7c9 ]
 
-We had various syzbot reports about tcp timers firing after
-the corresponding netns has been dismantled.
+For CONFIG_RETHUNK kernels, objtool annotates all the function return
+sites so they can be patched during boot.  By design, after
+apply_returns() is called, all tail-calls to the compiler-generated
+default return thunk (__x86_return_thunk) should be patched out and
+replaced with whatever's needed for any mitigations (or lack thereof).
 
-Fortunately Josef Bacik could trigger the issue more often,
-and could test a patch I wrote two years ago.
+The commit
 
-When TCP sockets are closed, we call inet_csk_clear_xmit_timers()
-to 'stop' the timers.
+  4461438a8405 ("x86/retpoline: Ensure default return thunk isn't used at runtime")
 
-inet_csk_clear_xmit_timers() can be called from any context,
-including when socket lock is held.
-This is the reason it uses sk_stop_timer(), aka del_timer().
-This means that ongoing timers might finish much later.
+adds a runtime check and a WARN_ONCE() if the default return thunk ever
+gets executed after alternatives have been applied.  This warning is
+a sanity check to make sure objtool and apply_returns() are doing their
+job.
 
-For user sockets, this is fine because each running timer
-holds a reference on the socket, and the user socket holds
-a reference on the netns.
+As Nathan reported, that check found something:
 
-For kernel sockets, we risk that the netns is freed before
-timer can complete, because kernel sockets do not hold
-reference on the netns.
+  Unpatched return thunk in use. This should not happen!
+  WARNING: CPU: 0 PID: 1 at arch/x86/kernel/cpu/bugs.c:2856 __warn_thunk+0x27/0x40
+  RIP: 0010:__warn_thunk+0x27/0x40
+  Call Trace:
+   <TASK>
+   ? show_regs
+   ? __warn
+   ? __warn_thunk
+   ? report_bug
+   ? console_unlock
+   ? handle_bug
+   ? exc_invalid_op
+   ? asm_exc_invalid_op
+   ? ia32_binfmt_init
+   ? __warn_thunk
+   warn_thunk_thunk
+   do_one_initcall
+   kernel_init_freeable
+   ? __pfx_kernel_init
+   kernel_init
+   ret_from_fork
+   ? __pfx_kernel_init
+   ret_from_fork_asm
+   </TASK>
 
-This patch adds inet_csk_clear_xmit_timers_sync() function
-that using sk_stop_timer_sync() to make sure all timers
-are terminated before the kernel socket is released.
-Modules using kernel sockets close them in their netns exit()
-handler.
+Boris debugged to find that the unpatched return site was in
+init_vdso_image_64(), and its translation unit wasn't being analyzed by
+objtool, so it never got annotated.  So it got ignored by
+apply_returns().
 
-Also add sock_not_owned_by_me() helper to get LOCKDEP
-support : inet_csk_clear_xmit_timers_sync() must not be called
-while socket lock is held.
+This is only a minor issue, as this function is only called during boot.
+Still, objtool needs full visibility to the kernel.  Fix it by enabling
+objtool on vdso-image-{32,64}.o.
 
-It is very possible we can revert in the future commit
-3a58f13a881e ("net: rds: acquire refcount on TCP sockets")
-which attempted to solve the issue in rds only.
-(net/smc/af_smc.c and net/mptcp/subflow.c have similar code)
+Note this problem can only be seen with !CONFIG_X86_KERNEL_IBT, as that
+requires objtool to run individually on all translation units rather on
+vmlinux.o.
 
-We probably can remove the check_net() tests from
-tcp_out_of_resources() and __tcp_close() in the future.
+  [ bp: Massage commit message. ]
 
-Reported-by: Josef Bacik <josef@toxicpanda.com>
-Closes: https://lore.kernel.org/netdev/20240314210740.GA2823176@perftesting/
-Fixes: 26abe14379f8 ("net: Modify sk_alloc to not reference count the netns of kernel sockets.")
-Fixes: 8a68173691f0 ("net: sk_clone_lock() should only do get_net() if the parent is not a kernel socket")
-Link: https://lore.kernel.org/bpf/CANn89i+484ffqb93aQm1N-tjxxvb3WDKX0EbD7318RwRgsatjw@mail.gmail.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Tested-by: Josef Bacik <josef@toxicpanda.com>
-Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/r/20240322135732.1535772-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240215032049.GA3944823@dev-arch.thelio-3990X
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/inet_connection_sock.h |  1 +
- include/net/sock.h                 |  7 +++++++
- net/ipv4/inet_connection_sock.c    | 14 ++++++++++++++
- net/ipv4/tcp.c                     |  2 ++
- 4 files changed, 24 insertions(+)
+ arch/x86/entry/vdso/Makefile | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
-index 568121fa0965c..f5967805c33fd 100644
---- a/include/net/inet_connection_sock.h
-+++ b/include/net/inet_connection_sock.h
-@@ -172,6 +172,7 @@ void inet_csk_init_xmit_timers(struct sock *sk,
- 			       void (*delack_handler)(struct timer_list *),
- 			       void (*keepalive_handler)(struct timer_list *));
- void inet_csk_clear_xmit_timers(struct sock *sk);
-+void inet_csk_clear_xmit_timers_sync(struct sock *sk);
+diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
+index b1b8dd1608f7e..4ee59121b9053 100644
+--- a/arch/x86/entry/vdso/Makefile
++++ b/arch/x86/entry/vdso/Makefile
+@@ -34,8 +34,12 @@ obj-y					+= vma.o extable.o
+ KASAN_SANITIZE_vma.o			:= y
+ UBSAN_SANITIZE_vma.o			:= y
+ KCSAN_SANITIZE_vma.o			:= y
+-OBJECT_FILES_NON_STANDARD_vma.o		:= n
+-OBJECT_FILES_NON_STANDARD_extable.o	:= n
++
++OBJECT_FILES_NON_STANDARD_extable.o		:= n
++OBJECT_FILES_NON_STANDARD_vdso-image-32.o 	:= n
++OBJECT_FILES_NON_STANDARD_vdso-image-64.o 	:= n
++OBJECT_FILES_NON_STANDARD_vdso32-setup.o	:= n
++OBJECT_FILES_NON_STANDARD_vma.o			:= n
  
- static inline void inet_csk_schedule_ack(struct sock *sk)
- {
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 87ee284ea9cb3..8bcc96bf291c3 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1681,6 +1681,13 @@ static inline void sock_owned_by_me(const struct sock *sk)
- #endif
- }
+ # vDSO images to build
+ vdso_img-$(VDSO64-y)		+= 64
+@@ -43,7 +47,6 @@ vdso_img-$(VDSOX32-y)		+= x32
+ vdso_img-$(VDSO32-y)		+= 32
  
-+static inline void sock_not_owned_by_me(const struct sock *sk)
-+{
-+#ifdef CONFIG_LOCKDEP
-+	WARN_ON_ONCE(lockdep_sock_is_held(sk) && debug_locks);
-+#endif
-+}
-+
- static inline bool sock_owned_by_user(const struct sock *sk)
- {
- 	sock_owned_by_me(sk);
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index b15c9ad0095a2..6ebe43b4d28f7 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -580,6 +580,20 @@ void inet_csk_clear_xmit_timers(struct sock *sk)
- }
- EXPORT_SYMBOL(inet_csk_clear_xmit_timers);
+ obj-$(VDSO32-y)				 += vdso32-setup.o
+-OBJECT_FILES_NON_STANDARD_vdso32-setup.o := n
  
-+void inet_csk_clear_xmit_timers_sync(struct sock *sk)
-+{
-+	struct inet_connection_sock *icsk = inet_csk(sk);
-+
-+	/* ongoing timer handlers need to acquire socket lock. */
-+	sock_not_owned_by_me(sk);
-+
-+	icsk->icsk_pending = icsk->icsk_ack.pending = 0;
-+
-+	sk_stop_timer_sync(sk, &icsk->icsk_retransmit_timer);
-+	sk_stop_timer_sync(sk, &icsk->icsk_delack_timer);
-+	sk_stop_timer_sync(sk, &sk->sk_timer);
-+}
-+
- void inet_csk_delete_keepalive_timer(struct sock *sk)
- {
- 	sk_stop_timer(sk, &sk->sk_timer);
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 2e874ec859715..ac6cb2dc60380 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2717,6 +2717,8 @@ void tcp_close(struct sock *sk, long timeout)
- 	lock_sock(sk);
- 	__tcp_close(sk, timeout);
- 	release_sock(sk);
-+	if (!sk->sk_net_refcnt)
-+		inet_csk_clear_xmit_timers_sync(sk);
- 	sock_put(sk);
- }
- EXPORT_SYMBOL(tcp_close);
+ vobjs := $(foreach F,$(vobjs-y),$(obj)/$F)
+ vobjs32 := $(foreach F,$(vobjs32-y),$(obj)/$F)
 -- 
 2.43.0
 
