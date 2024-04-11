@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-38138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CEE8A0D31
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:01:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE8A18A109D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57A321C20E8F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:01:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AD8E1C23A96
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6FD145B07;
-	Thu, 11 Apr 2024 10:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF044146D47;
+	Thu, 11 Apr 2024 10:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJRcCpRG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dlE+aihk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277422EAE5;
-	Thu, 11 Apr 2024 10:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6F61448C8;
+	Thu, 11 Apr 2024 10:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829676; cv=none; b=fxx4x836YB/4C+ZrQNGnTY1XRLAHYixAdHYtztp7iLbV2INTlmyfilD4nRcp65t42YneRtG5QKobf8pcianTt0kyUKzNc9WiBG+Ib2suuJw3Jhge5u+2GyD0D80MKEWzbIrEUNngfbmlWp8K7pDK85doo8adEzU63fjnpso6rpk=
+	t=1712831715; cv=none; b=pnRSAQiajgk1NuM5x/NhJ0rfhQZQC4B3ztLJq4c1Sxzpz8avO7Ew2PG3iN//yEToT4bdstnRokQEqDMLEWsQAp4UTYOON2jzwt25qHV+g/QU495L6o9H+nwibbreEFWd8G41uqa6vGUUXJZGDUBO1Olv98aQSHYBgZ2WhSk+J5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829676; c=relaxed/simple;
-	bh=9yV8KweV20qFNfXDLg8OulAdE1yn2tsbKgUYFTZ5UIg=;
+	s=arc-20240116; t=1712831715; c=relaxed/simple;
+	bh=T09/nQlGQX94re5Fml84TUAAOB/rKzHsk/37HuFGmcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=obVuqBGxjzGg9gD26aWHYZQjvP81y32PWOCH6pqh6uPGrXgAB+qRFg1/pmpghPyvNQg26ag3wLgwJbczXDBrpoBOiJ/IFcFmKg3IYSjrAqHqfBI1NxC+cVdon/0xiOnx8TTQphNnODCH3p4PJmNkzzGS1LNgMxJr4cg8/kskxPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJRcCpRG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A49C433C7;
-	Thu, 11 Apr 2024 10:01:15 +0000 (UTC)
+	 MIME-Version; b=C2s6e4iAOElHsWv+J7jIAfC3tgZ1fQbzjwYCWph/wmjRXYGybHq14YwEnReBRw/hlWDiuUbsYGWe1Q5G+6lsNhSqGe57qEKHJj7+Wa3ixQkMgE/2nA31vmdfukFrYD/MOjauQwQaBZowub092gtpggj7SFxlqKEudYv9QloBmKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dlE+aihk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23BECC433F1;
+	Thu, 11 Apr 2024 10:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829676;
-	bh=9yV8KweV20qFNfXDLg8OulAdE1yn2tsbKgUYFTZ5UIg=;
+	s=korg; t=1712831715;
+	bh=T09/nQlGQX94re5Fml84TUAAOB/rKzHsk/37HuFGmcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tJRcCpRG37RTnrODjQ/If3mNL3JVJvsWVHsYAqgeJAs0H0swrOVhaKMGcYJ03xQoh
-	 XwS2qN4o3u4y88aVd19f1NwEGSDJ0a6ffdGol6HzUKedqJGhbmp/Z4M7rwHt3qiCbC
-	 AJEwXTDCgaOXjcEpI99/kh8nAfObZKasYqgTdKjU=
+	b=dlE+aihknKoZdljXE6LOzQN5utjTdKNS4ipyLBR7qkqEm3BeK8obpSnLkewQ31qgx
+	 Ewi+IAPIwI2f8OCv2i7gk8YVp1sMfYrDkNxSvwGg5sWHeBTw+ipnn+Ovg3PohU4xws
+	 qrS6vzqRhIoGusqDEsdEzfq2i+epdWO2Tenycuck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhruva Gole <d-gole@ti.com>,
-	Qingliang Li <qingliang.li@mediatek.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Qiang Zhang <qiang4.zhang@intel.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 040/175] PM: sleep: wakeirq: fix wake irq warning in system suspend
+Subject: [PATCH 5.10 100/294] memtest: use {READ,WRITE}_ONCE in memory scanning
 Date: Thu, 11 Apr 2024 11:54:23 +0200
-Message-ID: <20240411095420.765959094@linuxfoundation.org>
+Message-ID: <20240411095438.683477341@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +66,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingliang Li <qingliang.li@mediatek.com>
+From: Qiang Zhang <qiang4.zhang@intel.com>
 
-[ Upstream commit e7a7681c859643f3f2476b2a28a494877fd89442 ]
+[ Upstream commit 82634d7e24271698e50a3ec811e5f50de790a65f ]
 
-When driver uses pm_runtime_force_suspend() as the system suspend callback
-function and registers the wake irq with reverse enable ordering, the wake
-irq will be re-enabled when entering system suspend, triggering an
-'Unbalanced enable for IRQ xxx' warning. In this scenario, the call
-sequence during system suspend is as follows:
-  suspend_devices_and_enter()
-    -> dpm_suspend_start()
-      -> dpm_run_callback()
-        -> pm_runtime_force_suspend()
-          -> dev_pm_enable_wake_irq_check()
-          -> dev_pm_enable_wake_irq_complete()
+memtest failed to find bad memory when compiled with clang.  So use
+{WRITE,READ}_ONCE to access memory to avoid compiler over optimization.
 
-    -> suspend_enter()
-      -> dpm_suspend_noirq()
-        -> device_wakeup_arm_wake_irqs()
-          -> dev_pm_arm_wake_irq()
-
-To fix this issue, complete the setting of WAKE_IRQ_DEDICATED_ENABLED flag
-in dev_pm_enable_wake_irq_complete() to avoid redundant irq enablement.
-
-Fixes: 8527beb12087 ("PM: sleep: wakeirq: fix wake irq arming")
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Signed-off-by: Qingliang Li <qingliang.li@mediatek.com>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lkml.kernel.org/r/20240312080422.691222-1-qiang4.zhang@intel.com
+Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/wakeirq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/memtest.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/power/wakeirq.c b/drivers/base/power/wakeirq.c
-index e7ba514999163..bc3637b45cbf7 100644
---- a/drivers/base/power/wakeirq.c
-+++ b/drivers/base/power/wakeirq.c
-@@ -376,8 +376,10 @@ void dev_pm_enable_wake_irq_complete(struct device *dev)
- 		return;
+diff --git a/mm/memtest.c b/mm/memtest.c
+index f53ace709ccd8..d407373f225b4 100644
+--- a/mm/memtest.c
++++ b/mm/memtest.c
+@@ -46,10 +46,10 @@ static void __init memtest(u64 pattern, phys_addr_t start_phys, phys_addr_t size
+ 	last_bad = 0;
  
- 	if (wirq->status & WAKE_IRQ_DEDICATED_MANAGED &&
--	    wirq->status & WAKE_IRQ_DEDICATED_REVERSE)
-+	    wirq->status & WAKE_IRQ_DEDICATED_REVERSE) {
- 		enable_irq(wirq->irq);
-+		wirq->status |= WAKE_IRQ_DEDICATED_ENABLED;
-+	}
- }
+ 	for (p = start; p < end; p++)
+-		*p = pattern;
++		WRITE_ONCE(*p, pattern);
  
- /**
+ 	for (p = start; p < end; p++, start_phys_aligned += incr) {
+-		if (*p == pattern)
++		if (READ_ONCE(*p) == pattern)
+ 			continue;
+ 		if (start_phys_aligned == last_bad + incr) {
+ 			last_bad += incr;
 -- 
 2.43.0
 
