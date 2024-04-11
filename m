@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-39088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B668A11DD
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC6A8A11E8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22B401C2158A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A42021F23343
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707BD6BB29;
-	Thu, 11 Apr 2024 10:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432E214600E;
+	Thu, 11 Apr 2024 10:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+RGXP/m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5TaFxFV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0CE79FD;
-	Thu, 11 Apr 2024 10:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DCD6BB29;
+	Thu, 11 Apr 2024 10:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832481; cv=none; b=VJzOP+CJzMaaTyXARp7DOt4CN2Z5EHGsR8u2biO7yj897VHSlyuA2t03kbLvbYDewaSjZX1ijPxCJx06kVgT87bFW5eJJCJLTQJQro0VgwsSuEELd+3ISM5xVQ0dvhHvs3PeCgUOXT30Zw+cU4f93qQ3EFT+j2wrSu1TdWf9zjk=
+	t=1712832514; cv=none; b=qFLR4Ape0fGPKRPkoKbC1H3Vr1slay4UCB3iX+Nb9an/fhMludSgOP05ngbX0ikuUtZgsLFVtmpQHkMPXfn0YACQOnVndKxXn2Edwx6Ki2zc057F6AT2bU/IIl6b9pNxxw3xiLreU1lfuEcPlcj20RFWDa6onX0l1uetHz1TGyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832481; c=relaxed/simple;
-	bh=PjnhW990hdaffpIT1+J9tR9pO6x8Lw+cnmo86S/qoZE=;
+	s=arc-20240116; t=1712832514; c=relaxed/simple;
+	bh=/xbFUqzX0fHMluL8yejKpnJWZ2cZBQ/XW/LjTcLIHDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j9Kaq1pn2ZKL+qhRIxQlDcVZPT7JDvfDRwOIndVw+95qgHuoPnE42mFVT70wnwlDCZBe9XrGkQQFLknhS59DzUiznKp8Oqmz4ue3w18DWnco7FgBuwMo3mgIfpF9zKI5O7mTFEL3HHtsxJ+0cL5G5dBOiRaiv6Ev+sIka/Qu4sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+RGXP/m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A8EC433C7;
-	Thu, 11 Apr 2024 10:48:00 +0000 (UTC)
+	 MIME-Version; b=aOjHcjJ88+7n0MSq0LB6z1McTIAUYDpJtP0YiH/KJiRqjMJEdIUNEJVGm1CLUwcXfeNtHE29pDFbjjfhhsQzK6wrs/U7IHTJVr/QvNBYKmuNofwfO22pqRl9GsTpK7vnTrCuNaQGO2JaEy4IpbYDpo4JZneKwWJGpder8LHsW2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5TaFxFV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 737A4C433F1;
+	Thu, 11 Apr 2024 10:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832481;
-	bh=PjnhW990hdaffpIT1+J9tR9pO6x8Lw+cnmo86S/qoZE=;
+	s=korg; t=1712832513;
+	bh=/xbFUqzX0fHMluL8yejKpnJWZ2cZBQ/XW/LjTcLIHDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x+RGXP/mQtKdXBWc/G5DJ0DjM59mu88cmS5OapEuUx5A58Vmj3BtiZe6qMkyjh5ZO
-	 Lknv1qdl7Hz6pzuDS6WATJyA1L597o6xJSRfEggEfVhwoPHsR5odvINhHiYqTx9ZxO
-	 0aJDCTNeJpb0Hg1kDlG877mEAMpR4L9K/b8+TxTA=
+	b=t5TaFxFVPZU8nlGy9DgmgQ15oHJFaohzdZXZ0bv9Xh2qcLUYEQBFsueQCHMOAOfpq
+	 IJej88vDFu8tpHcteOO6YzrZbrFpnPC+sw6ODbvWKc/suU6KOiga86kG+zAd9B3/vr
+	 KgEJqEjrx6cEFHcysSqTzC9LhDAJgooFKPuSYFkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?M=C3=A1t=C3=A9=20Mosonyi?= <mosomate@gmail.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 36/83] ASoC: Intel: common: DMI remap for rebranded Intel NUC M15 (LAPRC710) laptops
-Date: Thu, 11 Apr 2024 11:57:08 +0200
-Message-ID: <20240411095413.770797860@linuxfoundation.org>
+Subject: [PATCH 6.1 37/83] rcu-tasks: Repair RCU Tasks Trace quiescence check
+Date: Thu, 11 Apr 2024 11:57:09 +0200
+Message-ID: <20240411095413.800405614@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
 References: <20240411095412.671665933@linuxfoundation.org>
@@ -62,74 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: mosomate <mosomate@gmail.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit c13e03126a5be90781084437689724254c8226e1 ]
+[ Upstream commit 2eb52fa8900e642b3b5054c4bf9776089d2a935f ]
 
-Added DMI quirk to handle the rebranded variants of Intel NUC M15
-(LAPRC710) laptops. The DMI matching is based on motherboard
-attributes.
+The context-switch-time check for RCU Tasks Trace quiescence expects
+current->trc_reader_special.b.need_qs to be zero, and if so, updates
+it to TRC_NEED_QS_CHECKED.  This is backwards, because if this value
+is zero, there is no RCU Tasks Trace grace period in flight, an thus
+no need for a quiescent state.  Instead, when a grace period starts,
+this field is set to TRC_NEED_QS.
 
-Link: https://github.com/thesofproject/linux/issues/4218
-Signed-off-by: Máté Mosonyi <mosomate@gmail.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240208165545.93811-20-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This commit therefore changes the check from zero to TRC_NEED_QS.
+
+Reported-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Tested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/dmi-quirks.c   |  8 ++++++++
- sound/soc/intel/boards/sof_sdw.c | 11 +++++++++++
- 2 files changed, 19 insertions(+)
+ include/linux/rcupdate.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soundwire/dmi-quirks.c b/drivers/soundwire/dmi-quirks.c
-index 9ebdd0cd0b1cf..91ab97a456fa9 100644
---- a/drivers/soundwire/dmi-quirks.c
-+++ b/drivers/soundwire/dmi-quirks.c
-@@ -130,6 +130,14 @@ static const struct dmi_system_id adr_remap_quirk_table[] = {
- 		},
- 		.driver_data = (void *)intel_rooks_county,
- 	},
-+	{
-+		/* quirk used for NUC15 LAPRC710 skew */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
-+			DMI_MATCH(DMI_BOARD_NAME, "LAPRC710"),
-+		},
-+		.driver_data = (void *)intel_rooks_county,
-+	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 985012f2003e2..d1e6e4208c376 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -224,6 +224,17 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 					SOF_SDW_PCH_DMIC |
- 					RT711_JD2_100K),
- 	},
-+	{
-+		/* NUC15 LAPRC710 skews */
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
-+			DMI_MATCH(DMI_BOARD_NAME, "LAPRC710"),
-+		},
-+		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
-+					SOF_SDW_PCH_DMIC |
-+					RT711_JD2_100K),
-+	},
- 	/* TigerLake-SDCA devices */
- 	{
- 		.callback = sof_sdw_quirk_cb,
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index 319698087d66a..6858cae98da9e 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -205,9 +205,9 @@ void rcu_tasks_trace_qs_blkd(struct task_struct *t);
+ 	do {									\
+ 		int ___rttq_nesting = READ_ONCE((t)->trc_reader_nesting);	\
+ 										\
+-		if (likely(!READ_ONCE((t)->trc_reader_special.b.need_qs)) &&	\
++		if (unlikely(READ_ONCE((t)->trc_reader_special.b.need_qs) == TRC_NEED_QS) &&	\
+ 		    likely(!___rttq_nesting)) {					\
+-			rcu_trc_cmpxchg_need_qs((t), 0,	TRC_NEED_QS_CHECKED);	\
++			rcu_trc_cmpxchg_need_qs((t), TRC_NEED_QS, TRC_NEED_QS_CHECKED);	\
+ 		} else if (___rttq_nesting && ___rttq_nesting != INT_MIN &&	\
+ 			   !READ_ONCE((t)->trc_reader_special.b.blocked)) {	\
+ 			rcu_tasks_trace_qs_blkd(t);				\
 -- 
 2.43.0
 
