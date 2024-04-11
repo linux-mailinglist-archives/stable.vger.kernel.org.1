@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 010E28A0F95
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ECF68A10FA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B19C5287750
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A85AB26DCE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6681B146A71;
-	Thu, 11 Apr 2024 10:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4E8146D61;
+	Thu, 11 Apr 2024 10:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTx716Re"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9Ov7nuG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2518E13FD94;
-	Thu, 11 Apr 2024 10:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA4613D24D;
+	Thu, 11 Apr 2024 10:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831117; cv=none; b=kh+AgQE/eugUiS+AETQNO4ifsObJnvk+D/J3zIa6ybtCR/hNzb+ugU7SuQrI7IYswu+w5TBf65RiZOfbM3rHIe0+NvDxT1bApo7N0t65XmuzJbAfwSY6lMghy+zqv/SH8ZXvG+EzA4vYniE+n4I9OR6GfX0v++BO1BxdG/V5SKw=
+	t=1712831945; cv=none; b=QeEkh94Onry4OwP9Qcpno/I7gH0b9gnNTZWrL8Sf8D8CYNUFkrlE/MA9N7OnW62Ej4YWZIj+NnL3kSMPRdEG1CloDH7j2JFwkbTOwTAkGTkg8AEPIyLeaQzX7xfdxPeVZ0hm8SA/+HJOVsdsJ+kbWczOUAV7L0oZ7TSh6bKt1L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831117; c=relaxed/simple;
-	bh=vqTq0eI/FhiCw9wR30WHaKSArNpHwqkwgbL2A3zyiWI=;
+	s=arc-20240116; t=1712831945; c=relaxed/simple;
+	bh=wO4SN25Ohzamm7xRoqvjXhw7XvCTnSMJwX/vFzuWY4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nwcc+AoQuk+Re/PpphT+8zC7okArSDGKAAHqJvR60cLBkbgX/u/yVYtc/moUozNAl3m9cpwWrvKVkOAUI4qkRWcY0bjDXO3Kx5XvZfumdMtnmtejk0FiPW1c841TaKvVkCQ3NJ10zo2JPIxRqfS5Q65AP47A2dgbuyN7wn18ukg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTx716Re; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3475C433C7;
-	Thu, 11 Apr 2024 10:25:16 +0000 (UTC)
+	 MIME-Version; b=HKuKyuhdnIX4wyQYajTPfdpld0FJkfMo37JYVWwK/0yPv9G3MHHDbcjA1WULNYLNNDsTahj2BHSxrSmrxFRdoNwTFKvzDoydzQ0TJR/Pz5I1ARjl5ClGzZxd1D9/qWMkC3q92bMMX5Lfq1Al3hZ1AsgCPaYamCMUOFrDSmPuVzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9Ov7nuG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35DCC433C7;
+	Thu, 11 Apr 2024 10:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831117;
-	bh=vqTq0eI/FhiCw9wR30WHaKSArNpHwqkwgbL2A3zyiWI=;
+	s=korg; t=1712831945;
+	bh=wO4SN25Ohzamm7xRoqvjXhw7XvCTnSMJwX/vFzuWY4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JTx716ReLtCv9MLoXOF44yrrYQVOr8F7iIGJ402qTb64yVkK9Sgk6em0YQrmV4v/v
-	 Fxj6N2Oy3o1NdPkEpWfSQNuHyUFSYpAE0zNlB318JDWWSElRuJoDyA8ArPTo4bxUAq
-	 2sL0+pGYRc0OKM8/Gukpo9YOacA4LfBsnEODsicI=
+	b=a9Ov7nuGBn9wIxCemevFBBGQT6NzLMdPpYwcfAsjcUH0RWra2NqP7OJ30B0r0FUZ1
+	 z88SjfzsNxF4eivABFNwrnkvNfw2Td+ajv7qdaRK6yAV32lq9YPZQby0vvUCUYKFlZ
+	 g/iQx3z3rRhTR2g8PopIaWvLujcqiomzA3Zo3r2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Jonker <jbx6244@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/114] ARM: dts: rockchip: fix rk3288 hdmi ports node
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Kim Phillips <kim.phillips@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.10 178/294] x86/cpu: Enable STIBP on AMD if Automatic IBRS is enabled
 Date: Thu, 11 Apr 2024 11:55:41 +0200
-Message-ID: <20240411095417.298501226@linuxfoundation.org>
+Message-ID: <20240411095440.986131766@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Jonker <jbx6244@gmail.com>
+From: Kim Phillips <kim.phillips@amd.com>
 
-[ Upstream commit 585e4dc07100a6465b3da8d24e46188064c1c925 ]
+commit fd470a8beed88440b160d690344fbae05a0b9b1b upstream.
 
-Fix rk3288 hdmi ports node so that it matches the
-rockchip,dw-hdmi.yaml binding with some reordering
-to align with the (new) documentation about
-property ordering.
+Unlike Intel's Enhanced IBRS feature, AMD's Automatic IBRS does not
+provide protection to processes running at CPL3/user mode, see section
+"Extended Feature Enable Register (EFER)" in the APM v2 at
+https://bugzilla.kernel.org/attachment.cgi?id=304652
 
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Link: https://lore.kernel.org/r/cc3a9b4f-076d-4660-b464-615003b6a066@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Explicitly enable STIBP to protect against cross-thread CPL3
+branch target injections on systems with Automatic IBRS enabled.
+
+Also update the relevant documentation.
+
+Fixes: e7862eda309e ("x86/cpu: Support AMD Automatic IBRS")
+Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230720194727.67022-1-kim.phillips@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/rockchip/rk3288.dtsi | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ Documentation/admin-guide/hw-vuln/spectre.rst |   11 +++++++----
+ arch/x86/kernel/cpu/bugs.c                    |   15 +++++++++------
+ 2 files changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/boot/dts/rockchip/rk3288.dtsi b/arch/arm/boot/dts/rockchip/rk3288.dtsi
-index cb9cdaddffd42..8593a83599376 100644
---- a/arch/arm/boot/dts/rockchip/rk3288.dtsi
-+++ b/arch/arm/boot/dts/rockchip/rk3288.dtsi
-@@ -1231,27 +1231,37 @@ hdmi: hdmi@ff980000 {
- 		compatible = "rockchip,rk3288-dw-hdmi";
- 		reg = <0x0 0xff980000 0x0 0x20000>;
- 		reg-io-width = <4>;
--		#sound-dai-cells = <0>;
--		rockchip,grf = <&grf>;
- 		interrupts = <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&cru  PCLK_HDMI_CTRL>, <&cru SCLK_HDMI_HDCP>, <&cru SCLK_HDMI_CEC>;
- 		clock-names = "iahb", "isfr", "cec";
- 		power-domains = <&power RK3288_PD_VIO>;
-+		rockchip,grf = <&grf>;
-+		#sound-dai-cells = <0>;
- 		status = "disabled";
+--- a/Documentation/admin-guide/hw-vuln/spectre.rst
++++ b/Documentation/admin-guide/hw-vuln/spectre.rst
+@@ -484,11 +484,14 @@ Spectre variant 2
  
- 		ports {
--			hdmi_in: port {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			hdmi_in: port@0 {
-+				reg = <0>;
- 				#address-cells = <1>;
- 				#size-cells = <0>;
-+
- 				hdmi_in_vopb: endpoint@0 {
- 					reg = <0>;
- 					remote-endpoint = <&vopb_out_hdmi>;
- 				};
-+
- 				hdmi_in_vopl: endpoint@1 {
- 					reg = <1>;
- 					remote-endpoint = <&vopl_out_hdmi>;
- 				};
- 			};
-+
-+			hdmi_out: port@1 {
-+				reg = <1>;
-+			};
- 		};
- 	};
+    Systems which support enhanced IBRS (eIBRS) enable IBRS protection once at
+    boot, by setting the IBRS bit, and they're automatically protected against
+-   Spectre v2 variant attacks, including cross-thread branch target injections
+-   on SMT systems (STIBP). In other words, eIBRS enables STIBP too.
++   Spectre v2 variant attacks.
  
--- 
-2.43.0
-
+-   Legacy IBRS systems clear the IBRS bit on exit to userspace and
+-   therefore explicitly enable STIBP for that
++   On Intel's enhanced IBRS systems, this includes cross-thread branch target
++   injections on SMT systems (STIBP). In other words, Intel eIBRS enables
++   STIBP, too.
++
++   AMD Automatic IBRS does not protect userspace, and Legacy IBRS systems clear
++   the IBRS bit on exit to userspace, therefore both explicitly enable STIBP.
+ 
+    The retpoline mitigation is turned on by default on vulnerable
+    CPUs. It can be forced on or off by the administrator
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1317,19 +1317,21 @@ spectre_v2_user_select_mitigation(void)
+ 	}
+ 
+ 	/*
+-	 * If no STIBP, enhanced IBRS is enabled, or SMT impossible, STIBP
++	 * If no STIBP, Intel enhanced IBRS is enabled, or SMT impossible, STIBP
+ 	 * is not required.
+ 	 *
+-	 * Enhanced IBRS also protects against cross-thread branch target
++	 * Intel's Enhanced IBRS also protects against cross-thread branch target
+ 	 * injection in user-mode as the IBRS bit remains always set which
+ 	 * implicitly enables cross-thread protections.  However, in legacy IBRS
+ 	 * mode, the IBRS bit is set only on kernel entry and cleared on return
+-	 * to userspace. This disables the implicit cross-thread protection,
+-	 * so allow for STIBP to be selected in that case.
++	 * to userspace.  AMD Automatic IBRS also does not protect userspace.
++	 * These modes therefore disable the implicit cross-thread protection,
++	 * so allow for STIBP to be selected in those cases.
+ 	 */
+ 	if (!boot_cpu_has(X86_FEATURE_STIBP) ||
+ 	    !smt_possible ||
+-	    spectre_v2_in_eibrs_mode(spectre_v2_enabled))
++	    (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
++	     !boot_cpu_has(X86_FEATURE_AUTOIBRS)))
+ 		return;
+ 
+ 	/*
+@@ -2596,7 +2598,8 @@ static ssize_t rfds_show_state(char *buf
+ 
+ static char *stibp_state(void)
+ {
+-	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled))
++	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
++	    !boot_cpu_has(X86_FEATURE_AUTOIBRS))
+ 		return "";
+ 
+ 	switch (spectre_v2_user_stibp) {
 
 
 
