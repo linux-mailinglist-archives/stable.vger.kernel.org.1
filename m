@@ -1,155 +1,148 @@
-Return-Path: <stable+bounces-39223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BBF48A1FA0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 21:42:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DDF8A1FCF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 21:58:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2103728A2A3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 19:42:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BBE028B1C0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 19:58:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC401755A;
-	Thu, 11 Apr 2024 19:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2C0F9DF;
+	Thu, 11 Apr 2024 19:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="qo3oPvse"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.itouring.de (mail.itouring.de [85.10.202.141])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2067.outbound.protection.outlook.com [40.107.236.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DB6175AD;
-	Thu, 11 Apr 2024 19:42:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.202.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712864567; cv=none; b=DeX9ZrI2hDX5cd+RHcYVvS8inpAoX8MsHANRb7k1FlvGnIku33FncLv0ITGPbXkTigz0CdAALh+y/gmdt/U6vbsvNxS0UBLRW/XMWCpJ6xhZwnANhmHkq1g/QiVPu75jxNSPr5IyrH0CuCHuUSv6X009mSqS2M+2PGejbx0JQ78=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712864567; c=relaxed/simple;
-	bh=UJBRZUK4e9eLdqQMw3ivQwpCvgp4H+Bnb9TUiy3whug=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=RD1ip89RFc6WIE0nkeCXZ9hcBwifOogN5ml/5W6zk3zfNl6GVVBbAnJwHDL4Dd5/hNu1VfPa6iBiKNpz6npjBX/q9V0QFSEVi1ZavroQumrgYMrGYjt0KNFtwHX9S+Ue1jNb/GP2SdenRZijUCsaWlchLGrA0SG5grwtt1MHeFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com; spf=pass smtp.mailfrom=applied-asynchrony.com; arc=none smtp.client-ip=85.10.202.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=applied-asynchrony.com
-Received: from tux.applied-asynchrony.com (p5ddd7672.dip0.t-ipconnect.de [93.221.118.114])
-	by mail.itouring.de (Postfix) with ESMTPSA id 920C4103762;
-	Thu, 11 Apr 2024 21:34:41 +0200 (CEST)
-Received: from [192.168.100.221] (hho.applied-asynchrony.com [192.168.100.221])
-	by tux.applied-asynchrony.com (Postfix) with ESMTP id 3244CF01607;
-	Thu, 11 Apr 2024 21:34:41 +0200 (CEST)
-Subject: Re: [PATCH 6.8 000/143] 6.8.6-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240411095420.903937140@linuxfoundation.org>
-From: =?UTF-8?Q?Holger_Hoffst=c3=a4tte?= <holger@applied-asynchrony.com>
-Organization: Applied Asynchrony, Inc.
-Message-ID: <0386180b-d01d-81d6-bb7b-d6641ab4d719@applied-asynchrony.com>
-Date: Thu, 11 Apr 2024 21:34:41 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5FD17C6A
+	for <stable@vger.kernel.org>; Thu, 11 Apr 2024 19:57:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712865480; cv=fail; b=TVImBbxxhm5Rg9VpYH/o8ToCI/ZYrxdtYVjQlYa7lD/uQhLPQi+OL3n5FN78GtvPiek1mwT896Wb2DQm6gTMT4dQy4P4CYGPmgyNYeGr9XEPu+e1Gh2lFqM9hGh8EbyNPFpRnPTvK3ygVAuQI9cU41AoM6Lm7Hw7UCSNzKU4gzo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712865480; c=relaxed/simple;
+	bh=Ux0d0Z7cGkGnzXhP/4MASThTnC1C2vQaxdlpHZRQXVI=;
+	h=Message-ID:Date:To:From:Subject:Content-Type:MIME-Version; b=UD3zDNujXxPw4OR5wCSXJHKvWHetHYpIuVICc7GWFCx7nWu40nFu0V7MNN8yiwFVYm6ODdkqqvPGCt4KP2jjyS75ossXqafu9emK1ZkYPIvO3WnBL4qgV+tllY3oIccTBxRd8+WrwpnuMPSWkpzcD0a2FfuPi/QcCEW2QfX3q+k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=qo3oPvse; arc=fail smtp.client-ip=40.107.236.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BPr9YwVvUj6lKC2lcCK6KyE3IW/DJ/1tjrEkRyc12ZKuQ2azif+CPVzg4ZDycfKB5sRjNSDrWhQhx/6XE7u8SUDUF9ZOGqyZzzO7Xj1Mp81AJLk1fq+B7rLH+v77p/rxFp4EvW52CRGMugZPpyVTdNK6wIf4GJI1RUDVDWwHogcunWp87bsfOjxXDMoc02UGQPSavySHz1BG5sOeDt2aUPcoWLeHuVSTZwROUgpzluc3tIE9rF2U86UB5golPR3HOVooDP0EGmf8DNtrWTNUvZkN+nP03VKQPevfBj9YOnImcq6ECw/iiNn3iknJ8zj0gTcPpxEbJhI2z7w1UbwCJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7Xl+rrlKHsXX4UGa+PJR7VxNGiP6KSTsUz3EHn/AFhY=;
+ b=A4OtDMGFNCiHC6x5pea6wHqVcZq4TXeqLWuUKy9xm0YT4VfFTiRswycQemSC6dXRFtqZNnFNA4iaQbb1NwodINEu76RTLNiUc+SmA+aRqTKlagQXETDPfWBAHLedMqKGpLVfb9KVOAZvW+vH1jp9T3IclEzZ4KhT47t2mr+m7VXVwEPnwCFgKV93pcUqdtagqiQtxYV+AyJTMrEd4w7sZxxQAG1IzmbBU/TxuDIxL2952q1EqRwhc9KCBfmJSXKwN+H4UrsrBnSO4A9IMCxGAM8UcXzJB0NBYHRIsE6FWp5mtZbUYeawfSUyMNzto4WHzEV+5tXLfulIaRYFRblf9A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7Xl+rrlKHsXX4UGa+PJR7VxNGiP6KSTsUz3EHn/AFhY=;
+ b=qo3oPvseEOkXlN7TMFARo/NSR3ptfCidmaJNb4WDwjCJ+0+bbWXwwBgYNHZLCq3dRsrOy1jEDbhkr1CROz1D4exmS4zW+omw3zcsOdF0VMR5Y2OIBu1Iq5Sv9AkCuhm8PwsGbotWbWVULN667VUJIzZGG/r5Ypx57EhdEHhLrGI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB6253.namprd12.prod.outlook.com (2603:10b6:8:a6::12) by
+ IA1PR12MB8520.namprd12.prod.outlook.com (2603:10b6:208:44d::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7409.55; Thu, 11 Apr 2024 19:57:54 +0000
+Received: from DM4PR12MB6253.namprd12.prod.outlook.com
+ ([fe80::36ae:90ed:1c31:6499]) by DM4PR12MB6253.namprd12.prod.outlook.com
+ ([fe80::36ae:90ed:1c31:6499%4]) with mapi id 15.20.7409.042; Thu, 11 Apr 2024
+ 19:57:54 +0000
+Message-ID: <6be49d46-0448-4fd5-b605-b0274889e1b0@amd.com>
+Date: Thu, 11 Apr 2024 14:57:52 -0500
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: stable@vger.kernel.org
+From: "Gong, Richard" <richard.gong@amd.com>
+Subject: Add commit "eed14eb48ee1 drm/amdgpu/vpe: power on vpe when hw_init"
+ to kernel 6.8.y
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA9PR11CA0021.namprd11.prod.outlook.com
+ (2603:10b6:806:6e::26) To DM4PR12MB6253.namprd12.prod.outlook.com
+ (2603:10b6:8:a6::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB6253:EE_|IA1PR12MB8520:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3d79f3aa-738d-425a-ebc1-08dc5a61ad01
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	hoICfG6RYlpV18lsB3dwSv9dEoYz+TUJRqxzMAHXpV2g3srMyMTqGA6MyyAMbFGID2nigcW65yvIyHU65qLqrbufFnGAs8szx6cdMh9v/ZmFQ1VidA1YLetmO/Io53oPLExUckaRAfaajTUiXGKafmWkMCIiDaolLZWTAOvx1tfUxM8gYavUmdUhUF5I3obYX1qXUoGPbAt/VXhTFJrRuE1OLugHcU5bdTGSOySM34qnxYRp8WnZuxzwQs5LYaQfSn1uUJb32p0BPxkhI96HXm+QQB8WLhHhuqjEOOeAfWlMkEI/Se6fkG/jeudw5cjforRs2QqiLCsMUDeiW9ZqTmU0k8EVP0bfx/SMtycIO2ZQgD0xcqnD9vjqE4nD7XtS9dbQzRkeWsi/aVbKrtunHKVy8jCd6y8VzpNjE+8eHpcDcSz+VEmvv/+6lapswZtI/oSHiqr+zp88oO9dlTiJEUwaEeOxsKKUEBXd9FePnKP8xbbaduufYk0OqRcmRyvsuINgN+RtVmzhWarcmiPseVOJHmqaPlwvDFZfsOicTWTlC24atNeZpOyhdGJs93C0r3Dm59c0GKSEcuXLtT7F75KuSccfXy6uz3dIAdJC82Afa1ys9JohXfMetIPx4oJa5s5szcwLgFek3x0fx57zXebkUtLzKJtcvdIJqtWND0g=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6253.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?K1UvcGJlU0FQazRMWVpGQ2pjYitxTlVlTG0ydFB3T0hzMlV1Q0t4bkVJa21m?=
+ =?utf-8?B?aHFCZmJhQXFOY1V1bnZaTFVqQW5Pckd0Mkt4ajU2eVhSV0RZM2VNN3owY1FW?=
+ =?utf-8?B?cmIreGdJaXJnb211VGRjOWoydWxnSGVXRC9BSERyYmh0SHowWGRtUHlYTkVB?=
+ =?utf-8?B?eW9DWG90aXQ2OHJkYnF0LzgrbUhoc3hINEdmMWh4dTY1YzlNNTY5YzVDOW00?=
+ =?utf-8?B?ZzhXZ1hWRHFpdkdvSTVRNTA3UVF4eGlzRnpUeFAvQ05FemxLOXVpdUt1K2l1?=
+ =?utf-8?B?eE9LNzI5Q204ME16NWpYZm4reFRkT2FMY0x3aGRjV0hMa1UzYnhvc3pvbFFq?=
+ =?utf-8?B?eWJ1Ui9zT3gxZ3Frc0ozSFo1MFRPU3JYcUZrSnZrNmFGeEZ3ZDlZaGxFenFZ?=
+ =?utf-8?B?S2RaUzg0ZjRXNlRkOStrbllvQnRTdVNBT2dzdXZVNlV4eUtBVTRkUTFnd0Yw?=
+ =?utf-8?B?cjVYMUo2ZXdkZ0dBV0JGUEoxZXg2Y2wwTVExSVI3Q3VoOFFUSFAwU3ErZmZp?=
+ =?utf-8?B?d0JwRDlGUFZlSXBTTmdFeERUS3ZMZnlJeEgzMWJBb0pwV2VkRXcwb2hhT1kx?=
+ =?utf-8?B?R3JYVHNZd1ZQTk5xOW44V01zdkVMcGQ2VmtRRzRJTGZqMkpPOGVHQXNQV1Zz?=
+ =?utf-8?B?aG1VbFA2dk1HcHpoQm5RNzk5NGxjTDhkeHlUSE5oZGZTYm1uRzB3OGQrU0x5?=
+ =?utf-8?B?K3pueFNRZ0dBc1lCKzVvYmdRR3JJUWxXR0grdmZvY1dNelBYekY3N3oyV3Qv?=
+ =?utf-8?B?QUFQSTg4SjhCMWE2SVpoN3B3d2JnMmdIMFF6bmd2S1pZdEwycXphVlJoazAw?=
+ =?utf-8?B?d082MDVOMTBDSmd5aGpqRXJ3YVYrWWFUcWZ1dklCc3B6S2hoRGc2UkZnN0pS?=
+ =?utf-8?B?RzIxejlLbmhKRml3NFpNV25VYzd5NVUxMU9pbHUzQ0VpajhUZGRJdzZaWGZG?=
+ =?utf-8?B?bStJVXBjUGxsaWZ1MExwMzVYU1I4Vm9SVW9ZRTYyMU1POGo2SlhLVTlBdXpS?=
+ =?utf-8?B?KzhkYnYrdFhTSEgvY1A0ZXUyRmw4MS9BdHIvNmltdUF3em1rRE11ZDd2em9P?=
+ =?utf-8?B?OFdCcW5oVm9pUGl0RnVUUEJyNFhsZUk5aFR6MENkeXFPSmNoTnRORkxZTzQy?=
+ =?utf-8?B?NlpkOHVMT0F4dXRlRVRSTk1wS2RTczRSSDRwMHNMR0xzNFdiYkJvWDBNUGJh?=
+ =?utf-8?B?dzJJc0ZGTGd3MU4xZDBxOGFzSVovaTVLck0xUWhLbDFvSVdMcmJHU0RKNFNz?=
+ =?utf-8?B?bVcrRFFBT2hnNWxRSWo4QUJ3djJ3UlZoV3hUdTVXWWVLbEJHQ0lYSytseXd4?=
+ =?utf-8?B?Q1BOVi8rQ2pyZUNnMGRMQ3dzcFc5QVpkOGtQYkdDUXJBMVdXNmlzMktlRTJF?=
+ =?utf-8?B?MXVjWi8wZmhMejNWbkhEeGFGUkNVR0JLamRTM1VTR25SVzlqN0lCVHVhSnph?=
+ =?utf-8?B?cDNhWjRSLy8rMC9Yd1p0clZlZjZ0eldXZGUvZzJOZjNRZmo5ODVLTk1KblhP?=
+ =?utf-8?B?ajZzeXZWTmpYUTJsTWh1T2Z6dVZ6NmlSUlVZeU1oSUFpNVUxTlVhREl4N0pI?=
+ =?utf-8?B?dTMwSHF5VzVaM3FGekJRbmJIOW0vYjVEcXkyeHE1bGxlOWRhV0hackxkS1N5?=
+ =?utf-8?B?Znpxc2ZjVUh1a1NKZitUMFZkTWNxd1VmL2o2TXRIZHFHSk1xdm5NWDFYSXJ0?=
+ =?utf-8?B?VFRoelVuc0JKV00rSHExaVRQc2RYaDcrY2JlK0hLeTJvK21jNWZVcm5Td2Mv?=
+ =?utf-8?B?WjN1QVVEclNhWFJ2YktTdjFmUHFsOGw0LzFQZk5kaE81OUlZUldCQjY2NTRr?=
+ =?utf-8?B?YjFncHFFeXZ6eHIralBqQ1U4Y3YrRE9US3hVamJFRDZtYjRLeDBLWjFzT2d3?=
+ =?utf-8?B?TkZPYmFLZUFobWpWRUZrek9jZWxPc0tQTEhYd1BCSUYyNXhjY0daaHhXblUv?=
+ =?utf-8?B?UStCZ2Z3RDdKeXgzOFBIYW9XVHNqSWJTaTZpUFZSK2k2OFhudm0vNXFJY2Jh?=
+ =?utf-8?B?MklkOVoxNkRUZHZxc1FrYTg3bzE4bks4aGc2eU1ra2JmZFdjMkJEaWMrYXZK?=
+ =?utf-8?B?dkJLajBGdGdpdUtuZkpTYm80eFFxQWNvckhmdTBHc3RMdStvcmNYTGtMUlQx?=
+ =?utf-8?Q?+mqQ=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d79f3aa-738d-425a-ebc1-08dc5a61ad01
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6253.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2024 19:57:54.2393
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4pD5esZFxnc6DGebRl7zUS4rUu0cdu/quzMRQ0NEeC1wJQRtnTpKzyo5/BAr6zhLCtCQywEtHL4w10pbJE9vZw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8520
 
-On 2024-04-11 11:54, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.8.6 release.
-> There are 143 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
 
-With this -rc1 I see the following WARNING noise on my AMD Zen2 Thinkpad
-during boot:
+Hi,
 
---snip--
-Apr 11 16:08:45 hho kernel: [drm] Initialized amdgpu 3.57.0 20150101 for 0000:06:00.0 on minor 0
-Apr 11 16:08:45 hho kernel: ------------[ cut here ]------------
-Apr 11 16:08:45 hho kernel: amdgpu 0000:06:00.0: drm_WARN_ON_ONCE(!dev->mode_config.poll_enabled)
-Apr 11 16:08:45 hho kernel: WARNING: CPU: 10 PID: 728 at drivers/gpu/drm/drm_probe_helper.c:305 drm_kms_helper_poll_enable+0x129/0x130 [drm_kms_helper]
-Apr 11 16:08:45 hho kernel: Modules linked in: sch_fq_codel bpf_preload uvcvideo videobuf2_vmalloc videobuf2_memops uvc videobuf2_v4l2 mousedev videodev videobuf2_common mc snd_ctl_led snd_hda_codec_realtek iwlmvm amdgpu(+) snd_hda_codec_generic mac80211 libarc4 snd_hda_codec_hdmi pkcs8_key_parser edac_mce_amd i2c_algo_bit drm_ttm_helper crct10dif_pclmul crc32_pclmul crc32c_intel ttm snd_hda_intel ghash_clmulni_intel drm_exec snd_intel_dspcfg sha512_ssse3 drm_suballoc_helper amdxcp sha256_ssse3 snd_hda_codec drm_buddy gpu_sched sha1_ssse3 snd_hwdep iwlwifi snd_hda_core lm92 drm_display_helper thinkpad_acpi snd_pcm cec snd_rn_pci_acp3x ledtrig_audio snd_timer wmi_bmof drivetemp drm_kms_helper psmouse rapl r8169 platform_profile snd_acp_config cfg80211 serio_raw realtek k10temp snd_soc_acpi ipmi_devintf snd ucsi_acpi mdio_devres drm snd_pci_acp3x i2c_piix4 soundcore rfkill typec_ucsi ipmi_msghandler libphy video roles typec battery ac wmi i2c_scmi button
-Apr 11 16:08:45 hho kernel: CPU: 10 PID: 728 Comm: (udev-worker) Not tainted 6.8.6 #1
-Apr 11 16:08:45 hho kernel: Hardware name: LENOVO 20U50001GE/20U50001GE, BIOS R19ET32W (1.16 ) 01/26/2021
-Apr 11 16:08:45 hho kernel: RIP: 0010:drm_kms_helper_poll_enable+0x129/0x130 [drm_kms_helper]
-Apr 11 16:08:45 hho kernel: Code: 48 8b 5f 50 48 85 db 75 03 48 8b 1f e8 90 58 f8 e0 48 c7 c1 a0 0a 67 a0 48 89 da 48 c7 c7 84 14 67 a0 48 89 c6 e8 27 b2 a6 e0 <0f> 0b e9 08 ff ff ff 0f 1f 44 00 00 48 b8 e0 ff ff ff 0f 00 00 00
-Apr 11 16:08:45 hho kernel: RSP: 0018:ffffc900005ff918 EFLAGS: 00010296
-Apr 11 16:08:45 hho kernel: RAX: 0000000000000045 RBX: ffff88810173c5b0 RCX: 0000000000000027
-Apr 11 16:08:45 hho kernel: RDX: ffff8887ef69c6c8 RSI: 0000000000000001 RDI: ffff8887ef69c6c0
-Apr 11 16:08:45 hho kernel: RBP: 0000000000000000 R08: 00000000fffeffff R09: 0000000000000001
-Apr 11 16:08:45 hho kernel: R10: 0000000000000000 R11: ffff8887eec80000 R12: ffff88810e380010
-Apr 11 16:08:45 hho kernel: R13: ffff88810e380010 R14: 0000000000000003 R15: ffffffffa03b69ce
-Apr 11 16:08:45 hho kernel: FS:  00007f7472869800(0000) GS:ffff8887ef680000(0000) knlGS:0000000000000000
-Apr 11 16:08:45 hho kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-Apr 11 16:08:45 hho kernel: CR2: 00005607b50f5000 CR3: 0000000104f3e000 CR4: 0000000000350ef0
-Apr 11 16:08:45 hho kernel: Call Trace:
-Apr 11 16:08:45 hho kernel:  <TASK>
-Apr 11 16:08:45 hho kernel:  ? drm_kms_helper_poll_enable+0x129/0x130 [drm_kms_helper]
-Apr 11 16:08:45 hho kernel:  ? __warn+0x7d/0x120
-Apr 11 16:08:45 hho kernel:  ? drm_kms_helper_poll_enable+0x129/0x130 [drm_kms_helper]
-Apr 11 16:08:45 hho kernel:  ? report_bug+0x155/0x180
-Apr 11 16:08:45 hho kernel:  ? handle_bug+0x36/0x70
-Apr 11 16:08:45 hho kernel:  ? exc_invalid_op+0x13/0x60
-Apr 11 16:08:45 hho kernel:  ? asm_exc_invalid_op+0x16/0x20
-Apr 11 16:08:45 hho kernel:  ? drm_kms_helper_poll_enable+0x129/0x130 [drm_kms_helper]
-Apr 11 16:08:45 hho kernel:  ? drm_kms_helper_poll_enable+0x129/0x130 [drm_kms_helper]
-Apr 11 16:08:45 hho kernel:  drm_helper_probe_single_connector_modes+0x167/0x4f0 [drm_kms_helper]
-Apr 11 16:08:45 hho kernel:  drm_client_modeset_probe+0x1e0/0x1350 [drm]
-Apr 11 16:08:45 hho kernel:  ? __cond_resched+0x16/0x40
-Apr 11 16:08:45 hho kernel:  ? kmalloc_trace+0xfd/0x280
-Apr 11 16:08:45 hho kernel:  ? __pm_runtime_suspend+0x67/0xb0
-Apr 11 16:08:45 hho kernel:  __drm_fb_helper_initial_config_and_unlock+0x2d/0x490 [drm_kms_helper]
-Apr 11 16:08:45 hho kernel:  ? drm_file_alloc+0x1af/0x250 [drm]
-Apr 11 16:08:45 hho kernel:  ? __cond_resched+0x16/0x40
-Apr 11 16:08:45 hho kernel:  drm_fbdev_generic_client_hotplug+0x62/0xb0 [drm_kms_helper]
-Apr 11 16:08:45 hho kernel:  drm_client_register+0x5a/0x90 [drm]
-Apr 11 16:08:45 hho kernel:  amdgpu_pci_probe+0x465/0x4d0 [amdgpu]
-Apr 11 16:08:45 hho kernel:  local_pci_probe+0x39/0x80
-Apr 11 16:08:45 hho kernel:  pci_device_probe+0xa1/0x1b0
-Apr 11 16:08:45 hho kernel:  really_probe+0x156/0x2e0
-Apr 11 16:08:45 hho kernel:  ? __device_attach_driver+0x100/0x100
-Apr 11 16:08:45 hho kernel:  __driver_probe_device+0x73/0x110
-Apr 11 16:08:45 hho kernel:  driver_probe_device+0x1f/0xe0
-Apr 11 16:08:45 hho kernel:  __driver_attach+0x7d/0x180
-Apr 11 16:08:45 hho kernel:  bus_for_each_dev+0x60/0x90
-Apr 11 16:08:45 hho kernel:  bus_add_driver+0xe4/0x1e0
-Apr 11 16:08:45 hho kernel:  driver_register+0x55/0xf0
-Apr 11 16:08:45 hho kernel:  ? 0xffffffffa020a000
-Apr 11 16:08:45 hho kernel:  do_one_initcall+0x41/0x1c0
-Apr 11 16:08:45 hho kernel:  ? kmalloc_trace+0x1d5/0x280
-Apr 11 16:08:45 hho kernel:  do_init_module+0x60/0x230
-Apr 11 16:08:45 hho kernel:  init_module_from_file+0x79/0xb0
-Apr 11 16:08:45 hho kernel:  __x64_sys_finit_module+0x155/0x280
-Apr 11 16:08:45 hho kernel:  do_syscall_64+0x49/0x110
-Apr 11 16:08:45 hho kernel:  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-Apr 11 16:08:45 hho kernel: RIP: 0033:0x7f7472a740e9
-Apr 11 16:08:45 hho kernel: Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 07 ed 0c 00 f7 d8 64 89 01 48
-Apr 11 16:08:45 hho kernel: RSP: 002b:00007ffcff3f42d8 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
-Apr 11 16:08:45 hho kernel: RAX: ffffffffffffffda RBX: 0000564f9b3f5d50 RCX: 00007f7472a740e9
-Apr 11 16:08:45 hho kernel: RDX: 0000000000000004 RSI: 00007f7472c50369 RDI: 0000000000000017
-Apr 11 16:08:45 hho kernel: RBP: 0000000000000004 R08: 00007f7472b43b20 R09: 0000564f9b3af700
-Apr 11 16:08:45 hho kernel: R10: 0000000000000050 R11: 0000000000000246 R12: 00007f7472c50369
-Apr 11 16:08:45 hho kernel: R13: 0000000000020000 R14: 0000564f9b41d6b0 R15: 0000000000000000
-Apr 11 16:08:45 hho kernel:  </TASK>
-Apr 11 16:08:45 hho kernel: ---[ end trace 0000000000000000 ]---
-Apr 11 16:08:45 hho kernel: fbcon: amdgpudrmfb (fb0) is primary device
---snap--
+The commit below resolves s2idle failure on processor for AMD Family 1Ah 
+Model 20h,
 
-This is due to "drm-check-output-polling-initialized-before-disablin.patch" which
-needs a followup patch to work properly, otherwise the above drm_WARN_ON_ONCE
-always fires for the wrong reason.
+	eed14eb48ee1 drm/amdgpu/vpe: power on vpe when hw_init
 
-The commit in mainline is:
+Please add this commit to stable kernel 6.8.y. Thanks!
 
-048a36d8a608 "drm: Check polling initialized before enabling in drm_helper_probe_single_connector_modes"
-
-With that commit amdgpu initialisation is happy again: no more WARN_ON_ONCE on boot.
-
-cheers
-Holger
+Regards,
+Richard
 
