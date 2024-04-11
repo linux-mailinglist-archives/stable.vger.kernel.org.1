@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5CCC8A0DA3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:06:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48F758A0FBD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:27:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48496B218BD
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:06:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2BC1282DBC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D110145B0D;
-	Thu, 11 Apr 2024 10:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA92146A72;
+	Thu, 11 Apr 2024 10:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIzpDvJ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXz9vblA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA742EAE5;
-	Thu, 11 Apr 2024 10:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E1B13FD94;
+	Thu, 11 Apr 2024 10:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829962; cv=none; b=MlhhF9Ta1VKUIS6Yaca1CmkZJbxQ9Y9bouT2nuyeACN2iCYkPLnHrTklTr6hO9YKO+m8eVIv10zgc8npQxfS376ekMvnukkT7CX2XZoBE5Lywm76oAXpkCIgk6AO+DqGMrxz0OIDb3qVAJC8tHTxKozDZ3/9QDGK9uanYtFrEHo=
+	t=1712831223; cv=none; b=moE43F19b+5Ijh4KtKiBfq1LEMLjUyM+56322hSZWSY9gh+hIULPnCON75Xdhe9QPew8bP3rFJTc3vC/WZTXhhDlmQmSmcto9QY9Yn2ZrureqkZJYYdA1Vqh01KkRYG1Z42gVdp0D8b0iFNdgZtuySdZZozoGobC93QXacdenGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829962; c=relaxed/simple;
-	bh=kKFhvrzyuZxKDJKNbB0W9W2I59yzak06BxWVhP7JPeo=;
+	s=arc-20240116; t=1712831223; c=relaxed/simple;
+	bh=ZV1lMhXCcir27OMhymeGeWJGgJawuCKJPPEqQu9XR+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fl247f6r0aXcrWUecu0SU9gruWzEo0ycL6Rymb/PLKMwywUR5GDkZV9Fkkf8UU6dyDosUjJIRQ0afCOl4wL6HVFxgqdsgDtg8sXVAVrne3GQ1/qYDniEp39OGUftID0EcGVBa/FPz1XOhP7N0X9rYusPoX8ww0crUSL4IA4g5fE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIzpDvJ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C576BC433F1;
-	Thu, 11 Apr 2024 10:06:01 +0000 (UTC)
+	 MIME-Version; b=VfE9iyRgeU8weaazMWjr3pvHQc8fRw4L6Cr8na9FdolsHpqZ9umrxJ6K1Z6HR06JViVCRpd7tsPCFrhPqy+f/7T/FXqynWp10CjzYRdPg1kD7+U41bS5BjbCaJUaeelVVV1mI9lDafsGLvlHvuyss+kBlqtO78zJsdEogAQru5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXz9vblA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E82DC433F1;
+	Thu, 11 Apr 2024 10:27:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829962;
-	bh=kKFhvrzyuZxKDJKNbB0W9W2I59yzak06BxWVhP7JPeo=;
+	s=korg; t=1712831222;
+	bh=ZV1lMhXCcir27OMhymeGeWJGgJawuCKJPPEqQu9XR+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dIzpDvJ7XKAVE+PpTpTdX4AtuEZ2GQQFOwGNAk8pLiqSGdcXE7wS6NfNn3dTvgAQb
-	 uOYWs5UE2nKGcaRX/cLFMdGCVdcvTLY6acB7hvQLT+squ/oNHZFj8QCt0Li0uHKLYI
-	 fTUOtTQqVWKnsgFFkqcVyp0TVjrF7YSpFaHXAqAU=
+	b=RXz9vblAtpxCVVz8IEs2fngOAq4KFdl2DQACqmXAdPCfOTpfyMRq3s0LIJXABel4p
+	 GpUoPm6YIQ5ygyV6PHUGcnhlUO/vtmd42ucmSpxPfwRhAGcvDup3fawy/C09qsTRnQ
+	 Z6hPHu6syrA5uGFXveZCdPKgYFMjitTCDuib+ogY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 126/175] ipv6: Fix infinite recursion in fib6_dump_done().
+	Florian Westphal <fw@strlen.de>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 022/114] net: skbuff: add overflow debug check to pull/push helpers
 Date: Thu, 11 Apr 2024 11:55:49 +0200
-Message-ID: <20240411095423.358935956@linuxfoundation.org>
+Message-ID: <20240411095417.539333685@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,139 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit d21d40605bca7bd5fc23ef03d4c1ca1f48bc2cae upstream.
+[ Upstream commit 219eee9c0d16f1b754a8b85275854ab17df0850a ]
 
-syzkaller reported infinite recursive calls of fib6_dump_done() during
-netlink socket destruction.  [1]
+syzbot managed to trigger following splat:
+BUG: KASAN: use-after-free in __skb_flow_dissect+0x4a3b/0x5e50
+Read of size 1 at addr ffff888208a4000e by task a.out/2313
+[..]
+  __skb_flow_dissect+0x4a3b/0x5e50
+  __skb_get_hash+0xb4/0x400
+  ip_tunnel_xmit+0x77e/0x26f0
+  ipip_tunnel_xmit+0x298/0x410
+  ..
 
->From the log, syzkaller sent an AF_UNSPEC RTM_GETROUTE message, and then
-the response was generated.  The following recvmmsg() resumed the dump
-for IPv6, but the first call of inet6_dump_fib() failed at kzalloc() due
-to the fault injection.  [0]
+Analysis shows that the skb has a valid ->head, but bogus ->data
+pointer.
 
-  12:01:34 executing program 3:
-  r0 = socket$nl_route(0x10, 0x3, 0x0)
-  sendmsg$nl_route(r0, ... snip ...)
-  recvmmsg(r0, ... snip ...) (fail_nth: 8)
+skb->data gets its bogus value via the neigh layer, which does:
 
-Here, fib6_dump_done() was set to nlk_sk(sk)->cb.done, and the next call
-of inet6_dump_fib() set it to nlk_sk(sk)->cb.args[3].  syzkaller stopped
-receiving the response halfway through, and finally netlink_sock_destruct()
-called nlk_sk(sk)->cb.done().
+1556    __skb_pull(skb, skb_network_offset(skb));
 
-fib6_dump_done() calls fib6_dump_end() and nlk_sk(sk)->cb.done() if it
-is still not NULL.  fib6_dump_end() rewrites nlk_sk(sk)->cb.done() by
-nlk_sk(sk)->cb.args[3], but it has the same function, not NULL, calling
-itself recursively and hitting the stack guard page.
+... and the skb was already dodgy at this point:
 
-To avoid the issue, let's set the destructor after kzalloc().
+skb_network_offset(skb) returns a negative value due to an
+earlier overflow of skb->network_header (u16).  __skb_pull thus
+"adjusts" skb->data by a huge offset, pointing outside skb->head
+area.
 
-[0]:
-FAULT_INJECTION: forcing a failure.
-name failslab, interval 1, probability 0, space 0, times 0
-CPU: 1 PID: 432110 Comm: syz-executor.3 Not tainted 6.8.0-12821-g537c2e91d354-dirty #11
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl (lib/dump_stack.c:117)
- should_fail_ex (lib/fault-inject.c:52 lib/fault-inject.c:153)
- should_failslab (mm/slub.c:3733)
- kmalloc_trace (mm/slub.c:3748 mm/slub.c:3827 mm/slub.c:3992)
- inet6_dump_fib (./include/linux/slab.h:628 ./include/linux/slab.h:749 net/ipv6/ip6_fib.c:662)
- rtnl_dump_all (net/core/rtnetlink.c:4029)
- netlink_dump (net/netlink/af_netlink.c:2269)
- netlink_recvmsg (net/netlink/af_netlink.c:1988)
- ____sys_recvmsg (net/socket.c:1046 net/socket.c:2801)
- ___sys_recvmsg (net/socket.c:2846)
- do_recvmmsg (net/socket.c:2943)
- __x64_sys_recvmmsg (net/socket.c:3041 net/socket.c:3034 net/socket.c:3034)
+Allow debug builds to splat when we try to pull/push more than
+INT_MAX bytes.
 
-[1]:
-BUG: TASK stack guard page was hit at 00000000f2fa9af1 (stack is 00000000b7912430..000000009a436beb)
-stack guard page: 0000 [#1] PREEMPT SMP KASAN
-CPU: 1 PID: 223719 Comm: kworker/1:3 Not tainted 6.8.0-12821-g537c2e91d354-dirty #11
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-Workqueue: events netlink_sock_destruct_work
-RIP: 0010:fib6_dump_done (net/ipv6/ip6_fib.c:570)
-Code: 3c 24 e8 f3 e9 51 fd e9 28 fd ff ff 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 41 57 41 56 41 55 41 54 55 48 89 fd <53> 48 8d 5d 60 e8 b6 4d 07 fd 48 89 da 48 b8 00 00 00 00 00 fc ff
-RSP: 0018:ffffc9000d980000 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffffffff84405990 RCX: ffffffff844059d3
-RDX: ffff8881028e0000 RSI: ffffffff84405ac2 RDI: ffff88810c02f358
-RBP: ffff88810c02f358 R08: 0000000000000007 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000224 R12: 0000000000000000
-R13: ffff888007c82c78 R14: ffff888007c82c68 R15: ffff888007c82c68
-FS:  0000000000000000(0000) GS:ffff88811b100000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffc9000d97fff8 CR3: 0000000102309002 CR4: 0000000000770ef0
-PKRU: 55555554
-Call Trace:
- <#DF>
- </#DF>
- <TASK>
- fib6_dump_done (net/ipv6/ip6_fib.c:572 (discriminator 1))
- fib6_dump_done (net/ipv6/ip6_fib.c:572 (discriminator 1))
- ...
- fib6_dump_done (net/ipv6/ip6_fib.c:572 (discriminator 1))
- fib6_dump_done (net/ipv6/ip6_fib.c:572 (discriminator 1))
- netlink_sock_destruct (net/netlink/af_netlink.c:401)
- __sk_destruct (net/core/sock.c:2177 (discriminator 2))
- sk_destruct (net/core/sock.c:2224)
- __sk_free (net/core/sock.c:2235)
- sk_free (net/core/sock.c:2246)
- process_one_work (kernel/workqueue.c:3259)
- worker_thread (kernel/workqueue.c:3329 kernel/workqueue.c:3416)
- kthread (kernel/kthread.c:388)
- ret_from_fork (arch/x86/kernel/process.c:153)
- ret_from_fork_asm (arch/x86/entry/entry_64.S:256)
-Modules linked in:
+After this, the syzkaller reproducer yields a more precise splat
+before the flow dissector attempts to read off skb->data memory:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240401211003.25274-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+WARNING: CPU: 5 PID: 2313 at include/linux/skbuff.h:2653 neigh_connected_output+0x28e/0x400
+  ip_finish_output2+0xb25/0xed0
+  iptunnel_xmit+0x4ff/0x870
+  ipgre_xmit+0x78e/0xbb0
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240216113700.23013-1-fw@strlen.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_fib.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ include/linux/skbuff.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -587,19 +587,19 @@ static int inet6_dump_fib(struct sk_buff
- 	if (!w) {
- 		/* New dump:
- 		 *
--		 * 1. hook callback destructor.
--		 */
--		cb->args[3] = (long)cb->done;
--		cb->done = fib6_dump_done;
--
--		/*
--		 * 2. allocate and initialize walker.
-+		 * 1. allocate and initialize walker.
- 		 */
- 		w = kzalloc(sizeof(*w), GFP_ATOMIC);
- 		if (!w)
- 			return -ENOMEM;
- 		w->func = fib6_dump_node;
- 		cb->args[2] = (long)w;
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 9e61f6df6bc55..aa8d6e72ad98b 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -2627,6 +2627,8 @@ static inline void skb_put_u8(struct sk_buff *skb, u8 val)
+ void *skb_push(struct sk_buff *skb, unsigned int len);
+ static inline void *__skb_push(struct sk_buff *skb, unsigned int len)
+ {
++	DEBUG_NET_WARN_ON_ONCE(len > INT_MAX);
 +
-+		/* 2. hook callback destructor.
-+		 */
-+		cb->args[3] = (long)cb->done;
-+		cb->done = fib6_dump_done;
+ 	skb->data -= len;
+ 	skb->len  += len;
+ 	return skb->data;
+@@ -2635,6 +2637,8 @@ static inline void *__skb_push(struct sk_buff *skb, unsigned int len)
+ void *skb_pull(struct sk_buff *skb, unsigned int len);
+ static inline void *__skb_pull(struct sk_buff *skb, unsigned int len)
+ {
++	DEBUG_NET_WARN_ON_ONCE(len > INT_MAX);
 +
- 	}
+ 	skb->len -= len;
+ 	if (unlikely(skb->len < skb->data_len)) {
+ #if defined(CONFIG_DEBUG_NET)
+@@ -2659,6 +2663,8 @@ void *__pskb_pull_tail(struct sk_buff *skb, int delta);
+ static inline enum skb_drop_reason
+ pskb_may_pull_reason(struct sk_buff *skb, unsigned int len)
+ {
++	DEBUG_NET_WARN_ON_ONCE(len > INT_MAX);
++
+ 	if (likely(len <= skb_headlen(skb)))
+ 		return SKB_NOT_DROPPED_YET;
  
- 	arg.skb = skb;
+-- 
+2.43.0
+
 
 
 
