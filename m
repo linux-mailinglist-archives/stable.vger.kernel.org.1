@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA528A0DEF
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A1D8A10B1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEC1C1C21F68
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB0731C22DC3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8F0145B08;
-	Thu, 11 Apr 2024 10:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E9C148312;
+	Thu, 11 Apr 2024 10:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vfnzj+kG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPBC/IFZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EBB145B2C;
-	Thu, 11 Apr 2024 10:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F3F146D75;
+	Thu, 11 Apr 2024 10:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830163; cv=none; b=jRmmdOCbZ++oMIsxXlRTJDp71YvXRQggIFrZt8Bxmbe15ygAHzxoJSG6xiueUF4Qrb+J5kDPISGOjg1GPrZBrpYFev7kqXQt0fQ52CMF1Z46oCOwZDPmmtCuHXnxVpBN0OJeQmBODk7TSu/4252TgBu4IgfXXyjG4LVGf0T0bpw=
+	t=1712831779; cv=none; b=XKeMzVVcmFI+t+zUc7y0J8xytojbMJe7eH8+BCPwnQSgtZUol3FdCyldC6HaUfiTAlBEG5sb2z0ouqA/qKlZ+XF7Gl7ALha0bTibkSl4Tv41xERA7jk5EI5HjPjAkApV/2iy7B84oksxCbHj2IrFDP0qYeXXLGqHAB29MotDEDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830163; c=relaxed/simple;
-	bh=5QResHUC7K10pufvTzQU3efMUmlRmERGwfEzgQKVf3U=;
+	s=arc-20240116; t=1712831779; c=relaxed/simple;
+	bh=4XqPQsgsZCEORcT/o0opXMXZIIo4CHArRHncVS0aTJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hwD5Lid34CsZWJk83MuyciWwqEOXF//Ze7a6i9GeE5lJ6vhy4RUrk2LN0hELjnsujXM7CQpZkpAOydnxtuNoJkpvOE00u2lN5o/9KeBsJF40Z1vvCOUbAGaMUQ4lhe0j7qWVxugotagMuMQjea8aW7EAnmFOTFTNd36uElUH4KM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vfnzj+kG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57984C433F1;
-	Thu, 11 Apr 2024 10:09:23 +0000 (UTC)
+	 MIME-Version; b=jIDutdFNbVjLvKXTFMA2RuFwzJjw4oEQwkVxtm4+vP0d3479SG3vTOTmH+NqJ3DYnMf2r/kyhtZTQCyyi9Pe3wL5s1bgz5NH9omMRH66jYwf0lIdm35N4Xs/E/3D1jsMrQsLqgI1Yras1vbHlBi/10eQkYTvuvAu6sgiwYanoc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPBC/IFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DDEFC433C7;
+	Thu, 11 Apr 2024 10:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830163;
-	bh=5QResHUC7K10pufvTzQU3efMUmlRmERGwfEzgQKVf3U=;
+	s=korg; t=1712831779;
+	bh=4XqPQsgsZCEORcT/o0opXMXZIIo4CHArRHncVS0aTJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vfnzj+kG9tgqMjxVmFHZ98k9xXOU0LDqYd/TkIjfCF8AtgOLA913wGY6WrpguM6xq
-	 Na9gfmEW27Ndtp2IvmUL8iDvGM9Mr5/MpNF78Sm+ChIyPllWIp/czlMU/J3IOekNVc
-	 Qsmp4606OLnW+z0SHXG/Mqkymc4ASrFPklKjTpfk=
+	b=aPBC/IFZ+7wSWi/ptRr0P5gAansdLbVy4ntl1+303AmTxLuNSSwUPxIFiHS6v0EHr
+	 nhe6/YHEjwezPjvg7AgCwULWOt4E61PNLgojgSRnX7KZn+THpVpbH4eYd5gymwdApX
+	 +9ey163nGMNMc8cbzy1ZXJ93tesGM+5kVzRU58mU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ogness <john.ogness@linutronix.de>,
-	Petr Mladek <pmladek@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 017/143] dump_stack: Do not get cpu_sync for panic CPU
-Date: Thu, 11 Apr 2024 11:54:45 +0200
-Message-ID: <20240411095421.429552792@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 5.10 123/294] xfrm: Avoid clang fortify warning in copy_to_user_tmpl()
+Date: Thu, 11 Apr 2024 11:54:46 +0200
+Message-ID: <20240411095439.367956895@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 7412dc6d55eed6b76180e40ac3601412ebde29bd ]
+commit 1a807e46aa93ebad1dfbed4f82dc3bf779423a6e upstream.
 
-dump_stack() is called in panic(). If for some reason another CPU
-is holding the printk_cpu_sync and is unable to release it, the
-panic CPU will be unable to continue and print the stacktrace.
+After a couple recent changes in LLVM, there is a warning (or error with
+CONFIG_WERROR=y or W=e) from the compile time fortify source routines,
+specifically the memset() in copy_to_user_tmpl().
 
-Since non-panic CPUs are not allowed to store new printk messages
-anyway, there is no need to synchronize the stacktrace output in
-a panic situation.
+  In file included from net/xfrm/xfrm_user.c:14:
+  ...
+  include/linux/fortify-string.h:438:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
+    438 |                         __write_overflow_field(p_size_field, size);
+        |                         ^
+  1 error generated.
 
-For the panic CPU, do not get the printk_cpu_sync because it is
-not needed and avoids a potential deadlock scenario in panic().
+While ->xfrm_nr has been validated against XFRM_MAX_DEPTH when its value
+is first assigned in copy_templates() by calling validate_tmpl() first
+(so there should not be any issue in practice), LLVM/clang cannot really
+deduce that across the boundaries of these functions. Without that
+knowledge, it cannot assume that the loop stops before i is greater than
+XFRM_MAX_DEPTH, which would indeed result a stack buffer overflow in the
+memset().
 
-Link: https://lore.kernel.org/lkml/ZcIGKU8sxti38Kok@alley
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20240207134103.1357162-15-john.ogness@linutronix.de
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To make the bounds of ->xfrm_nr clear to the compiler and add additional
+defense in case copy_to_user_tmpl() is ever used in a path where
+->xfrm_nr has not been properly validated against XFRM_MAX_DEPTH first,
+add an explicit bound check and early return, which clears up the
+warning.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/ClangBuiltLinux/linux/issues/1985
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/printk.h   |  2 ++
- kernel/printk/internal.h |  1 -
- lib/dump_stack.c         | 16 +++++++++++++---
- 3 files changed, 15 insertions(+), 4 deletions(-)
+ net/xfrm/xfrm_user.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/printk.h b/include/linux/printk.h
-index 8ef499ab3c1ed..955e31860095e 100644
---- a/include/linux/printk.h
-+++ b/include/linux/printk.h
-@@ -273,6 +273,8 @@ static inline void printk_trigger_flush(void)
- }
- #endif
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -1753,6 +1753,9 @@ static int copy_to_user_tmpl(struct xfrm
+ 	if (xp->xfrm_nr == 0)
+ 		return 0;
  
-+bool this_cpu_in_panic(void);
++	if (xp->xfrm_nr > XFRM_MAX_DEPTH)
++		return -ENOBUFS;
 +
- #ifdef CONFIG_SMP
- extern int __printk_cpu_sync_try_get(void);
- extern void __printk_cpu_sync_wait(void);
-diff --git a/kernel/printk/internal.h b/kernel/printk/internal.h
-index ac2d9750e5f81..6c2afee5ef620 100644
---- a/kernel/printk/internal.h
-+++ b/kernel/printk/internal.h
-@@ -130,7 +130,6 @@ struct printk_message {
- };
- 
- bool other_cpu_in_panic(void);
--bool this_cpu_in_panic(void);
- bool printk_get_next_message(struct printk_message *pmsg, u64 seq,
- 			     bool is_extended, bool may_supress);
- 
-diff --git a/lib/dump_stack.c b/lib/dump_stack.c
-index 83471e81501a7..222c6d6c8281a 100644
---- a/lib/dump_stack.c
-+++ b/lib/dump_stack.c
-@@ -96,15 +96,25 @@ static void __dump_stack(const char *log_lvl)
-  */
- asmlinkage __visible void dump_stack_lvl(const char *log_lvl)
- {
-+	bool in_panic = this_cpu_in_panic();
- 	unsigned long flags;
- 
- 	/*
- 	 * Permit this cpu to perform nested stack dumps while serialising
--	 * against other CPUs
-+	 * against other CPUs, unless this CPU is in panic.
-+	 *
-+	 * When in panic, non-panic CPUs are not permitted to store new
-+	 * printk messages so there is no need to synchronize the output.
-+	 * This avoids potential deadlock in panic() if another CPU is
-+	 * holding and unable to release the printk_cpu_sync.
- 	 */
--	printk_cpu_sync_get_irqsave(flags);
-+	if (!in_panic)
-+		printk_cpu_sync_get_irqsave(flags);
-+
- 	__dump_stack(log_lvl);
--	printk_cpu_sync_put_irqrestore(flags);
-+
-+	if (!in_panic)
-+		printk_cpu_sync_put_irqrestore(flags);
- }
- EXPORT_SYMBOL(dump_stack_lvl);
- 
--- 
-2.43.0
-
+ 	for (i = 0; i < xp->xfrm_nr; i++) {
+ 		struct xfrm_user_tmpl *up = &vec[i];
+ 		struct xfrm_tmpl *kp = &xp->xfrm_vec[i];
 
 
 
