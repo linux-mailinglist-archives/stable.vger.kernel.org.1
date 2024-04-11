@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-39044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3651C8A119C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDB88A1163
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59F991C23C78
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D9C3B21E55
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF78145B13;
-	Thu, 11 Apr 2024 10:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F129A13FD97;
+	Thu, 11 Apr 2024 10:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPf1Ina/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4FXq8ad"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB246BB29;
-	Thu, 11 Apr 2024 10:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC5864CC0;
+	Thu, 11 Apr 2024 10:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832351; cv=none; b=sIXYMBhiQLL++zgXg50nAd8wRfODSYOcP4x72YUsaZlstVEjdUQXwdLhItQvzfSciHSZ6aeRD0srleBaECK2lC/cIlgHEFxAkFLlC9jshDvkSD5Hi7NJmMMv6QU9iUmZL/bzYmp/z6Id8ewqzUUBDm71qWFhyeYW8itAJlxm0X4=
+	t=1712832218; cv=none; b=NTewpbhutspaPh4OJFbxRY/N4HIJvHcX123wguZ9w914JlUAe41rAzooeqydkEjZjxBPP/F3JzW1fksyWvKTyu3n9cbcBXy5/4CCSMUZVmmHpt/zvhLMnNSI4boeFRFP6GbPVe+swnJR/EBYZODsrdiprdqbaeG5DHdtmCzetwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832351; c=relaxed/simple;
-	bh=Yu1ztJM02la0Qizd7ojqUjHcxH/gytiIGjYRYHtGB5I=;
+	s=arc-20240116; t=1712832218; c=relaxed/simple;
+	bh=57NmtV+2C5RQpvd7bN/OE07kN39Z3/htZzp1zwq19o4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ct9bQx5vJPwPTMsQd8+bL+98pUMe5HD7FHofABpHd6mb03pHCQ/obrKGg0wEZbZrtdsdeK2hvTlHsAavCyN2X+U3tqPy4HDInojnLgJytm52pJtLtnaij8BEU55WNH1z6bH4w85ukVC9UBew2mACgUTVIZYMOcowovx5KztZ/9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPf1Ina/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67FFC433C7;
-	Thu, 11 Apr 2024 10:45:50 +0000 (UTC)
+	 MIME-Version; b=ZxgTX2kSL+01zV/mDHpkm/rtjeO/6ki0wVD5J5j6sMn09e9k6ug+hH7kf/z7HMqF6hBFg1RuKHXVY/qXRKSJ/yYfz9RfXFBzqIELcZsarB0E6cMMeBBgIXvPmZeZaYcJElS12/lk6ApQvdsdWL6hs8y57mdsLq/PTW7hsfRjNfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4FXq8ad; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DE3C433F1;
+	Thu, 11 Apr 2024 10:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832351;
-	bh=Yu1ztJM02la0Qizd7ojqUjHcxH/gytiIGjYRYHtGB5I=;
+	s=korg; t=1712832218;
+	bh=57NmtV+2C5RQpvd7bN/OE07kN39Z3/htZzp1zwq19o4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VPf1Ina/Q6sqTCve4aszxI1cZxH9XX+UB8jSHQGIELl20tXXqsAdvYky4oiUmwiuG
-	 ToN031IUcIjLKvEFRFm8EUWcVFnTo0X36qIEtAFRCU5EGgTIVTIJwqysC/dfEHinPJ
-	 ENzl2VOoV1uhJvvEJY30Ou0AfvY7YvMAOZjodTow=
+	b=j4FXq8ad5U1PedMOgKu6+Glx6oDi5IT4pk317lYZ56nP5N8ZdjDMh1nZX3zimSJ76
+	 2qXYIhudMjRjRYsIt5RxcXj2jwr1oP6UEXUgUpQkIwppfHLEm7KDQcv5lFVXyQNyaW
+	 M5tt9Bz/kGo8/YU8sSPczvp7mmdJNC6o72lTRdhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Ariel Elior <aelior@marvell.com>,
-	Sudarsana Kalluru <skalluru@marvell.com>,
-	Manish Chopra <manishc@marvell.com>,
-	Kees Cook <keescook@chromium.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 02/83] bnx2x: Fix firmware version string character counts
+Subject: [PATCH 5.10 231/294] ata: sata_mv: Fix PCI device ID table declaration compilation warning
 Date: Thu, 11 Apr 2024 11:56:34 +0200
-Message-ID: <20240411095412.749158232@linuxfoundation.org>
+Message-ID: <20240411095442.538763244@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,138 +62,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 5642c82b9463c3263c086efb002516244bd4c668 ]
+[ Upstream commit 3137b83a90646917c90951d66489db466b4ae106 ]
 
-A potential string truncation was reported in bnx2x_fill_fw_str(),
-when a long bp->fw_ver and a long phy_fw_ver might coexist, but seems
-unlikely with real-world hardware.
+Building with W=1 shows a warning for an unused variable when CONFIG_PCI
+is diabled:
 
-Use scnprintf() to indicate the intent that truncations are tolerated.
+drivers/ata/sata_mv.c:790:35: error: unused variable 'mv_pci_tbl' [-Werror,-Wunused-const-variable]
+static const struct pci_device_id mv_pci_tbl[] = {
 
-While reading this code, I found a collection of various buffer size
-counting issues. None looked like they might lead to a buffer overflow
-with current code (the small buffers are 20 bytes and might only ever
-consume 10 bytes twice with a trailing %NUL). However, early truncation
-(due to a %NUL in the middle of the string) might be happening under
-likely rare conditions. Regardless fix the formatters and related
-functions:
+Move the table into the same block that containsn the pci_driver
+definition.
 
-- Switch from a separate strscpy() to just adding an additional "%s" to
-  the format string that immediately follows it in bnx2x_fill_fw_str().
-- Use sizeof() universally instead of using unbound defines.
-- Fix bnx2x_7101_format_ver() and bnx2x_null_format_ver() to report the
-  number of characters written, not including the trailing %NUL (as
-  already done with the other firmware formatting functions).
-- Require space for at least 1 byte in bnx2x_get_ext_phy_fw_version()
-  for the trailing %NUL.
-- Correct the needed buffer size in bnx2x_3_seq_format_ver().
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202401260858.jZN6vD1k-lkp@intel.com/
-Cc: Ariel Elior <aelior@marvell.com>
-Cc: Sudarsana Kalluru <skalluru@marvell.com>
-Cc: Manish Chopra <manishc@marvell.com>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20240126041044.work.220-kees@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7bb3c5290ca0 ("sata_mv: Remove PCI dependency")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c    |  9 +++++----
- .../net/ethernet/broadcom/bnx2x/bnx2x_ethtool.c    |  2 +-
- drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c   | 14 +++++++-------
- 3 files changed, 13 insertions(+), 12 deletions(-)
+ drivers/ata/sata_mv.c | 63 +++++++++++++++++++++----------------------
+ 1 file changed, 31 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
-index 4950fde82d175..b04c5b51eb598 100644
---- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
-+++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
-@@ -147,10 +147,11 @@ void bnx2x_fill_fw_str(struct bnx2x *bp, char *buf, size_t buf_len)
+diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
+index 11be88f70690e..cede4b517646f 100644
+--- a/drivers/ata/sata_mv.c
++++ b/drivers/ata/sata_mv.c
+@@ -783,37 +783,6 @@ static const struct ata_port_info mv_port_info[] = {
+ 	},
+ };
  
- 		phy_fw_ver[0] = '\0';
- 		bnx2x_get_ext_phy_fw_version(&bp->link_params,
--					     phy_fw_ver, PHY_FW_VER_LEN);
--		strscpy(buf, bp->fw_ver, buf_len);
--		snprintf(buf + strlen(bp->fw_ver), 32 - strlen(bp->fw_ver),
--			 "bc %d.%d.%d%s%s",
-+					     phy_fw_ver, sizeof(phy_fw_ver));
-+		/* This may become truncated. */
-+		scnprintf(buf, buf_len,
-+			 "%sbc %d.%d.%d%s%s",
-+			 bp->fw_ver,
- 			 (bp->common.bc_ver & 0xff0000) >> 16,
- 			 (bp->common.bc_ver & 0xff00) >> 8,
- 			 (bp->common.bc_ver & 0xff),
-diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_ethtool.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_ethtool.c
-index bda3ccc28eca6..f920976c36f0c 100644
---- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_ethtool.c
-@@ -1132,7 +1132,7 @@ static void bnx2x_get_drvinfo(struct net_device *dev,
- 	}
+-static const struct pci_device_id mv_pci_tbl[] = {
+-	{ PCI_VDEVICE(MARVELL, 0x5040), chip_504x },
+-	{ PCI_VDEVICE(MARVELL, 0x5041), chip_504x },
+-	{ PCI_VDEVICE(MARVELL, 0x5080), chip_5080 },
+-	{ PCI_VDEVICE(MARVELL, 0x5081), chip_508x },
+-	/* RocketRAID 1720/174x have different identifiers */
+-	{ PCI_VDEVICE(TTI, 0x1720), chip_6042 },
+-	{ PCI_VDEVICE(TTI, 0x1740), chip_6042 },
+-	{ PCI_VDEVICE(TTI, 0x1742), chip_6042 },
+-
+-	{ PCI_VDEVICE(MARVELL, 0x6040), chip_604x },
+-	{ PCI_VDEVICE(MARVELL, 0x6041), chip_604x },
+-	{ PCI_VDEVICE(MARVELL, 0x6042), chip_6042 },
+-	{ PCI_VDEVICE(MARVELL, 0x6080), chip_608x },
+-	{ PCI_VDEVICE(MARVELL, 0x6081), chip_608x },
+-
+-	{ PCI_VDEVICE(ADAPTEC2, 0x0241), chip_604x },
+-
+-	/* Adaptec 1430SA */
+-	{ PCI_VDEVICE(ADAPTEC2, 0x0243), chip_7042 },
+-
+-	/* Marvell 7042 support */
+-	{ PCI_VDEVICE(MARVELL, 0x7042), chip_7042 },
+-
+-	/* Highpoint RocketRAID PCIe series */
+-	{ PCI_VDEVICE(TTI, 0x2300), chip_7042 },
+-	{ PCI_VDEVICE(TTI, 0x2310), chip_7042 },
+-
+-	{ }			/* terminate list */
+-};
+-
+ static const struct mv_hw_ops mv5xxx_ops = {
+ 	.phy_errata		= mv5_phy_errata,
+ 	.enable_leds		= mv5_enable_leds,
+@@ -4307,6 +4276,36 @@ static int mv_pci_init_one(struct pci_dev *pdev,
+ static int mv_pci_device_resume(struct pci_dev *pdev);
+ #endif
  
- 	memset(version, 0, sizeof(version));
--	bnx2x_fill_fw_str(bp, version, ETHTOOL_FWVERS_LEN);
-+	bnx2x_fill_fw_str(bp, version, sizeof(version));
- 	strlcat(info->fw_version, version, sizeof(info->fw_version));
++static const struct pci_device_id mv_pci_tbl[] = {
++	{ PCI_VDEVICE(MARVELL, 0x5040), chip_504x },
++	{ PCI_VDEVICE(MARVELL, 0x5041), chip_504x },
++	{ PCI_VDEVICE(MARVELL, 0x5080), chip_5080 },
++	{ PCI_VDEVICE(MARVELL, 0x5081), chip_508x },
++	/* RocketRAID 1720/174x have different identifiers */
++	{ PCI_VDEVICE(TTI, 0x1720), chip_6042 },
++	{ PCI_VDEVICE(TTI, 0x1740), chip_6042 },
++	{ PCI_VDEVICE(TTI, 0x1742), chip_6042 },
++
++	{ PCI_VDEVICE(MARVELL, 0x6040), chip_604x },
++	{ PCI_VDEVICE(MARVELL, 0x6041), chip_604x },
++	{ PCI_VDEVICE(MARVELL, 0x6042), chip_6042 },
++	{ PCI_VDEVICE(MARVELL, 0x6080), chip_608x },
++	{ PCI_VDEVICE(MARVELL, 0x6081), chip_608x },
++
++	{ PCI_VDEVICE(ADAPTEC2, 0x0241), chip_604x },
++
++	/* Adaptec 1430SA */
++	{ PCI_VDEVICE(ADAPTEC2, 0x0243), chip_7042 },
++
++	/* Marvell 7042 support */
++	{ PCI_VDEVICE(MARVELL, 0x7042), chip_7042 },
++
++	/* Highpoint RocketRAID PCIe series */
++	{ PCI_VDEVICE(TTI, 0x2300), chip_7042 },
++	{ PCI_VDEVICE(TTI, 0x2310), chip_7042 },
++
++	{ }			/* terminate list */
++};
  
- 	strscpy(info->bus_info, pci_name(bp->pdev), sizeof(info->bus_info));
-diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c
-index 02808513ffe45..ea310057fe3af 100644
---- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c
-+++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c
-@@ -6163,8 +6163,8 @@ static void bnx2x_link_int_ack(struct link_params *params,
+ static struct pci_driver mv_pci_driver = {
+ 	.name			= DRV_NAME,
+@@ -4319,6 +4318,7 @@ static struct pci_driver mv_pci_driver = {
+ #endif
  
- static int bnx2x_null_format_ver(u32 spirom_ver, u8 *str, u16 *len)
- {
--	str[0] = '\0';
--	(*len)--;
-+	if (*len)
-+		str[0] = '\0';
- 	return 0;
- }
+ };
++MODULE_DEVICE_TABLE(pci, mv_pci_tbl);
  
-@@ -6173,7 +6173,7 @@ static int bnx2x_format_ver(u32 num, u8 *str, u16 *len)
- 	u16 ret;
- 
- 	if (*len < 10) {
--		/* Need more than 10chars for this format */
-+		/* Need more than 10 chars for this format */
- 		bnx2x_null_format_ver(num, str, len);
- 		return -EINVAL;
- 	}
-@@ -6188,8 +6188,8 @@ static int bnx2x_3_seq_format_ver(u32 num, u8 *str, u16 *len)
- {
- 	u16 ret;
- 
--	if (*len < 10) {
--		/* Need more than 10chars for this format */
-+	if (*len < 9) {
-+		/* Need more than 9 chars for this format */
- 		bnx2x_null_format_ver(num, str, len);
- 		return -EINVAL;
- 	}
-@@ -6208,7 +6208,7 @@ int bnx2x_get_ext_phy_fw_version(struct link_params *params, u8 *version,
- 	int status = 0;
- 	u8 *ver_p = version;
- 	u16 remain_len = len;
--	if (version == NULL || params == NULL)
-+	if (version == NULL || params == NULL || len == 0)
- 		return -EINVAL;
- 	bp = params->bp;
- 
-@@ -11546,7 +11546,7 @@ static int bnx2x_7101_format_ver(u32 spirom_ver, u8 *str, u16 *len)
- 	str[2] = (spirom_ver & 0xFF0000) >> 16;
- 	str[3] = (spirom_ver & 0xFF000000) >> 24;
- 	str[4] = '\0';
--	*len -= 5;
-+	*len -= 4;
- 	return 0;
- }
+ /**
+  *      mv_print_info - Dump key info to kernel log for perusal.
+@@ -4491,7 +4491,6 @@ static void __exit mv_exit(void)
+ MODULE_AUTHOR("Brett Russ");
+ MODULE_DESCRIPTION("SCSI low-level driver for Marvell SATA controllers");
+ MODULE_LICENSE("GPL v2");
+-MODULE_DEVICE_TABLE(pci, mv_pci_tbl);
+ MODULE_VERSION(DRV_VERSION);
+ MODULE_ALIAS("platform:" DRV_NAME);
  
 -- 
 2.43.0
