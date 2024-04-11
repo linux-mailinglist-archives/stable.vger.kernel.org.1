@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A64BD8A0D95
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE4B08A0FBB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4719B1F22B1A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E59EB215D2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B36145B05;
-	Thu, 11 Apr 2024 10:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488441465BF;
+	Thu, 11 Apr 2024 10:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0fuq67D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="areDr6ik"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8D214601D;
-	Thu, 11 Apr 2024 10:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E6613FD94;
+	Thu, 11 Apr 2024 10:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829923; cv=none; b=MlH9FA6RVsQk5JoYp/rF0VDbSPQeN0iGHLomukIVp1vdOgISQK1HokNdJfJXVdABjH8+Sf7cdE4VXOfG1DKBMNGnv2nZRVrzccxypQP6hYQlvvl1+QgJhU2JWImfidbAMN5G9bJZkjDscwv1WM7mZkPVoIh8k39ghW+Y2uJm1cs=
+	t=1712831214; cv=none; b=Le8sVxd+6BEqUIKVMc+s55HCnede/Gbmrw4L7i5RCbZkyUa8x2npTgWDSlXgeCmZFJR0kYGk7s6AD7noSJwfMcIbQJt43EO73VMVueruBC2LetG1TtsTFYSH4z6EhVMMltxiMYYEDRb6vdnCzIZ1QqnIbcS904sHASdOjou4kpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829923; c=relaxed/simple;
-	bh=c/3zxRaATM5PUzEsS17wrPtLe5uFcT/7sI5W8g/OL1E=;
+	s=arc-20240116; t=1712831214; c=relaxed/simple;
+	bh=sl1PNB+CRaCvcaD3j1pg39uNq69MnoIk8w+7m1XE0k0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dxu3dtvQmtrfDABGFIO7JaUSbedutXDe9by34oI/w5/hg+PDOFfoHA9Ot6Xj+FmQfPXWwYakOPl/9GQ/AYDT/JBgh1efTiyk0ygztWyz7RuBpf4lzGasfv9xDbMJ2Myq4rSVNg4FdCK2VWX1CyCvvJ5m87cTwMuNaMS5gEPyJPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0fuq67D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF99C433C7;
-	Thu, 11 Apr 2024 10:05:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PIZT5XNuD/2sUvAcUOKgmsQnClSzm3Gm9X7PbYO9kKx+GTQQ5Y/xduLZy3fUZXzdgEvH6ucTKIrRMpxe0qFTmnheWGmmGnfz0lBnlFx76yAHSnKmgJV/IQWraPZ0ENvvXjyRQgR22uC95t1dtQeh3Lu5dOO5ropAB3FRNCbw71o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=areDr6ik; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E53AC433F1;
+	Thu, 11 Apr 2024 10:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829923;
-	bh=c/3zxRaATM5PUzEsS17wrPtLe5uFcT/7sI5W8g/OL1E=;
+	s=korg; t=1712831213;
+	bh=sl1PNB+CRaCvcaD3j1pg39uNq69MnoIk8w+7m1XE0k0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q0fuq67DoGDHC3hDRZ0zcTOybbka0Hfz9iO6PwL5AoQ4+iJphibgl4rBiBDprTEjh
-	 HLneC1pUArM/ZFAlO9jbuVYbodLA/9+Nk95DD187D/5n9N80SxfSZQQkJ0CPhAlJC8
-	 E5CRpjeMrfvXOfrmHwSck3NpB+9P5MLcmt85ppsY=
+	b=areDr6ik0bntxUSlMevpWA16zHgwdzy/Slk9a7BkfKZwLPRwf8azuKmvqJFTUeGRu
+	 HZujoVcJWxFGOocUjhP2ROiTkG72icCHXqBZOdMkq1NXVlfnFOtkC+wGn/7l/8j0Dx
+	 JbwdRMT5XbMisJoyrYaiu9ew/LlBYwtYuIVQsZoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 150/175] btrfs: export: handle invalid inode or root reference in btrfs_get_parent()
+Subject: [PATCH 6.6 046/114] drm/vc4: dont check if plane->state->fb == state->fb
 Date: Thu, 11 Apr 2024 11:56:13 +0200
-Message-ID: <20240411095424.078608554@linuxfoundation.org>
+Message-ID: <20240411095418.272979533@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +60,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 26b66d1d366a375745755ca7365f67110bbf6bd5 ]
+[ Upstream commit 5ee0d47dcf33efd8950b347dcf4d20bab12a3fa9 ]
 
-The get_parent handler looks up a parent of a given dentry, this can be
-either a subvolume or a directory. The search is set up with offset -1
-but it's never expected to find such item, as it would break allowed
-range of inode number or a root id. This means it's a corruption (ext4
-also returns this error code).
+Currently, when using non-blocking commits, we can see the following
+kernel warning:
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+[  110.908514] ------------[ cut here ]------------
+[  110.908529] refcount_t: underflow; use-after-free.
+[  110.908620] WARNING: CPU: 0 PID: 1866 at lib/refcount.c:87 refcount_dec_not_one+0xb8/0xc0
+[  110.908664] Modules linked in: rfcomm snd_seq_dummy snd_hrtimer snd_seq snd_seq_device cmac algif_hash aes_arm64 aes_generic algif_skcipher af_alg bnep hid_logitech_hidpp vc4 brcmfmac hci_uart btbcm brcmutil bluetooth snd_soc_hdmi_codec cfg80211 cec drm_display_helper drm_dma_helper drm_kms_helper snd_soc_core snd_compress snd_pcm_dmaengine fb_sys_fops sysimgblt syscopyarea sysfillrect raspberrypi_hwmon ecdh_generic ecc rfkill libaes i2c_bcm2835 binfmt_misc joydev snd_bcm2835(C) bcm2835_codec(C) bcm2835_isp(C) v4l2_mem2mem videobuf2_dma_contig snd_pcm bcm2835_v4l2(C) raspberrypi_gpiomem bcm2835_mmal_vchiq(C) videobuf2_v4l2 snd_timer videobuf2_vmalloc videobuf2_memops videobuf2_common snd videodev vc_sm_cma(C) mc hid_logitech_dj uio_pdrv_genirq uio i2c_dev drm fuse dm_mod drm_panel_orientation_quirks backlight ip_tables x_tables ipv6
+[  110.909086] CPU: 0 PID: 1866 Comm: kodi.bin Tainted: G         C         6.1.66-v8+ #32
+[  110.909104] Hardware name: Raspberry Pi 3 Model B Rev 1.2 (DT)
+[  110.909114] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  110.909132] pc : refcount_dec_not_one+0xb8/0xc0
+[  110.909152] lr : refcount_dec_not_one+0xb4/0xc0
+[  110.909170] sp : ffffffc00913b9c0
+[  110.909177] x29: ffffffc00913b9c0 x28: 000000556969bbb0 x27: 000000556990df60
+[  110.909205] x26: 0000000000000002 x25: 0000000000000004 x24: ffffff8004448480
+[  110.909230] x23: ffffff800570b500 x22: ffffff802e03a7bc x21: ffffffecfca68c78
+[  110.909257] x20: ffffff8002b42000 x19: ffffff802e03a600 x18: 0000000000000000
+[  110.909283] x17: 0000000000000011 x16: ffffffffffffffff x15: 0000000000000004
+[  110.909308] x14: 0000000000000fff x13: ffffffed577e47e0 x12: 0000000000000003
+[  110.909333] x11: 0000000000000000 x10: 0000000000000027 x9 : c912d0d083728c00
+[  110.909359] x8 : c912d0d083728c00 x7 : 65646e75203a745f x6 : 746e756f63666572
+[  110.909384] x5 : ffffffed579f62ee x4 : ffffffed579eb01e x3 : 0000000000000000
+[  110.909409] x2 : 0000000000000000 x1 : ffffffc00913b750 x0 : 0000000000000001
+[  110.909434] Call trace:
+[  110.909441]  refcount_dec_not_one+0xb8/0xc0
+[  110.909461]  vc4_bo_dec_usecnt+0x4c/0x1b0 [vc4]
+[  110.909903]  vc4_cleanup_fb+0x44/0x50 [vc4]
+[  110.910315]  drm_atomic_helper_cleanup_planes+0x88/0xa4 [drm_kms_helper]
+[  110.910669]  vc4_atomic_commit_tail+0x390/0x9dc [vc4]
+[  110.911079]  commit_tail+0xb0/0x164 [drm_kms_helper]
+[  110.911397]  drm_atomic_helper_commit+0x1d0/0x1f0 [drm_kms_helper]
+[  110.911716]  drm_atomic_commit+0xb0/0xdc [drm]
+[  110.912569]  drm_mode_atomic_ioctl+0x348/0x4b8 [drm]
+[  110.913330]  drm_ioctl_kernel+0xec/0x15c [drm]
+[  110.914091]  drm_ioctl+0x24c/0x3b0 [drm]
+[  110.914850]  __arm64_sys_ioctl+0x9c/0xd4
+[  110.914873]  invoke_syscall+0x4c/0x114
+[  110.914897]  el0_svc_common+0xd0/0x118
+[  110.914917]  do_el0_svc+0x38/0xd0
+[  110.914936]  el0_svc+0x30/0x8c
+[  110.914958]  el0t_64_sync_handler+0x84/0xf0
+[  110.914979]  el0t_64_sync+0x18c/0x190
+[  110.914996] ---[ end trace 0000000000000000 ]---
+
+This happens because, although `prepare_fb` and `cleanup_fb` are
+perfectly balanced, we cannot guarantee consistency in the check
+plane->state->fb == state->fb. This means that sometimes we can increase
+the refcount in `prepare_fb` and don't decrease it in `cleanup_fb`. The
+opposite can also be true.
+
+In fact, the struct drm_plane .state shouldn't be accessed directly
+but instead, the `drm_atomic_get_new_plane_state()` helper function should
+be used. So, we could stick to this check, but using
+`drm_atomic_get_new_plane_state()`. But actually, this check is not really
+needed. We can increase and decrease the refcount symmetrically without
+problems.
+
+This is going to make the code more simple and consistent.
+
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240105175908.242000-1-mcanal@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/export.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/vc4/vc4_plane.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/export.c b/fs/btrfs/export.c
-index ecc33e3a3c063..01e9a5afc33bf 100644
---- a/fs/btrfs/export.c
-+++ b/fs/btrfs/export.c
-@@ -182,8 +182,15 @@ struct dentry *btrfs_get_parent(struct dentry *child)
- 	ret = btrfs_search_slot(NULL, root, &key, path, 0, 0);
- 	if (ret < 0)
- 		goto fail;
-+	if (ret == 0) {
-+		/*
-+		 * Key with offset of -1 found, there would have to exist an
-+		 * inode with such number or a root with such id.
-+		 */
-+		ret = -EUCLEAN;
-+		goto fail;
-+	}
+diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
+index 00e713faecd5a..5948e34f7f813 100644
+--- a/drivers/gpu/drm/vc4/vc4_plane.c
++++ b/drivers/gpu/drm/vc4/vc4_plane.c
+@@ -1505,9 +1505,6 @@ static int vc4_prepare_fb(struct drm_plane *plane,
  
--	BUG_ON(ret == 0); /* Key with offset of -1 found */
- 	if (path->slots[0] == 0) {
- 		ret = -ENOENT;
- 		goto fail;
+ 	drm_gem_plane_helper_prepare_fb(plane, state);
+ 
+-	if (plane->state->fb == state->fb)
+-		return 0;
+-
+ 	return vc4_bo_inc_usecnt(bo);
+ }
+ 
+@@ -1516,7 +1513,7 @@ static void vc4_cleanup_fb(struct drm_plane *plane,
+ {
+ 	struct vc4_bo *bo;
+ 
+-	if (plane->state->fb == state->fb || !state->fb)
++	if (!state->fb)
+ 		return;
+ 
+ 	bo = to_vc4_bo(&drm_fb_dma_get_gem_obj(state->fb, 0)->base);
 -- 
 2.43.0
 
