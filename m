@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2098A0D08
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:59:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C78788A0E95
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:16:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ADEB1F229A4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:59:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FC191F21B20
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA86C145345;
-	Thu, 11 Apr 2024 09:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7DBF14600E;
+	Thu, 11 Apr 2024 10:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/EhdNC9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KC+dYEeU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C4E13DDDD;
-	Thu, 11 Apr 2024 09:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658E41448F6;
+	Thu, 11 Apr 2024 10:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829572; cv=none; b=I7Uoft15KAT68RV6My+a0MUnGxhzCd68VgDHxv6XRQkkrfqlerCZJ4lFHDpA4s0IVI6LOU+IjqYEoQ6kt0KTSTPeyA7UrGi/a+lEvQ6mogcR/cDWlIbUCdwBRw5Bm5M1Y1oAqxeytb7jOuYdVRNtY0uvgs5grbVbtWGoQJx7tPI=
+	t=1712830572; cv=none; b=VPyYRNR05HwN1Xa+Q3UU6bQQSSBIt4JsevUaex/6hVpX8Ini/t2l4xxedE8ZnN93+/cf3u1GVmGOa/wtXOcmxNhJjbvK1JuwmKnyQGv/AjeXQNTW9YWmHiwrJmkwmsxRS3NfwSHZC9aZ0TbNbkqotsuLy5QGzUREz1rKwon8GrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829572; c=relaxed/simple;
-	bh=F4jos7qrq0Cf1BQGNH1C2F3Hg0bavKI1GmZAXDTVNxY=;
+	s=arc-20240116; t=1712830572; c=relaxed/simple;
+	bh=WnbQC11FODpP+fvO/QPbKvaWA+62N1wDfxJP+U2EK50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RyZTLZo+D2T38w47n5uHm9pwJffXixBWTFQsNAQ1lCoQ4TGjRyyVwzZBjvqG4vyY3qa3qKfG6j0x4H8Gmi4NWc/H/cDWOB/pnCX6tmFwEAy7JssWMBj0vWkbTu75sX4M6OUWOqvpYuDpDTmRSDho6wr+nY07ysljF/SSJN+Q868=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/EhdNC9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF90C433F1;
-	Thu, 11 Apr 2024 09:59:31 +0000 (UTC)
+	 MIME-Version; b=F0QDY2ryi/XQHbGC5UpJkipVkbac0HSwGKKR/sT9a5wB3f33xV/DCg2PNHEoruzI/X0HCZm7Te/Zw6W1h1Kbx/oXB5ImAbs519oSbmsQWVCkiHDwfNnLouYySpeJQsWFr4Dq1gLYUBwBsZG4JyAoyBjAUeRmgLYIWsVsZu6FdJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KC+dYEeU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B6EC433C7;
+	Thu, 11 Apr 2024 10:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829572;
-	bh=F4jos7qrq0Cf1BQGNH1C2F3Hg0bavKI1GmZAXDTVNxY=;
+	s=korg; t=1712830572;
+	bh=WnbQC11FODpP+fvO/QPbKvaWA+62N1wDfxJP+U2EK50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/EhdNC9bXSo+3c6dOdDKjZUePfxnobRXGTVZX7sGlil5lt5DPvGuA/WfnYNi/Dzy
-	 uM+xiHFhhESOULevPquuMRODdOWygTH8YrPIkH7HJEUKvw9x+u0LS6o91kaopp4OI8
-	 /eOg/7dA5/EQNlWVv1P1ovkN/GPRr8JrFFau3J9o=
+	b=KC+dYEeUh9YEBu5RqgWl1zRlGnE1zrh1Nwbg44+VpcP1O28nOHnAdulA1McDHFmxY
+	 pJ3IB2UNrz1EiMJjXOi6yjtsTsD9Oz5dinvjLWjRFc2jHXDwluARA9RUM0w3gtSXog
+	 eSQ1Lb2N9vR8j8897SLzn753jjqQh3yVSNmF97Bg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Max Reitz <mreitz@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 031/175] clk: qcom: gcc-ipq8074: fix terminating of frequency table arrays
+Subject: [PATCH 5.4 045/215] fuse: store fuse_conn in fuse_req
 Date: Thu, 11 Apr 2024 11:54:14 +0200
-Message-ID: <20240411095420.494852895@linuxfoundation.org>
+Message-ID: <20240411095426.249853460@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Max Reitz <mreitz@redhat.com>
 
-[ Upstream commit 1040ef5ed95d6fd2628bad387d78a61633e09429 ]
+[ Upstream commit 24754db2728a87c513cc480c70c09072a7a40ba6 ]
 
-The frequency table arrays are supposed to be terminated with an
-empty element. Add such entry to the end of the arrays where it
-is missing in order to avoid possible out-of-bound access when
-the table is traversed by functions like qcom_find_freq() or
-qcom_find_freq_floor().
+Every fuse_req belongs to a fuse_conn.  Right now, we always know which
+fuse_conn that is based on the respective device, but we want to allow
+multiple (sub)mounts per single connection, and then the corresponding
+filesystem is not going to be so trivial to obtain.
 
-Only compile tested.
+Storing a pointer to the associated fuse_conn in every fuse_req will
+allow us to trivially find any request's superblock (and thus
+filesystem) even then.
 
-Fixes: 9607f6224b39 ("clk: qcom: ipq8074: add PCIE, USB and SDCC clocks")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-3-074334f0905c@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Max Reitz <mreitz@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Stable-dep-of: b1fe686a765e ("fuse: don't unhash root")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-ipq8074.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/fuse/dev.c    | 13 +++++++------
+ fs/fuse/fuse_i.h |  3 +++
+ 2 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-ipq8074.c b/drivers/clk/qcom/gcc-ipq8074.c
-index eff38d22738c4..e38a1f87263b8 100644
---- a/drivers/clk/qcom/gcc-ipq8074.c
-+++ b/drivers/clk/qcom/gcc-ipq8074.c
-@@ -980,6 +980,7 @@ static struct clk_rcg2 pcie0_axi_clk_src = {
+diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+index ac6a8da340139..185cae8a7ce11 100644
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -40,20 +40,21 @@ static struct fuse_dev *fuse_get_dev(struct file *file)
+ 	return READ_ONCE(file->private_data);
+ }
  
- static const struct freq_tbl ftbl_pcie_aux_clk_src[] = {
- 	F(19200000, P_XO, 1, 0, 0),
-+	{ }
+-static void fuse_request_init(struct fuse_req *req)
++static void fuse_request_init(struct fuse_conn *fc, struct fuse_req *req)
+ {
+ 	INIT_LIST_HEAD(&req->list);
+ 	INIT_LIST_HEAD(&req->intr_entry);
+ 	init_waitqueue_head(&req->waitq);
+ 	refcount_set(&req->count, 1);
+ 	__set_bit(FR_PENDING, &req->flags);
++	req->fc = fc;
+ }
+ 
+-static struct fuse_req *fuse_request_alloc(gfp_t flags)
++static struct fuse_req *fuse_request_alloc(struct fuse_conn *fc, gfp_t flags)
+ {
+ 	struct fuse_req *req = kmem_cache_zalloc(fuse_req_cachep, flags);
+ 	if (req)
+-		fuse_request_init(req);
++		fuse_request_init(fc, req);
+ 
+ 	return req;
+ }
+@@ -125,7 +126,7 @@ static struct fuse_req *fuse_get_req(struct fuse_conn *fc, bool for_background)
+ 	if (fc->conn_error)
+ 		goto out;
+ 
+-	req = fuse_request_alloc(GFP_KERNEL);
++	req = fuse_request_alloc(fc, GFP_KERNEL);
+ 	err = -ENOMEM;
+ 	if (!req) {
+ 		if (for_background)
+@@ -480,7 +481,7 @@ ssize_t fuse_simple_request(struct fuse_conn *fc, struct fuse_args *args)
+ 
+ 	if (args->force) {
+ 		atomic_inc(&fc->num_waiting);
+-		req = fuse_request_alloc(GFP_KERNEL | __GFP_NOFAIL);
++		req = fuse_request_alloc(fc, GFP_KERNEL | __GFP_NOFAIL);
+ 
+ 		if (!args->nocreds)
+ 			fuse_force_creds(fc, req);
+@@ -547,7 +548,7 @@ int fuse_simple_background(struct fuse_conn *fc, struct fuse_args *args,
+ 
+ 	if (args->force) {
+ 		WARN_ON(!args->nocreds);
+-		req = fuse_request_alloc(gfp_flags);
++		req = fuse_request_alloc(fc, gfp_flags);
+ 		if (!req)
+ 			return -ENOMEM;
+ 		__set_bit(FR_BACKGROUND, &req->flags);
+diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
+index 83c2855bc7406..7138b780c9abd 100644
+--- a/fs/fuse/fuse_i.h
++++ b/fs/fuse/fuse_i.h
+@@ -363,6 +363,9 @@ struct fuse_req {
+ 	/** virtio-fs's physically contiguous buffer for in and out args */
+ 	void *argbuf;
+ #endif
++
++	/** fuse_conn this request belongs to */
++	struct fuse_conn *fc;
  };
  
- static struct clk_rcg2 pcie0_aux_clk_src = {
-@@ -1085,6 +1086,7 @@ static const struct freq_tbl ftbl_sdcc_ice_core_clk_src[] = {
- 	F(19200000, P_XO, 1, 0, 0),
- 	F(160000000, P_GPLL0, 5, 0, 0),
- 	F(308570000, P_GPLL6, 3.5, 0, 0),
-+	{ }
- };
- 
- static struct clk_rcg2 sdcc1_ice_core_clk_src = {
+ struct fuse_iqueue;
 -- 
 2.43.0
 
