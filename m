@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-38935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE4738A1118
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A29B08A0D8F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 978DA288867
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5863F1F21CAA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7926C145B26;
-	Thu, 11 Apr 2024 10:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15303145B32;
+	Thu, 11 Apr 2024 10:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JyUYBml"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GdWDbe66"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3579379FD;
-	Thu, 11 Apr 2024 10:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68E22EAE5;
+	Thu, 11 Apr 2024 10:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832023; cv=none; b=VNrwNZAxT2I3v9N5GiDPcX0RS0mWjJzsgT66j/YWi/yJMz2EnnXhsllR1RvkcbPzFlvml9N2qA9Z+CqVl9eWMA907zG7ML6qdyhcndH6m5TEFSUMJqYxpamIdOFTD0Q9+Fg4UOormxTUTlmfyml/wqnln3yCL4t69yYjLBdFZcA=
+	t=1712829905; cv=none; b=VPiXFO2IAbBGcC3IwNir28J/iRDwLiCEn2ku9ib7s6mkC3jzl2Rt7wGMPIJzBiOKDJ/8ppVDtkLVYshODRw0nJsvZkGHoUEVYe06dCFEcfimoehQjCGv7E9ICVx4H5Ufs3epTzaMLPMM3H1QNohV0b3NwhQeKhkA99NNUdSvtSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832023; c=relaxed/simple;
-	bh=eQadKMUqpSpV9e0rKjTk0PFvdkPFBeng1k+sP5kPPKM=;
+	s=arc-20240116; t=1712829905; c=relaxed/simple;
+	bh=Vyo/r5M3tDplGLGxniNFpLuWpMP0iSEkhNaPT61flMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DQX6CT+8+Dx6afE7RS1NKX84MXlyozmKfzfMlVp9VRoFDh8VOM0kmLNzLHrM4RZUtbf3H9jX4AD16kiy0yEIsTJCT/v64XF0jPzOLVROuzTzAljWFFwUFvHbGi6KBs2VPQJG2Gf7XNhlESNh38o9A1ODEmrAvd2EMJPdEYvcEaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JyUYBml; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEAB4C433F1;
-	Thu, 11 Apr 2024 10:40:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sCExr+s5ofEoe+hc03sZtaaV3oAymaN+YQ2cbGmfiv47PlqnG8A1i21i6wm3S357QnR3l2dPzU2i2/IGRz25PjWZ3p658YSUj3HGmJ1NblPM5JOt8WZ2GPQHHmsv5CGtnilgJGyQxdbzFce08wDQ7sXTgpSr410Rb505ddBezck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GdWDbe66; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E94FC433C7;
+	Thu, 11 Apr 2024 10:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832023;
-	bh=eQadKMUqpSpV9e0rKjTk0PFvdkPFBeng1k+sP5kPPKM=;
+	s=korg; t=1712829905;
+	bh=Vyo/r5M3tDplGLGxniNFpLuWpMP0iSEkhNaPT61flMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1JyUYBml5jtFVOoMtF+Ic5NUs/C7iNpQ33hF0GeymAOQdl+QAq5u02/pGMrYo5k8Q
-	 PXpbo5ViRiDNywqsi47rtB/6Bgwk+CXB7y1AfNLBSUutKm/8dCHsxoab2kXMOkOcG9
-	 gTmJNUYtTGv9kX91AKzirjpIoMD365EY7tRiOxxk=
+	b=GdWDbe66O0VVoFLb/BR2953aPiaGpCS0gt93IrS4c8QsqLdKaXarhPDPiNgwRnI4m
+	 32D1Kgx/klwX8G1/51ACOfa0dWc/MkRh9EdPBYeP82AGCkqBs48IWb4zOIu6OP+srP
+	 2csqLGyRwScccBke1AWRYhBxMQZu091+fgE5p1BE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Min Li <min15.li@samsung.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
-Subject: [PATCH 5.10 205/294] block: add check that partition length needs to be aligned with block size
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 145/175] batman-adv: Return directly after a failed batadv_dat_select_candidates() in batadv_dat_forward_data()
 Date: Thu, 11 Apr 2024 11:56:08 +0200
-Message-ID: <20240411095441.773298614@linuxfoundation.org>
+Message-ID: <20240411095423.928259603@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Min Li <min15.li@samsung.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-commit 6f64f866aa1ae6975c95d805ed51d7e9433a0016 upstream.
+[ Upstream commit ffc15626c861f811f9778914be004fcf43810a91 ]
 
-Before calling add partition or resize partition, there is no check
-on whether the length is aligned with the logical block size.
-If the logical block size of the disk is larger than 512 bytes,
-then the partition size maybe not the multiple of the logical block size,
-and when the last sector is read, bio_truncate() will adjust the bio size,
-resulting in an IO error if the size of the read command is smaller than
-the logical block size.If integrity data is supported, this will also
-result in a null pointer dereference when calling bio_integrity_free.
+The kfree() function was called in one case by
+the batadv_dat_forward_data() function during error handling
+even if the passed variable contained a null pointer.
+This issue was detected by using the Coccinelle software.
 
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Min Li <min15.li@samsung.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230629142517.121241-1-min15.li@samsung.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+* Thus return directly after a batadv_dat_select_candidates() call failed
+  at the beginning.
+
+* Delete the label “out” which became unnecessary with this refactoring.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Acked-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/ioctl.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/batman-adv/distributed-arp-table.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -17,7 +17,7 @@ static int blkpg_do_ioctl(struct block_d
- 			  struct blkpg_partition __user *upart, int op)
- {
- 	struct blkpg_partition p;
--	long long start, length;
-+	sector_t start, length;
+diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
+index af380dc877e31..6930d414138e1 100644
+--- a/net/batman-adv/distributed-arp-table.c
++++ b/net/batman-adv/distributed-arp-table.c
+@@ -648,7 +648,7 @@ static bool batadv_dat_send_data(struct batadv_priv *bat_priv,
  
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EACCES;
-@@ -32,6 +32,12 @@ static int blkpg_do_ioctl(struct block_d
- 	if (op == BLKPG_DEL_PARTITION)
- 		return bdev_del_partition(bdev, p.pno);
+ 	cand = batadv_dat_select_candidates(bat_priv, ip, vid);
+ 	if (!cand)
+-		goto out;
++		return ret;
  
-+	if (p.start < 0 || p.length <= 0 || p.start + p.length < 0)
-+		return -EINVAL;
-+	/* Check that the partition is aligned to the block size */
-+	if (!IS_ALIGNED(p.start | p.length, bdev_logical_block_size(bdev)))
-+		return -EINVAL;
-+
- 	start = p.start >> SECTOR_SHIFT;
- 	length = p.length >> SECTOR_SHIFT;
+ 	batadv_dbg(BATADV_DBG_DAT, bat_priv, "DHT_SEND for %pI4\n", &ip);
  
-@@ -46,9 +52,6 @@ static int blkpg_do_ioctl(struct block_d
+@@ -692,7 +692,6 @@ static bool batadv_dat_send_data(struct batadv_priv *bat_priv,
+ 		batadv_orig_node_put(cand[i].orig_node);
+ 	}
  
- 	switch (op) {
- 	case BLKPG_ADD_PARTITION:
--		/* check if partition is aligned to blocksize */
--		if (p.start & (bdev_logical_block_size(bdev) - 1))
--			return -EINVAL;
- 		return bdev_add_partition(bdev, p.pno, start, length);
- 	case BLKPG_RESIZE_PARTITION:
- 		return bdev_resize_partition(bdev, p.pno, start, length);
+-out:
+ 	kfree(cand);
+ 	return ret;
+ }
+-- 
+2.43.0
+
 
 
 
