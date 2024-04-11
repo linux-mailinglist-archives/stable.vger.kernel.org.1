@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390098A0EA1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:16:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA3B8A0CF1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:58:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E214E1F222CC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:16:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54A541F21872
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF30146582;
-	Thu, 11 Apr 2024 10:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAAB145345;
+	Thu, 11 Apr 2024 09:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqbD0E5L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRDi7JQW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8F513F452;
-	Thu, 11 Apr 2024 10:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF5B13DDDD;
+	Thu, 11 Apr 2024 09:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830593; cv=none; b=ObloczCcIjTf6ub73icgjdLf1OlmmxPGzLa33vL2APmdljj/pcR3hACusRuzDIRizpxZHvwrfegbsbEpGsayV0x3D9EW8pAAJcwVftuq13FlXCyou9kAi8lE6rvdHiyLiQ8wJM25H4PLDcpkjhyIw2O5XxxhVXSzr/2RL3+pLHQ=
+	t=1712829511; cv=none; b=In0juru71AdUgjdZhKLcPEW2GqEUfoUuNbl/Z2d6YFgPrDCqtheU4aS9Sd1pMhoA5TWmT5VJcr0D9OIqLqbnmBYpcyEWpbahZ8IfbNjh9qcxrvCRGjKgeHX0MYxMzB6ajDrLMZ+IpTE0Q3N9UwK78bCFDpZLFJZaOcENYCgX8Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830593; c=relaxed/simple;
-	bh=LtPRdiAP0XeyG5h7ekv3XeaJKmHDv2IuPNRu9nHIahI=;
+	s=arc-20240116; t=1712829511; c=relaxed/simple;
+	bh=tSM6KvUdogG9SEdJA3o3LWBs4JkWb3q2Fhtw1eRxRIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pyN2SezAsh2v87bGXzq4mPzZ9KIMLfG9whLkVr3fL+/N2ZFAsmXxLc6yPhCpZbZMvZMP3dqUPAZW1+nE+cyZ7pRWz/sXx8khhuaGRLliL4dC79LtQNqV1pwtDWdk91tR3qanFY9ZbybhQveboYuqDFk/CxeUaMN8IlmQzy+BXlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqbD0E5L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8053C433F1;
-	Thu, 11 Apr 2024 10:16:32 +0000 (UTC)
+	 MIME-Version; b=BICDhnfdRUxR04S4sgd9M2QTri5wp8NWTAPYTCT6P6VkmijmJeDjc7MRIe7HJ8DS88DNMDiuNKyDuxpiyMKnBJxThYyaDG2QJzTiDXWb7pUxcyTxTJytwUtoBc0xXzl9TFZP5htpGygJd+54KYDVF4+DhJivq86AH7QpFXxxfBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRDi7JQW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350D2C433F1;
+	Thu, 11 Apr 2024 09:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830593;
-	bh=LtPRdiAP0XeyG5h7ekv3XeaJKmHDv2IuPNRu9nHIahI=;
+	s=korg; t=1712829510;
+	bh=tSM6KvUdogG9SEdJA3o3LWBs4JkWb3q2Fhtw1eRxRIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZqbD0E5LbYXCVAJzuxWlPcB3eL8onOQcMd3BnJTjwxkKnBfoHoRUMrI5Uf641x6ez
-	 Wb13LK+vabL/nJJVpPm+vBPc2vKXfwL05qdBZ+ST/vaS1iATezisPles2ZK59qGX5f
-	 m35+i009rQ2D4/efvPMY/I7aN1+xJABBocmwu5uA=
+	b=CRDi7JQWYzxuGrN4obfX5AzdEIhBObrwWC0uvLMQ8XeNG9H252nl5h8W9340Mk/pp
+	 1qsQ+m9wQSi0cBtXwfGB+HN3dpX0QdpLw1T5mQSSQ39hOfSa+mcPfUqCngr5R4IuTj
+	 05B0j78WeH0GQXwXgogQgOOlFGSCnS29/wO9ujRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <cy54@illinois.edu>,
-	Richard Weinberger <richard@nod.at>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 025/215] ubi: Check for too small LEB size in VTBL code
-Date: Thu, 11 Apr 2024 11:53:54 +0200
-Message-ID: <20240411095425.639213522@linuxfoundation.org>
+Subject: [PATCH 4.19 012/175] smack: Handle SMACK64TRANSMUTE in smack_inode_setsecurity()
+Date: Thu, 11 Apr 2024 11:53:55 +0200
+Message-ID: <20240411095419.913953001@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Weinberger <richard@nod.at>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-[ Upstream commit 68a24aba7c593eafa8fd00f2f76407b9b32b47a9 ]
+[ Upstream commit ac02f007d64eb2769d0bde742aac4d7a5fc6e8a5 ]
 
-If the LEB size is smaller than a volume table record we cannot
-have volumes.
-In this case abort attaching.
+If the SMACK64TRANSMUTE xattr is provided, and the inode is a directory,
+update the in-memory inode flags by setting SMK_INODE_TRANSMUTE.
 
-Cc: Chenyuan Yang <cy54@illinois.edu>
 Cc: stable@vger.kernel.org
-Fixes: 801c135ce73d ("UBI: Unsorted Block Images")
-Reported-by: Chenyuan Yang <cy54@illinois.edu>
-Closes: https://lore.kernel.org/linux-mtd/1433EB7A-FC89-47D6-8F47-23BE41B263B3@illinois.edu/
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Fixes: 5c6d1125f8db ("Smack: Transmute labels on specified directories") # v2.6.38.x
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/ubi/vtbl.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ security/smack/smack_lsm.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/mtd/ubi/vtbl.c b/drivers/mtd/ubi/vtbl.c
-index 53d8ab54e1811..c891ee100dec4 100644
---- a/drivers/mtd/ubi/vtbl.c
-+++ b/drivers/mtd/ubi/vtbl.c
-@@ -791,6 +791,12 @@ int ubi_read_volume_table(struct ubi_device *ubi, struct ubi_attach_info *ai)
- 	 * The number of supported volumes is limited by the eraseblock size
- 	 * and by the UBI_MAX_VOLUMES constant.
- 	 */
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 2f2dc49f53dff..d9bff4ba7f2e8 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -2802,6 +2802,15 @@ static int smack_inode_setsecurity(struct inode *inode, const char *name,
+ 	if (value == NULL || size > SMK_LONGLABEL || size == 0)
+ 		return -EINVAL;
+ 
++	if (strcmp(name, XATTR_SMACK_TRANSMUTE) == 0) {
++		if (!S_ISDIR(inode->i_mode) || size != TRANS_TRUE_SIZE ||
++		    strncmp(value, TRANS_TRUE, TRANS_TRUE_SIZE) != 0)
++			return -EINVAL;
 +
-+	if (ubi->leb_size < UBI_VTBL_RECORD_SIZE) {
-+		ubi_err(ubi, "LEB size too small for a volume record");
-+		return -EINVAL;
++		nsp->smk_flags |= SMK_INODE_TRANSMUTE;
++		return 0;
 +	}
 +
- 	ubi->vtbl_slots = ubi->leb_size / UBI_VTBL_RECORD_SIZE;
- 	if (ubi->vtbl_slots > UBI_MAX_VOLUMES)
- 		ubi->vtbl_slots = UBI_MAX_VOLUMES;
+ 	skp = smk_import_entry(value, size);
+ 	if (IS_ERR(skp))
+ 		return PTR_ERR(skp);
 -- 
 2.43.0
 
