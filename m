@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CAE88A0FC1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:27:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99AA28A0E30
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:12:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4810428251F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 137F41F2186A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4533145B13;
-	Thu, 11 Apr 2024 10:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7890F145B28;
+	Thu, 11 Apr 2024 10:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmOCAcyX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrhmBsH6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820C713FD94;
-	Thu, 11 Apr 2024 10:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3651F1448EF;
+	Thu, 11 Apr 2024 10:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831231; cv=none; b=UXzZCkvFf0jcM66am23rgUG58Y2i51nCObgoCOfQhaoBqvTSEfXR4C2aoEJUJE1TcW0DPMGgicE7JSUmNSvSXwcN9ae/42ejUvkDBcivbDn/d6HgWj5jR4JaUvjDi0CPREsdePhkihw7vsXKs8zneciyMUzx24UKcALFcG7yjIo=
+	t=1712830325; cv=none; b=JqnsafEhjtB/AxSzDpczR08gTisgGfgtQoxySo2NX/r/d2xCHHOUgzJpq52exiDXX8kKjUZypn5aPVjqKDX2BNH65N3ilnxQOQo0yfv7QXCSsFOvTiGWRDDF9NwEr1MkqR5u+/jG6YCwP4hMEPvBVAXeHZh9XVO6Ifnj4nAAjis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831231; c=relaxed/simple;
-	bh=ZBvlvBMV+PlnHyeYCoB1bp0gAOa2MKxmFCz/Yn2r6SE=;
+	s=arc-20240116; t=1712830325; c=relaxed/simple;
+	bh=4f4oNbeRtNksqZuWqo1a6hFdAcQSEkTUILTAQLOnuds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iCJiZ6gkTPOxLhyZKOFlXfaBH59nqmBCCnTNVSuMofMchjQa8g6sLYbxbznNYc6NGof8NQuu4CCQdskHjL1ojk8LMLLnWqE/JM9Qj1QYWtAVj2E1FQlRhVZ67qzGCga4up2iotTE3Cl+hzwC1ut5mzi7sAsewkBFzNSFetIOHlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmOCAcyX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09AE1C433C7;
-	Thu, 11 Apr 2024 10:27:10 +0000 (UTC)
+	 MIME-Version; b=TS8YUCb1/1D6FVVn4zCLF1/9bnzWM9D+eq7JEDbK7/hcGA9LqPHAPYIhYOdtIiR4u2voWCzr7a+bpTnSOA/ZDlqMCO+1JcH7m68n4zFWl/wLFgN8FYFKyEZmzozzBo1CxjEkGsb7/HOLkq3m9K1UXYy+xHDWdqSOfFtzWtL5F6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrhmBsH6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21F4C433C7;
+	Thu, 11 Apr 2024 10:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831231;
-	bh=ZBvlvBMV+PlnHyeYCoB1bp0gAOa2MKxmFCz/Yn2r6SE=;
+	s=korg; t=1712830325;
+	bh=4f4oNbeRtNksqZuWqo1a6hFdAcQSEkTUILTAQLOnuds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cmOCAcyXl2TAPYDLZLgsJkL9GHjJqRFWbxxn0k3+PhxD2CKBCvYzA+U6m1jHr5yjY
-	 e2un2xWjQNhv7QQBgdNCE6VoiCLcXEx/dsp1N91SFtJIoEIJTH+afGcZUs+oPVTjbB
-	 KG1A3MYKYuYU1npox4hwAGiJyTsOHC+9744vaktk=
+	b=hrhmBsH63nc4N79gphQ6CJ5+gGeAWztTK+d99J2DgQLny4tOvGOF1obWSzcUts4Vh
+	 3Lo4kxSt+ZUm4X4Oah18kBRl1twqcfdvvHJwIe3Igqbi+nLQeCqRlPnwszcP5lVtVo
+	 3/LHZjpwHhJGn4Yng+OtkwvnhyrGXIcfjl8NUaAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Tejun Heo <tj@kernel.org>,
+	Andrea Righi <andrea.righi@canonical.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/114] pinctrl: renesas: checker: Limit cfg reg enum checks to provided IDs
+Subject: [PATCH 6.8 110/143] kernfs: RCU protect kernfs_nodes and avoid kernfs_idr_lock in kernfs_find_and_get_node_by_id()
 Date: Thu, 11 Apr 2024 11:56:18 +0200
-Message-ID: <20240411095418.425592009@linuxfoundation.org>
+Message-ID: <20240411095424.218530547@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,201 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 3803584a4e9b65bb5b013f862f55c5055aa86c25 ]
+[ Upstream commit 4207b556e62f0a8915afc5da4c5d5ad915a253a5 ]
 
-If the number of provided enum IDs in a variable width config register
-description does not match the expected number, the checker uses the
-expected number for validating the individual enum IDs.
+The BPF helper bpf_cgroup_from_id() calls kernfs_find_and_get_node_by_id()
+which acquires kernfs_idr_lock, which is an non-raw non-IRQ-safe lock. This
+can lead to deadlocks as bpf_cgroup_from_id() can be called from any BPF
+programs including e.g. the ones that attach to functions which are holding
+the scheduler rq lock.
 
-However, this may cause out-of-bounds accesses on the array holding the
-enum IDs, leading to bogus enum_id conflict warnings.  Worse, if the bug
-is an incorrect bit field description (e.g. accidentally using "12"
-instead of "-12" for a reserved field), thousands of warnings may be
-printed, overflowing the kernel log buffer.
+Consider the following BPF program:
 
-Fix this by limiting the enum ID check to the number of provided enum
-IDs.
+  SEC("fentry/__set_cpus_allowed_ptr_locked")
+  int BPF_PROG(__set_cpus_allowed_ptr_locked, struct task_struct *p,
+	       struct affinity_context *affn_ctx, struct rq *rq, struct rq_flags *rf)
+  {
+	  struct cgroup *cgrp = bpf_cgroup_from_id(p->cgroups->dfl_cgrp->kn->id);
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/c7385f44f2faebb8856bcbb4e908d846fc1531fb.1705930809.git.geert+renesas@glider.be
+	  if (cgrp) {
+		  bpf_printk("%d[%s] in %s", p->pid, p->comm, cgrp->kn->name);
+		  bpf_cgroup_release(cgrp);
+	  }
+	  return 0;
+  }
+
+__set_cpus_allowed_ptr_locked() is called with rq lock held and the above
+BPF program calls bpf_cgroup_from_id() within leading to the following
+lockdep warning:
+
+  =====================================================
+  WARNING: HARDIRQ-safe -> HARDIRQ-unsafe lock order detected
+  6.7.0-rc3-work-00053-g07124366a1d7-dirty #147 Not tainted
+  -----------------------------------------------------
+  repro/1620 [HC0[0]:SC0[0]:HE0:SE1] is trying to acquire:
+  ffffffff833b3688 (kernfs_idr_lock){+.+.}-{2:2}, at: kernfs_find_and_get_node_by_id+0x1e/0x70
+
+		and this task is already holding:
+  ffff888237ced698 (&rq->__lock){-.-.}-{2:2}, at: task_rq_lock+0x4e/0xf0
+  which would create a new lock dependency:
+   (&rq->__lock){-.-.}-{2:2} -> (kernfs_idr_lock){+.+.}-{2:2}
+  ...
+   Possible interrupt unsafe locking scenario:
+
+	 CPU0                    CPU1
+	 ----                    ----
+    lock(kernfs_idr_lock);
+				 local_irq_disable();
+				 lock(&rq->__lock);
+				 lock(kernfs_idr_lock);
+    <Interrupt>
+      lock(&rq->__lock);
+
+		 *** DEADLOCK ***
+  ...
+  Call Trace:
+   dump_stack_lvl+0x55/0x70
+   dump_stack+0x10/0x20
+   __lock_acquire+0x781/0x2a40
+   lock_acquire+0xbf/0x1f0
+   _raw_spin_lock+0x2f/0x40
+   kernfs_find_and_get_node_by_id+0x1e/0x70
+   cgroup_get_from_id+0x21/0x240
+   bpf_cgroup_from_id+0xe/0x20
+   bpf_prog_98652316e9337a5a___set_cpus_allowed_ptr_locked+0x96/0x11a
+   bpf_trampoline_6442545632+0x4f/0x1000
+   __set_cpus_allowed_ptr_locked+0x5/0x5a0
+   sched_setaffinity+0x1b3/0x290
+   __x64_sys_sched_setaffinity+0x4f/0x60
+   do_syscall_64+0x40/0xe0
+   entry_SYSCALL_64_after_hwframe+0x46/0x4e
+
+Let's fix it by protecting kernfs_node and kernfs_root with RCU and making
+kernfs_find_and_get_node_by_id() acquire rcu_read_lock() instead of
+kernfs_idr_lock.
+
+This adds an rcu_head to kernfs_node making it larger by 16 bytes on 64bit.
+Combined with the preceding rearrange patch, the net increase is 8 bytes.
+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Cc: Andrea Righi <andrea.righi@canonical.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/20240109214828.252092-4-tj@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/kernfs/dir.c             | 31 ++++++++++++++++++++-----------
+ fs/kernfs/kernfs-internal.h |  2 ++
+ include/linux/kernfs.h      |  2 ++
+ 3 files changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/pinctrl/renesas/core.c b/drivers/pinctrl/renesas/core.c
-index d1e92bbed33ad..757bbc549b0e2 100644
---- a/drivers/pinctrl/renesas/core.c
-+++ b/drivers/pinctrl/renesas/core.c
-@@ -909,9 +909,11 @@ static void __init sh_pfc_check_cfg_reg(const char *drvname,
- 		sh_pfc_err("reg 0x%x: var_field_width declares %u instead of %u bits\n",
- 			   cfg_reg->reg, rw, cfg_reg->reg_width);
+diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
+index bce1d7ac95caa..458519e416fe7 100644
+--- a/fs/kernfs/dir.c
++++ b/fs/kernfs/dir.c
+@@ -529,6 +529,20 @@ void kernfs_get(struct kernfs_node *kn)
+ }
+ EXPORT_SYMBOL_GPL(kernfs_get);
  
--	if (n != cfg_reg->nr_enum_ids)
-+	if (n != cfg_reg->nr_enum_ids) {
- 		sh_pfc_err("reg 0x%x: enum_ids[] has %u instead of %u values\n",
- 			   cfg_reg->reg, cfg_reg->nr_enum_ids, n);
-+		n = cfg_reg->nr_enum_ids;
++static void kernfs_free_rcu(struct rcu_head *rcu)
++{
++	struct kernfs_node *kn = container_of(rcu, struct kernfs_node, rcu);
++
++	kfree_const(kn->name);
++
++	if (kn->iattr) {
++		simple_xattrs_free(&kn->iattr->xattrs, NULL);
++		kmem_cache_free(kernfs_iattrs_cache, kn->iattr);
 +	}
++
++	kmem_cache_free(kernfs_node_cache, kn);
++}
++
+ /**
+  * kernfs_put - put a reference count on a kernfs_node
+  * @kn: the target kernfs_node
+@@ -557,16 +571,11 @@ void kernfs_put(struct kernfs_node *kn)
+ 	if (kernfs_type(kn) == KERNFS_LINK)
+ 		kernfs_put(kn->symlink.target_kn);
  
- check_enum_ids:
- 	sh_pfc_check_reg_enums(drvname, cfg_reg->reg, cfg_reg->enum_ids, n);
+-	kfree_const(kn->name);
+-
+-	if (kn->iattr) {
+-		simple_xattrs_free(&kn->iattr->xattrs, NULL);
+-		kmem_cache_free(kernfs_iattrs_cache, kn->iattr);
+-	}
+ 	spin_lock(&kernfs_idr_lock);
+ 	idr_remove(&root->ino_idr, (u32)kernfs_ino(kn));
+ 	spin_unlock(&kernfs_idr_lock);
+-	kmem_cache_free(kernfs_node_cache, kn);
++
++	call_rcu(&kn->rcu, kernfs_free_rcu);
+ 
+ 	kn = parent;
+ 	if (kn) {
+@@ -575,7 +584,7 @@ void kernfs_put(struct kernfs_node *kn)
+ 	} else {
+ 		/* just released the root kn, free @root too */
+ 		idr_destroy(&root->ino_idr);
+-		kfree(root);
++		kfree_rcu(root, rcu);
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(kernfs_put);
+@@ -715,7 +724,7 @@ struct kernfs_node *kernfs_find_and_get_node_by_id(struct kernfs_root *root,
+ 	ino_t ino = kernfs_id_ino(id);
+ 	u32 gen = kernfs_id_gen(id);
+ 
+-	spin_lock(&kernfs_idr_lock);
++	rcu_read_lock();
+ 
+ 	kn = idr_find(&root->ino_idr, (u32)ino);
+ 	if (!kn)
+@@ -739,10 +748,10 @@ struct kernfs_node *kernfs_find_and_get_node_by_id(struct kernfs_root *root,
+ 	if (unlikely(!__kernfs_active(kn) || !atomic_inc_not_zero(&kn->count)))
+ 		goto err_unlock;
+ 
+-	spin_unlock(&kernfs_idr_lock);
++	rcu_read_unlock();
+ 	return kn;
+ err_unlock:
+-	spin_unlock(&kernfs_idr_lock);
++	rcu_read_unlock();
+ 	return NULL;
+ }
+ 
+diff --git a/fs/kernfs/kernfs-internal.h b/fs/kernfs/kernfs-internal.h
+index 237f2764b9412..b42ee6547cdc1 100644
+--- a/fs/kernfs/kernfs-internal.h
++++ b/fs/kernfs/kernfs-internal.h
+@@ -49,6 +49,8 @@ struct kernfs_root {
+ 	struct rw_semaphore	kernfs_rwsem;
+ 	struct rw_semaphore	kernfs_iattr_rwsem;
+ 	struct rw_semaphore	kernfs_supers_rwsem;
++
++	struct rcu_head		rcu;
+ };
+ 
+ /* +1 to avoid triggering overflow warning when negating it */
+diff --git a/include/linux/kernfs.h b/include/linux/kernfs.h
+index 99aaa050ccb76..e857a150babc6 100644
+--- a/include/linux/kernfs.h
++++ b/include/linux/kernfs.h
+@@ -223,6 +223,8 @@ struct kernfs_node {
+ 	unsigned short		flags;
+ 	umode_t			mode;
+ 	struct kernfs_iattrs	*iattr;
++
++	struct rcu_head		rcu;
+ };
+ 
+ /*
 -- 
 2.43.0
 
