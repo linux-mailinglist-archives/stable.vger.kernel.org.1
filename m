@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-38489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF23C8A0EE0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:18:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A550B8A0D54
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93ACB284682
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:18:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44D301F23650
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E0314600E;
-	Thu, 11 Apr 2024 10:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4E3145B1D;
+	Thu, 11 Apr 2024 10:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdZtjAKW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QoiG+7bo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A1C140E3D;
-	Thu, 11 Apr 2024 10:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2DF145B13;
+	Thu, 11 Apr 2024 10:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830725; cv=none; b=EgPGQQnOYOerysF2+KfFQgP+M3Efc55xZfhjcwvn6SpX6WqED7QPKeG9cYHw0+NFyYROvdiK0fEHsT2QxVtFC1v15LcGHVUIZKQQZ4dZEum4FRrzIgXTQrotGELKBhp8DA3yVwt38GUecpYXAeBXzoQuARPUzHNZWPyitR5O+GE=
+	t=1712829767; cv=none; b=sNoQ2cnlWM8OfBowH6EChDcDQMAAHSDdYuqdi5jV/FytVkYextwNiclI72rEwOx7bsDzIJpKty4AFk0Pcf71NqADiFbK/aWbqHzw3KyH9cwfRi/zwZX4MW6ckGOpu2x/NvfOivdrdG3gjmXfwaFWf1Xl6eleGzZYrNL1hPWJNws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830725; c=relaxed/simple;
-	bh=vTYjRuQuEAWUMOkG9I6kWxTpdthoJRGwIdKt45wvtvU=;
+	s=arc-20240116; t=1712829767; c=relaxed/simple;
+	bh=TE4dgqA3ggw51zojwt6J9BuA6RUTqEPlnPfsWRrPAsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DmPvcAON6GmHdCwZcDufyzAEnayNm9f06BvaOgBwmsrgIXS9TIS9Ye/JV0RRd7EsSvLwdJtr2LHH69NcXBfbRJC/662jffU1olMKYEpT85BHYgQwwdGA7jKU74UUiH44F4tBBj5Xd9+JJnN9S1wvuQ55g2N+S1W0Qo7BFDI2U00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zdZtjAKW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CCFAC433F1;
-	Thu, 11 Apr 2024 10:18:43 +0000 (UTC)
+	 MIME-Version; b=CjX5nV5D1UzOtydvP17y/bnBFZ/jJyrlz/QF0+WNNfaLxZew7U3CeHftRYXv9xdDmGMxhFdaJMN0ajUFYrlVDfi80bYtIE6DSRGYuyG0ylWbwVOEETDoMg/25+tag4vBCLarT8QW2gWgZz+Lt1Y9+oNklCDDgmmTXRnx2TdSjhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QoiG+7bo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7676C43394;
+	Thu, 11 Apr 2024 10:02:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830724;
-	bh=vTYjRuQuEAWUMOkG9I6kWxTpdthoJRGwIdKt45wvtvU=;
+	s=korg; t=1712829767;
+	bh=TE4dgqA3ggw51zojwt6J9BuA6RUTqEPlnPfsWRrPAsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zdZtjAKW/7Djmk2zeCNtbEpaicwCYXW9xWEg9YmgJDFJPBWzwmQz1CGYmCB1kjTd3
-	 cLJ9AsdLKz6eGky9HGJ+iaS8ggBHCDqxcEQVVpXckWHlEemGaWQPKsKmIWWDJKmvm1
-	 A5fQ94soh6I5V4P+D7il0YBVlsYWqv/pXukTbQOY=
+	b=QoiG+7bou4AMXfTGrmB8yskvgKeIhxHVDiykYHt3MfHm9l8JlUbMIvGCiy0WEQBeY
+	 fL2UslqT/Ttr0PAVBKUTan230C9akBlfJejeCVD1rZ7DO+/N43nzXlngRUqrhegY46
+	 HDAA3uRdC2cdu4RgJjcts9C5VjzG0tyMWsTZtqnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilian Heyne <mheyne@amazon.de>,
-	Juergen Gross <jgross@suse.com>,
-	Andrew Paniakin <apanyaki@amazon.com>
-Subject: [PATCH 5.4 095/215] xen/events: close evtchn after mapping cleanup
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH 4.19 081/175] mm/migrate: set swap entry values of THP tail pages properly.
 Date: Thu, 11 Apr 2024 11:55:04 +0200
-Message-ID: <20240411095427.756058129@linuxfoundation.org>
+Message-ID: <20240411095422.001743978@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,163 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maximilian Heyne <mheyne@amazon.de>
+From: Zi Yan <ziy@nvidia.com>
 
-commit fa765c4b4aed2d64266b694520ecb025c862c5a9 upstream.
+The tail pages in a THP can have swap entry information stored in their
+private field. When migrating to a new page, all tail pages of the new
+page need to update ->private to avoid future data corruption.
 
-shutdown_pirq and startup_pirq are not taking the
-irq_mapping_update_lock because they can't due to lock inversion. Both
-are called with the irq_desc->lock being taking. The lock order,
-however, is first irq_mapping_update_lock and then irq_desc->lock.
+This fix is stable-only, since after commit 07e09c483cbe ("mm/huge_memory:
+work on folio->swap instead of page->private when splitting folio"),
+subpages of a swapcached THP no longer requires the maintenance.
 
-This opens multiple races:
-- shutdown_pirq can be interrupted by a function that allocates an event
-  channel:
+Adding THPs to the swapcache was introduced in commit
+38d8b4e6bdc87 ("mm, THP, swap: delay splitting THP during swap out"),
+where each subpage of a THP added to the swapcache had its own swapcache
+entry and required the ->private field to point to the correct swapcache
+entry. Later, when THP migration functionality was implemented in commit
+616b8371539a6 ("mm: thp: enable thp migration in generic path"),
+it initially did not handle the subpages of swapcached THPs, failing to
+update their ->private fields or replace the subpage pointers in the
+swapcache. Subsequently, commit e71769ae5260 ("mm: enable thp migration
+for shmem thp") addressed the swapcache update aspect. This patch fixes
+the update of subpage ->private fields.
 
-  CPU0                        CPU1
-  shutdown_pirq {
-    xen_evtchn_close(e)
-                              __startup_pirq {
-                                EVTCHNOP_bind_pirq
-                                  -> returns just freed evtchn e
-                                set_evtchn_to_irq(e, irq)
-                              }
-    xen_irq_info_cleanup() {
-      set_evtchn_to_irq(e, -1)
-    }
-  }
-
-  Assume here event channel e refers here to the same event channel
-  number.
-  After this race the evtchn_to_irq mapping for e is invalid (-1).
-
-- __startup_pirq races with __unbind_from_irq in a similar way. Because
-  __startup_pirq doesn't take irq_mapping_update_lock it can grab the
-  evtchn that __unbind_from_irq is currently freeing and cleaning up. In
-  this case even though the event channel is allocated, its mapping can
-  be unset in evtchn_to_irq.
-
-The fix is to first cleanup the mappings and then close the event
-channel. In this way, when an event channel gets allocated it's
-potential previous evtchn_to_irq mappings are guaranteed to be unset already.
-This is also the reverse order of the allocation where first the event
-channel is allocated and then the mappings are setup.
-
-On a 5.10 kernel prior to commit 3fcdaf3d7634 ("xen/events: modify internal
-[un]bind interfaces"), we hit a BUG like the following during probing of NVMe
-devices. The issue is that during nvme_setup_io_queues, pci_free_irq
-is called for every device which results in a call to shutdown_pirq.
-With many nvme devices it's therefore likely to hit this race during
-boot because there will be multiple calls to shutdown_pirq and
-startup_pirq are running potentially in parallel.
-
-  ------------[ cut here ]------------
-  blkfront: xvda: barrier or flush: disabled; persistent grants: enabled; indirect descriptors: enabled; bounce buffer: enabled
-  kernel BUG at drivers/xen/events/events_base.c:499!
-  invalid opcode: 0000 [#1] SMP PTI
-  CPU: 44 PID: 375 Comm: kworker/u257:23 Not tainted 5.10.201-191.748.amzn2.x86_64 #1
-  Hardware name: Xen HVM domU, BIOS 4.11.amazon 08/24/2006
-  Workqueue: nvme-reset-wq nvme_reset_work
-  RIP: 0010:bind_evtchn_to_cpu+0xdf/0xf0
-  Code: 5d 41 5e c3 cc cc cc cc 44 89 f7 e8 2b 55 ad ff 49 89 c5 48 85 c0 0f 84 64 ff ff ff 4c 8b 68 30 41 83 fe ff 0f 85 60 ff ff ff <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 0f 1f 44 00 00
-  RSP: 0000:ffffc9000d533b08 EFLAGS: 00010046
-  RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000006
-  RDX: 0000000000000028 RSI: 00000000ffffffff RDI: 00000000ffffffff
-  RBP: ffff888107419680 R08: 0000000000000000 R09: ffffffff82d72b00
-  R10: 0000000000000000 R11: 0000000000000000 R12: 00000000000001ed
-  R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000002
-  FS:  0000000000000000(0000) GS:ffff88bc8b500000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000000000000 CR3: 0000000002610001 CR4: 00000000001706e0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   ? show_trace_log_lvl+0x1c1/0x2d9
-   ? show_trace_log_lvl+0x1c1/0x2d9
-   ? set_affinity_irq+0xdc/0x1c0
-   ? __die_body.cold+0x8/0xd
-   ? die+0x2b/0x50
-   ? do_trap+0x90/0x110
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? do_error_trap+0x65/0x80
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? exc_invalid_op+0x4e/0x70
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? asm_exc_invalid_op+0x12/0x20
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? bind_evtchn_to_cpu+0xc5/0xf0
-   set_affinity_irq+0xdc/0x1c0
-   irq_do_set_affinity+0x1d7/0x1f0
-   irq_setup_affinity+0xd6/0x1a0
-   irq_startup+0x8a/0xf0
-   __setup_irq+0x639/0x6d0
-   ? nvme_suspend+0x150/0x150
-   request_threaded_irq+0x10c/0x180
-   ? nvme_suspend+0x150/0x150
-   pci_request_irq+0xa8/0xf0
-   ? __blk_mq_free_request+0x74/0xa0
-   queue_request_irq+0x6f/0x80
-   nvme_create_queue+0x1af/0x200
-   nvme_create_io_queues+0xbd/0xf0
-   nvme_setup_io_queues+0x246/0x320
-   ? nvme_irq_check+0x30/0x30
-   nvme_reset_work+0x1c8/0x400
-   process_one_work+0x1b0/0x350
-   worker_thread+0x49/0x310
-   ? process_one_work+0x350/0x350
-   kthread+0x11b/0x140
-   ? __kthread_bind_mask+0x60/0x60
-   ret_from_fork+0x22/0x30
-  Modules linked in:
-  ---[ end trace a11715de1eee1873 ]---
-
-Fixes: d46a78b05c0e ("xen: implement pirq type event channels")
-Cc: stable@vger.kernel.org
-Co-debugged-by: Andrew Panyakin <apanyaki@amazon.com>
-Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/20240124163130.31324-1-mheyne@amazon.de
-Signed-off-by: Juergen Gross <jgross@suse.com>
-[apanyaki: backport to v5.4-stable]
-Signed-off-by: Andrew Paniakin <apanyaki@amazon.com>
+Closes: https://lore.kernel.org/linux-mm/1707814102-22682-1-git-send-email-quic_charante@quicinc.com/
+Fixes: 616b8371539a ("mm: thp: enable thp migration in generic path")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/events/events_base.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ mm/migrate.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -825,8 +825,8 @@ static void shutdown_pirq(struct irq_dat
- 		return;
- 
- 	do_mask(info, EVT_MASK_REASON_EXPLICIT);
--	xen_evtchn_close(evtchn);
- 	xen_irq_info_cleanup(info);
-+	xen_evtchn_close(evtchn);
- }
- 
- static void enable_pirq(struct irq_data *data)
-@@ -869,8 +869,6 @@ static void __unbind_from_irq(unsigned i
- 	if (VALID_EVTCHN(evtchn)) {
- 		unsigned int cpu = cpu_from_irq(irq);
- 
--		xen_evtchn_close(evtchn);
--
- 		switch (type_from_irq(irq)) {
- 		case IRQT_VIRQ:
- 			per_cpu(virq_to_irq, cpu)[virq_from_irq(irq)] = -1;
-@@ -883,6 +881,7 @@ static void __unbind_from_irq(unsigned i
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -514,8 +514,12 @@ int migrate_page_move_mapping(struct add
+ 	if (PageSwapBacked(page)) {
+ 		__SetPageSwapBacked(newpage);
+ 		if (PageSwapCache(page)) {
++			int i;
++
+ 			SetPageSwapCache(newpage);
+-			set_page_private(newpage, page_private(page));
++			for (i = 0; i < (1 << compound_order(page)); i++)
++				set_page_private(newpage + i,
++						 page_private(page + i));
  		}
- 
- 		xen_irq_info_cleanup(info);
-+		xen_evtchn_close(evtchn);
- 	}
- 
- 	xen_free_irq(irq);
+ 	} else {
+ 		VM_BUG_ON_PAGE(PageSwapCache(page), page);
 
 
 
