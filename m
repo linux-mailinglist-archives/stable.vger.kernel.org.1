@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-38876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75EF88A10CD
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A397B8A0D1E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:00:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A74941C239C3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26221B26052
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0019B13CF90;
-	Thu, 11 Apr 2024 10:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CFC3145B1D;
+	Thu, 11 Apr 2024 10:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKQSwKq2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoNRDSqO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2319146A8D;
-	Thu, 11 Apr 2024 10:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D2D1448EF;
+	Thu, 11 Apr 2024 10:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831853; cv=none; b=tK9GCZ/fYEi7jhcf29QN1R1rJugfoKS98Z+9SLf3psQD0kbAJHnWpvrZWP1wzljyNgB6x8njVfPdKLDnfrd7xKcOArNMzpFVj3xfbVzlUguQrK7evFeWjFnccb+D6KPBhC2cpq4qYqu2Qgq0GZ+JmGolpQ1eybLtCp1U5CQ21ws=
+	t=1712829626; cv=none; b=tH7YeevhDIRK3etWj5SzVOgr/TlOS3tspWVAhpjAG+cdEYILZ4Hsz4GlA2OOX7qJGI/WjMywXpiXXBOTCgb0fKspGehtvNpCKXNzhtC/gI5DZsMfDiJkYpDefM1LKjVyxu5G/9zM6b1I73z1BhTcM9NllvAe5ajNyM4mM8x7OtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831853; c=relaxed/simple;
-	bh=brVjRuaB7C0bZzQgyMQQlDUnu+villMKIGZrN79G4B4=;
+	s=arc-20240116; t=1712829626; c=relaxed/simple;
+	bh=kFcCY0jBrGth3D5oRkAw49QN2vyFEm0ffEv903LiP8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wjj53TA9cLAzz4rFa5rsIelfuomiAptppWxFpEY4LkDXYpMjeUTiR5UXKF1kPZ5Msv1WNAvkA9fuDu5EtgIQYMiMZSgybvtX/qvCCuRL5gzPM15pUY3ydOAXS2jdgFsjhgBrswL+5n+0X13Hp9ncyQiOfguKNfmmp7u6Xe2X0HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKQSwKq2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319BDC433F1;
-	Thu, 11 Apr 2024 10:37:33 +0000 (UTC)
+	 MIME-Version; b=Ah+bybXsqfl9OC9FkP4lDbJ01A2IkMJ22lJnlG5EE0tOTZnArgtlj1vMJ/b4km0akdeZPLQL5n/5HPT5u5H2f+su0PJh1R3Lplgg3S7FnlKUTKow/qLNGvfradXYK1R/2B3RAbGQwDpA8ewgxFdZSckDObQ3NOjBdhmSf/2PWss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoNRDSqO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435B0C433C7;
+	Thu, 11 Apr 2024 10:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831853;
-	bh=brVjRuaB7C0bZzQgyMQQlDUnu+villMKIGZrN79G4B4=;
+	s=korg; t=1712829625;
+	bh=kFcCY0jBrGth3D5oRkAw49QN2vyFEm0ffEv903LiP8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aKQSwKq23vsizhWwYcApwRTmyoRQRUqUw3+CI6VQM+7kSc7ozZ/sCGJH+QUiJTJgb
-	 V8MH2bFJCBZqfwtj8kX43tfp1g6n0T0wvstTTNnfdzStYwbfpptVHiJwUuyXRfeVZc
-	 5+b+f2/9ftLnLKhMvJxHT/Go0y2Tu4GNG6zbKeWk=
+	b=ZoNRDSqOOlinMtag2NcPXDTRpnosIHM5ARC90T7TrAlW/WAdhjn92WbgIEK7o7pbM
+	 TWYcMrabc7xbnOb/ZgABBd8vIAYXP/AmUmnzAlyqSSJz99ubu/SwlwlvxSexnyxFO8
+	 9jQEFpTeKhto7nDeHbUHKIA3ZFXjwBVgajnyk/ME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Samuel Thibault <samuel.thibault@ens-lyon.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 110/294] drm/amd/display: Return the correct HDCP error code
-Date: Thu, 11 Apr 2024 11:54:33 +0200
-Message-ID: <20240411095438.981465641@linuxfoundation.org>
+Subject: [PATCH 4.19 051/175] speakup: Fix 8bit characters from direct synth
+Date: Thu, 11 Apr 2024 11:54:34 +0200
+Message-ID: <20240411095421.104409121@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+From: Samuel Thibault <samuel.thibault@ens-lyon.org>
 
-[ Upstream commit e64b3f55e458ce7e2087a0051f47edabf74545e7 ]
+[ Upstream commit b6c8dafc9d86eb77e502bb018ec4105e8d2fbf78 ]
 
-[WHY & HOW]
-If the display is null when creating an HDCP session, return a proper
-error code.
+When userland echoes 8bit characters to /dev/synth with e.g.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+echo -e '\xe9' > /dev/synth
+
+synth_write would get characters beyond 0x7f, and thus negative when
+char is signed.  When given to synth_buffer_add which takes a u16, this
+would sign-extend and produce a U+ffxy character rather than U+xy.
+Users thus get garbled text instead of accents in their output.
+
+Let's fix this by making sure that we read unsigned characters.
+
+Signed-off-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
+Fixes: 89fc2ae80bb1 ("speakup: extend synth buffer to 16bit unicode characters")
 Cc: stable@vger.kernel.org
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/r/20240204155736.2oh4ot7tiaa2wpbh@begin
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/staging/speakup/synth.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
-index 972f2600f967f..05d96fa681354 100644
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
-@@ -405,6 +405,9 @@ enum mod_hdcp_status mod_hdcp_hdcp2_create_session(struct mod_hdcp *hdcp)
- 	hdcp_cmd = (struct ta_hdcp_shared_memory *)psp->hdcp_context.hdcp_shared_buf;
- 	memset(hdcp_cmd, 0, sizeof(struct ta_hdcp_shared_memory));
+diff --git a/drivers/staging/speakup/synth.c b/drivers/staging/speakup/synth.c
+index 3568bfb89912c..b5944e7bdbf67 100644
+--- a/drivers/staging/speakup/synth.c
++++ b/drivers/staging/speakup/synth.c
+@@ -208,8 +208,10 @@ void spk_do_flush(void)
+ 	wake_up_process(speakup_task);
+ }
  
-+	if (!display)
-+		return MOD_HDCP_STATUS_DISPLAY_NOT_FOUND;
+-void synth_write(const char *buf, size_t count)
++void synth_write(const char *_buf, size_t count)
+ {
++	const unsigned char *buf = (const unsigned char *) _buf;
 +
- 	hdcp_cmd->in_msg.hdcp2_create_session_v2.display_handle = display->index;
- 
- 	if (hdcp->connection.link.adjust.hdcp2.force_type == MOD_HDCP_FORCE_TYPE_0)
+ 	while (count--)
+ 		synth_buffer_add(*buf++);
+ 	synth_start();
 -- 
 2.43.0
 
