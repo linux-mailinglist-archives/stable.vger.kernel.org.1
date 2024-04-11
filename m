@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-38668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F3F28A0FC6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:27:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0728A0F49
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90AFD1C22F59
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 443741F26D2F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:22:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B4814600E;
-	Thu, 11 Apr 2024 10:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3DB145FF0;
+	Thu, 11 Apr 2024 10:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iC8T7dkB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwoEo43M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4876213FD94;
-	Thu, 11 Apr 2024 10:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A71013FD94;
+	Thu, 11 Apr 2024 10:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831246; cv=none; b=PdEoF05vT2mGy8HfvIBuF8YUhECBiEV2/UYIOofVp/lme/YpH+oQ1qpJCDeE+YS0LJuRdbYPrdLd0YFyrQnjWFVyIunXl6t/EnuxwsDzrK3mNo0bRVPKDx9qysRoCCOBEZPrmHo/CX2AV/6yyg+y1dy3J8zax3MUokk2jQNeSDo=
+	t=1712830956; cv=none; b=bAeiqNsnVnb8oSOKzts6SJwoQtQfKvfcL/B6YkCYDbkYi0FK30eGt3PYzOAhRjST99QiKeJsP1OUyc0tCSEcsGwbfMN/0dhqZK+2CzNkkbWeCwsOulYIE6UmBOxGWL6+1OgHJg56K491kE0MCb44zhwI7piymlFdfSNSLtWeAUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831246; c=relaxed/simple;
-	bh=3ma+WmFDuhLz0Xuo5+rBx3eakHq/dgAHAACGl6tomh8=;
+	s=arc-20240116; t=1712830956; c=relaxed/simple;
+	bh=ZbIpoUO0FfkiXKA07oRA3t5Hi5TgK2cRpKciJE3G2C0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dZs8bPDoh0BtWZwOP499/fH+W/3qE+OkNETfyXvybZ7503ndy/uS+9CMpOTCuAXXeCaRxbb6uny7kPyMFe2cO/Ya2b2p1Dv69ddv0Hz2gukr8xcEEid9SZw/AqIxn8Po7dBhw0OOEsLo2JQT4Obr9bft8aPrTb75vDYpxp5zqvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iC8T7dkB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931A3C433C7;
-	Thu, 11 Apr 2024 10:27:25 +0000 (UTC)
+	 MIME-Version; b=FxvR2FT1Nk0LEvgPT6cA5YGAWkvBn29BSiri6b4SHkbO6kFWVyE7aGn+6cPUgf0RDAwD/PeuFVXHpXCYFD/d+MCorhMCmcP/VZtVBu0j75v7zMNccIGSvmU+nwxvdwCDiVtBgXL49uz2DV2RsYoAEYP6sSYun9aqwIuzdbT1ffo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwoEo43M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2296EC433F1;
+	Thu, 11 Apr 2024 10:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831246;
-	bh=3ma+WmFDuhLz0Xuo5+rBx3eakHq/dgAHAACGl6tomh8=;
+	s=korg; t=1712830956;
+	bh=ZbIpoUO0FfkiXKA07oRA3t5Hi5TgK2cRpKciJE3G2C0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iC8T7dkBkizRvn4afhSR72RUl29JsvNcBIiE2IbWvd2+EYueor6nPuueuFq1zJ7zS
-	 VfrzaG2YQiwBk3K9rkX4dnswvEGJzAV1ly37uHdsM83Djm0xbBFw0wKr7JeVkYfwHz
-	 xSaudEtRWV5koI6vc2WInW9SwAAazhCfPrn50dVk=
+	b=MwoEo43MEo9PIym0jKD0VT/ZlfQFfBTeL64NLEqSegEV13lwMoTwcbr4l3EZCI2Ok
+	 oM735slXzyPn0BIPc0fqrMLJEYdCxYJXqvTUtJm09p81cke8bnOyrL1gzljMbuZw7k
+	 VJLrvlWMtrPen1iFFAHjCVjhR96EBNcT5dP1qOKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Kees Cook <keescook@chromium.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/114] rcu/nocb: Fix WARN_ON_ONCE() in the rcu_nocb_bypass_lock()
-Date: Thu, 11 Apr 2024 11:56:23 +0200
-Message-ID: <20240411095418.576956732@linuxfoundation.org>
+Subject: [PATCH 5.4 175/215] VMCI: Fix memcpy() run-time warning in dg_dispatch_as_host()
+Date: Thu, 11 Apr 2024 11:56:24 +0200
+Message-ID: <20240411095430.131089526@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +66,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-[ Upstream commit dda98810b552fc6bf650f4270edeebdc2f28bd3f ]
+[ Upstream commit 19b070fefd0d024af3daa7329cbc0d00de5302ec ]
 
-For the kernels built with CONFIG_RCU_NOCB_CPU_DEFAULT_ALL=y and
-CONFIG_RCU_LAZY=y, the following scenarios will trigger WARN_ON_ONCE()
-in the rcu_nocb_bypass_lock() and rcu_nocb_wait_contended() functions:
+Syzkaller hit 'WARNING in dg_dispatch_as_host' bug.
 
-        CPU2                                               CPU11
-kthread
-rcu_nocb_cb_kthread                                       ksys_write
-rcu_do_batch                                              vfs_write
-rcu_torture_timer_cb                                      proc_sys_write
-__kmem_cache_free                                         proc_sys_call_handler
-kmemleak_free                                             drop_caches_sysctl_handler
-delete_object_full                                        drop_slab
-__delete_object                                           shrink_slab
-put_object                                                lazy_rcu_shrink_scan
-call_rcu                                                  rcu_nocb_flush_bypass
-__call_rcu_commn                                            rcu_nocb_bypass_lock
-                                                            raw_spin_trylock(&rdp->nocb_bypass_lock) fail
-                                                            atomic_inc(&rdp->nocb_lock_contended);
-rcu_nocb_wait_contended                                     WARN_ON_ONCE(smp_processor_id() != rdp->cpu);
- WARN_ON_ONCE(atomic_read(&rdp->nocb_lock_contended))                                          |
-                            |_ _ _ _ _ _ _ _ _ _same rdp and rdp->cpu != 11_ _ _ _ _ _ _ _ _ __|
+memcpy: detected field-spanning write (size 56) of single field "&dg_info->msg"
+at drivers/misc/vmw_vmci/vmci_datagram.c:237 (size 24)
 
-Reproduce this bug with "echo 3 > /proc/sys/vm/drop_caches".
+WARNING: CPU: 0 PID: 1555 at drivers/misc/vmw_vmci/vmci_datagram.c:237
+dg_dispatch_as_host+0x88e/0xa60 drivers/misc/vmw_vmci/vmci_datagram.c:237
 
-This commit therefore uses rcu_nocb_try_flush_bypass() instead of
-rcu_nocb_flush_bypass() in lazy_rcu_shrink_scan().  If the nocb_bypass
-queue is being flushed, then rcu_nocb_try_flush_bypass will return
-directly.
+Some code commentry, based on my understanding:
 
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+544 #define VMCI_DG_SIZE(_dg) (VMCI_DG_HEADERSIZE + (size_t)(_dg)->payload_size)
+/// This is 24 + payload_size
+
+memcpy(&dg_info->msg, dg, dg_size);
+	Destination = dg_info->msg ---> this is a 24 byte
+					structure(struct vmci_datagram)
+	Source = dg --> this is a 24 byte structure (struct vmci_datagram)
+	Size = dg_size = 24 + payload_size
+
+{payload_size = 56-24 =32} -- Syzkaller managed to set payload_size to 32.
+
+ 35 struct delayed_datagram_info {
+ 36         struct datagram_entry *entry;
+ 37         struct work_struct work;
+ 38         bool in_dg_host_queue;
+ 39         /* msg and msg_payload must be together. */
+ 40         struct vmci_datagram msg;
+ 41         u8 msg_payload[];
+ 42 };
+
+So those extra bytes of payload are copied into msg_payload[], a run time
+warning is seen while fuzzing with Syzkaller.
+
+One possible way to fix the warning is to split the memcpy() into
+two parts -- one -- direct assignment of msg and second taking care of payload.
+
+Gustavo quoted:
+"Under FORTIFY_SOURCE we should not copy data across multiple members
+in a structure."
+
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Suggested-by: Vegard Nossum <vegard.nossum@oracle.com>
+Suggested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240105164001.2129796-2-harshit.m.mogalapalli@oracle.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree_nocb.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/vmw_vmci/vmci_datagram.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/tree_nocb.h b/kernel/rcu/tree_nocb.h
-index 5598212d1f274..2b24405b9cd2b 100644
---- a/kernel/rcu/tree_nocb.h
-+++ b/kernel/rcu/tree_nocb.h
-@@ -1383,7 +1383,7 @@ lazy_rcu_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
- 			rcu_nocb_unlock_irqrestore(rdp, flags);
- 			continue;
- 		}
--		WARN_ON_ONCE(!rcu_nocb_flush_bypass(rdp, NULL, jiffies, false));
-+		rcu_nocb_try_flush_bypass(rdp, jiffies);
- 		rcu_nocb_unlock_irqrestore(rdp, flags);
- 		wake_nocb_gp(rdp, false);
- 		sc->nr_to_scan -= _count;
+diff --git a/drivers/misc/vmw_vmci/vmci_datagram.c b/drivers/misc/vmw_vmci/vmci_datagram.c
+index f50d22882476f..d1d8224c8800c 100644
+--- a/drivers/misc/vmw_vmci/vmci_datagram.c
++++ b/drivers/misc/vmw_vmci/vmci_datagram.c
+@@ -234,7 +234,8 @@ static int dg_dispatch_as_host(u32 context_id, struct vmci_datagram *dg)
+ 
+ 			dg_info->in_dg_host_queue = true;
+ 			dg_info->entry = dst_entry;
+-			memcpy(&dg_info->msg, dg, dg_size);
++			dg_info->msg = *dg;
++			memcpy(&dg_info->msg_payload, dg + 1, dg->payload_size);
+ 
+ 			INIT_WORK(&dg_info->work, dg_delayed_dispatch);
+ 			schedule_work(&dg_info->work);
 -- 
 2.43.0
 
