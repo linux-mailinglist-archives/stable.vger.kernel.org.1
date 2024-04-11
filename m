@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B9B8A0F6C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8251B8A1146
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D331D1C21560
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38B071F2D232
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9A8146D5B;
-	Thu, 11 Apr 2024 10:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7ABD1474BE;
+	Thu, 11 Apr 2024 10:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kRXzuvRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="by8AWf51"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C23B146D51;
-	Thu, 11 Apr 2024 10:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87072145B13;
+	Thu, 11 Apr 2024 10:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831022; cv=none; b=bvHKMiu7OHms55o15k8jXQn2ubSIwzxDlhelP8blrWI1s2VoDa9X5dFAa15C/dQNt0r366vqd1XYMFlR+C/jEZtn6UhL5naMgx0i6jKw5zXb+tczfBWPtmAr1QZjXFo2gqhjjxctXoK8bMIYibPfTkTt8cyrvCv2JieeAMQL9cc=
+	t=1712832142; cv=none; b=Kxzmlc1liBwaMrpInPEYf91d7RBm1slWZY8MGWIsU+xtYIHTqQ+0uPYxPd9ITi3bOFSRhzq7Mljl3PEkcMHfciIcF5j2V/kah3awLGG9KPGVdr5GUWao0vXis6QhAjZr2WZvkUrIvwxmUyh65ziqPc444jVZSibp/Qz0nlvKr+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831022; c=relaxed/simple;
-	bh=+Q+fg8vXq2XpyQJwNR9uGrcbdz3/OrNhkxXI80xufK0=;
+	s=arc-20240116; t=1712832142; c=relaxed/simple;
+	bh=Ekn9Q18Mh0GL7rSLO+8O3L6xZOaoDf+0MnFUJC42qQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hv3Z8Mjn/2iQLtV/HWAUvHISQ8UbCF1WcKvytDwL8X233WULkN2KDKweN669vxwavqAvFN1xE8ow5PkOe5ug2blADubNXsXCguynp4ijn/XNU150HH4iXHkO6ZwZfUComVpw1w7EdcFKVWp5NDmaR0CdGwDDCz2ifMCRdYmnyPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kRXzuvRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147B1C433C7;
-	Thu, 11 Apr 2024 10:23:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dM1ZzEKxHoxokQH1B8U14X5rY+Rlp7Q3QEgH0nLoflkJxFd6WcP0pkrG8MPP8K+qqBH96KpL7/OY7M9TStA1hXa8YCm8aduiivtD7QRvulodnERSaFxOL/8+pyAzkL0mKD88lnJ3efkBfBHyb49GzGx9gDKKs3qtOlEAJfNw+qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=by8AWf51; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A81C433C7;
+	Thu, 11 Apr 2024 10:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831022;
-	bh=+Q+fg8vXq2XpyQJwNR9uGrcbdz3/OrNhkxXI80xufK0=;
+	s=korg; t=1712832142;
+	bh=Ekn9Q18Mh0GL7rSLO+8O3L6xZOaoDf+0MnFUJC42qQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kRXzuvRrs6PaMBdmWv7TqXxgXCo6Mdi5/g1QYm6vFMFJEUB1zz00wdSr98lJUttN7
-	 qR4HK0p34qq5eKK8jbCh4wSU8dUvLhHt0ZT5sN8t2H9xfEl0mPiRQUys63bkvBZTlL
-	 5hw1GQG0khdP2TGjulihItT4lJXzkpnDPw6xreC4=
+	b=by8AWf51gW25YGHJfnG72Ec2K2MfNtQXGoQAo+rUmD2w7WEsfA45Z+zd1CLHMOY90
+	 rTLNJ2L7GeycEGW+Gk6KxwKBOXaqsVOIZECzUR3S78fiOTMU13yzxsGtl3PUFkPjtT
+	 vJAmaD+Y20CqKQ86t1zNyBuwk9l12d1DpWzLTLBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 198/215] usb: sl811-hcd: only defined function checkdone if QUIRK2 is defined
+Subject: [PATCH 5.10 244/294] batman-adv: Return directly after a failed batadv_dat_select_candidates() in batadv_dat_forward_data()
 Date: Thu, 11 Apr 2024 11:56:47 +0200
-Message-ID: <20240411095430.811063581@linuxfoundation.org>
+Message-ID: <20240411095442.916279340@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit 12f371e2b6cb4b79c788f1f073992e115f4ca918 ]
+[ Upstream commit ffc15626c861f811f9778914be004fcf43810a91 ]
 
-Function checkdone is only required if QUIRK2 is defined, so add
-appropriate #if / #endif around the function.
+The kfree() function was called in one case by
+the batadv_dat_forward_data() function during error handling
+even if the passed variable contained a null pointer.
+This issue was detected by using the Coccinelle software.
 
-Cleans up clang scan build warning:
-drivers/usb/host/sl811-hcd.c:588:18: warning: unused function
-'checkdone' [-Wunused-function]
+* Thus return directly after a batadv_dat_select_candidates() call failed
+  at the beginning.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Link: https://lore.kernel.org/r/20240307111351.1982382-1-colin.i.king@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+* Delete the label “out” which became unnecessary with this refactoring.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Acked-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/sl811-hcd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/batman-adv/distributed-arp-table.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/sl811-hcd.c b/drivers/usb/host/sl811-hcd.c
-index 936fddc6d8207..3cf8fce40c9dc 100644
---- a/drivers/usb/host/sl811-hcd.c
-+++ b/drivers/usb/host/sl811-hcd.c
-@@ -585,6 +585,7 @@ done(struct sl811 *sl811, struct sl811h_ep *ep, u8 bank)
- 		finish_request(sl811, ep, urb, urbstat);
- }
+diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
+index ddd3b4c70a516..b1cb6ecffceb9 100644
+--- a/net/batman-adv/distributed-arp-table.c
++++ b/net/batman-adv/distributed-arp-table.c
+@@ -687,7 +687,7 @@ static bool batadv_dat_forward_data(struct batadv_priv *bat_priv,
  
-+#ifdef QUIRK2
- static inline u8 checkdone(struct sl811 *sl811)
- {
- 	u8	ctl;
-@@ -616,6 +617,7 @@ static inline u8 checkdone(struct sl811 *sl811)
- #endif
- 	return irqstat;
- }
-+#endif
+ 	cand = batadv_dat_select_candidates(bat_priv, ip, vid);
+ 	if (!cand)
+-		goto out;
++		return ret;
  
- static irqreturn_t sl811h_irq(struct usb_hcd *hcd)
- {
+ 	batadv_dbg(BATADV_DBG_DAT, bat_priv, "DHT_SEND for %pI4\n", &ip);
+ 
+@@ -731,7 +731,6 @@ static bool batadv_dat_forward_data(struct batadv_priv *bat_priv,
+ 		batadv_orig_node_put(cand[i].orig_node);
+ 	}
+ 
+-out:
+ 	kfree(cand);
+ 	return ret;
+ }
 -- 
 2.43.0
 
