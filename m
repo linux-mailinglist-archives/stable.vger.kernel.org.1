@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-39149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD498A1221
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:51:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B03C8A11F4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 096711C231D7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:51:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E487C1F2704B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AD6145B13;
-	Thu, 11 Apr 2024 10:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784CC145B13;
+	Thu, 11 Apr 2024 10:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ay9tPJIJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2QIeDum"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E891464CC0;
-	Thu, 11 Apr 2024 10:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D7E64CC0;
+	Thu, 11 Apr 2024 10:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832662; cv=none; b=buGRu+6vF3tCA9V0n3GM8UeDoJkf2slR3TMFSLBxPdUdB3mzjHZ/iTC+y4E94I+3QooWfUNrtjHw4coMMbw6xk1hlNB9CinFPPZSPo0Nhil9nJeDFi6l40QvzthysmCyeed++jGQPslkVvj9P9uYQkwG/zkraVPPIepPiQVc0XA=
+	t=1712832543; cv=none; b=Ud0J6BSidP5VqfkV628hmhdnN1AWPe1uAlCzViGS0aWK4CaOFIyeVoQFRGdRi7pj9oCj5gh6LpCIle8cqtGMJhBQYoQJplmlqUF1WxErWPVVsdHryD6qVCLT6NH1XOpnr9501f2gylcyfwDm+5n02jFNqV5UNUgQgfgkrWfNEOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832662; c=relaxed/simple;
-	bh=Y542NSK8+1O99wbRBcj2ZSYMgSqUEjvHsQS5VtcbhzY=;
+	s=arc-20240116; t=1712832543; c=relaxed/simple;
+	bh=St1Chv0++2E3M7Q3OCCW8OnpEihsIONdsIGj9l8a+OQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TeUDTurP3sESgISEbcLCXmqH+gLLXoALH9kzh2qzlQsgpA2x4DlwsQ0E55KFmrWAFLCq//A8bwfUnW6c5Fjy3DzuKIdl0OA4QOX5Kg0aQ+kgLVTQqc00nzl1d2vGrvmYH+PITbIsJyVh/QDUSMcbis5kMFIgI0UlorX+cQ3ysEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ay9tPJIJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 687C7C433C7;
-	Thu, 11 Apr 2024 10:51:01 +0000 (UTC)
+	 MIME-Version; b=iAT2J3UUWCFBCmKBC4xJUzshIUfM2ip8lROQ3fnQFrgIQ5fizR3m90X+LuN7WPKIudhpCcwnYn0bWDDskvosFgCXcYaNRf33M6hodjWTah25fODL81vwsDU3d8ZDrzxNi2jRNsyQG+2KXzoLH4J0noLXehwHAUwIvBVOZ9bATxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2QIeDum; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D3DC433C7;
+	Thu, 11 Apr 2024 10:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832661;
-	bh=Y542NSK8+1O99wbRBcj2ZSYMgSqUEjvHsQS5VtcbhzY=;
+	s=korg; t=1712832543;
+	bh=St1Chv0++2E3M7Q3OCCW8OnpEihsIONdsIGj9l8a+OQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ay9tPJIJAhxndt5MLYebFtM4zOs6IkHuRg1u9bwvd5ED591c62liw+0w3on4H6CWt
-	 FKxMiX90JenNuMqiGDdIds9Wb1/hX1DHIGgA1/WBlPIxv8FO5OV1T79dMJo9BOuMs5
-	 aFbB74NtvILw8LpSvh8b6ZODtO+270JpqHmqweZQ=
+	b=c2QIeDumcWbbThJDvzJRtTzASKq0MH1E7wB9XYQ607hlQD950+/9eSKUJNDJy3PSc
+	 jD24ebRKjcslsg6KsEhzbFHgjKyTxYNbkQwZt7kWe9h0wxkV2+WbWTQcDt6NplLo0a
+	 jmEm4XzFaRog5jpKWU6+xXmjTCHja6C12zceW7PY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 40/57] usb: typec: tcpci: add generic tcpci fallback compatible
-Date: Thu, 11 Apr 2024 11:57:48 +0200
-Message-ID: <20240411095409.205276052@linuxfoundation.org>
+	stable@kernel.org,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH 6.1 77/83] virtio: reenable config if freezing device failed
+Date: Thu, 11 Apr 2024 11:57:49 +0200
+Message-ID: <20240411095415.006456055@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Felsch <m.felsch@pengutronix.de>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 8774ea7a553e2aec323170d49365b59af0a2b7e0 ]
+commit 310227f42882c52356b523e2f4e11690eebcd2ab upstream.
 
-The driver already support the tcpci binding for the i2c_device_id so
-add the support for the of_device_id too.
+Currently, we don't reenable the config if freezing the device failed.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240222210903.208901-3-m.felsch@pengutronix.de
+For example, virtio-mem currently doesn't support suspend+resume, and
+trying to freeze the device will always fail. Afterwards, the device
+will no longer respond to resize requests, because it won't get notified
+about config changes.
+
+Let's fix this by re-enabling the config if freezing fails.
+
+Fixes: 22b7050a024d ("virtio: defer config changed notifications")
+Cc: <stable@kernel.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Message-Id: <20240213135425.795001-1-david@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/virtio/virtio.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-index a7b0134d382b8..e047a15e67347 100644
---- a/drivers/usb/typec/tcpm/tcpci.c
-+++ b/drivers/usb/typec/tcpm/tcpci.c
-@@ -899,6 +899,7 @@ MODULE_DEVICE_TABLE(i2c, tcpci_id);
- #ifdef CONFIG_OF
- static const struct of_device_id tcpci_of_match[] = {
- 	{ .compatible = "nxp,ptn5110", },
-+	{ .compatible = "tcpci", },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, tcpci_of_match);
--- 
-2.43.0
-
+--- a/drivers/virtio/virtio.c
++++ b/drivers/virtio/virtio.c
+@@ -489,13 +489,19 @@ EXPORT_SYMBOL_GPL(unregister_virtio_devi
+ int virtio_device_freeze(struct virtio_device *dev)
+ {
+ 	struct virtio_driver *drv = drv_to_virtio(dev->dev.driver);
++	int ret;
+ 
+ 	virtio_config_disable(dev);
+ 
+ 	dev->failed = dev->config->get_status(dev) & VIRTIO_CONFIG_S_FAILED;
+ 
+-	if (drv && drv->freeze)
+-		return drv->freeze(dev);
++	if (drv && drv->freeze) {
++		ret = drv->freeze(dev);
++		if (ret) {
++			virtio_config_enable(dev);
++			return ret;
++		}
++	}
+ 
+ 	return 0;
+ }
 
 
 
