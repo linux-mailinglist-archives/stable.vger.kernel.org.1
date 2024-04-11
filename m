@@ -1,95 +1,100 @@
-Return-Path: <stable+bounces-39199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278818A178C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 16:41:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC5138A1843
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 17:10:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6402282F56
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 14:41:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A42AB240D1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 15:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87DEEAFA;
-	Thu, 11 Apr 2024 14:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1552EEB5;
+	Thu, 11 Apr 2024 15:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i6/S8A8b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SwFOZIsL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7732DD518;
-	Thu, 11 Apr 2024 14:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5DE168DD;
+	Thu, 11 Apr 2024 15:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712846383; cv=none; b=I8F4ENRWgOsI3RpNWRpNyZXyx4MhpV6kSVqzag8t3vbQBzjBK/UA8NwP5QU4pOansUbQq8+ijHf1EglbUroRG+s5dlU64M40BLq5yzCwzB1dqGSVzka+U0+FlZK3jMfrekpp3A0AfN1JfkUJ4ishBqAP/Ka/KUXet7u1b7e/7b0=
+	t=1712848215; cv=none; b=GRd1XYRbwHxFm7WPmZ1dHoX/q0InXg7hlxNV0R1/7qpKmxk8m+fpPndIUobgVQjDc3tO751l9r4sBIhIl7nLvd2Ad13W/HARg2woGL3eZkCyDetM7CAAr2PD9RfbG4059v2KI62DTdzYTdCg1lFSgCVoHAhxJZuCpc3YzhCUo9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712846383; c=relaxed/simple;
-	bh=HYiF5RVgmWfeB2q5YS1rVM15Tb6+J3pcTtrzx/qL7YA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=aak4ioRJXBrmqa+EUxbscrJz9HeGLy9tqgc738Tky+zJwlW4QrsRHYseMS+Z39rbPoQe2+ptX4AzLpd8fT+B48cYTlX73BihuYg1rXsQ4stAAGu9oR9yAwwEDVVqtXAgoyW8sNRfkae+RlhNDvWjXVh8kj78Lqo2/0QNucGEFXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i6/S8A8b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5052FC2BD10;
-	Thu, 11 Apr 2024 14:39:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712846383;
-	bh=HYiF5RVgmWfeB2q5YS1rVM15Tb6+J3pcTtrzx/qL7YA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=i6/S8A8bTGR+/yvGoSEMsFzMc3SDFPyIcz7MVXzsI0mE+HlMOkMHlf+/HetMJnANR
-	 oXT1H1DE2utRxYKEbHL66S1AyyUraB/Qa8DLoz0qDXRI0WoYD2ItdUATJeXC476g3l
-	 yh/mxKvAiWl4kq6pstH9+oH0YIH8Ii8xYh6sUvLrhasoTFT/3zzxSSihWSftzzvVy/
-	 WHvOizJES3haTKNglUJ/wGxyFVbteZj/6GFHVquN8nct6RAGCh08wfi5nBQDCTGrFs
-	 xaTTEiIWBWUYTjo3tjY8VVokU0Hb8oB7BWpNI2AyU15UbxP8XZRAXxItBBKyJplpP8
-	 fF3IH+BqY7IBw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 3EF45C433F2;
-	Thu, 11 Apr 2024 14:39:43 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1712848215; c=relaxed/simple;
+	bh=RgCuXoj5qiS0w7iaRf3GxVN7CusvwjfATAsJPn0aHek=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HYsfM1e6KHV4wzXmKnN64IcAiFDhZaSLDyLlbfctOXce95SqDvjmhPtnwh3iVgxyCGSvSXL5zg8FkS9o6NAfbajb5Cuzb0TVttXoPtToOFR/VCxgyFAsbK8ELfa4URdUOBp+k+RszqTxZoCdk0VOWizI2fnziXv48c8jzcGHp10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SwFOZIsL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8473C072AA;
+	Thu, 11 Apr 2024 15:10:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712848215;
+	bh=RgCuXoj5qiS0w7iaRf3GxVN7CusvwjfATAsJPn0aHek=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SwFOZIsLeokD/CdNKjDC+Dd4ZIZrs3LVZ1eI/XQ2DMjXB2GztfODiYHff/FKFv3yC
+	 nT9EfCvj0ACpFyViRI2Q8i17GwotaODoizC75qqt14YuzdABzqeewn4LgsuLzycN82
+	 AlA5tHUPJjtNptiuuq7+oIp+KbeUoKof5PjjDKnk=
+Date: Thu, 11 Apr 2024 17:10:12 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Miklos Szeredi <mszeredi@redhat.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Max Reitz <mreitz@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.4 045/215] fuse: store fuse_conn in fuse_req
+Message-ID: <2024041159-creamlike-prognosis-b9fc@gregkh>
+References: <20240411095424.875421572@linuxfoundation.org>
+ <20240411095426.249853460@linuxfoundation.org>
+ <CAOssrKfFgJcKK1RGbo4bDy0DkQ57Fe3Q9H89Jwgjh9yVj3qwJg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [RESEND. PATCH v2] Bluetooth: btusb: Add Realtek RTL8852BE support ID
- 0x0bda:0x4853
-From: patchwork-bot+bluetooth@kernel.org
-Message-Id: 
- <171284638325.18150.6436513987613825530.git-patchwork-notify@kernel.org>
-Date: Thu, 11 Apr 2024 14:39:43 +0000
-References: <883A1BECA61AB8B7+20240329023440.191799-1-wangyuli@uniontech.com>
-In-Reply-To: <883A1BECA61AB8B7+20240329023440.191799-1-wangyuli@uniontech.com>
-To: WangYuli <wangyuli@uniontech.com>
-Cc: Larry.Finger@lwfinger.net, marcel@holtmann.org, luiz.dentz@gmail.com,
- gustavo@padovan.org, johan.hedberg@gmail.com, guanwentao@uniontech.com,
- linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+In-Reply-To: <CAOssrKfFgJcKK1RGbo4bDy0DkQ57Fe3Q9H89Jwgjh9yVj3qwJg@mail.gmail.com>
 
-Hello:
-
-This patch was applied to bluetooth/bluetooth-next.git (master)
-by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
-
-On Fri, 29 Mar 2024 10:34:39 +0800 you wrote:
-> Add the support ID(0x0bda, 0x4853) to usb_device_id table for
-> Realtek RTL8852BE.
+On Thu, Apr 11, 2024 at 12:38:17PM +0200, Miklos Szeredi wrote:
+> On Thu, Apr 11, 2024 at 12:16 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > 5.4-stable review patch.  If anyone has any objections, please let me know.
+> >
+> > ------------------
+> >
+> > From: Max Reitz <mreitz@redhat.com>
+> >
+> > [ Upstream commit 24754db2728a87c513cc480c70c09072a7a40ba6 ]
+> >
+> > Every fuse_req belongs to a fuse_conn.  Right now, we always know which
+> > fuse_conn that is based on the respective device, but we want to allow
+> > multiple (sub)mounts per single connection, and then the corresponding
+> > filesystem is not going to be so trivial to obtain.
+> >
+> > Storing a pointer to the associated fuse_conn in every fuse_req will
+> > allow us to trivially find any request's superblock (and thus
+> > filesystem) even then.
+> >
+> > Signed-off-by: Max Reitz <mreitz@redhat.com>
+> > Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+> > Stable-dep-of: b1fe686a765e ("fuse: don't unhash root")
 > 
-> Without this change the device utilizes an obsolete version of
-> the firmware that is encoded in it rather than the updated Realtek
-> firmware and config files from the firmware directory. The latter
-> files implement many new features.
+> Why are this and the following patch marked as dependencies of
+> b1fe686a765e ("fuse: don't unhash root")?
 > 
-> [...]
+> I think they are completely independent.   While backporting them is
+> probably harmless, it should not be needed.
 
-Here is the summary with links:
-  - [RESEND.,v2] Bluetooth: btusb: Add Realtek RTL8852BE support ID 0x0bda:0x4853
-    https://git.kernel.org/bluetooth/bluetooth-next/c/cf396a443d37
+Good point, they were not needed, now dropped both of them, thanks for
+the review!
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+greg k-h
 
