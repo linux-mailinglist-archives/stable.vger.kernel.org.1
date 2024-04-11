@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-38705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D038A0FF2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:29:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 374708A0F7F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63FF11F29722
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:29:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6894D1C213FD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC14146A72;
-	Thu, 11 Apr 2024 10:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852EB146A64;
+	Thu, 11 Apr 2024 10:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQ+f2GYO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="niyU85IA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7C014600E;
-	Thu, 11 Apr 2024 10:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E18140E3D;
+	Thu, 11 Apr 2024 10:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831354; cv=none; b=dM/FSSiv8fTv9GpQcKCvgmfVYBXNnPnW2aUbvjdB/1tsH2sR5G/9n+mfnQN+a4l2qCfbOEYlt858tvIc1E7LoZUYfvXSpW79hMx5CrZeAFERSaZaDkuMYENoYeklJvfqVKLJOKrR1tjODlHx9MMnWnWh/Ce2HpFvB5n2Jj66tjo=
+	t=1712831064; cv=none; b=g/IXJnbETT/osTTM6SB6RUTEYZWStUGrgsByqsgviOFyxH1A6XrUIKX6YWfYdQbUNBY0ScDiBm1H2cTqoJDFPwuT6cenhO7D+jSb8KdIhdBhPFpG33VZQXqbqHErFgNOUhylH5DvKoNv6qka9GcEiQgTrfMkHTAVjegrMEcY5EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831354; c=relaxed/simple;
-	bh=fKNCk1nKi4wfLbdrU2mdqEFPabRdQ5dfjZ8ev2N3i2c=;
+	s=arc-20240116; t=1712831064; c=relaxed/simple;
+	bh=wquyjN4gNriRAXvJ9bcI0sXHTlSBlGvp6y2d417aw28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DcuY6bo/LqILD5DaiepMxvsLe5HGMHSFcNwTXr7Y+5H/BDkLYatrQGr2bxar5RP2dgdB1PHaDKkVpZFEifGTAC/dgoeNX0t4eDE+Q7XGK18HzQoyn6XKSIQgvVfjtEYgSDbi9Qm4cvKVpY3E5FmfBIxLsig320wkj9HuqB1kOYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQ+f2GYO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1340DC433F1;
-	Thu, 11 Apr 2024 10:29:13 +0000 (UTC)
+	 MIME-Version; b=hCXgLgfEvkUyGJXLkO6Si0KXKKQfvWFyuPZ45jCjtTfMdGZcN/xqWROz1MOndPFndx6ee4PH0k/9hmn4pQee02Z2A8Hzd/NXX85LtBGxibOomNY2N7MpV1FECJ9OJ+Felb3OifqPj/9+kDxeyDlZyvUbCZCY97ZMQvbTyGnNka4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=niyU85IA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA51C433F1;
+	Thu, 11 Apr 2024 10:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831354;
-	bh=fKNCk1nKi4wfLbdrU2mdqEFPabRdQ5dfjZ8ev2N3i2c=;
+	s=korg; t=1712831063;
+	bh=wquyjN4gNriRAXvJ9bcI0sXHTlSBlGvp6y2d417aw28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jQ+f2GYOTg+/cMP4ryIARxSX5gMnAHF1Oru5HY3+GIjykV+hUuUIxCR004kcm+rtG
-	 8kKS31tAInL4GM7XJg7A7jmTvGaIKiad+Opsq6HtXCefpvec2hbiJicrUNGDizRezA
-	 bu7Djo5OOR7CyrSGlZ93lRTdV7ViVsqg08zDsE+Q=
+	b=niyU85IArp5NRqsc113q9dbAwqfx1LZsopaZcu2cPGvxZRbIqOhDFAY9UgYLKmf6V
+	 lqOahjyUqJ7oaQmT+3fWKSEGW1FmSNoXyUCKuMjBLhs/s+/K9MIsArMqkyr1enj0uo
+	 I9pDQ2pYIgCNnRJUkynvsbFETe5wFkQDHeDYEvTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/114] usb: sl811-hcd: only defined function checkdone if QUIRK2 is defined
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.4 211/215] Bluetooth: btintel: Fixe build regression
 Date: Thu, 11 Apr 2024 11:57:00 +0200
-Message-ID: <20240411095419.699047410@linuxfoundation.org>
+Message-ID: <20240411095431.205534958@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 12f371e2b6cb4b79c788f1f073992e115f4ca918 ]
+commit 6e62ebfb49eb65bdcbfc5797db55e0ce7f79c3dd upstream.
 
-Function checkdone is only required if QUIRK2 is defined, so add
-appropriate #if / #endif around the function.
+This fixes the following build regression:
 
-Cleans up clang scan build warning:
-drivers/usb/host/sl811-hcd.c:588:18: warning: unused function
-'checkdone' [-Wunused-function]
+drivers-bluetooth-btintel.c-btintel_read_version()-warn:
+passing-zero-to-PTR_ERR
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Link: https://lore.kernel.org/r/20240307111351.1982382-1-colin.i.king@gmail.com
+Fixes: b79e04091010 ("Bluetooth: btintel: Fix null ptr deref in btintel_read_version")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/sl811-hcd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bluetooth/btintel.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/sl811-hcd.c b/drivers/usb/host/sl811-hcd.c
-index 0956495bba575..2b871540bb500 100644
---- a/drivers/usb/host/sl811-hcd.c
-+++ b/drivers/usb/host/sl811-hcd.c
-@@ -585,6 +585,7 @@ done(struct sl811 *sl811, struct sl811h_ep *ep, u8 bank)
- 		finish_request(sl811, ep, urb, urbstat);
- }
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -340,13 +340,13 @@ int btintel_read_version(struct hci_dev
+ 	struct sk_buff *skb;
  
-+#ifdef QUIRK2
- static inline u8 checkdone(struct sl811 *sl811)
- {
- 	u8	ctl;
-@@ -616,6 +617,7 @@ static inline u8 checkdone(struct sl811 *sl811)
- #endif
- 	return irqstat;
- }
-+#endif
+ 	skb = __hci_cmd_sync(hdev, 0xfc05, 0, NULL, HCI_CMD_TIMEOUT);
+-	if (IS_ERR_OR_NULL(skb)) {
++	if (IS_ERR(skb)) {
+ 		bt_dev_err(hdev, "Reading Intel version information failed (%ld)",
+ 			   PTR_ERR(skb));
+ 		return PTR_ERR(skb);
+ 	}
  
- static irqreturn_t sl811h_irq(struct usb_hcd *hcd)
- {
--- 
-2.43.0
-
+-	if (skb->len != sizeof(*ver)) {
++	if (!skb || skb->len != sizeof(*ver)) {
+ 		bt_dev_err(hdev, "Intel version event size mismatch");
+ 		kfree_skb(skb);
+ 		return -EILSEQ;
 
 
 
