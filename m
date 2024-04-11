@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-39038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 608D38A1193
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFDB28A1147
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AE07284503
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52726B22BC9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62989145323;
-	Thu, 11 Apr 2024 10:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F161474BA;
+	Thu, 11 Apr 2024 10:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hw7jkL9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TE6hgD01"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD156BB29;
-	Thu, 11 Apr 2024 10:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5826D1474AB;
+	Thu, 11 Apr 2024 10:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832334; cv=none; b=Sgxz6voh/anjmw9U31fx6Pp/N93dAj3kL9A4vuloigjWPCJRKkKLKQ+cZSBaargHNaf0CP5Za38TrX40lSMA1an2DHCJkwxxZ8K/VcZgmlYkZmPEbUt/3wWrsziWeF3zM+gW5mb+csDaawNwdcitlssUjjIV6mwt+VvwplmJCD4=
+	t=1712832139; cv=none; b=sprVRvDVjArtwv5wkX+BQSynSmmjEL6i36qY7DWMxxTZRLXYSk8gs4+9ank8tMAv/PW+DaCE5EePKFWMDBZG63TAp2TSEHWIOs98c7q56SuofJKD2MQqozCy76nBNE7Odo/hnIFRVpJuQYf297NFziWN8mpHIPBCYFZLAGQ9M4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832334; c=relaxed/simple;
-	bh=Ru6XtzkjUIoGo4aB0nx2WjnuegwOOh25p6xw3YpnBs0=;
+	s=arc-20240116; t=1712832139; c=relaxed/simple;
+	bh=J7q3Zxr9ADRzFiZ77twDCX8xurDOdHWWd5mDvmmIK10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bJuDrbpWLx7BZ61PBveuo0y2HPq8E8mOq9a2UPUSeYEwcsEDcOWu2+8wmxHDH9rUjwj5ms7YrceiUGcsob+xDD+I+vB4WZgDKs/oADvae2otXQbRN5YchLiJT59qfcdtSt3cg794SwxT/lX63wHD9vOXOsmDzbKn4JNiMLY6/rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hw7jkL9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5421CC433C7;
-	Thu, 11 Apr 2024 10:45:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B1rANMlvdgCeUxzteX3H+gJHwM9KbxDiXlzQCLPB/rYNNaZyBtEEdYTDe/I+eK6okM2Io/Q711T6/HfAstHsiILLIyEX2N6jj/fTyIkLuurXf1EIkyAfGhhLOtWj20+CQJwCDc/lb0fxN5+BrAs0JdRIN7UMtlQ493Y/rQldzCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TE6hgD01; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A80C433C7;
+	Thu, 11 Apr 2024 10:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832333;
-	bh=Ru6XtzkjUIoGo4aB0nx2WjnuegwOOh25p6xw3YpnBs0=;
+	s=korg; t=1712832139;
+	bh=J7q3Zxr9ADRzFiZ77twDCX8xurDOdHWWd5mDvmmIK10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hw7jkL9pdkvmv0GhFKPH+5LionID4spd6KUL5glCI1moQljOFgi5DFmee3/rxpdHQ
-	 JQ0J5yGK9roJyqm6hXGlxoFcdHN7AWhiKCt6Ne3jMQVrKFkZ+by6cZExOPR/DJD7g4
-	 1IaqpXKeHDWiJJE+Hp5om/G8cEFeY+Bn9H2bjlTY=
+	b=TE6hgD01L7WkKX61aYh+iel/kulLp6x6u6nbLxAiUFnMTU1nVFAKPG1Vl2AT2FL4K
+	 QQ/6aHLNu41FrpTBe/4qRUp41N55bw7bFc/plEwVOPmBQt9R65mk7tX/kVdOyJDNFO
+	 bwdOS3m9W4dzcxSVstvdSH+K6yTxymX2kdXSB9wk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Thierry Reding <treding@nvidia.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 14/83] firmware: tegra: bpmp: Return directly after a failed kzalloc() in get_filename()
+Subject: [PATCH 5.10 243/294] wifi: ath9k: fix LNA selection in ath_ant_try_scan()
 Date: Thu, 11 Apr 2024 11:56:46 +0200
-Message-ID: <20240411095413.106971704@linuxfoundation.org>
+Message-ID: <20240411095442.887348301@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,42 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 1315848f1f8a0100cb6f8a7187bc320c5d98947f ]
+[ Upstream commit d6b27eb997ef9a2aa51633b3111bc4a04748e6d3 ]
 
-The kfree() function was called in one case by
-the get_filename() function during error handling
-even if the passed variable contained a null pointer.
-This issue was detected by using the Coccinelle software.
+In 'ath_ant_try_scan()', (most likely) the 2nd LNA's signal
+strength should be used in comparison against RSSI when
+selecting first LNA as the main one. Compile tested only.
 
-Thus return directly after a call of the function “kzalloc” failed
-at the beginning.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20231211172502.25202-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/tegra/bpmp-debugfs.c | 2 +-
+ drivers/net/wireless/ath/ath9k/antenna.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/tegra/bpmp-debugfs.c b/drivers/firmware/tegra/bpmp-debugfs.c
-index 9d3874cdaaeef..34e4152477f3b 100644
---- a/drivers/firmware/tegra/bpmp-debugfs.c
-+++ b/drivers/firmware/tegra/bpmp-debugfs.c
-@@ -81,7 +81,7 @@ static const char *get_filename(struct tegra_bpmp *bpmp,
- 
- 	root_path_buf = kzalloc(root_path_buf_len, GFP_KERNEL);
- 	if (!root_path_buf)
--		goto out;
-+		return NULL;
- 
- 	root_path = dentry_path(bpmp->debugfs_mirror, root_path_buf,
- 				root_path_buf_len);
+diff --git a/drivers/net/wireless/ath/ath9k/antenna.c b/drivers/net/wireless/ath/ath9k/antenna.c
+index 988222cea9dfe..acc84e6711b0e 100644
+--- a/drivers/net/wireless/ath/ath9k/antenna.c
++++ b/drivers/net/wireless/ath/ath9k/antenna.c
+@@ -643,7 +643,7 @@ static void ath_ant_try_scan(struct ath_ant_comb *antcomb,
+ 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
+ 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_PLUS_LNA2;
+ 			} else if (antcomb->rssi_sub >
+-				   antcomb->rssi_lna1) {
++				   antcomb->rssi_lna2) {
+ 				/* set to A-B */
+ 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
+ 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_MINUS_LNA2;
 -- 
 2.43.0
 
