@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-38562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 762938A0F43
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CAE88A0FC1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:27:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31E72287038
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:22:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4810428251F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C21146A82;
-	Thu, 11 Apr 2024 10:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4533145B13;
+	Thu, 11 Apr 2024 10:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMEv8+ll"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmOCAcyX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6D1145353;
-	Thu, 11 Apr 2024 10:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820C713FD94;
+	Thu, 11 Apr 2024 10:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830938; cv=none; b=uqNCGmy1Sh3ZNDKiRdt/bz6ELTmzmIYo947wMru/IBFy0EtWlNjI7qv0hJCMbXVSV3sIVIpWRuYtP4ZhZBA+9UHrfXTAnE9inHNXYZOnrLKA4LDw6tGn19I9AvRmWo7XKvZdWPCQaEXEAL5pIgAHWLVchGDP/ijR/o4PohWeo7k=
+	t=1712831231; cv=none; b=UXzZCkvFf0jcM66am23rgUG58Y2i51nCObgoCOfQhaoBqvTSEfXR4C2aoEJUJE1TcW0DPMGgicE7JSUmNSvSXwcN9ae/42ejUvkDBcivbDn/d6HgWj5jR4JaUvjDi0CPREsdePhkihw7vsXKs8zneciyMUzx24UKcALFcG7yjIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830938; c=relaxed/simple;
-	bh=XbHRktKsWd3MpUyfp/5tHH0OwputoC1J8A9pRL6eB4E=;
+	s=arc-20240116; t=1712831231; c=relaxed/simple;
+	bh=ZBvlvBMV+PlnHyeYCoB1bp0gAOa2MKxmFCz/Yn2r6SE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XqLP6eSylCnBFnqCNU3mPhBvxOGfi6mpuAwChR6MJbNV1jL1ZHJeDFnZpN6J1HndiJUgP+6Jg5auxm9mm4oTZ3KoJ7oC2l/e+DpGlM+ch+wLNVW2uKi2HbMIFZ+nldEyOPwaVdXIz6Ox6FslcvEmInPDbD7hrlSjrBwFXIjzUp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMEv8+ll; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6503DC433F1;
-	Thu, 11 Apr 2024 10:22:18 +0000 (UTC)
+	 MIME-Version; b=iCJiZ6gkTPOxLhyZKOFlXfaBH59nqmBCCnTNVSuMofMchjQa8g6sLYbxbznNYc6NGof8NQuu4CCQdskHjL1ojk8LMLLnWqE/JM9Qj1QYWtAVj2E1FQlRhVZ67qzGCga4up2iotTE3Cl+hzwC1ut5mzi7sAsewkBFzNSFetIOHlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmOCAcyX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09AE1C433C7;
+	Thu, 11 Apr 2024 10:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830938;
-	bh=XbHRktKsWd3MpUyfp/5tHH0OwputoC1J8A9pRL6eB4E=;
+	s=korg; t=1712831231;
+	bh=ZBvlvBMV+PlnHyeYCoB1bp0gAOa2MKxmFCz/Yn2r6SE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AMEv8+ll5bdNp0LfMO3MkXdrtXNmQg1XTpHynSczm6SXctsIv1goFO9K3WXJkCaQz
-	 zZxDIC3mZ6i5Bm3rLqFngL7F9XwcYxdtzBBPQCWxFBuH3litYiGdcmamhi+W0Cyqfp
-	 kL78p534D45x/wxjlbezKWSI+DTSu83XkTcXNANk=
+	b=cmOCAcyXl2TAPYDLZLgsJkL9GHjJqRFWbxxn0k3+PhxD2CKBCvYzA+U6m1jHr5yjY
+	 e2un2xWjQNhv7QQBgdNCE6VoiCLcXEx/dsp1N91SFtJIoEIJTH+afGcZUs+oPVTjbB
+	 KG1A3MYKYuYU1npox4hwAGiJyTsOHC+9744vaktk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	I Gede Agastya Darma Laksana <gedeagas22@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 169/215] ALSA: hda/realtek: Update Panasonic CF-SZ6 quirk to support headset with microphone
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 051/114] pinctrl: renesas: checker: Limit cfg reg enum checks to provided IDs
 Date: Thu, 11 Apr 2024 11:56:18 +0200
-Message-ID: <20240411095429.954101121@linuxfoundation.org>
+Message-ID: <20240411095418.425592009@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: I Gede Agastya Darma Laksana <gedeagas22@gmail.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 1576f263ee2147dc395531476881058609ad3d38 upstream.
+[ Upstream commit 3803584a4e9b65bb5b013f862f55c5055aa86c25 ]
 
-This patch addresses an issue with the Panasonic CF-SZ6's existing quirk,
-specifically its headset microphone functionality. Previously, the quirk
-used ALC269_FIXUP_HEADSET_MODE, which does not support the CF-SZ6's design
-of a single 3.5mm jack for both mic and audio output effectively. The
-device uses pin 0x19 for the headset mic without jack detection.
+If the number of provided enum IDs in a variable width config register
+description does not match the expected number, the checker uses the
+expected number for validating the individual enum IDs.
 
-Following verification on the CF-SZ6 and discussions with the original
-patch author, i determined that the update to
-ALC269_FIXUP_ASPIRE_HEADSET_MIC is the appropriate solution. This change
-is custom-designed for the CF-SZ6's unique hardware setup, which includes
-a single 3.5mm jack for both mic and audio output, connecting the headset
-microphone to pin 0x19 without the use of jack detection.
+However, this may cause out-of-bounds accesses on the array holding the
+enum IDs, leading to bogus enum_id conflict warnings.  Worse, if the bug
+is an incorrect bit field description (e.g. accidentally using "12"
+instead of "-12" for a reserved field), thousands of warnings may be
+printed, overflowing the kernel log buffer.
 
-Fixes: 0fca97a29b83 ("ALSA: hda/realtek - Add Panasonic CF-SZ6 headset jack quirk")
-Signed-off-by: I Gede Agastya Darma Laksana <gedeagas22@gmail.com>
-Cc: <stable@vger.kernel.org>
-Message-ID: <20240401174602.14133-1-gedeagas22@gmail.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by limiting the enum ID check to the number of provided enum
+IDs.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/c7385f44f2faebb8856bcbb4e908d846fc1531fb.1705930809.git.geert+renesas@glider.be
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/renesas/core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -8335,7 +8335,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x10ec, 0x124c, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x10ec, 0x1252, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x10ec, 0x1254, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
--	SND_PCI_QUIRK(0x10f7, 0x8338, "Panasonic CF-SZ6", ALC269_FIXUP_HEADSET_MODE),
-+	SND_PCI_QUIRK(0x10f7, 0x8338, "Panasonic CF-SZ6", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x144d, 0xc109, "Samsung Ativ book 9 (NP900X3G)", ALC269_FIXUP_INV_DMIC),
- 	SND_PCI_QUIRK(0x144d, 0xc169, "Samsung Notebook 9 Pen (NP930SBE-K01US)", ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
- 	SND_PCI_QUIRK(0x144d, 0xc176, "Samsung Notebook 9 Pro (NP930MBE-K04US)", ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
+diff --git a/drivers/pinctrl/renesas/core.c b/drivers/pinctrl/renesas/core.c
+index d1e92bbed33ad..757bbc549b0e2 100644
+--- a/drivers/pinctrl/renesas/core.c
++++ b/drivers/pinctrl/renesas/core.c
+@@ -909,9 +909,11 @@ static void __init sh_pfc_check_cfg_reg(const char *drvname,
+ 		sh_pfc_err("reg 0x%x: var_field_width declares %u instead of %u bits\n",
+ 			   cfg_reg->reg, rw, cfg_reg->reg_width);
+ 
+-	if (n != cfg_reg->nr_enum_ids)
++	if (n != cfg_reg->nr_enum_ids) {
+ 		sh_pfc_err("reg 0x%x: enum_ids[] has %u instead of %u values\n",
+ 			   cfg_reg->reg, cfg_reg->nr_enum_ids, n);
++		n = cfg_reg->nr_enum_ids;
++	}
+ 
+ check_enum_ids:
+ 	sh_pfc_check_reg_enums(drvname, cfg_reg->reg, cfg_reg->enum_ids, n);
+-- 
+2.43.0
+
 
 
 
