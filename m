@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-38133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6AE8A0D29
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:01:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22FB38A10B2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 598772834CE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:01:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81CDAB25442
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACF9145B08;
-	Thu, 11 Apr 2024 10:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085D0148306;
+	Thu, 11 Apr 2024 10:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLccYwcY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQVTAcbO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385A62EAE5;
-	Thu, 11 Apr 2024 10:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9399146A70;
+	Thu, 11 Apr 2024 10:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829661; cv=none; b=bYc+JV0yyubPxGa36KXugIl7udOcMTCBNKGIp9aRK50rfv1wI/sf5J1HRA6EYwl8XftiaAIeq4/AfOGaJ2yQLELutc9zEyMYs+yUjfAvslp3Wid1rLH8fclPOghD9zmRCdUlP/oH+5H+XoZGBqNXV8eFHCs7gTX5cKyyAeEhKZU=
+	t=1712831776; cv=none; b=PS58xbgA6/J0zgIhf6MEB+xHJ54fbeBvV7OX89Czqo4nHk+nSUfssVwxFCP2ejz2zmtQ/CMCwrChN7JCViwYUQkNI2BUwNmYHXbRjMmQclQO4khFh3oqZ4ImpnySPT7QqmTchi8fw/8MRspNDkcPO/StHYkFbET8Jl85nN1EdH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829661; c=relaxed/simple;
-	bh=Y1UjfouNKSjpl+eU3HV6uYryuJ7yOpHX9PvZN1I9xSM=;
+	s=arc-20240116; t=1712831776; c=relaxed/simple;
+	bh=aOuZxKWgq2XauyvPgvvihLhxaaXZtaobUwqu/8oaeiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=klKN4eYeemfRqOuIdmzl8kMjTSZXeDBeeARDlpyg+1fzG3i2d7F/milVCBtGeh4i+kYMFXq5oZBqvp/mrvUXvmvDk8LaWUNAwP+UHhMP5T88K8li/L9kaZHIHR40sZ0zr8agnb42xZWwpKyVsdLs3anB9IlSh5QtU/AQLYgJoUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLccYwcY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75C3C433C7;
-	Thu, 11 Apr 2024 10:01:00 +0000 (UTC)
+	 MIME-Version; b=K/7suZN6AkCGMj/vM5SZXrJxeJs8iDtq5+SPcnAvTWnjei6FWs7bI7q4CGnpYXvQqwO3XfUwR708GsQT95K+p57fhB5PUQoUsjiH/9gh5WJdvzysdk9I2rMZYYhwSr7WWoRbKyca/mH4RmHMH8AQXBAq0TjOJa7mfSGmSSBftQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQVTAcbO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F67CC433C7;
+	Thu, 11 Apr 2024 10:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829661;
-	bh=Y1UjfouNKSjpl+eU3HV6uYryuJ7yOpHX9PvZN1I9xSM=;
+	s=korg; t=1712831776;
+	bh=aOuZxKWgq2XauyvPgvvihLhxaaXZtaobUwqu/8oaeiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yLccYwcY6FpBuLHQwLsT0pY3JNrD62ImSgzpcbV2l0UR1Tyoj/yuwPMrZguzJFpAS
-	 CvHz8oMsKG8+5PW+BJNlBd+Nm2aDiTuBuc/+6H4SNW30UViSc9o8BU7dUD/34Z5/i8
-	 ygia4d0v7ZuFE6cC8W/QpoTTr9h/PbOlK0q8pTXM=
+	b=WQVTAcbOqDGs4Rr1HZIqe4uVAQTBf9InIxTkdpO6AiHTcHjvKb0elRP1eMm/TjF+H
+	 c7ImFZB9E3a36Bxj/xzvjpS1PIq5VCKnuOSzHAgdOk2RphCn2dbMq/qN7BHxkTzBHN
+	 iZr125LM/GaTztJ4GC1k5e6QXlQ13kj+UUDBYLqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Zhang <qiang4.zhang@intel.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 062/175] memtest: use {READ,WRITE}_ONCE in memory scanning
+	Michael Kelley <mhklinux@outlook.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 5.10 122/294] Drivers: hv: vmbus: Calculate ring buffer size for more efficient use of memory
 Date: Thu, 11 Apr 2024 11:54:45 +0200
-Message-ID: <20240411095421.432750450@linuxfoundation.org>
+Message-ID: <20240411095439.338181514@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,50 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiang Zhang <qiang4.zhang@intel.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit 82634d7e24271698e50a3ec811e5f50de790a65f ]
+commit b8209544296edbd1af186e2ea9c648642c37b18c upstream.
 
-memtest failed to find bad memory when compiled with clang.  So use
-{WRITE,READ}_ONCE to access memory to avoid compiler over optimization.
+The VMBUS_RING_SIZE macro adds space for a ring buffer header to the
+requested ring buffer size.  The header size is always 1 page, and so
+its size varies based on the PAGE_SIZE for which the kernel is built.
+If the requested ring buffer size is a large power-of-2 size and the header
+size is small, the resulting size is inefficient in its use of memory.
+For example, a 512 Kbyte ring buffer with a 4 Kbyte page size results in
+a 516 Kbyte allocation, which is rounded to up 1 Mbyte by the memory
+allocator, and wastes 508 Kbytes of memory.
 
-Link: https://lkml.kernel.org/r/20240312080422.691222-1-qiang4.zhang@intel.com
-Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In such situations, the exact size of the ring buffer isn't that important,
+and it's OK to allocate the 4 Kbyte header at the beginning of the 512
+Kbytes, leaving the ring buffer itself with just 508 Kbytes. The memory
+allocation can be 512 Kbytes instead of 1 Mbyte and nothing is wasted.
+
+Update VMBUS_RING_SIZE to implement this approach for "large" ring buffer
+sizes.  "Large" is somewhat arbitrarily defined as 8 times the size of
+the ring buffer header (which is of size PAGE_SIZE).  For example, for
+4 Kbyte PAGE_SIZE, ring buffers of 32 Kbytes and larger use the first
+4 Kbytes as the ring buffer header.  For 64 Kbyte PAGE_SIZE, ring buffers
+of 512 Kbytes and larger use the first 64 Kbytes as the ring buffer
+header.  In both cases, smaller sizes add space for the header so
+the ring size isn't reduced too much by using part of the space for
+the header.  For example, with a 64 Kbyte page size, we don't want
+a 128 Kbyte ring buffer to be reduced to 64 Kbytes by allocating half
+of the space for the header.  In such a case, the memory allocation
+is less efficient, but it's the best that can be done.
+
+While the new algorithm slightly changes the amount of space allocated
+for ring buffers by drivers that use VMBUS_RING_SIZE, the devices aren't
+known to be sensitive to small changes in ring buffer size, so there
+shouldn't be any effect.
+
+Fixes: c1135c7fd0e9 ("Drivers: hv: vmbus: Introduce types of GPADL")
+Fixes: 6941f67ad37d ("hv_netvsc: Calculate correct ring size when PAGE_SIZE is not 4 Kbytes")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218502
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Reviewed-by: Dexuan Cui <decui@microsoft.com>
+Tested-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20240229004533.313662-1-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240229004533.313662-1-mhklinux@outlook.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memtest.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/hyperv.h |   22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/mm/memtest.c b/mm/memtest.c
-index f53ace709ccd8..d407373f225b4 100644
---- a/mm/memtest.c
-+++ b/mm/memtest.c
-@@ -46,10 +46,10 @@ static void __init memtest(u64 pattern, phys_addr_t start_phys, phys_addr_t size
- 	last_bad = 0;
+--- a/include/linux/hyperv.h
++++ b/include/linux/hyperv.h
+@@ -164,8 +164,28 @@ struct hv_ring_buffer {
+ 	u8 buffer[];
+ } __packed;
  
- 	for (p = start; p < end; p++)
--		*p = pattern;
-+		WRITE_ONCE(*p, pattern);
++
++/*
++ * If the requested ring buffer size is at least 8 times the size of the
++ * header, steal space from the ring buffer for the header. Otherwise, add
++ * space for the header so that is doesn't take too much of the ring buffer
++ * space.
++ *
++ * The factor of 8 is somewhat arbitrary. The goal is to prevent adding a
++ * relatively small header (4 Kbytes on x86) to a large-ish power-of-2 ring
++ * buffer size (such as 128 Kbytes) and so end up making a nearly twice as
++ * large allocation that will be almost half wasted. As a contrasting example,
++ * on ARM64 with 64 Kbyte page size, we don't want to take 64 Kbytes for the
++ * header from a 128 Kbyte allocation, leaving only 64 Kbytes for the ring.
++ * In this latter case, we must add 64 Kbytes for the header and not worry
++ * about what's wasted.
++ */
++#define VMBUS_HEADER_ADJ(payload_sz) \
++	((payload_sz) >=  8 * sizeof(struct hv_ring_buffer) ? \
++	0 : sizeof(struct hv_ring_buffer))
++
+ /* Calculate the proper size of a ringbuffer, it must be page-aligned */
+-#define VMBUS_RING_SIZE(payload_sz) PAGE_ALIGN(sizeof(struct hv_ring_buffer) + \
++#define VMBUS_RING_SIZE(payload_sz) PAGE_ALIGN(VMBUS_HEADER_ADJ(payload_sz) + \
+ 					       (payload_sz))
  
- 	for (p = start; p < end; p++, start_phys_aligned += incr) {
--		if (*p == pattern)
-+		if (READ_ONCE(*p) == pattern)
- 			continue;
- 		if (start_phys_aligned == last_bad + incr) {
- 			last_bad += incr;
--- 
-2.43.0
-
+ struct hv_ring_buffer_info {
 
 
 
