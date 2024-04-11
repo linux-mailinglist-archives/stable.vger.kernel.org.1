@@ -1,97 +1,108 @@
-Return-Path: <stable+bounces-38069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 245B88A0B06
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:19:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66FC18A0B24
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3B6428765A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 08:19:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CDA51F22F96
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 08:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F36BC13FD74;
-	Thu, 11 Apr 2024 08:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B9713E3FE;
+	Thu, 11 Apr 2024 08:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="p0gASETd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dIwmkpeK"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8A41E86A;
-	Thu, 11 Apr 2024 08:19:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320BC1DDE9;
+	Thu, 11 Apr 2024 08:27:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712823585; cv=none; b=fJQTfMzccSFvfQ5JMpYC6QBCDU6orlE/tJ7+jAKluKDd5C0fG9mKlMPV03MzoP4s8LvVHcECTmJ4Pwjq0zF8qN+oDhisiOsU57OkFOONAP667Xwsb6RMIa1J3JlExhKf4pVP4vuT2CeDrDBeKnvGW2//jaYArNt/vo4Zb0tphFk=
+	t=1712824036; cv=none; b=fwQ7wbR1QS3Q9SJiagwWYf4B+wz8PGs3Pi9sOo8mdHMrrz/v5vxjtSvHMoOkmpzOQvCsejDIQY8gFypSQ5rEvMTad9DjHwSv831hH5SVdy/HBAMdpM4ts9DBe25F9plmY3NP0tNUX6tF6QaThOBYlx3PUbh+NwAzQSlGr74KMmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712823585; c=relaxed/simple;
-	bh=CM5IClqopNcJAcrNl8/qhU8tE/TWjfiY17ebMaV+c2A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=a4pwGpKucydmmH7DprrXAQG8RCj14wDYu/LUDsavetK9zuy5ktz+osXiJQl96l3e7kS7Xx09JHI59plIB8HoE7u71378LSWla9VyPvIA9HxS4UYvV/mUgeefQXzMK8YDv+s7SH+rKNOPrWTgBXJIwMRNewOEFW7OBYt3rXxBoRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=p0gASETd; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Cc:Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=pV4wAKFJGjNV0VvjncX8Feh6Hp2U4aZAslaBjltzL/0=;
-	t=1712823583; x=1713255583; b=p0gASETdxS8FcFvut5NunRXg3P91PsGtqX7H8YtRqfBYzHg
-	0KAtrnOlk9K2z1ykugONP+NoB17S7pg46cdjJXgnLlOWnIxOZ4RksrWNb7bQ6a87ZedfT8WBdpmd+
-	kPpOgYmf39TwCHXr+WEOX2ls4jVEVMcOu+0fyyDSRgAGRtmvHkb5Pt5d7HI03xBrgq1TYW5JOsh2h
-	CHfbsPqjWtbVeFttdaFwCvUBO3y5W89GFMmV1SNJoI1/xR9xeFGi1cb/DC9EdJ8A+4obenFMiwfiA
-	9R6mmCORBg1uEh4bV6pZdEZ7b6DeVTuJ9wvcEBRA/qhPIxs/96s85RTNd0lWC3DA==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rupen-0005Ey-MB; Thu, 11 Apr 2024 10:19:41 +0200
-Message-ID: <4e2ff80c-9e3f-433e-8783-cb9729c30bb2@leemhuis.info>
-Date: Thu, 11 Apr 2024 10:19:41 +0200
+	s=arc-20240116; t=1712824036; c=relaxed/simple;
+	bh=VMUO6AMXMVsqgIqjVZgZBXBiEDcMtP9Oe9mg/oobPXQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RT3Aas+MjFdQOXjCtuYgxf0V4NIHrU1hmMhjBVyK1Idy0rUyUUl/gmaM5ifA7yjKIr2XXg4KS6W+tDcXEd6hMcpHnB+PvO0jGMjlhewFfO8Z+ttAkEUWolxcKNude5DyYPTRR5fVl5QY6czU9/2S3sK8IYYQ3MZhoXu3pYsYNQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dIwmkpeK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B86B5C433F1;
+	Thu, 11 Apr 2024 08:27:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712824035;
+	bh=VMUO6AMXMVsqgIqjVZgZBXBiEDcMtP9Oe9mg/oobPXQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=dIwmkpeKIe0q3pu/9q9xha9+2F3jhvYAe6frodg+nYsYZR9w3dcCsivNFDwRdfcfP
+	 rFXtnXXjGORHgV0IkkbqQhujoGdfST2cskNIzur4QJRNUvb3N0znbHS5WwH9mu1eUo
+	 nTlBjsBnb1CXWn0TzVG/PsHmnNWpx4bZ6p8xe2xtlRC1mRmy6B1lx5Ad6DuKJI8rP4
+	 uz0/QE//dOGFAM44jYtcC5pp9z9CXcgvfgKoviD35qme4MYpH3mPU1PDtOLMPtTwcm
+	 A+t2jxWi9C4U1DSChlNPpAc7R+qqsRatBlPS0+oMMq2mtCGJXVcYCwyIiTa3yDgKdK
+	 bSpNHi3Zkq4yQ==
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2d48d75ab70so103088301fa.0;
+        Thu, 11 Apr 2024 01:27:15 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVU0+of1qNpG+a37hgQhtcb+sSDa+4o1btpmPDOKiDWj1UY58Yjc4xZxBZP07RlZGFFLawRdptNhvOX/vvVC9d2VoCWMRvcD+E7tXyQ53r5iIrMXpluS44RwqyvnSKLl2jqoDjh
+X-Gm-Message-State: AOJu0YyVnrg1WosAg4M1MBhEYa9dxE0Wy5C61l6CV/yGOpk3tp4zNAPb
+	ouFjWJhzLd6C/QZAQJ7dLC7q73cX6iijQVfdNqMFV7VlFf5UBDOm/lMWcvYYhGH9gVs6RQizkFa
+	irmGI1xZkKrFsskmZDTeG2IGlnNs=
+X-Google-Smtp-Source: AGHT+IE6Jig5oeL04Ih0wDkMGruvLCBbhVbwekOG/N1Wn4x19B/cJ/cmRCJzfm1GiXipeKhO2KtEAU/LKwGLMVfOZ4g=
+X-Received: by 2002:a2e:9516:0:b0:2d8:59cb:89ef with SMTP id
+ f22-20020a2e9516000000b002d859cb89efmr3147956ljh.24.1712824033916; Thu, 11
+ Apr 2024 01:27:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <3c6e6172-cf64-4230-bcc5-7682b4d64a8a@gmx.de> <4e2ff80c-9e3f-433e-8783-cb9729c30bb2@leemhuis.info>
+In-Reply-To: <4e2ff80c-9e3f-433e-8783-cb9729c30bb2@leemhuis.info>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 11 Apr 2024 10:27:02 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHgvv0FYZXsFm8KisXuR6t47-nXtgOs0Gyva4MJEJ_4Ow@mail.gmail.com>
+Message-ID: <CAMj1kXHgvv0FYZXsFm8KisXuR6t47-nXtgOs0Gyva4MJEJ_4Ow@mail.gmail.com>
 Subject: Re: 6.8.5 does not boot (regression)
-To: =?UTF-8?Q?Toralf_F=C3=B6rster?= <toralf.foerster@gmx.de>,
- Linux Kernel <linux-kernel@vger.kernel.org>
-References: <3c6e6172-cf64-4230-bcc5-7682b4d64a8a@gmx.de>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Content-Language: en-US, de-DE
-Cc: Linux kernel regressions list <regressions@lists.linux.dev>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Greg KH <gregkh@linuxfoundation.org>, Ard Biesheuvel <ardb@kernel.org>
-In-Reply-To: <3c6e6172-cf64-4230-bcc5-7682b4d64a8a@gmx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1712823583;730eabc9;
-X-HE-SMSGID: 1rupen-0005Ey-MB
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: =?UTF-8?Q?Toralf_F=C3=B6rster?= <toralf.foerster@gmx.de>, 
+	Linux Kernel <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, Greg KH <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11.04.24 09:20, Toralf Förster wrote:
-> It is a remote system, nothing in the logs, system is a hardened Gentoo
-> Linux, 6.8.4 was fine.
-> 
-> Linux mr-fox 6.8.4 #4 SMP Thu Apr  4 22:10:47 UTC 2024 x86_64 AMD Ryzen
-> 9 5950X 16-Core Processor AuthenticAMD GNU/Linux
-> 
-> Another Gentoo dev reported problems too.
-> 
-> config is below.
+On Thu, 11 Apr 2024 at 10:19, Linux regression tracking (Thorsten
+Leemhuis) <regressions@leemhuis.info> wrote:
+>
+> On 11.04.24 09:20, Toralf F=C3=B6rster wrote:
+> > It is a remote system, nothing in the logs, system is a hardened Gentoo
+> > Linux, 6.8.4 was fine.
+> >
+> > Linux mr-fox 6.8.4 #4 SMP Thu Apr  4 22:10:47 UTC 2024 x86_64 AMD Ryzen
+> > 9 5950X 16-Core Processor AuthenticAMD GNU/Linux
+> >
+> > Another Gentoo dev reported problems too.
+> >
+> > config is below.
+>
+> Thx for the report, but the harsh reality is: nearly no developer will
+> see your initial report, as you just sent it to LKML, which nearly
+> nobody ready. I CCed a few lists, which might help. But that is
+> unlikely, as this could be cause by all sorts of changes. Which is why
+> we likely need a bisection (
+> https://docs.kernel.org/admin-guide/verify-bugs-and-bisect-regressions.ht=
+ml
+> ) from somebody affected to make some progress here.
+>
+> That being said: there are a few EFI changes in there that in a case
+> like this are a suspect. I CCed the developer, maybe something rings a be=
+ll.
+>
 
-Thx for the report, but the harsh reality is: nearly no developer will
-see your initial report, as you just sent it to LKML, which nearly
-nobody ready. I CCed a few lists, which might help. But that is
-unlikely, as this could be cause by all sorts of changes. Which is why
-we likely need a bisection (
-https://docs.kernel.org/admin-guide/verify-bugs-and-bisect-regressions.html
-) from somebody affected to make some progress here.
+This is a known issue, and will be fixed in the next 6.8.y release.
 
-That being said: there are a few EFI changes in there that in a case
-like this are a suspect. I CCed the developer, maybe something rings a bell.
+In the mean time, you can apply
 
-Ciao, Thorsten
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
+id=3De7d24c0aa8e678f41457d1304e2091cac6fd1a2e
 
