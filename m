@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76F58A115A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F70F8A0FF6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:29:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6259A288618
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 911A21C22E4F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56EE142624;
-	Thu, 11 Apr 2024 10:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC89F146A71;
+	Thu, 11 Apr 2024 10:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p3AbCP6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KTOekaTi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730366BB29;
-	Thu, 11 Apr 2024 10:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A84D1D558;
+	Thu, 11 Apr 2024 10:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832192; cv=none; b=ZChrU40HUz7LGoEcPJLEhTP1V1F3n9L9bDnCXTEdD7FzFOAoIujpKDwP8+eVoj9Imy1VI7C3uqJhlXAgAnH4eSSp8/0u5Y7BAdPjdIHs/fON+jKwU85eQdZBRBm6c3NVRBPCTxs1sbcTwEZdrRAZP5qguVnIiEakUDqj4vEjzKk=
+	t=1712831363; cv=none; b=KUyWW5L+d7ZFe2heRbKftmVY61e2oOfgBYNRY26UNFSNEqdAx9KnqIe/31KcPTYhcAzK8rpHxokBbJ8djpsxl6Dzt/WH2gV1agaLLqkwDl7gKySZ7Dl5Xy9c05+Th1R/9RHISZqvvAQrgk43DgvVVd025OTsRF3+/H978c7VoQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832192; c=relaxed/simple;
-	bh=9jqSkq6zquHd449jIvhm5CbUXoWIzuOqS+YaSOLHjCk=;
+	s=arc-20240116; t=1712831363; c=relaxed/simple;
+	bh=fnmbNURjj3Hdi+dD2Y2nD97DMc+wGjQ5l8/39dlB92U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKBg1Bqj66hqx7jZqjdPYxoiP6hZWi7w/orN2PS66hOV84uh4lxgORzPadcj60togYYTdAV9lgakBeasTzOz2Fcrdhl6frTFdMiv3fnytieC+DCdhm9Hn6Nhj1oyqL0f/dH2SmC80xA4me+t6s0+egwMf5f3UY1V8bVcPoa/D3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p3AbCP6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB3BC433C7;
-	Thu, 11 Apr 2024 10:43:11 +0000 (UTC)
+	 MIME-Version; b=RJ/7OZpovfU7pBcF6fmdqnRAQliU9CtUpBwR5jBQtPhuitBofpf6/Ii8kBAkInQBHGepWvOxmO+x5ByagftehvGpweYJqtR8KGkynffonAK063nTN4c0wx+GIDiJxgAms4trWMzYrjyDX8xwt+d48kV1bOIvMjC90xheHMmIW5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KTOekaTi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF2DC43390;
+	Thu, 11 Apr 2024 10:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832192;
-	bh=9jqSkq6zquHd449jIvhm5CbUXoWIzuOqS+YaSOLHjCk=;
+	s=korg; t=1712831363;
+	bh=fnmbNURjj3Hdi+dD2Y2nD97DMc+wGjQ5l8/39dlB92U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p3AbCP6zfidUBzCzcfoBF42T8NSNhTlmwlD0eVg9zlVmoLCldUEf9KE74Ha6dch9A
-	 QE4DmsE6gvJ/HExHbfuF4cSCubRAxe+arNeCxC830KBtEvg+W3luQnfxAlZzwhcq5d
-	 ZeMRADSvdSqaOG8ozpK2NgSi73yK5rnl8egB5h4Y=
+	b=KTOekaTiesdTpj/e1aI+S+PDpAt2e+pkgxWXrHviG249nw+qqk3K3Wcv/BL8K+JBs
+	 9YiiFI8icrIccLJwD4QykKLDSMGEL16wPgj0kZBp2E1RVL5Z9I88IbiPSBQF3R5Mob
+	 +x2I85hwd/PtLo/Wjh51CYgP1npjM7AphG+V8tmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Zhipeng Wang <zhipeng.wang_1@nxp.com>,
+	Chancel Liu <chancel.liu@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 259/294] pinctrl: renesas: checker: Limit cfg reg enum checks to provided IDs
-Date: Thu, 11 Apr 2024 11:57:02 +0200
-Message-ID: <20240411095443.359353709@linuxfoundation.org>
+Subject: [PATCH 6.6 096/114] ASoC: soc-core.c: Skip dummy codec when adding platforms
+Date: Thu, 11 Apr 2024 11:57:03 +0200
+Message-ID: <20240411095419.788856813@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Chancel Liu <chancel.liu@nxp.com>
 
-[ Upstream commit 3803584a4e9b65bb5b013f862f55c5055aa86c25 ]
+[ Upstream commit 23fb6bc2696119391ec3a92ccaffe50e567c515e ]
 
-If the number of provided enum IDs in a variable width config register
-description does not match the expected number, the checker uses the
-expected number for validating the individual enum IDs.
+When pcm_runtime is adding platform components it will scan all
+registered components. In case of DPCM FE/BE some DAI links will
+configure dummy platform. However both dummy codec and dummy platform
+are using "snd-soc-dummy" as component->name. Dummy codec should be
+skipped when adding platforms otherwise there'll be overflow and UBSAN
+complains.
 
-However, this may cause out-of-bounds accesses on the array holding the
-enum IDs, leading to bogus enum_id conflict warnings.  Worse, if the bug
-is an incorrect bit field description (e.g. accidentally using "12"
-instead of "-12" for a reserved field), thousands of warnings may be
-printed, overflowing the kernel log buffer.
-
-Fix this by limiting the enum ID check to the number of provided enum
-IDs.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/c7385f44f2faebb8856bcbb4e908d846fc1531fb.1705930809.git.geert+renesas@glider.be
+Reported-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+Link: https://msgid.link/r/20240305065606.3778642-1-chancel.liu@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/soc/soc-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pinctrl/renesas/core.c b/drivers/pinctrl/renesas/core.c
-index 54f1a7334027a..c390854483680 100644
---- a/drivers/pinctrl/renesas/core.c
-+++ b/drivers/pinctrl/renesas/core.c
-@@ -868,9 +868,11 @@ static void __init sh_pfc_check_cfg_reg(const char *drvname,
- 		sh_pfc_err("reg 0x%x: var_field_width declares %u instead of %u bits\n",
- 			   cfg_reg->reg, rw, cfg_reg->reg_width);
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index 9de98c01d8151..e65fe3a7c3e42 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -1105,6 +1105,9 @@ static int snd_soc_add_pcm_runtime(struct snd_soc_card *card,
+ 			if (!snd_soc_is_matching_component(platform, component))
+ 				continue;
  
--	if (n != cfg_reg->nr_enum_ids)
-+	if (n != cfg_reg->nr_enum_ids) {
- 		sh_pfc_err("reg 0x%x: enum_ids[] has %u instead of %u values\n",
- 			   cfg_reg->reg, cfg_reg->nr_enum_ids, n);
-+		n = cfg_reg->nr_enum_ids;
-+	}
- 
- check_enum_ids:
- 	sh_pfc_check_reg_enums(drvname, cfg_reg->reg, cfg_reg->enum_ids, n);
++			if (snd_soc_component_is_dummy(component) && component->num_dai)
++				continue;
++
+ 			snd_soc_rtd_add_component(rtd, component);
+ 		}
+ 	}
 -- 
 2.43.0
 
