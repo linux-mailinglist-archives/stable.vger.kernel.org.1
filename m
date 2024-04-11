@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CE408A0F4C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 653AF8A110B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DA731C20C4B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:22:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 971D91C23A5B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0E2145FF0;
-	Thu, 11 Apr 2024 10:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F711474C3;
+	Thu, 11 Apr 2024 10:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5NauUFY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwWeZkV0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3F013FD94;
-	Thu, 11 Apr 2024 10:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C8B1474AB;
+	Thu, 11 Apr 2024 10:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830962; cv=none; b=pq00EfAbVC+MBUkZDN8svo0JNBiACH8vbZ/XXPTiHc53eBW9AvYFm8cqmrf4bP+7wOs4ZAE8JS0AsFmTyZ7sylb2ypsJSIzt7twXVoODpoqdHl4MeAKbcEZHWYrnTPEbjpyOIVxUcQSnHq9Rov2p0p2SfJwbeqB7uR/R+rtIeCA=
+	t=1712831992; cv=none; b=MC6kM4k1380zx9arRPJIh3ByQHP1k6FLm8jXYd64ST+8L44xKgpSryyrwcwxvSeNc6fu5z2czOiSJCjPB+UoJEZ0YOVHUpvzvpYvxUhZcjlONrgj84AyLnC6FgZvQcjQ91lhOA+wYqisLBznzAwnvUc41fYZb0kdX/s21THexHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830962; c=relaxed/simple;
-	bh=ElBYbbR34W8QxefSd5XGk9qeiF1fuEd6KqV9OBKDrTk=;
+	s=arc-20240116; t=1712831992; c=relaxed/simple;
+	bh=arBfLa49kCT8Ohe9R8sxLTzojE/5JhZqYxarnA8xa/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rhPclChb9eg+HV0+oqadJjoSiqiR91L/N1/B/4rXlRpGHuTJ1XAh569lWYqf2yoBb3SU4pYPurfvt73UuhKdTQFKDD4xc6vpGi9D8+VBFThw968uMxjS2R+aZulKcTgyAhhthvww3iF8dPm2iHfAo1XdJWllliesRgQvQrmi7iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5NauUFY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27340C433F1;
-	Thu, 11 Apr 2024 10:22:41 +0000 (UTC)
+	 MIME-Version; b=T86zlT/A34BJ0rmMGfOjiqtvwy0ZF5hed1ciIt2O5I4ap4XTOlLp5WOTZ/xhoapG8SPavOOWunq+uiGjhIvPYSaMMO4WHX2cfFchQ0NPYU7H0tfcdpntZP8ZqDHkWPfSLp4oAEui26y3F7XMFwc/0/J4dmHt/97OLIFCjqc/bPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwWeZkV0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C052C433C7;
+	Thu, 11 Apr 2024 10:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830962;
-	bh=ElBYbbR34W8QxefSd5XGk9qeiF1fuEd6KqV9OBKDrTk=;
+	s=korg; t=1712831992;
+	bh=arBfLa49kCT8Ohe9R8sxLTzojE/5JhZqYxarnA8xa/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q5NauUFYkmIHaMWkv8NDnkWOAEGiTijrSBP5lIRbCcA9ElVgtXmqVpLxbytAOVcz2
-	 SPy0URvy7RxHvSTnZQtMHWZApCxZ0Gb+NO0PGhGasBjTIszv4Cc27OMYUdbEY86F7N
-	 mWRZm3bZIIDK+Uocrk9Lt1uTO3ADXNJTKuf/nfJQ=
+	b=FwWeZkV0cqWSyl05cAM1Dfo/V4mqXjfpr2iwn93Gvc64JCY5gPIw8O+zjBrkptB/m
+	 iYqHu48KT6iDu6JuDXkCnfxxvOEJZvKtJjf+KLHLW8bfXBm8RUnDb8ohqG1fpxYmZP
+	 37tDbp1aQKKxnFAgwr1p7BtQnfLf2QOCTmwm54Zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Piotr Wejman <piotrwejman90@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 150/215] net: stmmac: fix rx queue priority assignment
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 5.10 196/294] vfio/pci: Lock external INTx masking ops
 Date: Thu, 11 Apr 2024 11:55:59 +0200
-Message-ID: <20240411095429.393917410@linuxfoundation.org>
+Message-ID: <20240411095441.510989464@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,144 +63,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Piotr Wejman <piotrwejman90@gmail.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-commit b3da86d432b7cd65b025a11f68613e333d2483db upstream.
+[ Upstream commit 810cd4bb53456d0503cc4e7934e063835152c1b7 ]
 
-The driver should ensure that same priority is not mapped to multiple
-rx queues. From DesignWare Cores Ethernet Quality-of-Service
-Databook, section 17.1.29 MAC_RxQ_Ctrl2:
-"[...]The software must ensure that the content of this field is
-mutually exclusive to the PSRQ fields for other queues, that is,
-the same priority is not mapped to multiple Rx queues[...]"
+Mask operations through config space changes to DisINTx may race INTx
+configuration changes via ioctl.  Create wrappers that add locking for
+paths outside of the core interrupt code.
 
-Previously rx_queue_priority() function was:
-- clearing all priorities from a queue
-- adding new priorities to that queue
-After this patch it will:
-- first assign new priorities to a queue
-- then remove those priorities from all other queues
-- keep other priorities previously assigned to that queue
+In particular, irq_type is updated holding igate, therefore testing
+is_intx() requires holding igate.  For example clearing DisINTx from
+config space can otherwise race changes of the interrupt configuration.
 
-Fixes: a8f5102af2a7 ("net: stmmac: TX and RX queue priority configuration")
-Fixes: 2142754f8b9c ("net: stmmac: Add MAC related callbacks for XGMAC2")
-Signed-off-by: Piotr Wejman <piotrwejman90@gmail.com>
-Link: https://lore.kernel.org/r/20240401192239.33942-1-piotrwejman90@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This aligns interfaces which may trigger the INTx eventfd into two
+camps, one side serialized by igate and the other only enabled while
+INTx is configured.  A subsequent patch introduces synchronization for
+the latter flows.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
+Reported-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20240308230557.805580-3-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c   |   40 +++++++++++++++-----
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c |   38 +++++++++++++++----
- 2 files changed, 62 insertions(+), 16 deletions(-)
+ drivers/vfio/pci/vfio_pci_intrs.c |   30 ++++++++++++++++++++++++------
+ 1 file changed, 24 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-@@ -75,19 +75,41 @@ static void dwmac4_rx_queue_priority(str
- 				     u32 prio, u32 queue)
- {
- 	void __iomem *ioaddr = hw->pcsr;
--	u32 base_register;
--	u32 value;
-+	u32 clear_mask = 0;
-+	u32 ctrl2, ctrl3;
-+	int i;
- 
--	base_register = (queue < 4) ? GMAC_RXQ_CTRL2 : GMAC_RXQ_CTRL3;
--	if (queue >= 4)
--		queue -= 4;
-+	ctrl2 = readl(ioaddr + GMAC_RXQ_CTRL2);
-+	ctrl3 = readl(ioaddr + GMAC_RXQ_CTRL3);
-+
-+	/* The software must ensure that the same priority
-+	 * is not mapped to multiple Rx queues
-+	 */
-+	for (i = 0; i < 4; i++)
-+		clear_mask |= ((prio << GMAC_RXQCTRL_PSRQX_SHIFT(i)) &
-+						GMAC_RXQCTRL_PSRQX_MASK(i));
- 
--	value = readl(ioaddr + base_register);
-+	ctrl2 &= ~clear_mask;
-+	ctrl3 &= ~clear_mask;
- 
--	value &= ~GMAC_RXQCTRL_PSRQX_MASK(queue);
--	value |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
-+	/* First assign new priorities to a queue, then
-+	 * clear them from others queues
-+	 */
-+	if (queue < 4) {
-+		ctrl2 |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
- 						GMAC_RXQCTRL_PSRQX_MASK(queue);
--	writel(value, ioaddr + base_register);
-+
-+		writel(ctrl2, ioaddr + GMAC_RXQ_CTRL2);
-+		writel(ctrl3, ioaddr + GMAC_RXQ_CTRL3);
-+	} else {
-+		queue -= 4;
-+
-+		ctrl3 |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
-+						GMAC_RXQCTRL_PSRQX_MASK(queue);
-+
-+		writel(ctrl3, ioaddr + GMAC_RXQ_CTRL3);
-+		writel(ctrl2, ioaddr + GMAC_RXQ_CTRL2);
-+	}
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -33,11 +33,13 @@ static void vfio_send_intx_eventfd(void
+ 		eventfd_signal(vdev->ctx[0].trigger, 1);
  }
  
- static void dwmac4_tx_queue_priority(struct mac_device_info *hw,
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -96,17 +96,41 @@ static void dwxgmac2_rx_queue_prio(struc
- 				   u32 queue)
+-void vfio_pci_intx_mask(struct vfio_pci_device *vdev)
++static void __vfio_pci_intx_mask(struct vfio_pci_device *vdev)
  {
- 	void __iomem *ioaddr = hw->pcsr;
--	u32 value, reg;
-+	u32 clear_mask = 0;
-+	u32 ctrl2, ctrl3;
-+	int i;
+ 	struct pci_dev *pdev = vdev->pdev;
+ 	unsigned long flags;
  
--	reg = (queue < 4) ? XGMAC_RXQ_CTRL2 : XGMAC_RXQ_CTRL3;
--	if (queue >= 4)
-+	ctrl2 = readl(ioaddr + XGMAC_RXQ_CTRL2);
-+	ctrl3 = readl(ioaddr + XGMAC_RXQ_CTRL3);
++	lockdep_assert_held(&vdev->igate);
 +
-+	/* The software must ensure that the same priority
-+	 * is not mapped to multiple Rx queues
-+	 */
-+	for (i = 0; i < 4; i++)
-+		clear_mask |= ((prio << XGMAC_PSRQ_SHIFT(i)) &
-+						XGMAC_PSRQ(i));
-+
-+	ctrl2 &= ~clear_mask;
-+	ctrl3 &= ~clear_mask;
-+
-+	/* First assign new priorities to a queue, then
-+	 * clear them from others queues
-+	 */
-+	if (queue < 4) {
-+		ctrl2 |= (prio << XGMAC_PSRQ_SHIFT(queue)) &
-+						XGMAC_PSRQ(queue);
-+
-+		writel(ctrl2, ioaddr + XGMAC_RXQ_CTRL2);
-+		writel(ctrl3, ioaddr + XGMAC_RXQ_CTRL3);
-+	} else {
- 		queue -= 4;
+ 	spin_lock_irqsave(&vdev->irqlock, flags);
  
--	value = readl(ioaddr + reg);
--	value &= ~XGMAC_PSRQ(queue);
--	value |= (prio << XGMAC_PSRQ_SHIFT(queue)) & XGMAC_PSRQ(queue);
-+		ctrl3 |= (prio << XGMAC_PSRQ_SHIFT(queue)) &
-+						XGMAC_PSRQ(queue);
- 
--	writel(value, ioaddr + reg);
-+		writel(ctrl3, ioaddr + XGMAC_RXQ_CTRL3);
-+		writel(ctrl2, ioaddr + XGMAC_RXQ_CTRL2);
-+	}
+ 	/*
+@@ -65,6 +67,13 @@ void vfio_pci_intx_mask(struct vfio_pci_
+ 	spin_unlock_irqrestore(&vdev->irqlock, flags);
  }
  
- static void dwxgmac2_tx_queue_prio(struct mac_device_info *hw, u32 prio,
++void vfio_pci_intx_mask(struct vfio_pci_device *vdev)
++{
++	mutex_lock(&vdev->igate);
++	__vfio_pci_intx_mask(vdev);
++	mutex_unlock(&vdev->igate);
++}
++
+ /*
+  * If this is triggered by an eventfd, we can't call eventfd_signal
+  * or else we'll deadlock on the eventfd wait queue.  Return >0 when
+@@ -107,12 +116,21 @@ static int vfio_pci_intx_unmask_handler(
+ 	return ret;
+ }
+ 
+-void vfio_pci_intx_unmask(struct vfio_pci_device *vdev)
++static void __vfio_pci_intx_unmask(struct vfio_pci_device *vdev)
+ {
++	lockdep_assert_held(&vdev->igate);
++
+ 	if (vfio_pci_intx_unmask_handler(vdev, NULL) > 0)
+ 		vfio_send_intx_eventfd(vdev, NULL);
+ }
+ 
++void vfio_pci_intx_unmask(struct vfio_pci_device *vdev)
++{
++	mutex_lock(&vdev->igate);
++	__vfio_pci_intx_unmask(vdev);
++	mutex_unlock(&vdev->igate);
++}
++
+ static irqreturn_t vfio_intx_handler(int irq, void *dev_id)
+ {
+ 	struct vfio_pci_device *vdev = dev_id;
+@@ -428,11 +446,11 @@ static int vfio_pci_set_intx_unmask(stru
+ 		return -EINVAL;
+ 
+ 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
+-		vfio_pci_intx_unmask(vdev);
++		__vfio_pci_intx_unmask(vdev);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
+ 		uint8_t unmask = *(uint8_t *)data;
+ 		if (unmask)
+-			vfio_pci_intx_unmask(vdev);
++			__vfio_pci_intx_unmask(vdev);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
+ 		int32_t fd = *(int32_t *)data;
+ 		if (fd >= 0)
+@@ -455,11 +473,11 @@ static int vfio_pci_set_intx_mask(struct
+ 		return -EINVAL;
+ 
+ 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
+-		vfio_pci_intx_mask(vdev);
++		__vfio_pci_intx_mask(vdev);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
+ 		uint8_t mask = *(uint8_t *)data;
+ 		if (mask)
+-			vfio_pci_intx_mask(vdev);
++			__vfio_pci_intx_mask(vdev);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
+ 		return -ENOTTY; /* XXX implement me */
+ 	}
 
 
 
