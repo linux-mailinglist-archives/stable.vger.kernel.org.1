@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-38567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81FDE8A0F48
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3F28A0FC6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:27:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DBCF286DBA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:22:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90AFD1C22F59
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E955914600A;
-	Thu, 11 Apr 2024 10:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B4814600E;
+	Thu, 11 Apr 2024 10:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdZQc3gF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iC8T7dkB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7507145FF0;
-	Thu, 11 Apr 2024 10:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4876213FD94;
+	Thu, 11 Apr 2024 10:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830953; cv=none; b=D3icVTBqTkvQvx7DyLdAMmg3Hw3eAuuTM2vnJlP3Zgu196SIWEFouC2ni5kxkYqcBaVb0co5DGFvQKG0QPNaijoluANbbBDLfUKlr6ZnQhCZGXWE1PFf5Hns+ZmYhURQB4W68NEHxBX21woKMZ+sUO8PTWK9Eki2DcqUamnIXbQ=
+	t=1712831246; cv=none; b=PdEoF05vT2mGy8HfvIBuF8YUhECBiEV2/UYIOofVp/lme/YpH+oQ1qpJCDeE+YS0LJuRdbYPrdLd0YFyrQnjWFVyIunXl6t/EnuxwsDzrK3mNo0bRVPKDx9qysRoCCOBEZPrmHo/CX2AV/6yyg+y1dy3J8zax3MUokk2jQNeSDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830953; c=relaxed/simple;
-	bh=vz8o2C6Tz251Kn3U4ZA9FUwrompt55hAk1pGWb5Ioek=;
+	s=arc-20240116; t=1712831246; c=relaxed/simple;
+	bh=3ma+WmFDuhLz0Xuo5+rBx3eakHq/dgAHAACGl6tomh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GRnlx+CsAucCaAVmUlCjqC+PVTpZCfy5/zUf/ymC4Ef+EjZB2FBmMmh6CBL3tNYts/ZNILS9ezA4AO2Xv/Tm22qGQ1uCnKRUQh1T2I40cJacKSRuR/798vHgemVYWStFXwMiFtIMeIKmCxe3FVg3oJDG+QhlYef2lgCuVg8w8ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdZQc3gF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E0E1C433F1;
-	Thu, 11 Apr 2024 10:22:32 +0000 (UTC)
+	 MIME-Version; b=dZs8bPDoh0BtWZwOP499/fH+W/3qE+OkNETfyXvybZ7503ndy/uS+9CMpOTCuAXXeCaRxbb6uny7kPyMFe2cO/Ya2b2p1Dv69ddv0Hz2gukr8xcEEid9SZw/AqIxn8Po7dBhw0OOEsLo2JQT4Obr9bft8aPrTb75vDYpxp5zqvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iC8T7dkB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931A3C433C7;
+	Thu, 11 Apr 2024 10:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830953;
-	bh=vz8o2C6Tz251Kn3U4ZA9FUwrompt55hAk1pGWb5Ioek=;
+	s=korg; t=1712831246;
+	bh=3ma+WmFDuhLz0Xuo5+rBx3eakHq/dgAHAACGl6tomh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NdZQc3gF4QZDBSL67WOCCaMTnMQ/2w5Vrhu/iEJxlpVXyVMLqZuJuAVGtZX5mX+CJ
-	 KxR+DC+Ym5kNBY0KebM7hsBtDORUtYucF8KDfgndIUv4aHuVYZ9ZOYJYZawhKCT+EI
-	 ur3EfgSOUqxLdsTtqY8tapghH/B4UySms5S2JiZg=
+	b=iC8T7dkBkizRvn4afhSR72RUl29JsvNcBIiE2IbWvd2+EYueor6nPuueuFq1zJ7zS
+	 VfrzaG2YQiwBk3K9rkX4dnswvEGJzAV1ly37uHdsM83Djm0xbBFw0wKr7JeVkYfwHz
+	 xSaudEtRWV5koI6vc2WInW9SwAAazhCfPrn50dVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
+	Zqiang <qiang.zhang1211@gmail.com>,
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 174/215] batman-adv: Improve exception handling in batadv_throw_uevent()
+Subject: [PATCH 6.6 056/114] rcu/nocb: Fix WARN_ON_ONCE() in the rcu_nocb_bypass_lock()
 Date: Thu, 11 Apr 2024 11:56:23 +0200
-Message-ID: <20240411095430.101758620@linuxfoundation.org>
+Message-ID: <20240411095418.576956732@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +65,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-[ Upstream commit 5593e9abf1cf2bf096366d8c7fd933bc69d561ce ]
+[ Upstream commit dda98810b552fc6bf650f4270edeebdc2f28bd3f ]
 
-The kfree() function was called in up to three cases by
-the batadv_throw_uevent() function during error handling
-even if the passed variable contained a null pointer.
-This issue was detected by using the Coccinelle software.
+For the kernels built with CONFIG_RCU_NOCB_CPU_DEFAULT_ALL=y and
+CONFIG_RCU_LAZY=y, the following scenarios will trigger WARN_ON_ONCE()
+in the rcu_nocb_bypass_lock() and rcu_nocb_wait_contended() functions:
 
-* Thus adjust jump targets.
+        CPU2                                               CPU11
+kthread
+rcu_nocb_cb_kthread                                       ksys_write
+rcu_do_batch                                              vfs_write
+rcu_torture_timer_cb                                      proc_sys_write
+__kmem_cache_free                                         proc_sys_call_handler
+kmemleak_free                                             drop_caches_sysctl_handler
+delete_object_full                                        drop_slab
+__delete_object                                           shrink_slab
+put_object                                                lazy_rcu_shrink_scan
+call_rcu                                                  rcu_nocb_flush_bypass
+__call_rcu_commn                                            rcu_nocb_bypass_lock
+                                                            raw_spin_trylock(&rdp->nocb_bypass_lock) fail
+                                                            atomic_inc(&rdp->nocb_lock_contended);
+rcu_nocb_wait_contended                                     WARN_ON_ONCE(smp_processor_id() != rdp->cpu);
+ WARN_ON_ONCE(atomic_read(&rdp->nocb_lock_contended))                                          |
+                            |_ _ _ _ _ _ _ _ _ _same rdp and rdp->cpu != 11_ _ _ _ _ _ _ _ _ __|
 
-* Reorder kfree() calls at the end.
+Reproduce this bug with "echo 3 > /proc/sys/vm/drop_caches".
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Acked-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+This commit therefore uses rcu_nocb_try_flush_bypass() instead of
+rcu_nocb_flush_bypass() in lazy_rcu_shrink_scan().  If the nocb_bypass
+queue is being flushed, then rcu_nocb_try_flush_bypass will return
+directly.
+
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/main.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ kernel/rcu/tree_nocb.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/batman-adv/main.c b/net/batman-adv/main.c
-index 6a183c94cdeb4..62425d19bd598 100644
---- a/net/batman-adv/main.c
-+++ b/net/batman-adv/main.c
-@@ -733,29 +733,31 @@ int batadv_throw_uevent(struct batadv_priv *bat_priv, enum batadv_uev_type type,
- 				  "%s%s", BATADV_UEV_TYPE_VAR,
- 				  batadv_uev_type_str[type]);
- 	if (!uevent_env[0])
--		goto out;
-+		goto report_error;
- 
- 	uevent_env[1] = kasprintf(GFP_ATOMIC,
- 				  "%s%s", BATADV_UEV_ACTION_VAR,
- 				  batadv_uev_action_str[action]);
- 	if (!uevent_env[1])
--		goto out;
-+		goto free_first_env;
- 
- 	/* If the event is DEL, ignore the data field */
- 	if (action != BATADV_UEV_DEL) {
- 		uevent_env[2] = kasprintf(GFP_ATOMIC,
- 					  "%s%s", BATADV_UEV_DATA_VAR, data);
- 		if (!uevent_env[2])
--			goto out;
-+			goto free_second_env;
- 	}
- 
- 	ret = kobject_uevent_env(bat_kobj, KOBJ_CHANGE, uevent_env);
--out:
--	kfree(uevent_env[0]);
--	kfree(uevent_env[1]);
- 	kfree(uevent_env[2]);
-+free_second_env:
-+	kfree(uevent_env[1]);
-+free_first_env:
-+	kfree(uevent_env[0]);
- 
- 	if (ret)
-+report_error:
- 		batadv_dbg(BATADV_DBG_BATMAN, bat_priv,
- 			   "Impossible to send uevent for (%s,%s,%s) event (err: %d)\n",
- 			   batadv_uev_type_str[type],
+diff --git a/kernel/rcu/tree_nocb.h b/kernel/rcu/tree_nocb.h
+index 5598212d1f274..2b24405b9cd2b 100644
+--- a/kernel/rcu/tree_nocb.h
++++ b/kernel/rcu/tree_nocb.h
+@@ -1383,7 +1383,7 @@ lazy_rcu_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
+ 			rcu_nocb_unlock_irqrestore(rdp, flags);
+ 			continue;
+ 		}
+-		WARN_ON_ONCE(!rcu_nocb_flush_bypass(rdp, NULL, jiffies, false));
++		rcu_nocb_try_flush_bypass(rdp, jiffies);
+ 		rcu_nocb_unlock_irqrestore(rdp, flags);
+ 		wake_nocb_gp(rdp, false);
+ 		sc->nr_to_scan -= _count;
 -- 
 2.43.0
 
