@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-38096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B1D8A0D01
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:59:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 980C48A0E8E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D611B24059
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:59:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9B821C21741
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C31145345;
-	Thu, 11 Apr 2024 09:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3931B145B08;
+	Thu, 11 Apr 2024 10:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWJD6cFu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oem1627B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A254613DDDD;
-	Thu, 11 Apr 2024 09:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8A81448F6;
+	Thu, 11 Apr 2024 10:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829551; cv=none; b=JlqQZiG8I0BlsiY+l7v/g09SkRdstN6XtCJWzrSImeSdlj21iEqh/+k41kEKOOiRILKn9iCOGa5cBRZjx+JR0CP05ylatWp3pWKLruVLiacIdsX208aHXLYlahxEMKnArCMhhArKIJSKOX19m7DBklBHENU2wPIgwwIZ/epE0s8=
+	t=1712830552; cv=none; b=Jvkj9PvvjBTAhGb8lMGaFzV6OoqhNbEXAaWSK2j/avMcdK3xfHAHHreJ4GTcexHGPvoJwuQNaFAE0Wb5S9oYbfV3W4QeCiuytrKmOpgKgJQtaVkoOyR2eO7oYKAHcs6Ly3pu+nKHWXBq171Hx4rcqVuZdcJNO6HQQQfbRTPMOEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829551; c=relaxed/simple;
-	bh=YkJMmA5QuRwI5EkZGKTm5ujOFGPG3UajTb0Y+8zrTuY=;
+	s=arc-20240116; t=1712830552; c=relaxed/simple;
+	bh=qMBURrZXfSkYDzfi0wGtqzVsJFhYmr9Cw7jueCZnXqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tvQoB287z8PaVce2IkOrN5icAvEQYw4bUGTNIhsBZnBtDUFAL9OoomdTdur8EOR7SzStyf0FluLNdPgdaJeJgr4kwfELJP17GYPPVUprEAO6s+ywcV8W+t/ZgpI2cDjdQNax/3NQ8psp4knHrJ/RoDHyzx9c/2QaRBojeIOuJUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWJD6cFu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FBDC433C7;
-	Thu, 11 Apr 2024 09:59:10 +0000 (UTC)
+	 MIME-Version; b=KmchybGzwnZ3sH6KSZENF1jqPnjhvd7NT1UlQnu8qTUIH0WTg0QSj21h9TzZYAMRMTLJhnq3MNf2l6IJZN+h70FOznG/K9k41fKCuHYBozxZ6T6PDmMoYw7RMv0I+L/wWKMWmdCrgLDFF7Rp2gcvcS1KQgMWT06JJEI2U0K8wXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oem1627B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64094C43390;
+	Thu, 11 Apr 2024 10:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829551;
-	bh=YkJMmA5QuRwI5EkZGKTm5ujOFGPG3UajTb0Y+8zrTuY=;
+	s=korg; t=1712830551;
+	bh=qMBURrZXfSkYDzfi0wGtqzVsJFhYmr9Cw7jueCZnXqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dWJD6cFuqOTwG9aQzCyTwIBQoQlzTdlkzlDyWgu3g1TD8iR0tS0pk6D3YjlEleceY
-	 qgrPmZT9Oj484wsxFR2QR+GnShKEoLyMvZTgwAOGkLGgcQDyCt+L+AvoiurH+S32kU
-	 fliRWoGBuCZDuv7vAaNgXzZYvCLT+XGtrGvmcBHA=
+	b=Oem1627BzTC0Yfi78fQlhMtusVOGckaxlgyVCzgVnhkGCJOv70j+SpTa0gOsy3E1u
+	 JnlXxmGkEvKvGg7o2s6Ni6qBl0zmQAb6/q2O+kjweAa9KhpteVCFBtccfvve1ke3Wk
+	 00Xl3YcAd+QeGszBvzO+ZFG7SACIkVYoEEdSv9OU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
+	Cameron Williams <cang1@live.co.uk>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 025/175] parisc: Do not hardcode registers in checksum functions
+Subject: [PATCH 5.4 039/215] USB: serial: add device ID for VeriFone adapter
 Date: Thu, 11 Apr 2024 11:54:08 +0200
-Message-ID: <20240411095420.313171474@linuxfoundation.org>
+Message-ID: <20240411095426.071275386@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,172 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Cameron Williams <cang1@live.co.uk>
 
-[ Upstream commit 52b2d91752a82d9350981eb3b3ffc4b325c84ba9 ]
+[ Upstream commit cda704809797a8a86284f9df3eef5e62ec8a3175 ]
 
-Do not hardcode processor registers r19 to r22 as scratch registers.
-Instead let the compiler decide, which may give better optimization
-results when the functions get inlined.
+Add device ID for a (probably fake) CP2102 UART device.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Stable-dep-of: a2abae8f0b63 ("parisc: Fix ip_fast_csum")
+lsusb -v output:
+
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               1.10
+  bDeviceClass            0 [unknown]
+  bDeviceSubClass         0 [unknown]
+  bDeviceProtocol         0
+  bMaxPacketSize0        64
+  idVendor           0x11ca VeriFone Inc
+  idProduct          0x0212 Verifone USB to Printer
+  bcdDevice            1.00
+  iManufacturer           1 Silicon Labs
+  iProduct                2 Verifone USB to Printer
+  iSerial                 3 0001
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength       0x0020
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0
+    bmAttributes         0x80
+      (Bus Powered)
+    MaxPower              100mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           2
+      bInterfaceClass       255 Vendor Specific Class
+      bInterfaceSubClass      0 [unknown]
+      bInterfaceProtocol      0
+      iInterface              2 Verifone USB to Printer
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x01  EP 1 OUT
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               0
+Device Status:     0x0000
+  (Bus Powered)
+
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/checksum.h | 101 +++++++++++++++--------------
- 1 file changed, 52 insertions(+), 49 deletions(-)
+ drivers/usb/serial/cp210x.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
-index 3cbf1f1c1188e..c1c22819a04d1 100644
---- a/arch/parisc/include/asm/checksum.h
-+++ b/arch/parisc/include/asm/checksum.h
-@@ -42,31 +42,32 @@ extern __wsum csum_partial_copy_from_user(const void __user *src,
- static inline __sum16 ip_fast_csum(const void *iph, unsigned int ihl)
- {
- 	unsigned int sum;
-+	unsigned long t0, t1, t2;
- 
- 	__asm__ __volatile__ (
- "	ldws,ma		4(%1), %0\n"
- "	addib,<=	-4, %2, 2f\n"
- "\n"
--"	ldws		4(%1), %%r20\n"
--"	ldws		8(%1), %%r21\n"
--"	add		%0, %%r20, %0\n"
--"	ldws,ma		12(%1), %%r19\n"
--"	addc		%0, %%r21, %0\n"
--"	addc		%0, %%r19, %0\n"
--"1:	ldws,ma		4(%1), %%r19\n"
-+"	ldws		4(%1), %4\n"
-+"	ldws		8(%1), %5\n"
-+"	add		%0, %4, %0\n"
-+"	ldws,ma		12(%1), %3\n"
-+"	addc		%0, %5, %0\n"
-+"	addc		%0, %3, %0\n"
-+"1:	ldws,ma		4(%1), %3\n"
- "	addib,<		0, %2, 1b\n"
--"	addc		%0, %%r19, %0\n"
-+"	addc		%0, %3, %0\n"
- "\n"
--"	extru		%0, 31, 16, %%r20\n"
--"	extru		%0, 15, 16, %%r21\n"
--"	addc		%%r20, %%r21, %0\n"
--"	extru		%0, 15, 16, %%r21\n"
--"	add		%0, %%r21, %0\n"
-+"	extru		%0, 31, 16, %4\n"
-+"	extru		%0, 15, 16, %5\n"
-+"	addc		%4, %5, %0\n"
-+"	extru		%0, 15, 16, %5\n"
-+"	add		%0, %5, %0\n"
- "	subi		-1, %0, %0\n"
- "2:\n"
--	: "=r" (sum), "=r" (iph), "=r" (ihl)
-+	: "=r" (sum), "=r" (iph), "=r" (ihl), "=r" (t0), "=r" (t1), "=r" (t2)
- 	: "1" (iph), "2" (ihl)
--	: "r19", "r20", "r21", "memory");
-+	: "memory");
- 
- 	return (__force __sum16)sum;
- }
-@@ -126,6 +127,10 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- 					  __u32 len, __u8 proto,
- 					  __wsum sum)
- {
-+	unsigned long t0, t1, t2, t3;
-+
-+	len += proto;	/* add 16-bit proto + len */
-+
- 	__asm__ __volatile__ (
- 
- #if BITS_PER_LONG > 32
-@@ -136,20 +141,19 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- 	** Try to keep 4 registers with "live" values ahead of the ALU.
- 	*/
- 
--"	ldd,ma		8(%1), %%r19\n"	/* get 1st saddr word */
--"	ldd,ma		8(%2), %%r20\n"	/* get 1st daddr word */
--"	add		%8, %3, %3\n"/* add 16-bit proto + len */
--"	add		%%r19, %0, %0\n"
--"	ldd,ma		8(%1), %%r21\n"	/* 2cd saddr */
--"	ldd,ma		8(%2), %%r22\n"	/* 2cd daddr */
--"	add,dc		%%r20, %0, %0\n"
--"	add,dc		%%r21, %0, %0\n"
--"	add,dc		%%r22, %0, %0\n"
-+"	ldd,ma		8(%1), %4\n"	/* get 1st saddr word */
-+"	ldd,ma		8(%2), %5\n"	/* get 1st daddr word */
-+"	add		%4, %0, %0\n"
-+"	ldd,ma		8(%1), %6\n"	/* 2nd saddr */
-+"	ldd,ma		8(%2), %7\n"	/* 2nd daddr */
-+"	add,dc		%5, %0, %0\n"
-+"	add,dc		%6, %0, %0\n"
-+"	add,dc		%7, %0, %0\n"
- "	add,dc		%3, %0, %0\n"  /* fold in proto+len | carry bit */
--"	extrd,u		%0, 31, 32, %%r19\n"	/* copy upper half down */
--"	depdi		0, 31, 32, %0\n"	/* clear upper half */
--"	add		%%r19, %0, %0\n"	/* fold into 32-bits */
--"	addc		0, %0, %0\n"		/* add carry */
-+"	extrd,u		%0, 31, 32, %4\n"/* copy upper half down */
-+"	depdi		0, 31, 32, %0\n"/* clear upper half */
-+"	add		%4, %0, %0\n"	/* fold into 32-bits */
-+"	addc		0, %0, %0\n"	/* add carry */
- 
- #else
- 
-@@ -158,30 +162,29 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- 	** Insn stream is serialized on the carry bit here too.
- 	** result from the previous operation (eg r0 + x)
- 	*/
--
--"	ldw,ma		4(%1), %%r19\n"	/* get 1st saddr word */
--"	ldw,ma		4(%2), %%r20\n"	/* get 1st daddr word */
--"	add		%8, %3, %3\n"	/* add 16-bit proto + len */
--"	add		%%r19, %0, %0\n"
--"	ldw,ma		4(%1), %%r21\n"	/* 2cd saddr */
--"	addc		%%r20, %0, %0\n"
--"	ldw,ma		4(%2), %%r22\n"	/* 2cd daddr */
--"	addc		%%r21, %0, %0\n"
--"	ldw,ma		4(%1), %%r19\n"	/* 3rd saddr */
--"	addc		%%r22, %0, %0\n"
--"	ldw,ma		4(%2), %%r20\n"	/* 3rd daddr */
--"	addc		%%r19, %0, %0\n"
--"	ldw,ma		4(%1), %%r21\n"	/* 4th saddr */
--"	addc		%%r20, %0, %0\n"
--"	ldw,ma		4(%2), %%r22\n"	/* 4th daddr */
--"	addc		%%r21, %0, %0\n"
--"	addc		%%r22, %0, %0\n"
-+"	ldw,ma		4(%1), %4\n"	/* get 1st saddr word */
-+"	ldw,ma		4(%2), %5\n"	/* get 1st daddr word */
-+"	add		%4, %0, %0\n"
-+"	ldw,ma		4(%1), %6\n"	/* 2nd saddr */
-+"	addc		%5, %0, %0\n"
-+"	ldw,ma		4(%2), %7\n"	/* 2nd daddr */
-+"	addc		%6, %0, %0\n"
-+"	ldw,ma		4(%1), %4\n"	/* 3rd saddr */
-+"	addc		%7, %0, %0\n"
-+"	ldw,ma		4(%2), %5\n"	/* 3rd daddr */
-+"	addc		%4, %0, %0\n"
-+"	ldw,ma		4(%1), %6\n"	/* 4th saddr */
-+"	addc		%5, %0, %0\n"
-+"	ldw,ma		4(%2), %7\n"	/* 4th daddr */
-+"	addc		%6, %0, %0\n"
-+"	addc		%7, %0, %0\n"
- "	addc		%3, %0, %0\n"	/* fold in proto+len, catch carry */
- 
- #endif
--	: "=r" (sum), "=r" (saddr), "=r" (daddr), "=r" (len)
--	: "0" (sum), "1" (saddr), "2" (daddr), "3" (len), "r" (proto)
--	: "r19", "r20", "r21", "r22", "memory");
-+	: "=r" (sum), "=r" (saddr), "=r" (daddr), "=r" (len),
-+	  "=r" (t0), "=r" (t1), "=r" (t2), "=r" (t3)
-+	: "0" (sum), "1" (saddr), "2" (daddr), "3" (len)
-+	: "memory");
- 	return csum_fold(sum);
- }
- 
+diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
+index 1724cade102e1..015dcaf58047c 100644
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -178,6 +178,7 @@ static const struct usb_device_id id_table[] = {
+ 	{ USB_DEVICE(0x10C4, 0xF004) }, /* Elan Digital Systems USBcount50 */
+ 	{ USB_DEVICE(0x10C5, 0xEA61) }, /* Silicon Labs MobiData GPRS USB Modem */
+ 	{ USB_DEVICE(0x10CE, 0xEA6A) }, /* Silicon Labs MobiData GPRS USB Modem 100EU */
++	{ USB_DEVICE(0x11CA, 0x0212) }, /* Verifone USB to Printer (UART, CP2102) */
+ 	{ USB_DEVICE(0x12B8, 0xEC60) }, /* Link G4 ECU */
+ 	{ USB_DEVICE(0x12B8, 0xEC62) }, /* Link G4+ ECU */
+ 	{ USB_DEVICE(0x13AD, 0x9999) }, /* Baltech card reader */
 -- 
 2.43.0
 
