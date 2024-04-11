@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-39071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 812CD8A11CB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:47:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C73ED8A101F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:31:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21CDF1F21496
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DAB61F2A619
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE2C1474C3;
-	Thu, 11 Apr 2024 10:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF9314A4DA;
+	Thu, 11 Apr 2024 10:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lfyw6Keh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nb3ScEYx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3BB14600E;
-	Thu, 11 Apr 2024 10:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680E014A0B5;
+	Thu, 11 Apr 2024 10:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832431; cv=none; b=tu/L3j9RuSHLZ6P893vju1piHOLiVHdUw2AbELeoCQgNrZGZSiB5JLWo6TP6icfdRxdt+ibtev9ws/6PMaR3FVd1QeLHRI+1D6qUQyC/UQuKJmwZM7N2JR2stzK34xjcsMtEhGazSxO+OfBQG4n4qdzbTUOrJoNa7EigP6uc1ts=
+	t=1712831433; cv=none; b=GBbikUUJW6fcVBauPbmb7RZzXh0vvGM7whPstAAPAwvM4DFhjguH95qHSpZ9NNPH1QD5BwcFqp/cYXD73qEn77Bmgw8EGhwONoGGjwcBnxAO6FiF64HYuLK5JAPPwpmqBkMLtQwoklnIe2M0rvRvvAa1rJX22jXrS0e2rSPIzTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832431; c=relaxed/simple;
-	bh=+QaYaRAXqGuc3cHW/MG+95JLa85M7TrQsf3mLS3FI3A=;
+	s=arc-20240116; t=1712831433; c=relaxed/simple;
+	bh=dpZNrUUWZp2G1yLdC8F5fLItMXEkPLOPLAeX4ZE0LXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CdwE8sRP0IldlqZJJrX+nb6D5IbAu1BJjmJFQM+4nJWzWaZO8u+gfXu1Sm4gtwdEikMnVZ3He7ouze2Lau4nUftJwNppmChtQgdeluJakVYuRCz0/JKhLYte5BH5B8DGYyI2T0LusARDBuIurtXIXly9z607OYqQO6nvJ2hyuv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lfyw6Keh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D624C433C7;
-	Thu, 11 Apr 2024 10:47:10 +0000 (UTC)
+	 MIME-Version; b=RhwzOemwWnFy3biPd9Edf+in/gOWv/hnjGQY/tHZbmQm7QodKLdi8XA/rvu1Ee4Qjt+2UTJHTOgkJAKNps/sVkW3Um/a7uyAwRGHvJLej0ufeR5wBdmzV4aP3Upy4ZMicAEEKak5XgYN2835gZXJBYubKf/1ZSrRUsb7I7IiMxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nb3ScEYx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D03C433C7;
+	Thu, 11 Apr 2024 10:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832430;
-	bh=+QaYaRAXqGuc3cHW/MG+95JLa85M7TrQsf3mLS3FI3A=;
+	s=korg; t=1712831433;
+	bh=dpZNrUUWZp2G1yLdC8F5fLItMXEkPLOPLAeX4ZE0LXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lfyw6KehWpR9f/NCKdHULJO7T5J/Sg2ZDEw2kHLumBfXEUUfKsCl/3uQoavF9PU5a
-	 RJCi4H68aokXsmE+dabbVyrUS6ebShgT1wtexRgdfFFEnMYodiVLmJdRcOij4UFTI9
-	 aG1rvRjx+qFNqxA+y+TjeBdCRLZiEWsnGbdGSL2A=
+	b=nb3ScEYxE1DcJrAH8WIEafeFwYKXwWu5ETH8oEkuGBs7UEVLA3UoXHAiqRkVeIMc3
+	 pDzcwTpXb/P7sEF5aLsNysEFq+9qwIHfHSdIkQdaetKw/pc61gFaJY6dHj/yy9Ns71
+	 pQkcHU5ISPE7BQuqdUIzx+vs1dD7wMvP1Aaz2dC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Yang Jihong <yangjihong1@huawei.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 47/83] libperf evlist: Avoid out-of-bounds access
+	Simon Horman <horms@kernel.org>,
+	syzbot+99d15fcdb0132a1e1a82@syzkaller.appspotmail.com,
+	Florian Westphal <fw@strlen.de>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 112/114] net: mpls: error out if inner headers are not set
 Date: Thu, 11 Apr 2024 11:57:19 +0200
-Message-ID: <20240411095414.100623178@linuxfoundation.org>
+Message-ID: <20240411095420.272994514@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,131 +63,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 1947b92464c3268381604bbe2ac977a3fd78192f ]
+commit 025f8ad20f2e3264d11683aa9cbbf0083eefbdcd upstream.
 
-Parallel testing appears to show a race between allocating and setting
-evsel ids. As there is a bounds check on the xyarray it yields a segv
-like:
+mpls_gso_segment() assumes skb_inner_network_header() returns
+a valid result:
 
-```
-AddressSanitizer:DEADLYSIGNAL
+  mpls_hlen = skb_inner_network_header(skb) - skb_network_header(skb);
+  if (unlikely(!mpls_hlen || mpls_hlen % MPLS_HLEN))
+        goto out;
+  if (unlikely(!pskb_may_pull(skb, mpls_hlen)))
 
-=================================================================
+With syzbot reproducer, skb_inner_network_header() yields 0,
+skb_network_header() returns 108, so this will
+"pskb_may_pull(skb, -108)))" which triggers a newly added
+DEBUG_NET_WARN_ON_ONCE() check:
 
-==484408==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000010
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 5068 at include/linux/skbuff.h:2723 pskb_may_pull_reason include/linux/skbuff.h:2723 [inline]
+WARNING: CPU: 0 PID: 5068 at include/linux/skbuff.h:2723 pskb_may_pull include/linux/skbuff.h:2739 [inline]
+WARNING: CPU: 0 PID: 5068 at include/linux/skbuff.h:2723 mpls_gso_segment+0x773/0xaa0 net/mpls/mpls_gso.c:34
+[..]
+ skb_mac_gso_segment+0x383/0x740 net/core/gso.c:53
+ nsh_gso_segment+0x40a/0xad0 net/nsh/nsh.c:108
+ skb_mac_gso_segment+0x383/0x740 net/core/gso.c:53
+ __skb_gso_segment+0x324/0x4c0 net/core/gso.c:124
+ skb_gso_segment include/net/gso.h:83 [inline]
+ [..]
+ sch_direct_xmit+0x11a/0x5f0 net/sched/sch_generic.c:327
+ [..]
+ packet_sendmsg+0x46a9/0x6130 net/packet/af_packet.c:3113
+ [..]
 
-==484408==The signal is caused by a WRITE memory access.
+First iteration of this patch made mpls_hlen signed and changed
+test to error out to "mpls_hlen <= 0 || ..".
 
-==484408==Hint: address points to the zero page.
+Eric Dumazet said:
+ > I was thinking about adding a debug check in skb_inner_network_header()
+ > if inner_network_header is zero (that would mean it is not 'set' yet),
+ > but this would trigger even after your patch.
 
-    #0 0x55cef5d4eff4 in perf_evlist__id_hash tools/lib/perf/evlist.c:256
-    #1 0x55cef5d4f132 in perf_evlist__id_add tools/lib/perf/evlist.c:274
-    #2 0x55cef5d4f545 in perf_evlist__id_add_fd tools/lib/perf/evlist.c:315
-    #3 0x55cef5a1923f in store_evsel_ids util/evsel.c:3130
-    #4 0x55cef5a19400 in evsel__store_ids util/evsel.c:3147
-    #5 0x55cef5888204 in __run_perf_stat tools/perf/builtin-stat.c:832
-    #6 0x55cef5888c06 in run_perf_stat tools/perf/builtin-stat.c:960
-    #7 0x55cef58932db in cmd_stat tools/perf/builtin-stat.c:2878
-...
-```
+So add new skb_inner_network_header_was_set() helper and use that.
 
-Avoid this crash by early exiting the perf_evlist__id_add_fd and
-perf_evlist__id_add is the access is out-of-bounds.
+The syzbot reproducer injects data via packet socket. The skb that gets
+allocated and passed down the stack has ->protocol set to NSH (0x894f)
+and gso_type set to SKB_GSO_UDP | SKB_GSO_DODGY.
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240229070757.796244-1-irogers@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This gets passed to skb_mac_gso_segment(), which sees NSH as ptype to
+find a callback for.  nsh_gso_segment() retrieves next type:
+
+        proto = tun_p_to_eth_p(nsh_hdr(skb)->np);
+
+... which is MPLS (TUN_P_MPLS_UC). It updates skb->protocol and then
+calls mpls_gso_segment().  Inner offsets are all 0, so mpls_gso_segment()
+ends up with a negative header size.
+
+In case more callers rely on silent handling of such large may_pull values
+we could also 'legalize' this behaviour, either replacing the debug check
+with (len > INT_MAX) test or removing it and instead adding a comment
+before existing
+
+ if (unlikely(len > skb->len))
+    return SKB_DROP_REASON_PKT_TOO_SMALL;
+
+test in pskb_may_pull_reason(), saying that this check also implicitly
+takes care of callers that miscompute header sizes.
+
+Cc: Simon Horman <horms@kernel.org>
+Fixes: 219eee9c0d16 ("net: skbuff: add overflow debug check to pull/push helpers")
+Reported-by: syzbot+99d15fcdb0132a1e1a82@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/00000000000043b1310611e388aa@google.com/raw
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Link: https://lore.kernel.org/r/20240222140321.14080-1-fw@strlen.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/perf/evlist.c                  | 18 ++++++++++++------
- tools/lib/perf/include/internal/evlist.h |  4 ++--
- 2 files changed, 14 insertions(+), 8 deletions(-)
+ include/linux/skbuff.h |    5 +++++
+ net/mpls/mpls_gso.c    |    3 +++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/tools/lib/perf/evlist.c b/tools/lib/perf/evlist.c
-index 61b637f29b827..b871923c7e5cd 100644
---- a/tools/lib/perf/evlist.c
-+++ b/tools/lib/perf/evlist.c
-@@ -233,10 +233,10 @@ u64 perf_evlist__read_format(struct perf_evlist *evlist)
- 
- static void perf_evlist__id_hash(struct perf_evlist *evlist,
- 				 struct perf_evsel *evsel,
--				 int cpu, int thread, u64 id)
-+				 int cpu_map_idx, int thread, u64 id)
- {
- 	int hash;
--	struct perf_sample_id *sid = SID(evsel, cpu, thread);
-+	struct perf_sample_id *sid = SID(evsel, cpu_map_idx, thread);
- 
- 	sid->id = id;
- 	sid->evsel = evsel;
-@@ -254,21 +254,27 @@ void perf_evlist__reset_id_hash(struct perf_evlist *evlist)
- 
- void perf_evlist__id_add(struct perf_evlist *evlist,
- 			 struct perf_evsel *evsel,
--			 int cpu, int thread, u64 id)
-+			 int cpu_map_idx, int thread, u64 id)
- {
--	perf_evlist__id_hash(evlist, evsel, cpu, thread, id);
-+	if (!SID(evsel, cpu_map_idx, thread))
-+		return;
-+
-+	perf_evlist__id_hash(evlist, evsel, cpu_map_idx, thread, id);
- 	evsel->id[evsel->ids++] = id;
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -2837,6 +2837,11 @@ static inline void skb_set_inner_network
+ 	skb->inner_network_header += offset;
  }
  
- int perf_evlist__id_add_fd(struct perf_evlist *evlist,
- 			   struct perf_evsel *evsel,
--			   int cpu, int thread, int fd)
-+			   int cpu_map_idx, int thread, int fd)
- {
- 	u64 read_data[4] = { 0, };
- 	int id_idx = 1; /* The first entry is the counter value */
- 	u64 id;
- 	int ret;
- 
-+	if (!SID(evsel, cpu_map_idx, thread))
-+		return -1;
++static inline bool skb_inner_network_header_was_set(const struct sk_buff *skb)
++{
++	return skb->inner_network_header > 0;
++}
 +
- 	ret = ioctl(fd, PERF_EVENT_IOC_ID, &id);
- 	if (!ret)
- 		goto add;
-@@ -297,7 +303,7 @@ int perf_evlist__id_add_fd(struct perf_evlist *evlist,
- 	id = read_data[id_idx];
+ static inline unsigned char *skb_inner_mac_header(const struct sk_buff *skb)
+ {
+ 	return skb->head + skb->inner_mac_header;
+--- a/net/mpls/mpls_gso.c
++++ b/net/mpls/mpls_gso.c
+@@ -27,6 +27,9 @@ static struct sk_buff *mpls_gso_segment(
+ 	__be16 mpls_protocol;
+ 	unsigned int mpls_hlen;
  
- add:
--	perf_evlist__id_add(evlist, evsel, cpu, thread, id);
-+	perf_evlist__id_add(evlist, evsel, cpu_map_idx, thread, id);
- 	return 0;
- }
- 
-diff --git a/tools/lib/perf/include/internal/evlist.h b/tools/lib/perf/include/internal/evlist.h
-index 850f07070036c..cf77db75291b9 100644
---- a/tools/lib/perf/include/internal/evlist.h
-+++ b/tools/lib/perf/include/internal/evlist.h
-@@ -127,11 +127,11 @@ u64 perf_evlist__read_format(struct perf_evlist *evlist);
- 
- void perf_evlist__id_add(struct perf_evlist *evlist,
- 			 struct perf_evsel *evsel,
--			 int cpu, int thread, u64 id);
-+			 int cpu_map_idx, int thread, u64 id);
- 
- int perf_evlist__id_add_fd(struct perf_evlist *evlist,
- 			   struct perf_evsel *evsel,
--			   int cpu, int thread, int fd);
-+			   int cpu_map_idx, int thread, int fd);
- 
- void perf_evlist__reset_id_hash(struct perf_evlist *evlist);
- 
--- 
-2.43.0
-
++	if (!skb_inner_network_header_was_set(skb))
++		goto out;
++
+ 	skb_reset_network_header(skb);
+ 	mpls_hlen = skb_inner_network_header(skb) - skb_network_header(skb);
+ 	if (unlikely(!mpls_hlen || mpls_hlen % MPLS_HLEN))
 
 
 
