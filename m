@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5C608A0FCF
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA91D8A0E19
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:11:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C6E2282D94
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FD1D1F2154B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7781146A71;
-	Thu, 11 Apr 2024 10:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3C214658E;
+	Thu, 11 Apr 2024 10:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVrUjHxL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udaY4hZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BF313FD94;
-	Thu, 11 Apr 2024 10:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A3D145323;
+	Thu, 11 Apr 2024 10:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831269; cv=none; b=BEP9kGyLyHHOMtoSO/WOkszz0jp/g6erNpTqnt1DejTOy7O52TejYbUdkZmducGJ5Kok4DpbMyaoRpU8a5tLff5OXi5FjKbjVJ06Hc/BgZ9nOU6glgqoZC/0RiywshycmGfu6c+/OcMAZLUeZpbvoQYth4i0rN+MJpnBa5qgHmU=
+	t=1712830255; cv=none; b=Qtas3gMq5H43VM7aq11gfDkBd6PTJyz/t7zfRl6VB0Q18mWPA2SvK4fht33/Jpba6QqWD+DjjI7fgyPi7hF1IPG3L+/w+V60Unz3sEIzcjUOr6ZlRuQbbb1lZSrlmRHxGHGSmaVBtFkfKacUm8QvSJvScyXwkqzkb4yZbHQ+45M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831269; c=relaxed/simple;
-	bh=JFpZaJHgfB3/lWzrw+SA8TDLuwco7EqQfXKfEko23j4=;
+	s=arc-20240116; t=1712830255; c=relaxed/simple;
+	bh=QHLQ1f2UlCT/5dwQCZrXkBuPTYqmzT2nujX2ee+MtOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHsYVMGkVMoDld2fi0MUoABdxUhqaa/1Pgqy4XVIYZ5q3xM42iYy7JTk4i/HMVJuqhjvvlg+uzeuxvEfUkckifirxGX8NMMuf4D4x+nFjV/SXTGNb4EJKOcC1E/CCm/WJjreuMk62Xhdgw4JgjaOzjaRaw57KGG77u5HlBlPLBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVrUjHxL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6A2C433C7;
-	Thu, 11 Apr 2024 10:27:48 +0000 (UTC)
+	 MIME-Version; b=tcsjd9a1KI4ZfseEV+DKqqsTJJ0Ur8WzBfW5RmCAsXOC3RJDtArLwLeKZEuuyCGw0HeyVUUAi3F1T0n7MT6zBIjvG96OA3z2hCudLQKr0ikBpM6PvsijrYtWGYegEwvAX8VukIf1tO/dL2lKxF9l92Vz1Z2Sr1vRekXKK8pET98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udaY4hZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C44C43390;
+	Thu, 11 Apr 2024 10:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831269;
-	bh=JFpZaJHgfB3/lWzrw+SA8TDLuwco7EqQfXKfEko23j4=;
+	s=korg; t=1712830254;
+	bh=QHLQ1f2UlCT/5dwQCZrXkBuPTYqmzT2nujX2ee+MtOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YVrUjHxLizYL32Or9my7IOIynur4Ybb+qStuknMS22eR+1vTO9IcXKEzCoQC6HDQ4
-	 7q9KP6BTO1JLFhxuM2R9CT5DDhF+/a56EXaY2VGiRcEsd3MgAlbSF7iRYqlUOi2P9p
-	 IzY6ggvKNH4efYRjLVmHUcTD34zxwROiYBkntEgs=
+	b=udaY4hZscIxCirP2+ieIFdGk2HjbSlHuidKsQ9W8TKEqRAB2oqanyHS8rGMspWBCJ
+	 1fhnItbFHZSCgAMWUyw0Jqg8CHHY/ZgDRNIrIlQYbTxCZf85yolj5ESwyIkpj7AGk6
+	 h7PRCi5rbwag2El1VQrETyEzg8GJ+cj32Qmb9LMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chiu <chui-hao.chiu@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/114] wifi: mt76: mt7996: disable AMSDU for non-data frames
-Date: Thu, 11 Apr 2024 11:55:53 +0200
-Message-ID: <20240411095417.659043379@linuxfoundation.org>
+Subject: [PATCH 6.8 086/143] HID: input: avoid polling stylus battery on Chromebook Pompom
+Date: Thu, 11 Apr 2024 11:55:54 +0200
+Message-ID: <20240411095423.499015059@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit 5d5edc09197cd8c705b42a73cdf8ba03db53c033 ]
+[ Upstream commit 9a5b1521e2d0d7ace70c6e5eed073babcec91409 ]
 
-Disable AMSDU for non-data frames to prevent TX token leak issues.
+Internal touchscreen on Trogdor Pompom (AKA Dynabook Chromebook C1)
+supports USI stylus. Unfortunately the HID descriptor for the stylus
+interface does not contain "Stylus" physical collection, which makes
+the kernel to try and pull battery information, resulting in errors.
 
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Apply HID_BATTERY_QUIRK_AVOID_QUERY to the device.
+
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/hid/hid-ids.h   | 1 +
+ drivers/hid/hid-input.c | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index b0d0ae5080e82..73d46ec1181ae 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -757,6 +757,9 @@ mt7996_mac_write_txwi_8023(struct mt7996_dev *dev, __le32 *txwi,
- 	      FIELD_PREP(MT_TXD2_SUB_TYPE, fc_stype);
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 828a5c022c640..175b6680087e0 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -430,6 +430,7 @@
+ #define I2C_DEVICE_ID_HP_SPECTRE_X360_14T_EA100_V1	0x2BED
+ #define I2C_DEVICE_ID_HP_SPECTRE_X360_14T_EA100_V2	0x2BEE
+ #define I2C_DEVICE_ID_HP_ENVY_X360_15_EU0556NG		0x2D02
++#define I2C_DEVICE_ID_CHROMEBOOK_TROGDOR_POMPOM	0x2F81
  
- 	txwi[2] |= cpu_to_le32(val);
-+
-+	if (wcid->amsdu)
-+		txwi[3] |= cpu_to_le32(MT_TXD3_HW_AMSDU);
- }
+ #define USB_VENDOR_ID_ELECOM		0x056e
+ #define USB_DEVICE_ID_ELECOM_BM084	0x0061
+diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
+index c8b20d44b1472..e03d300d2bac4 100644
+--- a/drivers/hid/hid-input.c
++++ b/drivers/hid/hid-input.c
+@@ -411,6 +411,8 @@ static const struct hid_device_id hid_battery_quirks[] = {
+ 	  HID_BATTERY_QUIRK_IGNORE },
+ 	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_HP_ENVY_X360_15_EU0556NG),
+ 	  HID_BATTERY_QUIRK_IGNORE },
++	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_CHROMEBOOK_TROGDOR_POMPOM),
++	  HID_BATTERY_QUIRK_AVOID_QUERY },
+ 	{}
+ };
  
- static void
-@@ -887,8 +890,6 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
- 		val |= MT_TXD3_PROTECT_FRAME;
- 	if (info->flags & IEEE80211_TX_CTL_NO_ACK)
- 		val |= MT_TXD3_NO_ACK;
--	if (wcid->amsdu)
--		val |= MT_TXD3_HW_AMSDU;
- 
- 	txwi[3] = cpu_to_le32(val);
- 	txwi[4] = 0;
 -- 
 2.43.0
 
