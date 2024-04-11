@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258A38A1008
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:30:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB91D8A0DAB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:06:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF07E288503
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:30:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B5F91F22375
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE3B6146D47;
-	Thu, 11 Apr 2024 10:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E124E145B13;
+	Thu, 11 Apr 2024 10:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBh2/UvO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bn4Rc+Hk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8D7145B26;
-	Thu, 11 Apr 2024 10:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24B81448F3;
+	Thu, 11 Apr 2024 10:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831392; cv=none; b=WMOyyZVa2ofXwfueMY7b3LZlgW1J64HKGClEI7AJLAvewgIWLgnhRLeqS1+pHNDViG1UCWT3iqpuQTXvw7uHq1F/rH25+G38zoIy+xPEJ51A8+jwyLDaH8mvvaWLHIL41J6ByOJcFLAzOBFW0k8SG6ewybGWHMPNZQg7Zfo0rDI=
+	t=1712829983; cv=none; b=Lsl0i06cx/9/6l3NLu3HvgNP/K7J1g5CkB2mkfqsFKVOkKZ8P6sPZ7GE0lYJPEmONlaJkWJOvcQQL52PGsFOPjYq+gHoxZ3TQXWUpdCZ388y/J7H7d0tgMDkgwyL40YQfrrpbQypAZz8AXTmaugkPGM3mAh/swg+dycweI5Hsw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831392; c=relaxed/simple;
-	bh=7LbuEUUfH++50lNS1dsScPlp1Vq/dqg5btVYRRHIjVQ=;
+	s=arc-20240116; t=1712829983; c=relaxed/simple;
+	bh=BQ/ex29oPXMWJxWzpWJvHM1Rgd838tTlVEcX6A3Cy5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TEI9YwOiny6qVtMRbMhQvIPjO959GUxUnQ/pSI2FRYp1WTWvmp0WtGhMErI8/mBIgxOQjDldjqu7R9T7uwuqXOFnhNVwLm+i+/dHtx2JplnFQrKVAgO7/z55jFisR7i87F3Wqv3AQ6Tgop56Ci5W/pMR+CJZPytA/POl14YptX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBh2/UvO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 018F5C43390;
-	Thu, 11 Apr 2024 10:29:51 +0000 (UTC)
+	 MIME-Version; b=HASw6XuHE4V+VTo/rdWWLDs/vTIuS5QNuW72mIcytcSGTmkgTleFVUlBS114NQ7O3Ok/Uf4eVu+bGYM3pPmxgz4+sGH1R44cCwP+Rro40DKhIVPFLSTeVgsYRMzcOWNAda3Q9Q1+O7VBq4ZBhYUIz0UfSOz6yaIEbTCBunbUFbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bn4Rc+Hk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DE4C433F1;
+	Thu, 11 Apr 2024 10:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831392;
-	bh=7LbuEUUfH++50lNS1dsScPlp1Vq/dqg5btVYRRHIjVQ=;
+	s=korg; t=1712829983;
+	bh=BQ/ex29oPXMWJxWzpWJvHM1Rgd838tTlVEcX6A3Cy5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SBh2/UvOacIDyDfQEqt8DqiVaSbsJ4XByo8EIsCqPb8Ns78b6CzGMpl7YV8xlTfO+
-	 YduhiFvWAxqcZ/IvdikchuJmPXeOkhmKwd0cYywhOX0VC9KP0vdnA9babXvHXznsqp
-	 WvwS8dVFx62oYEcTZBtXap7RR3AI7hAk49DGo0I8=
+	b=bn4Rc+HkJsEA+cy8B2APnMfy4Yqrc6qJSMYZVgL5nIVaay591w27unXpkU0F9m1R4
+	 qRv9kUcXVYnYWXB33VfKTGVfYdD92SuPBatqVau+EpMsiIK5OWFXALIgv0xydorDMO
+	 +13IpNpzY8d5ecCN385ii4ihSmfd+4j1g++pomto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/114] drm/amd/amdgpu: Fix potential ioremap() memory leaks in amdgpu_device_init()
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 4.19 172/175] VMCI: Fix possible memcpy() run-time warning in vmci_datagram_invoke_guest_handler()
 Date: Thu, 11 Apr 2024 11:56:35 +0200
-Message-ID: <20240411095418.938714707@linuxfoundation.org>
+Message-ID: <20240411095424.741849875@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit eb4f139888f636614dab3bcce97ff61cefc4b3a7 ]
+commit e606e4b71798cc1df20e987dde2468e9527bd376 upstream.
 
-This ensures that the memory mapped by ioremap for adev->rmmio, is
-properly handled in amdgpu_device_init(). If the function exits early
-due to an error, the memory is unmapped. If the function completes
-successfully, the memory remains mapped.
+The changes are similar to those given in the commit 19b070fefd0d
+("VMCI: Fix memcpy() run-time warning in dg_dispatch_as_host()").
 
-Reported by smatch:
-drivers/gpu/drm/amd/amdgpu/amdgpu_device.c:4337 amdgpu_device_init() warn: 'adev->rmmio' from ioremap() not released on lines: 4035,4045,4051,4058,4068,4337
+Fix filling of the msg and msg_payload in dg_info struct, which prevents a
+possible "detected field-spanning write" of memcpy warning that is issued
+by the tracking mechanism __fortify_memcpy_chk.
 
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Link: https://lore.kernel.org/r/20240219105315.76955-1-kovalev@altlinux.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/misc/vmw_vmci/vmci_datagram.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 062d78818da16..347c454b41790 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3639,8 +3639,10 @@ int amdgpu_device_init(struct amdgpu_device *adev,
- 	 * early on during init and before calling to RREG32.
- 	 */
- 	adev->reset_domain = amdgpu_reset_create_reset_domain(SINGLE_DEVICE, "amdgpu-reset-dev");
--	if (!adev->reset_domain)
--		return -ENOMEM;
-+	if (!adev->reset_domain) {
-+		r = -ENOMEM;
-+		goto unmap_memory;
-+	}
+--- a/drivers/misc/vmw_vmci/vmci_datagram.c
++++ b/drivers/misc/vmw_vmci/vmci_datagram.c
+@@ -386,7 +386,8 @@ int vmci_datagram_invoke_guest_handler(s
  
- 	/* detect hw virtualization here */
- 	amdgpu_detect_virtualization(adev);
-@@ -3650,20 +3652,20 @@ int amdgpu_device_init(struct amdgpu_device *adev,
- 	r = amdgpu_device_get_job_timeout_settings(adev);
- 	if (r) {
- 		dev_err(adev->dev, "invalid lockup_timeout parameter syntax\n");
--		return r;
-+		goto unmap_memory;
- 	}
+ 		dg_info->in_dg_host_queue = false;
+ 		dg_info->entry = dst_entry;
+-		memcpy(&dg_info->msg, dg, VMCI_DG_SIZE(dg));
++		dg_info->msg = *dg;
++		memcpy(&dg_info->msg_payload, dg + 1, dg->payload_size);
  
- 	/* early init functions */
- 	r = amdgpu_device_ip_early_init(adev);
- 	if (r)
--		return r;
-+		goto unmap_memory;
- 
- 	amdgpu_device_set_mcbp(adev);
- 
- 	/* Get rid of things like offb */
- 	r = drm_aperture_remove_conflicting_pci_framebuffers(adev->pdev, &amdgpu_kms_driver);
- 	if (r)
--		return r;
-+		goto unmap_memory;
- 
- 	/* Enable TMZ based on IP_VERSION */
- 	amdgpu_gmc_tmz_set(adev);
-@@ -3673,7 +3675,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
- 	if (adev->gmc.xgmi.supported) {
- 		r = adev->gfxhub.funcs->get_xgmi_info(adev);
- 		if (r)
--			return r;
-+			goto unmap_memory;
- 	}
- 
- 	/* enable PCIE atomic ops */
-@@ -3930,6 +3932,8 @@ int amdgpu_device_init(struct amdgpu_device *adev,
- failed:
- 	amdgpu_vf_error_trans_all(adev);
- 
-+unmap_memory:
-+	iounmap(adev->rmmio);
- 	return r;
- }
- 
--- 
-2.43.0
-
+ 		INIT_WORK(&dg_info->work, dg_delayed_dispatch);
+ 		schedule_work(&dg_info->work);
 
 
 
