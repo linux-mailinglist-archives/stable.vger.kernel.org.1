@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 104A88A108B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B1D8A0D01
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:59:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 416131C238DD
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D611B24059
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CA114A4C7;
-	Thu, 11 Apr 2024 10:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C31145345;
+	Thu, 11 Apr 2024 09:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2Ej2WDe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWJD6cFu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AEB149E1A;
-	Thu, 11 Apr 2024 10:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A254613DDDD;
+	Thu, 11 Apr 2024 09:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831665; cv=none; b=DCZI27xLyV7nyIDVCx5EzudjMV5Kk6r7f2WLDht0rBXa7Xmc488uFoQ+2yE619oJkkpjkU19DXf7ymLMuvBbJ6d+2hVD5Xj9PBcyx+o8LnhEMvJ0hTZebAVJ3i0wXGa7inkZ6eyCQnzFuqeQJtRASqe9Mo32Sqc1vXJD6xBTlM4=
+	t=1712829551; cv=none; b=JlqQZiG8I0BlsiY+l7v/g09SkRdstN6XtCJWzrSImeSdlj21iEqh/+k41kEKOOiRILKn9iCOGa5cBRZjx+JR0CP05ylatWp3pWKLruVLiacIdsX208aHXLYlahxEMKnArCMhhArKIJSKOX19m7DBklBHENU2wPIgwwIZ/epE0s8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831665; c=relaxed/simple;
-	bh=MRifVy54QLdhGdeYzvigvNVvVSrUBGQsjaqiyr/VcD4=;
+	s=arc-20240116; t=1712829551; c=relaxed/simple;
+	bh=YkJMmA5QuRwI5EkZGKTm5ujOFGPG3UajTb0Y+8zrTuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MLhHeFpK4h2M7mBJ5txN2ee5RGkDPIVdjHz0ja7R79obZJexuWKwYyYYTYiyZgr4dT9xWswEJnC/Hmsjg4Z7EnmnnB8ytYnNp0u9I2IGAQZkXYRd2021Wg904lfUANhz+twEaRnvHYdhYauWUyiPwiCL6UhnBGv6rtSJjB0Wtms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2Ej2WDe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9303C433F1;
-	Thu, 11 Apr 2024 10:34:24 +0000 (UTC)
+	 MIME-Version; b=tvQoB287z8PaVce2IkOrN5icAvEQYw4bUGTNIhsBZnBtDUFAL9OoomdTdur8EOR7SzStyf0FluLNdPgdaJeJgr4kwfELJP17GYPPVUprEAO6s+ywcV8W+t/ZgpI2cDjdQNax/3NQ8psp4knHrJ/RoDHyzx9c/2QaRBojeIOuJUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWJD6cFu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FBDC433C7;
+	Thu, 11 Apr 2024 09:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831665;
-	bh=MRifVy54QLdhGdeYzvigvNVvVSrUBGQsjaqiyr/VcD4=;
+	s=korg; t=1712829551;
+	bh=YkJMmA5QuRwI5EkZGKTm5ujOFGPG3UajTb0Y+8zrTuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w2Ej2WDehq2Jlren+XMAJyQf24XzHYPLiIXWo8uQgQWXJIGMtldo4QjKrpixcMK9R
-	 a1uMEpOtNz8nEGlmVLbuvMc2OumxouIF0VCQM6KbZ1q/6DT4v/Oc2BKRrOn7esn7U/
-	 I1yuH2Yz+Xey7gLC/xCah6m5wZQ6UkIDtJXnBBBs=
+	b=dWJD6cFuqOTwG9aQzCyTwIBQoQlzTdlkzlDyWgu3g1TD8iR0tS0pk6D3YjlEleceY
+	 qgrPmZT9Oj484wsxFR2QR+GnShKEoLyMvZTgwAOGkLGgcQDyCt+L+AvoiurH+S32kU
+	 fliRWoGBuCZDuv7vAaNgXzZYvCLT+XGtrGvmcBHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 085/294] PCI: dwc: endpoint: Fix advertised resizable BAR size
+Subject: [PATCH 4.19 025/175] parisc: Do not hardcode registers in checksum functions
 Date: Thu, 11 Apr 2024 11:54:08 +0200
-Message-ID: <20240411095438.243397852@linuxfoundation.org>
+Message-ID: <20240411095420.313171474@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +59,174 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 72e34b8593e08a0ee759b7a038e0b178418ea6f8 ]
+[ Upstream commit 52b2d91752a82d9350981eb3b3ffc4b325c84ba9 ]
 
-The commit message in commit fc9a77040b04 ("PCI: designware-ep: Configure
-Resizable BAR cap to advertise the smallest size") claims that it modifies
-the Resizable BAR capability to only advertise support for 1 MB size BARs.
+Do not hardcode processor registers r19 to r22 as scratch registers.
+Instead let the compiler decide, which may give better optimization
+results when the functions get inlined.
 
-However, the commit writes all zeroes to PCI_REBAR_CAP (the register which
-contains the possible BAR sizes that a BAR be resized to).
-
-According to the spec, it is illegal to not have a bit set in
-PCI_REBAR_CAP, and 1 MB is the smallest size allowed.
-
-Set bit 4 in PCI_REBAR_CAP, so that we actually advertise support for a
-1 MB BAR size.
-
-Before:
-        Capabilities: [2e8 v1] Physical Resizable BAR
-                BAR 0: current size: 1MB
-                BAR 1: current size: 1MB
-                BAR 2: current size: 1MB
-                BAR 3: current size: 1MB
-                BAR 4: current size: 1MB
-                BAR 5: current size: 1MB
-After:
-        Capabilities: [2e8 v1] Physical Resizable BAR
-                BAR 0: current size: 1MB, supported: 1MB
-                BAR 1: current size: 1MB, supported: 1MB
-                BAR 2: current size: 1MB, supported: 1MB
-                BAR 3: current size: 1MB, supported: 1MB
-                BAR 4: current size: 1MB, supported: 1MB
-                BAR 5: current size: 1MB, supported: 1MB
-
-Fixes: fc9a77040b04 ("PCI: designware-ep: Configure Resizable BAR cap to advertise the smallest size")
-Link: https://lore.kernel.org/linux-pci/20240307111520.3303774-1-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: <stable@vger.kernel.org> # 5.2
+Signed-off-by: Helge Deller <deller@gmx.de>
+Stable-dep-of: a2abae8f0b63 ("parisc: Fix ip_fast_csum")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/parisc/include/asm/checksum.h | 101 +++++++++++++++--------------
+ 1 file changed, 52 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index 339318e790e21..8ed1df61f9c7c 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -662,8 +662,13 @@ int dw_pcie_ep_init_complete(struct dw_pcie_ep *ep)
- 		nbars = (reg & PCI_REBAR_CTRL_NBAR_MASK) >>
- 			PCI_REBAR_CTRL_NBAR_SHIFT;
+diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
+index 3cbf1f1c1188e..c1c22819a04d1 100644
+--- a/arch/parisc/include/asm/checksum.h
++++ b/arch/parisc/include/asm/checksum.h
+@@ -42,31 +42,32 @@ extern __wsum csum_partial_copy_from_user(const void __user *src,
+ static inline __sum16 ip_fast_csum(const void *iph, unsigned int ihl)
+ {
+ 	unsigned int sum;
++	unsigned long t0, t1, t2;
  
-+		/*
-+		 * PCIe r6.0, sec 7.8.6.2 require us to support at least one
-+		 * size in the range from 1 MB to 512 GB. Advertise support
-+		 * for 1 MB BAR size only.
-+		 */
- 		for (i = 0; i < nbars; i++, offset += PCI_REBAR_CTRL)
--			dw_pcie_writel_dbi(pci, offset + PCI_REBAR_CAP, 0x0);
-+			dw_pcie_writel_dbi(pci, offset + PCI_REBAR_CAP, BIT(4));
- 	}
+ 	__asm__ __volatile__ (
+ "	ldws,ma		4(%1), %0\n"
+ "	addib,<=	-4, %2, 2f\n"
+ "\n"
+-"	ldws		4(%1), %%r20\n"
+-"	ldws		8(%1), %%r21\n"
+-"	add		%0, %%r20, %0\n"
+-"	ldws,ma		12(%1), %%r19\n"
+-"	addc		%0, %%r21, %0\n"
+-"	addc		%0, %%r19, %0\n"
+-"1:	ldws,ma		4(%1), %%r19\n"
++"	ldws		4(%1), %4\n"
++"	ldws		8(%1), %5\n"
++"	add		%0, %4, %0\n"
++"	ldws,ma		12(%1), %3\n"
++"	addc		%0, %5, %0\n"
++"	addc		%0, %3, %0\n"
++"1:	ldws,ma		4(%1), %3\n"
+ "	addib,<		0, %2, 1b\n"
+-"	addc		%0, %%r19, %0\n"
++"	addc		%0, %3, %0\n"
+ "\n"
+-"	extru		%0, 31, 16, %%r20\n"
+-"	extru		%0, 15, 16, %%r21\n"
+-"	addc		%%r20, %%r21, %0\n"
+-"	extru		%0, 15, 16, %%r21\n"
+-"	add		%0, %%r21, %0\n"
++"	extru		%0, 31, 16, %4\n"
++"	extru		%0, 15, 16, %5\n"
++"	addc		%4, %5, %0\n"
++"	extru		%0, 15, 16, %5\n"
++"	add		%0, %5, %0\n"
+ "	subi		-1, %0, %0\n"
+ "2:\n"
+-	: "=r" (sum), "=r" (iph), "=r" (ihl)
++	: "=r" (sum), "=r" (iph), "=r" (ihl), "=r" (t0), "=r" (t1), "=r" (t2)
+ 	: "1" (iph), "2" (ihl)
+-	: "r19", "r20", "r21", "memory");
++	: "memory");
  
- 	dw_pcie_setup(pci);
+ 	return (__force __sum16)sum;
+ }
+@@ -126,6 +127,10 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ 					  __u32 len, __u8 proto,
+ 					  __wsum sum)
+ {
++	unsigned long t0, t1, t2, t3;
++
++	len += proto;	/* add 16-bit proto + len */
++
+ 	__asm__ __volatile__ (
+ 
+ #if BITS_PER_LONG > 32
+@@ -136,20 +141,19 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ 	** Try to keep 4 registers with "live" values ahead of the ALU.
+ 	*/
+ 
+-"	ldd,ma		8(%1), %%r19\n"	/* get 1st saddr word */
+-"	ldd,ma		8(%2), %%r20\n"	/* get 1st daddr word */
+-"	add		%8, %3, %3\n"/* add 16-bit proto + len */
+-"	add		%%r19, %0, %0\n"
+-"	ldd,ma		8(%1), %%r21\n"	/* 2cd saddr */
+-"	ldd,ma		8(%2), %%r22\n"	/* 2cd daddr */
+-"	add,dc		%%r20, %0, %0\n"
+-"	add,dc		%%r21, %0, %0\n"
+-"	add,dc		%%r22, %0, %0\n"
++"	ldd,ma		8(%1), %4\n"	/* get 1st saddr word */
++"	ldd,ma		8(%2), %5\n"	/* get 1st daddr word */
++"	add		%4, %0, %0\n"
++"	ldd,ma		8(%1), %6\n"	/* 2nd saddr */
++"	ldd,ma		8(%2), %7\n"	/* 2nd daddr */
++"	add,dc		%5, %0, %0\n"
++"	add,dc		%6, %0, %0\n"
++"	add,dc		%7, %0, %0\n"
+ "	add,dc		%3, %0, %0\n"  /* fold in proto+len | carry bit */
+-"	extrd,u		%0, 31, 32, %%r19\n"	/* copy upper half down */
+-"	depdi		0, 31, 32, %0\n"	/* clear upper half */
+-"	add		%%r19, %0, %0\n"	/* fold into 32-bits */
+-"	addc		0, %0, %0\n"		/* add carry */
++"	extrd,u		%0, 31, 32, %4\n"/* copy upper half down */
++"	depdi		0, 31, 32, %0\n"/* clear upper half */
++"	add		%4, %0, %0\n"	/* fold into 32-bits */
++"	addc		0, %0, %0\n"	/* add carry */
+ 
+ #else
+ 
+@@ -158,30 +162,29 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ 	** Insn stream is serialized on the carry bit here too.
+ 	** result from the previous operation (eg r0 + x)
+ 	*/
+-
+-"	ldw,ma		4(%1), %%r19\n"	/* get 1st saddr word */
+-"	ldw,ma		4(%2), %%r20\n"	/* get 1st daddr word */
+-"	add		%8, %3, %3\n"	/* add 16-bit proto + len */
+-"	add		%%r19, %0, %0\n"
+-"	ldw,ma		4(%1), %%r21\n"	/* 2cd saddr */
+-"	addc		%%r20, %0, %0\n"
+-"	ldw,ma		4(%2), %%r22\n"	/* 2cd daddr */
+-"	addc		%%r21, %0, %0\n"
+-"	ldw,ma		4(%1), %%r19\n"	/* 3rd saddr */
+-"	addc		%%r22, %0, %0\n"
+-"	ldw,ma		4(%2), %%r20\n"	/* 3rd daddr */
+-"	addc		%%r19, %0, %0\n"
+-"	ldw,ma		4(%1), %%r21\n"	/* 4th saddr */
+-"	addc		%%r20, %0, %0\n"
+-"	ldw,ma		4(%2), %%r22\n"	/* 4th daddr */
+-"	addc		%%r21, %0, %0\n"
+-"	addc		%%r22, %0, %0\n"
++"	ldw,ma		4(%1), %4\n"	/* get 1st saddr word */
++"	ldw,ma		4(%2), %5\n"	/* get 1st daddr word */
++"	add		%4, %0, %0\n"
++"	ldw,ma		4(%1), %6\n"	/* 2nd saddr */
++"	addc		%5, %0, %0\n"
++"	ldw,ma		4(%2), %7\n"	/* 2nd daddr */
++"	addc		%6, %0, %0\n"
++"	ldw,ma		4(%1), %4\n"	/* 3rd saddr */
++"	addc		%7, %0, %0\n"
++"	ldw,ma		4(%2), %5\n"	/* 3rd daddr */
++"	addc		%4, %0, %0\n"
++"	ldw,ma		4(%1), %6\n"	/* 4th saddr */
++"	addc		%5, %0, %0\n"
++"	ldw,ma		4(%2), %7\n"	/* 4th daddr */
++"	addc		%6, %0, %0\n"
++"	addc		%7, %0, %0\n"
+ "	addc		%3, %0, %0\n"	/* fold in proto+len, catch carry */
+ 
+ #endif
+-	: "=r" (sum), "=r" (saddr), "=r" (daddr), "=r" (len)
+-	: "0" (sum), "1" (saddr), "2" (daddr), "3" (len), "r" (proto)
+-	: "r19", "r20", "r21", "r22", "memory");
++	: "=r" (sum), "=r" (saddr), "=r" (daddr), "=r" (len),
++	  "=r" (t0), "=r" (t1), "=r" (t2), "=r" (t3)
++	: "0" (sum), "1" (saddr), "2" (daddr), "3" (len)
++	: "memory");
+ 	return csum_fold(sum);
+ }
+ 
 -- 
 2.43.0
 
