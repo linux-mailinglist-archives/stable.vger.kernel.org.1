@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-38433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A06828A0E90
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:15:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6D08A108E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B1EE286672
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:15:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D9221C23910
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0DEE145B08;
-	Thu, 11 Apr 2024 10:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F5E148832;
+	Thu, 11 Apr 2024 10:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vw4y06Xu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Faugvoax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBBD13F452;
-	Thu, 11 Apr 2024 10:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674B6146D61;
+	Thu, 11 Apr 2024 10:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830557; cv=none; b=BebYeyoWGPL3e3oHo0/TpXVTz+/kCfS4j4gzqwB7zZ6IOePtDAQCVftA3Mcb6NahzefPGlDbTDAxwrUyJKZpyJ63JFNVUutnHhRXQOm+C8nLHwZ2sMFcPLdemfhX33f33ncsB3CuDjwXcyDMQ7LPNePvvTo3bC9FJopChWjMeeQ=
+	t=1712831671; cv=none; b=rYjNVyjEbrY0br+amQgMESkzGRQqCXZtj54XMADElZFyojCxNzZFGHtx+bLrzon+cFb9ZfCiNH2/FR5tNbP2WWHR97PLoHeXLUgNfUGG7vEVHxrJXx/iiYlUZql7zlXGfXd8wikvKqe8pB8JVyQ77vpwJRky66m+L3x6AXZuA6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830557; c=relaxed/simple;
-	bh=8lP4QgphKpzpmMaaaBVH1peAI+pwvbH9mtHHnxBc2zs=;
+	s=arc-20240116; t=1712831671; c=relaxed/simple;
+	bh=kznTORBpAHgKzgMqmTe5BHnWualA5/DTekWEkPZ5Vhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JmCZOCSH2dvp2FoaSVtlhGah43m7lst9ylxApC0vZPvD9Q3ayXljLbjbEXFFqX34EevI+EdIPi8l1Ll7ykVYN6esSJcI43rl+nNmcle+tAFV0oCJO9dqByj2XFxTbqQIwzOr1iL+E8IBaeP/jFUmn4s3BIkic1O3UURPRUm7Gcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vw4y06Xu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34487C433F1;
-	Thu, 11 Apr 2024 10:15:57 +0000 (UTC)
+	 MIME-Version; b=RcSOSrFw9j4ZK+MGbZ/HAdMpmz05zR+6OhnAC3Bjhqh9gfIML6c1qSvrdmATU4hqeQPTBKf3EzrG0PwJRIkXYSEKSSsCyg6klBq7HFyWI49cTKNjUalz0keJ14omk+b4x3kIh1Gx42GjuYkv/J0kLYdadyYSr/MBHO5tfP+YaGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Faugvoax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5812C433C7;
+	Thu, 11 Apr 2024 10:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830557;
-	bh=8lP4QgphKpzpmMaaaBVH1peAI+pwvbH9mtHHnxBc2zs=;
+	s=korg; t=1712831671;
+	bh=kznTORBpAHgKzgMqmTe5BHnWualA5/DTekWEkPZ5Vhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vw4y06XuZeOx6tIdV9xMDD3NP+Zckz1KSlkE3hEKxSk7iQQSP7H1dCShEDPROUSha
-	 Eynu/sNaSbG1fra0F7ajyUW/2EVEvv0g/PIvxukeR9R8SXDboxjfLRpEJ2sNkXHZo6
-	 VexRfY+kjw1tfgBOkffNEXBjbjXW68PJQ9vm6H5Y=
+	b=FaugvoaxCZr05J+XjeEsr0Zboo5KjsduL8mEabumG8N6Yt1ByByFlZ3GLmuujBd62
+	 R9tZYK6ljVQ9WbKKeDpIOCvLQ7gkJu6gyY3dqwuqWTSDqqX46QE9Gx19HGTz3pgS5C
+	 EY+SxDaS0q0EYkhVfMQzkUBlK2QEd+S1yxmSxvTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Aur=C3=A9lien=20Jacobs?= <aurel@gnuage.org>,
-	Johan Hovold <johan@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linke li <lilinke99@qq.com>,
+	Rabin Vincent <rabin@rab.in>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 041/215] USB: serial: option: add MeiG Smart SLM320 product
+Subject: [PATCH 5.10 087/294] ring-buffer: Fix waking up ring buffer readers
 Date: Thu, 11 Apr 2024 11:54:10 +0200
-Message-ID: <20240411095426.130024167@linuxfoundation.org>
+Message-ID: <20240411095438.302220381@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +66,257 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurélien Jacobs <aurel@gnuage.org>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 46809c51565b83881aede6cdf3b0d25254966a41 ]
+[ Upstream commit b3594573681b53316ec0365332681a30463edfd6 ]
 
-Update the USB serial option driver to support MeiG Smart SLM320.
+A task can wait on a ring buffer for when it fills up to a specific
+watermark. The writer will check the minimum watermark that waiters are
+waiting for and if the ring buffer is past that, it will wake up all the
+waiters.
 
-ID 2dee:4d41 UNISOC UNISOC-8910
+The waiters are in a wait loop, and will first check if a signal is
+pending and then check if the ring buffer is at the desired level where it
+should break out of the loop.
 
-T: Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 9 Spd=480 MxCh= 0
-D: Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs= 1
-P: Vendor=2dee ProdID=4d41 Rev=00.00
-S: Manufacturer=UNISOC
-S: Product=UNISOC-8910
-C: #Ifs= 8 Cfg#= 1 Atr=e0 MxPwr=400mA
-I: If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+If a file that uses a ring buffer closes, and there's threads waiting on
+the ring buffer, it needs to wake up those threads. To do this, a
+"wait_index" was used.
 
-Tested successfully a PPP LTE connection using If#= 0.
-Not sure of the purpose of every other serial interfaces.
+Before entering the wait loop, the waiter will read the wait_index. On
+wakeup, it will check if the wait_index is different than when it entered
+the loop, and will exit the loop if it is. The waker will only need to
+update the wait_index before waking up the waiters.
 
-Signed-off-by: Aurélien Jacobs <aurel@gnuage.org>
+This had a couple of bugs. One trivial one and one broken by design.
+
+The trivial bug was that the waiter checked the wait_index after the
+schedule() call. It had to be checked between the prepare_to_wait() and
+the schedule() which it was not.
+
+The main bug is that the first check to set the default wait_index will
+always be outside the prepare_to_wait() and the schedule(). That's because
+the ring_buffer_wait() doesn't have enough context to know if it should
+break out of the loop.
+
+The loop itself is not needed, because all the callers to the
+ring_buffer_wait() also has their own loop, as the callers have a better
+sense of what the context is to decide whether to break out of the loop
+or not.
+
+Just have the ring_buffer_wait() block once, and if it gets woken up, exit
+the function and let the callers decide what to do next.
+
+Link: https://lore.kernel.org/all/CAHk-=whs5MdtNjzFkTyaUy=vHi=qwWgPi0JgTe6OYUYMNSRZfg@mail.gmail.com/
+Link: https://lore.kernel.org/linux-trace-kernel/20240308202431.792933613@goodmis.org
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linke li <lilinke99@qq.com>
+Cc: Rabin Vincent <rabin@rab.in>
+Fixes: e30f53aad2202 ("tracing: Do not busy wait in buffer splice")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: 761d9473e27f ("ring-buffer: Do not set shortest_full when full target is hit")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/trace/ring_buffer.c | 139 ++++++++++++++++++-------------------
+ 1 file changed, 68 insertions(+), 71 deletions(-)
 
-diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
-index 406cfd5ad9f48..17c3044c2d26a 100644
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -613,6 +613,11 @@ static void option_instat_callback(struct urb *urb);
- /* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
- #define LUAT_PRODUCT_AIR720U			0x4e00
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 4a43b8846b49f..936b560989a3e 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -415,7 +415,6 @@ struct rb_irq_work {
+ 	struct irq_work			work;
+ 	wait_queue_head_t		waiters;
+ 	wait_queue_head_t		full_waiters;
+-	long				wait_index;
+ 	bool				waiters_pending;
+ 	bool				full_waiters_pending;
+ 	bool				wakeup_full;
+@@ -862,14 +861,40 @@ void ring_buffer_wake_waiters(struct trace_buffer *buffer, int cpu)
+ 		rbwork = &cpu_buffer->irq_work;
+ 	}
  
-+/* MeiG Smart Technology products */
-+#define MEIGSMART_VENDOR_ID			0x2dee
-+/* MeiG Smart SLM320 based on UNISOC UIS8910 */
-+#define MEIGSMART_PRODUCT_SLM320		0x4d41
+-	rbwork->wait_index++;
+-	/* make sure the waiters see the new index */
+-	smp_wmb();
+-
+ 	/* This can be called in any context */
+ 	irq_work_queue(&rbwork->work);
+ }
+ 
++static bool rb_watermark_hit(struct trace_buffer *buffer, int cpu, int full)
++{
++	struct ring_buffer_per_cpu *cpu_buffer;
++	bool ret = false;
 +
- /* Device flags */
++	/* Reads of all CPUs always waits for any data */
++	if (cpu == RING_BUFFER_ALL_CPUS)
++		return !ring_buffer_empty(buffer);
++
++	cpu_buffer = buffer->buffers[cpu];
++
++	if (!ring_buffer_empty_cpu(buffer, cpu)) {
++		unsigned long flags;
++		bool pagebusy;
++
++		if (!full)
++			return true;
++
++		raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
++		pagebusy = cpu_buffer->reader_page == cpu_buffer->commit_page;
++		ret = !pagebusy && full_hit(buffer, cpu, full);
++
++		if (!cpu_buffer->shortest_full ||
++		    cpu_buffer->shortest_full > full)
++			cpu_buffer->shortest_full = full;
++		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
++	}
++	return ret;
++}
++
+ /**
+  * ring_buffer_wait - wait for input to the ring buffer
+  * @buffer: buffer to wait on
+@@ -885,7 +910,6 @@ int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
+ 	struct ring_buffer_per_cpu *cpu_buffer;
+ 	DEFINE_WAIT(wait);
+ 	struct rb_irq_work *work;
+-	long wait_index;
+ 	int ret = 0;
  
- /* Highest interface number which can be used with NCTRL() and RSVD() */
-@@ -2282,6 +2287,7 @@ static const struct usb_device_id option_ids[] = {
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
+ 	/*
+@@ -904,81 +928,54 @@ int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
+ 		work = &cpu_buffer->irq_work;
+ 	}
+ 
+-	wait_index = READ_ONCE(work->wait_index);
+-
+-	while (true) {
+-		if (full)
+-			prepare_to_wait(&work->full_waiters, &wait, TASK_INTERRUPTIBLE);
+-		else
+-			prepare_to_wait(&work->waiters, &wait, TASK_INTERRUPTIBLE);
+-
+-		/*
+-		 * The events can happen in critical sections where
+-		 * checking a work queue can cause deadlocks.
+-		 * After adding a task to the queue, this flag is set
+-		 * only to notify events to try to wake up the queue
+-		 * using irq_work.
+-		 *
+-		 * We don't clear it even if the buffer is no longer
+-		 * empty. The flag only causes the next event to run
+-		 * irq_work to do the work queue wake up. The worse
+-		 * that can happen if we race with !trace_empty() is that
+-		 * an event will cause an irq_work to try to wake up
+-		 * an empty queue.
+-		 *
+-		 * There's no reason to protect this flag either, as
+-		 * the work queue and irq_work logic will do the necessary
+-		 * synchronization for the wake ups. The only thing
+-		 * that is necessary is that the wake up happens after
+-		 * a task has been queued. It's OK for spurious wake ups.
+-		 */
+-		if (full)
+-			work->full_waiters_pending = true;
+-		else
+-			work->waiters_pending = true;
+-
+-		if (signal_pending(current)) {
+-			ret = -EINTR;
+-			break;
+-		}
+-
+-		if (cpu == RING_BUFFER_ALL_CPUS && !ring_buffer_empty(buffer))
+-			break;
+-
+-		if (cpu != RING_BUFFER_ALL_CPUS &&
+-		    !ring_buffer_empty_cpu(buffer, cpu)) {
+-			unsigned long flags;
+-			bool pagebusy;
+-			bool done;
+-
+-			if (!full)
+-				break;
+-
+-			raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
+-			pagebusy = cpu_buffer->reader_page == cpu_buffer->commit_page;
+-			done = !pagebusy && full_hit(buffer, cpu, full);
++	if (full)
++		prepare_to_wait(&work->full_waiters, &wait, TASK_INTERRUPTIBLE);
++	else
++		prepare_to_wait(&work->waiters, &wait, TASK_INTERRUPTIBLE);
+ 
+-			if (!cpu_buffer->shortest_full ||
+-			    cpu_buffer->shortest_full > full)
+-				cpu_buffer->shortest_full = full;
+-			raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+-			if (done)
+-				break;
+-		}
++	/*
++	 * The events can happen in critical sections where
++	 * checking a work queue can cause deadlocks.
++	 * After adding a task to the queue, this flag is set
++	 * only to notify events to try to wake up the queue
++	 * using irq_work.
++	 *
++	 * We don't clear it even if the buffer is no longer
++	 * empty. The flag only causes the next event to run
++	 * irq_work to do the work queue wake up. The worse
++	 * that can happen if we race with !trace_empty() is that
++	 * an event will cause an irq_work to try to wake up
++	 * an empty queue.
++	 *
++	 * There's no reason to protect this flag either, as
++	 * the work queue and irq_work logic will do the necessary
++	 * synchronization for the wake ups. The only thing
++	 * that is necessary is that the wake up happens after
++	 * a task has been queued. It's OK for spurious wake ups.
++	 */
++	if (full)
++		work->full_waiters_pending = true;
++	else
++		work->waiters_pending = true;
+ 
+-		schedule();
++	if (rb_watermark_hit(buffer, cpu, full))
++		goto out;
+ 
+-		/* Make sure to see the new wait index */
+-		smp_rmb();
+-		if (wait_index != work->wait_index)
+-			break;
++	if (signal_pending(current)) {
++		ret = -EINTR;
++		goto out;
+ 	}
+ 
++	schedule();
++ out:
+ 	if (full)
+ 		finish_wait(&work->full_waiters, &wait);
+ 	else
+ 		finish_wait(&work->waiters, &wait);
+ 
++	if (!ret && !rb_watermark_hit(buffer, cpu, full) && signal_pending(current))
++		ret = -EINTR;
++
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
