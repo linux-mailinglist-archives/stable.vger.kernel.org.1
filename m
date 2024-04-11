@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 649C28A0E89
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:15:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B2FF8A1084
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:36:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2086628616B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:15:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECEBFB245AC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6EE14601D;
-	Thu, 11 Apr 2024 10:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C03014C585;
+	Thu, 11 Apr 2024 10:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EF26cW7C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HD80OSdX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A3E13F452;
-	Thu, 11 Apr 2024 10:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB769149E10;
+	Thu, 11 Apr 2024 10:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830537; cv=none; b=IFQy3AEyhmKov9cS2D6GrE6/yIuCtQgR+ye+00XDhDwVCXHoS3mkQso+1JElS1aACegVOJI3JEkxQOXugkXooCVx5/qdkmHkuCtT+f42JdmBmQwc/HpQXYqQ8b+RNZ5EQBqWwYLypPuoEkASWF6OnJG2RfRIwE/BjJ6tmcL0ZYc=
+	t=1712831650; cv=none; b=CzxVCRBZNgEN8DThlhmTMnZkpnbo1hZdQ27/nF4I76ZH0Ui9XRWASDtsTpgOJhbdsl7Oqp1yW2pTpyoZ3KL/erC7d6vB0ApTza45ALyZsz8m1eH8yzNZH28Wnv295dk/d50gXvxC4LM8x9Ftt5Og0gwK3i4QkdLz63Oh/nYafwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830537; c=relaxed/simple;
-	bh=Ey/ILJ4nKH5WqkaNuW4oVrDjPMSOQAyASv+xionvu0U=;
+	s=arc-20240116; t=1712831650; c=relaxed/simple;
+	bh=m1/UaqFyUGYK0jG1UjY/L1K+IUUjnhFXta4SveZJaz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KgRKooaWYaFH+q2jdxPQTgPmlfc9KYt/OGXsaphL8Zgh9PQouvBfq8w64bOLbR291qVn5jKyCy878OYQsKU773MmBo6Cvc6fEqLB/srIPN3M5QDYYU4eBZfC3CsTxft9bSuzGsHYdL44+0/1jgQJwR/8WyMfv25duaUXKtubHg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EF26cW7C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7373CC433F1;
-	Thu, 11 Apr 2024 10:15:36 +0000 (UTC)
+	 MIME-Version; b=HlOuG8noajgd/1A6eNFVnn+SxAmBJ3tXIjXKycmzQj+mIKCqW74zjuKk/hv6KP+mqDmDTFXzBdzdM7Z/Pe7m14e3gokqVE2S6zMdwWjCKGzz0NesziuUo/4O77x+eoebG6XAJ0V7mun5jifuaCmYFvRcvwzcHqm8Pebs7NUcwqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HD80OSdX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5171DC433C7;
+	Thu, 11 Apr 2024 10:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830537;
-	bh=Ey/ILJ4nKH5WqkaNuW4oVrDjPMSOQAyASv+xionvu0U=;
+	s=korg; t=1712831650;
+	bh=m1/UaqFyUGYK0jG1UjY/L1K+IUUjnhFXta4SveZJaz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EF26cW7CrfUL9A1P0ew08xv+dPd7ZGT/SOgVmW03JRn8NsRhrcXwcJvKCGXea67VS
-	 Yw/ALrO29GxrUvlnPUG/4ej4g+eGtNqy1WfjCSwWvlQRWS6i7ZKtubTXhqymDv8E5M
-	 rb1gplK7ybPMY/x1EL0HAWtEBNLCAgcWP8inoTwk=
+	b=HD80OSdXAA5x196JzBO1zKnxi9nWItUY+vRmwzk0lnnn8aCwz8lBMIji4vNlrtp8b
+	 Lx1UU9J8X8074umv/BfyAt1BBAoHlWiEZ5KnYEqHYBMrN5xnOyaDMAiiCShx/ZN9MR
+	 Fw+HmWo+fxtitPl/E1PoNlqAjvpHfUer4dDA7YAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Samuel Thibault <samuel.thibault@ens-lyon.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 034/215] clk: qcom: gcc-ipq8074: fix terminating of frequency table arrays
+Subject: [PATCH 5.10 080/294] speakup: Fix 8bit characters from direct synth
 Date: Thu, 11 Apr 2024 11:54:03 +0200
-Message-ID: <20240411095425.924180203@linuxfoundation.org>
+Message-ID: <20240411095438.094204913@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Samuel Thibault <samuel.thibault@ens-lyon.org>
 
-[ Upstream commit 1040ef5ed95d6fd2628bad387d78a61633e09429 ]
+[ Upstream commit b6c8dafc9d86eb77e502bb018ec4105e8d2fbf78 ]
 
-The frequency table arrays are supposed to be terminated with an
-empty element. Add such entry to the end of the arrays where it
-is missing in order to avoid possible out-of-bound access when
-the table is traversed by functions like qcom_find_freq() or
-qcom_find_freq_floor().
+When userland echoes 8bit characters to /dev/synth with e.g.
 
-Only compile tested.
+echo -e '\xe9' > /dev/synth
 
-Fixes: 9607f6224b39 ("clk: qcom: ipq8074: add PCIE, USB and SDCC clocks")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+synth_write would get characters beyond 0x7f, and thus negative when
+char is signed.  When given to synth_buffer_add which takes a u16, this
+would sign-extend and produce a U+ffxy character rather than U+xy.
+Users thus get garbled text instead of accents in their output.
+
+Let's fix this by making sure that we read unsigned characters.
+
+Signed-off-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
+Fixes: 89fc2ae80bb1 ("speakup: extend synth buffer to 16bit unicode characters")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-3-074334f0905c@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20240204155736.2oh4ot7tiaa2wpbh@begin
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-ipq8074.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/accessibility/speakup/synth.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-ipq8074.c b/drivers/clk/qcom/gcc-ipq8074.c
-index 052e168d2a2ac..b10ecfde21c87 100644
---- a/drivers/clk/qcom/gcc-ipq8074.c
-+++ b/drivers/clk/qcom/gcc-ipq8074.c
-@@ -972,6 +972,7 @@ static struct clk_rcg2 pcie0_axi_clk_src = {
+diff --git a/drivers/accessibility/speakup/synth.c b/drivers/accessibility/speakup/synth.c
+index ac47dbac72075..82cfc5ec6bdf9 100644
+--- a/drivers/accessibility/speakup/synth.c
++++ b/drivers/accessibility/speakup/synth.c
+@@ -208,8 +208,10 @@ void spk_do_flush(void)
+ 	wake_up_process(speakup_task);
+ }
  
- static const struct freq_tbl ftbl_pcie_aux_clk_src[] = {
- 	F(19200000, P_XO, 1, 0, 0),
-+	{ }
- };
- 
- static struct clk_rcg2 pcie0_aux_clk_src = {
-@@ -1077,6 +1078,7 @@ static const struct freq_tbl ftbl_sdcc_ice_core_clk_src[] = {
- 	F(19200000, P_XO, 1, 0, 0),
- 	F(160000000, P_GPLL0, 5, 0, 0),
- 	F(308570000, P_GPLL6, 3.5, 0, 0),
-+	{ }
- };
- 
- static struct clk_rcg2 sdcc1_ice_core_clk_src = {
+-void synth_write(const char *buf, size_t count)
++void synth_write(const char *_buf, size_t count)
+ {
++	const unsigned char *buf = (const unsigned char *) _buf;
++
+ 	while (count--)
+ 		synth_buffer_add(*buf++);
+ 	synth_start();
 -- 
 2.43.0
 
