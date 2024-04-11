@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-38933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F8E8A1116
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F188A0F18
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:21:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8617D288820
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 545911C224FA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3B713D24D;
-	Thu, 11 Apr 2024 10:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3764146A89;
+	Thu, 11 Apr 2024 10:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTT4piVN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqUG+VRm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88B31474CA;
-	Thu, 11 Apr 2024 10:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B93145FF0;
+	Thu, 11 Apr 2024 10:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832016; cv=none; b=uD6rpCTWEHOGt1FxpAEWCNoxL3t+j24CLYTQsUJqHMqQMSD71qGxG3uSNXp2nxEkCPaiYC9kTsG6YOo4l8LrV6gSvMOLy3S7pklifFf9DZEp+7PppCWWoG8yN8xuXJEXMYaq+X3a47F6wqlnvkkq18wBCU7V8WAI1Dl7fDoujRk=
+	t=1712830856; cv=none; b=hF1E1sNoEQSz/1+BXT8J6DiTqULb9Hhc/e4ZWANkK1KKRf9eLXJhgkiVhNCa4b/7zQXAuvWv1Sc62KqA2lsOvNZWSr5eXPpUxnBXayobPHT8UNwCySt8Xs21Ica0Ts+mVbS4UxOTo8FqDqQCf+GYotGS7OuPIzngNT2+GM3A9EI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832016; c=relaxed/simple;
-	bh=DqpuVBneWiXOkbrp4LVcnvfV4YzxF4UdLZs9aRNwA/0=;
+	s=arc-20240116; t=1712830856; c=relaxed/simple;
+	bh=ClV2PTQrbTPxEq6f0F0QNXSJrjDQiW8GDXvcdT/pYHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vd8GP0yPtybL25nyxFbnpAI1Xvii4GmuCgsPgPMNV2FQAlJc2N7iFtgq1oqbTLomdWvzl0xaYoAL4eVuvjAzEE5NrmAYXjXx401T7QlAKq/iRQcSBhQdeTbgmmqvScsZH95dyR9glrut5R6e2rlqIlDzBdvUoA272k8CKSZgyn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTT4piVN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30521C433C7;
-	Thu, 11 Apr 2024 10:40:16 +0000 (UTC)
+	 MIME-Version; b=gy5FQRVfOJ0ftguCF6F+uc2Y5V+DzcaIvImn1mC/HthQuhcaZJwIEKarIbozoS86y5bDiRYO/YDYEQRYlUYOX6JdOzDzBJk7rNjtAMtYVe0V7jYjrzGhs/uvairKv0aF4bxOBbOl9XMpw7AdAvfgCG+X2DKH7JL1nzAKUDFJsvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqUG+VRm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE3DC43390;
+	Thu, 11 Apr 2024 10:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832016;
-	bh=DqpuVBneWiXOkbrp4LVcnvfV4YzxF4UdLZs9aRNwA/0=;
+	s=korg; t=1712830856;
+	bh=ClV2PTQrbTPxEq6f0F0QNXSJrjDQiW8GDXvcdT/pYHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bTT4piVNntGFVSNtSdJaszN8Ol18xFoGfDEmRr2B3mCaV0Up5p2ErtGVkrfQa/ACw
-	 gFdxdRyUypAlrqwa67ACjEvCN87TC7ANB8onNRU33baOJj74Ssi80UBe+LSe8r/SAz
-	 XQjCFOnPByRuXD648vm9eHEo9O3Ib3iNIi2YVUU8=
+	b=lqUG+VRmcOarVS47AuJDAQ83CLOSMC7+XVmpRO006oE4izu/ybgoAoO3Jj6ycfyy7
+	 yFxI/AXyPgx/6qAqGBWLi8rpm7ata8ck9jddXzWouaCw3poJbqKCvpoBYvQ+kQPW5g
+	 F0qvqtKDuuWP9hBPIbVgKzx/Dq8LMAi8rJT552ho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+33f4297b5f927648741a@syzkaller.appspotmail.com,
-	syzbot+aafd0513053a1cbf52ef@syzkaller.appspotmail.com,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Andrei Matei <andreimatei1@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 186/294] bpf: Protect against int overflow for stack access size
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 5.4 140/215] vfio/pci: Lock external INTx masking ops
 Date: Thu, 11 Apr 2024 11:55:49 +0200
-Message-ID: <20240411095441.219333709@linuxfoundation.org>
+Message-ID: <20240411095429.101538230@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +63,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Matei <andreimatei1@gmail.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit ecc6a2101840177e57c925c102d2d29f260d37c8 ]
+[ Upstream commit 810cd4bb53456d0503cc4e7934e063835152c1b7 ]
 
-This patch re-introduces protection against the size of access to stack
-memory being negative; the access size can appear negative as a result
-of overflowing its signed int representation. This should not actually
-happen, as there are other protections along the way, but we should
-protect against it anyway. One code path was missing such protections
-(fixed in the previous patch in the series), causing out-of-bounds array
-accesses in check_stack_range_initialized(). This patch causes the
-verification of a program with such a non-sensical access size to fail.
+Mask operations through config space changes to DisINTx may race INTx
+configuration changes via ioctl.  Create wrappers that add locking for
+paths outside of the core interrupt code.
 
-This check used to exist in a more indirect way, but was inadvertendly
-removed in a833a17aeac7.
+In particular, irq_type is updated holding igate, therefore testing
+is_intx() requires holding igate.  For example clearing DisINTx from
+config space can otherwise race changes of the interrupt configuration.
 
-Fixes: a833a17aeac7 ("bpf: Fix verification of indirect var-off stack access")
-Reported-by: syzbot+33f4297b5f927648741a@syzkaller.appspotmail.com
-Reported-by: syzbot+aafd0513053a1cbf52ef@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/bpf/CAADnVQLORV5PT0iTAhRER+iLBTkByCYNBYyvBSgjN1T31K+gOw@mail.gmail.com/
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Andrei Matei <andreimatei1@gmail.com>
-Link: https://lore.kernel.org/r/20240327024245.318299-3-andreimatei1@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This aligns interfaces which may trigger the INTx eventfd into two
+camps, one side serialized by igate and the other only enabled while
+INTx is configured.  A subsequent patch introduces synchronization for
+the latter flows.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
+Reported-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20240308230557.805580-3-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/vfio/pci/vfio_pci_intrs.c |   30 ++++++++++++++++++++++++------
+ 1 file changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index fce2345f600f2..25f8a8716e88d 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -3941,6 +3941,11 @@ static int check_stack_access_within_bounds(
- 	err = check_stack_slot_within_bounds(min_off, state, type);
- 	if (!err && max_off > 0)
- 		err = -EINVAL; /* out of stack access into non-negative offsets */
-+	if (!err && access_size < 0)
-+		/* access_size should not be negative (or overflow an int); others checks
-+		 * along the way should have prevented such an access.
-+		 */
-+		err = -EFAULT; /* invalid negative access size; integer overflow? */
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -33,11 +33,13 @@ static void vfio_send_intx_eventfd(void
+ 		eventfd_signal(vdev->ctx[0].trigger, 1);
+ }
  
- 	if (err) {
- 		if (tnum_is_const(reg->var_off)) {
--- 
-2.43.0
-
+-void vfio_pci_intx_mask(struct vfio_pci_device *vdev)
++static void __vfio_pci_intx_mask(struct vfio_pci_device *vdev)
+ {
+ 	struct pci_dev *pdev = vdev->pdev;
+ 	unsigned long flags;
+ 
++	lockdep_assert_held(&vdev->igate);
++
+ 	spin_lock_irqsave(&vdev->irqlock, flags);
+ 
+ 	/*
+@@ -65,6 +67,13 @@ void vfio_pci_intx_mask(struct vfio_pci_
+ 	spin_unlock_irqrestore(&vdev->irqlock, flags);
+ }
+ 
++void vfio_pci_intx_mask(struct vfio_pci_device *vdev)
++{
++	mutex_lock(&vdev->igate);
++	__vfio_pci_intx_mask(vdev);
++	mutex_unlock(&vdev->igate);
++}
++
+ /*
+  * If this is triggered by an eventfd, we can't call eventfd_signal
+  * or else we'll deadlock on the eventfd wait queue.  Return >0 when
+@@ -107,12 +116,21 @@ static int vfio_pci_intx_unmask_handler(
+ 	return ret;
+ }
+ 
+-void vfio_pci_intx_unmask(struct vfio_pci_device *vdev)
++static void __vfio_pci_intx_unmask(struct vfio_pci_device *vdev)
+ {
++	lockdep_assert_held(&vdev->igate);
++
+ 	if (vfio_pci_intx_unmask_handler(vdev, NULL) > 0)
+ 		vfio_send_intx_eventfd(vdev, NULL);
+ }
+ 
++void vfio_pci_intx_unmask(struct vfio_pci_device *vdev)
++{
++	mutex_lock(&vdev->igate);
++	__vfio_pci_intx_unmask(vdev);
++	mutex_unlock(&vdev->igate);
++}
++
+ static irqreturn_t vfio_intx_handler(int irq, void *dev_id)
+ {
+ 	struct vfio_pci_device *vdev = dev_id;
+@@ -428,11 +446,11 @@ static int vfio_pci_set_intx_unmask(stru
+ 		return -EINVAL;
+ 
+ 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
+-		vfio_pci_intx_unmask(vdev);
++		__vfio_pci_intx_unmask(vdev);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
+ 		uint8_t unmask = *(uint8_t *)data;
+ 		if (unmask)
+-			vfio_pci_intx_unmask(vdev);
++			__vfio_pci_intx_unmask(vdev);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
+ 		int32_t fd = *(int32_t *)data;
+ 		if (fd >= 0)
+@@ -455,11 +473,11 @@ static int vfio_pci_set_intx_mask(struct
+ 		return -EINVAL;
+ 
+ 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
+-		vfio_pci_intx_mask(vdev);
++		__vfio_pci_intx_mask(vdev);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
+ 		uint8_t mask = *(uint8_t *)data;
+ 		if (mask)
+-			vfio_pci_intx_mask(vdev);
++			__vfio_pci_intx_mask(vdev);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
+ 		return -ENOTTY; /* XXX implement me */
+ 	}
 
 
 
