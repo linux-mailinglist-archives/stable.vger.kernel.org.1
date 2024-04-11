@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 580768A0D3F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:02:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD86F8A0DD4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:08:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13999285FB7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:02:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF0EF1C21759
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1370145B08;
-	Thu, 11 Apr 2024 10:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E5E145FE0;
+	Thu, 11 Apr 2024 10:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ep9ominL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3UDgwKL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90577145345;
-	Thu, 11 Apr 2024 10:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E31145B25;
+	Thu, 11 Apr 2024 10:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829711; cv=none; b=ex4HTe86PSPhlmjTniKGJsFyCHRLA+Vo9k1UDDYApbcTajQHoYQGqEbwCDGqKqx5b/b3oGuqBZcphRTXDA43r3OHx7XjnBl648pHzSynUI6rYJA+Bij0PN0izvyBDfiQj7xBj/eajmAtJEvVqvjC0sfw8bT9wgKJKzI6Djyap4U=
+	t=1712830093; cv=none; b=FwQHUeBKe4DLbR3lJrjw0uBax5GCSxwSaKf+I2YQoM5baAOk4rn9VmkS/BOiSkkBVUE/3JGg7fdLCfv8nSVkr+yyBS2lhza3vqZRhlpKANjNMtaOcBd4nzxARGQXjx8iysJRmSovSUc1L3ZqcqxjB0WIWa2ns6w53UYklxLFKV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829711; c=relaxed/simple;
-	bh=Ba4e5KiZ64IHblsKq9tLYwPK0IMRcyDrGet/Ej6dyHg=;
+	s=arc-20240116; t=1712830093; c=relaxed/simple;
+	bh=GoMtBC8i570UlmbQEsIP+lhEvjXyqSs3MtmXP6bE5xE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AVztkAFPCXYfx0DBn/sHVd+rr4kpqj26g7FzedcYHSXoPbHr9/IAxCa1cV9RXXDyvxkw5n7rJNTAXuKyznIq2cV8tx45v3BD+wyc5B5/4fw4inxPjRie7YgCV0Mfuy2LHclacavzjs5AFuxhkUWVES44rNjGxd0753V2XOLJJ9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ep9ominL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E56BC433C7;
-	Thu, 11 Apr 2024 10:01:50 +0000 (UTC)
+	 MIME-Version; b=A8gb5MYOa7YLT/PPuUwQND1XMMkNHGqeQ5Vm0L3W2hEq66iHjAApWn5xHNoq9hS5Zea9+Gf+ZCCo+xw3OF1Uu6x/64hAQL4einkIJMD5LmqDYpHNuQlGHixdDtoPnuq0/WQM+Uy7QQeLbQC06qSiDEC/R9tHGuoRtd6X60suTpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3UDgwKL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA7CC433F1;
+	Thu, 11 Apr 2024 10:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829711;
-	bh=Ba4e5KiZ64IHblsKq9tLYwPK0IMRcyDrGet/Ej6dyHg=;
+	s=korg; t=1712830093;
+	bh=GoMtBC8i570UlmbQEsIP+lhEvjXyqSs3MtmXP6bE5xE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ep9ominLsfuRM+EXHOLRWDc5dDGzU0ghzFJrTkCiyDXY2ANNtVXQOAq/DrX0eNU0X
-	 cSa74FoDH5OU4d8HnPmKiAmsw1taKBzWm8tDwKmgeC8ydKaGWd/H6C9T55yIz7L7Y2
-	 vy4GRJ3Vp5FvNnBuVlu09FuCIVO/fsJmagA1TWjQ=
+	b=P3UDgwKLEq9FItXP8IiiqeEhwhoOvoZdZlMlBcbB3VYqKH9iXHLipIw2Ijl3Xql9u
+	 5poKGviZPuNWoBJ8Je9xc85msgepWtGcQJoIdnr1NoYvHkd3KsqzpiDzK49GJ/EbIg
+	 lUffQVC8h12XGHI+6EqLgPVkRWGcY8kDute30ve0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Subject: [PATCH 4.19 077/175] tty: serial: fsl_lpuart: avoid idle preamble pending if CTS is enabled
+	Hans de Goede <hdegoede@redhat.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 032/143] wifi: brcmfmac: Add DMI nvram filename quirk for ACEPC W5 Pro
 Date: Thu, 11 Apr 2024 11:55:00 +0200
-Message-ID: <20240411095421.882047204@linuxfoundation.org>
+Message-ID: <20240411095421.878870646@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 74cb7e0355fae9641f825afa389d3fba3b617714 upstream.
+[ Upstream commit 32167707aa5e7ae4b160c18be79d85a7b4fdfcfb ]
 
-If the remote uart device is not connected or not enabled after booting
-up, the CTS line is high by default. At this time, if we enable the flow
-control when opening the device(for example, using “stty -F /dev/ttyLP4
-crtscts” command), there will be a pending idle preamble(first writing 0
-and then writing 1 to UARTCTRL_TE will queue an idle preamble) that
-cannot be sent out, resulting in the uart port fail to close(waiting for
-TX empty), so the user space stty will have to wait for a long time or
-forever.
+The ACEPC W5 Pro HDMI stick contains quite generic names in the sys_vendor
+and product_name DMI strings, without this patch brcmfmac will try to load:
+"brcmfmac43455-sdio.$(DEFAULT_STRING)-$(DEFAULT_STRING).txt" as nvram file
+which is both too generic and messy with the $ symbols in the name.
 
-This is an LPUART IP bug(idle preamble has higher priority than CTS),
-here add a workaround patch to enable TX CTS after enabling UARTCTRL_TE,
-so that the idle preamble does not get stuck due to CTS is deasserted.
+The ACEPC W5 Pro uses the same Ampak AP6255 module as the ACEPC T8
+and the nvram for the T8 is already in linux-firmware, so point the new
+DMI nvram filename quirk to the T8 nvram file.
 
-Fixes: 380c966c093e ("tty: serial: fsl_lpuart: add 32-bit register interface support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://lore.kernel.org/r/20240305015706.1050769-1-sherry.sun@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240216213649.251718-1-hdegoede@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/fsl_lpuart.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -1753,9 +1753,12 @@ lpuart32_set_termios(struct uart_port *p
- 		       UARTCTRL);
- 
- 	lpuart32_serial_setbrg(sport, baud);
--	lpuart32_write(&sport->port, modem, UARTMODIR);
--	lpuart32_write(&sport->port, ctrl, UARTCTRL);
-+	/* disable CTS before enabling UARTCTRL_TE to avoid pending idle preamble */
-+	lpuart32_write(&sport->port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
- 	/* restore control register */
-+	lpuart32_write(&sport->port, ctrl, UARTCTRL);
-+	/* re-enable the CTS if needed */
-+	lpuart32_write(&sport->port, modem, UARTMODIR);
- 
- 	spin_unlock_irqrestore(&sport->port.lock, flags);
- }
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
+index 86ff174936a9a..c3a602197662b 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
+@@ -82,6 +82,15 @@ static const struct dmi_system_id dmi_platform_data[] = {
+ 		},
+ 		.driver_data = (void *)&acepc_t8_data,
+ 	},
++	{
++		/* ACEPC W5 Pro Cherry Trail Z8350 HDMI stick, same wifi as the T8 */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "T3 MRD"),
++			DMI_MATCH(DMI_CHASSIS_TYPE, "3"),
++			DMI_MATCH(DMI_BIOS_VENDOR, "American Megatrends Inc."),
++		},
++		.driver_data = (void *)&acepc_t8_data,
++	},
+ 	{
+ 		/* Chuwi Hi8 Pro with D2D3_Hi8Pro.233 BIOS */
+ 		.matches = {
+-- 
+2.43.0
+
 
 
 
