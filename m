@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-38289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A50F8A0DDC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:08:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D051D8A0EF1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBD8D1C21606
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:08:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FFFA1F213D2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280A7145B07;
-	Thu, 11 Apr 2024 10:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A97CC14601D;
+	Thu, 11 Apr 2024 10:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcDJbH8p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crU1IfWp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEE31F5FA;
-	Thu, 11 Apr 2024 10:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6971C14600A;
+	Thu, 11 Apr 2024 10:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830116; cv=none; b=IEM9UvNUM5KNcVi9qjtj/Jh9lLMMFyK2QqaxSLnUc6L3IaNdK2YxNNqyRIfPoV1EfRUhIevGMOGubWBa5Cgndz1OD7zSOYhM3SIKzB6MRTx2MHDLzjkeLyPEQgkQS29YEMs3SF9XjDQcAQGl+U+Bd6IXPu9TCnjVJXUKagfot1w=
+	t=1712830765; cv=none; b=cQGTxddNj5fS4D/RFugmteVQRkjHh0b1KGuYAzDRHoBXERTK/LV5Q4Gw9ID6xR9I9lUVEEfcHxvxk9/J9HXC/PFz0igrbhm1jBWTBtSXJNMNldMHdcF/lOHjVG1tdKc2+oZWUPrprz5d/hBxSSQVoK54Ly3fKhtOXlVQZBpX/eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830116; c=relaxed/simple;
-	bh=zZeZv1WYJ4TaFALGKvaCqwOeAcX5KSyaT7JX9XTX3lo=;
+	s=arc-20240116; t=1712830765; c=relaxed/simple;
+	bh=RswvHXKk+HFQ3rZ3gcaD2M85KOwby7Oxi2LlgZxnSVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s+A93YwH9rwtyLQkBygbKSEIE+9yfZ6noVGB0JGWr7DVfCig/Cc8ENIW3fKt/RWcIbQ3BHriI2ErDZGmvqMnJJ1CVt6HAzixFUABQ6+AWoEUGfiP54w3hxzx25Xf8NS015ZVHIz7dJAPYufo6jIkiDl3SHUwliprDUFRrUnAVhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcDJbH8p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 625BEC433F1;
-	Thu, 11 Apr 2024 10:08:36 +0000 (UTC)
+	 MIME-Version; b=ZbHCnIUf79zWvzQx71tP+oVAiLplUaNIaOZpct5fjWwv6MBJusMOJF+Id8p+4si0kXHv9tntl2yRpAQPjRTZdPh0bO1emp/qpsE7Tq4AP0wdRGDi9P8mf1Rofl7so5qLtD4m+tqEZY7qG7iLyLkDoYdskdW3qLtYTYOBJKAkZ84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crU1IfWp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A6DC433C7;
+	Thu, 11 Apr 2024 10:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830116;
-	bh=zZeZv1WYJ4TaFALGKvaCqwOeAcX5KSyaT7JX9XTX3lo=;
+	s=korg; t=1712830765;
+	bh=RswvHXKk+HFQ3rZ3gcaD2M85KOwby7Oxi2LlgZxnSVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcDJbH8pH8wYabNKS9nraYk3Nk36kuPdNwlgxC2GcyMtU/7BRd8XqWGgkW+Oy/2Gd
-	 IiLzW5q18fZV301pXv6/ba0WNrWUQdxAVIBMMx1+V2X4ETYJb3FDlt8MzqdJbbD+ne
-	 rZmkiK15uaSxi7R2C6eHw0ipGMIohZbaIQiVW4kQ=
+	b=crU1IfWpQf/U8+KYWbuUoVY3Sq7IcOtrJ0J2flqJbAvmnvAdAhYfSmhjJDfwXtbNW
+	 MNUBKcvataxa3xpFlmt2cCTOnmFnb/zdWeP3+b0LmSHeatpTPen6wn+agIBvjdsHr+
+	 1mNOjLB4e2XwADUjMXzDXabJJkIo7o6TEav7xAqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Qiang Zhang <qiang4.zhang@intel.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 013/143] net: dsa: qca8k: put MDIO controller OF node if unavailable
+Subject: [PATCH 5.4 072/215] memtest: use {READ,WRITE}_ONCE in memory scanning
 Date: Thu, 11 Apr 2024 11:54:41 +0200
-Message-ID: <20240411095421.309930677@linuxfoundation.org>
+Message-ID: <20240411095427.063092445@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +66,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Qiang Zhang <qiang4.zhang@intel.com>
 
-[ Upstream commit 08932323ccf7f8c4c85db9cb12a791ed81264f66 ]
+[ Upstream commit 82634d7e24271698e50a3ec811e5f50de790a65f ]
 
-It was pointed out during the review [1] of commit e66bf63a7f67 ("net:
-dsa: qca8k: skip MDIO bus creation if its OF node has status =
-"disabled"") that we now leak a reference to the "mdio" OF node if it is
-disabled.
+memtest failed to find bad memory when compiled with clang.  So use
+{WRITE,READ}_ONCE to access memory to avoid compiler over optimization.
 
-This is only a concern when using dynamic OF as far as I can tell (like
-probing on an overlay), since OF nodes are never freed in the regular
-case. Additionally, I'm unaware of any actual device trees (in
-production or elsewhere) which have status = "disabled" for the MDIO OF
-node. So handling this as a simple enhancement.
-
-[1] https://lore.kernel.org/netdev/CAJq09z4--Ug+3FAmp=EimQ8HTQYOWOuVon-PUMGB5a1N=RPv4g@mail.gmail.com/
-
-Suggested-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lkml.kernel.org/r/20240312080422.691222-1-qiang4.zhang@intel.com
+Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/qca/qca8k-8xxx.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ mm/memtest.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
-index 7a864329cb726..95d78b3181d1c 100644
---- a/drivers/net/dsa/qca/qca8k-8xxx.c
-+++ b/drivers/net/dsa/qca/qca8k-8xxx.c
-@@ -954,7 +954,7 @@ qca8k_mdio_register(struct qca8k_priv *priv)
+diff --git a/mm/memtest.c b/mm/memtest.c
+index f53ace709ccd8..d407373f225b4 100644
+--- a/mm/memtest.c
++++ b/mm/memtest.c
+@@ -46,10 +46,10 @@ static void __init memtest(u64 pattern, phys_addr_t start_phys, phys_addr_t size
+ 	last_bad = 0;
  
- 	mdio = of_get_child_by_name(dev->of_node, "mdio");
- 	if (mdio && !of_device_is_available(mdio))
--		goto out;
-+		goto out_put_node;
+ 	for (p = start; p < end; p++)
+-		*p = pattern;
++		WRITE_ONCE(*p, pattern);
  
- 	bus = devm_mdiobus_alloc(dev);
- 	if (!bus) {
-@@ -988,7 +988,6 @@ qca8k_mdio_register(struct qca8k_priv *priv)
- 
- out_put_node:
- 	of_node_put(mdio);
--out:
- 	return err;
- }
- 
+ 	for (p = start; p < end; p++, start_phys_aligned += incr) {
+-		if (*p == pattern)
++		if (READ_ONCE(*p) == pattern)
+ 			continue;
+ 		if (start_phys_aligned == last_bad + incr) {
+ 			last_bad += incr;
 -- 
 2.43.0
 
