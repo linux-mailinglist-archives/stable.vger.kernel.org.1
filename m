@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-38275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ADE48A0DCC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 921B78A0D39
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:01:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 042F5286456
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C389D1C2118A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BB5145B25;
-	Thu, 11 Apr 2024 10:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6DD145B05;
+	Thu, 11 Apr 2024 10:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duwR0q9b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWY/VwwL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60263145B0D;
-	Thu, 11 Apr 2024 10:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28B12EAE5;
+	Thu, 11 Apr 2024 10:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830075; cv=none; b=UlGg8n1bSLO0khsXFjrf5pNYVGdXLaDwTb0/Q+XQRu8BSUMBGoAFrheronTN5neuwl7Dgejg8HlIH507/tbxC5VUl5cGaKgVX3VdP3ANa7dSscrkuHaKGRiQF55J5NHV1t0JT67sJFsw7vle3YFHpgZkgsJNxdp32VMFE4H8qPA=
+	t=1712829696; cv=none; b=syQwGRKivFMYa1TH3+qY3e6nLbjT8Kd1gMMr5dGxCgi1/ZfLu6i+2x3iZwavmH5uyqt8AviNG79Vjfi07+CmLnsTo6Amj0o6XDYrk1o2mbStywu4G1RWAFQs01eA8LLnWQFSLgc2zzXeV2Mc9fAfjZ/Bc2Sdwtr/639UBuZ3UrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830075; c=relaxed/simple;
-	bh=M1GxeVaw6d7pZByn0uWCm3Fd5DDkDNCUV7Uqok1ExQ8=;
+	s=arc-20240116; t=1712829696; c=relaxed/simple;
+	bh=mFHUZZRyC4k72y3cls+vCB4+QAvzn/gS0azCZP1sm9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E2klslvP90JoBeDbe5BIwymNXZsUL5JYbqciLV9JVp5lgQjJcoFFau+DRGe3CjKlNZs3WkqoyJWzy6xWLjGAFTnnTKlYrfL9TVLc32wVQs//4/+oWWR+R8FLfMlUn5zBOtZ6XEgayL7mqHh0eYB1JEeKBtA8X/SpHJOC9y+oYrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duwR0q9b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6657C433C7;
-	Thu, 11 Apr 2024 10:07:54 +0000 (UTC)
+	 MIME-Version; b=RdOtj8DR4dNgOFwuTJuAaL1lSc+qV8PRsExhUbDk1F2TQTxY15P81VWVqN8+8B9RMAxsrdfAFHhMjzpZNiVC+Hh8XrnuVSrb/ooDZU+OTrupxAOBLnosulxLjw0SvnghvVfftr1ZJATbKLrZTYyMqaX1npi5EFfRc3EXzlbCTwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xWY/VwwL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A16C433C7;
+	Thu, 11 Apr 2024 10:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830075;
-	bh=M1GxeVaw6d7pZByn0uWCm3Fd5DDkDNCUV7Uqok1ExQ8=;
+	s=korg; t=1712829696;
+	bh=mFHUZZRyC4k72y3cls+vCB4+QAvzn/gS0azCZP1sm9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=duwR0q9bPC0sPz8iIBHwy8Xjg2k5wct3mi+HGfbvxlpNhW9uaiQapiiXfdZbTkUa/
-	 bXoQLQDwao1zmu0fkjSgXaLCMw/Q6tGXyUnlX7gf4ojE634tnQA7utqWxzkn7WtbgY
-	 Dfah1eIUtXy9+ITJ7+xJVbyKiuNkG7W5xY+IB83Q=
+	b=xWY/VwwLuXHXnDVOdzHLUPd67B7xc/gqyqhlD14hk7ff1La2TcvOabvJ2YeEKk1kB
+	 HBTVoY+FISzeH7FkPTj5lLIcKEpZLNjVzsZIqg7k6ykwutoR0bhtkJlU910Ig6j6Vn
+	 sDFeq5oHGPsoLCbyju2C+3ROeRJv+ilxB11FxJ2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Sandor Yu <Sandor.yu@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 027/143] pmdomain: imx8mp-blk-ctrl: imx8mp_blk: Add fdcc clock to hdmimix domain
-Date: Thu, 11 Apr 2024 11:54:55 +0200
-Message-ID: <20240411095421.729506918@linuxfoundation.org>
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 4.19 073/175] ALSA: hda/realtek - Fix headset Mic no show at resume back for Lenovo ALC897 platform
+Date: Thu, 11 Apr 2024 11:54:56 +0200
+Message-ID: <20240411095421.760982129@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 697624ee8ad557ab5417f985d2c804241a7ad30d ]
+commit d397b6e56151099cf3b1f7bfccb204a6a8591720 upstream.
 
-According to i.MX8MP RM and HDMI ADD, the fdcc clock is part of
-hdmi rx verification IP that should not enable for HDMI TX.
-But actually if the clock is disabled before HDMI/LCDIF probe,
-LCDIF will not get pixel clock from HDMI PHY and print the error
-logs:
+Headset Mic will no show at resume back.
+This patch will fix this issue.
 
-[CRTC:39:crtc-2] vblank wait timed out
-WARNING: CPU: 2 PID: 9 at drivers/gpu/drm/drm_atomic_helper.c:1634 drm_atomic_helper_wait_for_vblanks.part.0+0x23c/0x260
-
-Add fdcc clock to LCDIF and HDMI TX power domains to fix the issue.
-
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Jacky Bai <ping.bai@nxp.com>
-Signed-off-by: Sandor Yu <Sandor.yu@nxp.com>
-Link: https://lore.kernel.org/r/20240203165307.7806-5-aford173@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d7f32791a9fc ("ALSA: hda/realtek - Add headset Mic support for Lenovo ALC897 platform")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/r/4713d48a372e47f98bba0c6120fd8254@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/imx/imx8mp-blk-ctrl.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ sound/pci/hda/patch_realtek.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-index e3203eb6a0229..a56f7f92d0915 100644
---- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-@@ -55,7 +55,7 @@ struct imx8mp_blk_ctrl_domain_data {
- 	const char *gpc_name;
- };
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -8593,8 +8593,7 @@ static void alc897_hp_automute_hook(stru
  
--#define DOMAIN_MAX_CLKS 2
-+#define DOMAIN_MAX_CLKS 3
- #define DOMAIN_MAX_PATHS 3
+ 	snd_hda_gen_hp_automute(codec, jack);
+ 	vref = spec->gen.hp_jack_present ? (PIN_HP | AC_PINCTL_VREF_100) : PIN_HP;
+-	snd_hda_codec_write(codec, 0x1b, 0, AC_VERB_SET_PIN_WIDGET_CONTROL,
+-			    vref);
++	snd_hda_set_pin_ctl(codec, 0x1b, vref);
+ }
  
- struct imx8mp_blk_ctrl_domain {
-@@ -457,8 +457,8 @@ static const struct imx8mp_blk_ctrl_domain_data imx8mp_hdmi_domain_data[] = {
- 	},
- 	[IMX8MP_HDMIBLK_PD_LCDIF] = {
- 		.name = "hdmiblk-lcdif",
--		.clk_names = (const char *[]){ "axi", "apb" },
--		.num_clks = 2,
-+		.clk_names = (const char *[]){ "axi", "apb", "fdcc" },
-+		.num_clks = 3,
- 		.gpc_name = "lcdif",
- 		.path_names = (const char *[]){"lcdif-hdmi"},
- 		.num_paths = 1,
-@@ -483,8 +483,8 @@ static const struct imx8mp_blk_ctrl_domain_data imx8mp_hdmi_domain_data[] = {
- 	},
- 	[IMX8MP_HDMIBLK_PD_HDMI_TX] = {
- 		.name = "hdmiblk-hdmi-tx",
--		.clk_names = (const char *[]){ "apb", "ref_266m" },
--		.num_clks = 2,
-+		.clk_names = (const char *[]){ "apb", "ref_266m", "fdcc" },
-+		.num_clks = 3,
- 		.gpc_name = "hdmi-tx",
- 	},
- 	[IMX8MP_HDMIBLK_PD_HDMI_TX_PHY] = {
--- 
-2.43.0
-
+ static void alc897_fixup_lenovo_headset_mic(struct hda_codec *codec,
+@@ -8603,6 +8602,10 @@ static void alc897_fixup_lenovo_headset_
+ 	struct alc_spec *spec = codec->spec;
+ 	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
+ 		spec->gen.hp_automute_hook = alc897_hp_automute_hook;
++		spec->no_shutup_pins = 1;
++	}
++	if (action == HDA_FIXUP_ACT_PROBE) {
++		snd_hda_set_pin_ctl_cache(codec, 0x1a, PIN_IN | AC_PINCTL_VREF_100);
+ 	}
+ }
+ 
 
 
 
