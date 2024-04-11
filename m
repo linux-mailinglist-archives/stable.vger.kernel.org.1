@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 852738A0E78
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:15:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 317D88A109F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ADF51F21872
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:15:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62A8C1C23B3D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC9A146A70;
-	Thu, 11 Apr 2024 10:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C4C1448C8;
+	Thu, 11 Apr 2024 10:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sNLlt+HJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqWChNI7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4531465BF;
-	Thu, 11 Apr 2024 10:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7035E63A2;
+	Thu, 11 Apr 2024 10:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830493; cv=none; b=X4+6aC7U9YO2mAnPmy4192G6J3Hxx2cAWfyNMwOp6MC04rrrr4ILQChp9B88RSej01ql7tVaNTCc5ugeWrN/LN+Nz+1UwY56NIL9c/aPtjW17qyaRddv4GhDh56g9mmJhW7D4V6AumcxT1Af53K1SlotTKbGE4kCi1uaKLsjVDg=
+	t=1712831721; cv=none; b=osHjr1jL9ClTyA3pqp9atYNmoUUfPjCW7dLTHixwrxXG59BTmEqZa+rNdOZ+bRFZB0OL7o1PB4qnyV6w7zv9zrEyNsOcoeMnU1yxUzZNp37hXWP+K34ttP3+aZcXlcD6nC8WEpFx583OQHfkwfaJ0ZHTbXPzJsV/0spSNX5yv4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830493; c=relaxed/simple;
-	bh=LaFV2LBHENsrKyT8kGoeLUqIz+If8fb1kJ0FTF2r26A=;
+	s=arc-20240116; t=1712831721; c=relaxed/simple;
+	bh=t8+2CH8iTY38sKBZgBtby6kLa2nC40lemlZLg21Kbhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I4B5AkThs+olCaX7qYQ7rqmlAyL0/auFUbJV6QJZwFgqw1EdbB2bzq1U7RXrUqLtAqZ4at4ylt6gGSt0I0GmoTDtPGC6d+pznfG4ltMUWADQgY31gNkF/T4EzsueoneFXJw8/YGhucJjrgIIxDyl2loFzdzHR9ktp+7lb8ef+fM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNLlt+HJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4578C43394;
-	Thu, 11 Apr 2024 10:14:52 +0000 (UTC)
+	 MIME-Version; b=To8d1okvuG3mBW+W2hDQxjergq/pImS0jd1HOV8W65JhprhxAG3wF3j0XflZpApE1cyAObK9cYK9LiguNdS+UAjpc/MjQkPqF2+jXkePd1RyAd7d+YkmwejE7Q0RT7v+ms9ust0YKYJwKUXmdRidtcqzuUH1I6yrDOj+aFo+6P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqWChNI7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8DDFC433F1;
+	Thu, 11 Apr 2024 10:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830493;
-	bh=LaFV2LBHENsrKyT8kGoeLUqIz+If8fb1kJ0FTF2r26A=;
+	s=korg; t=1712831721;
+	bh=t8+2CH8iTY38sKBZgBtby6kLa2nC40lemlZLg21Kbhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sNLlt+HJyQLnvgDiPAaeByprJ01tiChSlTL+/EDOsa2/kZDclkZjZLNOZ2wUp2DAo
-	 HMqUgnq0f6voXmbDv2NvBWQVbaxo0m7rX5FObUOSMX//BSffzM6a6eif1U01cWZjM0
-	 9PvgO6ZF19FYvY7vt2CIlcTCrrOj4AONtlcPDHnI=
+	b=pqWChNI7MfkmuTZ2mJfgV9QbTXBNR7y7S2E1ZgacCyKcqW7iUt4AzT/uDu2NPhoUX
+	 l3X2G8dzBDjRw2Xx0KpCL4DGCGsVVS6w4hVcXbKm9aW5tlVXX/mI+0jPTngSX0lVTF
+	 uty/+PH7C267pKCHnmSDHKxB6ULmQipAr/2oWyL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damian Muszynski <damian.muszynski@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Niels van Aert <nvaert1986@hotmail.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 020/215] crypto: qat - resolve race condition during AER recovery
+Subject: [PATCH 5.10 066/294] PCI/DPC: Quirk PIO log size for Intel Raptor Lake Root Ports
 Date: Thu, 11 Apr 2024 11:53:49 +0200
-Message-ID: <20240411095425.492303477@linuxfoundation.org>
+Message-ID: <20240411095437.675995680@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damian Muszynski <damian.muszynski@intel.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
 
-[ Upstream commit 7d42e097607c4d246d99225bf2b195b6167a210c ]
+[ Upstream commit 627c6db20703b5d18d928464f411d0d4ec327508 ]
 
-During the PCI AER system's error recovery process, the kernel driver
-may encounter a race condition with freeing the reset_data structure's
-memory. If the device restart will take more than 10 seconds the function
-scheduling that restart will exit due to a timeout, and the reset_data
-structure will be freed. However, this data structure is used for
-completion notification after the restart is completed, which leads
-to a UAF bug.
+Commit 5459c0b70467 ("PCI/DPC: Quirk PIO log size for certain Intel Root
+Ports") and commit 3b8803494a06 ("PCI/DPC: Quirk PIO log size for Intel Ice
+Lake Root Ports") add quirks for Ice, Tiger and Alder Lake Root Ports.
+System firmware for Raptor Lake still has the bug, so Linux logs the
+warning below on several Raptor Lake systems like Dell Precision 3581 with
+Intel Raptor Lake processor (0W18NX) system firmware/BIOS version 1.10.1.
 
-This results in a KFENCE bug notice.
+  pci 0000:00:07.0: [8086:a76e] type 01 class 0x060400
+  pci 0000:00:07.0: DPC: RP PIO log size 0 is invalid
+  pci 0000:00:07.1: [8086:a73f] type 01 class 0x060400
+  pci 0000:00:07.1: DPC: RP PIO log size 0 is invalid
 
-  BUG: KFENCE: use-after-free read in adf_device_reset_worker+0x38/0xa0 [intel_qat]
-  Use-after-free read at 0x00000000bc56fddf (in kfence-#142):
-  adf_device_reset_worker+0x38/0xa0 [intel_qat]
-  process_one_work+0x173/0x340
+Apply the quirk for Raptor Lake Root Ports as well.
 
-To resolve this race condition, the memory associated to the container
-of the work_struct is freed on the worker if the timeout expired,
-otherwise on the function that schedules the worker.
-The timeout detection can be done by checking if the caller is
-still waiting for completion or not by using completion_done() function.
+This also enables the DPC driver to dump the RP PIO Log registers when DPC
+is triggered.
 
-Fixes: d8cba25d2c68 ("crypto: qat - Intel(R) QAT driver framework")
+Link: https://lore.kernel.org/r/20240305113057.56468-1-pmenzel@molgen.mpg.de
+Reported-by: Niels van Aert <nvaert1986@hotmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218560
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Damian Muszynski <damian.muszynski@intel.com>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Niels van Aert <nvaert1986@hotmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/qat/qat_common/adf_aer.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/pci/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/crypto/qat/qat_common/adf_aer.c b/drivers/crypto/qat/qat_common/adf_aer.c
-index 20f983b830065..a2989f0188cad 100644
---- a/drivers/crypto/qat/qat_common/adf_aer.c
-+++ b/drivers/crypto/qat/qat_common/adf_aer.c
-@@ -139,7 +139,8 @@ static void adf_device_reset_worker(struct work_struct *work)
- 	if (adf_dev_init(accel_dev) || adf_dev_start(accel_dev)) {
- 		/* The device hanged and we can't restart it so stop here */
- 		dev_err(&GET_DEV(accel_dev), "Restart device failed\n");
--		if (reset_data->mode == ADF_DEV_RESET_ASYNC)
-+		if (reset_data->mode == ADF_DEV_RESET_ASYNC ||
-+		    completion_done(&reset_data->compl))
- 			kfree(reset_data);
- 		WARN(1, "QAT: device restart failed. Device is unusable\n");
- 		return;
-@@ -147,11 +148,19 @@ static void adf_device_reset_worker(struct work_struct *work)
- 	adf_dev_restarted_notify(accel_dev);
- 	clear_bit(ADF_STATUS_RESTARTING, &accel_dev->status);
- 
--	/* The dev is back alive. Notify the caller if in sync mode */
--	if (reset_data->mode == ADF_DEV_RESET_SYNC)
--		complete(&reset_data->compl);
--	else
-+	/*
-+	 * The dev is back alive. Notify the caller if in sync mode
-+	 *
-+	 * If device restart will take a more time than expected,
-+	 * the schedule_reset() function can timeout and exit. This can be
-+	 * detected by calling the completion_done() function. In this case
-+	 * the reset_data structure needs to be freed here.
-+	 */
-+	if (reset_data->mode == ADF_DEV_RESET_ASYNC ||
-+	    completion_done(&reset_data->compl))
- 		kfree(reset_data);
-+	else
-+		complete(&reset_data->compl);
- }
- 
- static int adf_dev_aer_schedule_reset(struct adf_accel_dev *accel_dev,
-@@ -184,8 +193,9 @@ static int adf_dev_aer_schedule_reset(struct adf_accel_dev *accel_dev,
- 			dev_err(&GET_DEV(accel_dev),
- 				"Reset device timeout expired\n");
- 			ret = -EFAULT;
-+		} else {
-+			kfree(reset_data);
- 		}
--		kfree(reset_data);
- 		return ret;
- 	}
- 	return 0;
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index a467e3ce6fb10..eca4ed45bb4ee 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5944,4 +5944,6 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2b, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2d, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa73f, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa76e, dpc_log_size);
+ #endif
 -- 
 2.43.0
 
