@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-38680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3638B8A0FD6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8D88A116A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6A65B232BE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CECB1C2137C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A44F8146A9E;
-	Thu, 11 Apr 2024 10:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2921448F3;
+	Thu, 11 Apr 2024 10:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8iPAOsl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klLrWDeX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F597145B1A;
-	Thu, 11 Apr 2024 10:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1CF13FD97;
+	Thu, 11 Apr 2024 10:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831281; cv=none; b=EC34O9r4qS/bG0XV97yrCLztXaCHYnpOTSvU9gG8flJV/joKYcD+6M7hhjvyIaAr9kQd6U5vjBGYgC5MoQhant4LO4nl0epNnIiHEHjfaCyykvKFDsNxcyw3uu7zTOwXaS3qIt215AVmpD+WAxzt2cewri+q7OGz0jeyfuZOGbo=
+	t=1712832233; cv=none; b=Dgj48iy6VBNYMSG1/PMvQ5bPJn8w6uHeAMtWErkzrRJ3E1MtP5yg2/jeMcH2Iwg8+/eUx1z30WqJx80/TRz573S+ZBjNKEhxsrYTGltsnKxs2H9iXgAmDH5hGXBaB5jctGfNnEqavKiyZ02mNg90YPX9wmZDdR4LouiFDnH/f50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831281; c=relaxed/simple;
-	bh=eVARYfAQbhii3AYDkJGCN589Xw2NRLhAjDQODHI9N/A=;
+	s=arc-20240116; t=1712832233; c=relaxed/simple;
+	bh=Y4akQcT6rUQeOfITtbhC6VV/yQsk/7claS7f+TXAL1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RiHi+VfOs50GBgaAX7LUtvo/eug+SU5KDGjPdhNA3uMo/8tkmtepF0zdfhEUk4EPSvGSREy/Upk1R5SgtvAaBHGdfJ64fWPpoa29vZYsNOqL9ey+pdeUGQaKBiPkQn7h05w4vOWxbNQd4QeSwyzkwQZixL4e0DsvLLIoMumDbNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8iPAOsl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2597C433F1;
-	Thu, 11 Apr 2024 10:28:00 +0000 (UTC)
+	 MIME-Version; b=AFbtAE521dErP5Y0Z8dmTizVLAKFSXp9DKwkt5srQFSijfiNEFQenazmk7VJZW5t4UqENCzfMyRKMOH4uz6yUd9KcS5Jwj7DHhql+2vCWCfvA63RHLAnnwg0NCZ/I15rDOfDs5gvE5qVJWl9lTTmkr4DqpzsK11HPd9vkKavjjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=klLrWDeX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E502AC433C7;
+	Thu, 11 Apr 2024 10:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831281;
-	bh=eVARYfAQbhii3AYDkJGCN589Xw2NRLhAjDQODHI9N/A=;
+	s=korg; t=1712832233;
+	bh=Y4akQcT6rUQeOfITtbhC6VV/yQsk/7claS7f+TXAL1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a8iPAOslfiAbAcM/p/ZYai8wsHt0M0TJRbJ+oe2nUlx9Mkdgji6INP/Fa8gfV3+hD
-	 49nOchHGAwWHx6O7sUlsVgvXG/f2TiX+yWj8sNdWQJ5gC30GWBD7PHp3SHb+TJ1E08
-	 r6MNn9KdXxbIRsq7s+S9GbYjOQYlCBIES/LSUeJs=
+	b=klLrWDeXMbP/wT74kBYizoD40uSbWAe0vqgt2bA+Ga/i4oWerLXKJHCkxrY0PtV8d
+	 5V7mlzEhWnwStwcTpo+b8DNYF09dERNwywE3NqVIOgjHnaAWVtRdm6E+08krL05TvK
+	 05qijgjZPswtgNJZXNGz3mQy8SuE5CsWgyuRx0cA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Matthias Kaehlcke <mka@chromium.org>,
+	Venkata Lakshmi Narayana Gubba <gubbaven@codeaurora.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Bjorn Andersson <bjorn.andersson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 062/114] ext4: add a hint for block bitmap corrupt state in mb_groups
+Subject: [PATCH 5.10 226/294] arm64: dts: qcom: sc7180: Remove clock for bluetooth on Trogdor
 Date: Thu, 11 Apr 2024 11:56:29 +0200
-Message-ID: <20240411095418.758339846@linuxfoundation.org>
+Message-ID: <20240411095442.392387235@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +65,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Venkata Lakshmi Narayana Gubba <gubbaven@codeaurora.org>
 
-[ Upstream commit 68ee261fb15457ecb17e3683cb4e6a4792ca5b71 ]
+[ Upstream commit a307a9773420dc7d385991f61fbede2fe100bd78 ]
 
-If one group is marked as block bitmap corrupted, its free blocks cannot
-be used and its free count is also deducted from the global
-sbi->s_freeclusters_counter. User might be confused about the absent
-free space because we can't query the information about corrupted block
-groups except unreliable error messages in syslog. So add a hint to show
-block bitmap corrupted groups in mb_groups.
+Removed voting for RPMH_RF_CLK2 which is not required as it is
+getting managed by BT SoC through SW_CTRL line.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240119061154.1525781-1-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: Matthias Kaehlcke <mka@chromium.org>
+Signed-off-by: Venkata Lakshmi Narayana Gubba <gubbaven@codeaurora.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Matthias Kaehlcke <mka@chromium.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Link: https://lore.kernel.org/r/20210301133318.v2.8.I80c268f163e6d49a70af1238be442b5de400c579@changeid
+Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Stable-dep-of: e12e28009e58 ("arm64: dts: qcom: sc7180-trogdor: mark bluetooth address as broken")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 257b70c5ded45..a8a3ea2fd690f 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -3060,7 +3060,10 @@ static int ext4_mb_seq_groups_show(struct seq_file *seq, void *v)
- 	for (i = 0; i <= 13; i++)
- 		seq_printf(seq, " %-5u", i <= blocksize_bits + 1 ?
- 				sg.info.bb_counters[i] : 0);
--	seq_puts(seq, " ]\n");
-+	seq_puts(seq, " ]");
-+	if (EXT4_MB_GRP_BBITMAP_CORRUPT(&sg.info))
-+		seq_puts(seq, " Block bitmap corrupted!");
-+	seq_puts(seq, "\n");
+diff --git a/arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi b/arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
+index cb2c47f13a8a4..3f5883e8bf319 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
+@@ -810,7 +810,6 @@ ap_spi_fp: &spi10 {
+ 		vddrf-supply = <&pp1300_l2c>;
+ 		vddch0-supply = <&pp3300_l10c>;
+ 		max-speed = <3200000>;
+-		clocks = <&rpmhcc RPMH_RF_CLK2>;
+ 	};
+ };
  
- 	return 0;
- }
 -- 
 2.43.0
 
