@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-39101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CF8A8A11EC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D86BF8A11FC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D8561C21C40
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1899EB274F1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081351474BC;
-	Thu, 11 Apr 2024 10:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D1513D24D;
+	Thu, 11 Apr 2024 10:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVAGABWz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXC5B1OP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1351474B0;
-	Thu, 11 Apr 2024 10:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF166BB29;
+	Thu, 11 Apr 2024 10:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832519; cv=none; b=QHWFsILWqH1nL2jgEjc4k9B+CCkeADPlPjUkU1ytyjZ1aBfyp7ceaVv5XtKR3uER/tP0jtj+WqXmlef+uXZAjTrBwAvjnBEir9qWnssHfCoAwg3MA69GjbaKUISoyF7JbafbPuHuJ3J6rqkA5Blvz7iBcwNxd7jjFdzuLJ//dEE=
+	t=1712832563; cv=none; b=i5nD229r7A9YIw97RRlq/7R06Klni3XjvzNSCarRX7fdZRSJm/fgDtVyxP9zzrtwkuBx02OoBJ36ORbukYsIZdSXFvwsfhrzR8AJ7wH0Wx4qWSgNpijtJOAWfSSRh8rFL+T+GPd5wARE6XBBhkR6aWVK3iVoPr5I4WAuQr6uqpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832519; c=relaxed/simple;
-	bh=uDuSZP8ckE0HwmMDzMCjrSGp0jTj+zzfk92sspC6zdI=;
+	s=arc-20240116; t=1712832563; c=relaxed/simple;
+	bh=Ak23/Z3uD5U5Xe+38VIea8bf1iipNBqFQTlIw6O1b3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jI7GTZDH+Z1h7AJ0ws3ApawT69Fb1di0qWjt6SVympK4aYBoTLhKEems7EtAd66f7UB3qKCHhREeTc9i5jy/t5Uh+5SZk4swLSTus1DpO6aGtu7O5GkgmuaMVgFVPmoXUttaeH4b23y/zpc+9UfohE3K1CvVKS5lm8d+mZbuAkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVAGABWz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED2AC433C7;
-	Thu, 11 Apr 2024 10:48:39 +0000 (UTC)
+	 MIME-Version; b=dGwA0+7CTct5W9I+JZq+acVNDGmprdqQJClKomg+89kWy3keLs7iph3cYgydmzkt4vAF8aAQr479Fh6EZ+6lw9X0KVPY6glb5zysaTTd3IxvOVqZaDgd9fR5Gnc69kXYVCzO8dlczmnocXSqqzfKkVcOAehDXfQfR21K8PXp5x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXC5B1OP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43714C433C7;
+	Thu, 11 Apr 2024 10:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832519;
-	bh=uDuSZP8ckE0HwmMDzMCjrSGp0jTj+zzfk92sspC6zdI=;
+	s=korg; t=1712832563;
+	bh=Ak23/Z3uD5U5Xe+38VIea8bf1iipNBqFQTlIw6O1b3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MVAGABWzWzFM29YuQK/rdOo7kdVzptG7VMDMIE5zF0ZtZk/sfy7O/XJdXGvzzbe0K
-	 fvLuvWIxL/Jxlku5Btk6dYd3qnnC3c3hNtIGZHBvVyEcUsKYHv4upFlNR48JgcWbrW
-	 4enVFSA/KaTUeN+OdQ5xUulTIN+An6C5SsmJoM9s=
+	b=lXC5B1OPlT1Obrr0kp+eiYtsgkjjOX2Gk79ZjT7xQGpQQSW2jo1t67m8hKxcO2nME
+	 askVCKmOBd9RFJUREV53drUdmLhAZMB63QAeWbpiV6Ezx+AVktbsAnc54M4LAGUk3e
+	 NkyAuKU8vmQOnBpbZvSQxOYZhJJnS1NjxDs4z3wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,9 +50,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
 	John David Anglin <dave.anglin@bell.net>,
 	Cyril Brulebois <kibi@debian.org>
-Subject: [PATCH 6.1 74/83] Revert "scsi: sd: usb_storage: uas: Access media prior to querying device properties"
-Date: Thu, 11 Apr 2024 11:57:46 +0200
-Message-ID: <20240411095414.915492760@linuxfoundation.org>
+Subject: [PATCH 6.1 75/83] Revert "scsi: core: Add struct for args to execution functions"
+Date: Thu, 11 Apr 2024 11:57:47 +0200
+Message-ID: <20240411095414.945859117@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
 References: <20240411095412.671665933@linuxfoundation.org>
@@ -73,8 +73,8 @@ Content-Transfer-Encoding: 8bit
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-This reverts commit b73dd5f9997279715cd450ee8ca599aaff2eabb9 which is
-commit 321da3dc1f3c92a12e3c5da934090d2992a8814c upstream.
+This reverts commit cf33e6ca12d814e1be2263cb76960d0019d7fb94 which is
+commit d0949565811f0896c1c7e781ab2ad99d34273fdf upstream.
 
 It is known to cause problems and has asked to be dropped.
 
@@ -90,96 +90,175 @@ Reported-by: John David Anglin <dave.anglin@bell.net>
 Reported-by: Cyril Brulebois <kibi@debian.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sd.c              |   26 +-------------------------
- drivers/usb/storage/scsiglue.c |    7 -------
- drivers/usb/storage/uas.c      |    7 -------
- include/scsi/scsi_device.h     |    1 -
- 4 files changed, 1 insertion(+), 40 deletions(-)
+ drivers/scsi/scsi_lib.c    |   52 +++++++++++++++++++++++----------------------
+ include/scsi/scsi_device.h |   51 ++++++++++++--------------------------------
+ 2 files changed, 41 insertions(+), 62 deletions(-)
 
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -3286,24 +3286,6 @@ static bool sd_validate_opt_xfer_size(st
- 	return true;
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -185,37 +185,39 @@ void scsi_queue_insert(struct scsi_cmnd
+ 	__scsi_queue_insert(cmd, reason, true);
  }
  
--static void sd_read_block_zero(struct scsi_disk *sdkp)
--{
--	unsigned int buf_len = sdkp->device->sector_size;
--	char *buffer, cmd[10] = { };
--
--	buffer = kmalloc(buf_len, GFP_KERNEL);
--	if (!buffer)
--		return;
--
--	cmd[0] = READ_10;
--	put_unaligned_be32(0, &cmd[2]); /* Logical block address 0 */
--	put_unaligned_be16(1, &cmd[7]);	/* Transfer 1 logical block */
--
--	scsi_execute_cmd(sdkp->device, cmd, REQ_OP_DRV_IN, buffer, buf_len,
--			 SD_TIMEOUT, sdkp->max_retries, NULL);
--	kfree(buffer);
--}
--
- /**
-  *	sd_revalidate_disk - called the first time a new disk is seen,
-  *	performs disk spin up, read_capacity, etc.
-@@ -3343,13 +3325,7 @@ static int sd_revalidate_disk(struct gen
- 	 */
- 	if (sdkp->media_present) {
- 		sd_read_capacity(sdkp, buffer);
--		/*
--		 * Some USB/UAS devices return generic values for mode pages
--		 * until the media has been accessed. Trigger a READ operation
--		 * to force the device to populate mode pages.
--		 */
--		if (sdp->read_before_ms)
--			sd_read_block_zero(sdkp);
 +
- 		/*
- 		 * set the default to rotational.  All non-rotational devices
- 		 * support the block characteristics VPD page, which will
---- a/drivers/usb/storage/scsiglue.c
-+++ b/drivers/usb/storage/scsiglue.c
-@@ -180,13 +180,6 @@ static int slave_configure(struct scsi_d
- 		sdev->use_192_bytes_for_3f = 1;
+ /**
+- * scsi_execute_cmd - insert request and wait for the result
+- * @sdev:	scsi_device
++ * __scsi_execute - insert request and wait for the result
++ * @sdev:	scsi device
+  * @cmd:	scsi command
+- * @opf:	block layer request cmd_flags
++ * @data_direction: data direction
+  * @buffer:	data buffer
+  * @bufflen:	len of buffer
++ * @sense:	optional sense buffer
++ * @sshdr:	optional decoded sense header
+  * @timeout:	request timeout in HZ
+  * @retries:	number of times to retry request
+- * @args:	Optional args. See struct definition for field descriptions
++ * @flags:	flags for ->cmd_flags
++ * @rq_flags:	flags for ->rq_flags
++ * @resid:	optional residual length
+  *
+  * Returns the scsi_cmnd result field if a command was executed, or a negative
+  * Linux error code if we didn't get that far.
+  */
+-int scsi_execute_cmd(struct scsi_device *sdev, const unsigned char *cmd,
+-		     blk_opf_t opf, void *buffer, unsigned int bufflen,
+-		     int timeout, int retries,
+-		     const struct scsi_exec_args *args)
++int __scsi_execute(struct scsi_device *sdev, const unsigned char *cmd,
++		 int data_direction, void *buffer, unsigned bufflen,
++		 unsigned char *sense, struct scsi_sense_hdr *sshdr,
++		 int timeout, int retries, blk_opf_t flags,
++		 req_flags_t rq_flags, int *resid)
+ {
+-	static const struct scsi_exec_args default_args;
+ 	struct request *req;
+ 	struct scsi_cmnd *scmd;
+ 	int ret;
  
- 		/*
--		 * Some devices report generic values until the media has been
--		 * accessed. Force a READ(10) prior to querying device
--		 * characteristics.
--		 */
--		sdev->read_before_ms = 1;
+-	if (!args)
+-		args = &default_args;
+-	else if (WARN_ON_ONCE(args->sense &&
+-			      args->sense_len != SCSI_SENSE_BUFFERSIZE))
+-		return -EINVAL;
 -
--		/*
- 		 * Some devices don't like MODE SENSE with page=0x3f,
- 		 * which is the command used for checking if a device
- 		 * is write-protected.  Now that we tell the sd driver
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -877,13 +877,6 @@ static int uas_slave_configure(struct sc
- 		sdev->guess_capacity = 1;
+-	req = scsi_alloc_request(sdev->request_queue, opf, args->req_flags);
++	req = scsi_alloc_request(sdev->request_queue,
++			data_direction == DMA_TO_DEVICE ?
++			REQ_OP_DRV_OUT : REQ_OP_DRV_IN,
++			rq_flags & RQF_PM ? BLK_MQ_REQ_PM : 0);
+ 	if (IS_ERR(req))
+ 		return PTR_ERR(req);
+ 
+@@ -230,7 +232,8 @@ int scsi_execute_cmd(struct scsi_device
+ 	memcpy(scmd->cmnd, cmd, scmd->cmd_len);
+ 	scmd->allowed = retries;
+ 	req->timeout = timeout;
+-	req->rq_flags |= RQF_QUIET;
++	req->cmd_flags |= flags;
++	req->rq_flags |= rq_flags | RQF_QUIET;
  
  	/*
--	 * Some devices report generic values until the media has been
--	 * accessed. Force a READ(10) prior to querying device
--	 * characteristics.
--	 */
--	sdev->read_before_ms = 1;
+ 	 * head injection *required* here otherwise quiesce won't work
+@@ -246,21 +249,20 @@ int scsi_execute_cmd(struct scsi_device
+ 	if (unlikely(scmd->resid_len > 0 && scmd->resid_len <= bufflen))
+ 		memset(buffer + bufflen - scmd->resid_len, 0, scmd->resid_len);
+ 
+-	if (args->resid)
+-		*args->resid = scmd->resid_len;
+-	if (args->sense)
+-		memcpy(args->sense, scmd->sense_buffer, SCSI_SENSE_BUFFERSIZE);
+-	if (args->sshdr)
++	if (resid)
++		*resid = scmd->resid_len;
++	if (sense && scmd->sense_len)
++		memcpy(sense, scmd->sense_buffer, SCSI_SENSE_BUFFERSIZE);
++	if (sshdr)
+ 		scsi_normalize_sense(scmd->sense_buffer, scmd->sense_len,
+-				     args->sshdr);
 -
--	/*
- 	 * Some devices don't like MODE SENSE with page=0x3f,
- 	 * which is the command used for checking if a device
- 	 * is write-protected.  Now that we tell the sd driver
++				     sshdr);
+ 	ret = scmd->result;
+  out:
+ 	blk_mq_free_request(req);
+ 
+ 	return ret;
+ }
+-EXPORT_SYMBOL(scsi_execute_cmd);
++EXPORT_SYMBOL(__scsi_execute);
+ 
+ /*
+  * Wake up the error handler if necessary. Avoid as follows that the error
 --- a/include/scsi/scsi_device.h
 +++ b/include/scsi/scsi_device.h
-@@ -204,7 +204,6 @@ struct scsi_device {
- 	unsigned use_10_for_rw:1; /* first try 10-byte read / write */
- 	unsigned use_10_for_ms:1; /* first try 10-byte mode sense/select */
- 	unsigned set_dbd_for_ms:1; /* Set "DBD" field in mode sense */
--	unsigned read_before_ms:1;	/* perform a READ before MODE SENSE */
- 	unsigned no_report_opcodes:1;	/* no REPORT SUPPORTED OPERATION CODES */
- 	unsigned no_write_same:1;	/* no WRITE SAME command */
- 	unsigned use_16_for_rw:1; /* Use read/write(16) over read/write(10) */
+@@ -479,51 +479,28 @@ extern const char *scsi_device_state_nam
+ extern int scsi_is_sdev_device(const struct device *);
+ extern int scsi_is_target_device(const struct device *);
+ extern void scsi_sanitize_inquiry_string(unsigned char *s, int len);
+-
+-/* Optional arguments to scsi_execute_cmd */
+-struct scsi_exec_args {
+-	unsigned char *sense;		/* sense buffer */
+-	unsigned int sense_len;		/* sense buffer len */
+-	struct scsi_sense_hdr *sshdr;	/* decoded sense header */
+-	blk_mq_req_flags_t req_flags;	/* BLK_MQ_REQ flags */
+-	int *resid;			/* residual length */
+-};
+-
+-int scsi_execute_cmd(struct scsi_device *sdev, const unsigned char *cmd,
+-		     blk_opf_t opf, void *buffer, unsigned int bufflen,
+-		     int timeout, int retries,
+-		     const struct scsi_exec_args *args);
+-
++extern int __scsi_execute(struct scsi_device *sdev, const unsigned char *cmd,
++			int data_direction, void *buffer, unsigned bufflen,
++			unsigned char *sense, struct scsi_sense_hdr *sshdr,
++			int timeout, int retries, blk_opf_t flags,
++			req_flags_t rq_flags, int *resid);
+ /* Make sure any sense buffer is the correct size. */
+-#define scsi_execute(_sdev, _cmd, _data_dir, _buffer, _bufflen, _sense,	\
+-		     _sshdr, _timeout, _retries, _flags, _rq_flags,	\
+-		     _resid)						\
++#define scsi_execute(sdev, cmd, data_direction, buffer, bufflen, sense,	\
++		     sshdr, timeout, retries, flags, rq_flags, resid)	\
+ ({									\
+-	scsi_execute_cmd(_sdev, _cmd, (_data_dir == DMA_TO_DEVICE ?	\
+-			 REQ_OP_DRV_OUT : REQ_OP_DRV_IN) | _flags,	\
+-			 _buffer, _bufflen, _timeout, _retries,	\
+-			 &(struct scsi_exec_args) {			\
+-				.sense = _sense,			\
+-				.sshdr = _sshdr,			\
+-				.req_flags = _rq_flags & RQF_PM  ?	\
+-						BLK_MQ_REQ_PM : 0,	\
+-				.resid = _resid,			\
+-			 });						\
++	BUILD_BUG_ON((sense) != NULL &&					\
++		     sizeof(sense) != SCSI_SENSE_BUFFERSIZE);		\
++	__scsi_execute(sdev, cmd, data_direction, buffer, bufflen,	\
++		       sense, sshdr, timeout, retries, flags, rq_flags,	\
++		       resid);						\
+ })
+-
+ static inline int scsi_execute_req(struct scsi_device *sdev,
+ 	const unsigned char *cmd, int data_direction, void *buffer,
+ 	unsigned bufflen, struct scsi_sense_hdr *sshdr, int timeout,
+ 	int retries, int *resid)
+ {
+-	return scsi_execute_cmd(sdev, cmd,
+-				data_direction == DMA_TO_DEVICE ?
+-				REQ_OP_DRV_OUT : REQ_OP_DRV_IN, buffer,
+-				bufflen, timeout, retries,
+-				&(struct scsi_exec_args) {
+-					.sshdr = sshdr,
+-					.resid = resid,
+-				});
++	return scsi_execute(sdev, cmd, data_direction, buffer,
++		bufflen, NULL, sshdr, timeout, retries,  0, 0, resid);
+ }
+ extern void sdev_disable_disk_events(struct scsi_device *sdev);
+ extern void sdev_enable_disk_events(struct scsi_device *sdev);
 
 
 
