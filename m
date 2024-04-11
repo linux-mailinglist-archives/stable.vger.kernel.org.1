@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A5D8A0E26
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:11:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 019828A0F9A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18B8B1F21618
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:11:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84402B2329A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 921DB145B14;
-	Thu, 11 Apr 2024 10:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD07146A71;
+	Thu, 11 Apr 2024 10:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDJOK9o6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ArSebLjO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EEDD1448EF;
-	Thu, 11 Apr 2024 10:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E21140E3D;
+	Thu, 11 Apr 2024 10:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830290; cv=none; b=QA3WYPPNakPq7AnPvW5Qh/MvFjSbZcCN2KJeqQrCRDZFbC6zrrNqQ4J7qsFv7//c/TEumRaenXh0M/0j+uwWJLugCa5XBY/cqHaj2gJo/fAPnNj/qq/Au91DGx/pi7kkBURCjXP4l+OwiK14gCaUoBDc57kTwdD2bTdtdayiwbo=
+	t=1712831131; cv=none; b=ZKhJJ8p/mByErprrvsgVmCF5YsTKS7zNFRWIMlkhJk8r/td+Np2UE+k+HDfVOPQz6MKx5fieyJFlOlpGj7Pp1p7p7y9mZmFiQnJLZ/wMvwg1zklTRO40hGe5rlX8NGFXW0nZwyQYK8f5o7hHB3Wh+SrHmNjQzmV1aUSQ1mpRHWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830290; c=relaxed/simple;
-	bh=G/nXTX9L8DmZSzknHOjhpcW8Rc1qfDuCKHPNl9Szyiw=;
+	s=arc-20240116; t=1712831131; c=relaxed/simple;
+	bh=FK6iNNZKAFWoQF6Pwvw+/vMlwUZ1Ozto8HUy/kpOzrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hXiuvcXHAxuf0XQor3XE1y7qSGvlhVRFmDgy9yYP3W4DLhmCcRCEltXnZypYgBL6lYhvCQuGeT+HTuY1Eh2BPIfZHsLHaTtb+DY6GETI/6W4fYaeQ40emlCE1Kx54TjT+oNvhBzdwHhk/isot80lEUKBcGS7MjcI934jbpGQC2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDJOK9o6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C641AC433C7;
-	Thu, 11 Apr 2024 10:11:29 +0000 (UTC)
+	 MIME-Version; b=O/0sRFmSiRlltYSM1M1CYrcppPTdiaLth02JuXO5WH4AwEPfX2c/D/fQQf4jR8YxnHmhWDxYK7cJuFlohyMcdLeyTiyfeMDkwRHFFek5/NKFpS0GPLSJ+p/kfK6rrJUVSbsSb8voaF27tF1ZvmnbcrwYitfBla2hBFFIs/tTLyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ArSebLjO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29129C433F1;
+	Thu, 11 Apr 2024 10:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830290;
-	bh=G/nXTX9L8DmZSzknHOjhpcW8Rc1qfDuCKHPNl9Szyiw=;
+	s=korg; t=1712831131;
+	bh=FK6iNNZKAFWoQF6Pwvw+/vMlwUZ1Ozto8HUy/kpOzrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HDJOK9o6gCHTUI4ToC5zsJdU5M056Xwi/LgOlz3jUK9uaGY2kSEJyXpcDOL/MX/cx
-	 CnSnqf/9Y+SMit4g/eEI1RNRhA53M7CPzxIX0cG/fxUsCZbEs/kf6jw0lagUwCu6u+
-	 QpzZxPUKkWgPOXBjxwfRuhxq8TyMQ61Q/Bp7xTr4=
+	b=ArSebLjOxOjkRdqT/ZGM9EQ36zLD9W5ctdE3fyxv/ZbztwGKKsl8ry86KX11xwJZb
+	 9mqAdjwjkcjldIPNqfF56hYukvRnmh1m136cTND2LS+wI09FnrJfCSdsDcUUUJhvZG
+	 AAciUr+xeOWVe/j4msZwgONKt4/gqFikY7Z1ch3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Dionne-Riel <samuel@dionne-riel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Po-Hao Huang <phhuang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 061/143] drm: panel-orientation-quirks: Add quirk for GPD Win Mini
+Subject: [PATCH 6.6 002/114] wifi: rtw89: fix null pointer access when abort scan
 Date: Thu, 11 Apr 2024 11:55:29 +0200
-Message-ID: <20240411095422.752415919@linuxfoundation.org>
+Message-ID: <20240411095416.932648929@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Dionne-Riel <samuel@dionne-riel.com>
+From: Po-Hao Huang <phhuang@realtek.com>
 
-[ Upstream commit 2f862fdc0fd802e728b6ca96bc78ec3f01bf161e ]
+[ Upstream commit 7e11a2966f51695c0af0b1f976a32d64dee243b2 ]
 
-This adds a DMI orientation quirk for the GPD Win Mini panel.
+During cancel scan we might use vif that weren't scanning.
+Fix this by using the actual scanning vif.
 
-Signed-off-by: Samuel Dionne-Riel <samuel@dionne-riel.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231222030149.3740815-2-samuel@dionne-riel.com
+Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240119081501.25223-6-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/wireless/realtek/rtw89/mac80211.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 3d92f66e550c3..aa93129c3397e 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -117,6 +117,12 @@ static const struct drm_dmi_panel_orientation_data lcd1080x1920_leftside_up = {
- 	.orientation = DRM_MODE_PANEL_ORIENTATION_LEFT_UP,
- };
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index e70757e4dc2c1..8aed0d101bf3b 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -422,7 +422,7 @@ static void rtw89_ops_bss_info_changed(struct ieee80211_hw *hw,
+ 			 * when disconnected by peer
+ 			 */
+ 			if (rtwdev->scanning)
+-				rtw89_hw_scan_abort(rtwdev, vif);
++				rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
+ 		}
+ 	}
  
-+static const struct drm_dmi_panel_orientation_data lcd1080x1920_rightside_up = {
-+	.width = 1080,
-+	.height = 1920,
-+	.orientation = DRM_MODE_PANEL_ORIENTATION_RIGHT_UP,
-+};
-+
- static const struct drm_dmi_panel_orientation_data lcd1200x1920_rightside_up = {
- 	.width = 1200,
- 	.height = 1920,
-@@ -279,6 +285,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "G1618-03")
- 		},
- 		.driver_data = (void *)&lcd720x1280_rightside_up,
-+	}, {	/* GPD Win Mini */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "GPD"),
-+		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "G1617-01")
-+		},
-+		.driver_data = (void *)&lcd1080x1920_rightside_up,
- 	}, {	/* I.T.Works TW891 */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "To be filled by O.E.M."),
+@@ -971,7 +971,7 @@ static int rtw89_ops_remain_on_channel(struct ieee80211_hw *hw,
+ 	}
+ 
+ 	if (rtwdev->scanning)
+-		rtw89_hw_scan_abort(rtwdev, vif);
++		rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
+ 
+ 	if (type == IEEE80211_ROC_TYPE_MGMT_TX)
+ 		roc->state = RTW89_ROC_MGMT;
 -- 
 2.43.0
 
