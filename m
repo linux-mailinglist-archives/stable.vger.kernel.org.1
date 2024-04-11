@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-39132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8360B8A120F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:50:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C3F8A117D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A5BEB241A2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D5352869B6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5B0146A93;
-	Thu, 11 Apr 2024 10:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536541448C8;
+	Thu, 11 Apr 2024 10:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XELMgP0N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ee5A9Rtt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED63879FD;
-	Thu, 11 Apr 2024 10:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142CB6BB29;
+	Thu, 11 Apr 2024 10:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832611; cv=none; b=Gr5lYoSij7g+jVc0czVp2TrcExFVMN2QZEMzN/i0rRks5ANSBd1AKqwUvWGq3TMQfzU8L7xrE4Bhz+qc1ZJof7/hIrhiripi8hAubcnpzJmq7XejuI6LaoZe903H9QSRofeLWWhRjxBVPZnrJUaE6aWI/KoXVWaO8AjaO+V5mKY=
+	t=1712832278; cv=none; b=RjWQBtNiHEncGTf584qm/NTnOnzE6ZfAE3EYEzrVx5qsUNZPQd7pab1LTv8CNhdk4M2tEtxSnUfVujWk0bP6roL3ny2B1W0+fK/8EA6CBXLkM7JMbrZSuuJJOhAKLoeHLVT9thMz681yvw6p/ODctGY0k9f4rbhNPCBgrh5HT7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832611; c=relaxed/simple;
-	bh=+rlw1V0qIUT3EM4JHpL3fCNV5QN+0Q+rfwHuifX240I=;
+	s=arc-20240116; t=1712832278; c=relaxed/simple;
+	bh=gcSPnO4nKHSi2UEz5P4xswuvLmXg+YMonLBm46ZooEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gyOpjYDV+MfA3Noq10aOpf13JoIlx/42LcpLH+cRkEZ5SH4MMaZ2Sdzdup9oVmbzZrG4ozptfK+P8mgVoMl7ogh2bd1/srtgu4XiVQdr2BixFzD2az9hg7S2b0npUFsC5t8Z6d5+W8i5KrL4WUzA3y6KzotK3b7Srl51sBnObEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XELMgP0N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72786C433C7;
-	Thu, 11 Apr 2024 10:50:10 +0000 (UTC)
+	 MIME-Version; b=Xv/UQh1dAuidY5DjyEZQPjiysScSoQbc6Fr28FZF3sgs3tCSBpgvB4r2+H7/c7PvTyioEvE2ufB4C7Vk6uB7j+zKJkl2OY1SyINHEi/uyV+hWjkE9f7USO8MANe4A/2ixK5RXyD3KJ8cLk0eObI85NgRt26GgaPpiAc/Sfup7+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ee5A9Rtt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D00C433C7;
+	Thu, 11 Apr 2024 10:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832610;
-	bh=+rlw1V0qIUT3EM4JHpL3fCNV5QN+0Q+rfwHuifX240I=;
+	s=korg; t=1712832277;
+	bh=gcSPnO4nKHSi2UEz5P4xswuvLmXg+YMonLBm46ZooEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XELMgP0NTZSXwL51pIjmlPN5F9zMBBQFO9CcMifvT1pMOTAdO1GVWdPO/fVdJNcie
-	 KWDwSPI3gf9V8VisexrT6beos24V5IMD+KsjV1m01Aj1cy6Yuqxt0ZoWHKr4sma3fe
-	 3HSfdA3rC4zWzI9QDHRYe+598iPLGa3FyY8cCDxc=
+	b=Ee5A9RttvAk8KkYHYDoDBPqY/38SLo8VfzdT0M8kCHkRICUuwHcLF20SGrhU6pHuY
+	 Y+E/w2atsIE3b/uWhmLpdNkAEfC5YLLTeBS7q3c1XMnNzHq2ksnpn0hIA22FK8/4ul
+	 4CcVeNK8PxpmLlfm5Fejgqbl0xjfJIRUDpapbeJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Henrie <alexhenrie24@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 24/57] isofs: handle CDs with bad root inode but good Joliet root directory
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.10 289/294] Bluetooth: btintel: Fixe build regression
 Date: Thu, 11 Apr 2024 11:57:32 +0200
-Message-ID: <20240411095408.727835565@linuxfoundation.org>
+Message-ID: <20240411095444.233823629@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 4243bf80c79211a8ca2795401add9c4a3b1d37ca ]
+commit 6e62ebfb49eb65bdcbfc5797db55e0ce7f79c3dd upstream.
 
-I have a CD copy of the original Tom Clancy's Ghost Recon game from
-2001. The disc mounts without error on Windows, but on Linux mounting
-fails with the message "isofs_fill_super: get root inode failed". The
-error originates in isofs_read_inode, which returns -EIO because de_len
-is 0. The superblock on this disc appears to be intentionally corrupt as
-a form of copy protection.
+This fixes the following build regression:
 
-When the root inode is unusable, instead of giving up immediately, try
-to continue with the Joliet file table. This fixes the Ghost Recon CD
-and probably other copy-protected CDs too.
+drivers-bluetooth-btintel.c-btintel_read_version()-warn:
+passing-zero-to-PTR_ERR
 
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20240208022134.451490-1-alexhenrie24@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b79e04091010 ("Bluetooth: btintel: Fix null ptr deref in btintel_read_version")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/isofs/inode.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btintel.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/isofs/inode.c b/fs/isofs/inode.c
-index 0c6eacfcbeef1..07252d2a7f5f2 100644
---- a/fs/isofs/inode.c
-+++ b/fs/isofs/inode.c
-@@ -908,8 +908,22 @@ static int isofs_fill_super(struct super_block *s, void *data, int silent)
- 	 * we then decide whether to use the Joliet descriptor.
- 	 */
- 	inode = isofs_iget(s, sbi->s_firstdatazone, 0);
--	if (IS_ERR(inode))
--		goto out_no_root;
-+
-+	/*
-+	 * Fix for broken CDs with a corrupt root inode but a correct Joliet
-+	 * root directory.
-+	 */
-+	if (IS_ERR(inode)) {
-+		if (joliet_level && sbi->s_firstdatazone != first_data_zone) {
-+			printk(KERN_NOTICE
-+			       "ISOFS: root inode is unusable. "
-+			       "Disabling Rock Ridge and switching to Joliet.");
-+			sbi->s_rock = 0;
-+			inode = NULL;
-+		} else {
-+			goto out_no_root;
-+		}
-+	}
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -344,13 +344,13 @@ int btintel_read_version(struct hci_dev
+ 	struct sk_buff *skb;
  
- 	/*
- 	 * Fix for broken CDs with Rock Ridge and empty ISO root directory but
--- 
-2.43.0
-
+ 	skb = __hci_cmd_sync(hdev, 0xfc05, 0, NULL, HCI_CMD_TIMEOUT);
+-	if (IS_ERR_OR_NULL(skb)) {
++	if (IS_ERR(skb)) {
+ 		bt_dev_err(hdev, "Reading Intel version information failed (%ld)",
+ 			   PTR_ERR(skb));
+ 		return PTR_ERR(skb);
+ 	}
+ 
+-	if (skb->len != sizeof(*ver)) {
++	if (!skb || skb->len != sizeof(*ver)) {
+ 		bt_dev_err(hdev, "Intel version event size mismatch");
+ 		kfree_skb(skb);
+ 		return -EILSEQ;
 
 
 
