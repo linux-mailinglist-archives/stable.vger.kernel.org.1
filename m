@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-39112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B738A11FA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 637908A1227
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:51:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2BCBB273EA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94A1D1C2267D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347B513BC33;
-	Thu, 11 Apr 2024 10:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D2C13BC33;
+	Thu, 11 Apr 2024 10:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7zr1dOm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWLiDfvi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E915A79FD;
-	Thu, 11 Apr 2024 10:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC841E48E;
+	Thu, 11 Apr 2024 10:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832552; cv=none; b=inrscvx6Y83rBgEQyFxt3PpBJlwsZxa2MF21GDqY8eyTc3IusVZPrbSC2gvHVRJkpBnHGtRKE0dp1dgd/UAxfqQiXaXQHMudswF7lda8Pofihu9kXwhoxWMxBkeVvzkz7gBcnyARGF+UEmQVxjL1qzTHdOifdtJvrkUOsDMF9bI=
+	t=1712832679; cv=none; b=EbVwF4+EhGOh5dUviEndLEeanY3gtd+0oJwFiZMxohgNTR74yx8WxSmiJHJztLwJPolfJjnBZUTMk6afYQMhTZs0V9UQenTVRuc2pblCMHUxDEWD7Cdkjj7IE8R4qHpNzvvzL0d5dRtEtc6awqKfuWAnT6xzTy15rCA+LTFonvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832552; c=relaxed/simple;
-	bh=JdoerpNV+zIlOC76QWrOqcl5L3j73ul+RYBiGKnAuNU=;
+	s=arc-20240116; t=1712832679; c=relaxed/simple;
+	bh=jMnytF2zrywdmJrUkPs1nXl35BJwHHP4wNvHNJFAJ9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iQQyiyvCVAKRk8eBiOWOTNQ7p66lp4ijbs2L/PYvq8POBPYmPiTjJI5i4pV8JbktVwMG2EalnCgHDkJVWn0Ta76nmRxUTc25Uiq04/ytBdIWS1iISFu6GUdNy89StUqKC1t/hc71Xv/VWubwdwHHsvXmmPqmtWX5vTRfKoNObgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7zr1dOm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FEE5C433F1;
-	Thu, 11 Apr 2024 10:49:11 +0000 (UTC)
+	 MIME-Version; b=C292p1jvZbGeLu7jockZByFXsez4YW+oHSyvG6PM/tP+V6Vyu1x8/VMkKAoh6g9puze3IANhuVed9jE6/zw4KU8p7/KxNo/gIqIIv7nhlaIniKCsoXFbeZJImgfa+OJoQNbXojRsV6ealQlXEZLlvSKuBFKKl5inJlqBkuewib8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWLiDfvi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16737C433C7;
+	Thu, 11 Apr 2024 10:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832551;
-	bh=JdoerpNV+zIlOC76QWrOqcl5L3j73ul+RYBiGKnAuNU=;
+	s=korg; t=1712832679;
+	bh=jMnytF2zrywdmJrUkPs1nXl35BJwHHP4wNvHNJFAJ9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r7zr1dOmewPcbcXhOlGVMZhqTgrRj4StwSfmLS5iT+t8OyghReiuF2D8iXqPIGx4K
-	 6oPRUsqH7OXQTGqQlI2KSLtwA4u02oMMrWUX6eQW2CJS4L5aGR9YtLPl27oaUhaNOG
-	 mG3AxuHi2q54ex0g7a66MW5OxxvasJEY7tF9negk=
+	b=tWLiDfviI18yEDM58SC5MFynYcljYu9hwzbBx3O0ZymdXiHCpiU1icr/hpKDiF2rq
+	 9+/J30Z0S38//JUex6sZEyo1cKvA1u2ehPbPIwoLRpGunoAFmIIfvy6/1zg4o3K0CX
+	 ij0o6s89T0BquyMu+ZBDbpHkx6nlK+PDWABvgDm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 80/83] Bluetooth: btintel: Fixe build regression
-Date: Thu, 11 Apr 2024 11:57:52 +0200
-Message-ID: <20240411095415.097351290@linuxfoundation.org>
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 45/57] fbmon: prevent division by zero in fb_videomode_from_videomode()
+Date: Thu, 11 Apr 2024 11:57:53 +0200
+Message-ID: <20240411095409.352978961@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+References: <20240411095407.982258070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-commit 6e62ebfb49eb65bdcbfc5797db55e0ce7f79c3dd upstream.
+[ Upstream commit c2d953276b8b27459baed1277a4fdd5dd9bd4126 ]
 
-This fixes the following build regression:
+The expression htotal * vtotal can have a zero value on
+overflow. It is necessary to prevent division by zero like in
+fb_var_to_videomode().
 
-drivers-bluetooth-btintel.c-btintel_read_version()-warn:
-passing-zero-to-PTR_ERR
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Fixes: b79e04091010 ("Bluetooth: btintel: Fix null ptr deref in btintel_read_version")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btintel.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/core/fbmon.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/bluetooth/btintel.c
-+++ b/drivers/bluetooth/btintel.c
-@@ -405,13 +405,13 @@ int btintel_read_version(struct hci_dev
- 	struct sk_buff *skb;
+diff --git a/drivers/video/fbdev/core/fbmon.c b/drivers/video/fbdev/core/fbmon.c
+index b0e690f41025a..9ca99da3a56a0 100644
+--- a/drivers/video/fbdev/core/fbmon.c
++++ b/drivers/video/fbdev/core/fbmon.c
+@@ -1311,7 +1311,7 @@ int fb_get_mode(int flags, u32 val, struct fb_var_screeninfo *var, struct fb_inf
+ int fb_videomode_from_videomode(const struct videomode *vm,
+ 				struct fb_videomode *fbmode)
+ {
+-	unsigned int htotal, vtotal;
++	unsigned int htotal, vtotal, total;
  
- 	skb = __hci_cmd_sync(hdev, 0xfc05, 0, NULL, HCI_CMD_TIMEOUT);
--	if (IS_ERR_OR_NULL(skb)) {
-+	if (IS_ERR(skb)) {
- 		bt_dev_err(hdev, "Reading Intel version information failed (%ld)",
- 			   PTR_ERR(skb));
- 		return PTR_ERR(skb);
- 	}
- 
--	if (skb->len != sizeof(*ver)) {
-+	if (!skb || skb->len != sizeof(*ver)) {
- 		bt_dev_err(hdev, "Intel version event size mismatch");
- 		kfree_skb(skb);
- 		return -EILSEQ;
+ 	fbmode->xres = vm->hactive;
+ 	fbmode->left_margin = vm->hback_porch;
+@@ -1344,8 +1344,9 @@ int fb_videomode_from_videomode(const struct videomode *vm,
+ 	vtotal = vm->vactive + vm->vfront_porch + vm->vback_porch +
+ 		 vm->vsync_len;
+ 	/* prevent division by zero */
+-	if (htotal && vtotal) {
+-		fbmode->refresh = vm->pixelclock / (htotal * vtotal);
++	total = htotal * vtotal;
++	if (total) {
++		fbmode->refresh = vm->pixelclock / total;
+ 	/* a mode must have htotal and vtotal != 0 or it is invalid */
+ 	} else {
+ 		fbmode->refresh = 0;
+-- 
+2.43.0
+
 
 
 
