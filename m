@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C848A0DAD
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:06:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8976F8A1169
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7195A2864C2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:06:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB9D01C203AC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBAF145B05;
-	Thu, 11 Apr 2024 10:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EE813FD9F;
+	Thu, 11 Apr 2024 10:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n79MrkPB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwzAa7e9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CED31442F7;
-	Thu, 11 Apr 2024 10:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7825564CC0;
+	Thu, 11 Apr 2024 10:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829992; cv=none; b=F62cgJcCjFnOVYkBf+qDFMXXLi9D+jDhWpOZkY0y5dlZWa6yhZByEs3hG0t4aLd6M5pYGb5MB26sIRNsQyg/+JeGRbRuNRl68Dzw79g7yleTmg4b5ddS4dOygy4zWJnZif7vK1uaOsNWQ+QwfTtknU7L1SLye+qePn2frscIbMk=
+	t=1712832230; cv=none; b=PXAafTWj/iJLBBKh4q0LsachfmxemZpcnXNhYG9hMLZWAzvoibUalnWg85jx4FOWJO8+1vkC1aQdrPUHHWkgroaBzqoSVNKBF/79qFqu2pM4J71PmDjabtrTbrOPr67wVeCpu0i5QknuqGMlse3VDbvGBkophOZh9vpxXDdtt5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829992; c=relaxed/simple;
-	bh=4D+UE3Qj7lU1Aj00SE9qyyEQ7dM1Aro2zxGrkiVPhFs=;
+	s=arc-20240116; t=1712832230; c=relaxed/simple;
+	bh=IaQaFdsV1uJ8Ca2PX3D0w6nXUeKj8yHL4Dxx2/RBo0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K0o5FWS/0lSy5JI3g4eeaTNNpQWssHkYlFMkwAnFbOQah//XPIrncMdSU1Odof2k9LBzm35k0RB1k3dcHgamdLKyHvD6FN2leioVw0G/VTw+BkiytY++mOY3eh2y0bwqOY/KUcumkaAIt7JapJ59HBLDsbvlaWldKdlCH569+y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n79MrkPB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156E5C433C7;
-	Thu, 11 Apr 2024 10:06:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eqzkgmk3qh1G+JahMJJilPDFktXI7jf1enEynAcrRxsWereCMloTC3yIdebxk/XXeWElwuizsMgtSnpho9NojdGAOaivRJGg0L7x7FTnGdWlOFM1lmVe+v8pvoxY7J2UGgSmk+j72b4uEOaJIzGVAPt/LWHYbgrK8uuir9/0xVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwzAa7e9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC486C433C7;
+	Thu, 11 Apr 2024 10:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829992;
-	bh=4D+UE3Qj7lU1Aj00SE9qyyEQ7dM1Aro2zxGrkiVPhFs=;
+	s=korg; t=1712832230;
+	bh=IaQaFdsV1uJ8Ca2PX3D0w6nXUeKj8yHL4Dxx2/RBo0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n79MrkPB6oMm6tvysmzOIjAcFQsPNoZ/JdR/yt9nBmPJl+F0Dr8/vY9ZrxEnssTe5
-	 saTMcwcGVllci7pyJ41iBnUWlK2taStheFfGVAIPdEhId/fcyi7DRLBlcJpgYZWXLp
-	 YeoKmyrMNCIE1KgIHF6y6w5LF9Hzy+X7p9K2U9LY=
+	b=ZwzAa7e9BhLoj3PrjfZLugUMIAmwqR/X8bSCoQf46XyZFB/aTpLikNnpAlslf8LU7
+	 r0XRXlGsXBj3MLcZ0sGUJ5cfVgEsMiUqlckWbkU+8GErhNkVAt9rWpLdV69sUC+XOb
+	 pJQEZzYMia6XmsYhEPLI2/Q0Ymb5UiF15Dj9GEYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 4.19 175/175] initramfs: fix populate_initrd_image() section mismatch
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 5.10 235/294] x86/mce: Make sure to grab mce_sysfs_mutex in set_bank()
 Date: Thu, 11 Apr 2024 11:56:38 +0200
-Message-ID: <20240411095424.831633827@linuxfoundation.org>
+Message-ID: <20240411095442.654621976@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +59,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 4ada1e810038e9dbc20e40b524e05ee1a9d31f98 upstream.
+commit 3ddf944b32f88741c303f0b21459dbb3872b8bc5 upstream.
 
-With gcc-4.6.3:
+Modifying a MCA bank's MCA_CTL bits which control which error types to
+be reported is done over
 
-    WARNING: vmlinux.o(.text.unlikely+0x140): Section mismatch in reference from the function populate_initrd_image() to the variable .init.ramfs.info:__initramfs_size
-    The function populate_initrd_image() references
-    the variable __init __initramfs_size.
-    This is often because populate_initrd_image lacks a __init
-    annotation or the annotation of __initramfs_size is wrong.
+  /sys/devices/system/machinecheck/
+  ├── machinecheck0
+  │   ├── bank0
+  │   ├── bank1
+  │   ├── bank10
+  │   ├── bank11
+  ...
 
-    WARNING: vmlinux.o(.text.unlikely+0x14c): Section mismatch in reference from the function populate_initrd_image() to the function .init.text:unpack_to_rootfs()
-    The function populate_initrd_image() references
-    the function __init unpack_to_rootfs().
-    This is often because populate_initrd_image lacks a __init
-    annotation or the annotation of unpack_to_rootfs is wrong.
+sysfs nodes by writing the new bit mask of events to enable.
 
-    WARNING: vmlinux.o(.text.unlikely+0x198): Section mismatch in reference from the function populate_initrd_image() to the function .init.text:xwrite()
-    The function populate_initrd_image() references
-    the function __init xwrite().
-    This is often because populate_initrd_image lacks a __init
-    annotation or the annotation of xwrite is wrong.
+When the write is accepted, the kernel deletes all current timers and
+reinits all banks.
 
-Indeed, if the compiler decides not to inline populate_initrd_image(), a
-warning is generated.
+Doing that in parallel can lead to initializing a timer which is already
+armed and in the timer wheel, i.e., in use already:
 
-Fix this by adding the missing __init annotations.
+  ODEBUG: init active (active state 0) object: ffff888063a28000 object
+  type: timer_list hint: mce_timer_fn+0x0/0x240 arch/x86/kernel/cpu/mce/core.c:2642
+  WARNING: CPU: 0 PID: 8120 at lib/debugobjects.c:514
+  debug_print_object+0x1a0/0x2a0 lib/debugobjects.c:514
 
-Link: http://lkml.kernel.org/r/20190617074340.12779-1-geert@linux-m68k.org
-Fixes: 7c184ecd262fe64f ("initramfs: factor out a helper to populate the initrd image")
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fix that by grabbing the sysfs mutex as the rest of the MCA sysfs code
+does.
+
+Reported by: Yue Sun <samsun1006219@gmail.com>
+Reported by: xingwei lee <xrivendell7@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/CAEkJfYNiENwQY8yV1LYJ9LjJs%2Bx_-PqMv98gKig55=2vbzffRw@mail.gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/initramfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/mce/core.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/init/initramfs.c
-+++ b/init/initramfs.c
-@@ -603,7 +603,7 @@ static void __init clean_rootfs(void)
- #endif
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -2389,12 +2389,14 @@ static ssize_t set_bank(struct device *s
+ 		return -EINVAL;
  
- #ifdef CONFIG_BLK_DEV_RAM
--static void populate_initrd_image(char *err)
-+static void __init populate_initrd_image(char *err)
- {
- 	ssize_t written;
- 	struct file *file;
+ 	b = &per_cpu(mce_banks_array, s->id)[bank];
+-
+ 	if (!b->init)
+ 		return -ENODEV;
+ 
+ 	b->ctl = new;
++
++	mutex_lock(&mce_sysfs_mutex);
+ 	mce_restart();
++	mutex_unlock(&mce_sysfs_mutex);
+ 
+ 	return size;
+ }
 
 
 
