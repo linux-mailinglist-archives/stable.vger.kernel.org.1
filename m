@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882CF8A0D86
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:04:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 592F38A0FB0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA2771C21B00
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:04:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE2711F287EE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39EE3145FE6;
-	Thu, 11 Apr 2024 10:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDCB146D4C;
+	Thu, 11 Apr 2024 10:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnoFy/kh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blwnsiYS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB57E1448F3;
-	Thu, 11 Apr 2024 10:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEA6146A82;
+	Thu, 11 Apr 2024 10:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829891; cv=none; b=UXsRRg+bjoJNBf1egGk07qoCbpZ0zWdGO6l59ZNhmrifpMZMR4EpbUvdqE2hjtEPVA5qbJUy5Oia66kerCoZhvSfpQ/mnbhR1rPzKB7FPCnPIHwEJR59UXFrMCPJgMze7goODWqBccQNmziTtlXEZs/ZIRIPMPwugnf/KPgWNP8=
+	t=1712831182; cv=none; b=exSorY8Uk/C/ZIIu+69r5uWkF+yQqqwWJR09E4EUNzGVq0mzDQHvTZ1ywx496yZqEhxYAIlKc5ZyDMnwUXUpvtOKDU0ep66fE/b/BZkg8RrmeEBVBRnLTgNJPNFgFsaYM7GZdiJ89dJktgpi2KaOTRxuXrBcRWMhIpy032651Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829891; c=relaxed/simple;
-	bh=3mdurn2LCd3QYO1NMKM8oNxmEU8BuHQXm9l15J9A7fI=;
+	s=arc-20240116; t=1712831182; c=relaxed/simple;
+	bh=/5sGp5u9mYmlKo30JrXsmgfapT1qkF2+PXhmry1P1Ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qtqu8Dtk+eXsPgsBa1ph3saudQapMtD6BMYz9RRJuJBwQNHUnc7qvo4VBbfSHA+irmiwXY/GIH/iszAPrqPUxK4Fw0N8ecd9ioEr+pDla1nT15fGqWhv3q/qfe8/xznnTi6zGbUxIb6pisaYU9/KA9MUxZdSz3Yz9gT0MtCfbNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnoFy/kh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73EC2C43390;
-	Thu, 11 Apr 2024 10:04:50 +0000 (UTC)
+	 MIME-Version; b=Wp7VOnOYZuJyH7U5cnsYbYEdVPIBQu0m6ry3aA6ZllLQRnt1Cyx8sVUxA1oSl1fBcqucp2PssysxhBYf0hVPOhKvFatCo7L920MZgXvnmoLeNDYnN3/ik2/tOImfH3Uz+2baIbGvtRoa4RuHWweiYooT63skkQv9AkPd3XXct40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blwnsiYS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C27C433C7;
+	Thu, 11 Apr 2024 10:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829890;
-	bh=3mdurn2LCd3QYO1NMKM8oNxmEU8BuHQXm9l15J9A7fI=;
+	s=korg; t=1712831181;
+	bh=/5sGp5u9mYmlKo30JrXsmgfapT1qkF2+PXhmry1P1Ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wnoFy/khXmPohEJJsSTRrZQmIFGyUitdqnpjtb6EDNdpm33hypYtuE9UEqleqO16d
-	 QOsQ5M3Je8m7clBK04FMzljXk2BpSUDvFGkw3ocOZWHpHN9dioxlqoPm5q0jgFTlnO
-	 NEsfbgNXNRUEw8W3H0/8aJa/8X5Ure5FHt6BbzH8=
+	b=blwnsiYS/b/bZE5JZOuxfr7u39ltOIqMEZafNvFe/XWYoQCrx7j5QPxJqz1//mv+4
+	 9lUzBZXBICfpIGXWhHaJE/FM11mftXZJ3uf/Z3Jnz5if+8b+4Bw8vzA0d7uqXxPvSg
+	 NWsD/bamDH009uxYtRAkZFje4MR5kGFKhacGcZW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Lee <slee08177@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 140/175] ASoC: ops: Fix wraparound for mask in snd_soc_get_volsw
+Subject: [PATCH 6.6 036/114] wifi: iwlwifi: Add missing MODULE_FIRMWARE() for *.pnvm
 Date: Thu, 11 Apr 2024 11:56:03 +0200
-Message-ID: <20240411095423.780169996@linuxfoundation.org>
+Message-ID: <20240411095417.961175900@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Lee <slee08177@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit fc563aa900659a850e2ada4af26b9d7a3de6c591 ]
+[ Upstream commit 4223675d2b5912060a85e48fd8fee51207e00957 ]
 
-In snd_soc_info_volsw(), mask is generated by figuring out the index of
-the most significant bit set in max and converting the index to a
-bitmask through bit shift 1. Unintended wraparound occurs when max is an
-integer value with msb bit set. Since the bit shift value 1 is treated
-as an integer type, the left shift operation will wraparound and set
-mask to 0 instead of all 1's. In order to fix this, we type cast 1 as
-`1ULL` to prevent the wraparound.
+A few models require *.pnvm files while we don't declare them via
+MODULE_FIRMWARE().  This resulted in the breakage of WiFi on the
+system that relies on the information from modinfo (e.g. openSUSE
+installer image).
 
-Fixes: 7077148fb50a ("ASoC: core: Split ops out of soc-core.c")
-Signed-off-by: Stephen Lee <slee08177@gmail.com>
-Link: https://msgid.link/r/20240326010131.6211-1-slee08177@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This patch adds those missing MODULE_FIRMWARE() entries for *.pnvm
+files.
+
+type=feature
+ticket=none
+
+Link: https://bugzilla.opensuse.org/show_bug.cgi?id=1207553
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://msgid.link/20240228163837.4320-1-tiwai@suse.de
+[move to appropriate files]
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-ops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/cfg/ax210.c | 6 ++++++
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c    | 2 ++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index e01f3bf3ef171..08ed973b2d975 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -252,7 +252,7 @@ int snd_soc_get_volsw(struct snd_kcontrol *kcontrol,
- 	int max = mc->max;
- 	int min = mc->min;
- 	int sign_bit = mc->sign_bit;
--	unsigned int mask = (1 << fls(max)) - 1;
-+	unsigned int mask = (1ULL << fls(max)) - 1;
- 	unsigned int invert = mc->invert;
- 	int val;
- 	int ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
+index 8d5f9dce71d58..dc9667586de9e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
+@@ -299,3 +299,9 @@ MODULE_FIRMWARE(IWL_MA_B_HR_B_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_MA_B_GF_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_MA_B_GF4_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_MA_B_MR_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
++
++MODULE_FIRMWARE("iwlwifi-so-a0-gf-a0.pnvm");
++MODULE_FIRMWARE("iwlwifi-so-a0-gf4-a0.pnvm");
++MODULE_FIRMWARE("iwlwifi-ty-a0-gf-a0.pnvm");
++MODULE_FIRMWARE("iwlwifi-ma-b0-gf-a0.pnvm");
++MODULE_FIRMWARE("iwlwifi-ma-b0-gf4-a0.pnvm");
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+index 42e765fe3cfe1..cc71b513adf98 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+@@ -179,3 +179,5 @@ MODULE_FIRMWARE(IWL_BZ_A_FM_C_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_BZ_A_FM4_B_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_GL_B_FM_B_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_GL_C_FM_C_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
++
++MODULE_FIRMWARE("iwlwifi-gl-c0-fm-c0.pnvm");
 -- 
 2.43.0
 
