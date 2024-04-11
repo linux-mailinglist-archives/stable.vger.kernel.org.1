@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B61B8A0D2A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:01:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC8EA8A0DEE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22CBEB24D19
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:01:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDFAC1C21C94
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F50B145B07;
-	Thu, 11 Apr 2024 10:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B15145FFA;
+	Thu, 11 Apr 2024 10:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtHn7XyE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TyuPQXrx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5182EAE5;
-	Thu, 11 Apr 2024 10:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29D4145B13;
+	Thu, 11 Apr 2024 10:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829658; cv=none; b=Kg9T6x0t84rty49bCmhDSEUB9QRG7WZlL/waQp2iVF7o3ph0y5//TnS0rSapI0MDOQvu1gA0VIDCTkJsVGDPnzyEsAy77S60ekJP1FHAgzAKWguVUKyNuWqJQfVux4KOth+Zzb7tg09jJGNo883AGavhStidX6eyheE42YjuJ3Y=
+	t=1712830161; cv=none; b=VFH3FvT9M8dEuEyyDob/Ek1UK4ECstsli8uXakJYkMlbkJu0JbNL6XxI+NouJdZTVzvEER8aMZISZBhGInQ160+uHYlby4UKf3XRCrgL1/98bVcAr/ggDnNWOsNGPaabWu0OeXW80scc8vOU72N1yGDmGtwPZznm33jpkZZeCsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829658; c=relaxed/simple;
-	bh=SLiohcervRLDneKut0KfdMDc+0rEcJDOFGfLHBzwhTY=;
+	s=arc-20240116; t=1712830161; c=relaxed/simple;
+	bh=aRxm/L6M3IMdFWnKtipOmMNS/iaRgvQ+8an12SgmKOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fNbLP9Kx/Ug0yFvQmhXNJIQBkQAtaWCFAwPDYb+LI86FHCT9u60qNL+nw90Yj4WEDEgrPq9dTdz4+bcqX+0dAzYjLKr4V701BXBRsfvSmDVh5SDKKvG5FqtlLmPM5oY2aIw88y8cOKDV1U+nSEUun/qk7MCFkPSNYRmjjV+aCPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtHn7XyE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7753C433F1;
-	Thu, 11 Apr 2024 10:00:57 +0000 (UTC)
+	 MIME-Version; b=BXiqZb9hmZgGeyLJI0mPp3Fdx2t97CWttC0LL0Ke6sHtsUqnrOY0nKLWzz0iuhIZqV6s6DH+Mdf7CU/gnrxOJxeFe/eraroNbvg7MjchjN8Cv5zOMs48hyzgUKASfw9a+5GTLl/SbIbv6DJO9gm+mafzgKvL1APPiRBePhBAi20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TyuPQXrx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668C1C433C7;
+	Thu, 11 Apr 2024 10:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829658;
-	bh=SLiohcervRLDneKut0KfdMDc+0rEcJDOFGfLHBzwhTY=;
+	s=korg; t=1712830160;
+	bh=aRxm/L6M3IMdFWnKtipOmMNS/iaRgvQ+8an12SgmKOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qtHn7XyE0DWPwzs4nXiUzeqBnIF2r3wbEqdvBZhz2twp8zkCWXyzq7fBAljjQnNky
-	 ScFLxo6qFzRT5d5d5oUfb5HrLUJMkVTfCveG/A85K3AH6yG6e1V17RwIWRgdenEymE
-	 2OQICVvgBqrwbdh93NTNmPMwTk2d7EfeVdT5lWV4=
+	b=TyuPQXrxUIRFLePHIJ60s1kp00P9MU4nlqamCCAm4yx2bPn822tncvFaG//Se98SC
+	 pI85JeOP7puGLw7P/aXn8xFV8C/tPIhswZ6FZ2umcFsRvEMaVoLK9fvWzqRA5L9dyT
+	 IoMdG3HiOght6GCOfV654Dm9ish5PFf/c0o9CM3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	Petr Mladek <pmladek@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 061/175] drm/vc4: hdmi: do not return negative values from .get_modes()
+Subject: [PATCH 6.8 016/143] panic: Flush kernel log buffer at the end
 Date: Thu, 11 Apr 2024 11:54:44 +0200
-Message-ID: <20240411095421.402610830@linuxfoundation.org>
+Message-ID: <20240411095421.399663150@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: John Ogness <john.ogness@linutronix.de>
 
-[ Upstream commit abf493988e380f25242c1023275c68bd3579c9ce ]
+[ Upstream commit d988d9a9b9d180bfd5c1d353b3b176cb90d6861b ]
 
-The .get_modes() hooks aren't supposed to return negative error
-codes. Return 0 for no modes, whatever the reason.
+If the kernel crashes in a context where printk() calls always
+defer printing (such as in NMI or inside a printk_safe section)
+then the final panic messages will be deferred to irq_work. But
+if irq_work is not available, the messages will not get printed
+unless explicitly flushed. The result is that the final
+"end Kernel panic" banner does not get printed.
 
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: stable@vger.kernel.org
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/dcda6d4003e2c6192987916b35c7304732800e08.1709913674.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Add one final flush after the last printk() call to make sure
+the final panic messages make it out as well.
+
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20240207134103.1357162-14-john.ogness@linutronix.de
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/panic.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index 1161662664577..013dfc63c824e 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -276,7 +276,7 @@ static int vc4_hdmi_connector_get_modes(struct drm_connector *connector)
- 	edid = drm_get_edid(connector, vc4->hdmi->ddc);
- 	cec_s_phys_addr_from_edid(vc4->hdmi->cec_adap, edid);
- 	if (!edid)
--		return -ENODEV;
-+		return 0;
+diff --git a/kernel/panic.c b/kernel/panic.c
+index 2807639aab51d..f22d8f33ea147 100644
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -446,6 +446,14 @@ void panic(const char *fmt, ...)
  
- 	vc4_encoder->hdmi_monitor = drm_detect_hdmi_monitor(edid);
- 
+ 	/* Do not scroll important messages printed above */
+ 	suppress_printk = 1;
++
++	/*
++	 * The final messages may not have been printed if in a context that
++	 * defers printing (such as NMI) and irq_work is not available.
++	 * Explicitly flush the kernel log buffer one last time.
++	 */
++	console_flush_on_panic(CONSOLE_FLUSH_PENDING);
++
+ 	local_irq_enable();
+ 	for (i = 0; ; i += PANIC_TIMER_STEP) {
+ 		touch_softlockup_watchdog();
 -- 
 2.43.0
 
