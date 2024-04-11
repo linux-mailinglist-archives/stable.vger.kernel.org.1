@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D56398A1080
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:36:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC598A0EB5
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63D07B23044
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:36:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7BE11F21D43
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D24149E0B;
-	Thu, 11 Apr 2024 10:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD8013E897;
+	Thu, 11 Apr 2024 10:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kML5ux3V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vtEJ8Hit"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330DA13D258;
-	Thu, 11 Apr 2024 10:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A097145353;
+	Thu, 11 Apr 2024 10:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831636; cv=none; b=fukdACX4vvxXJtLVD3uyxiDMS8/PV8Yol2ejzAGxOxomIN9KW8/QPKiSvPGjae/oowpD0c1eei7AcJmwrmAoCgyuPkHz7d/sQkt7RrMfeej+TtvLyOcAgOuBYytmCrGL3c1cRP046FlxJwbVdPoDEFplkOfbof/aAwyCBKUbIJQ=
+	t=1712830644; cv=none; b=Sj3q/rCehFaotWDFtKbVv2akO8CfBgk2JsdkaSJHegGndM65BF6n/fwzHFgo+AmCwXpvNcfL4btbW6VCvnymGHYxG3YcPB2b2JSaUPnGmcKyH1CBmXuHWOJhIJNGLR2XL8HEKxawqg8OxySGBrISTxulHkcv3+Ux138wWerGKX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831636; c=relaxed/simple;
-	bh=s+r+Br2xJWUVvZ4BF5lhJa9uLAayM5MqGKv1t8GLLQo=;
+	s=arc-20240116; t=1712830644; c=relaxed/simple;
+	bh=rbHgf2o/Qv7MEmQco/IQ2KAO3E8e7vi1Gat2GqDxGiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mh24xuQiIGSQdb4jmKHVmt/DX0wj8jgEReelgnI6+2jA5+o4jk++vP65mSuizaMznsAvXmOQBwuyGH2vCh2VE660nqYH30/18FeiQMUiB8agpV3o/N7mR6CgGV6Prnhyp73qAbV/qzee2IHADr0C+i79zdtSPwBAVr2uLwKMtqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kML5ux3V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9FB2C433F1;
-	Thu, 11 Apr 2024 10:33:55 +0000 (UTC)
+	 MIME-Version; b=EQavr2MvfDjR76Qt1I+5Ga4af2/YqICFQ6NSmg2EWwtoBg0ACzM8fOMZZp+vCaOs9uKdCEA4V0QsdNPj23T0H7MkhSbD30ZgC2h/iKEwnbLxOHjzZTi9zd5ARzySbrt6pGurK45EimnRE/Eee1x4m3FpWTknNYidAeI4oSCsgDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vtEJ8Hit; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 820C4C433F1;
+	Thu, 11 Apr 2024 10:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831636;
-	bh=s+r+Br2xJWUVvZ4BF5lhJa9uLAayM5MqGKv1t8GLLQo=;
+	s=korg; t=1712830643;
+	bh=rbHgf2o/Qv7MEmQco/IQ2KAO3E8e7vi1Gat2GqDxGiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kML5ux3VLM+IPEO62UEgMjU7XI2yv8qPM9TPn3L3oepNdYSMXEgbos6Fl6ExY/wy8
-	 V0AJxj1qWduud4zfAL904OVzFPV9uT1X6LeDho5St+IP03HSWtzStwH8TofXssVHkj
-	 /8xTXj5xQqas6W416zEvB8vX6dP/wNh2/NRGQNFc=
+	b=vtEJ8HitLWjZVsJ3ghCiq9vOO2cJZ33/Wdr/uTaVe/UYOG/2q2iJ4AcSkT1fK+FXV
+	 nymWLbbhvqi5bhgYZ3/5P7YlSMieLY/PQn4/uXBCzYpGLisTyiH/2oTnUruy20XdNn
+	 B8Lwm8w53fkt6Xy2ER/M4Hck2audPC58yzlWJAGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 076/294] slimbus: core: Remove usage of the deprecated ida_simple_xx() API
+Subject: [PATCH 5.4 030/215] parisc: Fix csum_ipv6_magic on 32-bit systems
 Date: Thu, 11 Apr 2024 11:53:59 +0200
-Message-ID: <20240411095437.977781745@linuxfoundation.org>
+Message-ID: <20240411095425.803750394@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 89ffa4cccec54467446f141a79b9e36893079fb8 ]
+[ Upstream commit 4408ba75e4ba80c91fde7e10bccccf388f5c09be ]
 
-ida_alloc() and ida_free() should be preferred to the deprecated
-ida_simple_get() and ida_simple_remove().
+Calculating the IPv6 checksum on 32-bit systems missed overflows when
+adding the proto+len fields into the checksum. This results in the
+following unit test failure.
 
-Note that the upper limit of ida_simple_get() is exclusive, but the one of
-ida_alloc_range() is inclusive. So change this change allows one more
-device. Previously address 0xFE was never used.
+    # test_csum_ipv6_magic: ASSERTION FAILED at lib/checksum_kunit.c:506
+    Expected ( u64)csum_result == ( u64)expected, but
+        ( u64)csum_result == 46722 (0xb682)
+        ( u64)expected == 46721 (0xb681)
+    not ok 5 test_csum_ipv6_magic
 
-Fixes: 46a2bb5a7f7e ("slimbus: core: Add slim controllers support")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240224114137.85781-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is probably rarely seen in the real world because proto+len are
+usually small values which will rarely result in overflows when calculating
+the checksum. However, the unit test code uses large values for the length
+field, causing the test to fail.
+
+Fix the problem by adding the missing carry into the final checksum.
+
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Tested-by: Charlie Jenkins <charlie@rivosinc.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/slimbus/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/parisc/include/asm/checksum.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/slimbus/core.c b/drivers/slimbus/core.c
-index 1d2bc181da050..69f6178f294c8 100644
---- a/drivers/slimbus/core.c
-+++ b/drivers/slimbus/core.c
-@@ -438,8 +438,8 @@ static int slim_device_alloc_laddr(struct slim_device *sbdev,
- 		if (ret < 0)
- 			goto err;
- 	} else if (report_present) {
--		ret = ida_simple_get(&ctrl->laddr_ida,
--				     0, SLIM_LA_MANAGER - 1, GFP_KERNEL);
-+		ret = ida_alloc_max(&ctrl->laddr_ida,
-+				    SLIM_LA_MANAGER - 1, GFP_KERNEL);
- 		if (ret < 0)
- 			goto err;
+diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
+index 7efcd901b9656..0a02639514505 100644
+--- a/arch/parisc/include/asm/checksum.h
++++ b/arch/parisc/include/asm/checksum.h
+@@ -178,7 +178,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ "	ldw,ma		4(%2), %7\n"	/* 4th daddr */
+ "	addc		%6, %0, %0\n"
+ "	addc		%7, %0, %0\n"
+-"	addc		%3, %0, %0\n"	/* fold in proto+len, catch carry */
++"	addc		%3, %0, %0\n"	/* fold in proto+len */
++"	addc		0, %0, %0\n"	/* add carry */
  
+ #endif
+ 	: "=r" (sum), "=r" (saddr), "=r" (daddr), "=r" (len),
 -- 
 2.43.0
 
