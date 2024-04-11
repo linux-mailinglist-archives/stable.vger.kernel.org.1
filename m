@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-38601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4476C8A0F7B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C6438A11B7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:46:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8EA71F27DC3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F5551F21256
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC11146A64;
-	Thu, 11 Apr 2024 10:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DDF145B28;
+	Thu, 11 Apr 2024 10:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZ4KwyyM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSBUUlgj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA43140E3D;
-	Thu, 11 Apr 2024 10:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E8913D24D;
+	Thu, 11 Apr 2024 10:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831052; cv=none; b=qk2n36gTjP4SzBjYpXqjPxv3siOyAFRymNKkXh0dd7g5YBafGM2R6/D/Iro4RDy7KkgmK8MP5u62BFUY18q4UzpF+149dswgyr7+oJLAxJ/3rm43Wssp3CUTNVT6t3MMjdrzUv3JolUlfGXq/70nCUmNG9Exzazsw24siCfLn+Y=
+	t=1712832404; cv=none; b=b+ye6D8o3g2/iqNGu31eHL3EiUBpXfPAvPzEZOaQq2SCO7o3Y4dWir85i4i+HPWO7V+aCexZ0wMlRmCzDKT1n7O86H6BZB5Y75YlGnBnBdKKq9eOcfcRTOOtvdhPchEAvDaiMXlY97FJkX1mgCiTSq3Im2CqleZc5SaA3m2wKcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831052; c=relaxed/simple;
-	bh=czFLmSbOes7MTA0cA+WPlPd3/elLzU+hLicCp/XooWY=;
+	s=arc-20240116; t=1712832404; c=relaxed/simple;
+	bh=dhyCdCAbNjb0xoHTqhiTRAJSSSDejF2xLyfP5Z7AB3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=opbfDwwpKIWDz2szxDxSdO8EOpmmupraHqwMazLRlOyKS4mBqaQCyzsCYEUMh78ss6h8Vqze73t98UG4Dg6dB9C/DQlIBMoU/YaYiTNlHQ0uQflu+3DSflNkp/9+Z1yGk8OyUvxIv+ZCsvHToXxph2ZG5opHRPG7Kk3zj9/SCbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZ4KwyyM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D46C43399;
-	Thu, 11 Apr 2024 10:24:11 +0000 (UTC)
+	 MIME-Version; b=Fd1vzXCH8uDM9q0JAGn8p/C6O750GgSIim78Q/+Aa1NgAE31LqHLO2i+2CFD2rMh8rUIs1kgf34B6kJu4i9MoeYHahzGheUr2yC2MdLxcQOLD1Yq9EbhpQc7SNfA+zgtNaOQZbtK2ri7qB19wlxiS3qKMf6vRff4qRhLlka3+IA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSBUUlgj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D99C43390;
+	Thu, 11 Apr 2024 10:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831052;
-	bh=czFLmSbOes7MTA0cA+WPlPd3/elLzU+hLicCp/XooWY=;
+	s=korg; t=1712832404;
+	bh=dhyCdCAbNjb0xoHTqhiTRAJSSSDejF2xLyfP5Z7AB3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZ4KwyyML+11pezDC5MVz5pPSrgKICW4du2EyNV/7uqGxjOCcwVvB2joXJOXP0vCx
-	 vYHJ9DFX1q8VVCcKV37uF8YwbjtljW70APbnX+vQoc5AztvM+qUnasmSwxBb0yu1t2
-	 rhJMuXfQ3iAjK8N4kUa0r6UtKrbDlHx/SFaIdxl8=
+	b=DSBUUlgjnKv6uXzKUWCV9YAQtCD9416sjwigjkAedDtxW9gbUf+CtnJcWuRdCXIHL
+	 IlRCAXqZrgRgAYyn2pyFOEKTNtD/6puQ8yP/TzYlfK5ou/STYNd9hoyz7+OEetzwYs
+	 yhUeyg/jcy6sCUS7mTGnpvyxkjf2WRZD3oANsVp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Aric Cyr <aric.cyr@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 190/215] drm/amd/display: Fix nanosec stat overflow
+Subject: [PATCH 6.1 07/83] wifi: iwlwifi: pcie: Add the PCI device id for new hardware
 Date: Thu, 11 Apr 2024 11:56:39 +0200
-Message-ID: <20240411095430.574694860@linuxfoundation.org>
+Message-ID: <20240411095412.897640105@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +64,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aric Cyr <aric.cyr@amd.com>
+From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 
-[ Upstream commit 14d68acfd04b39f34eea7bea65dda652e6db5bf6 ]
+[ Upstream commit 6770eee75148ba10c0c051885379714773e00b48 ]
 
-[Why]
-Nanosec stats can overflow on long running systems potentially causing
-statistic logging issues.
+Add the support for a new PCI device id.
 
-[How]
-Use 64bit types for nanosec stats to ensure no overflow.
-
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Aric Cyr <aric.cyr@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240129211905.fde32107e0a3.I597cff4f340e4bed12b7568a0ad504bd4b2c1cf8@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/inc/mod_stats.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h b/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
-index 3812094b52e8f..88b312c3eb43a 100644
---- a/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
-+++ b/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
-@@ -51,10 +51,10 @@ void mod_stats_update_event(struct mod_stats *mod_stats,
- 		unsigned int length);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 4d4db5f6836be..7f30e6add9933 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -505,6 +505,7 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
  
- void mod_stats_update_flip(struct mod_stats *mod_stats,
--		unsigned long timestamp_in_ns);
-+		unsigned long long timestamp_in_ns);
- 
- void mod_stats_update_vupdate(struct mod_stats *mod_stats,
--		unsigned long timestamp_in_ns);
-+		unsigned long long timestamp_in_ns);
- 
- void mod_stats_update_freesync(struct mod_stats *mod_stats,
- 		unsigned int v_total_min,
+ /* Bz devices */
+ 	{IWL_PCI_DEVICE(0x2727, PCI_ANY_ID, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0x272D, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0xA840, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0x7740, PCI_ANY_ID, iwl_bz_trans_cfg)},
 -- 
 2.43.0
 
