@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-38248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0A78A0DB0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:06:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B341D8A0E3D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:12:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E0351F224F5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:06:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E46B31C2181C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6CAC145B05;
-	Thu, 11 Apr 2024 10:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F59C145B28;
+	Thu, 11 Apr 2024 10:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIPcmLZk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnsE6vWN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A261442F7;
-	Thu, 11 Apr 2024 10:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30701448EF;
+	Thu, 11 Apr 2024 10:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829998; cv=none; b=D9bWd03o3qnYOKsIn9f0irhc3h2QceZKM46TA4tRvtI5RdxWOySPpr2RZMN9c5umOuCKHA60zmod2nd5dWxQbzAdfFgURXnn/a+rn14QENzzpUivxtEyWROBTJe1AQbDTp6dJnN0i3/14Zt6mEgnvfLt5IFzgNqKUQAGsPIf62I=
+	t=1712830354; cv=none; b=GpNUNkdXEPsMrwaaFuKxoytizzm7hymyttzdDIWcTbV586ljh0OizU00AAijOFk9LV6XeY+NWBKZc5SfGkzJC4HE4FL7rzPK7wMhVvJYNa8RFxDH4f19h3+BqSRAB1Yu2CLFX2eAoq1ZdRn+htnhqfUtEY8RJrZT4CDKriTAeBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829998; c=relaxed/simple;
-	bh=MYQlsxjKSJxpCiIedykWyxuVkIjmOZjJcsWOJEpGVmc=;
+	s=arc-20240116; t=1712830354; c=relaxed/simple;
+	bh=lGvQwM7zmU5mZTtNvnsEpV9RivuLlE3Zx/IGcWD5Toc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f3yKl1LioFf1TYwQ2gXgH9QVE2zO+Dyg9/gDDjOMUG/0oyumniJzgg+6OJNW2xHQm2EkxrHfOWZlFQHp5z9hzwCaMVzUPDP/SFx8zy3BgHFHfW8OYiwp9ARMc+gravTXoqeKIDtEd1RGCf65EEpHM6Zg4E22JqOdNBpvP2AgU5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIPcmLZk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080E6C433C7;
-	Thu, 11 Apr 2024 10:06:37 +0000 (UTC)
+	 MIME-Version; b=us/k31DXvQco+z5V2FGyPW8FggouNdwouauysSqX0eh4QG1zxZlp5SPRllc64pFaC03PpBeKKToRUn0n1spt5SbuY9ChqufnREiZUazLJW0ZJ1f4QU+jlPwAe8nm9pBa789/SPMx4j0ZWruL6J6NSoPehIfhQ4JpiTKFV7R+7mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnsE6vWN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DFC4C433F1;
+	Thu, 11 Apr 2024 10:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829998;
-	bh=MYQlsxjKSJxpCiIedykWyxuVkIjmOZjJcsWOJEpGVmc=;
+	s=korg; t=1712830354;
+	bh=lGvQwM7zmU5mZTtNvnsEpV9RivuLlE3Zx/IGcWD5Toc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RIPcmLZkvQvLVcwd6Q44fXXQO2dIQ/pNsCoga4yN/0ZqvkPV04JgIdVvVnJMSS9jj
-	 gnxQ7p8ukuvSv92ET4097di1NVSS98XuHSU7YbV6UdzSTq5kXygw3AmFEx1sXWubPr
-	 k3WMIVJCo6kX8Kgk7jXHrdxWhsd3bses/uMHGe2A=
+	b=nnsE6vWN8DYJuXdC5v78HxCgGogxXi2uDFbRrHtvkfpKn/Nm1zT0zDTVWIJ5Sm1JL
+	 2VkBqG0AGChluHbj4cPVSHnd18W6fokwRYyQcp9wFRPsQ93HQMrtkzJ3EHWlieAtFU
+	 BuNS8d4hirUimYs7hJy2CzLgJLuUEgvO19Llb5NM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Colin Ian King <colin.i.king@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 164/175] usb: sl811-hcd: only defined function checkdone if QUIRK2 is defined
+Subject: [PATCH 6.8 119/143] usb: sl811-hcd: only defined function checkdone if QUIRK2 is defined
 Date: Thu, 11 Apr 2024 11:56:27 +0200
-Message-ID: <20240411095424.501771210@linuxfoundation.org>
+Message-ID: <20240411095424.488893010@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -85,7 +85,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/usb/host/sl811-hcd.c b/drivers/usb/host/sl811-hcd.c
-index 6dedefada92b1..873300e8cd277 100644
+index 0956495bba575..2b871540bb500 100644
 --- a/drivers/usb/host/sl811-hcd.c
 +++ b/drivers/usb/host/sl811-hcd.c
 @@ -585,6 +585,7 @@ done(struct sl811 *sl811, struct sl811h_ep *ep, u8 bank)
