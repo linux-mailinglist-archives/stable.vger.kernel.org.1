@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-39086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 972C48A11DC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DDA98A1180
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A228B27062
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FD671C2289F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994A86BB29;
-	Thu, 11 Apr 2024 10:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26830146A95;
+	Thu, 11 Apr 2024 10:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkZT1hlN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="to18QeIU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E6379FD;
-	Thu, 11 Apr 2024 10:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F556BB29;
+	Thu, 11 Apr 2024 10:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832475; cv=none; b=DBs3wKxQQEbzK8RCtYB9YshfJwSO8rGTEAdKwvbKPklYdB5t3lk+MkLAlGRxgBbXsYCT/kvBt+3tTO0B8nYiGAZOSO1YwgrzisKtLyPHHaHctqF2n4U8Fesn5TseIVBNMnph/E//HiD51IFglto1id4UDzaEhGMxo6Sq0rf9tuE=
+	t=1712832283; cv=none; b=YedgB0ydZQahnut6SIhZlxaGyKiMaDB+WqCi1X8TSF35oSfqbdSmF5tZJw0y1p512BTs0GFwzt3KHv071c9oh/s5qpGq0c9xHSD4ONiaHTJO48Kq7Dnf+SFaIRaCuuRa7xYBLsbP9mq/6ErO3B5RmfSGCzn8idesAR4XRg9Zwus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832475; c=relaxed/simple;
-	bh=GXrH28C+wwE4dcNGYD7Hi2n01T0Vd8UrrfKuUvWFSdU=;
+	s=arc-20240116; t=1712832283; c=relaxed/simple;
+	bh=SgWa6znbpwoHX2kJBorBmES38HFakoa4ZInLD3xdEwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uS6kuovNbxjyyrFamzdhwFQY91Vk827kx0MByegFYixeuTmE6fui7K0ceou2ZnJ1A+R4QXkkjF5MpQQr6mDSUuzq2MLEXB4exEI1WoDRo3xPXIiBtWzTrpgiNnolBPvVYOIbJNUBRdnUW+i3Hojo5wEWT8zTVf86gBJ0ELyPq4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkZT1hlN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0431C433F1;
-	Thu, 11 Apr 2024 10:47:54 +0000 (UTC)
+	 MIME-Version; b=X0ljiShP43hpgjWcWTrKupeMOR/XRI7xZHEYg7zTs51vE4z2+PdtnXfbbrOBb6nyYcphJVAH+QyhSDMHlMq6moSJ/4PfcmfXM1jmCjt1TdKJcAS3ubwRDSMNccxLhgMdMz6LHyeNrx1OBIU8klE50007w5eTntjvQijL3Q2E/kU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=to18QeIU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57060C433C7;
+	Thu, 11 Apr 2024 10:44:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832475;
-	bh=GXrH28C+wwE4dcNGYD7Hi2n01T0Vd8UrrfKuUvWFSdU=;
+	s=korg; t=1712832283;
+	bh=SgWa6znbpwoHX2kJBorBmES38HFakoa4ZInLD3xdEwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BkZT1hlNOP+7Qi/XGrIhNWnSh0nOLNSWFMx9pNFAwTMcStvC/3Qe144Td53JOltLb
-	 jc1sFagU85wTHK+i5QM/E4mLeQzfsAnaY2gjXxDbq6bE9p+/PAN/i9maAbXxOivgmI
-	 JQTafGDvbb1X8gFv2BO8LNSwaNyf7eLueSs4NRV0=
+	b=to18QeIUbI88N/D4BXOZfLe13mYGSemWPaGUsY8y+KNa7U/5HZASGXUgT7bOA7EBP
+	 rPEbKCHYgUDjFHtri6FBBQklD+LOiPHIv1dpumvVoVbw/oYno8B2aamBhkitG9MPaZ
+	 dGy0OJF1GX9dEsAmI0SqvjgiNJP/fyhtOcV9qknY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 61/83] usb: typec: tcpci: add generic tcpci fallback compatible
-Date: Thu, 11 Apr 2024 11:57:33 +0200
-Message-ID: <20240411095414.521207902@linuxfoundation.org>
+	Michal Kubecek <mkubecek@suse.cz>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.10 291/294] kbuild: dummy-tools: adjust to stricter stackprotector check
+Date: Thu, 11 Apr 2024 11:57:34 +0200
+Message-ID: <20240411095444.296508241@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Felsch <m.felsch@pengutronix.de>
+From: Michal Kubecek <mkubecek@suse.cz>
 
-[ Upstream commit 8774ea7a553e2aec323170d49365b59af0a2b7e0 ]
+commit c93db682cfb213501881072a9200a48ce1dc3c3f upstream.
 
-The driver already support the tcpci binding for the i2c_device_id so
-add the support for the of_device_id too.
+Commit 3fb0fdb3bbe7 ("x86/stackprotector/32: Make the canary into a regular
+percpu variable") modified the stackprotector check on 32-bit x86 to check
+if gcc supports using %fs as canary. Adjust dummy-tools gcc script to pass
+this new test by returning "%fs" rather than "%gs" if it detects
+-mstack-protector-guard-reg=fs on command line.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240222210903.208901-3-m.felsch@pengutronix.de
+Fixes: 3fb0fdb3bbe7 ("x86/stackprotector/32: Make the canary into a regular percpu variable")
+Signed-off-by: Michal Kubecek <mkubecek@suse.cz>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpci.c | 1 +
- 1 file changed, 1 insertion(+)
+ scripts/dummy-tools/gcc |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-index 816945913ed0d..f649769912e53 100644
---- a/drivers/usb/typec/tcpm/tcpci.c
-+++ b/drivers/usb/typec/tcpm/tcpci.c
-@@ -875,6 +875,7 @@ MODULE_DEVICE_TABLE(i2c, tcpci_id);
- #ifdef CONFIG_OF
- static const struct of_device_id tcpci_of_match[] = {
- 	{ .compatible = "nxp,ptn5110", },
-+	{ .compatible = "tcpci", },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, tcpci_of_match);
--- 
-2.43.0
-
+--- a/scripts/dummy-tools/gcc
++++ b/scripts/dummy-tools/gcc
+@@ -76,7 +76,11 @@ fi
+ if arg_contain -S "$@"; then
+ 	# For scripts/gcc-x86-*-has-stack-protector.sh
+ 	if arg_contain -fstack-protector "$@"; then
+-		echo "%gs"
++		if arg_contain -mstack-protector-guard-reg=fs "$@"; then
++			echo "%fs"
++		else
++			echo "%gs"
++		fi
+ 		exit 0
+ 	fi
+ fi
 
 
 
