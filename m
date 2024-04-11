@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-39152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFDE68A1224
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:51:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B398A1173
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DC171C21ABF
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:51:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB7BC1C23B89
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD7E1448F3;
-	Thu, 11 Apr 2024 10:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6C6146A93;
+	Thu, 11 Apr 2024 10:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxSBhib3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYWvC0hM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB871E48E;
-	Thu, 11 Apr 2024 10:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AFC1465AA;
+	Thu, 11 Apr 2024 10:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832670; cv=none; b=lfw2FHHOxI/bQ7j8fy494zc2+ChsFUU8fM0LT0up/6tuOlMmaM0tWVxRELPyKMnLkXpukQK0AV6wlPY2gemgsL4oR5pQvP4rGPOoVzWFc8cotOu3vxrFDxLPSmSR4NfpEV6kxEjPG8vW2APFn4HvP27KqPNgoixDU8ja841wknM=
+	t=1712832251; cv=none; b=k7KjQIvz9Z6JDybBbciGGytYOlDOvxHFCAsOd9Ghqok4D5XK12cbzI8qO4Hpe71Rr4LPcRjyvVqs6cE0qI8YVc2h4nbLKKDUKkj1ILcWD4bBSUsuM850ORPj4x2qyyE8ZCA/POF3Jsa9jVwu2ko/jnS/cWqjAs2djKzXpP7gvxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832670; c=relaxed/simple;
-	bh=4HuwDXwpHqrq/bxqbKJzHaJXnFiuPkQRQAKQWOTFgaE=;
+	s=arc-20240116; t=1712832251; c=relaxed/simple;
+	bh=BK/+KHmssIe8u4pQk21GehITA6wrbjD0khuEfZw+hHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GLyjYPrY5aZ4tmWeydCGyq+c58OykGGZ825eoPk8e+U2d3fZGECk6oPie8myow4IZt3RyCDxVgjfo68wTujSWCdDucAw7UOfQ+72ggEE4QXL9BK0HZeCsZZbGcEaZzOg+8ZIN4eOtSwQ7ror9/RPyPq0vz9fjUzX6BuuvH0Ci4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxSBhib3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53BC7C433C7;
-	Thu, 11 Apr 2024 10:51:10 +0000 (UTC)
+	 MIME-Version; b=H3saAay0ehyS7MJMtlviwdmsIZNH8GRB2mhE6AfbQyJwb0r9+cQUNvfrIK7tVjjvuzG5l+A2N/r4cWjiS8VY/+n10jOAhu/3Mo8wIRV1oAnDcWFL08nquwhPXekSIzODDGcOA8tYQ7jVnJAM94ZbHVwSqRBQlH/d8gL6S2/h4n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYWvC0hM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713C2C433F1;
+	Thu, 11 Apr 2024 10:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832670;
-	bh=4HuwDXwpHqrq/bxqbKJzHaJXnFiuPkQRQAKQWOTFgaE=;
+	s=korg; t=1712832250;
+	bh=BK/+KHmssIe8u4pQk21GehITA6wrbjD0khuEfZw+hHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxSBhib3NFTDUifuLxR+z3DyIjhupZrU6ZlzVyfzb/UYcZd8izONer+mPY5wOcjQd
-	 PiWNjYcWhDjvCgKmna7Ic+8i8iztROQdl9aE3p/Avjba1C8eWlVKqEKImMS83+R7Is
-	 0mmK5gXDC4ct9oOlQ4dwShdR4TcN7e/cV/XxqvS8=
+	b=HYWvC0hMXBBRj81dWuUhaZadC1d5rsX+MY1/ZDlBryHOzZbZFWDkwDZNw/nySsiM8
+	 6nhASJf8z8w6RJdm/AKbf4bDP0Ze7OVqhZzx+9gvFK3CLBTaFAyFRQQrn4KsO29vzi
+	 lbkDqxAXNp6SfBXw8zxLbu3E8n/anhJ+VsVqU+ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>,
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 16/57] btrfs: export: handle invalid inode or root reference in btrfs_get_parent()
+Subject: [PATCH 5.10 281/294] fbmon: prevent division by zero in fb_videomode_from_videomode()
 Date: Thu, 11 Apr 2024 11:57:24 +0200
-Message-ID: <20240411095408.486192422@linuxfoundation.org>
+Message-ID: <20240411095443.998522770@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-[ Upstream commit 26b66d1d366a375745755ca7365f67110bbf6bd5 ]
+[ Upstream commit c2d953276b8b27459baed1277a4fdd5dd9bd4126 ]
 
-The get_parent handler looks up a parent of a given dentry, this can be
-either a subvolume or a directory. The search is set up with offset -1
-but it's never expected to find such item, as it would break allowed
-range of inode number or a root id. This means it's a corruption (ext4
-also returns this error code).
+The expression htotal * vtotal can have a zero value on
+overflow. It is necessary to prevent division by zero like in
+fb_var_to_videomode().
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Found by Linux Verification Center (linuxtesting.org) with Svace.
+
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/export.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbmon.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/export.c b/fs/btrfs/export.c
-index fab7eb76e53b2..58b0f04d7123f 100644
---- a/fs/btrfs/export.c
-+++ b/fs/btrfs/export.c
-@@ -161,8 +161,15 @@ struct dentry *btrfs_get_parent(struct dentry *child)
- 	ret = btrfs_search_slot(NULL, root, &key, path, 0, 0);
- 	if (ret < 0)
- 		goto fail;
-+	if (ret == 0) {
-+		/*
-+		 * Key with offset of -1 found, there would have to exist an
-+		 * inode with such number or a root with such id.
-+		 */
-+		ret = -EUCLEAN;
-+		goto fail;
-+	}
+diff --git a/drivers/video/fbdev/core/fbmon.c b/drivers/video/fbdev/core/fbmon.c
+index 1bf82dbc9e3cf..3c29a5eb43805 100644
+--- a/drivers/video/fbdev/core/fbmon.c
++++ b/drivers/video/fbdev/core/fbmon.c
+@@ -1311,7 +1311,7 @@ int fb_get_mode(int flags, u32 val, struct fb_var_screeninfo *var, struct fb_inf
+ int fb_videomode_from_videomode(const struct videomode *vm,
+ 				struct fb_videomode *fbmode)
+ {
+-	unsigned int htotal, vtotal;
++	unsigned int htotal, vtotal, total;
  
--	BUG_ON(ret == 0); /* Key with offset of -1 found */
- 	if (path->slots[0] == 0) {
- 		ret = -ENOENT;
- 		goto fail;
+ 	fbmode->xres = vm->hactive;
+ 	fbmode->left_margin = vm->hback_porch;
+@@ -1344,8 +1344,9 @@ int fb_videomode_from_videomode(const struct videomode *vm,
+ 	vtotal = vm->vactive + vm->vfront_porch + vm->vback_porch +
+ 		 vm->vsync_len;
+ 	/* prevent division by zero */
+-	if (htotal && vtotal) {
+-		fbmode->refresh = vm->pixelclock / (htotal * vtotal);
++	total = htotal * vtotal;
++	if (total) {
++		fbmode->refresh = vm->pixelclock / total;
+ 	/* a mode must have htotal and vtotal != 0 or it is invalid */
+ 	} else {
+ 		fbmode->refresh = 0;
 -- 
 2.43.0
 
