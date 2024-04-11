@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A437E8A0DE6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B54288A0D4C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:02:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44A2E1F21813
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E69A51C22159
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:02:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EACE145B26;
-	Thu, 11 Apr 2024 10:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52FD414535A;
+	Thu, 11 Apr 2024 10:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gXgmIJa/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LceuyRTo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4B513B5B9;
-	Thu, 11 Apr 2024 10:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124631422C4;
+	Thu, 11 Apr 2024 10:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830143; cv=none; b=ctRD2vi5PcaKF1wTyQJDLUu+DcKk7hYUmNXszoiv60LtIGz1gS0jhSta9s8PsV/4erZ9YK0YE+JwMTqXZ/eSaFpGKzp6zzB9S6lLZCLeptH1EFkvlGkYFCeq6s02mfy+1hPRFSuGzCRzPXxvLBqjs0uDtO+8k32llZLQBl5+Bdc=
+	t=1712829750; cv=none; b=P6gt24R+dQcVgz++LcyVPqIS+zZULUYWxTk40t+VIvBfSemtKfM7BHJ8WCiejMK0TZEIMWTYR1mwVgOpKjed3lF/96wHjLKRP9OeKLRZf16tAw578Q3iEOEmLMHpJBEQz4OUR5FsLts9og3L3wYugZpYUNk44AcLYAAsWDBC/50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830143; c=relaxed/simple;
-	bh=QKG8LwkaFdK5hne7Qsh9EPU7tcP6l1d0ZtIGvgSFtMw=;
+	s=arc-20240116; t=1712829750; c=relaxed/simple;
+	bh=+oeTTC3ALWwMkt2MKi9kwo2aMtZxtlLh59KrYjM7l/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bxzA+FgTtGWzbInpAcxZhE3Qz+DkW3g6p0rHAJ3Gxg8FXPQpckIOeHOBgF21muBlua6Qzoob8h7egsYf3oyXSn0FVkqLJZEeIEhObSA62KORKx99fOGY39xDjJkXY/kj4GU/nkm+Ru6xQb9lVlEm22Y889zWiSO55CXeKawvX+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gXgmIJa/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5530C433F1;
-	Thu, 11 Apr 2024 10:09:02 +0000 (UTC)
+	 MIME-Version; b=IYk180LkzMzm1ZivOJB3sIbs/LhZ4oJ+VMd8eCzt1MMggqEfQ6FQbmmjs83QHAueJJytV1stwmcW5I3500Z6iBeF9P/se/IE//Al6QtLSlXIGcRZ1q8JG1INkrusKElqVtOevfL8KTa+0RBLgbgcolu8gmOfR1I2JbfQOwOxaZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LceuyRTo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C00C433C7;
+	Thu, 11 Apr 2024 10:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830143;
-	bh=QKG8LwkaFdK5hne7Qsh9EPU7tcP6l1d0ZtIGvgSFtMw=;
+	s=korg; t=1712829749;
+	bh=+oeTTC3ALWwMkt2MKi9kwo2aMtZxtlLh59KrYjM7l/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gXgmIJa/+2DdgqBsEb44rl8QtWNVcsQJJOoaO0IhzqkILumIkyDyGSBufrp50U70m
-	 Zgbnga5AhXvhJNKqCvW/iD2tstCnW1HWcjoksGKqWU8wCGsFA1YJ5XKDZDTGeAq0cv
-	 rvsueKaCaLDpUUxUQP89mJB0TCzSFkPH1/ydQBPY=
+	b=LceuyRToM23y0KWPiX2zO/cXoYY9v7Z53uc8HOpx9dWH+mZ14o5gyWx7nVqz+p3LA
+	 5BFTxc+GPfyNyY244cTqnA8zm0lu492Mwc/4XLi2iVlPL4GC+RMKwJ3DlhrP48Ih50
+	 BlHTvWVb5XRknkA8mWFiT1iQgN1Xj6fAJaNMBFps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 048/143] btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()
+	Martijn Coenen <maco@android.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Genjian Zhang <zhanggenjian@kylinos.cn>
+Subject: [PATCH 4.19 093/175] loop: Refactor loop_set_status() size calculation
 Date: Thu, 11 Apr 2024 11:55:16 +0200
-Message-ID: <20240411095422.363810641@linuxfoundation.org>
+Message-ID: <20240411095422.366009816@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Martijn Coenen <maco@android.com>
 
-[ Upstream commit 7411055db5ce64f836aaffd422396af0075fdc99 ]
+[ Upstream commit b0bd158dd630bd47640e0e418c062cda1e0da5ad ]
 
-The unhandled case in btrfs_relocate_sys_chunks() loop is a corruption,
-as it could be caused only by two impossible conditions:
+figure_loop_size() calculates the loop size based on the passed in
+parameters, but at the same time it updates the offset and sizelimit
+parameters in the loop device configuration. That is a somewhat
+unexpected side effect of a function with this name, and it is only only
+needed by one of the two callers of this function - loop_set_status().
 
-- at first the search key is set up to look for a chunk tree item, with
-  offset -1, this is an inexact search and the key->offset will contain
-  the correct offset upon a successful search, a valid chunk tree item
-  cannot have an offset -1
+Move the lo_offset and lo_sizelimit assignment back into loop_set_status(),
+and use the newly factored out functions to validate and apply the newly
+calculated size. This allows us to get rid of figure_loop_size() in a
+follow-up commit.
 
-- after first successful search, the found_key corresponds to a chunk
-  item, the offset is decremented by 1 before the next loop, it's
-  impossible to find a chunk item there due to alignment and size
-  constraints
-
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Martijn Coenen <maco@android.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/volumes.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/block/loop.c |   37 +++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index 5ccbb5f998175..f3890f7c78076 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -3440,7 +3440,17 @@ static int btrfs_relocate_sys_chunks(struct btrfs_fs_info *fs_info)
- 			mutex_unlock(&fs_info->reclaim_bgs_lock);
- 			goto error;
- 		}
--		BUG_ON(ret == 0); /* Corruption */
-+		if (ret == 0) {
-+			/*
-+			 * On the first search we would find chunk tree with
-+			 * offset -1, which is not possible. On subsequent
-+			 * loops this would find an existing item on an invalid
-+			 * offset (one less than the previous one, wrong
-+			 * alignment and size).
-+			 */
-+			ret = -EUCLEAN;
-+			goto error;
-+		}
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -248,11 +248,6 @@ figure_loop_size(struct loop_device *lo,
+ {
+ 	loff_t size = get_size(offset, sizelimit, lo->lo_backing_file);
  
- 		ret = btrfs_previous_item(chunk_root, path, key.objectid,
- 					  key.type);
--- 
-2.43.0
-
+-	if (lo->lo_offset != offset)
+-		lo->lo_offset = offset;
+-	if (lo->lo_sizelimit != sizelimit)
+-		lo->lo_sizelimit = sizelimit;
+-
+ 	loop_set_size(lo, size);
+ }
+ 
+@@ -1225,6 +1220,7 @@ loop_set_status(struct loop_device *lo,
+ 	kuid_t uid = current_uid();
+ 	struct block_device *bdev;
+ 	bool partscan = false;
++	bool size_changed = false;
+ 
+ 	err = mutex_lock_killable(&loop_ctl_mutex);
+ 	if (err)
+@@ -1246,6 +1242,7 @@ loop_set_status(struct loop_device *lo,
+ 
+ 	if (lo->lo_offset != info->lo_offset ||
+ 	    lo->lo_sizelimit != info->lo_sizelimit) {
++		size_changed = true;
+ 		sync_blockdev(lo->lo_device);
+ 		invalidate_bdev(lo->lo_device);
+ 	}
+@@ -1253,6 +1250,15 @@ loop_set_status(struct loop_device *lo,
+ 	/* I/O need to be drained during transfer transition */
+ 	blk_mq_freeze_queue(lo->lo_queue);
+ 
++	if (size_changed && lo->lo_device->bd_inode->i_mapping->nrpages) {
++		/* If any pages were dirtied after invalidate_bdev(), try again */
++		err = -EAGAIN;
++		pr_warn("%s: loop%d (%s) has still dirty pages (nrpages=%lu)\n",
++			__func__, lo->lo_number, lo->lo_file_name,
++			lo->lo_device->bd_inode->i_mapping->nrpages);
++		goto out_unfreeze;
++	}
++
+ 	err = loop_release_xfer(lo);
+ 	if (err)
+ 		goto out_unfreeze;
+@@ -1276,19 +1282,8 @@ loop_set_status(struct loop_device *lo,
+ 	if (err)
+ 		goto out_unfreeze;
+ 
+-	if (lo->lo_offset != info->lo_offset ||
+-	    lo->lo_sizelimit != info->lo_sizelimit) {
+-		/* kill_bdev should have truncated all the pages */
+-		if (lo->lo_device->bd_inode->i_mapping->nrpages) {
+-			err = -EAGAIN;
+-			pr_warn("%s: loop%d (%s) has still dirty pages (nrpages=%lu)\n",
+-				__func__, lo->lo_number, lo->lo_file_name,
+-				lo->lo_device->bd_inode->i_mapping->nrpages);
+-			goto out_unfreeze;
+-		}
+-		figure_loop_size(lo, info->lo_offset, info->lo_sizelimit);
+-	}
+-
++	lo->lo_offset = info->lo_offset;
++	lo->lo_sizelimit = info->lo_sizelimit;
+ 	memcpy(lo->lo_file_name, info->lo_file_name, LO_NAME_SIZE);
+ 	memcpy(lo->lo_crypt_name, info->lo_crypt_name, LO_NAME_SIZE);
+ 	lo->lo_file_name[LO_NAME_SIZE-1] = 0;
+@@ -1312,6 +1307,12 @@ loop_set_status(struct loop_device *lo,
+ 		lo->lo_key_owner = uid;
+ 	}
+ 
++	if (size_changed) {
++		loff_t new_size = get_size(lo->lo_offset, lo->lo_sizelimit,
++					   lo->lo_backing_file);
++		loop_set_size(lo, new_size);
++	}
++
+ 	loop_config_discard(lo);
+ 
+ 	/* update dio if lo_offset or transfer is changed */
 
 
 
