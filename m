@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-38253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50DF68A0DB5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB5C8A0E43
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 069FC1F21C30
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E6A31C219C2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E92B145B26;
-	Thu, 11 Apr 2024 10:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BFB145B28;
+	Thu, 11 Apr 2024 10:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/AnzcXi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQfgeJrc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8C61448F3;
-	Thu, 11 Apr 2024 10:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883581F5FA;
+	Thu, 11 Apr 2024 10:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830013; cv=none; b=FCtGa55X7GGQJvHu2xSpdze97Ign03nQM1c0YRi8iZEd4mLeepSBulMR05mN/K/iG9C4UADaiTSKdX+lKMC9jvvbWxnK/YntFJdenBUrJh8ivBbpoIp1zcpoJt2wqGs1S7tclJirUNVROLQo5QJ3UYfnroLwis94ecQMlGb9BDw=
+	t=1712830377; cv=none; b=MMoGqIw8bEi6hC+qmaaLPySSkP2P0rPy9+iI8uolcsz45iJsih6PNymP16Q+w1KranC70CAn5A50lnFTvitjq26vRRRWkTGScZhYu5qhDUJJ6BcRcJpUSADjzzKj6rUfIxXpMTQZKAt+pq5pgaY0v7kD9hsqhZ8ccK2Wi+aQ568=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830013; c=relaxed/simple;
-	bh=FBrG//iyI/rdQJDbZDGLfxWwvbJIBblLVRQooseH2xw=;
+	s=arc-20240116; t=1712830377; c=relaxed/simple;
+	bh=p0a6Ww7dgFsXnQwt3S46vHtasTMF2pAkjE3n+Ir7yRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BTkSajIxG97Fkz1uiZ0AX+9VmO+RZkDr4MAzK4Ji/CH0GEvhEIB7xjEhtAH7tSw07WN8fGmdB87uHEW5oGasq2VuaatB4MrzEW5LxorzdkAZmcDDlPrBZ8KEaa8ma7RdUuc5vBSZFeeT+VDYGVeJ609Wu2om5H5ilHL4Ez1k1nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/AnzcXi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9880C43390;
-	Thu, 11 Apr 2024 10:06:52 +0000 (UTC)
+	 MIME-Version; b=oX9jiw9Lc4NzZ7cbDgSJrpzgBi4cN6hWmpliV5wcPRxwHMx2d8M5dnHeLlLE3AZyhrl4JTU5tHicCKL+d+lNBoIMit7Tncn3fGlo/GFBugJBfonQ/sWS3mRgGifh9OxLhke+edRQqvatXtPdSnZGr6GRLpcDCTBtlJIPB4UuuCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQfgeJrc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9124C433F1;
+	Thu, 11 Apr 2024 10:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830013;
-	bh=FBrG//iyI/rdQJDbZDGLfxWwvbJIBblLVRQooseH2xw=;
+	s=korg; t=1712830377;
+	bh=p0a6Ww7dgFsXnQwt3S46vHtasTMF2pAkjE3n+Ir7yRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q/AnzcXi+aUnMKOCdh3moHfgdgfYkjjzoDAOiv6suV/WPQKvPoGUdZ69CR+55UnyQ
-	 rbsfY6UGC4/Aa8HwYtqaiZvVVnUC6o8DDW3X0CKvJMqxuMvQ84cdTtL7iaIcLiqYvm
-	 ub8Elom6H2W19i14m1EOpdL1mebIoOA8AV1JWZMw=
+	b=BQfgeJrcLcbyx9/qYey17OG1BX3HVgMOKkGcpD+WF8/is3Eh6CXe1Q3KuZeg+LTmg
+	 tw+BlksDL9EoDSTPyXc9SjC8kO8aVy+Sen1g6zgAtQDgsB96rI93rMM0pZTrTP7n+4
+	 C5pZqXkWhMB5UcvU4iN8doTXruyHGlOIH1I6ZV30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	David Hildenbrand <david@redhat.com>
-Subject: [PATCH 4.19 169/175] virtio: reenable config if freezing device failed
+	Aleksandr Burakov <a.burakov@rosalinux.ru>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 124/143] fbdev: viafb: fix typo in hw_bitblt_1 and hw_bitblt_2
 Date: Thu, 11 Apr 2024 11:56:32 +0200
-Message-ID: <20240411095424.651663464@linuxfoundation.org>
+Message-ID: <20240411095424.638148999@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Aleksandr Burakov <a.burakov@rosalinux.ru>
 
-commit 310227f42882c52356b523e2f4e11690eebcd2ab upstream.
+[ Upstream commit bc87bb342f106a0402186bcb588fcbe945dced4b ]
 
-Currently, we don't reenable the config if freezing the device failed.
+There are some actions with value 'tmp' but 'dst_addr' is checked instead.
+It is obvious that a copy-paste error was made here and the value
+of variable 'tmp' should be checked here.
 
-For example, virtio-mem currently doesn't support suspend+resume, and
-trying to freeze the device will always fail. Afterwards, the device
-will no longer respond to resize requests, because it won't get notified
-about config changes.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Let's fix this by re-enabling the config if freezing fails.
-
-Fixes: 22b7050a024d ("virtio: defer config changed notifications")
-Cc: <stable@kernel.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20240213135425.795001-1-david@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/via/accel.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/virtio/virtio.c
-+++ b/drivers/virtio/virtio.c
-@@ -376,13 +376,19 @@ EXPORT_SYMBOL_GPL(unregister_virtio_devi
- int virtio_device_freeze(struct virtio_device *dev)
- {
- 	struct virtio_driver *drv = drv_to_virtio(dev->dev.driver);
-+	int ret;
+diff --git a/drivers/video/fbdev/via/accel.c b/drivers/video/fbdev/via/accel.c
+index 0a1bc7a4d7853..1e04026f08091 100644
+--- a/drivers/video/fbdev/via/accel.c
++++ b/drivers/video/fbdev/via/accel.c
+@@ -115,7 +115,7 @@ static int hw_bitblt_1(void __iomem *engine, u8 op, u32 width, u32 height,
  
- 	virtio_config_disable(dev);
+ 	if (op != VIA_BITBLT_FILL) {
+ 		tmp = src_mem ? 0 : src_addr;
+-		if (dst_addr & 0xE0000007) {
++		if (tmp & 0xE0000007) {
+ 			printk(KERN_WARNING "hw_bitblt_1: Unsupported source "
+ 				"address %X\n", tmp);
+ 			return -EINVAL;
+@@ -260,7 +260,7 @@ static int hw_bitblt_2(void __iomem *engine, u8 op, u32 width, u32 height,
+ 		writel(tmp, engine + 0x18);
  
- 	dev->failed = dev->config->get_status(dev) & VIRTIO_CONFIG_S_FAILED;
- 
--	if (drv && drv->freeze)
--		return drv->freeze(dev);
-+	if (drv && drv->freeze) {
-+		ret = drv->freeze(dev);
-+		if (ret) {
-+			virtio_config_enable(dev);
-+			return ret;
-+		}
-+	}
- 
- 	return 0;
- }
+ 		tmp = src_mem ? 0 : src_addr;
+-		if (dst_addr & 0xE0000007) {
++		if (tmp & 0xE0000007) {
+ 			printk(KERN_WARNING "hw_bitblt_2: Unsupported source "
+ 				"address %X\n", tmp);
+ 			return -EINVAL;
+-- 
+2.43.0
+
 
 
 
