@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-38849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E4A8A10B0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B61B8A0D2A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:01:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A70A71C23E2D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22CBEB24D19
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D476148300;
-	Thu, 11 Apr 2024 10:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F50B145B07;
+	Thu, 11 Apr 2024 10:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tI4G1Kg/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtHn7XyE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD29C1482F6;
-	Thu, 11 Apr 2024 10:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5182EAE5;
+	Thu, 11 Apr 2024 10:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831773; cv=none; b=XjeRhmgXLximWj4ls+BCc9wEBH4yIK0+b9OcPuk4wk8FKLsfk8E0pWCIeOm2HyeQQr94lJC7F+69ZiaZqdAlNvR/T8SBbqKya3IwYwzdMZc8cXrbeXffFmZgNqo6EAbei8s5YVX9Qx17H0KwC/Arrw/EvIlEo+s7ugUU7jGb/Nc=
+	t=1712829658; cv=none; b=Kg9T6x0t84rty49bCmhDSEUB9QRG7WZlL/waQp2iVF7o3ph0y5//TnS0rSapI0MDOQvu1gA0VIDCTkJsVGDPnzyEsAy77S60ekJP1FHAgzAKWguVUKyNuWqJQfVux4KOth+Zzb7tg09jJGNo883AGavhStidX6eyheE42YjuJ3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831773; c=relaxed/simple;
-	bh=JeTX065VFqyODGCKWFgkjGgC3a0KMSkMh5qiMaXvuVo=;
+	s=arc-20240116; t=1712829658; c=relaxed/simple;
+	bh=SLiohcervRLDneKut0KfdMDc+0rEcJDOFGfLHBzwhTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNAkvlYkP9R2ICIZPT1wSDvnE59gBK5Q531BQZZ1rTjIpu6dvYtFBSC+LsT16NU0iqnz8SOmd8jB9ls9X389u4JM/uLSRkVXZDqDbG/Lir69Og8Y/5FWyOAzOCzwsm2JpKEy+ts4BmAYKw3bel+LAYLtY2G+6ur1rG2qWGSQO5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tI4G1Kg/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D367C433C7;
-	Thu, 11 Apr 2024 10:36:13 +0000 (UTC)
+	 MIME-Version; b=fNbLP9Kx/Ug0yFvQmhXNJIQBkQAtaWCFAwPDYb+LI86FHCT9u60qNL+nw90Yj4WEDEgrPq9dTdz4+bcqX+0dAzYjLKr4V701BXBRsfvSmDVh5SDKKvG5FqtlLmPM5oY2aIw88y8cOKDV1U+nSEUun/qk7MCFkPSNYRmjjV+aCPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtHn7XyE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7753C433F1;
+	Thu, 11 Apr 2024 10:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831773;
-	bh=JeTX065VFqyODGCKWFgkjGgC3a0KMSkMh5qiMaXvuVo=;
+	s=korg; t=1712829658;
+	bh=SLiohcervRLDneKut0KfdMDc+0rEcJDOFGfLHBzwhTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tI4G1Kg/5KkqiEklsEdJ36+yhdEMiwMhqqWKYzTT415H4qU5SVc7rBSNKqTenOBJT
-	 7Gjs+ESYfiuxVqX1250F7F3mL06i+3yDZEy36IR3nvRAYgVqTexuwIsRjTdmE/3Jf1
-	 FgpoL84IBNiP082Lo6iZ0ikFOtDk9ImHo25XLu8c=
+	b=qtHn7XyE0DWPwzs4nXiUzeqBnIF2r3wbEqdvBZhz2twp8zkCWXyzq7fBAljjQnNky
+	 ScFLxo6qFzRT5d5d5oUfb5HrLUJMkVTfCveG/A85K3AH6yG6e1V17RwIWRgdenEymE
+	 2OQICVvgBqrwbdh93NTNmPMwTk2d7EfeVdT5lWV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 121/294] netfilter: nf_tables: reject constant set with timeout
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 061/175] drm/vc4: hdmi: do not return negative values from .get_modes()
 Date: Thu, 11 Apr 2024 11:54:44 +0200
-Message-ID: <20240411095439.309916680@linuxfoundation.org>
+Message-ID: <20240411095421.402610830@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit 5f4fc4bd5cddb4770ab120ce44f02695c4505562 upstream.
+[ Upstream commit abf493988e380f25242c1023275c68bd3579c9ce ]
 
-This set combination is weird: it allows for elements to be
-added/deleted, but once bound to the rule it cannot be updated anymore.
-Eventually, all elements expire, leading to an empty set which cannot
-be updated anymore. Reject this flags combination.
+The .get_modes() hooks aren't supposed to return negative error
+codes. Return 0 for no modes, whatever the reason.
 
+Cc: Maxime Ripard <mripard@kernel.org>
 Cc: stable@vger.kernel.org
-Fixes: 761da2935d6e ("netfilter: nf_tables: add set timeout API support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/dcda6d4003e2c6192987916b35c7304732800e08.1709913674.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4413,6 +4413,9 @@ static int nf_tables_newset(struct net *
- 		if ((flags & (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT | NFT_SET_EVAL)) ==
- 			     (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT))
- 			return -EOPNOTSUPP;
-+		if ((flags & (NFT_SET_CONSTANT | NFT_SET_TIMEOUT)) ==
-+			     (NFT_SET_CONSTANT | NFT_SET_TIMEOUT))
-+			return -EOPNOTSUPP;
- 	}
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index 1161662664577..013dfc63c824e 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -276,7 +276,7 @@ static int vc4_hdmi_connector_get_modes(struct drm_connector *connector)
+ 	edid = drm_get_edid(connector, vc4->hdmi->ddc);
+ 	cec_s_phys_addr_from_edid(vc4->hdmi->cec_adap, edid);
+ 	if (!edid)
+-		return -ENODEV;
++		return 0;
  
- 	dtype = 0;
+ 	vc4_encoder->hdmi_monitor = drm_detect_hdmi_monitor(edid);
+ 
+-- 
+2.43.0
+
 
 
 
