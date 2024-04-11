@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-39144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F6658A121C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:50:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF7418A11E6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC3C228458D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0F681C21A49
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777A113BC33;
-	Thu, 11 Apr 2024 10:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52BCC13D24D;
+	Thu, 11 Apr 2024 10:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbYtVA3K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lFHrHbb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363EF79FD;
-	Thu, 11 Apr 2024 10:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E1D624;
+	Thu, 11 Apr 2024 10:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832647; cv=none; b=pkniabOKpyVfzbeXPlMjfFDZSWpMgSGfjEe7lEfWLqKOVTBPaAoZdTUHIdazZaiX+y7ZKYKSLWn2RjemsT3npNawr/n9QgJgoje/WyAO7Z9R4+6o8CQavfqeVwjlLpucgmxu2V7oIloKppvMMFUrth1WeYsUWVnNadOfnI1DC9U=
+	t=1712832508; cv=none; b=SGa0BnUYsaOI7XAqwrhK/Hm0tt02/Bhei05pADMRL7sae8AbhMCDwd0f4EvcMVa+tvH1QFxXbFTErfV3c91yo2CB6NAFzHALKWpuIX4nLRzyRhMClaqjt+sfj9HjGpNCT3f+r5dsTq04Agx9mC579F/ZpJWxicwAVSsSDJv3GiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832647; c=relaxed/simple;
-	bh=4k/po7iVgBaFOHrBwnXbImAjReD0OdaoLFMJCf0iCAw=;
+	s=arc-20240116; t=1712832508; c=relaxed/simple;
+	bh=9hAm9kmSVvTGTfq9K+U2ZCCTp50CYnCh50JWJMp6zbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QAeJXIDJYzP16KDbjvwCbU1nRKlY1ZXnO45kW1sz+Pai09bCf8LwjD2tVGEXpEB6jaerzd45a/Awmw7++D5xl8HyhWD+7qs2gZAPqnoc2mcs4JSbo6Q3kkARamiCPLSPCj55IPb0/BEzVgeFAQcNlClWuJyDJUu0feLav7dy5Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbYtVA3K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3277C433F1;
-	Thu, 11 Apr 2024 10:50:46 +0000 (UTC)
+	 MIME-Version; b=hfKMRqBub1ndKKfLqsgcfsfkftZgmNQxn2IaaHnKO/q2bwBQYIii0QG48cQfbo3X458CTr/42bK9cgk9RBy/xsBf1wwT813Td7qL4srY8xm21dZ1EyYQSaObA5by1gPd8t7ODt6KyLjL+Bi4Fsm2okZErWtKZuw9QejHPqvlW9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lFHrHbb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E534C433F1;
+	Thu, 11 Apr 2024 10:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832647;
-	bh=4k/po7iVgBaFOHrBwnXbImAjReD0OdaoLFMJCf0iCAw=;
+	s=korg; t=1712832508;
+	bh=9hAm9kmSVvTGTfq9K+U2ZCCTp50CYnCh50JWJMp6zbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DbYtVA3KWUQrvN/6669VzZ32WVuZknhA5wiFtDXrfSKHNs6u7oqntlDc68ujDaOt5
-	 bDYx++JXOBocViJEa8GJ/RaoNRQiRZkUPiMR2RD63xBpSw8r2iyjEtXqYXV+w3Jhk/
-	 D8zIa+573gZl86udOQJDyX96b3ekw9mmWb3dDK1M=
+	b=0lFHrHbbhEjKRJwZDceMvOd8Hng4Ju/8ILhJ9cR+GdhD3lIirt40/ofC0CZzU7eB9
+	 TIkUJer0lqG6YDTeUf7Iqzja8Cd+V32GRf9Sc89HtAKa9PS3g1eGczD/Jp7v31Dwo8
+	 iOfW6g88TvlXGJOy9z1TkQ2FzBdROC/8vNIrTuWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gergo Koteles <soyer@irl.hu>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 35/57] Input: allocate keycode for Display refresh rate toggle
+Subject: [PATCH 6.1 71/83] netfilter: nf_tables: discard table flag update with pending basechain deletion
 Date: Thu, 11 Apr 2024 11:57:43 +0200
-Message-ID: <20240411095409.056471861@linuxfoundation.org>
+Message-ID: <20240411095414.822712877@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +59,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gergo Koteles <soyer@irl.hu>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit cfeb98b95fff25c442f78a6f616c627bc48a26b7 ]
+commit 1bc83a019bbe268be3526406245ec28c2458a518 upstream.
 
-Newer Lenovo Yogas and Legions with 60Hz/90Hz displays send a wmi event
-when Fn + R is pressed. This is intended for use to switch between the
-two refresh rates.
+Hook unregistration is deferred to the commit phase, same occurs with
+hook updates triggered by the table dormant flag. When both commands are
+combined, this results in deleting a basechain while leaving its hook
+still registered in the core.
 
-Allocate a new KEY_REFRESH_RATE_TOGGLE keycode for it.
-
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/15a5d08c84cf4d7b820de34ebbcf8ae2502fb3ca.1710065750.git.soyer@irl.hu
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/input-event-codes.h | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nf_tables_api.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
-index 7989d9483ea75..bed20a89c14c1 100644
---- a/include/uapi/linux/input-event-codes.h
-+++ b/include/uapi/linux/input-event-codes.h
-@@ -602,6 +602,7 @@
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index e7b31c2c92df2..8152a69d82681 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1192,6 +1192,24 @@ static void nf_tables_table_disable(struct net *net, struct nft_table *table)
+ #define __NFT_TABLE_F_UPDATE		(__NFT_TABLE_F_WAS_DORMANT | \
+ 					 __NFT_TABLE_F_WAS_AWAKEN)
  
- #define KEY_ALS_TOGGLE		0x230	/* Ambient light sensor */
- #define KEY_ROTATE_LOCK_TOGGLE	0x231	/* Display rotation lock */
-+#define KEY_REFRESH_RATE_TOGGLE	0x232	/* Display refresh rate toggle */
++static bool nft_table_pending_update(const struct nft_ctx *ctx)
++{
++	struct nftables_pernet *nft_net = nft_pernet(ctx->net);
++	struct nft_trans *trans;
++
++	if (ctx->table->flags & __NFT_TABLE_F_UPDATE)
++		return true;
++
++	list_for_each_entry(trans, &nft_net->commit_list, list) {
++		if (trans->ctx.table == ctx->table &&
++		    trans->msg_type == NFT_MSG_DELCHAIN &&
++		    nft_is_base_chain(trans->ctx.chain))
++			return true;
++	}
++
++	return false;
++}
++
+ static int nf_tables_updtable(struct nft_ctx *ctx)
+ {
+ 	struct nft_trans *trans;
+@@ -1215,7 +1233,7 @@ static int nf_tables_updtable(struct nft_ctx *ctx)
+ 		return -EOPNOTSUPP;
  
- #define KEY_BUTTONCONFIG		0x240	/* AL Button Configuration */
- #define KEY_TASKMANAGER		0x241	/* AL Task/Project Manager */
+ 	/* No dormant off/on/off/on games in single transaction */
+-	if (ctx->table->flags & __NFT_TABLE_F_UPDATE)
++	if (nft_table_pending_update(ctx))
+ 		return -EINVAL;
+ 
+ 	trans = nft_trans_alloc(ctx, NFT_MSG_NEWTABLE,
 -- 
 2.43.0
 
