@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8960C8A0FFB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:29:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D7838A11D2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:47:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA9F21C221E2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:29:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 299BC282298
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297C51465BF;
-	Thu, 11 Apr 2024 10:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A496C146D61;
+	Thu, 11 Apr 2024 10:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flHFKk5Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyZwGaAj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB19143C76;
-	Thu, 11 Apr 2024 10:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE6479FD;
+	Thu, 11 Apr 2024 10:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831375; cv=none; b=HhwJxbRFxjIP074ycGEMClwt8x3mjirMM2Mf3JVu8it1iAqpcYl74AZcgPbYf1ap7veMZPUHYyNJFpfKExlFXGoXfchoBvhK5Muw9w4TsugEeFdVEyCIJyIYJr5BPE7UdR5V5Mxb7ElnOnBc7u5SmDmFH+xNVLCVNGM15ANYm5g=
+	t=1712832449; cv=none; b=fmRMo4OtV+GZbAGH0e5MY2nzITpeIC4F2FwBadCQun51hH6LeWaVa2MU+EyGXauqknOu3xGt7bCPtzlybVPVZYfIid96Yr5lZha3yauEn4QyNtMDSgSb5s/BR7rNHA7kbrhsUIM9EbQaUmmUWoYaO6MgAHf9zvdtSZW4n46sbJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831375; c=relaxed/simple;
-	bh=dwpXfqkFuECqcmVfX0yRN0VZ5IgN/WW+7E0bpv7CmL4=;
+	s=arc-20240116; t=1712832449; c=relaxed/simple;
+	bh=AT1qugGWcjaJJ69DFYFZTroXPigXDDWZe6BWs3brSLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AV23ZAMqjFxdBZiTSuUPSKRyzqMvCZ5DnUravXZHPCWukOqlIl+djzngq8ltPZIPlLhIKbSqWbI72FLzoxlUUF1+iVBoXUOMSruLnVB6vaD3xLfdnMybnHEoIiCLMAgwCxqIoWWqQMb7xqe6O4VIAkxs39BGP3iuRXuXZWyPdfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flHFKk5Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6506AC433F1;
-	Thu, 11 Apr 2024 10:29:34 +0000 (UTC)
+	 MIME-Version; b=PyiyEACd7cbYsaCRPFEUtulGUAQg5RqaExZiAy8sMqmo6fd/AsBOl0zJ/cEBO6jQC2NsSvkiFgFDmWdGBULMrMfXbTrTF5PBSCEtsYhapkiBY972D1pG6PX2/jkLNvSdbBdizYlpc85lIBFu8h9GBp4Ok5Em8dCmCpYXhG4miNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyZwGaAj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65B2C433C7;
+	Thu, 11 Apr 2024 10:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831374;
-	bh=dwpXfqkFuECqcmVfX0yRN0VZ5IgN/WW+7E0bpv7CmL4=;
+	s=korg; t=1712832449;
+	bh=AT1qugGWcjaJJ69DFYFZTroXPigXDDWZe6BWs3brSLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=flHFKk5ZGXAN+eZu0qn2j3B1yKX0PnW6+7XQJDria41ihlTBBdnb2+g763xtptU7w
-	 pEDHM7yWrQIdrcAKTWATRy1rQ/DfhtCf7hRf1/3Q4w2VrtzgVNJXdq9uvq7CtrN9X7
-	 o/ykq9/t/Q9kVItAvux4JiT0QoAj/Et0zF8Wyc8A=
+	b=VyZwGaAjRcmQDPD+O8haTJJuNwGqoTOTWShWeAvKcw1mlS1GMovuWvuGihXszt7bJ
+	 hv0PovK/bv2UlNzoNewJ1spFwZ45WPshmLLWueIUMI+vmlU2aHkzPKM1ZMHvXIZ9jp
+	 9Q/Q7IQppKHfb/CSW433ZC60j1lkFB9OtJIWlfs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Alex Henrie <alexhenrie24@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 100/114] modpost: fix null pointer dereference
+Subject: [PATCH 6.1 35/83] isofs: handle CDs with bad root inode but good Joliet root directory
 Date: Thu, 11 Apr 2024 11:57:07 +0200
-Message-ID: <20240411095419.909311343@linuxfoundation.org>
+Message-ID: <20240411095413.740320383@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Alex Henrie <alexhenrie24@gmail.com>
 
-[ Upstream commit 23dfd914d2bfc4c9938b0084dffd7105de231d98 ]
+[ Upstream commit 4243bf80c79211a8ca2795401add9c4a3b1d37ca ]
 
-If the find_fromsym() call fails and returns NULL, the warn() call
-will dereference this NULL pointer and cause the program to crash.
+I have a CD copy of the original Tom Clancy's Ghost Recon game from
+2001. The disc mounts without error on Windows, but on Linux mounting
+fails with the message "isofs_fill_super: get root inode failed". The
+error originates in isofs_read_inode, which returns -EIO because de_len
+is 0. The superblock on this disc appears to be intentionally corrupt as
+a form of copy protection.
 
-This happened when I tried to build with "test_user_copy" module.
-With this fix, it prints lots of warnings like this:
+When the root inode is unusable, instead of giving up immediately, try
+to continue with the Joliet file table. This fixes the Ghost Recon CD
+and probably other copy-protected CDs too.
 
- WARNING: modpost: lib/test_user_copy: section mismatch in reference: (unknown)+0x4 (section: .text.fixup) -> (unknown) (section: .init.text)
-
-masahiroy@kernel.org:
- The issue is reproduced with ARCH=arm allnoconfig + CONFIG_MODULES=y +
- CONFIG_RUNTIME_TESTING_MENU=y + CONFIG_TEST_USER_COPY=m
-
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20240208022134.451490-1-alexhenrie24@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/mod/modpost.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/isofs/inode.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index 7d53942445d75..269bd79bcd9ad 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -1098,7 +1098,9 @@ static void default_mismatch_handler(const char *modname, struct elf_info *elf,
- 	sec_mismatch_count++;
+diff --git a/fs/isofs/inode.c b/fs/isofs/inode.c
+index df9d70588b600..8a6c7fdc1d5fc 100644
+--- a/fs/isofs/inode.c
++++ b/fs/isofs/inode.c
+@@ -908,8 +908,22 @@ static int isofs_fill_super(struct super_block *s, void *data, int silent)
+ 	 * we then decide whether to use the Joliet descriptor.
+ 	 */
+ 	inode = isofs_iget(s, sbi->s_firstdatazone, 0);
+-	if (IS_ERR(inode))
+-		goto out_no_root;
++
++	/*
++	 * Fix for broken CDs with a corrupt root inode but a correct Joliet
++	 * root directory.
++	 */
++	if (IS_ERR(inode)) {
++		if (joliet_level && sbi->s_firstdatazone != first_data_zone) {
++			printk(KERN_NOTICE
++			       "ISOFS: root inode is unusable. "
++			       "Disabling Rock Ridge and switching to Joliet.");
++			sbi->s_rock = 0;
++			inode = NULL;
++		} else {
++			goto out_no_root;
++		}
++	}
  
- 	warn("%s: section mismatch in reference: %s+0x%x (section: %s) -> %s (section: %s)\n",
--	     modname, fromsym, (unsigned int)(faddr - from->st_value), fromsec, tosym, tosec);
-+	     modname, fromsym,
-+	     (unsigned int)(faddr - (from ? from->st_value : 0)),
-+	     fromsec, tosym, tosec);
- 
- 	if (mismatch->mismatch == EXTABLE_TO_NON_TEXT) {
- 		if (match(tosec, mismatch->bad_tosec))
+ 	/*
+ 	 * Fix for broken CDs with Rock Ridge and empty ISO root directory but
 -- 
 2.43.0
 
