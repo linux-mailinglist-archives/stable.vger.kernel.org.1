@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0D618A0EBB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADA528A0DEF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C383283EF7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEC1C1C21F68
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7D614601D;
-	Thu, 11 Apr 2024 10:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8F0145B08;
+	Thu, 11 Apr 2024 10:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCMso1+n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vfnzj+kG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D12313E897;
-	Thu, 11 Apr 2024 10:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EBB145B2C;
+	Thu, 11 Apr 2024 10:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830662; cv=none; b=RbLB/gL683ygkrSstDnsMprLHAtz08gXh76yl66DJzL5EN1Bu/9dfbhX3MZ1wSi89KNliGFo1r7/YdZLJJLVPFnmp+pkhSFQ9nST8kPChHI9nWrHXrsxVsoTbafsBmF8lRs2Nzmq9s0sxsIE0kjMXvwrFH1cm00XrFhsIPbVjTM=
+	t=1712830163; cv=none; b=jRmmdOCbZ++oMIsxXlRTJDp71YvXRQggIFrZt8Bxmbe15ygAHzxoJSG6xiueUF4Qrb+J5kDPISGOjg1GPrZBrpYFev7kqXQt0fQ52CMF1Z46oCOwZDPmmtCuHXnxVpBN0OJeQmBODk7TSu/4252TgBu4IgfXXyjG4LVGf0T0bpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830662; c=relaxed/simple;
-	bh=YyuQfMFTlJQzKJnz8boQ52t04a5bo63jQgxRMeKbVLo=;
+	s=arc-20240116; t=1712830163; c=relaxed/simple;
+	bh=5QResHUC7K10pufvTzQU3efMUmlRmERGwfEzgQKVf3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJ1ESjQdipqp8skB984XtcDQ5wVqjtL9vCgE0Ks3qfzJ1/jj2gyTtFPVaDolnrIuWXlvoN1gUKwm3T0Nyyac8nUPmYRdUVVlSI0j5DxxneQCf4tprsE9SzUQy/v+DtfEbKXpEf82cN/EyMUhBv4hs6/f15gk6N/tOMyHON5dhiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCMso1+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 886E5C433C7;
-	Thu, 11 Apr 2024 10:17:41 +0000 (UTC)
+	 MIME-Version; b=hwD5Lid34CsZWJk83MuyciWwqEOXF//Ze7a6i9GeE5lJ6vhy4RUrk2LN0hELjnsujXM7CQpZkpAOydnxtuNoJkpvOE00u2lN5o/9KeBsJF40Z1vvCOUbAGaMUQ4lhe0j7qWVxugotagMuMQjea8aW7EAnmFOTFTNd36uElUH4KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vfnzj+kG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57984C433F1;
+	Thu, 11 Apr 2024 10:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830661;
-	bh=YyuQfMFTlJQzKJnz8boQ52t04a5bo63jQgxRMeKbVLo=;
+	s=korg; t=1712830163;
+	bh=5QResHUC7K10pufvTzQU3efMUmlRmERGwfEzgQKVf3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tCMso1+n67WEe5mFlcgA7f11BQluapKrpcKG0JR7N0FNGkByYRx3V7HpluQxD2EYu
-	 vX9fCx7QK+gD/XxWU1mcv0110Z7HbBd2bXRgZJNWjouyCOH3Q4HztRmaQdPF23uLfo
-	 5CJ1U4BSy73PyAAo7l9Yz+IYW6KYJISfZmnvFW+U=
+	b=Vfnzj+kG9tgqMjxVmFHZ98k9xXOU0LDqYd/TkIjfCF8AtgOLA913wGY6WrpguM6xq
+	 Na9gfmEW27Ndtp2IvmUL8iDvGM9Mr5/MpNF78Sm+ChIyPllWIp/czlMU/J3IOekNVc
+	 Qsmp4606OLnW+z0SHXG/Mqkymc4ASrFPklKjTpfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Petr Mladek <pmladek@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 076/215] x86/CPU/AMD: Update the Zenbleed microcode revisions
+Subject: [PATCH 6.8 017/143] dump_stack: Do not get cpu_sync for panic CPU
 Date: Thu, 11 Apr 2024 11:54:45 +0200
-Message-ID: <20240411095427.194570618@linuxfoundation.org>
+Message-ID: <20240411095421.429552792@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: John Ogness <john.ogness@linutronix.de>
 
-[ Upstream commit 5c84b051bd4e777cf37aaff983277e58c99618d5 ]
+[ Upstream commit 7412dc6d55eed6b76180e40ac3601412ebde29bd ]
 
-Update them to the correct revision numbers.
+dump_stack() is called in panic(). If for some reason another CPU
+is holding the printk_cpu_sync and is unable to release it, the
+panic CPU will be unable to continue and print the stacktrace.
 
-Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Since non-panic CPUs are not allowed to store new printk messages
+anyway, there is no need to synchronize the stacktrace output in
+a panic situation.
+
+For the panic CPU, do not get the printk_cpu_sync because it is
+not needed and avoids a potential deadlock scenario in panic().
+
+Link: https://lore.kernel.org/lkml/ZcIGKU8sxti38Kok@alley
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20240207134103.1357162-15-john.ogness@linutronix.de
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/amd.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/linux/printk.h   |  2 ++
+ kernel/printk/internal.h |  1 -
+ lib/dump_stack.c         | 16 +++++++++++++---
+ 3 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 4e84203fc067d..533451498c8f8 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -998,11 +998,11 @@ static bool cpu_has_zenbleed_microcode(void)
- 	u32 good_rev = 0;
+diff --git a/include/linux/printk.h b/include/linux/printk.h
+index 8ef499ab3c1ed..955e31860095e 100644
+--- a/include/linux/printk.h
++++ b/include/linux/printk.h
+@@ -273,6 +273,8 @@ static inline void printk_trigger_flush(void)
+ }
+ #endif
  
- 	switch (boot_cpu_data.x86_model) {
--	case 0x30 ... 0x3f: good_rev = 0x0830107a; break;
--	case 0x60 ... 0x67: good_rev = 0x0860010b; break;
--	case 0x68 ... 0x6f: good_rev = 0x08608105; break;
--	case 0x70 ... 0x7f: good_rev = 0x08701032; break;
--	case 0xa0 ... 0xaf: good_rev = 0x08a00008; break;
-+	case 0x30 ... 0x3f: good_rev = 0x0830107b; break;
-+	case 0x60 ... 0x67: good_rev = 0x0860010c; break;
-+	case 0x68 ... 0x6f: good_rev = 0x08608107; break;
-+	case 0x70 ... 0x7f: good_rev = 0x08701033; break;
-+	case 0xa0 ... 0xaf: good_rev = 0x08a00009; break;
++bool this_cpu_in_panic(void);
++
+ #ifdef CONFIG_SMP
+ extern int __printk_cpu_sync_try_get(void);
+ extern void __printk_cpu_sync_wait(void);
+diff --git a/kernel/printk/internal.h b/kernel/printk/internal.h
+index ac2d9750e5f81..6c2afee5ef620 100644
+--- a/kernel/printk/internal.h
++++ b/kernel/printk/internal.h
+@@ -130,7 +130,6 @@ struct printk_message {
+ };
  
- 	default:
- 		return false;
+ bool other_cpu_in_panic(void);
+-bool this_cpu_in_panic(void);
+ bool printk_get_next_message(struct printk_message *pmsg, u64 seq,
+ 			     bool is_extended, bool may_supress);
+ 
+diff --git a/lib/dump_stack.c b/lib/dump_stack.c
+index 83471e81501a7..222c6d6c8281a 100644
+--- a/lib/dump_stack.c
++++ b/lib/dump_stack.c
+@@ -96,15 +96,25 @@ static void __dump_stack(const char *log_lvl)
+  */
+ asmlinkage __visible void dump_stack_lvl(const char *log_lvl)
+ {
++	bool in_panic = this_cpu_in_panic();
+ 	unsigned long flags;
+ 
+ 	/*
+ 	 * Permit this cpu to perform nested stack dumps while serialising
+-	 * against other CPUs
++	 * against other CPUs, unless this CPU is in panic.
++	 *
++	 * When in panic, non-panic CPUs are not permitted to store new
++	 * printk messages so there is no need to synchronize the output.
++	 * This avoids potential deadlock in panic() if another CPU is
++	 * holding and unable to release the printk_cpu_sync.
+ 	 */
+-	printk_cpu_sync_get_irqsave(flags);
++	if (!in_panic)
++		printk_cpu_sync_get_irqsave(flags);
++
+ 	__dump_stack(log_lvl);
+-	printk_cpu_sync_put_irqrestore(flags);
++
++	if (!in_panic)
++		printk_cpu_sync_put_irqrestore(flags);
+ }
+ EXPORT_SYMBOL(dump_stack_lvl);
+ 
 -- 
 2.43.0
 
