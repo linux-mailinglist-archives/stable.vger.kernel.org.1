@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7D88A0FB5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB748A0D8E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0602C281D5A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 509841F228D2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B8314600E;
-	Thu, 11 Apr 2024 10:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3AF145B2C;
+	Thu, 11 Apr 2024 10:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpKPZMhd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTG+P7dN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547CF1422CE;
-	Thu, 11 Apr 2024 10:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0392EAE5;
+	Thu, 11 Apr 2024 10:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831196; cv=none; b=s3cK5JY2wH5x0fXyd7huzxN401HmeyzJqzjCZ0SVehJ7QVvcgjY3uUxBTibeZTX7ll4qeG+6ki0rOmXC+Z+eOf1oZGBreG09/iOewt6AzGTtpP6tXH6rV8FLyzGu8rTPG8BaG6Rf/sE5+UOro+PMj9dQRpJvzyw113tYM/lwrCU=
+	t=1712829903; cv=none; b=oqMkSOiw7I5xolSZ288Gry2S+/U7fp4bawsi2udeijL+ZSq3M73G0UfRpP/fQsNb7VgXR9M0GTBAPJ1dA3X3r++BQqMRbSWJbOg6kK3wrPI1ZMf92VWrBgCUHqV2Q72Tuibm+lG0TMBfCS4zgJy01cawws+0xZcjCpQoGXjC/kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831196; c=relaxed/simple;
-	bh=4uqGYyLklEQXYwIdfzlfgeawtbxu9pMDuhSkELuuHGk=;
+	s=arc-20240116; t=1712829903; c=relaxed/simple;
+	bh=YXbbiZSBBLQF52vjxrE4zTTPVJoWuoFkLzJWqvaIRl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ptb4Fbs1R4E7iQYlQWpVIVE/FATAkBqB9y8xIdnGkBIRKckFmLO8y+x+sl23Fx8VFDsJbo0WA0dFbGLLfm9HXpaIxKMBBBNayVGhuel3LyF6ibRjZeimObpGFPzt355j2NuBc7Tk7diF/8cfhu/ZB+nhKoPsFSPU2/1rSk6rqP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpKPZMhd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47C8C433F1;
-	Thu, 11 Apr 2024 10:26:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lPMCJ59NmdrOa+uv4+EFCyh4fDONUTXb39Xtfi6Nmg48LpC34L/AorRp4jduzgYiI42R5cX2aZ/v9z2hQDSi5MOPLedyackCFyjw+VltPdOaA9dS2sy22Lean5v8XueXM7i5O9QvYPWIcxbmGwmSVopswNO98FEudqEh7Ao65CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTG+P7dN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E73C433C7;
+	Thu, 11 Apr 2024 10:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831196;
-	bh=4uqGYyLklEQXYwIdfzlfgeawtbxu9pMDuhSkELuuHGk=;
+	s=korg; t=1712829902;
+	bh=YXbbiZSBBLQF52vjxrE4zTTPVJoWuoFkLzJWqvaIRl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zpKPZMhd8QIFfwJw96xcc0X+QlSSJGARk/1dcvolacpVDeITsX8yhmnQPNPE0XuYW
-	 1eVrCpwvG1ptuuZAAd671OaiwHYqwbHSNZiVgKaglEYOxj1zu2rtzKIfhKBGFHwnFB
-	 RJis32uwMrU2HUdH2WepkqFwAC35yoYWy/uJh6k4=
+	b=HTG+P7dNsosfBquU4Nc3WfRAM3TkBZ5GZkvLiIaoO61tkgelfMiQXSjgt4Nf2cMdZ
+	 PrH3YlehyHhAKTrwIhYxaOYbxjDEr7kAqWI/bgrpps8KlMlzM7g3kGJhF+bGp7YtsL
+	 fnkujkq9egc/kBUwfRXKlj/yc3Y+mJhhM6cqYB7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/114] btrfs: send: handle path ref underflow in header iterate_inode_ref()
+Subject: [PATCH 4.19 144/175] wifi: ath9k: fix LNA selection in ath_ant_try_scan()
 Date: Thu, 11 Apr 2024 11:56:07 +0200
-Message-ID: <20240411095418.091641489@linuxfoundation.org>
+Message-ID: <20240411095423.898650819@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 3c6ee34c6f9cd12802326da26631232a61743501 ]
+[ Upstream commit d6b27eb997ef9a2aa51633b3111bc4a04748e6d3 ]
 
-Change BUG_ON to proper error handling if building the path buffer
-fails. The pointers are not printed so we don't accidentally leak kernel
-addresses.
+In 'ath_ant_try_scan()', (most likely) the 2nd LNA's signal
+strength should be used in comparison against RSSI when
+selecting first LNA as the main one. Compile tested only.
 
-Signed-off-by: David Sterba <dsterba@suse.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20231211172502.25202-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath9k/antenna.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index 6a1102954a0ab..b430e03260fbf 100644
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -1070,7 +1070,15 @@ static int iterate_inode_ref(struct btrfs_root *root, struct btrfs_path *path,
- 					ret = PTR_ERR(start);
- 					goto out;
- 				}
--				BUG_ON(start < p->buf);
-+				if (unlikely(start < p->buf)) {
-+					btrfs_err(root->fs_info,
-+			"send: path ref buffer underflow for key (%llu %u %llu)",
-+						  found_key->objectid,
-+						  found_key->type,
-+						  found_key->offset);
-+					ret = -EINVAL;
-+					goto out;
-+				}
- 			}
- 			p->start = start;
- 		} else {
+diff --git a/drivers/net/wireless/ath/ath9k/antenna.c b/drivers/net/wireless/ath/ath9k/antenna.c
+index a3668433dc02b..deac6184dd016 100644
+--- a/drivers/net/wireless/ath/ath9k/antenna.c
++++ b/drivers/net/wireless/ath/ath9k/antenna.c
+@@ -643,7 +643,7 @@ static void ath_ant_try_scan(struct ath_ant_comb *antcomb,
+ 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
+ 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_PLUS_LNA2;
+ 			} else if (antcomb->rssi_sub >
+-				   antcomb->rssi_lna1) {
++				   antcomb->rssi_lna2) {
+ 				/* set to A-B */
+ 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
+ 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_MINUS_LNA2;
 -- 
 2.43.0
 
