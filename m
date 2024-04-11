@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 868A28A0F90
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 923858A0E24
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:11:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35B92287241
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C36D21C21CD8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B3D146A71;
-	Thu, 11 Apr 2024 10:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E18145FF6;
+	Thu, 11 Apr 2024 10:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByqFsPWX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pORajXCb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8623E13FD94;
-	Thu, 11 Apr 2024 10:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8BE144D34;
+	Thu, 11 Apr 2024 10:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831102; cv=none; b=jmWjpGx2OiI6K8iq+uIH3DQpuMZjWyPGirvQj8RVY/1lypjD9fpfOR6BHDpXX+68Blc9ItOmJRPPg/D1xQgM/kJ9XEFvbJlIpkifkftAiUbuKFAguIvGLSx0Pnuvd4EaBRF8S8y+IB77prH5Z24bwvuL6ZYEbXxqV4pf4ZyY3kc=
+	t=1712830287; cv=none; b=aaw60pdfBZ/k4UA5FCujMAxlCeAMMSsCopRx5CCz2IuCNDleDhV7eyUurXo0RDaKVSpOqm+MZFJlWAm8uI4Q1h1cgjrWsJ718+sQUi2mO93GdZtDboi0DMqzCC7RUrSbjQuWb0CTDFfZUluEKTMffAHe3fXuw0oaenQ2eWyrFQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831102; c=relaxed/simple;
-	bh=5dtCZFkz/XnU+Pji79UoEGoPp3hJFBSFP91Y4rxQ7JA=;
+	s=arc-20240116; t=1712830287; c=relaxed/simple;
+	bh=7YcsASw4lNY4zzy3mzHQUl4CJRalH4wlewE9DWO1qOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i8ab8pGBt9LnHHqOUe1eGkyrxmyQM/jvDS3i9EQI6ZbpnQrtpIFZyoDbN1rVlrBJtqejqzybu8IsBurgG+yU+b9zoLNpyOc/wr0fDa+j95zujrvZ3kd0Y1Ywgf1MXuqubUYfEZ1kOZgUlgYBQ4AZHcQaZmZZWM4ARPt73LIzQ48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByqFsPWX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C467C433F1;
-	Thu, 11 Apr 2024 10:25:01 +0000 (UTC)
+	 MIME-Version; b=os32v0/3cu58uGUwxZrtjKBwX16o0FXdUZa2L3CUUFtSnrFtxIxJmu7ZHEpUExDkT3Giv1XfZZK0zWOt4jNP1+NNAVVkEclAIAHQSE1X2vsXkXAX2mGLCxBnnn8s0sHACHig60TVjp5pOzDmVnyXdeQIVmm1//jkO8Kk82KtZ3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pORajXCb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9AA7C433C7;
+	Thu, 11 Apr 2024 10:11:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831102;
-	bh=5dtCZFkz/XnU+Pji79UoEGoPp3hJFBSFP91Y4rxQ7JA=;
+	s=korg; t=1712830287;
+	bh=7YcsASw4lNY4zzy3mzHQUl4CJRalH4wlewE9DWO1qOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ByqFsPWXaPzfe3jIWSqnsbJU4ZEp/aN40JfCHHlF689tXXkJ+0r/K7drMQ3fSLoYm
-	 iq5XUJH+KCkLC/DZuqDmZdhIo2lOvYcorAMEzcw46Eq+jpQcK0sDtZ7v6Xk2w6yOCo
-	 uuCemTe8u72jRaqrtdrhPNKKzDxOPNUIJNfRbIOc=
+	b=pORajXCbNmrDU9f4ovJk1O5k6mnuuC05zXzdQTCeCq4CU1g8Q0U/1rVysa0+feqlS
+	 MmLhOZ5dGLrHAiUldACmYZFYd7vGlk0HlWPGTl21kEe1LkPa4Kwz3NKYQYC8Va/Sjm
+	 TRjGdaam0zslZZT1hjimvWJ+/OOvIEr3U4nt1PGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 001/114] wifi: ath9k: fix LNA selection in ath_ant_try_scan()
+Subject: [PATCH 6.8 060/143] Input: synaptics-rmi4 - fail probing if memory allocation for "phys" fails
 Date: Thu, 11 Apr 2024 11:55:28 +0200
-Message-ID: <20240411095416.902239341@linuxfoundation.org>
+Message-ID: <20240411095422.723246812@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit d6b27eb997ef9a2aa51633b3111bc4a04748e6d3 ]
+[ Upstream commit bc4996184d56cfaf56d3811ac2680c8a0e2af56e ]
 
-In 'ath_ant_try_scan()', (most likely) the 2nd LNA's signal
-strength should be used in comparison against RSSI when
-selecting first LNA as the main one. Compile tested only.
+While input core can work with input->phys set to NULL userspace might
+depend on it, so better fail probing if allocation fails. The system must
+be in a pretty bad shape for it to happen anyway.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20231211172502.25202-1-dmantipov@yandex.ru
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Link: https://lore.kernel.org/r/20240117073124.143636-1-chentao@kylinos.cn
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/antenna.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/rmi4/rmi_driver.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/antenna.c b/drivers/net/wireless/ath/ath9k/antenna.c
-index 988222cea9dfe..acc84e6711b0e 100644
---- a/drivers/net/wireless/ath/ath9k/antenna.c
-+++ b/drivers/net/wireless/ath/ath9k/antenna.c
-@@ -643,7 +643,7 @@ static void ath_ant_try_scan(struct ath_ant_comb *antcomb,
- 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
- 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_PLUS_LNA2;
- 			} else if (antcomb->rssi_sub >
--				   antcomb->rssi_lna1) {
-+				   antcomb->rssi_lna2) {
- 				/* set to A-B */
- 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
- 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_MINUS_LNA2;
+diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
+index 42eaebb3bf5cc..ef9ea295f9e03 100644
+--- a/drivers/input/rmi4/rmi_driver.c
++++ b/drivers/input/rmi4/rmi_driver.c
+@@ -1196,7 +1196,11 @@ static int rmi_driver_probe(struct device *dev)
+ 		}
+ 		rmi_driver_set_input_params(rmi_dev, data->input);
+ 		data->input->phys = devm_kasprintf(dev, GFP_KERNEL,
+-						"%s/input0", dev_name(dev));
++						   "%s/input0", dev_name(dev));
++		if (!data->input->phys) {
++			retval = -ENOMEM;
++			goto err;
++		}
+ 	}
+ 
+ 	retval = rmi_init_functions(data);
 -- 
 2.43.0
 
