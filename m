@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-38457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B3788A0EB0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01CED8A0DBB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D986C283DD5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FAC4B26865
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7999814601B;
-	Thu, 11 Apr 2024 10:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59DA41442F7;
+	Thu, 11 Apr 2024 10:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="up82PH3i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ub4SK9Cu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393A4145353;
-	Thu, 11 Apr 2024 10:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162DC1448F3;
+	Thu, 11 Apr 2024 10:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830629; cv=none; b=TzaYu8r7AaYk0uuUedy2LSUqZPelk/YhWAwovYrbYQwmvhkeBB/2hzOiF7TLLge3bR2KZ7xr2rE2IhGXNUWtTsGabEqYReHsoi2JWP+CHRXB7xk7excBSGAu575XX2NUMBvMaAmj6sRoTe3zh9DbLjTBGtfIRguYsihaNbBTX1o=
+	t=1712830028; cv=none; b=GQZo0H5XW1Upi7185lyzMOhKy+ozqKMrS55uLV4e7AsoIreQJGCxCNw4x4iKgJy/3HAokPSWvVDuZ/0O4g6NHyfHh7xMv/EeNIVo3gNcHl1QzYPh6YpdmlGUssfYYNKRtY7PXvs5jzDgEOHjDOkUQtHp19FCr4MqJLUl3TpCNJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830629; c=relaxed/simple;
-	bh=nGeBabdMIOcdtX4xCxR32GUOqv26NO4i5h5SyhtxRZo=;
+	s=arc-20240116; t=1712830028; c=relaxed/simple;
+	bh=djqz1T6zFkJWCd8dVAljxMJwhAbOxunAwFnuPyU/rAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ASzfPtiK163irwSDcuUJI4R5ueePCehBPlN1snt6Uqv9FhR2xEtansd9o4FxfdgEgYVf+ichggp4MzzrXwnrW45nPtu/Dod7jWj3KP4yjDNPiY/PwpOlIGpofZZyeTm9fHKHkwVhNcDxkj/K+Ui6yhNS14/tNMk5+MH0Qpq7tO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=up82PH3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 810F0C43394;
-	Thu, 11 Apr 2024 10:17:08 +0000 (UTC)
+	 MIME-Version; b=cZrTLGd8PJz/ymGeS4K47+twTYgevm921eUq6kwnl1hMrx3SMNW0UqQ/8r3mFA7DEDzAWWXtmFOM7bgAf8aINHAd3WIx/2pztw7VBnrTo01arYNkv8ahHFXk6boG3VGvFb7HuHahexfxxBe0h5SaNPVcLuxfsBbSSL6d9nkd3J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ub4SK9Cu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88737C433F1;
+	Thu, 11 Apr 2024 10:07:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830629;
-	bh=nGeBabdMIOcdtX4xCxR32GUOqv26NO4i5h5SyhtxRZo=;
+	s=korg; t=1712830027;
+	bh=djqz1T6zFkJWCd8dVAljxMJwhAbOxunAwFnuPyU/rAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=up82PH3iRPM1OGawsSEdYd85x6oLtKT7kO5rATaGSsJkf54ZtItjnJ5By2rYsiR8E
-	 dFPOSmIm8i2DsRT494vtrAyNhdpLo1wY7JZMjrDarH0FJjtrMNbWvFzXOwxwGL1oPv
-	 ijm71QFua5z0RgGxTp9YasgzDZ3Icd8d3BRNmC6s=
+	b=ub4SK9CuEa0b9sNd/I+Vvt7uP9LtSGjl8ExjCKI6Iicetv5U8KgZwiIgAv5mDYH7N
+	 HCGESjiBwt0xLngbcjShB6GVZnjHAVto/5ICy9qrr0nazUA2gIfXa0QmJGCMzExYlq
+	 HomsBJ4dWh1y6E/qu4AvD12i+GJe/l6dAlkG62TE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linke li <lilinke99@qq.com>,
-	Rabin Vincent <rabin@rab.in>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	kernel test robot <lkp@intel.com>,
+	Ariel Elior <aelior@marvell.com>,
+	Sudarsana Kalluru <skalluru@marvell.com>,
+	Manish Chopra <manishc@marvell.com>,
+	Kees Cook <keescook@chromium.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 062/215] ring-buffer: Fix resetting of shortest_full
+Subject: [PATCH 6.8 003/143] bnx2x: Fix firmware version string character counts
 Date: Thu, 11 Apr 2024 11:54:31 +0200
-Message-ID: <20240411095426.760704706@linuxfoundation.org>
+Message-ID: <20240411095421.011168872@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,119 +66,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 68282dd930ea38b068ce2c109d12405f40df3f93 ]
+[ Upstream commit 5642c82b9463c3263c086efb002516244bd4c668 ]
 
-The "shortest_full" variable is used to keep track of the waiter that is
-waiting for the smallest amount on the ring buffer before being woken up.
-When a tasks waits on the ring buffer, it passes in a "full" value that is
-a percentage. 0 means wake up on any data. 1-100 means wake up from 1% to
-100% full buffer.
+A potential string truncation was reported in bnx2x_fill_fw_str(),
+when a long bp->fw_ver and a long phy_fw_ver might coexist, but seems
+unlikely with real-world hardware.
 
-As all waiters are on the same wait queue, the wake up happens for the
-waiter with the smallest percentage.
+Use scnprintf() to indicate the intent that truncations are tolerated.
 
-The problem is that the smallest_full on the cpu_buffer that stores the
-smallest amount doesn't get reset when all the waiters are woken up. It
-does get reset when the ring buffer is reset (echo > /sys/kernel/tracing/trace).
+While reading this code, I found a collection of various buffer size
+counting issues. None looked like they might lead to a buffer overflow
+with current code (the small buffers are 20 bytes and might only ever
+consume 10 bytes twice with a trailing %NUL). However, early truncation
+(due to a %NUL in the middle of the string) might be happening under
+likely rare conditions. Regardless fix the formatters and related
+functions:
 
-This means that tasks may be woken up more often then when they want to
-be. Instead, have the shortest_full field get reset just before waking up
-all the tasks. If the tasks wait again, they will update the shortest_full
-before sleeping.
+- Switch from a separate strscpy() to just adding an additional "%s" to
+  the format string that immediately follows it in bnx2x_fill_fw_str().
+- Use sizeof() universally instead of using unbound defines.
+- Fix bnx2x_7101_format_ver() and bnx2x_null_format_ver() to report the
+  number of characters written, not including the trailing %NUL (as
+  already done with the other firmware formatting functions).
+- Require space for at least 1 byte in bnx2x_get_ext_phy_fw_version()
+  for the trailing %NUL.
+- Correct the needed buffer size in bnx2x_3_seq_format_ver().
 
-Also add locking around setting of shortest_full in the poll logic, and
-change "work" to "rbwork" to match the variable name for rb_irq_work
-structures that are used in other places.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240308202431.948914369@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linke li <lilinke99@qq.com>
-Cc: Rabin Vincent <rabin@rab.in>
-Fixes: 2c2b0a78b3739 ("ring-buffer: Add percentage of ring buffer full to wake up reader")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: 8145f1c35fa6 ("ring-buffer: Fix full_waiters_pending in poll")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202401260858.jZN6vD1k-lkp@intel.com/
+Cc: Ariel Elior <aelior@marvell.com>
+Cc: Sudarsana Kalluru <skalluru@marvell.com>
+Cc: Manish Chopra <manishc@marvell.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20240126041044.work.220-kees@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c    |  9 +++++----
+ .../net/ethernet/broadcom/bnx2x/bnx2x_ethtool.c    |  2 +-
+ drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c   | 14 +++++++-------
+ 3 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index ed505c6de7cae..a9c90088af780 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -601,8 +601,19 @@ static void rb_wake_up_waiters(struct irq_work *work)
+diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
+index e9c1e1bb55806..528441b28c4ef 100644
+--- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
++++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
+@@ -147,10 +147,11 @@ void bnx2x_fill_fw_str(struct bnx2x *bp, char *buf, size_t buf_len)
  
- 	wake_up_all(&rbwork->waiters);
- 	if (rbwork->full_waiters_pending || rbwork->wakeup_full) {
-+		/* Only cpu_buffer sets the above flags */
-+		struct ring_buffer_per_cpu *cpu_buffer =
-+			container_of(rbwork, struct ring_buffer_per_cpu, irq_work);
-+
-+		/* Called from interrupt context */
-+		raw_spin_lock(&cpu_buffer->reader_lock);
- 		rbwork->wakeup_full = false;
- 		rbwork->full_waiters_pending = false;
-+
-+		/* Waking up all waiters, they will reset the shortest full */
-+		cpu_buffer->shortest_full = 0;
-+		raw_spin_unlock(&cpu_buffer->reader_lock);
-+
- 		wake_up_all(&rbwork->full_waiters);
+ 		phy_fw_ver[0] = '\0';
+ 		bnx2x_get_ext_phy_fw_version(&bp->link_params,
+-					     phy_fw_ver, PHY_FW_VER_LEN);
+-		strscpy(buf, bp->fw_ver, buf_len);
+-		snprintf(buf + strlen(bp->fw_ver), 32 - strlen(bp->fw_ver),
+-			 "bc %d.%d.%d%s%s",
++					     phy_fw_ver, sizeof(phy_fw_ver));
++		/* This may become truncated. */
++		scnprintf(buf, buf_len,
++			 "%sbc %d.%d.%d%s%s",
++			 bp->fw_ver,
+ 			 (bp->common.bc_ver & 0xff0000) >> 16,
+ 			 (bp->common.bc_ver & 0xff00) >> 8,
+ 			 (bp->common.bc_ver & 0xff),
+diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_ethtool.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_ethtool.c
+index 81d232e6d05fe..0bc7690cdee16 100644
+--- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_ethtool.c
++++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_ethtool.c
+@@ -1132,7 +1132,7 @@ static void bnx2x_get_drvinfo(struct net_device *dev,
  	}
- }
-@@ -731,28 +742,33 @@ __poll_t ring_buffer_poll_wait(struct ring_buffer *buffer, int cpu,
- 			  struct file *filp, poll_table *poll_table, int full)
+ 
+ 	memset(version, 0, sizeof(version));
+-	bnx2x_fill_fw_str(bp, version, ETHTOOL_FWVERS_LEN);
++	bnx2x_fill_fw_str(bp, version, sizeof(version));
+ 	strlcat(info->fw_version, version, sizeof(info->fw_version));
+ 
+ 	strscpy(info->bus_info, pci_name(bp->pdev), sizeof(info->bus_info));
+diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c
+index 02808513ffe45..ea310057fe3af 100644
+--- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c
++++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c
+@@ -6163,8 +6163,8 @@ static void bnx2x_link_int_ack(struct link_params *params,
+ 
+ static int bnx2x_null_format_ver(u32 spirom_ver, u8 *str, u16 *len)
  {
- 	struct ring_buffer_per_cpu *cpu_buffer;
--	struct rb_irq_work *work;
-+	struct rb_irq_work *rbwork;
+-	str[0] = '\0';
+-	(*len)--;
++	if (*len)
++		str[0] = '\0';
+ 	return 0;
+ }
  
- 	if (cpu == RING_BUFFER_ALL_CPUS) {
--		work = &buffer->irq_work;
-+		rbwork = &buffer->irq_work;
- 		full = 0;
- 	} else {
- 		if (!cpumask_test_cpu(cpu, buffer->cpumask))
- 			return EPOLLERR;
+@@ -6173,7 +6173,7 @@ static int bnx2x_format_ver(u32 num, u8 *str, u16 *len)
+ 	u16 ret;
  
- 		cpu_buffer = buffer->buffers[cpu];
--		work = &cpu_buffer->irq_work;
-+		rbwork = &cpu_buffer->irq_work;
+ 	if (*len < 10) {
+-		/* Need more than 10chars for this format */
++		/* Need more than 10 chars for this format */
+ 		bnx2x_null_format_ver(num, str, len);
+ 		return -EINVAL;
  	}
+@@ -6188,8 +6188,8 @@ static int bnx2x_3_seq_format_ver(u32 num, u8 *str, u16 *len)
+ {
+ 	u16 ret;
  
- 	if (full) {
--		poll_wait(filp, &work->full_waiters, poll_table);
--		work->full_waiters_pending = true;
-+		unsigned long flags;
-+
-+		poll_wait(filp, &rbwork->full_waiters, poll_table);
-+
-+		raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
-+		rbwork->full_waiters_pending = true;
- 		if (!cpu_buffer->shortest_full ||
- 		    cpu_buffer->shortest_full > full)
- 			cpu_buffer->shortest_full = full;
-+		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
- 	} else {
--		poll_wait(filp, &work->waiters, poll_table);
--		work->waiters_pending = true;
-+		poll_wait(filp, &rbwork->waiters, poll_table);
-+		rbwork->waiters_pending = true;
+-	if (*len < 10) {
+-		/* Need more than 10chars for this format */
++	if (*len < 9) {
++		/* Need more than 9 chars for this format */
+ 		bnx2x_null_format_ver(num, str, len);
+ 		return -EINVAL;
  	}
+@@ -6208,7 +6208,7 @@ int bnx2x_get_ext_phy_fw_version(struct link_params *params, u8 *version,
+ 	int status = 0;
+ 	u8 *ver_p = version;
+ 	u16 remain_len = len;
+-	if (version == NULL || params == NULL)
++	if (version == NULL || params == NULL || len == 0)
+ 		return -EINVAL;
+ 	bp = params->bp;
  
- 	/*
+@@ -11546,7 +11546,7 @@ static int bnx2x_7101_format_ver(u32 spirom_ver, u8 *str, u16 *len)
+ 	str[2] = (spirom_ver & 0xFF0000) >> 16;
+ 	str[3] = (spirom_ver & 0xFF000000) >> 24;
+ 	str[4] = '\0';
+-	*len -= 5;
++	*len -= 4;
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
