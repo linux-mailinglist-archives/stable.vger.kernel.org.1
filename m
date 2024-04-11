@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3C488A1064
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:35:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A718A0E6A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:14:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D2741F2B563
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:35:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27050286EC8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8BF1474D0;
-	Thu, 11 Apr 2024 10:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D0314600E;
+	Thu, 11 Apr 2024 10:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spPcxp5o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="taeSGEO3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8CC64CC0;
-	Thu, 11 Apr 2024 10:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8FE145353;
+	Thu, 11 Apr 2024 10:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831586; cv=none; b=JmjO6O9QdUx83I8FZAc+6KmpD0k0pJVRT4qk7jlF8/7Ywye0lvzwI7crSoDrwz8MU4ZHHr7xp/wB0qst/9JYI5BoGLwWCfMMLpXJBKpBi8rtFkMmg/4MNJq8e3FpsAf8U/vslYAeYIbnidPkpjtNleQo91KaNRykJIKxZJ900yE=
+	t=1712830466; cv=none; b=Mmb2k86TCrbuVw6+1cvypWTbYw0K0sP+/xHDElR1vIVoVJlmYtWsvhxuB0BN21ezeu8l3jUAgVJeLxdaLbehzKHvIQf4oprBPSaKCRW9rTpAY9rVsy6+dz/CErwJtl06dFSi61jgMZXFiJVQio7h9biS9NxEcBEUg7e8MMvlJXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831586; c=relaxed/simple;
-	bh=H7VnyTUECyqsjRj7BJ3CVfxF7MvGu9QRhFrjvCt2gVg=;
+	s=arc-20240116; t=1712830466; c=relaxed/simple;
+	bh=walKaUfiGNp3DN4vqIz5ZJA6+ltaeg29LjaJFWWjoNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cfY5rnXTR5MPSy02AHAmwOcvNnwXcALxSrunOq0uzr+m8LVLn+nXyaNJqRsSgCNo6KaDe8VjUAi4z2Z78zWBnZy+3Hi5RRffpk5/pRKVI2IU1eaXq+IneIjKWXo7I050u+1hKtL374PlMCTrqo33UF0JTQBlW9s19l1gNj/N4hE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=spPcxp5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51603C433C7;
-	Thu, 11 Apr 2024 10:33:05 +0000 (UTC)
+	 MIME-Version; b=J/I5Ik2+Dba+Q0wuDjTpSLDb+l0EEAVl6lecD5PrOA+H3aSCQ4lQ2XDnjE5bmtlH9weoMI5aznY/bzpI66BsBBZZUsmhsoi7wRJ7tBDiTPwTgsmFe5xs6DzXSpRvhw2Emsw1ybefiF9aodq1wg9MJ+xrZhj6bumJUPrrxQh2auY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=taeSGEO3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13394C433F1;
+	Thu, 11 Apr 2024 10:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831585;
-	bh=H7VnyTUECyqsjRj7BJ3CVfxF7MvGu9QRhFrjvCt2gVg=;
+	s=korg; t=1712830466;
+	bh=walKaUfiGNp3DN4vqIz5ZJA6+ltaeg29LjaJFWWjoNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=spPcxp5o0LH0ZbiGUUG699tRXv4LjRAnz3Ws2JXO3roLELlYker85Q1dEyWhK73DK
-	 nMe+5+2pdIVeJqJjGhW3zTiU0wxMIQ8t46yPDIo40K3DedHul2dQyew5rx7f/B8PQ/
-	 xYrZ+ryvRKsXH/F5RFEu2OaMxrS2t3CvCBvVfH4o=
+	b=taeSGEO3PffhmRnHI/bFef/7f8z3pFpV6Ro+LN5I9MXnoN1Qmh3wKPQUGxwY9prNg
+	 QaDi/c//VK5REqJP/oQkyR1Vzz/sn+dDh41aNRsHRfoT/EqiLFfGW3WbQzr2iZVHP9
+	 nTLyRm/3Ze2oJ3A+PkTA3Nb9j16QcZLxqr6ShEBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Collingbourne <pcc@google.com>,
-	John Ogness <john.ogness@linutronix.de>,
+	Lubomir Rintel <lkundrak@v3.sk>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 057/294] serial: Lock console when calling into driver before registration
-Date: Thu, 11 Apr 2024 11:53:40 +0200
-Message-ID: <20240411095437.357266854@linuxfoundation.org>
+Subject: [PATCH 5.4 012/215] ARM: dts: mmp2-brownstone: Dont redeclare phandle references
+Date: Thu, 11 Apr 2024 11:53:41 +0200
+Message-ID: <20240411095425.250631064@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,189 +62,373 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Collingbourne <pcc@google.com>
+From: Lubomir Rintel <lkundrak@v3.sk>
 
-[ Upstream commit 801410b26a0e8b8a16f7915b2b55c9528b69ca87 ]
+[ Upstream commit 5a56cf3e8738f5d31d8c024d0c62a4c2bfe76fb2 ]
 
-During the handoff from earlycon to the real console driver, we have
-two separate drivers operating on the same device concurrently. In the
-case of the 8250 driver these concurrent accesses cause problems due
-to the driver's use of banked registers, controlled by LCR.DLAB. It is
-possible for the setup(), config_port(), pm() and set_mctrl() callbacks
-to set DLAB, which can cause the earlycon code that intends to access
-TX to instead access DLL, leading to missed output and corruption on
-the serial line due to unintended modifications to the baud rate.
+Extend the nodes by their phandle references instead of recreating the
+tree and declaring references of the same names.
 
-In particular, for setup() we have:
-
-univ8250_console_setup()
--> serial8250_console_setup()
--> uart_set_options()
--> serial8250_set_termios()
--> serial8250_do_set_termios()
--> serial8250_do_set_divisor()
-
-For config_port() we have:
-
-serial8250_config_port()
--> autoconfig()
-
-For pm() we have:
-
-serial8250_pm()
--> serial8250_do_pm()
--> serial8250_set_sleep()
-
-For set_mctrl() we have (for some devices):
-
-serial8250_set_mctrl()
--> omap8250_set_mctrl()
--> __omap8250_set_mctrl()
-
-To avoid such problems, let's make it so that the console is locked
-during pre-registration calls to these callbacks, which will prevent
-the earlycon driver from running concurrently.
-
-Remove the partial solution to this problem in the 8250 driver
-that locked the console only during autoconfig_irq(), as this would
-result in a deadlock with the new approach. The console continues
-to be locked during autoconfig_irq() because it can only be called
-through uart_configure_port().
-
-Although this patch introduces more locking than strictly necessary
-(and in particular it also locks during the call to rs485_config()
-which is not affected by this issue as far as I can tell), it follows
-the principle that it is the responsibility of the generic console
-code to manage the earlycon handoff by ensuring that earlycon and real
-console driver code cannot run concurrently, and not the individual
-drivers.
-
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Link: https://linux-review.googlesource.com/id/I7cf8124dcebf8618e6b2ee543fa5b25532de55d8
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240304214350.501253-1-pcc@google.com
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20200320174107.29406-5-lkundrak@v3.sk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 831e0cd4f9ee ("arm: dts: marvell: Fix maxium->maxim typo in brownstone dts")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_port.c |  6 ------
- drivers/tty/serial/serial_core.c    | 12 ++++++++++++
- kernel/printk/printk.c              | 21 ++++++++++++++++++---
- 3 files changed, 30 insertions(+), 9 deletions(-)
+ arch/arm/boot/dts/mmp2-brownstone.dts | 332 +++++++++++++-------------
+ 1 file changed, 165 insertions(+), 167 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index 8b49ac4856d2c..6098e87a34046 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -1358,9 +1358,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
- 		inb_p(ICP);
- 	}
- 
--	if (uart_console(port))
--		console_lock();
--
- 	/* forget possible initially masked and pending IRQ */
- 	probe_irq_off(probe_irq_on());
- 	save_mcr = serial8250_in_MCR(up);
-@@ -1391,9 +1388,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
- 	if (port->flags & UPF_FOURPORT)
- 		outb_p(save_ICP, ICP);
- 
--	if (uart_console(port))
--		console_unlock();
--
- 	port->irq = (irq > 0) ? irq : 0;
- }
- 
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index 40fff38588d4f..10b8785b99827 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -2431,7 +2431,12 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
- 			port->type = PORT_UNKNOWN;
- 			flags |= UART_CONFIG_TYPE;
- 		}
-+		/* Synchronize with possible boot console. */
-+		if (uart_console(port))
-+			console_lock();
- 		port->ops->config_port(port, flags);
-+		if (uart_console(port))
-+			console_unlock();
- 	}
- 
- 	if (port->type != PORT_UNKNOWN) {
-@@ -2439,6 +2444,10 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
- 
- 		uart_report_port(drv, port);
- 
-+		/* Synchronize with possible boot console. */
-+		if (uart_console(port))
-+			console_lock();
+diff --git a/arch/arm/boot/dts/mmp2-brownstone.dts b/arch/arm/boot/dts/mmp2-brownstone.dts
+index aaedc4c742ea5..04f1ae1382e7a 100644
+--- a/arch/arm/boot/dts/mmp2-brownstone.dts
++++ b/arch/arm/boot/dts/mmp2-brownstone.dts
+@@ -19,176 +19,174 @@ memory {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x08000000>;
+ 	};
++};
 +
- 		/* Power up port for set_mctrl() */
- 		uart_change_pm(state, UART_PM_STATE_ON);
++&uart3 {
++	status = "okay";
++};
  
-@@ -2455,6 +2464,9 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
- 			port->rs485_config(port, &port->rs485);
- 		spin_unlock_irqrestore(&port->lock, flags);
+-	soc {
+-		apb@d4000000 {
+-			uart3: uart@d4018000 {
+-				status = "okay";
+-			};
+-			twsi1: i2c@d4011000 {
+-				status = "okay";
+-				pmic: max8925@3c {
+-					compatible = "maxium,max8925";
+-					reg = <0x3c>;
+-					interrupts = <1>;
+-					interrupt-parent = <&intcmux4>;
+-					interrupt-controller;
+-					#interrupt-cells = <1>;
+-					maxim,tsc-irq = <0>;
++&twsi1 {
++	status = "okay";
++	pmic: max8925@3c {
++		compatible = "maxium,max8925";
++		reg = <0x3c>;
++		interrupts = <1>;
++		interrupt-parent = <&intcmux4>;
++		interrupt-controller;
++		#interrupt-cells = <1>;
++		maxim,tsc-irq = <0>;
  
-+		if (uart_console(port))
-+			console_unlock();
+-					regulators {
+-						SDV1 {
+-							regulator-min-microvolt = <637500>;
+-							regulator-max-microvolt = <1425000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						SDV2 {
+-							regulator-min-microvolt = <650000>;
+-							regulator-max-microvolt = <2225000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						SDV3 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO1 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO2 {
+-							regulator-min-microvolt = <650000>;
+-							regulator-max-microvolt = <2250000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO3 {
+-							regulator-min-microvolt = <650000>;
+-							regulator-max-microvolt = <2250000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO4 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO5 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO6 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO7 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO8 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO9 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO10 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-						};
+-						LDO11 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO12 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO13 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO14 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO15 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO16 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO17 {
+-							regulator-min-microvolt = <650000>;
+-							regulator-max-microvolt = <2250000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO18 {
+-							regulator-min-microvolt = <650000>;
+-							regulator-max-microvolt = <2250000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO19 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-						LDO20 {
+-							regulator-min-microvolt = <750000>;
+-							regulator-max-microvolt = <3900000>;
+-							regulator-boot-on;
+-							regulator-always-on;
+-						};
+-					};
+-					backlight {
+-						maxim,max8925-dual-string = <0>;
+-					};
+-					charger {
+-						batt-detect = <0>;
+-						topoff-threshold = <1>;
+-						fast-charge = <7>;
+-						no-temp-support = <0>;
+-						no-insert-detect = <0>;
+-					};
+-				};
+-			};
+-			rtc: rtc@d4010000 {
+-				status = "okay";
++		regulators {
++			SDV1 {
++				regulator-min-microvolt = <637500>;
++				regulator-max-microvolt = <1425000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			SDV2 {
++				regulator-min-microvolt = <650000>;
++				regulator-max-microvolt = <2225000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			SDV3 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO1 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO2 {
++				regulator-min-microvolt = <650000>;
++				regulator-max-microvolt = <2250000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO3 {
++				regulator-min-microvolt = <650000>;
++				regulator-max-microvolt = <2250000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO4 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO5 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO6 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO7 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO8 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO9 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO10 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
+ 			};
++			LDO11 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO12 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO13 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO14 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO15 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO16 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO17 {
++				regulator-min-microvolt = <650000>;
++				regulator-max-microvolt = <2250000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO18 {
++				regulator-min-microvolt = <650000>;
++				regulator-max-microvolt = <2250000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO19 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++			LDO20 {
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <3900000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++		};
++		backlight {
++			maxim,max8925-dual-string = <0>;
++		};
++		charger {
++			batt-detect = <0>;
++			topoff-threshold = <1>;
++			fast-charge = <7>;
++			no-temp-support = <0>;
++			no-insert-detect = <0>;
+ 		};
+ 	};
+ };
 +
- 		/*
- 		 * If this driver supports console, and it hasn't been
- 		 * successfully registered yet, try to re-register it.
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 632d6d5dcfa70..255654ea12447 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2684,6 +2684,21 @@ static int __init keep_bootcon_setup(char *str)
- 
- early_param("keep_bootcon", keep_bootcon_setup);
- 
-+static int console_call_setup(struct console *newcon, char *options)
-+{
-+	int err;
-+
-+	if (!newcon->setup)
-+		return 0;
-+
-+	/* Synchronize with possible boot console. */
-+	console_lock();
-+	err = newcon->setup(newcon, options);
-+	console_unlock();
-+
-+	return err;
-+}
-+
- /*
-  * This is called by register_console() to try to match
-  * the newly registered console with any of the ones selected
-@@ -2719,8 +2734,8 @@ static int try_enable_preferred_console(struct console *newcon,
- 			if (_braille_register_console(newcon, c))
- 				return 0;
- 
--			if (newcon->setup &&
--			    (err = newcon->setup(newcon, c->options)) != 0)
-+			err = console_call_setup(newcon, c->options);
-+			if (err)
- 				return err;
- 		}
- 		newcon->flags |= CON_ENABLED;
-@@ -2748,7 +2763,7 @@ static void try_enable_default_console(struct console *newcon)
- 	if (newcon->index < 0)
- 		newcon->index = 0;
- 
--	if (newcon->setup && newcon->setup(newcon, NULL) != 0)
-+	if (console_call_setup(newcon, NULL) != 0)
- 		return;
- 
- 	newcon->flags |= CON_ENABLED;
++&rtc {
++	status = "okay";
++};
 -- 
 2.43.0
 
