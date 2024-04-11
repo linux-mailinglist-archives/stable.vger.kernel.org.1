@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-38853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198C18A10B3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8479C8A0DC7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE5881F2CC55
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1ADF1C21D64
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD0071487C5;
-	Thu, 11 Apr 2024 10:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E60146010;
+	Thu, 11 Apr 2024 10:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYWTZfxg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pt0kTykY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78ED513D258;
-	Thu, 11 Apr 2024 10:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62F11442F7;
+	Thu, 11 Apr 2024 10:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831785; cv=none; b=lCbiBG3WLhsQLKLRkRuh6tfSTKmGwZMIQ3R59wsySlG15dRkvT/awekL/IbsVPoGyLux0nw1vAPRPakAIvhZRV4ZiZnZRxjaXMaZxNyeaV+dU9yscNCY4TD3/CnZ8BlNdNXAfDCQQwY9mX7wlYPEqOzVpR7BBjD8k2oyABtOs1Y=
+	t=1712830057; cv=none; b=rnMAV95I0gxp7RC9nUlMFVvCZ9Fcsomuc92PXC9aS14lUkc2IUTT874KIqnl2d2MTML0cyzc56Xb/5zHXQpa9m1s9P4oLe7QPsaCTFLWPT+xcLxpEHM/ME2BuxNJuqzwjWm0EXYneOqd0kDxEW+YiplqlbseJNxmL/me783xSno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831785; c=relaxed/simple;
-	bh=1kKNv1OUzZNbMdhCvielnTVOC+tV0LJPrNrw6+9+/aA=;
+	s=arc-20240116; t=1712830057; c=relaxed/simple;
+	bh=kRcudFwZqqVEUzHJUMNCj2Kzx7qD3PdGECklO67Ocy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EUUDBOI14QdbhD7LzR1y0tENKOhKQRGINkHouwC/lzMeUtrq1sO+obfZ7kRm/jujs0RZOhzVMluBSGp1ALzuEWWR23iUDYh/mspMtwfC9If8HEGXtyAmBuprV76/kz3+AnjLRXQIYE1tFRJLMel3GKb1VidVgcv6LsQvTZqh1pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYWTZfxg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4233C433F1;
-	Thu, 11 Apr 2024 10:36:24 +0000 (UTC)
+	 MIME-Version; b=azQlHuyxQAIu4QG0mQiyWgzLSlPRJqjOQ30LECNgH95VbImuaKF7QOOvHSm9equoP9QwqeDYE3J14asdCEVIGlZ/sxArEvXE+WHdXWuaLASFaYybPqDWthEUZpimrnd8x9mhilnt0cexqX5CD/breCVZr/8b132hHpcPcbUE7DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pt0kTykY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBCCC433F1;
+	Thu, 11 Apr 2024 10:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831785;
-	bh=1kKNv1OUzZNbMdhCvielnTVOC+tV0LJPrNrw6+9+/aA=;
+	s=korg; t=1712830057;
+	bh=kRcudFwZqqVEUzHJUMNCj2Kzx7qD3PdGECklO67Ocy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XYWTZfxgEPYT4fhL5WFPaqtJsUs5fdywS5nexI4agpsUluJ1N3t6DCfMKZaeHVcs8
-	 nNILBFw4i7cDSCKSzrkCnHu/szB0eR21ZU7i9MUuHUbrt2sbPqO9bI5c2DKqOpM1hS
-	 LWWqurqUEDHO5t0gkPQ1Bb3vDjcVd/yqF7gI8GL0=
+	b=Pt0kTykY/qTmIGqWSCBLuHGnN+e7f6Oh852m44WMlftBh/SrFr7HVCjqcwaCEmL51
+	 IelTL4huBwzwr/ETDTrdDw4CLg4TSaxal1ae02nuSD26L4kpt+AIUqS8JGWiYnVTXI
+	 skwFcM0hdJSkIJj3y7T/fu6VsSP/MK5i9wh7SwwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 125/294] ALSA: hda/realtek - Fix headset Mic no show at resume back for Lenovo ALC897 platform
-Date: Thu, 11 Apr 2024 11:54:48 +0200
-Message-ID: <20240411095439.426448767@linuxfoundation.org>
+	Johan Jonker <jbx6244@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 021/143] ARM: dts: rockchip: fix rk322x hdmi ports node
+Date: Thu, 11 Apr 2024 11:54:49 +0200
+Message-ID: <20240411095421.548734900@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Johan Jonker <jbx6244@gmail.com>
 
-commit d397b6e56151099cf3b1f7bfccb204a6a8591720 upstream.
+[ Upstream commit 15a5ed03000cf61daf87d14628085cb1bc8ae72c ]
 
-Headset Mic will no show at resume back.
-This patch will fix this issue.
+Fix rk322x hdmi ports node so that it matches the
+rockchip,dw-hdmi.yaml binding.
 
-Fixes: d7f32791a9fc ("ALSA: hda/realtek - Add headset Mic support for Lenovo ALC897 platform")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/r/4713d48a372e47f98bba0c6120fd8254@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/9b84adf0-9312-47fd-becc-cadd06941f70@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/rockchip/rk322x.dtsi | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10692,8 +10692,7 @@ static void alc897_hp_automute_hook(stru
+diff --git a/arch/arm/boot/dts/rockchip/rk322x.dtsi b/arch/arm/boot/dts/rockchip/rk322x.dtsi
+index 831561fc18146..96421355c2746 100644
+--- a/arch/arm/boot/dts/rockchip/rk322x.dtsi
++++ b/arch/arm/boot/dts/rockchip/rk322x.dtsi
+@@ -736,14 +736,20 @@ hdmi: hdmi@200a0000 {
+ 		status = "disabled";
  
- 	snd_hda_gen_hp_automute(codec, jack);
- 	vref = spec->gen.hp_jack_present ? (PIN_HP | AC_PINCTL_VREF_100) : PIN_HP;
--	snd_hda_codec_write(codec, 0x1b, 0, AC_VERB_SET_PIN_WIDGET_CONTROL,
--			    vref);
-+	snd_hda_set_pin_ctl(codec, 0x1b, vref);
- }
+ 		ports {
+-			hdmi_in: port {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				hdmi_in_vop: endpoint@0 {
+-					reg = <0>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			hdmi_in: port@0 {
++				reg = <0>;
++
++				hdmi_in_vop: endpoint {
+ 					remote-endpoint = <&vop_out_hdmi>;
+ 				};
+ 			};
++
++			hdmi_out: port@1 {
++				reg = <1>;
++			};
+ 		};
+ 	};
  
- static void alc897_fixup_lenovo_headset_mic(struct hda_codec *codec,
-@@ -10702,6 +10701,10 @@ static void alc897_fixup_lenovo_headset_
- 	struct alc_spec *spec = codec->spec;
- 	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
- 		spec->gen.hp_automute_hook = alc897_hp_automute_hook;
-+		spec->no_shutup_pins = 1;
-+	}
-+	if (action == HDA_FIXUP_ACT_PROBE) {
-+		snd_hda_set_pin_ctl_cache(codec, 0x1a, PIN_IN | AC_PINCTL_VREF_100);
- 	}
- }
- 
+-- 
+2.43.0
+
 
 
 
