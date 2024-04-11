@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-38670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A5A8A0FC8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:27:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA4E8A0E3C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:12:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58CE81C23143
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56A5F283246
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:12:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8909514600E;
-	Thu, 11 Apr 2024 10:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090D5144D34;
+	Thu, 11 Apr 2024 10:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLYo2am2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNFY3/mC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4719D143C76;
-	Thu, 11 Apr 2024 10:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC4B1448EF;
+	Thu, 11 Apr 2024 10:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831252; cv=none; b=WE4myVAo5MFAS2CAjWktmuRj88kSfh15ADSjFCzK/tkrgpilbAIo+GOZN5/V1/nsa/NQi7lNXG1qHxgBuqGVT+aHGG3LQvKkDZ+IE4plivH+4SFgGiHMK1ydHiNgXYOirqCa/0jfceOUPNC+6r0DKTpvmggGYG35NHdL/zvL7dY=
+	t=1712830351; cv=none; b=OLSK6WQJTFuTCfoAE63ls9NAwz/pVKYG03L4QO0N2/21K5tfAqGpg9cwT7f0KxIfnUoZzKQKDJRDth1y3Qm7FyWHrwwQT02eNZuEjXRcL8+yxCPl7dIYO8LmNRpb1F9N6EX/uPuKBoKTh/mCRPugRBGiaZCmgAN2X1HA57miqzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831252; c=relaxed/simple;
-	bh=Z0xz6fymuxSDT8JJR5DyKmhxkwTJms81aiCO1TBP3m4=;
+	s=arc-20240116; t=1712830351; c=relaxed/simple;
+	bh=6ikfXHeXH9UZyFFRr5yGkTXSUlEt8Hqz7y+2A63tcbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZB3DKe98ItXLLLhAWjjObhfnNKCmicND0feU5STT01E0CYgiiEk87/049iAweIG+2yYU6+FUeR1uSd0k8gHohIItwDhJoq6pAsqjK69Jk0usDcU/Ben2U0aFDP2ZGR+vGX3PTLPlVq/LUvSBNzlK2Bky+93+vzXatL0WGRaQMpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLYo2am2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E67C433F1;
-	Thu, 11 Apr 2024 10:27:31 +0000 (UTC)
+	 MIME-Version; b=JbObmVVnlzzaDkZzkzbvTSALVHn/vel9ZsRwV7WHOP/1dln1b9MENR5vVZcpv1YCguGqxxvL+DuQs0yQAe/GRHxiM4YORXw4welX1Rvz7hTd6+KkXuJX1TnaBTAkFrIYnLkwlJ6wEkjgrO67i9pFfDO32UBgkqahwKzRKbia44k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNFY3/mC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F137C433C7;
+	Thu, 11 Apr 2024 10:12:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831251;
-	bh=Z0xz6fymuxSDT8JJR5DyKmhxkwTJms81aiCO1TBP3m4=;
+	s=korg; t=1712830351;
+	bh=6ikfXHeXH9UZyFFRr5yGkTXSUlEt8Hqz7y+2A63tcbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sLYo2am2Ogbg834cbWB7I8t30P4gQAP4dr6//77POEVbWXcXjS7tp6SkVKKKnG4PF
-	 sAmn7fVGkyIV2P2gR9CDezQR6S0lnG0k/Zlj5SgaKgUjDaAbMVQ8OtPxdOBeDP6hkb
-	 +XEX4iZr09VRmNmqGZLQ5niJqNd/1c9d0nNUbfV8=
+	b=QNFY3/mC2GsNaicJpt48QmFe0no+zZCkRkN9mNTuM5XSJcPjap5qQaKvnlkEep2r4
+	 3WaHsNuwFhHnU3XoTri2/LKwb+h84gxvF1y0cR1XY3srnXuDggoVUZwcHhBCB4Qkfn
+	 T4rPBT+RTGsz8+wBneP0mMdXo+Cx0kF7QEnVXoig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Marshall <hubcap@omnibond.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/114] Julia Lawall reported this null pointer dereference, this should fix it.
-Date: Thu, 11 Apr 2024 11:56:25 +0200
-Message-ID: <20240411095418.637442350@linuxfoundation.org>
+Subject: [PATCH 6.8 118/143] usb: typec: tcpci: add generic tcpci fallback compatible
+Date: Thu, 11 Apr 2024 11:56:26 +0200
+Message-ID: <20240411095424.458820320@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,33 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Marshall <hubcap@omnibond.com>
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-[ Upstream commit 9bf93dcfc453fae192fe5d7874b89699e8f800ac ]
+[ Upstream commit 8774ea7a553e2aec323170d49365b59af0a2b7e0 ]
 
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+The driver already support the tcpci binding for the i2c_device_id so
+add the support for the of_device_id too.
+
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240222210903.208901-3-m.felsch@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/orangefs/super.c b/fs/orangefs/super.c
-index 5254256a224d7..4ca8ed410c3cf 100644
---- a/fs/orangefs/super.c
-+++ b/fs/orangefs/super.c
-@@ -527,7 +527,7 @@ struct dentry *orangefs_mount(struct file_system_type *fst,
- 	sb->s_fs_info = kzalloc(sizeof(struct orangefs_sb_info_s), GFP_KERNEL);
- 	if (!ORANGEFS_SB(sb)) {
- 		d = ERR_PTR(-ENOMEM);
--		goto free_sb_and_op;
-+		goto free_op;
- 	}
- 
- 	ret = orangefs_fill_sb(sb,
+diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
+index 0ee3e6e29bb17..7118551827f6a 100644
+--- a/drivers/usb/typec/tcpm/tcpci.c
++++ b/drivers/usb/typec/tcpm/tcpci.c
+@@ -889,6 +889,7 @@ MODULE_DEVICE_TABLE(i2c, tcpci_id);
+ #ifdef CONFIG_OF
+ static const struct of_device_id tcpci_of_match[] = {
+ 	{ .compatible = "nxp,ptn5110", },
++	{ .compatible = "tcpci", },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, tcpci_of_match);
 -- 
 2.43.0
 
