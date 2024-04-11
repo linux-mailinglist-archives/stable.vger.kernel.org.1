@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-38473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 556288A0ECC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:18:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 060758A10B6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CD2C1F21D8F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:18:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4F0B28AD36
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E76A1465AA;
-	Thu, 11 Apr 2024 10:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E507148FF3;
+	Thu, 11 Apr 2024 10:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NSFMw8J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2Pi6Vsh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0929F145353;
-	Thu, 11 Apr 2024 10:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8B11448F3;
+	Thu, 11 Apr 2024 10:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830677; cv=none; b=fTGgv074kl184GEsgXldW6kPlpKeifxbdXt7+qPg6DcQQa3B4M3Do/jOcNvriiB8BKfdiehxWtkVy1C8Z9sV63cDOps54yByz/fG3J/9XuW7uFX/QwbPBJRlsTUiWTxdpBgCRnZbR/rjakCN/KGWViB8Xo2pG7rMFSAkEmbeE6g=
+	t=1712831791; cv=none; b=CfmXxrnmlQObk7QNo5PKD1CEilAwPxr78jyVVaMMHtLRnwrmKP6tRApgi4gcu3sSN64C3D8lrwEHyAObNcNEsmcHsgH+bc2mcNmnzvu1CkNocRsMmItUNGqkhnMLedckrYBIZaxATZbW4o1QKWZERjtWiy9neqTC/42Q3AmXBbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830677; c=relaxed/simple;
-	bh=ZMV+WfiSRZhmJbotcMQzjSBrZVDB7QgfE5Yi3d46UMI=;
+	s=arc-20240116; t=1712831791; c=relaxed/simple;
+	bh=W/dtV5opeZo39xwmcr3STddv+9KYzOxGTP+mBFDvvjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GH49snEoodxEYBpJ6JL96NO96Ee9fLatYwxZHJ5nLyxhK6gYraCFaq+232Yhyfn3vMhv1cnMB81dg8RdWL058Bx+H5FyQRogxAGkB5FdtjkSIa596bNip8nzwJo0XuMMihNe/Gb2FSv3QOwohcyftkYycSHSJmjC2dbjbyYoEu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NSFMw8J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34129C433F1;
-	Thu, 11 Apr 2024 10:17:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UTrrwkknFrBpFwoFSgwwdt87OOhzCgmUbZs2Uwy7hSfQ/LRgfKTS4nRazrlFgLLv0H2GwONvdfOy/LFgUdt1qL+Y3k4ZU5ZbjD0eqcu57mvOVR9eD/PvkgWfKCsQNqrmgOz3YpuUwScLOIHozD9BNHy0Y+4wcgy6Gnpl9vrm+WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2Pi6Vsh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA377C433C7;
+	Thu, 11 Apr 2024 10:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830676;
-	bh=ZMV+WfiSRZhmJbotcMQzjSBrZVDB7QgfE5Yi3d46UMI=;
+	s=korg; t=1712831791;
+	bh=W/dtV5opeZo39xwmcr3STddv+9KYzOxGTP+mBFDvvjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0NSFMw8JmYMEphmvaJQ2EuxExT/pM2m/hWNGBcmJlzGs8lcW4QVbktf+iM/YZVV06
-	 YlN71b7WU0b3rrCE5TtLyLD6muQJnI9KJP5k30Tk3gaCEW2qtmb4nF6GXb0lGM/FBq
-	 MLcy44egQlw945H8/h3YdYpXXVtziK9VaP0auPB0=
+	b=l2Pi6VshB5ELlKBvAa0KBykQ11y0USwUdGGn4BqjcsXGtcVVsiV4M/RngNN2Wjl8N
+	 zjydnCQlLUUxEWuFRAJPZ1p77qAoDmwILLiS6lgkbHWSXDorAaua9cXkkxlOHoJRNh
+	 PxJp/SMkYzoSsrvE27J3W4oxwuYketDM9r09zmOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingi Cho <mgcho.minic@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.4 081/215] netfilter: nf_tables: mark set as dead when unbinding anonymous set with timeout
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>
+Subject: [PATCH 5.10 127/294] usb: gadget: ncm: Fix handling of zero block length packets
 Date: Thu, 11 Apr 2024 11:54:50 +0200
-Message-ID: <20240411095427.343293180@linuxfoundation.org>
+Message-ID: <20240411095439.484359533@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +59,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-commit 552705a3650bbf46a22b1adedc1b04181490fc36 upstream.
+commit f90ce1e04cbcc76639d6cba0fdbd820cd80b3c70 upstream.
 
-While the rhashtable set gc runs asynchronously, a race allows it to
-collect elements from anonymous sets with timeouts while it is being
-released from the commit path.
+While connecting to a Linux host with CDC_NCM_NTB_DEF_SIZE_TX
+set to 65536, it has been observed that we receive short packets,
+which come at interval of 5-10 seconds sometimes and have block
+length zero but still contain 1-2 valid datagrams present.
 
-Mingi Cho originally reported this issue in a different path in 6.1.x
-with a pipapo set with low timeouts which is not possible upstream since
-7395dfacfff6 ("netfilter: nf_tables: use timestamp to check for set
-element timeout").
+According to the NCM spec:
 
-Fix this by setting on the dead flag for anonymous sets to skip async gc
-in this case.
+"If wBlockLength = 0x0000, the block is terminated by a
+short packet. In this case, the USB transfer must still
+be shorter than dwNtbInMaxSize or dwNtbOutMaxSize. If
+exactly dwNtbInMaxSize or dwNtbOutMaxSize bytes are sent,
+and the size is a multiple of wMaxPacketSize for the
+given pipe, then no ZLP shall be sent.
 
-According to 08e4c8c5919f ("netfilter: nf_tables: mark newset as dead on
-transaction abort"), Florian plans to accelerate abort path by releasing
-objects via workqueue, therefore, this sets on the dead flag for abort
-path too.
+wBlockLength= 0x0000 must be used with extreme care, because
+of the possibility that the host and device may get out of
+sync, and because of test issues.
+
+wBlockLength = 0x0000 allows the sender to reduce latency by
+starting to send a very large NTB, and then shortening it when
+the sender discovers that there’s not sufficient data to justify
+sending a large NTB"
+
+However, there is a potential issue with the current implementation,
+as it checks for the occurrence of multiple NTBs in a single
+giveback by verifying if the leftover bytes to be processed is zero
+or not. If the block length reads zero, we would process the same
+NTB infintely because the leftover bytes is never zero and it leads
+to a crash. Fix this by bailing out if block length reads zero.
 
 Cc: stable@vger.kernel.org
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Reported-by: Mingi Cho <mgcho.minic@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 427694cfaafa ("usb: gadget: ncm: Handle decoding of multiple NTB's in unwrap call")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Maciej Żenczykowski <maze@google.com>
+Link: https://lore.kernel.org/r/20240228115441.2105585-1-quic_kriskura@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/gadget/function/f_ncm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4073,6 +4073,7 @@ static void nf_tables_unbind_set(const s
- 
- 	if (list_empty(&set->bindings) && nft_set_is_anonymous(set)) {
- 		list_del_rcu(&set->list);
-+		set->dead = 1;
- 		if (event)
- 			nf_tables_set_notify(ctx, set, NFT_MSG_DELSET,
- 					     GFP_KERNEL);
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -1357,7 +1357,7 @@ parse_ntb:
+ 	if (to_process == 1 &&
+ 	    (*(unsigned char *)(ntb_ptr + block_len) == 0x00)) {
+ 		to_process--;
+-	} else if (to_process > 0) {
++	} else if ((to_process > 0) && (block_len != 0)) {
+ 		ntb_ptr = (unsigned char *)(ntb_ptr + block_len);
+ 		goto parse_ntb;
+ 	}
 
 
 
