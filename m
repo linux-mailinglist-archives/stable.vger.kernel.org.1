@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 059D58A0FBA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DB528A0F37
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36B901C21C83
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEAB8286745
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99435145B13;
-	Thu, 11 Apr 2024 10:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922B914600A;
+	Thu, 11 Apr 2024 10:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6rEYy4c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MikucEAP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B6813FD94;
-	Thu, 11 Apr 2024 10:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51048140E3D;
+	Thu, 11 Apr 2024 10:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831211; cv=none; b=JRfPI1mY0wLXu9C1R9XVtOB/zFLGjqvv+ExS0wGbzX/Gm2kj/dnNMsa5x+yaWzKuPt+nnRQ+6dhmG2NHRNd9UQ6C1GknTgV55ErHykm0RAhFalvNLkZrELGjep0Ym3VfB0g616WuKH581EsoorSfGQvuPktQth/6qTwfFBz3Qf4=
+	t=1712830921; cv=none; b=RSJ+vFATniJDSc5CXYJMHwCGJ2vBpLj8H3wQuHQcwuiR1y4PrfYGGGtNULkUTsOSfnbcj3FD26hWkJCpoD4DKmOXIiv8EKZSG4DFxCOsFFLmWVL3rxK8qXxyJRvuF2s4ykC0gKhUONWACtUIti4z2k3azC7LhvL07WKSl3GNPe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831211; c=relaxed/simple;
-	bh=yVSzrilAZd0l8tZLcvDqEH70Fs5cZ78KSfEHVORbalU=;
+	s=arc-20240116; t=1712830921; c=relaxed/simple;
+	bh=VY4U1vEraptKK82Z4NF7UN+hZIm/vOn/5UZUk11pc3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rk5iHp1ByAPxBPkW+1EFZrcNProF3bkyBqk1n9oMBuOnRSOHb8WHUGmzVS3HvkwstQNDp7Ko8+1mnK7lw9axty+PQvRBDuQeD/74rjDGYfmpkETBMa1Bgq6+upqAwNxtSzgEL/yluCFPyUVamlBradMNqsfQlItH7Tp6pkMahiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6rEYy4c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C055C433C7;
-	Thu, 11 Apr 2024 10:26:50 +0000 (UTC)
+	 MIME-Version; b=HHDGq8PVh3AmSpotBYjfIqW0lNUOqgnDCehS/d88EvvUodsD/s9xAgRZ/qIne0AESHZQbSwZDxtLE2ohQfF1Ep2gnSS3DDKraqM8UAIoAlEYaPxjwUISVPYMcXT2YV71D64LKTPm4j44jZ73Wis51k+wq48CvQFEqlgLsAnrMuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MikucEAP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92480C433C7;
+	Thu, 11 Apr 2024 10:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831210;
-	bh=yVSzrilAZd0l8tZLcvDqEH70Fs5cZ78KSfEHVORbalU=;
+	s=korg; t=1712830921;
+	bh=VY4U1vEraptKK82Z4NF7UN+hZIm/vOn/5UZUk11pc3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y6rEYy4cGaKqdLlhgNcvVnV3kJsq7+goup+zMS7ij/7yRUmTfJrSIJDJJn15Zr2fc
-	 D2cs8UhbhessVWeh6NIu4V3c6sZPaY1pxuCZrHIrqyFupaLkoW5qG9pZnVJzCw3/My
-	 uEtfjtuv45lwG/d93NYLpKYNS+SDqHcbWsnrye7k=
+	b=MikucEAPRkoxfAEHxLWH+vGSMGsOv6cSiJh6I/ywsi/TYa0yx/O+q+3bAToCiwbzp
+	 A4miR8ghu37irQnRxgdHB4hmQGTl3rNpuISa7pm8iz5JViARQPQUChb2ePyPts1EeN
+	 d4SNr+V5UV8p8Xx4Skjjg6eIgtF2olDkbBQUGPFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vinicius Peixoto <nukelet64@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Paul Barker <paul.barker.ct@bp.renesas.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/114] Bluetooth: Add new quirk for broken read key length on ATS2851
-Date: Thu, 11 Apr 2024 11:56:12 +0200
-Message-ID: <20240411095418.242150039@linuxfoundation.org>
+Subject: [PATCH 5.4 164/215] net: ravb: Always process TX descriptor ring
+Date: Thu, 11 Apr 2024 11:56:13 +0200
+Message-ID: <20240411095429.805417168@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Peixoto <nukelet64@gmail.com>
+From: Paul Barker <paul.barker.ct@bp.renesas.com>
 
-[ Upstream commit 48201a3b3f398be6a01f78a14b18bd5d31c47458 ]
+[ Upstream commit 596a4254915f94c927217fe09c33a6828f33fb25 ]
 
-The ATS2851 controller erroneously reports support for the "Read
-Encryption Key Length" HCI command. This makes it unable to connect
-to any devices, since this command is issued by the kernel during the
-connection process in response to an "Encryption Change" HCI event.
+The TX queue should be serviced each time the poll function is called,
+even if the full RX work budget has been consumed. This prevents
+starvation of the TX queue when RX bandwidth usage is high.
 
-Add a new quirk (HCI_QUIRK_BROKEN_ENC_KEY_SIZE) to hint that the command
-is unsupported, preventing it from interrupting the connection process.
-
-This is the error log from btmon before this patch:
-
-> HCI Event: Encryption Change (0x08) plen 4
-        Status: Success (0x00)
-        Handle: 2048 Address: ...
-        Encryption: Enabled with E0 (0x01)
-< HCI Command: Read Encryption Key Size (0x05|0x0008) plen 2
-        Handle: 2048 Address: ...
-> HCI Event: Command Status (0x0f) plen 4
-      Read Encryption Key Size (0x05|0x0008) ncmd 1
-        Status: Unknown HCI Command (0x01)
-
-Signed-off-by: Vinicius Peixoto <nukelet64@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20240402145305.82148-1-paul.barker.ct@bp.renesas.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c   | 1 +
- include/net/bluetooth/hci.h | 8 ++++++++
- net/bluetooth/hci_event.c   | 3 ++-
- 3 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 8dbdc51976e7b..1976593bc804e 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -4477,6 +4477,7 @@ static int btusb_probe(struct usb_interface *intf,
- 		set_bit(HCI_QUIRK_BROKEN_READ_TRANSMIT_POWER, &hdev->quirks);
- 		set_bit(HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT, &hdev->quirks);
- 		set_bit(HCI_QUIRK_BROKEN_EXT_SCAN, &hdev->quirks);
-+		set_bit(HCI_QUIRK_BROKEN_READ_ENC_KEY_SIZE, &hdev->quirks);
- 	}
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 53b9c77c7f6a7..3cc312a526d9b 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -911,12 +911,12 @@ static int ravb_poll(struct napi_struct *napi, int budget)
+ 	int q = napi - priv->napi;
+ 	int mask = BIT(q);
+ 	int quota = budget;
++	bool unmask;
  
- 	if (!reset)
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index 03e68a8e229f5..35c5f75a3a5ee 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -339,6 +339,14 @@ enum {
- 	 * during the hdev->setup vendor callback.
- 	 */
- 	HCI_QUIRK_BROKEN_LE_CODED,
+ 	/* Processing RX Descriptor Ring */
+ 	/* Clear RX interrupt */
+ 	ravb_write(ndev, ~(mask | RIS0_RESERVED), RIS0);
+-	if (ravb_rx(ndev, &quota, q))
+-		goto out;
++	unmask = !ravb_rx(ndev, &quota, q);
+ 
+ 	/* Processing RX Descriptor Ring */
+ 	spin_lock_irqsave(&priv->lock, flags);
+@@ -926,6 +926,9 @@ static int ravb_poll(struct napi_struct *napi, int budget)
+ 	netif_wake_subqueue(ndev, q);
+ 	spin_unlock_irqrestore(&priv->lock, flags);
+ 
++	if (!unmask)
++		goto out;
 +
-+	/*
-+	 * When this quirk is set, the HCI_OP_READ_ENC_KEY_SIZE command is
-+	 * skipped during an HCI_EV_ENCRYPT_CHANGE event. This is required
-+	 * for Actions Semiconductor ATS2851 based controllers, which erroneously
-+	 * claim to support it.
-+	 */
-+	HCI_QUIRK_BROKEN_READ_ENC_KEY_SIZE,
- };
+ 	napi_complete(napi);
  
- /* HCI device flags */
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index bb0e5902a3e60..80e71ce32f09f 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3679,7 +3679,8 @@ static void hci_encrypt_change_evt(struct hci_dev *hdev, void *data,
- 		 * controller really supports it. If it doesn't, assume
- 		 * the default size (16).
- 		 */
--		if (!(hdev->commands[20] & 0x10)) {
-+		if (!(hdev->commands[20] & 0x10) ||
-+		    test_bit(HCI_QUIRK_BROKEN_READ_ENC_KEY_SIZE, &hdev->quirks)) {
- 			conn->enc_key_size = HCI_LINK_KEY_SIZE;
- 			goto notify;
- 		}
+ 	/* Re-enable RX/TX interrupts */
 -- 
 2.43.0
 
