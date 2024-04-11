@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81BD28A0D43
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:02:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99AE78A10BB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2BD11C20E8F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:02:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 362F61F2A21D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9297914535A;
-	Thu, 11 Apr 2024 10:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2A0149DF1;
+	Thu, 11 Apr 2024 10:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tX2fG3Lp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THOQhq68"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFBF1422C4;
-	Thu, 11 Apr 2024 10:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2580F149C7F;
+	Thu, 11 Apr 2024 10:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829723; cv=none; b=aCG9SzCPH9/Yd3KhmLUwqi2w1ugrTV6C3jsqM74KB2D2cjsdiNJ0dMjdQLscYo9SJFG06n/jSGlRXcj/wOv0ubMw0RNUExAeVdMZkUmLWUJRdomM2/e+CFB1Ov0ChJjvSR1N50stS5Bs4oHWMSCkOzZUcVqMZlp5JWzzciDzbXs=
+	t=1712831803; cv=none; b=YGkEwCghVOPx6Aaw6wK2ZHTloKG0ZP0zY5VDLfwFK75QZIK3ASdaNiJpprXSrKE92Da/wD9/bEQAPnBcc9IWbOMQXQx4XC1+q/cl30K+MkRxD89qniC7YMbYjZ6MbQcKS0RcTpahCwnuDgpHiR8sL0vrLtVUQfdoXQZneAJTXl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829723; c=relaxed/simple;
-	bh=QC6ES4Tua0g8uCSOFn+ainpeOJdA/F8ffbvFImcuDZs=;
+	s=arc-20240116; t=1712831803; c=relaxed/simple;
+	bh=LKXVCi6/COgxcFi3/vzW+5vClJtbgopADyjWuVsBDF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HEouDILeaDz9vT5Eq5Os1IG29BTQaWGxap3TBQY8i4sxV8rFp8w1mIl2hoUWWMPlCpIt8dh4z9c8/FthFwn0Ca6Xihu6nD8kFXIABtbw+vhClEV9p4nKxeIPqKeJmZs2VLk81VFZgZ4wI5j3BS8ZhHIc7SlOXNtW10N5ZNRQvvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tX2fG3Lp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C597BC433F1;
-	Thu, 11 Apr 2024 10:02:02 +0000 (UTC)
+	 MIME-Version; b=dstHb9q96c4GsrPQGVFQitK7BNOEFX+yL7AFb3YWwrN//4atMsCtcK5+XTQPIj0NlXsiMCAPe8hGYbahCy6On0wH4N3e0vEuaslD2BXvc1OOjnmUaI/WgygTZqmDiuagKYfZMMDNJCH35HRsfDmTOg4jcSKiPNQlqN2I9ESb1FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THOQhq68; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E018C433C7;
+	Thu, 11 Apr 2024 10:36:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829723;
-	bh=QC6ES4Tua0g8uCSOFn+ainpeOJdA/F8ffbvFImcuDZs=;
+	s=korg; t=1712831803;
+	bh=LKXVCi6/COgxcFi3/vzW+5vClJtbgopADyjWuVsBDF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tX2fG3LpP+y44PvmSZlSXzOLOD8PUGhmZXkMjgUzZTTpHell3iZ2+6eSg12/pgJbu
-	 csDThrnOpqsAtEvszOsdTLhvT/AhSyXjYiu4e6U5tUWDyxmljnzhCMqDH/24MKALMt
-	 gf8CDs14cK1IzxWXmiOlu71xVE/feimjW0UM2aLY=
+	b=THOQhq68aG5EJDh9SbDG8GdLQVq81btH2B/Fpf9W/s59oM+98vy+nhVaij6EKDoo4
+	 xXn/M9Y0DNWzHKu/mdf7nCIGAGSMrPPGsNC+Ecy7Rq9By4eBGhTFt9+eMDLNxCgcTq
+	 uMZ2qPc66AG2CCeOcJW3q/wwM8XeK8HuADntQ/Q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ricky Wu <ricky_wu@realtek.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 044/175] PCI/PM: Drain runtime-idle callbacks before driver removal
+Subject: [PATCH 5.10 104/294] x86/CPU/AMD: Update the Zenbleed microcode revisions
 Date: Thu, 11 Apr 2024 11:54:27 +0200
-Message-ID: <20240411095420.891296348@linuxfoundation.org>
+Message-ID: <20240411095438.804005380@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-[ Upstream commit 9d5286d4e7f68beab450deddbb6a32edd5ecf4bf ]
+[ Upstream commit 5c84b051bd4e777cf37aaff983277e58c99618d5 ]
 
-A race condition between the .runtime_idle() callback and the .remove()
-callback in the rtsx_pcr PCI driver leads to a kernel crash due to an
-unhandled page fault [1].
+Update them to the correct revision numbers.
 
-The problem is that rtsx_pci_runtime_idle() is not expected to be running
-after pm_runtime_get_sync() has been called, but the latter doesn't really
-guarantee that.  It only guarantees that the suspend and resume callbacks
-will not be running when it returns.
-
-However, if a .runtime_idle() callback is already running when
-pm_runtime_get_sync() is called, the latter will notice that the runtime PM
-status of the device is RPM_ACTIVE and it will return right away without
-waiting for the former to complete.  In fact, it cannot wait for
-.runtime_idle() to complete because it may be called from that callback (it
-arguably does not make much sense to do that, but it is not strictly
-prohibited).
-
-Thus in general, whoever is providing a .runtime_idle() callback needs
-to protect it from running in parallel with whatever code runs after
-pm_runtime_get_sync().  [Note that .runtime_idle() will not start after
-pm_runtime_get_sync() has returned, but it may continue running then if it
-has started earlier.]
-
-One way to address that race condition is to call pm_runtime_barrier()
-after pm_runtime_get_sync() (not before it, because a nonzero value of the
-runtime PM usage counter is necessary to prevent runtime PM callbacks from
-being invoked) to wait for the .runtime_idle() callback to complete should
-it be running at that point.  A suitable place for doing that is in
-pci_device_remove() which calls pm_runtime_get_sync() before removing the
-driver, so it may as well call pm_runtime_barrier() subsequently, which
-will prevent the race in question from occurring, not just in the rtsx_pcr
-driver, but in any PCI drivers providing .runtime_idle() callbacks.
-
-Link: https://lore.kernel.org/lkml/20240229062201.49500-1-kai.heng.feng@canonical.com/ # [1]
-Link: https://lore.kernel.org/r/5761426.DvuYhMxLoT@kreacher
-Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Ricky Wu <ricky_wu@realtek.com>
-Acked-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc: <stable@vger.kernel.org>
+Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-driver.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/kernel/cpu/amd.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index 2e5402b09c1ad..031908e42fb54 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -441,6 +441,13 @@ static int pci_device_remove(struct device *dev)
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index f29c6bed9d657..3b02cb8b05338 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1049,11 +1049,11 @@ static bool cpu_has_zenbleed_microcode(void)
+ 	u32 good_rev = 0;
  
- 	if (drv->remove) {
- 		pm_runtime_get_sync(dev);
-+		/*
-+		 * If the driver provides a .runtime_idle() callback and it has
-+		 * started to run already, it may continue to run in parallel
-+		 * with the code below, so wait until all of the runtime PM
-+		 * activity has completed.
-+		 */
-+		pm_runtime_barrier(dev);
- 		drv->remove(pci_dev);
- 		pm_runtime_put_noidle(dev);
- 	}
+ 	switch (boot_cpu_data.x86_model) {
+-	case 0x30 ... 0x3f: good_rev = 0x0830107a; break;
+-	case 0x60 ... 0x67: good_rev = 0x0860010b; break;
+-	case 0x68 ... 0x6f: good_rev = 0x08608105; break;
+-	case 0x70 ... 0x7f: good_rev = 0x08701032; break;
+-	case 0xa0 ... 0xaf: good_rev = 0x08a00008; break;
++	case 0x30 ... 0x3f: good_rev = 0x0830107b; break;
++	case 0x60 ... 0x67: good_rev = 0x0860010c; break;
++	case 0x68 ... 0x6f: good_rev = 0x08608107; break;
++	case 0x70 ... 0x7f: good_rev = 0x08701033; break;
++	case 0xa0 ... 0xaf: good_rev = 0x08a00009; break;
+ 
+ 	default:
+ 		return false;
 -- 
 2.43.0
 
