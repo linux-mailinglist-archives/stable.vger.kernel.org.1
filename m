@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-38238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BAAE8A0DA6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:06:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB56F8A0E16
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:11:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07082B20E78
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:06:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A640F282E8B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2632145B0D;
-	Thu, 11 Apr 2024 10:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE51146D5F;
+	Thu, 11 Apr 2024 10:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8Yu2gX4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bs0vx7S/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818A61448F3;
-	Thu, 11 Apr 2024 10:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A141146D51;
+	Thu, 11 Apr 2024 10:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829968; cv=none; b=ndznJU7G9UeCtsY63aRVaHhhtoOhMfLzj+2jwAP3cTAgl01zU1jWJx7g2wwFoSlj75nYxLE2Zb+0Ac50GG8933me1REeBhUAtEJaPI0Hz2ecNxHPpEdL4v6f/R6S8jRwsvgReRfiPd/0AUC9K1evycJOE8rB9MfvnuBRulrydPQ=
+	t=1712830247; cv=none; b=JyLOgwSpGu4BF8PSlpbjfv848eW25FJhcoSPAp8Jt5AU+q+GTa8Y1JnWJkMmJQEsk3jfseOT775/xzzyrS/KysQFp4KIxhqtI3ZhrD16qB6WIOEyzuXJMux0ZLS/okO8hrefAlG+v6k4jpII6PS5X0UOPwdEOPcZoyZOSr/gLRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829968; c=relaxed/simple;
-	bh=S33aXnIqGbNsFMOQVUVbqZfjzx7xSfl4iS262qxU1tA=;
+	s=arc-20240116; t=1712830247; c=relaxed/simple;
+	bh=2RGnegmN+RCRGduqGVnkJPBJPNJDWF3O3orcRaKFNxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tTBxj5HqENEmd0bowD2NjVoPGMZu45iEWodw86cWUWatml0bIXLql6O8ksVyQ4F8d2TaJuvfAVuoiUKcwRXTf4RA0QPkHthIN0Hzt11EtAyVBro1msujrh2wax/SZyGROnVMNA7n4vapHvjQAWfhCbpmMF1uK/gkAHAN9o2WQDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8Yu2gX4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E8CC433C7;
-	Thu, 11 Apr 2024 10:06:07 +0000 (UTC)
+	 MIME-Version; b=snRZhuQnICcH3tNwZ++uwohvAe9eWxqVdEEqkDJc+7hcgw7ICufG/RzUEwyGJkQfMS4Dg6MqotR8MzlF9MyL5R2A6l/SkcY3yotVs/CUk+cFjxbXAQ7CplPL+QNQQlDwKWWskFBX2+nIot6py4n8ASx/wUxI1tTkg1DmWZK2IJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bs0vx7S/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D7CC433C7;
+	Thu, 11 Apr 2024 10:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829968;
-	bh=S33aXnIqGbNsFMOQVUVbqZfjzx7xSfl4iS262qxU1tA=;
+	s=korg; t=1712830246;
+	bh=2RGnegmN+RCRGduqGVnkJPBJPNJDWF3O3orcRaKFNxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M8Yu2gX4i3n9Dkq9shDA64bsxPfzibafLC+R5Kjwgot8dXakPNvrwjZcaDxEGaYd8
-	 yNnFyJlQQ4AnQlojDtTSzMOE71n+oiIuysWwZSGhXpA3CpTZbDdqkqwRSKhDBmuvLF
-	 Es3n3XGy969vzM2RPiL/hFF9HjpipRVEaVaP5ViQ=
+	b=bs0vx7S/p+Y94XSUGWY34bJS3zw9woVQ7wPScbrpY+aWmplg8nkxhtvnvXxmEb3Df
+	 MvH7LAjiGG5KSSfjfPyZ3RgCwwg3rfeb5a5yxhMuLwLCZFNH4MecMhcHoCn6qcxAFX
+	 Rsr+d9Q2LY/r0USCiZ87XUxnm7gyAS3mstfGKgCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.org>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Aric Cyr <aric.cyr@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 128/175] staging: mmal-vchiq: Avoid use of bool in structures
+Subject: [PATCH 6.8 083/143] drm/amd/display: Fix nanosec stat overflow
 Date: Thu, 11 Apr 2024 11:55:51 +0200
-Message-ID: <20240411095423.418639459@linuxfoundation.org>
+Message-ID: <20240411095423.410356337@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.org>
+From: Aric Cyr <aric.cyr@amd.com>
 
-[ Upstream commit 640e77466e69d9c28de227bc76881f5501f532ca ]
+[ Upstream commit 14d68acfd04b39f34eea7bea65dda652e6db5bf6 ]
 
-Fixes up a checkpatch error "Avoid using bool structure members
-because of possible alignment issues".
+[Why]
+Nanosec stats can overflow on long running systems potentially causing
+statistic logging issues.
 
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.org>
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Acked-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Acked-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: f37e76abd614 ("staging: vc04_services: fix information leak in create_component()")
+[How]
+Use 64bit types for nanosec stats to ensure no overflow.
+
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Aric Cyr <aric.cyr@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../vc04_services/bcm2835-camera/mmal-vchiq.c        | 12 ++++++------
- .../vc04_services/bcm2835-camera/mmal-vchiq.h        |  4 ++--
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/display/modules/inc/mod_stats.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
-index daa2b96565529..00c943516ba38 100644
---- a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
-+++ b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
-@@ -845,9 +845,9 @@ static int port_info_get(struct vchiq_mmal_instance *instance,
- 		goto release_msg;
+diff --git a/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h b/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
+index 5960dd760e91c..8ce6c22e5d041 100644
+--- a/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
++++ b/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
+@@ -57,10 +57,10 @@ void mod_stats_update_event(struct mod_stats *mod_stats,
+ 		unsigned int length);
  
- 	if (rmsg->u.port_info_get_reply.port.is_enabled == 0)
--		port->enabled = false;
-+		port->enabled = 0;
- 	else
--		port->enabled = true;
-+		port->enabled = 1;
+ void mod_stats_update_flip(struct mod_stats *mod_stats,
+-		unsigned long timestamp_in_ns);
++		unsigned long long timestamp_in_ns);
  
- 	/* copy the values out of the message */
- 	port->handle = rmsg->u.port_info_get_reply.port_handle;
-@@ -1283,7 +1283,7 @@ static int port_disable(struct vchiq_mmal_instance *instance,
- 	if (!port->enabled)
- 		return 0;
+ void mod_stats_update_vupdate(struct mod_stats *mod_stats,
+-		unsigned long timestamp_in_ns);
++		unsigned long long timestamp_in_ns);
  
--	port->enabled = false;
-+	port->enabled = 0;
- 
- 	ret = port_action_port(instance, port,
- 			       MMAL_MSG_PORT_ACTION_TYPE_DISABLE);
-@@ -1335,7 +1335,7 @@ static int port_enable(struct vchiq_mmal_instance *instance,
- 	if (ret)
- 		goto done;
- 
--	port->enabled = true;
-+	port->enabled = 1;
- 
- 	if (port->buffer_cb) {
- 		/* send buffer headers to videocore */
-@@ -1502,7 +1502,7 @@ int vchiq_mmal_port_connect_tunnel(struct vchiq_mmal_instance *instance,
- 			pr_err("failed disconnecting src port\n");
- 			goto release_unlock;
- 		}
--		src->connected->enabled = false;
-+		src->connected->enabled = 0;
- 		src->connected = NULL;
- 	}
- 
-@@ -1746,7 +1746,7 @@ int vchiq_mmal_component_disable(struct vchiq_mmal_instance *instance,
- 
- 	ret = disable_component(instance, component);
- 	if (ret == 0)
--		component->enabled = false;
-+		component->enabled = 0;
- 
- 	mutex_unlock(&instance->vchiq_mutex);
- 
-diff --git a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
-index b0ee1716525b4..b3c231e619c90 100644
---- a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
-+++ b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
-@@ -47,7 +47,7 @@ typedef void (*vchiq_mmal_buffer_cb)(
- 		unsigned long length, u32 mmal_flags, s64 dts, s64 pts);
- 
- struct vchiq_mmal_port {
--	bool enabled;
-+	u32 enabled:1;
- 	u32 handle;
- 	u32 type; /* port type, cached to use on port info set */
- 	u32 index; /* port index, cached to use on port info set */
-@@ -81,7 +81,7 @@ struct vchiq_mmal_port {
- };
- 
- struct vchiq_mmal_component {
--	bool enabled;
-+	u32 enabled:1;
- 	u32 handle;  /* VideoCore handle for component */
- 	u32 inputs;  /* Number of input ports */
- 	u32 outputs; /* Number of output ports */
+ void mod_stats_update_freesync(struct mod_stats *mod_stats,
+ 		unsigned int v_total_min,
 -- 
 2.43.0
 
