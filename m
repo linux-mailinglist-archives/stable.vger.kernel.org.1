@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-38081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F05908A0CF0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:58:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C07A8A107A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:36:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB5662858B4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:58:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 068B8B226F5
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBE5145323;
-	Thu, 11 Apr 2024 09:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7EDC14B093;
+	Thu, 11 Apr 2024 10:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAxhn9M9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqCc1Pkd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D056313DDDD;
-	Thu, 11 Apr 2024 09:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669D814D6E4;
+	Thu, 11 Apr 2024 10:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829507; cv=none; b=mNd0LXmC4OZaFAtLc7sNMERGF6pIMsc/ut3fQKIRO/0cyCn0Sf1W3AGlTbhwJeVvRnwVQ/o4xMdbNJfeY+pWhR1pTeCwOBG1wFpZ5n3ktShDdCH0SWqBRRiUwlredZnasiUPkiOqeiAZu43dT6Annb+oO9ZuVRoo4MUqdDwBnG0=
+	t=1712831621; cv=none; b=h0dg7jEbkkTxBA32kL5d4EqyLamJaQfdUk15QY+oLnSZS5VDUNe/qzseVBfMvbb/vMQsp/j36qTT68qulSrl58OFW1+B7HKiecr6hGms7PMvsRj+LGcTweHbIj+bRo75a5LJbXi7nC6qdoyq4RdEGqDlz6fNExdDEybHL7GPpd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829507; c=relaxed/simple;
-	bh=gXOLO0KLUU3L14fDPd0lUZ9iHeCXqECMCnMCqnnNQas=;
+	s=arc-20240116; t=1712831621; c=relaxed/simple;
+	bh=m7G1b1GXAbSlsaiYYYwXeELMthD7Sl9ZicIz9LiW/Z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rclc/TRhv4ontK+HBOHOqdepKesPGGygo7csVVQLbcdFLcJEqkthq0KDwWq+OCC/BZrFC8dcBRiYkUz3FKZYxFuGYNpBo/zgIBEA3r9z1ENju4MJAJIcxAvqQ8rwGoZvDj16U3abG71vJ1ooIvFS8Khs4r3XvvcChAiaY5MG1bY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAxhn9M9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5C7C433F1;
-	Thu, 11 Apr 2024 09:58:27 +0000 (UTC)
+	 MIME-Version; b=oLMN0fppN8B/D9a7RldiXza1gdLGK9IP4ScITUgWAPp4/8iGtYvVBt8MCceJGCP53JIRjyu0wm3ssQXqde1BEZQzJxPvx5ZfLWRnjhUaLVjfRVIh1lyREvWxjiKPVzy7n7LiwDpw/82Qv8Z2w2Gu1DWxQeyrkbdO3hMoaS20wGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqCc1Pkd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25CCC43390;
+	Thu, 11 Apr 2024 10:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829507;
-	bh=gXOLO0KLUU3L14fDPd0lUZ9iHeCXqECMCnMCqnnNQas=;
+	s=korg; t=1712831621;
+	bh=m7G1b1GXAbSlsaiYYYwXeELMthD7Sl9ZicIz9LiW/Z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UAxhn9M9nBLjAoMhQVggELc6sGHRQS5izBvd2uy1HOnLTg/YD9LvLtnIsR67yzUPI
-	 vpHqvpzWtZ2JpF06Num9linelTKXYfsNchoOPrEpe8NBkrVRpxVC6ctqBskzhcFhKE
-	 ZB1FxrXayc5kLhiRzmmZddZQ4fnz0krRTPxnTOA0=
+	b=zqCc1PkdAeQdhOKmWPUVILZUSyIJJ+N+Erk2rlRDdtsfp6QjvUYTJ8MhIycRCZe15
+	 5pieb4CsLW8EiWkKj76wBSzIYU5BAuDGPG5/77QSemdPWNFLchVqXwrplFfXfSFmy8
+	 tHfIugWc3CZa0vQHE2hXH0sCL9Wy6zI9QwNJez64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Jorge Ramirez-Ortiz <jorge@foundries.io>,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 011/175] smack: Set SMACK64TRANSMUTE only for dirs in smack_inode_setxattr()
+Subject: [PATCH 5.10 071/294] mmc: core: Fix switch on gp3 partition
 Date: Thu, 11 Apr 2024 11:53:54 +0200
-Message-ID: <20240411095419.883077285@linuxfoundation.org>
+Message-ID: <20240411095437.833695850@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-[ Upstream commit 9c82169208dde516510aaba6bbd8b13976690c5d ]
+[ Upstream commit 4af59a8df5ea930038cd3355e822f5eedf4accc1 ]
 
-Since the SMACK64TRANSMUTE xattr makes sense only for directories, enforce
-this restriction in smack_inode_setxattr().
+Commit e7794c14fd73 ("mmc: rpmb: fixes pause retune on all RPMB
+partitions.") added a mask check for 'part_type', but the mask used was
+wrong leading to the code intended for rpmb also being executed for GP3.
 
+On some MMCs (but not all) this would make gp3 partition inaccessible:
+armadillo:~# head -c 1 < /dev/mmcblk2gp3
+head: standard input: I/O error
+armadillo:~# dmesg -c
+[  422.976583] mmc2: running CQE recovery
+[  423.058182] mmc2: running CQE recovery
+[  423.137607] mmc2: running CQE recovery
+[  423.137802] blk_update_request: I/O error, dev mmcblk2gp3, sector 0 op 0x0:(READ) flags 0x80700 phys_seg 4 prio class 0
+[  423.237125] mmc2: running CQE recovery
+[  423.318206] mmc2: running CQE recovery
+[  423.397680] mmc2: running CQE recovery
+[  423.397837] blk_update_request: I/O error, dev mmcblk2gp3, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 0
+[  423.408287] Buffer I/O error on dev mmcblk2gp3, logical block 0, async page read
+
+the part_type values of interest here are defined as follow:
+main  0
+boot0 1
+boot1 2
+rpmb  3
+gp0   4
+gp1   5
+gp2   6
+gp3   7
+
+so mask with EXT_CSD_PART_CONFIG_ACC_MASK (7) to correctly identify rpmb
+
+Fixes: e7794c14fd73 ("mmc: rpmb: fixes pause retune on all RPMB partitions.")
 Cc: stable@vger.kernel.org
-Fixes: 5c6d1125f8db ("Smack: Transmute labels on specified directories") # v2.6.38.x
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Cc: Jorge Ramirez-Ortiz <jorge@foundries.io>
+Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20240306-mmc-partswitch-v1-1-bf116985d950@codewreck.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack_lsm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mmc/core/block.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 128a5f464740e..2f2dc49f53dff 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -1341,7 +1341,8 @@ static int smack_inode_setxattr(struct dentry *dentry, const char *name,
- 		check_star = 1;
- 	} else if (strcmp(name, XATTR_NAME_SMACKTRANSMUTE) == 0) {
- 		check_priv = 1;
--		if (size != TRANS_TRUE_SIZE ||
-+		if (!S_ISDIR(d_backing_inode(dentry)->i_mode) ||
-+		    size != TRANS_TRUE_SIZE ||
- 		    strncmp(value, TRANS_TRUE, TRANS_TRUE_SIZE) != 0)
- 			rc = -EINVAL;
- 	} else
+diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+index 2058f31a1bce6..d826a1bb39f2c 100644
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -823,10 +823,11 @@ static const struct block_device_operations mmc_bdops = {
+ static int mmc_blk_part_switch_pre(struct mmc_card *card,
+ 				   unsigned int part_type)
+ {
+-	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
++	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_MASK;
++	const unsigned int rpmb = EXT_CSD_PART_CONFIG_ACC_RPMB;
+ 	int ret = 0;
+ 
+-	if ((part_type & mask) == mask) {
++	if ((part_type & mask) == rpmb) {
+ 		if (card->ext_csd.cmdq_en) {
+ 			ret = mmc_cmdq_disable(card);
+ 			if (ret)
+@@ -841,10 +842,11 @@ static int mmc_blk_part_switch_pre(struct mmc_card *card,
+ static int mmc_blk_part_switch_post(struct mmc_card *card,
+ 				    unsigned int part_type)
+ {
+-	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
++	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_MASK;
++	const unsigned int rpmb = EXT_CSD_PART_CONFIG_ACC_RPMB;
+ 	int ret = 0;
+ 
+-	if ((part_type & mask) == mask) {
++	if ((part_type & mask) == rpmb) {
+ 		mmc_retune_unpause(card->host);
+ 		if (card->reenable_cmdq && !card->ext_csd.cmdq_en)
+ 			ret = mmc_cmdq_enable(card);
 -- 
 2.43.0
 
