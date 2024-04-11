@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-38308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EA9D8A0DF4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F39BA8A0D20
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:00:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 815E71C219F4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD7BA285D8E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093ED145B08;
-	Thu, 11 Apr 2024 10:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDA5145345;
+	Thu, 11 Apr 2024 10:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JD2o91ed"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdBhVGd2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E1D1F5FA;
-	Thu, 11 Apr 2024 10:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E20145B0A;
+	Thu, 11 Apr 2024 10:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830172; cv=none; b=fLfXjxRCaJ5w25yjtbLGUqxGvADLqSygC7wzb6spmhdfJDJiHKC0w0hSNoOgefkoxK5BBcawqyv1i7RyG8pgz+lWGMPHYEXJHi8FJcG21ymKQs47KTOcloH1igS+y/kYB5V8kQdFu8l93Igdtz5yg2anHG0Gfw4RPA2uriWnVqk=
+	t=1712829637; cv=none; b=J3Ei14gHosuGGX/mfHx5tiNX9R+rB3hc8JkpOveQUTM5WEfPKN94baguH1tGE4+OVcL3+z2So7JbtBD6IUqROkTlLh9Yp5SGhLBvkj6o/9qzr3FbLID9Tbnfe+OapGKO053RsQLdckkj6YAFOtMKrdZWJvuoTXCyg8rkzh+rEBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830172; c=relaxed/simple;
-	bh=jkAcQj2Xzf9uAAck7DojzTNaYxL0MHHUi6mA1xg72Ls=;
+	s=arc-20240116; t=1712829637; c=relaxed/simple;
+	bh=03xWcyPXbL6Pqwz9tnMzb+lckXfT8Jp1HS91HO3SKU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BrM8FS02fdxIpCgdv4fQ9ICkz4c9gQa6a+ZHHjGzuxz0eJr4TSUzvIalyQuA3j3lnBtVVcUvIyecuA83Mh6StXwp73vhR2aIB3UFrW0lFLcZsxa34xa6TMZuZz6uwQx7uFk2ODu4iJ4e+h4+yZLhBEHqBRrwrujF5Tmw4FNlFHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JD2o91ed; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A84C43390;
-	Thu, 11 Apr 2024 10:09:32 +0000 (UTC)
+	 MIME-Version; b=iJgyVJFofv10YZKYO2VfVfv2fI5sVlTslRRziPdYXE70FwyMhaeR/KCQlwks80I2iOs+ZeCb+MTnCDlEMIS/p3lg3uV6y3YvT0xZHPvzta1nLdYi6zvnXLayFR0qYQNM/U9jlEBABSkVqzWp6c/IJSCGhuW2AvQrZbXJIOXQbmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdBhVGd2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD4BC433C7;
+	Thu, 11 Apr 2024 10:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830172;
-	bh=jkAcQj2Xzf9uAAck7DojzTNaYxL0MHHUi6mA1xg72Ls=;
+	s=korg; t=1712829637;
+	bh=03xWcyPXbL6Pqwz9tnMzb+lckXfT8Jp1HS91HO3SKU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JD2o91edXNe86rvw1wqIBY0/sFjnhKlT/f2WKJ+5XLTBrV/HoZNyQCeAoTlOknSwR
-	 pFkpeysK6XpYGdnuKwX9W4jPRlxr1C1iZdS+nZvJ4yt4CcWZKTSGF3MSQ7/DAeUgyz
-	 CqBCZqt1N3Loczw/izUJivO0aF6AElAvsOCwdRds=
+	b=EdBhVGd2xrb790yWeE8JsUHfJUwTd8t/KT5DRI2fNsqSMwz93RF5Q5v3+XTPvkYKA
+	 H0SUBFQ73a0kXAUXaBbm+043iHCxGD11BaD5D+Gqb1StNbEPNbBCM6rD1ukvBd8Lbc
+	 1Xzylpsjj6UEaxvC76xgeiIUnpEvqcfd6gu0ikG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Kees Cook <keescook@chromium.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sean Anderson <sean.anderson@seco.com>,
+	Camelia Groza <camelia.groza@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 010/143] VMCI: Fix memcpy() run-time warning in dg_dispatch_as_host()
+Subject: [PATCH 4.19 055/175] soc: fsl: qbman: Add helper for sanity checking cgr ops
 Date: Thu, 11 Apr 2024 11:54:38 +0200
-Message-ID: <20240411095421.219713436@linuxfoundation.org>
+Message-ID: <20240411095421.223504710@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+From: Sean Anderson <sean.anderson@seco.com>
 
-[ Upstream commit 19b070fefd0d024af3daa7329cbc0d00de5302ec ]
+[ Upstream commit d0e17a4653cebc2c8a20251c837dd1fcec5014d9 ]
 
-Syzkaller hit 'WARNING in dg_dispatch_as_host' bug.
+This breaks out/combines get_affine_portal and the cgr sanity check in
+preparation for the next commit. No functional change intended.
 
-memcpy: detected field-spanning write (size 56) of single field "&dg_info->msg"
-at drivers/misc/vmw_vmci/vmci_datagram.c:237 (size 24)
-
-WARNING: CPU: 0 PID: 1555 at drivers/misc/vmw_vmci/vmci_datagram.c:237
-dg_dispatch_as_host+0x88e/0xa60 drivers/misc/vmw_vmci/vmci_datagram.c:237
-
-Some code commentry, based on my understanding:
-
-544 #define VMCI_DG_SIZE(_dg) (VMCI_DG_HEADERSIZE + (size_t)(_dg)->payload_size)
-/// This is 24 + payload_size
-
-memcpy(&dg_info->msg, dg, dg_size);
-	Destination = dg_info->msg ---> this is a 24 byte
-					structure(struct vmci_datagram)
-	Source = dg --> this is a 24 byte structure (struct vmci_datagram)
-	Size = dg_size = 24 + payload_size
-
-{payload_size = 56-24 =32} -- Syzkaller managed to set payload_size to 32.
-
- 35 struct delayed_datagram_info {
- 36         struct datagram_entry *entry;
- 37         struct work_struct work;
- 38         bool in_dg_host_queue;
- 39         /* msg and msg_payload must be together. */
- 40         struct vmci_datagram msg;
- 41         u8 msg_payload[];
- 42 };
-
-So those extra bytes of payload are copied into msg_payload[], a run time
-warning is seen while fuzzing with Syzkaller.
-
-One possible way to fix the warning is to split the memcpy() into
-two parts -- one -- direct assignment of msg and second taking care of payload.
-
-Gustavo quoted:
-"Under FORTIFY_SOURCE we should not copy data across multiple members
-in a structure."
-
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Suggested-by: Vegard Nossum <vegard.nossum@oracle.com>
-Suggested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240105164001.2129796-2-harshit.m.mogalapalli@oracle.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+Acked-by: Camelia Groza <camelia.groza@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: fbec4e7fed89 ("soc: fsl: qbman: Use raw spinlock for cgr_lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_datagram.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/soc/fsl/qbman/qman.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/misc/vmw_vmci/vmci_datagram.c b/drivers/misc/vmw_vmci/vmci_datagram.c
-index f50d22882476f..d1d8224c8800c 100644
---- a/drivers/misc/vmw_vmci/vmci_datagram.c
-+++ b/drivers/misc/vmw_vmci/vmci_datagram.c
-@@ -234,7 +234,8 @@ static int dg_dispatch_as_host(u32 context_id, struct vmci_datagram *dg)
+diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
+index 17f72d7ed3103..24ca4bedcaa6e 100644
+--- a/drivers/soc/fsl/qbman/qman.c
++++ b/drivers/soc/fsl/qbman/qman.c
+@@ -2389,13 +2389,8 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
+ }
+ EXPORT_SYMBOL(qman_create_cgr);
  
- 			dg_info->in_dg_host_queue = true;
- 			dg_info->entry = dst_entry;
--			memcpy(&dg_info->msg, dg, dg_size);
-+			dg_info->msg = *dg;
-+			memcpy(&dg_info->msg_payload, dg + 1, dg->payload_size);
+-int qman_delete_cgr(struct qman_cgr *cgr)
++static struct qman_portal *qman_cgr_get_affine_portal(struct qman_cgr *cgr)
+ {
+-	unsigned long irqflags;
+-	struct qm_mcr_querycgr cgr_state;
+-	struct qm_mcc_initcgr local_opts;
+-	int ret = 0;
+-	struct qman_cgr *i;
+ 	struct qman_portal *p = get_affine_portal();
  
- 			INIT_WORK(&dg_info->work, dg_delayed_dispatch);
- 			schedule_work(&dg_info->work);
+ 	if (cgr->chan != p->config->channel) {
+@@ -2403,10 +2398,25 @@ int qman_delete_cgr(struct qman_cgr *cgr)
+ 		dev_err(p->config->dev, "CGR not owned by current portal");
+ 		dev_dbg(p->config->dev, " create 0x%x, delete 0x%x\n",
+ 			cgr->chan, p->config->channel);
+-
+-		ret = -EINVAL;
+-		goto put_portal;
++		put_affine_portal();
++		return NULL;
+ 	}
++
++	return p;
++}
++
++int qman_delete_cgr(struct qman_cgr *cgr)
++{
++	unsigned long irqflags;
++	struct qm_mcr_querycgr cgr_state;
++	struct qm_mcc_initcgr local_opts;
++	int ret = 0;
++	struct qman_cgr *i;
++	struct qman_portal *p = qman_cgr_get_affine_portal(cgr);
++
++	if (!p)
++		return -EINVAL;
++
+ 	memset(&local_opts, 0, sizeof(struct qm_mcc_initcgr));
+ 	spin_lock_irqsave(&p->cgr_lock, irqflags);
+ 	list_del(&cgr->node);
+@@ -2434,7 +2444,6 @@ int qman_delete_cgr(struct qman_cgr *cgr)
+ 		list_add(&cgr->node, &p->cgr_cbs);
+ release_lock:
+ 	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
+-put_portal:
+ 	put_affine_portal();
+ 	return ret;
+ }
 -- 
 2.43.0
 
