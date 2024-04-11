@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-38186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 923448A0D68
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4BCE8A0F07
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:20:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B548A1C2086F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D65581C2143E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9F7145B14;
-	Thu, 11 Apr 2024 10:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C7014601D;
+	Thu, 11 Apr 2024 10:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xww9MsNT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TgBIJgVq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A113C145B08;
-	Thu, 11 Apr 2024 10:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AAD140E3D;
+	Thu, 11 Apr 2024 10:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829817; cv=none; b=I9fjbjbxXDzpuX9fls4xis/3z+UUWzRQIpRV2CpIgg+4ZROP9YuYfKsYqOx8AVinqzu4dkxV1eIA0qggCDk3VfSP1b5fI3Qqm7A1sGXSBOvzCGv72QkJ1uq72GC0cvZdngkXJ7VgQ7PLVLInrSF8/4D725dVCZK1YV+qPji0qIY=
+	t=1712830818; cv=none; b=g6GlZn9jV0x+jT2WSM7dE3jvQ2sUWRi20wYrharCfij4I51JgdYQIZ217IjXYCZqjb/a+QxqHgJDCkeYgQuTxPaIWCoZdd73E8lv+oaiKZ9SuLu51Obw9U2s+Rj7w90hRm7Xu6a3m66DhJjVHRUeQ4Ky/LEjmrBBOQu5Y/qUQMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829817; c=relaxed/simple;
-	bh=eboM1EZicLWgS6TwKkZaBq0HwyOSSnk3VapmjxfZF0w=;
+	s=arc-20240116; t=1712830818; c=relaxed/simple;
+	bh=DpZQDw3JaW94Ed0WUjMkuTsa9QhYyXxoAFAW7xBAlVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M1+Dh8fne/kEVKDvwSLAwGuCn/ZotatabsqdXdC5fSy9Owb7CJo279W6iFGivKMArIxCs+9/KCPDMgtr+Wq4FprpciBLTZu5YrY+0x3IVBFiQY3DqOaDoGL781YRQRWe+TKQDtBP9D+EEepy0TbIElYN0oyWHLemKfW11BQ/GYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xww9MsNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EFFC433F1;
-	Thu, 11 Apr 2024 10:03:36 +0000 (UTC)
+	 MIME-Version; b=m3AzVJ+66o9I1DiqgvtNLOqMtHO9d5u2tDhbdLCEBGnePhlYlznPYuQFY5KLtMTGpTLNtY1mvbdRRuMssu0KMxjf0FyFbOJf6HWLzrSkY168RyZG3eQqYFZEvp9K1W3Ibq0UDPoC7ktJSRoR9xWvrUTn8OuJYK2u4XVdudRJbSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TgBIJgVq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81AA4C433F1;
+	Thu, 11 Apr 2024 10:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829817;
-	bh=eboM1EZicLWgS6TwKkZaBq0HwyOSSnk3VapmjxfZF0w=;
+	s=korg; t=1712830817;
+	bh=DpZQDw3JaW94Ed0WUjMkuTsa9QhYyXxoAFAW7xBAlVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xww9MsNTtFyloRghdtOa1dAYY+vzq7k/OjRZaYsZ339E+1DE61HvtJQhDIZIFYipo
-	 PsVC5QCR4RN1xBpxP4eApmeJl4J3AIjroS+rba40CRnCKyQsmazW3kQMfczGZeN14u
-	 sg9VYoC9+7a1K8MDI7sPBUI2NyVFdFwshuQKElto=
+	b=TgBIJgVqgSGWm16Jzekq7lxRtZKuUTwqw7hWi3pvzWSLfkyOs/TV8+RB+9R34YG6K
+	 AhdcpoB3JtOUbZ61+NQcg9Rf7nLMo3ojqrnTFuEFDG2WK4eKVqc0WJ3Sz0YjjQWyko
+	 KRDWPSuFBH4T1FbwGMC1E2umUjaiXeC2U2pSsvDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 114/175] tcp: properly terminate timers for kernel sockets
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.4 128/215] USB: core: Fix deadlock in usb_deauthorize_interface()
 Date: Thu, 11 Apr 2024 11:55:37 +0200
-Message-ID: <20240411095422.999453815@linuxfoundation.org>
+Message-ID: <20240411095428.744925858@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,143 +60,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 151c9c724d05d5b0dd8acd3e11cb69ef1f2dbada ]
+commit 80ba43e9f799cbdd83842fc27db667289b3150f5 upstream.
 
-We had various syzbot reports about tcp timers firing after
-the corresponding netns has been dismantled.
+Among the attribute file callback routines in
+drivers/usb/core/sysfs.c, the interface_authorized_store() function is
+the only one which acquires a device lock on an ancestor device: It
+calls usb_deauthorize_interface(), which locks the interface's parent
+USB device.
 
-Fortunately Josef Bacik could trigger the issue more often,
-and could test a patch I wrote two years ago.
+The will lead to deadlock if another process already owns that lock
+and tries to remove the interface, whether through a configuration
+change or because the device has been disconnected.  As part of the
+removal procedure, device_del() waits for all ongoing sysfs attribute
+callbacks to complete.  But usb_deauthorize_interface() can't complete
+until the device lock has been released, and the lock won't be
+released until the removal has finished.
 
-When TCP sockets are closed, we call inet_csk_clear_xmit_timers()
-to 'stop' the timers.
+The mechanism provided by sysfs to prevent this kind of deadlock is
+to use the sysfs_break_active_protection() function, which tells sysfs
+not to wait for the attribute callback.
 
-inet_csk_clear_xmit_timers() can be called from any context,
-including when socket lock is held.
-This is the reason it uses sk_stop_timer(), aka del_timer().
-This means that ongoing timers might finish much later.
+Reported-and-tested by: Yue Sun <samsun1006219@gmail.com>
+Reported by: xingwei lee <xrivendell7@gmail.com>
 
-For user sockets, this is fine because each running timer
-holds a reference on the socket, and the user socket holds
-a reference on the netns.
-
-For kernel sockets, we risk that the netns is freed before
-timer can complete, because kernel sockets do not hold
-reference on the netns.
-
-This patch adds inet_csk_clear_xmit_timers_sync() function
-that using sk_stop_timer_sync() to make sure all timers
-are terminated before the kernel socket is released.
-Modules using kernel sockets close them in their netns exit()
-handler.
-
-Also add sock_not_owned_by_me() helper to get LOCKDEP
-support : inet_csk_clear_xmit_timers_sync() must not be called
-while socket lock is held.
-
-It is very possible we can revert in the future commit
-3a58f13a881e ("net: rds: acquire refcount on TCP sockets")
-which attempted to solve the issue in rds only.
-(net/smc/af_smc.c and net/mptcp/subflow.c have similar code)
-
-We probably can remove the check_net() tests from
-tcp_out_of_resources() and __tcp_close() in the future.
-
-Reported-by: Josef Bacik <josef@toxicpanda.com>
-Closes: https://lore.kernel.org/netdev/20240314210740.GA2823176@perftesting/
-Fixes: 26abe14379f8 ("net: Modify sk_alloc to not reference count the netns of kernel sockets.")
-Fixes: 8a68173691f0 ("net: sk_clone_lock() should only do get_net() if the parent is not a kernel socket")
-Link: https://lore.kernel.org/bpf/CANn89i+484ffqb93aQm1N-tjxxvb3WDKX0EbD7318RwRgsatjw@mail.gmail.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Tested-by: Josef Bacik <josef@toxicpanda.com>
-Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/r/20240322135732.1535772-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/linux-usb/CAEkJfYO6jRVC8Tfrd_R=cjO0hguhrV31fDPrLrNOOHocDkPoAA@mail.gmail.com/#r
+Fixes: 310d2b4124c0 ("usb: interface authorization: SysFS part of USB interface authorization")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/1c37eea1-9f56-4534-b9d8-b443438dc869@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/inet_connection_sock.h |  1 +
- include/net/sock.h                 |  7 +++++++
- net/ipv4/inet_connection_sock.c    | 14 ++++++++++++++
- net/ipv4/tcp.c                     |  2 ++
- 4 files changed, 24 insertions(+)
+ drivers/usb/core/sysfs.c |   16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
-index da8a582ab032e..6141fe1932c8f 100644
---- a/include/net/inet_connection_sock.h
-+++ b/include/net/inet_connection_sock.h
-@@ -177,6 +177,7 @@ void inet_csk_init_xmit_timers(struct sock *sk,
- 			       void (*delack_handler)(struct timer_list *),
- 			       void (*keepalive_handler)(struct timer_list *));
- void inet_csk_clear_xmit_timers(struct sock *sk);
-+void inet_csk_clear_xmit_timers_sync(struct sock *sk);
- 
- static inline void inet_csk_schedule_ack(struct sock *sk)
+--- a/drivers/usb/core/sysfs.c
++++ b/drivers/usb/core/sysfs.c
+@@ -1190,14 +1190,24 @@ static ssize_t interface_authorized_stor
  {
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 8eea17a41c1ca..b5a929a4bc74d 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1589,6 +1589,13 @@ static inline void sock_owned_by_me(const struct sock *sk)
- #endif
- }
+ 	struct usb_interface *intf = to_usb_interface(dev);
+ 	bool val;
++	struct kernfs_node *kn;
  
-+static inline void sock_not_owned_by_me(const struct sock *sk)
-+{
-+#ifdef CONFIG_LOCKDEP
-+	WARN_ON_ONCE(lockdep_sock_is_held(sk) && debug_locks);
-+#endif
-+}
-+
- static inline bool sock_owned_by_user(const struct sock *sk)
- {
- 	sock_owned_by_me(sk);
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index 7392a744c677e..17a900c85aa66 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -557,6 +557,20 @@ void inet_csk_clear_xmit_timers(struct sock *sk)
- }
- EXPORT_SYMBOL(inet_csk_clear_xmit_timers);
+ 	if (strtobool(buf, &val) != 0)
+ 		return -EINVAL;
  
-+void inet_csk_clear_xmit_timers_sync(struct sock *sk)
-+{
-+	struct inet_connection_sock *icsk = inet_csk(sk);
-+
-+	/* ongoing timer handlers need to acquire socket lock. */
-+	sock_not_owned_by_me(sk);
-+
-+	icsk->icsk_pending = icsk->icsk_ack.pending = 0;
-+
-+	sk_stop_timer_sync(sk, &icsk->icsk_retransmit_timer);
-+	sk_stop_timer_sync(sk, &icsk->icsk_delack_timer);
-+	sk_stop_timer_sync(sk, &sk->sk_timer);
-+}
-+
- void inet_csk_delete_keepalive_timer(struct sock *sk)
- {
- 	sk_stop_timer(sk, &sk->sk_timer);
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 3df973d22295c..54d6058dcb5cc 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2514,6 +2514,8 @@ void tcp_close(struct sock *sk, long timeout)
- 	lock_sock(sk);
- 	__tcp_close(sk, timeout);
- 	release_sock(sk);
-+	if (!sk->sk_net_refcnt)
-+		inet_csk_clear_xmit_timers_sync(sk);
- 	sock_put(sk);
+-	if (val)
++	if (val) {
+ 		usb_authorize_interface(intf);
+-	else
+-		usb_deauthorize_interface(intf);
++	} else {
++		/*
++		 * Prevent deadlock if another process is concurrently
++		 * trying to unregister intf.
++		 */
++		kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
++		if (kn) {
++			usb_deauthorize_interface(intf);
++			sysfs_unbreak_active_protection(kn);
++		}
++	}
+ 
+ 	return count;
  }
- EXPORT_SYMBOL(tcp_close);
--- 
-2.43.0
-
 
 
 
