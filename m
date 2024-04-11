@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26C458A0F60
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5802F8A0E20
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:11:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 588091C20DC1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 130F52865B2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ABE9146D49;
-	Thu, 11 Apr 2024 10:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF6014601D;
+	Thu, 11 Apr 2024 10:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgGgSZoM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSGb13gI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A09146A9D;
-	Thu, 11 Apr 2024 10:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91FD1448EF;
+	Thu, 11 Apr 2024 10:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830996; cv=none; b=H+FwyKrB4mgL1IzTK0NIWJEAcEB6L4JxL+QxPFdXTzXf57DaByHuD/OO6bXACGxGI8cRgWAB8wAATOpfjhuTPylhKcYzJ/qlsWFpjd9VOZaOYCrHJrJSjC+rTqcfiObsPffZnX/0UC8CZwF/6GOhmlnDCg1id3UKLzMkJr/sNck=
+	t=1712830275; cv=none; b=bVCdhWH+mn341EP6QHRAN3PoQs7GVTHjxrPsmUkAyYs5XKvOPbWOR+LI5VRZmScij8yaTGpodo7x8P6b30QmoELIXWU1UJ+/l0LwBQE1tFrr9+ij2WPYb2eCPsQRjH9t7Eb7vCFdF+0jhq24G6Zai/A4HoaduMBI8yfTTQCjUVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830996; c=relaxed/simple;
-	bh=8G4TDd/RO5GoPAXiKcIJP45TF6VqselMZOGteGO+s18=;
+	s=arc-20240116; t=1712830275; c=relaxed/simple;
+	bh=SrEPAlLiMDFhfM+aAezU1ia5Bk1V26penQ3wfWwQjlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UMsbAUGqIvM73LU/bEZq72doH3u7TYLSvBFouA3qlAY3GFuCn/1lOzs3zz9TbBUG2Z5/uj9IMi7voXjMHJ8zh5R/xk+IQqoOLY5bTJRgszCiyaVmzd+rMatbW2WqZbhuguyCV810M7RS9MCmsKG5nJDXVrzR4JLXzLJYlQPEvF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jgGgSZoM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3F4C433F1;
-	Thu, 11 Apr 2024 10:23:15 +0000 (UTC)
+	 MIME-Version; b=knDJ8zuZFZb0GAGzVK1k0OTAoDe7j/3FMIzdQS+q6IMy6PSD/3fYYn4kdtPEQ4+oZWItbhsNBau5wZVYpCVjux8XEQGFhOd4wJuZwF2313keWmw7IBuzR29heb3pU9KBIbPQjkX8f9h6NLfU748yR30TqHNp6kRAQ8pg62YmU5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSGb13gI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D84CEC433C7;
+	Thu, 11 Apr 2024 10:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830996;
-	bh=8G4TDd/RO5GoPAXiKcIJP45TF6VqselMZOGteGO+s18=;
+	s=korg; t=1712830275;
+	bh=SrEPAlLiMDFhfM+aAezU1ia5Bk1V26penQ3wfWwQjlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jgGgSZoM772QVsi7wO+rBJnDi56us6M1uPhlJjb9dXxv7PW7+nobApA6XKQ6AleeJ
-	 YQKBtwXfe6xlB26aYV1IusgVVdPVBkouInMovS32ZPM69ORf/e1zWwgyBZqUvDqpdx
-	 2CTHglPmQnX0ATRGzBeOm966S1DJ0+S8YFEYuFMk=
+	b=RSGb13gIa75AkOpVuIWvCKVVW5FOVnH0RP2KZFmm8YvHkpNiNWLn32xvncClqk5wH
+	 9zZ6McihTFeIRRUUEr/T3Pbah0bbtj1W4lp8XCxNIbp9wv95ttkCMHCvyoE8Li3Gd/
+	 RPt7bxjgyg0NeLtYqxVtNTC+m5F8fQxNxvzqgKQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 151/215] selftests: reuseaddr_conflict: add missing new line at the end of the output
+	Ian Rogers <irogers@google.com>,
+	Yang Jihong <yangjihong1@huawei.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 092/143] libperf evlist: Avoid out-of-bounds access
 Date: Thu, 11 Apr 2024 11:56:00 +0200
-Message-ID: <20240411095429.423353184@linuxfoundation.org>
+Message-ID: <20240411095423.678608335@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Ian Rogers <irogers@google.com>
 
-commit 31974122cfdeaf56abc18d8ab740d580d9833e90 upstream.
+[ Upstream commit 1947b92464c3268381604bbe2ac977a3fd78192f ]
 
-The netdev CI runs in a VM and captures serial, so stdout and
-stderr get combined. Because there's a missing new line in
-stderr the test ends up corrupting KTAP:
+Parallel testing appears to show a race between allocating and setting
+evsel ids. As there is a bounds check on the xyarray it yields a segv
+like:
 
-  # Successok 1 selftests: net: reuseaddr_conflict
+```
+AddressSanitizer:DEADLYSIGNAL
 
-which should have been:
+=================================================================
 
-  # Success
-  ok 1 selftests: net: reuseaddr_conflict
+==484408==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000010
 
-Fixes: 422d8dc6fd3a ("selftest: add a reuseaddr test")
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/r/20240329160559.249476-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+==484408==The signal is caused by a WRITE memory access.
+
+==484408==Hint: address points to the zero page.
+
+    #0 0x55cef5d4eff4 in perf_evlist__id_hash tools/lib/perf/evlist.c:256
+    #1 0x55cef5d4f132 in perf_evlist__id_add tools/lib/perf/evlist.c:274
+    #2 0x55cef5d4f545 in perf_evlist__id_add_fd tools/lib/perf/evlist.c:315
+    #3 0x55cef5a1923f in store_evsel_ids util/evsel.c:3130
+    #4 0x55cef5a19400 in evsel__store_ids util/evsel.c:3147
+    #5 0x55cef5888204 in __run_perf_stat tools/perf/builtin-stat.c:832
+    #6 0x55cef5888c06 in run_perf_stat tools/perf/builtin-stat.c:960
+    #7 0x55cef58932db in cmd_stat tools/perf/builtin-stat.c:2878
+...
+```
+
+Avoid this crash by early exiting the perf_evlist__id_add_fd and
+perf_evlist__id_add is the access is out-of-bounds.
+
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Yang Jihong <yangjihong1@huawei.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240229070757.796244-1-irogers@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/reuseaddr_conflict.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/lib/perf/evlist.c                  | 18 ++++++++++++------
+ tools/lib/perf/include/internal/evlist.h |  4 ++--
+ 2 files changed, 14 insertions(+), 8 deletions(-)
 
---- a/tools/testing/selftests/net/reuseaddr_conflict.c
-+++ b/tools/testing/selftests/net/reuseaddr_conflict.c
-@@ -109,6 +109,6 @@ int main(void)
- 	fd1 = open_port(0, 1);
- 	if (fd1 >= 0)
- 		error(1, 0, "Was allowed to create an ipv4 reuseport on an already bound non-reuseport socket with no ipv6");
--	fprintf(stderr, "Success");
-+	fprintf(stderr, "Success\n");
+diff --git a/tools/lib/perf/evlist.c b/tools/lib/perf/evlist.c
+index 058e3ff10f9b2..c6d67fc9e57ef 100644
+--- a/tools/lib/perf/evlist.c
++++ b/tools/lib/perf/evlist.c
+@@ -248,10 +248,10 @@ u64 perf_evlist__read_format(struct perf_evlist *evlist)
+ 
+ static void perf_evlist__id_hash(struct perf_evlist *evlist,
+ 				 struct perf_evsel *evsel,
+-				 int cpu, int thread, u64 id)
++				 int cpu_map_idx, int thread, u64 id)
+ {
+ 	int hash;
+-	struct perf_sample_id *sid = SID(evsel, cpu, thread);
++	struct perf_sample_id *sid = SID(evsel, cpu_map_idx, thread);
+ 
+ 	sid->id = id;
+ 	sid->evsel = evsel;
+@@ -269,21 +269,27 @@ void perf_evlist__reset_id_hash(struct perf_evlist *evlist)
+ 
+ void perf_evlist__id_add(struct perf_evlist *evlist,
+ 			 struct perf_evsel *evsel,
+-			 int cpu, int thread, u64 id)
++			 int cpu_map_idx, int thread, u64 id)
+ {
+-	perf_evlist__id_hash(evlist, evsel, cpu, thread, id);
++	if (!SID(evsel, cpu_map_idx, thread))
++		return;
++
++	perf_evlist__id_hash(evlist, evsel, cpu_map_idx, thread, id);
+ 	evsel->id[evsel->ids++] = id;
+ }
+ 
+ int perf_evlist__id_add_fd(struct perf_evlist *evlist,
+ 			   struct perf_evsel *evsel,
+-			   int cpu, int thread, int fd)
++			   int cpu_map_idx, int thread, int fd)
+ {
+ 	u64 read_data[4] = { 0, };
+ 	int id_idx = 1; /* The first entry is the counter value */
+ 	u64 id;
+ 	int ret;
+ 
++	if (!SID(evsel, cpu_map_idx, thread))
++		return -1;
++
+ 	ret = ioctl(fd, PERF_EVENT_IOC_ID, &id);
+ 	if (!ret)
+ 		goto add;
+@@ -312,7 +318,7 @@ int perf_evlist__id_add_fd(struct perf_evlist *evlist,
+ 	id = read_data[id_idx];
+ 
+ add:
+-	perf_evlist__id_add(evlist, evsel, cpu, thread, id);
++	perf_evlist__id_add(evlist, evsel, cpu_map_idx, thread, id);
  	return 0;
  }
+ 
+diff --git a/tools/lib/perf/include/internal/evlist.h b/tools/lib/perf/include/internal/evlist.h
+index d86ffe8ed483e..f43bdb9b6227c 100644
+--- a/tools/lib/perf/include/internal/evlist.h
++++ b/tools/lib/perf/include/internal/evlist.h
+@@ -126,11 +126,11 @@ u64 perf_evlist__read_format(struct perf_evlist *evlist);
+ 
+ void perf_evlist__id_add(struct perf_evlist *evlist,
+ 			 struct perf_evsel *evsel,
+-			 int cpu, int thread, u64 id);
++			 int cpu_map_idx, int thread, u64 id);
+ 
+ int perf_evlist__id_add_fd(struct perf_evlist *evlist,
+ 			   struct perf_evsel *evsel,
+-			   int cpu, int thread, int fd);
++			   int cpu_map_idx, int thread, int fd);
+ 
+ void perf_evlist__reset_id_hash(struct perf_evlist *evlist);
+ 
+-- 
+2.43.0
+
 
 
 
