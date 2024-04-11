@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A048A0EEF
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:19:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB228A0DC5
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 649051F218A8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:19:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 812F71C21B01
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B1A14600E;
-	Thu, 11 Apr 2024 10:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F71145FFB;
+	Thu, 11 Apr 2024 10:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2GMg92B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nMA1nRwV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EBF145FFA;
-	Thu, 11 Apr 2024 10:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66134145B14;
+	Thu, 11 Apr 2024 10:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830759; cv=none; b=m/G8iFmFqLTRntB+caE92ALO2vh1yU1Bd5icTc9Ty/S/COoGXeDpmfDvMdIHJP0w6Rw6eyQyPWOn6YqxXv4zVj3FWrhRYvn0xtJ4hpLkIyzKTRvZo65PQJA+Og2YrsGWO2bF69mCG4rbqaf/1pJCnPDXFDNNd9fjpkwtKHMLOIc=
+	t=1712830052; cv=none; b=LCfvg2gVfmmTtxKX7eDCaUsfSj0OwipTaInYID2k0lipARzZPOmTQzTARNkliR0dP5x7NwPzAnPS9kGLb1M7mohaGpDqDOQ/OsuO5nte5CxNT3b9uprk4MJsm3ESBG/Ejzh6RW9QaRppOXSk7TMlaJ17IdQhUZ9j79tP0u6/v7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830759; c=relaxed/simple;
-	bh=TCQm7PZFcH4Eh1EzIipOF46gX3+6O6dp9Sy29+El5qM=;
+	s=arc-20240116; t=1712830052; c=relaxed/simple;
+	bh=GxQDZZFjahN6mQUoPXSL6LUnWeg7dWC8uXwZFOq8+Xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SkUKW6bWcieRV/FUlKuRxIApzo9Q69Q71S+lXzW3gKXp4y05r+22aP4LqCrFD+sBTItWnqiiwHF6x3Ic8nUPZ5uRqhWEdVk1OCxz0qJjERBeiW+pNzzH/pv9nYTr3J/Mhs6J8HYXReBiAZ7y2CGMftTnukS5QxDezRFlKq/4Oy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2GMg92B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F52EC433F1;
-	Thu, 11 Apr 2024 10:19:18 +0000 (UTC)
+	 MIME-Version; b=hZwB42lwO2nvcnGD6veRl/d2F54YgcxLtdobO20XzKJNPADZmcspz169KXWPKZanNVYpQla6NZi0ul32ySOm58lwdRvHt56qaORzbrhb7uV3q3AEbysMksOlRHATM9J5lRYUOY1ooW88CWQaIhSCV3TXIYmMOoqxV4ROjcO9TVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nMA1nRwV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81829C433F1;
+	Thu, 11 Apr 2024 10:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830759;
-	bh=TCQm7PZFcH4Eh1EzIipOF46gX3+6O6dp9Sy29+El5qM=;
+	s=korg; t=1712830051;
+	bh=GxQDZZFjahN6mQUoPXSL6LUnWeg7dWC8uXwZFOq8+Xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2GMg92BDU0+YkKnGvrS+XGLsMe4MgF+SIsGXFvjfMXvZ0DEa2vuBv+kWnK2rKejU
-	 alp3/7Gct1O7RhecQ+sG2xbXfw1rFhRPZWQVGjsFoN0CU6CdEi9ETbDOJ0khWxwA7D
-	 IYjDDAxxKMJ6vM4T6sdBepfQGjaBb/T6l+oPDLb0=
+	b=nMA1nRwVMaiog9y2cYP/S7XuwBYH1PFQQJk2gzQC/TT0X8r/xkFnqLb+861HSYkuj
+	 /gjREe5XUYAsBwXx7MB/B+8aC5jew0fIKsz/IOwA+6UNVlaFR5cghLLHbd0+0a/9Uu
+	 d1g6CHkSmpt2wQLqAdo/+tUNb2APeJkgmyCP6Swc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 070/215] drm/imx/ipuv3: do not return negative values from .get_modes()
+Subject: [PATCH 6.8 011/143] wifi: iwlwifi: pcie: Add the PCI device id for new hardware
 Date: Thu, 11 Apr 2024 11:54:39 +0200
-Message-ID: <20240411095427.004299136@linuxfoundation.org>
+Message-ID: <20240411095421.250774129@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 
-[ Upstream commit c2da9ada64962fcd2e6395ed9987b9874ea032d3 ]
+[ Upstream commit 6770eee75148ba10c0c051885379714773e00b48 ]
 
-The .get_modes() hooks aren't supposed to return negative error
-codes. Return 0 for no modes, whatever the reason.
+Add the support for a new PCI device id.
 
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: stable@vger.kernel.org
-Acked-by: Philipp Zabel <p.zabel@pengutronix.de>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/311f6eec96d47949b16a670529f4d89fcd97aefa.1709913674.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240129211905.fde32107e0a3.I597cff4f340e4bed12b7568a0ad504bd4b2c1cf8@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imx/parallel-display.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/imx/parallel-display.c b/drivers/gpu/drm/imx/parallel-display.c
-index e24272428744c..2165ad545a382 100644
---- a/drivers/gpu/drm/imx/parallel-display.c
-+++ b/drivers/gpu/drm/imx/parallel-display.c
-@@ -63,14 +63,14 @@ static int imx_pd_connector_get_modes(struct drm_connector *connector)
- 		int ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 2c9b98c8184b5..271be64ce19ae 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -502,6 +502,7 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
  
- 		if (!mode)
--			return -EINVAL;
-+			return 0;
- 
- 		ret = of_get_drm_display_mode(np, &imxpd->mode,
- 					      &imxpd->bus_flags,
- 					      OF_USE_NATIVE_MODE);
- 		if (ret) {
- 			drm_mode_destroy(connector->dev, mode);
--			return ret;
-+			return 0;
- 		}
- 
- 		drm_mode_copy(mode, &imxpd->mode);
+ /* Bz devices */
+ 	{IWL_PCI_DEVICE(0x2727, PCI_ANY_ID, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0x272D, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0xA840, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0x7740, PCI_ANY_ID, iwl_bz_trans_cfg)},
 -- 
 2.43.0
 
