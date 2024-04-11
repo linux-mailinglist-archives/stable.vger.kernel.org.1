@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-38363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B948A0E35
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:12:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 579308A112B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E34641C218F8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:12:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 109DE28451F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F44145B28;
-	Thu, 11 Apr 2024 10:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC8D147C69;
+	Thu, 11 Apr 2024 10:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KCjemDFT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjbjGQNs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2028144D34;
-	Thu, 11 Apr 2024 10:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590311465BE;
+	Thu, 11 Apr 2024 10:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830340; cv=none; b=d68zjahrm1PD8s8z5fZ3brX90gf0e0uCe/PHkF8nECZVMsZW6PVilU12NjA7QYpNAYa0AjgBPcUtZhdDIVpcsi0iHAlk1mnBC6I1TgIjNun+gUiOpUXwprXWw34RZvqvPpYJ9LJsqWsYDlsJjubYL1u539wDCGQGNiRJHZzN5kI=
+	t=1712832073; cv=none; b=SYftN2SdLk6fGgebiACP/E9u+yYH+rAva6bNMoJVd306E7PQRliimh7m1iB7Of8T5VhDIeh3ZIHPTDQT8KSlxcYVE2cBI4aV26KwUC6zdJeVKZ6JtQQey9vZDG1D+ncupZoXIPShiKKg2uvISNRa4ziMuSsql+Cdcj4nWVQw+m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830340; c=relaxed/simple;
-	bh=Z50bKTdULrExU/zyBidr3MU0mHm6AMkFhDbC4014Z88=;
+	s=arc-20240116; t=1712832073; c=relaxed/simple;
+	bh=vOUB4b8QvhPRVfiziry1Vb4LfXx4UnjXkuhRFKOTUpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LC1fLEVuc5G6R0UWzWsJKFMj5LHY6IYtK9/HWdnd94E5oyVXTsLjs0KWa6ShZ51SoYzfA+0SZasOgYYvNvZJA45RbsFLSH6V+gOtvB7/1COG5RdCQi41XXBZQizllbu0GUvUMB19ceYRoTvowYl4vQ2B9DJi/AwM+0/NjeOmH84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KCjemDFT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E44C43394;
-	Thu, 11 Apr 2024 10:12:19 +0000 (UTC)
+	 MIME-Version; b=TiQ3mrUAMdNwmWhVg9jp2NeknP6kUdPBQ50nbKPRzPUk2rt1JlpWXYgrvKRPdOcLrX5IopvHX+3Wz2+W9jF8zvBFU9MQn6lpIk/qAFwCree9eS3Uh+IyBVnHKqCqMJzmYO2dQahZs8MkljYRIxdhnMJxfJd9c56zK7hmye7uu9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjbjGQNs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9406EC43390;
+	Thu, 11 Apr 2024 10:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830339;
-	bh=Z50bKTdULrExU/zyBidr3MU0mHm6AMkFhDbC4014Z88=;
+	s=korg; t=1712832073;
+	bh=vOUB4b8QvhPRVfiziry1Vb4LfXx4UnjXkuhRFKOTUpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KCjemDFTR7ZtgrHZo1vorHgDHyO0J6Hcw8VFAHOVZFETBfU4cuWnYJW1C4rh8VZ0N
-	 /4yncdJK3S7b8pepdmeSU+dRcbxDcDrfFi8zpzNBUt123SYmrE+ZwbMnCsCNzBn9bK
-	 KGwp+r7qUq+RrMIKTM9dNXlppLIupde0e1h9qD0g=
+	b=EjbjGQNsvxsiiPhgLsGtAN5R3jLMpBs5hXfsVTGDQyL/AbPtYja8OpuBETStFJOcP
+	 rdXJcquo7e38usAo/qwGsEdxly9mpKPT4AUgBO/g1O4WiitWtNAXPBI+y0mR2UuOSe
+	 t1XONHHvCKZfNoIzXkmzp8+Tb0nIBUDMpenwuL6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 114/143] usb: gadget: uvc: mark incomplete frames with UVC_STREAM_ERR
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 5.10 219/294] i40e: fix i40e_count_filters() to count only active/new filters
 Date: Thu, 11 Apr 2024 11:56:22 +0200
-Message-ID: <20240411095424.338423640@linuxfoundation.org>
+Message-ID: <20240411095442.188071870@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-[ Upstream commit 2a3b7af120477d0571b815ccb8600cafd5ebf02f ]
+commit eb58c598ce45b7e787568fe27016260417c3d807 upstream.
 
-If an frame was transmitted incomplete to the host, we set the
-UVC_STREAM_ERR bit in the header for the last request that is going
-to be queued. This way the host will know that it should drop the
-frame instead of trying to display the corrupted content.
+The bug usually affects untrusted VFs, because they are limited to 18 MACs,
+it affects them badly, not letting to create MAC all filters.
+Not stable to reproduce, it happens when VF user creates MAC filters
+when other MACVLAN operations are happened in parallel.
+But consequence is that VF can't receive desired traffic.
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Link: https://lore.kernel.org/r/20240214-uvc-error-tag-v1-2-37659a3877fe@pengutronix.de
+Fix counter to be bumped only for new or active filters.
+
+Fixes: 621650cabee5 ("i40e: Refactoring VF MAC filters counting to make more reliable")
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/uvc_video.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_main.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/uvc_video.c b/drivers/usb/gadget/function/uvc_video.c
-index dbdd9033c1268..53e4cd81ea446 100644
---- a/drivers/usb/gadget/function/uvc_video.c
-+++ b/drivers/usb/gadget/function/uvc_video.c
-@@ -35,6 +35,9 @@ uvc_video_encode_header(struct uvc_video *video, struct uvc_buffer *buf,
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -1230,8 +1230,11 @@ int i40e_count_filters(struct i40e_vsi *
+ 	int bkt;
+ 	int cnt = 0;
  
- 	data[1] = UVC_STREAM_EOH | video->fid;
+-	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist)
+-		++cnt;
++	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist) {
++		if (f->state == I40E_FILTER_NEW ||
++		    f->state == I40E_FILTER_ACTIVE)
++			++cnt;
++	}
  
-+	if (video->queue.flags & UVC_QUEUE_DROP_INCOMPLETE)
-+		data[1] |= UVC_STREAM_ERR;
-+
- 	if (video->queue.buf_used == 0 && ts.tv_sec) {
- 		/* dwClockFrequency is 48 MHz */
- 		u32 pts = ((u64)ts.tv_sec * USEC_PER_SEC + ts.tv_nsec / NSEC_PER_USEC) * 48;
--- 
-2.43.0
-
+ 	return cnt;
+ }
 
 
 
