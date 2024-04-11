@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-38852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22D608A10B5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C6C8A0EBD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5FDEB2549D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB463B21BC9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1621482FC;
-	Thu, 11 Apr 2024 10:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6D414601B;
+	Thu, 11 Apr 2024 10:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tr0wu5Y1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwYAQKoT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C253134CC2;
-	Thu, 11 Apr 2024 10:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19B713E897;
+	Thu, 11 Apr 2024 10:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831782; cv=none; b=idn8tqXukQSGC2Y7jaTfDxSHqVhlnF4D+W+2PnZ4YEMDSXZuQ4YeQ3luPx2tUsqE7Z1wIZUUoJmNW5e3+jYHHSE5ECWyZEO0hn3Bh4b9vm2Z0XpBhbMyzC7aX5gPreZ+++SgSnvm8FUWy+1irNWa0ljhvPCUDxfykw1v1PuaTNo=
+	t=1712830668; cv=none; b=QHw/JDS0EEOcLsedGWFLOj9nGjMbKNnJQ30xff/rib7JQ4miSiaKoAeo+JoxsC9V/+vw0Q7L8m53mvSLZGcZmKKTJRd9FpkRquyUDPCBrGpnWxpF2+kmj6OU9/1G4BwypqyWjVMfQWrl5l8r8dPG5n1UVffVRzMIDxla3PhqK6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831782; c=relaxed/simple;
-	bh=XNByPdH7noUFgo9oynGOmg954fkE/jFM59QL9ZkMG5Q=;
+	s=arc-20240116; t=1712830668; c=relaxed/simple;
+	bh=ANGIyqvWHIKvSnl2DJJcvhKmpZT/9Euu7VYuur9lKVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JxFEKVrHl6MDSpGxxWy7Y2X2Kl3dUZbyd89s8k/qwxDr/+bac8GbtODb7xokffg1vZ9xHRflF6aXlOFB+2B7bxFl0losill/uwmBV+n8RIDdQdykYdqEOziqgZ+k+eG2tOUK3sYuz3goNpQ/mDnd81ZPrBE5wIfupJmaxNuolVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tr0wu5Y1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13334C433F1;
-	Thu, 11 Apr 2024 10:36:21 +0000 (UTC)
+	 MIME-Version; b=s1zez9pQ7nJkPx2r4x+8sPQMMrTedkqkxrQQ4OqGrA80O5uMM59E3AHVguExV4QpTyhaD6YiT4pv5z4jiaS7nIBNW+Pqo0Pv3234CxsGrcRq6BlQAcX1BYjEhEpAfrJAg9MrCMs3zXAWWrrKg9UQLyA+cBAcDC7bMCCota3h3A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwYAQKoT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FC6C43390;
+	Thu, 11 Apr 2024 10:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831782;
-	bh=XNByPdH7noUFgo9oynGOmg954fkE/jFM59QL9ZkMG5Q=;
+	s=korg; t=1712830667;
+	bh=ANGIyqvWHIKvSnl2DJJcvhKmpZT/9Euu7VYuur9lKVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tr0wu5Y1SVzITv3lw+BJ5G9C/IRgI4hP580nKeq+fmVfyBEp3erDeql5KcNN8j8d/
-	 0IdQYpgjPtgWPRUiREexs2wxRdsVoI4uc9cxC67xtj3vIl6HJ36HyBP/oN717VWNj2
-	 fWHRyLuARs4HBEN2lGzIIfTMLHxeBKh3DiqGfPuI=
+	b=qwYAQKoTVBJotx5NiQ+nu2qZSFfm1lzd0cCBRowkvUp9ZwhL8srH/2FIwVrEkvYqT
+	 hK0hM5QeK3yHFiPhr/cj36gTzHJWo1YlLmSQHa26D/TUmGhHIfbpdYwa7qX/+H+9+Q
+	 gOI6poWz7Fuib/g6xNG3Wkn5p4lpErNInDDS2gSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabe Kirkpatrick <gkirkpatrick@google.com>,
-	Josh Eads <josheads@google.com>,
-	Peter Gonda <pgonda@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 5.10 124/294] KVM: SVM: Flush pages under kvm->lock to fix UAF in svm_register_enc_region()
+	Matt <cryptearth@googlemail.com>,
+	Conrad Kostecki <conikost@gentoo.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 078/215] ahci: asm1064: asm1166: dont limit reported ports
 Date: Thu, 11 Apr 2024 11:54:47 +0200
-Message-ID: <20240411095439.397273661@linuxfoundation.org>
+Message-ID: <20240411095427.253485196@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Conrad Kostecki <conikost@gentoo.org>
 
-commit 5ef1d8c1ddbf696e47b226e11888eaf8d9e8e807 upstream.
+[ Upstream commit 6cd8adc3e18960f6e59d797285ed34ef473cc896 ]
 
-Do the cache flush of converted pages in svm_register_enc_region() before
-dropping kvm->lock to fix use-after-free issues where region and/or its
-array of pages could be freed by a different task, e.g. if userspace has
-__unregister_enc_region_locked() already queued up for the region.
+Previously, patches have been added to limit the reported count of SATA
+ports for asm1064 and asm1166 SATA controllers, as those controllers do
+report more ports than physically having.
 
-Note, the "obvious" alternative of using local variables doesn't fully
-resolve the bug, as region->pages is also dynamically allocated.  I.e. the
-region structure itself would be fine, but region->pages could be freed.
+While it is allowed to report more ports than physically having in CAP.NP,
+it is not allowed to report more ports than physically having in the PI
+(Ports Implemented) register, which is what these HBAs do.
+(This is a AHCI spec violation.)
 
-Flushing multiple pages under kvm->lock is unfortunate, but the entire
-flow is a rare slow path, and the manual flush is only needed on CPUs that
-lack coherency for encrypted memory.
+Unfortunately, it seems that the PMP implementation in these ASMedia HBAs
+is also violating the AHCI and SATA-IO PMP specification.
 
-Fixes: 19a23da53932 ("Fix unsynchronized access to sev members through svm_register_enc_region")
-Reported-by: Gabe Kirkpatrick <gkirkpatrick@google.com>
-Cc: Josh Eads <josheads@google.com>
-Cc: Peter Gonda <pgonda@google.com>
+What these HBAs do is that they do not report that they support PMP
+(CAP.SPM (Supports Port Multiplier) is not set).
+
+Instead, they have decided to add extra "virtual" ports in the PI register
+that is used if a port multiplier is connected to any of the physical
+ports of the HBA.
+
+Enumerating the devices behind the PMP as specified in the AHCI and
+SATA-IO specifications, by using PMP READ and PMP WRITE commands to the
+physical ports of the HBA is not possible, you have to use the "virtual"
+ports.
+
+This is of course bad, because this gives us no way to detect the device
+and vendor ID of the PMP actually connected to the HBA, which means that
+we can not apply the proper PMP quirks for the PMP that is connected to
+the HBA.
+
+Limiting the port map will thus stop these controllers from working with
+SATA Port Multipliers.
+
+This patch reverts both patches for asm1064 and asm1166, so old behavior
+is restored and SATA PMP will work again, but it will also reintroduce the
+(minutes long) extra boot time for the ASMedia controllers that do not
+have a PMP connected (either on the PCIe card itself, or an external PMP).
+
+However, a longer boot time for some, is the lesser evil compared to some
+other users not being able to detect their drives at all.
+
+Fixes: 0077a504e1a4 ("ahci: asm1166: correct count of reported ports")
+Fixes: 9815e3961754 ("ahci: asm1064: correct count of reported ports")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20240217013430.2079561-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Matt <cryptearth@googlemail.com>
+Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+[cassel: rewrote commit message]
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/sev.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/ata/ahci.c | 13 -------------
+ 1 file changed, 13 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1024,20 +1024,22 @@ int svm_register_enc_region(struct kvm *
- 		goto e_free;
- 	}
- 
--	region->uaddr = range->addr;
--	region->size = range->size;
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index d446830ba4b85..2d2a070c1efcb 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -626,19 +626,6 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
+ static void ahci_pci_save_initial_config(struct pci_dev *pdev,
+ 					 struct ahci_host_priv *hpriv)
+ {
+-	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA) {
+-		switch (pdev->device) {
+-		case 0x1166:
+-			dev_info(&pdev->dev, "ASM1166 has only six ports\n");
+-			hpriv->saved_port_map = 0x3f;
+-			break;
+-		case 0x1064:
+-			dev_info(&pdev->dev, "ASM1064 has only four ports\n");
+-			hpriv->saved_port_map = 0xf;
+-			break;
+-		}
+-	}
 -
--	list_add_tail(&region->list, &sev->regions_list);
--	mutex_unlock(&kvm->lock);
--
- 	/*
- 	 * The guest may change the memory encryption attribute from C=0 -> C=1
- 	 * or vice versa for this memory range. Lets make sure caches are
- 	 * flushed to ensure that guest data gets written into memory with
--	 * correct C-bit.
-+	 * correct C-bit.  Note, this must be done before dropping kvm->lock,
-+	 * as region and its array of pages can be freed by a different task
-+	 * once kvm->lock is released.
- 	 */
- 	sev_clflush_pages(region->pages, region->npages);
- 
-+	region->uaddr = range->addr;
-+	region->size = range->size;
-+
-+	list_add_tail(&region->list, &sev->regions_list);
-+	mutex_unlock(&kvm->lock);
-+
- 	return ret;
- 
- e_free:
+ 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
+ 		dev_info(&pdev->dev, "JMB361 has only one port\n");
+ 		hpriv->force_port_map = 1;
+-- 
+2.43.0
+
 
 
 
