@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-38869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D52DE8A10C5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B52A58A0D46
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:02:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AC7E1F2CEE9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E709F1C21495
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170DE14A4F8;
-	Thu, 11 Apr 2024 10:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555E6145B05;
+	Thu, 11 Apr 2024 10:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuF1LJRI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0W+jwgVI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BBD14A4DF;
-	Thu, 11 Apr 2024 10:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153B81422C4;
+	Thu, 11 Apr 2024 10:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831832; cv=none; b=ibM/qzW0nH6fPldfh+GpCiQDB3QY0zJLhCZvSEHFzlCAlulJCzQyOlh4FLxc4PdKHqbIRMzvPYYl1A86WESqW+9oAm2dTaWChUGDkDMIzgB6oNyVBlFsG9xnvziHWfdlm63x50ygHV9vPV7GADEG04PZHUWc+9ePvXl3xwS9O9M=
+	t=1712829735; cv=none; b=LFxzbjtHhwQ4rmv7P770p03RJlRqGAS36wq0gJCpu9wz9Qzl8BvN1IIaf9pBanU/P+Zid34DeYdLceoPqnsiE1KnwCEuDLgJGe/TeUOJteRGwvpGGbn5Uxhx06etE1yF6/xswbIl9e2ArW2XutQkwuLlXrIWt1W3gWZEChPEVlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831832; c=relaxed/simple;
-	bh=qk5vKb6xdFgEJAkxtt45I85/vsldIwXBsRS/h2PM+iM=;
+	s=arc-20240116; t=1712829735; c=relaxed/simple;
+	bh=gr89WBYhHHvUbUM3mx/ft5xF68qlht8GOBGRdrWNrC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a9ydIPyd7m5aP/6h/QIPlIj+r+N9R2eLQgIl5o1txMsF1+GEUdxLj8Gg7SxLFAQT8QoNG9qPTVUmQ6jO3olKNiLhNQrZmb6gdKRrADiGdvH75z+ItpvvR0BQv9BPFOFBWBZfDf9wdQGznF8RS7FrtTU60KP+GO9dE6oeRHA0sq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuF1LJRI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1A2C43390;
-	Thu, 11 Apr 2024 10:37:12 +0000 (UTC)
+	 MIME-Version; b=uAErfrBs9QWMXf2D/9f3MPcp9pk5sgtOd7PL7Y+oONHAVguxrHK+hzwrz2z12HeUypdonKvkthHQ8AuB4d+Q9nGbOleKYLHXwuVv76wR3hF/ihMaj3oiCyhzLZLLhWGh+6RhXgRaTp+ieFTgPa8roPb1V4P1oscYqxpu5yEc1zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0W+jwgVI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86DF6C433F1;
+	Thu, 11 Apr 2024 10:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831832;
-	bh=qk5vKb6xdFgEJAkxtt45I85/vsldIwXBsRS/h2PM+iM=;
+	s=korg; t=1712829734;
+	bh=gr89WBYhHHvUbUM3mx/ft5xF68qlht8GOBGRdrWNrC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JuF1LJRI9da2PWiDmi+GoB1lg/9gYQWz9TaMMgaL+4QU9JfuqOFOzyDZYUs/cEDRo
-	 ytI4yOf05n3mAx3zKdNgMcZ1Ugijz7qdUb0Scflprl0OUax5kd7ZQWAmhZrAoj2OFI
-	 q8F6bHFEX0mycuEo13JE+Kxwx67EAEiPRrc0h2rs=
+	b=0W+jwgVIvjhG2YvHytgLE3Y0wD0/g0xXJKm/w1HeJEk8F8jm6iTDnwjhEKaAM4Oqy
+	 lVuNfx8W9pDgqhPnt4LYtf+odOnYnqclpgCF2LIXtR9wPW/lMBaRBMObGicz7JzSxj
+	 zVDlwWBMI9bhyyHTOx2YLKP98RgPpx7yK6OX6dzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@intel.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 5.10 140/294] x86/entry_64: Add VERW just before userspace transition
+	Liu Shixin <liushixin2@huawei.com>
+Subject: [PATCH 4.19 080/175] mm/memory-failure: fix an incorrect use of tail pages
 Date: Thu, 11 Apr 2024 11:55:03 +0200
-Message-ID: <20240411095439.872263227@linuxfoundation.org>
+Message-ID: <20240411095421.971149662@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Liu Shixin <liushixin2@huawei.com>
 
-commit 3c7501722e6b31a6e56edd23cea5e77dbb9ffd1a upstream.
+When backport commit c79c5a0a00a9 to 4.19-stable, there is a mistake change.
+The head page instead of tail page should be passed to try_to_unmap(),
+otherwise unmap will failed as follows.
 
-Mitigation for MDS is to use VERW instruction to clear any secrets in
-CPU Buffers. Any memory accesses after VERW execution can still remain
-in CPU buffers. It is safer to execute VERW late in return to user path
-to minimize the window in which kernel data can end up in CPU buffers.
-There are not many kernel secrets to be had after SWITCH_TO_USER_CR3.
+ Memory failure: 0x121c10: failed to unmap page (mapcount=1)
+ Memory failure: 0x121c10: recovery action for unmapping failed page: Ignored
 
-Add support for deploying VERW mitigation after user register state is
-restored. This helps minimize the chances of kernel data ending up into
-CPU buffers after executing VERW.
-
-Note that the mitigation at the new location is not yet enabled.
-
-  Corner case not handled
-  =======================
-  Interrupts returning to kernel don't clear CPUs buffers since the
-  exit-to-user path is expected to do that anyways. But, there could be
-  a case when an NMI is generated in kernel after the exit-to-user path
-  has cleared the buffers. This case is not handled and NMI returning to
-  kernel don't clear CPU buffers because:
-
-  1. It is rare to get an NMI after VERW, but before returning to user.
-  2. For an unprivileged user, there is no known way to make that NMI
-     less rare or target it.
-  3. It would take a large number of these precisely-timed NMIs to mount
-     an actual attack.  There's presumably not enough bandwidth.
-  4. The NMI in question occurs after a VERW, i.e. when user state is
-     restored and most interesting data is already scrubbed. Whats left
-     is only the data that NMI touches, and that may or may not be of
-     any interest.
-
-  [ pawan: resolved conflict in syscall_return_via_sysret, added
-           CLEAR_CPU_BUFFERS to USERGS_SYSRET64 ]
-
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20240213-delay-verw-v8-2-a6216d83edb7%40linux.intel.com
+Fixes: c6f50413f2aa ("mm/memory-failure: check the mapcount of the precise page")
+Signed-off-by: Liu Shixin <liushixin2@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/entry/entry_64.S        |   10 ++++++++++
- arch/x86/entry/entry_64_compat.S |    1 +
- arch/x86/include/asm/irqflags.h  |    1 +
- 3 files changed, 12 insertions(+)
+ mm/memory-failure.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -615,6 +615,7 @@ SYM_INNER_LABEL(swapgs_restore_regs_and_
- 	/* Restore RDI. */
- 	popq	%rdi
- 	SWAPGS
-+	CLEAR_CPU_BUFFERS
- 	INTERRUPT_RETURN
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1033,7 +1033,7 @@ static bool hwpoison_user_mappings(struc
+ 	if (kill)
+ 		collect_procs(hpage, &tokill, flags & MF_ACTION_REQUIRED);
  
- 
-@@ -721,6 +722,8 @@ native_irq_return_ldt:
- 	 */
- 	popq	%rax				/* Restore user RAX */
- 
-+	CLEAR_CPU_BUFFERS
-+
- 	/*
- 	 * RSP now points to an ordinary IRET frame, except that the page
- 	 * is read-only and RSP[31:16] are preloaded with the userspace
-@@ -1488,6 +1491,12 @@ nmi_restore:
- 	movq	$0, 5*8(%rsp)		/* clear "NMI executing" */
- 
- 	/*
-+	 * Skip CLEAR_CPU_BUFFERS here, since it only helps in rare cases like
-+	 * NMI in kernel after user state is restored. For an unprivileged user
-+	 * these conditions are hard to meet.
-+	 */
-+
-+	/*
- 	 * iretq reads the "iret" frame and exits the NMI stack in a
- 	 * single instruction.  We are returning to kernel mode, so this
- 	 * cannot result in a fault.  Similarly, we don't need to worry
-@@ -1504,6 +1513,7 @@ SYM_CODE_END(asm_exc_nmi)
- SYM_CODE_START(ignore_sysret)
- 	UNWIND_HINT_EMPTY
- 	mov	$-ENOSYS, %eax
-+	CLEAR_CPU_BUFFERS
- 	sysretl
- SYM_CODE_END(ignore_sysret)
- #endif
---- a/arch/x86/entry/entry_64_compat.S
-+++ b/arch/x86/entry/entry_64_compat.S
-@@ -319,6 +319,7 @@ sysret32_from_system_call:
- 	xorl	%r9d, %r9d
- 	xorl	%r10d, %r10d
- 	swapgs
-+	CLEAR_CPU_BUFFERS
- 	sysretl
- SYM_CODE_END(entry_SYSCALL_compat)
- 
---- a/arch/x86/include/asm/irqflags.h
-+++ b/arch/x86/include/asm/irqflags.h
-@@ -134,6 +134,7 @@ static __always_inline unsigned long arc
- #define INTERRUPT_RETURN	jmp native_iret
- #define USERGS_SYSRET64				\
- 	swapgs;					\
-+	CLEAR_CPU_BUFFERS;			\
- 	sysretq;
- #define USERGS_SYSRET32				\
- 	swapgs;					\
+-	unmap_success = try_to_unmap(p, ttu);
++	unmap_success = try_to_unmap(hpage, ttu);
+ 	if (!unmap_success)
+ 		pr_err("Memory failure: %#lx: failed to unmap page (mapcount=%d)\n",
+ 		       pfn, page_mapcount(p));
 
 
 
