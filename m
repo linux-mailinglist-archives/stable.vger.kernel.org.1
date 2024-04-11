@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-38366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6EC8A0E3B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:12:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C68618A0F4B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B322FB249D8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:12:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 671D91F26E69
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EDA5145B14;
-	Thu, 11 Apr 2024 10:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE74146582;
+	Thu, 11 Apr 2024 10:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4GWo/DM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ifjt8siF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27701448EF;
-	Thu, 11 Apr 2024 10:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8DF13FD94;
+	Thu, 11 Apr 2024 10:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830348; cv=none; b=rxg8GdcvIwLAfb+gItnVEwFDDEVfit5OT5HpxoSehUFPu6kF7ytUmhhddmwHE1YFyj0qUhsn4I2xtjU4YDQKGwktgUiKkyYf2NqRFI0oNOT1SU3mM9emyXCGPT5wpHRNUHSQg7NZ6HF00nQNlQS85tDiGzP5YqB/JjfXs5CqUy0=
+	t=1712830960; cv=none; b=rsknneE2kawSS36EvzA0OXyRYxTmQGFuVpxsJ5Aj8AkgGNTHOE2Ll7ZihuRTockipsyAqIA6Nz3nDY3fjNO6UQxOZkOa5xWR9qqwpTg35ZnII1Qqcc2i34AIdUMxZtey8tCfgP4Yc/MS6adn8/nnQiNOEW4LF5RQzvxAb8EaEb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830348; c=relaxed/simple;
-	bh=LKEXAVKzl4TOuqB8sbvxnMqOnQIOhKCZKZlG2kXM7Lg=;
+	s=arc-20240116; t=1712830960; c=relaxed/simple;
+	bh=mdrLq/5g+CbzAL/b41OKE5lwNRkza0KLGPHusti8wN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FOyrJ/fyrCnuq1bWUAkoXV9i3EvcJvyIxkWjjG7QqCuyHPWeVMBxOUBS7NqpLbGGab5wYcdJt45Lg09wCwRTec1yLjDAm2ktLch+tVZKmTbHJYpHPoayp71Sny1ZwCITznlZlO+5Dwa2I5lrEJu4tsDEiVPl/qhlW3RuYYeUxMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4GWo/DM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466A9C433C7;
-	Thu, 11 Apr 2024 10:12:28 +0000 (UTC)
+	 MIME-Version; b=QsJKu0rp7FqVaFPrstFS3KHdHMQOinyUcKFqgIEb3G6LI6IuOosPkKxoMQTy+NRyXd/Cgicap0lNMD4bFyt+3+KGtKvMvvvdxr2cEzE8YbkVpTkzC3PgohWmBB9hfsilZkK+llzQqp+0cVl6NPoHT/DaFUoP7euANvmcL0xWqTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ifjt8siF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10199C433C7;
+	Thu, 11 Apr 2024 10:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830348;
-	bh=LKEXAVKzl4TOuqB8sbvxnMqOnQIOhKCZKZlG2kXM7Lg=;
+	s=korg; t=1712830959;
+	bh=mdrLq/5g+CbzAL/b41OKE5lwNRkza0KLGPHusti8wN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M4GWo/DMMHuRyzlYCDA84w7SXuRtmh//JJRM05d2C7/BBZgaKaJgTtEMhPyO3QG0K
-	 qJejhG/pXyDiJPlDTBqNXlTkNUX1TtUvWyys3Hhc/McjD64EU4ZdiAQ1a+rsrDCDLC
-	 knkvHvuwnCBzoP+0lhE4nWTH8HZPlNJWmmRvnk5c=
+	b=Ifjt8siFo442hkPn3CuS+BCY971lETKImiRsXXGup2ebshJzhPPzcpGnRegqFXN0/
+	 aQSqgKimpy5LVyEsZT1Nh5QyvxUMmhQCyD0MvAjYkITIcx1HxHCTsMgTd3uiGNy1kk
+	 cF3gQ1jKb/GTml8NH0ai/oZXraf/NsvPABAY2Lq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	Petr Mladek <pmladek@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 117/143] thunderbolt: Keep the domain powered when USB4 port is in redrive mode
+Subject: [PATCH 5.4 176/215] panic: Flush kernel log buffer at the end
 Date: Thu, 11 Apr 2024 11:56:25 +0200
-Message-ID: <20240411095424.428475081@linuxfoundation.org>
+Message-ID: <20240411095430.161292685@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,168 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: John Ogness <john.ogness@linutronix.de>
 
-[ Upstream commit a75e0684efe567ae5f6a8e91a8360c4c1773cf3a ]
+[ Upstream commit d988d9a9b9d180bfd5c1d353b3b176cb90d6861b ]
 
-If a DiplayPort cable is directly connected to the host routers USB4
-port, there is no tunnel involved but the port is in "redrive" mode
-meaning that it is re-driving the DisplayPort signals from its
-DisplayPort source. In this case we need to keep the domain powered on
-otherwise once the domain enters D3cold the connected monitor blanks
-too.
+If the kernel crashes in a context where printk() calls always
+defer printing (such as in NMI or inside a printk_safe section)
+then the final panic messages will be deferred to irq_work. But
+if irq_work is not available, the messages will not get printed
+unless explicitly flushed. The result is that the final
+"end Kernel panic" banner does not get printed.
 
-Since this happens only on Intel Barlow Ridge add a quirk that takes
-runtime PM reference if we detect that the USB4 port entered redrive
-mode (and release it once it exits the mode).
+Add one final flush after the last printk() call to make sure
+the final panic messages make it out as well.
 
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20240207134103.1357162-14-john.ogness@linutronix.de
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/quirks.c | 14 +++++++++++
- drivers/thunderbolt/tb.c     | 49 +++++++++++++++++++++++++++++++++++-
- drivers/thunderbolt/tb.h     |  4 +++
- 3 files changed, 66 insertions(+), 1 deletion(-)
+ kernel/panic.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/thunderbolt/quirks.c b/drivers/thunderbolt/quirks.c
-index e6bfa63b40aee..e81de9c30eac9 100644
---- a/drivers/thunderbolt/quirks.c
-+++ b/drivers/thunderbolt/quirks.c
-@@ -43,6 +43,12 @@ static void quirk_usb3_maximum_bandwidth(struct tb_switch *sw)
- 	}
- }
+diff --git a/kernel/panic.c b/kernel/panic.c
+index cef79466f9417..5559a6e4c4579 100644
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -404,6 +404,14 @@ void panic(const char *fmt, ...)
  
-+static void quirk_block_rpm_in_redrive(struct tb_switch *sw)
-+{
-+	sw->quirks |= QUIRK_KEEP_POWER_IN_DP_REDRIVE;
-+	tb_sw_dbg(sw, "preventing runtime PM in DP redrive mode\n");
-+}
-+
- struct tb_quirk {
- 	u16 hw_vendor_id;
- 	u16 hw_device_id;
-@@ -86,6 +92,14 @@ static const struct tb_quirk tb_quirks[] = {
- 		  quirk_usb3_maximum_bandwidth },
- 	{ 0x8087, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HUB_40G_BRIDGE, 0x0000, 0x0000,
- 		  quirk_usb3_maximum_bandwidth },
-+	/*
-+	 * Block Runtime PM in DP redrive mode for Intel Barlow Ridge host
-+	 * controllers.
-+	 */
-+	{ 0x8087, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI, 0x0000, 0x0000,
-+		  quirk_block_rpm_in_redrive },
-+	{ 0x8087, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI, 0x0000, 0x0000,
-+		  quirk_block_rpm_in_redrive },
- 	/*
- 	 * CLx is not supported on AMD USB4 Yellow Carp and Pink Sardine platforms.
- 	 */
-diff --git a/drivers/thunderbolt/tb.c b/drivers/thunderbolt/tb.c
-index 846d2813bb1a5..e6681f153c69d 100644
---- a/drivers/thunderbolt/tb.c
-+++ b/drivers/thunderbolt/tb.c
-@@ -1887,6 +1887,49 @@ static void tb_tunnel_dp(struct tb *tb)
- 		;
- }
- 
-+static void tb_enter_redrive(struct tb_port *port)
-+{
-+	struct tb_switch *sw = port->sw;
-+
-+	if (!(sw->quirks & QUIRK_KEEP_POWER_IN_DP_REDRIVE))
-+		return;
+ 	/* Do not scroll important messages printed above */
+ 	suppress_printk = 1;
 +
 +	/*
-+	 * If we get hot-unplug for the DP IN port of the host router
-+	 * and the DP resource is not available anymore it means there
-+	 * is a monitor connected directly to the Type-C port and we are
-+	 * in "redrive" mode. For this to work we cannot enter RTD3 so
-+	 * we bump up the runtime PM reference count here.
++	 * The final messages may not have been printed if in a context that
++	 * defers printing (such as NMI) and irq_work is not available.
++	 * Explicitly flush the kernel log buffer one last time.
 +	 */
-+	if (!tb_port_is_dpin(port))
-+		return;
-+	if (tb_route(sw))
-+		return;
-+	if (!tb_switch_query_dp_resource(sw, port)) {
-+		port->redrive = true;
-+		pm_runtime_get(&sw->dev);
-+		tb_port_dbg(port, "enter redrive mode, keeping powered\n");
-+	}
-+}
++	console_flush_on_panic(CONSOLE_FLUSH_PENDING);
 +
-+static void tb_exit_redrive(struct tb_port *port)
-+{
-+	struct tb_switch *sw = port->sw;
-+
-+	if (!(sw->quirks & QUIRK_KEEP_POWER_IN_DP_REDRIVE))
-+		return;
-+
-+	if (!tb_port_is_dpin(port))
-+		return;
-+	if (tb_route(sw))
-+		return;
-+	if (port->redrive && tb_switch_query_dp_resource(sw, port)) {
-+		port->redrive = false;
-+		pm_runtime_put(&sw->dev);
-+		tb_port_dbg(port, "exit redrive mode\n");
-+	}
-+}
-+
- static void tb_dp_resource_unavailable(struct tb *tb, struct tb_port *port)
- {
- 	struct tb_port *in, *out;
-@@ -1903,7 +1946,10 @@ static void tb_dp_resource_unavailable(struct tb *tb, struct tb_port *port)
- 	}
- 
- 	tunnel = tb_find_tunnel(tb, TB_TUNNEL_DP, in, out);
--	tb_deactivate_and_free_tunnel(tunnel);
-+	if (tunnel)
-+		tb_deactivate_and_free_tunnel(tunnel);
-+	else
-+		tb_enter_redrive(port);
- 	list_del_init(&port->list);
- 
- 	/*
-@@ -1930,6 +1976,7 @@ static void tb_dp_resource_available(struct tb *tb, struct tb_port *port)
- 	tb_port_dbg(port, "DP %s resource available after hotplug\n",
- 		    tb_port_is_dpin(port) ? "IN" : "OUT");
- 	list_add_tail(&port->list, &tcm->dp_resources);
-+	tb_exit_redrive(port);
- 
- 	/* Look for suitable DP IN <-> DP OUT pairs now */
- 	tb_tunnel_dp(tb);
-diff --git a/drivers/thunderbolt/tb.h b/drivers/thunderbolt/tb.h
-index 997c5a5369052..e4d4effb94447 100644
---- a/drivers/thunderbolt/tb.h
-+++ b/drivers/thunderbolt/tb.h
-@@ -23,6 +23,8 @@
- #define QUIRK_FORCE_POWER_LINK_CONTROLLER		BIT(0)
- /* Disable CLx if not supported */
- #define QUIRK_NO_CLX					BIT(1)
-+/* Need to keep power on while USB4 port is in redrive mode */
-+#define QUIRK_KEEP_POWER_IN_DP_REDRIVE			BIT(2)
- 
- /**
-  * struct tb_nvm - Structure holding NVM information
-@@ -258,6 +260,7 @@ struct tb_bandwidth_group {
-  * @group_list: The adapter is linked to the group's list of ports through this
-  * @max_bw: Maximum possible bandwidth through this adapter if set to
-  *	    non-zero.
-+ * @redrive: For DP IN, if true the adapter is in redrive mode.
-  *
-  * In USB4 terminology this structure represents an adapter (protocol or
-  * lane adapter).
-@@ -286,6 +289,7 @@ struct tb_port {
- 	struct tb_bandwidth_group *group;
- 	struct list_head group_list;
- 	unsigned int max_bw;
-+	bool redrive;
- };
- 
- /**
+ 	local_irq_enable();
+ 	for (i = 0; ; i += PANIC_TIMER_STEP) {
+ 		touch_softlockup_watchdog();
 -- 
 2.43.0
 
