@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BAE48A0FF8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:29:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D988A115D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50EFA1F2980F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:29:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7A052886FE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C655C146A71;
-	Thu, 11 Apr 2024 10:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E50C142624;
+	Thu, 11 Apr 2024 10:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guIrPmXm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v11+b8ab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838581D558;
-	Thu, 11 Apr 2024 10:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAF3134CC2;
+	Thu, 11 Apr 2024 10:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831369; cv=none; b=Gtn6bKioi8cZPlE6oaacI6RA11Dx7/lUm+VMYaqXO+pdoCnUwmwOE5UAx5YYflMUaA4SxR5lZ83QwzqL0Pe7OHXgpG3SkWegX//Xlh6mtDZk/aniPX7+ovs9Ua1UTI6ceEs539USqBjZ8SnC3dkwckMSeHh+GjM22rgG1JaFEj8=
+	t=1712832201; cv=none; b=KeMfKZWS5dUSYQQ9c2EOLJC2YhWVYfXvmEMMhaadwmcfv9jikxHgJT7JUdsP5ohdLZh4a2nalX+/IqNG3Wc/QXZ0l0szA7Q3+UCSrnaPhN2x2V0LEQwNlcGa8mucPmhnEiePwXw4TAwyqXD/0Bn6momc37RZymfKyewR6YAkG6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831369; c=relaxed/simple;
-	bh=sA8yfJ4TmLKVVrVwEpiMOHLt48K7seiWYmbfi0TyH40=;
+	s=arc-20240116; t=1712832201; c=relaxed/simple;
+	bh=Q4p4NMM7W5/4+97H7EoNof2SDuKUz4C0dePzD0r2eHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vyju3mio1HJ5o0szEynKo0Gz8580qKkjeGE9Xz6F5C/4GItri918rablTwRd7zZDG9gZBiCaL1xPC0I3hf8MfGIxQZw5gkkf/MPDHFd8Q3mm3bYNVFJQOJ6AqP0I7fTeEAT3NEkdQhg0l0MENuO0rDu1qQfmXL3zqFMyThw4A3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guIrPmXm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56FFC433F1;
-	Thu, 11 Apr 2024 10:29:28 +0000 (UTC)
+	 MIME-Version; b=V4jB8FWn/p10t829rqPtQNf4qooGGyCe7nUWy/sbj+vRCJT7yCgSv0xXWQgEJZ/YltNZBCM5zJrjF/CGpKeGl3fD5WFFUohk/gttVwOfsBnTqmUwujVVfFE916/sHdpUlU1vRyi+Trl9tTifmNGiL7qWwqHpZeyyvF/GIOvVTrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v11+b8ab; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA04C43390;
+	Thu, 11 Apr 2024 10:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831369;
-	bh=sA8yfJ4TmLKVVrVwEpiMOHLt48K7seiWYmbfi0TyH40=;
+	s=korg; t=1712832201;
+	bh=Q4p4NMM7W5/4+97H7EoNof2SDuKUz4C0dePzD0r2eHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=guIrPmXmXwkpZDo8QnsyyIPscZ95/9TxiFibVz0MS8rruTykPORX0/M8zITHnrguA
-	 lZx9zPhGqoL4i6sXdsuH50HWVLYgCTtG9v+4aszH+D9SxjYbhSGMjxDerQoV13Tyfm
-	 symjbaZ2W1LTwrWA1Nt9uBOC7q91h/o/x0XmtEDU=
+	b=v11+b8abY74SUdDIOfpwfZrWjg3tZAzeQN7Y5ycVczzEZh7w3mIGRruOdzogw0Dif
+	 jbsgWZZjbxzSpVVDIjvFCPTeiEyrITZ/WkZRh80oWgTsc5amhjU3VlmDrXWuxLMYoa
+	 pTwFU0MiiWt+llFbDtOYNPPGddJfL4oXudm/6eHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Burakov <a.burakov@rosalinux.ru>,
-	Helge Deller <deller@gmx.de>,
+	Alex Henrie <alexhenrie24@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/114] fbdev: viafb: fix typo in hw_bitblt_1 and hw_bitblt_2
+Subject: [PATCH 5.10 262/294] isofs: handle CDs with bad root inode but good Joliet root directory
 Date: Thu, 11 Apr 2024 11:57:05 +0200
-Message-ID: <20240411095419.849000154@linuxfoundation.org>
+Message-ID: <20240411095443.446202053@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Burakov <a.burakov@rosalinux.ru>
+From: Alex Henrie <alexhenrie24@gmail.com>
 
-[ Upstream commit bc87bb342f106a0402186bcb588fcbe945dced4b ]
+[ Upstream commit 4243bf80c79211a8ca2795401add9c4a3b1d37ca ]
 
-There are some actions with value 'tmp' but 'dst_addr' is checked instead.
-It is obvious that a copy-paste error was made here and the value
-of variable 'tmp' should be checked here.
+I have a CD copy of the original Tom Clancy's Ghost Recon game from
+2001. The disc mounts without error on Windows, but on Linux mounting
+fails with the message "isofs_fill_super: get root inode failed". The
+error originates in isofs_read_inode, which returns -EIO because de_len
+is 0. The superblock on this disc appears to be intentionally corrupt as
+a form of copy protection.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+When the root inode is unusable, instead of giving up immediately, try
+to continue with the Joliet file table. This fixes the Ghost Recon CD
+and probably other copy-protected CDs too.
 
-Signed-off-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20240208022134.451490-1-alexhenrie24@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/via/accel.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/isofs/inode.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/via/accel.c b/drivers/video/fbdev/via/accel.c
-index 0a1bc7a4d7853..1e04026f08091 100644
---- a/drivers/video/fbdev/via/accel.c
-+++ b/drivers/video/fbdev/via/accel.c
-@@ -115,7 +115,7 @@ static int hw_bitblt_1(void __iomem *engine, u8 op, u32 width, u32 height,
+diff --git a/fs/isofs/inode.c b/fs/isofs/inode.c
+index f62b5a5015668..4c763f573faf3 100644
+--- a/fs/isofs/inode.c
++++ b/fs/isofs/inode.c
+@@ -907,8 +907,22 @@ static int isofs_fill_super(struct super_block *s, void *data, int silent)
+ 	 * we then decide whether to use the Joliet descriptor.
+ 	 */
+ 	inode = isofs_iget(s, sbi->s_firstdatazone, 0);
+-	if (IS_ERR(inode))
+-		goto out_no_root;
++
++	/*
++	 * Fix for broken CDs with a corrupt root inode but a correct Joliet
++	 * root directory.
++	 */
++	if (IS_ERR(inode)) {
++		if (joliet_level && sbi->s_firstdatazone != first_data_zone) {
++			printk(KERN_NOTICE
++			       "ISOFS: root inode is unusable. "
++			       "Disabling Rock Ridge and switching to Joliet.");
++			sbi->s_rock = 0;
++			inode = NULL;
++		} else {
++			goto out_no_root;
++		}
++	}
  
- 	if (op != VIA_BITBLT_FILL) {
- 		tmp = src_mem ? 0 : src_addr;
--		if (dst_addr & 0xE0000007) {
-+		if (tmp & 0xE0000007) {
- 			printk(KERN_WARNING "hw_bitblt_1: Unsupported source "
- 				"address %X\n", tmp);
- 			return -EINVAL;
-@@ -260,7 +260,7 @@ static int hw_bitblt_2(void __iomem *engine, u8 op, u32 width, u32 height,
- 		writel(tmp, engine + 0x18);
- 
- 		tmp = src_mem ? 0 : src_addr;
--		if (dst_addr & 0xE0000007) {
-+		if (tmp & 0xE0000007) {
- 			printk(KERN_WARNING "hw_bitblt_2: Unsupported source "
- 				"address %X\n", tmp);
- 			return -EINVAL;
+ 	/*
+ 	 * Fix for broken CDs with Rock Ridge and empty ISO root directory but
 -- 
 2.43.0
 
