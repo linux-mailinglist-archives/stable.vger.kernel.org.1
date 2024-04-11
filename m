@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-38208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 633A08A0D83
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:04:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32EF88A0F62
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6B141F228D2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:04:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C65B61F277F6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0198145B25;
-	Thu, 11 Apr 2024 10:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DB01465BF;
+	Thu, 11 Apr 2024 10:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCUxn3oN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMVvVAkz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBAE14535A;
-	Thu, 11 Apr 2024 10:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2971513FD94;
+	Thu, 11 Apr 2024 10:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829882; cv=none; b=pFHHP6iiseJxR8ZxnUlP7i7h/3fB4qDlL+iI2OQ9jmJ6pG94kBNZrz2p8ZvMXgFhZ42DuLnv6QXMRoiMPdjKpRTTPZ5y3TyfYG/LuVPNt8gzmpPip/9Ez8nFC6sI1pLJnUuzPocdQivUWpLx98gYzJHKiVS2azB/UI5U6ZaeYgo=
+	t=1712831002; cv=none; b=nGGHVYO9H12Tuj3CwOG0+4s+ZGAiKT4DiqrXZp6VshbapvF0/NEEGLgT6cxeyoX31p5eD+Do+47wWpR8gedjW+H7sTYtwGdIETCixYYClymQErjfd7kad4tn9vDqdHX6YzoIG0v6M7bqVXJggEnEcPzHsQPY4scsILLG5CYVLAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829882; c=relaxed/simple;
-	bh=/UwARE1d7Yit5pXNu6NYMWyk/WTZXva0d57qbMTck8E=;
+	s=arc-20240116; t=1712831002; c=relaxed/simple;
+	bh=2tUCDsMUlXE0tE+nYdpJFUUBkz8DcLuJP7fg61DRjZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ib2GFMTShB1DqHqPlJ1ZAT6SrvYQS97MKu3UtrvRtU8FipmjBrtwDmeo6sWLApKZY3PZtB0R2gs7orOj9YovBfcQO/qMMYjF8+WGLYBOxFj3zXl7h0CLk6Zg1GTgvhtbDSuhp9jYfCA1jkXqGNzAp5EfV8fIocD93bp7ALpWy6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCUxn3oN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFDA7C433C7;
-	Thu, 11 Apr 2024 10:04:41 +0000 (UTC)
+	 MIME-Version; b=nJCBQHUZLMqU7vCqSGY0DQYKp4YPDRKLBxpRPjz8ulfk9U9EaJRBxwQ1rpX2+R/1SaEEIWFr8cb0dn9JBcsvrmbN5h/CQSa33kBTGroIQn9YP1sbp2EqyZ+CfE1zArfqYXpExIiTIxetfCUM8MR2q9VYdokswlFOy7OoJM4CzpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMVvVAkz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A53C433C7;
+	Thu, 11 Apr 2024 10:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829882;
-	bh=/UwARE1d7Yit5pXNu6NYMWyk/WTZXva0d57qbMTck8E=;
+	s=korg; t=1712831002;
+	bh=2tUCDsMUlXE0tE+nYdpJFUUBkz8DcLuJP7fg61DRjZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qCUxn3oNMT9FChu0SPSO8PS+NqBEieOlMJPhMdjTnNO9fuFDPPmGf9yCq73hWQuuF
-	 an8KWV0IQsBmGPt0Sbjtcb+c+EdS/c0Sja5VJoDxm36fo/OhZEI2AdqBydeTrTkeNd
-	 95bU85Y19RkEzqHLVcUU3hdp/Xw4WJthNUUL58GU=
+	b=SMVvVAkzDkpS+jF3VHpXDtXu+szxqtf2e6iEUQVYLgy95wKDOwPUPTINVhd5qxRRJ
+	 QOFxQ4PQ1qARm218CrSuC7OnncR03Pdcr8GQyo2RMGOw6FwC0ZM4utrGhPH/Vst50E
+	 LKEsK4Cp2N8ZzETY48CtAQc3LvgPmpe4zE7CoArI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Tu <u9012063@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 138/175] erspan: Add type I version 0 support.
+	syzkaller <syzkaller@googlegroups.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 152/215] ipv6: Fix infinite recursion in fib6_dump_done().
 Date: Thu, 11 Apr 2024 11:56:01 +0200
-Message-ID: <20240411095423.720133515@linuxfoundation.org>
+Message-ID: <20240411095429.452085304@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,200 +64,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Tu <u9012063@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit f989d546a2d5a9f001f6f8be49d98c10ab9b1897 ]
+commit d21d40605bca7bd5fc23ef03d4c1ca1f48bc2cae upstream.
 
-The Type I ERSPAN frame format is based on the barebones
-IP + GRE(4-byte) encapsulation on top of the raw mirrored frame.
-Both type I and II use 0x88BE as protocol type. Unlike type II
-and III, no sequence number or key is required.
-To creat a type I erspan tunnel device:
-  $ ip link add dev erspan11 type erspan \
-            local 172.16.1.100 remote 172.16.1.200 \
-            erspan_ver 0
+syzkaller reported infinite recursive calls of fib6_dump_done() during
+netlink socket destruction.  [1]
 
-Signed-off-by: William Tu <u9012063@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 17af420545a7 ("erspan: make sure erspan_base_hdr is present in skb->head")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+>From the log, syzkaller sent an AF_UNSPEC RTM_GETROUTE message, and then
+the response was generated.  The following recvmmsg() resumed the dump
+for IPv6, but the first call of inet6_dump_fib() failed at kzalloc() due
+to the fault injection.  [0]
+
+  12:01:34 executing program 3:
+  r0 = socket$nl_route(0x10, 0x3, 0x0)
+  sendmsg$nl_route(r0, ... snip ...)
+  recvmmsg(r0, ... snip ...) (fail_nth: 8)
+
+Here, fib6_dump_done() was set to nlk_sk(sk)->cb.done, and the next call
+of inet6_dump_fib() set it to nlk_sk(sk)->cb.args[3].  syzkaller stopped
+receiving the response halfway through, and finally netlink_sock_destruct()
+called nlk_sk(sk)->cb.done().
+
+fib6_dump_done() calls fib6_dump_end() and nlk_sk(sk)->cb.done() if it
+is still not NULL.  fib6_dump_end() rewrites nlk_sk(sk)->cb.done() by
+nlk_sk(sk)->cb.args[3], but it has the same function, not NULL, calling
+itself recursively and hitting the stack guard page.
+
+To avoid the issue, let's set the destructor after kzalloc().
+
+[0]:
+FAULT_INJECTION: forcing a failure.
+name failslab, interval 1, probability 0, space 0, times 0
+CPU: 1 PID: 432110 Comm: syz-executor.3 Not tainted 6.8.0-12821-g537c2e91d354-dirty #11
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl (lib/dump_stack.c:117)
+ should_fail_ex (lib/fault-inject.c:52 lib/fault-inject.c:153)
+ should_failslab (mm/slub.c:3733)
+ kmalloc_trace (mm/slub.c:3748 mm/slub.c:3827 mm/slub.c:3992)
+ inet6_dump_fib (./include/linux/slab.h:628 ./include/linux/slab.h:749 net/ipv6/ip6_fib.c:662)
+ rtnl_dump_all (net/core/rtnetlink.c:4029)
+ netlink_dump (net/netlink/af_netlink.c:2269)
+ netlink_recvmsg (net/netlink/af_netlink.c:1988)
+ ____sys_recvmsg (net/socket.c:1046 net/socket.c:2801)
+ ___sys_recvmsg (net/socket.c:2846)
+ do_recvmmsg (net/socket.c:2943)
+ __x64_sys_recvmmsg (net/socket.c:3041 net/socket.c:3034 net/socket.c:3034)
+
+[1]:
+BUG: TASK stack guard page was hit at 00000000f2fa9af1 (stack is 00000000b7912430..000000009a436beb)
+stack guard page: 0000 [#1] PREEMPT SMP KASAN
+CPU: 1 PID: 223719 Comm: kworker/1:3 Not tainted 6.8.0-12821-g537c2e91d354-dirty #11
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+Workqueue: events netlink_sock_destruct_work
+RIP: 0010:fib6_dump_done (net/ipv6/ip6_fib.c:570)
+Code: 3c 24 e8 f3 e9 51 fd e9 28 fd ff ff 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 41 57 41 56 41 55 41 54 55 48 89 fd <53> 48 8d 5d 60 e8 b6 4d 07 fd 48 89 da 48 b8 00 00 00 00 00 fc ff
+RSP: 0018:ffffc9000d980000 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffffffff84405990 RCX: ffffffff844059d3
+RDX: ffff8881028e0000 RSI: ffffffff84405ac2 RDI: ffff88810c02f358
+RBP: ffff88810c02f358 R08: 0000000000000007 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000224 R12: 0000000000000000
+R13: ffff888007c82c78 R14: ffff888007c82c68 R15: ffff888007c82c68
+FS:  0000000000000000(0000) GS:ffff88811b100000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffc9000d97fff8 CR3: 0000000102309002 CR4: 0000000000770ef0
+PKRU: 55555554
+Call Trace:
+ <#DF>
+ </#DF>
+ <TASK>
+ fib6_dump_done (net/ipv6/ip6_fib.c:572 (discriminator 1))
+ fib6_dump_done (net/ipv6/ip6_fib.c:572 (discriminator 1))
+ ...
+ fib6_dump_done (net/ipv6/ip6_fib.c:572 (discriminator 1))
+ fib6_dump_done (net/ipv6/ip6_fib.c:572 (discriminator 1))
+ netlink_sock_destruct (net/netlink/af_netlink.c:401)
+ __sk_destruct (net/core/sock.c:2177 (discriminator 2))
+ sk_destruct (net/core/sock.c:2224)
+ __sk_free (net/core/sock.c:2235)
+ sk_free (net/core/sock.c:2246)
+ process_one_work (kernel/workqueue.c:3259)
+ worker_thread (kernel/workqueue.c:3329 kernel/workqueue.c:3416)
+ kthread (kernel/kthread.c:388)
+ ret_from_fork (arch/x86/kernel/process.c:153)
+ ret_from_fork_asm (arch/x86/entry/entry_64.S:256)
+Modules linked in:
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240401211003.25274-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/erspan.h | 19 +++++++++++++--
- net/ipv4/ip_gre.c    | 58 ++++++++++++++++++++++++++++++++------------
- 2 files changed, 60 insertions(+), 17 deletions(-)
+ net/ipv6/ip6_fib.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/include/net/erspan.h b/include/net/erspan.h
-index b39643ef4c95f..0d9e86bd98934 100644
---- a/include/net/erspan.h
-+++ b/include/net/erspan.h
-@@ -2,7 +2,19 @@
- #define __LINUX_ERSPAN_H
- 
- /*
-- * GRE header for ERSPAN encapsulation (8 octets [34:41]) -- 8 bytes
-+ * GRE header for ERSPAN type I encapsulation (4 octets [34:37])
-+ *      0                   1                   2                   3
-+ *      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+ *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-+ *     |0|0|0|0|0|00000|000000000|00000|    Protocol Type for ERSPAN   |
-+ *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-+ *
-+ *  The Type I ERSPAN frame format is based on the barebones IP + GRE
-+ *  encapsulation (as described above) on top of the raw mirrored frame.
-+ *  There is no extra ERSPAN header.
-+ *
-+ *
-+ * GRE header for ERSPAN type II and II encapsulation (8 octets [34:41])
-  *       0                   1                   2                   3
-  *      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-  *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-@@ -43,7 +55,7 @@
-  * |                  Platform Specific Info                       |
-  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  *
-- * GRE proto ERSPAN type II = 0x88BE, type III = 0x22EB
-+ * GRE proto ERSPAN type I/II = 0x88BE, type III = 0x22EB
-  */
- 
- #include <uapi/linux/erspan.h>
-@@ -139,6 +151,9 @@ static inline u8 get_hwid(const struct erspan_md2 *md2)
- 
- static inline int erspan_hdr_len(int version)
- {
-+	if (version == 0)
-+		return 0;
-+
- 	return sizeof(struct erspan_base_hdr) +
- 	       (version == 1 ? ERSPAN_V1_MDSIZE : ERSPAN_V2_MDSIZE);
- }
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 38c8db78cda19..d1e90bfa84c11 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -251,6 +251,15 @@ static void gre_err(struct sk_buff *skb, u32 info)
- 	ipgre_err(skb, info, &tpi);
- }
- 
-+static bool is_erspan_type1(int gre_hdr_len)
-+{
-+	/* Both ERSPAN type I (version 0) and type II (version 1) use
-+	 * protocol 0x88BE, but the type I has only 4-byte GRE header,
-+	 * while type II has 8-byte.
-+	 */
-+	return gre_hdr_len == 4;
-+}
-+
- static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
- 		      int gre_hdr_len)
- {
-@@ -265,17 +274,26 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
- 	int len;
- 
- 	itn = net_generic(net, erspan_net_id);
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -591,19 +591,19 @@ static int inet6_dump_fib(struct sk_buff
+ 	if (!w) {
+ 		/* New dump:
+ 		 *
+-		 * 1. hook callback destructor.
+-		 */
+-		cb->args[3] = (long)cb->done;
+-		cb->done = fib6_dump_done;
 -
- 	iph = ip_hdr(skb);
--	ershdr = (struct erspan_base_hdr *)(skb->data + gre_hdr_len);
--	ver = ershdr->ver;
--
--	tunnel = ip_tunnel_lookup(itn, skb->dev->ifindex,
--				  tpi->flags | TUNNEL_KEY,
--				  iph->saddr, iph->daddr, tpi->key);
-+	if (is_erspan_type1(gre_hdr_len)) {
-+		ver = 0;
-+		tunnel = ip_tunnel_lookup(itn, skb->dev->ifindex,
-+					  tpi->flags | TUNNEL_NO_KEY,
-+					  iph->saddr, iph->daddr, 0);
-+	} else {
-+		ershdr = (struct erspan_base_hdr *)(skb->data + gre_hdr_len);
-+		ver = ershdr->ver;
-+		tunnel = ip_tunnel_lookup(itn, skb->dev->ifindex,
-+					  tpi->flags | TUNNEL_KEY,
-+					  iph->saddr, iph->daddr, tpi->key);
-+	}
- 
- 	if (tunnel) {
--		len = gre_hdr_len + erspan_hdr_len(ver);
-+		if (is_erspan_type1(gre_hdr_len))
-+			len = gre_hdr_len;
-+		else
-+			len = gre_hdr_len + erspan_hdr_len(ver);
+-		/*
+-		 * 2. allocate and initialize walker.
++		 * 1. allocate and initialize walker.
+ 		 */
+ 		w = kzalloc(sizeof(*w), GFP_ATOMIC);
+ 		if (!w)
+ 			return -ENOMEM;
+ 		w->func = fib6_dump_node;
+ 		cb->args[2] = (long)w;
 +
- 		if (unlikely(!pskb_may_pull(skb, len)))
- 			return PACKET_REJECT;
- 
-@@ -746,7 +764,10 @@ static netdev_tx_t erspan_xmit(struct sk_buff *skb,
++		/* 2. hook callback destructor.
++		 */
++		cb->args[3] = (long)cb->done;
++		cb->done = fib6_dump_done;
++
  	}
  
- 	/* Push ERSPAN header */
--	if (tunnel->erspan_ver == 1) {
-+	if (tunnel->erspan_ver == 0) {
-+		proto = htons(ETH_P_ERSPAN);
-+		tunnel->parms.o_flags &= ~TUNNEL_SEQ;
-+	} else if (tunnel->erspan_ver == 1) {
- 		erspan_build_header(skb, ntohl(tunnel->parms.o_key),
- 				    tunnel->index,
- 				    truncate, true);
-@@ -1156,7 +1177,10 @@ static int erspan_validate(struct nlattr *tb[], struct nlattr *data[],
- 	if (ret)
- 		return ret;
- 
--	/* ERSPAN should only have GRE sequence and key flag */
-+	if (nla_get_u8(data[IFLA_GRE_ERSPAN_VER]) == 0)
-+		return 0;
-+
-+	/* ERSPAN type II/III should only have GRE sequence and key flag */
- 	if (data[IFLA_GRE_OFLAGS])
- 		flags |= nla_get_be16(data[IFLA_GRE_OFLAGS]);
- 	if (data[IFLA_GRE_IFLAGS])
-@@ -1264,7 +1288,7 @@ static int erspan_netlink_parms(struct net_device *dev,
- 	if (data[IFLA_GRE_ERSPAN_VER]) {
- 		t->erspan_ver = nla_get_u8(data[IFLA_GRE_ERSPAN_VER]);
- 
--		if (t->erspan_ver != 1 && t->erspan_ver != 2)
-+		if (t->erspan_ver > 2)
- 			return -EINVAL;
- 	}
- 
-@@ -1349,7 +1373,11 @@ static int erspan_tunnel_init(struct net_device *dev)
- {
- 	struct ip_tunnel *tunnel = netdev_priv(dev);
- 
--	tunnel->tun_hlen = 8;
-+	if (tunnel->erspan_ver == 0)
-+		tunnel->tun_hlen = 4; /* 4-byte GRE hdr. */
-+	else
-+		tunnel->tun_hlen = 8; /* 8-byte GRE hdr. */
-+
- 	tunnel->parms.iph.protocol = IPPROTO_GRE;
- 	tunnel->hlen = tunnel->tun_hlen + tunnel->encap_hlen +
- 		       erspan_hdr_len(tunnel->erspan_ver);
-@@ -1552,8 +1580,8 @@ static int ipgre_fill_info(struct sk_buff *skb, const struct net_device *dev)
- 	struct ip_tunnel_parm *p = &t->parms;
- 	__be16 o_flags = p->o_flags;
- 
--	if (t->erspan_ver == 1 || t->erspan_ver == 2) {
--		if (!t->collect_md)
-+	if (t->erspan_ver <= 2) {
-+		if (t->erspan_ver != 0 && !t->collect_md)
- 			o_flags |= TUNNEL_KEY;
- 
- 		if (nla_put_u8(skb, IFLA_GRE_ERSPAN_VER, t->erspan_ver))
-@@ -1562,7 +1590,7 @@ static int ipgre_fill_info(struct sk_buff *skb, const struct net_device *dev)
- 		if (t->erspan_ver == 1) {
- 			if (nla_put_u32(skb, IFLA_GRE_ERSPAN_INDEX, t->index))
- 				goto nla_put_failure;
--		} else {
-+		} else if (t->erspan_ver == 2) {
- 			if (nla_put_u8(skb, IFLA_GRE_ERSPAN_DIR, t->dir))
- 				goto nla_put_failure;
- 			if (nla_put_u16(skb, IFLA_GRE_ERSPAN_HWID, t->hwid))
--- 
-2.43.0
-
+ 	arg.skb = skb;
 
 
 
