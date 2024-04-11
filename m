@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F078A0EA4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:16:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A0A8A109B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E65E1C22084
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:16:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D85FC1F2C86D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DCC146586;
-	Thu, 11 Apr 2024 10:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A41146D4E;
+	Thu, 11 Apr 2024 10:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2JFe5FV2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7H0IorO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7736214600E;
-	Thu, 11 Apr 2024 10:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B409D13FD97;
+	Thu, 11 Apr 2024 10:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830599; cv=none; b=oLGlM0tz1VfpbSvhtZCGjqF4N+XO38WZvM7vbQW6A8ExCv8dijMX7pifJDfqB/WjNObnf/zhlD7+J/EpWdjTmjvyemAI2qDpTo9PS/b4q5gVy/7H4pVcGR0NJFn0XXRGHXzwB8AkmvvsGpObmCa5v3SSgrjwarlqg8VBa+DUHfE=
+	t=1712831709; cv=none; b=npKMeRoDOWk2CYdVFkiBolRiNZ7NBbzZREMsVnfN5ViRfpgN7IDLWbtyQalbF3Tx16gD2MbGz39MycgKcETp+Syn5UGVx6j4YGHMqc5lhXxZjW8NyZS7gzv5U8wmh5hCioG6T4fYdEH9hHLdgeDMpBifLfqMduSTnrOzUYKXxPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830599; c=relaxed/simple;
-	bh=BAr9N7OrTe503OcrdM0vB7zkMxqQQDfAvC4h7GZYO2M=;
+	s=arc-20240116; t=1712831709; c=relaxed/simple;
+	bh=0AjOUkQIS28jMip0S+eAAHfsggbWkf2IbC0LyEnLrJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FgHs8GgJq/i7yJQvKNPDHJyymRnjPCWiPIR2IZG+dvuCE5hWUStiAwewwnInCiVEzuG8W8zWpz6WBCMO2SuGwuBW7CmcWTUjNBQhNDOvENSY/8RgGA6KImUPD9+BBxj8sADaaijNl+G4zY1mFGAZ1pFWr8g2dcxB/Y6/R8cZiMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2JFe5FV2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D6CC433F1;
-	Thu, 11 Apr 2024 10:16:38 +0000 (UTC)
+	 MIME-Version; b=KGARfh8OXZzFw5Zo7FNclMW3I5+8Gevcb+GOafHguVaKPyh5jKrMem4yfUL0h7bgS9BH5CR59HHsPoFTIGGQaFtKoR/yM7qm+Rj7tEUOyY9frSqit22UJCoYA38Zm65EKNTUK3DZ3IjkyTzvchA2PLuedmc1EZKWpQp5CFRp0lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7H0IorO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A877C433C7;
+	Thu, 11 Apr 2024 10:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830599;
-	bh=BAr9N7OrTe503OcrdM0vB7zkMxqQQDfAvC4h7GZYO2M=;
+	s=korg; t=1712831709;
+	bh=0AjOUkQIS28jMip0S+eAAHfsggbWkf2IbC0LyEnLrJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2JFe5FV2AIhDu22aeXf6gW81Qu2tPNjmfHiwSyahb53tLqGr/KhXjeIfbhmm5M+qg
-	 mO8RG1M3CDfeAA++sbmAyFvA2DrZO3UFfXbc3ZGkOEc+4nEAJp1qTpksyQcnAFjfwD
-	 Xmyxt9DKRQIaJ+uvTXEbCDOzP2vkE+T6j6BcCtHI=
+	b=x7H0IorOsHUMcESE/bhHdbrgn0f0IlnnK/JJpr+bUUnYpgX2R5EYzHW8WsbX/7F0J
+	 EtiMrzuMrVdKniZHjodWr3q3MS5gZHsF5XRo1yKL55s1ll6VJYJ9dfv3ZxDa3TxFLk
+	 iCp1l5lAVm/2f1GzL0DfZJBvurUbyQE6bmRXqI9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jorge Ramirez-Ortiz <jorge@foundries.io>,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 053/215] mmc: core: Fix switch on gp3 partition
+Subject: [PATCH 5.10 099/294] drm/vc4: hdmi: do not return negative values from .get_modes()
 Date: Thu, 11 Apr 2024 11:54:22 +0200
-Message-ID: <20240411095426.487861039@linuxfoundation.org>
+Message-ID: <20240411095438.653921737@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 4af59a8df5ea930038cd3355e822f5eedf4accc1 ]
+[ Upstream commit abf493988e380f25242c1023275c68bd3579c9ce ]
 
-Commit e7794c14fd73 ("mmc: rpmb: fixes pause retune on all RPMB
-partitions.") added a mask check for 'part_type', but the mask used was
-wrong leading to the code intended for rpmb also being executed for GP3.
+The .get_modes() hooks aren't supposed to return negative error
+codes. Return 0 for no modes, whatever the reason.
 
-On some MMCs (but not all) this would make gp3 partition inaccessible:
-armadillo:~# head -c 1 < /dev/mmcblk2gp3
-head: standard input: I/O error
-armadillo:~# dmesg -c
-[  422.976583] mmc2: running CQE recovery
-[  423.058182] mmc2: running CQE recovery
-[  423.137607] mmc2: running CQE recovery
-[  423.137802] blk_update_request: I/O error, dev mmcblk2gp3, sector 0 op 0x0:(READ) flags 0x80700 phys_seg 4 prio class 0
-[  423.237125] mmc2: running CQE recovery
-[  423.318206] mmc2: running CQE recovery
-[  423.397680] mmc2: running CQE recovery
-[  423.397837] blk_update_request: I/O error, dev mmcblk2gp3, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 0
-[  423.408287] Buffer I/O error on dev mmcblk2gp3, logical block 0, async page read
-
-the part_type values of interest here are defined as follow:
-main  0
-boot0 1
-boot1 2
-rpmb  3
-gp0   4
-gp1   5
-gp2   6
-gp3   7
-
-so mask with EXT_CSD_PART_CONFIG_ACC_MASK (7) to correctly identify rpmb
-
-Fixes: e7794c14fd73 ("mmc: rpmb: fixes pause retune on all RPMB partitions.")
+Cc: Maxime Ripard <mripard@kernel.org>
 Cc: stable@vger.kernel.org
-Cc: Jorge Ramirez-Ortiz <jorge@foundries.io>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20240306-mmc-partswitch-v1-1-bf116985d950@codewreck.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/dcda6d4003e2c6192987916b35c7304732800e08.1709913674.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-index 554dba0a06f5b..32369b120f02c 100644
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -873,10 +873,11 @@ static const struct block_device_operations mmc_bdops = {
- static int mmc_blk_part_switch_pre(struct mmc_card *card,
- 				   unsigned int part_type)
- {
--	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
-+	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_MASK;
-+	const unsigned int rpmb = EXT_CSD_PART_CONFIG_ACC_RPMB;
- 	int ret = 0;
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index 7e8620838de9c..6d01258349faa 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -197,7 +197,7 @@ static int vc4_hdmi_connector_get_modes(struct drm_connector *connector)
+ 	edid = drm_get_edid(connector, vc4_hdmi->ddc);
+ 	cec_s_phys_addr_from_edid(vc4_hdmi->cec_adap, edid);
+ 	if (!edid)
+-		return -ENODEV;
++		return 0;
  
--	if ((part_type & mask) == mask) {
-+	if ((part_type & mask) == rpmb) {
- 		if (card->ext_csd.cmdq_en) {
- 			ret = mmc_cmdq_disable(card);
- 			if (ret)
-@@ -891,10 +892,11 @@ static int mmc_blk_part_switch_pre(struct mmc_card *card,
- static int mmc_blk_part_switch_post(struct mmc_card *card,
- 				    unsigned int part_type)
- {
--	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
-+	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_MASK;
-+	const unsigned int rpmb = EXT_CSD_PART_CONFIG_ACC_RPMB;
- 	int ret = 0;
+ 	vc4_encoder->hdmi_monitor = drm_detect_hdmi_monitor(edid);
  
--	if ((part_type & mask) == mask) {
-+	if ((part_type & mask) == rpmb) {
- 		mmc_retune_unpause(card->host);
- 		if (card->reenable_cmdq && !card->ext_csd.cmdq_en)
- 			ret = mmc_cmdq_enable(card);
 -- 
 2.43.0
 
