@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E308A0DD5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:08:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C808A10C3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F88F1C208F7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:08:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A822E1C23B37
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862CC145B0A;
-	Thu, 11 Apr 2024 10:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F56214A4CA;
+	Thu, 11 Apr 2024 10:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XriKPAEY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AShO64pn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424AE13B5B9;
-	Thu, 11 Apr 2024 10:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13EE149E10;
+	Thu, 11 Apr 2024 10:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830096; cv=none; b=T0hf7TliNCQ6hcSLg/I6N9f3myc/x2LfQ8q6Ry7Ax6ODZl40Pd5fl+DlIyJFkqvUhC7sUq+kYHBmkghwJ+rpZnOaM+jBWrt46TAz0eS5R1k5YpNc3O3cgIY/GFR/1NApdLGlN72R5+0PiubTTk3GVCOeid41BlA/7MILaYFAd24=
+	t=1712831827; cv=none; b=hD/xxibrHHJFbzsqstpyt3JuWP/IAvA7oLfB8ipgTmZmkOeqpRRwFAOU8tmOfavKqoBaGEJIzCyirC8EUa1TflF7TuqRJqXEruB9rZifO8vIE7cvJt1Ct2F3UP1bBOVR6nBYBAaLnlnjnmeGbckSOziCiWOhcB8yQhMrqLVsQJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830096; c=relaxed/simple;
-	bh=0UnLQ6N4W1LC9sKC2wTwFD/dfrPzSeIgKT8uMBDoy+w=;
+	s=arc-20240116; t=1712831827; c=relaxed/simple;
+	bh=V76FmQUbYNTtENnNJb7sBI5WmwmODwv0Ahd0YPwlxuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dLMNHPS17RuC4veTLFYvMnP+Ksdhkjj5C0kPZYqIOKsX1f1pM6RaJbCJ9erlHuSN3PLlBPSJvXO/wlUgyGiUN5WtFo5Kosm+Q6nCUoTXD2zHUr7MSSfBQeOSYRi2OuHfCv8w1nbttmwl/5/0a7Enmuj+PoYanPA3Gn3OIYmr9tM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XriKPAEY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD666C433C7;
-	Thu, 11 Apr 2024 10:08:15 +0000 (UTC)
+	 MIME-Version; b=ER+sdqd0kU1LnD1MuUrZNDkjeAvIKXnaCFRZWfWdwi63Ekqb5k9MK44B6LVKmwd7/GFJ1KV2xmcAshbY5i4AzoZ3H0FgniGqzlpojOAQVQDV/jG1CyDfWF8QtTQiehrAzTjEd0QVnKGFJ8T+5Ua5QiT2DX7qaQgj38m+T3bkb48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AShO64pn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A1EBC433C7;
+	Thu, 11 Apr 2024 10:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830096;
-	bh=0UnLQ6N4W1LC9sKC2wTwFD/dfrPzSeIgKT8uMBDoy+w=;
+	s=korg; t=1712831826;
+	bh=V76FmQUbYNTtENnNJb7sBI5WmwmODwv0Ahd0YPwlxuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XriKPAEYxKF1dcnlR1gDXclDycUVWhoIOA1TbukoSe0+8BBPT9vBCNDJvt5MwTzc1
-	 0Jw2fmkyqnewwxLK6YXNEzb7J2MhdElkaCUqHhaoiQNap+gZcHH/VACK5oY/74wYqm
-	 AhJ6n5i8lxHFVyY7AZMVWMEjQOqrHPmldx1xx0ck=
+	b=AShO64pnfZuT9sxtI/7mHMmyNJZ0hnprodnF/TBMtEQnpvUg+tO4pAxv9+Gh1AIl0
+	 9wmzk1V6x/+DxNYNKneCNzG7TjjuRcQpWD0JtTiltb3ElUgW1h7I9hJJnG+eKJ/kDz
+	 alG3OrBR/H5PL3xCWI4brBA3ExwKHlNfHEuRqbA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Peter Chiu <chui-hao.chiu@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 033/143] wifi: mt76: mt7915: add locking for accessing mapped registers
+	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
+	Borislav Petkov <bp@suse.de>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PATCH 5.10 138/294] x86/asm: Add _ASM_RIP() macro for x86-64 (%rip) suffix
 Date: Thu, 11 Apr 2024 11:55:01 +0200
-Message-ID: <20240411095421.909275954@linuxfoundation.org>
+Message-ID: <20240411095439.810313369@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit 0937f95ab07af6e663ae932d592f630d9eb591da ]
+From: "H. Peter Anvin (Intel)" <hpa@zytor.com>
 
-Sicne the mapping is global, mapped register access needs to be protected
-against concurrent access, otherwise a race condition might cause the reads
-or writes to go towards the wrong register
+commit f87bc8dc7a7c438c70f97b4e51c76a183313272e upstream.
 
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add a macro _ASM_RIP() to add a (%rip) suffix on 64 bits only. This is
+useful for immediate memory references where one doesn't want gcc
+to possibly use a register indirection as it may in the case of an "m"
+constraint.
+
+Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Link: https://lkml.kernel.org/r/20210910195910.2542662-3-hpa@zytor.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/wireless/mediatek/mt76/mt7915/mmio.c  | 45 ++++++++++++++++---
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  1 +
- 2 files changed, 41 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/asm.h |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index 3039f53e22454..dceb505987b19 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -490,6 +490,11 @@ static u32 __mt7915_reg_addr(struct mt7915_dev *dev, u32 addr)
- 		return dev->reg.map[i].maps + ofs;
- 	}
+--- a/arch/x86/include/asm/asm.h
++++ b/arch/x86/include/asm/asm.h
+@@ -6,12 +6,14 @@
+ # define __ASM_FORM(x)	x
+ # define __ASM_FORM_RAW(x)     x
+ # define __ASM_FORM_COMMA(x) x,
++# define __ASM_REGPFX			%
+ #else
+ #include <linux/stringify.h>
  
-+	return 0;
-+}
+ # define __ASM_FORM(x)	" " __stringify(x) " "
+ # define __ASM_FORM_RAW(x)     __stringify(x)
+ # define __ASM_FORM_COMMA(x) " " __stringify(x) ","
++# define __ASM_REGPFX			%%
+ #endif
+ 
+ #ifndef __x86_64__
+@@ -48,6 +50,9 @@
+ #define _ASM_SI		__ASM_REG(si)
+ #define _ASM_DI		__ASM_REG(di)
+ 
++/* Adds a (%rip) suffix on 64 bits only; for immediate memory references */
++#define _ASM_RIP(x)	__ASM_SEL_RAW(x, x (__ASM_REGPFX rip))
 +
-+static u32 __mt7915_reg_remap_addr(struct mt7915_dev *dev, u32 addr)
-+{
- 	if ((addr >= MT_INFRA_BASE && addr < MT_WFSYS0_PHY_START) ||
- 	    (addr >= MT_WFSYS0_PHY_START && addr < MT_WFSYS1_PHY_START) ||
- 	    (addr >= MT_WFSYS1_PHY_START && addr <= MT_WFSYS1_PHY_END))
-@@ -514,15 +519,30 @@ void mt7915_memcpy_fromio(struct mt7915_dev *dev, void *buf, u32 offset,
- {
- 	u32 addr = __mt7915_reg_addr(dev, offset);
+ #ifndef __x86_64__
+ /* 32 bit */
  
--	memcpy_fromio(buf, dev->mt76.mmio.regs + addr, len);
-+	if (addr) {
-+		memcpy_fromio(buf, dev->mt76.mmio.regs + addr, len);
-+		return;
-+	}
-+
-+	spin_lock_bh(&dev->reg_lock);
-+	memcpy_fromio(buf, dev->mt76.mmio.regs +
-+			   __mt7915_reg_remap_addr(dev, offset), len);
-+	spin_unlock_bh(&dev->reg_lock);
- }
- 
- static u32 mt7915_rr(struct mt76_dev *mdev, u32 offset)
- {
- 	struct mt7915_dev *dev = container_of(mdev, struct mt7915_dev, mt76);
--	u32 addr = __mt7915_reg_addr(dev, offset);
-+	u32 addr = __mt7915_reg_addr(dev, offset), val;
- 
--	return dev->bus_ops->rr(mdev, addr);
-+	if (addr)
-+		return dev->bus_ops->rr(mdev, addr);
-+
-+	spin_lock_bh(&dev->reg_lock);
-+	val = dev->bus_ops->rr(mdev, __mt7915_reg_remap_addr(dev, offset));
-+	spin_unlock_bh(&dev->reg_lock);
-+
-+	return val;
- }
- 
- static void mt7915_wr(struct mt76_dev *mdev, u32 offset, u32 val)
-@@ -530,7 +550,14 @@ static void mt7915_wr(struct mt76_dev *mdev, u32 offset, u32 val)
- 	struct mt7915_dev *dev = container_of(mdev, struct mt7915_dev, mt76);
- 	u32 addr = __mt7915_reg_addr(dev, offset);
- 
--	dev->bus_ops->wr(mdev, addr, val);
-+	if (addr) {
-+		dev->bus_ops->wr(mdev, addr, val);
-+		return;
-+	}
-+
-+	spin_lock_bh(&dev->reg_lock);
-+	dev->bus_ops->wr(mdev, __mt7915_reg_remap_addr(dev, offset), val);
-+	spin_unlock_bh(&dev->reg_lock);
- }
- 
- static u32 mt7915_rmw(struct mt76_dev *mdev, u32 offset, u32 mask, u32 val)
-@@ -538,7 +565,14 @@ static u32 mt7915_rmw(struct mt76_dev *mdev, u32 offset, u32 mask, u32 val)
- 	struct mt7915_dev *dev = container_of(mdev, struct mt7915_dev, mt76);
- 	u32 addr = __mt7915_reg_addr(dev, offset);
- 
--	return dev->bus_ops->rmw(mdev, addr, mask, val);
-+	if (addr)
-+		return dev->bus_ops->rmw(mdev, addr, mask, val);
-+
-+	spin_lock_bh(&dev->reg_lock);
-+	val = dev->bus_ops->rmw(mdev, __mt7915_reg_remap_addr(dev, offset), mask, val);
-+	spin_unlock_bh(&dev->reg_lock);
-+
-+	return val;
- }
- 
- #ifdef CONFIG_NET_MEDIATEK_SOC_WED
-@@ -707,6 +741,7 @@ static int mt7915_mmio_init(struct mt76_dev *mdev,
- 
- 	dev = container_of(mdev, struct mt7915_dev, mt76);
- 	mt76_mmio_init(&dev->mt76, mem_base);
-+	spin_lock_init(&dev->reg_lock);
- 
- 	switch (device_id) {
- 	case 0x7915:
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 4727d9c7b11de..6e79bc65f5a51 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -287,6 +287,7 @@ struct mt7915_dev {
- 
- 	struct list_head sta_rc_list;
- 	struct list_head twt_list;
-+	spinlock_t reg_lock;
- 
- 	u32 hw_pattern;
- 
--- 
-2.43.0
-
 
 
 
