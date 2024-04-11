@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA5A8A0E48
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 319408A100A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:30:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B4F8286671
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 622C81C22F6A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDBBB145B28;
-	Thu, 11 Apr 2024 10:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918F8146D4F;
+	Thu, 11 Apr 2024 10:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GgCkYkgR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Xh9rMER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A8B1DDE9;
-	Thu, 11 Apr 2024 10:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB8C143C76;
+	Thu, 11 Apr 2024 10:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830392; cv=none; b=s5w3SAHs6F+8tMzwpy9LnXxaNtzguBsbk0dI/jNVkg+HRb8PAZYO9u4aqTuF7CHB1g1oeXoj1oQRvBuRLf+HKHVYMP5M5Gl6HeMFVq+pJQoA5uXJ3/Db8k6rQbfmURfBEm7yCVTpUECi5JWpOfnJmx1U7aOLDOlWT3Dik3r/bOQ=
+	t=1712831398; cv=none; b=Jd5iYYLx+s4rPKA3Aiu2ynU2WCedmoHtEewHZOqkNWi4yOVsmi6Hy/98+FaToBwPhTzWALfDA/TQqVpEts7dbNOPDF/EBaB0rdf28tKqCWoPADv+yyAtiO+JwQ5znQ4y7RBCwF0l3O5ROTt2SPipbgxD9/i6ZiS7Dp1sI3is1YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830392; c=relaxed/simple;
-	bh=aiiInGBKlKEt7g8B6DNygQHHdA79funamVbWRI422po=;
+	s=arc-20240116; t=1712831398; c=relaxed/simple;
+	bh=9uZtltV6gaIYllTEo3RO3nR+hJkuIjVYPNC4UaHACs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ex57x7yPu0FrSX+TxHnQQi2SwGxWBG2b1+eZx/oJO9UGqviKipwWSp3gGOCw+dMsXA2+2n8WNm80fsj1oiq7YSFEsYP1nT9QdF/ENRCO1SPozpHcYYy6YvVOSOsRLv/zwimo65RGgP2Sj4Pqbkz90zvQ/tnf5/dxXkYnbkGctzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GgCkYkgR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F151EC433C7;
-	Thu, 11 Apr 2024 10:13:11 +0000 (UTC)
+	 MIME-Version; b=QUtQT+r1HA9QvePqAPrsgSk9WlsiN0teb2+vA4tgJdhzjJxIwDvkEXn83sDBianlEmVgH86isyfhNsa3YRsQLT3YPiMwp/lfBs1geyOIW1dvdIdCJEmsDkimY7dnkRpcFe5onlQ1DwocPRNCWe7U2TecwQtsOiadgnfcUBjOhyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Xh9rMER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA75AC433C7;
+	Thu, 11 Apr 2024 10:29:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830392;
-	bh=aiiInGBKlKEt7g8B6DNygQHHdA79funamVbWRI422po=;
+	s=korg; t=1712831398;
+	bh=9uZtltV6gaIYllTEo3RO3nR+hJkuIjVYPNC4UaHACs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GgCkYkgRRorAsDMltMSvvZLaeGB/0x3rXPcUoXVAc+FxAmzLcm8UIrrfupXCkp396
-	 ka8BP0+gA4LSOtoy2eyoAnWhGPMtniKGEg/ZxUsNLiNDV0dLm+fXr5H8eZXFPkUb7v
-	 PdyZTRGPw9/BXIWWKymaJQGMxSgUViCjvdtOAkVY=
+	b=1Xh9rMER0OvoDJmctQHNnp+fln1AFu6C8PJpsxRbBipzBBwNa2tbH0Co78h9tzTCF
+	 Rs/MnI83bqGtrg4FgerRrD/iTq6924TxpkN0h0e9uoNU2IRIkeksUzSjvmv15ApLqe
+	 hEk1usINs4jJkSZPDkEK+ZiywFnptS3fCOkmsMAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Crawford <tcrawford@system76.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Jeremy Soller <jeremy@system76.com>
-Subject: [PATCH 6.8 129/143] ALSA: hda/realtek: Add quirks for some Clevo laptops
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 070/114] SUNRPC: increase size of rpc_wait_queue.qlen from unsigned short to unsigned int
 Date: Thu, 11 Apr 2024 11:56:37 +0200
-Message-ID: <20240411095424.787127959@linuxfoundation.org>
+Message-ID: <20240411095418.999130435@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Crawford <tcrawford@system76.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit 33affa7fb46c0c07f6c49d4ddac9dd436715064c ]
+[ Upstream commit 2c35f43b5a4b9cdfaa6fdd946f5a212615dac8eb ]
 
-Add audio quirks to fix speaker output and headset detection on some new
-Clevo models:
+When the NFS client is under extreme load the rpc_wait_queue.qlen counter
+can be overflowed. Here is an instant of the backlog queue overflow in a
+real world environment shown by drgn helper:
 
-- L240TU (ALC245)
-- PE60SNE-G (ALC1220)
-- V350SNEQ (ALC245)
+rpc_task_stats(rpc_clnt):
+-------------------------
+rpc_clnt: 0xffff92b65d2bae00
+rpc_xprt: 0xffff9275db64f000
+  Queue:  sending[64887] pending[524] backlog[30441] binding[0]
+XMIT task: 0xffff925c6b1d8e98
+     WRITE: 750654
+        __dta_call_status_580: 65463
+        __dta_call_transmit_status_579: 1
+        call_reserveresult: 685189
+        nfs_client_init_is_complete: 1
+    COMMIT: 584
+        call_reserveresult: 573
+        __dta_call_status_580: 11
+    ACCESS: 1
+        __dta_call_status_580: 1
+   GETATTR: 10
+        __dta_call_status_580: 4
+        call_reserveresult: 6
+751249 tasks for server 111.222.333.444
+Total tasks: 751249
 
-Co-authored-by: Jeremy Soller <jeremy@system76.com>
-Signed-off-by: Tim Crawford <tcrawford@system76.com>
-Message-ID: <20240319212726.62888-1-tcrawford@system76.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+count_rpc_wait_queues(xprt):
+----------------------------
+**** rpc_xprt: 0xffff9275db64f000 num_reqs: 65511
+wait_queue: xprt_binding[0] cnt: 0
+wait_queue: xprt_binding[1] cnt: 0
+wait_queue: xprt_binding[2] cnt: 0
+wait_queue: xprt_binding[3] cnt: 0
+rpc_wait_queue[xprt_binding].qlen: 0 maxpriority: 0
+wait_queue: xprt_sending[0] cnt: 0
+wait_queue: xprt_sending[1] cnt: 64887
+wait_queue: xprt_sending[2] cnt: 0
+wait_queue: xprt_sending[3] cnt: 0
+rpc_wait_queue[xprt_sending].qlen: 64887 maxpriority: 3
+wait_queue: xprt_pending[0] cnt: 524
+wait_queue: xprt_pending[1] cnt: 0
+wait_queue: xprt_pending[2] cnt: 0
+wait_queue: xprt_pending[3] cnt: 0
+rpc_wait_queue[xprt_pending].qlen: 524 maxpriority: 0
+wait_queue: xprt_backlog[0] cnt: 0
+wait_queue: xprt_backlog[1] cnt: 685801
+wait_queue: xprt_backlog[2] cnt: 0
+wait_queue: xprt_backlog[3] cnt: 0
+rpc_wait_queue[xprt_backlog].qlen: 30441 maxpriority: 3 [task cnt mismatch]
+
+There is no effect on operations when this overflow occurs. However
+it causes confusion when trying to diagnose the performance problem.
+
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/sunrpc/sched.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 39d8931fb7b21..8c2467ed127ee 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -2646,6 +2646,7 @@ static const struct snd_pci_quirk alc882_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1558, 0x65f1, "Clevo PC50HS", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
- 	SND_PCI_QUIRK(0x1558, 0x65f5, "Clevo PD50PN[NRT]", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
- 	SND_PCI_QUIRK(0x1558, 0x66a2, "Clevo PE60RNE", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
-+	SND_PCI_QUIRK(0x1558, 0x66a6, "Clevo PE60SN[CDE]-[GS]", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
- 	SND_PCI_QUIRK(0x1558, 0x67d1, "Clevo PB71[ER][CDF]", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
- 	SND_PCI_QUIRK(0x1558, 0x67e1, "Clevo PB71[DE][CDF]", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
- 	SND_PCI_QUIRK(0x1558, 0x67e5, "Clevo PC70D[PRS](?:-D|-G)?", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
-@@ -10214,12 +10215,14 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1462, 0xb120, "MSI Cubi MS-B120", ALC283_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1462, 0xb171, "Cubi N 8GL (MS-B171)", ALC283_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x152d, 0x1082, "Quanta NL3", ALC269_FIXUP_LIFEBOOK),
-+	SND_PCI_QUIRK(0x1558, 0x0353, "Clevo V35[05]SN[CDE]Q", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x1323, "Clevo N130ZU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x1325, "Clevo N15[01][CW]U", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x1401, "Clevo L140[CZ]U", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x1403, "Clevo N140CU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x1404, "Clevo N150CU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x14a1, "Clevo L141MU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1558, 0x2624, "Clevo L240TU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x4018, "Clevo NV40M[BE]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x4019, "Clevo NV40MZ", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x4020, "Clevo NV40MB", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
+index 8ada7dc802d30..8f9bee0e21c3b 100644
+--- a/include/linux/sunrpc/sched.h
++++ b/include/linux/sunrpc/sched.h
+@@ -186,7 +186,7 @@ struct rpc_wait_queue {
+ 	unsigned char		maxpriority;		/* maximum priority (0 if queue is not a priority queue) */
+ 	unsigned char		priority;		/* current priority */
+ 	unsigned char		nr;			/* # tasks remaining for cookie */
+-	unsigned short		qlen;			/* total # tasks waiting in queue */
++	unsigned int		qlen;			/* total # tasks waiting in queue */
+ 	struct rpc_timer	timer_list;
+ #if IS_ENABLED(CONFIG_SUNRPC_DEBUG) || IS_ENABLED(CONFIG_TRACEPOINTS)
+ 	const char *		name;
 -- 
 2.43.0
 
