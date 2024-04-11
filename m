@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-38164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF0008A0D4D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:02:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6C48A10D4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A176285CF5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:02:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C3B11C22A42
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B92145B08;
-	Thu, 11 Apr 2024 10:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0191474D0;
+	Thu, 11 Apr 2024 10:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMC8bcmG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5Tdg5cb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FAB1422C4;
-	Thu, 11 Apr 2024 10:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576C11474C4;
+	Thu, 11 Apr 2024 10:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829752; cv=none; b=HZ1oPidDkvbxOxAj6aEBXwihU0M3hR0aHcAu/QZ3h7IpYnOQW4vbKUCcquam3yLUDJoUyviOu8jbT+SJ3Rfrgbk6V9zCBAJMQAAH+jsjscWtCYRQtSR3N+nbxQzZljChURYyh/SMI1O7XkmK0ic+eMGEmwbfDbLqlOR+9h7U3YM=
+	t=1712831868; cv=none; b=bjBZKO6RF7OD1ysmJXzGFTHYYY8D0AicmdbZAfuUOSKebV0BvCWUyFOFFKqGYaT7Yf8JkW/m3VxK8TlUwGk8HBzvMtxxtmvKsulzqYK9/F/K9JuYxBTtRvKrltgNIw9BLuDDZChrbBPKOTXzkwyAZrqNjH6kzpukBsXiB5NrMVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829752; c=relaxed/simple;
-	bh=8XgUmww3pfBUb+mBWk44Va54apCXWGTtubu4tL3TOGs=;
+	s=arc-20240116; t=1712831868; c=relaxed/simple;
+	bh=/FypiNiA+Pu4KBKG9WFFDNPqKB75UHQRIM7Vk2vdwIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BX7mG+3vwqvejZRDEV3eQDr7yfw+axlx/J4WVhn74lHEq9H9ti5vRCwcAeI4g5Fv5xbIPXhO1OIbOQoHnv/sfXwML9H9IE7AJigSZ57ra3TV732nUi3V2bu3zDlYYo/5v+2HR2Y5w60neUiTZGif6bvQ3+5ZUDs6bTMDBJU7cUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMC8bcmG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A198C43390;
-	Thu, 11 Apr 2024 10:02:31 +0000 (UTC)
+	 MIME-Version; b=gDkzx3o7EJ/2cObhtwVAEPdwM2eb1jPgXis//DAHndcMP4GJZANtoT1O5d1riPsgoYA4uENaUfzCCVzsdUT/AV6SDBMM2oFvsWUkg4XamUZmp1AOXBbQfF5ZLBPba1n3MJumQHf/RG2547KrpPepebUqPb6Kdvaae5v8JAagwd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5Tdg5cb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EA9C433C7;
+	Thu, 11 Apr 2024 10:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829752;
-	bh=8XgUmww3pfBUb+mBWk44Va54apCXWGTtubu4tL3TOGs=;
+	s=korg; t=1712831868;
+	bh=/FypiNiA+Pu4KBKG9WFFDNPqKB75UHQRIM7Vk2vdwIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qMC8bcmGmjZBe9hHdRJ+PLMPB9g4dsxPP22GKSezGm1swxuR0a8Mn831FF0ahO/2p
-	 Bq5PMp3i3fEYCfdMC/+lgtvGuE2bXpSLOtbzRBdAjmmxyGel0Tkefva/gQQoqprGOI
-	 QqT8eqEd+izkLRDC1eHNfJOP96o7djscm3tjaPlo=
+	b=n5Tdg5cb2L8gFQeFGuJL6wE8BNE51kRnGJ/1KllmE9/dhjcmM7JRSN9MWPSIu+zP6
+	 MgDYw8smB7rbsi+Sd5K0te2BKaRQBBFPGrl8EwF2xx3g5Y4YnJtQpHFiFYCxpfcUiE
+	 9e59CV1Y5s+vDgKzkskxQEooggvaSRu8KbmUE/5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org,
-	holger@applied-asynchrony.com,
-	=?UTF-8?q?Holger=20Hoffst=E4tte?= <holger.hoffstaette@googlemail.com>,
-	Gwendal Grignou <gwendal@chromium.org>,
-	Benjamin Gordon <bmgordon@chromium.org>,
-	Guenter Roeck <groeck@chromium.org>,
-	Genjian Zhang <zhanggenjian@kylinos.cn>
-Subject: [PATCH 4.19 094/175] loop: properly observe rotational flag of underlying device
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH 5.10 154/294] mm/migrate: set swap entry values of THP tail pages properly.
 Date: Thu, 11 Apr 2024 11:55:17 +0200
-Message-ID: <20240411095422.396299495@linuxfoundation.org>
+Message-ID: <20240411095440.285627883@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +59,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Holger Hoffstätte <holger.hoffstaette@googlemail.com>
+From: Zi Yan <ziy@nvidia.com>
 
-[ Upstream commit 56a85fd8376ef32458efb6ea97a820754e12f6bb ]
+The tail pages in a THP can have swap entry information stored in their
+private field. When migrating to a new page, all tail pages of the new
+page need to update ->private to avoid future data corruption.
 
-The loop driver always declares the rotational flag of its device as
-rotational, even when the device of the mapped file is nonrotational,
-as is the case with SSDs or on tmpfs. This can confuse filesystem tools
-which are SSD-aware; in my case I frequently forget to tell mkfs.btrfs
-that my loop device on tmpfs is nonrotational, and that I really don't
-need any automatic metadata redundancy.
+This fix is stable-only, since after commit 07e09c483cbe ("mm/huge_memory:
+work on folio->swap instead of page->private when splitting folio"),
+subpages of a swapcached THP no longer requires the maintenance.
 
-The attached patch fixes this by introspecting the rotational flag of the
-mapped file's underlying block device, if it exists. If the mapped file's
-filesystem has no associated block device - as is the case on e.g. tmpfs -
-we assume nonrotational storage. If there is a better way to identify such
-non-devices I'd love to hear them.
+Adding THPs to the swapcache was introduced in commit
+38d8b4e6bdc87 ("mm, THP, swap: delay splitting THP during swap out"),
+where each subpage of a THP added to the swapcache had its own swapcache
+entry and required the ->private field to point to the correct swapcache
+entry. Later, when THP migration functionality was implemented in commit
+616b8371539a6 ("mm: thp: enable thp migration in generic path"),
+it initially did not handle the subpages of swapcached THPs, failing to
+update their ->private fields or replace the subpage pointers in the
+swapcache. Subsequently, commit e71769ae5260 ("mm: enable thp migration
+for shmem thp") addressed the swapcache update aspect. This patch fixes
+the update of subpage ->private fields.
 
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org
-Cc: holger@applied-asynchrony.com
-Signed-off-by: Holger Hoffstätte <holger.hoffstaette@googlemail.com>
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-Signed-off-by: Benjamin Gordon <bmgordon@chromium.org>
-Reviewed-by: Guenter Roeck <groeck@chromium.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
+Closes: https://lore.kernel.org/linux-mm/1707814102-22682-1-git-send-email-quic_charante@quicinc.com/
+Fixes: 616b8371539a ("mm: thp: enable thp migration in generic path")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/loop.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ mm/migrate.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -940,6 +940,24 @@ static int loop_prepare_queue(struct loo
- 	return 0;
- }
- 
-+static void loop_update_rotational(struct loop_device *lo)
-+{
-+	struct file *file = lo->lo_backing_file;
-+	struct inode *file_inode = file->f_mapping->host;
-+	struct block_device *file_bdev = file_inode->i_sb->s_bdev;
-+	struct request_queue *q = lo->lo_queue;
-+	bool nonrot = true;
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -447,8 +447,12 @@ int migrate_page_move_mapping(struct add
+ 	if (PageSwapBacked(page)) {
+ 		__SetPageSwapBacked(newpage);
+ 		if (PageSwapCache(page)) {
++			int i;
 +
-+	/* not all filesystems (e.g. tmpfs) have a sb->s_bdev */
-+	if (file_bdev)
-+		nonrot = blk_queue_nonrot(bdev_get_queue(file_bdev));
-+
-+	if (nonrot)
-+		blk_queue_flag_set(QUEUE_FLAG_NONROT, q);
-+	else
-+		blk_queue_flag_clear(QUEUE_FLAG_NONROT, q);
-+}
-+
- static int loop_set_fd(struct loop_device *lo, fmode_t mode,
- 		       struct block_device *bdev, unsigned int arg)
- {
-@@ -1001,6 +1019,7 @@ static int loop_set_fd(struct loop_devic
- 	if (!(lo_flags & LO_FLAGS_READ_ONLY) && file->f_op->fsync)
- 		blk_queue_write_cache(lo->lo_queue, true, false);
- 
-+	loop_update_rotational(lo);
- 	loop_update_dio(lo);
- 	loop_sysfs_init(lo);
- 	loop_set_size(lo, size);
+ 			SetPageSwapCache(newpage);
+-			set_page_private(newpage, page_private(page));
++			for (i = 0; i < (1 << compound_order(page)); i++)
++				set_page_private(newpage + i,
++						 page_private(page + i));
+ 		}
+ 	} else {
+ 		VM_BUG_ON_PAGE(PageSwapCache(page), page);
 
 
 
