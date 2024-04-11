@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0AA8A0F93
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CABDD8A10F7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7ACDD1C223B4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEF111C23A61
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BEF1465BF;
-	Thu, 11 Apr 2024 10:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D117148312;
+	Thu, 11 Apr 2024 10:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukmLIyHK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOO4WvnK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E52113FD94;
-	Thu, 11 Apr 2024 10:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF1C13D258;
+	Thu, 11 Apr 2024 10:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831111; cv=none; b=TdGnMn2WGvLdPzAjM0lzwozTCvu5BvRmAuyMsWYwtgiHYqt48PDDdwJuWEClmf4xsnB/wHDMYui+XtHfm17dJHcxKkL03EikP2gYEXQbkpa+dDqYFrrVU/aof7vCuaxx8P+UGQ0RFJ78C28AVtw27K/P5Ultg4MejOoBXGjsuuk=
+	t=1712831942; cv=none; b=MtQQNvbvWbmuRUqdCY7NxUFEjedPbkUZOb2LW6r/bhjJhEkFpz2vK3LAjLLVvuzOP5uY5J/uSDDtkYzVQ26RsCKHyyn8sR0+m7GcVcxXPVcKfaF835zBhvY1pgl0ieyFzwJesKokyNF9OGuvTsdtPJN29jvf06ubYAAf7rcXI1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831111; c=relaxed/simple;
-	bh=sWkGuslc3Iw88h2wWZ04NiybI4Fp3gX1yeoS1DZlee8=;
+	s=arc-20240116; t=1712831942; c=relaxed/simple;
+	bh=OccvTqZw+TeK4hgQ+AWuinV6W5AcheibAiFJ51JQg3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TjMnM5HZ9g7gz6Wg358LWGpZTaEpGjlQ37Mae8LoN4OiTNV/4scIUgPlThNDS43oh3i0nAlflgsn2vKu4EDFPEZlx/NinM5WE2VbVuaRM/OhS8M/wAPBKFavFFGED5JoY+qrIvukLbtuZC1az0PMix8pkR+cmCHBIzLuvU+LKzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukmLIyHK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B111CC433C7;
-	Thu, 11 Apr 2024 10:25:10 +0000 (UTC)
+	 MIME-Version; b=eDU+zaGmT54MsBYAsZx/80YFjbcPBlpTjku2gk3Xw5iNol2Lvv2KhK8U7ZBDczDfGzGawXMuJSiZyeo+AEBxCh6Ek1O6gR7wOyXkf3DVscejAhbRBXbF9mqVXhg7A84DpPpN8f1pySSi3Q2wHW93oy+8VAH3V8ZP69nYbCM4dKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOO4WvnK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F25C433C7;
+	Thu, 11 Apr 2024 10:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831111;
-	bh=sWkGuslc3Iw88h2wWZ04NiybI4Fp3gX1yeoS1DZlee8=;
+	s=korg; t=1712831942;
+	bh=OccvTqZw+TeK4hgQ+AWuinV6W5AcheibAiFJ51JQg3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukmLIyHKpRjhSN/JF9sQ/lbZqiKlpEKdMTKNCVT1Vx0xmScNdKf+w/8zNAInB+dUW
-	 CHnGAA9BFWsccqWJPipaAhuy5aht31tVxxeu5GOwZmMvb7YnfSj/S77rInA+uU4t2Y
-	 MuPG0Eyy2FtIll/Rf8JVlJWzH3JJyVPs7CkmICZQ=
+	b=GOO4WvnKM2n95sJ9RHbs++MSHQyreTOPZGcm20ziANPfH2hZYCpcDrTiltt2x2nXd
+	 iCRloF8cI1vpqnv4mSTgaXxBF/Ye/HxgvxwjumNwtVErYyB9uOPwk1/kVDwoVqC/bf
+	 j8goP4o1GhXQ7f6Muk3uAuwy8IdAShYX/xCEsAvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ogness <john.ogness@linutronix.de>,
-	Petr Mladek <pmladek@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/114] panic: Flush kernel log buffer at the end
-Date: Thu, 11 Apr 2024 11:55:39 +0200
-Message-ID: <20240411095417.237112674@linuxfoundation.org>
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 177/294] scsi: qla2xxx: Delay I/O Abort on PCI error
+Date: Thu, 11 Apr 2024 11:55:40 +0200
+Message-ID: <20240411095440.956945739@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit d988d9a9b9d180bfd5c1d353b3b176cb90d6861b ]
+commit 591c1fdf2016d118b8fbde427b796fac13f3f070 upstream.
 
-If the kernel crashes in a context where printk() calls always
-defer printing (such as in NMI or inside a printk_safe section)
-then the final panic messages will be deferred to irq_work. But
-if irq_work is not available, the messages will not get printed
-unless explicitly flushed. The result is that the final
-"end Kernel panic" banner does not get printed.
+Currently when PCI error is detected, I/O is aborted manually through the
+ABORT IOCB mechanism which is not guaranteed to succeed.
 
-Add one final flush after the last printk() call to make sure
-the final panic messages make it out as well.
+Instead, wait for the OS or system to notify driver to wind down I/O
+through the pci_error_handlers api.  Set eeh_busy flag to pause all traffic
+and wait for I/O to drain.
 
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20240207134103.1357162-14-john.ogness@linutronix.de
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-11-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/panic.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/scsi/qla2xxx/qla_attr.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/panic.c b/kernel/panic.c
-index ffa037fa777d5..ef9f9a4e928de 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -442,6 +442,14 @@ void panic(const char *fmt, ...)
+--- a/drivers/scsi/qla2xxx/qla_attr.c
++++ b/drivers/scsi/qla2xxx/qla_attr.c
+@@ -2689,7 +2689,13 @@ qla2x00_dev_loss_tmo_callbk(struct fc_rp
+ 		return;
  
- 	/* Do not scroll important messages printed above */
- 	suppress_printk = 1;
-+
-+	/*
-+	 * The final messages may not have been printed if in a context that
-+	 * defers printing (such as NMI) and irq_work is not available.
-+	 * Explicitly flush the kernel log buffer one last time.
-+	 */
-+	console_flush_on_panic(CONSOLE_FLUSH_PENDING);
-+
- 	local_irq_enable();
- 	for (i = 0; ; i += PANIC_TIMER_STEP) {
- 		touch_softlockup_watchdog();
--- 
-2.43.0
-
+ 	if (unlikely(pci_channel_offline(fcport->vha->hw->pdev))) {
+-		qla2x00_abort_all_cmds(fcport->vha, DID_NO_CONNECT << 16);
++		/* Will wait for wind down of adapter */
++		ql_dbg(ql_dbg_aer, fcport->vha, 0x900c,
++		    "%s pci offline detected (id %06x)\n", __func__,
++		    fcport->d_id.b24);
++		qla_pci_set_eeh_busy(fcport->vha);
++		qla2x00_eh_wait_for_pending_commands(fcport->vha, fcport->d_id.b24,
++		    0, WAIT_TARGET);
+ 		return;
+ 	}
+ }
+@@ -2711,7 +2717,11 @@ qla2x00_terminate_rport_io(struct fc_rpo
+ 	vha = fcport->vha;
+ 
+ 	if (unlikely(pci_channel_offline(fcport->vha->hw->pdev))) {
+-		qla2x00_abort_all_cmds(fcport->vha, DID_NO_CONNECT << 16);
++		/* Will wait for wind down of adapter */
++		ql_dbg(ql_dbg_aer, fcport->vha, 0x900b,
++		    "%s pci offline detected (id %06x)\n", __func__,
++		    fcport->d_id.b24);
++		qla_pci_set_eeh_busy(vha);
+ 		qla2x00_eh_wait_for_pending_commands(fcport->vha, fcport->d_id.b24,
+ 			0, WAIT_TARGET);
+ 		return;
 
 
 
