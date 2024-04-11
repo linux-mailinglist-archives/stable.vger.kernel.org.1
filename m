@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-38938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEFE98A111D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B3428A0D92
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EF021F2CF1F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF6EE1F21295
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A24014A087;
-	Thu, 11 Apr 2024 10:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F697145FF6;
+	Thu, 11 Apr 2024 10:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lV3qrrI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5rvHgjE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072F61487C3;
-	Thu, 11 Apr 2024 10:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34DD2EAE5;
+	Thu, 11 Apr 2024 10:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832033; cv=none; b=a+S5ZcSiuDH/BQfZLCLbOBFeEp75rOHcHJ+pI9K9hEqDae4oiY2B1psIgbrhPWQial00klzVnPX02FGLtuHsnVwYGNAo5Z6CV8w9cEvsalXooy9kEt5BXGJ3b8fEdMq2P87Q04mH+TMWEr51rVb+9U5qU6SyjNese/5+ANfcTEo=
+	t=1712829914; cv=none; b=XO+wRQRmWebbQOkTRpjwrhA6kV5F1n5+llRIGec+NMYiorz8nZlVT3H4SHcR0byrm/RJSWNvLUrcao+4TD0hlvuzR7u7ufu6lE8bNcWBHcBDwIUg0bX4KtIRNCPAeT+lLqQXXVJgQntFpyI4R9o6m5yxuYY2ajDgydBkYXl+99A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832033; c=relaxed/simple;
-	bh=vXg+jCjvwi/No3pGc1MYm9879l3gS/nvyDLfCCWPF3Y=;
+	s=arc-20240116; t=1712829914; c=relaxed/simple;
+	bh=Gg9PHJ+fWFWQilwsnPo5ZntFewBAVjOyUAZQOabBPGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FjjRbuFv2IMl/apcWiYjAPlqf8WRCkGxFcPLICDGR1AdVXGlYLgZHer0xqZDbSUFG8uosQByVzYuoJMt1L+UpTslEBBfvSLQiA2wyzZjshKcZMtLJ7r3T7LFvh/OfQDx/qmfMBVcm0ZKAguFw7MovED6cOYsNtMzL+sIn74labY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lV3qrrI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5B7C433F1;
-	Thu, 11 Apr 2024 10:40:32 +0000 (UTC)
+	 MIME-Version; b=cd9au1dLbbgVaVmwYJi60m1HGwn7SFX52IRWvqvebgP4fS/5LyAoHEiCNjrK3vns9aK7BBYK+/wUxwFuSGtic81oqv9uwwmUlXlEMW8+iThFEhT9DjIKrdtyQVcZaYhQvcxZvNDQ4m6mXoHH91eNImUhHnJVO1GdUFseWSLnnvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5rvHgjE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F74C433C7;
+	Thu, 11 Apr 2024 10:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832032;
-	bh=vXg+jCjvwi/No3pGc1MYm9879l3gS/nvyDLfCCWPF3Y=;
+	s=korg; t=1712829914;
+	bh=Gg9PHJ+fWFWQilwsnPo5ZntFewBAVjOyUAZQOabBPGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0lV3qrrIEyvZsSHiE5k4aprrfOOY4XtsSNCveVd0woTbiucg+c1Jlua8mYlskf2Er
-	 LynXrVgr1qgrDToSX56ftIpmS6GH9tDl6+sJN8K6NVxAcF3CYHc0KRQ96CVcW/3qj8
-	 t39WdPS7jDNKHP5TWtQohf+ZM3Mkrktc7C5jrPVI=
+	b=e5rvHgjEJCFTwS9T9xHQb8sCXZo/T8pgiAPryUOaBd7JMBcPeMeiCa9CgZpv/jm5Q
+	 TolaZpT7Oxh0cmCswBSB708lC8eU7ZKlr5pqWqegzTzGNsRTbO3Jfc81oGfEu4o+tC
+	 pVSPjxSFAmhT5NPz4+zd42rNrzM7RdLtHRknz8os=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyang Xuan <william.xuanziyang@huawei.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 208/294] netfilter: nf_tables: Fix potential data-race in __nft_flowtable_type_get()
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 148/175] tools/power x86_energy_perf_policy: Fix file leak in get_pkg_num()
 Date: Thu, 11 Apr 2024 11:56:11 +0200
-Message-ID: <20240411095441.862208434@linuxfoundation.org>
+Message-ID: <20240411095424.018194284@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-commit 24225011d81b471acc0e1e315b7d9905459a6304 upstream.
+[ Upstream commit f85450f134f0b4ca7e042dc3dc89155656a2299d ]
 
-nft_unregister_flowtable_type() within nf_flow_inet_module_exit() can
-concurrent with __nft_flowtable_type_get() within nf_tables_newflowtable().
-And thhere is not any protection when iterate over nf_tables_flowtables
-list in __nft_flowtable_type_get(). Therefore, there is pertential
-data-race of nf_tables_flowtables list entry.
+In function get_pkg_num() if fopen_or_die() succeeds it returns a file
+pointer to be used. But fclose() is never called before returning from
+the function.
 
-Use list_for_each_entry_rcu() to iterate over nf_tables_flowtables list
-in __nft_flowtable_type_get(), and use rcu_read_lock() in the caller
-nft_flowtable_type_get() to protect the entire type query process.
-
-Fixes: 3b49e2e94e6e ("netfilter: nf_tables: add flow table netlink frontend")
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6879,11 +6879,12 @@ static int nft_flowtable_parse_hook(cons
- 	return err;
+diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+index 2aba622d1c5aa..470d03e143422 100644
+--- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
++++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+@@ -1112,6 +1112,7 @@ unsigned int get_pkg_num(int cpu)
+ 	retval = fscanf(fp, "%d\n", &pkg);
+ 	if (retval != 1)
+ 		errx(1, "%s: failed to parse", pathname);
++	fclose(fp);
+ 	return pkg;
  }
  
-+/* call under rcu_read_lock */
- static const struct nf_flowtable_type *__nft_flowtable_type_get(u8 family)
- {
- 	const struct nf_flowtable_type *type;
- 
--	list_for_each_entry(type, &nf_tables_flowtables, list) {
-+	list_for_each_entry_rcu(type, &nf_tables_flowtables, list) {
- 		if (family == type->family)
- 			return type;
- 	}
-@@ -6895,9 +6896,13 @@ nft_flowtable_type_get(struct net *net,
- {
- 	const struct nf_flowtable_type *type;
- 
-+	rcu_read_lock();
- 	type = __nft_flowtable_type_get(family);
--	if (type != NULL && try_module_get(type->owner))
-+	if (type != NULL && try_module_get(type->owner)) {
-+		rcu_read_unlock();
- 		return type;
-+	}
-+	rcu_read_unlock();
- 
- 	lockdep_nfnl_nft_mutex_not_held();
- #ifdef CONFIG_MODULES
+-- 
+2.43.0
+
 
 
 
