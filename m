@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-38409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 078828A0E70
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:14:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7668A1092
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3926C1C21741
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:14:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1739B24F52
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B2714601B;
-	Thu, 11 Apr 2024 10:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B1A148858;
+	Thu, 11 Apr 2024 10:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6VAOEDU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCFYg77g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC36145353;
-	Thu, 11 Apr 2024 10:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538C61474B0;
+	Thu, 11 Apr 2024 10:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830481; cv=none; b=LCfMeZMedbHNuqupk16Qs6q3AtPx37obB2AI2TRtyA/GmyS/N+MQgaGcpcVqGtNAuVB9EWTxMLMlKfHSrUASHZu1KAGE6IMTIsIGIt6ai9Bl4Hbo89QcUE1CKnFzcT0Ne4B9U3wgjDU8Q0ie6xNl48sj5uIMHHTPTDTsQQIAsAs=
+	t=1712831680; cv=none; b=K6z+iyDbJtT7SNLxcXTl1RkxJ8IxldM7OokOfYnLMXbdaFyHwhAfpO1t5ft9t3vmgV+yGU0hwOE881VMX98FdkTNNAyKdjIE6fyZYGA4UO8pIczgmpKzwQN8KdDFkBLauJcl8GmGuLgQrlAHCgLL7U9d/1K5hnMgokZ6X8aFqM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830481; c=relaxed/simple;
-	bh=cm3/ts1QfuZCE6uE1jOQ6PXKD3f4k1zSww4JFKvwi44=;
+	s=arc-20240116; t=1712831680; c=relaxed/simple;
+	bh=OaSAt0mPncQPE0pngTTVCZYIqZrtcR1DfXGq8Ly5z5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O8vL6XVK/dlMnJOPMZBP55G/axTTLT65XjKCkN+16kArZQoKZCWGhfG45Lbc6I4S+gpi28OHOitsMJybeYrkI96h3C6qjn1lFXyh2f+v4RCXu6Wz4dt1KoQ+awIaOlTN4jpPrFfDpPrf5pLL0gP6+Q/ncyElltl7PmQ4S1tk6ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6VAOEDU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D264DC433C7;
-	Thu, 11 Apr 2024 10:14:40 +0000 (UTC)
+	 MIME-Version; b=e55SLW+aPngwNfrkrOysRlmj9eOapX+9fi2U/rwPqz6mcoGmsCKeHTTq2s3H+y7vZLFqKXoMFs/IjoBvjHPV9KVtiYANTjIrotNLsLm9W94Ys54lBGf7XEsxDUD73hN+ytSNjjLXDXPrCptgJdpQErgYFLY14cHoQeHIulOJsLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCFYg77g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA765C433F1;
+	Thu, 11 Apr 2024 10:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830481;
-	bh=cm3/ts1QfuZCE6uE1jOQ6PXKD3f4k1zSww4JFKvwi44=;
+	s=korg; t=1712831680;
+	bh=OaSAt0mPncQPE0pngTTVCZYIqZrtcR1DfXGq8Ly5z5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6VAOEDUOST89NcwVSrSZYwG5W6eplUZ3F8Kj/I+DZGZIEqDDyZJqFZJidCnI+r0Y
-	 R7oqHEcpGYwJU8h+coiknnwq2Tdg16ExdE/R0wlPl/gtzqczPT6n0m3dAAvy0lPXa9
-	 lsDscfTXBh7MmXn02cAToX7LoyIcovvVunXIoc94=
+	b=hCFYg77g+QtJB9V5p+LLKSCJWR4jvQk1f2HkkLvEVfQkbgCz74voWXZWPbZSY2Us8
+	 /9snLCb34w31454ltGcaUyLxNN2H15S/E4YVpZwlyK/+JADbKbHTCnJAr7H4kg/b/0
+	 2n24dxfC0q8cf8f54djKVqqbCySqS2wo+FGfI6QY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Igor Zhbanov <izh1979@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	sparclinux@vger.kernel.org,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andreas Larsson <andreas@gaisler.com>,
+	Michael Walle <michael@walle.cc>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 017/215] sparc64: NMI watchdog: fix return value of __setup handler
+Subject: [PATCH 5.10 063/294] PCI: Work around Intel I210 ROM BAR overlap defect
 Date: Thu, 11 Apr 2024 11:53:46 +0200
-Message-ID: <20240411095425.401145404@linuxfoundation.org>
+Message-ID: <20240411095437.588151353@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,52 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit 3ed7c61e49d65dacb96db798c0ab6fcd55a1f20f ]
+[ Upstream commit 500b55b05d0a21c4adddf4c3b29ee6f32b502046 ]
 
-__setup() handlers should return 1 to obsolete_checksetup() in
-init/main.c to indicate that the boot option has been handled.
-A return of 0 causes the boot option/value to be listed as an Unknown
-kernel parameter and added to init's (limited) argument or environment
-strings. Also, error return codes don't mean anything to
-obsolete_checksetup() -- only non-zero (usually 1) or zero.
-So return 1 from setup_nmi_watchdog().
+Per PCIe r5, sec 7.5.1.2.4, a device must not claim accesses to its
+Expansion ROM unless both the Memory Space Enable and the Expansion ROM
+Enable bit are set.  But apparently some Intel I210 NICs don't work
+correctly if the ROM BAR overlaps another BAR, even if the Expansion ROM is
+disabled.
 
-Fixes: e5553a6d0442 ("sparc64: Implement NMI watchdog on capable cpus.")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: Igor Zhbanov <izh1979@gmail.com>
-Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20240211052802.22612-1-rdunlap@infradead.org
+Michael reported that on a Kontron SMARC-sAL28 ARM64 system with U-Boot
+v2021.01-rc3, the ROM BAR overlaps BAR 3, and networking doesn't work at
+all:
+
+  BAR 0: 0x40000000 (32-bit, non-prefetchable) [size=1M]
+  BAR 3: 0x40200000 (32-bit, non-prefetchable) [size=16K]
+  ROM:   0x40200000 (disabled) [size=1M]
+
+  NETDEV WATCHDOG: enP2p1s0 (igb): transmit queue 0 timed out
+  Hardware name: Kontron SMARC-sAL28 (Single PHY) on SMARC Eval 2.0 carrier (DT)
+  igb 0002:01:00.0 enP2p1s0: Reset adapter
+
+Previously, pci_std_update_resource() wrote the assigned ROM address to the
+BAR only when the ROM was enabled.  This meant that the I210 ROM BAR could
+be left with an address assigned by firmware, which might overlap with
+other BARs.
+
+Quirk these I210 devices so pci_std_update_resource() always writes the
+assigned address to the ROM BAR, whether or not the ROM is enabled.
+
+Link: https://lore.kernel.org/r/20211223163754.GA1267351@bhelgaas
+Link: https://lore.kernel.org/r/20201230185317.30915-1-michael@walle.cc
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=211105
+Reported-by: Michael Walle <michael@walle.cc>
+Tested-by: Michael Walle <michael@walle.cc>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Stable-dep-of: 627c6db20703 ("PCI/DPC: Quirk PIO log size for Intel Raptor Lake Root Ports")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/kernel/nmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/quirks.c    | 10 ++++++++++
+ drivers/pci/setup-res.c |  8 ++++++--
+ include/linux/pci.h     |  1 +
+ 3 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/arch/sparc/kernel/nmi.c b/arch/sparc/kernel/nmi.c
-index 060fff95a305c..fbf25e926f67c 100644
---- a/arch/sparc/kernel/nmi.c
-+++ b/arch/sparc/kernel/nmi.c
-@@ -274,7 +274,7 @@ static int __init setup_nmi_watchdog(char *str)
- 	if (!strncmp(str, "panic", 5))
- 		panic_on_timeout = 1;
- 
--	return 0;
-+	return 1;
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 646807a443e2d..d7c4149855eb6 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5852,3 +5852,13 @@ static void nvidia_ion_ahci_fixup(struct pci_dev *pdev)
+ 	pdev->dev_flags |= PCI_DEV_FLAGS_HAS_MSI_MASKING;
  }
- __setup("nmi_watchdog=", setup_nmi_watchdog);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_NVIDIA, 0x0ab8, nvidia_ion_ahci_fixup);
++
++static void rom_bar_overlap_defect(struct pci_dev *dev)
++{
++	pci_info(dev, "working around ROM BAR overlap defect\n");
++	dev->rom_bar_overlap = 1;
++}
++DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1533, rom_bar_overlap_defect);
++DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1536, rom_bar_overlap_defect);
++DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1537, rom_bar_overlap_defect);
++DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1538, rom_bar_overlap_defect);
+diff --git a/drivers/pci/setup-res.c b/drivers/pci/setup-res.c
+index 875d50c16f19d..b492e67c3d871 100644
+--- a/drivers/pci/setup-res.c
++++ b/drivers/pci/setup-res.c
+@@ -75,12 +75,16 @@ static void pci_std_update_resource(struct pci_dev *dev, int resno)
+ 		 * as zero when disabled, so don't update ROM BARs unless
+ 		 * they're enabled.  See
+ 		 * https://lore.kernel.org/r/43147B3D.1030309@vc.cvut.cz/
++		 * But we must update ROM BAR for buggy devices where even a
++		 * disabled ROM can conflict with other BARs.
+ 		 */
+-		if (!(res->flags & IORESOURCE_ROM_ENABLE))
++		if (!(res->flags & IORESOURCE_ROM_ENABLE) &&
++		    !dev->rom_bar_overlap)
+ 			return;
+ 
+ 		reg = dev->rom_base_reg;
+-		new |= PCI_ROM_ADDRESS_ENABLE;
++		if (res->flags & IORESOURCE_ROM_ENABLE)
++			new |= PCI_ROM_ADDRESS_ENABLE;
+ 	} else
+ 		return;
+ 
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 75f29838d25cf..5b24a6fbfa0be 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -454,6 +454,7 @@ struct pci_dev {
+ 	unsigned int	link_active_reporting:1;/* Device capable of reporting link active */
+ 	unsigned int	no_vf_scan:1;		/* Don't scan for VFs after IOV enablement */
+ 	unsigned int	no_command_memory:1;	/* No PCI_COMMAND_MEMORY */
++	unsigned int	rom_bar_overlap:1;	/* ROM BAR disable broken */
+ 	pci_dev_flags_t dev_flags;
+ 	atomic_t	enable_cnt;	/* pci_enable_device has been called */
  
 -- 
 2.43.0
