@@ -1,231 +1,157 @@
-Return-Path: <stable+bounces-38073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6988A0C0A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:15:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E698C8A0C30
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:20:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EFD91C21848
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:15:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85DFD1F22127
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F801442F7;
-	Thu, 11 Apr 2024 09:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82909144305;
+	Thu, 11 Apr 2024 09:20:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC4D142E61;
-	Thu, 11 Apr 2024 09:14:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6428C13CF91;
+	Thu, 11 Apr 2024 09:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712826899; cv=none; b=a1xOoaSR9iQnviAoiRrF0/b7RrC09AjF6buNhUtnd6/jXf+lQhRqPBycdmxjVNuexnVOnlHnitrA5Ll+3RR+OAofXIlU21HVij9OiX5ai8/99gL8eLbn1cKwTSXxemJG6W6Daf+3fj0e6wYutR2hxdwuyTEgTNV0a5cYgWClxW4=
+	t=1712827229; cv=none; b=VazXHw483kPQS2rHB6WDQgqvDt9QvOzsW55D8lQEQ5q0GutYQ1Y6+iGC4SY590tXEFB51seWYuAT9VXljpqHLN31X9B7jK3yUPYUqmb9Bxy69fx4YZptRy+Qd4vQ2KDSFZ3sbmbzg5VtBSZEbibvbKZKRCMfn9rbLEooVAFYy68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712826899; c=relaxed/simple;
-	bh=KqGU897vzhzDZW5OmesbDqaBreTgT2QjXAuJtDUvnmM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JknlcrOl5F/Bo7rlxrGzOWe8iWFciYfV1O1nVmirkfK1QtEX/w/sEc+PiWwPIZAh1JgVKtJj547ES6vIqwKbUfNJbeka+MC7+Jy+USkaHE65lhcAD4+Bq+qxE6kW3dev2zJyc00O5teDPK7a0nhQjScXrah4+faVSPEJgCMqzD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4VFYsf5251z1wr5r;
-	Thu, 11 Apr 2024 17:13:58 +0800 (CST)
-Received: from dggpemd100001.china.huawei.com (unknown [7.185.36.94])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8A67418002F;
-	Thu, 11 Apr 2024 17:14:54 +0800 (CST)
-Received: from huawei.com (10.175.127.227) by dggpemd100001.china.huawei.com
- (7.185.36.94) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28; Thu, 11 Apr
- 2024 17:14:53 +0800
-From: Li Lingfeng <lilingfeng3@huawei.com>
-To: <stable@vger.kernel.org>, <gregkh@linuxfoundation.org>,
-	<mpatocka@redhat.com>, <torvalds@linux-foundation.org>, <tglx@linutronix.de>
-CC: <linux-kernel@vger.kernel.org>, <dm-devel@lists.linux.dev>,
-	<msnitzer@redhat.com>, <ignat@cloudflare.com>, <damien.lemoal@wdc.com>,
-	<bob.liu@oracle.com>, <houtao1@huawei.com>, <nhuck@google.com>,
-	<peterz@infradead.org>, <mingo@elte.hu>, <yukuai3@huawei.com>,
-	<yangerkun@huawei.com>, <yi.zhang@huawei.com>, <lilingfeng3@huawei.com>,
-	<lilingfeng@huaweicloud.com>
-Subject: [PATCH 6.6] Revert "dm-crypt, dm-verity: disable tasklets"
-Date: Thu, 11 Apr 2024 17:15:39 +0800
-Message-ID: <20240411091539.361470-1-lilingfeng3@huawei.com>
-X-Mailer: git-send-email 2.31.1
+	s=arc-20240116; t=1712827229; c=relaxed/simple;
+	bh=MuSa2629wjnJIwbeR+E3etbsRyL6LRWQ87Up/BxVyrU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hPa7dG8mqVfdMBrn8NiWHUFj1cJncXajtQPiRmZR9Py8k5IsN027rJ52eQ9LpMbSqufXSL+2fJzUnHPkmqkFkrWxGDvCN6PHjoisL05ygIb2tQHsC3ZNxRlqBd5/ZllEDF8oE1iz7vkK5YTcKmI1pUOP4HriDdj61BreV1t7mDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-6153d85053aso66498107b3.0;
+        Thu, 11 Apr 2024 02:20:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712827226; x=1713432026;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QWrI7vAbCyWyhkrkKcSxlbZsN3p29am8eXxJfrQzGlo=;
+        b=pD0fXMIYPvDw+J6bEKNmGhegVNLwA6O9S7wMzFwum5Yu2veacBmyPH3c9zzjTnwDKZ
+         mWe9yHvyzlg0jY7xt0W9/Bud6hDTcDE319JY5m1iWP7rO8sOBhBKuVhu0l7OVooeD11T
+         6IXOTMSlKYYPjtNRoa4GEp0/tzQJcVJhyQ83sopkQ+4FaScSLhty4CMe7reiWUCEf2ZN
+         yYLeJVE2HHYRgunp5gA4mCdg6KTi/XfFaOKQY9SSEBNww7MmptHQt9frNX3LzP2NhjSO
+         jtkjY/eL/zNoR0YBJHvGJT5jw7ka/4yulcs8nOdbmP2Z2I0HyHvEk16sguAv2yRMq9Ct
+         OLzg==
+X-Forwarded-Encrypted: i=1; AJvYcCX629CkWdRdd9elTd+dkTHHm5uQNtK5E2sS7n45q441r3w1BRhcT+qpxOvTSqS5BH2Yp1+GPnhTiGv1M3p2dC6rw6QfsitUXxTnGTvLgZ6wcFzFDj0YluYhVGRR3urNm1+4pLhToDty+qI4FPtzq9mj9i/Y3GCRZm+N2CEkc7SqsOHx6CoArWrLJcMgikFnUAXozfUYAP3HQM6o
+X-Gm-Message-State: AOJu0YwXt/N3YopQIFGMiVt5uQbqOsOe7HV+mn15SBbiySmj0iWyazqe
+	qOGc7Qmfg8UwX34/nH/5oRmEo2zZ9nIsN4e+huAvjP4MR3gmAN/VG30RHS5B
+X-Google-Smtp-Source: AGHT+IEf70VCszZn4E7AmD3QM76pIOuzM53vCivZ/FRPguLc1wUdDEXUP/74sFB5WtBdkfwk9h4KWQ==
+X-Received: by 2002:a81:a1c3:0:b0:618:198f:aedb with SMTP id y186-20020a81a1c3000000b00618198faedbmr4732950ywg.5.1712827225836;
+        Thu, 11 Apr 2024 02:20:25 -0700 (PDT)
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com. [209.85.219.171])
+        by smtp.gmail.com with ESMTPSA id s10-20020a81770a000000b0061537270630sm229113ywc.80.2024.04.11.02.20.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Apr 2024 02:20:09 -0700 (PDT)
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-dd045349d42so7031135276.2;
+        Thu, 11 Apr 2024 02:20:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVxhRyejhRL+/YvVR0rRv3NZ/ew6Ar2I0taiVCwjRrqn9ff3/G/WXVLRBW9oVKTCduTfBJcjjtSiAsC6A3kwgbxsTP/HJKrigbK+e19BF48rpJVBsJJvqODzATGNMhION+J7hWHPHDsFChXLhxsNFGprdEfTNuuQASevBRsaTTzHu7Qt4J6cm0l/1G63Gbd/IwScYon8q3fSt70
+X-Received: by 2002:a25:868a:0:b0:dc7:6f13:61d1 with SMTP id
+ z10-20020a25868a000000b00dc76f1361d1mr5243102ybk.20.1712827209472; Thu, 11
+ Apr 2024 02:20:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemd100001.china.huawei.com (7.185.36.94)
+References: <cover.1712812895.git.linux@leemhuis.info> <c0a08b160b286e8c98549eedb37404c6e784cf8a.1712812895.git.linux@leemhuis.info>
+ <2024041156-backache-dolly-a420@gregkh> <3f395eca-fc24-469b-b5fc-de47ab2a6861@leemhuis.info>
+ <2024041123-earthling-primarily-4656@gregkh> <dad33d1c-77da-4b97-a0ec-4bf566f8d861@leemhuis.info>
+ <2024041159-undone-deacon-3170@gregkh>
+In-Reply-To: <2024041159-undone-deacon-3170@gregkh>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 11 Apr 2024 11:19:57 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXMRJM1xQLHDc6yKWvs97W2iTZnYnNNZE=8-WrtnGRNfw@mail.gmail.com>
+Message-ID: <CAMuHMdXMRJM1xQLHDc6yKWvs97W2iTZnYnNNZE=8-WrtnGRNfw@mail.gmail.com>
+Subject: Re: [PATCH v1 2/4] docs: stable-kernel-rules: mention "no
+ semi-automatic backport"
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Thorsten Leemhuis <linux@leemhuis.info>, Sasha Levin <sashal@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, stable@vger.kernel.org, workflows@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This reverts commit 5735a2671ffb70ea29ca83969fe01316ee2ed6fc which is
-commit 0a9bab391e336489169b95cb0d4553d921302189 upstream.
+On Thu, Apr 11, 2024 at 11:13=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+> On Thu, Apr 11, 2024 at 09:50:24AM +0200, Thorsten Leemhuis wrote:
+> > On 11.04.24 09:40, Greg Kroah-Hartman wrote:
+> > > On Thu, Apr 11, 2024 at 08:59:39AM +0200, Thorsten Leemhuis wrote:
+> > >> On 11.04.24 07:29, Greg Kroah-Hartman wrote:
+> > >>> On Thu, Apr 11, 2024 at 07:25:04AM +0200, Thorsten Leemhuis wrote:
+> > >>>> Some developers deliberately steer clear of 'Fixes:' tags to preve=
+nt
+> > >>>> changes from being backported semi-automatically by the stable tea=
+m.
+> > >>>> That somewhat undermines the reason for the existence of the Fixes=
+: tag,
+> > >>>> hence point out there is an alternative to reach the same effect.
+> > > [...]
+> > >>> I do not understand, why are you saying "cc: stable" here if you do=
+ NOT
+> > >>> want it backported?
+> > >> Because the only alternative the developers have to make the stable =
+team
+> > >> not pick a single patch[1] is to deliberately omit a Fixes: tag even=
+ if
+> > >> the patch normally should have one. Like it was done here:
+> > >> https://lore.kernel.org/all/cover.1712226175.git.antony.antony@secun=
+et.com/
+> > > That feels odd, but ok I now see the need for this for some minor set=
+ of
+> > > changes (i.e. this has rarely come up in the past 15+ years)
+> > >
+> > > [...]
+> > >> E.g. 'ignore for the AUTOSEL and the "Fixes tag only" tools'. That w=
+as
+> > >> the best term I came up with.
+> > >
+> > > Thinking about it more, I think we need to be much more explicit, and
+> > > provide the reason why.
+> > >
+> > > How about:
+> > >     cc: <do-not-apply-to-stable@kernel.org> # Reason goes here, and m=
+ust be present
+> > >
+> > > and we can make that address be routed to /dev/null just like
+> > > <stable@kernel.org> is?
+> >
+> > Totally fine with me, but that feels somewhat long and hard to type.
+>
+> I want it long and hard to type and very very explicit that this is what
+> the developer/maintainer wants to have happen (again, because this is
+> such a rare occurrence.)
+>
+> > How
+> > about just 'no-stable@kernel.org' (or 'nostable@kernel.org')?
+>
+> More words are better :)
 
-Tasklet is thought to cause memory corruption [1], so it was disabled in
-dm-crypt and dm-verity. However, memory corruption may not happen since
-cc->io_queue is created without WQ_UNBOUND [2].
-Revert commit 5735a2671ffb ("dm-crypt, dm-verity: disable tasklets") to
-bring tasklet back.
+And after that, someone discovers this turns out to be (a hard
+dependency for) a very critical fix that does need backporting?
 
-[1] https://lore.kernel.org/all/d390d7ee-f142-44d3-822a-87949e14608b@suse.de/T/
-[2] https://lore.kernel.org/all/4d331659-badd-749d-fba1-271543631a8a@huawei.com/
+Gr{oetje,eeting}s,
 
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
----
- drivers/md/dm-crypt.c         | 38 +++++++++++++++++++++++++++++++++--
- drivers/md/dm-verity-target.c | 26 ++++++++++++++++++++++--
- drivers/md/dm-verity.h        |  1 +
- 3 files changed, 61 insertions(+), 4 deletions(-)
+                        Geert
 
-diff --git a/drivers/md/dm-crypt.c b/drivers/md/dm-crypt.c
-index aa6bb5b4704b..a60d91d02e28 100644
---- a/drivers/md/dm-crypt.c
-+++ b/drivers/md/dm-crypt.c
-@@ -75,8 +75,10 @@ struct dm_crypt_io {
- 	struct bio *base_bio;
- 	u8 *integrity_metadata;
- 	bool integrity_metadata_from_pool:1;
-+	bool in_tasklet:1;
- 
- 	struct work_struct work;
-+	struct tasklet_struct tasklet;
- 
- 	struct convert_context ctx;
- 
-@@ -1775,6 +1777,7 @@ static void crypt_io_init(struct dm_crypt_io *io, struct crypt_config *cc,
- 	io->ctx.r.req = NULL;
- 	io->integrity_metadata = NULL;
- 	io->integrity_metadata_from_pool = false;
-+	io->in_tasklet = false;
- 	atomic_set(&io->io_pending, 0);
- }
- 
-@@ -1785,6 +1788,13 @@ static void crypt_inc_pending(struct dm_crypt_io *io)
- 
- static void kcryptd_queue_read(struct dm_crypt_io *io);
- 
-+static void kcryptd_io_bio_endio(struct work_struct *work)
-+{
-+	struct dm_crypt_io *io = container_of(work, struct dm_crypt_io, work);
-+
-+	bio_endio(io->base_bio);
-+}
-+
- /*
-  * One of the bios was finished. Check for completion of
-  * the whole request and correctly clean up the buffer.
-@@ -1817,6 +1827,20 @@ static void crypt_dec_pending(struct dm_crypt_io *io)
- 
- 	base_bio->bi_status = error;
- 
-+	/*
-+	 * If we are running this function from our tasklet,
-+	 * we can't call bio_endio() here, because it will call
-+	 * clone_endio() from dm.c, which in turn will
-+	 * free the current struct dm_crypt_io structure with
-+	 * our tasklet. In this case we need to delay bio_endio()
-+	 * execution to after the tasklet is done and dequeued.
-+	 */
-+	if (io->in_tasklet) {
-+		INIT_WORK(&io->work, kcryptd_io_bio_endio);
-+		queue_work(cc->io_queue, &io->work);
-+		return;
-+	}
-+
- 	bio_endio(base_bio);
- }
- 
-@@ -2291,6 +2315,11 @@ static void kcryptd_crypt(struct work_struct *work)
- 		kcryptd_crypt_write_convert(io);
- }
- 
-+static void kcryptd_crypt_tasklet(unsigned long work)
-+{
-+	kcryptd_crypt((struct work_struct *)work);
-+}
-+
- static void kcryptd_queue_crypt(struct dm_crypt_io *io)
- {
- 	struct crypt_config *cc = io->cc;
-@@ -2302,10 +2331,15 @@ static void kcryptd_queue_crypt(struct dm_crypt_io *io)
- 		 * irqs_disabled(): the kernel may run some IO completion from the idle thread, but
- 		 * it is being executed with irqs disabled.
- 		 */
--		if (!(in_hardirq() || irqs_disabled())) {
--			kcryptd_crypt(&io->work);
-+		if (in_hardirq() || irqs_disabled()) {
-+			io->in_tasklet = true;
-+			tasklet_init(&io->tasklet, kcryptd_crypt_tasklet, (unsigned long)&io->work);
-+			tasklet_schedule(&io->tasklet);
- 			return;
- 		}
-+
-+		kcryptd_crypt(&io->work);
-+		return;
- 	}
- 
- 	INIT_WORK(&io->work, kcryptd_crypt);
-diff --git a/drivers/md/dm-verity-target.c b/drivers/md/dm-verity-target.c
-index 49e4a35d7019..0bb126eadc0d 100644
---- a/drivers/md/dm-verity-target.c
-+++ b/drivers/md/dm-verity-target.c
-@@ -701,6 +701,23 @@ static void verity_work(struct work_struct *w)
- 	verity_finish_io(io, errno_to_blk_status(verity_verify_io(io)));
- }
- 
-+static void verity_tasklet(unsigned long data)
-+{
-+	struct dm_verity_io *io = (struct dm_verity_io *)data;
-+	int err;
-+
-+	io->in_tasklet = true;
-+	err = verity_verify_io(io);
-+	if (err == -EAGAIN || err == -ENOMEM) {
-+		/* fallback to retrying with work-queue */
-+		INIT_WORK(&io->work, verity_work);
-+		queue_work(io->v->verify_wq, &io->work);
-+		return;
-+	}
-+
-+	verity_finish_io(io, errno_to_blk_status(err));
-+}
-+
- static void verity_end_io(struct bio *bio)
- {
- 	struct dm_verity_io *io = bio->bi_private;
-@@ -713,8 +730,13 @@ static void verity_end_io(struct bio *bio)
- 		return;
- 	}
- 
--	INIT_WORK(&io->work, verity_work);
--	queue_work(io->v->verify_wq, &io->work);
-+	if (static_branch_unlikely(&use_tasklet_enabled) && io->v->use_tasklet) {
-+		tasklet_init(&io->tasklet, verity_tasklet, (unsigned long)io);
-+		tasklet_schedule(&io->tasklet);
-+	} else {
-+		INIT_WORK(&io->work, verity_work);
-+		queue_work(io->v->verify_wq, &io->work);
-+	}
- }
- 
- /*
-diff --git a/drivers/md/dm-verity.h b/drivers/md/dm-verity.h
-index db93a91169d5..7e495cc375b0 100644
---- a/drivers/md/dm-verity.h
-+++ b/drivers/md/dm-verity.h
-@@ -87,6 +87,7 @@ struct dm_verity_io {
- 	bool in_tasklet;
- 
- 	struct work_struct work;
-+	struct tasklet_struct tasklet;
- 
- 	char *recheck_buffer;
- 
--- 
-2.31.1
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
