@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD4D8A1062
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:35:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B92808A0E6B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:14:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F84F1C21113
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:35:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46664B23297
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300891474C4;
-	Thu, 11 Apr 2024 10:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BDF145B3E;
+	Thu, 11 Apr 2024 10:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hjiyj6q1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLxC7+WN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E326E657AE;
-	Thu, 11 Apr 2024 10:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA69145353;
+	Thu, 11 Apr 2024 10:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831583; cv=none; b=OFhsSL8YZcYHusQ2oVLCQ5CzVXjhmKDGK7YskuIrlIQS4i1cXMN1EeJhYE6lJabP3nbX6nO2fGdTelAypCj5quOF5XLTHbMNShMhSYj8WDfOOwbF5nAx/5G99f1Y5xXLxdIIoXlToqf6VOw5qIB2tAuGj3odpWS0xqwdJuFR958=
+	t=1712830463; cv=none; b=b4RKN0t0dgKNN6z+nac5vVNceB76Ev1Yo3JlJlL3XD26iVqMYXqCLMtZbBJr/1VM49uAkappESA9yY0iNpZUbQO+uqqf3AJe1bO5OTAIOiA59Kl9pr6VXEilGdEybDRigqEDgtUdS6G/vn6+Sbwf0tD6lko0fKUg2ooQC9qYZ3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831583; c=relaxed/simple;
-	bh=vFv24UePh+WOs7HBXqmlBz1SI2Ttdp0Y9TpXnybIkU8=;
+	s=arc-20240116; t=1712830463; c=relaxed/simple;
+	bh=OxX2KimLLp0ixnNHu+iB08B8JAxnc13jOuJveY6HL84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LCKHE3onfpqXzCTkEDxAtWWM4yd1Kq5L/XUJoY8Dr3X3a7BgIsagAuHHpvH9U8N6y6eqUo6cS7aAEqLwEHAVQEosXLLV+M+q3YkAgS450IDrGPFqhTDVGiU08Vd8wIRALkV0fSp5t/cG/OeL1lRffXj4cgIcfs/EPsJUgNer8jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hjiyj6q1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6904AC433C7;
-	Thu, 11 Apr 2024 10:33:02 +0000 (UTC)
+	 MIME-Version; b=LLw+O6U6eZ1/Mg5b81HjZgDUqNH1ze0Szyu09WnRQRELy9toZWJ4GIsTgjXKi+9DYJ5dKJrza8Cwr0c4CuDNy9/R5HVorVB0YiwpYUhVJgymnpXwAEXsgy6TwjqKypf2pZdu18PKPo4xkwO40DkrKcXqA0OSI4DDNjva5SnxwME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLxC7+WN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27CBFC433F1;
+	Thu, 11 Apr 2024 10:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831582;
-	bh=vFv24UePh+WOs7HBXqmlBz1SI2Ttdp0Y9TpXnybIkU8=;
+	s=korg; t=1712830463;
+	bh=OxX2KimLLp0ixnNHu+iB08B8JAxnc13jOuJveY6HL84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hjiyj6q1G+SW00d8NTR/WEIkE5nrNsDv2V2uYqJy9/t6GU16xv24vwIxZH+ZpZT39
-	 IkJChCbWyw+90dpoHxglMNjJAtvJnyDJ3BKDOTkAtKWtTF5ncUAZESxp+tB/fT8x1P
-	 sirvXgXXtWBroxPKg1Pk3DP+4a8UrmY7NbI4oWGM=
+	b=TLxC7+WNuWYmVmsBN/D6JgYFrx748H/oBF/ciSHoMvljjJJkRsEU0sRgF8nKtbnlF
+	 p0/rSCwfUfwiXKyD2Usv8Kri4KDl2GrDbaGi2thOui922z7HfSQULPKheCKB2GtU27
+	 wYa11J3JgyT0+VgnOBZerS4He6Z1zwLq6PTJDKGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Mladek <pmladek@suse.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 056/294] printk/console: Split out code that enables default console
-Date: Thu, 11 Apr 2024 11:53:39 +0200
-Message-ID: <20240411095437.327396352@linuxfoundation.org>
+Subject: [PATCH 5.4 011/215] smack: Handle SMACK64TRANSMUTE in smack_inode_setsecurity()
+Date: Thu, 11 Apr 2024 11:53:40 +0200
+Message-ID: <20240411095425.221267968@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Mladek <pmladek@suse.com>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-[ Upstream commit ed758b30d541e9bf713cd58612a4414e57dc6d73 ]
+[ Upstream commit ac02f007d64eb2769d0bde742aac4d7a5fc6e8a5 ]
 
-Put the code enabling a console by default into a separate function
-called try_enable_default_console().
+If the SMACK64TRANSMUTE xattr is provided, and the inode is a directory,
+update the in-memory inode flags by setting SMK_INODE_TRANSMUTE.
 
-Rename try_enable_new_console() to try_enable_preferred_console() to
-make the purpose of the different variants more clear.
-
-It is a code refactoring without any functional change.
-
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Link: https://lore.kernel.org/r/20211122132649.12737-2-pmladek@suse.com
-Stable-dep-of: 801410b26a0e ("serial: Lock console when calling into driver before registration")
+Cc: stable@vger.kernel.org
+Fixes: 5c6d1125f8db ("Smack: Transmute labels on specified directories") # v2.6.38.x
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/printk/printk.c | 38 +++++++++++++++++++++++---------------
- 1 file changed, 23 insertions(+), 15 deletions(-)
+ security/smack/smack_lsm.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 17a310dcb6d96..632d6d5dcfa70 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2693,7 +2693,8 @@ early_param("keep_bootcon", keep_bootcon_setup);
-  * Care need to be taken with consoles that are statically
-  * enabled such as netconsole
-  */
--static int try_enable_new_console(struct console *newcon, bool user_specified)
-+static int try_enable_preferred_console(struct console *newcon,
-+					bool user_specified)
- {
- 	struct console_cmdline *c;
- 	int i, err;
-@@ -2741,6 +2742,23 @@ static int try_enable_new_console(struct console *newcon, bool user_specified)
- 	return -ENOENT;
- }
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 65743be5b30f5..072ce1ef6efb7 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -2717,6 +2717,15 @@ static int smack_inode_setsecurity(struct inode *inode, const char *name,
+ 	if (value == NULL || size > SMK_LONGLABEL || size == 0)
+ 		return -EINVAL;
  
-+/* Try to enable the console unconditionally */
-+static void try_enable_default_console(struct console *newcon)
-+{
-+	if (newcon->index < 0)
-+		newcon->index = 0;
++	if (strcmp(name, XATTR_SMACK_TRANSMUTE) == 0) {
++		if (!S_ISDIR(inode->i_mode) || size != TRANS_TRUE_SIZE ||
++		    strncmp(value, TRANS_TRUE, TRANS_TRUE_SIZE) != 0)
++			return -EINVAL;
 +
-+	if (newcon->setup && newcon->setup(newcon, NULL) != 0)
-+		return;
-+
-+	newcon->flags |= CON_ENABLED;
-+
-+	if (newcon->device) {
-+		newcon->flags |= CON_CONSDEV;
-+		has_preferred_console = true;
++		nsp->smk_flags |= SMK_INODE_TRANSMUTE;
++		return 0;
 +	}
-+}
 +
- /*
-  * The console driver calls this routine during kernel initialization
-  * to register the console printing procedure with printk() and to
-@@ -2797,25 +2815,15 @@ void register_console(struct console *newcon)
- 	 *	didn't select a console we take the first one
- 	 *	that registers here.
- 	 */
--	if (!has_preferred_console) {
--		if (newcon->index < 0)
--			newcon->index = 0;
--		if (newcon->setup == NULL ||
--		    newcon->setup(newcon, NULL) == 0) {
--			newcon->flags |= CON_ENABLED;
--			if (newcon->device) {
--				newcon->flags |= CON_CONSDEV;
--				has_preferred_console = true;
--			}
--		}
--	}
-+	if (!has_preferred_console)
-+		try_enable_default_console(newcon);
- 
- 	/* See if this console matches one we selected on the command line */
--	err = try_enable_new_console(newcon, true);
-+	err = try_enable_preferred_console(newcon, true);
- 
- 	/* If not, try to match against the platform default(s) */
- 	if (err == -ENOENT)
--		err = try_enable_new_console(newcon, false);
-+		err = try_enable_preferred_console(newcon, false);
- 
- 	/* printk() messages are not printed to the Braille console. */
- 	if (err || newcon->flags & CON_BRL)
+ 	skp = smk_import_entry(value, size);
+ 	if (IS_ERR(skp))
+ 		return PTR_ERR(skp);
 -- 
 2.43.0
 
