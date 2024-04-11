@@ -1,121 +1,98 @@
-Return-Path: <stable+bounces-39226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5596F8A204A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 22:35:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4CBE8A204F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 22:37:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 101392828C7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 20:35:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41EC0B215F7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 20:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 456B718635;
-	Thu, 11 Apr 2024 20:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F87182B3;
+	Thu, 11 Apr 2024 20:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="slQfO4Yu"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="mp6BwimZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A3029417;
-	Thu, 11 Apr 2024 20:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269AF18635;
+	Thu, 11 Apr 2024 20:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712867693; cv=none; b=T3sMEgIHIcTI7bC8kzwVdKycOvKW2Y2/CVpC1tue/SkhaK/aiwz6Ag7TPoU89djrshLXFvKAhyNqjJa2v49NxLgoPP6N7lC6sAR9HV0+trjj93yzBXPLJRWcwQ6eFidf3dEOCfrMST/8/Sj4fX0vfA1rwln3Gt/BsS55sGlPXaE=
+	t=1712867821; cv=none; b=B04Gti6go0G76GRrgIK4BR1mrAfnhSer2YTyr1HiN8G67wm+IScMEquYKUUL9HH1scky/avgJbgGMzhTYKCS87oVRDms/p/4mG0bB9T09r0c0rG5XctKOHupQePSlTBXstNV9u4M6FYBz2xsuD6MLuZUY9hmKC+bJ8wZvqnMbZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712867693; c=relaxed/simple;
-	bh=9I3BW9al1fnQ0MtkczhNQoRl2kehBKmTZx4LxVoh0cQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IRlxFiV5iAZ26uI74smCxlIIN6C1pGt/hIxg3kVOhrpFCMLy7hGfCW2t6jSMcBCzXfg4r1nANgsDquvABV1Tzm7/CmCkDvyS4HhxgMJA5itVsPP+dPkd2DqxYM6IumMhlGEUex75RjMKy23ZcEf+cGh3sRhxhV9LXaAZGHroO0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=slQfO4Yu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFD8C072AA;
-	Thu, 11 Apr 2024 20:34:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712867692;
-	bh=9I3BW9al1fnQ0MtkczhNQoRl2kehBKmTZx4LxVoh0cQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=slQfO4YuWHa5Kq1Dp9bOG+CYajJ0A8owzrfeBgxdPAjvZLlJGWQF0nCkyF6hbdrAA
-	 U6oHGUoSj+rTAvCp5iywDP3kj64mXITzC0KOYKjGJHrC0JtPTcYApUcEjX18TiIHCm
-	 1nsF7rzWwkOxCZNGzC6U53V8aFAZbblD8KRo0KMuOCCKA9h+iVQ2CDu9n5bM71dHk7
-	 5yDx1iFXzuOvL1VHz3mv4JQFiT3D4tWoHe8peAV2aghVefoAjZQk4GJrONS6M42qXl
-	 proNfIXgjsGvEp/SpZdQmvMMCpgvnWUIYNBLykY7I1LW2Om7aAJkbSwhNEBsZPgSHZ
-	 oxZPqk4QJSgbQ==
-Date: Thu, 11 Apr 2024 15:34:49 -0500
-From: Rob Herring <robh@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Herve Codina <herve.codina@bootlin.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Lizhi Hou <lizhi.hou@amd.com>,
-	Max Zhen <max.zhen@amd.com>, Sonal Santan <sonal.santan@amd.com>,
-	Stefano Stabellini <stefano.stabellini@xilinx.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] PCI: of: Attach created of_node to existing device
-Message-ID: <20240411203449.GA2641-robh@kernel.org>
-References: <20240325153919.199337-1-herve.codina@bootlin.com>
- <20240325153919.199337-3-herve.codina@bootlin.com>
- <2024041142-applause-spearman-bd38@gregkh>
+	s=arc-20240116; t=1712867821; c=relaxed/simple;
+	bh=dmMdDLN3YgL1qMEqV22WwccWKGPvTDnUyQtKaq9KA84=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ho0rW9wGaEDJeN7Ok1W45pYLDs8SAD2WQnwz/n3/VcYGdtUZqVQaCReLd0jhj/akxMSSTb9wgswcvkPHjpBo4UwpSZ0+tS2pnuMHlhh4kt8qKSrJ4hRaJSoCKmMjxf/VzgPyLY4B0Ul9e0TXCEdcvWdDy/ghP8bA+EaNtDXqIeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=mp6BwimZ; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1712867792; x=1713472592; i=rwarsow@gmx.de;
+	bh=dmMdDLN3YgL1qMEqV22WwccWKGPvTDnUyQtKaq9KA84=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=mp6BwimZqRGf6PmrHL+K1TTIDteZ4vNehMgc2V6VnegPlyQc7WOClZazn1lJ6YOI
+	 RGxgI/7ksEdmhylbs4WVdy0AlQsZuJkt30eZO2wwUTsDLZDh/9W+hPpGrxS5/BucH
+	 uziqi75xXfEYVJo8tgYM/kJW5DWK/q4Ejmx205CHOhY/4Xv/eQBpqx9WZWLI+JXXw
+	 8Dt87rRZKv+mciES3rFuxsW00c7WKYdY5/tS3mcy1/t9pgByBfUBmh2o+P1p1CGiC
+	 w8MyZf8eQ2VvUzMqkLmEVZQzdEGyzTm8mOvSn6tfC67+3yzxoWVcx31Akmff1G/mI
+	 N5OBYZYinJG9nazLUA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.32.118]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MgesG-1sOrjI1YXU-00h4IL; Thu, 11
+ Apr 2024 22:36:32 +0200
+Message-ID: <0cd9f4dc-3d11-4415-a818-f86f3cc90be1@gmx.de>
+Date: Thu, 11 Apr 2024 22:36:30 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024041142-applause-spearman-bd38@gregkh>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.8 000/143] 6.8.6-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240411095420.903937140@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:W12SHJDXLS1ndPqcvEpZJieiHmxdRjGQWpVeZ06B8HJbZQVjlZj
+ JdMAdOAVT7pWp4s/NvJsQFXjRrPGf07z926lQV7pioiRsvDiOLEjkwJSQRKqk0zu2U3G9Ft
+ boEPqmWAwqYl80AkKFyrnV6s8n1vPdISR6+7PepLvoZVpoZQGkFRcccGcvvcqHqjLpvY0OR
+ TaOhA3D7tbZD1iKlzcjtg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:OSNZYD1ohGk=;0/NShLD+wGhb/OqkpvOpte4DRhS
+ nhUidjn8dt7jclpxpoRZ2aKA+eD8KsIvA2qTGknm3mjSvYPYi22gmhiinGBFwBguL7cNhGtng
+ PkW6f3h9Z336uX4l0ymVcx5oos5RU+QsOvA2Bh+Lamy8Gm0qi0y7xmUEIq1VSWVcU3EyaqwGM
+ y0CEj2faTsaO7L4dySlT5h5Minx7A7lFK1dkAe0y8+cwkAVAgo7WY+IpNcl+822JdCw6E3DZR
+ zn7IyTX88fcErfSnKbuxMh2kTBDBL1FVmrBYrmh+jNKHxB7Wl0YfMynHPjqV3uB+QbB4dpPNY
+ 27w5IMkZSfjyUNzqF58BJP5Ovs3VplEKHes1YmcNDPEccchn8AhumHi9IAiAoT4CQOKWe+4GQ
+ ttHYzoEiWK9WtBStnart4vn5v2jNgBJuUUriPg0/83cYn1QKXjj9Hdwe+RPFufjew7E7d/5HW
+ c8S8pnKDzl4eYBTudOCVZUl/Og1tLBNKkiy6FyxoravEfN0P2WcVINISrx0NWF2kLZD7n/UEG
+ v4N7YZz6/UiLSWII6QK+DljUUWoSQTNuZXK/+Ougg48crX+P4x6rIrFp+DmrMPReE2kN1HN+2
+ Ae1Rv6xXCX5UTbq7yn/P3uy46NFnGt2DSLCnksa1Wb/CBHcIeSt3Chcp80zCsww3/5MD8/S5R
+ a8eNMZxtARGqUoI11eD3WDt12710O3aomrxVK9ZmKKU+xPKuZEmVxwIPQP7OknEtoq9Yghtdn
+ WdJuzBprX243NfET0lkKZ2cdLnoFOwP54k3KKtvz0tH7/VmLSIN51d9T44wdrPQFmbaQc/3hR
+ N7tyhaxCfgJ783BZv9KAnFinyWorYML7hRkS5kx/HYfcs=
 
-On Thu, Apr 11, 2024 at 03:23:55PM +0200, Greg Kroah-Hartman wrote:
-> On Mon, Mar 25, 2024 at 04:39:15PM +0100, Herve Codina wrote:
-> > The commit 407d1a51921e ("PCI: Create device tree node for bridge")
-> > creates of_node for PCI devices.
-> > 
-> > During the insertion handling of these new DT nodes done by of_platform,
-> > new devices (struct device) are created. For each PCI devices a struct
-> > device is already present (created and handled by the PCI core).
-> > Having a second struct device to represent the exact same PCI device is
-> > not correct.
-> > 
-> > On the of_node creation:
-> > - tell the of_platform that there is no need to create a device for this
-> >   node (OF_POPULATED flag),
-> > - link this newly created of_node to the already present device,
-> > - tell fwnode that the device attached to this of_node is ready using
-> >   fwnode_dev_initialized().
-> > 
-> > With this fix, the of_node are available in the sysfs device tree:
-> > /sys/devices/platform/soc/d0070000.pcie/
-> > + of_node -> .../devicetree/base/soc/pcie@d0070000
-> > + pci0000:00
-> >   + 0000:00:00.0
-> >     + of_node -> .../devicetree/base/soc/pcie@d0070000/pci@0,0
-> >     + 0000:01:00.0
-> >       + of_node -> .../devicetree/base/soc/pcie@d0070000/pci@0,0/dev@0,0
-> > 
-> > On the of_node removal, revert the operations.
-> > 
-> > Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> 
-> I need an ack from the maintainer here before I can take this.
+Hi Greg
 
-Correct me if I'm wrong, but having the of_node sysfs link populated or 
-changed after device_add is a race we lost. Userspace is notified about 
-the new device and then some time later the symlink shows up.
+*no* regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-However, it so far is not appearing that there's an easy way to 
-reshuffle order of things to fix this.
+Thanks
 
-Maybe the short term (and stable) answer just don't create any of_node 
-symlinks on these dynamically created nodes.
-
-Rob
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
