@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DAED8A1159
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB138A0FF4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF8A31C22BA2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 548771F297BD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED0B146A72;
-	Thu, 11 Apr 2024 10:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0766146A8C;
+	Thu, 11 Apr 2024 10:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHBPYm2p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2JD/8+mk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90BE2EAE5;
-	Thu, 11 Apr 2024 10:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A86143C76;
+	Thu, 11 Apr 2024 10:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832189; cv=none; b=pE4fPTFfmzPIofC75HLOsHy0KnOCitfr5LhBD3gms1UuDKhg0JkZRk7OZoqsElxKoZQyOQyhS3zed2lX2i0m5g8bA2sXGq5g6XwPHjBSJ+zelCk0iwkTvTtO11UX6/NzUyBu1QKBNoDntdZw8JoSMo51MT1iV7iZLMIU0Nf+jKM=
+	t=1712831357; cv=none; b=JvoUsF2MsgZKURJdebw66VHZwx3deNA3RXse8mN2KdY42ontTXVylfUrxf+M2VQ0Vcpt/CC9i97FqVY81VxavFsl6CBYPah28i9P4HkOsUrpU1YuBZ4Bk10pzKthfu6tvgT1lSlpkjd0XgYmjDlnyCx3CTW1JLCwiCsxgQ3Nd5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832189; c=relaxed/simple;
-	bh=KMUTfiKxC85lXeCSWJ+iMGBSkkOZ8FIjjkMjmt3/Pss=;
+	s=arc-20240116; t=1712831357; c=relaxed/simple;
+	bh=9k7rM3AsNn1p2FU6Fdx8cP8a9+FJG0romYQ8Pu8C8tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUPYH1wcMjUOA3Co+HBYNg+DSLwk7aaMwiQvXV3gzJtM31U/kf6dH/wBLc0J1Bf8PwAeuoPHQt3P0pQjnBDXlfoJLRr3j3nyItljRFslm2JMWVzsH6VXYR3PLUq2lJilMrzWMzKuSW6aZtfePG2s/M4n9fRmJPu8ChRSbzeV78s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHBPYm2p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01DEC433F1;
-	Thu, 11 Apr 2024 10:43:08 +0000 (UTC)
+	 MIME-Version; b=YIS1CfPbO6ycXVXiDcbmkBRyenybC9fjT4PuCH5p58W8UDnuahTtRCWIIe2b2TwsjHq3i1nhKT9mn4R80SObDjLoK0IzAMK1H+HfRogIRGIt/9ZR5WvUSvoCRw/8CCrIH7or53okWLS79i8wJU2I5v5aKFlravIOQxdeqYkbMtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2JD/8+mk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11F25C433C7;
+	Thu, 11 Apr 2024 10:29:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832189;
-	bh=KMUTfiKxC85lXeCSWJ+iMGBSkkOZ8FIjjkMjmt3/Pss=;
+	s=korg; t=1712831357;
+	bh=9k7rM3AsNn1p2FU6Fdx8cP8a9+FJG0romYQ8Pu8C8tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZHBPYm2peWDNDZS9ZvO6pNrOUGfUItkej5mYnZojX7TOac0g9NoLp05VhVhFp/MVz
-	 3cRfR1EAOs4wjyttFtsZHxM4aq5+yD+1oJZouQPjy173/zIA5Hlmi9YDqGE7n7FglE
-	 KzFA0VTAxdAO/z1d45ZEB01Zs7EwfTwl2aG2wRtw=
+	b=2JD/8+mkqz3MpKlGs5Rbep+JG7PbWuLbp7By55xw6QFkVBtCJ1mlWR4qq0Cl8E7+5
+	 9OvchsAvVSG4tga1iwhhV77N2AmZoDd7kdCQN5a+2Dwg0IwtgfULYVnvEbvv4iuVit
+	 FtAcnjotf4taey0NKV0swlNGcIiB58qXqgAXZ8PI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Mitch Cooley <m.cooley.198@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 258/294] Input: synaptics-rmi4 - fail probing if memory allocation for "phys" fails
+Subject: [PATCH 6.6 094/114] ASoC: amd: yc: Fix non-functional mic on ASUS M7600RE
 Date: Thu, 11 Apr 2024 11:57:01 +0200
-Message-ID: <20240411095443.331024277@linuxfoundation.org>
+Message-ID: <20240411095419.728830732@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: M Cooley <m.cooley.198@gmail.com>
 
-[ Upstream commit bc4996184d56cfaf56d3811ac2680c8a0e2af56e ]
+[ Upstream commit db185362fca554b201e2c62beb15a02bb39a064b ]
 
-While input core can work with input->phys set to NULL userspace might
-depend on it, so better fail probing if allocation fails. The system must
-be in a pretty bad shape for it to happen anyway.
+The ASUS M7600RE (Vivobook Pro 16X OLED) needs a quirks-table entry for the
+internal microphone to function properly.
 
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Link: https://lore.kernel.org/r/20240117073124.143636-1-chentao@kylinos.cn
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Mitch Cooley <m.cooley.198@gmail.com>
+
+Link: https://msgid.link/r/CALijGznExWW4fujNWwMzmn_K=wo96sGzV_2VkT7NjvEUdkg7Gw@mail.gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/rmi4/rmi_driver.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
-index 258d5fe3d395c..aa32371f04af6 100644
---- a/drivers/input/rmi4/rmi_driver.c
-+++ b/drivers/input/rmi4/rmi_driver.c
-@@ -1196,7 +1196,11 @@ static int rmi_driver_probe(struct device *dev)
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 1d1452c29ed02..69c68d8e7a6b5 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -311,6 +311,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "E1504FA"),
  		}
- 		rmi_driver_set_input_params(rmi_dev, data->input);
- 		data->input->phys = devm_kasprintf(dev, GFP_KERNEL,
--						"%s/input0", dev_name(dev));
-+						   "%s/input0", dev_name(dev));
-+		if (!data->input->phys) {
-+			retval = -ENOMEM;
-+			goto err;
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "M7600RE"),
 +		}
- 	}
- 
- 	retval = rmi_init_functions(data);
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.43.0
 
