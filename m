@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C588A0FDE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A5C28A118E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7978B1F2939A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BB541C23C9E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873BE143C76;
-	Thu, 11 Apr 2024 10:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C7D146019;
+	Thu, 11 Apr 2024 10:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2sgeoiK3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1trUjIz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4737D146D49;
-	Thu, 11 Apr 2024 10:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F3E142624;
+	Thu, 11 Apr 2024 10:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831296; cv=none; b=eds8KMJuNLwFB8yxRZjikD3Iy7kbGBsmUsXla0tR800ORfFxQfEUWRK68/AM0hzrJlfPRh/f2Iz1FO5+/gQvKAtbHcmn2aU/fWKNDpPAna5u2FUu3IJsi725vFdVbw4BHVadPXvsyRTPLwj02fGT3/mZSbebCz8+FpAnaggc8QM=
+	t=1712832322; cv=none; b=ruq2o7h8Tro8KO8Q4XrbG5TdJyIDSStnfyW36EqcOS774qiGEosViZ+wiRacedymXb5pZ624y4MXoSdvH3qi/4yV3ov36cO6yvkAHA/cGZKegjplQ8NLE7W+wwk8d1tK7Ro/b/tWIe6gdUbfqR7NrrAS3qaZD53EOaBZx+lxW9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831296; c=relaxed/simple;
-	bh=a1ls2DbMjblVprY2ZqLvVlgjyNrxEju/XEkGJnD1F4w=;
+	s=arc-20240116; t=1712832322; c=relaxed/simple;
+	bh=qf3UrMTxpd7ot6qJlRLwENivF4LmPxNkzuxPiombpWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1nrX9kwJt8ebzpYZ1agNY26cMQVs76G32Ce5LGrl+oUheqw19+LsecFSyQKrK7FUDPKIb5cvZ9FA+EOPcEsF51aTMKFBcGzrVLCxwd+4F/eLzVd0iE0eXsHFIHMVUiEs5671bMCXZK+qF97bSEE1IVpdzRanBqsuFEWM/tcx+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2sgeoiK3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B726C433F1;
-	Thu, 11 Apr 2024 10:28:15 +0000 (UTC)
+	 MIME-Version; b=uXh51rzeY6dRG8wMATU7QljiduQXLMWkGpc2eP0uxBSu09Wa640L722Tk0rlcDPoYZcXQPUAuVBBxXqdVsGlR7AoGbXUmd4lc5ksUMq2CdIsQq9f5SKfKGAq27DwwynepYQv60cTT1zUVRHm0a1J4XFHWF0mi7gKe7kdAjdBkaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1trUjIz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CD6C433F1;
+	Thu, 11 Apr 2024 10:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831295;
-	bh=a1ls2DbMjblVprY2ZqLvVlgjyNrxEju/XEkGJnD1F4w=;
+	s=korg; t=1712832321;
+	bh=qf3UrMTxpd7ot6qJlRLwENivF4LmPxNkzuxPiombpWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2sgeoiK3vw3zEpUzIwG9m81q+skZ3T2V83RfVErwqUdSiWmlPdKQnrsTeMDSrUmoL
-	 qdLr1sV3c5o+B/eQ2AJnsuTQQ2LUsRWS/2yelnsMcO5XzZICqas0Q3vq35160DjDBn
-	 zuuAzja328hJhsEBGBTr7ASRYK096x2JbxdcOF9I=
+	b=P1trUjIz0hUtGNS0JnHkcrSvm95jcZjwddAEpmbUiTAzbTh+QS8ueuuqEISsVtN4K
+	 jxpvGvrgNijduFCjaIoGFbY+CTQwOVfeu4r/tb8M4A7RVO+J9IS6ZtKf67cDsJapgh
+	 OESv4Q17RaGJYN7M36L7MCPk5yfb5zDlwXzua510=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junhao He <hejunhao3@huawei.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Will Deacon <will@kernel.org>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/114] drivers/perf: hisi: Enable HiSilicon Erratum 162700402 quirk for HIP09
+Subject: [PATCH 6.1 10/83] arm64: dts: rockchip: fix rk3328 hdmi ports node
 Date: Thu, 11 Apr 2024 11:56:42 +0200
-Message-ID: <20240411095419.151544551@linuxfoundation.org>
+Message-ID: <20240411095412.987405749@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junhao He <hejunhao3@huawei.com>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit e10b6976f6b9afdf3564f88c851e42d139bb19c0 ]
+[ Upstream commit 1d00ba4700d1e0f88ae70d028d2e17e39078fa1c ]
 
-HiSilicon UC PMU v2 suffers the erratum 162700402 that the PMU counter
-cannot be set due to the lack of clock under power saving mode. This will
-lead to error or inaccurate counts. The clock can be enabled by the PMU
-global enabling control.
+Fix rk3328 hdmi ports node so that it matches the
+rockchip,dw-hdmi.yaml binding.
 
-This patch tries to fix this by set the UC PMU enable before set event
-period to turn on the clock, and then restore the UC PMU configuration.
-The counter register can hold its value without a clock.
-
-Signed-off-by: Junhao He <hejunhao3@huawei.com>
-Reviewed-by: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20240227125231.53127-1-hejunhao3@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/e5dea3b7-bf84-4474-9530-cc2da3c41104@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/hisilicon/hisi_uncore_uc_pmu.c | 42 ++++++++++++++++++++-
- 1 file changed, 41 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3328.dtsi | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/perf/hisilicon/hisi_uncore_uc_pmu.c b/drivers/perf/hisilicon/hisi_uncore_uc_pmu.c
-index 636fb79647c8c..481dcc9e8fbf8 100644
---- a/drivers/perf/hisilicon/hisi_uncore_uc_pmu.c
-+++ b/drivers/perf/hisilicon/hisi_uncore_uc_pmu.c
-@@ -287,12 +287,52 @@ static u64 hisi_uc_pmu_read_counter(struct hisi_pmu *uc_pmu,
- 	return readq(uc_pmu->base + HISI_UC_CNTR_REGn(hwc->idx));
- }
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+index 905a50aa5dc38..d42846efff2fe 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+@@ -741,11 +741,20 @@ hdmi: hdmi@ff3c0000 {
+ 		status = "disabled";
  
--static void hisi_uc_pmu_write_counter(struct hisi_pmu *uc_pmu,
-+static bool hisi_uc_pmu_get_glb_en_state(struct hisi_pmu *uc_pmu)
-+{
-+	u32 val;
+ 		ports {
+-			hdmi_in: port {
++			#address-cells = <1>;
++			#size-cells = <0>;
 +
-+	val = readl(uc_pmu->base + HISI_UC_EVENT_CTRL_REG);
-+	return !!FIELD_GET(HISI_UC_EVENT_GLB_EN, val);
-+}
++			hdmi_in: port@0 {
++				reg = <0>;
 +
-+static void hisi_uc_pmu_write_counter_normal(struct hisi_pmu *uc_pmu,
- 				      struct hw_perf_event *hwc, u64 val)
- {
- 	writeq(val, uc_pmu->base + HISI_UC_CNTR_REGn(hwc->idx));
- }
+ 				hdmi_in_vop: endpoint {
+ 					remote-endpoint = <&vop_out_hdmi>;
+ 				};
+ 			};
++
++			hdmi_out: port@1 {
++				reg = <1>;
++			};
+ 		};
+ 	};
  
-+static void hisi_uc_pmu_write_counter_quirk_v2(struct hisi_pmu *uc_pmu,
-+				      struct hw_perf_event *hwc, u64 val)
-+{
-+	hisi_uc_pmu_start_counters(uc_pmu);
-+	hisi_uc_pmu_write_counter_normal(uc_pmu, hwc, val);
-+	hisi_uc_pmu_stop_counters(uc_pmu);
-+}
-+
-+static void hisi_uc_pmu_write_counter(struct hisi_pmu *uc_pmu,
-+				      struct hw_perf_event *hwc, u64 val)
-+{
-+	bool enable = hisi_uc_pmu_get_glb_en_state(uc_pmu);
-+	bool erratum = uc_pmu->identifier == HISI_PMU_V2;
-+
-+	/*
-+	 * HiSilicon UC PMU v2 suffers the erratum 162700402 that the
-+	 * PMU counter cannot be set due to the lack of clock under power
-+	 * saving mode. This will lead to error or inaccurate counts.
-+	 * The clock can be enabled by the PMU global enabling control.
-+	 * The irq handler and pmu_start() will call the function to set
-+	 * period. If the function under irq context, the PMU has been
-+	 * enabled therefore we set counter directly. Other situations
-+	 * the PMU is disabled, we need to enable it to turn on the
-+	 * counter clock to set period, and then restore PMU enable
-+	 * status, the counter can hold its value without a clock.
-+	 */
-+	if (enable || !erratum)
-+		hisi_uc_pmu_write_counter_normal(uc_pmu, hwc, val);
-+	else
-+		hisi_uc_pmu_write_counter_quirk_v2(uc_pmu, hwc, val);
-+}
-+
- static void hisi_uc_pmu_enable_counter_int(struct hisi_pmu *uc_pmu,
- 					   struct hw_perf_event *hwc)
- {
 -- 
 2.43.0
 
