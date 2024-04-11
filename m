@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-38309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E02EA8A0DF6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 819CF8A0D56
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D51E1C21E3B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B23361C2225A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D755145B13;
-	Thu, 11 Apr 2024 10:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DBF14659E;
+	Thu, 11 Apr 2024 10:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTAmlzhR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmUY8hLo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3EC1F5FA;
-	Thu, 11 Apr 2024 10:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524E2146586;
+	Thu, 11 Apr 2024 10:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830176; cv=none; b=U+Jn+QQpc8DpMBuRLZ92GwD5jwwNVbkW0OUOLYIRscey7llCghpgBxRNeaL9/niXFull8msO4YwpQNE8ywPABajQwLaZTpxKa4xezyS8DSjucP2sxgXcXexbOZxsBKyS6EsLW5/VdYXw6Pcav+uFnmUMVUA/rKLBFB5A3/nV0co=
+	t=1712829770; cv=none; b=lbpfW0+a7mg2m/k5ji655v6Qcx3GomLdk5E3V7rRkf2jKGg3lSxml3S3MGEHlnSg8rcd2zzeeucgMW6YCpaI0k2LkzUm/JLf64Ds/Yu6V4l4QFjkJbtp+poBh6Y1QITp8Kr/sTzpIZ2Zb6rQvWbLye6klqX1YxZMEBcMR8zPZN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830176; c=relaxed/simple;
-	bh=64rRGBh0U7WPm7dJXLrCU7fWIyklEjCke5RsfDOjpD8=;
+	s=arc-20240116; t=1712829770; c=relaxed/simple;
+	bh=qSby5htH1b5p6cHfDUIYv8mCWaEmyoHDFm+a8zpdIq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GduoG4MiR868x3z89m3OatRL3lwbUgsv7kNLBRNaDQj9955f1WuznOj76UFTGKqoYrurpwwRYj4+KHUbzlY8dGSqh0iucFGSdWg9dxB3zxfCEkMeuB+AydqaUq5Ak41rFdSUYVmjdY7jXizBdVZdv8NcPAu9Bsv2mS3fSq+n8II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTAmlzhR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A53AC433C7;
-	Thu, 11 Apr 2024 10:09:34 +0000 (UTC)
+	 MIME-Version; b=cAE/iwM0oUEPVOBOZti+AxjAGfIfrZXIf2btdTb/JQ0y64nZX7/ky3JvaN14kCosklIADqItzHEPtGVVpX5SUN363PHSpU4dC1AEKDbXZqzNmk90+yCuqixrDhdPOGs/hH4Rd024wjDsWYa2S0q1OmjjRqzzU3s7JEyD7ZU9f8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmUY8hLo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89BFC433F1;
+	Thu, 11 Apr 2024 10:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830175;
-	bh=64rRGBh0U7WPm7dJXLrCU7fWIyklEjCke5RsfDOjpD8=;
+	s=korg; t=1712829770;
+	bh=qSby5htH1b5p6cHfDUIYv8mCWaEmyoHDFm+a8zpdIq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HTAmlzhRkXyXAJSjGLc5E4GZzdEmDlJP3M/4QvTBv6KcpbhEtlKHdgdDQWL+Ki7KU
-	 vATz2FjmE22KEG2rur80eWTnSm9Zacdy+eEIvBWaJaRdUja3qCu+OOgVa/eqTIHzb7
-	 toeKThKi+7RHreVgAqQNPYAHeGssOzV1NSEiyMc4=
+	b=GmUY8hLo2iqDcQHB7rUhAz82XeK2aAt1LqTbvq3Gq/QTb9tUHRRiDkZbRd5n0K8MJ
+	 QVkpLWtAiyPV1osbRvIQkhV2wkl06Va+eNhi8DaxAa3xJyLGiVXub4CoTUrW+6RtvI
+	 Xv1rRQ7mZipl11M9KhGXOhRzT1BnOmTNRD+wreSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 053/143] netdev: let netlink core handle -EMSGSIZE errors
-Date: Thu, 11 Apr 2024 11:55:21 +0200
-Message-ID: <20240411095422.513084889@linuxfoundation.org>
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Siddh Raman Pant <code@siddh.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Genjian Zhang <zhanggenjian@kylinos.cn>,
+	syzbot+a8e049cd3abd342936b6@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 099/175] loop: Check for overflow while configuring loop
+Date: Thu, 11 Apr 2024 11:55:22 +0200
+Message-ID: <20240411095422.549754053@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,92 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Siddh Raman Pant <code@siddh.me>
 
-[ Upstream commit 0b11b1c5c320555483e8a94c44549db24c289987 ]
+[ Upstream commit c490a0b5a4f36da3918181a8acdc6991d967c5f3 ]
 
-Previous change added -EMSGSIZE handling to af_netlink, we don't
-have to hide these errors any longer.
+The userspace can configure a loop using an ioctl call, wherein
+a configuration of type loop_config is passed (see lo_ioctl()'s
+case on line 1550 of drivers/block/loop.c). This proceeds to call
+loop_configure() which in turn calls loop_set_status_from_info()
+(see line 1050 of loop.c), passing &config->info which is of type
+loop_info64*. This function then sets the appropriate values, like
+the offset.
 
-Theoretically the error handling changes from:
- if (err == -EMSGSIZE)
-to
- if (err == -EMSGSIZE && skb->len)
+loop_device has lo_offset of type loff_t (see line 52 of loop.c),
+which is typdef-chained to long long, whereas loop_info64 has
+lo_offset of type __u64 (see line 56 of include/uapi/linux/loop.h).
 
-everywhere, but in practice it doesn't matter.
-All messages fit into NLMSG_GOODSIZE, so overflow of an empty
-skb cannot happen.
+The function directly copies offset from info to the device as
+follows (See line 980 of loop.c):
+	lo->lo_offset = info->lo_offset;
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This results in an overflow, which triggers a warning in iomap_iter()
+due to a call to iomap_iter_done() which has:
+	WARN_ON_ONCE(iter->iomap.offset > iter->pos);
+
+Thus, check for negative value during loop_set_status_from_info().
+
+Bug report: https://syzkaller.appspot.com/bug?id=c620fe14aac810396d3c3edc9ad73848bf69a29e
+
+Reported-and-tested-by: syzbot+a8e049cd3abd342936b6@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Siddh Raman Pant <code@siddh.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20220823160810.181275-1-code@siddh.me
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/netdev-genl.c    | 15 +++------------
- net/core/page_pool_user.c |  2 --
- 2 files changed, 3 insertions(+), 14 deletions(-)
+ drivers/block/loop.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index fd98936da3aec..918b109e0cf40 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -152,10 +152,7 @@ int netdev_nl_dev_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
- 	}
- 	rtnl_unlock();
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -1271,6 +1271,11 @@ loop_set_status_from_info(struct loop_de
  
--	if (err != -EMSGSIZE)
--		return err;
--
--	return skb->len;
-+	return err;
- }
- 
- static int
-@@ -287,10 +284,7 @@ int netdev_nl_napi_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
- 	}
- 	rtnl_unlock();
- 
--	if (err != -EMSGSIZE)
--		return err;
--
--	return skb->len;
-+	return err;
- }
- 
- static int
-@@ -463,10 +457,7 @@ int netdev_nl_queue_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
- 	}
- 	rtnl_unlock();
- 
--	if (err != -EMSGSIZE)
--		return err;
--
--	return skb->len;
-+	return err;
- }
- 
- static int netdev_genl_netdevice_event(struct notifier_block *nb,
-diff --git a/net/core/page_pool_user.c b/net/core/page_pool_user.c
-index 278294aca66ab..3a3277ba167b1 100644
---- a/net/core/page_pool_user.c
-+++ b/net/core/page_pool_user.c
-@@ -103,8 +103,6 @@ netdev_nl_page_pool_get_dump(struct sk_buff *skb, struct netlink_callback *cb,
- 	mutex_unlock(&page_pools_lock);
- 	rtnl_unlock();
- 
--	if (skb->len && err == -EMSGSIZE)
--		return skb->len;
- 	return err;
- }
- 
--- 
-2.43.0
-
+ 	lo->lo_offset = info->lo_offset;
+ 	lo->lo_sizelimit = info->lo_sizelimit;
++
++	/* loff_t vars have been assigned __u64 */
++	if (lo->lo_offset < 0 || lo->lo_sizelimit < 0)
++		return -EOVERFLOW;
++
+ 	memcpy(lo->lo_file_name, info->lo_file_name, LO_NAME_SIZE);
+ 	memcpy(lo->lo_crypt_name, info->lo_crypt_name, LO_NAME_SIZE);
+ 	lo->lo_file_name[LO_NAME_SIZE-1] = 0;
 
 
 
