@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-38553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D308A0F34
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:21:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D11998A0D91
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E6C01F2670E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:21:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BDD7286318
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D317146A6A;
-	Thu, 11 Apr 2024 10:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503AA145FFA;
+	Thu, 11 Apr 2024 10:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2F/7tm5B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMNLd56f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB68E14601D;
-	Thu, 11 Apr 2024 10:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDDA145FF0;
+	Thu, 11 Apr 2024 10:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830912; cv=none; b=T0tsvDHhZ0LkqtWm4NV1XcA5II/vpy8oFbPh8VXAW6X/0sKJHYO+HHe+esTeZoBkpile05i538+NNIYSsREI2nDzEKjrwfCff00Nqe5FocVyKIBzMJdW99tC1I7FeApyHXoP28x8U26Q7vb2YgtzQiU7qdeOE3boDhzXdk5SE1Q=
+	t=1712829912; cv=none; b=YS0fE/Z+jKRvuKaPHHGPygTkdMf8bxn/RyPg+JSdqZ1sfRn4HxjhGX+AWjhTDsn78k3F25CYM6xu2lgysmFuvOANdMEl6en8r3Tz8x4LFP6SAb9Shll9MF1WJTWpc3MKmJeSnwOLgiheFqtPo3/V0w8JwAruebKWOGtXdrfq42I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830912; c=relaxed/simple;
-	bh=ff/MV0EIbBtBr9LWLAjVECCbInZcat+fI14wHz7o6Yo=;
+	s=arc-20240116; t=1712829912; c=relaxed/simple;
+	bh=ZtEmns+Diz69ysGSQlZh339Uq6o/rsZ69Dj8k9l0BNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pOfAPV6fvVxzQr0meuQAw9BPh34cEDSr7YbdZOD5HbeQC4oAb9fwdTua32DYvzngEjCyEjayl2x58bAmyaSIkp0smMq+HxjUNQFGYar2NHlZwwy6I4rZokrGUgcj93Y0kRVUOGUml28dVNCxbe3tDefGaIoJaznqnRnE2NsBeU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2F/7tm5B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2721C433F1;
-	Thu, 11 Apr 2024 10:21:51 +0000 (UTC)
+	 MIME-Version; b=E//2fN8ohmfTlPOsoiLFxHvXBt7iDCfhMtvjABiaIo24GnIwxguq0gSZlqc21tjSBGbN+p/9mowk4/dU2YkgqBU91ZIzo1bAUdD8dF4ZSESn9wcTmC6kKgFly2aE6yx1GaZ5cBmeNIoDO1UCN5mfM1dv1EHwQApkiTpb4wGzC2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMNLd56f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3F4C433F1;
+	Thu, 11 Apr 2024 10:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830912;
-	bh=ff/MV0EIbBtBr9LWLAjVECCbInZcat+fI14wHz7o6Yo=;
+	s=korg; t=1712829911;
+	bh=ZtEmns+Diz69ysGSQlZh339Uq6o/rsZ69Dj8k9l0BNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2F/7tm5BH0yNDyjCP/cNwyxXNM+ZSB85RtqO2kWSIgrnOSMDC1SynZohT01HsESvJ
-	 A4o/RE/cIlTfrCGNy30075jfn40XANSglrpTy8s1qvgYmCBVhfo88Y8j7uKnPsye1F
-	 LG9m7CBY3g0gCHqeJPqZdTxtoWV5WFWb7C00Wa9Q=
+	b=TMNLd56fEg08e9V9v8SfBPHA0Ujh5X740CECrGlZcOZj8J6vG+0owDCLEZ2rSTiqA
+	 8xVZ4bWUOVHoBI4EyD2P8M9CnZvuycgGRGF45+wSnlzmPvOId5sNxYngEC+4JoRR02
+	 nmg0NzRoPHKx81XafLL/j/pyt+PHcaPTWAHpPcv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Sperbeck <jsperbeck@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 161/215] init: open /initrd.image with O_LARGEFILE
+Subject: [PATCH 4.19 147/175] arm64: dts: rockchip: fix rk3399 hdmi ports node
 Date: Thu, 11 Apr 2024 11:56:10 +0200
-Message-ID: <20240411095429.716171781@linuxfoundation.org>
+Message-ID: <20240411095423.988953469@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,42 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Sperbeck <jsperbeck@google.com>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit 4624b346cf67400ef46a31771011fb798dd2f999 ]
+[ Upstream commit f051b6ace7ffcc48d6d1017191f167c0a85799f6 ]
 
-If initrd data is larger than 2Gb, we'll eventually fail to write to the
-/initrd.image file when we hit that limit, unless O_LARGEFILE is set.
+Fix rk3399 hdmi ports node so that it matches the
+rockchip,dw-hdmi.yaml binding.
 
-Link: https://lkml.kernel.org/r/20240317221522.896040-1-jsperbeck@google.com
-Signed-off-by: John Sperbeck <jsperbeck@google.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/a6ab6f75-3b80-40b1-bd30-3113e14becdd@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/initramfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3399.dtsi | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/init/initramfs.c b/init/initramfs.c
-index 1bc854fdf8302..b362b57c047d5 100644
---- a/init/initramfs.c
-+++ b/init/initramfs.c
-@@ -630,7 +630,7 @@ static void __init populate_initrd_image(char *err)
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
+index 5a60faa8e9998..f19d43021a4e7 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
+@@ -1683,6 +1683,7 @@ simple-audio-card,codec {
+ 	hdmi: hdmi@ff940000 {
+ 		compatible = "rockchip,rk3399-dw-hdmi";
+ 		reg = <0x0 0xff940000 0x0 0x20000>;
++		reg-io-width = <4>;
+ 		interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH 0>;
+ 		clocks = <&cru PCLK_HDMI_CTRL>,
+ 			 <&cru SCLK_HDMI_SFR>,
+@@ -1691,13 +1692,16 @@ hdmi: hdmi@ff940000 {
+ 			 <&cru PLL_VPLL>;
+ 		clock-names = "iahb", "isfr", "cec", "grf", "vpll";
+ 		power-domains = <&power RK3399_PD_HDCP>;
+-		reg-io-width = <4>;
+ 		rockchip,grf = <&grf>;
+ 		#sound-dai-cells = <0>;
+ 		status = "disabled";
  
- 	printk(KERN_INFO "rootfs image is not initramfs (%s); looks like an initrd\n",
- 			err);
--	file = filp_open("/initrd.image", O_WRONLY | O_CREAT, 0700);
-+	file = filp_open("/initrd.image", O_WRONLY|O_CREAT|O_LARGEFILE, 0700);
- 	if (IS_ERR(file))
- 		return;
+ 		ports {
+-			hdmi_in: port {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			hdmi_in: port@0 {
++				reg = <0>;
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
+ 
+@@ -1710,6 +1714,10 @@ hdmi_in_vopl: endpoint@1 {
+ 					remote-endpoint = <&vopl_out_hdmi>;
+ 				};
+ 			};
++
++			hdmi_out: port@1 {
++				reg = <1>;
++			};
+ 		};
+ 	};
  
 -- 
 2.43.0
