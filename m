@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24BC18A0D1C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:00:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 523918A0ECF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 569951C2181B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:00:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08AA02847FC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09686145B25;
-	Thu, 11 Apr 2024 10:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738D6140E3D;
+	Thu, 11 Apr 2024 10:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N47t8XYR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="un9+lBzT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA761448EF;
-	Thu, 11 Apr 2024 10:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F2F13E897;
+	Thu, 11 Apr 2024 10:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829628; cv=none; b=f5XFeENa/BJrzU4wRl/bZ59q86Gs7nvl76OUQxgFHoEB+06+bF9Hyi6fhfk4uMV7QMJoFiHExBu4WrChLx9cZlDPzfBmymwgOflCVFSzIr8wqABdyFJAU5KiGGzYwz8uAtc+KhrlnPTtGPiCbiQRwjAxuH/ivqtWQ6/obxbU/ek=
+	t=1712830686; cv=none; b=exNTCgFgAqUdmnCINYQH+VmWkR/XEKY6Qr4eztb2hkaVwsWpwN/axahcVeBMeAuK3g3DdW1IMswjl4P87i99aqTW19EC1T6Xy1gicPmv+qmjHDW7p7/XsBsjIk2WlE+NHQsiyML1VJ9nWSq/0XJNTR3mkLTmOKV/1d3vPaM+5Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829628; c=relaxed/simple;
-	bh=0wvt95ZKmLqg5yLw9U5lCl87GJMieU/GSUurwNEg0XQ=;
+	s=arc-20240116; t=1712830686; c=relaxed/simple;
+	bh=oPDJdsW3MKIv5b4ACCp3xP5/8GVmG6Y7/i0qCvDiezY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHIbZHip2tVp6Os8nUp5MPSXK8lANtA+ENJA01eX9O1L1jDYMgkmVYJR7pxgyGV4CPlB06KM0Qqw9ngnDESvsxph6e4q3XsPvzjA7+vERYL9OO2AKhOgTC2hFYxChI5MhQzr9Zt7jcO8UJm3qTMWTkEQCd8ISxhuajGMPLnUuNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N47t8XYR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A77FC433C7;
-	Thu, 11 Apr 2024 10:00:28 +0000 (UTC)
+	 MIME-Version; b=OyA4X0pAkeJVShEwBuun1qmw5LWcuLJnvc4j/iS/F5U5m15Wa0bPf1AeNuwoLWghSwOzqM+OSQPybV6gWjAGWluMk6TQV5Kal87T0fDpTM9BEl8ujsY5ld9fJvbcd3t7uWBpQU47PFhQ7Lf3ChMCUy6rOXjWM4C0ihUaDQtZl20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=un9+lBzT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE97C43390;
+	Thu, 11 Apr 2024 10:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829628;
-	bh=0wvt95ZKmLqg5yLw9U5lCl87GJMieU/GSUurwNEg0XQ=;
+	s=korg; t=1712830685;
+	bh=oPDJdsW3MKIv5b4ACCp3xP5/8GVmG6Y7/i0qCvDiezY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N47t8XYRJJBoRdDD1XkwLeYBc2vODZzMsFgDW4ZW025HbcexsCsG9gSuiJOpnUUK/
-	 6qyp8kTjPlWZaMfKrbaaZDczFvTlXStpE6xDTF6y2kvtlqVdpSfGpzyHjRKUttMfPf
-	 l2Jpcwu6yRbgChEYytPQV6a15WALzf9M2uiTxrhk=
+	b=un9+lBzTdf9dD6ePxNwvkgbFQWRGKpJaDsgp2clKSczyvVADpYVdU3G2pPyaOWh6V
+	 QOGlgBYsnjgWE7x4ekj/ppbIpm0qdPsMjHZ9RgzkWrL3kFzpY8+X9KXuwP0STwsgS3
+	 G3+4kM9ktYI8we1mV/wSyF4JZMC1SuZHQS3mWdgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Sean Anderson <sean.anderson@seco.com>,
+	Camelia Groza <camelia.groza@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 052/175] kbuild: Move -Wenum-{compare-conditional,enum-conversion} into W=1
+Subject: [PATCH 5.4 066/215] soc: fsl: qbman: Add CGR update function
 Date: Thu, 11 Apr 2024 11:54:35 +0200
-Message-ID: <20240411095421.134563921@linuxfoundation.org>
+Message-ID: <20240411095426.882339796@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Sean Anderson <sean.anderson@seco.com>
 
-[ Upstream commit 75b5ab134bb5f657ef7979a59106dce0657e8d87 ]
+[ Upstream commit 914f8b228ede709274b8c80514b352248ec9da00 ]
 
-Clang enables -Wenum-enum-conversion and -Wenum-compare-conditional
-under -Wenum-conversion. A recent change in Clang strengthened these
-warnings and they appear frequently in common builds, primarily due to
-several instances in common headers but there are quite a few drivers
-that have individual instances as well.
+This adds a function to update a CGR with new parameters. qman_create_cgr
+can almost be used for this (with flags=0), but it's not suitable because
+it also registers the callback function. The _safe variant was modeled off
+of qman_cgr_delete_safe. However, we handle multiple arguments and a return
+value.
 
-  include/linux/vmstat.h:508:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-    508 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-        |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-    509 |                            item];
-        |                            ~~~~
-
-  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:955:24: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
-    955 |                 flags |= is_new_rate ? IWL_MAC_BEACON_CCK
-        |                                      ^ ~~~~~~~~~~~~~~~~~~
-    956 |                           : IWL_MAC_BEACON_CCK_V1;
-        |                             ~~~~~~~~~~~~~~~~~~~~~
-  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:1120:21: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
-   1120 |                                                0) > 10 ?
-        |                                                        ^
-   1121 |                         IWL_MAC_BEACON_FILS :
-        |                         ~~~~~~~~~~~~~~~~~~~
-   1122 |                         IWL_MAC_BEACON_FILS_V1;
-        |                         ~~~~~~~~~~~~~~~~~~~~~~
-
-Doing arithmetic between or returning two different types of enums could
-be a bug, so each of the instance of the warning needs to be evaluated.
-Unfortunately, as mentioned above, there are many instances of this
-warning in many different configurations, which can break the build when
-CONFIG_WERROR is enabled.
-
-To avoid introducing new instances of the warnings while cleaning up the
-disruption for the majority of users, disable these warnings for the
-default build while leaving them on for W=1 builds.
-
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2002
-Link: https://github.com/llvm/llvm-project/commit/8c2ae42b3e1c6aa7c18f873edcebff7c0b45a37e
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+Acked-by: Camelia Groza <camelia.groza@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: fbec4e7fed89 ("soc: fsl: qbman: Use raw spinlock for cgr_lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.extrawarn | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/soc/fsl/qbman/qman.c | 48 ++++++++++++++++++++++++++++++++++++
+ include/soc/fsl/qman.h       |  9 +++++++
+ 2 files changed, 57 insertions(+)
 
-diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
-index e15cd63428ba7..c2e41daf373f8 100644
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -75,5 +75,7 @@ KBUILD_CFLAGS += $(call cc-disable-warning, uninitialized)
- KBUILD_CFLAGS += $(call cc-disable-warning, pointer-to-enum-cast)
- KBUILD_CFLAGS += $(call cc-disable-warning, unaligned-access)
- KBUILD_CFLAGS += $(call cc-disable-warning, cast-function-type-strict)
-+KBUILD_CFLAGS += -Wno-enum-compare-conditional
-+KBUILD_CFLAGS += -Wno-enum-enum-conversion
- endif
- endif
+diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
+index e31d33d000526..52327f0dab986 100644
+--- a/drivers/soc/fsl/qbman/qman.c
++++ b/drivers/soc/fsl/qbman/qman.c
+@@ -2566,6 +2566,54 @@ void qman_delete_cgr_safe(struct qman_cgr *cgr)
+ }
+ EXPORT_SYMBOL(qman_delete_cgr_safe);
+ 
++static int qman_update_cgr(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts)
++{
++	int ret;
++	unsigned long irqflags;
++	struct qman_portal *p = qman_cgr_get_affine_portal(cgr);
++
++	if (!p)
++		return -EINVAL;
++
++	spin_lock_irqsave(&p->cgr_lock, irqflags);
++	ret = qm_modify_cgr(cgr, 0, opts);
++	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
++	put_affine_portal();
++	return ret;
++}
++
++struct update_cgr_params {
++	struct qman_cgr *cgr;
++	struct qm_mcc_initcgr *opts;
++	int ret;
++};
++
++static void qman_update_cgr_smp_call(void *p)
++{
++	struct update_cgr_params *params = p;
++
++	params->ret = qman_update_cgr(params->cgr, params->opts);
++}
++
++int qman_update_cgr_safe(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts)
++{
++	struct update_cgr_params params = {
++		.cgr = cgr,
++		.opts = opts,
++	};
++
++	preempt_disable();
++	if (qman_cgr_cpus[cgr->cgrid] != smp_processor_id())
++		smp_call_function_single(qman_cgr_cpus[cgr->cgrid],
++					 qman_update_cgr_smp_call, &params,
++					 true);
++	else
++		params.ret = qman_update_cgr(cgr, opts);
++	preempt_enable();
++	return params.ret;
++}
++EXPORT_SYMBOL(qman_update_cgr_safe);
++
+ /* Cleanup FQs */
+ 
+ static int _qm_mr_consume_and_match_verb(struct qm_portal *p, int v)
+diff --git a/include/soc/fsl/qman.h b/include/soc/fsl/qman.h
+index aa31c05a103ad..f9c622027d852 100644
+--- a/include/soc/fsl/qman.h
++++ b/include/soc/fsl/qman.h
+@@ -1159,6 +1159,15 @@ int qman_delete_cgr(struct qman_cgr *cgr);
+  */
+ void qman_delete_cgr_safe(struct qman_cgr *cgr);
+ 
++/**
++ * qman_update_cgr_safe - Modifies a congestion group object from any CPU
++ * @cgr: the 'cgr' object to modify
++ * @opts: state of the CGR settings
++ *
++ * This will select the proper CPU and modify the CGR settings.
++ */
++int qman_update_cgr_safe(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts);
++
+ /**
+  * qman_query_cgr_congested - Queries CGR's congestion status
+  * @cgr: the 'cgr' object to query
 -- 
 2.43.0
 
