@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7BE18A0D8B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D91778A0FB2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 056B71C21B22
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78B1E1F28835
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E26146015;
-	Thu, 11 Apr 2024 10:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179CC14600E;
+	Thu, 11 Apr 2024 10:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qThrIlcJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTB5swJa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A95C146010;
-	Thu, 11 Apr 2024 10:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C941A13FD94;
+	Thu, 11 Apr 2024 10:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829894; cv=none; b=ng2/GnjCCM9nw5PNIjyJU8DFp06KMvWPTZ/gwm/L4B7XWYtY0zFNp8SSudJG5dubUN5fq+LJfJqJeta42jw18gArXGCkbG30CbFxpl7xJY3MLdzf2+PV6mcngrevjEvskQHZYL/gNbdl76UrdICV8gd9MDBHnMKFJNX/D3oalL8=
+	t=1712831187; cv=none; b=IufbinhK8G7k7PVUGKNmuX8VHzrL0dCPfScDKZ6yEc3mcKRt3MSwuMBlrQxNebMudunkB2INk+kOKZgusKQVGbqt8trH1t12S1qkFgYZo7fM8W3PTtNi5EXW+UlKBBHcwkDwl/1NYQBVT0DCGTOSgjAcOJbG5w/aRH4bGG9eAFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829894; c=relaxed/simple;
-	bh=QZCYQLdkDpsmmUS06EKe9Mw7sNRi6GxqTQ+Iq9HV3Z4=;
+	s=arc-20240116; t=1712831187; c=relaxed/simple;
+	bh=/L0dVy2/VGSLG68m6j7T+Bw2mLeaN+VgVmMS8FlL+qM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WtZUD3l3TvH9YcIFSvbhdlzqOqDKimju6P5YUuHYI2lAQm2PlXqWOw57EPateg+erk6xfzE8Ur33KFQHUqxeEXYaBpPrb7xNgnqI4QCLM3h/Z7iAmxx+VLn+OK37MSGhJEkmQnO5vkzHNHChOxOh3pwxBBv/j8mnUzTW1kU3ybQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qThrIlcJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F253C433C7;
-	Thu, 11 Apr 2024 10:04:53 +0000 (UTC)
+	 MIME-Version; b=pWtaRi4APYnLyvqexW/p7zywwyNuNEp21Q8uHQ4EIeVJ9044rg+NB4HVvuvRfS4t8BsQbjmYI2ncY8/DQP8T+SzP4PMKEFlcvtC04dPtOaQpI013aVaw8LVF5KSCYwelMAcx5DSNF03MXP7B8zmNL0loafTlgNDP9k9JD1ekAe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTB5swJa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05185C433F1;
+	Thu, 11 Apr 2024 10:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829893;
-	bh=QZCYQLdkDpsmmUS06EKe9Mw7sNRi6GxqTQ+Iq9HV3Z4=;
+	s=korg; t=1712831187;
+	bh=/L0dVy2/VGSLG68m6j7T+Bw2mLeaN+VgVmMS8FlL+qM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qThrIlcJXwDtNLSlOZ+Wky6xNRejjZL+wXroro/loK19Br8Rs2orN8Fm6VeuDFxXN
-	 7jdKs4GDa1e1pKApv4YLXmpaC5+ilj3byacAFO9DOirVbAxNtVrAzlROnN69EH5o7w
-	 Ymr/QSmmHqWCTmaqKyZPqeglEqevEih/KYvlQCKo=
+	b=yTB5swJaZ0YspunKwE0pjoshG8r6U/9vk7z7f3I8sT3NiNCQ7gIavE8oMBWfbIsJt
+	 xBgROA2FiZQTUxjxRFOXhEOoaDXSk26yO/PzQl9cV63YCSqlAxXTgct45ZKptSxYUb
+	 sCS47YkWBY/3ELSbYXcvvQUwlxl25Pv3WP9WPqIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 141/175] ata: sata_sx4: fix pdc20621_get_from_dimm() on 64-bit
-Date: Thu, 11 Apr 2024 11:56:04 +0200
-Message-ID: <20240411095423.809851979@linuxfoundation.org>
+Subject: [PATCH 6.6 038/114] btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()
+Date: Thu, 11 Apr 2024 11:56:05 +0200
+Message-ID: <20240411095418.031907626@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 52f80bb181a9a1530ade30bc18991900bbb9697f ]
+[ Upstream commit 7411055db5ce64f836aaffd422396af0075fdc99 ]
 
-gcc warns about a memcpy() with overlapping pointers because of an
-incorrect size calculation:
+The unhandled case in btrfs_relocate_sys_chunks() loop is a corruption,
+as it could be caused only by two impossible conditions:
 
-In file included from include/linux/string.h:369,
-                 from drivers/ata/sata_sx4.c:66:
-In function 'memcpy_fromio',
-    inlined from 'pdc20621_get_from_dimm.constprop' at drivers/ata/sata_sx4.c:962:2:
-include/linux/fortify-string.h:97:33: error: '__builtin_memcpy' accessing 4294934464 bytes at offsets 0 and [16, 16400] overlaps 6442385281 bytes at offset -2147450817 [-Werror=restrict]
-   97 | #define __underlying_memcpy     __builtin_memcpy
-      |                                 ^
-include/linux/fortify-string.h:620:9: note: in expansion of macro '__underlying_memcpy'
-  620 |         __underlying_##op(p, q, __fortify_size);                        \
-      |         ^~~~~~~~~~~~~
-include/linux/fortify-string.h:665:26: note: in expansion of macro '__fortify_memcpy_chk'
-  665 | #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,                  \
-      |                          ^~~~~~~~~~~~~~~~~~~~
-include/asm-generic/io.h:1184:9: note: in expansion of macro 'memcpy'
- 1184 |         memcpy(buffer, __io_virt(addr), size);
-      |         ^~~~~~
+- at first the search key is set up to look for a chunk tree item, with
+  offset -1, this is an inexact search and the key->offset will contain
+  the correct offset upon a successful search, a valid chunk tree item
+  cannot have an offset -1
 
-The problem here is the overflow of an unsigned 32-bit number to a
-negative that gets converted into a signed 'long', keeping a large
-positive number.
+- after first successful search, the found_key corresponds to a chunk
+  item, the offset is decremented by 1 before the next loop, it's
+  impossible to find a chunk item there due to alignment and size
+  constraints
 
-Replace the complex calculation with a more readable min() variant
-that avoids the warning.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/sata_sx4.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/btrfs/volumes.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ata/sata_sx4.c b/drivers/ata/sata_sx4.c
-index 0d742457925ec..f217ac8e17b15 100644
---- a/drivers/ata/sata_sx4.c
-+++ b/drivers/ata/sata_sx4.c
-@@ -1020,8 +1020,7 @@ static void pdc20621_get_from_dimm(struct ata_host *host, void *psource,
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 36adbb3d096a9..453d037987fb3 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -3352,7 +3352,17 @@ static int btrfs_relocate_sys_chunks(struct btrfs_fs_info *fs_info)
+ 			mutex_unlock(&fs_info->reclaim_bgs_lock);
+ 			goto error;
+ 		}
+-		BUG_ON(ret == 0); /* Corruption */
++		if (ret == 0) {
++			/*
++			 * On the first search we would find chunk tree with
++			 * offset -1, which is not possible. On subsequent
++			 * loops this would find an existing item on an invalid
++			 * offset (one less than the previous one, wrong
++			 * alignment and size).
++			 */
++			ret = -EUCLEAN;
++			goto error;
++		}
  
- 	offset -= (idx * window_size);
- 	idx++;
--	dist = ((long) (window_size - (offset + size))) >= 0 ? size :
--		(long) (window_size - offset);
-+	dist = min(size, window_size - offset);
- 	memcpy_fromio(psource, dimm_mmio + offset / 4, dist);
- 
- 	psource += dist;
-@@ -1069,8 +1068,7 @@ static void pdc20621_put_to_dimm(struct ata_host *host, void *psource,
- 	readl(mmio + PDC_DIMM_WINDOW_CTLR);
- 	offset -= (idx * window_size);
- 	idx++;
--	dist = ((long)(s32)(window_size - (offset + size))) >= 0 ? size :
--		(long) (window_size - offset);
-+	dist = min(size, window_size - offset);
- 	memcpy_toio(dimm_mmio + offset / 4, psource, dist);
- 	writel(0x01, mmio + PDC_GENERAL_CTLR);
- 	readl(mmio + PDC_GENERAL_CTLR);
+ 		ret = btrfs_previous_item(chunk_root, path, key.objectid,
+ 					  key.type);
 -- 
 2.43.0
 
