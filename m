@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-38573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AC358A0F4F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 578FC8A0E3E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:12:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C72D1C20CC5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:22:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8949A1C20AEA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33381465A6;
-	Thu, 11 Apr 2024 10:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A24145B26;
+	Thu, 11 Apr 2024 10:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RueokR42"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0QSKje4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E21145FF0;
-	Thu, 11 Apr 2024 10:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9973B1448EF;
+	Thu, 11 Apr 2024 10:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830971; cv=none; b=RG4U3GRXmoju5yNLly7RUYhcTsMqEnJjXXq7qigKE7j2XM/fDkoHTSoitknAqgXRLYu+2JuLKyCYOIFyXtQ2xSOwD7CFMbUS7S0XaQuVzghb7CbmsytjUFXbmeUrK74oVS0NZSKiXvrO+Za43XAIHCaMMirua9sz4/VIqOv/myk=
+	t=1712830357; cv=none; b=sGUCV8g95Qt/eeF1XXO4bYbBBLWOyhNU+ScgSH5s0dzUKvtZWKVIzVbuQJ9gvygPCV5Iv+44cpc/XKkNMbXW2iOgDLShuocOdQQrAGsy8+ADEspjwxUQ9LS79gNr/8R1It+hb0DSgNOR65wYCUnG+9w29PL4DQv7z+woHIfQhAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830971; c=relaxed/simple;
-	bh=nFvsYbS35y7n7usCyZ1ROa6ICubz/bUf0I23OnAs4zY=;
+	s=arc-20240116; t=1712830357; c=relaxed/simple;
+	bh=B350X+Vr+rkEP1k4wSmkDF9YQu3ieBqPuLvHVM4h4+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y5ip6aRuQEqDhOPPUiFpyKKXNJd6Em5QBg6ShJ9hiIu49IQhyvywXnxfM0+Xn7T4kwYcgeulRbTJpxz+E5m6U0A5aJjOHl/srHhkkc7+t3nhG8bsYHc9RMawbeR1BMus3sX2tAnR/A7EfMXl3OjXBMCXUJHh4qISjQ4kW3a7DV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RueokR42; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE94C433C7;
-	Thu, 11 Apr 2024 10:22:50 +0000 (UTC)
+	 MIME-Version; b=Yz2ceAPGjfpJz7eI2UVHFpA9m7m5FjRyEkA3ot0Az1/bMIzWQtHubk0PELgvtLEyWZ0xkYtLE4YoQAQlrMRjRwEMKlSrfZkIrtMEZrDZnw+g7pFvQlx3dOT304XZhXhkjneJIRUWEyoEErVq/erEz/a9OJ7tUsZJYfg0RBYCwMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0QSKje4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242CAC433C7;
+	Thu, 11 Apr 2024 10:12:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830971;
-	bh=nFvsYbS35y7n7usCyZ1ROa6ICubz/bUf0I23OnAs4zY=;
+	s=korg; t=1712830357;
+	bh=B350X+Vr+rkEP1k4wSmkDF9YQu3ieBqPuLvHVM4h4+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RueokR428wPR/9RwyPW+xObEBzIgNZ+xGpWR9GPmtSkY8PzXH3XNfPfM9SodXjFCe
-	 51daRRl19vUXdG5+djLqRzfJkXJUqlPaUdcXklhA4Pq4o13x4m6KSYvDy0R4vIX/Ac
-	 AJg1Ki+TIb+UScNk+XNg4YBFGIRL6H9tYGetpL5c=
+	b=V0QSKje4EvpMrT6QdzilBImoyki9mFw1UT1HZ7C8D222qxWK0R6UuBKZB71T+GVpy
+	 BLGvgk/zhnNLr2yiM7fulsgX3oJRiZrO+kmY35T92qaWFbzU0AtvgBdyRAxQ5a0iYh
+	 efkuHvWpum9KSAs8PuZgTYUOqVHUATNNYm3y9zD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Mitch Cooley <m.cooley.198@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 179/215] ionic: set adminq irq affinity
+Subject: [PATCH 6.8 120/143] ASoC: amd: yc: Fix non-functional mic on ASUS M7600RE
 Date: Thu, 11 Apr 2024 11:56:28 +0200
-Message-ID: <20240411095430.249602028@linuxfoundation.org>
+Message-ID: <20240411095424.518771122@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: M Cooley <m.cooley.198@gmail.com>
 
-[ Upstream commit c699f35d658f3c21b69ed24e64b2ea26381e941d ]
+[ Upstream commit db185362fca554b201e2c62beb15a02bb39a064b ]
 
-We claim to have the AdminQ on our irq0 and thus cpu id 0,
-but we need to be sure we set the affinity hint to try to
-keep it there.
+The ASUS M7600RE (Vivobook Pro 16X OLED) needs a quirks-table entry for the
+internal microphone to function properly.
 
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Mitch Cooley <m.cooley.198@gmail.com>
+
+Link: https://msgid.link/r/CALijGznExWW4fujNWwMzmn_K=wo96sGzV_2VkT7NjvEUdkg7Gw@mail.gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index d718c1a6d5fc7..e7d868da6a380 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -1874,9 +1874,12 @@ static int ionic_lif_adminq_init(struct ionic_lif *lif)
- 
- 	napi_enable(&qcq->napi);
- 
--	if (qcq->flags & IONIC_QCQ_F_INTR)
-+	if (qcq->flags & IONIC_QCQ_F_INTR) {
-+		irq_set_affinity_hint(qcq->intr.vector,
-+				      &qcq->intr.affinity_mask);
- 		ionic_intr_mask(idev->intr_ctrl, qcq->intr.index,
- 				IONIC_INTR_MASK_CLEAR);
-+	}
- 
- 	qcq->flags |= IONIC_QCQ_F_INITED;
- 
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 1d1452c29ed02..69c68d8e7a6b5 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -311,6 +311,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "E1504FA"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "M7600RE"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.43.0
 
