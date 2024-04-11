@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E628A0E01
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB058A0D6A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F9191C21B7F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D00E4B263DA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629B5145B2C;
-	Thu, 11 Apr 2024 10:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D67145B0D;
+	Thu, 11 Apr 2024 10:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpzK3dqV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqgkrdhD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20672145B08;
-	Thu, 11 Apr 2024 10:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B93145B07;
+	Thu, 11 Apr 2024 10:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830202; cv=none; b=k+BMIcftHoti9QMb/b5CzvCNKIzA3+SPwsts5cmI2L3XPVjKtplM2ORpLVx402qCntfR9L9AFw3HroAbKiQGjVx034lhgkptAn2sFKHTB/tZYNliJnsnDIByCT1NXijiL9AvwktG8sowDiI1Qe4aRtNoK1PS8Ldc3mAGEQqe8LA=
+	t=1712829820; cv=none; b=ZIA64QxYaZi+nTKMguRZH5D98qKZ4uuVr+s4EuwPBZjSMKwguJ/H9Ho13K59NuHZrJllMJTOcCeAODALuY/HUEIqxSzcFdTiRu8e2huJ3xL4O/EFr1zejTjw659/aEAPgBLeSUIzHXc0MelTM8tZkiOaN5lZQ/f/KBg+m2T5K5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830202; c=relaxed/simple;
-	bh=cHyxFyDkF5DYQA5XAbVDATPpjtkga6+ew0tSny4m3Dg=;
+	s=arc-20240116; t=1712829820; c=relaxed/simple;
+	bh=QcC+AHd2HbR4AooADNYht3BXV0zcEEB8dO4bTt59bAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A8sLkFi4OlMWsxzV3zpAlptET9C22VZ36v3jVILucvTOlwGKQSCL8kmSwT6BK1HoPiKyVASJBb7c74f/wZZbEkOKTEulTtmBWLv0i97O+8UvoIKuZU/lqUo7QwuduA8AtuPAy0zYPHlxP4sYxA2wUFZ9dyAzrpN+Sf5Vv220cPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpzK3dqV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9198BC433F1;
-	Thu, 11 Apr 2024 10:10:01 +0000 (UTC)
+	 MIME-Version; b=OeAkJYn4pNPmqycLsDHce7jcoxEf3A1qe2m0+Mmilj8RZjzg5DrjK+WIlR7KTut/4vk1vcw+4nw5dBfUUQtxGdqc+/3R3Df1c7N/9+3IxCm57g8LnuExQ3FXom0xuLkhSKPNHCGtXAWItDqIx09ncb3w5SzwIcjemHA445uzT3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqgkrdhD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8D9C43390;
+	Thu, 11 Apr 2024 10:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830202;
-	bh=cHyxFyDkF5DYQA5XAbVDATPpjtkga6+ew0tSny4m3Dg=;
+	s=korg; t=1712829820;
+	bh=QcC+AHd2HbR4AooADNYht3BXV0zcEEB8dO4bTt59bAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DpzK3dqVrWjAzbLWIIfDgViy1X2no/elfaPQPXc7DG398onFH38BSJPRcVz6H21wB
-	 g64IuhcMKC1vh4zfGEr4Dvz/wV6WBcPkYyAYOUwFt9Z99B9rhwgKA3IQkSQVOnbfRL
-	 qvHl/pGnxax+zFTcPLpHvCyQG1vdsNUELuLYAdTY=
+	b=SqgkrdhD9IIa3+HUy+rquDLM94xdXLBbPG5qyszq6HiBl1JfwmlbB+6BJCYo6idif
+	 fW0xq6twqgwpjEQSbBf73DU0LjsAA4elXDAfIdi6cAUKqIBVtOeteeTCSEeM6Ocz/7
+	 VLvgwEKBKrkLu6weheRS0U0U7Ua7hGo6GKnUvtGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Henrie <alexhenrie24@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 070/143] isofs: handle CDs with bad root inode but good Joliet root directory
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.19 115/175] r8169: fix issue caused by buggy BIOS on certain boards with RTL8168d
 Date: Thu, 11 Apr 2024 11:55:38 +0200
-Message-ID: <20240411095423.021774999@linuxfoundation.org>
+Message-ID: <20240411095423.028888660@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 4243bf80c79211a8ca2795401add9c4a3b1d37ca ]
+commit 5d872c9f46bd2ea3524af3c2420a364a13667135 upstream.
 
-I have a CD copy of the original Tom Clancy's Ghost Recon game from
-2001. The disc mounts without error on Windows, but on Linux mounting
-fails with the message "isofs_fill_super: get root inode failed". The
-error originates in isofs_read_inode, which returns -EIO because de_len
-is 0. The superblock on this disc appears to be intentionally corrupt as
-a form of copy protection.
+On some boards with this chip version the BIOS is buggy and misses
+to reset the PHY page selector. This results in the PHY ID read
+accessing registers on a different page, returning a more or
+less random value. Fix this by resetting the page selector first.
 
-When the root inode is unusable, instead of giving up immediately, try
-to continue with the Joliet file table. This fixes the Ghost Recon CD
-and probably other copy-protected CDs too.
-
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20240208022134.451490-1-alexhenrie24@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f1e911d5d0df ("r8169: add basic phylib support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/64f2055e-98b8-45ec-8568-665e3d54d4e6@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/isofs/inode.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/fs/isofs/inode.c b/fs/isofs/inode.c
-index 3e4d53e26f947..379c9edc907cf 100644
---- a/fs/isofs/inode.c
-+++ b/fs/isofs/inode.c
-@@ -908,8 +908,22 @@ static int isofs_fill_super(struct super_block *s, void *data, int silent)
- 	 * we then decide whether to use the Joliet descriptor.
- 	 */
- 	inode = isofs_iget(s, sbi->s_firstdatazone, 0);
--	if (IS_ERR(inode))
--		goto out_no_root;
-+
-+	/*
-+	 * Fix for broken CDs with a corrupt root inode but a correct Joliet
-+	 * root directory.
-+	 */
-+	if (IS_ERR(inode)) {
-+		if (joliet_level && sbi->s_firstdatazone != first_data_zone) {
-+			printk(KERN_NOTICE
-+			       "ISOFS: root inode is unusable. "
-+			       "Disabling Rock Ridge and switching to Joliet.");
-+			sbi->s_rock = 0;
-+			inode = NULL;
-+		} else {
-+			goto out_no_root;
-+		}
-+	}
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -7303,6 +7303,15 @@ static int r8169_mdio_register(struct rt
+ 	struct mii_bus *new_bus;
+ 	int ret;
  
- 	/*
- 	 * Fix for broken CDs with Rock Ridge and empty ISO root directory but
--- 
-2.43.0
-
++	/* On some boards with this chip version the BIOS is buggy and misses
++	 * to reset the PHY page selector. This results in the PHY ID read
++	 * accessing registers on a different page, returning a more or
++	 * less random value. Fix this by resetting the page selector first.
++	 */
++	if (tp->mac_version == RTL_GIGA_MAC_VER_25 ||
++	    tp->mac_version == RTL_GIGA_MAC_VER_26)
++		r8169_mdio_write(tp, 0x1f, 0);
++
+ 	new_bus = devm_mdiobus_alloc(&pdev->dev);
+ 	if (!new_bus)
+ 		return -ENOMEM;
 
 
 
