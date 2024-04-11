@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-38895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E798A10E4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C28328A0EFD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:19:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A7EE1C216F0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62EF71F22576
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:19:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3547C1448C8;
-	Thu, 11 Apr 2024 10:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16EE1465A4;
+	Thu, 11 Apr 2024 10:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EG2prxRU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PBFkWbCq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64C9143C76;
-	Thu, 11 Apr 2024 10:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E33114600A;
+	Thu, 11 Apr 2024 10:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831910; cv=none; b=SIQyD/tmEmg5lHDW6S2FTB0xrhW4DZe7wqP1LSgXUESFZCA3BK08kZlpJX/TC5v4FZ3dPNhj4Qhr+326WKR5GU2Mee+8t0wvQ8N+xD9lrhVpY38geTP0yVqsMRRRl428BNEN/q2cEWEGoKxGmT0FNCIAss8etnL/prpRLRf5p4s=
+	t=1712830794; cv=none; b=YwOnCJiT+gzDDChFop79Ve75nX36/kQP/0bSrQ8w3APD4IHHfrgddfSqLOJZKG+scW7uDxZ2geXMjrGmQ6qUl6uLi8vPtKg/QIdXvCcdmZs0YorxXkU3iWaIgHAnKnuhEW4SrF8KA215yIpmwbXVAj6ltFLbE2qvsoM0ZHWtDjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831910; c=relaxed/simple;
-	bh=zlfmnf0sO3hkfj/coQ4QTVwJJKG+OSLnCt5meU+DmLI=;
+	s=arc-20240116; t=1712830794; c=relaxed/simple;
+	bh=Zeav+D7URTT0FJN0jcSITKqdZbgyBDhKKkMysafq3qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aUGe5X7ySSbfcWGlpmJeJ+DTLvqO3jxa8nvRUZIVjfTJ6wIcuEAUuv+RyHY3iLF8eqQ+UmscQOcjJkeFe+E0z7XdCjKUjJyuF7l/ydt6nNHaDoOOyAmNGZJdWxMYu3O/IjqpSQ+kVnZp7Ldl7pK0gYNi8ie+f6xcAs9azFVMpiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EG2prxRU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CEE9C433F1;
-	Thu, 11 Apr 2024 10:38:29 +0000 (UTC)
+	 MIME-Version; b=cfpLyjPk4PU+oL/hlTsHsfu1pyJITbU47r8JuuzOqIbnb3TW4XSMIO0KmumMeKmxdBtujZNwKxlyCf+PR2qk0ze1zg7Q2E1NjkuXunogOlXBbI1ZYCH4X+8LXJdNEgaoA3GXx/H9pscgfGHXfTpHttU6Qx7yixOC2MwXBpAxuXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PBFkWbCq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04EBFC433C7;
+	Thu, 11 Apr 2024 10:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831909;
-	bh=zlfmnf0sO3hkfj/coQ4QTVwJJKG+OSLnCt5meU+DmLI=;
+	s=korg; t=1712830794;
+	bh=Zeav+D7URTT0FJN0jcSITKqdZbgyBDhKKkMysafq3qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EG2prxRUG3mlIgtjeRZHk6hOr9d2E2nMMB1GXZzyzcSIqC4laI93y7VqvJMbR+AKe
-	 BmP4cwwJxEsLr2Lw5LsA+z+gzTIHcsxMdMqvDKcVo9GNmsAS91mxf1exs6633/plrQ
-	 4S85zb4y3w9Lr70GFF8/k9uxgIAXC6C39hyq6rjY=
+	b=PBFkWbCqP36HTLeaEXsWbbz9+fPp9amaFi7gw3GzI/p3U1+F4mP2bqA/lGfhxuLQ4
+	 s/1rEUfz+kPxn1TOfyGWTn3YpihlH3Ut8X2ktWJmu+ye22PZnk8E3WZYkxzqJxhKBs
+	 9CMV/Qh2kuezuL7k7VSQJ8wDUjq73PYUjt2qttno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 167/294] USB: core: Add hub_get() and hub_put() routines
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 5.4 121/215] usb: dwc2: host: Fix hibernation flow
 Date: Thu, 11 Apr 2024 11:55:30 +0200
-Message-ID: <20240411095440.666286928@linuxfoundation.org>
+Message-ID: <20240411095428.538803587@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,118 +60,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-commit ee113b860aa169e9a4d2c167c95d0f1961c6e1b8 upstream.
+commit 3c7b9856a82227db01a20171d2e24c7ce305d59b upstream.
 
-Create hub_get() and hub_put() routines to encapsulate the kref_get()
-and kref_put() calls in hub.c.  The new routines will be used by the
-next patch in this series.
+Added to backup/restore registers HFLBADDR, HCCHARi, HCSPLTi,
+HCTSIZi, HCDMAi and HCDMABi.
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/604da420-ae8a-4a9e-91a4-2d511ff404fb@rowland.harvard.edu
-Cc: stable <stable@kernel.org>
+Fixes: 58e52ff6a6c3 ("usb: dwc2: Move register save and restore functions")
+Fixes: d17ee77b3044 ("usb: dwc2: add controller hibernation support")
+CC: stable@vger.kernel.org
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/c2d10ee6098b9b009a8e94191e046004747d3bdd.1708945444.git.Minas.Harutyunyan@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |   23 ++++++++++++++++-------
- drivers/usb/core/hub.h |    2 ++
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ drivers/usb/dwc2/core.h |   12 ++++++++++++
+ drivers/usb/dwc2/hcd.c  |   18 ++++++++++++++++--
+ 2 files changed, 28 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -116,7 +116,6 @@ EXPORT_SYMBOL_GPL(ehci_cf_port_reset_rws
- #define HUB_DEBOUNCE_STEP	  25
- #define HUB_DEBOUNCE_STABLE	 100
+--- a/drivers/usb/dwc2/core.h
++++ b/drivers/usb/dwc2/core.h
+@@ -743,8 +743,14 @@ struct dwc2_dregs_backup {
+  * struct dwc2_hregs_backup - Holds host registers state before
+  * entering partial power down
+  * @hcfg:		Backup of HCFG register
++ * @hflbaddr:		Backup of HFLBADDR register
+  * @haintmsk:		Backup of HAINTMSK register
++ * @hcchar:		Backup of HCCHAR register
++ * @hcsplt:		Backup of HCSPLT register
+  * @hcintmsk:		Backup of HCINTMSK register
++ * @hctsiz:		Backup of HCTSIZ register
++ * @hdma:		Backup of HCDMA register
++ * @hcdmab:		Backup of HCDMAB register
+  * @hprt0:		Backup of HPTR0 register
+  * @hfir:		Backup of HFIR register
+  * @hptxfsiz:		Backup of HPTXFSIZ register
+@@ -752,8 +758,14 @@ struct dwc2_dregs_backup {
+  */
+ struct dwc2_hregs_backup {
+ 	u32 hcfg;
++	u32 hflbaddr;
+ 	u32 haintmsk;
++	u32 hcchar[MAX_EPS_CHANNELS];
++	u32 hcsplt[MAX_EPS_CHANNELS];
+ 	u32 hcintmsk[MAX_EPS_CHANNELS];
++	u32 hctsiz[MAX_EPS_CHANNELS];
++	u32 hcidma[MAX_EPS_CHANNELS];
++	u32 hcidmab[MAX_EPS_CHANNELS];
+ 	u32 hprt0;
+ 	u32 hfir;
+ 	u32 hptxfsiz;
+--- a/drivers/usb/dwc2/hcd.c
++++ b/drivers/usb/dwc2/hcd.c
+@@ -5319,9 +5319,16 @@ int dwc2_backup_host_registers(struct dw
+ 	/* Backup Host regs */
+ 	hr = &hsotg->hr_backup;
+ 	hr->hcfg = dwc2_readl(hsotg, HCFG);
++	hr->hflbaddr = dwc2_readl(hsotg, HFLBADDR);
+ 	hr->haintmsk = dwc2_readl(hsotg, HAINTMSK);
+-	for (i = 0; i < hsotg->params.host_channels; ++i)
++	for (i = 0; i < hsotg->params.host_channels; ++i) {
++		hr->hcchar[i] = dwc2_readl(hsotg, HCCHAR(i));
++		hr->hcsplt[i] = dwc2_readl(hsotg, HCSPLT(i));
+ 		hr->hcintmsk[i] = dwc2_readl(hsotg, HCINTMSK(i));
++		hr->hctsiz[i] = dwc2_readl(hsotg, HCTSIZ(i));
++		hr->hcidma[i] = dwc2_readl(hsotg, HCDMA(i));
++		hr->hcidmab[i] = dwc2_readl(hsotg, HCDMAB(i));
++	}
  
--static void hub_release(struct kref *kref);
- static int usb_reset_and_verify_device(struct usb_device *udev);
- static int hub_port_disable(struct usb_hub *hub, int port1, int set_state);
- static bool hub_port_warm_reset_required(struct usb_hub *hub, int port1,
-@@ -678,14 +677,14 @@ static void kick_hub_wq(struct usb_hub *
- 	 */
- 	intf = to_usb_interface(hub->intfdev);
- 	usb_autopm_get_interface_no_resume(intf);
--	kref_get(&hub->kref);
-+	hub_get(hub);
+ 	hr->hprt0 = dwc2_read_hprt0(hsotg);
+ 	hr->hfir = dwc2_readl(hsotg, HFIR);
+@@ -5355,10 +5362,17 @@ int dwc2_restore_host_registers(struct d
+ 	hr->valid = false;
  
- 	if (queue_work(hub_wq, &hub->events))
- 		return;
+ 	dwc2_writel(hsotg, hr->hcfg, HCFG);
++	dwc2_writel(hsotg, hr->hflbaddr, HFLBADDR);
+ 	dwc2_writel(hsotg, hr->haintmsk, HAINTMSK);
  
- 	/* the work has already been scheduled */
- 	usb_autopm_put_interface_async(intf);
--	kref_put(&hub->kref, hub_release);
-+	hub_put(hub);
- }
+-	for (i = 0; i < hsotg->params.host_channels; ++i)
++	for (i = 0; i < hsotg->params.host_channels; ++i) {
++		dwc2_writel(hsotg, hr->hcchar[i], HCCHAR(i));
++		dwc2_writel(hsotg, hr->hcsplt[i], HCSPLT(i));
+ 		dwc2_writel(hsotg, hr->hcintmsk[i], HCINTMSK(i));
++		dwc2_writel(hsotg, hr->hctsiz[i], HCTSIZ(i));
++		dwc2_writel(hsotg, hr->hcidma[i], HCDMA(i));
++		dwc2_writel(hsotg, hr->hcidmab[i], HCDMAB(i));
++	}
  
- void usb_kick_hub_wq(struct usb_device *hdev)
-@@ -1053,7 +1052,7 @@ static void hub_activate(struct usb_hub
- 			goto init2;
- 		goto init3;
- 	}
--	kref_get(&hub->kref);
-+	hub_get(hub);
- 
- 	/* The superspeed hub except for root hub has to use Hub Depth
- 	 * value as an offset into the route string to locate the bits
-@@ -1301,7 +1300,7 @@ static void hub_activate(struct usb_hub
- 		device_unlock(&hdev->dev);
- 	}
- 
--	kref_put(&hub->kref, hub_release);
-+	hub_put(hub);
- }
- 
- /* Implement the continuations for the delays above */
-@@ -1717,6 +1716,16 @@ static void hub_release(struct kref *kre
- 	kfree(hub);
- }
- 
-+void hub_get(struct usb_hub *hub)
-+{
-+	kref_get(&hub->kref);
-+}
-+
-+void hub_put(struct usb_hub *hub)
-+{
-+	kref_put(&hub->kref, hub_release);
-+}
-+
- static unsigned highspeed_hubs;
- 
- static void hub_disconnect(struct usb_interface *intf)
-@@ -1763,7 +1772,7 @@ static void hub_disconnect(struct usb_in
- 	if (hub->quirk_disable_autosuspend)
- 		usb_autopm_put_interface(intf);
- 
--	kref_put(&hub->kref, hub_release);
-+	hub_put(hub);
- }
- 
- static bool hub_descriptor_is_sane(struct usb_host_interface *desc)
-@@ -5857,7 +5866,7 @@ out_hdev_lock:
- 
- 	/* Balance the stuff in kick_hub_wq() and allow autosuspend */
- 	usb_autopm_put_interface(intf);
--	kref_put(&hub->kref, hub_release);
-+	hub_put(hub);
- 
- 	kcov_remote_stop();
- }
---- a/drivers/usb/core/hub.h
-+++ b/drivers/usb/core/hub.h
-@@ -117,6 +117,8 @@ extern void usb_hub_remove_port_device(s
- extern int usb_hub_set_port_power(struct usb_device *hdev, struct usb_hub *hub,
- 		int port1, bool set);
- extern struct usb_hub *usb_hub_to_struct_hub(struct usb_device *hdev);
-+extern void hub_get(struct usb_hub *hub);
-+extern void hub_put(struct usb_hub *hub);
- extern int hub_port_debounce(struct usb_hub *hub, int port1,
- 		bool must_be_connected);
- extern int usb_clear_port_feature(struct usb_device *hdev,
+ 	dwc2_writel(hsotg, hr->hprt0, HPRT0);
+ 	dwc2_writel(hsotg, hr->hfir, HFIR);
 
 
 
