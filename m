@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-38653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23EE58A0FB7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4BB8A0F32
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:21:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFF3B28216B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D2B61C22F05
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0A01422CE;
-	Thu, 11 Apr 2024 10:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5EDC140E3D;
+	Thu, 11 Apr 2024 10:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PX1jmz8a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEPyqkhg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E98145B1A;
-	Thu, 11 Apr 2024 10:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C45145353;
+	Thu, 11 Apr 2024 10:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831202; cv=none; b=O6SaqiUwn4UbTvx5/wVtLn7Z1E7ZEoWyO6IOmhF6zk2TcEfuzu97eVIK3v6ajaLY+zGFA3GFEsoP4x7MiZQ/3dkfL1dtVw90k6jJfnLBg9gX2SESR/A0jCdxnJDjZ7kl+qqTcYRAbraAP8H75wsLkJFqjHIIUKzbXh6pmH2Y/GY=
+	t=1712830909; cv=none; b=VhuhTQY8bKyYu49Ey2JgvskKdqPx89vibV3d3jofG3+kQHjYjanQGe0w/Q590biMqPiOn9dgmwbh1vxjGjYTjymac0OQauzb0zrs73rAzsjg2Zo1jBISCLL+cVFywRnwhN+cjrxM/8T/Z1nYI+i1N1Odbn34inD6vkl5yzsqDl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831202; c=relaxed/simple;
-	bh=5uEVEG5ZnBiOrWqVH6ZOzeu2fQODFT5PxXjTwDShS4E=;
+	s=arc-20240116; t=1712830909; c=relaxed/simple;
+	bh=+gsHpaPbVTbiYOU1UtxRjFm395cl7eKfLAikKAYr7Po=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XnFL2pe7ke4Q714+HRE/Y6LjMLyPRN4vkhwMMLidSw4Inb69B5/4NERPrFKX7WEMyOdMZF7TNeBnqzLV+S/1kd7gxUp5nnwafZDIPOEGRsbDfpT293tRChaSETwdcjnwopn6acnzFfln14adUpwknFDxKuidLANKrVE7Ef3kNb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PX1jmz8a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D067C433C7;
-	Thu, 11 Apr 2024 10:26:41 +0000 (UTC)
+	 MIME-Version; b=kDFbwjKztjNVGU2GyQLdgJxgesaEqKDaBViDL6fJ6+lLiFC772/EVOmjvgp937cSTMAcuG9LpYgd8tOpAWDfP42NRa+e2DpKqY2V2GljzPYzXHy1mY4JMbyMFGlfIwiuPPplWl5mSdBOrW3GC62wGVlLpf28nAbkbAHIoF6ejAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEPyqkhg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED312C433F1;
+	Thu, 11 Apr 2024 10:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831202;
-	bh=5uEVEG5ZnBiOrWqVH6ZOzeu2fQODFT5PxXjTwDShS4E=;
+	s=korg; t=1712830909;
+	bh=+gsHpaPbVTbiYOU1UtxRjFm395cl7eKfLAikKAYr7Po=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PX1jmz8aU/vPdteLWz3diyuRwKFO2JB7ptZBRfLx03XFOe02Ok0mWRy8papFRH1pf
-	 dAyYloZio50AYgcO7HzX3pLFe1E5KDzV7PnR6wL7nWPrDjOq26FTzojmb24L7RIxcr
-	 W1Fyqor5Cr/hlYImDDQdqDmqsRalrFja1Og0OStY=
+	b=jEPyqkhgSMI9BaMVwg/bmD9z/BAwX84nrxMBOPADdiVPyx6mx56s19TOtV3MLUTJG
+	 PbUwRaZ9CN/uGtR49apIzQqI2A/0m3iWLxC79zTrH5VFwSraJ6g2pgekLmjsOvx4Oz
+	 B8zxx0SyvguUROzMduI/7tHsmQCZphf2DNhhRtM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Jan Karcher <jaka@linux.ibm.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/114] net/smc: reduce rtnl pressure in smc_pnet_create_pnetids_list()
+Subject: [PATCH 5.4 160/215] initramfs: switch initramfs unpacking to struct file based APIs
 Date: Thu, 11 Apr 2024 11:56:09 +0200
-Message-ID: <20240411095418.151447032@linuxfoundation.org>
+Message-ID: <20240411095429.687161343@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,98 +62,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 00af2aa93b76b1bade471ad0d0525d4d29ca5cc0 ]
+[ Upstream commit bf6419e4d5440c6d414a320506c5488857a5b001 ]
 
-Many syzbot reports show extreme rtnl pressure, and many of them hint
-that smc acquires rtnl in netns creation for no good reason [1]
+There is no good reason to mess with file descriptors from in-kernel
+code, switch the initramfs unpacking to struct file based write
+instead.
 
-This patch returns early from smc_pnet_net_init()
-if there is no netdevice yet.
-
-I am not even sure why smc_pnet_create_pnetids_list() even exists,
-because smc_pnet_netdev_event() is also calling
-smc_pnet_add_base_pnetid() when handling NETDEV_UP event.
-
-[1] extract of typical syzbot reports
-
-2 locks held by syz-executor.3/12252:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-2 locks held by syz-executor.4/12253:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-2 locks held by syz-executor.1/12257:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-2 locks held by syz-executor.2/12261:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-2 locks held by syz-executor.0/12265:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-2 locks held by syz-executor.3/12268:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-2 locks held by syz-executor.4/12271:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-2 locks held by syz-executor.1/12274:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-2 locks held by syz-executor.2/12280:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Wenjia Zhang <wenjia@linux.ibm.com>
-Cc: Jan Karcher <jaka@linux.ibm.com>
-Cc: "D. Wythe" <alibuda@linux.alibaba.com>
-Cc: Tony Lu <tonylu@linux.alibaba.com>
-Cc: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240302100744.3868021-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: 4624b346cf67 ("init: open /initrd.image with O_LARGEFILE")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_pnet.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ init/initramfs.c | 47 ++++++++++++++++++++++++++---------------------
+ 1 file changed, 26 insertions(+), 21 deletions(-)
 
-diff --git a/net/smc/smc_pnet.c b/net/smc/smc_pnet.c
-index 11775401df689..306b536fa89e9 100644
---- a/net/smc/smc_pnet.c
-+++ b/net/smc/smc_pnet.c
-@@ -806,6 +806,16 @@ static void smc_pnet_create_pnetids_list(struct net *net)
- 	u8 ndev_pnetid[SMC_MAX_PNETID_LEN];
- 	struct net_device *dev;
+diff --git a/init/initramfs.c b/init/initramfs.c
+index 00a32799a38b0..1bc854fdf8302 100644
+--- a/init/initramfs.c
++++ b/init/initramfs.c
+@@ -11,13 +11,14 @@
+ #include <linux/utime.h>
+ #include <linux/file.h>
  
-+	/* Newly created netns do not have devices.
-+	 * Do not even acquire rtnl.
-+	 */
-+	if (list_empty(&net->dev_base_head))
-+		return;
+-static ssize_t __init xwrite(int fd, const char *p, size_t count)
++static ssize_t __init xwrite(struct file *file, const char *p, size_t count,
++		loff_t *pos)
+ {
+ 	ssize_t out = 0;
+ 
+ 	/* sys_write only can write MAX_RW_COUNT aka 2G-4K bytes at most */
+ 	while (count) {
+-		ssize_t rv = ksys_write(fd, p, count);
++		ssize_t rv = kernel_write(file, p, count, pos);
+ 
+ 		if (rv < 0) {
+ 			if (rv == -EINTR || rv == -EAGAIN)
+@@ -315,7 +316,8 @@ static int __init maybe_link(void)
+ 	return 0;
+ }
+ 
+-static __initdata int wfd;
++static __initdata struct file *wfile;
++static __initdata loff_t wfile_pos;
+ 
+ static int __init do_name(void)
+ {
+@@ -332,16 +334,17 @@ static int __init do_name(void)
+ 			int openflags = O_WRONLY|O_CREAT;
+ 			if (ml != 1)
+ 				openflags |= O_TRUNC;
+-			wfd = ksys_open(collected, openflags, mode);
+-
+-			if (wfd >= 0) {
+-				ksys_fchown(wfd, uid, gid);
+-				ksys_fchmod(wfd, mode);
+-				if (body_len)
+-					ksys_ftruncate(wfd, body_len);
+-				vcollected = kstrdup(collected, GFP_KERNEL);
+-				state = CopyFile;
+-			}
++			wfile = filp_open(collected, openflags, mode);
++			if (IS_ERR(wfile))
++				return 0;
++			wfile_pos = 0;
 +
-+	/* Note: This might not be needed, because smc_pnet_netdev_event()
-+	 * is also calling smc_pnet_add_base_pnetid() when handling
-+	 * NETDEV_UP event.
-+	 */
- 	rtnl_lock();
- 	for_each_netdev(net, dev)
- 		smc_pnet_add_base_pnetid(net, dev, ndev_pnetid);
++			vfs_fchown(wfile, uid, gid);
++			vfs_fchmod(wfile, mode);
++			if (body_len)
++				vfs_truncate(&wfile->f_path, body_len);
++			vcollected = kstrdup(collected, GFP_KERNEL);
++			state = CopyFile;
+ 		}
+ 	} else if (S_ISDIR(mode)) {
+ 		ksys_mkdir(collected, mode);
+@@ -363,16 +366,16 @@ static int __init do_name(void)
+ static int __init do_copy(void)
+ {
+ 	if (byte_count >= body_len) {
+-		if (xwrite(wfd, victim, body_len) != body_len)
++		if (xwrite(wfile, victim, body_len, &wfile_pos) != body_len)
+ 			error("write error");
+-		ksys_close(wfd);
++		fput(wfile);
+ 		do_utime(vcollected, mtime);
+ 		kfree(vcollected);
+ 		eat(body_len);
+ 		state = SkipIt;
+ 		return 0;
+ 	} else {
+-		if (xwrite(wfd, victim, byte_count) != byte_count)
++		if (xwrite(wfile, victim, byte_count, &wfile_pos) != byte_count)
+ 			error("write error");
+ 		body_len -= byte_count;
+ 		eat(byte_count);
+@@ -620,21 +623,23 @@ static inline void clean_rootfs(void)
+ static void __init populate_initrd_image(char *err)
+ {
+ 	ssize_t written;
+-	int fd;
++	struct file *file;
++	loff_t pos = 0;
+ 
+ 	unpack_to_rootfs(__initramfs_start, __initramfs_size);
+ 
+ 	printk(KERN_INFO "rootfs image is not initramfs (%s); looks like an initrd\n",
+ 			err);
+-	fd = ksys_open("/initrd.image", O_WRONLY | O_CREAT, 0700);
+-	if (fd < 0)
++	file = filp_open("/initrd.image", O_WRONLY | O_CREAT, 0700);
++	if (IS_ERR(file))
+ 		return;
+ 
+-	written = xwrite(fd, (char *)initrd_start, initrd_end - initrd_start);
++	written = xwrite(file, (char *)initrd_start, initrd_end - initrd_start,
++			&pos);
+ 	if (written != initrd_end - initrd_start)
+ 		pr_err("/initrd.image: incomplete write (%zd != %ld)\n",
+ 		       written, initrd_end - initrd_start);
+-	ksys_close(fd);
++	fput(file);
+ }
+ #else
+ static void __init populate_initrd_image(char *err)
 -- 
 2.43.0
 
