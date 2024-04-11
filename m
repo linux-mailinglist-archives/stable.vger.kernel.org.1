@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6458A0E8A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FEC88A1086
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 146BB286009
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:15:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BEEB28ABEF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7154613F452;
-	Thu, 11 Apr 2024 10:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0725614C5A9;
+	Thu, 11 Apr 2024 10:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ss+l6IwW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+cTfHTK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B297145FF0;
-	Thu, 11 Apr 2024 10:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA9214C5A0;
+	Thu, 11 Apr 2024 10:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830540; cv=none; b=T2nmvdBtff6ezFz2v6poBs1OXo7abCoGAc0n41oQTfgf6okUQ7m5R8wcs70RXulwt57E/Cg7wT++JbY4vHYtDmKFgxJXoel+Ux3SRvYFeQJOUIInd+92bkQvlwvCcpnjWEgOaVYtdFhAChrVfaWrxuM57H4KxsTP/GqZFtOSBGU=
+	t=1712831653; cv=none; b=JaOksIRsFJXPkTByx0KHuStJdM09V7B77jPEjzAaY9wXuIDF5eI9amtT4kbOl5zAdAmS86elVlborK4ou4y+NbzbGPif0Xj9P2oDjNUvJ+Sx7oLmPrvInjSr80fyNeck+K+3WydQ6MzMy5cJqyDmcquwNCnROjbCW3oltSdHz/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830540; c=relaxed/simple;
-	bh=lzXy1O7N/JUlfj00r1jDwuapNf/O1AXmjxPPj/aYfZw=;
+	s=arc-20240116; t=1712831653; c=relaxed/simple;
+	bh=EUrMJZMVbFAgZX8vudpMJECPtbSnSEPY4sl2L4DjVpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jHbIgHNlA8YUJuGqY1If5QQI5fakAmeiTNz+1SfZx77XRRP2eriofL+2u5l0/CL7/B9Ri3gdbocEep5v0oXdvsNb9ZCVvlCkibtuVWRlCl7668RLecppkfpzza2wjX8H4RojkET0JCG2I4siWDhKPeBRbpw65dpTZY/WLRSswUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ss+l6IwW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F3CC433C7;
-	Thu, 11 Apr 2024 10:15:39 +0000 (UTC)
+	 MIME-Version; b=QZ/VScI4GfRepZG2rHUsHxWfP9SmoPObzvf9u6linFG8aLhbrrJYHrrLY/i9KBe4EMsp2ibFEBcNFBCP6/HKCkKE8lYSPmNY5giANrRmOCPDQVYAD4ON68fdXlZLknebH786TC3xJ47GeoSk/RSDPYbx8wfasmMjj4uyRshhYJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+cTfHTK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2D3C433F1;
+	Thu, 11 Apr 2024 10:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830540;
-	bh=lzXy1O7N/JUlfj00r1jDwuapNf/O1AXmjxPPj/aYfZw=;
+	s=korg; t=1712831653;
+	bh=EUrMJZMVbFAgZX8vudpMJECPtbSnSEPY4sl2L4DjVpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ss+l6IwWtdg3DmOZM7Boq5BYeIhDrguv9GUAcYd3lKyT7O4X6BSF39rZdkTBgAEzh
-	 SQf826zW2GYoMWCu5jap54sZv0KZrawjvpsu8oGFajK9cewa8iTh1gv4mUrodtwDpq
-	 qHanjs+bZLgJr1aoy6czBIrnPzXJjUw2+mFwzqTU=
+	b=M+cTfHTKqELyIk/AoGt0dPQ/y3G+/RZcnmQobQ3cfnLkcHNceDfnLOjjg2FXaYvOS
+	 IlPNVzdZhvA/fzE4XuKHz9c8xh4LU3qOxAXAen+qfsRh85SImI8rW63YHB7aluUtq7
+	 cGAtIh0cPFQDq2H6H1+34fLEz7zYRVOJWjg4ZFIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Sean V Kelley <sean.v.kelley@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 035/215] clk: qcom: mmcc-apq8084: fix terminating of frequency table arrays
+Subject: [PATCH 5.10 081/294] PCI/ERR: Clear AER status only when we control AER
 Date: Thu, 11 Apr 2024 11:54:04 +0200
-Message-ID: <20240411095425.953441049@linuxfoundation.org>
+Message-ID: <20240411095438.124369801@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Sean V Kelley <sean.v.kelley@intel.com>
 
-[ Upstream commit a903cfd38d8dee7e754fb89fd1bebed99e28003d ]
+[ Upstream commit aa344bc8b727b47b4350b59d8166216a3f351e55 ]
 
-The frequency table arrays are supposed to be terminated with an
-empty element. Add such entry to the end of the arrays where it
-is missing in order to avoid possible out-of-bound access when
-the table is traversed by functions like qcom_find_freq() or
-qcom_find_freq_floor().
+In some cases a bridge may not exist as the hardware controlling may be
+handled only by firmware and so is not visible to the OS. This scenario is
+also possible in future use cases involving non-native use of RCECs by
+firmware. In this scenario, we expect the platform to retain control of the
+bridge and to clear error status itself.
 
-Only compile tested.
+Clear error status only when the OS has native control of AER.
 
-Fixes: 2b46cd23a5a2 ("clk: qcom: Add APQ8084 Multimedia Clock Controller (MMCC) support")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-6-074334f0905c@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sean V Kelley <sean.v.kelley@intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Stable-dep-of: 002bf2fbc00e ("PCI/AER: Block runtime suspend when handling errors")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/mmcc-apq8084.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/pcie/err.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/mmcc-apq8084.c b/drivers/clk/qcom/mmcc-apq8084.c
-index fbfcf00067394..c2fd0e8f4bc09 100644
---- a/drivers/clk/qcom/mmcc-apq8084.c
-+++ b/drivers/clk/qcom/mmcc-apq8084.c
-@@ -333,6 +333,7 @@ static struct freq_tbl ftbl_mmss_axi_clk[] = {
- 	F(333430000, P_MMPLL1, 3.5, 0, 0),
- 	F(400000000, P_MMPLL0, 2, 0, 0),
- 	F(466800000, P_MMPLL1, 2.5, 0, 0),
-+	{ }
- };
+diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
+index 984aa023c753f..a806dfd94586c 100644
+--- a/drivers/pci/pcie/err.c
++++ b/drivers/pci/pcie/err.c
+@@ -176,6 +176,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+ 	int type = pci_pcie_type(dev);
+ 	struct pci_dev *bridge;
+ 	pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
++	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
  
- static struct clk_rcg2 mmss_axi_clk_src = {
-@@ -357,6 +358,7 @@ static struct freq_tbl ftbl_ocmemnoc_clk[] = {
- 	F(150000000, P_GPLL0, 4, 0, 0),
- 	F(228570000, P_MMPLL0, 3.5, 0, 0),
- 	F(320000000, P_MMPLL0, 2.5, 0, 0),
-+	{ }
- };
+ 	/*
+ 	 * If the error was detected by a Root Port, Downstream Port, or
+@@ -227,9 +228,17 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+ 	pci_dbg(bridge, "broadcast resume message\n");
+ 	pci_walk_bridge(bridge, report_resume, &status);
  
- static struct clk_rcg2 ocmemnoc_clk_src = {
+-	if (pcie_aer_is_native(bridge))
++	/*
++	 * If we have native control of AER, clear error status in the Root
++	 * Port or Downstream Port that signaled the error.  If the
++	 * platform retained control of AER, it is responsible for clearing
++	 * this status.  In that case, the signaling device may not even be
++	 * visible to the OS.
++	 */
++	if (host->native_aer || pcie_ports_native) {
+ 		pcie_clear_device_status(bridge);
+-	pci_aer_clear_nonfatal_status(bridge);
++		pci_aer_clear_nonfatal_status(bridge);
++	}
+ 	pci_info(bridge, "device recovery successful\n");
+ 	return status;
+ 
 -- 
 2.43.0
 
