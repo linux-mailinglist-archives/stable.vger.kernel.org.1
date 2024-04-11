@@ -1,103 +1,56 @@
-Return-Path: <stable+bounces-38059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B778A09E6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:34:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36BA78A0A2A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:41:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59435284D22
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 07:34:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAAA61F21F6F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 07:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE8913E40C;
-	Thu, 11 Apr 2024 07:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7191113E896;
+	Thu, 11 Apr 2024 07:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="i4SLKJSy";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="c6PX6CsF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ncCaGgNz"
 X-Original-To: stable@vger.kernel.org
-Received: from wfhigh5-smtp.messagingengine.com (wfhigh5-smtp.messagingengine.com [64.147.123.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6410A13E051;
-	Thu, 11 Apr 2024 07:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DE113D623;
+	Thu, 11 Apr 2024 07:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712820889; cv=none; b=lRr3xp/MG28Z5/uxMmiYALvqZMdXHHMTIzsu/PHkIR1v1sEG9ynvquv1BjhQitPFZTcYhqyoXXAIejzgnsBgGYc+UzYiLnYHJ1duCIXasZWdwaX3jZDeg1Vicq2TS1hysh2FP9nwYBS1e27q7nM8xmgZTMWTsgDBk+PoivEovCE=
+	t=1712821229; cv=none; b=X0odJb+e77JUe2QiFhM0oKOmUJqJeSKoXotpbaHDPnVpEQZII8BKRMHgurwI/8leUP+BGwC3sjH6t1/gDoAcYd1lFomETQBSmyMLT9VQE+vhuI8gKAJBErSfs0WEY17xr558fjz1iGLyMyFKfTofTiOydVOBoTYTFxTC8fewmwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712820889; c=relaxed/simple;
-	bh=FCIlykqS4nGQUWYzHKa1BQ22c1g7YOdrq4g3QJ1CV3I=;
+	s=arc-20240116; t=1712821229; c=relaxed/simple;
+	bh=gU83pKVxE28bT28SwDUVpbrEVoqeK57hhHrjjTx/m/0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CUyHALnXsm+a1gnD1haYfP8rc262zLgmrjC0siLjYyXH6ll0rC0dfNDsN3RpAU0PCQ1NXruiLpDb82Vmmeu3rockl7LBQ7RqEJ5zuCT/h/dO4k+nKDs9iP3j/zZUuehgA/PprFBsrepVnMk9eRDsj8PfoQM0l0AfcWoVSgWTk+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=i4SLKJSy; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=c6PX6CsF; arc=none smtp.client-ip=64.147.123.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfhigh.west.internal (Postfix) with ESMTP id B357D1800073;
-	Thu, 11 Apr 2024 03:34:43 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Thu, 11 Apr 2024 03:34:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1712820882; x=1712907282; bh=4e17aZLxCZ
-	/xmK6TqYtTj729Icc/M1cb6AfMgwOtJCA=; b=i4SLKJSyFXYxRX8ruMU5R8pM0Y
-	Rr+BOCWRWXLEhQT1K9Cs7uaJ2bLe1PqfxVxIkrOPR5ogAYAZHdOFpgIG9LpAuVJ3
-	h0zcczGQh8FqJj1EOJshLarSCTrF6WvC3B4p9SZtUHtmgkkQHfj+5LUPohcBPPtL
-	uEjl2wYjlLaPppEQTy7S+3b2bh4JI54rU/3nLNgxOBOj9dxSM/PVktCwkHVwb3ox
-	xDo3mYn1EcPWyAlzriXBZZmhIjGwVlX8TqLLd7PBgpNTXLkr5olYbUA76sQEkErA
-	puyxDcr6Xa6VGtAWP8LbSEN/2PFgvsi+CDKmGBA+XiyMNQU2pkZseKXXOqNA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1712820882; x=1712907282; bh=4e17aZLxCZ/xmK6TqYtTj729Icc/
-	M1cb6AfMgwOtJCA=; b=c6PX6CsFIgWxAwy0oNMI/az7N4racBVWkZ2sEWMg8HZt
-	1YPs6C+0LohVlfwgjb7K95wsjuHQwLl6sS3LoOXDDK0vmQ2bMlPkvcbhfFZJ4Kk1
-	8opTkn/P9ZR2uz+L4US8z3Z1pZ9Zf8F5AhEcskPX4+Rfi+013SaQTyRfCCDtCtJn
-	dm254cZ8Vymx3lxpLKJajkrwJAvRkxqmdc+JSlBIUhwu643lf+xpdJMGFveO8FKt
-	nh3mvc+4hsqetQvPBnzbNfTFitYoTFUC+numCY7jTPCvpN9LM1K671bRljCX39aa
-	Nb8uFnf+HPw7PNP5zEWsZu7NjdZYB2jHqdksF2JPTA==
-X-ME-Sender: <xms:kpIXZkYZBZAwT_mFTt8Qbzo8wNvIU8ngw2DsfK6k3OdMeSLvZXxk5w>
-    <xme:kpIXZvbCXi8srNjTZ1h0qTlmxEcww1wR7Bg__2Dy28FmEmJUGTPHOXXNkLnEO0ct2
-    Yo3fqvBdFaPqw>
-X-ME-Received: <xmr:kpIXZu9eqlTOkQc-aTbLGZdpxrPQpAozlFwdZ9wCx7l7QVAbdaGkOWj9aFpnTxn_u95SXw3ZqYIHA4SzmwCfCWuoyWtCz0MWyjWZDg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehjedguddukecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
-    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeekje
-    ejtdeutdejuedvleeggeevveehieegudefueektdevieetuddtgfegueegveenucffohhm
-    rghinhepughtshdrnhhofienucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
-    grihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:kpIXZuqRDCkr1yiiGU-sN1kHPE7RNB3-on3GZLKlYk8INqnio0q12g>
-    <xmx:kpIXZvogbnEgGL-fbi7v-GPCF38iUW8LDsfwBKRp3cPixZpwrOuH_g>
-    <xmx:kpIXZsRC4_CwDKAcjrawuVzHp6PjC6quz4YwxuJdT3Lj1iEflsunuw>
-    <xmx:kpIXZvoWDbZTWaGSZNjZ73uwIv0H9UgS3rKuuxf4O1WSIHRSWTG1qw>
-    <xmx:kpIXZrq_20fZBhzVx79U-UyZq1gSwNDF7qoDML-RopHMuLSmGRJpW59M>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 11 Apr 2024 03:34:41 -0400 (EDT)
-Date: Thu, 11 Apr 2024 09:34:39 +0200
-From: Greg KH <greg@kroah.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>, stable@vger.kernel.org,
-	stable-commits@vger.kernel.org, buddyjojo06@outlook.com,
-	Bjorn Andersson <andersson@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>
-Subject: Re: Patch "arm64: dts: qcom: Add support for Xiaomi Redmi Note 9S"
- has been added to the 6.8-stable tree
-Message-ID: <2024041112-shank-winking-0b54@gregkh>
-References: <20240410155728.1729320-1-sashal@kernel.org>
- <e06402a9-584f-4f0c-a61e-d415a8b0c441@linaro.org>
- <2024041016-scope-unfair-2b6a@gregkh>
- <addf37ca-f495-4531-86af-6baf1f3709c3@linaro.org>
- <2024041132-heaviness-jasmine-d2d5@gregkh>
- <641eb906-4539-4487-9ea4-4f93a9b7e3cc@linaro.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=uWBck0JeUwBMHqCV1FglwDh3jK0cWjFO2UnTnXSCrkBHT6Q1v1CbJIcZy6uGth7xAFxoWOAtAnawgYikAMXiqeaNEP+16TMg3H63SvpbM/Il3CR1decYvpeNdt2l46DPQsrsuAaXAPFAHbopg7G4kujqlVe4XY6EC6BtPsN5vf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ncCaGgNz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6FDC433C7;
+	Thu, 11 Apr 2024 07:40:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712821228;
+	bh=gU83pKVxE28bT28SwDUVpbrEVoqeK57hhHrjjTx/m/0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ncCaGgNzsedv/lqUFjuTRvttWoSfT7U5LpQoQN0Lp2zOYTaOW7o99yR2NoxR9DcTl
+	 J9pF+ARn4Wzpgc9UXrLqDjC4p9dbntLiNKVSk8n7YyxPnCIcY3VB7ZN4RwLC9WeEDo
+	 ClgkTXb2mUx3pgTq0VHo4lxi8QfxXqXF39AhD6cg=
+Date: Thu, 11 Apr 2024 09:40:25 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: Sasha Levin <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	stable@vger.kernel.org, workflows@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/4] docs: stable-kernel-rules: mention "no
+ semi-automatic backport"
+Message-ID: <2024041123-earthling-primarily-4656@gregkh>
+References: <cover.1712812895.git.linux@leemhuis.info>
+ <c0a08b160b286e8c98549eedb37404c6e784cf8a.1712812895.git.linux@leemhuis.info>
+ <2024041156-backache-dolly-a420@gregkh>
+ <3f395eca-fc24-469b-b5fc-de47ab2a6861@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -106,67 +59,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <641eb906-4539-4487-9ea4-4f93a9b7e3cc@linaro.org>
+In-Reply-To: <3f395eca-fc24-469b-b5fc-de47ab2a6861@leemhuis.info>
 
-On Thu, Apr 11, 2024 at 09:27:28AM +0200, Krzysztof Kozlowski wrote:
-> On 11/04/2024 09:22, Greg KH wrote:
-> > On Wed, Apr 10, 2024 at 08:24:49PM +0200, Krzysztof Kozlowski wrote:
-> >> On 10/04/2024 20:02, Greg KH wrote:
-> >>> On Wed, Apr 10, 2024 at 07:58:40PM +0200, Konrad Dybcio wrote:
-> >>>>
-> >>>>
-> >>>> On 4/10/24 17:57, Sasha Levin wrote:
-> >>>>> This is a note to let you know that I've just added the patch titled
-> >>>>>
-> >>>>>      arm64: dts: qcom: Add support for Xiaomi Redmi Note 9S
-> >>>>
-> >>>> autosel has been reeaaaaaly going over the top lately, particularly
-> >>>> with dts patches.. I'm not sure adding support for a device is
-> >>>> something that should go to stable
-> >>>
-> >>> Simple device ids and quirks have always been stable material.
-> >>>
+On Thu, Apr 11, 2024 at 08:59:39AM +0200, Thorsten Leemhuis wrote:
+> On 11.04.24 07:29, Greg Kroah-Hartman wrote:
+> > On Thu, Apr 11, 2024 at 07:25:04AM +0200, Thorsten Leemhuis wrote:
+> >> Some developers deliberately steer clear of 'Fixes:' tags to prevent
+> >> changes from being backported semi-automatically by the stable team.
+> >> That somewhat undermines the reason for the existence of the Fixes: tag,
+> >> hence point out there is an alternative to reach the same effect.
 > >>
-> >> That's true, but maybe DTS should have an exception. I guess you think
-> >> this is trivial device ID, because the patch contents is small. But it
-> >> is or it can be misleading. The patch adds new small DTS file which
-> >> includes another file:
+> >> Link: https://lore.kernel.org/all/dfd87673-c581-4b4b-b37a-1cf5c817240d@leemhuis.info/
+> >> Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
+> >> ---
+> >>  Documentation/process/stable-kernel-rules.rst | 6 ++++++
+> >>  1 file changed, 6 insertions(+)
 > >>
-> >> 	#include "sm7125-xiaomi-common.dtsi"
-> >>
-> >> Which includes another 7 files:
-> >>
-> >> 	#include <dt-bindings/arm/qcom,ids.h>
-> >> 	#include <dt-bindings/firmware/qcom,scm.h>
-> >> 	#include <dt-bindings/gpio/gpio.h>
-> >> 	#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
-> >> 	#include "sm7125.dtsi"
-> >> 	#include "pm6150.dtsi"
-> >> 	#include "pm6150l.dtsi"
-> >>
-> >> Out of which last three are likely to be changing as well.
-> >>
-> >> This means that following workflow is reasonable and likely:
-> >> 1. Add sm7125.dtsi (or pm6150.dtsi or pm6150l.dtsi)
-> >> 2. Add some sm7125 board (out of scope here).
-> >> 3. Release new kernel, e.g. v6.7.
-> >> 4. Make more changes to sm7125.dtsi
-> >> 5. The patch discussed here, so one adding sm7125-xiaomi-curtana.dts.
-> >>
-> >> Now if you backport only (5) above, without (4), it won't work. Might
-> >> compile, might not. Even if it compiles, might not work.
-> >>
-> >> The step (4) here might be small, but might be big as well.
+> >> diff --git a/Documentation/process/stable-kernel-rules.rst b/Documentation/process/stable-kernel-rules.rst
+> >> index 7bb16d42a51833..ebd57cb9277f7b 100644
+> >> --- a/Documentation/process/stable-kernel-rules.rst
+> >> +++ b/Documentation/process/stable-kernel-rules.rst
+> >> @@ -117,6 +117,12 @@ comment to pass arbitrary or predefined notes:
+> >>     Note, such tagging is unnecessary if the stable team can derive the
+> >>     appropriate versions from Fixes: tags.
+> >>  
+> >> + * Prevent semi-automatic backporting of changes carrying a 'Fixes:' tag:
+> >> +
+> >> +   .. code-block:: none
+> >> +
+> >> +     Cc: <stable@vger.kernel.org> # no semi-automatic backport
 > > 
-> > Fair enough.  So should we drop this change?
+> > I do not understand, why are you saying "cc: stable" here if you do NOT
+> > want it backported?
 > 
-> I vote for dropping. Also, I think such DTS patches should not be picked
-> automatically via AUTOSEL. Manual backports or targetted Cc-stable,
-> assuming that backporter investigated it, seem ok.
+> Because the only alternative the developers have to make the stable team
+> not pick a single patch[1] is to deliberately omit a Fixes: tag even if
+> the patch normally should have one. Like it was done here:
+> https://lore.kernel.org/all/cover.1712226175.git.antony.antony@secunet.com/
 
-Sasha now dropped this, thanks.
+That feels odd, but ok I now see the need for this for some minor set of
+changes (i.e. this has rarely come up in the past 15+ years)
 
-Sasha, want to add dts changes to the AUTOSEL "deny-list"?
+> And that somehow felt wrong to me, as discussed earlier in
+> https://lore.kernel.org/all/dfd87673-c581-4b4b-b37a-1cf5c817240d@leemhuis.info/
+> 
+> [1] e.g. if they don't have or want their whole subsystem marked as
+> 'ignore for the AUTOSEL and the "Fixes tag only" tools'
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/ignore_list
+> 
+> > And what do you mean by "semi-automatic"?
+> 
+> E.g. 'ignore for the AUTOSEL and the "Fixes tag only" tools'. That was
+> the best term I came up with.
+
+Thinking about it more, I think we need to be much more explicit, and
+provide the reason why.
+
+How about:
+	cc: <do-not-apply-to-stable@kernel.org> # Reason goes here, and must be present
+
+and we can make that address be routed to /dev/null just like
+<stable@kernel.org> is?
 
 thanks,
 
