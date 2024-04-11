@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-38818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C7668A1092
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B22D18A0D06
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:59:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1739B24F52
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4183A1F21B1B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B1A148858;
-	Thu, 11 Apr 2024 10:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC6F145B04;
+	Thu, 11 Apr 2024 09:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCFYg77g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rre67j2D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538C61474B0;
-	Thu, 11 Apr 2024 10:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3BC13DDDD;
+	Thu, 11 Apr 2024 09:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831680; cv=none; b=K6z+iyDbJtT7SNLxcXTl1RkxJ8IxldM7OokOfYnLMXbdaFyHwhAfpO1t5ft9t3vmgV+yGU0hwOE881VMX98FdkTNNAyKdjIE6fyZYGA4UO8pIczgmpKzwQN8KdDFkBLauJcl8GmGuLgQrlAHCgLL7U9d/1K5hnMgokZ6X8aFqM0=
+	t=1712829566; cv=none; b=IXCPdOsAtB6CRy4QV1f6uRWyxULpx5YCYYJ1FYSKAGE7+QsTXFnALRHP6NSMyIPte5CVDNCfa8SeoedOnzN/xYk+Q25Itsc7hcqTpf5EZroEUVxyN14h/sbM+HPurnZ9Vx0Ky4MdDNy+nM54/qhjnsmV7zDwVnZi/GLWNeT2/Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831680; c=relaxed/simple;
-	bh=OaSAt0mPncQPE0pngTTVCZYIqZrtcR1DfXGq8Ly5z5I=;
+	s=arc-20240116; t=1712829566; c=relaxed/simple;
+	bh=asvnJddpC5jFrjDsV3qMgq90h2uoC/vycIiBy00QAa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e55SLW+aPngwNfrkrOysRlmj9eOapX+9fi2U/rwPqz6mcoGmsCKeHTTq2s3H+y7vZLFqKXoMFs/IjoBvjHPV9KVtiYANTjIrotNLsLm9W94Ys54lBGf7XEsxDUD73hN+ytSNjjLXDXPrCptgJdpQErgYFLY14cHoQeHIulOJsLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCFYg77g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA765C433F1;
-	Thu, 11 Apr 2024 10:34:39 +0000 (UTC)
+	 MIME-Version; b=SxbE8ELeROPvlZmKWOGhza2paqj89FDEpRgd/2jkYKTb5dGnaH58lC5vWElD6VLaEm5Jfm0blxW0+qL5VlH85YgI//ixzhMcFm2zeCTHA0EYgtAUgaL2p0AOhIUdZ+n+zwpV1DYwQ3OyBf3w3tPquNYKezeDHO+31dCAKeIRDKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rre67j2D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04CE0C433F1;
+	Thu, 11 Apr 2024 09:59:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831680;
-	bh=OaSAt0mPncQPE0pngTTVCZYIqZrtcR1DfXGq8Ly5z5I=;
+	s=korg; t=1712829566;
+	bh=asvnJddpC5jFrjDsV3qMgq90h2uoC/vycIiBy00QAa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hCFYg77g+QtJB9V5p+LLKSCJWR4jvQk1f2HkkLvEVfQkbgCz74voWXZWPbZSY2Us8
-	 /9snLCb34w31454ltGcaUyLxNN2H15S/E4YVpZwlyK/+JADbKbHTCnJAr7H4kg/b/0
-	 2n24dxfC0q8cf8f54djKVqqbCySqS2wo+FGfI6QY=
+	b=rre67j2D2qtLxMKi3fSG3VTzjMVvnsPSZ+emtP48qXeh2XBQgnII+ejPOTqvv2jgq
+	 +LsoUFOzUwmBqLvpn1wgobcDkEOjgmJgQWHk98jlX9UbVs8BGuhsQjBxwRofM38x3T
+	 j2t0VrTdtBEVuYjisX0u7+8ffwenNeLPFqebjGUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <michael@walle.cc>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 063/294] PCI: Work around Intel I210 ROM BAR overlap defect
+	Borislav Petkov <bp@suse.de>
+Subject: [PATCH 4.19 003/175] x86/bugs: Use sysfs_emit()
 Date: Thu, 11 Apr 2024 11:53:46 +0200
-Message-ID: <20240411095437.588151353@linuxfoundation.org>
+Message-ID: <20240411095419.640981625@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +60,206 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Borislav Petkov <bp@suse.de>
 
-[ Upstream commit 500b55b05d0a21c4adddf4c3b29ee6f32b502046 ]
+commit 1d30800c0c0ae1d086ffad2bdf0ba4403370f132 upstream.
 
-Per PCIe r5, sec 7.5.1.2.4, a device must not claim accesses to its
-Expansion ROM unless both the Memory Space Enable and the Expansion ROM
-Enable bit are set.  But apparently some Intel I210 NICs don't work
-correctly if the ROM BAR overlaps another BAR, even if the Expansion ROM is
-disabled.
+Those mitigations are very talkative; use the printing helper which pays
+attention to the buffer size.
 
-Michael reported that on a Kontron SMARC-sAL28 ARM64 system with U-Boot
-v2021.01-rc3, the ROM BAR overlaps BAR 3, and networking doesn't work at
-all:
-
-  BAR 0: 0x40000000 (32-bit, non-prefetchable) [size=1M]
-  BAR 3: 0x40200000 (32-bit, non-prefetchable) [size=16K]
-  ROM:   0x40200000 (disabled) [size=1M]
-
-  NETDEV WATCHDOG: enP2p1s0 (igb): transmit queue 0 timed out
-  Hardware name: Kontron SMARC-sAL28 (Single PHY) on SMARC Eval 2.0 carrier (DT)
-  igb 0002:01:00.0 enP2p1s0: Reset adapter
-
-Previously, pci_std_update_resource() wrote the assigned ROM address to the
-BAR only when the ROM was enabled.  This meant that the I210 ROM BAR could
-be left with an address assigned by firmware, which might overlap with
-other BARs.
-
-Quirk these I210 devices so pci_std_update_resource() always writes the
-assigned address to the ROM BAR, whether or not the ROM is enabled.
-
-Link: https://lore.kernel.org/r/20211223163754.GA1267351@bhelgaas
-Link: https://lore.kernel.org/r/20201230185317.30915-1-michael@walle.cc
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=211105
-Reported-by: Michael Walle <michael@walle.cc>
-Tested-by: Michael Walle <michael@walle.cc>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: 627c6db20703 ("PCI/DPC: Quirk PIO log size for Intel Raptor Lake Root Ports")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20220809153419.10182-1-bp@alien8.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c    | 10 ++++++++++
- drivers/pci/setup-res.c |  8 ++++++--
- include/linux/pci.h     |  1 +
- 3 files changed, 17 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/bugs.c |   82 ++++++++++++++++++++++-----------------------
+ 1 file changed, 41 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 646807a443e2d..d7c4149855eb6 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5852,3 +5852,13 @@ static void nvidia_ion_ahci_fixup(struct pci_dev *pdev)
- 	pdev->dev_flags |= PCI_DEV_FLAGS_HAS_MSI_MASKING;
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -2137,69 +2137,69 @@ static const char * const l1tf_vmx_state
+ static ssize_t l1tf_show_state(char *buf)
+ {
+ 	if (l1tf_vmx_mitigation == VMENTER_L1D_FLUSH_AUTO)
+-		return sprintf(buf, "%s\n", L1TF_DEFAULT_MSG);
++		return sysfs_emit(buf, "%s\n", L1TF_DEFAULT_MSG);
+ 
+ 	if (l1tf_vmx_mitigation == VMENTER_L1D_FLUSH_EPT_DISABLED ||
+ 	    (l1tf_vmx_mitigation == VMENTER_L1D_FLUSH_NEVER &&
+ 	     sched_smt_active())) {
+-		return sprintf(buf, "%s; VMX: %s\n", L1TF_DEFAULT_MSG,
+-			       l1tf_vmx_states[l1tf_vmx_mitigation]);
++		return sysfs_emit(buf, "%s; VMX: %s\n", L1TF_DEFAULT_MSG,
++				  l1tf_vmx_states[l1tf_vmx_mitigation]);
+ 	}
+ 
+-	return sprintf(buf, "%s; VMX: %s, SMT %s\n", L1TF_DEFAULT_MSG,
+-		       l1tf_vmx_states[l1tf_vmx_mitigation],
+-		       sched_smt_active() ? "vulnerable" : "disabled");
++	return sysfs_emit(buf, "%s; VMX: %s, SMT %s\n", L1TF_DEFAULT_MSG,
++			  l1tf_vmx_states[l1tf_vmx_mitigation],
++			  sched_smt_active() ? "vulnerable" : "disabled");
  }
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_NVIDIA, 0x0ab8, nvidia_ion_ahci_fixup);
-+
-+static void rom_bar_overlap_defect(struct pci_dev *dev)
-+{
-+	pci_info(dev, "working around ROM BAR overlap defect\n");
-+	dev->rom_bar_overlap = 1;
-+}
-+DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1533, rom_bar_overlap_defect);
-+DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1536, rom_bar_overlap_defect);
-+DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1537, rom_bar_overlap_defect);
-+DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1538, rom_bar_overlap_defect);
-diff --git a/drivers/pci/setup-res.c b/drivers/pci/setup-res.c
-index 875d50c16f19d..b492e67c3d871 100644
---- a/drivers/pci/setup-res.c
-+++ b/drivers/pci/setup-res.c
-@@ -75,12 +75,16 @@ static void pci_std_update_resource(struct pci_dev *dev, int resno)
- 		 * as zero when disabled, so don't update ROM BARs unless
- 		 * they're enabled.  See
- 		 * https://lore.kernel.org/r/43147B3D.1030309@vc.cvut.cz/
-+		 * But we must update ROM BAR for buggy devices where even a
-+		 * disabled ROM can conflict with other BARs.
- 		 */
--		if (!(res->flags & IORESOURCE_ROM_ENABLE))
-+		if (!(res->flags & IORESOURCE_ROM_ENABLE) &&
-+		    !dev->rom_bar_overlap)
- 			return;
  
- 		reg = dev->rom_base_reg;
--		new |= PCI_ROM_ADDRESS_ENABLE;
-+		if (res->flags & IORESOURCE_ROM_ENABLE)
-+			new |= PCI_ROM_ADDRESS_ENABLE;
- 	} else
- 		return;
+ static ssize_t itlb_multihit_show_state(char *buf)
+ {
+ 	if (itlb_multihit_kvm_mitigation)
+-		return sprintf(buf, "KVM: Mitigation: Split huge pages\n");
++		return sysfs_emit(buf, "KVM: Mitigation: Split huge pages\n");
+ 	else
+-		return sprintf(buf, "KVM: Vulnerable\n");
++		return sysfs_emit(buf, "KVM: Vulnerable\n");
+ }
+ #else
+ static ssize_t l1tf_show_state(char *buf)
+ {
+-	return sprintf(buf, "%s\n", L1TF_DEFAULT_MSG);
++	return sysfs_emit(buf, "%s\n", L1TF_DEFAULT_MSG);
+ }
  
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 75f29838d25cf..5b24a6fbfa0be 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -454,6 +454,7 @@ struct pci_dev {
- 	unsigned int	link_active_reporting:1;/* Device capable of reporting link active */
- 	unsigned int	no_vf_scan:1;		/* Don't scan for VFs after IOV enablement */
- 	unsigned int	no_command_memory:1;	/* No PCI_COMMAND_MEMORY */
-+	unsigned int	rom_bar_overlap:1;	/* ROM BAR disable broken */
- 	pci_dev_flags_t dev_flags;
- 	atomic_t	enable_cnt;	/* pci_enable_device has been called */
+ static ssize_t itlb_multihit_show_state(char *buf)
+ {
+-	return sprintf(buf, "Processor vulnerable\n");
++	return sysfs_emit(buf, "Processor vulnerable\n");
+ }
+ #endif
  
--- 
-2.43.0
-
+ static ssize_t mds_show_state(char *buf)
+ {
+ 	if (boot_cpu_has(X86_FEATURE_HYPERVISOR)) {
+-		return sprintf(buf, "%s; SMT Host state unknown\n",
+-			       mds_strings[mds_mitigation]);
++		return sysfs_emit(buf, "%s; SMT Host state unknown\n",
++				  mds_strings[mds_mitigation]);
+ 	}
+ 
+ 	if (boot_cpu_has(X86_BUG_MSBDS_ONLY)) {
+-		return sprintf(buf, "%s; SMT %s\n", mds_strings[mds_mitigation],
+-			       (mds_mitigation == MDS_MITIGATION_OFF ? "vulnerable" :
+-			        sched_smt_active() ? "mitigated" : "disabled"));
++		return sysfs_emit(buf, "%s; SMT %s\n", mds_strings[mds_mitigation],
++				  (mds_mitigation == MDS_MITIGATION_OFF ? "vulnerable" :
++				   sched_smt_active() ? "mitigated" : "disabled"));
+ 	}
+ 
+-	return sprintf(buf, "%s; SMT %s\n", mds_strings[mds_mitigation],
+-		       sched_smt_active() ? "vulnerable" : "disabled");
++	return sysfs_emit(buf, "%s; SMT %s\n", mds_strings[mds_mitigation],
++			  sched_smt_active() ? "vulnerable" : "disabled");
+ }
+ 
+ static ssize_t tsx_async_abort_show_state(char *buf)
+ {
+ 	if ((taa_mitigation == TAA_MITIGATION_TSX_DISABLED) ||
+ 	    (taa_mitigation == TAA_MITIGATION_OFF))
+-		return sprintf(buf, "%s\n", taa_strings[taa_mitigation]);
++		return sysfs_emit(buf, "%s\n", taa_strings[taa_mitigation]);
+ 
+ 	if (boot_cpu_has(X86_FEATURE_HYPERVISOR)) {
+-		return sprintf(buf, "%s; SMT Host state unknown\n",
+-			       taa_strings[taa_mitigation]);
++		return sysfs_emit(buf, "%s; SMT Host state unknown\n",
++				  taa_strings[taa_mitigation]);
+ 	}
+ 
+-	return sprintf(buf, "%s; SMT %s\n", taa_strings[taa_mitigation],
+-		       sched_smt_active() ? "vulnerable" : "disabled");
++	return sysfs_emit(buf, "%s; SMT %s\n", taa_strings[taa_mitigation],
++			  sched_smt_active() ? "vulnerable" : "disabled");
+ }
+ 
+ static ssize_t mmio_stale_data_show_state(char *buf)
+@@ -2267,33 +2267,33 @@ static char *pbrsb_eibrs_state(void)
+ static ssize_t spectre_v2_show_state(char *buf)
+ {
+ 	if (spectre_v2_enabled == SPECTRE_V2_LFENCE)
+-		return sprintf(buf, "Vulnerable: LFENCE\n");
++		return sysfs_emit(buf, "Vulnerable: LFENCE\n");
+ 
+ 	if (spectre_v2_enabled == SPECTRE_V2_EIBRS && unprivileged_ebpf_enabled())
+-		return sprintf(buf, "Vulnerable: eIBRS with unprivileged eBPF\n");
++		return sysfs_emit(buf, "Vulnerable: eIBRS with unprivileged eBPF\n");
+ 
+ 	if (sched_smt_active() && unprivileged_ebpf_enabled() &&
+ 	    spectre_v2_enabled == SPECTRE_V2_EIBRS_LFENCE)
+-		return sprintf(buf, "Vulnerable: eIBRS+LFENCE with unprivileged eBPF and SMT\n");
++		return sysfs_emit(buf, "Vulnerable: eIBRS+LFENCE with unprivileged eBPF and SMT\n");
+ 
+-	return sprintf(buf, "%s%s%s%s%s%s%s\n",
+-		       spectre_v2_strings[spectre_v2_enabled],
+-		       ibpb_state(),
+-		       boot_cpu_has(X86_FEATURE_USE_IBRS_FW) ? ", IBRS_FW" : "",
+-		       stibp_state(),
+-		       boot_cpu_has(X86_FEATURE_RSB_CTXSW) ? ", RSB filling" : "",
+-		       pbrsb_eibrs_state(),
+-		       spectre_v2_module_string());
++	return sysfs_emit(buf, "%s%s%s%s%s%s%s\n",
++			  spectre_v2_strings[spectre_v2_enabled],
++			  ibpb_state(),
++			  boot_cpu_has(X86_FEATURE_USE_IBRS_FW) ? ", IBRS_FW" : "",
++			  stibp_state(),
++			  boot_cpu_has(X86_FEATURE_RSB_CTXSW) ? ", RSB filling" : "",
++			  pbrsb_eibrs_state(),
++			  spectre_v2_module_string());
+ }
+ 
+ static ssize_t srbds_show_state(char *buf)
+ {
+-	return sprintf(buf, "%s\n", srbds_strings[srbds_mitigation]);
++	return sysfs_emit(buf, "%s\n", srbds_strings[srbds_mitigation]);
+ }
+ 
+ static ssize_t retbleed_show_state(char *buf)
+ {
+-	return sprintf(buf, "%s\n", retbleed_strings[retbleed_mitigation]);
++	return sysfs_emit(buf, "%s\n", retbleed_strings[retbleed_mitigation]);
+ }
+ 
+ static ssize_t gds_show_state(char *buf)
+@@ -2305,26 +2305,26 @@ static ssize_t cpu_show_common(struct de
+ 			       char *buf, unsigned int bug)
+ {
+ 	if (!boot_cpu_has_bug(bug))
+-		return sprintf(buf, "Not affected\n");
++		return sysfs_emit(buf, "Not affected\n");
+ 
+ 	switch (bug) {
+ 	case X86_BUG_CPU_MELTDOWN:
+ 		if (boot_cpu_has(X86_FEATURE_PTI))
+-			return sprintf(buf, "Mitigation: PTI\n");
++			return sysfs_emit(buf, "Mitigation: PTI\n");
+ 
+ 		if (hypervisor_is_type(X86_HYPER_XEN_PV))
+-			return sprintf(buf, "Unknown (XEN PV detected, hypervisor mitigation required)\n");
++			return sysfs_emit(buf, "Unknown (XEN PV detected, hypervisor mitigation required)\n");
+ 
+ 		break;
+ 
+ 	case X86_BUG_SPECTRE_V1:
+-		return sprintf(buf, "%s\n", spectre_v1_strings[spectre_v1_mitigation]);
++		return sysfs_emit(buf, "%s\n", spectre_v1_strings[spectre_v1_mitigation]);
+ 
+ 	case X86_BUG_SPECTRE_V2:
+ 		return spectre_v2_show_state(buf);
+ 
+ 	case X86_BUG_SPEC_STORE_BYPASS:
+-		return sprintf(buf, "%s\n", ssb_strings[ssb_mode]);
++		return sysfs_emit(buf, "%s\n", ssb_strings[ssb_mode]);
+ 
+ 	case X86_BUG_L1TF:
+ 		if (boot_cpu_has(X86_FEATURE_L1TF_PTEINV))
+@@ -2357,7 +2357,7 @@ static ssize_t cpu_show_common(struct de
+ 		break;
+ 	}
+ 
+-	return sprintf(buf, "Vulnerable\n");
++	return sysfs_emit(buf, "Vulnerable\n");
+ }
+ 
+ ssize_t cpu_show_meltdown(struct device *dev, struct device_attribute *attr, char *buf)
 
 
 
