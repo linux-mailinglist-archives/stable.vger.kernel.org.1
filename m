@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-38443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E69F8A0E9A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:16:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D7D8A0D0D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:59:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B72F1C219F4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:16:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AE26280FAB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B19146586;
-	Thu, 11 Apr 2024 10:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6920C145323;
+	Thu, 11 Apr 2024 09:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NWH6CnV7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phSJPnQb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93BC145FF0;
-	Thu, 11 Apr 2024 10:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263E113DDDD;
+	Thu, 11 Apr 2024 09:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830588; cv=none; b=m+TXVGIDEpHBidhpeCe3fBOuARdoTNiQYHmE9iO1HugVA308RceLDqX2F3ozWElo/d34tE7DfB5x4P2g2kZSGvzITwnHz0pALo8JwbCthRAvCQ/xHJo3eCu3bmYlV0AvCau9MqE9UQmyrez9iyAiMnK9JOLc7tSE6wduSnX5Leo=
+	t=1712829587; cv=none; b=m2W3RKRFqpXDo0V8RNpzBVQOADd0TGPw/ynULTH4UjLMxc6wleYAXcnHNe677HhjHrzetlmrrOlGZgDORFvoj2NbU/+LbQmZXFo22JH5zUKPZc/cXj46zF6RiUCo+UKu33Rba8fAxq8nFnT6cV9u6GRksogwya+alTysgxnPz2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830588; c=relaxed/simple;
-	bh=9DGxGhbKQPyz7td4w36jTPkSJTrpW73HtRB3PiztoMY=;
+	s=arc-20240116; t=1712829587; c=relaxed/simple;
+	bh=Y/10cUnVgY6J/8XO2BgxyMSl+ZVP/UW4+IjcjlwFowk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LetAq7AX1WPeAfCt1XYaqJdB5H5nNKOjQ5ubyc3d3HypVj4hctwIcQEejXgeEG5CHJ5TkG97IxoHwJRC6gtgX+6x6Cl9/mC7HbEeMAySTMkEttVXsKbpfMI7zpkozP/5IZb/M9fyCyIX/a3/EYatuSHCJifYb9qTsNM9EQubMw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NWH6CnV7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D11D8C433C7;
-	Thu, 11 Apr 2024 10:16:26 +0000 (UTC)
+	 MIME-Version; b=KMOWbR6BDlc5513YwjboflakPAH8Di3Usi1kSx64Hunu9/OgB7IIFzaRUu65gZTKw1V10wWLC8tqA6uw/Ty/Cb1vXjRIX/xJDQL16+Kx2QjXfdvQQoYrL/rCr6QiQYQQ+szlrMN3IjLIFwBpkKtrEgnbBiPgJsT65oL5P/n0XRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phSJPnQb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B8FC433F1;
+	Thu, 11 Apr 2024 09:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830587;
-	bh=9DGxGhbKQPyz7td4w36jTPkSJTrpW73HtRB3PiztoMY=;
+	s=korg; t=1712829587;
+	bh=Y/10cUnVgY6J/8XO2BgxyMSl+ZVP/UW4+IjcjlwFowk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NWH6CnV7PI778a+Pw6XTwYt8kFwAcFsffIHnSslHyDbMaSlfxiNmNBir6QCgmbmDk
-	 zIICKAxpGOwuVEiLS2ubi4jst5OxrIOfKAqP9IJbTojFzAMBYaucuD4ZQw3RHkIslH
-	 cbldJzlPrsINC0oo0w7+T6ARcrJPgUNwD1Mj9htA=
+	b=phSJPnQbMlzq4N3p6z4bat6h17zkG88zxLm7yiUCQjh0X1RUU/SMy5IcqWXOB0tKz
+	 7Vzu+lqXR6pt/bAQBjitZr5UTkXmWTAbOjtBp0jKY7ZkrvwagvAFpoeg1VIzWWoTXx
+	 BJo1XHzUN98E4/s3C1XeN0IjI6ZMYN19pmDivHug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ricky Wu <ricky_wu@realtek.com>,
+	Cameron Williams <cang1@live.co.uk>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 050/215] PCI/PM: Drain runtime-idle callbacks before driver removal
+Subject: [PATCH 4.19 036/175] USB: serial: add device ID for VeriFone adapter
 Date: Thu, 11 Apr 2024 11:54:19 +0200
-Message-ID: <20240411095426.398110216@linuxfoundation.org>
+Message-ID: <20240411095420.645697223@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-[ Upstream commit 9d5286d4e7f68beab450deddbb6a32edd5ecf4bf ]
+[ Upstream commit cda704809797a8a86284f9df3eef5e62ec8a3175 ]
 
-A race condition between the .runtime_idle() callback and the .remove()
-callback in the rtsx_pcr PCI driver leads to a kernel crash due to an
-unhandled page fault [1].
+Add device ID for a (probably fake) CP2102 UART device.
 
-The problem is that rtsx_pci_runtime_idle() is not expected to be running
-after pm_runtime_get_sync() has been called, but the latter doesn't really
-guarantee that.  It only guarantees that the suspend and resume callbacks
-will not be running when it returns.
+lsusb -v output:
 
-However, if a .runtime_idle() callback is already running when
-pm_runtime_get_sync() is called, the latter will notice that the runtime PM
-status of the device is RPM_ACTIVE and it will return right away without
-waiting for the former to complete.  In fact, it cannot wait for
-.runtime_idle() to complete because it may be called from that callback (it
-arguably does not make much sense to do that, but it is not strictly
-prohibited).
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               1.10
+  bDeviceClass            0 [unknown]
+  bDeviceSubClass         0 [unknown]
+  bDeviceProtocol         0
+  bMaxPacketSize0        64
+  idVendor           0x11ca VeriFone Inc
+  idProduct          0x0212 Verifone USB to Printer
+  bcdDevice            1.00
+  iManufacturer           1 Silicon Labs
+  iProduct                2 Verifone USB to Printer
+  iSerial                 3 0001
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength       0x0020
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0
+    bmAttributes         0x80
+      (Bus Powered)
+    MaxPower              100mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           2
+      bInterfaceClass       255 Vendor Specific Class
+      bInterfaceSubClass      0 [unknown]
+      bInterfaceProtocol      0
+      iInterface              2 Verifone USB to Printer
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x01  EP 1 OUT
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               0
+Device Status:     0x0000
+  (Bus Powered)
 
-Thus in general, whoever is providing a .runtime_idle() callback needs
-to protect it from running in parallel with whatever code runs after
-pm_runtime_get_sync().  [Note that .runtime_idle() will not start after
-pm_runtime_get_sync() has returned, but it may continue running then if it
-has started earlier.]
-
-One way to address that race condition is to call pm_runtime_barrier()
-after pm_runtime_get_sync() (not before it, because a nonzero value of the
-runtime PM usage counter is necessary to prevent runtime PM callbacks from
-being invoked) to wait for the .runtime_idle() callback to complete should
-it be running at that point.  A suitable place for doing that is in
-pci_device_remove() which calls pm_runtime_get_sync() before removing the
-driver, so it may as well call pm_runtime_barrier() subsequently, which
-will prevent the race in question from occurring, not just in the rtsx_pcr
-driver, but in any PCI drivers providing .runtime_idle() callbacks.
-
-Link: https://lore.kernel.org/lkml/20240229062201.49500-1-kai.heng.feng@canonical.com/ # [1]
-Link: https://lore.kernel.org/r/5761426.DvuYhMxLoT@kreacher
-Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Ricky Wu <ricky_wu@realtek.com>
-Acked-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc: <stable@vger.kernel.org>
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-driver.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/serial/cp210x.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index 7644a282bfdb8..617b13c94b390 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -441,6 +441,13 @@ static int pci_device_remove(struct device *dev)
- 
- 	if (drv->remove) {
- 		pm_runtime_get_sync(dev);
-+		/*
-+		 * If the driver provides a .runtime_idle() callback and it has
-+		 * started to run already, it may continue to run in parallel
-+		 * with the code below, so wait until all of the runtime PM
-+		 * activity has completed.
-+		 */
-+		pm_runtime_barrier(dev);
- 		drv->remove(pci_dev);
- 		pm_runtime_put_noidle(dev);
- 	}
+diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
+index b58ca66dc3aed..9901fd79b8a21 100644
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -178,6 +178,7 @@ static const struct usb_device_id id_table[] = {
+ 	{ USB_DEVICE(0x10C4, 0xF004) }, /* Elan Digital Systems USBcount50 */
+ 	{ USB_DEVICE(0x10C5, 0xEA61) }, /* Silicon Labs MobiData GPRS USB Modem */
+ 	{ USB_DEVICE(0x10CE, 0xEA6A) }, /* Silicon Labs MobiData GPRS USB Modem 100EU */
++	{ USB_DEVICE(0x11CA, 0x0212) }, /* Verifone USB to Printer (UART, CP2102) */
+ 	{ USB_DEVICE(0x12B8, 0xEC60) }, /* Link G4 ECU */
+ 	{ USB_DEVICE(0x12B8, 0xEC62) }, /* Link G4+ ECU */
+ 	{ USB_DEVICE(0x13AD, 0x9999) }, /* Baltech card reader */
 -- 
 2.43.0
 
