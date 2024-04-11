@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-38600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B828A0F79
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6C148A0FEE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:29:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 499B01F27DDD
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D81A81C2236A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF92146A72;
-	Thu, 11 Apr 2024 10:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2751465BF;
+	Thu, 11 Apr 2024 10:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/FLf8ow"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LELstQR7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E467140E3D;
-	Thu, 11 Apr 2024 10:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D601D558;
+	Thu, 11 Apr 2024 10:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831049; cv=none; b=JVr2ss5sN7rb6sgAAruTcqOVgJQqy0LOqQ4BT60gsJPcKU20iEtugCWtMkqf2EI/eZwQLTtNDLcF5ODnuKidhaQwJ+O/pVGTOuvAB0okJoBtZ65oJZeBHxAa+PZXvQei1r9OLxa3+HGuKzuKPDQDTNSpokvwlrqOmZX9ZtQtrvM=
+	t=1712831343; cv=none; b=OkOBjs8ZQhuD4o5bVinDcz/wPB+g8Aela+iZleU0iszwQ+HK03jXghc/p8jssjWpXI3PNmNJvDrFtymZFmHk2C5SclCHeQDgDVXjCMpmc4bkCtQgmm1rGqB7tkaKC07aMe2mHAk1m5qrdWcqNorvaLNZ6ZmFNgJ0lbqRipji0LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831049; c=relaxed/simple;
-	bh=KmNJCCdzYah9C+1Pqq1Pl1R9UXXzZLyNiV/xPHEDSSY=;
+	s=arc-20240116; t=1712831343; c=relaxed/simple;
+	bh=1noyUlYzy1F5I4lmS5wVglRKTKTlzsIizxO4u+FLcsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j9+SquF6AyjbWnrEuJ9ct3mkZIaeLpyiMbOrPJW0wzkF2kKAWp0S8P5DUpA2rvCdDyW4CNsx6KPj8EGnhoLQMM88guW3BgPyWyVH+BigZUcIlScd03VNIUAIGKAEGxHUqFEXU+BDOLmoOiYvJEcsTv9aG/A0oOr/vNNC+lg31sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/FLf8ow; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98741C43390;
-	Thu, 11 Apr 2024 10:24:08 +0000 (UTC)
+	 MIME-Version; b=GU3mxPHnKVjxlv6LOPXIaGEwTWbsIG9qAOykTwo6GqtQBetLRGSQ6yJaietIXBdNUnjY7xqkgIEomkiIP4uj40PLIHmP2/DEuXPCdhh6srkncnotl1yXWlEo8YcYKRx52z5mXPYURQd8IM6+dKk5Aca/HQ8krmPr5ZVWKyb+DEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LELstQR7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB18C433F1;
+	Thu, 11 Apr 2024 10:29:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831049;
-	bh=KmNJCCdzYah9C+1Pqq1Pl1R9UXXzZLyNiV/xPHEDSSY=;
+	s=korg; t=1712831342;
+	bh=1noyUlYzy1F5I4lmS5wVglRKTKTlzsIizxO4u+FLcsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v/FLf8owxeCmxfiUNOqPMKufGGtEe4eBFdwtquqxekCzREeCVpRGtj3vtOUzgGgDu
-	 RTKUA1LdN2hYmD33Vw/l/gAK0RaFN/DQ1tZt3cnK/sR1hY8+lDXh3unCc0lyvowB6V
-	 oejUXYKLN/eq7I4Bj61pQlKemyUIrCyqbTC+hjBM=
+	b=LELstQR7mpYjv9jOr2CnGbQxkoNPHyCgrVHUhbHiDTSZBMHQee1AmxznRMXuhcs+h
+	 2NgnPEraVOWfazzUFQ5HzjEpEpXsTO6YaTMg5TowEo5An8euts4IxCuQ3wf8JRcgLF
+	 KrK5mCWLe1i59My2ood6oQUGqb0sfnl60wBpEwYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	David Hildenbrand <david@redhat.com>
-Subject: [PATCH 5.4 207/215] virtio: reenable config if freezing device failed
-Date: Thu, 11 Apr 2024 11:56:56 +0200
-Message-ID: <20240411095431.075787164@linuxfoundation.org>
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Prashant Malani <pmalani@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 090/114] usb: typec: ucsi: Limit read size on v1.2
+Date: Thu, 11 Apr 2024 11:56:57 +0200
+Message-ID: <20240411095419.608819010@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +64,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
 
-commit 310227f42882c52356b523e2f4e11690eebcd2ab upstream.
+[ Upstream commit b3db266fb031fba88c423d4bb8983a73a3db6527 ]
 
-Currently, we don't reenable the config if freezing the device failed.
+Between UCSI 1.2 and UCSI 2.0, the size of the MESSAGE_IN region was
+increased from 16 to 256. In order to avoid overflowing reads for older
+systems, add a mechanism to use the read UCSI version to truncate read
+sizes on UCSI v1.2.
 
-For example, virtio-mem currently doesn't support suspend+resume, and
-trying to freeze the device will always fail. Afterwards, the device
-will no longer respond to resize requests, because it won't get notified
-about config changes.
-
-Let's fix this by re-enabling the config if freezing fails.
-
-Fixes: 22b7050a024d ("virtio: defer config changed notifications")
-Cc: <stable@kernel.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20240213135425.795001-1-david@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Prashant Malani <pmalani@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
+Link: https://lore.kernel.org/r/20240209143723.v5.1.Iacf5570a66b82b73ef03daa6557e2fc0db10266a@changeid
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c | 26 ++++++++++++++++++++++++--
+ drivers/usb/typec/ucsi/ucsi.h | 11 +++++++++++
+ 2 files changed, 35 insertions(+), 2 deletions(-)
 
---- a/drivers/virtio/virtio.c
-+++ b/drivers/virtio/virtio.c
-@@ -381,13 +381,19 @@ EXPORT_SYMBOL_GPL(unregister_virtio_devi
- int virtio_device_freeze(struct virtio_device *dev)
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 70d9f4eebf1a7..c4f5ee171cdeb 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -36,6 +36,19 @@
+  */
+ #define UCSI_SWAP_TIMEOUT_MS	5000
+ 
++static int ucsi_read_message_in(struct ucsi *ucsi, void *buf,
++					  size_t buf_size)
++{
++	/*
++	 * Below UCSI 2.0, MESSAGE_IN was limited to 16 bytes. Truncate the
++	 * reads here.
++	 */
++	if (ucsi->version <= UCSI_VERSION_1_2)
++		buf_size = clamp(buf_size, 0, 16);
++
++	return ucsi->ops->read(ucsi, UCSI_MESSAGE_IN, buf, buf_size);
++}
++
+ static int ucsi_acknowledge_command(struct ucsi *ucsi)
  {
- 	struct virtio_driver *drv = drv_to_virtio(dev->dev.driver);
-+	int ret;
+ 	u64 ctrl;
+@@ -72,7 +85,7 @@ static int ucsi_read_error(struct ucsi *ucsi)
+ 	if (ret < 0)
+ 		return ret;
  
- 	virtio_config_disable(dev);
+-	ret = ucsi->ops->read(ucsi, UCSI_MESSAGE_IN, &error, sizeof(error));
++	ret = ucsi_read_message_in(ucsi, &error, sizeof(error));
+ 	if (ret)
+ 		return ret;
  
- 	dev->failed = dev->config->get_status(dev) & VIRTIO_CONFIG_S_FAILED;
+@@ -174,7 +187,7 @@ int ucsi_send_command(struct ucsi *ucsi, u64 command,
+ 	length = ret;
  
--	if (drv && drv->freeze)
--		return drv->freeze(dev);
-+	if (drv && drv->freeze) {
-+		ret = drv->freeze(dev);
-+		if (ret) {
-+			virtio_config_enable(dev);
-+			return ret;
-+		}
-+	}
+ 	if (data) {
+-		ret = ucsi->ops->read(ucsi, UCSI_MESSAGE_IN, data, size);
++		ret = ucsi_read_message_in(ucsi, data, size);
+ 		if (ret)
+ 			goto out;
+ 	}
+@@ -1593,6 +1606,15 @@ int ucsi_register(struct ucsi *ucsi)
+ 	if (!ucsi->version)
+ 		return -ENODEV;
  
- 	return 0;
- }
++	/*
++	 * Version format is JJ.M.N (JJ = Major version, M = Minor version,
++	 * N = sub-minor version).
++	 */
++	dev_dbg(ucsi->dev, "Registered UCSI interface with version %x.%x.%x",
++		UCSI_BCD_GET_MAJOR(ucsi->version),
++		UCSI_BCD_GET_MINOR(ucsi->version),
++		UCSI_BCD_GET_SUBMINOR(ucsi->version));
++
+ 	queue_delayed_work(system_long_wq, &ucsi->work, 0);
+ 
+ 	ucsi_debugfs_register(ucsi);
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 13ec976b1c747..2a886e58cd632 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -23,6 +23,17 @@ struct dentry;
+ #define UCSI_CONTROL			8
+ #define UCSI_MESSAGE_IN			16
+ #define UCSI_MESSAGE_OUT		32
++#define UCSIv2_MESSAGE_OUT		272
++
++/* UCSI versions */
++#define UCSI_VERSION_1_2	0x0120
++#define UCSI_VERSION_2_0	0x0200
++#define UCSI_VERSION_2_1	0x0210
++#define UCSI_VERSION_3_0	0x0300
++
++#define UCSI_BCD_GET_MAJOR(_v_)		(((_v_) >> 8) & 0xFF)
++#define UCSI_BCD_GET_MINOR(_v_)		(((_v_) >> 4) & 0x0F)
++#define UCSI_BCD_GET_SUBMINOR(_v_)	((_v_) & 0x0F)
+ 
+ /* Command Status and Connector Change Indication (CCI) bits */
+ #define UCSI_CCI_CONNECTOR(_c_)		(((_c_) & GENMASK(7, 1)) >> 1)
+-- 
+2.43.0
+
 
 
 
