@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-38226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DEB8A0D99
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB93D8A1127
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B25A21F22E3A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0695A1C23BDE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBFA0145B26;
-	Thu, 11 Apr 2024 10:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F2D146D7E;
+	Thu, 11 Apr 2024 10:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fDYlVtpd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjH6ZP9W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91236145B04;
-	Thu, 11 Apr 2024 10:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843B2146A74;
+	Thu, 11 Apr 2024 10:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829935; cv=none; b=VfsnaAt0GYekO1d6wprZHzWLhHwmeDAxk9Lfsmd2u3o+El6FkyD0mawytt/sHJZo5Tt84t1RGfZ3Epvvsd0rj4nwXDlpgfQEIfSKSe8gS86KxHw9pt87VloXw3CeF4Jw6SG0YiEJu1LrZH0Kyi/bne7l0Dj/FefEipj1nhXlbS8=
+	t=1712832061; cv=none; b=kcVvoR/QGXSQF02cMJzwoymAUZHdv7REy4b5S1tHR3qCY5boW05evvWKjO0tlZmm+peLqLKLUIG1AgfjEu5nUwokx2oa05YmH5zXiNxVCUAtcSIr6OnsZroPyoIpVA6FCJFbK3wsmADnNCCpiAfRo9lMLE67PhoRmf1pmXQZ+58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829935; c=relaxed/simple;
-	bh=JjtuQh9HiDMQ4k1NNmTTwy43lyugX0dH2D7NeOSnU3A=;
+	s=arc-20240116; t=1712832061; c=relaxed/simple;
+	bh=6rSkMh0Hvx0HfHTlgVmZI/ixH1FiYr4rDhH9IS9+iRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QKg7/B80iZG0vfLeVmj/9oThJFwYMf++/ZrgvtDhexREOTdmhWTFDbdnTGbTOKfjk+LhqT47MGsvoSH9yp57XK5+RMWOKKISxkmFmquDVIQVcbFDGuXn7y3ktbpHiMFQOli2f7zLm88OuZsmb89K8T54V++lGKg2TWVfyDjOOfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fDYlVtpd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13722C43390;
-	Thu, 11 Apr 2024 10:05:34 +0000 (UTC)
+	 MIME-Version; b=RLQsR4khhkspAR648tof9rdAxla8jGfeJgoEVoTRy8Dllcox3lpbuiwDk7mcWrRvOrXe89N/41vcRMGahOYdmBKmG+Tz1xFklmZHIio814gv+2zo84NRqMJrqAaI8LT3EJV/RRquDFdZ/tizEmC7uZEpI8XtU3kdT5rMyLEssfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjH6ZP9W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E3BC433C7;
+	Thu, 11 Apr 2024 10:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829935;
-	bh=JjtuQh9HiDMQ4k1NNmTTwy43lyugX0dH2D7NeOSnU3A=;
+	s=korg; t=1712832061;
+	bh=6rSkMh0Hvx0HfHTlgVmZI/ixH1FiYr4rDhH9IS9+iRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fDYlVtpdanl3v/DnUgkyWGs7nINpORYiLZf0zEMy+RqjncSwJ0/YjYlpLgPwX29Mo
-	 JzWoY/VgGsO1uLzGW57B1WqWu/qn0twK1+ky23ZYQPJvw4mUbCKeO2RytQbjJeNyiv
-	 bWWoOlsN1L5+cLTNNFC9AXRhBsgeSPzbgUSo7Qcg=
+	b=TjH6ZP9WED9LIqvlf/InF7VpU0s100MYfE4usUNzyyAMClYOA7D/ZgslZkbmn/zr/
+	 tBHQouyVE6zllbZiC9hGGvnM8jTcnqfDJMzNekD91ZTG0B3ObZ17Q8SD6wH4WVKDCR
+	 W7AQ03dPybBv3MrZCDZuywMlA35b7lecC1qKHunw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+69b40dc5fd40f32c199f@syzkaller.appspotmail.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 154/175] sysv: dont call sb_bread() with pointers_lock held
-Date: Thu, 11 Apr 2024 11:56:17 +0200
-Message-ID: <20240411095424.197979270@linuxfoundation.org>
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 215/294] selftests: reuseaddr_conflict: add missing new line at the end of the output
+Date: Thu, 11 Apr 2024 11:56:18 +0200
+Message-ID: <20240411095442.066421749@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit f123dc86388cb669c3d6322702dc441abc35c31e ]
+commit 31974122cfdeaf56abc18d8ab740d580d9833e90 upstream.
 
-syzbot is reporting sleep in atomic context in SysV filesystem [1], for
-sb_bread() is called with rw_spinlock held.
+The netdev CI runs in a VM and captures serial, so stdout and
+stderr get combined. Because there's a missing new line in
+stderr the test ends up corrupting KTAP:
 
-A "write_lock(&pointers_lock) => read_lock(&pointers_lock) deadlock" bug
-and a "sb_bread() with write_lock(&pointers_lock)" bug were introduced by
-"Replace BKL for chain locking with sysvfs-private rwlock" in Linux 2.5.12.
+  # Successok 1 selftests: net: reuseaddr_conflict
 
-Then, "[PATCH] err1-40: sysvfs locking fix" in Linux 2.6.8 fixed the
-former bug by moving pointers_lock lock to the callers, but instead
-introduced a "sb_bread() with read_lock(&pointers_lock)" bug (which made
-this problem easier to hit).
+which should have been:
 
-Al Viro suggested that why not to do like get_branch()/get_block()/
-find_shared() in Minix filesystem does. And doing like that is almost a
-revert of "[PATCH] err1-40: sysvfs locking fix" except that get_branch()
- from with find_shared() is called without write_lock(&pointers_lock).
+  # Success
+  ok 1 selftests: net: reuseaddr_conflict
 
-Reported-by: syzbot <syzbot+69b40dc5fd40f32c199f@syzkaller.appspotmail.com>
-Link: https://syzkaller.appspot.com/bug?extid=69b40dc5fd40f32c199f
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/r/0d195f93-a22a-49a2-0020-103534d6f7f6@I-love.SAKURA.ne.jp
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 422d8dc6fd3a ("selftest: add a reuseaddr test")
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/r/20240329160559.249476-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/sysv/itree.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ tools/testing/selftests/net/reuseaddr_conflict.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/sysv/itree.c b/fs/sysv/itree.c
-index e3d1673b8ec97..ef9bcfeec21ad 100644
---- a/fs/sysv/itree.c
-+++ b/fs/sysv/itree.c
-@@ -82,9 +82,6 @@ static inline sysv_zone_t *block_end(struct buffer_head *bh)
- 	return (sysv_zone_t*)((char*)bh->b_data + bh->b_size);
+--- a/tools/testing/selftests/net/reuseaddr_conflict.c
++++ b/tools/testing/selftests/net/reuseaddr_conflict.c
+@@ -109,6 +109,6 @@ int main(void)
+ 	fd1 = open_port(0, 1);
+ 	if (fd1 >= 0)
+ 		error(1, 0, "Was allowed to create an ipv4 reuseport on an already bound non-reuseport socket with no ipv6");
+-	fprintf(stderr, "Success");
++	fprintf(stderr, "Success\n");
+ 	return 0;
  }
- 
--/*
-- * Requires read_lock(&pointers_lock) or write_lock(&pointers_lock)
-- */
- static Indirect *get_branch(struct inode *inode,
- 			    int depth,
- 			    int offsets[],
-@@ -104,15 +101,18 @@ static Indirect *get_branch(struct inode *inode,
- 		bh = sb_bread(sb, block);
- 		if (!bh)
- 			goto failure;
-+		read_lock(&pointers_lock);
- 		if (!verify_chain(chain, p))
- 			goto changed;
- 		add_chain(++p, bh, (sysv_zone_t*)bh->b_data + *++offsets);
-+		read_unlock(&pointers_lock);
- 		if (!p->key)
- 			goto no_block;
- 	}
- 	return NULL;
- 
- changed:
-+	read_unlock(&pointers_lock);
- 	brelse(bh);
- 	*err = -EAGAIN;
- 	goto no_block;
-@@ -218,9 +218,7 @@ static int get_block(struct inode *inode, sector_t iblock, struct buffer_head *b
- 		goto out;
- 
- reread:
--	read_lock(&pointers_lock);
- 	partial = get_branch(inode, depth, offsets, chain, &err);
--	read_unlock(&pointers_lock);
- 
- 	/* Simplest case - block found, no allocation needed */
- 	if (!partial) {
-@@ -290,9 +288,9 @@ static Indirect *find_shared(struct inode *inode,
- 	*top = 0;
- 	for (k = depth; k > 1 && !offsets[k-1]; k--)
- 		;
-+	partial = get_branch(inode, k, offsets, chain, &err);
- 
- 	write_lock(&pointers_lock);
--	partial = get_branch(inode, k, offsets, chain, &err);
- 	if (!partial)
- 		partial = chain + k-1;
- 	/*
--- 
-2.43.0
-
 
 
 
