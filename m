@@ -1,65 +1,55 @@
-Return-Path: <stable+bounces-38870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5FD38A10C7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B6DA8A0EAB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41CAC1F2CB48
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 481C028180B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DFA14A09B;
-	Thu, 11 Apr 2024 10:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765501465A5;
+	Thu, 11 Apr 2024 10:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JFBi55e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3opTaWW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E751487EC;
-	Thu, 11 Apr 2024 10:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323361465A2;
+	Thu, 11 Apr 2024 10:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831835; cv=none; b=EuLK4LcRqS0gQHDK0ViTBrKv6gvND6q+laxIHrpPBF9yyZOcdojIXfK1sPpSZvOriy8lXgO0EQG1khjHZeP0qaoeaKwzYZdvWsSvGm5l/neTuwnBZt3et07/4DVNVB/6AJI9agzQO9cMdyqCLBmUJGcHwNnpsH/SQDfGGNuQr6E=
+	t=1712830617; cv=none; b=M5Z5gnYBj0ilcLmPOPQHkZz1PJh/JVMCxkjmfDuMKcn+c+UjhyoOlZp70QbJOVL84nUhMBxcEH1XejSKegrNmrOpzDPS5XhJx57QNx7/Fk5w3yZF9XQtqsDa/kzK06do3bthIaOkKOgQnRigSJDIli04f52q7q9roy4k9AKdeSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831835; c=relaxed/simple;
-	bh=6VyIgE7HbWACAIWAWQZQj53VAuWwnE+wus+UjkCCOW4=;
+	s=arc-20240116; t=1712830617; c=relaxed/simple;
+	bh=8sCP1b8Y3TB6pZ0dKmFjSsDhlBwu1yDUqwW32p5IVKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SQObp98iSrW9pPnwVyDh1u2oazszRVA5AKcvTGTMRgVjD1F+PyDSXaxATJPHxcbFCy0kXEEFWBAIUk9TaErArLNUlqG9M49AFSYvBARO56ekRmHUdZjATiAH9ctLklUeKceAH6W1uvvtNcFBnM+g/nA3tZDUj1lvz0hn/n2+Ypc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JFBi55e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197D2C433C7;
-	Thu, 11 Apr 2024 10:37:15 +0000 (UTC)
+	 MIME-Version; b=GLQeBdp+DJSWt25T9cGo63mzcUmBFLmBH0VRiAMyrW1Ch/foNV/iWZpkQNlrWtqSTGHGNcziUPKPCTx8aE3e3vfVMIea1he/xknozIdo+5iphlNVSwG8c0KKJpxpC3fKlqKKGAUKNvBPFcpTGYKrrQFthMqk10i5+L1taMTFpWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3opTaWW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6EAC433C7;
+	Thu, 11 Apr 2024 10:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831835;
-	bh=6VyIgE7HbWACAIWAWQZQj53VAuWwnE+wus+UjkCCOW4=;
+	s=korg; t=1712830617;
+	bh=8sCP1b8Y3TB6pZ0dKmFjSsDhlBwu1yDUqwW32p5IVKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0JFBi55eQGYN0FwaIm32pbupvhZP8zVeLY3MjCHZcZYnDlJUjR3dsHBQl8FVpjmTH
-	 cOazB0AGD+qusGSZPjP73dI0AmwGWvGUOMoSXBVJwCHy7e0vljK7nbyCDNmQANT1OV
-	 lekZn4aVQpmLgmhPOajwjBQD9fgEDOXChs6M+H2g=
+	b=l3opTaWWwU4GdSFgm8RWngff+RS98GwkSWwwkA9YhYzRwJiooEsA6qupxDzxYvncx
+	 Ae3TiQMJmOEFr8dNFVBN+S/Ri6jwx2knHAYPJFxZi5hqLALZWYB3RYT5SmTCWW1zpA
+	 qgKH4dsqR2qiH9poOaxkXjiHn7uf1UMPGU3IDAZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	netdev <netdev@vger.kernel.org>,
-	Yisen Zhuang <yisen.zhuang@huawei.com>,
-	Salil Mehta <salil.mehta@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Yufeng Mo <moyufeng@huawei.com>,
-	Huazhong Tan <tanhuazhong@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Samuel Thibault <samuel.thibault@ens-lyon.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 105/294] net: hns3: tracing: fix hclgevf trace event strings
+Subject: [PATCH 5.4 059/215] speakup: Fix 8bit characters from direct synth
 Date: Thu, 11 Apr 2024 11:54:28 +0200
-Message-ID: <20240411095438.833423565@linuxfoundation.org>
+Message-ID: <20240411095426.669999039@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,155 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Samuel Thibault <samuel.thibault@ens-lyon.org>
 
-[ Upstream commit 3f9952e8d80cca2da3b47ecd5ad9ec16cfd1a649 ]
+[ Upstream commit b6c8dafc9d86eb77e502bb018ec4105e8d2fbf78 ]
 
-The __string() and __assign_str() helper macros of the TRACE_EVENT() macro
-are going through some optimizations where only the source string of
-__string() will be used and the __assign_str() source will be ignored and
-later removed.
+When userland echoes 8bit characters to /dev/synth with e.g.
 
-To make sure that there's no issues, a new check is added between the
-__string() src argument and the __assign_str() src argument that does a
-strcmp() to make sure they are the same string.
+echo -e '\xe9' > /dev/synth
 
-The hclgevf trace events have:
+synth_write would get characters beyond 0x7f, and thus negative when
+char is signed.  When given to synth_buffer_add which takes a u16, this
+would sign-extend and produce a U+ffxy character rather than U+xy.
+Users thus get garbled text instead of accents in their output.
 
-  __assign_str(devname, &hdev->nic.kinfo.netdev->name);
+Let's fix this by making sure that we read unsigned characters.
 
-Which triggers the warning:
-
-hclgevf_trace.h:34:39: error: passing argument 1 of ‘strcmp’ from incompatible pointer type [-Werror=incompatible-pointer-types]
-   34 |                 __assign_str(devname, &hdev->nic.kinfo.netdev->name);
- [..]
-arch/x86/include/asm/string_64.h:75:24: note: expected ‘const char *’ but argument is of type ‘char (*)[16]’
-   75 | int strcmp(const char *cs, const char *ct);
-      |            ~~~~~~~~~~~~^~
-
-Because __assign_str() now has:
-
-	WARN_ON_ONCE(__builtin_constant_p(src) ?		\
-		     strcmp((src), __data_offsets.dst##_ptr_) :	\
-		     (src) != __data_offsets.dst##_ptr_);	\
-
-The problem is the '&' on hdev->nic.kinfo.netdev->name. That's because
-that name is:
-
-	char			name[IFNAMSIZ]
-
-Where passing an address '&' of a char array is not compatible with strcmp().
-
-The '&' is not necessary, remove it.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240313093454.3909afe7@gandalf.local.home
-
-Cc: netdev <netdev@vger.kernel.org>
-Cc: Yisen Zhuang <yisen.zhuang@huawei.com>
-Cc: Salil Mehta <salil.mehta@huawei.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Yufeng Mo <moyufeng@huawei.com>
-Cc: Huazhong Tan <tanhuazhong@huawei.com>
+Signed-off-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
+Fixes: 89fc2ae80bb1 ("speakup: extend synth buffer to 16bit unicode characters")
 Cc: stable@vger.kernel.org
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Jijie Shao <shaojijie@huawei.com>
-Fixes: d8355240cf8fb ("net: hns3: add trace event support for PF/VF mailbox")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/r/20240204155736.2oh4ot7tiaa2wpbh@begin
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h  | 8 ++++----
- .../net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h    | 8 ++++----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/staging/speakup/synth.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h
-index 5b0b71bd61200..e8e67321e9632 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h
-@@ -24,7 +24,7 @@ TRACE_EVENT(hclge_pf_mbx_get,
- 		__field(u8, code)
- 		__field(u8, subcode)
- 		__string(pciname, pci_name(hdev->pdev))
--		__string(devname, &hdev->vport[0].nic.kinfo.netdev->name)
-+		__string(devname, hdev->vport[0].nic.kinfo.netdev->name)
- 		__array(u32, mbx_data, PF_GET_MBX_LEN)
- 	),
+diff --git a/drivers/staging/speakup/synth.c b/drivers/staging/speakup/synth.c
+index 3568bfb89912c..b5944e7bdbf67 100644
+--- a/drivers/staging/speakup/synth.c
++++ b/drivers/staging/speakup/synth.c
+@@ -208,8 +208,10 @@ void spk_do_flush(void)
+ 	wake_up_process(speakup_task);
+ }
  
-@@ -33,7 +33,7 @@ TRACE_EVENT(hclge_pf_mbx_get,
- 		__entry->code = req->msg.code;
- 		__entry->subcode = req->msg.subcode;
- 		__assign_str(pciname, pci_name(hdev->pdev));
--		__assign_str(devname, &hdev->vport[0].nic.kinfo.netdev->name);
-+		__assign_str(devname, hdev->vport[0].nic.kinfo.netdev->name);
- 		memcpy(__entry->mbx_data, req,
- 		       sizeof(struct hclge_mbx_vf_to_pf_cmd));
- 	),
-@@ -56,7 +56,7 @@ TRACE_EVENT(hclge_pf_mbx_send,
- 		__field(u8, vfid)
- 		__field(u16, code)
- 		__string(pciname, pci_name(hdev->pdev))
--		__string(devname, &hdev->vport[0].nic.kinfo.netdev->name)
-+		__string(devname, hdev->vport[0].nic.kinfo.netdev->name)
- 		__array(u32, mbx_data, PF_SEND_MBX_LEN)
- 	),
- 
-@@ -64,7 +64,7 @@ TRACE_EVENT(hclge_pf_mbx_send,
- 		__entry->vfid = req->dest_vfid;
- 		__entry->code = req->msg.code;
- 		__assign_str(pciname, pci_name(hdev->pdev));
--		__assign_str(devname, &hdev->vport[0].nic.kinfo.netdev->name);
-+		__assign_str(devname, hdev->vport[0].nic.kinfo.netdev->name);
- 		memcpy(__entry->mbx_data, req,
- 		       sizeof(struct hclge_mbx_pf_to_vf_cmd));
- 	),
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h
-index e4bfb6191fef5..a208af567909f 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h
-@@ -23,7 +23,7 @@ TRACE_EVENT(hclge_vf_mbx_get,
- 		__field(u8, vfid)
- 		__field(u16, code)
- 		__string(pciname, pci_name(hdev->pdev))
--		__string(devname, &hdev->nic.kinfo.netdev->name)
-+		__string(devname, hdev->nic.kinfo.netdev->name)
- 		__array(u32, mbx_data, VF_GET_MBX_LEN)
- 	),
- 
-@@ -31,7 +31,7 @@ TRACE_EVENT(hclge_vf_mbx_get,
- 		__entry->vfid = req->dest_vfid;
- 		__entry->code = req->msg.code;
- 		__assign_str(pciname, pci_name(hdev->pdev));
--		__assign_str(devname, &hdev->nic.kinfo.netdev->name);
-+		__assign_str(devname, hdev->nic.kinfo.netdev->name);
- 		memcpy(__entry->mbx_data, req,
- 		       sizeof(struct hclge_mbx_pf_to_vf_cmd));
- 	),
-@@ -55,7 +55,7 @@ TRACE_EVENT(hclge_vf_mbx_send,
- 		__field(u8, code)
- 		__field(u8, subcode)
- 		__string(pciname, pci_name(hdev->pdev))
--		__string(devname, &hdev->nic.kinfo.netdev->name)
-+		__string(devname, hdev->nic.kinfo.netdev->name)
- 		__array(u32, mbx_data, VF_SEND_MBX_LEN)
- 	),
- 
-@@ -64,7 +64,7 @@ TRACE_EVENT(hclge_vf_mbx_send,
- 		__entry->code = req->msg.code;
- 		__entry->subcode = req->msg.subcode;
- 		__assign_str(pciname, pci_name(hdev->pdev));
--		__assign_str(devname, &hdev->nic.kinfo.netdev->name);
-+		__assign_str(devname, hdev->nic.kinfo.netdev->name);
- 		memcpy(__entry->mbx_data, req,
- 		       sizeof(struct hclge_mbx_vf_to_pf_cmd));
- 	),
+-void synth_write(const char *buf, size_t count)
++void synth_write(const char *_buf, size_t count)
+ {
++	const unsigned char *buf = (const unsigned char *) _buf;
++
+ 	while (count--)
+ 		synth_buffer_add(*buf++);
+ 	synth_start();
 -- 
 2.43.0
 
