@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 971268A110F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 882CF8A0D86
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:04:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB8B91C23A5B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA2771C21B00
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95A81474D7;
-	Thu, 11 Apr 2024 10:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39EE3145FE6;
+	Thu, 11 Apr 2024 10:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWr62wIO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnoFy/kh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B72134CC2;
-	Thu, 11 Apr 2024 10:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB57E1448F3;
+	Thu, 11 Apr 2024 10:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832004; cv=none; b=Sk6O7ZBonYeF2JfQF3DNd/v30tRPNgjXm7s9tW7bhWmeOpNQ7u/Z3ttaYJbirRc9O6qZzITAjkwa7+zcLSB7ysfgZisOQtapZ0Tp/c0KKQ5ykxKYo0KJaDKLYhNdQ3L/eZu8MO/OananwBO65dokM7VmqOP7IQd9hoDrCEQds8M=
+	t=1712829891; cv=none; b=UXsRRg+bjoJNBf1egGk07qoCbpZ0zWdGO6l59ZNhmrifpMZMR4EpbUvdqE2hjtEPVA5qbJUy5Oia66kerCoZhvSfpQ/mnbhR1rPzKB7FPCnPIHwEJR59UXFrMCPJgMze7goODWqBccQNmziTtlXEZs/ZIRIPMPwugnf/KPgWNP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832004; c=relaxed/simple;
-	bh=i8WEjxkFW0bwRqHNsmeAGy678Vv5OGVPPTctcGietqw=;
+	s=arc-20240116; t=1712829891; c=relaxed/simple;
+	bh=3mdurn2LCd3QYO1NMKM8oNxmEU8BuHQXm9l15J9A7fI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mCLy6Vypy5n1+k0WPRzmPsIf80BBm/KI43GY/w6BwFlo2y9mdcBK5oDOcky/+EJjclMW9q36d4HpvNlCyw69J3zjIV9ybHEG9BMyYUKUCMpQZXYbPSCK54sgIC/8/NIl4iP5KkIfDt4763jmaKXxmct2S73MVQw2Mrm0kX8lbss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWr62wIO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0773C433C7;
-	Thu, 11 Apr 2024 10:40:03 +0000 (UTC)
+	 MIME-Version; b=qtqu8Dtk+eXsPgsBa1ph3saudQapMtD6BMYz9RRJuJBwQNHUnc7qvo4VBbfSHA+irmiwXY/GIH/iszAPrqPUxK4Fw0N8ecd9ioEr+pDla1nT15fGqWhv3q/qfe8/xznnTi6zGbUxIb6pisaYU9/KA9MUxZdSz3Yz9gT0MtCfbNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnoFy/kh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73EC2C43390;
+	Thu, 11 Apr 2024 10:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832004;
-	bh=i8WEjxkFW0bwRqHNsmeAGy678Vv5OGVPPTctcGietqw=;
+	s=korg; t=1712829890;
+	bh=3mdurn2LCd3QYO1NMKM8oNxmEU8BuHQXm9l15J9A7fI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWr62wIOZR5ugCEXLxVuc8GfJAn7gdxYCoL+1mvPJMoN/uHt00wyy7csdcv7b0VYM
-	 gP54xxMau1D2LavWpWHvHYzPoolNrZTc2eZzkqAyUuo5Vs2ySpIlN66CVUyueNlQKv
-	 Jod5BjqUvCawgD7emDsPDdzb3VrVa/17PDe5tP0o=
+	b=wnoFy/khXmPohEJJsSTRrZQmIFGyUitdqnpjtb6EDNdpm33hypYtuE9UEqleqO16d
+	 QOsQ5M3Je8m7clBK04FMzljXk2BpSUDvFGkw3ocOZWHpHN9dioxlqoPm5q0jgFTlnO
+	 NEsfbgNXNRUEw8W3H0/8aJa/8X5Ure5FHt6BbzH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diana Craciun <diana.craciun@oss.nxp.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 5.10 200/294] vfio/fsl-mc: Block calling interrupt handler without trigger
+	Stephen Lee <slee08177@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 140/175] ASoC: ops: Fix wraparound for mask in snd_soc_get_volsw
 Date: Thu, 11 Apr 2024 11:56:03 +0200
-Message-ID: <20240411095441.627648250@linuxfoundation.org>
+Message-ID: <20240411095423.780169996@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Stephen Lee <slee08177@gmail.com>
 
-[ Upstream commit 7447d911af699a15f8d050dfcb7c680a86f87012 ]
+[ Upstream commit fc563aa900659a850e2ada4af26b9d7a3de6c591 ]
 
-The eventfd_ctx trigger pointer of the vfio_fsl_mc_irq object is
-initially NULL and may become NULL if the user sets the trigger
-eventfd to -1.  The interrupt handler itself is guaranteed that
-trigger is always valid between request_irq() and free_irq(), but
-the loopback testing mechanisms to invoke the handler function
-need to test the trigger.  The triggering and setting ioctl paths
-both make use of igate and are therefore mutually exclusive.
+In snd_soc_info_volsw(), mask is generated by figuring out the index of
+the most significant bit set in max and converting the index to a
+bitmask through bit shift 1. Unintended wraparound occurs when max is an
+integer value with msb bit set. Since the bit shift value 1 is treated
+as an integer type, the left shift operation will wraparound and set
+mask to 0 instead of all 1's. In order to fix this, we type cast 1 as
+`1ULL` to prevent the wraparound.
 
-The vfio-fsl-mc driver does not make use of irqfds, nor does it
-support any sort of masking operations, therefore unlike vfio-pci
-and vfio-platform, the flow can remain essentially unchanged.
-
-Cc: Diana Craciun <diana.craciun@oss.nxp.com>
-Cc:  <stable@vger.kernel.org>
-Fixes: cc0ee20bd969 ("vfio/fsl-mc: trigger an interrupt via eventfd")
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20240308230557.805580-8-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7077148fb50a ("ASoC: core: Split ops out of soc-core.c")
+Signed-off-by: Stephen Lee <slee08177@gmail.com>
+Link: https://msgid.link/r/20240326010131.6211-1-slee08177@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/soc/soc-ops.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c
-+++ b/drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c
-@@ -142,13 +142,14 @@ static int vfio_fsl_mc_set_irq_trigger(s
- 	irq = &vdev->mc_irqs[index];
- 
- 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
--		vfio_fsl_mc_irq_handler(hwirq, irq);
-+		if (irq->trigger)
-+			eventfd_signal(irq->trigger, 1);
- 
- 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
- 		u8 trigger = *(u8 *)data;
- 
--		if (trigger)
--			vfio_fsl_mc_irq_handler(hwirq, irq);
-+		if (trigger && irq->trigger)
-+			eventfd_signal(irq->trigger, 1);
- 	}
- 
- 	return 0;
+diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
+index e01f3bf3ef171..08ed973b2d975 100644
+--- a/sound/soc/soc-ops.c
++++ b/sound/soc/soc-ops.c
+@@ -252,7 +252,7 @@ int snd_soc_get_volsw(struct snd_kcontrol *kcontrol,
+ 	int max = mc->max;
+ 	int min = mc->min;
+ 	int sign_bit = mc->sign_bit;
+-	unsigned int mask = (1 << fls(max)) - 1;
++	unsigned int mask = (1ULL << fls(max)) - 1;
+ 	unsigned int invert = mc->invert;
+ 	int val;
+ 	int ret;
+-- 
+2.43.0
+
 
 
 
