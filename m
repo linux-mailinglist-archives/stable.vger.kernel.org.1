@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-38410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1676B8A0E73
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:14:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E6A8A0D0F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:59:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6D3028729F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:14:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E850AB249EE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933AA145FFB;
-	Thu, 11 Apr 2024 10:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CFA9145B04;
+	Thu, 11 Apr 2024 09:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUYfFf4i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnT3DKYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2F61448EF;
-	Thu, 11 Apr 2024 10:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B37D13DDDD;
+	Thu, 11 Apr 2024 09:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830484; cv=none; b=u+a9+hhipLeHk6qJtJkHiQsnKW/EW7eRF5H68XVnEsLEpaLR8ZUM/ioAnchgeFIiQQCSpsOZFo9tZxWl9q5fkJplypNx4KUYscw9JafbDMTVtigcnPK5oA5rmLa8L2TnQOX8YOcMse30OW56XlWZO7tiV012OO8d/+2alVC2t7I=
+	t=1712829593; cv=none; b=nox96adl85HBxgY2gisMXYAY8G6uog8jHYZ1sSiQqEWMhqQB2ZS1NoHt3ZAVK4267k0WkpBT8p8n2DyRN5K1M/diRhOUAwS9vA41/fdQKvQpYmj5eQRUHfQN+mG5O3qpXM8tTPs5Rj74zln5nHrhBbnpXdBPWp3xysZ3duDdlH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830484; c=relaxed/simple;
-	bh=NebH2tOaLoDk5BU5KfVKJPhrnoGze7gx90s0TQxq1FM=;
+	s=arc-20240116; t=1712829593; c=relaxed/simple;
+	bh=kQMK0nUIAothLCUvFWbs4BueDFPzk6ScDOSK37Qd0pQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=suwO3hoIpMxeMQkpbBN181ECyfW1nvR2ZPqv2XTfTPJofatbMChVddLH1+BTAXO2n7bYRDPZB94xUgHTELkXJytydjxHU9vB5SdUMhHX9KWlI/7NxYlsT3tsQM6AF63o76RKj8q76AUrATm9/Ffgt67bqZiPr46Qx9RIuuCRPTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUYfFf4i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 989E7C43390;
-	Thu, 11 Apr 2024 10:14:43 +0000 (UTC)
+	 MIME-Version; b=cUOR6gnRBqyZYrUylFaF14C4JPee7VqAVounz0WZeXtItSYWXprwbbPXNwNErquVayKQG57ybfwSLGDTjpqRLrjclHaKMyohCFJ+cPnH8jYu/mpSycgNndFCxCWIlpxX96uInQw9CXa8Vx8DaDPUOsK6eC3Mel/gxfXSeoydS8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnT3DKYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88392C433C7;
+	Thu, 11 Apr 2024 09:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830484;
-	bh=NebH2tOaLoDk5BU5KfVKJPhrnoGze7gx90s0TQxq1FM=;
+	s=korg; t=1712829592;
+	bh=kQMK0nUIAothLCUvFWbs4BueDFPzk6ScDOSK37Qd0pQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cUYfFf4iMaHYFUbaUDkzpma+ccylORuBmMjFzmtPrKV+PuOMI8snADlHdwAN42LKW
-	 L2/zWKXokuuS4OErQoWMbYiyfy/+CyQTxBDm4ERaLkKpIJtI3eDtL68v4ONfO+N0mu
-	 FtASLyZyGYCJwSPmC8zRzQkktpNMU/uMlCToxNsM=
+	b=ZnT3DKYk9gRHE+ia156No7bjJTS/dq0Sjd1ufwb4IdKrpks9VQqxktDbNgLwxFR5B
+	 gkDHYwo/Qj5uzPi7HZdB+FbwuX00gd1ciAsHPTcRYBmK3EF7UMAsFomrKcMnXPXx0a
+	 dEB2bvOJQkV83t0CTCZiwmJDeVaoDXPMlcvUfV+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Igor Zhbanov <izh1979@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	sparclinux@vger.kernel.org,
-	Dan Carpenter <dan.carpenter@oracle.com>,
-	Nick Alcock <nick.alcock@oracle.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andreas Larsson <andreas@gaisler.com>,
+	Anna-Maria Gleixner <anna-maria@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	fweisbec@gmail.com,
+	peterz@infradead.org,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 018/215] sparc: vDSO: fix return value of __setup handler
-Date: Thu, 11 Apr 2024 11:53:47 +0200
-Message-ID: <20240411095425.431375453@linuxfoundation.org>
+Subject: [PATCH 4.19 005/175] timer/trace: Improve timer tracing
+Date: Thu, 11 Apr 2024 11:53:48 +0200
+Message-ID: <20240411095419.700907917@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,59 +65,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Anna-Maria Gleixner <anna-maria@linutronix.de>
 
-[ Upstream commit 5378f00c935bebb846b1fdb0e79cb76c137c56b5 ]
+[ Upstream commit f28d3d5346e97e60c81f933ac89ccf015430e5cf ]
 
-__setup() handlers should return 1 to obsolete_checksetup() in
-init/main.c to indicate that the boot option has been handled.
-A return of 0 causes the boot option/value to be listed as an Unknown
-kernel parameter and added to init's (limited) argument or environment
-strings. Also, error return codes don't mean anything to
-obsolete_checksetup() -- only non-zero (usually 1) or zero.
-So return 1 from vdso_setup().
+Timers are added to the timer wheel off by one. This is required in
+case a timer is queued directly before incrementing jiffies to prevent
+early timer expiry.
 
-Fixes: 9a08862a5d2e ("vDSO for sparc")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: Igor Zhbanov <izh1979@gmail.com>
-Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: Dan Carpenter <dan.carpenter@oracle.com>
-Cc: Nick Alcock <nick.alcock@oracle.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20240211052808.22635-1-rdunlap@infradead.org
+When reading a timer trace and relying only on the expiry time of the timer
+in the timer_start trace point and on the now in the timer_expiry_entry
+trace point, it seems that the timer fires late. With the current
+timer_expiry_entry trace point information only now=jiffies is printed but
+not the value of base->clk. This makes it impossible to draw a conclusion
+to the index of base->clk and makes it impossible to examine timer problems
+without additional trace points.
+
+Therefore add the base->clk value to the timer_expire_entry trace
+point, to be able to calculate the index the timer base is located at
+during collecting expired timers.
+
+Signed-off-by: Anna-Maria Gleixner <anna-maria@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: fweisbec@gmail.com
+Cc: peterz@infradead.org
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Link: https://lkml.kernel.org/r/20190321120921.16463-5-anna-maria@linutronix.de
+Stable-dep-of: 0f7352557a35 ("wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/vdso/vma.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ include/trace/events/timer.h | 11 +++++++----
+ kernel/time/timer.c          | 17 +++++++++++++----
+ 2 files changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/arch/sparc/vdso/vma.c b/arch/sparc/vdso/vma.c
-index 9961b0f816939..3a30a086f0feb 100644
---- a/arch/sparc/vdso/vma.c
-+++ b/arch/sparc/vdso/vma.c
-@@ -449,9 +449,8 @@ static __init int vdso_setup(char *s)
- 	unsigned long val;
+diff --git a/include/trace/events/timer.h b/include/trace/events/timer.h
+index 8f6240854e28f..295517f109d71 100644
+--- a/include/trace/events/timer.h
++++ b/include/trace/events/timer.h
+@@ -89,24 +89,27 @@ TRACE_EVENT(timer_start,
+  */
+ TRACE_EVENT(timer_expire_entry,
  
- 	err = kstrtoul(s, 10, &val);
--	if (err)
--		return err;
--	vdso_enabled = val;
--	return 0;
-+	if (!err)
-+		vdso_enabled = val;
-+	return 1;
- }
- __setup("vdso=", vdso_setup);
+-	TP_PROTO(struct timer_list *timer),
++	TP_PROTO(struct timer_list *timer, unsigned long baseclk),
+ 
+-	TP_ARGS(timer),
++	TP_ARGS(timer, baseclk),
+ 
+ 	TP_STRUCT__entry(
+ 		__field( void *,	timer	)
+ 		__field( unsigned long,	now	)
+ 		__field( void *,	function)
++		__field( unsigned long,	baseclk	)
+ 	),
+ 
+ 	TP_fast_assign(
+ 		__entry->timer		= timer;
+ 		__entry->now		= jiffies;
+ 		__entry->function	= timer->function;
++		__entry->baseclk	= baseclk;
+ 	),
+ 
+-	TP_printk("timer=%p function=%ps now=%lu",
+-		  __entry->timer, __entry->function, __entry->now)
++	TP_printk("timer=%p function=%ps now=%lu baseclk=%lu",
++		  __entry->timer, __entry->function, __entry->now,
++		  __entry->baseclk)
+ );
+ 
+ /**
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index a6e88d9bb931c..140662c2b41e1 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1311,7 +1311,9 @@ int del_timer_sync(struct timer_list *timer)
+ EXPORT_SYMBOL(del_timer_sync);
+ #endif
+ 
+-static void call_timer_fn(struct timer_list *timer, void (*fn)(struct timer_list *))
++static void call_timer_fn(struct timer_list *timer,
++			  void (*fn)(struct timer_list *),
++			  unsigned long baseclk)
+ {
+ 	int count = preempt_count();
+ 
+@@ -1334,7 +1336,7 @@ static void call_timer_fn(struct timer_list *timer, void (*fn)(struct timer_list
+ 	 */
+ 	lock_map_acquire(&lockdep_map);
+ 
+-	trace_timer_expire_entry(timer);
++	trace_timer_expire_entry(timer, baseclk);
+ 	fn(timer);
+ 	trace_timer_expire_exit(timer);
+ 
+@@ -1355,6 +1357,13 @@ static void call_timer_fn(struct timer_list *timer, void (*fn)(struct timer_list
+ 
+ static void expire_timers(struct timer_base *base, struct hlist_head *head)
+ {
++	/*
++	 * This value is required only for tracing. base->clk was
++	 * incremented directly before expire_timers was called. But expiry
++	 * is related to the old base->clk value.
++	 */
++	unsigned long baseclk = base->clk - 1;
++
+ 	while (!hlist_empty(head)) {
+ 		struct timer_list *timer;
+ 		void (*fn)(struct timer_list *);
+@@ -1368,11 +1377,11 @@ static void expire_timers(struct timer_base *base, struct hlist_head *head)
+ 
+ 		if (timer->flags & TIMER_IRQSAFE) {
+ 			raw_spin_unlock(&base->lock);
+-			call_timer_fn(timer, fn);
++			call_timer_fn(timer, fn, baseclk);
+ 			raw_spin_lock(&base->lock);
+ 		} else {
+ 			raw_spin_unlock_irq(&base->lock);
+-			call_timer_fn(timer, fn);
++			call_timer_fn(timer, fn, baseclk);
+ 			raw_spin_lock_irq(&base->lock);
+ 		}
+ 	}
 -- 
 2.43.0
 
