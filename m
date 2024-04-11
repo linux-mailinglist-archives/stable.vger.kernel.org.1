@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-38636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBAA48A0FA2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1ACD8A10EE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D561B22F24
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 624E81F2CBF8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F90146A64;
-	Thu, 11 Apr 2024 10:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECE01474C6;
+	Thu, 11 Apr 2024 10:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y58gzZLO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcEApB4y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1590913FD94;
-	Thu, 11 Apr 2024 10:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9B91474B4;
+	Thu, 11 Apr 2024 10:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831152; cv=none; b=p921q2EAKYJ/LCgGG0848hkIaCf4anomHpQ18JQ5D5j5sT5Xn8GpS/fT8L922iZ8tixEhMgW7N1xehWrRMkEBlzxnzNkAiJELH0Rr0OobN8YYoyF33F8aU6m9K4SHlHPwq7QvB14XyQ85uYwKI6tNsrczYmfMlGLk5j+h/KUZKY=
+	t=1712831930; cv=none; b=ijt1Ox0pofrc4iET1qZnUbOHbLVlip+rdYpbcqbq6RYj51fi1oVh3eIjwOgjPOodZP8XAX1cImfBZiuTAAqt7EoAcpbDwGER1NaF4IaEkyARnAilIbwl+c41LkhcF2P/sTsAIb0DwB9jYaGXrY1dE9qUn1DzDhVKno99PNDEkbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831152; c=relaxed/simple;
-	bh=tqUJstvpBGE7uZCAnlBMhOJSRetC1zTBkvgZ7bghcbg=;
+	s=arc-20240116; t=1712831930; c=relaxed/simple;
+	bh=I6ABjbBaFjpWrF29IDj66s7NxWZYvx6MYqYJXshtFxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VTtcq//RBEwvtFk/klDYFxEGWi2IxW4t211ANwC6CwrOY8gx8wH+C3kjAEzLsHYFqsV7BfgD8HMcLKCqJkCeLQbJ4KO1SV1S0umyC6cl5QNBSHwD2WA7nw5NPcwV3ECGPNJ042C6N77v0ZUvHpM26HFz0hm5+LoL4SJZ95kA89k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y58gzZLO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE59C433C7;
-	Thu, 11 Apr 2024 10:25:51 +0000 (UTC)
+	 MIME-Version; b=KfX0nJ3+CGNyte88q02rl84n/HgN3247SfclhZ26vc6KOaWaOoVUr3vEO6w5ektSYsKzKvHY/0P1Ie2wIWqjPNAW44v0McUL9dJUV+lQ5rEDUtM6uY9gi9vT8Z9veVZm1aZTHQH1X0kqA4qZ+FmWoDJyneF32kciihaR+HhJiO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcEApB4y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF33EC433F1;
+	Thu, 11 Apr 2024 10:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831151;
-	bh=tqUJstvpBGE7uZCAnlBMhOJSRetC1zTBkvgZ7bghcbg=;
+	s=korg; t=1712831930;
+	bh=I6ABjbBaFjpWrF29IDj66s7NxWZYvx6MYqYJXshtFxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y58gzZLOSTKdWTAtowioADb4gJTC+zCsTihTzoTBh988kwn5zJ3vfOVl1GoQQYJmB
-	 yhi0K/3Yqak6w1uV7JMjDkcEmWiAWAFEDhfy13RtsjfQEyookDApST9w+9wMF2DJHo
-	 30G0cYuDANbD7HkeW4Hqitd5aRyBpmdkw+na9f7E=
+	b=HcEApB4ytX7Q5LloOEnvafibsaIeM6/QERHKy7brJ9l3kdbvj3DlZFLvri7ilpuYj
+	 eudhSM1vjYoajWSLEYL+tjbVTCONTeBipMaB23fKyxYuEnGP2UCXQh1INWyF2BR8MU
+	 tk8XwaaG2x92NlOHsngHGMdCi5wITzVy445Tnz2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Kees Cook <keescook@chromium.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/114] VMCI: Fix memcpy() run-time warning in dg_dispatch_as_host()
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	stable <stable@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 5.10 173/294] usb: typec: ucsi: Ack unsupported commands
 Date: Thu, 11 Apr 2024 11:55:36 +0200
-Message-ID: <20240411095417.145316555@linuxfoundation.org>
+Message-ID: <20240411095440.839552358@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,85 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit 19b070fefd0d024af3daa7329cbc0d00de5302ec ]
+commit 6b5c85ddeea77d18c4b69e3bda60e9374a20c304 upstream.
 
-Syzkaller hit 'WARNING in dg_dispatch_as_host' bug.
+If a command completes the OPM must send an ack. This applies
+to unsupported commands, too.
 
-memcpy: detected field-spanning write (size 56) of single field "&dg_info->msg"
-at drivers/misc/vmw_vmci/vmci_datagram.c:237 (size 24)
+Send the required ACK for unsupported commands.
 
-WARNING: CPU: 0 PID: 1555 at drivers/misc/vmw_vmci/vmci_datagram.c:237
-dg_dispatch_as_host+0x88e/0xa60 drivers/misc/vmw_vmci/vmci_datagram.c:237
-
-Some code commentry, based on my understanding:
-
-544 #define VMCI_DG_SIZE(_dg) (VMCI_DG_HEADERSIZE + (size_t)(_dg)->payload_size)
-/// This is 24 + payload_size
-
-memcpy(&dg_info->msg, dg, dg_size);
-	Destination = dg_info->msg ---> this is a 24 byte
-					structure(struct vmci_datagram)
-	Source = dg --> this is a 24 byte structure (struct vmci_datagram)
-	Size = dg_size = 24 + payload_size
-
-{payload_size = 56-24 =32} -- Syzkaller managed to set payload_size to 32.
-
- 35 struct delayed_datagram_info {
- 36         struct datagram_entry *entry;
- 37         struct work_struct work;
- 38         bool in_dg_host_queue;
- 39         /* msg and msg_payload must be together. */
- 40         struct vmci_datagram msg;
- 41         u8 msg_payload[];
- 42 };
-
-So those extra bytes of payload are copied into msg_payload[], a run time
-warning is seen while fuzzing with Syzkaller.
-
-One possible way to fix the warning is to split the memcpy() into
-two parts -- one -- direct assignment of msg and second taking care of payload.
-
-Gustavo quoted:
-"Under FORTIFY_SOURCE we should not copy data across multiple members
-in a structure."
-
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Suggested-by: Vegard Nossum <vegard.nossum@oracle.com>
-Suggested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240105164001.2129796-2-harshit.m.mogalapalli@oracle.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Link: https://lore.kernel.org/r/20240320073927.1641788-4-lk@c--e.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/vmw_vmci/vmci_datagram.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/misc/vmw_vmci/vmci_datagram.c b/drivers/misc/vmw_vmci/vmci_datagram.c
-index f50d22882476f..d1d8224c8800c 100644
---- a/drivers/misc/vmw_vmci/vmci_datagram.c
-+++ b/drivers/misc/vmw_vmci/vmci_datagram.c
-@@ -234,7 +234,8 @@ static int dg_dispatch_as_host(u32 context_id, struct vmci_datagram *dg)
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -138,8 +138,12 @@ static int ucsi_exec_command(struct ucsi
+ 	if (!(cci & UCSI_CCI_COMMAND_COMPLETE))
+ 		return -EIO;
  
- 			dg_info->in_dg_host_queue = true;
- 			dg_info->entry = dst_entry;
--			memcpy(&dg_info->msg, dg, dg_size);
-+			dg_info->msg = *dg;
-+			memcpy(&dg_info->msg_payload, dg + 1, dg->payload_size);
+-	if (cci & UCSI_CCI_NOT_SUPPORTED)
++	if (cci & UCSI_CCI_NOT_SUPPORTED) {
++		if (ucsi_acknowledge_command(ucsi) < 0)
++			dev_err(ucsi->dev,
++				"ACK of unsupported command failed\n");
+ 		return -EOPNOTSUPP;
++	}
  
- 			INIT_WORK(&dg_info->work, dg_delayed_dispatch);
- 			schedule_work(&dg_info->work);
--- 
-2.43.0
-
+ 	if (cci & UCSI_CCI_ERROR) {
+ 		if (cmd == UCSI_GET_ERROR_STATUS)
 
 
 
