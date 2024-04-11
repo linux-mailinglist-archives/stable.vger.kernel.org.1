@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD77B8A10CC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13FA38A0DBD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 812AE1F2CF5E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDC641F22A46
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F40145B26;
-	Thu, 11 Apr 2024 10:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4196F145B06;
+	Thu, 11 Apr 2024 10:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tk71BUO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="em4jCl6z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282E413FD9F;
-	Thu, 11 Apr 2024 10:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00EDC1442F7;
+	Thu, 11 Apr 2024 10:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831851; cv=none; b=NdEvoMDfl0xjRnggHmUwgPiT9Wy9BwTMFsZThZ7Q2PhP09/ro/rFZWK9BbAYsaWy6HOMTqXA7DW5Cxl8LA0qKLDnaM56+mTnxRpisN4hqL+AvpmfByafz5z4S31JudxMvhKTUr5GkHYeaOcE6ix43IfBddz3x2Pue2c87KEYeDI=
+	t=1712830034; cv=none; b=fRZe+J4W8kXgJM4uUH4h99Xzzs+rt5jY+plmiAvxRteps1j2nAd94v8D7UF+Qnddi/c76xAfHmOZmB8gfGycgGIVoIw1OmxWoAAdHF/Svc+L++rHNEFEACt3MRNDFegUysaRhTtpYOn0EfD3QT40LzOD4TJuAB+pxdpnGdI9zR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831851; c=relaxed/simple;
-	bh=RlMyV6D/EdB19mJBHsHwGlV7W7mmdBDxRKFYWDbZJ8U=;
+	s=arc-20240116; t=1712830034; c=relaxed/simple;
+	bh=PD1r+kb8IPEWJ4Qg4v7w42xBc936JPbkqJ1AGx5FOcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CW2HVcc8Ryqo5z8Ws0uFFiqZBoujwqPh9qfGm1bzI3zly7DLn2IIJKq4w4T5Irh9mCFyk5e/BOOpauePhOGBF0I4d9DdNP+aPf2JTHel/Q8wU5oKfluu0I7A37WvYh1yYz54Y2WdFvAGLxs949UUy2CiyXFj5tAGCckYCtcxytQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tk71BUO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EADDC433F1;
-	Thu, 11 Apr 2024 10:37:29 +0000 (UTC)
+	 MIME-Version; b=HooMCoYEOEotl+KiEWW2BfO4ySvbEilGgirCmqdEqrlIQf9cN1dmMiplmKp8I/w16yMOb3fWJzxeJ7cWoYybUFLYCcnVzPjsIsGxtOvn4krBCwyo6/S1jdkw+V6cCTWoiQCk+EdanYkjk63vBfJ785LRbLCiyJbwfIuF/htCwUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=em4jCl6z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCEBC43390;
+	Thu, 11 Apr 2024 10:07:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831850;
-	bh=RlMyV6D/EdB19mJBHsHwGlV7W7mmdBDxRKFYWDbZJ8U=;
+	s=korg; t=1712830033;
+	bh=PD1r+kb8IPEWJ4Qg4v7w42xBc936JPbkqJ1AGx5FOcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1tk71BUOwRn+YaASDmDivJ0/Lnk81qLH8zwIFHH4K2uT1c7UAzLwA0Un2lf/q41jj
-	 hy4VlZL5zV6EhuRAEYWy8u9XV/URYIzFVdVg90Sedg6prVPRHljvg7zRHlPDMTCvhW
-	 ng0sca0wzfDrekqhavqLTTmDixYrsVNHYVv6OAY4=
+	b=em4jCl6zVoKNJt2fHo5dBZaendGwl9wsgnaK+szPSSKndmh1IzdYgOrcvHbPKBViK
+	 uW3gbFojmxJsl3GUwKFLuFqIkai9y2LeBfKZlNJa5QMYEEzTuzaHhRuqiGuuf1GW0Y
+	 K3gk7TRMsmJRMXKZItoG+Mz7pm/4dYqCe6thBVnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt <cryptearth@googlemail.com>,
-	Conrad Kostecki <conikost@gentoo.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 109/294] ahci: asm1064: asm1166: dont limit reported ports
-Date: Thu, 11 Apr 2024 11:54:32 +0200
-Message-ID: <20240411095438.950971815@linuxfoundation.org>
+Subject: [PATCH 6.8 005/143] batman-adv: Improve exception handling in batadv_throw_uevent()
+Date: Thu, 11 Apr 2024 11:54:33 +0200
+Message-ID: <20240411095421.070551748@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conrad Kostecki <conikost@gentoo.org>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit 6cd8adc3e18960f6e59d797285ed34ef473cc896 ]
+[ Upstream commit 5593e9abf1cf2bf096366d8c7fd933bc69d561ce ]
 
-Previously, patches have been added to limit the reported count of SATA
-ports for asm1064 and asm1166 SATA controllers, as those controllers do
-report more ports than physically having.
+The kfree() function was called in up to three cases by
+the batadv_throw_uevent() function during error handling
+even if the passed variable contained a null pointer.
+This issue was detected by using the Coccinelle software.
 
-While it is allowed to report more ports than physically having in CAP.NP,
-it is not allowed to report more ports than physically having in the PI
-(Ports Implemented) register, which is what these HBAs do.
-(This is a AHCI spec violation.)
+* Thus adjust jump targets.
 
-Unfortunately, it seems that the PMP implementation in these ASMedia HBAs
-is also violating the AHCI and SATA-IO PMP specification.
+* Reorder kfree() calls at the end.
 
-What these HBAs do is that they do not report that they support PMP
-(CAP.SPM (Supports Port Multiplier) is not set).
-
-Instead, they have decided to add extra "virtual" ports in the PI register
-that is used if a port multiplier is connected to any of the physical
-ports of the HBA.
-
-Enumerating the devices behind the PMP as specified in the AHCI and
-SATA-IO specifications, by using PMP READ and PMP WRITE commands to the
-physical ports of the HBA is not possible, you have to use the "virtual"
-ports.
-
-This is of course bad, because this gives us no way to detect the device
-and vendor ID of the PMP actually connected to the HBA, which means that
-we can not apply the proper PMP quirks for the PMP that is connected to
-the HBA.
-
-Limiting the port map will thus stop these controllers from working with
-SATA Port Multipliers.
-
-This patch reverts both patches for asm1064 and asm1166, so old behavior
-is restored and SATA PMP will work again, but it will also reintroduce the
-(minutes long) extra boot time for the ASMedia controllers that do not
-have a PMP connected (either on the PCIe card itself, or an external PMP).
-
-However, a longer boot time for some, is the lesser evil compared to some
-other users not being able to detect their drives at all.
-
-Fixes: 0077a504e1a4 ("ahci: asm1166: correct count of reported ports")
-Fixes: 9815e3961754 ("ahci: asm1064: correct count of reported ports")
-Cc: stable@vger.kernel.org
-Reported-by: Matt <cryptearth@googlemail.com>
-Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-[cassel: rewrote commit message]
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Acked-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ net/batman-adv/main.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 5df344e26c110..55a07dbe1d8a6 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -662,19 +662,6 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
- static void ahci_pci_save_initial_config(struct pci_dev *pdev,
- 					 struct ahci_host_priv *hpriv)
- {
--	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA) {
--		switch (pdev->device) {
--		case 0x1166:
--			dev_info(&pdev->dev, "ASM1166 has only six ports\n");
--			hpriv->saved_port_map = 0x3f;
--			break;
--		case 0x1064:
--			dev_info(&pdev->dev, "ASM1064 has only four ports\n");
--			hpriv->saved_port_map = 0xf;
--			break;
--		}
--	}
--
- 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
- 		dev_info(&pdev->dev, "JMB361 has only one port\n");
- 		hpriv->force_port_map = 1;
+diff --git a/net/batman-adv/main.c b/net/batman-adv/main.c
+index 5fc754b0b3f7f..75119f1ffcccf 100644
+--- a/net/batman-adv/main.c
++++ b/net/batman-adv/main.c
+@@ -691,29 +691,31 @@ int batadv_throw_uevent(struct batadv_priv *bat_priv, enum batadv_uev_type type,
+ 				  "%s%s", BATADV_UEV_TYPE_VAR,
+ 				  batadv_uev_type_str[type]);
+ 	if (!uevent_env[0])
+-		goto out;
++		goto report_error;
+ 
+ 	uevent_env[1] = kasprintf(GFP_ATOMIC,
+ 				  "%s%s", BATADV_UEV_ACTION_VAR,
+ 				  batadv_uev_action_str[action]);
+ 	if (!uevent_env[1])
+-		goto out;
++		goto free_first_env;
+ 
+ 	/* If the event is DEL, ignore the data field */
+ 	if (action != BATADV_UEV_DEL) {
+ 		uevent_env[2] = kasprintf(GFP_ATOMIC,
+ 					  "%s%s", BATADV_UEV_DATA_VAR, data);
+ 		if (!uevent_env[2])
+-			goto out;
++			goto free_second_env;
+ 	}
+ 
+ 	ret = kobject_uevent_env(bat_kobj, KOBJ_CHANGE, uevent_env);
+-out:
+-	kfree(uevent_env[0]);
+-	kfree(uevent_env[1]);
+ 	kfree(uevent_env[2]);
++free_second_env:
++	kfree(uevent_env[1]);
++free_first_env:
++	kfree(uevent_env[0]);
+ 
+ 	if (ret)
++report_error:
+ 		batadv_dbg(BATADV_DBG_BATMAN, bat_priv,
+ 			   "Impossible to send uevent for (%s,%s,%s) event (err: %d)\n",
+ 			   batadv_uev_type_str[type],
 -- 
 2.43.0
 
