@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-39039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90EA8A1196
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D45348A0FE3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 787BA1F27B00
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 121CB1C22697
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC61145B26;
-	Thu, 11 Apr 2024 10:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A2D1465BE;
+	Thu, 11 Apr 2024 10:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8E+TKjy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QM2wZeb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18076BB29;
-	Thu, 11 Apr 2024 10:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838E1146A82;
+	Thu, 11 Apr 2024 10:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832336; cv=none; b=NMML8M1bjgU0COVqlxN+QFinhkkzyGxrrHuDklJOsImF3/rESmvEuuPnKuomoqCTcHE5monx8ScBR7XnU3gztNULiSOi2ITKiLOBse8S5zBzy4Q939/ekYy2dwHyxumjcTHzMFDtTNSM6gWthjwgJ1VWIlFjDhG+1aB+pHe5bTo=
+	t=1712831310; cv=none; b=QVDVCuzrDItsQg2lS02hobL5wAdiwJ0RpKgGCzStYZ/TeQW9p6J204ZDfO8ZLFizRgLWINy2zEogUabJRWDx4q3Zhkmh5O2TjyL/g3Q+7TJoEH/jXBfNQPWBvp2NbgzccReqCwZXMvOjRRvgtSy/J0JO5gUVE8nN91fo+f27UXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832336; c=relaxed/simple;
-	bh=QXotESlx31SMtgGDy7D5Ve8+9OF0e1XHdHuuzKkEjzY=;
+	s=arc-20240116; t=1712831310; c=relaxed/simple;
+	bh=CUkSKDcYIpkxoFrF7fJiSCobBbngAWLUyDDOdXJKTh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sy6qXWM7dHWV+dYOAZjTb7OF9hlLG0f6GPooWVdNvZbSAeTOGVhjTKYaOn4hXeNqe7w42pCuTpMqoEEKnCbe2+oyvs3Uq9izOdHp4uM2NTEzXWBwBUmRfBYNSy9WeoNEPEBlzrSOuRlCA90WRTIWDLMpCih5SdNLtquTqwhi9yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8E+TKjy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444A8C433C7;
-	Thu, 11 Apr 2024 10:45:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=me8Dl8wzj3ar21DDKHparcsCdHhaLu51g1rsMt2j5qg4yUQ/BWHvcF3R57W5XtJpcywsd/bAel3afbWWGzgHI/1lDudlu9oSo5lRdKYzEmErhlsGFVlEZPQ2w7R2pj88KXiyySnIfP+9FhE4oX8j9I2jYthZDj2bZDkwIg4MJ+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QM2wZeb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D996C433F1;
+	Thu, 11 Apr 2024 10:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832336;
-	bh=QXotESlx31SMtgGDy7D5Ve8+9OF0e1XHdHuuzKkEjzY=;
+	s=korg; t=1712831310;
+	bh=CUkSKDcYIpkxoFrF7fJiSCobBbngAWLUyDDOdXJKTh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y8E+TKjyFtLg03WHhh1apWf+HLFleEdPaDi4xxnzuTjPPOzOIprdGh7QOONb6Wy8R
-	 YISdJDM0VeKW2TdJmLjhs0BAkCShkfZbyUfIQJ+xBMez3j3P00TWqq4f/6dTtsKkRm
-	 TYFQaQgUAz2mqWkZCJUI+i0Es5uH97jaE83lCTB0=
+	b=1QM2wZeb3J3uNYJtFLLJY86p5+/f2WuJ4TBDCU6FfcB1w2QpDTfVYKEgsnQujAC6+
+	 2x8VDsa9gZcyWuxTXjaxCRpvu6l8y4KB790A8/Pd1XiX1YEglfeTGNJUSnyCaGQUSc
+	 X/IkaEi5OLnf7e0+Q0k/YZWST/wjHRKlGX+LeOts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	=?UTF-8?q?Alban=20Boy=C3=A9?= <alban.boye@protonmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 15/83] wifi: brcmfmac: Add DMI nvram filename quirk for ACEPC W5 Pro
+Subject: [PATCH 6.6 080/114] platform/x86: touchscreen_dmi: Add an extra entry for a variant of the Chuwi Vi8 tablet
 Date: Thu, 11 Apr 2024 11:56:47 +0200
-Message-ID: <20240411095413.136420979@linuxfoundation.org>
+Message-ID: <20240411095419.303392502@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Alban Boyé <alban.boye@protonmail.com>
 
-[ Upstream commit 32167707aa5e7ae4b160c18be79d85a7b4fdfcfb ]
+[ Upstream commit 1266e2efb7512dbf20eac820ca2ed34de6b1c3e7 ]
 
-The ACEPC W5 Pro HDMI stick contains quite generic names in the sys_vendor
-and product_name DMI strings, without this patch brcmfmac will try to load:
-"brcmfmac43455-sdio.$(DEFAULT_STRING)-$(DEFAULT_STRING).txt" as nvram file
-which is both too generic and messy with the $ symbols in the name.
-
-The ACEPC W5 Pro uses the same Ampak AP6255 module as the ACEPC T8
-and the nvram for the T8 is already in linux-firmware, so point the new
-DMI nvram filename quirk to the T8 nvram file.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240216213649.251718-1-hdegoede@redhat.com
+Signed-off-by: Alban Boyé <alban.boye@protonmail.com>
+Link: https://lore.kernel.org/r/20240227223919.11587-1-alban.boye@protonmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c | 9 +++++++++
+ drivers/platform/x86/touchscreen_dmi.c | 9 +++++++++
  1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
-index 86ff174936a9a..c3a602197662b 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
-@@ -82,6 +82,15 @@ static const struct dmi_system_id dmi_platform_data[] = {
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
+index 969477c83e56e..630ed0515b1e9 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -1222,6 +1222,15 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
+ 			DMI_MATCH(DMI_BIOS_VERSION, "CHUWI.D86JLBNR"),
  		},
- 		.driver_data = (void *)&acepc_t8_data,
  	},
 +	{
-+		/* ACEPC W5 Pro Cherry Trail Z8350 HDMI stick, same wifi as the T8 */
++		/* Chuwi Vi8 dual-boot (CWI506) */
++		.driver_data = (void *)&chuwi_vi8_data,
 +		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "T3 MRD"),
-+			DMI_MATCH(DMI_CHASSIS_TYPE, "3"),
-+			DMI_MATCH(DMI_BIOS_VENDOR, "American Megatrends Inc."),
++			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "i86"),
++			DMI_MATCH(DMI_BIOS_VERSION, "CHUWI2.D86JHBNR02"),
 +		},
-+		.driver_data = (void *)&acepc_t8_data,
 +	},
  	{
- 		/* Chuwi Hi8 Pro with D2D3_Hi8Pro.233 BIOS */
- 		.matches = {
+ 		/* Chuwi Vi8 Plus (CWI519) */
+ 		.driver_data = (void *)&chuwi_vi8_plus_data,
 -- 
 2.43.0
 
