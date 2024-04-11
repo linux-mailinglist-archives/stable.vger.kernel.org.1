@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 997D78A0D07
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:59:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F0C8A0E94
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:16:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F19E1F221A1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:59:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 569501C2181C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5C5145323;
-	Thu, 11 Apr 2024 09:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB21145B28;
+	Thu, 11 Apr 2024 10:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgWx+vTo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2OAvBxS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAD213DDDD;
-	Thu, 11 Apr 2024 09:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAFC13F452;
+	Thu, 11 Apr 2024 10:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829569; cv=none; b=iSAjrh6INMos8Po6z0R6wHjmFjQgpHMWjIrn84bqgYiBC7iV6QLiUyKGL+8JBB4Afj6qcittGmy6Sd0nMRGZxI/f9TbRrPtR4XbpCVKqzJvmWjDXwx4LC1e/2422rWjmxpusP4XDbhYqI6REhrMZOAoMaNCwt+F41zjIh2O1XZA=
+	t=1712830569; cv=none; b=tuB6x77SbwXMhQty55xnAXPXiZHBdd/8n6lMR6fmOk3dt5uisFl8X4ONfASQHHkrrW+jE0UpIhe0Q8IJQMFP9/v0uloFPk4gbkHJCR8TjEtCy0XTY4dbeZxdMlUKAeGtakvSkfQZyaPu66zvbkntQQ0KURQz9iiG8exadvxW2k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829569; c=relaxed/simple;
-	bh=uMScbvoJ2FEVlyiEZtkL433vmrUd6cbGefwg4aeCw/k=;
+	s=arc-20240116; t=1712830569; c=relaxed/simple;
+	bh=Gvp2cFPviIBC3fbhlkw/9Tc6F1roQNdcACQVCmf4Iqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b7oOWxp0AE86I/5c9W0LizD97kdaAahu978/uePSwcqTCqQy3JCKAXvOD0tNfBHflbHnvP4IXRm0qhQfbze3WR2mS/6y2UamhpxSzAAPAFszkqo0PFoBne5b1nOacv/F/kajcdJjrh8uK1HCk6RrhLI4rWv15rpBZWxYMKzQfTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgWx+vTo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00ABAC43390;
-	Thu, 11 Apr 2024 09:59:28 +0000 (UTC)
+	 MIME-Version; b=Fpz+Zxtp7D5//VsT6nasV9oOt5Lyz6rkM+eiMI4ojvzSHSjhl9adu3ARtNNHDNzpt8vrtRFumA4OCPcZCVq8tD/dRtgp08gDeEbZQd3685F0dYmt9gh52RqZwhPaZ2S0UQQNLF2DDtaPhu02DvXVoVeqdk0Qi6cX2kFbOQDNnww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2OAvBxS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF38EC433C7;
+	Thu, 11 Apr 2024 10:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829569;
-	bh=uMScbvoJ2FEVlyiEZtkL433vmrUd6cbGefwg4aeCw/k=;
+	s=korg; t=1712830569;
+	bh=Gvp2cFPviIBC3fbhlkw/9Tc6F1roQNdcACQVCmf4Iqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EgWx+vTopd4nMx9aNKYUR9ctCM6jZeuX5/F8ffHNrJWwMKzGrSBfOfxRZUyO749qf
-	 nIbm8/c4Ymbt3W/UhsorP8/ytHVv2vUS0eLQB1arkPTYWusQ3WSDOybYhaPBEl/GUQ
-	 1pUvoQ/5J+EicPB0KRPzXkCGU8wCmiCc4xrDtIE4=
+	b=m2OAvBxS77y22yDwQVFroaPGug6EO/QaqdfAedVTeuxnbwIHCO1uDeIO/mhpbazfz
+	 ORvmxtAj6lPSTVIcfVItR0EgXJJHIJZNFN81klC/etkqnGEqA+5cHWueg3hd+t3W1x
+	 wH4NXhzN9JGhRc23J7wsB+W7QUMEzgW2BMjz00hM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maulik Shah <quic_mkshah@quicinc.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 030/175] PM: suspend: Set mem_sleep_current during kernel command line setup
+Subject: [PATCH 5.4 044/215] mmc: tmio: avoid concurrent runs of mmc_request_done()
 Date: Thu, 11 Apr 2024 11:54:13 +0200
-Message-ID: <20240411095420.464077841@linuxfoundation.org>
+Message-ID: <20240411095426.218845167@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maulik Shah <quic_mkshah@quicinc.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 9bc4ffd32ef8943f5c5a42c9637cfd04771d021b ]
+[ Upstream commit e8d1b41e69d72c62865bebe8f441163ec00b3d44 ]
 
-psci_init_system_suspend() invokes suspend_set_ops() very early during
-bootup even before kernel command line for mem_sleep_default is setup.
-This leads to kernel command line mem_sleep_default=s2idle not working
-as mem_sleep_current gets changed to deep via suspend_set_ops() and never
-changes back to s2idle.
+With the to-be-fixed commit, the reset_work handler cleared 'host->mrq'
+outside of the spinlock protected critical section. That leaves a small
+race window during execution of 'tmio_mmc_reset()' where the done_work
+handler could grab a pointer to the now invalid 'host->mrq'. Both would
+use it to call mmc_request_done() causing problems (see link below).
 
-Set mem_sleep_current along with mem_sleep_default during kernel command
-line setup as default suspend mode.
+However, 'host->mrq' cannot simply be cleared earlier inside the
+critical section. That would allow new mrqs to come in asynchronously
+while the actual reset of the controller still needs to be done. So,
+like 'tmio_mmc_set_ios()', an ERR_PTR is used to prevent new mrqs from
+coming in but still avoiding concurrency between work handlers.
 
-Fixes: faf7ec4a92c0 ("drivers: firmware: psci: add system suspend support")
-CC: stable@vger.kernel.org # 5.4+
-Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
+Closes: https://lore.kernel.org/all/20240220061356.3001761-1-dirk.behme@de.bosch.com/
+Fixes: df3ef2d3c92c ("mmc: protect the tmio_mmc driver against a theoretical race")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: stable@vger.kernel.org # 3.0+
+Link: https://lore.kernel.org/r/20240305104423.3177-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/power/suspend.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/tmio_mmc_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
-index 0bd595a0b6103..7a080015a1b3c 100644
---- a/kernel/power/suspend.c
-+++ b/kernel/power/suspend.c
-@@ -202,6 +202,7 @@ static int __init mem_sleep_default_setup(char *str)
- 		if (mem_sleep_labels[state] &&
- 		    !strcmp(str, mem_sleep_labels[state])) {
- 			mem_sleep_default = state;
-+			mem_sleep_current = state;
- 			break;
- 		}
+diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+index 25083f010a7ad..e21907b92cf11 100644
+--- a/drivers/mmc/host/tmio_mmc_core.c
++++ b/drivers/mmc/host/tmio_mmc_core.c
+@@ -217,6 +217,8 @@ static void tmio_mmc_reset_work(struct work_struct *work)
+ 	else
+ 		mrq->cmd->error = -ETIMEDOUT;
+ 
++	/* No new calls yet, but disallow concurrent tmio_mmc_done_work() */
++	host->mrq = ERR_PTR(-EBUSY);
+ 	host->cmd = NULL;
+ 	host->data = NULL;
  
 -- 
 2.43.0
