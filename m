@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-39116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D86BF8A11FC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07FD78A1220
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:51:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1899EB274F1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B64802843F2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D1513D24D;
-	Thu, 11 Apr 2024 10:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5065313D24D;
+	Thu, 11 Apr 2024 10:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXC5B1OP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JgbB8K5h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF166BB29;
-	Thu, 11 Apr 2024 10:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF3779FD;
+	Thu, 11 Apr 2024 10:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832563; cv=none; b=i5nD229r7A9YIw97RRlq/7R06Klni3XjvzNSCarRX7fdZRSJm/fgDtVyxP9zzrtwkuBx02OoBJ36ORbukYsIZdSXFvwsfhrzR8AJ7wH0Wx4qWSgNpijtJOAWfSSRh8rFL+T+GPd5wARE6XBBhkR6aWVK3iVoPr5I4WAuQr6uqpE=
+	t=1712832659; cv=none; b=aRVfpkUYKZbwUCZLnmyNNVibyZAy5onD+a8iMFK0u9dZky54zZXln9HlKOxyaTGl/RgBc51y676Ke2Ga2cra6aQp4PgvHgiea+TZ4Eo0LmWGqB4qekWX27jo7Br2yPIOSmJlcvELsiTcax0FwHeaP6oelzXKN0hKLPmYWs/Q6y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832563; c=relaxed/simple;
-	bh=Ak23/Z3uD5U5Xe+38VIea8bf1iipNBqFQTlIw6O1b3E=;
+	s=arc-20240116; t=1712832659; c=relaxed/simple;
+	bh=n75tymbpOI5E6oyI+Cfqhw/ksbpIi/JHeSJpaYdcF3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dGwA0+7CTct5W9I+JZq+acVNDGmprdqQJClKomg+89kWy3keLs7iph3cYgydmzkt4vAF8aAQr479Fh6EZ+6lw9X0KVPY6glb5zysaTTd3IxvOVqZaDgd9fR5Gnc69kXYVCzO8dlczmnocXSqqzfKkVcOAehDXfQfR21K8PXp5x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXC5B1OP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43714C433C7;
-	Thu, 11 Apr 2024 10:49:23 +0000 (UTC)
+	 MIME-Version; b=eTwRslBlagRflS8EjnSPwSmlQSXzLmVwWMkVZMuX9uum06FOITKt+OZTJbiNKEYib5GWjKHa29EQcbhOHICN0zxv0Z/0MGxKD2pd1+Q9on3+MbNmXKFUxKKytlie4kjYoiWgNoa9uVPEF1x/eB3YiexHc+4+M4GxXkEeDtIdYF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JgbB8K5h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84948C433C7;
+	Thu, 11 Apr 2024 10:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832563;
-	bh=Ak23/Z3uD5U5Xe+38VIea8bf1iipNBqFQTlIw6O1b3E=;
+	s=korg; t=1712832658;
+	bh=n75tymbpOI5E6oyI+Cfqhw/ksbpIi/JHeSJpaYdcF3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lXC5B1OPlT1Obrr0kp+eiYtsgkjjOX2Gk79ZjT7xQGpQQSW2jo1t67m8hKxcO2nME
-	 askVCKmOBd9RFJUREV53drUdmLhAZMB63QAeWbpiV6Ezx+AVktbsAnc54M4LAGUk3e
-	 NkyAuKU8vmQOnBpbZvSQxOYZhJJnS1NjxDs4z3wg=
+	b=JgbB8K5hDB/V8oEJm+u1lGu6NVlK6jh/st9uTcZZfZHM6RnYY+5NUt08dVbHleF9Z
+	 Rd7TybnbDGgbQzo1toL1hyFhYGoewSRuHlBVQJLwNgmwbqLK2LiSc+MN/6fFPDJk77
+	 tNQeha94MVbTPCMpzOhN5p7S+QQtvQtCqo3H1gTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tasos Sahanidis <tasos@tasossah.com>,
-	"Ewan D. Milne" <emilne@redhat.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	James Bottomley <jejb@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	John David Anglin <dave.anglin@bell.net>,
-	Cyril Brulebois <kibi@debian.org>
-Subject: [PATCH 6.1 75/83] Revert "scsi: core: Add struct for args to execution functions"
+	Petre Rodan <petre.rodan@subdimension.ro>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 39/57] tools: iio: replace seekdir() in iio_generic_buffer
 Date: Thu, 11 Apr 2024 11:57:47 +0200
-Message-ID: <20240411095414.945859117@linuxfoundation.org>
+Message-ID: <20240411095409.175223112@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+References: <20240411095407.982258070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,198 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Petre Rodan <petre.rodan@subdimension.ro>
 
-This reverts commit cf33e6ca12d814e1be2263cb76960d0019d7fb94 which is
-commit d0949565811f0896c1c7e781ab2ad99d34273fdf upstream.
+[ Upstream commit 4e6500bfa053dc133021f9c144261b77b0ba7dc8 ]
 
-It is known to cause problems and has asked to be dropped.
+Replace seekdir() with rewinddir() in order to fix a localized glibc bug.
 
-Link: https://lore.kernel.org/r/yq1frvvpymp.fsf@ca-mkp.ca.oracle.com
-Cc: Tasos Sahanidis <tasos@tasossah.com>
-Cc: Ewan D. Milne <emilne@redhat.com>
-Cc: Bart Van Assche <bvanassche@acm.org>
-Cc: Tasos Sahanidis <tasos@tasossah.com>
-Cc: Martin K. Petersen <martin.petersen@oracle.com>
-Cc: James Bottomley <jejb@linux.ibm.com>
-Cc: Sasha Levin <sashal@kernel.org>
-Reported-by: John David Anglin <dave.anglin@bell.net>
-Reported-by: Cyril Brulebois <kibi@debian.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+One of the glibc patches that stable Gentoo is using causes an improper
+directory stream positioning bug on 32bit arm. That in turn ends up as a
+floating point exception in iio_generic_buffer.
+
+The attached patch provides a fix by using an equivalent function which
+should not cause trouble for other distros and is easier to reason about
+in general as it obviously always goes back to to the start.
+
+https://sourceware.org/bugzilla/show_bug.cgi?id=31212
+
+Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+Link: https://lore.kernel.org/r/20240108103224.3986-1-petre.rodan@subdimension.ro
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_lib.c    |   52 +++++++++++++++++++++++----------------------
- include/scsi/scsi_device.h |   51 ++++++++++++--------------------------------
- 2 files changed, 41 insertions(+), 62 deletions(-)
+ tools/iio/iio_utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -185,37 +185,39 @@ void scsi_queue_insert(struct scsi_cmnd
- 	__scsi_queue_insert(cmd, reason, true);
- }
+diff --git a/tools/iio/iio_utils.c b/tools/iio/iio_utils.c
+index 6a00a6eecaef0..c5c5082cb24e5 100644
+--- a/tools/iio/iio_utils.c
++++ b/tools/iio/iio_utils.c
+@@ -376,7 +376,7 @@ int build_channel_array(const char *device_dir, int buffer_idx,
+ 		goto error_close_dir;
+ 	}
  
-+
- /**
-- * scsi_execute_cmd - insert request and wait for the result
-- * @sdev:	scsi_device
-+ * __scsi_execute - insert request and wait for the result
-+ * @sdev:	scsi device
-  * @cmd:	scsi command
-- * @opf:	block layer request cmd_flags
-+ * @data_direction: data direction
-  * @buffer:	data buffer
-  * @bufflen:	len of buffer
-+ * @sense:	optional sense buffer
-+ * @sshdr:	optional decoded sense header
-  * @timeout:	request timeout in HZ
-  * @retries:	number of times to retry request
-- * @args:	Optional args. See struct definition for field descriptions
-+ * @flags:	flags for ->cmd_flags
-+ * @rq_flags:	flags for ->rq_flags
-+ * @resid:	optional residual length
-  *
-  * Returns the scsi_cmnd result field if a command was executed, or a negative
-  * Linux error code if we didn't get that far.
-  */
--int scsi_execute_cmd(struct scsi_device *sdev, const unsigned char *cmd,
--		     blk_opf_t opf, void *buffer, unsigned int bufflen,
--		     int timeout, int retries,
--		     const struct scsi_exec_args *args)
-+int __scsi_execute(struct scsi_device *sdev, const unsigned char *cmd,
-+		 int data_direction, void *buffer, unsigned bufflen,
-+		 unsigned char *sense, struct scsi_sense_hdr *sshdr,
-+		 int timeout, int retries, blk_opf_t flags,
-+		 req_flags_t rq_flags, int *resid)
- {
--	static const struct scsi_exec_args default_args;
- 	struct request *req;
- 	struct scsi_cmnd *scmd;
- 	int ret;
- 
--	if (!args)
--		args = &default_args;
--	else if (WARN_ON_ONCE(args->sense &&
--			      args->sense_len != SCSI_SENSE_BUFFERSIZE))
--		return -EINVAL;
--
--	req = scsi_alloc_request(sdev->request_queue, opf, args->req_flags);
-+	req = scsi_alloc_request(sdev->request_queue,
-+			data_direction == DMA_TO_DEVICE ?
-+			REQ_OP_DRV_OUT : REQ_OP_DRV_IN,
-+			rq_flags & RQF_PM ? BLK_MQ_REQ_PM : 0);
- 	if (IS_ERR(req))
- 		return PTR_ERR(req);
- 
-@@ -230,7 +232,8 @@ int scsi_execute_cmd(struct scsi_device
- 	memcpy(scmd->cmnd, cmd, scmd->cmd_len);
- 	scmd->allowed = retries;
- 	req->timeout = timeout;
--	req->rq_flags |= RQF_QUIET;
-+	req->cmd_flags |= flags;
-+	req->rq_flags |= rq_flags | RQF_QUIET;
- 
- 	/*
- 	 * head injection *required* here otherwise quiesce won't work
-@@ -246,21 +249,20 @@ int scsi_execute_cmd(struct scsi_device
- 	if (unlikely(scmd->resid_len > 0 && scmd->resid_len <= bufflen))
- 		memset(buffer + bufflen - scmd->resid_len, 0, scmd->resid_len);
- 
--	if (args->resid)
--		*args->resid = scmd->resid_len;
--	if (args->sense)
--		memcpy(args->sense, scmd->sense_buffer, SCSI_SENSE_BUFFERSIZE);
--	if (args->sshdr)
-+	if (resid)
-+		*resid = scmd->resid_len;
-+	if (sense && scmd->sense_len)
-+		memcpy(sense, scmd->sense_buffer, SCSI_SENSE_BUFFERSIZE);
-+	if (sshdr)
- 		scsi_normalize_sense(scmd->sense_buffer, scmd->sense_len,
--				     args->sshdr);
--
-+				     sshdr);
- 	ret = scmd->result;
-  out:
- 	blk_mq_free_request(req);
- 
- 	return ret;
- }
--EXPORT_SYMBOL(scsi_execute_cmd);
-+EXPORT_SYMBOL(__scsi_execute);
- 
- /*
-  * Wake up the error handler if necessary. Avoid as follows that the error
---- a/include/scsi/scsi_device.h
-+++ b/include/scsi/scsi_device.h
-@@ -479,51 +479,28 @@ extern const char *scsi_device_state_nam
- extern int scsi_is_sdev_device(const struct device *);
- extern int scsi_is_target_device(const struct device *);
- extern void scsi_sanitize_inquiry_string(unsigned char *s, int len);
--
--/* Optional arguments to scsi_execute_cmd */
--struct scsi_exec_args {
--	unsigned char *sense;		/* sense buffer */
--	unsigned int sense_len;		/* sense buffer len */
--	struct scsi_sense_hdr *sshdr;	/* decoded sense header */
--	blk_mq_req_flags_t req_flags;	/* BLK_MQ_REQ flags */
--	int *resid;			/* residual length */
--};
--
--int scsi_execute_cmd(struct scsi_device *sdev, const unsigned char *cmd,
--		     blk_opf_t opf, void *buffer, unsigned int bufflen,
--		     int timeout, int retries,
--		     const struct scsi_exec_args *args);
--
-+extern int __scsi_execute(struct scsi_device *sdev, const unsigned char *cmd,
-+			int data_direction, void *buffer, unsigned bufflen,
-+			unsigned char *sense, struct scsi_sense_hdr *sshdr,
-+			int timeout, int retries, blk_opf_t flags,
-+			req_flags_t rq_flags, int *resid);
- /* Make sure any sense buffer is the correct size. */
--#define scsi_execute(_sdev, _cmd, _data_dir, _buffer, _bufflen, _sense,	\
--		     _sshdr, _timeout, _retries, _flags, _rq_flags,	\
--		     _resid)						\
-+#define scsi_execute(sdev, cmd, data_direction, buffer, bufflen, sense,	\
-+		     sshdr, timeout, retries, flags, rq_flags, resid)	\
- ({									\
--	scsi_execute_cmd(_sdev, _cmd, (_data_dir == DMA_TO_DEVICE ?	\
--			 REQ_OP_DRV_OUT : REQ_OP_DRV_IN) | _flags,	\
--			 _buffer, _bufflen, _timeout, _retries,	\
--			 &(struct scsi_exec_args) {			\
--				.sense = _sense,			\
--				.sshdr = _sshdr,			\
--				.req_flags = _rq_flags & RQF_PM  ?	\
--						BLK_MQ_REQ_PM : 0,	\
--				.resid = _resid,			\
--			 });						\
-+	BUILD_BUG_ON((sense) != NULL &&					\
-+		     sizeof(sense) != SCSI_SENSE_BUFFERSIZE);		\
-+	__scsi_execute(sdev, cmd, data_direction, buffer, bufflen,	\
-+		       sense, sshdr, timeout, retries, flags, rq_flags,	\
-+		       resid);						\
- })
--
- static inline int scsi_execute_req(struct scsi_device *sdev,
- 	const unsigned char *cmd, int data_direction, void *buffer,
- 	unsigned bufflen, struct scsi_sense_hdr *sshdr, int timeout,
- 	int retries, int *resid)
- {
--	return scsi_execute_cmd(sdev, cmd,
--				data_direction == DMA_TO_DEVICE ?
--				REQ_OP_DRV_OUT : REQ_OP_DRV_IN, buffer,
--				bufflen, timeout, retries,
--				&(struct scsi_exec_args) {
--					.sshdr = sshdr,
--					.resid = resid,
--				});
-+	return scsi_execute(sdev, cmd, data_direction, buffer,
-+		bufflen, NULL, sshdr, timeout, retries,  0, 0, resid);
- }
- extern void sdev_disable_disk_events(struct scsi_device *sdev);
- extern void sdev_enable_disk_events(struct scsi_device *sdev);
+-	seekdir(dp, 0);
++	rewinddir(dp);
+ 	while (ent = readdir(dp), ent) {
+ 		if (strcmp(ent->d_name + strlen(ent->d_name) - strlen("_en"),
+ 			   "_en") == 0) {
+-- 
+2.43.0
+
 
 
 
