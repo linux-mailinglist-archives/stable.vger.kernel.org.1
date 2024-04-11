@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF4F8A0DB7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EBF18A0FC7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:27:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCF4D2865CC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60A9C1C230C0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7459A145B13;
-	Thu, 11 Apr 2024 10:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C634A13FD94;
+	Thu, 11 Apr 2024 10:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKhE6D/i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JaNvbb4V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339AF1442F7;
-	Thu, 11 Apr 2024 10:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E7B143C76;
+	Thu, 11 Apr 2024 10:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830019; cv=none; b=KDtF2PYamnqkLiO2X87SQQTwav2XZm+JWeFA2uC8jtnG7njW60lzfTkU0u3y4MoiYav24BG3aYtsJ0Zlgf759Dwwm+L7qNDVIzRhnVqrxUhM1ftdH8eXa3sqPd1c+DIvKYjIQ0NAMLt05rrGU9DsLTHUDN0TsN8kwsWfaCkf1FU=
+	t=1712831249; cv=none; b=esQmL8jwzLq4T5A99qJRP4qLcGqoVNv+G6YoQBoXDjlmNwXx+YGIgRo5S0AmnkmloNLiqQetY9faxj6zmlY2pB/XPr2Y9/f4OhlWkKzqJj+sj0GBex4Uglia739Uu10RjTfv6J/Pl7emyIAhFDDhoaHP1eBBXnxwfaKalx4RGK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830019; c=relaxed/simple;
-	bh=IEceZIKMOKvpF47ylPfp42eyVcot8W554PgQYWZ+EwQ=;
+	s=arc-20240116; t=1712831249; c=relaxed/simple;
+	bh=goXadW0BbhRBXptCMOUxktLRXTBs1HwWQLHzZ1bsjqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XbZwLWNrYYx47g+VTkXOWm6rCBkWRZEowaQqG0y+URDuzcryPadhTjoxyTtIQTa2sSYmpdK9mJME5Ws5rLMVsBWh6HcJnVU8yEK0ltSaSC555M7bViErJYbkPrlMHJnjCrOjherxOGuCMSqYCijoTwt/J2rK6gGSifN8SUTSwaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKhE6D/i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64C0C43390;
-	Thu, 11 Apr 2024 10:06:58 +0000 (UTC)
+	 MIME-Version; b=X3N/DEXgMeXRYQsQwFS7o7Fx21mewpFzNFztIdLRWACOkYnD73tflSHHHtIUy8TUGaiLvwaoOKaacDTGJeFTfGV3LI9iG4Nxf6JrW0K6RK+cxooE3YR1rrhtLPJ5bEQJyvxxeb7a230+q7FeELi1w/odcSxOMnykikYGk6kdnq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JaNvbb4V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5812C433F1;
+	Thu, 11 Apr 2024 10:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830019;
-	bh=IEceZIKMOKvpF47ylPfp42eyVcot8W554PgQYWZ+EwQ=;
+	s=korg; t=1712831249;
+	bh=goXadW0BbhRBXptCMOUxktLRXTBs1HwWQLHzZ1bsjqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AKhE6D/iiWIcBz4/EZVLsuc0baCT+uIUC7ovpBLD4I26kKGYbqk9d9jkkXs0XTJgI
-	 3BfUsScQvqSF9Y2bOB++YGDlGlE/uDCLK9/1uGu0BEbWl1qQItUAqd27yiZaru1XSw
-	 z9XG6r1Py2dQOYGGA/KbrQtPCsNoVkuIHxshbYyk=
+	b=JaNvbb4VjnWSl0cHwKphF4K0t6fr2VEAs0x1na7ysliLufhqf+J2dfIP0tzYHC/JU
+	 V5LLzpF2pR6/7GMPpKpQgSPPgi0p1OZGcdJ0dm+EMcHueh56mmpqximzim82Oipzvu
+	 rh5pTLK1SrC1funBwnlWo+La0oH36RqHqmKlEv5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gergo Koteles <soyer@irl.hu>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 161/175] Input: allocate keycode for Display refresh rate toggle
+Subject: [PATCH 6.6 057/114] rcu-tasks: Repair RCU Tasks Trace quiescence check
 Date: Thu, 11 Apr 2024 11:56:24 +0200
-Message-ID: <20240411095424.411417201@linuxfoundation.org>
+Message-ID: <20240411095418.607356530@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gergo Koteles <soyer@irl.hu>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit cfeb98b95fff25c442f78a6f616c627bc48a26b7 ]
+[ Upstream commit 2eb52fa8900e642b3b5054c4bf9776089d2a935f ]
 
-Newer Lenovo Yogas and Legions with 60Hz/90Hz displays send a wmi event
-when Fn + R is pressed. This is intended for use to switch between the
-two refresh rates.
+The context-switch-time check for RCU Tasks Trace quiescence expects
+current->trc_reader_special.b.need_qs to be zero, and if so, updates
+it to TRC_NEED_QS_CHECKED.  This is backwards, because if this value
+is zero, there is no RCU Tasks Trace grace period in flight, an thus
+no need for a quiescent state.  Instead, when a grace period starts,
+this field is set to TRC_NEED_QS.
 
-Allocate a new KEY_REFRESH_RATE_TOGGLE keycode for it.
+This commit therefore changes the check from zero to TRC_NEED_QS.
 
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/15a5d08c84cf4d7b820de34ebbcf8ae2502fb3ca.1710065750.git.soyer@irl.hu
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reported-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Tested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/input-event-codes.h | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/rcupdate.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
-index 1c011379a9967..76b524895dea6 100644
---- a/include/uapi/linux/input-event-codes.h
-+++ b/include/uapi/linux/input-event-codes.h
-@@ -596,6 +596,7 @@
- 
- #define KEY_ALS_TOGGLE		0x230	/* Ambient light sensor */
- #define KEY_ROTATE_LOCK_TOGGLE	0x231	/* Display rotation lock */
-+#define KEY_REFRESH_RATE_TOGGLE	0x232	/* Display refresh rate toggle */
- 
- #define KEY_BUTTONCONFIG		0x240	/* AL Button Configuration */
- #define KEY_TASKMANAGER		0x241	/* AL Task/Project Manager */
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index 9ad656b28847f..6466c2f792923 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -189,9 +189,9 @@ void rcu_tasks_trace_qs_blkd(struct task_struct *t);
+ 	do {									\
+ 		int ___rttq_nesting = READ_ONCE((t)->trc_reader_nesting);	\
+ 										\
+-		if (likely(!READ_ONCE((t)->trc_reader_special.b.need_qs)) &&	\
++		if (unlikely(READ_ONCE((t)->trc_reader_special.b.need_qs) == TRC_NEED_QS) &&	\
+ 		    likely(!___rttq_nesting)) {					\
+-			rcu_trc_cmpxchg_need_qs((t), 0,	TRC_NEED_QS_CHECKED);	\
++			rcu_trc_cmpxchg_need_qs((t), TRC_NEED_QS, TRC_NEED_QS_CHECKED);	\
+ 		} else if (___rttq_nesting && ___rttq_nesting != INT_MIN &&	\
+ 			   !READ_ONCE((t)->trc_reader_special.b.blocked)) {	\
+ 			rcu_tasks_trace_qs_blkd(t);				\
 -- 
 2.43.0
 
