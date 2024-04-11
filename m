@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-38187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB058A0D6A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A6388A10F5
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D00E4B263DA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E56101F2CF12
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D67145B0D;
-	Thu, 11 Apr 2024 10:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8DE14A0AE;
+	Thu, 11 Apr 2024 10:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqgkrdhD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5bd04JP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B93145B07;
-	Thu, 11 Apr 2024 10:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E467B149DFF;
+	Thu, 11 Apr 2024 10:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829820; cv=none; b=ZIA64QxYaZi+nTKMguRZH5D98qKZ4uuVr+s4EuwPBZjSMKwguJ/H9Ho13K59NuHZrJllMJTOcCeAODALuY/HUEIqxSzcFdTiRu8e2huJ3xL4O/EFr1zejTjw659/aEAPgBLeSUIzHXc0MelTM8tZkiOaN5lZQ/f/KBg+m2T5K5U=
+	t=1712831937; cv=none; b=vADq1vgp30FxSNTyqo2Bc3dOGK1O3DwYdiQzLvWODST+kiIp+n5B6UcWkW02TWA3dQwwRA5QAQ+ppqc+xN+K1n0NduNC87CBnMQg3Ke05ZoBt2phkrPV3dndsgjklhjPXJmbzW5HMypIPZmiZmDf8QHRuStSn/Fz1BcEME2SzgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829820; c=relaxed/simple;
-	bh=QcC+AHd2HbR4AooADNYht3BXV0zcEEB8dO4bTt59bAI=;
+	s=arc-20240116; t=1712831937; c=relaxed/simple;
+	bh=5WEgseugbwKy+DjQl7tHuxIWuOmR5c8iAyltBSNY0/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OeAkJYn4pNPmqycLsDHce7jcoxEf3A1qe2m0+Mmilj8RZjzg5DrjK+WIlR7KTut/4vk1vcw+4nw5dBfUUQtxGdqc+/3R3Df1c7N/9+3IxCm57g8LnuExQ3FXom0xuLkhSKPNHCGtXAWItDqIx09ncb3w5SzwIcjemHA445uzT3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqgkrdhD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8D9C43390;
-	Thu, 11 Apr 2024 10:03:39 +0000 (UTC)
+	 MIME-Version; b=Fjufx+dSEED069jJXPN/Sb415ouaqXeX4H8GrNNqd0nreYPpKyPvWRIdUDSRsqpxDAsOt0kRRCjB1Oo0zvu0CcQBj0/B1NMf2O8EQLOHoWLsrTJH+mbr9ujD1OkeKq8BDthhQ21wvgdYUpB8PcTEZ5sdqWYT/PJw8DiXJQeUZcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5bd04JP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28AC6C433C7;
+	Thu, 11 Apr 2024 10:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829820;
-	bh=QcC+AHd2HbR4AooADNYht3BXV0zcEEB8dO4bTt59bAI=;
+	s=korg; t=1712831936;
+	bh=5WEgseugbwKy+DjQl7tHuxIWuOmR5c8iAyltBSNY0/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SqgkrdhD9IIa3+HUy+rquDLM94xdXLBbPG5qyszq6HiBl1JfwmlbB+6BJCYo6idif
-	 fW0xq6twqgwpjEQSbBf73DU0LjsAA4elXDAfIdi6cAUKqIBVtOeteeTCSEeM6Ocz/7
-	 VLvgwEKBKrkLu6weheRS0U0U7Ua7hGo6GKnUvtGk=
+	b=L5bd04JPf7h7v9RXNXCIlBE0ZVz1f+AshICy94JREoVc0gO6y3LkRAe5BETjD+5k7
+	 T9nC8eK4GWJtT11MNHPrpqPTvpi2Tk6A4/bE9kYx5o4hhOFZhatm7xcIxMT0KK8OcK
+	 1C85eTX6QzcxmEVWlgO/BUKJDMhOgboRok0rR6mY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 115/175] r8169: fix issue caused by buggy BIOS on certain boards with RTL8168d
+	kernel test robot <lkp@intel.com>,
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 175/294] scsi: qla2xxx: Split FCE|EFT trace control
 Date: Thu, 11 Apr 2024 11:55:38 +0200
-Message-ID: <20240411095423.028888660@linuxfoundation.org>
+Message-ID: <20240411095440.899147482@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,229 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Quinn Tran <qutran@marvell.com>
 
-commit 5d872c9f46bd2ea3524af3c2420a364a13667135 upstream.
+commit 76a192e1a566e15365704b9f8fb3b70825f85064 upstream.
 
-On some boards with this chip version the BIOS is buggy and misses
-to reset the PHY page selector. This results in the PHY ID read
-accessing registers on a different page, returning a more or
-less random value. Fix this by resetting the page selector first.
+Current code combines the allocation of FCE|EFT trace buffers and enables
+the features all in 1 step.
 
-Fixes: f1e911d5d0df ("r8169: add basic phylib support")
+Split this step into separate steps in preparation for follow-on patch to
+allow user to have a choice to enable / disable FCE trace feature.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/64f2055e-98b8-45ec-8568-665e3d54d4e6@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-4-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/scsi/qla2xxx/qla_init.c |  102 ++++++++++++++++------------------------
+ 1 file changed, 41 insertions(+), 61 deletions(-)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -7303,6 +7303,15 @@ static int r8169_mdio_register(struct rt
- 	struct mii_bus *new_bus;
- 	int ret;
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -2280,6 +2280,40 @@ exit:
+ 	return rval;
+ }
  
-+	/* On some boards with this chip version the BIOS is buggy and misses
-+	 * to reset the PHY page selector. This results in the PHY ID read
-+	 * accessing registers on a different page, returning a more or
-+	 * less random value. Fix this by resetting the page selector first.
-+	 */
-+	if (tp->mac_version == RTL_GIGA_MAC_VER_25 ||
-+	    tp->mac_version == RTL_GIGA_MAC_VER_26)
-+		r8169_mdio_write(tp, 0x1f, 0);
++static void qla_enable_fce_trace(scsi_qla_host_t *vha)
++{
++	int rval;
++	struct qla_hw_data *ha = vha->hw;
 +
- 	new_bus = devm_mdiobus_alloc(&pdev->dev);
- 	if (!new_bus)
- 		return -ENOMEM;
++	if (ha->fce) {
++		ha->flags.fce_enabled = 1;
++		memset(ha->fce, 0, fce_calc_size(ha->fce_bufs));
++		rval = qla2x00_enable_fce_trace(vha,
++		    ha->fce_dma, ha->fce_bufs, ha->fce_mb, &ha->fce_bufs);
++
++		if (rval) {
++			ql_log(ql_log_warn, vha, 0x8033,
++			    "Unable to reinitialize FCE (%d).\n", rval);
++			ha->flags.fce_enabled = 0;
++		}
++	}
++}
++
++static void qla_enable_eft_trace(scsi_qla_host_t *vha)
++{
++	int rval;
++	struct qla_hw_data *ha = vha->hw;
++
++	if (ha->eft) {
++		memset(ha->eft, 0, EFT_SIZE);
++		rval = qla2x00_enable_eft_trace(vha, ha->eft_dma, EFT_NUM_BUFFERS);
++
++		if (rval) {
++			ql_log(ql_log_warn, vha, 0x8034,
++			    "Unable to reinitialize EFT (%d).\n", rval);
++		}
++	}
++}
+ /*
+ * qla2x00_initialize_adapter
+ *      Initialize board.
+@@ -3230,9 +3264,8 @@ qla24xx_chip_diag(scsi_qla_host_t *vha)
+ }
+ 
+ static void
+-qla2x00_init_fce_trace(scsi_qla_host_t *vha)
++qla2x00_alloc_fce_trace(scsi_qla_host_t *vha)
+ {
+-	int rval;
+ 	dma_addr_t tc_dma;
+ 	void *tc;
+ 	struct qla_hw_data *ha = vha->hw;
+@@ -3261,27 +3294,17 @@ qla2x00_init_fce_trace(scsi_qla_host_t *
+ 		return;
+ 	}
+ 
+-	rval = qla2x00_enable_fce_trace(vha, tc_dma, FCE_NUM_BUFFERS,
+-					ha->fce_mb, &ha->fce_bufs);
+-	if (rval) {
+-		ql_log(ql_log_warn, vha, 0x00bf,
+-		       "Unable to initialize FCE (%d).\n", rval);
+-		dma_free_coherent(&ha->pdev->dev, FCE_SIZE, tc, tc_dma);
+-		return;
+-	}
+-
+ 	ql_dbg(ql_dbg_init, vha, 0x00c0,
+ 	       "Allocated (%d KB) for FCE...\n", FCE_SIZE / 1024);
+ 
+-	ha->flags.fce_enabled = 1;
+ 	ha->fce_dma = tc_dma;
+ 	ha->fce = tc;
++	ha->fce_bufs = FCE_NUM_BUFFERS;
+ }
+ 
+ static void
+-qla2x00_init_eft_trace(scsi_qla_host_t *vha)
++qla2x00_alloc_eft_trace(scsi_qla_host_t *vha)
+ {
+-	int rval;
+ 	dma_addr_t tc_dma;
+ 	void *tc;
+ 	struct qla_hw_data *ha = vha->hw;
+@@ -3306,14 +3329,6 @@ qla2x00_init_eft_trace(scsi_qla_host_t *
+ 		return;
+ 	}
+ 
+-	rval = qla2x00_enable_eft_trace(vha, tc_dma, EFT_NUM_BUFFERS);
+-	if (rval) {
+-		ql_log(ql_log_warn, vha, 0x00c2,
+-		       "Unable to initialize EFT (%d).\n", rval);
+-		dma_free_coherent(&ha->pdev->dev, EFT_SIZE, tc, tc_dma);
+-		return;
+-	}
+-
+ 	ql_dbg(ql_dbg_init, vha, 0x00c3,
+ 	       "Allocated (%d KB) EFT ...\n", EFT_SIZE / 1024);
+ 
+@@ -3321,13 +3336,6 @@ qla2x00_init_eft_trace(scsi_qla_host_t *
+ 	ha->eft = tc;
+ }
+ 
+-static void
+-qla2x00_alloc_offload_mem(scsi_qla_host_t *vha)
+-{
+-	qla2x00_init_fce_trace(vha);
+-	qla2x00_init_eft_trace(vha);
+-}
+-
+ void
+ qla2x00_alloc_fw_dump(scsi_qla_host_t *vha)
+ {
+@@ -3382,10 +3390,10 @@ qla2x00_alloc_fw_dump(scsi_qla_host_t *v
+ 		if (ha->tgt.atio_ring)
+ 			mq_size += ha->tgt.atio_q_length * sizeof(request_t);
+ 
+-		qla2x00_init_fce_trace(vha);
++		qla2x00_alloc_fce_trace(vha);
+ 		if (ha->fce)
+ 			fce_size = sizeof(struct qla2xxx_fce_chain) + FCE_SIZE;
+-		qla2x00_init_eft_trace(vha);
++		qla2x00_alloc_eft_trace(vha);
+ 		if (ha->eft)
+ 			eft_size = EFT_SIZE;
+ 	}
+@@ -3784,7 +3792,6 @@ qla2x00_setup_chip(scsi_qla_host_t *vha)
+ 	struct qla_hw_data *ha = vha->hw;
+ 	struct device_reg_2xxx __iomem *reg = &ha->iobase->isp;
+ 	unsigned long flags;
+-	uint16_t fw_major_version;
+ 	int done_once = 0;
+ 
+ 	if (IS_P3P_TYPE(ha)) {
+@@ -3851,7 +3858,6 @@ execute_fw_with_lr:
+ 					goto failed;
+ 
+ enable_82xx_npiv:
+-				fw_major_version = ha->fw_major_version;
+ 				if (IS_P3P_TYPE(ha))
+ 					qla82xx_check_md_needed(vha);
+ 				else
+@@ -3880,12 +3886,11 @@ enable_82xx_npiv:
+ 				if (rval != QLA_SUCCESS)
+ 					goto failed;
+ 
+-				if (!fw_major_version && !(IS_P3P_TYPE(ha)))
+-					qla2x00_alloc_offload_mem(vha);
+-
+ 				if (ql2xallocfwdump && !(IS_P3P_TYPE(ha)))
+ 					qla2x00_alloc_fw_dump(vha);
+ 
++				qla_enable_fce_trace(vha);
++				qla_enable_eft_trace(vha);
+ 			} else {
+ 				goto failed;
+ 			}
+@@ -7012,7 +7017,6 @@ qla2x00_abort_isp_cleanup(scsi_qla_host_
+ int
+ qla2x00_abort_isp(scsi_qla_host_t *vha)
+ {
+-	int rval;
+ 	uint8_t        status = 0;
+ 	struct qla_hw_data *ha = vha->hw;
+ 	struct scsi_qla_host *vp;
+@@ -7100,31 +7104,7 @@ qla2x00_abort_isp(scsi_qla_host_t *vha)
+ 
+ 			if (IS_QLA81XX(ha) || IS_QLA8031(ha))
+ 				qla2x00_get_fw_version(vha);
+-			if (ha->fce) {
+-				ha->flags.fce_enabled = 1;
+-				memset(ha->fce, 0,
+-				    fce_calc_size(ha->fce_bufs));
+-				rval = qla2x00_enable_fce_trace(vha,
+-				    ha->fce_dma, ha->fce_bufs, ha->fce_mb,
+-				    &ha->fce_bufs);
+-				if (rval) {
+-					ql_log(ql_log_warn, vha, 0x8033,
+-					    "Unable to reinitialize FCE "
+-					    "(%d).\n", rval);
+-					ha->flags.fce_enabled = 0;
+-				}
+-			}
+ 
+-			if (ha->eft) {
+-				memset(ha->eft, 0, EFT_SIZE);
+-				rval = qla2x00_enable_eft_trace(vha,
+-				    ha->eft_dma, EFT_NUM_BUFFERS);
+-				if (rval) {
+-					ql_log(ql_log_warn, vha, 0x8034,
+-					    "Unable to reinitialize EFT "
+-					    "(%d).\n", rval);
+-				}
+-			}
+ 		} else {	/* failed the ISP abort */
+ 			vha->flags.online = 1;
+ 			if (test_bit(ISP_ABORT_RETRY, &vha->dpc_flags)) {
 
 
 
