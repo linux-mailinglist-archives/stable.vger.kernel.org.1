@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-38465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 439C48A0EB8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB0D8A10A5
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D69F81F218D9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05B7D28ADD4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D23146586;
-	Thu, 11 Apr 2024 10:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76EE1474BE;
+	Thu, 11 Apr 2024 10:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZBbItpV0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXO8DfgD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150A813E897;
-	Thu, 11 Apr 2024 10:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41521474AB;
+	Thu, 11 Apr 2024 10:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830653; cv=none; b=HgDxliL38Nf43+wocobT7NM0lIltv1Lm4C+aq5+9FjAYZnQq2pYcpsLYQc29vBsU+ripvgpH7LN6WPQsrhTqqgb1YORTUEGwahZI1mi3VsOwYrHpALRUVYZBz16TRWtkxzFpemC+Br6MNuWKnfWAIQTmENT5/YlpOUJC/bpfCMc=
+	t=1712831741; cv=none; b=PJiBwzAlCvjQF0CxDUum1Tmu+fNAz7kc+x0qwC/CgYSxknQ8QRx8fzeBenQzfjPwHOb2MCn1mKU1fpYSS0TvV4y/nlo5cgRK+2SxUChFeaRfXQHLBaZX4siBoX7YZ7XRDJeIDed7E/2QTOGdEO9CE1fTgEeSovKiuPG2BhSAIWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830653; c=relaxed/simple;
-	bh=itagJ48jM26u6sdaKymkIdmUMll1s4uBBumzZxcEc/A=;
+	s=arc-20240116; t=1712831741; c=relaxed/simple;
+	bh=m3KZ3Rn/ejPwwd/TF5QxWks1xOHgj3tt07fLDHw1kuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=olIVc7qn2AMFk7BvSSm1SdMT7kt4lz5UWXB/vNUvWUS4HKKxFkSKiESfd0cYEWWhSpBaqK4kS+TAkDZ6vXL0Zxlx8Hpt1W7BsX/xoDjsIxVr3uYDluTBkou6OP0K5HHZfHEIOBl7Sr6HSaFJEsRe1iTOdKEKpRECEjiICcnDq7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZBbItpV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CD3C433F1;
-	Thu, 11 Apr 2024 10:17:32 +0000 (UTC)
+	 MIME-Version; b=gl7Xa1buQwX4DaHfpuTRmSNQPyRkSRqgrbe6v5NLQT/Mq1PwnXQIh0KZO9ZahRFudPgeSZfs9znBTbaEjF9WSgTqv31r014TqU2NTccTQp6Zjm/53+m/UBbTPo5Ov3tWWuo6aL8yKD2uImv5Yi3VebTpfoQLvgWBh/lv13CFxow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXO8DfgD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37B8C43390;
+	Thu, 11 Apr 2024 10:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830652;
-	bh=itagJ48jM26u6sdaKymkIdmUMll1s4uBBumzZxcEc/A=;
+	s=korg; t=1712831741;
+	bh=m3KZ3Rn/ejPwwd/TF5QxWks1xOHgj3tt07fLDHw1kuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZBbItpV0oqM8r74mitlT4OAevZcNm/wvDzh9poc2XlQ0SBMFTF7Qn1hDG+ezqfpaK
-	 LDwmqzZU7F6TOO2XbYnGeLm0PwdPNMZwa39RqtVyNelUY557zu6M8cjbAAFK/CR004
-	 /fMojjvxZKy3bhq4WUugrSf1px3kLCgPwl5rbruw=
+	b=LXO8DfgDck3IikRboWyzHTTPy4I2rMYLamYifBW0oy++6qEm8AWxvp1N4wcJGQLvV
+	 GSj64T2nNl7aB3J9GS82IMz3mYS/i4C6I9FXmFhT1ikxGoFMfocOplFHj3C1/WmGoC
+	 LVr7DhLMLjdAgRYwOjtQ5pGHi7uUsk61YYPngmxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@seco.com>,
-	Camelia Groza <camelia.groza@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Leo Ma <hanghong.ma@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 065/215] soc: fsl: qbman: Add helper for sanity checking cgr ops
+Subject: [PATCH 5.10 111/294] drm/amd/display: Fix noise issue on HDMI AV mute
 Date: Thu, 11 Apr 2024 11:54:34 +0200
-Message-ID: <20240411095426.851569781@linuxfoundation.org>
+Message-ID: <20240411095439.011887159@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +66,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@seco.com>
+From: Leo Ma <hanghong.ma@amd.com>
 
-[ Upstream commit d0e17a4653cebc2c8a20251c837dd1fcec5014d9 ]
+[ Upstream commit 69e3be6893a7e668660b05a966bead82bbddb01d ]
 
-This breaks out/combines get_affine_portal and the cgr sanity check in
-preparation for the next commit. No functional change intended.
+[Why]
+When mode switching is triggered there is momentary noise visible on
+some HDMI TV or displays.
 
-Signed-off-by: Sean Anderson <sean.anderson@seco.com>
-Acked-by: Camelia Groza <camelia.groza@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: fbec4e7fed89 ("soc: fsl: qbman: Use raw spinlock for cgr_lock")
+[How]
+Wait for 2 frames to make sure we have enough time to send out AV mute
+and sink receives a full frame.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Leo Ma <hanghong.ma@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qbman/qman.c | 29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
-index 53b4cd0fb662d..e31d33d000526 100644
---- a/drivers/soc/fsl/qbman/qman.c
-+++ b/drivers/soc/fsl/qbman/qman.c
-@@ -2481,13 +2481,8 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
- }
- EXPORT_SYMBOL(qman_create_cgr);
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
+index 22c77e96f6a54..02d22f62c0031 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
+@@ -641,10 +641,20 @@ void dcn30_set_avmute(struct pipe_ctx *pipe_ctx, bool enable)
+ 	if (pipe_ctx == NULL)
+ 		return;
  
--int qman_delete_cgr(struct qman_cgr *cgr)
-+static struct qman_portal *qman_cgr_get_affine_portal(struct qman_cgr *cgr)
- {
--	unsigned long irqflags;
--	struct qm_mcr_querycgr cgr_state;
--	struct qm_mcc_initcgr local_opts;
--	int ret = 0;
--	struct qman_cgr *i;
- 	struct qman_portal *p = get_affine_portal();
- 
- 	if (cgr->chan != p->config->channel) {
-@@ -2495,10 +2490,25 @@ int qman_delete_cgr(struct qman_cgr *cgr)
- 		dev_err(p->config->dev, "CGR not owned by current portal");
- 		dev_dbg(p->config->dev, " create 0x%x, delete 0x%x\n",
- 			cgr->chan, p->config->channel);
--
--		ret = -EINVAL;
--		goto put_portal;
-+		put_affine_portal();
-+		return NULL;
- 	}
+-	if (dc_is_hdmi_tmds_signal(pipe_ctx->stream->signal) && pipe_ctx->stream_res.stream_enc != NULL)
++	if (dc_is_hdmi_tmds_signal(pipe_ctx->stream->signal) && pipe_ctx->stream_res.stream_enc != NULL) {
+ 		pipe_ctx->stream_res.stream_enc->funcs->set_avmute(
+ 				pipe_ctx->stream_res.stream_enc,
+ 				enable);
 +
-+	return p;
-+}
-+
-+int qman_delete_cgr(struct qman_cgr *cgr)
-+{
-+	unsigned long irqflags;
-+	struct qm_mcr_querycgr cgr_state;
-+	struct qm_mcc_initcgr local_opts;
-+	int ret = 0;
-+	struct qman_cgr *i;
-+	struct qman_portal *p = qman_cgr_get_affine_portal(cgr);
-+
-+	if (!p)
-+		return -EINVAL;
-+
- 	memset(&local_opts, 0, sizeof(struct qm_mcc_initcgr));
- 	spin_lock_irqsave(&p->cgr_lock, irqflags);
- 	list_del(&cgr->node);
-@@ -2526,7 +2536,6 @@ int qman_delete_cgr(struct qman_cgr *cgr)
- 		list_add(&cgr->node, &p->cgr_cbs);
- release_lock:
- 	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
--put_portal:
- 	put_affine_portal();
- 	return ret;
++		/* Wait for two frame to make sure AV mute is sent out */
++		if (enable) {
++			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VACTIVE);
++			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VBLANK);
++			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VACTIVE);
++			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VBLANK);
++			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VACTIVE);
++		}
++	}
  }
+ 
+ void dcn30_update_info_frame(struct pipe_ctx *pipe_ctx)
 -- 
 2.43.0
 
