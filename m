@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C7B78A0DF0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38EF18A0D28
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:01:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9F0AB2237D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E33221F22C5E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432FB146009;
-	Thu, 11 Apr 2024 10:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5A0145B04;
+	Thu, 11 Apr 2024 10:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuEeZ1qH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxXtuc/M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A2A145B14;
-	Thu, 11 Apr 2024 10:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF5B2EAE5;
+	Thu, 11 Apr 2024 10:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830158; cv=none; b=lMIUDvk0SvFi7BLtdFzzHgy7mK4fn5z+OO8DYjWjp0ksouTOmDR9/9kN8aTd5q92YGuOHg6ODV2pZ4tAB4BpH0r/IANFySTxjvrUxwsmhuaPaO4PNCzNbEi22FEe6I7R9ims5ECXx6rg58snaKpOQR2S4KBk5S3z0oXnZN6RNlA=
+	t=1712829655; cv=none; b=hm66pNXRQp80InvwjeWJcjVE8gJPUsjKc08xYqfooyYkiAcV35ZzQ+ga7SDedlqfMzma+aIT9qtLtLaIIwvDOCcNija4ueBqk1BvcjFlFbNWwqmta74uX0vx+fNvv2MQjt9wHwYo5OCBi7HRyyBAipR4PmaliFcxv1Nj4cv1O2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830158; c=relaxed/simple;
-	bh=T7L7ReBVeE2F+9pIl63G9HdB94s6xK5YzgQjbG0lDMQ=;
+	s=arc-20240116; t=1712829655; c=relaxed/simple;
+	bh=UclLc3x3cfMooEG7uwxUoiB9DONvo5+Nmcrzcr24rlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=klI7qQvmD7ZNT+a2jFCHkZq2JH4BabshpNSpfqDw01YSGX9up3Mc09QtIgk+xN0rKwdDnPfnk+ZLK2sLjL2wBOz/SD6rNZU9zBGtP7eWqC8X6gd5pmEcrDUSyhUwJM/a+BQ34nOz3mq2pc/BSgx5dIeBMNO3iAgjIa1eAjohTDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuEeZ1qH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78187C433C7;
-	Thu, 11 Apr 2024 10:09:17 +0000 (UTC)
+	 MIME-Version; b=DxkRS3TGm4ljEWQCPwso7cQ+eebG8/UuP/lwdLHcIr+C8PTZ0DB9XyUdkKIxhWBMyZst/Cx2PDe/eIfxNx5QU6ewHXFu4wnGt2+2eiqu+DxvjxW90u9ZOgq6bbAr3snXwclCcWHMr2ZLbxMsZWZzLFYqwyQ9bA3RJ/KmXuQ7g5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxXtuc/M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B725FC433F1;
+	Thu, 11 Apr 2024 10:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830157;
-	bh=T7L7ReBVeE2F+9pIl63G9HdB94s6xK5YzgQjbG0lDMQ=;
+	s=korg; t=1712829655;
+	bh=UclLc3x3cfMooEG7uwxUoiB9DONvo5+Nmcrzcr24rlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DuEeZ1qH+Ssq3s5QqFs+x3137HYCpRBa1PwAX66pppn9OuRtvj2xSE6IitkrDwNmU
-	 t71F3s4WWH6cw/omGGXln2D0XG6cjz1s9xR1h/NpAxR2xLYJ1cCF6sOqDNeoIFmYz7
-	 MrFvII2ola/PQrknECgGAtl/2xPbWiCTFveuUEP4=
+	b=UxXtuc/MkD+0gcvwu85tVHGgAzhs6dj2/M8UpjTlbXdQV2mM8uEiRpGRueA8qVbZd
+	 zTVvjff69i4c8uf1A24UERUkwyp2JdGVnRBnqbaOyxvBsdETzIxYs2YO5034/T+zFs
+	 L8+K1uQT2aj1wzyuAv12wOM9zRzzajpD7IzOjirg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ogness <john.ogness@linutronix.de>,
-	Petr Mladek <pmladek@suse.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 015/143] printk: For @suppress_panic_printk check for other CPU in panic
+Subject: [PATCH 4.19 060/175] drm/imx/ipuv3: do not return negative values from .get_modes()
 Date: Thu, 11 Apr 2024 11:54:43 +0200
-Message-ID: <20240411095421.369742659@linuxfoundation.org>
+Message-ID: <20240411095421.372489820@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 0ab7cdd00491b532591ef065be706301de7e448f ]
+[ Upstream commit c2da9ada64962fcd2e6395ed9987b9874ea032d3 ]
 
-Currently @suppress_panic_printk is checked along with
-non-matching @panic_cpu and current CPU. This works
-because @suppress_panic_printk is only set when
-panic_in_progress() is true.
+The .get_modes() hooks aren't supposed to return negative error
+codes. Return 0 for no modes, whatever the reason.
 
-Rather than relying on the @suppress_panic_printk semantics,
-use the concise helper function other_cpu_in_progress(). The
-helper function exists to avoid open coding such tests.
-
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20240207134103.1357162-7-john.ogness@linutronix.de
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: stable@vger.kernel.org
+Acked-by: Philipp Zabel <p.zabel@pengutronix.de>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/311f6eec96d47949b16a670529f4d89fcd97aefa.1709913674.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/printk/printk.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/imx/parallel-display.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 7a835b277e98d..e1b992652ab25 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2328,8 +2328,7 @@ asmlinkage int vprintk_emit(int facility, int level,
- 	if (unlikely(suppress_printk))
- 		return 0;
+diff --git a/drivers/gpu/drm/imx/parallel-display.c b/drivers/gpu/drm/imx/parallel-display.c
+index a96d99cbec4d0..290f68b9adfea 100644
+--- a/drivers/gpu/drm/imx/parallel-display.c
++++ b/drivers/gpu/drm/imx/parallel-display.c
+@@ -78,14 +78,14 @@ static int imx_pd_connector_get_modes(struct drm_connector *connector)
+ 		int ret;
  
--	if (unlikely(suppress_panic_printk) &&
--	    atomic_read(&panic_cpu) != raw_smp_processor_id())
-+	if (unlikely(suppress_panic_printk) && other_cpu_in_panic())
- 		return 0;
+ 		if (!mode)
+-			return -EINVAL;
++			return 0;
  
- 	if (level == LOGLEVEL_SCHED) {
+ 		ret = of_get_drm_display_mode(np, &imxpd->mode,
+ 					      &imxpd->bus_flags,
+ 					      OF_USE_NATIVE_MODE);
+ 		if (ret) {
+ 			drm_mode_destroy(connector->dev, mode);
+-			return ret;
++			return 0;
+ 		}
+ 
+ 		drm_mode_copy(mode, &imxpd->mode);
 -- 
 2.43.0
 
