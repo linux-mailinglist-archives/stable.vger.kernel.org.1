@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-38204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A5A08A0D81
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:04:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 354A28A0F2F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:21:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D641B23909
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:04:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35A581C22ACB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87D1145FED;
-	Thu, 11 Apr 2024 10:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C751A146A70;
+	Thu, 11 Apr 2024 10:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0TRxaQd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzMnaRW3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856E71422C4;
-	Thu, 11 Apr 2024 10:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86ACD146A64;
+	Thu, 11 Apr 2024 10:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829870; cv=none; b=tBgzwimqy1zYqdCOV3ZhBk3sgTe+A4fWwGSzUEYZ3CEPiQhGKuGnfxRtmk/dPYBgZzIlOXq3gBn1Qa++sKUsnJHZnLUjKI5BskQwjblikjfJ2/8INqtdvofCzfSnKKF+YFLl1Qj+YTEdnSM5ht2+urPcdLJ0cQLAT0V2W/laBhA=
+	t=1712830897; cv=none; b=EVFT/OwkTH5uYQqv8qimcFYG08iua2T29VZVvTHjYgA4WU7nVIK0casYPSTvszzXjJ+ODo4gWsgQw4V/yD/rq9udSfduwaZcyztysoVe8CmSDKdb1kHECKzFU0HVv6cJI/oa5y6EX+TYdv1KUFsZRvmKXIO1zN/eP152KqEvUeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829870; c=relaxed/simple;
-	bh=cIop02llaJHd4nq3ow+FjntSCmlphyqKRmhHt3sYaDU=;
+	s=arc-20240116; t=1712830897; c=relaxed/simple;
+	bh=txH5MTRqTzwg5USM772XgNmNA9FYsnEw0kej+zQwiwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UA0ssvDSo6bshcfLW84RNER+Ch75L/BHnvTBYE7HaH92HDG+yNWnME0+aWzSykSLAepUsrwYOrHyx+wOh1CaYOSNnSgHnCauYR6rR8BTxrPzsXDxGWZ1Fjz3NXmZEdzxeduLR5LcXtKVBeGiWLqivgUdxUa01LG59VQN8fHy/zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0TRxaQd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A140C433C7;
-	Thu, 11 Apr 2024 10:04:29 +0000 (UTC)
+	 MIME-Version; b=fe5DNn+Li5K3oGUxEIGUCXseKQt8gyN53HSPiUZqeMIJfVHHqWferuUG6tIsKNh26V2/8AL45hofZo733//m8FUtPF972V7tOO5Ixr47bPw+Gd/xkhikvFxaX73wOeUZ7+jlku41/vKc+p+K2MkwxrzdvdRFGqlFa/N3/nVwxeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzMnaRW3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C459C433F1;
+	Thu, 11 Apr 2024 10:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829870;
-	bh=cIop02llaJHd4nq3ow+FjntSCmlphyqKRmhHt3sYaDU=;
+	s=korg; t=1712830897;
+	bh=txH5MTRqTzwg5USM772XgNmNA9FYsnEw0kej+zQwiwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0TRxaQdzz5JQw3wkJr+552cdJL4VpSP6FKxbjyj1isKkHavh9PMbJGKw05DhqYTi
-	 QBwBXhCBbuVPgBZ/3wxflMDefTOaZZn/BXbjxL6l1yROsx5B2wShJj6ll+13fGFKcx
-	 F8T2bq+4QPd9JfAneZuWAAIAk1L0WHkls9dIg8HQ=
+	b=PzMnaRW3Ou8gsYTqQR6VaqEgRNBCPV9T0854EAhrR4J6fMA+U0BVeM5BAt47zRKa1
+	 GxlLW1r06d2alciVloih7Xp1YqXEZq42kHxa62zUU6Qqy6TvkAD1MBVWQqDOfOI7aB
+	 xovy8GWZpGnqcEAP0NNxUIOHP4hregXWUqLEqf6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 134/175] fs: add a vfs_fchown helper
+	xingwei lee <xrivendell7@gmail.com>,
+	yue sun <samsun1006219@gmail.com>,
+	syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com,
+	syzbot+d4066896495db380182e@syzkaller.appspotmail.com,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>
+Subject: [PATCH 5.4 148/215] bpf, sockmap: Prevent lock inversion deadlock in map delete elem
 Date: Thu, 11 Apr 2024 11:55:57 +0200
-Message-ID: <20240411095423.598671313@linuxfoundation.org>
+Message-ID: <20240411095429.335429578@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +66,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Jakub Sitnicki <jakub@cloudflare.com>
 
-[ Upstream commit c04011fe8cbd80af1be6e12b53193bf3846750d7 ]
+commit ff91059932401894e6c86341915615c5eb0eca48 upstream.
 
-Add a helper for struct file based chown operations.  To be used by
-the initramfs code soon.
+syzkaller started using corpuses where a BPF tracing program deletes
+elements from a sockmap/sockhash map. Because BPF tracing programs can be
+invoked from any interrupt context, locks taken during a map_delete_elem
+operation must be hardirq-safe. Otherwise a deadlock due to lock inversion
+is possible, as reported by lockdep:
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 4624b346cf67 ("init: open /initrd.image with O_LARGEFILE")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+       CPU0                    CPU1
+       ----                    ----
+  lock(&htab->buckets[i].lock);
+                               local_irq_disable();
+                               lock(&host->lock);
+                               lock(&htab->buckets[i].lock);
+  <Interrupt>
+    lock(&host->lock);
+
+Locks in sockmap are hardirq-unsafe by design. We expects elements to be
+deleted from sockmap/sockhash only in task (normal) context with interrupts
+enabled, or in softirq context.
+
+Detect when map_delete_elem operation is invoked from a context which is
+_not_ hardirq-unsafe, that is interrupts are disabled, and bail out with an
+error.
+
+Note that map updates are not affected by this issue. BPF verifier does not
+allow updating sockmap/sockhash from a BPF tracing program today.
+
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Reported-by: yue sun <samsun1006219@gmail.com>
+Reported-by: syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com
+Reported-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
+Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=d4066896495db380182e
+Closes: https://syzkaller.appspot.com/bug?extid=bc922f476bd65abbd466
+Link: https://lore.kernel.org/bpf/20240402104621.1050319-1-jakub@cloudflare.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/open.c          | 29 +++++++++++++++++------------
- include/linux/fs.h |  2 ++
- 2 files changed, 19 insertions(+), 12 deletions(-)
+ net/core/sock_map.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/open.c b/fs/open.c
-index 76996f920ebf5..e072e86003f56 100644
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -707,23 +707,28 @@ SYSCALL_DEFINE3(lchown, const char __user *, filename, uid_t, user, gid_t, group
- 			   AT_SYMLINK_NOFOLLOW);
- }
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -321,6 +321,9 @@ static int __sock_map_delete(struct bpf_
+ 	struct sock *sk;
+ 	int err = 0;
  
-+int vfs_fchown(struct file *file, uid_t user, gid_t group)
-+{
-+	int error;
++	if (irqs_disabled())
++		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
 +
-+	error = mnt_want_write_file(file);
-+	if (error)
-+		return error;
-+	audit_file(file);
-+	error = chown_common(&file->f_path, user, group);
-+	mnt_drop_write_file(file);
-+	return error;
-+}
+ 	raw_spin_lock_bh(&stab->lock);
+ 	sk = *psk;
+ 	if (!sk_test || sk_test == sk)
+@@ -654,6 +657,9 @@ static int sock_hash_delete_elem(struct
+ 	struct bpf_htab_elem *elem;
+ 	int ret = -ENOENT;
+ 
++	if (irqs_disabled())
++		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
 +
- int ksys_fchown(unsigned int fd, uid_t user, gid_t group)
- {
- 	struct fd f = fdget(fd);
- 	int error = -EBADF;
+ 	hash = sock_hash_bucket_hash(key, key_size);
+ 	bucket = sock_hash_select_bucket(htab, hash);
  
--	if (!f.file)
--		goto out;
--
--	error = mnt_want_write_file(f.file);
--	if (error)
--		goto out_fput;
--	audit_file(f.file);
--	error = chown_common(&f.file->f_path, user, group);
--	mnt_drop_write_file(f.file);
--out_fput:
--	fdput(f);
--out:
-+	if (f.file) {
-+		error = vfs_fchown(f.file, user, group);
-+		fdput(f);
-+	}
- 	return error;
- }
- 
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index e2c87c056742c..7d93d22ad1062 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -1660,6 +1660,8 @@ int vfs_mkobj(struct dentry *, umode_t,
- 		int (*f)(struct dentry *, umode_t, void *),
- 		void *);
- 
-+int vfs_fchown(struct file *file, uid_t user, gid_t group);
-+
- extern long vfs_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
- 
- /*
--- 
-2.43.0
-
 
 
 
