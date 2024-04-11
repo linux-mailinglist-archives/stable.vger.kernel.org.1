@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-38142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 233418A0D36
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:01:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2461F8A10B8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2E3E285BCC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:01:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFFCD1F2CCC1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E59C14532F;
-	Thu, 11 Apr 2024 10:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE4C1494A9;
+	Thu, 11 Apr 2024 10:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxgni2fw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WvdmMwxK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF72145B04;
-	Thu, 11 Apr 2024 10:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B56149C59;
+	Thu, 11 Apr 2024 10:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829688; cv=none; b=Qk9jwTGwIPKtFze25+clS3u8c/wE/zHzjQ85hAERjaM/mydnvZdUE9lH998oR6x/1cwgiWTrZEa8sIEgDeG+5JuFcJyEiblFMu21R3eNUVgK6tP9R3mkRGh5VaMPR4C/Pbr2ydMBLFc/5jpA2r+4SlqiwBDJA8Q2EAbDSqWmJvk=
+	t=1712831800; cv=none; b=kSBjohd/ylFOfPxAbdvRznTB6XSt3CVTHjqO0ykYAOMiGpU9Lpap+/K4IAhEw3VY5GDerQHzrgb6FnJ9y7autMGUs6cLFFefumRdxp0fshSs41M1iMU587OV29yFsYMNYSrEEFVin00HgUBfbrPYFJ3Ty8MFRlZQCIxVliizQeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829688; c=relaxed/simple;
-	bh=jFwLcx3x4A+zRQbraawYb0h6Jp0XCku5aKe7B47klQ4=;
+	s=arc-20240116; t=1712831800; c=relaxed/simple;
+	bh=4b5mEgfBxld4wS9Yny8g26gryR+JypXwJuYmMSgknm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+u9UUAxnXFHPDWAPdKME51RehH6a8lZd4u3Kc8CasT91HazfL93iPJfzSuHt8DHhxxcx3qvnoWuKmPGXxDlq743Mvd0/uRxJF9YXsvFgyEv3zte0xgzKqEs8Krl6xBTz2o0Ps4UgP5X6Vy7hgYPR7fmjLZQ4IUkH78Qc/D54Lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxgni2fw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E0CC433F1;
-	Thu, 11 Apr 2024 10:01:27 +0000 (UTC)
+	 MIME-Version; b=iQ6ZjYsOeBYiv5oZMuNGm2p0vX6SMQ3Qf1bzsF0JmDRZiJWJmXAJ/X7uhuMzO4Nq5eXM5gpyjn14ERqz6libJ7VC1vS+rUT2dGoSvkw5556BXqW58B+pEqCSiShUDO/w8Rc43xpq911xicNFerXuK+oF2w2j0GCYj1Tj8O7HS18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WvdmMwxK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C8CC433C7;
+	Thu, 11 Apr 2024 10:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829687;
-	bh=jFwLcx3x4A+zRQbraawYb0h6Jp0XCku5aKe7B47klQ4=;
+	s=korg; t=1712831800;
+	bh=4b5mEgfBxld4wS9Yny8g26gryR+JypXwJuYmMSgknm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sxgni2fwRq5tEhvOndReIsMGDz067OomfzysnbQanwcmVS/Du2bgoEg6BWT4YjQsv
-	 ROpxIRdV5ONGN6AH+57XLzfMOKMZqLXotBnb62VSsX7osgmOcrjrtjXVvUXDDPiGFj
-	 +sOUdnzXs9DrOSWjG1rOhhZDn88mcM7dmAEFMzz8=
+	b=WvdmMwxKB2PYpXrc5HZyNn8hlNrgMqZX3LP94uJtc1CvjSCUxXnWB5XI+Tj7Y+sjV
+	 jz0IG0XLtRIPgvbmgc9egaNmGMBWu1j+Pc8mzlzl6PzNg3E0uap4TRm8QGmruiWFLF
+	 gD+g3cRcCvR5jBbgk3TEEs4Exezunl5PKGbYj0gs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lonial con <kongln9170@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.19 070/175] netfilter: nf_tables: disallow anonymous set with timeout flag
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Tomas Winkler <tomas.winkler@intel.com>
+Subject: [PATCH 5.10 130/294] mei: me: add arrow lake point S DID
 Date: Thu, 11 Apr 2024 11:54:53 +0200
-Message-ID: <20240411095421.672564016@linuxfoundation.org>
+Message-ID: <20240411095439.574812772@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-commit 16603605b667b70da974bea8216c93e7db043bf1 upstream.
+commit 7a9b9012043e126f6d6f4683e67409312d1b707b upstream.
 
-Anonymous sets are never used with timeout from userspace, reject this.
-Exception to this rule is NFT_SET_EVAL to ensure legacy meters still work.
+Add Arrow Lake S device id.
 
 Cc: stable@vger.kernel.org
-Fixes: 761da2935d6e ("netfilter: nf_tables: add set timeout API support")
-Reported-by: lonial con <kongln9170@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240211103912.117105-1-tomas.winkler@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/misc/mei/hw-me-regs.h |    1 +
+ drivers/misc/mei/pci-me.c     |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3560,6 +3560,9 @@ static int nf_tables_newset(struct net *
- 		if ((flags & (NFT_SET_EVAL | NFT_SET_OBJECT)) ==
- 			     (NFT_SET_EVAL | NFT_SET_OBJECT))
- 			return -EOPNOTSUPP;
-+		if ((flags & (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT | NFT_SET_EVAL)) ==
-+			     (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT))
-+			return -EOPNOTSUPP;
- 	}
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -112,6 +112,7 @@
+ #define MEI_DEV_ID_RPL_S      0x7A68  /* Raptor Lake Point S */
  
- 	dtype = 0;
+ #define MEI_DEV_ID_MTL_M      0x7E70  /* Meteor Lake Point M */
++#define MEI_DEV_ID_ARL_S      0x7F68  /* Arrow Lake Point S */
+ 
+ /*
+  * MEI HW Section
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -118,6 +118,7 @@ static const struct pci_device_id mei_me
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_RPL_S, MEI_ME_PCH15_CFG)},
+ 
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_MTL_M, MEI_ME_PCH15_CFG)},
++	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
+ 
+ 	/* required last entry */
+ 	{0, }
 
 
 
