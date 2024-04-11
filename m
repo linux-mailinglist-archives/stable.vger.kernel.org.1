@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-38230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F608A0D9D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E058A112A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ADB81F22A1B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 311D51C23B68
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD55145B0D;
-	Thu, 11 Apr 2024 10:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77106140366;
+	Thu, 11 Apr 2024 10:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzIo/dfu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhSfXExc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED242EAE5;
-	Thu, 11 Apr 2024 10:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B941474D0;
+	Thu, 11 Apr 2024 10:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829947; cv=none; b=i7fx2AVSLYZUzVbFfjVdkY76jm8m3Dvj9KZE2NyCvZtBAd23Or9e3CS9lahuaiNBAEdyN4YW7J8xmLh0Q24HTmXtm4w8c3o8b1rAJQmufUlXmKz9wx2sGteQpInIMk9wpkQaiBcvhCcjH2vpgEdT+rG1nClQdNBCrC1fyjj5TQ8=
+	t=1712832070; cv=none; b=AQPYMETHwernY+rIg4ob92e6nA/+0ESzQc1LhwLGwFYOoboPpk6VZsHpPmRQC/coYCcm/E1fcuxT7vDb5tGIiXG29XYGMI8PhE3+N7myno+N15YTw3V2/jiHXZdxRuOw9xgD6y1AikT1u/w8O6EUzWRxK1jypdJ3VS91Mh8v0y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829947; c=relaxed/simple;
-	bh=0x3ikcQZG/rfdvy9QmUdo+MSyRdLrYU9WtR1KrrUbxM=;
+	s=arc-20240116; t=1712832070; c=relaxed/simple;
+	bh=Sm13lrb5Nd5WArFXfacSQDNrK0v8m36iLCyw8uTEAhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QSKIuPkM1F+2A3SX94xHyY9xxIrGv10INRv/BLPYFrOJxtrM2tpgmc3DSS7s1BErPJ2QPEr139VieS8PTFDvKKVva+Hd1/iye7qo9PmJZ+ZB2c4RyhH0pLsN6p9WO/zfIbsEnUQpgcBA5QvkQud9rzobrQ7IL8yLmD5d60EasHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzIo/dfu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92CEC433C7;
-	Thu, 11 Apr 2024 10:05:46 +0000 (UTC)
+	 MIME-Version; b=AyuND9J1RvsmAqifgM52O5hRavxOyVynTzDCg6SFgXgW4UCkh/mAE+boWVtmqCnE6LlK8M2RZFH+mm7hhGS0to90CarUHFX+nY7qt/0snqXD8jZNUhsiya4I6iWB3iclv+azz+mBrVNPj4auJp+PZXenibiXsZnAWWJYJ+4Q2/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhSfXExc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF031C433F1;
+	Thu, 11 Apr 2024 10:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829947;
-	bh=0x3ikcQZG/rfdvy9QmUdo+MSyRdLrYU9WtR1KrrUbxM=;
+	s=korg; t=1712832070;
+	bh=Sm13lrb5Nd5WArFXfacSQDNrK0v8m36iLCyw8uTEAhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QzIo/dfuJ6a72B/1N3fBZ/eOxJ7AWaErCsf2Xrj61lhelnPXcu/kTua5yKtWyK2b9
-	 UEkqDfjmpw2ADmskpr3LjhhhoHXun7j/RZuZT7upMvBDCxjvvejbVE8i/RR5q57KF8
-	 gcnf9vgPLdoQxq0dq2bVFtwztdCvYjaKOhIsjlRI=
+	b=yhSfXExcgmTB/wo2oeuZKUnMfi1vwrvS38ZzNACBRPsvo5Kka/BlmD+eyp1/guvZv
+	 MiaXVwlg+d874A6TvqCtRsnRr3/x3JfmB15Szv1tGt9TNIxS3TURrerZ6mmVEwl9zk
+	 KcJZfd44jyt5ZEWnrHJ/KNyguDozk0X8IfEn26fs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Aric Cyr <aric.cyr@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 158/175] drm/amd/display: Fix nanosec stat overflow
+	Su Hui <suhui@nfschina.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 218/294] octeontx2-pf: check negative error code in otx2_open()
 Date: Thu, 11 Apr 2024 11:56:21 +0200
-Message-ID: <20240411095424.322092984@linuxfoundation.org>
+Message-ID: <20240411095442.157060456@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aric Cyr <aric.cyr@amd.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 14d68acfd04b39f34eea7bea65dda652e6db5bf6 ]
+commit e709acbd84fb6ef32736331b0147f027a3ef4c20 upstream.
 
-[Why]
-Nanosec stats can overflow on long running systems potentially causing
-statistic logging issues.
+otx2_rxtx_enable() return negative error code such as -EIO,
+check -EIO rather than EIO to fix this problem.
 
-[How]
-Use 64bit types for nanosec stats to ensure no overflow.
-
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Aric Cyr <aric.cyr@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c926252205c4 ("octeontx2-pf: Disable packet I/O for graceful exit")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Link: https://lore.kernel.org/r/20240328020620.4054692-1-suhui@nfschina.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/modules/inc/mod_stats.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h b/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
-index 3812094b52e8f..88b312c3eb43a 100644
---- a/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
-+++ b/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
-@@ -51,10 +51,10 @@ void mod_stats_update_event(struct mod_stats *mod_stats,
- 		unsigned int length);
- 
- void mod_stats_update_flip(struct mod_stats *mod_stats,
--		unsigned long timestamp_in_ns);
-+		unsigned long long timestamp_in_ns);
- 
- void mod_stats_update_vupdate(struct mod_stats *mod_stats,
--		unsigned long timestamp_in_ns);
-+		unsigned long long timestamp_in_ns);
- 
- void mod_stats_update_freesync(struct mod_stats *mod_stats,
- 		unsigned int v_total_min,
--- 
-2.43.0
-
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -1598,7 +1598,7 @@ int otx2_open(struct net_device *netdev)
+ 	 * mcam entries are enabled to receive the packets. Hence disable the
+ 	 * packet I/O.
+ 	 */
+-	if (err == EIO)
++	if (err == -EIO)
+ 		goto err_disable_rxtx;
+ 	else if (err)
+ 		goto err_tx_stop_queues;
 
 
 
