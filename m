@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-38451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74568A0EA8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:16:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA9BF8A10AF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E893F1C21800
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:16:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89B541F2CBB0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E7A145FF0;
-	Thu, 11 Apr 2024 10:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC7B1474CA;
+	Thu, 11 Apr 2024 10:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7+VSA9E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXqcrCut"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468BD145350;
-	Thu, 11 Apr 2024 10:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7B2134CC2;
+	Thu, 11 Apr 2024 10:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830611; cv=none; b=WmnKMkqZYjkp88smk8qoG4EtMb61FfXrEBwreaXUfNMSqiS9PXpt8TBk8ZwmulYPnYLBzbOa5CUMHOoKWAqHj/6FLclosm1ytptzPiR4BI3g8K9FUJW1FeR8wp/TlDahLqit3zpbqhtl75Y39woUnKUMZBkGVqZwhjjG2Jh9LSo=
+	t=1712831771; cv=none; b=EPbmeMxlsfMrPhDWTd7q9XHK/eLwitD6UUfRdgV8JDJm2bt+dbA8zG18q5dBmNaUjJGd7DIFsoGkQjG54jTgE8179EmtbTt51/fA96XhF/Qv/ZDoU7fkasMXWI8daeZyhoU0Ru2ePA9bPU3qknJ/oJInCAVHvNdpC3yQs8WZdFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830611; c=relaxed/simple;
-	bh=Sy6S3xP/CcrV7CS5F7NOITcKrUxeUbkenB04MQNRHvs=;
+	s=arc-20240116; t=1712831771; c=relaxed/simple;
+	bh=4DsftsmgsEF+zFjGj8SunzlUMOOLKJzCujgcJEc7xNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0X6xKxNoUfwalaJDSR8NjOnTH9Zlm1p4yqfrt+8Nd1UJEilxDBomJcoYYaEH23QP5x8nNhr8SS3UryHaxXeB9B2k9euz2F6Ct/mGsDn/pQ6fIYZY68wB4iaahhj5o4KMMsotOBLvQkWfSoPhifwAr+y+Gae9hkQkz2wTKO8xVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7+VSA9E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC601C433F1;
-	Thu, 11 Apr 2024 10:16:50 +0000 (UTC)
+	 MIME-Version; b=aGNoApCFVZt3aUf7RqRG0NKDSrC30Px8lOHgr9InzIvfN8QLvWIwpNj/Id39B9T3CSvFi8PBCkYwpMonpa40bjM4hR40uarFmjkkw7EyNutnnmZk4mpDOA6iGtKIwDc+KWO1mnH1HG5oODNP+2gqf1+1ux1TWY4rJpLSS/e4M78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXqcrCut; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65390C433F1;
+	Thu, 11 Apr 2024 10:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830611;
-	bh=Sy6S3xP/CcrV7CS5F7NOITcKrUxeUbkenB04MQNRHvs=;
+	s=korg; t=1712831770;
+	bh=4DsftsmgsEF+zFjGj8SunzlUMOOLKJzCujgcJEc7xNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v7+VSA9ELzxiZOCLIZRSZOFCnlhx3luw0qhksB3WvKRiHWXXHAqfvxOcWu3dHZqDw
-	 B4zSmAhQlT8rzTiWm2L8+McflSS9kmrnKh6kO5bNr284LfCpU0Jfo1L/RhOLAVe+Qh
-	 +dgRAsMFlvgfYHwZ6bKR/lJHvzlb5GGdZ5/EbVjQ=
+	b=dXqcrCutyLMP1pBe2nnyMzzcHoMUKtfk/fy9grIhuSO/fncMrr/JkUmjsdMS4Rq0v
+	 OEN+KhJYDN+j8imCqYD7kcw1KmFBsvVJmiJTjnTDw0kL2i7OV7Dwu1eXd0psmjblq4
+	 nwn675XJkp+MVFp8pI9CCgHz7ikJA1Ntk28mGza0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	"Christoph Lameter (Ampere)" <cl@linux.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 057/215] nvmem: meson-efuse: fix function pointer type mismatch
+Subject: [PATCH 5.10 103/294] cpufreq: dt: always allocate zeroed cpumask
 Date: Thu, 11 Apr 2024 11:54:26 +0200
-Message-ID: <20240411095426.611640146@linuxfoundation.org>
+Message-ID: <20240411095438.772509380@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit cbd38332c140829ab752ba4e727f98be5c257f18 ]
+[ Upstream commit d2399501c2c081eac703ca9597ceb83c7875a537 ]
 
-clang-16 warns about casting functions to incompatible types, as is done
-here to call clk_disable_unprepare:
+Commit 0499a78369ad ("ARM64: Dynamically allocate cpumasks and increase
+supported CPUs to 512") changed the handling of cpumasks on ARM 64bit,
+what resulted in the strange issues and warnings during cpufreq-dt
+initialization on some big.LITTLE platforms.
 
-drivers/nvmem/meson-efuse.c:78:12: error: cast from 'void (*)(struct clk *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
-   78 |                                        (void(*)(void *))clk_disable_unprepare,
+This was caused by mixing OPPs between big and LITTLE cores, because
+OPP-sharing information between big and LITTLE cores is computed on
+cpumask, which in turn was not zeroed on allocation. Fix this by
+switching to zalloc_cpumask_var() call.
 
-The pattern of getting, enabling and setting a disable callback for a
-clock can be replaced with devm_clk_get_enabled(), which also fixes
-this warning.
-
-Fixes: 611fbca1c861 ("nvmem: meson-efuse: add peripheral clock")
-Cc: Stable@vger.kernel.org
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240224114023.85535-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: dc279ac6e5b4 ("cpufreq: dt: Refactor initialization to handle probe deferral properly")
+CC: stable@vger.kernel.org # v5.10+
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Christoph Lameter (Ampere) <cl@linux.com>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/meson-efuse.c | 25 +++----------------------
- 1 file changed, 3 insertions(+), 22 deletions(-)
+ drivers/cpufreq/cpufreq-dt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvmem/meson-efuse.c b/drivers/nvmem/meson-efuse.c
-index d6b533497ce1a..ba2714bef8d0e 100644
---- a/drivers/nvmem/meson-efuse.c
-+++ b/drivers/nvmem/meson-efuse.c
-@@ -47,7 +47,6 @@ static int meson_efuse_probe(struct platform_device *pdev)
- 	struct nvmem_config *econfig;
- 	struct clk *clk;
- 	unsigned int size;
--	int ret;
+diff --git a/drivers/cpufreq/cpufreq-dt.c b/drivers/cpufreq/cpufreq-dt.c
+index e363ae04aac62..44cc596ca0a5e 100644
+--- a/drivers/cpufreq/cpufreq-dt.c
++++ b/drivers/cpufreq/cpufreq-dt.c
+@@ -251,7 +251,7 @@ static int dt_cpufreq_early_init(struct device *dev, int cpu)
+ 	if (!priv)
+ 		return -ENOMEM;
  
- 	sm_np = of_parse_phandle(pdev->dev.of_node, "secure-monitor", 0);
- 	if (!sm_np) {
-@@ -60,27 +59,9 @@ static int meson_efuse_probe(struct platform_device *pdev)
- 	if (!fw)
- 		return -EPROBE_DEFER;
+-	if (!alloc_cpumask_var(&priv->cpus, GFP_KERNEL))
++	if (!zalloc_cpumask_var(&priv->cpus, GFP_KERNEL))
+ 		return -ENOMEM;
  
--	clk = devm_clk_get(dev, NULL);
--	if (IS_ERR(clk)) {
--		ret = PTR_ERR(clk);
--		if (ret != -EPROBE_DEFER)
--			dev_err(dev, "failed to get efuse gate");
--		return ret;
--	}
--
--	ret = clk_prepare_enable(clk);
--	if (ret) {
--		dev_err(dev, "failed to enable gate");
--		return ret;
--	}
--
--	ret = devm_add_action_or_reset(dev,
--				       (void(*)(void *))clk_disable_unprepare,
--				       clk);
--	if (ret) {
--		dev_err(dev, "failed to add disable callback");
--		return ret;
--	}
-+	clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(clk))
-+		return dev_err_probe(dev, PTR_ERR(clk), "failed to get efuse gate");
- 
- 	if (meson_sm_call(fw, SM_EFUSE_USER_MAX, &size, 0, 0, 0, 0, 0) < 0) {
- 		dev_err(dev, "failed to get max user");
+ 	priv->cpu_dev = cpu_dev;
 -- 
 2.43.0
 
