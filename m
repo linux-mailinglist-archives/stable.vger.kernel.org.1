@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-38311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B478A0DF9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78F998A10E6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F7BF282738
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8A131C22517
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C479E145B13;
-	Thu, 11 Apr 2024 10:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF76146A95;
+	Thu, 11 Apr 2024 10:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tRAaWfS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAVGr/ku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836E91F5FA;
-	Thu, 11 Apr 2024 10:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF3E146A72;
+	Thu, 11 Apr 2024 10:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830181; cv=none; b=qc6y5rgF1aU9V56xunBksQAfBA+0kEp9ZYFUoEYbExXDaILL51qajTtAGM5np6yKwq1ktMNGsYRh0p/DM8o98h4bPbOeeLJhjM/XHcR8B6gxshPfCGk6+l+932EO4b+Tw0CWn7/yYhgSK+XxCV/xVaRFSavvZ2AWFmsY0XEy5ow=
+	t=1712831913; cv=none; b=JAb5ykcHJm6xJQha9FOvzkfIbvPPGEJfTN2TKT8EUVaB2irWOrB3tRBLNfEZnEkxfd+e+jVxfYV3t06NbBQvwLnYtPx9KHUw21TP16ngqnpXvB1uoXrARK9cDAqax3HK3EtDZDwuBmGkDH4rVJEZ8qgrowY+5OuE0a7x9sgLmlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830181; c=relaxed/simple;
-	bh=5HhCjqwYlPXNn20F0szPHx8xuI47ngiPDhafT1Qz5Gc=;
+	s=arc-20240116; t=1712831913; c=relaxed/simple;
+	bh=SQn7rx9oHu9whGoLj7T0WuVQC6ErQDB+nxeYwd1fDyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jFpGOyVQb+UhuvIyi0pUcwZTlpdVdHGVWjLFA5Vjk2oFqshe6b93HyWJTUTNzqFpH+QullNMZqcnluo4A/Q1742MWfTbISU/NAY/d/zOWZL0tC2npGgPbXPAG6GdYs4D2qx0iEtK/72BFGUb8UGFqsPs0KUxgap9wAceEXuH/FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tRAaWfS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06FFEC433F1;
-	Thu, 11 Apr 2024 10:09:40 +0000 (UTC)
+	 MIME-Version; b=F5YYooLi9kDb2o6WCJ4PeImZaGja2qpSSdNSJ08BHcogAs+EporW87XLcxYzb0vSXENwZ796JehaEI5P6xVhd+ZCgRTrNt2TN/ZXqZVk2iLL+ygMTo8TB5mqWIB1xzKH8till+QLgjiMuqo2zXFQkqypY7BQevSnxonydlntbTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAVGr/ku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6143DC433F1;
+	Thu, 11 Apr 2024 10:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830181;
-	bh=5HhCjqwYlPXNn20F0szPHx8xuI47ngiPDhafT1Qz5Gc=;
+	s=korg; t=1712831912;
+	bh=SQn7rx9oHu9whGoLj7T0WuVQC6ErQDB+nxeYwd1fDyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2tRAaWfSJnGHzGsJoksW9ON9anTmXYMbaCF/DHy7u+pRCKTbJ9AwitmYfB2mb8yco
-	 cYuK7ja9WM3I144keDI0c7X3QQFGK+9ri+jCal0Sdt5zNr6VXbGN3o1zM3cEAS3Kur
-	 kC98VMYWu0E1kI3gNmiimK9Lwvisl7ZfZshzSBDk=
+	b=RAVGr/ku8PucqhAdozd4cMvLaX6KMvwS0p1eq7tjwDVZOwEKPh4Cds5Q5Xq1q983g
+	 KeL6CAB+1nVbiWKR21i1GZg7AMa2UZEsBl1wI83pMkn8e1dHd/PlNp1EAaGqVw4h3z
+	 HkBLsepPEQUOlGyzc97V6aqDlNyx3IlwujbkkNvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 063/143] drm/ttm: return ENOSPC from ttm_bo_mem_space v3
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 5.10 168/294] usb: dwc2: host: Fix remote wakeup from hibernation
 Date: Thu, 11 Apr 2024 11:55:31 +0200
-Message-ID: <20240411095422.812631219@linuxfoundation.org>
+Message-ID: <20240411095440.694899828@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +58,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-[ Upstream commit 28e5126718c7b306b8c29d2ae8f48417e9303aa1 ]
+commit bae2bc73a59c200db53b6c15fb26bb758e2c6108 upstream.
 
-Only convert it to ENOMEM in ttm_bo_validate.
+Starting from core v4.30a changed order of programming
+GPWRDN_PMUACTV to 0 in case of exit from hibernation on
+remote wakeup signaling from device.
 
-This allows ttm_bo_validate to distinguish between an out of memory
-situation and just out of space in a placement domain.
-
-v2: improve commit message
-v3: fix kerneldoc typos
-
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240112125158.2748-3-christian.koenig@amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c5c403dc4336 ("usb: dwc2: Add host/device hibernation functions")
+CC: stable@vger.kernel.org
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/99385ec55ce73445b6fbd0f471c9bd40eb1c9b9e.1708939799.git.Minas.Harutyunyan@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ttm/ttm_bo.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/usb/dwc2/core.h |    1 +
+ drivers/usb/dwc2/hcd.c  |   17 +++++++++++++----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
-index edf10618fe2b2..f95b0406ca995 100644
---- a/drivers/gpu/drm/ttm/ttm_bo.c
-+++ b/drivers/gpu/drm/ttm/ttm_bo.c
-@@ -770,7 +770,7 @@ static int ttm_bo_mem_force_space(struct ttm_buffer_object *bo,
-  * This function may sleep while waiting for space to become available.
-  * Returns:
-  * -EBUSY: No space available (only if no_wait == 1).
-- * -ENOMEM: Could not allocate memory for the buffer object, either due to
-+ * -ENOSPC: Could not allocate space for the buffer object, either due to
-  * fragmentation or concurrent allocators.
-  * -ERESTARTSYS: An interruptible sleep was interrupted by a signal.
-  */
-@@ -830,7 +830,7 @@ int ttm_bo_mem_space(struct ttm_buffer_object *bo,
- 			goto error;
- 	}
+--- a/drivers/usb/dwc2/core.h
++++ b/drivers/usb/dwc2/core.h
+@@ -1097,6 +1097,7 @@ struct dwc2_hsotg {
+ 	bool needs_byte_swap;
  
--	ret = -ENOMEM;
-+	ret = -ENOSPC;
- 	if (!type_found) {
- 		pr_err(TTM_PFX "No compatible memory type found\n");
- 		ret = -EINVAL;
-@@ -916,6 +916,9 @@ int ttm_bo_validate(struct ttm_buffer_object *bo,
- 		return -EINVAL;
+ 	/* DWC OTG HW Release versions */
++#define DWC2_CORE_REV_4_30a	0x4f54430a
+ #define DWC2_CORE_REV_2_71a	0x4f54271a
+ #define DWC2_CORE_REV_2_72a     0x4f54272a
+ #define DWC2_CORE_REV_2_80a	0x4f54280a
+--- a/drivers/usb/dwc2/hcd.c
++++ b/drivers/usb/dwc2/hcd.c
+@@ -5523,10 +5523,12 @@ int dwc2_host_exit_hibernation(struct dw
+ 	dwc2_writel(hsotg, hr->hcfg, HCFG);
  
- 	ret = ttm_bo_move_buffer(bo, placement, ctx);
-+	/* For backward compatibility with userspace */
-+	if (ret == -ENOSPC)
-+		return -ENOMEM;
- 	if (ret)
- 		return ret;
+ 	/* De-assert Wakeup Logic */
+-	gpwrdn = dwc2_readl(hsotg, GPWRDN);
+-	gpwrdn &= ~GPWRDN_PMUACTV;
+-	dwc2_writel(hsotg, gpwrdn, GPWRDN);
+-	udelay(10);
++	if (!(rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
++		gpwrdn = dwc2_readl(hsotg, GPWRDN);
++		gpwrdn &= ~GPWRDN_PMUACTV;
++		dwc2_writel(hsotg, gpwrdn, GPWRDN);
++		udelay(10);
++	}
  
--- 
-2.43.0
-
+ 	hprt0 = hr->hprt0;
+ 	hprt0 |= HPRT0_PWR;
+@@ -5551,6 +5553,13 @@ int dwc2_host_exit_hibernation(struct dw
+ 		hprt0 |= HPRT0_RES;
+ 		dwc2_writel(hsotg, hprt0, HPRT0);
+ 
++		/* De-assert Wakeup Logic */
++		if ((rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
++			gpwrdn = dwc2_readl(hsotg, GPWRDN);
++			gpwrdn &= ~GPWRDN_PMUACTV;
++			dwc2_writel(hsotg, gpwrdn, GPWRDN);
++			udelay(10);
++		}
+ 		/* Wait for Resume time and then program HPRT again */
+ 		mdelay(100);
+ 		hprt0 &= ~HPRT0_RES;
 
 
 
