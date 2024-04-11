@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-38148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 208168A0D3C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:01:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 742E08A0DD2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:08:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B965B24FE2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:01:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F1F2286597
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E98CB145B08;
-	Thu, 11 Apr 2024 10:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D5C145B07;
+	Thu, 11 Apr 2024 10:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQHd4EKz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lg9BTMzT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57422EAE5;
-	Thu, 11 Apr 2024 10:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6645913B5B9;
+	Thu, 11 Apr 2024 10:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829705; cv=none; b=YkeOiO2TqYv5/B2dVr2H6t2e0Cria9UomQVkguZDEZgFTyxQLgT6eoYlDSmc0bnnFZqI6/+GCGAYSxFi2Ti8WHOxiI3cNeDjhFDEXd6qI6QOLbuJbhm4ILyWHUzgVgPUc6/0YieKmFnE09gDx/irjBVG/R2qgznuPrQ7XHzpkLs=
+	t=1712830090; cv=none; b=QBDP24526bOkZLCJcHHDGT9MnzwyAAsX655Z/O7BfInUONDI7NT9XxqGiCaHVQFYLV2B/+zq/+XWi8LaaCSZ88gtjDzOEOKG6ZkfYwOiWuudmjVLg41jYXDxKo2vO1sLpLtUhO5b4IOKfcBkvoauuxUe7OhtWQTaFJr1aVuIQBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829705; c=relaxed/simple;
-	bh=pNe9q2N9HeS5S7sE5a74R3IllUzBf14AFw+T1S9KHy0=;
+	s=arc-20240116; t=1712830090; c=relaxed/simple;
+	bh=SLNx4GmimIpgCIRRelAxZRMKjwrf94FuPQRR0SSC69A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PqU4l1tqMOBfkVtBisWuAurrLa5wUis8tiUWvJc4T2PUT4WCZqhUvkbqeMlTOAIU/Z6l38CCzOXzlVwcupGklsJQA94d95QrIjcYrdVIvzlbQCAAFm34SP8MdkYtd5p/U1TfG8eWS71nMjwot2Lo43eqquO099ovfzDGAaXLFPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQHd4EKz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2154FC433C7;
-	Thu, 11 Apr 2024 10:01:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nDMxdWb1g4/xCGnLbGgNRPKTGsbHHyM2DdzQwDsVlDiO+PmFybUHT6jr/UgpVgm8g6TwoI/zxc/QzSMNqzqRS61ASnKc/kToJBNx461BYbThzGrxIPvq2KSDWOSZ2S4eCbsgNDQnDIKWyDIxRmOOH9MXDF5TTmFTFNo/8hhdKAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lg9BTMzT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E157FC433F1;
+	Thu, 11 Apr 2024 10:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829705;
-	bh=pNe9q2N9HeS5S7sE5a74R3IllUzBf14AFw+T1S9KHy0=;
+	s=korg; t=1712830090;
+	bh=SLNx4GmimIpgCIRRelAxZRMKjwrf94FuPQRR0SSC69A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQHd4EKz5NPed+D0om8FwIHE52xaTQBAmx89OD4KiKyIw0PoGJx8bbaq3/SLY6WKY
-	 rvC45eCRRE46hybXJSOLPBQ6tdQtE5DypL6HKsjB/WvfJZeacFoqOolHJPyZC2qwS8
-	 +K0jS7L2OBeR/ThHNB9bS7JrX16ZdD7Pgnjn5Fp0=
+	b=Lg9BTMzTUMMXFtauTkPHf0juwSgCXUXb38m0aMb3b2vgOzAQWXMEprQL2K6k12XMw
+	 mwkOevuddQMlFYeWEPKmIMlW4YuVeVJZcFcfyWkvzH9SBapSB9V5lbRSRRz0uQV11M
+	 8kknFblP+qGgtzHzwFAEZYpn2quoFdWEu+n4MJJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 4.19 076/175] usb: port: Dont try to peer unused USB ports based on location
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Thierry Reding <treding@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 031/143] firmware: tegra: bpmp: Return directly after a failed kzalloc() in get_filename()
 Date: Thu, 11 Apr 2024 11:54:59 +0200
-Message-ID: <20240411095421.851382548@linuxfoundation.org>
+Message-ID: <20240411095421.849166763@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,66 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-commit 69c63350e573367f9c8594162288cffa8a26d0d1 upstream.
+[ Upstream commit 1315848f1f8a0100cb6f8a7187bc320c5d98947f ]
 
-Unused USB ports may have bogus location data in ACPI PLD tables.
-This causes port peering failures as these unused USB2 and USB3 ports
-location may match.
+The kfree() function was called in one case by
+the get_filename() function during error handling
+even if the passed variable contained a null pointer.
+This issue was detected by using the Coccinelle software.
 
-Due to these failures the driver prints a
-"usb: port power management may be unreliable" warning, and
-unnecessarily blocks port power off during runtime suspend.
+Thus return directly after a call of the function “kzalloc” failed
+at the beginning.
 
-This was debugged on a couple DELL systems where the unused ports
-all returned zeroes in their location data.
-Similar bugreports exist for other systems.
-
-Don't try to peer or match ports that have connect type set to
-USB_PORT_NOT_USED.
-
-Fixes: 3bfd659baec8 ("usb: find internal hub tier mismatch via acpi")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218465
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218486
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Link: https://lore.kernel.org/linux-usb/5406d361-f5b7-4309-b0e6-8c94408f7d75@molgen.mpg.de
-Cc: stable@vger.kernel.org # v3.16+
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218490
-Link: https://lore.kernel.org/r/20240222233343.71856-1-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/port.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/firmware/tegra/bpmp-debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -431,7 +431,7 @@ static int match_location(struct usb_dev
- 	struct usb_hub *peer_hub = usb_hub_to_struct_hub(peer_hdev);
- 	struct usb_device *hdev = to_usb_device(port_dev->dev.parent->parent);
+diff --git a/drivers/firmware/tegra/bpmp-debugfs.c b/drivers/firmware/tegra/bpmp-debugfs.c
+index bbcdd9fed3fb6..4221fed70ad48 100644
+--- a/drivers/firmware/tegra/bpmp-debugfs.c
++++ b/drivers/firmware/tegra/bpmp-debugfs.c
+@@ -77,7 +77,7 @@ static const char *get_filename(struct tegra_bpmp *bpmp,
  
--	if (!peer_hub)
-+	if (!peer_hub || port_dev->connect_type == USB_PORT_NOT_USED)
- 		return 0;
+ 	root_path_buf = kzalloc(root_path_buf_len, GFP_KERNEL);
+ 	if (!root_path_buf)
+-		goto out;
++		return NULL;
  
- 	hcd = bus_to_hcd(hdev->bus);
-@@ -442,7 +442,8 @@ static int match_location(struct usb_dev
- 
- 	for (port1 = 1; port1 <= peer_hdev->maxchild; port1++) {
- 		peer = peer_hub->ports[port1 - 1];
--		if (peer && peer->location == port_dev->location) {
-+		if (peer && peer->connect_type != USB_PORT_NOT_USED &&
-+		    peer->location == port_dev->location) {
- 			link_peers_report(port_dev, peer);
- 			return 1; /* done */
- 		}
+ 	root_path = dentry_path(bpmp->debugfs_mirror, root_path_buf,
+ 				root_path_buf_len);
+-- 
+2.43.0
+
 
 
 
