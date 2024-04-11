@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-38088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546B28A0CF9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAC68A107F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86EA71C2101D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:58:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B05E1C2378B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3552145B06;
-	Thu, 11 Apr 2024 09:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547F614BF91;
+	Thu, 11 Apr 2024 10:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipZJA9+B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gro4SZre"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B058813DDDD;
-	Thu, 11 Apr 2024 09:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138D114535A;
+	Thu, 11 Apr 2024 10:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829528; cv=none; b=JiHZuJUN+TpDfSkfhLMYO2SxU2nLewt+7m8r32bmQOAmDmpeF4q9Gw7AytUwh6yS+/60Z0W+lXHIh+c+pS2IPTAvu4TStQMok/1nG03QIDo2Twd5PfaQEJw7hl6Jjr0Uo67HCDuS4FFu623qvdmay3jlc8NQRxDCTNbX2O8sP0c=
+	t=1712831642; cv=none; b=dDfQaSX1YtgDvGwZmGlLyOJV0XWzf0zaSVBne/t1VcWTLkY+6jb6e0tcU4v1J55i/vw4FtLYzfxeWyksNM/Gwl+P2eljZ7ki0tbiJQMJBeo/O3T9GXwxKaXjTnEds6yj4oMfxAB8eJ5s44WaV6zSDxEfRpRN+QMA9KFwOGG32NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829528; c=relaxed/simple;
-	bh=v2bHe0LdB7jBZULYIV20m2mC53LUFceWcXvKo3ALCc4=;
+	s=arc-20240116; t=1712831642; c=relaxed/simple;
+	bh=F1ISf2TpEwZra2cCMq3cbHysA1SbibIfTYcmKDct1Kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gS7mrCt2o4B678iVayhZ/8meNC+sWBbh5Q4hdZZsVrsSiq9yc0wQS/tA0BkX0YBzdYBJ/2NhNMs6Gw2WcWkztnROkjK9JLhsv4d0wCmPOyGS91IBZ0ePAP1XTA8/hqjxlxI5usOtnfyZkVlTrbf3rU0MwFIqmTelLnuwxue19yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipZJA9+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB46C433F1;
-	Thu, 11 Apr 2024 09:58:47 +0000 (UTC)
+	 MIME-Version; b=Oey47GaAPVgOOYGUrlt+iKTJEe2Y1l0uJ4nm0bXI5IfjV6u0IKSv6Op1zH10lh4vta/4JvY+8bVHAxZEWWpy1WaOQIeo9DsU8oqh8r6O+750Vz+JvHyM24bynm5uqH3ctrXt6cV/ZJr90HOp+8TNiQcFa5JDOHT4qk02c3Ha5ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gro4SZre; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87203C433C7;
+	Thu, 11 Apr 2024 10:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829528;
-	bh=v2bHe0LdB7jBZULYIV20m2mC53LUFceWcXvKo3ALCc4=;
+	s=korg; t=1712831641;
+	bh=F1ISf2TpEwZra2cCMq3cbHysA1SbibIfTYcmKDct1Kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ipZJA9+BFpdneehxv+VmrPqkquS3w00qH5dyD5YFBH5eUiqIbps2ZOEcU4JQuf3eI
-	 t+nayEjJfLQqyAy+BzEkKkrCXXCiponBU1wavzXthB9wyYF/WDaBWhHu6ntx75wnqD
-	 2BGLuZ3ex/voMWueIBAK5wm6LQVqIxb6NiTsQrbY=
+	b=gro4SZre9wj2QtMVqLF0KV6wAlYUNuYeCWL4eHXQSPsp5EjU9AbwkAyODj4N6d34K
+	 P/pOvQM88+o4iyDTh3BxC6YI7jX9lyHlcZS+nfe3CdvMX6o0HgKqwKY+N/rsl8HCNX
+	 fruo9/pqo4HScd6hQqHmrAneKv57S18dqipZM2uM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Igor Zhbanov <izh1979@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	sparclinux@vger.kernel.org,
-	Dan Carpenter <dan.carpenter@oracle.com>,
-	Nick Alcock <nick.alcock@oracle.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andreas Larsson <andreas@gaisler.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 018/175] sparc: vDSO: fix return value of __setup handler
+Subject: [PATCH 5.10 078/294] usb: gadget: tegra-xudc: Use dev_err_probe()
 Date: Thu, 11 Apr 2024 11:54:01 +0200
-Message-ID: <20240411095420.097191502@linuxfoundation.org>
+Message-ID: <20240411095438.035972708@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,59 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit 5378f00c935bebb846b1fdb0e79cb76c137c56b5 ]
+[ Upstream commit 77b57218ac2f37da4e8b72e78f002944b9f85091 ]
 
-__setup() handlers should return 1 to obsolete_checksetup() in
-init/main.c to indicate that the boot option has been handled.
-A return of 0 causes the boot option/value to be listed as an Unknown
-kernel parameter and added to init's (limited) argument or environment
-strings. Also, error return codes don't mean anything to
-obsolete_checksetup() -- only non-zero (usually 1) or zero.
-So return 1 from vdso_setup().
+Rather than testing if the error code is -EPROBE_DEFER before printing
+an error message, use dev_err_probe() instead to simplify the code.
 
-Fixes: 9a08862a5d2e ("vDSO for sparc")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: Igor Zhbanov <izh1979@gmail.com>
-Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: Dan Carpenter <dan.carpenter@oracle.com>
-Cc: Nick Alcock <nick.alcock@oracle.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20240211052808.22635-1-rdunlap@infradead.org
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20210519163553.212682-2-jonathanh@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 84fa943d93c3 ("usb: gadget: tegra-xudc: Fix USB3 PHY retrieval logic")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/vdso/vma.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/usb/gadget/udc/tegra-xudc.c | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
 
-diff --git a/arch/sparc/vdso/vma.c b/arch/sparc/vdso/vma.c
-index 5eaff3c1aa0c7..1869e4b36db21 100644
---- a/arch/sparc/vdso/vma.c
-+++ b/arch/sparc/vdso/vma.c
-@@ -262,9 +262,8 @@ static __init int vdso_setup(char *s)
- 	unsigned long val;
+diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
+index c5f0fbb8ffe47..23e31eec442dc 100644
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -3508,10 +3508,8 @@ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
+ 		xudc->utmi_phy[i] = devm_phy_optional_get(xudc->dev, phy_name);
+ 		if (IS_ERR(xudc->utmi_phy[i])) {
+ 			err = PTR_ERR(xudc->utmi_phy[i]);
+-			if (err != -EPROBE_DEFER)
+-				dev_err(xudc->dev, "failed to get usb2-%d PHY: %d\n",
+-					i, err);
+-
++			dev_err_probe(xudc->dev, err,
++				      "failed to get usb2-%d PHY\n", i);
+ 			goto clean_up;
+ 		} else if (xudc->utmi_phy[i]) {
+ 			/* Get usb-phy, if utmi phy is available */
+@@ -3538,10 +3536,8 @@ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
+ 		xudc->usb3_phy[i] = devm_phy_optional_get(xudc->dev, phy_name);
+ 		if (IS_ERR(xudc->usb3_phy[i])) {
+ 			err = PTR_ERR(xudc->usb3_phy[i]);
+-			if (err != -EPROBE_DEFER)
+-				dev_err(xudc->dev, "failed to get usb3-%d PHY: %d\n",
+-					usb3, err);
+-
++			dev_err_probe(xudc->dev, err,
++				      "failed to get usb3-%d PHY\n", usb3);
+ 			goto clean_up;
+ 		} else if (xudc->usb3_phy[i])
+ 			dev_dbg(xudc->dev, "usb3-%d PHY registered", usb3);
+@@ -3781,9 +3777,7 @@ static int tegra_xudc_probe(struct platform_device *pdev)
  
- 	err = kstrtoul(s, 10, &val);
--	if (err)
--		return err;
--	vdso_enabled = val;
--	return 0;
-+	if (!err)
-+		vdso_enabled = val;
-+	return 1;
- }
- __setup("vdso=", vdso_setup);
+ 	err = devm_clk_bulk_get(&pdev->dev, xudc->soc->num_clks, xudc->clks);
+ 	if (err) {
+-		if (err != -EPROBE_DEFER)
+-			dev_err(xudc->dev, "failed to request clocks: %d\n", err);
+-
++		dev_err_probe(xudc->dev, err, "failed to request clocks\n");
+ 		return err;
+ 	}
+ 
+@@ -3798,9 +3792,7 @@ static int tegra_xudc_probe(struct platform_device *pdev)
+ 	err = devm_regulator_bulk_get(&pdev->dev, xudc->soc->num_supplies,
+ 				      xudc->supplies);
+ 	if (err) {
+-		if (err != -EPROBE_DEFER)
+-			dev_err(xudc->dev, "failed to request regulators: %d\n", err);
+-
++		dev_err_probe(xudc->dev, err, "failed to request regulators\n");
+ 		return err;
+ 	}
+ 
 -- 
 2.43.0
 
