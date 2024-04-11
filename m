@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41CCF8A0ED5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:18:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE678A10BD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72F61B242F3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:18:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0F011C23228
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2753D146A81;
-	Thu, 11 Apr 2024 10:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B686149C7F;
+	Thu, 11 Apr 2024 10:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UjOT9GpU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkzTn4ma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14A41465A5;
-	Thu, 11 Apr 2024 10:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09EE564CC0;
+	Thu, 11 Apr 2024 10:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830694; cv=none; b=Cib/nhawuJu/fkdT7X5MkfPUcGj78b552SFevaVfoHzk48X2OqnkXFMwYYgCMKdHr/KpEmFryxF99+kuZeCHvVxslyziEPb+2a80mpdQ0mxpLl7ydDtEjGkdx32Qs0CG2tVB8d8vWTOA3GcDESa4S7qtoKHSbU/4TY2l9eSj+cQ=
+	t=1712831809; cv=none; b=hg8xvL0FKeQgoDWTqB9mo5UK7YnvSK28sOChJFbbxbIgYkQNyuy2snzEgmt9R6MnkoCnuHDLVWF9Ew16FKlGVfLltSAEEobctY8xbg/I1Ktc9p5nddAzr3zUGRZd81AfQUFB0fTAao4uGnoQhe1UrmXofzc6ao+1sUbdgJJESkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830694; c=relaxed/simple;
-	bh=yc5QJLEMAq037seneCyYYLIWsaLqHr0utCDGl2WDE8s=;
+	s=arc-20240116; t=1712831809; c=relaxed/simple;
+	bh=5KRJXDNXti/Guurlf05gIomO6vJefWfuvcFw8Yjp/HI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k8jkSwyZAlIpC6PPI2o3C5xbiDEIuTYtK29P0pwXV+S2XU2BnZZnXvbJEnti9KZO3T5713V6mr/dkNQjP73s6dc00GVMgnHoG1NrhRXkdBJaIpe0KSugDqOdpU4x9tYtKZHwdr4wGc37LlJeV9gqI6Utxsbq8jsGGmOwpjbSzQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UjOT9GpU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549D3C433C7;
-	Thu, 11 Apr 2024 10:18:14 +0000 (UTC)
+	 MIME-Version; b=Q/fZ/QdzoqpWQAvoWcDplqwq04cWFIsYFNKlYGmH360/vY3I8YNYUJl5qNPTySSSSErkTzGTlKc7VO6d1KkpGkl8xxL09JnEbM/BzxPxBziCOeX7Wc1byKbyeTzPjqcStZzNbi/NjVrNIcOAFJ3/+dRKJHMOhCgiIxEuSpTZD5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkzTn4ma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80EDDC433F1;
+	Thu, 11 Apr 2024 10:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830694;
-	bh=yc5QJLEMAq037seneCyYYLIWsaLqHr0utCDGl2WDE8s=;
+	s=korg; t=1712831808;
+	bh=5KRJXDNXti/Guurlf05gIomO6vJefWfuvcFw8Yjp/HI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UjOT9GpUvJiJZwKBQAsBoGC9tQq02qmtwsKJCzQTL/REgHnjvC9he0ew4/ZkFW1nU
-	 JhtoycpW00oL8zD5sqnOOolgBLk16+Ta21PYb16lhBzEJrbeVjqX6znPF3XEBGvEqb
-	 Sfr2OvZpEV8Oq1HocTpr/lGJOT9seAqvxsNLLPOw=
+	b=bkzTn4maegZFsjV19h9ZdBxmP8j+l30L9bbA37R1UFyPKk/a7jzin/V6SG+CdVz6u
+	 H2ETOiE9XYFTRzZIRugixy9EQRUn3bPRfQJJF6u9Lc3OEywVUfvnwAOXML3ah9D24L
+	 UZbftSm+/9BnOG/u35dVYLtS8kuAW1bnnx6CT/LE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	syzbot+28748250ab47a8f04100@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 086/215] USB: usb-storage: Prevent divide-by-0 error in isd200_ata_command
+	Nicolas Pitre <nico@fluxnic.net>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 132/294] vt: fix unicode buffer corruption when deleting characters
 Date: Thu, 11 Apr 2024 11:54:55 +0200
-Message-ID: <20240411095427.490273374@linuxfoundation.org>
+Message-ID: <20240411095439.633084935@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Nicolas Pitre <nico@fluxnic.net>
 
-commit 014bcf41d946b36a8f0b8e9b5d9529efbb822f49 upstream.
+commit 1581dafaf0d34bc9c428a794a22110d7046d186d upstream.
 
-The isd200 sub-driver in usb-storage uses the HEADS and SECTORS values
-in the ATA ID information to calculate cylinder and head values when
-creating a CDB for READ or WRITE commands.  The calculation involves
-division and modulus operations, which will cause a crash if either of
-these values is 0.  While this never happens with a genuine device, it
-could happen with a flawed or subversive emulation, as reported by the
-syzbot fuzzer.
+This is the same issue that was fixed for the VGA text buffer in commit
+39cdb68c64d8 ("vt: fix memory overlapping when deleting chars in the
+buffer"). The cure is also the same i.e. replace memcpy() with memmove()
+due to the overlaping buffers.
 
-Protect against this possibility by refusing to bind to the device if
-either the ATA_ID_HEADS or ATA_ID_SECTORS value in the device's ID
-information is 0.  This requires isd200_Initialization() to return a
-negative error code when initialization fails; currently it always
-returns 0 (even when there is an error).
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Reported-and-tested-by: syzbot+28748250ab47a8f04100@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-usb/0000000000003eb868061245ba7f@google.com/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reviewed-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/r/b1e605ea-333f-4ac0-9511-da04f411763e@rowland.harvard.edu
+Signed-off-by: Nicolas Pitre <nico@fluxnic.net>
+Fixes: 81732c3b2fed ("tty vt: Fix line garbage in virtual console on command line edition")
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/sn184on2-3p0q-0qrq-0218-895349s4753o@syhkavp.arg
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/isd200.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/tty/vt/vt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/storage/isd200.c
-+++ b/drivers/usb/storage/isd200.c
-@@ -1105,7 +1105,7 @@ static void isd200_dump_driveid(struct u
- static int isd200_get_inquiry_data( struct us_data *us )
- {
- 	struct isd200_info *info = (struct isd200_info *)us->extra;
--	int retStatus = ISD200_GOOD;
-+	int retStatus;
- 	u16 *id = info->id;
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -398,7 +398,7 @@ static void vc_uniscr_delete(struct vc_d
+ 		char32_t *ln = uniscr->lines[vc->state.y];
+ 		unsigned int x = vc->state.x, cols = vc->vc_cols;
  
- 	usb_stor_dbg(us, "Entering isd200_get_inquiry_data\n");
-@@ -1137,6 +1137,13 @@ static int isd200_get_inquiry_data( stru
- 				isd200_fix_driveid(id);
- 				isd200_dump_driveid(us, id);
- 
-+				/* Prevent division by 0 in isd200_scsi_to_ata() */
-+				if (id[ATA_ID_HEADS] == 0 || id[ATA_ID_SECTORS] == 0) {
-+					usb_stor_dbg(us, "   Invalid ATA Identify data\n");
-+					retStatus = ISD200_ERROR;
-+					goto Done;
-+				}
-+
- 				memset(&info->InquiryData, 0, sizeof(info->InquiryData));
- 
- 				/* Standard IDE interface only supports disks */
-@@ -1202,6 +1209,7 @@ static int isd200_get_inquiry_data( stru
- 		}
+-		memcpy(&ln[x], &ln[x + nr], (cols - x - nr) * sizeof(*ln));
++		memmove(&ln[x], &ln[x + nr], (cols - x - nr) * sizeof(*ln));
+ 		memset32(&ln[cols - nr], ' ', nr);
  	}
- 
-+ Done:
- 	usb_stor_dbg(us, "Leaving isd200_get_inquiry_data %08X\n", retStatus);
- 
- 	return(retStatus);
-@@ -1481,22 +1489,27 @@ static int isd200_init_info(struct us_da
- 
- static int isd200_Initialization(struct us_data *us)
- {
-+	int rc = 0;
-+
- 	usb_stor_dbg(us, "ISD200 Initialization...\n");
- 
- 	/* Initialize ISD200 info struct */
- 
--	if (isd200_init_info(us) == ISD200_ERROR) {
-+	if (isd200_init_info(us) < 0) {
- 		usb_stor_dbg(us, "ERROR Initializing ISD200 Info struct\n");
-+		rc = -ENOMEM;
- 	} else {
- 		/* Get device specific data */
- 
--		if (isd200_get_inquiry_data(us) != ISD200_GOOD)
-+		if (isd200_get_inquiry_data(us) != ISD200_GOOD) {
- 			usb_stor_dbg(us, "ISD200 Initialization Failure\n");
--		else
-+			rc = -EINVAL;
-+		} else {
- 			usb_stor_dbg(us, "ISD200 Initialization complete\n");
-+		}
- 	}
- 
--	return 0;
-+	return rc;
  }
- 
- 
 
 
 
