@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-39031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 802258A118A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B60B08A1170
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B973284C69
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E74991C22799
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533CB145323;
-	Thu, 11 Apr 2024 10:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898B2145B26;
+	Thu, 11 Apr 2024 10:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhT+Ns2M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="me5PJtud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F620142624;
-	Thu, 11 Apr 2024 10:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E29142624;
+	Thu, 11 Apr 2024 10:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832313; cv=none; b=KfqqWXWMdc0oHLxU5jTZAu05O1pDy2I/qriXmJU09RpFEc1iU06O2dcguPs+x0KT9C1PtyX48O9lA6nQ5MhW6Mr5C+YnR0JmKZ9aALAqaJuG50CZUuX2WaB7qrsoAyEeFm9kHfVPHP5NXq7mtp8AvtLiOF0LRlTxP2n8g3cpq3c=
+	t=1712832239; cv=none; b=aNv719eUUnDArTIjkA5S92sn3ugGi6fnYb0MAA28WZhELVi80tECrIgpWB1DlGg7mpTswogvQ6rpFGwUg4NOYcjfbnPAevJihLTgCA0TKZAaQj1KVw2GF3jadWe+w2xXKLvZvVHExiDxJhP/PoFP89BEe0ZzX42yGKQACnTmncM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832313; c=relaxed/simple;
-	bh=JKrnKLgM2/8P+SDub5K/KiDaYEFSXU8BmE4Sri2hpL8=;
+	s=arc-20240116; t=1712832239; c=relaxed/simple;
+	bh=ZGofY7EdWaiOXqWTsqeG+K7Vp5QFAb82Y/xFGUYEnu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C4CyTVNKe4zNXnKuUVNvQZ/imbrvmHYM4MVPJdgvbVIQLOqrMUZPxW3iB28RQhGM1UhRir1AjemPGEtes5Jfa2SKnQOzFoMGwJU4g9Mmnpa1cabZ5YUSVkvM5wuCN4n8nqzro+K36tnKdLkWRzQy2SgZxqlySQ5rpAcchcT/Jos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhT+Ns2M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA73C433F1;
-	Thu, 11 Apr 2024 10:45:12 +0000 (UTC)
+	 MIME-Version; b=sMNWhHpAVAAOq4+uSq44iJsgpaf3uES+QEEM/nyjYExeRoYDUF96cjFKbbcvOeSyOMX26pbzG6QpVa7kKg1PE0+3i+C2hCikWm7E9CXkYltYscENu3AhobDST5nf0zlWhCPo/jsA4KcMG0fQATegC47IW1n4hQkMoH0ZlgwIWO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=me5PJtud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BADC4C433C7;
+	Thu, 11 Apr 2024 10:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832312;
-	bh=JKrnKLgM2/8P+SDub5K/KiDaYEFSXU8BmE4Sri2hpL8=;
+	s=korg; t=1712832239;
+	bh=ZGofY7EdWaiOXqWTsqeG+K7Vp5QFAb82Y/xFGUYEnu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jhT+Ns2MHMvXXX0zNoi92cUbxLcX692At56GNrh0eMD7DkAGJLVY0gSHofoDuC643
-	 LdALf5UU63W6m8dJvmqwVUZDUxX8nWv6ewGYrjgiRHIyXR1t/ncb1Li9OmDpouD5c7
-	 YuL//rMoOi2jm9WluqhJoDNbbLbPZEIEUt1igEog=
+	b=me5PJtudHEZGYz2ot26AjkuK59rVPlu0Yo9KxFRmuiEldPP+D7y2bgzcE005dg+Su
+	 cplgX3MWuMogMpuTqqoLfqYMCOmJ4ogBt9lB/caRFsAXcDIMgjt+QSGJN5zg+tcg3k
+	 Xtnr96eDWOhIyViKzPBXw+tGnyDS9+MUbETiCHuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petre Rodan <petre.rodan@subdimension.ro>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 276/294] tools: iio: replace seekdir() in iio_generic_buffer
-Date: Thu, 11 Apr 2024 11:57:19 +0200
-Message-ID: <20240411095443.853450033@linuxfoundation.org>
+Subject: [PATCH 5.10 277/294] usb: typec: tcpci: add generic tcpci fallback compatible
+Date: Thu, 11 Apr 2024 11:57:20 +0200
+Message-ID: <20240411095443.882398700@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
 References: <20240411095435.633465671@linuxfoundation.org>
@@ -66,43 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Petre Rodan <petre.rodan@subdimension.ro>
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-[ Upstream commit 4e6500bfa053dc133021f9c144261b77b0ba7dc8 ]
+[ Upstream commit 8774ea7a553e2aec323170d49365b59af0a2b7e0 ]
 
-Replace seekdir() with rewinddir() in order to fix a localized glibc bug.
+The driver already support the tcpci binding for the i2c_device_id so
+add the support for the of_device_id too.
 
-One of the glibc patches that stable Gentoo is using causes an improper
-directory stream positioning bug on 32bit arm. That in turn ends up as a
-floating point exception in iio_generic_buffer.
-
-The attached patch provides a fix by using an equivalent function which
-should not cause trouble for other distros and is easier to reason about
-in general as it obviously always goes back to to the start.
-
-https://sourceware.org/bugzilla/show_bug.cgi?id=31212
-
-Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-Link: https://lore.kernel.org/r/20240108103224.3986-1-petre.rodan@subdimension.ro
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240222210903.208901-3-m.felsch@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/iio/iio_utils.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/iio/iio_utils.c b/tools/iio/iio_utils.c
-index 48360994c2a13..b8745873928c5 100644
---- a/tools/iio/iio_utils.c
-+++ b/tools/iio/iio_utils.c
-@@ -373,7 +373,7 @@ int build_channel_array(const char *device_dir,
- 		goto error_close_dir;
- 	}
- 
--	seekdir(dp, 0);
-+	rewinddir(dp);
- 	while (ent = readdir(dp), ent) {
- 		if (strcmp(ent->d_name + strlen(ent->d_name) - strlen("_en"),
- 			   "_en") == 0) {
+diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
+index e34e46df80243..33c67adf7c67a 100644
+--- a/drivers/usb/typec/tcpm/tcpci.c
++++ b/drivers/usb/typec/tcpm/tcpci.c
+@@ -732,6 +732,7 @@ MODULE_DEVICE_TABLE(i2c, tcpci_id);
+ #ifdef CONFIG_OF
+ static const struct of_device_id tcpci_of_match[] = {
+ 	{ .compatible = "nxp,ptn5110", },
++	{ .compatible = "tcpci", },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, tcpci_of_match);
 -- 
 2.43.0
 
