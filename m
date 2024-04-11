@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-39145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CAC18A121D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:50:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2FB58A11EB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C64071F21576
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DF2DB27240
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E61E13DDD6;
-	Thu, 11 Apr 2024 10:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20902146A70;
+	Thu, 11 Apr 2024 10:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkC+4tYZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJqNWx8k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D83079FD;
-	Thu, 11 Apr 2024 10:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09161E48E;
+	Thu, 11 Apr 2024 10:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832650; cv=none; b=YhIw71acY0tommtFL3MKGnq00PKssmNwy0jBp0ULbUHA6x5afwojJGYRYGkCrnP9oGLI2AfrGy5tUf85wYKYBIXu221ZKhruCSg6PYJUMdQPgbgMmOXRto3IPTB90EsQRAk0X5hQZTNtdun1bWkCnaLK/Vq98VWWCZfpMB0nVe0=
+	t=1712832516; cv=none; b=S0g7XhIAs09NIudkG778VtnmOA0S4bvjSGTJDsTf/qqzNUdqZN+brkApMhJj0lRIjUa9zC7oqkfQgJtqTgtNvjjXhtxoKVFxvF5QcX6PzxInYs7XEugTiHcDTSc2CsElk/ez5oCD1ERPVPtEw6JOeTFQGNhoR5+vsinmfB3yHqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832650; c=relaxed/simple;
-	bh=Oavl+aukklXJUEE9tfjr1UXq38hFGyBY4LDvL9CGCAk=;
+	s=arc-20240116; t=1712832516; c=relaxed/simple;
+	bh=XsPjSUXKgfLZIHDXtJTug0OHMD/aj9wAmRxiMmHoAlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UgDZNctPM8ys3whR4QMvJbUIVKQn/0Dkpz4M6eWkySsvHHJDqVAzQ7klNlkHAbwTJVdEphtUJN6yVp5Gi6QEFfWLQfnkFOn2gcFI+w68rw/aza/Qsl2AWftDsmotdCCxbjWJ8e1voMJlJBUR0y/oF14ICRlpouT6SlFqJr+/g/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkC+4tYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9905EC43390;
-	Thu, 11 Apr 2024 10:50:49 +0000 (UTC)
+	 MIME-Version; b=ene7iCJqlSY6lHR8fckwTYTMgDPzfJ9yij0RpZP10ViEMPBq5MUrrMwDZ+wY1firVFVbh1gIqic+tISPni9gTPvuURJjpRsD7iOm+TFbK+57kK6C3YgvFt3RpFMtRbEWq+sQN8fnmD4FjhC8XDoDYQT4uEopJxQOiomyz/AYbUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJqNWx8k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58091C43390;
+	Thu, 11 Apr 2024 10:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832650;
-	bh=Oavl+aukklXJUEE9tfjr1UXq38hFGyBY4LDvL9CGCAk=;
+	s=korg; t=1712832516;
+	bh=XsPjSUXKgfLZIHDXtJTug0OHMD/aj9wAmRxiMmHoAlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hkC+4tYZ98+AXT3HDP26fjNgRZsbMJ/HAsg0B1hQY3tgZE77IVJPGK6X9I4CeyCS/
-	 JqgBcAgXRS79BNTVcMnFPf6M6sp5ZXq1h2jJN1vLpfV5D/wbzwumTxNAnqQCiYQkkh
-	 6vJlnQmyX/dClx0tfNIx6lC3lF0ogJSAaxZ3mfps=
+	b=aJqNWx8ku+lCdVW7gEiia6GF5xFrPQm3SajphstQtmx+MlGNQzWa/6Xv1rqjBx7Iq
+	 GVFqRQg6jLpBQP7pFo+NNMrFluIQXcCzh71f82HmM+B32KDLFJsWWFf41vc79MX6yd
+	 1Z0awWqnx/LVrBWH+OFZIGA1ljuiHb1SA0hd8ch0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alban=20Boy=C3=A9?= <alban.boye@protonmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 36/57] platform/x86: touchscreen_dmi: Add an extra entry for a variant of the Chuwi Vi8 tablet
-Date: Thu, 11 Apr 2024 11:57:44 +0200
-Message-ID: <20240411095409.086043464@linuxfoundation.org>
+	kernel test robot <oliver.sang@intel.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 6.1 73/83] gcc-plugins/stackleak: Avoid .head.text section
+Date: Thu, 11 Apr 2024 11:57:45 +0200
+Message-ID: <20240411095414.884192507@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alban Boyé <alban.boye@protonmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 1266e2efb7512dbf20eac820ca2ed34de6b1c3e7 ]
+commit e7d24c0aa8e678f41457d1304e2091cac6fd1a2e upstream.
 
-Signed-off-by: Alban Boyé <alban.boye@protonmail.com>
-Link: https://lore.kernel.org/r/20240227223919.11587-1-alban.boye@protonmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The .head.text section carries the startup code that runs with the MMU
+off or with a translation of memory that deviates from the ordinary one.
+So avoid instrumentation with the stackleak plugin, which already avoids
+.init.text and .noinstr.text entirely.
+
+Fixes: 48204aba801f1b51 ("x86/sme: Move early SME kernel encryption handling into .head.text")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202403221630.2692c998-oliver.sang@intel.com
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20240328064256.2358634-2-ardb+git@google.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/touchscreen_dmi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ scripts/gcc-plugins/stackleak_plugin.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
-index 08a9b802be712..161bd19441042 100644
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -1153,6 +1153,15 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
- 			DMI_MATCH(DMI_BIOS_VERSION, "CHUWI.D86JLBNR"),
- 		},
- 	},
-+	{
-+		/* Chuwi Vi8 dual-boot (CWI506) */
-+		.driver_data = (void *)&chuwi_vi8_data,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "i86"),
-+			DMI_MATCH(DMI_BIOS_VERSION, "CHUWI2.D86JHBNR02"),
-+		},
-+	},
- 	{
- 		/* Chuwi Vi8 Plus (CWI519) */
- 		.driver_data = (void *)&chuwi_vi8_plus_data,
--- 
-2.43.0
-
+--- a/scripts/gcc-plugins/stackleak_plugin.c
++++ b/scripts/gcc-plugins/stackleak_plugin.c
+@@ -467,6 +467,8 @@ static bool stackleak_gate(void)
+ 			return false;
+ 		if (STRING_EQUAL(section, ".entry.text"))
+ 			return false;
++		if (STRING_EQUAL(section, ".head.text"))
++			return false;
+ 	}
+ 
+ 	return track_frame_size >= 0;
 
 
 
