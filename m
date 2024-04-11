@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-38548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 354A28A0F2F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:21:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 719128A0FA9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35A581C22ACB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:21:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 115D21F28748
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C751A146A70;
-	Thu, 11 Apr 2024 10:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9452C146A95;
+	Thu, 11 Apr 2024 10:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzMnaRW3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q9COViky"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86ACD146A64;
-	Thu, 11 Apr 2024 10:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB8E146A94;
+	Thu, 11 Apr 2024 10:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830897; cv=none; b=EVFT/OwkTH5uYQqv8qimcFYG08iua2T29VZVvTHjYgA4WU7nVIK0casYPSTvszzXjJ+ODo4gWsgQw4V/yD/rq9udSfduwaZcyztysoVe8CmSDKdb1kHECKzFU0HVv6cJI/oa5y6EX+TYdv1KUFsZRvmKXIO1zN/eP152KqEvUeI=
+	t=1712831167; cv=none; b=EyONrX2YVWrjTyzkREvhJc4Evha/EG4LGeDOf8uROkbrt80PmT7ZRB7U130P9Wp6AKl1nOAIxfzYXePr2JbceDzlZI6tBd4OV4RP4caGpG2pNrJnrnkOk7eaf9cMiVSeTQIqBANQbcPyb88lvudjKEJ6QEM6wFyKAdcUxwsHsH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830897; c=relaxed/simple;
-	bh=txH5MTRqTzwg5USM772XgNmNA9FYsnEw0kej+zQwiwU=;
+	s=arc-20240116; t=1712831167; c=relaxed/simple;
+	bh=ZDdl6uJpmQqchYslGZFMsE678HQdRtZFdqUR+UWihZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fe5DNn+Li5K3oGUxEIGUCXseKQt8gyN53HSPiUZqeMIJfVHHqWferuUG6tIsKNh26V2/8AL45hofZo733//m8FUtPF972V7tOO5Ixr47bPw+Gd/xkhikvFxaX73wOeUZ7+jlku41/vKc+p+K2MkwxrzdvdRFGqlFa/N3/nVwxeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzMnaRW3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C459C433F1;
-	Thu, 11 Apr 2024 10:21:36 +0000 (UTC)
+	 MIME-Version; b=G/2wGGrN/kLl4/xF3Fer1+cldr2D+FSi4ooyTazbhvmLMJgtHMEtjDay+8OQRV6fvRQAmzuXX1YT7oMMZDNnyIXCXZ/XKqh6oqt2zRjWlYkgpHf8ztwivXv6v+jM6QSoUI81R1D74qsM7byzCoUT525A+eDufXbQa4xHnD1udmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q9COViky; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468A0C433F1;
+	Thu, 11 Apr 2024 10:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830897;
-	bh=txH5MTRqTzwg5USM772XgNmNA9FYsnEw0kej+zQwiwU=;
+	s=korg; t=1712831166;
+	bh=ZDdl6uJpmQqchYslGZFMsE678HQdRtZFdqUR+UWihZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PzMnaRW3Ou8gsYTqQR6VaqEgRNBCPV9T0854EAhrR4J6fMA+U0BVeM5BAt47zRKa1
-	 GxlLW1r06d2alciVloih7Xp1YqXEZq42kHxa62zUU6Qqy6TvkAD1MBVWQqDOfOI7aB
-	 xovy8GWZpGnqcEAP0NNxUIOHP4hregXWUqLEqf6s=
+	b=Q9COVikyQt6XuBz1EqGtLSm1SeFJwUSDImO29xp8BVByV2B+a5kqVX36jmO2pfbW4
+	 0MS+lXBuQIhZD29odbmDnJcaIfUSEwBzCP9WThKK4uboyTKShUjXEEMSbGBJftONdp
+	 zIKSuGwr2ShD2jbYCjx3fHuXG4PMbikE02OwJ+sI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xingwei lee <xrivendell7@gmail.com>,
-	yue sun <samsun1006219@gmail.com>,
-	syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com,
-	syzbot+d4066896495db380182e@syzkaller.appspotmail.com,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>
-Subject: [PATCH 5.4 148/215] bpf, sockmap: Prevent lock inversion deadlock in map delete elem
-Date: Thu, 11 Apr 2024 11:55:57 +0200
-Message-ID: <20240411095429.335429578@linuxfoundation.org>
+	Serge Semin <fancer.lancer@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 031/114] net: pcs: xpcs: Return EINVAL in the internal methods
+Date: Thu, 11 Apr 2024 11:55:58 +0200
+Message-ID: <20240411095417.809228461@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Sitnicki <jakub@cloudflare.com>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-commit ff91059932401894e6c86341915615c5eb0eca48 upstream.
+[ Upstream commit f5151005d379d9ce42e327fd3b2d2aaef61cda81 ]
 
-syzkaller started using corpuses where a BPF tracing program deletes
-elements from a sockmap/sockhash map. Because BPF tracing programs can be
-invoked from any interrupt context, locks taken during a map_delete_elem
-operation must be hardirq-safe. Otherwise a deadlock due to lock inversion
-is possible, as reported by lockdep:
+In particular the xpcs_soft_reset() and xpcs_do_config() functions
+currently return -1 if invalid auto-negotiation mode is specified. That
+value might be then passed to the generic kernel subsystems which require
+a standard kernel errno value. Even though the erroneous conditions are
+very specific (memory corruption or buggy driver implementation) using a
+hard-coded -1 literal doesn't seem correct anyway especially when it comes
+to passing it higher to the network subsystem or printing to the system
+log.  Convert the hard-coded error values to -EINVAL then.
 
-       CPU0                    CPU1
-       ----                    ----
-  lock(&htab->buckets[i].lock);
-                               local_irq_disable();
-                               lock(&host->lock);
-                               lock(&htab->buckets[i].lock);
-  <Interrupt>
-    lock(&host->lock);
-
-Locks in sockmap are hardirq-unsafe by design. We expects elements to be
-deleted from sockmap/sockhash only in task (normal) context with interrupts
-enabled, or in softirq context.
-
-Detect when map_delete_elem operation is invoked from a context which is
-_not_ hardirq-unsafe, that is interrupts are disabled, and bail out with an
-error.
-
-Note that map updates are not affected by this issue. BPF verifier does not
-allow updating sockmap/sockhash from a BPF tracing program today.
-
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Reported-by: yue sun <samsun1006219@gmail.com>
-Reported-by: syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com
-Reported-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=d4066896495db380182e
-Closes: https://syzkaller.appspot.com/bug?extid=bc922f476bd65abbd466
-Link: https://lore.kernel.org/bpf/20240402104621.1050319-1-jakub@cloudflare.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Tested-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock_map.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/pcs/pcs-xpcs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -321,6 +321,9 @@ static int __sock_map_delete(struct bpf_
- 	struct sock *sk;
- 	int err = 0;
+diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
+index 4dbc21f604f20..f0f41e86a4fb3 100644
+--- a/drivers/net/pcs/pcs-xpcs.c
++++ b/drivers/net/pcs/pcs-xpcs.c
+@@ -293,7 +293,7 @@ static int xpcs_soft_reset(struct dw_xpcs *xpcs,
+ 		dev = MDIO_MMD_VEND2;
+ 		break;
+ 	default:
+-		return -1;
++		return -EINVAL;
+ 	}
  
-+	if (irqs_disabled())
-+		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
-+
- 	raw_spin_lock_bh(&stab->lock);
- 	sk = *psk;
- 	if (!sk_test || sk_test == sk)
-@@ -654,6 +657,9 @@ static int sock_hash_delete_elem(struct
- 	struct bpf_htab_elem *elem;
- 	int ret = -ENOENT;
+ 	ret = xpcs_write(xpcs, dev, MDIO_CTRL1, MDIO_CTRL1_RESET);
+@@ -891,7 +891,7 @@ int xpcs_do_config(struct dw_xpcs *xpcs, phy_interface_t interface,
+ 			return ret;
+ 		break;
+ 	default:
+-		return -1;
++		return -EINVAL;
+ 	}
  
-+	if (irqs_disabled())
-+		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
-+
- 	hash = sock_hash_bucket_hash(key, key_size);
- 	bucket = sock_hash_select_bucket(htab, hash);
- 
+ 	if (compat->pma_config) {
+-- 
+2.43.0
+
 
 
 
