@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-39134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 902D88A1212
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:50:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 076C68A11DB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1652B245FB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 385D81C22316
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516431474BC;
-	Thu, 11 Apr 2024 10:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA3C13BC33;
+	Thu, 11 Apr 2024 10:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+JKk8+U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nP/MJb80"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1DC1474B0;
-	Thu, 11 Apr 2024 10:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E44179FD;
+	Thu, 11 Apr 2024 10:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832617; cv=none; b=jGwdJMhMnNsvdDEP2edbrRG0jToc+0e8PL/m7zIDIWQuXNWGvug2edu7/71R9AQBHidLQg7zEAkn5RPonVPz9/IGjvE3/mFfiyZvYdTEuQoPjuy2xZsVfpqolxLbVFqL1basZGXBmiFlRDX+0FAzxETqBRvK6cufeuTDo3dmidk=
+	t=1712832478; cv=none; b=jUGGlQppfJMmugYYXedaXYMY2XQYXcxBfegsi+tFWVD5oyVHJjSiduuiyBwMIz+yLPwOgLUtb5MaeUndcSmmvTFgSK61VJlbOeR24bOtS7Bfo+A1gVYntIhBd4h1+piQFIPlXCeQ/Etp5Y+x0M+Ch8n4QRRP0FhXPGkKXc4vfnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832617; c=relaxed/simple;
-	bh=fdzwy75AI0SlxZ4LW+3xeO01/B+EOFrVH8VkdmIYxI0=;
+	s=arc-20240116; t=1712832478; c=relaxed/simple;
+	bh=4Wl6PCx7H7loai6wHxATPpbaoXbr8dvxpjm9KuU+e+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fVmehAkDtWKUmO3jf3TclIDSgaTCYR5kZ/dnEWVf4e4eFPLysLeD+9dZ+KSWCb8qzXnouYLguFlGiQc+ihDbWz9XSg9I9IHA6NMncgdnsH2tPNu7hv/zd0O9SLlC8Ho5coGP6l1hTckrwVTyAsSdWcCh8b3743Ba8i7wV5iGR20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+JKk8+U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B67C433B1;
-	Thu, 11 Apr 2024 10:50:16 +0000 (UTC)
+	 MIME-Version; b=B1FzgxkwhixUbvAmkUvZfv0fv6LbI7BiA4ZAHX7p/PbzkmUVxUdpbQ51cxcBLIC8KftCqlJLYlh2XGqJIFY1rfgc2uoh/mbLfsi0RTPdC8bcUbuzzhNDqKoJASR5E0nGVt72zh1yFJ8UX0gObmetCgr9Fg1Fz1forKBwfGAXx6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nP/MJb80; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3D7C433F1;
+	Thu, 11 Apr 2024 10:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832616;
-	bh=fdzwy75AI0SlxZ4LW+3xeO01/B+EOFrVH8VkdmIYxI0=;
+	s=korg; t=1712832478;
+	bh=4Wl6PCx7H7loai6wHxATPpbaoXbr8dvxpjm9KuU+e+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+JKk8+UPVreGo5OUDEdkNqehjhL52Lf3gTvtj2zwhEw87E7bZcQ3W2ugz7lLfxXc
-	 pOChJK6CKcce0BJllR2/sJ0/5t0KBO62sohj9joY/hk6NbTCn4k7DiHDAXksw0qTVj
-	 mnV0PMtZgWNainRLODPTG2NknEiYMuvcgMmra77o=
+	b=nP/MJb80cuiFvdz+wEVu6v6F9hxpnnx4IGuaQbPU3cXkl023lUuw7AgzdFcyL1+hO
+	 /zCf2xtx9f8JOuatyGTNN19vPlHJbNIieNl7ayNZhp0t5B5LzOd70nqIbLLM9C3hnC
+	 9uLjONf6+lnFOl0ADKstQLkut5eEHLHzTF5I7rhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>,
+	Colin Ian King <colin.i.king@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 26/57] ALSA: firewire-lib: handle quirk to calculate payload quadlets as data block counter
+Subject: [PATCH 6.1 62/83] usb: sl811-hcd: only defined function checkdone if QUIRK2 is defined
 Date: Thu, 11 Apr 2024 11:57:34 +0200
-Message-ID: <20240411095408.787310660@linuxfoundation.org>
+Message-ID: <20240411095414.551251192@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 4a486439d2ca85752c46711f373b6ddc107bb35d ]
+[ Upstream commit 12f371e2b6cb4b79c788f1f073992e115f4ca918 ]
 
-Miglia Harmony Audio (OXFW970) has a quirk to put the number of
-accumulated quadlets in CIP payload into the dbc field of CIP header.
+Function checkdone is only required if QUIRK2 is defined, so add
+appropriate #if / #endif around the function.
 
-This commit handles the quirk in the packet processing layer.
+Cleans up clang scan build warning:
+drivers/usb/host/sl811-hcd.c:588:18: warning: unused function
+'checkdone' [-Wunused-function]
 
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Link: https://lore.kernel.org/r/20240218074128.95210-4-o-takashi@sakamocchi.jp
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Link: https://lore.kernel.org/r/20240307111351.1982382-1-colin.i.king@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/amdtp-stream.c | 12 ++++++++----
- sound/firewire/amdtp-stream.h |  4 ++++
- 2 files changed, 12 insertions(+), 4 deletions(-)
+ drivers/usb/host/sl811-hcd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/firewire/amdtp-stream.c b/sound/firewire/amdtp-stream.c
-index f8b644cb9157a..8753125683692 100644
---- a/sound/firewire/amdtp-stream.c
-+++ b/sound/firewire/amdtp-stream.c
-@@ -771,10 +771,14 @@ static int check_cip_header(struct amdtp_stream *s, const __be32 *buf,
- 	} else {
- 		unsigned int dbc_interval;
+diff --git a/drivers/usb/host/sl811-hcd.c b/drivers/usb/host/sl811-hcd.c
+index b8b90eec91078..48478eb712119 100644
+--- a/drivers/usb/host/sl811-hcd.c
++++ b/drivers/usb/host/sl811-hcd.c
+@@ -585,6 +585,7 @@ done(struct sl811 *sl811, struct sl811h_ep *ep, u8 bank)
+ 		finish_request(sl811, ep, urb, urbstat);
+ }
  
--		if (*data_blocks > 0 && s->ctx_data.tx.dbc_interval > 0)
--			dbc_interval = s->ctx_data.tx.dbc_interval;
--		else
--			dbc_interval = *data_blocks;
-+		if (!(s->flags & CIP_DBC_IS_PAYLOAD_QUADLETS)) {
-+			if (*data_blocks > 0 && s->ctx_data.tx.dbc_interval > 0)
-+				dbc_interval = s->ctx_data.tx.dbc_interval;
-+			else
-+				dbc_interval = *data_blocks;
-+		} else {
-+			dbc_interval = payload_length / sizeof(__be32);
-+		}
++#ifdef QUIRK2
+ static inline u8 checkdone(struct sl811 *sl811)
+ {
+ 	u8	ctl;
+@@ -616,6 +617,7 @@ static inline u8 checkdone(struct sl811 *sl811)
+ #endif
+ 	return irqstat;
+ }
++#endif
  
- 		lost = dbc != ((*data_block_counter + dbc_interval) & 0xff);
- 	}
-diff --git a/sound/firewire/amdtp-stream.h b/sound/firewire/amdtp-stream.h
-index 1f957c946c956..cf9ab347277f2 100644
---- a/sound/firewire/amdtp-stream.h
-+++ b/sound/firewire/amdtp-stream.h
-@@ -37,6 +37,9 @@
-  *	the value of current SYT_INTERVAL; e.g. initial value is not zero.
-  * @CIP_UNAWARE_SYT: For outgoing packet, the value in SYT field of CIP is 0xffff.
-  *	For incoming packet, the value in SYT field of CIP is not handled.
-+ * @CIP_DBC_IS_PAYLOAD_QUADLETS: Available for incoming packet, and only effective with
-+ *	CIP_DBC_IS_END_EVENT flag. The value of dbc field is the number of accumulated quadlets
-+ *	in CIP payload, instead of the number of accumulated data blocks.
-  */
- enum cip_flags {
- 	CIP_NONBLOCKING		= 0x00,
-@@ -51,6 +54,7 @@ enum cip_flags {
- 	CIP_NO_HEADER		= 0x100,
- 	CIP_UNALIGHED_DBC	= 0x200,
- 	CIP_UNAWARE_SYT		= 0x400,
-+	CIP_DBC_IS_PAYLOAD_QUADLETS = 0x800,
- };
- 
- /**
+ static irqreturn_t sl811h_irq(struct usb_hcd *hcd)
+ {
 -- 
 2.43.0
 
