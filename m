@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91BA78A0DB3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:06:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D30858A0E3F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:12:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3233A1F23027
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:06:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F23C285AF3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2C3145FFB;
-	Thu, 11 Apr 2024 10:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1ED145B14;
+	Thu, 11 Apr 2024 10:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfYFNTrc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7FOSSXW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DC8145FED;
-	Thu, 11 Apr 2024 10:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984B61448EF;
+	Thu, 11 Apr 2024 10:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830004; cv=none; b=rxBeLsoIfd05jL5knfDLSzz54wSSkbIJYUaUQVwcBw9pN2qCJD2v7eEH31ROd46OzvhqKZ2XJOFlKehlN72q11qpQHQovY7e1Rlgk2cwabgTugQJgrcJ5rBPScM6T4eAk493EZDEa7g0jDvQTmOL+qs8au3bkjh3Sl6OMdMWgNA=
+	t=1712830360; cv=none; b=EfSB0fiiLezwHfW6O6+BEZ+E58+3SdrPq879HH7AwhNX+F7A7u8NozYFPRIzwi03lKk/84brVr/49Do+83zHF/2hl4XXgHYznCbftWiDlWxXadVc9qvQ0h4BBpE1jZJy936Co5+HlQgrdsG3xw75aBS9wi8yh0e+2FqXxkpLnn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830004; c=relaxed/simple;
-	bh=Q80JWwhUAiJQmskF9gKLNznvqvuubr3Oy21DcRHbhgk=;
+	s=arc-20240116; t=1712830360; c=relaxed/simple;
+	bh=XbOOO7v2MH+RBoDNPa6ejLHfsCtN6huP1rkX+gx320k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gfSJmGJUdc15PJyIXhkNFqes41bjjVcyUfZprFBEHdTOv+tSc6i7qMdTR2wa0z9+l8rJBjUBTChFTHZrisMuEQkO0BmidddjBRw+pP08K6sM4+yqYM6T6viy4R0aVsgsLUcy0X+zlhi2ZgA9wErZ+p0vYELTEdcK6Y6WG6sMtew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfYFNTrc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0908C433C7;
-	Thu, 11 Apr 2024 10:06:43 +0000 (UTC)
+	 MIME-Version; b=Mo/WoLVpkZM5urHTVvN2+KqdZMVSckpycUh9qphpN5E3NPTMxAZQttKVjuZY2KhQhLEgZaEItxW+NymvI7dM0XOV/L5AJv1gbqY31wduw4fvFaZnib+3gjz2vNhP5kU09XXqye2w7oM24blV1AF95vnpNc3fJBvK74qdJ6wfKzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7FOSSXW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A84CC433F1;
+	Thu, 11 Apr 2024 10:12:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830004;
-	bh=Q80JWwhUAiJQmskF9gKLNznvqvuubr3Oy21DcRHbhgk=;
+	s=korg; t=1712830360;
+	bh=XbOOO7v2MH+RBoDNPa6ejLHfsCtN6huP1rkX+gx320k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CfYFNTrcJ1NF3zk4a+tGP55QS7CsYXj2QYIcuARW8A2+GRUT2nu++PI+x+nxvZDs+
-	 J6fCsAp7sRCKtHtUbHzSFtCrC0Ce05dJp+UWH+m5NyU33Rd59y/BDe00u3B9OemSq9
-	 y00TyEP+FyhOV4NzFdE8CmQhJjMlCjWxA4AzPg5E=
+	b=r7FOSSXWHYMCMXd7G7OrNmSIgr5cM/bWvsRZ1d746cChQhHBZZNo8w++xNKB/b55m
+	 ygjkn8mk45HKf92fOiF6Ep3jGz6/UnGKww61XRmzdkE/hv2qjdOT2uEO1XBn1ouMBh
+	 A6SdtHXBu0fypxoJ/xP8wF7icsfD620cldZYzK00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Smirnov <r.smirnov@omp.ru>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Helge Deller <deller@gmx.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 166/175] fbmon: prevent division by zero in fb_videomode_from_videomode()
+Subject: [PATCH 6.8 121/143] thermal/of: Assume polling-delay(-passive) 0 when absent
 Date: Thu, 11 Apr 2024 11:56:29 +0200
-Message-ID: <20240411095424.562108599@linuxfoundation.org>
+Message-ID: <20240411095424.548446735@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Smirnov <r.smirnov@omp.ru>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit c2d953276b8b27459baed1277a4fdd5dd9bd4126 ]
+[ Upstream commit 488164006a281986d95abbc4b26e340c19c4c85b ]
 
-The expression htotal * vtotal can have a zero value on
-overflow. It is necessary to prevent division by zero like in
-fb_var_to_videomode().
+Currently, thermal zones associated with providers that have interrupts
+for signaling hot/critical trips are required to set a polling-delay
+of 0 to indicate no polling. This feels a bit backwards.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+Change the code such that "no polling delay" also means "no polling".
 
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Suggested-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20240125-topic-thermal-v1-2-3c9d4dced138@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbmon.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/thermal/thermal_of.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fbmon.c b/drivers/video/fbdev/core/fbmon.c
-index 8607439d69328..e4040fb860bbc 100644
---- a/drivers/video/fbdev/core/fbmon.c
-+++ b/drivers/video/fbdev/core/fbmon.c
-@@ -1309,7 +1309,7 @@ int fb_get_mode(int flags, u32 val, struct fb_var_screeninfo *var, struct fb_inf
- int fb_videomode_from_videomode(const struct videomode *vm,
- 				struct fb_videomode *fbmode)
- {
--	unsigned int htotal, vtotal;
-+	unsigned int htotal, vtotal, total;
+diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+index 4d6c22e0ed85b..61bbd42aa2cb4 100644
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -225,14 +225,18 @@ static int thermal_of_monitor_init(struct device_node *np, int *delay, int *pdel
+ 	int ret;
  
- 	fbmode->xres = vm->hactive;
- 	fbmode->left_margin = vm->hback_porch;
-@@ -1342,8 +1342,9 @@ int fb_videomode_from_videomode(const struct videomode *vm,
- 	vtotal = vm->vactive + vm->vfront_porch + vm->vback_porch +
- 		 vm->vsync_len;
- 	/* prevent division by zero */
--	if (htotal && vtotal) {
--		fbmode->refresh = vm->pixelclock / (htotal * vtotal);
-+	total = htotal * vtotal;
-+	if (total) {
-+		fbmode->refresh = vm->pixelclock / total;
- 	/* a mode must have htotal and vtotal != 0 or it is invalid */
- 	} else {
- 		fbmode->refresh = 0;
+ 	ret = of_property_read_u32(np, "polling-delay-passive", pdelay);
+-	if (ret < 0) {
+-		pr_err("%pOFn: missing polling-delay-passive property\n", np);
++	if (ret == -EINVAL) {
++		*pdelay = 0;
++	} else if (ret < 0) {
++		pr_err("%pOFn: Couldn't get polling-delay-passive: %d\n", np, ret);
+ 		return ret;
+ 	}
+ 
+ 	ret = of_property_read_u32(np, "polling-delay", delay);
+-	if (ret < 0) {
+-		pr_err("%pOFn: missing polling-delay property\n", np);
++	if (ret == -EINVAL) {
++		*delay = 0;
++	} else if (ret < 0) {
++		pr_err("%pOFn: Couldn't get polling-delay: %d\n", np, ret);
+ 		return ret;
+ 	}
+ 
 -- 
 2.43.0
 
