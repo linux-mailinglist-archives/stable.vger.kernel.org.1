@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C9F8A1150
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 123868A119F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:46:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F992288579
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 440081C23BDD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C18140366;
-	Thu, 11 Apr 2024 10:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D8C145323;
+	Thu, 11 Apr 2024 10:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3/vEelz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRvXToFE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F7B134CC2;
-	Thu, 11 Apr 2024 10:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385F96BB29;
+	Thu, 11 Apr 2024 10:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832165; cv=none; b=T4iIMYyqEHHxArkF/5Q3x3ycoHu6QxzPLX11ll0wnBtFhEAvNTS/7wKEkFT7KTvnKeuDrBWAulkAitn2Z4sdP/nYQhxGK4bAA2ooSzr70Z7bNsWHXDR0BreSiCHvOvUySUSv7H0yPedMdSbZ8C7U0EhrpKE8GprL+uqxQPglR/A=
+	t=1712832360; cv=none; b=ZjTzwIKbEwzVe08pXyFlZ9l6WSBVZXWL4DkiDXldPTdJPwnoxq+6z0Rdj6MDbSjynUsKVMgHxY6D4BuPpwQJevKI62fTORB0Jqo2Dp07MmWIy+QS5K6iyFNsUt4ClxHBHvO7+bpX90QFgZKcnDGpCbd+l39UBtbCLYS51zQWsBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832165; c=relaxed/simple;
-	bh=Qoo6vFnBIsoGSnUdd8Z6tVpIk6/xym3E80mdj3wBkzg=;
+	s=arc-20240116; t=1712832360; c=relaxed/simple;
+	bh=2s77ssU5wd4DgrLoQHok/DO45H7Ad0S4T32akfbzEdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FGWZDalTc+bk4fxljMkz6wdpHAqapQpnlc0VVRnf34bAx8yzKWvteFU7gakWoSu23ZEPSfNNjT65x2oYWg0WBOoGaRY7CeiT1UamgU05goXeqBL7B5ZpqPABlT35umfny8bYXkUd+Izo06VC+oCdL4MHjOFZv08T2nNU1tPefpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3/vEelz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D753C433F1;
-	Thu, 11 Apr 2024 10:42:44 +0000 (UTC)
+	 MIME-Version; b=uDVm56OQgJaSWUOt0McOBaAqD2d5m2fQY6bsptL0ZQNd7uelSFi4T1fAN3n5MXsA5m/yX/8Yhb0FuSvwOqn8Xji1DjJUUsWCJocWrP9rwBRA3fteH89TiDVkk42Zpib6XVyh9irwkLAZD0tbH7HxQmNAD4QzNPaADDlR/4VtuwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRvXToFE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2714C433F1;
+	Thu, 11 Apr 2024 10:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832165;
-	bh=Qoo6vFnBIsoGSnUdd8Z6tVpIk6/xym3E80mdj3wBkzg=;
+	s=korg; t=1712832360;
+	bh=2s77ssU5wd4DgrLoQHok/DO45H7Ad0S4T32akfbzEdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E3/vEelznsBHLrMfjpVS/3H6S2Y2bh7Eq6plBCEsgVeI3jZKCwwvaFp34N/NNXiCN
-	 NpBM7q+N9dBrzDqTjG45ddLS3N3xKDbiH/SEWsaJR1/IDGCKcqktgHsTu1SejnSICf
-	 HOThRQ9N4suQZ261hjtR/h9yCQsT9fmrBbc6OBm0=
+	b=DRvXToFEND+78bt9QTs4GdRv32iLWSvEoT2cOYTv/c7JUTKO5Q9rZqmqD23WZtQ6U
+	 6jQ0X3t6UUhDt8L5UILWV4CAaYNSZRd08Zp8OrtsqIELG/ei0VrV/CEF0A2Dga2nQ9
+	 nHKB5jIBArjSTPlsGlMZ5AxwlN3NQUSbjEnhL1B0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Kees Cook <keescook@chromium.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 251/294] pstore/zone: Add a null pointer check to the psz_kmsg_read
+Subject: [PATCH 6.1 22/83] btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()
 Date: Thu, 11 Apr 2024 11:56:54 +0200
-Message-ID: <20240411095443.125390361@linuxfoundation.org>
+Message-ID: <20240411095413.347064668@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 98bc7e26e14fbb26a6abf97603d59532475e97f8 ]
+[ Upstream commit 7411055db5ce64f836aaffd422396af0075fdc99 ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful
-by checking the pointer validity.
+The unhandled case in btrfs_relocate_sys_chunks() loop is a corruption,
+as it could be caused only by two impossible conditions:
 
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Link: https://lore.kernel.org/r/20240118100206.213928-1-chentao@kylinos.cn
-Signed-off-by: Kees Cook <keescook@chromium.org>
+- at first the search key is set up to look for a chunk tree item, with
+  offset -1, this is an inexact search and the key->offset will contain
+  the correct offset upon a successful search, a valid chunk tree item
+  cannot have an offset -1
+
+- after first successful search, the found_key corresponds to a chunk
+  item, the offset is decremented by 1 before the next loop, it's
+  impossible to find a chunk item there due to alignment and size
+  constraints
+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/zone.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/volumes.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/fs/pstore/zone.c b/fs/pstore/zone.c
-index b50fc33f2ab29..2426fb6794fd3 100644
---- a/fs/pstore/zone.c
-+++ b/fs/pstore/zone.c
-@@ -973,6 +973,8 @@ static ssize_t psz_kmsg_read(struct pstore_zone *zone,
- 		char *buf = kasprintf(GFP_KERNEL, "%s: Total %d times\n",
- 				      kmsg_dump_reason_str(record->reason),
- 				      record->count);
-+		if (!buf)
-+			return -ENOMEM;
- 		hlen = strlen(buf);
- 		record->buf = krealloc(buf, hlen + size, GFP_KERNEL);
- 		if (!record->buf) {
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 03cfb425ea4ea..ab5d410d560e7 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -3381,7 +3381,17 @@ static int btrfs_relocate_sys_chunks(struct btrfs_fs_info *fs_info)
+ 			mutex_unlock(&fs_info->reclaim_bgs_lock);
+ 			goto error;
+ 		}
+-		BUG_ON(ret == 0); /* Corruption */
++		if (ret == 0) {
++			/*
++			 * On the first search we would find chunk tree with
++			 * offset -1, which is not possible. On subsequent
++			 * loops this would find an existing item on an invalid
++			 * offset (one less than the previous one, wrong
++			 * alignment and size).
++			 */
++			ret = -EUCLEAN;
++			goto error;
++		}
+ 
+ 		ret = btrfs_previous_item(chunk_root, path, key.objectid,
+ 					  key.type);
 -- 
 2.43.0
 
