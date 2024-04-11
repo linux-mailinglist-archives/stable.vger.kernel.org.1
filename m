@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-38919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385838A1105
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E6948A0DE2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:08:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69EE81C21C40
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E15A1F24400
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E135146A90;
-	Thu, 11 Apr 2024 10:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAEBC145B0A;
+	Thu, 11 Apr 2024 10:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHktkheW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbrUZE04"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF67513C9A5;
-	Thu, 11 Apr 2024 10:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8894F1F5FA;
+	Thu, 11 Apr 2024 10:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831974; cv=none; b=YGY2UtNdkYt//5HM+cpwVQzLqwN2GomhoALpmlSITaa8cUS9910EeWHsNVACgz3Sn354fDlRButJMEbcku91nvPMjV0xYazRBQKBknZswe0KVN13eqQ42GYtMA8wfos7Y0Tz6KxPNewn5HU5Ea+79A48FL54z5GC+MsWo4gBnto=
+	t=1712830134; cv=none; b=Qzf5mDKoyHkjOe6SPL7xYF9vi5+aXv9NXKYVaGjIiiSsukXCvwKVLITB6ZiTAj3b1ESv+Lma67jhveX1uCDT5N6S9jLtgpg1RMfMk92iFgSmYDNHqURS6uYWRbp3rzaB/HK1Bvesv7vP6A+MObeldanw4kqJIUNT8zm7R6rJPQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831974; c=relaxed/simple;
-	bh=5/YK2fSn/vjrrhkTcHiJ5HK8s94gUmS5zFI9um299bQ=;
+	s=arc-20240116; t=1712830134; c=relaxed/simple;
+	bh=8Q5OJXefKmMjvnyKhwgxA1Py2U9NgRRALPxURMJXwVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=npUZKS99Kp+heDUUeuTeVHopuFKMWPgNmXNseUeS3/pBDlYr7dK3JGy8ag1U8DCney/KA7LfkXaNB+f+KF7u84aAK5reJfsUC7yjAqwrd22b5tdY7UcHgByhNKlgQHQi4FtAq/putski5pNK4z1VhPTWOFDg3r41YyAz5rmbnYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHktkheW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563A9C433F1;
-	Thu, 11 Apr 2024 10:39:34 +0000 (UTC)
+	 MIME-Version; b=p2YJXrx21Q2ZUBW/23cWItA28mnhl0NYD9YhKoWO72ADnXf1OqlB1kkRcBP+a0LYpaL9jIE1R1zUHqthNWaDLrPkl6ss9yHWhTpfplGls3WF8Eb1jRyL1nJ7V3C2sGjCwj8lupDIrPLvSqxx8/KbZYnUzT+0LAIOeEZQYQe8JPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbrUZE04; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06EF9C433C7;
+	Thu, 11 Apr 2024 10:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831974;
-	bh=5/YK2fSn/vjrrhkTcHiJ5HK8s94gUmS5zFI9um299bQ=;
+	s=korg; t=1712830134;
+	bh=8Q5OJXefKmMjvnyKhwgxA1Py2U9NgRRALPxURMJXwVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHktkheWskB7Ld8NoK7wUnHdJdFO4GEnAui6LWDrxqy2iejXCJfkO305oZKdS2T8/
-	 wzkGdDowxF+KbPaL7PIqxygixxoKs9cJIGtI1cECJFflOgq+kre6y6RLC+f/QMEnWo
-	 z5Oq6uK7Ts21073qn2FwRjyTeYT/VXlXJSt3rqWM=
+	b=pbrUZE04prAhGFfGuJGwN63cho3J6KN5Zz0BOPtUqF84BvR/6ikfW3gawzxN+zuve
+	 cAvBksdEbhnW0sHQzW2qnv8PFx/VaeW5W57/pXMVXNXZ6rGLTXBmxmuqVAiuYFQaR4
+	 EUykXtQrXaNLxP9GW6SJgQRkvK0IJ06NwFOz+0CY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Schumacher <timschumi@gmx.de>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 5.10 150/294] efivarfs: Request at most 512 bytes for variable names
+	Kees Cook <keescook@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 045/143] overflow: Allow non-type arg to type_max() and type_min()
 Date: Thu, 11 Apr 2024 11:55:13 +0200
-Message-ID: <20240411095440.167967683@linuxfoundation.org>
+Message-ID: <20240411095422.271891233@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Schumacher <timschumi@gmx.de>
+From: Kees Cook <keescook@chromium.org>
 
-commit f45812cc23fb74bef62d4eb8a69fe7218f4b9f2a upstream.
+[ Upstream commit bd1ebf2467f9c5d157bec7b025e83f8ffdae1318 ]
 
-Work around a quirk in a few old (2011-ish) UEFI implementations, where
-a call to `GetNextVariableName` with a buffer size larger than 512 bytes
-will always return EFI_INVALID_PARAMETER.
+A common use of type_max() is to find the max for the type of a
+variable. Using the pattern type_max(typeof(var)) is needlessly
+verbose. Instead, since typeof(type) == type we can just explicitly
+call typeof() on the argument to type_max() and type_min(). Add
+wrappers for readability.
 
-There is some lore around EFI variable names being up to 1024 bytes in
-size, but this has no basis in the UEFI specification, and the upper
-bounds are typically platform specific, and apply to the entire variable
-(name plus payload).
+We can do some replacements right away:
 
-Given that Linux does not permit creating files with names longer than
-NAME_MAX (255) bytes, 512 bytes (== 256 UTF-16 characters) is a
-reasonable limit.
+$ git grep '\btype_\(min\|max\)(typeof' | wc -l
+11
 
-Cc: <stable@vger.kernel.org> # 6.1+
-Signed-off-by: Tim Schumacher <timschumi@gmx.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-[timschumi@gmx.de: adjusted diff for changed context and code move]
-Signed-off-by: Tim Schumacher <timschumi@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240301062221.work.840-kees@kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/vars.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ include/linux/overflow.h | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/drivers/firmware/efi/vars.c
-+++ b/drivers/firmware/efi/vars.c
-@@ -415,7 +415,7 @@ int efivar_init(int (*func)(efi_char16_t
- 		void *data, bool duplicates, struct list_head *head)
- {
- 	const struct efivar_operations *ops;
--	unsigned long variable_name_size = 1024;
-+	unsigned long variable_name_size = 512;
- 	efi_char16_t *variable_name;
- 	efi_status_t status;
- 	efi_guid_t vendor_guid;
-@@ -438,12 +438,13 @@ int efivar_init(int (*func)(efi_char16_t
- 	}
+diff --git a/include/linux/overflow.h b/include/linux/overflow.h
+index 7b5cf4a5cd191..51af56522915e 100644
+--- a/include/linux/overflow.h
++++ b/include/linux/overflow.h
+@@ -31,8 +31,10 @@
+  * credit to Christian Biere.
+  */
+ #define __type_half_max(type) ((type)1 << (8*sizeof(type) - 1 - is_signed_type(type)))
+-#define type_max(T) ((T)((__type_half_max(T) - 1) + __type_half_max(T)))
+-#define type_min(T) ((T)((T)-type_max(T)-(T)1))
++#define __type_max(T) ((T)((__type_half_max(T) - 1) + __type_half_max(T)))
++#define type_max(t)	__type_max(typeof(t))
++#define __type_min(T) ((T)((T)-type_max(T)-(T)1))
++#define type_min(t)	__type_min(typeof(t))
  
- 	/*
--	 * Per EFI spec, the maximum storage allocated for both
--	 * the variable name and variable data is 1024 bytes.
-+	 * A small set of old UEFI implementations reject sizes
-+	 * above a certain threshold, the lowest seen in the wild
-+	 * is 512.
- 	 */
+ /*
+  * Avoids triggering -Wtype-limits compilation warning,
+@@ -130,10 +132,10 @@ static inline bool __must_check __must_check_overflow(bool overflow)
  
- 	do {
--		variable_name_size = 1024;
-+		variable_name_size = 512;
+ #define __overflows_type_constexpr(x, T) (			\
+ 	is_unsigned_type(typeof(x)) ?				\
+-		(x) > type_max(typeof(T)) :			\
++		(x) > type_max(T) :				\
+ 	is_unsigned_type(typeof(T)) ?				\
+-		(x) < 0 || (x) > type_max(typeof(T)) :		\
+-	(x) < type_min(typeof(T)) || (x) > type_max(typeof(T)))
++		(x) < 0 || (x) > type_max(T) :			\
++	(x) < type_min(T) || (x) > type_max(T))
  
- 		status = ops->get_next_variable(&variable_name_size,
- 						variable_name,
-@@ -491,9 +492,13 @@ int efivar_init(int (*func)(efi_char16_t
- 			break;
- 		case EFI_NOT_FOUND:
- 			break;
-+		case EFI_BUFFER_TOO_SMALL:
-+			pr_warn("efivars: Variable name size exceeds maximum (%lu > 512)\n",
-+				variable_name_size);
-+			status = EFI_NOT_FOUND;
-+			break;
- 		default:
--			printk(KERN_WARNING "efivars: get_next_variable: status=%lx\n",
--				status);
-+			pr_warn("efivars: get_next_variable: status=%lx\n", status);
- 			status = EFI_NOT_FOUND;
- 			break;
- 		}
+ #define __overflows_type(x, T)		({	\
+ 	typeof(T) v = 0;			\
+-- 
+2.43.0
+
 
 
 
