@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-38145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 921B78A0D39
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:01:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DEB88A0DCE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:08:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C389D1C2118A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:01:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3999C2865F3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6DD145B05;
-	Thu, 11 Apr 2024 10:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D77145B07;
+	Thu, 11 Apr 2024 10:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWY/VwwL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yA6xfjUh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28B12EAE5;
-	Thu, 11 Apr 2024 10:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943FC1448F3;
+	Thu, 11 Apr 2024 10:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829696; cv=none; b=syQwGRKivFMYa1TH3+qY3e6nLbjT8Kd1gMMr5dGxCgi1/ZfLu6i+2x3iZwavmH5uyqt8AviNG79Vjfi07+CmLnsTo6Amj0o6XDYrk1o2mbStywu4G1RWAFQs01eA8LLnWQFSLgc2zzXeV2Mc9fAfjZ/Bc2Sdwtr/639UBuZ3UrY=
+	t=1712830078; cv=none; b=YjOZ2S2hU02SiBLyfXNZ1+AcMF4epvmpzJMDyv+SBtgKOQhMf6emrMCq9AyHVVklw8ZCKnLThwjK0on3J/bAmqex3mrpT+k6g3bok52YwGtpDbnCSxFK4BZJdZ5FIPZ1lUkKgRuYFHQK1Wrso1I0pc2FaXbGMzYwL7oT2mIRuYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829696; c=relaxed/simple;
-	bh=mFHUZZRyC4k72y3cls+vCB4+QAvzn/gS0azCZP1sm9o=;
+	s=arc-20240116; t=1712830078; c=relaxed/simple;
+	bh=+p6xUj+sU28dPfS/V8s/kkLtq3pUGuBskKTXlGKOq44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RdOtj8DR4dNgOFwuTJuAaL1lSc+qV8PRsExhUbDk1F2TQTxY15P81VWVqN8+8B9RMAxsrdfAFHhMjzpZNiVC+Hh8XrnuVSrb/ooDZU+OTrupxAOBLnosulxLjw0SvnghvVfftr1ZJATbKLrZTYyMqaX1npi5EFfRc3EXzlbCTwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xWY/VwwL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A16C433C7;
-	Thu, 11 Apr 2024 10:01:36 +0000 (UTC)
+	 MIME-Version; b=fBJKkQuL2ZdYNb4MGrBdcCiKGRHWgCi172afDRbxk/xj+206F5VfnH7tH8bF5Hdhgt7ECvQXqQGCtMVW3S3bRhMnGOklRgtKIDGEdTXW9FEVO9PXY4GfMElZnHiOxAC91bZIVsKNDea6UgCFiU/OHQkshkwGVpMEHTAEDX5r1Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yA6xfjUh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21F7C433F1;
+	Thu, 11 Apr 2024 10:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829696;
-	bh=mFHUZZRyC4k72y3cls+vCB4+QAvzn/gS0azCZP1sm9o=;
+	s=korg; t=1712830078;
+	bh=+p6xUj+sU28dPfS/V8s/kkLtq3pUGuBskKTXlGKOq44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xWY/VwwLuXHXnDVOdzHLUPd67B7xc/gqyqhlD14hk7ff1La2TcvOabvJ2YeEKk1kB
-	 HBTVoY+FISzeH7FkPTj5lLIcKEpZLNjVzsZIqg7k6ykwutoR0bhtkJlU910Ig6j6Vn
-	 sDFeq5oHGPsoLCbyju2C+3ROeRJv+ilxB11FxJ2o=
+	b=yA6xfjUhmkn4e8Ewi2wa0T2BixQ2UAwkwpHOyFK1dZGdDiUKBKmqK92doglFMobTJ
+	 Dy/+D4sff1fO0WBDLc8sil2TlxPffFmJsa/KfZ7pvmwRb6s/1dj15Bm3EELBi97IFM
+	 o3zbLdpcYv2icJqr8428WBYYNA3WIDLGpSrgz1eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 4.19 073/175] ALSA: hda/realtek - Fix headset Mic no show at resume back for Lenovo ALC897 platform
+	Sviatoslav Harasymchuk <sviatoslav.harasymchuk@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 028/143] ACPI: resource: Add IRQ override quirk for ASUS ExpertBook B2502FBA
 Date: Thu, 11 Apr 2024 11:54:56 +0200
-Message-ID: <20240411095421.760982129@linuxfoundation.org>
+Message-ID: <20240411095421.759270250@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Sviatoslav Harasymchuk <sviatoslav.harasymchuk@gmail.com>
 
-commit d397b6e56151099cf3b1f7bfccb204a6a8591720 upstream.
+[ Upstream commit 0793e511c4c66c38dd26add86f7236bcdc70c3b5 ]
 
-Headset Mic will no show at resume back.
-This patch will fix this issue.
+In order to fix the keyboard on ASUS ExpertBook B2502FBA, add an IRQ override
+quirk for it in analogy with how it was done for other members of this machine
+family.
 
-Fixes: d7f32791a9fc ("ALSA: hda/realtek - Add headset Mic support for Lenovo ALC897 platform")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/r/4713d48a372e47f98bba0c6120fd8254@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-acpi/20230411183144.6932-1-pmenzel@molgen.mpg.de
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217323
+Signed-off-by: Sviatoslav Harasymchuk <sviatoslav.harasymchuk@gmail.com>
+[ rjw: Subject and changelog rewrite, fix broken white space ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -8593,8 +8593,7 @@ static void alc897_hp_automute_hook(stru
- 
- 	snd_hda_gen_hp_automute(codec, jack);
- 	vref = spec->gen.hp_jack_present ? (PIN_HP | AC_PINCTL_VREF_100) : PIN_HP;
--	snd_hda_codec_write(codec, 0x1b, 0, AC_VERB_SET_PIN_WIDGET_CONTROL,
--			    vref);
-+	snd_hda_set_pin_ctl(codec, 0x1b, vref);
- }
- 
- static void alc897_fixup_lenovo_headset_mic(struct hda_codec *codec,
-@@ -8603,6 +8602,10 @@ static void alc897_fixup_lenovo_headset_
- 	struct alc_spec *spec = codec->spec;
- 	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
- 		spec->gen.hp_automute_hook = alc897_hp_automute_hook;
-+		spec->no_shutup_pins = 1;
-+	}
-+	if (action == HDA_FIXUP_ACT_PROBE) {
-+		snd_hda_set_pin_ctl_cache(codec, 0x1a, PIN_IN | AC_PINCTL_VREF_100);
- 	}
- }
- 
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index c843feb02e980..b5193049d7b1b 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -489,6 +489,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "B2502CBA"),
+ 		},
+ 	},
++	{
++		/* Asus ExpertBook B2502FBA */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "B2502FBA"),
++		},
++	},
+ 	{
+ 		/* Asus Vivobook E1504GA */
+ 		.matches = {
+-- 
+2.43.0
+
 
 
 
