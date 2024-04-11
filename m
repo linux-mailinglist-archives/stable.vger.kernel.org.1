@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF3258A1093
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0CA08A0D09
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:59:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9407F1F2C718
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36FF6B2478A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ECB314A09C;
-	Thu, 11 Apr 2024 10:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42B7145342;
+	Thu, 11 Apr 2024 09:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="El4bJ3+4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWzQASNT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8F71474B9;
-	Thu, 11 Apr 2024 10:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726CE13DDDD;
+	Thu, 11 Apr 2024 09:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831689; cv=none; b=WCtBPlbmKbAy2VSuZfhtLSOFaKDCmjhgBjA4/yRSTEybG7YV5Afmch6N0PYUnLMsBpu1jTd99DVLOEyQihnoWQNOWMYtKybNLhJeY3A6XSqwCgebBcCOdjh8EWI3N2q5TZRbimyQYND6PybIQcsboCLscveeASibb/31/o5X5yw=
+	t=1712829575; cv=none; b=vFaG4m1lF7FZ3RaQitFJ3IhRgUIxrnXie+JB7wuT1ouIueK/aTKFb1QouSVdyCOerXSNTG1umTzv6NwXdeG40OSNS1GDjlt7VoMoEN4RDCKJ3umqfarlI2uu9CxwZKachCkoUQVpqbDSYk9bLiut1owGuw8y0ty6l0434i362Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831689; c=relaxed/simple;
-	bh=NNVL0vUgAm7kYx38ojBggc9rfFRy97StTCl06k0qTKk=;
+	s=arc-20240116; t=1712829575; c=relaxed/simple;
+	bh=QoLfAdM9iciada9JpqRfV24/fVlcbXPNS95khL5r/Xg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iR5myfwoLWnDioHisJewN7T5Y0DkEmF+hPzbvp2FL0VdpRUtwsmFtjnXzfspl3AwppdwpBaq1XhoGu893g3sy9bL/WcsEQWVh3CfpoKWBu5WOsBgIkIF8a58peNL1W1bhdq/Ll09ineZGfBljsZx9xveCz38ujRwvnF1FMJ+s2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=El4bJ3+4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 970B0C433C7;
-	Thu, 11 Apr 2024 10:34:48 +0000 (UTC)
+	 MIME-Version; b=rhgNFv74uKTo+SmFEday/PPidJmL0yBCgesXeNw3qufYsFbHufWszuLbSIKCH7ic5SC6j45GaUnWZVM/u5VwC7+F17PSA0lGfsoQg7EUsQSgj9y/qjqlleydZVdf21GOxPOA6PvV4fuDZ0ThYhIweEkG3cgRC4XidItQzCdpfT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWzQASNT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3CB4C43390;
+	Thu, 11 Apr 2024 09:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831689;
-	bh=NNVL0vUgAm7kYx38ojBggc9rfFRy97StTCl06k0qTKk=;
+	s=korg; t=1712829575;
+	bh=QoLfAdM9iciada9JpqRfV24/fVlcbXPNS95khL5r/Xg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=El4bJ3+4DSIcxDyxWEgjZTXzkoH5pUkBUWJTtO3dTLc081pNMuibY2kjf2xsMCBkp
-	 fdfubUwal2WW6ruWCRzBc/YJlkZ3/bRAug8Hwkgi/yObMgJI5I1K8Bvn187sRrK4Sn
-	 WSkBAGBBXkGmNFT/radlzQh9DYThu0R286omOJ1w=
+	b=dWzQASNTVyV+6h1xZGaxWDWWb0nxDA8ut03zxtfX1hmzTsaF9J0hXydWPZQzk+yqe
+	 reg24jrww8YKRBIwJZsxTiTh/eS+PmFtjm6oiFsNPehMmQZ4OoVwloLCVXOLeqLlZ8
+	 gUdHVPjJGcu3/AnkOMCk7m46NaecJpVRwf4XJiHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@seco.com>,
-	Camelia Groza <camelia.groza@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 092/294] soc: fsl: qbman: Add helper for sanity checking cgr ops
+Subject: [PATCH 4.19 032/175] clk: qcom: mmcc-apq8084: fix terminating of frequency table arrays
 Date: Thu, 11 Apr 2024 11:54:15 +0200
-Message-ID: <20240411095438.448745549@linuxfoundation.org>
+Message-ID: <20240411095420.525106744@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@seco.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit d0e17a4653cebc2c8a20251c837dd1fcec5014d9 ]
+[ Upstream commit a903cfd38d8dee7e754fb89fd1bebed99e28003d ]
 
-This breaks out/combines get_affine_portal and the cgr sanity check in
-preparation for the next commit. No functional change intended.
+The frequency table arrays are supposed to be terminated with an
+empty element. Add such entry to the end of the arrays where it
+is missing in order to avoid possible out-of-bound access when
+the table is traversed by functions like qcom_find_freq() or
+qcom_find_freq_floor().
 
-Signed-off-by: Sean Anderson <sean.anderson@seco.com>
-Acked-by: Camelia Groza <camelia.groza@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: fbec4e7fed89 ("soc: fsl: qbman: Use raw spinlock for cgr_lock")
+Only compile tested.
+
+Fixes: 2b46cd23a5a2 ("clk: qcom: Add APQ8084 Multimedia Clock Controller (MMCC) support")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-6-074334f0905c@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qbman/qman.c | 29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ drivers/clk/qcom/mmcc-apq8084.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
-index d8267e6c31a50..d581576c9a861 100644
---- a/drivers/soc/fsl/qbman/qman.c
-+++ b/drivers/soc/fsl/qbman/qman.c
-@@ -2483,13 +2483,8 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
- }
- EXPORT_SYMBOL(qman_create_cgr);
+diff --git a/drivers/clk/qcom/mmcc-apq8084.c b/drivers/clk/qcom/mmcc-apq8084.c
+index 4ce1d7c88377f..36a40b0ddfa1f 100644
+--- a/drivers/clk/qcom/mmcc-apq8084.c
++++ b/drivers/clk/qcom/mmcc-apq8084.c
+@@ -341,6 +341,7 @@ static struct freq_tbl ftbl_mmss_axi_clk[] = {
+ 	F(333430000, P_MMPLL1, 3.5, 0, 0),
+ 	F(400000000, P_MMPLL0, 2, 0, 0),
+ 	F(466800000, P_MMPLL1, 2.5, 0, 0),
++	{ }
+ };
  
--int qman_delete_cgr(struct qman_cgr *cgr)
-+static struct qman_portal *qman_cgr_get_affine_portal(struct qman_cgr *cgr)
- {
--	unsigned long irqflags;
--	struct qm_mcr_querycgr cgr_state;
--	struct qm_mcc_initcgr local_opts;
--	int ret = 0;
--	struct qman_cgr *i;
- 	struct qman_portal *p = get_affine_portal();
+ static struct clk_rcg2 mmss_axi_clk_src = {
+@@ -365,6 +366,7 @@ static struct freq_tbl ftbl_ocmemnoc_clk[] = {
+ 	F(150000000, P_GPLL0, 4, 0, 0),
+ 	F(228570000, P_MMPLL0, 3.5, 0, 0),
+ 	F(320000000, P_MMPLL0, 2.5, 0, 0),
++	{ }
+ };
  
- 	if (cgr->chan != p->config->channel) {
-@@ -2497,10 +2492,25 @@ int qman_delete_cgr(struct qman_cgr *cgr)
- 		dev_err(p->config->dev, "CGR not owned by current portal");
- 		dev_dbg(p->config->dev, " create 0x%x, delete 0x%x\n",
- 			cgr->chan, p->config->channel);
--
--		ret = -EINVAL;
--		goto put_portal;
-+		put_affine_portal();
-+		return NULL;
- 	}
-+
-+	return p;
-+}
-+
-+int qman_delete_cgr(struct qman_cgr *cgr)
-+{
-+	unsigned long irqflags;
-+	struct qm_mcr_querycgr cgr_state;
-+	struct qm_mcc_initcgr local_opts;
-+	int ret = 0;
-+	struct qman_cgr *i;
-+	struct qman_portal *p = qman_cgr_get_affine_portal(cgr);
-+
-+	if (!p)
-+		return -EINVAL;
-+
- 	memset(&local_opts, 0, sizeof(struct qm_mcc_initcgr));
- 	spin_lock_irqsave(&p->cgr_lock, irqflags);
- 	list_del(&cgr->node);
-@@ -2528,7 +2538,6 @@ int qman_delete_cgr(struct qman_cgr *cgr)
- 		list_add(&cgr->node, &p->cgr_cbs);
- release_lock:
- 	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
--put_portal:
- 	put_affine_portal();
- 	return ret;
- }
+ static struct clk_rcg2 ocmemnoc_clk_src = {
 -- 
 2.43.0
 
