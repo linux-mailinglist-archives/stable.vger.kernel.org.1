@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-38114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A528A0D15
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:00:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D6918A10A1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44E55283393
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:00:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 086D628AE32
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B96145B05;
-	Thu, 11 Apr 2024 10:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC21513FD97;
+	Thu, 11 Apr 2024 10:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIux+vl7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGCrefe5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C616D13DDDD;
-	Thu, 11 Apr 2024 10:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6929E79FD;
+	Thu, 11 Apr 2024 10:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829604; cv=none; b=S2YIjUsLmkA1Wqq3y2+UbYcQjt8ozZ3lxgkGFkkW7btRFFHVtOgH890at4+YFkzeKUz16p6tfC2rjl/5nmH4+wHjQT3dxkylTZXNl4hU8tOY2LVq9+8qyOuGZYPN1d15GrBnDxZd84u2l+fMs7v/MrS7+SpYUpN2vko+JNkFC18=
+	t=1712831730; cv=none; b=Sidn0qSB1DmfMa5cn6w6/x5ORZUzAPWT36ivMUb9hx22A0Ze+tbjIdn0w5LZDYuO5bhdSqgkhhhZHErTvazpV8yP95VjlBSQUrHhZk528CAJAC+XhHF2kvy+YbWj0xWY1e1k4B4BCrxHQD0EyOheQ9uthF/dxkdwpU0LfzZ4e6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829604; c=relaxed/simple;
-	bh=0kW+3TDZI1wdXp+Jv7LxJmvdBSXPNpDnnrMp1CUszgM=;
+	s=arc-20240116; t=1712831730; c=relaxed/simple;
+	bh=O0xZDDHidy2d8SaZa3NKFu0a6/cNwf/Y0EzkoIY3Gfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dVPCxEXuefxGmtGRy9WhhflWFCMCifyKNf9ZyAIVzs1SYvT8QMmJ3VWFCdBBLD+AMbku7L96PurzOdfcZQibPTbQyG7GwwutoRyq5EpyjGRM/vlfzdAN4yXRMt82biZVOhGCPiz5iNzpLMylctQXO6jCrBNUV9CNyrvjGmaQ8LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIux+vl7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49DA6C433F1;
-	Thu, 11 Apr 2024 10:00:04 +0000 (UTC)
+	 MIME-Version; b=imVZh0Yt0nSnI9c0g5ocSgGJar0Byy8oT6KPnFajws2S71FA0xiKnW5wOjO4zCrTVnAqx47unD0Y4vf4OEPnA0gd4O1zcxFxw6/CSCq/0DflWtJoR/krLFyAkicjt+NdqkKJTwHY2lmbnYeUK7qTfRTIX+oE6m1dwlAN5SuG18I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGCrefe5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D7CC433C7;
+	Thu, 11 Apr 2024 10:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829604;
-	bh=0kW+3TDZI1wdXp+Jv7LxJmvdBSXPNpDnnrMp1CUszgM=;
+	s=korg; t=1712831730;
+	bh=O0xZDDHidy2d8SaZa3NKFu0a6/cNwf/Y0EzkoIY3Gfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uIux+vl7JgK9kwLuQEuUkzbojOjcB9WNu4Mr8jG+zjSNm7kcLDG1tXirW9z7kqEE9
-	 se0n3+4lbKG7uHQCq7GixuzP1JoMnsfdkR8u9XhlETTze2ApJuOwEHOMslBzibHyMt
-	 gpkJaTQANNKZMVIrG+jTRfdT714dMxgA6QTibKDY=
+	b=zGCrefe5tOHLcuM9JXEDfgMXhI0BodE26iZB6ybzvz5DgvrXPL81JBpVhWzgDu7kQ
+	 7joZv8ZCdY3wvpIGQlyUHzV+X1UaHq5tc8DK7NF99OjcXpL9Xh1ePQsxbRTFuP61oV
+	 S6lEYo7jJHeznWhny62MHhbsY1NyWpy7mzi6B59M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Alexander Aring <aahringo@redhat.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 009/175] timers: Rename del_timer_sync() to timer_delete_sync()
+Subject: [PATCH 5.10 069/294] mac802154: fix llsec key resources release in mac802154_llsec_key_del
 Date: Thu, 11 Apr 2024 11:53:52 +0200
-Message-ID: <20240411095419.822184890@linuxfoundation.org>
+Message-ID: <20240411095437.764917760@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,132 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 9b13df3fb64ee95e2397585404e442afee2c7d4f ]
+[ Upstream commit e8a1e58345cf40b7b272e08ac7b32328b2543e40 ]
 
-The timer related functions do not have a strict timer_ prefixed namespace
-which is really annoying.
+mac802154_llsec_key_del() can free resources of a key directly without
+following the RCU rules for waiting before the end of a grace period. This
+may lead to use-after-free in case llsec_lookup_key() is traversing the
+list of keys in parallel with a key deletion:
 
-Rename del_timer_sync() to timer_delete_sync() and provide del_timer_sync()
-as a wrapper. Document that del_timer_sync() is not for new code.
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 4 PID: 16000 at lib/refcount.c:25 refcount_warn_saturate+0x162/0x2a0
+Modules linked in:
+CPU: 4 PID: 16000 Comm: wpan-ping Not tainted 6.7.0 #19
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:refcount_warn_saturate+0x162/0x2a0
+Call Trace:
+ <TASK>
+ llsec_lookup_key.isra.0+0x890/0x9e0
+ mac802154_llsec_encrypt+0x30c/0x9c0
+ ieee802154_subif_start_xmit+0x24/0x1e0
+ dev_hard_start_xmit+0x13e/0x690
+ sch_direct_xmit+0x2ae/0xbc0
+ __dev_queue_xmit+0x11dd/0x3c20
+ dgram_sendmsg+0x90b/0xd60
+ __sys_sendto+0x466/0x4c0
+ __x64_sys_sendto+0xe0/0x1c0
+ do_syscall_64+0x45/0xf0
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Link: https://lore.kernel.org/r/20221123201624.954785441@linutronix.de
-Stable-dep-of: 0f7352557a35 ("wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach")
+Also, ieee802154_llsec_key_entry structures are not freed by
+mac802154_llsec_key_del():
+
+unreferenced object 0xffff8880613b6980 (size 64):
+  comm "iwpan", pid 2176, jiffies 4294761134 (age 60.475s)
+  hex dump (first 32 bytes):
+    78 0d 8f 18 80 88 ff ff 22 01 00 00 00 00 ad de  x.......".......
+    00 00 00 00 00 00 00 00 03 00 cd ab 00 00 00 00  ................
+  backtrace:
+    [<ffffffff81dcfa62>] __kmem_cache_alloc_node+0x1e2/0x2d0
+    [<ffffffff81c43865>] kmalloc_trace+0x25/0xc0
+    [<ffffffff88968b09>] mac802154_llsec_key_add+0xac9/0xcf0
+    [<ffffffff8896e41a>] ieee802154_add_llsec_key+0x5a/0x80
+    [<ffffffff8892adc6>] nl802154_add_llsec_key+0x426/0x5b0
+    [<ffffffff86ff293e>] genl_family_rcv_msg_doit+0x1fe/0x2f0
+    [<ffffffff86ff46d1>] genl_rcv_msg+0x531/0x7d0
+    [<ffffffff86fee7a9>] netlink_rcv_skb+0x169/0x440
+    [<ffffffff86ff1d88>] genl_rcv+0x28/0x40
+    [<ffffffff86fec15c>] netlink_unicast+0x53c/0x820
+    [<ffffffff86fecd8b>] netlink_sendmsg+0x93b/0xe60
+    [<ffffffff86b91b35>] ____sys_sendmsg+0xac5/0xca0
+    [<ffffffff86b9c3dd>] ___sys_sendmsg+0x11d/0x1c0
+    [<ffffffff86b9c65a>] __sys_sendmsg+0xfa/0x1d0
+    [<ffffffff88eadbf5>] do_syscall_64+0x45/0xf0
+    [<ffffffff890000ea>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+Handle the proper resource release in the RCU callback function
+mac802154_llsec_key_del_rcu().
+
+Note that if llsec_lookup_key() finds a key, it gets a refcount via
+llsec_key_get() and locally copies key id from key_entry (which is a
+list element). So it's safe to call llsec_key_put() and free the list
+entry after the RCU grace period elapses.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 5d637d5aabd8 ("mac802154: add llsec structures and mutators")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Alexander Aring <aahringo@redhat.com>
+Message-ID: <20240228163840.6667-1-pchelkin@ispras.ru>
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/timer.h | 15 ++++++++++++++-
- kernel/time/timer.c   | 18 +++++++++---------
- 2 files changed, 23 insertions(+), 10 deletions(-)
+ include/net/cfg802154.h |  1 +
+ net/mac802154/llsec.c   | 18 +++++++++++++-----
+ 2 files changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/timer.h b/include/linux/timer.h
-index a9c20a7ead305..aef40cac2add8 100644
---- a/include/linux/timer.h
-+++ b/include/linux/timer.h
-@@ -171,7 +171,20 @@ extern int timer_reduce(struct timer_list *timer, unsigned long expires);
- extern void add_timer(struct timer_list *timer);
+diff --git a/include/net/cfg802154.h b/include/net/cfg802154.h
+index 6ed07844eb244..5290781abba3d 100644
+--- a/include/net/cfg802154.h
++++ b/include/net/cfg802154.h
+@@ -257,6 +257,7 @@ struct ieee802154_llsec_key {
  
- extern int try_to_del_timer_sync(struct timer_list *timer);
--extern int del_timer_sync(struct timer_list *timer);
-+extern int timer_delete_sync(struct timer_list *timer);
-+
-+/**
-+ * del_timer_sync - Delete a pending timer and wait for a running callback
-+ * @timer:	The timer to be deleted
-+ *
-+ * See timer_delete_sync() for detailed explanation.
-+ *
-+ * Do not use in new code. Use timer_delete_sync() instead.
-+ */
-+static inline int del_timer_sync(struct timer_list *timer)
-+{
-+	return timer_delete_sync(timer);
-+}
+ struct ieee802154_llsec_key_entry {
+ 	struct list_head list;
++	struct rcu_head rcu;
  
- #define del_singleshot_timer_sync(t) del_timer_sync(t)
- 
-diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index 489bb01796de4..e3120af29f533 100644
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1037,7 +1037,7 @@ __mod_timer(struct timer_list *timer, unsigned long expires, unsigned int option
- 		/*
- 		 * We are trying to schedule the timer on the new base.
- 		 * However we can't change timer's base while it is running,
--		 * otherwise del_timer_sync() can't detect that the timer's
-+		 * otherwise timer_delete_sync() can't detect that the timer's
- 		 * handler yet has not finished. This also guarantees that the
- 		 * timer is serialized wrt itself.
- 		 */
-@@ -1216,7 +1216,7 @@ EXPORT_SYMBOL_GPL(add_timer_on);
-  * @timer:	The timer to be deactivated
-  *
-  * The function only deactivates a pending timer, but contrary to
-- * del_timer_sync() it does not take into account whether the timer's
-+ * timer_delete_sync() it does not take into account whether the timer's
-  * callback function is concurrently executed on a different CPU or not.
-  * It neither prevents rearming of the timer. If @timer can be rearmed
-  * concurrently then the return value of this function is meaningless.
-@@ -1350,7 +1350,7 @@ static inline void del_timer_wait_running(struct timer_list *timer) { }
- #endif
- 
- /**
-- * del_timer_sync - Deactivate a timer and wait for the handler to finish.
-+ * timer_delete_sync - Deactivate a timer and wait for the handler to finish.
-  * @timer:	The timer to be deactivated
-  *
-  * Synchronization rules: Callers must prevent restarting of the timer,
-@@ -1372,10 +1372,10 @@ static inline void del_timer_wait_running(struct timer_list *timer) { }
-  *    spin_lock_irq(somelock);
-  *                                     <IRQ>
-  *                                        spin_lock(somelock);
-- *    del_timer_sync(mytimer);
-+ *    timer_delete_sync(mytimer);
-  *    while (base->running_timer == mytimer);
-  *
-- * Now del_timer_sync() will never return and never release somelock.
-+ * Now timer_delete_sync() will never return and never release somelock.
-  * The interrupt on the other CPU is waiting to grab somelock but it has
-  * interrupted the softirq that CPU0 is waiting to finish.
-  *
-@@ -1388,7 +1388,7 @@ static inline void del_timer_wait_running(struct timer_list *timer) { }
-  * * %0	- The timer was not pending
-  * * %1	- The timer was pending and deactivated
-  */
--int del_timer_sync(struct timer_list *timer)
-+int timer_delete_sync(struct timer_list *timer)
- {
- 	int ret;
- 
-@@ -1421,7 +1421,7 @@ int del_timer_sync(struct timer_list *timer)
- 
- 	return ret;
+ 	struct ieee802154_llsec_key_id id;
+ 	struct ieee802154_llsec_key *key;
+diff --git a/net/mac802154/llsec.c b/net/mac802154/llsec.c
+index 55550ead2ced8..a4cc9d077c59c 100644
+--- a/net/mac802154/llsec.c
++++ b/net/mac802154/llsec.c
+@@ -265,19 +265,27 @@ int mac802154_llsec_key_add(struct mac802154_llsec *sec,
+ 	return -ENOMEM;
  }
--EXPORT_SYMBOL(del_timer_sync);
-+EXPORT_SYMBOL(timer_delete_sync);
  
- static void call_timer_fn(struct timer_list *timer,
- 			  void (*fn)(struct timer_list *),
-@@ -1443,8 +1443,8 @@ static void call_timer_fn(struct timer_list *timer,
- #endif
- 	/*
- 	 * Couple the lock chain with the lock chain at
--	 * del_timer_sync() by acquiring the lock_map around the fn()
--	 * call here and in del_timer_sync().
-+	 * timer_delete_sync() by acquiring the lock_map around the fn()
-+	 * call here and in timer_delete_sync().
- 	 */
- 	lock_map_acquire(&lockdep_map);
++static void mac802154_llsec_key_del_rcu(struct rcu_head *rcu)
++{
++	struct ieee802154_llsec_key_entry *pos;
++	struct mac802154_llsec_key *mkey;
++
++	pos = container_of(rcu, struct ieee802154_llsec_key_entry, rcu);
++	mkey = container_of(pos->key, struct mac802154_llsec_key, key);
++
++	llsec_key_put(mkey);
++	kfree_sensitive(pos);
++}
++
+ int mac802154_llsec_key_del(struct mac802154_llsec *sec,
+ 			    const struct ieee802154_llsec_key_id *key)
+ {
+ 	struct ieee802154_llsec_key_entry *pos;
  
+ 	list_for_each_entry(pos, &sec->table.keys, list) {
+-		struct mac802154_llsec_key *mkey;
+-
+-		mkey = container_of(pos->key, struct mac802154_llsec_key, key);
+-
+ 		if (llsec_key_id_equal(&pos->id, key)) {
+ 			list_del_rcu(&pos->list);
+-			llsec_key_put(mkey);
++			call_rcu(&pos->rcu, mac802154_llsec_key_del_rcu);
+ 			return 0;
+ 		}
+ 	}
 -- 
 2.43.0
 
