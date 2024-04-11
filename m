@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B92918A1081
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:36:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 649C28A0E89
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:15:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9BBD1C2372A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:36:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2086628616B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A0014BFBF;
-	Thu, 11 Apr 2024 10:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6EE14601D;
+	Thu, 11 Apr 2024 10:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGgNVSXU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EF26cW7C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042CB1474BB;
-	Thu, 11 Apr 2024 10:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A3E13F452;
+	Thu, 11 Apr 2024 10:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831645; cv=none; b=gPesfLpPlQ78pTTZfRFbDzf3xik6bFzQPnpSf4tdwtDSkwyHMP0snU9PyHTBGlicJSMNDaM4ZhDE6QJdH/O9xcbjy6ZNNLygJ4DI79lgRPfXQptxGDWSj3a2gRs2Ch+2Ls4L0/+dS9ZHZOdVUPOUNXxvCbOMcSVGEOcx6JOcbV0=
+	t=1712830537; cv=none; b=IFQy3AEyhmKov9cS2D6GrE6/yIuCtQgR+ye+00XDhDwVCXHoS3mkQso+1JElS1aACegVOJI3JEkxQOXugkXooCVx5/qdkmHkuCtT+f42JdmBmQwc/HpQXYqQ8b+RNZ5EQBqWwYLypPuoEkASWF6OnJG2RfRIwE/BjJ6tmcL0ZYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831645; c=relaxed/simple;
-	bh=ug7afK/EJEPD6vaOVi9eF9DcPst2mRv9XDrtOnQoZ0k=;
+	s=arc-20240116; t=1712830537; c=relaxed/simple;
+	bh=Ey/ILJ4nKH5WqkaNuW4oVrDjPMSOQAyASv+xionvu0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ncHhFTFuZ7cKZaEa1UwzdrwJJRlHgeFQU7YfAmlmoqDq3sTnbeLuHHa/MwcgCNKCakSvnePCIa3BYznK1eY9jghwGX66/AHFyNRgPe3Y32OxQnO0NBs0IBxm4xPdULncGjqGp0ortoMYaWsqVdEWQiHq2UXmX+nv3qNPjiCjcnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGgNVSXU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A407C433C7;
-	Thu, 11 Apr 2024 10:34:04 +0000 (UTC)
+	 MIME-Version; b=KgRKooaWYaFH+q2jdxPQTgPmlfc9KYt/OGXsaphL8Zgh9PQouvBfq8w64bOLbR291qVn5jKyCy878OYQsKU773MmBo6Cvc6fEqLB/srIPN3M5QDYYU4eBZfC3CsTxft9bSuzGsHYdL44+0/1jgQJwR/8WyMfv25duaUXKtubHg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EF26cW7C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7373CC433F1;
+	Thu, 11 Apr 2024 10:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831644;
-	bh=ug7afK/EJEPD6vaOVi9eF9DcPst2mRv9XDrtOnQoZ0k=;
+	s=korg; t=1712830537;
+	bh=Ey/ILJ4nKH5WqkaNuW4oVrDjPMSOQAyASv+xionvu0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZGgNVSXU18f7CAt5ySVv59U7piGooMSWjNGU9sNzCxl/WEvvATUTroRO2yKd66dhz
-	 TEZEha0SEZtGlxLWYo4XkFo4IgsAEOiuTvjJ0pOp+2LWe8qyCv70uHwpDJPvQyCseP
-	 ayC76V/axc25fPmDC3cPxck1SacUwZu4WUrGDv9Y=
+	b=EF26cW7CrfUL9A1P0ew08xv+dPd7ZGT/SOgVmW03JRn8NsRhrcXwcJvKCGXea67VS
+	 Yw/ALrO29GxrUvlnPUG/4ej4g+eGtNqy1WfjCSwWvlQRWS6i7ZKtubTXhqymDv8E5M
+	 rb1gplK7ybPMY/x1EL0HAWtEBNLCAgcWP8inoTwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Chang <waynec@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 079/294] usb: gadget: tegra-xudc: Fix USB3 PHY retrieval logic
-Date: Thu, 11 Apr 2024 11:54:02 +0200
-Message-ID: <20240411095438.065043346@linuxfoundation.org>
+Subject: [PATCH 5.4 034/215] clk: qcom: gcc-ipq8074: fix terminating of frequency table arrays
+Date: Thu, 11 Apr 2024 11:54:03 +0200
+Message-ID: <20240411095425.924180203@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Chang <waynec@nvidia.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 84fa943d93c31ee978355e6c6c69592dae3c9f59 ]
+[ Upstream commit 1040ef5ed95d6fd2628bad387d78a61633e09429 ]
 
-This commit resolves an issue in the tegra-xudc USB gadget driver that
-incorrectly fetched USB3 PHY instances. The problem stemmed from the
-assumption of a one-to-one correspondence between USB2 and USB3 PHY
-names and their association with physical USB ports in the device tree.
+The frequency table arrays are supposed to be terminated with an
+empty element. Add such entry to the end of the arrays where it
+is missing in order to avoid possible out-of-bound access when
+the table is traversed by functions like qcom_find_freq() or
+qcom_find_freq_floor().
 
-Previously, the driver associated USB3 PHY names directly with the USB3
-instance number, leading to mismatches when mapping the physical USB
-ports. For instance, if using USB3-1 PHY, the driver expect the
-corresponding PHY name as 'usb3-1'. However, the physical USB ports in
-the device tree were designated as USB2-0 and USB3-0 as we only have
-one device controller, causing a misalignment.
+Only compile tested.
 
-This commit rectifies the issue by adjusting the PHY naming logic.
-Now, the driver correctly correlates the USB2 and USB3 PHY instances,
-allowing the USB2-0 and USB3-1 PHYs to form a physical USB port pair
-while accurately reflecting their configuration in the device tree by
-naming them USB2-0 and USB3-0, respectively.
-
-The change ensures that the PHY and PHY names align appropriately,
-resolving the mismatch between physical USB ports and their associated
-names in the device tree.
-
-Fixes: b4e19931c98a ("usb: gadget: tegra-xudc: Support multiple device modes")
+Fixes: 9607f6224b39 ("clk: qcom: ipq8074: add PCIE, USB and SDCC clocks")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/20240307030328.1487748-3-waynec@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-3-074334f0905c@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/tegra-xudc.c | 39 ++++++++++++++++++-----------
- 1 file changed, 25 insertions(+), 14 deletions(-)
+ drivers/clk/qcom/gcc-ipq8074.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
-index 23e31eec442dc..9d3e36c867e83 100644
---- a/drivers/usb/gadget/udc/tegra-xudc.c
-+++ b/drivers/usb/gadget/udc/tegra-xudc.c
-@@ -3480,8 +3480,8 @@ static void tegra_xudc_device_params_init(struct tegra_xudc *xudc)
+diff --git a/drivers/clk/qcom/gcc-ipq8074.c b/drivers/clk/qcom/gcc-ipq8074.c
+index 052e168d2a2ac..b10ecfde21c87 100644
+--- a/drivers/clk/qcom/gcc-ipq8074.c
++++ b/drivers/clk/qcom/gcc-ipq8074.c
+@@ -972,6 +972,7 @@ static struct clk_rcg2 pcie0_axi_clk_src = {
  
- static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
- {
--	int err = 0, usb3;
--	unsigned int i;
-+	int err = 0, usb3_companion_port;
-+	unsigned int i, j;
+ static const struct freq_tbl ftbl_pcie_aux_clk_src[] = {
+ 	F(19200000, P_XO, 1, 0, 0),
++	{ }
+ };
  
- 	xudc->utmi_phy = devm_kcalloc(xudc->dev, xudc->soc->num_phys,
- 					   sizeof(*xudc->utmi_phy), GFP_KERNEL);
-@@ -3509,7 +3509,7 @@ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
- 		if (IS_ERR(xudc->utmi_phy[i])) {
- 			err = PTR_ERR(xudc->utmi_phy[i]);
- 			dev_err_probe(xudc->dev, err,
--				      "failed to get usb2-%d PHY\n", i);
-+				"failed to get PHY for phy-name usb2-%d\n", i);
- 			goto clean_up;
- 		} else if (xudc->utmi_phy[i]) {
- 			/* Get usb-phy, if utmi phy is available */
-@@ -3528,19 +3528,30 @@ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
- 		}
+ static struct clk_rcg2 pcie0_aux_clk_src = {
+@@ -1077,6 +1078,7 @@ static const struct freq_tbl ftbl_sdcc_ice_core_clk_src[] = {
+ 	F(19200000, P_XO, 1, 0, 0),
+ 	F(160000000, P_GPLL0, 5, 0, 0),
+ 	F(308570000, P_GPLL6, 3.5, 0, 0),
++	{ }
+ };
  
- 		/* Get USB3 phy */
--		usb3 = tegra_xusb_padctl_get_usb3_companion(xudc->padctl, i);
--		if (usb3 < 0)
-+		usb3_companion_port = tegra_xusb_padctl_get_usb3_companion(xudc->padctl, i);
-+		if (usb3_companion_port < 0)
- 			continue;
- 
--		snprintf(phy_name, sizeof(phy_name), "usb3-%d", usb3);
--		xudc->usb3_phy[i] = devm_phy_optional_get(xudc->dev, phy_name);
--		if (IS_ERR(xudc->usb3_phy[i])) {
--			err = PTR_ERR(xudc->usb3_phy[i]);
--			dev_err_probe(xudc->dev, err,
--				      "failed to get usb3-%d PHY\n", usb3);
--			goto clean_up;
--		} else if (xudc->usb3_phy[i])
--			dev_dbg(xudc->dev, "usb3-%d PHY registered", usb3);
-+		for (j = 0; j < xudc->soc->num_phys; j++) {
-+			snprintf(phy_name, sizeof(phy_name), "usb3-%d", j);
-+			xudc->usb3_phy[i] = devm_phy_optional_get(xudc->dev, phy_name);
-+			if (IS_ERR(xudc->usb3_phy[i])) {
-+				err = PTR_ERR(xudc->usb3_phy[i]);
-+				dev_err_probe(xudc->dev, err,
-+					"failed to get PHY for phy-name usb3-%d\n", j);
-+				goto clean_up;
-+			} else if (xudc->usb3_phy[i]) {
-+				int usb2_port =
-+					tegra_xusb_padctl_get_port_number(xudc->utmi_phy[i]);
-+				int usb3_port =
-+					tegra_xusb_padctl_get_port_number(xudc->usb3_phy[i]);
-+				if (usb3_port == usb3_companion_port) {
-+					dev_dbg(xudc->dev, "USB2 port %d is paired with USB3 port %d for device mode port %d\n",
-+					 usb2_port, usb3_port, i);
-+					break;
-+				}
-+			}
-+		}
- 	}
- 
- 	return err;
+ static struct clk_rcg2 sdcc1_ice_core_clk_src = {
 -- 
 2.43.0
 
