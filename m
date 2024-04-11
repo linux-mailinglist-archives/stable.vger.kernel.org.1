@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFDB28A1147
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FEF38A0FE2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52726B22BC9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE9F3283391
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F161474BA;
-	Thu, 11 Apr 2024 10:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E5D146D45;
+	Thu, 11 Apr 2024 10:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TE6hgD01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftQYl5Dc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5826D1474AB;
-	Thu, 11 Apr 2024 10:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A031A1465BF;
+	Thu, 11 Apr 2024 10:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832139; cv=none; b=sprVRvDVjArtwv5wkX+BQSynSmmjEL6i36qY7DWMxxTZRLXYSk8gs4+9ank8tMAv/PW+DaCE5EePKFWMDBZG63TAp2TSEHWIOs98c7q56SuofJKD2MQqozCy76nBNE7Odo/hnIFRVpJuQYf297NFziWN8mpHIPBCYFZLAGQ9M4U=
+	t=1712831307; cv=none; b=PUJzCw7JopP2OpHVhEL/+Fa43AsIKD1MksQDenguJpHNldw/NMV0udcgTPyzUe9LaBu/0g29Ldc/WEJKeejV42yVM95kcKqfGU5oOQq7Obd3ZzgZVemssE0q0u2UxHzlwEVLyRiMSzqkfEf2DZFAPHmXgj1d6lSnWlD5gtdP93o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832139; c=relaxed/simple;
-	bh=J7q3Zxr9ADRzFiZ77twDCX8xurDOdHWWd5mDvmmIK10=;
+	s=arc-20240116; t=1712831307; c=relaxed/simple;
+	bh=W4FgZAjZd2MNMqiYA3sNmNcs4qYLaEa8PwGKl049s/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B1rANMlvdgCeUxzteX3H+gJHwM9KbxDiXlzQCLPB/rYNNaZyBtEEdYTDe/I+eK6okM2Io/Q711T6/HfAstHsiILLIyEX2N6jj/fTyIkLuurXf1EIkyAfGhhLOtWj20+CQJwCDc/lb0fxN5+BrAs0JdRIN7UMtlQ493Y/rQldzCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TE6hgD01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A80C433C7;
-	Thu, 11 Apr 2024 10:42:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gvMNcmav8cLnwca9Ii9POL3NowldZ2t7RjIFDMvDolKWbc47AeEQpcExSG6EFi6R5UhmMNhfjjpePbV4cCMxJryTkOm9nVXnaXXPegnoUOnuDMt1lZsP3Dy36OgLrqkPJx2aAIMpo1F6KfjzFK4VxWjMAcUNJnbgoP1I6CXaASM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftQYl5Dc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C11C433F1;
+	Thu, 11 Apr 2024 10:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832139;
-	bh=J7q3Zxr9ADRzFiZ77twDCX8xurDOdHWWd5mDvmmIK10=;
+	s=korg; t=1712831307;
+	bh=W4FgZAjZd2MNMqiYA3sNmNcs4qYLaEa8PwGKl049s/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TE6hgD01L7WkKX61aYh+iel/kulLp6x6u6nbLxAiUFnMTU1nVFAKPG1Vl2AT2FL4K
-	 QQ/6aHLNu41FrpTBe/4qRUp41N55bw7bFc/plEwVOPmBQt9R65mk7tX/kVdOyJDNFO
-	 bwdOS3m9W4dzcxSVstvdSH+K6yTxymX2kdXSB9wk=
+	b=ftQYl5Dcb99KMECxW+pyWOyLiQSOqpX2CUe3XxNTOGyf62QBgZJIPOr14AeXo+Ggi
+	 fC+zk705412b243BdbKCeT8UIp4R+RVqZtud0XeTbl/Nd9lo/IAOYjIjjFndTe/tUh
+	 yStn3eE6lEOdXOE1J2ioa9eQl3i+MqqnWDZwdXnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Gergo Koteles <soyer@irl.hu>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 243/294] wifi: ath9k: fix LNA selection in ath_ant_try_scan()
+Subject: [PATCH 6.6 079/114] Input: allocate keycode for Display refresh rate toggle
 Date: Thu, 11 Apr 2024 11:56:46 +0200
-Message-ID: <20240411095442.887348301@linuxfoundation.org>
+Message-ID: <20240411095419.273011263@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +64,42 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Gergo Koteles <soyer@irl.hu>
 
-[ Upstream commit d6b27eb997ef9a2aa51633b3111bc4a04748e6d3 ]
+[ Upstream commit cfeb98b95fff25c442f78a6f616c627bc48a26b7 ]
 
-In 'ath_ant_try_scan()', (most likely) the 2nd LNA's signal
-strength should be used in comparison against RSSI when
-selecting first LNA as the main one. Compile tested only.
+Newer Lenovo Yogas and Legions with 60Hz/90Hz displays send a wmi event
+when Fn + R is pressed. This is intended for use to switch between the
+two refresh rates.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Allocate a new KEY_REFRESH_RATE_TOGGLE keycode for it.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20231211172502.25202-1-dmantipov@yandex.ru
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/15a5d08c84cf4d7b820de34ebbcf8ae2502fb3ca.1710065750.git.soyer@irl.hu
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/antenna.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/uapi/linux/input-event-codes.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/antenna.c b/drivers/net/wireless/ath/ath9k/antenna.c
-index 988222cea9dfe..acc84e6711b0e 100644
---- a/drivers/net/wireless/ath/ath9k/antenna.c
-+++ b/drivers/net/wireless/ath/ath9k/antenna.c
-@@ -643,7 +643,7 @@ static void ath_ant_try_scan(struct ath_ant_comb *antcomb,
- 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
- 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_PLUS_LNA2;
- 			} else if (antcomb->rssi_sub >
--				   antcomb->rssi_lna1) {
-+				   antcomb->rssi_lna2) {
- 				/* set to A-B */
- 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
- 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_MINUS_LNA2;
+diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
+index 022a520e31fc2..03edf2ccdf6c8 100644
+--- a/include/uapi/linux/input-event-codes.h
++++ b/include/uapi/linux/input-event-codes.h
+@@ -602,6 +602,7 @@
+ 
+ #define KEY_ALS_TOGGLE		0x230	/* Ambient light sensor */
+ #define KEY_ROTATE_LOCK_TOGGLE	0x231	/* Display rotation lock */
++#define KEY_REFRESH_RATE_TOGGLE	0x232	/* Display refresh rate toggle */
+ 
+ #define KEY_BUTTONCONFIG		0x240	/* AL Button Configuration */
+ #define KEY_TASKMANAGER		0x241	/* AL Task/Project Manager */
 -- 
 2.43.0
 
