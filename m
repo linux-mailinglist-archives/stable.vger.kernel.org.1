@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBA3B8A0CF1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:58:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A44A78A107B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:36:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54A541F21872
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:58:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C50121C236F9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAAB145345;
-	Thu, 11 Apr 2024 09:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15FE64CC0;
+	Thu, 11 Apr 2024 10:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRDi7JQW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NY1BjSD/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF5B13DDDD;
-	Thu, 11 Apr 2024 09:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6049C14B081;
+	Thu, 11 Apr 2024 10:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829511; cv=none; b=In0juru71AdUgjdZhKLcPEW2GqEUfoUuNbl/Z2d6YFgPrDCqtheU4aS9Sd1pMhoA5TWmT5VJcr0D9OIqLqbnmBYpcyEWpbahZ8IfbNjh9qcxrvCRGjKgeHX0MYxMzB6ajDrLMZ+IpTE0Q3N9UwK78bCFDpZLFJZaOcENYCgX8Xs=
+	t=1712831624; cv=none; b=bII9/tDAK1VfXWOqjNfQFTR0MXqPt6dQ10RBwzjA566XgqVYchpZna4M1VhpccVajkbFTFMbjALVWs7QWdpSSrhETIu0knMJv9zE4TpqNPU210hGFa2lMLHiB/s2oMZiFxckOj6aP/MHLRPE4SN9DzdvlLtHWOC1WXFXHzdB1QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829511; c=relaxed/simple;
-	bh=tSM6KvUdogG9SEdJA3o3LWBs4JkWb3q2Fhtw1eRxRIA=;
+	s=arc-20240116; t=1712831624; c=relaxed/simple;
+	bh=QFEtAaG0rwTp5XuDprMiBrczFRrKEn9L3KofHjP8mnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BICDhnfdRUxR04S4sgd9M2QTri5wp8NWTAPYTCT6P6VkmijmJeDjc7MRIe7HJ8DS88DNMDiuNKyDuxpiyMKnBJxThYyaDG2QJzTiDXWb7pUxcyTxTJytwUtoBc0xXzl9TFZP5htpGygJd+54KYDVF4+DhJivq86AH7QpFXxxfBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRDi7JQW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350D2C433F1;
-	Thu, 11 Apr 2024 09:58:30 +0000 (UTC)
+	 MIME-Version; b=rUwZ7DP4NWhNT/8DNZ9c5bGmUMFo5EmIgwY9n/992k4hYYLZqCM5VI/F5N3KIxXe7WGs3r8Rhslx82HzUIVbMIYR9WTv0/ZexrNPdkhCTCFpX9MAb14szRio8OIulS0aNKxxfALv9XScJOMZo774mVH3+HR4bXB0MeIps6Ap67A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NY1BjSD/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6B5C433C7;
+	Thu, 11 Apr 2024 10:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829510;
-	bh=tSM6KvUdogG9SEdJA3o3LWBs4JkWb3q2Fhtw1eRxRIA=;
+	s=korg; t=1712831624;
+	bh=QFEtAaG0rwTp5XuDprMiBrczFRrKEn9L3KofHjP8mnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CRDi7JQWYzxuGrN4obfX5AzdEIhBObrwWC0uvLMQ8XeNG9H252nl5h8W9340Mk/pp
-	 1qsQ+m9wQSi0cBtXwfGB+HN3dpX0QdpLw1T5mQSSQ39hOfSa+mcPfUqCngr5R4IuTj
-	 05B0j78WeH0GQXwXgogQgOOlFGSCnS29/wO9ujRc=
+	b=NY1BjSD/8FEyUCJebiGKncEDKE4NsnWDUPE8meRjitE2Q4lfy9KLjgbEr/3mgpbMD
+	 brVruRL6zBO8p5ZHT4SrA0YcG6WLQvmSxWjq2zXDJg4dyI7Ik+hHN3z4iEs2X+D6t+
+	 0x7sAM1OWEd5XxjoqZUOVkZlDSJXxp1fhD/VzEck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
+	Lucas Stach <l.stach@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 012/175] smack: Handle SMACK64TRANSMUTE in smack_inode_setsecurity()
+Subject: [PATCH 5.10 072/294] drm/etnaviv: Restore some id values
 Date: Thu, 11 Apr 2024 11:53:55 +0200
-Message-ID: <20240411095419.913953001@linuxfoundation.org>
+Message-ID: <20240411095437.862263090@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Christian Gmeiner <cgmeiner@igalia.com>
 
-[ Upstream commit ac02f007d64eb2769d0bde742aac4d7a5fc6e8a5 ]
+[ Upstream commit b735ee173f84d5d0d0733c53946a83c12d770d05 ]
 
-If the SMACK64TRANSMUTE xattr is provided, and the inode is a directory,
-update the in-memory inode flags by setting SMK_INODE_TRANSMUTE.
+The hwdb selection logic as a feature that allows it to mark some fields
+as 'don't care'. If we match with such a field we memcpy(..)
+the current etnaviv_chip_identity into ident.
 
+This step can overwrite some id values read from the GPU with the
+'don't care' value.
+
+Fix this issue by restoring the affected values after the memcpy(..).
+
+As this is crucial for user space to know when this feature works as
+expected increment the minor version too.
+
+Fixes: 4078a1186dd3 ("drm/etnaviv: update hwdb selection logic")
 Cc: stable@vger.kernel.org
-Fixes: 5c6d1125f8db ("Smack: Transmute labels on specified directories") # v2.6.38.x
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
+Reviewed-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack_lsm.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/etnaviv/etnaviv_drv.c  | 2 +-
+ drivers/gpu/drm/etnaviv/etnaviv_hwdb.c | 9 +++++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 2f2dc49f53dff..d9bff4ba7f2e8 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -2802,6 +2802,15 @@ static int smack_inode_setsecurity(struct inode *inode, const char *name,
- 	if (value == NULL || size > SMK_LONGLABEL || size == 0)
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_drv.c b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
+index a9a3afaef9a1c..edf9387069cdc 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_drv.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
+@@ -511,7 +511,7 @@ static struct drm_driver etnaviv_drm_driver = {
+ 	.desc               = "etnaviv DRM",
+ 	.date               = "20151214",
+ 	.major              = 1,
+-	.minor              = 3,
++	.minor              = 4,
+ };
  
-+	if (strcmp(name, XATTR_SMACK_TRANSMUTE) == 0) {
-+		if (!S_ISDIR(inode->i_mode) || size != TRANS_TRUE_SIZE ||
-+		    strncmp(value, TRANS_TRUE, TRANS_TRUE_SIZE) != 0)
-+			return -EINVAL;
+ /*
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c b/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
+index 167971a09be79..e9b777ab3be7f 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
+@@ -73,6 +73,9 @@ static const struct etnaviv_chip_identity etnaviv_chip_identities[] = {
+ bool etnaviv_fill_identity_from_hwdb(struct etnaviv_gpu *gpu)
+ {
+ 	struct etnaviv_chip_identity *ident = &gpu->identity;
++	const u32 product_id = ident->product_id;
++	const u32 customer_id = ident->customer_id;
++	const u32 eco_id = ident->eco_id;
+ 	int i;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(etnaviv_chip_identities); i++) {
+@@ -86,6 +89,12 @@ bool etnaviv_fill_identity_from_hwdb(struct etnaviv_gpu *gpu)
+ 			 etnaviv_chip_identities[i].eco_id == ~0U)) {
+ 			memcpy(ident, &etnaviv_chip_identities[i],
+ 			       sizeof(*ident));
 +
-+		nsp->smk_flags |= SMK_INODE_TRANSMUTE;
-+		return 0;
-+	}
++			/* Restore some id values as ~0U aka 'don't care' might been used. */
++			ident->product_id = product_id;
++			ident->customer_id = customer_id;
++			ident->eco_id = eco_id;
 +
- 	skp = smk_import_entry(value, size);
- 	if (IS_ERR(skp))
- 		return PTR_ERR(skp);
+ 			return true;
+ 		}
+ 	}
 -- 
 2.43.0
 
