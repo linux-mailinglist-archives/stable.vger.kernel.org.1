@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-38110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E6A8A0D0F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:59:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 582908A0E74
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E850AB249EE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:59:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13B6C2871B7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CFA9145B04;
-	Thu, 11 Apr 2024 09:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0A7145B3E;
+	Thu, 11 Apr 2024 10:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnT3DKYk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EuQE6ew"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B37D13DDDD;
-	Thu, 11 Apr 2024 09:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496011448EF;
+	Thu, 11 Apr 2024 10:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829593; cv=none; b=nox96adl85HBxgY2gisMXYAY8G6uog8jHYZ1sSiQqEWMhqQB2ZS1NoHt3ZAVK4267k0WkpBT8p8n2DyRN5K1M/diRhOUAwS9vA41/fdQKvQpYmj5eQRUHfQN+mG5O3qpXM8tTPs5Rj74zln5nHrhBbnpXdBPWp3xysZ3duDdlH0=
+	t=1712830487; cv=none; b=gZRKEdVntFHgUb4DfEGJZNzTlAvqI/wILgR2+20vr20KvLqg9ECBtCes5VafuWuGOkACXoiEEmiU2Q8F3013KWVzg/VxM91h+KB8C0L3f04CW5uk7ePQCvhFoFwSGSwIGDlBPKaGXg0mlAKOwC/p1MOA7mkQQNFnLBeqVgwlq1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829593; c=relaxed/simple;
-	bh=kQMK0nUIAothLCUvFWbs4BueDFPzk6ScDOSK37Qd0pQ=;
+	s=arc-20240116; t=1712830487; c=relaxed/simple;
+	bh=9IA2xD6wBSFyciFBvfsMiSelFXkxHAAEyhztMJtLz9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cUOR6gnRBqyZYrUylFaF14C4JPee7VqAVounz0WZeXtItSYWXprwbbPXNwNErquVayKQG57ybfwSLGDTjpqRLrjclHaKMyohCFJ+cPnH8jYu/mpSycgNndFCxCWIlpxX96uInQw9CXa8Vx8DaDPUOsK6eC3Mel/gxfXSeoydS8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnT3DKYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88392C433C7;
-	Thu, 11 Apr 2024 09:59:52 +0000 (UTC)
+	 MIME-Version; b=FI1GLyXWBwHZZphaEDF17zNHCXn+lk9CsmyYRatIYm5WojqDXPU04mfUKUuf7BLzqsO6KattamEq6eh3bx7B3zaNQJ0q4LOTjQoGwNz2hIip29PWWPmRiTWtev9zl+YtgLX5h7af+0kreNQ2tfrx77VEOM4rU1VHo9OOakS0bpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EuQE6ew; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C3FC43390;
+	Thu, 11 Apr 2024 10:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829592;
-	bh=kQMK0nUIAothLCUvFWbs4BueDFPzk6ScDOSK37Qd0pQ=;
+	s=korg; t=1712830487;
+	bh=9IA2xD6wBSFyciFBvfsMiSelFXkxHAAEyhztMJtLz9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZnT3DKYk9gRHE+ia156No7bjJTS/dq0Sjd1ufwb4IdKrpks9VQqxktDbNgLwxFR5B
-	 gkDHYwo/Qj5uzPi7HZdB+FbwuX00gd1ciAsHPTcRYBmK3EF7UMAsFomrKcMnXPXx0a
-	 dEB2bvOJQkV83t0CTCZiwmJDeVaoDXPMlcvUfV+Y=
+	b=1EuQE6ewARm7/xGoRDbKy2FI1WadCyoSu0lN3dI9NN9cdcpxSsmp9ReOF4wVDY2d/
+	 YedhbpOhX+vWld1bs3iMaGGoEayQgxj1/y9RgeZNksX3HuKRQo11wCj4vvgIReAeF3
+	 rxPhK5+KmEGXDZD4IDWrHRahfh4EX6laMO3FcApA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anna-Maria Gleixner <anna-maria@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	fweisbec@gmail.com,
-	peterz@infradead.org,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 005/175] timer/trace: Improve timer tracing
+Subject: [PATCH 5.4 019/215] crypto: qat - fix double free during reset
 Date: Thu, 11 Apr 2024 11:53:48 +0200
-Message-ID: <20240411095419.700907917@linuxfoundation.org>
+Message-ID: <20240411095425.461361253@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,130 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anna-Maria Gleixner <anna-maria@linutronix.de>
+From: Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>
 
-[ Upstream commit f28d3d5346e97e60c81f933ac89ccf015430e5cf ]
+[ Upstream commit 01aed663e6c421aeafc9c330bda630976b50a764 ]
 
-Timers are added to the timer wheel off by one. This is required in
-case a timer is queued directly before incrementing jiffies to prevent
-early timer expiry.
+There is no need to free the reset_data structure if the recovery is
+unsuccessful and the reset is synchronous. The function
+adf_dev_aer_schedule_reset() handles the cleanup properly. Only
+asynchronous resets require such structure to be freed inside the reset
+worker.
 
-When reading a timer trace and relying only on the expiry time of the timer
-in the timer_start trace point and on the now in the timer_expiry_entry
-trace point, it seems that the timer fires late. With the current
-timer_expiry_entry trace point information only now=jiffies is printed but
-not the value of base->clk. This makes it impossible to draw a conclusion
-to the index of base->clk and makes it impossible to examine timer problems
-without additional trace points.
-
-Therefore add the base->clk value to the timer_expire_entry trace
-point, to be able to calculate the index the timer base is located at
-during collecting expired timers.
-
-Signed-off-by: Anna-Maria Gleixner <anna-maria@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: fweisbec@gmail.com
-Cc: peterz@infradead.org
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Link: https://lkml.kernel.org/r/20190321120921.16463-5-anna-maria@linutronix.de
-Stable-dep-of: 0f7352557a35 ("wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach")
+Fixes: d8cba25d2c68 ("crypto: qat - Intel(R) QAT driver framework")
+Signed-off-by: Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: 7d42e097607c ("crypto: qat - resolve race condition during AER recovery")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/timer.h | 11 +++++++----
- kernel/time/timer.c          | 17 +++++++++++++----
- 2 files changed, 20 insertions(+), 8 deletions(-)
+ drivers/crypto/qat/qat_common/adf_aer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/trace/events/timer.h b/include/trace/events/timer.h
-index 8f6240854e28f..295517f109d71 100644
---- a/include/trace/events/timer.h
-+++ b/include/trace/events/timer.h
-@@ -89,24 +89,27 @@ TRACE_EVENT(timer_start,
-  */
- TRACE_EVENT(timer_expire_entry,
- 
--	TP_PROTO(struct timer_list *timer),
-+	TP_PROTO(struct timer_list *timer, unsigned long baseclk),
- 
--	TP_ARGS(timer),
-+	TP_ARGS(timer, baseclk),
- 
- 	TP_STRUCT__entry(
- 		__field( void *,	timer	)
- 		__field( unsigned long,	now	)
- 		__field( void *,	function)
-+		__field( unsigned long,	baseclk	)
- 	),
- 
- 	TP_fast_assign(
- 		__entry->timer		= timer;
- 		__entry->now		= jiffies;
- 		__entry->function	= timer->function;
-+		__entry->baseclk	= baseclk;
- 	),
- 
--	TP_printk("timer=%p function=%ps now=%lu",
--		  __entry->timer, __entry->function, __entry->now)
-+	TP_printk("timer=%p function=%ps now=%lu baseclk=%lu",
-+		  __entry->timer, __entry->function, __entry->now,
-+		  __entry->baseclk)
- );
- 
- /**
-diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index a6e88d9bb931c..140662c2b41e1 100644
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1311,7 +1311,9 @@ int del_timer_sync(struct timer_list *timer)
- EXPORT_SYMBOL(del_timer_sync);
- #endif
- 
--static void call_timer_fn(struct timer_list *timer, void (*fn)(struct timer_list *))
-+static void call_timer_fn(struct timer_list *timer,
-+			  void (*fn)(struct timer_list *),
-+			  unsigned long baseclk)
- {
- 	int count = preempt_count();
- 
-@@ -1334,7 +1336,7 @@ static void call_timer_fn(struct timer_list *timer, void (*fn)(struct timer_list
- 	 */
- 	lock_map_acquire(&lockdep_map);
- 
--	trace_timer_expire_entry(timer);
-+	trace_timer_expire_entry(timer, baseclk);
- 	fn(timer);
- 	trace_timer_expire_exit(timer);
- 
-@@ -1355,6 +1357,13 @@ static void call_timer_fn(struct timer_list *timer, void (*fn)(struct timer_list
- 
- static void expire_timers(struct timer_base *base, struct hlist_head *head)
- {
-+	/*
-+	 * This value is required only for tracing. base->clk was
-+	 * incremented directly before expire_timers was called. But expiry
-+	 * is related to the old base->clk value.
-+	 */
-+	unsigned long baseclk = base->clk - 1;
-+
- 	while (!hlist_empty(head)) {
- 		struct timer_list *timer;
- 		void (*fn)(struct timer_list *);
-@@ -1368,11 +1377,11 @@ static void expire_timers(struct timer_base *base, struct hlist_head *head)
- 
- 		if (timer->flags & TIMER_IRQSAFE) {
- 			raw_spin_unlock(&base->lock);
--			call_timer_fn(timer, fn);
-+			call_timer_fn(timer, fn, baseclk);
- 			raw_spin_lock(&base->lock);
- 		} else {
- 			raw_spin_unlock_irq(&base->lock);
--			call_timer_fn(timer, fn);
-+			call_timer_fn(timer, fn, baseclk);
- 			raw_spin_lock_irq(&base->lock);
- 		}
+diff --git a/drivers/crypto/qat/qat_common/adf_aer.c b/drivers/crypto/qat/qat_common/adf_aer.c
+index f5e960d23a7a7..20f983b830065 100644
+--- a/drivers/crypto/qat/qat_common/adf_aer.c
++++ b/drivers/crypto/qat/qat_common/adf_aer.c
+@@ -139,7 +139,8 @@ static void adf_device_reset_worker(struct work_struct *work)
+ 	if (adf_dev_init(accel_dev) || adf_dev_start(accel_dev)) {
+ 		/* The device hanged and we can't restart it so stop here */
+ 		dev_err(&GET_DEV(accel_dev), "Restart device failed\n");
+-		kfree(reset_data);
++		if (reset_data->mode == ADF_DEV_RESET_ASYNC)
++			kfree(reset_data);
+ 		WARN(1, "QAT: device restart failed. Device is unusable\n");
+ 		return;
  	}
 -- 
 2.43.0
