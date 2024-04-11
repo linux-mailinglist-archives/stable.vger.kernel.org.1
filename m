@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5CA88A0FAD
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37DB88A0F64
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0D0B1C21873
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBBFB1F27849
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B8D1465BF;
-	Thu, 11 Apr 2024 10:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53651146A8D;
+	Thu, 11 Apr 2024 10:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KlL4/xd2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+P4F+zU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C441B146A8D;
-	Thu, 11 Apr 2024 10:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E65146A64;
+	Thu, 11 Apr 2024 10:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831178; cv=none; b=RRuUioqi+XDdJEQaCRgAiw8kWjcGX7IdXRASwIKLDxIgsDKZsUZa9Ic6Jvnh1R83HuU8Zc9Zmse3n9/iUnf9hEjV5obR1MWBzKQ2n0fPfzlwUhP8i4tWaZdlTToQl8hW6P7HTV/NkNIQZhBaWYEQRcHXMUVsrb3nj5k9yHvapro=
+	t=1712831008; cv=none; b=iBEd429r2Kw/DWEpORI007bPgNvmw3p33OTAAN7LFo8G+KUpZAMCcBZAELGCmrPZ60kJBSvp2pFaiLnTBn6A+I9T7w1Gh3QpOugG+7H6MRkAORwJ9sBhA+wmLRBJWrw9T0WCq9UQSrN+MJbeNre7JoBCANjJlCis0XvSeSuc70A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831178; c=relaxed/simple;
-	bh=pUGpmYTftrRK0ETT3jPG4tqfG8NDSM+XDTrcrsA609s=;
+	s=arc-20240116; t=1712831008; c=relaxed/simple;
+	bh=LEerFEamXMJ+2uPbmrFMb/MlrCFlU/Y2ci8emdM3JrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pFFaZdIWTPcadpObZL1MIi426PUCMxZTFHhhKELi7NujChHIoX7RJ4gTbS+8RpLNsLlAFUtYyq/fwEbnqMwb+zbZ5OCe1mRWABOd+Thk+y8LeQNugnuspFAasYKsEbo9uBaVO7WS94eMVuOiuBSmBpKs297UsEqa4pQofGQ6wpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KlL4/xd2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21241C433C7;
-	Thu, 11 Apr 2024 10:26:17 +0000 (UTC)
+	 MIME-Version; b=LZJIXBMfUodQzBB+FO2D+zmZGiVV+avi2EyzkidTHHAkv1myvKkdwv6U7m7/hxcgQY2jAp3YNALwjkp8/mHeVSHv2MvKF0ydmNHq+4YB9cf+Lp5cXV6srqwuncEOx1MYqW974K0LRh+6sm13zqvrYGuRSpfr32IeG4o3R9wht6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+P4F+zU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4B2C433C7;
+	Thu, 11 Apr 2024 10:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831178;
-	bh=pUGpmYTftrRK0ETT3jPG4tqfG8NDSM+XDTrcrsA609s=;
+	s=korg; t=1712831007;
+	bh=LEerFEamXMJ+2uPbmrFMb/MlrCFlU/Y2ci8emdM3JrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KlL4/xd2ZYeSsbHg4cNi9RfHOqQZon/iiOUIRMWNJcxCGRmyfaOe2TNAZfse5KSV8
-	 geI5XQ7tbEX51v0+EhYJx+J4ZnWfqc2BInvd6dw6S1649nQYmG+NsDosQoTDu4kplQ
-	 o4m9VmhcWuJizS2G907dtpicErsQeZfoXW1rTVsU=
+	b=c+P4F+zUSGGnXsldOepO12mDDj8K//TL7onZ3Bbgo+G3YA0xTEWDbDbL0F9NkXR7A
+	 r3/KZSTVM0V4Nly5vFmAzs2NITPymLb/k+p0oaPCgwJzAk3iHyQdkmUTmR0IFf7La3
+	 1bmoZIA/j5mm32D8cGcEYPUU7G+JHgIXaXeuj5Ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.org>,
+	Jacopo Mondi <jacopo@jmondi.org>,
+	Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/114] overflow: Allow non-type arg to type_max() and type_min()
-Date: Thu, 11 Apr 2024 11:56:02 +0200
-Message-ID: <20240411095417.930153947@linuxfoundation.org>
+Subject: [PATCH 5.4 154/215] staging: mmal-vchiq: Allocate and free components as required
+Date: Thu, 11 Apr 2024 11:56:03 +0200
+Message-ID: <20240411095429.510834414@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +63,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Dave Stevenson <dave.stevenson@raspberrypi.org>
 
-[ Upstream commit bd1ebf2467f9c5d157bec7b025e83f8ffdae1318 ]
+[ Upstream commit 8c589e1794a31e9a381916b0280260ab601e4d6e ]
 
-A common use of type_max() is to find the max for the type of a
-variable. Using the pattern type_max(typeof(var)) is needlessly
-verbose. Instead, since typeof(type) == type we can just explicitly
-call typeof() on the argument to type_max() and type_min(). Add
-wrappers for readability.
+The existing code assumed that there would only ever be 4 components,
+and never freed the entries once used.
+Allow arbitrary creation and destruction of components.
 
-We can do some replacements right away:
-
-$ git grep '\btype_\(min\|max\)(typeof' | wc -l
-11
-
-Link: https://lore.kernel.org/r/20240301062221.work.840-kees@kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.org>
+Signed-off-by: Jacopo Mondi <jacopo@jmondi.org>
+Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Link: https://lore.kernel.org/r/20200623164235.29566-3-nsaenzjulienne@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: f37e76abd614 ("staging: vc04_services: fix information leak in create_component()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/overflow.h | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ .../vc04_services/bcm2835-camera/mmal-vchiq.c | 29 ++++++++++++-------
+ .../vc04_services/bcm2835-camera/mmal-vchiq.h |  1 +
+ 2 files changed, 20 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/overflow.h b/include/linux/overflow.h
-index f9b60313eaea2..e04f679476473 100644
---- a/include/linux/overflow.h
-+++ b/include/linux/overflow.h
-@@ -31,8 +31,10 @@
-  * credit to Christian Biere.
-  */
- #define __type_half_max(type) ((type)1 << (8*sizeof(type) - 1 - is_signed_type(type)))
--#define type_max(T) ((T)((__type_half_max(T) - 1) + __type_half_max(T)))
--#define type_min(T) ((T)((T)-type_max(T)-(T)1))
-+#define __type_max(T) ((T)((__type_half_max(T) - 1) + __type_half_max(T)))
-+#define type_max(t)	__type_max(typeof(t))
-+#define __type_min(T) ((T)((T)-type_max(T)-(T)1))
-+#define type_min(t)	__type_min(typeof(t))
+diff --git a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
+index 1c180ead4a20b..9b47ba4d2d3cd 100644
+--- a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
++++ b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
+@@ -31,8 +31,11 @@
+ #define USE_VCHIQ_ARM
+ #include "interface/vchi/vchi.h"
  
- /*
-  * Avoids triggering -Wtype-limits compilation warning,
-@@ -130,10 +132,10 @@ static inline bool __must_check __must_check_overflow(bool overflow)
+-/* maximum number of components supported */
+-#define VCHIQ_MMAL_MAX_COMPONENTS 4
++/*
++ * maximum number of components supported.
++ * This matches the maximum permitted by default on the VPU
++ */
++#define VCHIQ_MMAL_MAX_COMPONENTS 64
  
- #define __overflows_type_constexpr(x, T) (			\
- 	is_unsigned_type(typeof(x)) ?				\
--		(x) > type_max(typeof(T)) :			\
-+		(x) > type_max(T) :				\
- 	is_unsigned_type(typeof(T)) ?				\
--		(x) < 0 || (x) > type_max(typeof(T)) :		\
--	(x) < type_min(typeof(T)) || (x) > type_max(typeof(T)))
-+		(x) < 0 || (x) > type_max(T) :			\
-+	(x) < type_min(T) || (x) > type_max(T))
+ /*#define FULL_MSG_DUMP 1*/
  
- #define __overflows_type(x, T)		({	\
- 	typeof(T) v = 0;			\
+@@ -167,8 +170,6 @@ struct vchiq_mmal_instance {
+ 	/* protect accesses to context_map */
+ 	struct mutex context_map_lock;
+ 
+-	/* component to use next */
+-	int component_idx;
+ 	struct vchiq_mmal_component component[VCHIQ_MMAL_MAX_COMPONENTS];
+ 
+ 	/* ordered workqueue to process all bulk operations */
+@@ -1616,18 +1617,24 @@ int vchiq_mmal_component_init(struct vchiq_mmal_instance *instance,
+ {
+ 	int ret;
+ 	int idx;		/* port index */
+-	struct vchiq_mmal_component *component;
++	struct vchiq_mmal_component *component = NULL;
+ 
+ 	if (mutex_lock_interruptible(&instance->vchiq_mutex))
+ 		return -EINTR;
+ 
+-	if (instance->component_idx == VCHIQ_MMAL_MAX_COMPONENTS) {
++	for (idx = 0; idx < VCHIQ_MMAL_MAX_COMPONENTS; idx++) {
++		if (!instance->component[idx].in_use) {
++			component = &instance->component[idx];
++			component->in_use = 1;
++			break;
++		}
++	}
++
++	if (!component) {
+ 		ret = -EINVAL;	/* todo is this correct error? */
+ 		goto unlock;
+ 	}
+ 
+-	component = &instance->component[instance->component_idx];
+-
+ 	ret = create_component(instance, component, name);
+ 	if (ret < 0) {
+ 		pr_err("%s: failed to create component %d (Not enough GPU mem?)\n",
+@@ -1678,8 +1685,6 @@ int vchiq_mmal_component_init(struct vchiq_mmal_instance *instance,
+ 			goto release_component;
+ 	}
+ 
+-	instance->component_idx++;
+-
+ 	*component_out = component;
+ 
+ 	mutex_unlock(&instance->vchiq_mutex);
+@@ -1689,6 +1694,8 @@ int vchiq_mmal_component_init(struct vchiq_mmal_instance *instance,
+ release_component:
+ 	destroy_component(instance, component);
+ unlock:
++	if (component)
++		component->in_use = 0;
+ 	mutex_unlock(&instance->vchiq_mutex);
+ 
+ 	return ret;
+@@ -1710,6 +1717,8 @@ int vchiq_mmal_component_finalise(struct vchiq_mmal_instance *instance,
+ 
+ 	ret = destroy_component(instance, component);
+ 
++	component->in_use = 0;
++
+ 	mutex_unlock(&instance->vchiq_mutex);
+ 
+ 	return ret;
+diff --git a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
+index 47897e81ec586..4e34728d87e53 100644
+--- a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
++++ b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
+@@ -82,6 +82,7 @@ struct vchiq_mmal_port {
+ };
+ 
+ struct vchiq_mmal_component {
++	u32 in_use:1;
+ 	u32 enabled:1;
+ 	u32 handle;  /* VideoCore handle for component */
+ 	u32 inputs;  /* Number of input ports */
 -- 
 2.43.0
 
