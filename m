@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E1DC8A0EB3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B438A107D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:36:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C303A1F2212A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DC681C220A6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4002E14600E;
-	Thu, 11 Apr 2024 10:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DAE14BF90;
+	Thu, 11 Apr 2024 10:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvpwy+Ko"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4Ch1Vsk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4032145353;
-	Thu, 11 Apr 2024 10:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6314714B067;
+	Thu, 11 Apr 2024 10:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830638; cv=none; b=V1kT8Lln5eW7Zuwc8+URZfsMGC6PSHPTIaNEt8zZRtouxxPv/KXZGAsYcMEAO/PxHugKFd37K0KsQ/gkR6+aByUcNPsbecPRTfHZ+AWtZMIc5JD6326ebTbC603dnf5M3aCTR+Fr34eOwrxwg5Kb3c1jcHROe3eDatdhT+a9hDg=
+	t=1712831630; cv=none; b=XpQiJJFcveyh/Baef5RYQKOOr/jEI2Bi3Uukrg9jTAjnpMj8466CP8FG0SxxxUCoePTCoycNiKUffO7W63/i4y7u54fbYJOZc4vCyHXBLEQKHGZdvXoFWjgnwCXzMX5Y/kwY7FOzi98hvNOM4U3Lx8hnwWu0U/4lVFO9zBIj5bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830638; c=relaxed/simple;
-	bh=RV8JGvfKQxF/z0WUPsRmFzLhSYSP4lbH7gY7C8EGP+I=;
+	s=arc-20240116; t=1712831630; c=relaxed/simple;
+	bh=GaM9d2PsOp1TGq17jKKjF7/GDADFJFZXIEDioSSTmxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lWISDcs+p5cvzYwRJGT6AyGS2x3PtZPlYuixofR5EE5wh1XAAD2fLEVnmCcJoTNofUP6pysM4H/DiBtRKul4tflxrlT6Bzl7YPsWttE0g7H0VMBhXcU97Ay5UqCi/+PTCVSMa1hqcZ60jajmFqdWGYB8tQw8SdnjJ3We60X+/so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvpwy+Ko; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715C0C433C7;
-	Thu, 11 Apr 2024 10:17:17 +0000 (UTC)
+	 MIME-Version; b=oMksWBLVQUBYCODs/T46OYBscGKm5gA2vFuX87vOHg/VxU/nJGSFdiiA7GnXWmzh5IORVfS5ttGs0z5ycZN/tc29lopqCh1mDcULsV9hRRh4ml7JpM0+3t+1hwEkXOCktUIQvAtJ4j5tqx2fkE9VUzCCPlcJx09x48tiBlC5wIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4Ch1Vsk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDDBC43394;
+	Thu, 11 Apr 2024 10:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830637;
-	bh=RV8JGvfKQxF/z0WUPsRmFzLhSYSP4lbH7gY7C8EGP+I=;
+	s=korg; t=1712831630;
+	bh=GaM9d2PsOp1TGq17jKKjF7/GDADFJFZXIEDioSSTmxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fvpwy+KoeEJwk55BPS0+JAA6v9+qwRPSaDBwhbUJeAEF5WmaIfApx96uyfiAkBB90
-	 UFfiOXoJ2T9eEsly/lWFOqf55J28kVDHTGecYn7EnGkGwEDNq0NoxkUd6x/0sJgEUU
-	 V6Pa5OTLTEICZOqD4wJI8X9MtpRdOuyE7FWlPNIM=
+	b=t4Ch1VskP/HngI3kqVfabuq2kpD9EtDo1jW0rql8pATdnEzuQNjDpBX/T8yRXz15p
+	 2OWh8nYjpjbi6Nu/dHUoKY2ZLbsP2SPMYPtxhHT9QJa/D66mZ41t4mHf2WMVZ4GYk9
+	 ARKzDwI/sY6Pz0HrIkLoqSEo4fTkJQYwr6nAvr6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
+	Maximilian Heyne <mheyne@amazon.de>,
+	Srivathsa Dara <srivathsa.d.dara@oracle.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 028/215] parisc: Do not hardcode registers in checksum functions
+Subject: [PATCH 5.10 074/294] ext4: fix corruption during on-line resize
 Date: Thu, 11 Apr 2024 11:53:57 +0200
-Message-ID: <20240411095425.739349493@linuxfoundation.org>
+Message-ID: <20240411095437.919980358@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,172 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Maximilian Heyne <mheyne@amazon.de>
 
-[ Upstream commit 52b2d91752a82d9350981eb3b3ffc4b325c84ba9 ]
+[ Upstream commit a6b3bfe176e8a5b05ec4447404e412c2a3fc92cc ]
 
-Do not hardcode processor registers r19 to r22 as scratch registers.
-Instead let the compiler decide, which may give better optimization
-results when the functions get inlined.
+We observed a corruption during on-line resize of a file system that is
+larger than 16 TiB with 4k block size. With having more then 2^32 blocks
+resize_inode is turned off by default by mke2fs. The issue can be
+reproduced on a smaller file system for convenience by explicitly
+turning off resize_inode. An on-line resize across an 8 GiB boundary (the
+size of a meta block group in this setup) then leads to a corruption:
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Stable-dep-of: a2abae8f0b63 ("parisc: Fix ip_fast_csum")
+  dev=/dev/<some_dev> # should be >= 16 GiB
+  mkdir -p /corruption
+  /sbin/mke2fs -t ext4 -b 4096 -O ^resize_inode $dev $((2 * 2**21 - 2**15))
+  mount -t ext4 $dev /corruption
+
+  dd if=/dev/zero bs=4096 of=/corruption/test count=$((2*2**21 - 4*2**15))
+  sha1sum /corruption/test
+  # 79d2658b39dcfd77274e435b0934028adafaab11  /corruption/test
+
+  /sbin/resize2fs $dev $((2*2**21))
+  # drop page cache to force reload the block from disk
+  echo 1 > /proc/sys/vm/drop_caches
+
+  sha1sum /corruption/test
+  # 3c2abc63cbf1a94c9e6977e0fbd72cd832c4d5c3  /corruption/test
+
+2^21 = 2^15*2^6 equals 8 GiB whereof 2^15 is the number of blocks per
+block group and 2^6 are the number of block groups that make a meta
+block group.
+
+The last checksum might be different depending on how the file is laid
+out across the physical blocks. The actual corruption occurs at physical
+block 63*2^15 = 2064384 which would be the location of the backup of the
+meta block group's block descriptor. During the on-line resize the file
+system will be converted to meta_bg starting at s_first_meta_bg which is
+2 in the example - meaning all block groups after 16 GiB. However, in
+ext4_flex_group_add we might add block groups that are not part of the
+first meta block group yet. In the reproducer we achieved this by
+substracting the size of a whole block group from the point where the
+meta block group would start. This must be considered when updating the
+backup block group descriptors to follow the non-meta_bg layout. The fix
+is to add a test whether the group to add is already part of the meta
+block group or not.
+
+Fixes: 01f795f9e0d67 ("ext4: add online resizing support for meta_bg and 64-bit file systems")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Tested-by: Srivathsa Dara <srivathsa.d.dara@oracle.com>
+Reviewed-by: Srivathsa Dara <srivathsa.d.dara@oracle.com>
+Link: https://lore.kernel.org/r/20240215155009.94493-1-mheyne@amazon.de
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/checksum.h | 101 +++++++++++++++--------------
- 1 file changed, 52 insertions(+), 49 deletions(-)
+ fs/ext4/resize.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
-index 3cbf1f1c1188e..c1c22819a04d1 100644
---- a/arch/parisc/include/asm/checksum.h
-+++ b/arch/parisc/include/asm/checksum.h
-@@ -42,31 +42,32 @@ extern __wsum csum_partial_copy_from_user(const void __user *src,
- static inline __sum16 ip_fast_csum(const void *iph, unsigned int ihl)
- {
- 	unsigned int sum;
-+	unsigned long t0, t1, t2;
- 
- 	__asm__ __volatile__ (
- "	ldws,ma		4(%1), %0\n"
- "	addib,<=	-4, %2, 2f\n"
- "\n"
--"	ldws		4(%1), %%r20\n"
--"	ldws		8(%1), %%r21\n"
--"	add		%0, %%r20, %0\n"
--"	ldws,ma		12(%1), %%r19\n"
--"	addc		%0, %%r21, %0\n"
--"	addc		%0, %%r19, %0\n"
--"1:	ldws,ma		4(%1), %%r19\n"
-+"	ldws		4(%1), %4\n"
-+"	ldws		8(%1), %5\n"
-+"	add		%0, %4, %0\n"
-+"	ldws,ma		12(%1), %3\n"
-+"	addc		%0, %5, %0\n"
-+"	addc		%0, %3, %0\n"
-+"1:	ldws,ma		4(%1), %3\n"
- "	addib,<		0, %2, 1b\n"
--"	addc		%0, %%r19, %0\n"
-+"	addc		%0, %3, %0\n"
- "\n"
--"	extru		%0, 31, 16, %%r20\n"
--"	extru		%0, 15, 16, %%r21\n"
--"	addc		%%r20, %%r21, %0\n"
--"	extru		%0, 15, 16, %%r21\n"
--"	add		%0, %%r21, %0\n"
-+"	extru		%0, 31, 16, %4\n"
-+"	extru		%0, 15, 16, %5\n"
-+"	addc		%4, %5, %0\n"
-+"	extru		%0, 15, 16, %5\n"
-+"	add		%0, %5, %0\n"
- "	subi		-1, %0, %0\n"
- "2:\n"
--	: "=r" (sum), "=r" (iph), "=r" (ihl)
-+	: "=r" (sum), "=r" (iph), "=r" (ihl), "=r" (t0), "=r" (t1), "=r" (t2)
- 	: "1" (iph), "2" (ihl)
--	: "r19", "r20", "r21", "memory");
-+	: "memory");
- 
- 	return (__force __sum16)sum;
- }
-@@ -126,6 +127,10 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- 					  __u32 len, __u8 proto,
- 					  __wsum sum)
- {
-+	unsigned long t0, t1, t2, t3;
-+
-+	len += proto;	/* add 16-bit proto + len */
-+
- 	__asm__ __volatile__ (
- 
- #if BITS_PER_LONG > 32
-@@ -136,20 +141,19 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- 	** Try to keep 4 registers with "live" values ahead of the ALU.
- 	*/
- 
--"	ldd,ma		8(%1), %%r19\n"	/* get 1st saddr word */
--"	ldd,ma		8(%2), %%r20\n"	/* get 1st daddr word */
--"	add		%8, %3, %3\n"/* add 16-bit proto + len */
--"	add		%%r19, %0, %0\n"
--"	ldd,ma		8(%1), %%r21\n"	/* 2cd saddr */
--"	ldd,ma		8(%2), %%r22\n"	/* 2cd daddr */
--"	add,dc		%%r20, %0, %0\n"
--"	add,dc		%%r21, %0, %0\n"
--"	add,dc		%%r22, %0, %0\n"
-+"	ldd,ma		8(%1), %4\n"	/* get 1st saddr word */
-+"	ldd,ma		8(%2), %5\n"	/* get 1st daddr word */
-+"	add		%4, %0, %0\n"
-+"	ldd,ma		8(%1), %6\n"	/* 2nd saddr */
-+"	ldd,ma		8(%2), %7\n"	/* 2nd daddr */
-+"	add,dc		%5, %0, %0\n"
-+"	add,dc		%6, %0, %0\n"
-+"	add,dc		%7, %0, %0\n"
- "	add,dc		%3, %0, %0\n"  /* fold in proto+len | carry bit */
--"	extrd,u		%0, 31, 32, %%r19\n"	/* copy upper half down */
--"	depdi		0, 31, 32, %0\n"	/* clear upper half */
--"	add		%%r19, %0, %0\n"	/* fold into 32-bits */
--"	addc		0, %0, %0\n"		/* add carry */
-+"	extrd,u		%0, 31, 32, %4\n"/* copy upper half down */
-+"	depdi		0, 31, 32, %0\n"/* clear upper half */
-+"	add		%4, %0, %0\n"	/* fold into 32-bits */
-+"	addc		0, %0, %0\n"	/* add carry */
- 
- #else
- 
-@@ -158,30 +162,29 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- 	** Insn stream is serialized on the carry bit here too.
- 	** result from the previous operation (eg r0 + x)
- 	*/
--
--"	ldw,ma		4(%1), %%r19\n"	/* get 1st saddr word */
--"	ldw,ma		4(%2), %%r20\n"	/* get 1st daddr word */
--"	add		%8, %3, %3\n"	/* add 16-bit proto + len */
--"	add		%%r19, %0, %0\n"
--"	ldw,ma		4(%1), %%r21\n"	/* 2cd saddr */
--"	addc		%%r20, %0, %0\n"
--"	ldw,ma		4(%2), %%r22\n"	/* 2cd daddr */
--"	addc		%%r21, %0, %0\n"
--"	ldw,ma		4(%1), %%r19\n"	/* 3rd saddr */
--"	addc		%%r22, %0, %0\n"
--"	ldw,ma		4(%2), %%r20\n"	/* 3rd daddr */
--"	addc		%%r19, %0, %0\n"
--"	ldw,ma		4(%1), %%r21\n"	/* 4th saddr */
--"	addc		%%r20, %0, %0\n"
--"	ldw,ma		4(%2), %%r22\n"	/* 4th daddr */
--"	addc		%%r21, %0, %0\n"
--"	addc		%%r22, %0, %0\n"
-+"	ldw,ma		4(%1), %4\n"	/* get 1st saddr word */
-+"	ldw,ma		4(%2), %5\n"	/* get 1st daddr word */
-+"	add		%4, %0, %0\n"
-+"	ldw,ma		4(%1), %6\n"	/* 2nd saddr */
-+"	addc		%5, %0, %0\n"
-+"	ldw,ma		4(%2), %7\n"	/* 2nd daddr */
-+"	addc		%6, %0, %0\n"
-+"	ldw,ma		4(%1), %4\n"	/* 3rd saddr */
-+"	addc		%7, %0, %0\n"
-+"	ldw,ma		4(%2), %5\n"	/* 3rd daddr */
-+"	addc		%4, %0, %0\n"
-+"	ldw,ma		4(%1), %6\n"	/* 4th saddr */
-+"	addc		%5, %0, %0\n"
-+"	ldw,ma		4(%2), %7\n"	/* 4th daddr */
-+"	addc		%6, %0, %0\n"
-+"	addc		%7, %0, %0\n"
- "	addc		%3, %0, %0\n"	/* fold in proto+len, catch carry */
- 
- #endif
--	: "=r" (sum), "=r" (saddr), "=r" (daddr), "=r" (len)
--	: "0" (sum), "1" (saddr), "2" (daddr), "3" (len), "r" (proto)
--	: "r19", "r20", "r21", "r22", "memory");
-+	: "=r" (sum), "=r" (saddr), "=r" (daddr), "=r" (len),
-+	  "=r" (t0), "=r" (t1), "=r" (t2), "=r" (t3)
-+	: "0" (sum), "1" (saddr), "2" (daddr), "3" (len)
-+	: "memory");
- 	return csum_fold(sum);
- }
- 
+diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
+index 06e0eaf2ea4e1..5d45ec29e61a6 100644
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -1545,7 +1545,8 @@ static int ext4_flex_group_add(struct super_block *sb,
+ 		int gdb_num = group / EXT4_DESC_PER_BLOCK(sb);
+ 		int gdb_num_end = ((group + flex_gd->count - 1) /
+ 				   EXT4_DESC_PER_BLOCK(sb));
+-		int meta_bg = ext4_has_feature_meta_bg(sb);
++		int meta_bg = ext4_has_feature_meta_bg(sb) &&
++			      gdb_num >= le32_to_cpu(es->s_first_meta_bg);
+ 		sector_t padding_blocks = meta_bg ? 0 : sbi->s_sbh->b_blocknr -
+ 					 ext4_group_first_block_no(sb, 0);
+ 		sector_t old_gdb = 0;
 -- 
 2.43.0
 
