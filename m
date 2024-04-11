@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-39020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390DA8A117E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0738A120D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:50:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96870B2611C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A7DE1F21075
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D87A1465BE;
-	Thu, 11 Apr 2024 10:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291F513DDD6;
+	Thu, 11 Apr 2024 10:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GW3IA6BR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LoamK+bl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF75E142624;
-	Thu, 11 Apr 2024 10:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACFF1E48E;
+	Thu, 11 Apr 2024 10:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832281; cv=none; b=DXMlm3wnd30q+0qyur3ZmOKdtyFrRdT+JmnaKZtZglLAbcRTZPZzegqWZ7ZSSfSyKuO3oWxxlmPdU1u96JGuqiwOkItILjVBqSs5O1fl5sbFYjaUaeSZZWopmyFRXFM+fGyuLo6c00t2aku11Kfaa4jLPliIhW3FppscRVduKOE=
+	t=1712832613; cv=none; b=Yyof63N+KC2UaFseeFVFnimjzgPGeoTQhMGgNn01+m/1j6NKT7Wy9Q00toIpHFAKOFQoPGSic/ltPgFMkeBGf1NL5cQWjFf7swxE9HK07X6BQpd1URhRMCoTo8HfSbf0mxuPxdE2FBbGn8r+kMv1kfvBcGRoseBJrg3OR0EWBzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832281; c=relaxed/simple;
-	bh=s0gsO7fPJQAm68mE2j930uNN2HnMPwRoF/GMTxI8Yuo=;
+	s=arc-20240116; t=1712832613; c=relaxed/simple;
+	bh=0EqbvflvM21cD/htcx8soUxoibL1J0Sh+pu7oAloqTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t/Uvl0VkxJwa+Y0Pk5LEmJE9xMHMWvk2VNjXzPod53MgHvxOeUXZ697Xrwq3IT0mZGbTyq6T6qeYd0Flp1yep9kPfsmaSOnpw2NNmj50VE7kQytAQtkCAFd704QvcWRI3DWwjivIiW4cHiP778vAYzAIt0Y01Ga4b9xY94J9ELA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GW3IA6BR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 779AFC433C7;
-	Thu, 11 Apr 2024 10:44:40 +0000 (UTC)
+	 MIME-Version; b=kAIVlA4xrVIx6KvokjnNVL4ozP/UYnY+8I3eKf0/NL0CLR3TyNjh738QLYOyO4MLHc8GqIOzx6THKITkiDVtq4fZV3PvHAcNIIU1+jbxUrhgwvVXr+15nsc/WNPYTRwmJKZxESzYyLLjQjGl6HaEIq883KQOXzxoPhiFZI3Qgn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LoamK+bl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F02C433C7;
+	Thu, 11 Apr 2024 10:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832280;
-	bh=s0gsO7fPJQAm68mE2j930uNN2HnMPwRoF/GMTxI8Yuo=;
+	s=korg; t=1712832613;
+	bh=0EqbvflvM21cD/htcx8soUxoibL1J0Sh+pu7oAloqTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GW3IA6BRI1a56XKxMefHBhFvL5Thto42Z0yM620IDF5RZ49wkqVKaY5MzfPVkAFos
-	 Hd++j/fN2a9Vpiv75pjcRK83H6pIq+32RnjYor45YTnxuvoEtlzaFDAaALfEB45BBr
-	 T6jS/PIk4gvNn9SZqLebqTEDnlbhkHImpr5qg6Ok=
+	b=LoamK+blykgzlho1BSj0kTuEij+mgCobwwCkFKqmDHGLBasJvZ1e6JLsSESp11AQ0
+	 zVRDT7qfGxP0n6RJQEs/qhTPbYuqIrinQ909D4GwJyBwkY/39JIMqG7HIShwiQtFoE
+	 Jf+8jo+i8qH4WD6M/ueI7/UhY2vb1PUON8Rz4rNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH 5.10 290/294] VMCI: Fix possible memcpy() run-time warning in vmci_datagram_invoke_guest_handler()
+	Arnd Bergmann <arnd@arndb.de>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 25/57] media: sta2x11: fix irq handler cast
 Date: Thu, 11 Apr 2024 11:57:33 +0200
-Message-ID: <20240411095444.267137646@linuxfoundation.org>
+Message-ID: <20240411095408.757543997@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+References: <20240411095407.982258070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit e606e4b71798cc1df20e987dde2468e9527bd376 upstream.
+[ Upstream commit 3de49ae81c3a0f83a554ecbce4c08e019f30168e ]
 
-The changes are similar to those given in the commit 19b070fefd0d
-("VMCI: Fix memcpy() run-time warning in dg_dispatch_as_host()").
+clang-16 warns about casting incompatible function pointers:
 
-Fix filling of the msg and msg_payload in dg_info struct, which prevents a
-possible "detected field-spanning write" of memcpy warning that is issued
-by the tracking mechanism __fortify_memcpy_chk.
+drivers/media/pci/sta2x11/sta2x11_vip.c:1057:6: error: cast from 'irqreturn_t (*)(int, struct sta2x11_vip *)' (aka 'enum irqreturn (*)(int, struct sta2x11_vip *)') to 'irq_handler_t' (aka 'enum irqreturn (*)(int, void *)') converts to incompatible function type [-Werror,-Wcast-function-type-strict]
 
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/r/20240219105315.76955-1-kovalev@altlinux.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Change the prototype of the irq handler to the regular version with a
+local variable to adjust the argument type.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[hverkuil: update argument documentation]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_datagram.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/pci/sta2x11/sta2x11_vip.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/misc/vmw_vmci/vmci_datagram.c
-+++ b/drivers/misc/vmw_vmci/vmci_datagram.c
-@@ -378,7 +378,8 @@ int vmci_datagram_invoke_guest_handler(s
+diff --git a/drivers/media/pci/sta2x11/sta2x11_vip.c b/drivers/media/pci/sta2x11/sta2x11_vip.c
+index 524912f20d9f2..74bbdc11abbb3 100644
+--- a/drivers/media/pci/sta2x11/sta2x11_vip.c
++++ b/drivers/media/pci/sta2x11/sta2x11_vip.c
+@@ -760,7 +760,7 @@ static const struct video_device video_dev_template = {
+ /**
+  * vip_irq - interrupt routine
+  * @irq: Number of interrupt ( not used, correct number is assumed )
+- * @vip: local data structure containing all information
++ * @data: local data structure containing all information
+  *
+  * check for both frame interrupts set ( top and bottom ).
+  * check FIFO overflow, but limit number of log messages after open.
+@@ -770,8 +770,9 @@ static const struct video_device video_dev_template = {
+  *
+  * IRQ_HANDLED, interrupt done.
+  */
+-static irqreturn_t vip_irq(int irq, struct sta2x11_vip *vip)
++static irqreturn_t vip_irq(int irq, void *data)
+ {
++	struct sta2x11_vip *vip = data;
+ 	unsigned int status;
  
- 		dg_info->in_dg_host_queue = false;
- 		dg_info->entry = dst_entry;
--		memcpy(&dg_info->msg, dg, VMCI_DG_SIZE(dg));
-+		dg_info->msg = *dg;
-+		memcpy(&dg_info->msg_payload, dg + 1, dg->payload_size);
+ 	status = reg_read(vip, DVP_ITS);
+@@ -1053,9 +1054,7 @@ static int sta2x11_vip_init_one(struct pci_dev *pdev,
  
- 		INIT_WORK(&dg_info->work, dg_delayed_dispatch);
- 		schedule_work(&dg_info->work);
+ 	spin_lock_init(&vip->slock);
+ 
+-	ret = request_irq(pdev->irq,
+-			  (irq_handler_t) vip_irq,
+-			  IRQF_SHARED, KBUILD_MODNAME, vip);
++	ret = request_irq(pdev->irq, vip_irq, IRQF_SHARED, KBUILD_MODNAME, vip);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "request_irq failed\n");
+ 		ret = -ENODEV;
+-- 
+2.43.0
+
 
 
 
