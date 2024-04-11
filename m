@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FD748A0E88
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:15:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1858A0CFA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:58:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D42B21F2180C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:15:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93DF1B23832
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24121465B8;
-	Thu, 11 Apr 2024 10:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CB3145323;
+	Thu, 11 Apr 2024 09:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSPbaZQ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNVOPPBJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB5614601B;
-	Thu, 11 Apr 2024 10:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CF513DDDD;
+	Thu, 11 Apr 2024 09:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830534; cv=none; b=R4eNc8xyA64ip+SLJj9Vu5gScavG3M1T2lMcwT+sy1DDBf/SttNRwF4uib3Q0kEsncmknWcByMQ+6cTAXCjrlaPgjXZcvzdGo+VhbS38mlBOjIMgj8ueW/VWvjmYQYr8wzkgvp1GlB+IwHpQKU0mLJ+hvtBYl44Y8b6PpHMAtZg=
+	t=1712829531; cv=none; b=A8vqgle3lrQ+rzUEBhwgbtFeU8GVnozofm/HS+VEgoX0l5I3dICg4WzVs5SizN73Ju8eNqTe2lPqZdZgdqSkYFxVQ6NF5avhLq7SEDK/XNGINO8UMN37yZ+Ykrv9lGgZHaMP18HkOVorrP4PzGYtpPTxZHC6hCzG0SWGAYAl+4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830534; c=relaxed/simple;
-	bh=vxwdqHjXHNE8bXcGL2WH0lYJvn08HgwkNKv7T56l7No=;
+	s=arc-20240116; t=1712829531; c=relaxed/simple;
+	bh=HRy/ye7dCgr8qMnQE0yzzx4ksBloZKc9LLbvnBeUHis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qfifcKobNhq4HEe27aGtdY14MbxeL7kAY2tOhyZRJQsJO4M2gu3NG1aVdfYxPe30qwgBnVnnqkCtHUwEYdgxdCkNEU8aiwBp9K1kY3pB5CuKkPeqOTnD5QT2aLWPKW6sHshMml08o4XFgpa1DZ6Pv/PF9Yq275/ntnx2hvTO6x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSPbaZQ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C31C433F1;
-	Thu, 11 Apr 2024 10:15:33 +0000 (UTC)
+	 MIME-Version; b=JdE3U86jN/rt1P7YlOGd/gVTr41N9TysTDdjhNwZLbYJ0rwIkcCj/Wy5N1Pdd92S23gt2ocboAfsexStu8WQtjeVMTCTR+ETM0OWUfblWhiQCo5F2BdQ4yo0zwRzakqNlVoooq8ZMhZGql+OmWn7I1c1TEGE7nl/QZrC/lE4G84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNVOPPBJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B621FC433C7;
+	Thu, 11 Apr 2024 09:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830533;
-	bh=vxwdqHjXHNE8bXcGL2WH0lYJvn08HgwkNKv7T56l7No=;
+	s=korg; t=1712829531;
+	bh=HRy/ye7dCgr8qMnQE0yzzx4ksBloZKc9LLbvnBeUHis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tSPbaZQ7ReCaxkZQp2OHswq5Ehl0WUWd7IU6I4uSzEFxQKUrzQbH4E2t1FqGuedp1
-	 /MTgeVchi2dt8UiQQGzQsf+IuFkdUEebZTX+RuBu+jEQKmpuDB1pJn2Mq2O0AVQV5f
-	 K5Sea983CksR6ySmn9M7l7ER1UuwegELIyOQhIuI=
+	b=JNVOPPBJwECYXBpZBb0I0YFVF0LElRqeGsKjRhm1uxVxfeWPBNnfVHM5aE7p/ysMa
+	 6DMlBDdPw1ITIm0uKecEC5jz2T7JnlwCpLHTgHI6uIbPkGBFmBbIvgfRZH/5zpLqN9
+	 3Wl69HCIhGhImKhlHc10OZ0ozpFN3fVdHcfPNDS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maulik Shah <quic_mkshah@quicinc.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 033/215] PM: suspend: Set mem_sleep_current during kernel command line setup
+Subject: [PATCH 4.19 019/175] crypto: qat - fix double free during reset
 Date: Thu, 11 Apr 2024 11:54:02 +0200
-Message-ID: <20240411095425.893215509@linuxfoundation.org>
+Message-ID: <20240411095420.127972396@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maulik Shah <quic_mkshah@quicinc.com>
+From: Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>
 
-[ Upstream commit 9bc4ffd32ef8943f5c5a42c9637cfd04771d021b ]
+[ Upstream commit 01aed663e6c421aeafc9c330bda630976b50a764 ]
 
-psci_init_system_suspend() invokes suspend_set_ops() very early during
-bootup even before kernel command line for mem_sleep_default is setup.
-This leads to kernel command line mem_sleep_default=s2idle not working
-as mem_sleep_current gets changed to deep via suspend_set_ops() and never
-changes back to s2idle.
+There is no need to free the reset_data structure if the recovery is
+unsuccessful and the reset is synchronous. The function
+adf_dev_aer_schedule_reset() handles the cleanup properly. Only
+asynchronous resets require such structure to be freed inside the reset
+worker.
 
-Set mem_sleep_current along with mem_sleep_default during kernel command
-line setup as default suspend mode.
-
-Fixes: faf7ec4a92c0 ("drivers: firmware: psci: add system suspend support")
-CC: stable@vger.kernel.org # 5.4+
-Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: d8cba25d2c68 ("crypto: qat - Intel(R) QAT driver framework")
+Signed-off-by: Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: 7d42e097607c ("crypto: qat - resolve race condition during AER recovery")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/power/suspend.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/qat/qat_common/adf_aer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
-index 5dea2778a3dbb..c6433d3c04a0e 100644
---- a/kernel/power/suspend.c
-+++ b/kernel/power/suspend.c
-@@ -187,6 +187,7 @@ static int __init mem_sleep_default_setup(char *str)
- 		if (mem_sleep_labels[state] &&
- 		    !strcmp(str, mem_sleep_labels[state])) {
- 			mem_sleep_default = state;
-+			mem_sleep_current = state;
- 			break;
- 		}
- 
+diff --git a/drivers/crypto/qat/qat_common/adf_aer.c b/drivers/crypto/qat/qat_common/adf_aer.c
+index 9225d060e18f4..44b91cb73dd19 100644
+--- a/drivers/crypto/qat/qat_common/adf_aer.c
++++ b/drivers/crypto/qat/qat_common/adf_aer.c
+@@ -139,7 +139,8 @@ static void adf_device_reset_worker(struct work_struct *work)
+ 	if (adf_dev_init(accel_dev) || adf_dev_start(accel_dev)) {
+ 		/* The device hanged and we can't restart it so stop here */
+ 		dev_err(&GET_DEV(accel_dev), "Restart device failed\n");
+-		kfree(reset_data);
++		if (reset_data->mode == ADF_DEV_RESET_ASYNC)
++			kfree(reset_data);
+ 		WARN(1, "QAT: device restart failed. Device is unusable\n");
+ 		return;
+ 	}
 -- 
 2.43.0
 
