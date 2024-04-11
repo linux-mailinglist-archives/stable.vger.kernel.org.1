@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-38236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 881FA8A0DA4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:06:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 566C88A0E12
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15B691F21791
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:06:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82AA91C21DBD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25752EAE5;
-	Thu, 11 Apr 2024 10:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD4A145B08;
+	Thu, 11 Apr 2024 10:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDWzuf5d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="InBa1XjQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DA31448F3;
-	Thu, 11 Apr 2024 10:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBBB145FE7;
+	Thu, 11 Apr 2024 10:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829965; cv=none; b=K2KHiPnIKc6canfcr+KDO0xDmdz+p0HvoThc6GgssCS690IWDO8E+wd26zAGULi1u+Y3mWSbIyoqqcOhmC9p/6rr2xSKhOcy2e1k4M45XEYwBCZb4rlXT7UohpxrlirKb1OPMIUbAZyZl5GT5gl12LmZlmrZmwcojPe9l/VcPWY=
+	t=1712830243; cv=none; b=GD1vyWavIHiQRT+DNEiItFPeMqnguUF45DrbB5SMhNnDNsKVnT6jTXGofmkcYU9D3EVaHEGHcBGmVactSyxtDW8dzUxHXUOcMUbwttnKYv9+8iJjrC50VtBKLoKeudLiTDEnDgrlrHiU6oOZ4BwTAR8Cq8fts+eXfct8HpXsUaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829965; c=relaxed/simple;
-	bh=Y22j1JZ7pwhr6ycuc5/m+tTvCKWievFf0c+Lx6s8RYI=;
+	s=arc-20240116; t=1712830243; c=relaxed/simple;
+	bh=hhzokIM22OKjrGyRjg6h+/+XlUfXgNUr2AJwg8gVsfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jN32s4ekLZwzvXRMoWNCDIqDNuK+Y3aXVBk55eXQ6dwtEMi+SVeklNEHDDuyJNN2UklwtJgcG7JGhScqBlKSMXtTCIulZ7qZtqsnB/d2lnDOBLcnZplkFTpXcBqd3GihO/HfRK7g1f5TOS6M6g34cgUoI7aAXULnROFg5xXNTCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDWzuf5d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7149C43390;
-	Thu, 11 Apr 2024 10:06:04 +0000 (UTC)
+	 MIME-Version; b=GGxAthC0DRtKi1duaK6JcmDhH1Y1cH9wWYI7OAnt5DdL7Pm7lag3J6qc/BomIwAAXxv34J9+Ws2BW0rkKiht4iRyekHo8RQRgfRgGdZKE51WYseZFwhTMggGxpdzojNirWLfZRuCZsPB0PpwLM+SJCbTFHS2cUboD3wAWwTZUCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InBa1XjQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C637C433C7;
+	Thu, 11 Apr 2024 10:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829965;
-	bh=Y22j1JZ7pwhr6ycuc5/m+tTvCKWievFf0c+Lx6s8RYI=;
+	s=korg; t=1712830243;
+	bh=hhzokIM22OKjrGyRjg6h+/+XlUfXgNUr2AJwg8gVsfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDWzuf5dlNjo7L0q19yeB0cn1/UEbMPQfINwI5aisy+iWoIYFI+p1YV4F3xkxoAhq
-	 uUKsjSsIogBLVRiOF7RkW28e29fuOP4Qdjt9IweywW7tCCoin0s2Vk4qOF4NikyoX0
-	 PnoPlOxK+4D0KgLoZiyHQ6upDYfOo3kuVU/WzzSo=
+	b=InBa1XjQXIqzlJ8HyQwz2yaW8Nxoom3FLTapc7rrZJjeFgZU4C/lu9YtWWD9jOYrS
+	 WMIMXdz+atwGKzgfDQpetMJ7/0UZd9/jjqLxYPXXLoHw5IQg0jUn2nJX5KFmX7+o8V
+	 0cb8X/ShC2qUJqMehSljZs0FMpUYcajMbLHIWdiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 4.19 127/175] i40e: fix vf may be used uninitialized in this function warning
+	Ye Bin <yebin10@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 082/143] ext4: forbid commit inconsistent quota data when errors=remount-ro
 Date: Thu, 11 Apr 2024 11:55:50 +0200
-Message-ID: <20240411095423.388849428@linuxfoundation.org>
+Message-ID: <20240411095423.381102282@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,151 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit f37c4eac99c258111d414d31b740437e1925b8e8 upstream.
+[ Upstream commit d8b945fa475f13d787df00c26a6dc45a3e2e1d1d ]
 
-To fix the regression introduced by commit 52424f974bc5, which causes
-servers hang in very hard to reproduce conditions with resets races.
-Using two sources for the information is the root cause.
-In this function before the fix bumping v didn't mean bumping vf
-pointer. But the code used this variables interchangeably, so stale vf
-could point to different/not intended vf.
+There's issue as follows When do IO fault injection test:
+Quota error (device dm-3): find_block_dqentry: Quota for id 101 referenced but not present
+Quota error (device dm-3): qtree_read_dquot: Can't read quota structure for id 101
+Quota error (device dm-3): do_check_range: Getting block 2021161007 out of range 1-186
+Quota error (device dm-3): qtree_read_dquot: Can't read quota structure for id 661
 
-Remove redundant "v" variable and iterate via single VF pointer across
-whole function instead to guarantee VF pointer validity.
+Now, ext4_write_dquot()/ext4_acquire_dquot()/ext4_release_dquot() may commit
+inconsistent quota data even if process failed. This may lead to filesystem
+corruption.
+To ensure filesystem consistent when errors=remount-ro there is need to call
+ext4_handle_error() to abort journal.
 
-Fixes: 52424f974bc5 ("i40e: Fix VF hang when reset is triggered on another VF")
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240119062908.3598806-1-yebin10@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |   34 +++++++++------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ fs/ext4/super.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -1317,8 +1317,8 @@ bool i40e_reset_all_vfs(struct i40e_pf *
- {
- 	struct i40e_hw *hw = &pf->hw;
- 	struct i40e_vf *vf;
--	int i, v;
- 	u32 reg;
-+	int i;
- 
- 	/* If we don't have any VFs, then there is nothing to reset */
- 	if (!pf->num_alloc_vfs)
-@@ -1329,11 +1329,10 @@ bool i40e_reset_all_vfs(struct i40e_pf *
- 		return false;
- 
- 	/* Begin reset on all VFs at once */
--	for (v = 0; v < pf->num_alloc_vfs; v++) {
--		vf = &pf->vf[v];
-+	for (vf = &pf->vf[0]; vf < &pf->vf[pf->num_alloc_vfs]; ++vf) {
- 		/* If VF is being reset no need to trigger reset again */
- 		if (!test_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
--			i40e_trigger_vf_reset(&pf->vf[v], flr);
-+			i40e_trigger_vf_reset(vf, flr);
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 32bd83adf0bb8..4866657c6d41f 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -6864,6 +6864,10 @@ static int ext4_write_dquot(struct dquot *dquot)
+ 	if (IS_ERR(handle))
+ 		return PTR_ERR(handle);
+ 	ret = dquot_commit(dquot);
++	if (ret < 0)
++		ext4_error_err(dquot->dq_sb, -ret,
++			       "Failed to commit dquot type %d",
++			       dquot->dq_id.type);
+ 	err = ext4_journal_stop(handle);
+ 	if (!ret)
+ 		ret = err;
+@@ -6880,6 +6884,10 @@ static int ext4_acquire_dquot(struct dquot *dquot)
+ 	if (IS_ERR(handle))
+ 		return PTR_ERR(handle);
+ 	ret = dquot_acquire(dquot);
++	if (ret < 0)
++		ext4_error_err(dquot->dq_sb, -ret,
++			      "Failed to acquire dquot type %d",
++			      dquot->dq_id.type);
+ 	err = ext4_journal_stop(handle);
+ 	if (!ret)
+ 		ret = err;
+@@ -6899,6 +6907,10 @@ static int ext4_release_dquot(struct dquot *dquot)
+ 		return PTR_ERR(handle);
  	}
- 
- 	/* HW requires some time to make sure it can flush the FIFO for a VF
-@@ -1342,14 +1341,13 @@ bool i40e_reset_all_vfs(struct i40e_pf *
- 	 * the VFs using a simple iterator that increments once that VF has
- 	 * finished resetting.
- 	 */
--	for (i = 0, v = 0; i < 10 && v < pf->num_alloc_vfs; i++) {
-+	for (i = 0, vf = &pf->vf[0]; i < 10 && vf < &pf->vf[pf->num_alloc_vfs]; ++i) {
- 		usleep_range(10000, 20000);
- 
- 		/* Check each VF in sequence, beginning with the VF to fail
- 		 * the previous check.
- 		 */
--		while (v < pf->num_alloc_vfs) {
--			vf = &pf->vf[v];
-+		while (vf < &pf->vf[pf->num_alloc_vfs]) {
- 			if (!test_bit(I40E_VF_STATE_RESETTING, &vf->vf_states)) {
- 				reg = rd32(hw, I40E_VPGEN_VFRSTAT(vf->vf_id));
- 				if (!(reg & I40E_VPGEN_VFRSTAT_VFRD_MASK))
-@@ -1359,7 +1357,7 @@ bool i40e_reset_all_vfs(struct i40e_pf *
- 			/* If the current VF has finished resetting, move on
- 			 * to the next VF in sequence.
- 			 */
--			v++;
-+			++vf;
- 		}
- 	}
- 
-@@ -1369,39 +1367,39 @@ bool i40e_reset_all_vfs(struct i40e_pf *
- 	/* Display a warning if at least one VF didn't manage to reset in
- 	 * time, but continue on with the operation.
- 	 */
--	if (v < pf->num_alloc_vfs)
-+	if (vf < &pf->vf[pf->num_alloc_vfs])
- 		dev_err(&pf->pdev->dev, "VF reset check timeout on VF %d\n",
--			pf->vf[v].vf_id);
-+			vf->vf_id);
- 	usleep_range(10000, 20000);
- 
- 	/* Begin disabling all the rings associated with VFs, but do not wait
- 	 * between each VF.
- 	 */
--	for (v = 0; v < pf->num_alloc_vfs; v++) {
-+	for (vf = &pf->vf[0]; vf < &pf->vf[pf->num_alloc_vfs]; ++vf) {
- 		/* On initial reset, we don't have any queues to disable */
--		if (pf->vf[v].lan_vsi_idx == 0)
-+		if (vf->lan_vsi_idx == 0)
- 			continue;
- 
- 		/* If VF is reset in another thread just continue */
- 		if (test_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
- 			continue;
- 
--		i40e_vsi_stop_rings_no_wait(pf->vsi[pf->vf[v].lan_vsi_idx]);
-+		i40e_vsi_stop_rings_no_wait(pf->vsi[vf->lan_vsi_idx]);
- 	}
- 
- 	/* Now that we've notified HW to disable all of the VF rings, wait
- 	 * until they finish.
- 	 */
--	for (v = 0; v < pf->num_alloc_vfs; v++) {
-+	for (vf = &pf->vf[0]; vf < &pf->vf[pf->num_alloc_vfs]; ++vf) {
- 		/* On initial reset, we don't have any queues to disable */
--		if (pf->vf[v].lan_vsi_idx == 0)
-+		if (vf->lan_vsi_idx == 0)
- 			continue;
- 
- 		/* If VF is reset in another thread just continue */
- 		if (test_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
- 			continue;
- 
--		i40e_vsi_wait_queues_disabled(pf->vsi[pf->vf[v].lan_vsi_idx]);
-+		i40e_vsi_wait_queues_disabled(pf->vsi[vf->lan_vsi_idx]);
- 	}
- 
- 	/* Hw may need up to 50ms to finish disabling the RX queues. We
-@@ -1410,12 +1408,12 @@ bool i40e_reset_all_vfs(struct i40e_pf *
- 	mdelay(50);
- 
- 	/* Finish the reset on each VF */
--	for (v = 0; v < pf->num_alloc_vfs; v++) {
-+	for (vf = &pf->vf[0]; vf < &pf->vf[pf->num_alloc_vfs]; ++vf) {
- 		/* If VF is reset in another thread just continue */
- 		if (test_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
- 			continue;
- 
--		i40e_cleanup_reset_vf(&pf->vf[v]);
-+		i40e_cleanup_reset_vf(vf);
- 	}
- 
- 	i40e_flush(hw);
+ 	ret = dquot_release(dquot);
++	if (ret < 0)
++		ext4_error_err(dquot->dq_sb, -ret,
++			       "Failed to release dquot type %d",
++			       dquot->dq_id.type);
+ 	err = ext4_journal_stop(handle);
+ 	if (!ret)
+ 		ret = err;
+-- 
+2.43.0
+
 
 
 
