@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3758A108F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13ECB8A0D04
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:59:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B13FB1C222F0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AE72B2423C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F1A13BACD;
-	Thu, 11 Apr 2024 10:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB58B145B04;
+	Thu, 11 Apr 2024 09:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llaMPxob"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGzX9AVL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7701474B0;
-	Thu, 11 Apr 2024 10:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A702D13DDDD;
+	Thu, 11 Apr 2024 09:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831674; cv=none; b=FbdPEz2ETSjqUjcraONVvdqPPb8X+M36TEvMiU2qgjEGEMo5KvXnQ+yXN5mHsJCsvK4VzMB89yroD6xeCEkeBDWSflACyAe9S/XALETfl+P/yqv76nx2a3dOwJlRfxVU/m4hMfhDP9HHxQSoSET3wbizx2wV4Mq4biZ0EX53Tho=
+	t=1712829560; cv=none; b=g3GYaJj8C6HdayrYqzyHoZnwb5Ne5ztJztyC9jp5J+82w2V/eEV5VW6EWMLBT1wjTBAko6XGF7EmHo5wVQOlaxiBx63E8jsV/74/MQBeFXkS5SnraErsWaG5Nzwvy5zIBBCedCW84oSYsCV7Qbs5bwBL7jbMYL8CHXiem73wMRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831674; c=relaxed/simple;
-	bh=Oq+BfmrDP7XQosqCh/P4zavSoxF0/xDp01yav11hSz0=;
+	s=arc-20240116; t=1712829560; c=relaxed/simple;
+	bh=fhzATl+5D2AlM/1eKg2T78np4SQxmHQ2OS/3YYW1LsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lyyjbWoeDbwT56K+aXkkzEHbsS1M24oMHj67x9dqTZ/Cm5Mnl5Wh1P5kdwjlK13T8QnvOo9UHH3qPWGBhAQH0c8xE+x1hlsUC8LDkpNKu5yiJnQy4NMTYsOVGcF/KAemtiM4byRZQUB+OUgiG49zDLGFT3sAju+dVHDL1BUgrNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=llaMPxob; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA79EC433F1;
-	Thu, 11 Apr 2024 10:34:33 +0000 (UTC)
+	 MIME-Version; b=UvwWEJ17I81fxDA3Sk0wcS/PyvI95FnXtIbq546CokAxmI907lOYCnZGnI0RfYkjF8R/YsY6lkaLwl5puxvd+YtcoD5wI+XPrQNN9E83u6jcGaxWJPoGk0QCXNy32QG94TQEE+xtniGYOB9Dx9LMBG+FqJnNPnMZ6X/bcS78Tf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGzX9AVL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DD2C433F1;
+	Thu, 11 Apr 2024 09:59:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831674;
-	bh=Oq+BfmrDP7XQosqCh/P4zavSoxF0/xDp01yav11hSz0=;
+	s=korg; t=1712829560;
+	bh=fhzATl+5D2AlM/1eKg2T78np4SQxmHQ2OS/3YYW1LsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=llaMPxobyRStq4b5Bf3MyOcnzFwe4SYDgbCMsGND3bf3lWbDt7hZ5+5Quww9eLJV2
-	 CA0OOoE1tn/a+940B9oCE8j0HN46qmCucHPaNsxeNSuqIPPn3FzLuvPuDTTh5k1AI4
-	 f6N5ILuksof8tdNMlIT+1tLOkoJS0yQDBTBNUlFU=
+	b=NGzX9AVLzrmGf9UktfKkRRgP02yZvF4Z1UTOLYVHx24NTvaRxZdq5xzZj9agRY67w
+	 dILNhj3N7BqaRZhKxXpmrjK46nqZTYqbSbKswWFcNEpTU6WC29mVEZbUMYRil1lJmn
+	 p1wL/GdJA8D8H9gpbhb2hQAYiIuR7dw5IOQkxUKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 088/294] ring-buffer: Do not set shortest_full when full target is hit
+Subject: [PATCH 4.19 028/175] parisc: Fix csum_ipv6_magic on 64-bit systems
 Date: Thu, 11 Apr 2024 11:54:11 +0200
-Message-ID: <20240411095438.332572399@linuxfoundation.org>
+Message-ID: <20240411095420.403780581@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 761d9473e27f0c8782895013a3e7b52a37c8bcfc ]
+[ Upstream commit 4b75b12d70506e31fc02356bbca60f8d5ca012d0 ]
 
-The rb_watermark_hit() checks if the amount of data in the ring buffer is
-above the percentage level passed in by the "full" variable. If it is, it
-returns true.
+hppa 64-bit systems calculates the IPv6 checksum using 64-bit add
+operations. The last add folds protocol and length fields into the 64-bit
+result. While unlikely, this operation can overflow. The overflow can be
+triggered with a code sequence such as the following.
 
-But it also sets the "shortest_full" field of the cpu_buffer that informs
-writers that it needs to call the irq_work if the amount of data on the
-ring buffer is above the requested amount.
+	/* try to trigger massive overflows */
+	memset(tmp_buf, 0xff, sizeof(struct in6_addr));
+	csum_result = csum_ipv6_magic((struct in6_addr *)tmp_buf,
+				      (struct in6_addr *)tmp_buf,
+				      0xffff, 0xff, 0xffffffff);
 
-The rb_watermark_hit() always sets the shortest_full even if the amount in
-the ring buffer is what it wants. As it is not going to wait, because it
-has what it wants, there's no reason to set shortest_full.
+Fix the problem by adding any overflows from the final add operation into
+the calculated checksum. Fortunately, we can do this without additional
+cost by replacing the add operation used to fold the checksum into 32 bit
+with "add,dc" to add in the missing carry.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240312115641.6aa8ba08@gandalf.local.home
-
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 42fb0a1e84ff5 ("tracing/ring-buffer: Have polling block on watermark")
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/parisc/include/asm/checksum.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 936b560989a3e..5b665e5991bf7 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -887,9 +887,10 @@ static bool rb_watermark_hit(struct trace_buffer *buffer, int cpu, int full)
- 		pagebusy = cpu_buffer->reader_page == cpu_buffer->commit_page;
- 		ret = !pagebusy && full_hit(buffer, cpu, full);
+diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
+index 0a02639514505..7861d365ba1e2 100644
+--- a/arch/parisc/include/asm/checksum.h
++++ b/arch/parisc/include/asm/checksum.h
+@@ -152,8 +152,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ "	add,dc		%3, %0, %0\n"  /* fold in proto+len | carry bit */
+ "	extrd,u		%0, 31, 32, %4\n"/* copy upper half down */
+ "	depdi		0, 31, 32, %0\n"/* clear upper half */
+-"	add		%4, %0, %0\n"	/* fold into 32-bits */
+-"	addc		0, %0, %0\n"	/* add carry */
++"	add,dc		%4, %0, %0\n"	/* fold into 32-bits, plus carry */
++"	addc		0, %0, %0\n"	/* add final carry */
  
--		if (!cpu_buffer->shortest_full ||
--		    cpu_buffer->shortest_full > full)
--			cpu_buffer->shortest_full = full;
-+		if (!ret && (!cpu_buffer->shortest_full ||
-+			     cpu_buffer->shortest_full > full)) {
-+		    cpu_buffer->shortest_full = full;
-+		}
- 		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
- 	}
- 	return ret;
+ #else
+ 
 -- 
 2.43.0
 
