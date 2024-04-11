@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-38108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0D7D8A0D0D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:59:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB748A109A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AE26280FAB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:59:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6251B251B9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6920C145323;
-	Thu, 11 Apr 2024 09:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269F01465BF;
+	Thu, 11 Apr 2024 10:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phSJPnQb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMe/jJWx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263E113DDDD;
-	Thu, 11 Apr 2024 09:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69951448C8;
+	Thu, 11 Apr 2024 10:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829587; cv=none; b=m2W3RKRFqpXDo0V8RNpzBVQOADd0TGPw/ynULTH4UjLMxc6wleYAXcnHNe677HhjHrzetlmrrOlGZgDORFvoj2NbU/+LbQmZXFo22JH5zUKPZc/cXj46zF6RiUCo+UKu33Rba8fAxq8nFnT6cV9u6GRksogwya+alTysgxnPz2I=
+	t=1712831700; cv=none; b=Nq4j1YistHEA7osk1E/sP0Tk3Nelw4/UApm80qG7ddvcxrvWBy4iIreuy6LmddAwFISp3N8Wu5NocEeeIoIyuWPthrDoidf8hMCMMpE6QCtIrudt9lgT2GlTe2wOo92Ek/cudKMCZswwU/0COTaELsbZ+OxTJPoSn2HMnpUJguo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829587; c=relaxed/simple;
-	bh=Y/10cUnVgY6J/8XO2BgxyMSl+ZVP/UW4+IjcjlwFowk=;
+	s=arc-20240116; t=1712831700; c=relaxed/simple;
+	bh=nvF/oOwW5z5HGTORPI8PDS3NEJAZJ/MnaAh6u5LkdPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KMOWbR6BDlc5513YwjboflakPAH8Di3Usi1kSx64Hunu9/OgB7IIFzaRUu65gZTKw1V10wWLC8tqA6uw/Ty/Cb1vXjRIX/xJDQL16+Kx2QjXfdvQQoYrL/rCr6QiQYQQ+szlrMN3IjLIFwBpkKtrEgnbBiPgJsT65oL5P/n0XRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phSJPnQb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B8FC433F1;
-	Thu, 11 Apr 2024 09:59:46 +0000 (UTC)
+	 MIME-Version; b=jBibCdY8O5C1Ja5fVXEkPwwTiF95Ufmt3pzDjEcOE2iW+7v49LBXrMhJmWeVxWtv4vNVGJEFPnqIbRy0pKIGklXi5xBNh+JT08wSqlse20AQA4Vy2DqM3+HWAkglFRI+UqeYRCXgZcVufEFMX+yr+SAY4KtqwTJ7mpIsgv/xlE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMe/jJWx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CBABC433C7;
+	Thu, 11 Apr 2024 10:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829587;
-	bh=Y/10cUnVgY6J/8XO2BgxyMSl+ZVP/UW4+IjcjlwFowk=;
+	s=korg; t=1712831700;
+	bh=nvF/oOwW5z5HGTORPI8PDS3NEJAZJ/MnaAh6u5LkdPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=phSJPnQbMlzq4N3p6z4bat6h17zkG88zxLm7yiUCQjh0X1RUU/SMy5IcqWXOB0tKz
-	 7Vzu+lqXR6pt/bAQBjitZr5UTkXmWTAbOjtBp0jKY7ZkrvwagvAFpoeg1VIzWWoTXx
-	 BJo1XHzUN98E4/s3C1XeN0IjI6ZMYN19pmDivHug=
+	b=JMe/jJWx/MUmF2vScQ9RIYfD6xiGG9Lz/uDKoFLm4X3SWh80AP1Cyl+HRuA/LNl6x
+	 gcMHqNvVNs+kBKZbxBJ3TAbvBD/Q7+pJ4XT39lLO2n3VbwB09C5+arWW05+8Qa5ktE
+	 qScyTrCGMqH7Yi2a/Zi4sKSC9D+xZ1FWKGH274jY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cameron Williams <cang1@live.co.uk>,
-	Johan Hovold <johan@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 036/175] USB: serial: add device ID for VeriFone adapter
+Subject: [PATCH 5.10 096/294] drm/panel: do not return negative error codes from drm_panel_get_modes()
 Date: Thu, 11 Apr 2024 11:54:19 +0200
-Message-ID: <20240411095420.645697223@linuxfoundation.org>
+Message-ID: <20240411095438.566011730@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +65,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit cda704809797a8a86284f9df3eef5e62ec8a3175 ]
+[ Upstream commit fc4e97726530241d96dd7db72eb65979217422c9 ]
 
-Add device ID for a (probably fake) CP2102 UART device.
+None of the callers of drm_panel_get_modes() expect it to return
+negative error codes. Either they propagate the return value in their
+struct drm_connector_helper_funcs .get_modes() hook (which is also not
+supposed to return negative codes), or add it to other counts leading to
+bogus values.
 
-lsusb -v output:
+On the other hand, many of the struct drm_panel_funcs .get_modes() hooks
+do return negative error codes, so handle them gracefully instead of
+propagating further.
 
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               1.10
-  bDeviceClass            0 [unknown]
-  bDeviceSubClass         0 [unknown]
-  bDeviceProtocol         0
-  bMaxPacketSize0        64
-  idVendor           0x11ca VeriFone Inc
-  idProduct          0x0212 Verifone USB to Printer
-  bcdDevice            1.00
-  iManufacturer           1 Silicon Labs
-  iProduct                2 Verifone USB to Printer
-  iSerial                 3 0001
-  bNumConfigurations      1
-  Configuration Descriptor:
-    bLength                 9
-    bDescriptorType         2
-    wTotalLength       0x0020
-    bNumInterfaces          1
-    bConfigurationValue     1
-    iConfiguration          0
-    bmAttributes         0x80
-      (Bus Powered)
-    MaxPower              100mA
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        0
-      bAlternateSetting       0
-      bNumEndpoints           2
-      bInterfaceClass       255 Vendor Specific Class
-      bInterfaceSubClass      0 [unknown]
-      bInterfaceProtocol      0
-      iInterface              2 Verifone USB to Printer
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x81  EP 1 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval               0
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x01  EP 1 OUT
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval               0
-Device Status:     0x0000
-  (Bus Powered)
+Return 0 for no modes, whatever the reason.
 
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Jessica Zhang <quic_jesszhan@quicinc.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/79f559b72d8c493940417304e222a4b04dfa19c4.1709913674.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/cp210x.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/drm_panel.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
-index b58ca66dc3aed..9901fd79b8a21 100644
---- a/drivers/usb/serial/cp210x.c
-+++ b/drivers/usb/serial/cp210x.c
-@@ -178,6 +178,7 @@ static const struct usb_device_id id_table[] = {
- 	{ USB_DEVICE(0x10C4, 0xF004) }, /* Elan Digital Systems USBcount50 */
- 	{ USB_DEVICE(0x10C5, 0xEA61) }, /* Silicon Labs MobiData GPRS USB Modem */
- 	{ USB_DEVICE(0x10CE, 0xEA6A) }, /* Silicon Labs MobiData GPRS USB Modem 100EU */
-+	{ USB_DEVICE(0x11CA, 0x0212) }, /* Verifone USB to Printer (UART, CP2102) */
- 	{ USB_DEVICE(0x12B8, 0xEC60) }, /* Link G4 ECU */
- 	{ USB_DEVICE(0x12B8, 0xEC62) }, /* Link G4+ ECU */
- 	{ USB_DEVICE(0x13AD, 0x9999) }, /* Baltech card reader */
+diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
+index f634371c717a8..7fd3de89ed079 100644
+--- a/drivers/gpu/drm/drm_panel.c
++++ b/drivers/gpu/drm/drm_panel.c
+@@ -207,19 +207,24 @@ EXPORT_SYMBOL(drm_panel_disable);
+  * The modes probed from the panel are automatically added to the connector
+  * that the panel is attached to.
+  *
+- * Return: The number of modes available from the panel on success or a
+- * negative error code on failure.
++ * Return: The number of modes available from the panel on success, or 0 on
++ * failure (no modes).
+  */
+ int drm_panel_get_modes(struct drm_panel *panel,
+ 			struct drm_connector *connector)
+ {
+ 	if (!panel)
+-		return -EINVAL;
++		return 0;
+ 
+-	if (panel->funcs && panel->funcs->get_modes)
+-		return panel->funcs->get_modes(panel, connector);
++	if (panel->funcs && panel->funcs->get_modes) {
++		int num;
+ 
+-	return -EOPNOTSUPP;
++		num = panel->funcs->get_modes(panel, connector);
++		if (num > 0)
++			return num;
++	}
++
++	return 0;
+ }
+ EXPORT_SYMBOL(drm_panel_get_modes);
+ 
 -- 
 2.43.0
 
