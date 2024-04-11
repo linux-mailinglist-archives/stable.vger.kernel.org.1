@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-39050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823F28A11A3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:46:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71DE08A0F7C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E27E3B26256
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:46:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9557B1C21B2F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F52145B26;
-	Thu, 11 Apr 2024 10:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF73145B1A;
+	Thu, 11 Apr 2024 10:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zD52De4i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEcj5rie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EAD6BB29;
-	Thu, 11 Apr 2024 10:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC76140E3D;
+	Thu, 11 Apr 2024 10:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832369; cv=none; b=GqxbplU/s8UiKKPX3itSBkouGSrkeFn8beFmbG5F/+AflVBO+WoWOqdiOSPOswejyfavSEotND/4YGBThKc0VlpR3i955U+rdE4jRArfKoRijUiBev6GCP5X70P/fltqO8CcykGQUdc7CALD0vIX7SwUH8D/PKHr6Ujgcxzdr8M=
+	t=1712831055; cv=none; b=PrZwLn7RzjH/ySLqOmKouuoZCtNE42uhvqa8x7l4tAAEbX/T5FLgcnDrTuXguZBCWww2eEk4a62iVgrqkiIj9SIIkWdDe5HKWa5EXiQSXEkpOPv2/N8irtI0rASxFPbtjfxmRDGfux31QCsfkgoxLYBV4i5UBU9hW+GXYMRgexY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832369; c=relaxed/simple;
-	bh=qpaI0iO2YpMGSFUZwGBUDau0flBLAMkeU8XcurzOH1c=;
+	s=arc-20240116; t=1712831055; c=relaxed/simple;
+	bh=k2H9Zf01S4xR1BeWCnOy05Wd5bXJ06Mx1rLhdY5GN8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SMiOeFrONDaZVBoEnMKAgZh3b7H8XBdeKZYfoBmrlfbtAHH7LTFFHM+9Rgbh0ZGlUMrLCV7ClQY6VHz1mMJreS/OUpIHMUPVIwPQ/hctmaJgxusAFoWVSc7T3FsJWBhhyP7x8iq2/Wtm2X9gF8I+eLFbsoHSLs3ZbbsWQ3pxzdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zD52De4i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBE8C43390;
-	Thu, 11 Apr 2024 10:46:08 +0000 (UTC)
+	 MIME-Version; b=KyMUZDZv1ateL8JPEBVpbpr58M4Hz0piRjXLni8csro2IMhYGgXs8pGQs4cG/dwFvNomB9lcVaqsgQZvwTY5WeQsY5mGl6dmOotBprQFwDKrn26QiAiB3ix7zUT+JrQE0mVmsoeFHBKAX+s6ecz8b3LFhejqaA+ZL1PCXqER1UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEcj5rie; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7953DC433F1;
+	Thu, 11 Apr 2024 10:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832369;
-	bh=qpaI0iO2YpMGSFUZwGBUDau0flBLAMkeU8XcurzOH1c=;
+	s=korg; t=1712831055;
+	bh=k2H9Zf01S4xR1BeWCnOy05Wd5bXJ06Mx1rLhdY5GN8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zD52De4ibqv/GdrK95Npa52xaZWLjgsm4wu7FUvODY9a8tNMuZm9UwCrzwwJ/Qdba
-	 IPjVjUrt00NPqzIUiaACyh6jrTloQLwR+BZPD5rKxHiibt2yxSraU0uqSVa27Jmuv0
-	 WeOXfugFQz3w59c3FvC+/BQIdAJ5cxYTu0VNrnss=
+	b=mEcj5rieJfkUTgXEKPrDOE3cVGW1cPBX+lsFiMx+4Fz8lXN7xtugnMaUp60D5jtI0
+	 uHb95k2OmnokoxNe63A97COEdLJ7dBPzPFt/5WxnbDl1ZX/m/qY5O0WQe1gP5DqTPl
+	 aMPkldzaGdxGfxfyXowY/1MWg69YIaBe4zSaO6mY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 25/83] ice: use relative VSI index for VFs instead of PF VSI number
+	David Hildenbrand <david@redhat.com>,
+	Wupeng Ma <mawupeng1@huawei.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 208/215] x86/mm/pat: fix VM_PAT handling in COW mappings
 Date: Thu, 11 Apr 2024 11:56:57 +0200
-Message-ID: <20240411095413.436066297@linuxfoundation.org>
+Message-ID: <20240411095431.116132102@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +69,244 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 11fbb1bfb5bc8c98b2d7db9da332b5e568f4aaab ]
+commit 04c35ab3bdae7fefbd7c7a7355f29fa03a035221 upstream.
 
-When initializing over virtchnl, the PF is required to pass a VSI ID to the
-VF as part of its capabilities exchange. The VF driver reports this value
-back to the PF in a variety of commands. The PF driver validates that this
-value matches the value it sent to the VF.
+PAT handling won't do the right thing in COW mappings: the first PTE (or,
+in fact, all PTEs) can be replaced during write faults to point at anon
+folios.  Reliably recovering the correct PFN and cachemode using
+follow_phys() from PTEs will not work in COW mappings.
 
-Some hardware families such as the E700 series could use this value when
-reading RSS registers or communicating directly with firmware over the
-Admin Queue.
+Using follow_phys(), we might just get the address+protection of the anon
+folio (which is very wrong), or fail on swap/nonswap entries, failing
+follow_phys() and triggering a WARN_ON_ONCE() in untrack_pfn() and
+track_pfn_copy(), not properly calling free_pfn_range().
 
-However, E800 series hardware does not support any of these interfaces and
-the VF's only use for this value is to report it back to the PF. Thus,
-there is no requirement that this value be an actual VSI ID value of any
-kind.
+In free_pfn_range(), we either wouldn't call memtype_free() or would call
+it with the wrong range, possibly leaking memory.
 
-The PF driver already does not trust that the VF sends it a real VSI ID.
-The VSI structure is always looked up from the VF structure. The PF does
-validate that the VSI ID provided matches a VSI associated with the VF, but
-otherwise does not use the VSI ID for any purpose.
+To fix that, let's update follow_phys() to refuse returning anon folios,
+and fallback to using the stored PFN inside vma->vm_pgoff for COW mappings
+if we run into that.
 
-Instead of reporting the VSI number relative to the PF space, report a
-fixed value of 1. When communicating with the VF over virtchnl, validate
-that the VSI number is returned appropriately.
+We will now properly handle untrack_pfn() with COW mappings, where we
+don't need the cachemode.  We'll have to fail fork()->track_pfn_copy() if
+the first page was replaced by an anon folio, though: we'd have to store
+the cachemode in the VMA to make this work, likely growing the VMA size.
 
-This avoids leaking information about the firmware of the PF state.
-Currently the ice driver only supplies a VF with a single VSI. However, it
-appears that virtchnl has some support for allowing multiple VSIs. I did
-not attempt to implement this. However, space is left open to allow further
-relative indexes if additional VSIs are provided in future feature
-development. For this reason, keep the ice_vc_isvalid_vsi_id function in
-place to allow extending it for multiple VSIs in the future.
+For now, lets keep it simple and let track_pfn_copy() just fail in that
+case: it would have failed in the past with swap/nonswap entries already,
+and it would have done the wrong thing with anon folios.
 
-This change will also simplify handling of live migration in a future
-series. Since we no longer will provide a real VSI number to the VF, there
-will be no need to keep track of this number when migrating to a new host.
+Simple reproducer to trigger the WARN_ON_ONCE() in untrack_pfn():
 
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/intel/ice/ice_virtchnl.c | 9 ++-------
- drivers/net/ethernet/intel/ice/ice_virtchnl.h | 9 +++++++++
- 2 files changed, 11 insertions(+), 7 deletions(-)
+<--- C reproducer --->
+ #include <stdio.h>
+ #include <sys/mman.h>
+ #include <unistd.h>
+ #include <liburing.h>
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-index 4b71392f60df1..e64bef490a174 100644
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-@@ -493,7 +493,7 @@ static int ice_vc_get_vf_res_msg(struct ice_vf *vf, u8 *msg)
- 	vfres->rss_lut_size = ICE_VSIQF_HLUT_ARRAY_SIZE;
- 	vfres->max_mtu = ice_vc_get_max_frame_size(vf);
- 
--	vfres->vsi_res[0].vsi_id = vf->lan_vsi_num;
-+	vfres->vsi_res[0].vsi_id = ICE_VF_VSI_ID;
- 	vfres->vsi_res[0].vsi_type = VIRTCHNL_VSI_SRIOV;
- 	vfres->vsi_res[0].num_queue_pairs = vsi->num_txq;
- 	ether_addr_copy(vfres->vsi_res[0].default_mac_addr,
-@@ -539,12 +539,7 @@ static void ice_vc_reset_vf_msg(struct ice_vf *vf)
-  */
- bool ice_vc_isvalid_vsi_id(struct ice_vf *vf, u16 vsi_id)
+ int main(void)
  {
--	struct ice_pf *pf = vf->pf;
--	struct ice_vsi *vsi;
--
--	vsi = ice_find_vsi(pf, vsi_id);
--
--	return (vsi && (vsi->vf == vf));
-+	return vsi_id == ICE_VF_VSI_ID;
+         struct io_uring_params p = {};
+         int ring_fd;
+         size_t size;
+         char *map;
+
+         ring_fd = io_uring_setup(1, &p);
+         if (ring_fd < 0) {
+                 perror("io_uring_setup");
+                 return 1;
+         }
+         size = p.sq_off.array + p.sq_entries * sizeof(unsigned);
+
+         /* Map the submission queue ring MAP_PRIVATE */
+         map = mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE,
+                    ring_fd, IORING_OFF_SQ_RING);
+         if (map == MAP_FAILED) {
+                 perror("mmap");
+                 return 1;
+         }
+
+         /* We have at least one page. Let's COW it. */
+         *map = 0;
+         pause();
+         return 0;
+ }
+<--- C reproducer --->
+
+On a system with 16 GiB RAM and swap configured:
+ # ./iouring &
+ # memhog 16G
+ # killall iouring
+[  301.552930] ------------[ cut here ]------------
+[  301.553285] WARNING: CPU: 7 PID: 1402 at arch/x86/mm/pat/memtype.c:1060 untrack_pfn+0xf4/0x100
+[  301.553989] Modules linked in: binfmt_misc nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_g
+[  301.558232] CPU: 7 PID: 1402 Comm: iouring Not tainted 6.7.5-100.fc38.x86_64 #1
+[  301.558772] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebu4
+[  301.559569] RIP: 0010:untrack_pfn+0xf4/0x100
+[  301.559893] Code: 75 c4 eb cf 48 8b 43 10 8b a8 e8 00 00 00 3b 6b 28 74 b8 48 8b 7b 30 e8 ea 1a f7 000
+[  301.561189] RSP: 0018:ffffba2c0377fab8 EFLAGS: 00010282
+[  301.561590] RAX: 00000000ffffffea RBX: ffff9208c8ce9cc0 RCX: 000000010455e047
+[  301.562105] RDX: 07fffffff0eb1e0a RSI: 0000000000000000 RDI: ffff9208c391d200
+[  301.562628] RBP: 0000000000000000 R08: ffffba2c0377fab8 R09: 0000000000000000
+[  301.563145] R10: ffff9208d2292d50 R11: 0000000000000002 R12: 00007fea890e0000
+[  301.563669] R13: 0000000000000000 R14: ffffba2c0377fc08 R15: 0000000000000000
+[  301.564186] FS:  0000000000000000(0000) GS:ffff920c2fbc0000(0000) knlGS:0000000000000000
+[  301.564773] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  301.565197] CR2: 00007fea88ee8a20 CR3: 00000001033a8000 CR4: 0000000000750ef0
+[  301.565725] PKRU: 55555554
+[  301.565944] Call Trace:
+[  301.566148]  <TASK>
+[  301.566325]  ? untrack_pfn+0xf4/0x100
+[  301.566618]  ? __warn+0x81/0x130
+[  301.566876]  ? untrack_pfn+0xf4/0x100
+[  301.567163]  ? report_bug+0x171/0x1a0
+[  301.567466]  ? handle_bug+0x3c/0x80
+[  301.567743]  ? exc_invalid_op+0x17/0x70
+[  301.568038]  ? asm_exc_invalid_op+0x1a/0x20
+[  301.568363]  ? untrack_pfn+0xf4/0x100
+[  301.568660]  ? untrack_pfn+0x65/0x100
+[  301.568947]  unmap_single_vma+0xa6/0xe0
+[  301.569247]  unmap_vmas+0xb5/0x190
+[  301.569532]  exit_mmap+0xec/0x340
+[  301.569801]  __mmput+0x3e/0x130
+[  301.570051]  do_exit+0x305/0xaf0
+...
+
+Link: https://lkml.kernel.org/r/20240403212131.929421-3-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: Wupeng Ma <mawupeng1@huawei.com>
+Closes: https://lkml.kernel.org/r/20240227122814.3781907-1-mawupeng1@huawei.com
+Fixes: b1a86e15dc03 ("x86, pat: remove the dependency on 'vm_pgoff' in track/untrack pfn vma routines")
+Fixes: 5899329b1910 ("x86: PAT: implement track/untrack of pfnmap regions for x86 - v3")
+Acked-by: Ingo Molnar <mingo@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/x86/mm/pat.c |   50 ++++++++++++++++++++++++++++++++++++--------------
+ mm/memory.c       |    4 ++++
+ 2 files changed, 40 insertions(+), 14 deletions(-)
+
+--- a/arch/x86/mm/pat.c
++++ b/arch/x86/mm/pat.c
+@@ -34,6 +34,7 @@
+ 
+ #include "pat_internal.h"
+ #include "mm_internal.h"
++#include "../../mm/internal.h"	/* is_cow_mapping() */
+ 
+ #undef pr_fmt
+ #define pr_fmt(fmt) "" fmt
+@@ -955,6 +956,38 @@ static void free_pfn_range(u64 paddr, un
+ 		free_memtype(paddr, paddr + size);
  }
  
- /**
-diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.h b/drivers/net/ethernet/intel/ice/ice_virtchnl.h
-index b5a3fd8adbb4e..6073d3b2d2d65 100644
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl.h
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.h
-@@ -18,6 +18,15 @@
-  */
- #define ICE_MAX_MACADDR_PER_VF		18
- 
-+/* VFs only get a single VSI. For ice hardware, the VF does not need to know
-+ * its VSI index. However, the virtchnl interface requires a VSI number,
-+ * mainly due to legacy hardware.
-+ *
-+ * Since the VF doesn't need this information, report a static value to the VF
-+ * instead of leaking any information about the PF or hardware setup.
-+ */
-+#define ICE_VF_VSI_ID	1
++static int get_pat_info(struct vm_area_struct *vma, resource_size_t *paddr,
++		pgprot_t *pgprot)
++{
++	unsigned long prot;
 +
- struct ice_virtchnl_ops {
- 	int (*get_ver_msg)(struct ice_vf *vf, u8 *msg);
- 	int (*get_vf_res_msg)(struct ice_vf *vf, u8 *msg);
--- 
-2.43.0
-
++	VM_WARN_ON_ONCE(!(vma->vm_flags & VM_PAT));
++
++	/*
++	 * We need the starting PFN and cachemode used for track_pfn_remap()
++	 * that covered the whole VMA. For most mappings, we can obtain that
++	 * information from the page tables. For COW mappings, we might now
++	 * suddenly have anon folios mapped and follow_phys() will fail.
++	 *
++	 * Fallback to using vma->vm_pgoff, see remap_pfn_range_notrack(), to
++	 * detect the PFN. If we need the cachemode as well, we're out of luck
++	 * for now and have to fail fork().
++	 */
++	if (!follow_phys(vma, vma->vm_start, 0, &prot, paddr)) {
++		if (pgprot)
++			*pgprot = __pgprot(prot);
++		return 0;
++	}
++	if (is_cow_mapping(vma->vm_flags)) {
++		if (pgprot)
++			return -EINVAL;
++		*paddr = (resource_size_t)vma->vm_pgoff << PAGE_SHIFT;
++		return 0;
++	}
++	WARN_ON_ONCE(1);
++	return -EINVAL;
++}
++
+ /*
+  * track_pfn_copy is called when vma that is covering the pfnmap gets
+  * copied through copy_page_range().
+@@ -965,20 +998,13 @@ static void free_pfn_range(u64 paddr, un
+ int track_pfn_copy(struct vm_area_struct *vma)
+ {
+ 	resource_size_t paddr;
+-	unsigned long prot;
+ 	unsigned long vma_size = vma->vm_end - vma->vm_start;
+ 	pgprot_t pgprot;
+ 
+ 	if (vma->vm_flags & VM_PAT) {
+-		/*
+-		 * reserve the whole chunk covered by vma. We need the
+-		 * starting address and protection from pte.
+-		 */
+-		if (follow_phys(vma, vma->vm_start, 0, &prot, &paddr)) {
+-			WARN_ON_ONCE(1);
++		if (get_pat_info(vma, &paddr, &pgprot))
+ 			return -EINVAL;
+-		}
+-		pgprot = __pgprot(prot);
++		/* reserve the whole chunk covered by vma. */
+ 		return reserve_pfn_range(paddr, vma_size, &pgprot, 1);
+ 	}
+ 
+@@ -1053,7 +1079,6 @@ void untrack_pfn(struct vm_area_struct *
+ 		 unsigned long size)
+ {
+ 	resource_size_t paddr;
+-	unsigned long prot;
+ 
+ 	if (vma && !(vma->vm_flags & VM_PAT))
+ 		return;
+@@ -1061,11 +1086,8 @@ void untrack_pfn(struct vm_area_struct *
+ 	/* free the chunk starting from pfn or the whole chunk */
+ 	paddr = (resource_size_t)pfn << PAGE_SHIFT;
+ 	if (!paddr && !size) {
+-		if (follow_phys(vma, vma->vm_start, 0, &prot, &paddr)) {
+-			WARN_ON_ONCE(1);
++		if (get_pat_info(vma, &paddr, NULL))
+ 			return;
+-		}
+-
+ 		size = vma->vm_end - vma->vm_start;
+ 	}
+ 	free_pfn_range(paddr, size);
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4428,6 +4428,10 @@ int follow_phys(struct vm_area_struct *v
+ 		goto out;
+ 	pte = *ptep;
+ 
++	/* Never return PFNs of anon folios in COW mappings. */
++	if (vm_normal_page(vma, address, pte))
++		goto unlock;
++
+ 	if ((flags & FOLL_WRITE) && !pte_write(pte))
+ 		goto unlock;
+ 
 
 
 
