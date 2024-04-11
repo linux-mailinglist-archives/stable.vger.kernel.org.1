@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-38315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B643F8A0DFE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF588A10EB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F6DB282AF8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9A1E284BB0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CE1145B3E;
-	Thu, 11 Apr 2024 10:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74DF146D7E;
+	Thu, 11 Apr 2024 10:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBhbLslZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGtHfXej"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBC3142624;
-	Thu, 11 Apr 2024 10:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8204B146D79;
+	Thu, 11 Apr 2024 10:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830193; cv=none; b=t0h3sn/PGJj5uML7vxs/05WB97jPUsyEq7sMfvxZpK5DIvI1J0y1pt29iIBFV8qyHXkYQJGy/ZGEHPV4B8u3a/EzCK2sZngdcZfbiiAvzs+pShjKn3DdLnnBQlJ1Is5HyxFmPnnchH2H9+FoAcdStAaEj2pPAQ+5HJnRsEiZD0Y=
+	t=1712831927; cv=none; b=qe5MRcoNQqUlYEKaSCQq8SO5GWppxXLBl2AayI9XQQMVaqrY8vvlLkV0gcrwlzSYNGEAQuvwZYBBtqTxC1AAYxgCnBDzoRdKWRag5Y1EKB5xpJFubFEzAmYCgonKHxsnq/elpHcHfAG5JPqV/5eTTSCaKc+PPt5RcOYQeUF3yjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830193; c=relaxed/simple;
-	bh=j8bEXFWjH4u7WCDyUFhxLK3fgidx7BdDrJ0WSx+tAwE=;
+	s=arc-20240116; t=1712831927; c=relaxed/simple;
+	bh=Veum3n/AR0Pd/k1GZzxTybdNESjBmz7GWcQY6pLFfZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e9aODmDOWcQRQhJuJoj5E2iuxEwuH7/wztqsB9yrA6SetwTvnuZQ9yhinRsZVqRN/Mh7cmQ9ZQeThuCvpZ/FT85bcu+L0MZ0ouku6fCGwXpWfxLAXXD0F1/1uObEa9u8eoo6IjKm/kc2nBYa6AfFxtUBlnDPr1bR9ZphSwitWz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBhbLslZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5215C433F1;
-	Thu, 11 Apr 2024 10:09:52 +0000 (UTC)
+	 MIME-Version; b=rULCvAUwr0pa9nbfZ3GaPIMWuryXRe2qUqxpifL8S9HdUUHIeY5VtKK0h0dKjwVMz7HXhu6FbUgEXnm8vVaH/YG/LRKxlKzihEwWQYakwDpIrTuvspcHQK+sh87iEcMT1Zs6Uw9lfoCdj7duL2Jj0W9MAH4OfbOt2DpojIIDHMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGtHfXej; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019B6C433F1;
+	Thu, 11 Apr 2024 10:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830193;
-	bh=j8bEXFWjH4u7WCDyUFhxLK3fgidx7BdDrJ0WSx+tAwE=;
+	s=korg; t=1712831927;
+	bh=Veum3n/AR0Pd/k1GZzxTybdNESjBmz7GWcQY6pLFfZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vBhbLslZ8ao6MiNdMxkbzQOuIzmIeZ+UIL/uBVnxyI55LaeY1g2Q5k2p+BXpl1dbB
-	 fyCFLtt0tuqLfvID79rDirdWKWHXl8hXEakgwA71XjpVUQ+/LjX5zOqht32tvLIoxu
-	 EQSG229YxfkcR7ENPgkEsfr3LvAwx1LMELEHGOYY=
+	b=PGtHfXejeUihDb45fkNsYCS9wbOoWKPqRLK0kVB8Oql3prOT/rJSwZJGtOGSZuEjK
+	 SoFkIWUS/ODdWmJ51civylKZHwuPkN8UkUvvDRjPkhXESCxq1Pt2RVJBcxUweiYqQX
+	 g1Kv1xtsAhh0NU7T48+mlg8sHIq0zGSaxtEFOUsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+69b40dc5fd40f32c199f@syzkaller.appspotmail.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 067/143] sysv: dont call sb_bread() with pointers_lock held
+	Alan Stern <stern@rowland.harvard.edu>,
+	yuan linyu <yuanlinyu@hihonor.com>
+Subject: [PATCH 5.10 172/294] usb: udc: remove warning when queue disabled ep
 Date: Thu, 11 Apr 2024 11:55:35 +0200
-Message-ID: <20240411095422.932083595@linuxfoundation.org>
+Message-ID: <20240411095440.810896569@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: yuan linyu <yuanlinyu@hihonor.com>
 
-[ Upstream commit f123dc86388cb669c3d6322702dc441abc35c31e ]
+commit 2a587a035214fa1b5ef598aea0b81848c5b72e5e upstream.
 
-syzbot is reporting sleep in atomic context in SysV filesystem [1], for
-sb_bread() is called with rw_spinlock held.
+It is possible trigger below warning message from mass storage function,
 
-A "write_lock(&pointers_lock) => read_lock(&pointers_lock) deadlock" bug
-and a "sb_bread() with write_lock(&pointers_lock)" bug were introduced by
-"Replace BKL for chain locking with sysvfs-private rwlock" in Linux 2.5.12.
+WARNING: CPU: 6 PID: 3839 at drivers/usb/gadget/udc/core.c:294 usb_ep_queue+0x7c/0x104
+pc : usb_ep_queue+0x7c/0x104
+lr : fsg_main_thread+0x494/0x1b3c
 
-Then, "[PATCH] err1-40: sysvfs locking fix" in Linux 2.6.8 fixed the
-former bug by moving pointers_lock lock to the callers, but instead
-introduced a "sb_bread() with read_lock(&pointers_lock)" bug (which made
-this problem easier to hit).
+Root cause is mass storage function try to queue request from main thread,
+but other thread may already disable ep when function disable.
 
-Al Viro suggested that why not to do like get_branch()/get_block()/
-find_shared() in Minix filesystem does. And doing like that is almost a
-revert of "[PATCH] err1-40: sysvfs locking fix" except that get_branch()
- from with find_shared() is called without write_lock(&pointers_lock).
+As there is no function failure in the driver, in order to avoid effort
+to fix warning, change WARN_ON_ONCE() in usb_ep_queue() to pr_debug().
 
-Reported-by: syzbot <syzbot+69b40dc5fd40f32c199f@syzkaller.appspotmail.com>
-Link: https://syzkaller.appspot.com/bug?extid=69b40dc5fd40f32c199f
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/r/0d195f93-a22a-49a2-0020-103534d6f7f6@I-love.SAKURA.ne.jp
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Cc: stable@vger.kernel.org
+Signed-off-by: yuan linyu <yuanlinyu@hihonor.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20240315020144.2715575-1-yuanlinyu@hihonor.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/sysv/itree.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/udc/core.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/sysv/itree.c b/fs/sysv/itree.c
-index 410ab2a44d2f6..19bcb51a22036 100644
---- a/fs/sysv/itree.c
-+++ b/fs/sysv/itree.c
-@@ -83,9 +83,6 @@ static inline sysv_zone_t *block_end(struct buffer_head *bh)
- 	return (sysv_zone_t*)((char*)bh->b_data + bh->b_size);
- }
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -273,7 +273,9 @@ int usb_ep_queue(struct usb_ep *ep,
+ {
+ 	int ret = 0;
  
--/*
-- * Requires read_lock(&pointers_lock) or write_lock(&pointers_lock)
-- */
- static Indirect *get_branch(struct inode *inode,
- 			    int depth,
- 			    int offsets[],
-@@ -105,15 +102,18 @@ static Indirect *get_branch(struct inode *inode,
- 		bh = sb_bread(sb, block);
- 		if (!bh)
- 			goto failure;
-+		read_lock(&pointers_lock);
- 		if (!verify_chain(chain, p))
- 			goto changed;
- 		add_chain(++p, bh, (sysv_zone_t*)bh->b_data + *++offsets);
-+		read_unlock(&pointers_lock);
- 		if (!p->key)
- 			goto no_block;
- 	}
- 	return NULL;
- 
- changed:
-+	read_unlock(&pointers_lock);
- 	brelse(bh);
- 	*err = -EAGAIN;
- 	goto no_block;
-@@ -219,9 +219,7 @@ static int get_block(struct inode *inode, sector_t iblock, struct buffer_head *b
+-	if (WARN_ON_ONCE(!ep->enabled && ep->address)) {
++	if (!ep->enabled && ep->address) {
++		pr_debug("USB gadget: queue request to disabled ep 0x%x (%s)\n",
++				 ep->address, ep->name);
+ 		ret = -ESHUTDOWN;
  		goto out;
- 
- reread:
--	read_lock(&pointers_lock);
- 	partial = get_branch(inode, depth, offsets, chain, &err);
--	read_unlock(&pointers_lock);
- 
- 	/* Simplest case - block found, no allocation needed */
- 	if (!partial) {
-@@ -291,9 +289,9 @@ static Indirect *find_shared(struct inode *inode,
- 	*top = 0;
- 	for (k = depth; k > 1 && !offsets[k-1]; k--)
- 		;
-+	partial = get_branch(inode, k, offsets, chain, &err);
- 
- 	write_lock(&pointers_lock);
--	partial = get_branch(inode, k, offsets, chain, &err);
- 	if (!partial)
- 		partial = chain + k-1;
- 	/*
--- 
-2.43.0
-
+ 	}
 
 
 
