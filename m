@@ -1,159 +1,124 @@
-Return-Path: <stable+bounces-38791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F47F8A106D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:35:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A4C8A0CD9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:53:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E28A11F2B8E2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:35:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27BD6283F1E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36ABF149C4F;
-	Thu, 11 Apr 2024 10:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18F2145B06;
+	Thu, 11 Apr 2024 09:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmlVVN4m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9gbSkp7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85A2149C46;
-	Thu, 11 Apr 2024 10:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAB714430D;
+	Thu, 11 Apr 2024 09:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831601; cv=none; b=jDQKlBi/sVSLVYQ7U28guYu0h9mQiO6xja2TMtoV4+ld4lSSFNWAsZheiHtZZsTNDI0hdEnknZGV9IcYUlK1kY3+IHcUop5xgtmF1Qu7DrQfI3pZnmMuSyBnBLovmjQTgnzH/MDMPbXGLGUH5WNdj1Ohkl2gUKid8a+KRxIlw68=
+	t=1712829190; cv=none; b=TEyMnB5qBAqCzEdpT93P24br5cSJNK06+ZDzHcl2YX7ArmcJU/QzeIMdbBBvi8mhSm7DB6jqA1sjgQcq80RMjwb1snLl1RjYXWFOApA4IZ8Am1DjxOvcCEipEQHXAZ8z9v/B9O4jyt9BOcX5XIY4OfFXx6BCs7dhVLSFmBgO7Qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831601; c=relaxed/simple;
-	bh=taDnXFenQCAA7bJ30jqJFmQ8QvlmwkJlyB7tLL3o1Wk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OsjMn7spq5924W90AJpeY2pIpNbgvWSz4uBZV75IdJeWLAVA0yzrqmK+Cgc8khTyGykmOtL37Uph8sQ3jfF2yPpR/ZmyKNNuZiSdFx6Gz65BaSwBbRGyqTf+RSmldPPCxV+ZtBhMhKR27g736/qxh51xnpNXnp8eIwK7Ic0XmaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmlVVN4m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7315EC43390;
-	Thu, 11 Apr 2024 10:33:20 +0000 (UTC)
+	s=arc-20240116; t=1712829190; c=relaxed/simple;
+	bh=8SQ0a8KIXg+9Q6wH7l7+OtKBY0yEhH+2/6JYQpE8re8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=vB5hEHyywfhcvcv+fvEEZf8d2X/uyJN/Hy7ui94BBySY4H4gPvrGl+P+/zSeMDVYQCd5dqresws/5G84xkgk4Fd0ExQTHfWb4jkyfOtB8FUkOeKall+CrssRv61xTpUhTcNQ511UOZG3kiozxgDKR/PWO3bk5+pHiz3wtzzvls4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9gbSkp7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9EEC433F1;
+	Thu, 11 Apr 2024 09:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831600;
-	bh=taDnXFenQCAA7bJ30jqJFmQ8QvlmwkJlyB7tLL3o1Wk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DmlVVN4mB5yXaTuo+QhmA8q7GrTuINtmr1Wbyve2p3dlEvkyhMe6FtkkXK8oYaKJC
-	 qL2sHdEGkMZGHtfUWLvq7WERJXzMs/ha+AhkK+a/GbDh2s2dUmap90c5mFa/+kT6lD
-	 2l09kgeZvQ3UQCVrymCKkHN8v/PGV4sE6f58WxGE=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Damian Muszynski <damian.muszynski@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 024/294] crypto: qat - resolve race condition during AER recovery
+	s=korg; t=1712829189;
+	bh=8SQ0a8KIXg+9Q6wH7l7+OtKBY0yEhH+2/6JYQpE8re8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=G9gbSkp7oEzeuI3Q0PgtuXj1sVQzFoshmy35z6knqC8VODQ8M+jRQp7yJomxLQOXD
+	 dNeFOGL+XQjg1Lf2s1UGNC+/Gb7l6z6PIuHfU5o20nIO11lpOhSIOQ3Ur3vC7CZ+k4
+	 PEcm0JAXlJGRqkpmoG1eD++BQeSEoTmEozBpgA5s=
 Date: Thu, 11 Apr 2024 11:53:07 +0200
-Message-ID: <20240411095436.359303587@linuxfoundation.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Thorsten Leemhuis <linux@leemhuis.info>,
+	Sasha Levin <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	stable@vger.kernel.org, workflows@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/4] docs: stable-kernel-rules: mention "no
+ semi-automatic backport"
+Message-ID: <2024041151-reflected-dancing-607a@gregkh>
+References: <cover.1712812895.git.linux@leemhuis.info>
+ <c0a08b160b286e8c98549eedb37404c6e784cf8a.1712812895.git.linux@leemhuis.info>
+ <2024041156-backache-dolly-a420@gregkh>
+ <3f395eca-fc24-469b-b5fc-de47ab2a6861@leemhuis.info>
+ <2024041123-earthling-primarily-4656@gregkh>
+ <dad33d1c-77da-4b97-a0ec-4bf566f8d861@leemhuis.info>
+ <2024041159-undone-deacon-3170@gregkh>
+ <CAMuHMdXMRJM1xQLHDc6yKWvs97W2iTZnYnNNZE=8-WrtnGRNfw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMuHMdXMRJM1xQLHDc6yKWvs97W2iTZnYnNNZE=8-WrtnGRNfw@mail.gmail.com>
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+On Thu, Apr 11, 2024 at 11:19:57AM +0200, Geert Uytterhoeven wrote:
+> On Thu, Apr 11, 2024 at 11:13 AM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> > On Thu, Apr 11, 2024 at 09:50:24AM +0200, Thorsten Leemhuis wrote:
+> > > On 11.04.24 09:40, Greg Kroah-Hartman wrote:
+> > > > On Thu, Apr 11, 2024 at 08:59:39AM +0200, Thorsten Leemhuis wrote:
+> > > >> On 11.04.24 07:29, Greg Kroah-Hartman wrote:
+> > > >>> On Thu, Apr 11, 2024 at 07:25:04AM +0200, Thorsten Leemhuis wrote:
+> > > >>>> Some developers deliberately steer clear of 'Fixes:' tags to prevent
+> > > >>>> changes from being backported semi-automatically by the stable team.
+> > > >>>> That somewhat undermines the reason for the existence of the Fixes: tag,
+> > > >>>> hence point out there is an alternative to reach the same effect.
+> > > > [...]
+> > > >>> I do not understand, why are you saying "cc: stable" here if you do NOT
+> > > >>> want it backported?
+> > > >> Because the only alternative the developers have to make the stable team
+> > > >> not pick a single patch[1] is to deliberately omit a Fixes: tag even if
+> > > >> the patch normally should have one. Like it was done here:
+> > > >> https://lore.kernel.org/all/cover.1712226175.git.antony.antony@secunet.com/
+> > > > That feels odd, but ok I now see the need for this for some minor set of
+> > > > changes (i.e. this has rarely come up in the past 15+ years)
+> > > >
+> > > > [...]
+> > > >> E.g. 'ignore for the AUTOSEL and the "Fixes tag only" tools'. That was
+> > > >> the best term I came up with.
+> > > >
+> > > > Thinking about it more, I think we need to be much more explicit, and
+> > > > provide the reason why.
+> > > >
+> > > > How about:
+> > > >     cc: <do-not-apply-to-stable@kernel.org> # Reason goes here, and must be present
+> > > >
+> > > > and we can make that address be routed to /dev/null just like
+> > > > <stable@kernel.org> is?
+> > >
+> > > Totally fine with me, but that feels somewhat long and hard to type.
+> >
+> > I want it long and hard to type and very very explicit that this is what
+> > the developer/maintainer wants to have happen (again, because this is
+> > such a rare occurrence.)
+> >
+> > > How
+> > > about just 'no-stable@kernel.org' (or 'nostable@kernel.org')?
+> >
+> > More words are better :)
+> 
+> And after that, someone discovers this turns out to be (a hard
+> dependency for) a very critical fix that does need backporting?
 
-------------------
+Then we backport it and let the person know like always.
 
-From: Damian Muszynski <damian.muszynski@intel.com>
+thanks,
 
-[ Upstream commit 7d42e097607c4d246d99225bf2b195b6167a210c ]
-
-During the PCI AER system's error recovery process, the kernel driver
-may encounter a race condition with freeing the reset_data structure's
-memory. If the device restart will take more than 10 seconds the function
-scheduling that restart will exit due to a timeout, and the reset_data
-structure will be freed. However, this data structure is used for
-completion notification after the restart is completed, which leads
-to a UAF bug.
-
-This results in a KFENCE bug notice.
-
-  BUG: KFENCE: use-after-free read in adf_device_reset_worker+0x38/0xa0 [intel_qat]
-  Use-after-free read at 0x00000000bc56fddf (in kfence-#142):
-  adf_device_reset_worker+0x38/0xa0 [intel_qat]
-  process_one_work+0x173/0x340
-
-To resolve this race condition, the memory associated to the container
-of the work_struct is freed on the worker if the timeout expired,
-otherwise on the function that schedules the worker.
-The timeout detection can be done by checking if the caller is
-still waiting for completion or not by using completion_done() function.
-
-Fixes: d8cba25d2c68 ("crypto: qat - Intel(R) QAT driver framework")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Damian Muszynski <damian.muszynski@intel.com>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/crypto/qat/qat_common/adf_aer.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/crypto/qat/qat_common/adf_aer.c b/drivers/crypto/qat/qat_common/adf_aer.c
-index d1a7809c51c0a..dc0feedf52702 100644
---- a/drivers/crypto/qat/qat_common/adf_aer.c
-+++ b/drivers/crypto/qat/qat_common/adf_aer.c
-@@ -95,7 +95,8 @@ static void adf_device_reset_worker(struct work_struct *work)
- 	if (adf_dev_init(accel_dev) || adf_dev_start(accel_dev)) {
- 		/* The device hanged and we can't restart it so stop here */
- 		dev_err(&GET_DEV(accel_dev), "Restart device failed\n");
--		if (reset_data->mode == ADF_DEV_RESET_ASYNC)
-+		if (reset_data->mode == ADF_DEV_RESET_ASYNC ||
-+		    completion_done(&reset_data->compl))
- 			kfree(reset_data);
- 		WARN(1, "QAT: device restart failed. Device is unusable\n");
- 		return;
-@@ -103,11 +104,19 @@ static void adf_device_reset_worker(struct work_struct *work)
- 	adf_dev_restarted_notify(accel_dev);
- 	clear_bit(ADF_STATUS_RESTARTING, &accel_dev->status);
- 
--	/* The dev is back alive. Notify the caller if in sync mode */
--	if (reset_data->mode == ADF_DEV_RESET_SYNC)
--		complete(&reset_data->compl);
--	else
-+	/*
-+	 * The dev is back alive. Notify the caller if in sync mode
-+	 *
-+	 * If device restart will take a more time than expected,
-+	 * the schedule_reset() function can timeout and exit. This can be
-+	 * detected by calling the completion_done() function. In this case
-+	 * the reset_data structure needs to be freed here.
-+	 */
-+	if (reset_data->mode == ADF_DEV_RESET_ASYNC ||
-+	    completion_done(&reset_data->compl))
- 		kfree(reset_data);
-+	else
-+		complete(&reset_data->compl);
- }
- 
- static int adf_dev_aer_schedule_reset(struct adf_accel_dev *accel_dev,
-@@ -140,8 +149,9 @@ static int adf_dev_aer_schedule_reset(struct adf_accel_dev *accel_dev,
- 			dev_err(&GET_DEV(accel_dev),
- 				"Reset device timeout expired\n");
- 			ret = -EFAULT;
-+		} else {
-+			kfree(reset_data);
- 		}
--		kfree(reset_data);
- 		return ret;
- 	}
- 	return 0;
--- 
-2.43.0
-
-
-
+greg k-h
 
