@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-39033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB778A118D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02D18A0DAA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:06:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7694D1C23BFE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B5BC2863B7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60156146A93;
-	Thu, 11 Apr 2024 10:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8E0145B0D;
+	Thu, 11 Apr 2024 10:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5Zx9vav"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLT4+a4a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17EF56BB29;
-	Thu, 11 Apr 2024 10:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAAB4145B05;
+	Thu, 11 Apr 2024 10:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832319; cv=none; b=HLn8jp/lc3OgV22r2HG0d5MWcRrBT4AQO37Ik0f/ipKM4ms7EGQZWtOWfVL8chWi4g/WO5Ku9KquBFVbSyoeon9icRu+fNO/fD2YIf7Kgx9Sw+4evt53pDWBRLO1qnzrMRi+j4itWCBzwjTx649/efgoZ/7x0bTx00htSHUbvaY=
+	t=1712829980; cv=none; b=Xac2xJKiCR3T6a0pIMUYlLD8LSLYLpoe78/y0CDA2mXNw0qUVHfIu6d/9Cc5Q7aN5MixnB/mVfeJcu6ArlAn2sNuIKI5ISZsoBeqM6gKxrrmvE8R4ikXu0RHqjH7nAnFrV6lUXaYsv4U4w7Z8rz1Hv2j0YMgtueXqgVgo3hK4tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832319; c=relaxed/simple;
-	bh=es7f6j1A8BBBGs49+th/6vf+VlPDEKCjxmpxcWVpeLk=;
+	s=arc-20240116; t=1712829980; c=relaxed/simple;
+	bh=nlUTp/O79DLUsaC/AM/cIJrhs8qzpMFsVeGOpAT0kT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qn5g3LaIo7IRvYm6X2V9jyBic443InP6ysrHHh4Q5Ydj3ujW7px+XcTFKVVMGdgap3gYOzQ2ZJIHTjBmfi7DJgy9EN/iEoFzdDhTIBCuApZPNX2qitkO4l5ufbJgQv0mNIZHOqk7B617rJAkFBp5yXtLeAdhS0l++/IVlAiNQSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5Zx9vav; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5875EC433F1;
-	Thu, 11 Apr 2024 10:45:18 +0000 (UTC)
+	 MIME-Version; b=g1AOWUfzfNi6MV4rvBTZY0DBBggcJMDzANXGBwCwRvXLEAhAyEpIKiqWLt1QeiJuXMbqQWblb3GK3agxO14TQec6tg6EgNcqUp4//hNMX/inPIs5TIp5V+YSh/xzwtazE2Z034GMQ0keL2BfDMGXeqHANwsbkwPXuNptffjJDUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLT4+a4a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEC2C433C7;
+	Thu, 11 Apr 2024 10:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832318;
-	bh=es7f6j1A8BBBGs49+th/6vf+VlPDEKCjxmpxcWVpeLk=;
+	s=korg; t=1712829980;
+	bh=nlUTp/O79DLUsaC/AM/cIJrhs8qzpMFsVeGOpAT0kT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A5Zx9vavof4aQz9DsABd3rZXMSApp2VjnXlox/lAPffcltSuYWfOBoLCgv6PNgfng
-	 XOR2AmsY2I0nWolSxxI8SVLxomtSB8HJ1RC/bZclLQxmEtCjspYaZn7kHam6tIHKW/
-	 dmcWJ6Qg85Fztds+DpB9tv32FTHRPbnHcnK3JMG0=
+	b=LLT4+a4azQxth8m7VqZe4LMd7mfIChvYSWu5DZehhTU2YuOsGkwkYlxJM4xGnrSZT
+	 RCo2UKiD8vu/4HTiZOV7cPykzv0BYXBGGqVk8itddmXV1nc02JLecVcQmlA6BxM//b
+	 +myuz34hXaSNylIvKfp8JXpUY2aJ0oQPi4WfKbzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 01/83] wifi: ath9k: fix LNA selection in ath_ant_try_scan()
-Date: Thu, 11 Apr 2024 11:56:33 +0200
-Message-ID: <20240411095412.719514169@linuxfoundation.org>
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 4.19 171/175] Bluetooth: btintel: Fixe build regression
+Date: Thu, 11 Apr 2024 11:56:34 +0200
+Message-ID: <20240411095424.712124322@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +58,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit d6b27eb997ef9a2aa51633b3111bc4a04748e6d3 ]
+commit 6e62ebfb49eb65bdcbfc5797db55e0ce7f79c3dd upstream.
 
-In 'ath_ant_try_scan()', (most likely) the 2nd LNA's signal
-strength should be used in comparison against RSSI when
-selecting first LNA as the main one. Compile tested only.
+This fixes the following build regression:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+drivers-bluetooth-btintel.c-btintel_read_version()-warn:
+passing-zero-to-PTR_ERR
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20231211172502.25202-1-dmantipov@yandex.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b79e04091010 ("Bluetooth: btintel: Fix null ptr deref in btintel_read_version")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath9k/antenna.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btintel.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/antenna.c b/drivers/net/wireless/ath/ath9k/antenna.c
-index 988222cea9dfe..acc84e6711b0e 100644
---- a/drivers/net/wireless/ath/ath9k/antenna.c
-+++ b/drivers/net/wireless/ath/ath9k/antenna.c
-@@ -643,7 +643,7 @@ static void ath_ant_try_scan(struct ath_ant_comb *antcomb,
- 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
- 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_PLUS_LNA2;
- 			} else if (antcomb->rssi_sub >
--				   antcomb->rssi_lna1) {
-+				   antcomb->rssi_lna2) {
- 				/* set to A-B */
- 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
- 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_MINUS_LNA2;
--- 
-2.43.0
-
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -355,13 +355,13 @@ int btintel_read_version(struct hci_dev
+ 	struct sk_buff *skb;
+ 
+ 	skb = __hci_cmd_sync(hdev, 0xfc05, 0, NULL, HCI_CMD_TIMEOUT);
+-	if (IS_ERR_OR_NULL(skb)) {
++	if (IS_ERR(skb)) {
+ 		bt_dev_err(hdev, "Reading Intel version information failed (%ld)",
+ 			   PTR_ERR(skb));
+ 		return PTR_ERR(skb);
+ 	}
+ 
+-	if (skb->len != sizeof(*ver)) {
++	if (!skb || skb->len != sizeof(*ver)) {
+ 		bt_dev_err(hdev, "Intel version event size mismatch");
+ 		kfree_skb(skb);
+ 		return -EILSEQ;
 
 
 
