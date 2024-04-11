@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D33A8A0EEB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:19:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B50408A1104
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEB7D1C20A94
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:19:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F5111F2D0A9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F39814600E;
-	Thu, 11 Apr 2024 10:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3602E14600E;
+	Thu, 11 Apr 2024 10:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CqBW1V/x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4VpRmV8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AE4140E3D;
-	Thu, 11 Apr 2024 10:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E894213C9A5;
+	Thu, 11 Apr 2024 10:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830748; cv=none; b=HwdlYLiAciY1abCWwQTsUw9InreQJ2PgfSMfKA4w3/bKBnlXAD08mdjyKEIq+1v0xrbHyZ1XXsTsAVw0ELLMOEqKV5h6UhZpYbZfnXTltc0FoBvx4QX9VNEfi1nfxI2vpX5JPI2spJPRTvjXYLk5xEBZVALqKhx/aeO4Of9TMvk=
+	t=1712831972; cv=none; b=O4uCCrVatBzu2cZk/BYSqSOiblepMLecb+FmLAIL47Wnf1G9o7ieFd/tNhYGSsPO0Yiol576bnk48dcEgSdALz5yDBFJKKR8hSXlGdJYgTQYqjd1Uyvstm/9mlfALifMOVmAL3rw60HcR1JV3S1GnBpw9RgX0ke1olhdPReFUt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830748; c=relaxed/simple;
-	bh=aCm8vlfm8Q4BfvMgszpYtKzYPeZof52XI8PMueq0wb8=;
+	s=arc-20240116; t=1712831972; c=relaxed/simple;
+	bh=o0NBpHlgnfmwJMTBRiBQ0Y8yoHJX6qNpnOd9TgxzAHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NLvzF6Dku0DWo6S8ahMsideFSCJBpSE805bRap9Gj1TPfmsSsiz8nZJijCvAOrbwKInX4SMKqC8TrsGLfS0jqLAgtZ+iUUjBdrPgeXprxWGmTnnWaVTo4MGmU0DoNIOmyqYHgH+RPc+3pWtYnppLF7D24Xb1GuBFuthKASknQow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CqBW1V/x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68419C433C7;
-	Thu, 11 Apr 2024 10:19:07 +0000 (UTC)
+	 MIME-Version; b=KNmJn8XpnpAd2lR2THw3b32bcAcHmTbuhLI1LNrefu4n5aeapGUGlQrCWyjE7CnvxHmUYmx5plFNFmngAOF8HHGa0YXWMyom93RonJkd+YPowyoysbTPYf1FW8Vcz+1SlJy5WIx22V/eWZ4qD3XB65V7O5pKDsOJdD3h1CnGE78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4VpRmV8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5B7C433C7;
+	Thu, 11 Apr 2024 10:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830747;
-	bh=aCm8vlfm8Q4BfvMgszpYtKzYPeZof52XI8PMueq0wb8=;
+	s=korg; t=1712831971;
+	bh=o0NBpHlgnfmwJMTBRiBQ0Y8yoHJX6qNpnOd9TgxzAHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CqBW1V/xH/lCGoNbSYz0NcqYhrs3NfYg8yjPvopot03WJnOsYxrzYEzTK5p07ajXe
-	 8BZflj0EzZgPz7heAprY13y5hTo72LxW/G6s7KRpsuWeDaZErHMUfT6OwLLC7i7RXm
-	 meCftIYzxjMe0Nl/IqsKmXG5oE6dyk40RyGqJKyI=
+	b=K4VpRmV8KFwyOx2HN3Z5N5KdB6eZAo8/jH4qqMLETWVzjA0Rra4BgOLwG7ntm28MW
+	 DH6vSbETlOTiiUMkkflAFan+NjzudeIUy/moqGujriAo/aqMSOhr8LcKlG8HrWYMMT
+	 mdLENhN4CVHtsSFs/+nsKq8N5/P5K6ktLQMP7VnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martijn Coenen <maco@android.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Genjian Zhang <zhanggenjian@kylinos.cn>
-Subject: [PATCH 5.4 103/215] loop: Factor out configuring loop from status
+	Yang Jihong <yangjihong1@huawei.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 5.10 149/294] perf/core: Fix reentry problem in perf_output_read_group()
 Date: Thu, 11 Apr 2024 11:55:12 +0200
-Message-ID: <20240411095428.007599584@linuxfoundation.org>
+Message-ID: <20240411095440.138711648@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,178 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martijn Coenen <maco@android.com>
+From: Yang Jihong <yangjihong1@huawei.com>
 
-[ Upstream commit 0c3796c244598122a5d59d56f30d19390096817f ]
+commit 6b959ba22d34ca793ffdb15b5715457c78e38b1a upstream.
 
-Factor out this code into a separate function, so it can be reused by
-other code more easily.
+perf_output_read_group may respond to IPI request of other cores and invoke
+__perf_install_in_context function. As a result, hwc configuration is modified.
+causing inconsistency and unexpected consequences.
 
-Signed-off-by: Martijn Coenen <maco@android.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
+Interrupts are not disabled when perf_output_read_group reads PMU counter.
+In this case, IPI request may be received from other cores.
+As a result, PMU configuration is modified and an error occurs when
+reading PMU counter:
+
+		     CPU0                                         CPU1
+						      __se_sys_perf_event_open
+							perf_install_in_context
+  perf_output_read_group                                  smp_call_function_single
+    for_each_sibling_event(sub, leader) {                   generic_exec_single
+      if ((sub != event) &&                                   remote_function
+	  (sub->state == PERF_EVENT_STATE_ACTIVE))                    |
+  <enter IPI handler: __perf_install_in_context>   <----RAISE IPI-----+
+  __perf_install_in_context
+    ctx_resched
+      event_sched_out
+	armpmu_del
+	  ...
+	  hwc->idx = -1; // event->hwc.idx is set to -1
+  ...
+  <exit IPI>
+	      sub->pmu->read(sub);
+		armpmu_read
+		  armv8pmu_read_counter
+		    armv8pmu_read_hw_counter
+		      int idx = event->hw.idx; // idx = -1
+		      u64 val = armv8pmu_read_evcntr(idx);
+			u32 counter = ARMV8_IDX_TO_COUNTER(idx); // invalid counter = 30
+			read_pmevcntrn(counter) // undefined instruction
+
+Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20220902082918.179248-1-yangjihong1@huawei.com
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/loop.c |  117 +++++++++++++++++++++++++++++----------------------
- 1 file changed, 67 insertions(+), 50 deletions(-)
+ kernel/events/core.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -1258,75 +1258,43 @@ static int loop_clr_fd(struct loop_devic
- 	return __loop_clr_fd(lo, false);
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6890,9 +6890,16 @@ static void perf_output_read_group(struc
+ {
+ 	struct perf_event *leader = event->group_leader, *sub;
+ 	u64 read_format = event->attr.read_format;
++	unsigned long flags;
+ 	u64 values[6];
+ 	int n = 0;
+ 
++	/*
++	 * Disabling interrupts avoids all counter scheduling
++	 * (context switches, timer based rotation and IPIs).
++	 */
++	local_irq_save(flags);
++
+ 	values[n++] = 1 + leader->nr_siblings;
+ 
+ 	if (read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
+@@ -6928,6 +6935,8 @@ static void perf_output_read_group(struc
+ 
+ 		__output_copy(handle, values, n * sizeof(u64));
+ 	}
++
++	local_irq_restore(flags);
  }
  
-+/**
-+ * loop_set_status_from_info - configure device from loop_info
-+ * @lo: struct loop_device to configure
-+ * @info: struct loop_info64 to configure the device with
-+ *
-+ * Configures the loop device parameters according to the passed
-+ * in loop_info64 configuration.
-+ */
- static int
--loop_set_status(struct loop_device *lo, const struct loop_info64 *info)
-+loop_set_status_from_info(struct loop_device *lo,
-+			  const struct loop_info64 *info)
- {
- 	int err;
- 	struct loop_func_table *xfer;
- 	kuid_t uid = current_uid();
--	struct block_device *bdev;
--	bool partscan = false;
--	bool size_changed = false;
- 
--	err = mutex_lock_killable(&loop_ctl_mutex);
--	if (err)
--		return err;
--	if (lo->lo_encrypt_key_size &&
--	    !uid_eq(lo->lo_key_owner, uid) &&
--	    !capable(CAP_SYS_ADMIN)) {
--		err = -EPERM;
--		goto out_unlock;
--	}
--	if (lo->lo_state != Lo_bound) {
--		err = -ENXIO;
--		goto out_unlock;
--	}
--	if ((unsigned int) info->lo_encrypt_key_size > LO_KEY_SIZE) {
--		err = -EINVAL;
--		goto out_unlock;
--	}
--
--	if (lo->lo_offset != info->lo_offset ||
--	    lo->lo_sizelimit != info->lo_sizelimit) {
--		size_changed = true;
--		sync_blockdev(lo->lo_device);
--		invalidate_bdev(lo->lo_device);
--	}
--
--	/* I/O need to be drained during transfer transition */
--	blk_mq_freeze_queue(lo->lo_queue);
--
--	if (size_changed && lo->lo_device->bd_inode->i_mapping->nrpages) {
--		/* If any pages were dirtied after invalidate_bdev(), try again */
--		err = -EAGAIN;
--		pr_warn("%s: loop%d (%s) has still dirty pages (nrpages=%lu)\n",
--			__func__, lo->lo_number, lo->lo_file_name,
--			lo->lo_device->bd_inode->i_mapping->nrpages);
--		goto out_unfreeze;
--	}
-+	if ((unsigned int) info->lo_encrypt_key_size > LO_KEY_SIZE)
-+		return -EINVAL;
- 
- 	err = loop_release_xfer(lo);
- 	if (err)
--		goto out_unfreeze;
-+		return err;
- 
- 	if (info->lo_encrypt_type) {
- 		unsigned int type = info->lo_encrypt_type;
- 
--		if (type >= MAX_LO_CRYPT) {
--			err = -EINVAL;
--			goto out_unfreeze;
--		}
-+		if (type >= MAX_LO_CRYPT)
-+			return -EINVAL;
- 		xfer = xfer_funcs[type];
--		if (xfer == NULL) {
--			err = -EINVAL;
--			goto out_unfreeze;
--		}
-+		if (xfer == NULL)
-+			return -EINVAL;
- 	} else
- 		xfer = NULL;
- 
- 	err = loop_init_xfer(lo, xfer, info);
- 	if (err)
--		goto out_unfreeze;
-+		return err;
- 
- 	lo->lo_offset = info->lo_offset;
- 	lo->lo_sizelimit = info->lo_sizelimit;
-@@ -1353,6 +1321,55 @@ loop_set_status(struct loop_device *lo,
- 		lo->lo_key_owner = uid;
- 	}
- 
-+	return 0;
-+}
-+
-+static int
-+loop_set_status(struct loop_device *lo, const struct loop_info64 *info)
-+{
-+	int err;
-+	struct block_device *bdev;
-+	kuid_t uid = current_uid();
-+	bool partscan = false;
-+	bool size_changed = false;
-+
-+	err = mutex_lock_killable(&loop_ctl_mutex);
-+	if (err)
-+		return err;
-+	if (lo->lo_encrypt_key_size &&
-+	    !uid_eq(lo->lo_key_owner, uid) &&
-+	    !capable(CAP_SYS_ADMIN)) {
-+		err = -EPERM;
-+		goto out_unlock;
-+	}
-+	if (lo->lo_state != Lo_bound) {
-+		err = -ENXIO;
-+		goto out_unlock;
-+	}
-+
-+	if (lo->lo_offset != info->lo_offset ||
-+	    lo->lo_sizelimit != info->lo_sizelimit) {
-+		size_changed = true;
-+		sync_blockdev(lo->lo_device);
-+		invalidate_bdev(lo->lo_device);
-+	}
-+
-+	/* I/O need to be drained during transfer transition */
-+	blk_mq_freeze_queue(lo->lo_queue);
-+
-+	if (size_changed && lo->lo_device->bd_inode->i_mapping->nrpages) {
-+		/* If any pages were dirtied after invalidate_bdev(), try again */
-+		err = -EAGAIN;
-+		pr_warn("%s: loop%d (%s) has still dirty pages (nrpages=%lu)\n",
-+			__func__, lo->lo_number, lo->lo_file_name,
-+			lo->lo_device->bd_inode->i_mapping->nrpages);
-+		goto out_unfreeze;
-+	}
-+
-+	err = loop_set_status_from_info(lo, info);
-+	if (err)
-+		goto out_unfreeze;
-+
- 	if (size_changed) {
- 		loff_t new_size = get_size(lo->lo_offset, lo->lo_sizelimit,
- 					   lo->lo_backing_file);
+ #define PERF_FORMAT_TOTAL_TIMES (PERF_FORMAT_TOTAL_TIME_ENABLED|\
 
 
 
