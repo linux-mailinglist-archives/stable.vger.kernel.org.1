@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-39002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394838A1168
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 641758A11B5
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:46:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 694C01C23AC6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA904B21CDC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01BA145323;
-	Thu, 11 Apr 2024 10:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA2A1474BC;
+	Thu, 11 Apr 2024 10:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seRpWIXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+24cxfX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFDF64CC0;
-	Thu, 11 Apr 2024 10:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052701474B5;
+	Thu, 11 Apr 2024 10:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832227; cv=none; b=dEWyKy9iVKN26WTls80rt12Lv5gjbfmCMsWpegaixqEHs+nlUh6AkZY+Ogh35Mpp064rjGimUMCYZ+CFU1KaciZgv8slPlUOZtUGTLKL/g4BtQfZAEfYm9KuAMy2gdjDtp+/PBvi2HvpH6lU0zRzY2Ybjo8ABbpGlW8BmFQhx6E=
+	t=1712832399; cv=none; b=PKJ2quoAb6fkGAhZfJOBupy58b92ztUMQPxjSTYwyg6pBCVJmR8ESgrKbN+b//wYjA2zmB9GHAMf+V7tScBBSf3NmMf4b1MPjrNn6+9dJJZ12D4Z1KHt7fo2Nl6AoO4JItdHRYhLpr0JyZCG+rdNedTEu+LvxmQdL0rcigcOUYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832227; c=relaxed/simple;
-	bh=/Iym9cN4VxmCTfsMdNjt1evcDdHDwptUd0ibpJiYXUA=;
+	s=arc-20240116; t=1712832399; c=relaxed/simple;
+	bh=Kco5JMaFjAUoRVsbHooKLRG7iyL1zEzyTf3O5I/9YO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a+LgYAh1StuPbLYH4tjxv/t1dPmXV0gCT6iYHcvJFqdV4pUPBW1FvU0/f/d68mnyAkSLiwTz1CK7Eeqy+9JjLtWrLn1fIa5MpLlK57u/JZxgY9XkvwKotRLsdALFe+alOqZXwYzHuF83ydRmprttuEMqri0r3rdzFW0mTao+g80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seRpWIXe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18CCC433F1;
-	Thu, 11 Apr 2024 10:43:46 +0000 (UTC)
+	 MIME-Version; b=nMuSM9hC1UUEGNuNiPVw8/sRE0+1rGGqvk8op6J4tn+isJo08z44RZwf0usM7bGmD9u4isFiu6sQmowf/Jmh2LfOJH0MO8JWrHLev/s9Zrl3euC7893rtjGIJKfrb4NIgxObCc4FSWHOK0AFQi9s5vWZkXjbL9F9Lg1Sw37qVCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+24cxfX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB7CC433F1;
+	Thu, 11 Apr 2024 10:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832227;
-	bh=/Iym9cN4VxmCTfsMdNjt1evcDdHDwptUd0ibpJiYXUA=;
+	s=korg; t=1712832398;
+	bh=Kco5JMaFjAUoRVsbHooKLRG7iyL1zEzyTf3O5I/9YO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=seRpWIXepbGch3BLnlSIGa+5gCKCvzMIDoYgfIlIM+7W5UN9t6F+uB1tUM14oak1b
-	 v3qsJi4TPHOQ+qBxIb9h1Hpep+c9pK0YlCyNnb32XpUOQYdOef6cun8zAOcJ6o1wiM
-	 k7iFDWf+3JxJ2SrWYsgK4qoHU2619ErqDzEv7qGY=
+	b=m+24cxfXSETt2zKSgXG3/MPAMWkLFROHp5xnbfLMzNrFpXlbSCXE2UtaClYIdwjYF
+	 qHKS7AnLKB0pLiZAk+UYowslgFqJNMx5gOLfL2Pv01Ja9n1VeXC+A6OD7vhRJTWJJA
+	 JcofR9vFlCXsPw2CjneFh+Hsgz75HATRtEVgCPKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Rob Herring <robh@kernel.org>
-Subject: [PATCH 5.10 234/294] of: dynamic: Synchronize of_changeset_destroy() with the devlink removals
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 05/83] wifi: rtw89: pci: enlarge RX DMA buffer to consider size of RX descriptor
 Date: Thu, 11 Apr 2024 11:56:37 +0200
-Message-ID: <20240411095442.625442809@linuxfoundation.org>
+Message-ID: <20240411095412.838345239@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-commit 8917e7385346bd6584890ed362985c219fe6ae84 upstream.
+[ Upstream commit c108b4a50dd7650941d4f4ec5c161655a73711db ]
 
-In the following sequence:
-  1) of_platform_depopulate()
-  2) of_overlay_remove()
+Hardware puts RX descriptor and packet in RX DMA buffer, so it could be
+over one buffer size if packet size is 11454, and then it will be split
+into two segments. WiFi 7 chips use larger size of RX descriptor, so
+enlarge DMA buffer size according to RX descriptor to have better
+performance and simple flow.
 
-During the step 1, devices are destroyed and devlinks are removed.
-During the step 2, OF nodes are destroyed but
-__of_changeset_entry_destroy() can raise warnings related to missing
-of_node_put():
-  ERROR: memory leak, expected refcount 1 instead of 2 ...
-
-Indeed, during the devlink removals performed at step 1, the removal
-itself releasing the device (and the attached of_node) is done by a job
-queued in a workqueue and so, it is done asynchronously with respect to
-function calls.
-When the warning is present, of_node_put() will be called but wrongly
-too late from the workqueue job.
-
-In order to be sure that any ongoing devlink removals are done before
-the of_node destruction, synchronize the of_changeset_destroy() with the
-devlink removals.
-
-Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Saravana Kannan <saravanak@google.com>
-Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240325152140.198219-3-herve.codina@bootlin.com
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240121071826.10159-5-pkshih@realtek.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/dynamic.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/wireless/realtek/rtw89/pci.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/of/dynamic.c
-+++ b/drivers/of/dynamic.c
-@@ -9,6 +9,7 @@
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
+index 179740607778a..d982c5dc0889f 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.h
++++ b/drivers/net/wireless/realtek/rtw89/pci.h
+@@ -546,7 +546,7 @@
+ #define RTW89_PCI_TXWD_NUM_MAX		512
+ #define RTW89_PCI_TXWD_PAGE_SIZE	128
+ #define RTW89_PCI_ADDRINFO_MAX		4
+-#define RTW89_PCI_RX_BUF_SIZE		11460
++#define RTW89_PCI_RX_BUF_SIZE		(11454 + 40) /* +40 for rtw89_rxdesc_long_v2 */
  
- #define pr_fmt(fmt)	"OF: " fmt
- 
-+#include <linux/device.h>
- #include <linux/of.h>
- #include <linux/spinlock.h>
- #include <linux/slab.h>
-@@ -675,6 +676,17 @@ void of_changeset_destroy(struct of_chan
- {
- 	struct of_changeset_entry *ce, *cen;
- 
-+	/*
-+	 * When a device is deleted, the device links to/from it are also queued
-+	 * for deletion. Until these device links are freed, the devices
-+	 * themselves aren't freed. If the device being deleted is due to an
-+	 * overlay change, this device might be holding a reference to a device
-+	 * node that will be freed. So, wait until all already pending device
-+	 * links are deleted before freeing a device node. This ensures we don't
-+	 * free any device node that has a non-zero reference count.
-+	 */
-+	device_link_wait_removal();
-+
- 	list_for_each_entry_safe_reverse(ce, cen, &ocs->entries, node)
- 		__of_changeset_entry_destroy(ce);
- }
+ #define RTW89_PCI_POLL_BDRAM_RST_CNT	100
+ #define RTW89_PCI_MULTITAG		8
+-- 
+2.43.0
+
 
 
 
