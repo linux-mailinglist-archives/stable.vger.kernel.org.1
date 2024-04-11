@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 706828A0EF4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:19:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA9C18A0D4B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:02:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B912284076
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:19:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 935BF285F0A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E74146586;
-	Thu, 11 Apr 2024 10:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A18145B04;
+	Thu, 11 Apr 2024 10:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0XMrx9Jd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTm0B3lZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34391140E3D;
-	Thu, 11 Apr 2024 10:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066661422C4;
+	Thu, 11 Apr 2024 10:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830774; cv=none; b=CnlRq1vN/bT45oIrLVuxVEkreqoOKXGVEm5IYfvp7jCInvdo41mRUn6nqCCBfMTFoXk9zEP0teQT2G+aeD3qM/UrLd60i2XuANQvGHqZJCBIgAA5fvQXOFUxweqR5JCEiF8VgwF15GYHrxZcgfmbjOMrchEFje8CCCO00FIh/EU=
+	t=1712829747; cv=none; b=PRA8LFFdAbE2EDMi1J+wtCl9PF9oIMwxaZTN4n6ViGbnebhdtz0iLIJY/DSmZnNAO5mYp8fv4lpKkPi80+uJZUViAeKFE0jxTry0uwqACiapa4+NJZCPhVobLQh09l4zqKwSmxq7wF1gDAE4mTk+9XoGAgEoR0oC2cBabcTFkRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830774; c=relaxed/simple;
-	bh=GL9oVYuPxfi3LLwUkIf37S1Ag54UlmwbVuAAl/uZ1dA=;
+	s=arc-20240116; t=1712829747; c=relaxed/simple;
+	bh=ixYwmUyJ/JPPUNlbOiLedbziPxfk9atXDxAr+Btknsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k++L1T3aiQT1yq9kAqKFPyXn5/+dZy3XfEPi/TDoIvm5A4ojO63Fy2k71FAFD0WpDS8aK5hBHYTvmpDRg1CBJQI7xpsKtvfaYmJybP3z5rvpZJoUlt8v/WgDd/x+yEh6Z3j9zY5Ar2SUjyC4Ab5U4T7usNm42pl/1qPJXHgyfMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0XMrx9Jd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB78C433C7;
-	Thu, 11 Apr 2024 10:19:33 +0000 (UTC)
+	 MIME-Version; b=gQ0wsWAcPyrjhhge3V5jgQi8gNb48P+oq2vyeBIXsv9+mDgVe96k0qYbTdeP+9NMtNAPg4L4ujvKJn0y5RFI6vbGLtX2HLw7n4vgm6JyXx3cp95B12+UM78T6BdgBg4/SfZ1yBo6HuLLZy7KDz5jxS4MHSA+LDwSLmra+mHS7KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTm0B3lZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA6FC433F1;
+	Thu, 11 Apr 2024 10:02:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830774;
-	bh=GL9oVYuPxfi3LLwUkIf37S1Ag54UlmwbVuAAl/uZ1dA=;
+	s=korg; t=1712829746;
+	bh=ixYwmUyJ/JPPUNlbOiLedbziPxfk9atXDxAr+Btknsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0XMrx9JdBsM3mNoUZmddDTIDZxwI6BFwPsXLx5aNz+x77goaJdzMSQxOlo6LCoDiz
-	 OOanYmpA1R6LvcHvMOJvacermeqjT0TEQHmfTx/XrF4qQ5QrGb6KgdWvwGErCmWJJJ
-	 Je3L30546/m1lut9TfbgXKNo3LY6639P146iWyL8=
+	b=fTm0B3lZhpL8Lco0v/6ucNxXpMO4yPe/duR3nk6AukbUh/PQOD2DNfuOpXRQCbTRr
+	 M6Fq8dG+yJ+HQoGNgkec1qlLNAYE4LkA5WxFs30egz7SnURHsgm+3zANPbyFI4zJFN
+	 Wm3/2igXIhJDbOSD4fDrYfrZCIIUcbFj4CJgaG14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Jihong <yangjihong1@huawei.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.4 106/215] perf/core: Fix reentry problem in perf_output_read_group()
+	Martijn Coenen <maco@android.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Genjian Zhang <zhanggenjian@kylinos.cn>
+Subject: [PATCH 4.19 092/175] loop: Factor out setting loop device size
 Date: Thu, 11 Apr 2024 11:55:15 +0200
-Message-ID: <20240411095428.097906923@linuxfoundation.org>
+Message-ID: <20240411095422.335548629@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Jihong <yangjihong1@huawei.com>
+From: Martijn Coenen <maco@android.com>
 
-commit 6b959ba22d34ca793ffdb15b5715457c78e38b1a upstream.
+[ Upstream commit 5795b6f5607f7e4db62ddea144727780cb351a9b ]
 
-perf_output_read_group may respond to IPI request of other cores and invoke
-__perf_install_in_context function. As a result, hwc configuration is modified.
-causing inconsistency and unexpected consequences.
+This code is used repeatedly.
 
-Interrupts are not disabled when perf_output_read_group reads PMU counter.
-In this case, IPI request may be received from other cores.
-As a result, PMU configuration is modified and an error occurs when
-reading PMU counter:
-
-		     CPU0                                         CPU1
-						      __se_sys_perf_event_open
-							perf_install_in_context
-  perf_output_read_group                                  smp_call_function_single
-    for_each_sibling_event(sub, leader) {                   generic_exec_single
-      if ((sub != event) &&                                   remote_function
-	  (sub->state == PERF_EVENT_STATE_ACTIVE))                    |
-  <enter IPI handler: __perf_install_in_context>   <----RAISE IPI-----+
-  __perf_install_in_context
-    ctx_resched
-      event_sched_out
-	armpmu_del
-	  ...
-	  hwc->idx = -1; // event->hwc.idx is set to -1
-  ...
-  <exit IPI>
-	      sub->pmu->read(sub);
-		armpmu_read
-		  armv8pmu_read_counter
-		    armv8pmu_read_hw_counter
-		      int idx = event->hw.idx; // idx = -1
-		      u64 val = armv8pmu_read_evcntr(idx);
-			u32 counter = ARMV8_IDX_TO_COUNTER(idx); // invalid counter = 30
-			read_pmevcntrn(counter) // undefined instruction
-
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20220902082918.179248-1-yangjihong1@huawei.com
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Martijn Coenen <maco@android.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/block/loop.c |   30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6372,9 +6372,16 @@ static void perf_output_read_group(struc
- {
- 	struct perf_event *leader = event->group_leader, *sub;
- 	u64 read_format = event->attr.read_format;
-+	unsigned long flags;
- 	u64 values[6];
- 	int n = 0;
- 
-+	/*
-+	 * Disabling interrupts avoids all counter scheduling
-+	 * (context switches, timer based rotation and IPIs).
-+	 */
-+	local_irq_save(flags);
-+
- 	values[n++] = 1 + leader->nr_siblings;
- 
- 	if (read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
-@@ -6410,6 +6417,8 @@ static void perf_output_read_group(struc
- 
- 		__output_copy(handle, values, n * sizeof(u64));
- 	}
-+
-+	local_irq_restore(flags);
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -225,20 +225,35 @@ static void __loop_update_dio(struct loo
+ 	blk_mq_unfreeze_queue(lo->lo_queue);
  }
  
- #define PERF_FORMAT_TOTAL_TIMES (PERF_FORMAT_TOTAL_TIME_ENABLED|\
++/**
++ * loop_set_size() - sets device size and notifies userspace
++ * @lo: struct loop_device to set the size for
++ * @size: new size of the loop device
++ *
++ * Callers must validate that the size passed into this function fits into
++ * a sector_t, eg using loop_validate_size()
++ */
++static void loop_set_size(struct loop_device *lo, loff_t size)
++{
++	struct block_device *bdev = lo->lo_device;
++
++	set_capacity(lo->lo_disk, size);
++	bd_set_size(bdev, size << SECTOR_SHIFT);
++	/* let user-space know about the new size */
++	kobject_uevent(&disk_to_dev(bdev->bd_disk)->kobj, KOBJ_CHANGE);
++}
++
+ static void
+ figure_loop_size(struct loop_device *lo, loff_t offset, loff_t sizelimit)
+ {
+ 	loff_t size = get_size(offset, sizelimit, lo->lo_backing_file);
+-	struct block_device *bdev = lo->lo_device;
+ 
+ 	if (lo->lo_offset != offset)
+ 		lo->lo_offset = offset;
+ 	if (lo->lo_sizelimit != sizelimit)
+ 		lo->lo_sizelimit = sizelimit;
+-	set_capacity(lo->lo_disk, size);
+-	bd_set_size(bdev, (loff_t)get_capacity(bdev->bd_disk) << 9);
+-	/* let user-space know about the new size */
+-	kobject_uevent(&disk_to_dev(bdev->bd_disk)->kobj, KOBJ_CHANGE);
++
++	loop_set_size(lo, size);
+ }
+ 
+ static inline int
+@@ -992,11 +1007,8 @@ static int loop_set_fd(struct loop_devic
+ 		blk_queue_write_cache(lo->lo_queue, true, false);
+ 
+ 	loop_update_dio(lo);
+-	set_capacity(lo->lo_disk, size);
+-	bd_set_size(bdev, size << 9);
+ 	loop_sysfs_init(lo);
+-	/* let user-space know about the new size */
+-	kobject_uevent(&disk_to_dev(bdev->bd_disk)->kobj, KOBJ_CHANGE);
++	loop_set_size(lo, size);
+ 
+ 	set_blocksize(bdev, S_ISBLK(inode->i_mode) ?
+ 		      block_size(inode->i_bdev) : PAGE_SIZE);
 
 
 
