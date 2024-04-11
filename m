@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-38487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC8D8A0EDE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:18:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF5A8A10A7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFBD41C215F1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:18:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A8751C23CB0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6030E14601B;
-	Thu, 11 Apr 2024 10:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA231474C4;
+	Thu, 11 Apr 2024 10:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYzwdn0N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mt4Z4Gcl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA8B145B0E;
-	Thu, 11 Apr 2024 10:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FCF13C9A5;
+	Thu, 11 Apr 2024 10:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830719; cv=none; b=BTvtUjGAQElOpiwle5HFrXt2Z8DNcHZAwodWW36HCiQhWDiZecZNpvwAbOMrmdGDyR3MvR3/WNd4b52O25/HZcAWUS05DcezsXiGSzGtR55rkudWc/ek8h5Lkyx8By7Ucoh6p44r+Nm1kw1x2ZNdSis+2mb49C2uJMxu93t/8Qk=
+	t=1712831747; cv=none; b=g4G290NiARMA/qtxTx0/o48sAKA/s+cs2itkWbN9QPC9C693PBEEuxfGe0peuGemcdLS66k3GQVq8aiNr+1isr5C6uvh3Up+sP01E4TlzG7SbNDSL3yqLe6HDZzbdWYQH2dJpB2/A+olg6nB3YTGut6ME6LX3/Iisq9j+cxRiYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830719; c=relaxed/simple;
-	bh=16xKpX3Wkk+z2TX9wUCjbyzkJxs8l9hXi/o9vA/9n2Q=;
+	s=arc-20240116; t=1712831747; c=relaxed/simple;
+	bh=ZUKE7zLJ9iv3zWzyha72+drnzsuFaXujV64aR6VdBgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZRumou5vNVU9az8vja/5RJ9y8Yk9lBC/MF4t+kYOXM6I2YeMlV4kNQkmGDB+XAQZ71JSAVLCubNc1X3gZToKz3jkRErdnpfl+4ixZRnj7CfQU8lJiZDOBqVVETBccTNPFBUTEVH313ZMhTRS/km5LNC95yuvwVsLe6uRmQN2H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYzwdn0N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359A0C433F1;
-	Thu, 11 Apr 2024 10:18:38 +0000 (UTC)
+	 MIME-Version; b=g9N3/K5IsOj3SZeHdwkFQlG5tw89GRn2i5TQkEAgxFHrSCrLbjXnlFWyJfdmZIa0tu+tUJ+aGbl5jvW/yTGMREelkF5EbOggfMu2pVVNFsZnZmCt+IPWhHBRkm+8foa6z6IXy7CUpY2PfvXeWpnPz1m3MlPif3m+ONJEGYIO8YA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mt4Z4Gcl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F9BC433F1;
+	Thu, 11 Apr 2024 10:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830718;
-	bh=16xKpX3Wkk+z2TX9wUCjbyzkJxs8l9hXi/o9vA/9n2Q=;
+	s=korg; t=1712831747;
+	bh=ZUKE7zLJ9iv3zWzyha72+drnzsuFaXujV64aR6VdBgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hYzwdn0N2XrvDO6uHetZlWClD1U3YsulHtsJNApqYgYa6RAyTsGuWr7rnLAOEH672
-	 qs0hhFI+EJyrMpA7m2VVlQjuR3Y2GAj6isBL8Bg8wu08oelmX5Xjxf+GwOmSwHAmmL
-	 Pk0obHDWGFMEmrYKhdwgbxMV7vfAVLDmy7Ncvq28=
+	b=mt4Z4Gclc3qP+G/HKhX6G/2n7y3RJEl197gLPOYoXeQwF6dyAYRUyIbOffxs+QrQV
+	 YozIRP+nloNqlb0YFPDR02GLkMbYngWyYsUL5j4Xzfopeys8Sq76UhaO9lRlwOO5uc
+	 2hlCtSj099SwJ4HjyA4aD2jwazGzSFP+ButtiBbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Steffen Trumtrar <s.trumtrar@pengutronix.de>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Camelia Groza <camelia.groza@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Xu Wang <vulab@iscas.ac.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 067/215] soc: fsl: qbman: Use raw spinlock for cgr_lock
+Subject: [PATCH 5.10 113/294] vxge: remove unnecessary cast in kfree()
 Date: Thu, 11 Apr 2024 11:54:36 +0200
-Message-ID: <20240411095426.913356990@linuxfoundation.org>
+Message-ID: <20240411095439.070982337@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,134 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Xu Wang <vulab@iscas.ac.cn>
 
-[ Upstream commit fbec4e7fed89b579f2483041fabf9650fb0dd6bc ]
+[ Upstream commit b6bf4776d9e2ed4b2552d1c252fff8de3786309a ]
 
-smp_call_function always runs its callback in hard IRQ context, even on
-PREEMPT_RT, where spinlocks can sleep. So we need to use a raw spinlock
-for cgr_lock to ensure we aren't waiting on a sleeping task.
+Remove unnecessary cast in the argument to kfree.
 
-Although this bug has existed for a while, it was not apparent until
-commit ef2a8d5478b9 ("net: dpaa: Adjust queue depth on rate change")
-which invokes smp_call_function_single via qman_update_cgr_safe every
-time a link goes up or down.
-
-Fixes: 96f413f47677 ("soc/fsl/qbman: fix issue in qman_delete_cgr_safe()")
-CC: stable@vger.kernel.org
-Reported-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Closes: https://lore.kernel.org/all/20230323153935.nofnjucqjqnz34ej@skbuf/
-Reported-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Closes: https://lore.kernel.org/linux-arm-kernel/87wmsyvclu.fsf@pengutronix.de/
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Camelia Groza <camelia.groza@nxp.com>
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20201023085533.4792-1-vulab@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: e3f269ed0acc ("x86/pm: Work around false positive kmemleak report in msr_build_context()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qbman/qman.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/neterion/vxge/vxge-config.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
-index 52327f0dab986..5144b8c66ac46 100644
---- a/drivers/soc/fsl/qbman/qman.c
-+++ b/drivers/soc/fsl/qbman/qman.c
-@@ -996,7 +996,7 @@ struct qman_portal {
- 	/* linked-list of CSCN handlers. */
- 	struct list_head cgr_cbs;
- 	/* list lock */
--	spinlock_t cgr_lock;
-+	raw_spinlock_t cgr_lock;
- 	struct work_struct congestion_work;
- 	struct work_struct mr_work;
- 	char irqname[MAX_IRQNAME];
-@@ -1286,7 +1286,7 @@ static int qman_create_portal(struct qman_portal *portal,
- 		/* if the given mask is NULL, assume all CGRs can be seen */
- 		qman_cgrs_fill(&portal->cgrs[0]);
- 	INIT_LIST_HEAD(&portal->cgr_cbs);
--	spin_lock_init(&portal->cgr_lock);
-+	raw_spin_lock_init(&portal->cgr_lock);
- 	INIT_WORK(&portal->congestion_work, qm_congestion_task);
- 	INIT_WORK(&portal->mr_work, qm_mr_process_task);
- 	portal->bits = 0;
-@@ -1461,11 +1461,14 @@ static void qm_congestion_task(struct work_struct *work)
- 	union qm_mc_result *mcr;
- 	struct qman_cgr *cgr;
+diff --git a/drivers/net/ethernet/neterion/vxge/vxge-config.c b/drivers/net/ethernet/neterion/vxge/vxge-config.c
+index f5d48d7c4ce28..da48dd85770c0 100644
+--- a/drivers/net/ethernet/neterion/vxge/vxge-config.c
++++ b/drivers/net/ethernet/neterion/vxge/vxge-config.c
+@@ -1121,7 +1121,7 @@ static void __vxge_hw_blockpool_destroy(struct __vxge_hw_blockpool *blockpool)
  
--	spin_lock_irq(&p->cgr_lock);
-+	/*
-+	 * FIXME: QM_MCR_TIMEOUT is 10ms, which is too long for a raw spinlock!
-+	 */
-+	raw_spin_lock_irq(&p->cgr_lock);
- 	qm_mc_start(&p->p);
- 	qm_mc_commit(&p->p, QM_MCC_VERB_QUERYCONGESTION);
- 	if (!qm_mc_result_timeout(&p->p, &mcr)) {
--		spin_unlock_irq(&p->cgr_lock);
-+		raw_spin_unlock_irq(&p->cgr_lock);
- 		dev_crit(p->config->dev, "QUERYCONGESTION timeout\n");
- 		qman_p_irqsource_add(p, QM_PIRQ_CSCI);
- 		return;
-@@ -1481,7 +1484,7 @@ static void qm_congestion_task(struct work_struct *work)
- 	list_for_each_entry(cgr, &p->cgr_cbs, node)
- 		if (cgr->cb && qman_cgrs_get(&c, cgr->cgrid))
- 			cgr->cb(p, cgr, qman_cgrs_get(&rr, cgr->cgrid));
--	spin_unlock_irq(&p->cgr_lock);
-+	raw_spin_unlock_irq(&p->cgr_lock);
- 	qman_p_irqsource_add(p, QM_PIRQ_CSCI);
- }
+ 	list_for_each_safe(p, n, &blockpool->free_entry_list) {
+ 		list_del(&((struct __vxge_hw_blockpool_entry *)p)->item);
+-		kfree((void *)p);
++		kfree(p);
+ 	}
  
-@@ -2438,7 +2441,7 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
- 	preempt_enable();
- 
- 	cgr->chan = p->config->channel;
--	spin_lock_irq(&p->cgr_lock);
-+	raw_spin_lock_irq(&p->cgr_lock);
- 
- 	if (opts) {
- 		struct qm_mcc_initcgr local_opts = *opts;
-@@ -2475,7 +2478,7 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
- 	    qman_cgrs_get(&p->cgrs[1], cgr->cgrid))
- 		cgr->cb(p, cgr, 1);
- out:
--	spin_unlock_irq(&p->cgr_lock);
-+	raw_spin_unlock_irq(&p->cgr_lock);
- 	put_affine_portal();
- 	return ret;
- }
-@@ -2510,7 +2513,7 @@ int qman_delete_cgr(struct qman_cgr *cgr)
- 		return -EINVAL;
- 
- 	memset(&local_opts, 0, sizeof(struct qm_mcc_initcgr));
--	spin_lock_irqsave(&p->cgr_lock, irqflags);
-+	raw_spin_lock_irqsave(&p->cgr_lock, irqflags);
- 	list_del(&cgr->node);
- 	/*
- 	 * If there are no other CGR objects for this CGRID in the list,
-@@ -2535,7 +2538,7 @@ int qman_delete_cgr(struct qman_cgr *cgr)
- 		/* add back to the list */
- 		list_add(&cgr->node, &p->cgr_cbs);
- release_lock:
--	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
-+	raw_spin_unlock_irqrestore(&p->cgr_lock, irqflags);
- 	put_affine_portal();
- 	return ret;
- }
-@@ -2575,9 +2578,9 @@ static int qman_update_cgr(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts)
- 	if (!p)
- 		return -EINVAL;
- 
--	spin_lock_irqsave(&p->cgr_lock, irqflags);
-+	raw_spin_lock_irqsave(&p->cgr_lock, irqflags);
- 	ret = qm_modify_cgr(cgr, 0, opts);
--	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
-+	raw_spin_unlock_irqrestore(&p->cgr_lock, irqflags);
- 	put_affine_portal();
- 	return ret;
- }
+ 	return;
 -- 
 2.43.0
 
