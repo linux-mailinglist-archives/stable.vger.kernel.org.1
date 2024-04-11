@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A397B8A0D1E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:00:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 439C48A0EB8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26221B26052
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:00:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D69F81F218D9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CFC3145B1D;
-	Thu, 11 Apr 2024 10:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D23146586;
+	Thu, 11 Apr 2024 10:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoNRDSqO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZBbItpV0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D2D1448EF;
-	Thu, 11 Apr 2024 10:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150A813E897;
+	Thu, 11 Apr 2024 10:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829626; cv=none; b=tH7YeevhDIRK3etWj5SzVOgr/TlOS3tspWVAhpjAG+cdEYILZ4Hsz4GlA2OOX7qJGI/WjMywXpiXXBOTCgb0fKspGehtvNpCKXNzhtC/gI5DZsMfDiJkYpDefM1LKjVyxu5G/9zM6b1I73z1BhTcM9NllvAe5ajNyM4mM8x7OtU=
+	t=1712830653; cv=none; b=HgDxliL38Nf43+wocobT7NM0lIltv1Lm4C+aq5+9FjAYZnQq2pYcpsLYQc29vBsU+ripvgpH7LN6WPQsrhTqqgb1YORTUEGwahZI1mi3VsOwYrHpALRUVYZBz16TRWtkxzFpemC+Br6MNuWKnfWAIQTmENT5/YlpOUJC/bpfCMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829626; c=relaxed/simple;
-	bh=kFcCY0jBrGth3D5oRkAw49QN2vyFEm0ffEv903LiP8M=;
+	s=arc-20240116; t=1712830653; c=relaxed/simple;
+	bh=itagJ48jM26u6sdaKymkIdmUMll1s4uBBumzZxcEc/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ah+bybXsqfl9OC9FkP4lDbJ01A2IkMJ22lJnlG5EE0tOTZnArgtlj1vMJ/b4km0akdeZPLQL5n/5HPT5u5H2f+su0PJh1R3Lplgg3S7FnlKUTKow/qLNGvfradXYK1R/2B3RAbGQwDpA8ewgxFdZSckDObQ3NOjBdhmSf/2PWss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoNRDSqO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435B0C433C7;
-	Thu, 11 Apr 2024 10:00:25 +0000 (UTC)
+	 MIME-Version; b=olIVc7qn2AMFk7BvSSm1SdMT7kt4lz5UWXB/vNUvWUS4HKKxFkSKiESfd0cYEWWhSpBaqK4kS+TAkDZ6vXL0Zxlx8Hpt1W7BsX/xoDjsIxVr3uYDluTBkou6OP0K5HHZfHEIOBl7Sr6HSaFJEsRe1iTOdKEKpRECEjiICcnDq7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZBbItpV0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CD3C433F1;
+	Thu, 11 Apr 2024 10:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829625;
-	bh=kFcCY0jBrGth3D5oRkAw49QN2vyFEm0ffEv903LiP8M=;
+	s=korg; t=1712830652;
+	bh=itagJ48jM26u6sdaKymkIdmUMll1s4uBBumzZxcEc/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZoNRDSqOOlinMtag2NcPXDTRpnosIHM5ARC90T7TrAlW/WAdhjn92WbgIEK7o7pbM
-	 TWYcMrabc7xbnOb/ZgABBd8vIAYXP/AmUmnzAlyqSSJz99ubu/SwlwlvxSexnyxFO8
-	 9jQEFpTeKhto7nDeHbUHKIA3ZFXjwBVgajnyk/ME=
+	b=ZBbItpV0oqM8r74mitlT4OAevZcNm/wvDzh9poc2XlQ0SBMFTF7Qn1hDG+ezqfpaK
+	 LDwmqzZU7F6TOO2XbYnGeLm0PwdPNMZwa39RqtVyNelUY557zu6M8cjbAAFK/CR004
+	 /fMojjvxZKy3bhq4WUugrSf1px3kLCgPwl5rbruw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Thibault <samuel.thibault@ens-lyon.org>,
+	Sean Anderson <sean.anderson@seco.com>,
+	Camelia Groza <camelia.groza@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 051/175] speakup: Fix 8bit characters from direct synth
+Subject: [PATCH 5.4 065/215] soc: fsl: qbman: Add helper for sanity checking cgr ops
 Date: Thu, 11 Apr 2024 11:54:34 +0200
-Message-ID: <20240411095421.104409121@linuxfoundation.org>
+Message-ID: <20240411095426.851569781@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Thibault <samuel.thibault@ens-lyon.org>
+From: Sean Anderson <sean.anderson@seco.com>
 
-[ Upstream commit b6c8dafc9d86eb77e502bb018ec4105e8d2fbf78 ]
+[ Upstream commit d0e17a4653cebc2c8a20251c837dd1fcec5014d9 ]
 
-When userland echoes 8bit characters to /dev/synth with e.g.
+This breaks out/combines get_affine_portal and the cgr sanity check in
+preparation for the next commit. No functional change intended.
 
-echo -e '\xe9' > /dev/synth
-
-synth_write would get characters beyond 0x7f, and thus negative when
-char is signed.  When given to synth_buffer_add which takes a u16, this
-would sign-extend and produce a U+ffxy character rather than U+xy.
-Users thus get garbled text instead of accents in their output.
-
-Let's fix this by making sure that we read unsigned characters.
-
-Signed-off-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
-Fixes: 89fc2ae80bb1 ("speakup: extend synth buffer to 16bit unicode characters")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240204155736.2oh4ot7tiaa2wpbh@begin
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+Acked-by: Camelia Groza <camelia.groza@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: fbec4e7fed89 ("soc: fsl: qbman: Use raw spinlock for cgr_lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/speakup/synth.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/soc/fsl/qbman/qman.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/staging/speakup/synth.c b/drivers/staging/speakup/synth.c
-index 3568bfb89912c..b5944e7bdbf67 100644
---- a/drivers/staging/speakup/synth.c
-+++ b/drivers/staging/speakup/synth.c
-@@ -208,8 +208,10 @@ void spk_do_flush(void)
- 	wake_up_process(speakup_task);
+diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
+index 53b4cd0fb662d..e31d33d000526 100644
+--- a/drivers/soc/fsl/qbman/qman.c
++++ b/drivers/soc/fsl/qbman/qman.c
+@@ -2481,13 +2481,8 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
  }
+ EXPORT_SYMBOL(qman_create_cgr);
  
--void synth_write(const char *buf, size_t count)
-+void synth_write(const char *_buf, size_t count)
+-int qman_delete_cgr(struct qman_cgr *cgr)
++static struct qman_portal *qman_cgr_get_affine_portal(struct qman_cgr *cgr)
  {
-+	const unsigned char *buf = (const unsigned char *) _buf;
+-	unsigned long irqflags;
+-	struct qm_mcr_querycgr cgr_state;
+-	struct qm_mcc_initcgr local_opts;
+-	int ret = 0;
+-	struct qman_cgr *i;
+ 	struct qman_portal *p = get_affine_portal();
+ 
+ 	if (cgr->chan != p->config->channel) {
+@@ -2495,10 +2490,25 @@ int qman_delete_cgr(struct qman_cgr *cgr)
+ 		dev_err(p->config->dev, "CGR not owned by current portal");
+ 		dev_dbg(p->config->dev, " create 0x%x, delete 0x%x\n",
+ 			cgr->chan, p->config->channel);
+-
+-		ret = -EINVAL;
+-		goto put_portal;
++		put_affine_portal();
++		return NULL;
+ 	}
 +
- 	while (count--)
- 		synth_buffer_add(*buf++);
- 	synth_start();
++	return p;
++}
++
++int qman_delete_cgr(struct qman_cgr *cgr)
++{
++	unsigned long irqflags;
++	struct qm_mcr_querycgr cgr_state;
++	struct qm_mcc_initcgr local_opts;
++	int ret = 0;
++	struct qman_cgr *i;
++	struct qman_portal *p = qman_cgr_get_affine_portal(cgr);
++
++	if (!p)
++		return -EINVAL;
++
+ 	memset(&local_opts, 0, sizeof(struct qm_mcc_initcgr));
+ 	spin_lock_irqsave(&p->cgr_lock, irqflags);
+ 	list_del(&cgr->node);
+@@ -2526,7 +2536,6 @@ int qman_delete_cgr(struct qman_cgr *cgr)
+ 		list_add(&cgr->node, &p->cgr_cbs);
+ release_lock:
+ 	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
+-put_portal:
+ 	put_affine_portal();
+ 	return ret;
+ }
 -- 
 2.43.0
 
