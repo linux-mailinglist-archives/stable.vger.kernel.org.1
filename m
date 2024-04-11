@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 097BE8A100D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:30:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8E318A123A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1BD41F2A312
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:30:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64E0C281D38
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B4C146D51;
-	Thu, 11 Apr 2024 10:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15BBA13BC33;
+	Thu, 11 Apr 2024 10:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xt/xFi9Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vr8GfMXU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CB7335BC;
-	Thu, 11 Apr 2024 10:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B112EAE5;
+	Thu, 11 Apr 2024 10:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831410; cv=none; b=i+p0RuixH/mg6Bfdq/Vo88IzXE7iaHoZky8p8/KDfhTPF0pF+IIsjSANkVO759lX18SqS2jTdkpdB8BBfYWEWPOdbvqx5QIQqItiuxDMWwoKGBn9s5oO4uW2joLSWyQ18J8aA2z/AOAZ3dpbfisP5BrbteULeK06afaO8DhJHWY=
+	t=1712832726; cv=none; b=I+ySbXDE7pSWx5UEmVjvXv7vaf+Ym89lDIIQ3LYPfxPy1DOqWNfOjE1F2WKCcJywoczVwRbY6VgSfpnPBc7uVr2wD6zagkpq3Ot6RNve2BO4E8Q9JAmfbkG9PmbRVbh6tEbSctEOCERc/9766UWY73d//PIuRr3Gm6OEiSjC2dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831410; c=relaxed/simple;
-	bh=C3etJO/RO/CnZhm5nSiexI7FjQ//G0JwmXr3BDOJAeE=;
+	s=arc-20240116; t=1712832726; c=relaxed/simple;
+	bh=uAkr0ySvkRYzKebrUmc3r6nFL0irOF6SAkYks9Y+6EM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=as58fV7SdTbvf/DP2W0BhivZPwKBa6dCIwHS4RjOixLZxmLpd76aXeVp8ExjD6frSfaAQDbfZxS28Oaka1FR2/G1ebdLQ5qSLS+JqrUD+OfnMP48Aqc+XT/AmAzIqU+QnAaHi22fA3jnNDXGOxJVa4/Ft4NdOdcdGgnPMA0QMRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xt/xFi9Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9F1C433F1;
-	Thu, 11 Apr 2024 10:30:09 +0000 (UTC)
+	 MIME-Version; b=AF90XdK8lt72tIWylAwr4op2v9O/EdlSRt+XQebyPVHxiay4BES8HejQmw1y7P72wmPZ0VdVdfK4sSaTBmSJmjNpCDcOQVq7Q0XWUKHXoXUSwdPLc3VD0gTLhGjcMlda79R9diT3f3KIOnM4Hnj8y4tigFwBLHx+MucmQV/H0M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vr8GfMXU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01FBEC433C7;
+	Thu, 11 Apr 2024 10:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831409;
-	bh=C3etJO/RO/CnZhm5nSiexI7FjQ//G0JwmXr3BDOJAeE=;
+	s=korg; t=1712832726;
+	bh=uAkr0ySvkRYzKebrUmc3r6nFL0irOF6SAkYks9Y+6EM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xt/xFi9Zlip2QceiuwfRVqjTzUKD86iAIYl/72Msc5jpA+TfxyJVInzXlc3WjQVH1
-	 KhT8lpeXRDfKbVfKdesNIZUqNa1MBEofLo00dFilzLDRxPvxFF7p1mZeCHPSVpFMnT
-	 6rxkTYXOOTpKMajLLjOChBlh7NK8AUr+fz2FhpFA=
+	b=vr8GfMXUXFMWhMswv7mxSBlLTE+re/2VmpaNvNTeAWCzpEWJXNPAnPyW0HWMgRXyw
+	 /2RNM+fnve9EmcuGwA8dFbtip2h1nmz+Fn32ZzEeFQ2+CD2t2KmjKI2Ab3bvD7jDHm
+	 7Kneqi3rmsjKE+Mi45mRFf+G6ysBdF7ZDQ6a5WRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 114/114] Revert "drm/amd/amdgpu: Fix potential ioremap() memory leaks in amdgpu_device_init()"
+	Serge Semin <fancer.lancer@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 13/57] net: pcs: xpcs: Return EINVAL in the internal methods
 Date: Thu, 11 Apr 2024 11:57:21 +0200
-Message-ID: <20240411095420.332814157@linuxfoundation.org>
+Message-ID: <20240411095408.394354303@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+References: <20240411095407.982258070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-commit 03c6284df179de3a4a6e0684764b1c71d2a405e2 upstream.
+[ Upstream commit f5151005d379d9ce42e327fd3b2d2aaef61cda81 ]
 
-This patch causes the following iounmap erorr and calltrace
-iounmap: bad address 00000000d0b3631f
+In particular the xpcs_soft_reset() and xpcs_do_config() functions
+currently return -1 if invalid auto-negotiation mode is specified. That
+value might be then passed to the generic kernel subsystems which require
+a standard kernel errno value. Even though the erroneous conditions are
+very specific (memory corruption or buggy driver implementation) using a
+hard-coded -1 literal doesn't seem correct anyway especially when it comes
+to passing it higher to the network subsystem or printing to the system
+log.  Convert the hard-coded error values to -EINVAL then.
 
-The original patch was unjustified because amdgpu_device_fini_sw() will
-always cleanup the rmmio mapping.
-
-This reverts commit eb4f139888f636614dab3bcce97ff61cefc4b3a7.
-
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Tested-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |   16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ drivers/net/pcs/pcs-xpcs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3639,10 +3639,8 @@ int amdgpu_device_init(struct amdgpu_dev
- 	 * early on during init and before calling to RREG32.
- 	 */
- 	adev->reset_domain = amdgpu_reset_create_reset_domain(SINGLE_DEVICE, "amdgpu-reset-dev");
--	if (!adev->reset_domain) {
--		r = -ENOMEM;
--		goto unmap_memory;
--	}
-+	if (!adev->reset_domain)
-+		return -ENOMEM;
- 
- 	/* detect hw virtualization here */
- 	amdgpu_detect_virtualization(adev);
-@@ -3652,20 +3650,20 @@ int amdgpu_device_init(struct amdgpu_dev
- 	r = amdgpu_device_get_job_timeout_settings(adev);
- 	if (r) {
- 		dev_err(adev->dev, "invalid lockup_timeout parameter syntax\n");
--		goto unmap_memory;
-+		return r;
+diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
+index 556ca98843565..ab382496c3a83 100644
+--- a/drivers/net/pcs/pcs-xpcs.c
++++ b/drivers/net/pcs/pcs-xpcs.c
+@@ -242,7 +242,7 @@ static int xpcs_soft_reset(struct dw_xpcs *xpcs,
+ 		dev = MDIO_MMD_VEND2;
+ 		break;
+ 	default:
+-		return -1;
++		return -EINVAL;
  	}
  
- 	/* early init functions */
- 	r = amdgpu_device_ip_early_init(adev);
- 	if (r)
--		goto unmap_memory;
-+		return r;
- 
- 	amdgpu_device_set_mcbp(adev);
- 
- 	/* Get rid of things like offb */
- 	r = drm_aperture_remove_conflicting_pci_framebuffers(adev->pdev, &amdgpu_kms_driver);
- 	if (r)
--		goto unmap_memory;
-+		return r;
- 
- 	/* Enable TMZ based on IP_VERSION */
- 	amdgpu_gmc_tmz_set(adev);
-@@ -3675,7 +3673,7 @@ int amdgpu_device_init(struct amdgpu_dev
- 	if (adev->gmc.xgmi.supported) {
- 		r = adev->gfxhub.funcs->get_xgmi_info(adev);
- 		if (r)
--			goto unmap_memory;
-+			return r;
+ 	ret = xpcs_write(xpcs, dev, MDIO_CTRL1, MDIO_CTRL1_RESET);
+@@ -808,7 +808,7 @@ int xpcs_do_config(struct dw_xpcs *xpcs, phy_interface_t interface,
+ 			return ret;
+ 		break;
+ 	default:
+-		return -1;
++		return -EINVAL;
  	}
  
- 	/* enable PCIE atomic ops */
-@@ -3932,8 +3930,6 @@ release_ras_con:
- failed:
- 	amdgpu_vf_error_trans_all(adev);
- 
--unmap_memory:
--	iounmap(adev->rmmio);
- 	return r;
- }
- 
+ 	if (compat->pma_config) {
+-- 
+2.43.0
+
 
 
 
