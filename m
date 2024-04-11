@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-39009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 401688A1175
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B7A08A11D0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C18A2B2361C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BB981F21626
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFF41465BF;
-	Thu, 11 Apr 2024 10:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D537146A95;
+	Thu, 11 Apr 2024 10:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9FRfx8y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rk0uVjht"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5989413DDD6;
-	Thu, 11 Apr 2024 10:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3DA14600E;
+	Thu, 11 Apr 2024 10:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832248; cv=none; b=ulZeWvnffgyS/e3Pfo0EInxvmOVITWz72FZkJKPRxZo2OkalhFoA2RH6ISAlqc+7YoCE8ZSUTPgMOUhDtbEHd3T9CS7RiSqpOeKJqBf0T7LGqbir2S89P0WUZcFqkTyJ7NFie3AdZkbJQwr/HK9UgWMBzG3EoP3cH48wdD2QY0s=
+	t=1712832442; cv=none; b=BKVGcnpDrls58ZMJBOTYotADFv5drUAqZXD9F9pWJZhAMCP+naEmDtWFNUr/AO2hBNI2aLm2eNFllkUzLVtqemKTkXBHvXZa4mZuUMvFp0iK+nUgy/OsW8/f3szkyDAnJe0mbWI5llH6yeaIs6nRo7Hd6LLYHcN5Dl/zQikQTjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832248; c=relaxed/simple;
-	bh=2yCzo7d5XcWXrJuqt89/YUYOt0Bt6oPLuzrOjiCgdqA=;
+	s=arc-20240116; t=1712832442; c=relaxed/simple;
+	bh=l9KZbiRRhulvlJhTg/YbSR38kK4xFqDVYboyOjoQlA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XPe4SBwVS9lUpvB7Q7QnFqiC7YjtgQUSQezGhcUMvsQ1pFpAYemkLMJIFLWq0j8tDQONCz4t7EgYcX3lpjEtyrBb04aB9/hQn330mYAy7vEcxCmtsQxWGOAePid+U48vaZUag8YSzMWUZh0gNtxTEcXBQkIrhLa+9uno2cEzqyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9FRfx8y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C258C433F1;
-	Thu, 11 Apr 2024 10:44:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Yzhqx0WRRwOubrjbhZHwSbQnBk1B3m/+CMy37NYQ2ItA24UVAq7+Ltoz7Bd8R32rk5ZDAdPnonmz1mMdjCbr5rkGzlakvtonqKemS6KV/Mydpmz7/yb+8ZuZfxqDQv1vmHUrdm3pTNNMxeJiHWR/Af1gkJ1WFFzk34zody2we0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rk0uVjht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46844C43390;
+	Thu, 11 Apr 2024 10:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832247;
-	bh=2yCzo7d5XcWXrJuqt89/YUYOt0Bt6oPLuzrOjiCgdqA=;
+	s=korg; t=1712832442;
+	bh=l9KZbiRRhulvlJhTg/YbSR38kK4xFqDVYboyOjoQlA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W9FRfx8y+j66O/WZ610LxdHPkCV22H9oD+aPry7gJxi9QxsK7W09qe81r/UJUHPJ1
-	 hfVMbWGgSEHmCrhg5DDUsjE5l/Exw9wu8ZJCG/X1y2M2+QhaNQtjAUaCKHZK0SSLse
-	 DE5Bm9ZhQ6Z1hfOBN2PARblnRrAeJbApAxu+3mWg=
+	b=Rk0uVjht1Gh1JPJoT2tzjwC/GFSNYqim1cAhNsw24tdVHBERaCKoBcpoByqus9yyE
+	 z426oWwhRItIjHSUhgPT6PS5WmgJQln0V/sO3WhuGip6JdMGPohHe2g1Zn3JWi3j0z
+	 F57m2s4G5v9QTIKNYIUEgPh0dHf8F2ly6hFWS/8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawei Fu <i@ibugone.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 280/294] drivers/nvme: Add quirks for device 126f:2262
+Subject: [PATCH 6.1 51/83] Input: imagis - use FIELD_GET where applicable
 Date: Thu, 11 Apr 2024 11:57:23 +0200
-Message-ID: <20240411095443.969442033@linuxfoundation.org>
+Message-ID: <20240411095414.220318172@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +60,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawei Fu (iBug) <i@ibugone.com>
+From: Duje Mihanović <duje.mihanovic@skole.hr>
 
-[ Upstream commit e89086c43f0500bc7c4ce225495b73b8ce234c1f ]
+[ Upstream commit c0ca3dbd03d66c6b9e044f48720e6ab5cef37ae5 ]
 
-This commit adds NVME_QUIRK_NO_DEEPEST_PS and NVME_QUIRK_BOGUS_NID for
-device [126f:2262], which appears to be a generic VID:PID pair used for
-many SSDs based on the Silicon Motion SM2262/SM2262EN controller.
+Instead of manually extracting certain bits from registers with binary
+ANDs and shifts, the FIELD_GET macro can be used. With this in mind, the
+*_SHIFT macros can be dropped.
 
-Two of my SSDs with this VID:PID pair exhibit the same behavior:
-
-  * They frequently have trouble exiting the deepest power state (5),
-    resulting in the entire disk unresponsive.
-    Verified by setting nvme_core.default_ps_max_latency_us=10000 and
-    observing them behaving normally.
-  * They produce all-zero nguid and eui64 with `nvme id-ns` command.
-
-The offending products are:
-
-  * HP SSD EX950 1TB
-  * HIKVISION C2000Pro 2TB
-
-Signed-off-by: Jiawei Fu <i@ibugone.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+Link: https://lore.kernel.org/r/20240306-b4-imagis-keys-v3-1-2c429afa8420@skole.hr
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/input/touchscreen/imagis.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 970a1b374a669..5242feda5471a 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3199,6 +3199,9 @@ static const struct pci_device_id nvme_id_table[] = {
- 				NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_VDEVICE(REDHAT, 0x0010),	/* Qemu emulated controller */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
-+	{ PCI_DEVICE(0x126f, 0x2262),	/* Silicon Motion generic */
-+		.driver_data = NVME_QUIRK_NO_DEEPEST_PS |
-+				NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x126f, 0x2263),	/* Silicon Motion unidentified */
- 		.driver_data = NVME_QUIRK_NO_NS_DESC_LIST, },
- 	{ PCI_DEVICE(0x1bb1, 0x0100),   /* Seagate Nytro Flash Storage */
+diff --git a/drivers/input/touchscreen/imagis.c b/drivers/input/touchscreen/imagis.c
+index b667914a44f1d..2636e1c9435d8 100644
+--- a/drivers/input/touchscreen/imagis.c
++++ b/drivers/input/touchscreen/imagis.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ 
++#include <linux/bitfield.h>
+ #include <linux/bits.h>
+ #include <linux/delay.h>
+ #include <linux/i2c.h>
+@@ -23,12 +24,9 @@
+ #define IST3038C_I2C_RETRY_COUNT	3
+ #define IST3038C_MAX_FINGER_NUM		10
+ #define IST3038C_X_MASK			GENMASK(23, 12)
+-#define IST3038C_X_SHIFT		12
+ #define IST3038C_Y_MASK			GENMASK(11, 0)
+ #define IST3038C_AREA_MASK		GENMASK(27, 24)
+-#define IST3038C_AREA_SHIFT		24
+ #define IST3038C_FINGER_COUNT_MASK	GENMASK(15, 12)
+-#define IST3038C_FINGER_COUNT_SHIFT	12
+ #define IST3038C_FINGER_STATUS_MASK	GENMASK(9, 0)
+ 
+ struct imagis_ts {
+@@ -92,8 +90,7 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
+ 		goto out;
+ 	}
+ 
+-	finger_count = (intr_message & IST3038C_FINGER_COUNT_MASK) >>
+-				IST3038C_FINGER_COUNT_SHIFT;
++	finger_count = FIELD_GET(IST3038C_FINGER_COUNT_MASK, intr_message);
+ 	if (finger_count > IST3038C_MAX_FINGER_NUM) {
+ 		dev_err(&ts->client->dev,
+ 			"finger count %d is more than maximum supported\n",
+@@ -101,7 +98,7 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
+ 		goto out;
+ 	}
+ 
+-	finger_pressed = intr_message & IST3038C_FINGER_STATUS_MASK;
++	finger_pressed = FIELD_GET(IST3038C_FINGER_STATUS_MASK, intr_message);
+ 
+ 	for (i = 0; i < finger_count; i++) {
+ 		error = imagis_i2c_read_reg(ts,
+@@ -118,12 +115,11 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
+ 		input_mt_report_slot_state(ts->input_dev, MT_TOOL_FINGER,
+ 					   finger_pressed & BIT(i));
+ 		touchscreen_report_pos(ts->input_dev, &ts->prop,
+-				       (finger_status & IST3038C_X_MASK) >>
+-						IST3038C_X_SHIFT,
+-				       finger_status & IST3038C_Y_MASK, 1);
++				       FIELD_GET(IST3038C_X_MASK, finger_status),
++				       FIELD_GET(IST3038C_Y_MASK, finger_status),
++				       true);
+ 		input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR,
+-				 (finger_status & IST3038C_AREA_MASK) >>
+-					IST3038C_AREA_SHIFT);
++				 FIELD_GET(IST3038C_AREA_MASK, finger_status));
+ 	}
+ 
+ 	input_mt_sync_frame(ts->input_dev);
 -- 
 2.43.0
 
