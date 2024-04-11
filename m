@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46BC88A0DBF
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF738A10A6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F12141F214DB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 218411F2CA6D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35374145B0D;
-	Thu, 11 Apr 2024 10:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FD71474D0;
+	Thu, 11 Apr 2024 10:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZzrsu4U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJIxyJPq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F5B145B06;
-	Thu, 11 Apr 2024 10:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CEF1474B9;
+	Thu, 11 Apr 2024 10:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830040; cv=none; b=gE+GfCvd30UVitm7F81qsudjR4qFsjEeh/biqqtHT9Z+1H4dZ5tOF3FHKYWv7axr/Mlg98INH2VgLl+k+QUBJXE1BPeJVp2vQH4f+d/kN15Z1ikCvqRQbrPHGFR6QDwd8k80iNn4M25aXHlmLzH8ovna7q9jfxkVJHElj5sKdx4=
+	t=1712831744; cv=none; b=RiBZ9KRz++o/Vr/wUbNj/b18pQzGjgtdNHD/VvdLHH9se7t5fPmuf2kSl4yIvlTfDQ6yf/J0+zlT9vDcY21pVPfrcX1B5CSkoYHzaaa+HSN5QJ269k/D1sKIx68vevxZZobwtOytuDk8BTRKFE5EOk4Gmg0w9VreqkyVZiDynp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830040; c=relaxed/simple;
-	bh=gGlz7krqbfAh5MEPedsHrl3c32TZ81GRJUq291awbSQ=;
+	s=arc-20240116; t=1712831744; c=relaxed/simple;
+	bh=+e8XLNvELddZonv6ny2jdM0bWUiA6dIO5dswj54CizM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l/xdXBceKWMp5azYsw6u/nih42SfeRcYsFEMUdDpCT6PmT3FScocxP19M3QgflRcjApKOEpwhdL1Lhckpz8ma7/dbRul03471WQRq2G9Mc9g9J+jmVe3I0t64nOF+t5hwW6sZnqeueRGNfI5UhBKDjwtWkv9773JN+3vzhwdSVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZzrsu4U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CDEC43390;
-	Thu, 11 Apr 2024 10:07:19 +0000 (UTC)
+	 MIME-Version; b=QQYW+iIjc4EHfB1vIYwYAQbXieRF/0kPmNl5iYP1OtFJD68/CxRP1YpJcuC+7k3UivbN9XbYBwQqCgH1CrwNghsSguBj7ZXA7Hre48COOLplqHnHW/Z2erkxOrmjehlkpcq+KALpI1c3a4nRNTjpPWlnIIKaWmK4KgXPkAiDjlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJIxyJPq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD226C433C7;
+	Thu, 11 Apr 2024 10:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830039;
-	bh=gGlz7krqbfAh5MEPedsHrl3c32TZ81GRJUq291awbSQ=;
+	s=korg; t=1712831744;
+	bh=+e8XLNvELddZonv6ny2jdM0bWUiA6dIO5dswj54CizM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZzrsu4UNeiuqbatiVo3iUT6GMQRPVuNPcr9S3M1sqU8ijQvxH/xXjiqaxGJj56JK
-	 Yk8FBNj5+7395cVVrT3zqFVBV/ZCKbJlnqOL61KhRu3Kmd1BBWkoD/Yh4tOY6+59O3
-	 Eaay/FbgF54UUmGzVZQxVaJh0QqR0hkTc6ayA2qg=
+	b=gJIxyJPqpGwHCRfG73k/ijU+28i66hDFptrG8S2VO3cbn69S85usViweXI3FDEYh1
+	 +DJmisC78HK3kR5rN3599Dnh+FdKiRylIFXpgmjjYqIgcCjtxufP5tHmH2vFlIWcyC
+	 /QaikQtFQN/OFU/PDpHq26MHUaGvXl4IRQjqbmQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Werner <andre.werner@systec-electronic.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	John Pittman <jpittman@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 007/143] net: phy: phy_device: Prevent nullptr exceptions on ISR
+Subject: [PATCH 5.10 112/294] dm snapshot: fix lockup in dm_exception_table_exit
 Date: Thu, 11 Apr 2024 11:54:35 +0200
-Message-ID: <20240411095421.130770667@linuxfoundation.org>
+Message-ID: <20240411095439.041700662@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Werner <andre.werner@systec-electronic.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 61c81872815f46006982bb80460c0c80a949b35b ]
+[ Upstream commit 6e7132ed3c07bd8a6ce3db4bb307ef2852b322dc ]
 
-If phydev->irq is set unconditionally, check
-for valid interrupt handler or fall back to polling mode to prevent
-nullptr exceptions in interrupt service routine.
+There was reported lockup when we exit a snapshot with many exceptions.
+Fix this by adding "cond_resched" to the loop that frees the exceptions.
 
-Signed-off-by: Andre Werner <andre.werner@systec-electronic.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240129135734.18975-2-andre.werner@systec-electronic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: John Pittman <jpittman@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_device.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/md/dm-snap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 6125418ca93f3..8efa2a136faa9 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1413,6 +1413,11 @@ int phy_sfp_probe(struct phy_device *phydev,
- }
- EXPORT_SYMBOL(phy_sfp_probe);
+diff --git a/drivers/md/dm-snap.c b/drivers/md/dm-snap.c
+index 41735a25d50aa..de73fe79640fd 100644
+--- a/drivers/md/dm-snap.c
++++ b/drivers/md/dm-snap.c
+@@ -685,8 +685,10 @@ static void dm_exception_table_exit(struct dm_exception_table *et,
+ 	for (i = 0; i < size; i++) {
+ 		slot = et->table + i;
  
-+static bool phy_drv_supports_irq(struct phy_driver *phydrv)
-+{
-+	return phydrv->config_intr && phydrv->handle_interrupt;
-+}
-+
- /**
-  * phy_attach_direct - attach a network device to a given PHY device pointer
-  * @dev: network device to attach
-@@ -1527,6 +1532,9 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 	if (phydev->dev_flags & PHY_F_NO_IRQ)
- 		phydev->irq = PHY_POLL;
+-		hlist_bl_for_each_entry_safe(ex, pos, n, slot, hash_list)
++		hlist_bl_for_each_entry_safe(ex, pos, n, slot, hash_list) {
+ 			kmem_cache_free(mem, ex);
++			cond_resched();
++		}
+ 	}
  
-+	if (!phy_drv_supports_irq(phydev->drv) && phy_interrupt_is_valid(phydev))
-+		phydev->irq = PHY_POLL;
-+
- 	/* Port is set to PORT_TP by default and the actual PHY driver will set
- 	 * it to different value depending on the PHY configuration. If we have
- 	 * the generic PHY driver we can't figure it out, thus set the old
-@@ -2992,11 +3000,6 @@ s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
- }
- EXPORT_SYMBOL(phy_get_internal_delay);
- 
--static bool phy_drv_supports_irq(struct phy_driver *phydrv)
--{
--	return phydrv->config_intr && phydrv->handle_interrupt;
--}
--
- static int phy_led_set_brightness(struct led_classdev *led_cdev,
- 				  enum led_brightness value)
- {
+ 	vfree(et->table);
 -- 
 2.43.0
 
