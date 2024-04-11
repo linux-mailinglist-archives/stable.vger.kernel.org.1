@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCE38A0F30
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:21:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25C538A0FB4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E6F01F265E4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:21:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5767D1C21645
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD51F146A64;
-	Thu, 11 Apr 2024 10:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA64145B1A;
+	Thu, 11 Apr 2024 10:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UDoKa4yG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMo7IF3n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C56914601D;
-	Thu, 11 Apr 2024 10:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C39F1422CE;
+	Thu, 11 Apr 2024 10:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830900; cv=none; b=QWkNxV7G1HMjBjXrsfI/IE+Bxt6PgATZUhtYeNS3mHI/9/W//xbxp/knpPnuEm4ix9FMvgw9xLV0GlH1LwZqFtWhJgkGm5uLoOhqJgRTE6TftVEd6iQAo/CRqbIn0ZZQi+Bqhn8T67Ao2M5q3uVkk3bcewc2GeJkQg3WbmISLgM=
+	t=1712831193; cv=none; b=JtkLmIaNw28ThLFu7f4p1DvEwmKGd1Le/pEHF0/UmWIBKYTnAfK82rlInFtWBWBPZqYp6WAd8zxZa7YXINk+BQvlyzpWdymMD5Hyx3YxiEsDH3tb5mIu2sp0oxXJTV3UYd0sU3xTHUPCeuCYzj5Sqz+CMjmKQl+/M6sW1bRis6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830900; c=relaxed/simple;
-	bh=nXNyPQmnYnQnaWXVGDT176/RqqmXnhWIZaVFDtSLx00=;
+	s=arc-20240116; t=1712831193; c=relaxed/simple;
+	bh=FfPncGbjvyvnmXlEylkh7AoYiGy6XXcu3CrlCVJGuTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qQ+z7S3m+MYScjghgVT+6h/6h2d3W/WqI21kAIbTnIiExceRl/kXHKrJULwv0qzoGNaj9KPV3/562Xo1EoGEyV2MELkHLwW4Vv/hOs21G12pjRpIlfGPHojuf0ikTkbtbTN8R5P5Y/7JIDcQT9emCKY36ccZsCMO1Bv37WV+Z9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UDoKa4yG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F128FC433C7;
-	Thu, 11 Apr 2024 10:21:39 +0000 (UTC)
+	 MIME-Version; b=Be/P+Z2VHosXNU6VJK7PUPbqaBgjxQVqxYqyqbXwpk4AAM9b1vA+zNeA2Ey1szweVHD+zbaBrBbBW0dUifGoSNdnm2Rp8jc++JUv6LkHibWtMbYRrY7NVDerE3mFgL/MrALePFn2EYDrkap9IKtbiFcQPCLVrNKtjDsDMVpIgPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMo7IF3n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F5EC433F1;
+	Thu, 11 Apr 2024 10:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830900;
-	bh=nXNyPQmnYnQnaWXVGDT176/RqqmXnhWIZaVFDtSLx00=;
+	s=korg; t=1712831193;
+	bh=FfPncGbjvyvnmXlEylkh7AoYiGy6XXcu3CrlCVJGuTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UDoKa4yG2z/VrOY0h03lw6h+8w2A4zZYHjWW5O7ow0EdunJdvpO5BalIT26UqjV3d
-	 aYHWVzluT56GMevG2R5jpmhDOjA9Y72i3ZPrFzVyV8Pwxu5FUTuvT9VBWfDFjMHQGe
-	 1X+heUVinGH+fgqY8U+0mvxwIzQHFCLYsK4UmIMU=
+	b=kMo7IF3nSte+qyUN0v4FFQzN5dAmqXOu515YzrjbY6PYou5rTgPLUVHyVm/blx4qC
+	 h1OeiU8Hd6NM10toDSVKyvQt8BjIZGgC/7ACJ7KiFuUR/1teXLqUoK/joFZ+4JdGh5
+	 P5OW+S3rL9860WbrRdcOtIzXzb+YUsimnxKxv0cY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 157/215] staging: vc04_services: fix information leak in create_component()
+Subject: [PATCH 6.6 039/114] btrfs: export: handle invalid inode or root reference in btrfs_get_parent()
 Date: Thu, 11 Apr 2024 11:56:06 +0200
-Message-ID: <20240411095429.599075398@linuxfoundation.org>
+Message-ID: <20240411095418.062072966@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit f37e76abd614b68987abc8e5c22d986013349771 ]
+[ Upstream commit 26b66d1d366a375745755ca7365f67110bbf6bd5 ]
 
-The m.u.component_create.pid field is for debugging and in the mainline
-kernel it's not used anything.  However, it still needs to be set to
-something to prevent disclosing uninitialized stack data.  Set it to
-zero.
+The get_parent handler looks up a parent of a given dentry, this can be
+either a subvolume or a directory. The search is set up with offset -1
+but it's never expected to find such item, as it would break allowed
+range of inode number or a root id. This means it's a corruption (ext4
+also returns this error code).
 
-Fixes: 7b3ad5abf027 ("staging: Import the BCM2835 MMAL-based V4L2 camera driver.")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/2d972847-9ebd-481b-b6f9-af390f5aabd3@moroto.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/export.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
-index fab119c60cb12..ad143f6019746 100644
---- a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
-+++ b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
-@@ -931,6 +931,7 @@ static int create_component(struct vchiq_mmal_instance *instance,
- 	m.u.component_create.client_component = component->client_component;
- 	strscpy_pad(m.u.component_create.name, name,
- 		    sizeof(m.u.component_create.name));
-+	m.u.component_create.pid = 0;
+diff --git a/fs/btrfs/export.c b/fs/btrfs/export.c
+index 744a02b7fd671..203e5964c9b0f 100644
+--- a/fs/btrfs/export.c
++++ b/fs/btrfs/export.c
+@@ -174,8 +174,15 @@ struct dentry *btrfs_get_parent(struct dentry *child)
+ 	ret = btrfs_search_slot(NULL, root, &key, path, 0, 0);
+ 	if (ret < 0)
+ 		goto fail;
++	if (ret == 0) {
++		/*
++		 * Key with offset of -1 found, there would have to exist an
++		 * inode with such number or a root with such id.
++		 */
++		ret = -EUCLEAN;
++		goto fail;
++	}
  
- 	ret = send_synchronous_mmal_msg(instance, &m,
- 					sizeof(m.u.component_create),
+-	BUG_ON(ret == 0); /* Key with offset of -1 found */
+ 	if (path->slots[0] == 0) {
+ 		ret = -ENOENT;
+ 		goto fail;
 -- 
 2.43.0
 
