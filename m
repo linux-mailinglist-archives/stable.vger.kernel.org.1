@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-38810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822618A1088
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 442AF8A0E8C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:15:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE9241F2C518
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 750081C21A46
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC7614D299;
-	Thu, 11 Apr 2024 10:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C4213F452;
+	Thu, 11 Apr 2024 10:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzvTIxkm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pkyCfIU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2B714D283;
-	Thu, 11 Apr 2024 10:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9202D145B28;
+	Thu, 11 Apr 2024 10:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831656; cv=none; b=dwX4Z7JmCZARgi4WHHHayNtQqzbBgxpeHr9gILzQRuq18/qJ5gU309QSypSKnfJ7tedmUXqrcRlnx1/gFqwmuSUoQMgrD7I58iitVg/aAqWo4OI0/uEr02wuBDfUvDud4QTt6tjAj3sVnyS8NRewlj3SjzSgyFUzWqMoX1j79vQ=
+	t=1712830546; cv=none; b=EYQiFZFxWPmvXvNr2zzELTZWkZ3tc1KRRL65BG5ZyDpWfRbY5L3Qj31cXBxnZqrLxLZ24yPHo8pVgOb+0S/ublfVHQ3Ek9fO9pFbs6VHp6yuUsiYb/n6sicRpzR0p3AH89KdqZACVTT/G034o79EwK7MZV+l8DtPwdjI999Klfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831656; c=relaxed/simple;
-	bh=G9nCqj7YyswIJhM8bkunLCgIHh6aZRUgpDUbODaxuR0=;
+	s=arc-20240116; t=1712830546; c=relaxed/simple;
+	bh=zKXmTEkayPZ1UQXeTrdKBcJEtusp7iRXkIxogp0QWgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lSIXwDsfJ+HDGHu3lx6oZ7rGNzcqN1Y4hNIsZhoyIehUeqr24trUIVJF6E9fj/EZLWLAcjycqKfl/bpjelZ1lxBotFY/h6JKqjodAPqxF0pCv4PSHYFqxd/k3Qy4uSsv2iNPs/TR1S6b2u8tLatR4db0H6qI7DsToUsmFQl8h3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzvTIxkm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2486EC433C7;
-	Thu, 11 Apr 2024 10:34:15 +0000 (UTC)
+	 MIME-Version; b=BP9wssQ8EqEQj1SYYDQOsBt3gMHWcTU3Bxf4VG/PQYe2AM3FkqP/mxlBTXcGCqYWzLkQgyxqZBWp3ttuYaC3Fifjgl0qGf7futpn7h0bu6rvO/ItDY+OMgesnXc1H0/PhjckI6gP7Jy6y1JTRmRWLs9dwjsgXS4DEG4jjjFG56c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pkyCfIU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878F4C433C7;
+	Thu, 11 Apr 2024 10:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831656;
-	bh=G9nCqj7YyswIJhM8bkunLCgIHh6aZRUgpDUbODaxuR0=;
+	s=korg; t=1712830545;
+	bh=zKXmTEkayPZ1UQXeTrdKBcJEtusp7iRXkIxogp0QWgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dzvTIxkmq+iVI9eZFj+34FeKq/wNTaL0isVY1PH3mCLEj7pTImJ6HVPlfsXZ2VFeA
-	 zQbcpGvStajtISaRuDcr9E5NFl2p/jN5umpewDplk89qhCfrRaw+wiat+T2Dq9NY6R
-	 rd5a+zC4e4ijxhCHQLkQGMZ1Yr1bAz8vWWJFSL8A=
+	b=1pkyCfIUARassuQm8vNMXLzrL9qkbnFnbagP7HkzOKuW7PxbASHwScXW493e1r640
+	 CoeRp4J2XZHyFppH1UA45xa0Em+QYTpDz9L0vGeY7CTZrlpZN2gi0ih7i3ug7eSHSq
+	 MpKK8nwwM9SaI4lxbIyG27BZ7itTGBRalXCtD4r8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Jan-Benedict Glaw <jbglaw@lug-owl.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 082/294] PCI/AER: Block runtime suspend when handling errors
-Date: Thu, 11 Apr 2024 11:54:05 +0200
-Message-ID: <20240411095438.155511174@linuxfoundation.org>
+Subject: [PATCH 5.4 037/215] powerpc/fsl: Fix mfpmr build errors with newer binutils
+Date: Thu, 11 Apr 2024 11:54:06 +0200
+Message-ID: <20240411095426.012250519@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 002bf2fbc00e5c4b95fb167287e2ae7d1973281e ]
+[ Upstream commit 5f491356b7149564ab22323ccce79c8d595bfd0c ]
 
-PM runtime can be done simultaneously with AER error handling.  Avoid that
-by using pm_runtime_get_sync() before and pm_runtime_put() after reset in
-pcie_do_recovery() for all recovering devices.
+Binutils 2.38 complains about the use of mfpmr when building
+ppc6xx_defconfig:
 
-pm_runtime_get_sync() will increase dev->power.usage_count counter to
-prevent any possible future request to runtime suspend a device.  It will
-also resume a device, if it was previously in D3hot state.
+    CC      arch/powerpc/kernel/pmc.o
+  {standard input}: Assembler messages:
+  {standard input}:45: Error: unrecognized opcode: `mfpmr'
+  {standard input}:56: Error: unrecognized opcode: `mtpmr'
 
-I tested with igc device by doing simultaneous aer_inject and rpm
-suspend/resume via /sys/bus/pci/devices/PCI_ID/power/control and can
-reproduce:
+This is because by default the kernel is built with -mcpu=powerpc, and
+the mt/mfpmr instructions are not defined.
 
-  igc 0000:02:00.0: not ready 65535ms after bus reset; giving up
-  pcieport 0000:00:1c.2: AER: Root Port link has been reset (-25)
-  pcieport 0000:00:1c.2: AER: subordinate device reset failed
-  pcieport 0000:00:1c.2: AER: device recovery failed
-  igc 0000:02:00.0: Unable to change power state from D3hot to D0, device inaccessible
+It can be avoided by enabling CONFIG_E300C3_CPU, but just adding that to
+the defconfig will leave open the possibility of randconfig failures.
 
-The problem disappears when this patch is applied.
+So add machine directives around the mt/mfpmr instructions to tell
+binutils how to assemble them.
 
-Link: https://lore.kernel.org/r/20240212120135.146068-1-stanislaw.gruszka@linux.intel.com
-Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Cc: <stable@vger.kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240229122521.762431-3-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/err.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ arch/powerpc/include/asm/reg_fsl_emb.h | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-index a806dfd94586c..bb4febcf45ba1 100644
---- a/drivers/pci/pcie/err.c
-+++ b/drivers/pci/pcie/err.c
-@@ -13,6 +13,7 @@
- #define dev_fmt(fmt) "AER: " fmt
+diff --git a/arch/powerpc/include/asm/reg_fsl_emb.h b/arch/powerpc/include/asm/reg_fsl_emb.h
+index a21f529c43d96..8359c06d92d9f 100644
+--- a/arch/powerpc/include/asm/reg_fsl_emb.h
++++ b/arch/powerpc/include/asm/reg_fsl_emb.h
+@@ -12,9 +12,16 @@
+ #ifndef __ASSEMBLY__
+ /* Performance Monitor Registers */
+ #define mfpmr(rn)	({unsigned int rval; \
+-			asm volatile("mfpmr %0," __stringify(rn) \
++			asm volatile(".machine push; " \
++				     ".machine e300; " \
++				     "mfpmr %0," __stringify(rn) ";" \
++				     ".machine pop; " \
+ 				     : "=r" (rval)); rval;})
+-#define mtpmr(rn, v)	asm volatile("mtpmr " __stringify(rn) ",%0" : : "r" (v))
++#define mtpmr(rn, v)	asm volatile(".machine push; " \
++				     ".machine e300; " \
++				     "mtpmr " __stringify(rn) ",%0; " \
++				     ".machine pop; " \
++				     : : "r" (v))
+ #endif /* __ASSEMBLY__ */
  
- #include <linux/pci.h>
-+#include <linux/pm_runtime.h>
- #include <linux/module.h>
- #include <linux/kernel.h>
- #include <linux/errno.h>
-@@ -79,6 +80,18 @@ static int report_error_detected(struct pci_dev *dev,
- 	return 0;
- }
- 
-+static int pci_pm_runtime_get_sync(struct pci_dev *pdev, void *data)
-+{
-+	pm_runtime_get_sync(&pdev->dev);
-+	return 0;
-+}
-+
-+static int pci_pm_runtime_put(struct pci_dev *pdev, void *data)
-+{
-+	pm_runtime_put(&pdev->dev);
-+	return 0;
-+}
-+
- static int report_frozen_detected(struct pci_dev *dev, void *data)
- {
- 	return report_error_detected(dev, pci_channel_io_frozen, data);
-@@ -194,6 +207,8 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 	else
- 		bridge = pci_upstream_bridge(dev);
- 
-+	pci_walk_bridge(bridge, pci_pm_runtime_get_sync, NULL);
-+
- 	pci_dbg(bridge, "broadcast error_detected message\n");
- 	if (state == pci_channel_io_frozen) {
- 		pci_walk_bridge(bridge, report_frozen_detected, &status);
-@@ -239,10 +254,15 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 		pcie_clear_device_status(bridge);
- 		pci_aer_clear_nonfatal_status(bridge);
- 	}
-+
-+	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
-+
- 	pci_info(bridge, "device recovery successful\n");
- 	return status;
- 
- failed:
-+	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
-+
- 	pci_uevent_ers(bridge, PCI_ERS_RESULT_DISCONNECT);
- 
- 	/* TODO: Should kernel panic here? */
+ /* Freescale Book E Performance Monitor APU Registers */
 -- 
 2.43.0
 
