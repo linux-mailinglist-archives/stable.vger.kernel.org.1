@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-38606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900E68A0F80
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DAED8A1159
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE977B220E1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF8A31C22BA2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38CF614600A;
-	Thu, 11 Apr 2024 10:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED0B146A72;
+	Thu, 11 Apr 2024 10:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+WoXi8l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHBPYm2p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED77A140E3D;
-	Thu, 11 Apr 2024 10:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90BE2EAE5;
+	Thu, 11 Apr 2024 10:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831067; cv=none; b=gcK0/GPQ8ZAMbWf52jpp4Gt+3PowyVHugjSPVf5UijAXxQV0rk+zl6UP5679Zj7zqkMt1kxnNjtfRj06jcOLiNmTZhbFhmZvnOdsClRpj5l6kI0qkT9sbt6XH2mQe4LLeK094+jC1m8Ed8w0T0rzq7mQm9KGrvExL+ddscY6vXw=
+	t=1712832189; cv=none; b=pE4fPTFfmzPIofC75HLOsHy0KnOCitfr5LhBD3gms1UuDKhg0JkZRk7OZoqsElxKoZQyOQyhS3zed2lX2i0m5g8bA2sXGq5g6XwPHjBSJ+zelCk0iwkTvTtO11UX6/NzUyBu1QKBNoDntdZw8JoSMo51MT1iV7iZLMIU0Nf+jKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831067; c=relaxed/simple;
-	bh=D0cLPRoVayMTAZwEsMcpQkU8at3UvINMQBGk47LjoLU=;
+	s=arc-20240116; t=1712832189; c=relaxed/simple;
+	bh=KMUTfiKxC85lXeCSWJ+iMGBSkkOZ8FIjjkMjmt3/Pss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cvoNV1G+m8VGX50xjNrvbLnt3PSUcIvEc8UHfUpIacM865u0HNTlLUDP20bw6CaYJzswF+OYUTH5lHnfznDZ4G6O3QQvc5GcnYn+Rmx/R6u/XNwC+mS9VBVvkVOAwg4bFfU5/G0L9rO6LwM2eACExsirjXV6pl9HoIkBC1N1GRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+WoXi8l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70678C433C7;
-	Thu, 11 Apr 2024 10:24:26 +0000 (UTC)
+	 MIME-Version; b=TUPYH1wcMjUOA3Co+HBYNg+DSLwk7aaMwiQvXV3gzJtM31U/kf6dH/wBLc0J1Bf8PwAeuoPHQt3P0pQjnBDXlfoJLRr3j3nyItljRFslm2JMWVzsH6VXYR3PLUq2lJilMrzWMzKuSW6aZtfePG2s/M4n9fRmJPu8ChRSbzeV78s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHBPYm2p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01DEC433F1;
+	Thu, 11 Apr 2024 10:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831066;
-	bh=D0cLPRoVayMTAZwEsMcpQkU8at3UvINMQBGk47LjoLU=;
+	s=korg; t=1712832189;
+	bh=KMUTfiKxC85lXeCSWJ+iMGBSkkOZ8FIjjkMjmt3/Pss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P+WoXi8l/t2fQWm51EnIh1Kh71WnWYozPhx5xu2FSWtLEdxH6Dk1TsINNfhO/1Vvg
-	 2GTvAYraIA9x3CmSco2/vcBUQDihYN0BIjBAkQB947vG2SvxFymOFUIiasjT5fQdJY
-	 EI0w2jTLFzL97Hj3P89LUJUcp7LXoaDY2Afm8KWk=
+	b=ZHBPYm2peWDNDZS9ZvO6pNrOUGfUItkej5mYnZojX7TOac0g9NoLp05VhVhFp/MVz
+	 3cRfR1EAOs4wjyttFtsZHxM4aq5+yD+1oJZouQPjy173/zIA5Hlmi9YDqGE7n7FglE
+	 KzFA0VTAxdAO/z1d45ZEB01Zs7EwfTwl2aG2wRtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH 5.4 212/215] VMCI: Fix possible memcpy() run-time warning in vmci_datagram_invoke_guest_handler()
+	Kunwu Chan <chentao@kylinos.cn>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 258/294] Input: synaptics-rmi4 - fail probing if memory allocation for "phys" fails
 Date: Thu, 11 Apr 2024 11:57:01 +0200
-Message-ID: <20240411095431.235847546@linuxfoundation.org>
+Message-ID: <20240411095443.331024277@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-commit e606e4b71798cc1df20e987dde2468e9527bd376 upstream.
+[ Upstream commit bc4996184d56cfaf56d3811ac2680c8a0e2af56e ]
 
-The changes are similar to those given in the commit 19b070fefd0d
-("VMCI: Fix memcpy() run-time warning in dg_dispatch_as_host()").
+While input core can work with input->phys set to NULL userspace might
+depend on it, so better fail probing if allocation fails. The system must
+be in a pretty bad shape for it to happen anyway.
 
-Fix filling of the msg and msg_payload in dg_info struct, which prevents a
-possible "detected field-spanning write" of memcpy warning that is issued
-by the tracking mechanism __fortify_memcpy_chk.
-
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/r/20240219105315.76955-1-kovalev@altlinux.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Link: https://lore.kernel.org/r/20240117073124.143636-1-chentao@kylinos.cn
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_datagram.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/input/rmi4/rmi_driver.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/misc/vmw_vmci/vmci_datagram.c
-+++ b/drivers/misc/vmw_vmci/vmci_datagram.c
-@@ -378,7 +378,8 @@ int vmci_datagram_invoke_guest_handler(s
+diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
+index 258d5fe3d395c..aa32371f04af6 100644
+--- a/drivers/input/rmi4/rmi_driver.c
++++ b/drivers/input/rmi4/rmi_driver.c
+@@ -1196,7 +1196,11 @@ static int rmi_driver_probe(struct device *dev)
+ 		}
+ 		rmi_driver_set_input_params(rmi_dev, data->input);
+ 		data->input->phys = devm_kasprintf(dev, GFP_KERNEL,
+-						"%s/input0", dev_name(dev));
++						   "%s/input0", dev_name(dev));
++		if (!data->input->phys) {
++			retval = -ENOMEM;
++			goto err;
++		}
+ 	}
  
- 		dg_info->in_dg_host_queue = false;
- 		dg_info->entry = dst_entry;
--		memcpy(&dg_info->msg, dg, VMCI_DG_SIZE(dg));
-+		dg_info->msg = *dg;
-+		memcpy(&dg_info->msg_payload, dg + 1, dg->payload_size);
- 
- 		INIT_WORK(&dg_info->work, dg_delayed_dispatch);
- 		schedule_work(&dg_info->work);
+ 	retval = rmi_init_functions(data);
+-- 
+2.43.0
+
 
 
 
