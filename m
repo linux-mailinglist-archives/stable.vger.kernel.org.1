@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-38109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5053A8A0D0E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:59:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1676B8A0E73
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:14:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E43BB1F229D7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:59:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6D3028729F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF90145345;
-	Thu, 11 Apr 2024 09:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933AA145FFB;
+	Thu, 11 Apr 2024 10:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oytjELrs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUYfFf4i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A45813DDDD;
-	Thu, 11 Apr 2024 09:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2F61448EF;
+	Thu, 11 Apr 2024 10:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829590; cv=none; b=Htw4GLTX4e66vqS3aMQ2q/trmLnlCBrZ2Dy4SbfftNQVduS1eHRgv+SOCuBk7pLbEISy50DTg2sde6AEhzRlgCwKVmgCtefpCy184P7KMCXnj/B8yBEZ+8CFXcJFpqTHttY82NpD3admKGL3IXgms5tkkHLEMhYdBlRseomBQFc=
+	t=1712830484; cv=none; b=u+a9+hhipLeHk6qJtJkHiQsnKW/EW7eRF5H68XVnEsLEpaLR8ZUM/ioAnchgeFIiQQCSpsOZFo9tZxWl9q5fkJplypNx4KUYscw9JafbDMTVtigcnPK5oA5rmLa8L2TnQOX8YOcMse30OW56XlWZO7tiV012OO8d/+2alVC2t7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829590; c=relaxed/simple;
-	bh=q9AFkWerm7xBHNsF+z6Ls9OQ46zn1ud7k8pvXnpV0A4=;
+	s=arc-20240116; t=1712830484; c=relaxed/simple;
+	bh=NebH2tOaLoDk5BU5KfVKJPhrnoGze7gx90s0TQxq1FM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cZ0LpV05wX2smG+hOQazGHGtSeIuVo6uKApggrKQM+xrKp3v37/kYCld0OlxFnAzGsmVs3/Mgm4UXuXwznoi6FbRc/1XemWlpLwROa99CM+5xPDqe0ElkrtwUweBea64DigdmYIpLuSR4GVFOg2/jM10IsEcbQ5/YKZIOR1yAlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oytjELrs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931CDC433C7;
-	Thu, 11 Apr 2024 09:59:49 +0000 (UTC)
+	 MIME-Version; b=suwO3hoIpMxeMQkpbBN181ECyfW1nvR2ZPqv2XTfTPJofatbMChVddLH1+BTAXO2n7bYRDPZB94xUgHTELkXJytydjxHU9vB5SdUMhHX9KWlI/7NxYlsT3tsQM6AF63o76RKj8q76AUrATm9/Ffgt67bqZiPr46Qx9RIuuCRPTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUYfFf4i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 989E7C43390;
+	Thu, 11 Apr 2024 10:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829590;
-	bh=q9AFkWerm7xBHNsF+z6Ls9OQ46zn1ud7k8pvXnpV0A4=;
+	s=korg; t=1712830484;
+	bh=NebH2tOaLoDk5BU5KfVKJPhrnoGze7gx90s0TQxq1FM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oytjELrsZ71rnFg5vPD8d4LO+1BpYHYYOhhXIptVd+4iN0/zGlMDIJEEJLJdR6yhy
-	 E87vuxScZ3Z1eAoSoDkHX71UYEP9c/S35h2XASCiqldRsppwNmA9Hn3AGz75PyYNiw
-	 ExnULstHVyc/4zKmzBt80AjNbJTU0iZGdwWqTuxw=
+	b=cUYfFf4iMaHYFUbaUDkzpma+ccylORuBmMjFzmtPrKV+PuOMI8snADlHdwAN42LKW
+	 L2/zWKXokuuS4OErQoWMbYiyfy/+CyQTxBDm4ERaLkKpIJtI3eDtL68v4ONfO+N0mu
+	 FtASLyZyGYCJwSPmC8zRzQkktpNMU/uMlCToxNsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anna-Maria Gleixner <anna-maria@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	fweisbec@gmail.com,
-	peterz@infradead.org,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Igor Zhbanov <izh1979@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	sparclinux@vger.kernel.org,
+	Dan Carpenter <dan.carpenter@oracle.com>,
+	Nick Alcock <nick.alcock@oracle.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andreas Larsson <andreas@gaisler.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 004/175] timer/trace: Replace deprecated vsprintf pointer extension %pf by %ps
+Subject: [PATCH 5.4 018/215] sparc: vDSO: fix return value of __setup handler
 Date: Thu, 11 Apr 2024 11:53:47 +0200
-Message-ID: <20240411095419.671078435@linuxfoundation.org>
+Message-ID: <20240411095425.431375453@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +70,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anna-Maria Gleixner <anna-maria@linutronix.de>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 6849cbb0f9a8dbc1ba56e9abc6955613103e01e3 ]
+[ Upstream commit 5378f00c935bebb846b1fdb0e79cb76c137c56b5 ]
 
-Since commit 04b8eb7a4ccd ("symbol lookup: introduce
-dereference_symbol_descriptor()") %pf is deprecated, because %ps is smart
-enough to handle function pointer dereference on platforms where such a
-dereference is required.
+__setup() handlers should return 1 to obsolete_checksetup() in
+init/main.c to indicate that the boot option has been handled.
+A return of 0 causes the boot option/value to be listed as an Unknown
+kernel parameter and added to init's (limited) argument or environment
+strings. Also, error return codes don't mean anything to
+obsolete_checksetup() -- only non-zero (usually 1) or zero.
+So return 1 from vdso_setup().
 
-While at it add proper line breaks to stay in the 80 character limit.
-
-Signed-off-by: Anna-Maria Gleixner <anna-maria@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: fweisbec@gmail.com
-Cc: peterz@infradead.org
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Link: https://lkml.kernel.org/r/20190321120921.16463-4-anna-maria@linutronix.de
-Stable-dep-of: 0f7352557a35 ("wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach")
+Fixes: 9a08862a5d2e ("vDSO for sparc")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: Igor Zhbanov <izh1979@gmail.com>
+Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: sparclinux@vger.kernel.org
+Cc: Dan Carpenter <dan.carpenter@oracle.com>
+Cc: Nick Alcock <nick.alcock@oracle.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/20240211052808.22635-1-rdunlap@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/timer.h | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/sparc/vdso/vma.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/include/trace/events/timer.h b/include/trace/events/timer.h
-index 350b046e7576c..8f6240854e28f 100644
---- a/include/trace/events/timer.h
-+++ b/include/trace/events/timer.h
-@@ -73,7 +73,7 @@ TRACE_EVENT(timer_start,
- 		__entry->flags		= flags;
- 	),
+diff --git a/arch/sparc/vdso/vma.c b/arch/sparc/vdso/vma.c
+index 9961b0f816939..3a30a086f0feb 100644
+--- a/arch/sparc/vdso/vma.c
++++ b/arch/sparc/vdso/vma.c
+@@ -449,9 +449,8 @@ static __init int vdso_setup(char *s)
+ 	unsigned long val;
  
--	TP_printk("timer=%p function=%pf expires=%lu [timeout=%ld] cpu=%u idx=%u flags=%s",
-+	TP_printk("timer=%p function=%ps expires=%lu [timeout=%ld] cpu=%u idx=%u flags=%s",
- 		  __entry->timer, __entry->function, __entry->expires,
- 		  (long)__entry->expires - __entry->now,
- 		  __entry->flags & TIMER_CPUMASK,
-@@ -105,7 +105,8 @@ TRACE_EVENT(timer_expire_entry,
- 		__entry->function	= timer->function;
- 	),
- 
--	TP_printk("timer=%p function=%pf now=%lu", __entry->timer, __entry->function,__entry->now)
-+	TP_printk("timer=%p function=%ps now=%lu",
-+		  __entry->timer, __entry->function, __entry->now)
- );
- 
- /**
-@@ -210,7 +211,7 @@ TRACE_EVENT(hrtimer_start,
- 		__entry->mode		= mode;
- 	),
- 
--	TP_printk("hrtimer=%p function=%pf expires=%llu softexpires=%llu "
-+	TP_printk("hrtimer=%p function=%ps expires=%llu softexpires=%llu "
- 		  "mode=%s", __entry->hrtimer, __entry->function,
- 		  (unsigned long long) __entry->expires,
- 		  (unsigned long long) __entry->softexpires,
-@@ -243,7 +244,8 @@ TRACE_EVENT(hrtimer_expire_entry,
- 		__entry->function	= hrtimer->function;
- 	),
- 
--	TP_printk("hrtimer=%p function=%pf now=%llu", __entry->hrtimer, __entry->function,
-+	TP_printk("hrtimer=%p function=%ps now=%llu",
-+		  __entry->hrtimer, __entry->function,
- 		  (unsigned long long) __entry->now)
- );
- 
+ 	err = kstrtoul(s, 10, &val);
+-	if (err)
+-		return err;
+-	vdso_enabled = val;
+-	return 0;
++	if (!err)
++		vdso_enabled = val;
++	return 1;
+ }
+ __setup("vdso=", vdso_setup);
 -- 
 2.43.0
 
