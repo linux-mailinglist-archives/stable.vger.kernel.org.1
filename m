@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A588A0E8D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:15:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 104A88A108B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1284B1C21DBC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:15:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 416131C238DD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40CB4146582;
-	Thu, 11 Apr 2024 10:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CA114A4C7;
+	Thu, 11 Apr 2024 10:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8GORcyb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2Ej2WDe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C6C14600E;
-	Thu, 11 Apr 2024 10:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AEB149E1A;
+	Thu, 11 Apr 2024 10:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830549; cv=none; b=jWBjuPE+H4H5pUjE0uKXFb3NM1Evsi6HibKQYfwI97GiIaxHEEMBU76ZVTn6a4bMEuPAGKxajC7nBR6tlLaR1J9EaxzhbzZDp/rknOko9DJXUKYnxiuHUMSYBoRPVl8kqgrLI3mRPn5UHxNNE19louzR3pi8XJJ9R5QSJPw+8J0=
+	t=1712831665; cv=none; b=DCZI27xLyV7nyIDVCx5EzudjMV5Kk6r7f2WLDht0rBXa7Xmc488uFoQ+2yE619oJkkpjkU19DXf7ymLMuvBbJ6d+2hVD5Xj9PBcyx+o8LnhEMvJ0hTZebAVJ3i0wXGa7inkZ6eyCQnzFuqeQJtRASqe9Mo32Sqc1vXJD6xBTlM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830549; c=relaxed/simple;
-	bh=YBfrix0gpQngFfRjUSJDmtrMmVP2OBjF9rkzclbmQlc=;
+	s=arc-20240116; t=1712831665; c=relaxed/simple;
+	bh=MRifVy54QLdhGdeYzvigvNVvVSrUBGQsjaqiyr/VcD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BjVSx2fpTu6nmtrauJvZDag2Bm410/vjs9ilJ4RRrouScLOrXz7unq1H0sZxm/7F1Pm7hVhD5kTf3x+/R23Jy6bUlPCO8EiSUC6JGKmoPSvIkl0lwyj4bu8bElGh53TQ7fqqn91FbzCQYGa2h+27Om/z+PGyu/+SDCBClY3roNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8GORcyb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76634C433F1;
-	Thu, 11 Apr 2024 10:15:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MLhHeFpK4h2M7mBJ5txN2ee5RGkDPIVdjHz0ja7R79obZJexuWKwYyYYTYiyZgr4dT9xWswEJnC/Hmsjg4Z7EnmnnB8ytYnNp0u9I2IGAQZkXYRd2021Wg904lfUANhz+twEaRnvHYdhYauWUyiPwiCL6UhnBGv6rtSJjB0Wtms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2Ej2WDe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9303C433F1;
+	Thu, 11 Apr 2024 10:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830548;
-	bh=YBfrix0gpQngFfRjUSJDmtrMmVP2OBjF9rkzclbmQlc=;
+	s=korg; t=1712831665;
+	bh=MRifVy54QLdhGdeYzvigvNVvVSrUBGQsjaqiyr/VcD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c8GORcybc5i5LSaReCja7cjtfzuFKWb33ETIjrinI7ptNgk14pSXWDaSpUW8tABaP
-	 EXhAXNIko4rM1Vo82nszxVhDoqIGqx7fc/VTIViOSOP4keOPKpuXcqEa4Z1LzEEBs8
-	 ElQSl4tC8QQR+q6wyVdUFdP27hNm6LcRsEKXTPCY=
+	b=w2Ej2WDehq2Jlren+XMAJyQf24XzHYPLiIXWo8uQgQWXJIGMtldo4QjKrpixcMK9R
+	 a1uMEpOtNz8nEGlmVLbuvMc2OumxouIF0VCQM6KbZ1q/6DT4v/Oc2BKRrOn7esn7U/
+	 I1yuH2Yz+Xey7gLC/xCah6m5wZQ6UkIDtJXnBBBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Vogelbacher <daniel@chaospixel.com>,
-	Johan Hovold <johan@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 038/215] USB: serial: ftdi_sio: add support for GMC Z216C Adapter IR-USB
-Date: Thu, 11 Apr 2024 11:54:07 +0200
-Message-ID: <20240411095426.042181600@linuxfoundation.org>
+Subject: [PATCH 5.10 085/294] PCI: dwc: endpoint: Fix advertised resizable BAR size
+Date: Thu, 11 Apr 2024 11:54:08 +0200
+Message-ID: <20240411095438.243397852@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Vogelbacher <daniel@chaospixel.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 3fb7bc4f3a98c48981318b87cf553c5f115fd5ca ]
+[ Upstream commit 72e34b8593e08a0ee759b7a038e0b178418ea6f8 ]
 
-The GMC IR-USB adapter cable utilizes a FTDI FT232R chip.
+The commit message in commit fc9a77040b04 ("PCI: designware-ep: Configure
+Resizable BAR cap to advertise the smallest size") claims that it modifies
+the Resizable BAR capability to only advertise support for 1 MB size BARs.
 
-Add VID/PID for this adapter so it can be used as serial device via
-ftdi_sio.
+However, the commit writes all zeroes to PCI_REBAR_CAP (the register which
+contains the possible BAR sizes that a BAR be resized to).
 
-Signed-off-by: Daniel Vogelbacher <daniel@chaospixel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+According to the spec, it is illegal to not have a bit set in
+PCI_REBAR_CAP, and 1 MB is the smallest size allowed.
+
+Set bit 4 in PCI_REBAR_CAP, so that we actually advertise support for a
+1 MB BAR size.
+
+Before:
+        Capabilities: [2e8 v1] Physical Resizable BAR
+                BAR 0: current size: 1MB
+                BAR 1: current size: 1MB
+                BAR 2: current size: 1MB
+                BAR 3: current size: 1MB
+                BAR 4: current size: 1MB
+                BAR 5: current size: 1MB
+After:
+        Capabilities: [2e8 v1] Physical Resizable BAR
+                BAR 0: current size: 1MB, supported: 1MB
+                BAR 1: current size: 1MB, supported: 1MB
+                BAR 2: current size: 1MB, supported: 1MB
+                BAR 3: current size: 1MB, supported: 1MB
+                BAR 4: current size: 1MB, supported: 1MB
+                BAR 5: current size: 1MB, supported: 1MB
+
+Fixes: fc9a77040b04 ("PCI: designware-ep: Configure Resizable BAR cap to advertise the smallest size")
+Link: https://lore.kernel.org/linux-pci/20240307111520.3303774-1-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: <stable@vger.kernel.org> # 5.2
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/ftdi_sio.c     | 2 ++
- drivers/usb/serial/ftdi_sio_ids.h | 6 ++++++
- 2 files changed, 8 insertions(+)
+ drivers/pci/controller/dwc/pcie-designware-ep.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/serial/ftdi_sio.c b/drivers/usb/serial/ftdi_sio.c
-index c97923858fce6..bfb0be4e70d5e 100644
---- a/drivers/usb/serial/ftdi_sio.c
-+++ b/drivers/usb/serial/ftdi_sio.c
-@@ -1055,6 +1055,8 @@ static const struct usb_device_id id_table_combined[] = {
- 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
- 	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_UNBUF_PID),
- 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
-+	/* GMC devices */
-+	{ USB_DEVICE(GMC_VID, GMC_Z216C_PID) },
- 	{ }					/* Terminating entry */
- };
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index 339318e790e21..8ed1df61f9c7c 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -662,8 +662,13 @@ int dw_pcie_ep_init_complete(struct dw_pcie_ep *ep)
+ 		nbars = (reg & PCI_REBAR_CTRL_NBAR_MASK) >>
+ 			PCI_REBAR_CTRL_NBAR_SHIFT;
  
-diff --git a/drivers/usb/serial/ftdi_sio_ids.h b/drivers/usb/serial/ftdi_sio_ids.h
-index 9a0f9fc991246..b2aec1106678a 100644
---- a/drivers/usb/serial/ftdi_sio_ids.h
-+++ b/drivers/usb/serial/ftdi_sio_ids.h
-@@ -1599,3 +1599,9 @@
- #define UBLOX_VID			0x1546
- #define UBLOX_C099F9P_ZED_PID		0x0502
- #define UBLOX_C099F9P_ODIN_PID		0x0503
-+
-+/*
-+ * GMC devices
-+ */
-+#define GMC_VID				0x1cd7
-+#define GMC_Z216C_PID			0x0217 /* GMC Z216C Adapter IR-USB */
++		/*
++		 * PCIe r6.0, sec 7.8.6.2 require us to support at least one
++		 * size in the range from 1 MB to 512 GB. Advertise support
++		 * for 1 MB BAR size only.
++		 */
+ 		for (i = 0; i < nbars; i++, offset += PCI_REBAR_CTRL)
+-			dw_pcie_writel_dbi(pci, offset + PCI_REBAR_CAP, 0x0);
++			dw_pcie_writel_dbi(pci, offset + PCI_REBAR_CAP, BIT(4));
+ 	}
+ 
+ 	dw_pcie_setup(pci);
 -- 
 2.43.0
 
