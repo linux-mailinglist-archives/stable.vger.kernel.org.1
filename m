@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-38485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B47FF8A0EDB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:18:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0C18A0D40
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4173CB24474
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:18:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FDBD1C2178F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D25146586;
-	Thu, 11 Apr 2024 10:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B98D9145B05;
+	Thu, 11 Apr 2024 10:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8mE+aMS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2fr10Qur"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CE02EAE5;
-	Thu, 11 Apr 2024 10:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F85145B04;
+	Thu, 11 Apr 2024 10:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830713; cv=none; b=Iehffn5OZ7qVBDgb8C6POr7UTokXaJGBXuLQJLCoSJmFmljQD4YL/6aGQlzaWszPoK748wfMxCz4chFLA5Ayy5zwTVqxi2dbpg4cN+P1dC2+N5bhBMSKj7+L5cvLEiakNNrdedaYSmygvvsX6ecgtM/9kCHOpJ2LXK+FF8a+rWA=
+	t=1712829714; cv=none; b=lFfcpIk4elo14RYYg7PgVS38TL93N+NsnRT3MbuJpUVnbu7yokbBQ6o9bJDFdX4E9gxS7SYmDPj0mBSzor+n+pT251B/c5dsXB8mpO5BDQoiA0TV07DYGYAqX9unZwS5Fq5UNS7a5LjovaBcny4Wus0FDWVzB5wgGJyiU3t2EM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830713; c=relaxed/simple;
-	bh=kGq6VtZFacPF0VPunw5ye0B1ihlQOOkDJhWwwxLwa80=;
+	s=arc-20240116; t=1712829714; c=relaxed/simple;
+	bh=5LGUp0flJXYBP/VOho2tB1xuJ6Y9zCdy9tUWB/lEtPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fZsbV2YeE3x02qOTm/wNbPodGHPepIgMmdBZvw/hXMQ7Ril2zhff/GihBnJDBeI3SdMG/5RyW5Yr6fUA7F4IR1o1KbDcD9WdArO/ovy6Eu1KltnuLkXXRidVfLXcUVGpV4W4xMnwI0gLxZ1z8pav/C3MosI7AUukwxrf1EXRs2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8mE+aMS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700E6C433C7;
-	Thu, 11 Apr 2024 10:18:32 +0000 (UTC)
+	 MIME-Version; b=K5Ex2ILyU5K3nLxlezQwzTCW6AEh8vEPXZKtcnlp1L28vP1IykOQRGQHBD4GywMWudD3VbqlKEozFXDioPK3ZG4eNIP3GTNpcmq9JrZN30kjhdJO9ky7yuKYZSqGTYhwS7z+YOf3/IJhGTx0RceFCdxCeZzKsDTynKekNgSjczc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2fr10Qur; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED424C433C7;
+	Thu, 11 Apr 2024 10:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830712;
-	bh=kGq6VtZFacPF0VPunw5ye0B1ihlQOOkDJhWwwxLwa80=;
+	s=korg; t=1712829714;
+	bh=5LGUp0flJXYBP/VOho2tB1xuJ6Y9zCdy9tUWB/lEtPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j8mE+aMSVGPl7ASnIXXHR3Dt5o5gUGYsJOiSQ3NgNqRFk0RcfyxwovZQduGKllc4J
-	 5xrgJbyfUC0k3883YoaQ+gMgV8BDSRIakjDh8hP//btHkGDjf9YHRqU3OL/dn1d6HX
-	 AxriacbJobV21dZ86vD9GDGwAbcvirj/UwdnQIig=
+	b=2fr10QurT28hHO6M8XE1HmSJcfNEBNw0u507jIXZEekUrKPijLtm9WDC6a0K1xCyI
+	 9bPkx5kt7aIMGuCpjlTLE5bWdmUWVrFL3IBziwXvDxnHgvVXSk8c9EbzlIp/UN+zN8
+	 vp0OS0IALaGfhjT0bNf0G4lUgAMdPTTy0+ygiZeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Chartre <alexandre.chartre@oracle.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Miroslav Benes <mbenes@suse.cz>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Rui Qi <qirui.001@bytedance.com>
-Subject: [PATCH 5.4 092/215] objtool: is_fentry_call() crashes if call has no destination
+	Nicolas Pitre <nico@fluxnic.net>,
+	stable <stable@kernel.org>
+Subject: [PATCH 4.19 078/175] vt: fix unicode buffer corruption when deleting characters
 Date: Thu, 11 Apr 2024 11:55:01 +0200
-Message-ID: <20240411095427.667644876@linuxfoundation.org>
+Message-ID: <20240411095421.911662867@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Chartre <alexandre.chartre@oracle.com>
+From: Nicolas Pitre <nico@fluxnic.net>
 
-commit 87cf61fe848ca8ddf091548671e168f52e8a718e upstream.
+commit 1581dafaf0d34bc9c428a794a22110d7046d186d upstream.
 
-Fix is_fentry_call() so that it works if a call has no destination
-set (call_dest). This needs to be done in order to support intra-
-function calls.
+This is the same issue that was fixed for the VGA text buffer in commit
+39cdb68c64d8 ("vt: fix memory overlapping when deleting chars in the
+buffer"). The cure is also the same i.e. replace memcpy() with memmove()
+due to the overlaping buffers.
 
-Signed-off-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Miroslav Benes <mbenes@suse.cz>
-Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20200414103618.12657-2-alexandre.chartre@oracle.com
-Signed-off-by: Rui Qi <qirui.001@bytedance.com>
+Signed-off-by: Nicolas Pitre <nico@fluxnic.net>
+Fixes: 81732c3b2fed ("tty vt: Fix line garbage in virtual console on command line edition")
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/sn184on2-3p0q-0qrq-0218-895349s4753o@syhkavp.arg
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/objtool/check.c |    2 +-
+ drivers/tty/vt/vt.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1367,7 +1367,7 @@ static int decode_sections(struct objtoo
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -405,7 +405,7 @@ static void vc_uniscr_delete(struct vc_d
+ 		char32_t *ln = uniscr->lines[vc->vc_y];
+ 		unsigned int x = vc->vc_x, cols = vc->vc_cols;
  
- static bool is_fentry_call(struct instruction *insn)
- {
--	if (insn->type == INSN_CALL &&
-+	if (insn->type == INSN_CALL && insn->call_dest &&
- 	    insn->call_dest->type == STT_NOTYPE &&
- 	    !strcmp(insn->call_dest->name, "__fentry__"))
- 		return true;
+-		memcpy(&ln[x], &ln[x + nr], (cols - x - nr) * sizeof(*ln));
++		memmove(&ln[x], &ln[x + nr], (cols - x - nr) * sizeof(*ln));
+ 		memset32(&ln[cols - nr], ' ', nr);
+ 	}
+ }
 
 
 
