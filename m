@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-38802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 747A98A107E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:36:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE0818A0CF4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:58:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 144991F2C0FD
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:36:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4126DB233AA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AEDD14BFA5;
-	Thu, 11 Apr 2024 10:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56EF145B06;
+	Thu, 11 Apr 2024 09:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntIEcvAp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sRWaui0A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DEA14B067;
-	Thu, 11 Apr 2024 10:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A9113DDDD;
+	Thu, 11 Apr 2024 09:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831633; cv=none; b=YwY3vis2VLOGTAXi4WPGF2vZ7zhOfLPlPtrvmLWshYO40pefuMddSIHdLq3aejExMIKnLwO3DdPUN/X4JovIQRp6/Ellsf5PGBdBSLT52LbmCZGvSnhKl/9hBelc3nj84xMukmgwBRaL+gLIJzqPQdc65SMBUjVKhbUol5rnJeQ=
+	t=1712829519; cv=none; b=gJ6ar7fGK8tr6KZ4uOTPsY3cRU7R3fOon3hgOH2c8ZkYPBo/IdUuGJZzSkijWJV81M+MaMjRKRC+1RJ6Uy2lv6wI4uzsOPFTENOIiNDz1WQ/z29AHoij3rH2QfWwl9HFmEfNltiyniaqkpfF3zy6GtGIAA+AgmUa+7+bwsiz/D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831633; c=relaxed/simple;
-	bh=gHHoTKgloJZ8m9eHChbnXRR4FZ7Rg0XA5cYRuPevRs0=;
+	s=arc-20240116; t=1712829519; c=relaxed/simple;
+	bh=Kg/rKohqFpM2L5N4VQQ7BQzjtMgRauZ5Y7fL31Nq37Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gu6o5gmHSy6c+2YV8y3mCyIq4Oam8Eqm3/UOsJUCeRXXoUTWLzie+WFoK2ug+bXpBgZ9np016J/WDU9uKqWccI12ZQZqFv/zFLbNKmFF2Iol1w9LTCYcjcuDRekB0yLfz2mnfhjIG1KBAjl2vCVroFAmXi74o0/YpzNXyNN5tLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntIEcvAp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31D7C433C7;
-	Thu, 11 Apr 2024 10:33:52 +0000 (UTC)
+	 MIME-Version; b=UPstk4yughqJNrLRG5z1HFMiwTokHU64crtwhv7wSeUnr1DjZfFjhaJqwE1ISLJRXxcRRDqPRYAp0Q/g2dtpS31R9uPkVTQK9ikgNpJp1lVQo0nX6b/gmKbQSOwDtf0JCDk+iqEUp2ELPDEhPNLZxYzbdL9B4WCGY5OXsOCXaqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sRWaui0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E781FC433F1;
+	Thu, 11 Apr 2024 09:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831633;
-	bh=gHHoTKgloJZ8m9eHChbnXRR4FZ7Rg0XA5cYRuPevRs0=;
+	s=korg; t=1712829519;
+	bh=Kg/rKohqFpM2L5N4VQQ7BQzjtMgRauZ5Y7fL31Nq37Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ntIEcvApatxrwf2n1kCO1PjEiXTc+72oq2gk0ddUiB7jeJqcTzuA8ao1RdhIa9LlR
-	 BiWbzVgKn5ozW9Yj9X468I1OwZ6pOm2hr54OP/alyHBV0ErU00hhwzMXkaa/lEFhtS
-	 xaT4AacqZn0qS49SouZ7SXYUrlbdtM152e7U/yuA=
+	b=sRWaui0A9VoBykwDPKtlW4LO2iXFVJPtmUc6l0EXssdMs+j1LylHTBTdOWv5oIcBu
+	 UF5KePqVyFV9Q2rsYF+n/zZfZsSVEV37z91J5D2qcSTEi+vpZXJFE8cHdBy4viLpBU
+	 YdKmTUSoW+RfhBRjezL9be8C0nn/EMGQ7P7+YZV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	BassCheck <bass@buaa.edu.cn>,
+	Gui-Dong Han <2045gemini@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 075/294] nvmem: meson-efuse: fix function pointer type mismatch
+Subject: [PATCH 4.19 015/175] media: xc4000: Fix atomicity violation in xc4000_get_frequency
 Date: Thu, 11 Apr 2024 11:53:58 +0200
-Message-ID: <20240411095437.949016055@linuxfoundation.org>
+Message-ID: <20240411095420.004682047@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Gui-Dong Han <2045gemini@gmail.com>
 
-[ Upstream commit cbd38332c140829ab752ba4e727f98be5c257f18 ]
+[ Upstream commit 36d503ad547d1c75758a6fcdbec2806f1b6aeb41 ]
 
-clang-16 warns about casting functions to incompatible types, as is done
-here to call clk_disable_unprepare:
+In xc4000_get_frequency():
+	*freq = priv->freq_hz + priv->freq_offset;
+The code accesses priv->freq_hz and priv->freq_offset without holding any
+lock.
 
-drivers/nvmem/meson-efuse.c:78:12: error: cast from 'void (*)(struct clk *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
-   78 |                                        (void(*)(void *))clk_disable_unprepare,
+In xc4000_set_params():
+	// Code that updates priv->freq_hz and priv->freq_offset
+	...
 
-The pattern of getting, enabling and setting a disable callback for a
-clock can be replaced with devm_clk_get_enabled(), which also fixes
-this warning.
+xc4000_get_frequency() and xc4000_set_params() may execute concurrently,
+risking inconsistent reads of priv->freq_hz and priv->freq_offset. Since
+these related data may update during reading, it can result in incorrect
+frequency calculation, leading to atomicity violations.
 
-Fixes: 611fbca1c861 ("nvmem: meson-efuse: add peripheral clock")
-Cc: Stable@vger.kernel.org
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240224114023.85535-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This possible bug is found by an experimental static analysis tool
+developed by our team, BassCheck[1]. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations. The above
+possible bug is reported when our tool analyzes the source code of
+Linux 6.2.
+
+To address this issue, it is proposed to add a mutex lock pair in
+xc4000_get_frequency() to ensure atomicity. With this patch applied, our
+tool no longer reports the possible bug, with the kernel configuration
+allyesconfig for x86_64. Due to the lack of associated hardware, we cannot
+test the patch in runtime testing, and just verify it according to the
+code logic.
+
+[1] https://sites.google.com/view/basscheck/
+
+Fixes: 4c07e32884ab ("[media] xc4000: Fix get_frequency()")
+Cc: stable@vger.kernel.org
+Reported-by: BassCheck <bass@buaa.edu.cn>
+Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/meson-efuse.c | 25 +++----------------------
- 1 file changed, 3 insertions(+), 22 deletions(-)
+ drivers/media/tuners/xc4000.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvmem/meson-efuse.c b/drivers/nvmem/meson-efuse.c
-index d6b533497ce1a..ba2714bef8d0e 100644
---- a/drivers/nvmem/meson-efuse.c
-+++ b/drivers/nvmem/meson-efuse.c
-@@ -47,7 +47,6 @@ static int meson_efuse_probe(struct platform_device *pdev)
- 	struct nvmem_config *econfig;
- 	struct clk *clk;
- 	unsigned int size;
--	int ret;
+diff --git a/drivers/media/tuners/xc4000.c b/drivers/media/tuners/xc4000.c
+index 0ef8f054a7950..6017602aead62 100644
+--- a/drivers/media/tuners/xc4000.c
++++ b/drivers/media/tuners/xc4000.c
+@@ -1527,10 +1527,10 @@ static int xc4000_get_frequency(struct dvb_frontend *fe, u32 *freq)
+ {
+ 	struct xc4000_priv *priv = fe->tuner_priv;
  
- 	sm_np = of_parse_phandle(pdev->dev.of_node, "secure-monitor", 0);
- 	if (!sm_np) {
-@@ -60,27 +59,9 @@ static int meson_efuse_probe(struct platform_device *pdev)
- 	if (!fw)
- 		return -EPROBE_DEFER;
++	mutex_lock(&priv->lock);
+ 	*freq = priv->freq_hz + priv->freq_offset;
  
--	clk = devm_clk_get(dev, NULL);
--	if (IS_ERR(clk)) {
--		ret = PTR_ERR(clk);
--		if (ret != -EPROBE_DEFER)
--			dev_err(dev, "failed to get efuse gate");
--		return ret;
--	}
--
--	ret = clk_prepare_enable(clk);
--	if (ret) {
--		dev_err(dev, "failed to enable gate");
--		return ret;
--	}
--
--	ret = devm_add_action_or_reset(dev,
--				       (void(*)(void *))clk_disable_unprepare,
--				       clk);
--	if (ret) {
--		dev_err(dev, "failed to add disable callback");
--		return ret;
--	}
-+	clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(clk))
-+		return dev_err_probe(dev, PTR_ERR(clk), "failed to get efuse gate");
+ 	if (debug) {
+-		mutex_lock(&priv->lock);
+ 		if ((priv->cur_fw.type
+ 		     & (BASE | FM | DTV6 | DTV7 | DTV78 | DTV8)) == BASE) {
+ 			u16	snr = 0;
+@@ -1541,8 +1541,8 @@ static int xc4000_get_frequency(struct dvb_frontend *fe, u32 *freq)
+ 				return 0;
+ 			}
+ 		}
+-		mutex_unlock(&priv->lock);
+ 	}
++	mutex_unlock(&priv->lock);
  
- 	if (meson_sm_call(fw, SM_EFUSE_USER_MAX, &size, 0, 0, 0, 0, 0) < 0) {
- 		dev_err(dev, "failed to get max user");
+ 	dprintk(1, "%s()\n", __func__);
+ 
 -- 
 2.43.0
 
