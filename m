@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-38577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6808A0F58
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50DF68A0DB5
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA5512870B6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 069FC1F21C30
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C760114600A;
-	Thu, 11 Apr 2024 10:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E92B145B26;
+	Thu, 11 Apr 2024 10:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLqYwcEj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/AnzcXi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8723513FD94;
-	Thu, 11 Apr 2024 10:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8C61448F3;
+	Thu, 11 Apr 2024 10:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830983; cv=none; b=keDhtc2a56oxq8T480IweOAokgzRS/MhbILCrnrcjN/ysIiAq5LkToM23k1Ys/yPEMoIM21nw9JUvvJoh2CV36Jy6OIrOaczLpEHh448lKEqJ2y1+iII+0I5gxYAxDgpIf1SccZNds+IMWMbhbKkNZVmSe3TAnGwnvqU0zfIs3M=
+	t=1712830013; cv=none; b=FCtGa55X7GGQJvHu2xSpdze97Ign03nQM1c0YRi8iZEd4mLeepSBulMR05mN/K/iG9C4UADaiTSKdX+lKMC9jvvbWxnK/YntFJdenBUrJh8ivBbpoIp1zcpoJt2wqGs1S7tclJirUNVROLQo5QJ3UYfnroLwis94ecQMlGb9BDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830983; c=relaxed/simple;
-	bh=4B/w1SNOFkGkjELrct9wWDpnAjbx3R74KwqQOYh+Os0=;
+	s=arc-20240116; t=1712830013; c=relaxed/simple;
+	bh=FBrG//iyI/rdQJDbZDGLfxWwvbJIBblLVRQooseH2xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UmMbtLgGva2EFm0tUoPjUFN9VQOT2ic/YM4JopeOQ1E/M9v6YKEWVKCjUORNZ9ieR3MJ9pAS76NW5fYpoRxCTl2X6bWVDzncv3wnUc9oMriDCBiUJr4o2aahRJjXJreNKLH7zdP7cuZQwQi1QVZJuKTwSOXWVkcqm1+t9H50VVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLqYwcEj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5507C433C7;
-	Thu, 11 Apr 2024 10:23:02 +0000 (UTC)
+	 MIME-Version; b=BTkSajIxG97Fkz1uiZ0AX+9VmO+RZkDr4MAzK4Ji/CH0GEvhEIB7xjEhtAH7tSw07WN8fGmdB87uHEW5oGasq2VuaatB4MrzEW5LxorzdkAZmcDDlPrBZ8KEaa8ma7RdUuc5vBSZFeeT+VDYGVeJ609Wu2om5H5ilHL4Ez1k1nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/AnzcXi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9880C43390;
+	Thu, 11 Apr 2024 10:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830983;
-	bh=4B/w1SNOFkGkjELrct9wWDpnAjbx3R74KwqQOYh+Os0=;
+	s=korg; t=1712830013;
+	bh=FBrG//iyI/rdQJDbZDGLfxWwvbJIBblLVRQooseH2xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oLqYwcEjnqK8l/YqrB8yXZa98FeLHEMRU/lyDpepbIEeGPkCWPiB3qVQ/y/9v70AY
-	 dund1VX8scfFDViBe04n3BTE596+bbHBarF2sqUfiHtieDQBV0HlBnDMfv8h2Mn94M
-	 V3VWXKsq2cXezy928zUTdEkhity5xTJYR82W4ab0=
+	b=q/AnzcXi+aUnMKOCdh3moHfgdgfYkjjzoDAOiv6suV/WPQKvPoGUdZ69CR+55UnyQ
+	 rbsfY6UGC4/Aa8HwYtqaiZvVVnUC6o8DDW3X0CKvJMqxuMvQ84cdTtL7iaIcLiqYvm
+	 ub8Elom6H2W19i14m1EOpdL1mebIoOA8AV1JWZMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 183/215] btrfs: send: handle path ref underflow in header iterate_inode_ref()
+	stable@kernel.org,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH 4.19 169/175] virtio: reenable config if freezing device failed
 Date: Thu, 11 Apr 2024 11:56:32 +0200
-Message-ID: <20240411095430.368345239@linuxfoundation.org>
+Message-ID: <20240411095424.651663464@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 3c6ee34c6f9cd12802326da26631232a61743501 ]
+commit 310227f42882c52356b523e2f4e11690eebcd2ab upstream.
 
-Change BUG_ON to proper error handling if building the path buffer
-fails. The pointers are not printed so we don't accidentally leak kernel
-addresses.
+Currently, we don't reenable the config if freezing the device failed.
 
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For example, virtio-mem currently doesn't support suspend+resume, and
+trying to freeze the device will always fail. Afterwards, the device
+will no longer respond to resize requests, because it won't get notified
+about config changes.
+
+Let's fix this by re-enabling the config if freezing fails.
+
+Fixes: 22b7050a024d ("virtio: defer config changed notifications")
+Cc: <stable@kernel.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Message-Id: <20240213135425.795001-1-david@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/send.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/virtio/virtio.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index 0dfa88ac01393..576c027909f8a 100644
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -973,7 +973,15 @@ static int iterate_inode_ref(struct btrfs_root *root, struct btrfs_path *path,
- 					ret = PTR_ERR(start);
- 					goto out;
- 				}
--				BUG_ON(start < p->buf);
-+				if (unlikely(start < p->buf)) {
-+					btrfs_err(root->fs_info,
-+			"send: path ref buffer underflow for key (%llu %u %llu)",
-+						  found_key->objectid,
-+						  found_key->type,
-+						  found_key->offset);
-+					ret = -EINVAL;
-+					goto out;
-+				}
- 			}
- 			p->start = start;
- 		} else {
--- 
-2.43.0
-
+--- a/drivers/virtio/virtio.c
++++ b/drivers/virtio/virtio.c
+@@ -376,13 +376,19 @@ EXPORT_SYMBOL_GPL(unregister_virtio_devi
+ int virtio_device_freeze(struct virtio_device *dev)
+ {
+ 	struct virtio_driver *drv = drv_to_virtio(dev->dev.driver);
++	int ret;
+ 
+ 	virtio_config_disable(dev);
+ 
+ 	dev->failed = dev->config->get_status(dev) & VIRTIO_CONFIG_S_FAILED;
+ 
+-	if (drv && drv->freeze)
+-		return drv->freeze(dev);
++	if (drv && drv->freeze) {
++		ret = drv->freeze(dev);
++		if (ret) {
++			virtio_config_enable(dev);
++			return ret;
++		}
++	}
+ 
+ 	return 0;
+ }
 
 
 
