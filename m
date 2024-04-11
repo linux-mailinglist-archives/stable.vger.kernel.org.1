@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-38703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 580E88A0FF0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:29:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02BCB8A11A4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:46:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 890C51C2179C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:29:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 300791C23C83
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5A11465BF;
-	Thu, 11 Apr 2024 10:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E54145B26;
+	Thu, 11 Apr 2024 10:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqVT/flQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDzlO/AS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2731D558;
-	Thu, 11 Apr 2024 10:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229AE1448C8;
+	Thu, 11 Apr 2024 10:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831348; cv=none; b=HgAvgWpxYoRRl4bFoepnWDKDWhwbIpy+grklkCCALOFUjSUF20i4rsgZdVTiKOGuAKUGlY5VW5+kxexm/x4bx1S5X1te2OmC15A0TB0OyNX+REsgZ1mBaCsOwxaXJnBiVkp9x63KxO8UVbOzpnSiSqLvrv+jH/IddtlWqjgxRRs=
+	t=1712832372; cv=none; b=fWhsK1/jUrkyeYPa2v6qN/MRe+OLq+tEJn7t+oPGjHd8ppkSvRyRdD8LGUF5t82w6Jv9RufCldbqvX+i3qscT5ljG/pV3+iqFjhub7eRR4rF1qczG4woctEn3O6hyc7LCBDnqpVTDXy0gROlkAu9NBFTcPQWp3AqnDTOSUrGrvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831348; c=relaxed/simple;
-	bh=JgRF78Zz7ABkjSC+EDkGrgEGo8rfZp69kb35XwRVWjw=;
+	s=arc-20240116; t=1712832372; c=relaxed/simple;
+	bh=JYk+oWChdCtiG7/SouviAdTr/Vdb5Jr0CcAji0dRcao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ILUUmCGy7R/tU6fRB0YOc5E9ODTaThXJkZWfjQg+YcsliaRzSAIWRqT+MFFFtQOcvPqEX6g9Twe8A5zFFrJkn20zf632j9PFbKwTHY0CfuqMmJRr+Ai5tnETQ3fZofvWp3DPa7BD8MYasujRNPZVDyC63yX+nSEURJTpfpitWoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqVT/flQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3445DC433C7;
-	Thu, 11 Apr 2024 10:29:08 +0000 (UTC)
+	 MIME-Version; b=CqenF1tbfBFwtNsaikUgxjTK9ggODxnKYdSYhWfVVHauj8EAc2bga1YHVXhaqXEGIfr63u+MKFwmNtG7y9/1KfuYlaHqKjlKR+Yw147WFtYmOQSGtOrY0NMgw6/vZwaDchcRsKJjDxUDzwIVeCITRnVvEBqYolQ3cAA45aNMaoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDzlO/AS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E0CC433F1;
+	Thu, 11 Apr 2024 10:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831348;
-	bh=JgRF78Zz7ABkjSC+EDkGrgEGo8rfZp69kb35XwRVWjw=;
+	s=korg; t=1712832372;
+	bh=JYk+oWChdCtiG7/SouviAdTr/Vdb5Jr0CcAji0dRcao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lqVT/flQX5VJgAVElIIwx0mUJk2sl35T7Mvk2Ei5G+sYFBnPXYBc7gK30pRgSsBlM
-	 vOP177F+Jhj1Xoq2rP9ZbwrfnmI6PkF8XrXWxQbYmWljF5zECeUGqWnblyyjfJDA9p
-	 JgB3hfHECb+/9wANm2W1Tu/dz8Dp+JEfNW3Eumc0=
+	b=hDzlO/ASNe2FqnrsRVhWbnFU5lvxiEpO2I19HiOOMFZrAxEcUH3/0rTYj94pIFN6u
+	 HlZVJ6Z51qOfn6J/LW8OHcWfqSWp/B/hsS91NBjzVJ706Iz26eXHukrLv1osX1dgJf
+	 TLaOebL5EHkgccXGS+yH5X3+THuJKhuse3/eakLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Jan Karcher <jaka@linux.ibm.com>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/114] thunderbolt: Keep the domain powered when USB4 port is in redrive mode
+Subject: [PATCH 6.1 26/83] net/smc: reduce rtnl pressure in smc_pnet_create_pnetids_list()
 Date: Thu, 11 Apr 2024 11:56:58 +0200
-Message-ID: <20240411095419.639037549@linuxfoundation.org>
+Message-ID: <20240411095413.465956838@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,168 +67,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a75e0684efe567ae5f6a8e91a8360c4c1773cf3a ]
+[ Upstream commit 00af2aa93b76b1bade471ad0d0525d4d29ca5cc0 ]
 
-If a DiplayPort cable is directly connected to the host routers USB4
-port, there is no tunnel involved but the port is in "redrive" mode
-meaning that it is re-driving the DisplayPort signals from its
-DisplayPort source. In this case we need to keep the domain powered on
-otherwise once the domain enters D3cold the connected monitor blanks
-too.
+Many syzbot reports show extreme rtnl pressure, and many of them hint
+that smc acquires rtnl in netns creation for no good reason [1]
 
-Since this happens only on Intel Barlow Ridge add a quirk that takes
-runtime PM reference if we detect that the USB4 port entered redrive
-mode (and release it once it exits the mode).
+This patch returns early from smc_pnet_net_init()
+if there is no netdevice yet.
 
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+I am not even sure why smc_pnet_create_pnetids_list() even exists,
+because smc_pnet_netdev_event() is also calling
+smc_pnet_add_base_pnetid() when handling NETDEV_UP event.
+
+[1] extract of typical syzbot reports
+
+2 locks held by syz-executor.3/12252:
+  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
+2 locks held by syz-executor.4/12253:
+  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
+2 locks held by syz-executor.1/12257:
+  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
+2 locks held by syz-executor.2/12261:
+  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
+2 locks held by syz-executor.0/12265:
+  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
+2 locks held by syz-executor.3/12268:
+  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
+2 locks held by syz-executor.4/12271:
+  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
+2 locks held by syz-executor.1/12274:
+  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
+2 locks held by syz-executor.2/12280:
+  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
+  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Wenjia Zhang <wenjia@linux.ibm.com>
+Cc: Jan Karcher <jaka@linux.ibm.com>
+Cc: "D. Wythe" <alibuda@linux.alibaba.com>
+Cc: Tony Lu <tonylu@linux.alibaba.com>
+Cc: Wen Gu <guwen@linux.alibaba.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240302100744.3868021-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/quirks.c | 14 +++++++++++
- drivers/thunderbolt/tb.c     | 49 +++++++++++++++++++++++++++++++++++-
- drivers/thunderbolt/tb.h     |  4 +++
- 3 files changed, 66 insertions(+), 1 deletion(-)
+ net/smc/smc_pnet.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/thunderbolt/quirks.c b/drivers/thunderbolt/quirks.c
-index e6bfa63b40aee..e81de9c30eac9 100644
---- a/drivers/thunderbolt/quirks.c
-+++ b/drivers/thunderbolt/quirks.c
-@@ -43,6 +43,12 @@ static void quirk_usb3_maximum_bandwidth(struct tb_switch *sw)
- 	}
- }
+diff --git a/net/smc/smc_pnet.c b/net/smc/smc_pnet.c
+index 25fb2fd186e22..21b8bf23e4ee6 100644
+--- a/net/smc/smc_pnet.c
++++ b/net/smc/smc_pnet.c
+@@ -802,6 +802,16 @@ static void smc_pnet_create_pnetids_list(struct net *net)
+ 	u8 ndev_pnetid[SMC_MAX_PNETID_LEN];
+ 	struct net_device *dev;
  
-+static void quirk_block_rpm_in_redrive(struct tb_switch *sw)
-+{
-+	sw->quirks |= QUIRK_KEEP_POWER_IN_DP_REDRIVE;
-+	tb_sw_dbg(sw, "preventing runtime PM in DP redrive mode\n");
-+}
-+
- struct tb_quirk {
- 	u16 hw_vendor_id;
- 	u16 hw_device_id;
-@@ -86,6 +92,14 @@ static const struct tb_quirk tb_quirks[] = {
- 		  quirk_usb3_maximum_bandwidth },
- 	{ 0x8087, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HUB_40G_BRIDGE, 0x0000, 0x0000,
- 		  quirk_usb3_maximum_bandwidth },
-+	/*
-+	 * Block Runtime PM in DP redrive mode for Intel Barlow Ridge host
-+	 * controllers.
++	/* Newly created netns do not have devices.
++	 * Do not even acquire rtnl.
 +	 */
-+	{ 0x8087, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI, 0x0000, 0x0000,
-+		  quirk_block_rpm_in_redrive },
-+	{ 0x8087, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI, 0x0000, 0x0000,
-+		  quirk_block_rpm_in_redrive },
- 	/*
- 	 * CLx is not supported on AMD USB4 Yellow Carp and Pink Sardine platforms.
- 	 */
-diff --git a/drivers/thunderbolt/tb.c b/drivers/thunderbolt/tb.c
-index 27bd6ca6f99e4..ecfb5714e822d 100644
---- a/drivers/thunderbolt/tb.c
-+++ b/drivers/thunderbolt/tb.c
-@@ -1416,6 +1416,49 @@ static void tb_tunnel_dp(struct tb *tb)
- 	pm_runtime_put_autosuspend(&in->sw->dev);
- }
- 
-+static void tb_enter_redrive(struct tb_port *port)
-+{
-+	struct tb_switch *sw = port->sw;
-+
-+	if (!(sw->quirks & QUIRK_KEEP_POWER_IN_DP_REDRIVE))
++	if (list_empty(&net->dev_base_head))
 +		return;
 +
-+	/*
-+	 * If we get hot-unplug for the DP IN port of the host router
-+	 * and the DP resource is not available anymore it means there
-+	 * is a monitor connected directly to the Type-C port and we are
-+	 * in "redrive" mode. For this to work we cannot enter RTD3 so
-+	 * we bump up the runtime PM reference count here.
++	/* Note: This might not be needed, because smc_pnet_netdev_event()
++	 * is also calling smc_pnet_add_base_pnetid() when handling
++	 * NETDEV_UP event.
 +	 */
-+	if (!tb_port_is_dpin(port))
-+		return;
-+	if (tb_route(sw))
-+		return;
-+	if (!tb_switch_query_dp_resource(sw, port)) {
-+		port->redrive = true;
-+		pm_runtime_get(&sw->dev);
-+		tb_port_dbg(port, "enter redrive mode, keeping powered\n");
-+	}
-+}
-+
-+static void tb_exit_redrive(struct tb_port *port)
-+{
-+	struct tb_switch *sw = port->sw;
-+
-+	if (!(sw->quirks & QUIRK_KEEP_POWER_IN_DP_REDRIVE))
-+		return;
-+
-+	if (!tb_port_is_dpin(port))
-+		return;
-+	if (tb_route(sw))
-+		return;
-+	if (port->redrive && tb_switch_query_dp_resource(sw, port)) {
-+		port->redrive = false;
-+		pm_runtime_put(&sw->dev);
-+		tb_port_dbg(port, "exit redrive mode\n");
-+	}
-+}
-+
- static void tb_dp_resource_unavailable(struct tb *tb, struct tb_port *port)
- {
- 	struct tb_port *in, *out;
-@@ -1432,7 +1475,10 @@ static void tb_dp_resource_unavailable(struct tb *tb, struct tb_port *port)
- 	}
- 
- 	tunnel = tb_find_tunnel(tb, TB_TUNNEL_DP, in, out);
--	tb_deactivate_and_free_tunnel(tunnel);
-+	if (tunnel)
-+		tb_deactivate_and_free_tunnel(tunnel);
-+	else
-+		tb_enter_redrive(port);
- 	list_del_init(&port->list);
- 
- 	/*
-@@ -1459,6 +1505,7 @@ static void tb_dp_resource_available(struct tb *tb, struct tb_port *port)
- 	tb_port_dbg(port, "DP %s resource available\n",
- 		    tb_port_is_dpin(port) ? "IN" : "OUT");
- 	list_add_tail(&port->list, &tcm->dp_resources);
-+	tb_exit_redrive(port);
- 
- 	/* Look for suitable DP IN <-> DP OUT pairs now */
- 	tb_tunnel_dp(tb);
-diff --git a/drivers/thunderbolt/tb.h b/drivers/thunderbolt/tb.h
-index d2a55ad2fd3e6..4893d2c7ac968 100644
---- a/drivers/thunderbolt/tb.h
-+++ b/drivers/thunderbolt/tb.h
-@@ -23,6 +23,8 @@
- #define QUIRK_FORCE_POWER_LINK_CONTROLLER		BIT(0)
- /* Disable CLx if not supported */
- #define QUIRK_NO_CLX					BIT(1)
-+/* Need to keep power on while USB4 port is in redrive mode */
-+#define QUIRK_KEEP_POWER_IN_DP_REDRIVE			BIT(2)
- 
- /**
-  * struct tb_nvm - Structure holding NVM information
-@@ -261,6 +263,7 @@ struct tb_bandwidth_group {
-  * @group_list: The adapter is linked to the group's list of ports through this
-  * @max_bw: Maximum possible bandwidth through this adapter if set to
-  *	    non-zero.
-+ * @redrive: For DP IN, if true the adapter is in redrive mode.
-  *
-  * In USB4 terminology this structure represents an adapter (protocol or
-  * lane adapter).
-@@ -289,6 +292,7 @@ struct tb_port {
- 	struct tb_bandwidth_group *group;
- 	struct list_head group_list;
- 	unsigned int max_bw;
-+	bool redrive;
- };
- 
- /**
+ 	rtnl_lock();
+ 	for_each_netdev(net, dev)
+ 		smc_pnet_add_base_pnetid(net, dev, ndev_pnetid);
 -- 
 2.43.0
 
