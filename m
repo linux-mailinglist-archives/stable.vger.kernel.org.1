@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-38267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB228A0DC5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 706158A10A9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 812F71C21B01
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BB6D28ADFF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F71145FFB;
-	Thu, 11 Apr 2024 10:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8262F147C80;
+	Thu, 11 Apr 2024 10:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nMA1nRwV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siJ3+YcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66134145B14;
-	Thu, 11 Apr 2024 10:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FB5657D3;
+	Thu, 11 Apr 2024 10:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830052; cv=none; b=LCfvg2gVfmmTtxKX7eDCaUsfSj0OwipTaInYID2k0lipARzZPOmTQzTARNkliR0dP5x7NwPzAnPS9kGLb1M7mohaGpDqDOQ/OsuO5nte5CxNT3b9uprk4MJsm3ESBG/Ejzh6RW9QaRppOXSk7TMlaJ17IdQhUZ9j79tP0u6/v7U=
+	t=1712831756; cv=none; b=W0fb32oFA9U14L7KwsQGkdYozFQJKzRTSHBKY/eDRhfUvWz/hrEZppMl5jGn7PMKDsEOhyxq7PLt6nlxpUX2+NGXIMbukCLPn3m2j+jdw2y7Lle6BeDJPWyz9V9NKhd7iyIehvDt7+N4kStABqODPRtldQrV4k4sV/TDm2ZiaN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830052; c=relaxed/simple;
-	bh=GxQDZZFjahN6mQUoPXSL6LUnWeg7dWC8uXwZFOq8+Xs=;
+	s=arc-20240116; t=1712831756; c=relaxed/simple;
+	bh=qCRIUKWA/2xHmtyJPxf/4vnDpu4ja6SxPsGQId1av1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZwB42lwO2nvcnGD6veRl/d2F54YgcxLtdobO20XzKJNPADZmcspz169KXWPKZanNVYpQla6NZi0ul32ySOm58lwdRvHt56qaORzbrhb7uV3q3AEbysMksOlRHATM9J5lRYUOY1ooW88CWQaIhSCV3TXIYmMOoqxV4ROjcO9TVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nMA1nRwV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81829C433F1;
-	Thu, 11 Apr 2024 10:07:31 +0000 (UTC)
+	 MIME-Version; b=MQvcn4gOIaHgJ+AJP4eCupv+y4ZpOugsvdvYVrrxIjrr77VpoYvSkP2m79EP2XKB9Nt8h4vjmz/pFHomUR9qD1CnERPRKb1lOA65d2/P34l6DWPpDQKD+dtysdH5suXb1X8CqNxShaNof7MvbJyCPlR9mvlb3mgew/vwK59gTyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siJ3+YcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC86AC433C7;
+	Thu, 11 Apr 2024 10:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830051;
-	bh=GxQDZZFjahN6mQUoPXSL6LUnWeg7dWC8uXwZFOq8+Xs=;
+	s=korg; t=1712831756;
+	bh=qCRIUKWA/2xHmtyJPxf/4vnDpu4ja6SxPsGQId1av1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nMA1nRwVMaiog9y2cYP/S7XuwBYH1PFQQJk2gzQC/TT0X8r/xkFnqLb+861HSYkuj
-	 /gjREe5XUYAsBwXx7MB/B+8aC5jew0fIKsz/IOwA+6UNVlaFR5cghLLHbd0+0a/9Uu
-	 d1g6CHkSmpt2wQLqAdo/+tUNb2APeJkgmyCP6Swc=
+	b=siJ3+YcTC1its6ekaLTaktPL8/5g7alF/hxmghnSTdOmxzuLA9Lv8uSM5eDQrOaz0
+	 IyODX5VO8dMAU3JN3V8PIrDF0ZQsxzYXXyRxLzQ2bv1R59JghJvNLkRRLIVd77Q64L
+	 +E6WsEeRuDab963Z62RFrHlMkYH+9lqOYSSVO+tY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 011/143] wifi: iwlwifi: pcie: Add the PCI device id for new hardware
+	Ben Hutchings <ben@decadent.org.uk>,
+	Salvatore Bonaccorso <carnil@debian.org>
+Subject: [PATCH 5.10 116/294] scripts: kernel-doc: Fix syntax error due to undeclared args variable
 Date: Thu, 11 Apr 2024 11:54:39 +0200
-Message-ID: <20240411095421.250774129@linuxfoundation.org>
+Message-ID: <20240411095439.160585532@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+From: Salvatore Bonaccorso <carnil@debian.org>
 
-[ Upstream commit 6770eee75148ba10c0c051885379714773e00b48 ]
+The backport of commit 3080ea5553cc ("stddef: Introduce
+DECLARE_FLEX_ARRAY() helper") to 5.10.y (as a prerequisite of another
+fix) modified scripts/kernel-doc and introduced a syntax error:
 
-Add the support for a new PCI device id.
+Global symbol "$args" requires explicit package name (did you forget to declare "my $args"?) at ./scripts/kernel-doc line 1236.
+Global symbol "$args" requires explicit package name (did you forget to declare "my $args"?) at ./scripts/kernel-doc line 1236.
+Execution of ./scripts/kernel-doc aborted due to compilation errors.
 
-Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240129211905.fde32107e0a3.I597cff4f340e4bed12b7568a0ad504bd4b2c1cf8@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note: The issue could be fixed in the 5.10.y series as well by
+backporting e86bdb24375a ("scripts: kernel-doc: reduce repeated regex
+expressions into variables") but just replacing the undeclared args back
+to ([^,)]+) was the most straightforward approach. The issue is specific
+to the backport to the 5.10.y series. Thus there is as well no upstream
+commit for this change.
+
+Fixes: 443b16ee3d9c ("stddef: Introduce DECLARE_FLEX_ARRAY() helper") # 5.10.y
+Reported-by: Ben Hutchings <ben@decadent.org.uk>
+Link: https://lore.kernel.org/regressions/ZeHKjjPGoyv_b2Tg@eldamar.lan/T/#u
+Link: https://bugs.debian.org/1064035
+Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 1 +
- 1 file changed, 1 insertion(+)
+ scripts/kernel-doc |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 2c9b98c8184b5..271be64ce19ae 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -502,6 +502,7 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
+--- a/scripts/kernel-doc
++++ b/scripts/kernel-doc
+@@ -1233,7 +1233,7 @@ sub dump_struct($$) {
+ 	# replace DECLARE_KFIFO_PTR
+ 	$members =~ s/DECLARE_KFIFO_PTR\s*\(([^,)]+),\s*([^,)]+)\)/$2 \*$1/gos;
+ 	# replace DECLARE_FLEX_ARRAY
+-	$members =~ s/(?:__)?DECLARE_FLEX_ARRAY\s*\($args,\s*$args\)/$1 $2\[\]/gos;
++	$members =~ s/(?:__)?DECLARE_FLEX_ARRAY\s*\(([^,)]+),\s*([^,)]+)\)/$1 $2\[\]/gos;
+ 	my $declaration = $members;
  
- /* Bz devices */
- 	{IWL_PCI_DEVICE(0x2727, PCI_ANY_ID, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0x272D, PCI_ANY_ID, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0xA840, PCI_ANY_ID, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x7740, PCI_ANY_ID, iwl_bz_trans_cfg)},
--- 
-2.43.0
-
+ 	# Split nested struct/union elements as newer ones
 
 
 
