@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-38861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE678A10BD
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ADE48A0DCC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0F011C23228
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 042F5286456
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B686149C7F;
-	Thu, 11 Apr 2024 10:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BB5145B25;
+	Thu, 11 Apr 2024 10:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkzTn4ma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duwR0q9b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09EE564CC0;
-	Thu, 11 Apr 2024 10:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60263145B0D;
+	Thu, 11 Apr 2024 10:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831809; cv=none; b=hg8xvL0FKeQgoDWTqB9mo5UK7YnvSK28sOChJFbbxbIgYkQNyuy2snzEgmt9R6MnkoCnuHDLVWF9Ew16FKlGVfLltSAEEobctY8xbg/I1Ktc9p5nddAzr3zUGRZd81AfQUFB0fTAao4uGnoQhe1UrmXofzc6ao+1sUbdgJJESkM=
+	t=1712830075; cv=none; b=UlGg8n1bSLO0khsXFjrf5pNYVGdXLaDwTb0/Q+XQRu8BSUMBGoAFrheronTN5neuwl7Dgejg8HlIH507/tbxC5VUl5cGaKgVX3VdP3ANa7dSscrkuHaKGRiQF55J5NHV1t0JT67sJFsw7vle3YFHpgZkgsJNxdp32VMFE4H8qPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831809; c=relaxed/simple;
-	bh=5KRJXDNXti/Guurlf05gIomO6vJefWfuvcFw8Yjp/HI=;
+	s=arc-20240116; t=1712830075; c=relaxed/simple;
+	bh=M1GxeVaw6d7pZByn0uWCm3Fd5DDkDNCUV7Uqok1ExQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q/fZ/QdzoqpWQAvoWcDplqwq04cWFIsYFNKlYGmH360/vY3I8YNYUJl5qNPTySSSSErkTzGTlKc7VO6d1KkpGkl8xxL09JnEbM/BzxPxBziCOeX7Wc1byKbyeTzPjqcStZzNbi/NjVrNIcOAFJ3/+dRKJHMOhCgiIxEuSpTZD5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkzTn4ma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80EDDC433F1;
-	Thu, 11 Apr 2024 10:36:48 +0000 (UTC)
+	 MIME-Version; b=E2klslvP90JoBeDbe5BIwymNXZsUL5JYbqciLV9JVp5lgQjJcoFFau+DRGe3CjKlNZs3WkqoyJWzy6xWLjGAFTnnTKlYrfL9TVLc32wVQs//4/+oWWR+R8FLfMlUn5zBOtZ6XEgayL7mqHh0eYB1JEeKBtA8X/SpHJOC9y+oYrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duwR0q9b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6657C433C7;
+	Thu, 11 Apr 2024 10:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831808;
-	bh=5KRJXDNXti/Guurlf05gIomO6vJefWfuvcFw8Yjp/HI=;
+	s=korg; t=1712830075;
+	bh=M1GxeVaw6d7pZByn0uWCm3Fd5DDkDNCUV7Uqok1ExQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bkzTn4maegZFsjV19h9ZdBxmP8j+l30L9bbA37R1UFyPKk/a7jzin/V6SG+CdVz6u
-	 H2ETOiE9XYFTRzZIRugixy9EQRUn3bPRfQJJF6u9Lc3OEywVUfvnwAOXML3ah9D24L
-	 UZbftSm+/9BnOG/u35dVYLtS8kuAW1bnnx6CT/LE=
+	b=duwR0q9bPC0sPz8iIBHwy8Xjg2k5wct3mi+HGfbvxlpNhW9uaiQapiiXfdZbTkUa/
+	 bXoQLQDwao1zmu0fkjSgXaLCMw/Q6tGXyUnlX7gf4ojE634tnQA7utqWxzkn7WtbgY
+	 Dfah1eIUtXy9+ITJ7+xJVbyKiuNkG7W5xY+IB83Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Pitre <nico@fluxnic.net>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 132/294] vt: fix unicode buffer corruption when deleting characters
+	Adam Ford <aford173@gmail.com>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Sandor Yu <Sandor.yu@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 027/143] pmdomain: imx8mp-blk-ctrl: imx8mp_blk: Add fdcc clock to hdmimix domain
 Date: Thu, 11 Apr 2024 11:54:55 +0200
-Message-ID: <20240411095439.633084935@linuxfoundation.org>
+Message-ID: <20240411095421.729506918@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Pitre <nico@fluxnic.net>
+From: Adam Ford <aford173@gmail.com>
 
-commit 1581dafaf0d34bc9c428a794a22110d7046d186d upstream.
+[ Upstream commit 697624ee8ad557ab5417f985d2c804241a7ad30d ]
 
-This is the same issue that was fixed for the VGA text buffer in commit
-39cdb68c64d8 ("vt: fix memory overlapping when deleting chars in the
-buffer"). The cure is also the same i.e. replace memcpy() with memmove()
-due to the overlaping buffers.
+According to i.MX8MP RM and HDMI ADD, the fdcc clock is part of
+hdmi rx verification IP that should not enable for HDMI TX.
+But actually if the clock is disabled before HDMI/LCDIF probe,
+LCDIF will not get pixel clock from HDMI PHY and print the error
+logs:
 
-Signed-off-by: Nicolas Pitre <nico@fluxnic.net>
-Fixes: 81732c3b2fed ("tty vt: Fix line garbage in virtual console on command line edition")
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/sn184on2-3p0q-0qrq-0218-895349s4753o@syhkavp.arg
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[CRTC:39:crtc-2] vblank wait timed out
+WARNING: CPU: 2 PID: 9 at drivers/gpu/drm/drm_atomic_helper.c:1634 drm_atomic_helper_wait_for_vblanks.part.0+0x23c/0x260
+
+Add fdcc clock to LCDIF and HDMI TX power domains to fix the issue.
+
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Jacky Bai <ping.bai@nxp.com>
+Signed-off-by: Sandor Yu <Sandor.yu@nxp.com>
+Link: https://lore.kernel.org/r/20240203165307.7806-5-aford173@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/vt/vt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pmdomain/imx/imx8mp-blk-ctrl.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -398,7 +398,7 @@ static void vc_uniscr_delete(struct vc_d
- 		char32_t *ln = uniscr->lines[vc->state.y];
- 		unsigned int x = vc->state.x, cols = vc->vc_cols;
+diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
+index e3203eb6a0229..a56f7f92d0915 100644
+--- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
+@@ -55,7 +55,7 @@ struct imx8mp_blk_ctrl_domain_data {
+ 	const char *gpc_name;
+ };
  
--		memcpy(&ln[x], &ln[x + nr], (cols - x - nr) * sizeof(*ln));
-+		memmove(&ln[x], &ln[x + nr], (cols - x - nr) * sizeof(*ln));
- 		memset32(&ln[cols - nr], ' ', nr);
- 	}
- }
+-#define DOMAIN_MAX_CLKS 2
++#define DOMAIN_MAX_CLKS 3
+ #define DOMAIN_MAX_PATHS 3
+ 
+ struct imx8mp_blk_ctrl_domain {
+@@ -457,8 +457,8 @@ static const struct imx8mp_blk_ctrl_domain_data imx8mp_hdmi_domain_data[] = {
+ 	},
+ 	[IMX8MP_HDMIBLK_PD_LCDIF] = {
+ 		.name = "hdmiblk-lcdif",
+-		.clk_names = (const char *[]){ "axi", "apb" },
+-		.num_clks = 2,
++		.clk_names = (const char *[]){ "axi", "apb", "fdcc" },
++		.num_clks = 3,
+ 		.gpc_name = "lcdif",
+ 		.path_names = (const char *[]){"lcdif-hdmi"},
+ 		.num_paths = 1,
+@@ -483,8 +483,8 @@ static const struct imx8mp_blk_ctrl_domain_data imx8mp_hdmi_domain_data[] = {
+ 	},
+ 	[IMX8MP_HDMIBLK_PD_HDMI_TX] = {
+ 		.name = "hdmiblk-hdmi-tx",
+-		.clk_names = (const char *[]){ "apb", "ref_266m" },
+-		.num_clks = 2,
++		.clk_names = (const char *[]){ "apb", "ref_266m", "fdcc" },
++		.num_clks = 3,
+ 		.gpc_name = "hdmi-tx",
+ 	},
+ 	[IMX8MP_HDMIBLK_PD_HDMI_TX_PHY] = {
+-- 
+2.43.0
+
 
 
 
