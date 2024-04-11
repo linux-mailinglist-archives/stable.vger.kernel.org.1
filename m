@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D3DB8A0E03
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E06398A0F29
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:21:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFE5DB2249D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D8261C22D3E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EFF145B26;
-	Thu, 11 Apr 2024 10:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB65145FF0;
+	Thu, 11 Apr 2024 10:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXEo1aBR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AaJiWfU/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5721142624;
-	Thu, 11 Apr 2024 10:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07C114601D;
+	Thu, 11 Apr 2024 10:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830208; cv=none; b=fOOyj3ZDIPqdNCWKwfudtkuP9xy6Cxbssf7it1uVw9UdK8sHDh7Ar5d2ea6agz6efURyCLWZ+3J6L/uGhEpIMLX7JXCCbV+fu/KfBZfU9/BTJH5yRm34nGO5bExj2tICEXNrP9wRcQX501lO2zWiDfbVo+AFUC4M8WR+MPbGGog=
+	t=1712830889; cv=none; b=TXRr1I0j2GRGfoYDrvprBxq0R5J/0I3NoWbEOKnP0uy9J08IBhDsf6q/t3OZO17xUnOLRrgNfFwK1kQe06s8E+0hxJe68iUaM0r39/MyMCkPDoOqkVio1/BEoBoN1t8a9gYBQX9sWX2gaoNy9IfbfyVqbD1QW8KMM5f3HvCAmds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830208; c=relaxed/simple;
-	bh=rNBjbtF/U7CqTyJLJcB1ScDBLv3NcSsmbiwqTgOnaWQ=;
+	s=arc-20240116; t=1712830889; c=relaxed/simple;
+	bh=aLGpvptGJGb/woJVy/5JXRHKx2E2JuXTWSaQ+Wmp9k4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBjpu/ayXxlCp8lilKxmMxpChXxwvXq7ZKDkQqCPcKNpkg88aFqM7X3gFsJP5MNXiauoP3CqFcR3MhBRzUzCH0Wtan5NuLEUMw0Gn16hfWtPGYJXilsFENUTZq7CqQBZyCiQj7PFtL7tjiD5v4cCwXXHzbl4s2b+zZFWX+NPMzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXEo1aBR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C356C433C7;
-	Thu, 11 Apr 2024 10:10:07 +0000 (UTC)
+	 MIME-Version; b=VI6ZrDX5MhCvUs+pIlVK18Z0ta3R0pj2sssRKEDN9wCj4jtpJKWFzdm8zmLasXVMo6dhgXqwaOd1ox7fQp3kRkG7UL/IOS6i0B4O7v5i2HABnMNvL6GWJyXRKBkpqRP7R+Z/j9++cH3cYMXqdx8E34zSMxHUUqe+QXqyirlZLhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AaJiWfU/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40FA0C43390;
+	Thu, 11 Apr 2024 10:21:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830207;
-	bh=rNBjbtF/U7CqTyJLJcB1ScDBLv3NcSsmbiwqTgOnaWQ=;
+	s=korg; t=1712830888;
+	bh=aLGpvptGJGb/woJVy/5JXRHKx2E2JuXTWSaQ+Wmp9k4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GXEo1aBR0KfG/9mBexbvc8rCNTctOVrs3l4oX+1Cvvixlay9TuoNuC3077k84PRvP
-	 6O4BaLXySJfO4UFrMp70+Fglp6wuduXCXkDUCDE4pkZqWXoatin6t0Y0a1fEBRzuim
-	 ujktUbiqgD9fe4AWdB2xfCGGdtQF0gZ0ijeWisLM=
+	b=AaJiWfU/MTSUpDM/SUwF35ArN9xTDvPupuGFbDdu+rEnESnFhDSfQ0HZKcKICAc/l
+	 L3wqmXDllMLz2xNOLqZFM32IPKGDuAeXe2E8f/EMOvXlmiIrP0asPqK+DdogXhtSxQ
+	 J/w4/KI3PZU6gbUCIOEUV/r+1XTAQJCtb7FCpwgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+830d9e3fa61968246abd@syzkaller.appspotmail.com
-Subject: [PATCH 6.8 054/143] Bluetooth: btintel: Fix null ptr deref in btintel_read_version
+	ranygh@riseup.net,
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.4 113/215] wifi: mac80211: check/clear fast rx for non-4addr sta VLAN changes
 Date: Thu, 11 Apr 2024 11:55:22 +0200
-Message-ID: <20240411095422.542945911@linuxfoundation.org>
+Message-ID: <20240411095428.304186854@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit b79e040910101b020931ba0c9a6b77e81ab7f645 ]
+commit 4f2bdb3c5e3189297e156b3ff84b140423d64685 upstream.
 
-If hci_cmd_sync_complete() is triggered and skb is NULL, then
-hdev->req_skb is NULL, which will cause this issue.
+When moving a station out of a VLAN and deleting the VLAN afterwards, the
+fast_rx entry still holds a pointer to the VLAN's netdev, which can cause
+use-after-free bugs. Fix this by immediately calling ieee80211_check_fast_rx
+after the VLAN change.
 
-Reported-and-tested-by: syzbot+830d9e3fa61968246abd@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: ranygh@riseup.net
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://msgid.link/20240316074336.40442-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btintel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/cfg.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
-index cdc5c08824a0a..e5b043d962073 100644
---- a/drivers/bluetooth/btintel.c
-+++ b/drivers/bluetooth/btintel.c
-@@ -435,7 +435,7 @@ int btintel_read_version(struct hci_dev *hdev, struct intel_version *ver)
- 	struct sk_buff *skb;
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1670,15 +1670,14 @@ static int ieee80211_change_station(stru
+ 		}
  
- 	skb = __hci_cmd_sync(hdev, 0xfc05, 0, NULL, HCI_CMD_TIMEOUT);
--	if (IS_ERR(skb)) {
-+	if (IS_ERR_OR_NULL(skb)) {
- 		bt_dev_err(hdev, "Reading Intel version information failed (%ld)",
- 			   PTR_ERR(skb));
- 		return PTR_ERR(skb);
--- 
-2.43.0
-
+ 		if (sta->sdata->vif.type == NL80211_IFTYPE_AP_VLAN &&
+-		    sta->sdata->u.vlan.sta) {
+-			ieee80211_clear_fast_rx(sta);
++		    sta->sdata->u.vlan.sta)
+ 			RCU_INIT_POINTER(sta->sdata->u.vlan.sta, NULL);
+-		}
+ 
+ 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED))
+ 			ieee80211_vif_dec_num_mcast(sta->sdata);
+ 
+ 		sta->sdata = vlansdata;
++		ieee80211_check_fast_rx(sta);
+ 		ieee80211_check_fast_xmit(sta);
+ 
+ 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED)) {
 
 
 
