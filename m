@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 523918A0ECF
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:18:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BC88A0DBF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08AA02847FC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:18:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F12141F214DB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738D6140E3D;
-	Thu, 11 Apr 2024 10:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35374145B0D;
+	Thu, 11 Apr 2024 10:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="un9+lBzT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZzrsu4U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F2F13E897;
-	Thu, 11 Apr 2024 10:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F5B145B06;
+	Thu, 11 Apr 2024 10:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830686; cv=none; b=exNTCgFgAqUdmnCINYQH+VmWkR/XEKY6Qr4eztb2hkaVwsWpwN/axahcVeBMeAuK3g3DdW1IMswjl4P87i99aqTW19EC1T6Xy1gicPmv+qmjHDW7p7/XsBsjIk2WlE+NHQsiyML1VJ9nWSq/0XJNTR3mkLTmOKV/1d3vPaM+5Z4=
+	t=1712830040; cv=none; b=gE+GfCvd30UVitm7F81qsudjR4qFsjEeh/biqqtHT9Z+1H4dZ5tOF3FHKYWv7axr/Mlg98INH2VgLl+k+QUBJXE1BPeJVp2vQH4f+d/kN15Z1ikCvqRQbrPHGFR6QDwd8k80iNn4M25aXHlmLzH8ovna7q9jfxkVJHElj5sKdx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830686; c=relaxed/simple;
-	bh=oPDJdsW3MKIv5b4ACCp3xP5/8GVmG6Y7/i0qCvDiezY=;
+	s=arc-20240116; t=1712830040; c=relaxed/simple;
+	bh=gGlz7krqbfAh5MEPedsHrl3c32TZ81GRJUq291awbSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OyA4X0pAkeJVShEwBuun1qmw5LWcuLJnvc4j/iS/F5U5m15Wa0bPf1AeNuwoLWghSwOzqM+OSQPybV6gWjAGWluMk6TQV5Kal87T0fDpTM9BEl8ujsY5ld9fJvbcd3t7uWBpQU47PFhQ7Lf3ChMCUy6rOXjWM4C0ihUaDQtZl20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=un9+lBzT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE97C43390;
-	Thu, 11 Apr 2024 10:18:05 +0000 (UTC)
+	 MIME-Version; b=l/xdXBceKWMp5azYsw6u/nih42SfeRcYsFEMUdDpCT6PmT3FScocxP19M3QgflRcjApKOEpwhdL1Lhckpz8ma7/dbRul03471WQRq2G9Mc9g9J+jmVe3I0t64nOF+t5hwW6sZnqeueRGNfI5UhBKDjwtWkv9773JN+3vzhwdSVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZzrsu4U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CDEC43390;
+	Thu, 11 Apr 2024 10:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830685;
-	bh=oPDJdsW3MKIv5b4ACCp3xP5/8GVmG6Y7/i0qCvDiezY=;
+	s=korg; t=1712830039;
+	bh=gGlz7krqbfAh5MEPedsHrl3c32TZ81GRJUq291awbSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=un9+lBzTdf9dD6ePxNwvkgbFQWRGKpJaDsgp2clKSczyvVADpYVdU3G2pPyaOWh6V
-	 QOGlgBYsnjgWE7x4ekj/ppbIpm0qdPsMjHZ9RgzkWrL3kFzpY8+X9KXuwP0STwsgS3
-	 G3+4kM9ktYI8we1mV/wSyF4JZMC1SuZHQS3mWdgI=
+	b=oZzrsu4UNeiuqbatiVo3iUT6GMQRPVuNPcr9S3M1sqU8ijQvxH/xXjiqaxGJj56JK
+	 Yk8FBNj5+7395cVVrT3zqFVBV/ZCKbJlnqOL61KhRu3Kmd1BBWkoD/Yh4tOY6+59O3
+	 Eaay/FbgF54UUmGzVZQxVaJh0QqR0hkTc6ayA2qg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@seco.com>,
-	Camelia Groza <camelia.groza@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Andre Werner <andre.werner@systec-electronic.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 066/215] soc: fsl: qbman: Add CGR update function
+Subject: [PATCH 6.8 007/143] net: phy: phy_device: Prevent nullptr exceptions on ISR
 Date: Thu, 11 Apr 2024 11:54:35 +0200
-Message-ID: <20240411095426.882339796@linuxfoundation.org>
+Message-ID: <20240411095421.130770667@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@seco.com>
+From: Andre Werner <andre.werner@systec-electronic.com>
 
-[ Upstream commit 914f8b228ede709274b8c80514b352248ec9da00 ]
+[ Upstream commit 61c81872815f46006982bb80460c0c80a949b35b ]
 
-This adds a function to update a CGR with new parameters. qman_create_cgr
-can almost be used for this (with flags=0), but it's not suitable because
-it also registers the callback function. The _safe variant was modeled off
-of qman_cgr_delete_safe. However, we handle multiple arguments and a return
-value.
+If phydev->irq is set unconditionally, check
+for valid interrupt handler or fall back to polling mode to prevent
+nullptr exceptions in interrupt service routine.
 
-Signed-off-by: Sean Anderson <sean.anderson@seco.com>
-Acked-by: Camelia Groza <camelia.groza@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: fbec4e7fed89 ("soc: fsl: qbman: Use raw spinlock for cgr_lock")
+Signed-off-by: Andre Werner <andre.werner@systec-electronic.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20240129135734.18975-2-andre.werner@systec-electronic.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qbman/qman.c | 48 ++++++++++++++++++++++++++++++++++++
- include/soc/fsl/qman.h       |  9 +++++++
- 2 files changed, 57 insertions(+)
+ drivers/net/phy/phy_device.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
-index e31d33d000526..52327f0dab986 100644
---- a/drivers/soc/fsl/qbman/qman.c
-+++ b/drivers/soc/fsl/qbman/qman.c
-@@ -2566,6 +2566,54 @@ void qman_delete_cgr_safe(struct qman_cgr *cgr)
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 6125418ca93f3..8efa2a136faa9 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -1413,6 +1413,11 @@ int phy_sfp_probe(struct phy_device *phydev,
  }
- EXPORT_SYMBOL(qman_delete_cgr_safe);
+ EXPORT_SYMBOL(phy_sfp_probe);
  
-+static int qman_update_cgr(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts)
++static bool phy_drv_supports_irq(struct phy_driver *phydrv)
 +{
-+	int ret;
-+	unsigned long irqflags;
-+	struct qman_portal *p = qman_cgr_get_affine_portal(cgr);
-+
-+	if (!p)
-+		return -EINVAL;
-+
-+	spin_lock_irqsave(&p->cgr_lock, irqflags);
-+	ret = qm_modify_cgr(cgr, 0, opts);
-+	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
-+	put_affine_portal();
-+	return ret;
++	return phydrv->config_intr && phydrv->handle_interrupt;
 +}
-+
-+struct update_cgr_params {
-+	struct qman_cgr *cgr;
-+	struct qm_mcc_initcgr *opts;
-+	int ret;
-+};
-+
-+static void qman_update_cgr_smp_call(void *p)
-+{
-+	struct update_cgr_params *params = p;
-+
-+	params->ret = qman_update_cgr(params->cgr, params->opts);
-+}
-+
-+int qman_update_cgr_safe(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts)
-+{
-+	struct update_cgr_params params = {
-+		.cgr = cgr,
-+		.opts = opts,
-+	};
-+
-+	preempt_disable();
-+	if (qman_cgr_cpus[cgr->cgrid] != smp_processor_id())
-+		smp_call_function_single(qman_cgr_cpus[cgr->cgrid],
-+					 qman_update_cgr_smp_call, &params,
-+					 true);
-+	else
-+		params.ret = qman_update_cgr(cgr, opts);
-+	preempt_enable();
-+	return params.ret;
-+}
-+EXPORT_SYMBOL(qman_update_cgr_safe);
-+
- /* Cleanup FQs */
- 
- static int _qm_mr_consume_and_match_verb(struct qm_portal *p, int v)
-diff --git a/include/soc/fsl/qman.h b/include/soc/fsl/qman.h
-index aa31c05a103ad..f9c622027d852 100644
---- a/include/soc/fsl/qman.h
-+++ b/include/soc/fsl/qman.h
-@@ -1159,6 +1159,15 @@ int qman_delete_cgr(struct qman_cgr *cgr);
-  */
- void qman_delete_cgr_safe(struct qman_cgr *cgr);
- 
-+/**
-+ * qman_update_cgr_safe - Modifies a congestion group object from any CPU
-+ * @cgr: the 'cgr' object to modify
-+ * @opts: state of the CGR settings
-+ *
-+ * This will select the proper CPU and modify the CGR settings.
-+ */
-+int qman_update_cgr_safe(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts);
 +
  /**
-  * qman_query_cgr_congested - Queries CGR's congestion status
-  * @cgr: the 'cgr' object to query
+  * phy_attach_direct - attach a network device to a given PHY device pointer
+  * @dev: network device to attach
+@@ -1527,6 +1532,9 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 	if (phydev->dev_flags & PHY_F_NO_IRQ)
+ 		phydev->irq = PHY_POLL;
+ 
++	if (!phy_drv_supports_irq(phydev->drv) && phy_interrupt_is_valid(phydev))
++		phydev->irq = PHY_POLL;
++
+ 	/* Port is set to PORT_TP by default and the actual PHY driver will set
+ 	 * it to different value depending on the PHY configuration. If we have
+ 	 * the generic PHY driver we can't figure it out, thus set the old
+@@ -2992,11 +3000,6 @@ s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
+ }
+ EXPORT_SYMBOL(phy_get_internal_delay);
+ 
+-static bool phy_drv_supports_irq(struct phy_driver *phydrv)
+-{
+-	return phydrv->config_intr && phydrv->handle_interrupt;
+-}
+-
+ static int phy_led_set_brightness(struct led_classdev *led_cdev,
+ 				  enum led_brightness value)
+ {
 -- 
 2.43.0
 
