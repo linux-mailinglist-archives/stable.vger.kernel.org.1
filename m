@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814CE8A0F96
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64CCB8A10F8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E07E2B2321F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 191221F2D098
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58776145B1A;
-	Thu, 11 Apr 2024 10:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED861474CD;
+	Thu, 11 Apr 2024 10:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1O8/4kR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTt1QXP1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173F613FD94;
-	Thu, 11 Apr 2024 10:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA4164CC0;
+	Thu, 11 Apr 2024 10:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831120; cv=none; b=pEdX8yzmSMIYkvceKYZ/QYcqob9NZXsopcPoI3IdEmAaL/ztBmHQDdiayKYhGmfV0VOePDIOuC9N9vlfmyyA1pLwHxqesLo+UqMXc03ieQzB83ySHnnFdUeSt0VraNRVG6/RHo2xgAYYgA1rnO8MxFfjPHD7Da2E1Ao91RKC+nE=
+	t=1712831948; cv=none; b=ZlH3IoJng7U3YbfOfPp3BQcfQ1cuMzBGUscFwBygKafFDvWpbdvjrdC6/bK8Og4Rsd8ASum7IykYHorQgKIOOs3XFI+SnTWXFn6TzLl1HHwW2PSCTo+mKAWqigklBqiAoNYSZDFcVwnYk4C4+mNsaGIHoIpbBJMKKAeo5qCcTq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831120; c=relaxed/simple;
-	bh=AQgikI4YWO9xp/ejRHpuwnkdDyUUEfKm5dqJ5DyKB8Y=;
+	s=arc-20240116; t=1712831948; c=relaxed/simple;
+	bh=hMJNWuA7/PBmqOJzCCbgKwahYVOzBx7cUaXbJs39ym8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KCwCttNNih24XTnsqpcyuZxWRGIFFugvBJ1QlQk+7wwTOp5behtFgzqmGX2qw7HkiyhVYySRt+wKOgAy7j/k5EKpZaajSHEebwc8O9IyeS4Iy6YAxGmnU8X3xr3lFiq2uaVvzmLvwfFROl/u26zrFk1smq6A/QIPU1pc9Xs9OEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1O8/4kR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E951C433C7;
-	Thu, 11 Apr 2024 10:25:19 +0000 (UTC)
+	 MIME-Version; b=SdPFY8eWolvR07ujz4BS5Xu5VNj3TcSShrmJRPg3heLEq60WuU+Wk7d+T+KAY/v2hg4igpXtTmIdNxn417htHtU6RRm8r+wEdN89k1wyFRkKX6eyV/4yL1yk3aqD0GYiO4PXZ3oixRNPTCQmjCSqu8TRn86GnduCK3yv+TAsIng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTt1QXP1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB28CC43390;
+	Thu, 11 Apr 2024 10:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831120;
-	bh=AQgikI4YWO9xp/ejRHpuwnkdDyUUEfKm5dqJ5DyKB8Y=;
+	s=korg; t=1712831948;
+	bh=hMJNWuA7/PBmqOJzCCbgKwahYVOzBx7cUaXbJs39ym8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p1O8/4kRMTh9c7v6errFA4hTousY39HBFvQxtQX52L8ml4pzwNcrGaHBoIWU/yV46
-	 UzrP65YCOsLRZIc0kyQKPPso8h4/XEswvjlctKuyHPAuYqhYw8nwPRKUAOHg+aT6ss
-	 FmB36PMiNfUxqJoOi9tghIZPpLJMWrXj4Bdt9X2g=
+	b=fTt1QXP1SnnkYJRQk5TELOGshs0xGi0hK+gYWLCOQT1SGMVwbEkNO4II3WqfgsMmx
+	 0h6x+iflJgoGPSN2JcWfPNevBEXmZXu5K6kyxQoLdWNeKY/Sq/3k3SDpIWaLfHmB6I
+	 QfNG/lJitjn3DQqfvWbY1vNEOpx5TVqWm/2b/aQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Jonker <jbx6244@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/114] ARM: dts: rockchip: fix rk322x hdmi ports node
+	Mark Blakeney <mark.blakeney@bullet-systems.net>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 5.10 179/294] PCI/DPC: Quirk PIO log size for Intel Ice Lake Root Ports
 Date: Thu, 11 Apr 2024 11:55:42 +0200
-Message-ID: <20240411095417.328572346@linuxfoundation.org>
+Message-ID: <20240411095441.014720326@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Jonker <jbx6244@gmail.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 15a5ed03000cf61daf87d14628085cb1bc8ae72c ]
+commit 3b8803494a0612acdeee714cb72aa142b1e05ce5 upstream.
 
-Fix rk322x hdmi ports node so that it matches the
-rockchip,dw-hdmi.yaml binding.
+Commit 5459c0b70467 ("PCI/DPC: Quirk PIO log size for certain Intel Root
+Ports") added quirks for Tiger and Alder Lake Root Ports but missed that
+the same issue exists also in the previous generation, Ice Lake.
 
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Link: https://lore.kernel.org/r/9b84adf0-9312-47fd-becc-cadd06941f70@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Apply the quirk for Ice Lake Root Ports as well.  This prevents kernel
+complaints like:
+
+  DPC: RP PIO log size 0 is invalid
+
+and also enables the DPC driver to dump the RP PIO Log registers when DPC
+is triggered.
+
+[bhelgaas: add dmesg warning and RP PIO Log dump info]
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=209943
+Link: https://lore.kernel.org/r/20230511121905.73949-1-mika.westerberg@linux.intel.com
+Reported-by: Mark Blakeney <mark.blakeney@bullet-systems.net>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/rockchip/rk322x.dtsi | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/pci/quirks.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/rockchip/rk322x.dtsi b/arch/arm/boot/dts/rockchip/rk322x.dtsi
-index ffc16d6b97e1b..03d9baddcbaba 100644
---- a/arch/arm/boot/dts/rockchip/rk322x.dtsi
-+++ b/arch/arm/boot/dts/rockchip/rk322x.dtsi
-@@ -732,14 +732,20 @@ hdmi: hdmi@200a0000 {
- 		status = "disabled";
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5912,8 +5912,9 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_I
  
- 		ports {
--			hdmi_in: port {
--				#address-cells = <1>;
--				#size-cells = <0>;
--				hdmi_in_vop: endpoint@0 {
--					reg = <0>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			hdmi_in: port@0 {
-+				reg = <0>;
-+
-+				hdmi_in_vop: endpoint {
- 					remote-endpoint = <&vop_out_hdmi>;
- 				};
- 			};
-+
-+			hdmi_out: port@1 {
-+				reg = <1>;
-+			};
- 		};
- 	};
- 
--- 
-2.43.0
-
+ #ifdef CONFIG_PCIE_DPC
+ /*
+- * Intel Tiger Lake and Alder Lake BIOS has a bug that clears the DPC
+- * RP PIO Log Size of the integrated Thunderbolt PCIe Root Ports.
++ * Intel Ice Lake, Tiger Lake and Alder Lake BIOS has a bug that clears
++ * the DPC RP PIO Log Size of the integrated Thunderbolt PCIe Root
++ * Ports.
+  */
+ static void dpc_log_size(struct pci_dev *dev)
+ {
+@@ -5936,6 +5937,10 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_I
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x462f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x463f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x466e, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x8a1d, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x8a1f, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x8a21, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x8a23, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a23, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a25, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a27, dpc_log_size);
 
 
 
