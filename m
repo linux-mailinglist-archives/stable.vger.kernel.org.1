@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-39108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F4EE8A11F3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD498A1221
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:51:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14360281024
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 096711C231D7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B33413D24D;
-	Thu, 11 Apr 2024 10:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AD6145B13;
+	Thu, 11 Apr 2024 10:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a+sqNpyf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ay9tPJIJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BFD13BACD;
-	Thu, 11 Apr 2024 10:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E891464CC0;
+	Thu, 11 Apr 2024 10:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832540; cv=none; b=OaOeaTFiwsRVgmQZi3nzEJMLZVrsdsxA0Dl+FY6f3PLYjWWaakANWaGQHg9ibBvp2hbWLnsTYvjJhDqJUISNa4X+h5f1Tu0KtpdXrxLIzSO3vnYAIjuG0fnP2Cfmgmdd0254Xo3fUnQ3yVcKuoF0p5MiDodX+IGymjDQhbDdLwA=
+	t=1712832662; cv=none; b=buGRu+6vF3tCA9V0n3GM8UeDoJkf2slR3TMFSLBxPdUdB3mzjHZ/iTC+y4E94I+3QooWfUNrtjHw4coMMbw6xk1hlNB9CinFPPZSPo0Nhil9nJeDFi6l40QvzthysmCyeed++jGQPslkVvj9P9uYQkwG/zkraVPPIepPiQVc0XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832540; c=relaxed/simple;
-	bh=z2iHSt+0ZuEC6iRFIas7D+np3HcIbmJ+qnrcmy7TgWA=;
+	s=arc-20240116; t=1712832662; c=relaxed/simple;
+	bh=Y542NSK8+1O99wbRBcj2ZSYMgSqUEjvHsQS5VtcbhzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V5BPwtnx0gfaC3PT6p8GmScDcw79Z/RWqBHj/dDkFfTd3SgCJDgA+z/R2RGuty/piRq5WTn2P5jaQfDLT9JN343XUhGSr6SVC93n4OR38ue653NobtUYqLjUYW8WsAVFOwBb9qtAdtzb0AeWSQfu9x5SkJ/iY7gE0boZiblh0Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a+sqNpyf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE7CEC433F1;
-	Thu, 11 Apr 2024 10:48:59 +0000 (UTC)
+	 MIME-Version; b=TeUDTurP3sESgISEbcLCXmqH+gLLXoALH9kzh2qzlQsgpA2x4DlwsQ0E55KFmrWAFLCq//A8bwfUnW6c5Fjy3DzuKIdl0OA4QOX5Kg0aQ+kgLVTQqc00nzl1d2vGrvmYH+PITbIsJyVh/QDUSMcbis5kMFIgI0UlorX+cQ3ysEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ay9tPJIJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 687C7C433C7;
+	Thu, 11 Apr 2024 10:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832540;
-	bh=z2iHSt+0ZuEC6iRFIas7D+np3HcIbmJ+qnrcmy7TgWA=;
+	s=korg; t=1712832661;
+	bh=Y542NSK8+1O99wbRBcj2ZSYMgSqUEjvHsQS5VtcbhzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a+sqNpyfRNwhFEoOVnitLLskBg4IwnE5g7FsqCDFgj4AG3D1+kcF/o4A6csWjqF+5
-	 0/mXDXHKzogBcgvbo7wkK80lcqVeGBr0e9++YZJE5bBBWRCI5ExJL931OrI9PHlz1Q
-	 p2Msox/DFixn/7YIBOnP0ZIKHxcj0CMizh/jaBn4=
+	b=Ay9tPJIJAhxndt5MLYebFtM4zOs6IkHuRg1u9bwvd5ED591c62liw+0w3on4H6CWt
+	 FKxMiX90JenNuMqiGDdIds9Wb1/hX1DHIGgA1/WBlPIxv8FO5OV1T79dMJo9BOuMs5
+	 aFbB74NtvILw8LpSvh8b6ZODtO+270JpqHmqweZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tasos Sahanidis <tasos@tasossah.com>,
-	"Ewan D. Milne" <emilne@redhat.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 76/83] scsi: sd: usb_storage: uas: Access media prior to querying device properties
+Subject: [PATCH 5.15 40/57] usb: typec: tcpci: add generic tcpci fallback compatible
 Date: Thu, 11 Apr 2024 11:57:48 +0200
-Message-ID: <20240411095414.976726082@linuxfoundation.org>
+Message-ID: <20240411095409.205276052@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+References: <20240411095407.982258070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,150 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-[ Upstream commit 321da3dc1f3c92a12e3c5da934090d2992a8814c ]
+[ Upstream commit 8774ea7a553e2aec323170d49365b59af0a2b7e0 ]
 
-It has been observed that some USB/UAS devices return generic properties
-hardcoded in firmware for mode pages for a period of time after a device
-has been discovered. The reported properties are either garbage or they do
-not accurately reflect the characteristics of the physical storage device
-attached in the case of a bridge.
+The driver already support the tcpci binding for the i2c_device_id so
+add the support for the of_device_id too.
 
-Prior to commit 1e029397d12f ("scsi: sd: Reorganize DIF/DIX code to
-avoid calling revalidate twice") we would call revalidate several
-times during device discovery. As a result, incorrect values would
-eventually get replaced with ones accurately describing the attached
-storage. When we did away with the redundant revalidate pass, several
-cases were reported where devices reported nonsensical values or would
-end up in write-protected state.
-
-An initial attempt at addressing this issue involved introducing a
-delayed second revalidate invocation. However, this approach still
-left some devices reporting incorrect characteristics.
-
-Tasos Sahanidis debugged the problem further and identified that
-introducing a READ operation prior to MODE SENSE fixed the problem and that
-it wasn't a timing issue. Issuing a READ appears to cause the devices to
-update their state to reflect the actual properties of the storage
-media. Device properties like vendor, model, and storage capacity appear to
-be correctly reported from the get-go. It is unclear why these devices
-defer populating the remaining characteristics.
-
-Match the behavior of a well known commercial operating system and
-trigger a READ operation prior to querying device characteristics to
-force the device to populate the mode pages.
-
-The additional READ is triggered by a flag set in the USB storage and
-UAS drivers. We avoid issuing the READ for other transport classes
-since some storage devices identify Linux through our particular
-discovery command sequence.
-
-Link: https://lore.kernel.org/r/20240213143306.2194237-1-martin.petersen@oracle.com
-Fixes: 1e029397d12f ("scsi: sd: Reorganize DIF/DIX code to avoid calling revalidate twice")
-Cc: stable@vger.kernel.org
-Reported-by: Tasos Sahanidis <tasos@tasossah.com>
-Reviewed-by: Ewan D. Milne <emilne@redhat.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Tested-by: Tasos Sahanidis <tasos@tasossah.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240222210903.208901-3-m.felsch@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sd.c              |   26 +++++++++++++++++++++++++-
- drivers/usb/storage/scsiglue.c |    7 +++++++
- drivers/usb/storage/uas.c      |    7 +++++++
- include/scsi/scsi_device.h     |    1 +
- 4 files changed, 40 insertions(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -3286,6 +3286,24 @@ static bool sd_validate_opt_xfer_size(st
- 	return true;
- }
- 
-+static void sd_read_block_zero(struct scsi_disk *sdkp)
-+{
-+	unsigned int buf_len = sdkp->device->sector_size;
-+	char *buffer, cmd[10] = { };
-+
-+	buffer = kmalloc(buf_len, GFP_KERNEL);
-+	if (!buffer)
-+		return;
-+
-+	cmd[0] = READ_10;
-+	put_unaligned_be32(0, &cmd[2]); /* Logical block address 0 */
-+	put_unaligned_be16(1, &cmd[7]);	/* Transfer 1 logical block */
-+
-+	scsi_execute_req(sdkp->device, cmd, DMA_FROM_DEVICE, buffer, buf_len,
-+			 NULL, SD_TIMEOUT, sdkp->max_retries, NULL);
-+	kfree(buffer);
-+}
-+
- /**
-  *	sd_revalidate_disk - called the first time a new disk is seen,
-  *	performs disk spin up, read_capacity, etc.
-@@ -3325,7 +3343,13 @@ static int sd_revalidate_disk(struct gen
- 	 */
- 	if (sdkp->media_present) {
- 		sd_read_capacity(sdkp, buffer);
--
-+		/*
-+		 * Some USB/UAS devices return generic values for mode pages
-+		 * until the media has been accessed. Trigger a READ operation
-+		 * to force the device to populate mode pages.
-+		 */
-+		if (sdp->read_before_ms)
-+			sd_read_block_zero(sdkp);
- 		/*
- 		 * set the default to rotational.  All non-rotational devices
- 		 * support the block characteristics VPD page, which will
---- a/drivers/usb/storage/scsiglue.c
-+++ b/drivers/usb/storage/scsiglue.c
-@@ -180,6 +180,13 @@ static int slave_configure(struct scsi_d
- 		sdev->use_192_bytes_for_3f = 1;
- 
- 		/*
-+		 * Some devices report generic values until the media has been
-+		 * accessed. Force a READ(10) prior to querying device
-+		 * characteristics.
-+		 */
-+		sdev->read_before_ms = 1;
-+
-+		/*
- 		 * Some devices don't like MODE SENSE with page=0x3f,
- 		 * which is the command used for checking if a device
- 		 * is write-protected.  Now that we tell the sd driver
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -877,6 +877,13 @@ static int uas_slave_configure(struct sc
- 		sdev->guess_capacity = 1;
- 
- 	/*
-+	 * Some devices report generic values until the media has been
-+	 * accessed. Force a READ(10) prior to querying device
-+	 * characteristics.
-+	 */
-+	sdev->read_before_ms = 1;
-+
-+	/*
- 	 * Some devices don't like MODE SENSE with page=0x3f,
- 	 * which is the command used for checking if a device
- 	 * is write-protected.  Now that we tell the sd driver
---- a/include/scsi/scsi_device.h
-+++ b/include/scsi/scsi_device.h
-@@ -204,6 +204,7 @@ struct scsi_device {
- 	unsigned use_10_for_rw:1; /* first try 10-byte read / write */
- 	unsigned use_10_for_ms:1; /* first try 10-byte mode sense/select */
- 	unsigned set_dbd_for_ms:1; /* Set "DBD" field in mode sense */
-+	unsigned read_before_ms:1;	/* perform a READ before MODE SENSE */
- 	unsigned no_report_opcodes:1;	/* no REPORT SUPPORTED OPERATION CODES */
- 	unsigned no_write_same:1;	/* no WRITE SAME command */
- 	unsigned use_16_for_rw:1; /* Use read/write(16) over read/write(10) */
+diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
+index a7b0134d382b8..e047a15e67347 100644
+--- a/drivers/usb/typec/tcpm/tcpci.c
++++ b/drivers/usb/typec/tcpm/tcpci.c
+@@ -899,6 +899,7 @@ MODULE_DEVICE_TABLE(i2c, tcpci_id);
+ #ifdef CONFIG_OF
+ static const struct of_device_id tcpci_of_match[] = {
+ 	{ .compatible = "nxp,ptn5110", },
++	{ .compatible = "tcpci", },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, tcpci_of_match);
+-- 
+2.43.0
+
 
 
 
