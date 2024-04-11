@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-38532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B618A0F16
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:21:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C418A0D9F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2C31285F15
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:20:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 322CA1F223B5
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD60146A72;
-	Thu, 11 Apr 2024 10:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5251145B14;
+	Thu, 11 Apr 2024 10:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjEvC64S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwTUkWZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B799145FF0;
-	Thu, 11 Apr 2024 10:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D9D145B04;
+	Thu, 11 Apr 2024 10:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830850; cv=none; b=m32NfZzrZW2ONxbEFBkO5sEaeEJBQs3NR2SMnS9ImuS1vB102/saLFt3vn8sxvNYHqz8JFv8Rp8X2xT0v8be8MdRcxiNdZPrgR+T203232Wc172F7FJO8bi+6owmXaifvzio6vsbtnIEoLicd7OrWLhuMlbsDxT5sjc2WsoBopw=
+	t=1712829953; cv=none; b=e4M0Y1ov/OFB6eTqsLcKlksG44YDch8IjfLsqXv6uFuRpsh2/QcqcN3PWZg9y10FuOtIi64z6Aj/DBwQOOg5oDeQIt3kxcwtGlasjfdHyrWAjVhRxjBtH9/F8cvfw2Spla3Dhz59jjr/0NhXlb6ICDlvu/FoJAej4TxkpAT6SU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830850; c=relaxed/simple;
-	bh=lfBH/YOLfitkV8w0fqrLoupTUjuFVfTliaQTQQWAqLw=;
+	s=arc-20240116; t=1712829953; c=relaxed/simple;
+	bh=EKLjOxEYEeDVd1H2iEXqJTJr3Ta+XeuqLky5kn6G53U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gVjuk0uEMTSwO25hdefto0K3l77A0A6rBbrXdkUHCtcQAK0puKV8PMfgM38RIJAB+T4t2x+/VvNkV1A9nIskxtplgvy1W0OF64LPOZer87ipZq+y9zF/OWJR0xwENtQO79nzfm0inEsGNCHUNiu7o/yJTAFWABqGBjkEDWjO/DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjEvC64S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2296AC433F1;
-	Thu, 11 Apr 2024 10:20:49 +0000 (UTC)
+	 MIME-Version; b=Ff+91BFovdyfh2eJ9+sBWNCL6ueeLEvlRbcMiMiy97GhukC7BPakoHWO0hJT4Jvb3/4XgBdRLHaR0QzBCfif09kANGu/UFXt0Y19gvSpGh/Fb/y11H6UrfZDZtf3A2FPQTH2sQ2gtYs4ss32VHh9+mpCFWb4vogoob64z33OOE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwTUkWZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB413C433C7;
+	Thu, 11 Apr 2024 10:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830850;
-	bh=lfBH/YOLfitkV8w0fqrLoupTUjuFVfTliaQTQQWAqLw=;
+	s=korg; t=1712829953;
+	bh=EKLjOxEYEeDVd1H2iEXqJTJr3Ta+XeuqLky5kn6G53U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JjEvC64SzSWhGDfeO3YUlVMDAP+9GikzE2J81BXPuSd+f6PejspMqgbXPqKmwZigE
-	 Jpi3UUL4R9EWmfqrRMY/mXF7nWfIK7kJYDCwMhlvI8hewez1XX36r1n1pRMNyUTDcB
-	 3yZcdUhPsz+q5rCVuujDIy7m0+h1FwQK+zrNGsKs=
+	b=KwTUkWZTbnAYXV0XLx5DzVLtIfemadKW9iv2HE7yG9XRBY5ei+Bbg+iyfXpUuno+c
+	 frJl73PoBA+WiCHyOmphofxenrswCz0XocVKYhImcl9B2XM1a3LLGsKvlbdKccX3m+
+	 xxIzdGYFA9mQNtmE+4VVQI7b9yeCMTs0kYlZf/Fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahmoud Adam <mngyadam@amazon.com>,
-	Simon Horman <horms@kernel.org>,
+	Piotr Wejman <piotrwejman90@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 138/215] net/rds: fix possible cp null dereference
+Subject: [PATCH 4.19 124/175] net: stmmac: fix rx queue priority assignment
 Date: Thu, 11 Apr 2024 11:55:47 +0200
-Message-ID: <20240411095429.040975042@linuxfoundation.org>
+Message-ID: <20240411095423.299287402@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahmoud Adam <mngyadam@amazon.com>
+From: Piotr Wejman <piotrwejman90@gmail.com>
 
-commit 62fc3357e079a07a22465b9b6ef71bb6ea75ee4b upstream.
+commit b3da86d432b7cd65b025a11f68613e333d2483db upstream.
 
-cp might be null, calling cp->cp_conn would produce null dereference
+The driver should ensure that same priority is not mapped to multiple
+rx queues. From DesignWare Cores Ethernet Quality-of-Service
+Databook, section 17.1.29 MAC_RxQ_Ctrl2:
+"[...]The software must ensure that the content of this field is
+mutually exclusive to the PSRQ fields for other queues, that is,
+the same priority is not mapped to multiple Rx queues[...]"
 
-[Simon Horman adds:]
+Previously rx_queue_priority() function was:
+- clearing all priorities from a queue
+- adding new priorities to that queue
+After this patch it will:
+- first assign new priorities to a queue
+- then remove those priorities from all other queues
+- keep other priorities previously assigned to that queue
 
-Analysis:
-
-* cp is a parameter of __rds_rdma_map and is not reassigned.
-
-* The following call-sites pass a NULL cp argument to __rds_rdma_map()
-
-  - rds_get_mr()
-  - rds_get_mr_for_dest
-
-* Prior to the code above, the following assumes that cp may be NULL
-  (which is indicative, but could itself be unnecessary)
-
-	trans_private = rs->rs_transport->get_mr(
-		sg, nents, rs, &mr->r_key, cp ? cp->cp_conn : NULL,
-		args->vec.addr, args->vec.bytes,
-		need_odp ? ODP_ZEROBASED : ODP_NOT_NEEDED);
-
-* The code modified by this patch is guarded by IS_ERR(trans_private),
-  where trans_private is assigned as per the previous point in this analysis.
-
-  The only implementation of get_mr that I could locate is rds_ib_get_mr()
-  which can return an ERR_PTR if the conn (4th) argument is NULL.
-
-* ret is set to PTR_ERR(trans_private).
-  rds_ib_get_mr can return ERR_PTR(-ENODEV) if the conn (4th) argument is NULL.
-  Thus ret may be -ENODEV in which case the code in question will execute.
-
-Conclusion:
-* cp may be NULL at the point where this patch adds a check;
-  this patch does seem to address a possible bug
-
-Fixes: c055fc00c07b ("net/rds: fix WARNING in rds_conn_connect_if_down")
-Cc: stable@vger.kernel.org # v4.19+
-Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240326153132.55580-1-mngyadam@amazon.com
+Fixes: a8f5102af2a7 ("net: stmmac: TX and RX queue priority configuration")
+Fixes: 2142754f8b9c ("net: stmmac: Add MAC related callbacks for XGMAC2")
+Signed-off-by: Piotr Wejman <piotrwejman90@gmail.com>
+Link: https://lore.kernel.org/r/20240401192239.33942-1-piotrwejman90@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/rdma.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c   |   40 +++++++++++++++-----
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c |   38 +++++++++++++++----
+ 2 files changed, 62 insertions(+), 16 deletions(-)
 
---- a/net/rds/rdma.c
-+++ b/net/rds/rdma.c
-@@ -280,7 +280,7 @@ static int __rds_rdma_map(struct rds_soc
- 		kfree(sg);
- 		ret = PTR_ERR(trans_private);
- 		/* Trigger connection so that its ready for the next retry */
--		if (ret == -ENODEV)
-+		if (ret == -ENODEV && cp)
- 			rds_conn_connect_if_down(cp->cp_conn);
- 		goto out;
- 	}
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+@@ -84,19 +84,41 @@ static void dwmac4_rx_queue_priority(str
+ 				     u32 prio, u32 queue)
+ {
+ 	void __iomem *ioaddr = hw->pcsr;
+-	u32 base_register;
+-	u32 value;
++	u32 clear_mask = 0;
++	u32 ctrl2, ctrl3;
++	int i;
+ 
+-	base_register = (queue < 4) ? GMAC_RXQ_CTRL2 : GMAC_RXQ_CTRL3;
+-	if (queue >= 4)
+-		queue -= 4;
++	ctrl2 = readl(ioaddr + GMAC_RXQ_CTRL2);
++	ctrl3 = readl(ioaddr + GMAC_RXQ_CTRL3);
++
++	/* The software must ensure that the same priority
++	 * is not mapped to multiple Rx queues
++	 */
++	for (i = 0; i < 4; i++)
++		clear_mask |= ((prio << GMAC_RXQCTRL_PSRQX_SHIFT(i)) &
++						GMAC_RXQCTRL_PSRQX_MASK(i));
+ 
+-	value = readl(ioaddr + base_register);
++	ctrl2 &= ~clear_mask;
++	ctrl3 &= ~clear_mask;
+ 
+-	value &= ~GMAC_RXQCTRL_PSRQX_MASK(queue);
+-	value |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
++	/* First assign new priorities to a queue, then
++	 * clear them from others queues
++	 */
++	if (queue < 4) {
++		ctrl2 |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
+ 						GMAC_RXQCTRL_PSRQX_MASK(queue);
+-	writel(value, ioaddr + base_register);
++
++		writel(ctrl2, ioaddr + GMAC_RXQ_CTRL2);
++		writel(ctrl3, ioaddr + GMAC_RXQ_CTRL3);
++	} else {
++		queue -= 4;
++
++		ctrl3 |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
++						GMAC_RXQCTRL_PSRQX_MASK(queue);
++
++		writel(ctrl3, ioaddr + GMAC_RXQ_CTRL3);
++		writel(ctrl2, ioaddr + GMAC_RXQ_CTRL2);
++	}
+ }
+ 
+ static void dwmac4_tx_queue_priority(struct mac_device_info *hw,
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -103,17 +103,41 @@ static void dwxgmac2_rx_queue_prio(struc
+ 				   u32 queue)
+ {
+ 	void __iomem *ioaddr = hw->pcsr;
+-	u32 value, reg;
++	u32 clear_mask = 0;
++	u32 ctrl2, ctrl3;
++	int i;
+ 
+-	reg = (queue < 4) ? XGMAC_RXQ_CTRL2 : XGMAC_RXQ_CTRL3;
+-	if (queue >= 4)
++	ctrl2 = readl(ioaddr + XGMAC_RXQ_CTRL2);
++	ctrl3 = readl(ioaddr + XGMAC_RXQ_CTRL3);
++
++	/* The software must ensure that the same priority
++	 * is not mapped to multiple Rx queues
++	 */
++	for (i = 0; i < 4; i++)
++		clear_mask |= ((prio << XGMAC_PSRQ_SHIFT(i)) &
++						XGMAC_PSRQ(i));
++
++	ctrl2 &= ~clear_mask;
++	ctrl3 &= ~clear_mask;
++
++	/* First assign new priorities to a queue, then
++	 * clear them from others queues
++	 */
++	if (queue < 4) {
++		ctrl2 |= (prio << XGMAC_PSRQ_SHIFT(queue)) &
++						XGMAC_PSRQ(queue);
++
++		writel(ctrl2, ioaddr + XGMAC_RXQ_CTRL2);
++		writel(ctrl3, ioaddr + XGMAC_RXQ_CTRL3);
++	} else {
+ 		queue -= 4;
+ 
+-	value = readl(ioaddr + reg);
+-	value &= ~XGMAC_PSRQ(queue);
+-	value |= (prio << XGMAC_PSRQ_SHIFT(queue)) & XGMAC_PSRQ(queue);
++		ctrl3 |= (prio << XGMAC_PSRQ_SHIFT(queue)) &
++						XGMAC_PSRQ(queue);
+ 
+-	writel(value, ioaddr + reg);
++		writel(ctrl3, ioaddr + XGMAC_RXQ_CTRL3);
++		writel(ctrl2, ioaddr + XGMAC_RXQ_CTRL2);
++	}
+ }
+ 
+ static void dwxgmac2_prog_mtl_rx_algorithms(struct mac_device_info *hw,
 
 
 
