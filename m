@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E9E98A0F65
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 673B38A0FB1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7AFF1F277AB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 984F31C22D6C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4B6146A82;
-	Thu, 11 Apr 2024 10:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3261145B13;
+	Thu, 11 Apr 2024 10:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvB9WxXE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVXn1q2V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F178C14600A;
-	Thu, 11 Apr 2024 10:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC9E1422CE;
+	Thu, 11 Apr 2024 10:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831011; cv=none; b=p8Z58UOqdz0sgcGQUPTsEoJdRzVQrz2xwuPIEEBzQi9s7ULdCZ3jCfC1gUbOBKACckds2zyqcBtRWob5dBZxbZVnzWVHoVFs95cLaIeZuM64lGkH8Ti9rm3PJCeR82offIuoZbMhLBrflGmuTO0s1cutvJcoAk20YMqinnH58kk=
+	t=1712831184; cv=none; b=VcEkAPI4EW0TodSZoIfu46QP9J24zafDQl1ivy0E1tHQzqBiOKKYE9+9w/f3MFbWkZFZzeW2BSXUGAHF7A3f7NgpN9l3sQuxuloymmw79yGcADoFxR/MKA2r4VPkCIwhwpQQB09OVZ4P4Ux6a6vl57H4nXv8Tt+IV0srm1qvgPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831011; c=relaxed/simple;
-	bh=HdWhHyH/r04Hn5igBTc4WiLML09vzKoFeKE3m+Pv5YI=;
+	s=arc-20240116; t=1712831184; c=relaxed/simple;
+	bh=Zp8YSe+BksDnNrruqtcsayb/NeZJ9V66oiRTt4rs8zw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=haDWuWmyfg/FbNvSviqhtcz6dGRcHjyQfg57nl3g/yn9qt19T0b+aMqI/ut2CQTnkn3ELuWr3W1KNuIn/XArCHjYRldM1TQrkkwXlkjiCW0ytgy+Qc96ms5bJBynzjGZeRYtHvyt5CLLMoX6kujqiBOAbATuk6LdyT8Y1A7ic1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvB9WxXE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B76C433F1;
-	Thu, 11 Apr 2024 10:23:30 +0000 (UTC)
+	 MIME-Version; b=P5XVM18VlzSeH2Za4WRGZ8H/9zVzULLWmXZJXCuNZXfp6lFnAB7NoPQQDA1yorGq38DQh7KwET3mFFC0Z0jIpfrNRC7385bJbGtLGsBmnZyXIyDGuLV3Fo+nEiXKljlyerSKpsSxyzXmcDDqGQeWqEf8gtNGlOgKitxshS4XrC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVXn1q2V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F46EC433F1;
+	Thu, 11 Apr 2024 10:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831010;
-	bh=HdWhHyH/r04Hn5igBTc4WiLML09vzKoFeKE3m+Pv5YI=;
+	s=korg; t=1712831184;
+	bh=Zp8YSe+BksDnNrruqtcsayb/NeZJ9V66oiRTt4rs8zw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zvB9WxXENnaOwoYHYHQm1c28gad+x0109Tk24Y22rY/iA5hgDrBAb9f1TANfxrGD8
-	 6F1YIGRBRwIRuOzeyS2HpA0K/7ixjOm2fCcEFy7qMUzIuztfJaLCfJRPBP8IDOhPSK
-	 Zb4D/anvdr4uJiAKY8x2fKkiQf1SzfyuBi5LI5pI=
+	b=IVXn1q2VImcE4PCJHIDcA19Rg4ibT6v+CcEqEF+W8u5/TsPbSjXDhfz2FnQNiAVSB
+	 UFmuxuAabH0VC+K1+q2cTDM+L6hHGuaTmM90UrqJaBJVQ8ygsAL1O4vB4Br0nHFCBq
+	 B2y8dzybui98qd+3sK3uZfViGmInfMdwQpeX0VA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.org>,
-	Jacopo Mondi <jacopo@jmondi.org>,
-	Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+	syzbot+d050d437fe47d479d210@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 155/215] staging: mmal-vchiq: Fix client_component for 64 bit kernel
+Subject: [PATCH 6.6 037/114] wifi: cfg80211: check A-MSDU format more carefully
 Date: Thu, 11 Apr 2024 11:56:04 +0200
-Message-ID: <20240411095429.540786685@linuxfoundation.org>
+Message-ID: <20240411095418.001969415@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 22e64b486adc4785542f8002c3af4c895490f841 ]
+[ Upstream commit 9ad7974856926129f190ffbe3beea78460b3b7cc ]
 
-The MMAL client_component field is used with the event
-mechanism to allow the client to identify the component for
-which the event is generated.
-The field is only 32bits in size, therefore we can't use a
-pointer to the component in a 64 bit kernel.
+If it looks like there's another subframe in the A-MSDU
+but the header isn't fully there, we can end up reading
+data out of bounds, only to discard later. Make this a
+bit more careful and check if the subframe header can
+even be present.
 
-Component handles are already held in an array per VCHI
-instance, so use the array index as the client_component handle
-to avoid having to create a new IDR for this purpose.
-
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.org>
-Signed-off-by: Jacopo Mondi <jacopo@jmondi.org>
-Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Link: https://lore.kernel.org/r/20200629150945.10720-5-nsaenzjulienne@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: f37e76abd614 ("staging: vc04_services: fix information leak in create_component()")
+Reported-by: syzbot+d050d437fe47d479d210@syzkaller.appspotmail.com
+Link: https://msgid.link/20240226203405.a731e2c95e38.I82ce7d8c0cc8970ce29d0a39fdc07f1ffc425be4@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c | 8 +++++++-
- drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h | 1 +
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ net/wireless/util.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
-index 9b47ba4d2d3cd..23d869ba12e69 100644
---- a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
-+++ b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
-@@ -928,7 +928,7 @@ static int create_component(struct vchiq_mmal_instance *instance,
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 1783ab9d57a31..9aa7bdce20b26 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -797,15 +797,19 @@ ieee80211_amsdu_subframe_length(void *field, u8 mesh_flags, u8 hdr_type)
  
- 	/* build component create message */
- 	m.h.type = MMAL_MSG_TYPE_COMPONENT_CREATE;
--	m.u.component_create.client_component = (u32)(unsigned long)component;
-+	m.u.component_create.client_component = component->client_component;
- 	strncpy(m.u.component_create.name, name,
- 		sizeof(m.u.component_create.name));
+ bool ieee80211_is_valid_amsdu(struct sk_buff *skb, u8 mesh_hdr)
+ {
+-	int offset = 0, remaining, subframe_len, padding;
++	int offset = 0, subframe_len, padding;
  
-@@ -1635,6 +1635,12 @@ int vchiq_mmal_component_init(struct vchiq_mmal_instance *instance,
- 		goto unlock;
- 	}
+ 	for (offset = 0; offset < skb->len; offset += subframe_len + padding) {
++		int remaining = skb->len - offset;
+ 		struct {
+ 		    __be16 len;
+ 		    u8 mesh_flags;
+ 		} hdr;
+ 		u16 len;
  
-+	/* We need a handle to reference back to our component structure.
-+	 * Use the array index in instance->component rather than rolling
-+	 * another IDR.
-+	 */
-+	component->client_component = idx;
++		if (sizeof(hdr) > remaining)
++			return false;
 +
- 	ret = create_component(instance, component, name);
- 	if (ret < 0) {
- 		pr_err("%s: failed to create component %d (Not enough GPU mem?)\n",
-diff --git a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
-index 4e34728d87e53..a75c5f0a770ef 100644
---- a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
-+++ b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
-@@ -92,6 +92,7 @@ struct vchiq_mmal_component {
- 	struct vchiq_mmal_port input[MAX_PORT_COUNT]; /* input ports */
- 	struct vchiq_mmal_port output[MAX_PORT_COUNT]; /* output ports */
- 	struct vchiq_mmal_port clock[MAX_PORT_COUNT]; /* clock ports */
-+	u32 client_component;	/* Used to ref back to client struct */
- };
+ 		if (skb_copy_bits(skb, offset + 2 * ETH_ALEN, &hdr, sizeof(hdr)) < 0)
+ 			return false;
  
- int vchiq_mmal_init(struct vchiq_mmal_instance **out_instance);
+@@ -813,7 +817,6 @@ bool ieee80211_is_valid_amsdu(struct sk_buff *skb, u8 mesh_hdr)
+ 						      mesh_hdr);
+ 		subframe_len = sizeof(struct ethhdr) + len;
+ 		padding = (4 - subframe_len) & 0x3;
+-		remaining = skb->len - offset;
+ 
+ 		if (subframe_len > remaining)
+ 			return false;
+@@ -831,7 +834,7 @@ void ieee80211_amsdu_to_8023s(struct sk_buff *skb, struct sk_buff_head *list,
+ {
+ 	unsigned int hlen = ALIGN(extra_headroom, 4);
+ 	struct sk_buff *frame = NULL;
+-	int offset = 0, remaining;
++	int offset = 0;
+ 	struct {
+ 		struct ethhdr eth;
+ 		uint8_t flags;
+@@ -845,10 +848,14 @@ void ieee80211_amsdu_to_8023s(struct sk_buff *skb, struct sk_buff_head *list,
+ 		copy_len = sizeof(hdr);
+ 
+ 	while (!last) {
++		int remaining = skb->len - offset;
+ 		unsigned int subframe_len;
+ 		int len, mesh_len = 0;
+ 		u8 padding;
+ 
++		if (copy_len > remaining)
++			goto purge;
++
+ 		skb_copy_bits(skb, offset, &hdr, copy_len);
+ 		if (iftype == NL80211_IFTYPE_MESH_POINT)
+ 			mesh_len = __ieee80211_get_mesh_hdrlen(hdr.flags);
+@@ -858,7 +865,6 @@ void ieee80211_amsdu_to_8023s(struct sk_buff *skb, struct sk_buff_head *list,
+ 		padding = (4 - subframe_len) & 0x3;
+ 
+ 		/* the last MSDU has no padding */
+-		remaining = skb->len - offset;
+ 		if (subframe_len > remaining)
+ 			goto purge;
+ 		/* mitigate A-MSDU aggregation injection attacks */
 -- 
 2.43.0
 
