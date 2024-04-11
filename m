@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-38847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7EF8A10AE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7B78A0DF0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 803F81F2CB32
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9F0AB2237D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608961482E6;
-	Thu, 11 Apr 2024 10:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432FB146009;
+	Thu, 11 Apr 2024 10:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAL2wSVe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuEeZ1qH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE461474CA;
-	Thu, 11 Apr 2024 10:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A2A145B14;
+	Thu, 11 Apr 2024 10:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831768; cv=none; b=eKMXaBiySmTaY65ZqfYEnSmA/gtR6cPEX+Oc9d+KN2vTwB77r2in7HshUfwlgCPQDfKCtKGZ+WOfaGP9VmMvjbioBymF6RJgcE/Wh/czTl4u3orA8j21ICO1Ri6Cwuzzz0dl+5Y4h0d9BSPmsreM0VOyvbMMGcRRt0bUWHquT8U=
+	t=1712830158; cv=none; b=lMIUDvk0SvFi7BLtdFzzHgy7mK4fn5z+OO8DYjWjp0ksouTOmDR9/9kN8aTd5q92YGuOHg6ODV2pZ4tAB4BpH0r/IANFySTxjvrUxwsmhuaPaO4PNCzNbEi22FEe6I7R9ims5ECXx6rg58snaKpOQR2S4KBk5S3z0oXnZN6RNlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831768; c=relaxed/simple;
-	bh=KZPf1wKXeiKemhenhPmub5r4HAau8r8SOSrZzhMxWl4=;
+	s=arc-20240116; t=1712830158; c=relaxed/simple;
+	bh=T7L7ReBVeE2F+9pIl63G9HdB94s6xK5YzgQjbG0lDMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DrkbJvH3FcR5wU5TURCCwKU8AQ+jscOXV4QPmRT8AdNdqemt75JDUgOvGRy1A/fuGOmTRF3wK23slUfMM7IwJBC4K3GJpJke5+O0CIe9yw7oWegReWxTXkVtowZVgSyywM9XxUcLV+Uuh0S/Uvt8nWYsabQh5BkILQ6V43i+pos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAL2wSVe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D45C433F1;
-	Thu, 11 Apr 2024 10:36:07 +0000 (UTC)
+	 MIME-Version; b=klI7qQvmD7ZNT+a2jFCHkZq2JH4BabshpNSpfqDw01YSGX9up3Mc09QtIgk+xN0rKwdDnPfnk+ZLK2sLjL2wBOz/SD6rNZU9zBGtP7eWqC8X6gd5pmEcrDUSyhUwJM/a+BQ34nOz3mq2pc/BSgx5dIeBMNO3iAgjIa1eAjohTDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuEeZ1qH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78187C433C7;
+	Thu, 11 Apr 2024 10:09:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831767;
-	bh=KZPf1wKXeiKemhenhPmub5r4HAau8r8SOSrZzhMxWl4=;
+	s=korg; t=1712830157;
+	bh=T7L7ReBVeE2F+9pIl63G9HdB94s6xK5YzgQjbG0lDMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zAL2wSVesJzQeDbImNKvcHUqSqzeWb57H0aQEHzmkExsn5PDkmH4Ccg3G0VX2nB9n
-	 Vhx8qfE/FMz+2Okrxc9+AOKzlZ08WRNy3FWYk3FOANkSuPzPvOsbSED5aRmYQ3QueZ
-	 wt6Bxk9+21BSNQQuPcHrui2AaqOK4v20dmZl75iM=
+	b=DuEeZ1qH+Ssq3s5QqFs+x3137HYCpRBa1PwAX66pppn9OuRtvj2xSE6IitkrDwNmU
+	 t71F3s4WWH6cw/omGGXln2D0XG6cjz1s9xR1h/NpAxR2xLYJ1cCF6sOqDNeoIFmYz7
+	 MrFvII2ola/PQrknECgGAtl/2xPbWiCTFveuUEP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lonial con <kongln9170@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 120/294] netfilter: nf_tables: disallow anonymous set with timeout flag
+	John Ogness <john.ogness@linutronix.de>,
+	Petr Mladek <pmladek@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 015/143] printk: For @suppress_panic_printk check for other CPU in panic
 Date: Thu, 11 Apr 2024 11:54:43 +0200
-Message-ID: <20240411095439.278694178@linuxfoundation.org>
+Message-ID: <20240411095421.369742659@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: John Ogness <john.ogness@linutronix.de>
 
-commit 16603605b667b70da974bea8216c93e7db043bf1 upstream.
+[ Upstream commit 0ab7cdd00491b532591ef065be706301de7e448f ]
 
-Anonymous sets are never used with timeout from userspace, reject this.
-Exception to this rule is NFT_SET_EVAL to ensure legacy meters still work.
+Currently @suppress_panic_printk is checked along with
+non-matching @panic_cpu and current CPU. This works
+because @suppress_panic_printk is only set when
+panic_in_progress() is true.
 
-Cc: stable@vger.kernel.org
-Fixes: 761da2935d6e ("netfilter: nf_tables: add set timeout API support")
-Reported-by: lonial con <kongln9170@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Rather than relying on the @suppress_panic_printk semantics,
+use the concise helper function other_cpu_in_progress(). The
+helper function exists to avoid open coding such tests.
+
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20240207134103.1357162-7-john.ogness@linutronix.de
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    3 +++
- 1 file changed, 3 insertions(+)
+ kernel/printk/printk.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4410,6 +4410,9 @@ static int nf_tables_newset(struct net *
- 		if ((flags & (NFT_SET_EVAL | NFT_SET_OBJECT)) ==
- 			     (NFT_SET_EVAL | NFT_SET_OBJECT))
- 			return -EOPNOTSUPP;
-+		if ((flags & (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT | NFT_SET_EVAL)) ==
-+			     (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT))
-+			return -EOPNOTSUPP;
- 	}
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index 7a835b277e98d..e1b992652ab25 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -2328,8 +2328,7 @@ asmlinkage int vprintk_emit(int facility, int level,
+ 	if (unlikely(suppress_printk))
+ 		return 0;
  
- 	dtype = 0;
+-	if (unlikely(suppress_panic_printk) &&
+-	    atomic_read(&panic_cpu) != raw_smp_processor_id())
++	if (unlikely(suppress_panic_printk) && other_cpu_in_panic())
+ 		return 0;
+ 
+ 	if (level == LOGLEVEL_SCHED) {
+-- 
+2.43.0
+
 
 
 
