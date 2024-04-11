@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-38176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C480A8A0D5C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF718A10E0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63A571F21EC6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B4D328AE1D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9D8145B16;
-	Thu, 11 Apr 2024 10:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F20E1487EC;
+	Thu, 11 Apr 2024 10:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGIhRW8i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFghZvBT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4AA145B05;
-	Thu, 11 Apr 2024 10:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7DE146D61;
+	Thu, 11 Apr 2024 10:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829788; cv=none; b=nQcjRS7KsiFeBYBQWgZdJqk6ssKY0JyR2P9yru6yLGMan5a500z96p2sBxVu0w54eSVVgIO0/7O+A7Sx2Y5yKe03Fzp6ibACjOCNPE7t3QofXf1+KNeS/sXwW08rgkfMRQXeHeLN5dv6OuHr7ZoICWRdzVcWWKlD1+bZ4+QsjUw=
+	t=1712831904; cv=none; b=XGQEUn8hp5t5cMsbv9rztT1aJ6vsGr5MuBHmi5cODSIj8yFoH8Z7Ql7Zs1dc30mC/oznKlcuYbRnuDXSQUyc/NXt7rqRgfroSPOC/VzqNlQDewv5JjOUdsz7FR6ccEcOUsSGSF6fcjqV+moCmmYXmVJiaurBFkZV+4EbWCFfBH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829788; c=relaxed/simple;
-	bh=MGj5TR4E1pTqcowLUvx3fQAzTfkx+hn4GfE8ncuXnNs=;
+	s=arc-20240116; t=1712831904; c=relaxed/simple;
+	bh=nbsSNUmY5ejFM4mSD/lRKE2FQG7T1Grq0xOxLNUAmF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nqbStiPOjCCRl6F1hWtmGp/U6h56Mn04v4ryRb5PPXUDNFdE+AiR6fla0dpFzv4AuILZNnpM2QwaDwaTbFtD/VfcdU7zAlDsA8M6gj+7bd+bFGJxPWH1yIdQIN2lpd+/Zat6woIXWT8cGTM2IPIQtPC4ccS/0q3Zz5e3/X6QX3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGIhRW8i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0651C433F1;
-	Thu, 11 Apr 2024 10:03:07 +0000 (UTC)
+	 MIME-Version; b=AmW9S+NCCk2iC/TIObQBTEEMUX558zOwGVt74GLhr38F1TvQyEC0QsfCuCg8t0+fUKyqNM8OV+mV/huenOqwcE6u/ERepEmf/h0Yylp6Dd+mql3VIG1cBQ/SNdcURtBRhzZhLRG3RSc2GiMwFT4fv0i310KGu/V2euWUmyyIbGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFghZvBT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 889EBC433C7;
+	Thu, 11 Apr 2024 10:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829788;
-	bh=MGj5TR4E1pTqcowLUvx3fQAzTfkx+hn4GfE8ncuXnNs=;
+	s=korg; t=1712831903;
+	bh=nbsSNUmY5ejFM4mSD/lRKE2FQG7T1Grq0xOxLNUAmF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PGIhRW8i9RqI6DXuz59BWdRQ3HTMKV+NoV1db0nuqY6OXguu5v8GpxMkbSc3fLM7w
-	 FE8T1gK7OnHZh24JeTTFVaukMsaPKb0UVb+hFaPSjG1Yz1iBHcv51+spUmnHZE1wVF
-	 hVekU+tNpi10pCs5Or6yAbf+ExCPRxDu2zaft2Sc=
+	b=LFghZvBT5QXsyjf3t3PXzqnibgNy+RZYPcNGzfRpyoX5wNbC+p8s3LB768PsDLuoO
+	 ZgADitectPgUoU2PCLrLHaAqaoNfahsi6yU3QPAGfTunAocXjmQJ8sFztwM7tDTgqb
+	 MBJJz72s44Dc9EeSFLRQE2CvyGSmHoDz12ZxWju4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	yuan linyu <yuanlinyu@hihonor.com>
-Subject: [PATCH 4.19 105/175] usb: udc: remove warning when queue disabled ep
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH 5.10 165/294] staging: vc04_services: changen strncpy() to strscpy_pad()
 Date: Thu, 11 Apr 2024 11:55:28 +0200
-Message-ID: <20240411095422.730357804@linuxfoundation.org>
+Message-ID: <20240411095440.608510250@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yuan linyu <yuanlinyu@hihonor.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 2a587a035214fa1b5ef598aea0b81848c5b72e5e upstream.
+commit ef25725b7f8aaffd7756974d3246ec44fae0a5cf upstream.
 
-It is possible trigger below warning message from mass storage function,
+gcc-14 warns about this strncpy() that results in a non-terminated
+string for an overflow:
 
-WARNING: CPU: 6 PID: 3839 at drivers/usb/gadget/udc/core.c:294 usb_ep_queue+0x7c/0x104
-pc : usb_ep_queue+0x7c/0x104
-lr : fsg_main_thread+0x494/0x1b3c
+In file included from include/linux/string.h:369,
+                 from drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c:20:
+In function 'strncpy',
+    inlined from 'create_component' at drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c:940:2:
+include/linux/fortify-string.h:108:33: error: '__builtin_strncpy' specified bound 128 equals destination size [-Werror=stringop-truncation]
 
-Root cause is mass storage function try to queue request from main thread,
-but other thread may already disable ep when function disable.
+Change it to strscpy_pad(), which produces a properly terminated and
+zero-padded string.
 
-As there is no function failure in the driver, in order to avoid effort
-to fix warning, change WARN_ON_ONCE() in usb_ep_queue() to pr_debug().
-
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: stable@vger.kernel.org
-Signed-off-by: yuan linyu <yuanlinyu@hihonor.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20240315020144.2715575-1-yuanlinyu@hihonor.com
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240313163712.224585-1-arnd@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/core.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -273,7 +273,9 @@ int usb_ep_queue(struct usb_ep *ep,
- {
- 	int ret = 0;
+--- a/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
++++ b/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
+@@ -940,8 +940,8 @@ static int create_component(struct vchiq
+ 	/* build component create message */
+ 	m.h.type = MMAL_MSG_TYPE_COMPONENT_CREATE;
+ 	m.u.component_create.client_component = component->client_component;
+-	strncpy(m.u.component_create.name, name,
+-		sizeof(m.u.component_create.name));
++	strscpy_pad(m.u.component_create.name, name,
++		    sizeof(m.u.component_create.name));
  
--	if (WARN_ON_ONCE(!ep->enabled && ep->address)) {
-+	if (!ep->enabled && ep->address) {
-+		pr_debug("USB gadget: queue request to disabled ep 0x%x (%s)\n",
-+				 ep->address, ep->name);
- 		ret = -ESHUTDOWN;
- 		goto out;
- 	}
+ 	ret = send_synchronous_mmal_msg(instance, &m,
+ 					sizeof(m.u.component_create),
 
 
 
