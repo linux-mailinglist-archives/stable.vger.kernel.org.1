@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-38857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 615DA8A10B9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 509B08A0DCD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2EBDB25579
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C819CB26A8C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D344149C4F;
-	Thu, 11 Apr 2024 10:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD99145B13;
+	Thu, 11 Apr 2024 10:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEgm9GZc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kbm+ofgt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED931494C4;
-	Thu, 11 Apr 2024 10:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51211448F3;
+	Thu, 11 Apr 2024 10:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831797; cv=none; b=QC0eJawkg5MFtH63JncASkSvBSY2v9mZPzVJvJX6WDfj+gTYbnFHKcN3/PWyie6Z2sv/VMAlH7LEVNuOx2TxAxItYmDuqduTsUAXobxdFlh8wS4qBvAlbHiB/ToL62L4jOerPw4mj0Xn2TsGX31MrkQriFj67nt5xR3l24hwgRc=
+	t=1712830070; cv=none; b=APo3N2diXgDa8/h5jGl0Faimw+C/p+2oIyx/1P8jqbE+Ge6rqJddh16EGoIQlMlUgTPS76iSuMdzdghs025d/2OwVZPwrRPvi+zFP7pyNckXVZ4P7y596jjjhJJvvK0IJvrj2s+LL3WDkK6+w3fzOOVPyYzOM8k4ZyMErCzECG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831797; c=relaxed/simple;
-	bh=lfsH0OKIQszrkYfhymMXaP4jCi6OlgPpLK15jo6xK4w=;
+	s=arc-20240116; t=1712830070; c=relaxed/simple;
+	bh=YOO0uWZmtGE7werAMU4UWyxXufE3eblFT5+Xiy9TOxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ajTNBUs30x9Og2Fo15RNsZm9Lw0PuMxzOIvpQKtMxOHCxoZZ9dpJCKD5FQy9odLE+jL4aDGDz1JygOjc3vanWax3Ab/YDQ3S6V3jHXi9ctRuM+sueVX14P1luov9Bnr5aJRytfaAzhsSpwI09dhHmd1JjzThfvJiLfAsI7Btfew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEgm9GZc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8882C433F1;
-	Thu, 11 Apr 2024 10:36:36 +0000 (UTC)
+	 MIME-Version; b=GdSG/bTy9Csqswref6RR1Sp/XVNdQTsCfl/9t6AnNVfivgJy27/11sOLJ7iWWMtB+sGRUPQSRO7pw/i51RNqOoBirRgs4VkOpdeWcWYooqCVHCoHF/lgtEfLpPvuwA5Db3vY7F/VZsVyXxs/GFExgTOd6f2B2+r4+jJTUuZlf34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kbm+ofgt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F96C433C7;
+	Thu, 11 Apr 2024 10:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831797;
-	bh=lfsH0OKIQszrkYfhymMXaP4jCi6OlgPpLK15jo6xK4w=;
+	s=korg; t=1712830069;
+	bh=YOO0uWZmtGE7werAMU4UWyxXufE3eblFT5+Xiy9TOxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oEgm9GZcIK5zUsmD5mB1EVVH4l19hIjBYnZaf4J0VQ0SatTfi29md3tCw6GSDMMzO
-	 oCzvEg2d9iNhfVptU2O3ddCaYtRDiBaMLNZSH6kDODcKte+0Bm/dsx3Q7zX5R4EvEY
-	 jTjkAEeKA3Ob+1LDKFwFy/ONTNpxz1hyQL4F+cp8=
+	b=Kbm+ofgtw89WvkJnyXET/ZTBoTKkkYEXkzW5He+QMz0Aez0nfu/EYnWHCw8nCL/FK
+	 htU65MYRQMpZiaNmRUCRIhG+zZjKezn6FwMnH5punztSKE22qeftaLp/W22+L3Znfg
+	 tFGNV7/xAOroJPhOiKo1X+DC6tTvbeWUYsEzeV/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Subject: [PATCH 5.10 129/294] tty: serial: fsl_lpuart: avoid idle preamble pending if CTS is enabled
-Date: Thu, 11 Apr 2024 11:54:52 +0200
-Message-ID: <20240411095439.545733675@linuxfoundation.org>
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 025/143] arm64: dts: qcom: qcs6490-rb3gen2: Declare GCC clocks protected
+Date: Thu, 11 Apr 2024 11:54:53 +0200
+Message-ID: <20240411095421.668444165@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +63,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-commit 74cb7e0355fae9641f825afa389d3fba3b617714 upstream.
+[ Upstream commit 7c6bef576a8891abce08d448165b53328032aa5f ]
 
-If the remote uart device is not connected or not enabled after booting
-up, the CTS line is high by default. At this time, if we enable the flow
-control when opening the device(for example, using “stty -F /dev/ttyLP4
-crtscts” command), there will be a pending idle preamble(first writing 0
-and then writing 1 to UARTCTRL_TE will queue an idle preamble) that
-cannot be sent out, resulting in the uart port fail to close(waiting for
-TX empty), so the user space stty will have to wait for a long time or
-forever.
+The SC7280 GCC binding describes clocks which, due to the difference in
+security model, are not accessible on the RB3gen2 - in the same way seen
+on QCM6490.
 
-This is an LPUART IP bug(idle preamble has higher priority than CTS),
-here add a workaround patch to enable TX CTS after enabling UARTCTRL_TE,
-so that the idle preamble does not get stuck due to CTS is deasserted.
+Mark these clocks as protected, to allow the board to boot. In contrast
+to the present QCM6490 boards GCC_EDP_CLKREF_EN is left out, as this
+does not need to be "protected" and is used on the RB3Gen2 board.
 
-Fixes: 380c966c093e ("tty: serial: fsl_lpuart: add 32-bit register interface support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://lore.kernel.org/r/20240305015706.1050769-1-sherry.sun@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Link: https://lore.kernel.org/r/20240209-qcm6490-gcc-protected-clocks-v2-1-11cd5fc13bd0@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/fsl_lpuart.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -2178,9 +2178,12 @@ lpuart32_set_termios(struct uart_port *p
- 		       UARTCTRL);
+diff --git a/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts b/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts
+index ae1632182d7c1..ac4579119d3ba 100644
+--- a/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts
++++ b/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts
+@@ -413,6 +413,23 @@ vreg_bob_3p296: bob {
+ 	};
+ };
  
- 	lpuart32_serial_setbrg(sport, baud);
--	lpuart32_write(&sport->port, modem, UARTMODIR);
--	lpuart32_write(&sport->port, ctrl, UARTCTRL);
-+	/* disable CTS before enabling UARTCTRL_TE to avoid pending idle preamble */
-+	lpuart32_write(&sport->port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
- 	/* restore control register */
-+	lpuart32_write(&sport->port, ctrl, UARTCTRL);
-+	/* re-enable the CTS if needed */
-+	lpuart32_write(&sport->port, modem, UARTMODIR);
- 
- 	if (old && sport->lpuart_dma_rx_use) {
- 		if (!lpuart_start_rx_dma(sport))
++&gcc {
++	protected-clocks = <GCC_CFG_NOC_LPASS_CLK>,
++			   <GCC_MSS_CFG_AHB_CLK>,
++			   <GCC_MSS_GPLL0_MAIN_DIV_CLK_SRC>,
++			   <GCC_MSS_OFFLINE_AXI_CLK>,
++			   <GCC_MSS_Q6SS_BOOT_CLK_SRC>,
++			   <GCC_MSS_Q6_MEMNOC_AXI_CLK>,
++			   <GCC_MSS_SNOC_AXI_CLK>,
++			   <GCC_QSPI_CNOC_PERIPH_AHB_CLK>,
++			   <GCC_QSPI_CORE_CLK>,
++			   <GCC_QSPI_CORE_CLK_SRC>,
++			   <GCC_SEC_CTRL_CLK_SRC>,
++			   <GCC_WPSS_AHB_BDG_MST_CLK>,
++			   <GCC_WPSS_AHB_CLK>,
++			   <GCC_WPSS_RSCP_CLK>;
++};
++
+ &qupv3_id_0 {
+ 	status = "okay";
+ };
+-- 
+2.43.0
+
 
 
 
