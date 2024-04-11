@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-38860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C0458A10BC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45DB58A0ED1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 944581C23A69
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 784701C214F4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A9D146A74;
-	Thu, 11 Apr 2024 10:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347E714600A;
+	Thu, 11 Apr 2024 10:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j35Q6mQE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aASAu8d+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710B114A4C9;
-	Thu, 11 Apr 2024 10:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90AB13E897;
+	Thu, 11 Apr 2024 10:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831806; cv=none; b=rddPNHRI4fcQQVrMvYn8CUi0O0X9k3GcfM/Fk8tF9dL2b0kxtaS7jWMwI/btxYQu1FtYW9YMHYSt5QrwJy1yyRBj/xdWuPSBMQLQW/o+8GdV0v34AsrYdTyItisNOvcE1zRw5dEmipzCm72uAxrT2U4SQOeUz50D6wye9fmIJOA=
+	t=1712830692; cv=none; b=LPdkghQQsXoNJ0yfySy3tfk6wQWx8V/itRpSGJfWGbSbMPZ0aMk8bQu1OMmoGpNb1hlnBM/1YeBNdoOOQ1CpTenDMm+HB9+ZDtKp0tA9W2lcIsn+m4WcBujwV2d0wWc0fDTxMbVznThHB4VlHsYqK6w5jdqHYDnuoVE2/+lK6S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831806; c=relaxed/simple;
-	bh=vOseH/gKgn7LQ3CtT5JOpu16i/cQfT8RzBwHQcsZCI4=;
+	s=arc-20240116; t=1712830692; c=relaxed/simple;
+	bh=eqB8LERlJGb+9bkAXx+vniePJCLRAhSyfVkVUjfhlNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PSsNglsgmqb/JrK3PfWwRTBfcTM4G6vKDCPYMX4mKgixhOMgnmCYOwLzgwtRGRoM5LYzudzvDuApizxj555tI+iYgg5Wy4VtrSWidNkLyBSltsz3Jbx9nlc0YqQ+HNoDdzR9ohgryW5M8fr10vE8uTTuyKrfB2gXJj6LiqqaPB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j35Q6mQE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C752C433C7;
-	Thu, 11 Apr 2024 10:36:45 +0000 (UTC)
+	 MIME-Version; b=Tc0NObq0yX4vMFHtdB9IAcrpQpZPm2vUQR39sZKUtEmXfMAYWo+NPfnASEq3Mnb3P6iLlLnh5C5Ln7KC/8EzTR4V6Asv7cMrF+DcTVtYGwn219jcZdveEQN44159uoHCy78AqHgGJ50ux9MmDi6/U/66m4TAplenLiGDGUMylfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aASAu8d+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6465AC433F1;
+	Thu, 11 Apr 2024 10:18:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831805;
-	bh=vOseH/gKgn7LQ3CtT5JOpu16i/cQfT8RzBwHQcsZCI4=;
+	s=korg; t=1712830691;
+	bh=eqB8LERlJGb+9bkAXx+vniePJCLRAhSyfVkVUjfhlNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j35Q6mQEmyRZBWOBT/CPoi4i9C3u2rqqRISoJ5caBUPcHH7jYnSmTmfmdx6wkYH8w
-	 uL4PHIB0oud2S1dHCZGJax8+5tYSukXJ/IlGigxnXVpb41yEQK2RyLl2d3CVb+c+rS
-	 /fu3adHK/bkxmci8TG6Ad4+Pi/+575lWf9xQT6Ms=
+	b=aASAu8d+s0DMl/miS2kN+WdUlOqhyY4BT5j0J5TcVSE6fu1CmSUFZJoiliLIzLXZw
+	 06vvV7MRZyydoUbJz2EeTpcXZiedYYkz3daBIG2+4zVkWSqU1vMeOh633eC0SyfVp/
+	 wwetQymsmtzjfimUqWnFbWcnez9XVr51WwZEykV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Tomas Winkler <tomas.winkler@intel.com>
-Subject: [PATCH 5.10 131/294] mei: me: add arrow lake point H DID
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 085/215] ALSA: hda/realtek - Fix headset Mic no show at resume back for Lenovo ALC897 platform
 Date: Thu, 11 Apr 2024 11:54:54 +0200
-Message-ID: <20240411095439.603829159@linuxfoundation.org>
+Message-ID: <20240411095427.461623304@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Kailang Yang <kailang@realtek.com>
 
-commit 8436f25802ec028ac7254990893f3e01926d9b79 upstream.
+commit d397b6e56151099cf3b1f7bfccb204a6a8591720 upstream.
 
-Add Arrow Lake H device id.
+Headset Mic will no show at resume back.
+This patch will fix this issue.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240211103912.117105-2-tomas.winkler@intel.com
+Fixes: d7f32791a9fc ("ALSA: hda/realtek - Add headset Mic support for Lenovo ALC897 platform")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/r/4713d48a372e47f98bba0c6120fd8254@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/hw-me-regs.h |    1 +
- drivers/misc/mei/pci-me.c     |    1 +
- 2 files changed, 2 insertions(+)
+ sound/pci/hda/patch_realtek.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -113,6 +113,7 @@
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9796,8 +9796,7 @@ static void alc897_hp_automute_hook(stru
  
- #define MEI_DEV_ID_MTL_M      0x7E70  /* Meteor Lake Point M */
- #define MEI_DEV_ID_ARL_S      0x7F68  /* Arrow Lake Point S */
-+#define MEI_DEV_ID_ARL_H      0x7770  /* Arrow Lake Point H */
+ 	snd_hda_gen_hp_automute(codec, jack);
+ 	vref = spec->gen.hp_jack_present ? (PIN_HP | AC_PINCTL_VREF_100) : PIN_HP;
+-	snd_hda_codec_write(codec, 0x1b, 0, AC_VERB_SET_PIN_WIDGET_CONTROL,
+-			    vref);
++	snd_hda_set_pin_ctl(codec, 0x1b, vref);
+ }
  
- /*
-  * MEI HW Section
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -119,6 +119,7 @@ static const struct pci_device_id mei_me
+ static void alc897_fixup_lenovo_headset_mic(struct hda_codec *codec,
+@@ -9806,6 +9805,10 @@ static void alc897_fixup_lenovo_headset_
+ 	struct alc_spec *spec = codec->spec;
+ 	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
+ 		spec->gen.hp_automute_hook = alc897_hp_automute_hook;
++		spec->no_shutup_pins = 1;
++	}
++	if (action == HDA_FIXUP_ACT_PROBE) {
++		snd_hda_set_pin_ctl_cache(codec, 0x1a, PIN_IN | AC_PINCTL_VREF_100);
+ 	}
+ }
  
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_MTL_M, MEI_ME_PCH15_CFG)},
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_H, MEI_ME_PCH15_CFG)},
- 
- 	/* required last entry */
- 	{0, }
 
 
 
