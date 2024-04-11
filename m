@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-39092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079DC8A11E1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A7A88A1219
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:50:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38EB31C21474
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC1DFB2752A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AAB013BC33;
-	Thu, 11 Apr 2024 10:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC87C146A90;
+	Thu, 11 Apr 2024 10:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2eN/s4lw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0G/mDR3j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A51079FD;
-	Thu, 11 Apr 2024 10:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD071E48E;
+	Thu, 11 Apr 2024 10:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832493; cv=none; b=V9nb7jM5r1dCZ86aJAXmWux7DTafD5HtgLymUpnhvrpt50S+A8kUYUkxZT72FEj0L59e3H5qmslz+k2cvDnkUsGwJINHkuv87LvWVwCC9MgiW5cqqWMy0csnvZNUEDHE6lFN4J3LRkdy6cWrsU1d+WnjMsVwnq74tuFAxFOWOw4=
+	t=1712832632; cv=none; b=X3bnXo5HtGN1rl44pYowgqdf3FhSy2sWlYyG+fNzQhY8LJevK7+H5oKPhGMTMMK07fe+idnmmwBu4eG69kad7RD4wqDwusIIqjTywZumq81K+9KUKgwRIvcSQriUUEO5whKaWrervmY9NqCtynDHwJ3AzeqQp8ExWfktQj53tjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832493; c=relaxed/simple;
-	bh=MDA+6GcEM6eDjp3X5N2TAJA2u1fF2tM3cnfB5kbcEeQ=;
+	s=arc-20240116; t=1712832632; c=relaxed/simple;
+	bh=x/jpc3qPs7/amMquVe3t4uiZm5rGK6cA8l79xuze/Ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uk7eZVE9Gh5ULci8K9n+b7/EopmKeGstEr0sIJ9oqzO5vt9awZgEh+nM8Vor9WX+PcfsEBuhzDjQZORFr6y57R7iZhY+JVvf7kEy7dRZJQEVL+fbsQcVc6mcgorERd89yEiQxIi0XHTNO5pmEJxYIPpXyq1QiwKa7eT7uUDS0r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2eN/s4lw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9072C433F1;
-	Thu, 11 Apr 2024 10:48:12 +0000 (UTC)
+	 MIME-Version; b=ilgTwuKqPsCe1PS6YxEfjcA0Pe/MeTNRN0X+XaM/Vf53A/pOtdViKYxC3dUBdTbpncMvjJahf3JTFG9SAPH1pPi8JK8ikvAsu2h+Tbvu/1OzP7cCWLta3jy1DxLlFeYzfIeUB3aosbuYVttWRAlDT+7uoDMCU+zXxxSxe1p/ICE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0G/mDR3j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01039C433F1;
+	Thu, 11 Apr 2024 10:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832493;
-	bh=MDA+6GcEM6eDjp3X5N2TAJA2u1fF2tM3cnfB5kbcEeQ=;
+	s=korg; t=1712832632;
+	bh=x/jpc3qPs7/amMquVe3t4uiZm5rGK6cA8l79xuze/Ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2eN/s4lwLH4IAnKxl4wEBOzLQtOqwvvqQojPD4lUXPmMyefp98I1KXtFjvcXQej5N
-	 cKydfw4W7d/ng9k7kxBf69Sz31k7EURiIIsY5XACRQvyRwwl/4OYSO85E5nu1QJXxm
-	 m0VLr3S05esthxdEc72ofVCWZnk42PTxjtH/Q5zg=
+	b=0G/mDR3juTTBKTPhaDbqvvghPa8Tz3L5UasbSDZyU9t1bbPkbWo6/mJk6kPyAm1qA
+	 wvN4o+1JSjKDFP1cG1lGDDY/5PKANqNbOyALqflfxe3FRl1k8aakZ6dFyPvzGLyykt
+	 qs9XMEYSJeOImNexb3gjIbu194KXhH7sW5vgyMv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+f8e9a371388aa62ecab4@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 66/83] io_uring: clear opcode specific data for an early failure
-Date: Thu, 11 Apr 2024 11:57:38 +0200
-Message-ID: <20240411095414.670487270@linuxfoundation.org>
+	Daniel Drake <drake@endlessos.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jian-Hong Pan <jhp@endlessos.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 31/57] Revert "ACPI: PM: Block ASUS B1400CEAE from suspend to idle by default"
+Date: Thu, 11 Apr 2024 11:57:39 +0200
+Message-ID: <20240411095408.938567154@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+References: <20240411095407.982258070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Daniel Drake <drake@endlessos.org>
 
-[ Upstream commit e21e1c45e1fe2e31732f40256b49c04e76a17cee ]
+[ Upstream commit cb98555fcd8eee98c30165537c7e394f3a66e809 ]
 
-If failure happens before the opcode prep handler is called, ensure that
-we clear the opcode specific area of the request, which holds data
-specific to that request type. This prevents errors where opcode
-handlers either don't get to clear per-request private data since prep
-isn't even called.
+This reverts commit d52848620de00cde4a3a5df908e231b8c8868250, which was
+originally put in place to work around a s2idle failure on this platform
+where the NVMe device was inaccessible upon resume.
 
-Reported-and-tested-by: syzbot+f8e9a371388aa62ecab4@syzkaller.appspotmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+After extended testing, we found that the firmware's implementation of S3
+is buggy and intermittently fails to wake up the system. We need to revert
+to s2idle mode.
+
+The NVMe issue has now been solved more precisely in the commit titled
+"PCI: Disable D3cold on Asus B1400 PCI-NVMe bridge"
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=215742
+Link: https://lore.kernel.org/r/20240228075316.7404-2-drake@endlessos.org
+Signed-off-by: Daniel Drake <drake@endlessos.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Jian-Hong Pan <jhp@endlessos.org>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ drivers/acpi/sleep.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 415248c1f82c6..68f1b6f8699a6 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1978,6 +1978,13 @@ static void io_init_req_drain(struct io_kiocb *req)
- 	}
- }
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index b277e25b276ce..95deb55fb9a8c 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -382,18 +382,6 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "20GGA00L00"),
+ 		},
+ 	},
+-	/*
+-	 * ASUS B1400CEAE hangs on resume from suspend (see
+-	 * https://bugzilla.kernel.org/show_bug.cgi?id=215742).
+-	 */
+-	{
+-	.callback = init_default_s3,
+-	.ident = "ASUS B1400CEAE",
+-	.matches = {
+-		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-		DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK B1400CEAE"),
+-		},
+-	},
+ 	{},
+ };
  
-+static __cold int io_init_fail_req(struct io_kiocb *req, int err)
-+{
-+	/* ensure per-opcode data is cleared if we fail before prep */
-+	memset(&req->cmd.data, 0, sizeof(req->cmd.data));
-+	return err;
-+}
-+
- static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 		       const struct io_uring_sqe *sqe)
- 	__must_hold(&ctx->uring_lock)
-@@ -1998,29 +2005,29 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 
- 	if (unlikely(opcode >= IORING_OP_LAST)) {
- 		req->opcode = 0;
--		return -EINVAL;
-+		return io_init_fail_req(req, -EINVAL);
- 	}
- 	def = &io_op_defs[opcode];
- 	if (unlikely(sqe_flags & ~SQE_COMMON_FLAGS)) {
- 		/* enforce forwards compatibility on users */
- 		if (sqe_flags & ~SQE_VALID_FLAGS)
--			return -EINVAL;
-+			return io_init_fail_req(req, -EINVAL);
- 		if (sqe_flags & IOSQE_BUFFER_SELECT) {
- 			if (!def->buffer_select)
--				return -EOPNOTSUPP;
-+				return io_init_fail_req(req, -EOPNOTSUPP);
- 			req->buf_index = READ_ONCE(sqe->buf_group);
- 		}
- 		if (sqe_flags & IOSQE_CQE_SKIP_SUCCESS)
- 			ctx->drain_disabled = true;
- 		if (sqe_flags & IOSQE_IO_DRAIN) {
- 			if (ctx->drain_disabled)
--				return -EOPNOTSUPP;
-+				return io_init_fail_req(req, -EOPNOTSUPP);
- 			io_init_req_drain(req);
- 		}
- 	}
- 	if (unlikely(ctx->restricted || ctx->drain_active || ctx->drain_next)) {
- 		if (ctx->restricted && !io_check_restriction(ctx, req, sqe_flags))
--			return -EACCES;
-+			return io_init_fail_req(req, -EACCES);
- 		/* knock it to the slow queue path, will be drained there */
- 		if (ctx->drain_active)
- 			req->flags |= REQ_F_FORCE_ASYNC;
-@@ -2033,9 +2040,9 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 	}
- 
- 	if (!def->ioprio && sqe->ioprio)
--		return -EINVAL;
-+		return io_init_fail_req(req, -EINVAL);
- 	if (!def->iopoll && (ctx->flags & IORING_SETUP_IOPOLL))
--		return -EINVAL;
-+		return io_init_fail_req(req, -EINVAL);
- 
- 	if (def->needs_file) {
- 		struct io_submit_state *state = &ctx->submit_state;
-@@ -2059,12 +2066,12 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 
- 		req->creds = xa_load(&ctx->personalities, personality);
- 		if (!req->creds)
--			return -EINVAL;
-+			return io_init_fail_req(req, -EINVAL);
- 		get_cred(req->creds);
- 		ret = security_uring_override_creds(req->creds);
- 		if (ret) {
- 			put_cred(req->creds);
--			return ret;
-+			return io_init_fail_req(req, ret);
- 		}
- 		req->flags |= REQ_F_CREDS;
- 	}
 -- 
 2.43.0
 
