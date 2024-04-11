@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-39103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C57F8A11EE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E9A8A1202
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 427F71F25D05
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5D501C21AA6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25B6146A70;
-	Thu, 11 Apr 2024 10:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA19413D24D;
+	Thu, 11 Apr 2024 10:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubtWRCBF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MkiP4Jjc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A100C64CC0;
-	Thu, 11 Apr 2024 10:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3F179FD;
+	Thu, 11 Apr 2024 10:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832525; cv=none; b=Xs0aW44C+ZTENuTTeMPaISQiXQSjgELm5qORcH+xWJTalOES8R6osQhxZGdscvHtSofugUUK+A3ichhWiIP0R36GuzOt64cepTG0lnABHOP6/Q6S7hWUmGsYIFuMHP9gkEBfnL3zMIciusg8+TeNRHonJU7XEBEO3z6HuEVvAzw=
+	t=1712832581; cv=none; b=Y9CO66lp+TKTJYSvBGwNf8x3uZnBRJqGqkgfUyvsnx0CcqgVIaLU2U4P87spOduHeuwBmGK+Xa09ntACvfClqyZAUU3AfRATG4YfgHLcIlvt7h9Nze2IgTp607PrlKwid80AXY0KFFELoPfeOW4fbsGde3Tp0RGWx14FzADKvZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832525; c=relaxed/simple;
-	bh=4/MLqR1ULrSjc9ISx+Ch1b5u3fd2cURrR110pgpNEFo=;
+	s=arc-20240116; t=1712832581; c=relaxed/simple;
+	bh=xVf2wXKslvdCRmJEd3K8TvhSvxBAi74R32KLXQD0jXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YGQM1gwEoVghOUuYu60ZRx9kh/Mzh4Gw/bphK9A+6KwsSrypQWdSg/wDASVjO2J5MI4EaWoSaePGprtzM2cB7sPsalBOouaAWiakjA7jbI3SaEUwn6w3x/TslPPnxTI5QNFPy8g9SKi1MgMpqa+NkHHzYuq9HsfD7eC1YUfOJLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubtWRCBF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26E2BC433F1;
-	Thu, 11 Apr 2024 10:48:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pAhP5PXLB9AnDfcU5YjVg1WTb8RbIIrUhigjiLCenBm/kdBxIlqGxeinw/vzJQOb+eHofUcq/+6q32rBjSCFV6fCHzIF2ozUfo3sxz0s35WBy1xsXbShqN/m4RcMgK+gsXi8pfbM4350OHrNNLVtbuZ4MFHu5d4tR1lRb0qocys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MkiP4Jjc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11142C433F1;
+	Thu, 11 Apr 2024 10:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832525;
-	bh=4/MLqR1ULrSjc9ISx+Ch1b5u3fd2cURrR110pgpNEFo=;
+	s=korg; t=1712832581;
+	bh=xVf2wXKslvdCRmJEd3K8TvhSvxBAi74R32KLXQD0jXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ubtWRCBF51D8CShAIy8WUtUN4rMjEs26ep0jpjA8EETX4tPLaCe2aOQ5CCbhs/Arx
-	 tSE+7TrITi11frWKLcl1CDg2JeZdetNxMsU5dQPXtLsCjngpv/YrlRUN6Ha5sGXaRO
-	 Rfa5FjBmwCh6xFdOrZtE7ZUDNtbY3uFJGMtYJQYI=
+	b=MkiP4JjcdcNETmSF46YE2MYF/5oVoEUjnq9gUF+KeWGQT0uErEb3rwAlPXdHwu/Lx
+	 g6meMy/39OOQTnAAnUapxMtN5xHkuriPyKynjel1DCr2NdprtYsEwsPwiW7QrIRuwW
+	 GKCIuLcxLucKvrkUkrczLed5oXCDRf7OsTtcAUaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 39/83] media: sta2x11: fix irq handler cast
+Subject: [PATCH 5.15 03/57] batman-adv: Return directly after a failed batadv_dat_select_candidates() in batadv_dat_forward_data()
 Date: Thu, 11 Apr 2024 11:57:11 +0200
-Message-ID: <20240411095413.859234433@linuxfoundation.org>
+Message-ID: <20240411095408.089112164@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+References: <20240411095407.982258070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit 3de49ae81c3a0f83a554ecbce4c08e019f30168e ]
+[ Upstream commit ffc15626c861f811f9778914be004fcf43810a91 ]
 
-clang-16 warns about casting incompatible function pointers:
+The kfree() function was called in one case by
+the batadv_dat_forward_data() function during error handling
+even if the passed variable contained a null pointer.
+This issue was detected by using the Coccinelle software.
 
-drivers/media/pci/sta2x11/sta2x11_vip.c:1057:6: error: cast from 'irqreturn_t (*)(int, struct sta2x11_vip *)' (aka 'enum irqreturn (*)(int, struct sta2x11_vip *)') to 'irq_handler_t' (aka 'enum irqreturn (*)(int, void *)') converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+* Thus return directly after a batadv_dat_select_candidates() call failed
+  at the beginning.
 
-Change the prototype of the irq handler to the regular version with a
-local variable to adjust the argument type.
+* Delete the label “out” which became unnecessary with this refactoring.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-[hverkuil: update argument documentation]
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Acked-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/sta2x11/sta2x11_vip.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/batman-adv/distributed-arp-table.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/media/pci/sta2x11/sta2x11_vip.c b/drivers/media/pci/sta2x11/sta2x11_vip.c
-index 8535e49a4c4f9..1f7ab56de4a00 100644
---- a/drivers/media/pci/sta2x11/sta2x11_vip.c
-+++ b/drivers/media/pci/sta2x11/sta2x11_vip.c
-@@ -756,7 +756,7 @@ static const struct video_device video_dev_template = {
- /**
-  * vip_irq - interrupt routine
-  * @irq: Number of interrupt ( not used, correct number is assumed )
-- * @vip: local data structure containing all information
-+ * @data: local data structure containing all information
-  *
-  * check for both frame interrupts set ( top and bottom ).
-  * check FIFO overflow, but limit number of log messages after open.
-@@ -766,8 +766,9 @@ static const struct video_device video_dev_template = {
-  *
-  * IRQ_HANDLED, interrupt done.
-  */
--static irqreturn_t vip_irq(int irq, struct sta2x11_vip *vip)
-+static irqreturn_t vip_irq(int irq, void *data)
- {
-+	struct sta2x11_vip *vip = data;
- 	unsigned int status;
+diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
+index 42dcdf5fd76a1..c091b2a70d22d 100644
+--- a/net/batman-adv/distributed-arp-table.c
++++ b/net/batman-adv/distributed-arp-table.c
+@@ -684,7 +684,7 @@ static bool batadv_dat_forward_data(struct batadv_priv *bat_priv,
  
- 	status = reg_read(vip, DVP_ITS);
-@@ -1049,9 +1050,7 @@ static int sta2x11_vip_init_one(struct pci_dev *pdev,
+ 	cand = batadv_dat_select_candidates(bat_priv, ip, vid);
+ 	if (!cand)
+-		goto out;
++		return ret;
  
- 	spin_lock_init(&vip->slock);
+ 	batadv_dbg(BATADV_DBG_DAT, bat_priv, "DHT_SEND for %pI4\n", &ip);
  
--	ret = request_irq(pdev->irq,
--			  (irq_handler_t) vip_irq,
--			  IRQF_SHARED, KBUILD_MODNAME, vip);
-+	ret = request_irq(pdev->irq, vip_irq, IRQF_SHARED, KBUILD_MODNAME, vip);
- 	if (ret) {
- 		dev_err(&pdev->dev, "request_irq failed\n");
- 		ret = -ENODEV;
+@@ -728,7 +728,6 @@ static bool batadv_dat_forward_data(struct batadv_priv *bat_priv,
+ 		batadv_orig_node_put(cand[i].orig_node);
+ 	}
+ 
+-out:
+ 	kfree(cand);
+ 	return ret;
+ }
 -- 
 2.43.0
 
