@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-39131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6728B8A120C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:50:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5838A11D9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:47:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 936EC1C22EF1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CDA7B27009
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFC0146A89;
-	Thu, 11 Apr 2024 10:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76606BB29;
+	Thu, 11 Apr 2024 10:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFyZ5xPq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSakvCos"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBD179FD;
-	Thu, 11 Apr 2024 10:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667F579FD;
+	Thu, 11 Apr 2024 10:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832608; cv=none; b=Z5Fejjhcn1191uYfvWG7CywcuMPaRoPE/8s5vD/D27m+a/XwG55oC5PcLXwpZyLlEtlOeEkAwIDB7Bt17Yx97qRTtYv1DkMK/lNbqZBUC2xArzJPDzBVe8FHk92sBc1Ltz6yISlQVcA0D4c7JP5zmOeb5jCA3MVPyl9fVLHn3ds=
+	t=1712832469; cv=none; b=aElYC9+zU9dLwiAZ18saCGz0dPl8NxNrY+nc40fXsJR/jwrwdS8k6JZ8yx442OlpUkunuqyHgMSmir38On8kBC2Q3BHsjCE0azrQARKXaW1AvdibFRcJVsa3wXoeAUoYTMDuXHZ+n/9skzAwasc8mr8jVMfjEuRgsLwwbblS4JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832608; c=relaxed/simple;
-	bh=Bg+MovjjRqJ3tab3tyXMg7QHEC69MdV74NNNKQuCVuc=;
+	s=arc-20240116; t=1712832469; c=relaxed/simple;
+	bh=aMdDWEJvTwKaF/iM7i3sUhnci3wJ085lw6LADwIRkWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvHLKlc46q6S1rrNNOLlbQYv9qN6GZtAQQMqQUDThZ2E1ACV0ee2xc7B+Eg877z4/6pA/CVQc5cRZxEJYvZV7K25KTfi6eusTNbO1z9hgY+riy082cH/YXZ2InkSe11a7dLQ9HISlvzde4gnsUsW8CCugFuAIOy7dLH9ej5Bk0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFyZ5xPq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F57C433F1;
-	Thu, 11 Apr 2024 10:50:07 +0000 (UTC)
+	 MIME-Version; b=fzmuPmw+Ig3+KoxiJo2qT2WBOyWW4t0z9ESJAv+s1KV8nTBh4R72PvfrFg8EhYqQXxO6Sd4nutuZq5nnNosR3GJHDmf0AaAlj+QB+azo34J+ijlQ8N4hPMGzbg0CSobc2Q+XtLpbsPDaWIQcQlq4suSAVPeIeQXebec8+4+bv6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSakvCos; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38AEC433C7;
+	Thu, 11 Apr 2024 10:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832607;
-	bh=Bg+MovjjRqJ3tab3tyXMg7QHEC69MdV74NNNKQuCVuc=;
+	s=korg; t=1712832469;
+	bh=aMdDWEJvTwKaF/iM7i3sUhnci3wJ085lw6LADwIRkWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gFyZ5xPqhNRbDD+Gn0Fk66bbUf8ftema7UmW4xLX7QcMzVW0df7TL7oSpfdoEhfPz
-	 v6jNyBNeh/V8H9CJgQtyeIKYMmWu4lAtgFfYmWtYN3RxU+f2giA3SCS8Hgw9Yrz0o4
-	 pnAlNXTRytufnEJt6zheXAlW04BgZ/J64mvBWZFA=
+	b=gSakvCosnC6u7VDBwgOaGo0NLjmgjkQhleERqeNCf3Yr0o4+QVrvdmCiPDsEDBrO+
+	 VkEZIN1GSuvotVEOO14nUYA1KwTovksv6ALxsfYdWGBIVSW1dgyylSPc3y51089LJU
+	 yTUpuchQVRkQxwTT74TdLVfQP6nO19U+9qZExyYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 23/57] scsi: lpfc: Fix possible memory leak in lpfc_rcv_padisc()
+Subject: [PATCH 6.1 59/83] usb: gadget: uvc: mark incomplete frames with UVC_STREAM_ERR
 Date: Thu, 11 Apr 2024 11:57:31 +0200
-Message-ID: <20240411095408.697378358@linuxfoundation.org>
+Message-ID: <20240411095414.461563859@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-[ Upstream commit 2ae917d4bcab80ab304b774d492e2fcd6c52c06b ]
+[ Upstream commit 2a3b7af120477d0571b815ccb8600cafd5ebf02f ]
 
-The call to lpfc_sli4_resume_rpi() in lpfc_rcv_padisc() may return an
-unsuccessful status.  In such cases, the elsiocb is not issued, the
-completion is not called, and thus the elsiocb resource is leaked.
+If an frame was transmitted incomplete to the host, we set the
+UVC_STREAM_ERR bit in the header for the last request that is going
+to be queued. This way the host will know that it should drop the
+frame instead of trying to display the corrupted content.
 
-Check return value after calling lpfc_sli4_resume_rpi() and conditionally
-release the elsiocb resource.
-
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240131185112.149731-3-justintee8345@gmail.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Link: https://lore.kernel.org/r/20240214-uvc-error-tag-v1-2-37659a3877fe@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_nportdisc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/uvc_video.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc_nportdisc.c b/drivers/scsi/lpfc/lpfc_nportdisc.c
-index 2bd35a7424c25..9b862f1254a42 100644
---- a/drivers/scsi/lpfc/lpfc_nportdisc.c
-+++ b/drivers/scsi/lpfc/lpfc_nportdisc.c
-@@ -724,8 +724,10 @@ lpfc_rcv_padisc(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
- 				/* Save the ELS cmd */
- 				elsiocb->drvrTimeout = cmd;
+diff --git a/drivers/usb/gadget/function/uvc_video.c b/drivers/usb/gadget/function/uvc_video.c
+index e81865978299c..be48d5ab17c7b 100644
+--- a/drivers/usb/gadget/function/uvc_video.c
++++ b/drivers/usb/gadget/function/uvc_video.c
+@@ -35,6 +35,9 @@ uvc_video_encode_header(struct uvc_video *video, struct uvc_buffer *buf,
  
--				lpfc_sli4_resume_rpi(ndlp,
--					lpfc_mbx_cmpl_resume_rpi, elsiocb);
-+				if (lpfc_sli4_resume_rpi(ndlp,
-+						lpfc_mbx_cmpl_resume_rpi,
-+						elsiocb))
-+					kfree(elsiocb);
- 				goto out;
- 			}
- 		}
+ 	data[1] = UVC_STREAM_EOH | video->fid;
+ 
++	if (video->queue.flags & UVC_QUEUE_DROP_INCOMPLETE)
++		data[1] |= UVC_STREAM_ERR;
++
+ 	if (video->queue.buf_used == 0 && ts.tv_sec) {
+ 		/* dwClockFrequency is 48 MHz */
+ 		u32 pts = ((u64)ts.tv_sec * USEC_PER_SEC + ts.tv_nsec / NSEC_PER_USEC) * 48;
 -- 
 2.43.0
 
