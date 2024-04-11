@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-38170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 819CF8A0D56
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D3DB8A0E03
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B23361C2225A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFE5DB2249D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DBF14659E;
-	Thu, 11 Apr 2024 10:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EFF145B26;
+	Thu, 11 Apr 2024 10:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmUY8hLo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXEo1aBR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524E2146586;
-	Thu, 11 Apr 2024 10:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5721142624;
+	Thu, 11 Apr 2024 10:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829770; cv=none; b=lbpfW0+a7mg2m/k5ji655v6Qcx3GomLdk5E3V7rRkf2jKGg3lSxml3S3MGEHlnSg8rcd2zzeeucgMW6YCpaI0k2LkzUm/JLf64Ds/Yu6V4l4QFjkJbtp+poBh6Y1QITp8Kr/sTzpIZ2Zb6rQvWbLye6klqX1YxZMEBcMR8zPZN8=
+	t=1712830208; cv=none; b=fOOyj3ZDIPqdNCWKwfudtkuP9xy6Cxbssf7it1uVw9UdK8sHDh7Ar5d2ea6agz6efURyCLWZ+3J6L/uGhEpIMLX7JXCCbV+fu/KfBZfU9/BTJH5yRm34nGO5bExj2tICEXNrP9wRcQX501lO2zWiDfbVo+AFUC4M8WR+MPbGGog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829770; c=relaxed/simple;
-	bh=qSby5htH1b5p6cHfDUIYv8mCWaEmyoHDFm+a8zpdIq0=;
+	s=arc-20240116; t=1712830208; c=relaxed/simple;
+	bh=rNBjbtF/U7CqTyJLJcB1ScDBLv3NcSsmbiwqTgOnaWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cAE/iwM0oUEPVOBOZti+AxjAGfIfrZXIf2btdTb/JQ0y64nZX7/ky3JvaN14kCosklIADqItzHEPtGVVpX5SUN363PHSpU4dC1AEKDbXZqzNmk90+yCuqixrDhdPOGs/hH4Rd024wjDsWYa2S0q1OmjjRqzzU3s7JEyD7ZU9f8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmUY8hLo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89BFC433F1;
-	Thu, 11 Apr 2024 10:02:49 +0000 (UTC)
+	 MIME-Version; b=SBjpu/ayXxlCp8lilKxmMxpChXxwvXq7ZKDkQqCPcKNpkg88aFqM7X3gFsJP5MNXiauoP3CqFcR3MhBRzUzCH0Wtan5NuLEUMw0Gn16hfWtPGYJXilsFENUTZq7CqQBZyCiQj7PFtL7tjiD5v4cCwXXHzbl4s2b+zZFWX+NPMzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXEo1aBR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C356C433C7;
+	Thu, 11 Apr 2024 10:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829770;
-	bh=qSby5htH1b5p6cHfDUIYv8mCWaEmyoHDFm+a8zpdIq0=;
+	s=korg; t=1712830207;
+	bh=rNBjbtF/U7CqTyJLJcB1ScDBLv3NcSsmbiwqTgOnaWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GmUY8hLo2iqDcQHB7rUhAz82XeK2aAt1LqTbvq3Gq/QTb9tUHRRiDkZbRd5n0K8MJ
-	 QVkpLWtAiyPV1osbRvIQkhV2wkl06Va+eNhi8DaxAa3xJyLGiVXub4CoTUrW+6RtvI
-	 Xv1rRQ7mZipl11M9KhGXOhRzT1BnOmTNRD+wreSw=
+	b=GXEo1aBR0KfG/9mBexbvc8rCNTctOVrs3l4oX+1Cvvixlay9TuoNuC3077k84PRvP
+	 6O4BaLXySJfO4UFrMp70+Fglp6wuduXCXkDUCDE4pkZqWXoatin6t0Y0a1fEBRzuim
+	 ujktUbiqgD9fe4AWdB2xfCGGdtQF0gZ0ijeWisLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Siddh Raman Pant <code@siddh.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Genjian Zhang <zhanggenjian@kylinos.cn>,
-	syzbot+a8e049cd3abd342936b6@syzkaller.appspotmail.com
-Subject: [PATCH 4.19 099/175] loop: Check for overflow while configuring loop
+	Edward Adam Davis <eadavis@qq.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+830d9e3fa61968246abd@syzkaller.appspotmail.com
+Subject: [PATCH 6.8 054/143] Bluetooth: btintel: Fix null ptr deref in btintel_read_version
 Date: Thu, 11 Apr 2024 11:55:22 +0200
-Message-ID: <20240411095422.549754053@linuxfoundation.org>
+Message-ID: <20240411095422.542945911@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddh Raman Pant <code@siddh.me>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit c490a0b5a4f36da3918181a8acdc6991d967c5f3 ]
+[ Upstream commit b79e040910101b020931ba0c9a6b77e81ab7f645 ]
 
-The userspace can configure a loop using an ioctl call, wherein
-a configuration of type loop_config is passed (see lo_ioctl()'s
-case on line 1550 of drivers/block/loop.c). This proceeds to call
-loop_configure() which in turn calls loop_set_status_from_info()
-(see line 1050 of loop.c), passing &config->info which is of type
-loop_info64*. This function then sets the appropriate values, like
-the offset.
+If hci_cmd_sync_complete() is triggered and skb is NULL, then
+hdev->req_skb is NULL, which will cause this issue.
 
-loop_device has lo_offset of type loff_t (see line 52 of loop.c),
-which is typdef-chained to long long, whereas loop_info64 has
-lo_offset of type __u64 (see line 56 of include/uapi/linux/loop.h).
-
-The function directly copies offset from info to the device as
-follows (See line 980 of loop.c):
-	lo->lo_offset = info->lo_offset;
-
-This results in an overflow, which triggers a warning in iomap_iter()
-due to a call to iomap_iter_done() which has:
-	WARN_ON_ONCE(iter->iomap.offset > iter->pos);
-
-Thus, check for negative value during loop_set_status_from_info().
-
-Bug report: https://syzkaller.appspot.com/bug?id=c620fe14aac810396d3c3edc9ad73848bf69a29e
-
-Reported-and-tested-by: syzbot+a8e049cd3abd342936b6@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Siddh Raman Pant <code@siddh.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20220823160810.181275-1-code@siddh.me
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-and-tested-by: syzbot+830d9e3fa61968246abd@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/bluetooth/btintel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -1271,6 +1271,11 @@ loop_set_status_from_info(struct loop_de
+diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
+index cdc5c08824a0a..e5b043d962073 100644
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -435,7 +435,7 @@ int btintel_read_version(struct hci_dev *hdev, struct intel_version *ver)
+ 	struct sk_buff *skb;
  
- 	lo->lo_offset = info->lo_offset;
- 	lo->lo_sizelimit = info->lo_sizelimit;
-+
-+	/* loff_t vars have been assigned __u64 */
-+	if (lo->lo_offset < 0 || lo->lo_sizelimit < 0)
-+		return -EOVERFLOW;
-+
- 	memcpy(lo->lo_file_name, info->lo_file_name, LO_NAME_SIZE);
- 	memcpy(lo->lo_crypt_name, info->lo_crypt_name, LO_NAME_SIZE);
- 	lo->lo_file_name[LO_NAME_SIZE-1] = 0;
+ 	skb = __hci_cmd_sync(hdev, 0xfc05, 0, NULL, HCI_CMD_TIMEOUT);
+-	if (IS_ERR(skb)) {
++	if (IS_ERR_OR_NULL(skb)) {
+ 		bt_dev_err(hdev, "Reading Intel version information failed (%ld)",
+ 			   PTR_ERR(skb));
+ 		return PTR_ERR(skb);
+-- 
+2.43.0
+
 
 
 
