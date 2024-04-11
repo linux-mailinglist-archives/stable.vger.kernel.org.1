@@ -1,74 +1,47 @@
-Return-Path: <stable+bounces-39231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F22FB8A2115
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 23:47:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB008A2195
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 00:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF05C284DF0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 21:47:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 637D51F23F25
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 22:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5D739AC3;
-	Thu, 11 Apr 2024 21:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA5C3D0D0;
+	Thu, 11 Apr 2024 22:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X/tSb9n+"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="aQpKo4mU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0A42942D;
-	Thu, 11 Apr 2024 21:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5284225D7;
+	Thu, 11 Apr 2024 22:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712872054; cv=none; b=LggN4+xjZDzwVO+mDmROSwryf1/Um3PNR7OOlMQqiP4O41LvYfh0xWYBJdB2Yq0BDN/gLnnlY7Hu6VULA9Yk8yve9XfYqBVWir3/DqwerdA2y+1Vty97xSbgGZx2ndyzOzw1WxKv2TbMqewpJLlmNGFkENPZ7I9Vcy2FJxJnD1o=
+	t=1712873279; cv=none; b=uWtZBSl/bPmGmmTci/t7NluFL29V/GaJEJ7TDh1In/RAIta78wkGCOZ1t/mxNEXisG4DkZCbiADcjM0YkdBspYKLFJfwB/xHCNt6xkvE07yQYcE0mhzMskBVXVC2rG63zCGgwcw54v6MGOZc+sO/WVBDjBGnzXYzYBnyQhWeh10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712872054; c=relaxed/simple;
-	bh=NiiW7HlO8jYMlaSPOm+tGXTrPK1xT3n2rILXDAH4rJ0=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=RnM9r04U/MA1cS610IIxrg9AOhwCgDrlWC8bGW0Qm7b79Q9o+hNprbxnlyH97adET8cl1r3P75TRrVOumDoMCpXwZazVGy0bE1ANVmVcM5d0DZ32kvX/8RKxu7A//vFHO1vfcwfqVWVE2TiAd93F9czt1bAONJrmgcnHzfinpss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X/tSb9n+; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-5cf2d73a183so854765a12.1;
-        Thu, 11 Apr 2024 14:47:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712872052; x=1713476852; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Ddxa7Lm0V7tNQ5Yf2X+O79t3Apo9+QNjaVHgEzh5CP0=;
-        b=X/tSb9n+65FbFQKn2F47FmHcJ4Ii/+uZTw44W48HGzyGKLYJZ5Mc4rHlJWEywa5GmW
-         spNFM/aXmI4Nw0N4R/K+zMaD8h+k3KmKaNSNG2kHl7vizBWOgqAHZuSEWBiqMjDlzBee
-         1mtTA/B/L5xbEqtzCSn9mt9ipkO9qmyB2Wy4ccRqz3Qo1vw7qOc+GbeW1oKxQDnrPW4V
-         Nk0gYPoDlRLZMWDJowmcqqvz1RRCFs1uLufbLhkx3YWjNO6ZRsoA6C3Mr39QTNsTyom2
-         CMqEIlKKiHuv4vw8F7yfbTw47RRIaTVQw4gDcNInSGyFrTRw3lzWSJUg5jLRkSObsZFI
-         93sQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712872052; x=1713476852;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ddxa7Lm0V7tNQ5Yf2X+O79t3Apo9+QNjaVHgEzh5CP0=;
-        b=iNqTjAm8hZHn+WyZnHdwJvctqC4oaBEjETA66G46uoXT1iZCCcgY9NYGPe4a/5rkl5
-         A8N9rL4exzLrGuorVxSf00FLl/E53iIbk7Bs1+rD361P/ZZ1mG6kHCLNm+Ylh6Ahxf7S
-         It2OfwTDRynOEeBmENEg+pJUX8uwmXGfZTB8DlRnTuvJ2Ie5qnW/sxPhpfqxWBA2fA8n
-         OQKJFmpqgvRpFrNOj0VyvUE2QdGLeSkvx5swdFjPHL0bVzDJxyN/ifPM78kwKchBj4WX
-         r64t8ZwTh8TtUcGmTm/t8yq5Jfw6T4WAS0/ORzaT4sLLPs6oG9tqL6NUtozKPHGigWRY
-         sLlA==
-X-Forwarded-Encrypted: i=1; AJvYcCVpl/W8/Jg7TCWIONRRZEIquPRBBCuGUaarIemdZuNf71v+gEr2AuObcavWnrQPDANj20Ef9ATCe9WfRdhgiuZYb9ZRg69GxkLNOWs7jWiWPd88vHNPCkpcMwWqKExEa4J3tYql
-X-Gm-Message-State: AOJu0YzdDn5ixb1CcKHS6R05a6ZhuWlm4y7BZTR10789uZO3AAXbEc3g
-	A5u9jvcVPkjFcbtzSsmd7GboX1i2jSFcHRtvFIEO7qNmSZ7MIoKc
-X-Google-Smtp-Source: AGHT+IG3OL39Tt2WbCq2ZhAMJutPEfrY2ljQNwyZVPQVJHZS0Yl/RyrZAznhXxuy4bMat415awG+jQ==
-X-Received: by 2002:a17:90a:bf0c:b0:2a5:e055:88c4 with SMTP id c12-20020a17090abf0c00b002a5e05588c4mr4915966pjs.5.1712872051716;
-        Thu, 11 Apr 2024 14:47:31 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id a9-20020a17090a8c0900b002a058159ff8sm1582146pjo.8.2024.04.11.14.47.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Apr 2024 14:47:30 -0700 (PDT)
-Message-ID: <c52995f6-20ee-495e-82a3-4e4f12c1fd5a@gmail.com>
-Date: Thu, 11 Apr 2024 14:47:28 -0700
+	s=arc-20240116; t=1712873279; c=relaxed/simple;
+	bh=6GyJ1moyGyzPMs+T8Tio5Hd2q/mmqtXU1wGSLBkqoD0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p5f1fUt4B5T/8Y0Tu6QgDYe3TIBBC6vx+Yvu4sO1HZ/NXFoLrvGO98zatO5FZ1Tn8WFCm27ylawnZgI+exwdWXFtNUvfK1BJzNQj+ijZTKWuB5yhjxxxOo8NK5h1IZb8iZQNRu6GuH35//bJjYKdmGd0hB/5vD4M9RuyqHw7OhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=aQpKo4mU; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [100.64.225.52] (unknown [20.29.225.195])
+	by linux.microsoft.com (Postfix) with ESMTPSA id ACEC220EC318;
+	Thu, 11 Apr 2024 15:07:56 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com ACEC220EC318
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1712873277;
+	bh=LMTBUyPQSa+ZQmS7leeSy5hd89KM45LnFsigAQb9pZg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aQpKo4mUtAJLaqwMOzcNsTcHMV/7oQ1HmdSBKscTKordamzhjzwDOK+BwSGxAoDN9
+	 X1y3AZ5lsPxVz3tutxuvyjKpQeW/OezME8JKU4qk5Gk2afzbK1TESNxj+i/2fv9coL
+	 +zgfb8OjGPiqC8LgOHfZmkDeWpbKKqRIr991nNDc=
+Message-ID: <5f3f0bbf-8d17-47b0-bbc2-1bdcc1e1a733@linux.microsoft.com>
+Date: Thu, 11 Apr 2024 15:07:55 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,45 +49,183 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH 6.6 000/114] 6.6.27-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240411095416.853744210@linuxfoundation.org>
-Content-Language: en-US
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v2] ACPI: CPPC: Fix access width used for PCC registers
+To: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
+ Jarred White <jarredwhite@linux.microsoft.com>
+Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "5 . 15+" <stable@vger.kernel.org>
+References: <20240411212306.1359466-1-vanshikonda@os.amperecomputing.com>
+Content-Language: en-CA
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
+In-Reply-To: <20240411212306.1359466-1-vanshikonda@os.amperecomputing.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 4/11/24 02:55, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.27 release.
-> There are 114 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 4/11/2024 2:23 PM, Vanshidhar Konda wrote:
+> commit 2f4a4d63a193be6fd530d180bb13c3592052904c modified
+> cpc_read/cpc_write to use access_width to read CPC registers. For PCC
+> registers the access width field in the ACPI register macro specifies
+> the PCC subspace id. For non-zero PCC subspace id the access width is
+> incorrectly treated as access width. This causes errors when reading
+> from PCC registers in the CPPC driver.
 > 
-> Responses should be made by Sat, 13 Apr 2024 09:53:55 +0000.
-> Anything received after that time might be too late.
+> For PCC registers base the size of read/write on the bit width field.
+> The debug message in cpc_read/cpc_write is updated to print relevant
+> information for the address space type used to read the register.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.27-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
+> Signed-off-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+> Tested-by: Jarred White <jarredwhite@linux.microsoft.com>
+> Reviewed-by: Jarred White <jarredwhite@linux.microsoft.com>
+> Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
+> ---
 > 
-> thanks,
+> When testing v6.9-rc1 kernel on AmpereOne system dmesg showed that
+> cpufreq policy had failed to initialize on some cores during boot because
+> cpufreq->get() always returned 0. On this system CPPC registers are in PCC
+> subspace index 2 that are 32 bits wide. With this patch the CPPC driver
+> interpreted the access width field as 16 bits, causing the register read
+> to roll over too quickly to provide valid values during frequency
+> computation.
 > 
-> greg k-h
+> v2:
+> - Use size variable in debug print message
+> - Use size instead of reg->bit_width for acpi_os_read_memory and
+>   acpi_os_write_memory
+> 
+>  drivers/acpi/cppc_acpi.c | 53 ++++++++++++++++++++++++++++------------
+>  1 file changed, 37 insertions(+), 16 deletions(-)
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Thanks for adding the CC: stable tag. Couple of nits, assuming those are fixed:
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+
+> 
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 4bfbe55553f4..a037e9d15f48 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -1002,14 +1002,14 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+>  	}
+>  
+>  	*val = 0;
+> +	size = GET_BIT_WIDTH(reg);
+>  
+>  	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
+> -		u32 width = GET_BIT_WIDTH(reg);
+>  		u32 val_u32;
+>  		acpi_status status;
+>  
+>  		status = acpi_os_read_port((acpi_io_address)reg->address,
+> -					   &val_u32, width);
+> +					   &val_u32, size);
+>  		if (ACPI_FAILURE(status)) {
+>  			pr_debug("Error: Failed to read SystemIO port %llx\n",
+>  				 reg->address);
+> @@ -1018,17 +1018,22 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+>  
+>  		*val = val_u32;
+>  		return 0;
+> -	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
+> +	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
+> +		/*
+> +		 * For registers in PCC space, the register size is determined
+> +		 * by the bit width field; the access size is used to indicate
+> +		 * the PCC subspace id.
+> +		 */
+> +		size = reg->bit_width;
+>  		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
+> +	}
+>  	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+>  		vaddr = reg_res->sys_mem_vaddr;
+>  	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
+>  		return cpc_read_ffh(cpu, reg, val);
+>  	else
+>  		return acpi_os_read_memory((acpi_physical_address)reg->address,
+> -				val, reg->bit_width);
+> -
+> -	size = GET_BIT_WIDTH(reg);
+> +				val, size);
+>  
+>  	switch (size) {
+>  	case 8:
+> @@ -1044,8 +1049,13 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+>  		*val = readq_relaxed(vaddr);
+>  		break;
+>  	default:
+> -		pr_debug("Error: Cannot read %u bit width from PCC for ss: %d\n",
+> -			 reg->bit_width, pcc_ss_id);
+> +		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+> +			pr_debug("Error: Cannot read %u width from for system memory: 0x%llx\n",
+> +				size, reg->address);
+
+Nit: from for? There might be a missing word there, or just an extra. Ditto for cpc_write() below.
+
+> +		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
+> +			pr_debug("Error: Cannot read %u bit width to PCC for ss: %d\n",
+> +				size, pcc_ss_id);
+> +		}
+>  		return -EFAULT;
+>  	}
+>  
+> @@ -1063,12 +1073,13 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+>  	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
+>  	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
+>  
+> +	size = GET_BIT_WIDTH(reg);
+> +
+>  	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
+> -		u32 width = GET_BIT_WIDTH(reg);
+>  		acpi_status status;
+>  
+>  		status = acpi_os_write_port((acpi_io_address)reg->address,
+> -					    (u32)val, width);
+> +					    (u32)val, size);
+>  		if (ACPI_FAILURE(status)) {
+>  			pr_debug("Error: Failed to write SystemIO port %llx\n",
+>  				 reg->address);
+> @@ -1076,17 +1087,22 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+>  		}
+>  
+>  		return 0;
+> -	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
+> +	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
+> +		/*
+> +		 * For registers in PCC space, the register size is determined
+> +		 * by the bit width field; the access size is used to indicate
+> +		 * the PCC subspace id.
+> +		 */
+> +		size = reg->bit_width;
+>  		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
+> +	}
+>  	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+>  		vaddr = reg_res->sys_mem_vaddr;
+>  	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
+>  		return cpc_write_ffh(cpu, reg, val);
+>  	else
+>  		return acpi_os_write_memory((acpi_physical_address)reg->address,
+> -				val, reg->bit_width);
+> -
+> -	size = GET_BIT_WIDTH(reg);
+> +				val, size);
+>  
+>  	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+>  		val = MASK_VAL(reg, val);
+> @@ -1105,8 +1121,13 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+>  		writeq_relaxed(val, vaddr);
+>  		break;
+>  	default:
+> -		pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
+> -			 reg->bit_width, pcc_ss_id);
+> +		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+> +			pr_debug("Error: Cannot write %u width from for system memory: 0x%llx\n",
+> +				size, reg->address);
+> +		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
+> +			pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
+> +				size, pcc_ss_id);
+> +		}
+>  		ret_val = -EFAULT;
+>  		break;
+>  	}
 
 
