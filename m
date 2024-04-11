@@ -1,55 +1,65 @@
-Return-Path: <stable+bounces-38588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF35F8A0F68
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 620368A0D7E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:04:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D31DF1C2101D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CD1A281869
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D14140E3D;
-	Thu, 11 Apr 2024 10:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7FE2145B2C;
+	Thu, 11 Apr 2024 10:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7L34Tn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oM94Y98g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DE31465BF;
-	Thu, 11 Apr 2024 10:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C971422C4;
+	Thu, 11 Apr 2024 10:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831017; cv=none; b=A5YXjx8U2IMIRfvt2c2YCXDSEi2LlIcFThWLhQtl1Rwy78LS65jQrMGkuRubzASrXx1D7c8qha3X8llDQzLiNzhEMcglIE1rZZUCdveOynOrb+6AyQEA5u+HHEoh4ODoyCdKkUf7DMeSekQSsM1+Le3UXs39xKW7GHUWdFb5fMA=
+	t=1712829867; cv=none; b=ltz95NL7StLUb8LAzUfMMAvNS0cl03NyM4I7vIHbd+S3ULCfuIwoDY/toEEhdHq86GKi3MiueNOSF8Zpw184DYH/Eho53kRiH/OhktYRZMSV9wpdTSB/mxPpBzyeK7V4hF7AP8nQwD2oVwbft498VRzsiPrHrulBADfzKAL84+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831017; c=relaxed/simple;
-	bh=0UexDH6L7kNaeV20GrV04CgxJANkyG1t1QfwPOXPf4c=;
+	s=arc-20240116; t=1712829867; c=relaxed/simple;
+	bh=L4Ts2+QjdSMfuUB+iqmkGweo0qc8Z+wTbbvTM1Rlxb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFJxg3gT69G9g8b3M4p0sg2aAhJXspG+k6h1Rf4eWJFasyH1bRm/UjMk32Lhx/H5iP3IDYcYf7XO/kBkiCUAr5u1i1svliNI6iZWx0XizSxdKllsW1VdEqA+7Sa/EDYqqrpYjY3xIz2YYJLuYkpZeM4zyTHn2qMhsm/vpYtn4Hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7L34Tn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EEBFC433F1;
-	Thu, 11 Apr 2024 10:23:36 +0000 (UTC)
+	 MIME-Version; b=M4kJdgbgcySvhs80AFp6ubg6Ur9cvzLT9v0VsdbiZgepW91J12mnikI4XHMWmAvEtUUZRzwzj5n/+N12OT0J9iU5eZnZ7eDZJh9FfSqF7jQg0xRo10R5/QTC65uK1q8Rfa6XYu7OTx4eUMnxHS0TMAbSfEOzJZthkj4RK2/jD24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oM94Y98g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D66A0C433F1;
+	Thu, 11 Apr 2024 10:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831016;
-	bh=0UexDH6L7kNaeV20GrV04CgxJANkyG1t1QfwPOXPf4c=;
+	s=korg; t=1712829867;
+	bh=L4Ts2+QjdSMfuUB+iqmkGweo0qc8Z+wTbbvTM1Rlxb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v7L34Tn43XFL0UPFqW2Fwbab4C3mCBfIOfbEs2yXZSeYI9HtwV4skgw7JqgX0aObG
-	 HJYXRxPcni5Pl1mZCUnyWultZEhN494OjBNZr9gLULKFACLOxzD5VLt2AI28K8GwU7
-	 hpgzLaLLeP0LLADh0ktZweWEgSsia7h8tKYDSiBw=
+	b=oM94Y98gSV1GR/CYFdXU6bIBsJmcZN6YoNAiedKrls9ttH/b6W0NcLrcRMvqU1YAT
+	 aAaZJ2V3zFyGmdIqwyfK53fXMdHHhdaIp9xPcG/ii26paQCp0C1eMqhLCEaE3ddjQk
+	 aznmH4ehLl81O03TyEQ6QVCHHqU976OMQbDSmcIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyang Xuan <william.xuanziyang@huawei.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.4 147/215] netfilter: nf_tables: Fix potential data-race in __nft_flowtable_type_get()
+	Christoph Hellwig <hch@lst.de>,
+	Mike Rapoport <rppt@linux.ibm.com>,
+	Steven Price <steven.price@arm.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Guan Xuetao <gxt@pku.edu.cn>,
+	Russell King <linux@armlinux.org.uk>,
+	Will Deacon <will.deacon@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH 4.19 133/175] initramfs: factor out a helper to populate the initrd image
 Date: Thu, 11 Apr 2024 11:55:56 +0200
-Message-ID: <20240411095429.306811298@linuxfoundation.org>
+Message-ID: <20240411095423.568081396@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +71,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 24225011d81b471acc0e1e315b7d9905459a6304 upstream.
+[ Upstream commit 7c184ecd262fe64fe8cf4e099e0f7cefe88d88b2 ]
 
-nft_unregister_flowtable_type() within nf_flow_inet_module_exit() can
-concurrent with __nft_flowtable_type_get() within nf_tables_newflowtable().
-And thhere is not any protection when iterate over nf_tables_flowtables
-list in __nft_flowtable_type_get(). Therefore, there is pertential
-data-race of nf_tables_flowtables list entry.
+This will allow for cleaner code sharing in the caller.
 
-Use list_for_each_entry_rcu() to iterate over nf_tables_flowtables list
-in __nft_flowtable_type_get(), and use rcu_read_lock() in the caller
-nft_flowtable_type_get() to protect the entire type query process.
-
-Fixes: 3b49e2e94e6e ("netfilter: nf_tables: add flow table netlink frontend")
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: http://lkml.kernel.org/r/20190213174621.29297-5-hch@lst.de
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Mike Rapoport <rppt@linux.ibm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>	[arm64]
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>	[m68k]
+Cc: Steven Price <steven.price@arm.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Guan Xuetao <gxt@pku.edu.cn>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Will Deacon <will.deacon@arm.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: 4624b346cf67 ("init: open /initrd.image with O_LARGEFILE")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ init/initramfs.c | 40 +++++++++++++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 17 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6041,11 +6041,12 @@ static int nf_tables_flowtable_parse_hoo
- 	return err;
+diff --git a/init/initramfs.c b/init/initramfs.c
+index dab8d63459f63..7103edf44436c 100644
+--- a/init/initramfs.c
++++ b/init/initramfs.c
+@@ -599,6 +599,28 @@ static void __init clean_rootfs(void)
  }
+ #endif
  
-+/* call under rcu_read_lock */
- static const struct nf_flowtable_type *__nft_flowtable_type_get(u8 family)
++#ifdef CONFIG_BLK_DEV_RAM
++static void populate_initrd_image(char *err)
++{
++	ssize_t written;
++	int fd;
++
++	unpack_to_rootfs(__initramfs_start, __initramfs_size);
++
++	printk(KERN_INFO "rootfs image is not initramfs (%s); looks like an initrd\n",
++			err);
++	fd = ksys_open("/initrd.image", O_WRONLY | O_CREAT, 0700);
++	if (fd < 0)
++		return;
++
++	written = xwrite(fd, (char *)initrd_start, initrd_end - initrd_start);
++	if (written != initrd_end - initrd_start)
++		pr_err("/initrd.image: incomplete write (%zd != %ld)\n",
++		       written, initrd_end - initrd_start);
++	ksys_close(fd);
++}
++#endif /* CONFIG_BLK_DEV_RAM */
++
+ static int __init populate_rootfs(void)
  {
- 	const struct nf_flowtable_type *type;
+ 	/* Load the built in initramfs */
+@@ -608,7 +630,6 @@ static int __init populate_rootfs(void)
+ 	/* If available load the bootloader supplied initrd */
+ 	if (initrd_start && !IS_ENABLED(CONFIG_INITRAMFS_FORCE)) {
+ #ifdef CONFIG_BLK_DEV_RAM
+-		int fd;
+ 		printk(KERN_INFO "Trying to unpack rootfs image as initramfs...\n");
+ 		err = unpack_to_rootfs((char *)initrd_start,
+ 			initrd_end - initrd_start);
+@@ -616,22 +637,7 @@ static int __init populate_rootfs(void)
+ 			goto done;
  
--	list_for_each_entry(type, &nf_tables_flowtables, list) {
-+	list_for_each_entry_rcu(type, &nf_tables_flowtables, list) {
- 		if (family == type->family)
- 			return type;
- 	}
-@@ -6057,9 +6058,13 @@ nft_flowtable_type_get(struct net *net,
- {
- 	const struct nf_flowtable_type *type;
- 
-+	rcu_read_lock();
- 	type = __nft_flowtable_type_get(family);
--	if (type != NULL && try_module_get(type->owner))
-+	if (type != NULL && try_module_get(type->owner)) {
-+		rcu_read_unlock();
- 		return type;
-+	}
-+	rcu_read_unlock();
- 
- 	lockdep_nfnl_nft_mutex_not_held();
- #ifdef CONFIG_MODULES
+ 		clean_rootfs();
+-		unpack_to_rootfs(__initramfs_start, __initramfs_size);
+-
+-		printk(KERN_INFO "rootfs image is not initramfs (%s)"
+-				"; looks like an initrd\n", err);
+-		fd = ksys_open("/initrd.image",
+-			      O_WRONLY|O_CREAT, 0700);
+-		if (fd >= 0) {
+-			ssize_t written = xwrite(fd, (char *)initrd_start,
+-						initrd_end - initrd_start);
+-
+-			if (written != initrd_end - initrd_start)
+-				pr_err("/initrd.image: incomplete write (%zd != %ld)\n",
+-				       written, initrd_end - initrd_start);
+-
+-			ksys_close(fd);
+-		}
++		populate_initrd_image(err);
+ 	done:
+ 		/* empty statement */;
+ #else
+-- 
+2.43.0
+
 
 
 
