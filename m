@@ -1,111 +1,72 @@
-Return-Path: <stable+bounces-38737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F13148A1024
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:32:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2820B8A12D4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 13:18:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC37F2892BE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:32:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85A7A282B03
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:18:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9ED6148FF3;
-	Thu, 11 Apr 2024 10:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37175147C86;
+	Thu, 11 Apr 2024 11:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="u1S11NYq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3OXL4T/"
 X-Original-To: stable@vger.kernel.org
-Received: from forward102c.mail.yandex.net (forward102c.mail.yandex.net [178.154.239.213])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B317C14884E;
-	Thu, 11 Apr 2024 10:30:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.213
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C491E13DDD6
+	for <stable@vger.kernel.org>; Thu, 11 Apr 2024 11:18:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831442; cv=none; b=XSv7r0i4b2LGOd7rjH+gQk7bgnBWkPq9TZnWOGM8s+ZvtCxI5ZIWTQRKj9u5LwuHnpUvh0yDtu039CGMQMIBqMDdXQ/eCtz+/75So1tkp5fQs5vWwx7QHUGyG/w63zfUEN5FuNpzUQIvxI/0Qpnm4WCBdUQT1+UVy2GC3yQ3LZU=
+	t=1712834316; cv=none; b=fFQt5yS4td5IoRxoalejsO4HYHdfNvinMEy9Db8S9pZA2Mw+Cgmsaro9KiI//gF4NJYZQqkqP/PFnNhhG5vchj7SUcywpiNDa5csYYPZnY2VS/vKcrWrqZxjWk82T9LsoPCMyoBxdzsTXp0dv1td3JAlsgiR7XX4aIPLp/a9vlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831442; c=relaxed/simple;
-	bh=Tyd5sjSQq0uCOIAQla9jv62vIEKZInGcvL7SV3Eq3Zo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g5VJmF2qwjXehNWIgwwfiocrdJZF1Jv2hjQIKBqZNA2bCyqATFz+BznAt7WhRD5T9ms3PnUWsIFmTAlUJvKA9kPkL27dPuM7qgljQlVMSkJ8SIL0bAeHU05w8Of1XZEx77ZTI/KzgwWJ3ZYJpL2C3gfNh/Kv5b6Pk/d7kT8FtXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=u1S11NYq; arc=none smtp.client-ip=178.154.239.213
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:40a8:0:640:e4a0:0])
-	by forward102c.mail.yandex.net (Yandex) with ESMTPS id CD7C8608C4;
-	Thu, 11 Apr 2024 13:30:29 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id GUYvfB6Aa0U0-eq8haQBw;
-	Thu, 11 Apr 2024 13:30:29 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1712831429; bh=0U309rUe4lYr52AcQxtvvnxUZcPXlp+u/Y/o6hkGyZI=;
-	h=Message-Id:Date:Cc:Subject:To:From;
-	b=u1S11NYqae0MtTOiEqXrQt/PitXzQLm6BeWlLEi7t1094HbIapfPIH3QrrqzTdxmI
-	 YxZR9ZiEJtNBuJ1J49yFZru0joH/S5On00oyjUzwVTDR8biNGFfitIf/opSpFqDKjL
-	 bu2Gu0ZLWnoIOmfXuTLTm9hi2jFEeiQ/K7cxQoOs=
-Authentication-Results: mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Mikhail Ukhin <mish.uxin2012@yandex.ru>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jens Axboe <axboe@kernel.dk>
-Cc: Mikhail Ukhin <mish.uxin2012@yandex.ru>,
-	stable@vger.kernel.org,
-	linux-ide@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Pavel Koshutin <koshutin.pavel@yandex.ru>,
-	lvc-project@linuxtesting.org,
-	Artem Sadovnikov <ancowi69@gmail.com>,
-	Mikhail Ivanov <iwanov-23@bk.ru>
-Subject: [PATCH v2 5.10/5.15] ata: libata-scsi: check cdb length for VARIABLE_LENGTH_CMD commands
-Date: Thu, 11 Apr 2024 13:30:13 +0300
-Message-Id: <20240411103013.5547-1-mish.uxin2012@yandex.ru>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1712834316; c=relaxed/simple;
+	bh=bA+dKB8+rce2HNoNLvHLOTn+GYqw0JjJ3qmvf2sxrcA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I08/dLRq0nAEkhQ4MxSBCmE5yhjBq0If4cn16rjEwmbM0iTSWliyOCpyPzaHOu9CwKaXsdFQmESivcytrQ8stnnU1sy7oHVPX7DAOiL4ctN3KW8OtXajCvTWrvRXdDQXdbVPROmeuSqcmSJnbnar/mxc6mrCzqTOADvO08AE5Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3OXL4T/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F0EC433F1;
+	Thu, 11 Apr 2024 11:18:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712834316;
+	bh=bA+dKB8+rce2HNoNLvHLOTn+GYqw0JjJ3qmvf2sxrcA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L3OXL4T/o30Hve3WBGO0nfcKs/k2TUwExiKB+gTm11+2A/TYTxMwS6oKH0Sdr99F/
+	 RpxZ7AVVF80NwVWrZ/kQ4XBZCNW5GBYXoGPguJ+L4a95lKDKzMa5bWhplTAmvfq7Im
+	 avHYrRQnvW0Z45Fzv1dRpgbjiWHjGotYZZGnD1qM=
+Date: Thu, 11 Apr 2024 12:30:30 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: "# 3.4.x" <stable@vger.kernel.org>
+Subject: Re: v5.15 backport request
+Message-ID: <2024041134-strobe-childhood-cc74@gregkh>
+References: <CAMj1kXEGNNZm9RrDxT6RzmE8WGFG-3kZePaZZNKJrT4fj3iveg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXEGNNZm9RrDxT6RzmE8WGFG-3kZePaZZNKJrT4fj3iveg@mail.gmail.com>
 
-No upstream commit exists for this patch.
+On Thu, Apr 11, 2024 at 12:23:37PM +0200, Ard Biesheuvel wrote:
+> Please consider the commits below for backporting to v5.15. These
+> patches are prerequisites for the backport of the x86 EFI stub
+> refactor that is needed for distros to sign v5.15 images for secure
+> boot in a way that complies with new MS requirements for memory
+> protections while running in the EFI firmware.
 
-Fuzzing of 5.10 stable branch reports a slab-out-of-bounds error in
-ata_scsi_pass_thru.
+What old distros still care about this for a kernel that was released in
+2021?  I can almost understand this for 6.1.y and newer, but why for
+this one too?
 
-The error is fixed in 5.18 by commit ce70fd9a551a ("scsi: core: Remove the
-cmd field from struct scsi_request") upstream.
-Backporting this commit would require significant changes to the code so
-it is bettter to use a simple fix for that particular error.
+thanks,
 
-The problem is that the length of the received SCSI command is not
-validated if scsi_op == VARIABLE_LENGTH_CMD. It can lead to out-of-bounds
-reading if the user sends a request with SCSI command of length less than
-32.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
-Signed-off-by: Mikhail Ivanov <iwanov-23@bk.ru>
-Signed-off-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
----
- v2: The new addresses were added and the text was updated. 
- drivers/ata/libata-scsi.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index dfa090ccd21c..77589e911d3d 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -4065,6 +4065,9 @@ int __ata_scsi_queuecmd(struct scsi_cmnd *scmd, struct ata_device *dev)
- 
- 	if (unlikely(!scmd->cmd_len))
- 		goto bad_cdb_len;
-+
-+	if (scsi_op == VARIABLE_LENGTH_CMD && scmd->cmd_len < 32)
-+		goto bad_cdb_len;
- 
- 	if (dev->class == ATA_DEV_ATA || dev->class == ATA_DEV_ZAC) {
- 		if (unlikely(scmd->cmd_len > dev->cdb_len))
--- 
-2.25.1
-
+greg k-h
 
