@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-38927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10CF88A110D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A7F8A0FAF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71F141F2CF53
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 777B2B20E3C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E241474D8;
-	Thu, 11 Apr 2024 10:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FA1146A77;
+	Thu, 11 Apr 2024 10:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxakG7BW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvF/SxOo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E00B1474D0;
-	Thu, 11 Apr 2024 10:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D54146A83;
+	Thu, 11 Apr 2024 10:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831998; cv=none; b=HkoPj0RvY6KWv+PK/PhqGYTwxh0b1/zPfNIK5f0hsR/6UMOEIVgfniKkAQT5e1QMjnGwcGLE9vamHS2XzEBKJwi+pAHPZn03FRQ5cqWES6KSbBkXjokM1OWIEf6663DNw2lDtOIW4BRV8OE21J58lAsKBNg0gXV084rVEo5EcNE=
+	t=1712831175; cv=none; b=XjKpcfsLZHrW/M0lk9C3Bd5pZmcYN2GPAa2saTC91HwBjL+rqvdLhgGT4lMKayxGnPxsWJOl4nZUKuqkxIDXouPJHqdA158LeTU0wAYAw6RuCmZxnX6j2w+zMiulmIihcu2kqycnbyYEb7IGyfdHqv1Vq2YrSQgR7ytRlgcvitM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831998; c=relaxed/simple;
-	bh=VtFEoPEueHyqMqPEpx2qfWBuflx423h0W3M/165gblk=;
+	s=arc-20240116; t=1712831175; c=relaxed/simple;
+	bh=ipyDrzPg8u8trsjLQY5tFVrH8fGX6HuTOPlhZiOi+YE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kzWmrb1powdBGOG5k6URzgOvjua+ivFnfe+vLDQNfI2fDvq45lqkLOKFnIeO7HPQBUQVVr6YGfIkcYU0lLB2ERYxZo0PgJjssEmrJOjMPIDDp5fwcCGbowocvdzLdg0XRVPsigN3rg025ttSV7ftz6Uo6sVVtJD/U3jy9PBiPeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxakG7BW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F199AC433F1;
-	Thu, 11 Apr 2024 10:39:57 +0000 (UTC)
+	 MIME-Version; b=hr0upwfcfcEK/zqkNt9EtHlP57cuY+XUyM3oHPx6WYq3v2c1ux6Vdwq+1wh1vlyim961y/JMgPYzejIJjNBPMzpbuEZYUiJ4ehvRwD5OdEKkImSOJnq0lbUEqJNijLgqXG3AuOOtvCx5bACigJ6ppD952u2985IW6U0uZvXGzSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvF/SxOo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BD9C433C7;
+	Thu, 11 Apr 2024 10:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831998;
-	bh=VtFEoPEueHyqMqPEpx2qfWBuflx423h0W3M/165gblk=;
+	s=korg; t=1712831175;
+	bh=ipyDrzPg8u8trsjLQY5tFVrH8fGX6HuTOPlhZiOi+YE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NxakG7BW3adNKaCa3IZ80qEFbGLHPo26nb1DButqiG+OBFAAADaupNvskx82kLNlW
-	 TN5UrRy3AdIwOs0TTfRmnRQi8gcMmThB7bhnJ3rcCSyPCeeo/Pxl1llPbd8Gd7dOSx
-	 rk+SxO3/jw0Dd7q3ETy85lR0pWdtNh0UPYgahego=
+	b=fvF/SxOowmEAUcO06ERjgJA9vdzpyJkBEAtP3cXgs9ZewnsCVKl34l99QtTW9QQxw
+	 H5AVp1RnoBAzCf7fxoivQlbZLlj8Zai13nCBw2KmLxgPKkpIkm6XBfC6OKUDXlTrjK
+	 Qz9FiBa0lDpR8ltdxR6rswujvJrVrN8JkSHb+1eI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 5.10 198/294] vfio/pci: Create persistent INTx handler
+	Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>,
+	Roman Stratiienko <r.stratiienko@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Dhruva Gole <d-gole@ti.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 034/114] cpufreq: Dont unregister cpufreq cooling on CPU hotplug
 Date: Thu, 11 Apr 2024 11:56:01 +0200
-Message-ID: <20240411095441.569949572@linuxfoundation.org>
+Message-ID: <20240411095417.899690259@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,259 +65,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-[ Upstream commit 18c198c96a815c962adc2b9b77909eec0be7df4d ]
+[ Upstream commit c4d61a529db788d2e52654f5b02c8d1de4952c5b ]
 
-A vulnerability exists where the eventfd for INTx signaling can be
-deconfigured, which unregisters the IRQ handler but still allows
-eventfds to be signaled with a NULL context through the SET_IRQS ioctl
-or through unmask irqfd if the device interrupt is pending.
+Offlining a CPU and bringing it back online is a common operation and it
+happens frequently during system suspend/resume, where the non-boot CPUs
+are hotplugged out during suspend and brought back at resume.
 
-Ideally this could be solved with some additional locking; the igate
-mutex serializes the ioctl and config space accesses, and the interrupt
-handler is unregistered relative to the trigger, but the irqfd path
-runs asynchronous to those.  The igate mutex cannot be acquired from the
-atomic context of the eventfd wake function.  Disabling the irqfd
-relative to the eventfd registration is potentially incompatible with
-existing userspace.
+The cpufreq core already tries to make this path as fast as possible as
+the changes are only temporary in nature and full cleanup of resources
+isn't required in this case. For example the drivers can implement
+online()/offline() callbacks to avoid a lot of tear down of resources.
 
-As a result, the solution implemented here moves configuration of the
-INTx interrupt handler to track the lifetime of the INTx context object
-and irq_type configuration, rather than registration of a particular
-trigger eventfd.  Synchronization is added between the ioctl path and
-eventfd_signal() wrapper such that the eventfd trigger can be
-dynamically updated relative to in-flight interrupts or irqfd callbacks.
+On similar lines, there is no need to unregister the cpufreq cooling
+device during suspend / resume, but only while the policy is getting
+removed.
 
-Cc:  <stable@vger.kernel.org>
-Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
-Reported-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20240308230557.805580-5-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Moreover, unregistering the cpufreq cooling device is resulting in an
+unwanted outcome, where the system suspend is eventually aborted in the
+process.  Currently, during system suspend the cpufreq core unregisters
+the cooling device, which in turn removes a kobject using device_del()
+and that generates a notification to the userspace via uevent broadcast.
+This causes system suspend to abort in some setups.
+
+This was also earlier reported (indirectly) by Roman [1]. Maybe there is
+another way around to fixing that problem properly, but this change
+makes sense anyways.
+
+Move the registering and unregistering of the cooling device to policy
+creation and removal times onlyy.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218521
+Reported-by: Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
+Reported-by: Roman Stratiienko <r.stratiienko@gmail.com>
+Link: https://patchwork.kernel.org/project/linux-pm/patch/20220710164026.541466-1-r.stratiienko@gmail.com/ [1]
+Tested-by: Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_intrs.c |  149 ++++++++++++++++++++------------------
- 1 file changed, 82 insertions(+), 67 deletions(-)
+ drivers/cpufreq/cpufreq.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -29,8 +29,13 @@ static void vfio_send_intx_eventfd(void
- {
- 	struct vfio_pci_device *vdev = opaque;
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 4bc7c793de3b9..9177265d73b47 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -1576,7 +1576,8 @@ static int cpufreq_online(unsigned int cpu)
+ 	if (cpufreq_driver->ready)
+ 		cpufreq_driver->ready(policy);
  
--	if (likely(is_intx(vdev) && !vdev->virq_disabled))
--		eventfd_signal(vdev->ctx[0].trigger, 1);
-+	if (likely(is_intx(vdev) && !vdev->virq_disabled)) {
-+		struct eventfd_ctx *trigger;
-+
-+		trigger = READ_ONCE(vdev->ctx[0].trigger);
-+		if (likely(trigger))
-+			eventfd_signal(trigger, 1);
-+	}
- }
+-	if (cpufreq_thermal_control_enabled(cpufreq_driver))
++	/* Register cpufreq cooling only for a new policy */
++	if (new_policy && cpufreq_thermal_control_enabled(cpufreq_driver))
+ 		policy->cdev = of_cpufreq_cooling_register(policy);
  
- static void __vfio_pci_intx_mask(struct vfio_pci_device *vdev)
-@@ -157,98 +162,104 @@ static irqreturn_t vfio_intx_handler(int
- 	return ret;
- }
+ 	pr_debug("initialization complete\n");
+@@ -1660,11 +1661,6 @@ static void __cpufreq_offline(unsigned int cpu, struct cpufreq_policy *policy)
+ 	else
+ 		policy->last_policy = policy->policy;
  
--static int vfio_intx_enable(struct vfio_pci_device *vdev)
-+static int vfio_intx_enable(struct vfio_pci_device *vdev,
-+			    struct eventfd_ctx *trigger)
- {
-+	struct pci_dev *pdev = vdev->pdev;
-+	unsigned long irqflags;
-+	char *name;
-+	int ret;
-+
- 	if (!is_irq_none(vdev))
- 		return -EINVAL;
- 
--	if (!vdev->pdev->irq)
-+	if (!pdev->irq)
- 		return -ENODEV;
- 
-+	name = kasprintf(GFP_KERNEL, "vfio-intx(%s)", pci_name(pdev));
-+	if (!name)
-+		return -ENOMEM;
-+
- 	vdev->ctx = kzalloc(sizeof(struct vfio_pci_irq_ctx), GFP_KERNEL);
- 	if (!vdev->ctx)
- 		return -ENOMEM;
- 
- 	vdev->num_ctx = 1;
- 
-+	vdev->ctx[0].name = name;
-+	vdev->ctx[0].trigger = trigger;
-+
- 	/*
--	 * If the virtual interrupt is masked, restore it.  Devices
--	 * supporting DisINTx can be masked at the hardware level
--	 * here, non-PCI-2.3 devices will have to wait until the
--	 * interrupt is enabled.
-+	 * Fill the initial masked state based on virq_disabled.  After
-+	 * enable, changing the DisINTx bit in vconfig directly changes INTx
-+	 * masking.  igate prevents races during setup, once running masked
-+	 * is protected via irqlock.
-+	 *
-+	 * Devices supporting DisINTx also reflect the current mask state in
-+	 * the physical DisINTx bit, which is not affected during IRQ setup.
-+	 *
-+	 * Devices without DisINTx support require an exclusive interrupt.
-+	 * IRQ masking is performed at the IRQ chip.  Again, igate protects
-+	 * against races during setup and IRQ handlers and irqfds are not
-+	 * yet active, therefore masked is stable and can be used to
-+	 * conditionally auto-enable the IRQ.
-+	 *
-+	 * irq_type must be stable while the IRQ handler is registered,
-+	 * therefore it must be set before request_irq().
- 	 */
- 	vdev->ctx[0].masked = vdev->virq_disabled;
--	if (vdev->pci_2_3)
--		pci_intx(vdev->pdev, !vdev->ctx[0].masked);
-+	if (vdev->pci_2_3) {
-+		pci_intx(pdev, !vdev->ctx[0].masked);
-+		irqflags = IRQF_SHARED;
-+	} else {
-+		irqflags = vdev->ctx[0].masked ? IRQF_NO_AUTOEN : 0;
-+	}
- 
- 	vdev->irq_type = VFIO_PCI_INTX_IRQ_INDEX;
- 
-+	ret = request_irq(pdev->irq, vfio_intx_handler,
-+			  irqflags, vdev->ctx[0].name, vdev);
-+	if (ret) {
-+		vdev->irq_type = VFIO_PCI_NUM_IRQS;
-+		kfree(name);
-+		vdev->num_ctx = 0;
-+		kfree(vdev->ctx);
-+		return ret;
-+	}
-+
- 	return 0;
- }
- 
--static int vfio_intx_set_signal(struct vfio_pci_device *vdev, int fd)
-+static int vfio_intx_set_signal(struct vfio_pci_device *vdev,
-+				struct eventfd_ctx *trigger)
- {
- 	struct pci_dev *pdev = vdev->pdev;
--	unsigned long irqflags = IRQF_SHARED;
--	struct eventfd_ctx *trigger;
--	unsigned long flags;
--	int ret;
--
--	if (vdev->ctx[0].trigger) {
--		free_irq(pdev->irq, vdev);
--		kfree(vdev->ctx[0].name);
--		eventfd_ctx_put(vdev->ctx[0].trigger);
--		vdev->ctx[0].trigger = NULL;
+-	if (cpufreq_thermal_control_enabled(cpufreq_driver)) {
+-		cpufreq_cooling_unregister(policy->cdev);
+-		policy->cdev = NULL;
 -	}
 -
--	if (fd < 0) /* Disable only */
--		return 0;
--
--	vdev->ctx[0].name = kasprintf(GFP_KERNEL, "vfio-intx(%s)",
--				      pci_name(pdev));
--	if (!vdev->ctx[0].name)
--		return -ENOMEM;
--
--	trigger = eventfd_ctx_fdget(fd);
--	if (IS_ERR(trigger)) {
--		kfree(vdev->ctx[0].name);
--		return PTR_ERR(trigger);
--	}
-+	struct eventfd_ctx *old;
+ 	if (has_target())
+ 		cpufreq_exit_governor(policy);
  
--	vdev->ctx[0].trigger = trigger;
-+	old = vdev->ctx[0].trigger;
- 
--	/*
--	 * Devices without DisINTx support require an exclusive interrupt,
--	 * IRQ masking is performed at the IRQ chip.  The masked status is
--	 * protected by vdev->irqlock. Setup the IRQ without auto-enable and
--	 * unmask as necessary below under lock.  DisINTx is unmodified by
--	 * the IRQ configuration and may therefore use auto-enable.
--	 */
--	if (!vdev->pci_2_3)
--		irqflags = IRQF_NO_AUTOEN;
-+	WRITE_ONCE(vdev->ctx[0].trigger, trigger);
- 
--	ret = request_irq(pdev->irq, vfio_intx_handler,
--			  irqflags, vdev->ctx[0].name, vdev);
--	if (ret) {
--		vdev->ctx[0].trigger = NULL;
--		kfree(vdev->ctx[0].name);
--		eventfd_ctx_put(trigger);
--		return ret;
-+	/* Releasing an old ctx requires synchronizing in-flight users */
-+	if (old) {
-+		synchronize_irq(pdev->irq);
-+		vfio_virqfd_flush_thread(&vdev->ctx[0].unmask);
-+		eventfd_ctx_put(old);
+@@ -1725,6 +1721,15 @@ static void cpufreq_remove_dev(struct device *dev, struct subsys_interface *sif)
+ 		return;
  	}
  
--	spin_lock_irqsave(&vdev->irqlock, flags);
--	if (!vdev->pci_2_3 && !vdev->ctx[0].masked)
--		enable_irq(pdev->irq);
--	spin_unlock_irqrestore(&vdev->irqlock, flags);
--
- 	return 0;
- }
- 
- static void vfio_intx_disable(struct vfio_pci_device *vdev)
- {
-+	struct pci_dev *pdev = vdev->pdev;
++	/*
++	 * Unregister cpufreq cooling once all the CPUs of the policy are
++	 * removed.
++	 */
++	if (cpufreq_thermal_control_enabled(cpufreq_driver)) {
++		cpufreq_cooling_unregister(policy->cdev);
++		policy->cdev = NULL;
++	}
 +
- 	vfio_virqfd_disable(&vdev->ctx[0].unmask);
- 	vfio_virqfd_disable(&vdev->ctx[0].mask);
--	vfio_intx_set_signal(vdev, -1);
-+	free_irq(pdev->irq, vdev);
-+	if (vdev->ctx[0].trigger)
-+		eventfd_ctx_put(vdev->ctx[0].trigger);
-+	kfree(vdev->ctx[0].name);
- 	vdev->irq_type = VFIO_PCI_NUM_IRQS;
- 	vdev->num_ctx = 0;
- 	kfree(vdev->ctx);
-@@ -498,19 +509,23 @@ static int vfio_pci_set_intx_trigger(str
- 		return -EINVAL;
- 
- 	if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
-+		struct eventfd_ctx *trigger = NULL;
- 		int32_t fd = *(int32_t *)data;
- 		int ret;
- 
-+		if (fd >= 0) {
-+			trigger = eventfd_ctx_fdget(fd);
-+			if (IS_ERR(trigger))
-+				return PTR_ERR(trigger);
-+		}
-+
- 		if (is_intx(vdev))
--			return vfio_intx_set_signal(vdev, fd);
-+			ret = vfio_intx_set_signal(vdev, trigger);
-+		else
-+			ret = vfio_intx_enable(vdev, trigger);
- 
--		ret = vfio_intx_enable(vdev);
--		if (ret)
--			return ret;
--
--		ret = vfio_intx_set_signal(vdev, fd);
--		if (ret)
--			vfio_intx_disable(vdev);
-+		if (ret && trigger)
-+			eventfd_ctx_put(trigger);
- 
- 		return ret;
- 	}
+ 	/* We did light-weight exit earlier, do full tear down now */
+ 	if (cpufreq_driver->offline)
+ 		cpufreq_driver->exit(policy);
+-- 
+2.43.0
+
 
 
 
