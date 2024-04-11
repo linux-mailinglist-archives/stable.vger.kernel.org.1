@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-38666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689B28A0FC4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:27:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B948A0E35
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:12:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 247B2282BA7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E34641C218F8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B73146A71;
-	Thu, 11 Apr 2024 10:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F44145B28;
+	Thu, 11 Apr 2024 10:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0f8mglgT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KCjemDFT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CCC145B13;
-	Thu, 11 Apr 2024 10:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2028144D34;
+	Thu, 11 Apr 2024 10:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831240; cv=none; b=mEeRLdaHZxfTo07xCuxre37TNx5EtUSpEbxFqyoiVvKOwjHIy1CcEatYPbqUELjDZxtqcm2sqByVSotyoE1recYb8qq3kn5iperdVMX3vRh7PBAKzretq99nu0jUjvjH0JrHpsNdzqXVMPz5SoynAXzb+MEoWXTGVePqI7E+D0U=
+	t=1712830340; cv=none; b=d68zjahrm1PD8s8z5fZ3brX90gf0e0uCe/PHkF8nECZVMsZW6PVilU12NjA7QYpNAYa0AjgBPcUtZhdDIVpcsi0iHAlk1mnBC6I1TgIjNun+gUiOpUXwprXWw34RZvqvPpYJ9LJsqWsYDlsJjubYL1u539wDCGQGNiRJHZzN5kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831240; c=relaxed/simple;
-	bh=GHUrM2JkJip0e5DVGvZvSVQawvAUqQr1kQiVRJbRPtc=;
+	s=arc-20240116; t=1712830340; c=relaxed/simple;
+	bh=Z50bKTdULrExU/zyBidr3MU0mHm6AMkFhDbC4014Z88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aLLibmcE1Lp/bP9ttFOi5JBFKiDSnEK72R8kT9ziJOhkP/eUSXUCilPrcGglhH+h4vvM1nmZdNOkuGoojY0eMPQb+4oyxvk9cEdiGHaOJyIGKIH7mWiFVLsaPHR4+0zQKImKyZ7ZcS5o71vl6dVNkWU9tCYZjLeRPfBb7QhiZws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0f8mglgT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E1DC433F1;
-	Thu, 11 Apr 2024 10:27:19 +0000 (UTC)
+	 MIME-Version; b=LC1fLEVuc5G6R0UWzWsJKFMj5LHY6IYtK9/HWdnd94E5oyVXTsLjs0KWa6ShZ51SoYzfA+0SZasOgYYvNvZJA45RbsFLSH6V+gOtvB7/1COG5RdCQi41XXBZQizllbu0GUvUMB19ceYRoTvowYl4vQ2B9DJi/AwM+0/NjeOmH84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KCjemDFT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E44C43394;
+	Thu, 11 Apr 2024 10:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831240;
-	bh=GHUrM2JkJip0e5DVGvZvSVQawvAUqQr1kQiVRJbRPtc=;
+	s=korg; t=1712830339;
+	bh=Z50bKTdULrExU/zyBidr3MU0mHm6AMkFhDbC4014Z88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0f8mglgT5NjYImN+aqOzkfFYeHM/kywFTS5hFYghmkNZjMH59MhyuA6RsJaft0yDD
-	 iQFGEbx5nF8ktTozjJTq2KotMdeFU+JPzLOibJh3xmMYmX1NOVqS66QNVGTnQc6roU
-	 WuRgt2CtQqtnxJKH6b6Spmbs9+ToJwAMC1wdfXXU=
+	b=KCjemDFTR7ZtgrHZo1vorHgDHyO0J6Hcw8VFAHOVZFETBfU4cuWnYJW1C4rh8VZ0N
+	 /4yncdJK3S7b8pepdmeSU+dRcbxDcDrfFi8zpzNBUt123SYmrE+ZwbMnCsCNzBn9bK
+	 KGwp+r7qUq+RrMIKTM9dNXlppLIupde0e1h9qD0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Henrie <alexhenrie24@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/114] isofs: handle CDs with bad root inode but good Joliet root directory
-Date: Thu, 11 Apr 2024 11:56:21 +0200
-Message-ID: <20240411095418.515712419@linuxfoundation.org>
+Subject: [PATCH 6.8 114/143] usb: gadget: uvc: mark incomplete frames with UVC_STREAM_ERR
+Date: Thu, 11 Apr 2024 11:56:22 +0200
+Message-ID: <20240411095424.338423640@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-[ Upstream commit 4243bf80c79211a8ca2795401add9c4a3b1d37ca ]
+[ Upstream commit 2a3b7af120477d0571b815ccb8600cafd5ebf02f ]
 
-I have a CD copy of the original Tom Clancy's Ghost Recon game from
-2001. The disc mounts without error on Windows, but on Linux mounting
-fails with the message "isofs_fill_super: get root inode failed". The
-error originates in isofs_read_inode, which returns -EIO because de_len
-is 0. The superblock on this disc appears to be intentionally corrupt as
-a form of copy protection.
+If an frame was transmitted incomplete to the host, we set the
+UVC_STREAM_ERR bit in the header for the last request that is going
+to be queued. This way the host will know that it should drop the
+frame instead of trying to display the corrupted content.
 
-When the root inode is unusable, instead of giving up immediately, try
-to continue with the Joliet file table. This fixes the Ghost Recon CD
-and probably other copy-protected CDs too.
-
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20240208022134.451490-1-alexhenrie24@gmail.com>
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Link: https://lore.kernel.org/r/20240214-uvc-error-tag-v1-2-37659a3877fe@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/isofs/inode.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/uvc_video.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/isofs/inode.c b/fs/isofs/inode.c
-index 2ee21286ac8f0..54075fe3de9b1 100644
---- a/fs/isofs/inode.c
-+++ b/fs/isofs/inode.c
-@@ -908,8 +908,22 @@ static int isofs_fill_super(struct super_block *s, void *data, int silent)
- 	 * we then decide whether to use the Joliet descriptor.
- 	 */
- 	inode = isofs_iget(s, sbi->s_firstdatazone, 0);
--	if (IS_ERR(inode))
--		goto out_no_root;
-+
-+	/*
-+	 * Fix for broken CDs with a corrupt root inode but a correct Joliet
-+	 * root directory.
-+	 */
-+	if (IS_ERR(inode)) {
-+		if (joliet_level && sbi->s_firstdatazone != first_data_zone) {
-+			printk(KERN_NOTICE
-+			       "ISOFS: root inode is unusable. "
-+			       "Disabling Rock Ridge and switching to Joliet.");
-+			sbi->s_rock = 0;
-+			inode = NULL;
-+		} else {
-+			goto out_no_root;
-+		}
-+	}
+diff --git a/drivers/usb/gadget/function/uvc_video.c b/drivers/usb/gadget/function/uvc_video.c
+index dbdd9033c1268..53e4cd81ea446 100644
+--- a/drivers/usb/gadget/function/uvc_video.c
++++ b/drivers/usb/gadget/function/uvc_video.c
+@@ -35,6 +35,9 @@ uvc_video_encode_header(struct uvc_video *video, struct uvc_buffer *buf,
  
- 	/*
- 	 * Fix for broken CDs with Rock Ridge and empty ISO root directory but
+ 	data[1] = UVC_STREAM_EOH | video->fid;
+ 
++	if (video->queue.flags & UVC_QUEUE_DROP_INCOMPLETE)
++		data[1] |= UVC_STREAM_ERR;
++
+ 	if (video->queue.buf_used == 0 && ts.tv_sec) {
+ 		/* dwClockFrequency is 48 MHz */
+ 		u32 pts = ((u64)ts.tv_sec * USEC_PER_SEC + ts.tv_nsec / NSEC_PER_USEC) * 48;
 -- 
 2.43.0
 
