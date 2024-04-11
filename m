@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-39024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E0A8A1189
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF73A8A11DF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39693B26235
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB0732824FC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD2C145B13;
-	Thu, 11 Apr 2024 10:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2856BB29;
+	Thu, 11 Apr 2024 10:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfLARry6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htn5Qscp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE60D142624;
-	Thu, 11 Apr 2024 10:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA5A624;
+	Thu, 11 Apr 2024 10:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832292; cv=none; b=bkAfXvOrbdsksYldeGCkCvUZJSJr30vFb79sxuU8kx+Dm1a59avQPnp56i8oLBe7+P4LggFQL/wS19fUrqOLuJc6Yn9gEgl2SJGCgB3i8LEnn7HatYc7e+Td8Tmr5NpUDiIEX3VTEMb15U5/OdffOWfxfgjqUXhklvQYCXlUItc=
+	t=1712832490; cv=none; b=DxXYzgaG2dpK2+fFJz7WEmImLZYBEvQyUwksNLiCvpGRCzMHQCbIUm0l6Xm2C2wk9FFB90723tEQEqJBX0Jon7vj4xbOc9EPDkxpP2E/5ox7yeg5V8oaRMiVzwvotq8qHdwe+/87K/qDD4PuNpUqCxza5pgauDRBDPWiQ44wCXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832292; c=relaxed/simple;
-	bh=lszPvIyZwAIQjhjBa9bVVYcTRWnN9LO+NOeBA3CnhTs=;
+	s=arc-20240116; t=1712832490; c=relaxed/simple;
+	bh=+9kIaa51QUdos9bmDQfEW136p9SOsDIup4XIsWriKJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6dAfojQ19DVy5eDRqcflwGVJ3X1hwAlBXnRZLcBPjaLZtWbXtPIzEh/WvGSAL5pqyeNYd0pZ03rcy4U7EyIC7YoCuc7v3IfrjagbTBJFpFcDpNJhEFcUnGPgKcqgSQi1dwTAh6dSSUT+7fTFENUfAG0z1cqyxPmmM0KCE8/zD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfLARry6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05232C433F1;
-	Thu, 11 Apr 2024 10:44:51 +0000 (UTC)
+	 MIME-Version; b=ejE8+HNh5fIjm/71CmCPfnOUZWqiP8UKd9nIDTUEoTLrIvviqdyTpyMgH/7W4bWmRhNdMNLnDck+bQU4y+9ENN2zZBI3dEs6v3H75ZvjTe6uzJkBTolUu+X7WBb6bmfNVn52FcpCkftFaT9u5WVxhasI32fKhYi3aw8dqH6V0Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htn5Qscp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973E6C433F1;
+	Thu, 11 Apr 2024 10:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832292;
-	bh=lszPvIyZwAIQjhjBa9bVVYcTRWnN9LO+NOeBA3CnhTs=;
+	s=korg; t=1712832490;
+	bh=+9kIaa51QUdos9bmDQfEW136p9SOsDIup4XIsWriKJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UfLARry634X2fhzsZj1kt/kxLhZujoJ/LWIqy8rTa8WS71g+RB6Dy24Dl/LufjZYu
-	 soNM/HGZ6rZ9AgR3G1i53YJdI7EbqOSKt5TFerscCtq5GDHy1DDhJULLcu/3NyiNAD
-	 2vfcgiR9PBWtZl4M2kbjPxxfRP2fIKcmv35Ssm08=
+	b=htn5QscpizhRLD5yBUs10833YunswFDWiHWiJE7pTIND6s2Fbs3e8Ww0M+Zvh9F6T
+	 boA9vxXgfy4IZhKi2EJa2+0K3+rybeOBtSAnClrZdUW2vyg2Hbaoox6DZfKDgViR3f
+	 ZB3Y14G78Cgz+w054dq/LdbMGnUrqS1UMm6j0l5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Roth <michael.roth@amd.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Borislav Petkov <bp@suse.de>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 5.10 294/294] x86/head/64: Re-enable stack protection
+	Aleksandr Burakov <a.burakov@rosalinux.ru>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 65/83] fbdev: viafb: fix typo in hw_bitblt_1 and hw_bitblt_2
 Date: Thu, 11 Apr 2024 11:57:37 +0200
-Message-ID: <20240411095444.384835955@linuxfoundation.org>
+Message-ID: <20240411095414.641123285@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,156 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Roth <michael.roth@amd.com>
+From: Aleksandr Burakov <a.burakov@rosalinux.ru>
 
-commit 469693d8f62299709e8ba56d8fb3da9ea990213c upstream.
+[ Upstream commit bc87bb342f106a0402186bcb588fcbe945dced4b ]
 
-Due to
+There are some actions with value 'tmp' but 'dst_addr' is checked instead.
+It is obvious that a copy-paste error was made here and the value
+of variable 'tmp' should be checked here.
 
-  103a4908ad4d ("x86/head/64: Disable stack protection for head$(BITS).o")
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-kernel/head{32,64}.c are compiled with -fno-stack-protector to allow
-a call to set_bringup_idt_handler(), which would otherwise have stack
-protection enabled with CONFIG_STACKPROTECTOR_STRONG.
-
-While sufficient for that case, there may still be issues with calls to
-any external functions that were compiled with stack protection enabled
-that in-turn make stack-protected calls, or if the exception handlers
-set up by set_bringup_idt_handler() make calls to stack-protected
-functions.
-
-Subsequent patches for SEV-SNP CPUID validation support will introduce
-both such cases. Attempting to disable stack protection for everything
-in scope to address that is prohibitive since much of the code, like the
-SEV-ES #VC handler, is shared code that remains in use after boot and
-could benefit from having stack protection enabled. Attempting to inline
-calls is brittle and can quickly balloon out to library/helper code
-where that's not really an option.
-
-Instead, re-enable stack protection for head32.c/head64.c, and make the
-appropriate changes to ensure the segment used for the stack canary is
-initialized in advance of any stack-protected C calls.
-
-For head64.c:
-
-- The BSP will enter from startup_64() and call into C code
-  (startup_64_setup_env()) shortly after setting up the stack, which
-  may result in calls to stack-protected code. Set up %gs early to allow
-  for this safely.
-- APs will enter from secondary_startup_64*(), and %gs will be set up
-  soon after. There is one call to C code prior to %gs being setup
-  (__startup_secondary_64()), but it is only to fetch 'sme_me_mask'
-  global, so just load 'sme_me_mask' directly instead, and remove the
-  now-unused __startup_secondary_64() function.
-
-For head32.c:
-
-- BSPs/APs will set %fs to __BOOT_DS prior to any C calls. In recent
-  kernels, the compiler is configured to access the stack canary at
-  %fs:__stack_chk_guard [1], which overlaps with the initial per-cpu
-  '__stack_chk_guard' variable in the initial/"master" .data..percpu
-  area. This is sufficient to allow access to the canary for use
-  during initial startup, so no changes are needed there.
-
-[1] 3fb0fdb3bbe7 ("x86/stackprotector/32: Make the canary into a regular percpu variable")
-
-  [ bp: Massage commit message. ]
-
-Suggested-by: Joerg Roedel <jroedel@suse.de> #for 64-bit %gs set up
-Signed-off-by: Michael Roth <michael.roth@amd.com>
-Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220307213356.2797205-24-brijesh.singh@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/setup.h |    1 -
- arch/x86/kernel/Makefile     |    1 -
- arch/x86/kernel/head64.c     |    9 ---------
- arch/x86/kernel/head_64.S    |   24 +++++++++++++++++++++---
- 4 files changed, 21 insertions(+), 14 deletions(-)
+ drivers/video/fbdev/via/accel.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/setup.h
-+++ b/arch/x86/include/asm/setup.h
-@@ -49,7 +49,6 @@ extern unsigned long saved_video_mode;
- extern void reserve_standard_io_resources(void);
- extern void i386_reserve_resources(void);
- extern unsigned long __startup_64(unsigned long physaddr, struct boot_params *bp);
--extern unsigned long __startup_secondary_64(void);
- extern void startup_64_setup_env(unsigned long physbase);
- extern void early_setup_idt(void);
- extern void __init do_early_exception(struct pt_regs *regs, int trapnr);
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -49,7 +49,6 @@ endif
- # non-deterministic coverage.
- KCOV_INSTRUMENT		:= n
+diff --git a/drivers/video/fbdev/via/accel.c b/drivers/video/fbdev/via/accel.c
+index 0a1bc7a4d7853..1e04026f08091 100644
+--- a/drivers/video/fbdev/via/accel.c
++++ b/drivers/video/fbdev/via/accel.c
+@@ -115,7 +115,7 @@ static int hw_bitblt_1(void __iomem *engine, u8 op, u32 width, u32 height,
  
--CFLAGS_head$(BITS).o	+= -fno-stack-protector
- CFLAGS_cc_platform.o	+= -fno-stack-protector
+ 	if (op != VIA_BITBLT_FILL) {
+ 		tmp = src_mem ? 0 : src_addr;
+-		if (dst_addr & 0xE0000007) {
++		if (tmp & 0xE0000007) {
+ 			printk(KERN_WARNING "hw_bitblt_1: Unsupported source "
+ 				"address %X\n", tmp);
+ 			return -EINVAL;
+@@ -260,7 +260,7 @@ static int hw_bitblt_2(void __iomem *engine, u8 op, u32 width, u32 height,
+ 		writel(tmp, engine + 0x18);
  
- CFLAGS_irq.o := -I $(srctree)/$(src)/../include/asm/trace
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -302,15 +302,6 @@ unsigned long __head __startup_64(unsign
- 	return sme_get_me_mask();
- }
- 
--unsigned long __startup_secondary_64(void)
--{
--	/*
--	 * Return the SME encryption mask (if SME is active) to be used as a
--	 * modifier for the initial pgdir entry programmed into CR3.
--	 */
--	return sme_get_me_mask();
--}
--
- /* Wipe all early page tables except for the kernel symbol map */
- static void __init reset_early_page_tables(void)
- {
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -74,6 +74,22 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	leaq	(__end_init_task - SIZEOF_PTREGS)(%rip), %rsp
- 
- 	leaq	_text(%rip), %rdi
-+
-+	/*
-+	 * initial_gs points to initial fixed_percpu_data struct with storage for
-+	 * the stack protector canary. Global pointer fixups are needed at this
-+	 * stage, so apply them as is done in fixup_pointer(), and initialize %gs
-+	 * such that the canary can be accessed at %gs:40 for subsequent C calls.
-+	 */
-+	movl	$MSR_GS_BASE, %ecx
-+	movq	initial_gs(%rip), %rax
-+	movq	$_text, %rdx
-+	subq	%rdx, %rax
-+	addq	%rdi, %rax
-+	movq	%rax, %rdx
-+	shrq	$32,  %rdx
-+	wrmsr
-+
- 	pushq	%rsi
- 	call	startup_64_setup_env
- 	popq	%rsi
-@@ -141,9 +157,11 @@ SYM_INNER_LABEL(secondary_startup_64_no_
- 	 * Retrieve the modifier (SME encryption mask if SME is active) to be
- 	 * added to the initial pgdir entry that will be programmed into CR3.
- 	 */
--	pushq	%rsi
--	call	__startup_secondary_64
--	popq	%rsi
-+#ifdef CONFIG_AMD_MEM_ENCRYPT
-+	movq	sme_me_mask, %rax
-+#else
-+	xorq	%rax, %rax
-+#endif
- 
- 	/* Form the CR3 value being sure to include the CR3 modifier */
- 	addq	$(init_top_pgt - __START_KERNEL_map), %rax
+ 		tmp = src_mem ? 0 : src_addr;
+-		if (dst_addr & 0xE0000007) {
++		if (tmp & 0xE0000007) {
+ 			printk(KERN_WARNING "hw_bitblt_2: Unsupported source "
+ 				"address %X\n", tmp);
+ 			return -EINVAL;
+-- 
+2.43.0
+
 
 
 
