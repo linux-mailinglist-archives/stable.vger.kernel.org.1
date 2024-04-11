@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-39121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A4158A1201
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CFAF8A11ED
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB9411C225E8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27E02281CC0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD3313BC33;
-	Thu, 11 Apr 2024 10:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F5A1465BF;
+	Thu, 11 Apr 2024 10:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTlEZXZF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXSCOtbl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9951979FD;
-	Thu, 11 Apr 2024 10:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C7764CC0;
+	Thu, 11 Apr 2024 10:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832578; cv=none; b=R3pCHm/XohYOfd1l7mge1ENqxqHjwplPCRd0O45CqtRiHTS5/gPdJ1bhKowIYrfEudoU+7goP/gagU9vjEPhh1L88D0/GtqUg1LUDBb7cV07Reua7Jk79ihlTq1vU8gabOUXt1XI+RCSJ+XFIL71/sdJzdcVwOvOpkd4UMnr1Pw=
+	t=1712832523; cv=none; b=FF6H07+4URhcEL9VvvDbgMIaleae2Ck0SnxjUHCAzZVtRqYa6AjcBNwW4O2CJAGL0ZNldiIvulPNF9j5foULJ0pU81jQovvVH3hjl/1sdLwsjkl64MK80O27r0x+60AbzTLC3zyjHMa0APkiL5vlE1pv6LFWbtsxu5zg5SccqVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832578; c=relaxed/simple;
-	bh=XU04F/lLskPO5SrzqQDUGXH9oMXQ/PCsp1wsrqYe1N4=;
+	s=arc-20240116; t=1712832523; c=relaxed/simple;
+	bh=B9egbZZ8XCf57FSeIAXB/Hle2LFg+SNrjC6ylFeK2KY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pz+WbG7sT6S+URJYvNugvUstmpSgOBxV8VOckrvGXZpq8SCz+ij4u5RIASqGjkQePItZtQDw4WDr3T+vEQtIzyDm91qtDwwBI5q3NRS0W7eAfI3Gs7a5OevvHIv82Y2SVmt/l7J3xoPEeGAlMz9BnWkyfMIeTZzR5aj21kEhAVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTlEZXZF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F08CC433C7;
-	Thu, 11 Apr 2024 10:49:37 +0000 (UTC)
+	 MIME-Version; b=NNHaiLGYt6XsEJ9EuJmIseT0wzKMqx+xyJJH1Lvrl1Z0X8tRcxEdZvZksXBwTpwghpXGfM4vZomUvOB9nr36cervQ47sl0ny0eanGAV44uVooPs/aO62YabylreIixSJvtE9YWHsSMOr1Mkttz3m6dJ74HwsXgIwotLc7jmzwes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXSCOtbl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321A7C433F1;
+	Thu, 11 Apr 2024 10:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832578;
-	bh=XU04F/lLskPO5SrzqQDUGXH9oMXQ/PCsp1wsrqYe1N4=;
+	s=korg; t=1712832522;
+	bh=B9egbZZ8XCf57FSeIAXB/Hle2LFg+SNrjC6ylFeK2KY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qTlEZXZF1HuD0OiAxkvQhTYCjI/fhe3yrk98oRq5B6N/XfPVr6E0U716Al11qPjwj
-	 TAAf2HgRkQIiAO5X5rWRuq/KyChYddhCjkDHNvcpWiNBFdanbuMUQXeKWrDj1Ycy1H
-	 OwsuqH6otWQnBNhWbp6RLM6gAMVjjQJBevk+0UzY=
+	b=UXSCOtble/t56RdLTGOGlVblCEyVGCicfok1lvu8qYz+w+zfOKgc2Synjvd/d1pNe
+	 R/AXI3Al72DXcz3XGlxF965KITsQPPq8AaxKWb1oqoq5LFc8YAoeT2Hj3whXOP1UHs
+	 9Bn1utHl7Tf/ODIegp2XXXTw/3/ZnV2PkP1M/YH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Mike Marshall <hubcap@omnibond.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 02/57] wifi: ath9k: fix LNA selection in ath_ant_try_scan()
+Subject: [PATCH 6.1 38/83] Julia Lawall reported this null pointer dereference, this should fix it.
 Date: Thu, 11 Apr 2024 11:57:10 +0200
-Message-ID: <20240411095408.059624060@linuxfoundation.org>
+Message-ID: <20240411095413.830186585@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +59,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Mike Marshall <hubcap@omnibond.com>
 
-[ Upstream commit d6b27eb997ef9a2aa51633b3111bc4a04748e6d3 ]
+[ Upstream commit 9bf93dcfc453fae192fe5d7874b89699e8f800ac ]
 
-In 'ath_ant_try_scan()', (most likely) the 2nd LNA's signal
-strength should be used in comparison against RSSI when
-selecting first LNA as the main one. Compile tested only.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20231211172502.25202-1-dmantipov@yandex.ru
+Signed-off-by: Mike Marshall <hubcap@omnibond.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/antenna.c | 2 +-
+ fs/orangefs/super.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/antenna.c b/drivers/net/wireless/ath/ath9k/antenna.c
-index 988222cea9dfe..acc84e6711b0e 100644
---- a/drivers/net/wireless/ath/ath9k/antenna.c
-+++ b/drivers/net/wireless/ath/ath9k/antenna.c
-@@ -643,7 +643,7 @@ static void ath_ant_try_scan(struct ath_ant_comb *antcomb,
- 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
- 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_PLUS_LNA2;
- 			} else if (antcomb->rssi_sub >
--				   antcomb->rssi_lna1) {
-+				   antcomb->rssi_lna2) {
- 				/* set to A-B */
- 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
- 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_MINUS_LNA2;
+diff --git a/fs/orangefs/super.c b/fs/orangefs/super.c
+index 5254256a224d7..4ca8ed410c3cf 100644
+--- a/fs/orangefs/super.c
++++ b/fs/orangefs/super.c
+@@ -527,7 +527,7 @@ struct dentry *orangefs_mount(struct file_system_type *fst,
+ 	sb->s_fs_info = kzalloc(sizeof(struct orangefs_sb_info_s), GFP_KERNEL);
+ 	if (!ORANGEFS_SB(sb)) {
+ 		d = ERR_PTR(-ENOMEM);
+-		goto free_sb_and_op;
++		goto free_op;
+ 	}
+ 
+ 	ret = orangefs_fill_sb(sb,
 -- 
 2.43.0
 
