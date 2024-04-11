@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-38519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891478A0F05
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:20:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B643F8A0DFE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28EED1F22328
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:20:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F6DB282AF8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A626146586;
-	Thu, 11 Apr 2024 10:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CE1145B3E;
+	Thu, 11 Apr 2024 10:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3cOA86u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBhbLslZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283A1140E3D;
-	Thu, 11 Apr 2024 10:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBC3142624;
+	Thu, 11 Apr 2024 10:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830812; cv=none; b=cPAQTaGPSTmvHDmRWl9/8NJqFBN9dEhMMcd8x6wJlm79xw/Nd04PYuVvKyotILZR4/8dz01idMjU148J+jT/xMziY5I9xhjwLWfwXs3ShZD6Afv1oD8z060oxhUicsve4GovYUU+qOm9EZUAdb5T5syhk1mZBQYTV9PbX/A5D7g=
+	t=1712830193; cv=none; b=t0h3sn/PGJj5uML7vxs/05WB97jPUsyEq7sMfvxZpK5DIvI1J0y1pt29iIBFV8qyHXkYQJGy/ZGEHPV4B8u3a/EzCK2sZngdcZfbiiAvzs+pShjKn3DdLnnBQlJ1Is5HyxFmPnnchH2H9+FoAcdStAaEj2pPAQ+5HJnRsEiZD0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830812; c=relaxed/simple;
-	bh=Uvycb5R6QGJmzcUjF+PiOzYvlNEAgeY3mkQn42UUUXM=;
+	s=arc-20240116; t=1712830193; c=relaxed/simple;
+	bh=j8bEXFWjH4u7WCDyUFhxLK3fgidx7BdDrJ0WSx+tAwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jyyNvO29cVbccq+F1xbMqUwoT+zm0dtAZbkIN0FqqcdAXtWqNo4ZV8Q63A9u9hLrHBho+uprhximgQMUsxJ5JlhsgNJjetv1hsru4hVGreqVwzz8+NoNv/MCHkOTFQnst/Ec42mhtW6+6NstM8z0W2h38z8q4UqsSBsuOG2m32g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3cOA86u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1938C433C7;
-	Thu, 11 Apr 2024 10:20:11 +0000 (UTC)
+	 MIME-Version; b=e9aODmDOWcQRQhJuJoj5E2iuxEwuH7/wztqsB9yrA6SetwTvnuZQ9yhinRsZVqRN/Mh7cmQ9ZQeThuCvpZ/FT85bcu+L0MZ0ouku6fCGwXpWfxLAXXD0F1/1uObEa9u8eoo6IjKm/kc2nBYa6AfFxtUBlnDPr1bR9ZphSwitWz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBhbLslZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5215C433F1;
+	Thu, 11 Apr 2024 10:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830812;
-	bh=Uvycb5R6QGJmzcUjF+PiOzYvlNEAgeY3mkQn42UUUXM=;
+	s=korg; t=1712830193;
+	bh=j8bEXFWjH4u7WCDyUFhxLK3fgidx7BdDrJ0WSx+tAwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W3cOA86uhqirEWWbigTulZY3CVMJa72M+S1CypEqUNAOfj+kq2n69VhdKzs4qFcUO
-	 7P70o7Jqzk5seXiPJ45k6WxcDPp0Z5L5qWMG2vTHppfz1X/zYxBbZIVqsi8fWeAFpS
-	 6W1kSIlmRxglW0jlLhXYOdmPjcIVJEH3RaH20zGE=
+	b=vBhbLslZ8ao6MiNdMxkbzQOuIzmIeZ+UIL/uBVnxyI55LaeY1g2Q5k2p+BXpl1dbB
+	 fyCFLtt0tuqLfvID79rDirdWKWHXl8hXEakgwA71XjpVUQ+/LjX5zOqht32tvLIoxu
+	 EQSG229YxfkcR7ENPgkEsfr3LvAwx1LMELEHGOYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Kim Phillips <kim.phillips@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.4 126/215] x86/cpu: Enable STIBP on AMD if Automatic IBRS is enabled
+	syzbot <syzbot+69b40dc5fd40f32c199f@syzkaller.appspotmail.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 067/143] sysv: dont call sb_bread() with pointers_lock held
 Date: Thu, 11 Apr 2024 11:55:35 +0200
-Message-ID: <20240411095428.684561950@linuxfoundation.org>
+Message-ID: <20240411095422.932083595@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kim Phillips <kim.phillips@amd.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit fd470a8beed88440b160d690344fbae05a0b9b1b upstream.
+[ Upstream commit f123dc86388cb669c3d6322702dc441abc35c31e ]
 
-Unlike Intel's Enhanced IBRS feature, AMD's Automatic IBRS does not
-provide protection to processes running at CPL3/user mode, see section
-"Extended Feature Enable Register (EFER)" in the APM v2 at
-https://bugzilla.kernel.org/attachment.cgi?id=304652
+syzbot is reporting sleep in atomic context in SysV filesystem [1], for
+sb_bread() is called with rw_spinlock held.
 
-Explicitly enable STIBP to protect against cross-thread CPL3
-branch target injections on systems with Automatic IBRS enabled.
+A "write_lock(&pointers_lock) => read_lock(&pointers_lock) deadlock" bug
+and a "sb_bread() with write_lock(&pointers_lock)" bug were introduced by
+"Replace BKL for chain locking with sysvfs-private rwlock" in Linux 2.5.12.
 
-Also update the relevant documentation.
+Then, "[PATCH] err1-40: sysvfs locking fix" in Linux 2.6.8 fixed the
+former bug by moving pointers_lock lock to the callers, but instead
+introduced a "sb_bread() with read_lock(&pointers_lock)" bug (which made
+this problem easier to hit).
 
-Fixes: e7862eda309e ("x86/cpu: Support AMD Automatic IBRS")
-Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Kim Phillips <kim.phillips@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230720194727.67022-1-kim.phillips@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Al Viro suggested that why not to do like get_branch()/get_block()/
+find_shared() in Minix filesystem does. And doing like that is almost a
+revert of "[PATCH] err1-40: sysvfs locking fix" except that get_branch()
+ from with find_shared() is called without write_lock(&pointers_lock).
+
+Reported-by: syzbot <syzbot+69b40dc5fd40f32c199f@syzkaller.appspotmail.com>
+Link: https://syzkaller.appspot.com/bug?extid=69b40dc5fd40f32c199f
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Link: https://lore.kernel.org/r/0d195f93-a22a-49a2-0020-103534d6f7f6@I-love.SAKURA.ne.jp
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/hw-vuln/spectre.rst |   11 +++++++----
- arch/x86/kernel/cpu/bugs.c                    |   15 +++++++++------
- 2 files changed, 16 insertions(+), 10 deletions(-)
+ fs/sysv/itree.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/Documentation/admin-guide/hw-vuln/spectre.rst
-+++ b/Documentation/admin-guide/hw-vuln/spectre.rst
-@@ -484,11 +484,14 @@ Spectre variant 2
+diff --git a/fs/sysv/itree.c b/fs/sysv/itree.c
+index 410ab2a44d2f6..19bcb51a22036 100644
+--- a/fs/sysv/itree.c
++++ b/fs/sysv/itree.c
+@@ -83,9 +83,6 @@ static inline sysv_zone_t *block_end(struct buffer_head *bh)
+ 	return (sysv_zone_t*)((char*)bh->b_data + bh->b_size);
+ }
  
-    Systems which support enhanced IBRS (eIBRS) enable IBRS protection once at
-    boot, by setting the IBRS bit, and they're automatically protected against
--   Spectre v2 variant attacks, including cross-thread branch target injections
--   on SMT systems (STIBP). In other words, eIBRS enables STIBP too.
-+   Spectre v2 variant attacks.
- 
--   Legacy IBRS systems clear the IBRS bit on exit to userspace and
--   therefore explicitly enable STIBP for that
-+   On Intel's enhanced IBRS systems, this includes cross-thread branch target
-+   injections on SMT systems (STIBP). In other words, Intel eIBRS enables
-+   STIBP, too.
-+
-+   AMD Automatic IBRS does not protect userspace, and Legacy IBRS systems clear
-+   the IBRS bit on exit to userspace, therefore both explicitly enable STIBP.
- 
-    The retpoline mitigation is turned on by default on vulnerable
-    CPUs. It can be forced on or off by the administrator
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1153,19 +1153,21 @@ spectre_v2_user_select_mitigation(void)
+-/*
+- * Requires read_lock(&pointers_lock) or write_lock(&pointers_lock)
+- */
+ static Indirect *get_branch(struct inode *inode,
+ 			    int depth,
+ 			    int offsets[],
+@@ -105,15 +102,18 @@ static Indirect *get_branch(struct inode *inode,
+ 		bh = sb_bread(sb, block);
+ 		if (!bh)
+ 			goto failure;
++		read_lock(&pointers_lock);
+ 		if (!verify_chain(chain, p))
+ 			goto changed;
+ 		add_chain(++p, bh, (sysv_zone_t*)bh->b_data + *++offsets);
++		read_unlock(&pointers_lock);
+ 		if (!p->key)
+ 			goto no_block;
  	}
+ 	return NULL;
  
+ changed:
++	read_unlock(&pointers_lock);
+ 	brelse(bh);
+ 	*err = -EAGAIN;
+ 	goto no_block;
+@@ -219,9 +219,7 @@ static int get_block(struct inode *inode, sector_t iblock, struct buffer_head *b
+ 		goto out;
+ 
+ reread:
+-	read_lock(&pointers_lock);
+ 	partial = get_branch(inode, depth, offsets, chain, &err);
+-	read_unlock(&pointers_lock);
+ 
+ 	/* Simplest case - block found, no allocation needed */
+ 	if (!partial) {
+@@ -291,9 +289,9 @@ static Indirect *find_shared(struct inode *inode,
+ 	*top = 0;
+ 	for (k = depth; k > 1 && !offsets[k-1]; k--)
+ 		;
++	partial = get_branch(inode, k, offsets, chain, &err);
+ 
+ 	write_lock(&pointers_lock);
+-	partial = get_branch(inode, k, offsets, chain, &err);
+ 	if (!partial)
+ 		partial = chain + k-1;
  	/*
--	 * If no STIBP, enhanced IBRS is enabled, or SMT impossible, STIBP
-+	 * If no STIBP, Intel enhanced IBRS is enabled, or SMT impossible, STIBP
- 	 * is not required.
- 	 *
--	 * Enhanced IBRS also protects against cross-thread branch target
-+	 * Intel's Enhanced IBRS also protects against cross-thread branch target
- 	 * injection in user-mode as the IBRS bit remains always set which
- 	 * implicitly enables cross-thread protections.  However, in legacy IBRS
- 	 * mode, the IBRS bit is set only on kernel entry and cleared on return
--	 * to userspace. This disables the implicit cross-thread protection,
--	 * so allow for STIBP to be selected in that case.
-+	 * to userspace.  AMD Automatic IBRS also does not protect userspace.
-+	 * These modes therefore disable the implicit cross-thread protection,
-+	 * so allow for STIBP to be selected in those cases.
- 	 */
- 	if (!boot_cpu_has(X86_FEATURE_STIBP) ||
- 	    !smt_possible ||
--	    spectre_v2_in_eibrs_mode(spectre_v2_enabled))
-+	    (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
-+	     !boot_cpu_has(X86_FEATURE_AUTOIBRS)))
- 		return;
- 
- 	/*
-@@ -2232,7 +2234,8 @@ static ssize_t mmio_stale_data_show_stat
- 
- static char *stibp_state(void)
- {
--	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled))
-+	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
-+	    !boot_cpu_has(X86_FEATURE_AUTOIBRS))
- 		return "";
- 
- 	switch (spectre_v2_user_stibp) {
+-- 
+2.43.0
+
 
 
 
