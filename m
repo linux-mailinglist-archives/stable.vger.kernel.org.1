@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-38327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03CCE8A0E0B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2CCB8A0F15
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:20:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32C771C21DED
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 306821C223C7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4E91465A4;
-	Thu, 11 Apr 2024 10:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C45146A70;
+	Thu, 11 Apr 2024 10:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kS1qAKTa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="laYGX+z/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A56B144D34;
-	Thu, 11 Apr 2024 10:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D40145FF0;
+	Thu, 11 Apr 2024 10:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830228; cv=none; b=GhyHHIanYSls6cu9GvloMtMRdQvVPsktexGdaTBxejdeJIl+Hqw0BlIFXd3HqzwbUrCSGJMDKGFBg53RwA0EscVAzeS/Q7XbeD8NuPK95RzR75CnUU5DGaXpCd6f/3H9VZm2p7E94z4SE1ppKScGx6lOXZFVx9j741p76y6AcP8=
+	t=1712830847; cv=none; b=YpsYMDHRRF3oZjOdo10yx/FluZyL/qmBVYY/YxG+BPl9Pf4SsE+DC6DTQyI96Z+YSHnRyaRvQKmNkwROlLB29KKAJmxoh4whtkn9YUPBqwQWNNYdzrjpBznWmrmKXx8F2GCMHzsCu2Ad9gm1OLl7inNTKg0YAcNQis6kF82hhJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830228; c=relaxed/simple;
-	bh=K/FPAT8IM8xiFafTdSQ5Jk6EWK4G2oHWTVG8w3XjPSI=;
+	s=arc-20240116; t=1712830847; c=relaxed/simple;
+	bh=tlGAHC1ZiJbewfkldIFTdFjbFEtPi7L0rnlOHIY/qG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BlYic3EBiYPsvfGYFqLHSom3enM4kLoKZcx/zmX3NimuHIWTyrCVy1gXZqk4BDxQfQzLSqeVCbMTvu7z9lX8xOrgskbxKJOV0SUAz1cx2fKIYlNt9P6xQvTA93fsdbRr8WeDbPjHkZFYV+oMLhjx10Ec2Taa1yI1Y4aCT/IMVoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kS1qAKTa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05F2CC433C7;
-	Thu, 11 Apr 2024 10:10:27 +0000 (UTC)
+	 MIME-Version; b=Va4tCsDvj+fVCIdKIIeLMlwOtvXc/Kz4aX4h3YX07dVAVMHQrHbDa+SvgtqbvhlV8+Op0h2RDZ5n3Wfmrv2J3FtR8rvoNIx56MYjS/ksrKY701xIq3OxqWYTyDY1SB0HNAb2EFFpkPdnW142dJLf2tgF+iJsq6kcLnMaOik49yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=laYGX+z/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B69AC433F1;
+	Thu, 11 Apr 2024 10:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830228;
-	bh=K/FPAT8IM8xiFafTdSQ5Jk6EWK4G2oHWTVG8w3XjPSI=;
+	s=korg; t=1712830847;
+	bh=tlGAHC1ZiJbewfkldIFTdFjbFEtPi7L0rnlOHIY/qG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kS1qAKTaNbtXaBkWrvYuNiMxzqQxhy1SYk4ZbnBIz+5Rq3SoLm9G3/TEiDN1qmiah
-	 NiwkcVX2lhMFQsJmuTzJKF+F8ormacm0cDA0tBcGoYVemveknG778nbmBgx763owcI
-	 zAOCjskdcRx+1qXxvm+u8GUjCS6i/372vHI3Ywoo=
+	b=laYGX+z/pvl54B613+PLRTiBS7OrR3yL+SuP7q9YH5uTl1pxWgh+5JlWuMsbav1gK
+	 uHL7Kh7fDo+4dXozOaX97oNIjFoNH/R8ZNRSLG6Jp6D0aBGFpIYticYBnirKyzBc8P
+	 qTRp/P+VQvvr9RDGdD98GMbarJI7ce/mL8F7icCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 078/143] drm/panel: simple: Add BOE BP082WX1-100 8.2" panel
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH 5.4 137/215] netfilter: nf_tables: disallow timeout for anonymous sets
 Date: Thu, 11 Apr 2024 11:55:46 +0200
-Message-ID: <20240411095423.261678185@linuxfoundation.org>
+Message-ID: <20240411095429.011513349@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit dc90214ff58be575fdceb549f901506cdef5d093 ]
+commit e26d3009efda338f19016df4175f354a9bd0a4ab upstream.
 
-The BOE BP082WX1-100 is a 8.2" panel similar to the 10.1" panel
-BP101WX1-100. Both panels use the same timings.
+Never used from userspace, disallow these parameters.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20240211111703.7567-2-tony@atomide.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240211111703.7567-2-tony@atomide.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[Keerthana: code surrounding the patch is different
+because nft_set_desc is not present in v4.19-v5.10]
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ net/netfilter/nf_tables_api.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index d493ee735c734..72fdab8adb088 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -1367,6 +1367,23 @@ static const struct drm_display_mode boe_bp101wx1_100_mode = {
- 	.vtotal = 800 + 6 + 8 + 2,
- };
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3816,6 +3816,9 @@ static int nf_tables_newset(struct net *
+ 		if (!(flags & NFT_SET_TIMEOUT))
+ 			return -EINVAL;
  
-+static const struct panel_desc boe_bp082wx1_100 = {
-+	.modes = &boe_bp101wx1_100_mode,
-+	.num_modes = 1,
-+	.bpc = 8,
-+	.size = {
-+		.width = 177,
-+		.height = 110,
-+	},
-+	.delay = {
-+		.enable = 50,
-+		.disable = 50,
-+	},
-+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_JEIDA,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
-+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
-+};
++		if (flags & NFT_SET_ANONYMOUS)
++			return -EOPNOTSUPP;
 +
- static const struct panel_desc boe_bp101wx1_100 = {
- 	.modes = &boe_bp101wx1_100_mode,
- 	.num_modes = 1,
-@@ -4345,6 +4362,9 @@ static const struct of_device_id platform_of_match[] = {
- 	}, {
- 		.compatible = "bananapi,s070wv20-ct16",
- 		.data = &bananapi_s070wv20_ct16,
-+	}, {
-+		.compatible = "boe,bp082wx1-100",
-+		.data = &boe_bp082wx1_100,
- 	}, {
- 		.compatible = "boe,bp101wx1-100",
- 		.data = &boe_bp101wx1_100,
--- 
-2.43.0
-
+ 		err = nf_msecs_to_jiffies64(nla[NFTA_SET_TIMEOUT], &timeout);
+ 		if (err)
+ 			return err;
+@@ -3824,6 +3827,10 @@ static int nf_tables_newset(struct net *
+ 	if (nla[NFTA_SET_GC_INTERVAL] != NULL) {
+ 		if (!(flags & NFT_SET_TIMEOUT))
+ 			return -EINVAL;
++
++		if (flags & NFT_SET_ANONYMOUS)
++			return -EOPNOTSUPP;
++
+ 		gc_int = ntohl(nla_get_be32(nla[NFTA_SET_GC_INTERVAL]));
+ 	}
+ 
 
 
 
