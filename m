@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-38321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 867D78A0E04
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 010E28A0F95
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7AD71C20AC9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B19C5287750
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A2E145B14;
-	Thu, 11 Apr 2024 10:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6681B146A71;
+	Thu, 11 Apr 2024 10:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeqmcw50"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTx716Re"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80EB142624;
-	Thu, 11 Apr 2024 10:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2518E13FD94;
+	Thu, 11 Apr 2024 10:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830210; cv=none; b=kalA4bkWXUCamLxiw9J2NLCSCnjLShTRw87e5vAnBDhs9XHeemWtvnhhjk+B4toFNSda6etsx3fYI44oH1cvK6W0mM9IzQ21r2LgK/JeQKr1CJgRXCAnfGAkUe6BX92F8iOl6BLa9l1Sd6IG1BwUgmRad3GIbqDn5rXjcmNt9Ac=
+	t=1712831117; cv=none; b=kh+AgQE/eugUiS+AETQNO4ifsObJnvk+D/J3zIa6ybtCR/hNzb+ugU7SuQrI7IYswu+w5TBf65RiZOfbM3rHIe0+NvDxT1bApo7N0t65XmuzJbAfwSY6lMghy+zqv/SH8ZXvG+EzA4vYniE+n4I9OR6GfX0v++BO1BxdG/V5SKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830210; c=relaxed/simple;
-	bh=WtjtEf3lXcaQe1+Lk35LrV/cz7qQdXY0fovdxDgxsfY=;
+	s=arc-20240116; t=1712831117; c=relaxed/simple;
+	bh=vqTq0eI/FhiCw9wR30WHaKSArNpHwqkwgbL2A3zyiWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cCXVtGGbjoJ2Y+YYPbjMi8B8ppnl1jXXqPGA4bulpZ3YFYdIl42X++oTnwTy6OODfqxBz7WV+XUkkJpoYDMx1sYrItomywfOlz/nXKCV/3GvbP6DYAKS1b2l2WexjQOK4DpGDM54aGDXULpbsA4UA0g41vdxH9f4v6sJ9ZRs0Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeqmcw50; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60719C433C7;
-	Thu, 11 Apr 2024 10:10:10 +0000 (UTC)
+	 MIME-Version; b=nwcc+AoQuk+Re/PpphT+8zC7okArSDGKAAHqJvR60cLBkbgX/u/yVYtc/moUozNAl3m9cpwWrvKVkOAUI4qkRWcY0bjDXO3Kx5XvZfumdMtnmtejk0FiPW1c841TaKvVkCQ3NJ10zo2JPIxRqfS5Q65AP47A2dgbuyN7wn18ukg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTx716Re; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3475C433C7;
+	Thu, 11 Apr 2024 10:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830210;
-	bh=WtjtEf3lXcaQe1+Lk35LrV/cz7qQdXY0fovdxDgxsfY=;
+	s=korg; t=1712831117;
+	bh=vqTq0eI/FhiCw9wR30WHaKSArNpHwqkwgbL2A3zyiWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xeqmcw50d3lryqUDYNf4osEXc1V2gBA6qCp1ila7TPN9x8FKrq9i7KpZUumW5co/e
-	 ScwXlzum1Kkvbufw+zSSrrtL1Si35XIXHcWRLVPrmDQKq3e6YpkQLv8lOukZQr8wWH
-	 B844L3K91mPH5kCp5oZOyuewdU1huBpPtdpkLlEI=
+	b=JTx716ReLtCv9MLoXOF44yrrYQVOr8F7iIGJ402qTb64yVkK9Sgk6em0YQrmV4v/v
+	 Fxj6N2Oy3o1NdPkEpWfSQNuHyUFSYpAE0zNlB318JDWWSElRuJoDyA8ArPTo4bxUAq
+	 2sL0+pGYRc0OKM8/Gukpo9YOacA4LfBsnEODsicI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?M=C3=A1t=C3=A9=20Mosonyi?= <mosomate@gmail.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 072/143] ASoC: Intel: common: DMI remap for rebranded Intel NUC M15 (LAPRC710) laptops
-Date: Thu, 11 Apr 2024 11:55:40 +0200
-Message-ID: <20240411095423.081618521@linuxfoundation.org>
+Subject: [PATCH 6.6 014/114] ARM: dts: rockchip: fix rk3288 hdmi ports node
+Date: Thu, 11 Apr 2024 11:55:41 +0200
+Message-ID: <20240411095417.298501226@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +60,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: mosomate <mosomate@gmail.com>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit c13e03126a5be90781084437689724254c8226e1 ]
+[ Upstream commit 585e4dc07100a6465b3da8d24e46188064c1c925 ]
 
-Added DMI quirk to handle the rebranded variants of Intel NUC M15
-(LAPRC710) laptops. The DMI matching is based on motherboard
-attributes.
+Fix rk3288 hdmi ports node so that it matches the
+rockchip,dw-hdmi.yaml binding with some reordering
+to align with the (new) documentation about
+property ordering.
 
-Link: https://github.com/thesofproject/linux/issues/4218
-Signed-off-by: Máté Mosonyi <mosomate@gmail.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240208165545.93811-20-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/cc3a9b4f-076d-4660-b464-615003b6a066@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/dmi-quirks.c   |  8 ++++++++
- sound/soc/intel/boards/sof_sdw.c | 11 +++++++++++
- 2 files changed, 19 insertions(+)
+ arch/arm/boot/dts/rockchip/rk3288.dtsi | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/soundwire/dmi-quirks.c b/drivers/soundwire/dmi-quirks.c
-index 9ebdd0cd0b1cf..91ab97a456fa9 100644
---- a/drivers/soundwire/dmi-quirks.c
-+++ b/drivers/soundwire/dmi-quirks.c
-@@ -130,6 +130,14 @@ static const struct dmi_system_id adr_remap_quirk_table[] = {
- 		},
- 		.driver_data = (void *)intel_rooks_county,
- 	},
-+	{
-+		/* quirk used for NUC15 LAPRC710 skew */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
-+			DMI_MATCH(DMI_BOARD_NAME, "LAPRC710"),
-+		},
-+		.driver_data = (void *)intel_rooks_county,
-+	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 300391fbc2fc2..cf14bd3053fc9 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -236,6 +236,17 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 					SOF_SDW_PCH_DMIC |
- 					RT711_JD2_100K),
- 	},
-+	{
-+		/* NUC15 LAPRC710 skews */
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
-+			DMI_MATCH(DMI_BOARD_NAME, "LAPRC710"),
-+		},
-+		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
-+					SOF_SDW_PCH_DMIC |
-+					RT711_JD2_100K),
-+	},
- 	/* TigerLake-SDCA devices */
- 	{
- 		.callback = sof_sdw_quirk_cb,
+diff --git a/arch/arm/boot/dts/rockchip/rk3288.dtsi b/arch/arm/boot/dts/rockchip/rk3288.dtsi
+index cb9cdaddffd42..8593a83599376 100644
+--- a/arch/arm/boot/dts/rockchip/rk3288.dtsi
++++ b/arch/arm/boot/dts/rockchip/rk3288.dtsi
+@@ -1231,27 +1231,37 @@ hdmi: hdmi@ff980000 {
+ 		compatible = "rockchip,rk3288-dw-hdmi";
+ 		reg = <0x0 0xff980000 0x0 0x20000>;
+ 		reg-io-width = <4>;
+-		#sound-dai-cells = <0>;
+-		rockchip,grf = <&grf>;
+ 		interrupts = <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&cru  PCLK_HDMI_CTRL>, <&cru SCLK_HDMI_HDCP>, <&cru SCLK_HDMI_CEC>;
+ 		clock-names = "iahb", "isfr", "cec";
+ 		power-domains = <&power RK3288_PD_VIO>;
++		rockchip,grf = <&grf>;
++		#sound-dai-cells = <0>;
+ 		status = "disabled";
+ 
+ 		ports {
+-			hdmi_in: port {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			hdmi_in: port@0 {
++				reg = <0>;
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
++
+ 				hdmi_in_vopb: endpoint@0 {
+ 					reg = <0>;
+ 					remote-endpoint = <&vopb_out_hdmi>;
+ 				};
++
+ 				hdmi_in_vopl: endpoint@1 {
+ 					reg = <1>;
+ 					remote-endpoint = <&vopl_out_hdmi>;
+ 				};
+ 			};
++
++			hdmi_out: port@1 {
++				reg = <1>;
++			};
+ 		};
+ 	};
+ 
 -- 
 2.43.0
 
