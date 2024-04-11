@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-39102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CFAF8A11ED
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 665B38A1020
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:32:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27E02281CC0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 978DE1C2355A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F5A1465BF;
-	Thu, 11 Apr 2024 10:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9123F149E19;
+	Thu, 11 Apr 2024 10:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXSCOtbl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MIRoKU1A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C7764CC0;
-	Thu, 11 Apr 2024 10:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500FA1474CB;
+	Thu, 11 Apr 2024 10:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832523; cv=none; b=FF6H07+4URhcEL9VvvDbgMIaleae2Ck0SnxjUHCAzZVtRqYa6AjcBNwW4O2CJAGL0ZNldiIvulPNF9j5foULJ0pU81jQovvVH3hjl/1sdLwsjkl64MK80O27r0x+60AbzTLC3zyjHMa0APkiL5vlE1pv6LFWbtsxu5zg5SccqVI=
+	t=1712831436; cv=none; b=lpaSo9pKm2hXk0d/rJlvSve2sVih5g9muezUWGHqCi9F2As8Z+EfdibM9gz6ef5H+83XkdVyuY8H05qCQ44VsVnIhq+GrjgH0KxjZ0mbi+S+GIMTHWk09u08tRUj5iSa5pMc+EpefEGlME2GG1TmYVRFpxUgLe/P7blHP5pvRsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832523; c=relaxed/simple;
-	bh=B9egbZZ8XCf57FSeIAXB/Hle2LFg+SNrjC6ylFeK2KY=;
+	s=arc-20240116; t=1712831436; c=relaxed/simple;
+	bh=gcsBe8SXaVwTUQW4EibeLTiwxEMgWsxV1gezRvNxiWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NNHaiLGYt6XsEJ9EuJmIseT0wzKMqx+xyJJH1Lvrl1Z0X8tRcxEdZvZksXBwTpwghpXGfM4vZomUvOB9nr36cervQ47sl0ny0eanGAV44uVooPs/aO62YabylreIixSJvtE9YWHsSMOr1Mkttz3m6dJ74HwsXgIwotLc7jmzwes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXSCOtbl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321A7C433F1;
-	Thu, 11 Apr 2024 10:48:42 +0000 (UTC)
+	 MIME-Version; b=XZZ4wCytS2p08YFG7h6DRy8WaDjN6i95JqoU7QQuW5gIahGWBWxx7bhFzfyzyJU/IteKSMQvLlIdZkuZ4PeMz0nq1o1KDs5JxKHEAz5p+2qIov96At85PeJ+GxuoHYGB6+FlSXj8wY3aElyurFUAaBNQ4p6BS50PsrQ/nj9cCL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MIRoKU1A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99EAC43390;
+	Thu, 11 Apr 2024 10:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832522;
-	bh=B9egbZZ8XCf57FSeIAXB/Hle2LFg+SNrjC6ylFeK2KY=;
+	s=korg; t=1712831436;
+	bh=gcsBe8SXaVwTUQW4EibeLTiwxEMgWsxV1gezRvNxiWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UXSCOtble/t56RdLTGOGlVblCEyVGCicfok1lvu8qYz+w+zfOKgc2Synjvd/d1pNe
-	 R/AXI3Al72DXcz3XGlxF965KITsQPPq8AaxKWb1oqoq5LFc8YAoeT2Hj3whXOP1UHs
-	 9Bn1utHl7Tf/ODIegp2XXXTw/3/ZnV2PkP1M/YH8=
+	b=MIRoKU1A+DYwG9VcHF3djxBSQiP7uE2m5LgVTHm4/aeVc2SWoV2HgAuWU2a6eOOx6
+	 5SS4IVp29nR9zZCF2SduxSX64xJiichmsanpqUBksRmY4gjWozGTmBBJRlAY7UK+RN
+	 g9GxBDIIWyO1sO1bKL3pasKcbxJB1fBxIlOau1PQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Marshall <hubcap@omnibond.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 38/83] Julia Lawall reported this null pointer dereference, this should fix it.
+	Tim Crawford <tcrawford@system76.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Jeremy Soller <jeremy@system76.com>
+Subject: [PATCH 6.6 103/114] ALSA: hda/realtek: Add quirks for some Clevo laptops
 Date: Thu, 11 Apr 2024 11:57:10 +0200
-Message-ID: <20240411095413.830186585@linuxfoundation.org>
+Message-ID: <20240411095420.003227697@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,33 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Marshall <hubcap@omnibond.com>
+From: Tim Crawford <tcrawford@system76.com>
 
-[ Upstream commit 9bf93dcfc453fae192fe5d7874b89699e8f800ac ]
+[ Upstream commit 33affa7fb46c0c07f6c49d4ddac9dd436715064c ]
 
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Add audio quirks to fix speaker output and headset detection on some new
+Clevo models:
+
+- L240TU (ALC245)
+- PE60SNE-G (ALC1220)
+- V350SNEQ (ALC245)
+
+Co-authored-by: Jeremy Soller <jeremy@system76.com>
+Signed-off-by: Tim Crawford <tcrawford@system76.com>
+Message-ID: <20240319212726.62888-1-tcrawford@system76.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/orangefs/super.c b/fs/orangefs/super.c
-index 5254256a224d7..4ca8ed410c3cf 100644
---- a/fs/orangefs/super.c
-+++ b/fs/orangefs/super.c
-@@ -527,7 +527,7 @@ struct dentry *orangefs_mount(struct file_system_type *fst,
- 	sb->s_fs_info = kzalloc(sizeof(struct orangefs_sb_info_s), GFP_KERNEL);
- 	if (!ORANGEFS_SB(sb)) {
- 		d = ERR_PTR(-ENOMEM);
--		goto free_sb_and_op;
-+		goto free_op;
- 	}
- 
- 	ret = orangefs_fill_sb(sb,
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index b8e47761fb572..6841de9d423e3 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -2645,6 +2645,7 @@ static const struct snd_pci_quirk alc882_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1558, 0x65f1, "Clevo PC50HS", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
+ 	SND_PCI_QUIRK(0x1558, 0x65f5, "Clevo PD50PN[NRT]", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
+ 	SND_PCI_QUIRK(0x1558, 0x66a2, "Clevo PE60RNE", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
++	SND_PCI_QUIRK(0x1558, 0x66a6, "Clevo PE60SN[CDE]-[GS]", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
+ 	SND_PCI_QUIRK(0x1558, 0x67d1, "Clevo PB71[ER][CDF]", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
+ 	SND_PCI_QUIRK(0x1558, 0x67e1, "Clevo PB71[DE][CDF]", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
+ 	SND_PCI_QUIRK(0x1558, 0x67e5, "Clevo PC70D[PRS](?:-D|-G)?", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
+@@ -10097,12 +10098,14 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1462, 0xb120, "MSI Cubi MS-B120", ALC283_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1462, 0xb171, "Cubi N 8GL (MS-B171)", ALC283_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x152d, 0x1082, "Quanta NL3", ALC269_FIXUP_LIFEBOOK),
++	SND_PCI_QUIRK(0x1558, 0x0353, "Clevo V35[05]SN[CDE]Q", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x1323, "Clevo N130ZU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x1325, "Clevo N15[01][CW]U", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x1401, "Clevo L140[CZ]U", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x1403, "Clevo N140CU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x1404, "Clevo N150CU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x14a1, "Clevo L141MU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1558, 0x2624, "Clevo L240TU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x4018, "Clevo NV40M[BE]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x4019, "Clevo NV40MZ", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x4020, "Clevo NV40MB", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
 -- 
 2.43.0
 
