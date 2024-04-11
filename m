@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004B28A0EA7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:16:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 830D68A0D41
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:02:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69C2D1F21D2A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:16:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E973285F27
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87ABD14601B;
-	Thu, 11 Apr 2024 10:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD86C145B1D;
+	Thu, 11 Apr 2024 10:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0eOYAZGs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Dx7eIL8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C64145350;
-	Thu, 11 Apr 2024 10:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4D12EAE5;
+	Thu, 11 Apr 2024 10:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830608; cv=none; b=UkWuQ/8A57czn4c/tppzFS3DbzSO79Wd1NsOxcDaPZ2GCKm8Oyg44wwuHo5x8UC3GTt4VxM7e5detlpTGYyLrqv8wqKckOWC4+y7sEmScRUt4auuXWfLu/q7jT1vfx2ldOaH3nuPrzB9wpMk6/dqo47CwRwZ5bd8+utnhTzMM/I=
+	t=1712829717; cv=none; b=OIKYedp/CD3SWdaAhrSdfO1XYzJ4o/wZUkwBQN/X9ou0LvlsQqFkDc7yrb/tzHDXA09mgqlfoxg8Ch0bFN8dqEbRCSOJYZiGcKrSq1+nSzzbQeQzYn/kTIv0CM4yKOnbLg9rQT1PZSuLSDpOqfT0bnihAwIGu4e0Ja5/Kt99FnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830608; c=relaxed/simple;
-	bh=Rlx0xDft9M4koD3y+F8L25WtTc2el8YBs6DytlZ6yd0=;
+	s=arc-20240116; t=1712829717; c=relaxed/simple;
+	bh=LKDr26SzuVF6ZPv5PMlvSIxq4hnVh36FUB1uAiJq4CY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fhFutUYX8vCRhoS8qHNoKRBVVzAMnMAwKgyXTWqSub5WyhX15/BLaaQWmpk1k4OsLMIK6Cth6a3nN4rMyIGUWU92cCvZtq8oLeKxzQfWHuy6oOJI6WcLyL3gw8Pq4E9XG6wn5nxD84nm+dV6lAcMd7j6fZrKmLV6d89r68bTk6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0eOYAZGs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4731C433F1;
-	Thu, 11 Apr 2024 10:16:47 +0000 (UTC)
+	 MIME-Version; b=o1AuUeCpPy0vvuWSrc3jSBqvSF0Pad/dzspNdqaDR8ygvRbSww6qcOgjLCWc2AbiTOw+rgW36hMh8CvJK9traF6GnBWyfUICLBdW2jF5NmHDswq0lXQpxnNdidV2ZWeWMtCCFmz2lglu/U4VpQ3jYH3tAqji6G0cn/bGPaT1Y9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Dx7eIL8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B7CC433C7;
+	Thu, 11 Apr 2024 10:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830608;
-	bh=Rlx0xDft9M4koD3y+F8L25WtTc2el8YBs6DytlZ6yd0=;
+	s=korg; t=1712829717;
+	bh=LKDr26SzuVF6ZPv5PMlvSIxq4hnVh36FUB1uAiJq4CY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0eOYAZGsmJQbLiuqNA+s3Nv+ApaQoMm8q6v+hMTU/1WSjTUcU9Ryso7HSBGWI5KqN
-	 3eJrFfcp9nxdOFF1XJjXXIppD7RzgZWE6vPl/FWHWn3ZgQgf5FaEOAqcDvGtQadWva
-	 P9/wOAiNVrV4Itl+EyCG6tIsAVrgZ7xAWiyNkYwQ=
+	b=1Dx7eIL8a3IpxPWQcKChvd8bv0x1KBBdB9/4r3Q1mABJbNfzkN5lPRJ+3KYYEG0K4
+	 zmPNrCeghfY87niA+6EOZk1HLTkuK4sEyib9IZLa5JNLGQc3eBpOE+V4Kf1VuLV4XN
+	 ysQwNAzW0fMu+4hDmwzHRJKDiMGe9f3fsUw1D/X8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Carlo Caione <ccaione@baylibre.com>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 056/215] firmware: meson_sm: Rework driver as a proper platform driver
+Subject: [PATCH 4.19 042/175] fuse: dont unhash root
 Date: Thu, 11 Apr 2024 11:54:25 +0200
-Message-ID: <20240411095426.577481884@linuxfoundation.org>
+Message-ID: <20240411095420.827132716@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,355 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlo Caione <ccaione@baylibre.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 8cde3c2153e8f57be884c0e73f18bc4de150e870 ]
+[ Upstream commit b1fe686a765e6c0d71811d825b5a1585a202b777 ]
 
-The secure monitor driver is currently a frankenstein driver which is
-registered as a platform driver but its functionality goes through a
-global struct accessed by the consumer drivers using exported helper
-functions.
+The root inode is assumed to be always hashed.  Do not unhash the root
+inode even if it is marked BAD.
 
-Try to tidy up the driver moving the firmware struct into the driver
-data and make the consumer drivers referencing the secure-monitor using
-a new property in the DT.
-
-Currently only the nvmem driver is using this API so we can fix it in
-the same commit.
-
-Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
-Signed-off-by: Carlo Caione <ccaione@baylibre.com>
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
-Stable-dep-of: cbd38332c140 ("nvmem: meson-efuse: fix function pointer type mismatch")
+Fixes: 5d069dbe8aaf ("fuse: fix bad inode")
+Cc: <stable@vger.kernel.org> # v5.11
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/meson/meson_sm.c       | 94 +++++++++++++++++--------
- drivers/nvmem/meson-efuse.c             | 24 ++++++-
- include/linux/firmware/meson/meson_sm.h | 15 ++--
- 3 files changed, 94 insertions(+), 39 deletions(-)
+ fs/fuse/fuse_i.h | 1 -
+ fs/fuse/inode.c  | 7 +++++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/meson/meson_sm.c b/drivers/firmware/meson/meson_sm.c
-index 8d908a8e0d20f..7608704512054 100644
---- a/drivers/firmware/meson/meson_sm.c
-+++ b/drivers/firmware/meson/meson_sm.c
-@@ -54,8 +54,6 @@ struct meson_sm_firmware {
- 	void __iomem *sm_shmem_out_base;
- };
+diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
+index 1c754a02fb06b..aa0a5e3960909 100644
+--- a/fs/fuse/fuse_i.h
++++ b/fs/fuse/fuse_i.h
+@@ -706,7 +706,6 @@ static inline u64 get_node_id(struct inode *inode)
  
--static struct meson_sm_firmware fw;
--
- static u32 meson_sm_get_cmd(const struct meson_sm_chip *chip,
- 			    unsigned int cmd_index)
+ static inline void fuse_make_bad(struct inode *inode)
  {
-@@ -90,6 +88,7 @@ static void __iomem *meson_sm_map_shmem(u32 cmd_shmem, unsigned int size)
- /**
-  * meson_sm_call - generic SMC32 call to the secure-monitor
-  *
-+ * @fw:		Pointer to secure-monitor firmware
-  * @cmd_index:	Index of the SMC32 function ID
-  * @ret:	Returned value
-  * @arg0:	SMC32 Argument 0
-@@ -100,15 +99,15 @@ static void __iomem *meson_sm_map_shmem(u32 cmd_shmem, unsigned int size)
-  *
-  * Return:	0 on success, a negative value on error
-  */
--int meson_sm_call(unsigned int cmd_index, u32 *ret, u32 arg0,
--		  u32 arg1, u32 arg2, u32 arg3, u32 arg4)
-+int meson_sm_call(struct meson_sm_firmware *fw, unsigned int cmd_index,
-+		  u32 *ret, u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4)
- {
- 	u32 cmd, lret;
- 
--	if (!fw.chip)
-+	if (!fw->chip)
- 		return -ENOENT;
- 
--	cmd = meson_sm_get_cmd(fw.chip, cmd_index);
-+	cmd = meson_sm_get_cmd(fw->chip, cmd_index);
- 	if (!cmd)
- 		return -EINVAL;
- 
-@@ -124,6 +123,7 @@ EXPORT_SYMBOL(meson_sm_call);
- /**
-  * meson_sm_call_read - retrieve data from secure-monitor
-  *
-+ * @fw:		Pointer to secure-monitor firmware
-  * @buffer:	Buffer to store the retrieved data
-  * @bsize:	Size of the buffer
-  * @cmd_index:	Index of the SMC32 function ID
-@@ -137,22 +137,23 @@ EXPORT_SYMBOL(meson_sm_call);
-  *		When 0 is returned there is no guarantee about the amount of
-  *		data read and bsize bytes are copied in buffer.
-  */
--int meson_sm_call_read(void *buffer, unsigned int bsize, unsigned int cmd_index,
--		       u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4)
-+int meson_sm_call_read(struct meson_sm_firmware *fw, void *buffer,
-+		       unsigned int bsize, unsigned int cmd_index, u32 arg0,
-+		       u32 arg1, u32 arg2, u32 arg3, u32 arg4)
- {
- 	u32 size;
- 	int ret;
- 
--	if (!fw.chip)
-+	if (!fw->chip)
- 		return -ENOENT;
- 
--	if (!fw.chip->cmd_shmem_out_base)
-+	if (!fw->chip->cmd_shmem_out_base)
- 		return -EINVAL;
- 
--	if (bsize > fw.chip->shmem_size)
-+	if (bsize > fw->chip->shmem_size)
- 		return -EINVAL;
- 
--	if (meson_sm_call(cmd_index, &size, arg0, arg1, arg2, arg3, arg4) < 0)
-+	if (meson_sm_call(fw, cmd_index, &size, arg0, arg1, arg2, arg3, arg4) < 0)
- 		return -EINVAL;
- 
- 	if (size > bsize)
-@@ -164,7 +165,7 @@ int meson_sm_call_read(void *buffer, unsigned int bsize, unsigned int cmd_index,
- 		size = bsize;
- 
- 	if (buffer)
--		memcpy(buffer, fw.sm_shmem_out_base, size);
-+		memcpy(buffer, fw->sm_shmem_out_base, size);
- 
- 	return ret;
+-	remove_inode_hash(inode);
+ 	set_bit(FUSE_I_BAD, &get_fuse_inode(inode)->state);
  }
-@@ -173,6 +174,7 @@ EXPORT_SYMBOL(meson_sm_call_read);
- /**
-  * meson_sm_call_write - send data to secure-monitor
-  *
-+ * @fw:		Pointer to secure-monitor firmware
-  * @buffer:	Buffer containing data to send
-  * @size:	Size of the data to send
-  * @cmd_index:	Index of the SMC32 function ID
-@@ -184,23 +186,24 @@ EXPORT_SYMBOL(meson_sm_call_read);
-  *
-  * Return:	size of sent data on success, a negative value on error
-  */
--int meson_sm_call_write(void *buffer, unsigned int size, unsigned int cmd_index,
--			u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4)
-+int meson_sm_call_write(struct meson_sm_firmware *fw, void *buffer,
-+			unsigned int size, unsigned int cmd_index, u32 arg0,
-+			u32 arg1, u32 arg2, u32 arg3, u32 arg4)
- {
- 	u32 written;
  
--	if (!fw.chip)
-+	if (!fw->chip)
- 		return -ENOENT;
- 
--	if (size > fw.chip->shmem_size)
-+	if (size > fw->chip->shmem_size)
- 		return -EINVAL;
- 
--	if (!fw.chip->cmd_shmem_in_base)
-+	if (!fw->chip->cmd_shmem_in_base)
- 		return -EINVAL;
- 
--	memcpy(fw.sm_shmem_in_base, buffer, size);
-+	memcpy(fw->sm_shmem_in_base, buffer, size);
- 
--	if (meson_sm_call(cmd_index, &written, arg0, arg1, arg2, arg3, arg4) < 0)
-+	if (meson_sm_call(fw, cmd_index, &written, arg0, arg1, arg2, arg3, arg4) < 0)
- 		return -EINVAL;
- 
- 	if (!written)
-@@ -210,6 +213,24 @@ int meson_sm_call_write(void *buffer, unsigned int size, unsigned int cmd_index,
- }
- EXPORT_SYMBOL(meson_sm_call_write);
- 
-+/**
-+ * meson_sm_get - get pointer to meson_sm_firmware structure.
-+ *
-+ * @sm_node:		Pointer to the secure-monitor Device Tree node.
-+ *
-+ * Return:		NULL is the secure-monitor device is not ready.
-+ */
-+struct meson_sm_firmware *meson_sm_get(struct device_node *sm_node)
-+{
-+	struct platform_device *pdev = of_find_device_by_node(sm_node);
-+
-+	if (!pdev)
-+		return NULL;
-+
-+	return platform_get_drvdata(pdev);
-+}
-+EXPORT_SYMBOL_GPL(meson_sm_get);
-+
- #define SM_CHIP_ID_LENGTH	119
- #define SM_CHIP_ID_OFFSET	4
- #define SM_CHIP_ID_SIZE		12
-@@ -217,14 +238,18 @@ EXPORT_SYMBOL(meson_sm_call_write);
- static ssize_t serial_show(struct device *dev, struct device_attribute *attr,
- 			 char *buf)
- {
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct meson_sm_firmware *fw;
- 	uint8_t *id_buf;
- 	int ret;
- 
-+	fw = platform_get_drvdata(pdev);
-+
- 	id_buf = kmalloc(SM_CHIP_ID_LENGTH, GFP_KERNEL);
- 	if (!id_buf)
- 		return -ENOMEM;
- 
--	ret = meson_sm_call_read(id_buf, SM_CHIP_ID_LENGTH, SM_GET_CHIP_ID,
-+	ret = meson_sm_call_read(fw, id_buf, SM_CHIP_ID_LENGTH, SM_GET_CHIP_ID,
- 				 0, 0, 0, 0, 0);
- 	if (ret < 0) {
- 		kfree(id_buf);
-@@ -268,25 +293,34 @@ static const struct of_device_id meson_sm_ids[] = {
- 
- static int __init meson_sm_probe(struct platform_device *pdev)
- {
-+	struct device *dev = &pdev->dev;
- 	const struct meson_sm_chip *chip;
-+	struct meson_sm_firmware *fw;
-+
-+	fw = devm_kzalloc(dev, sizeof(*fw), GFP_KERNEL);
-+	if (!fw)
-+		return -ENOMEM;
- 
--	chip = of_match_device(meson_sm_ids, &pdev->dev)->data;
-+	chip = of_match_device(meson_sm_ids, dev)->data;
- 
- 	if (chip->cmd_shmem_in_base) {
--		fw.sm_shmem_in_base = meson_sm_map_shmem(chip->cmd_shmem_in_base,
--							 chip->shmem_size);
--		if (WARN_ON(!fw.sm_shmem_in_base))
-+		fw->sm_shmem_in_base = meson_sm_map_shmem(chip->cmd_shmem_in_base,
-+							  chip->shmem_size);
-+		if (WARN_ON(!fw->sm_shmem_in_base))
- 			goto out;
+diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
+index 3b51c881baf8c..a67769c357b2d 100644
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -324,8 +324,11 @@ struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
+ 	} else if ((inode->i_mode ^ attr->mode) & S_IFMT) {
+ 		/* Inode has changed type, any I/O on the old should fail */
+ 		fuse_make_bad(inode);
+-		iput(inode);
+-		goto retry;
++		if (inode != d_inode(sb->s_root)) {
++			remove_inode_hash(inode);
++			iput(inode);
++			goto retry;
++		}
  	}
  
- 	if (chip->cmd_shmem_out_base) {
--		fw.sm_shmem_out_base = meson_sm_map_shmem(chip->cmd_shmem_out_base,
--							  chip->shmem_size);
--		if (WARN_ON(!fw.sm_shmem_out_base))
-+		fw->sm_shmem_out_base = meson_sm_map_shmem(chip->cmd_shmem_out_base,
-+							   chip->shmem_size);
-+		if (WARN_ON(!fw->sm_shmem_out_base))
- 			goto out_in_base;
- 	}
- 
--	fw.chip = chip;
-+	fw->chip = chip;
-+
-+	platform_set_drvdata(pdev, fw);
-+
- 	pr_info("secure-monitor enabled\n");
- 
- 	if (sysfs_create_group(&pdev->dev.kobj, &meson_sm_sysfs_attr_group))
-@@ -295,7 +329,7 @@ static int __init meson_sm_probe(struct platform_device *pdev)
- 	return 0;
- 
- out_in_base:
--	iounmap(fw.sm_shmem_in_base);
-+	iounmap(fw->sm_shmem_in_base);
- out:
- 	return -EINVAL;
- }
-diff --git a/drivers/nvmem/meson-efuse.c b/drivers/nvmem/meson-efuse.c
-index 39bd76306033f..d6b533497ce1a 100644
---- a/drivers/nvmem/meson-efuse.c
-+++ b/drivers/nvmem/meson-efuse.c
-@@ -17,14 +17,18 @@
- static int meson_efuse_read(void *context, unsigned int offset,
- 			    void *val, size_t bytes)
- {
--	return meson_sm_call_read((u8 *)val, bytes, SM_EFUSE_READ, offset,
-+	struct meson_sm_firmware *fw = context;
-+
-+	return meson_sm_call_read(fw, (u8 *)val, bytes, SM_EFUSE_READ, offset,
- 				  bytes, 0, 0, 0);
- }
- 
- static int meson_efuse_write(void *context, unsigned int offset,
- 			     void *val, size_t bytes)
- {
--	return meson_sm_call_write((u8 *)val, bytes, SM_EFUSE_WRITE, offset,
-+	struct meson_sm_firmware *fw = context;
-+
-+	return meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offset,
- 				   bytes, 0, 0, 0);
- }
- 
-@@ -37,12 +41,25 @@ MODULE_DEVICE_TABLE(of, meson_efuse_match);
- static int meson_efuse_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-+	struct meson_sm_firmware *fw;
-+	struct device_node *sm_np;
- 	struct nvmem_device *nvmem;
- 	struct nvmem_config *econfig;
- 	struct clk *clk;
- 	unsigned int size;
- 	int ret;
- 
-+	sm_np = of_parse_phandle(pdev->dev.of_node, "secure-monitor", 0);
-+	if (!sm_np) {
-+		dev_err(&pdev->dev, "no secure-monitor node\n");
-+		return -ENODEV;
-+	}
-+
-+	fw = meson_sm_get(sm_np);
-+	of_node_put(sm_np);
-+	if (!fw)
-+		return -EPROBE_DEFER;
-+
- 	clk = devm_clk_get(dev, NULL);
- 	if (IS_ERR(clk)) {
- 		ret = PTR_ERR(clk);
-@@ -65,7 +82,7 @@ static int meson_efuse_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	if (meson_sm_call(SM_EFUSE_USER_MAX, &size, 0, 0, 0, 0, 0) < 0) {
-+	if (meson_sm_call(fw, SM_EFUSE_USER_MAX, &size, 0, 0, 0, 0, 0) < 0) {
- 		dev_err(dev, "failed to get max user");
- 		return -EINVAL;
- 	}
-@@ -81,6 +98,7 @@ static int meson_efuse_probe(struct platform_device *pdev)
- 	econfig->reg_read = meson_efuse_read;
- 	econfig->reg_write = meson_efuse_write;
- 	econfig->size = size;
-+	econfig->priv = fw;
- 
- 	nvmem = devm_nvmem_register(&pdev->dev, econfig);
- 
-diff --git a/include/linux/firmware/meson/meson_sm.h b/include/linux/firmware/meson/meson_sm.h
-index 7613bf7c94428..6669e2a1d5fdc 100644
---- a/include/linux/firmware/meson/meson_sm.h
-+++ b/include/linux/firmware/meson/meson_sm.h
-@@ -16,11 +16,14 @@ enum {
- 
- struct meson_sm_firmware;
- 
--int meson_sm_call(unsigned int cmd_index, u32 *ret, u32 arg0, u32 arg1,
--		  u32 arg2, u32 arg3, u32 arg4);
--int meson_sm_call_write(void *buffer, unsigned int b_size, unsigned int cmd_index,
--			u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4);
--int meson_sm_call_read(void *buffer, unsigned int bsize, unsigned int cmd_index,
--		       u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4);
-+int meson_sm_call(struct meson_sm_firmware *fw, unsigned int cmd_index,
-+		  u32 *ret, u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4);
-+int meson_sm_call_write(struct meson_sm_firmware *fw, void *buffer,
-+			unsigned int b_size, unsigned int cmd_index, u32 arg0,
-+			u32 arg1, u32 arg2, u32 arg3, u32 arg4);
-+int meson_sm_call_read(struct meson_sm_firmware *fw, void *buffer,
-+		       unsigned int bsize, unsigned int cmd_index, u32 arg0,
-+		       u32 arg1, u32 arg2, u32 arg3, u32 arg4);
-+struct meson_sm_firmware *meson_sm_get(struct device_node *firmware_node);
- 
- #endif /* _MESON_SM_FW_H_ */
+ 	fi = get_fuse_inode(inode);
 -- 
 2.43.0
 
