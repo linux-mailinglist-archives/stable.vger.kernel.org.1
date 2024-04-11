@@ -1,58 +1,103 @@
-Return-Path: <stable+bounces-38058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D961E8A09D8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:33:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5B778A09E6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:34:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19450B26697
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 07:33:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59435284D22
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 07:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2938413E416;
-	Thu, 11 Apr 2024 07:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE8913E40C;
+	Thu, 11 Apr 2024 07:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SB6GCJGQ"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="i4SLKJSy";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="c6PX6CsF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wfhigh5-smtp.messagingengine.com (wfhigh5-smtp.messagingengine.com [64.147.123.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE37713E057;
-	Thu, 11 Apr 2024 07:32:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6410A13E051;
+	Thu, 11 Apr 2024 07:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712820776; cv=none; b=JjZ/N8ZSvzyuDvATF2lCudeVFM8rJ1vg6XAAlActzP4aqRL9x0cz/WidHxJB+UVsz5vNE5QgOKhXY5KjPKEYSCtRbLnu1Um0s/JZ476AHrBE7y7/KeCckn1xqEbhC1r/jmQLvfTpzN5xlQ2ODqZtSLtOVlcL1zdzjrSig0TXrdQ=
+	t=1712820889; cv=none; b=lRr3xp/MG28Z5/uxMmiYALvqZMdXHHMTIzsu/PHkIR1v1sEG9ynvquv1BjhQitPFZTcYhqyoXXAIejzgnsBgGYc+UzYiLnYHJ1duCIXasZWdwaX3jZDeg1Vicq2TS1hysh2FP9nwYBS1e27q7nM8xmgZTMWTsgDBk+PoivEovCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712820776; c=relaxed/simple;
-	bh=P/JEPZ8/bdZlLFI8atcD5Myhc+wd+nhuxTDkpIWpa0U=;
+	s=arc-20240116; t=1712820889; c=relaxed/simple;
+	bh=FCIlykqS4nGQUWYzHKa1BQ22c1g7YOdrq4g3QJ1CV3I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bd3kMHJb9CKrdyrgNZ3Mp7T0cikdicqhqWTiovl4kWwJyasccbW93OIc7GPg7dYt9VVummRynCAf2h4iIGysb5IvYxfScPCu5GIC6f9/MEa6s1QyPA4kB0FtI5yuA1qbj6n7gn1IXE+Jr2XEBu0oSBsC6bPYREaJW7knPrVhstU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SB6GCJGQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02210C433F1;
-	Thu, 11 Apr 2024 07:32:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712820775;
-	bh=P/JEPZ8/bdZlLFI8atcD5Myhc+wd+nhuxTDkpIWpa0U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SB6GCJGQDLQjg2mTCjbfYv52aBNNJ+vX7IPsWVjsN9UtAv+0q6obdgg1LQ7QeR7vM
-	 Q9/5CukrEvq10Jhp3F/r5uZxC1CPwuLygU0k/eC+Ni6JnraLdaRmbhmM8jciA2VQ8e
-	 ucynii3reSfDdgTULemsTZzbm4IUm6g+6hpoCr1g=
-Date: Thu, 11 Apr 2024 09:32:52 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, stable@vger.kernel.org,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH 6.6.y 3/5] selftests: mptcp: use += operator to append
- strings
-Message-ID: <2024041111-shirt-germicide-b316@gregkh>
-References: <2024040520-unselect-antitrust-a41b@gregkh>
- <20240405153636.958019-10-matttbe@kernel.org>
- <2024040801-undaunted-boastful-5a01@gregkh>
- <26b5e6f5-6da2-44ff-adbd-c1c1eda3ccba@kernel.org>
- <2024040902-syrup-sneezing-62c4@gregkh>
- <af60b8c3-e3c4-48b2-a4c6-f2f430aa9c68@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CUyHALnXsm+a1gnD1haYfP8rc262zLgmrjC0siLjYyXH6ll0rC0dfNDsN3RpAU0PCQ1NXruiLpDb82Vmmeu3rockl7LBQ7RqEJ5zuCT/h/dO4k+nKDs9iP3j/zZUuehgA/PprFBsrepVnMk9eRDsj8PfoQM0l0AfcWoVSgWTk+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=i4SLKJSy; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=c6PX6CsF; arc=none smtp.client-ip=64.147.123.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfhigh.west.internal (Postfix) with ESMTP id B357D1800073;
+	Thu, 11 Apr 2024 03:34:43 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Thu, 11 Apr 2024 03:34:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1712820882; x=1712907282; bh=4e17aZLxCZ
+	/xmK6TqYtTj729Icc/M1cb6AfMgwOtJCA=; b=i4SLKJSyFXYxRX8ruMU5R8pM0Y
+	Rr+BOCWRWXLEhQT1K9Cs7uaJ2bLe1PqfxVxIkrOPR5ogAYAZHdOFpgIG9LpAuVJ3
+	h0zcczGQh8FqJj1EOJshLarSCTrF6WvC3B4p9SZtUHtmgkkQHfj+5LUPohcBPPtL
+	uEjl2wYjlLaPppEQTy7S+3b2bh4JI54rU/3nLNgxOBOj9dxSM/PVktCwkHVwb3ox
+	xDo3mYn1EcPWyAlzriXBZZmhIjGwVlX8TqLLd7PBgpNTXLkr5olYbUA76sQEkErA
+	puyxDcr6Xa6VGtAWP8LbSEN/2PFgvsi+CDKmGBA+XiyMNQU2pkZseKXXOqNA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1712820882; x=1712907282; bh=4e17aZLxCZ/xmK6TqYtTj729Icc/
+	M1cb6AfMgwOtJCA=; b=c6PX6CsFIgWxAwy0oNMI/az7N4racBVWkZ2sEWMg8HZt
+	1YPs6C+0LohVlfwgjb7K95wsjuHQwLl6sS3LoOXDDK0vmQ2bMlPkvcbhfFZJ4Kk1
+	8opTkn/P9ZR2uz+L4US8z3Z1pZ9Zf8F5AhEcskPX4+Rfi+013SaQTyRfCCDtCtJn
+	dm254cZ8Vymx3lxpLKJajkrwJAvRkxqmdc+JSlBIUhwu643lf+xpdJMGFveO8FKt
+	nh3mvc+4hsqetQvPBnzbNfTFitYoTFUC+numCY7jTPCvpN9LM1K671bRljCX39aa
+	Nb8uFnf+HPw7PNP5zEWsZu7NjdZYB2jHqdksF2JPTA==
+X-ME-Sender: <xms:kpIXZkYZBZAwT_mFTt8Qbzo8wNvIU8ngw2DsfK6k3OdMeSLvZXxk5w>
+    <xme:kpIXZvbCXi8srNjTZ1h0qTlmxEcww1wR7Bg__2Dy28FmEmJUGTPHOXXNkLnEO0ct2
+    Yo3fqvBdFaPqw>
+X-ME-Received: <xmr:kpIXZu9eqlTOkQc-aTbLGZdpxrPQpAozlFwdZ9wCx7l7QVAbdaGkOWj9aFpnTxn_u95SXw3ZqYIHA4SzmwCfCWuoyWtCz0MWyjWZDg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehjedguddukecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
+    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeekje
+    ejtdeutdejuedvleeggeevveehieegudefueektdevieetuddtgfegueegveenucffohhm
+    rghinhepughtshdrnhhofienucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:kpIXZuqRDCkr1yiiGU-sN1kHPE7RNB3-on3GZLKlYk8INqnio0q12g>
+    <xmx:kpIXZvogbnEgGL-fbi7v-GPCF38iUW8LDsfwBKRp3cPixZpwrOuH_g>
+    <xmx:kpIXZsRC4_CwDKAcjrawuVzHp6PjC6quz4YwxuJdT3Lj1iEflsunuw>
+    <xmx:kpIXZvoWDbZTWaGSZNjZ73uwIv0H9UgS3rKuuxf4O1WSIHRSWTG1qw>
+    <xmx:kpIXZrq_20fZBhzVx79U-UyZq1gSwNDF7qoDML-RopHMuLSmGRJpW59M>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 11 Apr 2024 03:34:41 -0400 (EDT)
+Date: Thu, 11 Apr 2024 09:34:39 +0200
+From: Greg KH <greg@kroah.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>, stable@vger.kernel.org,
+	stable-commits@vger.kernel.org, buddyjojo06@outlook.com,
+	Bjorn Andersson <andersson@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>
+Subject: Re: Patch "arm64: dts: qcom: Add support for Xiaomi Redmi Note 9S"
+ has been added to the 6.8-stable tree
+Message-ID: <2024041112-shank-winking-0b54@gregkh>
+References: <20240410155728.1729320-1-sashal@kernel.org>
+ <e06402a9-584f-4f0c-a61e-d415a8b0c441@linaro.org>
+ <2024041016-scope-unfair-2b6a@gregkh>
+ <addf37ca-f495-4531-86af-6baf1f3709c3@linaro.org>
+ <2024041132-heaviness-jasmine-d2d5@gregkh>
+ <641eb906-4539-4487-9ea4-4f93a9b7e3cc@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,110 +106,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <af60b8c3-e3c4-48b2-a4c6-f2f430aa9c68@kernel.org>
+In-Reply-To: <641eb906-4539-4487-9ea4-4f93a9b7e3cc@linaro.org>
 
-On Tue, Apr 09, 2024 at 05:04:02PM +0200, Matthieu Baerts wrote:
-> Hi Greg,
-> 
-> On 09/04/2024 14:16, Greg KH wrote:
-> > On Mon, Apr 08, 2024 at 06:10:38PM +0200, Matthieu Baerts wrote:
-> >> Hi Greg,
-> >>
-> >> On 08/04/2024 13:31, Greg KH wrote:
-> >>> On Fri, Apr 05, 2024 at 05:36:40PM +0200, Matthieu Baerts (NGI0) wrote:
-> >>>> From: Geliang Tang <tanggeliang@kylinos.cn>
+On Thu, Apr 11, 2024 at 09:27:28AM +0200, Krzysztof Kozlowski wrote:
+> On 11/04/2024 09:22, Greg KH wrote:
+> > On Wed, Apr 10, 2024 at 08:24:49PM +0200, Krzysztof Kozlowski wrote:
+> >> On 10/04/2024 20:02, Greg KH wrote:
+> >>> On Wed, Apr 10, 2024 at 07:58:40PM +0200, Konrad Dybcio wrote:
 > >>>>
-> >>>> This patch uses addition assignment operator (+=) to append strings
-> >>>> instead of duplicating the variable name in mptcp_connect.sh and
-> >>>> mptcp_join.sh.
 > >>>>
-> >>>> This can make the statements shorter.
+> >>>> On 4/10/24 17:57, Sasha Levin wrote:
+> >>>>> This is a note to let you know that I've just added the patch titled
+> >>>>>
+> >>>>>      arm64: dts: qcom: Add support for Xiaomi Redmi Note 9S
 > >>>>
-> >>>> Note: in mptcp_connect.sh, add a local variable extra in do_transfer to
-> >>>> save the various extra warning logs, using += to append it. And add a
-> >>>> new variable tc_info to save various tc info, also using += to append it.
-> >>>> This can make the code more readable and prepare for the next commit.
-> >>>>
-> >>>> Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-> >>>> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> >>>> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> >>>> Link: https://lore.kernel.org/r/20240308-upstream-net-next-20240308-selftests-mptcp-unification-v1-8-4f42c347b653@kernel.org
-> >>>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> >>>> (cherry picked from commit e7c42bf4d320affe37337aa83ae0347832b3f568)
-> >>>> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> >>>> ---
-> >>>>  .../selftests/net/mptcp/mptcp_connect.sh      | 53 ++++++++++---------
-> >>>>  .../testing/selftests/net/mptcp/mptcp_join.sh | 30 +++++------
-> >>>>  2 files changed, 43 insertions(+), 40 deletions(-)
+> >>>> autosel has been reeaaaaaly going over the top lately, particularly
+> >>>> with dts patches.. I'm not sure adding support for a device is
+> >>>> something that should go to stable
 > >>>
-> >>> Odd, this one did not apply.
+> >>> Simple device ids and quirks have always been stable material.
+> >>>
 > >>
-> >> Indeed, that's odd. Do you use a different merge strategy?
+> >> That's true, but maybe DTS should have an exception. I guess you think
+> >> this is trivial device ID, because the patch contents is small. But it
+> >> is or it can be misleading. The patch adds new small DTS file which
+> >> includes another file:
+> >>
+> >> 	#include "sm7125-xiaomi-common.dtsi"
+> >>
+> >> Which includes another 7 files:
+> >>
+> >> 	#include <dt-bindings/arm/qcom,ids.h>
+> >> 	#include <dt-bindings/firmware/qcom,scm.h>
+> >> 	#include <dt-bindings/gpio/gpio.h>
+> >> 	#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+> >> 	#include "sm7125.dtsi"
+> >> 	#include "pm6150.dtsi"
+> >> 	#include "pm6150l.dtsi"
+> >>
+> >> Out of which last three are likely to be changing as well.
+> >>
+> >> This means that following workflow is reasonable and likely:
+> >> 1. Add sm7125.dtsi (or pm6150.dtsi or pm6150l.dtsi)
+> >> 2. Add some sm7125 board (out of scope here).
+> >> 3. Release new kernel, e.g. v6.7.
+> >> 4. Make more changes to sm7125.dtsi
+> >> 5. The patch discussed here, so one adding sm7125-xiaomi-curtana.dts.
+> >>
+> >> Now if you backport only (5) above, without (4), it won't work. Might
+> >> compile, might not. Even if it compiles, might not work.
+> >>
+> >> The step (4) here might be small, but might be big as well.
 > > 
-> > I do not use any merge strategy at all, I use 'patch' to apply patches
-> > (well, that's what quilt does), so git is not involved here.
+> > Fair enough.  So should we drop this change?
 > 
-> Ah OK, thank you for the explanation. I thought git was used to do the
-> cherry-pick + generate the patch for quilt.
+> I vote for dropping. Also, I think such DTS patches should not be picked
+> automatically via AUTOSEL. Manual backports or targetted Cc-stable,
+> assuming that backporter investigated it, seem ok.
 
-No, git is used only to export the patch from the tree if a git id is
-used.  As you sent a patch here, I just used your patch for this.
+Sasha now dropped this, thanks.
 
-> I'm still surprised quilt didn't accept these patches generated on top
-> of the 6.6-y branch. (By "chance", did you not have conflicts because
-> the patch 1/5 (commit 629b35a225b0 ("selftests: mptcp: display simult in
-> extra_msg")) didn't get backported by accident? It is strange it is also
-> missing in the v6.6.y branch.)
-
-I do not remember if there were conflicts or not, sorry.
-
-> > How about just resending this one patch after the next 6.6.y release
-> > that comes out in a day or so.
-> 
-> No hurry, that can indeed wait for the next 6.6.y release.
-> 
-> Just to be sure we are aligned: I suggested backporting these 5 commits:
-> 
-> - 629b35a225b0 ("selftests: mptcp: display simult in extra_msg")
-
-This one I've now queued up.
-
-> - e3aae1098f10 ("selftests: mptcp: connect: fix shellcheck warnings")
-
-Was already in the tree.
-
-> - e7c42bf4d320 ("selftests: mptcp: use += operator to append strings")
-
-Failed to apply
-
-> - 8e2b8a9fa512 ("mptcp: don't overwrite sock_ops in mptcp_is_tcpsk()")
-
-In the tree.
-
-> - 7a1b3490f47e ("mptcp: don't account accept() of non-MPC client as
-> fallback to TCP")
-
-In the tree.
-
-> But only these 3 got backported to 6.6.y:
-> 
-> - e3aae1098f10 ("selftests: mptcp: connect: fix shellcheck warnings")
-> - 8e2b8a9fa512 ("mptcp: don't overwrite sock_ops in mptcp_is_tcpsk()")
-> - 7a1b3490f47e ("mptcp: don't account accept() of non-MPC client as
-> fallback to TCP")
-> 
-> The last commit ("mptcp: don't account accept() of non-MPC client as
-> fallback to TCP") has a small problem in 6.6.y (only):
-> 
-> - In case of issue, a message will say that the subtest is OK and not
-> OK, and the TAP report will report that everything is OK with this
-> subtest => that's OK, nothing critical, that's the tests.
-> - We can solve that in the next 6.6 version by manually backporting
-> commit e7c42bf4d320 ("selftests: mptcp: use += operator to append
-> strings") and its dependence: commit 629b35a225b0 ("selftests: mptcp:
-> display simult in extra_msg").
-
-Patches gladly accepted :)
+Sasha, want to add dts changes to the AUTOSEL "deny-list"?
 
 thanks,
 
