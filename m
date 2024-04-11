@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-39006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60B08A1170
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB348A1200
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E74991C22799
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC6031C21C25
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898B2145B26;
-	Thu, 11 Apr 2024 10:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03CB6BB29;
+	Thu, 11 Apr 2024 10:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="me5PJtud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1YsSXqW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E29142624;
-	Thu, 11 Apr 2024 10:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1C379FD;
+	Thu, 11 Apr 2024 10:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832239; cv=none; b=aNv719eUUnDArTIjkA5S92sn3ugGi6fnYb0MAA28WZhELVi80tECrIgpWB1DlGg7mpTswogvQ6rpFGwUg4NOYcjfbnPAevJihLTgCA0TKZAaQj1KVw2GF3jadWe+w2xXKLvZvVHExiDxJhP/PoFP89BEe0ZzX42yGKQACnTmncM=
+	t=1712832575; cv=none; b=ngxuW2W3kQw3XGiU9IRf7m4XQ46DB+gd8j9UkAEHN/nlcLH6EDsr/RfYgFI80F6ysjH1HBN4dt/UCNASjB7DRYZS9YTVIgetpMz6KaRg0wRJyDBtrDMazPFuWx6x7+8wnvXXwH434k4qLksb6jiE/kvZV8v+DOh5/16CI4+zjiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832239; c=relaxed/simple;
-	bh=ZGofY7EdWaiOXqWTsqeG+K7Vp5QFAb82Y/xFGUYEnu8=;
+	s=arc-20240116; t=1712832575; c=relaxed/simple;
+	bh=sUa6lNXxHs4kgE3GviXBqI7p5RhXOvxwSfP9F6SwaW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMNWhHpAVAAOq4+uSq44iJsgpaf3uES+QEEM/nyjYExeRoYDUF96cjFKbbcvOeSyOMX26pbzG6QpVa7kKg1PE0+3i+C2hCikWm7E9CXkYltYscENu3AhobDST5nf0zlWhCPo/jsA4KcMG0fQATegC47IW1n4hQkMoH0ZlgwIWO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=me5PJtud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BADC4C433C7;
-	Thu, 11 Apr 2024 10:43:58 +0000 (UTC)
+	 MIME-Version; b=Q7yN97e7Fo/8gat7EBqloa06fBb5d7sF71Pr0C6J6vWastSxTCZiuWVCAZYLnyw9kSM44HLcVQILkRknx9hUE3sELvzDw1pP9m+a79rdQe9/u2Nb7yKml6UiGz04LUHmtrPSsACP9Kevdb2/7gybMQMNSGqlgqWZFfcl6JwWg6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1YsSXqW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BC0C433C7;
+	Thu, 11 Apr 2024 10:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832239;
-	bh=ZGofY7EdWaiOXqWTsqeG+K7Vp5QFAb82Y/xFGUYEnu8=;
+	s=korg; t=1712832575;
+	bh=sUa6lNXxHs4kgE3GviXBqI7p5RhXOvxwSfP9F6SwaW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=me5PJtudHEZGYz2ot26AjkuK59rVPlu0Yo9KxFRmuiEldPP+D7y2bgzcE005dg+Su
-	 cplgX3MWuMogMpuTqqoLfqYMCOmJ4ogBt9lB/caRFsAXcDIMgjt+QSGJN5zg+tcg3k
-	 Xtnr96eDWOhIyViKzPBXw+tGnyDS9+MUbETiCHuQ=
+	b=r1YsSXqWHLV3LGU4LvOkP3w6EkubOfR0H5AG06CPtd7RV6CiG+wvnUNkBoAWhF05Z
+	 eP3IyCDjnXiIditcqB4JA8qgXereibBtdWeMpqRKp7Jh/7hM2wetTk4EREOJgkZBFH
+	 e3Qio5R1EkmAxtg3Jeurj7NjeEVY5QVZDBAY9xyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 277/294] usb: typec: tcpci: add generic tcpci fallback compatible
+Subject: [PATCH 5.15 12/57] tools/power x86_energy_perf_policy: Fix file leak in get_pkg_num()
 Date: Thu, 11 Apr 2024 11:57:20 +0200
-Message-ID: <20240411095443.882398700@linuxfoundation.org>
+Message-ID: <20240411095408.364038765@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+References: <20240411095407.982258070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Felsch <m.felsch@pengutronix.de>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-[ Upstream commit 8774ea7a553e2aec323170d49365b59af0a2b7e0 ]
+[ Upstream commit f85450f134f0b4ca7e042dc3dc89155656a2299d ]
 
-The driver already support the tcpci binding for the i2c_device_id so
-add the support for the of_device_id too.
+In function get_pkg_num() if fopen_or_die() succeeds it returns a file
+pointer to be used. But fclose() is never called before returning from
+the function.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240222210903.208901-3-m.felsch@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpci.c | 1 +
+ tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-index e34e46df80243..33c67adf7c67a 100644
---- a/drivers/usb/typec/tcpm/tcpci.c
-+++ b/drivers/usb/typec/tcpm/tcpci.c
-@@ -732,6 +732,7 @@ MODULE_DEVICE_TABLE(i2c, tcpci_id);
- #ifdef CONFIG_OF
- static const struct of_device_id tcpci_of_match[] = {
- 	{ .compatible = "nxp,ptn5110", },
-+	{ .compatible = "tcpci", },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, tcpci_of_match);
+diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+index 5fd9e594079cf..ebda9c366b2ba 100644
+--- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
++++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+@@ -1241,6 +1241,7 @@ unsigned int get_pkg_num(int cpu)
+ 	retval = fscanf(fp, "%d\n", &pkg);
+ 	if (retval != 1)
+ 		errx(1, "%s: failed to parse", pathname);
++	fclose(fp);
+ 	return pkg;
+ }
+ 
 -- 
 2.43.0
 
