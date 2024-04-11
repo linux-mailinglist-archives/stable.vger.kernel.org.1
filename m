@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ECC38A0F46
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 689B28A0FC4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:27:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49CD4286CE1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:22:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 247B2282BA7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE10146A70;
-	Thu, 11 Apr 2024 10:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B73146A71;
+	Thu, 11 Apr 2024 10:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1Mo9nD0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0f8mglgT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94B0145FF0;
-	Thu, 11 Apr 2024 10:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CCC145B13;
+	Thu, 11 Apr 2024 10:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830947; cv=none; b=fqP22yLB9hOZKxaXmLs6o05XEZF7Eii4OF4vKKHg8+fz4JGCLxrXw7lMLeotw60bgW9qbHnbhpO9yJNHLt7BY0ck8yPofhJtBqQjBiBvuoDRUIo1qPEWrlIW0daogKSdgi8IWFSGno/idoKvy2wYH3n3N3PPPMpvDHIM5Cx6m+Q=
+	t=1712831240; cv=none; b=mEeRLdaHZxfTo07xCuxre37TNx5EtUSpEbxFqyoiVvKOwjHIy1CcEatYPbqUELjDZxtqcm2sqByVSotyoE1recYb8qq3kn5iperdVMX3vRh7PBAKzretq99nu0jUjvjH0JrHpsNdzqXVMPz5SoynAXzb+MEoWXTGVePqI7E+D0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830947; c=relaxed/simple;
-	bh=Aj/yyizbuPHoYSJvdW8dhBDYUCUqW6PBMOGE2Roa2Uo=;
+	s=arc-20240116; t=1712831240; c=relaxed/simple;
+	bh=GHUrM2JkJip0e5DVGvZvSVQawvAUqQr1kQiVRJbRPtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I2ZGF3uoUc1v+8eUXARVk0fXoSDp95eRqxijg+F6U6IICcpMaE08LJE2LZ4VsREd3KNByV2nUXcVi6DkTwiK2DMOm12khDGjjT1GjH2UbT6RKAZZrz8Lh2TSOD55WWgYkay89nCHr1+aZOO7WEvYj6To6pQs+lqjcrl8QYaoqA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1Mo9nD0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E56C433F1;
-	Thu, 11 Apr 2024 10:22:27 +0000 (UTC)
+	 MIME-Version; b=aLLibmcE1Lp/bP9ttFOi5JBFKiDSnEK72R8kT9ziJOhkP/eUSXUCilPrcGglhH+h4vvM1nmZdNOkuGoojY0eMPQb+4oyxvk9cEdiGHaOJyIGKIH7mWiFVLsaPHR4+0zQKImKyZ7ZcS5o71vl6dVNkWU9tCYZjLeRPfBb7QhiZws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0f8mglgT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E1DC433F1;
+	Thu, 11 Apr 2024 10:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830947;
-	bh=Aj/yyizbuPHoYSJvdW8dhBDYUCUqW6PBMOGE2Roa2Uo=;
+	s=korg; t=1712831240;
+	bh=GHUrM2JkJip0e5DVGvZvSVQawvAUqQr1kQiVRJbRPtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j1Mo9nD0ye0h0AY63HktWPpetrd7w7EN4Ob6lBE7qdNf32o6FXbED0008+QRl1K3S
-	 9L2RI/7utGN9211YYP94hJ5ui5ldlKGLSOJ8jAnnZzo0XptaWkJHS1ffIP0zMf6JV6
-	 NDHFT1roeSSSY3+h3Wkag1tHfcuI2wRXmPlskxlA=
+	b=0f8mglgT5NjYImN+aqOzkfFYeHM/kywFTS5hFYghmkNZjMH59MhyuA6RsJaft0yDD
+	 iQFGEbx5nF8ktTozjJTq2KotMdeFU+JPzLOibJh3xmMYmX1NOVqS66QNVGTnQc6roU
+	 WuRgt2CtQqtnxJKH6b6Spmbs9+ToJwAMC1wdfXXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Alex Henrie <alexhenrie24@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 172/215] wifi: ath9k: fix LNA selection in ath_ant_try_scan()
+Subject: [PATCH 6.6 054/114] isofs: handle CDs with bad root inode but good Joliet root directory
 Date: Thu, 11 Apr 2024 11:56:21 +0200
-Message-ID: <20240411095430.042314285@linuxfoundation.org>
+Message-ID: <20240411095418.515712419@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Alex Henrie <alexhenrie24@gmail.com>
 
-[ Upstream commit d6b27eb997ef9a2aa51633b3111bc4a04748e6d3 ]
+[ Upstream commit 4243bf80c79211a8ca2795401add9c4a3b1d37ca ]
 
-In 'ath_ant_try_scan()', (most likely) the 2nd LNA's signal
-strength should be used in comparison against RSSI when
-selecting first LNA as the main one. Compile tested only.
+I have a CD copy of the original Tom Clancy's Ghost Recon game from
+2001. The disc mounts without error on Windows, but on Linux mounting
+fails with the message "isofs_fill_super: get root inode failed". The
+error originates in isofs_read_inode, which returns -EIO because de_len
+is 0. The superblock on this disc appears to be intentionally corrupt as
+a form of copy protection.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+When the root inode is unusable, instead of giving up immediately, try
+to continue with the Joliet file table. This fixes the Ghost Recon CD
+and probably other copy-protected CDs too.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20231211172502.25202-1-dmantipov@yandex.ru
+Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20240208022134.451490-1-alexhenrie24@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/antenna.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/isofs/inode.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/antenna.c b/drivers/net/wireless/ath/ath9k/antenna.c
-index 988222cea9dfe..acc84e6711b0e 100644
---- a/drivers/net/wireless/ath/ath9k/antenna.c
-+++ b/drivers/net/wireless/ath/ath9k/antenna.c
-@@ -643,7 +643,7 @@ static void ath_ant_try_scan(struct ath_ant_comb *antcomb,
- 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
- 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_PLUS_LNA2;
- 			} else if (antcomb->rssi_sub >
--				   antcomb->rssi_lna1) {
-+				   antcomb->rssi_lna2) {
- 				/* set to A-B */
- 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
- 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_MINUS_LNA2;
+diff --git a/fs/isofs/inode.c b/fs/isofs/inode.c
+index 2ee21286ac8f0..54075fe3de9b1 100644
+--- a/fs/isofs/inode.c
++++ b/fs/isofs/inode.c
+@@ -908,8 +908,22 @@ static int isofs_fill_super(struct super_block *s, void *data, int silent)
+ 	 * we then decide whether to use the Joliet descriptor.
+ 	 */
+ 	inode = isofs_iget(s, sbi->s_firstdatazone, 0);
+-	if (IS_ERR(inode))
+-		goto out_no_root;
++
++	/*
++	 * Fix for broken CDs with a corrupt root inode but a correct Joliet
++	 * root directory.
++	 */
++	if (IS_ERR(inode)) {
++		if (joliet_level && sbi->s_firstdatazone != first_data_zone) {
++			printk(KERN_NOTICE
++			       "ISOFS: root inode is unusable. "
++			       "Disabling Rock Ridge and switching to Joliet.");
++			sbi->s_rock = 0;
++			inode = NULL;
++		} else {
++			goto out_no_root;
++		}
++	}
+ 
+ 	/*
+ 	 * Fix for broken CDs with Rock Ridge and empty ISO root directory but
 -- 
 2.43.0
 
