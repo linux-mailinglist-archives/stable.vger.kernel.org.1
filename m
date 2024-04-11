@@ -1,112 +1,140 @@
-Return-Path: <stable+bounces-38031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63C778A05D0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 04:26:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D3338A0620
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 04:48:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 045981F24D9F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 02:26:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17CF71F23D25
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 02:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB30B320A;
-	Thu, 11 Apr 2024 02:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843F813B28F;
+	Thu, 11 Apr 2024 02:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OEAGRLyW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DJWp4vl1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EDF9449
-	for <stable@vger.kernel.org>; Thu, 11 Apr 2024 02:26:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8F8282FA;
+	Thu, 11 Apr 2024 02:48:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712802382; cv=none; b=jyHUJwoa13DE52hJKnmxoYRRBcjf6fq/eGQirPvtWhcTlk+7r5B8vZCQxcQm349PcQ1nA+T9XpXIHrKBuMjBI5F2OFGcZ47Mk4VvZJ4pnTy6lzGsjJzB+RxnksOkHT/v7u0/0LLZsvhuwX5AfMmYeu4gAjbNhiZgZanzjIZ2Rxk=
+	t=1712803682; cv=none; b=qLCrkwbs1KzPJvGGOnVIU+joX9dhHKD+mkSR2sQqeBRfNdxJdbz0AFggTLomepf4pO2moPzZygqNBKviKiCak931jzbSFbivq4RlHTw36gbsiXPH8EDf6q1LfNrvjjzTokDY28VPVQrvaMZfpGQmteaW7nR0DmXPpHmgU/TKLDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712802382; c=relaxed/simple;
-	bh=UXJSmZxNI75aHxqgtrGql6qZ0waGZlG3tYEnH0qUS7Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VE57bJcRh6DAQ8Q3ajJy+XjVyF0CZmVGl8BkcusaiPICJq43BxF/9smYy7FsKITZg3HhjSXi0Zbw28qZ0VSutaMhpUyhrMRj58Tnl4nMZ/y8a4gALYBNXTw1tbGFqWXrpAptQQEPH4VMqNYG6f6gZNuoKSdSFcmSgjd4aTU2vqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OEAGRLyW; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-43477091797so93921cf.1
-        for <stable@vger.kernel.org>; Wed, 10 Apr 2024 19:26:20 -0700 (PDT)
+	s=arc-20240116; t=1712803682; c=relaxed/simple;
+	bh=eJphG6hxK5MLkJm07zYc9BIh4Drt2GMMuGsf+W5mEnQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Dmk70dopWils0BRy/wFpY4IvlIjCRcbrRsmPx48PNhhSxSVtMOyvhZhyNUTPBl7FmYs3DtpnE0SRutQVev3iI5HdqY9h1hwHporpE+6J1LXV3zropPvu6hmXXjO0llPn8bDhUWijV9tovdptjvi52zZAJFDlhmP8Hq7+laTxZeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DJWp4vl1; arc=none smtp.client-ip=209.85.210.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6ea163eb437so2380138a34.2;
+        Wed, 10 Apr 2024 19:48:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712802380; x=1713407180; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UXJSmZxNI75aHxqgtrGql6qZ0waGZlG3tYEnH0qUS7Q=;
-        b=OEAGRLyWraUqmw93STYIsFYWNKvqu0EqRRtw8GfQQNfllTju2Wxqpxttv9CCrJ4tS9
-         KOGdbI/SuAe/W2oAv0JwOqCc7NC0EJMGsOiTYGasSodAtgfAzofDhpODKRI0SsU5kpAv
-         rD1ioUalP4Sd7gJt1s/Rj774wDZyGkm8G4sjdb+XiElTGxwskGAWZj5aStWN4db26zKh
-         tGlfXjuSNDZETs+Ov0onK76ibHWmIKq7wuoFHzhz+rK80QW7D6B20+ql7yHb5YQdoO6q
-         MmkuepzQygnaoHGwxQbLT22ARJglurln3lUXvG3rQLoNfkouNZd5goOOK4LAmAQILkkd
-         yvGA==
+        d=gmail.com; s=20230601; t=1712803679; x=1713408479; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=0v2VY93AarnBB8OF2yJX5KcU060xyjTJtFzMOCSeicU=;
+        b=DJWp4vl1pWy9BLFeGq7d5JxnenILWpy7f6aQNvyUx/SG3k4bQhPlZvG7s0eikTpxzZ
+         CSEwqzC2auQYfTASHA78nLypsAzeyti3fT6+Mzno9SvnLUh6KQ6ykY9Q62HbYIUFtQne
+         7XrL+e8mzk+dNCKSZMzDHKSoRl0/4dntntZqMThkdEuQzFMQlRT1ZQG6TR/shKJd1wlZ
+         SaEH/7u3dbH4gXEzlURyfLc5zj7xoCLG9brXDWdhExMumM1EZR8HkwRUqUmFRpSb3DsW
+         pz7njkYD8SDMhIbJNNfiS0PkGugQl9/49yW0ShnFNAy+tqzB7sSz1FFy0wjP8mVPn3u0
+         eUng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712802380; x=1713407180;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UXJSmZxNI75aHxqgtrGql6qZ0waGZlG3tYEnH0qUS7Q=;
-        b=q0eAaKsYPI72gKfzhgCeSUFkNIbNzADJyvpdsoFg84pDPqGZDceRWtoi+872oaymC7
-         5pet/VfSmw6ASGWr+WNFdLd9hhQ0CAbup1kL6ijuQmvPUb7AGq3SmxTi8kL4aJM6F+cV
-         Z7ahmVCRiaDkAoFFIqsqxTkRT+Sq6y0Jnj2McQJS2/fKpxCIjdNa5CqNzJ24CKhVzP50
-         IoV/8nX1o6tjufdFBttv6xcP66ycErXzDETAa3mlmL4IuJGUQLG6Xgy3o8UY2PWcnkRw
-         lAREvdhxX3hrs6fn334vWVOuGGikYb5LG7aEsvCqtD7OdEzyWqqpNS+nBor7Mmfq4IHs
-         WN0g==
-X-Forwarded-Encrypted: i=1; AJvYcCUMzgklkaD0FURzG4KKItQ8J31xCOetFqJ8euTUbJeb+/A1bSMhaWzLJ895twf9eNR3xe8LyxOQyzstj0c1lHn8bpDFVPyV
-X-Gm-Message-State: AOJu0YzEg3tRyxZAJsojIuLIa5G9sLy/1NwP6KVzqI8D5eUBkndKjVDD
-	rPNs7S5RW0yR9MyPnfHv/alF/BNi+qoxSQLPpBC9mK29t6LxXvt/miM1ujiLip+yre+8k37Z8p3
-	agxwITiRc59zCjlY9vbjuzrXiwQ6Brp+TOhn/
-X-Google-Smtp-Source: AGHT+IFPg5vORmoeTvYI/uTQ7j/zK/tZPyZEFI/0EvsxjhZAYdby9Des1k8yuS9qmNN9z2fJqX/gxMcyeTA58eMTClQ=
-X-Received: by 2002:a05:622a:4c8d:b0:434:ec62:970c with SMTP id
- ez13-20020a05622a4c8d00b00434ec62970cmr131218qtb.12.1712802379873; Wed, 10
- Apr 2024 19:26:19 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712803679; x=1713408479;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0v2VY93AarnBB8OF2yJX5KcU060xyjTJtFzMOCSeicU=;
+        b=viFfm5vFVAGRChSQbVej/1F2nImXmhwkc3wXggH5UAoHEPhu7URtTiFE++7asCMEvr
+         55b1DsEKT2oJ4+3SMQQ4NUNhfAq2RkAQhz0Injh0VwWAh31hIx8+en1m96aq0fV2nC/K
+         EwkC+bfCmSQrKteWb+GkZpo8DV4oeFMoLodKSU6j14jvpYZRxPDnHHZXYJXHhVYZ7Ohq
+         4XpwKiWhBBvW1QuSJQjh5lea5J+gXtqhiqEtt0B26/YUN+YU27IkoGatMSt9DQ4nLFym
+         ystWxWxJ8IcN3EbvsRs1Ya1eVBvNbCouNkJaEF9COiRN392vxrwTXg2p/RCuvBcOnLuk
+         o8bQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW+I8C/YUZXkDgmGXMt6fazMw18n068AMae2K1/J4MUVOog9YJV7rzzu3g1rZVzbm0N84PHUwuOi7qFz20vGxPcQJL0reOhiOBreThWWkhXzD+KKnwWZfOzJLcxqi1a2vdbRc0kerM=
+X-Gm-Message-State: AOJu0Yydco4xLKPUuS0lvuwB5IFkGjtypW87izd0IbGzsDY9YbI2bCoe
+	OZcaZOCqpsL9jUFTavnG289lVhgMRfzLO/axvu63u1xC4zNPr2TghA/qmyID
+X-Google-Smtp-Source: AGHT+IF6/ra7tsi778+xsInsEN4ARudNuz9JQnw7btnunKOwMcuuhz3Gm/XqQPaDWRfp0y4IiBMUTg==
+X-Received: by 2002:a9d:66ca:0:b0:6ea:2d0d:f531 with SMTP id t10-20020a9d66ca000000b006ea2d0df531mr4811164otm.37.1712803679655;
+        Wed, 10 Apr 2024 19:47:59 -0700 (PDT)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id y13-20020a0568301d8d00b006ea16d35096sm140824oti.20.2024.04.10.19.47.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Apr 2024 19:47:59 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <287e9d4e-316a-4579-961e-58e75abea534@lwfinger.net>
+Date: Wed, 10 Apr 2024 21:47:58 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240410182618.169042-2-noah@noahloomans.com> <CABXOdTe02ALsv6sghnhWMkn7-7kidXhjvWzpDn7dGh4zKEkO8g@mail.gmail.com>
- <D0GS8UL1WKI5.1PLEUUWOD7B8@noahloomans.com> <ZhdIc3vt3DFvT066@google.com>
-In-Reply-To: <ZhdIc3vt3DFvT066@google.com>
-From: Guenter Roeck <groeck@google.com>
-Date: Wed, 10 Apr 2024 19:26:07 -0700
-Message-ID: <CABXOdTetbKE_VWQsK4K6PB4Lm456BO7FfWyHtBBMhP77+QhzPw@mail.gmail.com>
-Subject: Re: [PATCH] platform/chrome: cros_ec_uart: properly fix race condition
-To: Tzung-Bi Shih <tzungbi@kernel.org>
-Cc: Noah Loomans <noah@noahloomans.com>, Bhanu Prakash Maiya <bhanumaiya@chromium.org>, 
-	Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
-	Robert Zieba <robertzieba@google.com>, chrome-platform@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] rtw88: Fix startup problems for SDIO wifi plus UART
+ Bluetooth
+To: Ping-Ke Shih <pkshih@realtek.com>, Larry Finger <Larry.Finger@gmail.com>,
+ Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <4umro86wvv84.MjDfYvt4P5uZryt8boBK8Q2@1EHFQ.trk.elasticemail.com>
+ <5af71338f3904aac9d2c237637c851e7@realtek.com>
+Content-Language: en-US
+From: Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <5af71338f3904aac9d2c237637c851e7@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 10, 2024 at 7:18=E2=80=AFPM Tzung-Bi Shih <tzungbi@kernel.org> =
-wrote:
->
-> On Thu, Apr 11, 2024 at 12:06:33AM +0200, Noah Loomans wrote:
-> > On 2024-04-10 at 21:48 UTC+02, Guenter Roeck wrote:
-> > > On Wed, Apr 10, 2024 at 11:29=E2=80=AFAM Noah Loomans <noah@noahlooma=
-ns.com> wrote:
-> > > > This is my first time contributing to Linux, I hope this is a good
-> > > > patch. Feedback on how to improve is welcome!
-> > >
-> > > The commit message is a bit long, but the patch itself looks good to =
-me.
-> >
-> > Hmm yeah it's a bit on a long side. I'm not sure what could be removed
-> > though, it all seems relevant for understanding the bug and the fix.
->
-> Applied with shortening the message slightly.
+On 4/10/24 9:13 PM, Ping-Ke Shih wrote:
+> 
+> Larry Finger <Larry.Finger@gmail.com> wrote:
+> 
+>> As discussed in the links below, the SDIO part of RTW8821CS fails to
+>> start correctly if such startup happens while the UART portion of
+>> the chip is initializing.
+> 
+> I checked with SDIO team internally, but they didn't meet this case, so we may
+> take this workaround.
+> 
+> SDIO team wonder if something other than BT cause this failure, and after
+> system boots everything will be well. Could you boot the system without WiFi/BT
+> drivers, but insmod drivers manually after booting?
 
-We might also consider applying the patch to all ChromeOS branches
-directly (not waiting for upstream); we do see a number of crashes
-because of it.
+I sent the request to the user with the problem. I do not have any SDIO devices.
 
-Guenter
+> 
+> 
+>> ---
+>>   drivers/net/wireless/realtek/rtw88/sdio.c | 28 +++++++++++++++++++++++
+>>   1 file changed, 28 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+>> index 0cae5746f540..eec0ad85be72 100644
+>> --- a/drivers/net/wireless/realtek/rtw88/sdio.c
+>> +++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+>> @@ -1325,6 +1325,34 @@ int rtw_sdio_probe(struct sdio_func *sdio_func,
+> 
+> [...]
+> 
+>> +       mdelay(500);
+> 
+> Will it better to use sleep function?
+
+My thoughts were that a sleep function would tie up a CPU, whereas the delay 
+would not. Initially, we tested an msleep(150) statement, but that only gave a 
+60% success rate, whereas mdelay(500) worked 20 straight tries.
+
+Thanks for your comments.
+
+Larry
+
+
 
