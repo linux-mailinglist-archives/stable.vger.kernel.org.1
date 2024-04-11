@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-38521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4BCE8A0F07
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:20:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AAA78A10F3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D65581C2143E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:20:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C5DE1C20EEC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C7014601D;
-	Thu, 11 Apr 2024 10:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59006146D79;
+	Thu, 11 Apr 2024 10:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TgBIJgVq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwwCuy9N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AAD140E3D;
-	Thu, 11 Apr 2024 10:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C59149DFF;
+	Thu, 11 Apr 2024 10:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830818; cv=none; b=g6GlZn9jV0x+jT2WSM7dE3jvQ2sUWRi20wYrharCfij4I51JgdYQIZ217IjXYCZqjb/a+QxqHgJDCkeYgQuTxPaIWCoZdd73E8lv+oaiKZ9SuLu51Obw9U2s+Rj7w90hRm7Xu6a3m66DhJjVHRUeQ4Ky/LEjmrBBOQu5Y/qUQMw=
+	t=1712831934; cv=none; b=JQGjkN8MRR+pBA9QBjV0CwkWYIkqU3gtBdnNA/z0JejGM5UA1iHg/h9oNSZA+2gMI5un46u0fsVPVYC9zFtZEttFIcwTIGkBcC9MAg88MRag8KsdbQFDqkzK5aw7uxR88Y7ruRJvMWnOfD1z6r8L9mnquKkarktQw/3NVK4SRTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830818; c=relaxed/simple;
-	bh=DpZQDw3JaW94Ed0WUjMkuTsa9QhYyXxoAFAW7xBAlVw=;
+	s=arc-20240116; t=1712831934; c=relaxed/simple;
+	bh=Ifv23XTXARN9Tx/NtRjf0rzT/6A9ZX4wZNbBr+p6Ie0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m3AzVJ+66o9I1DiqgvtNLOqMtHO9d5u2tDhbdLCEBGnePhlYlznPYuQFY5KLtMTGpTLNtY1mvbdRRuMssu0KMxjf0FyFbOJf6HWLzrSkY168RyZG3eQqYFZEvp9K1W3Ibq0UDPoC7ktJSRoR9xWvrUTn8OuJYK2u4XVdudRJbSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TgBIJgVq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81AA4C433F1;
-	Thu, 11 Apr 2024 10:20:17 +0000 (UTC)
+	 MIME-Version; b=N3f84aCjYaYKRxd/r4fA8GSbeFJIltS57Q9B9sKXupsISmCFfzy0L1zYdSNRYDnI7BROP5UNIGNKKSYA2aHKJO/knJuL0oe3WLoqlSdg2pVPyVwGxGU1snkjxZUATSuO4c7q10Hjp8qFelYAPfPpmAhlU69vBWyErZX71cmGC9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwwCuy9N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087EDC43390;
+	Thu, 11 Apr 2024 10:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830817;
-	bh=DpZQDw3JaW94Ed0WUjMkuTsa9QhYyXxoAFAW7xBAlVw=;
+	s=korg; t=1712831933;
+	bh=Ifv23XTXARN9Tx/NtRjf0rzT/6A9ZX4wZNbBr+p6Ie0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TgBIJgVqgSGWm16Jzekq7lxRtZKuUTwqw7hWi3pvzWSLfkyOs/TV8+RB+9R34YG6K
-	 AhdcpoB3JtOUbZ61+NQcg9Rf7nLMo3ojqrnTFuEFDG2WK4eKVqc0WJ3Sz0YjjQWyko
-	 KRDWPSuFBH4T1FbwGMC1E2umUjaiXeC2U2pSsvDA=
+	b=MwwCuy9NCVUrBlEZTkUWDCbCYIreZNagyKKadgqwib3wl8xTgEbjsqpksCpHCxBUr
+	 ooVeytnCzT2xeg9Vny5QqmRPUjUxMTeT0WkiySVpnBE800Iq7nw/JMEsD7vYU/S415
+	 WX5G1GTPM0T/KOt5X8FA8F6ZfQ57JbRmNCWjPT78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.4 128/215] USB: core: Fix deadlock in usb_deauthorize_interface()
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	stable <stable@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 5.10 174/294] usb: typec: ucsi: Clear UCSI_CCI_RESET_COMPLETE before reset
 Date: Thu, 11 Apr 2024 11:55:37 +0200
-Message-ID: <20240411095428.744925858@linuxfoundation.org>
+Message-ID: <20240411095440.869372471@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-commit 80ba43e9f799cbdd83842fc27db667289b3150f5 upstream.
+commit 3de4f996a0b5412aa451729008130a488f71563e upstream.
 
-Among the attribute file callback routines in
-drivers/usb/core/sysfs.c, the interface_authorized_store() function is
-the only one which acquires a device lock on an ancestor device: It
-calls usb_deauthorize_interface(), which locks the interface's parent
-USB device.
+Check the UCSI_CCI_RESET_COMPLETE complete flag before starting
+another reset. Use a UCSI_SET_NOTIFICATION_ENABLE command to clear
+the flag if it is set.
 
-The will lead to deadlock if another process already owns that lock
-and tries to remove the interface, whether through a configuration
-change or because the device has been disconnected.  As part of the
-removal procedure, device_del() waits for all ongoing sysfs attribute
-callbacks to complete.  But usb_deauthorize_interface() can't complete
-until the device lock has been released, and the lock won't be
-released until the removal has finished.
-
-The mechanism provided by sysfs to prevent this kind of deadlock is
-to use the sysfs_break_active_protection() function, which tells sysfs
-not to wait for the attribute callback.
-
-Reported-and-tested by: Yue Sun <samsun1006219@gmail.com>
-Reported by: xingwei lee <xrivendell7@gmail.com>
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/linux-usb/CAEkJfYO6jRVC8Tfrd_R=cjO0hguhrV31fDPrLrNOOHocDkPoAA@mail.gmail.com/#r
-Fixes: 310d2b4124c0 ("usb: interface authorization: SysFS part of USB interface authorization")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/1c37eea1-9f56-4534-b9d8-b443438dc869@rowland.harvard.edu
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Link: https://lore.kernel.org/r/20240320073927.1641788-6-lk@c--e.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/sysfs.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c |   36 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/core/sysfs.c
-+++ b/drivers/usb/core/sysfs.c
-@@ -1190,14 +1190,24 @@ static ssize_t interface_authorized_stor
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -852,13 +852,47 @@ static int ucsi_reset_connector(struct u
+ 
+ static int ucsi_reset_ppm(struct ucsi *ucsi)
  {
- 	struct usb_interface *intf = to_usb_interface(dev);
- 	bool val;
-+	struct kernfs_node *kn;
+-	u64 command = UCSI_PPM_RESET;
++	u64 command;
+ 	unsigned long tmo;
+ 	u32 cci;
+ 	int ret;
  
- 	if (strtobool(buf, &val) != 0)
- 		return -EINVAL;
+ 	mutex_lock(&ucsi->ppm_lock);
  
--	if (val)
-+	if (val) {
- 		usb_authorize_interface(intf);
--	else
--		usb_deauthorize_interface(intf);
-+	} else {
-+		/*
-+		 * Prevent deadlock if another process is concurrently
-+		 * trying to unregister intf.
-+		 */
-+		kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
-+		if (kn) {
-+			usb_deauthorize_interface(intf);
-+			sysfs_unbreak_active_protection(kn);
-+		}
++	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
++	if (ret < 0)
++		goto out;
++
++	/*
++	 * If UCSI_CCI_RESET_COMPLETE is already set we must clear
++	 * the flag before we start another reset. Send a
++	 * UCSI_SET_NOTIFICATION_ENABLE command to achieve this.
++	 * Ignore a timeout and try the reset anyway if this fails.
++	 */
++	if (cci & UCSI_CCI_RESET_COMPLETE) {
++		command = UCSI_SET_NOTIFICATION_ENABLE;
++		ret = ucsi->ops->async_write(ucsi, UCSI_CONTROL, &command,
++					     sizeof(command));
++		if (ret < 0)
++			goto out;
++
++		tmo = jiffies + msecs_to_jiffies(UCSI_TIMEOUT_MS);
++		do {
++			ret = ucsi->ops->read(ucsi, UCSI_CCI,
++					      &cci, sizeof(cci));
++			if (ret < 0)
++				goto out;
++			if (cci & UCSI_CCI_COMMAND_COMPLETE)
++				break;
++			if (time_is_before_jiffies(tmo))
++				break;
++			msleep(20);
++		} while (1);
++
++		WARN_ON(cci & UCSI_CCI_RESET_COMPLETE);
 +	}
- 
- 	return count;
- }
++
++	command = UCSI_PPM_RESET;
+ 	ret = ucsi->ops->async_write(ucsi, UCSI_CONTROL, &command,
+ 				     sizeof(command));
+ 	if (ret < 0)
 
 
 
