@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-38776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6088A105A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:35:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C4758A106A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:35:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBF29B21867
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:35:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2AA7B218A2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A9A14AD2E;
-	Thu, 11 Apr 2024 10:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D19A14AD35;
+	Thu, 11 Apr 2024 10:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tABiiicI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkI1646h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26DA14AD26;
-	Thu, 11 Apr 2024 10:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159D11482F6;
+	Thu, 11 Apr 2024 10:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831556; cv=none; b=d5Z1DjfhM9Sbg9gGVnpDoaD+i/tFgl94xisq/yIbpf/RGNR/8ZjMMMuyKCIoGkinN6EW6xeZCdvnWBF4OjflTDfQc0ifCIJTjrX+pfBWkL9aoaEPbiq0jB6YT6PKyTOENWbDQDAtlgdcVj6kuu7r1H+Gq0G5amsd/WhE1fjDvTo=
+	t=1712831589; cv=none; b=mEBv6Im+POocVF42s9KkZtAC7y9YSqUHhaK6A6BqpJ3ffSHMnHjIQhK2vX2LJJ1bmktPBB6oA0QC6aB/+y2uk6U8SOyfmbP9Spj/8+yxBKCkNES6J12V64bFnznYWeDbTGk2uh0Nzj19ZFnuLCE4j2r+mTEhO0emnnOrXzxJnZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831556; c=relaxed/simple;
-	bh=Oy5bL5AoBnz16iJsbJlwRm81NuEPiaGSS0kdu4ouo20=;
+	s=arc-20240116; t=1712831589; c=relaxed/simple;
+	bh=nO7GnvOOizWXBYembrgYzvJUMN38MxWrMv+s6m6O38M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D+wvfl+/ocT4NUhDJVRpBOamNg/grFaVqLLksK3DK2vIDPzkNmjdBA0ZCO8A6LLA4XG644JuFqeJbfe4/WQ3PtjChoEgk702Y1ipdlLM5+seditcKC+TM3h1K7OwILOiJARtszwqAKZwkrJL0DSc3/WKVVkKpHHi75PAeASrHHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tABiiicI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A4A3C433C7;
-	Thu, 11 Apr 2024 10:32:35 +0000 (UTC)
+	 MIME-Version; b=hefyituZGHfFgD/CSLqxhRpuEPrAN0lhY5qt6/715TpshTGBvBKEHe6W9Afgt/X8cB4psrcQWBgq7K+5VqTuOY25OZoP1sa/n8gJHqot9Rn/NO1Ghvik5B41DGkf6JQyF2CC7ArRMW8kqvAENMbC5n+liSoDEARJQJqch/o03Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkI1646h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620A5C433F1;
+	Thu, 11 Apr 2024 10:33:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831556;
-	bh=Oy5bL5AoBnz16iJsbJlwRm81NuEPiaGSS0kdu4ouo20=;
+	s=korg; t=1712831589;
+	bh=nO7GnvOOizWXBYembrgYzvJUMN38MxWrMv+s6m6O38M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tABiiicIhmIzKu5pYfp/Re+ONm9QjNBXQbanTaB2zUECRjIh/zfNxFwXF6LCGsEro
-	 +KY8kwmX4+X9KGgVHSZU38lBOZtmmZkKcL1Bw0i/+8CGKcAPtNwILGq+1E3cy/OEJd
-	 Ucm8l2/H7NPil+U3rm5nF1Ux3WzH1+xavO9LfLmY=
+	b=XkI1646hIt8G4fcyiucBqeto1Pvzgo9CfocVYC6ML+53lPD2k5KkJjmc4y7BguVTh
+	 tnohYjaghgrFfZ2KStKbWUIG+eb9oG21D4hqkU0fYDEwi09aBw1ixYUn00NWEsHLuj
+	 xNZdiqRVVeNQsISX06h7qaMQEz17TnQGdAf51Wzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,14 +46,16 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Igor Zhbanov <izh1979@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	sparclinux@vger.kernel.org,
+	Dan Carpenter <dan.carpenter@oracle.com>,
+	Nick Alcock <nick.alcock@oracle.com>,
 	Sam Ravnborg <sam@ravnborg.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Arnd Bergmann <arnd@arndb.de>,
 	Andreas Larsson <andreas@gaisler.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 021/294] sparc64: NMI watchdog: fix return value of __setup handler
-Date: Thu, 11 Apr 2024 11:53:04 +0200
-Message-ID: <20240411095436.270792014@linuxfoundation.org>
+Subject: [PATCH 5.10 022/294] sparc: vDSO: fix return value of __setup handler
+Date: Thu, 11 Apr 2024 11:53:05 +0200
+Message-ID: <20240411095436.300580167@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
 References: <20240411095435.633465671@linuxfoundation.org>
@@ -74,7 +76,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 3ed7c61e49d65dacb96db798c0ab6fcd55a1f20f ]
+[ Upstream commit 5378f00c935bebb846b1fdb0e79cb76c137c56b5 ]
 
 __setup() handlers should return 1 to obsolete_checksetup() in
 init/main.c to indicate that the boot option has been handled.
@@ -82,39 +84,45 @@ A return of 0 causes the boot option/value to be listed as an Unknown
 kernel parameter and added to init's (limited) argument or environment
 strings. Also, error return codes don't mean anything to
 obsolete_checksetup() -- only non-zero (usually 1) or zero.
-So return 1 from setup_nmi_watchdog().
+So return 1 from vdso_setup().
 
-Fixes: e5553a6d0442 ("sparc64: Implement NMI watchdog on capable cpus.")
+Fixes: 9a08862a5d2e ("vDSO for sparc")
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Reported-by: Igor Zhbanov <izh1979@gmail.com>
 Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: sparclinux@vger.kernel.org
+Cc: Dan Carpenter <dan.carpenter@oracle.com>
+Cc: Nick Alcock <nick.alcock@oracle.com>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: stable@vger.kernel.org
 Cc: Arnd Bergmann <arnd@arndb.de>
 Cc: Andreas Larsson <andreas@gaisler.com>
 Signed-off-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20240211052802.22612-1-rdunlap@infradead.org
+Link: https://lore.kernel.org/r/20240211052808.22635-1-rdunlap@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/kernel/nmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/sparc/vdso/vma.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/sparc/kernel/nmi.c b/arch/sparc/kernel/nmi.c
-index 060fff95a305c..fbf25e926f67c 100644
---- a/arch/sparc/kernel/nmi.c
-+++ b/arch/sparc/kernel/nmi.c
-@@ -274,7 +274,7 @@ static int __init setup_nmi_watchdog(char *str)
- 	if (!strncmp(str, "panic", 5))
- 		panic_on_timeout = 1;
+diff --git a/arch/sparc/vdso/vma.c b/arch/sparc/vdso/vma.c
+index cc19e09b0fa1e..b073153c711ad 100644
+--- a/arch/sparc/vdso/vma.c
++++ b/arch/sparc/vdso/vma.c
+@@ -449,9 +449,8 @@ static __init int vdso_setup(char *s)
+ 	unsigned long val;
  
+ 	err = kstrtoul(s, 10, &val);
+-	if (err)
+-		return err;
+-	vdso_enabled = val;
 -	return 0;
++	if (!err)
++		vdso_enabled = val;
 +	return 1;
  }
- __setup("nmi_watchdog=", setup_nmi_watchdog);
- 
+ __setup("vdso=", vdso_setup);
 -- 
 2.43.0
 
