@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007D58A0D47
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:02:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9DBD8A1099
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F72AB23007
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:02:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07D531C23A3D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09D3145B04;
-	Thu, 11 Apr 2024 10:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB60146A8D;
+	Thu, 11 Apr 2024 10:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B58o+K6C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guQH1AV8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707DA14535A;
-	Thu, 11 Apr 2024 10:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C195779FD;
+	Thu, 11 Apr 2024 10:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829732; cv=none; b=ECXPKRr0ZLCSPB2XzE9IDJfZk82aieB+tvNCeih/944FOoPCTXLJY/CMgVPlJ2Mcy3yBuvb3N/y8uV7gTJRgPXPmev3VtAvxy4ThVyAYmDagy0mFVtd3Mp6/QbO/X/dkd7RE5nr9zogYnd9GNANbGzCdd1ucNOmIUVY7wXXhpWY=
+	t=1712831706; cv=none; b=dsFY6x4HVotOREddXtOMiVCMx/ugi9yhpRGrCfPD6zZnCYUAU4V2XFgcljPWFIrJcR501PKs5guPCwsnSkm3HbHHzzxN5f1IjZAC2QIwa719hkYTqkcoYP4MVuVHgr1phQmwy3ibzoY7a96o4zZF1zuaRKDOCOyTNxlBdc0H5UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829732; c=relaxed/simple;
-	bh=6MH7m7V25HpM9Zl0fXPqKViZmhO9wyQwWpF1sc1+m/c=;
+	s=arc-20240116; t=1712831706; c=relaxed/simple;
+	bh=KK7Pdoaje21BU50+346O9weHyWaTjt3cRRzf7GV2o0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WjWnSZ5k0io+gjkUeHIfqK9x9WgAceHnSgBqHu9WJpp6EPm4IMaiaf8X6tQCo8r/LGLTE+zydul5ifgIiAG5+8nqXJNqGpX9yrs8LejLHYuepGgGpmuL9d7oltItq5mr3ynJFXM0gy0bUg/SX+b/KryD88XEB3nHqX6J5NJPRwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B58o+K6C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9051BC433F1;
-	Thu, 11 Apr 2024 10:02:11 +0000 (UTC)
+	 MIME-Version; b=e3PV/1Un8AI3i075U2gWU/hIZKyJhYnRhJANG6gkK2SjvLfOqHWD+M8XxEVKpn7s1xfuXq3kB+6zR0oVrNbsi+kPzzBEsDt0RLGnKyhr34gG5C/cPpV5jLrUa+PbrkaP4epIQHpLDixYOGTtSoPwcNdtqrUdS9b/lOCn0iUzLJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guQH1AV8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481E3C433C7;
+	Thu, 11 Apr 2024 10:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829732;
-	bh=6MH7m7V25HpM9Zl0fXPqKViZmhO9wyQwWpF1sc1+m/c=;
+	s=korg; t=1712831706;
+	bh=KK7Pdoaje21BU50+346O9weHyWaTjt3cRRzf7GV2o0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B58o+K6CgUR6Bfza6+ys16yAPw/XPW48EE07w7W6DF4lD8zSoCr+0PhjXcLl2EuWZ
-	 55H3vl2VWS4N6YFK2tPwQ06dsAOG7y7BQcD6l/9n4HKMB7qlvwc+o4ZEFa3Fa1YCIN
-	 IA6UrzsHEIoZgJtTM3CzJdr2WWkFcTcLumF9+jNQ=
+	b=guQH1AV8pGFJ32FNoNTkpUmcOzBM0aJ/QGIxO2icUCb3gsEgs6o63sodLP14nq9QS
+	 zpJwtrWPfaba/5RMeZ3J5D6VO0pXMtR8MXB4GpeQkOvWQcaE6MXweWiM5ZQC1/nZHH
+	 MCLvH4Pvz2xtopuvzYOONvYwpPszVfE6nYWo8s4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20H=C3=A4ggstr=C3=B6m?= <christian.haggstrom@orexplore.com>,
-	Johan Hovold <johan@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 037/175] USB: serial: cp210x: add ID for MGP Instruments PDS100
-Date: Thu, 11 Apr 2024 11:54:20 +0200
-Message-ID: <20240411095420.675405435@linuxfoundation.org>
+Subject: [PATCH 5.10 098/294] drm/imx/ipuv3: do not return negative values from .get_modes()
+Date: Thu, 11 Apr 2024 11:54:21 +0200
+Message-ID: <20240411095438.625074278@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Häggström <christian.haggstrom@orexplore.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit a0d9d868491a362d421521499d98308c8e3a0398 ]
+[ Upstream commit c2da9ada64962fcd2e6395ed9987b9874ea032d3 ]
 
-The radiation meter has the text MGP Instruments PDS-100G or PDS-100GN
-produced by Mirion Technologies. Tested by forcing the driver
-association with
+The .get_modes() hooks aren't supposed to return negative error
+codes. Return 0 for no modes, whatever the reason.
 
-  echo 10c4 863c > /sys/bus/usb-serial/drivers/cp210x/new_id
-
-and then setting the serial port in 115200 8N1 mode. The device
-announces ID_USB_VENDOR_ENC=Silicon\x20Labs and ID_USB_MODEL_ENC=PDS100
-
-Signed-off-by: Christian Häggström <christian.haggstrom@orexplore.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Philipp Zabel <p.zabel@pengutronix.de>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/311f6eec96d47949b16a670529f4d89fcd97aefa.1709913674.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/cp210x.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/imx/parallel-display.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
-index 9901fd79b8a21..4bebe0f3c201a 100644
---- a/drivers/usb/serial/cp210x.c
-+++ b/drivers/usb/serial/cp210x.c
-@@ -145,6 +145,7 @@ static const struct usb_device_id id_table[] = {
- 	{ USB_DEVICE(0x10C4, 0x85EA) }, /* AC-Services IBUS-IF */
- 	{ USB_DEVICE(0x10C4, 0x85EB) }, /* AC-Services CIS-IBUS */
- 	{ USB_DEVICE(0x10C4, 0x85F8) }, /* Virtenio Preon32 */
-+	{ USB_DEVICE(0x10C4, 0x863C) }, /* MGP Instruments PDS100 */
- 	{ USB_DEVICE(0x10C4, 0x8664) }, /* AC-Services CAN-IF */
- 	{ USB_DEVICE(0x10C4, 0x8665) }, /* AC-Services OBD-IF */
- 	{ USB_DEVICE(0x10C4, 0x87ED) }, /* IMST USB-Stick for Smart Meter */
+diff --git a/drivers/gpu/drm/imx/parallel-display.c b/drivers/gpu/drm/imx/parallel-display.c
+index b61bfa84b6bbd..bcd6b9ee8eea6 100644
+--- a/drivers/gpu/drm/imx/parallel-display.c
++++ b/drivers/gpu/drm/imx/parallel-display.c
+@@ -65,14 +65,14 @@ static int imx_pd_connector_get_modes(struct drm_connector *connector)
+ 		int ret;
+ 
+ 		if (!mode)
+-			return -EINVAL;
++			return 0;
+ 
+ 		ret = of_get_drm_display_mode(np, &imxpd->mode,
+ 					      &imxpd->bus_flags,
+ 					      OF_USE_NATIVE_MODE);
+ 		if (ret) {
+ 			drm_mode_destroy(connector->dev, mode);
+-			return ret;
++			return 0;
+ 		}
+ 
+ 		drm_mode_copy(mode, &imxpd->mode);
 -- 
 2.43.0
 
