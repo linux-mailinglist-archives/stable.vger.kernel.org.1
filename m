@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A79D8A0DA7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:06:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64B6C8A10F9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB5A01C21A46
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:06:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05CFE1F2CFA1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C90F145B0D;
-	Thu, 11 Apr 2024 10:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B849145B13;
+	Thu, 11 Apr 2024 10:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EW4O+juo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xs9Ci3Yp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0401448F3;
-	Thu, 11 Apr 2024 10:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5926E147C7E;
+	Thu, 11 Apr 2024 10:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829974; cv=none; b=i8HfDNWhyqgEsGN+nnz2gL1UgPoATpZnyYzf2brQ24OpAJydOLwhH5mMPuxooRrgdKsVbCnXT7csNsuNo+lBQPIHlUl0dCeeJ3skbTwdV8wnRdoxMx4x+x1V/PZ1wm7EeCNcrDLVAokQ/gTPeslMsBERa2qWPkPcfhPhvE8vazU=
+	t=1712831951; cv=none; b=Cr9ADdDzAvErcxRinXFnwIOEo4rOtQIJbYLSpSIkHi/ZQtz/jR+mZLt2YK0XB1apCBRYBALm5BtvpO6ni0Qi046kcoYPbUuR9ygdITpXPZkoGIqn7Xyl1Ba68gV5Ugs/LSFQm1hfu+VLG3dHMRHj0VROA+7Y0VD6vUqssDrIYsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829974; c=relaxed/simple;
-	bh=oGCEAlH4cQSti6Odd0jLOmQ+L5sz+57xDQgxWdUIYYo=;
+	s=arc-20240116; t=1712831951; c=relaxed/simple;
+	bh=H2ef0z2Sanlu+KNdMWrnGdMX44lBLMQjU18L0JfcK2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mPYVRfmZOcT3elZXSKDHDvEj0UqlIDyIuc9pySJX7DBFK0j90EOMz//1TWTK5GbiVGC23N18vySLklgptHmMj3jvZDIhT7zcUSk5MBJmliFoyvBYzxClwmwJOV4PiwIO1AGAZb8VrhcTel3kOJMwQA8gqxUfj3TV4n65bgNoCGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EW4O+juo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C747C433F1;
-	Thu, 11 Apr 2024 10:06:14 +0000 (UTC)
+	 MIME-Version; b=QBn1kVUUUMReJdJFEQp5g7zSeZpLh7wCiZzJO572VR11RaKHQvUPVJm0LaCX7oh+KPBJmA6EawobizI/fRzynqYnNKxI4HDoYOfG074evSRLuTn0Mv5FRNMXmgf+lwpjqg1xw9+sM4WqiTqdusr+8QZP8rhieoE2vA8RyngFhGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xs9Ci3Yp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9B5C433F1;
+	Thu, 11 Apr 2024 10:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829974;
-	bh=oGCEAlH4cQSti6Odd0jLOmQ+L5sz+57xDQgxWdUIYYo=;
+	s=korg; t=1712831951;
+	bh=H2ef0z2Sanlu+KNdMWrnGdMX44lBLMQjU18L0JfcK2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EW4O+juo0nBQu5uWSynFrpPoqAXF0SmhpN7CPXUK1sIc0Hbk6dPSyavVnUuWw8cnj
-	 O75h7yeM6eTLJSqc9finKW5vh0SHW/WIVXr8f+SlWprHIWQOUmD865QquP56mBBXpP
-	 57b4WkkM2PWW5lXrgDzRVmI8lBM8vfPtDRLtZlbU=
+	b=xs9Ci3YpBQIqkCGwzxkbmi9bxT7vfGdj8Uc8ZlM8InULT2ihwVY62yIYwyVspfwJZ
+	 DOm6VX5EouEKM/rCdKN3nRLKIS2E3JOLkyp17dBSrt6m06DOsoDi5WmqS0BO+Iwp89
+	 OX4HjR7IW+8HBR14PhxRrSNuPSgTdAlYov92GaTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Molnar <mingo@kernel.org>,
-	Russ Anderson <rja@hpe.com>,
-	Steve Wahl <steve.wahl@hpe.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 4.19 120/175] Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Justin Tee <justintee8345@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 180/294] scsi: lpfc: Correct size for wqe for memset()
 Date: Thu, 11 Apr 2024 11:55:43 +0200
-Message-ID: <20240411095423.180073324@linuxfoundation.org>
+Message-ID: <20240411095441.043447176@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ingo Molnar <mingo@kernel.org>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-commit c567f2948f57bdc03ed03403ae0234085f376b7d upstream.
+commit 28d41991182c210ec1654f8af2e140ef4cc73f20 upstream.
 
-This reverts commit d794734c9bbfe22f86686dc2909c25f5ffe1a572.
+The wqe is of type lpfc_wqe128. It should be memset with the same type.
 
-While the original change tries to fix a bug, it also unintentionally broke
-existing systems, see the regressions reported at:
-
-  https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
-
-Since d794734c9bbf was also marked for -stable, let's back it out before
-causing more damage.
-
-Note that due to another upstream change the revert was not 100% automatic:
-
-  0a845e0f6348 mm/treewide: replace pud_large() with pud_leaf()
-
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: <stable@vger.kernel.org>
-Cc: Russ Anderson <rja@hpe.com>
-Cc: Steve Wahl <steve.wahl@hpe.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
-Fixes: d794734c9bbf ("x86/mm/ident_map: Use gbpages only where full GB page should be mapped.")
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Fixes: 6c621a2229b0 ("scsi: lpfc: Separate NVMET RQ buffer posting from IO resources SGL/iocbq/context")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/r/20240304090649.833953-1-usama.anjum@collabora.com
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Justin Tee <justintee8345@gmail.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/ident_map.c |   23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ drivers/scsi/lpfc/lpfc_nvmet.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -26,31 +26,18 @@ static int ident_pud_init(struct x86_map
- 	for (; addr < end; addr = next) {
- 		pud_t *pud = pud_page + pud_index(addr);
- 		pmd_t *pmd;
--		bool use_gbpage;
+--- a/drivers/scsi/lpfc/lpfc_nvmet.c
++++ b/drivers/scsi/lpfc/lpfc_nvmet.c
+@@ -1579,7 +1579,7 @@ lpfc_nvmet_setup_io_context(struct lpfc_
+ 		wqe = &nvmewqe->wqe;
  
- 		next = (addr & PUD_MASK) + PUD_SIZE;
- 		if (next > end)
- 			next = end;
+ 		/* Initialize WQE */
+-		memset(wqe, 0, sizeof(union lpfc_wqe));
++		memset(wqe, 0, sizeof(*wqe));
  
--		/* if this is already a gbpage, this portion is already mapped */
--		if (pud_large(*pud))
--			continue;
--
--		/* Is using a gbpage allowed? */
--		use_gbpage = info->direct_gbpages;
--
--		/* Don't use gbpage if it maps more than the requested region. */
--		/* at the begining: */
--		use_gbpage &= ((addr & ~PUD_MASK) == 0);
--		/* ... or at the end: */
--		use_gbpage &= ((next & ~PUD_MASK) == 0);
--
--		/* Never overwrite existing mappings */
--		use_gbpage &= !pud_present(*pud);
--
--		if (use_gbpage) {
-+		if (info->direct_gbpages) {
- 			pud_t pudval;
- 
-+			if (pud_present(*pud))
-+				continue;
-+
-+			addr &= PUD_MASK;
- 			pudval = __pud((addr - info->offset) | info->page_flag);
- 			set_pud(pud, pudval);
- 			continue;
+ 		ctx_buf->iocbq->context1 = NULL;
+ 		spin_lock(&phba->sli4_hba.sgl_list_lock);
 
 
 
