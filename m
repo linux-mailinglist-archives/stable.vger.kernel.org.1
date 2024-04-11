@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-38418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C3C8A0E7E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 316E98A105F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:35:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 247ED1C21372
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:15:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62B2B1C218DF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFFF14601D;
-	Thu, 11 Apr 2024 10:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC82D1474A8;
+	Thu, 11 Apr 2024 10:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABlVCdg7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJHhWxg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D081448F6;
-	Thu, 11 Apr 2024 10:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997F613D24D;
+	Thu, 11 Apr 2024 10:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830513; cv=none; b=bCnrEpa3oa+aWhTD8qTzwPPEdu/3oQ9S/Abm9l4NSR9PJuFZL5dXbbXwUijCXQcuGgAogv60do6/8/kQhRETeNgLD5KPEy2OeaBKoAn/aX6uFXDI60JGGpBUJhcRwzFB52UVo77M395rgADyNiGqtbS1VqtpUwnpRpGSbS2UxG0=
+	t=1712831571; cv=none; b=AzZ38olhZogaQ8K8JbCataMB8Q6eFlHNRFzwPEdIYwTTiokUg0s4XYfc4qiy6NyOJCxc7LzebkN7gqQxInkJrBUdt82b6FXyogUkDieM3KoG8rXQk63vheYecbEoOUYtxmYL6YlDndhfH0FSIZC/Jm4eO2duQcbhOhmzBosC6eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830513; c=relaxed/simple;
-	bh=rw1JLvO0H9C2p/r61f3Z5wWswuTKYVEKJ4sptK+iThY=;
+	s=arc-20240116; t=1712831571; c=relaxed/simple;
+	bh=OIxImODTVN6kRzetAfoPU/f618GY39akM0n27A5EjgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hSF81c25bKOnnNUQUee5k70tOx5biOPAS0A0vt08+fVU9wGYHt1NV+vYZZY0Ie5w6m8/WuID1P/oh8e+PbgY4ugMF3fTVGp36mtPqqsh0sQp1YYhz0iEMPzxLAGnx+E+R9oo6+f9R7cAYMVphnrO68T2uOaqo36x5By3z2SdxjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABlVCdg7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED5EC433F1;
-	Thu, 11 Apr 2024 10:15:12 +0000 (UTC)
+	 MIME-Version; b=iGHyZ5KczKO56D2UcctdK7XUtvr83TM8Al/A5ak/TEq+DCt008I0OiYEfI4ygyP1aKXzAoZyktN1/Sixz6ZRxnd4U4chXAu+UV8V57HoOXr5pLd/mZymAq/xTgOcm+zgMeogw7ts86vvzaim+nw6+MzLz4Uy+bFEjyb5PfLGWdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJHhWxg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA6AC433F1;
+	Thu, 11 Apr 2024 10:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830513;
-	bh=rw1JLvO0H9C2p/r61f3Z5wWswuTKYVEKJ4sptK+iThY=;
+	s=korg; t=1712831571;
+	bh=OIxImODTVN6kRzetAfoPU/f618GY39akM0n27A5EjgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ABlVCdg7a5R0xE9bT28mcDLESSEU3dRgBIWnBZmNJIDxD5f6chnfwDj461MU9ZtlQ
-	 10HBLKnJVNGQC9fAfAf/wYwVX+m7ma5mKDCGK5dvPyefgYidm06Ca5fE5Wrs3fGRFW
-	 Ibxq7/xI7qzGvMXLHF7rW1EYo+/JMnMnKfrYmkBw=
+	b=hJHhWxg6CDXSLa3XLA4xjvXbIshHlOhqlE/RNVP3lvdtgmD5ugCAM/fK75OJ58Jj7
+	 qKRElaMJ1Px1IQXgnDQ2oG6RMsU1AhmSQHYvDXICr0NjXa0U2TlVOlTdPjzG/Yifah
+	 vNkXokJCZML3shHryJuP95RE9YAWwm/kAwtlU0ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 006/215] timers: Rename del_timer_sync() to timer_delete_sync()
+Subject: [PATCH 5.10 052/294] mmc: tmio: avoid concurrent runs of mmc_request_done()
 Date: Thu, 11 Apr 2024 11:53:35 +0200
-Message-ID: <20240411095425.071117277@linuxfoundation.org>
+Message-ID: <20240411095437.208047725@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,131 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 9b13df3fb64ee95e2397585404e442afee2c7d4f ]
+[ Upstream commit e8d1b41e69d72c62865bebe8f441163ec00b3d44 ]
 
-The timer related functions do not have a strict timer_ prefixed namespace
-which is really annoying.
+With the to-be-fixed commit, the reset_work handler cleared 'host->mrq'
+outside of the spinlock protected critical section. That leaves a small
+race window during execution of 'tmio_mmc_reset()' where the done_work
+handler could grab a pointer to the now invalid 'host->mrq'. Both would
+use it to call mmc_request_done() causing problems (see link below).
 
-Rename del_timer_sync() to timer_delete_sync() and provide del_timer_sync()
-as a wrapper. Document that del_timer_sync() is not for new code.
+However, 'host->mrq' cannot simply be cleared earlier inside the
+critical section. That would allow new mrqs to come in asynchronously
+while the actual reset of the controller still needs to be done. So,
+like 'tmio_mmc_set_ios()', an ERR_PTR is used to prevent new mrqs from
+coming in but still avoiding concurrency between work handlers.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Link: https://lore.kernel.org/r/20221123201624.954785441@linutronix.de
-Stable-dep-of: 0f7352557a35 ("wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach")
+Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
+Closes: https://lore.kernel.org/all/20240220061356.3001761-1-dirk.behme@de.bosch.com/
+Fixes: df3ef2d3c92c ("mmc: protect the tmio_mmc driver against a theoretical race")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: stable@vger.kernel.org # 3.0+
+Link: https://lore.kernel.org/r/20240305104423.3177-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/timer.h | 15 ++++++++++++++-
- kernel/time/timer.c   | 18 +++++++++---------
- 2 files changed, 23 insertions(+), 10 deletions(-)
+ drivers/mmc/host/tmio_mmc_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/timer.h b/include/linux/timer.h
-index 4de865f516154..cadb23acd229e 100644
---- a/include/linux/timer.h
-+++ b/include/linux/timer.h
-@@ -182,7 +182,20 @@ extern int timer_reduce(struct timer_list *timer, unsigned long expires);
- extern void add_timer(struct timer_list *timer);
+diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+index abf36acb2641f..0482920a79681 100644
+--- a/drivers/mmc/host/tmio_mmc_core.c
++++ b/drivers/mmc/host/tmio_mmc_core.c
+@@ -216,6 +216,8 @@ static void tmio_mmc_reset_work(struct work_struct *work)
+ 	else
+ 		mrq->cmd->error = -ETIMEDOUT;
  
- extern int try_to_del_timer_sync(struct timer_list *timer);
--extern int del_timer_sync(struct timer_list *timer);
-+extern int timer_delete_sync(struct timer_list *timer);
-+
-+/**
-+ * del_timer_sync - Delete a pending timer and wait for a running callback
-+ * @timer:	The timer to be deleted
-+ *
-+ * See timer_delete_sync() for detailed explanation.
-+ *
-+ * Do not use in new code. Use timer_delete_sync() instead.
-+ */
-+static inline int del_timer_sync(struct timer_list *timer)
-+{
-+	return timer_delete_sync(timer);
-+}
- 
- #define del_singleshot_timer_sync(t) del_timer_sync(t)
- 
-diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index 0dfd1cacc4a00..6e2dd83a93afd 100644
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1031,7 +1031,7 @@ __mod_timer(struct timer_list *timer, unsigned long expires, unsigned int option
- 		/*
- 		 * We are trying to schedule the timer on the new base.
- 		 * However we can't change timer's base while it is running,
--		 * otherwise del_timer_sync() can't detect that the timer's
-+		 * otherwise timer_delete_sync() can't detect that the timer's
- 		 * handler yet has not finished. This also guarantees that the
- 		 * timer is serialized wrt itself.
- 		 */
-@@ -1210,7 +1210,7 @@ EXPORT_SYMBOL_GPL(add_timer_on);
-  * @timer:	The timer to be deactivated
-  *
-  * The function only deactivates a pending timer, but contrary to
-- * del_timer_sync() it does not take into account whether the timer's
-+ * timer_delete_sync() it does not take into account whether the timer's
-  * callback function is concurrently executed on a different CPU or not.
-  * It neither prevents rearming of the timer. If @timer can be rearmed
-  * concurrently then the return value of this function is meaningless.
-@@ -1346,7 +1346,7 @@ static inline void del_timer_wait_running(struct timer_list *timer) { }
- #endif
- 
- /**
-- * del_timer_sync - Deactivate a timer and wait for the handler to finish.
-+ * timer_delete_sync - Deactivate a timer and wait for the handler to finish.
-  * @timer:	The timer to be deactivated
-  *
-  * Synchronization rules: Callers must prevent restarting of the timer,
-@@ -1368,10 +1368,10 @@ static inline void del_timer_wait_running(struct timer_list *timer) { }
-  *    spin_lock_irq(somelock);
-  *                                     <IRQ>
-  *                                        spin_lock(somelock);
-- *    del_timer_sync(mytimer);
-+ *    timer_delete_sync(mytimer);
-  *    while (base->running_timer == mytimer);
-  *
-- * Now del_timer_sync() will never return and never release somelock.
-+ * Now timer_delete_sync() will never return and never release somelock.
-  * The interrupt on the other CPU is waiting to grab somelock but it has
-  * interrupted the softirq that CPU0 is waiting to finish.
-  *
-@@ -1384,7 +1384,7 @@ static inline void del_timer_wait_running(struct timer_list *timer) { }
-  * * %0	- The timer was not pending
-  * * %1	- The timer was pending and deactivated
-  */
--int del_timer_sync(struct timer_list *timer)
-+int timer_delete_sync(struct timer_list *timer)
- {
- 	int ret;
- 
-@@ -1417,7 +1417,7 @@ int del_timer_sync(struct timer_list *timer)
- 
- 	return ret;
- }
--EXPORT_SYMBOL(del_timer_sync);
-+EXPORT_SYMBOL(timer_delete_sync);
- 
- static void call_timer_fn(struct timer_list *timer,
- 			  void (*fn)(struct timer_list *),
-@@ -1439,8 +1439,8 @@ static void call_timer_fn(struct timer_list *timer,
- #endif
- 	/*
- 	 * Couple the lock chain with the lock chain at
--	 * del_timer_sync() by acquiring the lock_map around the fn()
--	 * call here and in del_timer_sync().
-+	 * timer_delete_sync() by acquiring the lock_map around the fn()
-+	 * call here and in timer_delete_sync().
- 	 */
- 	lock_map_acquire(&lockdep_map);
++	/* No new calls yet, but disallow concurrent tmio_mmc_done_work() */
++	host->mrq = ERR_PTR(-EBUSY);
+ 	host->cmd = NULL;
+ 	host->data = NULL;
  
 -- 
 2.43.0
