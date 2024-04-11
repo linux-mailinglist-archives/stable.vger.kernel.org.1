@@ -1,188 +1,269 @@
-Return-Path: <stable+bounces-39190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43578A145B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 14:22:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E526F8A14C5
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 14:38:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47BD81F21F0C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1300D1C21A55
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334D414B065;
-	Thu, 11 Apr 2024 12:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BCC3B2AD;
+	Thu, 11 Apr 2024 12:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Ak1AbbYg";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="Jy5Gm+em"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RlZz7Xai"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE3E13DDD6;
-	Thu, 11 Apr 2024 12:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712838159; cv=fail; b=rwKy8IApJTxLF4UEERxrMW3BGeMmBFwJNNRXjSvql0UY3B3b40FrY63z3zfyIbU7BVIgl4DCcPuh/OU2ExOGeGv8t46Dz4cTeA1DY35guWbiJx5SqyjA6g2AY8mbLOmpRmcA1oKH1kCFLSYOnixSlBT3bjcmrAOe0x/y+j1b1T4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712838159; c=relaxed/simple;
-	bh=S+C0tJM4U8b7lSs7ZaJPWjT98SQyPKchQayR0XZxwog=;
-	h=To:Cc:Subject:From:In-Reply-To:Message-ID:References:Date:
-	 Content-Type:MIME-Version; b=KB/IWd7FgUPOUJKedOGEDpa9gQ3dh21NFwyT/rGNyBuLncrWnEQolYzq+ENEFohAKKJEgEAJkalYngew2mRtGC/RM1N6D430ic1mBEJX6ctz0EYnTEW93+x4BbmBisYYzzLPie8q4vUa1KEEx6Z7tT6106h5irLXh8WMhRcqFyQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Ak1AbbYg; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=Jy5Gm+em; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43B9mfs9028088;
-	Thu, 11 Apr 2024 12:22:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : in-reply-to : message-id : references : date : content-type :
- mime-version; s=corp-2023-11-20;
- bh=KMJNNDJHfoOiNpC373VmztPBMVrfh0QO8NNCHErf/t4=;
- b=Ak1AbbYgaEj149X06K8BcdKMFYE6t3oQdkmpZPSDO8/7C85InadOFG+pRjplX8U07aAZ
- ev8j/+1Ov8Y1W4L49cq38blZNAFhc8RiT0+GjgxEfQW89uujlXmIRBw7r6s4SMw3Arbw
- B5+IS7r+kU/KXjXcCrdQNJySFgXpWn0ZmxPIieAstBH/j+tjqJmDXWKYsM0qUYSYmvaF
- 4CmPoI8J/I86jsnQL7AFCUxoQYjd0UdbUPrgSdlcOgnSWeTObLlOD7uv2Pg52c5uiOtm
- 24byFd2TVHJ0xffGE2GDNojmN/bHdNe97z8H6NBM4/9L9OdACz0OO7qpZ/1AxRa/w1GS sQ== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xaw029gpk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Apr 2024 12:22:34 +0000
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 43BB0KE9010830;
-	Thu, 11 Apr 2024 12:22:33 GMT
-Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2168.outbound.protection.outlook.com [104.47.58.168])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3xavu9ecf9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Apr 2024 12:22:33 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k+u7WM7ifIgHMJTZdmYlCfJvzCY/flat9Tix6Dg+WUS7dvoy5dfFOf398thrWDi6pnyr3OtDanfmTzMDLM7s1DbxtMUHBc+wt3Yp8eItdq0td3t3rOwoOWq51QQM7XFJcoEpI0OlTh0oTqLYh31lXDXt7HLOGblM8i6Q2XaiDEb8j3lYHpFO5IT9KtYW85PFDNizQdQMwvRXSM+t2wjTzqYkQxtkejieSvyzPLWuDZ2q5QOcjiny8BSUH7BRWoMwB0NYuX5wza876RmBUctMujK1vyFdRUUyxFs7M9/uk1/vv17WVKnv5GdMlByhIFrdFZkLuqJ7O5jnt9eQ4xcuyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KMJNNDJHfoOiNpC373VmztPBMVrfh0QO8NNCHErf/t4=;
- b=FxhOkLul7g47She5QLkwAXDZCMirkEK7YEK7vA9PZdVg29PGajul/5Zqn9ugtnVRAvM+wKrreOY3+XeVQ0AyOdSmyhMGHcTmrn8ahw37b741Z8yfFGIwLSMM+lFDOxw7xfxsqOXlKvhgvhZqnXeJN4Ge9GMOsVgxVuKzw5zxEQ+XaLzGFmHXxGnUZ4LxvPeaxnjfE3rQLlHN2GpPzq0ydZOFZRHbmC334aCPVtIsY/YSdRM0DQreBmSEMOhXMjW3/rTJlHVoDoJVNfbZCV9npL11R1C9RkGEzEieG4kjwRy/gDxtgHst8Ah92mOqmHl4O7n0N5bdADhbzEZ8/wb4BQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KMJNNDJHfoOiNpC373VmztPBMVrfh0QO8NNCHErf/t4=;
- b=Jy5Gm+eminT6ySWtQLV0go7RgndUJUvfL0+SZOFxwPzwP9bWjVE3AwLajRY8t/iaeCfKnsiGaPvLXXOTl8Ip8ILmWyLH8eKlai8VnH+L3u8ueqjCJXvqOQfdBy/JTx4iyea8BDWPMH8IFuOGP+ttVBO1s01hWmxtWfwIf18nmfE=
-Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
- by DS7PR10MB5054.namprd10.prod.outlook.com (2603:10b6:5:38e::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Thu, 11 Apr
- 2024 12:22:31 +0000
-Received: from PH0PR10MB4759.namprd10.prod.outlook.com
- ([fe80::7856:8db7:c1f6:fc59]) by PH0PR10MB4759.namprd10.prod.outlook.com
- ([fe80::7856:8db7:c1f6:fc59%4]) with mapi id 15.20.7409.042; Thu, 11 Apr 2024
- 12:22:31 +0000
-To: Chris Rankin <rankincj@gmail.com>
-Cc: linux-scsi@vger.kernel.org, Linux Stable <stable@vger.kernel.org>,
-        Greg
- KH <gregkh@linuxfoundation.org>
-Subject: Re: Fwd: [PATCH 6.8 000/143] 6.8.6-rc1 review
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-In-Reply-To: <CAK2bqV+d-ffQB_nHEnCcTp9mjHAq-LOb3WtaqXZK2Bk64UywNQ@mail.gmail.com>
-	(Chris Rankin's message of "Thu, 11 Apr 2024 13:08:27 +0100")
-Organization: Oracle Corporation
-Message-ID: <yq1ttk8ks5f.fsf@ca-mkp.ca.oracle.com>
-References: <CAK2bqV+kpG5cm5py24TusikZYO=_vWg7CVEN3oTywVhnq1mhjQ@mail.gmail.com>
-	<2024041125-surgery-pending-cd06@gregkh>
-	<CAK2bqVJcsjZE8k87_xNU-mQ3xXm58eCFMdouSVEMkkT57wCQFg@mail.gmail.com>
-	<CAK2bqV+d-ffQB_nHEnCcTp9mjHAq-LOb3WtaqXZK2Bk64UywNQ@mail.gmail.com>
-Date: Thu, 11 Apr 2024 08:22:29 -0400
-Content-Type: text/plain
-X-ClientProxiedBy: MN2PR19CA0059.namprd19.prod.outlook.com
- (2603:10b6:208:19b::36) To PH0PR10MB4759.namprd10.prod.outlook.com
- (2603:10b6:510:3d::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC751EF1E
+	for <stable@vger.kernel.org>; Thu, 11 Apr 2024 12:37:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712839076; cv=none; b=gtJjFn/myi0SZqF/ObOdWYPaHe9PUrOBHHg1eYEp3H6zR7McJ703r7ak/H9ejVpspKSqWjExhJEykN1fFK+D/HhKBuPz6uBau5rRUEOy6+0ygJRe8/zdzA0TbPkaEJDJ596sAV5vzRdOb5uKkhucVXCD0QmjqFc9R3mAmndRMfE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712839076; c=relaxed/simple;
+	bh=CIVy0SsUlg0fUMKX1CWqt9cbJE+qBzIZsfDGQR1WG34=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ij+SAT297fm5jdO5egSvhe7xjpclEATVjkdoS5Q+vPTKOw3VeYZiGnhpg5R21p1dtXmjwywuGmE5r7hkcAju6q3mu+Yo9kN+m4dUN8iHbNE/kWxZyP11hlg6Lv+fSvtCePTbBnT4/28Fpuc7w8xcdF/prAxNv5MrMDvk3JpK4lM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RlZz7Xai; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712839073;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jJHSGS6DZn5w0lI3N34lZqsw+keKCQ5HV+u+tB7G5X4=;
+	b=RlZz7Xaitl0bINAgfwn4j/Kwp0rWwFRVZkeWT3kH89XaBSPCE+/V6f6etOO2zdjOvZUYFr
+	mYdss7lfS1lG7lzzWMicORHCpywqmiAC/gsfvWg8zTXWnvKotq4ieVXmn0qexdw+xqr4tW
+	PzqP94/wHyRbjxc7QFRLs8injQnpaEw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-130-s809NAxbMm-yId62tKkBHQ-1; Thu, 11 Apr 2024 08:37:50 -0400
+X-MC-Unique: s809NAxbMm-yId62tKkBHQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 510BD802A6F;
+	Thu, 11 Apr 2024 12:37:49 +0000 (UTC)
+Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 57E7F2026962;
+	Thu, 11 Apr 2024 12:37:48 +0000 (UTC)
+Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
+	id 3CD3F30BFEC2; Thu, 11 Apr 2024 12:37:48 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+	by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id 37CE43FD73;
+	Thu, 11 Apr 2024 14:37:48 +0200 (CEST)
+Date: Thu, 11 Apr 2024 14:37:48 +0200 (CEST)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: Li Lingfeng <lilingfeng3@huawei.com>
+cc: stable@vger.kernel.org, gregkh@linuxfoundation.org, 
+    torvalds@linux-foundation.org, tglx@linutronix.de, 
+    linux-kernel@vger.kernel.org, dm-devel@lists.linux.dev, 
+    msnitzer@redhat.com, ignat@cloudflare.com, damien.lemoal@wdc.com, 
+    bob.liu@oracle.com, houtao1@huawei.com, nhuck@google.com, 
+    peterz@infradead.org, mingo@elte.hu, yukuai3@huawei.com, 
+    yangerkun@huawei.com, yi.zhang@huawei.com, lilingfeng@huaweicloud.com
+Subject: Re: [PATCH 6.6] Revert "dm-crypt, dm-verity: disable tasklets"
+In-Reply-To: <20240411091539.361470-1-lilingfeng3@huawei.com>
+Message-ID: <7c17f31a-2cc3-1597-e2b5-832355de7647@redhat.com>
+References: <20240411091539.361470-1-lilingfeng3@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB4759:EE_|DS7PR10MB5054:EE_
-X-MS-Office365-Filtering-Correlation-Id: 804bc6b0-9fba-4e08-a8ce-08dc5a220f5b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	/9yK+QiybETm6bj65xmkEja8irfHzhnPyxTjbsL3ELFwfh0ceyZZn2bYIgOdh58YQNh0yXwWTlEjRF7cr0aGRPrv+0K/60M/aGfzBAIw5zNsDYK8vGOTvopyNH8Uwg/hgl6i7HuDBfJ9a2rXoBNNRqqgj8G/jFzjnFd8hRhTJdCluApUOEVTi3TUuSDpK3Hf9KDIeXR5X9COGL4Vo44/yX2p0wDP7t9MS9SdVP6shfnWni4B1fEQzjf4KRn7ZvesY0C+HSS/NVDR7uM57mVvzSS4M+VqWIbLmtCwrNiw7AhFwq+tu7nbQRNKWh1XYhmALSt+betQ+j6SOsjRh1kEGlj8JRGXnXlb0eW/6IzG139JZ6wDnKWUirLqSO75FktpZ8mGjcjFQMjfWsK9TBJ8PpCIkyG8lILgMuZXWLFmmL2EbrbVOX32kQL+1r8nuwFSuO8U0xXQNuxXElUZxldOlzuNOi1tr1yjZ5/vp2kJ9nmsabjh0+tcLRHLnjXBOlHvjFcJvKjN7uJOaR5qJCEjVeTFcwuBw/k/JTFhHgk1SqoUOliL+o6RjuTusmYO9zy6+rtgHJ8xgifTPeQyqW2ztvWU18R5I51NAaCVdAKNedFL1FYux1t4jDnIVRronOH69c/CIB7Br16JyjwinbjRa+IIyotcBNf/DTKDOKwpJT4=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?79+Nt1wcyQKNEfqNcz7u7M+vk4lRAV4HoBt6lX8mrFrIITiBQfa7Xc19NcPX?=
- =?us-ascii?Q?4SB97WvFpP7yc1nbkVKpW7pf77S9Tl2us2HKqkWpeDrl298m7QyErJRSfFBH?=
- =?us-ascii?Q?aRq1MfwteZ+S4ljlm/Guawait6VpSyBhCy6pOcO8P1UNdOwmI0ghgYlwc/eV?=
- =?us-ascii?Q?28Bq8zI6Vv+2HF6xFdKq2YFDG+qmM3WtLknt0UZp82bY9kKJqICp8xH9jTXR?=
- =?us-ascii?Q?izTY3WqOX9DxWkv4A4ngRSo6BJIY7ZJ5q4TokyJffBXqEtPzEFy/lXK5mmVj?=
- =?us-ascii?Q?6VFSRmb+e5FPE3x408kCRLNwMY4EL5oZemKQ3OXHHwWu7CTKXSlxX+0R58XT?=
- =?us-ascii?Q?/+TTd29DC5JlcwuMMY1OVJb7KfmyHSX8BRhUjhjK9vA7hAzPQ2wXeF3ab0wO?=
- =?us-ascii?Q?OOlryukP+CjKdQFff/jOJa9NpKJQRMAWe41jUVVFsDKHeM++cJ+IWlBF+BCo?=
- =?us-ascii?Q?z5XPXUVCSWYjw2rOu3tTWCDk2tycoVHxI9QEp5IYWePlKnHGEVIzx/TjuXzY?=
- =?us-ascii?Q?HPKkiUOWHGZUdfwnGstgflw7qqX0RanUf4A+YhxpS9IrfH969x/ialfv7Lro?=
- =?us-ascii?Q?oAtLOtIIlEtgQnmgaeBs75X/sftzASpZamtgWSGaqhhGFeoHJTh630rnpY1Y?=
- =?us-ascii?Q?qXDlb+UIFoUdTZhQv7ZNqT5Hjk9/GfRFYCa7UxKOawTSIRSQ1VrxgfqTINCe?=
- =?us-ascii?Q?OdOVR/PBMx8aEuL7XDH6gXzK1ztpmkN/VQQDSkpAf5yycFiAxYQo8kSN09EH?=
- =?us-ascii?Q?lgp2liDoInw8YLzCdeHypwyctGYzdLfn22h0MGuUxKbb0Un0/SyOhyGfg3Ag?=
- =?us-ascii?Q?GP27YfrCPVABOFd3a3D+Wcs01YZJ3yOsWZEZCqnFukFdKjWGtKmNAu7mKeYG?=
- =?us-ascii?Q?KzyDt/LDnBagtOOCDMUx2LRL43X0QyPVS8VrEn5/4eys1kDDdFxAyDiZyoa/?=
- =?us-ascii?Q?veo9KH3tZ3POl8A984cS/srswT+Iz1XQjNo3h6+yCo14bx9c7CT2vR0wo35j?=
- =?us-ascii?Q?rSKrVBH3coB12HE2afs+NAhKk9ANY4oq6T6qERqRgWj0Zj5q9C5+xA+SL9+1?=
- =?us-ascii?Q?GE2P2wVFyGg7diUCQfjLPY4Io/XXubNBy3uUXTx8PYTWkXFVv7r8wAKBbBPD?=
- =?us-ascii?Q?sIZTO833Z1pkmAYmuHuNxr9Sc7QeiRu+FfTwFKhcjmD3PXWoqGejHqicg4mf?=
- =?us-ascii?Q?AStRj32wAENevG/IkepnXaqyfkXCI7NZigoMyClS8mpKqMKLgyL6hkCisEhg?=
- =?us-ascii?Q?aqgnZneTSURwUP599tPovzQSMocEiWvRuMnjcwBWZw22THMqQ/ZtbD92MtVg?=
- =?us-ascii?Q?pu+6dA9YUZbIrnnuk7LkhK9NKXP7GDL9J8fQDQutzdjg2B898/O2j/E67rwu?=
- =?us-ascii?Q?jk5uaEP3lDW1j/cWThtiWWtgxegiDS59MH7MwKH3E+8HmI5Eb27b8HvWy7kH?=
- =?us-ascii?Q?RoTHI8M4+ZF1HSYXdkbHdfYczGwCmCkyVfiXWedAU6bObPulFje/+4jgHA8M?=
- =?us-ascii?Q?7HUT7LLvNfKsEn87zSGPUPxerLAqscuwdjQgUijMV2tbHGJ+6ajgjR0Ulg4G?=
- =?us-ascii?Q?9D0UWIskUjNEpsVSViOZpjn8G/bXYS6QNMMo/uqRew9lCq8681wm0GReDySY?=
- =?us-ascii?Q?Pg=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	JO6cvR4aGQjD+bnODsAoEZ2e3mGSsJsAu+E/Iye4FSh///eXR+FV09gnEldwGwilH7ckkY945FA03mImwNYdyXzxJvD/0/9Kc+aa2RVQSLvBr1166DUSnUQZWSqz7vusLQXYwMztFGIskwOoj3mKdQNFJXgu1zlX+pati0zdEHFi1flzPJlROkAskKJLrO0Q/Q8+S6uLg6lKb7G+jFxCdhZt6af/a/fdSuTc4GP2yNVICEech9pHPgMIXoSQXnLNrI1L2Gff8LxQS5U2+is8xRCWMVLIR06rGaF7f6S4zvTJGcdg+0TY4HdMz8y96Lnm742VgeOfzz1SXlmxF1JH948btqh8l/9jpa3ZPm9R3F3q3obtQQBAbd9xrpftS42W6T+JRhT0cSSo8lKOkauHKcKMsJTA8x/P5DW50uq1XeqOZDrJ5JSxH2nvfpv8P1mt9VSB1x/gQaWPZgWkV2a6YzclhWXlqix0MjNi7Q6qdEh/5XOh3wlHk0IQdchfK7cF0yWLOVJswzEf1VRxs77x6G9h26D/wba8PvaxlLjU4It18CXxB+9U9/Mb4K9y52wx1nZdqSWPQfhurrQivo9uzeIdtSAvAruPWO8GERkcaB0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 804bc6b0-9fba-4e08-a8ce-08dc5a220f5b
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2024 12:22:31.3739
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NKAYYKWKBdf8+Hor88p/0JeVvTCDAMV4fXAPW5GM6tguS+G63a6+/hO6TA1s3IOxbcIfGhz0NoLe5pC6iaB+eIm49nc4UVRGGX6hKGpjmZw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR10MB5054
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-11_06,2024-04-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
- suspectscore=0 spamscore=0 mlxscore=0 bulkscore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2404110089
-X-Proofpoint-ORIG-GUID: VTVpoTM573EYuqD5qEozznxZJqofMCEZ
-X-Proofpoint-GUID: VTVpoTM573EYuqD5qEozznxZJqofMCEZ
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+
+Hi
+
+I NACK this.
 
 
-Chris,
+On Thu, 11 Apr 2024, Li Lingfeng wrote:
 
-> I have seen a patch circulated but pulled from 6.8.5 for this issue:
->
->> scsi: sg: Avoid sg device teardown race
->> [ Upstream commit 27f58c04a8f438078583041468ec60597841284d ]
->
-> I think I have hit this issue in 6.8.4. Is there a patch ready for
-> this bug yet please?
+> This reverts commit 5735a2671ffb70ea29ca83969fe01316ee2ed6fc which is
+> commit 0a9bab391e336489169b95cb0d4553d921302189 upstream.
+> 
+> Tasklet is thought to cause memory corruption [1], so it was disabled in
+> dm-crypt and dm-verity. However, memory corruption may not happen since
+> cc->io_queue is created without WQ_UNBOUND [2].
+> Revert commit 5735a2671ffb ("dm-crypt, dm-verity: disable tasklets") to
+> bring tasklet back.
+> 
+> [1] https://lore.kernel.org/all/d390d7ee-f142-44d3-822a-87949e14608b@suse.de/T/
+> [2] https://lore.kernel.org/all/4d331659-badd-749d-fba1-271543631a8a@huawei.com/
 
-I merged the fix last week. I'm assuming it'll go to Linus soon.
+Regarding [2] - if you add mdelay, you can make the race condition less 
+reproducible, but it is not a proper fix and the race condition stays 
+there unfixed.
 
-  https://git.kernel.org/mkp/scsi/c/d4e655c49f47
+Workqueues and ksoftirqd may be scheduled arbitrarily, there is no 
+guarantee that they will be executed in a particular order, even if they 
+are executed on the same CPU.
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Mikulas
+
+> Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+> ---
+>  drivers/md/dm-crypt.c         | 38 +++++++++++++++++++++++++++++++++--
+>  drivers/md/dm-verity-target.c | 26 ++++++++++++++++++++++--
+>  drivers/md/dm-verity.h        |  1 +
+>  3 files changed, 61 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/md/dm-crypt.c b/drivers/md/dm-crypt.c
+> index aa6bb5b4704b..a60d91d02e28 100644
+> --- a/drivers/md/dm-crypt.c
+> +++ b/drivers/md/dm-crypt.c
+> @@ -75,8 +75,10 @@ struct dm_crypt_io {
+>  	struct bio *base_bio;
+>  	u8 *integrity_metadata;
+>  	bool integrity_metadata_from_pool:1;
+> +	bool in_tasklet:1;
+>  
+>  	struct work_struct work;
+> +	struct tasklet_struct tasklet;
+>  
+>  	struct convert_context ctx;
+>  
+> @@ -1775,6 +1777,7 @@ static void crypt_io_init(struct dm_crypt_io *io, struct crypt_config *cc,
+>  	io->ctx.r.req = NULL;
+>  	io->integrity_metadata = NULL;
+>  	io->integrity_metadata_from_pool = false;
+> +	io->in_tasklet = false;
+>  	atomic_set(&io->io_pending, 0);
+>  }
+>  
+> @@ -1785,6 +1788,13 @@ static void crypt_inc_pending(struct dm_crypt_io *io)
+>  
+>  static void kcryptd_queue_read(struct dm_crypt_io *io);
+>  
+> +static void kcryptd_io_bio_endio(struct work_struct *work)
+> +{
+> +	struct dm_crypt_io *io = container_of(work, struct dm_crypt_io, work);
+> +
+> +	bio_endio(io->base_bio);
+> +}
+> +
+>  /*
+>   * One of the bios was finished. Check for completion of
+>   * the whole request and correctly clean up the buffer.
+> @@ -1817,6 +1827,20 @@ static void crypt_dec_pending(struct dm_crypt_io *io)
+>  
+>  	base_bio->bi_status = error;
+>  
+> +	/*
+> +	 * If we are running this function from our tasklet,
+> +	 * we can't call bio_endio() here, because it will call
+> +	 * clone_endio() from dm.c, which in turn will
+> +	 * free the current struct dm_crypt_io structure with
+> +	 * our tasklet. In this case we need to delay bio_endio()
+> +	 * execution to after the tasklet is done and dequeued.
+> +	 */
+> +	if (io->in_tasklet) {
+> +		INIT_WORK(&io->work, kcryptd_io_bio_endio);
+> +		queue_work(cc->io_queue, &io->work);
+> +		return;
+> +	}
+> +
+>  	bio_endio(base_bio);
+>  }
+>  
+> @@ -2291,6 +2315,11 @@ static void kcryptd_crypt(struct work_struct *work)
+>  		kcryptd_crypt_write_convert(io);
+>  }
+>  
+> +static void kcryptd_crypt_tasklet(unsigned long work)
+> +{
+> +	kcryptd_crypt((struct work_struct *)work);
+> +}
+> +
+>  static void kcryptd_queue_crypt(struct dm_crypt_io *io)
+>  {
+>  	struct crypt_config *cc = io->cc;
+> @@ -2302,10 +2331,15 @@ static void kcryptd_queue_crypt(struct dm_crypt_io *io)
+>  		 * irqs_disabled(): the kernel may run some IO completion from the idle thread, but
+>  		 * it is being executed with irqs disabled.
+>  		 */
+> -		if (!(in_hardirq() || irqs_disabled())) {
+> -			kcryptd_crypt(&io->work);
+> +		if (in_hardirq() || irqs_disabled()) {
+> +			io->in_tasklet = true;
+> +			tasklet_init(&io->tasklet, kcryptd_crypt_tasklet, (unsigned long)&io->work);
+> +			tasklet_schedule(&io->tasklet);
+>  			return;
+>  		}
+> +
+> +		kcryptd_crypt(&io->work);
+> +		return;
+>  	}
+>  
+>  	INIT_WORK(&io->work, kcryptd_crypt);
+> diff --git a/drivers/md/dm-verity-target.c b/drivers/md/dm-verity-target.c
+> index 49e4a35d7019..0bb126eadc0d 100644
+> --- a/drivers/md/dm-verity-target.c
+> +++ b/drivers/md/dm-verity-target.c
+> @@ -701,6 +701,23 @@ static void verity_work(struct work_struct *w)
+>  	verity_finish_io(io, errno_to_blk_status(verity_verify_io(io)));
+>  }
+>  
+> +static void verity_tasklet(unsigned long data)
+> +{
+> +	struct dm_verity_io *io = (struct dm_verity_io *)data;
+> +	int err;
+> +
+> +	io->in_tasklet = true;
+> +	err = verity_verify_io(io);
+> +	if (err == -EAGAIN || err == -ENOMEM) {
+> +		/* fallback to retrying with work-queue */
+> +		INIT_WORK(&io->work, verity_work);
+> +		queue_work(io->v->verify_wq, &io->work);
+> +		return;
+> +	}
+> +
+> +	verity_finish_io(io, errno_to_blk_status(err));
+> +}
+> +
+>  static void verity_end_io(struct bio *bio)
+>  {
+>  	struct dm_verity_io *io = bio->bi_private;
+> @@ -713,8 +730,13 @@ static void verity_end_io(struct bio *bio)
+>  		return;
+>  	}
+>  
+> -	INIT_WORK(&io->work, verity_work);
+> -	queue_work(io->v->verify_wq, &io->work);
+> +	if (static_branch_unlikely(&use_tasklet_enabled) && io->v->use_tasklet) {
+> +		tasklet_init(&io->tasklet, verity_tasklet, (unsigned long)io);
+> +		tasklet_schedule(&io->tasklet);
+> +	} else {
+> +		INIT_WORK(&io->work, verity_work);
+> +		queue_work(io->v->verify_wq, &io->work);
+> +	}
+>  }
+>  
+>  /*
+> diff --git a/drivers/md/dm-verity.h b/drivers/md/dm-verity.h
+> index db93a91169d5..7e495cc375b0 100644
+> --- a/drivers/md/dm-verity.h
+> +++ b/drivers/md/dm-verity.h
+> @@ -87,6 +87,7 @@ struct dm_verity_io {
+>  	bool in_tasklet;
+>  
+>  	struct work_struct work;
+> +	struct tasklet_struct tasklet;
+>  
+>  	char *recheck_buffer;
+>  
+> -- 
+> 2.31.1
+> 
+
 
