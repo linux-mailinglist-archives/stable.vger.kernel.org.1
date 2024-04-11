@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-38324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C38B8A0E07
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D2E8A0F97
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDD0E1C20B10
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 289471C215FA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C58145B26;
-	Thu, 11 Apr 2024 10:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46904146A64;
+	Thu, 11 Apr 2024 10:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gKM4+29+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hhJwIDSp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B870C142624;
-	Thu, 11 Apr 2024 10:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050ED13FD94;
+	Thu, 11 Apr 2024 10:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830219; cv=none; b=sWLPbKYGfDqBFnXsqeKZtwGBM57fFJB1lUtHg4oZtKXh2z5iNNY60Us85mwYB29kY/X0P8kxQcX3ujOswiApgJ/bC/OnFuFJxPq1aCZa3qcEqrf9ZgclETTdbLjI0aZGV6rtfn+HnDxmS8ZpfUnOgtt759TXW1zU9jrpo/KapVs=
+	t=1712831123; cv=none; b=V8ptcWVDnWJD0QfoZKfl92NDiYw6/haNK35rZJvpVKDL+v29GTZjavQ5WnBp7WnCNOrDfVx/RYR07zdB7krMLwF/N2L187a40cdQ47+fDe5i+hTAFLS6NuCvWjba3Jnig2okaCfWJdxHypcGMQIZEZTf0EgGwMUprz0sv6qmZtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830219; c=relaxed/simple;
-	bh=CinONC1eDjdb6R7fgi0qGJyGYBqBZPqfRCV6CROOJOc=;
+	s=arc-20240116; t=1712831123; c=relaxed/simple;
+	bh=lvqH8mUMP05H43amM3gIdFtWnj0DOiePv4BNW3a/Uv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q3QDnYPJosOiBJRP2cg9IplwiKtgNFZKud7JKVRxmkRT8nOUMkpIQ2aMHMqMuu7AlU08DR1FIJVMucygRLlObcOqwYdaN2BZgcYqRXmX36ghmQrQM5fSa93SGy0IsBWkXtPiA12u5K15hVyuIVT8xoVMvROsbpq3Gb2WLE3nlTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gKM4+29+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4117EC433C7;
-	Thu, 11 Apr 2024 10:10:19 +0000 (UTC)
+	 MIME-Version; b=MfDk1D7ESJBO1awltMUZddv2cT/bygZP+YfCbmQmMMQwOU53CkDgCnVvQvh/GqAo83yQxN4QP1Bpdw1/HR6Tuxx7SRi8leqmgkMYBR4QsQ6W5glJ2taNwGipAu/7udlBXpSkFKlvPLNMnvamCEeQgiESdyBMuiADAUn7q+a0HSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hhJwIDSp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA57C433F1;
+	Thu, 11 Apr 2024 10:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830219;
-	bh=CinONC1eDjdb6R7fgi0qGJyGYBqBZPqfRCV6CROOJOc=;
+	s=korg; t=1712831122;
+	bh=lvqH8mUMP05H43amM3gIdFtWnj0DOiePv4BNW3a/Uv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gKM4+29+f/yPbTljSviAKImItlSBrsrF8rM8XwazjhHuxPVuX32RxmFyoSH3XjR/p
-	 9uXUi0FrZs/xuuKC+2BhtnOAd6avQ1fwxZz4DB88CZvHy7WQa3YLU1Ct3o41HT+krk
-	 u7LDs8fspNfy6cp8Dh3/oaERFGyjmJ5PXIRG8LSM=
+	b=hhJwIDSp3vzYziVCBbVyxT63Cvby4Z0xyeDGkRaVi2HlkklPGwLt/yDHh/PHro4xw
+	 6dugtDmPpDtSMQ98gDNeKbhZbCITKns4j8WOKZpjrASiZkOpHfWgAqoF+gnUeyGd9g
+	 A9NI3Us7zRYxvYLfb7H+uaXyCF3XEgJEIj4ooXps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Marshall <hubcap@omnibond.com>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 075/143] Julia Lawall reported this null pointer dereference, this should fix it.
+Subject: [PATCH 6.6 016/114] arm64: dts: rockchip: fix rk3328 hdmi ports node
 Date: Thu, 11 Apr 2024 11:55:43 +0200
-Message-ID: <20240411095423.171513114@linuxfoundation.org>
+Message-ID: <20240411095417.359151122@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,33 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Marshall <hubcap@omnibond.com>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit 9bf93dcfc453fae192fe5d7874b89699e8f800ac ]
+[ Upstream commit 1d00ba4700d1e0f88ae70d028d2e17e39078fa1c ]
 
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Fix rk3328 hdmi ports node so that it matches the
+rockchip,dw-hdmi.yaml binding.
+
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/e5dea3b7-bf84-4474-9530-cc2da3c41104@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3328.dtsi | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/fs/orangefs/super.c b/fs/orangefs/super.c
-index 5254256a224d7..4ca8ed410c3cf 100644
---- a/fs/orangefs/super.c
-+++ b/fs/orangefs/super.c
-@@ -527,7 +527,7 @@ struct dentry *orangefs_mount(struct file_system_type *fst,
- 	sb->s_fs_info = kzalloc(sizeof(struct orangefs_sb_info_s), GFP_KERNEL);
- 	if (!ORANGEFS_SB(sb)) {
- 		d = ERR_PTR(-ENOMEM);
--		goto free_sb_and_op;
-+		goto free_op;
- 	}
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+index cc8209795c3e5..3778fe5c42a4b 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+@@ -743,11 +743,20 @@ hdmi: hdmi@ff3c0000 {
+ 		status = "disabled";
  
- 	ret = orangefs_fill_sb(sb,
+ 		ports {
+-			hdmi_in: port {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			hdmi_in: port@0 {
++				reg = <0>;
++
+ 				hdmi_in_vop: endpoint {
+ 					remote-endpoint = <&vop_out_hdmi>;
+ 				};
+ 			};
++
++			hdmi_out: port@1 {
++				reg = <1>;
++			};
+ 		};
+ 	};
+ 
 -- 
 2.43.0
 
