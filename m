@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E0628A0F8C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5678A0E5A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C03131C212B1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38EA528681E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D26146A72;
-	Thu, 11 Apr 2024 10:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1EB14600A;
+	Thu, 11 Apr 2024 10:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+JIqOqE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKKRXvOk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AFE140E3D;
-	Thu, 11 Apr 2024 10:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F89145B3E;
+	Thu, 11 Apr 2024 10:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831091; cv=none; b=nQ/6pwv6SruRKBE1IdLjanYdvxvAS7a75N3uJPNvPzxw5aIkhjApJKZ+3nFgdw1elx4a7T0k1zaBC8nKVU6ZsaYGNLFvupaKQ8aO1rhLuxTQfMUP24LaT8YFnqEYgsNi8yPgV1xBMQDZ5z8H8TRuSOaT9MigrFhLHmchSX5fi8g=
+	t=1712830431; cv=none; b=Xw9jeqe+KpUiMbaJOTEu9MsG8NxtNuv/JLFoIpX4npptFBM19wtPb1t8ocu3X2QdQZQPbsHzdynCfo2tF9TQvjUMX8K7QbJVgk5eQxwI7yXfxFdIz12CZhIQcXb04nOPEw93YD14vTGy/iq7N70WfnjxiUIf7WnqR6N8aYimacc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831091; c=relaxed/simple;
-	bh=7rrb036arbG4HXlLeM04ulNPRgH/aGWcH9SI35UzofE=;
+	s=arc-20240116; t=1712830431; c=relaxed/simple;
+	bh=YWX2S+HjNFw83l2qMWmYvU7adSh2VxY4GL45toYwhLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dq+UL9EmWYkI/PdJK2MYKX36zsh6vt9++eNaNz6zhBUvJ8XQny5EpxbaUxJphwoIwWoIGVQqFaK0nTNjn0pa1hgXttYjZ7HitblICq2L6TL5xgE9tFBHWaUaaj1bdboWuhXdq79Pa+iD02WoMJMxlCg2kZaRyxs7Vu5p6sIOmqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+JIqOqE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3FEC433C7;
-	Thu, 11 Apr 2024 10:24:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E7x8cD/RmE/ze0CTjER2N9kNDk5SVyW3fxQnHZLadogtqoA19weENKDG2qTQyQhaEQbTdEjYOp1CSygB0FzgTpja1JjNzj1tFbPMUWLYuIWXxsUlFyBtni3pa8CddFKKFSR+gZd1yoW9bLf5kbjVQhOLA51hmWOMXA1+fYFhxw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKKRXvOk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A139FC433F1;
+	Thu, 11 Apr 2024 10:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831090;
-	bh=7rrb036arbG4HXlLeM04ulNPRgH/aGWcH9SI35UzofE=;
+	s=korg; t=1712830431;
+	bh=YWX2S+HjNFw83l2qMWmYvU7adSh2VxY4GL45toYwhLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O+JIqOqE0SY7/h6GySLGFFihf4Top6igUE14q2NXGfMKUbdo+RwRDkyVs+BdLZf3T
-	 ljgLmjoxxGPPxVhK2AeVOGeavxihKjta5EoDf2CzVZFmVjyzBj8H+JJvaq/KDYYjcK
-	 smlNF0RlRhKwsAwCHKUgo0dGSaFUBzGZsZWz5gDY=
+	b=DKKRXvOktIjPNSAnwq8FUD3ipXlDDrDZt8SDMMXVNBALYuppuokqJkHHs4dDJYwYV
+	 wDoe0b8Zc1WMRnnUkyjHYgdnuv8lVPM831maeregy+FPzVcVwn+ss3x9gGZhnHNXT7
+	 CLBEIr7FajeWA5OuJhmXHoF/9nu1BeR5f82O1s7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hawley <warthog9@eaglescrag.net>,
-	"Ricardo B. Marliere" <ricardo@marliere.net>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	David McFarland <corngood@gmail.com>,
+	Enrik Berkhan <Enrik.Berkhan@inka.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 195/215] ktest: force $buildonly = 1 for make_warnings_file test type
+Subject: [PATCH 6.8 136/143] platform/x86/intel/hid: Dont wake on 5-button releases
 Date: Thu, 11 Apr 2024 11:56:44 +0200
-Message-ID: <20240411095430.723491111@linuxfoundation.org>
+Message-ID: <20240411095424.995498714@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marliere <ricardo@marliere.net>
+From: David McFarland <corngood@gmail.com>
 
-[ Upstream commit 07283c1873a4d0eaa0e822536881bfdaea853910 ]
+[ Upstream commit 5864e479ca4344f3a5df8074524da24c960f440b ]
 
-The test type "make_warnings_file" should have no mandatory configuration
-parameters other than the ones required by the "build" test type, because
-its purpose is to create a file with build warnings that may or may not be
-used by other subsequent tests. Currently, the only way to use it as a
-stand-alone test is by setting POWER_CYCLE, CONSOLE, SSH_USER,
-BUILD_TARGET, TARGET_IMAGE, REBOOT_TYPE and GRUB_MENU.
+If, for example, the power button is configured to suspend, holding it
+and releasing it after the machine has suspended, will wake the machine.
 
-Link: https://lkml.kernel.org/r/20240315-ktest-v2-1-c5c20a75f6a3@marliere.net
+Also on some machines, power button release events are sent during
+hibernation, even if the button wasn't used to hibernate the machine.
+This causes hibernation to be aborted.
 
-Cc: John Hawley <warthog9@eaglescrag.net>
-Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Fixes: 0c4cae1bc00d ("PM: hibernate: Avoid missing wakeup events during hibernation")
+Signed-off-by: David McFarland <corngood@gmail.com>
+Tested-by: Enrik Berkhan <Enrik.Berkhan@inka.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/878r1tpd6u.fsf_-_@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/x86/intel/hid.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index 698b99e25f980..d36612c620981 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -768,6 +768,7 @@ sub set_value {
-     if ($lvalue =~ /^(TEST|BISECT|CONFIG_BISECT)_TYPE(\[.*\])?$/ &&
- 	$prvalue !~ /^(config_|)bisect$/ &&
- 	$prvalue !~ /^build$/ &&
-+	$prvalue !~ /^make_warnings_file$/ &&
- 	$buildonly) {
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index 7457ca2b27a60..9ffbdc988fe50 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -504,6 +504,7 @@ static void notify_handler(acpi_handle handle, u32 event, void *context)
+ 	struct platform_device *device = context;
+ 	struct intel_hid_priv *priv = dev_get_drvdata(&device->dev);
+ 	unsigned long long ev_index;
++	struct key_entry *ke;
+ 	int err;
  
- 	# Note if a test is something other than build, then we
+ 	/*
+@@ -545,11 +546,15 @@ static void notify_handler(acpi_handle handle, u32 event, void *context)
+ 		if (event == 0xc0 || !priv->array)
+ 			return;
+ 
+-		if (!sparse_keymap_entry_from_scancode(priv->array, event)) {
++		ke = sparse_keymap_entry_from_scancode(priv->array, event);
++		if (!ke) {
+ 			dev_info(&device->dev, "unknown event 0x%x\n", event);
+ 			return;
+ 		}
+ 
++		if (ke->type == KE_IGNORE)
++			return;
++
+ wakeup:
+ 		pm_wakeup_hard_event(&device->dev);
+ 
 -- 
 2.43.0
 
