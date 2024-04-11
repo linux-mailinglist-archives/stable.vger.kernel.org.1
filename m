@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-38467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 152688A0EB9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75E4A8A10B0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 451371C22479
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A70A71C23E2D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61FF614601B;
-	Thu, 11 Apr 2024 10:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D476148300;
+	Thu, 11 Apr 2024 10:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5GJHW0Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tI4G1Kg/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E44013E897;
-	Thu, 11 Apr 2024 10:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD29C1482F6;
+	Thu, 11 Apr 2024 10:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830659; cv=none; b=Kcuxn2zFp8ez7a38Si6LCVRIF6K0JYKI+1u+O4QUNqG5X6AN30eFA8uAfWtBfgK9wT+MvkyzzAZraKwCKgs5bvNyHXYLyBREGCqNvEu7siPNjc6afZdZke7OPe0QiCLnl2zSn/kvvy34z26gVXFo8b6N82QvsWIte4iMyK3rC7U=
+	t=1712831773; cv=none; b=XjeRhmgXLximWj4ls+BCc9wEBH4yIK0+b9OcPuk4wk8FKLsfk8E0pWCIeOm2HyeQQr94lJC7F+69ZiaZqdAlNvR/T8SBbqKya3IwYwzdMZc8cXrbeXffFmZgNqo6EAbei8s5YVX9Qx17H0KwC/Arrw/EvIlEo+s7ugUU7jGb/Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830659; c=relaxed/simple;
-	bh=l7LJ5wLfIwnVglHB7XLDM5wUQ7zOiJvXmy+N9Z0DOtw=;
+	s=arc-20240116; t=1712831773; c=relaxed/simple;
+	bh=JeTX065VFqyODGCKWFgkjGgC3a0KMSkMh5qiMaXvuVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ERN3EwGTPUYSIb1okYtHFhZrGK/fLl42fVIPwjfixP2FwqkeX68RZWcrK2FwAmUMc3OGt7e0VMJQ9owRbD/4mJABuJ3SQooPi+uAwY1xyRVfg9cce3P62w8z/rymp6lriDQFXkQETepAXMyx9mXUaP/xL+HSojla3LstTFCkzeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5GJHW0Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACADC433C7;
-	Thu, 11 Apr 2024 10:17:38 +0000 (UTC)
+	 MIME-Version; b=gNAkvlYkP9R2ICIZPT1wSDvnE59gBK5Q531BQZZ1rTjIpu6dvYtFBSC+LsT16NU0iqnz8SOmd8jB9ls9X389u4JM/uLSRkVXZDqDbG/Lir69Og8Y/5FWyOAzOCzwsm2JpKEy+ts4BmAYKw3bel+LAYLtY2G+6ur1rG2qWGSQO5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tI4G1Kg/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D367C433C7;
+	Thu, 11 Apr 2024 10:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830659;
-	bh=l7LJ5wLfIwnVglHB7XLDM5wUQ7zOiJvXmy+N9Z0DOtw=;
+	s=korg; t=1712831773;
+	bh=JeTX065VFqyODGCKWFgkjGgC3a0KMSkMh5qiMaXvuVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t5GJHW0Qpp5RoEZvyAudQ7Jn5OibIYASG0ESgN/rZmAod1/tKB/JBlkVNaQ+QyOj4
-	 GW7pTEK5lT7+W9DnmF4tNGsOIQYjQM0my8QJfJrNyg3QZIwRf6QpyiK3jmdL2Dm8fS
-	 fyCWwX0izWPDTjvvkz1Bb+9eeNiTtbDhICDYKfzA=
+	b=tI4G1Kg/5KkqiEklsEdJ36+yhdEMiwMhqqWKYzTT415H4qU5SVc7rBSNKqTenOBJT
+	 7Gjs+ESYfiuxVqX1250F7F3mL06i+3yDZEy36IR3nvRAYgVqTexuwIsRjTdmE/3Jf1
+	 FgpoL84IBNiP082Lo6iZ0ikFOtDk9ImHo25XLu8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 075/215] nilfs2: prevent kernel bug at submit_bh_wbc()
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 121/294] netfilter: nf_tables: reject constant set with timeout
 Date: Thu, 11 Apr 2024 11:54:44 +0200
-Message-ID: <20240411095427.164761866@linuxfoundation.org>
+Message-ID: <20240411095439.309916680@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 269cdf353b5bdd15f1a079671b0f889113865f20 ]
+commit 5f4fc4bd5cddb4770ab120ce44f02695c4505562 upstream.
 
-Fix a bug where nilfs_get_block() returns a successful status when
-searching and inserting the specified block both fail inconsistently.  If
-this inconsistent behavior is not due to a previously fixed bug, then an
-unexpected race is occurring, so return a temporary error -EAGAIN instead.
+This set combination is weird: it allows for elements to be
+added/deleted, but once bound to the rule it cannot be updated anymore.
+Eventually, all elements expire, leading to an empty set which cannot
+be updated anymore. Reject this flags combination.
 
-This prevents callers such as __block_write_begin_int() from requesting a
-read into a buffer that is not mapped, which would cause the BUG_ON check
-for the BH_Mapped flag in submit_bh_wbc() to fail.
-
-Link: https://lkml.kernel.org/r/20240313105827.5296-3-konishi.ryusuke@gmail.com
-Fixes: 1f5abe7e7dbc ("nilfs2: replace BUG_ON and BUG calls triggerable from ioctl")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 761da2935d6e ("netfilter: nf_tables: add set timeout API support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/nilfs2/inode.c b/fs/nilfs2/inode.c
-index 83dbfd9d25323..530edb813add8 100644
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -111,7 +111,7 @@ int nilfs_get_block(struct inode *inode, sector_t blkoff,
- 					   "%s (ino=%lu): a race condition while inserting a data block at offset=%llu",
- 					   __func__, inode->i_ino,
- 					   (unsigned long long)blkoff);
--				err = 0;
-+				err = -EAGAIN;
- 			}
- 			nilfs_transaction_abort(inode->i_sb);
- 			goto out;
--- 
-2.43.0
-
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4413,6 +4413,9 @@ static int nf_tables_newset(struct net *
+ 		if ((flags & (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT | NFT_SET_EVAL)) ==
+ 			     (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT))
+ 			return -EOPNOTSUPP;
++		if ((flags & (NFT_SET_CONSTANT | NFT_SET_TIMEOUT)) ==
++			     (NFT_SET_CONSTANT | NFT_SET_TIMEOUT))
++			return -EOPNOTSUPP;
+ 	}
+ 
+ 	dtype = 0;
 
 
 
