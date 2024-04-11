@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D73E8A10AC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A50F8A0DDC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:08:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3838328AE23
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBD8D1C21606
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:08:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63732147C88;
-	Thu, 11 Apr 2024 10:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280A7145B07;
+	Thu, 11 Apr 2024 10:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQwwnDe9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcDJbH8p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E92D1474CA;
-	Thu, 11 Apr 2024 10:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEE31F5FA;
+	Thu, 11 Apr 2024 10:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831762; cv=none; b=B4HaY3k+PInpyh6SseupVJehoepcaADka3u0vkSyNZxQAfuZrJW/sSChyjNdbnzu/1LI5m8ATDCkZjYrc4ahiTByanGW2aRF2USMXjlSpJ+jmN3zwJhb7nelC9WuQwwmafTmcvX+PhFO9tzFeUMa2UWrxVj5WJStjWB+z94quOA=
+	t=1712830116; cv=none; b=IEM9UvNUM5KNcVi9qjtj/Jh9lLMMFyK2QqaxSLnUc6L3IaNdK2YxNNqyRIfPoV1EfRUhIevGMOGubWBa5Cgndz1OD7zSOYhM3SIKzB6MRTx2MHDLzjkeLyPEQgkQS29YEMs3SF9XjDQcAQGl+U+Bd6IXPu9TCnjVJXUKagfot1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831762; c=relaxed/simple;
-	bh=nUgHe6NC4ZJfnquRl/sg5BsWpQYaBiVT43KWFEDaJIk=;
+	s=arc-20240116; t=1712830116; c=relaxed/simple;
+	bh=zZeZv1WYJ4TaFALGKvaCqwOeAcX5KSyaT7JX9XTX3lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lDL7n4aO6kNUg53Zg2s/MzIdFdDYuwXbmJt/eXo4+LUp2NsP81hQWQUmVmPFNGQ7nqaTHtff28gallAj+3S2iv2cJm3nluO2COqnTsp9B1RkPI2maXQhx3y32x9ctcKNGzoudo9XUPCksfCBR70gpAyUFmu5Ebmckz6Wg23y1rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQwwnDe9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99422C433C7;
-	Thu, 11 Apr 2024 10:36:01 +0000 (UTC)
+	 MIME-Version; b=s+A93YwH9rwtyLQkBygbKSEIE+9yfZ6noVGB0JGWr7DVfCig/Cc8ENIW3fKt/RWcIbQ3BHriI2ErDZGmvqMnJJ1CVt6HAzixFUABQ6+AWoEUGfiP54w3hxzx25Xf8NS015ZVHIz7dJAPYufo6jIkiDl3SHUwliprDUFRrUnAVhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcDJbH8p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 625BEC433F1;
+	Thu, 11 Apr 2024 10:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831762;
-	bh=nUgHe6NC4ZJfnquRl/sg5BsWpQYaBiVT43KWFEDaJIk=;
+	s=korg; t=1712830116;
+	bh=zZeZv1WYJ4TaFALGKvaCqwOeAcX5KSyaT7JX9XTX3lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wQwwnDe9gNw+d624Cgy67RbyXuv7kzJrQ8y2qMzqVlv5OV0RyjE3S4yuZv9QXiEcF
-	 xr/cc+wXs0Vq5Kg5JRWFpLZv8GEmfcPCYmRZdYUXaKVZ4+82lM/0DSK+KH3csxpf4Q
-	 ZeNIL+WGtX1uwoD0wISwc5OffKep5kRWrc07dSbw=
+	b=hcDJbH8pH8wYabNKS9nraYk3Nk36kuPdNwlgxC2GcyMtU/7BRd8XqWGgkW+Oy/2Gd
+	 IiLzW5q18fZV301pXv6/ba0WNrWUQdxAVIBMMx1+V2X4ETYJb3FDlt8MzqdJbbD+ne
+	 rZmkiK15uaSxi7R2C6eHw0ipGMIohZbaIQiVW4kQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Anastasia Belova <abelova@astralinux.ru>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 118/294] cpufreq: brcmstb-avs-cpufreq: fix up "add check for cpufreq_cpu_gets return value"
+Subject: [PATCH 6.8 013/143] net: dsa: qca8k: put MDIO controller OF node if unavailable
 Date: Thu, 11 Apr 2024 11:54:41 +0200
-Message-ID: <20240411095439.220828502@linuxfoundation.org>
+Message-ID: <20240411095421.309930677@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-In commit 9127599c075c ("cpufreq: brcmstb-avs-cpufreq: add check for
-cpufreq_cpu_get's return value"), build warnings occur because a
-variable is created after some logic, resulting in:
+[ Upstream commit 08932323ccf7f8c4c85db9cb12a791ed81264f66 ]
 
-drivers/cpufreq/brcmstb-avs-cpufreq.c: In function 'brcm_avs_cpufreq_get':
-drivers/cpufreq/brcmstb-avs-cpufreq.c:486:9: error: ISO C90 forbids mixed
-declarations and code [-Werror=declaration-after-statement]
-  486 |         struct private_data *priv = policy->driver_data;
-      |         ^~~~~~
-cc1: all warnings being treated as errors
-make[2]: *** [scripts/Makefile.build:289:
-drivers/cpufreq/brcmstb-avs-cpufreq.o] Error 1
-make[1]: *** [scripts/Makefile.build:552: drivers/cpufreq] Error 2
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1907: drivers] Error 2
+It was pointed out during the review [1] of commit e66bf63a7f67 ("net:
+dsa: qca8k: skip MDIO bus creation if its OF node has status =
+"disabled"") that we now leak a reference to the "mdio" OF node if it is
+disabled.
 
-Fix this up.
+This is only a concern when using dynamic OF as far as I can tell (like
+probing on an overlay), since OF nodes are never freed in the regular
+case. Additionally, I'm unaware of any actual device trees (in
+production or elsewhere) which have status = "disabled" for the MDIO OF
+node. So handling this as a simple enhancement.
 
-Link: https://lore.kernel.org/r/e114d9e5-26af-42be-9baa-72c3a6ec8fe5@oracle.com
-Link: https://lore.kernel.org/stable/20240327015023.GC7502@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net/T/#m15bff0fe96986ef780e848b4fff362bf8ea03f08
-Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Fixes: 9127599c075c ("cpufreq: brcmstb-avs-cpufreq: add check for cpufreq_cpu_get's return value")
-Cc: Anastasia Belova <abelova@astralinux.ru>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] https://lore.kernel.org/netdev/CAJq09z4--Ug+3FAmp=EimQ8HTQYOWOuVon-PUMGB5a1N=RPv4g@mail.gmail.com/
+
+Suggested-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/brcmstb-avs-cpufreq.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/dsa/qca/qca8k-8xxx.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
-+++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
-@@ -481,10 +481,11 @@ static bool brcm_avs_is_firmware_loaded(
- static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
- {
- 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
-+	struct private_data *priv;
-+
- 	if (!policy)
- 		return 0;
--	struct private_data *priv = policy->driver_data;
--
-+	priv = policy->driver_data;
- 	cpufreq_cpu_put(policy);
+diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
+index 7a864329cb726..95d78b3181d1c 100644
+--- a/drivers/net/dsa/qca/qca8k-8xxx.c
++++ b/drivers/net/dsa/qca/qca8k-8xxx.c
+@@ -954,7 +954,7 @@ qca8k_mdio_register(struct qca8k_priv *priv)
  
- 	return brcm_avs_get_frequency(priv->base);
+ 	mdio = of_get_child_by_name(dev->of_node, "mdio");
+ 	if (mdio && !of_device_is_available(mdio))
+-		goto out;
++		goto out_put_node;
+ 
+ 	bus = devm_mdiobus_alloc(dev);
+ 	if (!bus) {
+@@ -988,7 +988,6 @@ qca8k_mdio_register(struct qca8k_priv *priv)
+ 
+ out_put_node:
+ 	of_node_put(mdio);
+-out:
+ 	return err;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
