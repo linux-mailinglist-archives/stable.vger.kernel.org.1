@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F5A18A0FA8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5A08A0D81
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:04:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40BB81C215FA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D641B23909
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AB0146A90;
-	Thu, 11 Apr 2024 10:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87D1145FED;
+	Thu, 11 Apr 2024 10:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqewzqOc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0TRxaQd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9060146A64;
-	Thu, 11 Apr 2024 10:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856E71422C4;
+	Thu, 11 Apr 2024 10:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831163; cv=none; b=EXJ2GSVfWmnWNPlgYiybVMoKe9qcjGJLdnyzCelVrhVl2QGmq8+Wzj3o+R9JkNjN9yWhVCltLNhHRmQVlHXtqNzPfD4TES0iMKUHc72YI4JaPOLfSYXruoP1xuMfJ+BX24ri0y8Zil/XjKJGe98ShZ6oK0KS45KGmGt+Ur5BOQI=
+	t=1712829870; cv=none; b=tBgzwimqy1zYqdCOV3ZhBk3sgTe+A4fWwGSzUEYZ3CEPiQhGKuGnfxRtmk/dPYBgZzIlOXq3gBn1Qa++sKUsnJHZnLUjKI5BskQwjblikjfJ2/8INqtdvofCzfSnKKF+YFLl1Qj+YTEdnSM5ht2+urPcdLJ0cQLAT0V2W/laBhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831163; c=relaxed/simple;
-	bh=I4hA93/j6qYoK5/1DuV8IXQy1756FXFYYM6AtqQNncY=;
+	s=arc-20240116; t=1712829870; c=relaxed/simple;
+	bh=cIop02llaJHd4nq3ow+FjntSCmlphyqKRmhHt3sYaDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/GmhI3YZYwY+9nTU1pNrruL2DGhzDTRGLhOhygrzuNuD7H0WRS2zJznsVtbIsquhbHKusI1zctghKv/IoHAFDbOAo1WAG+gwFOd+3vN2IvCZwpO7OpHlPBYRlNqMw23eJZjhvYPrS2HHfovzX2rKB2RPMU3PNpi7EQTrWg6SDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqewzqOc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3F3C433C7;
-	Thu, 11 Apr 2024 10:26:03 +0000 (UTC)
+	 MIME-Version; b=UA0ssvDSo6bshcfLW84RNER+Ch75L/BHnvTBYE7HaH92HDG+yNWnME0+aWzSykSLAepUsrwYOrHyx+wOh1CaYOSNnSgHnCauYR6rR8BTxrPzsXDxGWZ1Fjz3NXmZEdzxeduLR5LcXtKVBeGiWLqivgUdxUa01LG59VQN8fHy/zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0TRxaQd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A140C433C7;
+	Thu, 11 Apr 2024 10:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831163;
-	bh=I4hA93/j6qYoK5/1DuV8IXQy1756FXFYYM6AtqQNncY=;
+	s=korg; t=1712829870;
+	bh=cIop02llaJHd4nq3ow+FjntSCmlphyqKRmhHt3sYaDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pqewzqOc4T1rXv+dUkXQwtVMOI2l58fXQTqLcTgNjbO6fGZdQivTqYaWYMo/QFP72
-	 phmImkj97bzsQIqaCfxlEUsV9E10MyRPlU1zZOSQ2tH9RPFiceg6ttUsgmTur921U5
-	 gM7d3WSdORrNGQ12RE+JecUlEHPqf09YtNAS2A/I=
+	b=K0TRxaQdzz5JQw3wkJr+552cdJL4VpSP6FKxbjyj1isKkHavh9PMbJGKw05DhqYTi
+	 QBwBXhCBbuVPgBZ/3wxflMDefTOaZZn/BXbjxL6l1yROsx5B2wShJj6ll+13fGFKcx
+	 F8T2bq+4QPd9JfAneZuWAAIAk1L0WHkls9dIg8HQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/114] tools/power x86_energy_perf_policy: Fix file leak in get_pkg_num()
+Subject: [PATCH 4.19 134/175] fs: add a vfs_fchown helper
 Date: Thu, 11 Apr 2024 11:55:57 +0200
-Message-ID: <20240411095417.779298059@linuxfoundation.org>
+Message-ID: <20240411095423.598671313@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit f85450f134f0b4ca7e042dc3dc89155656a2299d ]
+[ Upstream commit c04011fe8cbd80af1be6e12b53193bf3846750d7 ]
 
-In function get_pkg_num() if fopen_or_die() succeeds it returns a file
-pointer to be used. But fclose() is never called before returning from
-the function.
+Add a helper for struct file based chown operations.  To be used by
+the initramfs code soon.
 
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: 4624b346cf67 ("init: open /initrd.image with O_LARGEFILE")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/open.c          | 29 +++++++++++++++++------------
+ include/linux/fs.h |  2 ++
+ 2 files changed, 19 insertions(+), 12 deletions(-)
 
-diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-index 5fd9e594079cf..ebda9c366b2ba 100644
---- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-+++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-@@ -1241,6 +1241,7 @@ unsigned int get_pkg_num(int cpu)
- 	retval = fscanf(fp, "%d\n", &pkg);
- 	if (retval != 1)
- 		errx(1, "%s: failed to parse", pathname);
-+	fclose(fp);
- 	return pkg;
+diff --git a/fs/open.c b/fs/open.c
+index 76996f920ebf5..e072e86003f56 100644
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -707,23 +707,28 @@ SYSCALL_DEFINE3(lchown, const char __user *, filename, uid_t, user, gid_t, group
+ 			   AT_SYMLINK_NOFOLLOW);
  }
  
++int vfs_fchown(struct file *file, uid_t user, gid_t group)
++{
++	int error;
++
++	error = mnt_want_write_file(file);
++	if (error)
++		return error;
++	audit_file(file);
++	error = chown_common(&file->f_path, user, group);
++	mnt_drop_write_file(file);
++	return error;
++}
++
+ int ksys_fchown(unsigned int fd, uid_t user, gid_t group)
+ {
+ 	struct fd f = fdget(fd);
+ 	int error = -EBADF;
+ 
+-	if (!f.file)
+-		goto out;
+-
+-	error = mnt_want_write_file(f.file);
+-	if (error)
+-		goto out_fput;
+-	audit_file(f.file);
+-	error = chown_common(&f.file->f_path, user, group);
+-	mnt_drop_write_file(f.file);
+-out_fput:
+-	fdput(f);
+-out:
++	if (f.file) {
++		error = vfs_fchown(f.file, user, group);
++		fdput(f);
++	}
+ 	return error;
+ }
+ 
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index e2c87c056742c..7d93d22ad1062 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1660,6 +1660,8 @@ int vfs_mkobj(struct dentry *, umode_t,
+ 		int (*f)(struct dentry *, umode_t, void *),
+ 		void *);
+ 
++int vfs_fchown(struct file *file, uid_t user, gid_t group);
++
+ extern long vfs_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
+ 
+ /*
 -- 
 2.43.0
 
