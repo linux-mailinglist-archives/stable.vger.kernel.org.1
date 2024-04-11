@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-38462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC598A0EB5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DDF98A1082
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:36:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7BE11F21D43
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0B0DB24596
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD8013E897;
-	Thu, 11 Apr 2024 10:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B8014BFB4;
+	Thu, 11 Apr 2024 10:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vtEJ8Hit"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8N518mX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A097145353;
-	Thu, 11 Apr 2024 10:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DAC1474BB;
+	Thu, 11 Apr 2024 10:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830644; cv=none; b=Sj3q/rCehFaotWDFtKbVv2akO8CfBgk2JsdkaSJHegGndM65BF6n/fwzHFgo+AmCwXpvNcfL4btbW6VCvnymGHYxG3YcPB2b2JSaUPnGmcKyH1CBmXuHWOJhIJNGLR2XL8HEKxawqg8OxySGBrISTxulHkcv3+Ux138wWerGKX0=
+	t=1712831639; cv=none; b=MCNKwVSiK/81JBYiyv/+YUPNKxbZ7N1JskjkXWOO/3GRTS/BS79Ufg82nYjxlIS6VS9j35MH7awG1OJo0RED2H/baw8xixceirfUAXECXoY0nbnuzmexZlz1OCbovxn9YF+9Acq1bCdqUQFpz0Cb9K41oAlNbulo7wi4vCE2B1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830644; c=relaxed/simple;
-	bh=rbHgf2o/Qv7MEmQco/IQ2KAO3E8e7vi1Gat2GqDxGiw=;
+	s=arc-20240116; t=1712831639; c=relaxed/simple;
+	bh=wWo2V9rsmi6qA+90hTS6ByHGsJKVtT6g1m+3bGbnNVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQavr2MvfDjR76Qt1I+5Ga4af2/YqICFQ6NSmg2EWwtoBg0ACzM8fOMZZp+vCaOs9uKdCEA4V0QsdNPj23T0H7MkhSbD30ZgC2h/iKEwnbLxOHjzZTi9zd5ARzySbrt6pGurK45EimnRE/Eee1x4m3FpWTknNYidAeI4oSCsgDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vtEJ8Hit; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 820C4C433F1;
-	Thu, 11 Apr 2024 10:17:23 +0000 (UTC)
+	 MIME-Version; b=Mq77OkdLw2kSp9B77cjQA7RhJXhU5nwB3FkFBUakBxvKHCanWYckT5hKckonL/0i/CDEgPszlA2mv/KFCrG8GyKyVXj4EC4jKXhcysPjRBJp/U/BnQRwWxiwXPcXs8tJuGwvYxvZhQQoK91NB6de4yaJmplIEPoQxd2fsPYaY8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8N518mX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9460BC433F1;
+	Thu, 11 Apr 2024 10:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830643;
-	bh=rbHgf2o/Qv7MEmQco/IQ2KAO3E8e7vi1Gat2GqDxGiw=;
+	s=korg; t=1712831639;
+	bh=wWo2V9rsmi6qA+90hTS6ByHGsJKVtT6g1m+3bGbnNVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vtEJ8HitLWjZVsJ3ghCiq9vOO2cJZ33/Wdr/uTaVe/UYOG/2q2iJ4AcSkT1fK+FXV
-	 nymWLbbhvqi5bhgYZ3/5P7YlSMieLY/PQn4/uXBCzYpGLisTyiH/2oTnUruy20XdNn
-	 B8Lwm8w53fkt6Xy2ER/M4Hck2audPC58yzlWJAGU=
+	b=y8N518mXIGZVy3tgXw5chn4vEVawfqeueiBh5Rew5uK6uYJh5mQbT5PUhUjXGdNxu
+	 nXibzn0V1Ar+Il0/XCIV/rlf32m1lMspY4C3WEyG397NTjkVL3lBjsAE7/NUGSVMx0
+	 krQLYsAnmqtzx01XdZBw1sqf2I8Wu4LnUtfQfuYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Helge Deller <deller@gmx.de>,
+	Wayne Chang <waynec@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 030/215] parisc: Fix csum_ipv6_magic on 32-bit systems
-Date: Thu, 11 Apr 2024 11:53:59 +0200
-Message-ID: <20240411095425.803750394@linuxfoundation.org>
+Subject: [PATCH 5.10 077/294] phy: tegra: xusb: Add API to retrieve the port number of phy
+Date: Thu, 11 Apr 2024 11:54:00 +0200
+Message-ID: <20240411095438.006865712@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Wayne Chang <waynec@nvidia.com>
 
-[ Upstream commit 4408ba75e4ba80c91fde7e10bccccf388f5c09be ]
+[ Upstream commit d843f031d9e90462253015bc0bd9e3852d206bf2 ]
 
-Calculating the IPv6 checksum on 32-bit systems missed overflows when
-adding the proto+len fields into the checksum. This results in the
-following unit test failure.
+This patch introduces a new API, tegra_xusb_padctl_get_port_number,
+to the Tegra XUSB Pad Controller driver. This API is used to identify
+the USB port that is associated with a given PHY.
 
-    # test_csum_ipv6_magic: ASSERTION FAILED at lib/checksum_kunit.c:506
-    Expected ( u64)csum_result == ( u64)expected, but
-        ( u64)csum_result == 46722 (0xb682)
-        ( u64)expected == 46721 (0xb681)
-    not ok 5 test_csum_ipv6_magic
+The function takes a PHY pointer for either a USB2 PHY or USB3 PHY as input
+and returns the corresponding port number. If the PHY pointer is invalid,
+it returns -ENODEV.
 
-This is probably rarely seen in the real world because proto+len are
-usually small values which will rarely result in overflows when calculating
-the checksum. However, the unit test code uses large values for the length
-field, causing the test to fail.
-
-Fix the problem by adding the missing carry into the final checksum.
-
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Charlie Jenkins <charlie@rivosinc.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20240307030328.1487748-2-waynec@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/checksum.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/phy/tegra/xusb.c       | 13 +++++++++++++
+ include/linux/phy/tegra/xusb.h |  2 ++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
-index 7efcd901b9656..0a02639514505 100644
---- a/arch/parisc/include/asm/checksum.h
-+++ b/arch/parisc/include/asm/checksum.h
-@@ -178,7 +178,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- "	ldw,ma		4(%2), %7\n"	/* 4th daddr */
- "	addc		%6, %0, %0\n"
- "	addc		%7, %0, %0\n"
--"	addc		%3, %0, %0\n"	/* fold in proto+len, catch carry */
-+"	addc		%3, %0, %0\n"	/* fold in proto+len */
-+"	addc		0, %0, %0\n"	/* add carry */
+diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
+index 8f11b293c48d1..856397def89ac 100644
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -1399,6 +1399,19 @@ int tegra_xusb_padctl_get_usb3_companion(struct tegra_xusb_padctl *padctl,
+ }
+ EXPORT_SYMBOL_GPL(tegra_xusb_padctl_get_usb3_companion);
  
- #endif
- 	: "=r" (sum), "=r" (saddr), "=r" (daddr), "=r" (len),
++int tegra_xusb_padctl_get_port_number(struct phy *phy)
++{
++	struct tegra_xusb_lane *lane;
++
++	if (!phy)
++		return -ENODEV;
++
++	lane = phy_get_drvdata(phy);
++
++	return lane->index;
++}
++EXPORT_SYMBOL_GPL(tegra_xusb_padctl_get_port_number);
++
+ MODULE_AUTHOR("Thierry Reding <treding@nvidia.com>");
+ MODULE_DESCRIPTION("Tegra XUSB Pad Controller driver");
+ MODULE_LICENSE("GPL v2");
+diff --git a/include/linux/phy/tegra/xusb.h b/include/linux/phy/tegra/xusb.h
+index 71d956935405f..86ccd90e425c7 100644
+--- a/include/linux/phy/tegra/xusb.h
++++ b/include/linux/phy/tegra/xusb.h
+@@ -23,4 +23,6 @@ int tegra_xusb_padctl_set_vbus_override(struct tegra_xusb_padctl *padctl,
+ int tegra_phy_xusb_utmi_port_reset(struct phy *phy);
+ int tegra_xusb_padctl_get_usb3_companion(struct tegra_xusb_padctl *padctl,
+ 					 unsigned int port);
++int tegra_xusb_padctl_get_port_number(struct phy *phy);
++
+ #endif /* PHY_TEGRA_XUSB_H */
 -- 
 2.43.0
 
