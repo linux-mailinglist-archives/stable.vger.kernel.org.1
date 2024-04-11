@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA5E78A111F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A64BD8A0D95
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A5251F2CEFE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4719B1F22B1A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239D7145B28;
-	Thu, 11 Apr 2024 10:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B36145B05;
+	Thu, 11 Apr 2024 10:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyuk+URF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0fuq67D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1BB140E3C;
-	Thu, 11 Apr 2024 10:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8D214601D;
+	Thu, 11 Apr 2024 10:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832038; cv=none; b=eRas0434hcjP8ARVDDd6CCkiaKs6iyAFU5t0JjHOQlcRP+2VPu41GUtfUkTtU0pp5Fl5Ne1Ia7oOENEJ3kPVyKrIqW0cCyfDV/oWPrnlnDtxNa7h7JcMUSlqWQjcHkehSzoHV2x2BVI8QCMuffs56PhV/+/53yGb0ob059W9jY0=
+	t=1712829923; cv=none; b=MlH9FA6RVsQk5JoYp/rF0VDbSPQeN0iGHLomukIVp1vdOgISQK1HokNdJfJXVdABjH8+Sf7cdE4VXOfG1DKBMNGnv2nZRVrzccxypQP6hYQlvvl1+QgJhU2JWImfidbAMN5G9bJZkjDscwv1WM7mZkPVoIh8k39ghW+Y2uJm1cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832038; c=relaxed/simple;
-	bh=BF7Q4n4Hic6C+DKjfpyyuM+q39+cIDfDiZB50tOIMvU=;
+	s=arc-20240116; t=1712829923; c=relaxed/simple;
+	bh=c/3zxRaATM5PUzEsS17wrPtLe5uFcT/7sI5W8g/OL1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EhTRiR3/jZpV4NwNehybKnEqGogZ51hF6aLM+HocWxsqO9Hq4Xm9mqb5ixu8pte81lTXjZerxEORfhEv5YDvk85LUjdwIEnMzXbSAK7KdeVmDFIAq29ax96Ui/m6IrrHfjtxmmPCM34UGgCeCpL2o762ui+CmXlbBHJXnaygNDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyuk+URF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5154CC433C7;
-	Thu, 11 Apr 2024 10:40:38 +0000 (UTC)
+	 MIME-Version; b=Dxu3dtvQmtrfDABGFIO7JaUSbedutXDe9by34oI/w5/hg+PDOFfoHA9Ot6Xj+FmQfPXWwYakOPl/9GQ/AYDT/JBgh1efTiyk0ygztWyz7RuBpf4lzGasfv9xDbMJ2Myq4rSVNg4FdCK2VWX1CyCvvJ5m87cTwMuNaMS5gEPyJPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0fuq67D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF99C433C7;
+	Thu, 11 Apr 2024 10:05:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832038;
-	bh=BF7Q4n4Hic6C+DKjfpyyuM+q39+cIDfDiZB50tOIMvU=;
+	s=korg; t=1712829923;
+	bh=c/3zxRaATM5PUzEsS17wrPtLe5uFcT/7sI5W8g/OL1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dyuk+URF5bTB+ldBeoygV+q/KZ6fXdan4K3ZAifOL33iK/aWlPVqhbXZ173ByWvzJ
-	 +GRuhSIuhsYM//chHvUxOl4o1swDx06UbZxnMHzsvIB2aS6q0q5R2H4EP76FdyK8W1
-	 JmWKURXj8DiYlzicbb1CLCyC7gFfrw+EyyPQd7eM=
+	b=Q0fuq67DoGDHC3hDRZ0zcTOybbka0Hfz9iO6PwL5AoQ4+iJphibgl4rBiBDprTEjh
+	 HLneC1pUArM/ZFAlO9jbuVYbodLA/9+Nk95DD187D/5n9N80SxfSZQQkJ0CPhAlJC8
+	 E5CRpjeMrfvXOfrmHwSck3NpB+9P5MLcmt85ppsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 5.10 210/294] vboxsf: Avoid an spurious warning if load_nls_xxx() fails
+	Josef Bacik <josef@toxicpanda.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 150/175] btrfs: export: handle invalid inode or root reference in btrfs_get_parent()
 Date: Thu, 11 Apr 2024 11:56:13 +0200
-Message-ID: <20240411095441.920222419@linuxfoundation.org>
+Message-ID: <20240411095424.078608554@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: David Sterba <dsterba@suse.com>
 
-commit de3f64b738af57e2732b91a0774facc675b75b54 upstream.
+[ Upstream commit 26b66d1d366a375745755ca7365f67110bbf6bd5 ]
 
-If an load_nls_xxx() function fails a few lines above, the 'sbi->bdi_id' is
-still 0.
-So, in the error handling path, we will call ida_simple_remove(..., 0)
-which is not allocated yet.
+The get_parent handler looks up a parent of a given dentry, this can be
+either a subvolume or a directory. The search is set up with offset -1
+but it's never expected to find such item, as it would break allowed
+range of inode number or a root id. This means it's a corruption (ext4
+also returns this error code).
 
-In order to prevent a spurious "ida_free called for id=0 which is not
-allocated." message, tweak the error handling path and add a new label.
-
-Fixes: 0fd169576648 ("fs: Add VirtualBox guest shared folder (vboxsf) support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/d09eaaa4e2e08206c58a1a27ca9b3e81dc168773.1698835730.git.christophe.jaillet@wanadoo.fr
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/vboxsf/super.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/export.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/fs/vboxsf/super.c
-+++ b/fs/vboxsf/super.c
-@@ -151,7 +151,7 @@ static int vboxsf_fill_super(struct supe
- 		if (!sbi->nls) {
- 			vbg_err("vboxsf: Count not load '%s' nls\n", nls_name);
- 			err = -EINVAL;
--			goto fail_free;
-+			goto fail_destroy_idr;
- 		}
- 	}
+diff --git a/fs/btrfs/export.c b/fs/btrfs/export.c
+index ecc33e3a3c063..01e9a5afc33bf 100644
+--- a/fs/btrfs/export.c
++++ b/fs/btrfs/export.c
+@@ -182,8 +182,15 @@ struct dentry *btrfs_get_parent(struct dentry *child)
+ 	ret = btrfs_search_slot(NULL, root, &key, path, 0, 0);
+ 	if (ret < 0)
+ 		goto fail;
++	if (ret == 0) {
++		/*
++		 * Key with offset of -1 found, there would have to exist an
++		 * inode with such number or a root with such id.
++		 */
++		ret = -EUCLEAN;
++		goto fail;
++	}
  
-@@ -224,6 +224,7 @@ fail_free:
- 		ida_simple_remove(&vboxsf_bdi_ida, sbi->bdi_id);
- 	if (sbi->nls)
- 		unload_nls(sbi->nls);
-+fail_destroy_idr:
- 	idr_destroy(&sbi->ino_idr);
- 	kfree(sbi);
- 	return err;
+-	BUG_ON(ret == 0); /* Key with offset of -1 found */
+ 	if (path->slots[0] == 0) {
+ 		ret = -ENOENT;
+ 		goto fail;
+-- 
+2.43.0
+
 
 
 
