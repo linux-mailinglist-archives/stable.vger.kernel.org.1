@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-38436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A6C8A0E93
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:16:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 997D78A0D07
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:59:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 325EF28050A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:16:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F19E1F221A1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A2A14601B;
-	Thu, 11 Apr 2024 10:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5C5145323;
+	Thu, 11 Apr 2024 09:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yN8o9XJG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgWx+vTo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A1B13F452;
-	Thu, 11 Apr 2024 10:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAD213DDDD;
+	Thu, 11 Apr 2024 09:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830566; cv=none; b=o0HbjFrS24hcG7ZB042awn6fiHDAjZEjTDrQmpU3kt0Rg5SrOeLOHj3PVx+Prbr5ITdSjDIChl/IPlAn9Nrjs00E/7bIj2tnH1IPrSiwHiR7V0J3IxLtCIoLQW/FcLfJYhgvyB+ggusro8F6eZn5jpmnjFa7mX0fXgbWsH2his8=
+	t=1712829569; cv=none; b=iSAjrh6INMos8Po6z0R6wHjmFjQgpHMWjIrn84bqgYiBC7iV6QLiUyKGL+8JBB4Afj6qcittGmy6Sd0nMRGZxI/f9TbRrPtR4XbpCVKqzJvmWjDXwx4LC1e/2422rWjmxpusP4XDbhYqI6REhrMZOAoMaNCwt+F41zjIh2O1XZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830566; c=relaxed/simple;
-	bh=prAjMazxOCCGNj8/Fbt5jGWYpIDbbgmMvtuJHaUNQuE=;
+	s=arc-20240116; t=1712829569; c=relaxed/simple;
+	bh=uMScbvoJ2FEVlyiEZtkL433vmrUd6cbGefwg4aeCw/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G3w8xIATV/lF44j5/OGiT7Yu0V7/vwYeeQ4GPY0J75LtavOYpEgaerdDqbITK/vN2SzNqP+g+ACzdbMW6gC9eVG5JbXHTcvvLBLPLoGe+NPzEDbnkrT9K90d2cx+VCT13V7oiXDVEI/SM6n3e7y0L9f/D48cXjI2RHzyi5Tic7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yN8o9XJG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B59FC433C7;
-	Thu, 11 Apr 2024 10:16:05 +0000 (UTC)
+	 MIME-Version; b=b7oOWxp0AE86I/5c9W0LizD97kdaAahu978/uePSwcqTCqQy3JCKAXvOD0tNfBHflbHnvP4IXRm0qhQfbze3WR2mS/6y2UamhpxSzAAPAFszkqo0PFoBne5b1nOacv/F/kajcdJjrh8uK1HCk6RrhLI4rWv15rpBZWxYMKzQfTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgWx+vTo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00ABAC43390;
+	Thu, 11 Apr 2024 09:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830566;
-	bh=prAjMazxOCCGNj8/Fbt5jGWYpIDbbgmMvtuJHaUNQuE=;
+	s=korg; t=1712829569;
+	bh=uMScbvoJ2FEVlyiEZtkL433vmrUd6cbGefwg4aeCw/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yN8o9XJGqxSyipKaiZrDycdSv25cjQGHhnCsigRx8mWrAqEOjPuRY7xOQBFGqHLo2
-	 kMPk9UIU1H5T72mQOwZCa/pJtuFPS2jr5W/s88TEoUkWIznUIEVmaVbzZJOyEIFQG5
-	 olenF2oLpU2YxOqj+RG7uyF+gCDreWQZ/gdK3IDQ=
+	b=EgWx+vTopd4nMx9aNKYUR9ctCM6jZeuX5/F8ffHNrJWwMKzGrSBfOfxRZUyO749qf
+	 nIbm8/c4Ymbt3W/UhsorP8/ytHVv2vUS0eLQB1arkPTYWusQ3WSDOybYhaPBEl/GUQ
+	 1pUvoQ/5J+EicPB0KRPzXkCGU8wCmiCc4xrDtIE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhruva Gole <d-gole@ti.com>,
-	Qingliang Li <qingliang.li@mediatek.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
+	Maulik Shah <quic_mkshah@quicinc.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 043/215] PM: sleep: wakeirq: fix wake irq warning in system suspend
-Date: Thu, 11 Apr 2024 11:54:12 +0200
-Message-ID: <20240411095426.188845956@linuxfoundation.org>
+Subject: [PATCH 4.19 030/175] PM: suspend: Set mem_sleep_current during kernel command line setup
+Date: Thu, 11 Apr 2024 11:54:13 +0200
+Message-ID: <20240411095420.464077841@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingliang Li <qingliang.li@mediatek.com>
+From: Maulik Shah <quic_mkshah@quicinc.com>
 
-[ Upstream commit e7a7681c859643f3f2476b2a28a494877fd89442 ]
+[ Upstream commit 9bc4ffd32ef8943f5c5a42c9637cfd04771d021b ]
 
-When driver uses pm_runtime_force_suspend() as the system suspend callback
-function and registers the wake irq with reverse enable ordering, the wake
-irq will be re-enabled when entering system suspend, triggering an
-'Unbalanced enable for IRQ xxx' warning. In this scenario, the call
-sequence during system suspend is as follows:
-  suspend_devices_and_enter()
-    -> dpm_suspend_start()
-      -> dpm_run_callback()
-        -> pm_runtime_force_suspend()
-          -> dev_pm_enable_wake_irq_check()
-          -> dev_pm_enable_wake_irq_complete()
+psci_init_system_suspend() invokes suspend_set_ops() very early during
+bootup even before kernel command line for mem_sleep_default is setup.
+This leads to kernel command line mem_sleep_default=s2idle not working
+as mem_sleep_current gets changed to deep via suspend_set_ops() and never
+changes back to s2idle.
 
-    -> suspend_enter()
-      -> dpm_suspend_noirq()
-        -> device_wakeup_arm_wake_irqs()
-          -> dev_pm_arm_wake_irq()
+Set mem_sleep_current along with mem_sleep_default during kernel command
+line setup as default suspend mode.
 
-To fix this issue, complete the setting of WAKE_IRQ_DEDICATED_ENABLED flag
-in dev_pm_enable_wake_irq_complete() to avoid redundant irq enablement.
-
-Fixes: 8527beb12087 ("PM: sleep: wakeirq: fix wake irq arming")
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Signed-off-by: Qingliang Li <qingliang.li@mediatek.com>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
+Fixes: faf7ec4a92c0 ("drivers: firmware: psci: add system suspend support")
+CC: stable@vger.kernel.org # 5.4+
+Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/wakeirq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/power/suspend.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/base/power/wakeirq.c b/drivers/base/power/wakeirq.c
-index 46654adf00a10..20b07fa2792ba 100644
---- a/drivers/base/power/wakeirq.c
-+++ b/drivers/base/power/wakeirq.c
-@@ -365,8 +365,10 @@ void dev_pm_enable_wake_irq_complete(struct device *dev)
- 		return;
+diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
+index 0bd595a0b6103..7a080015a1b3c 100644
+--- a/kernel/power/suspend.c
++++ b/kernel/power/suspend.c
+@@ -202,6 +202,7 @@ static int __init mem_sleep_default_setup(char *str)
+ 		if (mem_sleep_labels[state] &&
+ 		    !strcmp(str, mem_sleep_labels[state])) {
+ 			mem_sleep_default = state;
++			mem_sleep_current = state;
+ 			break;
+ 		}
  
- 	if (wirq->status & WAKE_IRQ_DEDICATED_MANAGED &&
--	    wirq->status & WAKE_IRQ_DEDICATED_REVERSE)
-+	    wirq->status & WAKE_IRQ_DEDICATED_REVERSE) {
- 		enable_irq(wirq->irq);
-+		wirq->status |= WAKE_IRQ_DEDICATED_ENABLED;
-+	}
- }
- 
- /**
 -- 
 2.43.0
 
