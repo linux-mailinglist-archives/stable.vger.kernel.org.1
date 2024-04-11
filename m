@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F85F8A1136
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA1F8A0FCB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:27:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5002B1C23CDC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10DC1B21827
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B56114A094;
-	Thu, 11 Apr 2024 10:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC531465BE;
+	Thu, 11 Apr 2024 10:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzr9F+6v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSjVIWH7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4786E149E19;
-	Thu, 11 Apr 2024 10:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEF31422CE;
+	Thu, 11 Apr 2024 10:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832092; cv=none; b=pY5tqhugMvDf19cUNpQmKA9dG1WLQtJ6cxcxR/r2oxMep7SyZUYvjg2LUgLSwCTRtqEnUMmghiORlBDEnmJK3+RbSYOYrobHtvEznIiuRnZJPFySaNbc7JKFw6iLVnh72p5mlgIno3JkRE1lEy1MRzwVWrQoTGAQyzZtUlmiV+I=
+	t=1712831261; cv=none; b=coVSq2i8aYuknh/W0vuRQs0HaQM58WYSpmjTlP+/ca4Xg09qT4nzfqcYjEv0KZwSa8555cJuQFJCu9nMAL6VflasLmCoQ17pOlvd9vGgDRduutOHV/tIn1Bp0lBTZs0tLhMKgYcnIPmDU9voTIiz+Hx7iIZCIsFXL3fl2YMn/RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832092; c=relaxed/simple;
-	bh=u6o63AaHqbcG7M/HMB3h5HCNmVdUpSa8GCeKDZdFz/g=;
+	s=arc-20240116; t=1712831261; c=relaxed/simple;
+	bh=Uc3aeYxtT+31Z42/NgF474FQUtuyHkJNnoZuiUpIGxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dp/n/L7KoWg0UtZWmjmipFMwQFRokNWkGpWZm04x47n8GicujyGeKm8EHJyO3v6eS4vuy63Egu+6mup1ZCJTaqSkcz/lc61vemjc8R1uVcT9ujVLV6gm50mAWONWPGy6Xub5/j9kiRFraCorHyCdhzYC8scEkSdDPX44k/bmr4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzr9F+6v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C523BC433C7;
-	Thu, 11 Apr 2024 10:41:31 +0000 (UTC)
+	 MIME-Version; b=FC59UzpOPchiTcBVuFWYRqG/I0oron0jaLZhYE/tchSHjXZXl4+0wlbecFM/Rkyc7NxtzVTe1S8fFkw6Q11SsJ5L71K/T7oIFRV6s7eKN5CT3sxdAia81lePgXaGed7hS6wLWZuZl5k4F0clsZmOk6Z4+O98VU6hvebTY6EkHi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSjVIWH7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DAD7C433C7;
+	Thu, 11 Apr 2024 10:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832092;
-	bh=u6o63AaHqbcG7M/HMB3h5HCNmVdUpSa8GCeKDZdFz/g=;
+	s=korg; t=1712831260;
+	bh=Uc3aeYxtT+31Z42/NgF474FQUtuyHkJNnoZuiUpIGxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fzr9F+6vt1PGHmr8B6zqcEnF3Noqqf9tWpGKKp5GPZI70xUUZTsbC/IhpzrCfyG2l
-	 Xt+b/AA27yNxvfRYp9lNVztAwUJp4DvP/n9PZ+8TnVrtiY7Y1YzYoecmLLuuiuiOMi
-	 KL1jtiY9IDG0OHDJ4vJusbVFO5IFZReO86y971a0=
+	b=RSjVIWH7dQRuOl7CsWHyfPCvNaEJ3PT+zfRjkG26sWjYTOBcFPX3pGw0mFGdEoIJq
+	 G9IOAhXpo08ZH1Ao2lJ4lEjmErF3OAYVEza0Qjlg4klCOAd1Fo7F3WOLASN9hlp5bp
+	 RRWczov6014B4pn4nRBH3oYMwY6pFXFMHR4b1H9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 224/294] udp: do not accept non-tunnel GSO skbs landing in a tunnel
+Subject: [PATCH 6.6 060/114] ALSA: firewire-lib: handle quirk to calculate payload quadlets as data block counter
 Date: Thu, 11 Apr 2024 11:56:27 +0200
-Message-ID: <20240411095442.333893193@linuxfoundation.org>
+Message-ID: <20240411095418.698128846@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,158 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-[ Upstream commit 3d010c8031e39f5fa1e8b13ada77e0321091011f ]
+[ Upstream commit 4a486439d2ca85752c46711f373b6ddc107bb35d ]
 
-When rx-udp-gro-forwarding is enabled UDP packets might be GROed when
-being forwarded. If such packets might land in a tunnel this can cause
-various issues and udp_gro_receive makes sure this isn't the case by
-looking for a matching socket. This is performed in
-udp4/6_gro_lookup_skb but only in the current netns. This is an issue
-with tunneled packets when the endpoint is in another netns. In such
-cases the packets will be GROed at the UDP level, which leads to various
-issues later on. The same thing can happen with rx-gro-list.
+Miglia Harmony Audio (OXFW970) has a quirk to put the number of
+accumulated quadlets in CIP payload into the dbc field of CIP header.
 
-We saw this with geneve packets being GROed at the UDP level. In such
-case gso_size is set; later the packet goes through the geneve rx path,
-the geneve header is pulled, the offset are adjusted and frag_list skbs
-are not adjusted with regard to geneve. When those skbs hit
-skb_fragment, it will misbehave. Different outcomes are possible
-depending on what the GROed skbs look like; from corrupted packets to
-kernel crashes.
+This commit handles the quirk in the packet processing layer.
 
-One example is a BUG_ON[1] triggered in skb_segment while processing the
-frag_list. Because gso_size is wrong (geneve header was pulled)
-skb_segment thinks there is "geneve header size" of data in frag_list,
-although it's in fact the next packet. The BUG_ON itself has nothing to
-do with the issue. This is only one of the potential issues.
-
-Looking up for a matching socket in udp_gro_receive is fragile: the
-lookup could be extended to all netns (not speaking about performances)
-but nothing prevents those packets from being modified in between and we
-could still not find a matching socket. It's OK to keep the current
-logic there as it should cover most cases but we also need to make sure
-we handle tunnel packets being GROed too early.
-
-This is done by extending the checks in udp_unexpected_gso: GSO packets
-lacking the SKB_GSO_UDP_TUNNEL/_CSUM bits and landing in a tunnel must
-be segmented.
-
-[1] kernel BUG at net/core/skbuff.c:4408!
-    RIP: 0010:skb_segment+0xd2a/0xf70
-    __udp_gso_segment+0xaa/0x560
-
-Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
-Fixes: 36707061d6ba ("udp: allow forwarding of plain (non-fraglisted) UDP GRO packets")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Link: https://lore.kernel.org/r/20240218074128.95210-4-o-takashi@sakamocchi.jp
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/udp.h    | 28 ++++++++++++++++++++++++++++
- net/ipv4/udp.c         |  7 +++++++
- net/ipv4/udp_offload.c |  5 +++++
- net/ipv6/udp.c         |  2 +-
- 4 files changed, 41 insertions(+), 1 deletion(-)
+ sound/firewire/amdtp-stream.c | 12 ++++++++----
+ sound/firewire/amdtp-stream.h |  4 ++++
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/udp.h b/include/linux/udp.h
-index ae58ff3b6b5b8..a220880019d6b 100644
---- a/include/linux/udp.h
-+++ b/include/linux/udp.h
-@@ -131,6 +131,24 @@ static inline void udp_cmsg_recv(struct msghdr *msg, struct sock *sk,
+diff --git a/sound/firewire/amdtp-stream.c b/sound/firewire/amdtp-stream.c
+index 7be17bca257f0..c9f153f85ae6b 100644
+--- a/sound/firewire/amdtp-stream.c
++++ b/sound/firewire/amdtp-stream.c
+@@ -773,10 +773,14 @@ static int check_cip_header(struct amdtp_stream *s, const __be32 *buf,
+ 	} else {
+ 		unsigned int dbc_interval;
+ 
+-		if (*data_blocks > 0 && s->ctx_data.tx.dbc_interval > 0)
+-			dbc_interval = s->ctx_data.tx.dbc_interval;
+-		else
+-			dbc_interval = *data_blocks;
++		if (!(s->flags & CIP_DBC_IS_PAYLOAD_QUADLETS)) {
++			if (*data_blocks > 0 && s->ctx_data.tx.dbc_interval > 0)
++				dbc_interval = s->ctx_data.tx.dbc_interval;
++			else
++				dbc_interval = *data_blocks;
++		} else {
++			dbc_interval = payload_length / sizeof(__be32);
++		}
+ 
+ 		lost = dbc != ((*data_block_counter + dbc_interval) & 0xff);
  	}
- }
+diff --git a/sound/firewire/amdtp-stream.h b/sound/firewire/amdtp-stream.h
+index b7ff44751ab93..a1ed2e80f91a7 100644
+--- a/sound/firewire/amdtp-stream.h
++++ b/sound/firewire/amdtp-stream.h
+@@ -37,6 +37,9 @@
+  *	the value of current SYT_INTERVAL; e.g. initial value is not zero.
+  * @CIP_UNAWARE_SYT: For outgoing packet, the value in SYT field of CIP is 0xffff.
+  *	For incoming packet, the value in SYT field of CIP is not handled.
++ * @CIP_DBC_IS_PAYLOAD_QUADLETS: Available for incoming packet, and only effective with
++ *	CIP_DBC_IS_END_EVENT flag. The value of dbc field is the number of accumulated quadlets
++ *	in CIP payload, instead of the number of accumulated data blocks.
+  */
+ enum cip_flags {
+ 	CIP_NONBLOCKING		= 0x00,
+@@ -51,6 +54,7 @@ enum cip_flags {
+ 	CIP_NO_HEADER		= 0x100,
+ 	CIP_UNALIGHED_DBC	= 0x200,
+ 	CIP_UNAWARE_SYT		= 0x400,
++	CIP_DBC_IS_PAYLOAD_QUADLETS = 0x800,
+ };
  
-+DECLARE_STATIC_KEY_FALSE(udp_encap_needed_key);
-+#if IS_ENABLED(CONFIG_IPV6)
-+DECLARE_STATIC_KEY_FALSE(udpv6_encap_needed_key);
-+#endif
-+
-+static inline bool udp_encap_needed(void)
-+{
-+	if (static_branch_unlikely(&udp_encap_needed_key))
-+		return true;
-+
-+#if IS_ENABLED(CONFIG_IPV6)
-+	if (static_branch_unlikely(&udpv6_encap_needed_key))
-+		return true;
-+#endif
-+
-+	return false;
-+}
-+
- static inline bool udp_unexpected_gso(struct sock *sk, struct sk_buff *skb)
- {
- 	if (!skb_is_gso(skb))
-@@ -142,6 +160,16 @@ static inline bool udp_unexpected_gso(struct sock *sk, struct sk_buff *skb)
- 	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST && !udp_sk(sk)->accept_udp_fraglist)
- 		return true;
- 
-+	/* GSO packets lacking the SKB_GSO_UDP_TUNNEL/_CSUM bits might still
-+	 * land in a tunnel as the socket check in udp_gro_receive cannot be
-+	 * foolproof.
-+	 */
-+	if (udp_encap_needed() &&
-+	    READ_ONCE(udp_sk(sk)->encap_rcv) &&
-+	    !(skb_shinfo(skb)->gso_type &
-+	      (SKB_GSO_UDP_TUNNEL | SKB_GSO_UDP_TUNNEL_CSUM)))
-+		return true;
-+
- 	return false;
- }
- 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index b2541c7d7c87f..0b7e76e6f2028 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -602,6 +602,13 @@ static inline bool __udp_is_mcast_sock(struct net *net, struct sock *sk,
- }
- 
- DEFINE_STATIC_KEY_FALSE(udp_encap_needed_key);
-+EXPORT_SYMBOL(udp_encap_needed_key);
-+
-+#if IS_ENABLED(CONFIG_IPV6)
-+DEFINE_STATIC_KEY_FALSE(udpv6_encap_needed_key);
-+EXPORT_SYMBOL(udpv6_encap_needed_key);
-+#endif
-+
- void udp_encap_enable(void)
- {
- 	static_branch_inc(&udp_encap_needed_key);
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index 9f6dcdaf86a4d..445d8bc30fdd1 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -512,6 +512,11 @@ struct sk_buff *udp_gro_receive(struct list_head *head, struct sk_buff *skb,
- 	unsigned int off = skb_gro_offset(skb);
- 	int flush = 1;
- 
-+	/* We can do L4 aggregation only if the packet can't land in a tunnel
-+	 * otherwise we could corrupt the inner stream. Detecting such packets
-+	 * cannot be foolproof and the aggregation might still happen in some
-+	 * cases. Such packets should be caught in udp_unexpected_gso later.
-+	 */
- 	NAPI_GRO_CB(skb)->is_flist = 0;
- 	if (skb->dev->features & NETIF_F_GRO_FRAGLIST)
- 		NAPI_GRO_CB(skb)->is_flist = sk ? !udp_sk(sk)->gro_enabled: 1;
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 5385037209a6b..b5d879f2501da 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -474,7 +474,7 @@ int udpv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 	goto try_again;
- }
- 
--DEFINE_STATIC_KEY_FALSE(udpv6_encap_needed_key);
-+DECLARE_STATIC_KEY_FALSE(udpv6_encap_needed_key);
- void udpv6_encap_enable(void)
- {
- 	static_branch_inc(&udpv6_encap_needed_key);
+ /**
 -- 
 2.43.0
 
