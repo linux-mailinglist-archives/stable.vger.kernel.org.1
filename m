@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-38829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE08B8A109C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5053A8A0D0E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:59:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AF5E1C23A4A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E43BB1F229D7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B781474B0;
-	Thu, 11 Apr 2024 10:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF90145345;
+	Thu, 11 Apr 2024 09:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0MBygrF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oytjELrs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0BD13FD97;
-	Thu, 11 Apr 2024 10:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A45813DDDD;
+	Thu, 11 Apr 2024 09:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831712; cv=none; b=tYZO3diom/2Owh7wd6vyida2eTA6nS/MBf3fgA5zx8PWBEtE69Z3ZnWWge2cL8I8ZXW9L0+ZjQyuK+dn50rdbXVJIJHibAeCmwGWDuywdzXz3UBYaAeyVO5WE/lr+q35QEPFOarG97qi+GgJFw0j3EGOaq4KzK6emm5Zm9+uDQw=
+	t=1712829590; cv=none; b=Htw4GLTX4e66vqS3aMQ2q/trmLnlCBrZ2Dy4SbfftNQVduS1eHRgv+SOCuBk7pLbEISy50DTg2sde6AEhzRlgCwKVmgCtefpCy184P7KMCXnj/B8yBEZ+8CFXcJFpqTHttY82NpD3admKGL3IXgms5tkkHLEMhYdBlRseomBQFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831712; c=relaxed/simple;
-	bh=5yRoYOMDeNq33SEY6evKjuRBUkvGdzQJQT5LVLjeuo8=;
+	s=arc-20240116; t=1712829590; c=relaxed/simple;
+	bh=q9AFkWerm7xBHNsF+z6Ls9OQ46zn1ud7k8pvXnpV0A4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XT7mDCvMORkC7gJtkosVoFJ1NrkY9xo/nyCbtHwi09fxJC8OqvGNGRaeKDJzlijVmw7Xc1UZtGVELWYv5LlMqx4rF3H0l2SW6uWpPUhrTUv7JPw01WhrnYV4VAX+AQu+GInWGUwnb9rfH9+7BQgSG66cRjDVsTQwC495y4n8fFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0MBygrF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315A2C433C7;
-	Thu, 11 Apr 2024 10:35:12 +0000 (UTC)
+	 MIME-Version; b=cZ0LpV05wX2smG+hOQazGHGtSeIuVo6uKApggrKQM+xrKp3v37/kYCld0OlxFnAzGsmVs3/Mgm4UXuXwznoi6FbRc/1XemWlpLwROa99CM+5xPDqe0ElkrtwUweBea64DigdmYIpLuSR4GVFOg2/jM10IsEcbQ5/YKZIOR1yAlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oytjELrs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931CDC433C7;
+	Thu, 11 Apr 2024 09:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831712;
-	bh=5yRoYOMDeNq33SEY6evKjuRBUkvGdzQJQT5LVLjeuo8=;
+	s=korg; t=1712829590;
+	bh=q9AFkWerm7xBHNsF+z6Ls9OQ46zn1ud7k8pvXnpV0A4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H0MBygrF/YaB/ZsC8lsI0Ze73Vw7God3Z2ZISdocVlh8lB+Ef1OYcnN7oeubJe5os
-	 6XQ4r4yyQKGYTXBz0VtKPZu9Bxdl+PF1DW6GYibackpgSuUGWYXwROGiP4G0FZ2rw1
-	 HBUlzEMrysFuX6W2FV9OQIDvEJba2M9pPCvXSWB0=
+	b=oytjELrsZ71rnFg5vPD8d4LO+1BpYHYYOhhXIptVd+4iN0/zGlMDIJEEJLJdR6yhy
+	 E87vuxScZ3Z1eAoSoDkHX71UYEP9c/S35h2XASCiqldRsppwNmA9Hn3AGz75PyYNiw
+	 ExnULstHVyc/4zKmzBt80AjNbJTU0iZGdwWqTuxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Anna-Maria Gleixner <anna-maria@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	fweisbec@gmail.com,
+	peterz@infradead.org,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 064/294] PCI/ASPM: Make Intel DG2 L1 acceptable latency unlimited
+Subject: [PATCH 4.19 004/175] timer/trace: Replace deprecated vsprintf pointer extension %pf by %ps
 Date: Thu, 11 Apr 2024 11:53:47 +0200
-Message-ID: <20240411095437.617726106@linuxfoundation.org>
+Message-ID: <20240411095419.671078435@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +65,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Anna-Maria Gleixner <anna-maria@linutronix.de>
 
-[ Upstream commit 03038d84ace72678a9944524508f218a00377dc0 ]
+[ Upstream commit 6849cbb0f9a8dbc1ba56e9abc6955613103e01e3 ]
 
-Intel DG2 discrete graphics PCIe endpoints advertise L1 acceptable exit
-latency to be < 1us even though they can actually tolerate unlimited exit
-latencies just fine. Quirk the L1 acceptable exit latency for these
-endpoints to be unlimited so ASPM L1 can be enabled.
+Since commit 04b8eb7a4ccd ("symbol lookup: introduce
+dereference_symbol_descriptor()") %pf is deprecated, because %ps is smart
+enough to handle function pointer dereference on platforms where such a
+dereference is required.
 
-[bhelgaas: use FIELD_GET/FIELD_PREP, wordsmith comment & commit log]
-Link: https://lore.kernel.org/r/20220405093810.76613-1-mika.westerberg@linux.intel.com
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Stable-dep-of: 627c6db20703 ("PCI/DPC: Quirk PIO log size for Intel Raptor Lake Root Ports")
+While at it add proper line breaks to stay in the 80 character limit.
+
+Signed-off-by: Anna-Maria Gleixner <anna-maria@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: fweisbec@gmail.com
+Cc: peterz@infradead.org
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Link: https://lkml.kernel.org/r/20190321120921.16463-4-anna-maria@linutronix.de
+Stable-dep-of: 0f7352557a35 ("wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 47 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+ include/trace/events/timer.h | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index d7c4149855eb6..3f494d6653284 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -12,6 +12,7 @@
-  * file, where their drivers can use them.
-  */
+diff --git a/include/trace/events/timer.h b/include/trace/events/timer.h
+index 350b046e7576c..8f6240854e28f 100644
+--- a/include/trace/events/timer.h
++++ b/include/trace/events/timer.h
+@@ -73,7 +73,7 @@ TRACE_EVENT(timer_start,
+ 		__entry->flags		= flags;
+ 	),
  
-+#include <linux/bitfield.h>
- #include <linux/types.h>
- #include <linux/kernel.h>
- #include <linux/export.h>
-@@ -5862,3 +5863,49 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1533, rom_bar_overlap_defect);
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1536, rom_bar_overlap_defect);
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1537, rom_bar_overlap_defect);
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1538, rom_bar_overlap_defect);
-+
-+#ifdef CONFIG_PCIEASPM
-+/*
-+ * Several Intel DG2 graphics devices advertise that they can only tolerate
-+ * 1us latency when transitioning from L1 to L0, which may prevent ASPM L1
-+ * from being enabled.  But in fact these devices can tolerate unlimited
-+ * latency.  Override their Device Capabilities value to allow ASPM L1 to
-+ * be enabled.
-+ */
-+static void aspm_l1_acceptable_latency(struct pci_dev *dev)
-+{
-+	u32 l1_lat = FIELD_GET(PCI_EXP_DEVCAP_L1, dev->devcap);
-+
-+	if (l1_lat < 7) {
-+		dev->devcap |= FIELD_PREP(PCI_EXP_DEVCAP_L1, 7);
-+		pci_info(dev, "ASPM: overriding L1 acceptable latency from %#x to 0x7\n",
-+			 l1_lat);
-+	}
-+}
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x4f80, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x4f81, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x4f82, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x4f83, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x4f84, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x4f85, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x4f86, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x4f87, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x4f88, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x5690, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x5691, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x5692, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x5693, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x5694, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x5695, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56a0, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56a1, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56a2, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56a3, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56a4, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56a5, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56a6, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56b0, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56b1, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56c0, aspm_l1_acceptable_latency);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56c1, aspm_l1_acceptable_latency);
-+#endif
+-	TP_printk("timer=%p function=%pf expires=%lu [timeout=%ld] cpu=%u idx=%u flags=%s",
++	TP_printk("timer=%p function=%ps expires=%lu [timeout=%ld] cpu=%u idx=%u flags=%s",
+ 		  __entry->timer, __entry->function, __entry->expires,
+ 		  (long)__entry->expires - __entry->now,
+ 		  __entry->flags & TIMER_CPUMASK,
+@@ -105,7 +105,8 @@ TRACE_EVENT(timer_expire_entry,
+ 		__entry->function	= timer->function;
+ 	),
+ 
+-	TP_printk("timer=%p function=%pf now=%lu", __entry->timer, __entry->function,__entry->now)
++	TP_printk("timer=%p function=%ps now=%lu",
++		  __entry->timer, __entry->function, __entry->now)
+ );
+ 
+ /**
+@@ -210,7 +211,7 @@ TRACE_EVENT(hrtimer_start,
+ 		__entry->mode		= mode;
+ 	),
+ 
+-	TP_printk("hrtimer=%p function=%pf expires=%llu softexpires=%llu "
++	TP_printk("hrtimer=%p function=%ps expires=%llu softexpires=%llu "
+ 		  "mode=%s", __entry->hrtimer, __entry->function,
+ 		  (unsigned long long) __entry->expires,
+ 		  (unsigned long long) __entry->softexpires,
+@@ -243,7 +244,8 @@ TRACE_EVENT(hrtimer_expire_entry,
+ 		__entry->function	= hrtimer->function;
+ 	),
+ 
+-	TP_printk("hrtimer=%p function=%pf now=%llu", __entry->hrtimer, __entry->function,
++	TP_printk("hrtimer=%p function=%ps now=%llu",
++		  __entry->hrtimer, __entry->function,
+ 		  (unsigned long long) __entry->now)
+ );
+ 
 -- 
 2.43.0
 
