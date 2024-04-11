@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64CCB8A10F8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ABB38A0D6F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 191221F2D098
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEFD61F22389
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED861474CD;
-	Thu, 11 Apr 2024 10:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0F7145B04;
+	Thu, 11 Apr 2024 10:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTt1QXP1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1MiUdOA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA4164CC0;
-	Thu, 11 Apr 2024 10:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A0B1422C4;
+	Thu, 11 Apr 2024 10:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831948; cv=none; b=ZlH3IoJng7U3YbfOfPp3BQcfQ1cuMzBGUscFwBygKafFDvWpbdvjrdC6/bK8Og4Rsd8ASum7IykYHorQgKIOOs3XFI+SnTWXFn6TzLl1HHwW2PSCTo+mKAWqigklBqiAoNYSZDFcVwnYk4C4+mNsaGIHoIpbBJMKKAeo5qCcTq4=
+	t=1712829835; cv=none; b=QVAMTRccKKQRBMIcOCUd0JukwyYMxycfm2iF9ax8WDosv1mS5TlYxfLtOFShe4lhRieY1kpup0S9QabVi9iETUHKsKy/gy5pJlVT4pjeGoTseu2LhLKY3T2oyKvzWy4TmKGHrVyMWIle1jNGTcKx7YKaW/Dlrr/ae+t4gfRzIVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831948; c=relaxed/simple;
-	bh=hMJNWuA7/PBmqOJzCCbgKwahYVOzBx7cUaXbJs39ym8=;
+	s=arc-20240116; t=1712829835; c=relaxed/simple;
+	bh=B9mVScBMIITGR4ZQYB33sTtbLxyAavgGG4s4iy3OEsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SdPFY8eWolvR07ujz4BS5Xu5VNj3TcSShrmJRPg3heLEq60WuU+Wk7d+T+KAY/v2hg4igpXtTmIdNxn417htHtU6RRm8r+wEdN89k1wyFRkKX6eyV/4yL1yk3aqD0GYiO4PXZ3oixRNPTCQmjCSqu8TRn86GnduCK3yv+TAsIng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTt1QXP1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB28CC43390;
-	Thu, 11 Apr 2024 10:39:07 +0000 (UTC)
+	 MIME-Version; b=sD4uNEmfCAhoPSZQXslVUtnwOPDg2riQ4ue2iqJIe7TmCkrkAs0RJIpFs/9ThjYYt9z+1wAL2fguTQP2ZE6BUdBWYOB2ZtfH/NHuT91buvNbt9i+GwXFsrI2SJFRYVOEMwIaWP2G3QBr7F0n4IL+vEZJkhwVYHMjdBhH3/5RaYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1MiUdOA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BFDC43390;
+	Thu, 11 Apr 2024 10:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831948;
-	bh=hMJNWuA7/PBmqOJzCCbgKwahYVOzBx7cUaXbJs39ym8=;
+	s=korg; t=1712829835;
+	bh=B9mVScBMIITGR4ZQYB33sTtbLxyAavgGG4s4iy3OEsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fTt1QXP1SnnkYJRQk5TELOGshs0xGi0hK+gYWLCOQT1SGMVwbEkNO4II3WqfgsMmx
-	 0h6x+iflJgoGPSN2JcWfPNevBEXmZXu5K6kyxQoLdWNeKY/Sq/3k3SDpIWaLfHmB6I
-	 QfNG/lJitjn3DQqfvWbY1vNEOpx5TVqWm/2b/aQs=
+	b=L1MiUdOAoXrqmZdRU3ywN8uP0MoW7QgvGMcCSxyw73JfRdF7XOyc3Wkb34wLUcpEm
+	 FG1F/GNrAdTv43toJ1cbxHz+plAKw8HKkOtq0qZ96ICykEkY3ptTATwceKc0DRwnwG
+	 2od8y1e/S8QibVYMyVuEZYqOMxWkMbugT6kRtlX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Blakeney <mark.blakeney@bullet-systems.net>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5.10 179/294] PCI/DPC: Quirk PIO log size for Intel Ice Lake Root Ports
+	Mahmoud Adam <mngyadam@amazon.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.19 119/175] net/rds: fix possible cp null dereference
 Date: Thu, 11 Apr 2024 11:55:42 +0200
-Message-ID: <20240411095441.014720326@linuxfoundation.org>
+Message-ID: <20240411095423.149076261@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Mahmoud Adam <mngyadam@amazon.com>
 
-commit 3b8803494a0612acdeee714cb72aa142b1e05ce5 upstream.
+commit 62fc3357e079a07a22465b9b6ef71bb6ea75ee4b upstream.
 
-Commit 5459c0b70467 ("PCI/DPC: Quirk PIO log size for certain Intel Root
-Ports") added quirks for Tiger and Alder Lake Root Ports but missed that
-the same issue exists also in the previous generation, Ice Lake.
+cp might be null, calling cp->cp_conn would produce null dereference
 
-Apply the quirk for Ice Lake Root Ports as well.  This prevents kernel
-complaints like:
+[Simon Horman adds:]
 
-  DPC: RP PIO log size 0 is invalid
+Analysis:
 
-and also enables the DPC driver to dump the RP PIO Log registers when DPC
-is triggered.
+* cp is a parameter of __rds_rdma_map and is not reassigned.
 
-[bhelgaas: add dmesg warning and RP PIO Log dump info]
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=209943
-Link: https://lore.kernel.org/r/20230511121905.73949-1-mika.westerberg@linux.intel.com
-Reported-by: Mark Blakeney <mark.blakeney@bullet-systems.net>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+* The following call-sites pass a NULL cp argument to __rds_rdma_map()
+
+  - rds_get_mr()
+  - rds_get_mr_for_dest
+
+* Prior to the code above, the following assumes that cp may be NULL
+  (which is indicative, but could itself be unnecessary)
+
+	trans_private = rs->rs_transport->get_mr(
+		sg, nents, rs, &mr->r_key, cp ? cp->cp_conn : NULL,
+		args->vec.addr, args->vec.bytes,
+		need_odp ? ODP_ZEROBASED : ODP_NOT_NEEDED);
+
+* The code modified by this patch is guarded by IS_ERR(trans_private),
+  where trans_private is assigned as per the previous point in this analysis.
+
+  The only implementation of get_mr that I could locate is rds_ib_get_mr()
+  which can return an ERR_PTR if the conn (4th) argument is NULL.
+
+* ret is set to PTR_ERR(trans_private).
+  rds_ib_get_mr can return ERR_PTR(-ENODEV) if the conn (4th) argument is NULL.
+  Thus ret may be -ENODEV in which case the code in question will execute.
+
+Conclusion:
+* cp may be NULL at the point where this patch adds a check;
+  this patch does seem to address a possible bug
+
+Fixes: c055fc00c07b ("net/rds: fix WARNING in rds_conn_connect_if_down")
+Cc: stable@vger.kernel.org # v4.19+
+Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240326153132.55580-1-mngyadam@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/rds/rdma.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5912,8 +5912,9 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_I
- 
- #ifdef CONFIG_PCIE_DPC
- /*
-- * Intel Tiger Lake and Alder Lake BIOS has a bug that clears the DPC
-- * RP PIO Log Size of the integrated Thunderbolt PCIe Root Ports.
-+ * Intel Ice Lake, Tiger Lake and Alder Lake BIOS has a bug that clears
-+ * the DPC RP PIO Log Size of the integrated Thunderbolt PCIe Root
-+ * Ports.
-  */
- static void dpc_log_size(struct pci_dev *dev)
- {
-@@ -5936,6 +5937,10 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_I
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x462f, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x463f, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x466e, dpc_log_size);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x8a1d, dpc_log_size);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x8a1f, dpc_log_size);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x8a21, dpc_log_size);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x8a23, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a23, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a25, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a27, dpc_log_size);
+--- a/net/rds/rdma.c
++++ b/net/rds/rdma.c
+@@ -279,7 +279,7 @@ static int __rds_rdma_map(struct rds_soc
+ 		kfree(sg);
+ 		ret = PTR_ERR(trans_private);
+ 		/* Trigger connection so that its ready for the next retry */
+-		if (ret == -ENODEV)
++		if (ret == -ENODEV && cp)
+ 			rds_conn_connect_if_down(cp->cp_conn);
+ 		goto out;
+ 	}
 
 
 
