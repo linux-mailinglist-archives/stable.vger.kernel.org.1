@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-38557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A232B8A0F38
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF8C8A0D97
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DC09287038
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:22:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C2ACB2312D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD031465A6;
-	Thu, 11 Apr 2024 10:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B17B146009;
+	Thu, 11 Apr 2024 10:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejdEB9cn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYQcB/3z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A583514601D;
-	Thu, 11 Apr 2024 10:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBDA145B07;
+	Thu, 11 Apr 2024 10:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830924; cv=none; b=RNw+jbttB6IRXv9xrVphu1aNGXAodEaNh3fz0xlPx6tnS2nR+tEt8udwKyrh/foTdgN7hP0vMcF2pG4YGgoO7Dx4M1cBCnzfoiOy49tmcofOpwdDaIRd0bG8rtIm0Nqpa3jvsJiPW4iY1jDLAiyqa2Frmjnos7hgc4f9D1OCCFU=
+	t=1712829926; cv=none; b=Ki6K4Ij83htrNXOOQDjsq9N68MY569yKCY91lR639jooWNMxy8sH0QU9629xM5VdWGhL8Xg4QBWA21jVvrPgY2L0jEIipESKJwJqXZbxGK18b+sHhfIMt04Y8jNAezduz2YYKpYHRIo+NzR8YLHKyztx2CkVFJSjheUNUTyUy6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830924; c=relaxed/simple;
-	bh=l3RDIezpCKjZQm9sHypHJnttBeGQ5Ju0WejjQZuc/yw=;
+	s=arc-20240116; t=1712829926; c=relaxed/simple;
+	bh=+rVmsbpJDU0CnrY7Y3beTawKrti5N3WS6M6RKOLkhDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bl1BKC/gJTRlSVPNVZCde0PPurEmj7v07UcsGp5BMSIf9hmLBBK/TpYDERq1e4pYqfIxjd/3yNx6PuxCPqAFymSFKVwVSSXDF2p6BTtdyGKm5aYRYUlIiUe/jRbsWu+7l8qOhbMmRkSgYtstP5j63xTKXjuN+PC7HudS/8IozJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejdEB9cn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E5BC433C7;
-	Thu, 11 Apr 2024 10:22:03 +0000 (UTC)
+	 MIME-Version; b=t1inRkp3Exnt22f1ruswcau2GZ1wkLg0Z50gS3ELVcL7CVTpZZ73DFTPkfb+VK4hbF3psmmtM8dVG5ehEEKzT5WroWAJIy6XzFFGf4IXH2WYM+pwPh8SfRn3V4AuuahNMkHvZqKNHDbJnIX8LHZKwXJxCMVmwjWMTVaU7RJPt4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYQcB/3z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0715CC433C7;
+	Thu, 11 Apr 2024 10:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830924;
-	bh=l3RDIezpCKjZQm9sHypHJnttBeGQ5Ju0WejjQZuc/yw=;
+	s=korg; t=1712829926;
+	bh=+rVmsbpJDU0CnrY7Y3beTawKrti5N3WS6M6RKOLkhDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ejdEB9cnXVX1sI2iHLbB/P8ti0AMZBDFn9rUgRBO/XsmYoJ7sA3OXhLxs2vPvG/Mz
-	 rJB85UmIgzvMEUDY5UTXcvJWEZ+xUCVL81D8uNEnyLPApOih/sUZ6KwFjt5s+908HG
-	 Sg8CRK+jtOkirQgoUIwY/lt/V//DSQjYNQsFIPvc=
+	b=lYQcB/3zyQPIB0wKdrJ7r1yHrFQhoC0g9yU9qt9lHaBA0ocspV205ZugapVBSSW5I
+	 aIP9P71tageDo263+UwpcoImPlNJKlGQ/5R7sTUqrEqKJ1jbezxOdDreb8t292Qrh/
+	 nscSPA4xZMoK1KYEW+MYS9Hry3gkquIOEkKtyRnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Lee <slee08177@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 165/215] ASoC: ops: Fix wraparound for mask in snd_soc_get_volsw
+Subject: [PATCH 4.19 151/175] btrfs: send: handle path ref underflow in header iterate_inode_ref()
 Date: Thu, 11 Apr 2024 11:56:14 +0200
-Message-ID: <20240411095429.834699434@linuxfoundation.org>
+Message-ID: <20240411095424.108535355@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Lee <slee08177@gmail.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit fc563aa900659a850e2ada4af26b9d7a3de6c591 ]
+[ Upstream commit 3c6ee34c6f9cd12802326da26631232a61743501 ]
 
-In snd_soc_info_volsw(), mask is generated by figuring out the index of
-the most significant bit set in max and converting the index to a
-bitmask through bit shift 1. Unintended wraparound occurs when max is an
-integer value with msb bit set. Since the bit shift value 1 is treated
-as an integer type, the left shift operation will wraparound and set
-mask to 0 instead of all 1's. In order to fix this, we type cast 1 as
-`1ULL` to prevent the wraparound.
+Change BUG_ON to proper error handling if building the path buffer
+fails. The pointers are not printed so we don't accidentally leak kernel
+addresses.
 
-Fixes: 7077148fb50a ("ASoC: core: Split ops out of soc-core.c")
-Signed-off-by: Stephen Lee <slee08177@gmail.com>
-Link: https://msgid.link/r/20240326010131.6211-1-slee08177@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-ops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/send.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index e01f3bf3ef171..08ed973b2d975 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -252,7 +252,7 @@ int snd_soc_get_volsw(struct snd_kcontrol *kcontrol,
- 	int max = mc->max;
- 	int min = mc->min;
- 	int sign_bit = mc->sign_bit;
--	unsigned int mask = (1 << fls(max)) - 1;
-+	unsigned int mask = (1ULL << fls(max)) - 1;
- 	unsigned int invert = mc->invert;
- 	int val;
- 	int ret;
+diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
+index 0c86409a316e8..e3b6ca9176afe 100644
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -958,7 +958,15 @@ static int iterate_inode_ref(struct btrfs_root *root, struct btrfs_path *path,
+ 					ret = PTR_ERR(start);
+ 					goto out;
+ 				}
+-				BUG_ON(start < p->buf);
++				if (unlikely(start < p->buf)) {
++					btrfs_err(root->fs_info,
++			"send: path ref buffer underflow for key (%llu %u %llu)",
++						  found_key->objectid,
++						  found_key->type,
++						  found_key->offset);
++					ret = -EINVAL;
++					goto out;
++				}
+ 			}
+ 			p->start = start;
+ 		} else {
 -- 
 2.43.0
 
