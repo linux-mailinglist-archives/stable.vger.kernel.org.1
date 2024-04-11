@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4078A10DA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94FAB8A0E11
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C4BB1C2182E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F37B28326D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563951482FD;
-	Thu, 11 Apr 2024 10:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE29E14659E;
+	Thu, 11 Apr 2024 10:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SArre7Ip"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heNLJLaj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D25142624;
-	Thu, 11 Apr 2024 10:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B097145B26;
+	Thu, 11 Apr 2024 10:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831886; cv=none; b=HsQqSn112tKX9SRRlR/znyqi+0c30B8CcQXj4DJqE1cMi4YXzMODBjWsj7r22H5HUwMRGkgEQoirIEe7bvtZYTCYC1ygr0KmvAYk/NYrIABe8xT2HNM/dIHDtNrmThvraNG1KyXXzSJpR30Ljt2gOvXAdy4kk7C4R5Od0J5uudk=
+	t=1712830240; cv=none; b=Ohlb9fu3SnMi1kiWUAkYuiEpkkBtPSBGx0n2j0MAI8PfDih9d3Tc2aRTr0IYLGwwLYbUm5qENH6j9jn9vKNqGHO4NmqIO26rAkQavrcgUEzFbBEspu6UJ6eB2T6aNQnEzu+xdfs+QMHcEN2iT1pEloj96LPS1XXBky0edbwD9Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831886; c=relaxed/simple;
-	bh=5zDK/bkUqyR4O+66I99LCsPTeC4/1T+bnC4sdrwGzqM=;
+	s=arc-20240116; t=1712830240; c=relaxed/simple;
+	bh=BbvUeRIk5u1Rx28TGOjzeP0QpF0ozx4HaEFtWxIAvzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlDoRL5SEIYYHxMfdzd4ScBI2/iBg/b5UuSaZGvbsFjrweeCudI0671fakcsZf5Jb+a4WxSh/n7JqK6yVY08iUeVQH92dzFy7EAVR2UAeWyQDr7rfmuWg7wiuc1CA3e+QQokVvHaIJE4kENwikJx402yL5GszP3Am+ZTh90SeAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SArre7Ip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A1FC43390;
-	Thu, 11 Apr 2024 10:38:05 +0000 (UTC)
+	 MIME-Version; b=RZBe5trp0lRgrCO8oO0w0pG2lwOp3qXQ7qYnC+7ja/dXnUplbRS9cPbCONaKu2LFQVd8oCcrywaEqZOEFqYEtMqvHEW3bHMHGwdopwi3KE1C4meUege8/kv8HdmeZ2bsM3yz74hJSDe5KoNA4eNSVZ+AlTCQCTmrQ3PUTurlyok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heNLJLaj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADAB2C433C7;
+	Thu, 11 Apr 2024 10:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831885;
-	bh=5zDK/bkUqyR4O+66I99LCsPTeC4/1T+bnC4sdrwGzqM=;
+	s=korg; t=1712830240;
+	bh=BbvUeRIk5u1Rx28TGOjzeP0QpF0ozx4HaEFtWxIAvzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SArre7Ip9Cswuar7Se2j6WymS6oQuKNTZBpSnyN57az2AYIZB0J1zv5PqdIjHMLNQ
-	 4BXRwbmWrXE1j1Je4Ng0r3qrI3/U5Vs7uul9OC321z+jmLgRg/NU/U0k8tTMsr0b32
-	 nIam7xNe13RgvRXWGGX3VQKNePV9LTFaO8wfq8gs=
+	b=heNLJLajzHJ9TJKKXuJAyvgBmcb++OsjyANVboOawuq66m+YkaRYTOkZzZMcvlhuN
+	 8MtSzobbJbwkush2amRQ/T9k3zn0f1WmhlQx4BqIQQVguTvIHChyBhg48EsMaOZacz
+	 U33hqCusdokgSDvkePSS6w/DNWNfJ36j/60sabxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Rapeli <mikko.rapeli@linaro.org>,
-	Avri Altman <avri.altman@wdc.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 160/294] mmc: core: Avoid negative index with array access
+	Takashi Iwai <tiwai@suse.de>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 055/143] Bluetooth: btmtk: Add MODULE_FIRMWARE() for MT7922
 Date: Thu, 11 Apr 2024 11:55:23 +0200
-Message-ID: <20240411095440.461927992@linuxfoundation.org>
+Message-ID: <20240411095422.573142401@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Rapeli <mikko.rapeli@linaro.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit cf55a7acd1ed38afe43bba1c8a0935b51d1dc014 upstream.
+[ Upstream commit 3e465a07cdf444140f16bc57025c23fcafdde997 ]
 
-Commit 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu") assigns
-prev_idata = idatas[i - 1], but doesn't check that the iterator i is
-greater than zero. Let's fix this by adding a check.
+Since dracut refers to the module info for defining the required
+firmware files and btmtk driver doesn't provide the firmware info for
+MT7922, the generate initrd misses the firmware, resulting in the
+broken Bluetooth.
 
-Fixes: 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu")
-Link: https://lore.kernel.org/all/20231129092535.3278-1-avri.altman@wdc.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://lore.kernel.org/r/20240313133744.2405325-2-mikko.rapeli@linaro.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch simply adds the MODULE_FIRMWARE() for the missing entry
+for covering that.
+
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1214133
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btmtk.c | 1 +
+ drivers/bluetooth/btmtk.h | 1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -468,7 +468,7 @@ static int __mmc_blk_ioctl_cmd(struct mm
- 	if (idata->flags & MMC_BLK_IOC_DROP)
- 		return 0;
+diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
+index 285418dbb43f5..ac8ebccd35075 100644
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -422,5 +422,6 @@ MODULE_LICENSE("GPL");
+ MODULE_FIRMWARE(FIRMWARE_MT7622);
+ MODULE_FIRMWARE(FIRMWARE_MT7663);
+ MODULE_FIRMWARE(FIRMWARE_MT7668);
++MODULE_FIRMWARE(FIRMWARE_MT7922);
+ MODULE_FIRMWARE(FIRMWARE_MT7961);
+ MODULE_FIRMWARE(FIRMWARE_MT7925);
+diff --git a/drivers/bluetooth/btmtk.h b/drivers/bluetooth/btmtk.h
+index 56f5502baadf9..cbcdb99a22e6d 100644
+--- a/drivers/bluetooth/btmtk.h
++++ b/drivers/bluetooth/btmtk.h
+@@ -4,6 +4,7 @@
+ #define FIRMWARE_MT7622		"mediatek/mt7622pr2h.bin"
+ #define FIRMWARE_MT7663		"mediatek/mt7663pr2h.bin"
+ #define FIRMWARE_MT7668		"mediatek/mt7668pr2h.bin"
++#define FIRMWARE_MT7922		"mediatek/BT_RAM_CODE_MT7922_1_1_hdr.bin"
+ #define FIRMWARE_MT7961		"mediatek/BT_RAM_CODE_MT7961_1_2_hdr.bin"
+ #define FIRMWARE_MT7925		"mediatek/mt7925/BT_RAM_CODE_MT7925_1_1_hdr.bin"
  
--	if (idata->flags & MMC_BLK_IOC_SBC)
-+	if (idata->flags & MMC_BLK_IOC_SBC && i > 0)
- 		prev_idata = idatas[i - 1];
- 
- 	/*
+-- 
+2.43.0
+
 
 
 
