@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-38509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7AEB8A0EF8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:19:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74BF78A0E21
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:11:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8CC21C21EF3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:19:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A2141F216BA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AEE01465A4;
-	Thu, 11 Apr 2024 10:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40DA1448EF;
+	Thu, 11 Apr 2024 10:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x11xSD3Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXFexpIj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA565140E3D;
-	Thu, 11 Apr 2024 10:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B36145FF0;
+	Thu, 11 Apr 2024 10:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830783; cv=none; b=CqW9aRkvNphVJg+pVwz5xDrVJwWDeLp9hj1YI0ErOH0xfGTAfvhIsFEj8meg4ZoNDVc5rC6Fdsy6rMHgTQ4euEl8kZ4PpWgYsWuAcyyDUw8sO4aMHGxsRQ57o5xofxjr/zyGVNQFq1jj5Mcjv5Y78OjoZUEAlgkgrAKgagThwOA=
+	t=1712830281; cv=none; b=K8LMtKExeNQg59sluUZBLJ9C+4Iv6//ni0m+ebx/KbSSCbwy/L2TEV8sFGxykqiOweFEkp1024TWnWPTfxcK2dngpMGONmWZvaeVkwoG3Nr7/qFjUaG14uUqoNyaFrPdKbLuzNf3OuPA/AjswUDdVJ7uEX26Xt7mS22qORSP2zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830783; c=relaxed/simple;
-	bh=gJ2ENgU/Wa6j+11Ouckw7yFQhhrUzYayA3uY2u5iujs=;
+	s=arc-20240116; t=1712830281; c=relaxed/simple;
+	bh=uRT/FcYPSixVi7rBi99NyFaakCs8TlWMQnVH1OtOWUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAzgqsqLZeWSXY3LgtmQ4AH3ho72m6mec2aw2h32m9tyqD4cUyhlR+qf18QjXSyTcWZuM+ER08Neur6jbCtrH9lDsVLKaTMbD1KPey+JpaMC5upw22Fl/d3mn+XztXKQ8eVko3TMG00tGxrXyepyuDQg1JS17DLlYAKQewr+NCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x11xSD3Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F29C433F1;
-	Thu, 11 Apr 2024 10:19:42 +0000 (UTC)
+	 MIME-Version; b=LgVg0l+2LpS814Q9NLp+Ihe+VT9aSIy4qGZJJBfBOBRhHq1J4KOwZBD0XlESNjKvO0rNr+aNnL4fFGIOm51CD5iv+uFpsH/PJIIPgFTjD5OpvSw3Q+gItQ8/yvDOekOlqblaCklvRvtn1QR/ZLvGnCyakFqjqh3ijzUTByiSarc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXFexpIj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DB5C433C7;
+	Thu, 11 Apr 2024 10:11:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830782;
-	bh=gJ2ENgU/Wa6j+11Ouckw7yFQhhrUzYayA3uY2u5iujs=;
+	s=korg; t=1712830281;
+	bh=uRT/FcYPSixVi7rBi99NyFaakCs8TlWMQnVH1OtOWUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x11xSD3ZsObGY5xNbn9AQ47YDRk4vEp0YfnnF9C6VOURg6ktonvxKZviGi20Sb1Rp
-	 kcR7l9+QzeLiT/NZSCq2zZ8KP/p+Peiw7akt2FPysLOA7uE+S2diRB8zJyHRNY+aki
-	 6Da8EJb6WBDB0/YXn58aozL0zrv2Zfr42gikWTfY=
+	b=IXFexpIj3XxOQQx6XpMKZsyanA6yJQdmHWAhb7bG39UYD6vWBO9o6sTsPWVbZ/9n6
+	 p/gEqY+aTa1bneu+DqicdccpM9SwKe30vPzjNszhCo+9gf/Xi8cOftj9qMWd2FG8Rw
+	 gbwKCnF5CcYxV3W5jaLRXmclJcp31tf1wJRSoPTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 5.4 117/215] usb: cdc-wdm: close race between read and workqueue
+	David Heidelberg <david.heidelberg@collabora.com>,
+	Helen Koike <helen.koike@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Vignesh Raman <vignesh.raman@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 058/143] drm/ci: uprev mesa version: fix kdl commit fetch
 Date: Thu, 11 Apr 2024 11:55:26 +0200
-Message-ID: <20240411095428.421465116@linuxfoundation.org>
+Message-ID: <20240411095422.662530336@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +65,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Vignesh Raman <vignesh.raman@collabora.com>
 
-commit 339f83612f3a569b194680768b22bf113c26a29d upstream.
+[ Upstream commit d315a68e94a76310c349add3f9c914cefda0a87f ]
 
-wdm_read() cannot race with itself. However, in
-service_outstanding_interrupt() it can race with the
-workqueue, which can be triggered by error handling.
+build-kdl.sh was doing a `clone --depth 1` of the default branch,
+then checking out a commit that might not be the latest of that
+branch, resulting in container build error.
 
-Hence we need to make sure that the WDM_RESPONDING
-flag is not just only set but tested.
+https://gitlab.freedesktop.org/mesa/mesa/-/commit/5efa4d56 fixes
+kdl commit fetch issue. Uprev mesa in drm-ci to fix this.
 
-Fixes: afba937e540c9 ("USB: CDC WDM driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20240314115132.3907-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This commit updates the kernel tag and adds .never-post-merge-rules
+due to the mesa uprev. It also fixes an issue where the virtio-gpu
+pipeline was not getting created with the mesa uprev.
+
+Reviewed-by: David Heidelberg <david.heidelberg@collabora.com>
+Acked-by: Helen Koike <helen.koike@collabora.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
+Signed-off-by: Helen Koike <helen.koike@collabora.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231222033434.1537761-1-vignesh.raman@collabora.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-wdm.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/ci/gitlab-ci.yml | 14 ++++++++++++--
+ drivers/gpu/drm/ci/test.yml      |  1 +
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -471,6 +471,7 @@ out_free_mem:
- static int service_outstanding_interrupt(struct wdm_device *desc)
- {
- 	int rv = 0;
-+	int used;
+diff --git a/drivers/gpu/drm/ci/gitlab-ci.yml b/drivers/gpu/drm/ci/gitlab-ci.yml
+index dac92cc2777cc..084e3ff8e3f42 100644
+--- a/drivers/gpu/drm/ci/gitlab-ci.yml
++++ b/drivers/gpu/drm/ci/gitlab-ci.yml
+@@ -1,6 +1,6 @@
+ variables:
+   DRM_CI_PROJECT_PATH: &drm-ci-project-path mesa/mesa
+-  DRM_CI_COMMIT_SHA: &drm-ci-commit-sha edfbf74df1d4d6ce54ffe24566108be0e1a98c3d
++  DRM_CI_COMMIT_SHA: &drm-ci-commit-sha 9d162de9a05155e1c4041857a5848842749164cf
  
- 	/* submit read urb only if the device is waiting for it */
- 	if (!desc->resp_count || !--desc->resp_count)
-@@ -485,7 +486,10 @@ static int service_outstanding_interrupt
- 		goto out;
- 	}
+   UPSTREAM_REPO: git://anongit.freedesktop.org/drm/drm
+   TARGET_BRANCH: drm-next
+@@ -25,7 +25,9 @@ variables:
+   # per-job artifact storage on MinIO
+   JOB_ARTIFACTS_BASE: ${PIPELINE_ARTIFACTS_BASE}/${CI_JOB_ID}
+   # default kernel for rootfs before injecting the current kernel tree
+-  KERNEL_IMAGE_BASE: https://${S3_HOST}/mesa-lava/gfx-ci/linux/v6.4.12-for-mesa-ci-f6b4ad45f48d
++  KERNEL_REPO: "gfx-ci/linux"
++  KERNEL_TAG: "v6.6.4-for-mesa-ci-e4f4c500f7fb"
++  KERNEL_IMAGE_BASE: https://${S3_HOST}/mesa-lava/${KERNEL_REPO}/${KERNEL_TAG}
+   LAVA_TAGS: subset-1-gfx
+   LAVA_JOB_PRIORITY: 30
  
--	set_bit(WDM_RESPONDING, &desc->flags);
-+	used = test_and_set_bit(WDM_RESPONDING, &desc->flags);
-+	if (used)
-+		goto out;
+@@ -133,6 +135,11 @@ stages:
+     - if: &is-pre-merge-for-marge '$GITLAB_USER_LOGIN == "marge-bot" && $CI_PIPELINE_SOURCE == "merge_request_event"'
+       when: on_success
+ 
++.never-post-merge-rules:
++  rules:
++    - if: *is-post-merge
++      when: never
 +
- 	spin_unlock_irq(&desc->iuspin);
- 	rv = usb_submit_urb(desc->response, GFP_KERNEL);
- 	spin_lock_irq(&desc->iuspin);
+ # Rule to filter for only scheduled pipelines.
+ .scheduled_pipeline-rules:
+   rules:
+@@ -150,6 +157,7 @@ stages:
+ .build-rules:
+   rules:
+     - !reference [.no_scheduled_pipelines-rules, rules]
++    - !reference [.never-post-merge-rules, rules]
+     # Run automatically once all dependency jobs have passed
+     - when: on_success
+ 
+@@ -157,6 +165,7 @@ stages:
+ .container+build-rules:
+   rules:
+     - !reference [.no_scheduled_pipelines-rules, rules]
++    - !reference [.never-post-merge-rules, rules]
+     - when: manual
+ 
+ .ci-deqp-artifacts:
+@@ -175,6 +184,7 @@ stages:
+ .container-rules:
+   rules:
+     - !reference [.no_scheduled_pipelines-rules, rules]
++    - !reference [.never-post-merge-rules, rules]
+     # Run pipeline by default in the main project if any CI pipeline
+     # configuration files were changed, to ensure docker images are up to date
+     - if: *is-post-merge
+diff --git a/drivers/gpu/drm/ci/test.yml b/drivers/gpu/drm/ci/test.yml
+index 5e1c727640c40..9faf76e55a56a 100644
+--- a/drivers/gpu/drm/ci/test.yml
++++ b/drivers/gpu/drm/ci/test.yml
+@@ -327,6 +327,7 @@ virtio_gpu:none:
+     GPU_VERSION: none
+   extends:
+     - .test-gl
++    - .test-rules
+   tags:
+     - kvm
+   script:
+-- 
+2.43.0
+
 
 
 
