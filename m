@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-38228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C698A0D9A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E0148A0F44
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8AAD1C21993
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3995A2870D2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1154145B13;
-	Thu, 11 Apr 2024 10:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243B014600A;
+	Thu, 11 Apr 2024 10:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdVyuhSr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUC4jVHc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CA82EAE5;
-	Thu, 11 Apr 2024 10:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D743A145353;
+	Thu, 11 Apr 2024 10:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829941; cv=none; b=PgwFLIZKFbEx8b2DVbr0sfg451vag7cSt5+z8I/lI4GFbRbrH2ABNWrDB0BLDW5n7ACFZdELW785DiyzMVgS2qZD56ADTF06EYcE0vvTi6z7OEzcRPE10PKKoWP8IIvcYg8iI5p6Zyl8P3sV5SZlcahtZjDVEW0dnGx7MvDSTS0=
+	t=1712830941; cv=none; b=JpxMlWI6LFF4/2sEWyXj4TE5BeVnpvoSYUM7mNYK284qKMsgNiy4sWrTmtBLGQCeKOWq9yrz/As+s0J2YfkymzE0ShEizbA4QFoUhOMdKhZpBcLv9ZXh+vFtyO2VusF9+TOSCdSiDdeBSbc59+II7rBNM7wl2T+cRkeP7jsrJjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829941; c=relaxed/simple;
-	bh=5k5WGojMyqqDgmgtUBBp08rL8LW8KjTuP6RXGoiX2No=;
+	s=arc-20240116; t=1712830941; c=relaxed/simple;
+	bh=2d4rMJiPl8vDrdQIEGv23Rj1NhaFAuI6z6uaBTnFNck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jrrPy3wRKQVWRoXo98/4SO7SzBjboD5VydEYvHDvNqKjiRq305EmLB3No8LavOVQFCUEUuVdaphuq5/4n/TELuPDOBBr7xKCzSAlOLzwTQ1WxjQs0FdGn4XuwLMNBPdF1l14+zRGvxoWm4OfftWw2ghFZmELuX1MFMwCeqKA2J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdVyuhSr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172A7C433C7;
-	Thu, 11 Apr 2024 10:05:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aCaJSDIXJfZPjfMcr+sMwhpdkJlRBKG6TL9kvTaBjTpXoh/O4200oROjrsmCkIZcgDSsRgS4J83BHUr7KBztUI32dle8mBG6Mqm7KYsCC1+fY0VDnHiipXGCZkeD88MnEOfZ7m/L/fqXrbC7Abvf/nKFUUZ82NL9vqG7Q9JIqDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUC4jVHc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5487CC433C7;
+	Thu, 11 Apr 2024 10:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829941;
-	bh=5k5WGojMyqqDgmgtUBBp08rL8LW8KjTuP6RXGoiX2No=;
+	s=korg; t=1712830941;
+	bh=2d4rMJiPl8vDrdQIEGv23Rj1NhaFAuI6z6uaBTnFNck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LdVyuhSryhGeOloZY8Np0p2+DdMosH018EjgB7Z9+80egJY7vULwJXFxNqOM6YfLo
-	 4SaStaCv7Hp1CccJN2Ql/xwBKXkjJH1sThPetp6MUAaoGabl5OsaY5QFH9bigtz9zf
-	 QNTjf2dMFhUX70s8sQM/hYfPhrfHRcZRzGUHHLGg=
+	b=gUC4jVHc00jpEQ3YEJsc6flSKovL5iuiQzZR6AqIZ2QRBmwuI01yypgtZELh5XglG
+	 69aGQC0dA4gIGNKqDtNyexFbBjk6HaKjoGZBIT9j3nYbZ6IWSf+aIIbQ6SWwqUUQSB
+	 j7AsOHt85AYfca95RTri/4d0eXnCghs5NbA8y4+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Henrie <alexhenrie24@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 156/175] isofs: handle CDs with bad root inode but good Joliet root directory
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 5.4 170/215] x86/mce: Make sure to grab mce_sysfs_mutex in set_bank()
 Date: Thu, 11 Apr 2024 11:56:19 +0200
-Message-ID: <20240411095424.261842595@linuxfoundation.org>
+Message-ID: <20240411095429.983218277@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +59,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-[ Upstream commit 4243bf80c79211a8ca2795401add9c4a3b1d37ca ]
+commit 3ddf944b32f88741c303f0b21459dbb3872b8bc5 upstream.
 
-I have a CD copy of the original Tom Clancy's Ghost Recon game from
-2001. The disc mounts without error on Windows, but on Linux mounting
-fails with the message "isofs_fill_super: get root inode failed". The
-error originates in isofs_read_inode, which returns -EIO because de_len
-is 0. The superblock on this disc appears to be intentionally corrupt as
-a form of copy protection.
+Modifying a MCA bank's MCA_CTL bits which control which error types to
+be reported is done over
 
-When the root inode is unusable, instead of giving up immediately, try
-to continue with the Joliet file table. This fixes the Ghost Recon CD
-and probably other copy-protected CDs too.
+  /sys/devices/system/machinecheck/
+  ├── machinecheck0
+  │   ├── bank0
+  │   ├── bank1
+  │   ├── bank10
+  │   ├── bank11
+  ...
 
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20240208022134.451490-1-alexhenrie24@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+sysfs nodes by writing the new bit mask of events to enable.
+
+When the write is accepted, the kernel deletes all current timers and
+reinits all banks.
+
+Doing that in parallel can lead to initializing a timer which is already
+armed and in the timer wheel, i.e., in use already:
+
+  ODEBUG: init active (active state 0) object: ffff888063a28000 object
+  type: timer_list hint: mce_timer_fn+0x0/0x240 arch/x86/kernel/cpu/mce/core.c:2642
+  WARNING: CPU: 0 PID: 8120 at lib/debugobjects.c:514
+  debug_print_object+0x1a0/0x2a0 lib/debugobjects.c:514
+
+Fix that by grabbing the sysfs mutex as the rest of the MCA sysfs code
+does.
+
+Reported by: Yue Sun <samsun1006219@gmail.com>
+Reported by: xingwei lee <xrivendell7@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/CAEkJfYNiENwQY8yV1LYJ9LjJs%2Bx_-PqMv98gKig55=2vbzffRw@mail.gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/isofs/inode.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/isofs/inode.c b/fs/isofs/inode.c
-index 6e4e2cfd40b9e..aec11a7676c9e 100644
---- a/fs/isofs/inode.c
-+++ b/fs/isofs/inode.c
-@@ -910,8 +910,22 @@ static int isofs_fill_super(struct super_block *s, void *data, int silent)
- 	 * we then decide whether to use the Joliet descriptor.
- 	 */
- 	inode = isofs_iget(s, sbi->s_firstdatazone, 0);
--	if (IS_ERR(inode))
--		goto out_no_root;
-+
-+	/*
-+	 * Fix for broken CDs with a corrupt root inode but a correct Joliet
-+	 * root directory.
-+	 */
-+	if (IS_ERR(inode)) {
-+		if (joliet_level && sbi->s_firstdatazone != first_data_zone) {
-+			printk(KERN_NOTICE
-+			       "ISOFS: root inode is unusable. "
-+			       "Disabling Rock Ridge and switching to Joliet.");
-+			sbi->s_rock = 0;
-+			inode = NULL;
-+		} else {
-+			goto out_no_root;
-+		}
-+	}
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -2228,12 +2228,14 @@ static ssize_t set_bank(struct device *s
+ 		return -EINVAL;
  
- 	/*
- 	 * Fix for broken CDs with Rock Ridge and empty ISO root directory but
--- 
-2.43.0
-
+ 	b = &per_cpu(mce_banks_array, s->id)[bank];
+-
+ 	if (!b->init)
+ 		return -ENODEV;
+ 
+ 	b->ctl = new;
++
++	mutex_lock(&mce_sysfs_mutex);
+ 	mce_restart();
++	mutex_unlock(&mce_sysfs_mutex);
+ 
+ 	return size;
+ }
 
 
 
