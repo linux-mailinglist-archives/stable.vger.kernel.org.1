@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 140178A0E5B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1558A1195
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 458C61C21B48
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13D46B26430
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4483145B26;
-	Thu, 11 Apr 2024 10:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9243C145B13;
+	Thu, 11 Apr 2024 10:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OEk8YmBD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ec8HcvZ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F38145B28;
-	Thu, 11 Apr 2024 10:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504D2142624;
+	Thu, 11 Apr 2024 10:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830434; cv=none; b=CIv+ET7kuPxgGxHB2uisNy2/9Dd03X9vw/dFDFqAdF636FJ9CohKMMMBrJvpICQ9WLmL1SlTbroiynRb0JJmxVAITuJWUvowcaeq44r2FceCPnlrooCi/snsJkEQb/o0wOZeXMLwLPGtI3AGPzYvQSAlTrbZpArOD7GdkrVh7rA=
+	t=1712832332; cv=none; b=WcD/9Z6Jo0VB1eyj5Q1e6a0Ju2T+UGfHk5FMADcDnd1cKgEWAl06KdO56OExBLbDH3ojt5inNvbjB4m/rUfQmCJm8vP6mVRPsq7Waya0u9Q3py2VSWR/HMvG7eRJ8MIphzwylBbfF0MhvcVwXioRwB5VzhXKM4WpmOl3gcTkriI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830434; c=relaxed/simple;
-	bh=b92U43FgTkSh1oOsSeVTO9cHGklap4qI9dU2V2ouXqE=;
+	s=arc-20240116; t=1712832332; c=relaxed/simple;
+	bh=6AihscBw4GqcCHjOjPan08Yo3ARh0m8WkIhToA7r2Vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PQN+ATsFVwRm1cpTCRlEdslqVKB26fFux4wVEWEiz/cm4UIYsL7Pk0Tzk3XCbffKjLREh3E6aZlnRBGXyV+e/M7B/VV9V+QQx8d3dQfQ3MONeA5KumjYcLgakJ/rXlH5MYdO99/bS37/jNe/AA7JKEOEtnUxe7ONQNSCRFzEf8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OEk8YmBD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9701AC433F1;
-	Thu, 11 Apr 2024 10:13:53 +0000 (UTC)
+	 MIME-Version; b=iaxne0OJpxvSPCoTvRCy9uFBw+EdZzq40zOVBqUyBV2JF8i8T/LWyhpChV6KjB1i1qoUVzMRLaV1pHgpHVK7sRIbJt5pm7+sW8SkOqjc446v+/WwNjfxP9ERLETBQOvAoL1YtHn3JSj8WE0kb3DRwfRlb6jqJINEiQYiZGEOLxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ec8HcvZ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE1DC433F1;
+	Thu, 11 Apr 2024 10:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830434;
-	bh=b92U43FgTkSh1oOsSeVTO9cHGklap4qI9dU2V2ouXqE=;
+	s=korg; t=1712832330;
+	bh=6AihscBw4GqcCHjOjPan08Yo3ARh0m8WkIhToA7r2Vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OEk8YmBD5DYFYfUwQhaFHfyVuxC4h1m8MsaAhRrfLP+iq8V+hCUjkEuRRVdAh9eSF
-	 oP9Jp8sDkvqIXOYlwxpl7rKuIkYwCWhnqNSNO8I4DYV5acQHcDqOHsLc1jeJYg0b1t
-	 Srn/zrm6hqzhWfTadW9kHBjHTUUPBM/zMDZ7KrLc=
+	b=Ec8HcvZ3aO8xaM0xO0XnFvwejqPjQsTvlQPLpa0QvWETblDXJvER5hhtq8tL4PTQn
+	 ju4X5469RVip0rhWR9wUK9oCHcC/fw+Eq3QOWd6WN5qU3RZDNYNPGw5FFpW3sAQSrQ
+	 ie06tcVIWCN5swvSU3kVYdgl9SqaHqoCc09tGJJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gwendal Grignou <gwendal@chromium.org>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Florian Westphal <fw@strlen.de>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 137/143] platform/x86: intel-vbtn: Update tablet mode switch at end of probe
+Subject: [PATCH 6.1 13/83] net: skbuff: add overflow debug check to pull/push helpers
 Date: Thu, 11 Apr 2024 11:56:45 +0200
-Message-ID: <20240411095425.024920739@linuxfoundation.org>
+Message-ID: <20240411095413.077192502@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +61,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gwendal Grignou <gwendal@chromium.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 434e5781d8cd2d0ed512d920c6cdeba4b33a2e81 ]
+[ Upstream commit 219eee9c0d16f1b754a8b85275854ab17df0850a ]
 
-ACER Vivobook Flip (TP401NAS) virtual intel switch is implemented as
-follow:
+syzbot managed to trigger following splat:
+BUG: KASAN: use-after-free in __skb_flow_dissect+0x4a3b/0x5e50
+Read of size 1 at addr ffff888208a4000e by task a.out/2313
+[..]
+  __skb_flow_dissect+0x4a3b/0x5e50
+  __skb_get_hash+0xb4/0x400
+  ip_tunnel_xmit+0x77e/0x26f0
+  ipip_tunnel_xmit+0x298/0x410
+  ..
 
-   Device (VGBI)
-   {
-       Name (_HID, EisaId ("INT33D6") ...
-       Name (VBDS, Zero)
-       Method (_STA, 0, Serialized)  // _STA: Status ...
-       Method (VBDL, 0, Serialized)
-       {
-           PB1E |= 0x20
-           VBDS |= 0x40
-       }
-       Method (VGBS, 0, Serialized)
-       {
-           Return (VBDS) /* \_SB_.PCI0.SBRG.EC0_.VGBI.VBDS */
-       }
-       ...
-    }
+Analysis shows that the skb has a valid ->head, but bogus ->data
+pointer.
 
-By default VBDS is set to 0. At boot it is set to clamshell (bit 6 set)
-only after method VBDL is executed.
+skb->data gets its bogus value via the neigh layer, which does:
 
-Since VBDL is now evaluated in the probe routine later, after the device
-is registered, the retrieved value of VBDS was still 0 ("tablet mode")
-when setting up the virtual switch.
+1556    __skb_pull(skb, skb_network_offset(skb));
 
-Make sure to evaluate VGBS after VBDL, to ensure the
-convertible boots in clamshell mode, the expected default.
+... and the skb was already dodgy at this point:
 
-Fixes: 26173179fae1 ("platform/x86: intel-vbtn: Eval VBDL after registering our notifier")
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240329143206.2977734-3-gwendal@chromium.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+skb_network_offset(skb) returns a negative value due to an
+earlier overflow of skb->network_header (u16).  __skb_pull thus
+"adjusts" skb->data by a huge offset, pointing outside skb->head
+area.
+
+Allow debug builds to splat when we try to pull/push more than
+INT_MAX bytes.
+
+After this, the syzkaller reproducer yields a more precise splat
+before the flow dissector attempts to read off skb->data memory:
+
+WARNING: CPU: 5 PID: 2313 at include/linux/skbuff.h:2653 neigh_connected_output+0x28e/0x400
+  ip_finish_output2+0xb25/0xed0
+  iptunnel_xmit+0x4ff/0x870
+  ipgre_xmit+0x78e/0xbb0
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240216113700.23013-1-fw@strlen.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/vbtn.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/linux/skbuff.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/platform/x86/intel/vbtn.c b/drivers/platform/x86/intel/vbtn.c
-index 084c355c86f5f..5d13452bb947a 100644
---- a/drivers/platform/x86/intel/vbtn.c
-+++ b/drivers/platform/x86/intel/vbtn.c
-@@ -136,8 +136,6 @@ static int intel_vbtn_input_setup(struct platform_device *device)
- 	priv->switches_dev->id.bustype = BUS_HOST;
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index c4a8520dc748f..1326a935b6fad 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -2603,6 +2603,8 @@ static inline void skb_put_u8(struct sk_buff *skb, u8 val)
+ void *skb_push(struct sk_buff *skb, unsigned int len);
+ static inline void *__skb_push(struct sk_buff *skb, unsigned int len)
+ {
++	DEBUG_NET_WARN_ON_ONCE(len > INT_MAX);
++
+ 	skb->data -= len;
+ 	skb->len  += len;
+ 	return skb->data;
+@@ -2611,6 +2613,8 @@ static inline void *__skb_push(struct sk_buff *skb, unsigned int len)
+ void *skb_pull(struct sk_buff *skb, unsigned int len);
+ static inline void *__skb_pull(struct sk_buff *skb, unsigned int len)
+ {
++	DEBUG_NET_WARN_ON_ONCE(len > INT_MAX);
++
+ 	skb->len -= len;
+ 	if (unlikely(skb->len < skb->data_len)) {
+ #if defined(CONFIG_DEBUG_NET)
+@@ -2634,6 +2638,8 @@ void *__pskb_pull_tail(struct sk_buff *skb, int delta);
  
- 	if (priv->has_switches) {
--		detect_tablet_mode(&device->dev);
--
- 		ret = input_register_device(priv->switches_dev);
- 		if (ret)
- 			return ret;
-@@ -316,6 +314,9 @@ static int intel_vbtn_probe(struct platform_device *device)
- 		if (ACPI_FAILURE(status))
- 			dev_err(&device->dev, "Error VBDL failed with ACPI status %d\n", status);
- 	}
-+	// Check switches after buttons since VBDL may have side effects.
-+	if (has_switches)
-+		detect_tablet_mode(&device->dev);
- 
- 	device_init_wakeup(&device->dev, true);
- 	/*
+ static inline bool pskb_may_pull(struct sk_buff *skb, unsigned int len)
+ {
++	DEBUG_NET_WARN_ON_ONCE(len > INT_MAX);
++
+ 	if (likely(len <= skb_headlen(skb)))
+ 		return true;
+ 	if (unlikely(len > skb->len))
 -- 
 2.43.0
 
