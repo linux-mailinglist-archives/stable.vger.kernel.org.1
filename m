@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-38823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE988A1095
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9106B8A0E99
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:16:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A4B228ADE3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 478201F22060
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A640148FF7;
-	Thu, 11 Apr 2024 10:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04A514601B;
+	Thu, 11 Apr 2024 10:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OM3rpem1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9QM3M7+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196151474B0;
-	Thu, 11 Apr 2024 10:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6A913F452;
+	Thu, 11 Apr 2024 10:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831695; cv=none; b=OWGNNZjy/wWV43jbZa4d+1k6tY9+aMiKXV7pJ4onjo2JmCkpPTvUoaDfTvzgk0y0Fpml80g4ek+MicfjKRSItcS9dlttHdjt+2dgfc898cMnXsddnuoNJS9Y6R33NH7c17PCZiuFEM9UpVeAQ4qOewfvCENRE0WiA5+S7g2NogQ=
+	t=1712830581; cv=none; b=ecUvFVsxu5UdHLLBPj+CXX2vUroPyWfP3rBaczGybGUS/xRmTTlWWD17ursPa7bruP7NAGsV7b1+j6Xip714WSRA1Fe/LZggoMrSDPN7S0ejiW5WuYl8c8Z1HCrRyn9wL6sIea40nRoq9K4MU3akTU0CdEn8oPydojcWgBYuvAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831695; c=relaxed/simple;
-	bh=W7SiqEv0/VA2wli+pxEiJvoNFFtHMKLZGsR+Zw4gZEY=;
+	s=arc-20240116; t=1712830581; c=relaxed/simple;
+	bh=7LHc9cDRJKpfK4Pb8QXkAZQ8s39wOtwz18WlOgKNOBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kMThsE0GCATGHriSE0pdWwlCAKqe/TnyS4vQeAVLinxlw6VQDyuCV+zBh5Z+XVu99f1sBv8oHiFhcyXCsk4zBwh6bRlDcdngjj/fWtGh4p2hubOM1Nj0uk87JuPFhZtMpQxqobonrnnNPNl2A1+QmVw+21UluZqfahHUIaip/aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OM3rpem1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78048C433F1;
-	Thu, 11 Apr 2024 10:34:54 +0000 (UTC)
+	 MIME-Version; b=SB1488EJS6qCO4KeDXGW8NrpkBKCZ4p1JmjHyVIRDv4Jn0YMDV88fijEZlkhf8a02IMddrT/PSkp0LISDNxvyPLL5vcbjeF8azth1BeRdr61tgGbmvTy9mcnTvqg16a37opkpSqYX3Y0P98/XAxZiUSO1ovnh19xAKFLnrw53zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9QM3M7+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4774C433F1;
+	Thu, 11 Apr 2024 10:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831694;
-	bh=W7SiqEv0/VA2wli+pxEiJvoNFFtHMKLZGsR+Zw4gZEY=;
+	s=korg; t=1712830581;
+	bh=7LHc9cDRJKpfK4Pb8QXkAZQ8s39wOtwz18WlOgKNOBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OM3rpem1mz+5S52I3dW8JJtgDAZFbtYFB/MVdsw/abc6xajP6V0hz/JdibZG90CER
-	 t9/GdlW89ah0LuoxXtf44Qkea6v9u14sfXuRr+JRI8oXFMo+DfpFpDKr48N+zj2AJB
-	 b79uni788duON5XQ+p6/Yy29FhGP+SmJ3pLjIWjQ=
+	b=i9QM3M7+WHgzh80X/hzjsej4KbAYAWmDTByeVYelGFww8QI0lDf7vUfiS1S09b79O
+	 mWhGbFKRaD0YFLSQNoaHUE8befoyA93WKGIglrsoG9PCeVxxwdWc1b4XSsO4N9Tmbg
+	 UZtUrGlu2qD8+kaEbNtvn3Ls5xIbb8ApOqAF3ZVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Steffen Trumtrar <s.trumtrar@pengutronix.de>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Camelia Groza <camelia.groza@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Alex Lyakas <alex.lyakas@zadara.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 094/294] soc: fsl: qbman: Use raw spinlock for cgr_lock
+Subject: [PATCH 5.4 048/215] btrfs: fix off-by-one chunk length calculation at contains_pending_extent()
 Date: Thu, 11 Apr 2024 11:54:17 +0200
-Message-ID: <20240411095438.506551835@linuxfoundation.org>
+Message-ID: <20240411095426.338943379@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,134 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit fbec4e7fed89b579f2483041fabf9650fb0dd6bc ]
+[ Upstream commit ae6bd7f9b46a29af52ebfac25d395757e2031d0d ]
 
-smp_call_function always runs its callback in hard IRQ context, even on
-PREEMPT_RT, where spinlocks can sleep. So we need to use a raw spinlock
-for cgr_lock to ensure we aren't waiting on a sleeping task.
+At contains_pending_extent() the value of the end offset of a chunk we
+found in the device's allocation state io tree is inclusive, so when
+we calculate the length we pass to the in_range() macro, we must sum
+1 to the expression "physical_end - physical_offset".
 
-Although this bug has existed for a while, it was not apparent until
-commit ef2a8d5478b9 ("net: dpaa: Adjust queue depth on rate change")
-which invokes smp_call_function_single via qman_update_cgr_safe every
-time a link goes up or down.
+In practice the wrong calculation should be harmless as chunks sizes
+are never 1 byte and we should never have 1 byte ranges of unallocated
+space. Nevertheless fix the wrong calculation.
 
-Fixes: 96f413f47677 ("soc/fsl/qbman: fix issue in qman_delete_cgr_safe()")
-CC: stable@vger.kernel.org
-Reported-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Closes: https://lore.kernel.org/all/20230323153935.nofnjucqjqnz34ej@skbuf/
-Reported-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Closes: https://lore.kernel.org/linux-arm-kernel/87wmsyvclu.fsf@pengutronix.de/
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Camelia Groza <camelia.groza@nxp.com>
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-by: Alex Lyakas <alex.lyakas@zadara.com>
+Link: https://lore.kernel.org/linux-btrfs/CAOcd+r30e-f4R-5x-S7sV22RJPe7+pgwherA6xqN2_qe7o4XTg@mail.gmail.com/
+Fixes: 1c11b63eff2a ("btrfs: replace pending/pinned chunks lists with io tree")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qbman/qman.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ fs/btrfs/volumes.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
-index 3346593e0bc62..7abc9b6a04ab6 100644
---- a/drivers/soc/fsl/qbman/qman.c
-+++ b/drivers/soc/fsl/qbman/qman.c
-@@ -991,7 +991,7 @@ struct qman_portal {
- 	/* linked-list of CSCN handlers. */
- 	struct list_head cgr_cbs;
- 	/* list lock */
--	spinlock_t cgr_lock;
-+	raw_spinlock_t cgr_lock;
- 	struct work_struct congestion_work;
- 	struct work_struct mr_work;
- 	char irqname[MAX_IRQNAME];
-@@ -1281,7 +1281,7 @@ static int qman_create_portal(struct qman_portal *portal,
- 		/* if the given mask is NULL, assume all CGRs can be seen */
- 		qman_cgrs_fill(&portal->cgrs[0]);
- 	INIT_LIST_HEAD(&portal->cgr_cbs);
--	spin_lock_init(&portal->cgr_lock);
-+	raw_spin_lock_init(&portal->cgr_lock);
- 	INIT_WORK(&portal->congestion_work, qm_congestion_task);
- 	INIT_WORK(&portal->mr_work, qm_mr_process_task);
- 	portal->bits = 0;
-@@ -1456,11 +1456,14 @@ static void qm_congestion_task(struct work_struct *work)
- 	union qm_mc_result *mcr;
- 	struct qman_cgr *cgr;
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index e11c8da9a5605..5539e672d70a3 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -1638,7 +1638,7 @@ static bool contains_pending_extent(struct btrfs_device *device, u64 *start,
  
--	spin_lock_irq(&p->cgr_lock);
-+	/*
-+	 * FIXME: QM_MCR_TIMEOUT is 10ms, which is too long for a raw spinlock!
-+	 */
-+	raw_spin_lock_irq(&p->cgr_lock);
- 	qm_mc_start(&p->p);
- 	qm_mc_commit(&p->p, QM_MCC_VERB_QUERYCONGESTION);
- 	if (!qm_mc_result_timeout(&p->p, &mcr)) {
--		spin_unlock_irq(&p->cgr_lock);
-+		raw_spin_unlock_irq(&p->cgr_lock);
- 		dev_crit(p->config->dev, "QUERYCONGESTION timeout\n");
- 		qman_p_irqsource_add(p, QM_PIRQ_CSCI);
- 		return;
-@@ -1476,7 +1479,7 @@ static void qm_congestion_task(struct work_struct *work)
- 	list_for_each_entry(cgr, &p->cgr_cbs, node)
- 		if (cgr->cb && qman_cgrs_get(&c, cgr->cgrid))
- 			cgr->cb(p, cgr, qman_cgrs_get(&rr, cgr->cgrid));
--	spin_unlock_irq(&p->cgr_lock);
-+	raw_spin_unlock_irq(&p->cgr_lock);
- 	qman_p_irqsource_add(p, QM_PIRQ_CSCI);
- }
- 
-@@ -2440,7 +2443,7 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
- 	preempt_enable();
- 
- 	cgr->chan = p->config->channel;
--	spin_lock_irq(&p->cgr_lock);
-+	raw_spin_lock_irq(&p->cgr_lock);
- 
- 	if (opts) {
- 		struct qm_mcc_initcgr local_opts = *opts;
-@@ -2477,7 +2480,7 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
- 	    qman_cgrs_get(&p->cgrs[1], cgr->cgrid))
- 		cgr->cb(p, cgr, 1);
- out:
--	spin_unlock_irq(&p->cgr_lock);
-+	raw_spin_unlock_irq(&p->cgr_lock);
- 	put_affine_portal();
- 	return ret;
- }
-@@ -2512,7 +2515,7 @@ int qman_delete_cgr(struct qman_cgr *cgr)
- 		return -EINVAL;
- 
- 	memset(&local_opts, 0, sizeof(struct qm_mcc_initcgr));
--	spin_lock_irqsave(&p->cgr_lock, irqflags);
-+	raw_spin_lock_irqsave(&p->cgr_lock, irqflags);
- 	list_del(&cgr->node);
- 	/*
- 	 * If there are no other CGR objects for this CGRID in the list,
-@@ -2537,7 +2540,7 @@ int qman_delete_cgr(struct qman_cgr *cgr)
- 		/* add back to the list */
- 		list_add(&cgr->node, &p->cgr_cbs);
- release_lock:
--	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
-+	raw_spin_unlock_irqrestore(&p->cgr_lock, irqflags);
- 	put_affine_portal();
- 	return ret;
- }
-@@ -2577,9 +2580,9 @@ static int qman_update_cgr(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts)
- 	if (!p)
- 		return -EINVAL;
- 
--	spin_lock_irqsave(&p->cgr_lock, irqflags);
-+	raw_spin_lock_irqsave(&p->cgr_lock, irqflags);
- 	ret = qm_modify_cgr(cgr, 0, opts);
--	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
-+	raw_spin_unlock_irqrestore(&p->cgr_lock, irqflags);
- 	put_affine_portal();
- 	return ret;
- }
+ 		if (in_range(physical_start, *start, len) ||
+ 		    in_range(*start, physical_start,
+-			     physical_end - physical_start)) {
++			     physical_end + 1 - physical_start)) {
+ 			*start = physical_end + 1;
+ 			return true;
+ 		}
 -- 
 2.43.0
 
