@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-38918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50408A1104
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C328A0DE1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:08:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F5111F2D0A9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 475341F2432D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3602E14600E;
-	Thu, 11 Apr 2024 10:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD794145B07;
+	Thu, 11 Apr 2024 10:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4VpRmV8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSk61kA0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E894213C9A5;
-	Thu, 11 Apr 2024 10:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBEB13B5B9;
+	Thu, 11 Apr 2024 10:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831972; cv=none; b=O4uCCrVatBzu2cZk/BYSqSOiblepMLecb+FmLAIL47Wnf1G9o7ieFd/tNhYGSsPO0Yiol576bnk48dcEgSdALz5yDBFJKKR8hSXlGdJYgTQYqjd1Uyvstm/9mlfALifMOVmAL3rw60HcR1JV3S1GnBpw9RgX0ke1olhdPReFUt4=
+	t=1712830131; cv=none; b=oGDoxy5Txp4jDJvdeWa0kZ8JGCru3MIWdCxzy9T31XMTlRQWAabyNyZ6YvxvMLwaOZHAXNJrF3Kin5vpGGb78pKpM+p0cKc6QrWRC0Rx6Tpx0RL5RtLj2IWS5/MiENc3BYo/QfCC2+KUu6tcEvcmzd2f9LTS6eB/64FpQ24+1iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831972; c=relaxed/simple;
-	bh=o0NBpHlgnfmwJMTBRiBQ0Y8yoHJX6qNpnOd9TgxzAHQ=;
+	s=arc-20240116; t=1712830131; c=relaxed/simple;
+	bh=lKOc7kRqiHsUJlHgTdUW/T11yO72tq8mod+bjmv6U3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KNmJn8XpnpAd2lR2THw3b32bcAcHmTbuhLI1LNrefu4n5aeapGUGlQrCWyjE7CnvxHmUYmx5plFNFmngAOF8HHGa0YXWMyom93RonJkd+YPowyoysbTPYf1FW8Vcz+1SlJy5WIx22V/eWZ4qD3XB65V7O5pKDsOJdD3h1CnGE78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4VpRmV8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5B7C433C7;
-	Thu, 11 Apr 2024 10:39:31 +0000 (UTC)
+	 MIME-Version; b=L4diZ59f7xDdv3EHQfwD1z1ouYlact86IlHwUS5DrbYhYPznUYAc9bhVxTq6BKiEsPMZUBsCCI9jva1FjRaCatyCDGZuJD+GzQwMp49VJnuVotViUPvtp1XIDzUbYxem89Y/jNkkCA/WNLPVu8MwtfAyx/PNrZaZyTO2FRsqhoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSk61kA0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E0C5C433F1;
+	Thu, 11 Apr 2024 10:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831971;
-	bh=o0NBpHlgnfmwJMTBRiBQ0Y8yoHJX6qNpnOd9TgxzAHQ=;
+	s=korg; t=1712830131;
+	bh=lKOc7kRqiHsUJlHgTdUW/T11yO72tq8mod+bjmv6U3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K4VpRmV8KFwyOx2HN3Z5N5KdB6eZAo8/jH4qqMLETWVzjA0Rra4BgOLwG7ntm28MW
-	 DH6vSbETlOTiiUMkkflAFan+NjzudeIUy/moqGujriAo/aqMSOhr8LcKlG8HrWYMMT
-	 mdLENhN4CVHtsSFs/+nsKq8N5/P5K6ktLQMP7VnQ=
+	b=jSk61kA0Wa7iSecyx1qBnCBaCMN5vHZLgkntnHmWp3nIsHRqEs6iQgMFoeCmv+RxQ
+	 WXk+1TmsEqBo9ldoThp0eDhd4rctPnFcOZBDrYVV8ndQOviaEv4LB5DRCTNMPmUppu
+	 DA1wvk+RdrLeI7+VHmzFwursde9pgdqDzzo9DCPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Jihong <yangjihong1@huawei.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.10 149/294] perf/core: Fix reentry problem in perf_output_read_group()
+	Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>,
+	Roman Stratiienko <r.stratiienko@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Dhruva Gole <d-gole@ti.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 044/143] cpufreq: Dont unregister cpufreq cooling on CPU hotplug
 Date: Thu, 11 Apr 2024 11:55:12 +0200
-Message-ID: <20240411095440.138711648@linuxfoundation.org>
+Message-ID: <20240411095422.241157837@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +65,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Jihong <yangjihong1@huawei.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-commit 6b959ba22d34ca793ffdb15b5715457c78e38b1a upstream.
+[ Upstream commit c4d61a529db788d2e52654f5b02c8d1de4952c5b ]
 
-perf_output_read_group may respond to IPI request of other cores and invoke
-__perf_install_in_context function. As a result, hwc configuration is modified.
-causing inconsistency and unexpected consequences.
+Offlining a CPU and bringing it back online is a common operation and it
+happens frequently during system suspend/resume, where the non-boot CPUs
+are hotplugged out during suspend and brought back at resume.
 
-Interrupts are not disabled when perf_output_read_group reads PMU counter.
-In this case, IPI request may be received from other cores.
-As a result, PMU configuration is modified and an error occurs when
-reading PMU counter:
+The cpufreq core already tries to make this path as fast as possible as
+the changes are only temporary in nature and full cleanup of resources
+isn't required in this case. For example the drivers can implement
+online()/offline() callbacks to avoid a lot of tear down of resources.
 
-		     CPU0                                         CPU1
-						      __se_sys_perf_event_open
-							perf_install_in_context
-  perf_output_read_group                                  smp_call_function_single
-    for_each_sibling_event(sub, leader) {                   generic_exec_single
-      if ((sub != event) &&                                   remote_function
-	  (sub->state == PERF_EVENT_STATE_ACTIVE))                    |
-  <enter IPI handler: __perf_install_in_context>   <----RAISE IPI-----+
-  __perf_install_in_context
-    ctx_resched
-      event_sched_out
-	armpmu_del
-	  ...
-	  hwc->idx = -1; // event->hwc.idx is set to -1
-  ...
-  <exit IPI>
-	      sub->pmu->read(sub);
-		armpmu_read
-		  armv8pmu_read_counter
-		    armv8pmu_read_hw_counter
-		      int idx = event->hw.idx; // idx = -1
-		      u64 val = armv8pmu_read_evcntr(idx);
-			u32 counter = ARMV8_IDX_TO_COUNTER(idx); // invalid counter = 30
-			read_pmevcntrn(counter) // undefined instruction
+On similar lines, there is no need to unregister the cpufreq cooling
+device during suspend / resume, but only while the policy is getting
+removed.
 
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20220902082918.179248-1-yangjihong1@huawei.com
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Moreover, unregistering the cpufreq cooling device is resulting in an
+unwanted outcome, where the system suspend is eventually aborted in the
+process.  Currently, during system suspend the cpufreq core unregisters
+the cooling device, which in turn removes a kobject using device_del()
+and that generates a notification to the userspace via uevent broadcast.
+This causes system suspend to abort in some setups.
+
+This was also earlier reported (indirectly) by Roman [1]. Maybe there is
+another way around to fixing that problem properly, but this change
+makes sense anyways.
+
+Move the registering and unregistering of the cooling device to policy
+creation and removal times onlyy.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218521
+Reported-by: Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
+Reported-by: Roman Stratiienko <r.stratiienko@gmail.com>
+Link: https://patchwork.kernel.org/project/linux-pm/patch/20220710164026.541466-1-r.stratiienko@gmail.com/ [1]
+Tested-by: Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/cpufreq/cpufreq.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6890,9 +6890,16 @@ static void perf_output_read_group(struc
- {
- 	struct perf_event *leader = event->group_leader, *sub;
- 	u64 read_format = event->attr.read_format;
-+	unsigned long flags;
- 	u64 values[6];
- 	int n = 0;
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 7d570b44777ac..3c2c955fbbbd6 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -1576,7 +1576,8 @@ static int cpufreq_online(unsigned int cpu)
+ 	if (cpufreq_driver->ready)
+ 		cpufreq_driver->ready(policy);
+ 
+-	if (cpufreq_thermal_control_enabled(cpufreq_driver))
++	/* Register cpufreq cooling only for a new policy */
++	if (new_policy && cpufreq_thermal_control_enabled(cpufreq_driver))
+ 		policy->cdev = of_cpufreq_cooling_register(policy);
+ 
+ 	pr_debug("initialization complete\n");
+@@ -1660,11 +1661,6 @@ static void __cpufreq_offline(unsigned int cpu, struct cpufreq_policy *policy)
+ 	else
+ 		policy->last_policy = policy->policy;
+ 
+-	if (cpufreq_thermal_control_enabled(cpufreq_driver)) {
+-		cpufreq_cooling_unregister(policy->cdev);
+-		policy->cdev = NULL;
+-	}
+-
+ 	if (has_target())
+ 		cpufreq_exit_governor(policy);
+ 
+@@ -1725,6 +1721,15 @@ static void cpufreq_remove_dev(struct device *dev, struct subsys_interface *sif)
+ 		return;
+ 	}
  
 +	/*
-+	 * Disabling interrupts avoids all counter scheduling
-+	 * (context switches, timer based rotation and IPIs).
++	 * Unregister cpufreq cooling once all the CPUs of the policy are
++	 * removed.
 +	 */
-+	local_irq_save(flags);
++	if (cpufreq_thermal_control_enabled(cpufreq_driver)) {
++		cpufreq_cooling_unregister(policy->cdev);
++		policy->cdev = NULL;
++	}
 +
- 	values[n++] = 1 + leader->nr_siblings;
- 
- 	if (read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
-@@ -6928,6 +6935,8 @@ static void perf_output_read_group(struc
- 
- 		__output_copy(handle, values, n * sizeof(u64));
- 	}
-+
-+	local_irq_restore(flags);
- }
- 
- #define PERF_FORMAT_TOTAL_TIMES (PERF_FORMAT_TOTAL_TIME_ENABLED|\
+ 	/* We did light-weight exit earlier, do full tear down now */
+ 	if (cpufreq_driver->offline)
+ 		cpufreq_driver->exit(policy);
+-- 
+2.43.0
+
 
 
 
