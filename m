@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C6218A0D70
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B3F8A10D1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE012B21235
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:04:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86CA8B258BC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994A2145FED;
-	Thu, 11 Apr 2024 10:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6FCE140E3C;
+	Thu, 11 Apr 2024 10:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BlMcldXD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12LRXLcU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565EC1422C4;
-	Thu, 11 Apr 2024 10:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8602763A2;
+	Thu, 11 Apr 2024 10:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829832; cv=none; b=SelSj7JCeNFdgzNOw1i5a8DMg4Vuquq3T0UGGvszHRmc/JQbi1pAEqKCYYyE/3SwcqRY7MUAPyB/gil7gl8ewxCkasBNPeDE1HY40A1iUTSrRZKMeWlLA+Nl5PPTQhmpyCUtnRqGj3EchzGYDTcTPjWb87TF8UBf0NIaemojUIA=
+	t=1712831859; cv=none; b=cuNuzBWCBRXeSB9UbYn0yE82HF63FuhYEUtvqoaN93DuKahUqIXggY/9fFPewCtpwQwKNU8HZf2y++ifePtcCgHBPm1ykdyxW8kb/5uRHoeKOLoooG0E8hS3uy5fPd2nToJplHE1A7iX3xsEcm7QDg3tMutDop1Fu18fBGHexho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829832; c=relaxed/simple;
-	bh=gY/ywS09wo5lT7oqShNhI0ZYFETI8848Vyycf0wMdHs=;
+	s=arc-20240116; t=1712831859; c=relaxed/simple;
+	bh=XaFOv2Hby/3JHgy+nhPdw5XZgc6yrAdFVXkQWvQEJXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SRLjCQLUTZiJlIP/5i4X+os6NmzE2XvIqvSjF8qlvHRrrdFsMaklATcUfOqyR0yrVeKSRRGQC8AxYCjCuG+/YdJbQNOyC5RKNLgbbL1w1AOG1kfPFJD9UTlfn0BctfRX2qFJkkICzOTdFUvONgHK4X32sUme8KXHjq+X3UO9PpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BlMcldXD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BDEDC433F1;
-	Thu, 11 Apr 2024 10:03:51 +0000 (UTC)
+	 MIME-Version; b=N5Cs3syCtgL1n0qgGvNqt9RhZ7e7hZ4mRDn2IgMvBN1PF78zAVTDOD9TTDkVJu3x9cNb1hqdc2TQTwlen1UiZi5zHptb+kaUm5SF1gdksry3czDZgRYj/Nb4YzCCZE1NKk7E7fteR8w2x5NOMfFZTV21b8WZAwcabOoy+p5FtBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12LRXLcU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA4CC433F1;
+	Thu, 11 Apr 2024 10:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829832;
-	bh=gY/ywS09wo5lT7oqShNhI0ZYFETI8848Vyycf0wMdHs=;
+	s=korg; t=1712831859;
+	bh=XaFOv2Hby/3JHgy+nhPdw5XZgc6yrAdFVXkQWvQEJXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BlMcldXDFOfiGMytwVnfq7w3LyTuoK3VUUWoQa+EknHDTuwNIYeQAynRQ1UCW7iPJ
-	 JuNN6Wg+anb2/hUWeMQ5jUzjDhtld5MhhCscWamC2IgDfqBfUVSfM26Ll3UU2IKSKo
-	 QAVuOZp53tWA7nuLCFd4DNkG9B6eCc2DAuNQNq9Y=
+	b=12LRXLcUARKV9dN1W+cJA1Yr/zjLD7g1z30+Sa0mBTXUkK1Z1eZ2J4GD9o/sskhjt
+	 NDR32IgVKOzS9E5/aKVsUhX9CGHrkrf9u2iAOLEIwX002lkexxcovlCGGNTeY3VfnL
+	 9ytN8gvdJEbGNZ5ZNSjGFleuAUts0yxdPC6LjcP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH 4.19 083/175] exec: Fix NOMMU linux_binprm::exec in transfer_args_to_stack()
+	Sean Christopherson <seanjc@google.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Nikolay Borisov <nik.borisov@suse.com>
+Subject: [PATCH 5.10 143/294] KVM/VMX: Use BT+JNC, i.e. EFLAGS.CF to select VMRESUME vs. VMLAUNCH
 Date: Thu, 11 Apr 2024 11:55:06 +0200
-Message-ID: <20240411095422.061715739@linuxfoundation.org>
+Message-ID: <20240411095439.959936805@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Filippov <jcmvbkbc@gmail.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit 2aea94ac14d1e0a8ae9e34febebe208213ba72f7 upstream.
+From: Sean Christopherson <seanjc@google.com>
 
-In NOMMU kernel the value of linux_binprm::p is the offset inside the
-temporary program arguments array maintained in separate pages in the
-linux_binprm::page. linux_binprm::exec being a copy of linux_binprm::p
-thus must be adjusted when that array is copied to the user stack.
-Without that adjustment the value passed by the NOMMU kernel to the ELF
-program in the AT_EXECFN entry of the aux array doesn't make any sense
-and it may break programs that try to access memory pointed to by that
-entry.
+commit 706a189dcf74d3b3f955e9384785e726ed6c7c80 upstream.
 
-Adjust linux_binprm::exec before the successful return from the
-transfer_args_to_stack().
+Use EFLAGS.CF instead of EFLAGS.ZF to track whether to use VMRESUME versus
+VMLAUNCH.  Freeing up EFLAGS.ZF will allow doing VERW, which clobbers ZF,
+for MDS mitigations as late as possible without needing to duplicate VERW
+for both paths.
 
-Cc: <stable@vger.kernel.org>
-Fixes: b6a2fea39318 ("mm: variable length argument support")
-Fixes: 5edc2a5123a7 ("binfmt_elf_fdpic: wire up AT_EXECFD, AT_EXECFN, AT_SECURE")
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-Link: https://lore.kernel.org/r/20240320182607.1472887-1-jcmvbkbc@gmail.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
+  [ pawan: resolved merge conflict in __vmx_vcpu_run in backport. ]
+
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: https://lore.kernel.org/all/20240213-delay-verw-v8-5-a6216d83edb7%40linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/exec.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kvm/vmx/run_flags.h |    7 +++++--
+ arch/x86/kvm/vmx/vmenter.S   |    6 +++---
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -823,6 +823,7 @@ int transfer_args_to_stack(struct linux_
- 			goto out;
- 	}
+--- a/arch/x86/kvm/vmx/run_flags.h
++++ b/arch/x86/kvm/vmx/run_flags.h
+@@ -2,7 +2,10 @@
+ #ifndef __KVM_X86_VMX_RUN_FLAGS_H
+ #define __KVM_X86_VMX_RUN_FLAGS_H
  
-+	bprm->exec += *sp_location - MAX_ARG_PAGES * PAGE_SIZE;
- 	*sp_location = sp;
+-#define VMX_RUN_VMRESUME	(1 << 0)
+-#define VMX_RUN_SAVE_SPEC_CTRL	(1 << 1)
++#define VMX_RUN_VMRESUME_SHIFT		0
++#define VMX_RUN_SAVE_SPEC_CTRL_SHIFT	1
++
++#define VMX_RUN_VMRESUME		BIT(VMX_RUN_VMRESUME_SHIFT)
++#define VMX_RUN_SAVE_SPEC_CTRL		BIT(VMX_RUN_SAVE_SPEC_CTRL_SHIFT)
  
- out:
+ #endif /* __KVM_X86_VMX_RUN_FLAGS_H */
+--- a/arch/x86/kvm/vmx/vmenter.S
++++ b/arch/x86/kvm/vmx/vmenter.S
+@@ -77,7 +77,7 @@ SYM_FUNC_START(__vmx_vcpu_run)
+ 	mov (%_ASM_SP), %_ASM_AX
+ 
+ 	/* Check if vmlaunch or vmresume is needed */
+-	testb $VMX_RUN_VMRESUME, %bl
++	bt   $VMX_RUN_VMRESUME_SHIFT, %bx
+ 
+ 	/* Load guest registers.  Don't clobber flags. */
+ 	mov VCPU_RCX(%_ASM_AX), %_ASM_CX
+@@ -99,8 +99,8 @@ SYM_FUNC_START(__vmx_vcpu_run)
+ 	/* Load guest RAX.  This kills the @regs pointer! */
+ 	mov VCPU_RAX(%_ASM_AX), %_ASM_AX
+ 
+-	/* Check EFLAGS.ZF from 'testb' above */
+-	jz .Lvmlaunch
++	/* Check EFLAGS.CF from the VMX_RUN_VMRESUME bit test above. */
++	jnc .Lvmlaunch
+ 
+ 	/*
+ 	 * After a successful VMRESUME/VMLAUNCH, control flow "magically"
 
 
 
