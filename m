@@ -1,47 +1,74 @@
-Return-Path: <stable+bounces-39220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F508A1EE9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 20:51:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4958A1F43
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 21:13:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C29B9B324D1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 18:44:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1E571F279E6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 19:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482EC2E648;
-	Thu, 11 Apr 2024 18:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EC2205E18;
+	Thu, 11 Apr 2024 19:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="i03MxOyH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d51Fb0xe"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A8C41744;
-	Thu, 11 Apr 2024 18:36:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E62205E1A;
+	Thu, 11 Apr 2024 19:13:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712860592; cv=none; b=et3GpFK6LYLHbAaxo87ZdbaByI+tjBcNtOqddmRYaIXFkse8pZZFVjoBbn6OSeBYXDUifVNr+jutufWFw5kYeGTL/uNsZGf/ZOss64WCDkd/ukQsmqJL/AmlfWV33nj7oeXC8fi0zxXJ78VHDxF3x1SCXotcpc31Wk8QgjVIILM=
+	t=1712862818; cv=none; b=uQv5WkQzpzPZ9eqEQxnnRzec77JLRDACcd9uO+4O8imX3tMjStCdpS9PAnnuiCl41oVUCsJjY/951i+O+h5f/dP1t/8TuA1H9uyk6uRQ59sGUc21Ljqn/KldG+yu+Xd1ndIgeScCpqu58v2sAeZAw/WtTd9vW9x6dyXu5PoYpOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712860592; c=relaxed/simple;
-	bh=Ft8JfQvHCLY2ghv8Ss761BEC9TQ/5kAvBzYcfHLpbv8=;
+	s=arc-20240116; t=1712862818; c=relaxed/simple;
+	bh=2CMK8rOtCxGsbTCs/JqTdsujjb7w3Q+fa+8zVF1mOzg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mU+RPY1yEo8xAlbP7S1LNsIdgy8VoM80IVmfQo7lktsJgC417yKbcyUUWZg15xR1nP8E+Kg/KoKxz3iUjUfEx0figQKmmlqwIIq3wzNDmdQ620NJwl4NNoR4escZZEbMPJ8J7r43POTYrTuVKxS91+GXTTxGgYSw5uZk0AzMKjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=i03MxOyH; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [100.64.216.186] (unknown [20.29.225.195])
-	by linux.microsoft.com (Postfix) with ESMTPSA id B898E20EC303;
-	Thu, 11 Apr 2024 11:36:29 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B898E20EC303
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1712860590;
-	bh=dN02yDdDosiWONjItu2a2iqcmYH10EILRT9j765+B5g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=i03MxOyHvZgSveQDWlCKvQEtyl8z5xvR5xn2cIVSL2fxgn+eautwWvzvjLpycNxb+
-	 W4hHzDLGsvFBtVdKuYI0456oklEZoeTa1vYozQzZmJnEfJKLWw616OemoZqv3uMRy3
-	 Yhmgkp+2Z/8gQWPWOs5O9kD3Xzq3qlfFY2uJsA1A=
-Message-ID: <e944c094-b503-4a9a-a5d0-487c8b056e34@linux.microsoft.com>
-Date: Thu, 11 Apr 2024 11:36:28 -0700
+	 In-Reply-To:Content-Type; b=PDpXSLSZEzVA6oylsL5/poW3uNqHQWrE/f1UcyHy2bVlSJZNtBcbRWVed7NOPmvlAvilF8gDdp/9gsaEEk8sEJj3vyYXO1loAWNROxbsXtTMoFcYlIhJKRxglnucM6AANa5e4v00yU6uwxxyTNMBV5v96G3B/QsLaM4irisSY9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d51Fb0xe; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-78d57bd5781so8593685a.3;
+        Thu, 11 Apr 2024 12:13:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712862816; x=1713467616; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=M5m3l4Vb8I5/ZGVgXiYeL4TNj6LNEAEO5dE5T/EQin8=;
+        b=d51Fb0xeoH/p7T45LmRqvFoSEjev2qqgKl5AKy3qygiRwuyCrokgvVmZKA25rxRYKF
+         FgcS+C9+/MjxTH/tWHlD1SeRj/2kLxMky1imXD52C2MCDTc4w1qg/4+5fCH/c8j7ckmp
+         TwS0/JhJUydyXf+ySkJ6R0OW4w/I8N+cbXo2J9uxfMrjtDf+/iE+x5tRObI24N5a8LEl
+         kDt94as129WKr64heOLG4pd+IWvpI7OobB4Dn2rFtlhNhtcNzRB0rguZ6E2YhdcAT3Do
+         9B9AHrnpBmazmkcux9Pa55lZieCmtjQCk8UkjvDt2z7WyPypk2kuz7iym1CK9j5x0KoN
+         C9FA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712862816; x=1713467616;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=M5m3l4Vb8I5/ZGVgXiYeL4TNj6LNEAEO5dE5T/EQin8=;
+        b=m6a9lId9wP6hXf6d1Hf6sMW4I7pRwtOLumQH90EbO+107ouNn1Rnf/QE9lXjdGd/aT
+         yvgBsoWj7Xd15jUBxRVZ9qDFutaRW6lS0q2xWfVPqmWKlUZpGkq67nVeJ6Ik9yzVTtYD
+         N0lvVTovtA+m9mmsYHcdMCLovAHkPuHfz4G/a3ZjS8+mLuS8E/UjKaxqP1tccEz0eSD0
+         BlCZQvnbA2TAtCZq7TcbhUEhT4yiTU65vcztMQkTxGSMsaHgC1QsS59cZEHL7Jd8mZF6
+         KOHF3ClX20x90GSP0PShyUMIwu3lwV40zQf6pD2prKmUrfKXki79cDAy6gIO4hSWoQGa
+         7ktw==
+X-Forwarded-Encrypted: i=1; AJvYcCV/C9cBI4CYnOdqD327EBlRvn521Al3fyTdbWhYnixgf6YIVGIvkhuC+Q63f3DKzOCQmXwwrPN9zBaUiljMzX9cSALDEXqEehZZX6cOzV8PpX6s7AOb8WVxEJ8LfEvdtvX6hg2r
+X-Gm-Message-State: AOJu0YwsgaQctNWqOy6Zzo6sBBz5f9jFCHoTKx//TdJ5R1uQjB3vVZkb
+	0fTRW+N753w8eKqX3yVWdWiMJjzQrtPYmMRh/vV3jUnG3o+ZIwZR
+X-Google-Smtp-Source: AGHT+IHhe1I2Uq0lLSbvmS5xMIfCfYMrM/FUl/d012CYdm/v+sQx7ZtT7UhmRSO2G843rHQGxzmibw==
+X-Received: by 2002:a05:620a:21d9:b0:78d:7368:3c7a with SMTP id h25-20020a05620a21d900b0078d73683c7amr577364qka.35.1712862815843;
+        Thu, 11 Apr 2024 12:13:35 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id d15-20020a05620a158f00b0078d54363075sm1387123qkk.40.2024.04.11.12.13.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Apr 2024 12:13:35 -0700 (PDT)
+Message-ID: <9292ddb9-c316-4418-9244-81cb6a8542e5@gmail.com>
+Date: Thu, 11 Apr 2024 12:13:25 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,21 +77,21 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 5.15 00/57] 5.15.155-rc1 review
+Content-Language: en-US
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  torvalds@linux-foundation.org, akpm@linux-foundation.org,
  linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
  lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
 References: <20240411095407.982258070@linuxfoundation.org>
-Content-Language: en-CA
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
 In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 4/11/2024 2:57 AM, Greg Kroah-Hartman wrote:
+On 4/11/24 02:57, Greg Kroah-Hartman wrote:
 > This is the start of the stable review cycle for the 5.15.155 release.
 > There are 57 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
@@ -82,16 +109,12 @@ On 4/11/2024 2:57 AM, Greg Kroah-Hartman wrote:
 > thanks,
 > 
 > greg k-h
-> 
 
-<snip>
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-I wanted to repeat my request from another thread[1] here, that we revert commit 4949affd5288 
-("ACPI: CPPC: Use access_width over bit_width for system memory accesses") in 5.15.155 due to
-known problems with the patch, so it's not lost in the mail storm.
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
-Thanks,
-Easwar
-
-[1] https://lore.kernel.org/all/97d25ef7-dee9-4cc5-842a-273f565869b3@linux.microsoft.com/
 
