@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-38612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21ADC8A0F89
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D4318A1141
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 522241C21803
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 148711F2D0DF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E138146A94;
-	Thu, 11 Apr 2024 10:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED014146D61;
+	Thu, 11 Apr 2024 10:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igsmNndp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sk8GIxzl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B9F146A8C;
-	Thu, 11 Apr 2024 10:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA676140E3C;
+	Thu, 11 Apr 2024 10:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831081; cv=none; b=IFXSWoa8lThLlIjHUtQj4w/1t23JqkWEDRFEl4xhbUxUftDbdFPmn6XF+KcDTrH4Hp7NsFLnfPNu3BH8ZnW12rmHMbHg6Cf0+xzTvthQID/FtHutvEyrQVsm4oEXNTe/0vl/vAJJEOJxhOPfdvTESNDhfajTl5ewUN4EaLapvD0=
+	t=1712832127; cv=none; b=jcHxODtTIWMfPAOIZ9zaSgdKm4HTJPcZvTS9dcZrM3P094tR23ALpG6bDc63MovwuVOyEKmTst58eewjEMul4FNRiHQJUbakVAEB6Ojh0krtzwmlcLQvyFOoXeWbW3V8sUms+DRV5vMLs6z99sg0kvFE7F9qcoJ1fHHHWQ9Ndj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831081; c=relaxed/simple;
-	bh=Kon4OyxxFWpd71aIwO/QjjmE9UloWUaEIdoE9nTVbl8=;
+	s=arc-20240116; t=1712832127; c=relaxed/simple;
+	bh=bpAzt+3Z1Wbz7ND/OlGZnHtpd46B3VX7hgi8auhzVQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgBqXkIpggaG1mAbo2GjDS4dWtr0ufKvgzgj+zzG8xDjFUPx/IEorFsItR4OLtS5WDvwdzIz3+gHr7XRY5laIt/7okiwDx+WY7v966ehbCWXHC1UBbM6s5zDN7ZVcqeFwZ4fOq7xrNRO1KQcPW//mY5EUGY+JB0UuXaHdj64XTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igsmNndp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8C7C433C7;
-	Thu, 11 Apr 2024 10:24:41 +0000 (UTC)
+	 MIME-Version; b=CZgTiO/+Vjy568pP09FzZa3NyXQsmBotsJpj/xQfl0ZqVMGzhA9wt9em2tZetiBL2uAFZ+M48VIOGHUij/kqBjZBELgkec3lZSeMQDmuFfGo812lSI7XSgVhph7c7vgmKiLG7LSCDi1tRV3QVGz3l93W8eIQ55oErVHpPLOeCtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sk8GIxzl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3428EC433C7;
+	Thu, 11 Apr 2024 10:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831081;
-	bh=Kon4OyxxFWpd71aIwO/QjjmE9UloWUaEIdoE9nTVbl8=;
+	s=korg; t=1712832127;
+	bh=bpAzt+3Z1Wbz7ND/OlGZnHtpd46B3VX7hgi8auhzVQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=igsmNndpTRAs66MJIr2GpB2lbvfUfIHPk4aYWpHN9+binySVNxMwq7RWXLp/sFH5J
-	 jXp29prKjX4wm0ySw9pc/BRu5FzWt0q1ln5CSgXKPhDOVIwbTlqR6fTIJXECWWks84
-	 Bx5CUvI8kpmR8sr9oeAKUCDjM+PYb0tENxRvo638=
+	b=Sk8GIxzlGn6zTyk+uyRQ3NP2a7LdbxbA0SJv92RXYd88FiXdwb2XMyu5vyoj248H7
+	 WxZHyIPAdFCqb3dbeJN1Z5vP1e2f7aGOEOToUYIcSlG8gFjhzJDTGh0HgymhLoDLhc
+	 YwY/HXfKhU4jsvzQaXp85uhYsnpdGpptOo9WDwmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Drake <drake@endlessos.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jian-Hong Pan <jhp@endlessos.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 192/215] Revert "ACPI: PM: Block ASUS B1400CEAE from suspend to idle by default"
-Date: Thu, 11 Apr 2024 11:56:41 +0200
-Message-ID: <20240411095430.633842897@linuxfoundation.org>
+	kernel test robot <oliver.sang@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.10 239/294] x86/retpoline: Do the necessary fixup to the Zen3/4 srso return thunk for !SRSO
+Date: Thu, 11 Apr 2024 11:56:42 +0200
+Message-ID: <20240411095442.770858885@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Drake <drake@endlessos.org>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-[ Upstream commit cb98555fcd8eee98c30165537c7e394f3a66e809 ]
+Commit 0e110732473e14d6520e49d75d2c88ef7d46fe67 upstream.
 
-This reverts commit d52848620de00cde4a3a5df908e231b8c8868250, which was
-originally put in place to work around a s2idle failure on this platform
-where the NVMe device was inaccessible upon resume.
+The srso_alias_untrain_ret() dummy thunk in the !CONFIG_MITIGATION_SRSO
+case is there only for the altenative in CALL_UNTRAIN_RET to have
+a symbol to resolve.
 
-After extended testing, we found that the firmware's implementation of S3
-is buggy and intermittently fails to wake up the system. We need to revert
-to s2idle mode.
+However, testing with kernels which don't have CONFIG_MITIGATION_SRSO
+enabled, leads to the warning in patch_return() to fire:
 
-The NVMe issue has now been solved more precisely in the commit titled
-"PCI: Disable D3cold on Asus B1400 PCI-NVMe bridge"
+  missing return thunk: srso_alias_untrain_ret+0x0/0x10-0x0: eb 0e 66 66 2e
+  WARNING: CPU: 0 PID: 0 at arch/x86/kernel/alternative.c:826 apply_returns (arch/x86/kernel/alternative.c:826
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=215742
-Link: https://lore.kernel.org/r/20240228075316.7404-2-drake@endlessos.org
-Signed-off-by: Daniel Drake <drake@endlessos.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Jian-Hong Pan <jhp@endlessos.org>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Put in a plain "ret" there so that gcc doesn't put a return thunk in
+in its place which special and gets checked.
+
+In addition:
+
+  ERROR: modpost: "srso_alias_untrain_ret" [arch/x86/kvm/kvm-amd.ko] undefined!
+  make[2]: *** [scripts/Makefile.modpost:145: Module.symvers] Chyba 1
+  make[1]: *** [/usr/src/linux-6.8.3/Makefile:1873: modpost] Chyba 2
+  make: *** [Makefile:240: __sub-make] Chyba 2
+
+since !SRSO builds would use the dummy return thunk as reported by
+petr.pisar@atlas.cz, https://bugzilla.kernel.org/show_bug.cgi?id=218679.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202404020901.da75a60f-oliver.sang@intel.com
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/all/202404020901.da75a60f-oliver.sang@intel.com/
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/sleep.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ arch/x86/lib/retpoline.S |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-index b9d203569ac1d..5996293f422e3 100644
---- a/drivers/acpi/sleep.c
-+++ b/drivers/acpi/sleep.c
-@@ -382,18 +382,6 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "20GGA00L00"),
- 		},
- 	},
--	/*
--	 * ASUS B1400CEAE hangs on resume from suspend (see
--	 * https://bugzilla.kernel.org/show_bug.cgi?id=215742).
--	 */
--	{
--	.callback = init_default_s3,
--	.ident = "ASUS B1400CEAE",
--	.matches = {
--		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--		DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK B1400CEAE"),
--		},
--	},
- 	{},
- };
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -108,6 +108,7 @@ SYM_START(srso_alias_untrain_ret, SYM_L_
+ 	ret
+ 	int3
+ SYM_FUNC_END(srso_alias_untrain_ret)
++__EXPORT_THUNK(srso_alias_untrain_ret)
+ #endif
  
--- 
-2.43.0
-
+ SYM_START(srso_alias_safe_ret, SYM_L_GLOBAL, SYM_A_NONE)
 
 
 
