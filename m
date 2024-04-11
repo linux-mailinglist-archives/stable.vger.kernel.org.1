@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-38681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB8538A0FD4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 331FD8A11B6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:46:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD8A21C21408
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65BD71C23CF9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB45146D47;
-	Thu, 11 Apr 2024 10:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E7F146A70;
+	Thu, 11 Apr 2024 10:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4IYlPpJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljCVbE1t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF2D145B1A;
-	Thu, 11 Apr 2024 10:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB47145B28;
+	Thu, 11 Apr 2024 10:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831284; cv=none; b=TjOSVJodhjfJ2mPgaI2uxvSH8DV4nf/rUZpiBhkegT8napIX4bu4/kXZTvOXGX0SqFjDu4Z9SSh/jOppuJT3t0RygPis0t4R6FjKIGSGotXz0DzukinIJiejZTeHBHyKfxeigPd1Ow8MHewhnmvxIH85otIpS3jcn9KKwJPlaUg=
+	t=1712832402; cv=none; b=NeCVP6+3ZCod9ZmBCR+gk6Qnx4u/DhItl9j87AkJxMvO94wEEl0jAXrL3K9DOkV1Wbafb9B59j8cW2bJw/iZfwRW1jGXVlnCtIVq0rF3WaPwNgCcPSlL6nlOlgYVWn5UTLjUJh/RvoRESgizOJJCjVr36rqhgWY96aLzvRJCLrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831284; c=relaxed/simple;
-	bh=nQITNJ2WyhXQOtkpLhJrf6PvmzNGiv9OBo95y+43CtI=;
+	s=arc-20240116; t=1712832402; c=relaxed/simple;
+	bh=yOSzghHqMtFBXEMpVrbS9ikajyDqtf7D3s0/94xwGS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZa7A1sv0FXTp6S/FM8LGHt1bq55S6asrLfnCFv5MLZkGvqSasyCdMjZZaREdaGkYqrVF8nWfNNrjjJXuPOZVLCJR5MIR8NEzEHpUIdB3aEly5f41eEKZ/AorbeHAc7VwSXDrpj5Vu/WEPSDfHzs8QvA8zKf6OAKhft6vfmNM30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4IYlPpJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9881BC43394;
-	Thu, 11 Apr 2024 10:28:03 +0000 (UTC)
+	 MIME-Version; b=cyeiaEPspJhv33RS/kSIUIJg0s+5Zn0vrm+j/5U70KXdNE0qAyFmWxVHbslKryhSAjhSi43fjjypKnDe82LIofJ5lTLidFX+AMTE4kcY0epx52HVE4+nxEmlwWQqWqqwT0xYeWb+EklmwfOmenM9+jwk1WP6qtHuvXA20vng9yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljCVbE1t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FF9C433C7;
+	Thu, 11 Apr 2024 10:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831284;
-	bh=nQITNJ2WyhXQOtkpLhJrf6PvmzNGiv9OBo95y+43CtI=;
+	s=korg; t=1712832401;
+	bh=yOSzghHqMtFBXEMpVrbS9ikajyDqtf7D3s0/94xwGS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X4IYlPpJ8m43nvQwpeQ1ywqMvzXW4d8NkWVH+D5YFneb3zgnoUZ4eP6HY9aF6sJZI
-	 UFIMcohvEhM3aMc+8uqihiRsTiUW4CkWRj2/zxmlKAeIVcx0Ze0CcjcB1zPSxs9Sho
-	 XU6l89XsyzMFqXhQDUJcMp7G0X7CdXW2AZR5ZLJk=
+	b=ljCVbE1t4vMMg5s5nh0aVAVSL+EMnU2N/9D8hl/JDkzUUv+bzLSK5BTyt1hueh4w6
+	 bN5IPLpL5mDneSoc1N6gMcCMhHtVP1/CpgZkEa1/PtC8xJzjUUVnTolNgCjPEUqMQx
+	 qSdy30Qie46g4UKbmj4EFhjogoHAkXBARNyofAMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Drake <drake@endlessos.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jian-Hong Pan <jhp@endlessos.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Kees Cook <keescook@chromium.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/114] PCI: Disable D3cold on Asus B1400 PCI-NVMe bridge
+Subject: [PATCH 6.1 06/83] VMCI: Fix memcpy() run-time warning in dg_dispatch_as_host()
 Date: Thu, 11 Apr 2024 11:56:38 +0200
-Message-ID: <20240411095419.029226785@linuxfoundation.org>
+Message-ID: <20240411095412.867873554@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +66,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Drake <drake@endlessos.org>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-[ Upstream commit cdea98bf1faef23166262825ce44648be6ebff42 ]
+[ Upstream commit 19b070fefd0d024af3daa7329cbc0d00de5302ec ]
 
-The Asus B1400 with original shipped firmware versions and VMD disabled
-cannot resume from suspend: the NVMe device becomes unresponsive and
-inaccessible.
+Syzkaller hit 'WARNING in dg_dispatch_as_host' bug.
 
-This appears to be an untested D3cold transition by the vendor; Intel
-socwatch shows that Windows leaves the NVMe device and parent bridge in D0
-during suspend, even though these firmware versions have StorageD3Enable=1.
+memcpy: detected field-spanning write (size 56) of single field "&dg_info->msg"
+at drivers/misc/vmw_vmci/vmci_datagram.c:237 (size 24)
 
-The NVMe device and parent PCI bridge both share the same "PXP" ACPI power
-resource, which gets turned off as both devices are put into D3cold during
-suspend. The _OFF() method calls DL23() which sets a L23E bit at offset
-0xe2 into the PCI configuration space for this root port.  This is the
-specific write that the _ON() routine is unable to recover from. This
-register is not documented in the public chipset datasheet.
+WARNING: CPU: 0 PID: 1555 at drivers/misc/vmw_vmci/vmci_datagram.c:237
+dg_dispatch_as_host+0x88e/0xa60 drivers/misc/vmw_vmci/vmci_datagram.c:237
 
-Disallow D3cold on the PCI bridge to enable successful suspend/resume.
+Some code commentry, based on my understanding:
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=215742
-Link: https://lore.kernel.org/r/20240228075316.7404-1-drake@endlessos.org
-Signed-off-by: Daniel Drake <drake@endlessos.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Jian-Hong Pan <jhp@endlessos.org>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+544 #define VMCI_DG_SIZE(_dg) (VMCI_DG_HEADERSIZE + (size_t)(_dg)->payload_size)
+/// This is 24 + payload_size
+
+memcpy(&dg_info->msg, dg, dg_size);
+	Destination = dg_info->msg ---> this is a 24 byte
+					structure(struct vmci_datagram)
+	Source = dg --> this is a 24 byte structure (struct vmci_datagram)
+	Size = dg_size = 24 + payload_size
+
+{payload_size = 56-24 =32} -- Syzkaller managed to set payload_size to 32.
+
+ 35 struct delayed_datagram_info {
+ 36         struct datagram_entry *entry;
+ 37         struct work_struct work;
+ 38         bool in_dg_host_queue;
+ 39         /* msg and msg_payload must be together. */
+ 40         struct vmci_datagram msg;
+ 41         u8 msg_payload[];
+ 42 };
+
+So those extra bytes of payload are copied into msg_payload[], a run time
+warning is seen while fuzzing with Syzkaller.
+
+One possible way to fix the warning is to split the memcpy() into
+two parts -- one -- direct assignment of msg and second taking care of payload.
+
+Gustavo quoted:
+"Under FORTIFY_SOURCE we should not copy data across multiple members
+in a structure."
+
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Suggested-by: Vegard Nossum <vegard.nossum@oracle.com>
+Suggested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240105164001.2129796-2-harshit.m.mogalapalli@oracle.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/pci/fixup.c | 48 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+ drivers/misc/vmw_vmci/vmci_datagram.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/pci/fixup.c b/arch/x86/pci/fixup.c
-index f347c20247d30..b33afb240601b 100644
---- a/arch/x86/pci/fixup.c
-+++ b/arch/x86/pci/fixup.c
-@@ -907,6 +907,54 @@ static void chromeos_fixup_apl_pci_l1ss_capability(struct pci_dev *dev)
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x5ad6, chromeos_save_apl_pci_l1ss_capability);
- DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_INTEL, 0x5ad6, chromeos_fixup_apl_pci_l1ss_capability);
+diff --git a/drivers/misc/vmw_vmci/vmci_datagram.c b/drivers/misc/vmw_vmci/vmci_datagram.c
+index f50d22882476f..d1d8224c8800c 100644
+--- a/drivers/misc/vmw_vmci/vmci_datagram.c
++++ b/drivers/misc/vmw_vmci/vmci_datagram.c
+@@ -234,7 +234,8 @@ static int dg_dispatch_as_host(u32 context_id, struct vmci_datagram *dg)
  
-+/*
-+ * Disable D3cold on Asus B1400 PCI-NVMe bridge
-+ *
-+ * On this platform with VMD off, the NVMe device cannot successfully power
-+ * back on from D3cold. This appears to be an untested transition by the
-+ * vendor: Windows leaves the NVMe and parent bridge in D0 during suspend.
-+ *
-+ * We disable D3cold on the parent bridge for simplicity, and the fact that
-+ * both parent bridge and NVMe device share the same power resource.
-+ *
-+ * This is only needed on BIOS versions before 308; the newer versions flip
-+ * StorageD3Enable from 1 to 0.
-+ */
-+static const struct dmi_system_id asus_nvme_broken_d3cold_table[] = {
-+	{
-+		.matches = {
-+				DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+				DMI_MATCH(DMI_BIOS_VERSION, "B1400CEAE.304"),
-+		},
-+	},
-+	{
-+		.matches = {
-+				DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+				DMI_MATCH(DMI_BIOS_VERSION, "B1400CEAE.305"),
-+		},
-+	},
-+	{
-+		.matches = {
-+				DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+				DMI_MATCH(DMI_BIOS_VERSION, "B1400CEAE.306"),
-+		},
-+	},
-+	{
-+		.matches = {
-+				DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+				DMI_MATCH(DMI_BIOS_VERSION, "B1400CEAE.307"),
-+		},
-+	},
-+	{}
-+};
-+
-+static void asus_disable_nvme_d3cold(struct pci_dev *pdev)
-+{
-+	if (dmi_check_system(asus_nvme_broken_d3cold_table) > 0)
-+		pci_d3cold_disable(pdev);
-+}
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x9a09, asus_disable_nvme_d3cold);
-+
- #ifdef CONFIG_SUSPEND
- /*
-  * Root Ports on some AMD SoCs advertise PME_Support for D3hot and D3cold, but
+ 			dg_info->in_dg_host_queue = true;
+ 			dg_info->entry = dst_entry;
+-			memcpy(&dg_info->msg, dg, dg_size);
++			dg_info->msg = *dg;
++			memcpy(&dg_info->msg_payload, dg + 1, dg->payload_size);
+ 
+ 			INIT_WORK(&dg_info->work, dg_delayed_dispatch);
+ 			schedule_work(&dg_info->work);
 -- 
 2.43.0
 
