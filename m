@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-38183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E5028A0D65
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D7C8A0FA0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09FF62862FE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6D832810D8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206CA145B16;
-	Thu, 11 Apr 2024 10:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7925D146A77;
+	Thu, 11 Apr 2024 10:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9GY080t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O09RWU+3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38931422C4;
-	Thu, 11 Apr 2024 10:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391F913FD94;
+	Thu, 11 Apr 2024 10:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829808; cv=none; b=L+FMRRZBnBJ3JQnF+DS0UpIvtCLe34s4Uv7oqbNRYbQz0eY7ZNdf1FdGFZiOPWX7I4R6cn83OKsW60JQCXcRhJJSBoV462ErZiyS+VtfGLzATDhN82/2DwN1tu6msLC4jRMKNpoj8ZXRWC0SDy/1tYgEbsjLcosBSiSblS1PqtQ=
+	t=1712831146; cv=none; b=HWf/zk7TnWaCmML6SOAfGI1wnPo7y2ojgujgwzthYpkHiQbD3WQ+FhZNEFBPc7KWg/Nl+FPDzX/h4YyfqGX+3dKnubEeOPM70EWlRzthB+ipwyCbzePW4itxgY/pxGknIdcEuPOeTL07n3HpENysVt/2ZlzgsYz08ORDTvnSeSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829808; c=relaxed/simple;
-	bh=JO6RnVWYHnDtR7xLK2kZXbuNgY2Ll4ZD3TPdwpGeJ2s=;
+	s=arc-20240116; t=1712831146; c=relaxed/simple;
+	bh=i4SIUc7psiq5UoLEav83SwRvgrsj+ezk+9OI8OHqUng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VIbVKaSo6UWRwp2Nd9cltsasprfWwQO12S/aZO3TJkhWHKJyKfXlt1Aup/4w5OArfTGFwpRQ7QB4tSKMbmJOBBWdUUViUTT4PqLF8m3vfFQJvThUQULE5zmtHaLoIXT6tUZ5hW0+JjmyOgPDnpYBN2J4dmUJ3DAfRG3MGbpLKsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9GY080t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB33C43390;
-	Thu, 11 Apr 2024 10:03:28 +0000 (UTC)
+	 MIME-Version; b=WH97yO+1/gmFUk3KmzxTaylHox+xRUXTtR1Qp8CRsXce3IfurEVTemY/y7pNVzzaWP0nswojr/rB06WdHf2NBmrjO0cIZOUhprACizqjG6Qki8kr2FdPqpyc9BEkZAA7Z8cCDHfSY5flcSjUxGa7AWIIgihirm5rnSCMZKwVeSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O09RWU+3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB169C433C7;
+	Thu, 11 Apr 2024 10:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829808;
-	bh=JO6RnVWYHnDtR7xLK2kZXbuNgY2Ll4ZD3TPdwpGeJ2s=;
+	s=korg; t=1712831146;
+	bh=i4SIUc7psiq5UoLEav83SwRvgrsj+ezk+9OI8OHqUng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K9GY080tU3uOdItTrVcPorS5vbyTqL3bQb42ShcdllHcBOXgrI9cm3xxo+c2GfbJw
-	 BqvocAoyZ/so6O/WB3tonwK47WnVUNfKZQ2JApevnaIxvsuCevE/7AuDZkdPUdvilP
-	 yCByrmltXCSgJ82HuUEB328tsAubWbExKOPGF1Bw=
+	b=O09RWU+3eCH7k7YIIVMu3zTxMaxEwjRIlSey6XK56JlNclo0gQDvIjGVTYl20vvIS
+	 0+AURnIvq6DOkbfK2W7T9tQlmxtVB3NR9yRcYRirSitnQLJ9Zli8HdFZsF8OzxIfrA
+	 lunpsZyPiaegyDhX5b5CBTfZTvgl1zQ2eWDzqqj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 4.19 111/175] USB: core: Fix deadlock in usb_deauthorize_interface()
+	Andre Werner <andre.werner@systec-electronic.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 007/114] net: phy: phy_device: Prevent nullptr exceptions on ISR
 Date: Thu, 11 Apr 2024 11:55:34 +0200
-Message-ID: <20240411095422.909491613@linuxfoundation.org>
+Message-ID: <20240411095417.085013925@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Andre Werner <andre.werner@systec-electronic.com>
 
-commit 80ba43e9f799cbdd83842fc27db667289b3150f5 upstream.
+[ Upstream commit 61c81872815f46006982bb80460c0c80a949b35b ]
 
-Among the attribute file callback routines in
-drivers/usb/core/sysfs.c, the interface_authorized_store() function is
-the only one which acquires a device lock on an ancestor device: It
-calls usb_deauthorize_interface(), which locks the interface's parent
-USB device.
+If phydev->irq is set unconditionally, check
+for valid interrupt handler or fall back to polling mode to prevent
+nullptr exceptions in interrupt service routine.
 
-The will lead to deadlock if another process already owns that lock
-and tries to remove the interface, whether through a configuration
-change or because the device has been disconnected.  As part of the
-removal procedure, device_del() waits for all ongoing sysfs attribute
-callbacks to complete.  But usb_deauthorize_interface() can't complete
-until the device lock has been released, and the lock won't be
-released until the removal has finished.
-
-The mechanism provided by sysfs to prevent this kind of deadlock is
-to use the sysfs_break_active_protection() function, which tells sysfs
-not to wait for the attribute callback.
-
-Reported-and-tested by: Yue Sun <samsun1006219@gmail.com>
-Reported by: xingwei lee <xrivendell7@gmail.com>
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/linux-usb/CAEkJfYO6jRVC8Tfrd_R=cjO0hguhrV31fDPrLrNOOHocDkPoAA@mail.gmail.com/#r
-Fixes: 310d2b4124c0 ("usb: interface authorization: SysFS part of USB interface authorization")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/1c37eea1-9f56-4534-b9d8-b443438dc869@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andre Werner <andre.werner@systec-electronic.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20240129135734.18975-2-andre.werner@systec-electronic.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/sysfs.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/net/phy/phy_device.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/core/sysfs.c
-+++ b/drivers/usb/core/sysfs.c
-@@ -1069,14 +1069,24 @@ static ssize_t interface_authorized_stor
- {
- 	struct usb_interface *intf = to_usb_interface(dev);
- 	bool val;
-+	struct kernfs_node *kn;
- 
- 	if (strtobool(buf, &val) != 0)
- 		return -EINVAL;
- 
--	if (val)
-+	if (val) {
- 		usb_authorize_interface(intf);
--	else
--		usb_deauthorize_interface(intf);
-+	} else {
-+		/*
-+		 * Prevent deadlock if another process is concurrently
-+		 * trying to unregister intf.
-+		 */
-+		kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
-+		if (kn) {
-+			usb_deauthorize_interface(intf);
-+			sysfs_unbreak_active_protection(kn);
-+		}
-+	}
- 
- 	return count;
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 813b753e21dec..c895cd178e6a1 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -1411,6 +1411,11 @@ int phy_sfp_probe(struct phy_device *phydev,
  }
+ EXPORT_SYMBOL(phy_sfp_probe);
+ 
++static bool phy_drv_supports_irq(struct phy_driver *phydrv)
++{
++	return phydrv->config_intr && phydrv->handle_interrupt;
++}
++
+ /**
+  * phy_attach_direct - attach a network device to a given PHY device pointer
+  * @dev: network device to attach
+@@ -1525,6 +1530,9 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 	if (phydev->dev_flags & PHY_F_NO_IRQ)
+ 		phydev->irq = PHY_POLL;
+ 
++	if (!phy_drv_supports_irq(phydev->drv) && phy_interrupt_is_valid(phydev))
++		phydev->irq = PHY_POLL;
++
+ 	/* Port is set to PORT_TP by default and the actual PHY driver will set
+ 	 * it to different value depending on the PHY configuration. If we have
+ 	 * the generic PHY driver we can't figure it out, thus set the old
+@@ -2987,11 +2995,6 @@ s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
+ }
+ EXPORT_SYMBOL(phy_get_internal_delay);
+ 
+-static bool phy_drv_supports_irq(struct phy_driver *phydrv)
+-{
+-	return phydrv->config_intr && phydrv->handle_interrupt;
+-}
+-
+ static int phy_led_set_brightness(struct led_classdev *led_cdev,
+ 				  enum led_brightness value)
+ {
+-- 
+2.43.0
+
 
 
 
