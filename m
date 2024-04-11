@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C9A38A0E46
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F03168A11AE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:46:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48BA8285917
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8825288290
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB92D145B3E;
-	Thu, 11 Apr 2024 10:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BF00146A90;
+	Thu, 11 Apr 2024 10:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mowMZfX6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+3P5eC2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977D71DDE9;
-	Thu, 11 Apr 2024 10:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCE66BB29;
+	Thu, 11 Apr 2024 10:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830386; cv=none; b=IT9r8R9l0zdWGLCArclT1CCygDaXhWhI0iCUOq0pu1iqSP+tWqB7K2qUBM00BP9agYtWGCb3ufJs4ngFynW3fv4o0NqyxlrbRBB4mQVhh9U4kP2+2aiStgLfLJPHXbGgGt7tkuv4EYdYhm89kxd5IAb5EiZTbtjIfvCNUhiZbho=
+	t=1712832384; cv=none; b=UQZa274iQUqkR1BS1QqudVThknxUT0H2Tgukscg0evt6vPx22aS498EjIsrvSji0Z8GcwuL2S9oDxCp6OrxjA/asaHARfEW55/2lsG5rpfI6ckrnhO7zh8dIvrOP9yc3T/L5oIX0m3KMurml1hbWueTwHIqQLKdEMYitZob7toM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830386; c=relaxed/simple;
-	bh=ebnzQKkZkRyZMIjZoiNq7M1UcUz1ei4pIBUk7lZqNr4=;
+	s=arc-20240116; t=1712832384; c=relaxed/simple;
+	bh=iLgPLm1FcwiKZJppAmWV/rmx0FnXLILqIDXLsugToAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A+dGeXkF/45tqILX4IX4INgk0J8O/LKa/Yw2VWXGrbWJS8XkFXQ689ZuYq+LzL70ge1Uh2q12/eQ0iw7uihmaWEZMiaLlynYEQ2e32//aEkEzDt7e/6xlSA/9kp2+/pwLmAcZ4p6+xAU9f3uPEoF6Y66ND7G4+6TBAqLMruYq98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mowMZfX6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5B2C433C7;
-	Thu, 11 Apr 2024 10:13:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b1O8ajWFw7Vj/zfPLAW44AHfFkWTmxxUyVPI8/IO0jNxpp0ZYAliRgBWGpF//rtuSX6QDb7fC+BIDrQd8U/+HssPiwQRWLCCBRLP+sn3k0mYtonwdYdm6UxA5CK0P2yWIFtL2wNe+X/FsKGruWHkVOAZMqKENka8iY6L9AhEYnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+3P5eC2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D7CC433F1;
+	Thu, 11 Apr 2024 10:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830386;
-	bh=ebnzQKkZkRyZMIjZoiNq7M1UcUz1ei4pIBUk7lZqNr4=;
+	s=korg; t=1712832383;
+	bh=iLgPLm1FcwiKZJppAmWV/rmx0FnXLILqIDXLsugToAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mowMZfX6WXRqU5XnOsY2kxSs3aqKj48wHE1NdSj2nqwhyIuAW3kDUCU+IpFqzy7pC
-	 O0X75I77zv4C+8ImlpkSNw2ET/E4+CC5bZ43Wyxt9vTVaBNjVa0wg9XZWfByTq1SfG
-	 54XcsUNwKV1FAA9OBZFZdJ/cSB9Qdr2dQyswtZcY=
+	b=T+3P5eC2q2j4azkW4JkH3MLexeEEKUTYMlXRWtsu5i3POfvahC+Ju1Y+OnLsVAMQ+
+	 QTHwxwywRPHEZMnQ8VBcM1C93daSS++OnFghi0MBjp+SSvNdUVPIyZpw/T1YJEtrEh
+	 E3RWJhcD+glCcW9J/GoW4PRuOgfmdrko3w5G9HYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawei Fu <i@ibugone.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 127/143] drivers/nvme: Add quirks for device 126f:2262
+Subject: [PATCH 6.1 03/83] batman-adv: Return directly after a failed batadv_dat_select_candidates() in batadv_dat_forward_data()
 Date: Thu, 11 Apr 2024 11:56:35 +0200
-Message-ID: <20240411095424.727934392@linuxfoundation.org>
+Message-ID: <20240411095412.778699955@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawei Fu (iBug) <i@ibugone.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit e89086c43f0500bc7c4ce225495b73b8ce234c1f ]
+[ Upstream commit ffc15626c861f811f9778914be004fcf43810a91 ]
 
-This commit adds NVME_QUIRK_NO_DEEPEST_PS and NVME_QUIRK_BOGUS_NID for
-device [126f:2262], which appears to be a generic VID:PID pair used for
-many SSDs based on the Silicon Motion SM2262/SM2262EN controller.
+The kfree() function was called in one case by
+the batadv_dat_forward_data() function during error handling
+even if the passed variable contained a null pointer.
+This issue was detected by using the Coccinelle software.
 
-Two of my SSDs with this VID:PID pair exhibit the same behavior:
+* Thus return directly after a batadv_dat_select_candidates() call failed
+  at the beginning.
 
-  * They frequently have trouble exiting the deepest power state (5),
-    resulting in the entire disk unresponsive.
-    Verified by setting nvme_core.default_ps_max_latency_us=10000 and
-    observing them behaving normally.
-  * They produce all-zero nguid and eui64 with `nvme id-ns` command.
+* Delete the label “out” which became unnecessary with this refactoring.
 
-The offending products are:
-
-  * HP SSD EX950 1TB
-  * HIKVISION C2000Pro 2TB
-
-Signed-off-by: Jiawei Fu <i@ibugone.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Acked-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/batman-adv/distributed-arp-table.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index e6267a6aa3801..8e0bb9692685d 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3363,6 +3363,9 @@ static const struct pci_device_id nvme_id_table[] = {
- 				NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_VDEVICE(REDHAT, 0x0010),	/* Qemu emulated controller */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
-+	{ PCI_DEVICE(0x126f, 0x2262),	/* Silicon Motion generic */
-+		.driver_data = NVME_QUIRK_NO_DEEPEST_PS |
-+				NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x126f, 0x2263),	/* Silicon Motion unidentified */
- 		.driver_data = NVME_QUIRK_NO_NS_DESC_LIST |
- 				NVME_QUIRK_BOGUS_NID, },
+diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
+index a0233252032dc..521d4952eb515 100644
+--- a/net/batman-adv/distributed-arp-table.c
++++ b/net/batman-adv/distributed-arp-table.c
+@@ -684,7 +684,7 @@ static bool batadv_dat_forward_data(struct batadv_priv *bat_priv,
+ 
+ 	cand = batadv_dat_select_candidates(bat_priv, ip, vid);
+ 	if (!cand)
+-		goto out;
++		return ret;
+ 
+ 	batadv_dbg(BATADV_DBG_DAT, bat_priv, "DHT_SEND for %pI4\n", &ip);
+ 
+@@ -728,7 +728,6 @@ static bool batadv_dat_forward_data(struct batadv_priv *bat_priv,
+ 		batadv_orig_node_put(cand[i].orig_node);
+ 	}
+ 
+-out:
+ 	kfree(cand);
+ 	return ret;
+ }
 -- 
 2.43.0
 
