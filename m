@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-38116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7669E8A0D18
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:00:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C3BB8A0EA2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:16:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BBE41F234B2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:00:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBBA02840AE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD93145FFA;
-	Thu, 11 Apr 2024 10:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B695F14600E;
+	Thu, 11 Apr 2024 10:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ce3SATWj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jNpBAwt6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFB7145FEE;
-	Thu, 11 Apr 2024 10:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7652B13F452;
+	Thu, 11 Apr 2024 10:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829611; cv=none; b=OH8dqbvjjddpXXZ3CsM/Gx7WMKmlXuZqtzYSbbP4Q9eu7fZ9L9Sm8qhqOjKD8c4F6trPeliXcboW3EeHqqLabCibYeA3RDK/kI83VXs+6ADJmcx1uQse6AJqRpphtqelmT4XDaQuyYGPKby88xPNx4g4QfhD2QFpHoOvDdWS8cU=
+	t=1712830596; cv=none; b=X4wu4sNgVb/d5vlGpIuPK0Ymp+733u3OJfpmbEVS2liyeapbqk013B+vvanrAmhUfuw2AMybZ8TXXJHak7JpqeP3mgD6fshWvJykz5YFNIXuvUYEcUAYJ3t5zVK1kQstgR890zXgQcCnRPL4Rz8kZ8cUHy4m8L1GsanxOl1w7jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829611; c=relaxed/simple;
-	bh=G7FuUj2Lu5z4ownHij3AftbnZhNnR9dlW5SaUqziUdU=;
+	s=arc-20240116; t=1712830596; c=relaxed/simple;
+	bh=EJIaHjk/CM7T8nyw7ZHWFu/5w1KQQSoPs0EC5CdiKjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W/soMiIA+CykCWZ/Tp+5mgpYqycySo5wBuC2RkPEZk/DYqACG3pVWm0NiKSreM9LzcKPYvzeG3RlUWCvJEO92Kqu4g2QKNebvgS5m0trAXo4pZqoVsyb9j9Vj7dHfiaknMTFZRUlfmpG9Jau/XR038BxNFUz1SHezHHzcT7TYK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ce3SATWj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99FB2C433C7;
-	Thu, 11 Apr 2024 10:00:10 +0000 (UTC)
+	 MIME-Version; b=e2nUmQnm2+GM7oVM7EXsntE/yFyOf7saeV//Srx4hlEN38sPBY4jOQQlkt84+0GgpLIuU3DYVACWaHoVJX/kX44XB2uTF1OlYcWV4m+qA+7UF8g2G8gZhwqRwPGRGDalpp0klMwWrvIcEgL+CuKcL0eskL0ROdbSYfScMDxdxIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jNpBAwt6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C43BAC433C7;
+	Thu, 11 Apr 2024 10:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829611;
-	bh=G7FuUj2Lu5z4ownHij3AftbnZhNnR9dlW5SaUqziUdU=;
+	s=korg; t=1712830596;
+	bh=EJIaHjk/CM7T8nyw7ZHWFu/5w1KQQSoPs0EC5CdiKjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ce3SATWjHlt79PZ+Y1gK3T1v3yKsEOFpP1o9Sb2JY0u6PZ92Vigc4FdYJzMeb4FAA
-	 iNnvMAqdfk2EFtIsq7lQUjkdzITt7h4JC4hMtuaiZaw/Vg3A5/ZrwUIYrKqh+W12Kp
-	 uOQpLpUXYeaHygwjSGMQHOLNjnZHB9VSxcKkTQH0=
+	b=jNpBAwt6shOOLwb1EAVK44ICoiAsr2i1Y2o6qVwnJVVTx5yCec3eVxrZyC+rBUrCm
+	 zccyLJKuEjbhiOY66JBak9VPprYCIuynW259W62RIogeBWLmL73bOZncok5vSSTFIt
+	 MvHkdk+k8wmOMwYWS118/Hgk8a+wRlSP6co8m5Lk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Aur=C3=A9lien=20Jacobs?= <aurel@gnuage.org>,
-	Johan Hovold <johan@kernel.org>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Xiao Ni <xni@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 038/175] USB: serial: option: add MeiG Smart SLM320 product
+Subject: [PATCH 5.4 052/215] dm-raid: fix lockdep waring in "pers->hot_add_disk"
 Date: Thu, 11 Apr 2024 11:54:21 +0200
-Message-ID: <20240411095420.705551405@linuxfoundation.org>
+Message-ID: <20240411095426.457638161@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurélien Jacobs <aurel@gnuage.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 46809c51565b83881aede6cdf3b0d25254966a41 ]
+[ Upstream commit 95009ae904b1e9dca8db6f649f2d7c18a6e42c75 ]
 
-Update the USB serial option driver to support MeiG Smart SLM320.
+The lockdep assert is added by commit a448af25becf ("md/raid10: remove
+rcu protection to access rdev from conf") in print_conf(). And I didn't
+notice that dm-raid is calling "pers->hot_add_disk" without holding
+'reconfig_mutex'.
 
-ID 2dee:4d41 UNISOC UNISOC-8910
+"pers->hot_add_disk" read and write many fields that is protected by
+'reconfig_mutex', and raid_resume() already grab the lock in other
+contex. Hence fix this problem by protecting "pers->host_add_disk"
+with the lock.
 
-T: Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 9 Spd=480 MxCh= 0
-D: Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs= 1
-P: Vendor=2dee ProdID=4d41 Rev=00.00
-S: Manufacturer=UNISOC
-S: Product=UNISOC-8910
-C: #Ifs= 8 Cfg#= 1 Atr=e0 MxPwr=400mA
-I: If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Tested successfully a PPP LTE connection using If#= 0.
-Not sure of the purpose of every other serial interfaces.
-
-Signed-off-by: Aurélien Jacobs <aurel@gnuage.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 9092c02d9435 ("DM RAID: Add ability to restore transiently failed devices on resume")
+Fixes: a448af25becf ("md/raid10: remove rcu protection to access rdev from conf")
+Cc: stable@vger.kernel.org # v6.7+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Xiao Ni <xni@redhat.com>
+Acked-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240305072306.2562024-10-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/md/dm-raid.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
-index 5014f45c7c6a0..7f4baceb540cd 100644
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -613,6 +613,11 @@ static void option_instat_callback(struct urb *urb);
- /* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
- #define LUAT_PRODUCT_AIR720U			0x4e00
+diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
+index 1ccd765fad938..25eecb92f5f38 100644
+--- a/drivers/md/dm-raid.c
++++ b/drivers/md/dm-raid.c
+@@ -4027,7 +4027,9 @@ static void raid_resume(struct dm_target *ti)
+ 		 * Take this opportunity to check whether any failed
+ 		 * devices are reachable again.
+ 		 */
++		mddev_lock_nointr(mddev);
+ 		attempt_restore_of_faulty_devices(rs);
++		mddev_unlock(mddev);
+ 	}
  
-+/* MeiG Smart Technology products */
-+#define MEIGSMART_VENDOR_ID			0x2dee
-+/* MeiG Smart SLM320 based on UNISOC UIS8910 */
-+#define MEIGSMART_PRODUCT_SLM320		0x4d41
-+
- /* Device flags */
- 
- /* Highest interface number which can be used with NCTRL() and RSVD() */
-@@ -2282,6 +2287,7 @@ static const struct usb_device_id option_ids[] = {
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
+ 	if (test_and_clear_bit(RT_FLAG_RS_SUSPENDED, &rs->runtime_flags)) {
 -- 
 2.43.0
 
