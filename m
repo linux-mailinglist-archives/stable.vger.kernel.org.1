@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-38784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72FC58A1063
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:35:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C4428A0E69
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:14:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00D8DB221CA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:35:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 269FC286D7A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CA1145B28;
-	Thu, 11 Apr 2024 10:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB6114601D;
+	Thu, 11 Apr 2024 10:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="is5+BQiU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EaWghpvD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA5064CC0;
-	Thu, 11 Apr 2024 10:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0BD145B3E;
+	Thu, 11 Apr 2024 10:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831580; cv=none; b=scx42e898VNguIIc8FEvsTf06UnpZiekgFjYynQLzN8k4ldfPo45cyeHOopmo4CwwHzjA+KUGZxElIPM9DvA+WgKR650cf+8dSRstDGyCqa539A8YaHXO/osWQg3/QXKS9/q76NMJjn6XbbN5wqVTmhW6NJ/mDEdyflC9smhqCI=
+	t=1712830460; cv=none; b=Nfeaavw/l1VavbOGSlJuiktJ89c0EArAMvZf6UuHRYPFIAd+y90/vJpc5+xTw0hsD+ZImRm9tCMaeeB4irV7QAaUP4RsKgSCWyC3SjHpC540Rn0NxKZ7/Hw9U4JmBwwQxcEQjTk/TdbkeDXDMRJMTLSn31qKikBclIbFH/+gj3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831580; c=relaxed/simple;
-	bh=rHbf2LDWYzuwLkS0WI7Vww50HFLAKTNrW9V2Mdgrskw=;
+	s=arc-20240116; t=1712830460; c=relaxed/simple;
+	bh=xOENAnL9Bd80ZyZbPZTKpKzWq/Z7Ibx/pg+ZUTTIXBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=knJFwKzzbpgsTwNL46Zwtkj9F4i6ewwpLwawJFIhlNyjLLATqcu5sqjAnpI5+0mtafZKZnsitXUSPjcdy7zlOjw+8M9pH/RxXerVGOGD24Yc8/rlx7dIS3CO9FXys/sYxn/RYImp/AzDAbeZnVLkv5qkRe7NPwhYstVSRGmeSNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=is5+BQiU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CAF4C433C7;
-	Thu, 11 Apr 2024 10:32:59 +0000 (UTC)
+	 MIME-Version; b=i9g5dNO3o3cgC7WBJcwzFnvmBOpJz1eQ563anXBVJk4GnRlTUX84f4wK126xoswjpdjBNlvtCnspwXSH55Qy0Ka6A27aDLTAVn0H04ZXELsw53aUGEDE1zzOtYJn3S1toJ2zh2XWc/yxjE7Anju9FyhX5OHlMa91JA3mEWiAhPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EaWghpvD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35CB1C433C7;
+	Thu, 11 Apr 2024 10:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831579;
-	bh=rHbf2LDWYzuwLkS0WI7Vww50HFLAKTNrW9V2Mdgrskw=;
+	s=korg; t=1712830460;
+	bh=xOENAnL9Bd80ZyZbPZTKpKzWq/Z7Ibx/pg+ZUTTIXBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=is5+BQiUCAOs2HaxnggXFkrfI9ckd1yO6uhqaj1hLP18R58brxjTh1ZlEeoiTYZD4
-	 A50Sn3Hcv+5TRcIpjabF6S/54oPacycsAII0WUZafvi2zXCxP/97gpu8NPFDO31foA
-	 pyohCJ9tmqR0Nqg6VPbJ2iuCRZMUrC7bCAINzbio=
+	b=EaWghpvDZ+FJSsnH9CtW+Fyg5vu6ltn6RdfBXYFwcFH7xNuAQVT/PlVF+ZKocFLL9
+	 FFG2yCrY0M2M3hgr7nLYs3xTULh9fq9sjlEZ6WQ1r1RJieUV1DBFsArOzhAWqSMF0G
+	 nXRbOtOWy5O1qfgEGdI80y2OXxbzIjDhSc+bwHvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benson Leung <bleung@chromium.org>,
-	Prashant Malani <pmalani@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Jameson Thies <jthies@google.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 055/294] usb: typec: ucsi: Clean up UCSI_CABLE_PROP macros
-Date: Thu, 11 Apr 2024 11:53:38 +0200
-Message-ID: <20240411095437.298330745@linuxfoundation.org>
+Subject: [PATCH 5.4 010/215] smack: Set SMACK64TRANSMUTE only for dirs in smack_inode_setxattr()
+Date: Thu, 11 Apr 2024 11:53:39 +0200
+Message-ID: <20240411095425.192039483@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jameson Thies <jthies@google.com>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-[ Upstream commit 4d0a5a9915793377c0fe1a8d78de6bcd92cea963 ]
+[ Upstream commit 9c82169208dde516510aaba6bbd8b13976690c5d ]
 
-Clean up UCSI_CABLE_PROP macros by fixing a bitmask shifting error for
-plug type and updating the modal support macro for consistent naming.
+Since the SMACK64TRANSMUTE xattr makes sense only for directories, enforce
+this restriction in smack_inode_setxattr().
 
-Fixes: 3cf657f07918 ("usb: typec: ucsi: Remove all bit-fields")
 Cc: stable@vger.kernel.org
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Reviewed-by: Prashant Malani <pmalani@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Jameson Thies <jthies@google.com>
-Link: https://lore.kernel.org/r/20240305025804.1290919-2-jthies@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5c6d1125f8db ("Smack: Transmute labels on specified directories") # v2.6.38.x
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ security/smack/smack_lsm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
-index fce23ad16c6d0..41e1a64da82e8 100644
---- a/drivers/usb/typec/ucsi/ucsi.h
-+++ b/drivers/usb/typec/ucsi/ucsi.h
-@@ -219,12 +219,12 @@ struct ucsi_cable_property {
- #define UCSI_CABLE_PROP_FLAG_VBUS_IN_CABLE	BIT(0)
- #define UCSI_CABLE_PROP_FLAG_ACTIVE_CABLE	BIT(1)
- #define UCSI_CABLE_PROP_FLAG_DIRECTIONALITY	BIT(2)
--#define UCSI_CABLE_PROP_FLAG_PLUG_TYPE(_f_)	((_f_) & GENMASK(3, 0))
-+#define UCSI_CABLE_PROP_FLAG_PLUG_TYPE(_f_)	(((_f_) & GENMASK(4, 3)) >> 3)
- #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_A	0
- #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_B	1
- #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_C	2
- #define   UCSI_CABLE_PROPERTY_PLUG_OTHER	3
--#define UCSI_CABLE_PROP_MODE_SUPPORT		BIT(5)
-+#define UCSI_CABLE_PROP_FLAG_MODE_SUPPORT	BIT(5)
- 	u8 latency;
- } __packed;
- 
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 6f2613f874fa9..65743be5b30f5 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -1290,7 +1290,8 @@ static int smack_inode_setxattr(struct dentry *dentry, const char *name,
+ 		check_star = 1;
+ 	} else if (strcmp(name, XATTR_NAME_SMACKTRANSMUTE) == 0) {
+ 		check_priv = 1;
+-		if (size != TRANS_TRUE_SIZE ||
++		if (!S_ISDIR(d_backing_inode(dentry)->i_mode) ||
++		    size != TRANS_TRUE_SIZE ||
+ 		    strncmp(value, TRANS_TRUE, TRANS_TRUE_SIZE) != 0)
+ 			rc = -EINVAL;
+ 	} else
 -- 
 2.43.0
 
