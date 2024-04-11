@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5391D8A0D9C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171888A0E32
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:12:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E03B284D50
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48C291C21BA8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7C5145B07;
-	Thu, 11 Apr 2024 10:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A76E145B3E;
+	Thu, 11 Apr 2024 10:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODaVDdWz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0UzP34o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AB12EAE5;
-	Thu, 11 Apr 2024 10:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D3A1448EF;
+	Thu, 11 Apr 2024 10:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829944; cv=none; b=LqE50rssOpLhnd61qN5KRtqNdH2/RMhHxYzaMGOXsNqHn7uCystReHjwVWZQZg9n7ciyX5JrYSrZBnel23Nv8jMLy3MewrpjpjBw6ykSpi5zec+jKnc58LoJhUjPAyrsqez0I/TZnSy8Xps5xB2gCiX/S/mtTw3Pf6bLcuKVBtA=
+	t=1712830331; cv=none; b=cmP2FBSMnazW7PMoT65O+hWUsQeUucfUJg5vV1ap3+8KN+B07TWesQQmnACY84IMJ3aVrDH6FTKLO5Y4tyq/fOXwakIB41lmKwqurhbgBEMP+JeTIpUbHJwUT7RsGl7pOnF87NmXH4DXmNtEpUzpFmVQnBLcfG6qiBTGCvw6g+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829944; c=relaxed/simple;
-	bh=JAPSwaZ8pu840ntBtl7d2IO/Ua+B2azvpMusm5aBhzo=;
+	s=arc-20240116; t=1712830331; c=relaxed/simple;
+	bh=FzjpLgJVeT3I3PuMr7TVFCW9vBbGrUyKwj7KKZ+jcLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdP9RB++3gke8MZHxNDsQgiWimjkIH40WeXTiVWtxnvuT+buMWQqGfm+NMOCY7CL+0nUwkdKzEC03VdfG6eUjh3mlRxlkus4g5m6amI33ENR3UZOgKzmAi8lClHXoZnBfvwJIZ3Ccy0Z94YNKQOnoH30Qfrj7rLMrz1c69vVa4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODaVDdWz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01123C433F1;
-	Thu, 11 Apr 2024 10:05:43 +0000 (UTC)
+	 MIME-Version; b=EDrWfDpQTDnxXy/A8ajYt9pjQZ6ql5avv+HizR/ExBP5LVCtErh7xYbS0GqCzGkcfHv1FVn5xSGbaiKnX8Q/OMHbGJz0Pev3rujXAlr9BUxtwmUh9UUHeom535A2LlW5i+Z3h6TD7yzMm1HVBus/AViFCHkvK7bM14bq3FQEtTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0UzP34o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB263C433C7;
+	Thu, 11 Apr 2024 10:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829944;
-	bh=JAPSwaZ8pu840ntBtl7d2IO/Ua+B2azvpMusm5aBhzo=;
+	s=korg; t=1712830331;
+	bh=FzjpLgJVeT3I3PuMr7TVFCW9vBbGrUyKwj7KKZ+jcLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODaVDdWzDlqPrt2Dui9KtZdzFY2CGYx362QZgr7pFzCFgPXWQkgAGcGYXLK2iurpS
-	 M5lzZPKouj1oIJDWIfAM+nzaFvE5Tc8I+4mMrnMODryee1dw7RuuneF8tjch3OnT/u
-	 H05WXh+camWzJlrz5qo8AIykL9aZwlZdda4FgTds=
+	b=W0UzP34oQkpPRAvCUohU0Sp3tDxinnvslgVfmUi0N14CPC7YwajDgfomtRhdXyrHz
+	 57WAmNRLBDEqVqPev1TLscy/F4YoQBOqcrJpj8cgHia5lM1UnSgCp8EarjlvnJHpRV
+	 lFFYXJnMUsPrniO3BQfiGpfvGnyEFePek2Lqqzvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Gil Fine <gil.fine@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 157/175] media: sta2x11: fix irq handler cast
+Subject: [PATCH 6.8 112/143] thunderbolt: Calculate DisplayPort tunnel bandwidth after DPRX capabilities read
 Date: Thu, 11 Apr 2024 11:56:20 +0200
-Message-ID: <20240411095424.292329382@linuxfoundation.org>
+Message-ID: <20240411095424.279259043@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Gil Fine <gil.fine@linux.intel.com>
 
-[ Upstream commit 3de49ae81c3a0f83a554ecbce4c08e019f30168e ]
+[ Upstream commit ccd845021147dc8257a05ed8f5a7f9c61a9101e3 ]
 
-clang-16 warns about casting incompatible function pointers:
+According to USB4 Connection Manager guide, after DisplayPort tunnel was
+setup, the DPRX capabilities read is performed by the DPTX. According to
+VESA spec, this shall be completed within 5 seconds after the DisplayPort
+tunnel was setup. Hence, if the bit: DPRX Capabilities Read Done, was
+not set to '1' by this time, we timeout and fail calculating DisplayPort
+tunnel consumed bandwidth.
 
-drivers/media/pci/sta2x11/sta2x11_vip.c:1057:6: error: cast from 'irqreturn_t (*)(int, struct sta2x11_vip *)' (aka 'enum irqreturn (*)(int, struct sta2x11_vip *)') to 'irq_handler_t' (aka 'enum irqreturn (*)(int, void *)') converts to incompatible function type [-Werror,-Wcast-function-type-strict]
-
-Change the prototype of the irq handler to the regular version with a
-local variable to adjust the argument type.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-[hverkuil: update argument documentation]
+Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/sta2x11/sta2x11_vip.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/thunderbolt/tunnel.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/media/pci/sta2x11/sta2x11_vip.c b/drivers/media/pci/sta2x11/sta2x11_vip.c
-index 1858efedaf1a4..33d6c95b36130 100644
---- a/drivers/media/pci/sta2x11/sta2x11_vip.c
-+++ b/drivers/media/pci/sta2x11/sta2x11_vip.c
-@@ -780,7 +780,7 @@ static const struct video_device video_dev_template = {
- /**
-  * vip_irq - interrupt routine
-  * @irq: Number of interrupt ( not used, correct number is assumed )
-- * @vip: local data structure containing all information
-+ * @data: local data structure containing all information
-  *
-  * check for both frame interrupts set ( top and bottom ).
-  * check FIFO overflow, but limit number of log messages after open.
-@@ -790,8 +790,9 @@ static const struct video_device video_dev_template = {
-  *
-  * IRQ_HANDLED, interrupt done.
-  */
--static irqreturn_t vip_irq(int irq, struct sta2x11_vip *vip)
-+static irqreturn_t vip_irq(int irq, void *data)
- {
-+	struct sta2x11_vip *vip = data;
- 	unsigned int status;
- 
- 	status = reg_read(vip, DVP_ITS);
-@@ -1073,9 +1074,7 @@ static int sta2x11_vip_init_one(struct pci_dev *pdev,
- 
- 	spin_lock_init(&vip->slock);
- 
--	ret = request_irq(pdev->irq,
--			  (irq_handler_t) vip_irq,
--			  IRQF_SHARED, KBUILD_MODNAME, vip);
-+	ret = request_irq(pdev->irq, vip_irq, IRQF_SHARED, KBUILD_MODNAME, vip);
- 	if (ret) {
- 		dev_err(&pdev->dev, "request_irq failed\n");
- 		ret = -ENODEV;
+diff --git a/drivers/thunderbolt/tunnel.c b/drivers/thunderbolt/tunnel.c
+index 6fffb2c82d3d1..4f09216b70f90 100644
+--- a/drivers/thunderbolt/tunnel.c
++++ b/drivers/thunderbolt/tunnel.c
+@@ -1196,17 +1196,13 @@ static int tb_dp_consumed_bandwidth(struct tb_tunnel *tunnel, int *consumed_up,
+ 		/*
+ 		 * Then see if the DPRX negotiation is ready and if yes
+ 		 * return that bandwidth (it may be smaller than the
+-		 * reduced one). Otherwise return the remote (possibly
+-		 * reduced) caps.
++		 * reduced one). According to VESA spec, the DPRX
++		 * negotiation shall compete in 5 seconds after tunnel
++		 * established. We give it 100ms extra just in case.
+ 		 */
+-		ret = tb_dp_wait_dprx(tunnel, 150);
+-		if (ret) {
+-			if (ret == -ETIMEDOUT)
+-				ret = tb_dp_read_cap(tunnel, DP_REMOTE_CAP,
+-						     &rate, &lanes);
+-			if (ret)
+-				return ret;
+-		}
++		ret = tb_dp_wait_dprx(tunnel, 5100);
++		if (ret)
++			return ret;
+ 		ret = tb_dp_read_cap(tunnel, DP_COMMON_CAP, &rate, &lanes);
+ 		if (ret)
+ 			return ret;
 -- 
 2.43.0
 
