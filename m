@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03C868A0D61
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC51B8A0EE1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94F421F21EB6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69ABEB24332
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A7D145B13;
-	Thu, 11 Apr 2024 10:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3E014601D;
+	Thu, 11 Apr 2024 10:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phBAVM/8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VP6dqYdX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEEF145B04;
-	Thu, 11 Apr 2024 10:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E52E140E3D;
+	Thu, 11 Apr 2024 10:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829800; cv=none; b=ue7sRG6RtD1HqojXr1oT8DGIMKT7tE5eTOnsBz919EOWWQW4Qh8gBjXN4ikukdDjhvGLIqZ7XoeNXkwFfm+z5k7pe/ID3bHdUKLWsbcqnSwyJuPNVQfGO5C0pjhK6wb5GF2ON7jiRV21dXW+WrhsUZoXOPh8y3DJY83C2FmcZ0E=
+	t=1712830727; cv=none; b=P0CEl6JgNr2F/Pt2s27973BWBt4A29+koZzrZu9lVaYrhqNkB5pouywgN3jquMZaUSFkO1t/5hbnN1jSMOTgFW9nZNHZjKINkETTb73EnQ5iV30nfincQPZYZDSXOoLYjVlUU+FVIBxnNQ/lnEhknPOT1+KshowV6dc+GCMbjMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829800; c=relaxed/simple;
-	bh=Rn+/NoXTvu1E/IItL4NfDu0kNmrhckjzCALVZZ2f7wA=;
+	s=arc-20240116; t=1712830727; c=relaxed/simple;
+	bh=hgl3E0tupiuzSLFq45IhqZwz5LHpYUitZ/XcrUzGREw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iUvPBk0z2l+zzswGluEBSeSymBYCwbEge2YiuFV6qnuEgN4F0EwnFpoKLkt16gYR7XLypC5ErINhD57y/RP7kw/TkhX6fw6eUQdhcar26psx3lHJRhknBYFlvuHdQi7raa7EahkvEycrZMMfYOVgnrbKp/nb1m/7Ywem2tb0Hrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phBAVM/8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9D7C433F1;
-	Thu, 11 Apr 2024 10:03:19 +0000 (UTC)
+	 MIME-Version; b=RKoRNCuNzY9W23atFU5bLgSQbzweB2t6IO2ckSugprFfzYgs8WPoWn3DJxDFT+pE3SSNRoBgDqDRarnWCed88zgApOQyEH+f3urqYnimhDVl+sv8Le+CahzaM+pYyxrEcRC1eY3cXUQKP49h2fMJ6bqHIM2JAlIZwcWJa2VSYkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VP6dqYdX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E99C433F1;
+	Thu, 11 Apr 2024 10:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829800;
-	bh=Rn+/NoXTvu1E/IItL4NfDu0kNmrhckjzCALVZZ2f7wA=;
+	s=korg; t=1712830727;
+	bh=hgl3E0tupiuzSLFq45IhqZwz5LHpYUitZ/XcrUzGREw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=phBAVM/8RWWdiGkaD0mQth+gc7y2gWd+3iCtq2FAYgaNhrESj5LrwEKA9t6F1dZn+
-	 ZuIwR5WWTz56oSa6SEsZA6ysqhkPuyWTXie5m6rA4XdZHb88AkJjkM6XRI7tcftNHs
-	 HQB8cawNlWgjW+XxaYVvQwqWBWAfQUDzbTocNTRY=
+	b=VP6dqYdXgUrnMJGR3yYZgmm6Rbr9BHX9rYGxgRomR3h81M1FlQkcasnWq8I9ZrtBh
+	 FTe0Mo7Je58gnoi7F4rVUo+0QjzAoYMhQf+N6/8HSVDVTnUnTlAPHH+6BgS2Ragfka
+	 58CcpfCdZ1DBTtCdHJTV/SnEP25hf2k2dU3zBbKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ranygh@riseup.net,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 4.19 082/175] wifi: mac80211: check/clear fast rx for non-4addr sta VLAN changes
+	Mukesh Ojha <quic_mojha@quicinc.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	Petr Mladek <pmladek@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 096/215] printk: Update @console_may_schedule in console_trylock_spinning()
 Date: Thu, 11 Apr 2024 11:55:05 +0200
-Message-ID: <20240411095422.031663010@linuxfoundation.org>
+Message-ID: <20240411095427.785439974@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: John Ogness <john.ogness@linutronix.de>
 
-commit 4f2bdb3c5e3189297e156b3ff84b140423d64685 upstream.
+[ Upstream commit 8076972468584d4a21dab9aa50e388b3ea9ad8c7 ]
 
-When moving a station out of a VLAN and deleting the VLAN afterwards, the
-fast_rx entry still holds a pointer to the VLAN's netdev, which can cause
-use-after-free bugs. Fix this by immediately calling ieee80211_check_fast_rx
-after the VLAN change.
+console_trylock_spinning() may takeover the console lock from a
+schedulable context. Update @console_may_schedule to make sure it
+reflects a trylock acquire.
 
-Cc: stable@vger.kernel.org
-Reported-by: ranygh@riseup.net
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://msgid.link/20240316074336.40442-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Closes: https://lore.kernel.org/lkml/20240222090538.23017-1-quic_mojha@quicinc.com
+Fixes: dbdda842fe96 ("printk: Add console owner and waiter logic to load balance console writes")
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/875xybmo2z.fsf@jogness.linutronix.de
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ kernel/printk/printk.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1548,15 +1548,14 @@ static int ieee80211_change_station(stru
- 		}
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index bb2198b40756d..ae1a97dd0c3cb 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -1787,6 +1787,12 @@ static int console_trylock_spinning(void)
+ 	 */
+ 	mutex_acquire(&console_lock_dep_map, 0, 1, _THIS_IP_);
  
- 		if (sta->sdata->vif.type == NL80211_IFTYPE_AP_VLAN &&
--		    sta->sdata->u.vlan.sta) {
--			ieee80211_clear_fast_rx(sta);
-+		    sta->sdata->u.vlan.sta)
- 			RCU_INIT_POINTER(sta->sdata->u.vlan.sta, NULL);
--		}
++	/*
++	 * Update @console_may_schedule for trylock because the previous
++	 * owner may have been schedulable.
++	 */
++	console_may_schedule = 0;
++
+ 	return 1;
+ }
  
- 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED))
- 			ieee80211_vif_dec_num_mcast(sta->sdata);
- 
- 		sta->sdata = vlansdata;
-+		ieee80211_check_fast_rx(sta);
- 		ieee80211_check_fast_xmit(sta);
- 
- 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED)) {
+-- 
+2.43.0
+
 
 
 
