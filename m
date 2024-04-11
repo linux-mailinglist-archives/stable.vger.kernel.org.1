@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5EA58A0E17
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:11:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B8288A0DA8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:06:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9198B284DB6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:11:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD68BB21326
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775A614601E;
-	Thu, 11 Apr 2024 10:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DF6145B06;
+	Thu, 11 Apr 2024 10:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HebRnvL0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ws1tQHrs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3577E145323;
-	Thu, 11 Apr 2024 10:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33551448F3;
+	Thu, 11 Apr 2024 10:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830249; cv=none; b=ar/Oa6Z4l6cRJMf6rTz0vRAvrG5eHSpWzLAFpFt553o0bMuskfC3BpQH9tFaHnalqaBBh6ZiSeK17wtsby2kHL9pkTRpD/M1hDXSuzdhUF/hN5Pv28iUB9CHHeJ3rDGBUfV7yMnEeC/1NIixFFxcTFtrIP9CnHlnzjMrrUKvC8M=
+	t=1712829971; cv=none; b=u/uq7MkJr/kCpgyRc00LwKICugHnWH6eJPuUkrftDclT2+lRJbSY8ZnFMU551u/SLdCyp89kkUmkLyld7Mi/LmzusIXG9x5Xeo51OXUdD1Z+XQePVji+24SNQlkNHS/FULm6jiVcXsNhjSj6feD+BSnvPFETgDACtRZ/nT7W0N4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830249; c=relaxed/simple;
-	bh=wTGeAte/Cmtd1B+sGOFljAFzEPfQun9M6AX6brarqcM=;
+	s=arc-20240116; t=1712829971; c=relaxed/simple;
+	bh=Ey7Qbbr7U2j72en2S5n/9slBerJ7Zl4w5ZrM4V6G4h8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WBL94GHGtE9MnyyStI3UOLKQX7GEzpHWvh2OQtGrc6XGoH9Q/xi3Y3aK+3gFYJcxoJ9Plj4eUHp+WvrhOdOOKgp0136JQIKTkx/6KRi0G0D/1m46gUNaG9t9H/fHStqHfNSF1/hyn5kHDaD/rjbTXaYT2NU/0I9vE6OSt5FnGSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HebRnvL0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AABF1C43390;
-	Thu, 11 Apr 2024 10:10:48 +0000 (UTC)
+	 MIME-Version; b=gvk/USjBXiqE/aisIpqKTtJdgolkPmLI/Tc7sa0WNwVjvJcZC3JAanosvk+xoqygwQE51YtQrMRVhpoFjalGdUt3Y7xAB8kUYXqLbpL9LY+IIfUVAZZ31JXEHea9t9FK/zsQg9f+xKfSv2pdNhI8w1q5YCHkcJt20LBlIHo48xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ws1tQHrs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BABC433C7;
+	Thu, 11 Apr 2024 10:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830249;
-	bh=wTGeAte/Cmtd1B+sGOFljAFzEPfQun9M6AX6brarqcM=;
+	s=korg; t=1712829971;
+	bh=Ey7Qbbr7U2j72en2S5n/9slBerJ7Zl4w5ZrM4V6G4h8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HebRnvL0BGz2xIpJ9VtjqvCCrxncHZ2J0AC3Sk82vPAYIBtzbrx/myPQXxjNGddjQ
-	 Y8dYnUairkX7lneDiyTAryr983YcaREO51NxZSVycrKAdYlfP5HjaKZrRcIcq68Aze
-	 GXuf1ARp3FbJysbOpzJlfZ9yiTucTrpoYzphkro8=
+	b=ws1tQHrsuGHowtj/HpZYLHtQR/L3NyiqpvQFF1L+qYSweav2pow/s+hLTFWUfQ6D0
+	 pxV4aoMplBO52w5UwFHbGuL/vQZ7iDBXRvpZNv+DaR49ADdkUKvFmPL62sGQXyz++C
+	 8oLMlxrCmvRZokbKHVUKKfxIrbkLAUEdJzMjmfzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koby Elbaz <kelbaz@habana.ai>,
-	Oded Gabbay <ogabbay@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.org>,
+	Jacopo Mondi <jacopo@jmondi.org>,
+	Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 084/143] accel/habanalabs: increase HL_MAX_STR to 64 bytes to avoid warnings
+Subject: [PATCH 4.19 129/175] staging: mmal-vchiq: Allocate and free components as required
 Date: Thu, 11 Apr 2024 11:55:52 +0200
-Message-ID: <20240411095423.439937441@linuxfoundation.org>
+Message-ID: <20240411095423.448851609@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +61,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koby Elbaz <kelbaz@habana.ai>
+From: Dave Stevenson <dave.stevenson@raspberrypi.org>
 
-[ Upstream commit 8c075401f2dbda43600c61f780a165abde77877a ]
+[ Upstream commit 8c589e1794a31e9a381916b0280260ab601e4d6e ]
 
-Fix a warning of a buffer overflow:
-‘snprintf’ output between 38 and 47 bytes into a destination of size 32
+The existing code assumed that there would only ever be 4 components,
+and never freed the entries once used.
+Allow arbitrary creation and destruction of components.
 
-Signed-off-by: Koby Elbaz <kelbaz@habana.ai>
-Reviewed-by: Oded Gabbay <ogabbay@kernel.org>
-Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.org>
+Signed-off-by: Jacopo Mondi <jacopo@jmondi.org>
+Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Link: https://lore.kernel.org/r/20200623164235.29566-3-nsaenzjulienne@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: f37e76abd614 ("staging: vc04_services: fix information leak in create_component()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/habanalabs/common/habanalabs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../vc04_services/bcm2835-camera/mmal-vchiq.c | 29 ++++++++++++-------
+ .../vc04_services/bcm2835-camera/mmal-vchiq.h |  1 +
+ 2 files changed, 20 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/accel/habanalabs/common/habanalabs.h b/drivers/accel/habanalabs/common/habanalabs.h
-index 2a900c9941fee..41c7aac2ffcf9 100644
---- a/drivers/accel/habanalabs/common/habanalabs.h
-+++ b/drivers/accel/habanalabs/common/habanalabs.h
-@@ -2547,7 +2547,7 @@ struct hl_state_dump_specs {
-  * DEVICES
-  */
+diff --git a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
+index 00c943516ba38..4f128c75c0f6c 100644
+--- a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
++++ b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
+@@ -31,8 +31,11 @@
+ #define USE_VCHIQ_ARM
+ #include "interface/vchi/vchi.h"
  
--#define HL_STR_MAX	32
-+#define HL_STR_MAX	64
+-/* maximum number of components supported */
+-#define VCHIQ_MMAL_MAX_COMPONENTS 4
++/*
++ * maximum number of components supported.
++ * This matches the maximum permitted by default on the VPU
++ */
++#define VCHIQ_MMAL_MAX_COMPONENTS 64
  
- #define HL_DEV_STS_MAX (HL_DEVICE_STATUS_LAST + 1)
+ /*#define FULL_MSG_DUMP 1*/
  
+@@ -165,8 +168,6 @@ struct vchiq_mmal_instance {
+ 	/* protect accesses to context_map */
+ 	struct mutex context_map_lock;
+ 
+-	/* component to use next */
+-	int component_idx;
+ 	struct vchiq_mmal_component component[VCHIQ_MMAL_MAX_COMPONENTS];
+ };
+ 
+@@ -1607,18 +1608,24 @@ int vchiq_mmal_component_init(struct vchiq_mmal_instance *instance,
+ {
+ 	int ret;
+ 	int idx;		/* port index */
+-	struct vchiq_mmal_component *component;
++	struct vchiq_mmal_component *component = NULL;
+ 
+ 	if (mutex_lock_interruptible(&instance->vchiq_mutex))
+ 		return -EINTR;
+ 
+-	if (instance->component_idx == VCHIQ_MMAL_MAX_COMPONENTS) {
++	for (idx = 0; idx < VCHIQ_MMAL_MAX_COMPONENTS; idx++) {
++		if (!instance->component[idx].in_use) {
++			component = &instance->component[idx];
++			component->in_use = 1;
++			break;
++		}
++	}
++
++	if (!component) {
+ 		ret = -EINVAL;	/* todo is this correct error? */
+ 		goto unlock;
+ 	}
+ 
+-	component = &instance->component[instance->component_idx];
+-
+ 	ret = create_component(instance, component, name);
+ 	if (ret < 0)
+ 		goto unlock;
+@@ -1666,8 +1673,6 @@ int vchiq_mmal_component_init(struct vchiq_mmal_instance *instance,
+ 			goto release_component;
+ 	}
+ 
+-	instance->component_idx++;
+-
+ 	*component_out = component;
+ 
+ 	mutex_unlock(&instance->vchiq_mutex);
+@@ -1677,6 +1682,8 @@ int vchiq_mmal_component_init(struct vchiq_mmal_instance *instance,
+ release_component:
+ 	destroy_component(instance, component);
+ unlock:
++	if (component)
++		component->in_use = 0;
+ 	mutex_unlock(&instance->vchiq_mutex);
+ 
+ 	return ret;
+@@ -1698,6 +1705,8 @@ int vchiq_mmal_component_finalise(struct vchiq_mmal_instance *instance,
+ 
+ 	ret = destroy_component(instance, component);
+ 
++	component->in_use = 0;
++
+ 	mutex_unlock(&instance->vchiq_mutex);
+ 
+ 	return ret;
+diff --git a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
+index b3c231e619c90..ee5eb6d4d080d 100644
+--- a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
++++ b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
+@@ -81,6 +81,7 @@ struct vchiq_mmal_port {
+ };
+ 
+ struct vchiq_mmal_component {
++	u32 in_use:1;
+ 	u32 enabled:1;
+ 	u32 handle;  /* VideoCore handle for component */
+ 	u32 inputs;  /* Number of input ports */
 -- 
 2.43.0
 
