@@ -1,140 +1,92 @@
-Return-Path: <stable+bounces-38032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D3338A0620
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 04:48:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E038A071D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 06:26:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17CF71F23D25
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 02:48:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC8271F244B8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 04:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843F813B28F;
-	Thu, 11 Apr 2024 02:48:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DJWp4vl1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C780D13BAFA;
+	Thu, 11 Apr 2024 04:26:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8F8282FA;
-	Thu, 11 Apr 2024 02:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A3E13C3CF;
+	Thu, 11 Apr 2024 04:26:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712803682; cv=none; b=qLCrkwbs1KzPJvGGOnVIU+joX9dhHKD+mkSR2sQqeBRfNdxJdbz0AFggTLomepf4pO2moPzZygqNBKviKiCak931jzbSFbivq4RlHTw36gbsiXPH8EDf6q1LfNrvjjzTokDY28VPVQrvaMZfpGQmteaW7nR0DmXPpHmgU/TKLDA=
+	t=1712809588; cv=none; b=i76y9j65I7NDGX950UKckFgMQ9thm9YWlYM34eP0OvdUGoQ7Q8Bw0tzMDMqaaIx2H7EU9k/5DFceocdVsXAX3aaxjePOlhQ666lM8o02NLHCOTLgq1HPgn8p2ZeAoosFt+SwnRu5669sYCVhY9VbIXH7//6+7N7Gy4/V9HJ0jCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712803682; c=relaxed/simple;
-	bh=eJphG6hxK5MLkJm07zYc9BIh4Drt2GMMuGsf+W5mEnQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Dmk70dopWils0BRy/wFpY4IvlIjCRcbrRsmPx48PNhhSxSVtMOyvhZhyNUTPBl7FmYs3DtpnE0SRutQVev3iI5HdqY9h1hwHporpE+6J1LXV3zropPvu6hmXXjO0llPn8bDhUWijV9tovdptjvi52zZAJFDlhmP8Hq7+laTxZeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DJWp4vl1; arc=none smtp.client-ip=209.85.210.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6ea163eb437so2380138a34.2;
-        Wed, 10 Apr 2024 19:48:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712803679; x=1713408479; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=0v2VY93AarnBB8OF2yJX5KcU060xyjTJtFzMOCSeicU=;
-        b=DJWp4vl1pWy9BLFeGq7d5JxnenILWpy7f6aQNvyUx/SG3k4bQhPlZvG7s0eikTpxzZ
-         CSEwqzC2auQYfTASHA78nLypsAzeyti3fT6+Mzno9SvnLUh6KQ6ykY9Q62HbYIUFtQne
-         7XrL+e8mzk+dNCKSZMzDHKSoRl0/4dntntZqMThkdEuQzFMQlRT1ZQG6TR/shKJd1wlZ
-         SaEH/7u3dbH4gXEzlURyfLc5zj7xoCLG9brXDWdhExMumM1EZR8HkwRUqUmFRpSb3DsW
-         pz7njkYD8SDMhIbJNNfiS0PkGugQl9/49yW0ShnFNAy+tqzB7sSz1FFy0wjP8mVPn3u0
-         eUng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712803679; x=1713408479;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0v2VY93AarnBB8OF2yJX5KcU060xyjTJtFzMOCSeicU=;
-        b=viFfm5vFVAGRChSQbVej/1F2nImXmhwkc3wXggH5UAoHEPhu7URtTiFE++7asCMEvr
-         55b1DsEKT2oJ4+3SMQQ4NUNhfAq2RkAQhz0Injh0VwWAh31hIx8+en1m96aq0fV2nC/K
-         EwkC+bfCmSQrKteWb+GkZpo8DV4oeFMoLodKSU6j14jvpYZRxPDnHHZXYJXHhVYZ7Ohq
-         4XpwKiWhBBvW1QuSJQjh5lea5J+gXtqhiqEtt0B26/YUN+YU27IkoGatMSt9DQ4nLFym
-         ystWxWxJ8IcN3EbvsRs1Ya1eVBvNbCouNkJaEF9COiRN392vxrwTXg2p/RCuvBcOnLuk
-         o8bQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW+I8C/YUZXkDgmGXMt6fazMw18n068AMae2K1/J4MUVOog9YJV7rzzu3g1rZVzbm0N84PHUwuOi7qFz20vGxPcQJL0reOhiOBreThWWkhXzD+KKnwWZfOzJLcxqi1a2vdbRc0kerM=
-X-Gm-Message-State: AOJu0Yydco4xLKPUuS0lvuwB5IFkGjtypW87izd0IbGzsDY9YbI2bCoe
-	OZcaZOCqpsL9jUFTavnG289lVhgMRfzLO/axvu63u1xC4zNPr2TghA/qmyID
-X-Google-Smtp-Source: AGHT+IF6/ra7tsi778+xsInsEN4ARudNuz9JQnw7btnunKOwMcuuhz3Gm/XqQPaDWRfp0y4IiBMUTg==
-X-Received: by 2002:a9d:66ca:0:b0:6ea:2d0d:f531 with SMTP id t10-20020a9d66ca000000b006ea2d0df531mr4811164otm.37.1712803679655;
-        Wed, 10 Apr 2024 19:47:59 -0700 (PDT)
-Received: from [192.168.1.119] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id y13-20020a0568301d8d00b006ea16d35096sm140824oti.20.2024.04.10.19.47.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Apr 2024 19:47:59 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <287e9d4e-316a-4579-961e-58e75abea534@lwfinger.net>
-Date: Wed, 10 Apr 2024 21:47:58 -0500
+	s=arc-20240116; t=1712809588; c=relaxed/simple;
+	bh=INoedeS1YRLb5NbBpuZ52sHt3SaQF4hIpOGhFzrppes=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rQxsnKY+Yzah6MOzvRVO9b7yWER/gAtWD7QRNIRmNxmNM2vR19qaDZ8wCklnbdj5CwKMu7nN0KPF6NXMW1ArPvB5slNJGNyB2KIU4jzHeqojaI7YbeFw+aRXGh7m+dniHRZW0fL5afz33xuk0ZT4fAfhmiGt/2BcB1oPIg9/ouA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43B4Ps2E2589410, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43B4Ps2E2589410
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 11 Apr 2024 12:25:55 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 11 Apr 2024 12:25:55 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 11 Apr 2024 12:25:55 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Thu, 11 Apr 2024 12:25:55 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Larry Finger <Larry.Finger@lwfinger.net>,
+        Larry Finger
+	<Larry.Finger@gmail.com>, Kalle Valo <kvalo@kernel.org>
+CC: Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [RFC] rtw88: Fix startup problems for SDIO wifi plus UART Bluetooth
+Thread-Topic: [RFC] rtw88: Fix startup problems for SDIO wifi plus UART
+ Bluetooth
+Thread-Index: AQHai6+3Zq0VJBVgFk2i9wweb2CUxrFiTTdQ//+KnwCAAKCeUA==
+Date: Thu, 11 Apr 2024 04:25:54 +0000
+Message-ID: <2afb5edcf8bf4173ab339e54707ada0b@realtek.com>
+References: <4umro86wvv84.MjDfYvt4P5uZryt8boBK8Q2@1EHFQ.trk.elasticemail.com>
+ <5af71338f3904aac9d2c237637c851e7@realtek.com>
+ <287e9d4e-316a-4579-961e-58e75abea534@lwfinger.net>
+In-Reply-To: <287e9d4e-316a-4579-961e-58e75abea534@lwfinger.net>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] rtw88: Fix startup problems for SDIO wifi plus UART
- Bluetooth
-To: Ping-Ke Shih <pkshih@realtek.com>, Larry Finger <Larry.Finger@gmail.com>,
- Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <4umro86wvv84.MjDfYvt4P5uZryt8boBK8Q2@1EHFQ.trk.elasticemail.com>
- <5af71338f3904aac9d2c237637c851e7@realtek.com>
-Content-Language: en-US
-From: Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <5af71338f3904aac9d2c237637c851e7@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On 4/10/24 9:13 PM, Ping-Ke Shih wrote:
-> 
-> Larry Finger <Larry.Finger@gmail.com> wrote:
-> 
->> As discussed in the links below, the SDIO part of RTW8821CS fails to
->> start correctly if such startup happens while the UART portion of
->> the chip is initializing.
-> 
-> I checked with SDIO team internally, but they didn't meet this case, so we may
-> take this workaround.
-> 
-> SDIO team wonder if something other than BT cause this failure, and after
-> system boots everything will be well. Could you boot the system without WiFi/BT
-> drivers, but insmod drivers manually after booting?
-
-I sent the request to the user with the problem. I do not have any SDIO devices.
-
-> 
-> 
->> ---
->>   drivers/net/wireless/realtek/rtw88/sdio.c | 28 +++++++++++++++++++++++
->>   1 file changed, 28 insertions(+)
->>
->> diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
->> index 0cae5746f540..eec0ad85be72 100644
->> --- a/drivers/net/wireless/realtek/rtw88/sdio.c
->> +++ b/drivers/net/wireless/realtek/rtw88/sdio.c
->> @@ -1325,6 +1325,34 @@ int rtw_sdio_probe(struct sdio_func *sdio_func,
-> 
-> [...]
-> 
->> +       mdelay(500);
-> 
-> Will it better to use sleep function?
-
-My thoughts were that a sleep function would tie up a CPU, whereas the delay 
-would not. Initially, we tested an msleep(150) statement, but that only gave a 
-60% success rate, whereas mdelay(500) worked 20 straight tries.
-
-Thanks for your comments.
-
-Larry
-
-
+DQoNCkxhcnJ5IEZpbmdlciA8bGFycnkuZmluZ2VyQGdtYWlsLmNvbT4gd3JvdGU6DQoNCj4gDQo+
+IE9uIDQvMTAvMjQgOToxMyBQTSwgUGluZy1LZSBTaGloIHdyb3RlOg0KPiA+DQo+ID4gTGFycnkg
+RmluZ2VyIDxMYXJyeS5GaW5nZXJAZ21haWwuY29tPiB3cm90ZToNCj4gPg0KPiA+PiArICAgICAg
+IG1kZWxheSg1MDApOw0KPiA+DQo+ID4gV2lsbCBpdCBiZXR0ZXIgdG8gdXNlIHNsZWVwIGZ1bmN0
+aW9uPw0KPiANCj4gTXkgdGhvdWdodHMgd2VyZSB0aGF0IGEgc2xlZXAgZnVuY3Rpb24gd291bGQg
+dGllIHVwIGEgQ1BVLCB3aGVyZWFzIHRoZSBkZWxheQ0KPiB3b3VsZCBub3QuIEluaXRpYWxseSwg
+d2UgdGVzdGVkIGFuIG1zbGVlcCgxNTApIHN0YXRlbWVudCwgYnV0IHRoYXQgb25seSBnYXZlIGEN
+Cj4gNjAlIHN1Y2Nlc3MgcmF0ZSwgd2hlcmVhcyBtZGVsYXkoNTAwKSB3b3JrZWQgMjAgc3RyYWln
+aHQgdHJpZXMuDQo+IA0KDQpTb3JyeSwgSSBkaWRuJ3QgY29uc2lkZXIgdGhlIGV4cGVyaW1lbnRh
+bCByZXN1bHRzIG9mIG1zbGVlcCgxNTApIGFuZCBtZGVsYXkoNTAwKS4NCg0KTXkgcG9pbnQgd2Fz
+IGJ1c3kgd2FpdGluZyBvZiBtZGVsYXkoKS4gSSBqdXN0IHdhbnQgdG8gc2F5IGlmIG1zbGVlcCg1
+MDApIGlzIA0KYmV0dGVyIHRoYW4gbWRlbGF5KDUwMCkuIA0KDQoNCg==
 
