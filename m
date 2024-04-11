@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB4D8A0D2E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:01:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E9F8A0DC6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BB6E1F2281B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:01:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7343A1C210A3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C974145B0A;
-	Thu, 11 Apr 2024 10:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF85145FED;
+	Thu, 11 Apr 2024 10:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkyQrOzC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pd7YMOa/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B19A145342;
-	Thu, 11 Apr 2024 10:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA64145FE7;
+	Thu, 11 Apr 2024 10:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829670; cv=none; b=eOtvbgBcqcZq9sLbWLILM1KXiWOVPgcXy6PxfWop+T3enpLJEDCn1l7VLka2NzdMEiGHXmw9SXFgWbIigQQbNHI70gce+bqp9DL89hbdKx6nIxt/H2J2UR3xHN6geyC2IbPI3qXi9SACcVjXgL+Gm7JFUIwBBtVBUFbxS0bk+Xc=
+	t=1712830055; cv=none; b=LPQAbUvJBtspKPljvbwzojD52+K8p6nxYrRLmfF0i8vGWwdwA4jWkUcgVcEOEE6XHlts8ZBZq/oLGUFTHYm9+c5dYryZY5wqc+4BN7UX88S9cEjESqBDNvRlHVS6A7DOusVWw2zrLbGy9YdMJn1Gl9DfkspRnyyrDftSQx0Lduc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829670; c=relaxed/simple;
-	bh=QirZjuFIKlcV09TphDlSeqk+i4yltyj4OXCVt2XcKo4=;
+	s=arc-20240116; t=1712830055; c=relaxed/simple;
+	bh=+pED2Je3eOZ4uwP1GqmV9xkuTCyY+YXzNIJIdPdZ1H0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=igI/GyTzj23VqfbpnQP3zWLR8j9XxKY8OjwueBCgXzrQPxdzHOCiGWJcJkc25oi3Sk6p45ze19SFLS/nEeKZErbCySePrNzONO2lSCqJ27tRQ29cqRukMTvBbj+QsT1AtrllV/2H+QOG6ejv2bpCmsApbTkYYpnHWjs0awjzAKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CkyQrOzC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B0BC433F1;
-	Thu, 11 Apr 2024 10:01:09 +0000 (UTC)
+	 MIME-Version; b=qx9jGY72wufqpdZ90OHF2rZQkMOYEdAbIpSOdMXnfT6/ppCApR3+7Eed7nMcowwOd/gdJHC6kbFpa7dOU1JlOyjfmLw80hfBDTwA0Y1cwhtInf8kMYcz9HkpxPeVBneVsdNSq5odWXI8++/rs7O/Tv7X+GGxn8ne97q6odvYoqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pd7YMOa/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E5AC43390;
+	Thu, 11 Apr 2024 10:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829670;
-	bh=QirZjuFIKlcV09TphDlSeqk+i4yltyj4OXCVt2XcKo4=;
+	s=korg; t=1712830054;
+	bh=+pED2Je3eOZ4uwP1GqmV9xkuTCyY+YXzNIJIdPdZ1H0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CkyQrOzCk0Hfk/UxnCG23BlBfu+OyIHrLB3DtUp9fJMOc+g+W+XxIh+De3n8vjshE
-	 299SeNAMT9fcvpPa1xzSMhDtiIoHkEilG/O2stBr5maoMYBgpQ2BXCZyN7E3B5anDa
-	 A5i2L1Pef1a6UokK6pq0+c5ONX/6IZn8pbpco0ws=
+	b=pd7YMOa/HhOmnGZoptjqTN1J8C1HVlKGeTu1i7vCZMH7DM848PfhFXUtv2Dsj146A
+	 W0bxtEBK2oQAc8m6nlxzyrpwHcjTaJwyMeS/mIdX1WkBx+uff4w3HqQ0PMUzLrm0x2
+	 OKsRgsvuxm+Yacu964H4q5Y1hEJEQn44Rk4PPKcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 065/175] nilfs2: prevent kernel bug at submit_bh_wbc()
+Subject: [PATCH 6.8 020/143] ARM: dts: rockchip: fix rk3288 hdmi ports node
 Date: Thu, 11 Apr 2024 11:54:48 +0200
-Message-ID: <20240411095421.522849750@linuxfoundation.org>
+Message-ID: <20240411095421.519037207@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit 269cdf353b5bdd15f1a079671b0f889113865f20 ]
+[ Upstream commit 585e4dc07100a6465b3da8d24e46188064c1c925 ]
 
-Fix a bug where nilfs_get_block() returns a successful status when
-searching and inserting the specified block both fail inconsistently.  If
-this inconsistent behavior is not due to a previously fixed bug, then an
-unexpected race is occurring, so return a temporary error -EAGAIN instead.
+Fix rk3288 hdmi ports node so that it matches the
+rockchip,dw-hdmi.yaml binding with some reordering
+to align with the (new) documentation about
+property ordering.
 
-This prevents callers such as __block_write_begin_int() from requesting a
-read into a buffer that is not mapped, which would cause the BUG_ON check
-for the BH_Mapped flag in submit_bh_wbc() to fail.
-
-Link: https://lkml.kernel.org/r/20240313105827.5296-3-konishi.ryusuke@gmail.com
-Fixes: 1f5abe7e7dbc ("nilfs2: replace BUG_ON and BUG calls triggerable from ioctl")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/cc3a9b4f-076d-4660-b464-615003b6a066@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/rockchip/rk3288.dtsi | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nilfs2/inode.c b/fs/nilfs2/inode.c
-index 83dbfd9d25323..530edb813add8 100644
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -111,7 +111,7 @@ int nilfs_get_block(struct inode *inode, sector_t blkoff,
- 					   "%s (ino=%lu): a race condition while inserting a data block at offset=%llu",
- 					   __func__, inode->i_ino,
- 					   (unsigned long long)blkoff);
--				err = 0;
-+				err = -EAGAIN;
- 			}
- 			nilfs_transaction_abort(inode->i_sb);
- 			goto out;
+diff --git a/arch/arm/boot/dts/rockchip/rk3288.dtsi b/arch/arm/boot/dts/rockchip/rk3288.dtsi
+index ead343dc3df10..3f1d640afafae 100644
+--- a/arch/arm/boot/dts/rockchip/rk3288.dtsi
++++ b/arch/arm/boot/dts/rockchip/rk3288.dtsi
+@@ -1240,27 +1240,37 @@ hdmi: hdmi@ff980000 {
+ 		compatible = "rockchip,rk3288-dw-hdmi";
+ 		reg = <0x0 0xff980000 0x0 0x20000>;
+ 		reg-io-width = <4>;
+-		#sound-dai-cells = <0>;
+-		rockchip,grf = <&grf>;
+ 		interrupts = <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&cru  PCLK_HDMI_CTRL>, <&cru SCLK_HDMI_HDCP>, <&cru SCLK_HDMI_CEC>;
+ 		clock-names = "iahb", "isfr", "cec";
+ 		power-domains = <&power RK3288_PD_VIO>;
++		rockchip,grf = <&grf>;
++		#sound-dai-cells = <0>;
+ 		status = "disabled";
+ 
+ 		ports {
+-			hdmi_in: port {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			hdmi_in: port@0 {
++				reg = <0>;
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
++
+ 				hdmi_in_vopb: endpoint@0 {
+ 					reg = <0>;
+ 					remote-endpoint = <&vopb_out_hdmi>;
+ 				};
++
+ 				hdmi_in_vopl: endpoint@1 {
+ 					reg = <1>;
+ 					remote-endpoint = <&vopl_out_hdmi>;
+ 				};
+ 			};
++
++			hdmi_out: port@1 {
++				reg = <1>;
++			};
+ 		};
+ 	};
+ 
 -- 
 2.43.0
 
