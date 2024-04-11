@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-39135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCFA58A1213
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:50:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94DC18A1181
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 894122833B1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EED928792D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002DA1474CD;
-	Thu, 11 Apr 2024 10:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC701448C8;
+	Thu, 11 Apr 2024 10:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVDvakcj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbKnMlhP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B5F1E48E;
-	Thu, 11 Apr 2024 10:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AEDE6BB29;
+	Thu, 11 Apr 2024 10:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832619; cv=none; b=r3rL3DoiZEaOkDufzvJpeLrXr5YeBq0rqhZnvejqp2rJtWRKFzKtNBg6QX+IrI3npthjHZzjRIk6F8huEsb+DGOcILjPKDjq3YFwXg6Ta87Xv7611tlV6iosRUl43vb019hVNMw3Tx1IxygGh3HczNqgi3nMfpP3c+353/3I7W8=
+	t=1712832287; cv=none; b=q+OD95PN6Amk+6ls+Lh52kNqGCVHWrYlfs3gTnbh1pcZbPK/SB26BzTrl9AZtqaIM+4CnRuQ43KAmwEmTumYK6viV6lyqBjSk3kBRm7YZfaMpyqMO5mEpVT7HDTlh1uJA9ZuOCW8g63XlDrgIedW4Am9HXovNEbQjTmxk8pNEvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832619; c=relaxed/simple;
-	bh=7JXnnl8hh1r7ePjHsK+zX2q9gc2qbp/UDV/skSD7NmY=;
+	s=arc-20240116; t=1712832287; c=relaxed/simple;
+	bh=1zXkG6RLLdPzFWfDM8CrVR0ZwcQQYdksAe7sbArpQe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5ge7DqkZ2XjNHUqLH420KcYyfti1t0iVJqblPFmzZgYdNWwSGCX9jUB7k3k7oA/P1c9NVK12BWva9X+bS6MWOKhicQYZkgmn3kSY93nibQLax3sbIOXAWb6V1/ZqFf/pMJy+6NhZWC9VnGNmv9l+xQmy7NhBWL+vIhTuhxWNI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVDvakcj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A51CC43330;
-	Thu, 11 Apr 2024 10:50:19 +0000 (UTC)
+	 MIME-Version; b=t4+H02uC6J7Y6ytsk9VHb/nne0O/9Gs6euPoF4AE7VbfG/H5lYSJSpWe2dE+wh3JcYbctOJlsIsiXjuh/BLqgjax8WK5cvgzyZJSwd0wKDK6UbkVPzhyYvUPscTGsEo0SRM/vSOd8PWkJHTLUAM+PUXL5wywEQBxjolRS7UHoUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbKnMlhP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397E7C433C7;
+	Thu, 11 Apr 2024 10:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832619;
-	bh=7JXnnl8hh1r7ePjHsK+zX2q9gc2qbp/UDV/skSD7NmY=;
+	s=korg; t=1712832286;
+	bh=1zXkG6RLLdPzFWfDM8CrVR0ZwcQQYdksAe7sbArpQe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RVDvakcjX7aCH6QCp5ItR1QXkXTsGRz0KKrKRg9jesJrBdzXLyQU3SGsPYmdLAbGP
-	 xq/q71WMFqweh1U8yntq2DNcK26u6yB0LDMw/kDWLnsiWzXzAVTfrLTq8Gkvn3gZB0
-	 kHYX/o64jdt0y9HY1moChIyKCeme6DcgqyHfa+sc=
+	b=RbKnMlhPFGK8iOuO9nc97S7NijAb4eXV2KyDcYcmTeEjDYfF4fgKH8+SROPm5TJJM
+	 F55kDHHpPUkQksmQPVvzWZn4M+S/ev/TUYpvAyD3APSAYBdEvFHrD26El1jZqpg41Q
+	 fPUXrhYsFihjEvWugRYmIHgpdafOXXI/8o95ryYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 27/57] ext4: add a hint for block bitmap corrupt state in mb_groups
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 292/294] scsi: sd: Fix wrong zone_write_granularity value during revalidate
 Date: Thu, 11 Apr 2024 11:57:35 +0200
-Message-ID: <20240411095408.816557396@linuxfoundation.org>
+Message-ID: <20240411095444.325864607@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-[ Upstream commit 68ee261fb15457ecb17e3683cb4e6a4792ca5b71 ]
+commit 288b3271d920c9ba949c3bab0f749f4cecc70e09 upstream.
 
-If one group is marked as block bitmap corrupted, its free blocks cannot
-be used and its free count is also deducted from the global
-sbi->s_freeclusters_counter. User might be confused about the absent
-free space because we can't query the information about corrupted block
-groups except unreliable error messages in syslog. So add a hint to show
-block bitmap corrupted groups in mb_groups.
+When the sd driver revalidates host-managed SMR disks, it calls
+disk_set_zoned() which changes the zone_write_granularity attribute value
+to the logical block size regardless of the device type. After that, the sd
+driver overwrites the value in sd_zbc_read_zone() with the physical block
+size, since ZBC/ZAC requires this for host-managed disks. Between the calls
+to disk_set_zoned() and sd_zbc_read_zone(), there exists a window where the
+attribute shows the logical block size as the zone_write_granularity value,
+which is wrong for host-managed disks. The duration of the window is from
+20ms to 200ms, depending on report zone command execution time.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240119061154.1525781-1-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To avoid the wrong zone_write_granularity value between disk_set_zoned()
+and sd_zbc_read_zone(), modify the value not in sd_zbc_read_zone() but
+just after disk_set_zoned() call.
+
+Fixes: a805a4fa4fa3 ("block: introduce zone_write_granularity limit")
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Link: https://lore.kernel.org/r/20230306063024.3376959-1-shinichiro.kawasaki@wdc.com
+Reviewed-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/scsi/sd.c     |    7 ++++++-
+ drivers/scsi/sd_zbc.c |    8 --------
+ 2 files changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index d13d669f90fd5..8dba416aa6c1e 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -2950,7 +2950,10 @@ static int ext4_mb_seq_groups_show(struct seq_file *seq, void *v)
- 	for (i = 0; i <= 13; i++)
- 		seq_printf(seq, " %-5u", i <= blocksize_bits + 1 ?
- 				sg.info.bb_counters[i] : 0);
--	seq_puts(seq, " ]\n");
-+	seq_puts(seq, " ]");
-+	if (EXT4_MB_GRP_BBITMAP_CORRUPT(&sg.info))
-+		seq_puts(seq, " Block bitmap corrupted!");
-+	seq_puts(seq, "\n");
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -3026,8 +3026,13 @@ static void sd_read_block_characteristic
+ 	}
  
- 	return 0;
- }
--- 
-2.43.0
-
+ 	if (sdkp->device->type == TYPE_ZBC) {
+-		/* Host-managed */
++		/*
++		 * Host-managed: Per ZBC and ZAC specifications, writes in
++		 * sequential write required zones of host-managed devices must
++		 * be aligned to the device physical block size.
++		 */
+ 		blk_queue_set_zoned(sdkp->disk, BLK_ZONED_HM);
++		blk_queue_zone_write_granularity(q, sdkp->physical_block_size);
+ 	} else {
+ 		sdkp->zoned = (buffer[8] >> 4) & 3;
+ 		if (sdkp->zoned == 1) {
+--- a/drivers/scsi/sd_zbc.c
++++ b/drivers/scsi/sd_zbc.c
+@@ -793,14 +793,6 @@ int sd_zbc_read_zones(struct scsi_disk *
+ 	blk_queue_max_active_zones(q, 0);
+ 	nr_zones = round_up(sdkp->capacity, zone_blocks) >> ilog2(zone_blocks);
+ 
+-	/*
+-	 * Per ZBC and ZAC specifications, writes in sequential write required
+-	 * zones of host-managed devices must be aligned to the device physical
+-	 * block size.
+-	 */
+-	if (blk_queue_zoned_model(q) == BLK_ZONED_HM)
+-		blk_queue_zone_write_granularity(q, sdkp->physical_block_size);
+-
+ 	/* READ16/WRITE16 is mandatory for ZBC disks */
+ 	sdkp->device->use_16_for_rw = 1;
+ 	sdkp->device->use_10_for_rw = 0;
 
 
 
