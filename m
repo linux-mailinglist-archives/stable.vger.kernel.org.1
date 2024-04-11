@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-39139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7A88A1219
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:50:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F6468A11E2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC1DFB2752A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F078C282CB9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC87C146A90;
-	Thu, 11 Apr 2024 10:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E41164CC0;
+	Thu, 11 Apr 2024 10:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0G/mDR3j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZU9aQ7qO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD071E48E;
-	Thu, 11 Apr 2024 10:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E14A63A2;
+	Thu, 11 Apr 2024 10:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832632; cv=none; b=X3bnXo5HtGN1rl44pYowgqdf3FhSy2sWlYyG+fNzQhY8LJevK7+H5oKPhGMTMMK07fe+idnmmwBu4eG69kad7RD4wqDwusIIqjTywZumq81K+9KUKgwRIvcSQriUUEO5whKaWrervmY9NqCtynDHwJ3AzeqQp8ExWfktQj53tjw=
+	t=1712832496; cv=none; b=ipTLIeimmQRxbUhkQNBhyKIY0GRl8MupWm3EDU8RQXae2OlkKyH2Zlvmc8p/frzwUkFFtR0Y4g1OFFvuiWrwRzvbEejYbkIEg5sH2jCkJENKPQ/EG1CYtbm1U2Jw0ivgSsCV/8gI6M1aY2Eol1rixzwGDZW0pWkmlRAbGhihWcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832632; c=relaxed/simple;
-	bh=x/jpc3qPs7/amMquVe3t4uiZm5rGK6cA8l79xuze/Ok=;
+	s=arc-20240116; t=1712832496; c=relaxed/simple;
+	bh=ThHWZ4OevIVpDZ8s0q+izCjOgEiBuAfsBdE07ANj6yA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ilgTwuKqPsCe1PS6YxEfjcA0Pe/MeTNRN0X+XaM/Vf53A/pOtdViKYxC3dUBdTbpncMvjJahf3JTFG9SAPH1pPi8JK8ikvAsu2h+Tbvu/1OzP7cCWLta3jy1DxLlFeYzfIeUB3aosbuYVttWRAlDT+7uoDMCU+zXxxSxe1p/ICE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0G/mDR3j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01039C433F1;
-	Thu, 11 Apr 2024 10:50:31 +0000 (UTC)
+	 MIME-Version; b=iJ1qxRDszjTGSUfUYaZ3836ydVM+vOonNHv5L6bM+0r0LRXHa01i/uw2a9H8mt3lw3TrzNl3qLolDXpj312izuSVUuuHK98IH/T5AfiDbcdih7ZarJenaU33VDrhkuoBOc5z/y51ubC62nPwY6EGhijLf2NJ6tEZteNNMB8bb54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZU9aQ7qO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FABC433F1;
+	Thu, 11 Apr 2024 10:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832632;
-	bh=x/jpc3qPs7/amMquVe3t4uiZm5rGK6cA8l79xuze/Ok=;
+	s=korg; t=1712832496;
+	bh=ThHWZ4OevIVpDZ8s0q+izCjOgEiBuAfsBdE07ANj6yA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0G/mDR3juTTBKTPhaDbqvvghPa8Tz3L5UasbSDZyU9t1bbPkbWo6/mJk6kPyAm1qA
-	 wvN4o+1JSjKDFP1cG1lGDDY/5PKANqNbOyALqflfxe3FRl1k8aakZ6dFyPvzGLyykt
-	 qs9XMEYSJeOImNexb3gjIbu194KXhH7sW5vgyMv4=
+	b=ZU9aQ7qOWQP/8hCydQDfVT1qMx8MxMRpKX8EvvaTux3Ll82njq6sBbiqKZCHcLoHZ
+	 Ahjyvy11u0PlCTbgQzmFvZ93N8LGAtpPx2MFPTntHLFmubEnywdaXsVviq6A6Z8F3B
+	 UYN1SbSkA858PfoZHM13usk1WIdiUE9Ny2D8RXks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Drake <drake@endlessos.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jian-Hong Pan <jhp@endlessos.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Jiawei Fu <i@ibugone.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 31/57] Revert "ACPI: PM: Block ASUS B1400CEAE from suspend to idle by default"
+Subject: [PATCH 6.1 67/83] drivers/nvme: Add quirks for device 126f:2262
 Date: Thu, 11 Apr 2024 11:57:39 +0200
-Message-ID: <20240411095408.938567154@linuxfoundation.org>
+Message-ID: <20240411095414.700796458@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Drake <drake@endlessos.org>
+From: Jiawei Fu (iBug) <i@ibugone.com>
 
-[ Upstream commit cb98555fcd8eee98c30165537c7e394f3a66e809 ]
+[ Upstream commit e89086c43f0500bc7c4ce225495b73b8ce234c1f ]
 
-This reverts commit d52848620de00cde4a3a5df908e231b8c8868250, which was
-originally put in place to work around a s2idle failure on this platform
-where the NVMe device was inaccessible upon resume.
+This commit adds NVME_QUIRK_NO_DEEPEST_PS and NVME_QUIRK_BOGUS_NID for
+device [126f:2262], which appears to be a generic VID:PID pair used for
+many SSDs based on the Silicon Motion SM2262/SM2262EN controller.
 
-After extended testing, we found that the firmware's implementation of S3
-is buggy and intermittently fails to wake up the system. We need to revert
-to s2idle mode.
+Two of my SSDs with this VID:PID pair exhibit the same behavior:
 
-The NVMe issue has now been solved more precisely in the commit titled
-"PCI: Disable D3cold on Asus B1400 PCI-NVMe bridge"
+  * They frequently have trouble exiting the deepest power state (5),
+    resulting in the entire disk unresponsive.
+    Verified by setting nvme_core.default_ps_max_latency_us=10000 and
+    observing them behaving normally.
+  * They produce all-zero nguid and eui64 with `nvme id-ns` command.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=215742
-Link: https://lore.kernel.org/r/20240228075316.7404-2-drake@endlessos.org
-Signed-off-by: Daniel Drake <drake@endlessos.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Jian-Hong Pan <jhp@endlessos.org>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+The offending products are:
+
+  * HP SSD EX950 1TB
+  * HIKVISION C2000Pro 2TB
+
+Signed-off-by: Jiawei Fu <i@ibugone.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/sleep.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ drivers/nvme/host/pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-index b277e25b276ce..95deb55fb9a8c 100644
---- a/drivers/acpi/sleep.c
-+++ b/drivers/acpi/sleep.c
-@@ -382,18 +382,6 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "20GGA00L00"),
- 		},
- 	},
--	/*
--	 * ASUS B1400CEAE hangs on resume from suspend (see
--	 * https://bugzilla.kernel.org/show_bug.cgi?id=215742).
--	 */
--	{
--	.callback = init_default_s3,
--	.ident = "ASUS B1400CEAE",
--	.matches = {
--		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--		DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK B1400CEAE"),
--		},
--	},
- 	{},
- };
- 
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 3d01290994d89..5ff09f2cacab7 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -3471,6 +3471,9 @@ static const struct pci_device_id nvme_id_table[] = {
+ 				NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_VDEVICE(REDHAT, 0x0010),	/* Qemu emulated controller */
+ 		.driver_data = NVME_QUIRK_BOGUS_NID, },
++	{ PCI_DEVICE(0x126f, 0x2262),	/* Silicon Motion generic */
++		.driver_data = NVME_QUIRK_NO_DEEPEST_PS |
++				NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_DEVICE(0x126f, 0x2263),	/* Silicon Motion unidentified */
+ 		.driver_data = NVME_QUIRK_NO_NS_DESC_LIST |
+ 				NVME_QUIRK_BOGUS_NID, },
 -- 
 2.43.0
 
