@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13FA38A0DBD
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE78E8A0EF3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:19:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDC641F22A46
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C9F0B21966
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4196F145B06;
-	Thu, 11 Apr 2024 10:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876B214600E;
+	Thu, 11 Apr 2024 10:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="em4jCl6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hyDtRri+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00EDC1442F7;
-	Thu, 11 Apr 2024 10:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45741140E3D;
+	Thu, 11 Apr 2024 10:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830034; cv=none; b=fRZe+J4W8kXgJM4uUH4h99Xzzs+rt5jY+plmiAvxRteps1j2nAd94v8D7UF+Qnddi/c76xAfHmOZmB8gfGycgGIVoIw1OmxWoAAdHF/Svc+L++rHNEFEACt3MRNDFegUysaRhTtpYOn0EfD3QT40LzOD4TJuAB+pxdpnGdI9zR0=
+	t=1712830771; cv=none; b=Pno0rjg1jQuxxXcvjIzGgXhICuKFsPCn/VxUNpEo3uR2vLOv4YhcQ3DFM6IDmSF/bQIqFGy2yg7kcJIrY/Z8z3OWBwxiQzvndlfDEA9AtyNk3uCRARAkUgHK7JPwKEQLwlz8KsRlTuA3Hlt/i7VcaPHBcEKSowvdiy2iw66ACS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830034; c=relaxed/simple;
-	bh=PD1r+kb8IPEWJ4Qg4v7w42xBc936JPbkqJ1AGx5FOcg=;
+	s=arc-20240116; t=1712830771; c=relaxed/simple;
+	bh=C3wjheEbUQ1IxbYSNfMELlWS7MnanZlIjdzgZUm/xMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HooMCoYEOEotl+KiEWW2BfO4ySvbEilGgirCmqdEqrlIQf9cN1dmMiplmKp8I/w16yMOb3fWJzxeJ7cWoYybUFLYCcnVzPjsIsGxtOvn4krBCwyo6/S1jdkw+V6cCTWoiQCk+EdanYkjk63vBfJ785LRbLCiyJbwfIuF/htCwUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=em4jCl6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCEBC43390;
-	Thu, 11 Apr 2024 10:07:13 +0000 (UTC)
+	 MIME-Version; b=Vc5Ph0/dqjLzHlN+WLRB8Jnbygou/lJ76uusv1bP6KW7vCzL11DHv/HtMxs89W7W35AIeFsklpAkOeWhr7q1nZfGppyqYsyGOgm7n+/OwWEAfpsKbreWys5UL0pzNg9Ayc6KBQ8IfEBteR/8vmrGIE5m6kjKFJnzUZwYtui8dhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hyDtRri+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B60D4C433F1;
+	Thu, 11 Apr 2024 10:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830033;
-	bh=PD1r+kb8IPEWJ4Qg4v7w42xBc936JPbkqJ1AGx5FOcg=;
+	s=korg; t=1712830771;
+	bh=C3wjheEbUQ1IxbYSNfMELlWS7MnanZlIjdzgZUm/xMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=em4jCl6zVoKNJt2fHo5dBZaendGwl9wsgnaK+szPSSKndmh1IzdYgOrcvHbPKBViK
-	 uW3gbFojmxJsl3GUwKFLuFqIkai9y2LeBfKZlNJa5QMYEEzTuzaHhRuqiGuuf1GW0Y
-	 K3gk7TRMsmJRMXKZItoG+Mz7pm/4dYqCe6thBVnI=
+	b=hyDtRri+Qc4xAvsXSWpaCC4QGarGkoKy1dacdjQWh5UhqnMezQa0ZXkXXosfC52Ou
+	 DqIu2m7OwbNvgqq9IiB73FwTnHtFnICZNG4IGGvxp/DQLoqz5g7BU1G8faLCDVPSEu
+	 RuK4y9ubz5U3i6WgFziCz1i4QygKFGZcD//2D844=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Camelia Groza <camelia.groza@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 005/143] batman-adv: Improve exception handling in batadv_throw_uevent()
+Subject: [PATCH 5.4 064/215] soc: fsl: qbman: Always disable interrupts when taking cgr_lock
 Date: Thu, 11 Apr 2024 11:54:33 +0200
-Message-ID: <20240411095421.070551748@linuxfoundation.org>
+Message-ID: <20240411095426.821075674@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 5593e9abf1cf2bf096366d8c7fd933bc69d561ce ]
+[ Upstream commit 584c2a9184a33a40fceee838f856de3cffa19be3 ]
 
-The kfree() function was called in up to three cases by
-the batadv_throw_uevent() function during error handling
-even if the passed variable contained a null pointer.
-This issue was detected by using the Coccinelle software.
+smp_call_function_single disables IRQs when executing the callback. To
+prevent deadlocks, we must disable IRQs when taking cgr_lock elsewhere.
+This is already done by qman_update_cgr and qman_delete_cgr; fix the
+other lockers.
 
-* Thus adjust jump targets.
-
-* Reorder kfree() calls at the end.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Acked-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Fixes: 96f413f47677 ("soc/fsl/qbman: fix issue in qman_delete_cgr_safe()")
+CC: stable@vger.kernel.org
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: Camelia Groza <camelia.groza@nxp.com>
+Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/main.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/soc/fsl/qbman/qman.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/batman-adv/main.c b/net/batman-adv/main.c
-index 5fc754b0b3f7f..75119f1ffcccf 100644
---- a/net/batman-adv/main.c
-+++ b/net/batman-adv/main.c
-@@ -691,29 +691,31 @@ int batadv_throw_uevent(struct batadv_priv *bat_priv, enum batadv_uev_type type,
- 				  "%s%s", BATADV_UEV_TYPE_VAR,
- 				  batadv_uev_type_str[type]);
- 	if (!uevent_env[0])
--		goto out;
-+		goto report_error;
+diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
+index 95f9e48052452..53b4cd0fb662d 100644
+--- a/drivers/soc/fsl/qbman/qman.c
++++ b/drivers/soc/fsl/qbman/qman.c
+@@ -1461,11 +1461,11 @@ static void qm_congestion_task(struct work_struct *work)
+ 	union qm_mc_result *mcr;
+ 	struct qman_cgr *cgr;
  
- 	uevent_env[1] = kasprintf(GFP_ATOMIC,
- 				  "%s%s", BATADV_UEV_ACTION_VAR,
- 				  batadv_uev_action_str[action]);
- 	if (!uevent_env[1])
--		goto out;
-+		goto free_first_env;
+-	spin_lock(&p->cgr_lock);
++	spin_lock_irq(&p->cgr_lock);
+ 	qm_mc_start(&p->p);
+ 	qm_mc_commit(&p->p, QM_MCC_VERB_QUERYCONGESTION);
+ 	if (!qm_mc_result_timeout(&p->p, &mcr)) {
+-		spin_unlock(&p->cgr_lock);
++		spin_unlock_irq(&p->cgr_lock);
+ 		dev_crit(p->config->dev, "QUERYCONGESTION timeout\n");
+ 		qman_p_irqsource_add(p, QM_PIRQ_CSCI);
+ 		return;
+@@ -1481,7 +1481,7 @@ static void qm_congestion_task(struct work_struct *work)
+ 	list_for_each_entry(cgr, &p->cgr_cbs, node)
+ 		if (cgr->cb && qman_cgrs_get(&c, cgr->cgrid))
+ 			cgr->cb(p, cgr, qman_cgrs_get(&rr, cgr->cgrid));
+-	spin_unlock(&p->cgr_lock);
++	spin_unlock_irq(&p->cgr_lock);
+ 	qman_p_irqsource_add(p, QM_PIRQ_CSCI);
+ }
  
- 	/* If the event is DEL, ignore the data field */
- 	if (action != BATADV_UEV_DEL) {
- 		uevent_env[2] = kasprintf(GFP_ATOMIC,
- 					  "%s%s", BATADV_UEV_DATA_VAR, data);
- 		if (!uevent_env[2])
--			goto out;
-+			goto free_second_env;
- 	}
+@@ -2438,7 +2438,7 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
+ 	preempt_enable();
  
- 	ret = kobject_uevent_env(bat_kobj, KOBJ_CHANGE, uevent_env);
--out:
--	kfree(uevent_env[0]);
--	kfree(uevent_env[1]);
- 	kfree(uevent_env[2]);
-+free_second_env:
-+	kfree(uevent_env[1]);
-+free_first_env:
-+	kfree(uevent_env[0]);
+ 	cgr->chan = p->config->channel;
+-	spin_lock(&p->cgr_lock);
++	spin_lock_irq(&p->cgr_lock);
  
- 	if (ret)
-+report_error:
- 		batadv_dbg(BATADV_DBG_BATMAN, bat_priv,
- 			   "Impossible to send uevent for (%s,%s,%s) event (err: %d)\n",
- 			   batadv_uev_type_str[type],
+ 	if (opts) {
+ 		struct qm_mcc_initcgr local_opts = *opts;
+@@ -2475,7 +2475,7 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
+ 	    qman_cgrs_get(&p->cgrs[1], cgr->cgrid))
+ 		cgr->cb(p, cgr, 1);
+ out:
+-	spin_unlock(&p->cgr_lock);
++	spin_unlock_irq(&p->cgr_lock);
+ 	put_affine_portal();
+ 	return ret;
+ }
 -- 
 2.43.0
 
