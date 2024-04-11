@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-38493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6240A8A0EE4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:18:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8E78A0DDD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:08:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 942471C21899
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:18:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B1B82864EE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22A7146586;
-	Thu, 11 Apr 2024 10:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757F71F5FA;
+	Thu, 11 Apr 2024 10:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJCRbOzB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t41xolph"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7853914600A;
-	Thu, 11 Apr 2024 10:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C4E145B06;
+	Thu, 11 Apr 2024 10:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830736; cv=none; b=J95LehEQHFGBZEXV8oWROpHndRnItqhDFp8Rfay/kRYBXyxmCXvCwkXaeRv0fqYLVF4aVOunwcJ3iLEY2YwXBxJwrvx2cwg3hWwNgbmt/xViuQgN3io7gDQeTpCxFKVzTh9KqXG6a8/3sier9xPlAi+4S5XbplvSnVbqvq5nwec=
+	t=1712830120; cv=none; b=l/Yv5oFAAjcfyC5ItRjnhg3GnZemYcjcNMh8NPBq5Y4M47LrCjDqYONNlLUTvYgU9PA5/wfyBVjE9dy8trR/EnPoeraA2rAuX9R9C6vah6zle85EYbdbgCVDDNt6ruFthNPMGk+mXtxo4I5ynyVzyUMp1MPuixpDCNhzkGfgsEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830736; c=relaxed/simple;
-	bh=YMNirU3C/bbfK5YcuSkk9PXrK/+5ytT0hN4lRYXsW6s=;
+	s=arc-20240116; t=1712830120; c=relaxed/simple;
+	bh=pz2E+wVgAhgjhMYyzuX+h/Gvr6aXl4FbcQxTV97O/10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nc21kXkZ7mBl+u3MLDM3teJK1MRp8ex9wPYSpRxgnr1riiY7oLn4v6jgwIDoSaqFMW5mwThQWc1b1Qq/j90WDLl/bCoccvxfGa1TkIpdSvbMJ3fnZa5ejRRCk+SAr1XIIZDULuZktp13LvsFYSg9C/2KfoZ6jkP2BBsdnQHdTUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJCRbOzB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C8DC433C7;
-	Thu, 11 Apr 2024 10:18:55 +0000 (UTC)
+	 MIME-Version; b=hLUzLRZTeuWcB6s/cBkZFMuU4HBZtnap7fLQVVhQwcR7brRe8qyxZ8p35pgIVh2D7EsDNNU41QxVyRb8OVIaiEoT5uqaihLKVzGf4TNZSN/TcY7iy1jUsLsbMKkI2eV/Q4m7bVc3ZwGQZ3hgIK830Oyo1Lz639TqfhV7oVWzLoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t41xolph; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5460BC433F1;
+	Thu, 11 Apr 2024 10:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830736;
-	bh=YMNirU3C/bbfK5YcuSkk9PXrK/+5ytT0hN4lRYXsW6s=;
+	s=korg; t=1712830119;
+	bh=pz2E+wVgAhgjhMYyzuX+h/Gvr6aXl4FbcQxTV97O/10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJCRbOzBGS1vOWRguAwdZiNEfD7dDHf1JSF2N40F+1NXCIwcOMDUpoKk/JK6MDaV4
-	 BOL3j/v7edbsPXfhyKebsJ4TzzzugLfub0yOcIzyMtVqDO+eg4VjfJ60fat4NpPavi
-	 r/mTeA6IPOP+d+ofzqkFLB/SZnWvAQFSclFTLCmk=
+	b=t41xolphhV35mgRC6J5HFjcDjmM2C45vKt9KXzGdH9m69DYFpG5wAp5YHOrjFDWQ/
+	 mWdENMM/vM7ZaWsC5kU4lhTZJE7t9UeNoBGxtj7XYK4ujeUAef1WHZ3FL3NN7W7Bfg
+	 Fts+LguIIN79EdtPInY/ROtrnLxYcxNe+EwMWKro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martijn Coenen <maco@android.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Bob Liu <bob.liu@oracle.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Genjian Zhang <zhanggenjian@kylinos.cn>
-Subject: [PATCH 5.4 099/215] loop: Call loop_config_discard() only after new config is applied
+	Serge Semin <fancer.lancer@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 040/143] net: pcs: xpcs: Return EINVAL in the internal methods
 Date: Thu, 11 Apr 2024 11:55:08 +0200
-Message-ID: <20240411095427.876402729@linuxfoundation.org>
+Message-ID: <20240411095422.120588469@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martijn Coenen <maco@android.com>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-[ Upstream commit 7c5014b0987a30e4989c90633c198aced454c0ec ]
+[ Upstream commit f5151005d379d9ce42e327fd3b2d2aaef61cda81 ]
 
-loop_set_status() calls loop_config_discard() to configure discard for
-the loop device; however, the discard configuration depends on whether
-the loop device uses encryption, and when we call it the encryption
-configuration has not been updated yet. Move the call down so we apply
-the correct discard configuration based on the new configuration.
+In particular the xpcs_soft_reset() and xpcs_do_config() functions
+currently return -1 if invalid auto-negotiation mode is specified. That
+value might be then passed to the generic kernel subsystems which require
+a standard kernel errno value. Even though the erroneous conditions are
+very specific (memory corruption or buggy driver implementation) using a
+hard-coded -1 literal doesn't seem correct anyway especially when it comes
+to passing it higher to the network subsystem or printing to the system
+log.  Convert the hard-coded error values to -EINVAL then.
 
-Signed-off-by: Martijn Coenen <maco@android.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Bob Liu <bob.liu@oracle.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Tested-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c |    4 ++--
+ drivers/net/pcs/pcs-xpcs.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -1332,8 +1332,6 @@ loop_set_status(struct loop_device *lo,
- 		}
+diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
+index 31f0beba638a2..03d6a6aef77cd 100644
+--- a/drivers/net/pcs/pcs-xpcs.c
++++ b/drivers/net/pcs/pcs-xpcs.c
+@@ -293,7 +293,7 @@ static int xpcs_soft_reset(struct dw_xpcs *xpcs,
+ 		dev = MDIO_MMD_VEND2;
+ 		break;
+ 	default:
+-		return -1;
++		return -EINVAL;
  	}
  
--	loop_config_discard(lo);
--
- 	memcpy(lo->lo_file_name, info->lo_file_name, LO_NAME_SIZE);
- 	memcpy(lo->lo_crypt_name, info->lo_crypt_name, LO_NAME_SIZE);
- 	lo->lo_file_name[LO_NAME_SIZE-1] = 0;
-@@ -1357,6 +1355,8 @@ loop_set_status(struct loop_device *lo,
- 		lo->lo_key_owner = uid;
+ 	ret = xpcs_write(xpcs, dev, MDIO_CTRL1, MDIO_CTRL1_RESET);
+@@ -891,7 +891,7 @@ int xpcs_do_config(struct dw_xpcs *xpcs, phy_interface_t interface,
+ 			return ret;
+ 		break;
+ 	default:
+-		return -1;
++		return -EINVAL;
  	}
  
-+	loop_config_discard(lo);
-+
- 	/* update dio if lo_offset or transfer is changed */
- 	__loop_update_dio(lo, lo->use_dio);
- 
+ 	if (compat->pma_config) {
+-- 
+2.43.0
+
 
 
 
