@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-38539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CCDB8A0F20
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:21:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D953B8A0D4E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:02:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C6DD1F25634
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:21:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B94DB23181
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECC0146A82;
-	Thu, 11 Apr 2024 10:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF39145B14;
+	Thu, 11 Apr 2024 10:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="db97o5s5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMfqZLCm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6E6140E3D;
-	Thu, 11 Apr 2024 10:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA7614430D;
+	Thu, 11 Apr 2024 10:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830871; cv=none; b=Wrg1jLEPn4aeS8I6oVgWeSeV1xhWnvQSdVgUTJyuepUjXc2/Rh+MuX9CFhpUs/3dwYZJvhqfZnoGFXShCmueJVCkydawWuTMmRSa1CwTVwgBHS3ezNdUPbw9hnmoa8Ig6O4SrEc8NV4QRq4iSiJ6p+3/ZFJHPyE/Ynola0FTWJo=
+	t=1712829755; cv=none; b=ZThPLBy2S/X7Ukn9b/a2DZ9TbgETxREv6VnO5VAfKKOImh+2+wtP98BFBiuBbFkrFCIBhsLofR0ayt8ZERU2CMz91QwH5CuHQThtPE+3ZG4yyIvaGvXwYvNwaIuTokmN6JCKXRK2ZRbwU2523RDtaOWnLJM9jdiBmTonlm37sm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830871; c=relaxed/simple;
-	bh=a+KAwO2c0oblO03QyxcYcF4reJ9IrvQLQf0o4XNpQCY=;
+	s=arc-20240116; t=1712829755; c=relaxed/simple;
+	bh=7pVZGUsoXK1v8X+d9P9gB+4szEczhw9f+5oL2U1gNkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qbZxKNYoreCEpbh1XxJaD26TlzoLsroIYkNiS6R2cH+W7XJJP2WKsLa1rIIpaJ2Ab3iM7I7bxT2/teDZX9c1k++M7DPM/29/i1r+83lR2EE+78Hjv9UY8VjW/8CruAlGFMa2zaz2oR5ogxQUbUIcKMF7ipOQJ0l90cr5Xf0gu7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=db97o5s5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4593C433F1;
-	Thu, 11 Apr 2024 10:21:10 +0000 (UTC)
+	 MIME-Version; b=f4u/0JUWIlO8NW4qKH61l0ud75m65GFcS1VAPaeBJ28B2PgegC4YKb2QlRd7u+mU7pnY1FeTzq08g18QxMUAQK2ZDX4pIz/2Klaiz6nKdu1WUSoVq1zc+D6Er8LmuUkPsXNqfPgFpQwvBKcXj4WD/CXc9lY20JY/SVuCZM7yB1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMfqZLCm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D0E3C433C7;
+	Thu, 11 Apr 2024 10:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830871;
-	bh=a+KAwO2c0oblO03QyxcYcF4reJ9IrvQLQf0o4XNpQCY=;
+	s=korg; t=1712829755;
+	bh=7pVZGUsoXK1v8X+d9P9gB+4szEczhw9f+5oL2U1gNkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=db97o5s5gH9ldEVDcmESkiK1H54fzKmD0sg4/K+HSKKwksZzuSm1Wa/QuzWyElTu6
-	 1LEnfVEscmDEJc6HPLhPc35CZUZFPw8bFB6VggJTH0cyb9TNTaqdMETe76AVA8Cgzf
-	 oPRoWru+yiRvp6DiCUfdsaMAnOKCyQx+H1c7eaDU=
+	b=yMfqZLCmYDsiMIfkGSPSTpZ0dZFfTYtV/TssAxCYAsSMqRgRv9IgNcZfxsLuqgDBL
+	 3CJvdDvswJp2pdx/6VqRfQT4GhCf+4ax1MJJiuinfYicZQSwzAFb5PBRhbpq01tg3c
+	 DktUtL4jfpa2UDVHZq8Plpg5dJ8iBKVyw3W85+a8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Rik van Riel <riel@surriel.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 109/215] bounds: support non-power-of-two CONFIG_NR_CPUS
+	Yang Jihong <yangjihong1@huawei.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 4.19 095/175] perf/core: Fix reentry problem in perf_output_read_group()
 Date: Thu, 11 Apr 2024 11:55:18 +0200
-Message-ID: <20240411095428.185358693@linuxfoundation.org>
+Message-ID: <20240411095422.427434777@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Yang Jihong <yangjihong1@huawei.com>
 
-commit f2d5dcb48f7ba9e3ff249d58fc1fa963d374e66a upstream.
+commit 6b959ba22d34ca793ffdb15b5715457c78e38b1a upstream.
 
-ilog2() rounds down, so for example when PowerPC 85xx sets CONFIG_NR_CPUS
-to 24, we will only allocate 4 bits to store the number of CPUs instead of
-5.  Use bits_per() instead, which rounds up.  Found by code inspection.
-The effect of this would probably be a misaccounting when doing NUMA
-balancing, so to a user, it would only be a performance penalty.  The
-effects may be more wide-spread; it's hard to tell.
+perf_output_read_group may respond to IPI request of other cores and invoke
+__perf_install_in_context function. As a result, hwc configuration is modified.
+causing inconsistency and unexpected consequences.
 
-Link: https://lkml.kernel.org/r/20231010145549.1244748-1-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Fixes: 90572890d202 ("mm: numa: Change page last {nid,pid} into {cpu,pid}")
-Reviewed-by: Rik van Riel <riel@surriel.com>
-Acked-by: Mel Gorman <mgorman@techsingularity.net>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Interrupts are not disabled when perf_output_read_group reads PMU counter.
+In this case, IPI request may be received from other cores.
+As a result, PMU configuration is modified and an error occurs when
+reading PMU counter:
+
+		     CPU0                                         CPU1
+						      __se_sys_perf_event_open
+							perf_install_in_context
+  perf_output_read_group                                  smp_call_function_single
+    for_each_sibling_event(sub, leader) {                   generic_exec_single
+      if ((sub != event) &&                                   remote_function
+	  (sub->state == PERF_EVENT_STATE_ACTIVE))                    |
+  <enter IPI handler: __perf_install_in_context>   <----RAISE IPI-----+
+  __perf_install_in_context
+    ctx_resched
+      event_sched_out
+	armpmu_del
+	  ...
+	  hwc->idx = -1; // event->hwc.idx is set to -1
+  ...
+  <exit IPI>
+	      sub->pmu->read(sub);
+		armpmu_read
+		  armv8pmu_read_counter
+		    armv8pmu_read_hw_counter
+		      int idx = event->hw.idx; // idx = -1
+		      u64 val = armv8pmu_read_evcntr(idx);
+			u32 counter = ARMV8_IDX_TO_COUNTER(idx); // invalid counter = 30
+			read_pmevcntrn(counter) // undefined instruction
+
+Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20220902082918.179248-1-yangjihong1@huawei.com
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bounds.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/core.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/kernel/bounds.c
-+++ b/kernel/bounds.c
-@@ -19,7 +19,7 @@ int main(void)
- 	DEFINE(NR_PAGEFLAGS, __NR_PAGEFLAGS);
- 	DEFINE(MAX_NR_ZONES, __MAX_NR_ZONES);
- #ifdef CONFIG_SMP
--	DEFINE(NR_CPUS_BITS, ilog2(CONFIG_NR_CPUS));
-+	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS));
- #endif
- 	DEFINE(SPINLOCK_SIZE, sizeof(spinlock_t));
- 	/* End of constants */
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6253,9 +6253,16 @@ static void perf_output_read_group(struc
+ {
+ 	struct perf_event *leader = event->group_leader, *sub;
+ 	u64 read_format = event->attr.read_format;
++	unsigned long flags;
+ 	u64 values[6];
+ 	int n = 0;
+ 
++	/*
++	 * Disabling interrupts avoids all counter scheduling
++	 * (context switches, timer based rotation and IPIs).
++	 */
++	local_irq_save(flags);
++
+ 	values[n++] = 1 + leader->nr_siblings;
+ 
+ 	if (read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
+@@ -6291,6 +6298,8 @@ static void perf_output_read_group(struc
+ 
+ 		__output_copy(handle, values, n * sizeof(u64));
+ 	}
++
++	local_irq_restore(flags);
+ }
+ 
+ #define PERF_FORMAT_TOTAL_TIMES (PERF_FORMAT_TOTAL_TIME_ENABLED|\
 
 
 
