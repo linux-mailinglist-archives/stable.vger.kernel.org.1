@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-38087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 270CB8A0CF7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEAE38A0EB6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDB571F21971
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:58:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A48BE1F21D43
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA199145342;
-	Thu, 11 Apr 2024 09:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421CD14601D;
+	Thu, 11 Apr 2024 10:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6ndrwUo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPIDPC9S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A446A13DDDD;
-	Thu, 11 Apr 2024 09:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4147145B28;
+	Thu, 11 Apr 2024 10:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829525; cv=none; b=TZdQKToxF8OgQuyo6qU6lIrkqQnqa5YTcFGHovKlgKZy1weaA50X23AR0id5RMvMvhS7X3wKEajijI7nWekLxOK3x00cmdE9PJ5gq24FixqxTgzRCgEqBOpKzHcrkci0LNXXw+akTA6vmI0fP23ijyBbMwJzCF06+Dpw8GZkhGY=
+	t=1712830647; cv=none; b=kJpnxWVA7oM3FAeh57JoHZtWzVCfdgcuW+rjJVZCqDPMdTfbeanRYBbDmmend9fU8flcHQZG++YExJv/vU3qXVgRag9wBBfByPjWDJFNrSWedQiw+myb9X5gwmGWdzgxYDwJOnJm2H3B9M+dJ66gQO+Rd79Biqk6rjwf2gFqUMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829525; c=relaxed/simple;
-	bh=s0JC/z39eKoY7OcvtWFVy51YccbLPOnSHxuMUUAj7dY=;
+	s=arc-20240116; t=1712830647; c=relaxed/simple;
+	bh=hxwqIXXU9m1gg4zy1WgIGQXW8OWiDKmVuQejUBz7JAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=im6+uLUz1GquhTrsH7+SwyjjXHyMV6hOUjbpC1oAUQLfkEbhOKlX4R/3K3QsNTK7ZXyjzFNNUFH5B6q0H+1H2RkpxJAfl9GAnH3xZLHrygP4fSuU++JSPQZTVvefGkj1cpHp603CR83+N4O1sjwrPWi6uFjxULuCW/CulhFT7QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6ndrwUo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93BFC433F1;
-	Thu, 11 Apr 2024 09:58:44 +0000 (UTC)
+	 MIME-Version; b=G82o1qHnTF3PmIgoyXrkXhrIqi3CSnir1vFLlwGr1UsqsXU1hdHSRJQamwVtNF52u7QuwxMzJbEif3m7EGLmCKdqIRHDiyNrr20T+MoGgqLWLTyOKpNXq0sbby7PW8zEtNU+tnXtS4gVaDNcYj0/pdwqyWgUSrqG2it0NBTHB00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPIDPC9S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715ADC433C7;
+	Thu, 11 Apr 2024 10:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829525;
-	bh=s0JC/z39eKoY7OcvtWFVy51YccbLPOnSHxuMUUAj7dY=;
+	s=korg; t=1712830646;
+	bh=hxwqIXXU9m1gg4zy1WgIGQXW8OWiDKmVuQejUBz7JAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v6ndrwUoQi/KU1oo9v3WwCmN4unLIHgw70Cvixhy4tm1+1UwQ6JchQ0C7oDXIEBdh
-	 VaFhl0YkOvGIyszCtuxwM6S6u9Oy3fkZPafpqgGZO1MmKPlA0SOePMUtxWGMHnmZ+E
-	 qZqrNxxUn11gzvTQ4Rv/H2g5Bil1u7yHdYI4iwhg=
+	b=LPIDPC9ScHbso0GTM/KjAPMUPwAdtKqFogpSHqoBZqxrA2bxG61seoLr52M+s5MKt
+	 WPTT8+j9snVX3ECScwwIbgp6fSu4EsArzeyaqiZugzW2vhMch/Fzg5Njo7g2iio8ib
+	 qu9SHC3FF+0ouwAiM+c4KejXFPemrYNNw4E1U89Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Igor Zhbanov <izh1979@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	sparclinux@vger.kernel.org,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andreas Larsson <andreas@gaisler.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 017/175] sparc64: NMI watchdog: fix return value of __setup handler
+Subject: [PATCH 5.4 031/215] parisc: Fix csum_ipv6_magic on 64-bit systems
 Date: Thu, 11 Apr 2024 11:54:00 +0200
-Message-ID: <20240411095420.065988249@linuxfoundation.org>
+Message-ID: <20240411095425.833621546@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,52 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 3ed7c61e49d65dacb96db798c0ab6fcd55a1f20f ]
+[ Upstream commit 4b75b12d70506e31fc02356bbca60f8d5ca012d0 ]
 
-__setup() handlers should return 1 to obsolete_checksetup() in
-init/main.c to indicate that the boot option has been handled.
-A return of 0 causes the boot option/value to be listed as an Unknown
-kernel parameter and added to init's (limited) argument or environment
-strings. Also, error return codes don't mean anything to
-obsolete_checksetup() -- only non-zero (usually 1) or zero.
-So return 1 from setup_nmi_watchdog().
+hppa 64-bit systems calculates the IPv6 checksum using 64-bit add
+operations. The last add folds protocol and length fields into the 64-bit
+result. While unlikely, this operation can overflow. The overflow can be
+triggered with a code sequence such as the following.
 
-Fixes: e5553a6d0442 ("sparc64: Implement NMI watchdog on capable cpus.")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: Igor Zhbanov <izh1979@gmail.com>
-Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
+	/* try to trigger massive overflows */
+	memset(tmp_buf, 0xff, sizeof(struct in6_addr));
+	csum_result = csum_ipv6_magic((struct in6_addr *)tmp_buf,
+				      (struct in6_addr *)tmp_buf,
+				      0xffff, 0xff, 0xffffffff);
+
+Fix the problem by adding any overflows from the final add operation into
+the calculated checksum. Fortunately, we can do this without additional
+cost by replacing the add operation used to fold the checksum into 32 bit
+with "add,dc" to add in the missing carry.
+
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20240211052802.22612-1-rdunlap@infradead.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/kernel/nmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/include/asm/checksum.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/sparc/kernel/nmi.c b/arch/sparc/kernel/nmi.c
-index 8babbeb30adf9..1f356928a06d5 100644
---- a/arch/sparc/kernel/nmi.c
-+++ b/arch/sparc/kernel/nmi.c
-@@ -273,7 +273,7 @@ static int __init setup_nmi_watchdog(char *str)
- 	if (!strncmp(str, "panic", 5))
- 		panic_on_timeout = 1;
+diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
+index 0a02639514505..7861d365ba1e2 100644
+--- a/arch/parisc/include/asm/checksum.h
++++ b/arch/parisc/include/asm/checksum.h
+@@ -152,8 +152,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ "	add,dc		%3, %0, %0\n"  /* fold in proto+len | carry bit */
+ "	extrd,u		%0, 31, 32, %4\n"/* copy upper half down */
+ "	depdi		0, 31, 32, %0\n"/* clear upper half */
+-"	add		%4, %0, %0\n"	/* fold into 32-bits */
+-"	addc		0, %0, %0\n"	/* add carry */
++"	add,dc		%4, %0, %0\n"	/* fold into 32-bits, plus carry */
++"	addc		0, %0, %0\n"	/* add final carry */
  
--	return 0;
-+	return 1;
- }
- __setup("nmi_watchdog=", setup_nmi_watchdog);
+ #else
  
 -- 
 2.43.0
