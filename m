@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-38890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D948A10DD
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7AEB8A0EF8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:19:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E569328ADFF
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8CC21C21EF3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0C4146019;
-	Thu, 11 Apr 2024 10:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AEE01465A4;
+	Thu, 11 Apr 2024 10:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPSB2iuW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x11xSD3Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E77613D24D;
-	Thu, 11 Apr 2024 10:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA565140E3D;
+	Thu, 11 Apr 2024 10:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831895; cv=none; b=cKIvNX1pBv+I4fakWuwFk52IUmsGzu4BdWjlpYautkp6LQc/ZczndgpE6jrDsyHo+KB/t6nFjP4KtPZwer/1oumxOLcR8BhEG5YxSVRJfIwj+2kMyGbYYr8B78KLX0+BwHOlzu5b5A/bWmIpH05Y0eF0pu/E9ZxhxgSAPnTJt00=
+	t=1712830783; cv=none; b=CqW9aRkvNphVJg+pVwz5xDrVJwWDeLp9hj1YI0ErOH0xfGTAfvhIsFEj8meg4ZoNDVc5rC6Fdsy6rMHgTQ4euEl8kZ4PpWgYsWuAcyyDUw8sO4aMHGxsRQ57o5xofxjr/zyGVNQFq1jj5Mcjv5Y78OjoZUEAlgkgrAKgagThwOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831895; c=relaxed/simple;
-	bh=y4EZ650pTJjsw70bzU66pUEW+9z7K89oD8V1WEN0fz0=;
+	s=arc-20240116; t=1712830783; c=relaxed/simple;
+	bh=gJ2ENgU/Wa6j+11Ouckw7yFQhhrUzYayA3uY2u5iujs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p3cmExoZI5+JiStPJSn4NRjmQyKcOe4rea/bJ02ZfssTpA99AgGtKKPDF+v8XKYWMVlDyPQOcxxaA9jhtTP4okEEZwQohPFW9XypV4OHZZWLkYR7R2cot1UKSyv88kR2KZ9zEWGpuYBWM/H0Qv+q8jY4NxZYrq05n5mlIXf0Iz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPSB2iuW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F887C433C7;
-	Thu, 11 Apr 2024 10:38:14 +0000 (UTC)
+	 MIME-Version; b=iAzgqsqLZeWSXY3LgtmQ4AH3ho72m6mec2aw2h32m9tyqD4cUyhlR+qf18QjXSyTcWZuM+ER08Neur6jbCtrH9lDsVLKaTMbD1KPey+JpaMC5upw22Fl/d3mn+XztXKQ8eVko3TMG00tGxrXyepyuDQg1JS17DLlYAKQewr+NCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x11xSD3Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F29C433F1;
+	Thu, 11 Apr 2024 10:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831895;
-	bh=y4EZ650pTJjsw70bzU66pUEW+9z7K89oD8V1WEN0fz0=;
+	s=korg; t=1712830782;
+	bh=gJ2ENgU/Wa6j+11Ouckw7yFQhhrUzYayA3uY2u5iujs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RPSB2iuWNIT6HQEk+GPOTe+zoROOjizPqJiyvS/Id8lUT7LK6llTw69vbovauY0ex
-	 KhQRYIwlh3ccoSzgzHgNtqnDlQxnyOycfH58vP9llxN9eJwE5V72kNBXnHXZc1OyyU
-	 hnY4j+VXUS46UGgZmHlAV3t3B3L761i6yS2QSJYw=
+	b=x11xSD3ZsObGY5xNbn9AQ47YDRk4vEp0YfnnF9C6VOURg6ktonvxKZviGi20Sb1Rp
+	 kcR7l9+QzeLiT/NZSCq2zZ8KP/p+Peiw7akt2FPysLOA7uE+S2diRB8zJyHRNY+aki
+	 6Da8EJb6WBDB0/YXn58aozL0zrv2Zfr42gikWTfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
 	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 5.10 162/294] usb: cdc-wdm: close race between read and workqueue
-Date: Thu, 11 Apr 2024 11:55:25 +0200
-Message-ID: <20240411095440.520699753@linuxfoundation.org>
+Subject: [PATCH 5.4 117/215] usb: cdc-wdm: close race between read and workqueue
+Date: Thu, 11 Apr 2024 11:55:26 +0200
+Message-ID: <20240411095428.421465116@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
