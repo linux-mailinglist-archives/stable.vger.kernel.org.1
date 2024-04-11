@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-38872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6446E8A10C9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC4F8A0D45
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:02:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FFEC1C2394E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29AC0B25A85
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 231CA13BACD;
-	Thu, 11 Apr 2024 10:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCC714535A;
+	Thu, 11 Apr 2024 10:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A7xCQVmJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCNywlL6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40F7140366;
-	Thu, 11 Apr 2024 10:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B03214430D;
+	Thu, 11 Apr 2024 10:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831841; cv=none; b=t2hg1tZKz+0dZyAxh16iyI2oCZqN7IKAZDw8iQM+iE6OKleBcT9bzy7G3Du52tpc9RYjvLha1unqmyJ4zTdtQ1YG19IiFGCF3gKfxuGOCgve409n5kXO0XkcLZGhaWZJNfx5HnBhaKJ0u5bCL/bND4/oI/g6PZqclHXLXJg3G7g=
+	t=1712829729; cv=none; b=PLwICf4A6Qp6ByuQj9BekhQQVXUkNZAfKHEyD7C3oZw4uJH7A5DrQwrw+x4E6BuwZYcMBBpX6tBOTDbxDAqBHLocBOWyZK25D8VB8ZNj3d5wVaXOVHrogHUL1OTHLhKFEK7P4NyRDXXynUXTgmOL4QACWI33mIChk8YiyG0C3qI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831841; c=relaxed/simple;
-	bh=bMixFMMfX0jWy17fpwiEGEmJ34zdLXxmM3H0SyL5cQA=;
+	s=arc-20240116; t=1712829729; c=relaxed/simple;
+	bh=shXsfHiIAhJOhAF4i/TD9/eZBsvJovvs7v9ZQov50Dg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Edi/NpJk2RFSKAdSo1XPd9t3KzTOjyP3E3z9nd8iPO0zhaRC4coAyhm5W/SbLXfJTBd7A80bbya41RDPuoxgzDslTIiqXCIHS9cSVanFDEDyXh4V+aq3/vRqG9U4pGTEXuRCPsG78EgTwpiFvqWxDnk6ILNNWhN2cpyKUGTn6Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A7xCQVmJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E82C433C7;
-	Thu, 11 Apr 2024 10:37:20 +0000 (UTC)
+	 MIME-Version; b=S1L2581prP/GDvz7g2C+OFFWqa2fbeS2yB3qkdK6yNPo0toTm0I7T/dSHCK9pFuR8gL7KesHp7M9TaM/t49k1w6dUMxmtGT+EW7UMmJLv4qYY5z0NTfPOv/GkJF8PaPynNkDEFURiCim0nKS/r6Gffx+dFcdDgYHw2rqzjy58ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCNywlL6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F82C433C7;
+	Thu, 11 Apr 2024 10:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831841;
-	bh=bMixFMMfX0jWy17fpwiEGEmJ34zdLXxmM3H0SyL5cQA=;
+	s=korg; t=1712829729;
+	bh=shXsfHiIAhJOhAF4i/TD9/eZBsvJovvs7v9ZQov50Dg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A7xCQVmJTbSo6jWznfe4KcPxVeF9HMgxjMUh0Tx+CcuVFKegFJodwlx1nYPFY15l+
-	 uag7KXNSAYDNTQ4oRl7iKReFV/sufg5WXfdMLziIKehr9fta2bXGTnTgCCPCbjquEj
-	 MDoM56ZbLVzwHZGjXB7X2d/7zjJFCYFcyeqLJMj0=
+	b=BCNywlL6CdVhUlddDQgIYIF8rbJArBVs8N4D/qWrdcP5TDbu1SDWTXJAHwyoWwE62
+	 1u1G/19gnMnZ8M7fpdBxFgbNqa7Q56Pk9VGewNyfaOBNj2BMBdKNm72Si4BwjxwKuz
+	 JJ8SkxZpC8sYqtorMIxZS24Q6EdwI5O6i6oR06xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lillian Berry <lillian@star-ark.net>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Xiao Ni <xni@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 106/294] wireguard: netlink: check for dangling peer via is_dead instead of empty list
+Subject: [PATCH 4.19 046/175] dm-raid: fix lockdep waring in "pers->hot_add_disk"
 Date: Thu, 11 Apr 2024 11:54:29 +0200
-Message-ID: <20240411095438.862667211@linuxfoundation.org>
+Message-ID: <20240411095420.952080315@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason A. Donenfeld <Jason@zx2c4.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 55b6c738673871c9b0edae05d0c97995c1ff08c4 ]
+[ Upstream commit 95009ae904b1e9dca8db6f649f2d7c18a6e42c75 ]
 
-If all peers are removed via wg_peer_remove_all(), rather than setting
-peer_list to empty, the peer is added to a temporary list with a head on
-the stack of wg_peer_remove_all(). If a netlink dump is resumed and the
-cursored peer is one that has been removed via wg_peer_remove_all(), it
-will iterate from that peer and then attempt to dump freed peers.
+The lockdep assert is added by commit a448af25becf ("md/raid10: remove
+rcu protection to access rdev from conf") in print_conf(). And I didn't
+notice that dm-raid is calling "pers->hot_add_disk" without holding
+'reconfig_mutex'.
 
-Fix this by instead checking peer->is_dead, which was explictly created
-for this purpose. Also move up the device_update_lock lockdep assertion,
-since reading is_dead relies on that.
+"pers->hot_add_disk" read and write many fields that is protected by
+'reconfig_mutex', and raid_resume() already grab the lock in other
+contex. Hence fix this problem by protecting "pers->host_add_disk"
+with the lock.
 
-It can be reproduced by a small script like:
-
-    echo "Setting config..."
-    ip link add dev wg0 type wireguard
-    wg setconf wg0 /big-config
-    (
-            while true; do
-                    echo "Showing config..."
-                    wg showconf wg0 > /dev/null
-            done
-    ) &
-    sleep 4
-    wg setconf wg0 <(printf "[Peer]\nPublicKey=$(wg genkey)\n")
-
-Resulting in:
-
-    BUG: KASAN: slab-use-after-free in __lock_acquire+0x182a/0x1b20
-    Read of size 8 at addr ffff88811956ec70 by task wg/59
-    CPU: 2 PID: 59 Comm: wg Not tainted 6.8.0-rc2-debug+ #5
-    Call Trace:
-     <TASK>
-     dump_stack_lvl+0x47/0x70
-     print_address_description.constprop.0+0x2c/0x380
-     print_report+0xab/0x250
-     kasan_report+0xba/0xf0
-     __lock_acquire+0x182a/0x1b20
-     lock_acquire+0x191/0x4b0
-     down_read+0x80/0x440
-     get_peer+0x140/0xcb0
-     wg_get_device_dump+0x471/0x1130
-
-Cc: stable@vger.kernel.org
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Reported-by: Lillian Berry <lillian@star-ark.net>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 9092c02d9435 ("DM RAID: Add ability to restore transiently failed devices on resume")
+Fixes: a448af25becf ("md/raid10: remove rcu protection to access rdev from conf")
+Cc: stable@vger.kernel.org # v6.7+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Xiao Ni <xni@redhat.com>
+Acked-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240305072306.2562024-10-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireguard/netlink.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/md/dm-raid.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
-index f5bc279c9a8c2..6523f9d5a1527 100644
---- a/drivers/net/wireguard/netlink.c
-+++ b/drivers/net/wireguard/netlink.c
-@@ -255,17 +255,17 @@ static int wg_get_device_dump(struct sk_buff *skb, struct netlink_callback *cb)
- 	if (!peers_nest)
- 		goto out;
- 	ret = 0;
--	/* If the last cursor was removed via list_del_init in peer_remove, then
-+	lockdep_assert_held(&wg->device_update_lock);
-+	/* If the last cursor was removed in peer_remove or peer_remove_all, then
- 	 * we just treat this the same as there being no more peers left. The
- 	 * reason is that seq_nr should indicate to userspace that this isn't a
- 	 * coherent dump anyway, so they'll try again.
- 	 */
- 	if (list_empty(&wg->peer_list) ||
--	    (ctx->next_peer && list_empty(&ctx->next_peer->peer_list))) {
-+	    (ctx->next_peer && ctx->next_peer->is_dead)) {
- 		nla_nest_cancel(skb, peers_nest);
- 		goto out;
+diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
+index 1759134fce824..2a8746f9c6d87 100644
+--- a/drivers/md/dm-raid.c
++++ b/drivers/md/dm-raid.c
+@@ -4023,7 +4023,9 @@ static void raid_resume(struct dm_target *ti)
+ 		 * Take this opportunity to check whether any failed
+ 		 * devices are reachable again.
+ 		 */
++		mddev_lock_nointr(mddev);
+ 		attempt_restore_of_faulty_devices(rs);
++		mddev_unlock(mddev);
  	}
--	lockdep_assert_held(&wg->device_update_lock);
- 	peer = list_prepare_entry(ctx->next_peer, &wg->peer_list, peer_list);
- 	list_for_each_entry_continue(peer, &wg->peer_list, peer_list) {
- 		if (get_peer(peer, skb, ctx)) {
+ 
+ 	if (test_and_clear_bit(RT_FLAG_RS_SUSPENDED, &rs->runtime_flags)) {
 -- 
 2.43.0
 
