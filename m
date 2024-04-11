@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-38189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F578A0D6B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 867D78A0E04
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 986F91C20B0F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7AD71C20AC9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FA4145B0A;
-	Thu, 11 Apr 2024 10:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A2E145B14;
+	Thu, 11 Apr 2024 10:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LvQud/N0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeqmcw50"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51851145345;
-	Thu, 11 Apr 2024 10:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80EB142624;
+	Thu, 11 Apr 2024 10:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829826; cv=none; b=rodfVGHpqBpOkcd2ml/thOxkfNB7ej0IyE9Vb+m+5yMt/xqiXLjyNrQdnZnkGkGud1iRGBdoEM8ZzHOs6piI52zrrFqXpF138r1SEuy/ATEIssdhz1aO59+aFg9JS3UfVdssk/7JCQHOt4knj+ExABujDbzn+8k9bN7B9/H8Waw=
+	t=1712830210; cv=none; b=kalA4bkWXUCamLxiw9J2NLCSCnjLShTRw87e5vAnBDhs9XHeemWtvnhhjk+B4toFNSda6etsx3fYI44oH1cvK6W0mM9IzQ21r2LgK/JeQKr1CJgRXCAnfGAkUe6BX92F8iOl6BLa9l1Sd6IG1BwUgmRad3GIbqDn5rXjcmNt9Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829826; c=relaxed/simple;
-	bh=IqHFWGWBRWX6wIe/SpknoNen8Hwcj0/FhMXgsnkn1sY=;
+	s=arc-20240116; t=1712830210; c=relaxed/simple;
+	bh=WtjtEf3lXcaQe1+Lk35LrV/cz7qQdXY0fovdxDgxsfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZSVhrz21oWUArPld/ZqSHoDADGqcG+3jLPNtzDGROd3TiP4oHhnFzWP1LDpY+L8I5+jjik/Dqk9lRqoErOYQLe552GQUdZVXoZqV3jF4NdjltOGoX39WLoqtLvivBZNJcpmoO1Dd3E+S/2QLxh5+oGDxt8Nc0O0VPnhgcMgmY4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LvQud/N0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AD2C433F1;
-	Thu, 11 Apr 2024 10:03:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cCXVtGGbjoJ2Y+YYPbjMi8B8ppnl1jXXqPGA4bulpZ3YFYdIl42X++oTnwTy6OODfqxBz7WV+XUkkJpoYDMx1sYrItomywfOlz/nXKCV/3GvbP6DYAKS1b2l2WexjQOK4DpGDM54aGDXULpbsA4UA0g41vdxH9f4v6sJ9ZRs0Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeqmcw50; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60719C433C7;
+	Thu, 11 Apr 2024 10:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829826;
-	bh=IqHFWGWBRWX6wIe/SpknoNen8Hwcj0/FhMXgsnkn1sY=;
+	s=korg; t=1712830210;
+	bh=WtjtEf3lXcaQe1+Lk35LrV/cz7qQdXY0fovdxDgxsfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LvQud/N0q+5o3+XQUm7NMEkGn6mD1MW6G5bQdgR4CaTjTKZBUy4jmEdvwLhc507/t
-	 7xY3MkM5tfgRzdK5T6U246i3/E0Ou/sPaeZ0bgOzKW1BDcsI0XYCa4Ms0pGWXdY0eL
-	 hIBTuT9oXaZ+EwWXBDTs1PlUyjl+HmfDOuBQIlXU=
+	b=xeqmcw50d3lryqUDYNf4osEXc1V2gBA6qCp1ila7TPN9x8FKrq9i7KpZUumW5co/e
+	 ScwXlzum1Kkvbufw+zSSrrtL1Si35XIXHcWRLVPrmDQKq3e6YpkQLv8lOukZQr8wWH
+	 B844L3K91mPH5kCp5oZOyuewdU1huBpPtdpkLlEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <2045gemini@gmail.com>,
-	Bastien Nocera <hadess@hadess.net>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 4.19 117/175] Bluetooth: Fix TOCTOU in HCI debugfs implementation
+	=?UTF-8?q?M=C3=A1t=C3=A9=20Mosonyi?= <mosomate@gmail.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 072/143] ASoC: Intel: common: DMI remap for rebranded Intel NUC M15 (LAPRC710) laptops
 Date: Thu, 11 Apr 2024 11:55:40 +0200
-Message-ID: <20240411095423.089298608@linuxfoundation.org>
+Message-ID: <20240411095423.081618521@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,199 +62,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bastien Nocera <hadess@hadess.net>
+From: mosomate <mosomate@gmail.com>
 
-commit 7835fcfd132eb88b87e8eb901f88436f63ab60f7 upstream.
+[ Upstream commit c13e03126a5be90781084437689724254c8226e1 ]
 
-struct hci_dev members conn_info_max_age, conn_info_min_age,
-le_conn_max_interval, le_conn_min_interval, le_adv_max_interval,
-and le_adv_min_interval can be modified from the HCI core code, as well
-through debugfs.
+Added DMI quirk to handle the rebranded variants of Intel NUC M15
+(LAPRC710) laptops. The DMI matching is based on motherboard
+attributes.
 
-The debugfs implementation, that's only available to privileged users,
-will check for boundaries, making sure that the minimum value being set
-is strictly above the maximum value that already exists, and vice-versa.
-
-However, as both minimum and maximum values can be changed concurrently
-to us modifying them, we need to make sure that the value we check is
-the value we end up using.
-
-For example, with ->conn_info_max_age set to 10, conn_info_min_age_set()
-gets called from vfs handlers to set conn_info_min_age to 8.
-
-In conn_info_min_age_set(), this goes through:
-	if (val == 0 || val > hdev->conn_info_max_age)
-		return -EINVAL;
-
-Concurrently, conn_info_max_age_set() gets called to set to set the
-conn_info_max_age to 7:
-	if (val == 0 || val > hdev->conn_info_max_age)
-		return -EINVAL;
-That check will also pass because we used the old value (10) for
-conn_info_max_age.
-
-After those checks that both passed, the struct hci_dev access
-is mutex-locked, disabling concurrent access, but that does not matter
-because the invalid value checks both passed, and we'll end up with
-conn_info_min_age = 8 and conn_info_max_age = 7
-
-To fix this problem, we need to lock the structure access before so the
-check and assignment are not interrupted.
-
-This fix was originally devised by the BassCheck[1] team, and
-considered the problem to be an atomicity one. This isn't the case as
-there aren't any concerns about the variable changing while we check it,
-but rather after we check it parallel to another change.
-
-This patch fixes CVE-2024-24858 and CVE-2024-24857.
-
-[1] https://sites.google.com/view/basscheck/
-
-Co-developed-by: Gui-Dong Han <2045gemini@gmail.com>
-Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
-Link: https://lore.kernel.org/linux-bluetooth/20231222161317.6255-1-2045gemini@gmail.com/
-Link: https://nvd.nist.gov/vuln/detail/CVE-2024-24858
-Link: https://lore.kernel.org/linux-bluetooth/20231222162931.6553-1-2045gemini@gmail.com/
-Link: https://lore.kernel.org/linux-bluetooth/20231222162310.6461-1-2045gemini@gmail.com/
-Link: https://nvd.nist.gov/vuln/detail/CVE-2024-24857
-Fixes: 31ad169148df ("Bluetooth: Add conn info lifetime parameters to debugfs")
-Fixes: 729a1051da6f ("Bluetooth: Expose default LE advertising interval via debugfs")
-Fixes: 71c3b60ec6d2 ("Bluetooth: Move BR/EDR debugfs file creation into hci_debugfs.c")
-Signed-off-by: Bastien Nocera <hadess@hadess.net>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://github.com/thesofproject/linux/issues/4218
+Signed-off-by: Máté Mosonyi <mosomate@gmail.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20240208165545.93811-20-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_debugfs.c |   48 +++++++++++++++++++++++++++++---------------
- 1 file changed, 32 insertions(+), 16 deletions(-)
+ drivers/soundwire/dmi-quirks.c   |  8 ++++++++
+ sound/soc/intel/boards/sof_sdw.c | 11 +++++++++++
+ 2 files changed, 19 insertions(+)
 
---- a/net/bluetooth/hci_debugfs.c
-+++ b/net/bluetooth/hci_debugfs.c
-@@ -200,10 +200,12 @@ static int conn_info_min_age_set(void *d
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val == 0 || val > hdev->conn_info_max_age)
-+	hci_dev_lock(hdev);
-+	if (val == 0 || val > hdev->conn_info_max_age) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->conn_info_min_age = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -228,10 +230,12 @@ static int conn_info_max_age_set(void *d
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val == 0 || val < hdev->conn_info_min_age)
-+	hci_dev_lock(hdev);
-+	if (val == 0 || val < hdev->conn_info_min_age) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->conn_info_max_age = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -479,10 +483,12 @@ static int sniff_min_interval_set(void *
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val == 0 || val % 2 || val > hdev->sniff_max_interval)
-+	hci_dev_lock(hdev);
-+	if (val == 0 || val % 2 || val > hdev->sniff_max_interval) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->sniff_min_interval = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -507,10 +513,12 @@ static int sniff_max_interval_set(void *
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val == 0 || val % 2 || val < hdev->sniff_min_interval)
-+	hci_dev_lock(hdev);
-+	if (val == 0 || val % 2 || val < hdev->sniff_min_interval) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->sniff_max_interval = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -749,10 +757,12 @@ static int conn_min_interval_set(void *d
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val < 0x0006 || val > 0x0c80 || val > hdev->le_conn_max_interval)
-+	hci_dev_lock(hdev);
-+	if (val < 0x0006 || val > 0x0c80 || val > hdev->le_conn_max_interval) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->le_conn_min_interval = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -777,10 +787,12 @@ static int conn_max_interval_set(void *d
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val < 0x0006 || val > 0x0c80 || val < hdev->le_conn_min_interval)
-+	hci_dev_lock(hdev);
-+	if (val < 0x0006 || val > 0x0c80 || val < hdev->le_conn_min_interval) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->le_conn_max_interval = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -889,10 +901,12 @@ static int adv_min_interval_set(void *da
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val < 0x0020 || val > 0x4000 || val > hdev->le_adv_max_interval)
-+	hci_dev_lock(hdev);
-+	if (val < 0x0020 || val > 0x4000 || val > hdev->le_adv_max_interval) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->le_adv_min_interval = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -917,10 +931,12 @@ static int adv_max_interval_set(void *da
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val < 0x0020 || val > 0x4000 || val < hdev->le_adv_min_interval)
-+	hci_dev_lock(hdev);
-+	if (val < 0x0020 || val > 0x4000 || val < hdev->le_adv_min_interval) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->le_adv_max_interval = val;
- 	hci_dev_unlock(hdev);
- 
+diff --git a/drivers/soundwire/dmi-quirks.c b/drivers/soundwire/dmi-quirks.c
+index 9ebdd0cd0b1cf..91ab97a456fa9 100644
+--- a/drivers/soundwire/dmi-quirks.c
++++ b/drivers/soundwire/dmi-quirks.c
+@@ -130,6 +130,14 @@ static const struct dmi_system_id adr_remap_quirk_table[] = {
+ 		},
+ 		.driver_data = (void *)intel_rooks_county,
+ 	},
++	{
++		/* quirk used for NUC15 LAPRC710 skew */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
++			DMI_MATCH(DMI_BOARD_NAME, "LAPRC710"),
++		},
++		.driver_data = (void *)intel_rooks_county,
++	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
+diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
+index 300391fbc2fc2..cf14bd3053fc9 100644
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -236,6 +236,17 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
+ 					SOF_SDW_PCH_DMIC |
+ 					RT711_JD2_100K),
+ 	},
++	{
++		/* NUC15 LAPRC710 skews */
++		.callback = sof_sdw_quirk_cb,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
++			DMI_MATCH(DMI_BOARD_NAME, "LAPRC710"),
++		},
++		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
++					SOF_SDW_PCH_DMIC |
++					RT711_JD2_100K),
++	},
+ 	/* TigerLake-SDCA devices */
+ 	{
+ 		.callback = sof_sdw_quirk_cb,
+-- 
+2.43.0
+
 
 
 
