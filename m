@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-38644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A7F8A0FAF
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A6A8A0E57
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 777B2B20E3C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2036285A91
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FA1146A77;
-	Thu, 11 Apr 2024 10:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824BD14600A;
+	Thu, 11 Apr 2024 10:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvF/SxOo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZ8/4GD7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D54146A83;
-	Thu, 11 Apr 2024 10:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4060C145B28;
+	Thu, 11 Apr 2024 10:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831175; cv=none; b=XjKpcfsLZHrW/M0lk9C3Bd5pZmcYN2GPAa2saTC91HwBjL+rqvdLhgGT4lMKayxGnPxsWJOl4nZUKuqkxIDXouPJHqdA158LeTU0wAYAw6RuCmZxnX6j2w+zMiulmIihcu2kqycnbyYEb7IGyfdHqv1Vq2YrSQgR7ytRlgcvitM=
+	t=1712830425; cv=none; b=YH1nUKtGTXq0tt5Bz/YBd6qGfG/kGr+LM5HHwTYUiPeh4SAjyGlgJYzbPOP8kGc5aFB2kaKAv0wXnlteMPMqiRK/f7MpxUdG1id+t0cHnJb4V+ViJaSxcaTWjFyDt6zbiVSh/0rZIuyZrqkHHZmgjs8hPqmEGhErTEcyHJsfLcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831175; c=relaxed/simple;
-	bh=ipyDrzPg8u8trsjLQY5tFVrH8fGX6HuTOPlhZiOi+YE=;
+	s=arc-20240116; t=1712830425; c=relaxed/simple;
+	bh=QQRBeBcWW3ysp89Ye/6oBNL/v4G5KU1HsZZ0SV8RLzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hr0upwfcfcEK/zqkNt9EtHlP57cuY+XUyM3oHPx6WYq3v2c1ux6Vdwq+1wh1vlyim961y/JMgPYzejIJjNBPMzpbuEZYUiJ4ehvRwD5OdEKkImSOJnq0lbUEqJNijLgqXG3AuOOtvCx5bACigJ6ppD952u2985IW6U0uZvXGzSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvF/SxOo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BD9C433C7;
-	Thu, 11 Apr 2024 10:26:15 +0000 (UTC)
+	 MIME-Version; b=oyA+l8SwD6nCfnfwPQFL/HXIyFhdkzRZSMm7/Y2sld/gig1JHVFq4KLqAUr3ZVIy4CjqpISU7b983a/8NX+2q7FQuYCiVnuKfvaLsneszOXHZxe0DpgaDJXp2XEZdofYYZ7eT0ce/1aamv4iiHvwwqOlV8b3SwwI6z/u83WgNJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZ8/4GD7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FFACC433C7;
+	Thu, 11 Apr 2024 10:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831175;
-	bh=ipyDrzPg8u8trsjLQY5tFVrH8fGX6HuTOPlhZiOi+YE=;
+	s=korg; t=1712830425;
+	bh=QQRBeBcWW3ysp89Ye/6oBNL/v4G5KU1HsZZ0SV8RLzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fvF/SxOowmEAUcO06ERjgJA9vdzpyJkBEAtP3cXgs9ZewnsCVKl34l99QtTW9QQxw
-	 H5AVp1RnoBAzCf7fxoivQlbZLlj8Zai13nCBw2KmLxgPKkpIkm6XBfC6OKUDXlTrjK
-	 Qz9FiBa0lDpR8ltdxR6rswujvJrVrN8JkSHb+1eI=
+	b=KZ8/4GD7bSSnhrgEPmk6EpGBHP+sdHeHStrT+O9gAh6Flkh6VoxOdOEsDn/pI+gXA
+	 bygHGGHkIIDLXhiubdRtpeFC4lvLTdIhbqeYVfxMQ/PwuFXKLDK8oherft01S4CVGP
+	 l4wYtEvUFDGac9NYjhy1Tc0fkj24xso+7e092tAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>,
-	Roman Stratiienko <r.stratiienko@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Dhruva Gole <d-gole@ti.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Tom Zanussi <tom.zanussi@linux.intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 034/114] cpufreq: Dont unregister cpufreq cooling on CPU hotplug
+Subject: [PATCH 6.8 093/143] crypto: iaa - Fix async_disable descriptor leak
 Date: Thu, 11 Apr 2024 11:56:01 +0200
-Message-ID: <20240411095417.899690259@linuxfoundation.org>
+Message-ID: <20240411095423.708290998@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Tom Zanussi <tom.zanussi@linux.intel.com>
 
-[ Upstream commit c4d61a529db788d2e52654f5b02c8d1de4952c5b ]
+[ Upstream commit 262534ddc88dfea7474ed18adfecf856e4fbe054 ]
 
-Offlining a CPU and bringing it back online is a common operation and it
-happens frequently during system suspend/resume, where the non-boot CPUs
-are hotplugged out during suspend and brought back at resume.
+The disable_async paths of iaa_compress/decompress() don't free idxd
+descriptors in the async_disable case. Currently this only happens in
+the testcases where req->dst is set to null. Add a test to free them
+in those paths.
 
-The cpufreq core already tries to make this path as fast as possible as
-the changes are only temporary in nature and full cleanup of resources
-isn't required in this case. For example the drivers can implement
-online()/offline() callbacks to avoid a lot of tear down of resources.
-
-On similar lines, there is no need to unregister the cpufreq cooling
-device during suspend / resume, but only while the policy is getting
-removed.
-
-Moreover, unregistering the cpufreq cooling device is resulting in an
-unwanted outcome, where the system suspend is eventually aborted in the
-process.  Currently, during system suspend the cpufreq core unregisters
-the cooling device, which in turn removes a kobject using device_del()
-and that generates a notification to the userspace via uevent broadcast.
-This causes system suspend to abort in some setups.
-
-This was also earlier reported (indirectly) by Roman [1]. Maybe there is
-another way around to fixing that problem properly, but this change
-makes sense anyways.
-
-Move the registering and unregistering of the cooling device to policy
-creation and removal times onlyy.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218521
-Reported-by: Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
-Reported-by: Roman Stratiienko <r.stratiienko@gmail.com>
-Link: https://patchwork.kernel.org/project/linux-pm/patch/20220710164026.541466-1-r.stratiienko@gmail.com/ [1]
-Tested-by: Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Tom Zanussi <tom.zanussi@linux.intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/crypto/intel/iaa/iaa_crypto_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 4bc7c793de3b9..9177265d73b47 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -1576,7 +1576,8 @@ static int cpufreq_online(unsigned int cpu)
- 	if (cpufreq_driver->ready)
- 		cpufreq_driver->ready(policy);
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+index aa65c1791ce76..64a2e87a55b3c 100644
+--- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
++++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+@@ -1328,7 +1328,7 @@ static int iaa_compress(struct crypto_tfm *tfm,	struct acomp_req *req,
  
--	if (cpufreq_thermal_control_enabled(cpufreq_driver))
-+	/* Register cpufreq cooling only for a new policy */
-+	if (new_policy && cpufreq_thermal_control_enabled(cpufreq_driver))
- 		policy->cdev = of_cpufreq_cooling_register(policy);
+ 	*compression_crc = idxd_desc->iax_completion->crc;
  
- 	pr_debug("initialization complete\n");
-@@ -1660,11 +1661,6 @@ static void __cpufreq_offline(unsigned int cpu, struct cpufreq_policy *policy)
- 	else
- 		policy->last_policy = policy->policy;
+-	if (!ctx->async_mode)
++	if (!ctx->async_mode || disable_async)
+ 		idxd_free_desc(wq, idxd_desc);
+ out:
+ 	return ret;
+@@ -1574,7 +1574,7 @@ static int iaa_decompress(struct crypto_tfm *tfm, struct acomp_req *req,
  
--	if (cpufreq_thermal_control_enabled(cpufreq_driver)) {
--		cpufreq_cooling_unregister(policy->cdev);
--		policy->cdev = NULL;
--	}
--
- 	if (has_target())
- 		cpufreq_exit_governor(policy);
+ 	*dlen = req->dlen;
  
-@@ -1725,6 +1721,15 @@ static void cpufreq_remove_dev(struct device *dev, struct subsys_interface *sif)
- 		return;
- 	}
+-	if (!ctx->async_mode)
++	if (!ctx->async_mode || disable_async)
+ 		idxd_free_desc(wq, idxd_desc);
  
-+	/*
-+	 * Unregister cpufreq cooling once all the CPUs of the policy are
-+	 * removed.
-+	 */
-+	if (cpufreq_thermal_control_enabled(cpufreq_driver)) {
-+		cpufreq_cooling_unregister(policy->cdev);
-+		policy->cdev = NULL;
-+	}
-+
- 	/* We did light-weight exit earlier, do full tear down now */
- 	if (cpufreq_driver->offline)
- 		cpufreq_driver->exit(policy);
+ 	/* Update stats */
 -- 
 2.43.0
 
