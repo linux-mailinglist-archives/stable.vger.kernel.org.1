@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-38964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD0E8A113F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F08968A0E40
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:12:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CD73B216C5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A24BD1F21345
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB57146A74;
-	Thu, 11 Apr 2024 10:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0FB145B26;
+	Thu, 11 Apr 2024 10:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9WEQgjW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAVaS9+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC24140366;
-	Thu, 11 Apr 2024 10:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826471448EF;
+	Thu, 11 Apr 2024 10:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832115; cv=none; b=I+qKujOaNIlQfQpXEQyT3cZMR3lTxemRteprFcrLGuQzBwITByXXGsC3BDP00ostWBkE0+Mhlg3d7YxsNM2RsSUelXqG1lPvqNY0jmETdTVarDoCuTfU3VJaLVsm5pY5dhtXCRNPgUjse5J9z80sBlCNel57dgbIQsjw+W4pF60=
+	t=1712830368; cv=none; b=AZcGVFl5wcdBvr99ufSEcFMZ2ARdGs2YHlXzPbgmX0/C65yt781OT1urhih57oYLgjr4pxTDlC+0ie/3HUcsh36VCO3Oa26+FQKOhDnzZBg4ipXAN5scYnKDbJZoClfGJ1CUDRbZ9QiD/SpEZyeQmrdYVVm79L0CWioGYM0SxMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832115; c=relaxed/simple;
-	bh=bhSMqcHLpn8mg01zn0c9ocJ8XFxgggCm6tVT2UVYLM4=;
+	s=arc-20240116; t=1712830368; c=relaxed/simple;
+	bh=L/GDP2sWP/lgDKl14jQDRoXnmb41kzcWq+MqK8qUeB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XyO+Ceaa86Kh10VdAVpY6MfVs6S/zNdYJaGZ6AqFxvypuujvaSH96k5LdRbdHdnnAHdF6I+Dgx79a143zNJ40/aBQrw9oBolOUfYu3ejRA03R+QzzZBkidND4Uhou+nmdpxvmAhEovi+05ZjVV6HafHKInPCBvvdK3vDTf4GCps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9WEQgjW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5105FC433F1;
-	Thu, 11 Apr 2024 10:41:55 +0000 (UTC)
+	 MIME-Version; b=M/Q8VAObaPhnqu4WxNm9vP64454bALfjGewB74nCDgSUGpd0/SFqatTUst9iItkG9TrCBRFINH9JZZAUmZRBJoMQyZ7nFozJI+y6iSrYGsqjgVyiOSI3aJ5Jd359Rt5lbE2T/33hP0lljFhMF6YGlNkqN27DbI3hNOnzu4GsMn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAVaS9+O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0720BC433C7;
+	Thu, 11 Apr 2024 10:12:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832115;
-	bh=bhSMqcHLpn8mg01zn0c9ocJ8XFxgggCm6tVT2UVYLM4=;
+	s=korg; t=1712830368;
+	bh=L/GDP2sWP/lgDKl14jQDRoXnmb41kzcWq+MqK8qUeB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o9WEQgjWOqYHQm6XIwg61r9Tp3hn4YIoSho89fp4617rG65aA+eFiAsrRY0/o61YI
-	 3vQ7hnWvWcaTmNsKVkOswd6FBd8fl2GhzPJRxCTDy27q6qe3V2ZABVeK87FvjzJr0M
-	 Ia57fBmSEU/vI0ZOpx3YuK3WGzTMnVIgnTfev2N8=
+	b=HAVaS9+OTozlr2AxRfwXsYAXybi9Dlty77/4ivS79ECZHFVXrn44OlT5urAKOx5HM
+	 jxOBoSzgaGm2EbHhGs+3KbwScbFlAoMgn13fn2h1h9q/EudAa5d9IC9cLzfEt/5U5t
+	 tprK2bHjKid8OB5szMJjEdHCWb5p4T4YsnKuxYMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Zhipeng Wang <zhipeng.wang_1@nxp.com>,
+	Chancel Liu <chancel.liu@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 227/294] arm64: dts: qcom: sc7180-trogdor: mark bluetooth address as broken
+Subject: [PATCH 6.8 122/143] ASoC: soc-core.c: Skip dummy codec when adding platforms
 Date: Thu, 11 Apr 2024 11:56:30 +0200
-Message-ID: <20240411095442.421381653@linuxfoundation.org>
+Message-ID: <20240411095424.578630404@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Chancel Liu <chancel.liu@nxp.com>
 
-[ Upstream commit e12e28009e584c8f8363439f6a928ec86278a106 ]
+[ Upstream commit 23fb6bc2696119391ec3a92ccaffe50e567c515e ]
 
-Several Qualcomm Bluetooth controllers lack persistent storage for the
-device address and instead one can be provided by the boot firmware
-using the 'local-bd-address' devicetree property.
+When pcm_runtime is adding platform components it will scan all
+registered components. In case of DPCM FE/BE some DAI links will
+configure dummy platform. However both dummy codec and dummy platform
+are using "snd-soc-dummy" as component->name. Dummy codec should be
+skipped when adding platforms otherwise there'll be overflow and UBSAN
+complains.
 
-The Bluetooth bindings clearly states that the address should be
-specified in little-endian order, but due to a long-standing bug in the
-Qualcomm driver which reversed the address some boot firmware has been
-providing the address in big-endian order instead.
-
-The boot firmware in SC7180 Trogdor Chromebooks is known to be affected
-so mark the 'local-bd-address' property as broken to maintain backwards
-compatibility with older firmware when fixing the underlying driver bug.
-
-Note that ChromeOS always updates the kernel and devicetree in lockstep
-so that there is no need to handle backwards compatibility with older
-devicetrees.
-
-Fixes: 7ec3e67307f8 ("arm64: dts: qcom: sc7180-trogdor: add initial trogdor and lazor dt")
-Cc: stable@vger.kernel.org      # 5.10
-Cc: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Bjorn Andersson <andersson@kernel.org>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+Link: https://msgid.link/r/20240305065606.3778642-1-chancel.liu@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/soc-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi b/arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
-index 3f5883e8bf319..9ce8bfbf7ea21 100644
---- a/arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
-@@ -810,6 +810,8 @@ ap_spi_fp: &spi10 {
- 		vddrf-supply = <&pp1300_l2c>;
- 		vddch0-supply = <&pp3300_l10c>;
- 		max-speed = <3200000>;
-+
-+		qcom,local-bd-address-broken;
- 	};
- };
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index 516350533e73f..8b5b583a2bad0 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -1218,6 +1218,9 @@ static int snd_soc_add_pcm_runtime(struct snd_soc_card *card,
+ 			if (!snd_soc_is_matching_component(platform, component))
+ 				continue;
  
++			if (snd_soc_component_is_dummy(component) && component->num_dai)
++				continue;
++
+ 			snd_soc_rtd_add_component(rtd, component);
+ 		}
+ 	}
 -- 
 2.43.0
 
