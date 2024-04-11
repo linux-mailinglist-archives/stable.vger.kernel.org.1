@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40E9F8A0DC6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1702A8A0EC3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7343A1C210A3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99BBDB21CD9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF85145FED;
-	Thu, 11 Apr 2024 10:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E9E14601D;
+	Thu, 11 Apr 2024 10:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pd7YMOa/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIIj0r8r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA64145FE7;
-	Thu, 11 Apr 2024 10:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0A613E897;
+	Thu, 11 Apr 2024 10:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830055; cv=none; b=LPQAbUvJBtspKPljvbwzojD52+K8p6nxYrRLmfF0i8vGWwdwA4jWkUcgVcEOEE6XHlts8ZBZq/oLGUFTHYm9+c5dYryZY5wqc+4BN7UX88S9cEjESqBDNvRlHVS6A7DOusVWw2zrLbGy9YdMJn1Gl9DfkspRnyyrDftSQx0Lduc=
+	t=1712830670; cv=none; b=Fg8glDofqLqQJlHX/3ZMf05v7OBdbZD3M6wtbdmXDXciYoyuTTdSH3fdoQD77sJn5X1g6AWLFlhkYMYvMSBlF/+ORTEpFDe49ha+XLcwYPiHQIns3jwuEQKnG0ECF0v9SUOfx+vKrEZAbpE5whZEuVAZYwE7IFP9cDi6cIolIqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830055; c=relaxed/simple;
-	bh=+pED2Je3eOZ4uwP1GqmV9xkuTCyY+YXzNIJIdPdZ1H0=;
+	s=arc-20240116; t=1712830670; c=relaxed/simple;
+	bh=siq0WyUGTdQ/cFE3X2hvh0y5ZY6rUnnlqBoUe3gBhMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qx9jGY72wufqpdZ90OHF2rZQkMOYEdAbIpSOdMXnfT6/ppCApR3+7Eed7nMcowwOd/gdJHC6kbFpa7dOU1JlOyjfmLw80hfBDTwA0Y1cwhtInf8kMYcz9HkpxPeVBneVsdNSq5odWXI8++/rs7O/Tv7X+GGxn8ne97q6odvYoqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pd7YMOa/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E5AC43390;
-	Thu, 11 Apr 2024 10:07:34 +0000 (UTC)
+	 MIME-Version; b=BNlXww4YmPVMW94/lCTfIFLMQYAeTUKEUlGT+ERne6qOisI9bWfbdCvZX1kwvXNaQrXXUb7LcbARA32B1MCvOkA/4BPFt4yhG7glvmo9WyZW3LZ5A6q1CoxCtzuBecBbBlkre0PH4hGvLPu/S1d3dMY8HPTFeQp6OfT7TEJ74T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIIj0r8r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57864C433F1;
+	Thu, 11 Apr 2024 10:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830054;
-	bh=+pED2Je3eOZ4uwP1GqmV9xkuTCyY+YXzNIJIdPdZ1H0=;
+	s=korg; t=1712830670;
+	bh=siq0WyUGTdQ/cFE3X2hvh0y5ZY6rUnnlqBoUe3gBhMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pd7YMOa/HhOmnGZoptjqTN1J8C1HVlKGeTu1i7vCZMH7DM848PfhFXUtv2Dsj146A
-	 W0bxtEBK2oQAc8m6nlxzyrpwHcjTaJwyMeS/mIdX1WkBx+uff4w3HqQ0PMUzLrm0x2
-	 OKsRgsvuxm+Yacu964H4q5Y1hEJEQn44Rk4PPKcQ=
+	b=lIIj0r8r22DGJdi1mCOhBCvvaXnE8DvGMsCP0qiepEVqzxZnGDcfLVIcIsnyNwbM/
+	 mIjmQ+O1VVyz84eZtulMCfIqPIim/EieLYCuBaKqMGhgcXGxlgfD4A3Et6WwkFgD63
+	 sJoJ0Gi3ZMrcUr2QuU2q7tyouLqmkyRpduPq8zxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Jonker <jbx6244@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	John Pittman <jpittman@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 020/143] ARM: dts: rockchip: fix rk3288 hdmi ports node
+Subject: [PATCH 5.4 079/215] dm snapshot: fix lockup in dm_exception_table_exit
 Date: Thu, 11 Apr 2024 11:54:48 +0200
-Message-ID: <20240411095421.519037207@linuxfoundation.org>
+Message-ID: <20240411095427.283006110@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Jonker <jbx6244@gmail.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 585e4dc07100a6465b3da8d24e46188064c1c925 ]
+[ Upstream commit 6e7132ed3c07bd8a6ce3db4bb307ef2852b322dc ]
 
-Fix rk3288 hdmi ports node so that it matches the
-rockchip,dw-hdmi.yaml binding with some reordering
-to align with the (new) documentation about
-property ordering.
+There was reported lockup when we exit a snapshot with many exceptions.
+Fix this by adding "cond_resched" to the loop that frees the exceptions.
 
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Link: https://lore.kernel.org/r/cc3a9b4f-076d-4660-b464-615003b6a066@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Reported-by: John Pittman <jpittman@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/rockchip/rk3288.dtsi | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/md/dm-snap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/rockchip/rk3288.dtsi b/arch/arm/boot/dts/rockchip/rk3288.dtsi
-index ead343dc3df10..3f1d640afafae 100644
---- a/arch/arm/boot/dts/rockchip/rk3288.dtsi
-+++ b/arch/arm/boot/dts/rockchip/rk3288.dtsi
-@@ -1240,27 +1240,37 @@ hdmi: hdmi@ff980000 {
- 		compatible = "rockchip,rk3288-dw-hdmi";
- 		reg = <0x0 0xff980000 0x0 0x20000>;
- 		reg-io-width = <4>;
--		#sound-dai-cells = <0>;
--		rockchip,grf = <&grf>;
- 		interrupts = <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&cru  PCLK_HDMI_CTRL>, <&cru SCLK_HDMI_HDCP>, <&cru SCLK_HDMI_CEC>;
- 		clock-names = "iahb", "isfr", "cec";
- 		power-domains = <&power RK3288_PD_VIO>;
-+		rockchip,grf = <&grf>;
-+		#sound-dai-cells = <0>;
- 		status = "disabled";
+diff --git a/drivers/md/dm-snap.c b/drivers/md/dm-snap.c
+index e902aae685af9..d8902d2b6aa66 100644
+--- a/drivers/md/dm-snap.c
++++ b/drivers/md/dm-snap.c
+@@ -685,8 +685,10 @@ static void dm_exception_table_exit(struct dm_exception_table *et,
+ 	for (i = 0; i < size; i++) {
+ 		slot = et->table + i;
  
- 		ports {
--			hdmi_in: port {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			hdmi_in: port@0 {
-+				reg = <0>;
- 				#address-cells = <1>;
- 				#size-cells = <0>;
-+
- 				hdmi_in_vopb: endpoint@0 {
- 					reg = <0>;
- 					remote-endpoint = <&vopb_out_hdmi>;
- 				};
-+
- 				hdmi_in_vopl: endpoint@1 {
- 					reg = <1>;
- 					remote-endpoint = <&vopl_out_hdmi>;
- 				};
- 			};
-+
-+			hdmi_out: port@1 {
-+				reg = <1>;
-+			};
- 		};
- 	};
+-		hlist_bl_for_each_entry_safe(ex, pos, n, slot, hash_list)
++		hlist_bl_for_each_entry_safe(ex, pos, n, slot, hash_list) {
+ 			kmem_cache_free(mem, ex);
++			cond_resched();
++		}
+ 	}
  
+ 	vfree(et->table);
 -- 
 2.43.0
 
