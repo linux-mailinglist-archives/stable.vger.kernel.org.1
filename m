@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B07F98A0DF8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E798A10E4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1A7B1C21DBD
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A7EE1C216F0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78B31F5FA;
-	Thu, 11 Apr 2024 10:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3547C1448C8;
+	Thu, 11 Apr 2024 10:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrcNCXe9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EG2prxRU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94152145B2C;
-	Thu, 11 Apr 2024 10:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64C9143C76;
+	Thu, 11 Apr 2024 10:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830178; cv=none; b=X8fuzSRCDohvmqNNUKjV38pkW1imsb/OQuz9nQ6vwq1XbmngYwamGmflNSlSrRoxMp5YklsQLJU/ylf17y7xdXAXEaPs5dX4ne1xJHG6wZpY/Yit9H/syQQ2QCrlSyrAP66u/5ctJZV6K+lzoURyyHnxzM2JpUBrWYf9GS7B2Qg=
+	t=1712831910; cv=none; b=SIQyD/tmEmg5lHDW6S2FTB0xrhW4DZe7wqP1LSgXUESFZCA3BK08kZlpJX/TC5v4FZ3dPNhj4Qhr+326WKR5GU2Mee+8t0wvQ8N+xD9lrhVpY38geTP0yVqsMRRRl428BNEN/q2cEWEGoKxGmT0FNCIAss8etnL/prpRLRf5p4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830178; c=relaxed/simple;
-	bh=zTKbr0AbXMdykA1JRZvxkDGdiF8REl2liAiXkNXhO/8=;
+	s=arc-20240116; t=1712831910; c=relaxed/simple;
+	bh=zlfmnf0sO3hkfj/coQ4QTVwJJKG+OSLnCt5meU+DmLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2dkx7mi2IwH56squXq5Z5RTHcSmnqXu9VXziLO5t/RYz9U+gzIlRhvO3GfSBrXgqauBkY6c0MNIq+aWFJ9y9eyEXsW3+fpfV4G1TCtKl77iHE2jvY3kj6gwTRD0N8oIeR7BX/bsktOBECii7f2UDo7RSNAa4AKo8BDEidAsCGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrcNCXe9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17985C43390;
-	Thu, 11 Apr 2024 10:09:37 +0000 (UTC)
+	 MIME-Version; b=aUGe5X7ySSbfcWGlpmJeJ+DTLvqO3jxa8nvRUZIVjfTJ6wIcuEAUuv+RyHY3iLF8eqQ+UmscQOcjJkeFe+E0z7XdCjKUjJyuF7l/ydt6nNHaDoOOyAmNGZJdWxMYu3O/IjqpSQ+kVnZp7Ldl7pK0gYNi8ie+f6xcAs9azFVMpiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EG2prxRU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CEE9C433F1;
+	Thu, 11 Apr 2024 10:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830178;
-	bh=zTKbr0AbXMdykA1JRZvxkDGdiF8REl2liAiXkNXhO/8=;
+	s=korg; t=1712831909;
+	bh=zlfmnf0sO3hkfj/coQ4QTVwJJKG+OSLnCt5meU+DmLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UrcNCXe95ofIJHPZZQUfgl5o4Yj8PAHF6kz0fK64+8gWalE+E9qaz9VXwdrPqUGF/
-	 e2bE4og+Bx+3SN0pu4WI+6Q/kPuBLRrnzqIrpS36a+5QWclzsdcdE5Aick0csiYLcf
-	 fN8Ez94V5iK4xh4xlS6rz7iGqflOkoOJ+dOAOfjA=
+	b=EG2prxRUG3mlIgtjeRZHk6hOr9d2E2nMMB1GXZzyzcSIqC4laI93y7VqvJMbR+AKe
+	 BmP4cwwJxEsLr2Lw5LsA+z+gzTIHcsxMdMqvDKcVo9GNmsAS91mxf1exs6633/plrQ
+	 4S85zb4y3w9Lr70GFF8/k9uxgIAXC6C39hyq6rjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Emil Velikov <emil.velikov@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 062/143] ASoC: SOF: amd: Optimize quirk for Valve Galileo
+	Alan Stern <stern@rowland.harvard.edu>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 167/294] USB: core: Add hub_get() and hub_put() routines
 Date: Thu, 11 Apr 2024 11:55:30 +0200
-Message-ID: <20240411095422.782041282@linuxfoundation.org>
+Message-ID: <20240411095440.666286928@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit a13f0c3c0e8fb3e61fbfd99c6b350cf9be0c4660 ]
+commit ee113b860aa169e9a4d2c167c95d0f1961c6e1b8 upstream.
 
-Valve's Steam Deck OLED is uniquely identified by vendor and product
-name (Galileo) DMI fields.
+Create hub_get() and hub_put() routines to encapsulate the kref_get()
+and kref_put() calls in hub.c.  The new routines will be used by the
+next patch in this series.
 
-Simplify the quirk by removing the unnecessary match on product family.
-
-Additionally, fix the related comment as it points to the old product
-variant.
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Reviewed-by: Emil Velikov <emil.velikov@collabora.com>
-Link: https://msgid.link/r/20231219030728.2431640-7-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/604da420-ae8a-4a9e-91a4-2d511ff404fb@rowland.harvard.edu
+Cc: stable <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/amd/acp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/core/hub.c |   23 ++++++++++++++++-------
+ drivers/usb/core/hub.h |    2 ++
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/sof/amd/acp.c b/sound/soc/sof/amd/acp.c
-index 2c242ef9f23c1..1b6f5724c82b0 100644
---- a/sound/soc/sof/amd/acp.c
-+++ b/sound/soc/sof/amd/acp.c
-@@ -31,11 +31,10 @@ static struct acp_quirk_entry quirk_valve_galileo = {
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -116,7 +116,6 @@ EXPORT_SYMBOL_GPL(ehci_cf_port_reset_rws
+ #define HUB_DEBOUNCE_STEP	  25
+ #define HUB_DEBOUNCE_STABLE	 100
  
- const struct dmi_system_id acp_sof_quirk_table[] = {
- 	{
--		/* Valve Jupiter device */
-+		/* Steam Deck OLED device */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Valve"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Galileo"),
--			DMI_MATCH(DMI_PRODUCT_FAMILY, "Sephiroth"),
- 		},
- 		.driver_data = &quirk_valve_galileo,
- 	},
--- 
-2.43.0
-
+-static void hub_release(struct kref *kref);
+ static int usb_reset_and_verify_device(struct usb_device *udev);
+ static int hub_port_disable(struct usb_hub *hub, int port1, int set_state);
+ static bool hub_port_warm_reset_required(struct usb_hub *hub, int port1,
+@@ -678,14 +677,14 @@ static void kick_hub_wq(struct usb_hub *
+ 	 */
+ 	intf = to_usb_interface(hub->intfdev);
+ 	usb_autopm_get_interface_no_resume(intf);
+-	kref_get(&hub->kref);
++	hub_get(hub);
+ 
+ 	if (queue_work(hub_wq, &hub->events))
+ 		return;
+ 
+ 	/* the work has already been scheduled */
+ 	usb_autopm_put_interface_async(intf);
+-	kref_put(&hub->kref, hub_release);
++	hub_put(hub);
+ }
+ 
+ void usb_kick_hub_wq(struct usb_device *hdev)
+@@ -1053,7 +1052,7 @@ static void hub_activate(struct usb_hub
+ 			goto init2;
+ 		goto init3;
+ 	}
+-	kref_get(&hub->kref);
++	hub_get(hub);
+ 
+ 	/* The superspeed hub except for root hub has to use Hub Depth
+ 	 * value as an offset into the route string to locate the bits
+@@ -1301,7 +1300,7 @@ static void hub_activate(struct usb_hub
+ 		device_unlock(&hdev->dev);
+ 	}
+ 
+-	kref_put(&hub->kref, hub_release);
++	hub_put(hub);
+ }
+ 
+ /* Implement the continuations for the delays above */
+@@ -1717,6 +1716,16 @@ static void hub_release(struct kref *kre
+ 	kfree(hub);
+ }
+ 
++void hub_get(struct usb_hub *hub)
++{
++	kref_get(&hub->kref);
++}
++
++void hub_put(struct usb_hub *hub)
++{
++	kref_put(&hub->kref, hub_release);
++}
++
+ static unsigned highspeed_hubs;
+ 
+ static void hub_disconnect(struct usb_interface *intf)
+@@ -1763,7 +1772,7 @@ static void hub_disconnect(struct usb_in
+ 	if (hub->quirk_disable_autosuspend)
+ 		usb_autopm_put_interface(intf);
+ 
+-	kref_put(&hub->kref, hub_release);
++	hub_put(hub);
+ }
+ 
+ static bool hub_descriptor_is_sane(struct usb_host_interface *desc)
+@@ -5857,7 +5866,7 @@ out_hdev_lock:
+ 
+ 	/* Balance the stuff in kick_hub_wq() and allow autosuspend */
+ 	usb_autopm_put_interface(intf);
+-	kref_put(&hub->kref, hub_release);
++	hub_put(hub);
+ 
+ 	kcov_remote_stop();
+ }
+--- a/drivers/usb/core/hub.h
++++ b/drivers/usb/core/hub.h
+@@ -117,6 +117,8 @@ extern void usb_hub_remove_port_device(s
+ extern int usb_hub_set_port_power(struct usb_device *hdev, struct usb_hub *hub,
+ 		int port1, bool set);
+ extern struct usb_hub *usb_hub_to_struct_hub(struct usb_device *hdev);
++extern void hub_get(struct usb_hub *hub);
++extern void hub_put(struct usb_hub *hub);
+ extern int hub_port_debounce(struct usb_hub *hub, int port1,
+ 		bool must_be_connected);
+ extern int usb_clear_port_feature(struct usb_device *hdev,
 
 
 
