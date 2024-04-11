@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-38464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A4EE8A0EB7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 572A18A0D13
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:00:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 177DCB212B7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11997285840
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5626714600E;
-	Thu, 11 Apr 2024 10:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E97145B04;
+	Thu, 11 Apr 2024 10:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3D5BoQh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxBW1gek"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1153E13E897;
-	Thu, 11 Apr 2024 10:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57D013DDDD;
+	Thu, 11 Apr 2024 10:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830650; cv=none; b=EEMHW5CgmDT5Iixa3vHUdQAMEkol5cfZTFB5NA8GzjB7TkSIFw7CUR5rVhiim3/wijqEChQoQyIgRDY8adHM6FNw1biqGoXd/kQg8tUaQWFH1ppCoseEV+2w39JDe7UEK1GzaF8kPosm/qfKbu75IKv4XlEH5seTOn1Jx6fD78w=
+	t=1712829601; cv=none; b=I4TOvDUTn2gjFGx5YGD2Qlye74vxawSIeKIAeb/PlF9RQVq/2tk2ByR5MbCs9jmAvAzgpfa9xyWCMEcwa1d3aSq1+6k366ZuyDZLEzpOxLXgWmk9k2ApyXWVSOIOuLsiugkzVKnInkfOOoYyj8ySsMhVDdOCd4Ps6+DTgpR/g6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830650; c=relaxed/simple;
-	bh=NeaZaGHnxfD28dAQ16+ER401emNDcKwCNTWsCxVPrWA=;
+	s=arc-20240116; t=1712829601; c=relaxed/simple;
+	bh=qu+BWgtz9zi+BH7/64gZ3r6MrQ2LpCJUox4CTaQ7DhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tb2Kbr1dn/CxCNNN/biT8X98Uf677hfXy2amPojzUGGy83yxMyFatkp3TPqSQcTa1oH3U/vmTuUUZXgom/nYleMDtq836j37fzVnJaNP8nMH3Fzp1G9qBbWBFtnTAwwfS1+r+Dc7Bogc5r1kH6PAPHoPPwrzZuXQEoDYl6QTsr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3D5BoQh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3F4C433C7;
-	Thu, 11 Apr 2024 10:17:29 +0000 (UTC)
+	 MIME-Version; b=uG0gkRMrNg8BEBhXGuc2nGwRMKwcUnQkpcAShl86O+ODss5X6hclmYqjBg/1ogFU4SF8OoTlwUFp+COLDJS9UQT1LMmLN+Zi4VF149lQjBil/a7tya/szB07QypFsHz/LCeW/h83PA+VIqwAuxSM6gCLW8Eu4zjiNCSUDY5LPHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxBW1gek; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AABAC433C7;
+	Thu, 11 Apr 2024 10:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830649;
-	bh=NeaZaGHnxfD28dAQ16+ER401emNDcKwCNTWsCxVPrWA=;
+	s=korg; t=1712829601;
+	bh=qu+BWgtz9zi+BH7/64gZ3r6MrQ2LpCJUox4CTaQ7DhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G3D5BoQhJeRuItbBSbgETnFb59ZGR5w8AtrW81HR7k7r62HAPER9hrNH8cpvXGDGF
-	 hYt3pyRP/4sCA8leGctETzZ55IErcZ/MfM6DKEUgXDA1A0mNdfY+WbGjqS1/bu9XX4
-	 XhV20WrvbQ0H0YDKwoCtKYQmgxYFqzPIUHV84dzA=
+	b=mxBW1gekecc/iBpqirLvJO9/UE3Z/BfCufE2OPABAwkvExyv6G2KGYDpp6WY9/mHv
+	 c+zoLJvhqpbwniOSDXkK4/rsSbA7aa86UYeTnbiyCIhPZfEa9MKvC8HC8LIijfvLML
+	 z3Z1ABacZxl2QN7vFqg8u2fRrzNwgCZNqMNq6A1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	yangerkun <yangerkun@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 022/215] ext4: correct best extent lstart adjustment logic
+Subject: [PATCH 4.19 008/175] timers: Use del_timer_sync() even on UP
 Date: Thu, 11 Apr 2024 11:53:51 +0200
-Message-ID: <20240411095425.551449165@linuxfoundation.org>
+Message-ID: <20240411095419.791913232@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,97 +65,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 4fbf8bc733d14bceb16dda46a3f5e19c6a9621c5 ]
+[ Upstream commit 168f6b6ffbeec0b9333f3582e4cf637300858db5 ]
 
-When yangerkun review commit 93cdf49f6eca ("ext4: Fix best extent lstart
-adjustment logic in ext4_mb_new_inode_pa()"), it was found that the best
-extent did not completely cover the original request after adjusting the
-best extent lstart in ext4_mb_new_inode_pa() as follows:
+del_timer_sync() is assumed to be pointless on uniprocessor systems and can
+be mapped to del_timer() because in theory del_timer() can never be invoked
+while the timer callback function is executed.
 
-  original request: 2/10(8)
-  normalized request: 0/64(64)
-  best extent: 0/9(9)
+This is not entirely true because del_timer() can be invoked from interrupt
+context and therefore hit in the middle of a running timer callback.
 
-When we check if best ex can be kept at start of goal, ac_o_ex.fe_logical
-is 2 less than the adjusted best extent logical end 9, so we think the
-adjustment is done. But obviously 0/9(9) doesn't cover 2/10(8), so we
-should determine here if the original request logical end is less than or
-equal to the adjusted best extent logical end.
+Contrary to that del_timer_sync() is not allowed to be invoked from
+interrupt context unless the affected timer is marked with TIMER_IRQSAFE.
+del_timer_sync() has proper checks in place to detect such a situation.
 
-In addition, add a comment stating when adjusted best_ex will not cover
-the original request, and remove the duplicate assertion because adjusting
-lstart makes no change to b_ex.fe_len.
+Give up on the UP optimization and make del_timer_sync() unconditionally
+available.
 
-Link: https://lore.kernel.org/r/3630fa7f-b432-7afd-5f79-781bc3b2c5ea@huawei.com
-Fixes: 93cdf49f6eca ("ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()")
-Cc:  <stable@kernel.org>
-Signed-off-by: yangerkun <yangerkun@huawei.com>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240201141845.1879253-1-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Co-developed-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Link: https://lore.kernel.org/all/20220407161745.7d6754b3@gandalf.local.home
+Link: https://lore.kernel.org/all/20221110064101.429013735@goodmis.org
+Link: https://lore.kernel.org/r/20221123201624.888306160@linutronix.de
+Stable-dep-of: 0f7352557a35 ("wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ include/linux/timer.h | 7 +------
+ kernel/time/timer.c   | 2 --
+ 2 files changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index e823731110e3e..b2e7b1907d410 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -3692,10 +3692,16 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
- 			.fe_len = ac->ac_g_ex.fe_len,
- 		};
- 		loff_t orig_goal_end = extent_logical_end(sbi, &ex);
-+		loff_t o_ex_end = extent_logical_end(sbi, &ac->ac_o_ex);
+diff --git a/include/linux/timer.h b/include/linux/timer.h
+index 8e027cb10df01..a9c20a7ead305 100644
+--- a/include/linux/timer.h
++++ b/include/linux/timer.h
+@@ -171,12 +171,7 @@ extern int timer_reduce(struct timer_list *timer, unsigned long expires);
+ extern void add_timer(struct timer_list *timer);
  
--		/* we can't allocate as much as normalizer wants.
--		 * so, found space must get proper lstart
--		 * to cover original request */
-+		/*
-+		 * We can't allocate as much as normalizer wants, so we try
-+		 * to get proper lstart to cover the original request, except
-+		 * when the goal doesn't cover the original request as below:
-+		 *
-+		 * orig_ex:2045/2055(10), isize:8417280 -> normalized:0/2048
-+		 * best_ex:0/200(200) -> adjusted: 1848/2048(200)
-+		 */
- 		BUG_ON(ac->ac_g_ex.fe_logical > ac->ac_o_ex.fe_logical);
- 		BUG_ON(ac->ac_g_ex.fe_len < ac->ac_o_ex.fe_len);
+ extern int try_to_del_timer_sync(struct timer_list *timer);
+-
+-#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
+-  extern int del_timer_sync(struct timer_list *timer);
+-#else
+-# define del_timer_sync(t)		del_timer(t)
+-#endif
++extern int del_timer_sync(struct timer_list *timer);
  
-@@ -3707,7 +3713,7 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
- 		 * 1. Check if best ex can be kept at end of goal and still
- 		 *    cover original start
- 		 * 2. Else, check if best ex can be kept at start of goal and
--		 *    still cover original start
-+		 *    still cover original end
- 		 * 3. Else, keep the best ex at start of original request.
- 		 */
- 		ex.fe_len = ac->ac_b_ex.fe_len;
-@@ -3717,7 +3723,7 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
- 			goto adjust_bex;
+ #define del_singleshot_timer_sync(t) del_timer_sync(t)
  
- 		ex.fe_logical = ac->ac_g_ex.fe_logical;
--		if (ac->ac_o_ex.fe_logical < extent_logical_end(sbi, &ex))
-+		if (o_ex_end <= extent_logical_end(sbi, &ex))
- 			goto adjust_bex;
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index f63efe259ae46..489bb01796de4 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1349,7 +1349,6 @@ static inline void timer_sync_wait_running(struct timer_base *base) { }
+ static inline void del_timer_wait_running(struct timer_list *timer) { }
+ #endif
  
- 		ex.fe_logical = ac->ac_o_ex.fe_logical;
-@@ -3725,7 +3731,6 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
- 		ac->ac_b_ex.fe_logical = ex.fe_logical;
+-#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
+ /**
+  * del_timer_sync - Deactivate a timer and wait for the handler to finish.
+  * @timer:	The timer to be deactivated
+@@ -1423,7 +1422,6 @@ int del_timer_sync(struct timer_list *timer)
+ 	return ret;
+ }
+ EXPORT_SYMBOL(del_timer_sync);
+-#endif
  
- 		BUG_ON(ac->ac_o_ex.fe_logical < ac->ac_b_ex.fe_logical);
--		BUG_ON(ac->ac_o_ex.fe_len > ac->ac_b_ex.fe_len);
- 		BUG_ON(extent_logical_end(sbi, &ex) > orig_goal_end);
- 	}
- 
+ static void call_timer_fn(struct timer_list *timer,
+ 			  void (*fn)(struct timer_list *),
 -- 
 2.43.0
 
