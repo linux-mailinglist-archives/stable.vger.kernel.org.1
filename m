@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 672158A0EF0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:19:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC648A0DD0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:08:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9995D1C2196C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:19:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6700B26B74
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29B91465A4;
-	Thu, 11 Apr 2024 10:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 301AE145B07;
+	Thu, 11 Apr 2024 10:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hKVDhJ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9+F3Ytw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9000B13F452;
-	Thu, 11 Apr 2024 10:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B0513B5B9;
+	Thu, 11 Apr 2024 10:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830762; cv=none; b=qj5okfPF0gvnI1U1mHtHdn5YPRAvbcH9Dq+BaS4Ssh4s0KlB98GImchfL5A2rLZJHhnsvfb3tx1DPJfsyzg92+NuhtHUWWbAKvzIsqXEtwhPWEDArbgI/fDFALEK5M/ds5/2Q29Phjh1fV44IIIhXCNMzmuWKRxVNIFFGqfxRsM=
+	t=1712830085; cv=none; b=L7pgcK+ep2b/gPjCupqTe+9XWQDDjfkw4VbGISsjK7HgDr9z5JRHvAUZJoQpDM08K2i6G2HiTErClHcGC6xJ6r1o+tWjmIoIsqm85/Z6S593qQFV6Qtxl/c+I/iAJGeTiaYQuEqucp+FtPp1C2S4H+Fv6JwliONJheZw6/eWrlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830762; c=relaxed/simple;
-	bh=c3Lm4od9bWFhOoiwDt9q3pA7RvgRlKqBxPcqsKIjB1s=;
+	s=arc-20240116; t=1712830085; c=relaxed/simple;
+	bh=aqgiBtkQJjB9w+R8ciew5t1RMXIpavEAXzIR/vECTsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cxg1FxtzPTIvOmqkZbisEfluWBjNUyAmuASDae9vL9fvlUzaPtomygXIZbTbsWb43vyBGZ6RsKRUSxNk07F98F0rDou84H6gYlq+dM6WN1I75EjtH1cSSQEUTm7nV9Pm98QXDXGK2x7HY5lQsNh7xnpILYPdfkTm69Ht2Ch47Bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hKVDhJ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB8DC433C7;
-	Thu, 11 Apr 2024 10:19:21 +0000 (UTC)
+	 MIME-Version; b=fsL4YqiDv+RrusN3PTJYv9RcknNK5nExox7tISx4xsMUAKDAcdWL9XHfH5X7oS16Ao1boUMs6Edw5QpuueKkzBG5uJ/JgZf7A/m/aXKK3BrTtyBjfdpYntAWagQYs+3UY1AkGbSUpQ6V08Y3Mg5Etfs08XDPCFtyypdNKZXd00w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9+F3Ytw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092D0C433F1;
+	Thu, 11 Apr 2024 10:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830762;
-	bh=c3Lm4od9bWFhOoiwDt9q3pA7RvgRlKqBxPcqsKIjB1s=;
+	s=korg; t=1712830084;
+	bh=aqgiBtkQJjB9w+R8ciew5t1RMXIpavEAXzIR/vECTsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1hKVDhJ0T+ex5vcQw1bIJgCP2o2WK5If/2iqrcI4FyHhhu06XFU6KuDRmZ6pnu4Y7
-	 dv+gVJCB5wPbEC+FK7zeXEVC+lJoHRbnBohJkTOFFCH6krmTLf0/Ca4q7mAdHmBTaA
-	 Mmw2alFiJV7o//nQcBAaUr0vm3sWsFzfsdBYHinE=
+	b=J9+F3Ytw5XepbWIgj6durMy2sUT5VVGMeUhKfl/UscEnTck/i4gEbBqi4eOFhKzr9
+	 b6l/BsUCtStZoZNg5YZggATQ/QW6s21BvxfOXl68l6qUAzF0BMFISt/VNPb8o+6pY4
+	 P59fmfMsEQ+gPMEiPmPr72xFkz7LXCER1paylkO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Hui Liu <quic_huliu@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 071/215] drm/vc4: hdmi: do not return negative values from .get_modes()
+Subject: [PATCH 6.8 012/143] arm64: dts: qcom: qcm6490-idp: Add definition for three LEDs
 Date: Thu, 11 Apr 2024 11:54:40 +0200
-Message-ID: <20240411095427.034533254@linuxfoundation.org>
+Message-ID: <20240411095421.280307174@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Hui Liu <quic_huliu@quicinc.com>
 
-[ Upstream commit abf493988e380f25242c1023275c68bd3579c9ce ]
+[ Upstream commit 8385383cc2c2f7039ecc57864043112cdc7026c7 ]
 
-The .get_modes() hooks aren't supposed to return negative error
-codes. Return 0 for no modes, whatever the reason.
+Add definition for three LEDs to make sure they can
+be enabled base on QCOM LPG LED driver.
 
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: stable@vger.kernel.org
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/dcda6d4003e2c6192987916b35c7304732800e08.1709913674.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Hui Liu <quic_huliu@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240126-lpg-v6-1-f879cecbce69@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/qcm6490-idp.dts | 28 ++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index 54435b72b7611..ba71200169866 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -236,7 +236,7 @@ static int vc4_hdmi_connector_get_modes(struct drm_connector *connector)
- 	edid = drm_get_edid(connector, vc4->hdmi->ddc);
- 	cec_s_phys_addr_from_edid(vc4->hdmi->cec_adap, edid);
- 	if (!edid)
--		return -ENODEV;
-+		return 0;
+diff --git a/arch/arm64/boot/dts/qcom/qcm6490-idp.dts b/arch/arm64/boot/dts/qcom/qcm6490-idp.dts
+index 74f5a43d53db9..d58d4f5dc3173 100644
+--- a/arch/arm64/boot/dts/qcom/qcm6490-idp.dts
++++ b/arch/arm64/boot/dts/qcom/qcm6490-idp.dts
+@@ -5,6 +5,7 @@
  
- 	vc4_encoder->hdmi_monitor = drm_detect_hdmi_monitor(edid);
+ /dts-v1/;
  
++#include <dt-bindings/leds/common.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+ #include "sc7280.dtsi"
+ #include "pm7325.dtsi"
+@@ -415,6 +416,33 @@ vreg_bob_3p296: bob {
+ 	};
+ };
+ 
++&pm8350c_pwm {
++	status = "okay";
++
++	multi-led {
++		color = <LED_COLOR_ID_RGB>;
++		function = LED_FUNCTION_STATUS;
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		led@1 {
++			reg = <1>;
++			color = <LED_COLOR_ID_RED>;
++		};
++
++		led@2 {
++			reg = <2>;
++			color = <LED_COLOR_ID_GREEN>;
++		};
++
++		led@3 {
++			reg = <3>;
++			color = <LED_COLOR_ID_BLUE>;
++		};
++	};
++};
++
+ &qupv3_id_0 {
+ 	status = "okay";
+ };
 -- 
 2.43.0
 
