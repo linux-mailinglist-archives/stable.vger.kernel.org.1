@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-38057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0B58A09C5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:29:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D961E8A09D8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:33:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A68B8283A4D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 07:29:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19450B26697
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 07:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A86E13E030;
-	Thu, 11 Apr 2024 07:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2938413E416;
+	Thu, 11 Apr 2024 07:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qf2Xukhu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SB6GCJGQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFE12EAE5;
-	Thu, 11 Apr 2024 07:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE37713E057;
+	Thu, 11 Apr 2024 07:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712820555; cv=none; b=Bp0OeJUC86qb6GvEmzSPnyOC0UHR8vVnU3Eq2G5ZpUNyaiISmSmHq7u6v6P7DpaPk6xim40ArHmBK3VSxUFiL1+h8xvsaTMVXqGXBh27CKsK7X/HLAnFyk1WiGLidaXQQqVe/qmnsxwL6d1EI/Ni+HNftsKuBF3Zhg7aWiakvp4=
+	t=1712820776; cv=none; b=JjZ/N8ZSvzyuDvATF2lCudeVFM8rJ1vg6XAAlActzP4aqRL9x0cz/WidHxJB+UVsz5vNE5QgOKhXY5KjPKEYSCtRbLnu1Um0s/JZ476AHrBE7y7/KeCckn1xqEbhC1r/jmQLvfTpzN5xlQ2ODqZtSLtOVlcL1zdzjrSig0TXrdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712820555; c=relaxed/simple;
-	bh=qhh+HFgnD5ox2Pc3uLoIsj/1W0p7M3Gm7DG3ga5Iuks=;
+	s=arc-20240116; t=1712820776; c=relaxed/simple;
+	bh=P/JEPZ8/bdZlLFI8atcD5Myhc+wd+nhuxTDkpIWpa0U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BOxIyueJeIeKrJRZxv2ypyYXoEvJ8rouc8ExE5ak21fbtTt/I4zra+QVo/z2+vkgZr05bRItC6GsLDHscEDFiwF3VTz1ff6W0l8h9V8pgP4eGKfqagDx20j9qOn+qeXpuHBc5/gkw8jjSNgjj33s7VFknDakbXT4WwfJTWuolSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qf2Xukhu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38138C433F1;
-	Thu, 11 Apr 2024 07:29:14 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=bd3kMHJb9CKrdyrgNZ3Mp7T0cikdicqhqWTiovl4kWwJyasccbW93OIc7GPg7dYt9VVummRynCAf2h4iIGysb5IvYxfScPCu5GIC6f9/MEa6s1QyPA4kB0FtI5yuA1qbj6n7gn1IXE+Jr2XEBu0oSBsC6bPYREaJW7knPrVhstU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SB6GCJGQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02210C433F1;
+	Thu, 11 Apr 2024 07:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712820554;
-	bh=qhh+HFgnD5ox2Pc3uLoIsj/1W0p7M3Gm7DG3ga5Iuks=;
+	s=korg; t=1712820775;
+	bh=P/JEPZ8/bdZlLFI8atcD5Myhc+wd+nhuxTDkpIWpa0U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qf2Xukhuq1tpqB93E5tlI6wEqqggG95z+q9BPaj3lw5a4Jl9su80qPULn9XnCnDd+
-	 65USnrsGSp5WqRnW5CNFyq3bpEpbYA1d5JDtP8FWAsIfu5Rh0a+jg3nSmV0ljdUvU3
-	 Zt3Yokb2Y66K+PqruJk6dhrDDAV3hWeZuMBYyshw=
-Date: Thu, 11 Apr 2024 09:29:11 +0200
+	b=SB6GCJGQDLQjg2mTCjbfYv52aBNNJ+vX7IPsWVjsN9UtAv+0q6obdgg1LQ7QeR7vM
+	 Q9/5CukrEvq10Jhp3F/r5uZxC1CPwuLygU0k/eC+Ni6JnraLdaRmbhmM8jciA2VQ8e
+	 ucynii3reSfDdgTULemsTZzbm4IUm6g+6hpoCr1g=
+Date: Thu, 11 Apr 2024 09:32:52 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: John David Anglin <dave.anglin@bell.net>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	linux-parisc <linux-parisc@vger.kernel.org>,
-	linux-scsi@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: Broken Domain Validation in 6.1.84+
-Message-ID: <2024041155-croon-dried-f649@gregkh>
-References: <b0670b6f-b7f7-4212-9802-7773dcd7206e@bell.net>
- <d1fc0b8d-4858-4234-8b66-c8980f612ea2@acm.org>
- <db784080-2268-4e6d-84bd-b33055a3331b@bell.net>
- <028352c6-7e34-4267-bbff-10c93d3596d3@acm.org>
- <cf78b204-9149-4462-8e82-b8f98859004b@bell.net>
- <6cb06622e6add6309e8dbb9a8944d53d1b9c4aaa.camel@HansenPartnership.com>
- <03ef7afd-98f5-4f1b-8330-329f47139ddf@bell.net>
- <yq1wmp9pb0d.fsf@ca-mkp.ca.oracle.com>
- <b3df77f6-2928-46cd-a7ee-f806d4c937d1@bell.net>
- <yq1frvvpymp.fsf@ca-mkp.ca.oracle.com>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, stable@vger.kernel.org,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH 6.6.y 3/5] selftests: mptcp: use += operator to append
+ strings
+Message-ID: <2024041111-shirt-germicide-b316@gregkh>
+References: <2024040520-unselect-antitrust-a41b@gregkh>
+ <20240405153636.958019-10-matttbe@kernel.org>
+ <2024040801-undaunted-boastful-5a01@gregkh>
+ <26b5e6f5-6da2-44ff-adbd-c1c1eda3ccba@kernel.org>
+ <2024040902-syrup-sneezing-62c4@gregkh>
+ <af60b8c3-e3c4-48b2-a4c6-f2f430aa9c68@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,37 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <yq1frvvpymp.fsf@ca-mkp.ca.oracle.com>
+In-Reply-To: <af60b8c3-e3c4-48b2-a4c6-f2f430aa9c68@kernel.org>
 
-On Mon, Apr 08, 2024 at 01:19:50PM -0400, Martin K. Petersen wrote:
+On Tue, Apr 09, 2024 at 05:04:02PM +0200, Matthieu Baerts wrote:
+> Hi Greg,
 > 
-> Dave,
+> On 09/04/2024 14:16, Greg KH wrote:
+> > On Mon, Apr 08, 2024 at 06:10:38PM +0200, Matthieu Baerts wrote:
+> >> Hi Greg,
+> >>
+> >> On 08/04/2024 13:31, Greg KH wrote:
+> >>> On Fri, Apr 05, 2024 at 05:36:40PM +0200, Matthieu Baerts (NGI0) wrote:
+> >>>> From: Geliang Tang <tanggeliang@kylinos.cn>
+> >>>>
+> >>>> This patch uses addition assignment operator (+=) to append strings
+> >>>> instead of duplicating the variable name in mptcp_connect.sh and
+> >>>> mptcp_join.sh.
+> >>>>
+> >>>> This can make the statements shorter.
+> >>>>
+> >>>> Note: in mptcp_connect.sh, add a local variable extra in do_transfer to
+> >>>> save the various extra warning logs, using += to append it. And add a
+> >>>> new variable tc_info to save various tc info, also using += to append it.
+> >>>> This can make the code more readable and prepare for the next commit.
+> >>>>
+> >>>> Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+> >>>> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> >>>> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> >>>> Link: https://lore.kernel.org/r/20240308-upstream-net-next-20240308-selftests-mptcp-unification-v1-8-4f42c347b653@kernel.org
+> >>>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> >>>> (cherry picked from commit e7c42bf4d320affe37337aa83ae0347832b3f568)
+> >>>> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> >>>> ---
+> >>>>  .../selftests/net/mptcp/mptcp_connect.sh      | 53 ++++++++++---------
+> >>>>  .../testing/selftests/net/mptcp/mptcp_join.sh | 30 +++++------
+> >>>>  2 files changed, 43 insertions(+), 40 deletions(-)
+> >>>
+> >>> Odd, this one did not apply.
+> >>
+> >> Indeed, that's odd. Do you use a different merge strategy?
+> > 
+> > I do not use any merge strategy at all, I use 'patch' to apply patches
+> > (well, that's what quilt does), so git is not involved here.
 > 
-> >> Could you please try the patch below on top of v6.1.80?
-> > Works okay on top of v6.1.80:
-> >
-> > [   30.952668] scsi 6:0:0:0: Direct-Access     HP 73.4G ST373207LW       HPC1 PQ: 0 ANSI: 3
-> > [   31.072592] scsi target6:0:0: Beginning Domain Validation
-> > [   31.139334] scsi 6:0:0:0: Power-on or device reset occurred
-> > [   31.186227] scsi target6:0:0: Ending Domain Validation
-> > [   31.240482] scsi target6:0:0: FAST-160 WIDE SCSI 320.0 MB/s DT IU QAS RTI WRFLOW PCOMP (6.25 ns, offset 63)
-> > [   31.462587] ata5: SATA link down (SStatus 0 SControl 0)
-> > [   31.618798] scsi 6:0:2:0: Direct-Access     HP 73.4G ST373207LW       HPC1 PQ: 0 ANSI: 3
-> > [   31.732588] scsi target6:0:2: Beginning Domain Validation
-> > [   31.799201] scsi 6:0:2:0: Power-on or device reset occurred
-> > [   31.846724] scsi target6:0:2: Ending Domain Validation
-> > [   31.900822] scsi target6:0:2: FAST-160 WIDE SCSI 320.0 MB/s DT IU QAS RTI WRFLOW PCOMP (6.25 ns, offset 63)
-> 
-> Great, thanks for testing!
-> 
-> Greg, please revert the following commits from linux-6.1.y:
-> 
-> b73dd5f99972 ("scsi: sd: usb_storage: uas: Access media prior to querying device properties")
-> cf33e6ca12d8 ("scsi: core: Add struct for args to execution functions")
-> 
-> and include the patch below instead.
+> Ah OK, thank you for the explanation. I thought git was used to do the
+> cherry-pick + generate the patch for quilt.
 
-Now done, thanks!
+No, git is used only to export the patch from the tree if a git id is
+used.  As you sent a patch here, I just used your patch for this.
+
+> I'm still surprised quilt didn't accept these patches generated on top
+> of the 6.6-y branch. (By "chance", did you not have conflicts because
+> the patch 1/5 (commit 629b35a225b0 ("selftests: mptcp: display simult in
+> extra_msg")) didn't get backported by accident? It is strange it is also
+> missing in the v6.6.y branch.)
+
+I do not remember if there were conflicts or not, sorry.
+
+> > How about just resending this one patch after the next 6.6.y release
+> > that comes out in a day or so.
+> 
+> No hurry, that can indeed wait for the next 6.6.y release.
+> 
+> Just to be sure we are aligned: I suggested backporting these 5 commits:
+> 
+> - 629b35a225b0 ("selftests: mptcp: display simult in extra_msg")
+
+This one I've now queued up.
+
+> - e3aae1098f10 ("selftests: mptcp: connect: fix shellcheck warnings")
+
+Was already in the tree.
+
+> - e7c42bf4d320 ("selftests: mptcp: use += operator to append strings")
+
+Failed to apply
+
+> - 8e2b8a9fa512 ("mptcp: don't overwrite sock_ops in mptcp_is_tcpsk()")
+
+In the tree.
+
+> - 7a1b3490f47e ("mptcp: don't account accept() of non-MPC client as
+> fallback to TCP")
+
+In the tree.
+
+> But only these 3 got backported to 6.6.y:
+> 
+> - e3aae1098f10 ("selftests: mptcp: connect: fix shellcheck warnings")
+> - 8e2b8a9fa512 ("mptcp: don't overwrite sock_ops in mptcp_is_tcpsk()")
+> - 7a1b3490f47e ("mptcp: don't account accept() of non-MPC client as
+> fallback to TCP")
+> 
+> The last commit ("mptcp: don't account accept() of non-MPC client as
+> fallback to TCP") has a small problem in 6.6.y (only):
+> 
+> - In case of issue, a message will say that the subtest is OK and not
+> OK, and the TAP report will report that everything is OK with this
+> subtest => that's OK, nothing critical, that's the tests.
+> - We can solve that in the next 6.6 version by manually backporting
+> commit e7c42bf4d320 ("selftests: mptcp: use += operator to append
+> strings") and its dependence: commit 629b35a225b0 ("selftests: mptcp:
+> display simult in extra_msg").
+
+Patches gladly accepted :)
+
+thanks,
 
 greg k-h
 
