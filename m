@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-38387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319D88A0E53
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE4738A1118
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E24542860A0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 978DA288867
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7592B14600A;
-	Thu, 11 Apr 2024 10:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7926C145B26;
+	Thu, 11 Apr 2024 10:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OuuLAqwF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JyUYBml"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E09145B1E;
-	Thu, 11 Apr 2024 10:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3579379FD;
+	Thu, 11 Apr 2024 10:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830416; cv=none; b=KVcz2ayWwAiPZY6GyCsphpYswV31jpHXiIoNgicUj5Vl7R8KjVA5Hl6t6HyfL6BI7nqrqhLVD11kyYXmlY8ULH9IdFvjlLGaYqGYG2V6jM0VUyH8UPhj4IR93fm09UQplf2RfRscrxpHeNB/QLH/8eU7K84trPziVorRc1ex2R0=
+	t=1712832023; cv=none; b=VNrwNZAxT2I3v9N5GiDPcX0RS0mWjJzsgT66j/YWi/yJMz2EnnXhsllR1RvkcbPzFlvml9N2qA9Z+CqVl9eWMA907zG7ML6qdyhcndH6m5TEFSUMJqYxpamIdOFTD0Q9+Fg4UOormxTUTlmfyml/wqnln3yCL4t69yYjLBdFZcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830416; c=relaxed/simple;
-	bh=SifY4LBYSMoGkXSEx+EdXH5XDw8QTg0Yrw6AkpzdaO0=;
+	s=arc-20240116; t=1712832023; c=relaxed/simple;
+	bh=eQadKMUqpSpV9e0rKjTk0PFvdkPFBeng1k+sP5kPPKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lbazRGJARKARuf2oSmlcuRSm6/eioQwkE6Oa83uqFmjXlvUkzs9lImp27uHu1rSmwDZGeLdSCmYzXDllGllBnZJmlYVb/yK3PkRQcH3USAHz703VDDR/rw3NlyAc9kgSupzudbceFL1NqwRKzn0h3VAuniiw7/DW7pQQ3yExUno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OuuLAqwF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DD4C433F1;
-	Thu, 11 Apr 2024 10:13:35 +0000 (UTC)
+	 MIME-Version; b=DQX6CT+8+Dx6afE7RS1NKX84MXlyozmKfzfMlVp9VRoFDh8VOM0kmLNzLHrM4RZUtbf3H9jX4AD16kiy0yEIsTJCT/v64XF0jPzOLVROuzTzAljWFFwUFvHbGi6KBs2VPQJG2Gf7XNhlESNh38o9A1ODEmrAvd2EMJPdEYvcEaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JyUYBml; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEAB4C433F1;
+	Thu, 11 Apr 2024 10:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830416;
-	bh=SifY4LBYSMoGkXSEx+EdXH5XDw8QTg0Yrw6AkpzdaO0=;
+	s=korg; t=1712832023;
+	bh=eQadKMUqpSpV9e0rKjTk0PFvdkPFBeng1k+sP5kPPKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OuuLAqwF4ETd5JzWsAlWZDzxeRDiMuEUr/B67jUO20sUYXRKDcoVSKpL4T7ozFsQD
-	 1GvqskU0zmG87hlgXwhmIbiRRxs+7BF36KYXsQzH0J//2PHBggNtikprVABuyQ/wrm
-	 XWiRBJRfuQbkv2DWGMo8PaCMObfCmuTp3Zb0w23o=
+	b=1JyUYBml5jtFVOoMtF+Ic5NUs/C7iNpQ33hF0GeymAOQdl+QAq5u02/pGMrYo5k8Q
+	 PXpbo5ViRiDNywqsi47rtB/6Bgwk+CXB7y1AfNLBSUutKm/8dCHsxoab2kXMOkOcG9
+	 gTmJNUYtTGv9kX91AKzirjpIoMD365EY7tRiOxxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SungHwan Jung <onenowy@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 100/143] platform/x86: acer-wmi: Add support for Acer PH16-71
+	Min Li <min15.li@samsung.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
+Subject: [PATCH 5.10 205/294] block: add check that partition length needs to be aligned with block size
 Date: Thu, 11 Apr 2024 11:56:08 +0200
-Message-ID: <20240411095423.918501151@linuxfoundation.org>
+Message-ID: <20240411095441.773298614@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +63,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SungHwan Jung <onenowy@gmail.com>
+From: Min Li <min15.li@samsung.com>
 
-[ Upstream commit 20a36ec343d4c5abc2378a45ab5e7ea1ca85020a ]
+commit 6f64f866aa1ae6975c95d805ed51d7e9433a0016 upstream.
 
-Add Acer Predator PH16-71 to Acer_quirks with predator_v4
-to support mode button and fan speed sensor.
+Before calling add partition or resize partition, there is no check
+on whether the length is aligned with the logical block size.
+If the logical block size of the disk is larger than 512 bytes,
+then the partition size maybe not the multiple of the logical block size,
+and when the last sector is read, bio_truncate() will adjust the bio size,
+resulting in an IO error if the size of the read command is smaller than
+the logical block size.If integrity data is supported, this will also
+result in a null pointer dereference when calling bio_integrity_free.
 
-Signed-off-by: SungHwan Jung <onenowy@gmail.com>
-Link: https://lore.kernel.org/r/20240220055231.6451-1-onenowy@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Min Li <min15.li@samsung.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230629142517.121241-1-min15.li@samsung.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/acer-wmi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ block/ioctl.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
-index 88b826e88ebd7..771b0ce34c8f9 100644
---- a/drivers/platform/x86/acer-wmi.c
-+++ b/drivers/platform/x86/acer-wmi.c
-@@ -584,6 +584,15 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
- 		},
- 		.driver_data = &quirk_acer_predator_v4,
- 	},
-+	{
-+		.callback = dmi_matched,
-+		.ident = "Acer Predator PH16-71",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Predator PH16-71"),
-+		},
-+		.driver_data = &quirk_acer_predator_v4,
-+	},
- 	{
- 		.callback = set_force_caps,
- 		.ident = "Acer Aspire Switch 10E SW3-016",
--- 
-2.43.0
-
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -17,7 +17,7 @@ static int blkpg_do_ioctl(struct block_d
+ 			  struct blkpg_partition __user *upart, int op)
+ {
+ 	struct blkpg_partition p;
+-	long long start, length;
++	sector_t start, length;
+ 
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EACCES;
+@@ -32,6 +32,12 @@ static int blkpg_do_ioctl(struct block_d
+ 	if (op == BLKPG_DEL_PARTITION)
+ 		return bdev_del_partition(bdev, p.pno);
+ 
++	if (p.start < 0 || p.length <= 0 || p.start + p.length < 0)
++		return -EINVAL;
++	/* Check that the partition is aligned to the block size */
++	if (!IS_ALIGNED(p.start | p.length, bdev_logical_block_size(bdev)))
++		return -EINVAL;
++
+ 	start = p.start >> SECTOR_SHIFT;
+ 	length = p.length >> SECTOR_SHIFT;
+ 
+@@ -46,9 +52,6 @@ static int blkpg_do_ioctl(struct block_d
+ 
+ 	switch (op) {
+ 	case BLKPG_ADD_PARTITION:
+-		/* check if partition is aligned to blocksize */
+-		if (p.start & (bdev_logical_block_size(bdev) - 1))
+-			return -EINVAL;
+ 		return bdev_add_partition(bdev, p.pno, start, length);
+ 	case BLKPG_RESIZE_PARTITION:
+ 		return bdev_resize_partition(bdev, p.pno, start, length);
 
 
 
