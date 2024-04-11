@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A0A8A109B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19EBD8A0D23
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:00:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D85FC1F2C86D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B3361C20AD4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:00:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A41146D4E;
-	Thu, 11 Apr 2024 10:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2344145B0A;
+	Thu, 11 Apr 2024 10:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7H0IorO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLnvqZV7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B409D13FD97;
-	Thu, 11 Apr 2024 10:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6107D145342;
+	Thu, 11 Apr 2024 10:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831709; cv=none; b=npKMeRoDOWk2CYdVFkiBolRiNZ7NBbzZREMsVnfN5ViRfpgN7IDLWbtyQalbF3Tx16gD2MbGz39MycgKcETp+Syn5UGVx6j4YGHMqc5lhXxZjW8NyZS7gzv5U8wmh5hCioG6T4fYdEH9hHLdgeDMpBifLfqMduSTnrOzUYKXxPI=
+	t=1712829643; cv=none; b=DFUDcoiJeagodmGH63TZEPM58bxTMASsylTKY5ZH9BrrRhs5aJGIgR4amBGa0z7tpBG+rzF5zpBfh6gBN++mYR0VF8Ovg4TRl2g5RsZ7bCgEkwaPmxeif9MOu5P6KnqrzJKQGdRr8dnzZ4bubI6xRl9FAStV9nrR/3QV27Ycu4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831709; c=relaxed/simple;
-	bh=0AjOUkQIS28jMip0S+eAAHfsggbWkf2IbC0LyEnLrJw=;
+	s=arc-20240116; t=1712829643; c=relaxed/simple;
+	bh=oN2/EzY+jEM15YshG8m5bOxJHX5ToIvq5GV9VaS95ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KGARfh8OXZzFw5Zo7FNclMW3I5+8Gevcb+GOafHguVaKPyh5jKrMem4yfUL0h7bgS9BH5CR59HHsPoFTIGGQaFtKoR/yM7qm+Rj7tEUOyY9frSqit22UJCoYA38Zm65EKNTUK3DZ3IjkyTzvchA2PLuedmc1EZKWpQp5CFRp0lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7H0IorO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A877C433C7;
-	Thu, 11 Apr 2024 10:35:09 +0000 (UTC)
+	 MIME-Version; b=hi2t32fwTztzWl12ZwM8+n1HArgx9cvQfbw0adue72Z8CbI7fcNPNTAwjkdvlFgHDtNsZ3691FmqNj2oCUD+u7oaV18zUZQMBE+5Plwyag0QvFod7rAWJYO7+FjANFru3WBbYO3J40B9wyLVG+IhhIZSEyltfEGzYNj7tXqe6a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLnvqZV7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF97FC433C7;
+	Thu, 11 Apr 2024 10:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831709;
-	bh=0AjOUkQIS28jMip0S+eAAHfsggbWkf2IbC0LyEnLrJw=;
+	s=korg; t=1712829643;
+	bh=oN2/EzY+jEM15YshG8m5bOxJHX5ToIvq5GV9VaS95ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x7H0IorOsHUMcESE/bhHdbrgn0f0IlnnK/JJpr+bUUnYpgX2R5EYzHW8WsbX/7F0J
-	 EtiMrzuMrVdKniZHjodWr3q3MS5gZHsF5XRo1yKL55s1ll6VJYJ9dfv3ZxDa3TxFLk
-	 iCp1l5lAVm/2f1GzL0DfZJBvurUbyQE6bmRXqI9Y=
+	b=LLnvqZV7gFKNeaZZrPj2uaNHo6Kcmq1YeMetjKuDFRLUHbXdj9/+pFWXUAoy8d/6P
+	 2XsVknsnWqw88lEHgNPZPvgMZLVbOhmk43vMvnJ9ej+3nNTaYEXfBNmU9sD8flwIwM
+	 lSmgJg8K2iFfmeR25sMZJ01KwQQE2OUH5n5EHNTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Toru Katagiri <Toru.Katagiri@tdk.com>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 099/294] drm/vc4: hdmi: do not return negative values from .get_modes()
+Subject: [PATCH 4.19 039/175] USB: serial: cp210x: add pid/vid for TDK NC0110013M and MM0110113M
 Date: Thu, 11 Apr 2024 11:54:22 +0200
-Message-ID: <20240411095438.653921737@linuxfoundation.org>
+Message-ID: <20240411095420.735453826@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Toru Katagiri <Toru.Katagiri@tdk.com>
 
-[ Upstream commit abf493988e380f25242c1023275c68bd3579c9ce ]
+[ Upstream commit b1a8da9ff1395c4879b4bd41e55733d944f3d613 ]
 
-The .get_modes() hooks aren't supposed to return negative error
-codes. Return 0 for no modes, whatever the reason.
+TDK NC0110013M and MM0110113M have custom USB IDs for CP210x,
+so we need to add them to the driver.
 
-Cc: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Toru Katagiri <Toru.Katagiri@tdk.com>
 Cc: stable@vger.kernel.org
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/dcda6d4003e2c6192987916b35c7304732800e08.1709913674.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/cp210x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index 7e8620838de9c..6d01258349faa 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -197,7 +197,7 @@ static int vc4_hdmi_connector_get_modes(struct drm_connector *connector)
- 	edid = drm_get_edid(connector, vc4_hdmi->ddc);
- 	cec_s_phys_addr_from_edid(vc4_hdmi->cec_adap, edid);
- 	if (!edid)
--		return -ENODEV;
-+		return 0;
- 
- 	vc4_encoder->hdmi_monitor = drm_detect_hdmi_monitor(edid);
- 
+diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
+index 4bebe0f3c201a..4686cf7c6b0a6 100644
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -57,6 +57,8 @@ static const struct usb_device_id id_table[] = {
+ 	{ USB_DEVICE(0x0471, 0x066A) }, /* AKTAKOM ACE-1001 cable */
+ 	{ USB_DEVICE(0x0489, 0xE000) }, /* Pirelli Broadband S.p.A, DP-L10 SIP/GSM Mobile */
+ 	{ USB_DEVICE(0x0489, 0xE003) }, /* Pirelli Broadband S.p.A, DP-L10 SIP/GSM Mobile */
++	{ USB_DEVICE(0x04BF, 0x1301) }, /* TDK Corporation NC0110013M - Network Controller */
++	{ USB_DEVICE(0x04BF, 0x1303) }, /* TDK Corporation MM0110113M - i3 Micro Module */
+ 	{ USB_DEVICE(0x0745, 0x1000) }, /* CipherLab USB CCD Barcode Scanner 1000 */
+ 	{ USB_DEVICE(0x0846, 0x1100) }, /* NetGear Managed Switch M4100 series, M5300 series, M7100 series */
+ 	{ USB_DEVICE(0x08e6, 0x5501) }, /* Gemalto Prox-PU/CU contactless smartcard reader */
 -- 
 2.43.0
 
