@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 845B18A0E1C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:11:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16FE8A1109
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B545A1C21FBF
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:11:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 699A71F2D038
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CBA14659A;
-	Thu, 11 Apr 2024 10:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1353146D76;
+	Thu, 11 Apr 2024 10:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euGU3Lr5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpjJ1QQj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DA1145323;
-	Thu, 11 Apr 2024 10:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F98813C9A5;
+	Thu, 11 Apr 2024 10:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830263; cv=none; b=d6yHwealO/Zwo2/h31S8w+ZBeSTN/L4l574SJxb4pfEvkl7lwB5v1m5LiOqkdMiLtA7ddZQU+uECC4sV3u9Uocp2YyJPgwlYyKMgAFM3+jcA/VlIcQtKqki23n3MNeh6B9pBZn50AIR9llLOnGlFQLSG8/p4NH+TkjFqg/ZLi1k=
+	t=1712831986; cv=none; b=gs3TYUQJxH1XWl8AbpA3+RLllxo1ZEGchVl87uQI4v+Knyzu3HbtZyFWKLXVehdGdtCghUs9uZUzNbSrPQ0WwE+z9aCHops/p2n2EzojB0RuzTvRwWWfHR9o02ZgbiyA3NOaIYuCtJ64GIqPBKsLgpWdbRiPGBkJXQlxlPtSo24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830263; c=relaxed/simple;
-	bh=qqCnSq7ue1fgY3FIhhXFbfmDBJykL/2BtGTgZ+kgbHI=;
+	s=arc-20240116; t=1712831986; c=relaxed/simple;
+	bh=kbU1sUezoK5j6TNHKEuXBMFz8foMMzxO4mlGiMUqtrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JvN5s/TnioIWaS44Xu5cND6+GECJZhu8W08UNg6d62QFA6jXfG/7PRNhDJ7grgxuvzUTl3eTqlC9lEjB4J5oVCse7TYm6CQQo/u6C1nhZ1AUJqEhCkPvXIlHtGTqgEMd93aMOvLg/oFjxX6lO1N7mbdlDLA42xgSqQdNMol3kdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euGU3Lr5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA5FC433C7;
-	Thu, 11 Apr 2024 10:11:02 +0000 (UTC)
+	 MIME-Version; b=KSBx3qBE519GnLXyqMy20fgvO9iTk2vwk0gQNxVuMiFht8lT/oG0/Mi8wCkPevMghJB0PvQvixi5il6Uu8INlyN70U7wzp7GqijT/n4TsuQQUxDUnyDijQSTDhImYmMm5qbGgoBpPq4QcrQ/xI3gUleSj/1+jHJd7IeG6g51NG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpjJ1QQj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0543C433F1;
+	Thu, 11 Apr 2024 10:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830263;
-	bh=qqCnSq7ue1fgY3FIhhXFbfmDBJykL/2BtGTgZ+kgbHI=;
+	s=korg; t=1712831986;
+	bh=kbU1sUezoK5j6TNHKEuXBMFz8foMMzxO4mlGiMUqtrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=euGU3Lr5u8DUowWUHMQ4TF2rISxSsDIO9Sv50fCv9fgVxIXzAKrPT46/+1gilMqDd
-	 YNCm8/XcfGlYT1wEkaMm3ng9G5NGYGWTDrZmVgimBGKRrTwIE7afNS6n1gKpLGKE/5
-	 TFsQgIOthFYnK0wqagvH8ILCFv+2CW8OmY3/PFwI=
+	b=wpjJ1QQj/Q+HDhbn9iU6LofELIjiTJyzENGSUYgXzcVsrrZVYgzi2m5Y9GRV620Lv
+	 JrSmQwx69wjPqVdXVbKuChs4d4QJLiQcakjQ6522fFZ15OW4xsAZbEkqt5MQTsIxxv
+	 q1I4Nbm3f+TrL7lcAPHwREBng0a32Rp90U49hc4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 089/143] SUNRPC: increase size of rpc_wait_queue.qlen from unsigned short to unsigned int
+	Mahmoud Adam <mngyadam@amazon.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 194/294] net/rds: fix possible cp null dereference
 Date: Thu, 11 Apr 2024 11:55:57 +0200
-Message-ID: <20240411095423.588289065@linuxfoundation.org>
+Message-ID: <20240411095441.452496342@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Mahmoud Adam <mngyadam@amazon.com>
 
-[ Upstream commit 2c35f43b5a4b9cdfaa6fdd946f5a212615dac8eb ]
+commit 62fc3357e079a07a22465b9b6ef71bb6ea75ee4b upstream.
 
-When the NFS client is under extreme load the rpc_wait_queue.qlen counter
-can be overflowed. Here is an instant of the backlog queue overflow in a
-real world environment shown by drgn helper:
+cp might be null, calling cp->cp_conn would produce null dereference
 
-rpc_task_stats(rpc_clnt):
--------------------------
-rpc_clnt: 0xffff92b65d2bae00
-rpc_xprt: 0xffff9275db64f000
-  Queue:  sending[64887] pending[524] backlog[30441] binding[0]
-XMIT task: 0xffff925c6b1d8e98
-     WRITE: 750654
-        __dta_call_status_580: 65463
-        __dta_call_transmit_status_579: 1
-        call_reserveresult: 685189
-        nfs_client_init_is_complete: 1
-    COMMIT: 584
-        call_reserveresult: 573
-        __dta_call_status_580: 11
-    ACCESS: 1
-        __dta_call_status_580: 1
-   GETATTR: 10
-        __dta_call_status_580: 4
-        call_reserveresult: 6
-751249 tasks for server 111.222.333.444
-Total tasks: 751249
+[Simon Horman adds:]
 
-count_rpc_wait_queues(xprt):
-----------------------------
-**** rpc_xprt: 0xffff9275db64f000 num_reqs: 65511
-wait_queue: xprt_binding[0] cnt: 0
-wait_queue: xprt_binding[1] cnt: 0
-wait_queue: xprt_binding[2] cnt: 0
-wait_queue: xprt_binding[3] cnt: 0
-rpc_wait_queue[xprt_binding].qlen: 0 maxpriority: 0
-wait_queue: xprt_sending[0] cnt: 0
-wait_queue: xprt_sending[1] cnt: 64887
-wait_queue: xprt_sending[2] cnt: 0
-wait_queue: xprt_sending[3] cnt: 0
-rpc_wait_queue[xprt_sending].qlen: 64887 maxpriority: 3
-wait_queue: xprt_pending[0] cnt: 524
-wait_queue: xprt_pending[1] cnt: 0
-wait_queue: xprt_pending[2] cnt: 0
-wait_queue: xprt_pending[3] cnt: 0
-rpc_wait_queue[xprt_pending].qlen: 524 maxpriority: 0
-wait_queue: xprt_backlog[0] cnt: 0
-wait_queue: xprt_backlog[1] cnt: 685801
-wait_queue: xprt_backlog[2] cnt: 0
-wait_queue: xprt_backlog[3] cnt: 0
-rpc_wait_queue[xprt_backlog].qlen: 30441 maxpriority: 3 [task cnt mismatch]
+Analysis:
 
-There is no effect on operations when this overflow occurs. However
-it causes confusion when trying to diagnose the performance problem.
+* cp is a parameter of __rds_rdma_map and is not reassigned.
 
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+* The following call-sites pass a NULL cp argument to __rds_rdma_map()
+
+  - rds_get_mr()
+  - rds_get_mr_for_dest
+
+* Prior to the code above, the following assumes that cp may be NULL
+  (which is indicative, but could itself be unnecessary)
+
+	trans_private = rs->rs_transport->get_mr(
+		sg, nents, rs, &mr->r_key, cp ? cp->cp_conn : NULL,
+		args->vec.addr, args->vec.bytes,
+		need_odp ? ODP_ZEROBASED : ODP_NOT_NEEDED);
+
+* The code modified by this patch is guarded by IS_ERR(trans_private),
+  where trans_private is assigned as per the previous point in this analysis.
+
+  The only implementation of get_mr that I could locate is rds_ib_get_mr()
+  which can return an ERR_PTR if the conn (4th) argument is NULL.
+
+* ret is set to PTR_ERR(trans_private).
+  rds_ib_get_mr can return ERR_PTR(-ENODEV) if the conn (4th) argument is NULL.
+  Thus ret may be -ENODEV in which case the code in question will execute.
+
+Conclusion:
+* cp may be NULL at the point where this patch adds a check;
+  this patch does seem to address a possible bug
+
+Fixes: c055fc00c07b ("net/rds: fix WARNING in rds_conn_connect_if_down")
+Cc: stable@vger.kernel.org # v4.19+
+Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240326153132.55580-1-mngyadam@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sunrpc/sched.h | 2 +-
+ net/rds/rdma.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
-index 2d61987b35456..0c77ba488bbae 100644
---- a/include/linux/sunrpc/sched.h
-+++ b/include/linux/sunrpc/sched.h
-@@ -197,7 +197,7 @@ struct rpc_wait_queue {
- 	unsigned char		maxpriority;		/* maximum priority (0 if queue is not a priority queue) */
- 	unsigned char		priority;		/* current priority */
- 	unsigned char		nr;			/* # tasks remaining for cookie */
--	unsigned short		qlen;			/* total # tasks waiting in queue */
-+	unsigned int		qlen;			/* total # tasks waiting in queue */
- 	struct rpc_timer	timer_list;
- #if IS_ENABLED(CONFIG_SUNRPC_DEBUG) || IS_ENABLED(CONFIG_TRACEPOINTS)
- 	const char *		name;
--- 
-2.43.0
-
+--- a/net/rds/rdma.c
++++ b/net/rds/rdma.c
+@@ -302,7 +302,7 @@ static int __rds_rdma_map(struct rds_soc
+ 		}
+ 		ret = PTR_ERR(trans_private);
+ 		/* Trigger connection so that its ready for the next retry */
+-		if (ret == -ENODEV)
++		if (ret == -ENODEV && cp)
+ 			rds_conn_connect_if_down(cp->cp_conn);
+ 		goto out;
+ 	}
 
 
 
