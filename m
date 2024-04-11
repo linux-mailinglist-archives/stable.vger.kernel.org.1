@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-39114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D758A11F9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D438A1229
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:51:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0CED1F273F7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52E821C22609
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1715C146A72;
-	Thu, 11 Apr 2024 10:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45041442FE;
+	Thu, 11 Apr 2024 10:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZg2Zh4S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCI/doGH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9D679FD;
-	Thu, 11 Apr 2024 10:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724E21E48E;
+	Thu, 11 Apr 2024 10:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832557; cv=none; b=Xb1vwcZTMuFt7kbzlB36Woiemsl/Aivg/gsbldRicB8PvvZ3m6jp+xZxDDl1cAgavYp3Ly4uXYteiygJKhvF2GjtI1+wHebzT/qQ8kNPO/fz/kNT9ERB4o/+DwIM2MOiioG6ltgAGOM08fcWEcMnCkaNh1FgLtK82HtQ3malze4=
+	t=1712832685; cv=none; b=F7R315aAxQuNE/IlYAYrlPUiCbkIs6J96WOX+L6W+6HQfPTpRAgUm/E3AkxhXhS7YaEXPs4aokDLrS2xUWfJ4RvxrblLL0xGHXffHiONJQSHD4wuX4vvfJAhOZEzXq+P1xRjcWUuFkVXkclxZwBarcnTib0OSOT+v6zpDnrRgEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832557; c=relaxed/simple;
-	bh=agQ/0UKxwjXoXJAWi5BOE1n7UFJrCBp+k+UvZLEmLRM=;
+	s=arc-20240116; t=1712832685; c=relaxed/simple;
+	bh=4NOqxpK14wEcv4bwMX7tGQT0u89DRjP5vstXk2+os8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R4Y/NgvyGDEJjtnZoEvnH6N0OZP/3k9p+D6cDjvRDMnv+EzzyqpGN/ujbKgvcvb/64DmY5IeLM0X2021sxcmJeuKkjyGlTqKNmrZ7frO6wMcTuOahfNWWhJRbbo2yPOC53LEFPsVaiB7Ye/rE7kEvZ9yio/06OCviKCOmS7Ynto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZg2Zh4S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5232EC433C7;
-	Thu, 11 Apr 2024 10:49:17 +0000 (UTC)
+	 MIME-Version; b=Y6jyATvmVw+SViXNdhMS2VJ95pqzFqGipFrXL8Bs9k8fHQpvZQMEznE3tg1Lcl7H6H6iTBXkSkK2d0gBXmKoBc0wpPo5C1aI7SMHEIMzP05KkGBfsQDbAZGTfuN9Sw8GVdape1R4ajDwjQp87a/WYzGd/myvIqo11aUUw3EI0rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCI/doGH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED28C433F1;
+	Thu, 11 Apr 2024 10:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832557;
-	bh=agQ/0UKxwjXoXJAWi5BOE1n7UFJrCBp+k+UvZLEmLRM=;
+	s=korg; t=1712832685;
+	bh=4NOqxpK14wEcv4bwMX7tGQT0u89DRjP5vstXk2+os8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FZg2Zh4SYE6sRfQxxVLVFj3xxY2sRwJ1PbceIpu/qsbrCUeO2/9GgODgGXqg5ffsf
-	 Zo6vrvUS/wK/oKB5VxAFIHR39s2tH65hUFaFLnJUD6fcaWuF7ddtac8+ZFHk0eEIov
-	 sM82vW0fuYI0O7XDLGJkF8xXCryjbly1e+Rkix+w=
+	b=LCI/doGHmmQ91sVyRBUJ3O1ON4qG03kE3x4gzA7XZ+H/cF3wPspJCxzAeQIkkoiVF
+	 W1FJ70MR1k7fnlphQ7zlrogcDPY4P6YU6zxBQCLd3bAp0aQDHhvNCFCFi4WjxF/B23
+	 HWCv9BhVHYu8R3ez9336aVZoua+cutqzHIFxX4J8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH 6.1 82/83] VMCI: Fix possible memcpy() run-time warning in vmci_datagram_invoke_guest_handler()
-Date: Thu, 11 Apr 2024 11:57:54 +0200
-Message-ID: <20240411095415.157348111@linuxfoundation.org>
+	Kuan-Ting Chen <hexrabbit@devco.re>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 47/57] netfilter: nf_tables: release mutex after nft_gc_seq_end from abort path
+Date: Thu, 11 Apr 2024 11:57:55 +0200
+Message-ID: <20240411095409.412995852@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+References: <20240411095407.982258070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit e606e4b71798cc1df20e987dde2468e9527bd376 upstream.
+commit 0d459e2ffb541841714839e8228b845458ed3b27 upstream.
 
-The changes are similar to those given in the commit 19b070fefd0d
-("VMCI: Fix memcpy() run-time warning in dg_dispatch_as_host()").
+The commit mutex should not be released during the critical section
+between nft_gc_seq_begin() and nft_gc_seq_end(), otherwise, async GC
+worker could collect expired objects and get the released commit lock
+within the same GC sequence.
 
-Fix filling of the msg and msg_payload in dg_info struct, which prevents a
-possible "detected field-spanning write" of memcpy warning that is issued
-by the tracking mechanism __fortify_memcpy_chk.
+nf_tables_module_autoload() temporarily releases the mutex to load
+module dependencies, then it goes back to replay the transaction again.
+Move it at the end of the abort phase after nft_gc_seq_end() is called.
 
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/r/20240219105315.76955-1-kovalev@altlinux.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 720344340fb9 ("netfilter: nf_tables: GC transaction race with abort path")
+Reported-by: Kuan-Ting Chen <hexrabbit@devco.re>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_datagram.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/misc/vmw_vmci/vmci_datagram.c
-+++ b/drivers/misc/vmw_vmci/vmci_datagram.c
-@@ -378,7 +378,8 @@ int vmci_datagram_invoke_guest_handler(s
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 9801bac049e28..ca061fc0b1def 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9880,11 +9880,6 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 		nf_tables_abort_release(trans);
+ 	}
  
- 		dg_info->in_dg_host_queue = false;
- 		dg_info->entry = dst_entry;
--		memcpy(&dg_info->msg, dg, VMCI_DG_SIZE(dg));
-+		dg_info->msg = *dg;
-+		memcpy(&dg_info->msg_payload, dg + 1, dg->payload_size);
+-	if (action == NFNL_ABORT_AUTOLOAD)
+-		nf_tables_module_autoload(net);
+-	else
+-		nf_tables_module_autoload_cleanup(net);
+-
+ 	return err;
+ }
  
- 		INIT_WORK(&dg_info->work, dg_delayed_dispatch);
- 		schedule_work(&dg_info->work);
+@@ -9901,6 +9896,14 @@ static int nf_tables_abort(struct net *net, struct sk_buff *skb,
+ 
+ 	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
+ 
++	/* module autoload needs to happen after GC sequence update because it
++	 * temporarily releases and grabs mutex again.
++	 */
++	if (action == NFNL_ABORT_AUTOLOAD)
++		nf_tables_module_autoload(net);
++	else
++		nf_tables_module_autoload_cleanup(net);
++
+ 	mutex_unlock(&nft_net->commit_mutex);
+ 
+ 	return ret;
+-- 
+2.43.0
+
 
 
 
