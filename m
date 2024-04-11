@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-39147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C5F28A121F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:50:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CF8A8A11EC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D8E61F21853
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D8561C21C40
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50ED413BC33;
-	Thu, 11 Apr 2024 10:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081351474BC;
+	Thu, 11 Apr 2024 10:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szQwIFn6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVAGABWz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08FA279FD;
-	Thu, 11 Apr 2024 10:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1351474B0;
+	Thu, 11 Apr 2024 10:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832656; cv=none; b=kK2zzlN82elZuEf+X7/WQi+ad8rG6gozGVsfkupmokbAVXXYwNItDPzPDBrFvFJ29gASeb2wP9UITgRmNjFE8pm0qZ6RrJ4RlisQLIKOm8OgE0hseoM8+exxCy41RLtvMxfzLcKO5pR/cG9k33GxgMiI7xprCt5nMfaSHzQG0Cw=
+	t=1712832519; cv=none; b=QHWFsILWqH1nL2jgEjc4k9B+CCkeADPlPjUkU1ytyjZ1aBfyp7ceaVv5XtKR3uER/tP0jtj+WqXmlef+uXZAjTrBwAvjnBEir9qWnssHfCoAwg3MA69GjbaKUISoyF7JbafbPuHuJ3J6rqkA5Blvz7iBcwNxd7jjFdzuLJ//dEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832656; c=relaxed/simple;
-	bh=4WLhnnN7zXJnW96NHYfMXDRH0rXtlTnqy1l03eQ7mOM=;
+	s=arc-20240116; t=1712832519; c=relaxed/simple;
+	bh=uDuSZP8ckE0HwmMDzMCjrSGp0jTj+zzfk92sspC6zdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jluxnswJZS8EMk2ekQEXmQOWWqc4tKON8E/8Pii1P6OyKPfJcHEmNwk9HdhJblIrnwbvntDLkNsie/2Ndxj12YXubUGEx8R3WU4n23M4IshbVZJRPtcgSBymuV4G9VjYQNFqpS1kdk/CPP7qWV/+97Y1bJF+SVgO7lUoF02W/pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szQwIFn6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E965C433C7;
-	Thu, 11 Apr 2024 10:50:55 +0000 (UTC)
+	 MIME-Version; b=jI7GTZDH+Z1h7AJ0ws3ApawT69Fb1di0qWjt6SVympK4aYBoTLhKEems7EtAd66f7UB3qKCHhREeTc9i5jy/t5Uh+5SZk4swLSTus1DpO6aGtu7O5GkgmuaMVgFVPmoXUttaeH4b23y/zpc+9UfohE3K1CvVKS5lm8d+mZbuAkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVAGABWz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED2AC433C7;
+	Thu, 11 Apr 2024 10:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832655;
-	bh=4WLhnnN7zXJnW96NHYfMXDRH0rXtlTnqy1l03eQ7mOM=;
+	s=korg; t=1712832519;
+	bh=uDuSZP8ckE0HwmMDzMCjrSGp0jTj+zzfk92sspC6zdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=szQwIFn6tnaitGVx51Y8WJnMGD3QkWWcZN34ba6UXLL7b+wn30OGhFfDFYMORuQzj
-	 iPD0Ze/2QfieR0xz8ESEbJHbDYnl6ttBSprpKTkaUEQyZhUP80ehbAhNukPj99myMj
-	 cW97enF5MZfZBfjQ+hJKEvEw3vjR/RuX7VEl8VnA=
+	b=MVAGABWzWzFM29YuQK/rdOo7kdVzptG7VMDMIE5zF0ZtZk/sfy7O/XJdXGvzzbe0K
+	 fvLuvWIxL/Jxlku5Btk6dYd3qnnC3c3hNtIGZHBvVyEcUsKYHv4upFlNR48JgcWbrW
+	 4enVFSA/KaTUeN+OdQ5xUulTIN+An6C5SsmJoM9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linke li <lilinke99@qq.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 38/57] ring-buffer: use READ_ONCE() to read cpu_buffer->commit_page in concurrent environment
+	Tasos Sahanidis <tasos@tasossah.com>,
+	"Ewan D. Milne" <emilne@redhat.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	James Bottomley <jejb@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>,
+	John David Anglin <dave.anglin@bell.net>,
+	Cyril Brulebois <kibi@debian.org>
+Subject: [PATCH 6.1 74/83] Revert "scsi: sd: usb_storage: uas: Access media prior to querying device properties"
 Date: Thu, 11 Apr 2024 11:57:46 +0200
-Message-ID: <20240411095409.144537496@linuxfoundation.org>
+Message-ID: <20240411095414.915492760@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +67,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: linke li <lilinke99@qq.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit f1e30cb6369251c03f63c564006f96a54197dcc4 ]
+This reverts commit b73dd5f9997279715cd450ee8ca599aaff2eabb9 which is
+commit 321da3dc1f3c92a12e3c5da934090d2992a8814c upstream.
 
-In function ring_buffer_iter_empty(), cpu_buffer->commit_page is read
-while other threads may change it. It may cause the time_stamp that read
-in the next line come from a different page. Use READ_ONCE() to avoid
-having to reason about compiler optimizations now and in future.
+It is known to cause problems and has asked to be dropped.
 
-Link: https://lore.kernel.org/linux-trace-kernel/tencent_DFF7D3561A0686B5E8FC079150A02505180A@qq.com
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: linke li <lilinke99@qq.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/yq1frvvpymp.fsf@ca-mkp.ca.oracle.com
+Cc: Tasos Sahanidis <tasos@tasossah.com>
+Cc: Ewan D. Milne <emilne@redhat.com>
+Cc: Bart Van Assche <bvanassche@acm.org>
+Cc: Tasos Sahanidis <tasos@tasossah.com>
+Cc: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: James Bottomley <jejb@linux.ibm.com>
+Cc: Sasha Levin <sashal@kernel.org>
+Reported-by: John David Anglin <dave.anglin@bell.net>
+Reported-by: Cyril Brulebois <kibi@debian.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/sd.c              |   26 +-------------------------
+ drivers/usb/storage/scsiglue.c |    7 -------
+ drivers/usb/storage/uas.c      |    7 -------
+ include/scsi/scsi_device.h     |    1 -
+ 4 files changed, 1 insertion(+), 40 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 80ec515ae81e7..c6bcb80785d8f 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -4390,7 +4390,7 @@ int ring_buffer_iter_empty(struct ring_buffer_iter *iter)
- 	cpu_buffer = iter->cpu_buffer;
- 	reader = cpu_buffer->reader_page;
- 	head_page = cpu_buffer->head_page;
--	commit_page = cpu_buffer->commit_page;
-+	commit_page = READ_ONCE(cpu_buffer->commit_page);
- 	commit_ts = commit_page->page->time_stamp;
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -3286,24 +3286,6 @@ static bool sd_validate_opt_xfer_size(st
+ 	return true;
+ }
+ 
+-static void sd_read_block_zero(struct scsi_disk *sdkp)
+-{
+-	unsigned int buf_len = sdkp->device->sector_size;
+-	char *buffer, cmd[10] = { };
+-
+-	buffer = kmalloc(buf_len, GFP_KERNEL);
+-	if (!buffer)
+-		return;
+-
+-	cmd[0] = READ_10;
+-	put_unaligned_be32(0, &cmd[2]); /* Logical block address 0 */
+-	put_unaligned_be16(1, &cmd[7]);	/* Transfer 1 logical block */
+-
+-	scsi_execute_cmd(sdkp->device, cmd, REQ_OP_DRV_IN, buffer, buf_len,
+-			 SD_TIMEOUT, sdkp->max_retries, NULL);
+-	kfree(buffer);
+-}
+-
+ /**
+  *	sd_revalidate_disk - called the first time a new disk is seen,
+  *	performs disk spin up, read_capacity, etc.
+@@ -3343,13 +3325,7 @@ static int sd_revalidate_disk(struct gen
+ 	 */
+ 	if (sdkp->media_present) {
+ 		sd_read_capacity(sdkp, buffer);
+-		/*
+-		 * Some USB/UAS devices return generic values for mode pages
+-		 * until the media has been accessed. Trigger a READ operation
+-		 * to force the device to populate mode pages.
+-		 */
+-		if (sdp->read_before_ms)
+-			sd_read_block_zero(sdkp);
++
+ 		/*
+ 		 * set the default to rotational.  All non-rotational devices
+ 		 * support the block characteristics VPD page, which will
+--- a/drivers/usb/storage/scsiglue.c
++++ b/drivers/usb/storage/scsiglue.c
+@@ -180,13 +180,6 @@ static int slave_configure(struct scsi_d
+ 		sdev->use_192_bytes_for_3f = 1;
+ 
+ 		/*
+-		 * Some devices report generic values until the media has been
+-		 * accessed. Force a READ(10) prior to querying device
+-		 * characteristics.
+-		 */
+-		sdev->read_before_ms = 1;
+-
+-		/*
+ 		 * Some devices don't like MODE SENSE with page=0x3f,
+ 		 * which is the command used for checking if a device
+ 		 * is write-protected.  Now that we tell the sd driver
+--- a/drivers/usb/storage/uas.c
++++ b/drivers/usb/storage/uas.c
+@@ -877,13 +877,6 @@ static int uas_slave_configure(struct sc
+ 		sdev->guess_capacity = 1;
  
  	/*
--- 
-2.43.0
-
+-	 * Some devices report generic values until the media has been
+-	 * accessed. Force a READ(10) prior to querying device
+-	 * characteristics.
+-	 */
+-	sdev->read_before_ms = 1;
+-
+-	/*
+ 	 * Some devices don't like MODE SENSE with page=0x3f,
+ 	 * which is the command used for checking if a device
+ 	 * is write-protected.  Now that we tell the sd driver
+--- a/include/scsi/scsi_device.h
++++ b/include/scsi/scsi_device.h
+@@ -204,7 +204,6 @@ struct scsi_device {
+ 	unsigned use_10_for_rw:1; /* first try 10-byte read / write */
+ 	unsigned use_10_for_ms:1; /* first try 10-byte mode sense/select */
+ 	unsigned set_dbd_for_ms:1; /* Set "DBD" field in mode sense */
+-	unsigned read_before_ms:1;	/* perform a READ before MODE SENSE */
+ 	unsigned no_report_opcodes:1;	/* no REPORT SUPPORTED OPERATION CODES */
+ 	unsigned no_write_same:1;	/* no WRITE SAME command */
+ 	unsigned use_16_for_rw:1; /* Use read/write(16) over read/write(10) */
 
 
 
