@@ -1,182 +1,89 @@
-Return-Path: <stable+bounces-38061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF708A0A50
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:43:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCCF8A0A52
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:44:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 150A8284273
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 07:43:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F7BE1C20AAC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 07:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E86213E04A;
-	Thu, 11 Apr 2024 07:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F211B13E03B;
+	Thu, 11 Apr 2024 07:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="AF3ArE2p";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Rw1Y+yKZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="av+dU8rO"
 X-Original-To: stable@vger.kernel.org
-Received: from wfhigh5-smtp.messagingengine.com (wfhigh5-smtp.messagingengine.com [64.147.123.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12AB713E048
-	for <stable@vger.kernel.org>; Thu, 11 Apr 2024 07:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B112913DDC7
+	for <stable@vger.kernel.org>; Thu, 11 Apr 2024 07:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712821356; cv=none; b=SyJSHUibouXq/B/6TuQezl9SdEoLtLaWfXKbYG2emub3+IodMT8IRnW8FeUnOxzPLa+tEsac41mncDApwsboSCC7qEvBCRenJVln/JM5iSk32BoTQjkyYSlGaykfwG1wZtTd4uzksdq/PQF+mpZ+5F+eg6jN3/PvhcqUZOsROIo=
+	t=1712821465; cv=none; b=JuPGEsD4anjtMrXviujHmRzJEArxEkSP89daakaojFsFM0F5cfkL0g7GfBbqqD/apPRuoZ00DWv+eOHXnNWLc0sgIv6ERvD56PUqtl1TSwp0511kEA0DUVOh7lHWwjksEF0gwHo/mu4zY//vrf89z3MR0bK6EH6Yf1l2VAt0X5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712821356; c=relaxed/simple;
-	bh=F5/Uo+tzUQxcRASbEEJJpQknHOyWZ7PFzpVUvvj6mrA=;
+	s=arc-20240116; t=1712821465; c=relaxed/simple;
+	bh=GntZbhEWsxB0o6eDBPzXvA5RdMeC5WE1L4A4hsObVNI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UDy/gR/1rKhCNbIRmVnaXOorzo3h9txkbV4peWg/PbcGHqz/XZDJDddLvx+rz/ejMy8VxkOfqNBMDo8p/ew3FADYwiqZNuFvRN84o4mP9xv1IgB+ARO4Z31ierWj6hXyXWsBIiBAwWgIIRskeYaNl2YcDNRlzP/ch6I6qATV2Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=AF3ArE2p; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Rw1Y+yKZ; arc=none smtp.client-ip=64.147.123.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailfhigh.west.internal (Postfix) with ESMTP id 3620318000A7;
-	Thu, 11 Apr 2024 03:42:33 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Thu, 11 Apr 2024 03:42:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1712821352;
-	 x=1712907752; bh=L1aRStXBed7JkQOFONFj/EZa6Keynn96VjRq49KnU/o=; b=
-	AF3ArE2phApSlW6eTlQ8vvvRyINs61aUzQziPBl6P8pUiI3NYuVxN4hRvYuZmYQ+
-	WDSp38PZVO3jZT9pYmP6GxcxEu/NzHyNvv/TevWEFDTmhkU+GPF37+HQFRjTrQ7x
-	IhyvVbvsGEzfFD7ZdWRjVMnGU27Qkuzy56RdbirEscZdPhyJZihYvDITCJmUzjyO
-	ZjAcIsuc39hndYICNlWBu3xFKwSifPtFEjn9y6xWYggNlCfNGWjSbLX49I0VK23M
-	/LfpNfQQ6COh6E+u08F3sAPynAAzQGzhvLQ5Nb+sg5iBVqfdnHjbGU34axDr8ffL
-	OtrF5M9vBYGcBPoDJuVxjg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1712821352; x=
-	1712907752; bh=L1aRStXBed7JkQOFONFj/EZa6Keynn96VjRq49KnU/o=; b=R
-	w1Y+yKZLYHu1ZdMCvgxRnpmM/SJ9L9ZDHyZBWBEmQgmWgoAXoznRLg2ADwvzjCxe
-	l85Flrqles1EZcxKVxqqTwdRpYVma0bTyHVO5ITwhrgJYKDYYeQ7C7RKuiWIKKFr
-	oVkpaho5cJCnwQ9r/Kp2v9xZW9F1pJMLWEiR55wPRnSN1Y2h3GCJqk4rxss6GCg2
-	5t9B81rXaG1cMzDysd0NEOvs8reblNE5Te67xhqaDuaOlv8UVT6RaZiXq2hiq+up
-	ByKMewtsSJLyEYHIV3ISiRmlDSTlw0XuZBLyhGWHsblUzgn8N+nAqjMk4sNhKA5a
-	qvG77YMPGvuXq8NX9xAkw==
-X-ME-Sender: <xms:Z5QXZuJQw7JwfIL7polfrqHh8PdCaeHN01l12zhk8s4lq9Go8mC3AA>
-    <xme:Z5QXZmKYImzvFPiQVz1CGLNQ62h0XpQSTh9594YXO1QZ5-t2MtQZ3f9LT8yemfuWe
-    TuLTFMtgBoSug>
-X-ME-Received: <xmr:Z5QXZutFW423wIuYhoIlRh6xoQz5u9E9y-hbC_KwptVeDdpGaQy-FIRrbNwOzJxsfmsPSAa3dhbNjNmoaB9CnP2LhqSbMY-34Ixs5A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehjedguddulecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepifhr
-    vghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepfe
-    ettefhtdehffdtffffjeegtdegvdekgeeuvddvteekgffhlefhteegveeuffejnecuffho
-    mhgrihhnpehqvghmuhdrohhrghdpuddtqdhrtgdurdhsohdpkhgvrhhnvghlrdhorhhgne
-    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghg
-    sehkrhhorghhrdgtohhm
-X-ME-Proxy: <xmx:Z5QXZjZTNbR3UXVxCRAXHAJwCAurWnVcgK5EhTnR3Nd-WpbTNV2JZQ>
-    <xmx:Z5QXZla2gml54AQ430VoyhtpLxhuaJieFyQmJYQz8m4ZAdJt3odpdw>
-    <xmx:Z5QXZvCCp4jssUxTZPZbrsM2iYWoJ7pqnTqBHEr0cdqCZ3WkwYs0_g>
-    <xmx:Z5QXZrbx0_axCbsc8mZ-U0QFEuUgtCqhgkyvwrIUyghMmMsCSBfqLg>
-    <xmx:aJQXZpTL18BqCRoX4naEgc7e4aeDeCVVXQ8zFERm4LqQqrmA3GxxtGJ4>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 11 Apr 2024 03:42:31 -0400 (EDT)
-Date: Thu, 11 Apr 2024 09:42:28 +0200
-From: Greg KH <greg@kroah.com>
-To: "guomengqi (A)" <guomengqi3@huawei.com>
-Cc: airlied@linux.ie, dri-devel@lists.freedesktop.org,
-	stable@vger.kernel.org, xuqiang36@huawei.com,
-	zhangchangzhong@huawei.com
-Subject: Re: [PATCH 4.19.y] drm/vkms: call drm_atomic_helper_shutdown before
- drm_dev_put()
-Message-ID: <2024041121-tuition-undermine-26b6@gregkh>
-References: <20240403094716.80313-1-guomengqi3@huawei.com>
- <2024040549-pushover-applied-4948@gregkh>
- <a29f435b-424e-4f9f-36cb-3faf22c4b0b3@huawei.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=GO9eRker0oBL9bUBIFUMOjacbJ3/vsMOoA7VpCt1wd7T+og2ygycTzzhivIlKv8u1jSn7rglxDv2CpzB/CuXO3YwO96jQQNhc9cIVaw6DLQYWh7lmnvMoAUJ5iZNPgG2KU7yh3STA6JOoTImhAVX5wiuMry0ljufbuJ/vXwJT3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=av+dU8rO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC10C433C7;
+	Thu, 11 Apr 2024 07:44:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712821464;
+	bh=GntZbhEWsxB0o6eDBPzXvA5RdMeC5WE1L4A4hsObVNI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=av+dU8rOlwG4GbWh/Nf6vtlkrPivMQ6XfNxgA6Q7avk6X/bgxuvlTy10qLxr3Oh3n
+	 sfoETRUmIqvZv812AwXkDCujl4dxFRqytMHE3mAYLc/0k1hyCB1x14kTlZ1LssCxhc
+	 hStM9zHNDSDI0qiQ2Z9GVYTzRRqI2vAX6RLvcnCE=
+Date: Thu, 11 Apr 2024 09:44:21 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: stable@vger.kernel.org, stable@kernel.org,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Subject: Re: [PATCH 6.1.y] virtio: reenable config if freezing device failed
+Message-ID: <2024041112-thrash-unstylish-2cf5@gregkh>
+References: <20240327121237.2829658-1-sashal@kernel.org>
+ <20240410092758.151321-1-david@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a29f435b-424e-4f9f-36cb-3faf22c4b0b3@huawei.com>
+In-Reply-To: <20240410092758.151321-1-david@redhat.com>
 
-On Tue, Apr 09, 2024 at 10:38:34AM +0800, guomengqi (A) wrote:
+On Wed, Apr 10, 2024 at 11:27:58AM +0200, David Hildenbrand wrote:
+> Currently, we don't reenable the config if freezing the device failed.
 > 
-> 在 2024/4/5 17:30, Greg KH 写道:
-> > On Wed, Apr 03, 2024 at 05:47:16PM +0800, Guo Mengqi wrote:
-> > > commit 73a82b22963d ("drm/atomic: Fix potential use-after-free
-> > > in nonblocking commits") introduced drm_dev_get/put() to
-> > > drm_atomic_helper_shutdown(). And this cause problem in vkms driver exit
-> > > process.
-> > > 
-> > > vkms_exit()
-> > >    drm_dev_put()
-> > >      vkms_release()
-> > >        drm_atomic_helper_shutdown()
-> > >          drm_dev_get()
-> > >          drm_dev_put()
-> > >            vkms_release()    ------ null pointer access
-> > > 
-> > > Using 4.19 stable x86 image on qemu, below stacktrace can be triggered by
-> > > load and unload vkms.ko.
-> > > 
-> > > root:~ # insmod vkms.ko
-> > > [  142.135449] [drm] Supports vblank timestamp caching Rev 2 (21.10.2013).
-> > > [  142.138713] [drm] Driver supports precise vblank timestamp query.
-> > > [  142.142390] [drm] Initialized vkms 1.0.0 20180514 for virtual device on minor 0
-> > > root:~ # rmmod vkms.ko
-> > > [  144.093710] BUG: unable to handle kernel NULL pointer dereference at 00000000000000a0
-> > > [  144.097491] PGD 800000023624e067 P4D 800000023624e067 PUD 22ab59067 PMD 0
-> > > [  144.100802] Oops: 0000 [#1] SMP PTI
-> > > [  144.102502] CPU: 0 PID: 3615 Comm: rmmod Not tainted 4.19.310 #1
-> > > [  144.104452] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-> > > [  144.107238] RIP: 0010:device_del+0x34/0x3a0
-> > > ...
-> > > [  144.131323] Call Trace:
-> > > [  144.131962]  ? __die+0x7d/0xc0
-> > > [  144.132711]  ? no_context+0x152/0x3b0
-> > > [  144.133605]  ? wake_up_q+0x70/0x70
-> > > [  144.134436]  ? __do_page_fault+0x342/0x4b0
-> > > [  144.135445]  ? __switch_to_asm+0x41/0x70
-> > > [  144.136416]  ? __switch_to_asm+0x35/0x70
-> > > [  144.137366]  ? page_fault+0x1e/0x30
-> > > [  144.138214]  ? __drm_atomic_state_free+0x51/0x60
-> > > [  144.139331]  ? device_del+0x34/0x3a0
-> > > [  144.140197]  platform_device_del.part.14+0x19/0x70
-> > > [  144.141348]  platform_device_unregister+0xe/0x20
-> > > [  144.142458]  vkms_release+0x10/0x30 [vkms]
-> > > [  144.143449]  __drm_atomic_helper_disable_all.constprop.31+0x13b/0x150
-> > > [  144.144980]  drm_atomic_helper_shutdown+0x4b/0x90
-> > > [  144.146102]  vkms_release+0x18/0x30 [vkms]
-> > > [  144.147107]  vkms_exit+0x29/0x8ec [vkms]
-> > > [  144.148053]  __x64_sys_delete_module+0x155/0x220
-> > > [  144.149168]  do_syscall_64+0x43/0x100
-> > > [  144.150056]  entry_SYSCALL_64_after_hwframe+0x5c/0xc1
-> > > 
-> > > It seems that the proper unload sequence is:
-> > > 	drm_atomic_helper_shutdown();
-> > > 	drm_dev_put();
-> > > 
-> > > Just put drm_atomic_helper_shutdown() before drm_dev_put()
-> > > should solve the problem.
-> > > 
-> > > Note that vkms exit code is refactored by 53d77aaa3f76 ("drm/vkms: Use
-> > > devm_drm_dev_alloc") in tags/v5.10-rc1.
-> > > 
-> > > So this bug only exists on 4.19 and 5.4.
-> > Do we also need this for 5.4?  If so, can you send a version for that
-> > tree with the correct Fixes: information, and I will be glad to queue
-> > both of these up.
+> For example, virtio-mem currently doesn't support suspend+resume, and
+> trying to freeze the device will always fail. Afterwards, the device
+> will no longer respond to resize requests, because it won't get notified
+> about config changes.
 > 
-> I sent a patch to 5.4.y too. Please check it at
-> https://lore.kernel.org/all/20240409022647.1821-1-guomengqi3@huawei.com/T/#u
+> Let's fix this by re-enabling the config if freezing fails.
+> 
+> Fixes: 22b7050a024d ("virtio: defer config changed notifications")
+> Cc: <stable@kernel.org>
+> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> Cc: Jason Wang <jasowang@redhat.com>
+> Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> Message-Id: <20240213135425.795001-1-david@redhat.com>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> (cherry picked from commit 310227f42882c52356b523e2f4e11690eebcd2ab)
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  drivers/virtio/virtio.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
 
-Both now queued up, thanks.
+All now queued up,t hanks.
 
 greg k-h
 
