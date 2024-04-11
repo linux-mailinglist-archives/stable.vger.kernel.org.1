@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-38892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337DA8A10DF
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868A28A0F90
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64A861C224F4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35B92287241
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600EE1487C3;
-	Thu, 11 Apr 2024 10:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B3D146A71;
+	Thu, 11 Apr 2024 10:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8lJnc47"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByqFsPWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED9413D24D;
-	Thu, 11 Apr 2024 10:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8623E13FD94;
+	Thu, 11 Apr 2024 10:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831901; cv=none; b=k7a4vHmL68UrpSjMTXXU4qPfRVktwFci4vg4u2knpJq0sMjROZWFiNy0OtchBLEO1orYdYmwRuBBloEXOK7XHiO7U9Ra4Np6dys37Qyf6YlCsv68gJ1sh94Pfier2NnthyHC2WASb5WemAYf90KbhHeCH2SVuY1r2K901FhIw2g=
+	t=1712831102; cv=none; b=jmWjpGx2OiI6K8iq+uIH3DQpuMZjWyPGirvQj8RVY/1lypjD9fpfOR6BHDpXX+68Blc9ItOmJRPPg/D1xQgM/kJ9XEFvbJlIpkifkftAiUbuKFAguIvGLSx0Pnuvd4EaBRF8S8y+IB77prH5Z24bwvuL6ZYEbXxqV4pf4ZyY3kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831901; c=relaxed/simple;
-	bh=BknUlDcP0ijkgIhf7Xa8R0ktH6zoJCXLrZT4tfqTDA0=;
+	s=arc-20240116; t=1712831102; c=relaxed/simple;
+	bh=5dtCZFkz/XnU+Pji79UoEGoPp3hJFBSFP91Y4rxQ7JA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZULAOV6FN2j61m8LPhePayDp/o3a+4PbKoPGzocpeZ2J5PxkHVFlsvGcsXvIVvymL/Ouzunkd9NsIIF3PxwvnJ/YkqA/pL8Yzg4OUw1VlXCp0HUnAMST08dkqK02PEDgGn4XvfFr1RzOivPEPe4nHJnmdLnxEj9EgYWNiDWBNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8lJnc47; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969B7C433F1;
-	Thu, 11 Apr 2024 10:38:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i8ab8pGBt9LnHHqOUe1eGkyrxmyQM/jvDS3i9EQI6ZbpnQrtpIFZyoDbN1rVlrBJtqejqzybu8IsBurgG+yU+b9zoLNpyOc/wr0fDa+j95zujrvZ3kd0Y1Ywgf1MXuqubUYfEZ1kOZgUlgYBQ4AZHcQaZmZZWM4ARPt73LIzQ48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByqFsPWX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C467C433F1;
+	Thu, 11 Apr 2024 10:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831901;
-	bh=BknUlDcP0ijkgIhf7Xa8R0ktH6zoJCXLrZT4tfqTDA0=;
+	s=korg; t=1712831102;
+	bh=5dtCZFkz/XnU+Pji79UoEGoPp3hJFBSFP91Y4rxQ7JA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W8lJnc47TQc0dY9QIVAj/P4QjYsE68nRms8/eTWRQK/MKFKCiWkEeNctGRYRLHlmR
-	 AM2xXVl7GIqjK+M+W/sk+eV2EaR0qF1z5glsegsWeyr+FLXEklX1NtYkbB75Va1GWk
-	 wWOoUlSu8E6DhtuBRuhdCAoNOckCGlICOYASKzn4=
+	b=ByqFsPWXaPzfe3jIWSqnsbJU4ZEp/aN40JfCHHlF689tXXkJ+0r/K7drMQ3fSLoYm
+	 iq5XUJH+KCkLC/DZuqDmZdhIo2lOvYcorAMEzcw46Eq+jpQcK0sDtZ7v6Xk2w6yOCo
+	 uuCemTe8u72jRaqrtdrhPNKKzDxOPNUIJNfRbIOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c645abf505ed21f931b5@syzkaller.appspotmail.com,
-	Bart Van Assche <bvanassche@acm.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 164/294] scsi: core: Fix unremoved procfs host directory regression
-Date: Thu, 11 Apr 2024 11:55:27 +0200
-Message-ID: <20240411095440.578855687@linuxfoundation.org>
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 001/114] wifi: ath9k: fix LNA selection in ath_ant_try_scan()
+Date: Thu, 11 Apr 2024 11:55:28 +0200
+Message-ID: <20240411095416.902239341@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit f23a4d6e07570826fe95023ca1aa96a011fa9f84 upstream.
+[ Upstream commit d6b27eb997ef9a2aa51633b3111bc4a04748e6d3 ]
 
-Commit fc663711b944 ("scsi: core: Remove the /proc/scsi/${proc_name}
-directory earlier") fixed a bug related to modules loading/unloading, by
-adding a call to scsi_proc_hostdir_rm() on scsi_remove_host(). But that led
-to a potential duplicate call to the hostdir_rm() routine, since it's also
-called from scsi_host_dev_release(). That triggered a regression report,
-which was then fixed by commit be03df3d4bfe ("scsi: core: Fix a procfs host
-directory removal regression"). The fix just dropped the hostdir_rm() call
-from dev_release().
+In 'ath_ant_try_scan()', (most likely) the 2nd LNA's signal
+strength should be used in comparison against RSSI when
+selecting first LNA as the main one. Compile tested only.
 
-But it happens that this proc directory is created on scsi_host_alloc(),
-and that function "pairs" with scsi_host_dev_release(), while
-scsi_remove_host() pairs with scsi_add_host(). In other words, it seems the
-reason for removing the proc directory on dev_release() was meant to cover
-cases in which a SCSI host structure was allocated, but the call to
-scsi_add_host() didn't happen. And that pattern happens to exist in some
-error paths, for example.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Syzkaller causes that by using USB raw gadget device, error'ing on
-usb-storage driver, at usb_stor_probe2(). By checking that path, we can see
-that the BadDevice label leads to a scsi_host_put() after a SCSI host
-allocation, but there's no call to scsi_add_host() in such path. That leads
-to messages like this in dmesg (and a leak of the SCSI host proc
-structure):
-
-usb-storage 4-1:87.51: USB Mass Storage device detected
-proc_dir_entry 'scsi/usb-storage' already registered
-WARNING: CPU: 1 PID: 3519 at fs/proc/generic.c:377 proc_register+0x347/0x4e0 fs/proc/generic.c:376
-
-The proper fix seems to still call scsi_proc_hostdir_rm() on dev_release(),
-but guard that with the state check for SHOST_CREATED; there is even a
-comment in scsi_host_dev_release() detailing that: such conditional is
-meant for cases where the SCSI host was allocated but there was no calls to
-{add,remove}_host(), like the usb-storage case.
-
-This is what we propose here and with that, the error path of usb-storage
-does not trigger the warning anymore.
-
-Reported-by: syzbot+c645abf505ed21f931b5@syzkaller.appspotmail.com
-Fixes: be03df3d4bfe ("scsi: core: Fix a procfs host directory removal regression")
-Cc: stable@vger.kernel.org
-Cc: Bart Van Assche <bvanassche@acm.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Link: https://lore.kernel.org/r/20240313113006.2834799-1-gpiccoli@igalia.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20231211172502.25202-1-dmantipov@yandex.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hosts.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath9k/antenna.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/hosts.c
-+++ b/drivers/scsi/hosts.c
-@@ -334,12 +334,13 @@ static void scsi_host_dev_release(struct
- 
- 	if (shost->shost_state == SHOST_CREATED) {
- 		/*
--		 * Free the shost_dev device name here if scsi_host_alloc()
--		 * and scsi_host_put() have been called but neither
-+		 * Free the shost_dev device name and remove the proc host dir
-+		 * here if scsi_host_{alloc,put}() have been called but neither
- 		 * scsi_host_add() nor scsi_host_remove() has been called.
- 		 * This avoids that the memory allocated for the shost_dev
--		 * name is leaked.
-+		 * name as well as the proc dir structure are leaked.
- 		 */
-+		scsi_proc_hostdir_rm(shost->hostt);
- 		kfree(dev_name(&shost->shost_dev));
- 	}
- 
+diff --git a/drivers/net/wireless/ath/ath9k/antenna.c b/drivers/net/wireless/ath/ath9k/antenna.c
+index 988222cea9dfe..acc84e6711b0e 100644
+--- a/drivers/net/wireless/ath/ath9k/antenna.c
++++ b/drivers/net/wireless/ath/ath9k/antenna.c
+@@ -643,7 +643,7 @@ static void ath_ant_try_scan(struct ath_ant_comb *antcomb,
+ 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
+ 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_PLUS_LNA2;
+ 			} else if (antcomb->rssi_sub >
+-				   antcomb->rssi_lna1) {
++				   antcomb->rssi_lna2) {
+ 				/* set to A-B */
+ 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
+ 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_MINUS_LNA2;
+-- 
+2.43.0
+
 
 
 
