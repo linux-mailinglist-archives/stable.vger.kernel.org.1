@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828D58A0E41
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7BE18A0D8B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B28C01C21899
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:12:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 056B71C21B22
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9ED1145FE0;
-	Thu, 11 Apr 2024 10:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E26146015;
+	Thu, 11 Apr 2024 10:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+REiUB5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qThrIlcJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762CD1F5FA;
-	Thu, 11 Apr 2024 10:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A95C146010;
+	Thu, 11 Apr 2024 10:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830371; cv=none; b=BREpdX3fqUfGnjlyw1yQ9KWr9IkxJ2825Tun2suY2geba0u4r0YkDep6dvXWKwLjSmRoIWYaCnk519/0XkZzECEGK2xO/4H15ayN+yEbpZ5AWt7I1bTR424kxPVit8ldEV0fvwc7uGsbV6jhjNtoHmKNquQW+7TzgtGjvEqmEJs=
+	t=1712829894; cv=none; b=ng2/GnjCCM9nw5PNIjyJU8DFp06KMvWPTZ/gwm/L4B7XWYtY0zFNp8SSudJG5dubUN5fq+LJfJqJeta42jw18gArXGCkbG30CbFxpl7xJY3MLdzf2+PV6mcngrevjEvskQHZYL/gNbdl76UrdICV8gd9MDBHnMKFJNX/D3oalL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830371; c=relaxed/simple;
-	bh=KUB4DUgHt8Z0ykVA4ONwdlTus7jcqQA4wvsxeS//zh4=;
+	s=arc-20240116; t=1712829894; c=relaxed/simple;
+	bh=QZCYQLdkDpsmmUS06EKe9Mw7sNRi6GxqTQ+Iq9HV3Z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mmKVTjV+lzkcmD2vd6RnYrsBlhtTllZ7xk8XsaLYjTpWzZq2iehTdGYTFPqIz6V67SorUYiJSS0AJ2GIYIOKWP00JaIQ3KYrM/h8ORoV+NkSsjFjuiClj2RyQtcPCzO797thKU4IHJ2SYbzQHlfqHAZBKkihf2PQ6saG4s8uPuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+REiUB5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE66AC433C7;
-	Thu, 11 Apr 2024 10:12:50 +0000 (UTC)
+	 MIME-Version; b=WtZUD3l3TvH9YcIFSvbhdlzqOqDKimju6P5YUuHYI2lAQm2PlXqWOw57EPateg+erk6xfzE8Ur33KFQHUqxeEXYaBpPrb7xNgnqI4QCLM3h/Z7iAmxx+VLn+OK37MSGhJEkmQnO5vkzHNHChOxOh3pwxBBv/j8mnUzTW1kU3ybQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qThrIlcJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F253C433C7;
+	Thu, 11 Apr 2024 10:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830371;
-	bh=KUB4DUgHt8Z0ykVA4ONwdlTus7jcqQA4wvsxeS//zh4=;
+	s=korg; t=1712829893;
+	bh=QZCYQLdkDpsmmUS06EKe9Mw7sNRi6GxqTQ+Iq9HV3Z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y+REiUB5oyCty3CwlDrl7TO1LnkKeMU7XA5HOkdOpTRGgERRApNtY+6j3qOVGJUlE
-	 zY6FxdLWjFdNarrufP2ExPz2anh+Us/aMGDuND9TsGIQ7xq0anfKJuBFaJL2SkRWAM
-	 +udHY36rkYHNyyFnT7UEEttsiX3so7hzNaE/vWZs=
+	b=qThrIlcJXwDtNLSlOZ+Wky6xNRejjZL+wXroro/loK19Br8Rs2orN8Fm6VeuDFxXN
+	 7jdKs4GDa1e1pKApv4YLXmpaC5+ilj3byacAFO9DOirVbAxNtVrAzlROnN69EH5o7w
+	 Ymr/QSmmHqWCTmaqKyZPqeglEqevEih/KYvlQCKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Smirnov <r.smirnov@omp.ru>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Jens Axboe <axboe@kernel.dk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 096/143] block: prevent division by zero in blk_rq_stat_sum()
+Subject: [PATCH 4.19 141/175] ata: sata_sx4: fix pdc20621_get_from_dimm() on 64-bit
 Date: Thu, 11 Apr 2024 11:56:04 +0200
-Message-ID: <20240411095423.798610098@linuxfoundation.org>
+Message-ID: <20240411095423.809851979@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Smirnov <r.smirnov@omp.ru>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 93f52fbeaf4b676b21acfe42a5152620e6770d02 ]
+[ Upstream commit 52f80bb181a9a1530ade30bc18991900bbb9697f ]
 
-The expression dst->nr_samples + src->nr_samples may
-have zero value on overflow. It is necessary to add
-a check to avoid division by zero.
+gcc warns about a memcpy() with overlapping pointers because of an
+incorrect size calculation:
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+In file included from include/linux/string.h:369,
+                 from drivers/ata/sata_sx4.c:66:
+In function 'memcpy_fromio',
+    inlined from 'pdc20621_get_from_dimm.constprop' at drivers/ata/sata_sx4.c:962:2:
+include/linux/fortify-string.h:97:33: error: '__builtin_memcpy' accessing 4294934464 bytes at offsets 0 and [16, 16400] overlaps 6442385281 bytes at offset -2147450817 [-Werror=restrict]
+   97 | #define __underlying_memcpy     __builtin_memcpy
+      |                                 ^
+include/linux/fortify-string.h:620:9: note: in expansion of macro '__underlying_memcpy'
+  620 |         __underlying_##op(p, q, __fortify_size);                        \
+      |         ^~~~~~~~~~~~~
+include/linux/fortify-string.h:665:26: note: in expansion of macro '__fortify_memcpy_chk'
+  665 | #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,                  \
+      |                          ^~~~~~~~~~~~~~~~~~~~
+include/asm-generic/io.h:1184:9: note: in expansion of macro 'memcpy'
+ 1184 |         memcpy(buffer, __io_virt(addr), size);
+      |         ^~~~~~
 
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20240305134509.23108-1-r.smirnov@omp.ru
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+The problem here is the overflow of an unsigned 32-bit number to a
+negative that gets converted into a signed 'long', keeping a large
+positive number.
+
+Replace the complex calculation with a more readable min() variant
+that avoids the warning.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-stat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/sata_sx4.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/block/blk-stat.c b/block/blk-stat.c
-index 7ff76ae6c76a9..e42c263e53fb9 100644
---- a/block/blk-stat.c
-+++ b/block/blk-stat.c
-@@ -27,7 +27,7 @@ void blk_rq_stat_init(struct blk_rq_stat *stat)
- /* src is a per-cpu stat, mean isn't initialized */
- void blk_rq_stat_sum(struct blk_rq_stat *dst, struct blk_rq_stat *src)
- {
--	if (!src->nr_samples)
-+	if (dst->nr_samples + src->nr_samples <= dst->nr_samples)
- 		return;
+diff --git a/drivers/ata/sata_sx4.c b/drivers/ata/sata_sx4.c
+index 0d742457925ec..f217ac8e17b15 100644
+--- a/drivers/ata/sata_sx4.c
++++ b/drivers/ata/sata_sx4.c
+@@ -1020,8 +1020,7 @@ static void pdc20621_get_from_dimm(struct ata_host *host, void *psource,
  
- 	dst->min = min(dst->min, src->min);
+ 	offset -= (idx * window_size);
+ 	idx++;
+-	dist = ((long) (window_size - (offset + size))) >= 0 ? size :
+-		(long) (window_size - offset);
++	dist = min(size, window_size - offset);
+ 	memcpy_fromio(psource, dimm_mmio + offset / 4, dist);
+ 
+ 	psource += dist;
+@@ -1069,8 +1068,7 @@ static void pdc20621_put_to_dimm(struct ata_host *host, void *psource,
+ 	readl(mmio + PDC_DIMM_WINDOW_CTLR);
+ 	offset -= (idx * window_size);
+ 	idx++;
+-	dist = ((long)(s32)(window_size - (offset + size))) >= 0 ? size :
+-		(long) (window_size - offset);
++	dist = min(size, window_size - offset);
+ 	memcpy_toio(dimm_mmio + offset / 4, psource, dist);
+ 	writel(0x01, mmio + PDC_GENERAL_CTLR);
+ 	readl(mmio + PDC_GENERAL_CTLR);
 -- 
 2.43.0
 
