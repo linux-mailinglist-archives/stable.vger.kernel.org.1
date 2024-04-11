@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F68F8A0FC5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:27:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C96CA8A0F47
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40CAD1C22D0C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69F521F26DA6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D03145B1A;
-	Thu, 11 Apr 2024 10:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0CC14600A;
+	Thu, 11 Apr 2024 10:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exJ8ZU+I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGOI/o9k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A6613FD94;
-	Thu, 11 Apr 2024 10:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE75113FD94;
+	Thu, 11 Apr 2024 10:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831243; cv=none; b=bJUW5SjZlhhcRJdV9nvak2On9YJBaKbsqnhPj2nxBTU9D/FSjuVE9iXnQvxl/ikWPnGQBWxpoSi8zUDEkktAQEpkOlt3jVRi+pSBOJKissUSyuETSoaMtZSg0uq+GGIGlRHeKZQSVr/ie+S50zcYHpA2Q4I6CrT5mLjF8+j3PXg=
+	t=1712830950; cv=none; b=oEtdYFgN4+V+SDMqpt2knLSXyX3zRnRaNCv3oGBrb9jwT77vDGaKrWm68UD30VLk952ERJtBgVAgWfORx9Jq+f2or3gUuXAg7rMgvUf2beNyeYyqr92eyPIQWLhXtJh4/y+iN1QvWo8UHjoSe6EYBh4jWC+MauZi9m5Y3EkHmbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831243; c=relaxed/simple;
-	bh=ab/4DiKWfo0TU71+3UCS3Cwlgm9+TOp2gakCgMwJDKE=;
+	s=arc-20240116; t=1712830950; c=relaxed/simple;
+	bh=6fGe/fLzT/3X4GzW24af7BMNoEemEt7gGL9+rkLJg7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mzwoWiIs4FBpskeDxLukgtf/iABDdnleeBba0J8MXHFcmemA5PXGuLRG+Ya+7lmy2G9AEy0+1HsoM1gTKvqFDLtXTsrFK5s9Sszhts8VHZP8XXbFeeRTPbEs7RxGMExVMZb0MnswnOYgpMA9CSfshjo/cqwLvzAsBVwL9wIv4Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exJ8ZU+I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA482C433F1;
-	Thu, 11 Apr 2024 10:27:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jIw98IwtXsUy1Nfxl24ACsOxY7+zMfRITIA27WgvFk3Pt4FZMIQ7Yrzpy98C+zSPi9lbwFxBRwMtkUJQVO4tsUWj6o1IiL1xTeJJA4b3+Nf5lE7qGsPXb4X7UGMYjrgSazgvsvHYsVgBCfG9SGZCv37h15OwnYgt0wKmcET+ALM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGOI/o9k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A422C433C7;
+	Thu, 11 Apr 2024 10:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831243;
-	bh=ab/4DiKWfo0TU71+3UCS3Cwlgm9+TOp2gakCgMwJDKE=;
+	s=korg; t=1712830950;
+	bh=6fGe/fLzT/3X4GzW24af7BMNoEemEt7gGL9+rkLJg7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=exJ8ZU+I4BTBpVjzrfeaCZS0bbp0/v1WuFWEZmTb5IKdyuKGassqlEftKGtgJyb9F
-	 smw+puW4q80is/cZ4A+uqa+ICwBP/+xkG1s0vrIAL0QychWLy7Qa/eQEyAZiO+GwHy
-	 Vsd/0718caaV73BrBjCTBzegY5zMKdXQvKWC/2uU=
+	b=pGOI/o9kH5ZCjrVYnqYFl8oHmeUVnKFwbrG0qNwsiylNM5gYLbcAFLNA6CKPR3Z5O
+	 NzrL78SIMbBPLipiKIuS0AOp7+7q1tWD92k49k9rKJrkwgaAAIe0q7LdRNpYWsIOIj
+	 VpRB+V7SBNaejXu4QYhsWQtvwBJNAKg4fmn3bVqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?M=C3=A1t=C3=A9=20Mosonyi?= <mosomate@gmail.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/114] ASoC: Intel: common: DMI remap for rebranded Intel NUC M15 (LAPRC710) laptops
+Subject: [PATCH 5.4 173/215] batman-adv: Return directly after a failed batadv_dat_select_candidates() in batadv_dat_forward_data()
 Date: Thu, 11 Apr 2024 11:56:22 +0200
-Message-ID: <20240411095418.545372193@linuxfoundation.org>
+Message-ID: <20240411095430.071783919@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +64,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: mosomate <mosomate@gmail.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit c13e03126a5be90781084437689724254c8226e1 ]
+[ Upstream commit ffc15626c861f811f9778914be004fcf43810a91 ]
 
-Added DMI quirk to handle the rebranded variants of Intel NUC M15
-(LAPRC710) laptops. The DMI matching is based on motherboard
-attributes.
+The kfree() function was called in one case by
+the batadv_dat_forward_data() function during error handling
+even if the passed variable contained a null pointer.
+This issue was detected by using the Coccinelle software.
 
-Link: https://github.com/thesofproject/linux/issues/4218
-Signed-off-by: Máté Mosonyi <mosomate@gmail.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240208165545.93811-20-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+* Thus return directly after a batadv_dat_select_candidates() call failed
+  at the beginning.
+
+* Delete the label “out” which became unnecessary with this refactoring.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Acked-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/dmi-quirks.c   |  8 ++++++++
- sound/soc/intel/boards/sof_sdw.c | 11 +++++++++++
- 2 files changed, 19 insertions(+)
+ net/batman-adv/distributed-arp-table.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/soundwire/dmi-quirks.c b/drivers/soundwire/dmi-quirks.c
-index 9ebdd0cd0b1cf..91ab97a456fa9 100644
---- a/drivers/soundwire/dmi-quirks.c
-+++ b/drivers/soundwire/dmi-quirks.c
-@@ -130,6 +130,14 @@ static const struct dmi_system_id adr_remap_quirk_table[] = {
- 		},
- 		.driver_data = (void *)intel_rooks_county,
- 	},
-+	{
-+		/* quirk used for NUC15 LAPRC710 skew */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
-+			DMI_MATCH(DMI_BOARD_NAME, "LAPRC710"),
-+		},
-+		.driver_data = (void *)intel_rooks_county,
-+	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 9ed572141fe5b..0ea7812125fee 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -243,6 +243,17 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 					SOF_SDW_PCH_DMIC |
- 					RT711_JD2_100K),
- 	},
-+	{
-+		/* NUC15 LAPRC710 skews */
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
-+			DMI_MATCH(DMI_BOARD_NAME, "LAPRC710"),
-+		},
-+		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
-+					SOF_SDW_PCH_DMIC |
-+					RT711_JD2_100K),
-+	},
- 	/* TigerLake-SDCA devices */
- 	{
- 		.callback = sof_sdw_quirk_cb,
+diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
+index dda62dcd59c8a..c5b7e9994a018 100644
+--- a/net/batman-adv/distributed-arp-table.c
++++ b/net/batman-adv/distributed-arp-table.c
+@@ -682,7 +682,7 @@ static bool batadv_dat_forward_data(struct batadv_priv *bat_priv,
+ 
+ 	cand = batadv_dat_select_candidates(bat_priv, ip, vid);
+ 	if (!cand)
+-		goto out;
++		return ret;
+ 
+ 	batadv_dbg(BATADV_DBG_DAT, bat_priv, "DHT_SEND for %pI4\n", &ip);
+ 
+@@ -726,7 +726,6 @@ static bool batadv_dat_forward_data(struct batadv_priv *bat_priv,
+ 		batadv_orig_node_put(cand[i].orig_node);
+ 	}
+ 
+-out:
+ 	kfree(cand);
+ 	return ret;
+ }
 -- 
 2.43.0
 
