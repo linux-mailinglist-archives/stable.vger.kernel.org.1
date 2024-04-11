@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258F28A1074
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:36:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 130838A0E6D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:14:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A84D81F2BC4B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:36:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36D621C21DAC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA43149C78;
-	Thu, 11 Apr 2024 10:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16CC9145FFB;
+	Thu, 11 Apr 2024 10:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEhYA5l1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvegpcPz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AEB146A70;
-	Thu, 11 Apr 2024 10:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6846145B28;
+	Thu, 11 Apr 2024 10:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831615; cv=none; b=heiAezqdOieE2CsY8q6n3VKkXyxN2+/7oEbS26OnXMeFxW7w+iFWriLA6Ddv4D9qPfU2pbczR7Xurvb52MM50OQz6BaSYEccl6b7L9qg0xk26RfKy8Nr3sAZHgFE7aoZAt2yo+jFQJE1ggLHCXuHvBjItX0TBQo7PTuSomMuZVM=
+	t=1712830475; cv=none; b=EvEroHkayHCN1kZlXrX1A/dTbi6/gdaSk5TMzPzfPkjj7bduxy3chwji9S4h/uIrFgbl4nnMR+NnxL0DdRgPrcnbXb6vqaPCQV8S/8PWpnyjeLulvyFP5ce+9nId3GuZTq7qPF2VwHJiSp+qDHl24DRKbtntwHwMLeXkrhV5teg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831615; c=relaxed/simple;
-	bh=sYBQN6cihXMvigJ+v+vlhZfWMRU0ux88S46Um+vm6WU=;
+	s=arc-20240116; t=1712830475; c=relaxed/simple;
+	bh=aICE5zh+3PSxAysPUC+b7BsHPnG9dJCyVsr7AFKL918=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ibN9GDZOxHggqU86jLpub8qAYEjGpynQvJ9VMvCaGocGZZeTGAGZ2OyGuJ0qxzJ36y1yNNNadipqZ9cdhCRTUIrIl8nh+CW6Q7Z4KDkWtb0nmhHy+V+K+PMmDmctcqHqbiDjzL5LYjnvIg/dCpc+zRRjtpWXkpfTZuxyK6Nercs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEhYA5l1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA37C433F1;
-	Thu, 11 Apr 2024 10:33:34 +0000 (UTC)
+	 MIME-Version; b=ZFVt4Uz1DbLl9JBW6Fv5Oa7q7cDuLN5O1dXwiwuZ1qfHVMGk2O8nqbpJa9ZpCn434mm1RLOmnbYYSyRQoA/5srBUWZ8oxOOeBFgVUEKHLPBuEPLW2u8dMMK+ugjiSoldB9AGL0NYHiU+1o3DsrIdUD8ZpT6kwcHmIJRShPBJEpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvegpcPz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED42AC433C7;
+	Thu, 11 Apr 2024 10:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831615;
-	bh=sYBQN6cihXMvigJ+v+vlhZfWMRU0ux88S46Um+vm6WU=;
+	s=korg; t=1712830475;
+	bh=aICE5zh+3PSxAysPUC+b7BsHPnG9dJCyVsr7AFKL918=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uEhYA5l1tyLiWfop+BxG7wtwyY93+KLjL6bql7EsMZQk3Ih4hLXAFHYRpkvjx4pqs
-	 O5NrNQ0OwurBy5sx1MUsr7v8Pn8UCrTLFAqivHmfiLLBQ9STOWy1nbQpRkuEuyyTov
-	 kSyQkyBL+OhsY7Pokftf3Ngg4P5kEDzy/YtygSBY=
+	b=uvegpcPz/36TLEIH/f03U2ZMQyfG9GkaFF+QBIeqAglNDXAiwkhOfIktPKAVswvhB
+	 9vvk5WMIHfTSX0BPztVW5V6UgPc91KJM4YqRXZwFZcVH8ZKS0YvB82YBD4CbttlgKc
+	 QR27gh8lnRZ7JfSp5ohpTZKSyyO/LPQUJ2yb20M0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Sean V Kelley <sean.v.kelley@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	BassCheck <bass@buaa.edu.cn>,
+	Gui-Dong Han <2045gemini@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 061/294] PCI/ERR: Cache RCEC EA Capability offset in pci_init_capabilities()
+Subject: [PATCH 5.4 015/215] media: xc4000: Fix atomicity violation in xc4000_get_frequency
 Date: Thu, 11 Apr 2024 11:53:44 +0200
-Message-ID: <20240411095437.476324683@linuxfoundation.org>
+Message-ID: <20240411095425.341337080@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,192 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean V Kelley <sean.v.kelley@intel.com>
+From: Gui-Dong Han <2045gemini@gmail.com>
 
-[ Upstream commit 90655631988f8f501529e6de5f13614389717ead ]
+[ Upstream commit 36d503ad547d1c75758a6fcdbec2806f1b6aeb41 ]
 
-Extend support for Root Complex Event Collectors by decoding and caching
-the RCEC Endpoint Association Extended Capabilities when enumerating. Use
-that cached information for later error source reporting. See PCIe r5.0,
-sec 7.9.10.
+In xc4000_get_frequency():
+	*freq = priv->freq_hz + priv->freq_offset;
+The code accesses priv->freq_hz and priv->freq_offset without holding any
+lock.
 
-Co-developed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Link: https://lore.kernel.org/r/20201121001036.8560-4-sean.v.kelley@intel.com
-Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> # non-native/no RCEC
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Sean V Kelley <sean.v.kelley@intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 627c6db20703 ("PCI/DPC: Quirk PIO log size for Intel Raptor Lake Root Ports")
+In xc4000_set_params():
+	// Code that updates priv->freq_hz and priv->freq_offset
+	...
+
+xc4000_get_frequency() and xc4000_set_params() may execute concurrently,
+risking inconsistent reads of priv->freq_hz and priv->freq_offset. Since
+these related data may update during reading, it can result in incorrect
+frequency calculation, leading to atomicity violations.
+
+This possible bug is found by an experimental static analysis tool
+developed by our team, BassCheck[1]. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations. The above
+possible bug is reported when our tool analyzes the source code of
+Linux 6.2.
+
+To address this issue, it is proposed to add a mutex lock pair in
+xc4000_get_frequency() to ensure atomicity. With this patch applied, our
+tool no longer reports the possible bug, with the kernel configuration
+allyesconfig for x86_64. Due to the lack of associated hardware, we cannot
+test the patch in runtime testing, and just verify it according to the
+code logic.
+
+[1] https://sites.google.com/view/basscheck/
+
+Fixes: 4c07e32884ab ("[media] xc4000: Fix get_frequency()")
+Cc: stable@vger.kernel.org
+Reported-by: BassCheck <bass@buaa.edu.cn>
+Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.h         | 17 +++++++++++
- drivers/pci/pcie/Makefile |  2 +-
- drivers/pci/pcie/rcec.c   | 59 +++++++++++++++++++++++++++++++++++++++
- drivers/pci/probe.c       |  2 ++
- include/linux/pci.h       |  4 +++
- 5 files changed, 83 insertions(+), 1 deletion(-)
- create mode 100644 drivers/pci/pcie/rcec.c
+ drivers/media/tuners/xc4000.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 32fa07bfc448e..da40f29036d65 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -442,6 +442,15 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info);
- void aer_print_error(struct pci_dev *dev, struct aer_err_info *info);
- #endif	/* CONFIG_PCIEAER */
- 
-+#ifdef CONFIG_PCIEPORTBUS
-+/* Cached RCEC Endpoint Association */
-+struct rcec_ea {
-+	u8		nextbusn;
-+	u8		lastbusn;
-+	u32		bitmap;
-+};
-+#endif
-+
- #ifdef CONFIG_PCIE_DPC
- void pci_save_dpc_state(struct pci_dev *dev);
- void pci_restore_dpc_state(struct pci_dev *dev);
-@@ -456,6 +465,14 @@ static inline void pci_dpc_init(struct pci_dev *pdev) {}
- static inline bool pci_dpc_recovered(struct pci_dev *pdev) { return false; }
- #endif
- 
-+#ifdef CONFIG_PCIEPORTBUS
-+void pci_rcec_init(struct pci_dev *dev);
-+void pci_rcec_exit(struct pci_dev *dev);
-+#else
-+static inline void pci_rcec_init(struct pci_dev *dev) {}
-+static inline void pci_rcec_exit(struct pci_dev *dev) {}
-+#endif
-+
- #ifdef CONFIG_PCI_ATS
- /* Address Translation Service */
- void pci_ats_init(struct pci_dev *dev);
-diff --git a/drivers/pci/pcie/Makefile b/drivers/pci/pcie/Makefile
-index 9a7085668466f..b2980db88cc09 100644
---- a/drivers/pci/pcie/Makefile
-+++ b/drivers/pci/pcie/Makefile
-@@ -2,7 +2,7 @@
- #
- # Makefile for PCI Express features and port driver
- 
--pcieportdrv-y			:= portdrv_core.o portdrv_pci.o err.o
-+pcieportdrv-y			:= portdrv_core.o portdrv_pci.o err.o rcec.o
- 
- obj-$(CONFIG_PCIEPORTBUS)	+= pcieportdrv.o
- 
-diff --git a/drivers/pci/pcie/rcec.c b/drivers/pci/pcie/rcec.c
-new file mode 100644
-index 0000000000000..038e9d706d5fd
---- /dev/null
-+++ b/drivers/pci/pcie/rcec.c
-@@ -0,0 +1,59 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Root Complex Event Collector Support
-+ *
-+ * Authors:
-+ *  Sean V Kelley <sean.v.kelley@intel.com>
-+ *  Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-+ *
-+ * Copyright (C) 2020 Intel Corp.
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/pci.h>
-+#include <linux/pci_regs.h>
-+
-+#include "../pci.h"
-+
-+void pci_rcec_init(struct pci_dev *dev)
-+{
-+	struct rcec_ea *rcec_ea;
-+	u32 rcec, hdr, busn;
-+	u8 ver;
-+
-+	/* Only for Root Complex Event Collectors */
-+	if (pci_pcie_type(dev) != PCI_EXP_TYPE_RC_EC)
-+		return;
-+
-+	rcec = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_RCEC);
-+	if (!rcec)
-+		return;
-+
-+	rcec_ea = kzalloc(sizeof(*rcec_ea), GFP_KERNEL);
-+	if (!rcec_ea)
-+		return;
-+
-+	pci_read_config_dword(dev, rcec + PCI_RCEC_RCIEP_BITMAP,
-+			      &rcec_ea->bitmap);
-+
-+	/* Check whether RCEC BUSN register is present */
-+	pci_read_config_dword(dev, rcec, &hdr);
-+	ver = PCI_EXT_CAP_VER(hdr);
-+	if (ver >= PCI_RCEC_BUSN_REG_VER) {
-+		pci_read_config_dword(dev, rcec + PCI_RCEC_BUSN, &busn);
-+		rcec_ea->nextbusn = PCI_RCEC_BUSN_NEXT(busn);
-+		rcec_ea->lastbusn = PCI_RCEC_BUSN_LAST(busn);
-+	} else {
-+		/* Avoid later ver check by setting nextbusn */
-+		rcec_ea->nextbusn = 0xff;
-+		rcec_ea->lastbusn = 0x00;
-+	}
-+
-+	dev->rcec_ea = rcec_ea;
-+}
-+
-+void pci_rcec_exit(struct pci_dev *dev)
-+{
-+	kfree(dev->rcec_ea);
-+	dev->rcec_ea = NULL;
-+}
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index ece90a23936d2..ab106d2a99479 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2216,6 +2216,7 @@ static void pci_configure_device(struct pci_dev *dev)
- static void pci_release_capabilities(struct pci_dev *dev)
+diff --git a/drivers/media/tuners/xc4000.c b/drivers/media/tuners/xc4000.c
+index ef9af052007cb..849df4d1c573c 100644
+--- a/drivers/media/tuners/xc4000.c
++++ b/drivers/media/tuners/xc4000.c
+@@ -1517,10 +1517,10 @@ static int xc4000_get_frequency(struct dvb_frontend *fe, u32 *freq)
  {
- 	pci_aer_exit(dev);
-+	pci_rcec_exit(dev);
- 	pci_vpd_release(dev);
- 	pci_iov_release(dev);
- 	pci_free_cap_save_buffers(dev);
-@@ -2416,6 +2417,7 @@ static void pci_init_capabilities(struct pci_dev *dev)
- 	pci_ptm_init(dev);		/* Precision Time Measurement */
- 	pci_aer_init(dev);		/* Advanced Error Reporting */
- 	pci_dpc_init(dev);		/* Downstream Port Containment */
-+	pci_rcec_init(dev);		/* Root Complex Event Collector */
+ 	struct xc4000_priv *priv = fe->tuner_priv;
  
- 	pcie_report_downtraining(dev);
++	mutex_lock(&priv->lock);
+ 	*freq = priv->freq_hz + priv->freq_offset;
  
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index bf46453475e31..1e3df93b39ca9 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -306,6 +306,7 @@ struct pcie_link_state;
- struct pci_vpd;
- struct pci_sriov;
- struct pci_p2pdma;
-+struct rcec_ea;
+ 	if (debug) {
+-		mutex_lock(&priv->lock);
+ 		if ((priv->cur_fw.type
+ 		     & (BASE | FM | DTV6 | DTV7 | DTV78 | DTV8)) == BASE) {
+ 			u16	snr = 0;
+@@ -1531,8 +1531,8 @@ static int xc4000_get_frequency(struct dvb_frontend *fe, u32 *freq)
+ 				return 0;
+ 			}
+ 		}
+-		mutex_unlock(&priv->lock);
+ 	}
++	mutex_unlock(&priv->lock);
  
- /* The pci_dev structure describes PCI devices */
- struct pci_dev {
-@@ -328,6 +329,9 @@ struct pci_dev {
- #ifdef CONFIG_PCIEAER
- 	u16		aer_cap;	/* AER capability offset */
- 	struct aer_stats *aer_stats;	/* AER stats for this device */
-+#endif
-+#ifdef CONFIG_PCIEPORTBUS
-+	struct rcec_ea	*rcec_ea;	/* RCEC cached endpoint association */
- #endif
- 	u8		pcie_cap;	/* PCIe capability offset */
- 	u8		msi_cap;	/* MSI capability offset */
+ 	dprintk(1, "%s()\n", __func__);
+ 
 -- 
 2.43.0
 
