@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515518A0DBA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E728A0EAE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BB76286571
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC1501F21980
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0FD6145B08;
-	Thu, 11 Apr 2024 10:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5699E14601D;
+	Thu, 11 Apr 2024 10:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNYovGmQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLq2KUfp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7291442F7;
-	Thu, 11 Apr 2024 10:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FF714600A;
+	Thu, 11 Apr 2024 10:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830025; cv=none; b=MGd7xAmOQiD/DuMD7vSB1EMOEG+sC2lVPo80hBPHVjidbe3MKaRAz5x4dbNSHWainPijHthoAFhAKj/GMgWhSzoDzPXMo2UalZxCm993WcAGBcUK87S0OAbunL4vsIFlzZRWbnVWtrmtUrabVWluC+RlSQAapScHkKdz+5uJhME=
+	t=1712830623; cv=none; b=S5HXkLrfPEcIfzbH0pZ5b1wyPRnkl6XnnIla4zFxhPNkLX3DdPmRBb+mymN58h590DG5+Be2z+/Wj53V1LM0udoh4PwbMeKV4NGpTGkIVx7UbmbHrHvn72z14evAiwYqnEaeJehuBSZhwUXkAJUZR3FSTlxVLSg271enMSLNWDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830025; c=relaxed/simple;
-	bh=EcvyI0tLq0J3KXmVagfs47f35aDPFOPjI1hOznYTLuo=;
+	s=arc-20240116; t=1712830623; c=relaxed/simple;
+	bh=RkI1E93rfNlkUeKabSaxu7kB4nFejk0W+XpvMRrwD2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OhV1T5bECFKdZ9enIDLEjGLlWikOwuMaX5q1WRhQaFdWvRlfWDXthTjDPgWjIKGxqTf7KgzPlWeEYuHI5gpJjivcW7gVoT546dmA5pTQ7SPedpeJcWr6mIiVQD7e/vIngXXanUDJVj6/ZCX25SOabqxlsJXoCDX5gW9aT3TTLl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNYovGmQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E63C433F1;
-	Thu, 11 Apr 2024 10:07:04 +0000 (UTC)
+	 MIME-Version; b=dsD6xPCwSwzlqqJR83X3MR6owVQiI6cqd5qdk1WJ9sTR/vLu1AiIckrQ4FMwgR5PlwjdQFlC7BSDBdLwhEi6RkGFMgTe+RoWXSmxeArgjBa3H2fhP2oCpbm5vegtAFsJWNYUQntQh9FSibMxmd+sNzUsk5sq1dXZXJ6ll7R1xB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLq2KUfp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880F4C433F1;
+	Thu, 11 Apr 2024 10:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830025;
-	bh=EcvyI0tLq0J3KXmVagfs47f35aDPFOPjI1hOznYTLuo=;
+	s=korg; t=1712830622;
+	bh=RkI1E93rfNlkUeKabSaxu7kB4nFejk0W+XpvMRrwD2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fNYovGmQqjgp6u+z0zPK9/4EHVQ1L8iNxe/Xo/hKDOfWfHzD/L4SVpqLCxRsOu/DE
-	 /gtfvIz5rEvcccnK/lUYFTiLndFg+CJ55hWYfb+wEhuWBMPa2gfNK+mphjgyqmwnlf
-	 o+QlfTQxgTVPV1+InqU5n+ApQZgAfQ2C8FPTsQTw=
+	b=xLq2KUfpjgDARdhkRjgNTxHgZ9QjYMGrR2iAPk9lqufzHL8x4BNybsiGqDTpOlcUL
+	 A7RAZLBOAa8ddVpJWiJFWZNGDNosXvih93AiDgDU4iiQ4nZ6hUx4diapUx6YaY8Geg
+	 az8J4vjZdL34EQSI56tYvJsX9L8NfJewwi+ya448=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Po-Hao Huang <phhuang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Eric Auger <eric.auger@redhat.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 002/143] wifi: rtw89: fix null pointer access when abort scan
+Subject: [PATCH 5.4 061/215] vfio/platform: Disable virqfds on cleanup
 Date: Thu, 11 Apr 2024 11:54:30 +0200
-Message-ID: <20240411095420.980876023@linuxfoundation.org>
+Message-ID: <20240411095426.731003953@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Po-Hao Huang <phhuang@realtek.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 7e11a2966f51695c0af0b1f976a32d64dee243b2 ]
+[ Upstream commit fcdc0d3d40bc26c105acf8467f7d9018970944ae ]
 
-During cancel scan we might use vif that weren't scanning.
-Fix this by using the actual scanning vif.
+irqfds for mask and unmask that are not specifically disabled by the
+user are leaked.  Remove any irqfds during cleanup
 
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240119081501.25223-6-pkshih@realtek.com
+Cc: Eric Auger <eric.auger@redhat.com>
+Cc:  <stable@vger.kernel.org>
+Fixes: a7fa7c77cf15 ("vfio/platform: implement IRQ masking/unmasking via an eventfd")
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20240308230557.805580-6-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/mac80211.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/vfio/platform/vfio_platform_irq.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
-index 93889d2fface1..956a06c8cdaab 100644
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -441,7 +441,7 @@ static void rtw89_ops_bss_info_changed(struct ieee80211_hw *hw,
- 			 * when disconnected by peer
- 			 */
- 			if (rtwdev->scanning)
--				rtw89_hw_scan_abort(rtwdev, vif);
-+				rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
- 		}
- 	}
+diff --git a/drivers/vfio/platform/vfio_platform_irq.c b/drivers/vfio/platform/vfio_platform_irq.c
+index c5b09ec0a3c98..f2893f2fcaabd 100644
+--- a/drivers/vfio/platform/vfio_platform_irq.c
++++ b/drivers/vfio/platform/vfio_platform_irq.c
+@@ -321,8 +321,11 @@ void vfio_platform_irq_cleanup(struct vfio_platform_device *vdev)
+ {
+ 	int i;
  
-@@ -990,7 +990,7 @@ static int rtw89_ops_remain_on_channel(struct ieee80211_hw *hw,
- 	}
+-	for (i = 0; i < vdev->num_irqs; i++)
++	for (i = 0; i < vdev->num_irqs; i++) {
++		vfio_virqfd_disable(&vdev->irqs[i].mask);
++		vfio_virqfd_disable(&vdev->irqs[i].unmask);
+ 		vfio_set_trigger(vdev, i, -1, NULL);
++	}
  
- 	if (rtwdev->scanning)
--		rtw89_hw_scan_abort(rtwdev, vif);
-+		rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
- 
- 	if (type == IEEE80211_ROC_TYPE_MGMT_TX)
- 		roc->state = RTW89_ROC_MGMT;
+ 	vdev->num_irqs = 0;
+ 	kfree(vdev->irqs);
 -- 
 2.43.0
 
