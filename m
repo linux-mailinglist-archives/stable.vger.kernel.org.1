@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-38971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE718A1145
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 035D88A0FE1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F2AE1C23F3F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1671282817
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CC21474B0;
-	Thu, 11 Apr 2024 10:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0003B145B1A;
+	Thu, 11 Apr 2024 10:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAqglkjF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHnexT9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E342EAE5;
-	Thu, 11 Apr 2024 10:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0001146A9D;
+	Thu, 11 Apr 2024 10:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832136; cv=none; b=WfFtgqOB6OSfpp3+HmuJNCp/o0nJwKHDz0W1owJ8j9zVMnSroLRYaJhwwoy/PZU8iah8FMY8W6kT22CLQj8HJDhFhlmMl3X/tcKx3nE0WMKJ/RGXUCq7mgWz3JYtt0xkL8ElwvjBkVHC48F2XXq6C8Qm9utRpePUmzh+C6A/dsk=
+	t=1712831304; cv=none; b=obam+4Yq1zNwWGftu17AQ/V5Vgtx+Jvlu/7Hau8s5r2BvXhupEEdmOBIeExdxWnsuieB6lgTEfxti+OBFoSas4Yalh9xUVZ6fnjPO01rYyyrBbwSnik5AKt/0JcdOVm95LZ3sCe6vz7Fqy+iFG07mpOJCjwtN+EFeaU0EKnOBRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832136; c=relaxed/simple;
-	bh=9YI7ZPpSleJ7mzgUZejWQFQKx8m4T2JXF9664DbuLoU=;
+	s=arc-20240116; t=1712831304; c=relaxed/simple;
+	bh=1JuWbHChnnJhetRnZmOWZTkpdWQaD4nzod5d6NSz3I0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WJ7SHRiBQaJyBnmRzJmkJ1o8muLZrhIQLc2iSL9/r2PijOeG1KcXVGLvMUTId6RjqWoVFDzuB4qHw+DlmUvBJ12+kcbuanIAtINFhc3MTkDM49RZGeC/gtNcPdE6biGjCcfZQPIHzNdRZ5beneOIfV/j0eqZIxo2uw45Pge9WRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAqglkjF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB876C433C7;
-	Thu, 11 Apr 2024 10:42:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Guqxvl13twrNvm0E+HWRBVpAJBfZ96esDwUkTzgEmjwQ4Xr9+7KCXJeUIGtuys97TmdAyLQcdCwN0Zb6BVOrP7tEn6xms8XNE1c1/mvMQbILW0ye5XWb1cpwcV0aafjyU9cG0LatBzjk3vK8wDdw4Ly232EJJL40BltpKW2TZ6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHnexT9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36015C433F1;
+	Thu, 11 Apr 2024 10:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832136;
-	bh=9YI7ZPpSleJ7mzgUZejWQFQKx8m4T2JXF9664DbuLoU=;
+	s=korg; t=1712831304;
+	bh=1JuWbHChnnJhetRnZmOWZTkpdWQaD4nzod5d6NSz3I0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mAqglkjFyXw3JClwgedb2ZX3+aCzTcDnA898NnFhmSbDjWStOjfNFaGbrl7TywEDc
-	 4Wj+6HMsf5qDyb+NzXhNpJMujuk6K/zQREW4XGVR0vI4h7zdHx4j9q7byuvqmJ+4M+
-	 /NlsIHpfr1OTtSx4Dm52MhwKaqSpwv1Mz5W6Ag9I=
+	b=vHnexT9h7XmPLCYC0fwC6N2O61R45q9yJz+qElhTXuNve/CmY0kF0M73q7l0dB4eM
+	 VtT0pWcfV5cR2G4GdyhVi3pejGqUrNkMZgUwXwmI8lKljLNRf79N2270csGCy73FOJ
+	 8vR+jt9fmrsm+zaRIoaoXIvxtbhSpR/zMvF10d2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Subject: [PATCH 5.10 242/294] objtool: Add asm version of STACK_FRAME_NON_STANDARD
+	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 078/114] Input: imagis - use FIELD_GET where applicable
 Date: Thu, 11 Apr 2024 11:56:45 +0200
-Message-ID: <20240411095442.858518783@linuxfoundation.org>
+Message-ID: <20240411095419.242385037@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,78 +60,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@redhat.com>
+From: Duje Mihanović <duje.mihanovic@skole.hr>
 
-commit 081df94301e317e84c3413686043987da2c3e39d upstream.
+[ Upstream commit c0ca3dbd03d66c6b9e044f48720e6ab5cef37ae5 ]
 
-To be used for adding asm functions to the ignore list.  The "aw" is
-needed to help the ELF section metadata match GCC-created sections.
-Otherwise the linker creates duplicate sections instead of combining
-them.
+Instead of manually extracting certain bits from registers with binary
+ANDs and shifts, the FIELD_GET macro can be used. With this in mind, the
+*_SHIFT macros can be dropped.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/8faa476f9a5ac89af27944ec184c89f95f3c6c49.1611263462.git.jpoimboe@redhat.com
-Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+Link: https://lore.kernel.org/r/20240306-b4-imagis-keys-v3-1-2c429afa8420@skole.hr
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/objtool.h       |    8 ++++++++
- tools/include/linux/objtool.h |    8 ++++++++
- 2 files changed, 16 insertions(+)
+ drivers/input/touchscreen/imagis.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
---- a/include/linux/objtool.h
-+++ b/include/linux/objtool.h
-@@ -141,6 +141,12 @@ struct unwind_hint {
- 	.popsection
- .endm
+diff --git a/drivers/input/touchscreen/imagis.c b/drivers/input/touchscreen/imagis.c
+index e67fd30110278..55ecebe981445 100644
+--- a/drivers/input/touchscreen/imagis.c
++++ b/drivers/input/touchscreen/imagis.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  
-+.macro STACK_FRAME_NON_STANDARD func:req
-+	.pushsection .discard.func_stack_frame_non_standard, "aw"
-+		.long \func - .
-+	.popsection
-+.endm
-+
- #endif /* __ASSEMBLY__ */
++#include <linux/bitfield.h>
+ #include <linux/bits.h>
+ #include <linux/delay.h>
+ #include <linux/i2c.h>
+@@ -23,12 +24,9 @@
+ #define IST3038C_I2C_RETRY_COUNT	3
+ #define IST3038C_MAX_FINGER_NUM		10
+ #define IST3038C_X_MASK			GENMASK(23, 12)
+-#define IST3038C_X_SHIFT		12
+ #define IST3038C_Y_MASK			GENMASK(11, 0)
+ #define IST3038C_AREA_MASK		GENMASK(27, 24)
+-#define IST3038C_AREA_SHIFT		24
+ #define IST3038C_FINGER_COUNT_MASK	GENMASK(15, 12)
+-#define IST3038C_FINGER_COUNT_SHIFT	12
+ #define IST3038C_FINGER_STATUS_MASK	GENMASK(9, 0)
  
- #else /* !CONFIG_STACK_VALIDATION */
-@@ -158,6 +164,8 @@ struct unwind_hint {
- .endm
- .macro ANNOTATE_NOENDBR
- .endm
-+.macro STACK_FRAME_NON_STANDARD func:req
-+.endm
- #endif
+ struct imagis_ts {
+@@ -92,8 +90,7 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
+ 		goto out;
+ 	}
  
- #endif /* CONFIG_STACK_VALIDATION */
---- a/tools/include/linux/objtool.h
-+++ b/tools/include/linux/objtool.h
-@@ -141,6 +141,12 @@ struct unwind_hint {
- 	.popsection
- .endm
+-	finger_count = (intr_message & IST3038C_FINGER_COUNT_MASK) >>
+-				IST3038C_FINGER_COUNT_SHIFT;
++	finger_count = FIELD_GET(IST3038C_FINGER_COUNT_MASK, intr_message);
+ 	if (finger_count > IST3038C_MAX_FINGER_NUM) {
+ 		dev_err(&ts->client->dev,
+ 			"finger count %d is more than maximum supported\n",
+@@ -101,7 +98,7 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
+ 		goto out;
+ 	}
  
-+.macro STACK_FRAME_NON_STANDARD func:req
-+	.pushsection .discard.func_stack_frame_non_standard, "aw"
-+		.long \func - .
-+	.popsection
-+.endm
-+
- #endif /* __ASSEMBLY__ */
+-	finger_pressed = intr_message & IST3038C_FINGER_STATUS_MASK;
++	finger_pressed = FIELD_GET(IST3038C_FINGER_STATUS_MASK, intr_message);
  
- #else /* !CONFIG_STACK_VALIDATION */
-@@ -158,6 +164,8 @@ struct unwind_hint {
- .endm
- .macro ANNOTATE_NOENDBR
- .endm
-+.macro STACK_FRAME_NON_STANDARD func:req
-+.endm
- #endif
+ 	for (i = 0; i < finger_count; i++) {
+ 		error = imagis_i2c_read_reg(ts,
+@@ -118,12 +115,11 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
+ 		input_mt_report_slot_state(ts->input_dev, MT_TOOL_FINGER,
+ 					   finger_pressed & BIT(i));
+ 		touchscreen_report_pos(ts->input_dev, &ts->prop,
+-				       (finger_status & IST3038C_X_MASK) >>
+-						IST3038C_X_SHIFT,
+-				       finger_status & IST3038C_Y_MASK, 1);
++				       FIELD_GET(IST3038C_X_MASK, finger_status),
++				       FIELD_GET(IST3038C_Y_MASK, finger_status),
++				       true);
+ 		input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR,
+-				 (finger_status & IST3038C_AREA_MASK) >>
+-					IST3038C_AREA_SHIFT);
++				 FIELD_GET(IST3038C_AREA_MASK, finger_status));
+ 	}
  
- #endif /* CONFIG_STACK_VALIDATION */
+ 	input_mt_sync_frame(ts->input_dev);
+-- 
+2.43.0
+
 
 
 
