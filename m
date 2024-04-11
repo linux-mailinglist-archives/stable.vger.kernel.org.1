@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-39067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E41958A11C6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:47:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7216E8A1185
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21B661C23657
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2ED41C23BBE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0FD147C87;
-	Thu, 11 Apr 2024 10:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C514A145B26;
+	Thu, 11 Apr 2024 10:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veboJwuL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVKoFjBq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B95147C7C;
-	Thu, 11 Apr 2024 10:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843E96BB29;
+	Thu, 11 Apr 2024 10:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832419; cv=none; b=ECHWxKNaF3jJEc6SUEUorIm46owTlm2BhITyP0S4ZqlKr5GkhQb+WnZTEUluPwrpk90d35mleFbJ9ah9TBs1psVakXx0IAVRqpJ0MUj03E9HqcPBYtNQiGeGZUuwk2QkcpZw1JRPfs/vg1hU2N4c+eSMiTAZ94j7gCCEQ3q3/Sc=
+	t=1712832301; cv=none; b=dkjUc/B0JBBUFnCD7xGzzeg/tJ0PLj2iLVO3l3bdAOteDyUzxRjhlfE1n2mu4WPNPh9TBL+WkCTX2qdo8RqIBviSZjb6eeqFrS61m7foSivAW4WDatBrcJwifIUx6SMgojeMGZzThETjeEbARBqi8SIzgIRKX0P2wd02QDlB/KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832419; c=relaxed/simple;
-	bh=qbWrZ0/9qXFHYHLpXWu+hBSId8X3qm3eSe2+V4uMDMQ=;
+	s=arc-20240116; t=1712832301; c=relaxed/simple;
+	bh=9AWX2fWlRxKE0Mit61ADZS0DeqsFE4mOLSdyra4Lmqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Clwps5E8x8TSJ0T6DKMch0/LqJKOBlhShHu8FDEOTca4n4DzW/lXBLXr0JtEbBSKFPbeLaT8CA6nPF8oRFhp72BumKfrbLOPY4XCfyQWqacX5xgbR44KngsoeDjKJ9Sxxw/mITzttmvF0ojnJIHMZZcCB7/XUSRuLfeKBXKvUhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veboJwuL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD58C433B1;
-	Thu, 11 Apr 2024 10:46:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=errkaArqqyOi+iN7ylM5oMv3cYi0MjIbRRxnHN7S8awb2UxKGleR9gCZtG/0CthWH4cj/w+GGXkOaMhWT/waf4zCKg6thVRFtXXBEVSGcBsVidw67cB53iZT9LhQGnuU37BDtATltb7+WXUL0JUHR3xuEdq44/XOMOJ9MpIKUNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVKoFjBq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F333AC433C7;
+	Thu, 11 Apr 2024 10:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832419;
-	bh=qbWrZ0/9qXFHYHLpXWu+hBSId8X3qm3eSe2+V4uMDMQ=;
+	s=korg; t=1712832301;
+	bh=9AWX2fWlRxKE0Mit61ADZS0DeqsFE4mOLSdyra4Lmqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=veboJwuLuWVIdQn+DlIWtPJBuIFF8Hpv/FuxvZ/WhSJmJ87Wmq3bcb3nIwJgR5v4s
-	 GxUyAR3kBqnuH2jrbR27/bGw5+ZiBCAfrfm+s6zozIkkoFXj0n7u5qb7upSx67D23K
-	 +CCIElPQI2Xcf6TckFrCUZ5NSzPDZvFgelT5GbSk=
+	b=OVKoFjBqFG1/sHKOuYqKMU7kI6mezNueGqJzXmkXifhlO13QCTMMacvdaTjOeg0to
+	 CbgN9fX1Dbh0fa7r0F+ro29SQPkebTU7E5yvFV2uAmBGvl0JkLfUVqDbARM5WbnjQK
+	 4YRxxjLdyrQZ0r+8kwqwdfFGv4XdRD4wPGHwkL/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Aric Cyr <aric.cyr@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Gergo Koteles <soyer@irl.hu>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 43/83] drm/amd/display: Fix nanosec stat overflow
+Subject: [PATCH 5.10 272/294] Input: allocate keycode for Display refresh rate toggle
 Date: Thu, 11 Apr 2024 11:57:15 +0200
-Message-ID: <20240411095413.979878060@linuxfoundation.org>
+Message-ID: <20240411095443.737115104@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aric Cyr <aric.cyr@amd.com>
+From: Gergo Koteles <soyer@irl.hu>
 
-[ Upstream commit 14d68acfd04b39f34eea7bea65dda652e6db5bf6 ]
+[ Upstream commit cfeb98b95fff25c442f78a6f616c627bc48a26b7 ]
 
-[Why]
-Nanosec stats can overflow on long running systems potentially causing
-statistic logging issues.
+Newer Lenovo Yogas and Legions with 60Hz/90Hz displays send a wmi event
+when Fn + R is pressed. This is intended for use to switch between the
+two refresh rates.
 
-[How]
-Use 64bit types for nanosec stats to ensure no overflow.
+Allocate a new KEY_REFRESH_RATE_TOGGLE keycode for it.
 
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Aric Cyr <aric.cyr@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/15a5d08c84cf4d7b820de34ebbcf8ae2502fb3ca.1710065750.git.soyer@irl.hu
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/inc/mod_stats.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/uapi/linux/input-event-codes.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h b/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
-index 4220fd8fdd60c..54cd86060f4d6 100644
---- a/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
-+++ b/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
-@@ -57,10 +57,10 @@ void mod_stats_update_event(struct mod_stats *mod_stats,
- 		unsigned int length);
+diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
+index 7989d9483ea75..bed20a89c14c1 100644
+--- a/include/uapi/linux/input-event-codes.h
++++ b/include/uapi/linux/input-event-codes.h
+@@ -602,6 +602,7 @@
  
- void mod_stats_update_flip(struct mod_stats *mod_stats,
--		unsigned long timestamp_in_ns);
-+		unsigned long long timestamp_in_ns);
+ #define KEY_ALS_TOGGLE		0x230	/* Ambient light sensor */
+ #define KEY_ROTATE_LOCK_TOGGLE	0x231	/* Display rotation lock */
++#define KEY_REFRESH_RATE_TOGGLE	0x232	/* Display refresh rate toggle */
  
- void mod_stats_update_vupdate(struct mod_stats *mod_stats,
--		unsigned long timestamp_in_ns);
-+		unsigned long long timestamp_in_ns);
- 
- void mod_stats_update_freesync(struct mod_stats *mod_stats,
- 		unsigned int v_total_min,
+ #define KEY_BUTTONCONFIG		0x240	/* AL Button Configuration */
+ #define KEY_TASKMANAGER		0x241	/* AL Task/Project Manager */
 -- 
 2.43.0
 
