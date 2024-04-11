@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-38471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1702A8A0EC3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 198C18A10B3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99BBDB21CD9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE5881F2CC55
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E9E14601D;
-	Thu, 11 Apr 2024 10:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD0071487C5;
+	Thu, 11 Apr 2024 10:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIIj0r8r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYWTZfxg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0A613E897;
-	Thu, 11 Apr 2024 10:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78ED513D258;
+	Thu, 11 Apr 2024 10:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830670; cv=none; b=Fg8glDofqLqQJlHX/3ZMf05v7OBdbZD3M6wtbdmXDXciYoyuTTdSH3fdoQD77sJn5X1g6AWLFlhkYMYvMSBlF/+ORTEpFDe49ha+XLcwYPiHQIns3jwuEQKnG0ECF0v9SUOfx+vKrEZAbpE5whZEuVAZYwE7IFP9cDi6cIolIqI=
+	t=1712831785; cv=none; b=lCbiBG3WLhsQLKLRkRuh6tfSTKmGwZMIQ3R59wsySlG15dRkvT/awekL/IbsVPoGyLux0nw1vAPRPakAIvhZRV4ZiZnZRxjaXMaZxNyeaV+dU9yscNCY4TD3/CnZ8BlNdNXAfDCQQwY9mX7wlYPEqOzVpR7BBjD8k2oyABtOs1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830670; c=relaxed/simple;
-	bh=siq0WyUGTdQ/cFE3X2hvh0y5ZY6rUnnlqBoUe3gBhMc=;
+	s=arc-20240116; t=1712831785; c=relaxed/simple;
+	bh=1kKNv1OUzZNbMdhCvielnTVOC+tV0LJPrNrw6+9+/aA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BNlXww4YmPVMW94/lCTfIFLMQYAeTUKEUlGT+ERne6qOisI9bWfbdCvZX1kwvXNaQrXXUb7LcbARA32B1MCvOkA/4BPFt4yhG7glvmo9WyZW3LZ5A6q1CoxCtzuBecBbBlkre0PH4hGvLPu/S1d3dMY8HPTFeQp6OfT7TEJ74T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIIj0r8r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57864C433F1;
-	Thu, 11 Apr 2024 10:17:50 +0000 (UTC)
+	 MIME-Version; b=EUUDBOI14QdbhD7LzR1y0tENKOhKQRGINkHouwC/lzMeUtrq1sO+obfZ7kRm/jujs0RZOhzVMluBSGp1ALzuEWWR23iUDYh/mspMtwfC9If8HEGXtyAmBuprV76/kz3+AnjLRXQIYE1tFRJLMel3GKb1VidVgcv6LsQvTZqh1pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYWTZfxg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4233C433F1;
+	Thu, 11 Apr 2024 10:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830670;
-	bh=siq0WyUGTdQ/cFE3X2hvh0y5ZY6rUnnlqBoUe3gBhMc=;
+	s=korg; t=1712831785;
+	bh=1kKNv1OUzZNbMdhCvielnTVOC+tV0LJPrNrw6+9+/aA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lIIj0r8r22DGJdi1mCOhBCvvaXnE8DvGMsCP0qiepEVqzxZnGDcfLVIcIsnyNwbM/
-	 mIjmQ+O1VVyz84eZtulMCfIqPIim/EieLYCuBaKqMGhgcXGxlgfD4A3Et6WwkFgD63
-	 sJoJ0Gi3ZMrcUr2QuU2q7tyouLqmkyRpduPq8zxE=
+	b=XYWTZfxgEPYT4fhL5WFPaqtJsUs5fdywS5nexI4agpsUluJ1N3t6DCfMKZaeHVcs8
+	 nNILBFw4i7cDSCKSzrkCnHu/szB0eR21ZU7i9MUuHUbrt2sbPqO9bI5c2DKqOpM1hS
+	 LWWqurqUEDHO5t0gkPQ1Bb3vDjcVd/yqF7gI8GL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Pittman <jpittman@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 079/215] dm snapshot: fix lockup in dm_exception_table_exit
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 125/294] ALSA: hda/realtek - Fix headset Mic no show at resume back for Lenovo ALC897 platform
 Date: Thu, 11 Apr 2024 11:54:48 +0200
-Message-ID: <20240411095427.283006110@linuxfoundation.org>
+Message-ID: <20240411095439.426448767@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 6e7132ed3c07bd8a6ce3db4bb307ef2852b322dc ]
+commit d397b6e56151099cf3b1f7bfccb204a6a8591720 upstream.
 
-There was reported lockup when we exit a snapshot with many exceptions.
-Fix this by adding "cond_resched" to the loop that frees the exceptions.
+Headset Mic will no show at resume back.
+This patch will fix this issue.
 
-Reported-by: John Pittman <jpittman@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d7f32791a9fc ("ALSA: hda/realtek - Add headset Mic support for Lenovo ALC897 platform")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/r/4713d48a372e47f98bba0c6120fd8254@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-snap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm-snap.c b/drivers/md/dm-snap.c
-index e902aae685af9..d8902d2b6aa66 100644
---- a/drivers/md/dm-snap.c
-+++ b/drivers/md/dm-snap.c
-@@ -685,8 +685,10 @@ static void dm_exception_table_exit(struct dm_exception_table *et,
- 	for (i = 0; i < size; i++) {
- 		slot = et->table + i;
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10692,8 +10692,7 @@ static void alc897_hp_automute_hook(stru
  
--		hlist_bl_for_each_entry_safe(ex, pos, n, slot, hash_list)
-+		hlist_bl_for_each_entry_safe(ex, pos, n, slot, hash_list) {
- 			kmem_cache_free(mem, ex);
-+			cond_resched();
-+		}
+ 	snd_hda_gen_hp_automute(codec, jack);
+ 	vref = spec->gen.hp_jack_present ? (PIN_HP | AC_PINCTL_VREF_100) : PIN_HP;
+-	snd_hda_codec_write(codec, 0x1b, 0, AC_VERB_SET_PIN_WIDGET_CONTROL,
+-			    vref);
++	snd_hda_set_pin_ctl(codec, 0x1b, vref);
+ }
+ 
+ static void alc897_fixup_lenovo_headset_mic(struct hda_codec *codec,
+@@ -10702,6 +10701,10 @@ static void alc897_fixup_lenovo_headset_
+ 	struct alc_spec *spec = codec->spec;
+ 	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
+ 		spec->gen.hp_automute_hook = alc897_hp_automute_hook;
++		spec->no_shutup_pins = 1;
++	}
++	if (action == HDA_FIXUP_ACT_PROBE) {
++		snd_hda_set_pin_ctl_cache(codec, 0x1a, PIN_IN | AC_PINCTL_VREF_100);
  	}
+ }
  
- 	vfree(et->table);
--- 
-2.43.0
-
 
 
 
