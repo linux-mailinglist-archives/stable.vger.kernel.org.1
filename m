@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-39125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B448A1205
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 578938A11F1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3942D1C22062
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 892161C219C4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3EE13BC33;
-	Thu, 11 Apr 2024 10:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83C91465BF;
+	Thu, 11 Apr 2024 10:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSwX3gsy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+LptlsV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE371E48E;
-	Thu, 11 Apr 2024 10:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761D66BB29;
+	Thu, 11 Apr 2024 10:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832590; cv=none; b=LBmfuUladjE5N1zt52LUoTxHNEBB5evbkrVmbnfk2h7XSTZkVYFCM+NOeGSyw5s9aglF6kBKJ4q0BxSg9K4CCeR6Us1uwPNASCk3j60l0r0eY5TrQ3xjk0p4w1QXBZ6jGbzhLUn0DRNy33uaesmKlVH2FnVjFyEdpQG5Rdp1umY=
+	t=1712832534; cv=none; b=GYvJN6ykgzO6a9I1oM1LsUQTOLIYxwtQo2fvDPySYEA3qRanoIqFCaw971qRDNh3Y+uFABcXLby3YObatAJ68ok3qj4sz2FVnUJtI/qBXe2YCV5g/3OcofJXPCsKKc0AUF3F1E4FwzePKKoCWIgeSIxDetUtPL44Ke9KNQ3O+QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832590; c=relaxed/simple;
-	bh=XDj4ELLO5GTxmLnRIrGbDnwWPAoN6jQpHyxicwqPkQ8=;
+	s=arc-20240116; t=1712832534; c=relaxed/simple;
+	bh=5rh9+ZTI6aoaBdTBt8I724lwV/DkZ1ei6ImH+rSNDJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUPFHBdUGIuEBRFruWrurAyDUxNu7ddZo1tqIvIoHCTYXXCDpPj+GmMIXEu7jBru5h6sM4hSwgTgiHIrglvdMD8+7mvJ4+YfMmsR4i9LCOrS9za1omlHCCbFFI8mVDkapBn0rtijFCNtnuZWzgwBlQ5g7KRmDTfVsYqVDCZMMHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nSwX3gsy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C5DC433F1;
-	Thu, 11 Apr 2024 10:49:49 +0000 (UTC)
+	 MIME-Version; b=dbWGv6NHEwK+5bE07QEU7WhzjX7Sf+XEEJ+OwIMVegOk3kknGu/TXNozGJZpUcGkfBH4OOHDI7JeSdQDp3Vn4qVwDrIMoc7SyJM0hCSPUuBaS/q/KY899158AdP/3EyaH4PpHLOBzl4+5b9MwNHs0Au0iSuvafbX/aG++lNa1is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+LptlsV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE60C433C7;
+	Thu, 11 Apr 2024 10:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832590;
-	bh=XDj4ELLO5GTxmLnRIrGbDnwWPAoN6jQpHyxicwqPkQ8=;
+	s=korg; t=1712832534;
+	bh=5rh9+ZTI6aoaBdTBt8I724lwV/DkZ1ei6ImH+rSNDJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nSwX3gsyIPZu/NCt5s52gxIyMF2hPZDJa32yszvh3MSfISLxpSiIXPexqyEkCSxbK
-	 Y7poq+WeOH5N5aucGz+eO1jlS8SDUplvuAnBhHnDM03bxXjak/IPnokYeOrPuTuXVl
-	 QtkYErgP3JfvptJ8bobXpMk1zuGfqs0Y0Q3b++D8=
+	b=B+LptlsVb0bK59wQlnEvsjlEcJmH08FENWJdbpu30dzh3FigUtY5W2llvN8MKq/nl
+	 mOn8KoSJzHVnq0LmAHZr6tA9VSi/ktDUfEzxeKPur9Ljw6LMpeRkh+gofBvqsptesx
+	 rG+hKSEKpB4nehLssin1FBgsIpnS8iNIVvIUtJLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ogness <john.ogness@linutronix.de>,
-	Petr Mladek <pmladek@suse.com>,
+	Ye Bin <yebin10@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 06/57] panic: Flush kernel log buffer at the end
+Subject: [PATCH 6.1 42/83] ext4: forbid commit inconsistent quota data when errors=remount-ro
 Date: Thu, 11 Apr 2024 11:57:14 +0200
-Message-ID: <20240411095408.182064275@linuxfoundation.org>
+Message-ID: <20240411095413.949328194@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit d988d9a9b9d180bfd5c1d353b3b176cb90d6861b ]
+[ Upstream commit d8b945fa475f13d787df00c26a6dc45a3e2e1d1d ]
 
-If the kernel crashes in a context where printk() calls always
-defer printing (such as in NMI or inside a printk_safe section)
-then the final panic messages will be deferred to irq_work. But
-if irq_work is not available, the messages will not get printed
-unless explicitly flushed. The result is that the final
-"end Kernel panic" banner does not get printed.
+There's issue as follows When do IO fault injection test:
+Quota error (device dm-3): find_block_dqentry: Quota for id 101 referenced but not present
+Quota error (device dm-3): qtree_read_dquot: Can't read quota structure for id 101
+Quota error (device dm-3): do_check_range: Getting block 2021161007 out of range 1-186
+Quota error (device dm-3): qtree_read_dquot: Can't read quota structure for id 661
 
-Add one final flush after the last printk() call to make sure
-the final panic messages make it out as well.
+Now, ext4_write_dquot()/ext4_acquire_dquot()/ext4_release_dquot() may commit
+inconsistent quota data even if process failed. This may lead to filesystem
+corruption.
+To ensure filesystem consistent when errors=remount-ro there is need to call
+ext4_handle_error() to abort journal.
 
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20240207134103.1357162-14-john.ogness@linutronix.de
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240119062908.3598806-1-yebin10@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/panic.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/ext4/super.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/kernel/panic.c b/kernel/panic.c
-index 47933d4c769b6..3b14c6d123ddc 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -425,6 +425,14 @@ void panic(const char *fmt, ...)
- 
- 	/* Do not scroll important messages printed above */
- 	suppress_printk = 1;
-+
-+	/*
-+	 * The final messages may not have been printed if in a context that
-+	 * defers printing (such as NMI) and irq_work is not available.
-+	 * Explicitly flush the kernel log buffer one last time.
-+	 */
-+	console_flush_on_panic(CONSOLE_FLUSH_PENDING);
-+
- 	local_irq_enable();
- 	for (i = 0; ; i += PANIC_TIMER_STEP) {
- 		touch_softlockup_watchdog();
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 601e097e17207..274542d869d0c 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -6751,6 +6751,10 @@ static int ext4_write_dquot(struct dquot *dquot)
+ 	if (IS_ERR(handle))
+ 		return PTR_ERR(handle);
+ 	ret = dquot_commit(dquot);
++	if (ret < 0)
++		ext4_error_err(dquot->dq_sb, -ret,
++			       "Failed to commit dquot type %d",
++			       dquot->dq_id.type);
+ 	err = ext4_journal_stop(handle);
+ 	if (!ret)
+ 		ret = err;
+@@ -6767,6 +6771,10 @@ static int ext4_acquire_dquot(struct dquot *dquot)
+ 	if (IS_ERR(handle))
+ 		return PTR_ERR(handle);
+ 	ret = dquot_acquire(dquot);
++	if (ret < 0)
++		ext4_error_err(dquot->dq_sb, -ret,
++			      "Failed to acquire dquot type %d",
++			      dquot->dq_id.type);
+ 	err = ext4_journal_stop(handle);
+ 	if (!ret)
+ 		ret = err;
+@@ -6786,6 +6794,10 @@ static int ext4_release_dquot(struct dquot *dquot)
+ 		return PTR_ERR(handle);
+ 	}
+ 	ret = dquot_release(dquot);
++	if (ret < 0)
++		ext4_error_err(dquot->dq_sb, -ret,
++			       "Failed to release dquot type %d",
++			       dquot->dq_id.type);
+ 	err = ext4_journal_stop(handle);
+ 	if (!ret)
+ 		ret = err;
 -- 
 2.43.0
 
