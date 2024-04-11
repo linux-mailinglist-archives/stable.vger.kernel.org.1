@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A83CA8A0E49
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4358A0F6A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 495FF1F23775
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA884286E60
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E353E145B28;
-	Thu, 11 Apr 2024 10:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E848C146A8D;
+	Thu, 11 Apr 2024 10:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Qngdjr+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqA2By8t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBFF1DDE9;
-	Thu, 11 Apr 2024 10:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6261146A70;
+	Thu, 11 Apr 2024 10:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830395; cv=none; b=Xd1EjSreNgf74+/ZjEvAdbpiLX5nVPqoW3RKNLOOwvV8kL/d0RogG4d/sAN1YtRIpXgID1U9+voJCc8l51mkbJbxxBgRp0ev5NvY5Pju+yjHR+ZQH1d9C4o08CQWwoLHpcw+7P4TTOnYEBFQl3KSsE9lFIc9iC1UbX9UVMT+Wsc=
+	t=1712831019; cv=none; b=kHscbGVYOTrhVPNUxW7q6wwnMlqSVyFlGppT+7LhnD/NfoM1wSkek8lsgucsBuP/kve7tR2XSJnlNwxL3qChlIxLz1+CdVQwaJF14alz3GPqyGYtoNEHHPKY5HfH9QaXZUyCpWpfYt4d/cfExOgTdLZawaptv2cz4MajgiXh9PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830395; c=relaxed/simple;
-	bh=B1JE5kJwCrY5SNG2lIls2CfTl0VzYuUsAxFDCqe05j0=;
+	s=arc-20240116; t=1712831019; c=relaxed/simple;
+	bh=NL/r75MlsalO4CqSSZ1+PTDCDy6X568eOH6hjeOUut4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z41RFGM2MwqBjt2dIs9LV6EToI51jZsvNf397fgivIpWffIeAielxPk2cT6avDNWbwXpALu++cHlIPAfLxcwkZE/vlKmxo5LiqCg2AcKXPkKaiIH7j9ITcoYfX8U9wVSzVjtOnUY5HNO+9Pae9faoIVi0jL82uQY4Wob3PSItZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Qngdjr+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB071C433F1;
-	Thu, 11 Apr 2024 10:13:14 +0000 (UTC)
+	 MIME-Version; b=mY5l3FBoesWOd052blIyO6+sXAkNRBdrpHPE2H1H8HfLnyk5H7x3BX47FLQI7PmduB73mVJZCdcwFCpCyNTM8vRII4lEnBiRICjJ65gM6jIIbk5z6oRErHXnrO/2PV5rCWVLYCHi9IfcLg3yPhwlZDqzOUHN7zNj2pmjF+a9YQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqA2By8t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA57C433C7;
+	Thu, 11 Apr 2024 10:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830395;
-	bh=B1JE5kJwCrY5SNG2lIls2CfTl0VzYuUsAxFDCqe05j0=;
+	s=korg; t=1712831019;
+	bh=NL/r75MlsalO4CqSSZ1+PTDCDy6X568eOH6hjeOUut4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Qngdjr+veMbrl4f4H/Vg+d93ICr34mZzqYE9d12Yg46pI9sY7W6dWF6iq/iXe0vB
-	 rMUWGkAxiIDR1V11jm1uhYeOb92j1qVQ7PbwNPMCTqoANkK5tAfGT9hB35sZ5lFNg0
-	 +JRi4oBG0xH8cR2LHGA4N88RzsGsmqR7XWDVpONM=
+	b=gqA2By8thWArWeT9KQVoatj8W0QtJCTEZuGkZ7DIcDcM6UspGZ9x3A0zYPY8hVrIp
+	 AGJAg1pv9yW2bJwwLhUqRj94jgQv9kTIgBHBwo24SHH8fd3s3zfbnsn+mtjReLcjOv
+	 M0jUID5g2MwtW1WOrvx4xJpcW2x0lIxnfkI++xvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahmad Rehman <Ahmad.Rehman@amd.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 130/143] drm/amdgpu: Init zone device and drm client after mode-1 reset on reload
+Subject: [PATCH 5.4 189/215] media: sta2x11: fix irq handler cast
 Date: Thu, 11 Apr 2024 11:56:38 +0200
-Message-ID: <20240411095424.816968150@linuxfoundation.org>
+Message-ID: <20240411095430.545389975@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmad Rehman <Ahmad.Rehman@amd.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f679fd6057fbf5ab34aaee28d58b7f81af0cbf48 ]
+[ Upstream commit 3de49ae81c3a0f83a554ecbce4c08e019f30168e ]
 
-In passthrough environment, when amdgpu is reloaded after unload, mode-1
-is triggered after initializing the necessary IPs, That init does not
-include KFD, and KFD init waits until the reset is completed. KFD init
-is called in the reset handler, but in this case, the zone device and
-drm client is not initialized, causing app to create kernel panic.
+clang-16 warns about casting incompatible function pointers:
 
-v2: Removing the init KFD condition from amdgpu_amdkfd_drm_client_create.
-As the previous version has the potential of creating DRM client twice.
+drivers/media/pci/sta2x11/sta2x11_vip.c:1057:6: error: cast from 'irqreturn_t (*)(int, struct sta2x11_vip *)' (aka 'enum irqreturn (*)(int, struct sta2x11_vip *)') to 'irq_handler_t' (aka 'enum irqreturn (*)(int, void *)') converts to incompatible function type [-Werror,-Wcast-function-type-strict]
 
-v3: v2 patch results in SDMA engine hung as DRM open causes VM clear to SDMA
-before SDMA init. Adding the condition to in drm client creation, on top of v1,
-to guard against drm client creation call multiple times.
+Change the prototype of the irq handler to the regular version with a
+local variable to adjust the argument type.
 
-Signed-off-by: Ahmad Rehman <Ahmad.Rehman@amd.com>
-Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[hverkuil: update argument documentation]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c | 2 +-
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c    | 5 ++++-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/media/pci/sta2x11/sta2x11_vip.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-index 41db030ddc4ee..131983ed43465 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-@@ -146,7 +146,7 @@ int amdgpu_amdkfd_drm_client_create(struct amdgpu_device *adev)
+diff --git a/drivers/media/pci/sta2x11/sta2x11_vip.c b/drivers/media/pci/sta2x11/sta2x11_vip.c
+index 798574cfad35e..5a77f8ba3a187 100644
+--- a/drivers/media/pci/sta2x11/sta2x11_vip.c
++++ b/drivers/media/pci/sta2x11/sta2x11_vip.c
+@@ -760,7 +760,7 @@ static const struct video_device video_dev_template = {
+ /**
+  * vip_irq - interrupt routine
+  * @irq: Number of interrupt ( not used, correct number is assumed )
+- * @vip: local data structure containing all information
++ * @data: local data structure containing all information
+  *
+  * check for both frame interrupts set ( top and bottom ).
+  * check FIFO overflow, but limit number of log messages after open.
+@@ -770,8 +770,9 @@ static const struct video_device video_dev_template = {
+  *
+  * IRQ_HANDLED, interrupt done.
+  */
+-static irqreturn_t vip_irq(int irq, struct sta2x11_vip *vip)
++static irqreturn_t vip_irq(int irq, void *data)
  {
- 	int ret;
++	struct sta2x11_vip *vip = data;
+ 	unsigned int status;
  
--	if (!adev->kfd.init_complete)
-+	if (!adev->kfd.init_complete || adev->kfd.client.dev)
- 		return 0;
+ 	status = reg_read(vip, DVP_ITS);
+@@ -1053,9 +1054,7 @@ static int sta2x11_vip_init_one(struct pci_dev *pdev,
  
- 	ret = drm_client_init(&adev->ddev, &adev->kfd.client, "kfd",
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-index 586f4d03039df..64b1bb2404242 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2451,8 +2451,11 @@ static void amdgpu_drv_delayed_reset_work_handler(struct work_struct *work)
- 	}
- 	for (i = 0; i < mgpu_info.num_dgpu; i++) {
- 		adev = mgpu_info.gpu_ins[i].adev;
--		if (!adev->kfd.init_complete)
-+		if (!adev->kfd.init_complete) {
-+			kgd2kfd_init_zone_device(adev);
- 			amdgpu_amdkfd_device_init(adev);
-+			amdgpu_amdkfd_drm_client_create(adev);
-+		}
- 		amdgpu_ttm_set_buffer_funcs_status(adev, true);
- 	}
- }
+ 	spin_lock_init(&vip->slock);
+ 
+-	ret = request_irq(pdev->irq,
+-			  (irq_handler_t) vip_irq,
+-			  IRQF_SHARED, KBUILD_MODNAME, vip);
++	ret = request_irq(pdev->irq, vip_irq, IRQF_SHARED, KBUILD_MODNAME, vip);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "request_irq failed\n");
+ 		ret = -ENODEV;
 -- 
 2.43.0
 
