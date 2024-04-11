@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-38879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E02098A10CE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F9C78A0DE4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9188B1F2CF15
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 618691C2149B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB62914600E;
-	Thu, 11 Apr 2024 10:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF11145B0A;
+	Thu, 11 Apr 2024 10:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7dLuXn3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/5QBrRb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7767279FD;
-	Thu, 11 Apr 2024 10:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD641F5FA;
+	Thu, 11 Apr 2024 10:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831862; cv=none; b=dvB42V0uJT/4mKZkkd9isRqEt0A+mW9ErvsPXqCAIlGhzK1qc2OGHr0JcUkIws5bdMiUcuWzRl9yTP3bXgNqU8eTfeh3cbd05VzU50W5hF+5kztqzrNzgUjdxPheDoijAyXJ9vdVQvl3XNFXg9DbP5qyq6CyYTvxjg3SA0UTMIA=
+	t=1712830140; cv=none; b=SE6cq6vGGXgae17cmYOhaVX8F9sG5lsEYWAMb4h3wEdX1FtcIv/bHfECk+y9ieGsZx1zK1GcUc6kqz0V8312n4Hhdm2Wk5EJ0hg58zU0pboO/6bVCRFsdmCvDR5wc01GoSmrzI8wDL/lwbrCCg2qDjPI6buZmqCZu7erqJA66VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831862; c=relaxed/simple;
-	bh=12jlhMILL21YX9nDM7TCzCT9OFlKhTtyqGLIP39HJPs=;
+	s=arc-20240116; t=1712830140; c=relaxed/simple;
+	bh=TZAbMvpeIk+5DPea3GwoTmfqojOP/aWh5oRdf7R91G0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kw6j+/S/bD0RULZIx3oqejWLVDdYjZK7tq4clhKX1fqJ6bBtD3qy1bV7jd8wTen+rN5LEUBMILm1QeDIhhxglXb4lPUIF+//+0PNQaFPcyTcc+V6NPAI1JEip81qbI2TqkklqohoeEX84LT29ZyI+IqXzacBJOO5eNkeVysaQu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7dLuXn3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F243BC433C7;
-	Thu, 11 Apr 2024 10:37:41 +0000 (UTC)
+	 MIME-Version; b=qXnb+5HNWFzRIqCvq3WL4HlsMcGCLdoJ9Mmr1IB7aqEBEwDS+lZC/OZKWOSqFO3/tQx0m9BVKpHJmv8nnGSKUEO9+uVqvIfwo4xITJJGh/KQ5UovpPSFGBQ+Hu6ELE0Z247puIi2bYdNY7nAo1hwUlA8m2jcK3DZCuzw/tC+t3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/5QBrRb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD97C433F1;
+	Thu, 11 Apr 2024 10:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831862;
-	bh=12jlhMILL21YX9nDM7TCzCT9OFlKhTtyqGLIP39HJPs=;
+	s=korg; t=1712830140;
+	bh=TZAbMvpeIk+5DPea3GwoTmfqojOP/aWh5oRdf7R91G0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t7dLuXn3hSdFHWLsB+a9JtO3Q/cyQc6RXezlFNzIfMAj/WsMN45QS9ne5PC7zynfV
-	 bDfwkQGQzgvgFft/7P+ruXGyvu9Bzgs/5pzNEM9q2kW0LUo55xcVT+kCH8BQUmOycG
-	 F+JZThw0e9b16bA4A8EPJ7mSlNU70IJEnHPC4pFM=
+	b=N/5QBrRbjhQv7uQ3NjXoj0xT94WMXkzhzTMG4CVoFBeBOVGPptjDzso265TXFtDL8
+	 1iQGEKE7Byv4i+QOJNgroMspSRKPl02Eq7Zj19wVE60cPUsdvV8PToa+sK8uHnjMt8
+	 Mr6azHNKhkIhnFM/PPNe0P61mMQhidlJTUUUu4M8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	"GONG, Ruiqi" <gongruiqi1@huawei.com>, GONG@web.codeaurora.org
-Subject: [PATCH 5.10 152/294] serial: sc16is7xx: convert from _raw_ to _noinc_ regmap functions for FIFO
+	patches@lists.linux.dev,
+	syzbot+d050d437fe47d479d210@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 047/143] wifi: cfg80211: check A-MSDU format more carefully
 Date: Thu, 11 Apr 2024 11:55:15 +0200
-Message-ID: <20240411095440.226379846@linuxfoundation.org>
+Message-ID: <20240411095422.333183925@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,88 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit dbf4ab821804df071c8b566d9813083125e6d97b upstream.
+[ Upstream commit 9ad7974856926129f190ffbe3beea78460b3b7cc ]
 
-The SC16IS7XX IC supports a burst mode to access the FIFOs where the
-initial register address is sent ($00), followed by all the FIFO data
-without having to resend the register address each time. In this mode, the
-IC doesn't increment the register address for each R/W byte.
+If it looks like there's another subframe in the A-MSDU
+but the header isn't fully there, we can end up reading
+data out of bounds, only to discard later. Make this a
+bit more careful and check if the subframe header can
+even be present.
 
-The regmap_raw_read() and regmap_raw_write() are functions which can
-perform IO over multiple registers. They are currently used to read/write
-from/to the FIFO, and although they operate correctly in this burst mode on
-the SPI bus, they would corrupt the regmap cache if it was not disabled
-manually. The reason is that when the R/W size is more than 1 byte, these
-functions assume that the register address is incremented and handle the
-cache accordingly.
-
-Convert FIFO R/W functions to use the regmap _noinc_ versions in order to
-remove the manual cache control which was a workaround when using the
-_raw_ versions. FIFO registers are properly declared as volatile so
-cache will not be used/updated for FIFO accesses.
-
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231211171353.2901416-6-hugo@hugovil.com
-Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+d050d437fe47d479d210@syzkaller.appspotmail.com
+Link: https://msgid.link/20240226203405.a731e2c95e38.I82ce7d8c0cc8970ce29d0a39fdc07f1ffc425be4@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ net/wireless/util.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -376,9 +376,7 @@ static void sc16is7xx_fifo_read(struct u
- 	const u8 line = sc16is7xx_line(port);
- 	u8 addr = (SC16IS7XX_RHR_REG << SC16IS7XX_REG_SHIFT) | line;
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index d1ce3bee27973..b9d15f369378b 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -791,15 +791,19 @@ ieee80211_amsdu_subframe_length(void *field, u8 mesh_flags, u8 hdr_type)
  
--	regcache_cache_bypass(s->regmap, true);
--	regmap_raw_read(s->regmap, addr, s->buf, rxlen);
--	regcache_cache_bypass(s->regmap, false);
-+	regmap_noinc_read(s->regmap, addr, s->buf, rxlen);
- }
- 
- static void sc16is7xx_fifo_write(struct uart_port *port, u8 to_send)
-@@ -394,9 +392,7 @@ static void sc16is7xx_fifo_write(struct
- 	if (unlikely(!to_send))
- 		return;
- 
--	regcache_cache_bypass(s->regmap, true);
--	regmap_raw_write(s->regmap, addr, s->buf, to_send);
--	regcache_cache_bypass(s->regmap, false);
-+	regmap_noinc_write(s->regmap, addr, s->buf, to_send);
- }
- 
- static void sc16is7xx_port_update(struct uart_port *port, u8 reg,
-@@ -489,6 +485,11 @@ static bool sc16is7xx_regmap_precious(st
- 	return false;
- }
- 
-+static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
-+{
-+	return reg == SC16IS7XX_RHR_REG;
-+}
-+
- static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ bool ieee80211_is_valid_amsdu(struct sk_buff *skb, u8 mesh_hdr)
  {
- 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
-@@ -1439,6 +1440,8 @@ static struct regmap_config regcfg = {
- 	.cache_type = REGCACHE_RBTREE,
- 	.volatile_reg = sc16is7xx_regmap_volatile,
- 	.precious_reg = sc16is7xx_regmap_precious,
-+	.writeable_noinc_reg = sc16is7xx_regmap_noinc,
-+	.readable_noinc_reg = sc16is7xx_regmap_noinc,
- };
+-	int offset = 0, remaining, subframe_len, padding;
++	int offset = 0, subframe_len, padding;
  
- #ifdef CONFIG_SERIAL_SC16IS7XX_SPI
+ 	for (offset = 0; offset < skb->len; offset += subframe_len + padding) {
++		int remaining = skb->len - offset;
+ 		struct {
+ 		    __be16 len;
+ 		    u8 mesh_flags;
+ 		} hdr;
+ 		u16 len;
+ 
++		if (sizeof(hdr) > remaining)
++			return false;
++
+ 		if (skb_copy_bits(skb, offset + 2 * ETH_ALEN, &hdr, sizeof(hdr)) < 0)
+ 			return false;
+ 
+@@ -807,7 +811,6 @@ bool ieee80211_is_valid_amsdu(struct sk_buff *skb, u8 mesh_hdr)
+ 						      mesh_hdr);
+ 		subframe_len = sizeof(struct ethhdr) + len;
+ 		padding = (4 - subframe_len) & 0x3;
+-		remaining = skb->len - offset;
+ 
+ 		if (subframe_len > remaining)
+ 			return false;
+@@ -825,7 +828,7 @@ void ieee80211_amsdu_to_8023s(struct sk_buff *skb, struct sk_buff_head *list,
+ {
+ 	unsigned int hlen = ALIGN(extra_headroom, 4);
+ 	struct sk_buff *frame = NULL;
+-	int offset = 0, remaining;
++	int offset = 0;
+ 	struct {
+ 		struct ethhdr eth;
+ 		uint8_t flags;
+@@ -839,10 +842,14 @@ void ieee80211_amsdu_to_8023s(struct sk_buff *skb, struct sk_buff_head *list,
+ 		copy_len = sizeof(hdr);
+ 
+ 	while (!last) {
++		int remaining = skb->len - offset;
+ 		unsigned int subframe_len;
+ 		int len, mesh_len = 0;
+ 		u8 padding;
+ 
++		if (copy_len > remaining)
++			goto purge;
++
+ 		skb_copy_bits(skb, offset, &hdr, copy_len);
+ 		if (iftype == NL80211_IFTYPE_MESH_POINT)
+ 			mesh_len = __ieee80211_get_mesh_hdrlen(hdr.flags);
+@@ -852,7 +859,6 @@ void ieee80211_amsdu_to_8023s(struct sk_buff *skb, struct sk_buff_head *list,
+ 		padding = (4 - subframe_len) & 0x3;
+ 
+ 		/* the last MSDU has no padding */
+-		remaining = skb->len - offset;
+ 		if (subframe_len > remaining)
+ 			goto purge;
+ 		/* mitigate A-MSDU aggregation injection attacks */
+-- 
+2.43.0
+
 
 
 
