@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-38616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5FC8A0F8D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE718A1145
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC8F1285D50
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F2AE1C23F3F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16ACD1465BF;
-	Thu, 11 Apr 2024 10:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CC21474B0;
+	Thu, 11 Apr 2024 10:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDOLDjyT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAqglkjF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98FC13FD94;
-	Thu, 11 Apr 2024 10:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E342EAE5;
+	Thu, 11 Apr 2024 10:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831093; cv=none; b=STZYCFsYoXsET5Y3LH7Aiy58n81NIYH9bL8CeHVrL7YBfDH42DjpVQXQbzp2Cb0OpWuLOnP+3+pDoQAP+22WDC+Cn7snNT6EQ4ZHwqznEUCSomUIeChSlQA8OgFc0sfKlf+QQr0zhMvmiOxWkYcwzbJgWSx1hoXDUZJEeUGDZ9o=
+	t=1712832136; cv=none; b=WfFtgqOB6OSfpp3+HmuJNCp/o0nJwKHDz0W1owJ8j9zVMnSroLRYaJhwwoy/PZU8iah8FMY8W6kT22CLQj8HJDhFhlmMl3X/tcKx3nE0WMKJ/RGXUCq7mgWz3JYtt0xkL8ElwvjBkVHC48F2XXq6C8Qm9utRpePUmzh+C6A/dsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831093; c=relaxed/simple;
-	bh=uLfxFcbhtOQEkwa9vRvuchlhUXbYp3ihe+1koowFtAU=;
+	s=arc-20240116; t=1712832136; c=relaxed/simple;
+	bh=9YI7ZPpSleJ7mzgUZejWQFQKx8m4T2JXF9664DbuLoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YAd0g5eIJq8EPQCHTVyZ6x/YR70IqrFHXSAvNt97798jOi6X8Fwrgqxic+GVxrkJXxgOf11afcysme03aHNQevYCoSL5JvOfBs41IXXnfZuJFqO7m5w+GpuKPLys1ciwqAdLJmZuu75EAv17x+zDhOfIF931IzEYgRHhqzEUwYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDOLDjyT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B73DC433C7;
-	Thu, 11 Apr 2024 10:24:53 +0000 (UTC)
+	 MIME-Version; b=WJ7SHRiBQaJyBnmRzJmkJ1o8muLZrhIQLc2iSL9/r2PijOeG1KcXVGLvMUTId6RjqWoVFDzuB4qHw+DlmUvBJ12+kcbuanIAtINFhc3MTkDM49RZGeC/gtNcPdE6biGjCcfZQPIHzNdRZ5beneOIfV/j0eqZIxo2uw45Pge9WRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAqglkjF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB876C433C7;
+	Thu, 11 Apr 2024 10:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831093;
-	bh=uLfxFcbhtOQEkwa9vRvuchlhUXbYp3ihe+1koowFtAU=;
+	s=korg; t=1712832136;
+	bh=9YI7ZPpSleJ7mzgUZejWQFQKx8m4T2JXF9664DbuLoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aDOLDjyT84rJ36I/qEuYNLTTsRS+xjY08QTtLFj7melgQhmwS8GwHPbqPErSq2unX
-	 R9QbZxF5O80sQ+TYpVIHw7m75uzVIKTdda7xMGbKAzY+mrnEbngzlKlkwWaCoglOmd
-	 0ap4bO3ky1Hw1yw5OA7URGHvF9VIUeoIlpi2WC34=
+	b=mAqglkjFyXw3JClwgedb2ZX3+aCzTcDnA898NnFhmSbDjWStOjfNFaGbrl7TywEDc
+	 4Wj+6HMsf5qDyb+NzXhNpJMujuk6K/zQREW4XGVR0vI4h7zdHx4j9q7byuvqmJ+4M+
+	 /NlsIHpfr1OTtSx4Dm52MhwKaqSpwv1Mz5W6Ag9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petre Rodan <petre.rodan@subdimension.ro>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 196/215] tools: iio: replace seekdir() in iio_generic_buffer
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Subject: [PATCH 5.10 242/294] objtool: Add asm version of STACK_FRAME_NON_STANDARD
 Date: Thu, 11 Apr 2024 11:56:45 +0200
-Message-ID: <20240411095430.752724387@linuxfoundation.org>
+Message-ID: <20240411095442.858518783@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petre Rodan <petre.rodan@subdimension.ro>
+From: Josh Poimboeuf <jpoimboe@redhat.com>
 
-[ Upstream commit 4e6500bfa053dc133021f9c144261b77b0ba7dc8 ]
+commit 081df94301e317e84c3413686043987da2c3e39d upstream.
 
-Replace seekdir() with rewinddir() in order to fix a localized glibc bug.
+To be used for adding asm functions to the ignore list.  The "aw" is
+needed to help the ELF section metadata match GCC-created sections.
+Otherwise the linker creates duplicate sections instead of combining
+them.
 
-One of the glibc patches that stable Gentoo is using causes an improper
-directory stream positioning bug on 32bit arm. That in turn ends up as a
-floating point exception in iio_generic_buffer.
-
-The attached patch provides a fix by using an equivalent function which
-should not cause trouble for other distros and is easier to reason about
-in general as it obviously always goes back to to the start.
-
-https://sourceware.org/bugzilla/show_bug.cgi?id=31212
-
-Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-Link: https://lore.kernel.org/r/20240108103224.3986-1-petre.rodan@subdimension.ro
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/8faa476f9a5ac89af27944ec184c89f95f3c6c49.1611263462.git.jpoimboe@redhat.com
+Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/iio/iio_utils.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/objtool.h       |    8 ++++++++
+ tools/include/linux/objtool.h |    8 ++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/tools/iio/iio_utils.c b/tools/iio/iio_utils.c
-index 48360994c2a13..b8745873928c5 100644
---- a/tools/iio/iio_utils.c
-+++ b/tools/iio/iio_utils.c
-@@ -373,7 +373,7 @@ int build_channel_array(const char *device_dir,
- 		goto error_close_dir;
- 	}
+--- a/include/linux/objtool.h
++++ b/include/linux/objtool.h
+@@ -141,6 +141,12 @@ struct unwind_hint {
+ 	.popsection
+ .endm
  
--	seekdir(dp, 0);
-+	rewinddir(dp);
- 	while (ent = readdir(dp), ent) {
- 		if (strcmp(ent->d_name + strlen(ent->d_name) - strlen("_en"),
- 			   "_en") == 0) {
--- 
-2.43.0
-
++.macro STACK_FRAME_NON_STANDARD func:req
++	.pushsection .discard.func_stack_frame_non_standard, "aw"
++		.long \func - .
++	.popsection
++.endm
++
+ #endif /* __ASSEMBLY__ */
+ 
+ #else /* !CONFIG_STACK_VALIDATION */
+@@ -158,6 +164,8 @@ struct unwind_hint {
+ .endm
+ .macro ANNOTATE_NOENDBR
+ .endm
++.macro STACK_FRAME_NON_STANDARD func:req
++.endm
+ #endif
+ 
+ #endif /* CONFIG_STACK_VALIDATION */
+--- a/tools/include/linux/objtool.h
++++ b/tools/include/linux/objtool.h
+@@ -141,6 +141,12 @@ struct unwind_hint {
+ 	.popsection
+ .endm
+ 
++.macro STACK_FRAME_NON_STANDARD func:req
++	.pushsection .discard.func_stack_frame_non_standard, "aw"
++		.long \func - .
++	.popsection
++.endm
++
+ #endif /* __ASSEMBLY__ */
+ 
+ #else /* !CONFIG_STACK_VALIDATION */
+@@ -158,6 +164,8 @@ struct unwind_hint {
+ .endm
+ .macro ANNOTATE_NOENDBR
+ .endm
++.macro STACK_FRAME_NON_STANDARD func:req
++.endm
+ #endif
+ 
+ #endif /* CONFIG_STACK_VALIDATION */
 
 
 
