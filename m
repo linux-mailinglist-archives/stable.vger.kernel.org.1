@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D678A0FEB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDE68A1153
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 459D21C22DF8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A20F9B25016
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9FB1465BF;
-	Thu, 11 Apr 2024 10:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D10140E3C;
+	Thu, 11 Apr 2024 10:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnmqzh/1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tdNFhD9g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFEA1D558;
-	Thu, 11 Apr 2024 10:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2417B13CF89;
+	Thu, 11 Apr 2024 10:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831334; cv=none; b=iZ2Su9IqobE89CELBVYzZgpcAYxCLJACWntjxjFhA+j0nIVU5uF+jhn3vacnZhbsNGJHPeuqbSQM2rM4Xrtc6zSsr0aWWMN+WlFOvKxoULbR5ahAvkPYB1QCG1yprzbjJ9DzmTlsAjrdE5g9J4/GXGhL7Eha/OsOfpwnY4NZ/Ig=
+	t=1712832169; cv=none; b=GhmEbndv6Fm3pPSpEXu5d4VGZZ1WPmmLHZuUb0UAjG7QKccTGGzfQkvWLjnWaCfhN9emEo4Wx/t+/XGKugiutpHjNooEDa4dEwM7a92ORMgz6c8gzbuXWQZ4v6mVWgQ7NYZFRjxS4waGE79cAkAYsDB/oohOV0zkpreqh+iB3uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831334; c=relaxed/simple;
-	bh=kn9rFZ5KJn0gBKOry9pO/COI+2Poms1BmFuJ4VhGMeA=;
+	s=arc-20240116; t=1712832169; c=relaxed/simple;
+	bh=u4vDYpKlutpZH0pLm/zi8JeIRio7IA9/WJSBlJx84n0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g4z2w5rkm6ylccOWdcLDRPC0LxmJdsHPiTMyImpIIHGCt8v0k6pBXkewuQzAtJnLaK/KUxPv8pjpJKstTXr/UVcRrLI22FDLFFhwl7ayovVj/zY0Ei7Rv+UuHcwVgWlt3faTpfhx7Blift0mYy9miU1g8tV4q4dhtNs09CH4XjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnmqzh/1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94AFC433F1;
-	Thu, 11 Apr 2024 10:28:53 +0000 (UTC)
+	 MIME-Version; b=T0KU1KTHQPKf9NQ7dLr1PJj7kEhgTrSFHmaccYD1K5IPtJisSXnSdHTYO/GnY3eVZTGWQVXltT+4nq6VZiR8pRkVbQi13lykgFu3XjmZTYTQJm40WesWW3ETp0xDsmED5V93dS1MJqZIL53nKnOGGu6OLf3xrjSE2NfKtvr0gCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tdNFhD9g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A6BCC433C7;
+	Thu, 11 Apr 2024 10:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831334;
-	bh=kn9rFZ5KJn0gBKOry9pO/COI+2Poms1BmFuJ4VhGMeA=;
+	s=korg; t=1712832168;
+	bh=u4vDYpKlutpZH0pLm/zi8JeIRio7IA9/WJSBlJx84n0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bnmqzh/1b7pV8YRj4dcboUmrcodJHsrZYfLS5yf6AdIFNC2d6GkP7DwDWAPXrP4YD
-	 dIJ4ABbcFSJElH/8ZsWPPCzLKr1zGQXCjZ5518bDYaPFVOYF4rMySmGmoqVGwsUHDT
-	 x2RLU7lGq7stlQgkG3NSowCmO2xpSLv3VZfPkSeY=
+	b=tdNFhD9gnUMJBweyAk0gYhv1hN7wAX6tU40NVbJmMAQUlxLtasZ6p+F7Z5/S/+vXx
+	 OlBEzxTcLV3gWraa2kRGQyR7muzxUQ6PZds0Q3So69m3ERjaS5bRl8lLg1qXn+tLIy
+	 EaBV7C17Y2oTW27D6tBu3olxmw+B0rghxTiqRtE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Carl Vanderlip <quic_carlv@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 087/114] bus: mhi: host: Add MHI_PM_SYS_ERR_FAIL state
-Date: Thu, 11 Apr 2024 11:56:54 +0200
-Message-ID: <20240411095419.516471444@linuxfoundation.org>
+Subject: [PATCH 5.10 252/294] tools/power x86_energy_perf_policy: Fix file leak in get_pkg_num()
+Date: Thu, 11 Apr 2024 11:56:55 +0200
+Message-ID: <20240411095443.154388719@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,159 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeffrey Hugo <quic_jhugo@quicinc.com>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-[ Upstream commit bce3f770684cc1d91ff9edab431b71ac991faf29 ]
+[ Upstream commit f85450f134f0b4ca7e042dc3dc89155656a2299d ]
 
-When processing a SYSERR, if the device does not respond to the MHI_RESET
-from the host, the host will be stuck in a difficult to recover state.
-The host will remain in MHI_PM_SYS_ERR_PROCESS and not clean up the host
-channels.  Clients will not be notified of the SYSERR via the destruction
-of their channel devices, which means clients may think that the device is
-still up.  Subsequent SYSERR events such as a device fatal error will not
-be processed as the state machine cannot transition from PROCESS back to
-DETECT.  The only way to recover from this is to unload the mhi module
-(wipe the state machine state) or for the mhi controller to initiate
-SHUTDOWN.
+In function get_pkg_num() if fopen_or_die() succeeds it returns a file
+pointer to be used. But fclose() is never called before returning from
+the function.
 
-This issue was discovered by stress testing soc_reset events on AIC100
-via the sysfs node.
-
-soc_reset is processed entirely in hardware.  When the register write
-hits the endpoint hardware, it causes the soc to reset without firmware
-involvement.  In stress testing, there is a rare race where soc_reset N
-will cause the soc to reset and PBL to signal SYSERR (fatal error).  If
-soc_reset N+1 is triggered before PBL can process the MHI_RESET from the
-host, then the soc will reset again, and re-run PBL from the beginning.
-This will cause PBL to lose all state.  PBL will be waiting for the host
-to respond to the new syserr, but host will be stuck expecting the
-previous MHI_RESET to be processed.
-
-Additionally, the AMSS EE firmware (QSM) was hacked to synthetically
-reproduce the issue by simulating a FW hang after the QSM issued a
-SYSERR.  In this case, soc_reset would not recover the device.
-
-For this failure case, to recover the device, we need a state similar to
-PROCESS, but can transition to DETECT.  There is not a viable existing
-state to use.  POR has the needed transitions, but assumes the device is
-in a good state and could allow the host to attempt to use the device.
-Allowing PROCESS to transition to DETECT invites the possibility of
-parallel SYSERR processing which could get the host and device out of
-sync.
-
-Thus, invent a new state - MHI_PM_SYS_ERR_FAIL
-
-This essentially a holding state.  It allows us to clean up the host
-elements that are based on the old state of the device (channels), but
-does not allow us to directly advance back to an operational state.  It
-does allow the detection and processing of another SYSERR which may
-recover the device, or allows the controller to do a clean shutdown.
-
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Reviewed-by: Carl Vanderlip <quic_carlv@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240112180800.536733-1-quic_jhugo@quicinc.com
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/init.c     |  1 +
- drivers/bus/mhi/host/internal.h |  9 ++++++---
- drivers/bus/mhi/host/pm.c       | 20 +++++++++++++++++---
- 3 files changed, 24 insertions(+), 6 deletions(-)
+ tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bus/mhi/host/init.c b/drivers/bus/mhi/host/init.c
-index f78aefd2d7a36..cfd17c02fe20e 100644
---- a/drivers/bus/mhi/host/init.c
-+++ b/drivers/bus/mhi/host/init.c
-@@ -62,6 +62,7 @@ static const char * const mhi_pm_state_str[] = {
- 	[MHI_PM_STATE_FW_DL_ERR] = "Firmware Download Error",
- 	[MHI_PM_STATE_SYS_ERR_DETECT] = "SYS ERROR Detect",
- 	[MHI_PM_STATE_SYS_ERR_PROCESS] = "SYS ERROR Process",
-+	[MHI_PM_STATE_SYS_ERR_FAIL] = "SYS ERROR Failure",
- 	[MHI_PM_STATE_SHUTDOWN_PROCESS] = "SHUTDOWN Process",
- 	[MHI_PM_STATE_LD_ERR_FATAL_DETECT] = "Linkdown or Error Fatal Detect",
- };
-diff --git a/drivers/bus/mhi/host/internal.h b/drivers/bus/mhi/host/internal.h
-index 2e139e76de4c0..d2858236af52b 100644
---- a/drivers/bus/mhi/host/internal.h
-+++ b/drivers/bus/mhi/host/internal.h
-@@ -88,6 +88,7 @@ enum mhi_pm_state {
- 	MHI_PM_STATE_FW_DL_ERR,
- 	MHI_PM_STATE_SYS_ERR_DETECT,
- 	MHI_PM_STATE_SYS_ERR_PROCESS,
-+	MHI_PM_STATE_SYS_ERR_FAIL,
- 	MHI_PM_STATE_SHUTDOWN_PROCESS,
- 	MHI_PM_STATE_LD_ERR_FATAL_DETECT,
- 	MHI_PM_STATE_MAX
-@@ -104,14 +105,16 @@ enum mhi_pm_state {
- #define MHI_PM_FW_DL_ERR				BIT(7)
- #define MHI_PM_SYS_ERR_DETECT				BIT(8)
- #define MHI_PM_SYS_ERR_PROCESS				BIT(9)
--#define MHI_PM_SHUTDOWN_PROCESS				BIT(10)
-+#define MHI_PM_SYS_ERR_FAIL				BIT(10)
-+#define MHI_PM_SHUTDOWN_PROCESS				BIT(11)
- /* link not accessible */
--#define MHI_PM_LD_ERR_FATAL_DETECT			BIT(11)
-+#define MHI_PM_LD_ERR_FATAL_DETECT			BIT(12)
+diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+index ff6c6661f075f..1c80aa498d543 100644
+--- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
++++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+@@ -1152,6 +1152,7 @@ unsigned int get_pkg_num(int cpu)
+ 	retval = fscanf(fp, "%d\n", &pkg);
+ 	if (retval != 1)
+ 		errx(1, "%s: failed to parse", pathname);
++	fclose(fp);
+ 	return pkg;
+ }
  
- #define MHI_REG_ACCESS_VALID(pm_state)			((pm_state & (MHI_PM_POR | MHI_PM_M0 | \
- 						MHI_PM_M2 | MHI_PM_M3_ENTER | MHI_PM_M3_EXIT | \
- 						MHI_PM_SYS_ERR_DETECT | MHI_PM_SYS_ERR_PROCESS | \
--						MHI_PM_SHUTDOWN_PROCESS | MHI_PM_FW_DL_ERR)))
-+						MHI_PM_SYS_ERR_FAIL | MHI_PM_SHUTDOWN_PROCESS |  \
-+						MHI_PM_FW_DL_ERR)))
- #define MHI_PM_IN_ERROR_STATE(pm_state)			(pm_state >= MHI_PM_FW_DL_ERR)
- #define MHI_PM_IN_FATAL_STATE(pm_state)			(pm_state == MHI_PM_LD_ERR_FATAL_DETECT)
- #define MHI_DB_ACCESS_VALID(mhi_cntrl)			(mhi_cntrl->pm_state & mhi_cntrl->db_access)
-diff --git a/drivers/bus/mhi/host/pm.c b/drivers/bus/mhi/host/pm.c
-index 8a4362d75fc43..27f8a40f288cf 100644
---- a/drivers/bus/mhi/host/pm.c
-+++ b/drivers/bus/mhi/host/pm.c
-@@ -36,7 +36,10 @@
-  *     M0 <--> M0
-  *     M0 -> FW_DL_ERR
-  *     M0 -> M3_ENTER -> M3 -> M3_EXIT --> M0
-- * L1: SYS_ERR_DETECT -> SYS_ERR_PROCESS --> POR
-+ * L1: SYS_ERR_DETECT -> SYS_ERR_PROCESS
-+ *     SYS_ERR_PROCESS -> SYS_ERR_FAIL
-+ *     SYS_ERR_FAIL -> SYS_ERR_DETECT
-+ *     SYS_ERR_PROCESS --> POR
-  * L2: SHUTDOWN_PROCESS -> LD_ERR_FATAL_DETECT
-  *     SHUTDOWN_PROCESS -> DISABLE
-  * L3: LD_ERR_FATAL_DETECT <--> LD_ERR_FATAL_DETECT
-@@ -93,7 +96,12 @@ static const struct mhi_pm_transitions dev_state_transitions[] = {
- 	},
- 	{
- 		MHI_PM_SYS_ERR_PROCESS,
--		MHI_PM_POR | MHI_PM_SHUTDOWN_PROCESS |
-+		MHI_PM_POR | MHI_PM_SYS_ERR_FAIL | MHI_PM_SHUTDOWN_PROCESS |
-+		MHI_PM_LD_ERR_FATAL_DETECT
-+	},
-+	{
-+		MHI_PM_SYS_ERR_FAIL,
-+		MHI_PM_SYS_ERR_DETECT | MHI_PM_SHUTDOWN_PROCESS |
- 		MHI_PM_LD_ERR_FATAL_DETECT
- 	},
- 	/* L2 States */
-@@ -624,7 +632,13 @@ static void mhi_pm_sys_error_transition(struct mhi_controller *mhi_cntrl)
- 					!in_reset, timeout);
- 		if (!ret || in_reset) {
- 			dev_err(dev, "Device failed to exit MHI Reset state\n");
--			goto exit_sys_error_transition;
-+			write_lock_irq(&mhi_cntrl->pm_lock);
-+			cur_state = mhi_tryset_pm_state(mhi_cntrl,
-+							MHI_PM_SYS_ERR_FAIL);
-+			write_unlock_irq(&mhi_cntrl->pm_lock);
-+			/* Shutdown may have occurred, otherwise cleanup now */
-+			if (cur_state != MHI_PM_SYS_ERR_FAIL)
-+				goto exit_sys_error_transition;
- 		}
- 
- 		/*
 -- 
 2.43.0
 
