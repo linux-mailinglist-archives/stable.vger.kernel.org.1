@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-38856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA878A10B7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4908A0D35
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:01:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C4151C23793
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D7D91C20948
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805C41494AA;
-	Thu, 11 Apr 2024 10:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA57145B08;
+	Thu, 11 Apr 2024 10:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMe1CdiT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DYpqFLZe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9F41448F3;
-	Thu, 11 Apr 2024 10:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2F72EAE5;
+	Thu, 11 Apr 2024 10:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831794; cv=none; b=JxKB7WWVD/8bJrYmN9lgLb2DUfjxa4wS8O0B+OdS5IX8d/NX4VjiX/n3X13075OBl9l1muFAjMthaWHeTCadikkuZCdQRdo2qJqn3dvhfedxD28qz0/G1ax9RU5SCH14EjJjqGvG/RSrnjzWhZ43B/gh9/q2O1fuxpU8LAq5Egw=
+	t=1712829685; cv=none; b=eRqCPbzof2RK6zsHAbP1FodDX/G6JsfcLJB7/gNDTZ1jAsIgBeeH2Ny9yj3qKh87z+wZoqZTmRoOqLDAs9urmS0JNGuypRdMoMdKTIDMl9BO9aBx6GvRjaQtGI+hJ7o76PO/AWO4gGfErjAVdrl6XqQC0Te3wG8Y62qNqFGfbg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831794; c=relaxed/simple;
-	bh=QXKlqEL8Jsf7aQOy+HMqnzR8PxNw1YWg3pVRWkWfMDM=;
+	s=arc-20240116; t=1712829685; c=relaxed/simple;
+	bh=lBMz7eLrA49pJ4RHNHIPck532pG+d7XImNq3wB3K55Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G8ld6S58lHm9/BMYuSbSYtS2ZID6M7ixOQTPhKQLXOa/3cXcsC/yeb+Gmhe2S53HHhbMPF/AioQaWOXvTgcqW7PuXx/KdfgG6ElP6WwB7q0INGyW9BSi9yUBrZ/ugOj5ygCQvbxXs09AKZe6ew0nZLF1gmnueDfrpdlyolpWcNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMe1CdiT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A75C433F1;
-	Thu, 11 Apr 2024 10:36:33 +0000 (UTC)
+	 MIME-Version; b=Z+KGy2ECQ+ORNaql9UhOk9S2StYTuUqMtM07Rlc6nPUppnivYMXvEhg9Aqgap38tpSmHoULgkNTPNyC0PMBm83rPJm2RCrwWpV0OkhbvmhlfJyxu280yG27su5WCioJFtdxOFXgJUixwkRgIv8n1JxeKkiyTI8vUtKsoOC0yWKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYpqFLZe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8492BC433F1;
+	Thu, 11 Apr 2024 10:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831794;
-	bh=QXKlqEL8Jsf7aQOy+HMqnzR8PxNw1YWg3pVRWkWfMDM=;
+	s=korg; t=1712829684;
+	bh=lBMz7eLrA49pJ4RHNHIPck532pG+d7XImNq3wB3K55Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hMe1CdiTFa2QQIq/9kvVZIFiBIZvFFRIpoqJI3Kxhrpel327mE1MJNbXYq9n9ogAb
-	 K6crBtfnhukWC/5Si/xddh+C16d0mTc6+Ds2Jswl+BmnbfI9VB6UoEeJE++ZtoY8BE
-	 uwGhBdLLClKWokAaEinFLdqSLwF4Hth7ggNzbdyA=
+	b=DYpqFLZepeycGswVI2KjvcL9PUHlEJDAYdfIOZ8QtmDD7GZ9P9NRfloeiPSAGCaP+
+	 f3zLAQaSPB/S8/AykgTaf2bcmXtWPSe0YjP02tIPb3D2PGVlmBQOv+pH2fUBxytbNv
+	 UGgTBFAE5tuUp33f80MCrYc7zDBwUbnxxq6q+EiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.10 128/294] usb: port: Dont try to peer unused USB ports based on location
-Date: Thu, 11 Apr 2024 11:54:51 +0200
-Message-ID: <20240411095439.515654025@linuxfoundation.org>
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 4.19 069/175] comedi: comedi_test: Prevent timers rescheduling during deletion
+Date: Thu, 11 Apr 2024 11:54:52 +0200
+Message-ID: <20240411095421.641548502@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +60,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit 69c63350e573367f9c8594162288cffa8a26d0d1 upstream.
+commit f53641a6e849034a44bf80f50245a75d7a376025 upstream.
 
-Unused USB ports may have bogus location data in ACPI PLD tables.
-This causes port peering failures as these unused USB2 and USB3 ports
-location may match.
+The comedi_test devices have a couple of timers (ai_timer and ao_timer)
+that can be started to simulate hardware interrupts.  Their expiry
+functions normally reschedule the timer.  The driver code calls either
+del_timer_sync() or del_timer() to delete the timers from the queue, but
+does not currently prevent the timers from rescheduling themselves so
+synchronized deletion may be ineffective.
 
-Due to these failures the driver prints a
-"usb: port power management may be unreliable" warning, and
-unnecessarily blocks port power off during runtime suspend.
+Add a couple of boolean members (one for each timer: ai_timer_enable and
+ao_timer_enable) to the device private data structure to indicate
+whether the timers are allowed to reschedule themselves.  Set the member
+to true when adding the timer to the queue, and to false when deleting
+the timer from the queue in the waveform_ai_cancel() and
+waveform_ao_cancel() functions.
 
-This was debugged on a couple DELL systems where the unused ports
-all returned zeroes in their location data.
-Similar bugreports exist for other systems.
+The del_timer_sync() function is also called from the waveform_detach()
+function, but the timer enable members will already be set to false when
+that function is called, so no change is needed there.
 
-Don't try to peer or match ports that have connect type set to
-USB_PORT_NOT_USED.
-
-Fixes: 3bfd659baec8 ("usb: find internal hub tier mismatch via acpi")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218465
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218486
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Link: https://lore.kernel.org/linux-usb/5406d361-f5b7-4309-b0e6-8c94408f7d75@molgen.mpg.de
-Cc: stable@vger.kernel.org # v3.16+
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218490
-Link: https://lore.kernel.org/r/20240222233343.71856-1-mathias.nyman@linux.intel.com
+Fixes: 403fe7f34e33 ("staging: comedi: comedi_test: fix timer race conditions")
+Cc: stable@vger.kernel.org # 4.4+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20240214100747.16203-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/port.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/staging/comedi/drivers/comedi_test.c |   30 +++++++++++++++++++++++----
+ 1 file changed, 26 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -450,7 +450,7 @@ static int match_location(struct usb_dev
- 	struct usb_hub *peer_hub = usb_hub_to_struct_hub(peer_hdev);
- 	struct usb_device *hdev = to_usb_device(port_dev->dev.parent->parent);
+--- a/drivers/staging/comedi/drivers/comedi_test.c
++++ b/drivers/staging/comedi/drivers/comedi_test.c
+@@ -87,6 +87,8 @@ struct waveform_private {
+ 	struct comedi_device *dev;	/* parent comedi device */
+ 	u64 ao_last_scan_time;		/* time of previous AO scan in usec */
+ 	unsigned int ao_scan_period;	/* AO scan period in usec */
++	bool ai_timer_enable:1;		/* should AI timer be running? */
++	bool ao_timer_enable:1;		/* should AO timer be running? */
+ 	unsigned short ao_loopbacks[N_CHANS];
+ };
  
--	if (!peer_hub)
-+	if (!peer_hub || port_dev->connect_type == USB_PORT_NOT_USED)
- 		return 0;
+@@ -236,8 +238,12 @@ static void waveform_ai_timer(struct tim
+ 			time_increment = devpriv->ai_convert_time - now;
+ 		else
+ 			time_increment = 1;
+-		mod_timer(&devpriv->ai_timer,
+-			  jiffies + usecs_to_jiffies(time_increment));
++		spin_lock(&dev->spinlock);
++		if (devpriv->ai_timer_enable) {
++			mod_timer(&devpriv->ai_timer,
++				  jiffies + usecs_to_jiffies(time_increment));
++		}
++		spin_unlock(&dev->spinlock);
+ 	}
  
- 	hcd = bus_to_hcd(hdev->bus);
-@@ -461,7 +461,8 @@ static int match_location(struct usb_dev
+ overrun:
+@@ -393,9 +399,12 @@ static int waveform_ai_cmd(struct comedi
+ 	 * Seem to need an extra jiffy here, otherwise timer expires slightly
+ 	 * early!
+ 	 */
++	spin_lock_bh(&dev->spinlock);
++	devpriv->ai_timer_enable = true;
+ 	devpriv->ai_timer.expires =
+ 		jiffies + usecs_to_jiffies(devpriv->ai_convert_period) + 1;
+ 	add_timer(&devpriv->ai_timer);
++	spin_unlock_bh(&dev->spinlock);
+ 	return 0;
+ }
  
- 	for (port1 = 1; port1 <= peer_hdev->maxchild; port1++) {
- 		peer = peer_hub->ports[port1 - 1];
--		if (peer && peer->location == port_dev->location) {
-+		if (peer && peer->connect_type != USB_PORT_NOT_USED &&
-+		    peer->location == port_dev->location) {
- 			link_peers_report(port_dev, peer);
- 			return 1; /* done */
- 		}
+@@ -404,6 +413,9 @@ static int waveform_ai_cancel(struct com
+ {
+ 	struct waveform_private *devpriv = dev->private;
+ 
++	spin_lock_bh(&dev->spinlock);
++	devpriv->ai_timer_enable = false;
++	spin_unlock_bh(&dev->spinlock);
+ 	if (in_softirq()) {
+ 		/* Assume we were called from the timer routine itself. */
+ 		del_timer(&devpriv->ai_timer);
+@@ -495,8 +507,12 @@ static void waveform_ao_timer(struct tim
+ 		unsigned int time_inc = devpriv->ao_last_scan_time +
+ 					devpriv->ao_scan_period - now;
+ 
+-		mod_timer(&devpriv->ao_timer,
+-			  jiffies + usecs_to_jiffies(time_inc));
++		spin_lock(&dev->spinlock);
++		if (devpriv->ao_timer_enable) {
++			mod_timer(&devpriv->ao_timer,
++				  jiffies + usecs_to_jiffies(time_inc));
++		}
++		spin_unlock(&dev->spinlock);
+ 	}
+ 
+ underrun:
+@@ -517,9 +533,12 @@ static int waveform_ao_inttrig_start(str
+ 	async->inttrig = NULL;
+ 
+ 	devpriv->ao_last_scan_time = ktime_to_us(ktime_get());
++	spin_lock_bh(&dev->spinlock);
++	devpriv->ao_timer_enable = true;
+ 	devpriv->ao_timer.expires =
+ 		jiffies + usecs_to_jiffies(devpriv->ao_scan_period);
+ 	add_timer(&devpriv->ao_timer);
++	spin_unlock_bh(&dev->spinlock);
+ 
+ 	return 1;
+ }
+@@ -604,6 +623,9 @@ static int waveform_ao_cancel(struct com
+ 	struct waveform_private *devpriv = dev->private;
+ 
+ 	s->async->inttrig = NULL;
++	spin_lock_bh(&dev->spinlock);
++	devpriv->ao_timer_enable = false;
++	spin_unlock_bh(&dev->spinlock);
+ 	if (in_softirq()) {
+ 		/* Assume we were called from the timer routine itself. */
+ 		del_timer(&devpriv->ao_timer);
 
 
 
