@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-38894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B7858A10E3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 420D58A0EFC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:19:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15020B21D78
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7404F1C21749
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:19:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427ED148FFF;
-	Thu, 11 Apr 2024 10:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D852714600E;
+	Thu, 11 Apr 2024 10:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7RzlMzm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3QnJf+o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011211465BF;
-	Thu, 11 Apr 2024 10:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967F0140E3D;
+	Thu, 11 Apr 2024 10:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831907; cv=none; b=SlSfqZKsAzjCPE2mTRkuxAutfP9JE7WfgohHf04RucQv+NxBsybbVtj7s45/Q19eXjcBGvxQoWvZ8nO+2bXrGjljsT6JanIDqXV9K8TP+hbND9hhwbSxEgh+E/1XIX07eiMMkmA/YEP5/Da3aGKpFsjE74npFoE12zuY6RVcwoc=
+	t=1712830791; cv=none; b=jnOasbHa6PyfbODrOdazR8e5KHGJ3UmHxKspcVLbPVz5E4okzEUMCTlL+DvBiG3Q+DmzK9wc62fFdP24bbhW7V4gxPmqI24mkRmej848OxeDPj+2gBMMeaBlXKYdxmo3atnL0BeuolpXjFkee0o5MzpNkTw8kQ/GqPMnMx8GKdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831907; c=relaxed/simple;
-	bh=LRwgfnCugkiZof7lE2CgNVS7MwdUXJu/3xidjX0Jikg=;
+	s=arc-20240116; t=1712830791; c=relaxed/simple;
+	bh=Dp+GbCL387QOVlRNQruPIj+v9W+m6F5J4gLx9jbfdpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZpW5GwIQa91n8zW56mUCUkQYSxvm6H/kf8QsZQjfDxhLUGDF44t4EoeU5fs9TsAR9813EvbLS+V2d6paCe//6lT900/p+SpVqJ98maKIf9hMVHgPz0PUHyyREyPiHdlVz1G0RJ6qkvNx1WjsH2aDD+9HfPER2+WaBFKdNAwdnG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7RzlMzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72791C433F1;
-	Thu, 11 Apr 2024 10:38:26 +0000 (UTC)
+	 MIME-Version; b=qYso68MYdl1Uck1dT1svjXS7ULlAuD4cyB1HXSxuejz3yK3lIIV8+TnARAyK6REYb4h0iCaZmvIAOPPjUWRqq+JQz0VYpX0GM5ODmpLZTa4gTHuVRCl0wy5/OqvKg3PxDc5ye8kQSqQJmEgQLVhguhs73+o/o0h3ecTM3YPc0gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3QnJf+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A353C433C7;
+	Thu, 11 Apr 2024 10:19:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831906;
-	bh=LRwgfnCugkiZof7lE2CgNVS7MwdUXJu/3xidjX0Jikg=;
+	s=korg; t=1712830791;
+	bh=Dp+GbCL387QOVlRNQruPIj+v9W+m6F5J4gLx9jbfdpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j7RzlMzmN1vbha6LlbjtoRKFFQPmfxm/HqKDJxx5J9vgYmLna7KX079W9GSU4Hkuu
-	 Vt0Ysgw/xymqIrcTeVoaXIWYeHRc4TymWRbU5+1kKocj3XMLoJrqLHV4CHSy6wMA+b
-	 q/MObpz31qreXpy3dmYY5imADy18yE0+agxwFMRw=
+	b=O3QnJf+oWlNjst89Mque2VLcqM76NS830yw2TZifwx+zJAzXk6XwXGID/m4c2HeIg
+	 BMhhsOFJeK8AtxDsDAgFh5zcOkbT6Dbw2MfIA7uhkD1u4+kajAJayS3g3klH9obn4b
+	 +dIRnBhX3kl3cU0weXkJZwGdlanc7NrLNvU2ibOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 5.10 166/294] staging: vc04_services: fix information leak in create_component()
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 5.4 120/215] usb: dwc2: host: Fix remote wakeup from hibernation
 Date: Thu, 11 Apr 2024 11:55:29 +0200
-Message-ID: <20240411095440.637287430@linuxfoundation.org>
+Message-ID: <20240411095428.509989578@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +60,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-commit f37e76abd614b68987abc8e5c22d986013349771 upstream.
+commit bae2bc73a59c200db53b6c15fb26bb758e2c6108 upstream.
 
-The m.u.component_create.pid field is for debugging and in the mainline
-kernel it's not used anything.  However, it still needs to be set to
-something to prevent disclosing uninitialized stack data.  Set it to
-zero.
+Starting from core v4.30a changed order of programming
+GPWRDN_PMUACTV to 0 in case of exit from hibernation on
+remote wakeup signaling from device.
 
-Fixes: 7b3ad5abf027 ("staging: Import the BCM2835 MMAL-based V4L2 camera driver.")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/2d972847-9ebd-481b-b6f9-af390f5aabd3@moroto.mountain
+Fixes: c5c403dc4336 ("usb: dwc2: Add host/device hibernation functions")
+CC: stable@vger.kernel.org
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/99385ec55ce73445b6fbd0f471c9bd40eb1c9b9e.1708939799.git.Minas.Harutyunyan@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc2/core.h |    1 +
+ drivers/usb/dwc2/hcd.c  |   17 +++++++++++++----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
---- a/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
-+++ b/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
-@@ -942,6 +942,7 @@ static int create_component(struct vchiq
- 	m.u.component_create.client_component = component->client_component;
- 	strscpy_pad(m.u.component_create.name, name,
- 		    sizeof(m.u.component_create.name));
-+	m.u.component_create.pid = 0;
+--- a/drivers/usb/dwc2/core.h
++++ b/drivers/usb/dwc2/core.h
+@@ -1087,6 +1087,7 @@ struct dwc2_hsotg {
+ 	bool needs_byte_swap;
  
- 	ret = send_synchronous_mmal_msg(instance, &m,
- 					sizeof(m.u.component_create),
+ 	/* DWC OTG HW Release versions */
++#define DWC2_CORE_REV_4_30a	0x4f54430a
+ #define DWC2_CORE_REV_2_71a	0x4f54271a
+ #define DWC2_CORE_REV_2_72a     0x4f54272a
+ #define DWC2_CORE_REV_2_80a	0x4f54280a
+--- a/drivers/usb/dwc2/hcd.c
++++ b/drivers/usb/dwc2/hcd.c
+@@ -5523,10 +5523,12 @@ int dwc2_host_exit_hibernation(struct dw
+ 	dwc2_writel(hsotg, hr->hcfg, HCFG);
+ 
+ 	/* De-assert Wakeup Logic */
+-	gpwrdn = dwc2_readl(hsotg, GPWRDN);
+-	gpwrdn &= ~GPWRDN_PMUACTV;
+-	dwc2_writel(hsotg, gpwrdn, GPWRDN);
+-	udelay(10);
++	if (!(rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
++		gpwrdn = dwc2_readl(hsotg, GPWRDN);
++		gpwrdn &= ~GPWRDN_PMUACTV;
++		dwc2_writel(hsotg, gpwrdn, GPWRDN);
++		udelay(10);
++	}
+ 
+ 	hprt0 = hr->hprt0;
+ 	hprt0 |= HPRT0_PWR;
+@@ -5551,6 +5553,13 @@ int dwc2_host_exit_hibernation(struct dw
+ 		hprt0 |= HPRT0_RES;
+ 		dwc2_writel(hsotg, hprt0, HPRT0);
+ 
++		/* De-assert Wakeup Logic */
++		if ((rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
++			gpwrdn = dwc2_readl(hsotg, GPWRDN);
++			gpwrdn &= ~GPWRDN_PMUACTV;
++			dwc2_writel(hsotg, gpwrdn, GPWRDN);
++			udelay(10);
++		}
+ 		/* Wait for Resume time and then program HPRT again */
+ 		mdelay(100);
+ 		hprt0 &= ~HPRT0_RES;
 
 
 
