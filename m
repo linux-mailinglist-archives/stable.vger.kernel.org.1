@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-38531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2CCB8A0F15
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:20:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7398A0FD3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 306821C223C7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:20:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8157B1F290B7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C45146A70;
-	Thu, 11 Apr 2024 10:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DCF0143C76;
+	Thu, 11 Apr 2024 10:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="laYGX+z/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHPACoaU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D40145FF0;
-	Thu, 11 Apr 2024 10:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD75146D4E;
+	Thu, 11 Apr 2024 10:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830847; cv=none; b=YpsYMDHRRF3oZjOdo10yx/FluZyL/qmBVYY/YxG+BPl9Pf4SsE+DC6DTQyI96Z+YSHnRyaRvQKmNkwROlLB29KKAJmxoh4whtkn9YUPBqwQWNNYdzrjpBznWmrmKXx8F2GCMHzsCu2Ad9gm1OLl7inNTKg0YAcNQis6kF82hhJQ=
+	t=1712831278; cv=none; b=oFzFQgcBEDOAhAOqpO8412/OOtEIDeRuJfXkEfbBPbnp7mLCYO1KcDq/gBSQAh7O0Z6iH29cBVxV3VABjjLvjQ4GAodnMRiHc8GcgfggX2jYyLpsdxfUAPJ4oN3aNMIcnCpy21Ss048P0S4xR6g9zjtqSw371uVluKMClWYP37Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830847; c=relaxed/simple;
-	bh=tlGAHC1ZiJbewfkldIFTdFjbFEtPi7L0rnlOHIY/qG4=;
+	s=arc-20240116; t=1712831278; c=relaxed/simple;
+	bh=SRtx+joo3s2hd20EnTjEFjoPMjDuabv5XZK6NSK5DTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Va4tCsDvj+fVCIdKIIeLMlwOtvXc/Kz4aX4h3YX07dVAVMHQrHbDa+SvgtqbvhlV8+Op0h2RDZ5n3Wfmrv2J3FtR8rvoNIx56MYjS/ksrKY701xIq3OxqWYTyDY1SB0HNAb2EFFpkPdnW142dJLf2tgF+iJsq6kcLnMaOik49yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=laYGX+z/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B69AC433F1;
-	Thu, 11 Apr 2024 10:20:47 +0000 (UTC)
+	 MIME-Version; b=qt0QEOYPIGs8zfBLlHweXIPhMGENSGRKdpAEXgxOrNEpZeKn82+5tzAVBbnlfhs0nxkmK0l+K00bEd+yYPT0xGUdWuOxAzpet1yR0WPs7utBh1/dgrpejlPh7Pbe89h8N5/XQo66DmeZ5j50AOkoKshz3h2mzBR495lJ4YEGAXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHPACoaU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B781FC433C7;
+	Thu, 11 Apr 2024 10:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830847;
-	bh=tlGAHC1ZiJbewfkldIFTdFjbFEtPi7L0rnlOHIY/qG4=;
+	s=korg; t=1712831278;
+	bh=SRtx+joo3s2hd20EnTjEFjoPMjDuabv5XZK6NSK5DTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=laYGX+z/pvl54B613+PLRTiBS7OrR3yL+SuP7q9YH5uTl1pxWgh+5JlWuMsbav1gK
-	 uHL7Kh7fDo+4dXozOaX97oNIjFoNH/R8ZNRSLG6Jp6D0aBGFpIYticYBnirKyzBc8P
-	 qTRp/P+VQvvr9RDGdD98GMbarJI7ce/mL8F7icCc=
+	b=OHPACoaUslDCk86UKqEfryJAUnJtMZrnjC5RmFxfxHA4bOfANQ/NTUuwLuukxlt8o
+	 3pD9HqEwYvs+eudHqqiallp/HI4yFQDcN8L8LvwwblaMaaqVZMaQheEK6hV33pkjg1
+	 LlAa4fLkccdmctp82ud8FDJcMq+6/zWCKJzg3Omc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH 5.4 137/215] netfilter: nf_tables: disallow timeout for anonymous sets
+	Kunwu Chan <chentao@kylinos.cn>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 019/114] pmdomain: ti: Add a null pointer check to the omap_prm_domain_init
 Date: Thu, 11 Apr 2024 11:55:46 +0200
-Message-ID: <20240411095429.011513349@linuxfoundation.org>
+Message-ID: <20240411095417.448265100@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-commit e26d3009efda338f19016df4175f354a9bd0a4ab upstream.
+[ Upstream commit 5d7f58ee08434a33340f75ac7ac5071eea9673b3 ]
 
-Never used from userspace, disallow these parameters.
+devm_kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure. Ensure the allocation was successful
+by checking the pointer validity.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-[Keerthana: code surrounding the patch is different
-because nft_set_desc is not present in v4.19-v5.10]
-Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Link: https://lore.kernel.org/r/20240118054257.200814-1-chentao@kylinos.cn
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/pmdomain/ti/omap_prm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3816,6 +3816,9 @@ static int nf_tables_newset(struct net *
- 		if (!(flags & NFT_SET_TIMEOUT))
- 			return -EINVAL;
+diff --git a/drivers/pmdomain/ti/omap_prm.c b/drivers/pmdomain/ti/omap_prm.c
+index c2feae3a634ca..b8ceb3c2b81c2 100644
+--- a/drivers/pmdomain/ti/omap_prm.c
++++ b/drivers/pmdomain/ti/omap_prm.c
+@@ -695,6 +695,8 @@ static int omap_prm_domain_init(struct device *dev, struct omap_prm *prm)
+ 	data = prm->data;
+ 	name = devm_kasprintf(dev, GFP_KERNEL, "prm_%s",
+ 			      data->name);
++	if (!name)
++		return -ENOMEM;
  
-+		if (flags & NFT_SET_ANONYMOUS)
-+			return -EOPNOTSUPP;
-+
- 		err = nf_msecs_to_jiffies64(nla[NFTA_SET_TIMEOUT], &timeout);
- 		if (err)
- 			return err;
-@@ -3824,6 +3827,10 @@ static int nf_tables_newset(struct net *
- 	if (nla[NFTA_SET_GC_INTERVAL] != NULL) {
- 		if (!(flags & NFT_SET_TIMEOUT))
- 			return -EINVAL;
-+
-+		if (flags & NFT_SET_ANONYMOUS)
-+			return -EOPNOTSUPP;
-+
- 		gc_int = ntohl(nla_get_be32(nla[NFTA_SET_GC_INTERVAL]));
- 	}
- 
+ 	prmd->dev = dev;
+ 	prmd->prm = prm;
+-- 
+2.43.0
+
 
 
 
