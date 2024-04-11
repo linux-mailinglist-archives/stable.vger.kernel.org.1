@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-38185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12DD8A0D67
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C28E8A0E00
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C6041F217BA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01BC5282958
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED514145FE6;
-	Thu, 11 Apr 2024 10:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B19145B0E;
+	Thu, 11 Apr 2024 10:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KjLH3z2D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fonk8wFm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB33014532F;
-	Thu, 11 Apr 2024 10:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3446F142624;
+	Thu, 11 Apr 2024 10:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829814; cv=none; b=FoMhoBupifEANF/xetZ8qy064/nQ6k1f3g7zLzXscVxfo1mVo17yfMUvnPNK4A2zPDY6H8dSJXI0Fclovs6Ez8Y+AT0aYLZkqe8TZ2AiPdTdkiE7ga4S18jRCX9D97AK2t3XQgn3lpSDtSQ6aZjrYSF2Hkr5mIGcGMlZ4A0YiAs=
+	t=1712830199; cv=none; b=SKJBsFuMEMZnx9dWucpkSQ32PfpzH5vitUSyGM+A02ufirlrzHoUmr59DvnDGqDLGHHDjw4LHgTvTkvkYdcEqqsl/NkZUzRz8HWT1+bJ8OgMnjABaj81DkuKkjVkVVr63JtQbL7n56izNDuNmKGUmPG/8tMuCH+1EGHAf5POyoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829814; c=relaxed/simple;
-	bh=+TnLpotENgedPlxOBJNOkTTBicJz1QEOr3L/NNxAfxg=;
+	s=arc-20240116; t=1712830199; c=relaxed/simple;
+	bh=8Ye56ijoCCElzG3oSzl2pf4ueongfMHeOqk5qbJby94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UX/0EunD6CdlzIZfCKYjYqu66lC31apt/TuXCl9QXtC/EX2P4y7oJOOKis3EojxQ22g8N3aVofSe9OTjTA1XgbUsLtOinoF/nOnYX2+h1ZBArdnYfMmp+bS2Ilu6PTYlG+NpT0MqJjW+82zhXAv5tNr+j53xUoLskHSj0ep2oTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjLH3z2D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F407C433F1;
-	Thu, 11 Apr 2024 10:03:34 +0000 (UTC)
+	 MIME-Version; b=XdGi5zIHlmN3s8kSM3c/mLzg64k8b6cTFJMKL/UiRzHjqv6p1ExjGtz46ZmOSxu9jH5xwl8E+5hwElt/usbeUv09y4TvrclErA3TFy3/pt+hdzA8rNNSwHQCMK13/mtHNZiVtXn5UriBHHL6v7POdX6HCfgZycHITX+Gk36oBME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fonk8wFm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE473C433C7;
+	Thu, 11 Apr 2024 10:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829814;
-	bh=+TnLpotENgedPlxOBJNOkTTBicJz1QEOr3L/NNxAfxg=;
+	s=korg; t=1712830199;
+	bh=8Ye56ijoCCElzG3oSzl2pf4ueongfMHeOqk5qbJby94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KjLH3z2DJvO+OJHnvYxZ4IB747DJRBHNh3FKmVQ/Hb7mhRF4VIcIc3HBG1jcAUFW1
-	 GdszisnJ4fdF0A7C2wS/SvkovBcwbK9Vt9N98ONZ8TavcYLzxAII0tHN0V/6YpSj1F
-	 +rQtr+cYaglJS+kQOz1zZIyWG4YOfOpZfQwT8+zc=
+	b=Fonk8wFmL3pR2pYKjr3SkUjitjKUrCi01gr+uSf1ICGNJqt/v4OuWnDfftTtqRgRF
+	 DPJ2DPA+cKAKB8vuVcyz82rr+g9mKLOlvo11HGJ2OcuqQM94EQWm4LPInptxi9fEi5
+	 jKoWsmDDX7Ql+BbugK4NZOehVK+BQfJj+2L1UCro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Geliang Tang <geliangtang@gmail.com>,
-	Mat Martineau <mathew.j.martineau@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Ovidiu Bunea <ovidiu.bunea@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 113/175] mptcp: add sk_stop_timer_sync helper
-Date: Thu, 11 Apr 2024 11:55:36 +0200
-Message-ID: <20240411095422.969807312@linuxfoundation.org>
+Subject: [PATCH 6.8 069/143] drm/amd/display: Disable idle reallow as part of command/gpint execution
+Date: Thu, 11 Apr 2024 11:55:37 +0200
+Message-ID: <20240411095422.991619190@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <geliangtang@gmail.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit 08b81d873126b413cda511b1ea1cbb0e99938bbd ]
+[ Upstream commit 6226a5aa77370329e01ee8abe50a95e60618ce97 ]
 
-This patch added a new helper sk_stop_timer_sync, it deactivates a timer
-like sk_stop_timer, but waits for the handler to finish.
+[Why]
+Workaroud for a race condition where DMCUB is in the process of
+committing to IPS1 during the handshake causing us to miss the
+transition into IPS2 and touch the INBOX1 RPTR causing a HW hang.
 
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Geliang Tang <geliangtang@gmail.com>
-Reviewed-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 151c9c724d05 ("tcp: properly terminate timers for kernel sockets")
+[How]
+Disable the reallow to ensure that we have enough of a gap between entry
+and exit and we're not seeing back-to-back wake_and_executes.
+
+Reviewed-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h | 2 ++
- net/core/sock.c    | 7 +++++++
- 2 files changed, 9 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dc.h                           | 1 +
+ drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c                  | 4 ++--
+ .../gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c    | 1 +
+ 3 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 81888513b3b93..8eea17a41c1ca 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2194,6 +2194,8 @@ void sk_reset_timer(struct sock *sk, struct timer_list *timer,
+diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
+index f1342314f7f43..fc60fa5814fbe 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -987,6 +987,7 @@ struct dc_debug_options {
+ 	bool psp_disabled_wa;
+ 	unsigned int ips2_eval_delay_us;
+ 	unsigned int ips2_entry_delay_us;
++	bool disable_dmub_reallow_idle;
+ 	bool disable_timeout;
+ 	bool disable_extblankadj;
+ 	unsigned int static_screen_wait_frames;
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+index 363d522603a21..9084b320849a6 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
++++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+@@ -1364,7 +1364,7 @@ bool dc_wake_and_execute_dmub_cmd_list(const struct dc_context *ctx, unsigned in
+ 	else
+ 		result = dm_execute_dmub_cmd(ctx, cmd, wait_type);
  
- void sk_stop_timer(struct sock *sk, struct timer_list *timer);
+-	if (result && reallow_idle)
++	if (result && reallow_idle && !ctx->dc->debug.disable_dmub_reallow_idle)
+ 		dc_dmub_srv_apply_idle_power_optimizations(ctx->dc, true);
  
-+void sk_stop_timer_sync(struct sock *sk, struct timer_list *timer);
-+
- int __sk_queue_drop_skb(struct sock *sk, struct sk_buff_head *sk_queue,
- 			struct sk_buff *skb, unsigned int flags,
- 			void (*destructor)(struct sock *sk,
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 62d169bcfcfa1..eaa6f1ca414d0 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2804,6 +2804,13 @@ void sk_stop_timer(struct sock *sk, struct timer_list* timer)
- }
- EXPORT_SYMBOL(sk_stop_timer);
+ 	return result;
+@@ -1413,7 +1413,7 @@ bool dc_wake_and_execute_gpint(const struct dc_context *ctx, enum dmub_gpint_com
  
-+void sk_stop_timer_sync(struct sock *sk, struct timer_list *timer)
-+{
-+	if (del_timer_sync(timer))
-+		__sock_put(sk);
-+}
-+EXPORT_SYMBOL(sk_stop_timer_sync);
-+
- void sock_init_data(struct socket *sock, struct sock *sk)
- {
- 	sk_init_common(sk);
+ 	result = dc_dmub_execute_gpint(ctx, command_code, param, response, wait_type);
+ 
+-	if (result && reallow_idle)
++	if (result && reallow_idle && !ctx->dc->debug.disable_dmub_reallow_idle)
+ 		dc_dmub_srv_apply_idle_power_optimizations(ctx->dc, true);
+ 
+ 	return result;
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
+index 04d230aa8861f..78c315541f031 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
+@@ -782,6 +782,7 @@ static const struct dc_debug_options debug_defaults_drv = {
+ 	.psp_disabled_wa = true,
+ 	.ips2_eval_delay_us = 2000,
+ 	.ips2_entry_delay_us = 800,
++	.disable_dmub_reallow_idle = true,
+ 	.static_screen_wait_frames = 2,
+ };
+ 
 -- 
 2.43.0
 
