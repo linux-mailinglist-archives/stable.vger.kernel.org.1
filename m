@@ -1,102 +1,88 @@
-Return-Path: <stable+bounces-38047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEF798A081A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 08:10:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8351B8A08A7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 08:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C7B71F23F3F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 06:10:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B50961C21475
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 06:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE54E13CA95;
-	Thu, 11 Apr 2024 06:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C9C13D613;
+	Thu, 11 Apr 2024 06:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VE1tAvcH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YBO9BYzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562F57E9;
-	Thu, 11 Apr 2024 06:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774F013CF81
+	for <stable@vger.kernel.org>; Thu, 11 Apr 2024 06:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712815837; cv=none; b=esl8wV5agu7gIehNH5CEEy4oQdmCimrppBeTJRySMSH9F60n3jgcHjzT4Fj/RhVJ7KkabRVETJOQnWvGtuqlPxWSfnfj1QEEjczmr6n165PsSIWm3F6jiIP5Zi+X4RuwzUeinplnblS7s04nTxRyuQkyoyXBAzCrRPvchUb1CHY=
+	t=1712817829; cv=none; b=p2XZqiXKKtshO8fyzE27k9Kgl+gKCCjaPGgHSw5gxH5B/OzQIxH1VLeJ9Zhwk6IE9Q9AsB7dhdGPkFHGdetfTpbMMcsr7QQ7K55aje9yeFMgII9zwerrF9hnuWgMA1iF89FmuxebQ9hdgS3XKIqAG4B+o/RDTh+RiLUHMJrgnB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712815837; c=relaxed/simple;
-	bh=pipQlZPEXvUCAR8N2lSjjo5XA/D0PbxuprjFT/UeDO0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bHK5zLtFns2ymVfqjhXB+mlpI/NqlierZUWVOROW8jKdhYz0F+LcDzHdA0afsAaa2TKnJ2l+NyW3vxESMpl8SrvaK6JmiTR6ZD9PzE3oDWjPNmbdnzzphfGL5Nhb5CqknzKnPecbXuygtRoN/9oTpETBmjv49xxfTw3u6b4A+No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VE1tAvcH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF98C433F1;
-	Thu, 11 Apr 2024 06:10:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712815836;
-	bh=pipQlZPEXvUCAR8N2lSjjo5XA/D0PbxuprjFT/UeDO0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VE1tAvcH3/sjsxshMt2csgQ9AUiarTPn6lSfjCywjJWTxwfbSv+UYX2MxLtFBN6mz
-	 FwtXJx1kq9wMjY/pNmx6Jx0x/TW1LSJ3cWHxYkmaSGiauQNv0ppmIwRtxCWszmM6Ig
-	 ii19pw8rKM7EyYv5+e+Lior27s/62bf4vbzhzaV0=
-Date: Thu, 11 Apr 2024 08:10:33 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Thorsten Leemhuis <linux@leemhuis.info>
-Cc: Sasha Levin <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	stable@vger.kernel.org, workflows@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 3/4] docs: stable-kernel-rules: call mainline by its
- name and change example
-Message-ID: <2024041127-attach-removed-f9f0@gregkh>
-References: <cover.1712812895.git.linux@leemhuis.info>
- <ec5dff37a62681beb74f89f8fcde41b6618152f0.1712812895.git.linux@leemhuis.info>
- <2024041156-nintendo-paddling-eaad@gregkh>
- <963811ba-6c12-47d1-942e-ba7bcf93a766@leemhuis.info>
+	s=arc-20240116; t=1712817829; c=relaxed/simple;
+	bh=XZLDi9yMfdD5htl6aTLkBdQoyDg1JHq32SKqeXhS3V4=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=rrUkMAMmTM0fdP6diddXvtcIYjBECe5KXCXSglJInURNg6vWMc4vtS7zExAJAe4muKH9lDPQR+F0oegod9zzD1zazWieJ8DFYMwEwOi8F3hpd8KLm+spPhJ00m4FNv6iKoAQOrvr2hlYYCQV2GwzWT8L8I9x0ha4McfLBSdOL/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YBO9BYzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DBAC43390
+	for <stable@vger.kernel.org>; Thu, 11 Apr 2024 06:43:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712817829;
+	bh=XZLDi9yMfdD5htl6aTLkBdQoyDg1JHq32SKqeXhS3V4=;
+	h=From:Date:Subject:To:From;
+	b=YBO9BYzQSACRZ4ZNFZPilcE+ZeVvtYVw+52tOYIwh832B3IW3oCQYGEsH4Mg4CnZ0
+	 I7A400X1GrA2aJXJ3IC6XTxZFgtfLHDqQxIh6vsebt+k/g6qj7koi3zVnULqlBJXmm
+	 apKNu8qze2WEC/JmD7bBItW3Gs+sBfKb8+tIiScNyyMYN4jzh7I6ClFQn8zxpz1j5R
+	 YR+m6JgYWULc/eHIqaLS6IJXAQYA+kSoqfJoJEHtdBZxyARfIQu/uNOEKnhEYmwaE/
+	 GIxbykelgis6GkbqpIOB+RhXVpEX3kqWUcjsVmImo+ABFK62gQOr2WuvVAF6Yr/Uoq
+	 yJ+H/C/ej+D+Q==
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2d29aad15a5so70875841fa.3
+        for <stable@vger.kernel.org>; Wed, 10 Apr 2024 23:43:48 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwwFPltaKJGd/byRogN3XSaAgruYjgPU+/QPjbYqd/SkF/JENQX
+	tm1Qz6yTsiPxvG1NLmmHVP7CYesWJGahrHYh6rmlk0S8rh8IvYTytfL8vUWv1zJizP6vughFOH6
+	ca1N2X+b9PM5hulqkiBb8gzLn4vk=
+X-Google-Smtp-Source: AGHT+IHlH7Vf5XIQbbs9aRIiH37DnhWFQne7MxpwXfCYgwPw7tPCz6m46OataJqOigON7akZxr4K3ZC+VDuvOYauQyA=
+X-Received: by 2002:a2e:91cd:0:b0:2d6:b0b5:bb12 with SMTP id
+ u13-20020a2e91cd000000b002d6b0b5bb12mr3339259ljg.18.1712817827177; Wed, 10
+ Apr 2024 23:43:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <963811ba-6c12-47d1-942e-ba7bcf93a766@leemhuis.info>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 11 Apr 2024 08:43:35 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHi=hF=Qb1rQZ941TBA5v1H39+NRjqXU=o=aB=7AH=uGA@mail.gmail.com>
+Message-ID: <CAMj1kXHi=hF=Qb1rQZ941TBA5v1H39+NRjqXU=o=aB=7AH=uGA@mail.gmail.com>
+Subject: v5.15+ backport request
+To: "# 3.4.x" <stable@vger.kernel.org>, Kees Cook <keescook@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Apr 11, 2024 at 07:50:29AM +0200, Thorsten Leemhuis wrote:
-> On 11.04.24 07:30, Greg Kroah-Hartman wrote:
-> > On Thu, Apr 11, 2024 at 07:25:05AM +0200, Thorsten Leemhuis wrote:
-> >>  
-> >> -     Cc: <stable@vger.kernel.org> # after 4 weeks in mainline
-> >> +     Cc: <stable@vger.kernel.org> # after 6 weeks in a stable mainline release
-> > 
-> > I do not know what "stable mainline release" means here, sorry.  "after
-> > 4 weeks in mainline" means "after in Linus's tree for 4 weeks, but
-> > Linus's tree is not "stable mainline".
-> 
-> I meant a proper mainline release like 6.7 or 6.8 to make it obvious
-> that this does not mean a "pre-release".
-> 
-> I actually had used the term "proper mainline release" earlier in a
-> draft, but a quick search on the net showed that this is not really used
-> out there. "stable mainline release" is not popular either, but seemed
-> to be a better match; I also considered "final mainline release", but
-> that felt odd.
-> 
-> It feels like there must be some better term my mind just stumbles to
-> come up with. Please help. :-D
+please backport
 
-Well, what is the goal here?  Just put it in words, I have seen stuff
-like:
-	Cc: <stable@vger.kernel.org> # wait until -rc3
-	Cc: <stable@vger.kernel.org> # wait until 6.1 is released
-	Cc: <stable@vger.kernel.org> # after -rc2
+e7d24c0aa8e678f41
+gcc-plugins/stackleak: Avoid .head.text section
 
-and so on.
+to stable kernels v5.15 and newer. This addresses the regression reported here:
 
-Just pick a specific time/release might be better?  "after X weeks" is
-assuming that we all know and remember how many weeks something
-happened...
+https://lkml.kernel.org/r/dc118105-b97c-4e51-9a42-a918fa875967%40hardfalcon.net
 
-thanks,
+On v5.15, there is a dependency that needs to be backported first:
 
-greg k-h
+ae978009fc013e3166c9f523f8b17e41a3c0286e
+gcc-plugins/stackleak: Ignore .noinstr.text and .entry.text
+
+The particular issue that this patch fixes does not exist [yet] in
+v6.1 and v5.15, but I am working on backports that would introduce it.
+But even without those backports, this change is important as it
+prevents input sections from being instrumented by stackleak that may
+not tolerate this for other reasons too.
+
+Thanks,
+Ard.
 
