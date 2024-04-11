@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-39066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B128A11C5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B64FD8A115E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1C4A1C21C25
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E788B1C23C08
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E301147C88;
-	Thu, 11 Apr 2024 10:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5616D13C9A5;
+	Thu, 11 Apr 2024 10:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EyYgoUB4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tdwGg5nf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E46146A93;
-	Thu, 11 Apr 2024 10:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1509C64CC0;
+	Thu, 11 Apr 2024 10:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832416; cv=none; b=LjEtEgEu/WPZNO7wsZiu+7N6/cYCTw17otNMlbHk2QYL6RNNnTC28QSMp6AaimKS0mWSU/OfROCP0kCDVyGN92Sj8zZD3VCDFuyS4EGYLDiMYnP9X5dhNe59bWiN6Gentt4Zcr0hRO5f48EQDMAGuOEAXq42J1T1IEGIwuT5k4U=
+	t=1712832204; cv=none; b=ehrKCsyek+prTX2d4k9dl9zBH6zUprseVdlcNSJoLmy4u5eMrsW57LLl9NTJ9d7mC7NmVgo0xvlmmhxlrJkU4Onz2Zg7nu6JiB77Z5X4tUJeG2ifP1qklIbm1ZYm+9xfA6kReALfYk+0SVEx9KsQ46VqNPdmTQ+5WIgeOzsLR0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832416; c=relaxed/simple;
-	bh=BNUEM0cerVicNBccL0SJT17YtCfwhGwkMbjChW+4Omk=;
+	s=arc-20240116; t=1712832204; c=relaxed/simple;
+	bh=5KrGVtxZ001BmcSdcXLmjqN+y302wayJMnRh7IXao2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AWt5TF3CtxImhmueaK+SHCJiJXuhErLsdfjv2a8Zm8Iu6GaZw/a+A1BsqeQ+Y0hlGdquyM7Ckxb1wme+b7hmlJCeYFi6rO4+7fO9D/C5IKTL0GqsrQfQhbpLPHAxcYzP/hHqKqjkS0ZbJnRVCYPzGRE0U01B07QGv2LV0/7IA4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EyYgoUB4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38F0C433F1;
-	Thu, 11 Apr 2024 10:46:55 +0000 (UTC)
+	 MIME-Version; b=bTnHkSRp+hv8Ni4kvvbwwMtaPv8PLigWPLz3HAk6XQj/fUlu4+OPGtuMHOtbLloA83vHgjJkz3bcMvWVkvkqTpzDCi9pbzT35gkJnJm26wLnF0FC2Gk8lt7q9sZyfz88lUOnA7MA2YFJRMvI7qPJZAW6NydbFNbckuiBqTqmtkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tdwGg5nf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECE6C433F1;
+	Thu, 11 Apr 2024 10:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832416;
-	bh=BNUEM0cerVicNBccL0SJT17YtCfwhGwkMbjChW+4Omk=;
+	s=korg; t=1712832204;
+	bh=5KrGVtxZ001BmcSdcXLmjqN+y302wayJMnRh7IXao2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EyYgoUB4XkDCr/7DCqctf9XI4tBRdEChi+QKjvyNSaoqCoHtwBtvVKweXnD5D+oBU
-	 3iWCCfNrL+fxfAxGMBA701ssUZsUtTNYXhNB6C2znA7+H/NF/c1wvhXuLEON318PdZ
-	 gkoRTAQ3fc//r6U447BgoTqYKPF6B9BW9OS68imI=
+	b=tdwGg5nfBiMOy5UmVj1Yv+2AUUI9821e7sFSrwK4t5TlLWS5v0fr6HU+yna7W+/Jy
+	 eXS8MvuMYXte8AS5iGBlP8Y8cjsHRzCRR9ZF1W3g1LY6rIDKN2xPPeDddLx5Xjy+VM
+	 ZBW5m8yDfiLmBBWHuwfsHnwpIRx5v8ATh9MT8DYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 34/83] scsi: lpfc: Fix possible memory leak in lpfc_rcv_padisc()
+Subject: [PATCH 5.10 263/294] media: sta2x11: fix irq handler cast
 Date: Thu, 11 Apr 2024 11:57:06 +0200
-Message-ID: <20240411095413.709849455@linuxfoundation.org>
+Message-ID: <20240411095443.475139372@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 2ae917d4bcab80ab304b774d492e2fcd6c52c06b ]
+[ Upstream commit 3de49ae81c3a0f83a554ecbce4c08e019f30168e ]
 
-The call to lpfc_sli4_resume_rpi() in lpfc_rcv_padisc() may return an
-unsuccessful status.  In such cases, the elsiocb is not issued, the
-completion is not called, and thus the elsiocb resource is leaked.
+clang-16 warns about casting incompatible function pointers:
 
-Check return value after calling lpfc_sli4_resume_rpi() and conditionally
-release the elsiocb resource.
+drivers/media/pci/sta2x11/sta2x11_vip.c:1057:6: error: cast from 'irqreturn_t (*)(int, struct sta2x11_vip *)' (aka 'enum irqreturn (*)(int, struct sta2x11_vip *)') to 'irq_handler_t' (aka 'enum irqreturn (*)(int, void *)') converts to incompatible function type [-Werror,-Wcast-function-type-strict]
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240131185112.149731-3-justintee8345@gmail.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Change the prototype of the irq handler to the regular version with a
+local variable to adjust the argument type.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[hverkuil: update argument documentation]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_nportdisc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/media/pci/sta2x11/sta2x11_vip.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_nportdisc.c b/drivers/scsi/lpfc/lpfc_nportdisc.c
-index b86ff9fcdf0c6..f21396a0ba9d0 100644
---- a/drivers/scsi/lpfc/lpfc_nportdisc.c
-+++ b/drivers/scsi/lpfc/lpfc_nportdisc.c
-@@ -748,8 +748,10 @@ lpfc_rcv_padisc(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
- 				/* Save the ELS cmd */
- 				elsiocb->drvrTimeout = cmd;
+diff --git a/drivers/media/pci/sta2x11/sta2x11_vip.c b/drivers/media/pci/sta2x11/sta2x11_vip.c
+index 336df65c8af11..01ca940aecc2d 100644
+--- a/drivers/media/pci/sta2x11/sta2x11_vip.c
++++ b/drivers/media/pci/sta2x11/sta2x11_vip.c
+@@ -760,7 +760,7 @@ static const struct video_device video_dev_template = {
+ /**
+  * vip_irq - interrupt routine
+  * @irq: Number of interrupt ( not used, correct number is assumed )
+- * @vip: local data structure containing all information
++ * @data: local data structure containing all information
+  *
+  * check for both frame interrupts set ( top and bottom ).
+  * check FIFO overflow, but limit number of log messages after open.
+@@ -770,8 +770,9 @@ static const struct video_device video_dev_template = {
+  *
+  * IRQ_HANDLED, interrupt done.
+  */
+-static irqreturn_t vip_irq(int irq, struct sta2x11_vip *vip)
++static irqreturn_t vip_irq(int irq, void *data)
+ {
++	struct sta2x11_vip *vip = data;
+ 	unsigned int status;
  
--				lpfc_sli4_resume_rpi(ndlp,
--					lpfc_mbx_cmpl_resume_rpi, elsiocb);
-+				if (lpfc_sli4_resume_rpi(ndlp,
-+						lpfc_mbx_cmpl_resume_rpi,
-+						elsiocb))
-+					kfree(elsiocb);
- 				goto out;
- 			}
- 		}
+ 	status = reg_read(vip, DVP_ITS);
+@@ -1053,9 +1054,7 @@ static int sta2x11_vip_init_one(struct pci_dev *pdev,
+ 
+ 	spin_lock_init(&vip->slock);
+ 
+-	ret = request_irq(pdev->irq,
+-			  (irq_handler_t) vip_irq,
+-			  IRQF_SHARED, KBUILD_MODNAME, vip);
++	ret = request_irq(pdev->irq, vip_irq, IRQF_SHARED, KBUILD_MODNAME, vip);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "request_irq failed\n");
+ 		ret = -ENODEV;
 -- 
 2.43.0
 
