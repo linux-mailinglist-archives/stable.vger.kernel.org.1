@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 020ED8A115C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0142E8A0F82
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82F72B232FD
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABB761F27F38
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC73140366;
-	Thu, 11 Apr 2024 10:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1346014600E;
+	Thu, 11 Apr 2024 10:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOax0+ZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seQmvjdQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD5F6BB29;
-	Thu, 11 Apr 2024 10:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58DF140E3D;
+	Thu, 11 Apr 2024 10:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832195; cv=none; b=Kro+xegpX+p3S8tfnkkM9PBXQ/ezpIiesLHjOYdUoHkntJ72AHz58zkpfMGjKIVKm5/JYhX4ijqQ22ne4i+oUFkF54zYnHbzrfy6slCb60GMxuijqYweP5VhVUUtqLBACJmNvTzDDXTTMe9lzuiYeg7eCHVT+WYLweumso73eYM=
+	t=1712831072; cv=none; b=skZlqz9Mnrr1iSWRsv+F+AzHUTqslgcyf1g6mjusCUX+2Sn1oa5RckY3fnc8Ws631yfLV+Wl70DIapns5svCRr1Lk/0vjTlEuf0ML24LyZ+pmOxPut3K6r/HaylOglhBe/oVTCZ/ml1fUoZ4gkehfJTKrynrrAdsevFkaQsjpes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832195; c=relaxed/simple;
-	bh=0np737c3oB+evyj3Bxj7eVBroiUeNHGVYuBjYt3yk2I=;
+	s=arc-20240116; t=1712831072; c=relaxed/simple;
+	bh=ZIOYROQLtSPba7XN4yJC3yy4oD1qJ8om2eyziQ56wJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TgFPfUrTKWxFUSAxL7PH3FHhkwUoq7dJAEIGxiKDjKzu3CAWTTCSyhJgvuObpssC9qQdGBs3Mga/eTvsqvacZSSDvdXZKXtH1dGX+OxOTVpuMicK7jlZ/Zo0V/aakTD4f77bqIr6wTDFeJZnuMowuon14LFdB0z9UKsIZK81Rp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOax0+ZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36A6C433C7;
-	Thu, 11 Apr 2024 10:43:14 +0000 (UTC)
+	 MIME-Version; b=FY7WQ5RuOYDjQ0fXXsocvKuDqVP06Orhu4IOuJlP2fpHYGKEvzI2dP0mhhsnBbXI9/T5cW3NhBaWsN0xO3N/AMriBlqGxf6/RPH1rK6IXf+MxaCvaw/g8qj0ncx/crrfnNzglaWwz76t95LVGlQ8RmzSbjiSWJTyGwgTP0TS/0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seQmvjdQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2BBC433C7;
+	Thu, 11 Apr 2024 10:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832195;
-	bh=0np737c3oB+evyj3Bxj7eVBroiUeNHGVYuBjYt3yk2I=;
+	s=korg; t=1712831072;
+	bh=ZIOYROQLtSPba7XN4yJC3yy4oD1qJ8om2eyziQ56wJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GOax0+ZTKWa6dMTZTEZRE5nEqMYjoxBr7anLbTy1ixm07o1kCgTXmOfAC+V1s7egB
-	 K5U9ifeDGK4s8S8bPW+BpYlcJQPcVjcH4FzKE3C9PTEolXq/R2i5yCjhz6C7TxJTEq
-	 Bh5LNl1Bmd31aOcRt30QvB/rn867dLLkny9eGnbw=
+	b=seQmvjdQTVgWbsqfrQUgb6pumj2GeB+0snDA0/9uZdcYbhuQ8HOf7VcqYkhyRBSt/
+	 2elp3FjnSsJqEydYfV+rTxftjjyAL/mou26n0kZXPBXvc/XaWiDDHrpErId+ofclZD
+	 IzGBm7eidXTjePeXPqf6rI7lAmFoMWO9akSGcm2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+69b40dc5fd40f32c199f@syzkaller.appspotmail.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 260/294] sysv: dont call sb_bread() with pointers_lock held
+	Jianlin Shi <jishi@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	William Tu <u9012063@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.4 214/215] ip_gre: do not report erspan version on GRE interface
 Date: Thu, 11 Apr 2024 11:57:03 +0200
-Message-ID: <20240411095443.388776524@linuxfoundation.org>
+Message-ID: <20240411095431.294653996@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit f123dc86388cb669c3d6322702dc441abc35c31e ]
+commit ee496694b9eea651ae1aa4c4667d886cdf74aa3b upstream.
 
-syzbot is reporting sleep in atomic context in SysV filesystem [1], for
-sb_bread() is called with rw_spinlock held.
+Although the type I ERSPAN is based on the barebones IP + GRE
+encapsulation and no extra ERSPAN header. Report erspan version on GRE
+interface looks unreasonable. Fix this by separating the erspan and gre
+fill info.
 
-A "write_lock(&pointers_lock) => read_lock(&pointers_lock) deadlock" bug
-and a "sb_bread() with write_lock(&pointers_lock)" bug were introduced by
-"Replace BKL for chain locking with sysvfs-private rwlock" in Linux 2.5.12.
+IPv6 GRE does not have this info as IPv6 only supports erspan version
+1 and 2.
 
-Then, "[PATCH] err1-40: sysvfs locking fix" in Linux 2.6.8 fixed the
-former bug by moving pointers_lock lock to the callers, but instead
-introduced a "sb_bread() with read_lock(&pointers_lock)" bug (which made
-this problem easier to hit).
-
-Al Viro suggested that why not to do like get_branch()/get_block()/
-find_shared() in Minix filesystem does. And doing like that is almost a
-revert of "[PATCH] err1-40: sysvfs locking fix" except that get_branch()
- from with find_shared() is called without write_lock(&pointers_lock).
-
-Reported-by: syzbot <syzbot+69b40dc5fd40f32c199f@syzkaller.appspotmail.com>
-Link: https://syzkaller.appspot.com/bug?extid=69b40dc5fd40f32c199f
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/r/0d195f93-a22a-49a2-0020-103534d6f7f6@I-love.SAKURA.ne.jp
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Jianlin Shi <jishi@redhat.com>
+Fixes: f989d546a2d5 ("erspan: Add type I version 0 support.")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: William Tu <u9012063@gmail.com>
+Link: https://lore.kernel.org/r/20221203032858.3130339-1-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/sysv/itree.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ net/ipv4/ip_gre.c |   48 +++++++++++++++++++++++++++++-------------------
+ 1 file changed, 29 insertions(+), 19 deletions(-)
 
-diff --git a/fs/sysv/itree.c b/fs/sysv/itree.c
-index e3d1673b8ec97..ef9bcfeec21ad 100644
---- a/fs/sysv/itree.c
-+++ b/fs/sysv/itree.c
-@@ -82,9 +82,6 @@ static inline sysv_zone_t *block_end(struct buffer_head *bh)
- 	return (sysv_zone_t*)((char*)bh->b_data + bh->b_size);
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -1504,24 +1504,6 @@ static int ipgre_fill_info(struct sk_buf
+ 	struct ip_tunnel_parm *p = &t->parms;
+ 	__be16 o_flags = p->o_flags;
+ 
+-	if (t->erspan_ver <= 2) {
+-		if (t->erspan_ver != 0 && !t->collect_md)
+-			o_flags |= TUNNEL_KEY;
+-
+-		if (nla_put_u8(skb, IFLA_GRE_ERSPAN_VER, t->erspan_ver))
+-			goto nla_put_failure;
+-
+-		if (t->erspan_ver == 1) {
+-			if (nla_put_u32(skb, IFLA_GRE_ERSPAN_INDEX, t->index))
+-				goto nla_put_failure;
+-		} else if (t->erspan_ver == 2) {
+-			if (nla_put_u8(skb, IFLA_GRE_ERSPAN_DIR, t->dir))
+-				goto nla_put_failure;
+-			if (nla_put_u16(skb, IFLA_GRE_ERSPAN_HWID, t->hwid))
+-				goto nla_put_failure;
+-		}
+-	}
+-
+ 	if (nla_put_u32(skb, IFLA_GRE_LINK, p->link) ||
+ 	    nla_put_be16(skb, IFLA_GRE_IFLAGS,
+ 			 gre_tnl_flags_to_gre_flags(p->i_flags)) ||
+@@ -1562,6 +1544,34 @@ nla_put_failure:
+ 	return -EMSGSIZE;
  }
  
--/*
-- * Requires read_lock(&pointers_lock) or write_lock(&pointers_lock)
-- */
- static Indirect *get_branch(struct inode *inode,
- 			    int depth,
- 			    int offsets[],
-@@ -104,15 +101,18 @@ static Indirect *get_branch(struct inode *inode,
- 		bh = sb_bread(sb, block);
- 		if (!bh)
- 			goto failure;
-+		read_lock(&pointers_lock);
- 		if (!verify_chain(chain, p))
- 			goto changed;
- 		add_chain(++p, bh, (sysv_zone_t*)bh->b_data + *++offsets);
-+		read_unlock(&pointers_lock);
- 		if (!p->key)
- 			goto no_block;
- 	}
- 	return NULL;
++static int erspan_fill_info(struct sk_buff *skb, const struct net_device *dev)
++{
++	struct ip_tunnel *t = netdev_priv(dev);
++
++	if (t->erspan_ver <= 2) {
++		if (t->erspan_ver != 0 && !t->collect_md)
++			t->parms.o_flags |= TUNNEL_KEY;
++
++		if (nla_put_u8(skb, IFLA_GRE_ERSPAN_VER, t->erspan_ver))
++			goto nla_put_failure;
++
++		if (t->erspan_ver == 1) {
++			if (nla_put_u32(skb, IFLA_GRE_ERSPAN_INDEX, t->index))
++				goto nla_put_failure;
++		} else if (t->erspan_ver == 2) {
++			if (nla_put_u8(skb, IFLA_GRE_ERSPAN_DIR, t->dir))
++				goto nla_put_failure;
++			if (nla_put_u16(skb, IFLA_GRE_ERSPAN_HWID, t->hwid))
++				goto nla_put_failure;
++		}
++	}
++
++	return ipgre_fill_info(skb, dev);
++
++nla_put_failure:
++	return -EMSGSIZE;
++}
++
+ static void erspan_setup(struct net_device *dev)
+ {
+ 	struct ip_tunnel *t = netdev_priv(dev);
+@@ -1640,7 +1650,7 @@ static struct rtnl_link_ops erspan_link_
+ 	.changelink	= erspan_changelink,
+ 	.dellink	= ip_tunnel_dellink,
+ 	.get_size	= ipgre_get_size,
+-	.fill_info	= ipgre_fill_info,
++	.fill_info	= erspan_fill_info,
+ 	.get_link_net	= ip_tunnel_get_link_net,
+ };
  
- changed:
-+	read_unlock(&pointers_lock);
- 	brelse(bh);
- 	*err = -EAGAIN;
- 	goto no_block;
-@@ -218,9 +218,7 @@ static int get_block(struct inode *inode, sector_t iblock, struct buffer_head *b
- 		goto out;
- 
- reread:
--	read_lock(&pointers_lock);
- 	partial = get_branch(inode, depth, offsets, chain, &err);
--	read_unlock(&pointers_lock);
- 
- 	/* Simplest case - block found, no allocation needed */
- 	if (!partial) {
-@@ -290,9 +288,9 @@ static Indirect *find_shared(struct inode *inode,
- 	*top = 0;
- 	for (k = depth; k > 1 && !offsets[k-1]; k--)
- 		;
-+	partial = get_branch(inode, k, offsets, chain, &err);
- 
- 	write_lock(&pointers_lock);
--	partial = get_branch(inode, k, offsets, chain, &err);
- 	if (!partial)
- 		partial = chain + k-1;
- 	/*
--- 
-2.43.0
-
 
 
 
