@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-39053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 040618A11AC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:46:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 900E68A0F80
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 985681F21054
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:46:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE977B220E1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B42F145B26;
-	Thu, 11 Apr 2024 10:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38CF614600A;
+	Thu, 11 Apr 2024 10:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqzUNnKw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+WoXi8l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF663146D52;
-	Thu, 11 Apr 2024 10:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED77A140E3D;
+	Thu, 11 Apr 2024 10:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832378; cv=none; b=Z0enGj5+EnSSaHhsA91FAKkvV50G0J13DlRovtolYoLz6xh/zJPV7v5wv0mKmkKnYg+GtBwgckkV0tbG53jurkoXl2lUE64r9jrABTi88QJnjg0S/BU7B9kiObPGYCQaRxZpm02YV7P3jl/bIoT89cqr8HeuJQbYwxSWLsLEOlA=
+	t=1712831067; cv=none; b=gcK0/GPQ8ZAMbWf52jpp4Gt+3PowyVHugjSPVf5UijAXxQV0rk+zl6UP5679Zj7zqkMt1kxnNjtfRj06jcOLiNmTZhbFhmZvnOdsClRpj5l6kI0qkT9sbt6XH2mQe4LLeK094+jC1m8Ed8w0T0rzq7mQm9KGrvExL+ddscY6vXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832378; c=relaxed/simple;
-	bh=hQ9D75srD9U6bMn4kG8eFiIGYu8k2/L+HaGYUuO7uds=;
+	s=arc-20240116; t=1712831067; c=relaxed/simple;
+	bh=D0cLPRoVayMTAZwEsMcpQkU8at3UvINMQBGk47LjoLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bUPC+Ht8XR3qczz/aVr6ZcVDfDbNyzTBj7446HhzZcpWK0txZkyeGXRLMlySkbyXA2L54Kv+IgveDBNkFPjq43KX4jqrmadaQvqQuDpHbENbiUQ+RE1ElaZcmeCBWQwLNzyeQM12bnIzy3mXEBs5Cu64aAJkaGl4dVCkWjQRBnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqzUNnKw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75BF9C43399;
-	Thu, 11 Apr 2024 10:46:17 +0000 (UTC)
+	 MIME-Version; b=cvoNV1G+m8VGX50xjNrvbLnt3PSUcIvEc8UHfUpIacM865u0HNTlLUDP20bw6CaYJzswF+OYUTH5lHnfznDZ4G6O3QQvc5GcnYn+Rmx/R6u/XNwC+mS9VBVvkVOAwg4bFfU5/G0L9rO6LwM2eACExsirjXV6pl9HoIkBC1N1GRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+WoXi8l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70678C433C7;
+	Thu, 11 Apr 2024 10:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832377;
-	bh=hQ9D75srD9U6bMn4kG8eFiIGYu8k2/L+HaGYUuO7uds=;
+	s=korg; t=1712831066;
+	bh=D0cLPRoVayMTAZwEsMcpQkU8at3UvINMQBGk47LjoLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NqzUNnKwHujCKGv+YzU3iES//psKpoS7meYOI47gF7u8u0wxtxacDH/ElmNtdCFs8
-	 7Dog2DgVYVXuFDg5Bte0tQa0puvrUG7ZnYGrDsXdZkNktYrVzr6AeIzpn1vnGeUwJs
-	 Ahz/A4LAFF0T9o4xOJtUYso5K4rtLQQ4aKb2yMpY=
+	b=P+WoXi8l/t2fQWm51EnIh1Kh71WnWYozPhx5xu2FSWtLEdxH6Dk1TsINNfhO/1Vvg
+	 2GTvAYraIA9x3CmSco2/vcBUQDihYN0BIjBAkQB947vG2SvxFymOFUIiasjT5fQdJY
+	 EI0w2jTLFzL97Hj3P89LUJUcp7LXoaDY2Afm8KWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 28/83] Bluetooth: btmtk: Add MODULE_FIRMWARE() for MT7922
-Date: Thu, 11 Apr 2024 11:57:00 +0200
-Message-ID: <20240411095413.525049026@linuxfoundation.org>
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 5.4 212/215] VMCI: Fix possible memcpy() run-time warning in vmci_datagram_invoke_guest_handler()
+Date: Thu, 11 Apr 2024 11:57:01 +0200
+Message-ID: <20240411095431.235847546@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit 3e465a07cdf444140f16bc57025c23fcafdde997 ]
+commit e606e4b71798cc1df20e987dde2468e9527bd376 upstream.
 
-Since dracut refers to the module info for defining the required
-firmware files and btmtk driver doesn't provide the firmware info for
-MT7922, the generate initrd misses the firmware, resulting in the
-broken Bluetooth.
+The changes are similar to those given in the commit 19b070fefd0d
+("VMCI: Fix memcpy() run-time warning in dg_dispatch_as_host()").
 
-This patch simply adds the MODULE_FIRMWARE() for the missing entry
-for covering that.
+Fix filling of the msg and msg_payload in dg_info struct, which prevents a
+possible "detected field-spanning write" of memcpy warning that is issued
+by the tracking mechanism __fortify_memcpy_chk.
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1214133
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Link: https://lore.kernel.org/r/20240219105315.76955-1-kovalev@altlinux.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btmtk.c | 1 +
- drivers/bluetooth/btmtk.h | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/misc/vmw_vmci/vmci_datagram.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
-index 809762d64fc65..b77e337778a44 100644
---- a/drivers/bluetooth/btmtk.c
-+++ b/drivers/bluetooth/btmtk.c
-@@ -288,4 +288,5 @@ MODULE_LICENSE("GPL");
- MODULE_FIRMWARE(FIRMWARE_MT7622);
- MODULE_FIRMWARE(FIRMWARE_MT7663);
- MODULE_FIRMWARE(FIRMWARE_MT7668);
-+MODULE_FIRMWARE(FIRMWARE_MT7922);
- MODULE_FIRMWARE(FIRMWARE_MT7961);
-diff --git a/drivers/bluetooth/btmtk.h b/drivers/bluetooth/btmtk.h
-index 2a88ea8e475e8..ee0b1d27aa5c0 100644
---- a/drivers/bluetooth/btmtk.h
-+++ b/drivers/bluetooth/btmtk.h
-@@ -4,6 +4,7 @@
- #define FIRMWARE_MT7622		"mediatek/mt7622pr2h.bin"
- #define FIRMWARE_MT7663		"mediatek/mt7663pr2h.bin"
- #define FIRMWARE_MT7668		"mediatek/mt7668pr2h.bin"
-+#define FIRMWARE_MT7922		"mediatek/BT_RAM_CODE_MT7922_1_1_hdr.bin"
- #define FIRMWARE_MT7961		"mediatek/BT_RAM_CODE_MT7961_1_2_hdr.bin"
+--- a/drivers/misc/vmw_vmci/vmci_datagram.c
++++ b/drivers/misc/vmw_vmci/vmci_datagram.c
+@@ -378,7 +378,8 @@ int vmci_datagram_invoke_guest_handler(s
  
- #define HCI_EV_WMT 0xe4
--- 
-2.43.0
-
+ 		dg_info->in_dg_host_queue = false;
+ 		dg_info->entry = dst_entry;
+-		memcpy(&dg_info->msg, dg, VMCI_DG_SIZE(dg));
++		dg_info->msg = *dg;
++		memcpy(&dg_info->msg_payload, dg + 1, dg->payload_size);
+ 
+ 		INIT_WORK(&dg_info->work, dg_delayed_dispatch);
+ 		schedule_work(&dg_info->work);
 
 
 
