@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B6F8A1125
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 191598A0F1C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:21:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D0781C23C0D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DCF0286CC0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BACF6142624;
-	Thu, 11 Apr 2024 10:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2225146A64;
+	Thu, 11 Apr 2024 10:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VX0bf/7O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g09x7pQP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7955F140366;
-	Thu, 11 Apr 2024 10:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D6B146D51;
+	Thu, 11 Apr 2024 10:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832050; cv=none; b=OnovWxY6qP3Q/keZ7+/XtyOpuQzDQ+r5qCAU1H2PnCZoXkvThj5VGhZv6V4VbTRHErRrW/xhfQAYiVJN+5gWkc+0NiyXrlHQhj0FOuiUCaF5R4Hs3HY3/hpVSTAPXEbuVkqYZsmKXZgB5rKeY3fib84ly0Y1rgSB9CYx4jHYyOk=
+	t=1712830859; cv=none; b=hVo1epAy90E9AGoTPXoXTjJMjnQ2XuxLp695p+tZTjRM24QSRfxr6xnBjJ0LSAT1RobAQuE2y6Iuf2sfP/z5rQV/FbaPd+JJlS9lvwEKSEJaJCniO86ij2fmSUXvf8HxL4tKqkGFSEtsQsTbzjw/aEQaKVzS30RS9cWjS0KxzfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832050; c=relaxed/simple;
-	bh=PMz/YMsfnHaB5uvA8HVd7aDFDDawaou6gfa08Q0whYc=;
+	s=arc-20240116; t=1712830859; c=relaxed/simple;
+	bh=dhUG2HVpUFG/mP557MV4aAUsMLg3GONRODGuU7joths=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iSEaUEMDMnr17TM3b8Jkyd+dicKU/nd9iAYKrzyxxbbS+7mSmMqvwppL5jET34R4DYdhuWenRNskRU/DhcJ53moxX9dLL78VMxYPaFMTkA7YbV40H4Se9U48dsylP3mU6oHuaMmW9nDS8kSguScnmwFkYSMDrd4qGrDwWfyuSJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VX0bf/7O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01252C433C7;
-	Thu, 11 Apr 2024 10:40:49 +0000 (UTC)
+	 MIME-Version; b=q2DemTkNZdR1bx4ktRQESLg4PKm/VN1XggX/jtqZ48UnROzJp3EamgEEqa1ITgzu/jIC018pqKdLvHVRlxC1tJ9z22tbNqBQk3giM7PunKSvUDZcfIXhfC6IhIW/mMlX9MhC7UfVyDzSUPBNuJgsy6f/B0TKoZIuN2hAFajzoFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g09x7pQP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97FFC43390;
+	Thu, 11 Apr 2024 10:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832050;
-	bh=PMz/YMsfnHaB5uvA8HVd7aDFDDawaou6gfa08Q0whYc=;
+	s=korg; t=1712830859;
+	bh=dhUG2HVpUFG/mP557MV4aAUsMLg3GONRODGuU7joths=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VX0bf/7OJ/2pUaCRUy125hxHdoh8fvhwoI1aFcitpL9TR55T9Egu8TrkKnVH+L/UL
-	 Y1Y60TEM3tJ0XjVLk3DN4PcrF5zg3K7q3bNbJGcXJ8lg3laSN/BGBxXBzmPdovGJdV
-	 UPFVFO5snPXvF/Ts2Ri18W6yUXdVw8wHXtlvrmAI=
+	b=g09x7pQPRWRnF0usnbYUzylPAx7OlKUACXOd+pVlWt4JcnzgkltHN0a18VmjK4REv
+	 ovr8tZgOHo52VYDBm7Y+B13oDy7bvIwZFzh1xMqSR6V9PqqAdOq5Ydk1NgOO3Gs8Af
+	 ApfORV6kBtuUueQ1CQZ+xGAenE6zUlQZiPqUL74Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 187/294] Octeontx2-af: fix pause frame configuration in GMP mode
+	Kevin Tian <kevin.tian@intel.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 5.4 141/215] vfio: Introduce interface to flush virqfd inject workqueue
 Date: Thu, 11 Apr 2024 11:55:50 +0200
-Message-ID: <20240411095441.247698130@linuxfoundation.org>
+Message-ID: <20240411095429.131070244@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 40d4b4807cadd83fb3f46cc8cd67a945b5b25461 ]
+[ Upstream commit b620ecbd17a03cacd06f014a5d3f3a11285ce053 ]
 
-The Octeontx2 MAC block (CGX) has separate data paths (SMU and GMP) for
-different speeds, allowing for efficient data transfer.
+In order to synchronize changes that can affect the thread callback,
+introduce an interface to force a flush of the inject workqueue.  The
+irqfd pointer is only valid under spinlock, but the workqueue cannot
+be flushed under spinlock.  Therefore the flush work for the irqfd is
+queued under spinlock.  The vfio_irqfd_cleanup_wq workqueue is re-used
+for queuing this work such that flushing the workqueue is also ordered
+relative to shutdown.
 
-The previous patch which added pause frame configuration has a bug due
-to which pause frame feature is not working in GMP mode.
-
-This patch fixes the issue by configurating appropriate registers.
-
-Fixes: f7e086e754fe ("octeontx2-af: Pause frame configuration at cgx")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240326052720.4441-1-hkelam@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20240308230557.805580-4-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/vfio/virqfd.c |   21 +++++++++++++++++++++
+ include/linux/vfio.h  |    2 ++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-index 55dfe1a20bc99..7f82baf8e7403 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-@@ -403,6 +403,11 @@ int cgx_lmac_set_pause_frm(void *cgxd, int lmac_id,
- 	if (!cgx || lmac_id >= cgx->lmac_count)
- 		return -ENODEV;
+--- a/drivers/vfio/virqfd.c
++++ b/drivers/vfio/virqfd.c
+@@ -101,6 +101,13 @@ static void virqfd_inject(struct work_st
+ 		virqfd->thread(virqfd->opaque, virqfd->data);
+ }
  
-+	cfg = cgx_read(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL);
-+	cfg &= ~CGX_GMP_GMI_RXX_FRM_CTL_CTL_BCK;
-+	cfg |= rx_pause ? CGX_GMP_GMI_RXX_FRM_CTL_CTL_BCK : 0x0;
-+	cgx_write(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL, cfg);
++static void virqfd_flush_inject(struct work_struct *work)
++{
++	struct virqfd *virqfd = container_of(work, struct virqfd, flush_inject);
 +
- 	cfg = cgx_read(cgx, lmac_id, CGXX_SMUX_RX_FRM_CTL);
- 	cfg &= ~CGX_SMUX_RX_FRM_CTL_CTL_BCK;
- 	cfg |= rx_pause ? CGX_SMUX_RX_FRM_CTL_CTL_BCK : 0x0;
--- 
-2.43.0
-
++	flush_work(&virqfd->inject);
++}
++
+ int vfio_virqfd_enable(void *opaque,
+ 		       int (*handler)(void *, void *),
+ 		       void (*thread)(void *, void *),
+@@ -124,6 +131,7 @@ int vfio_virqfd_enable(void *opaque,
+ 
+ 	INIT_WORK(&virqfd->shutdown, virqfd_shutdown);
+ 	INIT_WORK(&virqfd->inject, virqfd_inject);
++	INIT_WORK(&virqfd->flush_inject, virqfd_flush_inject);
+ 
+ 	irqfd = fdget(fd);
+ 	if (!irqfd.file) {
+@@ -214,6 +222,19 @@ void vfio_virqfd_disable(struct virqfd *
+ }
+ EXPORT_SYMBOL_GPL(vfio_virqfd_disable);
+ 
++void vfio_virqfd_flush_thread(struct virqfd **pvirqfd)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&virqfd_lock, flags);
++	if (*pvirqfd && (*pvirqfd)->thread)
++		queue_work(vfio_irqfd_cleanup_wq, &(*pvirqfd)->flush_inject);
++	spin_unlock_irqrestore(&virqfd_lock, flags);
++
++	flush_workqueue(vfio_irqfd_cleanup_wq);
++}
++EXPORT_SYMBOL_GPL(vfio_virqfd_flush_thread);
++
+ module_init(vfio_virqfd_init);
+ module_exit(vfio_virqfd_exit);
+ 
+--- a/include/linux/vfio.h
++++ b/include/linux/vfio.h
+@@ -186,6 +186,7 @@ struct virqfd {
+ 	wait_queue_entry_t		wait;
+ 	poll_table		pt;
+ 	struct work_struct	shutdown;
++	struct work_struct	flush_inject;
+ 	struct virqfd		**pvirqfd;
+ };
+ 
+@@ -194,5 +195,6 @@ extern int vfio_virqfd_enable(void *opaq
+ 			      void (*thread)(void *, void *),
+ 			      void *data, struct virqfd **pvirqfd, int fd);
+ extern void vfio_virqfd_disable(struct virqfd **pvirqfd);
++void vfio_virqfd_flush_thread(struct virqfd **pvirqfd);
+ 
+ #endif /* VFIO_H */
 
 
 
