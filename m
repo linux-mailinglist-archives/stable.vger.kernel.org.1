@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22FB38A10B2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D618A0EBB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81CDAB25442
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C383283EF7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085D0148306;
-	Thu, 11 Apr 2024 10:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7D614601D;
+	Thu, 11 Apr 2024 10:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQVTAcbO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCMso1+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9399146A70;
-	Thu, 11 Apr 2024 10:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D12313E897;
+	Thu, 11 Apr 2024 10:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831776; cv=none; b=PS58xbgA6/J0zgIhf6MEB+xHJ54fbeBvV7OX89Czqo4nHk+nSUfssVwxFCP2ejz2zmtQ/CMCwrChN7JCViwYUQkNI2BUwNmYHXbRjMmQclQO4khFh3oqZ4ImpnySPT7QqmTchi8fw/8MRspNDkcPO/StHYkFbET8Jl85nN1EdH4=
+	t=1712830662; cv=none; b=RbLB/gL683ygkrSstDnsMprLHAtz08gXh76yl66DJzL5EN1Bu/9dfbhX3MZ1wSi89KNliGFo1r7/YdZLJJLVPFnmp+pkhSFQ9nST8kPChHI9nWrHXrsxVsoTbafsBmF8lRs2Nzmq9s0sxsIE0kjMXvwrFH1cm00XrFhsIPbVjTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831776; c=relaxed/simple;
-	bh=aOuZxKWgq2XauyvPgvvihLhxaaXZtaobUwqu/8oaeiE=;
+	s=arc-20240116; t=1712830662; c=relaxed/simple;
+	bh=YyuQfMFTlJQzKJnz8boQ52t04a5bo63jQgxRMeKbVLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/7suZN6AkCGMj/vM5SZXrJxeJs8iDtq5+SPcnAvTWnjei6FWs7bI7q4CGnpYXvQqwO3XfUwR708GsQT95K+p57fhB5PUQoUsjiH/9gh5WJdvzysdk9I2rMZYYhwSr7WWoRbKyca/mH4RmHMH8AQXBAq0TjOJa7mfSGmSSBftQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQVTAcbO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F67CC433C7;
-	Thu, 11 Apr 2024 10:36:16 +0000 (UTC)
+	 MIME-Version; b=RJ1ESjQdipqp8skB984XtcDQ5wVqjtL9vCgE0Ks3qfzJ1/jj2gyTtFPVaDolnrIuWXlvoN1gUKwm3T0Nyyac8nUPmYRdUVVlSI0j5DxxneQCf4tprsE9SzUQy/v+DtfEbKXpEf82cN/EyMUhBv4hs6/f15gk6N/tOMyHON5dhiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCMso1+n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 886E5C433C7;
+	Thu, 11 Apr 2024 10:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831776;
-	bh=aOuZxKWgq2XauyvPgvvihLhxaaXZtaobUwqu/8oaeiE=;
+	s=korg; t=1712830661;
+	bh=YyuQfMFTlJQzKJnz8boQ52t04a5bo63jQgxRMeKbVLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WQVTAcbOqDGs4Rr1HZIqe4uVAQTBf9InIxTkdpO6AiHTcHjvKb0elRP1eMm/TjF+H
-	 c7ImFZB9E3a36Bxj/xzvjpS1PIq5VCKnuOSzHAgdOk2RphCn2dbMq/qN7BHxkTzBHN
-	 iZr125LM/GaTztJ4GC1k5e6QXlQ13kj+UUDBYLqk=
+	b=tCMso1+n67WEe5mFlcgA7f11BQluapKrpcKG0JR7N0FNGkByYRx3V7HpluQxD2EYu
+	 vX9fCx7QK+gD/XxWU1mcv0110Z7HbBd2bXRgZJNWjouyCOH3Q4HztRmaQdPF23uLfo
+	 5CJ1U4BSy73PyAAo7l9Yz+IYW6KYJISfZmnvFW+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Dexuan Cui <decui@microsoft.com>,
-	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 5.10 122/294] Drivers: hv: vmbus: Calculate ring buffer size for more efficient use of memory
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 076/215] x86/CPU/AMD: Update the Zenbleed microcode revisions
 Date: Thu, 11 Apr 2024 11:54:45 +0200
-Message-ID: <20240411095439.338181514@linuxfoundation.org>
+Message-ID: <20240411095427.194570618@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit b8209544296edbd1af186e2ea9c648642c37b18c upstream.
+[ Upstream commit 5c84b051bd4e777cf37aaff983277e58c99618d5 ]
 
-The VMBUS_RING_SIZE macro adds space for a ring buffer header to the
-requested ring buffer size.  The header size is always 1 page, and so
-its size varies based on the PAGE_SIZE for which the kernel is built.
-If the requested ring buffer size is a large power-of-2 size and the header
-size is small, the resulting size is inefficient in its use of memory.
-For example, a 512 Kbyte ring buffer with a 4 Kbyte page size results in
-a 516 Kbyte allocation, which is rounded to up 1 Mbyte by the memory
-allocator, and wastes 508 Kbytes of memory.
+Update them to the correct revision numbers.
 
-In such situations, the exact size of the ring buffer isn't that important,
-and it's OK to allocate the 4 Kbyte header at the beginning of the 512
-Kbytes, leaving the ring buffer itself with just 508 Kbytes. The memory
-allocation can be 512 Kbytes instead of 1 Mbyte and nothing is wasted.
-
-Update VMBUS_RING_SIZE to implement this approach for "large" ring buffer
-sizes.  "Large" is somewhat arbitrarily defined as 8 times the size of
-the ring buffer header (which is of size PAGE_SIZE).  For example, for
-4 Kbyte PAGE_SIZE, ring buffers of 32 Kbytes and larger use the first
-4 Kbytes as the ring buffer header.  For 64 Kbyte PAGE_SIZE, ring buffers
-of 512 Kbytes and larger use the first 64 Kbytes as the ring buffer
-header.  In both cases, smaller sizes add space for the header so
-the ring size isn't reduced too much by using part of the space for
-the header.  For example, with a 64 Kbyte page size, we don't want
-a 128 Kbyte ring buffer to be reduced to 64 Kbytes by allocating half
-of the space for the header.  In such a case, the memory allocation
-is less efficient, but it's the best that can be done.
-
-While the new algorithm slightly changes the amount of space allocated
-for ring buffers by drivers that use VMBUS_RING_SIZE, the devices aren't
-known to be sensitive to small changes in ring buffer size, so there
-shouldn't be any effect.
-
-Fixes: c1135c7fd0e9 ("Drivers: hv: vmbus: Introduce types of GPADL")
-Fixes: 6941f67ad37d ("hv_netvsc: Calculate correct ring size when PAGE_SIZE is not 4 Kbytes")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218502
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Reviewed-by: Dexuan Cui <decui@microsoft.com>
-Tested-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20240229004533.313662-1-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240229004533.313662-1-mhklinux@outlook.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/hyperv.h |   22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/amd.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/include/linux/hyperv.h
-+++ b/include/linux/hyperv.h
-@@ -164,8 +164,28 @@ struct hv_ring_buffer {
- 	u8 buffer[];
- } __packed;
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 4e84203fc067d..533451498c8f8 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -998,11 +998,11 @@ static bool cpu_has_zenbleed_microcode(void)
+ 	u32 good_rev = 0;
  
-+
-+/*
-+ * If the requested ring buffer size is at least 8 times the size of the
-+ * header, steal space from the ring buffer for the header. Otherwise, add
-+ * space for the header so that is doesn't take too much of the ring buffer
-+ * space.
-+ *
-+ * The factor of 8 is somewhat arbitrary. The goal is to prevent adding a
-+ * relatively small header (4 Kbytes on x86) to a large-ish power-of-2 ring
-+ * buffer size (such as 128 Kbytes) and so end up making a nearly twice as
-+ * large allocation that will be almost half wasted. As a contrasting example,
-+ * on ARM64 with 64 Kbyte page size, we don't want to take 64 Kbytes for the
-+ * header from a 128 Kbyte allocation, leaving only 64 Kbytes for the ring.
-+ * In this latter case, we must add 64 Kbytes for the header and not worry
-+ * about what's wasted.
-+ */
-+#define VMBUS_HEADER_ADJ(payload_sz) \
-+	((payload_sz) >=  8 * sizeof(struct hv_ring_buffer) ? \
-+	0 : sizeof(struct hv_ring_buffer))
-+
- /* Calculate the proper size of a ringbuffer, it must be page-aligned */
--#define VMBUS_RING_SIZE(payload_sz) PAGE_ALIGN(sizeof(struct hv_ring_buffer) + \
-+#define VMBUS_RING_SIZE(payload_sz) PAGE_ALIGN(VMBUS_HEADER_ADJ(payload_sz) + \
- 					       (payload_sz))
+ 	switch (boot_cpu_data.x86_model) {
+-	case 0x30 ... 0x3f: good_rev = 0x0830107a; break;
+-	case 0x60 ... 0x67: good_rev = 0x0860010b; break;
+-	case 0x68 ... 0x6f: good_rev = 0x08608105; break;
+-	case 0x70 ... 0x7f: good_rev = 0x08701032; break;
+-	case 0xa0 ... 0xaf: good_rev = 0x08a00008; break;
++	case 0x30 ... 0x3f: good_rev = 0x0830107b; break;
++	case 0x60 ... 0x67: good_rev = 0x0860010c; break;
++	case 0x68 ... 0x6f: good_rev = 0x08608107; break;
++	case 0x70 ... 0x7f: good_rev = 0x08701033; break;
++	case 0xa0 ... 0xaf: good_rev = 0x08a00009; break;
  
- struct hv_ring_buffer_info {
+ 	default:
+ 		return false;
+-- 
+2.43.0
+
 
 
 
