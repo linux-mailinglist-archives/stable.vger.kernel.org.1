@@ -1,81 +1,136 @@
-Return-Path: <stable+bounces-39177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48018A12D7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 13:19:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77AEC8A1307
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 13:31:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4F5A1C2114E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:19:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D56DFB24537
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8CD1482E9;
-	Thu, 11 Apr 2024 11:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE161487E4;
+	Thu, 11 Apr 2024 11:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gIA/LJI+"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="F8zmltR3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F95D2EAE5;
-	Thu, 11 Apr 2024 11:19:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8A6147C7E;
+	Thu, 11 Apr 2024 11:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712834390; cv=none; b=OBcA4tOlNyqhWdGeXv670lFt9hq9jTSmH8K5pLPqHWEq0CmLbWAAfcu2hiTIki3MQipXR7HxTr1QMWM2cisXMiJs3dumkyazF4CyXxKJFmjhfCsYZzZYy1NvcnDgeppAr3niTNEXhaocJcMAi6YNqL+r+dO+HYDipUQjw9/jj/Q=
+	t=1712835070; cv=none; b=i4gQ2m99oQwEjQnsVnt5SXJ1rdUPyCWCRTnPJbbqhSUAU9b0slGG3o+ONh6d8T9xqRrCqFbzFtuIGF6SpAIMLyjV+H+PGI2DRLpEGzOYwivGDd51e9ds9JVF/DQQ+eo5+DbTAPDKEm3suBK66Jxspgowj6p89/Nc8Re4LeyDVqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712834390; c=relaxed/simple;
-	bh=4+EX1O3OUBUt+DgU/WACpEoYvw2h6K4uULYp0k19JXg=;
+	s=arc-20240116; t=1712835070; c=relaxed/simple;
+	bh=8bmXSD5TR7GbqIdLzPU0tqPJQzerrcPq9z5gHkP2tOs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rbbQRbWoRxZORrWayAIRmdl7lH4Vd9WEH56yKGdJigJQxnWfI8etg/MIdlAL0Jjs+di/b7/VEcK7jyv/T5mS2XxFcg7FKWeWyV2uqiHAF+segJxt+7tE7SxfR9rzwnkMq69DPJn0G2CUEmRjR3JFbSPeq3U0c8wk273asm4TwcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gIA/LJI+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 349BDC433F1;
-	Thu, 11 Apr 2024 11:19:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712834389;
-	bh=4+EX1O3OUBUt+DgU/WACpEoYvw2h6K4uULYp0k19JXg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gIA/LJI+zJdGrQ27WbXTxnj3Drl45G+ckOWj7QXHJ28hohyQsquVOW4Eh5+nSGZ7S
-	 /tIDg8nTcBfX5rJn6Xrk94BMTYC2te0jIWhkhPPC1p8rAq+psDMICVUV3lqd8McVxH
-	 YYmZtr7yZa/qdnGKj/2u5/lT5s2aQkpyQhm8z294=
-Date: Thu, 11 Apr 2024 13:19:46 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Chris Rankin <rankincj@gmail.com>
-Cc: Linux Stable <stable@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 6.8 000/143] 6.8.6-rc1 review
-Message-ID: <2024041125-surgery-pending-cd06@gregkh>
-References: <CAK2bqV+kpG5cm5py24TusikZYO=_vWg7CVEN3oTywVhnq1mhjQ@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=mElXHTU9cq75+LnHcAaCzL80Ux3CRklLWlR6wYkd5RUh859uAYlADuj3L3fCNSFjhdo7CsRbbBVuI06FJ766wCjMFyiwQCLANpn3xsiW4GjNC9mZ9we+/0TsTMlWFo8xhojhqyeQzTDe88cyyGPfeboc+2ZqmHMwJZSAgBQWzp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=F8zmltR3; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=tERq9opbCgfNNvRYcUZvTrrVQXEmLqhRg5dU9H2JR9M=; b=F8zmltR3z/q/DpRNN3XdVVS53P
+	1QwNidq7FV9L5uZRYdnrui5DxIrUXKcyjExy/TSyyomaFPpScty2eBOxAPPbtFLhRB9gYR4liU1JQ
+	vMSGRBJfzJbHnb5KBF8a7Z/UGZVs9gb8P1z409zBZFehImkHr9DEuSdhqVO9nIDlHAZwAFohWBrAG
+	EyEJiOVQKu0LXrdGhFBC76FQC61MneHgZFjYcH/rSPiEOUziSSIK+TGGKO043xOiOG/yCwuQRWZEL
+	yBBk+tc6NXHhP8fJmqqyn0z6a9O3Q5czhpU37dIkB+2FG/Gs5JdHtM7z9yMF1VLvaChfBmkjvStVi
+	2HEyM0YQ==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <kibi@debian.org>)
+	id 1rusdx-001nuu-Ug; Thu, 11 Apr 2024 11:31:02 +0000
+Date: Thu, 11 Apr 2024 13:30:59 +0200
+From: Cyril Brulebois <kibi@debian.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Tasos Sahanidis <tasos@tasossah.com>,
+	"Ewan D. Milne" <emilne@redhat.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 76/83] scsi: sd: usb_storage: uas: Access media prior
+ to querying device properties
+Message-ID: <20240411113059.w743nqi4d7hydv4z@mraw.org>
+Organization: Debian
+References: <20240411095412.671665933@linuxfoundation.org>
+ <20240411095414.976726082@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ddytng5kuvofzsfp"
+Content-Disposition: inline
+In-Reply-To: <20240411095414.976726082@linuxfoundation.org>
+X-Debian-User: kibi
+
+
+--ddytng5kuvofzsfp
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAK2bqV+kpG5cm5py24TusikZYO=_vWg7CVEN3oTywVhnq1mhjQ@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 11, 2024 at 11:38:36AM +0100, Chris Rankin wrote:
-> The SCSI sg driver oopsed on my 6.8.4 kernel, and I noticed that a
-> patch (presumably) to fix this was pulled from 6.8.5. However, I also
-> noticed this email:
+Hi,
 
-Was that a warning or a real crash?
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> (2024-04-11):
+> 6.1-stable review patch.  If anyone has any objections, please let me kno=
+w.
 
-> >> Reverted this patch and I couldn't see the reposted warning.
-> >> scsi: sg: Avoid sg device teardown race
-> >> [ Upstream commit 27f58c04a8f438078583041468ec60597841284d ]
-> >
-> > Fix is here:
-> >
-> > https://git.kernel.org/mkp/scsi/c/d4e655c49f47
-> 
-> Is this unsuitable for 6.8.6 please?
+Test report initially submitted to the thread where that patch
+originated from:
+  https://lore.kernel.org/linux-scsi/20240411044021.xejk54iznz3cdxem@mraw.o=
+rg/
 
-Is it in Linus's tree yet?
+I've confirmed that applying patches 74+75+76 on top of v6.1.85 fixes
+the (partial) loss of SMART information that started with v6.1.81 (and
+cf33e6ca12d814e1be2263cb76960d0019d7fb94 precisely).
 
-thanks,
+That was tested in a QEMU VM with a SATA disk (that exposes only a few
+SMART attributes anyway) and also on baremetal with real disks (2 pairs
+of Seagate IronWolf): smartctl returns data again, including
+temperatures.
 
-greg k-h
+
+Closes: https://bugs.debian.org/1068675
+Tested-by: Cyril Brulebois <kibi@debian.org>
+
+
+Thanks everyone for the swift replies and fixes.
+
+
+Cheers,
+--=20
+Cyril Brulebois (kibi@debian.org)            <https://debamax.com/>
+D-I release manager -- Release team member -- Freelance Consultant
+
+--ddytng5kuvofzsfp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEtg6/KYRFPHDXTPR4/5FK8MKzVSAFAmYXyfAACgkQ/5FK8MKz
+VSD6RA/+NtFdbFMsg45RllOQVpB/P9Q/Y0pd9OOTYhU8ZgSXCho3HrK8gQIJHX1N
+3Eleh8/WCvdW9vP7Swp6aNTsgmnTskuzIQivxoUZrR8c0prf5MnHi8IA26ijrOhr
+xXTsdy4bUJq2ul/0dmLO5JSrtled4Xv8wHvPjYQPq8AdhQaFwRyM+x7aTSOuzkJV
+aANt4j1bZyy2j+VPqMNhb49RoJ5u6gzegN587tlwV8MRJ61abKB2//MYv8FQLy4R
++4ssAYJqwhr91I1APXo4QwXg69o3PnEBYWZHZ9we/vRmLD49JXCVvghsE4v1QekR
+UoWJSxzghm+LVuYEDOqbzKnJuiOHbcFx4TB0zsmt1X9d8wCgxOAKQtRK3stjJb5/
+FkWaZ/FqSjpT+VhOKSOISUaA555OflFt00ORCyvIjjNWOWe4g7JXXzmHXXtBPSIt
+z6Co0URZTcFdk3uY93ZxdNQZkVD55X5UczuRtaMo1mn08kL1A9//oIElu6rXPM3l
+ghqFNyo2tURccRRh6RPG+b8itj88aKvxMjh/Uj5/oeR2GfT0oyRjhqpg4uGxNOWL
+YmKasCgAcCGLjkEgN8HzS31rc6XZ+sflodzb9rZcuWXpnW0DEeL5Uf1Xm3zKt2gw
+rXubtMrHzhGPSZ3jpTGP0a8tpGXoQ5jW0XMY6RpZXq5wruU8wFI=
+=eSaE
+-----END PGP SIGNATURE-----
+
+--ddytng5kuvofzsfp--
 
