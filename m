@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035D88A0FE1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB8B58A0F8E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1671282817
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FDD31F28165
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0003B145B1A;
-	Thu, 11 Apr 2024 10:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECE9146A64;
+	Thu, 11 Apr 2024 10:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHnexT9h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gWeZPEMT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0001146A9D;
-	Thu, 11 Apr 2024 10:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04D9146A71;
+	Thu, 11 Apr 2024 10:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831304; cv=none; b=obam+4Yq1zNwWGftu17AQ/V5Vgtx+Jvlu/7Hau8s5r2BvXhupEEdmOBIeExdxWnsuieB6lgTEfxti+OBFoSas4Yalh9xUVZ6fnjPO01rYyyrBbwSnik5AKt/0JcdOVm95LZ3sCe6vz7Fqy+iFG07mpOJCjwtN+EFeaU0EKnOBRk=
+	t=1712831096; cv=none; b=hC+kysO3kWBCWayLgojo50aEkMGTnhX/oVaH3DmvmgpToLnOBT4rXoVRdgJt2MN5siCIY6tHiR8ll8/Vh8M27zaYL6Q91Jyx4lOoc9rcJCPjwIz3HtzlIjPaI7aW+lIfYQBtB6S4FFmUBMNxMf+y/6QWJdPrrFqA67mfP8KL9iM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831304; c=relaxed/simple;
-	bh=1JuWbHChnnJhetRnZmOWZTkpdWQaD4nzod5d6NSz3I0=;
+	s=arc-20240116; t=1712831096; c=relaxed/simple;
+	bh=3cZWNiS+y4VOWWXqaMO8p1WR+EwtKKsLaWZfKyLrZc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Guqxvl13twrNvm0E+HWRBVpAJBfZ96esDwUkTzgEmjwQ4Xr9+7KCXJeUIGtuys97TmdAyLQcdCwN0Zb6BVOrP7tEn6xms8XNE1c1/mvMQbILW0ye5XWb1cpwcV0aafjyU9cG0LatBzjk3vK8wDdw4Ly232EJJL40BltpKW2TZ6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHnexT9h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36015C433F1;
-	Thu, 11 Apr 2024 10:28:24 +0000 (UTC)
+	 MIME-Version; b=IoxChzwKmEMvAbwSu0bIyYruDOXh2NaFO3WrWnsC4M3fBMaRD962NGFYerlQbLW6R2iLqNJYVFeXGRJX3q8p32zJC78M/3nH912E+f0EMEej04tYVq3sVi477pDlACtRWfQ2KpNx3SgrT7SJ4I8+s/lnAaXsD9bdMrWElCan6xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gWeZPEMT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C267C433C7;
+	Thu, 11 Apr 2024 10:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831304;
-	bh=1JuWbHChnnJhetRnZmOWZTkpdWQaD4nzod5d6NSz3I0=;
+	s=korg; t=1712831096;
+	bh=3cZWNiS+y4VOWWXqaMO8p1WR+EwtKKsLaWZfKyLrZc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vHnexT9h7XmPLCYC0fwC6N2O61R45q9yJz+qElhTXuNve/CmY0kF0M73q7l0dB4eM
-	 VtT0pWcfV5cR2G4GdyhVi3pejGqUrNkMZgUwXwmI8lKljLNRf79N2270csGCy73FOJ
-	 8vR+jt9fmrsm+zaRIoaoXIvxtbhSpR/zMvF10d2A=
+	b=gWeZPEMTYMB7Zn7woqFNL3/EYdEmMXZTymIzFomsCu1dn94dq9np1nkWYUPGbSnu+
+	 kRkn6NVi19D1SMK/NAKCCR5PVNzH3nngQIr0QsLQoUUeDSbr67/B7vTo0uCU7aiS2Q
+	 Cvyu6ch7ZZ+ZyRKVp0iFw2mmuWmNpP1NXpPVaszQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/114] Input: imagis - use FIELD_GET where applicable
-Date: Thu, 11 Apr 2024 11:56:45 +0200
-Message-ID: <20240411095419.242385037@linuxfoundation.org>
+Subject: [PATCH 5.4 197/215] usb: typec: tcpci: add generic tcpci fallback compatible
+Date: Thu, 11 Apr 2024 11:56:46 +0200
+Message-ID: <20240411095430.781842014@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duje Mihanović <duje.mihanovic@skole.hr>
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-[ Upstream commit c0ca3dbd03d66c6b9e044f48720e6ab5cef37ae5 ]
+[ Upstream commit 8774ea7a553e2aec323170d49365b59af0a2b7e0 ]
 
-Instead of manually extracting certain bits from registers with binary
-ANDs and shifts, the FIELD_GET macro can be used. With this in mind, the
-*_SHIFT macros can be dropped.
+The driver already support the tcpci binding for the i2c_device_id so
+add the support for the of_device_id too.
 
-Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
-Link: https://lore.kernel.org/r/20240306-b4-imagis-keys-v3-1-2c429afa8420@skole.hr
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240222210903.208901-3-m.felsch@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/imagis.c | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ drivers/usb/typec/tcpm/tcpci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/input/touchscreen/imagis.c b/drivers/input/touchscreen/imagis.c
-index e67fd30110278..55ecebe981445 100644
---- a/drivers/input/touchscreen/imagis.c
-+++ b/drivers/input/touchscreen/imagis.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- 
-+#include <linux/bitfield.h>
- #include <linux/bits.h>
- #include <linux/delay.h>
- #include <linux/i2c.h>
-@@ -23,12 +24,9 @@
- #define IST3038C_I2C_RETRY_COUNT	3
- #define IST3038C_MAX_FINGER_NUM		10
- #define IST3038C_X_MASK			GENMASK(23, 12)
--#define IST3038C_X_SHIFT		12
- #define IST3038C_Y_MASK			GENMASK(11, 0)
- #define IST3038C_AREA_MASK		GENMASK(27, 24)
--#define IST3038C_AREA_SHIFT		24
- #define IST3038C_FINGER_COUNT_MASK	GENMASK(15, 12)
--#define IST3038C_FINGER_COUNT_SHIFT	12
- #define IST3038C_FINGER_STATUS_MASK	GENMASK(9, 0)
- 
- struct imagis_ts {
-@@ -92,8 +90,7 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
- 		goto out;
- 	}
- 
--	finger_count = (intr_message & IST3038C_FINGER_COUNT_MASK) >>
--				IST3038C_FINGER_COUNT_SHIFT;
-+	finger_count = FIELD_GET(IST3038C_FINGER_COUNT_MASK, intr_message);
- 	if (finger_count > IST3038C_MAX_FINGER_NUM) {
- 		dev_err(&ts->client->dev,
- 			"finger count %d is more than maximum supported\n",
-@@ -101,7 +98,7 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
- 		goto out;
- 	}
- 
--	finger_pressed = intr_message & IST3038C_FINGER_STATUS_MASK;
-+	finger_pressed = FIELD_GET(IST3038C_FINGER_STATUS_MASK, intr_message);
- 
- 	for (i = 0; i < finger_count; i++) {
- 		error = imagis_i2c_read_reg(ts,
-@@ -118,12 +115,11 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
- 		input_mt_report_slot_state(ts->input_dev, MT_TOOL_FINGER,
- 					   finger_pressed & BIT(i));
- 		touchscreen_report_pos(ts->input_dev, &ts->prop,
--				       (finger_status & IST3038C_X_MASK) >>
--						IST3038C_X_SHIFT,
--				       finger_status & IST3038C_Y_MASK, 1);
-+				       FIELD_GET(IST3038C_X_MASK, finger_status),
-+				       FIELD_GET(IST3038C_Y_MASK, finger_status),
-+				       true);
- 		input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR,
--				 (finger_status & IST3038C_AREA_MASK) >>
--					IST3038C_AREA_SHIFT);
-+				 FIELD_GET(IST3038C_AREA_MASK, finger_status));
- 	}
- 
- 	input_mt_sync_frame(ts->input_dev);
+diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
+index ccb72875c8ee5..c11c2f71521ce 100644
+--- a/drivers/usb/typec/tcpm/tcpci.c
++++ b/drivers/usb/typec/tcpm/tcpci.c
+@@ -634,6 +634,7 @@ MODULE_DEVICE_TABLE(i2c, tcpci_id);
+ #ifdef CONFIG_OF
+ static const struct of_device_id tcpci_of_match[] = {
+ 	{ .compatible = "nxp,ptn5110", },
++	{ .compatible = "tcpci", },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, tcpci_of_match);
 -- 
 2.43.0
 
