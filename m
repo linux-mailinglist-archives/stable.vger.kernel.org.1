@@ -1,71 +1,48 @@
-Return-Path: <stable+bounces-39240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D51C38A22A4
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 01:56:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29B648A22B7
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 01:58:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19BB91C2115D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 23:56:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEE531F22065
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 23:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1474AEDA;
-	Thu, 11 Apr 2024 23:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEB04AEEA;
+	Thu, 11 Apr 2024 23:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ax+8tY8H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TmungXsz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B99547A5D
-	for <stable@vger.kernel.org>; Thu, 11 Apr 2024 23:56:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E6347A5D;
+	Thu, 11 Apr 2024 23:58:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712879776; cv=none; b=lYTpWe9a4VW933iUAYr9tVpCIRF6Z4vdn6KiakuTrqw2FJKA1bTW7ZPgt541rwc1O4Y3tw3EHW6uF3gkS0TiTLpOCZJTJo6G74Zc2nJhzW6wJaWl5hPYK2Y0vWBTtMZWbHtsA6WnJFuNzD/4WGNpk+/BNAxKY7gm9Mc9f4zPJtg=
+	t=1712879926; cv=none; b=jzS+ceuTc8g6XVolEbSj583kmMEtWSsOLyv7ggGQkPNyRLTTKiG+YURC0oQFs6hlFZXAE2WIKy0NMSvDrVYEas/3tgoX5OaWQsSpCesDRz+DJ8IH82HvdudX6UUPunu/sNQJVqr1WmmPkKQoVrMkIbI/AW7bxi3eSaP/33wkbsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712879776; c=relaxed/simple;
-	bh=1hJuW4Q6DIb/H/sHiYOYExJ//bqXgHS7kwabOym3u1c=;
+	s=arc-20240116; t=1712879926; c=relaxed/simple;
+	bh=Rvrx5bIocVoHhqzlQ8FUwZ0hV15oMlthb4VvYCnIU/Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aw/CA2n+v6odcgjZwi0rrqkMDxGpdjgu6y8RSvMBSXUVlkKJtGKkhDlJ5RN6kmrlR750jaAG/xDiHSHiLgqPPc8uJS0mwUiPzac7gB6FuVvxBn01losXU2J8DpzB9D5984RtKat1oF8rYiOwUaAGQd5GMEfpX8HTYEbZC+echXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ax+8tY8H; arc=none smtp.client-ip=209.85.166.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-7d0772bb5ffso7991739f.0
-        for <stable@vger.kernel.org>; Thu, 11 Apr 2024 16:56:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1712879774; x=1713484574; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Qe0CvRWLgYscYGo8HB4Lqcq6jCdobjBtnisZZSsYEYM=;
-        b=ax+8tY8Hx9T+pGfzUTLwrcFhDUP6gZduZygzmij8iEUD/K9t63R2hSY0r5TO34whZk
-         4DSVX4/IC+85oXl+NGdzkgVOu02adxYYPChJ6NUyc+IHH8XsW1wQdmsjBqXV+XFofOEh
-         IajvAi6/GaZdNGq1LNX/yzxYSZsReZBpAohz8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712879774; x=1713484574;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qe0CvRWLgYscYGo8HB4Lqcq6jCdobjBtnisZZSsYEYM=;
-        b=NcV3cb7L8Oj6CRPhaga3/tnlyQfO/dxPgw8G1bJ8M7p5B20/xNorJCz/dCRGSogAUs
-         o39lf2WkDbPc0l/iQye36q8LzVg0pCQ4UKB2JhySunVZElLGMDBME/dcTOM1Sz4L0VIp
-         F37tO7N9T+bJ23taxoDmZQbJs5RKcDhgHQvH8rFmuS4UlM7Tf++HHukwUOgXyME1daEJ
-         6v5mLpeAPCgCfMPGXM0L9LSfOIg/tECLI8jzvFRvisnw28/aUO7QDdbg9ox3d8YS13k3
-         yYRQQBepyjcPekT8FzIDQP0Ec8XEc821bEB4k+ultvty6gEtdyD+FAt/0yTONJjfJWDy
-         Cjyg==
-X-Forwarded-Encrypted: i=1; AJvYcCWEDRZHJ7Hd6TokRY14GtcY0orYbgUBVYeRq4Pd8FtH/ePXPNVym+ZAFgcg7I3seh35ViO84/e3evv9HwIaet1bwJgFxDoW
-X-Gm-Message-State: AOJu0YzPDQ5VbO5oYUn+FZOXxghxDTCzPXrcEQGX5iF4IlOasAGofs1r
-	EP/ttl4ubeXzGbBlpeKSL3B5zzXwi4kxMay6CUZRZUsmXelK9+VMmBD43fQRNiU=
-X-Google-Smtp-Source: AGHT+IGV0IhqS2O6YRkP3iIt3Yudyqf3AzBPtdznd78B8RXYp98RlusRMAJ9uzdymcwqzIpF6kSb0w==
-X-Received: by 2002:a05:6e02:194f:b0:369:e37d:541f with SMTP id x15-20020a056e02194f00b00369e37d541fmr1456230ilu.1.1712879774647;
-        Thu, 11 Apr 2024 16:56:14 -0700 (PDT)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id r13-20020a92c50d000000b003698fc3a541sm644512ilg.80.2024.04.11.16.56.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Apr 2024 16:56:14 -0700 (PDT)
-Message-ID: <8de5278c-9bf5-46ab-9fa0-ffba4c95b4fc@linuxfoundation.org>
-Date: Thu, 11 Apr 2024 17:56:13 -0600
+	 In-Reply-To:Content-Type; b=p1fiTk9N4+WtILP+l6qtY5dVfF07shnIxJJM9woAFRWUIF+6iXR5qg+leliuSxrkX0EId2SKVlIUN5cXA05bsHXxP7S1s1BMKuYLue6016ZNQ9XkBB23cBmF1amai5MmtK0tw8iUysVDkiylAKUFLYK/UKAIlPooH2SuCkTHNBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TmungXsz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7166CC072AA;
+	Thu, 11 Apr 2024 23:58:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712879926;
+	bh=Rvrx5bIocVoHhqzlQ8FUwZ0hV15oMlthb4VvYCnIU/Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TmungXszWLiOZYvkGczuGKN3KtOLrN2pGFzQyi8Puk4Ctie2iAzXuJkRLXMaNCVjl
+	 /kzYCjkvIeCLQrL3HxwxMRlfO8nPqijfxt0LiwRoQ/ykurW1NfTIOInCiwwdQDi0Vg
+	 euZwhbSNvrSG3w9jdeBEQZmrOXwqa8EZAUKJNMUqJVYg2YY36lAGfyexFg7VPFeRF5
+	 bw1Uwi/8OzY09cc/jSldM7byXOrs1IxXPPnIuXidNk9Izf9juIN3uKbVTdCVFEJ3kV
+	 wDKyTCzztW/vEVN9an3Riee94rg53JKY4GW0JjwjDtgApT/kebR8MpUMDWC9j7KZZk
+	 QtbMexSUEo5Bw==
+Message-ID: <a5cc609b-5e96-4e72-aaad-7ee5cf0e6364@kernel.org>
+Date: Fri, 12 Apr 2024 08:58:42 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,46 +50,69 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4.19 000/175] 4.19.312-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+Subject: Re: [PATCH v2 5.10/5.15] ata: libata-scsi: check cdb length for
+ VARIABLE_LENGTH_CMD commands
+To: Mikhail Ukhin <mish.uxin2012@yandex.ru>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jens Axboe <axboe@kernel.dk>
+Cc: stable@vger.kernel.org, linux-ide@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Pavel Koshutin <koshutin.pavel@yandex.ru>,
+ lvc-project@linuxtesting.org, Artem Sadovnikov <ancowi69@gmail.com>,
+ Mikhail Ivanov <iwanov-23@bk.ru>
+References: <20240411103013.5547-1-mish.uxin2012@yandex.ru>
+From: Damien Le Moal <dlemoal@kernel.org>
 Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Organization: Western Digital Research
+In-Reply-To: <20240411103013.5547-1-mish.uxin2012@yandex.ru>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 4/11/24 03:53, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 4.19.312 release.
-> There are 175 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 4/11/24 19:30, Mikhail Ukhin wrote:
+> No upstream commit exists for this patch.
 > 
-> Responses should be made by Sat, 13 Apr 2024 09:53:55 +0000.
-> Anything received after that time might be too late.
+> Fuzzing of 5.10 stable branch reports a slab-out-of-bounds error in
+> ata_scsi_pass_thru.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.312-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
-> and the diffstat can be found below.
+> The error is fixed in 5.18 by commit ce70fd9a551a ("scsi: core: Remove the
+> cmd field from struct scsi_request") upstream.
+> Backporting this commit would require significant changes to the code so
+> it is bettter to use a simple fix for that particular error.
 > 
-> thanks,
+> The problem is that the length of the received SCSI command is not
+> validated if scsi_op == VARIABLE_LENGTH_CMD. It can lead to out-of-bounds
+> reading if the user sends a request with SCSI command of length less than
+> 32.
 > 
-> greg k-h
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 > 
+> Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
+> Signed-off-by: Mikhail Ivanov <iwanov-23@bk.ru>
+> Signed-off-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+> ---
+>  v2: The new addresses were added and the text was updated. 
+>  drivers/ata/libata-scsi.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+> index dfa090ccd21c..77589e911d3d 100644
+> --- a/drivers/ata/libata-scsi.c
+> +++ b/drivers/ata/libata-scsi.c
+> @@ -4065,6 +4065,9 @@ int __ata_scsi_queuecmd(struct scsi_cmnd *scmd, struct ata_device *dev)
+>  
+>  	if (unlikely(!scmd->cmd_len))
+>  		goto bad_cdb_len;
+> +
+> +	if (scsi_op == VARIABLE_LENGTH_CMD && scmd->cmd_len < 32)
+> +		goto bad_cdb_len;
 
-Compiled and booted on my test system. No dmesg regressions.
+This check should really be in ata_scsi_var_len_cdb_xlat(). Please move it to
+that function.
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+>  
+>  	if (dev->class == ATA_DEV_ATA || dev->class == ATA_DEV_ZAC) {
+>  		if (unlikely(scmd->cmd_len > dev->cdb_len))
 
-thanks,
--- Shuah
+-- 
+Damien Le Moal
+Western Digital Research
+
 
