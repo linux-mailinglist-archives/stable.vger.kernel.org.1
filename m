@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-38113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572A18A0D13
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:00:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 583018A10A0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11997285840
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:00:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12C0B28AE5F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E97145B04;
-	Thu, 11 Apr 2024 10:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01A1146A90;
+	Thu, 11 Apr 2024 10:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxBW1gek"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nrjtfn8s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57D013DDDD;
-	Thu, 11 Apr 2024 10:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F60F79FD;
+	Thu, 11 Apr 2024 10:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829601; cv=none; b=I4TOvDUTn2gjFGx5YGD2Qlye74vxawSIeKIAeb/PlF9RQVq/2tk2ByR5MbCs9jmAvAzgpfa9xyWCMEcwa1d3aSq1+6k366ZuyDZLEzpOxLXgWmk9k2ApyXWVSOIOuLsiugkzVKnInkfOOoYyj8ySsMhVDdOCd4Ps6+DTgpR/g6s=
+	t=1712831727; cv=none; b=JLl3+DFChwlffEuy1GRe0fHaM0vFKrBwanxew0ED5GJDtQAEYD4o//IJd6k7EDbflco8iuwTniskqhGbma9CHLzfSd4FLQvpUc3Hvz39YiC4Une3bq2N4wmyhcbAX+vKIwJCI1u9RuzaiKB2RRv85ngpwBsfo2+hCfLzoToRGrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829601; c=relaxed/simple;
-	bh=qu+BWgtz9zi+BH7/64gZ3r6MrQ2LpCJUox4CTaQ7DhU=;
+	s=arc-20240116; t=1712831727; c=relaxed/simple;
+	bh=SBp4COjUqc2qvTFkVrCjvJ6hVSw83Xd9fH1GV5KJo6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uG0gkRMrNg8BEBhXGuc2nGwRMKwcUnQkpcAShl86O+ODss5X6hclmYqjBg/1ogFU4SF8OoTlwUFp+COLDJS9UQT1LMmLN+Zi4VF149lQjBil/a7tya/szB07QypFsHz/LCeW/h83PA+VIqwAuxSM6gCLW8Eu4zjiNCSUDY5LPHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxBW1gek; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AABAC433C7;
-	Thu, 11 Apr 2024 10:00:01 +0000 (UTC)
+	 MIME-Version; b=FwkBAIpzerNbImqC0TyiWpR3Ag5AzHcBmTrypTfIaj5QA8pZvE2hWWFqdTwG5m9NLNM9F1e1bLGmosxanId+ZdlprgBs7Q+ZmvhFW9+6DwYDzVHqlwprIRLUwDrvAQWoD23Cj7sI309L2PAs5iuIXUxosV6wn7+h+sn20TkztUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nrjtfn8s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDA5C433C7;
+	Thu, 11 Apr 2024 10:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829601;
-	bh=qu+BWgtz9zi+BH7/64gZ3r6MrQ2LpCJUox4CTaQ7DhU=;
+	s=korg; t=1712831727;
+	bh=SBp4COjUqc2qvTFkVrCjvJ6hVSw83Xd9fH1GV5KJo6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mxBW1gekecc/iBpqirLvJO9/UE3Z/BfCufE2OPABAwkvExyv6G2KGYDpp6WY9/mHv
-	 c+zoLJvhqpbwniOSDXkK4/rsSbA7aa86UYeTnbiyCIhPZfEa9MKvC8HC8LIijfvLML
-	 z3Z1ABacZxl2QN7vFqg8u2fRrzNwgCZNqMNq6A1k=
+	b=Nrjtfn8sFiXPvdIihORoSTXD5gjavYK5dT9X9ZM1z9IiFaD+s722YfoA+GId0GwA8
+	 15aAHDU5hdCZKsdCyJxU3RIurucsRE6ozhkBUCTs/dV37NDp9kJgfLR05UU1t2ZpZR
+	 Mua41PJVJh0GjksWPfELDR6WjNqjkiUaW7Fx31FE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Xiao Ni <xni@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 008/175] timers: Use del_timer_sync() even on UP
+Subject: [PATCH 5.10 068/294] dm-raid: fix lockdep waring in "pers->hot_add_disk"
 Date: Thu, 11 Apr 2024 11:53:51 +0200
-Message-ID: <20240411095419.791913232@linuxfoundation.org>
+Message-ID: <20240411095437.734823970@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 168f6b6ffbeec0b9333f3582e4cf637300858db5 ]
+[ Upstream commit 95009ae904b1e9dca8db6f649f2d7c18a6e42c75 ]
 
-del_timer_sync() is assumed to be pointless on uniprocessor systems and can
-be mapped to del_timer() because in theory del_timer() can never be invoked
-while the timer callback function is executed.
+The lockdep assert is added by commit a448af25becf ("md/raid10: remove
+rcu protection to access rdev from conf") in print_conf(). And I didn't
+notice that dm-raid is calling "pers->hot_add_disk" without holding
+'reconfig_mutex'.
 
-This is not entirely true because del_timer() can be invoked from interrupt
-context and therefore hit in the middle of a running timer callback.
+"pers->hot_add_disk" read and write many fields that is protected by
+'reconfig_mutex', and raid_resume() already grab the lock in other
+contex. Hence fix this problem by protecting "pers->host_add_disk"
+with the lock.
 
-Contrary to that del_timer_sync() is not allowed to be invoked from
-interrupt context unless the affected timer is marked with TIMER_IRQSAFE.
-del_timer_sync() has proper checks in place to detect such a situation.
-
-Give up on the UP optimization and make del_timer_sync() unconditionally
-available.
-
-Co-developed-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Link: https://lore.kernel.org/all/20220407161745.7d6754b3@gandalf.local.home
-Link: https://lore.kernel.org/all/20221110064101.429013735@goodmis.org
-Link: https://lore.kernel.org/r/20221123201624.888306160@linutronix.de
-Stable-dep-of: 0f7352557a35 ("wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach")
+Fixes: 9092c02d9435 ("DM RAID: Add ability to restore transiently failed devices on resume")
+Fixes: a448af25becf ("md/raid10: remove rcu protection to access rdev from conf")
+Cc: stable@vger.kernel.org # v6.7+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Xiao Ni <xni@redhat.com>
+Acked-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240305072306.2562024-10-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/timer.h | 7 +------
- kernel/time/timer.c   | 2 --
- 2 files changed, 1 insertion(+), 8 deletions(-)
+ drivers/md/dm-raid.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/timer.h b/include/linux/timer.h
-index 8e027cb10df01..a9c20a7ead305 100644
---- a/include/linux/timer.h
-+++ b/include/linux/timer.h
-@@ -171,12 +171,7 @@ extern int timer_reduce(struct timer_list *timer, unsigned long expires);
- extern void add_timer(struct timer_list *timer);
+diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
+index e523ecdf947f4..99995b1804b32 100644
+--- a/drivers/md/dm-raid.c
++++ b/drivers/md/dm-raid.c
+@@ -4019,7 +4019,9 @@ static void raid_resume(struct dm_target *ti)
+ 		 * Take this opportunity to check whether any failed
+ 		 * devices are reachable again.
+ 		 */
++		mddev_lock_nointr(mddev);
+ 		attempt_restore_of_faulty_devices(rs);
++		mddev_unlock(mddev);
+ 	}
  
- extern int try_to_del_timer_sync(struct timer_list *timer);
--
--#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
--  extern int del_timer_sync(struct timer_list *timer);
--#else
--# define del_timer_sync(t)		del_timer(t)
--#endif
-+extern int del_timer_sync(struct timer_list *timer);
- 
- #define del_singleshot_timer_sync(t) del_timer_sync(t)
- 
-diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index f63efe259ae46..489bb01796de4 100644
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1349,7 +1349,6 @@ static inline void timer_sync_wait_running(struct timer_base *base) { }
- static inline void del_timer_wait_running(struct timer_list *timer) { }
- #endif
- 
--#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
- /**
-  * del_timer_sync - Deactivate a timer and wait for the handler to finish.
-  * @timer:	The timer to be deactivated
-@@ -1423,7 +1422,6 @@ int del_timer_sync(struct timer_list *timer)
- 	return ret;
- }
- EXPORT_SYMBOL(del_timer_sync);
--#endif
- 
- static void call_timer_fn(struct timer_list *timer,
- 			  void (*fn)(struct timer_list *),
+ 	if (test_and_clear_bit(RT_FLAG_RS_SUSPENDED, &rs->runtime_flags)) {
 -- 
 2.43.0
 
