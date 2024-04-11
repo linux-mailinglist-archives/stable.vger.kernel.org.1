@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4358A0F6A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C848A0DAD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:06:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA884286E60
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7195A2864C2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:06:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E848C146A8D;
-	Thu, 11 Apr 2024 10:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBAF145B05;
+	Thu, 11 Apr 2024 10:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqA2By8t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n79MrkPB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6261146A70;
-	Thu, 11 Apr 2024 10:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CED31442F7;
+	Thu, 11 Apr 2024 10:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831019; cv=none; b=kHscbGVYOTrhVPNUxW7q6wwnMlqSVyFlGppT+7LhnD/NfoM1wSkek8lsgucsBuP/kve7tR2XSJnlNwxL3qChlIxLz1+CdVQwaJF14alz3GPqyGYtoNEHHPKY5HfH9QaXZUyCpWpfYt4d/cfExOgTdLZawaptv2cz4MajgiXh9PY=
+	t=1712829992; cv=none; b=F62cgJcCjFnOVYkBf+qDFMXXLi9D+jDhWpOZkY0y5dlZWa6yhZByEs3hG0t4aLd6M5pYGb5MB26sIRNsQyg/+JeGRbRuNRl68Dzw79g7yleTmg4b5ddS4dOygy4zWJnZif7vK1uaOsNWQ+QwfTtknU7L1SLye+qePn2frscIbMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831019; c=relaxed/simple;
-	bh=NL/r75MlsalO4CqSSZ1+PTDCDy6X568eOH6hjeOUut4=;
+	s=arc-20240116; t=1712829992; c=relaxed/simple;
+	bh=4D+UE3Qj7lU1Aj00SE9qyyEQ7dM1Aro2zxGrkiVPhFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mY5l3FBoesWOd052blIyO6+sXAkNRBdrpHPE2H1H8HfLnyk5H7x3BX47FLQI7PmduB73mVJZCdcwFCpCyNTM8vRII4lEnBiRICjJ65gM6jIIbk5z6oRErHXnrO/2PV5rCWVLYCHi9IfcLg3yPhwlZDqzOUHN7zNj2pmjF+a9YQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqA2By8t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA57C433C7;
-	Thu, 11 Apr 2024 10:23:39 +0000 (UTC)
+	 MIME-Version; b=K0o5FWS/0lSy5JI3g4eeaTNNpQWssHkYlFMkwAnFbOQah//XPIrncMdSU1Odof2k9LBzm35k0RB1k3dcHgamdLKyHvD6FN2leioVw0G/VTw+BkiytY++mOY3eh2y0bwqOY/KUcumkaAIt7JapJ59HBLDsbvlaWldKdlCH569+y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n79MrkPB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156E5C433C7;
+	Thu, 11 Apr 2024 10:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831019;
-	bh=NL/r75MlsalO4CqSSZ1+PTDCDy6X568eOH6hjeOUut4=;
+	s=korg; t=1712829992;
+	bh=4D+UE3Qj7lU1Aj00SE9qyyEQ7dM1Aro2zxGrkiVPhFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gqA2By8thWArWeT9KQVoatj8W0QtJCTEZuGkZ7DIcDcM6UspGZ9x3A0zYPY8hVrIp
-	 AGJAg1pv9yW2bJwwLhUqRj94jgQv9kTIgBHBwo24SHH8fd3s3zfbnsn+mtjReLcjOv
-	 M0jUID5g2MwtW1WOrvx4xJpcW2x0lIxnfkI++xvg=
+	b=n79MrkPB6oMm6tvysmzOIjAcFQsPNoZ/JdR/yt9nBmPJl+F0Dr8/vY9ZrxEnssTe5
+	 saTMcwcGVllci7pyJ41iBnUWlK2taStheFfGVAIPdEhId/fcyi7DRLBlcJpgYZWXLp
+	 YeoKmyrMNCIE1KgIHF6y6w5LF9Hzy+X7p9K2U9LY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 189/215] media: sta2x11: fix irq handler cast
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 4.19 175/175] initramfs: fix populate_initrd_image() section mismatch
 Date: Thu, 11 Apr 2024 11:56:38 +0200
-Message-ID: <20240411095430.545389975@linuxfoundation.org>
+Message-ID: <20240411095424.831633827@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-[ Upstream commit 3de49ae81c3a0f83a554ecbce4c08e019f30168e ]
+commit 4ada1e810038e9dbc20e40b524e05ee1a9d31f98 upstream.
 
-clang-16 warns about casting incompatible function pointers:
+With gcc-4.6.3:
 
-drivers/media/pci/sta2x11/sta2x11_vip.c:1057:6: error: cast from 'irqreturn_t (*)(int, struct sta2x11_vip *)' (aka 'enum irqreturn (*)(int, struct sta2x11_vip *)') to 'irq_handler_t' (aka 'enum irqreturn (*)(int, void *)') converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+    WARNING: vmlinux.o(.text.unlikely+0x140): Section mismatch in reference from the function populate_initrd_image() to the variable .init.ramfs.info:__initramfs_size
+    The function populate_initrd_image() references
+    the variable __init __initramfs_size.
+    This is often because populate_initrd_image lacks a __init
+    annotation or the annotation of __initramfs_size is wrong.
 
-Change the prototype of the irq handler to the regular version with a
-local variable to adjust the argument type.
+    WARNING: vmlinux.o(.text.unlikely+0x14c): Section mismatch in reference from the function populate_initrd_image() to the function .init.text:unpack_to_rootfs()
+    The function populate_initrd_image() references
+    the function __init unpack_to_rootfs().
+    This is often because populate_initrd_image lacks a __init
+    annotation or the annotation of unpack_to_rootfs is wrong.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-[hverkuil: update argument documentation]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    WARNING: vmlinux.o(.text.unlikely+0x198): Section mismatch in reference from the function populate_initrd_image() to the function .init.text:xwrite()
+    The function populate_initrd_image() references
+    the function __init xwrite().
+    This is often because populate_initrd_image lacks a __init
+    annotation or the annotation of xwrite is wrong.
+
+Indeed, if the compiler decides not to inline populate_initrd_image(), a
+warning is generated.
+
+Fix this by adding the missing __init annotations.
+
+Link: http://lkml.kernel.org/r/20190617074340.12779-1-geert@linux-m68k.org
+Fixes: 7c184ecd262fe64f ("initramfs: factor out a helper to populate the initrd image")
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/sta2x11/sta2x11_vip.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ init/initramfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/pci/sta2x11/sta2x11_vip.c b/drivers/media/pci/sta2x11/sta2x11_vip.c
-index 798574cfad35e..5a77f8ba3a187 100644
---- a/drivers/media/pci/sta2x11/sta2x11_vip.c
-+++ b/drivers/media/pci/sta2x11/sta2x11_vip.c
-@@ -760,7 +760,7 @@ static const struct video_device video_dev_template = {
- /**
-  * vip_irq - interrupt routine
-  * @irq: Number of interrupt ( not used, correct number is assumed )
-- * @vip: local data structure containing all information
-+ * @data: local data structure containing all information
-  *
-  * check for both frame interrupts set ( top and bottom ).
-  * check FIFO overflow, but limit number of log messages after open.
-@@ -770,8 +770,9 @@ static const struct video_device video_dev_template = {
-  *
-  * IRQ_HANDLED, interrupt done.
-  */
--static irqreturn_t vip_irq(int irq, struct sta2x11_vip *vip)
-+static irqreturn_t vip_irq(int irq, void *data)
+--- a/init/initramfs.c
++++ b/init/initramfs.c
+@@ -603,7 +603,7 @@ static void __init clean_rootfs(void)
+ #endif
+ 
+ #ifdef CONFIG_BLK_DEV_RAM
+-static void populate_initrd_image(char *err)
++static void __init populate_initrd_image(char *err)
  {
-+	struct sta2x11_vip *vip = data;
- 	unsigned int status;
- 
- 	status = reg_read(vip, DVP_ITS);
-@@ -1053,9 +1054,7 @@ static int sta2x11_vip_init_one(struct pci_dev *pdev,
- 
- 	spin_lock_init(&vip->slock);
- 
--	ret = request_irq(pdev->irq,
--			  (irq_handler_t) vip_irq,
--			  IRQF_SHARED, KBUILD_MODNAME, vip);
-+	ret = request_irq(pdev->irq, vip_irq, IRQF_SHARED, KBUILD_MODNAME, vip);
- 	if (ret) {
- 		dev_err(&pdev->dev, "request_irq failed\n");
- 		ret = -ENODEV;
--- 
-2.43.0
-
+ 	ssize_t written;
+ 	struct file *file;
 
 
 
