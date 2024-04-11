@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A21E8A0FCC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:27:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19FF58A1135
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C99841C232CE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44A821C23C58
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0661A146A72;
-	Thu, 11 Apr 2024 10:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C56214A4D6;
+	Thu, 11 Apr 2024 10:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJ55MXMu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0sz9uq+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA55813FD94;
-	Thu, 11 Apr 2024 10:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC20114A086;
+	Thu, 11 Apr 2024 10:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831263; cv=none; b=th3W+E1AfPjmyOSNnGTIDj8CFBMrAGC5mRhEPB6ZbqdceAcHADR+RKgfOV5zXR/z7NEi5KEpJH7FQwvXhfnVd5Z4Ugskm8kPcXh1h8OWyBpUovgY7yGPb8PfLPiilu3QtuJgQ4E0ugISEduiRWoZ1dh3faj0+6HwIPabpWE504A=
+	t=1712832088; cv=none; b=W6ZCyILNLf9j+ddOE7/iHpnwJhG9OItcfYgAvF+RCZ5MNqAAs0DtnqNWXLokeedG5o1mh7iQdcFyCByf+EvKNN2eV9hoA2amxVkyAIJf4jCUBuou2t8jmegqvu6U11VkjhqQJhLsnOGra73QnurnLJIBW2t6jB4+i3+sSrwraXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831263; c=relaxed/simple;
-	bh=HjGgif+i+euXAkV1I5zJRUFiCyZNPwwfRzWXVFw8pQc=;
+	s=arc-20240116; t=1712832088; c=relaxed/simple;
+	bh=pP+WFeqjkfpDluRZEOl/ZZrraAUa9dLSJfaRBXVCiSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K7qsJj+8kGj7BVatRpKh/9i1iJ+iDvkl6OzQcZUOqPJZeStYf6/SB5Fr0uCi/ocaJpaI21OBrqNuDu8Gw8qw+FTrRK9qHKqM/R3c4TUImrK7yytH6kun2biiryw4BSD1+XbiHpqmNLKD1fK/x4PBahnKOvj1EjX1MZ0nPt8TvLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJ55MXMu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F045C43390;
-	Thu, 11 Apr 2024 10:27:43 +0000 (UTC)
+	 MIME-Version; b=uQ7/Jxk9dTjMAVYVcBPo1w7YtdHVVAVQNe+IGJyvZh2MxF5rar2svsYtCgpqxX68xvgOGsSFM0iFid/X1BfdhIVKEjMOQYYQGRAxZGjVRHHjN+JK5l1lno7NTQzgKzXI6ek5ckHUKblVz9RF8zXViAFNshRPkjiFqwNEXkqssCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0sz9uq+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70CCFC43394;
+	Thu, 11 Apr 2024 10:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831263;
-	bh=HjGgif+i+euXAkV1I5zJRUFiCyZNPwwfRzWXVFw8pQc=;
+	s=korg; t=1712832087;
+	bh=pP+WFeqjkfpDluRZEOl/ZZrraAUa9dLSJfaRBXVCiSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cJ55MXMuVlFnwgNzbLG2BBtNlE61mnnAtVqCwlw6KqBfGcXmxysH8GqmiAHo0gFYq
-	 nInUOBFhpmeDHi1LNMIJzo6qXgQUffTdDLCPHQG5RCHicES7dmiqer2tYQ6Ms68Zj1
-	 JqW6TPKNxJ2aV/160rhQMxehPJJ8ZKZXAH87BEK4=
+	b=G0sz9uq+kKEgRP+EYU4C4lNPHAgXfzB5iLyGRD6QdIJjEwCjOFb62O/ux+b5EfKtR
+	 9O6cJY7MSqhQBL2zMrmzuJHMfjDbMarunu7fTdWC4jaStCfXbryET9EZ97a7TQHLqp
+	 F1Nlj1mUYzTqrJxMyXlJmbdl50aO4NlaBhCYkj+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Mike Snitzer <snitzer@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/114] wifi: brcmfmac: Add DMI nvram filename quirk for ACEPC W5 Pro
+Subject: [PATCH 5.10 188/294] dm integrity: fix out-of-range warning
 Date: Thu, 11 Apr 2024 11:55:51 +0200
-Message-ID: <20240411095417.600062520@linuxfoundation.org>
+Message-ID: <20240411095441.277039846@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 32167707aa5e7ae4b160c18be79d85a7b4fdfcfb ]
+[ Upstream commit 8e91c2342351e0f5ef6c0a704384a7f6fc70c3b2 ]
 
-The ACEPC W5 Pro HDMI stick contains quite generic names in the sys_vendor
-and product_name DMI strings, without this patch brcmfmac will try to load:
-"brcmfmac43455-sdio.$(DEFAULT_STRING)-$(DEFAULT_STRING).txt" as nvram file
-which is both too generic and messy with the $ symbols in the name.
+Depending on the value of CONFIG_HZ, clang complains about a pointless
+comparison:
 
-The ACEPC W5 Pro uses the same Ampak AP6255 module as the ACEPC T8
-and the nvram for the T8 is already in linux-firmware, so point the new
-DMI nvram filename quirk to the T8 nvram file.
+drivers/md/dm-integrity.c:4085:12: error: result of comparison of
+                        constant 42949672950 with expression of type
+                        'unsigned int' is always false
+                        [-Werror,-Wtautological-constant-out-of-range-compare]
+                        if (val >= (uint64_t)UINT_MAX * 1000 / HZ) {
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240216213649.251718-1-hdegoede@redhat.com
+As the check remains useful for other configurations, shut up the
+warning by adding a second type cast to uint64_t.
+
+Fixes: 468dfca38b1a ("dm integrity: add a bitmap mode")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/md/dm-integrity.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
-index 86ff174936a9a..c3a602197662b 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
-@@ -82,6 +82,15 @@ static const struct dmi_system_id dmi_platform_data[] = {
- 		},
- 		.driver_data = (void *)&acepc_t8_data,
- 	},
-+	{
-+		/* ACEPC W5 Pro Cherry Trail Z8350 HDMI stick, same wifi as the T8 */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "T3 MRD"),
-+			DMI_MATCH(DMI_CHASSIS_TYPE, "3"),
-+			DMI_MATCH(DMI_BIOS_VENDOR, "American Megatrends Inc."),
-+		},
-+		.driver_data = (void *)&acepc_t8_data,
-+	},
- 	{
- 		/* Chuwi Hi8 Pro with D2D3_Hi8Pro.233 BIOS */
- 		.matches = {
+diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
+index 62cae34ca3b43..067be1d9f51cb 100644
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -3937,7 +3937,7 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
+ 		} else if (sscanf(opt_string, "sectors_per_bit:%llu%c", &llval, &dummy) == 1) {
+ 			log2_sectors_per_bitmap_bit = !llval ? 0 : __ilog2_u64(llval);
+ 		} else if (sscanf(opt_string, "bitmap_flush_interval:%u%c", &val, &dummy) == 1) {
+-			if (val >= (uint64_t)UINT_MAX * 1000 / HZ) {
++			if ((uint64_t)val >= (uint64_t)UINT_MAX * 1000 / HZ) {
+ 				r = -EINVAL;
+ 				ti->error = "Invalid bitmap_flush_interval argument";
+ 				goto bad;
 -- 
 2.43.0
 
