@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-38160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 317838A0D49
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:02:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 988468A1106
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF613285BE3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:02:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3831C1F2CFB2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343DC145B04;
-	Thu, 11 Apr 2024 10:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E99146D4D;
+	Thu, 11 Apr 2024 10:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A3EY84fb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+6PTsy9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A571422C4;
-	Thu, 11 Apr 2024 10:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23EE13C9A5;
+	Thu, 11 Apr 2024 10:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829741; cv=none; b=FKYFvHGORiL3/b+D0bsfCwviOfF9D68z1A28SORaWuCS55J+rb0VZ+8G4o3GblHxVylJjT+J1Z0Oecnp2gOMJ013bOIZ9+pCFdm/VkC29EwYjewsP45I6MYR0sZRrlzvpPDk8GKTp0J8DH3NzhqN7dFVihMN3mWK7JCM+JMLSHo=
+	t=1712831977; cv=none; b=EQEH3fdOqHzhBp41f7do/hZTfSEf2Jw7p7lMeqVRlCAa76DkAJpE/t3bzLtC+lQperxR/nSE5Ajymz0rV+AxDxgIvIvAJh56Tu2+1CcAIXEp1k3ICoAn4pRuW6i5ln9i6oztbzY1RlJ6y2PU75TBV+eUubhmtZsoHyp6O/dYQgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829741; c=relaxed/simple;
-	bh=Nbby2tkEPOTksKROBjablKFTjpzLLZB4wkn6y8SVwCo=;
+	s=arc-20240116; t=1712831977; c=relaxed/simple;
+	bh=PjfAb4dPOyG91O9oOFjaDHW4cPtBZWJ6t1MRjzseOb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkMEupwLid9dcEnLus2G7UAEpQxbulEXgl7Z5zmOS98XC5fvR8zT651C1rmP4Un38xaLt2Qi4YG4c+O4izjOkz4zA/FEmbtvSiQAf/CrfFvno6MhtSD8eo92gQZV7U3bB/v9Q/2FERWje+MachZEnylqcLtnQJyuWSD7156yiuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A3EY84fb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690C7C433C7;
-	Thu, 11 Apr 2024 10:02:20 +0000 (UTC)
+	 MIME-Version; b=rbvuTfuY0We4Qh8WLT3w2zWeDs1jEk8fNnE+bGZw+UJ4ZCQYxYuEbOSs6ldp0Eg32gwL6UmabAZgSjbvOyrBDNNJFyDFiByYxSyoJWujkdLnEYVVn3+hZk/FSBrtnIybwzD3FO7LGVgs+tqMdDDzPgdD1zc6k1kgqh/CExVGIeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+6PTsy9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A9F5C43390;
+	Thu, 11 Apr 2024 10:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829740;
-	bh=Nbby2tkEPOTksKROBjablKFTjpzLLZB4wkn6y8SVwCo=;
+	s=korg; t=1712831977;
+	bh=PjfAb4dPOyG91O9oOFjaDHW4cPtBZWJ6t1MRjzseOb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A3EY84fb+kil2HKqHDss8qu8ibpKchF2LRpxTQnXcYmqOEg/DyxUuINRM5Bxhx81h
-	 pl0WuWUMzHb4QxQ2Z7djwGtFzJnLEs8I5EuvH5ayXQQDUVc0ulFRf//bEkY9VjqWEf
-	 xmgIOyxQw3BS9eVrCe4RgldDUm6fAoO1llJK8IRU=
+	b=y+6PTsy9KoQD/EtnHHQmOS2vZX3OVIs0XZ2Dd8rpm/A6Qb/ijkG6rl0AO6GQDhq8w
+	 TH7pwJTkm6d/LhfIYTCFk9+N9Vt9lRwGnEfwYMOwVvSCsPKpP4NkzNqmnC5v9MdH6h
+	 lNPpTrMfbxhtDpplx5x71VFqynEyCoCVv8MuM24E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martijn Coenen <maco@android.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Bob Liu <bob.liu@oracle.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Genjian Zhang <zhanggenjian@kylinos.cn>
-Subject: [PATCH 4.19 090/175] loop: Call loop_config_discard() only after new config is applied
-Date: Thu, 11 Apr 2024 11:55:13 +0200
-Message-ID: <20240411095422.273162804@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.10 151/294] powerpc: xor_vmx: Add -mhard-float to CFLAGS
+Date: Thu, 11 Apr 2024 11:55:14 +0200
+Message-ID: <20240411095440.197504497@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martijn Coenen <maco@android.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 7c5014b0987a30e4989c90633c198aced454c0ec ]
+commit 35f20786c481d5ced9283ff42de5c69b65e5ed13 upstream.
 
-loop_set_status() calls loop_config_discard() to configure discard for
-the loop device; however, the discard configuration depends on whether
-the loop device uses encryption, and when we call it the encryption
-configuration has not been updated yet. Move the call down so we apply
-the correct discard configuration based on the new configuration.
+arch/powerpc/lib/xor_vmx.o is built with '-msoft-float' (from the main
+powerpc Makefile) and '-maltivec' (from its CFLAGS), which causes an
+error when building with clang after a recent change in main:
 
-Signed-off-by: Martijn Coenen <maco@android.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Bob Liu <bob.liu@oracle.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
+  error: option '-msoft-float' cannot be specified with '-maltivec'
+  make[6]: *** [scripts/Makefile.build:243: arch/powerpc/lib/xor_vmx.o] Error 1
+
+Explicitly add '-mhard-float' before '-maltivec' in xor_vmx.o's CFLAGS
+to override the previous inclusion of '-msoft-float' (as the last option
+wins), which matches how other areas of the kernel use '-maltivec', such
+as AMDGPU.
+
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1986
+Link: https://github.com/llvm/llvm-project/commit/4792f912b232141ecba4cbae538873be3c28556c
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240127-ppc-xor_vmx-drop-msoft-float-v1-1-f24140e81376@kernel.org
+[nathan: Fixed conflicts due to lack of 04e85bbf71c9 in older trees]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/loop.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/lib/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -1286,8 +1286,6 @@ loop_set_status(struct loop_device *lo,
- 		}
- 	}
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -67,6 +67,6 @@ obj-$(CONFIG_PPC_LIB_RHEAP) += rheap.o
+ obj-$(CONFIG_FTR_FIXUP_SELFTEST) += feature-fixups-test.o
  
--	loop_config_discard(lo);
--
- 	memcpy(lo->lo_file_name, info->lo_file_name, LO_NAME_SIZE);
- 	memcpy(lo->lo_crypt_name, info->lo_crypt_name, LO_NAME_SIZE);
- 	lo->lo_file_name[LO_NAME_SIZE-1] = 0;
-@@ -1311,6 +1309,8 @@ loop_set_status(struct loop_device *lo,
- 		lo->lo_key_owner = uid;
- 	}
+ obj-$(CONFIG_ALTIVEC)	+= xor_vmx.o xor_vmx_glue.o
+-CFLAGS_xor_vmx.o += -maltivec $(call cc-option,-mabi=altivec)
++CFLAGS_xor_vmx.o += -mhard-float -maltivec $(call cc-option,-mabi=altivec)
  
-+	loop_config_discard(lo);
-+
- 	/* update dio if lo_offset or transfer is changed */
- 	__loop_update_dio(lo, lo->use_dio);
- 
+ obj-$(CONFIG_PPC64) += $(obj64-y)
 
 
 
