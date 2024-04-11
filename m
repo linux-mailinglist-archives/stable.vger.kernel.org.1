@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E36488A0F55
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91BA78A0DB3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:06:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6634DB22B74
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3233A1F23027
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C240F146D4E;
-	Thu, 11 Apr 2024 10:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2C3145FFB;
+	Thu, 11 Apr 2024 10:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="barPUGX3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfYFNTrc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D279146A9E;
-	Thu, 11 Apr 2024 10:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DC8145FED;
+	Thu, 11 Apr 2024 10:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830974; cv=none; b=ZQJg5C+dTodk4l4HX06hvmx6rTnML5uGqzpQVGilH7iaDHUQFNJe8+72nAWuzyRihSNvYe3i69CoyD6TdsgLhp+OvhCD7lrassXSg5whKgEOtD0WvI+wad2m723oUtQOGFSI6RPKDlbhjX30VAQmIVkxIWWZyXRgAvIhveW4j8E=
+	t=1712830004; cv=none; b=rxBeLsoIfd05jL5knfDLSzz54wSSkbIJYUaUQVwcBw9pN2qCJD2v7eEH31ROd46OzvhqKZ2XJOFlKehlN72q11qpQHQovY7e1Rlgk2cwabgTugQJgrcJ5rBPScM6T4eAk493EZDEa7g0jDvQTmOL+qs8au3bkjh3Sl6OMdMWgNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830974; c=relaxed/simple;
-	bh=N+7I9VWoCeoy2uWOMJaTbqJqTHssuNMUqsP6tolpCaw=;
+	s=arc-20240116; t=1712830004; c=relaxed/simple;
+	bh=Q80JWwhUAiJQmskF9gKLNznvqvuubr3Oy21DcRHbhgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nuQuctxBVgAdeS15FMIrc4uSiD76eRWCbF13XW+MfiAXIjnIZygvZ3yT8q5wUTYTWE+59kGHHvnVRB9x+GSQuoEpc1QZL3XK94+6srypwciUo6ZOcrpoUOrh6lnKWph35SJyJmANzexD1LtiRFQeFoLO05iLb9FBdRZWFD/lj5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=barPUGX3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050DCC433F1;
-	Thu, 11 Apr 2024 10:22:53 +0000 (UTC)
+	 MIME-Version; b=gfSJmGJUdc15PJyIXhkNFqes41bjjVcyUfZprFBEHdTOv+tSc6i7qMdTR2wa0z9+l8rJBjUBTChFTHZrisMuEQkO0BmidddjBRw+pP08K6sM4+yqYM6T6viy4R0aVsgsLUcy0X+zlhi2ZgA9wErZ+p0vYELTEdcK6Y6WG6sMtew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfYFNTrc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0908C433C7;
+	Thu, 11 Apr 2024 10:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830974;
-	bh=N+7I9VWoCeoy2uWOMJaTbqJqTHssuNMUqsP6tolpCaw=;
+	s=korg; t=1712830004;
+	bh=Q80JWwhUAiJQmskF9gKLNznvqvuubr3Oy21DcRHbhgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=barPUGX32siJvS+tDHhyvgRzAmnevDJ+Fh5mVsVJQjDwpg3UWCemZkzjMTGHWZpRD
-	 DPfZEZophOU/dVq1tQlvJ9CwNPQn9kCl9VbXXloisWjbH4C+0NfS4syLGskDw6alNM
-	 q0kwlXrBIhSsQLQDTrgW8ztxc77FosNmV319UUI4=
+	b=CfYFNTrcJ1NF3zk4a+tGP55QS7CsYXj2QYIcuARW8A2+GRUT2nu++PI+x+nxvZDs+
+	 J6fCsAp7sRCKtHtUbHzSFtCrC0Ce05dJp+UWH+m5NyU33Rd59y/BDe00u3B9OemSq9
+	 y00TyEP+FyhOV4NzFdE8CmQhJjMlCjWxA4AzPg5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 180/215] tools/power x86_energy_perf_policy: Fix file leak in get_pkg_num()
+Subject: [PATCH 4.19 166/175] fbmon: prevent division by zero in fb_videomode_from_videomode()
 Date: Thu, 11 Apr 2024 11:56:29 +0200
-Message-ID: <20240411095430.279086213@linuxfoundation.org>
+Message-ID: <20240411095424.562108599@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-[ Upstream commit f85450f134f0b4ca7e042dc3dc89155656a2299d ]
+[ Upstream commit c2d953276b8b27459baed1277a4fdd5dd9bd4126 ]
 
-In function get_pkg_num() if fopen_or_die() succeeds it returns a file
-pointer to be used. But fclose() is never called before returning from
-the function.
+The expression htotal * vtotal can have a zero value on
+overflow. It is necessary to prevent division by zero like in
+fb_var_to_videomode().
 
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Found by Linux Verification Center (linuxtesting.org) with Svace.
+
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/video/fbdev/core/fbmon.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-index 3fe1eed900d41..165eb4da8a644 100644
---- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-+++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-@@ -1111,6 +1111,7 @@ unsigned int get_pkg_num(int cpu)
- 	retval = fscanf(fp, "%d\n", &pkg);
- 	if (retval != 1)
- 		errx(1, "%s: failed to parse", pathname);
-+	fclose(fp);
- 	return pkg;
- }
+diff --git a/drivers/video/fbdev/core/fbmon.c b/drivers/video/fbdev/core/fbmon.c
+index 8607439d69328..e4040fb860bbc 100644
+--- a/drivers/video/fbdev/core/fbmon.c
++++ b/drivers/video/fbdev/core/fbmon.c
+@@ -1309,7 +1309,7 @@ int fb_get_mode(int flags, u32 val, struct fb_var_screeninfo *var, struct fb_inf
+ int fb_videomode_from_videomode(const struct videomode *vm,
+ 				struct fb_videomode *fbmode)
+ {
+-	unsigned int htotal, vtotal;
++	unsigned int htotal, vtotal, total;
  
+ 	fbmode->xres = vm->hactive;
+ 	fbmode->left_margin = vm->hback_porch;
+@@ -1342,8 +1342,9 @@ int fb_videomode_from_videomode(const struct videomode *vm,
+ 	vtotal = vm->vactive + vm->vfront_porch + vm->vback_porch +
+ 		 vm->vsync_len;
+ 	/* prevent division by zero */
+-	if (htotal && vtotal) {
+-		fbmode->refresh = vm->pixelclock / (htotal * vtotal);
++	total = htotal * vtotal;
++	if (total) {
++		fbmode->refresh = vm->pixelclock / total;
+ 	/* a mode must have htotal and vtotal != 0 or it is invalid */
+ 	} else {
+ 		fbmode->refresh = 0;
 -- 
 2.43.0
 
