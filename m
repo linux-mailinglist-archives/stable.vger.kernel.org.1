@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-38631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5539F8A0F9D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8980F8A10E7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 104872821AA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAA901C20BEE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6755146A77;
-	Thu, 11 Apr 2024 10:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F864146D47;
+	Thu, 11 Apr 2024 10:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwXITaXv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HHeFVx82"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B6E13FD94;
-	Thu, 11 Apr 2024 10:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D069F13CF89;
+	Thu, 11 Apr 2024 10:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831137; cv=none; b=bS2N1YKSZUFsFPnoBbTvq+mhTnEDYc2V8c7CfLgmW/OpFiC+r6Y4CUqORUviXU0wz0b1k01gHlD/eAJKtcLDVzOjM/3YW5Y4Ael7MFqZOjW2YBDTgQ+C8U+P9YUr5ZdBLiQhTzBW/DS8DPJ9RVwD6f0JiLmDbYn46pgECcVzcZI=
+	t=1712831915; cv=none; b=ZIdJfU61H+vT3I74gh+mkiEbAiJoeUnlUWjV4GpTDekP0vkBwL3gz8Meq08I0/GRfliVlaW3fiGkHvXKi9sDstXOW7yf3H86gr5VA53eJ4NvyvdwCSjHAhq3tvd92+ba1znN2TFZSLVtoQEENULasrWpvu1IsJgXUEwO2kK0a6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831137; c=relaxed/simple;
-	bh=UikVFuWnNDILP2s+LPIkGddoYy8fAnSBt+0uXA7N+Zc=;
+	s=arc-20240116; t=1712831915; c=relaxed/simple;
+	bh=gbVmAJkn+m4RiigbWiPAKsix54Net+kEib7IFMbe7/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tQ71rcC9OkMNbf3LHfYDweusfHHDlRHbho8U/hEgpjQtMX6C2ln2xlRQrlqb66tCvHUA2HbIQyRW6EJcqQLz25qwROx//iVQYa4dB0D98dJJ/W3Dojo/jJFhKecHl4rCoCjIfaEUGFB1oVRuM+QHax93WWi8KYxbVLrjQp8BJIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VwXITaXv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA1EBC433C7;
-	Thu, 11 Apr 2024 10:25:36 +0000 (UTC)
+	 MIME-Version; b=C4N8qzG434+ogEFLROxkRUOz523kPg2aoHk66iwVl+WdnkgSUO8+UcBbH5r/L1LCIpM1CBfLnxTjA/yi8oEA/UNJqGXnqZSaUxJz+9F5h4/yHdCdVFagieDkxizkZAYjy7aIBZW4cf9PENaOn43lrt+oWG1j/sxTfAU9zUWaAvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HHeFVx82; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5549BC433F1;
+	Thu, 11 Apr 2024 10:38:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831137;
-	bh=UikVFuWnNDILP2s+LPIkGddoYy8fAnSBt+0uXA7N+Zc=;
+	s=korg; t=1712831915;
+	bh=gbVmAJkn+m4RiigbWiPAKsix54Net+kEib7IFMbe7/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VwXITaXvWhdL78PbwcO3ylGkSO09UMu8Dek2FZoP5p5x/5yVSlaRqu7hMULHCff02
-	 6mhnLGssA9TTbBJx3/iFmm94BqorJRBgF5TwTgbmO24vvAaQYZM1ksRaf5xpVbNbnY
-	 4X13u/ijlObjTc99Ir01K5kS+xCPcqO+avErTWcY=
+	b=HHeFVx82T9hSCkzVqAE939WxBYyenqetIZJqdm7rnwzfk6gK+xwcVxsRwCDMswwu9
+	 KE9Nn9q/VyyNcZneC1NHQixrqVQu0i08bx+uTT5fi0ulmoO4r8fVxJaW77HiKC67EX
+	 EqtiqUaMSKYXjiovCxs6CeheQwZLNYcXXHVzB4SY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/114] batman-adv: Return directly after a failed batadv_dat_select_candidates() in batadv_dat_forward_data()
-Date: Thu, 11 Apr 2024 11:55:31 +0200
-Message-ID: <20240411095416.993175297@linuxfoundation.org>
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 5.10 169/294] usb: dwc2: host: Fix hibernation flow
+Date: Thu, 11 Apr 2024 11:55:32 +0200
+Message-ID: <20240411095440.723838096@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +58,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-[ Upstream commit ffc15626c861f811f9778914be004fcf43810a91 ]
+commit 3c7b9856a82227db01a20171d2e24c7ce305d59b upstream.
 
-The kfree() function was called in one case by
-the batadv_dat_forward_data() function during error handling
-even if the passed variable contained a null pointer.
-This issue was detected by using the Coccinelle software.
+Added to backup/restore registers HFLBADDR, HCCHARi, HCSPLTi,
+HCTSIZi, HCDMAi and HCDMABi.
 
-* Thus return directly after a batadv_dat_select_candidates() call failed
-  at the beginning.
-
-* Delete the label “out” which became unnecessary with this refactoring.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Acked-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 58e52ff6a6c3 ("usb: dwc2: Move register save and restore functions")
+Fixes: d17ee77b3044 ("usb: dwc2: add controller hibernation support")
+CC: stable@vger.kernel.org
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/c2d10ee6098b9b009a8e94191e046004747d3bdd.1708945444.git.Minas.Harutyunyan@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/distributed-arp-table.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/dwc2/core.h |   12 ++++++++++++
+ drivers/usb/dwc2/hcd.c  |   18 ++++++++++++++++--
+ 2 files changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
-index 28a939d560906..4c7e855343245 100644
---- a/net/batman-adv/distributed-arp-table.c
-+++ b/net/batman-adv/distributed-arp-table.c
-@@ -684,7 +684,7 @@ static bool batadv_dat_forward_data(struct batadv_priv *bat_priv,
+--- a/drivers/usb/dwc2/core.h
++++ b/drivers/usb/dwc2/core.h
+@@ -748,8 +748,14 @@ struct dwc2_dregs_backup {
+  * struct dwc2_hregs_backup - Holds host registers state before
+  * entering partial power down
+  * @hcfg:		Backup of HCFG register
++ * @hflbaddr:		Backup of HFLBADDR register
+  * @haintmsk:		Backup of HAINTMSK register
++ * @hcchar:		Backup of HCCHAR register
++ * @hcsplt:		Backup of HCSPLT register
+  * @hcintmsk:		Backup of HCINTMSK register
++ * @hctsiz:		Backup of HCTSIZ register
++ * @hdma:		Backup of HCDMA register
++ * @hcdmab:		Backup of HCDMAB register
+  * @hprt0:		Backup of HPTR0 register
+  * @hfir:		Backup of HFIR register
+  * @hptxfsiz:		Backup of HPTXFSIZ register
+@@ -757,8 +763,14 @@ struct dwc2_dregs_backup {
+  */
+ struct dwc2_hregs_backup {
+ 	u32 hcfg;
++	u32 hflbaddr;
+ 	u32 haintmsk;
++	u32 hcchar[MAX_EPS_CHANNELS];
++	u32 hcsplt[MAX_EPS_CHANNELS];
+ 	u32 hcintmsk[MAX_EPS_CHANNELS];
++	u32 hctsiz[MAX_EPS_CHANNELS];
++	u32 hcidma[MAX_EPS_CHANNELS];
++	u32 hcidmab[MAX_EPS_CHANNELS];
+ 	u32 hprt0;
+ 	u32 hfir;
+ 	u32 hptxfsiz;
+--- a/drivers/usb/dwc2/hcd.c
++++ b/drivers/usb/dwc2/hcd.c
+@@ -5319,9 +5319,16 @@ int dwc2_backup_host_registers(struct dw
+ 	/* Backup Host regs */
+ 	hr = &hsotg->hr_backup;
+ 	hr->hcfg = dwc2_readl(hsotg, HCFG);
++	hr->hflbaddr = dwc2_readl(hsotg, HFLBADDR);
+ 	hr->haintmsk = dwc2_readl(hsotg, HAINTMSK);
+-	for (i = 0; i < hsotg->params.host_channels; ++i)
++	for (i = 0; i < hsotg->params.host_channels; ++i) {
++		hr->hcchar[i] = dwc2_readl(hsotg, HCCHAR(i));
++		hr->hcsplt[i] = dwc2_readl(hsotg, HCSPLT(i));
+ 		hr->hcintmsk[i] = dwc2_readl(hsotg, HCINTMSK(i));
++		hr->hctsiz[i] = dwc2_readl(hsotg, HCTSIZ(i));
++		hr->hcidma[i] = dwc2_readl(hsotg, HCDMA(i));
++		hr->hcidmab[i] = dwc2_readl(hsotg, HCDMAB(i));
++	}
  
- 	cand = batadv_dat_select_candidates(bat_priv, ip, vid);
- 	if (!cand)
--		goto out;
-+		return ret;
+ 	hr->hprt0 = dwc2_read_hprt0(hsotg);
+ 	hr->hfir = dwc2_readl(hsotg, HFIR);
+@@ -5355,10 +5362,17 @@ int dwc2_restore_host_registers(struct d
+ 	hr->valid = false;
  
- 	batadv_dbg(BATADV_DBG_DAT, bat_priv, "DHT_SEND for %pI4\n", &ip);
+ 	dwc2_writel(hsotg, hr->hcfg, HCFG);
++	dwc2_writel(hsotg, hr->hflbaddr, HFLBADDR);
+ 	dwc2_writel(hsotg, hr->haintmsk, HAINTMSK);
  
-@@ -728,7 +728,6 @@ static bool batadv_dat_forward_data(struct batadv_priv *bat_priv,
- 		batadv_orig_node_put(cand[i].orig_node);
- 	}
+-	for (i = 0; i < hsotg->params.host_channels; ++i)
++	for (i = 0; i < hsotg->params.host_channels; ++i) {
++		dwc2_writel(hsotg, hr->hcchar[i], HCCHAR(i));
++		dwc2_writel(hsotg, hr->hcsplt[i], HCSPLT(i));
+ 		dwc2_writel(hsotg, hr->hcintmsk[i], HCINTMSK(i));
++		dwc2_writel(hsotg, hr->hctsiz[i], HCTSIZ(i));
++		dwc2_writel(hsotg, hr->hcidma[i], HCDMA(i));
++		dwc2_writel(hsotg, hr->hcidmab[i], HCDMAB(i));
++	}
  
--out:
- 	kfree(cand);
- 	return ret;
- }
--- 
-2.43.0
-
+ 	dwc2_writel(hsotg, hr->hprt0, HPRT0);
+ 	dwc2_writel(hsotg, hr->hfir, HFIR);
 
 
 
