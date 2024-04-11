@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF8F8A0DD7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:08:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF23C8A0EE0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:18:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E642F1F2291F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:08:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93ACB284682
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8231448F3;
-	Thu, 11 Apr 2024 10:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E0314600E;
+	Thu, 11 Apr 2024 10:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+D9UsQM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdZtjAKW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C83113B5B9;
-	Thu, 11 Apr 2024 10:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A1C140E3D;
+	Thu, 11 Apr 2024 10:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830102; cv=none; b=hjtIcIbzokYi4FzwE4WLDLfbJmI7PbLNVaaF0ucD6ZcYRLcwuf/YwlQ9nD4wogO63A0IWIC3mqZ5VoiTAgrnjHLM+TmSEnVnP/YBG0l09FwCntXNSJi4NhNEWDHVgJjCxmImDyNRNLEYVp85ggjlBbsTFyZH81JYavw+Xazo4C0=
+	t=1712830725; cv=none; b=EgPGQQnOYOerysF2+KfFQgP+M3Efc55xZfhjcwvn6SpX6WqED7QPKeG9cYHw0+NFyYROvdiK0fEHsT2QxVtFC1v15LcGHVUIZKQQZ4dZEum4FRrzIgXTQrotGELKBhp8DA3yVwt38GUecpYXAeBXzoQuARPUzHNZWPyitR5O+GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830102; c=relaxed/simple;
-	bh=YODPr+TylOCEFY9xYjUpYiNcZqNq9uoswrtesYjODpY=;
+	s=arc-20240116; t=1712830725; c=relaxed/simple;
+	bh=vTYjRuQuEAWUMOkG9I6kWxTpdthoJRGwIdKt45wvtvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P/hwJTO23mvD0ZMN2cObE3nhKcUhd81c+B9y/b9RnxE8eM/3LHs5O//oGPbjQM8WgcSVIVLyiBcWt/SExlKNkbG3Cxmuv677LrrkH038oIGbZdU5fA83lnF8Qs/1Eqo51zV4ufD+4OVXKVm9w4KmYmC66+8176W8mpWFdz8ucsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+D9UsQM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2EEBC433F1;
-	Thu, 11 Apr 2024 10:08:21 +0000 (UTC)
+	 MIME-Version; b=DmPvcAON6GmHdCwZcDufyzAEnayNm9f06BvaOgBwmsrgIXS9TIS9Ye/JV0RRd7EsSvLwdJtr2LHH69NcXBfbRJC/662jffU1olMKYEpT85BHYgQwwdGA7jKU74UUiH44F4tBBj5Xd9+JJnN9S1wvuQ55g2N+S1W0Qo7BFDI2U00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zdZtjAKW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CCFAC433F1;
+	Thu, 11 Apr 2024 10:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830102;
-	bh=YODPr+TylOCEFY9xYjUpYiNcZqNq9uoswrtesYjODpY=;
+	s=korg; t=1712830724;
+	bh=vTYjRuQuEAWUMOkG9I6kWxTpdthoJRGwIdKt45wvtvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K+D9UsQMF/JyXebeolC0Gx6l7eYGCL/G9jtkWoxnuQeZw3/RVO+AAJICXIDSC+gH8
-	 vzpAzq01upllNddFqbxnvVn79eLmzaDcudcB0EQnNVLk+2ixjXql9h1osJ9MMImPyW
-	 OpY0hCv+9x6fvAZImGujKSATzqc32ixw4bKIU04o=
+	b=zdZtjAKW/7Djmk2zeCNtbEpaicwCYXW9xWEg9YmgJDFJPBWzwmQz1CGYmCB1kjTd3
+	 cLJ9AsdLKz6eGky9HGJ+iaS8ggBHCDqxcEQVVpXckWHlEemGaWQPKsKmIWWDJKmvm1
+	 A5fQ94soh6I5V4P+D7il0YBVlsYWqv/pXukTbQOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 035/143] wifi: mt76: mt7996: add locking for accessing mapped registers
-Date: Thu, 11 Apr 2024 11:55:03 +0200
-Message-ID: <20240411095421.968389731@linuxfoundation.org>
+	Maximilian Heyne <mheyne@amazon.de>,
+	Juergen Gross <jgross@suse.com>,
+	Andrew Paniakin <apanyaki@amazon.com>
+Subject: [PATCH 5.4 095/215] xen/events: close evtchn after mapping cleanup
+Date: Thu, 11 Apr 2024 11:55:04 +0200
+Message-ID: <20240411095427.756058129@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,174 +62,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+From: Maximilian Heyne <mheyne@amazon.de>
 
-[ Upstream commit 3687854d3e7e7fd760d939dd9e5a3520d5ab60fe ]
+commit fa765c4b4aed2d64266b694520ecb025c862c5a9 upstream.
 
-A race condition was observed when accessing mapped registers, so add
-locking to protect against concurrent access.
+shutdown_pirq and startup_pirq are not taking the
+irq_mapping_update_lock because they can't due to lock inversion. Both
+are called with the irq_desc->lock being taking. The lock order,
+however, is first irq_mapping_update_lock and then irq_desc->lock.
 
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This opens multiple races:
+- shutdown_pirq can be interrupted by a function that allocates an event
+  channel:
+
+  CPU0                        CPU1
+  shutdown_pirq {
+    xen_evtchn_close(e)
+                              __startup_pirq {
+                                EVTCHNOP_bind_pirq
+                                  -> returns just freed evtchn e
+                                set_evtchn_to_irq(e, irq)
+                              }
+    xen_irq_info_cleanup() {
+      set_evtchn_to_irq(e, -1)
+    }
+  }
+
+  Assume here event channel e refers here to the same event channel
+  number.
+  After this race the evtchn_to_irq mapping for e is invalid (-1).
+
+- __startup_pirq races with __unbind_from_irq in a similar way. Because
+  __startup_pirq doesn't take irq_mapping_update_lock it can grab the
+  evtchn that __unbind_from_irq is currently freeing and cleaning up. In
+  this case even though the event channel is allocated, its mapping can
+  be unset in evtchn_to_irq.
+
+The fix is to first cleanup the mappings and then close the event
+channel. In this way, when an event channel gets allocated it's
+potential previous evtchn_to_irq mappings are guaranteed to be unset already.
+This is also the reverse order of the allocation where first the event
+channel is allocated and then the mappings are setup.
+
+On a 5.10 kernel prior to commit 3fcdaf3d7634 ("xen/events: modify internal
+[un]bind interfaces"), we hit a BUG like the following during probing of NVMe
+devices. The issue is that during nvme_setup_io_queues, pci_free_irq
+is called for every device which results in a call to shutdown_pirq.
+With many nvme devices it's therefore likely to hit this race during
+boot because there will be multiple calls to shutdown_pirq and
+startup_pirq are running potentially in parallel.
+
+  ------------[ cut here ]------------
+  blkfront: xvda: barrier or flush: disabled; persistent grants: enabled; indirect descriptors: enabled; bounce buffer: enabled
+  kernel BUG at drivers/xen/events/events_base.c:499!
+  invalid opcode: 0000 [#1] SMP PTI
+  CPU: 44 PID: 375 Comm: kworker/u257:23 Not tainted 5.10.201-191.748.amzn2.x86_64 #1
+  Hardware name: Xen HVM domU, BIOS 4.11.amazon 08/24/2006
+  Workqueue: nvme-reset-wq nvme_reset_work
+  RIP: 0010:bind_evtchn_to_cpu+0xdf/0xf0
+  Code: 5d 41 5e c3 cc cc cc cc 44 89 f7 e8 2b 55 ad ff 49 89 c5 48 85 c0 0f 84 64 ff ff ff 4c 8b 68 30 41 83 fe ff 0f 85 60 ff ff ff <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 0f 1f 44 00 00
+  RSP: 0000:ffffc9000d533b08 EFLAGS: 00010046
+  RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000006
+  RDX: 0000000000000028 RSI: 00000000ffffffff RDI: 00000000ffffffff
+  RBP: ffff888107419680 R08: 0000000000000000 R09: ffffffff82d72b00
+  R10: 0000000000000000 R11: 0000000000000000 R12: 00000000000001ed
+  R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000002
+  FS:  0000000000000000(0000) GS:ffff88bc8b500000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000000000000 CR3: 0000000002610001 CR4: 00000000001706e0
+  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  Call Trace:
+   ? show_trace_log_lvl+0x1c1/0x2d9
+   ? show_trace_log_lvl+0x1c1/0x2d9
+   ? set_affinity_irq+0xdc/0x1c0
+   ? __die_body.cold+0x8/0xd
+   ? die+0x2b/0x50
+   ? do_trap+0x90/0x110
+   ? bind_evtchn_to_cpu+0xdf/0xf0
+   ? do_error_trap+0x65/0x80
+   ? bind_evtchn_to_cpu+0xdf/0xf0
+   ? exc_invalid_op+0x4e/0x70
+   ? bind_evtchn_to_cpu+0xdf/0xf0
+   ? asm_exc_invalid_op+0x12/0x20
+   ? bind_evtchn_to_cpu+0xdf/0xf0
+   ? bind_evtchn_to_cpu+0xc5/0xf0
+   set_affinity_irq+0xdc/0x1c0
+   irq_do_set_affinity+0x1d7/0x1f0
+   irq_setup_affinity+0xd6/0x1a0
+   irq_startup+0x8a/0xf0
+   __setup_irq+0x639/0x6d0
+   ? nvme_suspend+0x150/0x150
+   request_threaded_irq+0x10c/0x180
+   ? nvme_suspend+0x150/0x150
+   pci_request_irq+0xa8/0xf0
+   ? __blk_mq_free_request+0x74/0xa0
+   queue_request_irq+0x6f/0x80
+   nvme_create_queue+0x1af/0x200
+   nvme_create_io_queues+0xbd/0xf0
+   nvme_setup_io_queues+0x246/0x320
+   ? nvme_irq_check+0x30/0x30
+   nvme_reset_work+0x1c8/0x400
+   process_one_work+0x1b0/0x350
+   worker_thread+0x49/0x310
+   ? process_one_work+0x350/0x350
+   kthread+0x11b/0x140
+   ? __kthread_bind_mask+0x60/0x60
+   ret_from_fork+0x22/0x30
+  Modules linked in:
+  ---[ end trace a11715de1eee1873 ]---
+
+Fixes: d46a78b05c0e ("xen: implement pirq type event channels")
+Cc: stable@vger.kernel.org
+Co-debugged-by: Andrew Panyakin <apanyaki@amazon.com>
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20240124163130.31324-1-mheyne@amazon.de
+Signed-off-by: Juergen Gross <jgross@suse.com>
+[apanyaki: backport to v5.4-stable]
+Signed-off-by: Andrew Paniakin <apanyaki@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/mmio.c  | 64 ++++++++++++-------
- .../wireless/mediatek/mt76/mt7996/mt7996.h    |  3 +-
- 2 files changed, 43 insertions(+), 24 deletions(-)
+ drivers/xen/events/events_base.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-index 9f2abfa273c9b..efd4a767eb37d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-@@ -140,7 +140,6 @@ static u32 mt7996_reg_map_l1(struct mt7996_dev *dev, u32 addr)
- 	u32 offset = FIELD_GET(MT_HIF_REMAP_L1_OFFSET, addr);
- 	u32 base = FIELD_GET(MT_HIF_REMAP_L1_BASE, addr);
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -825,8 +825,8 @@ static void shutdown_pirq(struct irq_dat
+ 		return;
  
--	dev->reg_l1_backup = dev->bus_ops->rr(&dev->mt76, MT_HIF_REMAP_L1);
- 	dev->bus_ops->rmw(&dev->mt76, MT_HIF_REMAP_L1,
- 			  MT_HIF_REMAP_L1_MASK,
- 			  FIELD_PREP(MT_HIF_REMAP_L1_MASK, base));
-@@ -155,7 +154,6 @@ static u32 mt7996_reg_map_l2(struct mt7996_dev *dev, u32 addr)
- 	u32 offset = FIELD_GET(MT_HIF_REMAP_L2_OFFSET, addr);
- 	u32 base = FIELD_GET(MT_HIF_REMAP_L2_BASE, addr);
- 
--	dev->reg_l2_backup = dev->bus_ops->rr(&dev->mt76, MT_HIF_REMAP_L2);
- 	dev->bus_ops->rmw(&dev->mt76, MT_HIF_REMAP_L2,
- 			  MT_HIF_REMAP_L2_MASK,
- 			  FIELD_PREP(MT_HIF_REMAP_L2_MASK, base));
-@@ -165,26 +163,10 @@ static u32 mt7996_reg_map_l2(struct mt7996_dev *dev, u32 addr)
- 	return MT_HIF_REMAP_BASE_L2 + offset;
+ 	do_mask(info, EVT_MASK_REASON_EXPLICIT);
+-	xen_evtchn_close(evtchn);
+ 	xen_irq_info_cleanup(info);
++	xen_evtchn_close(evtchn);
  }
  
--static void mt7996_reg_remap_restore(struct mt7996_dev *dev)
--{
--	/* remap to ori status */
--	if (unlikely(dev->reg_l1_backup)) {
--		dev->bus_ops->wr(&dev->mt76, MT_HIF_REMAP_L1, dev->reg_l1_backup);
--		dev->reg_l1_backup = 0;
--	}
--
--	if (dev->reg_l2_backup) {
--		dev->bus_ops->wr(&dev->mt76, MT_HIF_REMAP_L2, dev->reg_l2_backup);
--		dev->reg_l2_backup = 0;
--	}
--}
--
- static u32 __mt7996_reg_addr(struct mt7996_dev *dev, u32 addr)
- {
- 	int i;
+ static void enable_pirq(struct irq_data *data)
+@@ -869,8 +869,6 @@ static void __unbind_from_irq(unsigned i
+ 	if (VALID_EVTCHN(evtchn)) {
+ 		unsigned int cpu = cpu_from_irq(irq);
  
--	mt7996_reg_remap_restore(dev);
+-		xen_evtchn_close(evtchn);
 -
- 	if (addr < 0x100000)
- 		return addr;
+ 		switch (type_from_irq(irq)) {
+ 		case IRQT_VIRQ:
+ 			per_cpu(virq_to_irq, cpu)[virq_from_irq(irq)] = -1;
+@@ -883,6 +881,7 @@ static void __unbind_from_irq(unsigned i
+ 		}
  
-@@ -201,6 +183,11 @@ static u32 __mt7996_reg_addr(struct mt7996_dev *dev, u32 addr)
- 		return dev->reg.map[i].mapped + ofs;
+ 		xen_irq_info_cleanup(info);
++		xen_evtchn_close(evtchn);
  	}
  
-+	return 0;
-+}
-+
-+static u32 __mt7996_reg_remap_addr(struct mt7996_dev *dev, u32 addr)
-+{
- 	if ((addr >= MT_INFRA_BASE && addr < MT_WFSYS0_PHY_START) ||
- 	    (addr >= MT_WFSYS0_PHY_START && addr < MT_WFSYS1_PHY_START) ||
- 	    (addr >= MT_WFSYS1_PHY_START && addr <= MT_WFSYS1_PHY_END))
-@@ -225,28 +212,60 @@ void mt7996_memcpy_fromio(struct mt7996_dev *dev, void *buf, u32 offset,
- {
- 	u32 addr = __mt7996_reg_addr(dev, offset);
- 
--	memcpy_fromio(buf, dev->mt76.mmio.regs + addr, len);
-+	if (addr) {
-+		memcpy_fromio(buf, dev->mt76.mmio.regs + addr, len);
-+		return;
-+	}
-+
-+	spin_lock_bh(&dev->reg_lock);
-+	memcpy_fromio(buf, dev->mt76.mmio.regs +
-+			   __mt7996_reg_remap_addr(dev, offset), len);
-+	spin_unlock_bh(&dev->reg_lock);
- }
- 
- static u32 mt7996_rr(struct mt76_dev *mdev, u32 offset)
- {
- 	struct mt7996_dev *dev = container_of(mdev, struct mt7996_dev, mt76);
-+	u32 addr = __mt7996_reg_addr(dev, offset), val;
-+
-+	if (addr)
-+		return dev->bus_ops->rr(mdev, addr);
- 
--	return dev->bus_ops->rr(mdev, __mt7996_reg_addr(dev, offset));
-+	spin_lock_bh(&dev->reg_lock);
-+	val = dev->bus_ops->rr(mdev, __mt7996_reg_remap_addr(dev, offset));
-+	spin_unlock_bh(&dev->reg_lock);
-+
-+	return val;
- }
- 
- static void mt7996_wr(struct mt76_dev *mdev, u32 offset, u32 val)
- {
- 	struct mt7996_dev *dev = container_of(mdev, struct mt7996_dev, mt76);
-+	u32 addr = __mt7996_reg_addr(dev, offset);
- 
--	dev->bus_ops->wr(mdev, __mt7996_reg_addr(dev, offset), val);
-+	if (addr) {
-+		dev->bus_ops->wr(mdev, addr, val);
-+		return;
-+	}
-+
-+	spin_lock_bh(&dev->reg_lock);
-+	dev->bus_ops->wr(mdev, __mt7996_reg_remap_addr(dev, offset), val);
-+	spin_unlock_bh(&dev->reg_lock);
- }
- 
- static u32 mt7996_rmw(struct mt76_dev *mdev, u32 offset, u32 mask, u32 val)
- {
- 	struct mt7996_dev *dev = container_of(mdev, struct mt7996_dev, mt76);
-+	u32 addr = __mt7996_reg_addr(dev, offset);
-+
-+	if (addr)
-+		return dev->bus_ops->rmw(mdev, addr, mask, val);
-+
-+	spin_lock_bh(&dev->reg_lock);
-+	val = dev->bus_ops->rmw(mdev, __mt7996_reg_remap_addr(dev, offset), mask, val);
-+	spin_unlock_bh(&dev->reg_lock);
- 
--	return dev->bus_ops->rmw(mdev, __mt7996_reg_addr(dev, offset), mask, val);
-+	return val;
- }
- 
- #ifdef CONFIG_NET_MEDIATEK_SOC_WED
-@@ -421,6 +440,7 @@ static int mt7996_mmio_init(struct mt76_dev *mdev,
- 
- 	dev = container_of(mdev, struct mt7996_dev, mt76);
- 	mt76_mmio_init(&dev->mt76, mem_base);
-+	spin_lock_init(&dev->reg_lock);
- 
- 	switch (device_id) {
- 	case 0x7990:
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 8154ad37827f0..36d1f247d55aa 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -325,8 +325,7 @@ struct mt7996_dev {
- 		u8 n_agrt;
- 	} twt;
- 
--	u32 reg_l1_backup;
--	u32 reg_l2_backup;
-+	spinlock_t reg_lock;
- 
- 	u8 wtbl_size_group;
- };
--- 
-2.43.0
-
+ 	xen_free_irq(irq);
 
 
 
