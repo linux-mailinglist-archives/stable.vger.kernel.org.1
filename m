@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804698A0D33
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:01:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 933A18A0DC8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFE12B228B3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:01:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC6BC1C21453
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58CF8145345;
-	Thu, 11 Apr 2024 10:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FB4145B14;
+	Thu, 11 Apr 2024 10:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asGXji3T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6pjDxTY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176FB2EAE5;
-	Thu, 11 Apr 2024 10:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FE91442F7;
+	Thu, 11 Apr 2024 10:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829679; cv=none; b=EDJME5wqnjtOnLz46fo2+314ie/tca1XiEUcv7cjTfLuQhYc1JbYMc6nrJrhLYSmwyaVwTzPEFl2CwjEkbsgUxQNYTSjfcMGY3qo4mAO5xpw3EMsSCEAA1ZDzR33rR85PZOx8DRVeOuTekywQ5QNlpYaB4GljtGKh6Rb4W/JOek=
+	t=1712830060; cv=none; b=qCoy/Aje1dMF2rV+r7EPjkBcYARs3RXej8RjULzkPx/UT49LaoSj6kb1AuEomzkRO03n7/e3XAWGuByfWTgZIQQ/a/8l/k7uk4/Aji6CbvMd2H9i+2I7TUnBqLavTYIXPSFAB4K2i7APZzCHWfp6ZPQvuzUYoF9ciqoPv2JxIT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829679; c=relaxed/simple;
-	bh=IHW33AH5yoE378YKwxGtb5o7umsdsimgGtUpj+YpjeI=;
+	s=arc-20240116; t=1712830060; c=relaxed/simple;
+	bh=c6ZUbTGSavtMiV7jWRYZHfwB/hnfDn1vv5t9dGzw3sQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZY85JkwrqystF5XXbiok4CIAO9Ba7o1oAub/6Z/CvzEnHIzMvor+X1MP2voZinwocnLz3UrzDXS4haxgxxjXHQ3COR2FdF0KdcXvuhnJ1pEOcxP0XWGggekb7WzzNwa9GR0FicSGXyhqLuaZ9i0Xu6HiopP8fc8QIWAp7J3jwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asGXji3T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917ADC433C7;
-	Thu, 11 Apr 2024 10:01:18 +0000 (UTC)
+	 MIME-Version; b=lPbViM3zsz6ij+cVQWSNmiy4DYts4Ou3isETXefqGaKPhU62dH7zQOuelpsJQvSdqb23YASquhvLs4D8MRq/s69eSwcLo9IKre+iv1nNGT53BSKFh7AckO60kDnqbeDDUylnZysm0gZrKfrz+QvUdQxQ4fFXEfwFggWi2t9HL9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6pjDxTY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E126C43390;
+	Thu, 11 Apr 2024 10:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829679;
-	bh=IHW33AH5yoE378YKwxGtb5o7umsdsimgGtUpj+YpjeI=;
+	s=korg; t=1712830060;
+	bh=c6ZUbTGSavtMiV7jWRYZHfwB/hnfDn1vv5t9dGzw3sQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=asGXji3T3oIv2SCLbI6FN0Nb1xXcurI3cPFpbyhebh+gJ/D1VWEhtO4qtTq8jY3R/
-	 6I9T7ho30QJTlKUThKezsjesrhbyU4rBo1wj+AZ+BTIvFn5PSeSRQrRjqzu2KsSdHX
-	 id8/T4ZiMDJsvCHpuDdN9pvKUYM3twRn4rFRmBf8=
+	b=H6pjDxTYJ/Pzca2qovZueiOzrWYHRV1SlNc3KCewChOCInJvXkC2ig4S3g1iKIuGU
+	 RAwnrrWBQOioNtRF39QCEAd5LyTydHgk6ovg/Q2taVVpo9UPjEH/fEMovULdzLZSX4
+	 G95B5N5s55kWU/ifSYyyT0u5fMwYfVA6D/6imbSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Andrey Jr. Melnikov" <temnota.am@gmail.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 067/175] ahci: asm1064: correct count of reported ports
+Subject: [PATCH 6.8 022/143] arm64: dts: rockchip: fix rk3328 hdmi ports node
 Date: Thu, 11 Apr 2024 11:54:50 +0200
-Message-ID: <20240411095421.582599303@linuxfoundation.org>
+Message-ID: <20240411095421.579150208@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Jr. Melnikov <temnota.am@gmail.com>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit 9815e39617541ef52d0dfac4be274ad378c6dc09 ]
+[ Upstream commit 1d00ba4700d1e0f88ae70d028d2e17e39078fa1c ]
 
-The ASM1064 SATA host controller always reports wrongly,
-that it has 24 ports. But in reality, it only has four ports.
+Fix rk3328 hdmi ports node so that it matches the
+rockchip,dw-hdmi.yaml binding.
 
-before:
-ahci 0000:04:00.0: SSS flag set, parallel bus scan disabled
-ahci 0000:04:00.0: AHCI 0001.0301 32 slots 24 ports 6 Gbps 0xffff0f impl SATA mode
-ahci 0000:04:00.0: flags: 64bit ncq sntf stag pm led only pio sxs deso sadm sds apst
-
-after:
-ahci 0000:04:00.0: ASM1064 has only four ports
-ahci 0000:04:00.0: forcing port_map 0xffff0f -> 0xf
-ahci 0000:04:00.0: SSS flag set, parallel bus scan disabled
-ahci 0000:04:00.0: AHCI 0001.0301 32 slots 24 ports 6 Gbps 0xf impl SATA mode
-ahci 0000:04:00.0: flags: 64bit ncq sntf stag pm led only pio sxs deso sadm sds apst
-
-Signed-off-by: "Andrey Jr. Melnikov" <temnota.am@gmail.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Stable-dep-of: 6cd8adc3e189 ("ahci: asm1064: asm1166: don't limit reported ports")
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/e5dea3b7-bf84-4474-9530-cc2da3c41104@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3328.dtsi | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index abdfd440987b4..6b1562fed85ed 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -634,9 +634,17 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
- static void ahci_pci_save_initial_config(struct pci_dev *pdev,
- 					 struct ahci_host_priv *hpriv)
- {
--	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA && pdev->device == 0x1166) {
--		dev_info(&pdev->dev, "ASM1166 has only six ports\n");
--		hpriv->saved_port_map = 0x3f;
-+	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA) {
-+		switch (pdev->device) {
-+		case 0x1166:
-+			dev_info(&pdev->dev, "ASM1166 has only six ports\n");
-+			hpriv->saved_port_map = 0x3f;
-+			break;
-+		case 0x1064:
-+			dev_info(&pdev->dev, "ASM1064 has only four ports\n");
-+			hpriv->saved_port_map = 0xf;
-+			break;
-+		}
- 	}
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+index 7b4c15c4a9c31..b6f045069ee2f 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+@@ -744,11 +744,20 @@ hdmi: hdmi@ff3c0000 {
+ 		status = "disabled";
  
- 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
+ 		ports {
+-			hdmi_in: port {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			hdmi_in: port@0 {
++				reg = <0>;
++
+ 				hdmi_in_vop: endpoint {
+ 					remote-endpoint = <&vop_out_hdmi>;
+ 				};
+ 			};
++
++			hdmi_out: port@1 {
++				reg = <1>;
++			};
+ 		};
+ 	};
+ 
 -- 
 2.43.0
 
