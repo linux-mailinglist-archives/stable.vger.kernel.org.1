@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-39142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CEF8A121A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:50:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E125D8A11E4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1DB528458D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E5131C20B13
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC24C1442FE;
-	Thu, 11 Apr 2024 10:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A28613BC33;
+	Thu, 11 Apr 2024 10:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpFzKcAu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qarViO1W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BEF13BC33;
-	Thu, 11 Apr 2024 10:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DC479FD;
+	Thu, 11 Apr 2024 10:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832641; cv=none; b=l9tvjvlQ7+8JmA3Mwixs1k/ouyczPzzfTezmgZvF1EZcuWT04p+Mfp8P2qx+kvHWoCNm9tszGEPURM4FAjNG4oUzeYE1kyJPBWpYxa/hHxZZKdCMOZsOWF9rmPMEh8QDOQKhhtjKHpYPge1+KKgwK3FQx2vJDzQ5vVgYAY1t4D8=
+	t=1712832502; cv=none; b=KqJWaiuQGgh5bVC5waSDeh+stMb0uxcqoXrmUoz+hGtcS1VxFe1TwH3w9fTJtbXdPijEFegTvHOEyYEMvrnggiXIkooOCuwG7DnuSbPO/Ddl2O6Kz7z9pX7BzzPNS3svGHsE5Fn66Neh1Je1b6bY1gDd+4mNJb7+nUcajPCL8e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832641; c=relaxed/simple;
-	bh=EKS9iHgDFNRYDK8vuOBJE2Fn8x9Cd1jM0W3ktvv19k4=;
+	s=arc-20240116; t=1712832502; c=relaxed/simple;
+	bh=hzo6dXJDSplKMfcS7JGhL9HqzaCxh5H8I2+JpghInkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQeo5W2BY11S9ZMpJLTI/AA8yqBtVrQuRXpbQuhSfu8CF9prfFfzOEn2Hsl/2GM9Wnv9t3jqoFgorEyeqKUSAab6CIjNt/9PX4PvAzyhqu6mKDfL2FqZPK9s7Cj+hidIUb8LuVBxs5tR/AlFJbOo2KHMStFLFEYN0kPwdcN4eKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpFzKcAu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1543C433C7;
-	Thu, 11 Apr 2024 10:50:40 +0000 (UTC)
+	 MIME-Version; b=s51YnD2KFBQUhTvMeDokmhq993Wq7Ub+z56xiinJniLWB0RNez0XItKkM6lRMeME4HyLXsAKJ4j7z++k0IszbwgDVos8QvVw6dDOyuh4GbvEraChW8eIkFbcXlbIlcqcDeukv4+4+IxZbBUQE1No2V1H+Ony+7DKxx7przCmwz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qarViO1W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8443C433F1;
+	Thu, 11 Apr 2024 10:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832641;
-	bh=EKS9iHgDFNRYDK8vuOBJE2Fn8x9Cd1jM0W3ktvv19k4=;
+	s=korg; t=1712832502;
+	bh=hzo6dXJDSplKMfcS7JGhL9HqzaCxh5H8I2+JpghInkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JpFzKcAu5RAveieL1p3Zffbt185CIOfyAW/wgVG9G3DxcwZ1hNiPJg67yekzlSEb2
-	 vd3mhfs9HtHe/hkruiQ3v+Mgn4YSGPHPN92HJxpdZIjuf/f1cqu0cnokWWyjEczkhH
-	 6wSSb0rcRdLeAoMn4QSUH99CPf3g49SFMK1DUXoI=
+	b=qarViO1WhLaCqvGrr0TAF10nagsvXzwPPgB4QRlvZYMidpTPQAadgCp7Xm2mGxXCJ
+	 HNrF46uMt0WMLhHMF1KTtCQDT3ZrFC5TTA/nueswXmgG7Ro9yDXHGhMTmOvtc2XdwH
+	 nJVxHqu8jWsWBH7jW4bf2Y8OWFBDRXvWSsHx/NLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Smirnov <r.smirnov@omp.ru>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Jens Axboe <axboe@kernel.dk>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 33/57] block: prevent division by zero in blk_rq_stat_sum()
+Subject: [PATCH 6.1 69/83] netfilter: nf_tables: release batch on table validation from abort path
 Date: Thu, 11 Apr 2024 11:57:41 +0200
-Message-ID: <20240411095408.997363463@linuxfoundation.org>
+Message-ID: <20240411095414.762308749@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Smirnov <r.smirnov@omp.ru>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 93f52fbeaf4b676b21acfe42a5152620e6770d02 ]
+commit a45e6889575c2067d3c0212b6bc1022891e65b91 upstream.
 
-The expression dst->nr_samples + src->nr_samples may
-have zero value on overflow. It is necessary to add
-a check to avoid division by zero.
+Unlike early commit path stage which triggers a call to abort, an
+explicit release of the batch is required on abort, otherwise mutex is
+released and commit_list remains in place.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+Add WARN_ON_ONCE to ensure commit_list is empty from the abort path
+before releasing the mutex.
 
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20240305134509.23108-1-r.smirnov@omp.ru
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+After this patch, commit_list is always assumed to be empty before
+grabbing the mutex, therefore
+
+  03c1f1ef1584 ("netfilter: Cleanup nft_net->module_list from nf_tables_exit_net()")
+
+only needs to release the pending modules for registration.
+
+Cc: stable@vger.kernel.org
+Fixes: c0391b6ab810 ("netfilter: nf_tables: missing validation from the abort path")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-stat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/block/blk-stat.c b/block/blk-stat.c
-index ae3dd1fb8e61d..6e602f9b966e4 100644
---- a/block/blk-stat.c
-+++ b/block/blk-stat.c
-@@ -28,7 +28,7 @@ void blk_rq_stat_init(struct blk_rq_stat *stat)
- /* src is a per-cpu stat, mean isn't initialized */
- void blk_rq_stat_sum(struct blk_rq_stat *dst, struct blk_rq_stat *src)
- {
--	if (!src->nr_samples)
-+	if (dst->nr_samples + src->nr_samples <= dst->nr_samples)
- 		return;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 8d38cd5047692..6b032a90e2b15 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9902,10 +9902,11 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 	struct nft_trans *trans, *next;
+ 	LIST_HEAD(set_update_list);
+ 	struct nft_trans_elem *te;
++	int err = 0;
  
- 	dst->min = min(dst->min, src->min);
+ 	if (action == NFNL_ABORT_VALIDATE &&
+ 	    nf_tables_validate(net) < 0)
+-		return -EAGAIN;
++		err = -EAGAIN;
+ 
+ 	list_for_each_entry_safe_reverse(trans, next, &nft_net->commit_list,
+ 					 list) {
+@@ -10081,7 +10082,7 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 	else
+ 		nf_tables_module_autoload_cleanup(net);
+ 
+-	return 0;
++	return err;
+ }
+ 
+ static int nf_tables_abort(struct net *net, struct sk_buff *skb,
+@@ -10095,6 +10096,8 @@ static int nf_tables_abort(struct net *net, struct sk_buff *skb,
+ 	ret = __nf_tables_abort(net, action);
+ 	nft_gc_seq_end(nft_net, gc_seq);
+ 
++	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
++
+ 	mutex_unlock(&nft_net->commit_mutex);
+ 
+ 	return ret;
+@@ -10892,9 +10895,10 @@ static void __net_exit nf_tables_exit_net(struct net *net)
+ 
+ 	gc_seq = nft_gc_seq_begin(nft_net);
+ 
+-	if (!list_empty(&nft_net->commit_list) ||
+-	    !list_empty(&nft_net->module_list))
+-		__nf_tables_abort(net, NFNL_ABORT_NONE);
++	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
++
++	if (!list_empty(&nft_net->module_list))
++		nf_tables_module_autoload_cleanup(net);
+ 
+ 	__nft_release_tables(net);
+ 
 -- 
 2.43.0
 
