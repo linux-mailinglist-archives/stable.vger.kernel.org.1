@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C96CA8A0F47
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4988A0DA1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69F521F26DA6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:22:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 629B41F21A54
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0CC14600A;
-	Thu, 11 Apr 2024 10:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DBA145B0D;
+	Thu, 11 Apr 2024 10:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGOI/o9k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trAA7otv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE75113FD94;
-	Thu, 11 Apr 2024 10:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6096C2EAE5;
+	Thu, 11 Apr 2024 10:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830950; cv=none; b=oEtdYFgN4+V+SDMqpt2knLSXyX3zRnRaNCv3oGBrb9jwT77vDGaKrWm68UD30VLk952ERJtBgVAgWfORx9Jq+f2or3gUuXAg7rMgvUf2beNyeYyqr92eyPIQWLhXtJh4/y+iN1QvWo8UHjoSe6EYBh4jWC+MauZi9m5Y3EkHmbQ=
+	t=1712829956; cv=none; b=BBBE/SwGqmzqRwIpLMPziqKLc55pKtgRWqa4QLEiA2sKqX02rtFrhuDTywxXZMZYs/f+nG74giF0aFGlx6Nm4n41v8Hsvz+O6LF98GqGdWwkHImUDzh0qmaAlilwuW6BTBCvE23Ca1FxS2woa3HjaiMZUzIpFtejm+sklF6J0Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830950; c=relaxed/simple;
-	bh=6fGe/fLzT/3X4GzW24af7BMNoEemEt7gGL9+rkLJg7o=;
+	s=arc-20240116; t=1712829956; c=relaxed/simple;
+	bh=cyhkpGO/Vr65vsVTQuG/hhcPjrrXQDjf5QU35v3mZ5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jIw98IwtXsUy1Nfxl24ACsOxY7+zMfRITIA27WgvFk3Pt4FZMIQ7Yrzpy98C+zSPi9lbwFxBRwMtkUJQVO4tsUWj6o1IiL1xTeJJA4b3+Nf5lE7qGsPXb4X7UGMYjrgSazgvsvHYsVgBCfG9SGZCv37h15OwnYgt0wKmcET+ALM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGOI/o9k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A422C433C7;
-	Thu, 11 Apr 2024 10:22:29 +0000 (UTC)
+	 MIME-Version; b=oxY4I/S+W8cu+mNMUirTXYpB3ppNeHSyK+eoVeeYqVjsbrfZTQgng+fxQxrlcdAoXq25mVWEOjbuc25SPF1MrGhAjC6MaeipM+g7wYU4hWWhEDoDpMQwlXS2cnBKF7qGfa1Co6686clpjLUnRbv5Cljo5pZoiZXOO5NYMfxOzN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trAA7otv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B5FC433C7;
+	Thu, 11 Apr 2024 10:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830950;
-	bh=6fGe/fLzT/3X4GzW24af7BMNoEemEt7gGL9+rkLJg7o=;
+	s=korg; t=1712829956;
+	bh=cyhkpGO/Vr65vsVTQuG/hhcPjrrXQDjf5QU35v3mZ5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pGOI/o9kH5ZCjrVYnqYFl8oHmeUVnKFwbrG0qNwsiylNM5gYLbcAFLNA6CKPR3Z5O
-	 NzrL78SIMbBPLipiKIuS0AOp7+7q1tWD92k49k9rKJrkwgaAAIe0q7LdRNpYWsIOIj
-	 VpRB+V7SBNaejXu4QYhsWQtvwBJNAKg4fmn3bVqc=
+	b=trAA7otvdnRSOjsxl6coFIZwLtv+wdcayrsjilOS7IEH1KK+I5em9KKPimwISzLfO
+	 q+9P3kL7l9YdPLpfPs7jnVfQyxSAow/TaE7M8CBvwfTiyoOCv2JuCtYEbDpoYZH7JE
+	 gNqHlU5fVPWSagh8uoqGnTmdYjqdT2ll+2o4UF2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 173/215] batman-adv: Return directly after a failed batadv_dat_select_candidates() in batadv_dat_forward_data()
-Date: Thu, 11 Apr 2024 11:56:22 +0200
-Message-ID: <20240411095430.071783919@linuxfoundation.org>
+Subject: [PATCH 4.19 160/175] block: prevent division by zero in blk_rq_stat_sum()
+Date: Thu, 11 Apr 2024 11:56:23 +0200
+Message-ID: <20240411095424.381474020@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-[ Upstream commit ffc15626c861f811f9778914be004fcf43810a91 ]
+[ Upstream commit 93f52fbeaf4b676b21acfe42a5152620e6770d02 ]
 
-The kfree() function was called in one case by
-the batadv_dat_forward_data() function during error handling
-even if the passed variable contained a null pointer.
-This issue was detected by using the Coccinelle software.
+The expression dst->nr_samples + src->nr_samples may
+have zero value on overflow. It is necessary to add
+a check to avoid division by zero.
 
-* Thus return directly after a batadv_dat_select_candidates() call failed
-  at the beginning.
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-* Delete the label “out” which became unnecessary with this refactoring.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Acked-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20240305134509.23108-1-r.smirnov@omp.ru
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/distributed-arp-table.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ block/blk-stat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
-index dda62dcd59c8a..c5b7e9994a018 100644
---- a/net/batman-adv/distributed-arp-table.c
-+++ b/net/batman-adv/distributed-arp-table.c
-@@ -682,7 +682,7 @@ static bool batadv_dat_forward_data(struct batadv_priv *bat_priv,
+diff --git a/block/blk-stat.c b/block/blk-stat.c
+index 7587b1c3caaf5..507ac714423bd 100644
+--- a/block/blk-stat.c
++++ b/block/blk-stat.c
+@@ -27,7 +27,7 @@ void blk_rq_stat_init(struct blk_rq_stat *stat)
+ /* src is a per-cpu stat, mean isn't initialized */
+ void blk_rq_stat_sum(struct blk_rq_stat *dst, struct blk_rq_stat *src)
+ {
+-	if (!src->nr_samples)
++	if (dst->nr_samples + src->nr_samples <= dst->nr_samples)
+ 		return;
  
- 	cand = batadv_dat_select_candidates(bat_priv, ip, vid);
- 	if (!cand)
--		goto out;
-+		return ret;
- 
- 	batadv_dbg(BATADV_DBG_DAT, bat_priv, "DHT_SEND for %pI4\n", &ip);
- 
-@@ -726,7 +726,6 @@ static bool batadv_dat_forward_data(struct batadv_priv *bat_priv,
- 		batadv_orig_node_put(cand[i].orig_node);
- 	}
- 
--out:
- 	kfree(cand);
- 	return ret;
- }
+ 	dst->min = min(dst->min, src->min);
 -- 
 2.43.0
 
