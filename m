@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D1B8A114C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 464B08A0FE7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5E6E1C23D37
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 022B7281A5C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BF71487E6;
-	Thu, 11 Apr 2024 10:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB4E146A71;
+	Thu, 11 Apr 2024 10:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGuW3fxg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuCxX+Kj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C331487C1;
-	Thu, 11 Apr 2024 10:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A83D143C76;
+	Thu, 11 Apr 2024 10:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832154; cv=none; b=dZOUemKGymol7BqvJrQd74AvNiXnvJQFvaUuypJg65+fFSTME3bwomsEXqeBo5G15fMvEm4DXv7g4mP7+5vlbjY+Y7AC7xFGEZsqVQZRTadYQp5l1eXnxmm+EGnzchxN74aYt6eJaAZBUdyC9Q5mI3LoTj+xNlGRCX7Yj1C/gE8=
+	t=1712831322; cv=none; b=Rebsxuto0IHS0tpv0NW9u1D9/NDaDce/B/gT0daFieSUdvl00p8J92GB49HFI6SrxOfMWvTly0ZehX1BB+g9xUZBupD7PPk6wwTzrfXLYEWEWk7mj3pKk4IuZpoH+ZQch5nLCItkph93DN1Raz1nFVZjr4BR3h2Wz+iDlJjBch8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832154; c=relaxed/simple;
-	bh=0SCHghE8voAfYrYlRauv/8U6pV+drh1bpy/ZNiS+H6E=;
+	s=arc-20240116; t=1712831322; c=relaxed/simple;
+	bh=nPHAh0pd8KRDgMf0D5grRZG9GVts7ZkyU72XMF9qwG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3RKMpw91hqiJv/8qHvfv0c6rpxLG+RIF4vtM9fyDR8quq1pyIRXstBoTJOOSfUMYzzVVvZ1/Bl80X/+bnSPOwIxbddPE4qNrCN+AEeb4+om0fZjGVpiChGi3ma1hw7WumFErK9g5viFW87xNZJOJbM/gPj1RIJ3N7bnODv7EF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGuW3fxg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C002C433F1;
-	Thu, 11 Apr 2024 10:42:33 +0000 (UTC)
+	 MIME-Version; b=fpsVPGziS/4czXiGAmaA1vUW9DQBOU/FWouhyOUAVQnLoVPgUjSP3CylRPUXwc3HtGvESLJVFXo32mWQ+vzIf/nN56/TpI0H+ZKun0c47lkAsZIHyhppjMXHJFnYHHn6+/7+Mm9JO0lg43yXaqttgrvkUHYRrMhpknhNFlQeTtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuCxX+Kj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38BDC433F1;
+	Thu, 11 Apr 2024 10:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832153;
-	bh=0SCHghE8voAfYrYlRauv/8U6pV+drh1bpy/ZNiS+H6E=;
+	s=korg; t=1712831322;
+	bh=nPHAh0pd8KRDgMf0D5grRZG9GVts7ZkyU72XMF9qwG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gGuW3fxg4hCsfqH4WPH/xIvmQLKoOgij1Y00qKApdgaC/YtNmQQCgJNamxb+RQpWh
-	 AcLu4Yc7coVJpiRZ8cvKiihA1906Xb28R6qTU9MVo9fMZoxoY4v26UWkaGtdcNRCG3
-	 Te9gpauyPT45V7YvZQ3TOyDXusKOt4nA9y3T5hKc=
+	b=uuCxX+KjGWYHXfwDHzjZwGfbxO57NX2q+BmMPa5FHuXcplUze1r3ZUFme9fUIMJk1
+	 6qYcGPrxKoqYFWvyjd43EriB51Y1a3iJvNq+SgYBcHuX2VPL4XxLGKbTVZicyLxCmP
+	 OJ+kR2DTbwCWZR/lkzEpD7+0vHX1X44ihb6XeOqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ogness <john.ogness@linutronix.de>,
-	Petr Mladek <pmladek@suse.com>,
+	John Hawley <warthog9@eaglescrag.net>,
+	"Ricardo B. Marliere" <ricardo@marliere.net>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 247/294] panic: Flush kernel log buffer at the end
+Subject: [PATCH 6.6 083/114] ktest: force $buildonly = 1 for make_warnings_file test type
 Date: Thu, 11 Apr 2024 11:56:50 +0200
-Message-ID: <20240411095443.003646780@linuxfoundation.org>
+Message-ID: <20240411095419.394514665@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Ricardo B. Marliere <ricardo@marliere.net>
 
-[ Upstream commit d988d9a9b9d180bfd5c1d353b3b176cb90d6861b ]
+[ Upstream commit 07283c1873a4d0eaa0e822536881bfdaea853910 ]
 
-If the kernel crashes in a context where printk() calls always
-defer printing (such as in NMI or inside a printk_safe section)
-then the final panic messages will be deferred to irq_work. But
-if irq_work is not available, the messages will not get printed
-unless explicitly flushed. The result is that the final
-"end Kernel panic" banner does not get printed.
+The test type "make_warnings_file" should have no mandatory configuration
+parameters other than the ones required by the "build" test type, because
+its purpose is to create a file with build warnings that may or may not be
+used by other subsequent tests. Currently, the only way to use it as a
+stand-alone test is by setting POWER_CYCLE, CONSOLE, SSH_USER,
+BUILD_TARGET, TARGET_IMAGE, REBOOT_TYPE and GRUB_MENU.
 
-Add one final flush after the last printk() call to make sure
-the final panic messages make it out as well.
+Link: https://lkml.kernel.org/r/20240315-ktest-v2-1-c5c20a75f6a3@marliere.net
 
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20240207134103.1357162-14-john.ogness@linutronix.de
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Cc: John Hawley <warthog9@eaglescrag.net>
+Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/panic.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/testing/ktest/ktest.pl | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/panic.c b/kernel/panic.c
-index bc39e2b27d315..30d8da0d43d8f 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -427,6 +427,14 @@ void panic(const char *fmt, ...)
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index 829f5bdfd2e43..24451f8f42910 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -843,6 +843,7 @@ sub set_value {
+     if ($lvalue =~ /^(TEST|BISECT|CONFIG_BISECT)_TYPE(\[.*\])?$/ &&
+ 	$prvalue !~ /^(config_|)bisect$/ &&
+ 	$prvalue !~ /^build$/ &&
++	$prvalue !~ /^make_warnings_file$/ &&
+ 	$buildonly) {
  
- 	/* Do not scroll important messages printed above */
- 	suppress_printk = 1;
-+
-+	/*
-+	 * The final messages may not have been printed if in a context that
-+	 * defers printing (such as NMI) and irq_work is not available.
-+	 * Explicitly flush the kernel log buffer one last time.
-+	 */
-+	console_flush_on_panic(CONSOLE_FLUSH_PENDING);
-+
- 	local_irq_enable();
- 	for (i = 0; ; i += PANIC_TIMER_STEP) {
- 		touch_softlockup_watchdog();
+ 	# Note if a test is something other than build, then we
 -- 
 2.43.0
 
