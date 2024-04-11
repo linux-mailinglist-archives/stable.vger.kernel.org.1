@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D11998A0D91
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 950D98A0E56
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BDD7286318
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34BD11F24CA3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503AA145FFA;
-	Thu, 11 Apr 2024 10:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F04145FF0;
+	Thu, 11 Apr 2024 10:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMNLd56f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2xI3CkM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDDA145FF0;
-	Thu, 11 Apr 2024 10:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82824145B1E;
+	Thu, 11 Apr 2024 10:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829912; cv=none; b=YS0fE/Z+jKRvuKaPHHGPygTkdMf8bxn/RyPg+JSdqZ1sfRn4HxjhGX+AWjhTDsn78k3F25CYM6xu2lgysmFuvOANdMEl6en8r3Tz8x4LFP6SAb9Shll9MF1WJTWpc3MKmJeSnwOLgiheFqtPo3/V0w8JwAruebKWOGtXdrfq42I=
+	t=1712830422; cv=none; b=CYLbkhyAcqg4BhvPJdp+zZ0u1lY4Ug1tuVjzGO9Pk+NHQz8y5RZ+Myh9xV2UXwooTV5adcWHHNJjoLJBqAFzDQri94IcduDfz08pOXoVdCzKV3E/ysLPBk7t6b1QjNT7o18jc4DZPT0/ffxFXYPPOgOMWf2+8dd7VPXPEQoy6O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829912; c=relaxed/simple;
-	bh=ZtEmns+Diz69ysGSQlZh339Uq6o/rsZ69Dj8k9l0BNI=;
+	s=arc-20240116; t=1712830422; c=relaxed/simple;
+	bh=5lTFt4ZZmUw+IZ3tsp6V3ungTALnwSYUyTYkPHkvm1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E//2fN8ohmfTlPOsoiLFxHvXBt7iDCfhMtvjABiaIo24GnIwxguq0gSZlqc21tjSBGbN+p/9mowk4/dU2YkgqBU91ZIzo1bAUdD8dF4ZSESn9wcTmC6kKgFly2aE6yx1GaZ5cBmeNIoDO1UCN5mfM1dv1EHwQApkiTpb4wGzC2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMNLd56f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3F4C433F1;
-	Thu, 11 Apr 2024 10:05:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sisSFaXX2RGDyQltfCzLOxl+gy8DSBLRBbx79Y0fMeS1FaO+7jW63iRuI1/0LhPJtkFDJEKcMZaoGwO6kh/dPXi/mbWJc87Em+Bj9Ap5vQYeqpQs5hjH3Q9N7nmA2xtPPo0n0Z7aya1tDJQM0nJ8Ov821iAue0wyKQKIa/1vFNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2xI3CkM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A753CC433C7;
+	Thu, 11 Apr 2024 10:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829911;
-	bh=ZtEmns+Diz69ysGSQlZh339Uq6o/rsZ69Dj8k9l0BNI=;
+	s=korg; t=1712830422;
+	bh=5lTFt4ZZmUw+IZ3tsp6V3ungTALnwSYUyTYkPHkvm1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TMNLd56fEg08e9V9v8SfBPHA0Ujh5X740CECrGlZcOZj8J6vG+0owDCLEZ2rSTiqA
-	 8xVZ4bWUOVHoBI4EyD2P8M9CnZvuycgGRGF45+wSnlzmPvOId5sNxYngEC+4JoRR02
-	 nmg0NzRoPHKx81XafLL/j/pyt+PHcaPTWAHpPcv4=
+	b=Q2xI3CkMERWIiV9AD8+GK+lB5D8/1uUiO4pZ7vThA/5Htd2DINAbcQRS76CIJrIfZ
+	 0T9hLUAHiVZAJ/o5dpFpG9UJlUQdDTuZlQry9TgPI/y+6mnWAX82B+p+CL13IJlMDI
+	 UHKKofLCZkb5t0EmdcuKi4bgpVTSLanlf6SG8G1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Jonker <jbx6244@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	=?UTF-8?q?Alban=20Boy=C3=A9?= <alban.boye@protonmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 147/175] arm64: dts: rockchip: fix rk3399 hdmi ports node
+Subject: [PATCH 6.8 102/143] platform/x86: touchscreen_dmi: Add an extra entry for a variant of the Chuwi Vi8 tablet
 Date: Thu, 11 Apr 2024 11:56:10 +0200
-Message-ID: <20240411095423.988953469@linuxfoundation.org>
+Message-ID: <20240411095423.978466532@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Jonker <jbx6244@gmail.com>
+From: Alban Boyé <alban.boye@protonmail.com>
 
-[ Upstream commit f051b6ace7ffcc48d6d1017191f167c0a85799f6 ]
+[ Upstream commit 1266e2efb7512dbf20eac820ca2ed34de6b1c3e7 ]
 
-Fix rk3399 hdmi ports node so that it matches the
-rockchip,dw-hdmi.yaml binding.
-
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Link: https://lore.kernel.org/r/a6ab6f75-3b80-40b1-bd30-3113e14becdd@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Alban Boyé <alban.boye@protonmail.com>
+Link: https://lore.kernel.org/r/20240227223919.11587-1-alban.boye@protonmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399.dtsi | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/platform/x86/touchscreen_dmi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-index 5a60faa8e9998..f19d43021a4e7 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-@@ -1683,6 +1683,7 @@ simple-audio-card,codec {
- 	hdmi: hdmi@ff940000 {
- 		compatible = "rockchip,rk3399-dw-hdmi";
- 		reg = <0x0 0xff940000 0x0 0x20000>;
-+		reg-io-width = <4>;
- 		interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH 0>;
- 		clocks = <&cru PCLK_HDMI_CTRL>,
- 			 <&cru SCLK_HDMI_SFR>,
-@@ -1691,13 +1692,16 @@ hdmi: hdmi@ff940000 {
- 			 <&cru PLL_VPLL>;
- 		clock-names = "iahb", "isfr", "cec", "grf", "vpll";
- 		power-domains = <&power RK3399_PD_HDCP>;
--		reg-io-width = <4>;
- 		rockchip,grf = <&grf>;
- 		#sound-dai-cells = <0>;
- 		status = "disabled";
- 
- 		ports {
--			hdmi_in: port {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			hdmi_in: port@0 {
-+				reg = <0>;
- 				#address-cells = <1>;
- 				#size-cells = <0>;
- 
-@@ -1710,6 +1714,10 @@ hdmi_in_vopl: endpoint@1 {
- 					remote-endpoint = <&vopl_out_hdmi>;
- 				};
- 			};
-+
-+			hdmi_out: port@1 {
-+				reg = <1>;
-+			};
- 		};
- 	};
- 
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
+index 975cf24ae359a..c6a10ec2c83f6 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -1217,6 +1217,15 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
+ 			DMI_MATCH(DMI_BIOS_VERSION, "CHUWI.D86JLBNR"),
+ 		},
+ 	},
++	{
++		/* Chuwi Vi8 dual-boot (CWI506) */
++		.driver_data = (void *)&chuwi_vi8_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "i86"),
++			DMI_MATCH(DMI_BIOS_VERSION, "CHUWI2.D86JHBNR02"),
++		},
++	},
+ 	{
+ 		/* Chuwi Vi8 Plus (CWI519) */
+ 		.driver_data = (void *)&chuwi_vi8_plus_data,
 -- 
 2.43.0
 
