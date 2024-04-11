@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FEF38A0FE2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BA828A0E5C
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE9F3283391
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC12A2866B9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E5D146D45;
-	Thu, 11 Apr 2024 10:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59978146009;
+	Thu, 11 Apr 2024 10:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftQYl5Dc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hir788aC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A031A1465BF;
-	Thu, 11 Apr 2024 10:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1925C145B28;
+	Thu, 11 Apr 2024 10:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831307; cv=none; b=PUJzCw7JopP2OpHVhEL/+Fa43AsIKD1MksQDenguJpHNldw/NMV0udcgTPyzUe9LaBu/0g29Ldc/WEJKeejV42yVM95kcKqfGU5oOQq7Obd3ZzgZVemssE0q0u2UxHzlwEVLyRiMSzqkfEf2DZFAPHmXgj1d6lSnWlD5gtdP93o=
+	t=1712830437; cv=none; b=UFSOSTVZQuR6PSz5hSY6tVdBHby4mHNeoCp56cRposyB5ZffWH/Zi3MLQQ3dQr8ossAyQjDiAFlYppYXD21Y+dsePByoV8JXClF3VmY3J+lzwd3sBSG7fS/R1ZbXr9XCEFbCGVnxbImiktqotEONBRIGytTc1yHIvfA5EnlV5Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831307; c=relaxed/simple;
-	bh=W4FgZAjZd2MNMqiYA3sNmNcs4qYLaEa8PwGKl049s/Q=;
+	s=arc-20240116; t=1712830437; c=relaxed/simple;
+	bh=MyU0IAWzR6C2RY3EXP2BPALFUp0kNTMtwHMuwlYE2/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gvMNcmav8cLnwca9Ii9POL3NowldZ2t7RjIFDMvDolKWbc47AeEQpcExSG6EFi6R5UhmMNhfjjpePbV4cCMxJryTkOm9nVXnaXXPegnoUOnuDMt1lZsP3Dy36OgLrqkPJx2aAIMpo1F6KfjzFK4VxWjMAcUNJnbgoP1I6CXaASM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftQYl5Dc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C11C433F1;
-	Thu, 11 Apr 2024 10:28:26 +0000 (UTC)
+	 MIME-Version; b=Pvx2kh1cd9LeXD0g054lFC7G0+TE76OBPYAxDr5P6l9vSOVplY5FOyxZQb8drGUZrJlvC/7eNlL8Kl380qWhljjlfNnBmEBj7tnyTWNVxKhIXQn3TVrqptCUNDUXoaaWyoXib9mcHyu4wGZD7JK3gF77yrE2vrpsbRVVlhKL0Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hir788aC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B8DC433C7;
+	Thu, 11 Apr 2024 10:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831307;
-	bh=W4FgZAjZd2MNMqiYA3sNmNcs4qYLaEa8PwGKl049s/Q=;
+	s=korg; t=1712830437;
+	bh=MyU0IAWzR6C2RY3EXP2BPALFUp0kNTMtwHMuwlYE2/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ftQYl5Dcb99KMECxW+pyWOyLiQSOqpX2CUe3XxNTOGyf62QBgZJIPOr14AeXo+Ggi
-	 fC+zk705412b243BdbKCeT8UIp4R+RVqZtud0XeTbl/Nd9lo/IAOYjIjjFndTe/tUh
-	 yStn3eE6lEOdXOE1J2ioa9eQl3i+MqqnWDZwdXnQ=
+	b=hir788aCsOXCpXquQLM2h1GFf0cMeUU8afkXTAqEH0wraKmYs3e+ba+sYA63OmKMl
+	 lpZ9HVXQoSMO9YqYVFawwTjzpIe24BVLTSADGjz5AqHUrbAOaJvRzFtBkwf0e7JTSu
+	 tzjSib7fFgvNmQtk58CeW06Rv0OAixOnk7JDbbG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gergo Koteles <soyer@irl.hu>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Dave Airlie <airlied@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/114] Input: allocate keycode for Display refresh rate toggle
+Subject: [PATCH 6.8 138/143] nouveau: fix devinit paths to only handle display on GSP.
 Date: Thu, 11 Apr 2024 11:56:46 +0200
-Message-ID: <20240411095419.273011263@linuxfoundation.org>
+Message-ID: <20240411095425.054960679@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gergo Koteles <soyer@irl.hu>
+From: Dave Airlie <airlied@gmail.com>
 
-[ Upstream commit cfeb98b95fff25c442f78a6f616c627bc48a26b7 ]
+[ Upstream commit 718c4fb221dbeff9072810841b949413c5ffc345 ]
 
-Newer Lenovo Yogas and Legions with 60Hz/90Hz displays send a wmi event
-when Fn + R is pressed. This is intended for use to switch between the
-two refresh rates.
+This reverts:
+nouveau/gsp: don't check devinit disable on GSP.
+and applies a further fix.
 
-Allocate a new KEY_REFRESH_RATE_TOGGLE keycode for it.
+It turns out the open gpu driver, checks this register,
+but only for display.
 
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/15a5d08c84cf4d7b820de34ebbcf8ae2502fb3ca.1710065750.git.soyer@irl.hu
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Match that behaviour and in the turing path only disable
+the display block. (ampere already only does displays).
+
+Fixes: 5d4e8ae6e57b ("nouveau/gsp: don't check devinit disable on GSP.")
+Reviewed-by: Danilo Krummrich <dakr@redhat.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240408064243.2219527-1-airlied@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/input-event-codes.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/nouveau/nvkm/subdev/devinit/gm107.c | 12 ++++++++----
+ drivers/gpu/drm/nouveau/nvkm/subdev/devinit/r535.c  |  1 +
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
-index 022a520e31fc2..03edf2ccdf6c8 100644
---- a/include/uapi/linux/input-event-codes.h
-+++ b/include/uapi/linux/input-event-codes.h
-@@ -602,6 +602,7 @@
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/devinit/gm107.c b/drivers/gpu/drm/nouveau/nvkm/subdev/devinit/gm107.c
+index 7bcbc4895ec22..271bfa038f5bc 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/devinit/gm107.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/devinit/gm107.c
+@@ -25,6 +25,7 @@
  
- #define KEY_ALS_TOGGLE		0x230	/* Ambient light sensor */
- #define KEY_ROTATE_LOCK_TOGGLE	0x231	/* Display rotation lock */
-+#define KEY_REFRESH_RATE_TOGGLE	0x232	/* Display refresh rate toggle */
+ #include <subdev/bios.h>
+ #include <subdev/bios/init.h>
++#include <subdev/gsp.h>
  
- #define KEY_BUTTONCONFIG		0x240	/* AL Button Configuration */
- #define KEY_TASKMANAGER		0x241	/* AL Task/Project Manager */
+ void
+ gm107_devinit_disable(struct nvkm_devinit *init)
+@@ -33,10 +34,13 @@ gm107_devinit_disable(struct nvkm_devinit *init)
+ 	u32 r021c00 = nvkm_rd32(device, 0x021c00);
+ 	u32 r021c04 = nvkm_rd32(device, 0x021c04);
+ 
+-	if (r021c00 & 0x00000001)
+-		nvkm_subdev_disable(device, NVKM_ENGINE_CE, 0);
+-	if (r021c00 & 0x00000004)
+-		nvkm_subdev_disable(device, NVKM_ENGINE_CE, 2);
++	/* gsp only wants to enable/disable display */
++	if (!nvkm_gsp_rm(device->gsp)) {
++		if (r021c00 & 0x00000001)
++			nvkm_subdev_disable(device, NVKM_ENGINE_CE, 0);
++		if (r021c00 & 0x00000004)
++			nvkm_subdev_disable(device, NVKM_ENGINE_CE, 2);
++	}
+ 	if (r021c04 & 0x00000001)
+ 		nvkm_subdev_disable(device, NVKM_ENGINE_DISP, 0);
+ }
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/devinit/r535.c b/drivers/gpu/drm/nouveau/nvkm/subdev/devinit/r535.c
+index 11b4c9c274a1a..666eb93b1742c 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/devinit/r535.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/devinit/r535.c
+@@ -41,6 +41,7 @@ r535_devinit_new(const struct nvkm_devinit_func *hw,
+ 
+ 	rm->dtor = r535_devinit_dtor;
+ 	rm->post = hw->post;
++	rm->disable = hw->disable;
+ 
+ 	ret = nv50_devinit_new_(rm, device, type, inst, pdevinit);
+ 	if (ret)
 -- 
 2.43.0
 
