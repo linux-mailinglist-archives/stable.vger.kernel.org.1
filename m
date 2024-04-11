@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-38921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2688A1107
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C868A0D61
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6318B1C23907
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94F421F21EB6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4CC13FD97;
-	Thu, 11 Apr 2024 10:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A7D145B13;
+	Thu, 11 Apr 2024 10:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0a63RX+a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phBAVM/8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9710813C9A5;
-	Thu, 11 Apr 2024 10:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEEF145B04;
+	Thu, 11 Apr 2024 10:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831980; cv=none; b=n84LHHZ9aERMiQWpmnbJHSv0ag8b0kweIlPC06hbVzR71wcUs1tuZDJ+yhKGbXkdcZ65ko81L9dBYbw6heh1Fbye4LGXaIY/V+MUDvzvncexaaZ8eDZS7xbQT51Ig97zHgfBEppa5sOB+Ov+HK8xwy2xYpWvqyh+/89m5uWMkTo=
+	t=1712829800; cv=none; b=ue7sRG6RtD1HqojXr1oT8DGIMKT7tE5eTOnsBz919EOWWQW4Qh8gBjXN4ikukdDjhvGLIqZ7XoeNXkwFfm+z5k7pe/ID3bHdUKLWsbcqnSwyJuPNVQfGO5C0pjhK6wb5GF2ON7jiRV21dXW+WrhsUZoXOPh8y3DJY83C2FmcZ0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831980; c=relaxed/simple;
-	bh=K23n7xs49+qEyP+qh6Ed96CmHx/zhXtD8injCFQLbIM=;
+	s=arc-20240116; t=1712829800; c=relaxed/simple;
+	bh=Rn+/NoXTvu1E/IItL4NfDu0kNmrhckjzCALVZZ2f7wA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VjabkIP0YS9Hn29RZ7suR8eQGTYYxY9AaLNwbA540qdOQc6vG+kS4HeTR5VMcllLOabr16SDz0+hd/BPB/eiA5G5acN6ZcgPIwQlgp00nGeWFRs6jnQ9jsowMtVwiAK2CiLbbcGErckWrdiCaROQuJ9O348+T9GUfYOklicg3CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0a63RX+a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA57C433F1;
-	Thu, 11 Apr 2024 10:39:39 +0000 (UTC)
+	 MIME-Version; b=iUvPBk0z2l+zzswGluEBSeSymBYCwbEge2YiuFV6qnuEgN4F0EwnFpoKLkt16gYR7XLypC5ErINhD57y/RP7kw/TkhX6fw6eUQdhcar26psx3lHJRhknBYFlvuHdQi7raa7EahkvEycrZMMfYOVgnrbKp/nb1m/7Ywem2tb0Hrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phBAVM/8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9D7C433F1;
+	Thu, 11 Apr 2024 10:03:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831980;
-	bh=K23n7xs49+qEyP+qh6Ed96CmHx/zhXtD8injCFQLbIM=;
+	s=korg; t=1712829800;
+	bh=Rn+/NoXTvu1E/IItL4NfDu0kNmrhckjzCALVZZ2f7wA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0a63RX+agsDPUrj1xQuu039Sf2uXu0/IFtzV0+iNQvuYz06Z4s12SYmjFUlU1ePIx
-	 aEgildTqUAFZ3eVtBPtHUb/boYL/1vBXVRhVfiEgYHPrurQkaqlZtACNKOLXIaC1cl
-	 3yt8cCU4yvcZXRZbjjd9yqx4vofNogKpTXFqcWSo=
+	b=phBAVM/8RWWdiGkaD0mQth+gc7y2gWd+3iCtq2FAYgaNhrESj5LrwEKA9t6F1dZn+
+	 ZuIwR5WWTz56oSa6SEsZA6ysqhkPuyWTXie5m6rA4XdZHb88AkJjkM6XRI7tcftNHs
+	 HQB8cawNlWgjW+XxaYVvQwqWBWAfQUDzbTocNTRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: [PATCH 5.10 142/294] x86/bugs: Use ALTERNATIVE() instead of mds_user_clear static key
+	ranygh@riseup.net,
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 4.19 082/175] wifi: mac80211: check/clear fast rx for non-4addr sta VLAN changes
 Date: Thu, 11 Apr 2024 11:55:05 +0200
-Message-ID: <20240411095439.931119397@linuxfoundation.org>
+Message-ID: <20240411095422.031663010@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,205 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 6613d82e617dd7eb8b0c40b2fe3acea655b1d611 upstream.
+commit 4f2bdb3c5e3189297e156b3ff84b140423d64685 upstream.
 
-The VERW mitigation at exit-to-user is enabled via a static branch
-mds_user_clear. This static branch is never toggled after boot, and can
-be safely replaced with an ALTERNATIVE() which is convenient to use in
-asm.
+When moving a station out of a VLAN and deleting the VLAN afterwards, the
+fast_rx entry still holds a pointer to the VLAN's netdev, which can cause
+use-after-free bugs. Fix this by immediately calling ieee80211_check_fast_rx
+after the VLAN change.
 
-Switch to ALTERNATIVE() to use the VERW mitigation late in exit-to-user
-path. Also remove the now redundant VERW in exc_nmi() and
-arch_exit_to_user_mode().
-
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20240213-delay-verw-v8-4-a6216d83edb7%40linux.intel.com
+Cc: stable@vger.kernel.org
+Reported-by: ranygh@riseup.net
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://msgid.link/20240316074336.40442-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/x86/mds.rst            |   36 +++++++++++++++++++++++++----------
- arch/x86/include/asm/entry-common.h  |    1 
- arch/x86/include/asm/nospec-branch.h |   12 -----------
- arch/x86/kernel/cpu/bugs.c           |   15 +++++---------
- arch/x86/kernel/nmi.c                |    3 --
- arch/x86/kvm/vmx/vmx.c               |    2 -
- 6 files changed, 33 insertions(+), 36 deletions(-)
+ net/mac80211/cfg.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/Documentation/x86/mds.rst
-+++ b/Documentation/x86/mds.rst
-@@ -95,6 +95,9 @@ The kernel provides a function to invoke
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1548,15 +1548,14 @@ static int ieee80211_change_station(stru
+ 		}
  
-     mds_clear_cpu_buffers()
+ 		if (sta->sdata->vif.type == NL80211_IFTYPE_AP_VLAN &&
+-		    sta->sdata->u.vlan.sta) {
+-			ieee80211_clear_fast_rx(sta);
++		    sta->sdata->u.vlan.sta)
+ 			RCU_INIT_POINTER(sta->sdata->u.vlan.sta, NULL);
+-		}
  
-+Also macro CLEAR_CPU_BUFFERS can be used in ASM late in exit-to-user path.
-+Other than CFLAGS.ZF, this macro doesn't clobber any registers.
-+
- The mitigation is invoked on kernel/userspace, hypervisor/guest and C-state
- (idle) transitions.
+ 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED))
+ 			ieee80211_vif_dec_num_mcast(sta->sdata);
  
-@@ -138,17 +141,30 @@ Mitigation points
+ 		sta->sdata = vlansdata;
++		ieee80211_check_fast_rx(sta);
+ 		ieee80211_check_fast_xmit(sta);
  
-    When transitioning from kernel to user space the CPU buffers are flushed
-    on affected CPUs when the mitigation is not disabled on the kernel
--   command line. The migitation is enabled through the static key
--   mds_user_clear.
-+   command line. The mitigation is enabled through the feature flag
-+   X86_FEATURE_CLEAR_CPU_BUF.
- 
--   The mitigation is invoked in prepare_exit_to_usermode() which covers
--   all but one of the kernel to user space transitions.  The exception
--   is when we return from a Non Maskable Interrupt (NMI), which is
--   handled directly in do_nmi().
--
--   (The reason that NMI is special is that prepare_exit_to_usermode() can
--    enable IRQs.  In NMI context, NMIs are blocked, and we don't want to
--    enable IRQs with NMIs blocked.)
-+   The mitigation is invoked just before transitioning to userspace after
-+   user registers are restored. This is done to minimize the window in
-+   which kernel data could be accessed after VERW e.g. via an NMI after
-+   VERW.
-+
-+   **Corner case not handled**
-+   Interrupts returning to kernel don't clear CPUs buffers since the
-+   exit-to-user path is expected to do that anyways. But, there could be
-+   a case when an NMI is generated in kernel after the exit-to-user path
-+   has cleared the buffers. This case is not handled and NMI returning to
-+   kernel don't clear CPU buffers because:
-+
-+   1. It is rare to get an NMI after VERW, but before returning to userspace.
-+   2. For an unprivileged user, there is no known way to make that NMI
-+      less rare or target it.
-+   3. It would take a large number of these precisely-timed NMIs to mount
-+      an actual attack.  There's presumably not enough bandwidth.
-+   4. The NMI in question occurs after a VERW, i.e. when user state is
-+      restored and most interesting data is already scrubbed. Whats left
-+      is only the data that NMI touches, and that may or may not be of
-+      any interest.
- 
- 
- 2. C-State transition
---- a/arch/x86/include/asm/entry-common.h
-+++ b/arch/x86/include/asm/entry-common.h
-@@ -77,7 +77,6 @@ static inline void arch_exit_to_user_mod
- 
- static __always_inline void arch_exit_to_user_mode(void)
- {
--	mds_user_clear_cpu_buffers();
- 	amd_clear_divider();
- }
- #define arch_exit_to_user_mode arch_exit_to_user_mode
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -370,7 +370,6 @@ DECLARE_STATIC_KEY_FALSE(switch_to_cond_
- DECLARE_STATIC_KEY_FALSE(switch_mm_cond_ibpb);
- DECLARE_STATIC_KEY_FALSE(switch_mm_always_ibpb);
- 
--DECLARE_STATIC_KEY_FALSE(mds_user_clear);
- DECLARE_STATIC_KEY_FALSE(mds_idle_clear);
- 
- DECLARE_STATIC_KEY_FALSE(mmio_stale_data_clear);
-@@ -403,17 +402,6 @@ static __always_inline void mds_clear_cp
- }
- 
- /**
-- * mds_user_clear_cpu_buffers - Mitigation for MDS and TAA vulnerability
-- *
-- * Clear CPU buffers if the corresponding static key is enabled
-- */
--static __always_inline void mds_user_clear_cpu_buffers(void)
--{
--	if (static_branch_likely(&mds_user_clear))
--		mds_clear_cpu_buffers();
--}
--
--/**
-  * mds_idle_clear_cpu_buffers - Mitigation for MDS vulnerability
-  *
-  * Clear CPU buffers if the corresponding static key is enabled
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -109,9 +109,6 @@ DEFINE_STATIC_KEY_FALSE(switch_mm_cond_i
- /* Control unconditional IBPB in switch_mm() */
- DEFINE_STATIC_KEY_FALSE(switch_mm_always_ibpb);
- 
--/* Control MDS CPU buffer clear before returning to user space */
--DEFINE_STATIC_KEY_FALSE(mds_user_clear);
--EXPORT_SYMBOL_GPL(mds_user_clear);
- /* Control MDS CPU buffer clear before idling (halt, mwait) */
- DEFINE_STATIC_KEY_FALSE(mds_idle_clear);
- EXPORT_SYMBOL_GPL(mds_idle_clear);
-@@ -249,7 +246,7 @@ static void __init mds_select_mitigation
- 		if (!boot_cpu_has(X86_FEATURE_MD_CLEAR))
- 			mds_mitigation = MDS_MITIGATION_VMWERV;
- 
--		static_branch_enable(&mds_user_clear);
-+		setup_force_cpu_cap(X86_FEATURE_CLEAR_CPU_BUF);
- 
- 		if (!boot_cpu_has(X86_BUG_MSBDS_ONLY) &&
- 		    (mds_nosmt || cpu_mitigations_auto_nosmt()))
-@@ -353,7 +350,7 @@ static void __init taa_select_mitigation
- 	 * For guests that can't determine whether the correct microcode is
- 	 * present on host, enable the mitigation for UCODE_NEEDED as well.
- 	 */
--	static_branch_enable(&mds_user_clear);
-+	setup_force_cpu_cap(X86_FEATURE_CLEAR_CPU_BUF);
- 
- 	if (taa_nosmt || cpu_mitigations_auto_nosmt())
- 		cpu_smt_disable(false);
-@@ -421,7 +418,7 @@ static void __init mmio_select_mitigatio
- 	 */
- 	if (boot_cpu_has_bug(X86_BUG_MDS) || (boot_cpu_has_bug(X86_BUG_TAA) &&
- 					      boot_cpu_has(X86_FEATURE_RTM)))
--		static_branch_enable(&mds_user_clear);
-+		setup_force_cpu_cap(X86_FEATURE_CLEAR_CPU_BUF);
- 	else
- 		static_branch_enable(&mmio_stale_data_clear);
- 
-@@ -481,12 +478,12 @@ static void __init md_clear_update_mitig
- 	if (cpu_mitigations_off())
- 		return;
- 
--	if (!static_key_enabled(&mds_user_clear))
-+	if (!boot_cpu_has(X86_FEATURE_CLEAR_CPU_BUF))
- 		goto out;
- 
- 	/*
--	 * mds_user_clear is now enabled. Update MDS, TAA and MMIO Stale Data
--	 * mitigation, if necessary.
-+	 * X86_FEATURE_CLEAR_CPU_BUF is now enabled. Update MDS, TAA and MMIO
-+	 * Stale Data mitigation, if necessary.
- 	 */
- 	if (mds_mitigation == MDS_MITIGATION_OFF &&
- 	    boot_cpu_has_bug(X86_BUG_MDS)) {
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -519,9 +519,6 @@ nmi_restart:
- 		write_cr2(this_cpu_read(nmi_cr2));
- 	if (this_cpu_dec_return(nmi_state))
- 		goto nmi_restart;
--
--	if (user_mode(regs))
--		mds_user_clear_cpu_buffers();
- }
- 
- #if defined(CONFIG_X86_64) && IS_ENABLED(CONFIG_KVM_INTEL)
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6795,7 +6795,7 @@ static noinstr void vmx_vcpu_enter_exit(
- 	/* L1D Flush includes CPU buffer clear to mitigate MDS */
- 	if (static_branch_unlikely(&vmx_l1d_should_flush))
- 		vmx_l1d_flush(vcpu);
--	else if (static_branch_unlikely(&mds_user_clear))
-+	else if (cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF))
- 		mds_clear_cpu_buffers();
- 	else if (static_branch_unlikely(&mmio_stale_data_clear) &&
- 		 kvm_arch_has_assigned_device(vcpu->kvm))
+ 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED)) {
 
 
 
