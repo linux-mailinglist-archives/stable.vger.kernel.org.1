@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-39034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5C28A118E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7978D8A0E58
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BB541C23C9E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34116286669
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C7D146019;
-	Thu, 11 Apr 2024 10:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84DA145FFB;
+	Thu, 11 Apr 2024 10:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1trUjIz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGYp66Wl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F3E142624;
-	Thu, 11 Apr 2024 10:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0B2145B08;
+	Thu, 11 Apr 2024 10:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832322; cv=none; b=ruq2o7h8Tro8KO8Q4XrbG5TdJyIDSStnfyW36EqcOS774qiGEosViZ+wiRacedymXb5pZ624y4MXoSdvH3qi/4yV3ov36cO6yvkAHA/cGZKegjplQ8NLE7W+wwk8d1tK7Ro/b/tWIe6gdUbfqR7NrrAS3qaZD53EOaBZx+lxW9U=
+	t=1712830428; cv=none; b=WIrXSd+eFrCTuPJCF9/Sl9gxN6cvQXmLtOydQxAwS+gRjCFrZ3SygGnwexKInXWXeoGOzRWUkCdcSry6crBCGuJcVFhHOqs/zYYtrGatsq1h27eTGmy9fiCHAO30eBCijMcW2Y0hG5zKgonLZArcReedJvYIesWia+i3xVVebFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832322; c=relaxed/simple;
-	bh=qf3UrMTxpd7ot6qJlRLwENivF4LmPxNkzuxPiombpWI=;
+	s=arc-20240116; t=1712830428; c=relaxed/simple;
+	bh=EO0SyLXkkkfyfocn8i0FnE+gOirtqQjS7V+e1U4Wn9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXh51rzeY6dRG8wMATU7QljiduQXLMWkGpc2eP0uxBSu09Wa640L722Tk0rlcDPoYZcXQPUAuVBBxXqdVsGlR7AoGbXUmd4lc5ksUMq2CdIsQq9f5SKfKGAq27DwwynepYQv60cTT1zUVRHm0a1J4XFHWF0mi7gKe7kdAjdBkaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1trUjIz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CD6C433F1;
-	Thu, 11 Apr 2024 10:45:21 +0000 (UTC)
+	 MIME-Version; b=n9o71q9rYEcnTFIrJpfOl+2do/P+FD/X/9mkyZKeyoplQOEdaZYlmg/xrI1fAeNZld2zCvi7+iZhliLJoLiwM8k0U1gF8m2GTHlhtDFKI/jWiLTX4kdhcZnh3fDNtF1idYodVAnJk8IDMxSB/wR2VjHRnGRTXCTIEGa+sVH9rHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGYp66Wl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14E1C433C7;
+	Thu, 11 Apr 2024 10:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832321;
-	bh=qf3UrMTxpd7ot6qJlRLwENivF4LmPxNkzuxPiombpWI=;
+	s=korg; t=1712830428;
+	bh=EO0SyLXkkkfyfocn8i0FnE+gOirtqQjS7V+e1U4Wn9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P1trUjIz0hUtGNS0JnHkcrSvm95jcZjwddAEpmbUiTAzbTh+QS8ueuuqEISsVtN4K
-	 jxpvGvrgNijduFCjaIoGFbY+CTQwOVfeu4r/tb8M4A7RVO+J9IS6ZtKf67cDsJapgh
-	 OESv4Q17RaGJYN7M36L7MCPk5yfb5zDlwXzua510=
+	b=BGYp66WlnPpxuyc58Qi6ldyRkGG3d02TLNnwugSm3OZlSrgAwCmnj94SznUpyLkvp
+	 icgsTFbh9hKHBpoVYm8wW3ZZbVVG/FgnAEpm++BFKZUhqmT38CerxkgOEwmN7o00iH
+	 T7hRB9kA677zptetHkLbnVpkG4ZD8nWjs5l55tCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Jonker <jbx6244@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Kees Cook <keescook@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 10/83] arm64: dts: rockchip: fix rk3328 hdmi ports node
-Date: Thu, 11 Apr 2024 11:56:42 +0200
-Message-ID: <20240411095412.987405749@linuxfoundation.org>
+Subject: [PATCH 6.8 135/143] randomize_kstack: Improve entropy diffusion
+Date: Thu, 11 Apr 2024 11:56:43 +0200
+Message-ID: <20240411095424.966287988@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Jonker <jbx6244@gmail.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 1d00ba4700d1e0f88ae70d028d2e17e39078fa1c ]
+[ Upstream commit 9c573cd313433f6c1f7236fe64b9b743500c1628 ]
 
-Fix rk3328 hdmi ports node so that it matches the
-rockchip,dw-hdmi.yaml binding.
+The kstack_offset variable was really only ever using the low bits for
+kernel stack offset entropy. Add a ror32() to increase bit diffusion.
 
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Link: https://lore.kernel.org/r/e5dea3b7-bf84-4474-9530-cc2da3c41104@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 39218ff4c625 ("stack: Optionally randomize kernel stack offset each syscall")
+Link: https://lore.kernel.org/r/20240309202445.work.165-kees@kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3328.dtsi | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ include/linux/randomize_kstack.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-index 905a50aa5dc38..d42846efff2fe 100644
---- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-@@ -741,11 +741,20 @@ hdmi: hdmi@ff3c0000 {
- 		status = "disabled";
- 
- 		ports {
--			hdmi_in: port {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			hdmi_in: port@0 {
-+				reg = <0>;
-+
- 				hdmi_in_vop: endpoint {
- 					remote-endpoint = <&vop_out_hdmi>;
- 				};
- 			};
-+
-+			hdmi_out: port@1 {
-+				reg = <1>;
-+			};
- 		};
- 	};
- 
+diff --git a/include/linux/randomize_kstack.h b/include/linux/randomize_kstack.h
+index 5d868505a94e4..6d92b68efbf6c 100644
+--- a/include/linux/randomize_kstack.h
++++ b/include/linux/randomize_kstack.h
+@@ -80,7 +80,7 @@ DECLARE_PER_CPU(u32, kstack_offset);
+ 	if (static_branch_maybe(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,	\
+ 				&randomize_kstack_offset)) {		\
+ 		u32 offset = raw_cpu_read(kstack_offset);		\
+-		offset ^= (rand);					\
++		offset = ror32(offset, 5) ^ (rand);			\
+ 		raw_cpu_write(kstack_offset, offset);			\
+ 	}								\
+ } while (0)
 -- 
 2.43.0
 
