@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-39126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C778A1206
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D0408A11C7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:47:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02CBC1F21E87
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F10901F21313
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE6D13BACD;
-	Thu, 11 Apr 2024 10:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73441146D79;
+	Thu, 11 Apr 2024 10:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zj6q3xZq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTQXENaq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9E079FD;
-	Thu, 11 Apr 2024 10:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8CC64CC0;
+	Thu, 11 Apr 2024 10:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832593; cv=none; b=qdL7i11+/Fg30GPvDJ5ndhNo7VtYtCIPIzYkZMMk7ldqE4a8YMnTjpcgGVVqeG0RviGnwTPOyd+3t690HtzEUTC+OBvQxhoreX3Bi+HfXqtld1IA/kXVNZsH3Vv7fowKvrQrWFn7wsSNdHYlfKYSWtpJocgECmgvpzvs7BALfDM=
+	t=1712832423; cv=none; b=WVuxozG02HoNfFqkBm3lXUTM6cmHT9TK+1TS3Et9lxKOCq6VyIaPE/Ctp9hwmVL91oyLeYSOe5uW08xHECzJEwTT8n4+I9jf+ZGbLA46JB1N7NdV0lztcwQBtnYoFqwwMfk2QoVKRlAYEfceEwtuHJYZmJVfepE9ekLMUzL+h9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832593; c=relaxed/simple;
-	bh=dc1RS/R3fnz/OD0CYRYDepUgqR3+ownl+b5i0TCNqxM=;
+	s=arc-20240116; t=1712832423; c=relaxed/simple;
+	bh=9a/QrXINF5+BNIgCdwD2Rx+61K9f//dXS6vaGg3Ynx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mhxKvGDpzNVy1bw/XnpDyOKXf++BnfEmAQUyz+miJJlYb5PqKHT4A5HZFPE5PUGA/zEbtnyf2MikYZKF2e61hDkk8zDAdDFuZyD3CAm18Ne2pdY1WPNR4JVQMXMEaN40fJKeATc7L4bFLeODIvVI1pt53olx3+iJGv51kEOUG9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zj6q3xZq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BADA3C433F1;
-	Thu, 11 Apr 2024 10:49:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lfsHvlvCGHavUpxGsjA2R4p6HiNtbpPxA8sq3WgMMmdwb5BE6CJzXwpRV7//UO/hw4a6j5idE6pwr2/NgPeiD6F0FuHMOny34i2a4hRYKCnFIar23gzgJ+0fHBDM7wgnbjiBh2yNscVVMPCVvnDurjZ9UQMYFxrchxn9s9u5ZGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTQXENaq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C39C433C7;
+	Thu, 11 Apr 2024 10:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832593;
-	bh=dc1RS/R3fnz/OD0CYRYDepUgqR3+ownl+b5i0TCNqxM=;
+	s=korg; t=1712832422;
+	bh=9a/QrXINF5+BNIgCdwD2Rx+61K9f//dXS6vaGg3Ynx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zj6q3xZqn2gnk7vSF/vDsiEAErKMd6IQGgRXJ70K3ZU+W66RcZF21F+wvuPkhc2EJ
-	 BDTA4NsWiefQm8xFDb1wE6JUyaNKDedDW2dknbbzdWveMNBxckwLO0BkClQSz6fsgH
-	 Cqj7YEv0Rb5Wjt+a2zKxOnwmiMAYYORPhVYHCBCc=
+	b=vTQXENaqrk6akScuoO/mqzvJ0i9hrXt1KWewY7vcgSn5OOnOHU9bh8d5GgBvZA8JC
+	 Y2JhTjlVyRjEofSRLu54aiDsu6cNkl06cB/urs9w8utgogqcf/IFtLDS6LQTUOa20w
+	 8zbpBenehYRomjqY+ycIGeJQ5c2IWrQd/A8Xd1JM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	C Cheng <C.Cheng@mediatek.com>,
-	Bo Ye <bo.ye@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 07/57] cpuidle: Avoid potential overflow in integer multiplication
-Date: Thu, 11 Apr 2024 11:57:15 +0200
-Message-ID: <20240411095408.213066049@linuxfoundation.org>
+Subject: [PATCH 6.1 44/83] drm/amd/amdgpu: Fix potential ioremap() memory leaks in amdgpu_device_init()
+Date: Thu, 11 Apr 2024 11:57:16 +0200
+Message-ID: <20240411095414.010786725@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: C Cheng <C.Cheng@mediatek.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 88390dd788db485912ee7f9a8d3d56fc5265d52f ]
+[ Upstream commit eb4f139888f636614dab3bcce97ff61cefc4b3a7 ]
 
-In detail:
+This ensures that the memory mapped by ioremap for adev->rmmio, is
+properly handled in amdgpu_device_init(). If the function exits early
+due to an error, the memory is unmapped. If the function completes
+successfully, the memory remains mapped.
 
-In C language, when you perform a multiplication operation, if
-both operands are of int type, the multiplication operation is
-performed on the int type, and then the result is converted to
-the target type. This means that if the product of int type
-multiplication exceeds the range that int type can represent,
-an overflow will occur even if you store the result in a
-variable of int64_t type.
+Reported by smatch:
+drivers/gpu/drm/amd/amdgpu/amdgpu_device.c:4337 amdgpu_device_init() warn: 'adev->rmmio' from ioremap() not released on lines: 4035,4045,4051,4058,4068,4337
 
-For a multiplication of two int values, it is better to use
-mul_u32_u32() rather than s->exit_latency_ns = s->exit_latency *
-NSEC_PER_USEC to avoid potential overflow happenning.
-
-Signed-off-by: C Cheng <C.Cheng@mediatek.com>
-Signed-off-by: Bo Ye <bo.ye@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-[ rjw: New subject ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/driver.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/cpuidle/driver.c b/drivers/cpuidle/driver.c
-index f70aa17e2a8e0..c594e28adddf3 100644
---- a/drivers/cpuidle/driver.c
-+++ b/drivers/cpuidle/driver.c
-@@ -16,6 +16,7 @@
- #include <linux/cpumask.h>
- #include <linux/tick.h>
- #include <linux/cpu.h>
-+#include <linux/math64.h>
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index b11690a816e73..e4eb906806a51 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3713,8 +3713,10 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	 * early on during init and before calling to RREG32.
+ 	 */
+ 	adev->reset_domain = amdgpu_reset_create_reset_domain(SINGLE_DEVICE, "amdgpu-reset-dev");
+-	if (!adev->reset_domain)
+-		return -ENOMEM;
++	if (!adev->reset_domain) {
++		r = -ENOMEM;
++		goto unmap_memory;
++	}
  
- #include "cpuidle.h"
- 
-@@ -185,7 +186,7 @@ static void __cpuidle_driver_init(struct cpuidle_driver *drv)
- 			s->target_residency_ns = 0;
- 
- 		if (s->exit_latency > 0)
--			s->exit_latency_ns = s->exit_latency * NSEC_PER_USEC;
-+			s->exit_latency_ns = mul_u32_u32(s->exit_latency, NSEC_PER_USEC);
- 		else if (s->exit_latency_ns < 0)
- 			s->exit_latency_ns =  0;
+ 	/* detect hw virtualization here */
+ 	amdgpu_detect_virtualization(adev);
+@@ -3722,18 +3724,18 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	r = amdgpu_device_get_job_timeout_settings(adev);
+ 	if (r) {
+ 		dev_err(adev->dev, "invalid lockup_timeout parameter syntax\n");
+-		return r;
++		goto unmap_memory;
  	}
+ 
+ 	/* early init functions */
+ 	r = amdgpu_device_ip_early_init(adev);
+ 	if (r)
+-		return r;
++		goto unmap_memory;
+ 
+ 	/* Get rid of things like offb */
+ 	r = drm_aperture_remove_conflicting_pci_framebuffers(adev->pdev, &amdgpu_kms_driver);
+ 	if (r)
+-		return r;
++		goto unmap_memory;
+ 
+ 	/* Enable TMZ based on IP_VERSION */
+ 	amdgpu_gmc_tmz_set(adev);
+@@ -3743,7 +3745,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	if (adev->gmc.xgmi.supported) {
+ 		r = adev->gfxhub.funcs->get_xgmi_info(adev);
+ 		if (r)
+-			return r;
++			goto unmap_memory;
+ 	}
+ 
+ 	/* enable PCIE atomic ops */
+@@ -3999,6 +4001,8 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ failed:
+ 	amdgpu_vf_error_trans_all(adev);
+ 
++unmap_memory:
++	iounmap(adev->rmmio);
+ 	return r;
+ }
+ 
 -- 
 2.43.0
 
