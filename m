@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-39069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7874B8A11C9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:47:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE888A1188
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17DD11F21626
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D075D1C23BFE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02DF1474B0;
-	Thu, 11 Apr 2024 10:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B19A146D61;
+	Thu, 11 Apr 2024 10:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vOZpjEo+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMC36RYY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C98713D24D;
-	Thu, 11 Apr 2024 10:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD4F146D49;
+	Thu, 11 Apr 2024 10:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832425; cv=none; b=pqJmnNdgBHVNktn7oJcLGzegWXrEauJTvkSeYEhKCsJqk+0wAYCBfL/CIfQoYBlnpsPIlxNtlSfoeFUH7ukY7KBVCrT5jO0XuYS1USq/jhqZQavPGE2adaCN4mHGfikAXqzg/k5XXFwFHqwB3a037MdsRAkzz6g5ANNX0Lmmyyc=
+	t=1712832307; cv=none; b=Lgd/k8HkLz2sN0MTvItr1PGrcFXZQw71Alo60dxX64Vdb6AhiWW1UVx7Usi1us8MHgJhGmovDMBL4OemuEy5mcY8AhIP5UvO23SlzfsPABKXbuis2i1KuZzAb72R7e/QLyYtjftcDOXUK1ma8DzV+mHmu0laBcvWMsLedLpR+yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832425; c=relaxed/simple;
-	bh=QEpTGOJRAeOts1P6yJxqDcNdd65QWzNyuhMinm8JlvI=;
+	s=arc-20240116; t=1712832307; c=relaxed/simple;
+	bh=fIU7d6g8dmi4R4qMZNxU4FuVvNQZy3X4azbXT5b7Uzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BjspjWGyhqpOVHOz5Pljp6Vx7XY345D60NqalKSRkz7Zn4Z8El5Etg3UrOSVsuAKBZuI3dF/Uug5kN2+1TZx2G0cUmH0+pZTcmFz08S8gX9GpAVm/gUrmyNlpg+7xhBvZw2EILBJZTsxKRAU4ZUPOViogmaTXyI9Nxy/ndJxNss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vOZpjEo+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD95AC43390;
-	Thu, 11 Apr 2024 10:47:04 +0000 (UTC)
+	 MIME-Version; b=NtSBEme4TubZBlssFveVyd6BnrmXKCDR5B9fiXSXDjeBykPSnSaJgKvhdrmZimocSNxEObNuEAeO+wRdXeJh5T94o7A6umd+k5eEVOnfWgz+xdWdWHqDdRd2K6jiM3B/NcicMf2URo0jwH6JCVaksTnOQzn4dThLw7osjiWP19o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMC36RYY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C833FC43394;
+	Thu, 11 Apr 2024 10:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832425;
-	bh=QEpTGOJRAeOts1P6yJxqDcNdd65QWzNyuhMinm8JlvI=;
+	s=korg; t=1712832307;
+	bh=fIU7d6g8dmi4R4qMZNxU4FuVvNQZy3X4azbXT5b7Uzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vOZpjEo+4C8UhbdSggAYfJYBDoRrvKen9EDLF17g6rCLqleUnuo/m2mx8TnFk0XMY
-	 oV1ti82ln5FToeKFOjrCWoUapr/23beWPoXPKfz5yV3UV5nehDA3qdkV3AQLzGg99C
-	 lhD7rQYdY1Th2TBEj7vs9lBnweLUgRhekQtyY6mM=
+	b=WMC36RYYlLELW5y4cTDLsf1d+CN39m1BcWOh05VRYyZXTmxJFanMAhtlON5L1X7oI
+	 mQ1rgc9XxvGnLLbXUQkWZiVTRgl5zcIHhdi4zcKFMZQiME7eNb14WkZhD6XwKDM69g
+	 oel8uE3ZN5/7Ej5iRRdsu+6ebPmkBHcKI4T5fZ84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	John Hawley <warthog9@eaglescrag.net>,
+	"Ricardo B. Marliere" <ricardo@marliere.net>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 45/83] SUNRPC: increase size of rpc_wait_queue.qlen from unsigned short to unsigned int
+Subject: [PATCH 5.10 274/294] ktest: force $buildonly = 1 for make_warnings_file test type
 Date: Thu, 11 Apr 2024 11:57:17 +0200
-Message-ID: <20240411095414.040467427@linuxfoundation.org>
+Message-ID: <20240411095443.795192509@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Ricardo B. Marliere <ricardo@marliere.net>
 
-[ Upstream commit 2c35f43b5a4b9cdfaa6fdd946f5a212615dac8eb ]
+[ Upstream commit 07283c1873a4d0eaa0e822536881bfdaea853910 ]
 
-When the NFS client is under extreme load the rpc_wait_queue.qlen counter
-can be overflowed. Here is an instant of the backlog queue overflow in a
-real world environment shown by drgn helper:
+The test type "make_warnings_file" should have no mandatory configuration
+parameters other than the ones required by the "build" test type, because
+its purpose is to create a file with build warnings that may or may not be
+used by other subsequent tests. Currently, the only way to use it as a
+stand-alone test is by setting POWER_CYCLE, CONSOLE, SSH_USER,
+BUILD_TARGET, TARGET_IMAGE, REBOOT_TYPE and GRUB_MENU.
 
-rpc_task_stats(rpc_clnt):
--------------------------
-rpc_clnt: 0xffff92b65d2bae00
-rpc_xprt: 0xffff9275db64f000
-  Queue:  sending[64887] pending[524] backlog[30441] binding[0]
-XMIT task: 0xffff925c6b1d8e98
-     WRITE: 750654
-        __dta_call_status_580: 65463
-        __dta_call_transmit_status_579: 1
-        call_reserveresult: 685189
-        nfs_client_init_is_complete: 1
-    COMMIT: 584
-        call_reserveresult: 573
-        __dta_call_status_580: 11
-    ACCESS: 1
-        __dta_call_status_580: 1
-   GETATTR: 10
-        __dta_call_status_580: 4
-        call_reserveresult: 6
-751249 tasks for server 111.222.333.444
-Total tasks: 751249
+Link: https://lkml.kernel.org/r/20240315-ktest-v2-1-c5c20a75f6a3@marliere.net
 
-count_rpc_wait_queues(xprt):
-----------------------------
-**** rpc_xprt: 0xffff9275db64f000 num_reqs: 65511
-wait_queue: xprt_binding[0] cnt: 0
-wait_queue: xprt_binding[1] cnt: 0
-wait_queue: xprt_binding[2] cnt: 0
-wait_queue: xprt_binding[3] cnt: 0
-rpc_wait_queue[xprt_binding].qlen: 0 maxpriority: 0
-wait_queue: xprt_sending[0] cnt: 0
-wait_queue: xprt_sending[1] cnt: 64887
-wait_queue: xprt_sending[2] cnt: 0
-wait_queue: xprt_sending[3] cnt: 0
-rpc_wait_queue[xprt_sending].qlen: 64887 maxpriority: 3
-wait_queue: xprt_pending[0] cnt: 524
-wait_queue: xprt_pending[1] cnt: 0
-wait_queue: xprt_pending[2] cnt: 0
-wait_queue: xprt_pending[3] cnt: 0
-rpc_wait_queue[xprt_pending].qlen: 524 maxpriority: 0
-wait_queue: xprt_backlog[0] cnt: 0
-wait_queue: xprt_backlog[1] cnt: 685801
-wait_queue: xprt_backlog[2] cnt: 0
-wait_queue: xprt_backlog[3] cnt: 0
-rpc_wait_queue[xprt_backlog].qlen: 30441 maxpriority: 3 [task cnt mismatch]
-
-There is no effect on operations when this overflow occurs. However
-it causes confusion when trying to diagnose the performance problem.
-
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Cc: John Hawley <warthog9@eaglescrag.net>
+Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/sched.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/ktest/ktest.pl | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
-index 8ada7dc802d30..8f9bee0e21c3b 100644
---- a/include/linux/sunrpc/sched.h
-+++ b/include/linux/sunrpc/sched.h
-@@ -186,7 +186,7 @@ struct rpc_wait_queue {
- 	unsigned char		maxpriority;		/* maximum priority (0 if queue is not a priority queue) */
- 	unsigned char		priority;		/* current priority */
- 	unsigned char		nr;			/* # tasks remaining for cookie */
--	unsigned short		qlen;			/* total # tasks waiting in queue */
-+	unsigned int		qlen;			/* total # tasks waiting in queue */
- 	struct rpc_timer	timer_list;
- #if IS_ENABLED(CONFIG_SUNRPC_DEBUG) || IS_ENABLED(CONFIG_TRACEPOINTS)
- 	const char *		name;
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index ea26f2b0c1bc2..f72da30795dd6 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -773,6 +773,7 @@ sub set_value {
+     if ($lvalue =~ /^(TEST|BISECT|CONFIG_BISECT)_TYPE(\[.*\])?$/ &&
+ 	$prvalue !~ /^(config_|)bisect$/ &&
+ 	$prvalue !~ /^build$/ &&
++	$prvalue !~ /^make_warnings_file$/ &&
+ 	$buildonly) {
+ 
+ 	# Note if a test is something other than build, then we
 -- 
 2.43.0
 
