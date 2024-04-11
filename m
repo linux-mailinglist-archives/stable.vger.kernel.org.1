@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-39166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D4C8A1232
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:51:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D668B8A1176
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE0AD281D0F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:51:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13E641C216AE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229CC13BC33;
-	Thu, 11 Apr 2024 10:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25565145B26;
+	Thu, 11 Apr 2024 10:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zppdaz8v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGZsfM1w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AB71E48E;
-	Thu, 11 Apr 2024 10:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A431448C8;
+	Thu, 11 Apr 2024 10:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832711; cv=none; b=gIWoBGAM9Tp0sfFMq2HI2OHIGBk3NK+duZVHOr3h8vwYxt8Gs4pjtnciRm2R0cSNCWUyzk/aYJqqWHQGD/R8/4kPKr9J2FJ6nt7EKTsjMOlci9aTRbB9u9yuEeUfPaK1hHGfHwSdgXlPSs2tL2Axei9fgcueYUv0et9jzZEyn3c=
+	t=1712832260; cv=none; b=p8F6U+I1iiqpLJMa1Rw/cqQgEpmkhJCbZECanAeyfcQwyL+aISn45kkvGYv8bewEpJ1ch6lO8iYJnr6NzoW8b/JoEDMfekfKKRB2BeaomnP1cUG2JJUz7cWMr0Ij/rb4t0HAEVuzIhD23syftP2gykTYK/Go7xXcr2mbUY6W3ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832711; c=relaxed/simple;
-	bh=ULp/fMxduKj1j/9PGLjP2ULAYehrFKWvJX5gLVNFql4=;
+	s=arc-20240116; t=1712832260; c=relaxed/simple;
+	bh=lE+KimLROdpJh55G1IyNff9LFxHjn62OKHfy26o0ZrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CFlDRFd3Ob5Db90QT+8k3epO/8DNoEHkr6eC/ASdsHLr4j3VcxMb4PLj6GPtSDQVpu9Vaxvt5nIDPL12Vgv9RRnYoGSTmMYLjiMvX6WdEHcZa3/ePaUVKpvG6nxzFKNmjAZ5yxP9oPzEAiKy8upTHMKnLx834FGSJKhHckRfqIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zppdaz8v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D6CC433F1;
-	Thu, 11 Apr 2024 10:51:51 +0000 (UTC)
+	 MIME-Version; b=enLteI+QYKYb6APZuXsH7EEdgwoT0gWHo4+XPIGtZlcvXfvSeqgsYhl6wSXATToBXbdDMsSRklBMaBWKEyDj+LRJtv/4C9wkS6hoU0H7wHzO6JODzXPTy21fwvIRlH/5LY5bgoQ5pssYH4OQKQz01hf+b2hUmyf/zUHMYnNtFrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGZsfM1w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D723AC433F1;
+	Thu, 11 Apr 2024 10:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832711;
-	bh=ULp/fMxduKj1j/9PGLjP2ULAYehrFKWvJX5gLVNFql4=;
+	s=korg; t=1712832260;
+	bh=lE+KimLROdpJh55G1IyNff9LFxHjn62OKHfy26o0ZrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zppdaz8vsYUiampVbGGJEoREyNQ9AwpXNwXwVnnT7gWoVnZ8+937TB+YlKPNttKt7
-	 5h6zaKvsu5xlGQIhsZCmAB5gXE52F5jR07/vtY6yqq4qtyDmEj79SpMoemzUHQcev8
-	 vAlqgARIyAVOaJfiVuSmz15e2hrcdAO63q50Opk0=
+	b=BGZsfM1wLtnZ+chp99bc/vIHtpikJ/D+1hUKZLH2f3wn92C9Mo8iwGuKJjQtxQuIA
+	 C29cwFaWHsOkYEDVvCTIuBTSinAJbw4U2Zoeyq2Y4pnRZ0u2CQgPrO6ZCn/1focU3C
+	 yFs56j2pldXSsj1CWUQa5f2P4eDdqNO2JPXcHAu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Jan Karcher <jaka@linux.ibm.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 18/57] net/smc: reduce rtnl pressure in smc_pnet_create_pnetids_list()
-Date: Thu, 11 Apr 2024 11:57:26 +0200
-Message-ID: <20240411095408.546419801@linuxfoundation.org>
+Subject: [PATCH 5.10 284/294] netfilter: nf_tables: discard table flag update with pending basechain deletion
+Date: Thu, 11 Apr 2024 11:57:27 +0200
+Message-ID: <20240411095444.085346905@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,98 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 00af2aa93b76b1bade471ad0d0525d4d29ca5cc0 ]
+commit 1bc83a019bbe268be3526406245ec28c2458a518 upstream.
 
-Many syzbot reports show extreme rtnl pressure, and many of them hint
-that smc acquires rtnl in netns creation for no good reason [1]
+Hook unregistration is deferred to the commit phase, same occurs with
+hook updates triggered by the table dormant flag. When both commands are
+combined, this results in deleting a basechain while leaving its hook
+still registered in the core.
 
-This patch returns early from smc_pnet_net_init()
-if there is no netdevice yet.
-
-I am not even sure why smc_pnet_create_pnetids_list() even exists,
-because smc_pnet_netdev_event() is also calling
-smc_pnet_add_base_pnetid() when handling NETDEV_UP event.
-
-[1] extract of typical syzbot reports
-
-2 locks held by syz-executor.3/12252:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-2 locks held by syz-executor.4/12253:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-2 locks held by syz-executor.1/12257:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-2 locks held by syz-executor.2/12261:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-2 locks held by syz-executor.0/12265:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-2 locks held by syz-executor.3/12268:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-2 locks held by syz-executor.4/12271:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-2 locks held by syz-executor.1/12274:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-2 locks held by syz-executor.2/12280:
-  #0: ffffffff8f369610 (pernet_ops_rwsem){++++}-{3:3}, at: copy_net_ns+0x4c7/0x7b0 net/core/net_namespace.c:491
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_create_pnetids_list net/smc/smc_pnet.c:809 [inline]
-  #1: ffffffff8f375b88 (rtnl_mutex){+.+.}-{3:3}, at: smc_pnet_net_init+0x10a/0x1e0 net/smc/smc_pnet.c:878
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Wenjia Zhang <wenjia@linux.ibm.com>
-Cc: Jan Karcher <jaka@linux.ibm.com>
-Cc: "D. Wythe" <alibuda@linux.alibaba.com>
-Cc: Tony Lu <tonylu@linux.alibaba.com>
-Cc: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240302100744.3868021-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_pnet.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/netfilter/nf_tables_api.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/net/smc/smc_pnet.c b/net/smc/smc_pnet.c
-index 79ee0618d919b..c9e4b37e65777 100644
---- a/net/smc/smc_pnet.c
-+++ b/net/smc/smc_pnet.c
-@@ -796,6 +796,16 @@ static void smc_pnet_create_pnetids_list(struct net *net)
- 	u8 ndev_pnetid[SMC_MAX_PNETID_LEN];
- 	struct net_device *dev;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index ef271628975a9..ab7f7e45b9846 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1084,6 +1084,24 @@ static void nf_tables_table_disable(struct net *net, struct nft_table *table)
+ #define __NFT_TABLE_F_UPDATE		(__NFT_TABLE_F_WAS_DORMANT | \
+ 					 __NFT_TABLE_F_WAS_AWAKEN)
  
-+	/* Newly created netns do not have devices.
-+	 * Do not even acquire rtnl.
-+	 */
-+	if (list_empty(&net->dev_base_head))
-+		return;
++static bool nft_table_pending_update(const struct nft_ctx *ctx)
++{
++	struct nftables_pernet *nft_net = net_generic(ctx->net, nf_tables_net_id);
++	struct nft_trans *trans;
 +
-+	/* Note: This might not be needed, because smc_pnet_netdev_event()
-+	 * is also calling smc_pnet_add_base_pnetid() when handling
-+	 * NETDEV_UP event.
-+	 */
- 	rtnl_lock();
- 	for_each_netdev(net, dev)
- 		smc_pnet_add_base_pnetid(net, dev, ndev_pnetid);
++	if (ctx->table->flags & __NFT_TABLE_F_UPDATE)
++		return true;
++
++	list_for_each_entry(trans, &nft_net->commit_list, list) {
++		if (trans->ctx.table == ctx->table &&
++		    trans->msg_type == NFT_MSG_DELCHAIN &&
++		    nft_is_base_chain(trans->ctx.chain))
++			return true;
++	}
++
++	return false;
++}
++
+ static int nf_tables_updtable(struct nft_ctx *ctx)
+ {
+ 	struct nft_trans *trans;
+@@ -1101,7 +1119,7 @@ static int nf_tables_updtable(struct nft_ctx *ctx)
+ 		return 0;
+ 
+ 	/* No dormant off/on/off/on games in single transaction */
+-	if (ctx->table->flags & __NFT_TABLE_F_UPDATE)
++	if (nft_table_pending_update(ctx))
+ 		return -EINVAL;
+ 
+ 	trans = nft_trans_alloc(ctx, NFT_MSG_NEWTABLE,
 -- 
 2.43.0
 
