@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 582908A0E74
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:14:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E80A8A109E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13B6C2871B7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:14:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04B5D28ABEF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0A7145B3E;
-	Thu, 11 Apr 2024 10:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6141146D73;
+	Thu, 11 Apr 2024 10:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EuQE6ew"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKIYUwd0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496011448EF;
-	Thu, 11 Apr 2024 10:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3331448C8;
+	Thu, 11 Apr 2024 10:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830487; cv=none; b=gZRKEdVntFHgUb4DfEGJZNzTlAvqI/wILgR2+20vr20KvLqg9ECBtCes5VafuWuGOkACXoiEEmiU2Q8F3013KWVzg/VxM91h+KB8C0L3f04CW5uk7ePQCvhFoFwSGSwIGDlBPKaGXg0mlAKOwC/p1MOA7mkQQNFnLBeqVgwlq1o=
+	t=1712831718; cv=none; b=cWtVjUomyLCcAsIYk3ezl7poNHw3a2TDGdwo/Jb601fQdP6DLdZ4RG4yk1EuI9eQj+TvAjyjEjQW3bR1lE0xRrRlFURJuEWgPtYmDL0J40k9W2JaL92Z9yyqPrqgJT2Kr+x/hwH9KLiUQ4GzAIKdz+YdiY0e6kWbef/qGdKwdsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830487; c=relaxed/simple;
-	bh=9IA2xD6wBSFyciFBvfsMiSelFXkxHAAEyhztMJtLz9E=;
+	s=arc-20240116; t=1712831718; c=relaxed/simple;
+	bh=Gue8tFRW43URzCjs7SdV40/kI+cgw61FVF0ipsg4nv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FI1GLyXWBwHZZphaEDF17zNHCXn+lk9CsmyYRatIYm5WojqDXPU04mfUKUuf7BLzqsO6KattamEq6eh3bx7B3zaNQJ0q4LOTjQoGwNz2hIip29PWWPmRiTWtev9zl+YtgLX5h7af+0kreNQ2tfrx77VEOM4rU1VHo9OOakS0bpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EuQE6ew; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C3FC43390;
-	Thu, 11 Apr 2024 10:14:46 +0000 (UTC)
+	 MIME-Version; b=rI7FJrTgg9QMogruIhRqU+3rP47qDxchyoNHOIGXwiDOtsnGWwx1FuEEuPCG8dUACetb97nNK+/s5Ups850N+anA3S8FtI54DVDdmWCkG8WzcNMnRvGZIdvSsWn9Ws3XEVgrbaPSdXtBu/3KuX6MCa1SXGCtNfAbyyyLcKzoVC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKIYUwd0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00CD2C433F1;
+	Thu, 11 Apr 2024 10:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830487;
-	bh=9IA2xD6wBSFyciFBvfsMiSelFXkxHAAEyhztMJtLz9E=;
+	s=korg; t=1712831718;
+	bh=Gue8tFRW43URzCjs7SdV40/kI+cgw61FVF0ipsg4nv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1EuQE6ewARm7/xGoRDbKy2FI1WadCyoSu0lN3dI9NN9cdcpxSsmp9ReOF4wVDY2d/
-	 YedhbpOhX+vWld1bs3iMaGGoEayQgxj1/y9RgeZNksX3HuKRQo11wCj4vvgIReAeF3
-	 rxPhK5+KmEGXDZD4IDWrHRahfh4EX6laMO3FcApA=
+	b=nKIYUwd0gzUPmd3XOL9IKkfvkpz0rrVoNGwhV6RfE8W0yGPnafVwUm3YhfilYu6dF
+	 T3Vz1sV60tWJ53kRjLp+ZN2E2jZo+o+caOhdxKmxxzaw2olnx7xny4U9Nu88lEe+VW
+	 8ZNz2OBOE6UhGMsNEv8mA5Pl29ExjYXLgTpy3jk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 019/215] crypto: qat - fix double free during reset
+Subject: [PATCH 5.10 065/294] PCI/DPC: Quirk PIO log size for certain Intel Root Ports
 Date: Thu, 11 Apr 2024 11:53:48 +0200
-Message-ID: <20240411095425.461361253@linuxfoundation.org>
+Message-ID: <20240411095437.646850413@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 01aed663e6c421aeafc9c330bda630976b50a764 ]
+[ Upstream commit 5459c0b7046752e519a646e1c2404852bb628459 ]
 
-There is no need to free the reset_data structure if the recovery is
-unsuccessful and the reset is synchronous. The function
-adf_dev_aer_schedule_reset() handles the cleanup properly. Only
-asynchronous resets require such structure to be freed inside the reset
-worker.
+Some Root Ports on Intel Tiger Lake and Alder Lake systems support the RP
+Extensions for DPC and the RP PIO Log registers but incorrectly advertise
+an RP PIO Log Size of zero.  This means the kernel complains that:
 
-Fixes: d8cba25d2c68 ("crypto: qat - Intel(R) QAT driver framework")
-Signed-off-by: Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: 7d42e097607c ("crypto: qat - resolve race condition during AER recovery")
+  DPC: RP PIO log size 0 is invalid
+
+and if DPC is triggered, the DPC driver will not dump the RP PIO Log
+registers when it should.
+
+This is caused by a BIOS bug and should be fixed the BIOS for future CPUs.
+
+Add a quirk to set the correct RP PIO Log size for the affected Root Ports.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=209943
+Link: https://lore.kernel.org/r/20220816102042.69125-1-mika.westerberg@linux.intel.com
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Stable-dep-of: 627c6db20703 ("PCI/DPC: Quirk PIO log size for Intel Raptor Lake Root Ports")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/qat/qat_common/adf_aer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/pcie/dpc.c | 15 ++++++++++-----
+ drivers/pci/quirks.c   | 36 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 46 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/crypto/qat/qat_common/adf_aer.c b/drivers/crypto/qat/qat_common/adf_aer.c
-index f5e960d23a7a7..20f983b830065 100644
---- a/drivers/crypto/qat/qat_common/adf_aer.c
-+++ b/drivers/crypto/qat/qat_common/adf_aer.c
-@@ -139,7 +139,8 @@ static void adf_device_reset_worker(struct work_struct *work)
- 	if (adf_dev_init(accel_dev) || adf_dev_start(accel_dev)) {
- 		/* The device hanged and we can't restart it so stop here */
- 		dev_err(&GET_DEV(accel_dev), "Restart device failed\n");
--		kfree(reset_data);
-+		if (reset_data->mode == ADF_DEV_RESET_ASYNC)
-+			kfree(reset_data);
- 		WARN(1, "QAT: device restart failed. Device is unusable\n");
+diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+index cf0d4ba2e157a..ab83f78f3eb1d 100644
+--- a/drivers/pci/pcie/dpc.c
++++ b/drivers/pci/pcie/dpc.c
+@@ -335,11 +335,16 @@ void pci_dpc_init(struct pci_dev *pdev)
  		return;
+ 
+ 	pdev->dpc_rp_extensions = true;
+-	pdev->dpc_rp_log_size = (cap & PCI_EXP_DPC_RP_PIO_LOG_SIZE) >> 8;
+-	if (pdev->dpc_rp_log_size < 4 || pdev->dpc_rp_log_size > 9) {
+-		pci_err(pdev, "RP PIO log size %u is invalid\n",
+-			pdev->dpc_rp_log_size);
+-		pdev->dpc_rp_log_size = 0;
++
++	/* Quirks may set dpc_rp_log_size if device or firmware is buggy */
++	if (!pdev->dpc_rp_log_size) {
++		pdev->dpc_rp_log_size =
++			(cap & PCI_EXP_DPC_RP_PIO_LOG_SIZE) >> 8;
++		if (pdev->dpc_rp_log_size < 4 || pdev->dpc_rp_log_size > 9) {
++			pci_err(pdev, "RP PIO log size %u is invalid\n",
++				pdev->dpc_rp_log_size);
++			pdev->dpc_rp_log_size = 0;
++		}
  	}
+ }
+ 
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 3f494d6653284..a467e3ce6fb10 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5909,3 +5909,39 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56b1, aspm_l1_acceptable_latency
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56c0, aspm_l1_acceptable_latency);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56c1, aspm_l1_acceptable_latency);
+ #endif
++
++#ifdef CONFIG_PCIE_DPC
++/*
++ * Intel Tiger Lake and Alder Lake BIOS has a bug that clears the DPC
++ * RP PIO Log Size of the integrated Thunderbolt PCIe Root Ports.
++ */
++static void dpc_log_size(struct pci_dev *dev)
++{
++	u16 dpc, val;
++
++	dpc = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_DPC);
++	if (!dpc)
++		return;
++
++	pci_read_config_word(dev, dpc + PCI_EXP_DPC_CAP, &val);
++	if (!(val & PCI_EXP_DPC_CAP_RP_EXT))
++		return;
++
++	if (!((val & PCI_EXP_DPC_RP_PIO_LOG_SIZE) >> 8)) {
++		pci_info(dev, "Overriding RP PIO Log Size to 4\n");
++		dev->dpc_rp_log_size = 4;
++	}
++}
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x461f, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x462f, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x463f, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x466e, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a23, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a25, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a27, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a29, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2b, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2d, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2f, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
++#endif
 -- 
 2.43.0
 
