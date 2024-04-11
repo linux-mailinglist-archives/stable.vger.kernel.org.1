@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-38901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D668A10EC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7758E8A0D71
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:04:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1B3AB23BA5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 168271F222E6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F1B13C9A5;
-	Thu, 11 Apr 2024 10:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21772145B14;
+	Thu, 11 Apr 2024 10:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lDGkkeiJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRmAcuCv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9107A14600E;
-	Thu, 11 Apr 2024 10:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9EE13AD0C;
+	Thu, 11 Apr 2024 10:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831924; cv=none; b=PKhkzq/R8XaByl11jgpFFfH029+wKBH/bQebD/Cm+tsk1Xu+0r31VR2cJsS+sCpE4mpW2QMh4X3LrDRNvcXLSfKTyFyR7gm1hkA5SrPft6RzJalYpleg9YVhgEpifDYDAkwTPrBfaexbWXP0Em/ZU4azLSC58Qp1IpYuAyWFqek=
+	t=1712829840; cv=none; b=otIZ4mDCzMbOdMwkyLGprNhba4GmvzbInPUL+tfU44pG4yzlWLgsy4d00qpVWhjc9NI4N26bXZ0fqZZbhg2gsoBNthmEzErfnJ/Ml/FhVE0DL8BEz9pDYwpB1EuMcARHWcAyGuoeeW+8gbQS1G5ImOEDkuE6hVox+c16I+qhfLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831924; c=relaxed/simple;
-	bh=zBRd/BH4VcFknQ3OomHU1llbz7OJH24X+6QCHiHAgf0=;
+	s=arc-20240116; t=1712829840; c=relaxed/simple;
+	bh=+e5SNT9SOHY0UYEj/IviCuOMFBVulcchmjn4GPRBHiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y0KaE6ZuqXyGyyfSFiBjZ61XHMf/H8XNoFFd8daQsIfOhcp6GR6xiEU4L1R0RChRojq1NAgksT7mhaJj8cbkdRGADNqwLhauDN0PvGuqRa6V660na/SxdyWSIzSv1x5trV0GdpRNreKAGkwyHdUfq7tsIsPnvlkG2yxPmLaZ6B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lDGkkeiJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17EA3C433F1;
-	Thu, 11 Apr 2024 10:38:43 +0000 (UTC)
+	 MIME-Version; b=O4mdcz+PLFT3uoPFlG5+FrFRkGd2yjNj5CcJiXqzZlKgofM0L8sZ3OUX3dV8vl+CZNI9dpMts+YRIUxwNacRFLaviNJsJuc9KTZqaJCSQgUU6tybqLsU2BLONyLXejARqt+sF2HE0JCGPYHkZ2LYJXM/dZ9Esf71H4MG3LlKENI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRmAcuCv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57830C433F1;
+	Thu, 11 Apr 2024 10:04:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831924;
-	bh=zBRd/BH4VcFknQ3OomHU1llbz7OJH24X+6QCHiHAgf0=;
+	s=korg; t=1712829840;
+	bh=+e5SNT9SOHY0UYEj/IviCuOMFBVulcchmjn4GPRBHiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lDGkkeiJtJU6QOWq1KKM3NzyBpN60c9hGfXRyLb4ukn9xLjpUQqczl/DHZZxhuDLw
-	 EoAY4rexnAFpdYb5TxRYCxMIcEwE3+MmNLvPEhUT7sLwjeDvL6qqx+yzEA3IbwIBqk
-	 Kriqo0DQ59Nd23qynEARjiTec1t0YvdrbO+qY4Gc=
+	b=gRmAcuCvNqIK88cjx3wFIe2l4Tx5JpCb73AJiceJdB+qRos21N75Mg+HL3LJIzO2y
+	 SNw2WkJt1FKcAEA8XHlNv6TNQT1hKdl6E9dW0Mq66qHOFrSEBK7gDBVumlT2VsLFUR
+	 GPTfneyubUXEnFKOuqfY+7+SCJHLjbIEd51irdHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: [PATCH 5.10 145/294] x86/mmio: Disable KVM mitigation when X86_FEATURE_CLEAR_CPU_BUF is set
+	Takashi Iwai <tiwai@suse.de>,
+	Duoming Zhou <duoming@zju.edu.cn>
+Subject: [PATCH 4.19 085/175] ALSA: sh: aica: reorder cleanup operations to avoid UAF bugs
 Date: Thu, 11 Apr 2024 11:55:08 +0200
-Message-ID: <20240411095440.019256621@linuxfoundation.org>
+Message-ID: <20240411095422.120837037@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit e95df4ec0c0c9791941f112db699fae794b9862a upstream.
+commit 051e0840ffa8ab25554d6b14b62c9ab9e4901457 upstream.
 
-Currently MMIO Stale Data mitigation for CPUs not affected by MDS/TAA is
-to only deploy VERW at VMentry by enabling mmio_stale_data_clear static
-branch. No mitigation is needed for kernel->user transitions. If such
-CPUs are also affected by RFDS, its mitigation may set
-X86_FEATURE_CLEAR_CPU_BUF to deploy VERW at kernel->user and VMentry.
-This could result in duplicate VERW at VMentry.
+The dreamcastcard->timer could schedule the spu_dma_work and the
+spu_dma_work could also arm the dreamcastcard->timer.
 
-Fix this by disabling mmio_stale_data_clear static branch when
-X86_FEATURE_CLEAR_CPU_BUF is enabled.
+When the snd_pcm_substream is closing, the aica_channel will be
+deallocated. But it could still be dereferenced in the worker
+thread. The reason is that del_timer() will return directly
+regardless of whether the timer handler is running or not and
+the worker could be rescheduled in the timer handler. As a result,
+the UAF bug will happen. The racy situation is shown below:
 
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+      (Thread 1)                 |      (Thread 2)
+snd_aicapcm_pcm_close()          |
+ ...                             |  run_spu_dma() //worker
+                                 |    mod_timer()
+  flush_work()                   |
+  del_timer()                    |  aica_period_elapsed() //timer
+  kfree(dreamcastcard->channel)  |    schedule_work()
+                                 |  run_spu_dma() //worker
+  ...                            |    dreamcastcard->channel-> //USE
+
+In order to mitigate this bug and other possible corner cases,
+call mod_timer() conditionally in run_spu_dma(), then implement
+PCM sync_stop op to cancel both the timer and worker. The sync_stop
+op will be called from PCM core appropriately when needed.
+
+Fixes: 198de43d758c ("[ALSA] Add ALSA support for the SEGA Dreamcast PCM device")
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Message-ID: <20240326094238.95442-1-duoming@zju.edu.cn>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/bugs.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ sound/sh/aica.c |   17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -419,6 +419,13 @@ static void __init mmio_select_mitigatio
- 	if (boot_cpu_has_bug(X86_BUG_MDS) || (boot_cpu_has_bug(X86_BUG_TAA) &&
- 					      boot_cpu_has(X86_FEATURE_RTM)))
- 		setup_force_cpu_cap(X86_FEATURE_CLEAR_CPU_BUF);
-+
-+	/*
-+	 * X86_FEATURE_CLEAR_CPU_BUF could be enabled by other VERW based
-+	 * mitigations, disable KVM-only mitigation in that case.
-+	 */
-+	if (boot_cpu_has(X86_FEATURE_CLEAR_CPU_BUF))
-+		static_branch_disable(&mmio_stale_data_clear);
- 	else
- 		static_branch_enable(&mmio_stale_data_clear);
+--- a/sound/sh/aica.c
++++ b/sound/sh/aica.c
+@@ -295,7 +295,8 @@ static void run_spu_dma(struct work_stru
+ 		dreamcastcard->clicks++;
+ 		if (unlikely(dreamcastcard->clicks >= AICA_PERIOD_NUMBER))
+ 			dreamcastcard->clicks %= AICA_PERIOD_NUMBER;
+-		mod_timer(&dreamcastcard->timer, jiffies + 1);
++		if (snd_pcm_running(dreamcastcard->substream))
++			mod_timer(&dreamcastcard->timer, jiffies + 1);
+ 	}
+ }
  
-@@ -495,8 +502,11 @@ static void __init md_clear_update_mitig
- 		taa_mitigation = TAA_MITIGATION_VERW;
- 		taa_select_mitigation();
- 	}
--	if (mmio_mitigation == MMIO_MITIGATION_OFF &&
--	    boot_cpu_has_bug(X86_BUG_MMIO_STALE_DATA)) {
-+	/*
-+	 * MMIO_MITIGATION_OFF is not checked here so that mmio_stale_data_clear
-+	 * gets updated correctly as per X86_FEATURE_CLEAR_CPU_BUF state.
-+	 */
-+	if (boot_cpu_has_bug(X86_BUG_MMIO_STALE_DATA)) {
- 		mmio_mitigation = MMIO_MITIGATION_VERW;
- 		mmio_select_mitigation();
- 	}
+@@ -307,6 +308,8 @@ static void aica_period_elapsed(struct t
+ 	/*timer function - so cannot sleep */
+ 	int play_period;
+ 	struct snd_pcm_runtime *runtime;
++	if (!snd_pcm_running(substream))
++		return;
+ 	runtime = substream->runtime;
+ 	dreamcastcard = substream->pcm->private_data;
+ 	/* Have we played out an additional period? */
+@@ -367,12 +370,19 @@ static int snd_aicapcm_pcm_open(struct s
+ 	return 0;
+ }
+ 
++static int snd_aicapcm_pcm_sync_stop(struct snd_pcm_substream *substream)
++{
++	struct snd_card_aica *dreamcastcard = substream->pcm->private_data;
++
++	del_timer_sync(&dreamcastcard->timer);
++	cancel_work_sync(&dreamcastcard->spu_dma_work);
++	return 0;
++}
++
+ static int snd_aicapcm_pcm_close(struct snd_pcm_substream
+ 				 *substream)
+ {
+ 	struct snd_card_aica *dreamcastcard = substream->pcm->private_data;
+-	flush_work(&(dreamcastcard->spu_dma_work));
+-	del_timer(&dreamcastcard->timer);
+ 	dreamcastcard->substream = NULL;
+ 	kfree(dreamcastcard->channel);
+ 	spu_disable();
+@@ -438,6 +448,7 @@ static const struct snd_pcm_ops snd_aica
+ 	.prepare = snd_aicapcm_pcm_prepare,
+ 	.trigger = snd_aicapcm_pcm_trigger,
+ 	.pointer = snd_aicapcm_pcm_pointer,
++	.sync_stop = snd_aicapcm_pcm_sync_stop,
+ };
+ 
+ /* TO DO: set up to handle more than one pcm instance */
 
 
 
