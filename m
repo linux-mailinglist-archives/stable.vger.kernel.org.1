@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-39119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B135F8A11FF
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 812CD8A11CB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 681221F27375
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21CDF1F21496
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0B7145B13;
-	Thu, 11 Apr 2024 10:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE2C1474C3;
+	Thu, 11 Apr 2024 10:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOFiYWAr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lfyw6Keh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D13779FD;
-	Thu, 11 Apr 2024 10:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3BB14600E;
+	Thu, 11 Apr 2024 10:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832572; cv=none; b=EMAlgzfm0kb+Q1dbMeoHS9oRNRZaPeDZ+ScRTEUzRjh1t4SZqlJztsywdVuq9CUMnPxvMg+7uCBInGxydbSfw5p9KYAku6E7f9fata1cNQRGyygvoDyfelcMNWdeUxJXmZb1WwrXhFc6+O3ogiVLGlTxEKb9tveA88svhPuo3FQ=
+	t=1712832431; cv=none; b=tu/L3j9RuSHLZ6P893vju1piHOLiVHdUw2AbELeoCQgNrZGZSiB5JLWo6TP6icfdRxdt+ibtev9ws/6PMaR3FVd1QeLHRI+1D6qUQyC/UQuKJmwZM7N2JR2stzK34xjcsMtEhGazSxO+OfBQG4n4qdzbTUOrJoNa7EigP6uc1ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832572; c=relaxed/simple;
-	bh=I3cwneSKWDAILHSGTtQaPMVTFHNrkXSsfkKfpc1ZxaI=;
+	s=arc-20240116; t=1712832431; c=relaxed/simple;
+	bh=+QaYaRAXqGuc3cHW/MG+95JLa85M7TrQsf3mLS3FI3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fLSzCxmv3Gu7Z2TL6a6k5mit6ur7GIvRJtIH/XO2fNZmKn9tCkWn/jIlbhXVaMHMuVbHRKvCY5r1u5VIEP3yytRe2SgIIjFu5TAwTO2SYGjnTss8TlYU8bNa5y8wixI10Gfb1u53+Nt6+7izE2OPin37ZfZuuO0KytxoaZUcNsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOFiYWAr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 141D6C433C7;
-	Thu, 11 Apr 2024 10:49:31 +0000 (UTC)
+	 MIME-Version; b=CdwE8sRP0IldlqZJJrX+nb6D5IbAu1BJjmJFQM+4nJWzWaZO8u+gfXu1Sm4gtwdEikMnVZ3He7ouze2Lau4nUftJwNppmChtQgdeluJakVYuRCz0/JKhLYte5BH5B8DGYyI2T0LusARDBuIurtXIXly9z607OYqQO6nvJ2hyuv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lfyw6Keh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D624C433C7;
+	Thu, 11 Apr 2024 10:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832572;
-	bh=I3cwneSKWDAILHSGTtQaPMVTFHNrkXSsfkKfpc1ZxaI=;
+	s=korg; t=1712832430;
+	bh=+QaYaRAXqGuc3cHW/MG+95JLa85M7TrQsf3mLS3FI3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mOFiYWAr+k+YxA+RRfsYSXAUboR4Fiu7kghCopmpSSNFc72wKvr7i4jVa+2Ve1B/K
-	 uzTCl+as7I1aT56ppOODn3uR92Pkhid5emuuYOhfHSPK2xGBe4EdblF2lCLhRXe8fI
-	 EQIT7fZrpHOxPXeDcOXB/+Kohokhoy5c7Q6vC+k4=
+	b=Lfyw6KehWpR9f/NCKdHULJO7T5J/Sg2ZDEw2kHLumBfXEUUfKsCl/3uQoavF9PU5a
+	 RJCi4H68aokXsmE+dabbVyrUS6ebShgT1wtexRgdfFFEnMYodiVLmJdRcOij4UFTI9
+	 aG1rvRjx+qFNqxA+y+TjeBdCRLZiEWsnGbdGSL2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Kees Cook <keescook@chromium.org>,
+	Ian Rogers <irogers@google.com>,
+	Yang Jihong <yangjihong1@huawei.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 11/57] pstore/zone: Add a null pointer check to the psz_kmsg_read
+Subject: [PATCH 6.1 47/83] libperf evlist: Avoid out-of-bounds access
 Date: Thu, 11 Apr 2024 11:57:19 +0200
-Message-ID: <20240411095408.334651070@linuxfoundation.org>
+Message-ID: <20240411095414.100623178@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 98bc7e26e14fbb26a6abf97603d59532475e97f8 ]
+[ Upstream commit 1947b92464c3268381604bbe2ac977a3fd78192f ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful
-by checking the pointer validity.
+Parallel testing appears to show a race between allocating and setting
+evsel ids. As there is a bounds check on the xyarray it yields a segv
+like:
 
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Link: https://lore.kernel.org/r/20240118100206.213928-1-chentao@kylinos.cn
-Signed-off-by: Kees Cook <keescook@chromium.org>
+```
+AddressSanitizer:DEADLYSIGNAL
+
+=================================================================
+
+==484408==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000010
+
+==484408==The signal is caused by a WRITE memory access.
+
+==484408==Hint: address points to the zero page.
+
+    #0 0x55cef5d4eff4 in perf_evlist__id_hash tools/lib/perf/evlist.c:256
+    #1 0x55cef5d4f132 in perf_evlist__id_add tools/lib/perf/evlist.c:274
+    #2 0x55cef5d4f545 in perf_evlist__id_add_fd tools/lib/perf/evlist.c:315
+    #3 0x55cef5a1923f in store_evsel_ids util/evsel.c:3130
+    #4 0x55cef5a19400 in evsel__store_ids util/evsel.c:3147
+    #5 0x55cef5888204 in __run_perf_stat tools/perf/builtin-stat.c:832
+    #6 0x55cef5888c06 in run_perf_stat tools/perf/builtin-stat.c:960
+    #7 0x55cef58932db in cmd_stat tools/perf/builtin-stat.c:2878
+...
+```
+
+Avoid this crash by early exiting the perf_evlist__id_add_fd and
+perf_evlist__id_add is the access is out-of-bounds.
+
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Yang Jihong <yangjihong1@huawei.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240229070757.796244-1-irogers@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/zone.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/lib/perf/evlist.c                  | 18 ++++++++++++------
+ tools/lib/perf/include/internal/evlist.h |  4 ++--
+ 2 files changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/fs/pstore/zone.c b/fs/pstore/zone.c
-index 5d3f944f60185..295040c249d91 100644
---- a/fs/pstore/zone.c
-+++ b/fs/pstore/zone.c
-@@ -973,6 +973,8 @@ static ssize_t psz_kmsg_read(struct pstore_zone *zone,
- 		char *buf = kasprintf(GFP_KERNEL, "%s: Total %d times\n",
- 				      kmsg_dump_reason_str(record->reason),
- 				      record->count);
-+		if (!buf)
-+			return -ENOMEM;
- 		hlen = strlen(buf);
- 		record->buf = krealloc(buf, hlen + size, GFP_KERNEL);
- 		if (!record->buf) {
+diff --git a/tools/lib/perf/evlist.c b/tools/lib/perf/evlist.c
+index 61b637f29b827..b871923c7e5cd 100644
+--- a/tools/lib/perf/evlist.c
++++ b/tools/lib/perf/evlist.c
+@@ -233,10 +233,10 @@ u64 perf_evlist__read_format(struct perf_evlist *evlist)
+ 
+ static void perf_evlist__id_hash(struct perf_evlist *evlist,
+ 				 struct perf_evsel *evsel,
+-				 int cpu, int thread, u64 id)
++				 int cpu_map_idx, int thread, u64 id)
+ {
+ 	int hash;
+-	struct perf_sample_id *sid = SID(evsel, cpu, thread);
++	struct perf_sample_id *sid = SID(evsel, cpu_map_idx, thread);
+ 
+ 	sid->id = id;
+ 	sid->evsel = evsel;
+@@ -254,21 +254,27 @@ void perf_evlist__reset_id_hash(struct perf_evlist *evlist)
+ 
+ void perf_evlist__id_add(struct perf_evlist *evlist,
+ 			 struct perf_evsel *evsel,
+-			 int cpu, int thread, u64 id)
++			 int cpu_map_idx, int thread, u64 id)
+ {
+-	perf_evlist__id_hash(evlist, evsel, cpu, thread, id);
++	if (!SID(evsel, cpu_map_idx, thread))
++		return;
++
++	perf_evlist__id_hash(evlist, evsel, cpu_map_idx, thread, id);
+ 	evsel->id[evsel->ids++] = id;
+ }
+ 
+ int perf_evlist__id_add_fd(struct perf_evlist *evlist,
+ 			   struct perf_evsel *evsel,
+-			   int cpu, int thread, int fd)
++			   int cpu_map_idx, int thread, int fd)
+ {
+ 	u64 read_data[4] = { 0, };
+ 	int id_idx = 1; /* The first entry is the counter value */
+ 	u64 id;
+ 	int ret;
+ 
++	if (!SID(evsel, cpu_map_idx, thread))
++		return -1;
++
+ 	ret = ioctl(fd, PERF_EVENT_IOC_ID, &id);
+ 	if (!ret)
+ 		goto add;
+@@ -297,7 +303,7 @@ int perf_evlist__id_add_fd(struct perf_evlist *evlist,
+ 	id = read_data[id_idx];
+ 
+ add:
+-	perf_evlist__id_add(evlist, evsel, cpu, thread, id);
++	perf_evlist__id_add(evlist, evsel, cpu_map_idx, thread, id);
+ 	return 0;
+ }
+ 
+diff --git a/tools/lib/perf/include/internal/evlist.h b/tools/lib/perf/include/internal/evlist.h
+index 850f07070036c..cf77db75291b9 100644
+--- a/tools/lib/perf/include/internal/evlist.h
++++ b/tools/lib/perf/include/internal/evlist.h
+@@ -127,11 +127,11 @@ u64 perf_evlist__read_format(struct perf_evlist *evlist);
+ 
+ void perf_evlist__id_add(struct perf_evlist *evlist,
+ 			 struct perf_evsel *evsel,
+-			 int cpu, int thread, u64 id);
++			 int cpu_map_idx, int thread, u64 id);
+ 
+ int perf_evlist__id_add_fd(struct perf_evlist *evlist,
+ 			   struct perf_evsel *evsel,
+-			   int cpu, int thread, int fd);
++			   int cpu_map_idx, int thread, int fd);
+ 
+ void perf_evlist__reset_id_hash(struct perf_evlist *evlist);
+ 
 -- 
 2.43.0
 
