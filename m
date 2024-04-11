@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-38518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246FB8A0F04
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:20:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D788A0D66
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE5611F219DA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:20:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AE661C217BB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681BA146582;
-	Thu, 11 Apr 2024 10:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60915145B25;
+	Thu, 11 Apr 2024 10:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zUnlBVB6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STT9OENO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C19140E3D;
-	Thu, 11 Apr 2024 10:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA801422C4;
+	Thu, 11 Apr 2024 10:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830809; cv=none; b=M1ZWkSreKD4DSz0S9X6AMGJx3KVDeyNZ/qMeKV4bg92AAgwnwtarAvVUu1MNcSm7sx4sZvd/z1IzJQMmcr5WlwZOeC6WyvKVlGR6ornLJ6Sx61IssULmhGEghLkg9qwxKTfzM7D9o6SPJEh90sK4rIfwwc8EXCFORbJXwZOzBR0=
+	t=1712829813; cv=none; b=FwffrlR81twNQTF/tN+y8nZBxtw0yNeTk3+ICMWokfdAAQy+Fe33olWs+kd06QDCvNm47N4cl2e/w1Q6PVU3Lyy/uy4U+3xAqBfHwYKrsAsMHzWrSXqmI0iguysorUOEZfMCYWXWtpLopX6S7U8ayJnveDnG5ZwubqJDxuhvQN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830809; c=relaxed/simple;
-	bh=hNjez8TEh650lxyzuKUynw49dRQ3KGwBic0TiR1TqIk=;
+	s=arc-20240116; t=1712829813; c=relaxed/simple;
+	bh=VFyTgVy0bC/o4H+HUdnH7SbkGhm5R55HTDi3Q784MeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r2CIISdVoI8ZEVL0MvBE7iaJ5UNv8Cr049cKO1mhgVmMn+SEVZQVcrfB6RMIqZipwgU9TVHv7YetVPLH6/anzg1nTV6wmdhASUnzzabWhknZyVbd1e40o+uCP6dPJL6AaO67gMfM1irs2gzwdYbmDFbs5btFq38QenP1/MIHodQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zUnlBVB6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A05E9C433C7;
-	Thu, 11 Apr 2024 10:20:08 +0000 (UTC)
+	 MIME-Version; b=QnCWQPzooCujHGCkNxL6cHKinUMk+m7L503+DhmKH6vxlWgDxIy5oN44dFEUtBnBETk3c3Mfuj5afWlkfbgucQc7/4q+LQt7e1WUqB+jjx5h0qegbW5RHCW37RDs2JIN/8bc4YaZs7DicsJBBpStJUEioFl2qht8ENk8ejZTr1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STT9OENO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BDB9C433C7;
+	Thu, 11 Apr 2024 10:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830809;
-	bh=hNjez8TEh650lxyzuKUynw49dRQ3KGwBic0TiR1TqIk=;
+	s=korg; t=1712829811;
+	bh=VFyTgVy0bC/o4H+HUdnH7SbkGhm5R55HTDi3Q784MeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zUnlBVB6U0FK5uWJOQhgwN5cqoqEBzdSlPS4s82PGMtmcknltENFl6uvrUReHvVA5
-	 lPMniSnfE7nEbWimmHF5FdWENTwohtzlcFzCVElvXAxAxSdHFOzXCab2Q8FIam/nDI
-	 gAh76JplOSMl0ofiaaw7iPErtliPdclcWJBhw42g=
+	b=STT9OENOEbtW8H7bvw0JmMf+w0uEGM6KZ6YNkIN29XYQC4jos/WNT+Ver5UrBjCC2
+	 v+vOGiGx2rpozaC+sATsABxV8DS8i2BeCNAu0nkpWpfcbSZcArS3PB/L7PQvjjkxbt
+	 RfdB1LB6zFFlghjxDbrOmM4pb9CW8f7P4CO2p8L4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.4 125/215] scsi: qla2xxx: Fix command flush on cable pull
-Date: Thu, 11 Apr 2024 11:55:34 +0200
-Message-ID: <20240411095428.655298854@linuxfoundation.org>
+	Ryosuke Yasuoka <ryasuoka@redhat.com>,
+	Jeremy Cline <jeremy@jcline.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com,
+	syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 112/175] nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet
+Date: Thu, 11 Apr 2024 11:55:35 +0200
+Message-ID: <20240411095422.939091456@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +66,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Ryosuke Yasuoka <ryasuoka@redhat.com>
 
-commit a27d4d0e7de305def8a5098a614053be208d1aa1 upstream.
+[ Upstream commit d24b03535e5eb82e025219c2f632b485409c898f ]
 
-System crash due to command failed to flush back to SCSI layer.
+syzbot reported the following uninit-value access issue [1][2]:
 
- BUG: unable to handle kernel NULL pointer dereference at 0000000000000000
- PGD 0 P4D 0
- Oops: 0000 [#1] SMP NOPTI
- CPU: 27 PID: 793455 Comm: kworker/u130:6 Kdump: loaded Tainted: G           OE    --------- -  - 4.18.0-372.9.1.el8.x86_64 #1
- Hardware name: HPE ProLiant DL360 Gen10/ProLiant DL360 Gen10, BIOS U32 09/03/2021
- Workqueue: nvme-wq nvme_fc_connect_ctrl_work [nvme_fc]
- RIP: 0010:__wake_up_common+0x4c/0x190
- Code: 24 10 4d 85 c9 74 0a 41 f6 01 04 0f 85 9d 00 00 00 48 8b 43 08 48 83 c3 08 4c 8d 48 e8 49 8d 41 18 48 39 c3 0f 84 f0 00 00 00 <49> 8b 41 18 89 54 24 08 31 ed 4c 8d 70 e8 45 8b 29 41 f6 c5 04 75
- RSP: 0018:ffff95f3e0cb7cd0 EFLAGS: 00010086
- RAX: 0000000000000000 RBX: ffff8b08d3b26328 RCX: 0000000000000000
- RDX: 0000000000000001 RSI: 0000000000000003 RDI: ffff8b08d3b26320
- RBP: 0000000000000001 R08: 0000000000000000 R09: ffffffffffffffe8
- R10: 0000000000000000 R11: ffff95f3e0cb7a60 R12: ffff95f3e0cb7d20
- R13: 0000000000000003 R14: 0000000000000000 R15: 0000000000000000
- FS:  0000000000000000(0000) GS:ffff8b2fdf6c0000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 0000002f1e410002 CR4: 00000000007706e0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 55555554
- Call Trace:
-  __wake_up_common_lock+0x7c/0xc0
-  qla_nvme_ls_req+0x355/0x4c0 [qla2xxx]
- qla2xxx [0000:12:00.1]-f084:3: qlt_free_session_done: se_sess 0000000000000000 / sess ffff8ae1407ca000 from port 21:32:00:02:ac:07:ee:b8 loop_id 0x02 s_id 01:02:00 logout 1 keep 0 els_logo 0
- ? __nvme_fc_send_ls_req+0x260/0x380 [nvme_fc]
- qla2xxx [0000:12:00.1]-207d:3: FCPort 21:32:00:02:ac:07:ee:b8 state transitioned from ONLINE to LOST - portid=010200.
-  ? nvme_fc_send_ls_req.constprop.42+0x1a/0x45 [nvme_fc]
- qla2xxx [0000:12:00.1]-2109:3: qla2x00_schedule_rport_del 21320002ac07eeb8. rport ffff8ae598122000 roles 1
- ? nvme_fc_connect_ctrl_work.cold.63+0x1e3/0xa7d [nvme_fc]
- qla2xxx [0000:12:00.1]-f084:3: qlt_free_session_done: se_sess 0000000000000000 / sess ffff8ae14801e000 from port 21:32:01:02:ad:f7:ee:b8 loop_id 0x04 s_id 01:02:01 logout 1 keep 0 els_logo 0
-  ? __switch_to+0x10c/0x450
- ? process_one_work+0x1a7/0x360
- qla2xxx [0000:12:00.1]-207d:3: FCPort 21:32:01:02:ad:f7:ee:b8 state transitioned from ONLINE to LOST - portid=010201.
-  ? worker_thread+0x1ce/0x390
-  ? create_worker+0x1a0/0x1a0
- qla2xxx [0000:12:00.1]-2109:3: qla2x00_schedule_rport_del 21320102adf7eeb8. rport ffff8ae3b2312800 roles 70
-  ? kthread+0x10a/0x120
- qla2xxx [0000:12:00.1]-2112:3: qla_nvme_unregister_remote_port: unregister remoteport on ffff8ae14801e000 21320102adf7eeb8
-  ? set_kthread_struct+0x40/0x40
- qla2xxx [0000:12:00.1]-2110:3: remoteport_delete of ffff8ae14801e000 21320102adf7eeb8 completed.
-  ? ret_from_fork+0x1f/0x40
- qla2xxx [0000:12:00.1]-f086:3: qlt_free_session_done: waiting for sess ffff8ae14801e000 logout
+nci_rx_work() parses and processes received packet. When the payload
+length is zero, each message type handler reads uninitialized payload
+and KMSAN detects this issue. The receipt of a packet with a zero-size
+payload is considered unexpected, and therefore, such packets should be
+silently discarded.
 
-The system was under memory stress where driver was not able to allocate an
-SRB to carry out error recovery of cable pull.  The failure to flush causes
-upper layer to start modifying scsi_cmnd.  When the system frees up some
-memory, the subsequent cable pull trigger another command flush. At this
-point the driver access a null pointer when attempting to DMA unmap the
-SGL.
+This patch resolved this issue by checking payload size before calling
+each message type handler codes.
 
-Add a check to make sure commands are flush back on session tear down to
-prevent the null pointer access.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240227164127.36465-7-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Reported-and-tested-by: syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com
+Reported-and-tested-by: syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7ea9413ea6749baf5574 [1]
+Closes: https://syzkaller.appspot.com/bug?extid=29b5ca705d2e0f4a44d2 [2]
+Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
+Reviewed-by: Jeremy Cline <jeremy@jcline.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_target.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/nfc/nci/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/scsi/qla2xxx/qla_target.c
-+++ b/drivers/scsi/qla2xxx/qla_target.c
-@@ -1040,6 +1040,16 @@ void qlt_free_session_done(struct work_s
- 		    "%s: sess %p logout completed\n", __func__, sess);
- 	}
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 2e885b7a02a15..1f863ccf21211 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1511,6 +1511,11 @@ static void nci_rx_work(struct work_struct *work)
+ 		nfc_send_to_raw_sock(ndev->nfc_dev, skb,
+ 				     RAW_PAYLOAD_NCI, NFC_DIRECTION_RX);
  
-+	/* check for any straggling io left behind */
-+	if (!(sess->flags & FCF_FCP2_DEVICE) &&
-+	    qla2x00_eh_wait_for_pending_commands(sess->vha, sess->d_id.b24, 0, WAIT_TARGET)) {
-+		ql_log(ql_log_warn, vha, 0x3027,
-+		    "IO not return. Resetting.\n");
-+		set_bit(ISP_ABORT_NEEDED, &vha->dpc_flags);
-+		qla2xxx_wake_dpc(vha);
-+		qla2x00_wait_for_chip_reset(vha);
-+	}
++		if (!nci_plen(skb->data)) {
++			kfree_skb(skb);
++			break;
++		}
 +
- 	if (sess->logo_ack_needed) {
- 		sess->logo_ack_needed = 0;
- 		qla24xx_async_notify_ack(vha, sess,
+ 		/* Process frame */
+ 		switch (nci_mt(skb->data)) {
+ 		case NCI_MT_RSP_PKT:
+-- 
+2.43.0
+
 
 
 
