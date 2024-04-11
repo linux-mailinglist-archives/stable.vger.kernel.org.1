@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B8288A0DA8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:06:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D71C8A0F1E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD68BB21326
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:06:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00ACC286745
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DF6145B06;
-	Thu, 11 Apr 2024 10:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3631465A6;
+	Thu, 11 Apr 2024 10:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ws1tQHrs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00pzSJ99"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33551448F3;
-	Thu, 11 Apr 2024 10:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1C7145FF0;
+	Thu, 11 Apr 2024 10:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829971; cv=none; b=u/uq7MkJr/kCpgyRc00LwKICugHnWH6eJPuUkrftDclT2+lRJbSY8ZnFMU551u/SLdCyp89kkUmkLyld7Mi/LmzusIXG9x5Xeo51OXUdD1Z+XQePVji+24SNQlkNHS/FULm6jiVcXsNhjSj6feD+BSnvPFETgDACtRZ/nT7W0N4=
+	t=1712830865; cv=none; b=e6z/ge+bfF4vAC5jEpgRftORetaaypZ/UCL8ruPmX+EyJL7lU4rZa0xRRikMmZaqnZF6+M33a25v+7V0rhv81Ow26/IswVsp9JgcRh9F1Eeqb0fS5ITHlesFivdr4dUdrR/CyWUv1MSYqSqY03ucNg9F1dJ+iTGJgmANuXYL0Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829971; c=relaxed/simple;
-	bh=Ey7Qbbr7U2j72en2S5n/9slBerJ7Zl4w5ZrM4V6G4h8=;
+	s=arc-20240116; t=1712830865; c=relaxed/simple;
+	bh=kdR7EkKiMt7UDzpmyXvJEoVLKcmQPny1xGlYwcBeflA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gvk/USjBXiqE/aisIpqKTtJdgolkPmLI/Tc7sa0WNwVjvJcZC3JAanosvk+xoqygwQE51YtQrMRVhpoFjalGdUt3Y7xAB8kUYXqLbpL9LY+IIfUVAZZ31JXEHea9t9FK/zsQg9f+xKfSv2pdNhI8w1q5YCHkcJt20LBlIHo48xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ws1tQHrs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BABC433C7;
-	Thu, 11 Apr 2024 10:06:10 +0000 (UTC)
+	 MIME-Version; b=UpFO6Ud7ijRz5fnrKCGor/SiyRxrV+QkmeM6VIyOrmBn8GjiZECQeJRiEYQQECAJcdGpc1h/Xi8ECWe5hL327pBE6RSs8uyOtWRFI1qXw7t3hE+GXNXlEph6eJlTEEBPbH6hH1cTPwGDGE1MduRTUQbZ0if41qAu8JE4YkDxlK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00pzSJ99; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D42F8C43399;
+	Thu, 11 Apr 2024 10:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829971;
-	bh=Ey7Qbbr7U2j72en2S5n/9slBerJ7Zl4w5ZrM4V6G4h8=;
+	s=korg; t=1712830865;
+	bh=kdR7EkKiMt7UDzpmyXvJEoVLKcmQPny1xGlYwcBeflA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ws1tQHrsuGHowtj/HpZYLHtQR/L3NyiqpvQFF1L+qYSweav2pow/s+hLTFWUfQ6D0
-	 pxV4aoMplBO52w5UwFHbGuL/vQZ7iDBXRvpZNv+DaR49ADdkUKvFmPL62sGQXyz++C
-	 8oLMlxrCmvRZokbKHVUKKfxIrbkLAUEdJzMjmfzw=
+	b=00pzSJ99MODSVEGHBVMDXtoQXxnrBNhaHM5zY+zhI7OVyDcjCWPdBKdSnPTa0IIKe
+	 6U8/eCGbKfs6x9YUUzefDNNr0VaXxjT1WYibUrf17X7QKXrZlkFsd/KMe1DGnyseI+
+	 /WK6zA03yCHNuxY/g4TACr4mL1Z+lIPfvEYpJfO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.org>,
-	Jacopo Mondi <jacopo@jmondi.org>,
-	Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 129/175] staging: mmal-vchiq: Allocate and free components as required
+	Eric Auger <eric.auger@redhat.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 5.4 143/215] vfio/platform: Create persistent IRQ handlers
 Date: Thu, 11 Apr 2024 11:55:52 +0200
-Message-ID: <20240411095423.448851609@linuxfoundation.org>
+Message-ID: <20240411095429.189592685@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,128 +62,255 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.org>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 8c589e1794a31e9a381916b0280260ab601e4d6e ]
+[ Upstream commit 675daf435e9f8e5a5eab140a9864dfad6668b375 ]
 
-The existing code assumed that there would only ever be 4 components,
-and never freed the entries once used.
-Allow arbitrary creation and destruction of components.
+The vfio-platform SET_IRQS ioctl currently allows loopback triggering of
+an interrupt before a signaling eventfd has been configured by the user,
+which thereby allows a NULL pointer dereference.
 
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.org>
-Signed-off-by: Jacopo Mondi <jacopo@jmondi.org>
-Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Link: https://lore.kernel.org/r/20200623164235.29566-3-nsaenzjulienne@suse.de
+Rather than register the IRQ relative to a valid trigger, register all
+IRQs in a disabled state in the device open path.  This allows mask
+operations on the IRQ to nest within the overall enable state governed
+by a valid eventfd signal.  This decouples @masked, protected by the
+@locked spinlock from @trigger, protected via the @igate mutex.
+
+In doing so, it's guaranteed that changes to @trigger cannot race the
+IRQ handlers because the IRQ handler is synchronously disabled before
+modifying the trigger, and loopback triggering of the IRQ via ioctl is
+safe due to serialization with trigger changes via igate.
+
+For compatibility, request_irq() failures are maintained to be local to
+the SET_IRQS ioctl rather than a fatal error in the open device path.
+This allows, for example, a userspace driver with polling mode support
+to continue to work regardless of moving the request_irq() call site.
+This necessarily blocks all SET_IRQS access to the failed index.
+
+Cc: Eric Auger <eric.auger@redhat.com>
+Cc:  <stable@vger.kernel.org>
+Fixes: 57f972e2b341 ("vfio/platform: trigger an interrupt via eventfd")
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20240308230557.805580-7-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: f37e76abd614 ("staging: vc04_services: fix information leak in create_component()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../vc04_services/bcm2835-camera/mmal-vchiq.c | 29 ++++++++++++-------
- .../vc04_services/bcm2835-camera/mmal-vchiq.h |  1 +
- 2 files changed, 20 insertions(+), 10 deletions(-)
+ drivers/vfio/platform/vfio_platform_irq.c |  101 ++++++++++++++++++++----------
+ 1 file changed, 68 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
-index 00c943516ba38..4f128c75c0f6c 100644
---- a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
-+++ b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
-@@ -31,8 +31,11 @@
- #define USE_VCHIQ_ARM
- #include "interface/vchi/vchi.h"
+--- a/drivers/vfio/platform/vfio_platform_irq.c
++++ b/drivers/vfio/platform/vfio_platform_irq.c
+@@ -136,6 +136,16 @@ static int vfio_platform_set_irq_unmask(
+ 	return 0;
+ }
  
--/* maximum number of components supported */
--#define VCHIQ_MMAL_MAX_COMPONENTS 4
 +/*
-+ * maximum number of components supported.
-+ * This matches the maximum permitted by default on the VPU
++ * The trigger eventfd is guaranteed valid in the interrupt path
++ * and protected by the igate mutex when triggered via ioctl.
 + */
-+#define VCHIQ_MMAL_MAX_COMPONENTS 64
- 
- /*#define FULL_MSG_DUMP 1*/
- 
-@@ -165,8 +168,6 @@ struct vchiq_mmal_instance {
- 	/* protect accesses to context_map */
- 	struct mutex context_map_lock;
- 
--	/* component to use next */
--	int component_idx;
- 	struct vchiq_mmal_component component[VCHIQ_MMAL_MAX_COMPONENTS];
- };
- 
-@@ -1607,18 +1608,24 @@ int vchiq_mmal_component_init(struct vchiq_mmal_instance *instance,
++static void vfio_send_eventfd(struct vfio_platform_irq *irq_ctx)
++{
++	if (likely(irq_ctx->trigger))
++		eventfd_signal(irq_ctx->trigger, 1);
++}
++
+ static irqreturn_t vfio_automasked_irq_handler(int irq, void *dev_id)
  {
- 	int ret;
- 	int idx;		/* port index */
--	struct vchiq_mmal_component *component;
-+	struct vchiq_mmal_component *component = NULL;
+ 	struct vfio_platform_irq *irq_ctx = dev_id;
+@@ -155,7 +165,7 @@ static irqreturn_t vfio_automasked_irq_h
+ 	spin_unlock_irqrestore(&irq_ctx->lock, flags);
  
- 	if (mutex_lock_interruptible(&instance->vchiq_mutex))
- 		return -EINTR;
+ 	if (ret == IRQ_HANDLED)
+-		eventfd_signal(irq_ctx->trigger, 1);
++		vfio_send_eventfd(irq_ctx);
  
--	if (instance->component_idx == VCHIQ_MMAL_MAX_COMPONENTS) {
-+	for (idx = 0; idx < VCHIQ_MMAL_MAX_COMPONENTS; idx++) {
-+		if (!instance->component[idx].in_use) {
-+			component = &instance->component[idx];
-+			component->in_use = 1;
-+			break;
+ 	return ret;
+ }
+@@ -164,22 +174,19 @@ static irqreturn_t vfio_irq_handler(int
+ {
+ 	struct vfio_platform_irq *irq_ctx = dev_id;
+ 
+-	eventfd_signal(irq_ctx->trigger, 1);
++	vfio_send_eventfd(irq_ctx);
+ 
+ 	return IRQ_HANDLED;
+ }
+ 
+ static int vfio_set_trigger(struct vfio_platform_device *vdev, int index,
+-			    int fd, irq_handler_t handler)
++			    int fd)
+ {
+ 	struct vfio_platform_irq *irq = &vdev->irqs[index];
+ 	struct eventfd_ctx *trigger;
+-	int ret;
+ 
+ 	if (irq->trigger) {
+-		irq_clear_status_flags(irq->hwirq, IRQ_NOAUTOEN);
+-		free_irq(irq->hwirq, irq);
+-		kfree(irq->name);
++		disable_irq(irq->hwirq);
+ 		eventfd_ctx_put(irq->trigger);
+ 		irq->trigger = NULL;
+ 	}
+@@ -187,30 +194,20 @@ static int vfio_set_trigger(struct vfio_
+ 	if (fd < 0) /* Disable only */
+ 		return 0;
+ 
+-	irq->name = kasprintf(GFP_KERNEL, "vfio-irq[%d](%s)",
+-						irq->hwirq, vdev->name);
+-	if (!irq->name)
+-		return -ENOMEM;
+-
+ 	trigger = eventfd_ctx_fdget(fd);
+-	if (IS_ERR(trigger)) {
+-		kfree(irq->name);
++	if (IS_ERR(trigger))
+ 		return PTR_ERR(trigger);
+-	}
+ 
+ 	irq->trigger = trigger;
+ 
+-	irq_set_status_flags(irq->hwirq, IRQ_NOAUTOEN);
+-	ret = request_irq(irq->hwirq, handler, 0, irq->name, irq);
+-	if (ret) {
+-		kfree(irq->name);
+-		eventfd_ctx_put(trigger);
+-		irq->trigger = NULL;
+-		return ret;
+-	}
+-
+-	if (!irq->masked)
+-		enable_irq(irq->hwirq);
++	/*
++	 * irq->masked effectively provides nested disables within the overall
++	 * enable relative to trigger.  Specifically request_irq() is called
++	 * with NO_AUTOEN, therefore the IRQ is initially disabled.  The user
++	 * may only further disable the IRQ with a MASK operations because
++	 * irq->masked is initially false.
++	 */
++	enable_irq(irq->hwirq);
+ 
+ 	return 0;
+ }
+@@ -229,7 +226,7 @@ static int vfio_platform_set_irq_trigger
+ 		handler = vfio_irq_handler;
+ 
+ 	if (!count && (flags & VFIO_IRQ_SET_DATA_NONE))
+-		return vfio_set_trigger(vdev, index, -1, handler);
++		return vfio_set_trigger(vdev, index, -1);
+ 
+ 	if (start != 0 || count != 1)
+ 		return -EINVAL;
+@@ -237,7 +234,7 @@ static int vfio_platform_set_irq_trigger
+ 	if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
+ 		int32_t fd = *(int32_t *)data;
+ 
+-		return vfio_set_trigger(vdev, index, fd, handler);
++		return vfio_set_trigger(vdev, index, fd);
+ 	}
+ 
+ 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
+@@ -261,6 +258,14 @@ int vfio_platform_set_irqs_ioctl(struct
+ 		    unsigned start, unsigned count, uint32_t flags,
+ 		    void *data) = NULL;
+ 
++	/*
++	 * For compatibility, errors from request_irq() are local to the
++	 * SET_IRQS path and reflected in the name pointer.  This allows,
++	 * for example, polling mode fallback for an exclusive IRQ failure.
++	 */
++	if (IS_ERR(vdev->irqs[index].name))
++		return PTR_ERR(vdev->irqs[index].name);
++
+ 	switch (flags & VFIO_IRQ_SET_ACTION_TYPE_MASK) {
+ 	case VFIO_IRQ_SET_ACTION_MASK:
+ 		func = vfio_platform_set_irq_mask;
+@@ -281,7 +286,7 @@ int vfio_platform_set_irqs_ioctl(struct
+ 
+ int vfio_platform_irq_init(struct vfio_platform_device *vdev)
+ {
+-	int cnt = 0, i;
++	int cnt = 0, i, ret = 0;
+ 
+ 	while (vdev->get_irq(vdev, cnt) >= 0)
+ 		cnt++;
+@@ -292,29 +297,54 @@ int vfio_platform_irq_init(struct vfio_p
+ 
+ 	for (i = 0; i < cnt; i++) {
+ 		int hwirq = vdev->get_irq(vdev, i);
++		irq_handler_t handler = vfio_irq_handler;
+ 
+-		if (hwirq < 0)
++		if (hwirq < 0) {
++			ret = -EINVAL;
+ 			goto err;
++		}
+ 
+ 		spin_lock_init(&vdev->irqs[i].lock);
+ 
+ 		vdev->irqs[i].flags = VFIO_IRQ_INFO_EVENTFD;
+ 
+-		if (irq_get_trigger_type(hwirq) & IRQ_TYPE_LEVEL_MASK)
++		if (irq_get_trigger_type(hwirq) & IRQ_TYPE_LEVEL_MASK) {
+ 			vdev->irqs[i].flags |= VFIO_IRQ_INFO_MASKABLE
+ 						| VFIO_IRQ_INFO_AUTOMASKED;
++			handler = vfio_automasked_irq_handler;
++		}
+ 
+ 		vdev->irqs[i].count = 1;
+ 		vdev->irqs[i].hwirq = hwirq;
+ 		vdev->irqs[i].masked = false;
++		vdev->irqs[i].name = kasprintf(GFP_KERNEL,
++					       "vfio-irq[%d](%s)", hwirq,
++					       vdev->name);
++		if (!vdev->irqs[i].name) {
++			ret = -ENOMEM;
++			goto err;
++		}
++
++		ret = request_irq(hwirq, handler, IRQF_NO_AUTOEN,
++				  vdev->irqs[i].name, &vdev->irqs[i]);
++		if (ret) {
++			kfree(vdev->irqs[i].name);
++			vdev->irqs[i].name = ERR_PTR(ret);
++		}
+ 	}
+ 
+ 	vdev->num_irqs = cnt;
+ 
+ 	return 0;
+ err:
++	for (--i; i >= 0; i--) {
++		if (!IS_ERR(vdev->irqs[i].name)) {
++			free_irq(vdev->irqs[i].hwirq, &vdev->irqs[i]);
++			kfree(vdev->irqs[i].name);
 +		}
 +	}
-+
-+	if (!component) {
- 		ret = -EINVAL;	/* todo is this correct error? */
- 		goto unlock;
+ 	kfree(vdev->irqs);
+-	return -EINVAL;
++	return ret;
+ }
+ 
+ void vfio_platform_irq_cleanup(struct vfio_platform_device *vdev)
+@@ -324,7 +354,12 @@ void vfio_platform_irq_cleanup(struct vf
+ 	for (i = 0; i < vdev->num_irqs; i++) {
+ 		vfio_virqfd_disable(&vdev->irqs[i].mask);
+ 		vfio_virqfd_disable(&vdev->irqs[i].unmask);
+-		vfio_set_trigger(vdev, i, -1, NULL);
++		if (!IS_ERR(vdev->irqs[i].name)) {
++			free_irq(vdev->irqs[i].hwirq, &vdev->irqs[i]);
++			if (vdev->irqs[i].trigger)
++				eventfd_ctx_put(vdev->irqs[i].trigger);
++			kfree(vdev->irqs[i].name);
++		}
  	}
  
--	component = &instance->component[instance->component_idx];
--
- 	ret = create_component(instance, component, name);
- 	if (ret < 0)
- 		goto unlock;
-@@ -1666,8 +1673,6 @@ int vchiq_mmal_component_init(struct vchiq_mmal_instance *instance,
- 			goto release_component;
- 	}
- 
--	instance->component_idx++;
--
- 	*component_out = component;
- 
- 	mutex_unlock(&instance->vchiq_mutex);
-@@ -1677,6 +1682,8 @@ int vchiq_mmal_component_init(struct vchiq_mmal_instance *instance,
- release_component:
- 	destroy_component(instance, component);
- unlock:
-+	if (component)
-+		component->in_use = 0;
- 	mutex_unlock(&instance->vchiq_mutex);
- 
- 	return ret;
-@@ -1698,6 +1705,8 @@ int vchiq_mmal_component_finalise(struct vchiq_mmal_instance *instance,
- 
- 	ret = destroy_component(instance, component);
- 
-+	component->in_use = 0;
-+
- 	mutex_unlock(&instance->vchiq_mutex);
- 
- 	return ret;
-diff --git a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
-index b3c231e619c90..ee5eb6d4d080d 100644
---- a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
-+++ b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
-@@ -81,6 +81,7 @@ struct vchiq_mmal_port {
- };
- 
- struct vchiq_mmal_component {
-+	u32 in_use:1;
- 	u32 enabled:1;
- 	u32 handle;  /* VideoCore handle for component */
- 	u32 inputs;  /* Number of input ports */
--- 
-2.43.0
-
+ 	vdev->num_irqs = 0;
 
 
 
