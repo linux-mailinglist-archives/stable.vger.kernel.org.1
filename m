@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E728A0EAE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 904468A0D1A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:00:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC1501F21980
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0E041C217FD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5699E14601D;
-	Thu, 11 Apr 2024 10:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C6B13DDDD;
+	Thu, 11 Apr 2024 10:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLq2KUfp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCN+WuMK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FF714600A;
-	Thu, 11 Apr 2024 10:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029E9145B05;
+	Thu, 11 Apr 2024 10:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830623; cv=none; b=S5HXkLrfPEcIfzbH0pZ5b1wyPRnkl6XnnIla4zFxhPNkLX3DdPmRBb+mymN58h590DG5+Be2z+/Wj53V1LM0udoh4PwbMeKV4NGpTGkIVx7UbmbHrHvn72z14evAiwYqnEaeJehuBSZhwUXkAJUZR3FSTlxVLSg271enMSLNWDc=
+	t=1712829617; cv=none; b=gnDudATZlTHZn3dn9sPqcWZ3svMRs+HDt3WB08/+o2P0YeEYa5TwFio4G2nyJzMOXUxOToxpFtR7U0qj2exPzZreSemuK9zxR3pBDgJqOajlcM8WDUkNbPw3Agit8SbV9zKQNRKk/u6V/5peqiIkNpF1jhDwW2HSl62ghcmyzXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830623; c=relaxed/simple;
-	bh=RkI1E93rfNlkUeKabSaxu7kB4nFejk0W+XpvMRrwD2s=;
+	s=arc-20240116; t=1712829617; c=relaxed/simple;
+	bh=rkQ4zTQX9Tje0OfVNVEITcRH31gaUFPwzZ4rI1M2U7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dsD6xPCwSwzlqqJR83X3MR6owVQiI6cqd5qdk1WJ9sTR/vLu1AiIckrQ4FMwgR5PlwjdQFlC7BSDBdLwhEi6RkGFMgTe+RoWXSmxeArgjBa3H2fhP2oCpbm5vegtAFsJWNYUQntQh9FSibMxmd+sNzUsk5sq1dXZXJ6ll7R1xB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLq2KUfp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880F4C433F1;
-	Thu, 11 Apr 2024 10:17:02 +0000 (UTC)
+	 MIME-Version; b=qgghlI/ukb3kseS0uusZT1fLLEWxH1v6T/fCg+mMliMZoQOErYKxbISCnYUi876zdMqDjgreiClsn2WNAlMRR3I3kB1lXrrBNINz4/X/E6Kw18WJihf1JaNEvuVnrtYe9NZBKT4HjEWwua+6mZakJi4QHDr4KMBnZ0BvSU8fB0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCN+WuMK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FAF5C43390;
+	Thu, 11 Apr 2024 10:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830622;
-	bh=RkI1E93rfNlkUeKabSaxu7kB4nFejk0W+XpvMRrwD2s=;
+	s=korg; t=1712829616;
+	bh=rkQ4zTQX9Tje0OfVNVEITcRH31gaUFPwzZ4rI1M2U7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xLq2KUfpjgDARdhkRjgNTxHgZ9QjYMGrR2iAPk9lqufzHL8x4BNybsiGqDTpOlcUL
-	 A7RAZLBOAa8ddVpJWiJFWZNGDNosXvih93AiDgDU4iiQ4nZ6hUx4diapUx6YaY8Geg
-	 az8J4vjZdL34EQSI56tYvJsX9L8NfJewwi+ya448=
+	b=wCN+WuMKo41kGaswvdjggoIrpllZUdGW7sln3yVCMh1wKlgocdNc7bAFPW59xxI53
+	 rft4MUktsugTr1QEIzxnVN/YNZb9KtnCSEXtLAWakK0Im/514O0H9ZopG13sPY6rUy
+	 DnN6y19Vuz6XnOnPnai58bwBnC8xQiksOHO6ymfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Auger <eric.auger@redhat.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 061/215] vfio/platform: Disable virqfds on cleanup
-Date: Thu, 11 Apr 2024 11:54:30 +0200
-Message-ID: <20240411095426.731003953@linuxfoundation.org>
+Subject: [PATCH 4.19 048/175] hwmon: (amc6821) add of_match table
+Date: Thu, 11 Apr 2024 11:54:31 +0200
+Message-ID: <20240411095421.013559736@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Josua Mayer <josua@solid-run.com>
 
-[ Upstream commit fcdc0d3d40bc26c105acf8467f7d9018970944ae ]
+[ Upstream commit 3f003fda98a7a8d5f399057d92e6ed56b468657c ]
 
-irqfds for mask and unmask that are not specifically disabled by the
-user are leaked.  Remove any irqfds during cleanup
+Add of_match table for "ti,amc6821" compatible string.
+This fixes automatic driver loading by userspace when using device-tree,
+and if built as a module like major linux distributions do.
 
-Cc: Eric Auger <eric.auger@redhat.com>
-Cc:  <stable@vger.kernel.org>
-Fixes: a7fa7c77cf15 ("vfio/platform: implement IRQ masking/unmasking via an eventfd")
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20240308230557.805580-6-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+While devices probe just fine with i2c_device_id table, userspace can't
+match the "ti,amc6821" compatible string from dt with the plain
+"amc6821" device id. As a result, the kernel module can not be loaded.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Link: https://lore.kernel.org/r/20240307-amc6821-of-match-v1-1-5f40464a3110@solid-run.com
+[groeck: Cleaned up patch description]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/platform/vfio_platform_irq.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/hwmon/amc6821.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/vfio/platform/vfio_platform_irq.c b/drivers/vfio/platform/vfio_platform_irq.c
-index c5b09ec0a3c98..f2893f2fcaabd 100644
---- a/drivers/vfio/platform/vfio_platform_irq.c
-+++ b/drivers/vfio/platform/vfio_platform_irq.c
-@@ -321,8 +321,11 @@ void vfio_platform_irq_cleanup(struct vfio_platform_device *vdev)
- {
- 	int i;
+diff --git a/drivers/hwmon/amc6821.c b/drivers/hwmon/amc6821.c
+index 46b4e35fd5555..b562337df7b3c 100644
+--- a/drivers/hwmon/amc6821.c
++++ b/drivers/hwmon/amc6821.c
+@@ -1003,10 +1003,21 @@ static const struct i2c_device_id amc6821_id[] = {
  
--	for (i = 0; i < vdev->num_irqs; i++)
-+	for (i = 0; i < vdev->num_irqs; i++) {
-+		vfio_virqfd_disable(&vdev->irqs[i].mask);
-+		vfio_virqfd_disable(&vdev->irqs[i].unmask);
- 		vfio_set_trigger(vdev, i, -1, NULL);
-+	}
+ MODULE_DEVICE_TABLE(i2c, amc6821_id);
  
- 	vdev->num_irqs = 0;
- 	kfree(vdev->irqs);
++static const struct of_device_id __maybe_unused amc6821_of_match[] = {
++	{
++		.compatible = "ti,amc6821",
++		.data = (void *)amc6821,
++	},
++	{ }
++};
++
++MODULE_DEVICE_TABLE(of, amc6821_of_match);
++
+ static struct i2c_driver amc6821_driver = {
+ 	.class = I2C_CLASS_HWMON,
+ 	.driver = {
+ 		.name	= "amc6821",
++		.of_match_table = of_match_ptr(amc6821_of_match),
+ 	},
+ 	.probe = amc6821_probe,
+ 	.id_table = amc6821_id,
 -- 
 2.43.0
 
