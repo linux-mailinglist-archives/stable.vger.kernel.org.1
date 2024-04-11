@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-39021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DDA98A1180
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 902D88A1212
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:50:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FD671C2289F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1652B245FB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26830146A95;
-	Thu, 11 Apr 2024 10:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516431474BC;
+	Thu, 11 Apr 2024 10:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="to18QeIU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+JKk8+U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F556BB29;
-	Thu, 11 Apr 2024 10:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1DC1474B0;
+	Thu, 11 Apr 2024 10:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832283; cv=none; b=YedgB0ydZQahnut6SIhZlxaGyKiMaDB+WqCi1X8TSF35oSfqbdSmF5tZJw0y1p512BTs0GFwzt3KHv071c9oh/s5qpGq0c9xHSD4ONiaHTJO48Kq7Dnf+SFaIRaCuuRa7xYBLsbP9mq/6ErO3B5RmfSGCzn8idesAR4XRg9Zwus=
+	t=1712832617; cv=none; b=jGwdJMhMnNsvdDEP2edbrRG0jToc+0e8PL/m7zIDIWQuXNWGvug2edu7/71R9AQBHidLQg7zEAkn5RPonVPz9/IGjvE3/mFfiyZvYdTEuQoPjuy2xZsVfpqolxLbVFqL1basZGXBmiFlRDX+0FAzxETqBRvK6cufeuTDo3dmidk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832283; c=relaxed/simple;
-	bh=SgWa6znbpwoHX2kJBorBmES38HFakoa4ZInLD3xdEwg=;
+	s=arc-20240116; t=1712832617; c=relaxed/simple;
+	bh=fdzwy75AI0SlxZ4LW+3xeO01/B+EOFrVH8VkdmIYxI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0ljiShP43hpgjWcWTrKupeMOR/XRI7xZHEYg7zTs51vE4z2+PdtnXfbbrOBb6nyYcphJVAH+QyhSDMHlMq6moSJ/4PfcmfXM1jmCjt1TdKJcAS3ubwRDSMNccxLhgMdMz6LHyeNrx1OBIU8klE50007w5eTntjvQijL3Q2E/kU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=to18QeIU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57060C433C7;
-	Thu, 11 Apr 2024 10:44:43 +0000 (UTC)
+	 MIME-Version; b=fVmehAkDtWKUmO3jf3TclIDSgaTCYR5kZ/dnEWVf4e4eFPLysLeD+9dZ+KSWCb8qzXnouYLguFlGiQc+ihDbWz9XSg9I9IHA6NMncgdnsH2tPNu7hv/zd0O9SLlC8Ho5coGP6l1hTckrwVTyAsSdWcCh8b3743Ba8i7wV5iGR20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+JKk8+U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B67C433B1;
+	Thu, 11 Apr 2024 10:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832283;
-	bh=SgWa6znbpwoHX2kJBorBmES38HFakoa4ZInLD3xdEwg=;
+	s=korg; t=1712832616;
+	bh=fdzwy75AI0SlxZ4LW+3xeO01/B+EOFrVH8VkdmIYxI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=to18QeIUbI88N/D4BXOZfLe13mYGSemWPaGUsY8y+KNa7U/5HZASGXUgT7bOA7EBP
-	 rPEbKCHYgUDjFHtri6FBBQklD+LOiPHIv1dpumvVoVbw/oYno8B2aamBhkitG9MPaZ
-	 dGy0OJF1GX9dEsAmI0SqvjgiNJP/fyhtOcV9qknY=
+	b=N+JKk8+UPVreGo5OUDEdkNqehjhL52Lf3gTvtj2zwhEw87E7bZcQ3W2ugz7lLfxXc
+	 pOChJK6CKcce0BJllR2/sJ0/5t0KBO62sohj9joY/hk6NbTCn4k7DiHDAXksw0qTVj
+	 mnV0PMtZgWNainRLODPTG2NknEiYMuvcgMmra77o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Kubecek <mkubecek@suse.cz>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 5.10 291/294] kbuild: dummy-tools: adjust to stricter stackprotector check
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 26/57] ALSA: firewire-lib: handle quirk to calculate payload quadlets as data block counter
 Date: Thu, 11 Apr 2024 11:57:34 +0200
-Message-ID: <20240411095444.296508241@linuxfoundation.org>
+Message-ID: <20240411095408.787310660@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+References: <20240411095407.982258070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Kubecek <mkubecek@suse.cz>
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-commit c93db682cfb213501881072a9200a48ce1dc3c3f upstream.
+[ Upstream commit 4a486439d2ca85752c46711f373b6ddc107bb35d ]
 
-Commit 3fb0fdb3bbe7 ("x86/stackprotector/32: Make the canary into a regular
-percpu variable") modified the stackprotector check on 32-bit x86 to check
-if gcc supports using %fs as canary. Adjust dummy-tools gcc script to pass
-this new test by returning "%fs" rather than "%gs" if it detects
--mstack-protector-guard-reg=fs on command line.
+Miglia Harmony Audio (OXFW970) has a quirk to put the number of
+accumulated quadlets in CIP payload into the dbc field of CIP header.
 
-Fixes: 3fb0fdb3bbe7 ("x86/stackprotector/32: Make the canary into a regular percpu variable")
-Signed-off-by: Michal Kubecek <mkubecek@suse.cz>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This commit handles the quirk in the packet processing layer.
+
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Link: https://lore.kernel.org/r/20240218074128.95210-4-o-takashi@sakamocchi.jp
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/dummy-tools/gcc |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/firewire/amdtp-stream.c | 12 ++++++++----
+ sound/firewire/amdtp-stream.h |  4 ++++
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
---- a/scripts/dummy-tools/gcc
-+++ b/scripts/dummy-tools/gcc
-@@ -76,7 +76,11 @@ fi
- if arg_contain -S "$@"; then
- 	# For scripts/gcc-x86-*-has-stack-protector.sh
- 	if arg_contain -fstack-protector "$@"; then
--		echo "%gs"
-+		if arg_contain -mstack-protector-guard-reg=fs "$@"; then
-+			echo "%fs"
-+		else
-+			echo "%gs"
-+		fi
- 		exit 0
- 	fi
- fi
+diff --git a/sound/firewire/amdtp-stream.c b/sound/firewire/amdtp-stream.c
+index f8b644cb9157a..8753125683692 100644
+--- a/sound/firewire/amdtp-stream.c
++++ b/sound/firewire/amdtp-stream.c
+@@ -771,10 +771,14 @@ static int check_cip_header(struct amdtp_stream *s, const __be32 *buf,
+ 	} else {
+ 		unsigned int dbc_interval;
+ 
+-		if (*data_blocks > 0 && s->ctx_data.tx.dbc_interval > 0)
+-			dbc_interval = s->ctx_data.tx.dbc_interval;
+-		else
+-			dbc_interval = *data_blocks;
++		if (!(s->flags & CIP_DBC_IS_PAYLOAD_QUADLETS)) {
++			if (*data_blocks > 0 && s->ctx_data.tx.dbc_interval > 0)
++				dbc_interval = s->ctx_data.tx.dbc_interval;
++			else
++				dbc_interval = *data_blocks;
++		} else {
++			dbc_interval = payload_length / sizeof(__be32);
++		}
+ 
+ 		lost = dbc != ((*data_block_counter + dbc_interval) & 0xff);
+ 	}
+diff --git a/sound/firewire/amdtp-stream.h b/sound/firewire/amdtp-stream.h
+index 1f957c946c956..cf9ab347277f2 100644
+--- a/sound/firewire/amdtp-stream.h
++++ b/sound/firewire/amdtp-stream.h
+@@ -37,6 +37,9 @@
+  *	the value of current SYT_INTERVAL; e.g. initial value is not zero.
+  * @CIP_UNAWARE_SYT: For outgoing packet, the value in SYT field of CIP is 0xffff.
+  *	For incoming packet, the value in SYT field of CIP is not handled.
++ * @CIP_DBC_IS_PAYLOAD_QUADLETS: Available for incoming packet, and only effective with
++ *	CIP_DBC_IS_END_EVENT flag. The value of dbc field is the number of accumulated quadlets
++ *	in CIP payload, instead of the number of accumulated data blocks.
+  */
+ enum cip_flags {
+ 	CIP_NONBLOCKING		= 0x00,
+@@ -51,6 +54,7 @@ enum cip_flags {
+ 	CIP_NO_HEADER		= 0x100,
+ 	CIP_UNALIGHED_DBC	= 0x200,
+ 	CIP_UNAWARE_SYT		= 0x400,
++	CIP_DBC_IS_PAYLOAD_QUADLETS = 0x800,
+ };
+ 
+ /**
+-- 
+2.43.0
+
 
 
 
