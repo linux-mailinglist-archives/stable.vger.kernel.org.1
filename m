@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-38406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689E18A0E6C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:14:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 386088A0CEE
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2413C286CD6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:14:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69C741C20B10
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C704A1465A2;
-	Thu, 11 Apr 2024 10:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A066145323;
+	Thu, 11 Apr 2024 09:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRLzmzy+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enxN7mNb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA83146586;
-	Thu, 11 Apr 2024 10:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CC413DDDD;
+	Thu, 11 Apr 2024 09:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830472; cv=none; b=BjFZk5JdvcARQhawbybsZIT8kzwCAuWecVSWhNwjlWW+HHQWEdXpDDYbf8Uvnen3Kpxi552bz4gI41/+ZfDIMPZshljqemsWJQ9ONCXl7rZSVAc0Bg4xP02DLjUigOnCKoApe9265oOg/snXfFvNUeEAli/TkDb8j5hEI+9tCbg=
+	t=1712829502; cv=none; b=PVxju6xvX3nl5HRS5zB1KntSWk3HIMjQ0aKm3WxBmn9e0QqSqX5j3W/8cnWjZK4xAef9Qvw8Kapqmyeb6zbA1zZZnvtQlxg3yrC0P3JZjTUgYnLQ8a4Iur5fYy91Cgu2khGg9BX0s0r20kx8e2d60+7xpUhsc+1Tq4TSe3O2aqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830472; c=relaxed/simple;
-	bh=TDarKECVdbG/3qUUiWn4q4/fSFrLpla96WAzvNnlyt8=;
+	s=arc-20240116; t=1712829502; c=relaxed/simple;
+	bh=9sZt5gAUZK/5ywk6rjr8fE8idDVQ0MA0xAjgQ1JuhbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sVBD7bHm926+xqp73sDG0wFo3eyywTFg3N5bzYtLGRYIlfQ83T+qhOtEUdGFSHAl2rzzPCIWKm9FhM+lHsR6AwjNQypt7ZTejr4tmOabhitSRKEa05fDzhMglwHycNsLJcSAm4Qn1LmZ02fBmVVol38pGoQHvplOuJ1m6qNTgXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRLzmzy+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061CDC433F1;
-	Thu, 11 Apr 2024 10:14:31 +0000 (UTC)
+	 MIME-Version; b=o+G43RXiw1CaysYCLHoJdZHio93q4a6jjDNr+a1xcmKp7sMxEZux4Pyx+l+WblXWzvjCObR+Klbkx5Ld7IOHZCqzuhCRc0hzwB2BiCBGnlRE5mmn5Wbb3AgzfYasmIixwvhfkRJaLCJTB6HeKx07wqANH1w7gX+37MwrWufkvRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enxN7mNb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37682C433F1;
+	Thu, 11 Apr 2024 09:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830472;
-	bh=TDarKECVdbG/3qUUiWn4q4/fSFrLpla96WAzvNnlyt8=;
+	s=korg; t=1712829501;
+	bh=9sZt5gAUZK/5ywk6rjr8fE8idDVQ0MA0xAjgQ1JuhbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TRLzmzy+wqLrWVnunD2EdMPrz1sQkbFRrPCm191wsX4zBMjCgaN3Mttclj5up/qwk
-	 cah4d5ZYpbyD9TvfHw+C2BXQg3G1l6iFdiaL0Z1QK+Pi138aXZf71mXh2/baL13I5Y
-	 97+p6khDVY+laDH5bVeRo9hCvJ7BmKmApj7nREcA=
+	b=enxN7mNb5qgwNSn2dyoGwinbP7Aa4vBLRwgAVpuHH7U5ojHfi5WH9hhq2EITZtryU
+	 3/T9ebUAzzf/YZ/GbxCTS062oyI4BjKJva7zeHT2/g1dQzX0QRAj/OfHgdz0GcbVYv
+	 B5pdSQ6GEfqwKlp2jsaNkFNTy2C2NvQu90sn2POw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 014/215] serial: max310x: fix NULL pointer dereference in I2C instantiation
-Date: Thu, 11 Apr 2024 11:53:43 +0200
-Message-ID: <20240411095425.311309741@linuxfoundation.org>
+	Lin Yujun <linyujun809@huawei.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: [PATCH 4.19 001/175] Documentation/hw-vuln: Update spectre doc
+Date: Thu, 11 Apr 2024 11:53:44 +0200
+Message-ID: <20240411095419.580385928@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Lin Yujun <linyujun809@huawei.com>
 
-[ Upstream commit 0d27056c24efd3d63a03f3edfbcfc4827086b110 ]
+commit 06cb31cc761823ef444ba4e1df11347342a6e745 upstream.
 
-When trying to instantiate a max14830 device from userspace:
+commit 7c693f54c873691 ("x86/speculation: Add spectre_v2=ibrs option to support Kernel IBRS")
 
-    echo max14830 0x60 > /sys/bus/i2c/devices/i2c-2/new_device
+adds the "ibrs " option  in
+Documentation/admin-guide/kernel-parameters.txt but omits it to
+Documentation/admin-guide/hw-vuln/spectre.rst, add it.
 
-we get the following error:
-
-    Unable to handle kernel NULL pointer dereference at virtual address...
-    ...
-    Call trace:
-        max310x_i2c_probe+0x48/0x170 [max310x]
-        i2c_device_probe+0x150/0x2a0
-    ...
-
-Add check for validity of devtype to prevent the error, and abort probe
-with a meaningful error message.
-
-Fixes: 2e1f2d9a9bdb ("serial: max310x: implement I2C support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240118152213.2644269-2-hugo@hugovil.com
+Signed-off-by: Lin Yujun <linyujun809@huawei.com>
+Link: https://lore.kernel.org/r/20220830123614.23007-1-linyujun809@huawei.com
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/max310x.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ Documentation/admin-guide/hw-vuln/spectre.rst |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
-index 5570fd3b84e15..363b68555fe62 100644
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -1636,13 +1636,16 @@ static unsigned short max310x_i2c_slave_addr(unsigned short addr,
+--- a/Documentation/admin-guide/hw-vuln/spectre.rst
++++ b/Documentation/admin-guide/hw-vuln/spectre.rst
+@@ -625,6 +625,7 @@ kernel command line.
+                 eibrs                   enhanced IBRS
+                 eibrs,retpoline         enhanced IBRS + Retpolines
+                 eibrs,lfence            enhanced IBRS + LFENCE
++                ibrs                    use IBRS to protect kernel
  
- static int max310x_i2c_probe(struct i2c_client *client)
- {
--	const struct max310x_devtype *devtype =
--			device_get_match_data(&client->dev);
-+	const struct max310x_devtype *devtype;
- 	struct i2c_client *port_client;
- 	struct regmap *regmaps[4];
- 	unsigned int i;
- 	u8 port_addr;
- 
-+	devtype = device_get_match_data(&client->dev);
-+	if (!devtype)
-+		return dev_err_probe(&client->dev, -ENODEV, "Failed to match device\n");
-+
- 	if (client->addr < devtype->slave_addr.min ||
- 		client->addr > devtype->slave_addr.max)
- 		return dev_err_probe(&client->dev, -EINVAL,
--- 
-2.43.0
-
+ 		Not specifying this option is equivalent to
+ 		spectre_v2=auto.
 
 
 
