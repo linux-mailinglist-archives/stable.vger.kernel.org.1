@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E03F8A1139
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C608A0FCF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F238E1F2D028
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C6E2282D94
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E97146A8D;
-	Thu, 11 Apr 2024 10:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7781146A71;
+	Thu, 11 Apr 2024 10:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7qyi9y5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVrUjHxL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D9F145323;
-	Thu, 11 Apr 2024 10:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BF313FD94;
+	Thu, 11 Apr 2024 10:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832101; cv=none; b=W5Vxj+fCurweUzF+v3QzGXBRUdSzbahvG/mWRjL/mivhuI9jD7JbGLNINpswB8qlK22bBReYguPWi77hRQs+KJOXAXw1Nlgg7yxzPnsbZFlWCbhA9hwT5L7GZSdk8SRhJmJIo1X3RMUMe/A4f2p672/J3lyv4hAaKldlOaN05mY=
+	t=1712831269; cv=none; b=BEP9kGyLyHHOMtoSO/WOkszz0jp/g6erNpTqnt1DejTOy7O52TejYbUdkZmducGJ5Kok4DpbMyaoRpU8a5tLff5OXi5FjKbjVJ06Hc/BgZ9nOU6glgqoZC/0RiywshycmGfu6c+/OcMAZLUeZpbvoQYth4i0rN+MJpnBa5qgHmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832101; c=relaxed/simple;
-	bh=WlEAcdx4dAp6Xfnqk2dX70F0g0b4N5ykyYyKlD9kdkU=;
+	s=arc-20240116; t=1712831269; c=relaxed/simple;
+	bh=JFpZaJHgfB3/lWzrw+SA8TDLuwco7EqQfXKfEko23j4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vds3MCQAYwMq3IRWFzI1WP34UmL7JrUkAiAmAwjusAo65zfqP+mEByJVhsH4zYosueq+WloMJzWnmGh/OesRToffiXVdIo3RTxwZuhQSsh+VFc/8ST9Sx7S3TPjG6zXkzpDZ98/MPmh1ryPVGyon5O9QNrTLlI2SHnUkMEaHuOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7qyi9y5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D171C433C7;
-	Thu, 11 Apr 2024 10:41:40 +0000 (UTC)
+	 MIME-Version; b=ZHsYVMGkVMoDld2fi0MUoABdxUhqaa/1Pgqy4XVIYZ5q3xM42iYy7JTk4i/HMVJuqhjvvlg+uzeuxvEfUkckifirxGX8NMMuf4D4x+nFjV/SXTGNb4EJKOcC1E/CCm/WJjreuMk62Xhdgw4JgjaOzjaRaw57KGG77u5HlBlPLBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVrUjHxL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6A2C433C7;
+	Thu, 11 Apr 2024 10:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832101;
-	bh=WlEAcdx4dAp6Xfnqk2dX70F0g0b4N5ykyYyKlD9kdkU=;
+	s=korg; t=1712831269;
+	bh=JFpZaJHgfB3/lWzrw+SA8TDLuwco7EqQfXKfEko23j4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d7qyi9y53njQTEu0dmWLqE1ElRV18TEWaNeZisnQaIa2Cwge5pvxcPXKn0zF963J7
-	 /ynN7CsGXeo3XFXvSMRa3vCK8ejU2hAQ52EEypiHrB3mwUnut1l1iezAQbj8T7vDAQ
-	 wRcewmrpXx+EIVBqfwLHYI/dOq3mk26rtxFdOVr0=
+	b=YVrUjHxLizYL32Or9my7IOIynur4Ybb+qStuknMS22eR+1vTO9IcXKEzCoQC6HDQ4
+	 7q9KP6BTO1JLFhxuM2R9CT5DDhF+/a56EXaY2VGiRcEsd3MgAlbSF7iRYqlUOi2P9p
+	 IzY6ggvKNH4efYRjLVmHUcTD34zxwROiYBkntEgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sandipan Das <sandipan.das@amd.com>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 5.10 190/294] x86/cpufeatures: Add new word for scattered features
+	Peter Chiu <chui-hao.chiu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 026/114] wifi: mt76: mt7996: disable AMSDU for non-data frames
 Date: Thu, 11 Apr 2024 11:55:53 +0200
-Message-ID: <20240411095441.335387559@linuxfoundation.org>
+Message-ID: <20240411095417.659043379@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sandipan Das <sandipan.das@amd.com>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-commit 7f274e609f3d5f45c22b1dd59053f6764458b492 upstream.
+[ Upstream commit 5d5edc09197cd8c705b42a73cdf8ba03db53c033 ]
 
-Add a new word for scattered features because all free bits among the
-existing Linux-defined auxiliary flags have been exhausted.
+Disable AMSDU for non-data frames to prevent TX token leak issues.
 
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/8380d2a0da469a1f0ad75b8954a79fb689599ff6.1711091584.git.sandipan.das@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/cpufeature.h        |    6 ++++--
- arch/x86/include/asm/cpufeatures.h       |    2 +-
- arch/x86/include/asm/disabled-features.h |    3 ++-
- arch/x86/include/asm/required-features.h |    3 ++-
- 4 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/cpufeature.h
-+++ b/arch/x86/include/asm/cpufeature.h
-@@ -93,8 +93,9 @@ extern const char * const x86_bug_flags[
- 	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 18, feature_bit) ||	\
- 	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 19, feature_bit) ||	\
- 	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 20, feature_bit) ||	\
-+	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 21, feature_bit) ||	\
- 	   REQUIRED_MASK_CHECK					  ||	\
--	   BUILD_BUG_ON_ZERO(NCAPINTS != 21))
-+	   BUILD_BUG_ON_ZERO(NCAPINTS != 22))
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index b0d0ae5080e82..73d46ec1181ae 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -757,6 +757,9 @@ mt7996_mac_write_txwi_8023(struct mt7996_dev *dev, __le32 *txwi,
+ 	      FIELD_PREP(MT_TXD2_SUB_TYPE, fc_stype);
  
- #define DISABLED_MASK_BIT_SET(feature_bit)				\
- 	 ( CHECK_BIT_IN_MASK_WORD(DISABLED_MASK,  0, feature_bit) ||	\
-@@ -118,8 +119,9 @@ extern const char * const x86_bug_flags[
- 	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 18, feature_bit) ||	\
- 	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 19, feature_bit) ||	\
- 	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 20, feature_bit) ||	\
-+	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 21, feature_bit) ||	\
- 	   DISABLED_MASK_CHECK					  ||	\
--	   BUILD_BUG_ON_ZERO(NCAPINTS != 21))
-+	   BUILD_BUG_ON_ZERO(NCAPINTS != 22))
+ 	txwi[2] |= cpu_to_le32(val);
++
++	if (wcid->amsdu)
++		txwi[3] |= cpu_to_le32(MT_TXD3_HW_AMSDU);
+ }
  
- #define cpu_has(c, bit)							\
- 	(__builtin_constant_p(bit) && REQUIRED_MASK_BIT_SET(bit) ? 1 :	\
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -13,7 +13,7 @@
- /*
-  * Defines x86 CPU feature bits
-  */
--#define NCAPINTS			21	   /* N 32-bit words worth of info */
-+#define NCAPINTS			22	   /* N 32-bit words worth of info */
- #define NBUGINTS			2	   /* N 32-bit bug flags */
+ static void
+@@ -887,8 +890,6 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 		val |= MT_TXD3_PROTECT_FRAME;
+ 	if (info->flags & IEEE80211_TX_CTL_NO_ACK)
+ 		val |= MT_TXD3_NO_ACK;
+-	if (wcid->amsdu)
+-		val |= MT_TXD3_HW_AMSDU;
  
- /*
---- a/arch/x86/include/asm/disabled-features.h
-+++ b/arch/x86/include/asm/disabled-features.h
-@@ -103,6 +103,7 @@
- #define DISABLED_MASK18	0
- #define DISABLED_MASK19	0
- #define DISABLED_MASK20	0
--#define DISABLED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 21)
-+#define DISABLED_MASK21	0
-+#define DISABLED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 22)
- 
- #endif /* _ASM_X86_DISABLED_FEATURES_H */
---- a/arch/x86/include/asm/required-features.h
-+++ b/arch/x86/include/asm/required-features.h
-@@ -103,6 +103,7 @@
- #define REQUIRED_MASK18	0
- #define REQUIRED_MASK19	0
- #define REQUIRED_MASK20	0
--#define REQUIRED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 21)
-+#define REQUIRED_MASK21	0
-+#define REQUIRED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 22)
- 
- #endif /* _ASM_X86_REQUIRED_FEATURES_H */
+ 	txwi[3] = cpu_to_le32(val);
+ 	txwi[4] = 0;
+-- 
+2.43.0
+
 
 
 
