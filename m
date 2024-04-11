@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53B928A111E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6619C8A0F36
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77DC91C23729
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BCC32871F5
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F84148842;
-	Thu, 11 Apr 2024 10:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8381465AA;
+	Thu, 11 Apr 2024 10:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSVP2yZW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVgkSPIE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA53147C7E;
-	Thu, 11 Apr 2024 10:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C040146582;
+	Thu, 11 Apr 2024 10:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832036; cv=none; b=ekiCrqxyUYkvADQoVhLOypk77sAQjOIT5yEIMxZ+V2miwtuYrNbWZ5aPHKUJEjeX46CRr2SGCs2ZoLcXJQF58UEwDdihrOWuD0u7W5up4Q33x34kHe0GjfGDcePoVPyVOZ3h8dGUvchLlDCbnl55ekUW+D7uk2++HCUggk+k2dY=
+	t=1712830918; cv=none; b=mcyCAJTC53g0XADtVhjiY1Wek+nFvyxxgzy+cIihijitqM73+XbfZvwlER3QgfhknHHyS4YvbrXHPq0Sg5q2EA4HcVrtOtq5UpNOWDqMjWpZuFOfeRZzbXzorhKa4YsXTVRY5kB1CANgEx1LKYaYOoy7+kGXibUHKbISI+kjLH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832036; c=relaxed/simple;
-	bh=dbb26MAgOvtEAhZnuDwONPFVFpSWze/jAgcGbzq70yM=;
+	s=arc-20240116; t=1712830918; c=relaxed/simple;
+	bh=tQfZONQ/VHlRwSo7m+N0cPq74TuFzgHaI+muOeNDo3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RzKZtmxKr2F/XOjdnPYVpn+WWHiJL8X9/c/3gvEcO8nbL+cX4W6udPoGjamgAQ6O8YDpXTNs02f+UIktrGYym288qcT1+kUJMSag9csgluw22qeU55G9gyTsy7iNDnz/ahsrLkvYgC26B/5FphhM1N8FXnpjSi5P4+LTFLbVO4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSVP2yZW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 654B9C433C7;
-	Thu, 11 Apr 2024 10:40:35 +0000 (UTC)
+	 MIME-Version; b=kmbPf+JkPUKnVMYP5XP5mR9p+gaV61Qmab1nVM5ItUnb5L634O8qNEhtwWsyWs7UrdNj9KPbXeLrBf7RveYF/rOKpRDklEVmdc15la4YRbPt6sApYYD5JmJy6qfXPDXs6Bux3gaSps/oNHLmWaIfjqQaFRD3q/FKMzPRR5OWtk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVgkSPIE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E23C433F1;
+	Thu, 11 Apr 2024 10:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832035;
-	bh=dbb26MAgOvtEAhZnuDwONPFVFpSWze/jAgcGbzq70yM=;
+	s=korg; t=1712830918;
+	bh=tQfZONQ/VHlRwSo7m+N0cPq74TuFzgHaI+muOeNDo3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MSVP2yZWF8/4Ffu4i4kbX/FfhibmlJCgX03uqLwZyzaQTgmCYeoAlDD5brtf9443/
-	 oPpOdKF3hmHezjnrMxUuTG0wS/ZMKlWwyavUuP2+ClADTHjcMohOZ+i2ho8wRPZUq2
-	 btSrimNklHW9trUxgI+Lyg6+qJ6dsFmSYniHtZ/M=
+	b=oVgkSPIE3LfMBgJ1iGetUM123i+4TjHIaWztNEcZgp+SKrI92cYimATa4a3EHBh/G
+	 RmTWA/I4ZGmPwe2CM6s7Z8GOvPgRU16AedT/NXbZETfvlqrST7gX/4MmpfYYFwBZf1
+	 YOzlZjsVU4XCg6COMbh7CUFOL4CUArB/Ub6fZgfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
+	syzbot+1c1cf138518bf0c53d68@syzkaller.appspotmail.com,
 	Eric Dumazet <edumazet@google.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 209/294] netfilter: validate user input for expected length
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 163/215] erspan: make sure erspan_base_hdr is present in skb->head
 Date: Thu, 11 Apr 2024 11:56:12 +0200
-Message-ID: <20240411095441.891582059@linuxfoundation.org>
+Message-ID: <20240411095429.776274832@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,258 +64,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Eric Dumazet <edumazet@google.com>
 
-commit 0c83842df40f86e529db6842231154772c20edcc upstream.
+[ Upstream commit 17af420545a750f763025149fa7b833a4fc8b8f0 ]
 
-I got multiple syzbot reports showing old bugs exposed
-by BPF after commit 20f2505fb436 ("bpf: Try to avoid kzalloc
-in cgroup/{s,g}etsockopt")
+syzbot reported a problem in ip6erspan_rcv() [1]
 
-setsockopt() @optlen argument should be taken into account
-before copying data.
+Issue is that ip6erspan_rcv() (and erspan_rcv()) no longer make
+sure erspan_base_hdr is present in skb linear part (skb->head)
+before getting @ver field from it.
 
- BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset include/linux/sockptr.h:49 [inline]
- BUG: KASAN: slab-out-of-bounds in copy_from_sockptr include/linux/sockptr.h:55 [inline]
- BUG: KASAN: slab-out-of-bounds in do_replace net/ipv4/netfilter/ip_tables.c:1111 [inline]
- BUG: KASAN: slab-out-of-bounds in do_ipt_set_ctl+0x902/0x3dd0 net/ipv4/netfilter/ip_tables.c:1627
-Read of size 96 at addr ffff88802cd73da0 by task syz-executor.4/7238
+Add the missing pskb_may_pull() calls.
 
-CPU: 1 PID: 7238 Comm: syz-executor.4 Not tainted 6.9.0-rc2-next-20240403-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-Call Trace:
- <TASK>
-  __dump_stack lib/dump_stack.c:88 [inline]
-  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
-  print_address_description mm/kasan/report.c:377 [inline]
-  print_report+0x169/0x550 mm/kasan/report.c:488
-  kasan_report+0x143/0x180 mm/kasan/report.c:601
-  kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
-  __asan_memcpy+0x29/0x70 mm/kasan/shadow.c:105
-  copy_from_sockptr_offset include/linux/sockptr.h:49 [inline]
-  copy_from_sockptr include/linux/sockptr.h:55 [inline]
-  do_replace net/ipv4/netfilter/ip_tables.c:1111 [inline]
-  do_ipt_set_ctl+0x902/0x3dd0 net/ipv4/netfilter/ip_tables.c:1627
-  nf_setsockopt+0x295/0x2c0 net/netfilter/nf_sockopt.c:101
-  do_sock_setsockopt+0x3af/0x720 net/socket.c:2311
-  __sys_setsockopt+0x1ae/0x250 net/socket.c:2334
-  __do_sys_setsockopt net/socket.c:2343 [inline]
-  __se_sys_setsockopt net/socket.c:2340 [inline]
-  __x64_sys_setsockopt+0xb5/0xd0 net/socket.c:2340
- do_syscall_64+0xfb/0x240
- entry_SYSCALL_64_after_hwframe+0x72/0x7a
-RIP: 0033:0x7fd22067dde9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fd21f9ff0c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000036
-RAX: ffffffffffffffda RBX: 00007fd2207abf80 RCX: 00007fd22067dde9
-RDX: 0000000000000040 RSI: 0000000000000000 RDI: 0000000000000003
-RBP: 00007fd2206ca47a R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000020000880 R11: 0000000000000246 R12: 0000000000000000
-R13: 000000000000000b R14: 00007fd2207abf80 R15: 00007ffd2d0170d8
- </TASK>
+v2: Reload iph pointer in erspan_rcv() after pskb_may_pull()
+    because skb->head might have changed.
 
-Allocated by task 7238:
-  kasan_save_stack mm/kasan/common.c:47 [inline]
-  kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
-  poison_kmalloc_redzone mm/kasan/common.c:370 [inline]
-  __kasan_kmalloc+0x98/0xb0 mm/kasan/common.c:387
-  kasan_kmalloc include/linux/kasan.h:211 [inline]
-  __do_kmalloc_node mm/slub.c:4069 [inline]
-  __kmalloc_noprof+0x200/0x410 mm/slub.c:4082
-  kmalloc_noprof include/linux/slab.h:664 [inline]
-  __cgroup_bpf_run_filter_setsockopt+0xd47/0x1050 kernel/bpf/cgroup.c:1869
-  do_sock_setsockopt+0x6b4/0x720 net/socket.c:2293
-  __sys_setsockopt+0x1ae/0x250 net/socket.c:2334
-  __do_sys_setsockopt net/socket.c:2343 [inline]
-  __se_sys_setsockopt net/socket.c:2340 [inline]
-  __x64_sys_setsockopt+0xb5/0xd0 net/socket.c:2340
- do_syscall_64+0xfb/0x240
- entry_SYSCALL_64_after_hwframe+0x72/0x7a
+[1]
 
-The buggy address belongs to the object at ffff88802cd73da0
- which belongs to the cache kmalloc-8 of size 8
-The buggy address is located 0 bytes inside of
- allocated 1-byte region [ffff88802cd73da0, ffff88802cd73da1)
+ BUG: KMSAN: uninit-value in pskb_may_pull_reason include/linux/skbuff.h:2742 [inline]
+ BUG: KMSAN: uninit-value in pskb_may_pull include/linux/skbuff.h:2756 [inline]
+ BUG: KMSAN: uninit-value in ip6erspan_rcv net/ipv6/ip6_gre.c:541 [inline]
+ BUG: KMSAN: uninit-value in gre_rcv+0x11f8/0x1930 net/ipv6/ip6_gre.c:610
+  pskb_may_pull_reason include/linux/skbuff.h:2742 [inline]
+  pskb_may_pull include/linux/skbuff.h:2756 [inline]
+  ip6erspan_rcv net/ipv6/ip6_gre.c:541 [inline]
+  gre_rcv+0x11f8/0x1930 net/ipv6/ip6_gre.c:610
+  ip6_protocol_deliver_rcu+0x1d4c/0x2ca0 net/ipv6/ip6_input.c:438
+  ip6_input_finish net/ipv6/ip6_input.c:483 [inline]
+  NF_HOOK include/linux/netfilter.h:314 [inline]
+  ip6_input+0x15d/0x430 net/ipv6/ip6_input.c:492
+  ip6_mc_input+0xa7e/0xc80 net/ipv6/ip6_input.c:586
+  dst_input include/net/dst.h:460 [inline]
+  ip6_rcv_finish+0x955/0x970 net/ipv6/ip6_input.c:79
+  NF_HOOK include/linux/netfilter.h:314 [inline]
+  ipv6_rcv+0xde/0x390 net/ipv6/ip6_input.c:310
+  __netif_receive_skb_one_core net/core/dev.c:5538 [inline]
+  __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5652
+  netif_receive_skb_internal net/core/dev.c:5738 [inline]
+  netif_receive_skb+0x58/0x660 net/core/dev.c:5798
+  tun_rx_batched+0x3ee/0x980 drivers/net/tun.c:1549
+  tun_get_user+0x5566/0x69e0 drivers/net/tun.c:2002
+  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
+  call_write_iter include/linux/fs.h:2108 [inline]
+  new_sync_write fs/read_write.c:497 [inline]
+  vfs_write+0xb63/0x1520 fs/read_write.c:590
+  ksys_write+0x20f/0x4c0 fs/read_write.c:643
+  __do_sys_write fs/read_write.c:655 [inline]
+  __se_sys_write fs/read_write.c:652 [inline]
+  __x64_sys_write+0x93/0xe0 fs/read_write.c:652
+ do_syscall_64+0xd5/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
 
-The buggy address belongs to the physical page:
-page: refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff88802cd73020 pfn:0x2cd73
-flags: 0xfff80000000000(node=0|zone=1|lastcpupid=0xfff)
-page_type: 0xffffefff(slab)
-raw: 00fff80000000000 ffff888015041280 dead000000000100 dead000000000122
-raw: ffff88802cd73020 000000008080007f 00000001ffffefff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 0, migratetype Unmovable, gfp_mask 0x12cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY), pid 5103, tgid 2119833701 (syz-executor.4), ts 5103, free_ts 70804600828
-  set_page_owner include/linux/page_owner.h:32 [inline]
-  post_alloc_hook+0x1f3/0x230 mm/page_alloc.c:1490
-  prep_new_page mm/page_alloc.c:1498 [inline]
-  get_page_from_freelist+0x2e7e/0x2f40 mm/page_alloc.c:3454
-  __alloc_pages_noprof+0x256/0x6c0 mm/page_alloc.c:4712
-  __alloc_pages_node_noprof include/linux/gfp.h:244 [inline]
-  alloc_pages_node_noprof include/linux/gfp.h:271 [inline]
-  alloc_slab_page+0x5f/0x120 mm/slub.c:2249
-  allocate_slab+0x5a/0x2e0 mm/slub.c:2412
-  new_slab mm/slub.c:2465 [inline]
-  ___slab_alloc+0xcd1/0x14b0 mm/slub.c:3615
-  __slab_alloc+0x58/0xa0 mm/slub.c:3705
-  __slab_alloc_node mm/slub.c:3758 [inline]
-  slab_alloc_node mm/slub.c:3936 [inline]
-  __do_kmalloc_node mm/slub.c:4068 [inline]
-  kmalloc_node_track_caller_noprof+0x286/0x450 mm/slub.c:4089
-  kstrdup+0x3a/0x80 mm/util.c:62
-  device_rename+0xb5/0x1b0 drivers/base/core.c:4558
-  dev_change_name+0x275/0x860 net/core/dev.c:1232
-  do_setlink+0xa4b/0x41f0 net/core/rtnetlink.c:2864
-  __rtnl_newlink net/core/rtnetlink.c:3680 [inline]
-  rtnl_newlink+0x180b/0x20a0 net/core/rtnetlink.c:3727
-  rtnetlink_rcv_msg+0x89b/0x10d0 net/core/rtnetlink.c:6594
-  netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2559
-  netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
-  netlink_unicast+0x7ea/0x980 net/netlink/af_netlink.c:1361
-page last free pid 5146 tgid 5146 stack trace:
-  reset_page_owner include/linux/page_owner.h:25 [inline]
-  free_pages_prepare mm/page_alloc.c:1110 [inline]
-  free_unref_page+0xd3c/0xec0 mm/page_alloc.c:2617
-  discard_slab mm/slub.c:2511 [inline]
-  __put_partials+0xeb/0x130 mm/slub.c:2980
-  put_cpu_partial+0x17c/0x250 mm/slub.c:3055
-  __slab_free+0x2ea/0x3d0 mm/slub.c:4254
-  qlink_free mm/kasan/quarantine.c:163 [inline]
-  qlist_free_all+0x9e/0x140 mm/kasan/quarantine.c:179
-  kasan_quarantine_reduce+0x14f/0x170 mm/kasan/quarantine.c:286
-  __kasan_slab_alloc+0x23/0x80 mm/kasan/common.c:322
-  kasan_slab_alloc include/linux/kasan.h:201 [inline]
-  slab_post_alloc_hook mm/slub.c:3888 [inline]
-  slab_alloc_node mm/slub.c:3948 [inline]
-  __do_kmalloc_node mm/slub.c:4068 [inline]
-  __kmalloc_node_noprof+0x1d7/0x450 mm/slub.c:4076
-  kmalloc_node_noprof include/linux/slab.h:681 [inline]
-  kvmalloc_node_noprof+0x72/0x190 mm/util.c:634
-  bucket_table_alloc lib/rhashtable.c:186 [inline]
-  rhashtable_rehash_alloc+0x9e/0x290 lib/rhashtable.c:367
-  rht_deferred_worker+0x4e1/0x2440 lib/rhashtable.c:427
-  process_one_work kernel/workqueue.c:3218 [inline]
-  process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3299
-  worker_thread+0x86d/0xd70 kernel/workqueue.c:3380
-  kthread+0x2f0/0x390 kernel/kthread.c:388
-  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:243
+Uninit was created at:
+  slab_post_alloc_hook mm/slub.c:3804 [inline]
+  slab_alloc_node mm/slub.c:3845 [inline]
+  kmem_cache_alloc_node+0x613/0xc50 mm/slub.c:3888
+  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:577
+  __alloc_skb+0x35b/0x7a0 net/core/skbuff.c:668
+  alloc_skb include/linux/skbuff.h:1318 [inline]
+  alloc_skb_with_frags+0xc8/0xbf0 net/core/skbuff.c:6504
+  sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2795
+  tun_alloc_skb drivers/net/tun.c:1525 [inline]
+  tun_get_user+0x209a/0x69e0 drivers/net/tun.c:1846
+  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
+  call_write_iter include/linux/fs.h:2108 [inline]
+  new_sync_write fs/read_write.c:497 [inline]
+  vfs_write+0xb63/0x1520 fs/read_write.c:590
+  ksys_write+0x20f/0x4c0 fs/read_write.c:643
+  __do_sys_write fs/read_write.c:655 [inline]
+  __se_sys_write fs/read_write.c:652 [inline]
+  __x64_sys_write+0x93/0xe0 fs/read_write.c:652
+ do_syscall_64+0xd5/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
 
-Memory state around the buggy address:
- ffff88802cd73c80: 07 fc fc fc 05 fc fc fc 05 fc fc fc fa fc fc fc
- ffff88802cd73d00: fa fc fc fc fa fc fc fc fa fc fc fc fa fc fc fc
->ffff88802cd73d80: fa fc fc fc 01 fc fc fc fa fc fc fc fa fc fc fc
-                               ^
- ffff88802cd73e00: fa fc fc fc fa fc fc fc 05 fc fc fc 07 fc fc fc
- ffff88802cd73e80: 07 fc fc fc 07 fc fc fc 07 fc fc fc 07 fc fc fc
+CPU: 1 PID: 5045 Comm: syz-executor114 Not tainted 6.9.0-rc1-syzkaller-00021-g962490525cff #0
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
+Fixes: cb73ee40b1b3 ("net: ip_gre: use erspan key field for tunnel lookup")
+Reported-by: syzbot+1c1cf138518bf0c53d68@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/000000000000772f2c0614b66ef7@google.com/
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Link: https://lore.kernel.org/r/20240404122051.2303764-1-edumazet@google.com
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://lore.kernel.org/r/20240328112248.1101491-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/netfilter/ebtables.c |    6 ++++++
- net/ipv4/netfilter/arp_tables.c |    4 ++++
- net/ipv4/netfilter/ip_tables.c  |    4 ++++
- net/ipv6/netfilter/ip6_tables.c |    4 ++++
- 4 files changed, 18 insertions(+)
+ net/ipv4/ip_gre.c  | 5 +++++
+ net/ipv6/ip6_gre.c | 3 +++
+ 2 files changed, 8 insertions(+)
 
---- a/net/bridge/netfilter/ebtables.c
-+++ b/net/bridge/netfilter/ebtables.c
-@@ -1070,6 +1070,8 @@ static int do_replace(struct net *net, s
- 	struct ebt_table_info *newinfo;
- 	struct ebt_replace tmp;
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index f8369580ea273..b8ff2179071f9 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -278,8 +278,13 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
+ 					  tpi->flags | TUNNEL_NO_KEY,
+ 					  iph->saddr, iph->daddr, 0);
+ 	} else {
++		if (unlikely(!pskb_may_pull(skb,
++					    gre_hdr_len + sizeof(*ershdr))))
++			return PACKET_REJECT;
++
+ 		ershdr = (struct erspan_base_hdr *)(skb->data + gre_hdr_len);
+ 		ver = ershdr->ver;
++		iph = ip_hdr(skb);
+ 		tunnel = ip_tunnel_lookup(itn, skb->dev->ifindex,
+ 					  tpi->flags | TUNNEL_KEY,
+ 					  iph->saddr, iph->daddr, tpi->key);
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index 2d34bd98fccea..de707e057cd90 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -531,6 +531,9 @@ static int ip6erspan_rcv(struct sk_buff *skb,
+ 	struct ip6_tnl *tunnel;
+ 	u8 ver;
  
-+	if (len < sizeof(tmp))
-+		return -EINVAL;
- 	if (copy_from_sockptr(&tmp, arg, sizeof(tmp)) != 0)
- 		return -EFAULT;
- 
-@@ -1309,6 +1311,8 @@ static int update_counters(struct net *n
- {
- 	struct ebt_replace hlp;
- 
-+	if (len < sizeof(hlp))
-+		return -EINVAL;
- 	if (copy_from_sockptr(&hlp, arg, sizeof(hlp)))
- 		return -EFAULT;
- 
-@@ -2238,6 +2242,8 @@ static int compat_update_counters(struct
- {
- 	struct compat_ebt_replace hlp;
- 
-+	if (len < sizeof(hlp))
-+		return -EINVAL;
- 	if (copy_from_sockptr(&hlp, arg, sizeof(hlp)))
- 		return -EFAULT;
- 
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -955,6 +955,8 @@ static int do_replace(struct net *net, s
- 	void *loc_cpu_entry;
- 	struct arpt_entry *iter;
- 
-+	if (len < sizeof(tmp))
-+		return -EINVAL;
- 	if (copy_from_sockptr(&tmp, arg, sizeof(tmp)) != 0)
- 		return -EFAULT;
- 
-@@ -1253,6 +1255,8 @@ static int compat_do_replace(struct net
- 	void *loc_cpu_entry;
- 	struct arpt_entry *iter;
- 
-+	if (len < sizeof(tmp))
-+		return -EINVAL;
- 	if (copy_from_sockptr(&tmp, arg, sizeof(tmp)) != 0)
- 		return -EFAULT;
- 
---- a/net/ipv4/netfilter/ip_tables.c
-+++ b/net/ipv4/netfilter/ip_tables.c
-@@ -1109,6 +1109,8 @@ do_replace(struct net *net, sockptr_t ar
- 	void *loc_cpu_entry;
- 	struct ipt_entry *iter;
- 
-+	if (len < sizeof(tmp))
-+		return -EINVAL;
- 	if (copy_from_sockptr(&tmp, arg, sizeof(tmp)) != 0)
- 		return -EFAULT;
- 
-@@ -1493,6 +1495,8 @@ compat_do_replace(struct net *net, sockp
- 	void *loc_cpu_entry;
- 	struct ipt_entry *iter;
- 
-+	if (len < sizeof(tmp))
-+		return -EINVAL;
- 	if (copy_from_sockptr(&tmp, arg, sizeof(tmp)) != 0)
- 		return -EFAULT;
- 
---- a/net/ipv6/netfilter/ip6_tables.c
-+++ b/net/ipv6/netfilter/ip6_tables.c
-@@ -1127,6 +1127,8 @@ do_replace(struct net *net, sockptr_t ar
- 	void *loc_cpu_entry;
- 	struct ip6t_entry *iter;
- 
-+	if (len < sizeof(tmp))
-+		return -EINVAL;
- 	if (copy_from_sockptr(&tmp, arg, sizeof(tmp)) != 0)
- 		return -EFAULT;
- 
-@@ -1503,6 +1505,8 @@ compat_do_replace(struct net *net, sockp
- 	void *loc_cpu_entry;
- 	struct ip6t_entry *iter;
- 
-+	if (len < sizeof(tmp))
-+		return -EINVAL;
- 	if (copy_from_sockptr(&tmp, arg, sizeof(tmp)) != 0)
- 		return -EFAULT;
- 
++	if (unlikely(!pskb_may_pull(skb, sizeof(*ershdr))))
++		return PACKET_REJECT;
++
+ 	ipv6h = ipv6_hdr(skb);
+ 	ershdr = (struct erspan_base_hdr *)skb->data;
+ 	ver = ershdr->ver;
+-- 
+2.43.0
+
 
 
 
