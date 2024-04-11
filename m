@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-39140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CEF8A1217
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:50:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 417958A11E3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE5FB2840AB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0D38282DBC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2357C146D47;
-	Thu, 11 Apr 2024 10:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F30613D24D;
+	Thu, 11 Apr 2024 10:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iutwVdGo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0wvmQ4y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40FF1E48E;
-	Thu, 11 Apr 2024 10:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC7D79FD;
+	Thu, 11 Apr 2024 10:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832635; cv=none; b=pN5BI1BtHo1FkavUyRtLLhsWwgXbhLkylJX4uKrVAwHJFzYCRfT4R7dCiqAODuc/5AnoQhIUQ7HgiJB8LZC1ZRNP9rmMm6RmZ2OtAQXbfTNOijenp9zxdBBzrUMJVxZDHZ2mzDQ0bUOeDQE8alf67xjAeYg5ZyNZM/JaDjWh3+I=
+	t=1712832499; cv=none; b=H/DgNoyyFRyPFBlg6rclYopgVPdUep8oiVUdUd8AjXBE4Na3VnvS+KrbHihphAMAArK6lqnmDP7YMMiwL00YUFm1r1PtxNEzNbsl2mqh/k42S11/mSiUWfSeWbzxls7HzuqiOuKpLGsycQ+r18FFmUr0nYRmWD/0FD6EEPciCxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832635; c=relaxed/simple;
-	bh=Os7XymKyKNxvQryzYgFYr/gDeAuXDf16XF4WwQrKF+s=;
+	s=arc-20240116; t=1712832499; c=relaxed/simple;
+	bh=tAd04C3rjGp/G7xgbkAtRvldkigW7xW1tAzQ6ug9bC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IqOpKI2QjYrm40fhDaXIR0iDAzOKW4rqgRVUaFAQjk812FVy0pTsr2B2yc4/Dxc7EYVo+CcSNNrr5HzuFYdRFRf3eo0FxhNBYT9B6yx9t8PjawIHhlITgY+jMSN6Ef2aYHC9xXz7SMXmqivHRRTeRUEazP9e7KmYFrpDLZlCsBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iutwVdGo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2918C433F1;
-	Thu, 11 Apr 2024 10:50:34 +0000 (UTC)
+	 MIME-Version; b=CWUPrstAgUbgepo6MOpzH+67SjZd/jPEksmpuN5KzroHuchlx3jPGbjs6TUokSy89POC24sCyesMY9sOFF48pXNCUM4r+gu6BS/33tSO8KHIcuLJGmcCrn53g8VZ3NW0OK72Id++goJP463BhurLQLHHYq6TYt7gI/hrIjtcCpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0wvmQ4y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5EBDC433F1;
+	Thu, 11 Apr 2024 10:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832635;
-	bh=Os7XymKyKNxvQryzYgFYr/gDeAuXDf16XF4WwQrKF+s=;
+	s=korg; t=1712832499;
+	bh=tAd04C3rjGp/G7xgbkAtRvldkigW7xW1tAzQ6ug9bC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iutwVdGopDprZHw0uBPzGUGtxOx4kpkAdN6sHc556mktR/vOq7C80etYtGkzA3otF
-	 s03KiOtnEZmG6zufsxXA7UcH+N+89gnlxi6ZgqTDifgEmFMgyVUjfa3YiqnRwM5pYE
-	 T+zeybMIRp4UpVV+Aa6hAPYMqasIbWzCZ5WZ04T4=
+	b=Q0wvmQ4yw6T8Ltsh1l11qDHJozfZZwtTOPkMxxWz6vdiAE44iAyvCzAT56qvrRpEj
+	 bM4WphC0OWmvc6tQHF7UYlR4xqCbr0WtrLAIuJ9rp0ktj1BLkAmAbdy3Gn0VkvbJqm
+	 ybw/7tIIQ9EXa3WoPEpmFxkaczcGQpt7GXQgM48M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Yang Jihong <yangjihong1@huawei.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 32/57] libperf evlist: Avoid out-of-bounds access
+Subject: [PATCH 6.1 68/83] fbmon: prevent division by zero in fb_videomode_from_videomode()
 Date: Thu, 11 Apr 2024 11:57:40 +0200
-Message-ID: <20240411095408.968049347@linuxfoundation.org>
+Message-ID: <20240411095414.731538013@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,128 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-[ Upstream commit 1947b92464c3268381604bbe2ac977a3fd78192f ]
+[ Upstream commit c2d953276b8b27459baed1277a4fdd5dd9bd4126 ]
 
-Parallel testing appears to show a race between allocating and setting
-evsel ids. As there is a bounds check on the xyarray it yields a segv
-like:
+The expression htotal * vtotal can have a zero value on
+overflow. It is necessary to prevent division by zero like in
+fb_var_to_videomode().
 
-```
-AddressSanitizer:DEADLYSIGNAL
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-=================================================================
-
-==484408==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000010
-
-==484408==The signal is caused by a WRITE memory access.
-
-==484408==Hint: address points to the zero page.
-
-    #0 0x55cef5d4eff4 in perf_evlist__id_hash tools/lib/perf/evlist.c:256
-    #1 0x55cef5d4f132 in perf_evlist__id_add tools/lib/perf/evlist.c:274
-    #2 0x55cef5d4f545 in perf_evlist__id_add_fd tools/lib/perf/evlist.c:315
-    #3 0x55cef5a1923f in store_evsel_ids util/evsel.c:3130
-    #4 0x55cef5a19400 in evsel__store_ids util/evsel.c:3147
-    #5 0x55cef5888204 in __run_perf_stat tools/perf/builtin-stat.c:832
-    #6 0x55cef5888c06 in run_perf_stat tools/perf/builtin-stat.c:960
-    #7 0x55cef58932db in cmd_stat tools/perf/builtin-stat.c:2878
-...
-```
-
-Avoid this crash by early exiting the perf_evlist__id_add_fd and
-perf_evlist__id_add is the access is out-of-bounds.
-
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240229070757.796244-1-irogers@google.com
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/perf/evlist.c                  | 18 ++++++++++++------
- tools/lib/perf/include/internal/evlist.h |  4 ++--
- 2 files changed, 14 insertions(+), 8 deletions(-)
+ drivers/video/fbdev/core/fbmon.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tools/lib/perf/evlist.c b/tools/lib/perf/evlist.c
-index 5146ff0fa078c..6aa1c35273a18 100644
---- a/tools/lib/perf/evlist.c
-+++ b/tools/lib/perf/evlist.c
-@@ -224,10 +224,10 @@ u64 perf_evlist__read_format(struct perf_evlist *evlist)
- 
- static void perf_evlist__id_hash(struct perf_evlist *evlist,
- 				 struct perf_evsel *evsel,
--				 int cpu, int thread, u64 id)
-+				 int cpu_map_idx, int thread, u64 id)
+diff --git a/drivers/video/fbdev/core/fbmon.c b/drivers/video/fbdev/core/fbmon.c
+index b0e690f41025a..9ca99da3a56a0 100644
+--- a/drivers/video/fbdev/core/fbmon.c
++++ b/drivers/video/fbdev/core/fbmon.c
+@@ -1311,7 +1311,7 @@ int fb_get_mode(int flags, u32 val, struct fb_var_screeninfo *var, struct fb_inf
+ int fb_videomode_from_videomode(const struct videomode *vm,
+ 				struct fb_videomode *fbmode)
  {
- 	int hash;
--	struct perf_sample_id *sid = SID(evsel, cpu, thread);
-+	struct perf_sample_id *sid = SID(evsel, cpu_map_idx, thread);
+-	unsigned int htotal, vtotal;
++	unsigned int htotal, vtotal, total;
  
- 	sid->id = id;
- 	sid->evsel = evsel;
-@@ -245,21 +245,27 @@ void perf_evlist__reset_id_hash(struct perf_evlist *evlist)
- 
- void perf_evlist__id_add(struct perf_evlist *evlist,
- 			 struct perf_evsel *evsel,
--			 int cpu, int thread, u64 id)
-+			 int cpu_map_idx, int thread, u64 id)
- {
--	perf_evlist__id_hash(evlist, evsel, cpu, thread, id);
-+	if (!SID(evsel, cpu_map_idx, thread))
-+		return;
-+
-+	perf_evlist__id_hash(evlist, evsel, cpu_map_idx, thread, id);
- 	evsel->id[evsel->ids++] = id;
- }
- 
- int perf_evlist__id_add_fd(struct perf_evlist *evlist,
- 			   struct perf_evsel *evsel,
--			   int cpu, int thread, int fd)
-+			   int cpu_map_idx, int thread, int fd)
- {
- 	u64 read_data[4] = { 0, };
- 	int id_idx = 1; /* The first entry is the counter value */
- 	u64 id;
- 	int ret;
- 
-+	if (!SID(evsel, cpu_map_idx, thread))
-+		return -1;
-+
- 	ret = ioctl(fd, PERF_EVENT_IOC_ID, &id);
- 	if (!ret)
- 		goto add;
-@@ -288,7 +294,7 @@ int perf_evlist__id_add_fd(struct perf_evlist *evlist,
- 	id = read_data[id_idx];
- 
- add:
--	perf_evlist__id_add(evlist, evsel, cpu, thread, id);
-+	perf_evlist__id_add(evlist, evsel, cpu_map_idx, thread, id);
- 	return 0;
- }
- 
-diff --git a/tools/lib/perf/include/internal/evlist.h b/tools/lib/perf/include/internal/evlist.h
-index f366dbad6a88c..49b17b2b3923f 100644
---- a/tools/lib/perf/include/internal/evlist.h
-+++ b/tools/lib/perf/include/internal/evlist.h
-@@ -119,11 +119,11 @@ u64 perf_evlist__read_format(struct perf_evlist *evlist);
- 
- void perf_evlist__id_add(struct perf_evlist *evlist,
- 			 struct perf_evsel *evsel,
--			 int cpu, int thread, u64 id);
-+			 int cpu_map_idx, int thread, u64 id);
- 
- int perf_evlist__id_add_fd(struct perf_evlist *evlist,
- 			   struct perf_evsel *evsel,
--			   int cpu, int thread, int fd);
-+			   int cpu_map_idx, int thread, int fd);
- 
- void perf_evlist__reset_id_hash(struct perf_evlist *evlist);
- 
+ 	fbmode->xres = vm->hactive;
+ 	fbmode->left_margin = vm->hback_porch;
+@@ -1344,8 +1344,9 @@ int fb_videomode_from_videomode(const struct videomode *vm,
+ 	vtotal = vm->vactive + vm->vfront_porch + vm->vback_porch +
+ 		 vm->vsync_len;
+ 	/* prevent division by zero */
+-	if (htotal && vtotal) {
+-		fbmode->refresh = vm->pixelclock / (htotal * vtotal);
++	total = htotal * vtotal;
++	if (total) {
++		fbmode->refresh = vm->pixelclock / total;
+ 	/* a mode must have htotal and vtotal != 0 or it is invalid */
+ 	} else {
+ 		fbmode->refresh = 0;
 -- 
 2.43.0
 
