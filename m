@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-39027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7216E8A1185
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4105D8A1011
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2ED41C23BBE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64A1A1C22F39
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C514A145B26;
-	Thu, 11 Apr 2024 10:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE29A1474AB;
+	Thu, 11 Apr 2024 10:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVKoFjBq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bgusywX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843E96BB29;
-	Thu, 11 Apr 2024 10:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF57140E3C;
+	Thu, 11 Apr 2024 10:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832301; cv=none; b=dkjUc/B0JBBUFnCD7xGzzeg/tJ0PLj2iLVO3l3bdAOteDyUzxRjhlfE1n2mu4WPNPh9TBL+WkCTX2qdo8RqIBviSZjb6eeqFrS61m7foSivAW4WDatBrcJwifIUx6SMgojeMGZzThETjeEbARBqi8SIzgIRKX0P2wd02QDlB/KQ=
+	t=1712831421; cv=none; b=m/YdPZ4TI6ioMzlPrKdYLhfgtpCaZWoQOvS2sZGbakw8e5uXJj1LPHuZj1HdiQbfKDNs3KWq8qLHiyq3lvPlLfFY16fDONxRdhbAzoPDPyB28CP0go0wOzFRc+Lan/oVMl6AVLvZdlXkDDnDxl58jgw+RIl4vQRdjfNMplvlzIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832301; c=relaxed/simple;
-	bh=9AWX2fWlRxKE0Mit61ADZS0DeqsFE4mOLSdyra4Lmqs=;
+	s=arc-20240116; t=1712831421; c=relaxed/simple;
+	bh=aTXPC+yTIvbvpJHMz2HGO7AydgG3Cmqz+A4N+OA0Rk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=errkaArqqyOi+iN7ylM5oMv3cYi0MjIbRRxnHN7S8awb2UxKGleR9gCZtG/0CthWH4cj/w+GGXkOaMhWT/waf4zCKg6thVRFtXXBEVSGcBsVidw67cB53iZT9LhQGnuU37BDtATltb7+WXUL0JUHR3xuEdq44/XOMOJ9MpIKUNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVKoFjBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F333AC433C7;
-	Thu, 11 Apr 2024 10:45:00 +0000 (UTC)
+	 MIME-Version; b=d/UlBLhz8sSQo4iQ4wo9L0yn2cutHz5PcDpMvX1MtOXWwmfpYfiO0oiMz4cK1rHKhiICZXqa5rdUqx6jq+QSx9STUcQwpog+I95Ad34UPpVZKwlwhqd0L99gCMG2bKx15GCVHSwUeeU1xuuaB/Uua+Mc6BH7j8qO8i8mAXTKEoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bgusywX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F46C433C7;
+	Thu, 11 Apr 2024 10:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832301;
-	bh=9AWX2fWlRxKE0Mit61ADZS0DeqsFE4mOLSdyra4Lmqs=;
+	s=korg; t=1712831421;
+	bh=aTXPC+yTIvbvpJHMz2HGO7AydgG3Cmqz+A4N+OA0Rk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OVKoFjBqFG1/sHKOuYqKMU7kI6mezNueGqJzXmkXifhlO13QCTMMacvdaTjOeg0to
-	 CbgN9fX1Dbh0fa7r0F+ro29SQPkebTU7E5yvFV2uAmBGvl0JkLfUVqDbARM5WbnjQK
-	 4YRxxjLdyrQZ0r+8kwqwdfFGv4XdRD4wPGHwkL/k=
+	b=0bgusywXvN3/WkedXPNKecEKrqLhKfU7bJpnQsCeZA0Z3oPLeRwskjxzpnj+sGJNo
+	 mTfoSMlXRV4Bre5uzVnujRHgd2zd+kLA/X5z6CCl5H0jV1uX7kGG6J0rd4TJCP3ZYE
+	 pa8dZU/EhMh6flstGOiKGq5ufp8ay6UrpCuXPXaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gergo Koteles <soyer@irl.hu>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Yunfei Dong <yunfei.dong@mediatek.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 272/294] Input: allocate keycode for Display refresh rate toggle
+Subject: [PATCH 6.6 108/114] media: mediatek: vcodec: adding lock to protect encoder context list
 Date: Thu, 11 Apr 2024 11:57:15 +0200
-Message-ID: <20240411095443.737115104@linuxfoundation.org>
+Message-ID: <20240411095420.152628554@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gergo Koteles <soyer@irl.hu>
+From: Yunfei Dong <yunfei.dong@mediatek.com>
 
-[ Upstream commit cfeb98b95fff25c442f78a6f616c627bc48a26b7 ]
+[ Upstream commit afaaf3a0f647a24a7bf6a2145d8ade37baaf75ad ]
 
-Newer Lenovo Yogas and Legions with 60Hz/90Hz displays send a wmi event
-when Fn + R is pressed. This is intended for use to switch between the
-two refresh rates.
+Add a lock for the ctx_list, to avoid accessing a NULL pointer
+within the 'vpu_enc_ipi_handler' function when the ctx_list has
+been deleted due to an unexpected behavior on the SCP IP block.
 
-Allocate a new KEY_REFRESH_RATE_TOGGLE keycode for it.
-
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/15a5d08c84cf4d7b820de34ebbcf8ae2502fb3ca.1710065750.git.soyer@irl.hu
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 1972e32431ed ("media: mediatek: vcodec: Fix possible invalid memory access for encoder")
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/input-event-codes.h | 1 +
- 1 file changed, 1 insertion(+)
+ .../platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c      | 4 ++--
+ .../platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c    | 5 +++++
+ .../platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h    | 2 ++
+ drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c | 2 ++
+ 4 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
-index 7989d9483ea75..bed20a89c14c1 100644
---- a/include/uapi/linux/input-event-codes.h
-+++ b/include/uapi/linux/input-event-codes.h
-@@ -602,6 +602,7 @@
+diff --git a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
+index 831ec3d48b274..42ce58c41e4f4 100644
+--- a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
++++ b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
+@@ -65,12 +65,12 @@ static void mtk_vcodec_vpu_reset_enc_handler(void *priv)
  
- #define KEY_ALS_TOGGLE		0x230	/* Ambient light sensor */
- #define KEY_ROTATE_LOCK_TOGGLE	0x231	/* Display rotation lock */
-+#define KEY_REFRESH_RATE_TOGGLE	0x232	/* Display refresh rate toggle */
+ 	dev_err(&dev->plat_dev->dev, "Watchdog timeout!!");
  
- #define KEY_BUTTONCONFIG		0x240	/* AL Button Configuration */
- #define KEY_TASKMANAGER		0x241	/* AL Task/Project Manager */
+-	mutex_lock(&dev->dev_mutex);
++	mutex_lock(&dev->dev_ctx_lock);
+ 	list_for_each_entry(ctx, &dev->ctx_list, list) {
+ 		ctx->state = MTK_STATE_ABORT;
+ 		mtk_v4l2_vdec_dbg(0, ctx, "[%d] Change to state MTK_STATE_ABORT", ctx->id);
+ 	}
+-	mutex_unlock(&dev->dev_mutex);
++	mutex_unlock(&dev->dev_ctx_lock);
+ }
+ 
+ static const struct mtk_vcodec_fw_ops mtk_vcodec_vpu_msg = {
+diff --git a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
+index 6319f24bc714b..3cb8a16222220 100644
+--- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
++++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
+@@ -177,7 +177,9 @@ static int fops_vcodec_open(struct file *file)
+ 	mtk_v4l2_venc_dbg(2, ctx, "Create instance [%d]@%p m2m_ctx=%p ",
+ 			  ctx->id, ctx, ctx->m2m_ctx);
+ 
++	mutex_lock(&dev->dev_ctx_lock);
+ 	list_add(&ctx->list, &dev->ctx_list);
++	mutex_unlock(&dev->dev_ctx_lock);
+ 
+ 	mutex_unlock(&dev->dev_mutex);
+ 	mtk_v4l2_venc_dbg(0, ctx, "%s encoder [%d]", dev_name(&dev->plat_dev->dev),
+@@ -212,7 +214,9 @@ static int fops_vcodec_release(struct file *file)
+ 	v4l2_fh_exit(&ctx->fh);
+ 	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
+ 
++	mutex_lock(&dev->dev_ctx_lock);
+ 	list_del_init(&ctx->list);
++	mutex_unlock(&dev->dev_ctx_lock);
+ 	kfree(ctx);
+ 	mutex_unlock(&dev->dev_mutex);
+ 	return 0;
+@@ -294,6 +298,7 @@ static int mtk_vcodec_probe(struct platform_device *pdev)
+ 
+ 	mutex_init(&dev->enc_mutex);
+ 	mutex_init(&dev->dev_mutex);
++	mutex_init(&dev->dev_ctx_lock);
+ 	spin_lock_init(&dev->irqlock);
+ 
+ 	snprintf(dev->v4l2_dev.name, sizeof(dev->v4l2_dev.name), "%s",
+diff --git a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h
+index a042f607ed8d1..0bd85d0fb379a 100644
+--- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h
++++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h
+@@ -178,6 +178,7 @@ struct mtk_vcodec_enc_ctx {
+  *
+  * @enc_mutex: encoder hardware lock.
+  * @dev_mutex: video_device lock
++ * @dev_ctx_lock: the lock of context list
+  * @encode_workqueue: encode work queue
+  *
+  * @enc_irq: h264 encoder irq resource
+@@ -205,6 +206,7 @@ struct mtk_vcodec_enc_dev {
+ 	/* encoder hardware mutex lock */
+ 	struct mutex enc_mutex;
+ 	struct mutex dev_mutex;
++	struct mutex dev_ctx_lock;
+ 	struct workqueue_struct *encode_workqueue;
+ 
+ 	int enc_irq;
+diff --git a/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c b/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c
+index 84ad1cc6ad171..51bb7ee141b9e 100644
+--- a/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c
++++ b/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c
+@@ -47,12 +47,14 @@ static bool vpu_enc_check_ap_inst(struct mtk_vcodec_enc_dev *enc_dev, struct ven
+ 	struct mtk_vcodec_enc_ctx *ctx;
+ 	int ret = false;
+ 
++	mutex_lock(&enc_dev->dev_ctx_lock);
+ 	list_for_each_entry(ctx, &enc_dev->ctx_list, list) {
+ 		if (!IS_ERR_OR_NULL(ctx) && ctx->vpu_inst == vpu) {
+ 			ret = true;
+ 			break;
+ 		}
+ 	}
++	mutex_unlock(&enc_dev->dev_ctx_lock);
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
