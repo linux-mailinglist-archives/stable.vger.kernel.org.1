@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C468A0E06
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 814CE8A0F96
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4B091C21B48
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E07E2B2321F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2770E145B14;
-	Thu, 11 Apr 2024 10:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58776145B1A;
+	Thu, 11 Apr 2024 10:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6QXgVT5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1O8/4kR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB17F142624;
-	Thu, 11 Apr 2024 10:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173F613FD94;
+	Thu, 11 Apr 2024 10:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830216; cv=none; b=SBKffoOMQOxz6SCQ5w2IRfyOP0OjtNFQDvYZRpXN2S34XOX3Z1irT0o78pXE3pdbwddSzUaxh7Hw7WupOVXeynl1v9sqTnV3HzQy3Ef6GrnFZY0iapZo89dsUeAlUGCPxqPmg1dq0zy2ncHRImlZTP2HmC1tin/p8WE3npciJ5k=
+	t=1712831120; cv=none; b=pEdX8yzmSMIYkvceKYZ/QYcqob9NZXsopcPoI3IdEmAaL/ztBmHQDdiayKYhGmfV0VOePDIOuC9N9vlfmyyA1pLwHxqesLo+UqMXc03ieQzB83ySHnnFdUeSt0VraNRVG6/RHo2xgAYYgA1rnO8MxFfjPHD7Da2E1Ao91RKC+nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830216; c=relaxed/simple;
-	bh=P4pW3c4tcs2N0o46r1Wrz+GR9fk/4/LuUkkcdiJKEGI=;
+	s=arc-20240116; t=1712831120; c=relaxed/simple;
+	bh=AQgikI4YWO9xp/ejRHpuwnkdDyUUEfKm5dqJ5DyKB8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HwdSGALj5A2vHVgbXCFOKd3HUVCCRLq1HhXeNpNP3/6DtNCkZwZTKiU0qKMNieGegNUACIg79ppbfKscx0FaboitfXTThXv5jFRStszuQ5PAT/U2HfsryspYuS9FgdQS0Nw8v6s01cHPnPJ7bQiD+ZYZ56y2nvTecCrbFgqBYac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6QXgVT5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5153AC433F1;
-	Thu, 11 Apr 2024 10:10:16 +0000 (UTC)
+	 MIME-Version; b=KCwCttNNih24XTnsqpcyuZxWRGIFFugvBJ1QlQk+7wwTOp5behtFgzqmGX2qw7HkiyhVYySRt+wKOgAy7j/k5EKpZaajSHEebwc8O9IyeS4Iy6YAxGmnU8X3xr3lFiq2uaVvzmLvwfFROl/u26zrFk1smq6A/QIPU1pc9Xs9OEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1O8/4kR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E951C433C7;
+	Thu, 11 Apr 2024 10:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830216;
-	bh=P4pW3c4tcs2N0o46r1Wrz+GR9fk/4/LuUkkcdiJKEGI=;
+	s=korg; t=1712831120;
+	bh=AQgikI4YWO9xp/ejRHpuwnkdDyUUEfKm5dqJ5DyKB8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F6QXgVT5Vwbd7NZMKZFv4dIB58qg8It4UHmEbFk1jrSJ7QFOGNCdwR6Zw9j1vfbuH
-	 565RVfJXfz56St19w2eeQTXRIw6kC6fZVgaaWD/JnMsbK9+zs+TwkCWLlf1cupjWPQ
-	 GkokHfNm/apXETsw9szB59VXMBpkH81WCARrh6t4=
+	b=p1O8/4kRMTh9c7v6errFA4hTousY39HBFvQxtQX52L8ml4pzwNcrGaHBoIWU/yV46
+	 UzrP65YCOsLRZIc0kyQKPPso8h4/XEswvjlctKuyHPAuYqhYw8nwPRKUAOHg+aT6ss
+	 FmB36PMiNfUxqJoOi9tghIZPpLJMWrXj4Bdt9X2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 074/143] rcu-tasks: Repair RCU Tasks Trace quiescence check
+Subject: [PATCH 6.6 015/114] ARM: dts: rockchip: fix rk322x hdmi ports node
 Date: Thu, 11 Apr 2024 11:55:42 +0200
-Message-ID: <20240411095423.142105239@linuxfoundation.org>
+Message-ID: <20240411095417.328572346@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit 2eb52fa8900e642b3b5054c4bf9776089d2a935f ]
+[ Upstream commit 15a5ed03000cf61daf87d14628085cb1bc8ae72c ]
 
-The context-switch-time check for RCU Tasks Trace quiescence expects
-current->trc_reader_special.b.need_qs to be zero, and if so, updates
-it to TRC_NEED_QS_CHECKED.  This is backwards, because if this value
-is zero, there is no RCU Tasks Trace grace period in flight, an thus
-no need for a quiescent state.  Instead, when a grace period starts,
-this field is set to TRC_NEED_QS.
+Fix rk322x hdmi ports node so that it matches the
+rockchip,dw-hdmi.yaml binding.
 
-This commit therefore changes the check from zero to TRC_NEED_QS.
-
-Reported-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Tested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/9b84adf0-9312-47fd-becc-cadd06941f70@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rcupdate.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/rockchip/rk322x.dtsi | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index 9d69e4bd6f0a8..17d7ed5f3ae6e 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -184,9 +184,9 @@ void rcu_tasks_trace_qs_blkd(struct task_struct *t);
- 	do {									\
- 		int ___rttq_nesting = READ_ONCE((t)->trc_reader_nesting);	\
- 										\
--		if (likely(!READ_ONCE((t)->trc_reader_special.b.need_qs)) &&	\
-+		if (unlikely(READ_ONCE((t)->trc_reader_special.b.need_qs) == TRC_NEED_QS) &&	\
- 		    likely(!___rttq_nesting)) {					\
--			rcu_trc_cmpxchg_need_qs((t), 0,	TRC_NEED_QS_CHECKED);	\
-+			rcu_trc_cmpxchg_need_qs((t), TRC_NEED_QS, TRC_NEED_QS_CHECKED);	\
- 		} else if (___rttq_nesting && ___rttq_nesting != INT_MIN &&	\
- 			   !READ_ONCE((t)->trc_reader_special.b.blocked)) {	\
- 			rcu_tasks_trace_qs_blkd(t);				\
+diff --git a/arch/arm/boot/dts/rockchip/rk322x.dtsi b/arch/arm/boot/dts/rockchip/rk322x.dtsi
+index ffc16d6b97e1b..03d9baddcbaba 100644
+--- a/arch/arm/boot/dts/rockchip/rk322x.dtsi
++++ b/arch/arm/boot/dts/rockchip/rk322x.dtsi
+@@ -732,14 +732,20 @@ hdmi: hdmi@200a0000 {
+ 		status = "disabled";
+ 
+ 		ports {
+-			hdmi_in: port {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				hdmi_in_vop: endpoint@0 {
+-					reg = <0>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			hdmi_in: port@0 {
++				reg = <0>;
++
++				hdmi_in_vop: endpoint {
+ 					remote-endpoint = <&vop_out_hdmi>;
+ 				};
+ 			};
++
++			hdmi_out: port@1 {
++				reg = <1>;
++			};
+ 		};
+ 	};
+ 
 -- 
 2.43.0
 
