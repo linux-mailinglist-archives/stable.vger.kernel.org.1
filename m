@@ -1,99 +1,130 @@
-Return-Path: <stable+bounces-38027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 397C28A0424
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 01:41:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E03638A057F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 03:29:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB316B251E7
-	for <lists+stable@lfdr.de>; Wed, 10 Apr 2024 23:41:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E1241C22ADB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 01:29:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1973F8C7;
-	Wed, 10 Apr 2024 23:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VJJJL426"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66A266B57;
+	Thu, 11 Apr 2024 01:28:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from v251.mxout.mta1.net (v251.mxout.mta1.net [192.152.126.251])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3042C695
-	for <stable@vger.kernel.org>; Wed, 10 Apr 2024 23:40:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E391960EC4
+	for <stable@vger.kernel.org>; Thu, 11 Apr 2024 01:28:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.152.126.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712792457; cv=none; b=TQFjVncJW/3V8V70d9rTu9bev9gtoqkwmHlXNmJdhQyJ+w1LmOjkynGZVN6uvyTPZLKxDR1eB04k1cpi6FllM4CkCYiJrUbC474GQ7Qc1rwxGiFeqh3GkAqHYXDapNl9CXyA0nf/kDiCVllCUjCRIX06+guPAmT2NVTufxbnjMk=
+	t=1712798886; cv=none; b=WphmaQpMD5wgpBm3IeVo4/A24Y+b7dLtdG0hcUUZXhMS9IP5WEzcBn+qbDHyNSl68C43sKpjJoj6VUonLAhYnTjOiSHM7bwlERI0MP09EYFouA6XMN2oPTQ5NiVC+u2w1B6DJqUXPRlDPVTjji31SpaIeviyxOc42kB4oOQ3VSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712792457; c=relaxed/simple;
-	bh=87ZQceCAjd/xjDJE6i37wZhK+s+y88c+97wzBCNa1ts=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Z0CLnFtkQaYu2y8dksWbhX2nBDytFxeBOB/oBY/5mfQyaVfblJo/fEId1bC5ngIdUhYJhemym5df1kY7t8g1Fs9FpqEZx/LUEoW9UdNS5QShYetPmMVJVdaVtby+5e9lZ/M2ZkzWbCdzieytwgSoZzYfzZ+RWbyVw4iZ/Fno3Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VJJJL426; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712792456; x=1744328456;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=87ZQceCAjd/xjDJE6i37wZhK+s+y88c+97wzBCNa1ts=;
-  b=VJJJL426zKsn3TppNcvhgeM7iaW2PAuxeBv0croKuCS4U7FL1VnZBqTI
-   zmy8Hoi1YO/Yd5xEbequkJjgtn+wGgDRfCBPDmlrmlk1Hszz1hQ9rZ4Ln
-   4WasUXxl4gs7evCCLDA8BmbTvpbfrgztQsz9HQLs+qc7twlmcoEmI6/ry
-   jEvPNt9xDo/+AZyJ/vF//6xYGLXJlkZbJEdnwTa6/jp604S1ewoMJVS3M
-   KT4CY3LqGSaviFnvCrkwHIF0DI1bNSY4lrxdFcHBDQY0lvQ+G58Q97mN9
-   3WtEWKk6bKezD96avFJawWToH9y3bGTv2Von9XvGiNp1dmDrkHOaMPP+p
-   A==;
-X-CSE-ConnectionGUID: eoZ6t3sMTsiMusCqqmvYwg==
-X-CSE-MsgGUID: j8WtwXKXQ0u5Z5dKBMENjw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="11976194"
-X-IronPort-AV: E=Sophos;i="6.07,191,1708416000"; 
-   d="scan'208";a="11976194"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2024 16:40:55 -0700
-X-CSE-ConnectionGUID: 7YvmraeXRWy64A4DwL82qA==
-X-CSE-MsgGUID: lqk8oGDfRoOv6/SuLcd1wQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,191,1708416000"; 
-   d="scan'208";a="51920125"
-Received: from lkp-server01.sh.intel.com (HELO e61807b1d151) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 10 Apr 2024 16:40:54 -0700
-Received: from kbuild by e61807b1d151 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ruhYh-0007xq-1O;
-	Wed, 10 Apr 2024 23:40:51 +0000
-Date: Thu, 11 Apr 2024 07:40:10 +0800
-From: kernel test robot <lkp@intel.com>
-To: Saranya Muruganandam <saranyamohan@google.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] block: Fix BLKRRPART regression
-Message-ID: <ZhcjWhxZpbgLzme1@92629a18465e>
+	s=arc-20240116; t=1712798886; c=relaxed/simple;
+	bh=lKij7m7eg4Eq/lIooR3dZoHQLrICIKjq9C8EEy333Bc=;
+	h=From:Date:Subject:Message-Id:To:Cc:MIME-Version:Content-Type; b=f25fbs1ND76ue9Y4KocIkLOLDYYBcDw19PYi96FJafRmg0dCU6QiFWHTET2B/i9g3gW+82fMihZ4ZTMpH3h49AR9pcZXzHb9TgXL9R6t8iWDNOF28k8TaBS3I7qIiBk1cjZfbJXWqSoesNon7ASHv0pzBLT7n6sQX2SycUAdMoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=bounces.elasticemail.net; arc=none smtp.client-ip=192.152.126.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bounces.elasticemail.net
+From: Larry Finger <Larry.Finger@gmail.com>
+Date: Thu, 11 Apr 2024 01:26:55 +0000
+Subject: [RFC] rtw88: Fix startup problems for SDIO wifi plus UART Bluetooth
+Message-Id: <4umro86wvv84.pysq-xM30js4szgqyKY3og2@1EHFQ.trk.elasticemail.com>
+Reply-To: Larry Finger <Larry.Finger@gmail.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org,
+ Larry Finger <Larry.Finger@gmail.com>, stable@vger.kernel.org
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-Msg-EID: pysq-xM30js4szgqyKY3og2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240410233932.256871-1-saranyamohan@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 
-Hi,
+As discussed in the links below, the SDIO part of RTW8821CS fails to
+start correctly if such startup happens while the UART portion of
+the chip is initializing. The logged results with such failure is
 
-Thanks for your patch.
+[   10.230516] rtw_8821cs mmc3:0001:1: Start of rtw_sdio_probe
+[   10.306569] Bluetooth: HCI UART driver ver 2.3
+[   10.306717] Bluetooth: HCI UART protocol Three-wire (H5) registered
+[   10.307167] of_dma_request_slave_channel: dma-names property of node '/serial@fe650000' missing or empty
+[   10.307199] dw-apb-uart fe650000.serial: failed to request DMA
+[   10.543474] rtw_8821cs mmc3:0001:1: Firmware version 24.8.0, H2C version 12
+[   10.730744] rtw_8821cs mmc3:0001:1: sdio read32 failed (0x11080): -110
+[   10.730923] rtw_8821cs mmc3:0001:1: sdio write32 failed (0x11080): -110
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Due to the above errors, wifi fails to work.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+For those instances when wifi works, the following is logged:
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] block: Fix BLKRRPART regression
-Link: https://lore.kernel.org/stable/20240410233932.256871-1-saranyamohan%40google.com
+[   10.452861] Bluetooth: HCI UART protocol Three-wire (H5) registered
+[   10.453580] of_dma_request_slave_channel: dma-names property of node '/serial@fe650000' missing or empty
+[   10.453621] dw-apb-uart fe650000.serial: failed to request DMA
+[   10.455741] rtw_8821cs mmc3:0001:1: Start of rtw_sdio_probe
+[   10.639186] rtw_8821cs mmc3:0001:1: Firmware version 24.8.0, H2C version 12
 
+In this case, SDIO wifi works correctly. The correct case is ensured by
+adding an mdelay(500) statement before the call to rtw_core_init(). No
+adverse effects are observed.
+
+Link: https://1EHFQ.trk.elasticemail.com/tracking/click?d=1UfsVowwwMAM6kBoyumkHP3o7pYa4kGXhuklYI-QPLuVUi2ohkUG8HssjZcN67C_BtzEo2aHgjSDxQlrbonuUL2yHlv5pJROamOlEnjxhjX6ma_XKx_YvnBTmqM6sQUhF4_8B7TjnnuY5TJAxA5Oeoc023DnWr-zvOPBcKJFuOGC0
+Link: https://1EHFQ.trk.elasticemail.com/tracking/click?d=XUEf4t8W9xt0czASPOeeDt8BnPqLK_YeGMMwadyXNu17p5TeSDk6RmEZ25rBt0-C5d-GR5IlKqu5URoKaespUAOAffgoysVTLbvgzQoAO57Ix1ChR-fYsf2VGRa1vIR9iWmNK1bUBvdHTZb0StprYd71qCHjhdARdl8m0L3guFDpSzFekW-tapcjw0BgugcDKvlwg4DghhYs4OnIL56wuPTzyAEpDh1rQd9BBRYp0kzW0
+Fixes: 65371a3f14e7 ("wifi: rtw88: sdio: Add HCI implementation for SDIO based chipsets")
+Signed-off-by: Larry Finger <Larry.Finger@gmail.com>
+Cc: stable@vger.kernel.org # v6.4+
+---
+ drivers/net/wireless/realtek/rtw88/sdio.c | 28 +++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+index 0cae5746f540..eec0ad85be72 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.c
++++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+@@ -1325,6 +1325,34 @@ int rtw_sdio_probe(struct sdio_func *sdio_func,
+ 	rtwdev->hci.ops = &rtw_sdio_ops;
+ 	rtwdev->hci.type = RTW_HCI_TYPE_SDIO;
+ 
++	/* Insert a delay of 500 ms. Without the delay, the wifi part
++	 * and the UART that controls Bluetooth interfere with one
++	 * another resulting in the following being logged:
++	 *
++	 * Start of SDIO probe function.
++	 * Bluetooth: HCI UART driver ver 2.3
++	 * Bluetooth: HCI UART protocol Three-wire (H5) registered
++	 * of_dma_request_slave_channel: dma-names property of node '/serial@fe650000'
++	 *	 missing or empty
++	 * dw-apb-uart fe650000.serial: failed to request DMA
++`	 * rtw_8821cs mmc3:0001:1: Firmware version 24.8.0, H2C version 12
++	 * rtw_8821cs mmc3:0001:1: sdio read32 failed (0x11080): -110
++	 *
++	 * If the UART is finished initializing before the SDIO probe
++	 * function startw, the following is logged:
++	 *
++	 * Bluetooth: HCI UART protocol Three-wire (H5) registered
++	 * of_dma_request_slave_channel: dma-names property of node '/serial@fe650000'
++	 *	missing or empty
++	 * dw-apb-uart fe650000.serial: failed to request DMA
++	 * Start of SDIO probe function.
++	 * rtw_8821cs mmc3:0001:1: Firmware version 24.8.0, H2C version 12
++	 * Bluetooth: hci0: RTL: examining hci_ver=08 hci_rev=000c lmp_ver=08 lmp_subver=8821
++	 * SDIO wifi works correctly.
++	 *
++	 * No adverse effects are observed from the delay.
++	 */
++	mdelay(500);
+ 	ret = rtw_core_init(rtwdev);
+ 	if (ret)
+ 		goto err_release_hw;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.44.0
 
 
-
+https://1EHFQ.trk.elasticemail.com/tracking/unsubscribe?d=XjvOA0R6jwFES_UmJ2Qt6yxg5cowtZ3gnLhcahwZlzF1HexUZWhPQ26VvnZeA147YLSNXF0kfAcfHhFPszjKkdNpUh1XcSY-T-r5EAwp11F10
 
