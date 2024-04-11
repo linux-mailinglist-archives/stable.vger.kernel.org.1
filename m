@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AAA78A10F3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 480088A0F91
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C5DE1C20EEC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A67F1C21C5E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59006146D79;
-	Thu, 11 Apr 2024 10:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5CF51465BF;
+	Thu, 11 Apr 2024 10:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwwCuy9N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MaaUtbY0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C59149DFF;
-	Thu, 11 Apr 2024 10:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E4613FD94;
+	Thu, 11 Apr 2024 10:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831934; cv=none; b=JQGjkN8MRR+pBA9QBjV0CwkWYIkqU3gtBdnNA/z0JejGM5UA1iHg/h9oNSZA+2gMI5un46u0fsVPVYC9zFtZEttFIcwTIGkBcC9MAg88MRag8KsdbQFDqkzK5aw7uxR88Y7ruRJvMWnOfD1z6r8L9mnquKkarktQw/3NVK4SRTQ=
+	t=1712831105; cv=none; b=Oa8haoP0ZBqkRQKG3kJaTyj6w9sVSETNAGqt4D+g6k53EZokFlct6LkuYmc0mtbWYEzLXDP1dPVKhIMnb2T8A9QLluR8GPaBggSNqmqc+Y5Hv3+F3X26Mhoe24/mVyPnjYAK2NnJay7gd1ozkhokDioDYjcEwyBt3JwPkkL2T+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831934; c=relaxed/simple;
-	bh=Ifv23XTXARN9Tx/NtRjf0rzT/6A9ZX4wZNbBr+p6Ie0=;
+	s=arc-20240116; t=1712831105; c=relaxed/simple;
+	bh=F0fQnfoFIQscobq5j8sxYgab5MIYibLgF3/82tsAztk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N3f84aCjYaYKRxd/r4fA8GSbeFJIltS57Q9B9sKXupsISmCFfzy0L1zYdSNRYDnI7BROP5UNIGNKKSYA2aHKJO/knJuL0oe3WLoqlSdg2pVPyVwGxGU1snkjxZUATSuO4c7q10Hjp8qFelYAPfPpmAhlU69vBWyErZX71cmGC9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwwCuy9N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087EDC43390;
-	Thu, 11 Apr 2024 10:38:52 +0000 (UTC)
+	 MIME-Version; b=L/U96aeKEgU+XoSTT7LRHjMlDfthLqEOU48o4Wjk8n0CpH81h22Pxyh8Oak5N6F1I3dnKpc8bQ1wjeeYnZ2rejfXFtY0suVi3D6O+OqSKyGS5M19MY3/LdEU9deRbdLFPwt6IEyy7dLwwHcpm9UBOL7BkGiZCpnzQZ/INDtRR2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MaaUtbY0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1338C433C7;
+	Thu, 11 Apr 2024 10:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831933;
-	bh=Ifv23XTXARN9Tx/NtRjf0rzT/6A9ZX4wZNbBr+p6Ie0=;
+	s=korg; t=1712831105;
+	bh=F0fQnfoFIQscobq5j8sxYgab5MIYibLgF3/82tsAztk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MwwCuy9NCVUrBlEZTkUWDCbCYIreZNagyKKadgqwib3wl8xTgEbjsqpksCpHCxBUr
-	 ooVeytnCzT2xeg9Vny5QqmRPUjUxMTeT0WkiySVpnBE800Iq7nw/JMEsD7vYU/S415
-	 WX5G1GTPM0T/KOt5X8FA8F6ZfQ57JbRmNCWjPT78=
+	b=MaaUtbY0YoI97PWyK99c9ZjDj4Z9p+6cfTrhcPUOMBY3NAL4vMmY8kEqqpdHrVXrl
+	 hhJZmHRlqg/gYIgEbhEtdfGx2O0xZqcvWnAqQhlPLoouKHEYbO+bCzlOyD9SfBkE4y
+	 TrJx5FUctjmlgesXO5/aTJTiccw0vSY7JtDyR3sE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 5.10 174/294] usb: typec: ucsi: Clear UCSI_CCI_RESET_COMPLETE before reset
+	Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 010/114] wifi: iwlwifi: pcie: Add the PCI device id for new hardware
 Date: Thu, 11 Apr 2024 11:55:37 +0200
-Message-ID: <20240411095440.869372471@linuxfoundation.org>
+Message-ID: <20240411095417.176315818@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 
-commit 3de4f996a0b5412aa451729008130a488f71563e upstream.
+[ Upstream commit 6770eee75148ba10c0c051885379714773e00b48 ]
 
-Check the UCSI_CCI_RESET_COMPLETE complete flag before starting
-another reset. Use a UCSI_SET_NOTIFICATION_ENABLE command to clear
-the flag if it is set.
+Add the support for a new PCI device id.
 
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Link: https://lore.kernel.org/r/20240320073927.1641788-6-lk@c--e.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240129211905.fde32107e0a3.I597cff4f340e4bed12b7568a0ad504bd4b2c1cf8@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |   36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -852,13 +852,47 @@ static int ucsi_reset_connector(struct u
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index bc83d2ba55c67..dea4d6478b4f4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -502,6 +502,7 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
  
- static int ucsi_reset_ppm(struct ucsi *ucsi)
- {
--	u64 command = UCSI_PPM_RESET;
-+	u64 command;
- 	unsigned long tmo;
- 	u32 cci;
- 	int ret;
- 
- 	mutex_lock(&ucsi->ppm_lock);
- 
-+	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
-+	if (ret < 0)
-+		goto out;
-+
-+	/*
-+	 * If UCSI_CCI_RESET_COMPLETE is already set we must clear
-+	 * the flag before we start another reset. Send a
-+	 * UCSI_SET_NOTIFICATION_ENABLE command to achieve this.
-+	 * Ignore a timeout and try the reset anyway if this fails.
-+	 */
-+	if (cci & UCSI_CCI_RESET_COMPLETE) {
-+		command = UCSI_SET_NOTIFICATION_ENABLE;
-+		ret = ucsi->ops->async_write(ucsi, UCSI_CONTROL, &command,
-+					     sizeof(command));
-+		if (ret < 0)
-+			goto out;
-+
-+		tmo = jiffies + msecs_to_jiffies(UCSI_TIMEOUT_MS);
-+		do {
-+			ret = ucsi->ops->read(ucsi, UCSI_CCI,
-+					      &cci, sizeof(cci));
-+			if (ret < 0)
-+				goto out;
-+			if (cci & UCSI_CCI_COMMAND_COMPLETE)
-+				break;
-+			if (time_is_before_jiffies(tmo))
-+				break;
-+			msleep(20);
-+		} while (1);
-+
-+		WARN_ON(cci & UCSI_CCI_RESET_COMPLETE);
-+	}
-+
-+	command = UCSI_PPM_RESET;
- 	ret = ucsi->ops->async_write(ucsi, UCSI_CONTROL, &command,
- 				     sizeof(command));
- 	if (ret < 0)
+ /* Bz devices */
+ 	{IWL_PCI_DEVICE(0x2727, PCI_ANY_ID, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0x272D, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0xA840, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0x7740, PCI_ANY_ID, iwl_bz_trans_cfg)},
+-- 
+2.43.0
+
 
 
 
