@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-38691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2663C8A0FE4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E588A0DB4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:06:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D17D81F2950B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E9061F22930
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5293143C76;
-	Thu, 11 Apr 2024 10:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1AC7145B14;
+	Thu, 11 Apr 2024 10:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MuPRWULJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmP9SflK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628EB146A71;
-	Thu, 11 Apr 2024 10:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612041448F3;
+	Thu, 11 Apr 2024 10:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831313; cv=none; b=XEgLiiztetqFPF2UC14ZH/OCdSZKOsL21RLqbZ/3t0tqm4wuE8zcE0v46UVP8np4p00or+6x6w9OMendvO/H4nycz9c5dcWpzkTrCLwBlTd7ZIx66YNDCiL/EYK8+9SbjqXpBZJDT8yDGQdSCFjbPVCr+IPKK0YUvGJPHBaqGBk=
+	t=1712830007; cv=none; b=FtYl9z9A/EC6Xx1JDazwq8SPPaWSxrPXURNcoNlfLmpE8G/lMqd25L1+qhLSUGzZJTSyGDbhZ9NtRlwTyZabREO3qD94iOXUAkXAMMD/7Uz0Gu1tNyE87ELn+0ipnVSABtBd3C5sDVSF0Gx92iWoSvQr97c6C/8nsJ4m4FdlBpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831313; c=relaxed/simple;
-	bh=ur5XYLMQIeNEfu7kqJbPOLTgWN/vAcoNJVK3VqJLHDk=;
+	s=arc-20240116; t=1712830007; c=relaxed/simple;
+	bh=BVVNbrhk2MKN6Tpeh5g4ewAAh7XjlFTm48OKSNFSBjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aZ5ZIQeK1RZfVbrHnPUbk44tNGCe+lwH9WSy7MYFPPnkpXdjVYa+NvQvgSjKlS3JoQWnIcYhc6jOhdiAGbQfgRC5m6EPndhaejgZyT5LtBgfdWJkSBTlAmmWNCNov5kSeesXHJGt8g4a5sDGMiMl5BOCRHQeIK82BdJ8Yo0n+co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MuPRWULJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDAD0C433F1;
-	Thu, 11 Apr 2024 10:28:32 +0000 (UTC)
+	 MIME-Version; b=Djw732GcOZKyuNoHkhwwD2h3jr4FtWd0uvRFcjDg68v1Zhk3Vj7ytrC9eDUoObmesyVlHBuRAaFAY4isVJ/jnxGcVtHmi1DXzBHRmKrxpIEV7HZJ1N/M1PXTe5TD1D1ht4QOpPCbg3JBB/7tK/3/Ijm4sbwPRkKfBbtM5Ca+u0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmP9SflK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BC3C433F1;
+	Thu, 11 Apr 2024 10:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831313;
-	bh=ur5XYLMQIeNEfu7kqJbPOLTgWN/vAcoNJVK3VqJLHDk=;
+	s=korg; t=1712830007;
+	bh=BVVNbrhk2MKN6Tpeh5g4ewAAh7XjlFTm48OKSNFSBjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MuPRWULJoZNI0I2VhRhMZxTzWWg/n+u52paqcnuFFps8eW8fhPtwFMU6ZGqo6lDJH
-	 rpBrzxJYIaaZOUqj0lL87SozByiTqQxDSwRjxJNvT2LqdqzG6xr4XqpJFXEMCWui5q
-	 s9ZEX/d8m3FjaTxvjDq12HeK8Jg4m1qzyRSNYV5Y=
+	b=kmP9SflKHlY+9/1QvuhcZ8/bX7Ah/7zuzAHMR3Ip0Mhu4bQuP/jCfDQmlXp05RSU9
+	 ZSFiyNkRjMpgYiegbNWYmwBP3NrOT8g20Vekn+vtITVAcNl2xx1ZNbfTr9KDIXYizV
+	 O6CEMj6i4dlHga6DZZDCGEjhYPSvUZv1Z+N0BlLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 063/114] ext4: forbid commit inconsistent quota data when errors=remount-ro
+	Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+Subject: [PATCH 4.19 167/175] tty: n_gsm: require CAP_NET_ADMIN to attach N_GSM0710 ldisc
 Date: Thu, 11 Apr 2024 11:56:30 +0200
-Message-ID: <20240411095418.788725203@linuxfoundation.org>
+Message-ID: <20240411095424.591801181@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
 
-[ Upstream commit d8b945fa475f13d787df00c26a6dc45a3e2e1d1d ]
+commit 67c37756898a5a6b2941a13ae7260c89b54e0d88 upstream.
 
-There's issue as follows When do IO fault injection test:
-Quota error (device dm-3): find_block_dqentry: Quota for id 101 referenced but not present
-Quota error (device dm-3): qtree_read_dquot: Can't read quota structure for id 101
-Quota error (device dm-3): do_check_range: Getting block 2021161007 out of range 1-186
-Quota error (device dm-3): qtree_read_dquot: Can't read quota structure for id 661
+Any unprivileged user can attach N_GSM0710 ldisc, but it requires
+CAP_NET_ADMIN to create a GSM network anyway.
 
-Now, ext4_write_dquot()/ext4_acquire_dquot()/ext4_release_dquot() may commit
-inconsistent quota data even if process failed. This may lead to filesystem
-corruption.
-To ensure filesystem consistent when errors=remount-ro there is need to call
-ext4_handle_error() to abort journal.
+Require initial namespace CAP_NET_ADMIN to do that.
 
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240119062908.3598806-1-yebin10@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+Link: https://lore.kernel.org/r/20230731185942.279611-1-cascardo@canonical.com
+From: Salvatore Bonaccorso <carnil@debian.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/tty/n_gsm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 3ea4d8f11e7bb..83fc3f092a0c7 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -6865,6 +6865,10 @@ static int ext4_write_dquot(struct dquot *dquot)
- 	if (IS_ERR(handle))
- 		return PTR_ERR(handle);
- 	ret = dquot_commit(dquot);
-+	if (ret < 0)
-+		ext4_error_err(dquot->dq_sb, -ret,
-+			       "Failed to commit dquot type %d",
-+			       dquot->dq_id.type);
- 	err = ext4_journal_stop(handle);
- 	if (!ret)
- 		ret = err;
-@@ -6881,6 +6885,10 @@ static int ext4_acquire_dquot(struct dquot *dquot)
- 	if (IS_ERR(handle))
- 		return PTR_ERR(handle);
- 	ret = dquot_acquire(dquot);
-+	if (ret < 0)
-+		ext4_error_err(dquot->dq_sb, -ret,
-+			      "Failed to acquire dquot type %d",
-+			      dquot->dq_id.type);
- 	err = ext4_journal_stop(handle);
- 	if (!ret)
- 		ret = err;
-@@ -6900,6 +6908,10 @@ static int ext4_release_dquot(struct dquot *dquot)
- 		return PTR_ERR(handle);
- 	}
- 	ret = dquot_release(dquot);
-+	if (ret < 0)
-+		ext4_error_err(dquot->dq_sb, -ret,
-+			       "Failed to release dquot type %d",
-+			       dquot->dq_id.type);
- 	err = ext4_journal_stop(handle);
- 	if (!ret)
- 		ret = err;
--- 
-2.43.0
-
+--- a/drivers/tty/n_gsm.c
++++ b/drivers/tty/n_gsm.c
+@@ -2435,6 +2435,9 @@ static int gsmld_open(struct tty_struct
+ 	struct gsm_mux *gsm;
+ 	int ret;
+ 
++	if (!capable(CAP_NET_ADMIN))
++		return -EPERM;
++
+ 	if (tty->ops->write == NULL)
+ 		return -EINVAL;
+ 
 
 
 
