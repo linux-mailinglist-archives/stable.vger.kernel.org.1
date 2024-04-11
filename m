@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-39128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B7928A1208
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:50:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7874B8A11C9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:47:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1EFEB22571
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17DD11F21626
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654CC13DDD6;
-	Thu, 11 Apr 2024 10:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02DF1474B0;
+	Thu, 11 Apr 2024 10:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6eMN9K+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vOZpjEo+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A4F6BB29;
-	Thu, 11 Apr 2024 10:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C98713D24D;
+	Thu, 11 Apr 2024 10:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832599; cv=none; b=TJMlFW/7oq/owNTtJMyquyrDAiFYtw32VfSZEA5+kHQpZ+bYkAvhjhiZZu/Fte3Id3yPwPr7nJGOZx1iY6MFSMCmbl/hGB4+k4OihRREdH9OphCwI0wI81/GeKUjJtr4DfCWQvlWkFv39J/I46DISHh2TIRMwKBnX8ValDfm87c=
+	t=1712832425; cv=none; b=pqJmnNdgBHVNktn7oJcLGzegWXrEauJTvkSeYEhKCsJqk+0wAYCBfL/CIfQoYBlnpsPIlxNtlSfoeFUH7ukY7KBVCrT5jO0XuYS1USq/jhqZQavPGE2adaCN4mHGfikAXqzg/k5XXFwFHqwB3a037MdsRAkzz6g5ANNX0Lmmyyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832599; c=relaxed/simple;
-	bh=v1NSYt7MOfU6OCYWCrgChFM2aiuecfWNlw6dRvRXoUY=;
+	s=arc-20240116; t=1712832425; c=relaxed/simple;
+	bh=QEpTGOJRAeOts1P6yJxqDcNdd65QWzNyuhMinm8JlvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LjJYLWaDzgUba5peObndRLPYHp6xcDNOikSvoq00wvxXwSOEGI2VvOh9XYlPd4Z7hPGLDwir2xLPlM9Vx7ewtr6IWsKhgTwNhP6UfxZwRX2yi9G3T3dpu0NAh6sOwFmlpp6UWAr3CUoNzSK+6UonA4AGhBNOR6dapES4jEYCOWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6eMN9K+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F57BC433F1;
-	Thu, 11 Apr 2024 10:49:58 +0000 (UTC)
+	 MIME-Version; b=BjspjWGyhqpOVHOz5Pljp6Vx7XY345D60NqalKSRkz7Zn4Z8El5Etg3UrOSVsuAKBZuI3dF/Uug5kN2+1TZx2G0cUmH0+pZTcmFz08S8gX9GpAVm/gUrmyNlpg+7xhBvZw2EILBJZTsxKRAU4ZUPOViogmaTXyI9Nxy/ndJxNss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vOZpjEo+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD95AC43390;
+	Thu, 11 Apr 2024 10:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832599;
-	bh=v1NSYt7MOfU6OCYWCrgChFM2aiuecfWNlw6dRvRXoUY=;
+	s=korg; t=1712832425;
+	bh=QEpTGOJRAeOts1P6yJxqDcNdd65QWzNyuhMinm8JlvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H6eMN9K+WDmzGj1ZZm/9wqBeS7OFaWt00uefp3u1aKlFtBmr0wuRR2f/tMrpv7cSI
-	 F7VkCI4wdgHclP5TL20Ld1lvJYaPpJ0Lr40ws0NZtM6E6ClJtCteaT00/DZZUMeInE
-	 h1TbtOxKMcKw7X48fW92s2GwfiOlGY9Bp1qyX6BU=
+	b=vOZpjEo+4C8UhbdSggAYfJYBDoRrvKen9EDLF17g6rCLqleUnuo/m2mx8TnFk0XMY
+	 oV1ti82ln5FToeKFOjrCWoUapr/23beWPoXPKfz5yV3UV5nehDA3qdkV3AQLzGg99C
+	 lhD7rQYdY1Th2TBEj7vs9lBnweLUgRhekQtyY6mM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Jonker <jbx6244@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 09/57] arm64: dts: rockchip: fix rk3399 hdmi ports node
+Subject: [PATCH 6.1 45/83] SUNRPC: increase size of rpc_wait_queue.qlen from unsigned short to unsigned int
 Date: Thu, 11 Apr 2024 11:57:17 +0200
-Message-ID: <20240411095408.272681113@linuxfoundation.org>
+Message-ID: <20240411095414.040467427@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Jonker <jbx6244@gmail.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit f051b6ace7ffcc48d6d1017191f167c0a85799f6 ]
+[ Upstream commit 2c35f43b5a4b9cdfaa6fdd946f5a212615dac8eb ]
 
-Fix rk3399 hdmi ports node so that it matches the
-rockchip,dw-hdmi.yaml binding.
+When the NFS client is under extreme load the rpc_wait_queue.qlen counter
+can be overflowed. Here is an instant of the backlog queue overflow in a
+real world environment shown by drgn helper:
 
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Link: https://lore.kernel.org/r/a6ab6f75-3b80-40b1-bd30-3113e14becdd@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+rpc_task_stats(rpc_clnt):
+-------------------------
+rpc_clnt: 0xffff92b65d2bae00
+rpc_xprt: 0xffff9275db64f000
+  Queue:  sending[64887] pending[524] backlog[30441] binding[0]
+XMIT task: 0xffff925c6b1d8e98
+     WRITE: 750654
+        __dta_call_status_580: 65463
+        __dta_call_transmit_status_579: 1
+        call_reserveresult: 685189
+        nfs_client_init_is_complete: 1
+    COMMIT: 584
+        call_reserveresult: 573
+        __dta_call_status_580: 11
+    ACCESS: 1
+        __dta_call_status_580: 1
+   GETATTR: 10
+        __dta_call_status_580: 4
+        call_reserveresult: 6
+751249 tasks for server 111.222.333.444
+Total tasks: 751249
+
+count_rpc_wait_queues(xprt):
+----------------------------
+**** rpc_xprt: 0xffff9275db64f000 num_reqs: 65511
+wait_queue: xprt_binding[0] cnt: 0
+wait_queue: xprt_binding[1] cnt: 0
+wait_queue: xprt_binding[2] cnt: 0
+wait_queue: xprt_binding[3] cnt: 0
+rpc_wait_queue[xprt_binding].qlen: 0 maxpriority: 0
+wait_queue: xprt_sending[0] cnt: 0
+wait_queue: xprt_sending[1] cnt: 64887
+wait_queue: xprt_sending[2] cnt: 0
+wait_queue: xprt_sending[3] cnt: 0
+rpc_wait_queue[xprt_sending].qlen: 64887 maxpriority: 3
+wait_queue: xprt_pending[0] cnt: 524
+wait_queue: xprt_pending[1] cnt: 0
+wait_queue: xprt_pending[2] cnt: 0
+wait_queue: xprt_pending[3] cnt: 0
+rpc_wait_queue[xprt_pending].qlen: 524 maxpriority: 0
+wait_queue: xprt_backlog[0] cnt: 0
+wait_queue: xprt_backlog[1] cnt: 685801
+wait_queue: xprt_backlog[2] cnt: 0
+wait_queue: xprt_backlog[3] cnt: 0
+rpc_wait_queue[xprt_backlog].qlen: 30441 maxpriority: 3 [task cnt mismatch]
+
+There is no effect on operations when this overflow occurs. However
+it causes confusion when trying to diagnose the performance problem.
+
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399.dtsi | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ include/linux/sunrpc/sched.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-index 9e33f0e6ed504..e98966899f53c 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-@@ -1801,6 +1801,7 @@ simple-audio-card,codec {
- 	hdmi: hdmi@ff940000 {
- 		compatible = "rockchip,rk3399-dw-hdmi";
- 		reg = <0x0 0xff940000 0x0 0x20000>;
-+		reg-io-width = <4>;
- 		interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH 0>;
- 		clocks = <&cru PCLK_HDMI_CTRL>,
- 			 <&cru SCLK_HDMI_SFR>,
-@@ -1809,13 +1810,16 @@ hdmi: hdmi@ff940000 {
- 			 <&cru PLL_VPLL>;
- 		clock-names = "iahb", "isfr", "cec", "grf", "vpll";
- 		power-domains = <&power RK3399_PD_HDCP>;
--		reg-io-width = <4>;
- 		rockchip,grf = <&grf>;
- 		#sound-dai-cells = <0>;
- 		status = "disabled";
- 
- 		ports {
--			hdmi_in: port {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			hdmi_in: port@0 {
-+				reg = <0>;
- 				#address-cells = <1>;
- 				#size-cells = <0>;
- 
-@@ -1828,6 +1832,10 @@ hdmi_in_vopl: endpoint@1 {
- 					remote-endpoint = <&vopl_out_hdmi>;
- 				};
- 			};
-+
-+			hdmi_out: port@1 {
-+				reg = <1>;
-+			};
- 		};
- 	};
- 
+diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
+index 8ada7dc802d30..8f9bee0e21c3b 100644
+--- a/include/linux/sunrpc/sched.h
++++ b/include/linux/sunrpc/sched.h
+@@ -186,7 +186,7 @@ struct rpc_wait_queue {
+ 	unsigned char		maxpriority;		/* maximum priority (0 if queue is not a priority queue) */
+ 	unsigned char		priority;		/* current priority */
+ 	unsigned char		nr;			/* # tasks remaining for cookie */
+-	unsigned short		qlen;			/* total # tasks waiting in queue */
++	unsigned int		qlen;			/* total # tasks waiting in queue */
+ 	struct rpc_timer	timer_list;
+ #if IS_ENABLED(CONFIG_SUNRPC_DEBUG) || IS_ENABLED(CONFIG_TRACEPOINTS)
+ 	const char *		name;
 -- 
 2.43.0
 
