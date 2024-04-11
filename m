@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6458A0D00
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 11:59:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51F318A108A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 479142857E3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:59:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 078511F2C47A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1541145323;
-	Thu, 11 Apr 2024 09:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DCB14C5AF;
+	Thu, 11 Apr 2024 10:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B38yOfrN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKiQ8ANU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9BD13DDDD;
-	Thu, 11 Apr 2024 09:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D393114A08D;
+	Thu, 11 Apr 2024 10:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829548; cv=none; b=WeTQQcp5/j5tHI1Kku5xOfG758ND16+MpBFZQ/KqnAuOKyp9KAxWjniKglsMbxI75QTz/buncjPaJ8ZAM3iP95wzBAa+JeEp2nZy2H/pboa/As3q1Q/1GBbN/pbU47nXx58QYIldHBUSLbdq6rL7cHUi3mgcx4Jsd/zU2xn6++A=
+	t=1712831662; cv=none; b=Tm2WGErWLyDNg4UOsXUskADtT+7lyLp18Pl6tHn2GIuMQWD4WB/6MhX9ptb62pfiFOJjZgXkOOI+Tpfgxr1a9PTgmxch7vib4DeSnGT0P8DC3RP1SndxrR6MYE3M0W7YMERaxIt3IwahPq1uhSM6Iz0Wcx4pAmvSQ9W7fIVjsJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829548; c=relaxed/simple;
-	bh=1bOzYIPfAWrbXCy3VqWswpIj3dQLBY788atgK9EYLvI=;
+	s=arc-20240116; t=1712831662; c=relaxed/simple;
+	bh=YPcf2vH1IiajHkuu4Q7ykY9NESgiEYrKWHxX2n/v3tM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DeMNItTj0qsNd4F1jGdixsmyntybI+T2jm6sGjaK/BM4DpYwo47NCTJc4E37Wtb0XzQ68pNZclp6lRMTg4fh9EKUbYNigaA8tmW8X+E1jiRfm2TmTu7zGxKVGccW14CoDcbhggMuSbKZQscr2NtFXBv1jsg1w66zMZYg3CcVoHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B38yOfrN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A73C433C7;
-	Thu, 11 Apr 2024 09:59:08 +0000 (UTC)
+	 MIME-Version; b=A283FJKZ8djob11dUZwVwGWe06Wb2ZmG2gWCiw76sT7Q7mFTzWa1jy5hnXMl+bln5iWmR26PXTBOJB/sUJlkFOlsmFbySIKLQP0MYOKLhOAt1KNA3Z9ejvtuWUJjKP1b97u/gWGyo/x+qt2hMldJ/CQ4drdQN915uZOCXux/2Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKiQ8ANU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05624C433F1;
+	Thu, 11 Apr 2024 10:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829548;
-	bh=1bOzYIPfAWrbXCy3VqWswpIj3dQLBY788atgK9EYLvI=;
+	s=korg; t=1712831662;
+	bh=YPcf2vH1IiajHkuu4Q7ykY9NESgiEYrKWHxX2n/v3tM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B38yOfrNVDAB7ClcNBR3FSB1FM4SsVB8ev9tBL1lq+yBhSpJSqt/Qd7PK5UjBTgBW
-	 OnQrk6w59VAyajwVG/5Ba8hc1wp4RtflO7JUr84XD66TUPJ/Jl/rBekWHHeIxQ2mC0
-	 4KhXnC/eYJmnGaKFUZlq6VZjhR5+bve4cYJEeGJE=
+	b=fKiQ8ANUxoQt53zWjlICo+x0vhmbAU8/EA0n0rR9enb+JWG966W+wp+Wp21gNJLYd
+	 1Ys8e2BokEvw8HtK1P3I9TFLsw0b1rHoGHue0j5aU7veE0CcYvKu/0rWimNr9DBimQ
+	 Lk/rPwhyktBe2zpdA3ec/Mouc8IJKOYRuav+KXVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 024/175] ubi: correct the calculation of fastmap size
+Subject: [PATCH 5.10 084/294] kbuild: Move -Wenum-{compare-conditional,enum-conversion} into W=1
 Date: Thu, 11 Apr 2024 11:54:07 +0200
-Message-ID: <20240411095420.282837045@linuxfoundation.org>
+Message-ID: <20240411095438.214346564@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 7f174ae4f39e8475adcc09d26c5a43394689ad6c ]
+[ Upstream commit 75b5ab134bb5f657ef7979a59106dce0657e8d87 ]
 
-Now that the calculation of fastmap size in ubi_calc_fm_size() is
-incorrect since it miss each user volume's ubi_fm_eba structure and the
-Internal UBI volume info. Let's correct the calculation.
+Clang enables -Wenum-enum-conversion and -Wenum-compare-conditional
+under -Wenum-conversion. A recent change in Clang strengthened these
+warnings and they appear frequently in common builds, primarily due to
+several instances in common headers but there are quite a few drivers
+that have individual instances as well.
+
+  include/linux/vmstat.h:508:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+    508 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+        |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+    509 |                            item];
+        |                            ~~~~
+
+  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:955:24: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
+    955 |                 flags |= is_new_rate ? IWL_MAC_BEACON_CCK
+        |                                      ^ ~~~~~~~~~~~~~~~~~~
+    956 |                           : IWL_MAC_BEACON_CCK_V1;
+        |                             ~~~~~~~~~~~~~~~~~~~~~
+  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:1120:21: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
+   1120 |                                                0) > 10 ?
+        |                                                        ^
+   1121 |                         IWL_MAC_BEACON_FILS :
+        |                         ~~~~~~~~~~~~~~~~~~~
+   1122 |                         IWL_MAC_BEACON_FILS_V1;
+        |                         ~~~~~~~~~~~~~~~~~~~~~~
+
+Doing arithmetic between or returning two different types of enums could
+be a bug, so each of the instance of the warning needs to be evaluated.
+Unfortunately, as mentioned above, there are many instances of this
+warning in many different configurations, which can break the build when
+CONFIG_WERROR is enabled.
+
+To avoid introducing new instances of the warnings while cleaning up the
+disruption for the majority of users, disable these warnings for the
+default build while leaving them on for W=1 builds.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2002
+Link: https://github.com/llvm/llvm-project/commit/8c2ae42b3e1c6aa7c18f873edcebff7c0b45a37e
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/ubi/fastmap.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ scripts/Makefile.extrawarn | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
-index d45c1d6587d18..e24fc0131d794 100644
---- a/drivers/mtd/ubi/fastmap.c
-+++ b/drivers/mtd/ubi/fastmap.c
-@@ -95,9 +95,10 @@ size_t ubi_calc_fm_size(struct ubi_device *ubi)
- 		sizeof(struct ubi_fm_scan_pool) +
- 		sizeof(struct ubi_fm_scan_pool) +
- 		(ubi->peb_count * sizeof(struct ubi_fm_ec)) +
--		(sizeof(struct ubi_fm_eba) +
--		(ubi->peb_count * sizeof(__be32))) +
--		sizeof(struct ubi_fm_volhdr) * UBI_MAX_VOLUMES;
-+		((sizeof(struct ubi_fm_eba) +
-+		  sizeof(struct ubi_fm_volhdr)) *
-+		 (UBI_MAX_VOLUMES + UBI_INT_VOL_COUNT)) +
-+		(ubi->peb_count * sizeof(__be32));
- 	return roundup(size, ubi->leb_size);
- }
+diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
+index fe327a4532ddb..eb01e8d07e280 100644
+--- a/scripts/Makefile.extrawarn
++++ b/scripts/Makefile.extrawarn
+@@ -53,6 +53,8 @@ KBUILD_CFLAGS += $(call cc-disable-warning, pointer-to-enum-cast)
+ KBUILD_CFLAGS += -Wno-tautological-constant-out-of-range-compare
+ KBUILD_CFLAGS += $(call cc-disable-warning, unaligned-access)
+ KBUILD_CFLAGS += $(call cc-disable-warning, cast-function-type-strict)
++KBUILD_CFLAGS += -Wno-enum-compare-conditional
++KBUILD_CFLAGS += -Wno-enum-enum-conversion
+ endif
  
+ endif
 -- 
 2.43.0
 
