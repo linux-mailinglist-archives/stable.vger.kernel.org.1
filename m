@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 706158A10A9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D8258A0D22
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:00:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BB6D28ADFF
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03AE01F22EB8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:00:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8262F147C80;
-	Thu, 11 Apr 2024 10:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DE7145B05;
+	Thu, 11 Apr 2024 10:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siJ3+YcT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZVong+y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FB5657D3;
-	Thu, 11 Apr 2024 10:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726C2143C72;
+	Thu, 11 Apr 2024 10:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831756; cv=none; b=W0fb32oFA9U14L7KwsQGkdYozFQJKzRTSHBKY/eDRhfUvWz/hrEZppMl5jGn7PMKDsEOhyxq7PLt6nlxpUX2+NGXIMbukCLPn3m2j+jdw2y7Lle6BeDJPWyz9V9NKhd7iyIehvDt7+N4kStABqODPRtldQrV4k4sV/TDm2ZiaN4=
+	t=1712829640; cv=none; b=hBOf/1jQwcGS/pvmF9N6t7OBWFs4jC7VA/58g9uaQsXEU7swbxF3yo0x3ZPGT70qJeLI9DjAaDiX8fKtc4XQO3YYER/lqC8qncMSIR7vtBMgz8XGFq9i0Q0K8HAWUb1c5HGobSIfI9W9JY/JTtxr1BinntU5cgai81Qbo1qtCrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831756; c=relaxed/simple;
-	bh=qCRIUKWA/2xHmtyJPxf/4vnDpu4ja6SxPsGQId1av1A=;
+	s=arc-20240116; t=1712829640; c=relaxed/simple;
+	bh=aEkyDljDkWI8U8jDoMjXMeeMSbQbW3mRLqANM/A0zBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQvcn4gOIaHgJ+AJP4eCupv+y4ZpOugsvdvYVrrxIjrr77VpoYvSkP2m79EP2XKB9Nt8h4vjmz/pFHomUR9qD1CnERPRKb1lOA65d2/P34l6DWPpDQKD+dtysdH5suXb1X8CqNxShaNof7MvbJyCPlR9mvlb3mgew/vwK59gTyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siJ3+YcT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC86AC433C7;
-	Thu, 11 Apr 2024 10:35:55 +0000 (UTC)
+	 MIME-Version; b=uEzokgX5zzncW075ih4gP8zuQRu5q3pKBgFvRtUC4ukq9mMD0kg1lnu0nLDSMSPgiznpJkPOgNa1tVkeHfY5U02pMYEMAstiQ+rHU0etACcn6na3B6OKm+6yUWJi2mFLAHAwrlJgC5txd9/gnICN8TgQcSslJv1iyPbJy1c9ViY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZVong+y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EA2C433F1;
+	Thu, 11 Apr 2024 10:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831756;
-	bh=qCRIUKWA/2xHmtyJPxf/4vnDpu4ja6SxPsGQId1av1A=;
+	s=korg; t=1712829640;
+	bh=aEkyDljDkWI8U8jDoMjXMeeMSbQbW3mRLqANM/A0zBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=siJ3+YcTC1its6ekaLTaktPL8/5g7alF/hxmghnSTdOmxzuLA9Lv8uSM5eDQrOaz0
-	 IyODX5VO8dMAU3JN3V8PIrDF0ZQsxzYXXyRxLzQ2bv1R59JghJvNLkRRLIVd77Q64L
-	 +E6WsEeRuDab963Z62RFrHlMkYH+9lqOYSSVO+tY=
+	b=uZVong+y+51r6SBDwuSpVZVIoaeTsn9OSUiffnjWYA+QLdcAkfya0aly3J9h82+sU
+	 4H4+dCQ02+rXoFVfz1Rqnq1x3rxrADLRZy2MqN6eUaFWShCP6/DNwiFCvKZ/mV0EQw
+	 tNG/pOs35ra1m3E8IQ7MTuc+X2813PWS7pxOIzfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Hutchings <ben@decadent.org.uk>,
-	Salvatore Bonaccorso <carnil@debian.org>
-Subject: [PATCH 5.10 116/294] scripts: kernel-doc: Fix syntax error due to undeclared args variable
+	Sean Anderson <sean.anderson@seco.com>,
+	Camelia Groza <camelia.groza@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 056/175] soc: fsl: qbman: Add CGR update function
 Date: Thu, 11 Apr 2024 11:54:39 +0200
-Message-ID: <20240411095439.160585532@linuxfoundation.org>
+Message-ID: <20240411095421.253866128@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salvatore Bonaccorso <carnil@debian.org>
+From: Sean Anderson <sean.anderson@seco.com>
 
-The backport of commit 3080ea5553cc ("stddef: Introduce
-DECLARE_FLEX_ARRAY() helper") to 5.10.y (as a prerequisite of another
-fix) modified scripts/kernel-doc and introduced a syntax error:
+[ Upstream commit 914f8b228ede709274b8c80514b352248ec9da00 ]
 
-Global symbol "$args" requires explicit package name (did you forget to declare "my $args"?) at ./scripts/kernel-doc line 1236.
-Global symbol "$args" requires explicit package name (did you forget to declare "my $args"?) at ./scripts/kernel-doc line 1236.
-Execution of ./scripts/kernel-doc aborted due to compilation errors.
+This adds a function to update a CGR with new parameters. qman_create_cgr
+can almost be used for this (with flags=0), but it's not suitable because
+it also registers the callback function. The _safe variant was modeled off
+of qman_cgr_delete_safe. However, we handle multiple arguments and a return
+value.
 
-Note: The issue could be fixed in the 5.10.y series as well by
-backporting e86bdb24375a ("scripts: kernel-doc: reduce repeated regex
-expressions into variables") but just replacing the undeclared args back
-to ([^,)]+) was the most straightforward approach. The issue is specific
-to the backport to the 5.10.y series. Thus there is as well no upstream
-commit for this change.
-
-Fixes: 443b16ee3d9c ("stddef: Introduce DECLARE_FLEX_ARRAY() helper") # 5.10.y
-Reported-by: Ben Hutchings <ben@decadent.org.uk>
-Link: https://lore.kernel.org/regressions/ZeHKjjPGoyv_b2Tg@eldamar.lan/T/#u
-Link: https://bugs.debian.org/1064035
-Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+Acked-by: Camelia Groza <camelia.groza@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: fbec4e7fed89 ("soc: fsl: qbman: Use raw spinlock for cgr_lock")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kernel-doc |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/fsl/qbman/qman.c | 48 ++++++++++++++++++++++++++++++++++++
+ include/soc/fsl/qman.h       |  9 +++++++
+ 2 files changed, 57 insertions(+)
 
---- a/scripts/kernel-doc
-+++ b/scripts/kernel-doc
-@@ -1233,7 +1233,7 @@ sub dump_struct($$) {
- 	# replace DECLARE_KFIFO_PTR
- 	$members =~ s/DECLARE_KFIFO_PTR\s*\(([^,)]+),\s*([^,)]+)\)/$2 \*$1/gos;
- 	# replace DECLARE_FLEX_ARRAY
--	$members =~ s/(?:__)?DECLARE_FLEX_ARRAY\s*\($args,\s*$args\)/$1 $2\[\]/gos;
-+	$members =~ s/(?:__)?DECLARE_FLEX_ARRAY\s*\(([^,)]+),\s*([^,)]+)\)/$1 $2\[\]/gos;
- 	my $declaration = $members;
+diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
+index 24ca4bedcaa6e..4d0853ead7ddf 100644
+--- a/drivers/soc/fsl/qbman/qman.c
++++ b/drivers/soc/fsl/qbman/qman.c
+@@ -2474,6 +2474,54 @@ void qman_delete_cgr_safe(struct qman_cgr *cgr)
+ }
+ EXPORT_SYMBOL(qman_delete_cgr_safe);
  
- 	# Split nested struct/union elements as newer ones
++static int qman_update_cgr(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts)
++{
++	int ret;
++	unsigned long irqflags;
++	struct qman_portal *p = qman_cgr_get_affine_portal(cgr);
++
++	if (!p)
++		return -EINVAL;
++
++	spin_lock_irqsave(&p->cgr_lock, irqflags);
++	ret = qm_modify_cgr(cgr, 0, opts);
++	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
++	put_affine_portal();
++	return ret;
++}
++
++struct update_cgr_params {
++	struct qman_cgr *cgr;
++	struct qm_mcc_initcgr *opts;
++	int ret;
++};
++
++static void qman_update_cgr_smp_call(void *p)
++{
++	struct update_cgr_params *params = p;
++
++	params->ret = qman_update_cgr(params->cgr, params->opts);
++}
++
++int qman_update_cgr_safe(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts)
++{
++	struct update_cgr_params params = {
++		.cgr = cgr,
++		.opts = opts,
++	};
++
++	preempt_disable();
++	if (qman_cgr_cpus[cgr->cgrid] != smp_processor_id())
++		smp_call_function_single(qman_cgr_cpus[cgr->cgrid],
++					 qman_update_cgr_smp_call, &params,
++					 true);
++	else
++		params.ret = qman_update_cgr(cgr, opts);
++	preempt_enable();
++	return params.ret;
++}
++EXPORT_SYMBOL(qman_update_cgr_safe);
++
+ /* Cleanup FQs */
+ 
+ static int _qm_mr_consume_and_match_verb(struct qm_portal *p, int v)
+diff --git a/include/soc/fsl/qman.h b/include/soc/fsl/qman.h
+index 597783b8a3a07..b67f2e83bbef9 100644
+--- a/include/soc/fsl/qman.h
++++ b/include/soc/fsl/qman.h
+@@ -1159,6 +1159,15 @@ int qman_delete_cgr(struct qman_cgr *cgr);
+  */
+ void qman_delete_cgr_safe(struct qman_cgr *cgr);
+ 
++/**
++ * qman_update_cgr_safe - Modifies a congestion group object from any CPU
++ * @cgr: the 'cgr' object to modify
++ * @opts: state of the CGR settings
++ *
++ * This will select the proper CPU and modify the CGR settings.
++ */
++int qman_update_cgr_safe(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts);
++
+ /**
+  * qman_query_cgr_congested - Queries CGR's congestion status
+  * @cgr: the 'cgr' object to query
+-- 
+2.43.0
+
 
 
 
