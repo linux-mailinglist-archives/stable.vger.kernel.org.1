@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01A958A0FBC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:27:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A232B8A0F38
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 186791C2160A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DC09287038
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26D6F146A9D;
-	Thu, 11 Apr 2024 10:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD031465A6;
+	Thu, 11 Apr 2024 10:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBpmJo1K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejdEB9cn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9128146A93;
-	Thu, 11 Apr 2024 10:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A583514601D;
+	Thu, 11 Apr 2024 10:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831216; cv=none; b=O8YwUUcGpf/12T4VoKYzpdC7GlRQMulG4IyTz1DjrBwbsuYg8MHm53jUkICqNvJO1y4XVcgeC5Lf4JsEJBBdU8EycOY6vgJzmV0PwxYdEh2ZxW3W8hcpXYil/2cjaQnh37le64TEaZxbMzIB6jstT5F/Ljv7KUBKfAnajSLSJOc=
+	t=1712830924; cv=none; b=RNw+jbttB6IRXv9xrVphu1aNGXAodEaNh3fz0xlPx6tnS2nR+tEt8udwKyrh/foTdgN7hP0vMcF2pG4YGgoO7Dx4M1cBCnzfoiOy49tmcofOpwdDaIRd0bG8rtIm0Nqpa3jvsJiPW4iY1jDLAiyqa2Frmjnos7hgc4f9D1OCCFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831216; c=relaxed/simple;
-	bh=G8mywYZenmQV//bVhO1KfiSzQv/3Af6sXZTuBmZLOsQ=;
+	s=arc-20240116; t=1712830924; c=relaxed/simple;
+	bh=l3RDIezpCKjZQm9sHypHJnttBeGQ5Ju0WejjQZuc/yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ysre1eXwPdrpPcjHeUFr9bjNMxeH+TlvFYrmigjat0Bt2p8DHd6vTop+GLz0LoCtLGqhNw1ur4hG06Qo7meVINTGPKKtMDrL7v0fq9w1BysGvHsfNVp8R9K36exYmUmkFJ5D7M1f0m32ShEGjS7R2l53Rp/uzvTgw/lgdq2RPns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBpmJo1K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAF3C433F1;
-	Thu, 11 Apr 2024 10:26:56 +0000 (UTC)
+	 MIME-Version; b=bl1BKC/gJTRlSVPNVZCde0PPurEmj7v07UcsGp5BMSIf9hmLBBK/TpYDERq1e4pYqfIxjd/3yNx6PuxCPqAFymSFKVwVSSXDF2p6BTtdyGKm5aYRYUlIiUe/jRbsWu+7l8qOhbMmRkSgYtstP5j63xTKXjuN+PC7HudS/8IozJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejdEB9cn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E5BC433C7;
+	Thu, 11 Apr 2024 10:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831216;
-	bh=G8mywYZenmQV//bVhO1KfiSzQv/3Af6sXZTuBmZLOsQ=;
+	s=korg; t=1712830924;
+	bh=l3RDIezpCKjZQm9sHypHJnttBeGQ5Ju0WejjQZuc/yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBpmJo1K24XiD4hGNkarU0M9K9CqnrmUP7XAzviKXDSMV3/yu0W9Y5dL6bAGMh9oN
-	 0fy2Zg/e5kIDftOFzu+UpHzqEAUTMIDQDMBmHq+++e+9lqwU4Dxy3EijuYcEFW9N/6
-	 UYuk732YuueOacLCPdiAodO45kbKTtgZgIBSxKH0=
+	b=ejdEB9cnXVX1sI2iHLbB/P8ti0AMZBDFn9rUgRBO/XsmYoJ7sA3OXhLxs2vPvG/Mz
+	 rJB85UmIgzvMEUDY5UTXcvJWEZ+xUCVL81D8uNEnyLPApOih/sUZ6KwFjt5s+908HG
+	 Sg8CRK+jtOkirQgoUIwY/lt/V//DSQjYNQsFIPvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Stephen Lee <slee08177@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/114] Input: synaptics-rmi4 - fail probing if memory allocation for "phys" fails
+Subject: [PATCH 5.4 165/215] ASoC: ops: Fix wraparound for mask in snd_soc_get_volsw
 Date: Thu, 11 Apr 2024 11:56:14 +0200
-Message-ID: <20240411095418.302619727@linuxfoundation.org>
+Message-ID: <20240411095429.834699434@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Stephen Lee <slee08177@gmail.com>
 
-[ Upstream commit bc4996184d56cfaf56d3811ac2680c8a0e2af56e ]
+[ Upstream commit fc563aa900659a850e2ada4af26b9d7a3de6c591 ]
 
-While input core can work with input->phys set to NULL userspace might
-depend on it, so better fail probing if allocation fails. The system must
-be in a pretty bad shape for it to happen anyway.
+In snd_soc_info_volsw(), mask is generated by figuring out the index of
+the most significant bit set in max and converting the index to a
+bitmask through bit shift 1. Unintended wraparound occurs when max is an
+integer value with msb bit set. Since the bit shift value 1 is treated
+as an integer type, the left shift operation will wraparound and set
+mask to 0 instead of all 1's. In order to fix this, we type cast 1 as
+`1ULL` to prevent the wraparound.
 
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Link: https://lore.kernel.org/r/20240117073124.143636-1-chentao@kylinos.cn
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: 7077148fb50a ("ASoC: core: Split ops out of soc-core.c")
+Signed-off-by: Stephen Lee <slee08177@gmail.com>
+Link: https://msgid.link/r/20240326010131.6211-1-slee08177@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/rmi4/rmi_driver.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/soc/soc-ops.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
-index 258d5fe3d395c..aa32371f04af6 100644
---- a/drivers/input/rmi4/rmi_driver.c
-+++ b/drivers/input/rmi4/rmi_driver.c
-@@ -1196,7 +1196,11 @@ static int rmi_driver_probe(struct device *dev)
- 		}
- 		rmi_driver_set_input_params(rmi_dev, data->input);
- 		data->input->phys = devm_kasprintf(dev, GFP_KERNEL,
--						"%s/input0", dev_name(dev));
-+						   "%s/input0", dev_name(dev));
-+		if (!data->input->phys) {
-+			retval = -ENOMEM;
-+			goto err;
-+		}
- 	}
- 
- 	retval = rmi_init_functions(data);
+diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
+index e01f3bf3ef171..08ed973b2d975 100644
+--- a/sound/soc/soc-ops.c
++++ b/sound/soc/soc-ops.c
+@@ -252,7 +252,7 @@ int snd_soc_get_volsw(struct snd_kcontrol *kcontrol,
+ 	int max = mc->max;
+ 	int min = mc->min;
+ 	int sign_bit = mc->sign_bit;
+-	unsigned int mask = (1 << fls(max)) - 1;
++	unsigned int mask = (1ULL << fls(max)) - 1;
+ 	unsigned int invert = mc->invert;
+ 	int val;
+ 	int ret;
 -- 
 2.43.0
 
