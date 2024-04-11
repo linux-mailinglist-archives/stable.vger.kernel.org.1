@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-39075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B7A08A11D0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5142F8A1218
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:50:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BB981F21626
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E636F1F21A35
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D537146A95;
-	Thu, 11 Apr 2024 10:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0B0146D51;
+	Thu, 11 Apr 2024 10:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rk0uVjht"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvhX/PQI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3DA14600E;
-	Thu, 11 Apr 2024 10:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09471E48E;
+	Thu, 11 Apr 2024 10:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832442; cv=none; b=BKVGcnpDrls58ZMJBOTYotADFv5drUAqZXD9F9pWJZhAMCP+naEmDtWFNUr/AO2hBNI2aLm2eNFllkUzLVtqemKTkXBHvXZa4mZuUMvFp0iK+nUgy/OsW8/f3szkyDAnJe0mbWI5llH6yeaIs6nRo7Hd6LLYHcN5Dl/zQikQTjE=
+	t=1712832638; cv=none; b=Yz0RmTNJg7tqLo/gk9fGoBbK0B6BM2vYfr90fQAkCz+VEf3L/ARQPKvXHr8Jc06ZABMpdZ6XvClIQeJBcsQaArn1p/nNqFylueom+rdQUzxbF6LKGXDYd7mZKsOVDmmytV7gUeaSziGJ2xwij7X6k/KEvTH1tpX0l14TyPGltRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832442; c=relaxed/simple;
-	bh=l9KZbiRRhulvlJhTg/YbSR38kK4xFqDVYboyOjoQlA4=;
+	s=arc-20240116; t=1712832638; c=relaxed/simple;
+	bh=2J1Xqe9R+ILT4xPMaYs9T8w3yp+1uDJC3Pm/3lPg1mU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yzhqx0WRRwOubrjbhZHwSbQnBk1B3m/+CMy37NYQ2ItA24UVAq7+Ltoz7Bd8R32rk5ZDAdPnonmz1mMdjCbr5rkGzlakvtonqKemS6KV/Mydpmz7/yb+8ZuZfxqDQv1vmHUrdm3pTNNMxeJiHWR/Af1gkJ1WFFzk34zody2we0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rk0uVjht; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46844C43390;
-	Thu, 11 Apr 2024 10:47:22 +0000 (UTC)
+	 MIME-Version; b=ZKZzql1Z6Bk1R/iz17d2S3jjzVbYXr5BdjXuj5KGh5eEFsaLNVTUCvjE6Ks1c2HWAExbwTwIMZUN2hoq17NNwjrcOBTlk9qv5eCd23lSOQcmLronSJ5g4hUCNqECD03uCJZBADQUseTanC7wPStcBghE+6IMIObJ/X8qV698vLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvhX/PQI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFAAC433C7;
+	Thu, 11 Apr 2024 10:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832442;
-	bh=l9KZbiRRhulvlJhTg/YbSR38kK4xFqDVYboyOjoQlA4=;
+	s=korg; t=1712832638;
+	bh=2J1Xqe9R+ILT4xPMaYs9T8w3yp+1uDJC3Pm/3lPg1mU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rk0uVjht1Gh1JPJoT2tzjwC/GFSNYqim1cAhNsw24tdVHBERaCKoBcpoByqus9yyE
-	 z426oWwhRItIjHSUhgPT6PS5WmgJQln0V/sO3WhuGip6JdMGPohHe2g1Zn3JWi3j0z
-	 F57m2s4G5v9QTIKNYIUEgPh0dHf8F2ly6hFWS/8Q=
+	b=JvhX/PQIddKmBUtF89yCRnYcrOGbAEbh5i/zrXg8AUqcngu+4BwArTm/E+tcAxz78
+	 K+3mGMRhmMnn8dXc41jdYqX9XWWj0kxeymc1zzV5r2D48lzGZn42y8MlW4T0i8SmzF
+	 HLXTop+1Sscge4MgmycIvNqcgkSZrTL+xg1hna7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 51/83] Input: imagis - use FIELD_GET where applicable
+Subject: [PATCH 5.15 15/57] btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()
 Date: Thu, 11 Apr 2024 11:57:23 +0200
-Message-ID: <20240411095414.220318172@linuxfoundation.org>
+Message-ID: <20240411095408.456091492@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+References: <20240411095407.982258070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duje Mihanović <duje.mihanovic@skole.hr>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit c0ca3dbd03d66c6b9e044f48720e6ab5cef37ae5 ]
+[ Upstream commit 7411055db5ce64f836aaffd422396af0075fdc99 ]
 
-Instead of manually extracting certain bits from registers with binary
-ANDs and shifts, the FIELD_GET macro can be used. With this in mind, the
-*_SHIFT macros can be dropped.
+The unhandled case in btrfs_relocate_sys_chunks() loop is a corruption,
+as it could be caused only by two impossible conditions:
 
-Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
-Link: https://lore.kernel.org/r/20240306-b4-imagis-keys-v3-1-2c429afa8420@skole.hr
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+- at first the search key is set up to look for a chunk tree item, with
+  offset -1, this is an inexact search and the key->offset will contain
+  the correct offset upon a successful search, a valid chunk tree item
+  cannot have an offset -1
+
+- after first successful search, the found_key corresponds to a chunk
+  item, the offset is decremented by 1 before the next loop, it's
+  impossible to find a chunk item there due to alignment and size
+  constraints
+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/imagis.c | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ fs/btrfs/volumes.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/input/touchscreen/imagis.c b/drivers/input/touchscreen/imagis.c
-index b667914a44f1d..2636e1c9435d8 100644
---- a/drivers/input/touchscreen/imagis.c
-+++ b/drivers/input/touchscreen/imagis.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 1ce0fa487e5b2..36e77956c63fa 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -3358,7 +3358,17 @@ static int btrfs_relocate_sys_chunks(struct btrfs_fs_info *fs_info)
+ 			mutex_unlock(&fs_info->reclaim_bgs_lock);
+ 			goto error;
+ 		}
+-		BUG_ON(ret == 0); /* Corruption */
++		if (ret == 0) {
++			/*
++			 * On the first search we would find chunk tree with
++			 * offset -1, which is not possible. On subsequent
++			 * loops this would find an existing item on an invalid
++			 * offset (one less than the previous one, wrong
++			 * alignment and size).
++			 */
++			ret = -EUCLEAN;
++			goto error;
++		}
  
-+#include <linux/bitfield.h>
- #include <linux/bits.h>
- #include <linux/delay.h>
- #include <linux/i2c.h>
-@@ -23,12 +24,9 @@
- #define IST3038C_I2C_RETRY_COUNT	3
- #define IST3038C_MAX_FINGER_NUM		10
- #define IST3038C_X_MASK			GENMASK(23, 12)
--#define IST3038C_X_SHIFT		12
- #define IST3038C_Y_MASK			GENMASK(11, 0)
- #define IST3038C_AREA_MASK		GENMASK(27, 24)
--#define IST3038C_AREA_SHIFT		24
- #define IST3038C_FINGER_COUNT_MASK	GENMASK(15, 12)
--#define IST3038C_FINGER_COUNT_SHIFT	12
- #define IST3038C_FINGER_STATUS_MASK	GENMASK(9, 0)
- 
- struct imagis_ts {
-@@ -92,8 +90,7 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
- 		goto out;
- 	}
- 
--	finger_count = (intr_message & IST3038C_FINGER_COUNT_MASK) >>
--				IST3038C_FINGER_COUNT_SHIFT;
-+	finger_count = FIELD_GET(IST3038C_FINGER_COUNT_MASK, intr_message);
- 	if (finger_count > IST3038C_MAX_FINGER_NUM) {
- 		dev_err(&ts->client->dev,
- 			"finger count %d is more than maximum supported\n",
-@@ -101,7 +98,7 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
- 		goto out;
- 	}
- 
--	finger_pressed = intr_message & IST3038C_FINGER_STATUS_MASK;
-+	finger_pressed = FIELD_GET(IST3038C_FINGER_STATUS_MASK, intr_message);
- 
- 	for (i = 0; i < finger_count; i++) {
- 		error = imagis_i2c_read_reg(ts,
-@@ -118,12 +115,11 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
- 		input_mt_report_slot_state(ts->input_dev, MT_TOOL_FINGER,
- 					   finger_pressed & BIT(i));
- 		touchscreen_report_pos(ts->input_dev, &ts->prop,
--				       (finger_status & IST3038C_X_MASK) >>
--						IST3038C_X_SHIFT,
--				       finger_status & IST3038C_Y_MASK, 1);
-+				       FIELD_GET(IST3038C_X_MASK, finger_status),
-+				       FIELD_GET(IST3038C_Y_MASK, finger_status),
-+				       true);
- 		input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR,
--				 (finger_status & IST3038C_AREA_MASK) >>
--					IST3038C_AREA_SHIFT);
-+				 FIELD_GET(IST3038C_AREA_MASK, finger_status));
- 	}
- 
- 	input_mt_sync_frame(ts->input_dev);
+ 		ret = btrfs_previous_item(chunk_root, path, key.objectid,
+ 					  key.type);
 -- 
 2.43.0
 
