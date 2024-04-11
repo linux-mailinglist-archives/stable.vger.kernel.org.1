@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827438A0FE5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3418A1198
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C5F8283399
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 759E42875EC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41A914600E;
-	Thu, 11 Apr 2024 10:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30AD145B13;
+	Thu, 11 Apr 2024 10:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDzJWA+m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOKyYr6a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BB31D558;
-	Thu, 11 Apr 2024 10:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17FC6BB29;
+	Thu, 11 Apr 2024 10:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831319; cv=none; b=OFSO8Kg9n6Kfn2QnWZKsNZvDZljv9Row+8K5PON7z8TFUpxAzaoQFyPt5M5eMe+WSwmBpkh54nRVKssdiFsW/YY3wPg2qQyW2CEaVri6PBUwTvwPm6pRdxI7J2zIvpaNCmGVZZSF32/u6q0oNxJH/BppobrXCwA0eoDAiLiyfzU=
+	t=1712832342; cv=none; b=r3B6rBWmp4alWzETGWINjGpv+AqEwM7fXt8AuAGj8jXswAFMXpUgo7H8jPxB4LPIw+gDy9iE0yg3epjJjuSqiI/fOl+CAAQTr1o0boonWefmKaFpLwcOciQLuaV2BPF3l+HT+31Ar7l/jaVwuSmsmso/66AZg7WYgtsuu9vAMTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831319; c=relaxed/simple;
-	bh=WMAlojTW2OzsMKDxO7xFBgaqzadE9aYPUSCA+4g+dkg=;
+	s=arc-20240116; t=1712832342; c=relaxed/simple;
+	bh=zgr+sGQpD4vQs9Lqt3wFQfl7qlumGyGjAA2KC70zhjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tnb4ZoUaM007G+L7Oy9IHhnpvmgNE5DwJ0qdLplxkq6TYshVBQmlJIcbz/ADQW3/7qinb5PJD/OsLa1vjqp4JCDdYlTuvZwUWV1JWwM9VYTK2qmvVwG9LjqqcaM/yxkeb+zY8Gt43n0zYHrsrj4SbdhzJPxVQ/Z6wah/WjhocVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDzJWA+m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADD0C433F1;
-	Thu, 11 Apr 2024 10:28:38 +0000 (UTC)
+	 MIME-Version; b=o79Vh9qttdjLjTQHPlC88FllsJAaCkDK0pC/DuKkwRXphj1GA1ufJuf2wbq7FV1X1tDYEjDHcNpULkFdOK18v12Y6OvK9OzKRVPfvUz8Qf/5d9ZgLFHmp12jGC7T1QHsiLkkAcSwpEzUDeCKiY7ywLrd8TiycbZee4qBy5SCd9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOKyYr6a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20EF1C433F1;
+	Thu, 11 Apr 2024 10:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831319;
-	bh=WMAlojTW2OzsMKDxO7xFBgaqzadE9aYPUSCA+4g+dkg=;
+	s=korg; t=1712832342;
+	bh=zgr+sGQpD4vQs9Lqt3wFQfl7qlumGyGjAA2KC70zhjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xDzJWA+mDXephsdjOZnEmZjql0SN6cwZFP7qwUpXs5GXnFh2jQFb3tA1aZH1pgs1f
-	 Q/EKeaDN/Z7N9BUKCtQJGlGPv3+Yx/V2JWHRT4xbq68knIDIniikHDN1+ctXIcCJ+N
-	 N6C06YOImE0MPja0aa9W1D/5YJM/sniHofkrtwWI=
+	b=GOKyYr6aekiC/gh8Nocf5x0MyTKDReNEn6jRRry0q/f/4VtWMxj1/5eIfG5umkqge
+	 BtuwusadnlfcLpG0sjHTpt9cxJkLT+5bw5ggQNfN+BZs1SBpz301dcSwcENDxgb2Ih
+	 ptawHkIEku9UbgxQK1c185Kp5oSp6vJX3R12XcyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jichi Zhang <i@jichi.ca>,
-	Takashi Iwai <tiwai@suse.de>,
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/114] ALSA: hda/realtek: Add quirk for Lenovo Yoga 9 14IMH9
+Subject: [PATCH 6.1 17/83] tools/power x86_energy_perf_policy: Fix file leak in get_pkg_num()
 Date: Thu, 11 Apr 2024 11:56:49 +0200
-Message-ID: <20240411095419.364383816@linuxfoundation.org>
+Message-ID: <20240411095413.196865927@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jichi Zhang <i@jichi.ca>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-[ Upstream commit 9b714a59b719b1ba9382c092f0f7aa4bbe94eba1 ]
+[ Upstream commit f85450f134f0b4ca7e042dc3dc89155656a2299d ]
 
-The speakers on the Lenovo Yoga 9 14IMH9 are similar to previous generations
-such as the 14IAP7, and the bass speakers can be fixed using similar methods
-with one caveat: 14IMH9 uses CS35L41 amplifiers which need to be activated
-separately.
+In function get_pkg_num() if fopen_or_die() succeeds it returns a file
+pointer to be used. But fclose() is never called before returning from
+the function.
 
-Signed-off-by: Jichi Zhang <i@jichi.ca>
-Message-ID: <20240315081954.45470-3-i@jichi.ca>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index b1c2fb43cab69..b8e47761fb572 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7428,6 +7428,7 @@ enum {
- 	ALC287_FIXUP_LEGION_16ITHG6,
- 	ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK,
- 	ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN,
-+	ALC287_FIXUP_YOGA9_14IMH9_BASS_SPK_PIN,
- 	ALC295_FIXUP_DELL_INSPIRON_TOP_SPEAKERS,
- 	ALC236_FIXUP_DELL_DUAL_CODECS,
- 	ALC287_FIXUP_CS35L41_I2C_2_THINKPAD_ACPI,
-@@ -9552,6 +9553,12 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK,
- 	},
-+	[ALC287_FIXUP_YOGA9_14IMH9_BASS_SPK_PIN] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc287_fixup_yoga9_14iap7_bass_spk_pin,
-+		.chained = true,
-+		.chain_id = ALC287_FIXUP_CS35L41_I2C_2,
-+	},
- 	[ALC295_FIXUP_DELL_INSPIRON_TOP_SPEAKERS] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc295_fixup_dell_inspiron_top_speakers,
-@@ -10257,6 +10264,8 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x38c3, "Y980 DUAL", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x38cb, "Y790 YG DUAL", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x38cd, "Y790 VECO DUAL", ALC287_FIXUP_TAS2781_I2C),
-+	SND_PCI_QUIRK(0x17aa, 0x38d2, "Lenovo Yoga 9 14IMH9", ALC287_FIXUP_YOGA9_14IMH9_BASS_SPK_PIN),
-+	SND_PCI_QUIRK(0x17aa, 0x38d7, "Lenovo Yoga 9 14IMH9", ALC287_FIXUP_YOGA9_14IMH9_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x3902, "Lenovo E50-80", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
- 	SND_PCI_QUIRK(0x17aa, 0x3977, "IdeaPad S210", ALC283_FIXUP_INT_MIC),
- 	SND_PCI_QUIRK(0x17aa, 0x3978, "Lenovo B50-70", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
+diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+index 5fd9e594079cf..ebda9c366b2ba 100644
+--- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
++++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+@@ -1241,6 +1241,7 @@ unsigned int get_pkg_num(int cpu)
+ 	retval = fscanf(fp, "%d\n", &pkg);
+ 	if (retval != 1)
+ 		errx(1, "%s: failed to parse", pathname);
++	fclose(fp);
+ 	return pkg;
+ }
+ 
 -- 
 2.43.0
 
