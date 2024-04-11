@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-39043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C2C8A119B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 099228A0F73
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 721C0B264B0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AC79B21A78
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3ED145323;
-	Thu, 11 Apr 2024 10:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A08146A81;
+	Thu, 11 Apr 2024 10:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMVTb2QB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rngwmlw3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D32F6BB29;
-	Thu, 11 Apr 2024 10:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56538146A64;
+	Thu, 11 Apr 2024 10:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832348; cv=none; b=i1vyxwn5VyTumgxdisw6Q0Rsoj6HHVIKPWOiwhR9DfeZgvFwO2hOj5gUgiSniCjWqn+6dDb81EY/kHznUHUv6BoLifc3azEMU1xW5Gmjib/aqPziC5RiVarNs16AXWytmrfNbFtguK+1wAwzEGYvaWRIckqzh88AeY22fzVMYTU=
+	t=1712831034; cv=none; b=qZZfDeEC98pAzYo4FgajkI9SvsrYLYRTTsWYCLEaRa4rfKu64FNme/baFLjuQHIOu2Xna0UOVA7jCp/CfxZbvoNhtxu8Zi6yDkZlwxtMyTT667Q2YDsEYplU/WmguMGSKci4zJvjqb7IMRySSh7YtDRAYoj2nzYV9mzkUk8fHHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832348; c=relaxed/simple;
-	bh=ZqBize1qw6wZ2KoWFY8NjrgXdPR7g9kDWRIcRgozzfY=;
+	s=arc-20240116; t=1712831034; c=relaxed/simple;
+	bh=fSAXaUo0l0NsWcJ9YSBEb0i2CUN6pYDGVqlOAS6O+T8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KERoNBzKKUNv6o2jaQE4DSsWn8lmtYO2fcNdz5hCQXOSycpWZVc8K9DB5mAu7hV5RbUHDGdAfBi94iukYpud8VAOHq/v9P1AKHC/j06sCFvZVPYkX3JxcfRMCGKVyHZlZz8dPOm57YuC7zIXuAknLXC6dB9SU6FMfxgmamGqrWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMVTb2QB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BE0C433C7;
-	Thu, 11 Apr 2024 10:45:47 +0000 (UTC)
+	 MIME-Version; b=Uu0NOjWxSVjYXGVGQ0zAfmkgUGCbQI01vMuq6FZ9oZa7jzAN7ogGxxDaYWbyKD/6j8Ybm6LBlPXsBgdcMDRTbUFXU1+FIej5EtaR8ts/PotzpwAfskuh+xHc+ym5ofZBq86tK1XvmCjFP/zeC3D+bci6AqmG/vZTkvxoELMgWSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rngwmlw3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA32C433F1;
+	Thu, 11 Apr 2024 10:23:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832348;
-	bh=ZqBize1qw6wZ2KoWFY8NjrgXdPR7g9kDWRIcRgozzfY=;
+	s=korg; t=1712831034;
+	bh=fSAXaUo0l0NsWcJ9YSBEb0i2CUN6pYDGVqlOAS6O+T8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qMVTb2QB2YJadgoblBxR1KOfce3OH3b7M6atHfmKlIyQf8N3yEk+iF2lqy+KqJ9+m
-	 t0l+qnTHq7FxNue6kVmSnhBZtpkujsMFmWDzKvC9IKNjHYfUjrhPqDgaRZZ6/Zfl7V
-	 DpHqfNMK2BPlBc4Aoipw54UleXlmHeNawPqqWSa4=
+	b=rngwmlw3cCz+IDK8kgM13PfUWb3fudjrf7HjotCWz3oqSR1X12enDnz2F8SUW1GwK
+	 BnywMOcPjsdgahHmRhVv3saKNrkEA/e9NgLv7kf64WAtOpuZHbWsHDNIO9zOhcUQrD
+	 YVMQFncBweDb3OkCyzBbw5Mi5kSjxhswjDHYv3jQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 19/83] dma-direct: Leak pages on dma_set_decrypted() failure
+Subject: [PATCH 5.4 202/215] netfilter: nf_tables: release batch on table validation from abort path
 Date: Thu, 11 Apr 2024 11:56:51 +0200
-Message-ID: <20240411095413.257007667@linuxfoundation.org>
+Message-ID: <20240411095430.929370795@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit b9fa16949d18e06bdf728a560f5c8af56d2bdcaf ]
+commit a45e6889575c2067d3c0212b6bc1022891e65b91 upstream.
 
-On TDX it is possible for the untrusted host to cause
-set_memory_encrypted() or set_memory_decrypted() to fail such that an
-error is returned and the resulting memory is shared. Callers need to
-take care to handle these errors to avoid returning decrypted (shared)
-memory to the page allocator, which could lead to functional or security
-issues.
+Unlike early commit path stage which triggers a call to abort, an
+explicit release of the batch is required on abort, otherwise mutex is
+released and commit_list remains in place.
 
-DMA could free decrypted/shared pages if dma_set_decrypted() fails. This
-should be a rare case. Just leak the pages in this case instead of
-freeing them.
+Add WARN_ON_ONCE to ensure commit_list is empty from the abort path
+before releasing the mutex.
 
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+After this patch, commit_list is always assumed to be empty before
+grabbing the mutex, therefore
+
+  03c1f1ef1584 ("netfilter: Cleanup nft_net->module_list from nf_tables_exit_net()")
+
+only needs to release the pending modules for registration.
+
+Cc: stable@vger.kernel.org
+Fixes: c0391b6ab810 ("netfilter: nf_tables: missing validation from the abort path")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/direct.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/netfilter/nf_tables_api.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 63859a101ed83..d4215739efc71 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -296,7 +296,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
- 	} else {
- 		ret = page_address(page);
- 		if (dma_set_decrypted(dev, ret, size))
--			goto out_free_pages;
-+			goto out_leak_pages;
- 	}
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index f4821d64c2fd8..b719f3517caf1 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7564,10 +7564,11 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 	struct nftables_pernet *nft_net = net_generic(net, nf_tables_net_id);
+ 	struct nft_trans *trans, *next;
+ 	struct nft_trans_elem *te;
++	int err = 0;
  
- 	memset(ret, 0, size);
-@@ -317,6 +317,8 @@ void *dma_direct_alloc(struct device *dev, size_t size,
- out_free_pages:
- 	__dma_direct_free_pages(dev, page, size);
- 	return NULL;
-+out_leak_pages:
-+	return NULL;
+ 	if (action == NFNL_ABORT_VALIDATE &&
+ 	    nf_tables_validate(net) < 0)
+-		return -EAGAIN;
++		err = -EAGAIN;
+ 
+ 	list_for_each_entry_safe_reverse(trans, next, &nft_net->commit_list,
+ 					 list) {
+@@ -7700,7 +7701,7 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 	else
+ 		nf_tables_module_autoload_cleanup(net);
+ 
+-	return 0;
++	return err;
  }
  
- void dma_direct_free(struct device *dev, size_t size,
-@@ -379,12 +381,11 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
+ static int nf_tables_abort(struct net *net, struct sk_buff *skb,
+@@ -7714,6 +7715,8 @@ static int nf_tables_abort(struct net *net, struct sk_buff *skb,
+ 	ret = __nf_tables_abort(net, action);
+ 	nft_gc_seq_end(nft_net, gc_seq);
  
- 	ret = page_address(page);
- 	if (dma_set_decrypted(dev, ret, size))
--		goto out_free_pages;
-+		goto out_leak_pages;
- 	memset(ret, 0, size);
- 	*dma_handle = phys_to_dma_direct(dev, page_to_phys(page));
- 	return page;
--out_free_pages:
--	__dma_direct_free_pages(dev, page, size);
-+out_leak_pages:
- 	return NULL;
- }
++	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
++
+ 	mutex_unlock(&nft_net->commit_mutex);
  
+ 	return ret;
+@@ -8400,8 +8403,11 @@ static void __net_exit nf_tables_exit_net(struct net *net)
+ 
+ 	gc_seq = nft_gc_seq_begin(nft_net);
+ 
+-	if (!list_empty(&nft_net->commit_list))
+-		__nf_tables_abort(net, NFNL_ABORT_NONE);
++	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
++
++	if (!list_empty(&nft_net->module_list))
++		nf_tables_module_autoload_cleanup(net);
++
+ 	__nft_release_tables(net);
+ 
+ 	nft_gc_seq_end(nft_net, gc_seq);
 -- 
 2.43.0
 
