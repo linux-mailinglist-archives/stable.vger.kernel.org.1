@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-38126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D8258A0D22
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:00:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64D1C8A10AB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03AE01F22EB8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:00:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FCCB28AC0B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DE7145B05;
-	Thu, 11 Apr 2024 10:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CFBB147C7A;
+	Thu, 11 Apr 2024 10:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZVong+y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="miBNdCim"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726C2143C72;
-	Thu, 11 Apr 2024 10:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340CF657D3;
+	Thu, 11 Apr 2024 10:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829640; cv=none; b=hBOf/1jQwcGS/pvmF9N6t7OBWFs4jC7VA/58g9uaQsXEU7swbxF3yo0x3ZPGT70qJeLI9DjAaDiX8fKtc4XQO3YYER/lqC8qncMSIR7vtBMgz8XGFq9i0Q0K8HAWUb1c5HGobSIfI9W9JY/JTtxr1BinntU5cgai81Qbo1qtCrk=
+	t=1712831759; cv=none; b=YJyfCN70OG+8L8/+FA7uV/knyetBnNbI8axiEPHvI975GqGV4gnfh0oxpYfWmopJSmDTvMhV4Vs3IxdcE0hSWSoybh58t+59i790DreN5kM+iec5pmzXpHxgCFOo7rb0Tm4aZF+aCHd48DIXxgXoJkfgZrRrxAKKnk/p4jaceNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829640; c=relaxed/simple;
-	bh=aEkyDljDkWI8U8jDoMjXMeeMSbQbW3mRLqANM/A0zBM=;
+	s=arc-20240116; t=1712831759; c=relaxed/simple;
+	bh=Lr08ubfpIdpYJEmmwtzfffulzGva+VxSwDw0ANA97tM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uEzokgX5zzncW075ih4gP8zuQRu5q3pKBgFvRtUC4ukq9mMD0kg1lnu0nLDSMSPgiznpJkPOgNa1tVkeHfY5U02pMYEMAstiQ+rHU0etACcn6na3B6OKm+6yUWJi2mFLAHAwrlJgC5txd9/gnICN8TgQcSslJv1iyPbJy1c9ViY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZVong+y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EA2C433F1;
-	Thu, 11 Apr 2024 10:00:39 +0000 (UTC)
+	 MIME-Version; b=BVMrjsl0fYc9G7uvRuT2ogBteP1b0TnBRIhLNLPUj4E8sEJLG+oVzY1U79UE3mAfplxuyxyp5hN3spdMcESZmJR0Bo4EQNLuaIu0q10v9itCZppoJamZE80gkzCdYvu6xSmKxhzzLbbf3kxKjerudWpOBuET0J3lqCHdo2IZVtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=miBNdCim; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF977C433C7;
+	Thu, 11 Apr 2024 10:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829640;
-	bh=aEkyDljDkWI8U8jDoMjXMeeMSbQbW3mRLqANM/A0zBM=;
+	s=korg; t=1712831759;
+	bh=Lr08ubfpIdpYJEmmwtzfffulzGva+VxSwDw0ANA97tM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uZVong+y+51r6SBDwuSpVZVIoaeTsn9OSUiffnjWYA+QLdcAkfya0aly3J9h82+sU
-	 4H4+dCQ02+rXoFVfz1Rqnq1x3rxrADLRZy2MqN6eUaFWShCP6/DNwiFCvKZ/mV0EQw
-	 tNG/pOs35ra1m3E8IQ7MTuc+X2813PWS7pxOIzfg=
+	b=miBNdCim3fQYYtHx8gl0Xn9ivOeOm+QkZLYNwsbqHI15LSfgTftRbpl4+oV1roDRm
+	 CNs9IRK+JoIl+pIUJap4c3N/HVELghxtk4ibc7/wOraLh5yIhggJLoWyGnOUMeTejT
+	 8Q0Q1oynGbcjws1kgJFxhud9scvFsQ1jgBMEwZWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@seco.com>,
-	Camelia Groza <camelia.groza@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 056/175] soc: fsl: qbman: Add CGR update function
-Date: Thu, 11 Apr 2024 11:54:39 +0200
-Message-ID: <20240411095421.253866128@linuxfoundation.org>
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.10 117/294] comedi: comedi_test: Prevent timers rescheduling during deletion
+Date: Thu, 11 Apr 2024 11:54:40 +0200
+Message-ID: <20240411095439.190388684@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +60,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@seco.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 914f8b228ede709274b8c80514b352248ec9da00 ]
+commit f53641a6e849034a44bf80f50245a75d7a376025 upstream.
 
-This adds a function to update a CGR with new parameters. qman_create_cgr
-can almost be used for this (with flags=0), but it's not suitable because
-it also registers the callback function. The _safe variant was modeled off
-of qman_cgr_delete_safe. However, we handle multiple arguments and a return
-value.
+The comedi_test devices have a couple of timers (ai_timer and ao_timer)
+that can be started to simulate hardware interrupts.  Their expiry
+functions normally reschedule the timer.  The driver code calls either
+del_timer_sync() or del_timer() to delete the timers from the queue, but
+does not currently prevent the timers from rescheduling themselves so
+synchronized deletion may be ineffective.
 
-Signed-off-by: Sean Anderson <sean.anderson@seco.com>
-Acked-by: Camelia Groza <camelia.groza@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: fbec4e7fed89 ("soc: fsl: qbman: Use raw spinlock for cgr_lock")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add a couple of boolean members (one for each timer: ai_timer_enable and
+ao_timer_enable) to the device private data structure to indicate
+whether the timers are allowed to reschedule themselves.  Set the member
+to true when adding the timer to the queue, and to false when deleting
+the timer from the queue in the waveform_ai_cancel() and
+waveform_ao_cancel() functions.
+
+The del_timer_sync() function is also called from the waveform_detach()
+function, but the timer enable members will already be set to false when
+that function is called, so no change is needed there.
+
+Fixes: 403fe7f34e33 ("staging: comedi: comedi_test: fix timer race conditions")
+Cc: stable@vger.kernel.org # 4.4+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20240214100747.16203-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/fsl/qbman/qman.c | 48 ++++++++++++++++++++++++++++++++++++
- include/soc/fsl/qman.h       |  9 +++++++
- 2 files changed, 57 insertions(+)
+ drivers/staging/comedi/drivers/comedi_test.c |   30 +++++++++++++++++++++++----
+ 1 file changed, 26 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
-index 24ca4bedcaa6e..4d0853ead7ddf 100644
---- a/drivers/soc/fsl/qbman/qman.c
-+++ b/drivers/soc/fsl/qbman/qman.c
-@@ -2474,6 +2474,54 @@ void qman_delete_cgr_safe(struct qman_cgr *cgr)
+--- a/drivers/staging/comedi/drivers/comedi_test.c
++++ b/drivers/staging/comedi/drivers/comedi_test.c
+@@ -87,6 +87,8 @@ struct waveform_private {
+ 	struct comedi_device *dev;	/* parent comedi device */
+ 	u64 ao_last_scan_time;		/* time of previous AO scan in usec */
+ 	unsigned int ao_scan_period;	/* AO scan period in usec */
++	bool ai_timer_enable:1;		/* should AI timer be running? */
++	bool ao_timer_enable:1;		/* should AO timer be running? */
+ 	unsigned short ao_loopbacks[N_CHANS];
+ };
+ 
+@@ -236,8 +238,12 @@ static void waveform_ai_timer(struct tim
+ 			time_increment = devpriv->ai_convert_time - now;
+ 		else
+ 			time_increment = 1;
+-		mod_timer(&devpriv->ai_timer,
+-			  jiffies + usecs_to_jiffies(time_increment));
++		spin_lock(&dev->spinlock);
++		if (devpriv->ai_timer_enable) {
++			mod_timer(&devpriv->ai_timer,
++				  jiffies + usecs_to_jiffies(time_increment));
++		}
++		spin_unlock(&dev->spinlock);
+ 	}
+ 
+ overrun:
+@@ -393,9 +399,12 @@ static int waveform_ai_cmd(struct comedi
+ 	 * Seem to need an extra jiffy here, otherwise timer expires slightly
+ 	 * early!
+ 	 */
++	spin_lock_bh(&dev->spinlock);
++	devpriv->ai_timer_enable = true;
+ 	devpriv->ai_timer.expires =
+ 		jiffies + usecs_to_jiffies(devpriv->ai_convert_period) + 1;
+ 	add_timer(&devpriv->ai_timer);
++	spin_unlock_bh(&dev->spinlock);
+ 	return 0;
  }
- EXPORT_SYMBOL(qman_delete_cgr_safe);
  
-+static int qman_update_cgr(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts)
-+{
-+	int ret;
-+	unsigned long irqflags;
-+	struct qman_portal *p = qman_cgr_get_affine_portal(cgr);
-+
-+	if (!p)
-+		return -EINVAL;
-+
-+	spin_lock_irqsave(&p->cgr_lock, irqflags);
-+	ret = qm_modify_cgr(cgr, 0, opts);
-+	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
-+	put_affine_portal();
-+	return ret;
-+}
-+
-+struct update_cgr_params {
-+	struct qman_cgr *cgr;
-+	struct qm_mcc_initcgr *opts;
-+	int ret;
-+};
-+
-+static void qman_update_cgr_smp_call(void *p)
-+{
-+	struct update_cgr_params *params = p;
-+
-+	params->ret = qman_update_cgr(params->cgr, params->opts);
-+}
-+
-+int qman_update_cgr_safe(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts)
-+{
-+	struct update_cgr_params params = {
-+		.cgr = cgr,
-+		.opts = opts,
-+	};
-+
-+	preempt_disable();
-+	if (qman_cgr_cpus[cgr->cgrid] != smp_processor_id())
-+		smp_call_function_single(qman_cgr_cpus[cgr->cgrid],
-+					 qman_update_cgr_smp_call, &params,
-+					 true);
-+	else
-+		params.ret = qman_update_cgr(cgr, opts);
-+	preempt_enable();
-+	return params.ret;
-+}
-+EXPORT_SYMBOL(qman_update_cgr_safe);
-+
- /* Cleanup FQs */
+@@ -404,6 +413,9 @@ static int waveform_ai_cancel(struct com
+ {
+ 	struct waveform_private *devpriv = dev->private;
  
- static int _qm_mr_consume_and_match_verb(struct qm_portal *p, int v)
-diff --git a/include/soc/fsl/qman.h b/include/soc/fsl/qman.h
-index 597783b8a3a07..b67f2e83bbef9 100644
---- a/include/soc/fsl/qman.h
-+++ b/include/soc/fsl/qman.h
-@@ -1159,6 +1159,15 @@ int qman_delete_cgr(struct qman_cgr *cgr);
-  */
- void qman_delete_cgr_safe(struct qman_cgr *cgr);
++	spin_lock_bh(&dev->spinlock);
++	devpriv->ai_timer_enable = false;
++	spin_unlock_bh(&dev->spinlock);
+ 	if (in_softirq()) {
+ 		/* Assume we were called from the timer routine itself. */
+ 		del_timer(&devpriv->ai_timer);
+@@ -495,8 +507,12 @@ static void waveform_ao_timer(struct tim
+ 		unsigned int time_inc = devpriv->ao_last_scan_time +
+ 					devpriv->ao_scan_period - now;
  
-+/**
-+ * qman_update_cgr_safe - Modifies a congestion group object from any CPU
-+ * @cgr: the 'cgr' object to modify
-+ * @opts: state of the CGR settings
-+ *
-+ * This will select the proper CPU and modify the CGR settings.
-+ */
-+int qman_update_cgr_safe(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts);
-+
- /**
-  * qman_query_cgr_congested - Queries CGR's congestion status
-  * @cgr: the 'cgr' object to query
--- 
-2.43.0
-
+-		mod_timer(&devpriv->ao_timer,
+-			  jiffies + usecs_to_jiffies(time_inc));
++		spin_lock(&dev->spinlock);
++		if (devpriv->ao_timer_enable) {
++			mod_timer(&devpriv->ao_timer,
++				  jiffies + usecs_to_jiffies(time_inc));
++		}
++		spin_unlock(&dev->spinlock);
+ 	}
+ 
+ underrun:
+@@ -517,9 +533,12 @@ static int waveform_ao_inttrig_start(str
+ 	async->inttrig = NULL;
+ 
+ 	devpriv->ao_last_scan_time = ktime_to_us(ktime_get());
++	spin_lock_bh(&dev->spinlock);
++	devpriv->ao_timer_enable = true;
+ 	devpriv->ao_timer.expires =
+ 		jiffies + usecs_to_jiffies(devpriv->ao_scan_period);
+ 	add_timer(&devpriv->ao_timer);
++	spin_unlock_bh(&dev->spinlock);
+ 
+ 	return 1;
+ }
+@@ -604,6 +623,9 @@ static int waveform_ao_cancel(struct com
+ 	struct waveform_private *devpriv = dev->private;
+ 
+ 	s->async->inttrig = NULL;
++	spin_lock_bh(&dev->spinlock);
++	devpriv->ao_timer_enable = false;
++	spin_unlock_bh(&dev->spinlock);
+ 	if (in_softirq()) {
+ 		/* Assume we were called from the timer routine itself. */
+ 		del_timer(&devpriv->ao_timer);
 
 
 
