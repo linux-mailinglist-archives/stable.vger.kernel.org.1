@@ -1,55 +1,51 @@
-Return-Path: <stable+bounces-39174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81BF98A123D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:52:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 523208A123B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:52:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E1A3281CF3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:52:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E620281AA7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E72C13CF89;
-	Thu, 11 Apr 2024 10:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3EB013DDD6;
+	Thu, 11 Apr 2024 10:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDtJqCEa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tn17eIGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C07C2EAE5;
-	Thu, 11 Apr 2024 10:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704C22EAE5;
+	Thu, 11 Apr 2024 10:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832735; cv=none; b=Z0zU1Puw9keWdXBGn70y/K3zYkU+4lKAPC0nvIXfBMvnnnZF89grvCYFqoaudg1uQOVQQo6wKaed56TVvUQ533Ngi3v1dHRRwAGcajZ3myGyAP+r7Hlq0Mx508lzeA6H5+2csw+ZoG+xAqVTQtc+VY0W6cKWMXPx5/OXv/EDv00=
+	t=1712832729; cv=none; b=q+JC0NZ1A5puhs+hlTZNel0wZvq5D9tERVo/2zu+jLeURNzJpYyL3D0xYgfNvYOC5K3Yqn1zX70xJ/Adr516P1xs4XAdYd1nRdWWEL+bvvCINPhlbUDYSl16vcxYdkdK/z3Pm2YJGmcbMZBup+oaKz0Yf1C3Mp+NPHVnCh+IWH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832735; c=relaxed/simple;
-	bh=slbFyYG5k+Qoht7d1SnzhmWz9g/r/Z87ybQS03ddI/E=;
+	s=arc-20240116; t=1712832729; c=relaxed/simple;
+	bh=B7ogOxla0UhrcmBEIFXnMPeMuaO4OTkFqP3SLZSl+X4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G0cO4FuKLBjTC5FuoZSA+9FFfE4aXxKb4bPZje18QGxtNikEaqYhAQOXu6Nd3NI0O+oadDextEsDCiKihatpcrBNLk4HfroPBL/spev0G+pwfXLz3xPDX5KcqkpS0zS8t1fatvOlaYLnxrNGew47lNanPFkVULquevDh1gzOdw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDtJqCEa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C349EC433C7;
-	Thu, 11 Apr 2024 10:52:14 +0000 (UTC)
+	 MIME-Version; b=b/mk2vpVXLxO3+7mGMok8qAbW9TA1mSJoRIZw3BdhKj1nEqAsbXN1uPKFOgAa2QvkdPkBGderHW4ZO7sVs12Tt/XNi5aeCCxFDajFn7kFsP54EHBVnDaR3SxgxuFAfRVBl2g4NPWjA5uLSohD9qUw5jYOJgADTxiSwxuGPMTfu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tn17eIGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA799C433C7;
+	Thu, 11 Apr 2024 10:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832735;
-	bh=slbFyYG5k+Qoht7d1SnzhmWz9g/r/Z87ybQS03ddI/E=;
+	s=korg; t=1712832729;
+	bh=B7ogOxla0UhrcmBEIFXnMPeMuaO4OTkFqP3SLZSl+X4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QDtJqCEa2y1V3Vku9PScAMudjfrevczYDH5kvIT5vhYiRSYZV3xIsu5QvqEKR8+KK
-	 yep3V2wzL5FS5rEB+y+LrIuZP5V1tgXjmT+vlJ2DnvS4aePjc1iodovVUXzZAMNNxT
-	 jt8YTN9ClB3QuFpJuH8BIMaQCIiZ8MYqvEqVTUFM=
+	b=Tn17eIGxljdTd54hnv1ZHklVz1NmjxmIHk8yXSp7yvdkW9UpKvGfRs++qhA/1Xv7Y
+	 P39+FPBmohJa0HRm2n8IoLakFg5gF4EpUZEHxFqzS4xy5WE3dirRvTCWJtAr2RAfTd
+	 AQUmQsccvY53HnQyEBl2BvBhMpCJa3hb2YS+M3yk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gwendal Grignou <gwendal@chromium.org>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 55/57] platform/x86: intel-vbtn: Update tablet mode switch at end of probe
-Date: Thu, 11 Apr 2024 11:58:03 +0200
-Message-ID: <20240411095409.652329101@linuxfoundation.org>
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.15 56/57] Bluetooth: btintel: Fixe build regression
+Date: Thu, 11 Apr 2024 11:58:04 +0200
+Message-ID: <20240411095409.683518103@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
 References: <20240411095407.982258070@linuxfoundation.org>
@@ -62,85 +58,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gwendal Grignou <gwendal@chromium.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 434e5781d8cd2d0ed512d920c6cdeba4b33a2e81 ]
+commit 6e62ebfb49eb65bdcbfc5797db55e0ce7f79c3dd upstream.
 
-ACER Vivobook Flip (TP401NAS) virtual intel switch is implemented as
-follow:
+This fixes the following build regression:
 
-   Device (VGBI)
-   {
-       Name (_HID, EisaId ("INT33D6") ...
-       Name (VBDS, Zero)
-       Method (_STA, 0, Serialized)  // _STA: Status ...
-       Method (VBDL, 0, Serialized)
-       {
-           PB1E |= 0x20
-           VBDS |= 0x40
-       }
-       Method (VGBS, 0, Serialized)
-       {
-           Return (VBDS) /* \_SB_.PCI0.SBRG.EC0_.VGBI.VBDS */
-       }
-       ...
-    }
+drivers-bluetooth-btintel.c-btintel_read_version()-warn:
+passing-zero-to-PTR_ERR
 
-By default VBDS is set to 0. At boot it is set to clamshell (bit 6 set)
-only after method VBDL is executed.
-
-Since VBDL is now evaluated in the probe routine later, after the device
-is registered, the retrieved value of VBDS was still 0 ("tablet mode")
-when setting up the virtual switch.
-
-Make sure to evaluate VGBS after VBDL, to ensure the
-convertible boots in clamshell mode, the expected default.
-
-Fixes: 26173179fae1 ("platform/x86: intel-vbtn: Eval VBDL after registering our notifier")
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240329143206.2977734-3-gwendal@chromium.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b79e04091010 ("Bluetooth: btintel: Fix null ptr deref in btintel_read_version")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/vbtn.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btintel.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/vbtn.c b/drivers/platform/x86/intel/vbtn.c
-index 6fb3e597c57aa..4e9d3f25c35d0 100644
---- a/drivers/platform/x86/intel/vbtn.c
-+++ b/drivers/platform/x86/intel/vbtn.c
-@@ -136,8 +136,6 @@ static int intel_vbtn_input_setup(struct platform_device *device)
- 	priv->switches_dev->id.bustype = BUS_HOST;
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -405,13 +405,13 @@ int btintel_read_version(struct hci_dev
+ 	struct sk_buff *skb;
  
- 	if (priv->has_switches) {
--		detect_tablet_mode(&device->dev);
--
- 		ret = input_register_device(priv->switches_dev);
- 		if (ret)
- 			return ret;
-@@ -316,6 +314,9 @@ static int intel_vbtn_probe(struct platform_device *device)
- 		if (ACPI_FAILURE(status))
- 			dev_err(&device->dev, "Error VBDL failed with ACPI status %d\n", status);
+ 	skb = __hci_cmd_sync(hdev, 0xfc05, 0, NULL, HCI_CMD_TIMEOUT);
+-	if (IS_ERR_OR_NULL(skb)) {
++	if (IS_ERR(skb)) {
+ 		bt_dev_err(hdev, "Reading Intel version information failed (%ld)",
+ 			   PTR_ERR(skb));
+ 		return PTR_ERR(skb);
  	}
-+	// Check switches after buttons since VBDL may have side effects.
-+	if (has_switches)
-+		detect_tablet_mode(&device->dev);
  
- 	device_init_wakeup(&device->dev, true);
- 	/*
--- 
-2.43.0
-
+-	if (skb->len != sizeof(*ver)) {
++	if (!skb || skb->len != sizeof(*ver)) {
+ 		bt_dev_err(hdev, "Intel version event size mismatch");
+ 		kfree_skb(skb);
+ 		return -EILSEQ;
 
 
 
