@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99AE78A10BB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F9458A0EA9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:16:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 362F61F2A21D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08F16B23815
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2A0149DF1;
-	Thu, 11 Apr 2024 10:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885F114600A;
+	Thu, 11 Apr 2024 10:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THOQhq68"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euWAB7+N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2580F149C7F;
-	Thu, 11 Apr 2024 10:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F4E145B28;
+	Thu, 11 Apr 2024 10:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831803; cv=none; b=YGkEwCghVOPx6Aaw6wK2ZHTloKG0ZP0zY5VDLfwFK75QZIK3ASdaNiJpprXSrKE92Da/wD9/bEQAPnBcc9IWbOMQXQx4XC1+q/cl30K+MkRxD89qniC7YMbYjZ6MbQcKS0RcTpahCwnuDgpHiR8sL0vrLtVUQfdoXQZneAJTXl4=
+	t=1712830614; cv=none; b=aZuOb6zfhNBdsr6bRk0vHW5Usm1CuZkP/clhDOBSPWXmbNw+b7JRrh7rfMSqMKT2OVkIJaRYG4azeEOkebsTXxufq3NWjVbUjQNDS+7cdQL1/TWhkty3ArzuI9eL/NWDR1PfuT6o3KGL0bJSRjigqq2zLh/brr/GgjXBtLByc/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831803; c=relaxed/simple;
-	bh=LKXVCi6/COgxcFi3/vzW+5vClJtbgopADyjWuVsBDF8=;
+	s=arc-20240116; t=1712830614; c=relaxed/simple;
+	bh=AkmcYSZtnE5Nmo7ak5E6Rt5v4CISmp35ll9RglOLjRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dstHb9q96c4GsrPQGVFQitK7BNOEFX+yL7AFb3YWwrN//4atMsCtcK5+XTQPIj0NlXsiMCAPe8hGYbahCy6On0wH4N3e0vEuaslD2BXvc1OOjnmUaI/WgygTZqmDiuagKYfZMMDNJCH35HRsfDmTOg4jcSKiPNQlqN2I9ESb1FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THOQhq68; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E018C433C7;
-	Thu, 11 Apr 2024 10:36:42 +0000 (UTC)
+	 MIME-Version; b=qmq0hIVyU7WSi2noe1hx0yJzpOTcAhb9cnZIM42ECff5j5+YKBPige6VR3ekYoGibb892h9MkLZM/rB9UvmlC0hDCjdp0+0UBfiAGq8u7EbMBz04gWMMsKldZvqijeSYjGbmUj/zXrbBBLXsvOuRFSZ8DjuDXlktH2n3oNFHeRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euWAB7+N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD7DC433F1;
+	Thu, 11 Apr 2024 10:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831803;
-	bh=LKXVCi6/COgxcFi3/vzW+5vClJtbgopADyjWuVsBDF8=;
+	s=korg; t=1712830614;
+	bh=AkmcYSZtnE5Nmo7ak5E6Rt5v4CISmp35ll9RglOLjRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=THOQhq68aG5EJDh9SbDG8GdLQVq81btH2B/Fpf9W/s59oM+98vy+nhVaij6EKDoo4
-	 xXn/M9Y0DNWzHKu/mdf7nCIGAGSMrPPGsNC+Ecy7Rq9By4eBGhTFt9+eMDLNxCgcTq
-	 uMZ2qPc66AG2CCeOcJW3q/wwM8XeK8HuADntQ/Q0=
+	b=euWAB7+N2Qd4w/PAjHs5bBY1ROk4dLRUw9dhAa7zYhdInb7vn7b7pKgtvte7b0syH
+	 Y7JVX8OWLCzwGMdW3WGy1cZ9bUcx1iNz4eaRsK9a0Zc+jgvJZ3QyAgI8LrPRQlCcx6
+	 Ombxt6DGSn/jlvjf9Csmp1rORpt+84oxsg7q7vT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Stable@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 104/294] x86/CPU/AMD: Update the Zenbleed microcode revisions
+Subject: [PATCH 5.4 058/215] slimbus: core: Remove usage of the deprecated ida_simple_xx() API
 Date: Thu, 11 Apr 2024 11:54:27 +0200
-Message-ID: <20240411095438.804005380@linuxfoundation.org>
+Message-ID: <20240411095426.640944471@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 5c84b051bd4e777cf37aaff983277e58c99618d5 ]
+[ Upstream commit 89ffa4cccec54467446f141a79b9e36893079fb8 ]
 
-Update them to the correct revision numbers.
+ida_alloc() and ida_free() should be preferred to the deprecated
+ida_simple_get() and ida_simple_remove().
 
-Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Note that the upper limit of ida_simple_get() is exclusive, but the one of
+ida_alloc_range() is inclusive. So change this change allows one more
+device. Previously address 0xFE was never used.
+
+Fixes: 46a2bb5a7f7e ("slimbus: core: Add slim controllers support")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240224114137.85781-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/amd.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/slimbus/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index f29c6bed9d657..3b02cb8b05338 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1049,11 +1049,11 @@ static bool cpu_has_zenbleed_microcode(void)
- 	u32 good_rev = 0;
+diff --git a/drivers/slimbus/core.c b/drivers/slimbus/core.c
+index 130c798921b5d..e3f3ce6dc7e74 100644
+--- a/drivers/slimbus/core.c
++++ b/drivers/slimbus/core.c
+@@ -439,8 +439,8 @@ static int slim_device_alloc_laddr(struct slim_device *sbdev,
+ 		if (ret < 0)
+ 			goto err;
+ 	} else if (report_present) {
+-		ret = ida_simple_get(&ctrl->laddr_ida,
+-				     0, SLIM_LA_MANAGER - 1, GFP_KERNEL);
++		ret = ida_alloc_max(&ctrl->laddr_ida,
++				    SLIM_LA_MANAGER - 1, GFP_KERNEL);
+ 		if (ret < 0)
+ 			goto err;
  
- 	switch (boot_cpu_data.x86_model) {
--	case 0x30 ... 0x3f: good_rev = 0x0830107a; break;
--	case 0x60 ... 0x67: good_rev = 0x0860010b; break;
--	case 0x68 ... 0x6f: good_rev = 0x08608105; break;
--	case 0x70 ... 0x7f: good_rev = 0x08701032; break;
--	case 0xa0 ... 0xaf: good_rev = 0x08a00008; break;
-+	case 0x30 ... 0x3f: good_rev = 0x0830107b; break;
-+	case 0x60 ... 0x67: good_rev = 0x0860010c; break;
-+	case 0x68 ... 0x6f: good_rev = 0x08608107; break;
-+	case 0x70 ... 0x7f: good_rev = 0x08701033; break;
-+	case 0xa0 ... 0xaf: good_rev = 0x08a00009; break;
- 
- 	default:
- 		return false;
 -- 
 2.43.0
 
