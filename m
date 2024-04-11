@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 562A48A0F85
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF4DA8A11BB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:46:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B1471F27F3A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 318CFB23B93
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33957146A81;
-	Thu, 11 Apr 2024 10:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE8A146A8D;
+	Thu, 11 Apr 2024 10:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eyc3gPiZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQpRKGXY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59F714600E;
-	Thu, 11 Apr 2024 10:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC2A624;
+	Thu, 11 Apr 2024 10:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831079; cv=none; b=XrWBD+olkZdINvk0JnfKx/mJ1eVNCGAt1MnBYKvpZ+2a8pZAqXxB3DHUPr1cU0hXFuH21S4MbXGnuh2Tdd18a82Hu8JWhEAwbI9kRBr1+l5L2cVgoW1dQPr8wd5G/NPZDhvGVTr7WWp2DMLbgmFAkwO+vzvtU/sdmQouwljJz5o=
+	t=1712832407; cv=none; b=hpG5sQHiwInRuqTiBlHAfy09gP8p4asOwZpAlRSeCcrRv5WLUgA4Y4RKFcJxlsK8n+bWwh8k/inxoJrSU/pj/QCJPiN9fCZLhRy2+ZF7TRGPHWgHgE8Wbm0tVRbtmF9NpjpBgCAifOiXu2EVTTKPbYBgqoDOTbJR61RTtw+KnYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831079; c=relaxed/simple;
-	bh=fSqc5PZHJVXCxX98xwzsi5QrLE7JoUejIAcyIyVbrrk=;
+	s=arc-20240116; t=1712832407; c=relaxed/simple;
+	bh=6CAHplaGkG1lVaENfvyv+lPpw8mQbdaeCuAIy6mr/aY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K0Le8dEQT0qZ3IGh9jQFXo8xl4Jfuq0BSB2PI+cVnM06llfHgBwcLJkFOUQjELkFbE+EvM8mxH6g74UMVjjZICg0bD/KmaWKcrm7PprzPR/BAMHstRssrukioxdCH92RTT6BO3guzc5yLHV8TaozVe5+PPKQ8FTWIQHifO1wO1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eyc3gPiZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F6B3C43394;
-	Thu, 11 Apr 2024 10:24:38 +0000 (UTC)
+	 MIME-Version; b=RGXydSm+euEZWrcsEoCAbmlhiPcHgYZ0kUFOSEdNfJNbk9D+QzHRJ7cXx1w3U8N7soo5WhmmXMmf69ptlX/cqQp2ihlcFyVQeci3HQBJ9RB/zG33oDOn0JXIXENiLDwnMQqvol9Pz9RveFYei6XpWtieCgnCyadfgXZhuxKbhb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQpRKGXY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC54C43390;
+	Thu, 11 Apr 2024 10:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831078;
-	bh=fSqc5PZHJVXCxX98xwzsi5QrLE7JoUejIAcyIyVbrrk=;
+	s=korg; t=1712832407;
+	bh=6CAHplaGkG1lVaENfvyv+lPpw8mQbdaeCuAIy6mr/aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eyc3gPiZ8qaOGmBEKBoIHRKShQ7fz36Cw6TK9Vb0MxVKoS1WlAE2UGBYz82E6A/Ya
-	 /gISQLIhyhwIf47WcP/hP9v4sCTGT3jZ3yy/D2NHAC9m4dLf0EG7MREyAfFpnyhqHT
-	 6xnEQ+naqx05dyAZc7Bq9fuXvFlaa+kdoY8GqDlI=
+	b=JQpRKGXYhraN66+KaxVgbvjA8ry9RbpVCYLLXGMxtpbXrzOQu7MbIC37pDYFdf0mv
+	 CaJeLNeg5h3yM7wqZuVsVxKPAuQC6rIAgJXSzcyOqrMXA/N63QiTfspbX55NxWC4yA
+	 HMFn5v6en5cMG9Ts7ejUjBMvaSrslYeAflEHFv+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	Petr Mladek <pmladek@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 191/215] SUNRPC: increase size of rpc_wait_queue.qlen from unsigned short to unsigned int
+Subject: [PATCH 6.1 08/83] panic: Flush kernel log buffer at the end
 Date: Thu, 11 Apr 2024 11:56:40 +0200
-Message-ID: <20240411095430.604371983@linuxfoundation.org>
+Message-ID: <20240411095412.928088353@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: John Ogness <john.ogness@linutronix.de>
 
-[ Upstream commit 2c35f43b5a4b9cdfaa6fdd946f5a212615dac8eb ]
+[ Upstream commit d988d9a9b9d180bfd5c1d353b3b176cb90d6861b ]
 
-When the NFS client is under extreme load the rpc_wait_queue.qlen counter
-can be overflowed. Here is an instant of the backlog queue overflow in a
-real world environment shown by drgn helper:
+If the kernel crashes in a context where printk() calls always
+defer printing (such as in NMI or inside a printk_safe section)
+then the final panic messages will be deferred to irq_work. But
+if irq_work is not available, the messages will not get printed
+unless explicitly flushed. The result is that the final
+"end Kernel panic" banner does not get printed.
 
-rpc_task_stats(rpc_clnt):
--------------------------
-rpc_clnt: 0xffff92b65d2bae00
-rpc_xprt: 0xffff9275db64f000
-  Queue:  sending[64887] pending[524] backlog[30441] binding[0]
-XMIT task: 0xffff925c6b1d8e98
-     WRITE: 750654
-        __dta_call_status_580: 65463
-        __dta_call_transmit_status_579: 1
-        call_reserveresult: 685189
-        nfs_client_init_is_complete: 1
-    COMMIT: 584
-        call_reserveresult: 573
-        __dta_call_status_580: 11
-    ACCESS: 1
-        __dta_call_status_580: 1
-   GETATTR: 10
-        __dta_call_status_580: 4
-        call_reserveresult: 6
-751249 tasks for server 111.222.333.444
-Total tasks: 751249
+Add one final flush after the last printk() call to make sure
+the final panic messages make it out as well.
 
-count_rpc_wait_queues(xprt):
-----------------------------
-**** rpc_xprt: 0xffff9275db64f000 num_reqs: 65511
-wait_queue: xprt_binding[0] cnt: 0
-wait_queue: xprt_binding[1] cnt: 0
-wait_queue: xprt_binding[2] cnt: 0
-wait_queue: xprt_binding[3] cnt: 0
-rpc_wait_queue[xprt_binding].qlen: 0 maxpriority: 0
-wait_queue: xprt_sending[0] cnt: 0
-wait_queue: xprt_sending[1] cnt: 64887
-wait_queue: xprt_sending[2] cnt: 0
-wait_queue: xprt_sending[3] cnt: 0
-rpc_wait_queue[xprt_sending].qlen: 64887 maxpriority: 3
-wait_queue: xprt_pending[0] cnt: 524
-wait_queue: xprt_pending[1] cnt: 0
-wait_queue: xprt_pending[2] cnt: 0
-wait_queue: xprt_pending[3] cnt: 0
-rpc_wait_queue[xprt_pending].qlen: 524 maxpriority: 0
-wait_queue: xprt_backlog[0] cnt: 0
-wait_queue: xprt_backlog[1] cnt: 685801
-wait_queue: xprt_backlog[2] cnt: 0
-wait_queue: xprt_backlog[3] cnt: 0
-rpc_wait_queue[xprt_backlog].qlen: 30441 maxpriority: 3 [task cnt mismatch]
-
-There is no effect on operations when this overflow occurs. However
-it causes confusion when trying to diagnose the performance problem.
-
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20240207134103.1357162-14-john.ogness@linutronix.de
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/sched.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/panic.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
-index 5c37fabdec103..61de83be9cc27 100644
---- a/include/linux/sunrpc/sched.h
-+++ b/include/linux/sunrpc/sched.h
-@@ -196,7 +196,7 @@ struct rpc_wait_queue {
- 	unsigned char		maxpriority;		/* maximum priority (0 if queue is not a priority queue) */
- 	unsigned char		priority;		/* current priority */
- 	unsigned char		nr;			/* # tasks remaining for cookie */
--	unsigned short		qlen;			/* total # tasks waiting in queue */
-+	unsigned int		qlen;			/* total # tasks waiting in queue */
- 	struct rpc_timer	timer_list;
- #if IS_ENABLED(CONFIG_SUNRPC_DEBUG) || IS_ENABLED(CONFIG_TRACEPOINTS)
- 	const char *		name;
+diff --git a/kernel/panic.c b/kernel/panic.c
+index 63e94f3bd8dcd..e6c2bf04a32c0 100644
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -441,6 +441,14 @@ void panic(const char *fmt, ...)
+ 
+ 	/* Do not scroll important messages printed above */
+ 	suppress_printk = 1;
++
++	/*
++	 * The final messages may not have been printed if in a context that
++	 * defers printing (such as NMI) and irq_work is not available.
++	 * Explicitly flush the kernel log buffer one last time.
++	 */
++	console_flush_on_panic(CONSOLE_FLUSH_PENDING);
++
+ 	local_irq_enable();
+ 	for (i = 0; ; i += PANIC_TIMER_STEP) {
+ 		touch_softlockup_watchdog();
 -- 
 2.43.0
 
