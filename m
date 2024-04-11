@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A3A8A0DCF
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:08:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12CBE8A0D3A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:01:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 890481F2171B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:08:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93F44B24F86
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD73145B0A;
-	Thu, 11 Apr 2024 10:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0ED145B07;
+	Thu, 11 Apr 2024 10:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcHq/Kuv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKe6X+em"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12B5145B07;
-	Thu, 11 Apr 2024 10:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C192D2EAE5;
+	Thu, 11 Apr 2024 10:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830082; cv=none; b=jNv+F+SVx8GZGtTc77ANcyu/nz8u86Jqr6jgQk0ozRA4xCA9i5NV/us2kLbyi9FkxzVciIIo3lz4eR6Tfk8OyHyoDDjwmgVF+WQUzIMuo0T9KofHKHwLZtQ4lqGxMoWSPsGpLRf5rEBfWQ4v4otc9RhnN6IT8Z//X5QhipGN1t8=
+	t=1712829699; cv=none; b=HLHrqilQYQIxqYsfrrhcdtkKnLR7YT94ErHzbrO4eIm9HIjDBxt5S3m0Fa7863cNAOSF+tWJonkQ+ASYSlkQN+0PQJb8jZw7DhZuENplexU95QS+QCrKj1KC+9YF1But2SpzrgcvTtsthZZ0KK5OP1TeKZET41Gz13P8Eoj3zHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830082; c=relaxed/simple;
-	bh=jTJJlW2VilnMqez2ByoC4imH4qJd95H16MhYewezftg=;
+	s=arc-20240116; t=1712829699; c=relaxed/simple;
+	bh=1qNFMWSmYJzIOylFoOgrkPanPypVOZU9sK06mu44Au8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8qc/sjMWsJIOneWJqX2gHBdRqMysbWeVRViOLK3r9qw98gfGBI/mOxpTuAYes/QxfkjBbcI2JaV3GNOaEiTNyV00u+vzkBk3m/kqEKXj10Q5FCs7M8zTIwPc7rsdbdFz9iZEPfWLQbmUIrk2pFbUKkmwEQGQ21/L+4rS2gCKqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcHq/Kuv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D4BC433C7;
-	Thu, 11 Apr 2024 10:08:00 +0000 (UTC)
+	 MIME-Version; b=lusIFdq13fvyCpEnigrxeucawDnZznW5Dhr1YqzpIka+jNTpDY46sWFuJfZA23l0Wy+gmCJ/JPO7wzw2+A+c5WepSJU+/tjtUPNzYcN14n3Olewj7JqrGwmKYYH/zlI41K56zJ8pS3g/pv6dV1hhpnruO79VaS2LaGb6sF7FlD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKe6X+em; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE9FC433F1;
+	Thu, 11 Apr 2024 10:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830081;
-	bh=jTJJlW2VilnMqez2ByoC4imH4qJd95H16MhYewezftg=;
+	s=korg; t=1712829699;
+	bh=1qNFMWSmYJzIOylFoOgrkPanPypVOZU9sK06mu44Au8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gcHq/Kuv/0z+qagDpjjljpIy4+nzcsPUUvi4R443mu/+aOZmJqgCi4ccRubwm1s8r
-	 OOqYuV9YfLSSY/MDDoCmPOMRjWCX40ubz8pZDtkm0tgdARjbMh+2RRUVJBe9/VgnUr
-	 0o6X8nO5VtL1beSYJd7KqMcHOlRIT55mecXh9xFw=
+	b=uKe6X+emRaTR/n6acUpOc5/13r9ohHzs4fuounMuQx1DuheOSPl9CIJHH3VT8fchL
+	 9LPwjlNutLfc3rZfQPSTVg3gdIUz1pymykjneqB+7eYBjuBTUaWPdCcQ0H77OtieKO
+	 itIFJHmjHmfzP+4eT9GRt3gti4wvdKdi3T8gmnGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 029/143] ionic: set adminq irq affinity
+	Alan Stern <stern@rowland.harvard.edu>,
+	PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	syzbot+28748250ab47a8f04100@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 074/175] USB: usb-storage: Prevent divide-by-0 error in isd200_ata_command
 Date: Thu, 11 Apr 2024 11:54:57 +0200
-Message-ID: <20240411095421.789490490@linuxfoundation.org>
+Message-ID: <20240411095421.791249278@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit c699f35d658f3c21b69ed24e64b2ea26381e941d ]
+commit 014bcf41d946b36a8f0b8e9b5d9529efbb822f49 upstream.
 
-We claim to have the AdminQ on our irq0 and thus cpu id 0,
-but we need to be sure we set the affinity hint to try to
-keep it there.
+The isd200 sub-driver in usb-storage uses the HEADS and SECTORS values
+in the ATA ID information to calculate cylinder and head values when
+creating a CDB for READ or WRITE commands.  The calculation involves
+division and modulus operations, which will cause a crash if either of
+these values is 0.  While this never happens with a genuine device, it
+could happen with a flawed or subversive emulation, as reported by the
+syzbot fuzzer.
 
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Protect against this possibility by refusing to bind to the device if
+either the ATA_ID_HEADS or ATA_ID_SECTORS value in the device's ID
+information is 0.  This requires isd200_Initialization() to return a
+negative error code when initialization fails; currently it always
+returns 0 (even when there is an error).
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Reported-and-tested-by: syzbot+28748250ab47a8f04100@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-usb/0000000000003eb868061245ba7f@google.com/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Reviewed-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/b1e605ea-333f-4ac0-9511-da04f411763e@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/storage/isd200.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index fcb44ceeb6aa5..44d30115ded13 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -3391,9 +3391,12 @@ static int ionic_lif_adminq_init(struct ionic_lif *lif)
+--- a/drivers/usb/storage/isd200.c
++++ b/drivers/usb/storage/isd200.c
+@@ -1104,7 +1104,7 @@ static void isd200_dump_driveid(struct u
+ static int isd200_get_inquiry_data( struct us_data *us )
+ {
+ 	struct isd200_info *info = (struct isd200_info *)us->extra;
+-	int retStatus = ISD200_GOOD;
++	int retStatus;
+ 	u16 *id = info->id;
  
- 	napi_enable(&qcq->napi);
+ 	usb_stor_dbg(us, "Entering isd200_get_inquiry_data\n");
+@@ -1136,6 +1136,13 @@ static int isd200_get_inquiry_data( stru
+ 				isd200_fix_driveid(id);
+ 				isd200_dump_driveid(us, id);
  
--	if (qcq->flags & IONIC_QCQ_F_INTR)
-+	if (qcq->flags & IONIC_QCQ_F_INTR) {
-+		irq_set_affinity_hint(qcq->intr.vector,
-+				      &qcq->intr.affinity_mask);
- 		ionic_intr_mask(idev->intr_ctrl, qcq->intr.index,
- 				IONIC_INTR_MASK_CLEAR);
-+	}
++				/* Prevent division by 0 in isd200_scsi_to_ata() */
++				if (id[ATA_ID_HEADS] == 0 || id[ATA_ID_SECTORS] == 0) {
++					usb_stor_dbg(us, "   Invalid ATA Identify data\n");
++					retStatus = ISD200_ERROR;
++					goto Done;
++				}
++
+ 				memset(&info->InquiryData, 0, sizeof(info->InquiryData));
  
- 	qcq->flags |= IONIC_QCQ_F_INITED;
+ 				/* Standard IDE interface only supports disks */
+@@ -1201,6 +1208,7 @@ static int isd200_get_inquiry_data( stru
+ 		}
+ 	}
  
--- 
-2.43.0
-
++ Done:
+ 	usb_stor_dbg(us, "Leaving isd200_get_inquiry_data %08X\n", retStatus);
+ 
+ 	return(retStatus);
+@@ -1480,22 +1488,27 @@ static int isd200_init_info(struct us_da
+ 
+ static int isd200_Initialization(struct us_data *us)
+ {
++	int rc = 0;
++
+ 	usb_stor_dbg(us, "ISD200 Initialization...\n");
+ 
+ 	/* Initialize ISD200 info struct */
+ 
+-	if (isd200_init_info(us) == ISD200_ERROR) {
++	if (isd200_init_info(us) < 0) {
+ 		usb_stor_dbg(us, "ERROR Initializing ISD200 Info struct\n");
++		rc = -ENOMEM;
+ 	} else {
+ 		/* Get device specific data */
+ 
+-		if (isd200_get_inquiry_data(us) != ISD200_GOOD)
++		if (isd200_get_inquiry_data(us) != ISD200_GOOD) {
+ 			usb_stor_dbg(us, "ISD200 Initialization Failure\n");
+-		else
++			rc = -EINVAL;
++		} else {
+ 			usb_stor_dbg(us, "ISD200 Initialization complete\n");
++		}
+ 	}
+ 
+-	return 0;
++	return rc;
+ }
+ 
+ 
 
 
 
