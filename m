@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2818A0D57
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43B188A10DB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9041F1F2112B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEC621F2CEFF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17A5145FEF;
-	Thu, 11 Apr 2024 10:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B75148306;
+	Thu, 11 Apr 2024 10:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPzhM0/Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhD7fN/5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7091A14430D;
-	Thu, 11 Apr 2024 10:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2387A13D258;
+	Thu, 11 Apr 2024 10:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829773; cv=none; b=hpbo+pZVKGZ6GYlyz9hzV5nCk8v0EEX4U6/lIcsufyqESfe/5KtUAOEj5lHUZRshAxZJ6eD/7V0lJXJfYnh1nT9lYTCpLIP+E8V62hjmRxkedjE7vW512U+IqFqkroSoLfoWz/yjsre0d4mIYiOEW8Olom/oJZZQUvPa2waCDgo=
+	t=1712831889; cv=none; b=dcxyn/XKDw03HroYUu5rpAKCKTY1RYP/DtvgZHtUDsht7YqlKQBQ6gkhb5hiWcLH22/4Tuv7jc+Pjkh59iz0OPkZ7Pav/rA0StIHUpjir77QAi/kecEk6nxEshCcAxlgkErf5TwyRGJ7Q3UY/9v9v1VFDQzd4Lyio3mOPj9RXXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829773; c=relaxed/simple;
-	bh=3VL9t6ZcbetS3FoOqqJmEXwytXpsNAFYynqLMJ3fIAo=;
+	s=arc-20240116; t=1712831889; c=relaxed/simple;
+	bh=nzBttE9cylekrx9FiCXI6mEgrmsQE1UZe4nYKUwHlog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dASmfE47yQtOgbx0oUaCIYSUqANgTC1lskbF/bnkAU4Ls6HyaPJ04EtspXtq8fNz4AVUzIHKWJgc/jXPGrTUjW5qSksPltrJ3t7jEeu30M1U0oyw75sJrAkUgWLiEPIHqWDJwGy/VmP0peaqva1EM0egK4eRyD7+aE50Xvu2hCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPzhM0/Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A3BC43390;
-	Thu, 11 Apr 2024 10:02:52 +0000 (UTC)
+	 MIME-Version; b=NN7gFZyxzvRRRNgvPRO96wpjVW8JmLjhwqJouDbxNeYkX5nRcWFtf882Bv6CJaewb1RuxDvcXYRxoASl+uRWWGcmgd0cDwsWrasW8xCoWgXqwjNAlkOOVPautbzf8lSve184fry2/phuAcwjmvaOAs7VH9a3WFsnEJqAT3p34ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhD7fN/5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FEF1C433F1;
+	Thu, 11 Apr 2024 10:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829773;
-	bh=3VL9t6ZcbetS3FoOqqJmEXwytXpsNAFYynqLMJ3fIAo=;
+	s=korg; t=1712831889;
+	bh=nzBttE9cylekrx9FiCXI6mEgrmsQE1UZe4nYKUwHlog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MPzhM0/Qy3E16CTqgGAtEQ0RMcVqJauJY7KpRmANG+EZLUlLuyOeGXAUcQ+Jfpb7a
-	 kk8UuNAqbBdwBad0Vf/STiOtZv3TnnJaVfRDMM19HEDqALHQULd921cbWBy6ywntSU
-	 yxFp0feZYQQpchF5OJhSePEWuhkaBVrg4AG5SVas=
+	b=QhD7fN/5TqK4pGHL6R3gFvLkowz30MTPM7xfmaP7Wm/9ss4XOAta7Brv4FW4vVtw9
+	 4dO6NHl3SRQZ4AbfJhwB7fPYDZbkKPiK7sFm6vGvzzLJ2ShYPBEhf9IQ8VxfEw2nkM
+	 mojeMMWoTKc4BzhvF5Bw/3t3oQCc9j1FaQUVusFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhong Jinghua <zhongjinghua@huawei.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Genjian Zhang <zhanggenjian@kylinos.cn>
-Subject: [PATCH 4.19 100/175] loop: loop_set_status_from_info() check before assignment
-Date: Thu, 11 Apr 2024 11:55:23 +0200
-Message-ID: <20240411095422.580176781@linuxfoundation.org>
+	Claus Hansen Ries <chr@terma.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 161/294] net: ll_temac: platform_get_resource replaced by wrong function
+Date: Thu, 11 Apr 2024 11:55:24 +0200
+Message-ID: <20240411095440.491261058@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhong Jinghua <zhongjinghua@huawei.com>
+From: Claus Hansen Ries <chr@terma.com>
 
-[ Upstream commit 9f6ad5d533d1c71e51bdd06a5712c4fbc8768dfa ]
+commit 3a38a829c8bc27d78552c28e582eb1d885d07d11 upstream.
 
-In loop_set_status_from_info(), lo->lo_offset and lo->lo_sizelimit should
-be checked before reassignment, because if an overflow error occurs, the
-original correct value will be changed to the wrong value, and it will not
-be changed back.
+The function platform_get_resource was replaced with
+devm_platform_ioremap_resource_byname and is called using 0 as name.
 
-More, the original patch did not solve the problem, the value was set and
-ioctl returned an error, but the subsequent io used the value in the loop
-driver, which still caused an alarm:
+This eventually ends up in platform_get_resource_byname in the call
+stack, where it causes a null pointer in strcmp.
 
-loop_handle_cmd
- do_req_filebacked
-  loff_t pos = ((loff_t) blk_rq_pos(rq) << 9) + lo->lo_offset;
-  lo_rw_aio
-   cmd->iocb.ki_pos = pos
+	if (type == resource_type(r) && !strcmp(r->name, name))
 
-Fixes: c490a0b5a4f3 ("loop: Check for overflow while configuring loop")
-Signed-off-by: Zhong Jinghua <zhongjinghua@huawei.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Link: https://lore.kernel.org/r/20230221095027.3656193-1-zhongjinghua@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
+It should have been replaced with devm_platform_ioremap_resource.
+
+Fixes: bd69058f50d5 ("net: ll_temac: Use devm_platform_ioremap_resource_byname()")
+Signed-off-by: Claus Hansen Ries <chr@terma.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/cca18f9c630a41c18487729770b492bb@terma.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/loop.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/xilinx/ll_temac_main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -1269,13 +1269,13 @@ loop_set_status_from_info(struct loop_de
- 	if (err)
- 		return err;
+--- a/drivers/net/ethernet/xilinx/ll_temac_main.c
++++ b/drivers/net/ethernet/xilinx/ll_temac_main.c
+@@ -1427,7 +1427,7 @@ static int temac_probe(struct platform_d
+ 	}
  
-+	/* Avoid assigning overflow values */
-+	if (info->lo_offset > LLONG_MAX || info->lo_sizelimit > LLONG_MAX)
-+		return -EOVERFLOW;
-+
- 	lo->lo_offset = info->lo_offset;
- 	lo->lo_sizelimit = info->lo_sizelimit;
- 
--	/* loff_t vars have been assigned __u64 */
--	if (lo->lo_offset < 0 || lo->lo_sizelimit < 0)
--		return -EOVERFLOW;
--
- 	memcpy(lo->lo_file_name, info->lo_file_name, LO_NAME_SIZE);
- 	memcpy(lo->lo_crypt_name, info->lo_crypt_name, LO_NAME_SIZE);
- 	lo->lo_file_name[LO_NAME_SIZE-1] = 0;
+ 	/* map device registers */
+-	lp->regs = devm_platform_ioremap_resource_byname(pdev, 0);
++	lp->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(lp->regs)) {
+ 		dev_err(&pdev->dev, "could not map TEMAC registers\n");
+ 		return -ENOMEM;
 
 
 
