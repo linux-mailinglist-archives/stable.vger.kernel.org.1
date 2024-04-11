@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-38383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7676B8A0E50
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 408898A1115
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28AE01F247B7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 610C9B207C7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC67145B08;
-	Thu, 11 Apr 2024 10:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5A0149DE5;
+	Thu, 11 Apr 2024 10:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duKL7qDR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRpfyX4I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B38145B28;
-	Thu, 11 Apr 2024 10:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04E6149C73;
+	Thu, 11 Apr 2024 10:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830405; cv=none; b=DnLWzKAwe7kNNXaVBWBT1agV/8S28fEMHnHECv/NvnoEAWjHquqEerIVfietcaI2F7ggwiK5Cd1fCMtgi+jqGv+OapzpgOGh7nlnmwmEfNeaouwseJxNbaz3nJ3LDN4qZuDbUuwpGHb86aOECeUGqY+nuJ7fR+9O37jTprPQSKM=
+	t=1712832013; cv=none; b=H9wwHyMUg6gpNfwbCn8QdEcq4pdi3nwf0hbm7kHFXFBbLH64cxhINQYdmobNsHONE4P0SOYNRr/4EtUubvYt0S39udPziKF3pSQZf4HI+6keKiM66mlSIX0gBav5/pV3ILrK0DgKggxRYuEO1bBGA8aXN8q6UjE1kVltCPaed5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830405; c=relaxed/simple;
-	bh=7772yVhehGVAoMxO6XiKngiC9hADRJMTxEcn6ywEg+Q=;
+	s=arc-20240116; t=1712832013; c=relaxed/simple;
+	bh=4mtrmC276LbjlinWuqxnSAun59vQhhoTDNz+W274Bhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YMa5pwkheKyMmJnABRbDDN3ruRqKjLmTl+fsa+U0Urzk1nacRrkKyx3lNQP6DYqU56Nrp0+ZJVLRRSIShiP4Iacdrspl69yzJ+DkVJlq86bltSuds4MSbyqTFfVxqSPuHI1HgctKF/WcTTQDN1QNu8JEYDAB9QXByUoW1GZqwuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duKL7qDR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6EFC433F1;
-	Thu, 11 Apr 2024 10:13:23 +0000 (UTC)
+	 MIME-Version; b=jrTdyt6OQg/DCeubCHQI/njyMMMV7e8s3YaR44zBGU4MwKey7DeGJLC/xLJeHW36TwLmu7eedGwCF8sMtuYeURCq5m9KYMdH03tlKs2ubP/8F3AInHjrRL94re4HmHOv7hs3OB/BO92WtwpkvV1xLMYR2BBUSloxPvUmCKXSiSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRpfyX4I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07655C433C7;
+	Thu, 11 Apr 2024 10:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830404;
-	bh=7772yVhehGVAoMxO6XiKngiC9hADRJMTxEcn6ywEg+Q=;
+	s=korg; t=1712832013;
+	bh=4mtrmC276LbjlinWuqxnSAun59vQhhoTDNz+W274Bhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=duKL7qDRoKV58EOMeXBYU5uX0wIOl70CV00GG/jSsdDBKtmvfWQCBcxCvwU6cP+Rh
-	 uSVbFnK6UzRNjxLAXQiapXoELXer+PLlkQLRQxrCE5aEztbGH6cbkKWgPeEuCyCk20
-	 dnjf1Cv4MR5T0Hw2S3CRWzEJa2eXwfErjq4ez3t0=
+	b=ZRpfyX4IVIzmPx6hV6dy4cwT7HAcnV/dooUTrQT4PkvnheW1PkU9uQz1WmBqkmq47
+	 9Si8QWjn56LY0BDRrXp8DTfunBdAmZBYpcLVwwVMHTyYL/I7iNAUG5oYLyw1zPVwFS
+	 X+RQpjk4cdh8shfRs/+aAjxfjctEOzhIlIcpkWaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manjunath Patil <manjunath.b.patil@oracle.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 097/143] RDMA/cm: add timeout to cm_destroy_id wait
-Date: Thu, 11 Apr 2024 11:56:05 +0200
-Message-ID: <20240411095423.828437029@linuxfoundation.org>
+	Vlastimil Babka <vbabka@suse.cz>,
+	Sven van Ashbrook <svenva@chromium.org>,
+	Karthikeyan Ramasubramanian <kramasub@chromium.org>,
+	Brian Geffon <bgeffon@google.com>,
+	Curtis Malainey <cujomalainey@chromium.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Michal Hocko <mhocko@kernel.org>,
+	Takashi Iwai <tiwai@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 203/294] mm, vmscan: prevent infinite loop for costly GFP_NOIO | __GFP_RETRY_MAYFAIL allocations
+Date: Thu, 11 Apr 2024 11:56:06 +0200
+Message-ID: <20240411095441.715444677@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +69,193 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manjunath Patil <manjunath.b.patil@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-[ Upstream commit 96d9cbe2f2ff7abde021bac75eafaceabe9a51fa ]
+commit 803de9000f334b771afacb6ff3e78622916668b0 upstream.
 
-Add timeout to cm_destroy_id, so that userspace can trigger any data
-collection that would help in analyzing the cause of delay in destroying
-the cm_id.
+Sven reports an infinite loop in __alloc_pages_slowpath() for costly order
+__GFP_RETRY_MAYFAIL allocations that are also GFP_NOIO.  Such combination
+can happen in a suspend/resume context where a GFP_KERNEL allocation can
+have __GFP_IO masked out via gfp_allowed_mask.
 
-New noinline function helps dtrace/ebpf programs to hook on to it.
-Existing functionality isn't changed except triggering a probe-able new
-function at every timeout interval.
+Quoting Sven:
 
-We have seen cases where CM messages stuck with MAD layer (either due to
-software bug or faulty HCA), leading to cm_id getting stuck in the
-following call stack. This patch helps in resolving such issues faster.
+1. try to do a "costly" allocation (order > PAGE_ALLOC_COSTLY_ORDER)
+   with __GFP_RETRY_MAYFAIL set.
 
-kernel: ... INFO: task XXXX:56778 blocked for more than 120 seconds.
-...
-	Call Trace:
-	__schedule+0x2bc/0x895
-	schedule+0x36/0x7c
-	schedule_timeout+0x1f6/0x31f
- 	? __slab_free+0x19c/0x2ba
-	wait_for_completion+0x12b/0x18a
-	? wake_up_q+0x80/0x73
-	cm_destroy_id+0x345/0x610 [ib_cm]
-	ib_destroy_cm_id+0x10/0x20 [ib_cm]
-	rdma_destroy_id+0xa8/0x300 [rdma_cm]
-	ucma_destroy_id+0x13e/0x190 [rdma_ucm]
-	ucma_write+0xe0/0x160 [rdma_ucm]
-	__vfs_write+0x3a/0x16d
-	vfs_write+0xb2/0x1a1
-	? syscall_trace_enter+0x1ce/0x2b8
-	SyS_write+0x5c/0xd3
-	do_syscall_64+0x79/0x1b9
-	entry_SYSCALL_64_after_hwframe+0x16d/0x0
+2. page alloc's __alloc_pages_slowpath tries to get a page from the
+   freelist. This fails because there is nothing free of that costly
+   order.
 
-Signed-off-by: Manjunath Patil <manjunath.b.patil@oracle.com>
-Link: https://lore.kernel.org/r/20240309063323.458102-1-manjunath.b.patil@oracle.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+3. page alloc tries to reclaim by calling __alloc_pages_direct_reclaim,
+   which bails out because a zone is ready to be compacted; it pretends
+   to have made a single page of progress.
+
+4. page alloc tries to compact, but this always bails out early because
+   __GFP_IO is not set (it's not passed by the snd allocator, and even
+   if it were, we are suspending so the __GFP_IO flag would be cleared
+   anyway).
+
+5. page alloc believes reclaim progress was made (because of the
+   pretense in item 3) and so it checks whether it should retry
+   compaction. The compaction retry logic thinks it should try again,
+   because:
+    a) reclaim is needed because of the early bail-out in item 4
+    b) a zonelist is suitable for compaction
+
+6. goto 2. indefinite stall.
+
+(end quote)
+
+The immediate root cause is confusing the COMPACT_SKIPPED returned from
+__alloc_pages_direct_compact() (step 4) due to lack of __GFP_IO to be
+indicating a lack of order-0 pages, and in step 5 evaluating that in
+should_compact_retry() as a reason to retry, before incrementing and
+limiting the number of retries.  There are however other places that
+wrongly assume that compaction can happen while we lack __GFP_IO.
+
+To fix this, introduce gfp_compaction_allowed() to abstract the __GFP_IO
+evaluation and switch the open-coded test in try_to_compact_pages() to use
+it.
+
+Also use the new helper in:
+- compaction_ready(), which will make reclaim not bail out in step 3, so
+  there's at least one attempt to actually reclaim, even if chances are
+  small for a costly order
+- in_reclaim_compaction() which will make should_continue_reclaim()
+  return false and we don't over-reclaim unnecessarily
+- in __alloc_pages_slowpath() to set a local variable can_compact,
+  which is then used to avoid retrying reclaim/compaction for costly
+  allocations (step 5) if we can't compact and also to skip the early
+  compaction attempt that we do in some cases
+
+Link: https://lkml.kernel.org/r/20240221114357.13655-2-vbabka@suse.cz
+Fixes: 3250845d0526 ("Revert "mm, oom: prevent premature OOM killer invocation for high order request"")
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Reported-by: Sven van Ashbrook <svenva@chromium.org>
+Closes: https://lore.kernel.org/all/CAG-rBihs_xMKb3wrMO1%2B-%2Bp4fowP9oy1pa_OTkfxBzPUVOZF%2Bg@mail.gmail.com/
+Tested-by: Karthikeyan Ramasubramanian <kramasub@chromium.org>
+Cc: Brian Geffon <bgeffon@google.com>
+Cc: Curtis Malainey <cujomalainey@chromium.org>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/cm.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ include/linux/gfp.h |    9 +++++++++
+ mm/compaction.c     |    7 +------
+ mm/page_alloc.c     |   10 ++++++----
+ mm/vmscan.c         |    5 ++++-
+ 4 files changed, 20 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/infiniband/core/cm.c b/drivers/infiniband/core/cm.c
-index ff58058aeadca..bf0df6ee4f785 100644
---- a/drivers/infiniband/core/cm.c
-+++ b/drivers/infiniband/core/cm.c
-@@ -34,6 +34,7 @@ MODULE_AUTHOR("Sean Hefty");
- MODULE_DESCRIPTION("InfiniBand CM");
- MODULE_LICENSE("Dual BSD/GPL");
- 
-+#define CM_DESTROY_ID_WAIT_TIMEOUT 10000 /* msecs */
- static const char * const ibcm_rej_reason_strs[] = {
- 	[IB_CM_REJ_NO_QP]			= "no QP",
- 	[IB_CM_REJ_NO_EEC]			= "no EEC",
-@@ -1025,10 +1026,20 @@ static void cm_reset_to_idle(struct cm_id_private *cm_id_priv)
- 	}
+--- a/include/linux/gfp.h
++++ b/include/linux/gfp.h
+@@ -623,6 +623,15 @@ static inline bool pm_suspended_storage(
  }
+ #endif /* CONFIG_PM_SLEEP */
  
-+static noinline void cm_destroy_id_wait_timeout(struct ib_cm_id *cm_id)
++/*
++ * Check if the gfp flags allow compaction - GFP_NOIO is a really
++ * tricky context because the migration might require IO.
++ */
++static inline bool gfp_compaction_allowed(gfp_t gfp_mask)
 +{
-+	struct cm_id_private *cm_id_priv;
-+
-+	cm_id_priv = container_of(cm_id, struct cm_id_private, id);
-+	pr_err("%s: cm_id=%p timed out. state=%d refcnt=%d\n", __func__,
-+	       cm_id, cm_id->state, refcount_read(&cm_id_priv->refcount));
++	return IS_ENABLED(CONFIG_COMPACTION) && (gfp_mask & __GFP_IO);
 +}
 +
- static void cm_destroy_id(struct ib_cm_id *cm_id, int err)
+ #ifdef CONFIG_CONTIG_ALLOC
+ /* The below functions must be run on a range from a single zone. */
+ extern int alloc_contig_range(unsigned long start, unsigned long end,
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -2466,16 +2466,11 @@ enum compact_result try_to_compact_pages
+ 		unsigned int alloc_flags, const struct alloc_context *ac,
+ 		enum compact_priority prio, struct page **capture)
  {
- 	struct cm_id_private *cm_id_priv;
- 	struct cm_work *work;
-+	int ret;
+-	int may_perform_io = gfp_mask & __GFP_IO;
+ 	struct zoneref *z;
+ 	struct zone *zone;
+ 	enum compact_result rc = COMPACT_SKIPPED;
  
- 	cm_id_priv = container_of(cm_id, struct cm_id_private, id);
- 	spin_lock_irq(&cm_id_priv->lock);
-@@ -1135,7 +1146,14 @@ static void cm_destroy_id(struct ib_cm_id *cm_id, int err)
+-	/*
+-	 * Check if the GFP flags allow compaction - GFP_NOIO is really
+-	 * tricky context because the migration might require IO
+-	 */
+-	if (!may_perform_io)
++	if (!gfp_compaction_allowed(gfp_mask))
+ 		return COMPACT_SKIPPED;
  
- 	xa_erase(&cm.local_id_table, cm_local_id(cm_id->local_id));
- 	cm_deref_id(cm_id_priv);
--	wait_for_completion(&cm_id_priv->comp);
-+	do {
-+		ret = wait_for_completion_timeout(&cm_id_priv->comp,
-+						  msecs_to_jiffies(
-+						  CM_DESTROY_ID_WAIT_TIMEOUT));
-+		if (!ret) /* timeout happened */
-+			cm_destroy_id_wait_timeout(cm_id);
-+	} while (!ret);
+ 	trace_mm_compaction_try_to_compact_pages(order, gfp_mask, prio);
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4644,6 +4644,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, u
+ 						struct alloc_context *ac)
+ {
+ 	bool can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
++	bool can_compact = gfp_compaction_allowed(gfp_mask);
+ 	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
+ 	struct page *page = NULL;
+ 	unsigned int alloc_flags;
+@@ -4709,7 +4710,7 @@ restart:
+ 	 * Don't try this for allocations that are allowed to ignore
+ 	 * watermarks, as the ALLOC_NO_WATERMARKS attempt didn't yet happen.
+ 	 */
+-	if (can_direct_reclaim &&
++	if (can_direct_reclaim && can_compact &&
+ 			(costly_order ||
+ 			   (order > 0 && ac->migratetype != MIGRATE_MOVABLE))
+ 			&& !gfp_pfmemalloc_allowed(gfp_mask)) {
+@@ -4806,9 +4807,10 @@ retry:
+ 
+ 	/*
+ 	 * Do not retry costly high order allocations unless they are
+-	 * __GFP_RETRY_MAYFAIL
++	 * __GFP_RETRY_MAYFAIL and we can compact
+ 	 */
+-	if (costly_order && !(gfp_mask & __GFP_RETRY_MAYFAIL))
++	if (costly_order && (!can_compact ||
++			     !(gfp_mask & __GFP_RETRY_MAYFAIL)))
+ 		goto nopage;
+ 
+ 	if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
+@@ -4821,7 +4823,7 @@ retry:
+ 	 * implementation of the compaction depends on the sufficient amount
+ 	 * of free memory (see __compaction_suitable)
+ 	 */
+-	if (did_some_progress > 0 &&
++	if (did_some_progress > 0 && can_compact &&
+ 			should_compact_retry(ac, order, alloc_flags,
+ 				compact_result, &compact_priority,
+ 				&compaction_retries))
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -2546,7 +2546,7 @@ static void shrink_lruvec(struct lruvec
+ /* Use reclaim/compaction for costly allocs or under memory pressure */
+ static bool in_reclaim_compaction(struct scan_control *sc)
+ {
+-	if (IS_ENABLED(CONFIG_COMPACTION) && sc->order &&
++	if (gfp_compaction_allowed(sc->gfp_mask) && sc->order &&
+ 			(sc->order > PAGE_ALLOC_COSTLY_ORDER ||
+ 			 sc->priority < DEF_PRIORITY - 2))
+ 		return true;
+@@ -2873,6 +2873,9 @@ static inline bool compaction_ready(stru
+ 	unsigned long watermark;
+ 	enum compact_result suitable;
+ 
++	if (!gfp_compaction_allowed(sc->gfp_mask))
++		return false;
 +
- 	while ((work = cm_dequeue_work(cm_id_priv)) != NULL)
- 		cm_free_work(work);
- 
--- 
-2.43.0
-
+ 	suitable = compaction_suitable(zone, sc->order, 0, sc->reclaim_idx);
+ 	if (suitable == COMPACT_SUCCESS)
+ 		/* Allocation should succeed already. Don't reclaim. */
 
 
 
