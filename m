@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A2A8A0E79
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:15:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9AF08A10A2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3FCE1C22084
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:15:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3511EB25206
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D99D14600E;
-	Thu, 11 Apr 2024 10:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D345146A93;
+	Thu, 11 Apr 2024 10:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zmEJG/c8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAXGkii4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8981448EF;
-	Thu, 11 Apr 2024 10:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C64E140E3C;
+	Thu, 11 Apr 2024 10:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830496; cv=none; b=unbkPihi9xvqFWk4zvyyNCMcLwfo5GP4jjmyo+x1pN1wIhWRCKt4dDGEz65z+5Wd4iHlY7+E4oYuLo2piTG9Fgg/U7R0LlBkp5JqXa01dkDigZHn6tbW8gkReIGAsSROzyHEwJBSClrbHptxYwnqRxZIWSADmtOuQWlxwmhOWUU=
+	t=1712831724; cv=none; b=WrjnlIjuYZ8PyzdBBDU64HUVUPkvBYAq7egNdI/NdTVVJpceF9uYB7JUYaPwScAbtN3riExaEHTchN1nMKX86Ni6ir+ZbuSJXpgk6Dy8l+jD6V4OjIPd+nuCwTyXVJofia6jY8D6s64rkpddC+byh0vTOfIjxrjjTVTdcqjsqnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830496; c=relaxed/simple;
-	bh=WcLYLL14vt0U1+7Hu7z32w+iVdlZqtHZfI7YkIQwCTE=;
+	s=arc-20240116; t=1712831724; c=relaxed/simple;
+	bh=Qjo2Kwd7SjclfXISnwG0Nu5DD566RlvnRykFTPIWcxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L0U9s+BRCd8HQBu2V9gPY8ySC7TGwQWKYLw2bYYViYBN0KigA7Y8EoEnUulMQ1CysefVjbSbl3vEcJynozdisvE9tjK5lZWq9X6j6B76YXW2yeTVQzNoKNRV6l+veicy/Q2iUJWrHi3IEdv9AnsBp6nhpqRlTvPVsGcqkETJ49c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zmEJG/c8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF0BBC433F1;
-	Thu, 11 Apr 2024 10:14:55 +0000 (UTC)
+	 MIME-Version; b=JrqMAWdUE9GRPrmRDNsBiV6Ap0l2sZxPXXNidNhFhMo9WUsnyQv1mIM3BGjx3WYTDVxxzGiLNZUsz84QsO37Ep1oyr1gdc7iOqEdViyxhkCRa2dVUzY3zg3Tsg4VUiK+ScrAJ4RZCis3RRKEm+SxZZudTYZhQdZFwZlRCpsThNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAXGkii4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3927C433C7;
+	Thu, 11 Apr 2024 10:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830496;
-	bh=WcLYLL14vt0U1+7Hu7z32w+iVdlZqtHZfI7YkIQwCTE=;
+	s=korg; t=1712831724;
+	bh=Qjo2Kwd7SjclfXISnwG0Nu5DD566RlvnRykFTPIWcxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zmEJG/c8CEYoBK10wv6i1Xd3i1JQf2p5GohKLUS/FS/W4KK2eKl39O+o8bzZ0Nv7h
-	 56xYZ6mtmorhPbnIXjSifvMy6OUyci7VHD2coakExLP0MmfnjeKZaq6hQLb86KcYSD
-	 GW9q3V56Nm5UU2ifNqreVEifQ9OYsX1yw5+8jbO4=
+	b=IAXGkii4I3yjJtab6LLq522Xn2ICwEBxSH1UtPmiZowQ65yxzwQsvB5TGU3ObvGsg
+	 X4OzpJzaHB6vOwNb7GMDXRoGdcrLN5PkoongRM9aUv05I5fGO3nU063KV2Os2iaTrf
+	 rQTCzKi3OVOHQOog/OkNmVXc7FxkIJHwkczlZaDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Dan Moulding <dan@danm.net>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 021/215] selftests/mqueue: Set timeout to 180 seconds
+Subject: [PATCH 5.10 067/294] Revert "Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d""
 Date: Thu, 11 Apr 2024 11:53:50 +0200
-Message-ID: <20240411095425.521368835@linuxfoundation.org>
+Message-ID: <20240411095437.704925128@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Song Liu <song@kernel.org>
 
-[ Upstream commit 85506aca2eb4ea41223c91c5fe25125953c19b13 ]
+[ Upstream commit 3445139e3a594be77eff48bc17eff67cf983daed ]
 
-While mq_perf_tests runs with the default kselftest timeout limit, which
-is 45 seconds, the test takes about 60 seconds to complete on i3.metal
-AWS instances.  Hence, the test always times out.  Increase the timeout
-to 180 seconds.
+This reverts commit bed9e27baf52a09b7ba2a3714f1e24e17ced386d.
 
-Fixes: 852c8cbf34d3 ("selftests/kselftest/runner.sh: Add 45 second timeout per test")
-Cc: <stable@vger.kernel.org> # 5.4.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+The original set [1][2] was expected to undo a suboptimal fix in [2], and
+replace it with a better fix [1]. However, as reported by Dan Moulding [2]
+causes an issue with raid5 with journal device.
+
+Revert [2] for now to close the issue. We will follow up on another issue
+reported by Juxiao Bi, as [2] is expected to fix it. We believe this is a
+good trade-off, because the latter issue happens less freqently.
+
+In the meanwhile, we will NOT revert [1], as it contains the right logic.
+
+[1] commit d6e035aad6c0 ("md: bypass block throttle for superblock update")
+[2] commit bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
+
+Reported-by: Dan Moulding <dan@danm.net>
+Closes: https://lore.kernel.org/linux-raid/20240123005700.9302-1-dan@danm.net/
+Fixes: bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
+Cc: stable@vger.kernel.org # v5.19+
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240125082131.788600-1-song@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mqueue/setting | 1 +
- 1 file changed, 1 insertion(+)
- create mode 100644 tools/testing/selftests/mqueue/setting
+ drivers/md/raid5.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/tools/testing/selftests/mqueue/setting b/tools/testing/selftests/mqueue/setting
-new file mode 100644
-index 0000000000000..a953c96aa16e1
---- /dev/null
-+++ b/tools/testing/selftests/mqueue/setting
-@@ -0,0 +1 @@
-+timeout=180
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index 00995e60d46b1..9f114b9d8dc6b 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -36,6 +36,7 @@
+  */
+ 
+ #include <linux/blkdev.h>
++#include <linux/delay.h>
+ #include <linux/kthread.h>
+ #include <linux/raid/pq.h>
+ #include <linux/async_tx.h>
+@@ -6519,7 +6520,18 @@ static void raid5d(struct md_thread *thread)
+ 			spin_unlock_irq(&conf->device_lock);
+ 			md_check_recovery(mddev);
+ 			spin_lock_irq(&conf->device_lock);
++
++			/*
++			 * Waiting on MD_SB_CHANGE_PENDING below may deadlock
++			 * seeing md_check_recovery() is needed to clear
++			 * the flag when using mdmon.
++			 */
++			continue;
+ 		}
++
++		wait_event_lock_irq(mddev->sb_wait,
++			!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags),
++			conf->device_lock);
+ 	}
+ 	pr_debug("%d stripes handled\n", handled);
+ 
 -- 
 2.43.0
 
