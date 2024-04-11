@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-38628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3B48A0F99
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:25:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7EC8A1100
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C6AF1F28333
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:25:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B47A1C239DB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082301465BE;
-	Thu, 11 Apr 2024 10:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D0C143C76;
+	Thu, 11 Apr 2024 10:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgJ5PSD8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdkOLbzi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7E513FD94;
-	Thu, 11 Apr 2024 10:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226A2148842;
+	Thu, 11 Apr 2024 10:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831128; cv=none; b=NT9ywrkIJJUAGVpgufqCKjaxYf3cFIhbt3EUtuRd2/zfhiK8XDGkF9VDcfRN0+cAxvmJ+a6mUltj9M3UcmvqZKSsa3cF1S0RwR3GYjXgCaqS+/tN/21s3C+2hjPRKX18kOKTKhgjPrdhr4mHT505lthSQ1KIy91tHxOUIAeHB6U=
+	t=1712831960; cv=none; b=krk3+cgXLi2J4VQXsr8EdwwW+IKeeKWsdeMUZEiyr54HyCRIJ80mCu4964At/cCgBryg6phmwwVIWPzTQd6eVUSfY/+v3vL0HzeSfYOS2ZNswBjc5UtXnCtgdjZBAxNerEjsF5SKzhxk+33iCDG1UZqWagnAgz/2UZaYYX/54ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831128; c=relaxed/simple;
-	bh=CCE/rpX0nGCewA+yImsvlbydv4sWmsiKGTXrB2brmCg=;
+	s=arc-20240116; t=1712831960; c=relaxed/simple;
+	bh=lqkmrD50xV9mKe07RR8siSEu144pXGFxikHHy8UAMx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BpqfPXUc9GZ0ZiiAV4971HhH5ZjioiYby6lYKpf5sx2IShn3T+fUgW7MlVcuzMAeaq/ZeM+vRxOBkgdQPMF9I+19T3nk815ggGtcyllFF/CT4VkzwRRHOHx30inWyUKUoBNL/aeFF3ch4kv3+krm7VgzM8dGJoKTuxx3Ht+rWW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgJ5PSD8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 401E9C433F1;
-	Thu, 11 Apr 2024 10:25:28 +0000 (UTC)
+	 MIME-Version; b=HAPkTaoZCxuSzs8NnM6a3c2etOneMx9ec2OjqVcd3kuX6rh/YnMzP5XvCflCN9U9F9jwmaA1HAeVX2Z2zSnO0qlk5OTL0DXM9ic/hjUly0AXGED5mi2XGKc5vlMvK1Ohg5rYNInzvCn0ozeypyd725SxABwQT1iO6+AIJyLteaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdkOLbzi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD67C433F1;
+	Thu, 11 Apr 2024 10:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831128;
-	bh=CCE/rpX0nGCewA+yImsvlbydv4sWmsiKGTXrB2brmCg=;
+	s=korg; t=1712831960;
+	bh=lqkmrD50xV9mKe07RR8siSEu144pXGFxikHHy8UAMx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CgJ5PSD8zLtiK4wnOMh4VbmjX3zXHw8vpYhBys09XSkZYUaicIciqfotaC0365wP1
-	 XoNE7K73kIyU/9zhrRF7IRnJIgmzm0SVUZZxzsP/D1bx2xtnOY0uqzJwn03H452AO5
-	 q+Xw/jFoOTr+O3O+rJ1YJw0JqFnJbXSeMOpK3lTw=
+	b=NdkOLbzi1m9M6QAmcM4zA+fJfH+plMGimn+1mHcxefGPNQ0cNW0QPommfKjOcCOZL
+	 qU5TtAntnDiK5MTmTMdtidnlMhG2Y4rC8WELJrxXAdhiK+fFqP1kNa30yzxMVjHz1m
+	 Mv4V8vqoxg9/S/8eAfTrXtqzymT8nHrDKObYht/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/114] net: add netdev_lockdep_set_classes() to virtual drivers
+	Ryosuke Yasuoka <ryasuoka@redhat.com>,
+	Jeremy Cline <jeremy@jcline.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com,
+	syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 182/294] nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet
 Date: Thu, 11 Apr 2024 11:55:45 +0200
-Message-ID: <20240411095417.418453568@linuxfoundation.org>
+Message-ID: <20240411095441.100597637@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,309 +66,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ryosuke Yasuoka <ryasuoka@redhat.com>
 
-[ Upstream commit 0bef512012b1cd8820f0c9ec80e5f8ceb43fdd59 ]
+[ Upstream commit d24b03535e5eb82e025219c2f632b485409c898f ]
 
-Based on a syzbot report, it appears many virtual
-drivers do not yet use netdev_lockdep_set_classes(),
-triggerring lockdep false positives.
+syzbot reported the following uninit-value access issue [1][2]:
 
-WARNING: possible recursive locking detected
-6.8.0-rc4-next-20240212-syzkaller #0 Not tainted
+nci_rx_work() parses and processes received packet. When the payload
+length is zero, each message type handler reads uninitialized payload
+and KMSAN detects this issue. The receipt of a packet with a zero-size
+payload is considered unexpected, and therefore, such packets should be
+silently discarded.
 
-syz-executor.0/19016 is trying to acquire lock:
- ffff8880162cb298 (_xmit_ETHER#2){+.-.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
- ffff8880162cb298 (_xmit_ETHER#2){+.-.}-{2:2}, at: __netif_tx_lock include/linux/netdevice.h:4452 [inline]
- ffff8880162cb298 (_xmit_ETHER#2){+.-.}-{2:2}, at: sch_direct_xmit+0x1c4/0x5f0 net/sched/sch_generic.c:340
+This patch resolved this issue by checking payload size before calling
+each message type handler codes.
 
-but task is already holding lock:
- ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
- ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: __netif_tx_lock include/linux/netdevice.h:4452 [inline]
- ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: sch_direct_xmit+0x1c4/0x5f0 net/sched/sch_generic.c:340
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-  lock(_xmit_ETHER#2);
-  lock(_xmit_ETHER#2);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-9 locks held by syz-executor.0/19016:
-  #0: ffffffff8f385208 (rtnl_mutex){+.+.}-{3:3}, at: rtnl_lock net/core/rtnetlink.c:79 [inline]
-  #0: ffffffff8f385208 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x82c/0x1040 net/core/rtnetlink.c:6603
-  #1: ffffc90000a08c00 ((&in_dev->mr_ifc_timer)){+.-.}-{0:0}, at: call_timer_fn+0xc0/0x600 kernel/time/timer.c:1697
-  #2: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire include/linux/rcupdate.h:298 [inline]
-  #2: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock include/linux/rcupdate.h:750 [inline]
-  #2: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x45f/0x1360 net/ipv4/ip_output.c:228
-  #3: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: local_bh_disable include/linux/bottom_half.h:20 [inline]
-  #3: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: rcu_read_lock_bh include/linux/rcupdate.h:802 [inline]
-  #3: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0x2c4/0x3b10 net/core/dev.c:4284
-  #4: ffff8880416e3258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: spin_trylock include/linux/spinlock.h:361 [inline]
-  #4: ffff8880416e3258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: qdisc_run_begin include/net/sch_generic.h:195 [inline]
-  #4: ffff8880416e3258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_xmit_skb net/core/dev.c:3771 [inline]
-  #4: ffff8880416e3258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_queue_xmit+0x1262/0x3b10 net/core/dev.c:4325
-  #5: ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
-  #5: ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: __netif_tx_lock include/linux/netdevice.h:4452 [inline]
-  #5: ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: sch_direct_xmit+0x1c4/0x5f0 net/sched/sch_generic.c:340
-  #6: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire include/linux/rcupdate.h:298 [inline]
-  #6: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock include/linux/rcupdate.h:750 [inline]
-  #6: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x45f/0x1360 net/ipv4/ip_output.c:228
-  #7: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: local_bh_disable include/linux/bottom_half.h:20 [inline]
-  #7: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: rcu_read_lock_bh include/linux/rcupdate.h:802 [inline]
-  #7: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0x2c4/0x3b10 net/core/dev.c:4284
-  #8: ffff888014d9d258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: spin_trylock include/linux/spinlock.h:361 [inline]
-  #8: ffff888014d9d258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: qdisc_run_begin include/net/sch_generic.h:195 [inline]
-  #8: ffff888014d9d258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_xmit_skb net/core/dev.c:3771 [inline]
-  #8: ffff888014d9d258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_queue_xmit+0x1262/0x3b10 net/core/dev.c:4325
-
-stack backtrace:
-CPU: 1 PID: 19016 Comm: syz-executor.0 Not tainted 6.8.0-rc4-next-20240212-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
-Call Trace:
- <IRQ>
-  __dump_stack lib/dump_stack.c:88 [inline]
-  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
-  check_deadlock kernel/locking/lockdep.c:3062 [inline]
-  validate_chain+0x15c1/0x58e0 kernel/locking/lockdep.c:3856
-  __lock_acquire+0x1346/0x1fd0 kernel/locking/lockdep.c:5137
-  lock_acquire+0x1e4/0x530 kernel/locking/lockdep.c:5754
-  __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
-  _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
-  spin_lock include/linux/spinlock.h:351 [inline]
-  __netif_tx_lock include/linux/netdevice.h:4452 [inline]
-  sch_direct_xmit+0x1c4/0x5f0 net/sched/sch_generic.c:340
-  __dev_xmit_skb net/core/dev.c:3784 [inline]
-  __dev_queue_xmit+0x1912/0x3b10 net/core/dev.c:4325
-  neigh_output include/net/neighbour.h:542 [inline]
-  ip_finish_output2+0xe66/0x1360 net/ipv4/ip_output.c:235
-  iptunnel_xmit+0x540/0x9b0 net/ipv4/ip_tunnel_core.c:82
-  ip_tunnel_xmit+0x20ee/0x2960 net/ipv4/ip_tunnel.c:831
-  erspan_xmit+0x9de/0x1460 net/ipv4/ip_gre.c:720
-  __netdev_start_xmit include/linux/netdevice.h:4989 [inline]
-  netdev_start_xmit include/linux/netdevice.h:5003 [inline]
-  xmit_one net/core/dev.c:3555 [inline]
-  dev_hard_start_xmit+0x242/0x770 net/core/dev.c:3571
-  sch_direct_xmit+0x2b6/0x5f0 net/sched/sch_generic.c:342
-  __dev_xmit_skb net/core/dev.c:3784 [inline]
-  __dev_queue_xmit+0x1912/0x3b10 net/core/dev.c:4325
-  neigh_output include/net/neighbour.h:542 [inline]
-  ip_finish_output2+0xe66/0x1360 net/ipv4/ip_output.c:235
-  igmpv3_send_cr net/ipv4/igmp.c:723 [inline]
-  igmp_ifc_timer_expire+0xb71/0xd90 net/ipv4/igmp.c:813
-  call_timer_fn+0x17e/0x600 kernel/time/timer.c:1700
-  expire_timers kernel/time/timer.c:1751 [inline]
-  __run_timers+0x621/0x830 kernel/time/timer.c:2038
-  run_timer_softirq+0x67/0xf0 kernel/time/timer.c:2051
-  __do_softirq+0x2bc/0x943 kernel/softirq.c:554
-  invoke_softirq kernel/softirq.c:428 [inline]
-  __irq_exit_rcu+0xf2/0x1c0 kernel/softirq.c:633
-  irq_exit_rcu+0x9/0x30 kernel/softirq.c:645
-  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1076 [inline]
-  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1076
- </IRQ>
- <TASK>
-  asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
- RIP: 0010:resched_offsets_ok kernel/sched/core.c:10127 [inline]
- RIP: 0010:__might_resched+0x16f/0x780 kernel/sched/core.c:10142
-Code: 00 4c 89 e8 48 c1 e8 03 48 ba 00 00 00 00 00 fc ff df 48 89 44 24 38 0f b6 04 10 84 c0 0f 85 87 04 00 00 41 8b 45 00 c1 e0 08 <01> d8 44 39 e0 0f 85 d6 00 00 00 44 89 64 24 1c 48 8d bc 24 a0 00
-RSP: 0018:ffffc9000ee069e0 EFLAGS: 00000246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff8880296a9e00
-RDX: dffffc0000000000 RSI: ffff8880296a9e00 RDI: ffffffff8bfe8fa0
-RBP: ffffc9000ee06b00 R08: ffffffff82326877 R09: 1ffff11002b5ad1b
-R10: dffffc0000000000 R11: ffffed1002b5ad1c R12: 0000000000000000
-R13: ffff8880296aa23c R14: 000000000000062a R15: 1ffff92001dc0d44
-  down_write+0x19/0x50 kernel/locking/rwsem.c:1578
-  kernfs_activate fs/kernfs/dir.c:1403 [inline]
-  kernfs_add_one+0x4af/0x8b0 fs/kernfs/dir.c:819
-  __kernfs_create_file+0x22e/0x2e0 fs/kernfs/file.c:1056
-  sysfs_add_file_mode_ns+0x24a/0x310 fs/sysfs/file.c:307
-  create_files fs/sysfs/group.c:64 [inline]
-  internal_create_group+0x4f4/0xf20 fs/sysfs/group.c:152
-  internal_create_groups fs/sysfs/group.c:192 [inline]
-  sysfs_create_groups+0x56/0x120 fs/sysfs/group.c:218
-  create_dir lib/kobject.c:78 [inline]
-  kobject_add_internal+0x472/0x8d0 lib/kobject.c:240
-  kobject_add_varg lib/kobject.c:374 [inline]
-  kobject_init_and_add+0x124/0x190 lib/kobject.c:457
-  netdev_queue_add_kobject net/core/net-sysfs.c:1706 [inline]
-  netdev_queue_update_kobjects+0x1f3/0x480 net/core/net-sysfs.c:1758
-  register_queue_kobjects net/core/net-sysfs.c:1819 [inline]
-  netdev_register_kobject+0x265/0x310 net/core/net-sysfs.c:2059
-  register_netdevice+0x1191/0x19c0 net/core/dev.c:10298
-  bond_newlink+0x3b/0x90 drivers/net/bonding/bond_netlink.c:576
-  rtnl_newlink_create net/core/rtnetlink.c:3506 [inline]
-  __rtnl_newlink net/core/rtnetlink.c:3726 [inline]
-  rtnl_newlink+0x158f/0x20a0 net/core/rtnetlink.c:3739
-  rtnetlink_rcv_msg+0x885/0x1040 net/core/rtnetlink.c:6606
-  netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2543
-  netlink_unicast_kernel net/netlink/af_netlink.c:1341 [inline]
-  netlink_unicast+0x7ea/0x980 net/netlink/af_netlink.c:1367
-  netlink_sendmsg+0xa3c/0xd70 net/netlink/af_netlink.c:1908
-  sock_sendmsg_nosec net/socket.c:730 [inline]
-  __sock_sendmsg+0x221/0x270 net/socket.c:745
-  __sys_sendto+0x3a4/0x4f0 net/socket.c:2191
-  __do_sys_sendto net/socket.c:2203 [inline]
-  __se_sys_sendto net/socket.c:2199 [inline]
-  __x64_sys_sendto+0xde/0x100 net/socket.c:2199
- do_syscall_64+0xfb/0x240
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-RIP: 0033:0x7fc3fa87fa9c
-
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240212140700.2795436-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Reported-and-tested-by: syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com
+Reported-and-tested-by: syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7ea9413ea6749baf5574 [1]
+Closes: https://syzkaller.appspot.com/bug?extid=29b5ca705d2e0f4a44d2 [2]
+Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
+Reviewed-by: Jeremy Cline <jeremy@jcline.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dummy.c            | 1 +
- drivers/net/geneve.c           | 1 +
- drivers/net/loopback.c         | 1 +
- drivers/net/veth.c             | 1 +
- drivers/net/vxlan/vxlan_core.c | 1 +
- net/ipv4/ip_tunnel.c           | 1 +
- net/ipv6/ip6_gre.c             | 2 ++
- net/ipv6/ip6_tunnel.c          | 1 +
- net/ipv6/ip6_vti.c             | 1 +
- net/ipv6/sit.c                 | 1 +
- 10 files changed, 11 insertions(+)
+ net/nfc/nci/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/dummy.c b/drivers/net/dummy.c
-index c4b1b0aa438ac..5560cf683eb73 100644
---- a/drivers/net/dummy.c
-+++ b/drivers/net/dummy.c
-@@ -71,6 +71,7 @@ static int dummy_dev_init(struct net_device *dev)
- 	if (!dev->lstats)
- 		return -ENOMEM;
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 5bfaf06f7be7f..d8002065baaef 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1502,6 +1502,11 @@ static void nci_rx_work(struct work_struct *work)
+ 		nfc_send_to_raw_sock(ndev->nfc_dev, skb,
+ 				     RAW_PAYLOAD_NCI, NFC_DIRECTION_RX);
  
-+	netdev_lockdep_set_classes(dev);
- 	return 0;
- }
- 
-diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-index 9566fda8b2e2e..0204ac92b05ab 100644
---- a/drivers/net/geneve.c
-+++ b/drivers/net/geneve.c
-@@ -349,6 +349,7 @@ static int geneve_init(struct net_device *dev)
- 		gro_cells_destroy(&geneve->gro_cells);
- 		return err;
- 	}
-+	netdev_lockdep_set_classes(dev);
- 	return 0;
- }
- 
-diff --git a/drivers/net/loopback.c b/drivers/net/loopback.c
-index f6d53e63ef4ec..f6eab66c26608 100644
---- a/drivers/net/loopback.c
-+++ b/drivers/net/loopback.c
-@@ -144,6 +144,7 @@ static int loopback_dev_init(struct net_device *dev)
- 	dev->lstats = netdev_alloc_pcpu_stats(struct pcpu_lstats);
- 	if (!dev->lstats)
- 		return -ENOMEM;
-+	netdev_lockdep_set_classes(dev);
- 	return 0;
- }
- 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 5cdb77e861c0e..7767b6ff5a155 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -1475,6 +1475,7 @@ static void veth_free_queues(struct net_device *dev)
- 
- static int veth_dev_init(struct net_device *dev)
- {
-+	netdev_lockdep_set_classes(dev);
- 	return veth_alloc_queues(dev);
- }
- 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 5b5597073b004..99ede13124194 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -2960,6 +2960,7 @@ static int vxlan_init(struct net_device *dev)
- 	if (err)
- 		goto err_gro_cells_destroy;
- 
-+	netdev_lockdep_set_classes(dev);
- 	return 0;
- 
- err_gro_cells_destroy:
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index b1b6dcf2161fb..acf93f34a8213 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -1298,6 +1298,7 @@ int ip_tunnel_init(struct net_device *dev)
- 
- 	if (tunnel->collect_md)
- 		netif_keep_dst(dev);
-+	netdev_lockdep_set_classes(dev);
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(ip_tunnel_init);
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index 26c3287beb29c..289b83347d9d5 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -1514,6 +1514,7 @@ static int ip6gre_tunnel_init_common(struct net_device *dev)
- 	ip6gre_tnl_init_features(dev);
- 
- 	netdev_hold(dev, &tunnel->dev_tracker, GFP_KERNEL);
-+	netdev_lockdep_set_classes(dev);
- 	return 0;
- 
- cleanup_dst_cache_init:
-@@ -1906,6 +1907,7 @@ static int ip6erspan_tap_init(struct net_device *dev)
- 	ip6erspan_tnl_link_config(tunnel, 1);
- 
- 	netdev_hold(dev, &tunnel->dev_tracker, GFP_KERNEL);
-+	netdev_lockdep_set_classes(dev);
- 	return 0;
- 
- cleanup_dst_cache_init:
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 9bbabf750a21e..70478027a7af7 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -1898,6 +1898,7 @@ ip6_tnl_dev_init_gen(struct net_device *dev)
- 	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len;
- 
- 	netdev_hold(dev, &t->dev_tracker, GFP_KERNEL);
-+	netdev_lockdep_set_classes(dev);
- 	return 0;
- 
- destroy_dst:
-diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-index 73c85d4e0e9cd..04e4368fe4655 100644
---- a/net/ipv6/ip6_vti.c
-+++ b/net/ipv6/ip6_vti.c
-@@ -935,6 +935,7 @@ static inline int vti6_dev_init_gen(struct net_device *dev)
- 	if (!dev->tstats)
- 		return -ENOMEM;
- 	netdev_hold(dev, &t->dev_tracker, GFP_KERNEL);
-+	netdev_lockdep_set_classes(dev);
- 	return 0;
- }
- 
-diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
-index cc24cefdb85c0..eb4c8e2a2b12e 100644
---- a/net/ipv6/sit.c
-+++ b/net/ipv6/sit.c
-@@ -1460,6 +1460,7 @@ static int ipip6_tunnel_init(struct net_device *dev)
- 		return err;
- 	}
- 	netdev_hold(dev, &tunnel->dev_tracker, GFP_KERNEL);
-+	netdev_lockdep_set_classes(dev);
- 	return 0;
- }
- 
++		if (!nci_plen(skb->data)) {
++			kfree_skb(skb);
++			break;
++		}
++
+ 		/* Process frame */
+ 		switch (nci_mt(skb->data)) {
+ 		case NCI_MT_RSP_PKT:
 -- 
 2.43.0
 
