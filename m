@@ -1,127 +1,182 @@
-Return-Path: <stable+bounces-38060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36BA78A0A2A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:41:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF708A0A50
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 09:43:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAAA61F21F6F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 07:41:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 150A8284273
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 07:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7191113E896;
-	Thu, 11 Apr 2024 07:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E86213E04A;
+	Thu, 11 Apr 2024 07:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ncCaGgNz"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="AF3ArE2p";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Rw1Y+yKZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wfhigh5-smtp.messagingengine.com (wfhigh5-smtp.messagingengine.com [64.147.123.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DE113D623;
-	Thu, 11 Apr 2024 07:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12AB713E048
+	for <stable@vger.kernel.org>; Thu, 11 Apr 2024 07:42:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712821229; cv=none; b=X0odJb+e77JUe2QiFhM0oKOmUJqJeSKoXotpbaHDPnVpEQZII8BKRMHgurwI/8leUP+BGwC3sjH6t1/gDoAcYd1lFomETQBSmyMLT9VQE+vhuI8gKAJBErSfs0WEY17xr558fjz1iGLyMyFKfTofTiOydVOBoTYTFxTC8fewmwg=
+	t=1712821356; cv=none; b=SyJSHUibouXq/B/6TuQezl9SdEoLtLaWfXKbYG2emub3+IodMT8IRnW8FeUnOxzPLa+tEsac41mncDApwsboSCC7qEvBCRenJVln/JM5iSk32BoTQjkyYSlGaykfwG1wZtTd4uzksdq/PQF+mpZ+5F+eg6jN3/PvhcqUZOsROIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712821229; c=relaxed/simple;
-	bh=gU83pKVxE28bT28SwDUVpbrEVoqeK57hhHrjjTx/m/0=;
+	s=arc-20240116; t=1712821356; c=relaxed/simple;
+	bh=F5/Uo+tzUQxcRASbEEJJpQknHOyWZ7PFzpVUvvj6mrA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uWBck0JeUwBMHqCV1FglwDh3jK0cWjFO2UnTnXSCrkBHT6Q1v1CbJIcZy6uGth7xAFxoWOAtAnawgYikAMXiqeaNEP+16TMg3H63SvpbM/Il3CR1decYvpeNdt2l46DPQsrsuAaXAPFAHbopg7G4kujqlVe4XY6EC6BtPsN5vf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ncCaGgNz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6FDC433C7;
-	Thu, 11 Apr 2024 07:40:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712821228;
-	bh=gU83pKVxE28bT28SwDUVpbrEVoqeK57hhHrjjTx/m/0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ncCaGgNzsedv/lqUFjuTRvttWoSfT7U5LpQoQN0Lp2zOYTaOW7o99yR2NoxR9DcTl
-	 J9pF+ARn4Wzpgc9UXrLqDjC4p9dbntLiNKVSk8n7YyxPnCIcY3VB7ZN4RwLC9WeEDo
-	 ClgkTXb2mUx3pgTq0VHo4lxi8QfxXqXF39AhD6cg=
-Date: Thu, 11 Apr 2024 09:40:25 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Thorsten Leemhuis <linux@leemhuis.info>
-Cc: Sasha Levin <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	stable@vger.kernel.org, workflows@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/4] docs: stable-kernel-rules: mention "no
- semi-automatic backport"
-Message-ID: <2024041123-earthling-primarily-4656@gregkh>
-References: <cover.1712812895.git.linux@leemhuis.info>
- <c0a08b160b286e8c98549eedb37404c6e784cf8a.1712812895.git.linux@leemhuis.info>
- <2024041156-backache-dolly-a420@gregkh>
- <3f395eca-fc24-469b-b5fc-de47ab2a6861@leemhuis.info>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UDy/gR/1rKhCNbIRmVnaXOorzo3h9txkbV4peWg/PbcGHqz/XZDJDddLvx+rz/ejMy8VxkOfqNBMDo8p/ew3FADYwiqZNuFvRN84o4mP9xv1IgB+ARO4Z31ierWj6hXyXWsBIiBAwWgIIRskeYaNl2YcDNRlzP/ch6I6qATV2Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=AF3ArE2p; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Rw1Y+yKZ; arc=none smtp.client-ip=64.147.123.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailfhigh.west.internal (Postfix) with ESMTP id 3620318000A7;
+	Thu, 11 Apr 2024 03:42:33 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Thu, 11 Apr 2024 03:42:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1712821352;
+	 x=1712907752; bh=L1aRStXBed7JkQOFONFj/EZa6Keynn96VjRq49KnU/o=; b=
+	AF3ArE2phApSlW6eTlQ8vvvRyINs61aUzQziPBl6P8pUiI3NYuVxN4hRvYuZmYQ+
+	WDSp38PZVO3jZT9pYmP6GxcxEu/NzHyNvv/TevWEFDTmhkU+GPF37+HQFRjTrQ7x
+	IhyvVbvsGEzfFD7ZdWRjVMnGU27Qkuzy56RdbirEscZdPhyJZihYvDITCJmUzjyO
+	ZjAcIsuc39hndYICNlWBu3xFKwSifPtFEjn9y6xWYggNlCfNGWjSbLX49I0VK23M
+	/LfpNfQQ6COh6E+u08F3sAPynAAzQGzhvLQ5Nb+sg5iBVqfdnHjbGU34axDr8ffL
+	OtrF5M9vBYGcBPoDJuVxjg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1712821352; x=
+	1712907752; bh=L1aRStXBed7JkQOFONFj/EZa6Keynn96VjRq49KnU/o=; b=R
+	w1Y+yKZLYHu1ZdMCvgxRnpmM/SJ9L9ZDHyZBWBEmQgmWgoAXoznRLg2ADwvzjCxe
+	l85Flrqles1EZcxKVxqqTwdRpYVma0bTyHVO5ITwhrgJYKDYYeQ7C7RKuiWIKKFr
+	oVkpaho5cJCnwQ9r/Kp2v9xZW9F1pJMLWEiR55wPRnSN1Y2h3GCJqk4rxss6GCg2
+	5t9B81rXaG1cMzDysd0NEOvs8reblNE5Te67xhqaDuaOlv8UVT6RaZiXq2hiq+up
+	ByKMewtsSJLyEYHIV3ISiRmlDSTlw0XuZBLyhGWHsblUzgn8N+nAqjMk4sNhKA5a
+	qvG77YMPGvuXq8NX9xAkw==
+X-ME-Sender: <xms:Z5QXZuJQw7JwfIL7polfrqHh8PdCaeHN01l12zhk8s4lq9Go8mC3AA>
+    <xme:Z5QXZmKYImzvFPiQVz1CGLNQ62h0XpQSTh9594YXO1QZ5-t2MtQZ3f9LT8yemfuWe
+    TuLTFMtgBoSug>
+X-ME-Received: <xmr:Z5QXZutFW423wIuYhoIlRh6xoQz5u9E9y-hbC_KwptVeDdpGaQy-FIRrbNwOzJxsfmsPSAa3dhbNjNmoaB9CnP2LhqSbMY-34Ixs5A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehjedguddulecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepifhr
+    vghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepfe
+    ettefhtdehffdtffffjeegtdegvdekgeeuvddvteekgffhlefhteegveeuffejnecuffho
+    mhgrihhnpehqvghmuhdrohhrghdpuddtqdhrtgdurdhsohdpkhgvrhhnvghlrdhorhhgne
+    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghg
+    sehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:Z5QXZjZTNbR3UXVxCRAXHAJwCAurWnVcgK5EhTnR3Nd-WpbTNV2JZQ>
+    <xmx:Z5QXZla2gml54AQ430VoyhtpLxhuaJieFyQmJYQz8m4ZAdJt3odpdw>
+    <xmx:Z5QXZvCCp4jssUxTZPZbrsM2iYWoJ7pqnTqBHEr0cdqCZ3WkwYs0_g>
+    <xmx:Z5QXZrbx0_axCbsc8mZ-U0QFEuUgtCqhgkyvwrIUyghMmMsCSBfqLg>
+    <xmx:aJQXZpTL18BqCRoX4naEgc7e4aeDeCVVXQ8zFERm4LqQqrmA3GxxtGJ4>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 11 Apr 2024 03:42:31 -0400 (EDT)
+Date: Thu, 11 Apr 2024 09:42:28 +0200
+From: Greg KH <greg@kroah.com>
+To: "guomengqi (A)" <guomengqi3@huawei.com>
+Cc: airlied@linux.ie, dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org, xuqiang36@huawei.com,
+	zhangchangzhong@huawei.com
+Subject: Re: [PATCH 4.19.y] drm/vkms: call drm_atomic_helper_shutdown before
+ drm_dev_put()
+Message-ID: <2024041121-tuition-undermine-26b6@gregkh>
+References: <20240403094716.80313-1-guomengqi3@huawei.com>
+ <2024040549-pushover-applied-4948@gregkh>
+ <a29f435b-424e-4f9f-36cb-3faf22c4b0b3@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <3f395eca-fc24-469b-b5fc-de47ab2a6861@leemhuis.info>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a29f435b-424e-4f9f-36cb-3faf22c4b0b3@huawei.com>
 
-On Thu, Apr 11, 2024 at 08:59:39AM +0200, Thorsten Leemhuis wrote:
-> On 11.04.24 07:29, Greg Kroah-Hartman wrote:
-> > On Thu, Apr 11, 2024 at 07:25:04AM +0200, Thorsten Leemhuis wrote:
-> >> Some developers deliberately steer clear of 'Fixes:' tags to prevent
-> >> changes from being backported semi-automatically by the stable team.
-> >> That somewhat undermines the reason for the existence of the Fixes: tag,
-> >> hence point out there is an alternative to reach the same effect.
-> >>
-> >> Link: https://lore.kernel.org/all/dfd87673-c581-4b4b-b37a-1cf5c817240d@leemhuis.info/
-> >> Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
-> >> ---
-> >>  Documentation/process/stable-kernel-rules.rst | 6 ++++++
-> >>  1 file changed, 6 insertions(+)
-> >>
-> >> diff --git a/Documentation/process/stable-kernel-rules.rst b/Documentation/process/stable-kernel-rules.rst
-> >> index 7bb16d42a51833..ebd57cb9277f7b 100644
-> >> --- a/Documentation/process/stable-kernel-rules.rst
-> >> +++ b/Documentation/process/stable-kernel-rules.rst
-> >> @@ -117,6 +117,12 @@ comment to pass arbitrary or predefined notes:
-> >>     Note, such tagging is unnecessary if the stable team can derive the
-> >>     appropriate versions from Fixes: tags.
-> >>  
-> >> + * Prevent semi-automatic backporting of changes carrying a 'Fixes:' tag:
-> >> +
-> >> +   .. code-block:: none
-> >> +
-> >> +     Cc: <stable@vger.kernel.org> # no semi-automatic backport
-> > 
-> > I do not understand, why are you saying "cc: stable" here if you do NOT
-> > want it backported?
+On Tue, Apr 09, 2024 at 10:38:34AM +0800, guomengqi (A) wrote:
 > 
-> Because the only alternative the developers have to make the stable team
-> not pick a single patch[1] is to deliberately omit a Fixes: tag even if
-> the patch normally should have one. Like it was done here:
-> https://lore.kernel.org/all/cover.1712226175.git.antony.antony@secunet.com/
-
-That feels odd, but ok I now see the need for this for some minor set of
-changes (i.e. this has rarely come up in the past 15+ years)
-
-> And that somehow felt wrong to me, as discussed earlier in
-> https://lore.kernel.org/all/dfd87673-c581-4b4b-b37a-1cf5c817240d@leemhuis.info/
+> 在 2024/4/5 17:30, Greg KH 写道:
+> > On Wed, Apr 03, 2024 at 05:47:16PM +0800, Guo Mengqi wrote:
+> > > commit 73a82b22963d ("drm/atomic: Fix potential use-after-free
+> > > in nonblocking commits") introduced drm_dev_get/put() to
+> > > drm_atomic_helper_shutdown(). And this cause problem in vkms driver exit
+> > > process.
+> > > 
+> > > vkms_exit()
+> > >    drm_dev_put()
+> > >      vkms_release()
+> > >        drm_atomic_helper_shutdown()
+> > >          drm_dev_get()
+> > >          drm_dev_put()
+> > >            vkms_release()    ------ null pointer access
+> > > 
+> > > Using 4.19 stable x86 image on qemu, below stacktrace can be triggered by
+> > > load and unload vkms.ko.
+> > > 
+> > > root:~ # insmod vkms.ko
+> > > [  142.135449] [drm] Supports vblank timestamp caching Rev 2 (21.10.2013).
+> > > [  142.138713] [drm] Driver supports precise vblank timestamp query.
+> > > [  142.142390] [drm] Initialized vkms 1.0.0 20180514 for virtual device on minor 0
+> > > root:~ # rmmod vkms.ko
+> > > [  144.093710] BUG: unable to handle kernel NULL pointer dereference at 00000000000000a0
+> > > [  144.097491] PGD 800000023624e067 P4D 800000023624e067 PUD 22ab59067 PMD 0
+> > > [  144.100802] Oops: 0000 [#1] SMP PTI
+> > > [  144.102502] CPU: 0 PID: 3615 Comm: rmmod Not tainted 4.19.310 #1
+> > > [  144.104452] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+> > > [  144.107238] RIP: 0010:device_del+0x34/0x3a0
+> > > ...
+> > > [  144.131323] Call Trace:
+> > > [  144.131962]  ? __die+0x7d/0xc0
+> > > [  144.132711]  ? no_context+0x152/0x3b0
+> > > [  144.133605]  ? wake_up_q+0x70/0x70
+> > > [  144.134436]  ? __do_page_fault+0x342/0x4b0
+> > > [  144.135445]  ? __switch_to_asm+0x41/0x70
+> > > [  144.136416]  ? __switch_to_asm+0x35/0x70
+> > > [  144.137366]  ? page_fault+0x1e/0x30
+> > > [  144.138214]  ? __drm_atomic_state_free+0x51/0x60
+> > > [  144.139331]  ? device_del+0x34/0x3a0
+> > > [  144.140197]  platform_device_del.part.14+0x19/0x70
+> > > [  144.141348]  platform_device_unregister+0xe/0x20
+> > > [  144.142458]  vkms_release+0x10/0x30 [vkms]
+> > > [  144.143449]  __drm_atomic_helper_disable_all.constprop.31+0x13b/0x150
+> > > [  144.144980]  drm_atomic_helper_shutdown+0x4b/0x90
+> > > [  144.146102]  vkms_release+0x18/0x30 [vkms]
+> > > [  144.147107]  vkms_exit+0x29/0x8ec [vkms]
+> > > [  144.148053]  __x64_sys_delete_module+0x155/0x220
+> > > [  144.149168]  do_syscall_64+0x43/0x100
+> > > [  144.150056]  entry_SYSCALL_64_after_hwframe+0x5c/0xc1
+> > > 
+> > > It seems that the proper unload sequence is:
+> > > 	drm_atomic_helper_shutdown();
+> > > 	drm_dev_put();
+> > > 
+> > > Just put drm_atomic_helper_shutdown() before drm_dev_put()
+> > > should solve the problem.
+> > > 
+> > > Note that vkms exit code is refactored by 53d77aaa3f76 ("drm/vkms: Use
+> > > devm_drm_dev_alloc") in tags/v5.10-rc1.
+> > > 
+> > > So this bug only exists on 4.19 and 5.4.
+> > Do we also need this for 5.4?  If so, can you send a version for that
+> > tree with the correct Fixes: information, and I will be glad to queue
+> > both of these up.
 > 
-> [1] e.g. if they don't have or want their whole subsystem marked as
-> 'ignore for the AUTOSEL and the "Fixes tag only" tools'
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/ignore_list
-> 
-> > And what do you mean by "semi-automatic"?
-> 
-> E.g. 'ignore for the AUTOSEL and the "Fixes tag only" tools'. That was
-> the best term I came up with.
+> I sent a patch to 5.4.y too. Please check it at
+> https://lore.kernel.org/all/20240409022647.1821-1-guomengqi3@huawei.com/T/#u
 
-Thinking about it more, I think we need to be much more explicit, and
-provide the reason why.
-
-How about:
-	cc: <do-not-apply-to-stable@kernel.org> # Reason goes here, and must be present
-
-and we can make that address be routed to /dev/null just like
-<stable@kernel.org> is?
-
-thanks,
+Both now queued up, thanks.
 
 greg k-h
 
