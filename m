@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-38223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF8C8A0D97
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26FC38A1122
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C2ACB2312D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 576B41C216E2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B17B146009;
-	Thu, 11 Apr 2024 10:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C850146D4F;
+	Thu, 11 Apr 2024 10:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYQcB/3z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAdprBSj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBDA145B07;
-	Thu, 11 Apr 2024 10:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBAA147C7E;
+	Thu, 11 Apr 2024 10:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829926; cv=none; b=Ki6K4Ij83htrNXOOQDjsq9N68MY569yKCY91lR639jooWNMxy8sH0QU9629xM5VdWGhL8Xg4QBWA21jVvrPgY2L0jEIipESKJwJqXZbxGK18b+sHhfIMt04Y8jNAezduz2YYKpYHRIo+NzR8YLHKyztx2CkVFJSjheUNUTyUy6M=
+	t=1712832041; cv=none; b=h55hLRcONiclO3GstOFfpDO1za/nOUnHzkmsgCW/2UanDNdZClh2rr9Ox1ye3NKHiDY1Au1f2/bw3s9wo1dgbQNb4rUcLYA5Q634Rvsp6KUTQHEGTpsLYv4an24YZ99ADAQRZqdO2u01M0YAwbW7Ey1lSQAtu0WrSHNIi26a9kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829926; c=relaxed/simple;
-	bh=+rVmsbpJDU0CnrY7Y3beTawKrti5N3WS6M6RKOLkhDA=;
+	s=arc-20240116; t=1712832041; c=relaxed/simple;
+	bh=bYiyivn4e2yFAM+k0iJ4soZoWDX+YLIbOyMryLUGT7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t1inRkp3Exnt22f1ruswcau2GZ1wkLg0Z50gS3ELVcL7CVTpZZ73DFTPkfb+VK4hbF3psmmtM8dVG5ehEEKzT5WroWAJIy6XzFFGf4IXH2WYM+pwPh8SfRn3V4AuuahNMkHvZqKNHDbJnIX8LHZKwXJxCMVmwjWMTVaU7RJPt4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYQcB/3z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0715CC433C7;
-	Thu, 11 Apr 2024 10:05:25 +0000 (UTC)
+	 MIME-Version; b=u4fx2eWFEsRlBM+uFqPX2GOA4CF0gMfIqBwXjOuUhdWs7smt/zSmBms/3MztlAoNv2NHxDYFmPS0E+O7ngUWUVONZsnpjSzNUBf3/B+dLw2UUIsVMi1COs/5WWL5wfq7kpkixgKdrJCLJw5LMtfvkIBTTLSwp1PSeK4h4srrtVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAdprBSj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43227C433B2;
+	Thu, 11 Apr 2024 10:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829926;
-	bh=+rVmsbpJDU0CnrY7Y3beTawKrti5N3WS6M6RKOLkhDA=;
+	s=korg; t=1712832041;
+	bh=bYiyivn4e2yFAM+k0iJ4soZoWDX+YLIbOyMryLUGT7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lYQcB/3zyQPIB0wKdrJ7r1yHrFQhoC0g9yU9qt9lHaBA0ocspV205ZugapVBSSW5I
-	 aIP9P71tageDo263+UwpcoImPlNJKlGQ/5R7sTUqrEqKJ1jbezxOdDreb8t292Qrh/
-	 nscSPA4xZMoK1KYEW+MYS9Hry3gkquIOEkKtyRnY=
+	b=UAdprBSjp0kj4JH3dqmSbCLre3tAlYzSB+Cqc+Fc4hcH/6W2T6w/wuo1B7jm7OeE4
+	 pzQVkm8P3a5sRp6lvLrT2Hq4dSA/uvUQeL4d17fNfLPxunR1mOka/8zCdGG35xsXRI
+	 kbVKYPIGln+ei2vhBpoMmFqOwNm6i6oFxPHcO7Io=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 151/175] btrfs: send: handle path ref underflow in header iterate_inode_ref()
+	xingwei lee <xrivendell7@gmail.com>,
+	yue sun <samsun1006219@gmail.com>,
+	syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com,
+	syzbot+d4066896495db380182e@syzkaller.appspotmail.com,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>
+Subject: [PATCH 5.10 211/294] bpf, sockmap: Prevent lock inversion deadlock in map delete elem
 Date: Thu, 11 Apr 2024 11:56:14 +0200
-Message-ID: <20240411095424.108535355@linuxfoundation.org>
+Message-ID: <20240411095441.948963329@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +66,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Jakub Sitnicki <jakub@cloudflare.com>
 
-[ Upstream commit 3c6ee34c6f9cd12802326da26631232a61743501 ]
+commit ff91059932401894e6c86341915615c5eb0eca48 upstream.
 
-Change BUG_ON to proper error handling if building the path buffer
-fails. The pointers are not printed so we don't accidentally leak kernel
-addresses.
+syzkaller started using corpuses where a BPF tracing program deletes
+elements from a sockmap/sockhash map. Because BPF tracing programs can be
+invoked from any interrupt context, locks taken during a map_delete_elem
+operation must be hardirq-safe. Otherwise a deadlock due to lock inversion
+is possible, as reported by lockdep:
 
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+       CPU0                    CPU1
+       ----                    ----
+  lock(&htab->buckets[i].lock);
+                               local_irq_disable();
+                               lock(&host->lock);
+                               lock(&htab->buckets[i].lock);
+  <Interrupt>
+    lock(&host->lock);
+
+Locks in sockmap are hardirq-unsafe by design. We expects elements to be
+deleted from sockmap/sockhash only in task (normal) context with interrupts
+enabled, or in softirq context.
+
+Detect when map_delete_elem operation is invoked from a context which is
+_not_ hardirq-unsafe, that is interrupts are disabled, and bail out with an
+error.
+
+Note that map updates are not affected by this issue. BPF verifier does not
+allow updating sockmap/sockhash from a BPF tracing program today.
+
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Reported-by: yue sun <samsun1006219@gmail.com>
+Reported-by: syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com
+Reported-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
+Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=d4066896495db380182e
+Closes: https://syzkaller.appspot.com/bug?extid=bc922f476bd65abbd466
+Link: https://lore.kernel.org/bpf/20240402104621.1050319-1-jakub@cloudflare.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/send.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/core/sock_map.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index 0c86409a316e8..e3b6ca9176afe 100644
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -958,7 +958,15 @@ static int iterate_inode_ref(struct btrfs_root *root, struct btrfs_path *path,
- 					ret = PTR_ERR(start);
- 					goto out;
- 				}
--				BUG_ON(start < p->buf);
-+				if (unlikely(start < p->buf)) {
-+					btrfs_err(root->fs_info,
-+			"send: path ref buffer underflow for key (%llu %u %llu)",
-+						  found_key->objectid,
-+						  found_key->type,
-+						  found_key->offset);
-+					ret = -EINVAL;
-+					goto out;
-+				}
- 			}
- 			p->start = start;
- 		} else {
--- 
-2.43.0
-
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -422,6 +422,9 @@ static int __sock_map_delete(struct bpf_
+ 	struct sock *sk;
+ 	int err = 0;
+ 
++	if (irqs_disabled())
++		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
++
+ 	raw_spin_lock_bh(&stab->lock);
+ 	sk = *psk;
+ 	if (!sk_test || sk_test == sk)
+@@ -955,6 +958,9 @@ static int sock_hash_delete_elem(struct
+ 	struct bpf_shtab_elem *elem;
+ 	int ret = -ENOENT;
+ 
++	if (irqs_disabled())
++		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
++
+ 	hash = sock_hash_bucket_hash(key, key_size);
+ 	bucket = sock_hash_select_bucket(htab, hash);
+ 
 
 
 
