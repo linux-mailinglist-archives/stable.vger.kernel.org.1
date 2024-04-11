@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB9E8A0E44
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CA3E8A0F59
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D73B1C2127C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0A281F274A3
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE83E145FE0;
-	Thu, 11 Apr 2024 10:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4477146A74;
+	Thu, 11 Apr 2024 10:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAeUcyo/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rg3RJyJ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A28C145B07;
-	Thu, 11 Apr 2024 10:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D9613FD94;
+	Thu, 11 Apr 2024 10:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830380; cv=none; b=LIicedp8SMmv0Zh4KnETj0VuPlp4RcwTQflK/LG13ZVb3TXnX8uPaq10nOMhduANNXGTlKQfdgk7tIE07KVE70HM3ps+gwdkjxN6w0pWM1hP42mLsk38P3okHPBWpKG/74U1muZP2FNOK44KXewlWwnpVl1LP+DQmfdiQo1zsLU=
+	t=1712830987; cv=none; b=TEFWshT3uf944tgcyvjDfAxbYXT1g675iyc4t8ZFHuX4iXOYYsU8VDXzWsjqvZfMXgDmGlVBMjA5Y0sk1CYqV4tiHSC53WR0i1rw9tr/2Ma+ZYKPvTvgv8UyI/aaUTftmqnq9ViuoSRL6ONjE+TuxdsMRXy18F7ucdE95vm10Qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830380; c=relaxed/simple;
-	bh=wcuvU8sHKj7Ey1ZS6rdCjtFSOW5l5ZkCMMhBke5PgdM=;
+	s=arc-20240116; t=1712830987; c=relaxed/simple;
+	bh=JK405gihm7p0n9xO+1w8bc7peaZ2u847bd+kH7Y/zuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IA8EBYzl42ei+cEy9ea23h5xr6CSWakSRLR2kp3xBlbb5Knr7qoZKrArgSEPqKHt1RPr087Xa1a5QQ8YmTEQBbi5376DgYh6SNE5IXuD/QNQXYVR5io5igFTUg6RlTp6r1JMQsV9kcJRwsnM6T7vJsE0vsfvyEUOFLfeMpre5lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAeUcyo/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C1AC433F1;
-	Thu, 11 Apr 2024 10:12:59 +0000 (UTC)
+	 MIME-Version; b=rQl5B2tZxXPBI251vCeZkJh1Ga2ihDmeFzFoDwRtE+Lii89ednGmtO9nnOXthPLMoAM1PBomhHJCpbpKTUeZVtDCdU0iv0ipyqBu4dBeA3mlELayph76tp2chAPv6+5DTI4FRpUAOz327ax8aazKweJXAIX6twQRvnjXteyenhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rg3RJyJ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09CB3C433C7;
+	Thu, 11 Apr 2024 10:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830380;
-	bh=wcuvU8sHKj7Ey1ZS6rdCjtFSOW5l5ZkCMMhBke5PgdM=;
+	s=korg; t=1712830987;
+	bh=JK405gihm7p0n9xO+1w8bc7peaZ2u847bd+kH7Y/zuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JAeUcyo/i54F3Li5FvbOCIX6l0oUofEZxaA/Vv8qjZ7I7gSC45MyOBoL2ipgw5hKT
-	 ylvp0cc7LBadzEn4zJgZflju42FYl6u5021bmIVmEM9lGmeFbnCAq3RL8ZVQ0YYERb
-	 89p6lWrod6rOHD0iEYZT6vVwoFd9WgyzzuVwgefE=
+	b=Rg3RJyJ0EE7secmkV7pixUSYDkXlE0QktMKtGCd2z20CxXXX8TndglNLNfRG3Mjzo
+	 1MfWbpG9LpFoVnu5tMOO5rIk1/pzLqB6u2VaAegXB3/iPtV8Rcjj1VJcgMx1Won993
+	 T1QVfV4IvfQHlbBnPZGax7dk98cLDSGGgFnhWYuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
+	Edward Adam Davis <eadavis@qq.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	syzbot+f8e9a371388aa62ecab4@syzkaller.appspotmail.com
-Subject: [PATCH 6.8 125/143] io_uring: clear opcode specific data for an early failure
+	syzbot+830d9e3fa61968246abd@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 184/215] Bluetooth: btintel: Fix null ptr deref in btintel_read_version
 Date: Thu, 11 Apr 2024 11:56:33 +0200
-Message-ID: <20240411095424.668057170@linuxfoundation.org>
+Message-ID: <20240411095430.398125112@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit e21e1c45e1fe2e31732f40256b49c04e76a17cee ]
+[ Upstream commit b79e040910101b020931ba0c9a6b77e81ab7f645 ]
 
-If failure happens before the opcode prep handler is called, ensure that
-we clear the opcode specific area of the request, which holds data
-specific to that request type. This prevents errors where opcode
-handlers either don't get to clear per-request private data since prep
-isn't even called.
+If hci_cmd_sync_complete() is triggered and skb is NULL, then
+hdev->req_skb is NULL, which will cause this issue.
 
-Reported-and-tested-by: syzbot+f8e9a371388aa62ecab4@syzkaller.appspotmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-and-tested-by: syzbot+830d9e3fa61968246abd@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ drivers/bluetooth/btintel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 572effd0af532..0f52ea80103ef 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2143,6 +2143,13 @@ static void io_init_req_drain(struct io_kiocb *req)
- 	}
- }
+diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
+index bb99c8653aabf..5694dd63c1459 100644
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -340,7 +340,7 @@ int btintel_read_version(struct hci_dev *hdev, struct intel_version *ver)
+ 	struct sk_buff *skb;
  
-+static __cold int io_init_fail_req(struct io_kiocb *req, int err)
-+{
-+	/* ensure per-opcode data is cleared if we fail before prep */
-+	memset(&req->cmd.data, 0, sizeof(req->cmd.data));
-+	return err;
-+}
-+
- static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 		       const struct io_uring_sqe *sqe)
- 	__must_hold(&ctx->uring_lock)
-@@ -2163,29 +2170,29 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 
- 	if (unlikely(opcode >= IORING_OP_LAST)) {
- 		req->opcode = 0;
--		return -EINVAL;
-+		return io_init_fail_req(req, -EINVAL);
- 	}
- 	def = &io_issue_defs[opcode];
- 	if (unlikely(sqe_flags & ~SQE_COMMON_FLAGS)) {
- 		/* enforce forwards compatibility on users */
- 		if (sqe_flags & ~SQE_VALID_FLAGS)
--			return -EINVAL;
-+			return io_init_fail_req(req, -EINVAL);
- 		if (sqe_flags & IOSQE_BUFFER_SELECT) {
- 			if (!def->buffer_select)
--				return -EOPNOTSUPP;
-+				return io_init_fail_req(req, -EOPNOTSUPP);
- 			req->buf_index = READ_ONCE(sqe->buf_group);
- 		}
- 		if (sqe_flags & IOSQE_CQE_SKIP_SUCCESS)
- 			ctx->drain_disabled = true;
- 		if (sqe_flags & IOSQE_IO_DRAIN) {
- 			if (ctx->drain_disabled)
--				return -EOPNOTSUPP;
-+				return io_init_fail_req(req, -EOPNOTSUPP);
- 			io_init_req_drain(req);
- 		}
- 	}
- 	if (unlikely(ctx->restricted || ctx->drain_active || ctx->drain_next)) {
- 		if (ctx->restricted && !io_check_restriction(ctx, req, sqe_flags))
--			return -EACCES;
-+			return io_init_fail_req(req, -EACCES);
- 		/* knock it to the slow queue path, will be drained there */
- 		if (ctx->drain_active)
- 			req->flags |= REQ_F_FORCE_ASYNC;
-@@ -2198,9 +2205,9 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 	}
- 
- 	if (!def->ioprio && sqe->ioprio)
--		return -EINVAL;
-+		return io_init_fail_req(req, -EINVAL);
- 	if (!def->iopoll && (ctx->flags & IORING_SETUP_IOPOLL))
--		return -EINVAL;
-+		return io_init_fail_req(req, -EINVAL);
- 
- 	if (def->needs_file) {
- 		struct io_submit_state *state = &ctx->submit_state;
-@@ -2224,12 +2231,12 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 
- 		req->creds = xa_load(&ctx->personalities, personality);
- 		if (!req->creds)
--			return -EINVAL;
-+			return io_init_fail_req(req, -EINVAL);
- 		get_cred(req->creds);
- 		ret = security_uring_override_creds(req->creds);
- 		if (ret) {
- 			put_cred(req->creds);
--			return ret;
-+			return io_init_fail_req(req, ret);
- 		}
- 		req->flags |= REQ_F_CREDS;
- 	}
+ 	skb = __hci_cmd_sync(hdev, 0xfc05, 0, NULL, HCI_CMD_TIMEOUT);
+-	if (IS_ERR(skb)) {
++	if (IS_ERR_OR_NULL(skb)) {
+ 		bt_dev_err(hdev, "Reading Intel version information failed (%ld)",
+ 			   PTR_ERR(skb));
+ 		return PTR_ERR(skb);
 -- 
 2.43.0
 
