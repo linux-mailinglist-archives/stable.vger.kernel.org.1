@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 950D98A0E56
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 276798A0FB8
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:26:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34BD11F24CA3
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1F6F1F288FC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F04145FF0;
-	Thu, 11 Apr 2024 10:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D011145B1A;
+	Thu, 11 Apr 2024 10:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2xI3CkM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gi4FyvRn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82824145B1E;
-	Thu, 11 Apr 2024 10:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D14413FD94;
+	Thu, 11 Apr 2024 10:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830422; cv=none; b=CYLbkhyAcqg4BhvPJdp+zZ0u1lY4Ug1tuVjzGO9Pk+NHQz8y5RZ+Myh9xV2UXwooTV5adcWHHNJjoLJBqAFzDQri94IcduDfz08pOXoVdCzKV3E/ysLPBk7t6b1QjNT7o18jc4DZPT0/ffxFXYPPOgOMWf2+8dd7VPXPEQoy6O0=
+	t=1712831205; cv=none; b=RTHT5N6ijKIV8DPMSLPRI9y3AIOy0OZdyjT6Cx14pwxTuMhAPfnWGOYZhsYrGXNXI+H2EuGJqogOkaJSvYQ3mcFIP58I4yO2R0hBdKCBvCs+V2AQy6rQKzJInah05CetlrZxSHE+s0AbA9148wSvFdHUp0E6+GOrusX0Kunftkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830422; c=relaxed/simple;
-	bh=5lTFt4ZZmUw+IZ3tsp6V3ungTALnwSYUyTYkPHkvm1Q=;
+	s=arc-20240116; t=1712831205; c=relaxed/simple;
+	bh=FSiRYzmeuU3hh4HArW/RmAhxJ7xEQEYBuFYNXJ4sCUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sisSFaXX2RGDyQltfCzLOxl+gy8DSBLRBbx79Y0fMeS1FaO+7jW63iRuI1/0LhPJtkFDJEKcMZaoGwO6kh/dPXi/mbWJc87Em+Bj9Ap5vQYeqpQs5hjH3Q9N7nmA2xtPPo0n0Z7aya1tDJQM0nJ8Ov821iAue0wyKQKIa/1vFNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2xI3CkM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A753CC433C7;
-	Thu, 11 Apr 2024 10:13:41 +0000 (UTC)
+	 MIME-Version; b=KBMg/4CA1K56+71uDwpZg5j3GmZWGiRrxuvau79pi8+MbRgbHtlgwZ3V3qzmFEFhwaEYesQLtWBRHu33SoITZe3BVGILqIwgd5PI/AfVWJ41hZGj/y6IHl9UxuOUewWBRcp2ZQvSdcMPg9Js/K7oMyUFoNDDY2UknOBsKghJfkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gi4FyvRn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE92C433C7;
+	Thu, 11 Apr 2024 10:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830422;
-	bh=5lTFt4ZZmUw+IZ3tsp6V3ungTALnwSYUyTYkPHkvm1Q=;
+	s=korg; t=1712831205;
+	bh=FSiRYzmeuU3hh4HArW/RmAhxJ7xEQEYBuFYNXJ4sCUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q2xI3CkMERWIiV9AD8+GK+lB5D8/1uUiO4pZ7vThA/5Htd2DINAbcQRS76CIJrIfZ
-	 0T9hLUAHiVZAJ/o5dpFpG9UJlUQdDTuZlQry9TgPI/y+6mnWAX82B+p+CL13IJlMDI
-	 UHKKofLCZkb5t0EmdcuKi4bgpVTSLanlf6SG8G1Y=
+	b=gi4FyvRnDFNHpkRNasZrVWWxH6dlHymM2C2Wl/xvXqZcVN+RiOaD+sTdbEkOeS/GN
+	 yX8Y7HN0crJTv5pxIhWOLMZnsDnPnev1DMN1XkkTQDkoPFZKRg87XZoXhRE7CMg7aA
+	 jlkT2pG79AlT/6Q+bpn+4ziOkPNZII4+mQOMUPdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alban=20Boy=C3=A9?= <alban.boye@protonmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 102/143] platform/x86: touchscreen_dmi: Add an extra entry for a variant of the Chuwi Vi8 tablet
+	Edward Adam Davis <eadavis@qq.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+830d9e3fa61968246abd@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 043/114] Bluetooth: btintel: Fix null ptr deref in btintel_read_version
 Date: Thu, 11 Apr 2024 11:56:10 +0200
-Message-ID: <20240411095423.978466532@linuxfoundation.org>
+Message-ID: <20240411095418.181923090@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alban Boyé <alban.boye@protonmail.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 1266e2efb7512dbf20eac820ca2ed34de6b1c3e7 ]
+[ Upstream commit b79e040910101b020931ba0c9a6b77e81ab7f645 ]
 
-Signed-off-by: Alban Boyé <alban.boye@protonmail.com>
-Link: https://lore.kernel.org/r/20240227223919.11587-1-alban.boye@protonmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+If hci_cmd_sync_complete() is triggered and skb is NULL, then
+hdev->req_skb is NULL, which will cause this issue.
+
+Reported-and-tested-by: syzbot+830d9e3fa61968246abd@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/touchscreen_dmi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/bluetooth/btintel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
-index 975cf24ae359a..c6a10ec2c83f6 100644
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -1217,6 +1217,15 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
- 			DMI_MATCH(DMI_BIOS_VERSION, "CHUWI.D86JLBNR"),
- 		},
- 	},
-+	{
-+		/* Chuwi Vi8 dual-boot (CWI506) */
-+		.driver_data = (void *)&chuwi_vi8_data,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "i86"),
-+			DMI_MATCH(DMI_BIOS_VERSION, "CHUWI2.D86JHBNR02"),
-+		},
-+	},
- 	{
- 		/* Chuwi Vi8 Plus (CWI519) */
- 		.driver_data = (void *)&chuwi_vi8_plus_data,
+diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
+index 2462796a512a5..b396b0b1d6cc2 100644
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -435,7 +435,7 @@ int btintel_read_version(struct hci_dev *hdev, struct intel_version *ver)
+ 	struct sk_buff *skb;
+ 
+ 	skb = __hci_cmd_sync(hdev, 0xfc05, 0, NULL, HCI_CMD_TIMEOUT);
+-	if (IS_ERR(skb)) {
++	if (IS_ERR_OR_NULL(skb)) {
+ 		bt_dev_err(hdev, "Reading Intel version information failed (%ld)",
+ 			   PTR_ERR(skb));
+ 		return PTR_ERR(skb);
 -- 
 2.43.0
 
