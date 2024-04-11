@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8251B8A1146
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D90EA8A1196
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38B071F2D232
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 787BA1F27B00
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7ABD1474BE;
-	Thu, 11 Apr 2024 10:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC61145B26;
+	Thu, 11 Apr 2024 10:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="by8AWf51"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8E+TKjy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87072145B13;
-	Thu, 11 Apr 2024 10:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18076BB29;
+	Thu, 11 Apr 2024 10:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832142; cv=none; b=Kxzmlc1liBwaMrpInPEYf91d7RBm1slWZY8MGWIsU+xtYIHTqQ+0uPYxPd9ITi3bOFSRhzq7Mljl3PEkcMHfciIcF5j2V/kah3awLGG9KPGVdr5GUWao0vXis6QhAjZr2WZvkUrIvwxmUyh65ziqPc444jVZSibp/Qz0nlvKr+s=
+	t=1712832336; cv=none; b=NMML8M1bjgU0COVqlxN+QFinhkkzyGxrrHuDklJOsImF3/rESmvEuuPnKuomoqCTcHE5monx8ScBR7XnU3gztNULiSOi2ITKiLOBse8S5zBzy4Q939/ekYy2dwHyxumjcTHzMFDtTNSM6gWthjwgJ1VWIlFjDhG+1aB+pHe5bTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832142; c=relaxed/simple;
-	bh=Ekn9Q18Mh0GL7rSLO+8O3L6xZOaoDf+0MnFUJC42qQA=;
+	s=arc-20240116; t=1712832336; c=relaxed/simple;
+	bh=QXotESlx31SMtgGDy7D5Ve8+9OF0e1XHdHuuzKkEjzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dM1ZzEKxHoxokQH1B8U14X5rY+Rlp7Q3QEgH0nLoflkJxFd6WcP0pkrG8MPP8K+qqBH96KpL7/OY7M9TStA1hXa8YCm8aduiivtD7QRvulodnERSaFxOL/8+pyAzkL0mKD88lnJ3efkBfBHyb49GzGx9gDKKs3qtOlEAJfNw+qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=by8AWf51; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A81C433C7;
-	Thu, 11 Apr 2024 10:42:21 +0000 (UTC)
+	 MIME-Version; b=Sy6qXWM7dHWV+dYOAZjTb7OF9hlLG0f6GPooWVdNvZbSAeTOGVhjTKYaOn4hXeNqe7w42pCuTpMqoEEKnCbe2+oyvs3Uq9izOdHp4uM2NTEzXWBwBUmRfBYNSy9WeoNEPEBlzrSOuRlCA90WRTIWDLMpCih5SdNLtquTqwhi9yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8E+TKjy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444A8C433C7;
+	Thu, 11 Apr 2024 10:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832142;
-	bh=Ekn9Q18Mh0GL7rSLO+8O3L6xZOaoDf+0MnFUJC42qQA=;
+	s=korg; t=1712832336;
+	bh=QXotESlx31SMtgGDy7D5Ve8+9OF0e1XHdHuuzKkEjzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=by8AWf51gW25YGHJfnG72Ec2K2MfNtQXGoQAo+rUmD2w7WEsfA45Z+zd1CLHMOY90
-	 rTLNJ2L7GeycEGW+Gk6KxwKBOXaqsVOIZECzUR3S78fiOTMU13yzxsGtl3PUFkPjtT
-	 vJAmaD+Y20CqKQ86t1zNyBuwk9l12d1DpWzLTLBs=
+	b=Y8E+TKjyFtLg03WHhh1apWf+HLFleEdPaDi4xxnzuTjPPOzOIprdGh7QOONb6Wy8R
+	 YISdJDM0VeKW2TdJmLjhs0BAkCShkfZbyUfIQJ+xBMez3j3P00TWqq4f/6dTtsKkRm
+	 TYFQaQgUAz2mqWkZCJUI+i0Es5uH97jaE83lCTB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 244/294] batman-adv: Return directly after a failed batadv_dat_select_candidates() in batadv_dat_forward_data()
+Subject: [PATCH 6.1 15/83] wifi: brcmfmac: Add DMI nvram filename quirk for ACEPC W5 Pro
 Date: Thu, 11 Apr 2024 11:56:47 +0200
-Message-ID: <20240411095442.916279340@linuxfoundation.org>
+Message-ID: <20240411095413.136420979@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit ffc15626c861f811f9778914be004fcf43810a91 ]
+[ Upstream commit 32167707aa5e7ae4b160c18be79d85a7b4fdfcfb ]
 
-The kfree() function was called in one case by
-the batadv_dat_forward_data() function during error handling
-even if the passed variable contained a null pointer.
-This issue was detected by using the Coccinelle software.
+The ACEPC W5 Pro HDMI stick contains quite generic names in the sys_vendor
+and product_name DMI strings, without this patch brcmfmac will try to load:
+"brcmfmac43455-sdio.$(DEFAULT_STRING)-$(DEFAULT_STRING).txt" as nvram file
+which is both too generic and messy with the $ symbols in the name.
 
-* Thus return directly after a batadv_dat_select_candidates() call failed
-  at the beginning.
+The ACEPC W5 Pro uses the same Ampak AP6255 module as the ACEPC T8
+and the nvram for the T8 is already in linux-firmware, so point the new
+DMI nvram filename quirk to the T8 nvram file.
 
-* Delete the label “out” which became unnecessary with this refactoring.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Acked-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240216213649.251718-1-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/distributed-arp-table.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
-index ddd3b4c70a516..b1cb6ecffceb9 100644
---- a/net/batman-adv/distributed-arp-table.c
-+++ b/net/batman-adv/distributed-arp-table.c
-@@ -687,7 +687,7 @@ static bool batadv_dat_forward_data(struct batadv_priv *bat_priv,
- 
- 	cand = batadv_dat_select_candidates(bat_priv, ip, vid);
- 	if (!cand)
--		goto out;
-+		return ret;
- 
- 	batadv_dbg(BATADV_DBG_DAT, bat_priv, "DHT_SEND for %pI4\n", &ip);
- 
-@@ -731,7 +731,6 @@ static bool batadv_dat_forward_data(struct batadv_priv *bat_priv,
- 		batadv_orig_node_put(cand[i].orig_node);
- 	}
- 
--out:
- 	kfree(cand);
- 	return ret;
- }
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
+index 86ff174936a9a..c3a602197662b 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
+@@ -82,6 +82,15 @@ static const struct dmi_system_id dmi_platform_data[] = {
+ 		},
+ 		.driver_data = (void *)&acepc_t8_data,
+ 	},
++	{
++		/* ACEPC W5 Pro Cherry Trail Z8350 HDMI stick, same wifi as the T8 */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "T3 MRD"),
++			DMI_MATCH(DMI_CHASSIS_TYPE, "3"),
++			DMI_MATCH(DMI_BIOS_VENDOR, "American Megatrends Inc."),
++		},
++		.driver_data = (void *)&acepc_t8_data,
++	},
+ 	{
+ 		/* Chuwi Hi8 Pro with D2D3_Hi8Pro.233 BIOS */
+ 		.matches = {
 -- 
 2.43.0
 
