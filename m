@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-38980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0DEF8A114F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4409E8A0FEA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80A081F27244
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC9BC1F295D2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56328145B05;
-	Thu, 11 Apr 2024 10:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80CE1146A72;
+	Thu, 11 Apr 2024 10:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfLdPm4L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="syaTF6rZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C9A142624;
-	Thu, 11 Apr 2024 10:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F520145B1A;
+	Thu, 11 Apr 2024 10:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832163; cv=none; b=gBITu14E+L/DQfqVcS3GPRalLvkPn08MF7nr6XiESyVFbIWuQPkOJHjNUxrXmpxiENe8LIMBowLXMkxsNlkh4TsFWl6pL4GjLeiXUznx87NRZmy8ZbjLjEmwTFqPQE21BboonCRVvBmlZTKmoeEl7HmicTGI8ggkr5r0FXKDWrs=
+	t=1712831331; cv=none; b=AEZ2h53SdVBt1JbT1g8pS+urRLWO4ba1i23+V+02WUC3tTbUQFXqH7k2Q3uY4I43Xcvshk9U7muKUFyxTe9oQmxz1tv6QJ5ZFEhJ9gXh2ivflmvasA2vHJgFnJPtXMst89HnpO9DoHc58vQXh3NgWolvPs83bNCCi2e9A2iN51o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832163; c=relaxed/simple;
-	bh=UTgfpIma/Bxd8SNRyDpP5x2WABspy2pTry2ZpNBIBcQ=;
+	s=arc-20240116; t=1712831331; c=relaxed/simple;
+	bh=cIGmj+DcJdMu/1ma60H4ivJWyQ+XbicOQkk7tXkO7Uc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JvMkgEvfZoqMWfTL+CdAku3bqKZu22h362x5304phFo5ZL+b5aR74nsLobLpXeSSBLd8+w/0agKlU78dXTsypGuionCJyjiOxWrcIDLiXnugAridMgwuLutWvlHg3wGxfU1C2FjN8Dyx2SLjmYGmuW5GjAZDsAXrgcfwKnloagU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfLdPm4L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EF6C433F1;
-	Thu, 11 Apr 2024 10:42:41 +0000 (UTC)
+	 MIME-Version; b=nWUvhIYt4EKgrpkm46afGggGzsvmFeLR+X88ugVoiEnFKlRtHNHzrcuUI7r+lI9gkR+2POKTrhvtEJPkS7H3DopNJxL5QKuUP0SqlP9Y27FPTPMCcpQlBIoE0qjx9owwzefB2P7oHbmJI/5WAXCM/iZVH8nfcl/4+vGbj+ugUn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=syaTF6rZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95D5C433C7;
+	Thu, 11 Apr 2024 10:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832162;
-	bh=UTgfpIma/Bxd8SNRyDpP5x2WABspy2pTry2ZpNBIBcQ=;
+	s=korg; t=1712831331;
+	bh=cIGmj+DcJdMu/1ma60H4ivJWyQ+XbicOQkk7tXkO7Uc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wfLdPm4L4cN4/bfpxVM6wpXbGt8Lmc7hcAp/3F/PSDttP4VS9U1WFB0SNl4/mD1nl
-	 tyXbT7w7AzgQeidPuXtVf9gMI9xXgwcz03oaqVk8VB557zf4JZRJKHUBcYcnic2qg9
-	 ZsfrBc51rP+a0zMiI3qoqr7B+fVAAxs/cZGCnXp0=
+	b=syaTF6rZ+l2Qh/g/86wYMQi/nBKw6MwMBbFWBkYLCr/P+15Ni5XS82SVEKYlBSHxW
+	 cP2tnQAHtdF4an6bTBfU4C+c6axjqxzjbIPzJHAssBnzMl9mY0Ob4uBELZzqSsd58q
+	 pjQ1YCtxkD5Ch06zJosd4VQKR4TgJMVo0OKumfa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Petre Rodan <petre.rodan@subdimension.ro>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 250/294] ionic: set adminq irq affinity
+Subject: [PATCH 6.6 086/114] tools: iio: replace seekdir() in iio_generic_buffer
 Date: Thu, 11 Apr 2024 11:56:53 +0200
-Message-ID: <20240411095443.095629549@linuxfoundation.org>
+Message-ID: <20240411095419.485428141@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Petre Rodan <petre.rodan@subdimension.ro>
 
-[ Upstream commit c699f35d658f3c21b69ed24e64b2ea26381e941d ]
+[ Upstream commit 4e6500bfa053dc133021f9c144261b77b0ba7dc8 ]
 
-We claim to have the AdminQ on our irq0 and thus cpu id 0,
-but we need to be sure we set the affinity hint to try to
-keep it there.
+Replace seekdir() with rewinddir() in order to fix a localized glibc bug.
 
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+One of the glibc patches that stable Gentoo is using causes an improper
+directory stream positioning bug on 32bit arm. That in turn ends up as a
+floating point exception in iio_generic_buffer.
+
+The attached patch provides a fix by using an equivalent function which
+should not cause trouble for other distros and is easier to reason about
+in general as it obviously always goes back to to the start.
+
+https://sourceware.org/bugzilla/show_bug.cgi?id=31212
+
+Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+Link: https://lore.kernel.org/r/20240108103224.3986-1-petre.rodan@subdimension.ro
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/iio/iio_utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index 49c28134ac2cc..a37ca4b1e5665 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -2708,9 +2708,12 @@ static int ionic_lif_adminq_init(struct ionic_lif *lif)
+diff --git a/tools/iio/iio_utils.c b/tools/iio/iio_utils.c
+index 6a00a6eecaef0..c5c5082cb24e5 100644
+--- a/tools/iio/iio_utils.c
++++ b/tools/iio/iio_utils.c
+@@ -376,7 +376,7 @@ int build_channel_array(const char *device_dir, int buffer_idx,
+ 		goto error_close_dir;
+ 	}
  
- 	napi_enable(&qcq->napi);
- 
--	if (qcq->flags & IONIC_QCQ_F_INTR)
-+	if (qcq->flags & IONIC_QCQ_F_INTR) {
-+		irq_set_affinity_hint(qcq->intr.vector,
-+				      &qcq->intr.affinity_mask);
- 		ionic_intr_mask(idev->intr_ctrl, qcq->intr.index,
- 				IONIC_INTR_MASK_CLEAR);
-+	}
- 
- 	qcq->flags |= IONIC_QCQ_F_INITED;
- 
+-	seekdir(dp, 0);
++	rewinddir(dp);
+ 	while (ent = readdir(dp), ent) {
+ 		if (strcmp(ent->d_name + strlen(ent->d_name) - strlen("_en"),
+ 			   "_en") == 0) {
 -- 
 2.43.0
 
