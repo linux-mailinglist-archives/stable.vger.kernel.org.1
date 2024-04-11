@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-38700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F4E8A0FED
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:29:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94B828A0F79
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:24:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8FB928251A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:29:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 499B01F27DDD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B93D14600E;
-	Thu, 11 Apr 2024 10:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF92146A72;
+	Thu, 11 Apr 2024 10:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9CoijV8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/FLf8ow"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8441D558;
-	Thu, 11 Apr 2024 10:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E467140E3D;
+	Thu, 11 Apr 2024 10:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831340; cv=none; b=U1/IVuQe4kSgeCwiSoZ9tfNPB9W3wgjyPpje5p0MS0U9P9Qod/QxuL1/2qRMoWmgLQYsaYyo805AHaYf9qmx9+Pz0/trAqpQr674dc0Bq6YmjlIQOrFo3gY92fUrwkJhCUXyAYzGdFIrzXjychPzXjjRJCmilN2SmF2RdUrgx/o=
+	t=1712831049; cv=none; b=JVr2ss5sN7rb6sgAAruTcqOVgJQqy0LOqQ4BT60gsJPcKU20iEtugCWtMkqf2EI/eZwQLTtNDLcF5ODnuKidhaQwJ+O/pVGTOuvAB0okJoBtZ65oJZeBHxAa+PZXvQei1r9OLxa3+HGuKzuKPDQDTNSpokvwlrqOmZX9ZtQtrvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831340; c=relaxed/simple;
-	bh=mX0nmJw+03BGQLfnO7ZvRxZlwDJwGRTy0Aj1KBycMLc=;
+	s=arc-20240116; t=1712831049; c=relaxed/simple;
+	bh=KmNJCCdzYah9C+1Pqq1Pl1R9UXXzZLyNiV/xPHEDSSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZ6E+c56UwFAN3aSO1+odk/RLvFl0p2XfpuWE1srDM0eSb+JQWQnpmS7BA6GFo9h6JDqxmd3973Lgdsza1xBjy0qsCzCf4B2Dx3mO3kg3PZJdUCqL6x1506OeWI0/qDijc/ggbO+v+FuMaYY+61dIpgJJIggf60dGdJOfSe32gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9CoijV8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73391C433C7;
-	Thu, 11 Apr 2024 10:28:59 +0000 (UTC)
+	 MIME-Version; b=j9+SquF6AyjbWnrEuJ9ct3mkZIaeLpyiMbOrPJW0wzkF2kKAWp0S8P5DUpA2rvCdDyW4CNsx6KPj8EGnhoLQMM88guW3BgPyWyVH+BigZUcIlScd03VNIUAIGKAEGxHUqFEXU+BDOLmoOiYvJEcsTv9aG/A0oOr/vNNC+lg31sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/FLf8ow; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98741C43390;
+	Thu, 11 Apr 2024 10:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831339;
-	bh=mX0nmJw+03BGQLfnO7ZvRxZlwDJwGRTy0Aj1KBycMLc=;
+	s=korg; t=1712831049;
+	bh=KmNJCCdzYah9C+1Pqq1Pl1R9UXXzZLyNiV/xPHEDSSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T9CoijV8gwxxCi4NVzvYUIDjJ6F8K8KR0enprR96+22uMdmt71QEasUTXf7MvMp/x
-	 R+urYZhmzAp0B3mlBdAPecDN5N3kJ5IIbmfeU7B8kia+vHdhUNsbuLDvFzBGy6Vfct
-	 K3eS2sL9Qhh5qm8MxK1Qg3M2jUQ9a5S2maq9BJF4=
+	b=v/FLf8owxeCmxfiUNOqPMKufGGtEe4eBFdwtquqxekCzREeCVpRGtj3vtOUzgGgDu
+	 RTKUA1LdN2hYmD33Vw/l/gAK0RaFN/DQ1tZt3cnK/sR1hY8+lDXh3unCc0lyvowB6V
+	 oejUXYKLN/eq7I4Bj61pQlKemyUIrCyqbTC+hjBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/114] usb: gadget: uvc: mark incomplete frames with UVC_STREAM_ERR
+	stable@kernel.org,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH 5.4 207/215] virtio: reenable config if freezing device failed
 Date: Thu, 11 Apr 2024 11:56:56 +0200
-Message-ID: <20240411095419.578090624@linuxfoundation.org>
+Message-ID: <20240411095431.075787164@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 2a3b7af120477d0571b815ccb8600cafd5ebf02f ]
+commit 310227f42882c52356b523e2f4e11690eebcd2ab upstream.
 
-If an frame was transmitted incomplete to the host, we set the
-UVC_STREAM_ERR bit in the header for the last request that is going
-to be queued. This way the host will know that it should drop the
-frame instead of trying to display the corrupted content.
+Currently, we don't reenable the config if freezing the device failed.
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Link: https://lore.kernel.org/r/20240214-uvc-error-tag-v1-2-37659a3877fe@pengutronix.de
+For example, virtio-mem currently doesn't support suspend+resume, and
+trying to freeze the device will always fail. Afterwards, the device
+will no longer respond to resize requests, because it won't get notified
+about config changes.
+
+Let's fix this by re-enabling the config if freezing fails.
+
+Fixes: 22b7050a024d ("virtio: defer config changed notifications")
+Cc: <stable@kernel.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Message-Id: <20240213135425.795001-1-david@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/uvc_video.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/virtio/virtio.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/uvc_video.c b/drivers/usb/gadget/function/uvc_video.c
-index 91af3b1ef0d41..281e75027b344 100644
---- a/drivers/usb/gadget/function/uvc_video.c
-+++ b/drivers/usb/gadget/function/uvc_video.c
-@@ -35,6 +35,9 @@ uvc_video_encode_header(struct uvc_video *video, struct uvc_buffer *buf,
+--- a/drivers/virtio/virtio.c
++++ b/drivers/virtio/virtio.c
+@@ -381,13 +381,19 @@ EXPORT_SYMBOL_GPL(unregister_virtio_devi
+ int virtio_device_freeze(struct virtio_device *dev)
+ {
+ 	struct virtio_driver *drv = drv_to_virtio(dev->dev.driver);
++	int ret;
  
- 	data[1] = UVC_STREAM_EOH | video->fid;
+ 	virtio_config_disable(dev);
  
-+	if (video->queue.flags & UVC_QUEUE_DROP_INCOMPLETE)
-+		data[1] |= UVC_STREAM_ERR;
-+
- 	if (video->queue.buf_used == 0 && ts.tv_sec) {
- 		/* dwClockFrequency is 48 MHz */
- 		u32 pts = ((u64)ts.tv_sec * USEC_PER_SEC + ts.tv_nsec / NSEC_PER_USEC) * 48;
--- 
-2.43.0
-
+ 	dev->failed = dev->config->get_status(dev) & VIRTIO_CONFIG_S_FAILED;
+ 
+-	if (drv && drv->freeze)
+-		return drv->freeze(dev);
++	if (drv && drv->freeze) {
++		ret = drv->freeze(dev);
++		if (ret) {
++			virtio_config_enable(dev);
++			return ret;
++		}
++	}
+ 
+ 	return 0;
+ }
 
 
 
