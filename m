@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-38817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2AD8A1090
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A6C8A0E93
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 911BB1F2C6B9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 325EF28050A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9278F148314;
-	Thu, 11 Apr 2024 10:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A2A14601B;
+	Thu, 11 Apr 2024 10:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSAF4umu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yN8o9XJG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F52F140366;
-	Thu, 11 Apr 2024 10:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A1B13F452;
+	Thu, 11 Apr 2024 10:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831677; cv=none; b=G+wJRVq2fQQxYvcqwRgSH0BKXOlBTnt49E56nc/SoTN+SmPMoeS30rT36GnChXTn+CRHeBbXCU2yezyFsrw1LtrDG5CQTj3qlXjrGu4nZHT4WhKIfAlu07eGA9HslYfAgdOCU1fhehh6Li+WyGtSDA8Ja0wRgUP7bAN8f4b5bFc=
+	t=1712830566; cv=none; b=o0HbjFrS24hcG7ZB042awn6fiHDAjZEjTDrQmpU3kt0Rg5SrOeLOHj3PVx+Prbr5ITdSjDIChl/IPlAn9Nrjs00E/7bIj2tnH1IPrSiwHiR7V0J3IxLtCIoLQW/FcLfJYhgvyB+ggusro8F6eZn5jpmnjFa7mX0fXgbWsH2his8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831677; c=relaxed/simple;
-	bh=Qh1rtoXGGXJ4FOPBGOPW7/8WSKcPWbb7Pj2KqlSi9bE=;
+	s=arc-20240116; t=1712830566; c=relaxed/simple;
+	bh=prAjMazxOCCGNj8/Fbt5jGWYpIDbbgmMvtuJHaUNQuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cteR0mz5XIlxv/PB0dodwGiVZWggvqvUZ4ZL83onIEdWcg8WNX1ohzLdR76ucNz0amEjBhe29h6AhttsywDayvw3unEfMnuZhluoYSPUkiN5oekKjJiGIZwNiBpKrSdkPnhkIentuzdm4kKgUwg7JjxMEDEcGCWKOQpcwyRS7qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSAF4umu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA8AC433C7;
-	Thu, 11 Apr 2024 10:34:36 +0000 (UTC)
+	 MIME-Version; b=G3w8xIATV/lF44j5/OGiT7Yu0V7/vwYeeQ4GPY0J75LtavOYpEgaerdDqbITK/vN2SzNqP+g+ACzdbMW6gC9eVG5JbXHTcvvLBLPLoGe+NPzEDbnkrT9K90d2cx+VCT13V7oiXDVEI/SM6n3e7y0L9f/D48cXjI2RHzyi5Tic7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yN8o9XJG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B59FC433C7;
+	Thu, 11 Apr 2024 10:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831677;
-	bh=Qh1rtoXGGXJ4FOPBGOPW7/8WSKcPWbb7Pj2KqlSi9bE=;
+	s=korg; t=1712830566;
+	bh=prAjMazxOCCGNj8/Fbt5jGWYpIDbbgmMvtuJHaUNQuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HSAF4umuEFL2pKpzTHjL7Zt3dBZ5bRbXrxljzHE6aLVhWaQg2vg5aqNZkIHJuyWmd
-	 2zWS3NiKIfHMmrcevxOj5CzpTuiQxjYjVLdyiUNJW8OBTC+5nH2p1N9o2wcSjLXJ4U
-	 /DDKQYFSbSnbi5DvTeKv1ZYeHQA9etb7OGb2j2Q8=
+	b=yN8o9XJGqxSyipKaiZrDycdSv25cjQGHhnCsigRx8mWrAqEOjPuRY7xOQBFGqHLo2
+	 kMPk9UIU1H5T72mQOwZCa/pJtuFPS2jr5W/s88TEoUkWIznUIEVmaVbzZJOyEIFQG5
+	 olenF2oLpU2YxOqj+RG7uyF+gCDreWQZ/gdK3IDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linke li <lilinke99@qq.com>,
-	Rabin Vincent <rabin@rab.in>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Dhruva Gole <d-gole@ti.com>,
+	Qingliang Li <qingliang.li@mediatek.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 089/294] ring-buffer: Fix resetting of shortest_full
+Subject: [PATCH 5.4 043/215] PM: sleep: wakeirq: fix wake irq warning in system suspend
 Date: Thu, 11 Apr 2024 11:54:12 +0200
-Message-ID: <20240411095438.361815895@linuxfoundation.org>
+Message-ID: <20240411095426.188845956@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,119 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Qingliang Li <qingliang.li@mediatek.com>
 
-[ Upstream commit 68282dd930ea38b068ce2c109d12405f40df3f93 ]
+[ Upstream commit e7a7681c859643f3f2476b2a28a494877fd89442 ]
 
-The "shortest_full" variable is used to keep track of the waiter that is
-waiting for the smallest amount on the ring buffer before being woken up.
-When a tasks waits on the ring buffer, it passes in a "full" value that is
-a percentage. 0 means wake up on any data. 1-100 means wake up from 1% to
-100% full buffer.
+When driver uses pm_runtime_force_suspend() as the system suspend callback
+function and registers the wake irq with reverse enable ordering, the wake
+irq will be re-enabled when entering system suspend, triggering an
+'Unbalanced enable for IRQ xxx' warning. In this scenario, the call
+sequence during system suspend is as follows:
+  suspend_devices_and_enter()
+    -> dpm_suspend_start()
+      -> dpm_run_callback()
+        -> pm_runtime_force_suspend()
+          -> dev_pm_enable_wake_irq_check()
+          -> dev_pm_enable_wake_irq_complete()
 
-As all waiters are on the same wait queue, the wake up happens for the
-waiter with the smallest percentage.
+    -> suspend_enter()
+      -> dpm_suspend_noirq()
+        -> device_wakeup_arm_wake_irqs()
+          -> dev_pm_arm_wake_irq()
 
-The problem is that the smallest_full on the cpu_buffer that stores the
-smallest amount doesn't get reset when all the waiters are woken up. It
-does get reset when the ring buffer is reset (echo > /sys/kernel/tracing/trace).
+To fix this issue, complete the setting of WAKE_IRQ_DEDICATED_ENABLED flag
+in dev_pm_enable_wake_irq_complete() to avoid redundant irq enablement.
 
-This means that tasks may be woken up more often then when they want to
-be. Instead, have the shortest_full field get reset just before waking up
-all the tasks. If the tasks wait again, they will update the shortest_full
-before sleeping.
-
-Also add locking around setting of shortest_full in the poll logic, and
-change "work" to "rbwork" to match the variable name for rb_irq_work
-structures that are used in other places.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240308202431.948914369@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linke li <lilinke99@qq.com>
-Cc: Rabin Vincent <rabin@rab.in>
-Fixes: 2c2b0a78b3739 ("ring-buffer: Add percentage of ring buffer full to wake up reader")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: 8145f1c35fa6 ("ring-buffer: Fix full_waiters_pending in poll")
+Fixes: 8527beb12087 ("PM: sleep: wakeirq: fix wake irq arming")
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Signed-off-by: Qingliang Li <qingliang.li@mediatek.com>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ drivers/base/power/wakeirq.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 5b665e5991bf7..5465f4c950f27 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -831,8 +831,19 @@ static void rb_wake_up_waiters(struct irq_work *work)
+diff --git a/drivers/base/power/wakeirq.c b/drivers/base/power/wakeirq.c
+index 46654adf00a10..20b07fa2792ba 100644
+--- a/drivers/base/power/wakeirq.c
++++ b/drivers/base/power/wakeirq.c
+@@ -365,8 +365,10 @@ void dev_pm_enable_wake_irq_complete(struct device *dev)
+ 		return;
  
- 	wake_up_all(&rbwork->waiters);
- 	if (rbwork->full_waiters_pending || rbwork->wakeup_full) {
-+		/* Only cpu_buffer sets the above flags */
-+		struct ring_buffer_per_cpu *cpu_buffer =
-+			container_of(rbwork, struct ring_buffer_per_cpu, irq_work);
-+
-+		/* Called from interrupt context */
-+		raw_spin_lock(&cpu_buffer->reader_lock);
- 		rbwork->wakeup_full = false;
- 		rbwork->full_waiters_pending = false;
-+
-+		/* Waking up all waiters, they will reset the shortest full */
-+		cpu_buffer->shortest_full = 0;
-+		raw_spin_unlock(&cpu_buffer->reader_lock);
-+
- 		wake_up_all(&rbwork->full_waiters);
- 	}
+ 	if (wirq->status & WAKE_IRQ_DEDICATED_MANAGED &&
+-	    wirq->status & WAKE_IRQ_DEDICATED_REVERSE)
++	    wirq->status & WAKE_IRQ_DEDICATED_REVERSE) {
+ 		enable_irq(wirq->irq);
++		wirq->status |= WAKE_IRQ_DEDICATED_ENABLED;
++	}
  }
-@@ -999,28 +1010,33 @@ __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
- 			  struct file *filp, poll_table *poll_table, int full)
- {
- 	struct ring_buffer_per_cpu *cpu_buffer;
--	struct rb_irq_work *work;
-+	struct rb_irq_work *rbwork;
  
- 	if (cpu == RING_BUFFER_ALL_CPUS) {
--		work = &buffer->irq_work;
-+		rbwork = &buffer->irq_work;
- 		full = 0;
- 	} else {
- 		if (!cpumask_test_cpu(cpu, buffer->cpumask))
- 			return EPOLLERR;
- 
- 		cpu_buffer = buffer->buffers[cpu];
--		work = &cpu_buffer->irq_work;
-+		rbwork = &cpu_buffer->irq_work;
- 	}
- 
- 	if (full) {
--		poll_wait(filp, &work->full_waiters, poll_table);
--		work->full_waiters_pending = true;
-+		unsigned long flags;
-+
-+		poll_wait(filp, &rbwork->full_waiters, poll_table);
-+
-+		raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
-+		rbwork->full_waiters_pending = true;
- 		if (!cpu_buffer->shortest_full ||
- 		    cpu_buffer->shortest_full > full)
- 			cpu_buffer->shortest_full = full;
-+		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
- 	} else {
--		poll_wait(filp, &work->waiters, poll_table);
--		work->waiters_pending = true;
-+		poll_wait(filp, &rbwork->waiters, poll_table);
-+		rbwork->waiters_pending = true;
- 	}
- 
- 	/*
+ /**
 -- 
 2.43.0
 
