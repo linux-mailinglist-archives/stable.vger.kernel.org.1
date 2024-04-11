@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-38955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FF58A1135
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BAAE8A0DA6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:06:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44A821C23C58
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07082B20E78
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C56214A4D6;
-	Thu, 11 Apr 2024 10:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2632145B0D;
+	Thu, 11 Apr 2024 10:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0sz9uq+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8Yu2gX4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC20114A086;
-	Thu, 11 Apr 2024 10:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818A61448F3;
+	Thu, 11 Apr 2024 10:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832088; cv=none; b=W6ZCyILNLf9j+ddOE7/iHpnwJhG9OItcfYgAvF+RCZ5MNqAAs0DtnqNWXLokeedG5o1mh7iQdcFyCByf+EvKNN2eV9hoA2amxVkyAIJf4jCUBuou2t8jmegqvu6U11VkjhqQJhLsnOGra73QnurnLJIBW2t6jB4+i3+sSrwraXk=
+	t=1712829968; cv=none; b=ndznJU7G9UeCtsY63aRVaHhhtoOhMfLzj+2jwAP3cTAgl01zU1jWJx7g2wwFoSlj75nYxLE2Zb+0Ac50GG8933me1REeBhUAtEJaPI0Hz2ecNxHPpEdL4v6f/R6S8jRwsvgReRfiPd/0AUC9K1evycJOE8rB9MfvnuBRulrydPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832088; c=relaxed/simple;
-	bh=pP+WFeqjkfpDluRZEOl/ZZrraAUa9dLSJfaRBXVCiSQ=;
+	s=arc-20240116; t=1712829968; c=relaxed/simple;
+	bh=S33aXnIqGbNsFMOQVUVbqZfjzx7xSfl4iS262qxU1tA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQ7/Jxk9dTjMAVYVcBPo1w7YtdHVVAVQNe+IGJyvZh2MxF5rar2svsYtCgpqxX68xvgOGsSFM0iFid/X1BfdhIVKEjMOQYYQGRAxZGjVRHHjN+JK5l1lno7NTQzgKzXI6ek5ckHUKblVz9RF8zXViAFNshRPkjiFqwNEXkqssCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0sz9uq+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70CCFC43394;
-	Thu, 11 Apr 2024 10:41:27 +0000 (UTC)
+	 MIME-Version; b=tTBxj5HqENEmd0bowD2NjVoPGMZu45iEWodw86cWUWatml0bIXLql6O8ksVyQ4F8d2TaJuvfAVuoiUKcwRXTf4RA0QPkHthIN0Hzt11EtAyVBro1msujrh2wax/SZyGROnVMNA7n4vapHvjQAWfhCbpmMF1uK/gkAHAN9o2WQDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8Yu2gX4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E8CC433C7;
+	Thu, 11 Apr 2024 10:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832087;
-	bh=pP+WFeqjkfpDluRZEOl/ZZrraAUa9dLSJfaRBXVCiSQ=;
+	s=korg; t=1712829968;
+	bh=S33aXnIqGbNsFMOQVUVbqZfjzx7xSfl4iS262qxU1tA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0sz9uq+kKEgRP+EYU4C4lNPHAgXfzB5iLyGRD6QdIJjEwCjOFb62O/ux+b5EfKtR
-	 9O6cJY7MSqhQBL2zMrmzuJHMfjDbMarunu7fTdWC4jaStCfXbryET9EZ97a7TQHLqp
-	 F1Nlj1mUYzTqrJxMyXlJmbdl50aO4NlaBhCYkj+I=
+	b=M8Yu2gX4i3n9Dkq9shDA64bsxPfzibafLC+R5Kjwgot8dXakPNvrwjZcaDxEGaYd8
+	 yNnFyJlQQ4AnQlojDtTSzMOE71n+oiIuysWwZSGhXpA3CpTZbDdqkqwRSKhDBmuvLF
+	 Es3n3XGy969vzM2RPiL/hFF9HjpipRVEaVaP5ViQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Mike Snitzer <snitzer@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 188/294] dm integrity: fix out-of-range warning
+Subject: [PATCH 4.19 128/175] staging: mmal-vchiq: Avoid use of bool in structures
 Date: Thu, 11 Apr 2024 11:55:51 +0200
-Message-ID: <20240411095441.277039846@linuxfoundation.org>
+Message-ID: <20240411095423.418639459@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Dave Stevenson <dave.stevenson@raspberrypi.org>
 
-[ Upstream commit 8e91c2342351e0f5ef6c0a704384a7f6fc70c3b2 ]
+[ Upstream commit 640e77466e69d9c28de227bc76881f5501f532ca ]
 
-Depending on the value of CONFIG_HZ, clang complains about a pointless
-comparison:
+Fixes up a checkpatch error "Avoid using bool structure members
+because of possible alignment issues".
 
-drivers/md/dm-integrity.c:4085:12: error: result of comparison of
-                        constant 42949672950 with expression of type
-                        'unsigned int' is always false
-                        [-Werror,-Wtautological-constant-out-of-range-compare]
-                        if (val >= (uint64_t)UINT_MAX * 1000 / HZ) {
-
-As the check remains useful for other configurations, shut up the
-warning by adding a second type cast to uint64_t.
-
-Fixes: 468dfca38b1a ("dm integrity: add a bitmap mode")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.org>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Acked-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Acked-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: f37e76abd614 ("staging: vc04_services: fix information leak in create_component()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-integrity.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../vc04_services/bcm2835-camera/mmal-vchiq.c        | 12 ++++++------
+ .../vc04_services/bcm2835-camera/mmal-vchiq.h        |  4 ++--
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
-index 62cae34ca3b43..067be1d9f51cb 100644
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -3937,7 +3937,7 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
- 		} else if (sscanf(opt_string, "sectors_per_bit:%llu%c", &llval, &dummy) == 1) {
- 			log2_sectors_per_bitmap_bit = !llval ? 0 : __ilog2_u64(llval);
- 		} else if (sscanf(opt_string, "bitmap_flush_interval:%u%c", &val, &dummy) == 1) {
--			if (val >= (uint64_t)UINT_MAX * 1000 / HZ) {
-+			if ((uint64_t)val >= (uint64_t)UINT_MAX * 1000 / HZ) {
- 				r = -EINVAL;
- 				ti->error = "Invalid bitmap_flush_interval argument";
- 				goto bad;
+diff --git a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
+index daa2b96565529..00c943516ba38 100644
+--- a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
++++ b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
+@@ -845,9 +845,9 @@ static int port_info_get(struct vchiq_mmal_instance *instance,
+ 		goto release_msg;
+ 
+ 	if (rmsg->u.port_info_get_reply.port.is_enabled == 0)
+-		port->enabled = false;
++		port->enabled = 0;
+ 	else
+-		port->enabled = true;
++		port->enabled = 1;
+ 
+ 	/* copy the values out of the message */
+ 	port->handle = rmsg->u.port_info_get_reply.port_handle;
+@@ -1283,7 +1283,7 @@ static int port_disable(struct vchiq_mmal_instance *instance,
+ 	if (!port->enabled)
+ 		return 0;
+ 
+-	port->enabled = false;
++	port->enabled = 0;
+ 
+ 	ret = port_action_port(instance, port,
+ 			       MMAL_MSG_PORT_ACTION_TYPE_DISABLE);
+@@ -1335,7 +1335,7 @@ static int port_enable(struct vchiq_mmal_instance *instance,
+ 	if (ret)
+ 		goto done;
+ 
+-	port->enabled = true;
++	port->enabled = 1;
+ 
+ 	if (port->buffer_cb) {
+ 		/* send buffer headers to videocore */
+@@ -1502,7 +1502,7 @@ int vchiq_mmal_port_connect_tunnel(struct vchiq_mmal_instance *instance,
+ 			pr_err("failed disconnecting src port\n");
+ 			goto release_unlock;
+ 		}
+-		src->connected->enabled = false;
++		src->connected->enabled = 0;
+ 		src->connected = NULL;
+ 	}
+ 
+@@ -1746,7 +1746,7 @@ int vchiq_mmal_component_disable(struct vchiq_mmal_instance *instance,
+ 
+ 	ret = disable_component(instance, component);
+ 	if (ret == 0)
+-		component->enabled = false;
++		component->enabled = 0;
+ 
+ 	mutex_unlock(&instance->vchiq_mutex);
+ 
+diff --git a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
+index b0ee1716525b4..b3c231e619c90 100644
+--- a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
++++ b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.h
+@@ -47,7 +47,7 @@ typedef void (*vchiq_mmal_buffer_cb)(
+ 		unsigned long length, u32 mmal_flags, s64 dts, s64 pts);
+ 
+ struct vchiq_mmal_port {
+-	bool enabled;
++	u32 enabled:1;
+ 	u32 handle;
+ 	u32 type; /* port type, cached to use on port info set */
+ 	u32 index; /* port index, cached to use on port info set */
+@@ -81,7 +81,7 @@ struct vchiq_mmal_port {
+ };
+ 
+ struct vchiq_mmal_component {
+-	bool enabled;
++	u32 enabled:1;
+ 	u32 handle;  /* VideoCore handle for component */
+ 	u32 inputs;  /* Number of input ports */
+ 	u32 outputs; /* Number of output ports */
 -- 
 2.43.0
 
