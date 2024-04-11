@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-38833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9AF08A10A2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A4EE8A0EB7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:17:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3511EB25206
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 177DCB212B7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D345146A93;
-	Thu, 11 Apr 2024 10:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5626714600E;
+	Thu, 11 Apr 2024 10:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAXGkii4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3D5BoQh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C64E140E3C;
-	Thu, 11 Apr 2024 10:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1153E13E897;
+	Thu, 11 Apr 2024 10:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831724; cv=none; b=WrjnlIjuYZ8PyzdBBDU64HUVUPkvBYAq7egNdI/NdTVVJpceF9uYB7JUYaPwScAbtN3riExaEHTchN1nMKX86Ni6ir+ZbuSJXpgk6Dy8l+jD6V4OjIPd+nuCwTyXVJofia6jY8D6s64rkpddC+byh0vTOfIjxrjjTVTdcqjsqnc=
+	t=1712830650; cv=none; b=EEMHW5CgmDT5Iixa3vHUdQAMEkol5cfZTFB5NA8GzjB7TkSIFw7CUR5rVhiim3/wijqEChQoQyIgRDY8adHM6FNw1biqGoXd/kQg8tUaQWFH1ppCoseEV+2w39JDe7UEK1GzaF8kPosm/qfKbu75IKv4XlEH5seTOn1Jx6fD78w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831724; c=relaxed/simple;
-	bh=Qjo2Kwd7SjclfXISnwG0Nu5DD566RlvnRykFTPIWcxY=;
+	s=arc-20240116; t=1712830650; c=relaxed/simple;
+	bh=NeaZaGHnxfD28dAQ16+ER401emNDcKwCNTWsCxVPrWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JrqMAWdUE9GRPrmRDNsBiV6Ap0l2sZxPXXNidNhFhMo9WUsnyQv1mIM3BGjx3WYTDVxxzGiLNZUsz84QsO37Ep1oyr1gdc7iOqEdViyxhkCRa2dVUzY3zg3Tsg4VUiK+ScrAJ4RZCis3RRKEm+SxZZudTYZhQdZFwZlRCpsThNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAXGkii4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3927C433C7;
-	Thu, 11 Apr 2024 10:35:23 +0000 (UTC)
+	 MIME-Version; b=tb2Kbr1dn/CxCNNN/biT8X98Uf677hfXy2amPojzUGGy83yxMyFatkp3TPqSQcTa1oH3U/vmTuUUZXgom/nYleMDtq836j37fzVnJaNP8nMH3Fzp1G9qBbWBFtnTAwwfS1+r+Dc7Bogc5r1kH6PAPHoPPwrzZuXQEoDYl6QTsr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3D5BoQh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3F4C433C7;
+	Thu, 11 Apr 2024 10:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831724;
-	bh=Qjo2Kwd7SjclfXISnwG0Nu5DD566RlvnRykFTPIWcxY=;
+	s=korg; t=1712830649;
+	bh=NeaZaGHnxfD28dAQ16+ER401emNDcKwCNTWsCxVPrWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IAXGkii4I3yjJtab6LLq522Xn2ICwEBxSH1UtPmiZowQ65yxzwQsvB5TGU3ObvGsg
-	 X4OzpJzaHB6vOwNb7GMDXRoGdcrLN5PkoongRM9aUv05I5fGO3nU063KV2Os2iaTrf
-	 rQTCzKi3OVOHQOog/OkNmVXc7FxkIJHwkczlZaDw=
+	b=G3D5BoQhJeRuItbBSbgETnFb59ZGR5w8AtrW81HR7k7r62HAPER9hrNH8cpvXGDGF
+	 hYt3pyRP/4sCA8leGctETzZ55IErcZ/MfM6DKEUgXDA1A0mNdfY+WbGjqS1/bu9XX4
+	 XhV20WrvbQ0H0YDKwoCtKYQmgxYFqzPIUHV84dzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Moulding <dan@danm.net>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+	stable@kernel.org,
+	yangerkun <yangerkun@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 067/294] Revert "Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d""
-Date: Thu, 11 Apr 2024 11:53:50 +0200
-Message-ID: <20240411095437.704925128@linuxfoundation.org>
+Subject: [PATCH 5.4 022/215] ext4: correct best extent lstart adjustment logic
+Date: Thu, 11 Apr 2024 11:53:51 +0200
+Message-ID: <20240411095425.551449165@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +66,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Liu <song@kernel.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 3445139e3a594be77eff48bc17eff67cf983daed ]
+[ Upstream commit 4fbf8bc733d14bceb16dda46a3f5e19c6a9621c5 ]
 
-This reverts commit bed9e27baf52a09b7ba2a3714f1e24e17ced386d.
+When yangerkun review commit 93cdf49f6eca ("ext4: Fix best extent lstart
+adjustment logic in ext4_mb_new_inode_pa()"), it was found that the best
+extent did not completely cover the original request after adjusting the
+best extent lstart in ext4_mb_new_inode_pa() as follows:
 
-The original set [1][2] was expected to undo a suboptimal fix in [2], and
-replace it with a better fix [1]. However, as reported by Dan Moulding [2]
-causes an issue with raid5 with journal device.
+  original request: 2/10(8)
+  normalized request: 0/64(64)
+  best extent: 0/9(9)
 
-Revert [2] for now to close the issue. We will follow up on another issue
-reported by Juxiao Bi, as [2] is expected to fix it. We believe this is a
-good trade-off, because the latter issue happens less freqently.
+When we check if best ex can be kept at start of goal, ac_o_ex.fe_logical
+is 2 less than the adjusted best extent logical end 9, so we think the
+adjustment is done. But obviously 0/9(9) doesn't cover 2/10(8), so we
+should determine here if the original request logical end is less than or
+equal to the adjusted best extent logical end.
 
-In the meanwhile, we will NOT revert [1], as it contains the right logic.
+In addition, add a comment stating when adjusted best_ex will not cover
+the original request, and remove the duplicate assertion because adjusting
+lstart makes no change to b_ex.fe_len.
 
-[1] commit d6e035aad6c0 ("md: bypass block throttle for superblock update")
-[2] commit bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
-
-Reported-by: Dan Moulding <dan@danm.net>
-Closes: https://lore.kernel.org/linux-raid/20240123005700.9302-1-dan@danm.net/
-Fixes: bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
-Cc: stable@vger.kernel.org # v5.19+
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240125082131.788600-1-song@kernel.org
+Link: https://lore.kernel.org/r/3630fa7f-b432-7afd-5f79-781bc3b2c5ea@huawei.com
+Fixes: 93cdf49f6eca ("ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()")
+Cc:  <stable@kernel.org>
+Signed-off-by: yangerkun <yangerkun@huawei.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240201141845.1879253-1-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ fs/ext4/mballoc.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index 00995e60d46b1..9f114b9d8dc6b 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -36,6 +36,7 @@
-  */
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index e823731110e3e..b2e7b1907d410 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -3692,10 +3692,16 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
+ 			.fe_len = ac->ac_g_ex.fe_len,
+ 		};
+ 		loff_t orig_goal_end = extent_logical_end(sbi, &ex);
++		loff_t o_ex_end = extent_logical_end(sbi, &ac->ac_o_ex);
  
- #include <linux/blkdev.h>
-+#include <linux/delay.h>
- #include <linux/kthread.h>
- #include <linux/raid/pq.h>
- #include <linux/async_tx.h>
-@@ -6519,7 +6520,18 @@ static void raid5d(struct md_thread *thread)
- 			spin_unlock_irq(&conf->device_lock);
- 			md_check_recovery(mddev);
- 			spin_lock_irq(&conf->device_lock);
-+
-+			/*
-+			 * Waiting on MD_SB_CHANGE_PENDING below may deadlock
-+			 * seeing md_check_recovery() is needed to clear
-+			 * the flag when using mdmon.
-+			 */
-+			continue;
- 		}
-+
-+		wait_event_lock_irq(mddev->sb_wait,
-+			!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags),
-+			conf->device_lock);
+-		/* we can't allocate as much as normalizer wants.
+-		 * so, found space must get proper lstart
+-		 * to cover original request */
++		/*
++		 * We can't allocate as much as normalizer wants, so we try
++		 * to get proper lstart to cover the original request, except
++		 * when the goal doesn't cover the original request as below:
++		 *
++		 * orig_ex:2045/2055(10), isize:8417280 -> normalized:0/2048
++		 * best_ex:0/200(200) -> adjusted: 1848/2048(200)
++		 */
+ 		BUG_ON(ac->ac_g_ex.fe_logical > ac->ac_o_ex.fe_logical);
+ 		BUG_ON(ac->ac_g_ex.fe_len < ac->ac_o_ex.fe_len);
+ 
+@@ -3707,7 +3713,7 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
+ 		 * 1. Check if best ex can be kept at end of goal and still
+ 		 *    cover original start
+ 		 * 2. Else, check if best ex can be kept at start of goal and
+-		 *    still cover original start
++		 *    still cover original end
+ 		 * 3. Else, keep the best ex at start of original request.
+ 		 */
+ 		ex.fe_len = ac->ac_b_ex.fe_len;
+@@ -3717,7 +3723,7 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
+ 			goto adjust_bex;
+ 
+ 		ex.fe_logical = ac->ac_g_ex.fe_logical;
+-		if (ac->ac_o_ex.fe_logical < extent_logical_end(sbi, &ex))
++		if (o_ex_end <= extent_logical_end(sbi, &ex))
+ 			goto adjust_bex;
+ 
+ 		ex.fe_logical = ac->ac_o_ex.fe_logical;
+@@ -3725,7 +3731,6 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
+ 		ac->ac_b_ex.fe_logical = ex.fe_logical;
+ 
+ 		BUG_ON(ac->ac_o_ex.fe_logical < ac->ac_b_ex.fe_logical);
+-		BUG_ON(ac->ac_o_ex.fe_len > ac->ac_b_ex.fe_len);
+ 		BUG_ON(extent_logical_end(sbi, &ex) > orig_goal_end);
  	}
- 	pr_debug("%d stripes handled\n", handled);
  
 -- 
 2.43.0
