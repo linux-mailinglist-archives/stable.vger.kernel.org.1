@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-38214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AEF98A0D8D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9334B8A0E54
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B6211F22A9E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2094FB21D51
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C735145B1D;
-	Thu, 11 Apr 2024 10:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E279814600E;
+	Thu, 11 Apr 2024 10:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u3T/Gp76"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqRQ2Heh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE03C1448F3;
-	Thu, 11 Apr 2024 10:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7D9145FFA;
+	Thu, 11 Apr 2024 10:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829900; cv=none; b=W02dZONXsl1wDBhJEK0y4Q0w1Li/WgrB8ie3uebW9Bu/1VD+trL+MRzit7geHa3BHSbnvW2SIRI8i4aQ9CHBnHF/5GA6IuDzsY0kpTf4jvhKZ1lZYHpUay7OJJh2KejiyuCEzC/2xeF7Dx4lRYSB4wZifNt7p718Megmflsqiqw=
+	t=1712830410; cv=none; b=mp0B76Wev+hGboeLZtT2zh8OBRkoD5vyK37p4ljJcpPgk3zLou3XrdAdkJpGZIvgW9ZRRQnUtO8zY+iHxzsYBgGgtaGo3wKpEATI0xbp6CyoZ+RPqB8sxt/EU9V1ieq5HC13FfrLG9cyAiCTmWFsnCuDeJnn62MKEAfypVfGdQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829900; c=relaxed/simple;
-	bh=P72zhHXgukmczXxtb/MUMslzYcdOhGSbgakDjvzZEgc=;
+	s=arc-20240116; t=1712830410; c=relaxed/simple;
+	bh=Z1P671L6Y/JY+UTO1bOfFsLf//wz1+HnSQaSWgzYfX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSiVN2gb4FOtCVmOQxOZ6x0ZU0Hf/R93WIp1dPvRcW3vysbvDaqSCOU6seFPCt491Rr7hIXXwEaDXVWoCXZWjfeDEXbJRrVajKHGkD9V08bm5Vc3lpch73cCIo2kpqN7VAvMqLfyqcW5An4HSGahdf+EC6XtYYz4U9o0pmpfWkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u3T/Gp76; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619B6C43390;
-	Thu, 11 Apr 2024 10:04:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s9/8TrqPtNnmWseT43ZVnykl1VNm9oNWRX74vKbwNAzlVK1V+wHoQ/ex6XkngmGZ7CSipUa+ql6z8A6ZJwhLCD4N5eUlkgJvRMNdX2+u/EC2F8mWZ1Hx1AwOwEwkcLVWCMRk8Iqtxqf1S8gHKLKjeqDOgNpEOPhL48nEzzOvQrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqRQ2Heh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D01ADC433F1;
+	Thu, 11 Apr 2024 10:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829899;
-	bh=P72zhHXgukmczXxtb/MUMslzYcdOhGSbgakDjvzZEgc=;
+	s=korg; t=1712830410;
+	bh=Z1P671L6Y/JY+UTO1bOfFsLf//wz1+HnSQaSWgzYfX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u3T/Gp768tydO4O4lario/wMedNeqtNGxa8dT57QK3tduAW/VayFcsN+p8EMkKHd8
-	 CQdg0hBkyqlcJZ/MltLW0TvelcidSDUSYMW3yfAFe9I4tTc7lKW64BcoRQk0KdkgT2
-	 /J6Pgm8372SzyVa8syveQr105Vvxm9Ou6GSwPNb8=
+	b=XqRQ2Heh4iaE6AVSfYY9bnALtHQB6WiLCnrFhfi3XAgjnTpR9q2PnjcxXDWII0wtb
+	 hZxwVBcqojpXvJAS7UJHUgSw+s/A5t3WzX/IWre7xnQuMbB9/ESGdF7TUziF+d/0Yi
+	 v8YWYNs8y3KKRPoa8WjDhFNH8BIEArd/6gP/X1XA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	I Gede Agastya Darma Laksana <gedeagas22@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 4.19 143/175] ALSA: hda/realtek: Update Panasonic CF-SZ6 quirk to support headset with microphone
+	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 098/143] Input: imagis - use FIELD_GET where applicable
 Date: Thu, 11 Apr 2024 11:56:06 +0200
-Message-ID: <20240411095423.869326204@linuxfoundation.org>
+Message-ID: <20240411095423.858075542@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,50 +60,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: I Gede Agastya Darma Laksana <gedeagas22@gmail.com>
+From: Duje Mihanović <duje.mihanovic@skole.hr>
 
-commit 1576f263ee2147dc395531476881058609ad3d38 upstream.
+[ Upstream commit c0ca3dbd03d66c6b9e044f48720e6ab5cef37ae5 ]
 
-This patch addresses an issue with the Panasonic CF-SZ6's existing quirk,
-specifically its headset microphone functionality. Previously, the quirk
-used ALC269_FIXUP_HEADSET_MODE, which does not support the CF-SZ6's design
-of a single 3.5mm jack for both mic and audio output effectively. The
-device uses pin 0x19 for the headset mic without jack detection.
+Instead of manually extracting certain bits from registers with binary
+ANDs and shifts, the FIELD_GET macro can be used. With this in mind, the
+*_SHIFT macros can be dropped.
 
-Following verification on the CF-SZ6 and discussions with the original
-patch author, i determined that the update to
-ALC269_FIXUP_ASPIRE_HEADSET_MIC is the appropriate solution. This change
-is custom-designed for the CF-SZ6's unique hardware setup, which includes
-a single 3.5mm jack for both mic and audio output, connecting the headset
-microphone to pin 0x19 without the use of jack detection.
-
-Fixes: 0fca97a29b83 ("ALSA: hda/realtek - Add Panasonic CF-SZ6 headset jack quirk")
-Signed-off-by: I Gede Agastya Darma Laksana <gedeagas22@gmail.com>
-Cc: <stable@vger.kernel.org>
-Message-ID: <20240401174602.14133-1-gedeagas22@gmail.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+Link: https://lore.kernel.org/r/20240306-b4-imagis-keys-v3-1-2c429afa8420@skole.hr
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/touchscreen/imagis.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7218,7 +7218,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x10cf, 0x1629, "Lifebook U7x7", ALC255_FIXUP_LIFEBOOK_U7x7_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x10cf, 0x1845, "Lifebook U904", ALC269_FIXUP_LIFEBOOK_EXTMIC),
- 	SND_PCI_QUIRK(0x10ec, 0x10f2, "Intel Reference board", ALC700_FIXUP_INTEL_REFERENCE),
--	SND_PCI_QUIRK(0x10f7, 0x8338, "Panasonic CF-SZ6", ALC269_FIXUP_HEADSET_MODE),
-+	SND_PCI_QUIRK(0x10f7, 0x8338, "Panasonic CF-SZ6", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x144d, 0xc109, "Samsung Ativ book 9 (NP900X3G)", ALC269_FIXUP_INV_DMIC),
- 	SND_PCI_QUIRK(0x144d, 0xc740, "Samsung Ativ book 8 (NP870Z5G)", ALC269_FIXUP_ATIV_BOOK_8),
- 	SND_PCI_QUIRK(0x1458, 0xfa53, "Gigabyte BXBT-2807", ALC283_FIXUP_HEADSET_MIC),
+diff --git a/drivers/input/touchscreen/imagis.c b/drivers/input/touchscreen/imagis.c
+index e67fd30110278..55ecebe981445 100644
+--- a/drivers/input/touchscreen/imagis.c
++++ b/drivers/input/touchscreen/imagis.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ 
++#include <linux/bitfield.h>
+ #include <linux/bits.h>
+ #include <linux/delay.h>
+ #include <linux/i2c.h>
+@@ -23,12 +24,9 @@
+ #define IST3038C_I2C_RETRY_COUNT	3
+ #define IST3038C_MAX_FINGER_NUM		10
+ #define IST3038C_X_MASK			GENMASK(23, 12)
+-#define IST3038C_X_SHIFT		12
+ #define IST3038C_Y_MASK			GENMASK(11, 0)
+ #define IST3038C_AREA_MASK		GENMASK(27, 24)
+-#define IST3038C_AREA_SHIFT		24
+ #define IST3038C_FINGER_COUNT_MASK	GENMASK(15, 12)
+-#define IST3038C_FINGER_COUNT_SHIFT	12
+ #define IST3038C_FINGER_STATUS_MASK	GENMASK(9, 0)
+ 
+ struct imagis_ts {
+@@ -92,8 +90,7 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
+ 		goto out;
+ 	}
+ 
+-	finger_count = (intr_message & IST3038C_FINGER_COUNT_MASK) >>
+-				IST3038C_FINGER_COUNT_SHIFT;
++	finger_count = FIELD_GET(IST3038C_FINGER_COUNT_MASK, intr_message);
+ 	if (finger_count > IST3038C_MAX_FINGER_NUM) {
+ 		dev_err(&ts->client->dev,
+ 			"finger count %d is more than maximum supported\n",
+@@ -101,7 +98,7 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
+ 		goto out;
+ 	}
+ 
+-	finger_pressed = intr_message & IST3038C_FINGER_STATUS_MASK;
++	finger_pressed = FIELD_GET(IST3038C_FINGER_STATUS_MASK, intr_message);
+ 
+ 	for (i = 0; i < finger_count; i++) {
+ 		error = imagis_i2c_read_reg(ts,
+@@ -118,12 +115,11 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
+ 		input_mt_report_slot_state(ts->input_dev, MT_TOOL_FINGER,
+ 					   finger_pressed & BIT(i));
+ 		touchscreen_report_pos(ts->input_dev, &ts->prop,
+-				       (finger_status & IST3038C_X_MASK) >>
+-						IST3038C_X_SHIFT,
+-				       finger_status & IST3038C_Y_MASK, 1);
++				       FIELD_GET(IST3038C_X_MASK, finger_status),
++				       FIELD_GET(IST3038C_Y_MASK, finger_status),
++				       true);
+ 		input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR,
+-				 (finger_status & IST3038C_AREA_MASK) >>
+-					IST3038C_AREA_SHIFT);
++				 FIELD_GET(IST3038C_AREA_MASK, finger_status));
+ 	}
+ 
+ 	input_mt_sync_frame(ts->input_dev);
+-- 
+2.43.0
+
 
 
 
