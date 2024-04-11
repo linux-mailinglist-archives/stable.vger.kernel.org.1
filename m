@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D243D8A0DFF
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B168A0F06
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:20:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71A281F20F4D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D95C71F226E4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC48145FE7;
-	Thu, 11 Apr 2024 10:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6371465A4;
+	Thu, 11 Apr 2024 10:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMpCu0D9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLH8XyZm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C301F5FA;
-	Thu, 11 Apr 2024 10:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5D8145FF0;
+	Thu, 11 Apr 2024 10:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830196; cv=none; b=TYIjhK9aBahJSkGP1jgvEeqKOzBEtWKMVl7WyrnJiMLCR1hlVNCfJumlxRzNDB9rr9l31j3BWdD3BHj0PRtBrh15oEwRdLGC6dhoHGrrLPQsB5JZ60JYxwGgrAyoLgmKKXG055Z37ZNMloTTlCCBGWvAmh9JKiFeo0e8cB8Qchg=
+	t=1712830815; cv=none; b=SlkZ5oWpmEWpQyZ8THtVIrCRScuEladPb4xqOCUzocNVoUw1r+ryibA6gh54joKyW/YmCGA5aANpxkqKzmpZVRzr4EOyF4aK6W0DfBZMrxQ5OzM1uYrOit/Ic+W2ijNEOvaB3IhdUgBytTTVdeBt+PGzCLtuVDqMoT/mME8O2p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830196; c=relaxed/simple;
-	bh=NtGX7f0Cm+UTNX/pgWLaI/hGBWagYVhzStyJ8Hb4ScQ=;
+	s=arc-20240116; t=1712830815; c=relaxed/simple;
+	bh=vdJHy9lK7o3gU2f3a2LGqDqSustPpV6W7NLpi5SDZR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YLCPyb+BYauFqrCbTtspTMasy+4B3fjkNiqnk+H5MIzBfPucNxxWQtRajYNEUZnvqM7WHm3rqk5vW5NumpU/iqeRGfID/4ZEcMDkDwGxzVcWbeTfRZUMi/Vb+B9jWVXyWLfIfKAKrSGEOsSih7nuX1HEJA/s0T2NOSN/Jf4Zpt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMpCu0D9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74CDC433F1;
-	Thu, 11 Apr 2024 10:09:55 +0000 (UTC)
+	 MIME-Version; b=gYQc33eO5vUna/835DS9ksakruUX1ASVP0NnJWTs/9FlmtkvMj7p3T4RnbvblN3Qb8iey2xwN5csJ+Gmldia3FUeKSWdBjsKnTCwdbUjMmmQGiT2OsYbwrAf+G9LySs69e+v8Enk8RmZixNXQT/sirJyWS9yU3t/+D/t+2EZ4UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLH8XyZm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C7EC433F1;
+	Thu, 11 Apr 2024 10:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830196;
-	bh=NtGX7f0Cm+UTNX/pgWLaI/hGBWagYVhzStyJ8Hb4ScQ=;
+	s=korg; t=1712830815;
+	bh=vdJHy9lK7o3gU2f3a2LGqDqSustPpV6W7NLpi5SDZR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qMpCu0D99SHA6Lg1gWTe2NatAi8tNpZyP6UmU64IUBPa+9dOUHkn0Yq7y7zKH+aO4
-	 5NXx8bTJwxIsvs6GJj8lQukAWZPtHOjzWT2X8rl3HQan+n6dEeHfQ+qJcaIN1hS2bD
-	 zQQYhGsk69icb+SnWff/keXgme2CKwMMtlMXDlQs=
+	b=OLH8XyZmp4U4riA8k5HKLLqCfJrlgxYUKZBPSd7UvwCq/2Ezve4RcHMrLapoqREJH
+	 LIdJjtzvhS3m6t2i1QDGSc5HhOmTXBge8lqkgS4OdtcrC2nxv5mvWlYBRiu8ruW7Vt
+	 eZmLwCN+/MC7KsjCrusXY2WmwEh/EtVKrjyASJVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 068/143] scsi: lpfc: Fix possible memory leak in lpfc_rcv_padisc()
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Justin Tee <justintee8345@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.4 127/215] scsi: lpfc: Correct size for wqe for memset()
 Date: Thu, 11 Apr 2024 11:55:36 +0200
-Message-ID: <20240411095422.961838597@linuxfoundation.org>
+Message-ID: <20240411095428.713672516@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-[ Upstream commit 2ae917d4bcab80ab304b774d492e2fcd6c52c06b ]
+commit 28d41991182c210ec1654f8af2e140ef4cc73f20 upstream.
 
-The call to lpfc_sli4_resume_rpi() in lpfc_rcv_padisc() may return an
-unsuccessful status.  In such cases, the elsiocb is not issued, the
-completion is not called, and thus the elsiocb resource is leaked.
+The wqe is of type lpfc_wqe128. It should be memset with the same type.
 
-Check return value after calling lpfc_sli4_resume_rpi() and conditionally
-release the elsiocb resource.
-
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240131185112.149731-3-justintee8345@gmail.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Fixes: 6c621a2229b0 ("scsi: lpfc: Separate NVMET RQ buffer posting from IO resources SGL/iocbq/context")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/r/20240304090649.833953-1-usama.anjum@collabora.com
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Justin Tee <justintee8345@gmail.com>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_nportdisc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/scsi/lpfc/lpfc_nvmet.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_nportdisc.c b/drivers/scsi/lpfc/lpfc_nportdisc.c
-index d9074929fbab8..b147304b01fa1 100644
---- a/drivers/scsi/lpfc/lpfc_nportdisc.c
-+++ b/drivers/scsi/lpfc/lpfc_nportdisc.c
-@@ -748,8 +748,10 @@ lpfc_rcv_padisc(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
- 				/* Save the ELS cmd */
- 				elsiocb->drvrTimeout = cmd;
+--- a/drivers/scsi/lpfc/lpfc_nvmet.c
++++ b/drivers/scsi/lpfc/lpfc_nvmet.c
+@@ -1392,7 +1392,7 @@ lpfc_nvmet_setup_io_context(struct lpfc_
+ 		wqe = &nvmewqe->wqe;
  
--				lpfc_sli4_resume_rpi(ndlp,
--					lpfc_mbx_cmpl_resume_rpi, elsiocb);
-+				if (lpfc_sli4_resume_rpi(ndlp,
-+						lpfc_mbx_cmpl_resume_rpi,
-+						elsiocb))
-+					kfree(elsiocb);
- 				goto out;
- 			}
- 		}
--- 
-2.43.0
-
+ 		/* Initialize WQE */
+-		memset(wqe, 0, sizeof(union lpfc_wqe));
++		memset(wqe, 0, sizeof(*wqe));
+ 
+ 		ctx_buf->iocbq->context1 = NULL;
+ 		spin_lock(&phba->sli4_hba.sgl_list_lock);
 
 
 
