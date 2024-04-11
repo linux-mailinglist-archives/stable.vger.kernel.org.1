@@ -1,120 +1,120 @@
-Return-Path: <stable+bounces-39230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EC798A20F1
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 23:34:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F22FB8A2115
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 23:47:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A94951F24379
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 21:34:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF05C284DF0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 21:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2C72E3EF;
-	Thu, 11 Apr 2024 21:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5D739AC3;
+	Thu, 11 Apr 2024 21:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="WVC6/N37"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X/tSb9n+"
 X-Original-To: stable@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9396B2941F;
-	Thu, 11 Apr 2024 21:34:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0A42942D;
+	Thu, 11 Apr 2024 21:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712871250; cv=none; b=l4OdcVW+7AH0LWAWWSggpyDvIkpgJZYYJQ4bCchRfDXeDPMC8fpe1HK3cEczUvhutzqgcrKa4svf0XRLLDe7vTFg8d9Z+9v0+izGi+Yvid8fl4IRKVMQqjDM05ymgWnhjwy1XDAqUt4gQKZbl7UlRMl3rfiDD4fg5g65H6Zs7zk=
+	t=1712872054; cv=none; b=LggN4+xjZDzwVO+mDmROSwryf1/Um3PNR7OOlMQqiP4O41LvYfh0xWYBJdB2Yq0BDN/gLnnlY7Hu6VULA9Yk8yve9XfYqBVWir3/DqwerdA2y+1Vty97xSbgGZx2ndyzOzw1WxKv2TbMqewpJLlmNGFkENPZ7I9Vcy2FJxJnD1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712871250; c=relaxed/simple;
-	bh=z2/Orf6yxKDaqub6BTAfFJIArBnI+mzGrz0nYL/Evhw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=eyeMg5poq006pt0dvPSGy6sbeOJzFYHvBXo8cB9chheAzEYMo+fWKUtd1H835mGENqd3OmW7CWbQYFJzXo5Bo48MVaddenYVWtTpME8VItGaefrlGkGSHUpzGHMzHOsw8hTo2hImHDzxUz5zzD1ZtdJMBz0BQMO33iA2pssLr/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=WVC6/N37; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1712871236;
-	bh=z2/Orf6yxKDaqub6BTAfFJIArBnI+mzGrz0nYL/Evhw=;
-	h=From:Date:Subject:To:Cc:From;
-	b=WVC6/N370UZmJtUN/b6OgQnoVXrQ58ZDT6hxbmTb2vITO3XnoZxbdtmfGvcIzeQkY
-	 9TZNXBKI2rnl/vj9mZDdi/YxK/bufqqhocH6QrCdiHCzrMnMzCQv7X3sHNa21izw/P
-	 i51h2YPw4UUzqwaKDh8PEYkGRAnr5R5fxt3Npm8s=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Thu, 11 Apr 2024 23:33:51 +0200
-Subject: [PATCH] misc/pvpanic-pci: register attributes via pci_driver
+	s=arc-20240116; t=1712872054; c=relaxed/simple;
+	bh=NiiW7HlO8jYMlaSPOm+tGXTrPK1xT3n2rILXDAH4rJ0=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=RnM9r04U/MA1cS610IIxrg9AOhwCgDrlWC8bGW0Qm7b79Q9o+hNprbxnlyH97adET8cl1r3P75TRrVOumDoMCpXwZazVGy0bE1ANVmVcM5d0DZ32kvX/8RKxu7A//vFHO1vfcwfqVWVE2TiAd93F9czt1bAONJrmgcnHzfinpss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X/tSb9n+; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-5cf2d73a183so854765a12.1;
+        Thu, 11 Apr 2024 14:47:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712872052; x=1713476852; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Ddxa7Lm0V7tNQ5Yf2X+O79t3Apo9+QNjaVHgEzh5CP0=;
+        b=X/tSb9n+65FbFQKn2F47FmHcJ4Ii/+uZTw44W48HGzyGKLYJZ5Mc4rHlJWEywa5GmW
+         spNFM/aXmI4Nw0N4R/K+zMaD8h+k3KmKaNSNG2kHl7vizBWOgqAHZuSEWBiqMjDlzBee
+         1mtTA/B/L5xbEqtzCSn9mt9ipkO9qmyB2Wy4ccRqz3Qo1vw7qOc+GbeW1oKxQDnrPW4V
+         Nk0gYPoDlRLZMWDJowmcqqvz1RRCFs1uLufbLhkx3YWjNO6ZRsoA6C3Mr39QTNsTyom2
+         CMqEIlKKiHuv4vw8F7yfbTw47RRIaTVQw4gDcNInSGyFrTRw3lzWSJUg5jLRkSObsZFI
+         93sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712872052; x=1713476852;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ddxa7Lm0V7tNQ5Yf2X+O79t3Apo9+QNjaVHgEzh5CP0=;
+        b=iNqTjAm8hZHn+WyZnHdwJvctqC4oaBEjETA66G46uoXT1iZCCcgY9NYGPe4a/5rkl5
+         A8N9rL4exzLrGuorVxSf00FLl/E53iIbk7Bs1+rD361P/ZZ1mG6kHCLNm+Ylh6Ahxf7S
+         It2OfwTDRynOEeBmENEg+pJUX8uwmXGfZTB8DlRnTuvJ2Ie5qnW/sxPhpfqxWBA2fA8n
+         OQKJFmpqgvRpFrNOj0VyvUE2QdGLeSkvx5swdFjPHL0bVzDJxyN/ifPM78kwKchBj4WX
+         r64t8ZwTh8TtUcGmTm/t8yq5Jfw6T4WAS0/ORzaT4sLLPs6oG9tqL6NUtozKPHGigWRY
+         sLlA==
+X-Forwarded-Encrypted: i=1; AJvYcCVpl/W8/Jg7TCWIONRRZEIquPRBBCuGUaarIemdZuNf71v+gEr2AuObcavWnrQPDANj20Ef9ATCe9WfRdhgiuZYb9ZRg69GxkLNOWs7jWiWPd88vHNPCkpcMwWqKExEa4J3tYql
+X-Gm-Message-State: AOJu0YzdDn5ixb1CcKHS6R05a6ZhuWlm4y7BZTR10789uZO3AAXbEc3g
+	A5u9jvcVPkjFcbtzSsmd7GboX1i2jSFcHRtvFIEO7qNmSZ7MIoKc
+X-Google-Smtp-Source: AGHT+IG3OL39Tt2WbCq2ZhAMJutPEfrY2ljQNwyZVPQVJHZS0Yl/RyrZAznhXxuy4bMat415awG+jQ==
+X-Received: by 2002:a17:90a:bf0c:b0:2a5:e055:88c4 with SMTP id c12-20020a17090abf0c00b002a5e05588c4mr4915966pjs.5.1712872051716;
+        Thu, 11 Apr 2024 14:47:31 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id a9-20020a17090a8c0900b002a058159ff8sm1582146pjo.8.2024.04.11.14.47.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Apr 2024 14:47:30 -0700 (PDT)
+Message-ID: <c52995f6-20ee-495e-82a3-4e4f12c1fd5a@gmail.com>
+Date: Thu, 11 Apr 2024 14:47:28 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240411-pvpanic-pci-dev-groups-v1-1-db8cb69f1b09@weissschuh.net>
-X-B4-Tracking: v=1; b=H4sIAD5XGGYC/x3MMQqAMAxG4atIZgNWO3kVcbDxV7PU0GIRxLtbH
- L/hvYcykiLT2DyUUDTrGStc25AcS9zBulZT3/W+886xFVuiCpsoryi8p/OyzBgCECSIh6caW8K
- m9z+e5vf9AN5pcyFoAAAA
-To: Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Mihai Carabas <mihai.carabas@oracle.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1712871236; l=1763;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=z2/Orf6yxKDaqub6BTAfFJIArBnI+mzGrz0nYL/Evhw=;
- b=1V/RDtPVi+D1+yvtc1ilBYxY6/hEn6cz9tAUSdlW4pHg1paRQgjpUphNVFEQgr08yvZ0o3Pfw
- WV9r+6YzUXPAFZFYw/3A92lEjCJdmk3eGdG88pARtfZ3Q4oZV2brF5Z
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+User-Agent: Mozilla Thunderbird
+From: Florian Fainelli <f.fainelli@gmail.com>
+Subject: Re: [PATCH 6.6 000/114] 6.6.27-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240411095416.853744210@linuxfoundation.org>
+Content-Language: en-US
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-In __pci_register_driver(), the pci core overwrites the dev_groups field of
-the embedded struct device_driver with the dev_groups from the outer
-struct pci_driver unconditionally.
+On 4/11/24 02:55, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.27 release.
+> There are 114 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 13 Apr 2024 09:53:55 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.27-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Set dev_groups in the pci_driver to make sure it is used.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-This was broken since the introduction of pvpanic-pci.
-
-Fixes: db3a4f0abefd ("misc/pvpanic: add PCI driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
-Greg,
-
-does it make sense to duplicate fields between struct pci_driver and
-struct device_driver?
-The fields "name", "groups" and "dev_groups" are duplicated.
-
-pci_driver::dev_groups was introduced in
-commit ded13b9cfd59 ("PCI: Add support for dev_groups to struct pci_driver")
-because "this helps converting PCI drivers sysfs attributes to static"
-
-I don't understand the reasoning. The embedded device_driver shares the
-same storage lifetime and the fields have the exact same type.
----
- drivers/misc/pvpanic/pvpanic-pci.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/misc/pvpanic/pvpanic-pci.c b/drivers/misc/pvpanic/pvpanic-pci.c
-index 9ad20e82785b..b21598a18f6d 100644
---- a/drivers/misc/pvpanic/pvpanic-pci.c
-+++ b/drivers/misc/pvpanic/pvpanic-pci.c
-@@ -44,8 +44,6 @@ static struct pci_driver pvpanic_pci_driver = {
- 	.name =         "pvpanic-pci",
- 	.id_table =     pvpanic_pci_id_tbl,
- 	.probe =        pvpanic_pci_probe,
--	.driver = {
--		.dev_groups = pvpanic_dev_groups,
--	},
-+	.dev_groups =   pvpanic_dev_groups,
- };
- module_pci_driver(pvpanic_pci_driver);
-
----
-base-commit: 00dcf5d862e86e57f5ce46344039f11bb1ad61f6
-change-id: 20240411-pvpanic-pci-dev-groups-e3beebcbc4e4
-
-Best regards,
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-Thomas Weißschuh <linux@weissschuh.net>
+Florian
 
 
