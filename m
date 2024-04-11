@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50CA8A1108
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B94D8A0F17
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:21:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 556921F2D0A0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17FD528571D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FE6F1474B4;
-	Thu, 11 Apr 2024 10:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C681B1465A4;
+	Thu, 11 Apr 2024 10:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNXZGeUC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKMkLvg0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0DF1474A8;
-	Thu, 11 Apr 2024 10:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E5E145FF0;
+	Thu, 11 Apr 2024 10:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831983; cv=none; b=TVasDwb2expSiqCWR2QOyirZihWV1rCmSPAzKfWLoWYmbW25O7kUxoBq8exsBshCf+I+owiwPEz5i3MD8CY8p6oVR4eIf3LxVyZrjoAvgMz+EUjImOQ33sZ+jtjrvHjD28NJ99npXj5heVPD2eFWUxrWBWiaBrsEuylg4OzBzCw=
+	t=1712830853; cv=none; b=QRwee6W/IbmoYG4TWUIdQ4o7FKzQ19aeKfBYIrAYF9NbOWpjriilvwOvH+vSuxNydx/WK+llKv66NlFftZ220+uw6B5B0YkpYI9sUIbhXOmbT8rTr24voftZcLRT7d2DWKdj0xrzcWJJXvGrIsCOXPJhN/Nqfme9hae8P4Cb0tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831983; c=relaxed/simple;
-	bh=E+fVjRU2DKYAgJz4dnaYI9bha3HV6L6ZpOdn6XNLh18=;
+	s=arc-20240116; t=1712830853; c=relaxed/simple;
+	bh=N9/FvBQGj2cIws6/CAIGv/4suDB1c7ePm8FbhZ2huL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=keu7S1KmXKYWgSowQhY+WqPUYlAiU8UsOUQ6f1ZKXr015H+yDScm6gXBb9LuQhWlH9XgCYWn9gVEOxzpyYQbbVFIjVnC3CT07s+JOlnPRhm+gJNi/1fSaMC383XAiVPmDJ22REuW2oQUBnpWok9FRADH7YJeXq1BXBPOF9Y2fBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNXZGeUC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059D6C433C7;
-	Thu, 11 Apr 2024 10:39:42 +0000 (UTC)
+	 MIME-Version; b=JSafdnBQUW8CX68ykDrjP/UpPMxyPE2goYHFXwH0LCBHcbAjqN3FrBnyJC1TuvqpWr39smJeaKVjdTnE597G9YWLruQXFe2LumRfbKJoDRP/aImvQOI2ri8ogAAQl+KmNkm7PQCtPdflUlKixxtfwFOcFbdWGCbr9+iWIOHybAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKMkLvg0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC9DC433C7;
+	Thu, 11 Apr 2024 10:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831983;
-	bh=E+fVjRU2DKYAgJz4dnaYI9bha3HV6L6ZpOdn6XNLh18=;
+	s=korg; t=1712830853;
+	bh=N9/FvBQGj2cIws6/CAIGv/4suDB1c7ePm8FbhZ2huL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xNXZGeUCtNjeVVE3lHmGQRGQuFFIVYOMmDrcD84k6x//8EtRi83eYWoAQgTSh4LlC
-	 +YpHXNHxXq7XoNFEBI6fcRCU4kX4rlXUexVleyt12f3h4eDvnzaRZUl+4v4uT9EZ5j
-	 WzRhxKma2gvuCcBEhQ2l5op2nuqEEqqMJ/Ebj9To=
+	b=nKMkLvg0PeGbepvzn1bRrYwGHqCZFILia3i9kPYVPW1TqPc+2mI/BSuCGfT6sRAxo
+	 BGYiXsUuSiOeKQOMc0e4MKv4KskgbxTMEQ4xzsyJYKyRYnQiEd91w5TC75mtbJbsEh
+	 mt5eINMR7bhUOBe4U0UNGCGE70LR0dxdCiKlTixo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Kiryushin <kiryushin@ancud.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 185/294] ACPICA: debugger: check status of acpi_evaluate_object() in acpi_db_walk_for_fields()
+	Kevin Tian <kevin.tian@intel.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 5.4 139/215] vfio/pci: Disable auto-enable of exclusive INTx IRQ
 Date: Thu, 11 Apr 2024 11:55:48 +0200
-Message-ID: <20240411095441.190190652@linuxfoundation.org>
+Message-ID: <20240411095429.072346154@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Kiryushin <kiryushin@ancud.ru>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 40e2710860e57411ab57a1529c5a2748abbe8a19 ]
+[ Upstream commit fe9a7082684eb059b925c535682e68c34d487d43 ]
 
-ACPICA commit 9061cd9aa131205657c811a52a9f8325a040c6c9
+Currently for devices requiring masking at the irqchip for INTx, ie.
+devices without DisINTx support, the IRQ is enabled in request_irq()
+and subsequently disabled as necessary to align with the masked status
+flag.  This presents a window where the interrupt could fire between
+these events, resulting in the IRQ incrementing the disable depth twice.
+This would be unrecoverable for a user since the masked flag prevents
+nested enables through vfio.
 
-Errors in acpi_evaluate_object() can lead to incorrect state of buffer.
+Instead, invert the logic using IRQF_NO_AUTOEN such that exclusive INTx
+is never auto-enabled, then unmask as required.
 
-This can lead to access to data in previously ACPI_FREEd buffer and
-secondary ACPI_FREE to the same buffer later.
-
-Handle errors in acpi_evaluate_object the same way it is done earlier
-with acpi_ns_handle_to_pathname.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Link: https://github.com/acpica/acpica/commit/9061cd9a
-Fixes: 5fd033288a86 ("ACPICA: debugger: add command to dump all fields of particular subtype")
-Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc:  <stable@vger.kernel.org>
+Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20240308230557.805580-2-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpica/dbnames.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/vfio/pci/vfio_pci_intrs.c |   17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/acpi/acpica/dbnames.c b/drivers/acpi/acpica/dbnames.c
-index b91155ea9c343..c9131259f717b 100644
---- a/drivers/acpi/acpica/dbnames.c
-+++ b/drivers/acpi/acpica/dbnames.c
-@@ -550,8 +550,12 @@ acpi_db_walk_for_fields(acpi_handle obj_handle,
- 	ACPI_FREE(buffer.pointer);
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -199,8 +199,15 @@ static int vfio_intx_set_signal(struct v
  
- 	buffer.length = ACPI_ALLOCATE_LOCAL_BUFFER;
--	acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
--
-+	status = acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
-+	if (ACPI_FAILURE(status)) {
-+		acpi_os_printf("Could Not evaluate object %p\n",
-+			       obj_handle);
-+		return (AE_OK);
-+	}
- 	/*
- 	 * Since this is a field unit, surround the output in braces
- 	 */
--- 
-2.43.0
-
+ 	vdev->ctx[0].trigger = trigger;
+ 
++	/*
++	 * Devices without DisINTx support require an exclusive interrupt,
++	 * IRQ masking is performed at the IRQ chip.  The masked status is
++	 * protected by vdev->irqlock. Setup the IRQ without auto-enable and
++	 * unmask as necessary below under lock.  DisINTx is unmodified by
++	 * the IRQ configuration and may therefore use auto-enable.
++	 */
+ 	if (!vdev->pci_2_3)
+-		irqflags = 0;
++		irqflags = IRQF_NO_AUTOEN;
+ 
+ 	ret = request_irq(pdev->irq, vfio_intx_handler,
+ 			  irqflags, vdev->ctx[0].name, vdev);
+@@ -211,13 +218,9 @@ static int vfio_intx_set_signal(struct v
+ 		return ret;
+ 	}
+ 
+-	/*
+-	 * INTx disable will stick across the new irq setup,
+-	 * disable_irq won't.
+-	 */
+ 	spin_lock_irqsave(&vdev->irqlock, flags);
+-	if (!vdev->pci_2_3 && vdev->ctx[0].masked)
+-		disable_irq_nosync(pdev->irq);
++	if (!vdev->pci_2_3 && !vdev->ctx[0].masked)
++		enable_irq(pdev->irq);
+ 	spin_unlock_irqrestore(&vdev->irqlock, flags);
+ 
+ 	return 0;
 
 
 
