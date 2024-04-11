@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319408A100A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:30:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A83CA8A0E49
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 622C81C22F6A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:30:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 495FF1F23775
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918F8146D4F;
-	Thu, 11 Apr 2024 10:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E353E145B28;
+	Thu, 11 Apr 2024 10:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Xh9rMER"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Qngdjr+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB8C143C76;
-	Thu, 11 Apr 2024 10:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBFF1DDE9;
+	Thu, 11 Apr 2024 10:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831398; cv=none; b=Jd5iYYLx+s4rPKA3Aiu2ynU2WCedmoHtEewHZOqkNWi4yOVsmi6Hy/98+FaToBwPhTzWALfDA/TQqVpEts7dbNOPDF/EBaB0rdf28tKqCWoPADv+yyAtiO+JwQ5znQ4y7RBCwF0l3O5ROTt2SPipbgxD9/i6ZiS7Dp1sI3is1YI=
+	t=1712830395; cv=none; b=Xd1EjSreNgf74+/ZjEvAdbpiLX5nVPqoW3RKNLOOwvV8kL/d0RogG4d/sAN1YtRIpXgID1U9+voJCc8l51mkbJbxxBgRp0ev5NvY5Pju+yjHR+ZQH1d9C4o08CQWwoLHpcw+7P4TTOnYEBFQl3KSsE9lFIc9iC1UbX9UVMT+Wsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831398; c=relaxed/simple;
-	bh=9uZtltV6gaIYllTEo3RO3nR+hJkuIjVYPNC4UaHACs8=;
+	s=arc-20240116; t=1712830395; c=relaxed/simple;
+	bh=B1JE5kJwCrY5SNG2lIls2CfTl0VzYuUsAxFDCqe05j0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QUtQT+r1HA9QvePqAPrsgSk9WlsiN0teb2+vA4tgJdhzjJxIwDvkEXn83sDBianlEmVgH86isyfhNsa3YRsQLT3YPiMwp/lfBs1geyOIW1dvdIdCJEmsDkimY7dnkRpcFe5onlQ1DwocPRNCWe7U2TecwQtsOiadgnfcUBjOhyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Xh9rMER; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA75AC433C7;
-	Thu, 11 Apr 2024 10:29:57 +0000 (UTC)
+	 MIME-Version; b=Z41RFGM2MwqBjt2dIs9LV6EToI51jZsvNf397fgivIpWffIeAielxPk2cT6avDNWbwXpALu++cHlIPAfLxcwkZE/vlKmxo5LiqCg2AcKXPkKaiIH7j9ITcoYfX8U9wVSzVjtOnUY5HNO+9Pae9faoIVi0jL82uQY4Wob3PSItZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Qngdjr+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB071C433F1;
+	Thu, 11 Apr 2024 10:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831398;
-	bh=9uZtltV6gaIYllTEo3RO3nR+hJkuIjVYPNC4UaHACs8=;
+	s=korg; t=1712830395;
+	bh=B1JE5kJwCrY5SNG2lIls2CfTl0VzYuUsAxFDCqe05j0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Xh9rMER0OvoDJmctQHNnp+fln1AFu6C8PJpsxRbBipzBBwNa2tbH0Co78h9tzTCF
-	 Rs/MnI83bqGtrg4FgerRrD/iTq6924TxpkN0h0e9uoNU2IRIkeksUzSjvmv15ApLqe
-	 hEk1usINs4jJkSZPDkEK+ZiywFnptS3fCOkmsMAM=
+	b=0Qngdjr+veMbrl4f4H/Vg+d93ICr34mZzqYE9d12Yg46pI9sY7W6dWF6iq/iXe0vB
+	 rMUWGkAxiIDR1V11jm1uhYeOb92j1qVQ7PbwNPMCTqoANkK5tAfGT9hB35sZ5lFNg0
+	 +JRi4oBG0xH8cR2LHGA4N88RzsGsmqR7XWDVpONM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Ahmad Rehman <Ahmad.Rehman@amd.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/114] SUNRPC: increase size of rpc_wait_queue.qlen from unsigned short to unsigned int
-Date: Thu, 11 Apr 2024 11:56:37 +0200
-Message-ID: <20240411095418.999130435@linuxfoundation.org>
+Subject: [PATCH 6.8 130/143] drm/amdgpu: Init zone device and drm client after mode-1 reset on reload
+Date: Thu, 11 Apr 2024 11:56:38 +0200
+Message-ID: <20240411095424.816968150@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Ahmad Rehman <Ahmad.Rehman@amd.com>
 
-[ Upstream commit 2c35f43b5a4b9cdfaa6fdd946f5a212615dac8eb ]
+[ Upstream commit f679fd6057fbf5ab34aaee28d58b7f81af0cbf48 ]
 
-When the NFS client is under extreme load the rpc_wait_queue.qlen counter
-can be overflowed. Here is an instant of the backlog queue overflow in a
-real world environment shown by drgn helper:
+In passthrough environment, when amdgpu is reloaded after unload, mode-1
+is triggered after initializing the necessary IPs, That init does not
+include KFD, and KFD init waits until the reset is completed. KFD init
+is called in the reset handler, but in this case, the zone device and
+drm client is not initialized, causing app to create kernel panic.
 
-rpc_task_stats(rpc_clnt):
--------------------------
-rpc_clnt: 0xffff92b65d2bae00
-rpc_xprt: 0xffff9275db64f000
-  Queue:  sending[64887] pending[524] backlog[30441] binding[0]
-XMIT task: 0xffff925c6b1d8e98
-     WRITE: 750654
-        __dta_call_status_580: 65463
-        __dta_call_transmit_status_579: 1
-        call_reserveresult: 685189
-        nfs_client_init_is_complete: 1
-    COMMIT: 584
-        call_reserveresult: 573
-        __dta_call_status_580: 11
-    ACCESS: 1
-        __dta_call_status_580: 1
-   GETATTR: 10
-        __dta_call_status_580: 4
-        call_reserveresult: 6
-751249 tasks for server 111.222.333.444
-Total tasks: 751249
+v2: Removing the init KFD condition from amdgpu_amdkfd_drm_client_create.
+As the previous version has the potential of creating DRM client twice.
 
-count_rpc_wait_queues(xprt):
-----------------------------
-**** rpc_xprt: 0xffff9275db64f000 num_reqs: 65511
-wait_queue: xprt_binding[0] cnt: 0
-wait_queue: xprt_binding[1] cnt: 0
-wait_queue: xprt_binding[2] cnt: 0
-wait_queue: xprt_binding[3] cnt: 0
-rpc_wait_queue[xprt_binding].qlen: 0 maxpriority: 0
-wait_queue: xprt_sending[0] cnt: 0
-wait_queue: xprt_sending[1] cnt: 64887
-wait_queue: xprt_sending[2] cnt: 0
-wait_queue: xprt_sending[3] cnt: 0
-rpc_wait_queue[xprt_sending].qlen: 64887 maxpriority: 3
-wait_queue: xprt_pending[0] cnt: 524
-wait_queue: xprt_pending[1] cnt: 0
-wait_queue: xprt_pending[2] cnt: 0
-wait_queue: xprt_pending[3] cnt: 0
-rpc_wait_queue[xprt_pending].qlen: 524 maxpriority: 0
-wait_queue: xprt_backlog[0] cnt: 0
-wait_queue: xprt_backlog[1] cnt: 685801
-wait_queue: xprt_backlog[2] cnt: 0
-wait_queue: xprt_backlog[3] cnt: 0
-rpc_wait_queue[xprt_backlog].qlen: 30441 maxpriority: 3 [task cnt mismatch]
+v3: v2 patch results in SDMA engine hung as DRM open causes VM clear to SDMA
+before SDMA init. Adding the condition to in drm client creation, on top of v1,
+to guard against drm client creation call multiple times.
 
-There is no effect on operations when this overflow occurs. However
-it causes confusion when trying to diagnose the performance problem.
-
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Ahmad Rehman <Ahmad.Rehman@amd.com>
+Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/sched.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c    | 5 ++++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
-index 8ada7dc802d30..8f9bee0e21c3b 100644
---- a/include/linux/sunrpc/sched.h
-+++ b/include/linux/sunrpc/sched.h
-@@ -186,7 +186,7 @@ struct rpc_wait_queue {
- 	unsigned char		maxpriority;		/* maximum priority (0 if queue is not a priority queue) */
- 	unsigned char		priority;		/* current priority */
- 	unsigned char		nr;			/* # tasks remaining for cookie */
--	unsigned short		qlen;			/* total # tasks waiting in queue */
-+	unsigned int		qlen;			/* total # tasks waiting in queue */
- 	struct rpc_timer	timer_list;
- #if IS_ENABLED(CONFIG_SUNRPC_DEBUG) || IS_ENABLED(CONFIG_TRACEPOINTS)
- 	const char *		name;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
+index 41db030ddc4ee..131983ed43465 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
+@@ -146,7 +146,7 @@ int amdgpu_amdkfd_drm_client_create(struct amdgpu_device *adev)
+ {
+ 	int ret;
+ 
+-	if (!adev->kfd.init_complete)
++	if (!adev->kfd.init_complete || adev->kfd.client.dev)
+ 		return 0;
+ 
+ 	ret = drm_client_init(&adev->ddev, &adev->kfd.client, "kfd",
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 586f4d03039df..64b1bb2404242 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2451,8 +2451,11 @@ static void amdgpu_drv_delayed_reset_work_handler(struct work_struct *work)
+ 	}
+ 	for (i = 0; i < mgpu_info.num_dgpu; i++) {
+ 		adev = mgpu_info.gpu_ins[i].adev;
+-		if (!adev->kfd.init_complete)
++		if (!adev->kfd.init_complete) {
++			kgd2kfd_init_zone_device(adev);
+ 			amdgpu_amdkfd_device_init(adev);
++			amdgpu_amdkfd_drm_client_create(adev);
++		}
+ 		amdgpu_ttm_set_buffer_funcs_status(adev, true);
+ 	}
+ }
 -- 
 2.43.0
 
