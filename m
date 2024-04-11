@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-38764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AAFA8A104B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:34:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C16C28A104D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0608B239A6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:34:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42FA8B232BB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DF214A4CA;
-	Thu, 11 Apr 2024 10:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794FB149E04;
+	Thu, 11 Apr 2024 10:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="daVQcHMK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I72ieom+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC01140366;
-	Thu, 11 Apr 2024 10:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39750148314;
+	Thu, 11 Apr 2024 10:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831521; cv=none; b=fQIqyA3MghW4h5HfMAb0+6x8TOgoACfsajz3gpfx93gHTbe03ZZdhmozR+B1b/3dzj+Ly3Hre0csjAdgEcLcJVrGAZnquu26JLW3LMjKahohcRytcCdqam/cwJK0RTf6tn+qp26PUtcbGWtrIMxnULcOmCTUggPWcBMqHj/OfDo=
+	t=1712831527; cv=none; b=HIHozJhPcL/kHHlCVGv/R/12tpDT/1OMnCAIUf/pvroVE6+81UpJlc8QTl+ovQh2R9s4WImy7p9M8cJbXEBUDw/sDDQKMhxERm2ND6haLQFLVHCygjQnYfyzlvdLu76ExZCdUrGDN571cMkHryqLPNqv9Kf/P9ua3tTzIbfpiyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831521; c=relaxed/simple;
-	bh=KX2txMkPaz6GSzsIAzX7Z4b1Par3jZ8fYeuY6JqKZNs=;
+	s=arc-20240116; t=1712831527; c=relaxed/simple;
+	bh=01w8cUQ4b47A8Qlqw+NlRFfILh/T7J6Ljcegq/wMCt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O5kzE3VDyYTyPlPV/T1Ihyeeo89YC7qTeydMMDE4fEYh0kxNJukWBGwRYT7DbZoUTyzqwbVMLl6snfHMQetfw+9uxje3/mdJaY2PzlRS6AE76eo2O+nxcWK64l3w4v3UEcUA8lrDa30/Gd39YmpsNoJhwOD74SubqqbtNWjnq8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=daVQcHMK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC064C433C7;
-	Thu, 11 Apr 2024 10:32:00 +0000 (UTC)
+	 MIME-Version; b=d9nbZUmw4LzyzN97gPjlzSPf6tOpxdIT/ey0GkBXjgcFV8lndnz8tsPk9nbO++UXyEjBMT8BeIfbikzlD951yzaxkxwxS4HFkn6pAgAtV4vWVPDB8itYK5dXN8iS9N9XO/XCsaRNcQvVrZ/oWIJkn0331sieLQ+8nHxKx9/bK9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I72ieom+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57C5C433F1;
+	Thu, 11 Apr 2024 10:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831521;
-	bh=KX2txMkPaz6GSzsIAzX7Z4b1Par3jZ8fYeuY6JqKZNs=;
+	s=korg; t=1712831527;
+	bh=01w8cUQ4b47A8Qlqw+NlRFfILh/T7J6Ljcegq/wMCt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=daVQcHMKTVUCGniCIvMFv5RDbuq5U9GUl/ivmq1wDJu1guit+aBm1Ep9C7Tzou0OC
-	 5r/aXDXBBHhcP1Zl0I3tAjicNorGx0II4FnZVz3t0AgdazBQwW9CsVFY6Ib7gvRF8b
-	 PkowqBdGZIDfgAmMdyEZT+MJlnDUU3VKu5bf0+zQ=
+	b=I72ieom++/s0EFjlnsyn9Ap8unetQzCagt1teRwWsy5Di47Em6pIMQLCEujQnqZsn
+	 x39hLgezvGNGSUJcQxEh4RqB8V0DOFjkDyXHEKIijmS7z1ARLV7NsdRLhcYIwr15IC
+	 ZKW4yhCL7Pl4Z5PEZHtMMLGg18tM5jZ8s2EtEC48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Charlie Jenkins <charlie@rivosinc.com>,
 	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 037/294] parisc: Fix csum_ipv6_magic on 32-bit systems
-Date: Thu, 11 Apr 2024 11:53:20 +0200
-Message-ID: <20240411095436.754378450@linuxfoundation.org>
+Subject: [PATCH 5.10 038/294] parisc: Fix csum_ipv6_magic on 64-bit systems
+Date: Thu, 11 Apr 2024 11:53:21 +0200
+Message-ID: <20240411095436.784514560@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
 References: <20240411095435.633465671@linuxfoundation.org>
@@ -70,51 +70,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 4408ba75e4ba80c91fde7e10bccccf388f5c09be ]
+[ Upstream commit 4b75b12d70506e31fc02356bbca60f8d5ca012d0 ]
 
-Calculating the IPv6 checksum on 32-bit systems missed overflows when
-adding the proto+len fields into the checksum. This results in the
-following unit test failure.
+hppa 64-bit systems calculates the IPv6 checksum using 64-bit add
+operations. The last add folds protocol and length fields into the 64-bit
+result. While unlikely, this operation can overflow. The overflow can be
+triggered with a code sequence such as the following.
 
-    # test_csum_ipv6_magic: ASSERTION FAILED at lib/checksum_kunit.c:506
-    Expected ( u64)csum_result == ( u64)expected, but
-        ( u64)csum_result == 46722 (0xb682)
-        ( u64)expected == 46721 (0xb681)
-    not ok 5 test_csum_ipv6_magic
+	/* try to trigger massive overflows */
+	memset(tmp_buf, 0xff, sizeof(struct in6_addr));
+	csum_result = csum_ipv6_magic((struct in6_addr *)tmp_buf,
+				      (struct in6_addr *)tmp_buf,
+				      0xffff, 0xff, 0xffffffff);
 
-This is probably rarely seen in the real world because proto+len are
-usually small values which will rarely result in overflows when calculating
-the checksum. However, the unit test code uses large values for the length
-field, causing the test to fail.
-
-Fix the problem by adding the missing carry into the final checksum.
+Fix the problem by adding any overflows from the final add operation into
+the calculated checksum. Fortunately, we can do this without additional
+cost by replacing the add operation used to fold the checksum into 32 bit
+with "add,dc" to add in the missing carry.
 
 Cc: Palmer Dabbelt <palmer@rivosinc.com>
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Charlie Jenkins <charlie@rivosinc.com>
 Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/checksum.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/parisc/include/asm/checksum.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
-index f705e5dd10742..e619e67440db9 100644
+index e619e67440db9..c949aa20fa162 100644
 --- a/arch/parisc/include/asm/checksum.h
 +++ b/arch/parisc/include/asm/checksum.h
-@@ -163,7 +163,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- "	ldw,ma		4(%2), %7\n"	/* 4th daddr */
- "	addc		%6, %0, %0\n"
- "	addc		%7, %0, %0\n"
--"	addc		%3, %0, %0\n"	/* fold in proto+len, catch carry */
-+"	addc		%3, %0, %0\n"	/* fold in proto+len */
-+"	addc		0, %0, %0\n"	/* add carry */
+@@ -137,8 +137,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ "	add,dc		%3, %0, %0\n"  /* fold in proto+len | carry bit */
+ "	extrd,u		%0, 31, 32, %4\n"/* copy upper half down */
+ "	depdi		0, 31, 32, %0\n"/* clear upper half */
+-"	add		%4, %0, %0\n"	/* fold into 32-bits */
+-"	addc		0, %0, %0\n"	/* add carry */
++"	add,dc		%4, %0, %0\n"	/* fold into 32-bits, plus carry */
++"	addc		0, %0, %0\n"	/* add final carry */
  
- #endif
- 	: "=r" (sum), "=r" (saddr), "=r" (daddr), "=r" (len),
+ #else
+ 
 -- 
 2.43.0
 
