@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-38709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F70F8A0FF6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B23A48A11B0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:46:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 911A21C22E4F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:29:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E496C1C23C75
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC89F146A71;
-	Thu, 11 Apr 2024 10:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14729146D49;
+	Thu, 11 Apr 2024 10:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KTOekaTi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="owOIvjN9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A84D1D558;
-	Thu, 11 Apr 2024 10:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C735F64CC0;
+	Thu, 11 Apr 2024 10:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831363; cv=none; b=KUyWW5L+d7ZFe2heRbKftmVY61e2oOfgBYNRY26UNFSNEqdAx9KnqIe/31KcPTYhcAzK8rpHxokBbJ8djpsxl6Dzt/WH2gV1agaLLqkwDl7gKySZ7Dl5Xy9c05+Th1R/9RHISZqvvAQrgk43DgvVVd025OTsRF3+/H978c7VoQw=
+	t=1712832389; cv=none; b=bkBGljfMYRsYOr5Y68yKVsDIOpeHlifQzh57iHJQu6Wkjo4/6faB96Mcyc1KuD8l//Dfwl916mY9Dgj7n7y3FkQmjWsm7VN3fTvwULtUjrLq5aD4STCsFdtXgsKsxjWn2oOq29OFinn4DZpzs9ReXXNThZ7QcpB8ciRcoHrXn/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831363; c=relaxed/simple;
-	bh=fnmbNURjj3Hdi+dD2Y2nD97DMc+wGjQ5l8/39dlB92U=;
+	s=arc-20240116; t=1712832389; c=relaxed/simple;
+	bh=1WrzSVG0Y9YVtSuSb0/XpEb9WLRbZY98HQ2gOP+Sfmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJ/7OZpovfU7pBcF6fmdqnRAQliU9CtUpBwR5jBQtPhuitBofpf6/Ii8kBAkInQBHGepWvOxmO+x5ByagftehvGpweYJqtR8KGkynffonAK063nTN4c0wx+GIDiJxgAms4trWMzYrjyDX8xwt+d48kV1bOIvMjC90xheHMmIW5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KTOekaTi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF2DC43390;
-	Thu, 11 Apr 2024 10:29:22 +0000 (UTC)
+	 MIME-Version; b=WvXuuQi4UBP5YMgYerWfJZEiyk5vaHvz/3tsye+1BhVuIZJHSwp/tjiMF7hWXAiHUCC3MOPT5EtOCfH5GTqojdgyhyyUUnpo3FW8qX3YTOAY4FappIfTXKdUpSfqtDBuxiqbHlX60hNnVeyMVBIFtFttFVNeCdl3+BfQhcv3DJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=owOIvjN9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E970C433C7;
+	Thu, 11 Apr 2024 10:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831363;
-	bh=fnmbNURjj3Hdi+dD2Y2nD97DMc+wGjQ5l8/39dlB92U=;
+	s=korg; t=1712832389;
+	bh=1WrzSVG0Y9YVtSuSb0/XpEb9WLRbZY98HQ2gOP+Sfmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KTOekaTiesdTpj/e1aI+S+PDpAt2e+pkgxWXrHviG249nw+qqk3K3Wcv/BL8K+JBs
-	 9YiiFI8icrIccLJwD4QykKLDSMGEL16wPgj0kZBp2E1RVL5Z9I88IbiPSBQF3R5Mob
-	 +x2I85hwd/PtLo/Wjh51CYgP1npjM7AphG+V8tmE=
+	b=owOIvjN9prL8gzTpQsD3Ey/QCZWMaFm5+pibTEmIdtePRVgBEb5+icQF4nlKkRfKB
+	 y26vLdpFfvkkbCNCjt4Yr4Ij6v2I0qHCaVCM47d5v2gm0kgRC5zlKxl5LEXVLtWvV7
+	 HMVDnHodrx8GDHCMQvPLjG8SnwiofVLvhNUgq0MY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Wang <zhipeng.wang_1@nxp.com>,
-	Chancel Liu <chancel.liu@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Samuel Dionne-Riel <samuel@dionne-riel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/114] ASoC: soc-core.c: Skip dummy codec when adding platforms
+Subject: [PATCH 6.1 31/83] drm: panel-orientation-quirks: Add quirk for GPD Win Mini
 Date: Thu, 11 Apr 2024 11:57:03 +0200
-Message-ID: <20240411095419.788856813@linuxfoundation.org>
+Message-ID: <20240411095413.615462514@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chancel Liu <chancel.liu@nxp.com>
+From: Samuel Dionne-Riel <samuel@dionne-riel.com>
 
-[ Upstream commit 23fb6bc2696119391ec3a92ccaffe50e567c515e ]
+[ Upstream commit 2f862fdc0fd802e728b6ca96bc78ec3f01bf161e ]
 
-When pcm_runtime is adding platform components it will scan all
-registered components. In case of DPCM FE/BE some DAI links will
-configure dummy platform. However both dummy codec and dummy platform
-are using "snd-soc-dummy" as component->name. Dummy codec should be
-skipped when adding platforms otherwise there'll be overflow and UBSAN
-complains.
+This adds a DMI orientation quirk for the GPD Win Mini panel.
 
-Reported-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
-Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
-Link: https://msgid.link/r/20240305065606.3778642-1-chancel.liu@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Samuel Dionne-Riel <samuel@dionne-riel.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231222030149.3740815-2-samuel@dionne-riel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index 9de98c01d8151..e65fe3a7c3e42 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -1105,6 +1105,9 @@ static int snd_soc_add_pcm_runtime(struct snd_soc_card *card,
- 			if (!snd_soc_is_matching_component(platform, component))
- 				continue;
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index d5c15292ae937..3fe5e6439c401 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -117,6 +117,12 @@ static const struct drm_dmi_panel_orientation_data lcd1080x1920_leftside_up = {
+ 	.orientation = DRM_MODE_PANEL_ORIENTATION_LEFT_UP,
+ };
  
-+			if (snd_soc_component_is_dummy(component) && component->num_dai)
-+				continue;
++static const struct drm_dmi_panel_orientation_data lcd1080x1920_rightside_up = {
++	.width = 1080,
++	.height = 1920,
++	.orientation = DRM_MODE_PANEL_ORIENTATION_RIGHT_UP,
++};
 +
- 			snd_soc_rtd_add_component(rtd, component);
- 		}
- 	}
+ static const struct drm_dmi_panel_orientation_data lcd1200x1920_rightside_up = {
+ 	.width = 1200,
+ 	.height = 1920,
+@@ -279,6 +285,12 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "G1618-03")
+ 		},
+ 		.driver_data = (void *)&lcd720x1280_rightside_up,
++	}, {	/* GPD Win Mini */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "GPD"),
++		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "G1617-01")
++		},
++		.driver_data = (void *)&lcd1080x1920_rightside_up,
+ 	}, {	/* I.T.Works TW891 */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "To be filled by O.E.M."),
 -- 
 2.43.0
 
