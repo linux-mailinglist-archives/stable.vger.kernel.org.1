@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-38848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9BF8A10AF
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81BD28A0D43
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:02:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89B541F2CBB0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2BD11C20E8F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC7B1474CA;
-	Thu, 11 Apr 2024 10:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9297914535A;
+	Thu, 11 Apr 2024 10:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXqcrCut"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tX2fG3Lp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7B2134CC2;
-	Thu, 11 Apr 2024 10:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFBF1422C4;
+	Thu, 11 Apr 2024 10:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831771; cv=none; b=EPbmeMxlsfMrPhDWTd7q9XHK/eLwitD6UUfRdgV8JDJm2bt+dbA8zG18q5dBmNaUjJGd7DIFsoGkQjG54jTgE8179EmtbTt51/fA96XhF/Qv/ZDoU7fkasMXWI8daeZyhoU0Ru2ePA9bPU3qknJ/oJInCAVHvNdpC3yQs8WZdFM=
+	t=1712829723; cv=none; b=aCG9SzCPH9/Yd3KhmLUwqi2w1ugrTV6C3jsqM74KB2D2cjsdiNJ0dMjdQLscYo9SJFG06n/jSGlRXcj/wOv0ubMw0RNUExAeVdMZkUmLWUJRdomM2/e+CFB1Ov0ChJjvSR1N50stS5Bs4oHWMSCkOzZUcVqMZlp5JWzzciDzbXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831771; c=relaxed/simple;
-	bh=4DsftsmgsEF+zFjGj8SunzlUMOOLKJzCujgcJEc7xNg=;
+	s=arc-20240116; t=1712829723; c=relaxed/simple;
+	bh=QC6ES4Tua0g8uCSOFn+ainpeOJdA/F8ffbvFImcuDZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aGNoApCFVZt3aUf7RqRG0NKDSrC30Px8lOHgr9InzIvfN8QLvWIwpNj/Id39B9T3CSvFi8PBCkYwpMonpa40bjM4hR40uarFmjkkw7EyNutnnmZk4mpDOA6iGtKIwDc+KWO1mnH1HG5oODNP+2gqf1+1ux1TWY4rJpLSS/e4M78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXqcrCut; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65390C433F1;
-	Thu, 11 Apr 2024 10:36:10 +0000 (UTC)
+	 MIME-Version; b=HEouDILeaDz9vT5Eq5Os1IG29BTQaWGxap3TBQY8i4sxV8rFp8w1mIl2hoUWWMPlCpIt8dh4z9c8/FthFwn0Ca6Xihu6nD8kFXIABtbw+vhClEV9p4nKxeIPqKeJmZs2VLk81VFZgZ4wI5j3BS8ZhHIc7SlOXNtW10N5ZNRQvvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tX2fG3Lp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C597BC433F1;
+	Thu, 11 Apr 2024 10:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831770;
-	bh=4DsftsmgsEF+zFjGj8SunzlUMOOLKJzCujgcJEc7xNg=;
+	s=korg; t=1712829723;
+	bh=QC6ES4Tua0g8uCSOFn+ainpeOJdA/F8ffbvFImcuDZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dXqcrCutyLMP1pBe2nnyMzzcHoMUKtfk/fy9grIhuSO/fncMrr/JkUmjsdMS4Rq0v
-	 OEN+KhJYDN+j8imCqYD7kcw1KmFBsvVJmiJTjnTDw0kL2i7OV7Dwu1eXd0psmjblq4
-	 nwn675XJkp+MVFp8pI9CCgHz7ikJA1Ntk28mGza0=
+	b=tX2fG3LpP+y44PvmSZlSXzOLOD8PUGhmZXkMjgUzZTTpHell3iZ2+6eSg12/pgJbu
+	 csDThrnOpqsAtEvszOsdTLhvT/AhSyXjYiu4e6U5tUWDyxmljnzhCMqDH/24MKALMt
+	 gf8CDs14cK1IzxWXmiOlu71xVE/feimjW0UM2aLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	"Christoph Lameter (Ampere)" <cl@linux.com>,
-	Dhruva Gole <d-gole@ti.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Ricky Wu <ricky_wu@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 103/294] cpufreq: dt: always allocate zeroed cpumask
-Date: Thu, 11 Apr 2024 11:54:26 +0200
-Message-ID: <20240411095438.772509380@linuxfoundation.org>
+Subject: [PATCH 4.19 044/175] PCI/PM: Drain runtime-idle callbacks before driver removal
+Date: Thu, 11 Apr 2024 11:54:27 +0200
+Message-ID: <20240411095420.891296348@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit d2399501c2c081eac703ca9597ceb83c7875a537 ]
+[ Upstream commit 9d5286d4e7f68beab450deddbb6a32edd5ecf4bf ]
 
-Commit 0499a78369ad ("ARM64: Dynamically allocate cpumasks and increase
-supported CPUs to 512") changed the handling of cpumasks on ARM 64bit,
-what resulted in the strange issues and warnings during cpufreq-dt
-initialization on some big.LITTLE platforms.
+A race condition between the .runtime_idle() callback and the .remove()
+callback in the rtsx_pcr PCI driver leads to a kernel crash due to an
+unhandled page fault [1].
 
-This was caused by mixing OPPs between big and LITTLE cores, because
-OPP-sharing information between big and LITTLE cores is computed on
-cpumask, which in turn was not zeroed on allocation. Fix this by
-switching to zalloc_cpumask_var() call.
+The problem is that rtsx_pci_runtime_idle() is not expected to be running
+after pm_runtime_get_sync() has been called, but the latter doesn't really
+guarantee that.  It only guarantees that the suspend and resume callbacks
+will not be running when it returns.
 
-Fixes: dc279ac6e5b4 ("cpufreq: dt: Refactor initialization to handle probe deferral properly")
-CC: stable@vger.kernel.org # v5.10+
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Christoph Lameter (Ampere) <cl@linux.com>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+However, if a .runtime_idle() callback is already running when
+pm_runtime_get_sync() is called, the latter will notice that the runtime PM
+status of the device is RPM_ACTIVE and it will return right away without
+waiting for the former to complete.  In fact, it cannot wait for
+.runtime_idle() to complete because it may be called from that callback (it
+arguably does not make much sense to do that, but it is not strictly
+prohibited).
+
+Thus in general, whoever is providing a .runtime_idle() callback needs
+to protect it from running in parallel with whatever code runs after
+pm_runtime_get_sync().  [Note that .runtime_idle() will not start after
+pm_runtime_get_sync() has returned, but it may continue running then if it
+has started earlier.]
+
+One way to address that race condition is to call pm_runtime_barrier()
+after pm_runtime_get_sync() (not before it, because a nonzero value of the
+runtime PM usage counter is necessary to prevent runtime PM callbacks from
+being invoked) to wait for the .runtime_idle() callback to complete should
+it be running at that point.  A suitable place for doing that is in
+pci_device_remove() which calls pm_runtime_get_sync() before removing the
+driver, so it may as well call pm_runtime_barrier() subsequently, which
+will prevent the race in question from occurring, not just in the rtsx_pcr
+driver, but in any PCI drivers providing .runtime_idle() callbacks.
+
+Link: https://lore.kernel.org/lkml/20240229062201.49500-1-kai.heng.feng@canonical.com/ # [1]
+Link: https://lore.kernel.org/r/5761426.DvuYhMxLoT@kreacher
+Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Ricky Wu <ricky_wu@realtek.com>
+Acked-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq-dt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pci-driver.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/cpufreq/cpufreq-dt.c b/drivers/cpufreq/cpufreq-dt.c
-index e363ae04aac62..44cc596ca0a5e 100644
---- a/drivers/cpufreq/cpufreq-dt.c
-+++ b/drivers/cpufreq/cpufreq-dt.c
-@@ -251,7 +251,7 @@ static int dt_cpufreq_early_init(struct device *dev, int cpu)
- 	if (!priv)
- 		return -ENOMEM;
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index 2e5402b09c1ad..031908e42fb54 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -441,6 +441,13 @@ static int pci_device_remove(struct device *dev)
  
--	if (!alloc_cpumask_var(&priv->cpus, GFP_KERNEL))
-+	if (!zalloc_cpumask_var(&priv->cpus, GFP_KERNEL))
- 		return -ENOMEM;
- 
- 	priv->cpu_dev = cpu_dev;
+ 	if (drv->remove) {
+ 		pm_runtime_get_sync(dev);
++		/*
++		 * If the driver provides a .runtime_idle() callback and it has
++		 * started to run already, it may continue to run in parallel
++		 * with the code below, so wait until all of the runtime PM
++		 * activity has completed.
++		 */
++		pm_runtime_barrier(dev);
+ 		drv->remove(pci_dev);
+ 		pm_runtime_put_noidle(dev);
+ 	}
 -- 
 2.43.0
 
