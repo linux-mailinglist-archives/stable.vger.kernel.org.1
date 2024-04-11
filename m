@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-38388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8299E8A0E55
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D72548A1119
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:41:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C61428670F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 926B92880EA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F61145B28;
-	Thu, 11 Apr 2024 10:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE1D13FD9F;
+	Thu, 11 Apr 2024 10:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5WxrBCN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGKjWfzc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DC6145B08;
-	Thu, 11 Apr 2024 10:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F96D64CC0;
+	Thu, 11 Apr 2024 10:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830419; cv=none; b=ZmMgv5MUJSTEAxpIWZmyQ7dn5gDZ3DmDT1tQB49cDXFUcoLBOoCy9FE1g9bgmnb2dJUXOX/GsaqYnwcK48k+RCU+32BKXSO7nW4sfcK45eNToiyLaLeQi3c4osIlSCNNWyd7u+CZn32MSVSM4zGuAq8Y4Ne9uFORVGvDicCcSos=
+	t=1712832027; cv=none; b=IP74JM81cJma9gpYbDy657M4tzFbksAnY/8tRUwi7MQJm1DmhTPNm3r05e5Zd8p8bdtjl+GwY4o1lz+354IwMB0Uuf0oSwRJQcEkd/QtaNBjlmzFPaaYpCJsjj/FXFXffY9/6zsaAGhXrQpkK6bKVDQuRAtV+yo9bIfX9b045vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830419; c=relaxed/simple;
-	bh=WNCA8VGWX6yuB938XY/CAKMIoZm9VEdIXMVHQMF6aPc=;
+	s=arc-20240116; t=1712832027; c=relaxed/simple;
+	bh=dvBTZu2N8rMsUYRcXtC1V376xm9/NLLJ10hMggSh8V4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JNc0hi56CNLtkmPN1rbRTjT/r3sQAIR9ed/B5ftiuGL96WxBXgVUiRlbaZe7XPFeXFXIp+ylXi4doTQEZTf11lg1PHmysGgfRSJksvdIhSZhI/qKfUeH7VIJo9V3Rz9KxRFe9dHo6S9FZqpaS+nHPNKljpSqREvdUnj8yYRClj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5WxrBCN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC491C433F1;
-	Thu, 11 Apr 2024 10:13:38 +0000 (UTC)
+	 MIME-Version; b=UjFoRg1bguHztEWnWckT9OhVLtvxx1ZhTVMzR6x/MJ5Lljvv852wXGDcXsZcymEoXGMr/CRNBCxpS8ELfJ5qjn2APmNSNql90it5+YOnlhoGJUJm+7Maa23Ddw3JpJPOeH7o2qXoH4eAlczdqL5Y0Q3jn9AAvU6XgzuHSjiyLSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGKjWfzc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0F3C433A6;
+	Thu, 11 Apr 2024 10:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830419;
-	bh=WNCA8VGWX6yuB938XY/CAKMIoZm9VEdIXMVHQMF6aPc=;
+	s=korg; t=1712832027;
+	bh=dvBTZu2N8rMsUYRcXtC1V376xm9/NLLJ10hMggSh8V4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5WxrBCNE18KJ2IM7DYhO0EJvN+fKE4gK7trypY11NgkXSbCANt9xC/YNMKeltjwT
-	 zjGRFYUOWZz+8OA9CFdfKK+zbHDTQHo1ZQ+r9RiiAY/cs3OYY3Izm1Q9F0yNl6ZvG5
-	 qAKVqDeGVRF4UDghCyODzxJZ204QFmqTP97NBHng=
+	b=aGKjWfzcm9W7X8cCImL07w6s3lutoYAakLee8kN88zQhyxfRWzWoe93AmDaMqL5eT
+	 3kuLf6WwgnfxyNcrHjVxPOHKVE8LGxFaURzMGBrdA5JdveNbOplQb2NlxyMXp/pfNr
+	 0zjrM2TAOoKiNTFoLZbezknOAC7yHIX7KQCyUWSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SungHwan Jung <onenowy@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 101/143] platform/x86: acer-wmi: Add predator_v4 module parameter
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 206/294] netfilter: nf_tables: reject new basechain after table flag update
 Date: Thu, 11 Apr 2024 11:56:09 +0200
-Message-ID: <20240411095423.948079324@linuxfoundation.org>
+Message-ID: <20240411095441.802837658@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +58,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SungHwan Jung <onenowy@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit f9124f2a454a6f1edb4eae9f0646b1a61fd74dba ]
+commit 994209ddf4f430946f6247616b2e33d179243769 upstream.
 
-This parameter allows predator laptop users to test and use features
-(mode button, platform profile, fan speed monitoring) without
-adding model names to acer_quirks and compiling kernel.
+When dormant flag is toggled, hooks are disabled in the commit phase by
+iterating over current chains in table (existing and new).
 
-Signed-off-by: SungHwan Jung <onenowy@gmail.com>
-Link: https://lore.kernel.org/r/20240220080416.6395-1-onenowy@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The following configuration allows for an inconsistent state:
+
+  add table x
+  add chain x y { type filter hook input priority 0; }
+  add table x { flags dormant; }
+  add chain x w { type filter hook input priority 1; }
+
+which triggers the following warning when trying to unregister chain w
+which is already unregistered.
+
+[  127.322252] WARNING: CPU: 7 PID: 1211 at net/netfilter/core.c:50                                                                     1 __nf_unregister_net_hook+0x21a/0x260
+[...]
+[  127.322519] Call Trace:
+[  127.322521]  <TASK>
+[  127.322524]  ? __warn+0x9f/0x1a0
+[  127.322531]  ? __nf_unregister_net_hook+0x21a/0x260
+[  127.322537]  ? report_bug+0x1b1/0x1e0
+[  127.322545]  ? handle_bug+0x3c/0x70
+[  127.322552]  ? exc_invalid_op+0x17/0x40
+[  127.322556]  ? asm_exc_invalid_op+0x1a/0x20
+[  127.322563]  ? kasan_save_free_info+0x3b/0x60
+[  127.322570]  ? __nf_unregister_net_hook+0x6a/0x260
+[  127.322577]  ? __nf_unregister_net_hook+0x21a/0x260
+[  127.322583]  ? __nf_unregister_net_hook+0x6a/0x260
+[  127.322590]  ? __nf_tables_unregister_hook+0x8a/0xe0 [nf_tables]
+[  127.322655]  nft_table_disable+0x75/0xf0 [nf_tables]
+[  127.322717]  nf_tables_commit+0x2571/0x2620 [nf_tables]
+
+Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/acer-wmi.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
-index 771b0ce34c8f9..ee2e164f86b9c 100644
---- a/drivers/platform/x86/acer-wmi.c
-+++ b/drivers/platform/x86/acer-wmi.c
-@@ -276,6 +276,7 @@ static bool has_type_aa;
- static u16 commun_func_bitmap;
- static u8 commun_fn_key_number;
- static bool cycle_gaming_thermal_profile = true;
-+static bool predator_v4;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -2225,6 +2225,9 @@ static int nf_tables_addchain(struct nft
+ 		struct nft_stats __percpu *stats = NULL;
+ 		struct nft_chain_hook hook;
  
- module_param(mailled, int, 0444);
- module_param(brightness, int, 0444);
-@@ -284,6 +285,7 @@ module_param(force_series, int, 0444);
- module_param(force_caps, int, 0444);
- module_param(ec_raw_mode, bool, 0444);
- module_param(cycle_gaming_thermal_profile, bool, 0644);
-+module_param(predator_v4, bool, 0444);
- MODULE_PARM_DESC(mailled, "Set initial state of Mail LED");
- MODULE_PARM_DESC(brightness, "Set initial LCD backlight brightness");
- MODULE_PARM_DESC(threeg, "Set initial state of 3G hardware");
-@@ -292,6 +294,8 @@ MODULE_PARM_DESC(force_caps, "Force the capability bitmask to this value");
- MODULE_PARM_DESC(ec_raw_mode, "Enable EC raw mode");
- MODULE_PARM_DESC(cycle_gaming_thermal_profile,
- 	"Set thermal mode key in cycle mode. Disabling it sets the mode key in turbo toggle mode");
-+MODULE_PARM_DESC(predator_v4,
-+	"Enable features for predator laptops that use predator sense v4");
++		if (table->flags & __NFT_TABLE_F_UPDATE)
++			return -EINVAL;
++
+ 		if (flags & NFT_CHAIN_BINDING)
+ 			return -EOPNOTSUPP;
  
- struct acer_data {
- 	int mailled;
-@@ -734,7 +738,9 @@ enum acer_predator_v4_thermal_profile_wmi {
- /* Find which quirks are needed for a particular vendor/ model pair */
- static void __init find_quirks(void)
- {
--	if (!force_series) {
-+	if (predator_v4) {
-+		quirks = &quirk_acer_predator_v4;
-+	} else if (!force_series) {
- 		dmi_check_system(acer_quirks);
- 		dmi_check_system(non_acer_quirks);
- 	} else if (force_series == 2490) {
--- 
-2.43.0
-
 
 
 
