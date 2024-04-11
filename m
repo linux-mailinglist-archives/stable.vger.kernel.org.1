@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-38752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7EE8A1037
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:33:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71D0E8A1023
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:32:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D43AD1C20C5E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:32:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3FABB24801
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B31147C82;
-	Thu, 11 Apr 2024 10:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF46148851;
+	Thu, 11 Apr 2024 10:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lS1RdoBG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gj0j2YF3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205E71474CF;
-	Thu, 11 Apr 2024 10:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094601474CB;
+	Thu, 11 Apr 2024 10:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831486; cv=none; b=ZACbIBak/n9GyBLmsHVoGvXA/p7V3uGdQ+dhNAa+wADvP/YFX8D6Y8ENmxAOfbCxa53Yy+PRLursFWLhEIznN++/3qg/pERk9A4wCgKpqBt4r2j97XgU/E6E8UlD2WuDrODxg1oIqKTmocjzn6N3+SLLVRzeeER1MSzneSprz08=
+	t=1712831442; cv=none; b=Z52zp0TrtpiHZ00Qy0j0R+1z9vLcIJcJAMLy+Ce88P0Sbo9vLcZljVLcG7UIqhdkj6wZ9fb/frD04gZR9jjAZzLGyLgXvhKrUsbDar79ss03xSsJIKq3F5lXCwaHVMFFkewJdwGNUo5gKvRweq/7+uHCAV/RWAYJgQ2oCMD26gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831486; c=relaxed/simple;
-	bh=RdIF4nHouyLOKQA2ucreemTGRrrb1T+FjfDV5xhHCZs=;
+	s=arc-20240116; t=1712831442; c=relaxed/simple;
+	bh=R8apMdgGf4luzQa0J/AduyWIx8XUJidoE5RuvRrPcQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mc92XbrtjopcnY7fNlKOa7yil0Z5MUExznFaR4BCHHsSijL+QVsrIiy9DkLeBvwq5eR7UJH/bU70As8aahpTavvrJz0Gg2dGUWwDzxV16fMnId1qZ0HhhKkcOZnNYnfmn8opIW4SDY1LWkGz8uaKAyHyba57wQLALT4uAgLRXC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lS1RdoBG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C6EC433F1;
-	Thu, 11 Apr 2024 10:31:25 +0000 (UTC)
+	 MIME-Version; b=NP7nRPSzqQwXQY+l9CmfOcsuZi0JYl1hOMHktH21ixdtd0E8ZmgtN6A+xf4BlvnSOw5jm5epqQqm3vwoeuYFzpF/HJ0KFKTO+PWL86l0PKenFrgyzicIGUqm7PktGiio9sv7LpyaA/rKUEdGS09dxO6CFb3OA/QALT5lbLumQbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gj0j2YF3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860E5C433F1;
+	Thu, 11 Apr 2024 10:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831486;
-	bh=RdIF4nHouyLOKQA2ucreemTGRrrb1T+FjfDV5xhHCZs=;
+	s=korg; t=1712831441;
+	bh=R8apMdgGf4luzQa0J/AduyWIx8XUJidoE5RuvRrPcQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lS1RdoBGmfB0L7VHt+Y5H4RJWDBrHodccBySWUTDmrU8PBE58lEDcsKxzVNIoG7fz
-	 /XRzyuRP7lWm1BP2xiQUkfil0RNmlGfCUI6DEGKVxUDIJq59jogsvNpHOS1YipNBbq
-	 4/HFlz5qA9ANNDKW5V1q8C93Zp7VxCqMDhGqU6Qs=
+	b=gj0j2YF3Bmn0KGVOtaTCFTKQrPfLq2xtGMsQch5TxKbgcPiFYk608LNtgm1+PQ1sw
+	 Gm7hbgZrr9vDmkOxYvEd82iUhRpYlcpuXIJIWyMa6NOgpQ0Q9/8rUueVNyqVaD3/Z1
+	 k7ThKvLwrJkRP0XbtR6VPC71+F5WA7C8956pURsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Amit Pundir <amit.pundir@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 009/294] clk: qcom: gcc-sdm845: Add soft dependency on rpmhpd
-Date: Thu, 11 Apr 2024 11:52:52 +0200
-Message-ID: <20240411095435.918738961@linuxfoundation.org>
+Subject: [PATCH 5.10 010/294] smack: Set SMACK64TRANSMUTE only for dirs in smack_inode_setxattr()
+Date: Thu, 11 Apr 2024 11:52:53 +0200
+Message-ID: <20240411095435.948426053@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
 References: <20240411095435.633465671@linuxfoundation.org>
@@ -67,38 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Amit Pundir <amit.pundir@linaro.org>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-[ Upstream commit 1d9054e3a4fd36e2949e616f7360bdb81bcc1921 ]
+[ Upstream commit 9c82169208dde516510aaba6bbd8b13976690c5d ]
 
-With the addition of RPMh power domain to the GCC node in
-device tree, we noticed a significant delay in getting the
-UFS driver probed on AOSP which futher led to mount failures
-because Android do not support rootwait. So adding a soft
-dependency on RPMh power domain which informs modprobe to
-load rpmhpd module before gcc-sdm845.
+Since the SMACK64TRANSMUTE xattr makes sense only for directories, enforce
+this restriction in smack_inode_setxattr().
 
-Cc: stable@vger.kernel.org # v5.4+
-Fixes: 4b6ea15c0a11 ("arm64: dts: qcom: sdm845: Add missing RPMh power domain to GCC")
-Suggested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240123062814.2555649-1-amit.pundir@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 5c6d1125f8db ("Smack: Transmute labels on specified directories") # v2.6.38.x
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sdm845.c | 1 +
- 1 file changed, 1 insertion(+)
+ security/smack/smack_lsm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-sdm845.c b/drivers/clk/qcom/gcc-sdm845.c
-index 90f7febaf5288..a6b07aa8eb650 100644
---- a/drivers/clk/qcom/gcc-sdm845.c
-+++ b/drivers/clk/qcom/gcc-sdm845.c
-@@ -3646,3 +3646,4 @@ module_exit(gcc_sdm845_exit);
- MODULE_DESCRIPTION("QTI GCC SDM845 Driver");
- MODULE_LICENSE("GPL v2");
- MODULE_ALIAS("platform:gcc-sdm845");
-+MODULE_SOFTDEP("pre: rpmhpd");
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 5388f143eecd8..0be25e05c1a03 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -1280,7 +1280,8 @@ static int smack_inode_setxattr(struct dentry *dentry, const char *name,
+ 		check_star = 1;
+ 	} else if (strcmp(name, XATTR_NAME_SMACKTRANSMUTE) == 0) {
+ 		check_priv = 1;
+-		if (size != TRANS_TRUE_SIZE ||
++		if (!S_ISDIR(d_backing_inode(dentry)->i_mode) ||
++		    size != TRANS_TRUE_SIZE ||
+ 		    strncmp(value, TRANS_TRUE, TRANS_TRUE_SIZE) != 0)
+ 			rc = -EINVAL;
+ 	} else
 -- 
 2.43.0
 
