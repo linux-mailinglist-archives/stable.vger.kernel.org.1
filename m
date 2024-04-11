@@ -1,92 +1,122 @@
-Return-Path: <stable+bounces-38033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E038A071D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 06:26:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 364768A0729
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 06:33:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC8271F244B8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 04:26:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67B0D1C22E09
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 04:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C780D13BAFA;
-	Thu, 11 Apr 2024 04:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E932EAE5;
+	Thu, 11 Apr 2024 04:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="NJT1x/+d"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A3E13C3CF;
-	Thu, 11 Apr 2024 04:26:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460575CBD;
+	Thu, 11 Apr 2024 04:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712809588; cv=none; b=i76y9j65I7NDGX950UKckFgMQ9thm9YWlYM34eP0OvdUGoQ7Q8Bw0tzMDMqaaIx2H7EU9k/5DFceocdVsXAX3aaxjePOlhQ666lM8o02NLHCOTLgq1HPgn8p2ZeAoosFt+SwnRu5669sYCVhY9VbIXH7//6+7N7Gy4/V9HJ0jCY=
+	t=1712810017; cv=none; b=NDy9jEYRDpax8xudJoQW7wBVJlbsk4nO3zaZ/v/0YLln0ttq3waiG5FWpMw/XaEletxTCvBVE9CFkP6X/PDFzfg/JeMyhSfemFyr2rI9RfCU8D3Wf0TcJcQZrtnLYQpzguyMddDrgt1Wp+IE+JZoFJ+GruNuw743DM8vWQc/RSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712809588; c=relaxed/simple;
-	bh=INoedeS1YRLb5NbBpuZ52sHt3SaQF4hIpOGhFzrppes=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=rQxsnKY+Yzah6MOzvRVO9b7yWER/gAtWD7QRNIRmNxmNM2vR19qaDZ8wCklnbdj5CwKMu7nN0KPF6NXMW1ArPvB5slNJGNyB2KIU4jzHeqojaI7YbeFw+aRXGh7m+dniHRZW0fL5afz33xuk0ZT4fAfhmiGt/2BcB1oPIg9/ouA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43B4Ps2E2589410, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43B4Ps2E2589410
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Apr 2024 12:25:55 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 11 Apr 2024 12:25:55 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 11 Apr 2024 12:25:55 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Thu, 11 Apr 2024 12:25:55 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Larry Finger <Larry.Finger@lwfinger.net>,
-        Larry Finger
-	<Larry.Finger@gmail.com>, Kalle Valo <kvalo@kernel.org>
-CC: Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [RFC] rtw88: Fix startup problems for SDIO wifi plus UART Bluetooth
-Thread-Topic: [RFC] rtw88: Fix startup problems for SDIO wifi plus UART
- Bluetooth
-Thread-Index: AQHai6+3Zq0VJBVgFk2i9wweb2CUxrFiTTdQ//+KnwCAAKCeUA==
-Date: Thu, 11 Apr 2024 04:25:54 +0000
-Message-ID: <2afb5edcf8bf4173ab339e54707ada0b@realtek.com>
-References: <4umro86wvv84.MjDfYvt4P5uZryt8boBK8Q2@1EHFQ.trk.elasticemail.com>
- <5af71338f3904aac9d2c237637c851e7@realtek.com>
- <287e9d4e-316a-4579-961e-58e75abea534@lwfinger.net>
-In-Reply-To: <287e9d4e-316a-4579-961e-58e75abea534@lwfinger.net>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1712810017; c=relaxed/simple;
+	bh=9X+PjMjMteDeHZkxEoky+iWM5pNEjgeb4ckxulg6FnA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qEXRz9Sv2pE0xN/J1JPTVR+qRQ0oeCW7+ysmKuWX5davJt3d+k2nOXLuUMXqgrJLB+4ZiP/cgJvZsy+UznEpBXhZt/5wVhMNHeMtg1Qx/WoFR6etyevFF2ypSUe4Tc4D5pCogGbusrG+wbxWA73TZIGDWDebfR6xsdSKXQEvq3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=NJT1x/+d; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0xy0RSu0FBM75EE/MzdLyTdZbtB79ssgCE2mlIY1v5s=; b=NJT1x/+dzc3HpsTSEkzjqdrf0h
+	4cRu0nFH6tl2xw/kg+v6DQO7JLtOQSZD2MO+YWOqL70Bl56AV+jLtDGORb8WxQYthz4pWVxgpGnEb
+	AbFXL0MTZsjRF/gz3zcrZiPcuJeu0sqEK52x14LotS0FcBOOv39h2+ku0RsRuFP97+YLHuv0caw5G
+	wMp7Eq19dQqc4G4Khdqa266GRALYnyhlEr53FEwr9JwOT0/kXpdOcmRTp7yFMmptQ++a9VWgHbs9I
+	NynjYGiChAafBRbkONZNLjd3S5GT6UOeU6HGuxugFIGfJMRBAbHQZL+4sItp3W+W/+ceSEbKk76O7
+	TlyWsaiA==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <kibi@debian.org>)
+	id 1rum7u-001Xyy-9X; Thu, 11 Apr 2024 04:33:30 +0000
+Date: Thu, 11 Apr 2024 06:33:27 +0200
+From: Cyril Brulebois <kibi@debian.org>
+To: James Bottomley <jejb@linux.ibm.com>
+Cc: regressions@lists.linux.dev, stable@vger.kernel.org,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>, gregkh@linuxfoundation.org,
+	Bart Van Assche <bvanassche@acm.org>,
+	Christoph Hellwig <hch@lst.de>,
+	John Garry <john.g.garry@oracle.com>, linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Diederik de Haas <didi.debian@cknow.org>,
+	Salvatore Bonaccorso <carnil@debian.org>
+Subject: Re: [REGRESSION] Loss of some SMART information in v6.1.81
+Message-ID: <20240411043327.m5unlpweoslnzzce@mraw.org>
+Organization: Debian
+References: <20240410193207.qnb75osxuk4ovvm6@mraw.org>
+ <0655cea93e52928d3e4a12b4fe2d2a4375492ed3.camel@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="x225b5f4ap2p7arx"
+Content-Disposition: inline
+In-Reply-To: <0655cea93e52928d3e4a12b4fe2d2a4375492ed3.camel@linux.ibm.com>
+X-Debian-User: kibi
 
-DQoNCkxhcnJ5IEZpbmdlciA8bGFycnkuZmluZ2VyQGdtYWlsLmNvbT4gd3JvdGU6DQoNCj4gDQo+
-IE9uIDQvMTAvMjQgOToxMyBQTSwgUGluZy1LZSBTaGloIHdyb3RlOg0KPiA+DQo+ID4gTGFycnkg
-RmluZ2VyIDxMYXJyeS5GaW5nZXJAZ21haWwuY29tPiB3cm90ZToNCj4gPg0KPiA+PiArICAgICAg
-IG1kZWxheSg1MDApOw0KPiA+DQo+ID4gV2lsbCBpdCBiZXR0ZXIgdG8gdXNlIHNsZWVwIGZ1bmN0
-aW9uPw0KPiANCj4gTXkgdGhvdWdodHMgd2VyZSB0aGF0IGEgc2xlZXAgZnVuY3Rpb24gd291bGQg
-dGllIHVwIGEgQ1BVLCB3aGVyZWFzIHRoZSBkZWxheQ0KPiB3b3VsZCBub3QuIEluaXRpYWxseSwg
-d2UgdGVzdGVkIGFuIG1zbGVlcCgxNTApIHN0YXRlbWVudCwgYnV0IHRoYXQgb25seSBnYXZlIGEN
-Cj4gNjAlIHN1Y2Nlc3MgcmF0ZSwgd2hlcmVhcyBtZGVsYXkoNTAwKSB3b3JrZWQgMjAgc3RyYWln
-aHQgdHJpZXMuDQo+IA0KDQpTb3JyeSwgSSBkaWRuJ3QgY29uc2lkZXIgdGhlIGV4cGVyaW1lbnRh
-bCByZXN1bHRzIG9mIG1zbGVlcCgxNTApIGFuZCBtZGVsYXkoNTAwKS4NCg0KTXkgcG9pbnQgd2Fz
-IGJ1c3kgd2FpdGluZyBvZiBtZGVsYXkoKS4gSSBqdXN0IHdhbnQgdG8gc2F5IGlmIG1zbGVlcCg1
-MDApIGlzIA0KYmV0dGVyIHRoYW4gbWRlbGF5KDUwMCkuIA0KDQoNCg==
+
+--x225b5f4ap2p7arx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+James Bottomley <jejb@linux.ibm.com> (2024-04-10):
+> This is a different manifestation of the same bug in stable that was
+> introduced by a backport of scsi_execute_cmd.  The proposed fix for the
+> domain validation problem here will also sort out this problem:
+>=20
+> https://lore.kernel.org/linux-scsi/yq1frvvpymp.fsf@ca-mkp.ca.oracle.com/
+
+Thanks for the pointer! I've just confirmed this, and I'll follow up
+there.
+
+
+Cheers,
+--=20
+Cyril Brulebois (kibi@debian.org)            <https://debamax.com/>
+D-I release manager -- Release team member -- Freelance Consultant
+
+--x225b5f4ap2p7arx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEtg6/KYRFPHDXTPR4/5FK8MKzVSAFAmYXaBUACgkQ/5FK8MKz
+VSD9xg/9GEc++o6wJulDZVizBrO3tZpCsV9wW7+fEFJd7Lb2Wp3KDhubYoYI1Nmt
+tct6p0VsUU0RZ0rmd0tq4HfF+DpkL/1xN7AG024BJJxjn5ut6j253y/nfA4YIUZc
+KwQQ3IEU+NlkKUh510RV8aJ8C4Zu8IX5S4G1ijp0tigFTJuD/Sj4RpS9Njcrmq71
+bENUCYb/W4nfdjrQ5u5DwYLitDC7duABnJw7HlvK7G71r78+LHIVRJ8JfgLgGssj
+DEo6eX1/h/YF/Ov+9It34/KIZOFZoXvRWyQ9SFvjWIYPtug4tETRoClvucIaJSjF
+3i13+T6r7TSVGihQskcsxKypWN/d4yr5kizp8nLc1UdEqZxPCv0YIFsNZcFxYp/R
+DqiFfpq3G/7I+Pl2tL320Ej2jPSe2pm+OYhqM34CenioiW2TxjVn0tWdzcBL4QU7
+XyFYjM/h1gMB4mvtrw3bAQQajBT+zMyCZQCG3k17hL3FCA8sPpYpIWXbnnDMAlD/
+Tf31Er4lnedTttVQ3PVo5xEhy9cPvNYRbBRkg7xPT+htfY0fcM1plMbz96kfMF1e
+Caao801hRtZoP0N7j1mKahXdJga3Z/oBGlS+yhI2fmwR1wRzZJ8JUpSuhvYfqGhv
+EAsC6Z67Urgk3hoOAcbLS4AwaEXvA11LXAlAooFxDGs3kubF9CY=
+=RLmB
+-----END PGP SIGNATURE-----
+
+--x225b5f4ap2p7arx--
 
