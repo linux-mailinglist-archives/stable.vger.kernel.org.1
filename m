@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-39056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC3A08A11AF
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:46:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A76F58A115A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED06E1C23CC4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:46:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6259A288618
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A926BB29;
-	Thu, 11 Apr 2024 10:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56EE142624;
+	Thu, 11 Apr 2024 10:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWztghoy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p3AbCP6z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37671145B26;
-	Thu, 11 Apr 2024 10:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730366BB29;
+	Thu, 11 Apr 2024 10:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832387; cv=none; b=UZ5em7XDMGNBj1oUbVOah2NzTjLfcqr+O4lhino/vT2rGvdvCiKL61m7F9rG0KcqdmmAzag4Oz6aqlvGWPjmcHEFp0kOuOqPueYZpoA5cb17AX6zOMuHrUXWujfUv2+Z9I889xAbNziK35ULZhouF7uyryXXBTPCQ+S7QfR0le4=
+	t=1712832192; cv=none; b=ZChrU40HUz7LGoEcPJLEhTP1V1F3n9L9bDnCXTEdD7FzFOAoIujpKDwP8+eVoj9Imy1VI7C3uqJhlXAgAnH4eSSp8/0u5Y7BAdPjdIHs/fON+jKwU85eQdZBRBm6c3NVRBPCTxs1sbcTwEZdrRAZP5qguVnIiEakUDqj4vEjzKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832387; c=relaxed/simple;
-	bh=uWagEpRHIxGBWaZYE1yoRjegQbWG/gHONZFkXgDyAvc=;
+	s=arc-20240116; t=1712832192; c=relaxed/simple;
+	bh=9jqSkq6zquHd449jIvhm5CbUXoWIzuOqS+YaSOLHjCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBpU9V+v2XTzj11U8sqoVM5/RX5sjWl9iU2+Ir9JZJZQDPOje5chrTnk+QPtOlxzEdbHaBIvfeOHWpgNWNG9Ltx6oI+3aYlf2IujH5Axt2phG4fDOIyAmmod/IyFg6uokR6rBN0EQ+bj2e19/kp+EVEfZ+QQD3V21HkF7Y3W46Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWztghoy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477C5C43390;
-	Thu, 11 Apr 2024 10:46:26 +0000 (UTC)
+	 MIME-Version; b=FKBg1Bqj66hqx7jZqjdPYxoiP6hZWi7w/orN2PS66hOV84uh4lxgORzPadcj60togYYTdAV9lgakBeasTzOz2Fcrdhl6frTFdMiv3fnytieC+DCdhm9Hn6Nhj1oyqL0f/dH2SmC80xA4me+t6s0+egwMf5f3UY1V8bVcPoa/D3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p3AbCP6z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB3BC433C7;
+	Thu, 11 Apr 2024 10:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832386;
-	bh=uWagEpRHIxGBWaZYE1yoRjegQbWG/gHONZFkXgDyAvc=;
+	s=korg; t=1712832192;
+	bh=9jqSkq6zquHd449jIvhm5CbUXoWIzuOqS+YaSOLHjCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yWztghoyEo5G2cAg46FtWEX6noVIao9bx7fPtDi2fCGy2GKNtQUx7Bpp09DknhQQG
-	 GfNT5/RRmUAPi6Y8gSAFZ49PvaetDFxR7kuB+MQYG0F3D32hwUkredMdFVfr4hnrO7
-	 wCu6blP/7Gv3EB1eEqdS+TjIuFaOimXz5ZY7R0I4=
+	b=p3AbCP6zfidUBzCzcfoBF42T8NSNhTlmwlD0eVg9zlVmoLCldUEf9KE74Ha6dch9A
+	 QE4DmsE6gvJ/HExHbfuF4cSCubRAxe+arNeCxC830KBtEvg+W3luQnfxAlZzwhcq5d
+	 ZeMRADSvdSqaOG8ozpK2NgSi73yK5rnl8egB5h4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 30/83] Input: synaptics-rmi4 - fail probing if memory allocation for "phys" fails
+Subject: [PATCH 5.10 259/294] pinctrl: renesas: checker: Limit cfg reg enum checks to provided IDs
 Date: Thu, 11 Apr 2024 11:57:02 +0200
-Message-ID: <20240411095413.585001437@linuxfoundation.org>
+Message-ID: <20240411095443.359353709@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit bc4996184d56cfaf56d3811ac2680c8a0e2af56e ]
+[ Upstream commit 3803584a4e9b65bb5b013f862f55c5055aa86c25 ]
 
-While input core can work with input->phys set to NULL userspace might
-depend on it, so better fail probing if allocation fails. The system must
-be in a pretty bad shape for it to happen anyway.
+If the number of provided enum IDs in a variable width config register
+description does not match the expected number, the checker uses the
+expected number for validating the individual enum IDs.
 
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Link: https://lore.kernel.org/r/20240117073124.143636-1-chentao@kylinos.cn
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+However, this may cause out-of-bounds accesses on the array holding the
+enum IDs, leading to bogus enum_id conflict warnings.  Worse, if the bug
+is an incorrect bit field description (e.g. accidentally using "12"
+instead of "-12" for a reserved field), thousands of warnings may be
+printed, overflowing the kernel log buffer.
+
+Fix this by limiting the enum ID check to the number of provided enum
+IDs.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/c7385f44f2faebb8856bcbb4e908d846fc1531fb.1705930809.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/rmi4/rmi_driver.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/pinctrl/renesas/core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
-index 258d5fe3d395c..aa32371f04af6 100644
---- a/drivers/input/rmi4/rmi_driver.c
-+++ b/drivers/input/rmi4/rmi_driver.c
-@@ -1196,7 +1196,11 @@ static int rmi_driver_probe(struct device *dev)
- 		}
- 		rmi_driver_set_input_params(rmi_dev, data->input);
- 		data->input->phys = devm_kasprintf(dev, GFP_KERNEL,
--						"%s/input0", dev_name(dev));
-+						   "%s/input0", dev_name(dev));
-+		if (!data->input->phys) {
-+			retval = -ENOMEM;
-+			goto err;
-+		}
- 	}
+diff --git a/drivers/pinctrl/renesas/core.c b/drivers/pinctrl/renesas/core.c
+index 54f1a7334027a..c390854483680 100644
+--- a/drivers/pinctrl/renesas/core.c
++++ b/drivers/pinctrl/renesas/core.c
+@@ -868,9 +868,11 @@ static void __init sh_pfc_check_cfg_reg(const char *drvname,
+ 		sh_pfc_err("reg 0x%x: var_field_width declares %u instead of %u bits\n",
+ 			   cfg_reg->reg, rw, cfg_reg->reg_width);
  
- 	retval = rmi_init_functions(data);
+-	if (n != cfg_reg->nr_enum_ids)
++	if (n != cfg_reg->nr_enum_ids) {
+ 		sh_pfc_err("reg 0x%x: enum_ids[] has %u instead of %u values\n",
+ 			   cfg_reg->reg, cfg_reg->nr_enum_ids, n);
++		n = cfg_reg->nr_enum_ids;
++	}
+ 
+ check_enum_ids:
+ 	sh_pfc_check_reg_enums(drvname, cfg_reg->reg, cfg_reg->enum_ids, n);
 -- 
 2.43.0
 
