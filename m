@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-38582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D808A0F61
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 298328A1166
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA97A1F27780
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D791F281477
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A0C146A83;
-	Thu, 11 Apr 2024 10:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6E6145B26;
+	Thu, 11 Apr 2024 10:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qqn6+xBz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5M6kJv8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46FB113FD94;
-	Thu, 11 Apr 2024 10:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABF26BB29;
+	Thu, 11 Apr 2024 10:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830999; cv=none; b=YTq038x6qJbigVYdAt2rj6WJ19FLcjHHxVknlWvQ0bGO49WcBdCFp3nQe73m5g45njXIVawQYsers41MEcIirc2qCJOZqiw/BOaYmqvCduPV18vA9CZ3fEVpKj7saKCQINb5zEfUsas8szmw8IvEkDLsvsdqu3QAcAdH8ouweuM=
+	t=1712832225; cv=none; b=Z1oblBjle5f2AaUQTtYWdag1JoErllrPaK9vv1i4PJTkA3qPANX6HBN8eIsrSliq+Hc1poBg5BOaAzVKP22bYQAIryEZZ5TRuWo+ftG80l/IjWJFmAxhb1EUWfAh+xnbEwMLPbNKSpwbuljIXV+a2ge4xTelGv8Z33EALU52BNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830999; c=relaxed/simple;
-	bh=Fo+QAWM3ObBJzZl4gxAIbtgtf2+1lxARBJK0gyPdAag=;
+	s=arc-20240116; t=1712832225; c=relaxed/simple;
+	bh=RG+WxSx7ZbqiCelMPZ3QnHwyE0yHZxml0Kf3o8FhvdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HcvlqXZTuCy1EYWBY/Wy/ygJouY2EMXC9wr+U8TgcTOEHVnBE5RH/PpNZO6qWRjAUenIPP7pP0ke/7CZRCW/mfAHNkKSC7qLdvJkr8d8epWvz0OikRobdeBFB/2k/Qj+YJGV1WrM89+/0+MmoW6WvLxlj+4iuslr2eQX8T/ybSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qqn6+xBz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0A6C433C7;
-	Thu, 11 Apr 2024 10:23:18 +0000 (UTC)
+	 MIME-Version; b=sf1WGhwCaSDQWgBQQVX2W35GiGixMIg+POAZ2rsNBPkxHPEwgVe2RmM3sbhtW65nw6kUBTghYfw3e0SFS/GnxfLIIn27ad+bRbKPf5vuQqB9JrNdgPvab1RFVMJDjnrVZjWAAfRVZbdXtbRos4hvj9qMpiBmOFpOoidSOwViH4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5M6kJv8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B29C433F1;
+	Thu, 11 Apr 2024 10:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830999;
-	bh=Fo+QAWM3ObBJzZl4gxAIbtgtf2+1lxARBJK0gyPdAag=;
+	s=korg; t=1712832224;
+	bh=RG+WxSx7ZbqiCelMPZ3QnHwyE0yHZxml0Kf3o8FhvdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qqn6+xBzh9hAFQ/kX6+HPhFcs/K/ep/BhQ0EiFj4J9Qqp5CspfYt1/r+C7iRPQKTb
-	 eqVxxlREpxeKR2Bo3UaLN/1hBMhsggTtI0oW8pxP6Wi7MsMf0wIm9708qE6fmwt+/3
-	 eEM135CJWanMf51rzKk5Ii4D7HkImCRrnpB2CCdk=
+	b=V5M6kJv8X6JoqJWzrteV6+nPc5ihOjkhj5O39y/rD1QG/Ucehzg6b6zS97Shw6yVV
+	 Pl9Ntg+irt3/d+uRDyft6DsDI8gUr0AbtDH3G9JDBSUF85VdQMB1tMtUcEzEohOrd9
+	 R2Lr/qpf6FeYEuctvUrZKroz5WjfOM5Ti0XN25LI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 187/215] scsi: lpfc: Fix possible memory leak in lpfc_rcv_padisc()
+	Herve Codina <herve.codina@bootlin.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Rob Herring <robh@kernel.org>
+Subject: [PATCH 5.10 233/294] driver core: Introduce device_link_wait_removal()
 Date: Thu, 11 Apr 2024 11:56:36 +0200
-Message-ID: <20240411095430.486189488@linuxfoundation.org>
+Message-ID: <20240411095442.596449071@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +64,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit 2ae917d4bcab80ab304b774d492e2fcd6c52c06b ]
+commit 0462c56c290a99a7f03e817ae5b843116dfb575c upstream.
 
-The call to lpfc_sli4_resume_rpi() in lpfc_rcv_padisc() may return an
-unsuccessful status.  In such cases, the elsiocb is not issued, the
-completion is not called, and thus the elsiocb resource is leaked.
+The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
+introduces a workqueue to release the consumer and supplier devices used
+in the devlink.
+In the job queued, devices are release and in turn, when all the
+references to these devices are dropped, the release function of the
+device itself is called.
 
-Check return value after calling lpfc_sli4_resume_rpi() and conditionally
-release the elsiocb resource.
+Nothing is present to provide some synchronisation with this workqueue
+in order to ensure that all ongoing releasing operations are done and
+so, some other operations can be started safely.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240131185112.149731-3-justintee8345@gmail.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For instance, in the following sequence:
+  1) of_platform_depopulate()
+  2) of_overlay_remove()
+
+During the step 1, devices are released and related devlinks are removed
+(jobs pushed in the workqueue).
+During the step 2, OF nodes are destroyed but, without any
+synchronisation with devlink removal jobs, of_overlay_remove() can raise
+warnings related to missing of_node_put():
+  ERROR: memory leak, expected refcount 1 instead of 2
+
+Indeed, the missing of_node_put() call is going to be done, too late,
+from the workqueue job execution.
+
+Introduce device_link_wait_removal() to offer a way to synchronize
+operations waiting for the end of devlink removals (i.e. end of
+workqueue jobs).
+Also, as a flushing operation is done on the workqueue, the workqueue
+used is moved from a system-wide workqueue to a local one.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Reviewed-by: Saravana Kannan <saravanak@google.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240325152140.198219-2-herve.codina@bootlin.com
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_nportdisc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/base/core.c    |   26 +++++++++++++++++++++++---
+ include/linux/device.h |    1 +
+ 2 files changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_nportdisc.c b/drivers/scsi/lpfc/lpfc_nportdisc.c
-index e6a94f550a572..1ca3179444d23 100644
---- a/drivers/scsi/lpfc/lpfc_nportdisc.c
-+++ b/drivers/scsi/lpfc/lpfc_nportdisc.c
-@@ -781,8 +781,10 @@ lpfc_rcv_padisc(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
- 				/* Save the ELS cmd */
- 				elsiocb->drvrTimeout = cmd;
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -53,6 +53,7 @@ static unsigned int defer_sync_state_cou
+ static unsigned int defer_fw_devlink_count;
+ static LIST_HEAD(deferred_fw_devlink);
+ static DEFINE_MUTEX(defer_fw_devlink_lock);
++static struct workqueue_struct *device_link_wq;
+ static bool fw_devlink_is_permissive(void);
  
--				lpfc_sli4_resume_rpi(ndlp,
--					lpfc_mbx_cmpl_resume_rpi, elsiocb);
-+				if (lpfc_sli4_resume_rpi(ndlp,
-+						lpfc_mbx_cmpl_resume_rpi,
-+						elsiocb))
-+					kfree(elsiocb);
- 				goto out;
- 			}
- 		}
--- 
-2.43.0
-
+ #ifdef CONFIG_SRCU
+@@ -364,12 +365,26 @@ static void devlink_dev_release(struct d
+ 	/*
+ 	 * It may take a while to complete this work because of the SRCU
+ 	 * synchronization in device_link_release_fn() and if the consumer or
+-	 * supplier devices get deleted when it runs, so put it into the "long"
+-	 * workqueue.
++	 * supplier devices get deleted when it runs, so put it into the
++	 * dedicated workqueue.
+ 	 */
+-	queue_work(system_long_wq, &link->rm_work);
++	queue_work(device_link_wq, &link->rm_work);
+ }
+ 
++/**
++ * device_link_wait_removal - Wait for ongoing devlink removal jobs to terminate
++ */
++void device_link_wait_removal(void)
++{
++	/*
++	 * devlink removal jobs are queued in the dedicated work queue.
++	 * To be sure that all removal jobs are terminated, ensure that any
++	 * scheduled work has run to completion.
++	 */
++	flush_workqueue(device_link_wq);
++}
++EXPORT_SYMBOL_GPL(device_link_wait_removal);
++
+ static struct class devlink_class = {
+ 	.name = "devlink",
+ 	.owner = THIS_MODULE,
+@@ -3415,9 +3430,14 @@ int __init devices_init(void)
+ 	sysfs_dev_char_kobj = kobject_create_and_add("char", dev_kobj);
+ 	if (!sysfs_dev_char_kobj)
+ 		goto char_kobj_err;
++	device_link_wq = alloc_workqueue("device_link_wq", 0, 0);
++	if (!device_link_wq)
++		goto wq_err;
+ 
+ 	return 0;
+ 
++ wq_err:
++	kobject_put(sysfs_dev_char_kobj);
+  char_kobj_err:
+ 	kobject_put(sysfs_dev_block_kobj);
+  block_kobj_err:
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -973,6 +973,7 @@ void device_link_del(struct device_link
+ void device_link_remove(void *consumer, struct device *supplier);
+ void device_links_supplier_sync_state_pause(void);
+ void device_links_supplier_sync_state_resume(void);
++void device_link_wait_removal(void);
+ 
+ extern __printf(3, 4)
+ int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
 
 
 
