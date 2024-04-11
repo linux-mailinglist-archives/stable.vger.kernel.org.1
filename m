@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA4E8A0E3C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:12:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E0C38A1134
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56A5F283246
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:12:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F0B01C23B93
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090D5144D34;
-	Thu, 11 Apr 2024 10:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E0D149E0B;
+	Thu, 11 Apr 2024 10:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNFY3/mC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apD5CxRO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC4B1448EF;
-	Thu, 11 Apr 2024 10:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08357149DF4;
+	Thu, 11 Apr 2024 10:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830351; cv=none; b=OLSK6WQJTFuTCfoAE63ls9NAwz/pVKYG03L4QO0N2/21K5tfAqGpg9cwT7f0KxIfnUoZzKQKDJRDth1y3Qm7FyWHrwwQT02eNZuEjXRcL8+yxCPl7dIYO8LmNRpb1F9N6EX/uPuKBoKTh/mCRPugRBGiaZCmgAN2X1HA57miqzU=
+	t=1712832085; cv=none; b=JYvpGZYE+BMDcVntwv1T8LDKXIA8lDR0wF+NH5bFcrtYDMOUePXo2goUIUI3gMc3G/Lobs+q0mrTY8R7YOvZjlDySeXFyyYaaQBefRzt8PIPxBGy/TN0Dcmm+L1/MU07hfl8+nLCEkiXo7NRyzEUDHEtvXURAIy9Cd7+XAE3ybo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830351; c=relaxed/simple;
-	bh=6ikfXHeXH9UZyFFRr5yGkTXSUlEt8Hqz7y+2A63tcbo=;
+	s=arc-20240116; t=1712832085; c=relaxed/simple;
+	bh=jOI4XuK3ZPRNdqnXz9jGtV+sGT8zrjh2to8/tUyqihk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JbObmVVnlzzaDkZzkzbvTSALVHn/vel9ZsRwV7WHOP/1dln1b9MENR5vVZcpv1YCguGqxxvL+DuQs0yQAe/GRHxiM4YORXw4welX1Rvz7hTd6+KkXuJX1TnaBTAkFrIYnLkwlJ6wEkjgrO67i9pFfDO32UBgkqahwKzRKbia44k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNFY3/mC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F137C433C7;
-	Thu, 11 Apr 2024 10:12:31 +0000 (UTC)
+	 MIME-Version; b=BRrgUGmNjKXNwx3/zH7FNiFIT/yfZV4BdpBhD4dTfz6Deht/fDct9U8CSPikM7Ggyg7OwZN/uyS4pXs/CvQvVsMi8VQd1qK6TMoqjWxJ4twl7zlBuVcQMhX+ihe20Mkn3T2odIGe7jdmNoz3QRatdP//ghnT6LKdQJMVDcYJ128=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apD5CxRO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821F4C43394;
+	Thu, 11 Apr 2024 10:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830351;
-	bh=6ikfXHeXH9UZyFFRr5yGkTXSUlEt8Hqz7y+2A63tcbo=;
+	s=korg; t=1712832084;
+	bh=jOI4XuK3ZPRNdqnXz9jGtV+sGT8zrjh2to8/tUyqihk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QNFY3/mC2GsNaicJpt48QmFe0no+zZCkRkN9mNTuM5XSJcPjap5qQaKvnlkEep2r4
-	 3WaHsNuwFhHnU3XoTri2/LKwb+h84gxvF1y0cR1XY3srnXuDggoVUZwcHhBCB4Qkfn
-	 T4rPBT+RTGsz8+wBneP0mMdXo+Cx0kF7QEnVXoig=
+	b=apD5CxROfNhOWpbRGhUCjzcxTQMotn0y6xv2AFvyxoR73Q8iFKTm2O6Ai7GqntKyt
+	 BhZcfWxWbTcrSXIa6YSx31VLFBeJ7ru47N1JGNOUc9iEyZvr1hz/dqH/jwenZr2rz0
+	 pPFBM2iTpfiCXAFaahDFfRY+3+sBWS0lgou4w/Sw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	stable <stable@kernel.org>,
+	Sean Anderson <sean.anderson@seco.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 118/143] usb: typec: tcpci: add generic tcpci fallback compatible
+Subject: [PATCH 5.10 223/294] Revert "usb: phy: generic: Get the vbus supply"
 Date: Thu, 11 Apr 2024 11:56:26 +0200
-Message-ID: <20240411095424.458820320@linuxfoundation.org>
+Message-ID: <20240411095442.304946705@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Felsch <m.felsch@pengutronix.de>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 8774ea7a553e2aec323170d49365b59af0a2b7e0 ]
+[ Upstream commit fdada0db0b2ae2addef4ccafe50937874dbeeebe ]
 
-The driver already support the tcpci binding for the i2c_device_id so
-add the support for the of_device_id too.
+This reverts commit 75fd6485cccef269ac9eb3b71cf56753341195ef.
+This patch was applied twice by accident, causing probe failures.
+Revert the accident.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240222210903.208901-3-m.felsch@pengutronix.de
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Fixes: 75fd6485ccce ("usb: phy: generic: Get the vbus supply")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Sean Anderson <sean.anderson@seco.com>
+Link: https://lore.kernel.org/r/20240314092628.1869414-1-alexander.stein@ew.tq-group.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/phy/phy-generic.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-index 0ee3e6e29bb17..7118551827f6a 100644
---- a/drivers/usb/typec/tcpm/tcpci.c
-+++ b/drivers/usb/typec/tcpm/tcpci.c
-@@ -889,6 +889,7 @@ MODULE_DEVICE_TABLE(i2c, tcpci_id);
- #ifdef CONFIG_OF
- static const struct of_device_id tcpci_of_match[] = {
- 	{ .compatible = "nxp,ptn5110", },
-+	{ .compatible = "tcpci", },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, tcpci_of_match);
+diff --git a/drivers/usb/phy/phy-generic.c b/drivers/usb/phy/phy-generic.c
+index 34b9f81401871..661a229c105dd 100644
+--- a/drivers/usb/phy/phy-generic.c
++++ b/drivers/usb/phy/phy-generic.c
+@@ -268,13 +268,6 @@ int usb_phy_gen_create_phy(struct device *dev, struct usb_phy_generic *nop)
+ 			return -EPROBE_DEFER;
+ 	}
+ 
+-	nop->vbus_draw = devm_regulator_get_exclusive(dev, "vbus");
+-	if (PTR_ERR(nop->vbus_draw) == -ENODEV)
+-		nop->vbus_draw = NULL;
+-	if (IS_ERR(nop->vbus_draw))
+-		return dev_err_probe(dev, PTR_ERR(nop->vbus_draw),
+-				     "could not get vbus regulator\n");
+-
+ 	nop->dev		= dev;
+ 	nop->phy.dev		= nop->dev;
+ 	nop->phy.label		= "nop-xceiv";
 -- 
 2.43.0
 
