@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-38415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 837628A0E7A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:15:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B37308A105D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:35:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5ABE1C21861
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:15:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E51671C215B9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E1F1465A5;
-	Thu, 11 Apr 2024 10:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A112D146D73;
+	Thu, 11 Apr 2024 10:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oxk/N5Ws"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVNiSRzg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E8E1448EF;
-	Thu, 11 Apr 2024 10:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6008A13D24D;
+	Thu, 11 Apr 2024 10:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830499; cv=none; b=spvhrmX99b6qm8aLpvUmvTkt9SgjQth+5x1Orp8Gan3KgxPebtmv1TzxZ+ZdMx/9eM1ut0TN79OOcRDP30tkLNZRWHtfdHKbswUlWXYWAgbWzSBxUIDYESCGV4cREEKSzwkQzUsoxtEe5lPYNdGF7GtIozDqgiIoVl2le4JE18M=
+	t=1712831565; cv=none; b=FLKuJo9SStIX28wEegsfFnKLQKlxbuXZpZF5IwxAtiYpyASvk8F8XZ3lPhTFQCbx5O08+gTOQ4k17/I6Hs9yfzT/gCICrffoNIqjd9eCAwiJ50j2xHlGL0RIFAeJNT+sYj+FYyUfLj78AOembv3l7NN1LJPDwfUeWkbp/H6ldOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830499; c=relaxed/simple;
-	bh=vpE1rEL7QfNBHkuf8GwJ3+hjfcG0aRpU5/m89NKjnjI=;
+	s=arc-20240116; t=1712831565; c=relaxed/simple;
+	bh=sEvloR34wGKP4TkskJ+/BazOcZ6pS4JWJqL6kCQKe00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hl3+SoL97RGaeAmfYd7gBNbvF5ljL7KtHH4NJcEo7M6oacoSwHDFqgOvDpk3lFSNByTFwOImj28hWoXgie/eDbGO4CxoRv+uHb19+hQeZEUdStIWs28jK1RrtM+2fa2acG0ktZ05j9I3fA+8iFmb28Pvuo0RctXz5gN6TCSR/6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oxk/N5Ws; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B33C433F1;
-	Thu, 11 Apr 2024 10:14:58 +0000 (UTC)
+	 MIME-Version; b=QXw/MZjuRsIe7iIlmxYR4fCJmQI+Z0EyGv/0u3I4KTRMi0/ytf96TXgs3yNgxJrNALu3Bh/lOljXQjj3mrcmrFjv7X7PMowURGhcCr+nUyYNrfzpPw5ntZQJGau+kXRsXc5qa0MO+qYkaGuZxG5epDdfJbwfLNHnEbAX4YvrtDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVNiSRzg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D96C433C7;
+	Thu, 11 Apr 2024 10:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830499;
-	bh=vpE1rEL7QfNBHkuf8GwJ3+hjfcG0aRpU5/m89NKjnjI=;
+	s=korg; t=1712831565;
+	bh=sEvloR34wGKP4TkskJ+/BazOcZ6pS4JWJqL6kCQKe00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oxk/N5WskyTzkxn0eHPOC4uSBwxUGJSwCOIOU20SEV82up0sOqptos/cTZIZzT4OA
-	 TNy5k1uSa2HmVCHfKln/B40yxgrm4VpIPPZFPDwZyJt1wXYTtfkgy1GlfTNfFtPdN9
-	 c+Hu/BtKHBE5rMJWTty5Tpckhnr//1nSn/Wgglq4=
+	b=GVNiSRzgGy6HMGqqu1zBXJ2EkOOltieoA8pusVQcAnyRsWGtZ3hlFOeffweUyrmoy
+	 qJN3jrK1JUBnKvJm0jmO1QMBtMQXbM0PJOCWnch//c4lBnXX1so2kjpo7fuQvs7g3N
+	 cTni+XS5yY9H58KxeOx9jhTej41F1axRMatR421A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@suse.de>
-Subject: [PATCH 5.4 003/215] x86/bugs: Use sysfs_emit()
-Date: Thu, 11 Apr 2024 11:53:32 +0200
-Message-ID: <20240411095424.982606754@linuxfoundation.org>
+	Toru Katagiri <Toru.Katagiri@tdk.com>,
+	Johan Hovold <johan@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 050/294] USB: serial: cp210x: add pid/vid for TDK NC0110013M and MM0110113M
+Date: Thu, 11 Apr 2024 11:53:33 +0200
+Message-ID: <20240411095437.148014974@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,206 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov <bp@suse.de>
+From: Toru Katagiri <Toru.Katagiri@tdk.com>
 
-commit 1d30800c0c0ae1d086ffad2bdf0ba4403370f132 upstream.
+[ Upstream commit b1a8da9ff1395c4879b4bd41e55733d944f3d613 ]
 
-Those mitigations are very talkative; use the printing helper which pays
-attention to the buffer size.
+TDK NC0110013M and MM0110113M have custom USB IDs for CP210x,
+so we need to add them to the driver.
 
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220809153419.10182-1-bp@alien8.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Toru Katagiri <Toru.Katagiri@tdk.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c |   82 ++++++++++++++++++++++-----------------------
- 1 file changed, 41 insertions(+), 41 deletions(-)
+ drivers/usb/serial/cp210x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2148,69 +2148,69 @@ static const char * const l1tf_vmx_state
- static ssize_t l1tf_show_state(char *buf)
- {
- 	if (l1tf_vmx_mitigation == VMENTER_L1D_FLUSH_AUTO)
--		return sprintf(buf, "%s\n", L1TF_DEFAULT_MSG);
-+		return sysfs_emit(buf, "%s\n", L1TF_DEFAULT_MSG);
- 
- 	if (l1tf_vmx_mitigation == VMENTER_L1D_FLUSH_EPT_DISABLED ||
- 	    (l1tf_vmx_mitigation == VMENTER_L1D_FLUSH_NEVER &&
- 	     sched_smt_active())) {
--		return sprintf(buf, "%s; VMX: %s\n", L1TF_DEFAULT_MSG,
--			       l1tf_vmx_states[l1tf_vmx_mitigation]);
-+		return sysfs_emit(buf, "%s; VMX: %s\n", L1TF_DEFAULT_MSG,
-+				  l1tf_vmx_states[l1tf_vmx_mitigation]);
- 	}
- 
--	return sprintf(buf, "%s; VMX: %s, SMT %s\n", L1TF_DEFAULT_MSG,
--		       l1tf_vmx_states[l1tf_vmx_mitigation],
--		       sched_smt_active() ? "vulnerable" : "disabled");
-+	return sysfs_emit(buf, "%s; VMX: %s, SMT %s\n", L1TF_DEFAULT_MSG,
-+			  l1tf_vmx_states[l1tf_vmx_mitigation],
-+			  sched_smt_active() ? "vulnerable" : "disabled");
- }
- 
- static ssize_t itlb_multihit_show_state(char *buf)
- {
- 	if (itlb_multihit_kvm_mitigation)
--		return sprintf(buf, "KVM: Mitigation: Split huge pages\n");
-+		return sysfs_emit(buf, "KVM: Mitigation: Split huge pages\n");
- 	else
--		return sprintf(buf, "KVM: Vulnerable\n");
-+		return sysfs_emit(buf, "KVM: Vulnerable\n");
- }
- #else
- static ssize_t l1tf_show_state(char *buf)
- {
--	return sprintf(buf, "%s\n", L1TF_DEFAULT_MSG);
-+	return sysfs_emit(buf, "%s\n", L1TF_DEFAULT_MSG);
- }
- 
- static ssize_t itlb_multihit_show_state(char *buf)
- {
--	return sprintf(buf, "Processor vulnerable\n");
-+	return sysfs_emit(buf, "Processor vulnerable\n");
- }
- #endif
- 
- static ssize_t mds_show_state(char *buf)
- {
- 	if (boot_cpu_has(X86_FEATURE_HYPERVISOR)) {
--		return sprintf(buf, "%s; SMT Host state unknown\n",
--			       mds_strings[mds_mitigation]);
-+		return sysfs_emit(buf, "%s; SMT Host state unknown\n",
-+				  mds_strings[mds_mitigation]);
- 	}
- 
- 	if (boot_cpu_has(X86_BUG_MSBDS_ONLY)) {
--		return sprintf(buf, "%s; SMT %s\n", mds_strings[mds_mitigation],
--			       (mds_mitigation == MDS_MITIGATION_OFF ? "vulnerable" :
--			        sched_smt_active() ? "mitigated" : "disabled"));
-+		return sysfs_emit(buf, "%s; SMT %s\n", mds_strings[mds_mitigation],
-+				  (mds_mitigation == MDS_MITIGATION_OFF ? "vulnerable" :
-+				   sched_smt_active() ? "mitigated" : "disabled"));
- 	}
- 
--	return sprintf(buf, "%s; SMT %s\n", mds_strings[mds_mitigation],
--		       sched_smt_active() ? "vulnerable" : "disabled");
-+	return sysfs_emit(buf, "%s; SMT %s\n", mds_strings[mds_mitigation],
-+			  sched_smt_active() ? "vulnerable" : "disabled");
- }
- 
- static ssize_t tsx_async_abort_show_state(char *buf)
- {
- 	if ((taa_mitigation == TAA_MITIGATION_TSX_DISABLED) ||
- 	    (taa_mitigation == TAA_MITIGATION_OFF))
--		return sprintf(buf, "%s\n", taa_strings[taa_mitigation]);
-+		return sysfs_emit(buf, "%s\n", taa_strings[taa_mitigation]);
- 
- 	if (boot_cpu_has(X86_FEATURE_HYPERVISOR)) {
--		return sprintf(buf, "%s; SMT Host state unknown\n",
--			       taa_strings[taa_mitigation]);
-+		return sysfs_emit(buf, "%s; SMT Host state unknown\n",
-+				  taa_strings[taa_mitigation]);
- 	}
- 
--	return sprintf(buf, "%s; SMT %s\n", taa_strings[taa_mitigation],
--		       sched_smt_active() ? "vulnerable" : "disabled");
-+	return sysfs_emit(buf, "%s; SMT %s\n", taa_strings[taa_mitigation],
-+			  sched_smt_active() ? "vulnerable" : "disabled");
- }
- 
- static ssize_t mmio_stale_data_show_state(char *buf)
-@@ -2278,33 +2278,33 @@ static char *pbrsb_eibrs_state(void)
- static ssize_t spectre_v2_show_state(char *buf)
- {
- 	if (spectre_v2_enabled == SPECTRE_V2_LFENCE)
--		return sprintf(buf, "Vulnerable: LFENCE\n");
-+		return sysfs_emit(buf, "Vulnerable: LFENCE\n");
- 
- 	if (spectre_v2_enabled == SPECTRE_V2_EIBRS && unprivileged_ebpf_enabled())
--		return sprintf(buf, "Vulnerable: eIBRS with unprivileged eBPF\n");
-+		return sysfs_emit(buf, "Vulnerable: eIBRS with unprivileged eBPF\n");
- 
- 	if (sched_smt_active() && unprivileged_ebpf_enabled() &&
- 	    spectre_v2_enabled == SPECTRE_V2_EIBRS_LFENCE)
--		return sprintf(buf, "Vulnerable: eIBRS+LFENCE with unprivileged eBPF and SMT\n");
-+		return sysfs_emit(buf, "Vulnerable: eIBRS+LFENCE with unprivileged eBPF and SMT\n");
- 
--	return sprintf(buf, "%s%s%s%s%s%s%s\n",
--		       spectre_v2_strings[spectre_v2_enabled],
--		       ibpb_state(),
--		       boot_cpu_has(X86_FEATURE_USE_IBRS_FW) ? ", IBRS_FW" : "",
--		       stibp_state(),
--		       boot_cpu_has(X86_FEATURE_RSB_CTXSW) ? ", RSB filling" : "",
--		       pbrsb_eibrs_state(),
--		       spectre_v2_module_string());
-+	return sysfs_emit(buf, "%s%s%s%s%s%s%s\n",
-+			  spectre_v2_strings[spectre_v2_enabled],
-+			  ibpb_state(),
-+			  boot_cpu_has(X86_FEATURE_USE_IBRS_FW) ? ", IBRS_FW" : "",
-+			  stibp_state(),
-+			  boot_cpu_has(X86_FEATURE_RSB_CTXSW) ? ", RSB filling" : "",
-+			  pbrsb_eibrs_state(),
-+			  spectre_v2_module_string());
- }
- 
- static ssize_t srbds_show_state(char *buf)
- {
--	return sprintf(buf, "%s\n", srbds_strings[srbds_mitigation]);
-+	return sysfs_emit(buf, "%s\n", srbds_strings[srbds_mitigation]);
- }
- 
- static ssize_t retbleed_show_state(char *buf)
- {
--	return sprintf(buf, "%s\n", retbleed_strings[retbleed_mitigation]);
-+	return sysfs_emit(buf, "%s\n", retbleed_strings[retbleed_mitigation]);
- }
- 
- static ssize_t gds_show_state(char *buf)
-@@ -2316,26 +2316,26 @@ static ssize_t cpu_show_common(struct de
- 			       char *buf, unsigned int bug)
- {
- 	if (!boot_cpu_has_bug(bug))
--		return sprintf(buf, "Not affected\n");
-+		return sysfs_emit(buf, "Not affected\n");
- 
- 	switch (bug) {
- 	case X86_BUG_CPU_MELTDOWN:
- 		if (boot_cpu_has(X86_FEATURE_PTI))
--			return sprintf(buf, "Mitigation: PTI\n");
-+			return sysfs_emit(buf, "Mitigation: PTI\n");
- 
- 		if (hypervisor_is_type(X86_HYPER_XEN_PV))
--			return sprintf(buf, "Unknown (XEN PV detected, hypervisor mitigation required)\n");
-+			return sysfs_emit(buf, "Unknown (XEN PV detected, hypervisor mitigation required)\n");
- 
- 		break;
- 
- 	case X86_BUG_SPECTRE_V1:
--		return sprintf(buf, "%s\n", spectre_v1_strings[spectre_v1_mitigation]);
-+		return sysfs_emit(buf, "%s\n", spectre_v1_strings[spectre_v1_mitigation]);
- 
- 	case X86_BUG_SPECTRE_V2:
- 		return spectre_v2_show_state(buf);
- 
- 	case X86_BUG_SPEC_STORE_BYPASS:
--		return sprintf(buf, "%s\n", ssb_strings[ssb_mode]);
-+		return sysfs_emit(buf, "%s\n", ssb_strings[ssb_mode]);
- 
- 	case X86_BUG_L1TF:
- 		if (boot_cpu_has(X86_FEATURE_L1TF_PTEINV))
-@@ -2368,7 +2368,7 @@ static ssize_t cpu_show_common(struct de
- 		break;
- 	}
- 
--	return sprintf(buf, "Vulnerable\n");
-+	return sysfs_emit(buf, "Vulnerable\n");
- }
- 
- ssize_t cpu_show_meltdown(struct device *dev, struct device_attribute *attr, char *buf)
+diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
+index 12d0be4d15101..294f7f01656aa 100644
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -60,6 +60,8 @@ static const struct usb_device_id id_table[] = {
+ 	{ USB_DEVICE(0x0471, 0x066A) }, /* AKTAKOM ACE-1001 cable */
+ 	{ USB_DEVICE(0x0489, 0xE000) }, /* Pirelli Broadband S.p.A, DP-L10 SIP/GSM Mobile */
+ 	{ USB_DEVICE(0x0489, 0xE003) }, /* Pirelli Broadband S.p.A, DP-L10 SIP/GSM Mobile */
++	{ USB_DEVICE(0x04BF, 0x1301) }, /* TDK Corporation NC0110013M - Network Controller */
++	{ USB_DEVICE(0x04BF, 0x1303) }, /* TDK Corporation MM0110113M - i3 Micro Module */
+ 	{ USB_DEVICE(0x0745, 0x1000) }, /* CipherLab USB CCD Barcode Scanner 1000 */
+ 	{ USB_DEVICE(0x0846, 0x1100) }, /* NetGear Managed Switch M4100 series, M5300 series, M7100 series */
+ 	{ USB_DEVICE(0x08e6, 0x5501) }, /* Gemalto Prox-PU/CU contactless smartcard reader */
+-- 
+2.43.0
+
 
 
 
