@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7308A1060
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:35:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 723AB8A0E81
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:15:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E3971F2B304
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:35:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EC0B2869DD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A0D1474BC;
-	Thu, 11 Apr 2024 10:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C099C1465AA;
+	Thu, 11 Apr 2024 10:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEfWnodi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPeACTa7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233D413D24D;
-	Thu, 11 Apr 2024 10:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE9F146582;
+	Thu, 11 Apr 2024 10:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831574; cv=none; b=WsXlOCn8FoDflHIhDj0GyWRDaZX0JJpT+R+lIeaOwSpd5e6o7N9hVvblroOI2SLkHX8mwFEytw8P7lQpl3atCZWAbyGNXOIv3MrSku8L25BCaahoVHKu8Gm7naXW1qox5zeUIXo824ZkgPe5H4cHMwxZIIu+MofolCp77zEOj48=
+	t=1712830516; cv=none; b=P5PEDSQIfIwC93DUF80HqYBj8QqQVxx5NhNXFatGPlS25P8j37jstqxjyISy0oxPShQf0wW/X8Ido6k2UJCB5e5+vTTXhMv7qh2veB27qEQB17cEMRfToyYFKAJLHEF1QmmV5EHTZnAllxbfLPtHoBQo7SCq22iB8tEt86njlk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831574; c=relaxed/simple;
-	bh=ZTAyDEnlHvmtolPRTA+4U0HO6ZmfSFi9qxd3+F3IA0k=;
+	s=arc-20240116; t=1712830516; c=relaxed/simple;
+	bh=7K8ZoLhCAfTo8zpyZeuaHvUX5iQN5pY2QssyLNI4uOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L2efpFugzez87U0ydEl8e+gdovi1gnrSgPOdUZAnXg1e6yU1qyUMmn0TSS6dTAgBBY6XBL88y10ZjX2elcoeDXxS/biHzdzMHXVtyRkxSCbhjIS0AyfkTpiRn4ypAQzsFMCO8MYVI0KZgPMh+A/qK4VrgJzqMSWjNjNYvy0QDNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEfWnodi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5ECC433F1;
-	Thu, 11 Apr 2024 10:32:53 +0000 (UTC)
+	 MIME-Version; b=Z11m0BGdfC1pRT3TyFO+13sMcNDeBS7x34NtH+6P+3YRBNkorWKLomljxd4Cn4G6VRskbIQJy2pvuyIE7FcJhTworUvXpD6xyRSypenxKzur8kSZ6lZVyAWWq6KQ9og2qbwsAlDO37hNoL3HfjgLihLHvFWGV6Edp8OdgmkexPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPeACTa7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D9AC433C7;
+	Thu, 11 Apr 2024 10:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831574;
-	bh=ZTAyDEnlHvmtolPRTA+4U0HO6ZmfSFi9qxd3+F3IA0k=;
+	s=korg; t=1712830516;
+	bh=7K8ZoLhCAfTo8zpyZeuaHvUX5iQN5pY2QssyLNI4uOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LEfWnodi8LifPBret6/nYlZZzBarGarNsr0EtDf4eujwpzjUGqyZm4QOyPpu3vJwf
-	 X+7ITpSO2rCq/4JbSL3lGnHqc4z0ah+yEMjYhyhUMpMu2n8jW1VZl4ZDNPXnE9d093
-	 FVpD3GjHo8kKNFEHadcKhMW5lUwghORksR7eSaao=
+	b=GPeACTa7tH9UTOaweJmHcrLeXRWkd/jonvJTUVNyG/zP5jAfi4Bx59tjq/Q/3hB/Z
+	 Icn3C8+1HT86KZJd4bgtzYaVC3lzXi4zhDtc/0VepHn2xkKAa2s1UgsCES9ENm6pV/
+	 jwXLel2ZknAcF1v/7VdOS5YgdaFcoTyPyAkPGRU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio SJ Musumeci <trapexit@spawn.link>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Zheng Wang <zyytlz.wz@163.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 053/294] fuse: fix root lookup with nonzero generation
+Subject: [PATCH 5.4 007/215] wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach
 Date: Thu, 11 Apr 2024 11:53:36 +0200
-Message-ID: <20240411095437.237814158@linuxfoundation.org>
+Message-ID: <20240411095425.101082977@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 68ca1b49e430f6534d0774a94147a823e3b8b26e ]
+[ Upstream commit 0f7352557a35ab7888bc7831411ec8a3cbe20d78 ]
 
-The root inode has a fixed nodeid and generation (1, 0).
+This is the candidate patch of CVE-2023-47233 :
+https://nvd.nist.gov/vuln/detail/CVE-2023-47233
 
-Prior to the commit 15db16837a35 ("fuse: fix illegal access to inode with
-reused nodeid") generation number on lookup was ignored.  After this commit
-lookup with the wrong generation number resulted in the inode being
-unhashed.  This is correct for non-root inodes, but replacing the root
-inode is wrong and results in weird behavior.
+In brcm80211 driver,it starts with the following invoking chain
+to start init a timeout worker:
 
-Fix by reverting to the old behavior if ignoring the generation for the
-root inode, but issuing a warning in dmesg.
+->brcmf_usb_probe
+  ->brcmf_usb_probe_cb
+    ->brcmf_attach
+      ->brcmf_bus_started
+        ->brcmf_cfg80211_attach
+          ->wl_init_priv
+            ->brcmf_init_escan
+              ->INIT_WORK(&cfg->escan_timeout_work,
+		  brcmf_cfg80211_escan_timeout_worker);
 
-Reported-by: Antonio SJ Musumeci <trapexit@spawn.link>
-Closes: https://lore.kernel.org/all/CAOQ4uxhek5ytdN8Yz2tNEOg5ea4NkBb4nk0FGPjPk_9nz-VG3g@mail.gmail.com/
-Fixes: 15db16837a35 ("fuse: fix illegal access to inode with reused nodeid")
-Cc: <stable@vger.kernel.org> # v5.14
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+If we disconnect the USB by hotplug, it will call
+brcmf_usb_disconnect to make cleanup. The invoking chain is :
+
+brcmf_usb_disconnect
+  ->brcmf_usb_disconnect_cb
+    ->brcmf_detach
+      ->brcmf_cfg80211_detach
+        ->kfree(cfg);
+
+While the timeout woker may still be running. This will cause
+a use-after-free bug on cfg in brcmf_cfg80211_escan_timeout_worker.
+
+Fix it by deleting the timer and canceling the worker in
+brcmf_cfg80211_detach.
+
+Fixes: e756af5b30b0 ("brcmfmac: add e-scan support.")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Cc: stable@vger.kernel.org
+[arend.vanspriel@broadcom.com: keep timer delete as is and cancel work just before free]
+Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240107072504.392713-1-arend.vanspriel@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/dir.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
-index b0c701c007c68..d131f34cd3e13 100644
---- a/fs/fuse/dir.c
-+++ b/fs/fuse/dir.c
-@@ -451,6 +451,10 @@ int fuse_lookup_name(struct super_block *sb, u64 nodeid, const struct qstr *name
- 		goto out_put_forget;
- 	if (fuse_invalid_attr(&outarg->attr))
- 		goto out_put_forget;
-+	if (outarg->nodeid == FUSE_ROOT_ID && outarg->generation != 0) {
-+		pr_warn_once("root generation should be zero\n");
-+		outarg->generation = 0;
-+	}
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index b7ceea0b3204d..668c8897c1095 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -710,8 +710,7 @@ s32 brcmf_notify_escan_complete(struct brcmf_cfg80211_info *cfg,
+ 	scan_request = cfg->scan_request;
+ 	cfg->scan_request = NULL;
  
- 	*inode = fuse_iget(sb, outarg->nodeid, outarg->generation,
- 			   &outarg->attr, entry_attr_timeout(outarg),
+-	if (timer_pending(&cfg->escan_timeout))
+-		del_timer_sync(&cfg->escan_timeout);
++	timer_delete_sync(&cfg->escan_timeout);
+ 
+ 	if (fw_abort) {
+ 		/* Do a scan abort to stop the driver's scan engine */
+@@ -7240,6 +7239,7 @@ void brcmf_cfg80211_detach(struct brcmf_cfg80211_info *cfg)
+ 	brcmf_btcoex_detach(cfg);
+ 	wiphy_unregister(cfg->wiphy);
+ 	wl_deinit_priv(cfg);
++	cancel_work_sync(&cfg->escan_timeout_work);
+ 	brcmf_free_wiphy(cfg->wiphy);
+ 	kfree(cfg);
+ }
 -- 
 2.43.0
 
