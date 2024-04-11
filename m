@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-38194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7758E8A0D71
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:04:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6240A8A0EE4
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:18:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 168271F222E6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:04:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 942471C21899
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:18:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21772145B14;
-	Thu, 11 Apr 2024 10:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22A7146586;
+	Thu, 11 Apr 2024 10:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRmAcuCv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJCRbOzB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9EE13AD0C;
-	Thu, 11 Apr 2024 10:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7853914600A;
+	Thu, 11 Apr 2024 10:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829840; cv=none; b=otIZ4mDCzMbOdMwkyLGprNhba4GmvzbInPUL+tfU44pG4yzlWLgsy4d00qpVWhjc9NI4N26bXZ0fqZZbhg2gsoBNthmEzErfnJ/Ml/FhVE0DL8BEz9pDYwpB1EuMcARHWcAyGuoeeW+8gbQS1G5ImOEDkuE6hVox+c16I+qhfLc=
+	t=1712830736; cv=none; b=J95LehEQHFGBZEXV8oWROpHndRnItqhDFp8Rfay/kRYBXyxmCXvCwkXaeRv0fqYLVF4aVOunwcJ3iLEY2YwXBxJwrvx2cwg3hWwNgbmt/xViuQgN3io7gDQeTpCxFKVzTh9KqXG6a8/3sier9xPlAi+4S5XbplvSnVbqvq5nwec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829840; c=relaxed/simple;
-	bh=+e5SNT9SOHY0UYEj/IviCuOMFBVulcchmjn4GPRBHiQ=;
+	s=arc-20240116; t=1712830736; c=relaxed/simple;
+	bh=YMNirU3C/bbfK5YcuSkk9PXrK/+5ytT0hN4lRYXsW6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4mdcz+PLFT3uoPFlG5+FrFRkGd2yjNj5CcJiXqzZlKgofM0L8sZ3OUX3dV8vl+CZNI9dpMts+YRIUxwNacRFLaviNJsJuc9KTZqaJCSQgUU6tybqLsU2BLONyLXejARqt+sF2HE0JCGPYHkZ2LYJXM/dZ9Esf71H4MG3LlKENI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRmAcuCv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57830C433F1;
-	Thu, 11 Apr 2024 10:04:00 +0000 (UTC)
+	 MIME-Version; b=Nc21kXkZ7mBl+u3MLDM3teJK1MRp8ex9wPYSpRxgnr1riiY7oLn4v6jgwIDoSaqFMW5mwThQWc1b1Qq/j90WDLl/bCoccvxfGa1TkIpdSvbMJ3fnZa5ejRRCk+SAr1XIIZDULuZktp13LvsFYSg9C/2KfoZ6jkP2BBsdnQHdTUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJCRbOzB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C8DC433C7;
+	Thu, 11 Apr 2024 10:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829840;
-	bh=+e5SNT9SOHY0UYEj/IviCuOMFBVulcchmjn4GPRBHiQ=;
+	s=korg; t=1712830736;
+	bh=YMNirU3C/bbfK5YcuSkk9PXrK/+5ytT0hN4lRYXsW6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gRmAcuCvNqIK88cjx3wFIe2l4Tx5JpCb73AJiceJdB+qRos21N75Mg+HL3LJIzO2y
-	 SNw2WkJt1FKcAEA8XHlNv6TNQT1hKdl6E9dW0Mq66qHOFrSEBK7gDBVumlT2VsLFUR
-	 GPTfneyubUXEnFKOuqfY+7+SCJHLjbIEd51irdHE=
+	b=DJCRbOzBGS1vOWRguAwdZiNEfD7dDHf1JSF2N40F+1NXCIwcOMDUpoKk/JK6MDaV4
+	 BOL3j/v7edbsPXfhyKebsJ4TzzzugLfub0yOcIzyMtVqDO+eg4VjfJ60fat4NpPavi
+	 r/mTeA6IPOP+d+ofzqkFLB/SZnWvAQFSclFTLCmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Duoming Zhou <duoming@zju.edu.cn>
-Subject: [PATCH 4.19 085/175] ALSA: sh: aica: reorder cleanup operations to avoid UAF bugs
+	Martijn Coenen <maco@android.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Bob Liu <bob.liu@oracle.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Genjian Zhang <zhanggenjian@kylinos.cn>
+Subject: [PATCH 5.4 099/215] loop: Call loop_config_discard() only after new config is applied
 Date: Thu, 11 Apr 2024 11:55:08 +0200
-Message-ID: <20240411095422.120837037@linuxfoundation.org>
+Message-ID: <20240411095427.876402729@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Martijn Coenen <maco@android.com>
 
-commit 051e0840ffa8ab25554d6b14b62c9ab9e4901457 upstream.
+[ Upstream commit 7c5014b0987a30e4989c90633c198aced454c0ec ]
 
-The dreamcastcard->timer could schedule the spu_dma_work and the
-spu_dma_work could also arm the dreamcastcard->timer.
+loop_set_status() calls loop_config_discard() to configure discard for
+the loop device; however, the discard configuration depends on whether
+the loop device uses encryption, and when we call it the encryption
+configuration has not been updated yet. Move the call down so we apply
+the correct discard configuration based on the new configuration.
 
-When the snd_pcm_substream is closing, the aica_channel will be
-deallocated. But it could still be dereferenced in the worker
-thread. The reason is that del_timer() will return directly
-regardless of whether the timer handler is running or not and
-the worker could be rescheduled in the timer handler. As a result,
-the UAF bug will happen. The racy situation is shown below:
-
-      (Thread 1)                 |      (Thread 2)
-snd_aicapcm_pcm_close()          |
- ...                             |  run_spu_dma() //worker
-                                 |    mod_timer()
-  flush_work()                   |
-  del_timer()                    |  aica_period_elapsed() //timer
-  kfree(dreamcastcard->channel)  |    schedule_work()
-                                 |  run_spu_dma() //worker
-  ...                            |    dreamcastcard->channel-> //USE
-
-In order to mitigate this bug and other possible corner cases,
-call mod_timer() conditionally in run_spu_dma(), then implement
-PCM sync_stop op to cancel both the timer and worker. The sync_stop
-op will be called from PCM core appropriately when needed.
-
-Fixes: 198de43d758c ("[ALSA] Add ALSA support for the SEGA Dreamcast PCM device")
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Message-ID: <20240326094238.95442-1-duoming@zju.edu.cn>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Martijn Coenen <maco@android.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Bob Liu <bob.liu@oracle.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/sh/aica.c |   17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/block/loop.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/sh/aica.c
-+++ b/sound/sh/aica.c
-@@ -295,7 +295,8 @@ static void run_spu_dma(struct work_stru
- 		dreamcastcard->clicks++;
- 		if (unlikely(dreamcastcard->clicks >= AICA_PERIOD_NUMBER))
- 			dreamcastcard->clicks %= AICA_PERIOD_NUMBER;
--		mod_timer(&dreamcastcard->timer, jiffies + 1);
-+		if (snd_pcm_running(dreamcastcard->substream))
-+			mod_timer(&dreamcastcard->timer, jiffies + 1);
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -1332,8 +1332,6 @@ loop_set_status(struct loop_device *lo,
+ 		}
  	}
- }
  
-@@ -307,6 +308,8 @@ static void aica_period_elapsed(struct t
- 	/*timer function - so cannot sleep */
- 	int play_period;
- 	struct snd_pcm_runtime *runtime;
-+	if (!snd_pcm_running(substream))
-+		return;
- 	runtime = substream->runtime;
- 	dreamcastcard = substream->pcm->private_data;
- 	/* Have we played out an additional period? */
-@@ -367,12 +370,19 @@ static int snd_aicapcm_pcm_open(struct s
- 	return 0;
- }
+-	loop_config_discard(lo);
+-
+ 	memcpy(lo->lo_file_name, info->lo_file_name, LO_NAME_SIZE);
+ 	memcpy(lo->lo_crypt_name, info->lo_crypt_name, LO_NAME_SIZE);
+ 	lo->lo_file_name[LO_NAME_SIZE-1] = 0;
+@@ -1357,6 +1355,8 @@ loop_set_status(struct loop_device *lo,
+ 		lo->lo_key_owner = uid;
+ 	}
  
-+static int snd_aicapcm_pcm_sync_stop(struct snd_pcm_substream *substream)
-+{
-+	struct snd_card_aica *dreamcastcard = substream->pcm->private_data;
++	loop_config_discard(lo);
 +
-+	del_timer_sync(&dreamcastcard->timer);
-+	cancel_work_sync(&dreamcastcard->spu_dma_work);
-+	return 0;
-+}
-+
- static int snd_aicapcm_pcm_close(struct snd_pcm_substream
- 				 *substream)
- {
- 	struct snd_card_aica *dreamcastcard = substream->pcm->private_data;
--	flush_work(&(dreamcastcard->spu_dma_work));
--	del_timer(&dreamcastcard->timer);
- 	dreamcastcard->substream = NULL;
- 	kfree(dreamcastcard->channel);
- 	spu_disable();
-@@ -438,6 +448,7 @@ static const struct snd_pcm_ops snd_aica
- 	.prepare = snd_aicapcm_pcm_prepare,
- 	.trigger = snd_aicapcm_pcm_trigger,
- 	.pointer = snd_aicapcm_pcm_pointer,
-+	.sync_stop = snd_aicapcm_pcm_sync_stop,
- };
+ 	/* update dio if lo_offset or transfer is changed */
+ 	__loop_update_dio(lo, lo->use_dio);
  
- /* TO DO: set up to handle more than one pcm instance */
 
 
 
