@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-39118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691008A11FE
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 115848A11CA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AB761C2160C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41DD11C23DBB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB4E14600E;
-	Thu, 11 Apr 2024 10:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE9413D24D;
+	Thu, 11 Apr 2024 10:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQ/1r9RG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x3QSHqN2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92BE86BB29;
-	Thu, 11 Apr 2024 10:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D31864CC0;
+	Thu, 11 Apr 2024 10:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832569; cv=none; b=ph3hZPmWJ9ZZ5qRwTkg50FVXisijzo1cLEum05wYAsyH2X5zoIzMehhLPniTB944ipU5qE6ZjHPpVnwi/fvBaX9UR13qsdaGHBUwhYAR8fcnhaLj8iJ+d+/tawlXzZHldxFAqICBCbyT36F/0MjlVbOpyadxVhJsxjdKS/oq0jE=
+	t=1712832428; cv=none; b=mh8o3GFzHZD41JlF+LeKYlTtlzZG/hslA/8ahtcI6s/Jtvjo3C1TMt/PJt7OjC/mTBfTrl3qF6O1l8Z5skFMouJaouQvx4Og3aLnKQd3ZcFd2l53adDHXjz+OYSSNKs9zale+RUC/K22IyAQH+YwURDnRCHm7+lYU7YlyPxfTJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832569; c=relaxed/simple;
-	bh=qBHiGjypW9QOlGz1S5ZTyoFT1nWz896IbC0WS5i3kTY=;
+	s=arc-20240116; t=1712832428; c=relaxed/simple;
+	bh=Xp3uYVlUEh7ygznpo8Gy8G65fnvvvOFSA3lyv4ZpJDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2btNikXfbri3CJPknTZDA7gSB2zlU9WpDKOlONsFJALnF9xo3Oy9Q6yjtULnHHOp9beL8qLutWd+tZnNYP2E9bYZ4JbluogCda1vB/bqfJwX53CRfuhwUS7YYi2Uh1sonEPk48julDzlnvN43De9j4gCOxAUAOt2NLQCMyHYE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQ/1r9RG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16884C433F1;
-	Thu, 11 Apr 2024 10:49:28 +0000 (UTC)
+	 MIME-Version; b=JShBA1k4MrUVabobfzOSev/s6yDUxMGEmob5NVEUMo1Kuyi/1QOPjPFJhqQe2D7QNc9zDMBY+uDE8hKysqgGbdj6EQos95Wb8mPlqKeTIftrT9RDIi0w7g5AuP7vnPyMWQlUc+k9zNr55yeJMcdR5OPDxLqYVrynF16+8magzO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x3QSHqN2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7854C433F1;
+	Thu, 11 Apr 2024 10:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832569;
-	bh=qBHiGjypW9QOlGz1S5ZTyoFT1nWz896IbC0WS5i3kTY=;
+	s=korg; t=1712832428;
+	bh=Xp3uYVlUEh7ygznpo8Gy8G65fnvvvOFSA3lyv4ZpJDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WQ/1r9RG3TRi29EIbH9iXp47DrDlhRP+OBddW635wVNwIMmDN+hHY9s6rJA/eq5VB
-	 FAS5H3ZTIjEBemaNy/1auyVgBpqUI+xniUiSZGXT8aL67m5IKsNNfX6nu6tJcYeL+8
-	 IIDeufW1wqU493/NLO5zJ7T6sR3XWFsMEIO95CRc=
+	b=x3QSHqN2LO98a3h1U56YIdQ7whVieQiispnRWC/bK0Bz3Kf/7+7qfC6RDHBHJF+Tk
+	 y1ll0xqufL4276AsCcgaFCJetRe/jO1KJSMO758UTYAgaR6BG04zUI9J5qbpMtMu8J
+	 w/DBSTDAs1MlT3yBisjYPgLhg13H8PbTzHO/CtPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Daniel Drake <drake@endlessos.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jian-Hong Pan <jhp@endlessos.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 10/57] ionic: set adminq irq affinity
+Subject: [PATCH 6.1 46/83] Revert "ACPI: PM: Block ASUS B1400CEAE from suspend to idle by default"
 Date: Thu, 11 Apr 2024 11:57:18 +0200
-Message-ID: <20240411095408.303378898@linuxfoundation.org>
+Message-ID: <20240411095414.070756546@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-References: <20240411095407.982258070@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Daniel Drake <drake@endlessos.org>
 
-[ Upstream commit c699f35d658f3c21b69ed24e64b2ea26381e941d ]
+[ Upstream commit cb98555fcd8eee98c30165537c7e394f3a66e809 ]
 
-We claim to have the AdminQ on our irq0 and thus cpu id 0,
-but we need to be sure we set the affinity hint to try to
-keep it there.
+This reverts commit d52848620de00cde4a3a5df908e231b8c8868250, which was
+originally put in place to work around a s2idle failure on this platform
+where the NVMe device was inaccessible upon resume.
 
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+After extended testing, we found that the firmware's implementation of S3
+is buggy and intermittently fails to wake up the system. We need to revert
+to s2idle mode.
+
+The NVMe issue has now been solved more precisely in the commit titled
+"PCI: Disable D3cold on Asus B1400 PCI-NVMe bridge"
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=215742
+Link: https://lore.kernel.org/r/20240228075316.7404-2-drake@endlessos.org
+Signed-off-by: Daniel Drake <drake@endlessos.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Jian-Hong Pan <jhp@endlessos.org>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/acpi/sleep.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index 63181866809fd..1f84ba638e6eb 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -3232,9 +3232,12 @@ static int ionic_lif_adminq_init(struct ionic_lif *lif)
- 
- 	napi_enable(&qcq->napi);
- 
--	if (qcq->flags & IONIC_QCQ_F_INTR)
-+	if (qcq->flags & IONIC_QCQ_F_INTR) {
-+		irq_set_affinity_hint(qcq->intr.vector,
-+				      &qcq->intr.affinity_mask);
- 		ionic_intr_mask(idev->intr_ctrl, qcq->intr.index,
- 				IONIC_INTR_MASK_CLEAR);
-+	}
- 
- 	qcq->flags |= IONIC_QCQ_F_INITED;
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index 539c12fbd2f14..6026e20f022a2 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -385,18 +385,6 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "20GGA00L00"),
+ 		},
+ 	},
+-	/*
+-	 * ASUS B1400CEAE hangs on resume from suspend (see
+-	 * https://bugzilla.kernel.org/show_bug.cgi?id=215742).
+-	 */
+-	{
+-	.callback = init_default_s3,
+-	.ident = "ASUS B1400CEAE",
+-	.matches = {
+-		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-		DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK B1400CEAE"),
+-		},
+-	},
+ 	{},
+ };
  
 -- 
 2.43.0
