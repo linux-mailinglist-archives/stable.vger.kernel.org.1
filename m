@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-38232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C418A0D9F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A418A113D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 322CA1F223B5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F40701F2D230
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5251145B14;
-	Thu, 11 Apr 2024 10:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37EC0146D76;
+	Thu, 11 Apr 2024 10:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwTUkWZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gipI0ph/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D9D145B04;
-	Thu, 11 Apr 2024 10:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54632EAE5;
+	Thu, 11 Apr 2024 10:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829953; cv=none; b=e4M0Y1ov/OFB6eTqsLcKlksG44YDch8IjfLsqXv6uFuRpsh2/QcqcN3PWZg9y10FuOtIi64z6Aj/DBwQOOg5oDeQIt3kxcwtGlasjfdHyrWAjVhRxjBtH9/F8cvfw2Spla3Dhz59jjr/0NhXlb6ICDlvu/FoJAej4TxkpAT6SU8=
+	t=1712832113; cv=none; b=omF0GR8jq6v1LCByW4OemYBHsjhg9OhO7BegojK21V+DOiMtKCBVSxqKP+wCHvADw3/vbzMu3X2DBHAbCBHOGlbCm4KoHL3+/zpNXGkjg1gtqUt6TiRCwAnD9BlQuHbwnxwxZJgllx1jWUAMNcFai8pz6WXMmkbbcg0SeJEWXcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829953; c=relaxed/simple;
-	bh=EKLjOxEYEeDVd1H2iEXqJTJr3Ta+XeuqLky5kn6G53U=;
+	s=arc-20240116; t=1712832113; c=relaxed/simple;
+	bh=Ns+sD9JnhADGpfBoaSpGGqW+DMydvINLv3vj7EzXvY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ff+91BFovdyfh2eJ9+sBWNCL6ueeLEvlRbcMiMiy97GhukC7BPakoHWO0hJT4Jvb3/4XgBdRLHaR0QzBCfif09kANGu/UFXt0Y19gvSpGh/Fb/y11H6UrfZDZtf3A2FPQTH2sQ2gtYs4ss32VHh9+mpCFWb4vogoob64z33OOE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwTUkWZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB413C433C7;
-	Thu, 11 Apr 2024 10:05:52 +0000 (UTC)
+	 MIME-Version; b=e1Z1fTXoyi7lmu/hrTtEwUXkmCZZeL7Wx8FQPbwqmURmibOOpdJA/PJIruFE2DiMBEQ/zc2NOkool9PDJu16RdAFtL+/g8/ZLNwBL248qnuWE0XSkk5H1Z0f0Fc/mzoUTkE/H8lSQ6TF9WRf1ilqU5Ep4CxK4AIVImKFUxRncOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gipI0ph/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6D2C433C7;
+	Thu, 11 Apr 2024 10:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829953;
-	bh=EKLjOxEYEeDVd1H2iEXqJTJr3Ta+XeuqLky5kn6G53U=;
+	s=korg; t=1712832112;
+	bh=Ns+sD9JnhADGpfBoaSpGGqW+DMydvINLv3vj7EzXvY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KwTUkWZTbnAYXV0XLx5DzVLtIfemadKW9iv2HE7yG9XRBY5ei+Bbg+iyfXpUuno+c
-	 frJl73PoBA+WiCHyOmphofxenrswCz0XocVKYhImcl9B2XM1a3LLGsKvlbdKccX3m+
-	 xxIzdGYFA9mQNtmE+4VVQI7b9yeCMTs0kYlZf/Fg=
+	b=gipI0ph/PGDeTqxhnfUhvpru0Q0dEvfzlPuovFaLDj6SuR/c+FZh8D0GEKvNZgKdM
+	 IF9rDHJSdAlerWIZoV+/9hE6ci1fEiiFKMIz+8EPuooDhM/xD8Ifd8CXDQhFOo7sao
+	 8Odj8AOGARypjRX02UmkPltbvmy4tdIfi8QB5w2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Piotr Wejman <piotrwejman90@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 124/175] net: stmmac: fix rx queue priority assignment
+	Josef Bacik <josef@toxicpanda.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 184/294] tcp: properly terminate timers for kernel sockets
 Date: Thu, 11 Apr 2024 11:55:47 +0200
-Message-ID: <20240411095423.299287402@linuxfoundation.org>
+Message-ID: <20240411095441.161171915@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,144 +64,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Piotr Wejman <piotrwejman90@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit b3da86d432b7cd65b025a11f68613e333d2483db upstream.
+[ Upstream commit 151c9c724d05d5b0dd8acd3e11cb69ef1f2dbada ]
 
-The driver should ensure that same priority is not mapped to multiple
-rx queues. From DesignWare Cores Ethernet Quality-of-Service
-Databook, section 17.1.29 MAC_RxQ_Ctrl2:
-"[...]The software must ensure that the content of this field is
-mutually exclusive to the PSRQ fields for other queues, that is,
-the same priority is not mapped to multiple Rx queues[...]"
+We had various syzbot reports about tcp timers firing after
+the corresponding netns has been dismantled.
 
-Previously rx_queue_priority() function was:
-- clearing all priorities from a queue
-- adding new priorities to that queue
-After this patch it will:
-- first assign new priorities to a queue
-- then remove those priorities from all other queues
-- keep other priorities previously assigned to that queue
+Fortunately Josef Bacik could trigger the issue more often,
+and could test a patch I wrote two years ago.
 
-Fixes: a8f5102af2a7 ("net: stmmac: TX and RX queue priority configuration")
-Fixes: 2142754f8b9c ("net: stmmac: Add MAC related callbacks for XGMAC2")
-Signed-off-by: Piotr Wejman <piotrwejman90@gmail.com>
-Link: https://lore.kernel.org/r/20240401192239.33942-1-piotrwejman90@gmail.com
+When TCP sockets are closed, we call inet_csk_clear_xmit_timers()
+to 'stop' the timers.
+
+inet_csk_clear_xmit_timers() can be called from any context,
+including when socket lock is held.
+This is the reason it uses sk_stop_timer(), aka del_timer().
+This means that ongoing timers might finish much later.
+
+For user sockets, this is fine because each running timer
+holds a reference on the socket, and the user socket holds
+a reference on the netns.
+
+For kernel sockets, we risk that the netns is freed before
+timer can complete, because kernel sockets do not hold
+reference on the netns.
+
+This patch adds inet_csk_clear_xmit_timers_sync() function
+that using sk_stop_timer_sync() to make sure all timers
+are terminated before the kernel socket is released.
+Modules using kernel sockets close them in their netns exit()
+handler.
+
+Also add sock_not_owned_by_me() helper to get LOCKDEP
+support : inet_csk_clear_xmit_timers_sync() must not be called
+while socket lock is held.
+
+It is very possible we can revert in the future commit
+3a58f13a881e ("net: rds: acquire refcount on TCP sockets")
+which attempted to solve the issue in rds only.
+(net/smc/af_smc.c and net/mptcp/subflow.c have similar code)
+
+We probably can remove the check_net() tests from
+tcp_out_of_resources() and __tcp_close() in the future.
+
+Reported-by: Josef Bacik <josef@toxicpanda.com>
+Closes: https://lore.kernel.org/netdev/20240314210740.GA2823176@perftesting/
+Fixes: 26abe14379f8 ("net: Modify sk_alloc to not reference count the netns of kernel sockets.")
+Fixes: 8a68173691f0 ("net: sk_clone_lock() should only do get_net() if the parent is not a kernel socket")
+Link: https://lore.kernel.org/bpf/CANn89i+484ffqb93aQm1N-tjxxvb3WDKX0EbD7318RwRgsatjw@mail.gmail.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Tested-by: Josef Bacik <josef@toxicpanda.com>
+Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Link: https://lore.kernel.org/r/20240322135732.1535772-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c   |   40 +++++++++++++++-----
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c |   38 +++++++++++++++----
- 2 files changed, 62 insertions(+), 16 deletions(-)
+ include/net/inet_connection_sock.h |  1 +
+ include/net/sock.h                 |  7 +++++++
+ net/ipv4/inet_connection_sock.c    | 14 ++++++++++++++
+ net/ipv4/tcp.c                     |  2 ++
+ 4 files changed, 24 insertions(+)
 
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-@@ -84,19 +84,41 @@ static void dwmac4_rx_queue_priority(str
- 				     u32 prio, u32 queue)
+diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
+index 568121fa0965c..f5967805c33fd 100644
+--- a/include/net/inet_connection_sock.h
++++ b/include/net/inet_connection_sock.h
+@@ -172,6 +172,7 @@ void inet_csk_init_xmit_timers(struct sock *sk,
+ 			       void (*delack_handler)(struct timer_list *),
+ 			       void (*keepalive_handler)(struct timer_list *));
+ void inet_csk_clear_xmit_timers(struct sock *sk);
++void inet_csk_clear_xmit_timers_sync(struct sock *sk);
+ 
+ static inline void inet_csk_schedule_ack(struct sock *sk)
  {
- 	void __iomem *ioaddr = hw->pcsr;
--	u32 base_register;
--	u32 value;
-+	u32 clear_mask = 0;
-+	u32 ctrl2, ctrl3;
-+	int i;
- 
--	base_register = (queue < 4) ? GMAC_RXQ_CTRL2 : GMAC_RXQ_CTRL3;
--	if (queue >= 4)
--		queue -= 4;
-+	ctrl2 = readl(ioaddr + GMAC_RXQ_CTRL2);
-+	ctrl3 = readl(ioaddr + GMAC_RXQ_CTRL3);
-+
-+	/* The software must ensure that the same priority
-+	 * is not mapped to multiple Rx queues
-+	 */
-+	for (i = 0; i < 4; i++)
-+		clear_mask |= ((prio << GMAC_RXQCTRL_PSRQX_SHIFT(i)) &
-+						GMAC_RXQCTRL_PSRQX_MASK(i));
- 
--	value = readl(ioaddr + base_register);
-+	ctrl2 &= ~clear_mask;
-+	ctrl3 &= ~clear_mask;
- 
--	value &= ~GMAC_RXQCTRL_PSRQX_MASK(queue);
--	value |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
-+	/* First assign new priorities to a queue, then
-+	 * clear them from others queues
-+	 */
-+	if (queue < 4) {
-+		ctrl2 |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
- 						GMAC_RXQCTRL_PSRQX_MASK(queue);
--	writel(value, ioaddr + base_register);
-+
-+		writel(ctrl2, ioaddr + GMAC_RXQ_CTRL2);
-+		writel(ctrl3, ioaddr + GMAC_RXQ_CTRL3);
-+	} else {
-+		queue -= 4;
-+
-+		ctrl3 |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
-+						GMAC_RXQCTRL_PSRQX_MASK(queue);
-+
-+		writel(ctrl3, ioaddr + GMAC_RXQ_CTRL3);
-+		writel(ctrl2, ioaddr + GMAC_RXQ_CTRL2);
-+	}
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 87ee284ea9cb3..8bcc96bf291c3 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1681,6 +1681,13 @@ static inline void sock_owned_by_me(const struct sock *sk)
+ #endif
  }
  
- static void dwmac4_tx_queue_priority(struct mac_device_info *hw,
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -103,17 +103,41 @@ static void dwxgmac2_rx_queue_prio(struc
- 				   u32 queue)
++static inline void sock_not_owned_by_me(const struct sock *sk)
++{
++#ifdef CONFIG_LOCKDEP
++	WARN_ON_ONCE(lockdep_sock_is_held(sk) && debug_locks);
++#endif
++}
++
+ static inline bool sock_owned_by_user(const struct sock *sk)
  {
- 	void __iomem *ioaddr = hw->pcsr;
--	u32 value, reg;
-+	u32 clear_mask = 0;
-+	u32 ctrl2, ctrl3;
-+	int i;
- 
--	reg = (queue < 4) ? XGMAC_RXQ_CTRL2 : XGMAC_RXQ_CTRL3;
--	if (queue >= 4)
-+	ctrl2 = readl(ioaddr + XGMAC_RXQ_CTRL2);
-+	ctrl3 = readl(ioaddr + XGMAC_RXQ_CTRL3);
-+
-+	/* The software must ensure that the same priority
-+	 * is not mapped to multiple Rx queues
-+	 */
-+	for (i = 0; i < 4; i++)
-+		clear_mask |= ((prio << XGMAC_PSRQ_SHIFT(i)) &
-+						XGMAC_PSRQ(i));
-+
-+	ctrl2 &= ~clear_mask;
-+	ctrl3 &= ~clear_mask;
-+
-+	/* First assign new priorities to a queue, then
-+	 * clear them from others queues
-+	 */
-+	if (queue < 4) {
-+		ctrl2 |= (prio << XGMAC_PSRQ_SHIFT(queue)) &
-+						XGMAC_PSRQ(queue);
-+
-+		writel(ctrl2, ioaddr + XGMAC_RXQ_CTRL2);
-+		writel(ctrl3, ioaddr + XGMAC_RXQ_CTRL3);
-+	} else {
- 		queue -= 4;
- 
--	value = readl(ioaddr + reg);
--	value &= ~XGMAC_PSRQ(queue);
--	value |= (prio << XGMAC_PSRQ_SHIFT(queue)) & XGMAC_PSRQ(queue);
-+		ctrl3 |= (prio << XGMAC_PSRQ_SHIFT(queue)) &
-+						XGMAC_PSRQ(queue);
- 
--	writel(value, ioaddr + reg);
-+		writel(ctrl3, ioaddr + XGMAC_RXQ_CTRL3);
-+		writel(ctrl2, ioaddr + XGMAC_RXQ_CTRL2);
-+	}
+ 	sock_owned_by_me(sk);
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index b15c9ad0095a2..6ebe43b4d28f7 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -580,6 +580,20 @@ void inet_csk_clear_xmit_timers(struct sock *sk)
  }
+ EXPORT_SYMBOL(inet_csk_clear_xmit_timers);
  
- static void dwxgmac2_prog_mtl_rx_algorithms(struct mac_device_info *hw,
++void inet_csk_clear_xmit_timers_sync(struct sock *sk)
++{
++	struct inet_connection_sock *icsk = inet_csk(sk);
++
++	/* ongoing timer handlers need to acquire socket lock. */
++	sock_not_owned_by_me(sk);
++
++	icsk->icsk_pending = icsk->icsk_ack.pending = 0;
++
++	sk_stop_timer_sync(sk, &icsk->icsk_retransmit_timer);
++	sk_stop_timer_sync(sk, &icsk->icsk_delack_timer);
++	sk_stop_timer_sync(sk, &sk->sk_timer);
++}
++
+ void inet_csk_delete_keepalive_timer(struct sock *sk)
+ {
+ 	sk_stop_timer(sk, &sk->sk_timer);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 2e874ec859715..ac6cb2dc60380 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2717,6 +2717,8 @@ void tcp_close(struct sock *sk, long timeout)
+ 	lock_sock(sk);
+ 	__tcp_close(sk, timeout);
+ 	release_sock(sk);
++	if (!sk->sk_net_refcnt)
++		inet_csk_clear_xmit_timers_sync(sk);
+ 	sock_put(sk);
+ }
+ EXPORT_SYMBOL(tcp_close);
+-- 
+2.43.0
+
 
 
 
