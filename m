@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-39062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6438A11B7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:46:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA42F8A0E4A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F5551F21256
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:46:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49BBA1F24073
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DDF145B28;
-	Thu, 11 Apr 2024 10:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C717B145B3E;
+	Thu, 11 Apr 2024 10:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSBUUlgj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KT9R5YWz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E8913D24D;
-	Thu, 11 Apr 2024 10:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848C91DDE9;
+	Thu, 11 Apr 2024 10:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832404; cv=none; b=b+ye6D8o3g2/iqNGu31eHL3EiUBpXfPAvPzEZOaQq2SCO7o3Y4dWir85i4i+HPWO7V+aCexZ0wMlRmCzDKT1n7O86H6BZB5Y75YlGnBnBdKKq9eOcfcRTOOtvdhPchEAvDaiMXlY97FJkX1mgCiTSq3Im2CqleZc5SaA3m2wKcs=
+	t=1712830398; cv=none; b=sAHw09AbuKFi5JkmXwopwd1aZswG7Cv2zuBKIYvPNkWKW/SEVogBPj1gY0iL3vZGvuBM6N1E9UQgqrt1RN8M3PyEGzUYHwFcvyNiDiYL6KA59gGtCevKDqVMGUHXg1VlxxA0eSjqsm54CytKgy1BZNNKYVyZMd7v+KtbN9vmLiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832404; c=relaxed/simple;
-	bh=dhyCdCAbNjb0xoHTqhiTRAJSSSDejF2xLyfP5Z7AB3I=;
+	s=arc-20240116; t=1712830398; c=relaxed/simple;
+	bh=zHcSwJtu2UXRy+BZfCnQDnIepZMvJiOSKWKIqqQkVcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fd1vzXCH8uDM9q0JAGn8p/C6O750GgSIim78Q/+Aa1NgAE31LqHLO2i+2CFD2rMh8rUIs1kgf34B6kJu4i9MoeYHahzGheUr2yC2MdLxcQOLD1Yq9EbhpQc7SNfA+zgtNaOQZbtK2ri7qB19wlxiS3qKMf6vRff4qRhLlka3+IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSBUUlgj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D99C43390;
-	Thu, 11 Apr 2024 10:46:43 +0000 (UTC)
+	 MIME-Version; b=Q4F+OWXS+kZskZTyBc1qBoSMw7kZjLX9suNqopUyh3BlVnGICPKwSrKfoKhk3WFg24WiNvWAwtdJ1Vl2+9sIuT0PZGlCn6HAXRP8oRSdJna2AMwopD1M07mOL7TnTq6mWywGA8bmLtfLa3r0F6UE+Cm/UR0fYYgc1qMxGz81NEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KT9R5YWz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E63EC433F1;
+	Thu, 11 Apr 2024 10:13:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832404;
-	bh=dhyCdCAbNjb0xoHTqhiTRAJSSSDejF2xLyfP5Z7AB3I=;
+	s=korg; t=1712830398;
+	bh=zHcSwJtu2UXRy+BZfCnQDnIepZMvJiOSKWKIqqQkVcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DSBUUlgjnKv6uXzKUWCV9YAQtCD9416sjwigjkAedDtxW9gbUf+CtnJcWuRdCXIHL
-	 IlRCAXqZrgRgAYyn2pyFOEKTNtD/6puQ8yP/TzYlfK5ou/STYNd9hoyz7+OEetzwYs
-	 yhUeyg/jcy6sCUS7mTGnpvyxkjf2WRZD3oANsVp4=
+	b=KT9R5YWzD033KEXR9CyMjshStQvvJB22nXgysvjEusBHCJplHmZf2MwwQyV9Y1hRM
+	 S9zl0BIbig/TTcaCaK0NgVtb0qaFTM7Es289+tiyPnuvLDpfRax6C/cHp5PWVXPxfq
+	 no+FpBHEw2OkbMCI4tqJ7mJpkOv7HIAjmAdiEC54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 07/83] wifi: iwlwifi: pcie: Add the PCI device id for new hardware
+	kernel test robot <oliver.sang@intel.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 6.8 131/143] gcc-plugins/stackleak: Avoid .head.text section
 Date: Thu, 11 Apr 2024 11:56:39 +0200
-Message-ID: <20240411095412.897640105@linuxfoundation.org>
+Message-ID: <20240411095424.846891922@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 6770eee75148ba10c0c051885379714773e00b48 ]
+commit e7d24c0aa8e678f41457d1304e2091cac6fd1a2e upstream.
 
-Add the support for a new PCI device id.
+The .head.text section carries the startup code that runs with the MMU
+off or with a translation of memory that deviates from the ordinary one.
+So avoid instrumentation with the stackleak plugin, which already avoids
+.init.text and .noinstr.text entirely.
 
-Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240129211905.fde32107e0a3.I597cff4f340e4bed12b7568a0ad504bd4b2c1cf8@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 48204aba801f1b51 ("x86/sme: Move early SME kernel encryption handling into .head.text")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202403221630.2692c998-oliver.sang@intel.com
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20240328064256.2358634-2-ardb+git@google.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 1 +
- 1 file changed, 1 insertion(+)
+ scripts/gcc-plugins/stackleak_plugin.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 4d4db5f6836be..7f30e6add9933 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -505,6 +505,7 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
+--- a/scripts/gcc-plugins/stackleak_plugin.c
++++ b/scripts/gcc-plugins/stackleak_plugin.c
+@@ -467,6 +467,8 @@ static bool stackleak_gate(void)
+ 			return false;
+ 		if (STRING_EQUAL(section, ".entry.text"))
+ 			return false;
++		if (STRING_EQUAL(section, ".head.text"))
++			return false;
+ 	}
  
- /* Bz devices */
- 	{IWL_PCI_DEVICE(0x2727, PCI_ANY_ID, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0x272D, PCI_ANY_ID, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0xA840, PCI_ANY_ID, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x7740, PCI_ANY_ID, iwl_bz_trans_cfg)},
--- 
-2.43.0
-
+ 	return track_frame_size >= 0;
 
 
 
