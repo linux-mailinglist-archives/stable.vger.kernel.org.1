@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71BD58A0FEC
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 087BB8A11A0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:46:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F32981F295EA
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39A4E1C23BDD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900011465BF;
-	Thu, 11 Apr 2024 10:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B051146019;
+	Thu, 11 Apr 2024 10:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpcXeTK/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZx7xd+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBE7143C76;
-	Thu, 11 Apr 2024 10:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F1E142624;
+	Thu, 11 Apr 2024 10:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831337; cv=none; b=L9QEu6AGlUwMA0euTDVfk8cpJ6oXh+1PZ6BFHvHgVorZ8dPVPLXWQoD4HQ8D4QBjcNxsLBtSTKp+ZbyWA0VuJzA0/TicnVPHidpBPPOFPoSMArYxZkFBXRlS8GZkvpXFm2DsEJj3gc65qdNz0Mrnrg7u11QZBNOfrvTaGG9r00c=
+	t=1712832363; cv=none; b=RVXjABXDivS3+FtlV5l/zLwrPGlz9LdoF0bxLLJdd/5eb0ppT+yrXnPFSNuXj/ki1l7nTJJ5hQpc98bBe1MCGbrhHAcxbCjg2jT8AzakPLIMW/1IZUGGhdUDbktLBD6W1tyolMnI6Ra6iUBL7gLfLkIXp0kSwtbtsNlNs3xZnCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831337; c=relaxed/simple;
-	bh=xjh5MdBJzK09Hg7mphK7iuwfn/oXGEvlshLh4YXDCkE=;
+	s=arc-20240116; t=1712832363; c=relaxed/simple;
+	bh=fTrHAQfGi0HYSpaR72PZ6kJ6fCS0i46yafK55J3/Ns0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JinzSrjcC/agEtY4F57iR+Am0CiPof95BU1Bhh9mjzs4+z41tK/ZBw54cOyy+Npt20iQivvt0RZyKgAee4hh3yGetbCOz/LS/KKIslcpbTYt5EUEBZW4QpStYdAoxB41U1v3worlppKhBedmlRUpljM2nvhW42phhK0ZPjv80iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpcXeTK/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7ACC433F1;
-	Thu, 11 Apr 2024 10:28:56 +0000 (UTC)
+	 MIME-Version; b=LaI+t/ruUoOGq3cmKWBUr0xnM0CifwnQJFqQmU7wo6Zw/8XWrq2lSMXvZEqzpIzx8YwoZ8mx1Dxk4xw4MjcxTQ0HISCkgWnWzFoVBL04fK+ZKifmBVlgbvf4VEJ+6CqPA+xJ69O9uzhE6YumHPdonCsV3Fk/M4xNmY6sEZ4eXPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZx7xd+J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CFAC433C7;
+	Thu, 11 Apr 2024 10:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831336;
-	bh=xjh5MdBJzK09Hg7mphK7iuwfn/oXGEvlshLh4YXDCkE=;
+	s=korg; t=1712832363;
+	bh=fTrHAQfGi0HYSpaR72PZ6kJ6fCS0i46yafK55J3/Ns0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rpcXeTK/69kr7SLnigbvba39P/5eTlE8shqq1MD/x6yefD/y0BhlHfEgwkMggT22F
-	 h0ebs0pZaY7QjxDkQ881/oKn9TVsnVIYasly+2eJoGD0Kl6YshWUJJ7wfOocFIZyaA
-	 ZTTOMj50yff1zGeiBPHRFBoxO7hnIiWgFgZaFbbU=
+	b=vZx7xd+JIpAn8vHdqJk2KivG/gcr8yOf7H73f7Au9EwuEfSCE/0NoLcJxzA0w4eIX
+	 gqwIHZCD9Qj73hCjNFoGQyTryLwc5MfIXvKgMrnII17/ZYSN8Le1fFHtC+5LM+XeES
+	 QXD3NW1yxiH28uhkfWvg9EDa5nc9grkFNgUJbj5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Andrea Righi <andrea.righi@canonical.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/114] kernfs: RCU protect kernfs_nodes and avoid kernfs_idr_lock in kernfs_find_and_get_node_by_id()
+Subject: [PATCH 6.1 23/83] btrfs: export: handle invalid inode or root reference in btrfs_get_parent()
 Date: Thu, 11 Apr 2024 11:56:55 +0200
-Message-ID: <20240411095419.547540008@linuxfoundation.org>
+Message-ID: <20240411095413.376956389@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+References: <20240411095412.671665933@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,201 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 4207b556e62f0a8915afc5da4c5d5ad915a253a5 ]
+[ Upstream commit 26b66d1d366a375745755ca7365f67110bbf6bd5 ]
 
-The BPF helper bpf_cgroup_from_id() calls kernfs_find_and_get_node_by_id()
-which acquires kernfs_idr_lock, which is an non-raw non-IRQ-safe lock. This
-can lead to deadlocks as bpf_cgroup_from_id() can be called from any BPF
-programs including e.g. the ones that attach to functions which are holding
-the scheduler rq lock.
+The get_parent handler looks up a parent of a given dentry, this can be
+either a subvolume or a directory. The search is set up with offset -1
+but it's never expected to find such item, as it would break allowed
+range of inode number or a root id. This means it's a corruption (ext4
+also returns this error code).
 
-Consider the following BPF program:
-
-  SEC("fentry/__set_cpus_allowed_ptr_locked")
-  int BPF_PROG(__set_cpus_allowed_ptr_locked, struct task_struct *p,
-	       struct affinity_context *affn_ctx, struct rq *rq, struct rq_flags *rf)
-  {
-	  struct cgroup *cgrp = bpf_cgroup_from_id(p->cgroups->dfl_cgrp->kn->id);
-
-	  if (cgrp) {
-		  bpf_printk("%d[%s] in %s", p->pid, p->comm, cgrp->kn->name);
-		  bpf_cgroup_release(cgrp);
-	  }
-	  return 0;
-  }
-
-__set_cpus_allowed_ptr_locked() is called with rq lock held and the above
-BPF program calls bpf_cgroup_from_id() within leading to the following
-lockdep warning:
-
-  =====================================================
-  WARNING: HARDIRQ-safe -> HARDIRQ-unsafe lock order detected
-  6.7.0-rc3-work-00053-g07124366a1d7-dirty #147 Not tainted
-  -----------------------------------------------------
-  repro/1620 [HC0[0]:SC0[0]:HE0:SE1] is trying to acquire:
-  ffffffff833b3688 (kernfs_idr_lock){+.+.}-{2:2}, at: kernfs_find_and_get_node_by_id+0x1e/0x70
-
-		and this task is already holding:
-  ffff888237ced698 (&rq->__lock){-.-.}-{2:2}, at: task_rq_lock+0x4e/0xf0
-  which would create a new lock dependency:
-   (&rq->__lock){-.-.}-{2:2} -> (kernfs_idr_lock){+.+.}-{2:2}
-  ...
-   Possible interrupt unsafe locking scenario:
-
-	 CPU0                    CPU1
-	 ----                    ----
-    lock(kernfs_idr_lock);
-				 local_irq_disable();
-				 lock(&rq->__lock);
-				 lock(kernfs_idr_lock);
-    <Interrupt>
-      lock(&rq->__lock);
-
-		 *** DEADLOCK ***
-  ...
-  Call Trace:
-   dump_stack_lvl+0x55/0x70
-   dump_stack+0x10/0x20
-   __lock_acquire+0x781/0x2a40
-   lock_acquire+0xbf/0x1f0
-   _raw_spin_lock+0x2f/0x40
-   kernfs_find_and_get_node_by_id+0x1e/0x70
-   cgroup_get_from_id+0x21/0x240
-   bpf_cgroup_from_id+0xe/0x20
-   bpf_prog_98652316e9337a5a___set_cpus_allowed_ptr_locked+0x96/0x11a
-   bpf_trampoline_6442545632+0x4f/0x1000
-   __set_cpus_allowed_ptr_locked+0x5/0x5a0
-   sched_setaffinity+0x1b3/0x290
-   __x64_sys_sched_setaffinity+0x4f/0x60
-   do_syscall_64+0x40/0xe0
-   entry_SYSCALL_64_after_hwframe+0x46/0x4e
-
-Let's fix it by protecting kernfs_node and kernfs_root with RCU and making
-kernfs_find_and_get_node_by_id() acquire rcu_read_lock() instead of
-kernfs_idr_lock.
-
-This adds an rcu_head to kernfs_node making it larger by 16 bytes on 64bit.
-Combined with the preceding rearrange patch, the net increase is 8 bytes.
-
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Cc: Andrea Righi <andrea.righi@canonical.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/20240109214828.252092-4-tj@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/kernfs/dir.c             | 31 ++++++++++++++++++++-----------
- fs/kernfs/kernfs-internal.h |  2 ++
- include/linux/kernfs.h      |  2 ++
- 3 files changed, 24 insertions(+), 11 deletions(-)
+ fs/btrfs/export.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
-index 62d39ecf0a466..2405aeb39b9a2 100644
---- a/fs/kernfs/dir.c
-+++ b/fs/kernfs/dir.c
-@@ -529,6 +529,20 @@ void kernfs_get(struct kernfs_node *kn)
- }
- EXPORT_SYMBOL_GPL(kernfs_get);
- 
-+static void kernfs_free_rcu(struct rcu_head *rcu)
-+{
-+	struct kernfs_node *kn = container_of(rcu, struct kernfs_node, rcu);
-+
-+	kfree_const(kn->name);
-+
-+	if (kn->iattr) {
-+		simple_xattrs_free(&kn->iattr->xattrs, NULL);
-+		kmem_cache_free(kernfs_iattrs_cache, kn->iattr);
+diff --git a/fs/btrfs/export.c b/fs/btrfs/export.c
+index fab7eb76e53b2..58b0f04d7123f 100644
+--- a/fs/btrfs/export.c
++++ b/fs/btrfs/export.c
+@@ -161,8 +161,15 @@ struct dentry *btrfs_get_parent(struct dentry *child)
+ 	ret = btrfs_search_slot(NULL, root, &key, path, 0, 0);
+ 	if (ret < 0)
+ 		goto fail;
++	if (ret == 0) {
++		/*
++		 * Key with offset of -1 found, there would have to exist an
++		 * inode with such number or a root with such id.
++		 */
++		ret = -EUCLEAN;
++		goto fail;
 +	}
-+
-+	kmem_cache_free(kernfs_node_cache, kn);
-+}
-+
- /**
-  * kernfs_put - put a reference count on a kernfs_node
-  * @kn: the target kernfs_node
-@@ -557,16 +571,11 @@ void kernfs_put(struct kernfs_node *kn)
- 	if (kernfs_type(kn) == KERNFS_LINK)
- 		kernfs_put(kn->symlink.target_kn);
  
--	kfree_const(kn->name);
--
--	if (kn->iattr) {
--		simple_xattrs_free(&kn->iattr->xattrs, NULL);
--		kmem_cache_free(kernfs_iattrs_cache, kn->iattr);
--	}
- 	spin_lock(&kernfs_idr_lock);
- 	idr_remove(&root->ino_idr, (u32)kernfs_ino(kn));
- 	spin_unlock(&kernfs_idr_lock);
--	kmem_cache_free(kernfs_node_cache, kn);
-+
-+	call_rcu(&kn->rcu, kernfs_free_rcu);
- 
- 	kn = parent;
- 	if (kn) {
-@@ -575,7 +584,7 @@ void kernfs_put(struct kernfs_node *kn)
- 	} else {
- 		/* just released the root kn, free @root too */
- 		idr_destroy(&root->ino_idr);
--		kfree(root);
-+		kfree_rcu(root, rcu);
- 	}
- }
- EXPORT_SYMBOL_GPL(kernfs_put);
-@@ -715,7 +724,7 @@ struct kernfs_node *kernfs_find_and_get_node_by_id(struct kernfs_root *root,
- 	ino_t ino = kernfs_id_ino(id);
- 	u32 gen = kernfs_id_gen(id);
- 
--	spin_lock(&kernfs_idr_lock);
-+	rcu_read_lock();
- 
- 	kn = idr_find(&root->ino_idr, (u32)ino);
- 	if (!kn)
-@@ -739,10 +748,10 @@ struct kernfs_node *kernfs_find_and_get_node_by_id(struct kernfs_root *root,
- 	if (unlikely(!__kernfs_active(kn) || !atomic_inc_not_zero(&kn->count)))
- 		goto err_unlock;
- 
--	spin_unlock(&kernfs_idr_lock);
-+	rcu_read_unlock();
- 	return kn;
- err_unlock:
--	spin_unlock(&kernfs_idr_lock);
-+	rcu_read_unlock();
- 	return NULL;
- }
- 
-diff --git a/fs/kernfs/kernfs-internal.h b/fs/kernfs/kernfs-internal.h
-index a9b854cdfdb5f..210dac7e9ee25 100644
---- a/fs/kernfs/kernfs-internal.h
-+++ b/fs/kernfs/kernfs-internal.h
-@@ -49,6 +49,8 @@ struct kernfs_root {
- 	struct rw_semaphore	kernfs_rwsem;
- 	struct rw_semaphore	kernfs_iattr_rwsem;
- 	struct rw_semaphore	kernfs_supers_rwsem;
-+
-+	struct rcu_head		rcu;
- };
- 
- /* +1 to avoid triggering overflow warning when negating it */
-diff --git a/include/linux/kernfs.h b/include/linux/kernfs.h
-index 2a36f3218b510..5a952d00ea159 100644
---- a/include/linux/kernfs.h
-+++ b/include/linux/kernfs.h
-@@ -223,6 +223,8 @@ struct kernfs_node {
- 	unsigned short		flags;
- 	umode_t			mode;
- 	struct kernfs_iattrs	*iattr;
-+
-+	struct rcu_head		rcu;
- };
- 
- /*
+-	BUG_ON(ret == 0); /* Key with offset of -1 found */
+ 	if (path->slots[0] == 0) {
+ 		ret = -ENOENT;
+ 		goto fail;
 -- 
 2.43.0
 
