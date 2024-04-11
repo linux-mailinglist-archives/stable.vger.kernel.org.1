@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A708A0D3B
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:01:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51F7B8A0DD1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:08:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAF611C208C5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:01:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 738B01C21A10
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7D1145B04;
-	Thu, 11 Apr 2024 10:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B8E145B0A;
+	Thu, 11 Apr 2024 10:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGurSLAj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WNajBqxC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5202EAE5;
-	Thu, 11 Apr 2024 10:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F0913B5B9;
+	Thu, 11 Apr 2024 10:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829702; cv=none; b=cjtsX4+jLTH9PYYoUnSyD3Ue9vbipXwnOjGNH9NOIzG7YpdFGcyMhv0uxpblq25m2ojWdiMapfoU8G68QuVp12ehgenOJ182b3s4A+CyNO4w2On7c7UWz6v3Zbn1cWbtePgnJCmUU4p/+bMNISjbrdx345j2+OFPOtWrI6hLluM=
+	t=1712830087; cv=none; b=aryrsNkmvDFSvxMvTyB0RTFyocTLzpscu6+AnjyL0m5OE8oYqukz/NX7XvW6T0kzmZSHOGlpYEBjhILZkyAWvY3hIb2BhliKFHK2lMNTfG0RlNtMCm4oXaI62PTqDTqQG3H4RIFzR5qU1Wl1R/UztCxfWm57sBRo1c4PB+ooTh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829702; c=relaxed/simple;
-	bh=iHi2LD98F86TTnU9wOg2NksImbNwJmjMENgiv70NkAU=;
+	s=arc-20240116; t=1712830087; c=relaxed/simple;
+	bh=d275yoIS5cNyQyj4X2Q4xKdNEmeh96bb/TQO8TTnrfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U92DycJ+lNurkO/ZXVQfhGyp7ou6OZnKcy2CdzzvCjiVDrqRmil0wKQL8Zg8TEIaAiR7Q4Eapm22U5Dww7WKriPa2LvhS5g/IA7+ilfvxyAJzqUY8SmePP0VxFXCpy4REJB1K+jv0WKqMFPs5m2IrBrHfIRnx/5uAlZ9whLvau4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGurSLAj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A7CC433F1;
-	Thu, 11 Apr 2024 10:01:42 +0000 (UTC)
+	 MIME-Version; b=Jei+PpwiUSjFph/FHAwNm6+2kRDIa1/ejPMKa2SxXYRs5okF8nCz2XxdEPW+sLLOn5cAf63FkmUArt9veUJygtGQvhc4Bqzm/aGRIUTG4hlC7K01UM1cT2yFMZGONqyF/udKE/XkQM94TNL+5c/I/WDX7YkENgTSrqrul/FhQfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNajBqxC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D9DC433F1;
+	Thu, 11 Apr 2024 10:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829702;
-	bh=iHi2LD98F86TTnU9wOg2NksImbNwJmjMENgiv70NkAU=;
+	s=korg; t=1712830087;
+	bh=d275yoIS5cNyQyj4X2Q4xKdNEmeh96bb/TQO8TTnrfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JGurSLAj0zX+xUOwWDMijEcHXAQnI3gzNFuxL2kxBIL9gGNZ3RO+tb80gazhELjap
-	 AJstkmWAKMFH4tUmJEbk/S0bmdWIDt0qu9Z2XZ3v/pcTLsKiwxSk6KsvKiRpBmi82y
-	 fodF1OSqDabhw+5aE8hGqUyfWuyOnFmD9lr88ZJo=
+	b=WNajBqxCx0LlGgqLA570do5ODedSaeOZ6dSj5W6R8Xq3SjW5WrY4/kudK3JFiCx6V
+	 daWOwX1bFs/JUOLIXg0F+Ob5bi+uMCSqv2Uvb3UWTRYMBrLo0ElVTh2CFceY+blgEk
+	 N24/0APNiUuefJECF8hp5PB8V/Tc/79ki3jR217E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>
-Subject: [PATCH 4.19 075/175] usb: gadget: ncm: Fix handling of zero block length packets
+	Florian Westphal <fw@strlen.de>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 030/143] net: skbuff: add overflow debug check to pull/push helpers
 Date: Thu, 11 Apr 2024 11:54:58 +0200
-Message-ID: <20240411095421.821348557@linuxfoundation.org>
+Message-ID: <20240411095421.819736748@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +61,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit f90ce1e04cbcc76639d6cba0fdbd820cd80b3c70 upstream.
+[ Upstream commit 219eee9c0d16f1b754a8b85275854ab17df0850a ]
 
-While connecting to a Linux host with CDC_NCM_NTB_DEF_SIZE_TX
-set to 65536, it has been observed that we receive short packets,
-which come at interval of 5-10 seconds sometimes and have block
-length zero but still contain 1-2 valid datagrams present.
+syzbot managed to trigger following splat:
+BUG: KASAN: use-after-free in __skb_flow_dissect+0x4a3b/0x5e50
+Read of size 1 at addr ffff888208a4000e by task a.out/2313
+[..]
+  __skb_flow_dissect+0x4a3b/0x5e50
+  __skb_get_hash+0xb4/0x400
+  ip_tunnel_xmit+0x77e/0x26f0
+  ipip_tunnel_xmit+0x298/0x410
+  ..
 
-According to the NCM spec:
+Analysis shows that the skb has a valid ->head, but bogus ->data
+pointer.
 
-"If wBlockLength = 0x0000, the block is terminated by a
-short packet. In this case, the USB transfer must still
-be shorter than dwNtbInMaxSize or dwNtbOutMaxSize. If
-exactly dwNtbInMaxSize or dwNtbOutMaxSize bytes are sent,
-and the size is a multiple of wMaxPacketSize for the
-given pipe, then no ZLP shall be sent.
+skb->data gets its bogus value via the neigh layer, which does:
 
-wBlockLength= 0x0000 must be used with extreme care, because
-of the possibility that the host and device may get out of
-sync, and because of test issues.
+1556    __skb_pull(skb, skb_network_offset(skb));
 
-wBlockLength = 0x0000 allows the sender to reduce latency by
-starting to send a very large NTB, and then shortening it when
-the sender discovers that there’s not sufficient data to justify
-sending a large NTB"
+... and the skb was already dodgy at this point:
 
-However, there is a potential issue with the current implementation,
-as it checks for the occurrence of multiple NTBs in a single
-giveback by verifying if the leftover bytes to be processed is zero
-or not. If the block length reads zero, we would process the same
-NTB infintely because the leftover bytes is never zero and it leads
-to a crash. Fix this by bailing out if block length reads zero.
+skb_network_offset(skb) returns a negative value due to an
+earlier overflow of skb->network_header (u16).  __skb_pull thus
+"adjusts" skb->data by a huge offset, pointing outside skb->head
+area.
 
-Cc: stable@vger.kernel.org
-Fixes: 427694cfaafa ("usb: gadget: ncm: Handle decoding of multiple NTB's in unwrap call")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Maciej Żenczykowski <maze@google.com>
-Link: https://lore.kernel.org/r/20240228115441.2105585-1-quic_kriskura@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Allow debug builds to splat when we try to pull/push more than
+INT_MAX bytes.
+
+After this, the syzkaller reproducer yields a more precise splat
+before the flow dissector attempts to read off skb->data memory:
+
+WARNING: CPU: 5 PID: 2313 at include/linux/skbuff.h:2653 neigh_connected_output+0x28e/0x400
+  ip_finish_output2+0xb25/0xed0
+  iptunnel_xmit+0x4ff/0x870
+  ipgre_xmit+0x78e/0xbb0
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240216113700.23013-1-fw@strlen.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_ncm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/skbuff.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1357,7 +1357,7 @@ parse_ntb:
- 	if (to_process == 1 &&
- 	    (*(unsigned char *)(ntb_ptr + block_len) == 0x00)) {
- 		to_process--;
--	} else if (to_process > 0) {
-+	} else if ((to_process > 0) && (block_len != 0)) {
- 		ntb_ptr = (unsigned char *)(ntb_ptr + block_len);
- 		goto parse_ntb;
- 	}
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 227f4514476b1..741115aeca2f1 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -2637,6 +2637,8 @@ static inline void skb_put_u8(struct sk_buff *skb, u8 val)
+ void *skb_push(struct sk_buff *skb, unsigned int len);
+ static inline void *__skb_push(struct sk_buff *skb, unsigned int len)
+ {
++	DEBUG_NET_WARN_ON_ONCE(len > INT_MAX);
++
+ 	skb->data -= len;
+ 	skb->len  += len;
+ 	return skb->data;
+@@ -2645,6 +2647,8 @@ static inline void *__skb_push(struct sk_buff *skb, unsigned int len)
+ void *skb_pull(struct sk_buff *skb, unsigned int len);
+ static inline void *__skb_pull(struct sk_buff *skb, unsigned int len)
+ {
++	DEBUG_NET_WARN_ON_ONCE(len > INT_MAX);
++
+ 	skb->len -= len;
+ 	if (unlikely(skb->len < skb->data_len)) {
+ #if defined(CONFIG_DEBUG_NET)
+@@ -2669,6 +2673,8 @@ void *__pskb_pull_tail(struct sk_buff *skb, int delta);
+ static inline enum skb_drop_reason
+ pskb_may_pull_reason(struct sk_buff *skb, unsigned int len)
+ {
++	DEBUG_NET_WARN_ON_ONCE(len > INT_MAX);
++
+ 	if (likely(len <= skb_headlen(skb)))
+ 		return SKB_NOT_DROPPED_YET;
+ 
+-- 
+2.43.0
+
 
 
 
