@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF588A10EB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:39:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D243D8A0DFF
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9A1E284BB0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:39:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71A281F20F4D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74DF146D7E;
-	Thu, 11 Apr 2024 10:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC48145FE7;
+	Thu, 11 Apr 2024 10:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGtHfXej"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMpCu0D9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8204B146D79;
-	Thu, 11 Apr 2024 10:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C301F5FA;
+	Thu, 11 Apr 2024 10:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831927; cv=none; b=qe5MRcoNQqUlYEKaSCQq8SO5GWppxXLBl2AayI9XQQMVaqrY8vvlLkV0gcrwlzSYNGEAQuvwZYBBtqTxC1AAYxgCnBDzoRdKWRag5Y1EKB5xpJFubFEzAmYCgonKHxsnq/elpHcHfAG5JPqV/5eTTSCaKc+PPt5RcOYQeUF3yjE=
+	t=1712830196; cv=none; b=TYIjhK9aBahJSkGP1jgvEeqKOzBEtWKMVl7WyrnJiMLCR1hlVNCfJumlxRzNDB9rr9l31j3BWdD3BHj0PRtBrh15oEwRdLGC6dhoHGrrLPQsB5JZ60JYxwGgrAyoLgmKKXG055Z37ZNMloTTlCCBGWvAmh9JKiFeo0e8cB8Qchg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831927; c=relaxed/simple;
-	bh=Veum3n/AR0Pd/k1GZzxTybdNESjBmz7GWcQY6pLFfZI=;
+	s=arc-20240116; t=1712830196; c=relaxed/simple;
+	bh=NtGX7f0Cm+UTNX/pgWLaI/hGBWagYVhzStyJ8Hb4ScQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rULCvAUwr0pa9nbfZ3GaPIMWuryXRe2qUqxpifL8S9HdUUHIeY5VtKK0h0dKjwVMz7HXhu6FbUgEXnm8vVaH/YG/LRKxlKzihEwWQYakwDpIrTuvspcHQK+sh87iEcMT1Zs6Uw9lfoCdj7duL2Jj0W9MAH4OfbOt2DpojIIDHMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGtHfXej; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019B6C433F1;
-	Thu, 11 Apr 2024 10:38:46 +0000 (UTC)
+	 MIME-Version; b=YLCPyb+BYauFqrCbTtspTMasy+4B3fjkNiqnk+H5MIzBfPucNxxWQtRajYNEUZnvqM7WHm3rqk5vW5NumpU/iqeRGfID/4ZEcMDkDwGxzVcWbeTfRZUMi/Vb+B9jWVXyWLfIfKAKrSGEOsSih7nuX1HEJA/s0T2NOSN/Jf4Zpt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMpCu0D9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74CDC433F1;
+	Thu, 11 Apr 2024 10:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831927;
-	bh=Veum3n/AR0Pd/k1GZzxTybdNESjBmz7GWcQY6pLFfZI=;
+	s=korg; t=1712830196;
+	bh=NtGX7f0Cm+UTNX/pgWLaI/hGBWagYVhzStyJ8Hb4ScQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PGtHfXejeUihDb45fkNsYCS9wbOoWKPqRLK0kVB8Oql3prOT/rJSwZJGtOGSZuEjK
-	 SoFkIWUS/ODdWmJ51civylKZHwuPkN8UkUvvDRjPkhXESCxq1Pt2RVJBcxUweiYqQX
-	 g1Kv1xtsAhh0NU7T48+mlg8sHIq0zGSaxtEFOUsI=
+	b=qMpCu0D99SHA6Lg1gWTe2NatAi8tNpZyP6UmU64IUBPa+9dOUHkn0Yq7y7zKH+aO4
+	 5NXx8bTJwxIsvs6GJj8lQukAWZPtHOjzWT2X8rl3HQan+n6dEeHfQ+qJcaIN1hS2bD
+	 zQQYhGsk69icb+SnWff/keXgme2CKwMMtlMXDlQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	yuan linyu <yuanlinyu@hihonor.com>
-Subject: [PATCH 5.10 172/294] usb: udc: remove warning when queue disabled ep
-Date: Thu, 11 Apr 2024 11:55:35 +0200
-Message-ID: <20240411095440.810896569@linuxfoundation.org>
+	Justin Tee <justin.tee@broadcom.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 068/143] scsi: lpfc: Fix possible memory leak in lpfc_rcv_padisc()
+Date: Thu, 11 Apr 2024 11:55:36 +0200
+Message-ID: <20240411095422.961838597@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yuan linyu <yuanlinyu@hihonor.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-commit 2a587a035214fa1b5ef598aea0b81848c5b72e5e upstream.
+[ Upstream commit 2ae917d4bcab80ab304b774d492e2fcd6c52c06b ]
 
-It is possible trigger below warning message from mass storage function,
+The call to lpfc_sli4_resume_rpi() in lpfc_rcv_padisc() may return an
+unsuccessful status.  In such cases, the elsiocb is not issued, the
+completion is not called, and thus the elsiocb resource is leaked.
 
-WARNING: CPU: 6 PID: 3839 at drivers/usb/gadget/udc/core.c:294 usb_ep_queue+0x7c/0x104
-pc : usb_ep_queue+0x7c/0x104
-lr : fsg_main_thread+0x494/0x1b3c
+Check return value after calling lpfc_sli4_resume_rpi() and conditionally
+release the elsiocb resource.
 
-Root cause is mass storage function try to queue request from main thread,
-but other thread may already disable ep when function disable.
-
-As there is no function failure in the driver, in order to avoid effort
-to fix warning, change WARN_ON_ONCE() in usb_ep_queue() to pr_debug().
-
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: stable@vger.kernel.org
-Signed-off-by: yuan linyu <yuanlinyu@hihonor.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20240315020144.2715575-1-yuanlinyu@hihonor.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20240131185112.149731-3-justintee8345@gmail.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/core.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_nportdisc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -273,7 +273,9 @@ int usb_ep_queue(struct usb_ep *ep,
- {
- 	int ret = 0;
+diff --git a/drivers/scsi/lpfc/lpfc_nportdisc.c b/drivers/scsi/lpfc/lpfc_nportdisc.c
+index d9074929fbab8..b147304b01fa1 100644
+--- a/drivers/scsi/lpfc/lpfc_nportdisc.c
++++ b/drivers/scsi/lpfc/lpfc_nportdisc.c
+@@ -748,8 +748,10 @@ lpfc_rcv_padisc(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
+ 				/* Save the ELS cmd */
+ 				elsiocb->drvrTimeout = cmd;
  
--	if (WARN_ON_ONCE(!ep->enabled && ep->address)) {
-+	if (!ep->enabled && ep->address) {
-+		pr_debug("USB gadget: queue request to disabled ep 0x%x (%s)\n",
-+				 ep->address, ep->name);
- 		ret = -ESHUTDOWN;
- 		goto out;
- 	}
+-				lpfc_sli4_resume_rpi(ndlp,
+-					lpfc_mbx_cmpl_resume_rpi, elsiocb);
++				if (lpfc_sli4_resume_rpi(ndlp,
++						lpfc_mbx_cmpl_resume_rpi,
++						elsiocb))
++					kfree(elsiocb);
+ 				goto out;
+ 			}
+ 		}
+-- 
+2.43.0
+
 
 
 
