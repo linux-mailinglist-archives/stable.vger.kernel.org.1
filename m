@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-39028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D3168A1186
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA1548A1014
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:30:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F7411C22DD7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6564A288755
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3ED1465BE;
-	Thu, 11 Apr 2024 10:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81DF1474BC;
+	Thu, 11 Apr 2024 10:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YhL+H73A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ea3D2Mfx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 751286BB29;
-	Thu, 11 Apr 2024 10:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C9A1474B0;
+	Thu, 11 Apr 2024 10:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832304; cv=none; b=m8ofdc4oXeU4/WI1vigatHCKRC8oVZFhSnRtqCQcQw8hpWX3L6oc05yzkasRFpMiHix+cWZsCf9/NTbh63Tm+BglI0/aBUwAkVTfA2TkJIzGbRUz5xj5c+tROPvDVaEhlPj3HBpKWOWqyZS+iMrox9Bp1suzw+e8960rn/vEYkc=
+	t=1712831427; cv=none; b=DaRszD75We24Ci41GSgMrDF6K9I26h/JwHTvdGdRsUlXlE+6B8Z1wRQRrbkLrHLhfDFzb/+94Xeclx1bMYbfPU2rjmGtEvs3PYlv8CQ+OXGPhpJkednCXBDmHNpb/x/FRV976gBzSMGX5RKF/1L8LzdFDj0xCs16fm/JHpv7BAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832304; c=relaxed/simple;
-	bh=bWg23MT/w572YrFMjwDLFX3fMJl3mhOiahdo9xJCq94=;
+	s=arc-20240116; t=1712831427; c=relaxed/simple;
+	bh=ZSUQ1wGYlZdfUKt5EvJsJuXIWaU3zkuKbxop/03HZbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NyfYYETCHrn5g5VupJ5yRnmct5zC7oDdYNAp6ZpJ+Qm66E2ApoIABGEnj5WioHSw/ViEsmZBfSRzV+Mb9fSDSSxT24h0aaZBSJOoTQweYmr+50NItZmBa5q2QxhvSRZZ+lyMiUO8DMLhCaxspKURi2yIfs9Xme4g50vEFoM+StE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YhL+H73A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5774C43390;
-	Thu, 11 Apr 2024 10:45:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CgQCDGndXuc12gNGutWqfv0i/LV+HrMKTwTehVO2VRJGNSdFTFs3UBmuKJSKkG6GsAY6XdT+yhotMAzCqy2j1zMQbS0GQhTZyFIp766VzwVdCE8twE40yoW4FImBgUZCNhGRPXVW6bfwroaa/QALoxHmifK5cWZf74gp/peckoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ea3D2Mfx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088ACC43390;
+	Thu, 11 Apr 2024 10:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832304;
-	bh=bWg23MT/w572YrFMjwDLFX3fMJl3mhOiahdo9xJCq94=;
+	s=korg; t=1712831427;
+	bh=ZSUQ1wGYlZdfUKt5EvJsJuXIWaU3zkuKbxop/03HZbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YhL+H73APez/eTAPjE6m0kR7LVYE6h69fP3XHs7lzDy4HZXPOBTvgWMkgmz6hhlGH
-	 01h1fH9Kbx2xhvw4F6peX7wgcmBQ/a0NQSz1M8WDLAzgEDiEVgzP1hlPOPXcETge2u
-	 pBb1LhhWqwnXmap+0ivDOJzrVNom1UZIDZ1M3ie4=
+	b=ea3D2MfxpcMFW2lX69O6EGaLLdi0ACMsLX557PwP9hPu4oZS5geHye7chii5rxGs0
+	 Yh3m9pIroUFHCIRW5HQbp4T0E8+03SFhJCjh8IsOlH64t5QWW2fzazt+2fFE0Fd1KP
+	 rPp5t1LTaBaJLrnK8vPnl9C2g2LMtniIrFtjKTPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alban=20Boy=C3=A9?= <alban.boye@protonmail.com>,
+	Gwendal Grignou <gwendal@chromium.org>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 273/294] platform/x86: touchscreen_dmi: Add an extra entry for a variant of the Chuwi Vi8 tablet
-Date: Thu, 11 Apr 2024 11:57:16 +0200
-Message-ID: <20240411095443.766242071@linuxfoundation.org>
+Subject: [PATCH 6.6 110/114] platform/x86: intel-vbtn: Update tablet mode switch at end of probe
+Date: Thu, 11 Apr 2024 11:57:17 +0200
+Message-ID: <20240411095420.212908734@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +65,79 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alban Boyé <alban.boye@protonmail.com>
+From: Gwendal Grignou <gwendal@chromium.org>
 
-[ Upstream commit 1266e2efb7512dbf20eac820ca2ed34de6b1c3e7 ]
+[ Upstream commit 434e5781d8cd2d0ed512d920c6cdeba4b33a2e81 ]
 
-Signed-off-by: Alban Boyé <alban.boye@protonmail.com>
-Link: https://lore.kernel.org/r/20240227223919.11587-1-alban.boye@protonmail.com
+ACER Vivobook Flip (TP401NAS) virtual intel switch is implemented as
+follow:
+
+   Device (VGBI)
+   {
+       Name (_HID, EisaId ("INT33D6") ...
+       Name (VBDS, Zero)
+       Method (_STA, 0, Serialized)  // _STA: Status ...
+       Method (VBDL, 0, Serialized)
+       {
+           PB1E |= 0x20
+           VBDS |= 0x40
+       }
+       Method (VGBS, 0, Serialized)
+       {
+           Return (VBDS) /* \_SB_.PCI0.SBRG.EC0_.VGBI.VBDS */
+       }
+       ...
+    }
+
+By default VBDS is set to 0. At boot it is set to clamshell (bit 6 set)
+only after method VBDL is executed.
+
+Since VBDL is now evaluated in the probe routine later, after the device
+is registered, the retrieved value of VBDS was still 0 ("tablet mode")
+when setting up the virtual switch.
+
+Make sure to evaluate VGBS after VBDL, to ensure the
+convertible boots in clamshell mode, the expected default.
+
+Fixes: 26173179fae1 ("platform/x86: intel-vbtn: Eval VBDL after registering our notifier")
+Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240329143206.2977734-3-gwendal@chromium.org
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/touchscreen_dmi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/platform/x86/intel/vbtn.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
-index ebe959db1eeb9..fbaa618594628 100644
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -1084,6 +1084,15 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
- 			DMI_MATCH(DMI_BIOS_VERSION, "CHUWI.D86JLBNR"),
- 		},
- 	},
-+	{
-+		/* Chuwi Vi8 dual-boot (CWI506) */
-+		.driver_data = (void *)&chuwi_vi8_data,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "i86"),
-+			DMI_MATCH(DMI_BIOS_VERSION, "CHUWI2.D86JHBNR02"),
-+		},
-+	},
- 	{
- 		/* Chuwi Vi8 Plus (CWI519) */
- 		.driver_data = (void *)&chuwi_vi8_plus_data,
+diff --git a/drivers/platform/x86/intel/vbtn.c b/drivers/platform/x86/intel/vbtn.c
+index 084c355c86f5f..5d13452bb947a 100644
+--- a/drivers/platform/x86/intel/vbtn.c
++++ b/drivers/platform/x86/intel/vbtn.c
+@@ -136,8 +136,6 @@ static int intel_vbtn_input_setup(struct platform_device *device)
+ 	priv->switches_dev->id.bustype = BUS_HOST;
+ 
+ 	if (priv->has_switches) {
+-		detect_tablet_mode(&device->dev);
+-
+ 		ret = input_register_device(priv->switches_dev);
+ 		if (ret)
+ 			return ret;
+@@ -316,6 +314,9 @@ static int intel_vbtn_probe(struct platform_device *device)
+ 		if (ACPI_FAILURE(status))
+ 			dev_err(&device->dev, "Error VBDL failed with ACPI status %d\n", status);
+ 	}
++	// Check switches after buttons since VBDL may have side effects.
++	if (has_switches)
++		detect_tablet_mode(&device->dev);
+ 
+ 	device_init_wakeup(&device->dev, true);
+ 	/*
 -- 
 2.43.0
 
