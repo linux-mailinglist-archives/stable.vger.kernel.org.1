@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50BC8A0E2C
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:11:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01A958A0FBC
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:27:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51E44B228F4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:11:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 186791C2160A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D487145B28;
-	Thu, 11 Apr 2024 10:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26D6F146A9D;
+	Thu, 11 Apr 2024 10:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pAcfd257"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBpmJo1K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBD01448EF;
-	Thu, 11 Apr 2024 10:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9128146A93;
+	Thu, 11 Apr 2024 10:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830308; cv=none; b=TeMQ293Fx89gn9pl2F+yFEVX6STcxo/Qo8aN9xEQfvHM5VvkGWUnneo04AENPKBviBN3vjfVlV9Yad4qYxgOSVi8juQ5YRiQQttznekztX4pjGtVxK975s/izkxf3UNyfnlLEoEdEREQY7sTFINtXVVFRAHkXN/neyJg1lqlY5c=
+	t=1712831216; cv=none; b=O8YwUUcGpf/12T4VoKYzpdC7GlRQMulG4IyTz1DjrBwbsuYg8MHm53jUkICqNvJO1y4XVcgeC5Lf4JsEJBBdU8EycOY6vgJzmV0PwxYdEh2ZxW3W8hcpXYil/2cjaQnh37le64TEaZxbMzIB6jstT5F/Ljv7KUBKfAnajSLSJOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830308; c=relaxed/simple;
-	bh=yqOk9XNUq4PwBDiEbV6oplVvQgeHA+J489RlDkCo7mI=;
+	s=arc-20240116; t=1712831216; c=relaxed/simple;
+	bh=G8mywYZenmQV//bVhO1KfiSzQv/3Af6sXZTuBmZLOsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C0Ff6eNXX+xh7MhHXL/wiGSJrvfwpyTlxXaCopvy+WtBsn9wXrMXEhAucb+fYQ/tS85eeqGL+BHXEbQI2RObY2s/ztRNwvyXFiVsvvSb1zvPPuq4O0OGb+GZGgToUI+Zsz5MMFz708C1MdOkh3N1+XaeVt14f2Px81WxXjV6dTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pAcfd257; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86063C433F1;
-	Thu, 11 Apr 2024 10:11:47 +0000 (UTC)
+	 MIME-Version; b=Ysre1eXwPdrpPcjHeUFr9bjNMxeH+TlvFYrmigjat0Bt2p8DHd6vTop+GLz0LoCtLGqhNw1ur4hG06Qo7meVINTGPKKtMDrL7v0fq9w1BysGvHsfNVp8R9K36exYmUmkFJ5D7M1f0m32ShEGjS7R2l53Rp/uzvTgw/lgdq2RPns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBpmJo1K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAF3C433F1;
+	Thu, 11 Apr 2024 10:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830307;
-	bh=yqOk9XNUq4PwBDiEbV6oplVvQgeHA+J489RlDkCo7mI=;
+	s=korg; t=1712831216;
+	bh=G8mywYZenmQV//bVhO1KfiSzQv/3Af6sXZTuBmZLOsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pAcfd257uMcYwHBDVCZNVwisem8+pKOTkScJWELw16XeT+6sHAWsOsk2NaDGn1C8G
-	 36jrnlDo9f0cBWtYepqss5T7r9WN8/nCoxHk30tylwwS8TKwT3/zFoPgog9mfiOfXk
-	 B/8rbZBadgqeexef/C9Z48j0Xded1fVKVRDSBm8E=
+	b=oBpmJo1K24XiD4hGNkarU0M9K9CqnrmUP7XAzviKXDSMV3/yu0W9Y5dL6bAGMh9oN
+	 0fy2Zg/e5kIDftOFzu+UpHzqEAUTMIDQDMBmHq+++e+9lqwU4Dxy3EijuYcEFW9N/6
+	 UYuk732YuueOacLCPdiAodO45kbKTtgZgIBSxKH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Scialabba <matt.git@fastmail.fm>,
+	Kunwu Chan <chentao@kylinos.cn>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 106/143] Input: xpad - add support for Snakebyte GAMEPADs
+Subject: [PATCH 6.6 047/114] Input: synaptics-rmi4 - fail probing if memory allocation for "phys" fails
 Date: Thu, 11 Apr 2024 11:56:14 +0200
-Message-ID: <20240411095424.097781449@linuxfoundation.org>
+Message-ID: <20240411095418.302619727@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Scialabba <matt.git@fastmail.fm>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 81c32343d04f8ca974681d5fb5d939d2e1f58851 ]
+[ Upstream commit bc4996184d56cfaf56d3811ac2680c8a0e2af56e ]
 
-Add Snakebyte GAMEPAD BASE X and Snakebyte GAMEPAD RGB X to the list
-of supported devices.
+While input core can work with input->phys set to NULL userspace might
+depend on it, so better fail probing if allocation fails. The system must
+be in a pretty bad shape for it to happen anyway.
 
-Signed-off-by: Matt Scialabba <matt.git@fastmail.fm>
-Link: https://lore.kernel.org/r/efbfb428-06b0-48f9-8701-db291c2a9d65@app.fastmail.com
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Link: https://lore.kernel.org/r/20240117073124.143636-1-chentao@kylinos.cn
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/input/rmi4/rmi_driver.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index 14c828adebf78..1fad51b51b0e1 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -366,6 +366,8 @@ static const struct xpad_device {
- 	{ 0x24c6, 0x5d04, "Razer Sabertooth", 0, XTYPE_XBOX360 },
- 	{ 0x24c6, 0xfafe, "Rock Candy Gamepad for Xbox 360", 0, XTYPE_XBOX360 },
- 	{ 0x2563, 0x058d, "OneXPlayer Gamepad", 0, XTYPE_XBOX360 },
-+	{ 0x294b, 0x3303, "Snakebyte GAMEPAD BASE X", 0, XTYPE_XBOXONE },
-+	{ 0x294b, 0x3404, "Snakebyte GAMEPAD RGB X", 0, XTYPE_XBOXONE },
- 	{ 0x2dc8, 0x2000, "8BitDo Pro 2 Wired Controller fox Xbox", 0, XTYPE_XBOXONE },
- 	{ 0x2dc8, 0x3106, "8BitDo Pro 2 Wired Controller", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1100, "Wooting One", 0, XTYPE_XBOX360 },
-@@ -507,6 +509,7 @@ static const struct usb_device_id xpad_table[] = {
- 	XPAD_XBOXONE_VENDOR(0x24c6),		/* PowerA controllers */
- 	XPAD_XBOX360_VENDOR(0x2563),		/* OneXPlayer Gamepad */
- 	XPAD_XBOX360_VENDOR(0x260d),		/* Dareu H101 */
-+       XPAD_XBOXONE_VENDOR(0x294b),            /* Snakebyte */
- 	XPAD_XBOX360_VENDOR(0x2c22),		/* Qanba Controllers */
- 	XPAD_XBOX360_VENDOR(0x2dc8),            /* 8BitDo Pro 2 Wired Controller */
- 	XPAD_XBOXONE_VENDOR(0x2dc8),		/* 8BitDo Pro 2 Wired Controller for Xbox */
+diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
+index 258d5fe3d395c..aa32371f04af6 100644
+--- a/drivers/input/rmi4/rmi_driver.c
++++ b/drivers/input/rmi4/rmi_driver.c
+@@ -1196,7 +1196,11 @@ static int rmi_driver_probe(struct device *dev)
+ 		}
+ 		rmi_driver_set_input_params(rmi_dev, data->input);
+ 		data->input->phys = devm_kasprintf(dev, GFP_KERNEL,
+-						"%s/input0", dev_name(dev));
++						   "%s/input0", dev_name(dev));
++		if (!data->input->phys) {
++			retval = -ENOMEM;
++			goto err;
++		}
+ 	}
+ 
+ 	retval = rmi_init_functions(data);
 -- 
 2.43.0
 
