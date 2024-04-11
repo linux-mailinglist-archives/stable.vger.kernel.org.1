@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-38555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6619C8A0F36
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:22:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49AC18A0D93
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BCC32871F5
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:22:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD7BD1F2306A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8381465AA;
-	Thu, 11 Apr 2024 10:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D7F146015;
+	Thu, 11 Apr 2024 10:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVgkSPIE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvLL51bs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C040146582;
-	Thu, 11 Apr 2024 10:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C9014600A;
+	Thu, 11 Apr 2024 10:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830918; cv=none; b=mcyCAJTC53g0XADtVhjiY1Wek+nFvyxxgzy+cIihijitqM73+XbfZvwlER3QgfhknHHyS4YvbrXHPq0Sg5q2EA4HcVrtOtq5UpNOWDqMjWpZuFOfeRZzbXzorhKa4YsXTVRY5kB1CANgEx1LKYaYOoy7+kGXibUHKbISI+kjLH4=
+	t=1712829918; cv=none; b=WcIakStyT6dlTtaKbwQKBUX1BB6yEZnaT6ye3nRMSnBd9N0YV4Sm80atd1W9xx1pY9IJ79ydqQ+/9s4EhJcWxWzwytc7PsiiDBe7MBBDIkoDFonY+TQoj5vNVw+Lx43t97yx8acjXCCJxmCmY52jL9tj/qrbSstjSTARgqmTTq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830918; c=relaxed/simple;
-	bh=tQfZONQ/VHlRwSo7m+N0cPq74TuFzgHaI+muOeNDo3k=;
+	s=arc-20240116; t=1712829918; c=relaxed/simple;
+	bh=w24IojX4/Q/DJ/EQR880p51X+eH7bv7IROuRn+sWal4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kmbPf+JkPUKnVMYP5XP5mR9p+gaV61Qmab1nVM5ItUnb5L634O8qNEhtwWsyWs7UrdNj9KPbXeLrBf7RveYF/rOKpRDklEVmdc15la4YRbPt6sApYYD5JmJy6qfXPDXs6Bux3gaSps/oNHLmWaIfjqQaFRD3q/FKMzPRR5OWtk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVgkSPIE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E23C433F1;
-	Thu, 11 Apr 2024 10:21:57 +0000 (UTC)
+	 MIME-Version; b=mKMhT3/lOKaHDVeronFAxHUpa8vg9V5gOTlYmF8+STqBLgwjSTpMS2lDSZQZvTjfwZvp+BmpKKL0q0W/xrA6NtqggYUnUeff5lNme2J0nLa3knfSiS7ByC9kVmfhe5KedRgtxQmn/zygbGbX5RWBQimjb1Islnqvxx30Jni6OZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvLL51bs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30170C433F1;
+	Thu, 11 Apr 2024 10:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830918;
-	bh=tQfZONQ/VHlRwSo7m+N0cPq74TuFzgHaI+muOeNDo3k=;
+	s=korg; t=1712829917;
+	bh=w24IojX4/Q/DJ/EQR880p51X+eH7bv7IROuRn+sWal4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oVgkSPIE3LfMBgJ1iGetUM123i+4TjHIaWztNEcZgp+SKrI92cYimATa4a3EHBh/G
-	 RmTWA/I4ZGmPwe2CM6s7Z8GOvPgRU16AedT/NXbZETfvlqrST7gX/4MmpfYYFwBZf1
-	 YOzlZjsVU4XCg6COMbh7CUFOL4CUArB/Ub6fZgfU=
+	b=lvLL51bstx+JKK7qBU6WbefhdEc17XchJ71iYi+DHkZtQNPjgKRCQCxstOgaSCCTy
+	 nd652MW6+5yn72k5XMOPuHfgzVnFRNw0NeFw4R8LTVDV7BxCja0P13QQ+VXcCw3DVP
+	 uuNpdg0napLUme6LwMZZV0HCUgJOgy6r9jegd+SQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1c1cf138518bf0c53d68@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 163/215] erspan: make sure erspan_base_hdr is present in skb->head
+Subject: [PATCH 4.19 149/175] btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()
 Date: Thu, 11 Apr 2024 11:56:12 +0200
-Message-ID: <20240411095429.776274832@linuxfoundation.org>
+Message-ID: <20240411095424.048475234@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 17af420545a750f763025149fa7b833a4fc8b8f0 ]
+[ Upstream commit 7411055db5ce64f836aaffd422396af0075fdc99 ]
 
-syzbot reported a problem in ip6erspan_rcv() [1]
+The unhandled case in btrfs_relocate_sys_chunks() loop is a corruption,
+as it could be caused only by two impossible conditions:
 
-Issue is that ip6erspan_rcv() (and erspan_rcv()) no longer make
-sure erspan_base_hdr is present in skb linear part (skb->head)
-before getting @ver field from it.
+- at first the search key is set up to look for a chunk tree item, with
+  offset -1, this is an inexact search and the key->offset will contain
+  the correct offset upon a successful search, a valid chunk tree item
+  cannot have an offset -1
 
-Add the missing pskb_may_pull() calls.
+- after first successful search, the found_key corresponds to a chunk
+  item, the offset is decremented by 1 before the next loop, it's
+  impossible to find a chunk item there due to alignment and size
+  constraints
 
-v2: Reload iph pointer in erspan_rcv() after pskb_may_pull()
-    because skb->head might have changed.
-
-[1]
-
- BUG: KMSAN: uninit-value in pskb_may_pull_reason include/linux/skbuff.h:2742 [inline]
- BUG: KMSAN: uninit-value in pskb_may_pull include/linux/skbuff.h:2756 [inline]
- BUG: KMSAN: uninit-value in ip6erspan_rcv net/ipv6/ip6_gre.c:541 [inline]
- BUG: KMSAN: uninit-value in gre_rcv+0x11f8/0x1930 net/ipv6/ip6_gre.c:610
-  pskb_may_pull_reason include/linux/skbuff.h:2742 [inline]
-  pskb_may_pull include/linux/skbuff.h:2756 [inline]
-  ip6erspan_rcv net/ipv6/ip6_gre.c:541 [inline]
-  gre_rcv+0x11f8/0x1930 net/ipv6/ip6_gre.c:610
-  ip6_protocol_deliver_rcu+0x1d4c/0x2ca0 net/ipv6/ip6_input.c:438
-  ip6_input_finish net/ipv6/ip6_input.c:483 [inline]
-  NF_HOOK include/linux/netfilter.h:314 [inline]
-  ip6_input+0x15d/0x430 net/ipv6/ip6_input.c:492
-  ip6_mc_input+0xa7e/0xc80 net/ipv6/ip6_input.c:586
-  dst_input include/net/dst.h:460 [inline]
-  ip6_rcv_finish+0x955/0x970 net/ipv6/ip6_input.c:79
-  NF_HOOK include/linux/netfilter.h:314 [inline]
-  ipv6_rcv+0xde/0x390 net/ipv6/ip6_input.c:310
-  __netif_receive_skb_one_core net/core/dev.c:5538 [inline]
-  __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5652
-  netif_receive_skb_internal net/core/dev.c:5738 [inline]
-  netif_receive_skb+0x58/0x660 net/core/dev.c:5798
-  tun_rx_batched+0x3ee/0x980 drivers/net/tun.c:1549
-  tun_get_user+0x5566/0x69e0 drivers/net/tun.c:2002
-  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-  call_write_iter include/linux/fs.h:2108 [inline]
-  new_sync_write fs/read_write.c:497 [inline]
-  vfs_write+0xb63/0x1520 fs/read_write.c:590
-  ksys_write+0x20f/0x4c0 fs/read_write.c:643
-  __do_sys_write fs/read_write.c:655 [inline]
-  __se_sys_write fs/read_write.c:652 [inline]
-  __x64_sys_write+0x93/0xe0 fs/read_write.c:652
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-Uninit was created at:
-  slab_post_alloc_hook mm/slub.c:3804 [inline]
-  slab_alloc_node mm/slub.c:3845 [inline]
-  kmem_cache_alloc_node+0x613/0xc50 mm/slub.c:3888
-  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:577
-  __alloc_skb+0x35b/0x7a0 net/core/skbuff.c:668
-  alloc_skb include/linux/skbuff.h:1318 [inline]
-  alloc_skb_with_frags+0xc8/0xbf0 net/core/skbuff.c:6504
-  sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2795
-  tun_alloc_skb drivers/net/tun.c:1525 [inline]
-  tun_get_user+0x209a/0x69e0 drivers/net/tun.c:1846
-  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-  call_write_iter include/linux/fs.h:2108 [inline]
-  new_sync_write fs/read_write.c:497 [inline]
-  vfs_write+0xb63/0x1520 fs/read_write.c:590
-  ksys_write+0x20f/0x4c0 fs/read_write.c:643
-  __do_sys_write fs/read_write.c:655 [inline]
-  __se_sys_write fs/read_write.c:652 [inline]
-  __x64_sys_write+0x93/0xe0 fs/read_write.c:652
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-CPU: 1 PID: 5045 Comm: syz-executor114 Not tainted 6.9.0-rc1-syzkaller-00021-g962490525cff #0
-
-Fixes: cb73ee40b1b3 ("net: ip_gre: use erspan key field for tunnel lookup")
-Reported-by: syzbot+1c1cf138518bf0c53d68@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/000000000000772f2c0614b66ef7@google.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://lore.kernel.org/r/20240328112248.1101491-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_gre.c  | 5 +++++
- net/ipv6/ip6_gre.c | 3 +++
- 2 files changed, 8 insertions(+)
+ fs/btrfs/volumes.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index f8369580ea273..b8ff2179071f9 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -278,8 +278,13 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
- 					  tpi->flags | TUNNEL_NO_KEY,
- 					  iph->saddr, iph->daddr, 0);
- 	} else {
-+		if (unlikely(!pskb_may_pull(skb,
-+					    gre_hdr_len + sizeof(*ershdr))))
-+			return PACKET_REJECT;
-+
- 		ershdr = (struct erspan_base_hdr *)(skb->data + gre_hdr_len);
- 		ver = ershdr->ver;
-+		iph = ip_hdr(skb);
- 		tunnel = ip_tunnel_lookup(itn, skb->dev->ifindex,
- 					  tpi->flags | TUNNEL_KEY,
- 					  iph->saddr, iph->daddr, tpi->key);
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index 2d34bd98fccea..de707e057cd90 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -531,6 +531,9 @@ static int ip6erspan_rcv(struct sk_buff *skb,
- 	struct ip6_tnl *tunnel;
- 	u8 ver;
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index ceced5e56c5a9..30b5646b2c0de 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -2948,7 +2948,17 @@ static int btrfs_relocate_sys_chunks(struct btrfs_fs_info *fs_info)
+ 			mutex_unlock(&fs_info->delete_unused_bgs_mutex);
+ 			goto error;
+ 		}
+-		BUG_ON(ret == 0); /* Corruption */
++		if (ret == 0) {
++			/*
++			 * On the first search we would find chunk tree with
++			 * offset -1, which is not possible. On subsequent
++			 * loops this would find an existing item on an invalid
++			 * offset (one less than the previous one, wrong
++			 * alignment and size).
++			 */
++			ret = -EUCLEAN;
++			goto error;
++		}
  
-+	if (unlikely(!pskb_may_pull(skb, sizeof(*ershdr))))
-+		return PACKET_REJECT;
-+
- 	ipv6h = ipv6_hdr(skb);
- 	ershdr = (struct erspan_base_hdr *)skb->data;
- 	ver = ershdr->ver;
+ 		ret = btrfs_previous_item(chunk_root, path, key.objectid,
+ 					  key.type);
 -- 
 2.43.0
 
