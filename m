@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-39040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9114F8A1197
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:45:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7CDA8A0F6D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:23:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C311D1C23C3E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:45:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E5B51F27BBB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029F61448C8;
-	Thu, 11 Apr 2024 10:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5480146A70;
+	Thu, 11 Apr 2024 10:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGB+GSVU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbeDDuye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56166BB29;
-	Thu, 11 Apr 2024 10:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A891465BE;
+	Thu, 11 Apr 2024 10:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832339; cv=none; b=uxquhXkUZ57PRunXM0uZF3zT4Z9tRT4+b4JZdkL4dUj59H9w5MqckqHOT8NhYQ2BlzoTQan5VS3BMW/nhDj8oLnIdprYW2JNv06TZ+zff2kqeudyUb1Fd6RwuwKrWBzu/atI7qlKg+CSoBTXlF95WLJboCZRBjFDC8xSd10OwPU=
+	t=1712831025; cv=none; b=MEl+nTHix3cL9pl2PSFoR9RaLnWnhoRX3OGgS+JLwgt9mxICwpFpWeTV/HDGOpif0FjJbOffW23vtpaG8m0cfZsV4Vix3oudWzVNZChu5GGbrMl5hnRHF5shqtbw5gj5OYVfieyLgqbS22bJj6LHTf59BeZsr2geqiHhmwYvZHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832339; c=relaxed/simple;
-	bh=B4GCfwbRznOKw4jbFK8H3zAHY6H/40s9bItlZRt1364=;
+	s=arc-20240116; t=1712831025; c=relaxed/simple;
+	bh=HY3cxfi5qaAw1qB3JDSsDbF+hdXB7lU5cKLEaQjyc8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qgn/MYyb31dEXc41/gYvTwkR1U+UyLH3LhNG+cd1gXbLIL84Mr/RRtsEaJRMcdGlc1KyZNe9AVmi0LrWpIDmwNCIIJ7R1Llg3KgnyKuoiTJpZmbTSrR0PJyjihGHn8EemT2gHFD0FV3Ld5DPb2dTsuou8P7OZmR1wBonpbGC/fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGB+GSVU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356ABC433F1;
-	Thu, 11 Apr 2024 10:45:39 +0000 (UTC)
+	 MIME-Version; b=FGi9QbEgT48IY/7GeZglAuU1/3/aMgo0f6WHiJeR/+cXKF7vVlWFr7CzmROnCdxr45fLj7Qf0VMqh8CE8iWp4Dc4SxqksjVVrTR3xz97BBZrda5KF5GVAX94MXJh/TvD1Fw353X8STCr7zm75X852Wvg01UuLudUYvicdga1an4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbeDDuye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE54EC43390;
+	Thu, 11 Apr 2024 10:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832339;
-	bh=B4GCfwbRznOKw4jbFK8H3zAHY6H/40s9bItlZRt1364=;
+	s=korg; t=1712831025;
+	bh=HY3cxfi5qaAw1qB3JDSsDbF+hdXB7lU5cKLEaQjyc8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JGB+GSVURxCUOLEcO0as2Q6YkWXyMg8o7lha8P/BQwoR8WVoO9ZGs1r5oFfdzFNjN
-	 mR9K5Al91THH20FYACtk8lN2zxc6ggEJxZSfyGGMphea89MSWS2Xi9QR0nJ+MIvSVG
-	 hvyLbvvzDpLGO5EwO1Pbis3wQBLxuv/xIKpjDOFs=
+	b=sbeDDuye0lmtyj14ZAu+B7+g/H0kbp5XV5yvsxRjb5/WV1UIdxV8ocsOgUabJWqMv
+	 v0GxsGjBwWzAsiy7s44F/sfGag2jilpTafDvrqmcf23Yu0v6GsLQoQMdq/d04djRcd
+	 2jbciWSFob0GHNCNCJ1txMNoJGJgUJpvh48g2wDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Kees Cook <keescook@chromium.org>,
+	Aleksandr Burakov <a.burakov@rosalinux.ru>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 16/83] pstore/zone: Add a null pointer check to the psz_kmsg_read
+Subject: [PATCH 5.4 199/215] fbdev: viafb: fix typo in hw_bitblt_1 and hw_bitblt_2
 Date: Thu, 11 Apr 2024 11:56:48 +0200
-Message-ID: <20240411095413.165854473@linuxfoundation.org>
+Message-ID: <20240411095430.840167098@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
+References: <20240411095424.875421572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Aleksandr Burakov <a.burakov@rosalinux.ru>
 
-[ Upstream commit 98bc7e26e14fbb26a6abf97603d59532475e97f8 ]
+[ Upstream commit bc87bb342f106a0402186bcb588fcbe945dced4b ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful
-by checking the pointer validity.
+There are some actions with value 'tmp' but 'dst_addr' is checked instead.
+It is obvious that a copy-paste error was made here and the value
+of variable 'tmp' should be checked here.
 
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Link: https://lore.kernel.org/r/20240118100206.213928-1-chentao@kylinos.cn
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/zone.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/video/fbdev/via/accel.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/pstore/zone.c b/fs/pstore/zone.c
-index 2770746bb7aa1..abca117725c81 100644
---- a/fs/pstore/zone.c
-+++ b/fs/pstore/zone.c
-@@ -973,6 +973,8 @@ static ssize_t psz_kmsg_read(struct pstore_zone *zone,
- 		char *buf = kasprintf(GFP_KERNEL, "%s: Total %d times\n",
- 				      kmsg_dump_reason_str(record->reason),
- 				      record->count);
-+		if (!buf)
-+			return -ENOMEM;
- 		hlen = strlen(buf);
- 		record->buf = krealloc(buf, hlen + size, GFP_KERNEL);
- 		if (!record->buf) {
+diff --git a/drivers/video/fbdev/via/accel.c b/drivers/video/fbdev/via/accel.c
+index 0a1bc7a4d7853..1e04026f08091 100644
+--- a/drivers/video/fbdev/via/accel.c
++++ b/drivers/video/fbdev/via/accel.c
+@@ -115,7 +115,7 @@ static int hw_bitblt_1(void __iomem *engine, u8 op, u32 width, u32 height,
+ 
+ 	if (op != VIA_BITBLT_FILL) {
+ 		tmp = src_mem ? 0 : src_addr;
+-		if (dst_addr & 0xE0000007) {
++		if (tmp & 0xE0000007) {
+ 			printk(KERN_WARNING "hw_bitblt_1: Unsupported source "
+ 				"address %X\n", tmp);
+ 			return -EINVAL;
+@@ -260,7 +260,7 @@ static int hw_bitblt_2(void __iomem *engine, u8 op, u32 width, u32 height,
+ 		writel(tmp, engine + 0x18);
+ 
+ 		tmp = src_mem ? 0 : src_addr;
+-		if (dst_addr & 0xE0000007) {
++		if (tmp & 0xE0000007) {
+ 			printk(KERN_WARNING "hw_bitblt_2: Unsupported source "
+ 				"address %X\n", tmp);
+ 			return -EINVAL;
 -- 
 2.43.0
 
