@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-38280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 742E08A0DD2
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:08:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F938A10C2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F1F2286597
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:08:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D6BB1F2CDDA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D5C145B07;
-	Thu, 11 Apr 2024 10:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468DD149E1F;
+	Thu, 11 Apr 2024 10:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lg9BTMzT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJgpFcDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6645913B5B9;
-	Thu, 11 Apr 2024 10:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060DE149E10;
+	Thu, 11 Apr 2024 10:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830090; cv=none; b=QBDP24526bOkZLCJcHHDGT9MnzwyAAsX655Z/O7BfInUONDI7NT9XxqGiCaHVQFYLV2B/+zq/+XWi8LaaCSZ88gtjDzOEOKG6ZkfYwOiWuudmjVLg41jYXDxKo2vO1sLpLtUhO5b4IOKfcBkvoauuxUe7OhtWQTaFJr1aVuIQBc=
+	t=1712831824; cv=none; b=c9YF/tEZKXqxrhzK6LaJGA9vazKXJxlNNeQtdohQ/gDHcfyNG4nqE9nQjx0gX6K+UfF9ciByelL/1wDMy/sqQMf5ubDDC13hi0zTWjMXH5zQBkPNa+jpbIEUAQtPFAJ9necaG0KBXJrfDenuIUx/+24blppWkMw9Z4Q9dL/jB2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830090; c=relaxed/simple;
-	bh=SLNx4GmimIpgCIRRelAxZRMKjwrf94FuPQRR0SSC69A=;
+	s=arc-20240116; t=1712831824; c=relaxed/simple;
+	bh=apl9hV3l8GLwtYF4wuY1SrtUhLn4WMotOgmwGImkHDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nDMxdWb1g4/xCGnLbGgNRPKTGsbHHyM2DdzQwDsVlDiO+PmFybUHT6jr/UgpVgm8g6TwoI/zxc/QzSMNqzqRS61ASnKc/kToJBNx461BYbThzGrxIPvq2KSDWOSZ2S4eCbsgNDQnDIKWyDIxRmOOH9MXDF5TTmFTFNo/8hhdKAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lg9BTMzT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E157FC433F1;
-	Thu, 11 Apr 2024 10:08:09 +0000 (UTC)
+	 MIME-Version; b=BNfdkSa+zay7IZwRVdn2kYgKuTkHCP0PGDTS39mQTdABX3tKJvT0hSbaZ0skvGoYVzl+z/4YSdN1Gvr8SABQvflQR6uCEuivbtvsYzYTYguJYF4Ot+sGHxeBAX0O5K8xAXbkn8EBd3bYyPbkiSwy3dsxG2ixPi2b9diOV0JpnOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJgpFcDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811C7C433C7;
+	Thu, 11 Apr 2024 10:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830090;
-	bh=SLNx4GmimIpgCIRRelAxZRMKjwrf94FuPQRR0SSC69A=;
+	s=korg; t=1712831823;
+	bh=apl9hV3l8GLwtYF4wuY1SrtUhLn4WMotOgmwGImkHDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lg9BTMzTUMMXFtauTkPHf0juwSgCXUXb38m0aMb3b2vgOzAQWXMEprQL2K6k12XMw
-	 mwkOevuddQMlFYeWEPKmIMlW4YuVeVJZcFcfyWkvzH9SBapSB9V5lbRSRRz0uQV11M
-	 8kknFblP+qGgtzHzwFAEZYpn2quoFdWEu+n4MJJA=
+	b=FJgpFcDgF5u2YnZhd9ksYpVhkv9+mLlsOcGFvd4UPv7BpaVusYMPhLsjq3QV0YfKS
+	 eRiGv0jN/WmEJcV/MHDbrHvSc8NPl9zxup+cdZkBlIeDFTu1MOQ0sAT4fz0QsyPxzt
+	 P1ETg8WKgswKcPi1osrkqaESypbR31f8aUk5Fqvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 031/143] firmware: tegra: bpmp: Return directly after a failed kzalloc() in get_filename()
-Date: Thu, 11 Apr 2024 11:54:59 +0200
-Message-ID: <20240411095421.849166763@linuxfoundation.org>
+	Anand Jain <anand.jain@oracle.com>,
+	Goldwyn Rodrigues <rgoldwyn@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Maximilian Heyne <mheyne@amazon.de>
+Subject: [PATCH 5.10 137/294] btrfs: allocate btrfs_ioctl_defrag_range_args on stack
+Date: Thu, 11 Apr 2024 11:55:00 +0200
+Message-ID: <20240411095439.778563481@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Goldwyn Rodrigues <rgoldwyn@suse.com>
 
-[ Upstream commit 1315848f1f8a0100cb6f8a7187bc320c5d98947f ]
+commit c853a5783ebe123847886d432354931874367292 upstream.
 
-The kfree() function was called in one case by
-the get_filename() function during error handling
-even if the passed variable contained a null pointer.
-This issue was detected by using the Coccinelle software.
+Instead of using kmalloc() to allocate btrfs_ioctl_defrag_range_args,
+allocate btrfs_ioctl_defrag_range_args on stack, the size is reasonably
+small and ioctls are called in process context.
 
-Thus return directly after a call of the function “kzalloc” failed
-at the beginning.
+sizeof(btrfs_ioctl_defrag_range_args) = 48
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ This patch is needed to fix a memory leak of "range" that was
+introduced when commit 173431b274a9 ("btrfs: defrag: reject unknown
+flags of btrfs_ioctl_defrag_range_args") was backported to kernels
+lacking this patch. Now with these two patches applied in reverse order,
+range->flags needed to change back to range.flags.
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.]
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/tegra/bpmp-debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/ioctl.c |   25 ++++++++-----------------
+ 1 file changed, 8 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/firmware/tegra/bpmp-debugfs.c b/drivers/firmware/tegra/bpmp-debugfs.c
-index bbcdd9fed3fb6..4221fed70ad48 100644
---- a/drivers/firmware/tegra/bpmp-debugfs.c
-+++ b/drivers/firmware/tegra/bpmp-debugfs.c
-@@ -77,7 +77,7 @@ static const char *get_filename(struct tegra_bpmp *bpmp,
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -3148,7 +3148,7 @@ static int btrfs_ioctl_defrag(struct fil
+ {
+ 	struct inode *inode = file_inode(file);
+ 	struct btrfs_root *root = BTRFS_I(inode)->root;
+-	struct btrfs_ioctl_defrag_range_args *range;
++	struct btrfs_ioctl_defrag_range_args range = {0};
+ 	int ret;
  
- 	root_path_buf = kzalloc(root_path_buf_len, GFP_KERNEL);
- 	if (!root_path_buf)
--		goto out;
-+		return NULL;
+ 	ret = mnt_want_write_file(file);
+@@ -3180,37 +3180,28 @@ static int btrfs_ioctl_defrag(struct fil
+ 			goto out;
+ 		}
  
- 	root_path = dentry_path(bpmp->debugfs_mirror, root_path_buf,
- 				root_path_buf_len);
--- 
-2.43.0
-
+-		range = kzalloc(sizeof(*range), GFP_KERNEL);
+-		if (!range) {
+-			ret = -ENOMEM;
+-			goto out;
+-		}
+-
+ 		if (argp) {
+-			if (copy_from_user(range, argp,
+-					   sizeof(*range))) {
++			if (copy_from_user(&range, argp, sizeof(range))) {
+ 				ret = -EFAULT;
+-				kfree(range);
+ 				goto out;
+ 			}
+-			if (range->flags & ~BTRFS_DEFRAG_RANGE_FLAGS_SUPP) {
++			if (range.flags & ~BTRFS_DEFRAG_RANGE_FLAGS_SUPP) {
+ 				ret = -EOPNOTSUPP;
+ 				goto out;
+ 			}
+ 			/* compression requires us to start the IO */
+-			if ((range->flags & BTRFS_DEFRAG_RANGE_COMPRESS)) {
+-				range->flags |= BTRFS_DEFRAG_RANGE_START_IO;
+-				range->extent_thresh = (u32)-1;
++			if ((range.flags & BTRFS_DEFRAG_RANGE_COMPRESS)) {
++				range.flags |= BTRFS_DEFRAG_RANGE_START_IO;
++				range.extent_thresh = (u32)-1;
+ 			}
+ 		} else {
+ 			/* the rest are all set to zero by kzalloc */
+-			range->len = (u64)-1;
++			range.len = (u64)-1;
+ 		}
+ 		ret = btrfs_defrag_file(file_inode(file), file,
+-					range, BTRFS_OLDEST_GENERATION, 0);
++					&range, BTRFS_OLDEST_GENERATION, 0);
+ 		if (ret > 0)
+ 			ret = 0;
+-		kfree(range);
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
 
 
 
