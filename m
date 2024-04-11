@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0C18A0D40
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:02:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 855BA8A0DD6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FDBD1C2178F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:02:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B7BE1F2323E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B98D9145B05;
-	Thu, 11 Apr 2024 10:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF5C145B14;
+	Thu, 11 Apr 2024 10:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2fr10Qur"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdjKAXSG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F85145B04;
-	Thu, 11 Apr 2024 10:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3845F1448F3;
+	Thu, 11 Apr 2024 10:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829714; cv=none; b=lFfcpIk4elo14RYYg7PgVS38TL93N+NsnRT3MbuJpUVnbu7yokbBQ6o9bJDFdX4E9gxS7SYmDPj0mBSzor+n+pT251B/c5dsXB8mpO5BDQoiA0TV07DYGYAqX9unZwS5Fq5UNS7a5LjovaBcny4Wus0FDWVzB5wgGJyiU3t2EM0=
+	t=1712830099; cv=none; b=k0nxS3QhMis8RE4FXnctTSHukoJdU7UmHt4fo1UEM7z6pwrJkyKZIDXxtLXv4vWV8+q9V3zikC2pHGAvSu9m5Wa1hBpz8uWdKzP2tx1Hv7ppIWGo91TQzOksn+Zil7LcAfqciBlSB8rY4PQuCDyQ9az4SOrpHePkBqTi6co5KeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829714; c=relaxed/simple;
-	bh=5LGUp0flJXYBP/VOho2tB1xuJ6Y9zCdy9tUWB/lEtPY=;
+	s=arc-20240116; t=1712830099; c=relaxed/simple;
+	bh=fAhiJjEZ3CkYEzdk1BYRsp/jslGRFGU6GPSUgAekDzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K5Ex2ILyU5K3nLxlezQwzTCW6AEh8vEPXZKtcnlp1L28vP1IykOQRGQHBD4GywMWudD3VbqlKEozFXDioPK3ZG4eNIP3GTNpcmq9JrZN30kjhdJO9ky7yuKYZSqGTYhwS7z+YOf3/IJhGTx0RceFCdxCeZzKsDTynKekNgSjczc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2fr10Qur; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED424C433C7;
-	Thu, 11 Apr 2024 10:01:53 +0000 (UTC)
+	 MIME-Version; b=qr8GtRA5/tCHBzQrmbWclexQpJb5KFT223qOSzUnrEkZaaF/AV269BNvI9Wt0ua4BbRkKNdh54ETpc1mPMnaZ1vlTcP0iCXN9lNEPLHD4pho1NjeFQVI5Km+GFojwjt2uONqpKwG3mSGtjqCV7oKfM0JslLOMmQwom/rswC5mD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdjKAXSG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BD4C433C7;
+	Thu, 11 Apr 2024 10:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829714;
-	bh=5LGUp0flJXYBP/VOho2tB1xuJ6Y9zCdy9tUWB/lEtPY=;
+	s=korg; t=1712830099;
+	bh=fAhiJjEZ3CkYEzdk1BYRsp/jslGRFGU6GPSUgAekDzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2fr10QurT28hHO6M8XE1HmSJcfNEBNw0u507jIXZEekUrKPijLtm9WDC6a0K1xCyI
-	 9bPkx5kt7aIMGuCpjlTLE5bWdmUWVrFL3IBziwXvDxnHgvVXSk8c9EbzlIp/UN+zN8
-	 vp0OS0IALaGfhjT0bNf0G4lUgAMdPTTy0+ygiZeo=
+	b=DdjKAXSGzn+z78Q/gXxXfCQxa3ZAeUErhKK0lqWZZhZiiHFekFbVxaZr1BkH8ihMu
+	 cfEeHMUHNEiSD3rRkNnUZxIF4CtJDZH/gD5aH41CKzToEq8oueW5p9rjiHdKVFQX1J
+	 lOYJuiyWGj/NqoItyHbmrpyE2QH3RyVrci4dInyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Pitre <nico@fluxnic.net>,
-	stable <stable@kernel.org>
-Subject: [PATCH 4.19 078/175] vt: fix unicode buffer corruption when deleting characters
-Date: Thu, 11 Apr 2024 11:55:01 +0200
-Message-ID: <20240411095421.911662867@linuxfoundation.org>
+	Peter Chiu <chui-hao.chiu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 034/143] wifi: mt76: mt7996: disable AMSDU for non-data frames
+Date: Thu, 11 Apr 2024 11:55:02 +0200
+Message-ID: <20240411095421.938790768@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Pitre <nico@fluxnic.net>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-commit 1581dafaf0d34bc9c428a794a22110d7046d186d upstream.
+[ Upstream commit 5d5edc09197cd8c705b42a73cdf8ba03db53c033 ]
 
-This is the same issue that was fixed for the VGA text buffer in commit
-39cdb68c64d8 ("vt: fix memory overlapping when deleting chars in the
-buffer"). The cure is also the same i.e. replace memcpy() with memmove()
-due to the overlaping buffers.
+Disable AMSDU for non-data frames to prevent TX token leak issues.
 
-Signed-off-by: Nicolas Pitre <nico@fluxnic.net>
-Fixes: 81732c3b2fed ("tty vt: Fix line garbage in virtual console on command line edition")
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/sn184on2-3p0q-0qrq-0218-895349s4753o@syhkavp.arg
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/vt/vt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -405,7 +405,7 @@ static void vc_uniscr_delete(struct vc_d
- 		char32_t *ln = uniscr->lines[vc->vc_y];
- 		unsigned int x = vc->vc_x, cols = vc->vc_cols;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 63d34844c1223..0384fb059ddfc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -732,6 +732,9 @@ mt7996_mac_write_txwi_8023(struct mt7996_dev *dev, __le32 *txwi,
+ 	      FIELD_PREP(MT_TXD2_SUB_TYPE, fc_stype);
  
--		memcpy(&ln[x], &ln[x + nr], (cols - x - nr) * sizeof(*ln));
-+		memmove(&ln[x], &ln[x + nr], (cols - x - nr) * sizeof(*ln));
- 		memset32(&ln[cols - nr], ' ', nr);
- 	}
+ 	txwi[2] |= cpu_to_le32(val);
++
++	if (wcid->amsdu)
++		txwi[3] |= cpu_to_le32(MT_TXD3_HW_AMSDU);
  }
+ 
+ static void
+@@ -862,8 +865,6 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 		val |= MT_TXD3_PROTECT_FRAME;
+ 	if (info->flags & IEEE80211_TX_CTL_NO_ACK)
+ 		val |= MT_TXD3_NO_ACK;
+-	if (wcid->amsdu)
+-		val |= MT_TXD3_HW_AMSDU;
+ 
+ 	txwi[3] = cpu_to_le32(val);
+ 	txwi[4] = 0;
+-- 
+2.43.0
+
 
 
 
