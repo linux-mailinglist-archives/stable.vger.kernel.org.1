@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AF5A8A10A7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:37:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA2928A0DC1
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:07:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A8751C23CB0
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:37:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8659F286510
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA231474C4;
-	Thu, 11 Apr 2024 10:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4CA145B25;
+	Thu, 11 Apr 2024 10:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mt4Z4Gcl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ru35FK5n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FCF13C9A5;
-	Thu, 11 Apr 2024 10:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E012D1448F3;
+	Thu, 11 Apr 2024 10:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831747; cv=none; b=g4G290NiARMA/qtxTx0/o48sAKA/s+cs2itkWbN9QPC9C693PBEEuxfGe0peuGemcdLS66k3GQVq8aiNr+1isr5C6uvh3Up+sP01E4TlzG7SbNDSL3yqLe6HDZzbdWYQH2dJpB2/A+olg6nB3YTGut6ME6LX3/Iisq9j+cxRiYY=
+	t=1712830046; cv=none; b=A05UJT93mEifQPyvDas92wCx1Z9PYKaEhINdnOmG5L7DnSgn/wLOr6gDY2xj/NvnnlaQt1Lwllysy2yrLg7Kp9DW/+WGrVFmv1tSbPeZWWRcb7u0XXfUqrPwLDzyLzxRSBmfPAlJcVpC9pCjZNt8MLpldmXt4PcRPhPxE49rSfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831747; c=relaxed/simple;
-	bh=ZUKE7zLJ9iv3zWzyha72+drnzsuFaXujV64aR6VdBgQ=;
+	s=arc-20240116; t=1712830046; c=relaxed/simple;
+	bh=4fHzsk2FtdPgBcoKpArdGXcLviUj11NPS9gJxmM7078=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g9N3/K5IsOj3SZeHdwkFQlG5tw89GRn2i5TQkEAgxFHrSCrLbjXnlFWyJfdmZIa0tu+tUJ+aGbl5jvW/yTGMREelkF5EbOggfMu2pVVNFsZnZmCt+IPWhHBRkm+8foa6z6IXy7CUpY2PfvXeWpnPz1m3MlPif3m+ONJEGYIO8YA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mt4Z4Gcl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F9BC433F1;
-	Thu, 11 Apr 2024 10:35:46 +0000 (UTC)
+	 MIME-Version; b=nW9oFz7Gm+sXV/giC/M/MiKnW8GKjwa9F1DWWN8gs6uE4IlggviOQvPxSSmjoNWWvG9v8gA5u4pnglAvxg1oQOzF5gtiaBoQ6jOWWUlTLeqUt6zgMtmwSxn6Ex5Mbg7Rtb+S1ue0aAzyjGQ7nvOV7DFR+zteqDgdQ4ZdCKTavz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ru35FK5n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618ADC433F1;
+	Thu, 11 Apr 2024 10:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831747;
-	bh=ZUKE7zLJ9iv3zWzyha72+drnzsuFaXujV64aR6VdBgQ=;
+	s=korg; t=1712830045;
+	bh=4fHzsk2FtdPgBcoKpArdGXcLviUj11NPS9gJxmM7078=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mt4Z4Gclc3qP+G/HKhX6G/2n7y3RJEl197gLPOYoXeQwF6dyAYRUyIbOffxs+QrQV
-	 YozIRP+nloNqlb0YFPDR02GLkMbYngWyYsUL5j4Xzfopeys8Sq76UhaO9lRlwOO5uc
-	 2hlCtSj099SwJ4HjyA4aD2jwazGzSFP+ButtiBbI=
+	b=Ru35FK5nKDfJq7LfkdbUpQgpUV3VGfMXKA6FzgPa2Z23CyoTKO+eEKf/47Ac8BW1e
+	 cVzooLGKBZyduL7sU4nFN/J0xjFZ3Jg4/nimjy7gevkbOjFhshfZWWBhA84QbKqfVN
+	 TmnGSCnl3yr6fGt6+wCetUo/cr8ZZEvVBH4OG2IM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Wang <vulab@iscas.ac.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 113/294] vxge: remove unnecessary cast in kfree()
-Date: Thu, 11 Apr 2024 11:54:36 +0200
-Message-ID: <20240411095439.070982337@linuxfoundation.org>
+Subject: [PATCH 6.8 009/143] wifi: rtw89: pci: enlarge RX DMA buffer to consider size of RX descriptor
+Date: Thu, 11 Apr 2024 11:54:37 +0200
+Message-ID: <20240411095421.190000084@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Wang <vulab@iscas.ac.cn>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit b6bf4776d9e2ed4b2552d1c252fff8de3786309a ]
+[ Upstream commit c108b4a50dd7650941d4f4ec5c161655a73711db ]
 
-Remove unnecessary cast in the argument to kfree.
+Hardware puts RX descriptor and packet in RX DMA buffer, so it could be
+over one buffer size if packet size is 11454, and then it will be split
+into two segments. WiFi 7 chips use larger size of RX descriptor, so
+enlarge DMA buffer size according to RX descriptor to have better
+performance and simple flow.
 
-Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20201023085533.4792-1-vulab@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: e3f269ed0acc ("x86/pm: Work around false positive kmemleak report in msr_build_context()")
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240121071826.10159-5-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/neterion/vxge/vxge-config.c | 2 +-
+ drivers/net/wireless/realtek/rtw89/pci.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/neterion/vxge/vxge-config.c b/drivers/net/ethernet/neterion/vxge/vxge-config.c
-index f5d48d7c4ce28..da48dd85770c0 100644
---- a/drivers/net/ethernet/neterion/vxge/vxge-config.c
-+++ b/drivers/net/ethernet/neterion/vxge/vxge-config.c
-@@ -1121,7 +1121,7 @@ static void __vxge_hw_blockpool_destroy(struct __vxge_hw_blockpool *blockpool)
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
+index 83a36358504f4..772a84bd8db6b 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.h
++++ b/drivers/net/wireless/realtek/rtw89/pci.h
+@@ -996,7 +996,7 @@
+ #define RTW89_PCI_TXWD_NUM_MAX		512
+ #define RTW89_PCI_TXWD_PAGE_SIZE	128
+ #define RTW89_PCI_ADDRINFO_MAX		4
+-#define RTW89_PCI_RX_BUF_SIZE		11460
++#define RTW89_PCI_RX_BUF_SIZE		(11454 + 40) /* +40 for rtw89_rxdesc_long_v2 */
  
- 	list_for_each_safe(p, n, &blockpool->free_entry_list) {
- 		list_del(&((struct __vxge_hw_blockpool_entry *)p)->item);
--		kfree((void *)p);
-+		kfree(p);
- 	}
- 
- 	return;
+ #define RTW89_PCI_POLL_BDRAM_RST_CNT	100
+ #define RTW89_PCI_MULTITAG		8
 -- 
 2.43.0
 
