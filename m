@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-39115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015638A11FB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:49:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 528E98A122A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:51:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B07E728384D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:49:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 851401C22CF2
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1800F146A95;
-	Thu, 11 Apr 2024 10:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6751448F3;
+	Thu, 11 Apr 2024 10:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCKXOkHn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekLXINwr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8ADD64CC0;
-	Thu, 11 Apr 2024 10:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A720813BACD;
+	Thu, 11 Apr 2024 10:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832560; cv=none; b=i2bivIWf6I9Gbsno0TFlBC1xvlxOymbGIqH0trdVw3BS5HUx35PfDNLJ1ddokUAkRKQKVuvKGfI9cQKSTp9WS4WMMpn8mRRMj/L93aNDk5hvoWZu2M0f+lzraK2W/vfHylN6oXqJgPQ2/V1iQnHsQoL3JnfRSO/ZjXpcXXvniJk=
+	t=1712832688; cv=none; b=F61y0YmKobUBHhprFqzd/g4GyRTo38kTgfHQJfYFmrl9EyBxAyNQAAcR5IPzNYFa2LP9ukRxS4SLMLqEFjMrfC3hf2A+Do+WZnh/YvE+6gZPDlQodO7BtElpb7bCu8KKfQwfifFKMoEcF/zH1CNsHFMPvb73z9yP7EhtJL/I/pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832560; c=relaxed/simple;
-	bh=L0QbgUthqT7Ogv259kdxngin8i8d4SZMDSfaWE4tD3o=;
+	s=arc-20240116; t=1712832688; c=relaxed/simple;
+	bh=TvQsw6CANmWBi1D5zqk9XYEDZWtF14WJ75uzkVVpHN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aFyOHDjaaA+JBIHY7H6bahrNXPFqd4kFgPNXkn9BN0/UqTUvFjH3SuofU48x/Isic8bEpteJgqfRG9njMvYzFMhEx2/Pd+NcSIP0SGYxnuorsTh7csEEG65J5TS2KGoWOFEHUvUJH51l6+DyoNHrddAWfrAetY46p7FTz2e30hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCKXOkHn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA05C433F1;
-	Thu, 11 Apr 2024 10:49:20 +0000 (UTC)
+	 MIME-Version; b=S0kf8DmuR8ivFPqHqZBj6q56wji+Uwrq5RzGnEDwjW+bAI+Nx7OqDxMRN5Ax2eKdzzlQBK/LgqzwlRfH35GNV/SWtaU067+Ol57ESRySxqNDQdehP4/JdCrpTcryRnouOf2XX1O2eVWdQ+4PdHT6GLHEhJjGxMA/ffn4Aq3XoJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekLXINwr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F6DC433F1;
+	Thu, 11 Apr 2024 10:51:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832560;
-	bh=L0QbgUthqT7Ogv259kdxngin8i8d4SZMDSfaWE4tD3o=;
+	s=korg; t=1712832688;
+	bh=TvQsw6CANmWBi1D5zqk9XYEDZWtF14WJ75uzkVVpHN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MCKXOkHn+6eXJ63SaRX88mQQ8zPNT1p76ni8Y4Xw99Z8f+0xt5s7ePnYt3r557Sq2
-	 /B+Q3UpWRrlfloStap73MTvF9vqF8w7H6J65dbycRryUE+kSPSReK74nRlwwSdhEAy
-	 gywnN0MoMXjhogeXItxp1iqjLr/rUvmyHHal1h2c=
+	b=ekLXINwrzcVHvI3z95Dw2zYgLuZZFpgpkpvJFAZFpThYDV0/ziioIM2kLfww0fSo1
+	 DhPDBaiNwwstlERTdxY1NqXYKlAJSiDsCYNHzLD+lgHa7O9B+RhD8MtmuXfw9qAg7L
+	 zQYJEo0RgnPTU3WQR96RIYzoLaHdQBOUC0ioV9yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 83/83] Revert "drm/amd/amdgpu: Fix potential ioremap() memory leaks in amdgpu_device_init()"
-Date: Thu, 11 Apr 2024 11:57:55 +0200
-Message-ID: <20240411095415.186692656@linuxfoundation.org>
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 48/57] netfilter: nf_tables: discard table flag update with pending basechain deletion
+Date: Thu, 11 Apr 2024 11:57:56 +0200
+Message-ID: <20240411095409.443588898@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+References: <20240411095407.982258070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +59,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 03c6284df179de3a4a6e0684764b1c71d2a405e2 upstream.
+commit 1bc83a019bbe268be3526406245ec28c2458a518 upstream.
 
-This patch causes the following iounmap erorr and calltrace
-iounmap: bad address 00000000d0b3631f
+Hook unregistration is deferred to the commit phase, same occurs with
+hook updates triggered by the table dormant flag. When both commands are
+combined, this results in deleting a basechain while leaving its hook
+still registered in the core.
 
-The original patch was unjustified because amdgpu_device_fini_sw() will
-always cleanup the rmmio mapping.
-
-This reverts commit eb4f139888f636614dab3bcce97ff61cefc4b3a7.
-
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |   16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ net/netfilter/nf_tables_api.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3713,10 +3713,8 @@ int amdgpu_device_init(struct amdgpu_dev
- 	 * early on during init and before calling to RREG32.
- 	 */
- 	adev->reset_domain = amdgpu_reset_create_reset_domain(SINGLE_DEVICE, "amdgpu-reset-dev");
--	if (!adev->reset_domain) {
--		r = -ENOMEM;
--		goto unmap_memory;
--	}
-+	if (!adev->reset_domain)
-+		return -ENOMEM;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index ca061fc0b1def..113c1ebe4a5be 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1139,6 +1139,24 @@ static void nf_tables_table_disable(struct net *net, struct nft_table *table)
+ #define __NFT_TABLE_F_UPDATE		(__NFT_TABLE_F_WAS_DORMANT | \
+ 					 __NFT_TABLE_F_WAS_AWAKEN)
  
- 	/* detect hw virtualization here */
- 	amdgpu_detect_virtualization(adev);
-@@ -3724,18 +3722,18 @@ int amdgpu_device_init(struct amdgpu_dev
- 	r = amdgpu_device_get_job_timeout_settings(adev);
- 	if (r) {
- 		dev_err(adev->dev, "invalid lockup_timeout parameter syntax\n");
--		goto unmap_memory;
-+		return r;
- 	}
++static bool nft_table_pending_update(const struct nft_ctx *ctx)
++{
++	struct nftables_pernet *nft_net = nft_pernet(ctx->net);
++	struct nft_trans *trans;
++
++	if (ctx->table->flags & __NFT_TABLE_F_UPDATE)
++		return true;
++
++	list_for_each_entry(trans, &nft_net->commit_list, list) {
++		if (trans->ctx.table == ctx->table &&
++		    trans->msg_type == NFT_MSG_DELCHAIN &&
++		    nft_is_base_chain(trans->ctx.chain))
++			return true;
++	}
++
++	return false;
++}
++
+ static int nf_tables_updtable(struct nft_ctx *ctx)
+ {
+ 	struct nft_trans *trans;
+@@ -1162,7 +1180,7 @@ static int nf_tables_updtable(struct nft_ctx *ctx)
+ 		return -EOPNOTSUPP;
  
- 	/* early init functions */
- 	r = amdgpu_device_ip_early_init(adev);
- 	if (r)
--		goto unmap_memory;
-+		return r;
+ 	/* No dormant off/on/off/on games in single transaction */
+-	if (ctx->table->flags & __NFT_TABLE_F_UPDATE)
++	if (nft_table_pending_update(ctx))
+ 		return -EINVAL;
  
- 	/* Get rid of things like offb */
- 	r = drm_aperture_remove_conflicting_pci_framebuffers(adev->pdev, &amdgpu_kms_driver);
- 	if (r)
--		goto unmap_memory;
-+		return r;
- 
- 	/* Enable TMZ based on IP_VERSION */
- 	amdgpu_gmc_tmz_set(adev);
-@@ -3745,7 +3743,7 @@ int amdgpu_device_init(struct amdgpu_dev
- 	if (adev->gmc.xgmi.supported) {
- 		r = adev->gfxhub.funcs->get_xgmi_info(adev);
- 		if (r)
--			goto unmap_memory;
-+			return r;
- 	}
- 
- 	/* enable PCIE atomic ops */
-@@ -4001,8 +3999,6 @@ release_ras_con:
- failed:
- 	amdgpu_vf_error_trans_all(adev);
- 
--unmap_memory:
--	iounmap(adev->rmmio);
- 	return r;
- }
- 
+ 	trans = nft_trans_alloc(ctx, NFT_MSG_NEWTABLE,
+-- 
+2.43.0
+
 
 
 
