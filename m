@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-38546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BAE88A0F2D
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:21:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF4078A10DA
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:38:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D2721C22D72
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:21:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C4BB1C2182E
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA234146A95;
-	Thu, 11 Apr 2024 10:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563951482FD;
+	Thu, 11 Apr 2024 10:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlD5G9EC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SArre7Ip"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D4B146A90;
-	Thu, 11 Apr 2024 10:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D25142624;
+	Thu, 11 Apr 2024 10:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830891; cv=none; b=QxDp9X8ae7GOyZm9o4arhJIhSjjSqR4BNFTv50otjHvnjj7D/VGomOKLmLb32+M51dlk8mlnUVffhAmjcRXTKuUDObf4Bkvb3crETLMAvEXU/vI8UQTcrJ/FgbZ9T8EsqKCrdtaUkCye3r1/xe6U6FV9YVyYy9NVlXVu4Ez7qNI=
+	t=1712831886; cv=none; b=HsQqSn112tKX9SRRlR/znyqi+0c30B8CcQXj4DJqE1cMi4YXzMODBjWsj7r22H5HUwMRGkgEQoirIEe7bvtZYTCYC1ygr0KmvAYk/NYrIABe8xT2HNM/dIHDtNrmThvraNG1KyXXzSJpR30Ljt2gOvXAdy4kk7C4R5Od0J5uudk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830891; c=relaxed/simple;
-	bh=A8yYUqrenb/ctc03J5kXKv2bcaZ6AiOMZ0Hb7VJxAOw=;
+	s=arc-20240116; t=1712831886; c=relaxed/simple;
+	bh=5zDK/bkUqyR4O+66I99LCsPTeC4/1T+bnC4sdrwGzqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBpsBNPkPjXJPv+iNkAeBpMDg/leaih3CDnZUc16vTQROnd/VGKjW94EQezmvLdm2x0yoLXmgjxPB71f95iTvf/Cfw3g1BAMWKIG8hfWb4T61sqrqD3Bs+myGZ42DD8DC4ZkprQ2wV2QIQZfgDlJ897h2HnGulQTO/BF4KvUYEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlD5G9EC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3C0C433C7;
-	Thu, 11 Apr 2024 10:21:30 +0000 (UTC)
+	 MIME-Version; b=HlDoRL5SEIYYHxMfdzd4ScBI2/iBg/b5UuSaZGvbsFjrweeCudI0671fakcsZf5Jb+a4WxSh/n7JqK6yVY08iUeVQH92dzFy7EAVR2UAeWyQDr7rfmuWg7wiuc1CA3e+QQokVvHaIJE4kENwikJx402yL5GszP3Am+ZTh90SeAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SArre7Ip; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A1FC43390;
+	Thu, 11 Apr 2024 10:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830891;
-	bh=A8yYUqrenb/ctc03J5kXKv2bcaZ6AiOMZ0Hb7VJxAOw=;
+	s=korg; t=1712831885;
+	bh=5zDK/bkUqyR4O+66I99LCsPTeC4/1T+bnC4sdrwGzqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XlD5G9EC26BHD6o0B1D2SOkLvcOk8Cij2h85qS38waQ/J/weNMEyA675zQBxNh7m/
-	 LDdcka+S66ujY0rmpDkpe87SGMcM+KEC3+zimGS/IOm35HUsJIlKiU5pqy1UsULwDb
-	 bUx6TkP9dRUlYIq7Y+Mud0VE4AzvlSa5WoqJDq0k=
+	b=SArre7Ip9Cswuar7Se2j6WymS6oQuKNTZBpSnyN57az2AYIZB0J1zv5PqdIjHMLNQ
+	 4BXRwbmWrXE1j1Je4Ng0r3qrI3/U5Vs7uul9OC321z+jmLgRg/NU/U0k8tTMsr0b32
+	 nIam7xNe13RgvRXWGGX3VQKNePV9LTFaO8wfq8gs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH 5.4 114/215] exec: Fix NOMMU linux_binprm::exec in transfer_args_to_stack()
+	Mikko Rapeli <mikko.rapeli@linaro.org>,
+	Avri Altman <avri.altman@wdc.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 160/294] mmc: core: Avoid negative index with array access
 Date: Thu, 11 Apr 2024 11:55:23 +0200
-Message-ID: <20240411095428.333138002@linuxfoundation.org>
+Message-ID: <20240411095440.461927992@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Filippov <jcmvbkbc@gmail.com>
+From: Mikko Rapeli <mikko.rapeli@linaro.org>
 
-commit 2aea94ac14d1e0a8ae9e34febebe208213ba72f7 upstream.
+commit cf55a7acd1ed38afe43bba1c8a0935b51d1dc014 upstream.
 
-In NOMMU kernel the value of linux_binprm::p is the offset inside the
-temporary program arguments array maintained in separate pages in the
-linux_binprm::page. linux_binprm::exec being a copy of linux_binprm::p
-thus must be adjusted when that array is copied to the user stack.
-Without that adjustment the value passed by the NOMMU kernel to the ELF
-program in the AT_EXECFN entry of the aux array doesn't make any sense
-and it may break programs that try to access memory pointed to by that
-entry.
+Commit 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu") assigns
+prev_idata = idatas[i - 1], but doesn't check that the iterator i is
+greater than zero. Let's fix this by adding a check.
 
-Adjust linux_binprm::exec before the successful return from the
-transfer_args_to_stack().
-
-Cc: <stable@vger.kernel.org>
-Fixes: b6a2fea39318 ("mm: variable length argument support")
-Fixes: 5edc2a5123a7 ("binfmt_elf_fdpic: wire up AT_EXECFD, AT_EXECFN, AT_SECURE")
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-Link: https://lore.kernel.org/r/20240320182607.1472887-1-jcmvbkbc@gmail.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Fixes: 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu")
+Link: https://lore.kernel.org/all/20231129092535.3278-1-avri.altman@wdc.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://lore.kernel.org/r/20240313133744.2405325-2-mikko.rapeli@linaro.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/exec.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/core/block.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -836,6 +836,7 @@ int transfer_args_to_stack(struct linux_
- 			goto out;
- 	}
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -468,7 +468,7 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 	if (idata->flags & MMC_BLK_IOC_DROP)
+ 		return 0;
  
-+	bprm->exec += *sp_location - MAX_ARG_PAGES * PAGE_SIZE;
- 	*sp_location = sp;
+-	if (idata->flags & MMC_BLK_IOC_SBC)
++	if (idata->flags & MMC_BLK_IOC_SBC && i > 0)
+ 		prev_idata = idatas[i - 1];
  
- out:
+ 	/*
 
 
 
