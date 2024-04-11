@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-39079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A93028A11D4
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:47:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 667A48A1177
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:44:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AF6D1F20CDB
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:47:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4E1DB23748
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C31513D24D;
-	Thu, 11 Apr 2024 10:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E71B14600E;
+	Thu, 11 Apr 2024 10:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mozFUzwR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxOmrgIW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1E6624;
-	Thu, 11 Apr 2024 10:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1917142624;
+	Thu, 11 Apr 2024 10:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832455; cv=none; b=l+rQju8epy3SQ7n/0LhSz00Y97H8q45T8QNK6KBCEyHeCQ7f45ToXQ0zPVKGPFhvy0naCAWciEyPua6mgcp2mCytd/NVUCNkJ3Ird07L9hEYOKGdwCnRLBBR9b5KBJHcPDTKBGPLMS/IeuywELRAbzBw+W2V8TDJqzOJwKGQvJk=
+	t=1712832257; cv=none; b=IhAoJxyd+HVIh3tmfIJ8fAd3gOTOqraLuM1I+DMcHsZ5R3Et+Dc+1AkIdCdK8DCpGCtQTOXkcgP+d1OiogxKe2dPP2ULHq7Pxmftl26m6ysLZaWUCEsDyWxPJ/WulebSRPOCPXaT6zVHIJLckUAsNbxWlW54EsmCyG0uK2Wh40g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832455; c=relaxed/simple;
-	bh=u8s+Rtk07HRutefpfNpS1f8c2No21HKMYRJjFc7dD2E=;
+	s=arc-20240116; t=1712832257; c=relaxed/simple;
+	bh=WtIldR4tXrldgKOxVBQD8cLuqF/GC5/RiNe6jchsRmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JTObbM3h9mX9uU8C7VoGUn1EAe4P6LOrFMLjwH4+NzaQ83j+sUxpBeDhi7t0AAhsSa46SNhJkjm7Ipuy/xG1UOcykjZg4lQ48kvpfBR+729qxFwjD9qhEssvT6U3wJdZH6mSoETUeCGJUe/yyl6SOvb+Q2SEeoOqh1Y9+HHXN3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mozFUzwR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D6BC433C7;
-	Thu, 11 Apr 2024 10:47:34 +0000 (UTC)
+	 MIME-Version; b=XkyD/U3+w084S0h4QNtIj1BByou5OaWHuyHNVxscsrehkr6kHCVYRgn88FVfl+aHnfSM0cbuLMEKBXDdNpsXx8ZK5p5MhDwxWSJ5RMunBqQ+aeiPz8MBRqrli+zML1rTXpeyhsMZw4lKGsYHVs4V3fVnyLFZpNY1v0Iey0xBK8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxOmrgIW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9FFC433C7;
+	Thu, 11 Apr 2024 10:44:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832454;
-	bh=u8s+Rtk07HRutefpfNpS1f8c2No21HKMYRJjFc7dD2E=;
+	s=korg; t=1712832257;
+	bh=WtIldR4tXrldgKOxVBQD8cLuqF/GC5/RiNe6jchsRmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mozFUzwRnMxlf6iAwXMPGg6U5hVOiLco3CLaTP5DlGCjkxCZjHk7PPGnYxnfmErhV
-	 YTcgYy9sxDZqFnlUZ8O53iPnR9M+bJRkWs7451eQjjvAtTHHFPhrDw+T+ZJuxQknek
-	 aJoHR4lE/nKF1ttH3v2anjU2vQflu0t8T5FP46sU=
+	b=zxOmrgIWeXy1sYkNb481T7VMpcOVTojyFnKgooa+SilIeb2xY4c7hGXL8EqUBTTxl
+	 0zLs0NuRVOyfsEq7tP2MYjBhT6BrUr8V5Z06CAraRoA6OAg4MXVs/2nvLraCzwbS/9
+	 S/SrGEXVSKF6d3IrbdQBUnYHJQpPX1zwWN2HZgEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sandipan Das <sandipan.das@amd.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
+	Kuan-Ting Chen <hexrabbit@devco.re>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 54/83] perf/x86/amd/lbr: Discard erroneous branch entries
+Subject: [PATCH 5.10 283/294] netfilter: nf_tables: release mutex after nft_gc_seq_end from abort path
 Date: Thu, 11 Apr 2024 11:57:26 +0200
-Message-ID: <20240411095414.309106512@linuxfoundation.org>
+Message-ID: <20240411095444.056558485@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sandipan Das <sandipan.das@amd.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 29297ffffb0bf388778bd4b581a43cee6929ae65 ]
+commit 0d459e2ffb541841714839e8228b845458ed3b27 upstream.
 
-The Revision Guide for AMD Family 19h Model 10-1Fh processors declares
-Erratum 1452 which states that non-branch entries may erroneously be
-recorded in the Last Branch Record (LBR) stack with the valid and
-spec bits set.
+The commit mutex should not be released during the critical section
+between nft_gc_seq_begin() and nft_gc_seq_end(), otherwise, async GC
+worker could collect expired objects and get the released commit lock
+within the same GC sequence.
 
-Such entries can be recognized by inspecting bit 61 of the corresponding
-LastBranchStackToIp register. This bit is currently reserved but if found
-to be set, the associated branch entry should be discarded.
+nf_tables_module_autoload() temporarily releases the mutex to load
+module dependencies, then it goes back to replay the transaction again.
+Move it at the end of the abort phase after nft_gc_seq_end() is called.
 
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://bugzilla.kernel.org/attachment.cgi?id=305518
-Link: https://lore.kernel.org/r/3ad2aa305f7396d41a40e3f054f740d464b16b7f.1706526029.git.sandipan.das@amd.com
+Cc: stable@vger.kernel.org
+Fixes: 720344340fb9 ("netfilter: nf_tables: GC transaction race with abort path")
+Reported-by: Kuan-Ting Chen <hexrabbit@devco.re>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/amd/lbr.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/events/amd/lbr.c b/arch/x86/events/amd/lbr.c
-index b8fe74e8e0a60..48f4095f500d4 100644
---- a/arch/x86/events/amd/lbr.c
-+++ b/arch/x86/events/amd/lbr.c
-@@ -173,9 +173,11 @@ void amd_pmu_lbr_read(void)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 6c5de620da9f1..ef271628975a9 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -8964,11 +8964,6 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 		nf_tables_abort_release(trans);
+ 	}
  
- 		/*
- 		 * Check if a branch has been logged; if valid = 0, spec = 0
--		 * then no branch was recorded
-+		 * then no branch was recorded; if reserved = 1 then an
-+		 * erroneous branch was recorded (see Erratum 1452)
- 		 */
--		if (!entry.to.split.valid && !entry.to.split.spec)
-+		if ((!entry.to.split.valid && !entry.to.split.spec) ||
-+		    entry.to.split.reserved)
- 			continue;
+-	if (action == NFNL_ABORT_AUTOLOAD)
+-		nf_tables_module_autoload(net);
+-	else
+-		nf_tables_module_autoload_cleanup(net);
+-
+ 	return err;
+ }
  
- 		perf_clear_branch_entry_bitfields(br + out);
+@@ -8985,6 +8980,14 @@ static int nf_tables_abort(struct net *net, struct sk_buff *skb,
+ 
+ 	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
+ 
++	/* module autoload needs to happen after GC sequence update because it
++	 * temporarily releases and grabs mutex again.
++	 */
++	if (action == NFNL_ABORT_AUTOLOAD)
++		nf_tables_module_autoload(net);
++	else
++		nf_tables_module_autoload_cleanup(net);
++
+ 	mutex_unlock(&nft_net->commit_mutex);
+ 
+ 	return ret;
 -- 
 2.43.0
 
