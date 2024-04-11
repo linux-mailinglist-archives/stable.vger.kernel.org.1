@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-39098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5C58A11E7
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CAC18A121D
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:50:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D534F1F232A9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:48:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C64071F21576
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE9513BC33;
-	Thu, 11 Apr 2024 10:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E61E13DDD6;
+	Thu, 11 Apr 2024 10:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLvHBN6/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkC+4tYZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C3779FD;
-	Thu, 11 Apr 2024 10:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D83079FD;
+	Thu, 11 Apr 2024 10:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832511; cv=none; b=vEUzqc7d4Toktl++S4GmGUOxMKgy20Pm7soz9grqe42IkKF3MmgOtRE9kw9xf0UI+xAEEUePW9Rto2zDKgZ1BisQG9xm7Y58Ra/b8SL8/HtxT92pnHqlcGP/uYzrOLu+TGnnpNxEUvVgpxTKTxM6KO7eMDWv9gXzE3LXGwVDGqU=
+	t=1712832650; cv=none; b=YhIw71acY0tommtFL3MKGnq00PKssmNwy0jBp0ULbUHA6x5afwojJGYRYGkCrnP9oGLI2AfrGy5tUf85wYKYBIXu221ZKhruCSg6PYJUMdQPgbgMmOXRto3IPTB90EsQRAk0X5hQZTNtdun1bWkCnaLK/Vq98VWWCZfpMB0nVe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832511; c=relaxed/simple;
-	bh=pToZaE/5nPHzTqhdj9ZXpTAM4a0t3sgKzzuTcv2Wpo4=;
+	s=arc-20240116; t=1712832650; c=relaxed/simple;
+	bh=Oavl+aukklXJUEE9tfjr1UXq38hFGyBY4LDvL9CGCAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4pc2qaqkNaeIYxAne6wTALlw/c7IkHHwAZbH1VCwE0roq1DMRR3BHEivaxkyuOZXxfyMHd2KrF38CyOwU8Fl52GUud7v4Wazw0lXJQDjL8gc69ValrNKUrCw84W6UrgoalJGpqba9QXEvypQQgjl7D0UwlHU3PGz1UGD31m2UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLvHBN6/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7684EC433C7;
-	Thu, 11 Apr 2024 10:48:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UgDZNctPM8ys3whR4QMvJbUIVKQn/0Dkpz4M6eWkySsvHHJDqVAzQ7klNlkHAbwTJVdEphtUJN6yVp5Gi6QEFfWLQfnkFOn2gcFI+w68rw/aza/Qsl2AWftDsmotdCCxbjWJ8e1voMJlJBUR0y/oF14ICRlpouT6SlFqJr+/g/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkC+4tYZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9905EC43390;
+	Thu, 11 Apr 2024 10:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832510;
-	bh=pToZaE/5nPHzTqhdj9ZXpTAM4a0t3sgKzzuTcv2Wpo4=;
+	s=korg; t=1712832650;
+	bh=Oavl+aukklXJUEE9tfjr1UXq38hFGyBY4LDvL9CGCAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XLvHBN6/0B+QwaQ57Ncxd6Ha4p0IOpCJ9GNZl0hWe3bXa6KDJtdIooCIvhNb4RkAI
-	 jSuCw8YhIM8ZbsoANzMukxS/4I0okmcWB+2PwgNw7ml4iR81Io0JTWT00YRW3E+aIw
-	 qdU65VIcgW4gTo3Nt0kh5esT4Nj9gFeNvA0otA8g=
+	b=hkC+4tYZ98+AXT3HDP26fjNgRZsbMJ/HAsg0B1hQY3tgZE77IVJPGK6X9I4CeyCS/
+	 JqgBcAgXRS79BNTVcMnFPf6M6sp5ZXq1h2jJN1vLpfV5D/wbzwumTxNAnqQCiYQkkh
+	 6vJlnQmyX/dClx0tfNIx6lC3lF0ogJSAaxZ3mfps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-Subject: [PATCH 6.1 72/83] tty: n_gsm: require CAP_NET_ADMIN to attach N_GSM0710 ldisc
+	=?UTF-8?q?Alban=20Boy=C3=A9?= <alban.boye@protonmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 36/57] platform/x86: touchscreen_dmi: Add an extra entry for a variant of the Chuwi Vi8 tablet
 Date: Thu, 11 Apr 2024 11:57:44 +0200
-Message-ID: <20240411095414.852374870@linuxfoundation.org>
+Message-ID: <20240411095409.086043464@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
-References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+References: <20240411095407.982258070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,41 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+From: Alban Boyé <alban.boye@protonmail.com>
 
-commit 67c37756898a5a6b2941a13ae7260c89b54e0d88 upstream.
+[ Upstream commit 1266e2efb7512dbf20eac820ca2ed34de6b1c3e7 ]
 
-Any unprivileged user can attach N_GSM0710 ldisc, but it requires
-CAP_NET_ADMIN to create a GSM network anyway.
-
-Require initial namespace CAP_NET_ADMIN to do that.
-
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-Link: https://lore.kernel.org/r/20230731185942.279611-1-cascardo@canonical.com
-From: Salvatore Bonaccorso <carnil@debian.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alban Boyé <alban.boye@protonmail.com>
+Link: https://lore.kernel.org/r/20240227223919.11587-1-alban.boye@protonmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/n_gsm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/platform/x86/touchscreen_dmi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -2969,6 +2969,9 @@ static int gsmld_open(struct tty_struct
- {
- 	struct gsm_mux *gsm;
- 
-+	if (!capable(CAP_NET_ADMIN))
-+		return -EPERM;
-+
- 	if (tty->ops->write == NULL)
- 		return -EINVAL;
- 
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
+index 08a9b802be712..161bd19441042 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -1153,6 +1153,15 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
+ 			DMI_MATCH(DMI_BIOS_VERSION, "CHUWI.D86JLBNR"),
+ 		},
+ 	},
++	{
++		/* Chuwi Vi8 dual-boot (CWI506) */
++		.driver_data = (void *)&chuwi_vi8_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "i86"),
++			DMI_MATCH(DMI_BIOS_VERSION, "CHUWI2.D86JHBNR02"),
++		},
++	},
+ 	{
+ 		/* Chuwi Vi8 Plus (CWI519) */
+ 		.driver_data = (void *)&chuwi_vi8_plus_data,
+-- 
+2.43.0
+
 
 
 
