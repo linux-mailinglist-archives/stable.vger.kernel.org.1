@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37838A0FD9
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:28:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 067B38A1140
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:42:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8902C1F293A8
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:28:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37FF71C23EF0
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5B3146D4F;
-	Thu, 11 Apr 2024 10:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135551448F3;
+	Thu, 11 Apr 2024 10:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjTQWlGy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2H83YoYu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAFC146A93;
-	Thu, 11 Apr 2024 10:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C616E2EAE5;
+	Thu, 11 Apr 2024 10:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831290; cv=none; b=iyqHCMO1XBrmF7CIPKb/o6lnVV2O9QcK1Mqyyvnngpp14dJCGiYGZ9e3cv6fClKTzLgVJ6NqY+TLaJedjL3B8Kn8rIlXCSxuzEPUYLh0FLVTg2ZNFW8ygrga/iZxtjnC1m+TZeEev3nhz7jXCMJDV2pIZo98DrZwvk3oAKSxxWU=
+	t=1712832124; cv=none; b=JJwQcEB4+Dyx6zC0bYuIL079+A14n4exVNsXjdlMMwS2fwcbIcxdU92IRMz/tcZq3ZXZky8hj6OTcfbbev5Swa2KfawuT0L9Q0cIH8psWVYhxScHTsY/X4vDzsz/R/6daOHOioSTxEwX2hoC3o7rNljJdcA/1TqqPg07QXXqFgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831290; c=relaxed/simple;
-	bh=RYATxPfrG/9IK+R4ZBFUOkNDk8AdmUdMhO0LMt6GDPk=;
+	s=arc-20240116; t=1712832124; c=relaxed/simple;
+	bh=2xfm2Me9Ic/kOKuUM+ld2p5K0nKSj1ZVNCVpAkTWWWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3M/WWxm7+4IYJjuNxm7XPdXH9hW5FAY27nPGepuC4EgEYd/am0W1YTYFCX2GrVN3FY6RULI8lh5VKC+w8i4bRVAgjq8m0UdfJMPWHbc32I5vqzjqP/QWCJrlY3PFAI7B9AcQgazaH488YksnrIwEwmaFJwVzteWZBWpdecs9r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjTQWlGy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901C3C433C7;
-	Thu, 11 Apr 2024 10:28:09 +0000 (UTC)
+	 MIME-Version; b=TpVE0pDVPga3OmDK+tI4kXy+8JpJ1WXpfy2T4kkEOMUSimmmoSkvhDgMf1s08hy6eKzYBJECdlPISVoweEC8XTnVhYdN84pRGK73+awnSYAbHsVCqvN3FmB5kc7bcUMTYnfgJ8m6ae7vEEhUPN3H+25mW1ho3JGrHWeA3aokVeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2H83YoYu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAB8C433C7;
+	Thu, 11 Apr 2024 10:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831290;
-	bh=RYATxPfrG/9IK+R4ZBFUOkNDk8AdmUdMhO0LMt6GDPk=;
+	s=korg; t=1712832124;
+	bh=2xfm2Me9Ic/kOKuUM+ld2p5K0nKSj1ZVNCVpAkTWWWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MjTQWlGykf2cgC9Wx1DM0rnpmqLmkmd2ZebgP+slOReCDaTWN3qyB4DiSAij7n6ab
-	 mhNg5Kslkpzu2/Fz5ve+dbcVdgVJQL1lCqSiyZv+53V5K0Qjy8qcTXlvSV4Y8ltUny
-	 qdCokBa1iJy7HfNME7KturaDjU19LgKFkKTRnnVc=
+	b=2H83YoYu5ErRhn10Ny9teyr0k6URLDrZqUQ3WApX7rQkrlTQHuUu9gEyF2ws4U1c5
+	 3GJY07VWf/KOteA046b2vtUIrYl68BlYqQd3p5Fugh1IvXVqAIpxVUvoKZUoLrSJBK
+	 Lium4s0nBecfNkM64GwHBIkDqkGUwn1VPf++kx10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Yang Jihong <yangjihong1@huawei.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/114] libperf evlist: Avoid out-of-bounds access
-Date: Thu, 11 Apr 2024 11:56:40 +0200
-Message-ID: <20240411095419.090344248@linuxfoundation.org>
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	stable@kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.10 238/294] x86/bugs: Fix the SRSO mitigation on Zen3/4
+Date: Thu, 11 Apr 2024 11:56:41 +0200
+Message-ID: <20240411095442.740587176@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
-References: <20240411095416.853744210@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,131 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-[ Upstream commit 1947b92464c3268381604bbe2ac977a3fd78192f ]
+Commit 4535e1a4174c4111d92c5a9a21e542d232e0fcaa upstream.
 
-Parallel testing appears to show a race between allocating and setting
-evsel ids. As there is a bounds check on the xyarray it yields a segv
-like:
+The original version of the mitigation would patch in the calls to the
+untraining routines directly.  That is, the alternative() in UNTRAIN_RET
+will patch in the CALL to srso_alias_untrain_ret() directly.
 
-```
-AddressSanitizer:DEADLYSIGNAL
+However, even if commit e7c25c441e9e ("x86/cpu: Cleanup the untrain
+mess") meant well in trying to clean up the situation, due to micro-
+architectural reasons, the untraining routine srso_alias_untrain_ret()
+must be the target of a CALL instruction and not of a JMP instruction as
+it is done now.
 
-=================================================================
+Reshuffle the alternative macros to accomplish that.
 
-==484408==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000010
-
-==484408==The signal is caused by a WRITE memory access.
-
-==484408==Hint: address points to the zero page.
-
-    #0 0x55cef5d4eff4 in perf_evlist__id_hash tools/lib/perf/evlist.c:256
-    #1 0x55cef5d4f132 in perf_evlist__id_add tools/lib/perf/evlist.c:274
-    #2 0x55cef5d4f545 in perf_evlist__id_add_fd tools/lib/perf/evlist.c:315
-    #3 0x55cef5a1923f in store_evsel_ids util/evsel.c:3130
-    #4 0x55cef5a19400 in evsel__store_ids util/evsel.c:3147
-    #5 0x55cef5888204 in __run_perf_stat tools/perf/builtin-stat.c:832
-    #6 0x55cef5888c06 in run_perf_stat tools/perf/builtin-stat.c:960
-    #7 0x55cef58932db in cmd_stat tools/perf/builtin-stat.c:2878
-...
-```
-
-Avoid this crash by early exiting the perf_evlist__id_add_fd and
-perf_evlist__id_add is the access is out-of-bounds.
-
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240229070757.796244-1-irogers@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e7c25c441e9e ("x86/cpu: Cleanup the untrain mess")
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@kernel.org
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/perf/evlist.c                  | 18 ++++++++++++------
- tools/lib/perf/include/internal/evlist.h |  4 ++--
- 2 files changed, 14 insertions(+), 8 deletions(-)
+ arch/x86/include/asm/asm-prototypes.h |    1 +
+ arch/x86/include/asm/nospec-branch.h  |   20 ++++++++++++++------
+ arch/x86/lib/retpoline.S              |    4 +---
+ 3 files changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/tools/lib/perf/evlist.c b/tools/lib/perf/evlist.c
-index b8b066d0dc5e4..ceb34123f38ed 100644
---- a/tools/lib/perf/evlist.c
-+++ b/tools/lib/perf/evlist.c
-@@ -248,10 +248,10 @@ u64 perf_evlist__read_format(struct perf_evlist *evlist)
+--- a/arch/x86/include/asm/asm-prototypes.h
++++ b/arch/x86/include/asm/asm-prototypes.h
+@@ -12,6 +12,7 @@
+ #include <asm/special_insns.h>
+ #include <asm/preempt.h>
+ #include <asm/asm.h>
++#include <asm/nospec-branch.h>
  
- static void perf_evlist__id_hash(struct perf_evlist *evlist,
- 				 struct perf_evsel *evsel,
--				 int cpu, int thread, u64 id)
-+				 int cpu_map_idx, int thread, u64 id)
- {
- 	int hash;
--	struct perf_sample_id *sid = SID(evsel, cpu, thread);
-+	struct perf_sample_id *sid = SID(evsel, cpu_map_idx, thread);
+ #ifndef CONFIG_X86_CMPXCHG64
+ extern void cmpxchg8b_emu(void);
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -155,11 +155,20 @@
+ .Lskip_rsb_\@:
+ .endm
  
- 	sid->id = id;
- 	sid->evsel = evsel;
-@@ -269,21 +269,27 @@ void perf_evlist__reset_id_hash(struct perf_evlist *evlist)
++/*
++ * The CALL to srso_alias_untrain_ret() must be patched in directly at
++ * the spot where untraining must be done, ie., srso_alias_untrain_ret()
++ * must be the target of a CALL instruction instead of indirectly
++ * jumping to a wrapper which then calls it. Therefore, this macro is
++ * called outside of __UNTRAIN_RET below, for the time being, before the
++ * kernel can support nested alternatives with arbitrary nesting.
++ */
++.macro CALL_UNTRAIN_RET
+ #ifdef CONFIG_CPU_UNRET_ENTRY
+-#define CALL_UNTRAIN_RET	"call entry_untrain_ret"
+-#else
+-#define CALL_UNTRAIN_RET	""
++	ALTERNATIVE_2 "", "call entry_untrain_ret", X86_FEATURE_UNRET, \
++		          "call srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
+ #endif
++.endm
  
- void perf_evlist__id_add(struct perf_evlist *evlist,
- 			 struct perf_evsel *evsel,
--			 int cpu, int thread, u64 id)
-+			 int cpu_map_idx, int thread, u64 id)
- {
--	perf_evlist__id_hash(evlist, evsel, cpu, thread, id);
-+	if (!SID(evsel, cpu_map_idx, thread))
-+		return;
-+
-+	perf_evlist__id_hash(evlist, evsel, cpu_map_idx, thread, id);
- 	evsel->id[evsel->ids++] = id;
- }
+ /*
+  * Mitigate RETBleed for AMD/Hygon Zen uarch. Requires KERNEL CR3 because the
+@@ -176,9 +185,8 @@
+ #if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
+ 	defined(CONFIG_CPU_SRSO)
+ 	ANNOTATE_UNRET_END
+-	ALTERNATIVE_2 "",						\
+-		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
+-		      "call entry_ibpb", X86_FEATURE_ENTRY_IBPB
++	CALL_UNTRAIN_RET
++	ALTERNATIVE "", "call entry_ibpb", X86_FEATURE_ENTRY_IBPB
+ #endif
+ .endm
  
- int perf_evlist__id_add_fd(struct perf_evlist *evlist,
- 			   struct perf_evsel *evsel,
--			   int cpu, int thread, int fd)
-+			   int cpu_map_idx, int thread, int fd)
- {
- 	u64 read_data[4] = { 0, };
- 	int id_idx = 1; /* The first entry is the counter value */
- 	u64 id;
- 	int ret;
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -249,9 +249,7 @@ SYM_CODE_START(srso_return_thunk)
+ SYM_CODE_END(srso_return_thunk)
  
-+	if (!SID(evsel, cpu_map_idx, thread))
-+		return -1;
-+
- 	ret = ioctl(fd, PERF_EVENT_IOC_ID, &id);
- 	if (!ret)
- 		goto add;
-@@ -312,7 +318,7 @@ int perf_evlist__id_add_fd(struct perf_evlist *evlist,
- 	id = read_data[id_idx];
+ SYM_FUNC_START(entry_untrain_ret)
+-	ALTERNATIVE_2 "jmp retbleed_untrain_ret", \
+-		      "jmp srso_untrain_ret", X86_FEATURE_SRSO, \
+-		      "jmp srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
++	ALTERNATIVE "jmp retbleed_untrain_ret", "jmp srso_untrain_ret", X86_FEATURE_SRSO
+ SYM_FUNC_END(entry_untrain_ret)
+ __EXPORT_THUNK(entry_untrain_ret)
  
- add:
--	perf_evlist__id_add(evlist, evsel, cpu, thread, id);
-+	perf_evlist__id_add(evlist, evsel, cpu_map_idx, thread, id);
- 	return 0;
- }
- 
-diff --git a/tools/lib/perf/include/internal/evlist.h b/tools/lib/perf/include/internal/evlist.h
-index 3339bc2f17655..79e11d71072a0 100644
---- a/tools/lib/perf/include/internal/evlist.h
-+++ b/tools/lib/perf/include/internal/evlist.h
-@@ -126,11 +126,11 @@ u64 perf_evlist__read_format(struct perf_evlist *evlist);
- 
- void perf_evlist__id_add(struct perf_evlist *evlist,
- 			 struct perf_evsel *evsel,
--			 int cpu, int thread, u64 id);
-+			 int cpu_map_idx, int thread, u64 id);
- 
- int perf_evlist__id_add_fd(struct perf_evlist *evlist,
- 			   struct perf_evsel *evsel,
--			   int cpu, int thread, int fd);
-+			   int cpu_map_idx, int thread, int fd);
- 
- void perf_evlist__reset_id_hash(struct perf_evlist *evlist);
- 
--- 
-2.43.0
-
 
 
 
