@@ -1,58 +1,53 @@
-Return-Path: <stable+bounces-38744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD618A102F
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:32:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC2BA8A1073
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:36:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50387B25020
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:32:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 768921F2BC29
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E601474C9;
-	Thu, 11 Apr 2024 10:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF824149DE0;
+	Thu, 11 Apr 2024 10:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vEWFyrak"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gg5D0pxE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B171474BE;
-	Thu, 11 Apr 2024 10:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE6F1474CF;
+	Thu, 11 Apr 2024 10:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712831462; cv=none; b=NGC029VNMR18L2V3xSvhcMzBVbyJPRSJJeIcpWT8LF5y309Y+6m87tqQgDKEDtspYo9m36Ngz7+7tPKWhqhV0CXiyn0luLLGTXGKy20/E162n5mjEIr1EyV9wrV0x0IhGGXM/+3owJOurKFGOdzogpZdHMYHvnvftxanEavi/vc=
+	t=1712831612; cv=none; b=O863WZS4PJ1xIpYTFd3gVpXLTmQHw+uKJjj0M9s1d4DnVKuoLdw3CIB24xdqa4W3vZYM0t2wxv/GVNQ9gVIN8zC6dSJIvY3kubRGfmqe6yVUl7PsHtotBcCySlVaXMZctEM3pXi76RfwBGGq9R0UKOEJmW9yc2UN6W7yY1hAcoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712831462; c=relaxed/simple;
-	bh=IFWxknzMHgFZiZ/9MioDxP3I2ZZRYm2fPlbvvX0JSLs=;
+	s=arc-20240116; t=1712831612; c=relaxed/simple;
+	bh=O/9/pTgTbBNjMdGqDx1qnhUnqqVhaqH67h5Nwg7iQio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftJsk40mehq216hfshU68e+uzcFom7Hogu6Joeu5zLFin7Z2TPQF5jvPqf8wJ0tJB6Z2407CXqdtjuAjSPxt7w9KvSh9IAB/lBsU/TLZQDzir7UElRReD8/cNO14oVLJT0JCUMUrhXts8+2gTtPpQI+sk8xx7OKZ4zD/f12cVZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vEWFyrak; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0ECCC433C7;
-	Thu, 11 Apr 2024 10:31:01 +0000 (UTC)
+	 MIME-Version; b=H4oFZC7x46EqrATdPSeHnk/YfcgMC6CgT7TnvdQ/UxO0Tz5d/cVAiS2BzGsxRZbUAHTj6LXXy5dwUJHQUMayAaDnjS51bpxHlHt5vIG65qQkSLt9hjTx+wcnOeQWTEru+zpEvDvwP3vH5yNS/LgQuimGEAnnxbPCpPk/h619mwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gg5D0pxE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD13C433C7;
+	Thu, 11 Apr 2024 10:33:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712831462;
-	bh=IFWxknzMHgFZiZ/9MioDxP3I2ZZRYm2fPlbvvX0JSLs=;
+	s=korg; t=1712831612;
+	bh=O/9/pTgTbBNjMdGqDx1qnhUnqqVhaqH67h5Nwg7iQio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vEWFyrakcqDFXdSzNtU2WG0m8KNbGvc6mtHFlHjxIVCXmztd58wst1WgHDN1eof5H
-	 JxdlizIibUs9sWK5P4m/wzfeLXCfqzw5TdHfD8kRMp6JGqHVzVwdmWZREhA5t4WXGQ
-	 HQJSjsfPY17p75M8YYBUh1TUpfGy+iQk3yeYzkBA=
+	b=Gg5D0pxEy9zQ57oO/tS1pEtQ/e45xkvbbAZx3KyHoLcoS447jhLLKsMW4SN5k2qop
+	 aL5KfEZigZLJZMFENNUj47S8Tddjd+2WbWbDy8Vc98V2yM+h+DOMdtKtJyg9yila+l
+	 TZoxJ1wz0A/Zy04QLmPcfsxZzFfNPpjbf7Xt2AhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niels De Graef <ndegraef@redhat.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Martin Krastev <martin.krastev@broadcom.com>,
-	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	dri-devel@lists.freedesktop.org,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 017/294] drm/vmwgfx: Fix possible null pointer derefence with invalid contexts
-Date: Thu, 11 Apr 2024 11:53:00 +0200
-Message-ID: <20240411095436.152044413@linuxfoundation.org>
+Subject: [PATCH 5.10 018/294] serial: max310x: fix NULL pointer dereference in I2C instantiation
+Date: Thu, 11 Apr 2024 11:53:01 +0200
+Message-ID: <20240411095436.182334522@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
 References: <20240411095435.633465671@linuxfoundation.org>
@@ -71,101 +66,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 517621b7060096e48e42f545fa6646fc00252eac ]
+[ Upstream commit 0d27056c24efd3d63a03f3edfbcfc4827086b110 ]
 
-vmw_context_cotable can return either an error or a null pointer and its
-usage sometimes went unchecked. Subsequent code would then try to access
-either a null pointer or an error value.
+When trying to instantiate a max14830 device from userspace:
 
-The invalid dereferences were only possible with malformed userspace
-apps which never properly initialized the rendering contexts.
+    echo max14830 0x60 > /sys/bus/i2c/devices/i2c-2/new_device
 
-Check the results of vmw_context_cotable to fix the invalid derefs.
+we get the following error:
 
-Thanks:
-ziming zhang(@ezrak1e) from Ant Group Light-Year Security Lab
-who was the first person to discover it.
-Niels De Graef who reported it and helped to track down the poc.
+    Unable to handle kernel NULL pointer dereference at virtual address...
+    ...
+    Call trace:
+        max310x_i2c_probe+0x48/0x170 [max310x]
+        i2c_device_probe+0x150/0x2a0
+    ...
 
-Fixes: 9c079b8ce8bf ("drm/vmwgfx: Adapt execbuf to the new validation api")
-Cc: <stable@vger.kernel.org> # v4.20+
-Reported-by: Niels De Graef  <ndegraef@redhat.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Cc: Martin Krastev <martin.krastev@broadcom.com>
-Cc: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Cc: Ian Forbes <ian.forbes@broadcom.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240110200305.94086-1-zack.rusin@broadcom.com
+Add check for validity of devtype to prevent the error, and abort probe
+with a meaningful error message.
+
+Fixes: 2e1f2d9a9bdb ("serial: max310x: implement I2C support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20240118152213.2644269-2-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/tty/serial/max310x.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-index 831291b5d1a03..616f6cb622783 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -467,7 +467,7 @@ static int vmw_resource_context_res_add(struct vmw_private *dev_priv,
- 	    vmw_res_type(ctx) == vmw_res_dx_context) {
- 		for (i = 0; i < cotable_max; ++i) {
- 			res = vmw_context_cotable(ctx, i);
--			if (IS_ERR(res))
-+			if (IS_ERR_OR_NULL(res))
- 				continue;
+diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
+index 5570fd3b84e15..363b68555fe62 100644
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -1636,13 +1636,16 @@ static unsigned short max310x_i2c_slave_addr(unsigned short addr,
  
- 			ret = vmw_execbuf_res_noctx_val_add(sw_context, res,
-@@ -1272,6 +1272,8 @@ static int vmw_cmd_dx_define_query(struct vmw_private *dev_priv,
- 		return -EINVAL;
+ static int max310x_i2c_probe(struct i2c_client *client)
+ {
+-	const struct max310x_devtype *devtype =
+-			device_get_match_data(&client->dev);
++	const struct max310x_devtype *devtype;
+ 	struct i2c_client *port_client;
+ 	struct regmap *regmaps[4];
+ 	unsigned int i;
+ 	u8 port_addr;
  
- 	cotable_res = vmw_context_cotable(ctx_node->ctx, SVGA_COTABLE_DXQUERY);
-+	if (IS_ERR_OR_NULL(cotable_res))
-+		return cotable_res ? PTR_ERR(cotable_res) : -EINVAL;
- 	ret = vmw_cotable_notify(cotable_res, cmd->body.queryId);
- 
- 	return ret;
-@@ -2450,6 +2452,8 @@ static int vmw_cmd_dx_view_define(struct vmw_private *dev_priv,
- 		return ret;
- 
- 	res = vmw_context_cotable(ctx_node->ctx, vmw_view_cotables[view_type]);
-+	if (IS_ERR_OR_NULL(res))
-+		return res ? PTR_ERR(res) : -EINVAL;
- 	ret = vmw_cotable_notify(res, cmd->defined_id);
- 	if (unlikely(ret != 0))
- 		return ret;
-@@ -2535,8 +2539,8 @@ static int vmw_cmd_dx_so_define(struct vmw_private *dev_priv,
- 
- 	so_type = vmw_so_cmd_to_type(header->id);
- 	res = vmw_context_cotable(ctx_node->ctx, vmw_so_cotables[so_type]);
--	if (IS_ERR(res))
--		return PTR_ERR(res);
-+	if (IS_ERR_OR_NULL(res))
-+		return res ? PTR_ERR(res) : -EINVAL;
- 	cmd = container_of(header, typeof(*cmd), header);
- 	ret = vmw_cotable_notify(res, cmd->defined_id);
- 
-@@ -2655,6 +2659,8 @@ static int vmw_cmd_dx_define_shader(struct vmw_private *dev_priv,
- 		return -EINVAL;
- 
- 	res = vmw_context_cotable(ctx_node->ctx, SVGA_COTABLE_DXSHADER);
-+	if (IS_ERR_OR_NULL(res))
-+		return res ? PTR_ERR(res) : -EINVAL;
- 	ret = vmw_cotable_notify(res, cmd->body.shaderId);
- 	if (ret)
- 		return ret;
-@@ -2976,6 +2982,8 @@ static int vmw_cmd_dx_define_streamoutput(struct vmw_private *dev_priv,
- 	}
- 
- 	res = vmw_context_cotable(ctx_node->ctx, SVGA_COTABLE_STREAMOUTPUT);
-+	if (IS_ERR_OR_NULL(res))
-+		return res ? PTR_ERR(res) : -EINVAL;
- 	ret = vmw_cotable_notify(res, cmd->body.soid);
- 	if (ret)
- 		return ret;
++	devtype = device_get_match_data(&client->dev);
++	if (!devtype)
++		return dev_err_probe(&client->dev, -ENODEV, "Failed to match device\n");
++
+ 	if (client->addr < devtype->slave_addr.min ||
+ 		client->addr > devtype->slave_addr.max)
+ 		return dev_err_probe(&client->dev, -EINVAL,
 -- 
 2.43.0
 
