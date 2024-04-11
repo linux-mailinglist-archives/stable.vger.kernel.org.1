@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-38188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E3808A0D69
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:03:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A51E8A10F6
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C97922861A6
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:03:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEBEF1F2D09B
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D84145B05;
-	Thu, 11 Apr 2024 10:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344BB145B05;
+	Thu, 11 Apr 2024 10:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+ozhDOX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8Xfh2UO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC2A145B04;
-	Thu, 11 Apr 2024 10:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4D013D24D;
+	Thu, 11 Apr 2024 10:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829823; cv=none; b=TKI3+G9WzFOylL+KeGdvOFIqKJEsv8q7ZfVcsKTItWFaMLfvT3crIt9hn3mPhL7n8WGwbcMXX9c3gP82uG+wdkFQ1YtBAkeAn5fsxnRhxYRVETLcsBY3TjXi//XXiaRywo6RQdKFcVxxp4KGHhZlbimYLmQH7cQf9sLHNiCEibo=
+	t=1712831940; cv=none; b=hCG2iyl3NzT2wkyfXeDpfSpYuBEb6FO98+RjA1ps0vGUThQ1VNAtW+A12Sz40obR80hGD1YJWRiPTlR+pcAy3CIwFu3BbulmWtMCUVrPo1FrgWzvpnnVSBruI+blDm0I8MTcmAj8/F0cInLAuYJ8bxP5s6ABAlohOYf16uq1Tps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829823; c=relaxed/simple;
-	bh=XCMOBc1hhruSr/n/csosEXB83eD7M1qO6i92857LblM=;
+	s=arc-20240116; t=1712831940; c=relaxed/simple;
+	bh=OuX57w3Y+lKwLpDcmrguSkEwb5y2n1MkhAtvoNMrdzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eh+mmDhw1A30WiV6eR3iIRln1BbY8yl9ZtK+dLImp2h3WioI049SDB2l9EuV8NXo/jFWG1+L2CQULsAn0lJSoJzzJkKjxxv4ut/xSdkqBIK7sJ84kWdOFEwpOxmpP/0K+/Od38MT67EAa2oTdL2KPr4yOi5arNvo9tMQ4ohVKfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+ozhDOX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91A5C433C7;
-	Thu, 11 Apr 2024 10:03:42 +0000 (UTC)
+	 MIME-Version; b=LLjkXtME+gF2Wuxh82DpSqJNGS7wH9MrABUQ+TtyIQNXAWLiHepGYTJU+6Aucsj8l031MQXiLSMkHS7F2pR4e5AFCGncY0fh4QyLcC3fiF0UCEKxvRFKVeIw4SoYsI/C1UaJQ0VdOUEHD8jq5i54Aa2+utZJr9u2zLloyZvF5tY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8Xfh2UO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF64C433C7;
+	Thu, 11 Apr 2024 10:38:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829823;
-	bh=XCMOBc1hhruSr/n/csosEXB83eD7M1qO6i92857LblM=;
+	s=korg; t=1712831939;
+	bh=OuX57w3Y+lKwLpDcmrguSkEwb5y2n1MkhAtvoNMrdzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y+ozhDOXjbftKqr+pc03Rp7km0yDZmI4ZIHJxeh8xJThxEUNqJj9YjFE7JhfSsH6A
-	 Qj70tac5sX6CW9nQ+14Fw7TX8RKxZVI3/wWF9oG/eVXMbX0xbnk2rpUyny1v99lNX4
-	 v917NCchGX9soP0AwkapA5dEUGlWsnWy3JOuWViw=
+	b=g8Xfh2UOLJ12FzbElsFvjlgMU3ILhutUn1WkDoSmOo5fk+q8gRLvkanvfkc2IEISE
+	 ZX/yX/A2hPxn/JBAoAx5r2KMrAZfwsgJWhCHhPWFa5r/btuy3zfm3c2QJMHBJHzYxZ
+	 5eEnkeTATfETYep+IQrG7wiqnC8PSOVcHtxPdPTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Hui Wang <hui.wang@canonical.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 4.19 116/175] Bluetooth: hci_event: set the conn encrypted before conn establishes
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 176/294] scsi: qla2xxx: Fix command flush on cable pull
 Date: Thu, 11 Apr 2024 11:55:39 +0200
-Message-ID: <20240411095423.058814671@linuxfoundation.org>
+Message-ID: <20240411095440.928131730@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hui Wang <hui.wang@canonical.com>
+From: Quinn Tran <qutran@marvell.com>
 
-commit c569242cd49287d53b73a94233db40097d838535 upstream.
+commit a27d4d0e7de305def8a5098a614053be208d1aa1 upstream.
 
-We have a BT headset (Lenovo Thinkplus XT99), the pairing and
-connecting has no problem, once this headset is paired, bluez will
-remember this device and will auto re-connect it whenever the device
-is powered on. The auto re-connecting works well with Windows and
-Android, but with Linux, it always fails. Through debugging, we found
-at the rfcomm connection stage, the bluetooth stack reports
-"Connection refused - security block (0x0003)".
+System crash due to command failed to flush back to SCSI layer.
 
-For this device, the re-connecting negotiation process is different
-from other BT headsets, it sends the Link_KEY_REQUEST command before
-the CONNECT_REQUEST completes, and it doesn't send ENCRYPT_CHANGE
-command during the negotiation. When the device sends the "connect
-complete" to hci, the ev->encr_mode is 1.
+ BUG: unable to handle kernel NULL pointer dereference at 0000000000000000
+ PGD 0 P4D 0
+ Oops: 0000 [#1] SMP NOPTI
+ CPU: 27 PID: 793455 Comm: kworker/u130:6 Kdump: loaded Tainted: G           OE    --------- -  - 4.18.0-372.9.1.el8.x86_64 #1
+ Hardware name: HPE ProLiant DL360 Gen10/ProLiant DL360 Gen10, BIOS U32 09/03/2021
+ Workqueue: nvme-wq nvme_fc_connect_ctrl_work [nvme_fc]
+ RIP: 0010:__wake_up_common+0x4c/0x190
+ Code: 24 10 4d 85 c9 74 0a 41 f6 01 04 0f 85 9d 00 00 00 48 8b 43 08 48 83 c3 08 4c 8d 48 e8 49 8d 41 18 48 39 c3 0f 84 f0 00 00 00 <49> 8b 41 18 89 54 24 08 31 ed 4c 8d 70 e8 45 8b 29 41 f6 c5 04 75
+ RSP: 0018:ffff95f3e0cb7cd0 EFLAGS: 00010086
+ RAX: 0000000000000000 RBX: ffff8b08d3b26328 RCX: 0000000000000000
+ RDX: 0000000000000001 RSI: 0000000000000003 RDI: ffff8b08d3b26320
+ RBP: 0000000000000001 R08: 0000000000000000 R09: ffffffffffffffe8
+ R10: 0000000000000000 R11: ffff95f3e0cb7a60 R12: ffff95f3e0cb7d20
+ R13: 0000000000000003 R14: 0000000000000000 R15: 0000000000000000
+ FS:  0000000000000000(0000) GS:ffff8b2fdf6c0000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000000 CR3: 0000002f1e410002 CR4: 00000000007706e0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ PKRU: 55555554
+ Call Trace:
+  __wake_up_common_lock+0x7c/0xc0
+  qla_nvme_ls_req+0x355/0x4c0 [qla2xxx]
+ qla2xxx [0000:12:00.1]-f084:3: qlt_free_session_done: se_sess 0000000000000000 / sess ffff8ae1407ca000 from port 21:32:00:02:ac:07:ee:b8 loop_id 0x02 s_id 01:02:00 logout 1 keep 0 els_logo 0
+ ? __nvme_fc_send_ls_req+0x260/0x380 [nvme_fc]
+ qla2xxx [0000:12:00.1]-207d:3: FCPort 21:32:00:02:ac:07:ee:b8 state transitioned from ONLINE to LOST - portid=010200.
+  ? nvme_fc_send_ls_req.constprop.42+0x1a/0x45 [nvme_fc]
+ qla2xxx [0000:12:00.1]-2109:3: qla2x00_schedule_rport_del 21320002ac07eeb8. rport ffff8ae598122000 roles 1
+ ? nvme_fc_connect_ctrl_work.cold.63+0x1e3/0xa7d [nvme_fc]
+ qla2xxx [0000:12:00.1]-f084:3: qlt_free_session_done: se_sess 0000000000000000 / sess ffff8ae14801e000 from port 21:32:01:02:ad:f7:ee:b8 loop_id 0x04 s_id 01:02:01 logout 1 keep 0 els_logo 0
+  ? __switch_to+0x10c/0x450
+ ? process_one_work+0x1a7/0x360
+ qla2xxx [0000:12:00.1]-207d:3: FCPort 21:32:01:02:ad:f7:ee:b8 state transitioned from ONLINE to LOST - portid=010201.
+  ? worker_thread+0x1ce/0x390
+  ? create_worker+0x1a0/0x1a0
+ qla2xxx [0000:12:00.1]-2109:3: qla2x00_schedule_rport_del 21320102adf7eeb8. rport ffff8ae3b2312800 roles 70
+  ? kthread+0x10a/0x120
+ qla2xxx [0000:12:00.1]-2112:3: qla_nvme_unregister_remote_port: unregister remoteport on ffff8ae14801e000 21320102adf7eeb8
+  ? set_kthread_struct+0x40/0x40
+ qla2xxx [0000:12:00.1]-2110:3: remoteport_delete of ffff8ae14801e000 21320102adf7eeb8 completed.
+  ? ret_from_fork+0x1f/0x40
+ qla2xxx [0000:12:00.1]-f086:3: qlt_free_session_done: waiting for sess ffff8ae14801e000 logout
 
-So here in the conn_complete_evt(), if ev->encr_mode is 1, link type
-is ACL and HCI_CONN_ENCRYPT is not set, we set HCI_CONN_ENCRYPT to
-this conn, and update conn->enc_key_size accordingly.
+The system was under memory stress where driver was not able to allocate an
+SRB to carry out error recovery of cable pull.  The failure to flush causes
+upper layer to start modifying scsi_cmnd.  When the system frees up some
+memory, the subsequent cable pull trigger another command flush. At this
+point the driver access a null pointer when attempting to DMA unmap the
+SGL.
 
-After this change, this BT headset could re-connect with Linux
-successfully. This is the btmon log after applying the patch, after
-receiving the "Connect Complete" with "Encryption: Enabled", will send
-the command to read encryption key size:
-> HCI Event: Connect Request (0x04) plen 10
-        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
-        Class: 0x240404
-          Major class: Audio/Video (headset, speaker, stereo, video, vcr)
-          Minor class: Wearable Headset Device
-          Rendering (Printing, Speaker)
-          Audio (Speaker, Microphone, Headset)
-        Link type: ACL (0x01)
-...
-> HCI Event: Link Key Request (0x17) plen 6
-        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
-< HCI Command: Link Key Request Reply (0x01|0x000b) plen 22
-        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
-        Link key: ${32-hex-digits-key}
-...
-> HCI Event: Connect Complete (0x03) plen 11
-        Status: Success (0x00)
-        Handle: 256
-        Address: 8C:3C:AA:D8:11:67 (OUI 8C-3C-AA)
-        Link type: ACL (0x01)
-        Encryption: Enabled (0x01)
-< HCI Command: Read Encryption Key... (0x05|0x0008) plen 2
-        Handle: 256
-< ACL Data TX: Handle 256 flags 0x00 dlen 10
-      L2CAP: Information Request (0x0a) ident 1 len 2
-        Type: Extended features supported (0x0002)
-> HCI Event: Command Complete (0x0e) plen 7
-      Read Encryption Key Size (0x05|0x0008) ncmd 1
-        Status: Success (0x00)
-        Handle: 256
-        Key size: 16
+Add a check to make sure commands are flush back on session tear down to
+prevent the null pointer access.
 
 Cc: stable@vger.kernel.org
-Link: https://github.com/bluez/bluez/issues/704
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Signed-off-by: Hui Wang <hui.wang@canonical.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-7-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/scsi/qla2xxx/qla_target.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -2453,6 +2453,31 @@ static void hci_conn_complete_evt(struct
- 		if (test_bit(HCI_ENCRYPT, &hdev->flags))
- 			set_bit(HCI_CONN_ENCRYPT, &conn->flags);
+--- a/drivers/scsi/qla2xxx/qla_target.c
++++ b/drivers/scsi/qla2xxx/qla_target.c
+@@ -1038,6 +1038,16 @@ void qlt_free_session_done(struct work_s
+ 		    "%s: sess %p logout completed\n", __func__, sess);
+ 	}
  
-+		/* "Link key request" completed ahead of "connect request" completes */
-+		if (ev->encr_mode == 1 && !test_bit(HCI_CONN_ENCRYPT, &conn->flags) &&
-+		    ev->link_type == ACL_LINK) {
-+			struct link_key *key;
-+			struct hci_cp_read_enc_key_size cp;
++	/* check for any straggling io left behind */
++	if (!(sess->flags & FCF_FCP2_DEVICE) &&
++	    qla2x00_eh_wait_for_pending_commands(sess->vha, sess->d_id.b24, 0, WAIT_TARGET)) {
++		ql_log(ql_log_warn, vha, 0x3027,
++		    "IO not return. Resetting.\n");
++		set_bit(ISP_ABORT_NEEDED, &vha->dpc_flags);
++		qla2xxx_wake_dpc(vha);
++		qla2x00_wait_for_chip_reset(vha);
++	}
 +
-+			key = hci_find_link_key(hdev, &ev->bdaddr);
-+			if (key) {
-+				set_bit(HCI_CONN_ENCRYPT, &conn->flags);
-+
-+				if (!(hdev->commands[20] & 0x10)) {
-+					conn->enc_key_size = HCI_LINK_KEY_SIZE;
-+				} else {
-+					cp.handle = cpu_to_le16(conn->handle);
-+					if (hci_send_cmd(hdev, HCI_OP_READ_ENC_KEY_SIZE,
-+							 sizeof(cp), &cp)) {
-+						bt_dev_err(hdev, "sending read key size failed");
-+						conn->enc_key_size = HCI_LINK_KEY_SIZE;
-+					}
-+				}
-+
-+				hci_encrypt_cfm(conn, ev->status);
-+			}
-+		}
-+
- 		/* Get remote features */
- 		if (conn->type == ACL_LINK) {
- 			struct hci_cp_read_remote_features cp;
+ 	if (sess->logo_ack_needed) {
+ 		sess->logo_ack_needed = 0;
+ 		qla24xx_async_notify_ack(vha, sess,
 
 
 
