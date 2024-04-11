@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-38325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43528A0E08
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:10:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43E918A10FB
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:40:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F200281444
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:10:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1B56288013
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413A5145B26;
-	Thu, 11 Apr 2024 10:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74711487EC;
+	Thu, 11 Apr 2024 10:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2g1yZkf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBlwUa1y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00050145B07;
-	Thu, 11 Apr 2024 10:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842471465BF;
+	Thu, 11 Apr 2024 10:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830223; cv=none; b=iJKSN+GgTBylXRourjbnDNoWbVx2Fkc2ra2rZS5ZjvWMfQNMHe3qACZK4eYaSstqTpDL1JJ5x7oaIIDYddVcJG18HIKDXiFmFK3I0PD0UHLzMD+ni0rn55H4xtnHhIzEekjM0+IQDAF32h/Nr79ohj1CFTDZ2lvEOsTWdrRsLlo=
+	t=1712831954; cv=none; b=i+BrOAiQHuoUFQ95AXidFVtlS8OA/7x7Nn6pCgqqR9gmzeqeguoYLiEN9RCAdPDD5XX26GkRp12MP1VuJz6uO7APPlwujTNc+IjrcPl88EP3sBYxGb7cgey1u0gx/tz8YfwrD6aVTZCw4aDML0QdI2bzZmAHv/sI2kTxXDd/xIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830223; c=relaxed/simple;
-	bh=5SRdojoQ9qDNEuoAgLynYp/X8cPVOBcPaOFAx0fuOus=;
+	s=arc-20240116; t=1712831954; c=relaxed/simple;
+	bh=oLrVNt9qrL3EgIXJXQvItJ0RJKy/ejrKc3YBcr91GdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YXvmtmjTitl9BK01FsJKvj/zyy7xo47NEJIyVo8uXDpv5uDt0NWgaEb658UIVLI3pS3eiCxkT0GcGqHiHjx5Ya95w2jj/88Zh4dFn39/9FzXmEm5zlEhkndBrvFfOoWJpD2q+g1lI2BruIkZGTirIfbsCRDojKENN0ZKP1o+hHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2g1yZkf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25766C433C7;
-	Thu, 11 Apr 2024 10:10:21 +0000 (UTC)
+	 MIME-Version; b=G8+Nn9USYlWa1RY63JMCROpDr089JXwvwOyS+NbSnSN6Y+q2T8xZy2WGP4+X7hRBmxBn93PcZ4dYcENFDw3SsMP+orNVANfoTe3Z02p0vcTBYNkX5baqeNV9hpA5q5c47D+gsT2vXeYDNo7SCyeFCgjctCeiljP0RQxLiwmgCOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBlwUa1y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B347BC433C7;
+	Thu, 11 Apr 2024 10:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830222;
-	bh=5SRdojoQ9qDNEuoAgLynYp/X8cPVOBcPaOFAx0fuOus=;
+	s=korg; t=1712831954;
+	bh=oLrVNt9qrL3EgIXJXQvItJ0RJKy/ejrKc3YBcr91GdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l2g1yZkfAx/r75xMWS1GUCtauYsNQX9oXZXoBKXK92B3PniiTIRURTgNpoFUkSBKo
-	 iTmo4cDvZI5BYMibSZAzim2H5H1SZQJSxohtGeNuXCLH8T28ZrRBvMRsxvQOw+bJMB
-	 CleJL80hQmVpsvyrveZcxmx/sgG6Q8Sib9pkB+bA=
+	b=GBlwUa1ygUvz0UwLuGrvI730thou88zhsQgGdQ5qKDLZtSe2bMokkYFMaW99mZgZu
+	 hPIB1wj4kqSL+O6tQxOue+tzDOaJkklyvMnKP+R/fNeey5GzymYGa58/LUdyT4UK5q
+	 T2kjTmwbZ2lfRDggF21Vnk3mgyW0mXi8kpIhyGLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 076/143] media: sta2x11: fix irq handler cast
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.10 181/294] USB: core: Fix deadlock in usb_deauthorize_interface()
 Date: Thu, 11 Apr 2024 11:55:44 +0200
-Message-ID: <20240411095423.201772163@linuxfoundation.org>
+Message-ID: <20240411095441.071942007@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
-References: <20240411095420.903937140@linuxfoundation.org>
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +60,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 3de49ae81c3a0f83a554ecbce4c08e019f30168e ]
+commit 80ba43e9f799cbdd83842fc27db667289b3150f5 upstream.
 
-clang-16 warns about casting incompatible function pointers:
+Among the attribute file callback routines in
+drivers/usb/core/sysfs.c, the interface_authorized_store() function is
+the only one which acquires a device lock on an ancestor device: It
+calls usb_deauthorize_interface(), which locks the interface's parent
+USB device.
 
-drivers/media/pci/sta2x11/sta2x11_vip.c:1057:6: error: cast from 'irqreturn_t (*)(int, struct sta2x11_vip *)' (aka 'enum irqreturn (*)(int, struct sta2x11_vip *)') to 'irq_handler_t' (aka 'enum irqreturn (*)(int, void *)') converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+The will lead to deadlock if another process already owns that lock
+and tries to remove the interface, whether through a configuration
+change or because the device has been disconnected.  As part of the
+removal procedure, device_del() waits for all ongoing sysfs attribute
+callbacks to complete.  But usb_deauthorize_interface() can't complete
+until the device lock has been released, and the lock won't be
+released until the removal has finished.
 
-Change the prototype of the irq handler to the regular version with a
-local variable to adjust the argument type.
+The mechanism provided by sysfs to prevent this kind of deadlock is
+to use the sysfs_break_active_protection() function, which tells sysfs
+not to wait for the attribute callback.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-[hverkuil: update argument documentation]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested by: Yue Sun <samsun1006219@gmail.com>
+Reported by: xingwei lee <xrivendell7@gmail.com>
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/linux-usb/CAEkJfYO6jRVC8Tfrd_R=cjO0hguhrV31fDPrLrNOOHocDkPoAA@mail.gmail.com/#r
+Fixes: 310d2b4124c0 ("usb: interface authorization: SysFS part of USB interface authorization")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/1c37eea1-9f56-4534-b9d8-b443438dc869@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/sta2x11/sta2x11_vip.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/usb/core/sysfs.c |   16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/pci/sta2x11/sta2x11_vip.c b/drivers/media/pci/sta2x11/sta2x11_vip.c
-index e4cf9d63e926d..364ce9e570182 100644
---- a/drivers/media/pci/sta2x11/sta2x11_vip.c
-+++ b/drivers/media/pci/sta2x11/sta2x11_vip.c
-@@ -757,7 +757,7 @@ static const struct video_device video_dev_template = {
- /**
-  * vip_irq - interrupt routine
-  * @irq: Number of interrupt ( not used, correct number is assumed )
-- * @vip: local data structure containing all information
-+ * @data: local data structure containing all information
-  *
-  * check for both frame interrupts set ( top and bottom ).
-  * check FIFO overflow, but limit number of log messages after open.
-@@ -767,8 +767,9 @@ static const struct video_device video_dev_template = {
-  *
-  * IRQ_HANDLED, interrupt done.
-  */
--static irqreturn_t vip_irq(int irq, struct sta2x11_vip *vip)
-+static irqreturn_t vip_irq(int irq, void *data)
+--- a/drivers/usb/core/sysfs.c
++++ b/drivers/usb/core/sysfs.c
+@@ -1166,14 +1166,24 @@ static ssize_t interface_authorized_stor
  {
-+	struct sta2x11_vip *vip = data;
- 	unsigned int status;
+ 	struct usb_interface *intf = to_usb_interface(dev);
+ 	bool val;
++	struct kernfs_node *kn;
  
- 	status = reg_read(vip, DVP_ITS);
-@@ -1053,9 +1054,7 @@ static int sta2x11_vip_init_one(struct pci_dev *pdev,
+ 	if (strtobool(buf, &val) != 0)
+ 		return -EINVAL;
  
- 	spin_lock_init(&vip->slock);
+-	if (val)
++	if (val) {
+ 		usb_authorize_interface(intf);
+-	else
+-		usb_deauthorize_interface(intf);
++	} else {
++		/*
++		 * Prevent deadlock if another process is concurrently
++		 * trying to unregister intf.
++		 */
++		kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
++		if (kn) {
++			usb_deauthorize_interface(intf);
++			sysfs_unbreak_active_protection(kn);
++		}
++	}
  
--	ret = request_irq(pdev->irq,
--			  (irq_handler_t) vip_irq,
--			  IRQF_SHARED, KBUILD_MODNAME, vip);
-+	ret = request_irq(pdev->irq, vip_irq, IRQF_SHARED, KBUILD_MODNAME, vip);
- 	if (ret) {
- 		dev_err(&pdev->dev, "request_irq failed\n");
- 		ret = -ENODEV;
--- 
-2.43.0
-
+ 	return count;
+ }
 
 
 
