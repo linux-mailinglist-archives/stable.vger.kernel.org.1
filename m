@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-38994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64FD8A115E
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:43:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8C878A0FF9
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:29:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E788B1C23C08
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:43:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0662E1C22795
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5616D13C9A5;
-	Thu, 11 Apr 2024 10:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FCFC146A77;
+	Thu, 11 Apr 2024 10:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tdwGg5nf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6lUoPZl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1509C64CC0;
-	Thu, 11 Apr 2024 10:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2A2143C76;
+	Thu, 11 Apr 2024 10:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712832204; cv=none; b=ehrKCsyek+prTX2d4k9dl9zBH6zUprseVdlcNSJoLmy4u5eMrsW57LLl9NTJ9d7mC7NmVgo0xvlmmhxlrJkU4Onz2Zg7nu6JiB77Z5X4tUJeG2ifP1qklIbm1ZYm+9xfA6kReALfYk+0SVEx9KsQ46VqNPdmTQ+5WIgeOzsLR0s=
+	t=1712831372; cv=none; b=tZ0332psJ+hwq2cbZF/Xlyv3uCq/zxRz0WQcDp5h4I2lpZeLa4TLIK7HahZCExaGyLVYO5mQG309W6ZXw02S7aROjuxhwYdsHVF1zgWjsNFhvm53/UKjuGRTlqkp1LfRN7+y98jSV4lTR0cBfI/bTMPNO4Ajd2k2BxuT+q54wKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712832204; c=relaxed/simple;
-	bh=5KrGVtxZ001BmcSdcXLmjqN+y302wayJMnRh7IXao2c=;
+	s=arc-20240116; t=1712831372; c=relaxed/simple;
+	bh=ecm8EpMoDNZIxzHF9t4B4mqMY2sCc3MIdCMR4ijNeck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bTnHkSRp+hv8Ni4kvvbwwMtaPv8PLigWPLz3HAk6XQj/fUlu4+OPGtuMHOtbLloA83vHgjJkz3bcMvWVkvkqTpzDCi9pbzT35gkJnJm26wLnF0FC2Gk8lt7q9sZyfz88lUOnA7MA2YFJRMvI7qPJZAW6NydbFNbckuiBqTqmtkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tdwGg5nf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECE6C433F1;
-	Thu, 11 Apr 2024 10:43:23 +0000 (UTC)
+	 MIME-Version; b=ishi+PqlCdCsvLJj9hIXu4xWUQp8mVhZE1U/hIr2Pkyea2LSoWA8w/eTxJ/k3fcshyT7WYEKpMzVxhIxgDArXFlWriHk2OGgAN3o1Bq8W4OHQsO7ITbgtnnrL5d+Cj262iNyFSUzrv/oDMoqlYob4CIcAah1Jc6UTMQeDyJIBOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6lUoPZl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C36C433F1;
+	Thu, 11 Apr 2024 10:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712832204;
-	bh=5KrGVtxZ001BmcSdcXLmjqN+y302wayJMnRh7IXao2c=;
+	s=korg; t=1712831371;
+	bh=ecm8EpMoDNZIxzHF9t4B4mqMY2sCc3MIdCMR4ijNeck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tdwGg5nfBiMOy5UmVj1Yv+2AUUI9821e7sFSrwK4t5TlLWS5v0fr6HU+yna7W+/Jy
-	 eXS8MvuMYXte8AS5iGBlP8Y8cjsHRzCRR9ZF1W3g1LY6rIDKN2xPPeDddLx5Xjy+VM
-	 ZBW5m8yDfiLmBBWHuwfsHnwpIRx5v8ATh9MT8DYU=
+	b=n6lUoPZl4BPxsWybZEbRYwIvM1dnnlZt1DW8Pbt/24LzSCeVA+Cvxk3luuohb3d5H
+	 lWvaOlb2oF1CEF0SI2SfqU3vBqFyQ/nq081r3jNTSIuyB4RZhYMG6L5Ze0NSxCRHSe
+	 fxup55TUAUJbiXm/UGtvCgo8XD7xKW1H3lNfNGpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 263/294] media: sta2x11: fix irq handler cast
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+f8e9a371388aa62ecab4@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 099/114] io_uring: clear opcode specific data for an early failure
 Date: Thu, 11 Apr 2024 11:57:06 +0200
-Message-ID: <20240411095443.475139372@linuxfoundation.org>
+Message-ID: <20240411095419.879095073@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+In-Reply-To: <20240411095416.853744210@linuxfoundation.org>
+References: <20240411095416.853744210@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 3de49ae81c3a0f83a554ecbce4c08e019f30168e ]
+[ Upstream commit e21e1c45e1fe2e31732f40256b49c04e76a17cee ]
 
-clang-16 warns about casting incompatible function pointers:
+If failure happens before the opcode prep handler is called, ensure that
+we clear the opcode specific area of the request, which holds data
+specific to that request type. This prevents errors where opcode
+handlers either don't get to clear per-request private data since prep
+isn't even called.
 
-drivers/media/pci/sta2x11/sta2x11_vip.c:1057:6: error: cast from 'irqreturn_t (*)(int, struct sta2x11_vip *)' (aka 'enum irqreturn (*)(int, struct sta2x11_vip *)') to 'irq_handler_t' (aka 'enum irqreturn (*)(int, void *)') converts to incompatible function type [-Werror,-Wcast-function-type-strict]
-
-Change the prototype of the irq handler to the regular version with a
-local variable to adjust the argument type.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-[hverkuil: update argument documentation]
+Reported-and-tested-by: syzbot+f8e9a371388aa62ecab4@syzkaller.appspotmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/sta2x11/sta2x11_vip.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ io_uring/io_uring.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/media/pci/sta2x11/sta2x11_vip.c b/drivers/media/pci/sta2x11/sta2x11_vip.c
-index 336df65c8af11..01ca940aecc2d 100644
---- a/drivers/media/pci/sta2x11/sta2x11_vip.c
-+++ b/drivers/media/pci/sta2x11/sta2x11_vip.c
-@@ -760,7 +760,7 @@ static const struct video_device video_dev_template = {
- /**
-  * vip_irq - interrupt routine
-  * @irq: Number of interrupt ( not used, correct number is assumed )
-- * @vip: local data structure containing all information
-+ * @data: local data structure containing all information
-  *
-  * check for both frame interrupts set ( top and bottom ).
-  * check FIFO overflow, but limit number of log messages after open.
-@@ -770,8 +770,9 @@ static const struct video_device video_dev_template = {
-  *
-  * IRQ_HANDLED, interrupt done.
-  */
--static irqreturn_t vip_irq(int irq, struct sta2x11_vip *vip)
-+static irqreturn_t vip_irq(int irq, void *data)
- {
-+	struct sta2x11_vip *vip = data;
- 	unsigned int status;
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 2c0a9a98272ca..62ff7cee5db5f 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2117,6 +2117,13 @@ static void io_init_req_drain(struct io_kiocb *req)
+ 	}
+ }
  
- 	status = reg_read(vip, DVP_ITS);
-@@ -1053,9 +1054,7 @@ static int sta2x11_vip_init_one(struct pci_dev *pdev,
++static __cold int io_init_fail_req(struct io_kiocb *req, int err)
++{
++	/* ensure per-opcode data is cleared if we fail before prep */
++	memset(&req->cmd.data, 0, sizeof(req->cmd.data));
++	return err;
++}
++
+ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
+ 		       const struct io_uring_sqe *sqe)
+ 	__must_hold(&ctx->uring_lock)
+@@ -2137,29 +2144,29 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
  
- 	spin_lock_init(&vip->slock);
+ 	if (unlikely(opcode >= IORING_OP_LAST)) {
+ 		req->opcode = 0;
+-		return -EINVAL;
++		return io_init_fail_req(req, -EINVAL);
+ 	}
+ 	def = &io_issue_defs[opcode];
+ 	if (unlikely(sqe_flags & ~SQE_COMMON_FLAGS)) {
+ 		/* enforce forwards compatibility on users */
+ 		if (sqe_flags & ~SQE_VALID_FLAGS)
+-			return -EINVAL;
++			return io_init_fail_req(req, -EINVAL);
+ 		if (sqe_flags & IOSQE_BUFFER_SELECT) {
+ 			if (!def->buffer_select)
+-				return -EOPNOTSUPP;
++				return io_init_fail_req(req, -EOPNOTSUPP);
+ 			req->buf_index = READ_ONCE(sqe->buf_group);
+ 		}
+ 		if (sqe_flags & IOSQE_CQE_SKIP_SUCCESS)
+ 			ctx->drain_disabled = true;
+ 		if (sqe_flags & IOSQE_IO_DRAIN) {
+ 			if (ctx->drain_disabled)
+-				return -EOPNOTSUPP;
++				return io_init_fail_req(req, -EOPNOTSUPP);
+ 			io_init_req_drain(req);
+ 		}
+ 	}
+ 	if (unlikely(ctx->restricted || ctx->drain_active || ctx->drain_next)) {
+ 		if (ctx->restricted && !io_check_restriction(ctx, req, sqe_flags))
+-			return -EACCES;
++			return io_init_fail_req(req, -EACCES);
+ 		/* knock it to the slow queue path, will be drained there */
+ 		if (ctx->drain_active)
+ 			req->flags |= REQ_F_FORCE_ASYNC;
+@@ -2172,9 +2179,9 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
+ 	}
  
--	ret = request_irq(pdev->irq,
--			  (irq_handler_t) vip_irq,
--			  IRQF_SHARED, KBUILD_MODNAME, vip);
-+	ret = request_irq(pdev->irq, vip_irq, IRQF_SHARED, KBUILD_MODNAME, vip);
- 	if (ret) {
- 		dev_err(&pdev->dev, "request_irq failed\n");
- 		ret = -ENODEV;
+ 	if (!def->ioprio && sqe->ioprio)
+-		return -EINVAL;
++		return io_init_fail_req(req, -EINVAL);
+ 	if (!def->iopoll && (ctx->flags & IORING_SETUP_IOPOLL))
+-		return -EINVAL;
++		return io_init_fail_req(req, -EINVAL);
+ 
+ 	if (def->needs_file) {
+ 		struct io_submit_state *state = &ctx->submit_state;
+@@ -2198,12 +2205,12 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
+ 
+ 		req->creds = xa_load(&ctx->personalities, personality);
+ 		if (!req->creds)
+-			return -EINVAL;
++			return io_init_fail_req(req, -EINVAL);
+ 		get_cred(req->creds);
+ 		ret = security_uring_override_creds(req->creds);
+ 		if (ret) {
+ 			put_cred(req->creds);
+-			return ret;
++			return io_init_fail_req(req, ret);
+ 		}
+ 		req->flags |= REQ_F_CREDS;
+ 	}
 -- 
 2.43.0
 
