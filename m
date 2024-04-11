@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-38541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 664848A0F22
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:21:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8208A0E1A
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 897F31C22D8A
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:21:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AE6E1F215E7
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF17D146582;
-	Thu, 11 Apr 2024 10:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A69D145FF0;
+	Thu, 11 Apr 2024 10:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJM4LKz9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZbuusxIk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E24C140E3D;
-	Thu, 11 Apr 2024 10:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A03145B0E;
+	Thu, 11 Apr 2024 10:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712830877; cv=none; b=nNnt19FgvlQOu+0y/o9HlHSlwRpT+0ZrIkAqqqaJJN3ykNnjW06LPZS85kF3Es9UfM38lsHvOk/Ps6HQLwEgEbb0pIrhW3Q8iwS6kHSbDwpFcZ9ZNeJsyeBA4PdOsRg3egckXJCG89haipnAKu3QPlQaXefN1H6tIkpVCpHFud0=
+	t=1712830257; cv=none; b=qEL7GAwNhGIZCgnzgXcuXsrGDYHSPn5cmIk1FROGQOiJRgqFSz3IZZqBDwTLvmcmtKw+4cvZniJcsd5drMh6MMuv1WqVt7e7NpWrjGa8RhqMJP1sobUWtSoMrBVjCOZfdzuaTQ9fzWIrqxS2E4XuKGxUBei9N9J8zRaD5S5L6fQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712830877; c=relaxed/simple;
-	bh=RRIF9ON4VAozpUzZbFO7hQvBkUotVc4sutGuArRX27w=;
+	s=arc-20240116; t=1712830257; c=relaxed/simple;
+	bh=z36qr+DRZZUEyhnT88PvzXUkxYJ6CNq1Wv/dxlGE0VY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BWN8qzgsGrsU4U4x6Ry5HReufEodO7cVFYz7kt5xHKUOGgdOvsD2oAmfr6fajawCJ5i9i7YLAsWi8WTtjggMt8TgkMV11mD3M5CBq96gyL/C+IGmR3embwS0McS9uUGHJpCRom1nzmhxtA2Z2V2qnMpIDBZHLcWRlOoPQx2I5s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJM4LKz9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D14FC433C7;
-	Thu, 11 Apr 2024 10:21:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UPEUPlTCCU3t7ioB1WffAIwdCpQcmmm0yG2T7UcS2sYKyiG7LTHqIprUxpYFS9LgBuYDQOkO1h+c1P3mR8aqR30vOItbxbagPn72O6QXr3iQLlgRZwvEKvbbfB4MDW6S8jx3RdjjiiFjVLQ6n2pomOdZjzMaOhGZ44K+p13PEQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZbuusxIk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5AFC433C7;
+	Thu, 11 Apr 2024 10:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712830877;
-	bh=RRIF9ON4VAozpUzZbFO7hQvBkUotVc4sutGuArRX27w=;
+	s=korg; t=1712830257;
+	bh=z36qr+DRZZUEyhnT88PvzXUkxYJ6CNq1Wv/dxlGE0VY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJM4LKz9JFHoRHePwMLm3nWMIKLrxxBJgDPTM+8HuMi0vNmJ23u91nMKiLx2Sxx+t
-	 JyhOnIX9oCz1t/odh1RtCg9Itq0BjrVdRLPXw98xHRdJ7vsoZGB+TvSLoRuQQDJ0a4
-	 DFUYDadJQG1pqeMW+1UYIcLSHHs1MHl8/tVxvtzM=
+	b=ZbuusxIkTS3j6nTAKDSPorbVlta39muX561UF75CGebaLjgN5sN4FbroPQCPMwl8I
+	 SlheJM3OAMtTEHS/2Lj8Bdifmm8bq7HAUQ+y/XNHlRg0ddcOfCw5CRcizZBXHm8YZb
+	 KyIloVuxu0z7vb108HNb/NyXhAVeqOc4nHQRVNOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.4 146/215] netfilter: nf_tables: flush pending destroy work before exit_net release
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 087/143] drm/amd/amdgpu: Fix potential ioremap() memory leaks in amdgpu_device_init()
 Date: Thu, 11 Apr 2024 11:55:55 +0200
-Message-ID: <20240411095429.277537072@linuxfoundation.org>
+Message-ID: <20240411095423.528781851@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095424.875421572@linuxfoundation.org>
-References: <20240411095424.875421572@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,132 +61,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit 24cea9677025e0de419989ecb692acd4bb34cac2 upstream.
+[ Upstream commit eb4f139888f636614dab3bcce97ff61cefc4b3a7 ]
 
-Similar to 2c9f0293280e ("netfilter: nf_tables: flush pending destroy
-work before netlink notifier") to address a race between exit_net and
-the destroy workqueue.
+This ensures that the memory mapped by ioremap for adev->rmmio, is
+properly handled in amdgpu_device_init(). If the function exits early
+due to an error, the memory is unmapped. If the function completes
+successfully, the memory remains mapped.
 
-The trace below shows an element to be released via destroy workqueue
-while exit_net path (triggered via module removal) has already released
-the set that is used in such transaction.
+Reported by smatch:
+drivers/gpu/drm/amd/amdgpu/amdgpu_device.c:4337 amdgpu_device_init() warn: 'adev->rmmio' from ioremap() not released on lines: 4035,4045,4051,4058,4068,4337
 
-[ 1360.547789] BUG: KASAN: slab-use-after-free in nf_tables_trans_destroy_work+0x3f5/0x590 [nf_tables]
-[ 1360.547861] Read of size 8 at addr ffff888140500cc0 by task kworker/4:1/152465
-[ 1360.547870] CPU: 4 PID: 152465 Comm: kworker/4:1 Not tainted 6.8.0+ #359
-[ 1360.547882] Workqueue: events nf_tables_trans_destroy_work [nf_tables]
-[ 1360.547984] Call Trace:
-[ 1360.547991]  <TASK>
-[ 1360.547998]  dump_stack_lvl+0x53/0x70
-[ 1360.548014]  print_report+0xc4/0x610
-[ 1360.548026]  ? __virt_addr_valid+0xba/0x160
-[ 1360.548040]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-[ 1360.548054]  ? nf_tables_trans_destroy_work+0x3f5/0x590 [nf_tables]
-[ 1360.548176]  kasan_report+0xae/0xe0
-[ 1360.548189]  ? nf_tables_trans_destroy_work+0x3f5/0x590 [nf_tables]
-[ 1360.548312]  nf_tables_trans_destroy_work+0x3f5/0x590 [nf_tables]
-[ 1360.548447]  ? __pfx_nf_tables_trans_destroy_work+0x10/0x10 [nf_tables]
-[ 1360.548577]  ? _raw_spin_unlock_irq+0x18/0x30
-[ 1360.548591]  process_one_work+0x2f1/0x670
-[ 1360.548610]  worker_thread+0x4d3/0x760
-[ 1360.548627]  ? __pfx_worker_thread+0x10/0x10
-[ 1360.548640]  kthread+0x16b/0x1b0
-[ 1360.548653]  ? __pfx_kthread+0x10/0x10
-[ 1360.548665]  ret_from_fork+0x2f/0x50
-[ 1360.548679]  ? __pfx_kthread+0x10/0x10
-[ 1360.548690]  ret_from_fork_asm+0x1a/0x30
-[ 1360.548707]  </TASK>
-
-[ 1360.548719] Allocated by task 192061:
-[ 1360.548726]  kasan_save_stack+0x20/0x40
-[ 1360.548739]  kasan_save_track+0x14/0x30
-[ 1360.548750]  __kasan_kmalloc+0x8f/0xa0
-[ 1360.548760]  __kmalloc_node+0x1f1/0x450
-[ 1360.548771]  nf_tables_newset+0x10c7/0x1b50 [nf_tables]
-[ 1360.548883]  nfnetlink_rcv_batch+0xbc4/0xdc0 [nfnetlink]
-[ 1360.548909]  nfnetlink_rcv+0x1a8/0x1e0 [nfnetlink]
-[ 1360.548927]  netlink_unicast+0x367/0x4f0
-[ 1360.548935]  netlink_sendmsg+0x34b/0x610
-[ 1360.548944]  ____sys_sendmsg+0x4d4/0x510
-[ 1360.548953]  ___sys_sendmsg+0xc9/0x120
-[ 1360.548961]  __sys_sendmsg+0xbe/0x140
-[ 1360.548971]  do_syscall_64+0x55/0x120
-[ 1360.548982]  entry_SYSCALL_64_after_hwframe+0x55/0x5d
-
-[ 1360.548994] Freed by task 192222:
-[ 1360.548999]  kasan_save_stack+0x20/0x40
-[ 1360.549009]  kasan_save_track+0x14/0x30
-[ 1360.549019]  kasan_save_free_info+0x3b/0x60
-[ 1360.549028]  poison_slab_object+0x100/0x180
-[ 1360.549036]  __kasan_slab_free+0x14/0x30
-[ 1360.549042]  kfree+0xb6/0x260
-[ 1360.549049]  __nft_release_table+0x473/0x6a0 [nf_tables]
-[ 1360.549131]  nf_tables_exit_net+0x170/0x240 [nf_tables]
-[ 1360.549221]  ops_exit_list+0x50/0xa0
-[ 1360.549229]  free_exit_list+0x101/0x140
-[ 1360.549236]  unregister_pernet_operations+0x107/0x160
-[ 1360.549245]  unregister_pernet_subsys+0x1c/0x30
-[ 1360.549254]  nf_tables_module_exit+0x43/0x80 [nf_tables]
-[ 1360.549345]  __do_sys_delete_module+0x253/0x370
-[ 1360.549352]  do_syscall_64+0x55/0x120
-[ 1360.549360]  entry_SYSCALL_64_after_hwframe+0x55/0x5d
-
-(gdb) list *__nft_release_table+0x473
-0x1e033 is in __nft_release_table (net/netfilter/nf_tables_api.c:11354).
-11349           list_for_each_entry_safe(flowtable, nf, &table->flowtables, list) {
-11350                   list_del(&flowtable->list);
-11351                   nft_use_dec(&table->use);
-11352                   nf_tables_flowtable_destroy(flowtable);
-11353           }
-11354           list_for_each_entry_safe(set, ns, &table->sets, list) {
-11355                   list_del(&set->list);
-11356                   nft_use_dec(&table->use);
-11357                   if (set->flags & (NFT_SET_MAP | NFT_SET_OBJECT))
-11358                           nft_map_deactivate(&ctx, set);
-(gdb)
-
-[ 1360.549372] Last potentially related work creation:
-[ 1360.549376]  kasan_save_stack+0x20/0x40
-[ 1360.549384]  __kasan_record_aux_stack+0x9b/0xb0
-[ 1360.549392]  __queue_work+0x3fb/0x780
-[ 1360.549399]  queue_work_on+0x4f/0x60
-[ 1360.549407]  nft_rhash_remove+0x33b/0x340 [nf_tables]
-[ 1360.549516]  nf_tables_commit+0x1c6a/0x2620 [nf_tables]
-[ 1360.549625]  nfnetlink_rcv_batch+0x728/0xdc0 [nfnetlink]
-[ 1360.549647]  nfnetlink_rcv+0x1a8/0x1e0 [nfnetlink]
-[ 1360.549671]  netlink_unicast+0x367/0x4f0
-[ 1360.549680]  netlink_sendmsg+0x34b/0x610
-[ 1360.549690]  ____sys_sendmsg+0x4d4/0x510
-[ 1360.549697]  ___sys_sendmsg+0xc9/0x120
-[ 1360.549706]  __sys_sendmsg+0xbe/0x140
-[ 1360.549715]  do_syscall_64+0x55/0x120
-[ 1360.549725]  entry_SYSCALL_64_after_hwframe+0x55/0x5d
-
-Fixes: 0935d5588400 ("netfilter: nf_tables: asynchronous release")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -8476,6 +8476,7 @@ static void __exit nf_tables_module_exit
- 	unregister_netdevice_notifier(&nf_tables_flowtable_notifier);
- 	nft_chain_filter_fini();
- 	nft_chain_route_fini();
-+	nf_tables_trans_destroy_flush_work();
- 	unregister_pernet_subsys(&nf_tables_net_ops);
- 	cancel_work_sync(&trans_gc_work);
- 	cancel_work_sync(&trans_destroy_work);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index d0afb9ba3789c..1eff446321bd6 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4025,8 +4025,10 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	 * early on during init and before calling to RREG32.
+ 	 */
+ 	adev->reset_domain = amdgpu_reset_create_reset_domain(SINGLE_DEVICE, "amdgpu-reset-dev");
+-	if (!adev->reset_domain)
+-		return -ENOMEM;
++	if (!adev->reset_domain) {
++		r = -ENOMEM;
++		goto unmap_memory;
++	}
+ 
+ 	/* detect hw virtualization here */
+ 	amdgpu_detect_virtualization(adev);
+@@ -4036,20 +4038,20 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	r = amdgpu_device_get_job_timeout_settings(adev);
+ 	if (r) {
+ 		dev_err(adev->dev, "invalid lockup_timeout parameter syntax\n");
+-		return r;
++		goto unmap_memory;
+ 	}
+ 
+ 	/* early init functions */
+ 	r = amdgpu_device_ip_early_init(adev);
+ 	if (r)
+-		return r;
++		goto unmap_memory;
+ 
+ 	amdgpu_device_set_mcbp(adev);
+ 
+ 	/* Get rid of things like offb */
+ 	r = drm_aperture_remove_conflicting_pci_framebuffers(adev->pdev, &amdgpu_kms_driver);
+ 	if (r)
+-		return r;
++		goto unmap_memory;
+ 
+ 	/* Enable TMZ based on IP_VERSION */
+ 	amdgpu_gmc_tmz_set(adev);
+@@ -4059,7 +4061,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	if (adev->gmc.xgmi.supported) {
+ 		r = adev->gfxhub.funcs->get_xgmi_info(adev);
+ 		if (r)
+-			return r;
++			goto unmap_memory;
+ 	}
+ 
+ 	/* enable PCIE atomic ops */
+@@ -4328,6 +4330,8 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ failed:
+ 	amdgpu_vf_error_trans_all(adev);
+ 
++unmap_memory:
++	iounmap(adev->rmmio);
+ 	return r;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
