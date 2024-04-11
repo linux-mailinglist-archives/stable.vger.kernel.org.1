@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-38217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-38388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB9478A0D90
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:05:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8299E8A0E55
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 12:13:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A7BD1F22285
-	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:05:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C61428670F
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 10:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09E0145FE7;
-	Thu, 11 Apr 2024 10:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F61145B28;
+	Thu, 11 Apr 2024 10:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eW+cwI6Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5WxrBCN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE33D2EAE5;
-	Thu, 11 Apr 2024 10:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DC6145B08;
+	Thu, 11 Apr 2024 10:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712829908; cv=none; b=Btjw0zBFH3aozJT2DMNoiYZi+7BRQnjfKCskH4fRcwaTn5TowU0mf+1r20pqDR6R/C/pNJQ4fN0bSBUw/cQBfhEQyO+VsXKNTWVU39FVrdn/IF6DAbrFR0rl7owCMto9yWP4Rpd5zDFWT4GiYa+mfr7W2AmgZrRDZ5YTh93hbpc=
+	t=1712830419; cv=none; b=ZmMgv5MUJSTEAxpIWZmyQ7dn5gDZ3DmDT1tQB49cDXFUcoLBOoCy9FE1g9bgmnb2dJUXOX/GsaqYnwcK48k+RCU+32BKXSO7nW4sfcK45eNToiyLaLeQi3c4osIlSCNNWyd7u+CZn32MSVSM4zGuAq8Y4Ne9uFORVGvDicCcSos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712829908; c=relaxed/simple;
-	bh=fNG+qQN1ypequkuSCGA/x6WODWR7lxd1EamfrkW/pnY=;
+	s=arc-20240116; t=1712830419; c=relaxed/simple;
+	bh=WNCA8VGWX6yuB938XY/CAKMIoZm9VEdIXMVHQMF6aPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jHvvNZLs0V920uWAqu8EWF3HLqeIuuF1ciN0sArP9GQYCw72zpP2IqmebVBJkdQPfFG1A3LCR6BfhqcrNIhIHa4x5FtSBTaq9DshQn32s89jMn4SzmEGGFmluYGNhC+uO8X+Bd+MLxo8JTprp+4iCeIr5jRjj/4oGwdy/mvDc18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eW+cwI6Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34992C43390;
-	Thu, 11 Apr 2024 10:05:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JNc0hi56CNLtkmPN1rbRTjT/r3sQAIR9ed/B5ftiuGL96WxBXgVUiRlbaZe7XPFeXFXIp+ylXi4doTQEZTf11lg1PHmysGgfRSJksvdIhSZhI/qKfUeH7VIJo9V3Rz9KxRFe9dHo6S9FZqpaS+nHPNKljpSqREvdUnj8yYRClj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5WxrBCN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC491C433F1;
+	Thu, 11 Apr 2024 10:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712829908;
-	bh=fNG+qQN1ypequkuSCGA/x6WODWR7lxd1EamfrkW/pnY=;
+	s=korg; t=1712830419;
+	bh=WNCA8VGWX6yuB938XY/CAKMIoZm9VEdIXMVHQMF6aPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eW+cwI6QYV+Wgmcd44bI3SaVbE7wvDFsyCKiRMWUpRA3Rqp7ZT9mlEnqtBHFRQ6QV
-	 ZhaJpuRhrX6A+bsl1m6j9sRhuvatL/v9MYd5xOGqml6Y1GCz3pllRfUD+msJgMy+s3
-	 e6knMkrar7LyAqomCjPuu2NqkIADlgtYlOzU4/hU=
+	b=M5WxrBCNE18KJ2IM7DYhO0EJvN+fKE4gK7trypY11NgkXSbCANt9xC/YNMKeltjwT
+	 zjGRFYUOWZz+8OA9CFdfKK+zbHDTQHo1ZQ+r9RiiAY/cs3OYY3Izm1Q9F0yNl6ZvG5
+	 qAKVqDeGVRF4UDghCyODzxJZ204QFmqTP97NBHng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Kees Cook <keescook@chromium.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	SungHwan Jung <onenowy@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 146/175] VMCI: Fix memcpy() run-time warning in dg_dispatch_as_host()
+Subject: [PATCH 6.8 101/143] platform/x86: acer-wmi: Add predator_v4 module parameter
 Date: Thu, 11 Apr 2024 11:56:09 +0200
-Message-ID: <20240411095423.958401972@linuxfoundation.org>
+Message-ID: <20240411095423.948079324@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
+In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+References: <20240411095420.903937140@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+From: SungHwan Jung <onenowy@gmail.com>
 
-[ Upstream commit 19b070fefd0d024af3daa7329cbc0d00de5302ec ]
+[ Upstream commit f9124f2a454a6f1edb4eae9f0646b1a61fd74dba ]
 
-Syzkaller hit 'WARNING in dg_dispatch_as_host' bug.
+This parameter allows predator laptop users to test and use features
+(mode button, platform profile, fan speed monitoring) without
+adding model names to acer_quirks and compiling kernel.
 
-memcpy: detected field-spanning write (size 56) of single field "&dg_info->msg"
-at drivers/misc/vmw_vmci/vmci_datagram.c:237 (size 24)
-
-WARNING: CPU: 0 PID: 1555 at drivers/misc/vmw_vmci/vmci_datagram.c:237
-dg_dispatch_as_host+0x88e/0xa60 drivers/misc/vmw_vmci/vmci_datagram.c:237
-
-Some code commentry, based on my understanding:
-
-544 #define VMCI_DG_SIZE(_dg) (VMCI_DG_HEADERSIZE + (size_t)(_dg)->payload_size)
-/// This is 24 + payload_size
-
-memcpy(&dg_info->msg, dg, dg_size);
-	Destination = dg_info->msg ---> this is a 24 byte
-					structure(struct vmci_datagram)
-	Source = dg --> this is a 24 byte structure (struct vmci_datagram)
-	Size = dg_size = 24 + payload_size
-
-{payload_size = 56-24 =32} -- Syzkaller managed to set payload_size to 32.
-
- 35 struct delayed_datagram_info {
- 36         struct datagram_entry *entry;
- 37         struct work_struct work;
- 38         bool in_dg_host_queue;
- 39         /* msg and msg_payload must be together. */
- 40         struct vmci_datagram msg;
- 41         u8 msg_payload[];
- 42 };
-
-So those extra bytes of payload are copied into msg_payload[], a run time
-warning is seen while fuzzing with Syzkaller.
-
-One possible way to fix the warning is to split the memcpy() into
-two parts -- one -- direct assignment of msg and second taking care of payload.
-
-Gustavo quoted:
-"Under FORTIFY_SOURCE we should not copy data across multiple members
-in a structure."
-
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Suggested-by: Vegard Nossum <vegard.nossum@oracle.com>
-Suggested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240105164001.2129796-2-harshit.m.mogalapalli@oracle.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: SungHwan Jung <onenowy@gmail.com>
+Link: https://lore.kernel.org/r/20240220080416.6395-1-onenowy@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_datagram.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/x86/acer-wmi.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/misc/vmw_vmci/vmci_datagram.c b/drivers/misc/vmw_vmci/vmci_datagram.c
-index 8a4b6bbe1beed..275542e8b2ad9 100644
---- a/drivers/misc/vmw_vmci/vmci_datagram.c
-+++ b/drivers/misc/vmw_vmci/vmci_datagram.c
-@@ -242,7 +242,8 @@ static int dg_dispatch_as_host(u32 context_id, struct vmci_datagram *dg)
+diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
+index 771b0ce34c8f9..ee2e164f86b9c 100644
+--- a/drivers/platform/x86/acer-wmi.c
++++ b/drivers/platform/x86/acer-wmi.c
+@@ -276,6 +276,7 @@ static bool has_type_aa;
+ static u16 commun_func_bitmap;
+ static u8 commun_fn_key_number;
+ static bool cycle_gaming_thermal_profile = true;
++static bool predator_v4;
  
- 			dg_info->in_dg_host_queue = true;
- 			dg_info->entry = dst_entry;
--			memcpy(&dg_info->msg, dg, dg_size);
-+			dg_info->msg = *dg;
-+			memcpy(&dg_info->msg_payload, dg + 1, dg->payload_size);
+ module_param(mailled, int, 0444);
+ module_param(brightness, int, 0444);
+@@ -284,6 +285,7 @@ module_param(force_series, int, 0444);
+ module_param(force_caps, int, 0444);
+ module_param(ec_raw_mode, bool, 0444);
+ module_param(cycle_gaming_thermal_profile, bool, 0644);
++module_param(predator_v4, bool, 0444);
+ MODULE_PARM_DESC(mailled, "Set initial state of Mail LED");
+ MODULE_PARM_DESC(brightness, "Set initial LCD backlight brightness");
+ MODULE_PARM_DESC(threeg, "Set initial state of 3G hardware");
+@@ -292,6 +294,8 @@ MODULE_PARM_DESC(force_caps, "Force the capability bitmask to this value");
+ MODULE_PARM_DESC(ec_raw_mode, "Enable EC raw mode");
+ MODULE_PARM_DESC(cycle_gaming_thermal_profile,
+ 	"Set thermal mode key in cycle mode. Disabling it sets the mode key in turbo toggle mode");
++MODULE_PARM_DESC(predator_v4,
++	"Enable features for predator laptops that use predator sense v4");
  
- 			INIT_WORK(&dg_info->work, dg_delayed_dispatch);
- 			schedule_work(&dg_info->work);
+ struct acer_data {
+ 	int mailled;
+@@ -734,7 +738,9 @@ enum acer_predator_v4_thermal_profile_wmi {
+ /* Find which quirks are needed for a particular vendor/ model pair */
+ static void __init find_quirks(void)
+ {
+-	if (!force_series) {
++	if (predator_v4) {
++		quirks = &quirk_acer_predator_v4;
++	} else if (!force_series) {
+ 		dmi_check_system(acer_quirks);
+ 		dmi_check_system(non_acer_quirks);
+ 	} else if (force_series == 2490) {
 -- 
 2.43.0
 
