@@ -1,132 +1,101 @@
-Return-Path: <stable+bounces-39250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B068A23F8
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 04:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B5CC8A2555
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 06:50:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0922BB22E3E
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 02:55:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD994B21309
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 04:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5492B11CAB;
-	Fri, 12 Apr 2024 02:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E87BA47;
+	Fri, 12 Apr 2024 04:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="dn92FAqg"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="NzINVwSi";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="eWOJzqDe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A54175A7
-	for <stable@vger.kernel.org>; Fri, 12 Apr 2024 02:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2E0205E34;
+	Fri, 12 Apr 2024 04:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712890528; cv=none; b=Pgm12mFOtDBrp2UdTcoWsEYcqVeCuvd8MMknjvVsAROaaeXGoqbqUq6BySkP0tMarnq9hf3PiS4tWiWgsZddTAKZ3l8PLXl61eFtbxXB/Qf0agEZRoR2XBjCj69UtuumztuAJRatz+/mw2lOnU/CF9ud61j7Dy3hPdD5qbb/0XA=
+	t=1712897418; cv=none; b=VEEZOGFf9R9AqbGJDtlpQ6WJYnXD26Tvnw8hBibPwv3LCRsA98nFZO/MCucA5U7bQ/EClwF8su5nYOczZxDpCbn4I4oQuvTWtNMMZwv9uKDjNXI5l7OIAzOtMr6IDa+owwMb9atl/S2pCuEPN7C/RY80cCee4ONoas0S7u9tvO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712890528; c=relaxed/simple;
-	bh=sCQTFjD7ep6zZTHtC1JwwNYlsthDnvzHZcj/BvLzHdQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=myxZNXC+LGdGEFh12Iy7j3jQ12UYDSRJehXmGEi2+ejhGbbTRpYWQtIbHtITV/yKM/jOOQE87eCO3CA1vuKy8lzH8jOeyEXN/St9HbKJLS/w0Ksr5/kgtMDoBIJ8tnPgNYBdIJcCLZlnKcaYLdrF3BUL1zr1109hWlqL7W56wkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=dn92FAqg; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-78d5751901bso32785685a.1
-        for <stable@vger.kernel.org>; Thu, 11 Apr 2024 19:55:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1712890525; x=1713495325; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IUdoEKYMeyvOEbhTlsoajd8PIkMAEd98DVuYNbg+BqU=;
-        b=dn92FAqgbLAWBU8eGhbleZiOHx5QYWKzvyd2/87vjyjyrB6Lb+DriXVp4t6EB6sdCq
-         Apmb28SPPEkN2Ewpj4LW8HVEL93rKn8F1GCxVCu9TQuuHoQOPFZTkOyfUDU0NPXcITNz
-         V9RDLiFbahvH7GBSZNT8VmLshi36CfSdZPI7M=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712890525; x=1713495325;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IUdoEKYMeyvOEbhTlsoajd8PIkMAEd98DVuYNbg+BqU=;
-        b=ojVLnwsCr4wmEFvak4g6uPyL0C2rbCr5zDFcMZE8bBTnck1I48TDUQ7tqj4I7gWT1n
-         oZqdVT8I4i0Esj4ANJOqrv4ZeLtD+aMg+h3yQpW1bBFy/EPmxBWfnAbF9MYfSE70lE/+
-         YOeoZWzZQLxtcHQKcwn7cci/vsIXA7bSOUrkwISk+O/zOt4EeAK6cJvmNrLgZPBAuFZM
-         n3GioBOC/P2tEX5KWZYu9J0kWZVIfcVjz+bhftM6TquOtyAPXBU03krF3con+y5iRpbc
-         /Y0PXPmobOdc09/keV8NPdxHBAwoLQOjXF+tChQBvuB8nqIw8NBXUKQy9npWC/WObBIy
-         xWFg==
-X-Forwarded-Encrypted: i=1; AJvYcCXvOmWmxyEiEN+01bvJoRiVJo3nO9mZW6Ak8pl4GLqxjjXzPuL5tC438C//1hfGn+lV8dnAeute+sJ2h85+MM2MDvhe9o9k
-X-Gm-Message-State: AOJu0YzF3WqCu9angG7aHOXYVohrKZhYYN7h/2G6nNxcK+q3XSa3Sds6
-	/UIzEYalGm1KTqp+XADEAcFAOUxg2fAaK0NmOsv48M7qZsHA1k14TL9u2aGWRw==
-X-Google-Smtp-Source: AGHT+IH9Fbqg4XgLGfQ1M0xRMJylwntm60TK7ZtOpxY+6GSWQRQ+zfrPyDlAmCL/Tqen+8DJois+bA==
-X-Received: by 2002:a05:622a:190f:b0:436:5a0e:cb48 with SMTP id w15-20020a05622a190f00b004365a0ecb48mr1962435qtc.24.1712890525665;
-        Thu, 11 Apr 2024 19:55:25 -0700 (PDT)
-Received: from vertex.vmware.com (pool-173-49-113-140.phlapa.fios.verizon.net. [173.49.113.140])
-        by smtp.gmail.com with ESMTPSA id t12-20020ac865cc000000b00434ab3072b0sm1682174qto.40.2024.04.11.19.55.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Apr 2024 19:55:25 -0700 (PDT)
-From: Zack Rusin <zack.rusin@broadcom.com>
-To: dri-devel@lists.freedesktop.org
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	ian.forbes@broadcom.com,
-	martin.krastev@broadcom.com,
-	maaz.mombasawala@broadcom.com,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	stable@vger.kernel.org,
-	Pekka Paalanen <pekka.paalanen@collabora.com>
-Subject: [PATCH v2 5/5] drm/vmwgfx: Sort primary plane formats by order of preference
-Date: Thu, 11 Apr 2024 22:55:11 -0400
-Message-Id: <20240412025511.78553-6-zack.rusin@broadcom.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20240412025511.78553-1-zack.rusin@broadcom.com>
-References: <20240412025511.78553-1-zack.rusin@broadcom.com>
+	s=arc-20240116; t=1712897418; c=relaxed/simple;
+	bh=4+42ynGEyHlCRHCEji9sviaHUyVVm5QGhCORJy3G0Ig=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cz+3O+j0A1uEjD5Wyavv3rLBOvVXIppJ/iT/V5LDgPPRkt6Z3KHYAzSi1GPwNU/swuSdQV3pSVQo/ak/bNATLa3L+kjV+LPKu/3ckmhP7DGRHNPIk3ffwCaXjdb6ITrL63RlPLouc/3oMSnMmUIS0Up8GnOWLoU+LDWlz3b3R8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=NzINVwSi; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=eWOJzqDe; arc=none smtp.client-ip=91.121.71.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id 8CEF6C023; Fri, 12 Apr 2024 06:50:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1712897408; bh=7WSthEQYlk7/SIGKZLPpcaTfbc1Ib5Ox8uDcREcjIvE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NzINVwSiTpry9k+ceLei9+eUtRNrT6PxYBoRJKbGv8sADltvPBzDQ1Crw/ljWwsgC
+	 defCI62/tYCd6rkhC4WVRdFB+Xm/xuGjkp6wasfVB9bss1QeOGASJe5+VVEadmvnMK
+	 nO0ZaQPodfUtsO3ZmtkMBeFyPG9mNPaRWT4pdLO8icpTS4agzAMLYaPaf4vaM2RqSU
+	 bScm6LPdtegvqetIPtxcOT481OaKp1FCIX1v7q+r0sqMJTuZh4Gd+lbxM5Heg5gap1
+	 4UBnSCDvp4jhkYUEJpHuwe7uy74j2vqdhxrjzH9QkW4VBzY+DlWaO8Mlni5QDTe3Io
+	 /MN888BsLgBXA==
+X-Spam-Level: 
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id 14E9FC009;
+	Fri, 12 Apr 2024 06:50:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1712897407; bh=7WSthEQYlk7/SIGKZLPpcaTfbc1Ib5Ox8uDcREcjIvE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eWOJzqDexXHU4aJRlEzo734+unPKXb6PTP+216dp7SsTk8xyUCMECwIq+ePjvdK5I
+	 88KvyI7j2yxXmuoOxZLT4ozTnU5ewPQ4JsBggf/Sv5hBVdb1J6NdqEzCz4qGYBXnTK
+	 53gDcthgv/liMeSNc7Hb99Sqe+stv63ZmJHvxHGjT1934gU5Eho0gOUtw9P35AfEe5
+	 5gJmQIEWb+4WrOWDttq2Qt/+ux4qsB1Z6cOjOQ7qOVOL+mik23UVg0Xm/uhz2lZI3H
+	 BVtRLvTe+q+D7xNoTIJNwiN0NWCrf6QZK3ysYuRAKPMh/BakccpOOOlkdVKCKi3NxD
+	 BrDSOez73hK0w==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id f355fdc5;
+	Fri, 12 Apr 2024 04:49:57 +0000 (UTC)
+Date: Fri, 12 Apr 2024 13:49:42 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 5.10 000/294] 5.10.215-rc1 review
+Message-ID: <Zhi9Zs8oWVfNckdJ@codewreck.org>
+References: <20240411095435.633465671@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
 
-The table of primary plane formats wasn't sorted at all, leading to
-applications picking our least desirable formats by defaults.
+Greg Kroah-Hartman wrote on Thu, Apr 11, 2024 at 11:52:43AM +0200:
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.215-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 
-Sort the primary plane formats according to our order of preference.
+Tested 244ca117cb3c ("Linux 5.10.215-rc1") on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8MP (Armadillo G4)
 
-Nice side-effect of this change is that it makes IGT's kms_atomic
-plane-invalid-params pass because the test picks the first format
-which for vmwgfx was DRM_FORMAT_XRGB1555 and uses fb's with odd sizes
-which make Pixman, which IGT depends on assert due to the fact that our
-16bpp formats aren't 32 bit aligned like Pixman requires all formats
-to be.
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: 36cc79bc9077 ("drm/vmwgfx: Add universal plane support")
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v4.12+
-Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
----
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-index bf9931e3a728..bf24f2f0dcfc 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-@@ -233,10 +233,10 @@ struct vmw_framebuffer_bo {
- 
- 
- static const uint32_t __maybe_unused vmw_primary_plane_formats[] = {
--	DRM_FORMAT_XRGB1555,
--	DRM_FORMAT_RGB565,
- 	DRM_FORMAT_XRGB8888,
- 	DRM_FORMAT_ARGB8888,
-+	DRM_FORMAT_RGB565,
-+	DRM_FORMAT_XRGB1555,
- };
- 
- static const uint32_t __maybe_unused vmw_cursor_plane_formats[] = {
 -- 
-2.40.1
-
+Dominique Martinet | Asmadeus
 
