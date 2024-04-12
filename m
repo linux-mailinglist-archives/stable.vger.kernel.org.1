@@ -1,147 +1,109 @@
-Return-Path: <stable+bounces-39282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E19B8A28EF
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 10:10:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F068A2943
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 10:26:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2049AB24AEA
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 08:10:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73EDB281390
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 08:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33D84F207;
-	Fri, 12 Apr 2024 08:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566C1502B3;
+	Fri, 12 Apr 2024 08:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pBrJVHzS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MhZVRUAK"
 X-Original-To: stable@vger.kernel.org
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E944C4E1B3;
-	Fri, 12 Apr 2024 08:10:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3EE502AD;
+	Fri, 12 Apr 2024 08:25:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712909434; cv=none; b=QbhNgKICmrNFx6xKikCQyd2+qtYGc5nkVe3eawbl0SLExEDrYpxBheWgdDHl26NzE2/XqKXYHCRfte3uPch5a+Rmo87dEkncl2OCwbkQIfyzPw6VtK/ljtCa7UiZvNxL6E6rcxak8eVW5KqB8zjB0diVJvGjKeF9p1oaqwiyAiA=
+	t=1712910348; cv=none; b=HxzstpxI4v+QV1Bh9tPNSWDoasWucSPFrwAN0A27oK970Z/YtE6F60F06ARfUpY+cw6YL3ebqaEQXYkEv/OvvmiY577LUomC4SE3BXB1NItJ/9WKYGBzqw9OmGY2jgchRO55Emn4/kbGmEc3GBchRavnkN6SOEWRYPkx+lkabt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712909434; c=relaxed/simple;
-	bh=lyrvQ1jQSDzDlOlLk6Ni8xRBq5CvyRT9MGKZEiVCukg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Cp7JztNTTlUMRe+8EAsOR2MePSCS8M6YS6ziAsBDfawTvayW3fIZQomfsSPXKdv5MCfINNfXHGIlalfFZo/K85XSyEAkZFvxjoVCzfHs8xV031jXz2BtC2YEb/oWh3nnDfYo9GpK/CngphHcD3OUWe6FTKPA6tnrf5HPook8W5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pBrJVHzS; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id EFFD360007;
-	Fri, 12 Apr 2024 08:10:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1712909421;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q0E7/dykhn14vt5idbhGa3zPIsvtfStWumlOd8mo6+0=;
-	b=pBrJVHzSSzlEzc5mqWMjA8Ebi4s/3qDkjT4bVoMZncY6YlMUaVSbtpMHizdauR8LTxd8hW
-	OrzVVpm/3TTgrHYaNi33eVL/nal4LrhFQDkb2JTcX6MLbJyy0Ll6EAY0HOfD/zoKqeD4fL
-	RD3Al1Mpkmry4eBsj+LCpgz1WDe1SFsKtGOpuVmBwQNdv3Ci42vGvoZ757A6/E7XPf/fV0
-	wLu85gSC6ydbLRo00vyDiB/HyVeSzh0Aty396FnUJN0//u0CBaQhWHgo7k0/x9bYPHdIJX
-	/Y+BlPo6sA5ty+IqxzIthendSUW1adLNzWGiodC05S9LXy7r4fuYGq0p1ewyEQ==
-Date: Fri, 12 Apr 2024 10:10:19 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Rob Herring <robh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Lizhi Hou <lizhi.hou@amd.com>, Max
- Zhen <max.zhen@amd.com>, Sonal Santan <sonal.santan@amd.com>, Stefano
- Stabellini <stefano.stabellini@xilinx.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, Krzysztof =?UTF-8?B?V2lsY3p5xYRza2k=?=
- <kwilczynski@kernel.org>, linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>,
- Horatiu Vultur <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] PCI: of: Attach created of_node to existing
- device
-Message-ID: <20240412101019.7ceee755@bootlin.com>
-In-Reply-To: <2024041219-impure-upcountry-9e9d@gregkh>
-References: <20240325153919.199337-1-herve.codina@bootlin.com>
-	<20240325153919.199337-3-herve.codina@bootlin.com>
-	<2024041142-applause-spearman-bd38@gregkh>
-	<20240411203449.GA2641-robh@kernel.org>
-	<2024041219-impure-upcountry-9e9d@gregkh>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1712910348; c=relaxed/simple;
+	bh=XgDIXudnzBjmOKKjeEc1800vtr+SGSDiJv2UFrOFRSE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QLgvRLEze9YKlEMbhFLThai3B9y+DkltGN+scc4JbyWhFqCNSSU/DheWJ+Y5iW9tSLdtDRePtBDaxaPigITjOwlM/dKh3GPcUYbP1Vn6j53A+87RVksD+i+WB+yZnlruWjQV7avpYfsWR/VJyasLpeuTVfuXNmHXWBS+PpGyOZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MhZVRUAK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D32C4AF07;
+	Fri, 12 Apr 2024 08:25:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712910347;
+	bh=XgDIXudnzBjmOKKjeEc1800vtr+SGSDiJv2UFrOFRSE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MhZVRUAK32Veaqa4hWd+BEaLRYwye5at5gfyeEaddLwDDkX4Zg7tM2Dy9Bc1Bbc/p
+	 dE2nCXK+44TzgfHFwF3WZZg4q1I87GcnYwVZKQP23Ue1YoPxtf1AvgraTtEXKGtWoo
+	 yFZL8XzsL8I42ptQxbywWpg5fJRtL1y8tfgpcjhM=
+Date: Fri, 12 Apr 2024 10:25:44 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Jarred White <jarredwhite@linux.microsoft.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+Subject: Re: [PATCH 6.8 102/399] ACPI: CPPC: Use access_width over bit_width
+ for system memory accesses
+Message-ID: <2024041236-precision-consuming-945f@gregkh>
+References: <20240401152549.131030308@linuxfoundation.org>
+ <20240401152552.230440447@linuxfoundation.org>
+ <4fabd250-bfa8-4482-b2f2-b787844aeb0b@linux.microsoft.com>
+ <2024040235-clutter-pushing-01e2@gregkh>
+ <97d25ef7-dee9-4cc5-842a-273f565869b3@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <97d25ef7-dee9-4cc5-842a-273f565869b3@linux.microsoft.com>
 
-Hi Greg, Rob,
-
-On Fri, 12 Apr 2024 09:41:19 +0200
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-
-> On Thu, Apr 11, 2024 at 03:34:49PM -0500, Rob Herring wrote:
-> > On Thu, Apr 11, 2024 at 03:23:55PM +0200, Greg Kroah-Hartman wrote:  
-> > > On Mon, Mar 25, 2024 at 04:39:15PM +0100, Herve Codina wrote:  
-> > > > The commit 407d1a51921e ("PCI: Create device tree node for bridge")
-> > > > creates of_node for PCI devices.
-> > > > 
-> > > > During the insertion handling of these new DT nodes done by of_platform,
-> > > > new devices (struct device) are created. For each PCI devices a struct
-> > > > device is already present (created and handled by the PCI core).
-> > > > Having a second struct device to represent the exact same PCI device is
-> > > > not correct.
-> > > > 
-> > > > On the of_node creation:
-> > > > - tell the of_platform that there is no need to create a device for this
-> > > >   node (OF_POPULATED flag),
-> > > > - link this newly created of_node to the already present device,
-> > > > - tell fwnode that the device attached to this of_node is ready using
-> > > >   fwnode_dev_initialized().
-> > > > 
-> > > > With this fix, the of_node are available in the sysfs device tree:
-> > > > /sys/devices/platform/soc/d0070000.pcie/
-> > > > + of_node -> .../devicetree/base/soc/pcie@d0070000
-> > > > + pci0000:00
-> > > >   + 0000:00:00.0
-> > > >     + of_node -> .../devicetree/base/soc/pcie@d0070000/pci@0,0
-> > > >     + 0000:01:00.0
-> > > >       + of_node -> .../devicetree/base/soc/pcie@d0070000/pci@0,0/dev@0,0
-> > > > 
-> > > > On the of_node removal, revert the operations.
-> > > > 
-> > > > Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-> > > > Cc: stable@vger.kernel.org
-> > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>  
-> > > 
-> > > I need an ack from the maintainer here before I can take this.  
+On Thu, Apr 11, 2024 at 09:49:59AM -0700, Easwar Hariharan wrote:
+> Hi stable team,
+> 
+> On 4/2/2024 12:55 AM, Greg Kroah-Hartman wrote:
+> > On Mon, Apr 01, 2024 at 10:16:46AM -0700, Easwar Hariharan wrote:
+> >> On 4/1/2024 8:41 AM, Greg Kroah-Hartman wrote:
+> >>> 6.8-stable review patch.  If anyone has any objections, please let me know.
+> >>>
+> >>> ------------------
+> >>>
+> >>> From: Jarred White <jarredwhite@linux.microsoft.com>
+> >>>
+> >>> [ Upstream commit 2f4a4d63a193be6fd530d180bb13c3592052904c ]
+> >>>
+> >>> To align with ACPI 6.3+, since bit_width can be any 8-bit value, it
+> >>> cannot be depended on to be always on a clean 8b boundary. This was
+> >>> uncovered on the Cobalt 100 platform.
+> >>>
+> >>
+> >> Hi Greg,
+> >>
+> >> Please drop this patch from all stable kernels as we seem to have a regression reported
+> >> on AmpereOne systems: https://lore.kernel.org/all/20240329220054.1205596-1-vanshikonda@os.amperecomputing.com/
 > > 
-> > Correct me if I'm wrong, but having the of_node sysfs link populated or 
-> > changed after device_add is a race we lost. Userspace is notified about 
-> > the new device and then some time later the symlink shows up.  
-> 
-> Ah, yes, I missed that, good catch, this will not work.
-> 
-> > However, it so far is not appearing that there's an easy way to 
-> > reshuffle order of things to fix this.
+> > Ok, all now dropped.  Please let us know when the fix gets into Linus's
+> > tree (and also properly tag it for stable inclusion as it is fixing a
+> > commit that was tagged for stable inclusion.)
 > > 
-> > Maybe the short term (and stable) answer just don't create any of_node 
-> > symlinks on these dynamically created nodes.  
+> > thanks,
+> > 
+> > greg k-h
 > 
-> That would work, but does userspace really need to know this
-> information?
+> Despite having dropped the backport of this patch from all stable kernels, the 5.15 backport seems to have snuck through.
 > 
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-5.15.y&id=4949affd5288b867cdf115f5b08d6166b2027f87
+> 
+> Both the regression fix for AmpereOne[1] and a fix for another bug[2] we found while testing haven't been accepted into Linus'
+> tree yet, so 5.15.154 has a known issue. Please revert this for 5.15.155 and I'll send an email when the full set is in Linus' tree.
 
-I don't think that the user space really need this information.
-I agree, it should work.
+Now reverted, thansk.
 
-Let me rework my series in that sense and perform some tests before
-sending a new iteration removing the of_node sysfs link creation.
-
-Best regards,
-Hervé
+greg k-h
 
