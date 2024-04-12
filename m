@@ -1,132 +1,164 @@
-Return-Path: <stable+bounces-39274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B878A286F
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 09:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 738BC8A28C6
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 10:04:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C539A2842F5
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 07:45:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A6B128AE5E
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 08:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1FB4C601;
-	Fri, 12 Apr 2024 07:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FBB45337C;
+	Fri, 12 Apr 2024 08:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqYRwcMz"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="O1hK9mLX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2059.outbound.protection.outlook.com [40.107.243.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2344CDEC;
-	Fri, 12 Apr 2024 07:45:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712907931; cv=none; b=LLUJbG/j5R9fnjHv9bBqYpLE8aYX9hA9b/QxRAaXujUBtMfhYOV4qpT/RZiwtNxSFU1OHqkRYwLeElK+JFVHm+zVH54o3OqoZk8ffNKh7UMTyDdwZWGN0HSR0ArhgkOuL3FuSvSZmI85N5XyHJbjQRoOvZh/1C0fdaBGjHJRbd4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712907931; c=relaxed/simple;
-	bh=O48522UDx5+yp77SGAqqDH7H2dnzmPLlJYJEYS3z8ls=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fMMrac9ggaJBI9jBngmGedlcUECrvar3RBZfFnstVtJi7YoQbgq0Tk76t/mYulyZXoksQyZCr4crTx+GpdEERaaSVkHgvL1tF1vOjgOjAdAuyqXD5CW25yovgCpcftsBh0MoVC0FN5MSbbLLz23RbwS8Pd4R2SMTTjg0ewouLCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqYRwcMz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE0DC113CC;
-	Fri, 12 Apr 2024 07:45:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712907931;
-	bh=O48522UDx5+yp77SGAqqDH7H2dnzmPLlJYJEYS3z8ls=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qqYRwcMzFGSj5E3dQSV8A1RVXCPxjC9XQ5cTkwt5Wy++whu83KgEmq/V36BXjs0Ry
-	 XXDMqXTrgNmNGxN8YP7S6mw3flN5paXIgiicAzv1a9WRY7HHt8qI26CEU0SsFxL2AD
-	 nn819PuhHpIW7eYpT/jqqU3wljEUtjUuc58tLDMU=
-Date: Fri, 12 Apr 2024 09:45:28 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Cc: Arnd Bergmann <arnd@arndb.de>, Mihai Carabas <mihai.carabas@oracle.com>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] misc/pvpanic-pci: register attributes via pci_driver
-Message-ID: <2024041228-maximum-aware-f078@gregkh>
-References: <20240411-pvpanic-pci-dev-groups-v1-1-db8cb69f1b09@weissschuh.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B914F20A;
+	Fri, 12 Apr 2024 08:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712909018; cv=fail; b=uv5StFwGYDf8sx80Pr4Rv8DpdC4O4pnqHl+ZihQBuaQFBh5NyuTjtOErsoXmjayVpMfI06sXVkYdCGwCjL0hfsrRGKiTGa9bQ8opOzb4pwWj2xpft+ujtXBgYIL6GzB3WeIhUMhJBDogFgK/tRQzMABA0mI4AC3uPQ5y44F/AoU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712909018; c=relaxed/simple;
+	bh=396RMRtSjEYB/FdQJepVM1zKOYjS08bzLmymjY2oVNU=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=ZWL+5JS8gNK1wgBTTEElYcXblH45PT5oj9dvrdM8RJuczKqvAERfEYy+wRiBV8B9qsopRiAokh/MICPi8uhcwu788pbc5MNYKfSwWit0LaOK12D/IkX79MI1eBIpo9NTBveK8e0Zr2txmYUAAmVipTRYK3prp5+CeUeqnvzPDms=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=O1hK9mLX; arc=fail smtp.client-ip=40.107.243.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kBZnDOMycCS1/u+JuSoJqEiy7+NcAuL+h1TNabcwJ7cGgTtij/pwuc+VK+3gPNJMIqrwO6jzZnaLOtQLFJwNi+WyNcwbbeKEh6a1xNSNRQgpRC2Bk20w9/Nmpbp9ojTrVe2/doO4gwfGHIQIG/slO62nzDAh7MfhIRYl6hRmdfyEN0tquIha5eVE3EAdEoNvLOqdf6PCSjo/XAkBa4yDwxMsknruv7fMyX2A2kK743S5aoXz4tYGoJKruqejdswHLZfex+XQdwa1fKowcmkusR0uPOjrshxirH7oHxKYN/J2+A7KbONgDuDi/Ihnl5GduK+4gSTY//E++nCiXHBtWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XLyGhwNnNv8k8Bj7rSLwEZnIg/ongaviFkMc4FkS8xI=;
+ b=oZdg0UShLOBGhQQc555/aAuqM5/QlDnwUcUJFHSIYRoZVd4auhrPpV1mKJraWUFfCcARQN/JL+fZf5j++TRsVRmqeeyuf8DkqFzhXnGuzBGgHpl0x0RtxOkVYR83I4nM8Gi7lXGmDQrFzUfyEgcExipmNttbzCU601oUAdn+GeQFuWkwk4I6wt02vGMwmvxBPuJ7TfCO+Snnno09OC7/LMu33Vbj7V4uTkFXYqMcEszhq1hvo/jJ7//8A+0AkGXwvoNYUm3HfwiSfDFASkuCO6c3lB+GToVO6l0tZcFixmTDef62dNrrefn9nMNXC3QFXQprqRgR5f+SZIU0RWx6ig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XLyGhwNnNv8k8Bj7rSLwEZnIg/ongaviFkMc4FkS8xI=;
+ b=O1hK9mLXunWs782l5xmPCKTawR1czlreMr5eB/8Ax7H0gJfszVwOMZu8tKUXxEuSgjF4N4fICJSZVqsckw4ows8TKC4sNlvRVvqzVj9InOS4OGcRWD+T+iiPTNoFVaP2ABhCNYxzLEHVG1+fZYJ+hG58bLnpOwUoOES1w4FHXbOFJ8exboZKdyXX473Lbb7AaN0CYC9S2O64meiIt11ofYJfA6cjGQduqEaQS/o6fY0sz90OFOiRT7Quk11sqZ9uhHpZHyQ7CElOW9Zpg1os4nVHVmQ2TPcyf0RvJR6OG1dklB5rNeB4bmNJFsIc5Uwm5QJcCXREfAIswiXKIKFmyw==
+Received: from BYAPR02CA0011.namprd02.prod.outlook.com (2603:10b6:a02:ee::24)
+ by BY5PR12MB4209.namprd12.prod.outlook.com (2603:10b6:a03:20d::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.55; Fri, 12 Apr
+ 2024 08:03:28 +0000
+Received: from CO1PEPF000044F5.namprd05.prod.outlook.com
+ (2603:10b6:a02:ee:cafe::6a) by BYAPR02CA0011.outlook.office365.com
+ (2603:10b6:a02:ee::24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.26 via Frontend
+ Transport; Fri, 12 Apr 2024 08:03:28 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CO1PEPF000044F5.mail.protection.outlook.com (10.167.241.75) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7452.22 via Frontend Transport; Fri, 12 Apr 2024 08:03:28 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Fri, 12 Apr
+ 2024 01:03:13 -0700
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 12 Apr
+ 2024 01:03:13 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12 via Frontend
+ Transport; Fri, 12 Apr 2024 01:03:13 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 4.19 000/175] 4.19.312-rc1 review
+In-Reply-To: <20240411095419.532012976@linuxfoundation.org>
+References: <20240411095419.532012976@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240411-pvpanic-pci-dev-groups-v1-1-db8cb69f1b09@weissschuh.net>
+Message-ID: <b7e396a1-5397-40bf-9755-1dd7de81c74e@rnnvmail203.nvidia.com>
+Date: Fri, 12 Apr 2024 01:03:13 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F5:EE_|BY5PR12MB4209:EE_
+X-MS-Office365-Filtering-Correlation-Id: a164c22f-b592-4f5c-3811-08dc5ac70977
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	5Gr2vjXERrcBkZ8xi0lLMAXU/YYOTO8ImMaLaLS1QkSXcYgyM7oDezIZAyRPFWo04h8Qq9BMKA9i5zHwPQI9UKa0W4Y0dHJXa/tG2IRlagNT+NyqTf4Nck0kJuUgZLDLW6btDqPn/e8F7vY1S9KMX4snlXXgMEruArbJqaH0kXy4jVPbNSHFmjeDKoELdTjuc0pRA7yazV29sqCnem9GOilh731gumwDe/AHd9PyHW4IQ4xBldFh/kvYVnmCdX34qvEGHR5rl2tpDZ0e3pYYEWrgP4/o3mqsmedevkWxc4yyCVuZ0+eLPMrRixFDj1N3R1Y0jql4Og1qWPf/ykP04KehsgQlvmLzCoCbP4wCJzdey1steKoqgXob55YPDIeSyB1k+8F5ohDToZgRvQxV+AgLsSnQFN4YXcd7Y/DlcOcC85GPyYyJBzkQXzCHjl10NnvXCGD5TP2wSykj1U3ZI+iIcV0HQLMBMJg2KdPmw/qY7bRpFFZeOIQfN+43f0x/wcWd/6BzaGC++Yzxaw6PaCe5he3e8EZPUSW1+SDdDP5MRbdkbpDvaiUpRDGSbMXDtiMEnVOOFOPI8MgJ6D9tHV/dzCY8Ipj4qm6HosY7Ha2kqv5OGe38vUUGulNBm8nAz1Jy2/xd0NKCcVkbJ1ap05YzC7k5CYpNGYwaHnK++yoGR8i0m0bgB6Cah+Jy1eQErEydR5/h11j1Us3zJicO2vPbOEIYbyYIjqLKvuH0imPkCZ88E8ThKZEBdgaPLTfH
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(1800799015)(376005)(36860700004)(7416005)(82310400014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Apr 2024 08:03:28.2630
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a164c22f-b592-4f5c-3811-08dc5ac70977
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000044F5.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4209
 
-On Thu, Apr 11, 2024 at 11:33:51PM +0200, Thomas Weiﬂschuh wrote:
-> In __pci_register_driver(), the pci core overwrites the dev_groups field of
-> the embedded struct device_driver with the dev_groups from the outer
-> struct pci_driver unconditionally.
+On Thu, 11 Apr 2024 11:53:43 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 4.19.312 release.
+> There are 175 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Set dev_groups in the pci_driver to make sure it is used.
+> Responses should be made by Sat, 13 Apr 2024 09:53:55 +0000.
+> Anything received after that time might be too late.
 > 
-> This was broken since the introduction of pvpanic-pci.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.312-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+> and the diffstat can be found below.
 > 
-> Fixes: db3a4f0abefd ("misc/pvpanic: add PCI driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thomas Weiﬂschuh <linux@weissschuh.net>
-> ---
-> Greg,
+> thanks,
 > 
-> does it make sense to duplicate fields between struct pci_driver and
-> struct device_driver?
-> The fields "name", "groups" and "dev_groups" are duplicated.
-> 
-> pci_driver::dev_groups was introduced in
-> commit ded13b9cfd59 ("PCI: Add support for dev_groups to struct pci_driver")
-> because "this helps converting PCI drivers sysfs attributes to static"
-> 
-> I don't understand the reasoning. The embedded device_driver shares the
-> same storage lifetime and the fields have the exact same type.
+> greg k-h
 
-It's "simpler" to have the fields be in the pci_driver structure as then
-you don't need to do the crazy:
-	.driver = {
-		.field = FOO,
-	},
+All tests passing for Tegra ...
 
-type of declaration just for simplicity.
+Test results for stable-v4.19:
+    10 builds:	10 pass, 0 fail
+    20 boots:	20 pass, 0 fail
+    37 tests:	37 pass, 0 fail
 
-And as the number overall of these structures is very very small,
-duplication on the driver level is not really an issue.
+Linux version:	4.19.312-rc1-gf0cf5f6110a7
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra30-cardhu-a04
 
-Duplication on a device level is another story, there should not be any
-duplication at all if possible there, as that is where it really
-matters.
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-> ---
->  drivers/misc/pvpanic/pvpanic-pci.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/misc/pvpanic/pvpanic-pci.c b/drivers/misc/pvpanic/pvpanic-pci.c
-> index 9ad20e82785b..b21598a18f6d 100644
-> --- a/drivers/misc/pvpanic/pvpanic-pci.c
-> +++ b/drivers/misc/pvpanic/pvpanic-pci.c
-> @@ -44,8 +44,6 @@ static struct pci_driver pvpanic_pci_driver = {
->  	.name =         "pvpanic-pci",
->  	.id_table =     pvpanic_pci_id_tbl,
->  	.probe =        pvpanic_pci_probe,
-> -	.driver = {
-> -		.dev_groups = pvpanic_dev_groups,
-> -	},
-> +	.dev_groups =   pvpanic_dev_groups,
-
-Maybe we should throw a trace in the pci core if we find that dev_groups
-is set to something before we override it to catch this type of mistake
-in the future?
-
-Although, given that this never worked in the first place, it seems odd
-that the original developer never noticed it, so perhaps that's not
-really an issue here.
-
-Oh wait, it originally did, but the pci change caused it to break,
-nevermind, it is relevent, thanks.
-
-thanks,
-
-greg k-h
+Jon
 
