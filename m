@@ -1,291 +1,187 @@
-Return-Path: <stable+bounces-39244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03C748A23A5
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 04:06:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80BB18A23B1
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 04:10:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3915B231BE
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 02:06:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8AD0B23128
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 02:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09251101EE;
-	Fri, 12 Apr 2024 02:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9A8DDAA;
+	Fri, 12 Apr 2024 02:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="FKMz4sSE";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="H/sBFzDD"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD645DDDA;
-	Fri, 12 Apr 2024 02:06:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712887586; cv=none; b=C7/lhw4h82ZkEqiEyT7yd7wTEetoYKAyRZgYP35T8wEDkechVEkn6BUD4v6mi9Whjl/9qS/YDrta/glsUvmJVvu3m05Eg35XjuHwxpNwXiuf5qBxCiLRyY8/56MlsrPreerciKSOQrlErhFxWjxDCrpLaJPf5tKGijWJnRyc9cg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712887586; c=relaxed/simple;
-	bh=iPUJalo/V5yuwIqG56h/GIP8PXBjUtO8NPe4sOfCQKc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=TGsGk67Gvae8K3IKbzFy/RDlUOBZiXmE3FKgNB3m5MKC4AsFrOjHd1PiDMg1VnyuhgfDpoeWC4H40pLH8RYu55ly416CK6ngJsLTTk9jqlivpHZwPigY2mkXnsr0Ru5tEJ8RClsZ8IhvvP2kUdZpvSTrK6K0nY/nx9FZy1B5ZXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4VG0JX1S25zYdKk;
-	Fri, 12 Apr 2024 10:05:16 +0800 (CST)
-Received: from dggpemd100001.china.huawei.com (unknown [7.185.36.94])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1536018007F;
-	Fri, 12 Apr 2024 10:06:15 +0800 (CST)
-Received: from [10.174.179.155] (10.174.179.155) by
- dggpemd100001.china.huawei.com (7.185.36.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Fri, 12 Apr 2024 10:06:14 +0800
-Message-ID: <4e5e4634-a2d0-ce35-3884-829d385c0879@huawei.com>
-Date: Fri, 12 Apr 2024 10:06:14 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D70D517;
+	Fri, 12 Apr 2024 02:09:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712887791; cv=fail; b=SzNK/KUODRr33wJkQiyoP7erCK0ix72f8dbifCB1YYwWB+qofof4Zoxf+bzpGGTzwwVYykv50ATaYBIUZISTTnu6jjN5xOGfwuSM/Rq+08thVdc6ljlFTpEBiH8EcaqqV4cO0VLH2ttaQon9pPuGuF67G2CaDd57LEZs7Vwm+wE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712887791; c=relaxed/simple;
+	bh=8Eqs4JADbKfvUPnKIBzjoVQTWfMoawR8yIn40lLFva8=;
+	h=To:Cc:Subject:From:In-Reply-To:Message-ID:References:Date:
+	 Content-Type:MIME-Version; b=PqQYF0V5c3lTvLX4iPW4XLguV1jiwfmM3ld/aqnqhPLlKRC1uTx/AZifXPKGy1ezhEVYZkwy/4pJ4l8Mylf89jCcO1iQBejZjZg7HxBkRx6MKT5KgOFZN8unq4IRa25bkuN/yAEfopEB0bjMmz9KodEtJOBFEkkjaZ7HsYC/dpI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=FKMz4sSE; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=H/sBFzDD; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43BINnt3011678;
+	Fri, 12 Apr 2024 02:09:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : in-reply-to : message-id : references : date : content-type :
+ mime-version; s=corp-2023-11-20;
+ bh=0Ep0UQACKKxTbRj2MiDZcZooUdaE6W/Qa2oaycvXcy8=;
+ b=FKMz4sSEmfBCHpGSi23WlNeoO7EweGMylv4CQ41DwdP77wHMA5K/gvrYs//PmepACmoI
+ BAYwshc3bMQEmWAqnJZC0g9iTtxjuixSymYppNddaTxzRG2gzDatEdgZl6wA8lA/aV9O
+ /cmW0/3htvoiHy4rYX+6hfrmCgaQu4IUmCfxrWSYw8YeCYb3TVrU+x3710M4/W2O3Ehn
+ R0tAuahAwNgOupXBqL8m+EQg1hb0QTl/H0W4HphiIlvT0rMKyX8m+z52OIxZEZMCWwiv
+ UF0RriXyoBUUWMZIs3b6jf56pVeQWhU4t0BR0QqTGpUfo3DC4OHkgHhPuxHzMSIBGTq8 8w== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xaxxvjwkj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Apr 2024 02:09:47 +0000
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 43C0C34A032538;
+	Fri, 12 Apr 2024 02:09:46 GMT
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2171.outbound.protection.outlook.com [104.47.58.171])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3xavub04fj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Apr 2024 02:09:46 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TIdbJVzUZRwUrcg26hq5nbvkq9eNqAIEat5jA5W0Elv1/lSygA6bkIF52zz64Ggg9PdzNGTlL8/EbcETa4bdEmAUsBvWGobeSBoqj0B+JmN+mFNPXXdOj9xkGJMkjj4Jo5vfzDMRu4i4TnmmbbAfv5H2rbhby3aFdZQXsLyFESRU87dk0uOuiJyWLgU8547nwDYwYlAxxmGw68aOaW4Ks/W/ZSLmLiYoyVkL1k5Oa0ZokKuPiVNFQZEbEz+zy6YO0m0/vaEy18T9vyRqXI1sanvnzrCx071Jq6SqbOZBhg7h3YxSyAY25jSnWNOPto/Cm6ab6H348FhCDcKYk3gQjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0Ep0UQACKKxTbRj2MiDZcZooUdaE6W/Qa2oaycvXcy8=;
+ b=kW2NCSdrn/RrclFaNIaoOOJ5m+EiNuFfLe9w9+Kd8z2L+JPPUoGHDrpYDtctfpI9KmuP1tee+h/kc9WA02OTKjIOsSZAelHyNsPBM5sqSH/uS9Q0wnLd6MGJYJbvpGknKtLE5trvYXgMDVIzzTOIlH9tFfsDWqZ2o9rSUUOpilFxQSp9AdauWJ2M7CCjnLBeX6spwyaaBx0PtjNpqMVwKh0/W6Pokd7JDfGLzdhKrySZq8wnbtKDeTlBCEEK2e7dTv1pgfo6CAUTcFdE72kDEYkojX6FXHWzlhXvVinwINMaSLb6LWbbk6YboOVDpXjCbmJxZPYPAA0Mgy2RweGqrQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0Ep0UQACKKxTbRj2MiDZcZooUdaE6W/Qa2oaycvXcy8=;
+ b=H/sBFzDDAPLuZH8OUlaY50HOfw9LUzFU6F/ylWNm0e96o3qnym/4cHlYWuerb5UZF45HRFwqKhOywJGgx0h8AGoGXpj5F1zUXCyIz10mRcZG9U4jIEWOtvpUYCG/ZT6mM7NRJmaQVXqLqt9s+pIjAhXHUnYYk+zgFJrWWYwMSlI=
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
+ by DS0PR10MB6797.namprd10.prod.outlook.com (2603:10b6:8:13d::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.55; Fri, 12 Apr
+ 2024 02:09:42 +0000
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::7856:8db7:c1f6:fc59]) by PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::7856:8db7:c1f6:fc59%4]) with mapi id 15.20.7409.042; Fri, 12 Apr 2024
+ 02:09:42 +0000
+To: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: Chris Rankin <rankincj@gmail.com>, linux-scsi@vger.kernel.org,
+        Linux
+ Stable <stable@vger.kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: Fwd: [PATCH 6.8 000/143] 6.8.6-rc1 review
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+In-Reply-To: <yq1ttk8ks5f.fsf@ca-mkp.ca.oracle.com> (Martin K. Petersen's
+	message of "Thu, 11 Apr 2024 08:22:29 -0400")
+Organization: Oracle Corporation
+Message-ID: <yq1a5lzjpx7.fsf@ca-mkp.ca.oracle.com>
+References: <CAK2bqV+kpG5cm5py24TusikZYO=_vWg7CVEN3oTywVhnq1mhjQ@mail.gmail.com>
+	<2024041125-surgery-pending-cd06@gregkh>
+	<CAK2bqVJcsjZE8k87_xNU-mQ3xXm58eCFMdouSVEMkkT57wCQFg@mail.gmail.com>
+	<CAK2bqV+d-ffQB_nHEnCcTp9mjHAq-LOb3WtaqXZK2Bk64UywNQ@mail.gmail.com>
+	<yq1ttk8ks5f.fsf@ca-mkp.ca.oracle.com>
+Date: Thu, 11 Apr 2024 22:09:40 -0400
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR21CA0020.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::30) To PH0PR10MB4759.namprd10.prod.outlook.com
+ (2603:10b6:510:3d::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:104.0) Gecko/20100101
- Thunderbird/104.0
-Subject: Re: [PATCH 6.6] Revert "dm-crypt, dm-verity: disable tasklets"
-To: Mikulas Patocka <mpatocka@redhat.com>
-CC: <stable@vger.kernel.org>, <gregkh@linuxfoundation.org>,
-	<torvalds@linux-foundation.org>, <tglx@linutronix.de>,
-	<linux-kernel@vger.kernel.org>, <dm-devel@lists.linux.dev>,
-	<msnitzer@redhat.com>, <ignat@cloudflare.com>, <damien.lemoal@wdc.com>,
-	<houtao1@huawei.com>, <nhuck@google.com>, <peterz@infradead.org>,
-	<yukuai3@huawei.com>, <yangerkun@huawei.com>, <yi.zhang@huawei.com>,
-	<lilingfeng@huaweicloud.com>
-References: <20240411091539.361470-1-lilingfeng3@huawei.com>
- <7c17f31a-2cc3-1597-e2b5-832355de7647@redhat.com>
-From: Li Lingfeng <lilingfeng3@huawei.com>
-In-Reply-To: <7c17f31a-2cc3-1597-e2b5-832355de7647@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemd100001.china.huawei.com (7.185.36.94)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4759:EE_|DS0PR10MB6797:EE_
+X-MS-Office365-Filtering-Correlation-Id: 933e6a0a-23e9-4cbe-a1a5-08dc5a959d89
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	y8d2YUeq2VXdYxMoTKUZf9ZLYDc6TUv6QRS8AdZUdh0E7PFCpRgtDfDwZAajMufYoQ9wSIPMIE67BINiKvVkyth5EhEm6L/Np7WnD05m6JAy3MRIJXDKSmEc/p4A9a9sjtOEesNIN/YN9AdfB7SVjvqWGtFCc4sX9nNqgj4T2OSDGr4+DZfuIfUN+UfYE0Y8StNGJjWyG9KmgL7JkRcCLbdbZ5u8TJUQGRH4DkYcXlZx9Gz/N7RW4VSqCbm1ab3F7KNCv8iHdqKvQnZ1MLGX1BmtxfSTROBQ8EJD3jtnA977R9MD2w7uwSRNxruVy9gJZeM4jVWYxHgIyMkxRXlht6N3bxqcfTPBit+VehHXbydX8Di8ckxiWg5NudR6BSkm3IxtdzMpZKJhcNqZPTZ1ZcfZ6rYBx+A+fEHzTXewwYMGltUYgcWqEIUSLMttewKdyTYkXymJ9csbKSjWYckqChBJy9zUKxaJ/lgteTDtUrMI0LpIuFdnsYpVG9++Vx3IQ/Vdv/0Z5SwrhIGKVtCVOLLVHK7zIqrsZlATpdyMKak9k9O0UmYQ3BE6cwTRGKvXmBAlar/Np+iEvFZxz2HgRD1pQRE518x0wpY90yrjd3YFKj0QBZIYT8uMtnFmDMGsBpFIafUT123EkVYrIoxwldQr1SpkiL7rkZmMyQHlm4U=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?us-ascii?Q?OWetD8FtlQ+TsxAHhH955TEJmKYf2Y2B6hqzZ1LxgGgUoxlhkhLCH5V8mXtf?=
+ =?us-ascii?Q?PDgLrW0hV9IwEqpOiWZsS3EWSxsI/VvVTFWCvE1d76BFr1GZJWregkPXzaby?=
+ =?us-ascii?Q?IGtY+mRbWQNXCQHhb4YXu6+u87llA3Nu9KAL/DB7LNUj37courGP+UHPMXLi?=
+ =?us-ascii?Q?Jd8nS5af+UvsOofzuHA8zUWpN5OYBk8MicVhK4CaxRVZgXIx5PrZX4kYpW4D?=
+ =?us-ascii?Q?uqRJCke7uAug1Cy7xiF6NM/6BoszNkQtkGxYBW+OjI4pUybKaEkslRAGZQ9V?=
+ =?us-ascii?Q?cQo/X4a6n19UC1C0/pDONeOFs+KObw++nDfJRSl/OIt5Z7fZOIV+xfAXCfXU?=
+ =?us-ascii?Q?NPAv4UX87A212LfJPFu6jeHjJpofILvcZfI4Bh6LGwakaFgoi1gqswO9qUzY?=
+ =?us-ascii?Q?HY/c3nE3O0Reep64kS0fbS154qrTtO3244a6vCiXBYHbfuJPSO1Oni8Rml7N?=
+ =?us-ascii?Q?WU7edegYiSv0mRmSBouYK08iHuizGuctkGhuwB0661hhWQrrygcHupwhE/+a?=
+ =?us-ascii?Q?zKoIg5ylJWKcWegLcmNGzN7clEcwfqs+Y7/8JMR9nYSc/YAblmLBdxbUTv+P?=
+ =?us-ascii?Q?ruPvVbWoLi4JwnEfE4dzNs85tMLrxYSupnS2r7w8PYGz77Fejw9PGX7OOHO3?=
+ =?us-ascii?Q?YBfchZpTKt6UddggFmUrgNx/vwE/F7g7aQpLJPCdN4Dg+tHU0JUvXlzRD3dp?=
+ =?us-ascii?Q?5y3fZmtqata6hSmHmb048uOjgZ/ixTHJsDv5c0Y9JCCC/Qxr2cnDBeb7R9SH?=
+ =?us-ascii?Q?Jv+GmisjR5FR0AUCAA6vKTL7fPZsCtCTUa7kUPjE97QNe82ZOoM/b6e8UOr7?=
+ =?us-ascii?Q?kKD8MHBElxXZ/saEVbsfyTgGOnjkJpO/hprc3Q7yWfLPAgfC4qbpagN/PrGb?=
+ =?us-ascii?Q?gSc9lnNP6Hn5Vi3hFoSMhK3075c4CVbKm/cZvPIkJEXjJQowEeMmjNRrH/wy?=
+ =?us-ascii?Q?an4HqZCISXiqKsSf1IVhd/RjxiT0mh2keVbpqQOEJVWIQGIW/sogDLPtpfIY?=
+ =?us-ascii?Q?NvzhFnJNgP876N2q7WxAGaD9YjdpMsw9bi4wZQNXMFvrp72IBuAOw0+wtmKi?=
+ =?us-ascii?Q?JBwrHNXkbZkO7GX5w0KVMZttjiMtsubY+NGmHEtRhzecLDgeR3Q1x0ATGSmg?=
+ =?us-ascii?Q?roYIxSdcPAOL04Ad/2eb1V3Wn3uGNlPV+JkJ4a7ZR2e369pkCPgnaU1EX/qY?=
+ =?us-ascii?Q?4WuLaHC8v6AdyARp1ioZtZVeaa+9+80w2wHj6yxfakFPqlfXfSmdA1itL41H?=
+ =?us-ascii?Q?7riau1xAOQlyPbRSdTmtyxH7ECcNE6lE4h54LUB7oJKthg6Eg/z0ERXOhX+X?=
+ =?us-ascii?Q?tpvLGztmbKNT9jcSOGwStXzbuVJV2RoRqXdg5y9B57FA6SRxgckeMk4iixnE?=
+ =?us-ascii?Q?eql10YFJG/AcsajCLvQmRWENpFIv9rmqL13qftWAPRkCB4/Wrn0iU57cjpfa?=
+ =?us-ascii?Q?12bP4gk+aBbKBsrKLfs+Zkm1htC+mue9GHFq2EOYBsPU9NWOnZ3eif6fvxEf?=
+ =?us-ascii?Q?HR+eZstx+08MfOc2nvQqhIh4KOWhaXxCnYyCW4bfv35/7hcEaqkK/wBiD4pV?=
+ =?us-ascii?Q?iwfI4PIEIUIc6YQTfUGA/DT5U7i2nYySTd12fWwf0GKW6zW3eLw4Lg1GNyXj?=
+ =?us-ascii?Q?Vw=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	1E35ENSTxBKyHLg811r404sPvRd4DUibaQzC6vOfnat23CGRqjDs1DnvhtFGuQcrmHQCYYjjSC/JHQvTJXao40i/U/hIcGDih0sx770CqcRxE6Tkv1gwMgRAzuUSzmFRuqPojpEevvaceoJBgujhMfJa6DnKZvdrXxs/YMU9oWtAcwu1saBhRlB/4mxuTFcEg4eI708fhPM3X8YdvDiA+TOsMDR4edjcuiUOGzytjPshStTGoV/ziLNBjPhHnY3BMd+VfNKMFFcLochHzcsmey0SULHR1B/FljNiOL4X9KG6J4kRsUNR/wurdttKrjAZ9qbIu0Z4B63lxZEsFEzqN+WWRs/GF0w+cZqJemJ9A8IXzzOIDFolUT1b1Q8vHJh8BdusRKsmcjPUwR7l+T+Enj+Yzh+dtobTTq0sW6Py4k2O1kXgfMhBS7CEkkT40/xOZb0jA27riJlTzLk+XfBA4phAQp127yl2wd/zFqf9tM+GPdzCf+nNCtUtqZ0egyeInZYW6wcOYLoSdatWkvfnCdHMFDRhF9bYltLf5PR6aRLXzbma2maM1oiHWKBc2u+rqFXKaBHeJA7p50p65viMQsjWeozS13vefolRvU006V0=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 933e6a0a-23e9-4cbe-a1a5-08dc5a959d89
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Apr 2024 02:09:42.1074
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JiUQ/+pKUuNGEkMHyGWb+N3jhxJ/LRR67Hl6ERBp7qv0nMZqH645Q4IyI1IOpCQ6RJcqcB2kG7His1o/oa67uULgPR0Y3ZjnmlmBk3KFpZY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB6797
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-11_14,2024-04-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
+ bulkscore=0 mlxlogscore=999 mlxscore=0 adultscore=0 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2404120014
+X-Proofpoint-ORIG-GUID: oMr6Ex2nXCVbiBApe87DId8RsIwsWdrp
+X-Proofpoint-GUID: oMr6Ex2nXCVbiBApe87DId8RsIwsWdrp
 
-Hi
 
-I'm having difficulty understanding "Workqueues and ksoftirqd may be 
-scheduled arbitrarily".
-This is my understanding:
-kcryptd_queue_crypt
-  tasklet_schedule
-   __tasklet_schedule
-    __tasklet_schedule_common
-     raise_softirq_irqoff
-      wakeup_softirqd
-       wake_up_process // ksoftirqd
-
-run_ksoftirqd
-  __do_softirq
-   softirq_handle_begin
-    __local_bh_disable_ip // Turn off preemption
-<---------- [1] ---------->
-   tasklet_action // h->action
-    tasklet_action_common
-     tasklet_trylock
-      kcryptd_crypt_tasklet // t->func(t->data)
-      ...
-       queue_work(cc->io_queue, &io->work)
-<---------- [2] ---------->
-     tasklet_unlock
-
-// workqueue process
-kcryptd_io_bio_endio
-  ...
-  // free tasklet_struct
-
-Since preemption has been turned off at [1], I'm confused about how the 
-CPU can be scheduled out to do work first at [2].
-Would you mind explaining it to me?
-
-Thanks
-
-在 2024/4/11 20:37, Mikulas Patocka 写道:
-> Hi
->
-> I NACK this.
->
->
-> On Thu, 11 Apr 2024, Li Lingfeng wrote:
->
->> This reverts commit 5735a2671ffb70ea29ca83969fe01316ee2ed6fc which is
->> commit 0a9bab391e336489169b95cb0d4553d921302189 upstream.
+>>> scsi: sg: Avoid sg device teardown race
+>>> [ Upstream commit 27f58c04a8f438078583041468ec60597841284d ]
 >>
->> Tasklet is thought to cause memory corruption [1], so it was disabled in
->> dm-crypt and dm-verity. However, memory corruption may not happen since
->> cc->io_queue is created without WQ_UNBOUND [2].
->> Revert commit 5735a2671ffb ("dm-crypt, dm-verity: disable tasklets") to
->> bring tasklet back.
->>
->> [1] https://lore.kernel.org/all/d390d7ee-f142-44d3-822a-87949e14608b@suse.de/T/
->> [2] https://lore.kernel.org/all/4d331659-badd-749d-fba1-271543631a8a@huawei.com/
-> Regarding [2] - if you add mdelay, you can make the race condition less
-> reproducible, but it is not a proper fix and the race condition stays
-> there unfixed.
->
-> Workqueues and ksoftirqd may be scheduled arbitrarily, there is no
-> guarantee that they will be executed in a particular order, even if they
-> are executed on the same CPU.
->
-> Mikulas
->
->> Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
->> ---
->>   drivers/md/dm-crypt.c         | 38 +++++++++++++++++++++++++++++++++--
->>   drivers/md/dm-verity-target.c | 26 ++++++++++++++++++++++--
->>   drivers/md/dm-verity.h        |  1 +
->>   3 files changed, 61 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/md/dm-crypt.c b/drivers/md/dm-crypt.c
->> index aa6bb5b4704b..a60d91d02e28 100644
->> --- a/drivers/md/dm-crypt.c
->> +++ b/drivers/md/dm-crypt.c
->> @@ -75,8 +75,10 @@ struct dm_crypt_io {
->>   	struct bio *base_bio;
->>   	u8 *integrity_metadata;
->>   	bool integrity_metadata_from_pool:1;
->> +	bool in_tasklet:1;
->>   
->>   	struct work_struct work;
->> +	struct tasklet_struct tasklet;
->>   
->>   	struct convert_context ctx;
->>   
->> @@ -1775,6 +1777,7 @@ static void crypt_io_init(struct dm_crypt_io *io, struct crypt_config *cc,
->>   	io->ctx.r.req = NULL;
->>   	io->integrity_metadata = NULL;
->>   	io->integrity_metadata_from_pool = false;
->> +	io->in_tasklet = false;
->>   	atomic_set(&io->io_pending, 0);
->>   }
->>   
->> @@ -1785,6 +1788,13 @@ static void crypt_inc_pending(struct dm_crypt_io *io)
->>   
->>   static void kcryptd_queue_read(struct dm_crypt_io *io);
->>   
->> +static void kcryptd_io_bio_endio(struct work_struct *work)
->> +{
->> +	struct dm_crypt_io *io = container_of(work, struct dm_crypt_io, work);
->> +
->> +	bio_endio(io->base_bio);
->> +}
->> +
->>   /*
->>    * One of the bios was finished. Check for completion of
->>    * the whole request and correctly clean up the buffer.
->> @@ -1817,6 +1827,20 @@ static void crypt_dec_pending(struct dm_crypt_io *io)
->>   
->>   	base_bio->bi_status = error;
->>   
->> +	/*
->> +	 * If we are running this function from our tasklet,
->> +	 * we can't call bio_endio() here, because it will call
->> +	 * clone_endio() from dm.c, which in turn will
->> +	 * free the current struct dm_crypt_io structure with
->> +	 * our tasklet. In this case we need to delay bio_endio()
->> +	 * execution to after the tasklet is done and dequeued.
->> +	 */
->> +	if (io->in_tasklet) {
->> +		INIT_WORK(&io->work, kcryptd_io_bio_endio);
->> +		queue_work(cc->io_queue, &io->work);
->> +		return;
->> +	}
->> +
->>   	bio_endio(base_bio);
->>   }
->>   
->> @@ -2291,6 +2315,11 @@ static void kcryptd_crypt(struct work_struct *work)
->>   		kcryptd_crypt_write_convert(io);
->>   }
->>   
->> +static void kcryptd_crypt_tasklet(unsigned long work)
->> +{
->> +	kcryptd_crypt((struct work_struct *)work);
->> +}
->> +
->>   static void kcryptd_queue_crypt(struct dm_crypt_io *io)
->>   {
->>   	struct crypt_config *cc = io->cc;
->> @@ -2302,10 +2331,15 @@ static void kcryptd_queue_crypt(struct dm_crypt_io *io)
->>   		 * irqs_disabled(): the kernel may run some IO completion from the idle thread, but
->>   		 * it is being executed with irqs disabled.
->>   		 */
->> -		if (!(in_hardirq() || irqs_disabled())) {
->> -			kcryptd_crypt(&io->work);
->> +		if (in_hardirq() || irqs_disabled()) {
->> +			io->in_tasklet = true;
->> +			tasklet_init(&io->tasklet, kcryptd_crypt_tasklet, (unsigned long)&io->work);
->> +			tasklet_schedule(&io->tasklet);
->>   			return;
->>   		}
->> +
->> +		kcryptd_crypt(&io->work);
->> +		return;
->>   	}
->>   
->>   	INIT_WORK(&io->work, kcryptd_crypt);
->> diff --git a/drivers/md/dm-verity-target.c b/drivers/md/dm-verity-target.c
->> index 49e4a35d7019..0bb126eadc0d 100644
->> --- a/drivers/md/dm-verity-target.c
->> +++ b/drivers/md/dm-verity-target.c
->> @@ -701,6 +701,23 @@ static void verity_work(struct work_struct *w)
->>   	verity_finish_io(io, errno_to_blk_status(verity_verify_io(io)));
->>   }
->>   
->> +static void verity_tasklet(unsigned long data)
->> +{
->> +	struct dm_verity_io *io = (struct dm_verity_io *)data;
->> +	int err;
->> +
->> +	io->in_tasklet = true;
->> +	err = verity_verify_io(io);
->> +	if (err == -EAGAIN || err == -ENOMEM) {
->> +		/* fallback to retrying with work-queue */
->> +		INIT_WORK(&io->work, verity_work);
->> +		queue_work(io->v->verify_wq, &io->work);
->> +		return;
->> +	}
->> +
->> +	verity_finish_io(io, errno_to_blk_status(err));
->> +}
->> +
->>   static void verity_end_io(struct bio *bio)
->>   {
->>   	struct dm_verity_io *io = bio->bi_private;
->> @@ -713,8 +730,13 @@ static void verity_end_io(struct bio *bio)
->>   		return;
->>   	}
->>   
->> -	INIT_WORK(&io->work, verity_work);
->> -	queue_work(io->v->verify_wq, &io->work);
->> +	if (static_branch_unlikely(&use_tasklet_enabled) && io->v->use_tasklet) {
->> +		tasklet_init(&io->tasklet, verity_tasklet, (unsigned long)io);
->> +		tasklet_schedule(&io->tasklet);
->> +	} else {
->> +		INIT_WORK(&io->work, verity_work);
->> +		queue_work(io->v->verify_wq, &io->work);
->> +	}
->>   }
->>   
->>   /*
->> diff --git a/drivers/md/dm-verity.h b/drivers/md/dm-verity.h
->> index db93a91169d5..7e495cc375b0 100644
->> --- a/drivers/md/dm-verity.h
->> +++ b/drivers/md/dm-verity.h
->> @@ -87,6 +87,7 @@ struct dm_verity_io {
->>   	bool in_tasklet;
->>   
->>   	struct work_struct work;
->> +	struct tasklet_struct tasklet;
->>   
->>   	char *recheck_buffer;
->>   
->> -- 
->> 2.31.1
->>
+>> I think I have hit this issue in 6.8.4. Is there a patch ready for
+>> this bug yet please?
+
+Commit d4e655c49f47 ("scsi: sg: Avoid race in error handling & drop
+bogus warn") is now in Linus' tree and should be applied on top of all
+branches which contain a backport of upstream commit 27f58c04a8f4
+("scsi: sg: Avoid sg device teardown race").
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
 
