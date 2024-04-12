@@ -1,129 +1,239 @@
-Return-Path: <stable+bounces-39309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066218A2E10
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 14:16:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF5D8A2F37
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 15:19:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 388131C2151D
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 12:16:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91DB8282C04
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 13:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691AE57867;
-	Fri, 12 Apr 2024 12:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E5983CD1;
+	Fri, 12 Apr 2024 13:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Vv7KM8WQ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bGAIaIFg"
-X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U72mNorB"
+X-Original-To: Stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9455C5731F;
-	Fri, 12 Apr 2024 12:15:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFD983CB4;
+	Fri, 12 Apr 2024 13:18:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712924133; cv=none; b=S4w3ox2Lg7LBIvhsUA7rsXMmzYfzNQyKUM2PzpfGHjUr3QSsQsEGW5+r3/2epBsuVHYNktO/r+ap+3UNzGKu5iw7g48bvWEG3bF0uf8UNLjoZq+LLPQc66ieF9kzJd3Cb4JJDcsy50s0BNJN96zTay9/5b9EI+Ux0loVv4DC3vY=
+	t=1712927904; cv=none; b=MXEsuIpBIubHQ0ZiJMmEFdsv3ctnd2m0+oVyCXXA0bMHYemnZUcvKq+pNgMVFGxJGP4J38OOOxd64jwVS7scf1K711PBsWqD4MdxQe4Fy/S+v/S1OMSzzxN3Ygp47pMwWD3zI72q4JErBH9HCt6kXhL1g5eov+1wrUj2IGhRddI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712924133; c=relaxed/simple;
-	bh=nmNHb58EWI8oLDjXQIjOG1Wq8LmNik2S7FCEDWcM8tU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=g/y6Dx5P7rgcGpZaPn4eSgRJtnM7cWMv+Dh64tv34QTti9ItF8P2G/dZwJ/rzpaV1kpWUo11g+mThcIP/LFWWrLdlFN1Uts2xcJC4ir9tlnP9uJKKy0eaKbtAfTG7lWDNvi7OwTeJ8zV1VZC7kZ9SMyyTb3bLJYuuoxQaQnj8/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Vv7KM8WQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bGAIaIFg; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 12 Apr 2024 12:15:29 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712924130;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kdC6iHt9iuIs2ZUHG+rVn8AHQ2/r2wQDI5UeskPFyL0=;
-	b=Vv7KM8WQDfZvJF8dtJ43Vo4gDkUh8kF1L5W9ejTxFgkFzDCsk+KN3CQkYaGVZRAPpTZfLY
-	ZADBcwumF5MlXL2L3gbh/dP2+Ah6XOjPoMnj4Ed7A2OonV6OJjXqHKdIiPtcd5zoOM/cUr
-	MOaptZ1UEh+vMdS5wYJrPYl4ug3Mmlz2n2kvnqdEuZmztUU3qTZbvuNNUFE8uAJOBBmws2
-	nTS3k2NJ7359FedklKpkuazflnVqKeGa3f+zmSba1ReewaMduiA5sNm9O78+59XNKACFvK
-	QJmb+cne+2QtBOlxEmORL36ot3+3Ex86VHHOVF8KKU/lJBYcbU03LS8qyJ6Icw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712924130;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kdC6iHt9iuIs2ZUHG+rVn8AHQ2/r2wQDI5UeskPFyL0=;
-	b=bGAIaIFgEeaXE0SP005INNs63sdee6ZcvDqKUmtNoHxt5Q6ggZR/f51ftbTJlFJcmbhd9V
-	tx6shPcJC8OeneCQ==
-From: "tip-bot2 for John Stultz" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] selftests: timers: Fix posix_timers
- ksft_print_msg() warning
-Cc: John Stultz <jstultz@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Justin Stitt <justinstitt@google.com>, Shuah Khan <skhan@linuxfoundation.org>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240410232637.4135564-1-jstultz@google.com>
-References: <20240410232637.4135564-1-jstultz@google.com>
+	s=arc-20240116; t=1712927904; c=relaxed/simple;
+	bh=J01T7vOWuk8XunIDkQev0J/k4GnQzoItYVn62qH2i+s=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=YXxuhCPjWGfAKaRJbsD52XzZTVRSgwYwz5QNKlh1sW+U2ivb6091CfHwT1kiGHcHuF8JDuxrG4/7zhXFxoCqNtKiLQvzzfWrT/gBbmAlxO05s0g8aqgWzyzjjSCjfkPGkxuAdFdN1d8peT29deTGx1mdZ91z8wUTqfm1rbou0eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U72mNorB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8987EC3277B;
+	Fri, 12 Apr 2024 13:18:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712927904;
+	bh=J01T7vOWuk8XunIDkQev0J/k4GnQzoItYVn62qH2i+s=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=U72mNorBevIjAj4KEOavz2dshROeP0/LR8A52mqoUoaog5QW9JWkvxIFWautH53Xu
+	 VdfdnxRJ/LPSAaFbfJ+TdwqTTEOg/SGu90rH4RWLTS3lYnI0V0YmXW5VWusdgIs9YQ
+	 hn/Bhi8ZEFf3iEj2ka3I8FzoWh5b6ZAq8MVpu2UyvVF18heACsb82Sv3MvZGzyF/Rs
+	 9DIjtiuZz6lhyAS9YkiQWZ03r8O2ZE7inCdcl2vU6KVs9XkFYeyVk8xquya/Cfie3Y
+	 fVd6xnWsClrlY9uibqR8mmES+/GgI4O5J67Ave7kY/uPX2bnUPT1+sxPQ91X3dbcWZ
+	 WPC8EU8ZJ+dhQ==
+Date: Fri, 12 Apr 2024 22:18:20 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: qiang4.zhang@linux.intel.com
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, Qiang Zhang <qiang4.zhang@intel.com>,
+ Stable@vger.kernel.org
+Subject: Re: [PATCH v2] bootconfig: use memblock_free_late to free xbc
+ memory to buddy
+Message-Id: <20240412221820.852abeb57feceec893ca0dad@kernel.org>
+In-Reply-To: <20240412104940.456257-1-qiang4.zhang@linux.intel.com>
+References: <20240412104940.456257-1-qiang4.zhang@linux.intel.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-ID: <171292412916.10875.16404428821258401754.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the timers/urgent branch of tip:
+On Fri, 12 Apr 2024 18:49:41 +0800
+qiang4.zhang@linux.intel.com wrote:
 
-Commit-ID:     e4a6bceac98eba3c00e874892736b34ea5fdaca3
-Gitweb:        https://git.kernel.org/tip/e4a6bceac98eba3c00e874892736b34ea5fdaca3
-Author:        John Stultz <jstultz@google.com>
-AuthorDate:    Wed, 10 Apr 2024 16:26:28 -07:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 12 Apr 2024 14:11:15 +02:00
+> From: Qiang Zhang <qiang4.zhang@intel.com>
+> 
+> On the time to free xbc memory in xbc_exit(), memblock may has handed
+> over memory to buddy allocator. So it doesn't make sense to free memory
+> back to memblock. memblock_free() called by xbc_exit() even causes UAF bugs
+> on architectures with CONFIG_ARCH_KEEP_MEMBLOCK disabled like x86.
+> Following KASAN logs shows this case.
+> 
+> This patch fixes the xbc memory free problem by calling memblock_free()
+> in early xbc init error rewind path and calling memblock_free_late() in
+> xbc exit path to free memory to buddy allocator.
+> 
+> [    9.410890] ==================================================================
+> [    9.418962] BUG: KASAN: use-after-free in memblock_isolate_range+0x12d/0x260
+> [    9.426850] Read of size 8 at addr ffff88845dd30000 by task swapper/0/1
+> 
+> [    9.435901] CPU: 9 PID: 1 Comm: swapper/0 Tainted: G     U             6.9.0-rc3-00208-g586b5dfb51b9 #5
+> [    9.446403] Hardware name: Intel Corporation RPLP LP5 (CPU:RaptorLake)/RPLP LP5 (ID:13), BIOS IRPPN02.01.01.00.00.19.015.D-00000000 Dec 28 2023
+> [    9.460789] Call Trace:
+> [    9.463518]  <TASK>
+> [    9.465859]  dump_stack_lvl+0x53/0x70
+> [    9.469949]  print_report+0xce/0x610
+> [    9.473944]  ? __virt_addr_valid+0xf5/0x1b0
+> [    9.478619]  ? memblock_isolate_range+0x12d/0x260
+> [    9.483877]  kasan_report+0xc6/0x100
+> [    9.487870]  ? memblock_isolate_range+0x12d/0x260
+> [    9.493125]  memblock_isolate_range+0x12d/0x260
+> [    9.498187]  memblock_phys_free+0xb4/0x160
+> [    9.502762]  ? __pfx_memblock_phys_free+0x10/0x10
+> [    9.508021]  ? mutex_unlock+0x7e/0xd0
+> [    9.512111]  ? __pfx_mutex_unlock+0x10/0x10
+> [    9.516786]  ? kernel_init_freeable+0x2d4/0x430
+> [    9.521850]  ? __pfx_kernel_init+0x10/0x10
+> [    9.526426]  xbc_exit+0x17/0x70
+> [    9.529935]  kernel_init+0x38/0x1e0
+> [    9.533829]  ? _raw_spin_unlock_irq+0xd/0x30
+> [    9.538601]  ret_from_fork+0x2c/0x50
+> [    9.542596]  ? __pfx_kernel_init+0x10/0x10
+> [    9.547170]  ret_from_fork_asm+0x1a/0x30
+> [    9.551552]  </TASK>
+> 
+> [    9.555649] The buggy address belongs to the physical page:
+> [    9.561875] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1 pfn:0x45dd30
+> [    9.570821] flags: 0x200000000000000(node=0|zone=2)
+> [    9.576271] page_type: 0xffffffff()
+> [    9.580167] raw: 0200000000000000 ffffea0011774c48 ffffea0012ba1848 0000000000000000
+> [    9.588823] raw: 0000000000000001 0000000000000000 00000000ffffffff 0000000000000000
+> [    9.597476] page dumped because: kasan: bad access detected
+> 
+> [    9.605362] Memory state around the buggy address:
+> [    9.610714]  ffff88845dd2ff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [    9.618786]  ffff88845dd2ff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [    9.626857] >ffff88845dd30000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+> [    9.634930]                    ^
+> [    9.638534]  ffff88845dd30080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+> [    9.646605]  ffff88845dd30100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+> [    9.654675] ==================================================================
+> 
+> Cc: Stable@vger.kernel.org
+> Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
 
-selftests: timers: Fix posix_timers ksft_print_msg() warning
+Looks good to me.
 
-After commit 6d029c25b71f ("selftests/timers/posix_timers: Reimplement
-check_timer_distribution()") the following warning occurs when building
-with an older gcc:
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-posix_timers.c:250:2: warning: format not a string literal and no format arguments [-Wformat-security]
-  250 |  ksft_print_msg(errmsg);
-      |  ^~~~~~~~~~~~~~
+Also,
 
-Fix this up by changing it to ksft_print_msg("%s", errmsg)
+Fixes: 40caa127f3c7 ("init: bootconfig: Remove all bootconfig data when the init memory is removed")
 
-Fixes: 6d029c25b71f ("selftests/timers/posix_timers: Reimplement check_timer_distribution()")
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Justin Stitt <justinstitt@google.com>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240410232637.4135564-1-jstultz@google.com
----
- tools/testing/selftests/timers/posix_timers.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Let me pick this for bootconfig/fixes.
 
-diff --git a/tools/testing/selftests/timers/posix_timers.c b/tools/testing/selftests/timers/posix_timers.c
-index d86a0e0..348f471 100644
---- a/tools/testing/selftests/timers/posix_timers.c
-+++ b/tools/testing/selftests/timers/posix_timers.c
-@@ -247,7 +247,7 @@ static int check_timer_distribution(void)
- 		ksft_test_result_skip("check signal distribution (old kernel)\n");
- 	return 0;
- err:
--	ksft_print_msg(errmsg);
-+	ksft_print_msg("%s", errmsg);
- 	return -1;
- }
- 
+Thanks!
+
+> ---
+> v2:
+> - add an early flag in xbc_free_mem() to free memory back to memblock in
+>   xbc_init error path or put memory to buddy allocator in normal xbc_exit.
+> 
+> ---
+>  include/linux/bootconfig.h |  7 ++++++-
+>  lib/bootconfig.c           | 19 +++++++++++--------
+>  2 files changed, 17 insertions(+), 9 deletions(-)
+> 
+> diff --git a/include/linux/bootconfig.h b/include/linux/bootconfig.h
+> index e5ee2c694401..3f4b4ac527ca 100644
+> --- a/include/linux/bootconfig.h
+> +++ b/include/linux/bootconfig.h
+> @@ -288,7 +288,12 @@ int __init xbc_init(const char *buf, size_t size, const char **emsg, int *epos);
+>  int __init xbc_get_info(int *node_size, size_t *data_size);
+>  
+>  /* XBC cleanup data structures */
+> -void __init xbc_exit(void);
+> +void __init _xbc_exit(bool early);
+> +
+> +static inline void xbc_exit(void)
+> +{
+> +	_xbc_exit(false);
+> +}
+>  
+>  /* XBC embedded bootconfig data in kernel */
+>  #ifdef CONFIG_BOOT_CONFIG_EMBED
+> diff --git a/lib/bootconfig.c b/lib/bootconfig.c
+> index c59d26068a64..f9a45adc6307 100644
+> --- a/lib/bootconfig.c
+> +++ b/lib/bootconfig.c
+> @@ -61,9 +61,12 @@ static inline void * __init xbc_alloc_mem(size_t size)
+>  	return memblock_alloc(size, SMP_CACHE_BYTES);
+>  }
+>  
+> -static inline void __init xbc_free_mem(void *addr, size_t size)
+> +static inline void __init xbc_free_mem(void *addr, size_t size, bool early)
+>  {
+> -	memblock_free(addr, size);
+> +	if (early)
+> +		memblock_free(addr, size);
+> +	else
+> +		memblock_free_late(__pa(addr), size);
+>  }
+>  
+>  #else /* !__KERNEL__ */
+> @@ -73,7 +76,7 @@ static inline void *xbc_alloc_mem(size_t size)
+>  	return malloc(size);
+>  }
+>  
+> -static inline void xbc_free_mem(void *addr, size_t size)
+> +static inline void xbc_free_mem(void *addr, size_t size, bool early)
+>  {
+>  	free(addr);
+>  }
+> @@ -904,13 +907,13 @@ static int __init xbc_parse_tree(void)
+>   * If you need to reuse xbc_init() with new boot config, you can
+>   * use this.
+>   */
+> -void __init xbc_exit(void)
+> +void __init _xbc_exit(bool early)
+>  {
+> -	xbc_free_mem(xbc_data, xbc_data_size);
+> +	xbc_free_mem(xbc_data, xbc_data_size, early);
+>  	xbc_data = NULL;
+>  	xbc_data_size = 0;
+>  	xbc_node_num = 0;
+> -	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX);
+> +	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX, early);
+>  	xbc_nodes = NULL;
+>  	brace_index = 0;
+>  }
+> @@ -963,7 +966,7 @@ int __init xbc_init(const char *data, size_t size, const char **emsg, int *epos)
+>  	if (!xbc_nodes) {
+>  		if (emsg)
+>  			*emsg = "Failed to allocate bootconfig nodes";
+> -		xbc_exit();
+> +		_xbc_exit(true);
+>  		return -ENOMEM;
+>  	}
+>  	memset(xbc_nodes, 0, sizeof(struct xbc_node) * XBC_NODE_MAX);
+> @@ -977,7 +980,7 @@ int __init xbc_init(const char *data, size_t size, const char **emsg, int *epos)
+>  			*epos = xbc_err_pos;
+>  		if (emsg)
+>  			*emsg = xbc_err_msg;
+> -		xbc_exit();
+> +		_xbc_exit(true);
+>  	} else
+>  		ret = xbc_node_num;
+>  
+> -- 
+> 2.39.2
+> 
+
+
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
