@@ -1,278 +1,186 @@
-Return-Path: <stable+bounces-39265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E40D8A27CA
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 09:15:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 532208A27BE
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 09:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF2CC1F254FF
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 07:15:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09F23281B13
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 07:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F33747A53;
-	Fri, 12 Apr 2024 07:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559F3487BE;
+	Fri, 12 Apr 2024 07:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bh0VYYFi"
+	dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="JqcmA4vF";
+	dkim=pass (1024-bit key) header.d=sharedspace.onmicrosoft.com header.i=@sharedspace.onmicrosoft.com header.b="WbQRvCIp"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from esa4.hgst.iphmx.com (esa4.hgst.iphmx.com [216.71.154.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33154CDF9
-	for <stable@vger.kernel.org>; Fri, 12 Apr 2024 07:15:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712906119; cv=none; b=mC6o6FBmpTkXhKzSOmTzCpivNRUnIMbWE99uwiOUvRa83eHUZFXyGIdysBynzo2yRuNofibt2hfwswqNb0j1n2ErosAZdRdho6Aur9FZokO0MFXcKgh5SYCpz/Ho+8TxMONT5Yg8wdxJYa/oNAlw6joceGyDRp6/JNQ4Xt29JFo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712906119; c=relaxed/simple;
-	bh=31vkEXsSKC2rH3gPKy/8HeRb27ArX1kPWFDPshZ4Mp8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oH2/lV+oGlS4GbakYC+gAC5S3O0EdfhtkXyKey9DpyGHcRtK8p4nw+UI5rralT0Wpk6ocU2SLn/2XyRjDaYF5vcxFTYf04jHIdWd28d0bOQKbip5At7azKgkI6VzR+ITGGAx4SiWzdtpTblvOgbaW0P/kMzrRJnZfl5PNDjTVqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bh0VYYFi; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712906118; x=1744442118;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=31vkEXsSKC2rH3gPKy/8HeRb27ArX1kPWFDPshZ4Mp8=;
-  b=bh0VYYFi5h7eARXoWydb00dFRvFHIJuUlOS+yshCKQTH5aNU4TyFUYX2
-   XQV137+dE3P82IdGKMQfj1BGtExAIUvNFgk7BUEUhbAd2RHlxeJfV+CXn
-   pT4Jn1sdJQpbSqrgSvZh/7BmJu4AJ7350yqYIiEwHVzqhtuN4MkpY1Ns8
-   SDB38VdDxpR7BP2gl6qtyRLf6zf2s49qxbirwGFACLomF67EmWyc8V3Mt
-   YyJjV5gAHq0gw0N3m0WSHzebrqlkCPJcNDL9db8fJ1ruBTyDNpQhqRpSO
-   fLYks5t+47Mi2fDyjVXKRHszgqfvBANhzqmxQxu362MfuAKG/qX9tkLK+
-   A==;
-X-CSE-ConnectionGUID: zis3qmJXQ1KP7+jCxx1qKA==
-X-CSE-MsgGUID: b1RktnfSRne+mhuEshcgTQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="18906498"
-X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; 
-   d="scan'208";a="18906498"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2024 00:15:17 -0700
-X-CSE-ConnectionGUID: QbraRSBDSVCUMkwb9vAc3A==
-X-CSE-MsgGUID: Zlo6iTpwRDGDEKsTbjAsLw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; 
-   d="scan'208";a="21200041"
-Received: from amuszyns-mobl1.ger.corp.intel.com (HELO jkrzyszt-mobl2.intranet) ([10.213.19.168])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2024 00:15:14 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH 6.7.y] drm/i915/vma: Fix UAF on destroy against retire race
-Date: Fri, 12 Apr 2024 09:12:30 +0200
-Message-ID: <20240412071500.275976-2-janusz.krzysztofik@linux.intel.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <2024033027-expensive-footage-f3ea@gregkh>
-References: <2024033027-expensive-footage-f3ea@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3933F4655D;
+	Fri, 12 Apr 2024 07:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=216.71.154.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712905970; cv=fail; b=FApX+zfmmoduc2DL/4FdYhINNkws40/Nec2EW1ETz9UOSheSRDk/TPlQY176jXpjj9AeRcg8GWnMNBnpt4RV8d7vqIHW/Jj0hzTeX+p8kyS1oYoAw43cePlE3jTodNOj5tJ8F+TignMUirmnR1xC6Y5LVml+wLvHToesHXCaTK8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712905970; c=relaxed/simple;
+	bh=9qiOkHe2S8WeLlp0MyuDAuH/AtnDeCTTdA/HQxeAK7U=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=cf+Qtg+boM5rHG2ygyS1EfNQu1/goKZop7pb/Eh5mcqQp0jynXHzIbzl/Cx0YpGzXz6IXEZcawV3cctLgaU5DthApjmv2uy2usZ2kogxjmsWj8Ad/hnOM28gDVz+b2vAnOzHI6xZR+0hA24ijeL285sXt+8VCjMcebRGf59IN+0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com; spf=pass smtp.mailfrom=wdc.com; dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b=JqcmA4vF; dkim=pass (1024-bit key) header.d=sharedspace.onmicrosoft.com header.i=@sharedspace.onmicrosoft.com header.b=WbQRvCIp; arc=fail smtp.client-ip=216.71.154.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wdc.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1712905968; x=1744441968;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=9qiOkHe2S8WeLlp0MyuDAuH/AtnDeCTTdA/HQxeAK7U=;
+  b=JqcmA4vFSmO2Ugx7kACw+rqkPJk7cXlCX7sGWvLLZSh7cXkOAKdBggHF
+   ONAa+7YECBXD0LcW++8M4bt+NXDXk8zEgV3i6IogBR/dgaWmLIEohefZW
+   y9l1+nGolRe9a3rWrM9FFucsi1fmsFYPGt5yFBRlAZ4pkrQRVD4qdZB/T
+   LnoxqxhYZ3RWtSbtlik7vI+0CxuKgkyuiEH/yhcfaEFJ9cyXfU9rQW6lb
+   XdX2i9jRbDK/R7YnJTUi93LQzIlqdTMOn4Uv42Rd6uLctimupPtdwODFs
+   CRlvGAgVkqXVkloueqbC61efmxsjKZRN1K7ad65JLnqkS/nqnrNrV7BX0
+   w==;
+X-CSE-ConnectionGUID: qm81SHSGTsSeptzo5mmBAQ==
+X-CSE-MsgGUID: HCIyG+MbTi2b21YaCppIZg==
+X-IronPort-AV: E=Sophos;i="6.07,195,1708358400"; 
+   d="scan'208";a="13297940"
+Received: from mail-eastus2azlp17013021.outbound.protection.outlook.com (HELO BN8PR05CU002.outbound.protection.outlook.com) ([40.93.12.21])
+  by ob1.hgst.iphmx.com with ESMTP; 12 Apr 2024 15:12:39 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MtvcUk3vYRLQ6am4Z6ez16/QyWmGbUEOPDuLEoQ1S4gqMEZpCY0gZvmMfjb4LL1Ydcm4MhBlytcJcr2wokXBa4ma9ArLNhls+WKndgPscSPdkFFetOJ7WToJkDGFQPq9by5jpc9JrtOFQbAZy9ClWsSV+HNMh7HAWtvjsxfAHqqu7Mjifnh+Sv18lrQFmhfKykzhEHf0MblJQVPyMDLGb809jcEzZ81PQAE9MwtDQLQK0ZJCVmPyFHNAU/YzvtVr9+RaAuk17D9BLSZWltRTo6skxjACyP+ixflqRS2C4pW1jsEJ60U84Y97QP18DfwkYc9skVWznjphFCDXWsLBWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9qiOkHe2S8WeLlp0MyuDAuH/AtnDeCTTdA/HQxeAK7U=;
+ b=ap4Hl6TPXVgRDRDEourXf5FE58bqtgBZ/It32fiEn/r622WsjGfc6smtMmGWVY5VdPmRUWoQljBt2f1d0sm9TdQps97lUFKXbcxCH2pl/pUZsTauX62jjvfq/kqiUH1JMdfFWQnCpbOqk3RgAuQ7t9PJ3yIBgFzP1H7vNWdWXjfst+ivTEZ/QHISmhuCX9AUTgeWhBelpZ9rE7z9RLEqU8fIEXBA3MEkffAkN7q7i6kbr2OemNkshsWDvtyfbVwKRSe7C8sX3utMO+l8wx6+5TF+VV7SaFgc3f+yBVqyJdHJDqCDW3XIG6WiDpa5ml838gBsNZBj7OjjXYFOQtY0Zw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
+ header.d=wdc.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9qiOkHe2S8WeLlp0MyuDAuH/AtnDeCTTdA/HQxeAK7U=;
+ b=WbQRvCIpHZZ7AXP0UPgBkJi1e5CoWhft0v9hhUTztRHUYEFydRJZ3SfPC8M2MHQY+GMniYOpePkhKzaD1vWU6x2pYz7pLoTm4B8AVbx5Tzhek3xH1XSBz7w4BRRvwXl1B4EdYEjxkKfeZoJHuDaVDqwbhDIErlNGZrgiEwhZabk=
+Received: from DM8PR04MB8037.namprd04.prod.outlook.com (2603:10b6:8:f::6) by
+ BY5PR04MB6309.namprd04.prod.outlook.com (2603:10b6:a03:1e8::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.55; Fri, 12 Apr
+ 2024 07:12:37 +0000
+Received: from DM8PR04MB8037.namprd04.prod.outlook.com
+ ([fe80::c75d:c682:da15:14f]) by DM8PR04MB8037.namprd04.prod.outlook.com
+ ([fe80::c75d:c682:da15:14f%3]) with mapi id 15.20.7409.042; Fri, 12 Apr 2024
+ 07:12:37 +0000
+From: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+To: Saranya Muruganandam <saranyamohan@google.com>
+CC: "axboe@kernel.dk" <axboe@kernel.dk>, "hch@lst.de" <hch@lst.de>,
+	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "tj@kernel.org"
+	<tj@kernel.org>, "yukuai1@huaweicloud.com" <yukuai1@huaweicloud.com>
+Subject: Re: [PATCH] block: Fix BLKRRPART regression
+Thread-Topic: [PATCH] block: Fix BLKRRPART regression
+Thread-Index: AQHaiwSINB8WBnJl30qPCQCcaD9o87FiKqMAgAIQ7IA=
+Date: Fri, 12 Apr 2024 07:12:37 +0000
+Message-ID: <zvmwp3n3yx55ogzb5gtfe2xdmsg53y3umgnezcwd4weq5vloru@w6qi7lfvezls>
+References: <tnqg4la2bhbhfbty3aa74uorkfhz76v5sntd3md44lfctjhjb7@7qbx5z2o7hzm>
+ <20240410233932.256871-1-saranyamohan@google.com>
+In-Reply-To: <20240410233932.256871-1-saranyamohan@google.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=wdc.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM8PR04MB8037:EE_|BY5PR04MB6309:EE_
+x-ms-office365-filtering-correlation-id: 1c57d12d-f612-4dfa-a202-08dc5abfef38
+wdcipoutbound: EOP-TRUE
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ 1RKilA5qts2cEDnicfvhsmIiI5XU00aFzyytUsThz0qAKW0dp8GSGLg0YPgNq/PnSFhFukkF0/2wsPgceCyrFkBotFnMevOB09bJj/n7xiGwCMagsaw45u8hRXDZvfQ/8+HOj0YMCZLzHIWGwWf9eEoqtxL6OINsVxxYMnwDG1sbxCTqrwejzRHsWRm7dNmeV4JUP+GA16xTyLag2SLHckAWvMPQY+EMWBUa4rwwysXW+mzytZkLYwlH67Z86l1RJ6kKvtscYDwHN8x6brFP3BSb4auvRhlIZ7lN9uV+fdbr8Z12yL+O4YNlXLuaf7ifLtIfmZ4yfPmfjX23cKK3sw4FMIbvmLLnD90oRa1FW0Q1EG4+cM//bxfnEXN2Jnbw+Db3FXDahtadEOQbrXXkdBu6lLs8qvs+/EAZWhUjaxwua5mzMb7HyD77+dvZIZO37sFRMwK+03pOZlv8pO5egflJp+L/kVC90quKKYjMxJ3xf1W759aeUfzMGghVLKe6OkIrHLyO8tnwislWL5bPe4zA78RXy+M1oFNLKkOaMeducDYLV27xy1zQXu9B07IFWrJWu+sUc9Gk1diRSGtpg5zCyX4NcAb7KkBIzzVMQkJQdy66/Ymh0p3qyo8zErdOS44yWAEHhbT799A1BM6hH3p024xMmdTBa0Mi7H7aPWOkN95RDd4z8Pc/YbvaXiFTmjGNMu7sjWVHVCBgnOJWNV/f7+jlY3T/AI590BO6c2g=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM8PR04MB8037.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?NBiioRM4Dq/XtoUpZT/zeWBkzBItj/n+bldykSkPMYxasHl6Fsu8p4wKfsXa?=
+ =?us-ascii?Q?cqHNTQ/TiazGu4AeNHN/vk9AFYMPYe5zFfnLj9BJG08XqJlwoLKiVzvTnAUh?=
+ =?us-ascii?Q?qUNr94xCkcmpNc8kBleEHkoDFu9gYdhWX36A/h4/M0gaLUvP2OFILIWNXTBF?=
+ =?us-ascii?Q?Aa99Hz9xDYk/btQLtvxBOy657yUhXCmONI7p3xw5i0/EArEaX0sIt+cdNESP?=
+ =?us-ascii?Q?PD+nIBWCKqHLg4v1cOUhTy4i1VyhltfjSxA7dXENAbDQRhjl+3eBvvPU70hw?=
+ =?us-ascii?Q?B+meNIXzjHd8nZ45j3mBrcAIeWy0fd73lOhlIf+JscAYqt4jtHL23IFDsUti?=
+ =?us-ascii?Q?yhCxGNnjDLV9ljd4qsMk1xvUPYJtovyXtELuCFGDxkeaXNwO5xB/hi2AQqzV?=
+ =?us-ascii?Q?inUQnsvRal5JjS9vD5bIVBLyjpMLaiPX5BDizvvrpIboRo4UW00b94SRt72q?=
+ =?us-ascii?Q?xia6pI3OCAgtPwZT0y1N8XxZb+eABXep3PDml4eX8tF7SEFdRUhaRySW/e4L?=
+ =?us-ascii?Q?HYr+J2ftoozBqJQMwFgxlzKgsF/jxdBgasm4DUZltO9W4tisxq1+WnvQjyHc?=
+ =?us-ascii?Q?3r2eIm9jc6OziNZMp+miaF+ITdIPzKb9r07rUnKbBlfCv2He23TwvuF7URBA?=
+ =?us-ascii?Q?fMQoEynb+Zw4jaRuCRkmPoLEdODBT0YI38s94SvxZrNCMXoR8t0KG03vy5+7?=
+ =?us-ascii?Q?/Ss+4IQVSLysJNLwGkvp4VLjIjHnNrBa5rpMCQJo1iW/LWnnqAfekcUfnl6g?=
+ =?us-ascii?Q?iTu/uNYwIml+gGNwscpe588MVPPOlADyISJ2X2OMK8XHXwgL5FpOzQPPkZbN?=
+ =?us-ascii?Q?6ARxYP6nBqHnWBS8B5qnJC7YxGIQHI55ZYKVZVtqicUSQrN5u9L3ej9S/Tpp?=
+ =?us-ascii?Q?gvfWEkF45fOQCXUcsJEjVmvjJgqixdsMAs03v7U1765NjiRWMhtX6Ey1Z3Oo?=
+ =?us-ascii?Q?PeDfEDgDaeEOrTZb2p8598y1IJr/GZxwH4jps6l5zMDuFFyBd1w918E6TQqb?=
+ =?us-ascii?Q?uWprvo1MgVl22KprwtDxFnukgi3uDDlVdMj2+04x8FZEXfhO+NAZv1gQG+3p?=
+ =?us-ascii?Q?i6G/W3NFClkhCh0CJJpS1ZqxyiUoE524k8e+TswXzZ+mvPUklz3Tw5R8Q08d?=
+ =?us-ascii?Q?CLDNasp/lkg1q3vMnXzUOcVGXX62/6fUm+zW79pSDxMAZS4MFrNLNIwfEyG5?=
+ =?us-ascii?Q?dJIxzN9dRrTh29j+Dcb9rw0967NgoF1sQdNho46OMonDu0uJ5FgTIAkPSd4c?=
+ =?us-ascii?Q?QdETyvM0BSkmc/HPaW8WYius2di+v3mIn9pbmg6uNW400iFfz2WbX7oSYvWA?=
+ =?us-ascii?Q?kD27zfMjf75y84QJyQP7yOl4fWlyccwWeRmuKsP8ZlGeGf7Tgh+syq/x/qU5?=
+ =?us-ascii?Q?/bCM9y1i4c+WPn9TE2MtZpCf72rEFOGHnbmnPVBlMY/+LqJL7625VAO3qUX+?=
+ =?us-ascii?Q?TbSjmT9tQNRdnuemN1uleBiqXXGRV+DD20JP8/pWYZkXCBxA38Ly+3oePDGw?=
+ =?us-ascii?Q?yhcZPYNCVwweHqcBi82q/0jHGPxYfvldKl835mIbGhTv0mVgHrrVH+rcSJxA?=
+ =?us-ascii?Q?tHGX8TD8/jSYdniND0SM76z6OBUuPs6QemiE7y+t5+4ucAojQ8MOwVnrgsXC?=
+ =?us-ascii?Q?AFWv/ESif2QbDjL82rYRf+s=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <E7C95529097DDE429B38B49B8AA3ADB7@namprd04.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	xg7UqeNzbGyAiPEwLZ+C4zkLTlR46c3nKHVq0uLEbq7dpUWUBJLmSs0DLDLCCI8OQBsMOqFBnI9fuzR1SmI0RRV+9k9+DmIQpC4mGye22Zj1YIUrvi+II8I7/tuLzo2UeagAD91ag+WxitjBmGjwu7wen3xsbDjFqUk8I6laJqwdG0h3qQBrK/GuxYPwZmLN5yJF1Q411Q7k+CJYxc/zPEDZxhto1vbOy4KX4reW0dW3WDljCKe9n4sf2R5pZH5mlN43h4Hvsepji2BBkXAnOHFH7fWL9j2r/N4oLW6aC9A8ltKVh6hMBU3VK8Q42tb1bmgVBYPUaIoBeDaK/WIh3EwcNLCsyhsdtL+cIw3VeDzKAQtFI0ReN+R+C+QileFXLC8VZws7QyAMtxT43iuKJcfI+BOyAsklW8C/GPNNYhSwKeXgJ/IMoADPQRkcKVdvDocX1/HXBvaX0AaqZPC1oWXKLfbFD0hq44IlFyAiON1+KcNzW4qGoC35/BsgU35YkE0eGOfdAZFSvbcjV3sJf1izg5I0ggGpXG70PmvdFvmkkyTCsg9s6bA4MfcFAc+I/Eo5rdsiXtNz/IjuU6KsT/8+ROugXA17+dgD8zMzUhKCWSN9B6MPvAYCLecgj2VR
+X-OriginatorOrg: wdc.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM8PR04MB8037.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c57d12d-f612-4dfa-a202-08dc5abfef38
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Apr 2024 07:12:37.8052
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: J21s3qC8yMSJuPh9TwR74VXCTO7RvwZEf9v/GN/w5GPYUym/BKNEL+zS8+ksryjp5jDTj+sH5F5a1yOCVemaUK/2WZS2Ip/pZPV2AKM1gZ0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR04MB6309
 
-Object debugging tools were sporadically reporting illegal attempts to
-free a still active i915 VMA object when parking a GT believed to be idle.
+On Apr 10, 2024 / 23:39, Saranya Muruganandam wrote:
+> The BLKRRPART ioctl used to report errors such as EIO before we changed
+> the blkdev_reread_part() logic.
+>=20
+> Add a flag and capture the errors returned by bdev_disk_changed()
+> when the flag is set. Set this flag for the BLKRRPART path when we
+> want the errors to be reported when rereading partitions on the disk.
+>=20
+> Link: https://lore.kernel.org/all/20240320015134.GA14267@lst.de/
+> Suggested-by: Christoph Hellwig <hch@lst.de>
+> Tested: Tested by simulating failure to the block device and will
+> propose a new test to blktests.
+> Fixes: 4601b4b130de ("block: reopen the device in blkdev_reread_part")
+> Reported-by: Saranya Muruganandam <saranyamohan@google.com>
+> Signed-off-by: Saranya Muruganandam <saranyamohan@google.com>
 
-[161.359441] ODEBUG: free active (active state 0) object: ffff88811643b958 object type: i915_active hint: __i915_vma_active+0x0/0x50 [i915]
-[161.360082] WARNING: CPU: 5 PID: 276 at lib/debugobjects.c:514 debug_print_object+0x80/0xb0
-...
-[161.360304] CPU: 5 PID: 276 Comm: kworker/5:2 Not tainted 6.5.0-rc1-CI_DRM_13375-g003f860e5577+ #1
-[161.360314] Hardware name: Intel Corporation Rocket Lake Client Platform/RocketLake S UDIMM 6L RVP, BIOS RKLSFWI1.R00.3173.A03.2204210138 04/21/2022
-[161.360322] Workqueue: i915-unordered __intel_wakeref_put_work [i915]
-[161.360592] RIP: 0010:debug_print_object+0x80/0xb0
-...
-[161.361347] debug_object_free+0xeb/0x110
-[161.361362] i915_active_fini+0x14/0x130 [i915]
-[161.361866] release_references+0xfe/0x1f0 [i915]
-[161.362543] i915_vma_parked+0x1db/0x380 [i915]
-[161.363129] __gt_park+0x121/0x230 [i915]
-[161.363515] ____intel_wakeref_put_last+0x1f/0x70 [i915]
+The change looks good to me. I also confirmed the fix with the new,
+corresponding blktests test case.
 
-That has been tracked down to be happening when another thread is
-deactivating the VMA inside __active_retire() helper, after the VMA's
-active counter has been already decremented to 0, but before deactivation
-of the VMA's object is reported to the object debugging tool.
-
-We could prevent from that race by serializing i915_active_fini() with
-__active_retire() via ref->tree_lock, but that wouldn't stop the VMA from
-being used, e.g. from __i915_vma_retire() called at the end of
-__active_retire(), after that VMA has been already freed by a concurrent
-i915_vma_destroy() on return from the i915_active_fini().  Then, we should
-rather fix the issue at the VMA level, not in i915_active.
-
-Since __i915_vma_parked() is called from __gt_park() on last put of the
-GT's wakeref, the issue could be addressed by holding the GT wakeref long
-enough for __active_retire() to complete before that wakeref is released
-and the GT parked.
-
-I believe the issue was introduced by commit d93939730347 ("drm/i915:
-Remove the vma refcount") which moved a call to i915_active_fini() from
-a dropped i915_vma_release(), called on last put of the removed VMA kref,
-to i915_vma_parked() processing path called on last put of a GT wakeref.
-However, its visibility to the object debugging tool was suppressed by a
-bug in i915_active that was fixed two weeks later with commit e92eb246feb9
-("drm/i915/active: Fix missing debug object activation").
-
-A VMA associated with a request doesn't acquire a GT wakeref by itself.
-Instead, it depends on a wakeref held directly by the request's active
-intel_context for a GT associated with its VM, and indirectly on that
-intel_context's engine wakeref if the engine belongs to the same GT as the
-VMA's VM.  Those wakerefs are released asynchronously to VMA deactivation.
-
-Fix the issue by getting a wakeref for the VMA's GT when activating it,
-and putting that wakeref only after the VMA is deactivated.  However,
-exclude global GTT from that processing path, otherwise the GPU never goes
-idle.  Since __i915_vma_retire() may be called from atomic contexts, use
-async variant of wakeref put.  Also, to avoid circular locking dependency,
-take care of acquiring the wakeref before VM mutex when both are needed.
-
-v7: Add inline comments with justifications for:
-    - using untracked variants of intel_gt_pm_get/put() (Nirmoy),
-    - using async variant of _put(),
-    - not getting the wakeref in case of a global GTT,
-    - always getting the first wakeref outside vm->mutex.
-v6: Since __i915_vma_active/retire() callbacks are not serialized, storing
-    a wakeref tracking handle inside struct i915_vma is not safe, and
-    there is no other good place for that.  Use untracked variants of
-    intel_gt_pm_get/put_async().
-v5: Replace "tile" with "GT" across commit description (Rodrigo),
-  - avoid mentioning multi-GT case in commit description (Rodrigo),
-  - explain why we need to take a temporary wakeref unconditionally inside
-    i915_vma_pin_ww() (Rodrigo).
-v4: Refresh on top of commit 5e4e06e4087e ("drm/i915: Track gt pm
-    wakerefs") (Andi),
-  - for more easy backporting, split out removal of former insufficient
-    workarounds and move them to separate patches (Nirmoy).
-  - clean up commit message and description a bit.
-v3: Identify root cause more precisely, and a commit to blame,
-  - identify and drop former workarounds,
-  - update commit message and description.
-v2: Get the wakeref before VM mutex to avoid circular locking dependency,
-  - drop questionable Fixes: tag.
-
-Fixes: d93939730347 ("drm/i915: Remove the vma refcount")
-Closes: https://gitlab.freedesktop.org/drm/intel/issues/8875
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: stable@vger.kernel.org # v5.19+
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240305143747.335367-6-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit f3c71b2ded5c4367144a810ef25f998fd1d6c381)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit 0e45882ca829b26b915162e8e86dbb1095768e9e)
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- drivers/gpu/drm/i915/i915_vma.c | 50 ++++++++++++++++++++++++++++-----
- 1 file changed, 43 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/gpu/drm/i915/i915_vma.c b/drivers/gpu/drm/i915/i915_vma.c
-index d09aad34ba37f..b70715b1411d6 100644
---- a/drivers/gpu/drm/i915/i915_vma.c
-+++ b/drivers/gpu/drm/i915/i915_vma.c
-@@ -34,6 +34,7 @@
- #include "gt/intel_engine.h"
- #include "gt/intel_engine_heartbeat.h"
- #include "gt/intel_gt.h"
-+#include "gt/intel_gt_pm.h"
- #include "gt/intel_gt_requests.h"
- #include "gt/intel_tlb.h"
- 
-@@ -103,12 +104,42 @@ static inline struct i915_vma *active_to_vma(struct i915_active *ref)
- 
- static int __i915_vma_active(struct i915_active *ref)
- {
--	return i915_vma_tryget(active_to_vma(ref)) ? 0 : -ENOENT;
-+	struct i915_vma *vma = active_to_vma(ref);
-+
-+	if (!i915_vma_tryget(vma))
-+		return -ENOENT;
-+
-+	/*
-+	 * Exclude global GTT VMA from holding a GT wakeref
-+	 * while active, otherwise GPU never goes idle.
-+	 */
-+	if (!i915_vma_is_ggtt(vma)) {
-+		/*
-+		 * Since we and our _retire() counterpart can be
-+		 * called asynchronously, storing a wakeref tracking
-+		 * handle inside struct i915_vma is not safe, and
-+		 * there is no other good place for that.  Hence,
-+		 * use untracked variants of intel_gt_pm_get/put().
-+		 */
-+		intel_gt_pm_get_untracked(vma->vm->gt);
-+	}
-+
-+	return 0;
- }
- 
- static void __i915_vma_retire(struct i915_active *ref)
- {
--	i915_vma_put(active_to_vma(ref));
-+	struct i915_vma *vma = active_to_vma(ref);
-+
-+	if (!i915_vma_is_ggtt(vma)) {
-+		/*
-+		 * Since we can be called from atomic contexts,
-+		 * use an async variant of intel_gt_pm_put().
-+		 */
-+		intel_gt_pm_put_async_untracked(vma->vm->gt);
-+	}
-+
-+	i915_vma_put(vma);
- }
- 
- static struct i915_vma *
-@@ -1404,7 +1435,7 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
- 	struct i915_vma_work *work = NULL;
- 	struct dma_fence *moving = NULL;
- 	struct i915_vma_resource *vma_res = NULL;
--	intel_wakeref_t wakeref = 0;
-+	intel_wakeref_t wakeref;
- 	unsigned int bound;
- 	int err;
- 
-@@ -1424,8 +1455,14 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
- 	if (err)
- 		return err;
- 
--	if (flags & PIN_GLOBAL)
--		wakeref = intel_runtime_pm_get(&vma->vm->i915->runtime_pm);
-+	/*
-+	 * In case of a global GTT, we must hold a runtime-pm wakeref
-+	 * while global PTEs are updated.  In other cases, we hold
-+	 * the rpm reference while the VMA is active.  Since runtime
-+	 * resume may require allocations, which are forbidden inside
-+	 * vm->mutex, get the first rpm wakeref outside of the mutex.
-+	 */
-+	wakeref = intel_runtime_pm_get(&vma->vm->i915->runtime_pm);
- 
- 	if (flags & vma->vm->bind_async_flags) {
- 		/* lock VM */
-@@ -1561,8 +1598,7 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
- 	if (work)
- 		dma_fence_work_commit_imm(&work->base);
- err_rpm:
--	if (wakeref)
--		intel_runtime_pm_put(&vma->vm->i915->runtime_pm, wakeref);
-+	intel_runtime_pm_put(&vma->vm->i915->runtime_pm, wakeref);
- 
- 	if (moving)
- 		dma_fence_put(moving);
--- 
-2.44.0
-
+Reviewed-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>=
 
