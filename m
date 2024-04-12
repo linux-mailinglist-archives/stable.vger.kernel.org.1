@@ -1,128 +1,291 @@
-Return-Path: <stable+bounces-39243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 913848A233D
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 03:32:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C748A23A5
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 04:06:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF068B21C95
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 01:32:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3915B231BE
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 02:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032F2523A;
-	Fri, 12 Apr 2024 01:32:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fykoWlT+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09251101EE;
+	Fri, 12 Apr 2024 02:06:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEDD33F7;
-	Fri, 12 Apr 2024 01:32:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD645DDDA;
+	Fri, 12 Apr 2024 02:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712885561; cv=none; b=jebKYkvr4Qbkysfymcox8N2qVp5YtEapcdKRWvstWCa7fW/9JkgrTBBgWAbpUstOPyyR2Gh8xekH65dC4hNqi7OoNsOy8QmJoCfm5RMzxO546pWzRGFGaoHZiX9mXRQgdADvAqSt1ShI2QA2/ZBiycZSmHGBI65Z7G6fWstzCTU=
+	t=1712887586; cv=none; b=C7/lhw4h82ZkEqiEyT7yd7wTEetoYKAyRZgYP35T8wEDkechVEkn6BUD4v6mi9Whjl/9qS/YDrta/glsUvmJVvu3m05Eg35XjuHwxpNwXiuf5qBxCiLRyY8/56MlsrPreerciKSOQrlErhFxWjxDCrpLaJPf5tKGijWJnRyc9cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712885561; c=relaxed/simple;
-	bh=PU27nh4ICcMKtfoWAY2oTKn4uNtsFsaFulZ55C62uGg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OsJWrLU4VtFf4Yd0z8LyQoqDVPWo+lUyaM+3aMM0kcaAIrE0Rh6H2x/QXq+Cb/Qzpq/KJsuwXPDmatSuQuY+l4BnB+U35S335BATvXAJpPNZnIdNQWGpOtygeGJW4fGMEoF20NJzvmox9k73TRq7PMH2juPzoWreUmrqwIkfh+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fykoWlT+; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-6ecff9df447so482767b3a.1;
-        Thu, 11 Apr 2024 18:32:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712885560; x=1713490360; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dU3sSS4eDu0gFlOQ+EtChbXI75mbMnya9v5nETYuAbM=;
-        b=fykoWlT+0mSi0WrWVQIdcVJTec42twBxxpZjZ+A8QQKFejrMJKD9AfTFLEM5N3yOUH
-         u2kfu/udjKSpbuJ/XG42dl73HAmGEAB61/UJsKtzCDgfM6166slk2uHbmFizGFquFQ3+
-         vGMKjkVJKO8YGOMOMd8nNXpobPWwHaH+lJGVw6fqtgZeE6FYkHPlym3BWce79A+AQv9q
-         AQSTj4u2oIsaT3O69X4ju5UnDFE4ujWWic4YTP8kaabN0Nn/1uz6rJM/y1uSKvUIOxIZ
-         FybqrwWeKJ7vvZHnpHmud0mBBGF/yCRZyeyIr1nSuOxGfDVHhFstfjG3sOY6s7hz2R4p
-         8m0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712885560; x=1713490360;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dU3sSS4eDu0gFlOQ+EtChbXI75mbMnya9v5nETYuAbM=;
-        b=gT0sXVkaVJIB1ORL3/9RJbj1/xgGRZWbKjLBGxhZ3MUNkwL6tQ48FbVax9HtIb+7Aj
-         wO5qGA5dK6i+iz7ZyNplkfQY3uUG8iljba6j3Sw3oNihzXjiWScvw3+oXrxfWGHol81B
-         +O2Q51MPbNiLOcU2uXxibJCYHgv8+NAM9IrEOgKfdrdi1o+xf4U3RYmn0ZmZ2TZx1OrY
-         q3rcgccqLW9QzrP6Pc2rHugTe3rAgZYD/Q6U3EogsTWA0SGCnahS1vyfaBuJ6kjAKa2A
-         YfIu7unfkCwGzNUfgB8iPPy1FUTS0/7nXbkaoS98hpmh57aRUu3ykUti+f7YEim+yZ9P
-         FhiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWTAiqYe6DwK0Vq1tmaT4zAmKRUTrWWOBYxHK2nPOUZdR9CMdkxtV8FfWTUbWJQPdIx7XeSQxd53Usf8vjzlhKFGYGNpssn/xJ7cmS7Pa5kD9l6FOU1BPO39zvMqwXPN4BdnjmF
-X-Gm-Message-State: AOJu0Yyi9hGFm+jKrEoHDCfwGqex80l2amYkOBNNMYUwBtxrN+TkNrjI
-	tXd/lI8iXJri71afVhTgnhOLF/V4Kwk96SRa5FTjQEtdMwwMea+O
-X-Google-Smtp-Source: AGHT+IEfQBpInoWg7ls3MpIafYuMBgkN2A6xBoM+hy3ZDJ1AN48nI79H4kzzTR2Jkb2hBKd8AtqDsA==
-X-Received: by 2002:a05:6a20:9496:b0:1a3:bfce:ec9e with SMTP id hs22-20020a056a20949600b001a3bfceec9emr1557696pzb.18.1712885559704;
-        Thu, 11 Apr 2024 18:32:39 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id i89-20020a17090a3de200b002a005778f51sm1920924pjc.50.2024.04.11.18.32.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Apr 2024 18:32:39 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id 14281186BBCA4; Fri, 12 Apr 2024 08:32:35 +0700 (WIB)
-Date: Fri, 12 Apr 2024 08:32:35 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.8 000/143] 6.8.6-rc1 review
-Message-ID: <ZhiPMz1V4TwH_wKb@archie.me>
-References: <20240411095420.903937140@linuxfoundation.org>
+	s=arc-20240116; t=1712887586; c=relaxed/simple;
+	bh=iPUJalo/V5yuwIqG56h/GIP8PXBjUtO8NPe4sOfCQKc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=TGsGk67Gvae8K3IKbzFy/RDlUOBZiXmE3FKgNB3m5MKC4AsFrOjHd1PiDMg1VnyuhgfDpoeWC4H40pLH8RYu55ly416CK6ngJsLTTk9jqlivpHZwPigY2mkXnsr0Ru5tEJ8RClsZ8IhvvP2kUdZpvSTrK6K0nY/nx9FZy1B5ZXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4VG0JX1S25zYdKk;
+	Fri, 12 Apr 2024 10:05:16 +0800 (CST)
+Received: from dggpemd100001.china.huawei.com (unknown [7.185.36.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1536018007F;
+	Fri, 12 Apr 2024 10:06:15 +0800 (CST)
+Received: from [10.174.179.155] (10.174.179.155) by
+ dggpemd100001.china.huawei.com (7.185.36.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Fri, 12 Apr 2024 10:06:14 +0800
+Message-ID: <4e5e4634-a2d0-ce35-3884-829d385c0879@huawei.com>
+Date: Fri, 12 Apr 2024 10:06:14 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="KD2kvVoGn2JSdYIW"
-Content-Disposition: inline
-In-Reply-To: <20240411095420.903937140@linuxfoundation.org>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:104.0) Gecko/20100101
+ Thunderbird/104.0
+Subject: Re: [PATCH 6.6] Revert "dm-crypt, dm-verity: disable tasklets"
+To: Mikulas Patocka <mpatocka@redhat.com>
+CC: <stable@vger.kernel.org>, <gregkh@linuxfoundation.org>,
+	<torvalds@linux-foundation.org>, <tglx@linutronix.de>,
+	<linux-kernel@vger.kernel.org>, <dm-devel@lists.linux.dev>,
+	<msnitzer@redhat.com>, <ignat@cloudflare.com>, <damien.lemoal@wdc.com>,
+	<houtao1@huawei.com>, <nhuck@google.com>, <peterz@infradead.org>,
+	<yukuai3@huawei.com>, <yangerkun@huawei.com>, <yi.zhang@huawei.com>,
+	<lilingfeng@huaweicloud.com>
+References: <20240411091539.361470-1-lilingfeng3@huawei.com>
+ <7c17f31a-2cc3-1597-e2b5-832355de7647@redhat.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
+In-Reply-To: <7c17f31a-2cc3-1597-e2b5-832355de7647@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemd100001.china.huawei.com (7.185.36.94)
 
+Hi
 
---KD2kvVoGn2JSdYIW
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'm having difficulty understanding "Workqueues and ksoftirqd may be 
+scheduled arbitrarily".
+This is my understanding:
+kcryptd_queue_crypt
+  tasklet_schedule
+   __tasklet_schedule
+    __tasklet_schedule_common
+     raise_softirq_irqoff
+      wakeup_softirqd
+       wake_up_process // ksoftirqd
 
-On Thu, Apr 11, 2024 at 11:54:28AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.8.6 release.
-> There are 143 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+run_ksoftirqd
+  __do_softirq
+   softirq_handle_begin
+    __local_bh_disable_ip // Turn off preemption
+<---------- [1] ---------->
+   tasklet_action // h->action
+    tasklet_action_common
+     tasklet_trylock
+      kcryptd_crypt_tasklet // t->func(t->data)
+      ...
+       queue_work(cc->io_queue, &io->work)
+<---------- [2] ---------->
+     tasklet_unlock
 
-Successfully compiled and installed the kernel on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+// workqueue process
+kcryptd_io_bio_endio
+  ...
+  // free tasklet_struct
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Since preemption has been turned off at [1], I'm confused about how the 
+CPU can be scheduled out to do work first at [2].
+Would you mind explaining it to me?
 
---=20
-An old man doll... just what I always wanted! - Clara
+Thanks
 
---KD2kvVoGn2JSdYIW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZhiPLwAKCRD2uYlJVVFO
-o+FUAQCBcW+tpaOSaAinvPSnFZyQ1A+fI7JgTPvpQRLT6x0bTwD/VBb1rpYSBLEK
-0FgrnPcLWyxBzYmF/u+FgiSn5adh9wc=
-=MQEi
------END PGP SIGNATURE-----
-
---KD2kvVoGn2JSdYIW--
+在 2024/4/11 20:37, Mikulas Patocka 写道:
+> Hi
+>
+> I NACK this.
+>
+>
+> On Thu, 11 Apr 2024, Li Lingfeng wrote:
+>
+>> This reverts commit 5735a2671ffb70ea29ca83969fe01316ee2ed6fc which is
+>> commit 0a9bab391e336489169b95cb0d4553d921302189 upstream.
+>>
+>> Tasklet is thought to cause memory corruption [1], so it was disabled in
+>> dm-crypt and dm-verity. However, memory corruption may not happen since
+>> cc->io_queue is created without WQ_UNBOUND [2].
+>> Revert commit 5735a2671ffb ("dm-crypt, dm-verity: disable tasklets") to
+>> bring tasklet back.
+>>
+>> [1] https://lore.kernel.org/all/d390d7ee-f142-44d3-822a-87949e14608b@suse.de/T/
+>> [2] https://lore.kernel.org/all/4d331659-badd-749d-fba1-271543631a8a@huawei.com/
+> Regarding [2] - if you add mdelay, you can make the race condition less
+> reproducible, but it is not a proper fix and the race condition stays
+> there unfixed.
+>
+> Workqueues and ksoftirqd may be scheduled arbitrarily, there is no
+> guarantee that they will be executed in a particular order, even if they
+> are executed on the same CPU.
+>
+> Mikulas
+>
+>> Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+>> ---
+>>   drivers/md/dm-crypt.c         | 38 +++++++++++++++++++++++++++++++++--
+>>   drivers/md/dm-verity-target.c | 26 ++++++++++++++++++++++--
+>>   drivers/md/dm-verity.h        |  1 +
+>>   3 files changed, 61 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/md/dm-crypt.c b/drivers/md/dm-crypt.c
+>> index aa6bb5b4704b..a60d91d02e28 100644
+>> --- a/drivers/md/dm-crypt.c
+>> +++ b/drivers/md/dm-crypt.c
+>> @@ -75,8 +75,10 @@ struct dm_crypt_io {
+>>   	struct bio *base_bio;
+>>   	u8 *integrity_metadata;
+>>   	bool integrity_metadata_from_pool:1;
+>> +	bool in_tasklet:1;
+>>   
+>>   	struct work_struct work;
+>> +	struct tasklet_struct tasklet;
+>>   
+>>   	struct convert_context ctx;
+>>   
+>> @@ -1775,6 +1777,7 @@ static void crypt_io_init(struct dm_crypt_io *io, struct crypt_config *cc,
+>>   	io->ctx.r.req = NULL;
+>>   	io->integrity_metadata = NULL;
+>>   	io->integrity_metadata_from_pool = false;
+>> +	io->in_tasklet = false;
+>>   	atomic_set(&io->io_pending, 0);
+>>   }
+>>   
+>> @@ -1785,6 +1788,13 @@ static void crypt_inc_pending(struct dm_crypt_io *io)
+>>   
+>>   static void kcryptd_queue_read(struct dm_crypt_io *io);
+>>   
+>> +static void kcryptd_io_bio_endio(struct work_struct *work)
+>> +{
+>> +	struct dm_crypt_io *io = container_of(work, struct dm_crypt_io, work);
+>> +
+>> +	bio_endio(io->base_bio);
+>> +}
+>> +
+>>   /*
+>>    * One of the bios was finished. Check for completion of
+>>    * the whole request and correctly clean up the buffer.
+>> @@ -1817,6 +1827,20 @@ static void crypt_dec_pending(struct dm_crypt_io *io)
+>>   
+>>   	base_bio->bi_status = error;
+>>   
+>> +	/*
+>> +	 * If we are running this function from our tasklet,
+>> +	 * we can't call bio_endio() here, because it will call
+>> +	 * clone_endio() from dm.c, which in turn will
+>> +	 * free the current struct dm_crypt_io structure with
+>> +	 * our tasklet. In this case we need to delay bio_endio()
+>> +	 * execution to after the tasklet is done and dequeued.
+>> +	 */
+>> +	if (io->in_tasklet) {
+>> +		INIT_WORK(&io->work, kcryptd_io_bio_endio);
+>> +		queue_work(cc->io_queue, &io->work);
+>> +		return;
+>> +	}
+>> +
+>>   	bio_endio(base_bio);
+>>   }
+>>   
+>> @@ -2291,6 +2315,11 @@ static void kcryptd_crypt(struct work_struct *work)
+>>   		kcryptd_crypt_write_convert(io);
+>>   }
+>>   
+>> +static void kcryptd_crypt_tasklet(unsigned long work)
+>> +{
+>> +	kcryptd_crypt((struct work_struct *)work);
+>> +}
+>> +
+>>   static void kcryptd_queue_crypt(struct dm_crypt_io *io)
+>>   {
+>>   	struct crypt_config *cc = io->cc;
+>> @@ -2302,10 +2331,15 @@ static void kcryptd_queue_crypt(struct dm_crypt_io *io)
+>>   		 * irqs_disabled(): the kernel may run some IO completion from the idle thread, but
+>>   		 * it is being executed with irqs disabled.
+>>   		 */
+>> -		if (!(in_hardirq() || irqs_disabled())) {
+>> -			kcryptd_crypt(&io->work);
+>> +		if (in_hardirq() || irqs_disabled()) {
+>> +			io->in_tasklet = true;
+>> +			tasklet_init(&io->tasklet, kcryptd_crypt_tasklet, (unsigned long)&io->work);
+>> +			tasklet_schedule(&io->tasklet);
+>>   			return;
+>>   		}
+>> +
+>> +		kcryptd_crypt(&io->work);
+>> +		return;
+>>   	}
+>>   
+>>   	INIT_WORK(&io->work, kcryptd_crypt);
+>> diff --git a/drivers/md/dm-verity-target.c b/drivers/md/dm-verity-target.c
+>> index 49e4a35d7019..0bb126eadc0d 100644
+>> --- a/drivers/md/dm-verity-target.c
+>> +++ b/drivers/md/dm-verity-target.c
+>> @@ -701,6 +701,23 @@ static void verity_work(struct work_struct *w)
+>>   	verity_finish_io(io, errno_to_blk_status(verity_verify_io(io)));
+>>   }
+>>   
+>> +static void verity_tasklet(unsigned long data)
+>> +{
+>> +	struct dm_verity_io *io = (struct dm_verity_io *)data;
+>> +	int err;
+>> +
+>> +	io->in_tasklet = true;
+>> +	err = verity_verify_io(io);
+>> +	if (err == -EAGAIN || err == -ENOMEM) {
+>> +		/* fallback to retrying with work-queue */
+>> +		INIT_WORK(&io->work, verity_work);
+>> +		queue_work(io->v->verify_wq, &io->work);
+>> +		return;
+>> +	}
+>> +
+>> +	verity_finish_io(io, errno_to_blk_status(err));
+>> +}
+>> +
+>>   static void verity_end_io(struct bio *bio)
+>>   {
+>>   	struct dm_verity_io *io = bio->bi_private;
+>> @@ -713,8 +730,13 @@ static void verity_end_io(struct bio *bio)
+>>   		return;
+>>   	}
+>>   
+>> -	INIT_WORK(&io->work, verity_work);
+>> -	queue_work(io->v->verify_wq, &io->work);
+>> +	if (static_branch_unlikely(&use_tasklet_enabled) && io->v->use_tasklet) {
+>> +		tasklet_init(&io->tasklet, verity_tasklet, (unsigned long)io);
+>> +		tasklet_schedule(&io->tasklet);
+>> +	} else {
+>> +		INIT_WORK(&io->work, verity_work);
+>> +		queue_work(io->v->verify_wq, &io->work);
+>> +	}
+>>   }
+>>   
+>>   /*
+>> diff --git a/drivers/md/dm-verity.h b/drivers/md/dm-verity.h
+>> index db93a91169d5..7e495cc375b0 100644
+>> --- a/drivers/md/dm-verity.h
+>> +++ b/drivers/md/dm-verity.h
+>> @@ -87,6 +87,7 @@ struct dm_verity_io {
+>>   	bool in_tasklet;
+>>   
+>>   	struct work_struct work;
+>> +	struct tasklet_struct tasklet;
+>>   
+>>   	char *recheck_buffer;
+>>   
+>> -- 
+>> 2.31.1
+>>
 
