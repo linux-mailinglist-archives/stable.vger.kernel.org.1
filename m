@@ -1,258 +1,317 @@
-Return-Path: <stable+bounces-39297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5791C8A2C3A
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 12:23:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC9B8A2C48
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 12:26:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A1741C22066
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 10:23:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7226D1C216CF
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 10:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CAEA5381B;
-	Fri, 12 Apr 2024 10:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353FC537F0;
+	Fri, 12 Apr 2024 10:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZY5GTtGO"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="CCOl4BeI";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="RDw3Nx8+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3EB54273;
-	Fri, 12 Apr 2024 10:23:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712917384; cv=none; b=Z5ozGF4kBGXLeExxGSWrfZBRJroz0GSUtMdLmxU8ZmyDeH2jeVP2/pjVUWQ3chH9qtgyXKbOtEHtvW6Q6NQDWQXAVSNBMHZUdWWbNfWYFqEbDa5j24dvjULPKFP8uCmBaHhDhFkp3G87yOP8OE2/YN/qHNd91YiaJHoMOQ9cKQE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712917384; c=relaxed/simple;
-	bh=lx/mzNmYe+gTjPQ6nAnsnztHRku3uCOcq194Vk7GP8E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LPO9Z9NVXhWU5YsRORbmxmrhSWUZH2nDFNyzdoiiO5QUv8pRS0/RjMXXDKoCeuuAfgxO5jKSt8GIJegL2eLuz365jTZau8XHI7qYhluoojdmX+7M7cX7FBImpHn5UXdwVdbf7WR4QMos2Gt5e/0fXr45Mxe+GqDLthZIf32xSXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZY5GTtGO; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-56c5d05128dso756765a12.0;
-        Fri, 12 Apr 2024 03:23:01 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7374CB2B;
+	Fri, 12 Apr 2024 10:26:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712917580; cv=fail; b=pD2cQPCRtyAFBnXLEmEHHlC4VtheAOjhDzS51S6iuIOHUzYN2PHpTubzoaFHaMuEVNRvFxh3QPrslgl44pSFFtOJkJrFbjnTPugJUQX+CyewDyqxSz5NK0D7FvNq+w0s+JdLTIIXY6mzCPdGY9BR/pppKgBeaOT9azJJwv0uM4k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712917580; c=relaxed/simple;
+	bh=sa46Gd3b8aVl9Jee0u8+fE/z4hhFaHLaFgt5VUXKxHw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=BESqYmvEadGAxN9vW6KpzK5v4wtjgbjd5GjFiWYFxcWZgml71C7VcC1E6PGfEGc+chKkjSXYeP6DLD0zUHSGwu+dHojEdE/Iw9CczWKQXXo7yW3eHI0/XHGmbSdK3BwTBqAWHwbVY5t6L0vJYDq8UPkNKKlw6pUClqln/SpML7c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=CCOl4BeI; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=RDw3Nx8+; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43C9447A015314;
+	Fri, 12 Apr 2024 10:25:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-11-20;
+ bh=zYvuyuE58REjWHdx3rA/xJTuODq8D6ChHcPgfWmwqLY=;
+ b=CCOl4BeINidKUmIhv7ZSOhNowkOKtb7/ELAtn/HA5qnSDhnLgznTLfz8wyQRbuqUBIHS
+ fiyeXnJf4cQSRlyx5BK+M7utM4SwvmE0ClG/gGCd31ru6vxEOWYzXBnlg/5vi6xOuzvV
+ S9l/tZEnjPPRNeVnylrakVTlEt8JJUisi0ptjVwJz7fM7hzVXBed38k0Tg688RHBJ7s2
+ PDsbGv2G02noGgt/t8K6Km7XP7Qa+N8NlObkgvO9BefRWJG6NBZQqmhRlbLAVzRONRe8
+ HoNjSR6Ile9K8BRCyZv6KFkobUHrYe/G7RUlJxxjVXhU1eM21l89SJeHkKwH5FyfCxqm rA== 
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xavtfbcug-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Apr 2024 10:25:49 +0000
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 43C9ImCv007835;
+	Fri, 12 Apr 2024 10:25:48 GMT
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2041.outbound.protection.outlook.com [104.47.66.41])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3xavuasydm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Apr 2024 10:25:48 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jNl+pFFojyNpBCnwcp/jSeEaXRdhfb+GGnlFT3DIFDkiB+W1B5EAOcNPFl52znyuKGKOGgXXHqx+2nJdvgdojUnw1wLXAf1TlNUUhs96Sw+44dwhza1Z7FtgzBmtA/R4Ir0FIDkr+dJYaQGxbUi0e7BSuvcM9LofTwFOFowXSbFyOZxuJSMo/yKVBkIhoYh+g2Yr8D6cWuljTYrmBgwrkpP8CxJ0gr7RJPuH8mMP8FlKZuhZ6rNvyhKr66loxViq9gqPpFWJDJBgdoCfHFvFqDD/s+IJ1TFwJ85GmcCk+OzXKmWLC/r82bB0+S6wdAcSIXGwHyIK+Ozwrji9nxTJAQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zYvuyuE58REjWHdx3rA/xJTuODq8D6ChHcPgfWmwqLY=;
+ b=SiZ1WpUerljK6pJWEn4i1JST759ns4W8asbceKL2UsNBZy+M7r6VtCOR7e8pkA8HVCWw+wrNcP9IZAHU9DFQqBx/1phfODfdZDSZ6Uz6fjrjrIUiYOjs9NEWMlLpSJR+E93izE3Jtxzeu/C9lz7KUakyaKdq1Z5GHbtvPN1Tn0piHhZFLEQ4yOSEKvJenWQOPQYaJR2oHv/fd3F5Kf7/YzVYaPa2niMe2vnHZvoFWI/3bEuVougCth2XDn72KgrB4kTQGXVuslo2MXqu+85ToHLAxvJNY0TFcxlLajdwZEiX/NP0VHuSTTiKSmE2LjhPGK4tIJFCt/S82VfrcT34EQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712917380; x=1713522180; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dzOdBlKYaerdid9lqA521iJH25UlFopxA3ir8MLFtZ8=;
-        b=ZY5GTtGOODnKbLi7O0QzTZa4baEiwFebORcHGHlZXeeuvEhHNdRwKQVP2XS3B/gbTC
-         w2aNM0Y1vp9pT2zxE4s9euJbBFCqHJIYul4C0c/P4E6ViM/fm255v5xZ+ESTN4oXFUWv
-         Vy6+AOZV9apjHdJN2f51zldeVH1KhWs1jUTVjxoWAEwo6W/sU5OTsYvEvI14Px+6wJcK
-         vd0Zo5AQA7q/XYJREn0PnecAreemlStyA8E0qIHnm7a0GSbahT3hA7I+yDYKj/ydofF+
-         Rl8Fu4NUuA/F2Y8QdNMHgYSQTUkU1iTKX+kRu8v/hWJDNn3kmSWdsoAMVverUb2Iz19z
-         YCrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712917380; x=1713522180;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dzOdBlKYaerdid9lqA521iJH25UlFopxA3ir8MLFtZ8=;
-        b=I3YIFZAWFx5JSN3JwD8bFXIhigCpf4CRdGkR1uMDPgMSD1Pg7L+MtMqKsgKYkJA1rB
-         OxX130J0ywRHNOjg5HDHowM1H+x9/9ynD52Xo84zmm0hejHVP+hdECuArqyyopbpXdUT
-         jKA9Ptvna2PRJmfnQU6INEhrC++ZQdgE53xVY9iE7lDA8KsfI4pItchD+qjQzEUDm6bI
-         7Eb5V7lcVwq4etvwCdOzl8VyPPXOkg2OLoQGBFoz3eNlrVUxV3d6uvPVK7g4NLiS34d/
-         QWXAvnKk2YV2DR3+ddd1SzK1Yn+GxjAP8t93t6EfwXyWZ0JFslmvoie2gZWsGaf25+IK
-         f1gg==
-X-Forwarded-Encrypted: i=1; AJvYcCUe5cMOXA8KkZf/GH5biMdW0D0BFLodEUfMwUK7iseijfsZUOdA+mmv6CN+ibmuxfyUfGSZnYedwujb5WCsob/0O2meUR0X9WlLt2QQiyRhGDcR7nUd+6eETumye+P0upHPCU8YUs/GAOL80gecqxPjGUz4HB5oMFvNha38V1y7mw==
-X-Gm-Message-State: AOJu0Yw0FJ+TNeNB/7n96BbjAl+T0u1Vs5qTidlqR/BN29edvOOtr5Ku
-	kEhKFs5wASAScnQ5zAD1zPri1JZPkMZs1EPef6r0IO7e6ujTaK4a
-X-Google-Smtp-Source: AGHT+IEcQ9QlbNTawUPcRzL9ZfPgkeLxXYdp8hA6uGuutwA12jpqExjzZsC94ItVvXq6MAtW7xeb+w==
-X-Received: by 2002:a50:cd5c:0:b0:56c:5a49:730 with SMTP id d28-20020a50cd5c000000b0056c5a490730mr1497914edj.19.1712917380143;
-        Fri, 12 Apr 2024 03:23:00 -0700 (PDT)
-Received: from gmail.com (1F2EF1A5.nat.pool.telekom.hu. [31.46.241.165])
-        by smtp.gmail.com with ESMTPSA id fj11-20020a0564022b8b00b0056e6a0ec702sm1515248edb.65.2024.04.12.03.22.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Apr 2024 03:22:59 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date: Fri, 12 Apr 2024 12:22:56 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, "levi . yun" <yeoreum.yun@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Daniel Bristot de Oliveira <bristot@redhat.com>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>,
-	Aaron Lu <aaron.lu@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
-	Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, x86@kernel.org
-Subject: Re: [PATCH] sched: Add missing memory barrier in switch_mm_cid
-Message-ID: <ZhkLgJ2ZkI3JO0m/@gmail.com>
-References: <20240411174302.353889-1-mathieu.desnoyers@efficios.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zYvuyuE58REjWHdx3rA/xJTuODq8D6ChHcPgfWmwqLY=;
+ b=RDw3Nx8+LZwbjtHr0JS/iPnZ6JUwhIIh2+/gYDn1ms5GjsmAnPiDzYQF2W0zffqZRVuecE6IvvY4j2ZUQUhT0IsPPRe1x/n23pcTtWVYgQ20nG9Aw43Som4LT/LzbrhWV3Ct4brIJpY3pg6PDKI5gUNDywG/xcyJet3pcaIMSt8=
+Received: from PH8PR10MB6290.namprd10.prod.outlook.com (2603:10b6:510:1c1::7)
+ by PH0PR10MB4485.namprd10.prod.outlook.com (2603:10b6:510:41::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.55; Fri, 12 Apr
+ 2024 10:25:46 +0000
+Received: from PH8PR10MB6290.namprd10.prod.outlook.com
+ ([fe80::f5ee:d47b:69b8:2e89]) by PH8PR10MB6290.namprd10.prod.outlook.com
+ ([fe80::f5ee:d47b:69b8:2e89%3]) with mapi id 15.20.7409.042; Fri, 12 Apr 2024
+ 10:25:46 +0000
+Message-ID: <2c2362c7-ace7-4a79-861e-fa435e46ac85@oracle.com>
+Date: Fri, 12 Apr 2024 15:55:34 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 00/57] 5.15.155-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+        rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
+        broonie@kernel.org, Calum Mackay <calum.mackay@oracle.com>,
+        Chuck Lever III <chuck.lever@oracle.com>,
+        Vegard Nossum <vegard.nossum@oracle.com>,
+        Darren Kenny <darren.kenny@oracle.com>,
+        Ramanan Govindarajan <ramanan.govindarajan@oracle.com>,
+        Linux NFS Mailing List <linux-nfs@vger.kernel.org>
+References: <20240411095407.982258070@linuxfoundation.org>
+Content-Language: en-US
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TYAPR03CA0004.apcprd03.prod.outlook.com
+ (2603:1096:404:14::16) To PH8PR10MB6290.namprd10.prod.outlook.com
+ (2603:10b6:510:1c1::7)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240411174302.353889-1-mathieu.desnoyers@efficios.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR10MB6290:EE_|PH0PR10MB4485:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2ad67f6a-286e-459d-652b-08dc5adaea55
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	iPQtvqK4jXek82je2K4Rhm0/vTjmX+or0ozzWn9MMALrnYGdKuiinSLzHYZBwKAlClDP2Ufd0mzycL5I7lx9HgDMESTyxJWaksMhIC9q8J1PqW06lgzBPdlmmQJqmD6voySwbyaG4gE8lQO6pat/OtKEZJGZTjjU3D4HWQYTyE6NMShVkFvLvi+e2HqJPko6yDx1Gw1Msg21M8vzTNYDm/70mxMm2qyylcOVK/QJy3ohBADXpM6TzB4D1l892yPUnCvZ0BxzJhM2ZBIgC5cuEfZlj+MOHf3d8/47Tb3VQGdIn4eYlYVTA04HiWBwssG1DhmDFn6vgHpBPCJySSnFIocMExSk7t45ORk8CYMnyb8VqzHrR/S3GHStSMdeU10qvejAT9SiOzs5CjbEc8edJB1DUo0jzuOvRg5TeUlIHT8Yt0peuI/7/2JIe41tPXPc1uSIm7ipmJ6DyJEPgO0CFE9/ASQb/B4aE4ow7bAcey0eRGyBN6YT55jQsVH9i60nkq48C/VkO0MuYHzaafw9p4S7xX7CjKnlpnJsBTtUTzJwJUourveEajugojKuXZy/afGDcBeLasHUKwpugQWTIgqSzYy42A+V2DQrOZxvqIOKD+t3rWnKhRww+rlJyoyFNqgt/tWWRxSnnfTlQBa57DKLnDCGvtBYfjL3uE9afFA=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6290.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(7416005)(366007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?Ny9XcUlGRjk1dVBnRkVRbjRtY0Rubm54VUdWdk5kcXhYbkw3QW1XeDBlQm5R?=
+ =?utf-8?B?Z0tsT2krLzBoMGFMYTAzVXkxTTJSclFIbktjQlRYUitZN1dLMldWVlhndEZF?=
+ =?utf-8?B?ck1GOHlsKzBYRmFnWWRHN2VpODJEUlVpNGkyUE5SNUZCdndXdUdLdzVrZ3BI?=
+ =?utf-8?B?cWhKMGRLWjRhU0lCV3Zha3FYdTQ3a1Y2YnVIckRNU3JGNFN0aVpob1VFU2cy?=
+ =?utf-8?B?enNkT3ZoZnhPVlBObFovVXhrREdYbkEzS0FDUlZYUFFpS28rNjdLWndHNlFQ?=
+ =?utf-8?B?Z3JMYTJ1aHluK0dLQ0tuUWN6YVloa0ptZXgzWGFXODFRVFcyck56NTNNS2ZT?=
+ =?utf-8?B?eVNVcnlxYjR1djZFcmVBZWRERFZvOFlnb0M3MUFybTduRVZoWWdnZ2Jxa3Rh?=
+ =?utf-8?B?TXFvblp1UEVEWFFEaHZ1QmJIU3RFMjNUazduU1FSYjVJY1NDYzdiMktQMTkr?=
+ =?utf-8?B?TlRhWWdTUzJQbTJiMERIeE0rbXhpVit1dzVXYTRJcFNWa0VleXo1OUFEcHJW?=
+ =?utf-8?B?clRjdXJlaVFYRU02NFArL0FpQUNJbDYvU0VpTWJmNTA3VVNkZ0E1S0x5Mzlr?=
+ =?utf-8?B?V2JENjJibzFxc3dZLytCY3p2ZUZJK28xZWJMN29maE5Vcm1LY1graklGVnkv?=
+ =?utf-8?B?dlNzRWswaHR2Y0tuNEJEQ3ZJeEpubG5EL21FUHRSR3ZoeGNIZ0o0TTNPNGNZ?=
+ =?utf-8?B?UlArdXNhOWRaV21GeEUwcWNlSWtxa2o4TUloUlhBQmhmbnpkVWhadVpwek80?=
+ =?utf-8?B?a0psdWRIMmNBWHNxbnNxMGVIc1h5VEJya2tVWnpFRHlvYWgwR0NxdDZiNC8r?=
+ =?utf-8?B?ZnlXMitRY3JjdHY2TGpQVXdUa0xYSVJUcE1YNGo4cnlFYTY5MVdZaVk0aXRN?=
+ =?utf-8?B?MVBaMk1vdm5GMFZ6YXFOa3BQMGlNMDM4VmI4c3ZVc3BJV3NvT2h2eDQyN0ln?=
+ =?utf-8?B?eUt4M3RJcC9kbHhxMGtjdEVuYkE0a0FFbS9mMXJKMzMvWTJRa3hxNEw1Ym5x?=
+ =?utf-8?B?bWJ2WkY2VU5BbGhXNUtPaEJqRThZSTR1RlhENzVGMU1GMHVwdjB2UjU2UUVF?=
+ =?utf-8?B?dE5OMUNCSjhJRGYrUlowTERDNzBId2dmNW51UFRVdUNsc3pmaFFiRmJ1UGg1?=
+ =?utf-8?B?bGxEK0VDb2t0NnkwVVBKdGwzWHNibzdtcmVKV1FMQ0c1QjEvVlhBbmRaeXJm?=
+ =?utf-8?B?RXJuNGhXM3dOVEJ1MWFndHVsc3FwdFU4UGtvREhMZEJjNXRwV0MrdHV6MWRK?=
+ =?utf-8?B?NUNHZVdMMHZXWDZqWXNxZ1RUbUhyRFVQWG90ZWZPa0lrMzhKa0FnRVU5OFox?=
+ =?utf-8?B?ZHM5OWZrdmVFK2lkdWRyOVYzdnZkQXMzUVRBa2xtVHF1bHd4bEtHb09wZDVG?=
+ =?utf-8?B?KzN0L3dXeExuOEhkYXdLMU5rLy9qZitrTVhLSmhVNGJGM3ZpQ3dnbk9VK3pT?=
+ =?utf-8?B?c2FybXpRSEhaMHBMMmZuZkxnYjIyNXJKWENvb0dUL1RYNW1LWmVZL1hTUkNR?=
+ =?utf-8?B?Y2Vvbzl6Y1NlNlkrMHBzaENCRGNuWVZ2WWRHcUZiaUhkcnVhRzZPdHVGVjU1?=
+ =?utf-8?B?dkhKL0x0REdialFXR2RrSWo3aUNkNTRSNEI2WlpMV1ZDLzF6MUFuSHFRMjF5?=
+ =?utf-8?B?T3NRTUF4Z05YOUVtUU1TNmVOaTdJd2ZvOXNhU2VEbldTb25LS05qZ2VLVFYr?=
+ =?utf-8?B?UmRZNGpIdTFpejg2RGVjNGZxRW44WDNoeHE3YWxEUlJjY0xFRnJnR0VHeDNQ?=
+ =?utf-8?B?bVZtRXY4bGo2ekxqeXJmUUdod1JlQWZ3WVdkZ2Znd3dKcWZOMFVsWk1PU3Bq?=
+ =?utf-8?B?c1VMUVFEVG9SYi9pbzdRMXlUTDh0bUZiNjU3VEVhdURXMFFYenU4ZG8ydVF5?=
+ =?utf-8?B?SFJtQVNMbVJJMEpwaW1MbWowSVBVNXRWSEd0aDRuZFc4RGZtTHN3MWw3aDF3?=
+ =?utf-8?B?NWlhcFB1VUVRWDErQW93dWJ3VGM1LzI4OW1BcjBCL3l1cFR1K0RFRFdLbG1q?=
+ =?utf-8?B?YzYrbXQwUDRZYjExcy84eFk5WGI5THVrQllKT0JOVUl2Sk1nK3Y0d3FrZnk3?=
+ =?utf-8?B?RW5GbFdvV0U0MG5SM2dGditWS29UVk52cmNSSGEzeEEycFpydFUzMHlNMXkx?=
+ =?utf-8?B?R091ckphYVVSdTJ6cnNic1JQRDkrTzIvdlNWUkhQWWVzWEZFMVB5OEd0dXVN?=
+ =?utf-8?Q?awr3Ol3ti4YrDV88XXkmFtY=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	t97wf0OARh3h9+28ZaWLqn7N80P24le3x8xn/LcauOndENIL5YwVx0ui98NCuSnlbQgBcU0sdkp0Sv8UmJThOUHxQLXxEMf1CEhhCxXg7hiblRFlG5n8eiT3WupvycUL7pM2TGzn955l7Lm6QFgEmXKq88sN6SHtYfCRtaes7Cd5B9e5rHCHSPETXF8/h0gMpXtPC8VFa1FDimB9LnIThTiPttQUM83Ex4UoctP91sZVN9hxI5UggRIX36VZw5+GAWH0mjhrfQyxbu67ISkRNeF64pgVXaGt9HrBqoCC9T6Z8G3h205uc0ALU1RF2Kjx9fX+ZWVvzxq9BClkkqgfVg8L4SxXDFqGY82M0nkR2Kh9ndl/CivR6G0wMFNO5RMsyiZcW2m2HGI70/PpPp2aNWRU8f46nMI0KFpIYg5v+O+vhyf/IRu3vB905Phbd1wGPsetFOUJh87Z6gYjtELuyesbGiAICLX3UqITgpBJUBwZeGhkBYjKUIUaRYhfmIOz9xIG5LH1ij0R1zpdYfHc2LCIAEbjaEPs4eEved9dcH6Fo/63E1GyjEAR4AtgzZnW/3RA04Yxruzqh5RopkKProxuPfu7Wkkztc3bDM5ra8M=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2ad67f6a-286e-459d-652b-08dc5adaea55
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6290.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Apr 2024 10:25:46.2779
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QyADGPcVP7/6V0A4AoSi2HRiPe19RgqxTOF12yNoa9Hr6/Fh3aQkIA2++KwDV/j/nyOCw7liSh0pDfdyUUOlXtkfS52jQBnijAGmO6kq2tNvoQ03elY+ucRa4l1A84Ri
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4485
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-12_06,2024-04-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
+ mlxscore=0 adultscore=0 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2404120075
+X-Proofpoint-GUID: ZLkZf84YQVQSrp2XJEp9JnnoNjfxwnoj
+X-Proofpoint-ORIG-GUID: ZLkZf84YQVQSrp2XJEp9JnnoNjfxwnoj
+
+Hi Greg,
 
 
-* Mathieu Desnoyers <mathieu.desnoyers@efficios.com> wrote:
+On 11/04/24 15:27, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.155 release.
+> There are 57 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 13 Apr 2024 09:53:55 +0000.
+> Anything received after that time might be too late.
+> 
 
-> Many architectures' switch_mm() (e.g. arm64) do not have an smp_mb()
-> which the core scheduler code has depended upon since commit:
-> 
->     commit 223baf9d17f25 ("sched: Fix performance regression introduced by mm_cid")
-> 
-> If switch_mm() doesn't call smp_mb(), sched_mm_cid_remote_clear() can
-> unset the actively used cid when it fails to observe active task after it
-> sets lazy_put.
-> 
-> There *is* a memory barrier between storing to rq->curr and _return to
-> userspace_ (as required by membarrier), but the rseq mm_cid has stricter
-> requirements: the barrier needs to be issued between store to rq->curr
-> and switch_mm_cid(), which happens earlier than:
-> 
-> - spin_unlock(),
-> - switch_to().
-> 
-> So it's fine when the architecture switch_mm() happens to have that
-> barrier already, but less so when the architecture only provides the
-> full barrier in switch_to() or spin_unlock().
-> 
-> It is a bug in the rseq switch_mm_cid() implementation. All architectures
-> that don't have memory barriers in switch_mm(), but rather have the full
-> barrier either in finish_lock_switch() or switch_to() have them too late
-> for the needs of switch_mm_cid().
-> 
-> Introduce a new smp_mb__after_switch_mm(), defined as smp_mb() in the
-> generic barrier.h header, and use it in switch_mm_cid() for scheduler
-> transitions where switch_mm() is expected to provide a memory barrier.
-> 
-> Architectures can override smp_mb__after_switch_mm() if their
-> switch_mm() implementation provides an implicit memory barrier.
-> Override it with a no-op on x86 which implicitly provide this memory
-> barrier by writing to CR3.
-> 
-> Link: https://lore.kernel.org/lkml/20240305145335.2696125-1-yeoreum.yun@arm.com/
-> Reported-by: levi.yun <yeoreum.yun@arm.com>
-> Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com> # for arm64
-> Acked-by: Dave Hansen <dave.hansen@linux.intel.com> # for x86
-> Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
-> Cc: <stable@vger.kernel.org> # 6.4.x
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Vincent Guittot <vincent.guittot@linaro.org>
-> Cc: Juri Lelli <juri.lelli@redhat.com>
-> Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-> Cc: Ben Segall <bsegall@google.com>
-> Cc: Mel Gorman <mgorman@suse.de>
-> Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
-> Cc: Valentin Schneider <vschneid@redhat.com>
-> Cc: levi.yun <yeoreum.yun@arm.com>
-> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Aaron Lu <aaron.lu@intel.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: linux-arch@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Cc: x86@kernel.org
-> ---
->  arch/x86/include/asm/barrier.h |  3 +++
->  include/asm-generic/barrier.h  |  8 ++++++++
->  kernel/sched/sched.h           | 20 ++++++++++++++------
->  3 files changed, 25 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/barrier.h b/arch/x86/include/asm/barrier.h
-> index 0216f63a366b..d0795b5fab46 100644
-> --- a/arch/x86/include/asm/barrier.h
-> +++ b/arch/x86/include/asm/barrier.h
-> @@ -79,6 +79,9 @@ do {									\
->  #define __smp_mb__before_atomic()	do { } while (0)
->  #define __smp_mb__after_atomic()	do { } while (0)
->  
-> +/* Writing to CR3 provides a full memory barrier in switch_mm(). */
-> +#define smp_mb__after_switch_mm()	do { } while (0)
-> +
->  #include <asm-generic/barrier.h>
->  
->  #endif /* _ASM_X86_BARRIER_H */
-> diff --git a/include/asm-generic/barrier.h b/include/asm-generic/barrier.h
-> index 961f4d88f9ef..5a6c94d7a598 100644
-> --- a/include/asm-generic/barrier.h
-> +++ b/include/asm-generic/barrier.h
-> @@ -296,5 +296,13 @@ do {									\
->  #define io_stop_wc() do { } while (0)
->  #endif
->  
-> +/*
-> + * Architectures that guarantee an implicit smp_mb() in switch_mm()
-> + * can override smp_mb__after_switch_mm.
-> + */
-> +#ifndef smp_mb__after_switch_mm
-> +#define smp_mb__after_switch_mm()	smp_mb()
-> +#endif
-> +
->  #endif /* !__ASSEMBLY__ */
->  #endif /* __ASM_GENERIC_BARRIER_H */
-> diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-> index 001fe047bd5d..35717359d3ca 100644
-> --- a/kernel/sched/sched.h
-> +++ b/kernel/sched/sched.h
-> @@ -79,6 +79,8 @@
->  # include <asm/paravirt_api_clock.h>
->  #endif
->  
-> +#include <asm/barrier.h>
-> +
->  #include "cpupri.h"
->  #include "cpudeadline.h"
->  
-> @@ -3445,13 +3447,19 @@ static inline void switch_mm_cid(struct rq *rq,
->  		 * between rq->curr store and load of {prev,next}->mm->pcpu_cid[cpu].
->  		 * Provide it here.
->  		 */
-> -		if (!prev->mm)                          // from kernel
-> +		if (!prev->mm) {                        // from kernel
->  			smp_mb();
-> -		/*
-> -		 * user -> user transition guarantees a memory barrier through
-> -		 * switch_mm() when current->mm changes. If current->mm is
-> -		 * unchanged, no barrier is needed.
-> -		 */
-> +		} else {				// from user
-> +			/*
-> +			 * user -> user transition relies on an implicit
-> +			 * memory barrier in switch_mm() when
-> +			 * current->mm changes. If the architecture
-> +			 * switch_mm() does not have an implicit memory
-> +			 * barrier, it is emitted here.  If current->mm
-> +			 * is unchanged, no barrier is needed.
-> +			 */
-> +			smp_mb__after_switch_mm();
-> +		}
->  	}
->  	if (prev->mm_cid_active) {
->  		mm_cid_snapshot_time(rq, prev->mm);
+I have noticed a regression in lts test case with nfsv4 and this was 
+overlooked in the previous cycle(5.15.154). So the regression is from 
+153-->154 update. And I think that is due to nfs backports we had in 
+5.15.154.
 
-Please move switch_mm_cid() from sched.h to core.c, where its only user 
-resides.
+# ./runltp -d /tmpdir -s fcntl17
+
+<<<test_start>>>
+tag=fcntl17 stime=1712915065
+cmdline="fcntl17"
+contacts=""
+analysis=exit
+<<<test_output>>>
+fcntl17     0  TINFO  :  Enter preparation phase
+fcntl17     0  TINFO  :  Exit preparation phase
+fcntl17     0  TINFO  :  Enter block 1
+fcntl17     0  TINFO  :  child 1 starting
+fcntl17     0  TINFO  :  child 1 pid 22904 locked
+fcntl17     0  TINFO  :  child 2 starting
+fcntl17     0  TINFO  :  child 2 pid 22905 locked
+fcntl17     0  TINFO  :  child 3 starting
+fcntl17     0  TINFO  :  child 3 pid 22906 locked
+fcntl17     0  TINFO  :  child 2 resuming
+fcntl17     0  TINFO  :  child 3 resuming
+fcntl17     0  TINFO  :  child 1 resuming
+fcntl17     0  TINFO  :  child 3 lockw err 35
+fcntl17     0  TINFO  :  child 3 exiting
+fcntl17     0  TINFO  :  child 1 unlocked
+fcntl17     0  TINFO  :  child 1 exiting
+fcntl17     1  TFAIL  :  fcntl17.c:429: Alarm expired, deadlock not detected
+fcntl17     0  TWARN  :  fcntl17.c:430: You may need to kill child 
+processes by hand
+fcntl17     2  TPASS  :  Block 1 PASSED
+fcntl17     0  TINFO  :  Exit block 1
+fcntl17     0  TWARN  :  tst_tmpdir.c:342: tst_rmdir: 
+rmobj(/tmpdir/ltp-jRFBtBQhhx/LTP_fcnp7lqPn) failed: 
+unlink(/tmpdir/ltp-jRFBtBQhhx/LTP_fcnp7lqPn) failed; errno=2: ENOENT
+<<<execution_status>>>
+initiation_status="ok"
+duration=10 termination_type=exited termination_id=5 corefile=no
+cutime=0 cstime=0
+<<<test_end>>>
+<<<test_start>>>
+tag=fcntl17_64 stime=1712915075
+cmdline="fcntl17_64"
+contacts=""
+analysis=exit
+<<<test_output>>>
+incrementing stop
+fcntl17     0  TINFO  :  Enter preparation phase
+fcntl17     0  TINFO  :  Exit preparation phase
+fcntl17     0  TINFO  :  Enter block 1
+fcntl17     0  TINFO  :  child 1 starting
+fcntl17     0  TINFO  :  child 1 pid 22909 locked
+fcntl17     0  TINFO  :  child 2 starting
+fcntl17     0  TINFO  :  child 2 pid 22910 locked
+fcntl17     0  TINFO  :  child 3 starting
+fcntl17     0  TINFO  :  child 3 pid 22911 locked
+fcntl17     0  TINFO  :  child 2 resuming
+fcntl17     0  TINFO  :  child 3 resuming
+fcntl17     0  TINFO  :  child 1 resuming
+fcntl17     0  TINFO  :  child 3 lockw err 35
+fcntl17     0  TINFO  :  child 3 exiting
+fcntl17     0  TINFO  :  child 1 unlocked
+fcntl17     0  TINFO  :  child 1 exiting
+fcntl17     1  TFAIL  :  fcntl17.c:429: Alarm expired, deadlock not detected
+fcntl17     0  TWARN  :  fcntl17.c:430: You may need to kill child 
+processes by hand
+fcntl17     2  TPASS  :  Block 1 PASSED
+fcntl17     0  TINFO  :  Exit block 1
+fcntl17     0  TWARN  :  tst_tmpdir.c:342: tst_rmdir: 
+rmobj(/tmpdir/ltp-jRFBtBQhhx/LTP_fcn9Xy4hM) failed: 
+unlink(/tmpdir/ltp-jRFBtBQhhx/LTP_fcn9Xy4hM) failed; errno=2: ENOENT
+<<<execution_status>>>
+initiation_status="ok"
+duration=10 termination_type=exited termination_id=5 corefile=no
+cutime=0 cstime=0
+<<<test_end>>>
+INFO: ltp-pan reported some tests FAIL
+LTP Version: 20240129-167-gb592cdd0d
+
+
+Steps used after installing latest ltp:
+
+$ mkdir /tmpdir
+$ yum install nfs-utils  -y
+$ echo "/media *(rw,no_root_squash,sync)" >/etc/exports
+$ systemctl start nfs-server.service
+$ mount -o rw,nfsvers=3 127.0.0.1:/media /tmpdir
+$ cd /opt/ltp
+$ ./runltp -d /tmpdir -s fcntl17
+
+
+
+This does not happen in 5.15.153 tag.
+
+Adding nfs people to the CC list
+
+
 
 Thanks,
+Harshit
 
-	Ingo
+
+
+
+
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.155-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
