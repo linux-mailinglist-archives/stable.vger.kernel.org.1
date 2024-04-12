@@ -1,184 +1,257 @@
-Return-Path: <stable+bounces-39317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BFE68A3104
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 16:42:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 544608A3212
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 17:18:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F5981C21E60
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 14:42:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C224E1F22B20
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 15:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676271420B9;
-	Fri, 12 Apr 2024 14:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B759914883B;
+	Fri, 12 Apr 2024 15:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="We+rjn6S"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LRIpeS3N"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F5E1420BE
-	for <stable@vger.kernel.org>; Fri, 12 Apr 2024 14:42:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1F914831E
+	for <stable@vger.kernel.org>; Fri, 12 Apr 2024 15:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712932926; cv=none; b=mT5PeG/fRl7CSAn/rJLzl1qujOIi+AFW54kfN3j4A5+iX3xAYkacE98WfYytx90qYmu6m5hKC8ZG/zfztJts4CGwR7qLdELZDBpdigLwwpDKFpqBKePcP1YsTGhRAkYBkOuaXpZH+sRcqa9nq7ZOIAB0b2mRoTrbCbpiZD7R56M=
+	t=1712934874; cv=none; b=pmwQHuY96nmXIC3jged6gTrt0iy65IpC/UHwjgPb/Qc7Kch/mI9WHTVi1IYaZVDZ79ulYTQFxBUQb0rjK9Am648uCDqtaBLxJHeg0lnBVO3HBsYXVcCtF1Ww/+fOySDMsL9aKCusKrncP7GT8ndH0HdLbvmrEEvhNSKVzeTb4vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712932926; c=relaxed/simple;
-	bh=S7+Zq3Sp36ywGsSjIg+MnzoYOT71Y8aF8vKqMab4AmU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PiFPzur2kHTHDPNrC5+ebDsFP83xYDDQseyLBbaYXrbdqC8GraVYlL8bQlIioO7/RUho2iKYGUyOcXwvQd2iRCpVqRn3K3AEZKWxCcvZsoIKkZX106cmWq+6hF+poEjbGUo/C9ftWnvJwLRgm4Bs3/AbNfPIWO91drflEXXZthM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=We+rjn6S; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712932924; x=1744468924;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=S7+Zq3Sp36ywGsSjIg+MnzoYOT71Y8aF8vKqMab4AmU=;
-  b=We+rjn6S7gsvf5OEpvwtWXa2lrth1DAF1rVxmKXfJedELtNfOVft7OFX
-   kMCGJdIShjwOG32vmLLs+LSIjH0u2U4sRzQV8rpq17LLXj7IcItnwz9Ug
-   X+u8WOfnNcn5kuPmVwgz8TCGwTgpxt/lAETnR+l71hn+aYRJlBS5e686E
-   tFNCB+WXQmcyEMNv7gaHBFca81ECmSQGmExTR/vGQLwyzdexQGubPRYv1
-   qsvrD9dboPz5cp2MG4Nax1CCu87hdZ15JswI7P4nBSw4oU2+nRTWiqToa
-   0ODDksJvxylnmDjSdjiDZzPJJb8izCN5FU4MZZeB1qK8k+YlibfVaYq3X
-   Q==;
-X-CSE-ConnectionGUID: 0ruusLfhQo+lMiNIxiy7bw==
-X-CSE-MsgGUID: 50eDVVnbSbaE/OAcGFGb9g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11042"; a="8246706"
-X-IronPort-AV: E=Sophos;i="6.07,196,1708416000"; 
-   d="scan'208";a="8246706"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2024 07:42:04 -0700
-X-CSE-ConnectionGUID: WQdZVFjfRzC32G9Te2lM+g==
-X-CSE-MsgGUID: t+IJUxbnRCm0Y+F2ErjGHg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,196,1708416000"; 
-   d="scan'208";a="25690968"
-Received: from maurocar-mobl2.ger.corp.intel.com (HELO [10.245.244.44]) ([10.245.244.44])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2024 07:42:02 -0700
-Message-ID: <14259171-58af-4c64-8ed8-e210400d643e@intel.com>
-Date: Fri, 12 Apr 2024 15:42:00 +0100
+	s=arc-20240116; t=1712934874; c=relaxed/simple;
+	bh=brEje0cHPh78nWmZ49OAC1Q54MURkbmR/oXropLUQlI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FDboIMBKzK6k07OBlhU1sx6zAi79bd5hQME85eDrD+H/Xp5oLv3IPExc7dteLA2wRreoQfOYd3hSjvT1RMwqLdjmkqPCvt2Ybak/BUYU0Qzpuwb2nHQLBswBst9aPKkBkVgqG7io/XWSun1gj5ZD03fjq/RuxMsOfNQkKvvytcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LRIpeS3N; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6164d7a02d2so10393977b3.3
+        for <stable@vger.kernel.org>; Fri, 12 Apr 2024 08:14:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712934871; x=1713539671; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VLvO4O9yjxcuvv/qAn2Shyb8mUKKY44bwVC7r1AMAcM=;
+        b=LRIpeS3NzedOks3PDgsh2sp5dijm6Jgp6sJe0ftpjyic6Jxjw/0dgw2oRzDnBbChlw
+         Q/Wh0y0ZuhP57raoRbNhc+1mJ73IB9YQqe/MV/pH6wMQAGdhhHKhnFwia3zOVq6qqKas
+         6RhNVkbG1yeugZvdS/2CFJbT3Fp6CtKGZDPLgd6CwhebhSBa2/O2O9i7PpXPcPdxh56/
+         fL8KXiJZoRoOde/8+zHxGh4s8OgXIi0QvYOR/Os+LFz2TyaohwAh4TL6cTOTrsp/1jf0
+         EVTmFgRDMGdcmfwFCz+AOJg5qQiHdPLf6Y3qgdTEWvwoRD4y9tb9NDbGp9L4ZDJIYD5H
+         CVXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712934871; x=1713539671;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VLvO4O9yjxcuvv/qAn2Shyb8mUKKY44bwVC7r1AMAcM=;
+        b=EsFckz65kl7VwBfhraMCXS0iVQm4U4/yWAx2Jwx686YIm5zKHs0Y7Uwb9zxz/7wbjD
+         lLyNwt4LcCO9tVl/Zow3M8pckQpuKt8x4roDDvLsWO/G7pv/i+lkClq3fC0k8gvxwCy3
+         atm/H33mjC7LJPtSlnSls1mic9oIiiq+mGJptOsgto7gYHLSBTPDE/yTWDza2eT/rK33
+         Y6CObmapo8nNttIO5aImtrstL7xXcmGVncTaQhKdtTgTNmLzx3cC5ocNFAzjSqPRcPNt
+         UuzxGfTh9I/ss0d6kTiKCKqBxZat/fcRyJrIfXMhLc37n9tw9aU+Q13FTYC7yxIDL2GH
+         b9Iw==
+X-Gm-Message-State: AOJu0YxZ0/vIZfEhn4YwE+Am/an0TxdHCndZNBBR6HIP4hs899AGAt08
+	Nlp3jQUA5a1Is1O9HKi8h97cNU3XAwsJdz1V/kp8MTQYjzSy3jJ3d+Rt5ZUt37EYv3bXirpLETB
+	VmE3Q08Y7T2mocfASuBNFPBi97baARkWxbw03ug==
+X-Google-Smtp-Source: AGHT+IFLuEDQPZPdafjpLdhnG+r9Ye8iEmmGE6muHcR1tOSBTmu8a6ZSPp1/UImrPk4NjhvsWI0E09D8nDEHmcvlq2E=
+X-Received: by 2002:a81:ac67:0:b0:618:66f3:818d with SMTP id
+ z39-20020a81ac67000000b0061866f3818dmr2705737ywj.16.1712934870543; Fri, 12
+ Apr 2024 08:14:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] drm/xe/vm: prevent UAF with asid based lookup
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: intel-xe@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
- stable@vger.kernel.org
-References: <20240412113144.259426-4-matthew.auld@intel.com>
- <sm2cs4zyl7yhnumfefky5kg4yatnfhbkoombgcupih6z6v2yos@ckz475ikjc5b>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <sm2cs4zyl7yhnumfefky5kg4yatnfhbkoombgcupih6z6v2yos@ckz475ikjc5b>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240411095412.671665933@linuxfoundation.org>
+In-Reply-To: <20240411095412.671665933@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Fri, 12 Apr 2024 20:44:18 +0530
+Message-ID: <CA+G9fYswXLb=gN9SUxqpctWKyDz52rsrXqynPWy=uUAPkKCUFw@mail.gmail.com>
+Subject: Re: [PATCH 6.1 00/83] 6.1.86-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/04/2024 15:06, Lucas De Marchi wrote:
-> On Fri, Apr 12, 2024 at 12:31:45PM +0100, Matthew Auld wrote:
->> The asid is only erased from the xarray when the vm refcount reaches
->> zero, however this leads to potential UAF since the xe_vm_get() only
-> 
-> I'm not sure I understand the call chain an where xe_vm_get() is coming
-> into play here.
-> 
-> 
->> works on a vm with refcount != 0. Since the asid is allocated in the vm
->> create ioctl, rather erase it when closing the vm, prior to dropping the
->> potential last ref. This should also work when user closes driver fd
->> without explicit vm destroy.
-> 
-> what seems weird is that you are moving it earlier in the call stack
-> rather than later, outside of the worker, to prevent the UAF.
-> 
-> what exactly was the UAF on?
+On Thu, 11 Apr 2024 at 16:16, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.86 release.
+> There are 83 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 13 Apr 2024 09:53:55 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.86-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-UAF on the vm object. From the bug report it's when servicing some GPU 
-fault, so inside handle_pagefault(). At this stage it just has some asid 
-which is meant to map to some vm AFAICT. The lookup dance relies on 
-calling xe_vm_get() after getting back the vm pointer from the xarray. 
-Currently the asid is only erased from the xarray in 
-vm_destroy_work_func() which is long after the refcount reaches zero and 
-we are about to free the memory for the vm.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-However xe_vm_get() is only meant to be called if you are already 
-holding a ref, so if the vm refcount is already zero it just throws an 
-error and continues on, and the caller has no idea. If that happens then 
-as soon as we drop the usm lock the memory can be freed and it's game 
-over. This looks to be what happens with the vm refcount reaching zero, 
-and the handle_pagefault() still being able to reach the 
-soon-to-be-freed vm via the xarray. With this patch we now erase from 
-the xarray before we drop what is potentially the final ref. That way if 
-you can reach the vm via the xarray you should always be able get a 
-valid ref.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-> 
-> Lucas De Marchi
-> 
->>
->> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
->> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1594
->> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->> Cc: Matthew Brost <matthew.brost@intel.com>
->> Cc: <stable@vger.kernel.org> # v6.8+
->> ---
->> drivers/gpu/drm/xe/xe_vm.c | 21 +++++++++++----------
->> 1 file changed, 11 insertions(+), 10 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
->> index a196dbe65252..c5c26b3d1b76 100644
->> --- a/drivers/gpu/drm/xe/xe_vm.c
->> +++ b/drivers/gpu/drm/xe/xe_vm.c
->> @@ -1581,6 +1581,16 @@ void xe_vm_close_and_put(struct xe_vm *vm)
->>         xe->usm.num_vm_in_fault_mode--;
->>     else if (!(vm->flags & XE_VM_FLAG_MIGRATION))
->>         xe->usm.num_vm_in_non_fault_mode--;
->> +
->> +    if (vm->usm.asid) {
->> +        void *lookup;
->> +
->> +        xe_assert(xe, xe->info.has_asid);
->> +        xe_assert(xe, !(vm->flags & XE_VM_FLAG_MIGRATION));
->> +
->> +        lookup = xa_erase(&xe->usm.asid_to_vm, vm->usm.asid);
->> +        xe_assert(xe, lookup == vm);
->> +    }
->>     mutex_unlock(&xe->usm.lock);
->>
->>     for_each_tile(tile, xe, id)
->> @@ -1596,24 +1606,15 @@ static void vm_destroy_work_func(struct 
->> work_struct *w)
->>     struct xe_device *xe = vm->xe;
->>     struct xe_tile *tile;
->>     u8 id;
->> -    void *lookup;
->>
->>     /* xe_vm_close_and_put was not called? */
->>     xe_assert(xe, !vm->size);
->>
->>     mutex_destroy(&vm->snap_mutex);
->>
->> -    if (!(vm->flags & XE_VM_FLAG_MIGRATION)) {
->> +    if (!(vm->flags & XE_VM_FLAG_MIGRATION))
->>         xe_device_mem_access_put(xe);
->>
->> -        if (xe->info.has_asid && vm->usm.asid) {
->> -            mutex_lock(&xe->usm.lock);
->> -            lookup = xa_erase(&xe->usm.asid_to_vm, vm->usm.asid);
->> -            xe_assert(xe, lookup == vm);
->> -            mutex_unlock(&xe->usm.lock);
->> -        }
->> -    }
->> -
->>     for_each_tile(tile, xe, id)
->>         XE_WARN_ON(vm->pt_root[id]);
->>
->> -- 
->> 2.44.0
->>
+## Build
+* kernel: 6.1.86-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.1.y
+* git commit: 2cacd493e299f82c489b78ba1de45da451d02bb0
+* git describe: v6.1.85-84-g2cacd493e299
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.8=
+5-84-g2cacd493e299
+
+## Test Regressions (compared to v6.1.85)
+
+## Metric Regressions (compared to v6.1.85)
+
+## Test Fixes (compared to v6.1.85)
+
+## Metric Fixes (compared to v6.1.85)
+
+## Test result summary
+total: 161977, pass: 138152, fail: 2686, skip: 20976, xfail: 163
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 139 total, 139 passed, 0 failed
+* arm64: 41 total, 41 passed, 0 failed
+* i386: 31 total, 31 passed, 0 failed
+* mips: 26 total, 26 passed, 0 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 36 passed, 0 failed
+* riscv: 11 total, 11 passed, 0 failed
+* s390: 16 total, 16 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 37 total, 36 passed, 1 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
