@@ -1,75 +1,76 @@
-Return-Path: <stable+bounces-39263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B6C8A27B0
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 09:09:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E40D8A27CA
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 09:15:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F676281A26
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 07:09:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF2CC1F254FF
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 07:15:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CCA481AB;
-	Fri, 12 Apr 2024 07:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F33747A53;
+	Fri, 12 Apr 2024 07:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kHbHgaBX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bh0VYYFi"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7549741232
-	for <stable@vger.kernel.org>; Fri, 12 Apr 2024 07:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33154CDF9
+	for <stable@vger.kernel.org>; Fri, 12 Apr 2024 07:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712905733; cv=none; b=eZph1qIkLnv+cqxCrlw3ybpSrCmJkeqr4tkY5xT3Wqe2vbpHCvX7F4gzDcuw4sIDHsofNJ64/4fEBsv/DkJUdZdVxeNtXR7KxdgLUsETccs29KZyBLV1n7oXYO+lMq3o0jkGGOq5syIepFEZkXG6SGr8BtjtBbXSFtLwNiXXJ5Y=
+	t=1712906119; cv=none; b=mC6o6FBmpTkXhKzSOmTzCpivNRUnIMbWE99uwiOUvRa83eHUZFXyGIdysBynzo2yRuNofibt2hfwswqNb0j1n2ErosAZdRdho6Aur9FZokO0MFXcKgh5SYCpz/Ho+8TxMONT5Yg8wdxJYa/oNAlw6joceGyDRp6/JNQ4Xt29JFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712905733; c=relaxed/simple;
-	bh=Dz4Mhi2y660l02uU6l5FEFMqTLPkb82G4AjTlD9V4zc=;
+	s=arc-20240116; t=1712906119; c=relaxed/simple;
+	bh=31vkEXsSKC2rH3gPKy/8HeRb27ArX1kPWFDPshZ4Mp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fT4oYliOH7WHKVIOvH/5QMaYFmbJdh9MY6qb8/wggKmSKgcqbGU4MJ/wqnlGnrbSiioPQVynyYDxJH0haR6jAqghKQcbTFjL6vvz2bhTeYs8HupmvyvvSySQOG3/44Fo1QCq3ed1EUAWrhtFarbTVwO28pbpvrNi7yP8Xk9gExg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kHbHgaBX; arc=none smtp.client-ip=198.175.65.11
+	 MIME-Version:Content-Type; b=oH2/lV+oGlS4GbakYC+gAC5S3O0EdfhtkXyKey9DpyGHcRtK8p4nw+UI5rralT0Wpk6ocU2SLn/2XyRjDaYF5vcxFTYf04jHIdWd28d0bOQKbip5At7azKgkI6VzR+ITGGAx4SiWzdtpTblvOgbaW0P/kMzrRJnZfl5PNDjTVqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bh0VYYFi; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712905732; x=1744441732;
+  t=1712906118; x=1744442118;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Dz4Mhi2y660l02uU6l5FEFMqTLPkb82G4AjTlD9V4zc=;
-  b=kHbHgaBXa2iZmXBx0BVwtQ1CoffG+rbV5+7B32aQ52txUnf7u4rIRWGr
-   0zI7/gDRS0a6Ha3Am0T4NONJ4Lk/e/gVCQUuPm9Me6YCNklnM2a0JPt5E
-   9W4pUtNvWgaYXj/1bTjLfp55IuHWLR35KkpVl4vofNsYJ0qo5phQfED0T
-   cSOSbl9VBIehzXmqsfzJPZuwSyzHKi2EEbeIqR+U1/Y/PM7WhyrCMEWBg
-   zgK5FeCXYnfKahRBj8UiWU1DSofHTQsEZrgD2hlZe2XHPDhfiJvinNCjP
-   lvQBKAwDivlkQ78XLvzkeb621CxQ8IUkx/nXpb4kmc/1Q4dVx9J+CcJ1c
+  bh=31vkEXsSKC2rH3gPKy/8HeRb27ArX1kPWFDPshZ4Mp8=;
+  b=bh0VYYFi5h7eARXoWydb00dFRvFHIJuUlOS+yshCKQTH5aNU4TyFUYX2
+   XQV137+dE3P82IdGKMQfj1BGtExAIUvNFgk7BUEUhbAd2RHlxeJfV+CXn
+   pT4Jn1sdJQpbSqrgSvZh/7BmJu4AJ7350yqYIiEwHVzqhtuN4MkpY1Ns8
+   SDB38VdDxpR7BP2gl6qtyRLf6zf2s49qxbirwGFACLomF67EmWyc8V3Mt
+   YyJjV5gAHq0gw0N3m0WSHzebrqlkCPJcNDL9db8fJ1ruBTyDNpQhqRpSO
+   fLYks5t+47Mi2fDyjVXKRHszgqfvBANhzqmxQxu362MfuAKG/qX9tkLK+
    A==;
-X-CSE-ConnectionGUID: itPlizYqQ0qPPDxPAAKIBQ==
-X-CSE-MsgGUID: JoyyEYGWT9O1FfM6oBXonA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="18905985"
+X-CSE-ConnectionGUID: zis3qmJXQ1KP7+jCxx1qKA==
+X-CSE-MsgGUID: b1RktnfSRne+mhuEshcgTQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="18906498"
 X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; 
-   d="scan'208";a="18905985"
+   d="scan'208";a="18906498"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2024 00:08:51 -0700
-X-CSE-ConnectionGUID: Kl3I9TO7SeGdxGIqdY3yFg==
-X-CSE-MsgGUID: djbv+2LnRzezL6jHIDGZpQ==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2024 00:15:17 -0700
+X-CSE-ConnectionGUID: QbraRSBDSVCUMkwb9vAc3A==
+X-CSE-MsgGUID: Zlo6iTpwRDGDEKsTbjAsLw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; 
-   d="scan'208";a="21198564"
+   d="scan'208";a="21200041"
 Received: from amuszyns-mobl1.ger.corp.intel.com (HELO jkrzyszt-mobl2.intranet) ([10.213.19.168])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2024 00:08:48 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2024 00:15:14 -0700
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: stable@vger.kernel.org
 Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Nirmoy Das <nirmoy.das@intel.com>,
 	Andi Shyti <andi.shyti@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.6.y] drm/i915/vma: Fix UAF on destroy against retire race
-Date: Fri, 12 Apr 2024 09:07:51 +0200
-Message-ID: <20240412070829.275409-2-janusz.krzysztofik@linux.intel.com>
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH 6.7.y] drm/i915/vma: Fix UAF on destroy against retire race
+Date: Fri, 12 Apr 2024 09:12:30 +0200
+Message-ID: <20240412071500.275976-2-janusz.krzysztofik@linux.intel.com>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <2024033042-audio-pacemaker-1b50@gregkh>
-References: <2024033042-audio-pacemaker-1b50@gregkh>
+In-Reply-To: <2024033027-expensive-footage-f3ea@gregkh>
+References: <2024033027-expensive-footage-f3ea@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -179,10 +180,10 @@ Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
  1 file changed, 43 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/gpu/drm/i915/i915_vma.c b/drivers/gpu/drm/i915/i915_vma.c
-index 6f180ee138531..e3b0ab50276f0 100644
+index d09aad34ba37f..b70715b1411d6 100644
 --- a/drivers/gpu/drm/i915/i915_vma.c
 +++ b/drivers/gpu/drm/i915/i915_vma.c
-@@ -33,6 +33,7 @@
+@@ -34,6 +34,7 @@
  #include "gt/intel_engine.h"
  #include "gt/intel_engine_heartbeat.h"
  #include "gt/intel_gt.h"
@@ -190,7 +191,7 @@ index 6f180ee138531..e3b0ab50276f0 100644
  #include "gt/intel_gt_requests.h"
  #include "gt/intel_tlb.h"
  
-@@ -102,12 +103,42 @@ static inline struct i915_vma *active_to_vma(struct i915_active *ref)
+@@ -103,12 +104,42 @@ static inline struct i915_vma *active_to_vma(struct i915_active *ref)
  
  static int __i915_vma_active(struct i915_active *ref)
  {
@@ -235,7 +236,7 @@ index 6f180ee138531..e3b0ab50276f0 100644
  }
  
  static struct i915_vma *
-@@ -1403,7 +1434,7 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
+@@ -1404,7 +1435,7 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
  	struct i915_vma_work *work = NULL;
  	struct dma_fence *moving = NULL;
  	struct i915_vma_resource *vma_res = NULL;
@@ -244,7 +245,7 @@ index 6f180ee138531..e3b0ab50276f0 100644
  	unsigned int bound;
  	int err;
  
-@@ -1423,8 +1454,14 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
+@@ -1424,8 +1455,14 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
  	if (err)
  		return err;
  
@@ -261,7 +262,7 @@ index 6f180ee138531..e3b0ab50276f0 100644
  
  	if (flags & vma->vm->bind_async_flags) {
  		/* lock VM */
-@@ -1560,8 +1597,7 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
+@@ -1561,8 +1598,7 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
  	if (work)
  		dma_fence_work_commit_imm(&work->base);
  err_rpm:
