@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-39310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF5D8A2F37
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 15:19:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B7EC8A2F64
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 15:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91DB8282C04
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 13:19:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF588282D22
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 13:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E5983CD1;
-	Fri, 12 Apr 2024 13:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6030D824A7;
+	Fri, 12 Apr 2024 13:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U72mNorB"
-X-Original-To: Stable@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nY18LgI6"
+X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFD983CB4;
-	Fri, 12 Apr 2024 13:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B76824A3
+	for <stable@vger.kernel.org>; Fri, 12 Apr 2024 13:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712927904; cv=none; b=MXEsuIpBIubHQ0ZiJMmEFdsv3ctnd2m0+oVyCXXA0bMHYemnZUcvKq+pNgMVFGxJGP4J38OOOxd64jwVS7scf1K711PBsWqD4MdxQe4Fy/S+v/S1OMSzzxN3Ygp47pMwWD3zI72q4JErBH9HCt6kXhL1g5eov+1wrUj2IGhRddI=
+	t=1712928565; cv=none; b=MWJ54zS6uTWemwpTsHzdNmVD+kDNII/5CWTKxszuX1eokEiM7g41Lfcrp/ZljXdjYYBcFDlqCBYPdLvX0WNL248dhXw+CMM6qswhvqhTF8tOzyJySQY8vdUBJtekUMQHpwNu8smRlB7QAsQ3MqmZdH8WNNjmtM4nUZRVtTxl5iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712927904; c=relaxed/simple;
-	bh=J01T7vOWuk8XunIDkQev0J/k4GnQzoItYVn62qH2i+s=;
+	s=arc-20240116; t=1712928565; c=relaxed/simple;
+	bh=hRyoN1LZ8uUNr/s3ClJX2HJYgp0UozjbXCjLota3Vtw=;
 	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=YXxuhCPjWGfAKaRJbsD52XzZTVRSgwYwz5QNKlh1sW+U2ivb6091CfHwT1kiGHcHuF8JDuxrG4/7zhXFxoCqNtKiLQvzzfWrT/gBbmAlxO05s0g8aqgWzyzjjSCjfkPGkxuAdFdN1d8peT29deTGx1mdZ91z8wUTqfm1rbou0eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U72mNorB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8987EC3277B;
-	Fri, 12 Apr 2024 13:18:22 +0000 (UTC)
+	 Mime-Version:Content-Type; b=FSDPkRQcF+g+OG3ET30zCtjWKxtKgbFk2AVx06Ke3csISTn1miNKGsz+S1lMe5JsyYjsc9/hrwvir7Tq9ayJGliUj1m1IRpaV2MAN2+u4VqhuimkDQu4/ADq/9VW0iwTaUlErUCFuguNEywo9AYxzsHJepoPxohWH1K7rfcN3Ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nY18LgI6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548AAC113CC;
+	Fri, 12 Apr 2024 13:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712927904;
-	bh=J01T7vOWuk8XunIDkQev0J/k4GnQzoItYVn62qH2i+s=;
+	s=k20201202; t=1712928564;
+	bh=hRyoN1LZ8uUNr/s3ClJX2HJYgp0UozjbXCjLota3Vtw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=U72mNorBevIjAj4KEOavz2dshROeP0/LR8A52mqoUoaog5QW9JWkvxIFWautH53Xu
-	 VdfdnxRJ/LPSAaFbfJ+TdwqTTEOg/SGu90rH4RWLTS3lYnI0V0YmXW5VWusdgIs9YQ
-	 hn/Bhi8ZEFf3iEj2ka3I8FzoWh5b6ZAq8MVpu2UyvVF18heACsb82Sv3MvZGzyF/Rs
-	 9DIjtiuZz6lhyAS9YkiQWZ03r8O2ZE7inCdcl2vU6KVs9XkFYeyVk8xquya/Cfie3Y
-	 fVd6xnWsClrlY9uibqR8mmES+/GgI4O5J67Ave7kY/uPX2bnUPT1+sxPQ91X3dbcWZ
-	 WPC8EU8ZJ+dhQ==
-Date: Fri, 12 Apr 2024 22:18:20 +0900
+	b=nY18LgI6tPFTI7l4Gom6jkctFyrRNNHn2rP+1Gn5WfMBoLLxtrmMX/RgCEhBIho6Z
+	 SQNZEIM1x8LbE8+32XMRZ3vi7WBeP3OWLdz1ehP11grkbZGmQh9a01nXueNCgVjqfl
+	 eyRgvYbC9+hfNLbIwU78f8NE/E9CG7vd+4hFc7jkGYzquJLswvmMVLpW9QD9Lohky/
+	 s54vZDb5pQ1uOCqXA9ftu5tydVG2lSIJn+T7oPuicMqXkxEAKA/xKCxRXvvwxZLV79
+	 WEOEuyzk+V0QOA8RLc6KvYyVGT0EWOgonEW/0Q++MvnOd36c132SNPzGTxCZyEbaJV
+	 ySZZEQkkp8CFQ==
+Date: Fri, 12 Apr 2024 22:29:20 +0900
 From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: qiang4.zhang@linux.intel.com
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, Qiang Zhang <qiang4.zhang@intel.com>,
- Stable@vger.kernel.org
-Subject: Re: [PATCH v2] bootconfig: use memblock_free_late to free xbc
- memory to buddy
-Message-Id: <20240412221820.852abeb57feceec893ca0dad@kernel.org>
-In-Reply-To: <20240412104940.456257-1-qiang4.zhang@linux.intel.com>
-References: <20240412104940.456257-1-qiang4.zhang@linux.intel.com>
+To: Maxime MERE <maxime.mere@foss.st.com>
+Cc: Maxime MERE <maxime.mere@st.com>, Maxime <mere.maxime@gmail.com>, Andrii
+ Nakryiko <andrii@kernel.org>, Francis Laniel <flaniel@linux.microsoft.com>,
+ <stable@vger.kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Steven
+ Rostedt <rostedt@goodmis.org>, Song Liu <song@kernel.org>
+Subject: Re: [PATCH 1/3] tracing/kprobes: Fix symbol counting logic by
+ looking at modules as well
+Message-Id: <20240412222920.c65c9e176c692529166d5aa8@kernel.org>
+In-Reply-To: <20240412115422.2693663-1-maxime.mere@foss.st.com>
+References: <20240412115422.2693663-1-maxime.mere@foss.st.com>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,175 +63,81 @@ Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 12 Apr 2024 18:49:41 +0800
-qiang4.zhang@linux.intel.com wrote:
+Hi,
 
-> From: Qiang Zhang <qiang4.zhang@intel.com>
+On Fri, 12 Apr 2024 13:54:20 +0200
+Maxime MERE <maxime.mere@foss.st.com> wrote:
+
+> From: Andrii Nakryiko <andrii@kernel.org>
 > 
-> On the time to free xbc memory in xbc_exit(), memblock may has handed
-> over memory to buddy allocator. So it doesn't make sense to free memory
-> back to memblock. memblock_free() called by xbc_exit() even causes UAF bugs
-> on architectures with CONFIG_ARCH_KEEP_MEMBLOCK disabled like x86.
-> Following KASAN logs shows this case.
+> Recent changes to count number of matching symbols when creating
+> a kprobe event failed to take into account kernel modules. As such, it
+> breaks kprobes on kernel module symbols, by assuming there is no match.
 > 
-> This patch fixes the xbc memory free problem by calling memblock_free()
-> in early xbc init error rewind path and calling memblock_free_late() in
-> xbc exit path to free memory to buddy allocator.
+> Fix this my calling module_kallsyms_on_each_symbol() in addition to
+> kallsyms_on_each_match_symbol() to perform a proper counting.
 > 
-> [    9.410890] ==================================================================
-> [    9.418962] BUG: KASAN: use-after-free in memblock_isolate_range+0x12d/0x260
-> [    9.426850] Read of size 8 at addr ffff88845dd30000 by task swapper/0/1
+> Link: https://lore.kernel.org/all/20231027233126.2073148-1-andrii@kernel.org/
 > 
-> [    9.435901] CPU: 9 PID: 1 Comm: swapper/0 Tainted: G     U             6.9.0-rc3-00208-g586b5dfb51b9 #5
-> [    9.446403] Hardware name: Intel Corporation RPLP LP5 (CPU:RaptorLake)/RPLP LP5 (ID:13), BIOS IRPPN02.01.01.00.00.19.015.D-00000000 Dec 28 2023
-> [    9.460789] Call Trace:
-> [    9.463518]  <TASK>
-> [    9.465859]  dump_stack_lvl+0x53/0x70
-> [    9.469949]  print_report+0xce/0x610
-> [    9.473944]  ? __virt_addr_valid+0xf5/0x1b0
-> [    9.478619]  ? memblock_isolate_range+0x12d/0x260
-> [    9.483877]  kasan_report+0xc6/0x100
-> [    9.487870]  ? memblock_isolate_range+0x12d/0x260
-> [    9.493125]  memblock_isolate_range+0x12d/0x260
-> [    9.498187]  memblock_phys_free+0xb4/0x160
-> [    9.502762]  ? __pfx_memblock_phys_free+0x10/0x10
-> [    9.508021]  ? mutex_unlock+0x7e/0xd0
-> [    9.512111]  ? __pfx_mutex_unlock+0x10/0x10
-> [    9.516786]  ? kernel_init_freeable+0x2d4/0x430
-> [    9.521850]  ? __pfx_kernel_init+0x10/0x10
-> [    9.526426]  xbc_exit+0x17/0x70
-> [    9.529935]  kernel_init+0x38/0x1e0
-> [    9.533829]  ? _raw_spin_unlock_irq+0xd/0x30
-> [    9.538601]  ret_from_fork+0x2c/0x50
-> [    9.542596]  ? __pfx_kernel_init+0x10/0x10
-> [    9.547170]  ret_from_fork_asm+0x1a/0x30
-> [    9.551552]  </TASK>
-> 
-> [    9.555649] The buggy address belongs to the physical page:
-> [    9.561875] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1 pfn:0x45dd30
-> [    9.570821] flags: 0x200000000000000(node=0|zone=2)
-> [    9.576271] page_type: 0xffffffff()
-> [    9.580167] raw: 0200000000000000 ffffea0011774c48 ffffea0012ba1848 0000000000000000
-> [    9.588823] raw: 0000000000000001 0000000000000000 00000000ffffffff 0000000000000000
-> [    9.597476] page dumped because: kasan: bad access detected
-> 
-> [    9.605362] Memory state around the buggy address:
-> [    9.610714]  ffff88845dd2ff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> [    9.618786]  ffff88845dd2ff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> [    9.626857] >ffff88845dd30000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-> [    9.634930]                    ^
-> [    9.638534]  ffff88845dd30080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-> [    9.646605]  ffff88845dd30100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-> [    9.654675] ==================================================================
-> 
-> Cc: Stable@vger.kernel.org
-> Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
 
-Looks good to me.
+I forgot to push this to probes/for-next. Thanks for finding.
+Let me pick.
 
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Thank you,
 
-Also,
-
-Fixes: 40caa127f3c7 ("init: bootconfig: Remove all bootconfig data when the init memory is removed")
-
-Let me pick this for bootconfig/fixes.
-
-Thanks!
-
+> Cc: Francis Laniel <flaniel@linux.microsoft.com>
+> Cc: stable@vger.kernel.org
+> Cc: Masami Hiramatsu <mhiramat@kernel.org>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+> Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+> Acked-by: Song Liu <song@kernel.org>
+> Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 > ---
-> v2:
-> - add an early flag in xbc_free_mem() to free memory back to memblock in
->   xbc_init error path or put memory to buddy allocator in normal xbc_exit.
+>  kernel/trace/trace_kprobe.c | 24 ++++++++++++++++++++----
+>  1 file changed, 20 insertions(+), 4 deletions(-)
 > 
-> ---
->  include/linux/bootconfig.h |  7 ++++++-
->  lib/bootconfig.c           | 19 +++++++++++--------
->  2 files changed, 17 insertions(+), 9 deletions(-)
-> 
-> diff --git a/include/linux/bootconfig.h b/include/linux/bootconfig.h
-> index e5ee2c694401..3f4b4ac527ca 100644
-> --- a/include/linux/bootconfig.h
-> +++ b/include/linux/bootconfig.h
-> @@ -288,7 +288,12 @@ int __init xbc_init(const char *buf, size_t size, const char **emsg, int *epos);
->  int __init xbc_get_info(int *node_size, size_t *data_size);
+> diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+> index 95c5b0668cb7..e834f149695b 100644
+> --- a/kernel/trace/trace_kprobe.c
+> +++ b/kernel/trace/trace_kprobe.c
+> @@ -714,14 +714,30 @@ static int count_symbols(void *data, unsigned long unused)
+>  	return 0;
+>  }
 >  
->  /* XBC cleanup data structures */
-> -void __init xbc_exit(void);
-> +void __init _xbc_exit(bool early);
+> +struct sym_count_ctx {
+> +	unsigned int count;
+> +	const char *name;
+> +};
 > +
-> +static inline void xbc_exit(void)
+> +static int count_mod_symbols(void *data, const char *name, unsigned long unused)
 > +{
-> +	_xbc_exit(false);
+> +	struct sym_count_ctx *ctx = data;
+> +
+> +	if (strcmp(name, ctx->name) == 0)
+> +		ctx->count++;
+> +
+> +	return 0;
 > +}
->  
->  /* XBC embedded bootconfig data in kernel */
->  #ifdef CONFIG_BOOT_CONFIG_EMBED
-> diff --git a/lib/bootconfig.c b/lib/bootconfig.c
-> index c59d26068a64..f9a45adc6307 100644
-> --- a/lib/bootconfig.c
-> +++ b/lib/bootconfig.c
-> @@ -61,9 +61,12 @@ static inline void * __init xbc_alloc_mem(size_t size)
->  	return memblock_alloc(size, SMP_CACHE_BYTES);
->  }
->  
-> -static inline void __init xbc_free_mem(void *addr, size_t size)
-> +static inline void __init xbc_free_mem(void *addr, size_t size, bool early)
+> +
+>  static unsigned int number_of_same_symbols(char *func_name)
 >  {
-> -	memblock_free(addr, size);
-> +	if (early)
-> +		memblock_free(addr, size);
-> +	else
-> +		memblock_free_late(__pa(addr), size);
+> -	unsigned int count;
+> +	struct sym_count_ctx ctx = { .count = 0, .name = func_name };
+> +
+> +	kallsyms_on_each_match_symbol(count_symbols, func_name, &ctx.count);
+>  
+> -	count = 0;
+> -	kallsyms_on_each_match_symbol(count_symbols, func_name, &count);
+> +	module_kallsyms_on_each_symbol(NULL, count_mod_symbols, &ctx);
+>  
+> -	return count;
+> +	return ctx.count;
 >  }
 >  
->  #else /* !__KERNEL__ */
-> @@ -73,7 +76,7 @@ static inline void *xbc_alloc_mem(size_t size)
->  	return malloc(size);
->  }
->  
-> -static inline void xbc_free_mem(void *addr, size_t size)
-> +static inline void xbc_free_mem(void *addr, size_t size, bool early)
->  {
->  	free(addr);
->  }
-> @@ -904,13 +907,13 @@ static int __init xbc_parse_tree(void)
->   * If you need to reuse xbc_init() with new boot config, you can
->   * use this.
->   */
-> -void __init xbc_exit(void)
-> +void __init _xbc_exit(bool early)
->  {
-> -	xbc_free_mem(xbc_data, xbc_data_size);
-> +	xbc_free_mem(xbc_data, xbc_data_size, early);
->  	xbc_data = NULL;
->  	xbc_data_size = 0;
->  	xbc_node_num = 0;
-> -	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX);
-> +	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX, early);
->  	xbc_nodes = NULL;
->  	brace_index = 0;
->  }
-> @@ -963,7 +966,7 @@ int __init xbc_init(const char *data, size_t size, const char **emsg, int *epos)
->  	if (!xbc_nodes) {
->  		if (emsg)
->  			*emsg = "Failed to allocate bootconfig nodes";
-> -		xbc_exit();
-> +		_xbc_exit(true);
->  		return -ENOMEM;
->  	}
->  	memset(xbc_nodes, 0, sizeof(struct xbc_node) * XBC_NODE_MAX);
-> @@ -977,7 +980,7 @@ int __init xbc_init(const char *data, size_t size, const char **emsg, int *epos)
->  			*epos = xbc_err_pos;
->  		if (emsg)
->  			*emsg = xbc_err_msg;
-> -		xbc_exit();
-> +		_xbc_exit(true);
->  	} else
->  		ret = xbc_node_num;
->  
+>  static int __trace_kprobe_create(int argc, const char *argv[])
 > -- 
-> 2.39.2
+> 2.25.1
 > 
 
 
