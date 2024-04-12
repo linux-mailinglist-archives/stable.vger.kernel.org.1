@@ -1,261 +1,264 @@
-Return-Path: <stable+bounces-39326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67BA48A3595
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 20:25:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F176D8A3620
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 21:03:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3AC11F23284
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 18:25:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79B911F239B8
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 19:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3789814EC6A;
-	Fri, 12 Apr 2024 18:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D078314F124;
+	Fri, 12 Apr 2024 19:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ct90XKBv"
+	dkim=pass (2048-bit key) header.d=epam.com header.i=@epam.com header.b="PPuy52hP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0039f301.pphosted.com (mx0a-0039f301.pphosted.com [148.163.133.242])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7621C148313
-	for <stable@vger.kernel.org>; Fri, 12 Apr 2024 18:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712946308; cv=none; b=E4t0Ar0ZxntlFw2JamodO1c9K9R+KTTNHrNbu63eMZst+Nd6CSeeGMZuqscv+sv0+70H93s35l1yJZFso8Cxk5ds3lRTnpzcSl/SBXuXiDqRrr1y3LjLon+F46usfyqlNqH3pKOFA8rY4JQPIEEvW6m+nOiq7KU2FRtEH+NcWW8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712946308; c=relaxed/simple;
-	bh=ry66YQlyt3rAYniCDBOFkCGxY2ZiHVBUqgNRBCuc3PY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BNMFDrM1FfKNH3j858l/a6tNiseJkcBQMvMod0Ptd5US1GFkYjh2EahcazNzpU2Vz6Cij36PZLvZwMZAqh/0VOAR9TD/6hOjUPgLLe6eh35N/001V8q1U2UtOfXDh7/ZMUczV3NJVFDKcyt6KzfHQrPcfdLngm2LwiCJS/FqLeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ct90XKBv; arc=none smtp.client-ip=209.85.221.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-4dc9f17c27bso337750e0c.1
-        for <stable@vger.kernel.org>; Fri, 12 Apr 2024 11:25:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712946305; x=1713551105; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jQVC4UrxcWEkIXkGeGXm7dBR+1G2Vzp/gIdMFXmEOQM=;
-        b=ct90XKBvrGBu7+PmkCT5eFkaYTDuHA0NpasPZUHElDejtrA0EphD08Bv0sAi+LSJEB
-         yp1xWUj1f5lqfrYuC3oqULSuDPVGLXIjGliaFioVaRd9WuWf+hUYYeu9+urWB3IIKuen
-         GK2jXSTN6VxuyOKIMfQ80gLPqU0eFB1IxZw6Vzaz6eSdKES0UPOZsljwFBsllI4QDCSV
-         uodknjDMEmF1OFtYb7KZQu+jgUtwd/iiBFFxS6yuB9IG6dKKZ25QjrtzPMujAKR0FUlW
-         yFZXTYj75QRgaeKbs+nHmaMZzQ4Gmx8WdzBoZ5OfQAL47k0xYz8OHxRTdBPlfv9COgH4
-         EXbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712946305; x=1713551105;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jQVC4UrxcWEkIXkGeGXm7dBR+1G2Vzp/gIdMFXmEOQM=;
-        b=O+KtluWkAMvc/wRj6M9kXYndh8QtstVTmW7/hN2JXq+VPALbAzbLK5qnGaDVewIM/E
-         x6U+6rzo+0VYW0hqn8I8hFG6vb9iecWKDzVe5qZBi+7OSHpwqA2uacqA3YlZvgKpOR3U
-         jguo9Y4Oq0odMJhqkSI99/PLEqAPVFgpFL0pwLuObaSQnzQ/An5ktzIEThrpAozKvHhF
-         po5NQjb1jN9u691xmofQW8j1HllExTs3T4AU2AxsVaP3pLyphALc9NJq0exjAcigqGD+
-         Ikiwf9Or5NU4GWzDl+WTKdaxipjWrw44MxmkkOdS0TAUf2RpXp+VAOzwwMYy0ZsdSRD8
-         1V+w==
-X-Gm-Message-State: AOJu0Yy8fJNKlCjk1SoKtWUC0a3Ar4Y3fDu4+vCCcF1fe1yVe/MiEw2Z
-	axi0Nl1OZXniQK8PyjGV7r7M8KTmnrF+VkEKC2g8Tg14cKh11pXYnjXP69Vq8+f0jmOkZnZK3dj
-	guJIrIg+yPNQO98XrX6lqO+Rat9HkNbNF40hKmA==
-X-Google-Smtp-Source: AGHT+IHMP9iSKz9Wkqt1WKRSp65sfJmSOV5flXRlhZ3cVhkWjFku5qz8AJVj/wKL3Vrf+35SNZ0bmN6Lzol/yZLlCLs=
-X-Received: by 2002:a05:6122:3c56:b0:4da:9d3e:a7df with SMTP id
- fv22-20020a0561223c5600b004da9d3ea7dfmr3994403vkb.5.1712946305324; Fri, 12
- Apr 2024 11:25:05 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1B114F13E;
+	Fri, 12 Apr 2024 19:03:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.133.242
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712948617; cv=fail; b=GonEPDNz+eykvu0x+R8+Q1fxgfKd2AGrpiD7ezQ1kiH/I9TiS4D1dQmmjZ1T8IAWLwvnfWzkn7HR5xad+rX6xIvLBJBLGW1qFXK2tv3QMztBb+afyxOimovQMcKl08iDuaNN4+pzBhasB9eHA2MhR/gXmNk9C9q0MsQ5tWcSu8o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712948617; c=relaxed/simple;
+	bh=w0GXoPoVXq20ZzFqnCrUpBss5WcElt3jJ33vs4jXlQ4=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=nzslB+QNBjJLdLBxyMP+i9cRDE7NEIaEOmqeOAzJT1zyrSMpMAOxvNZVvG4YB3LNtVsfCABUQPrGkuckUD5bc1gLugtHr7Z6xTnUUg/IAuDwW4NbMZCcBFfTLY2b4CUMA/bo7SY6d7bVH16BpF0v1mqBaLqcTcQTu31M3/FaeaE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=epam.com; spf=pass smtp.mailfrom=epam.com; dkim=pass (2048-bit key) header.d=epam.com header.i=@epam.com header.b=PPuy52hP; arc=fail smtp.client-ip=148.163.133.242
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=epam.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=epam.com
+Received: from pps.filterd (m0174678.ppops.net [127.0.0.1])
+	by mx0a-0039f301.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43CDu5Bk020474;
+	Fri, 12 Apr 2024 19:03:29 GMT
+Received: from eur05-am6-obe.outbound.protection.outlook.com (mail-am6eur05lp2104.outbound.protection.outlook.com [104.47.18.104])
+	by mx0a-0039f301.pphosted.com (PPS) with ESMTPS id 3xf1saj9wy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Apr 2024 19:03:29 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=acg/u1ZXXLYOxbDDPIvA/R1HjDUAWTaaSdo6Gjsq697nSRlY9f3AB5feRc/1iLzpbtNqWKw9KF9Iv+fduwdopZLa3bJhdjT4KFG5yGgRFKKo9rtSKPgfyNUr2An/08ICNdkNkRsU6BTek4JclBTr6OMCR0aGI3n7VMwoVCPcqZvrYYmJzmPF4uMNR7F3v5nsNQG7rn6HL/CMPuf5earYEofTDbSPL38pd2fDj8unwdRQhnO0+Cdynpmwb9QkDWsjZQW5/YZ6uYEwHYPk+xYxKUYDCEQ58fhueFrBrAPKbN5BkO/1/v4YSTbZTIFO7/0eSVnLa7I3+sAgWd2g4pPxtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RZgT/yvE/u5C2JKDXUNRvWqf5cFw7ZY2EWmbfUam6nE=;
+ b=XqsM8BnqwjVisgEOQ4PSv3bwJI+8jeZ8o9MyT2Ug1pUSw3xV4p66Ohw3AsYSvpPVQ1KAxsJ75ouWuK9OCbkKwvd5WO2HckmE5gFUsI7uYFPkqwGNiaG12a1ndOgsnzhJHuY0eHoq9vTuil+aebh/TEKyJGDYi7qclI7wDelC45Gqu60gtNxfP3daMj6TJdi/Mmh1QIJ8LCgd/ttoLxf1PuH0cVhmRGvj6lyp8A8jG1/u2S3dEPMnoFnmHbj/dfmzMyT2WZinnW7M4xO3isEkvkWjVv5WIOlv3ePOGCxrx/tP7/Ba+y3zfPa0kDLYV+IoFCTWG5U6TJvY3l2Q9DQCTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=epam.com; dmarc=pass action=none header.from=epam.com;
+ dkim=pass header.d=epam.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=epam.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RZgT/yvE/u5C2JKDXUNRvWqf5cFw7ZY2EWmbfUam6nE=;
+ b=PPuy52hPuq2Et0SFGEPIeidvf4DMsrgg1D+a3LCFocl4GUODgBq6x3oZe+KfO3mgaeiR1jNKI2kv9JYKThbtRzsaSVj3Uq3FFp96XLLK1qBQhCplJsYXp2zipsZoy44xtzcI+H5BOlLo+mAqoj7QjdA7C5zWNiJslz5VEDK9bY4nJ90VzRbFAsmvRhMxSkK3L+gD6aC1FsyDWDV/T8hmsG56y9abTorMxs3e83FUFpsJp+rfTBlsdWfSv4K1CKJlIAeLT90Tx21gBRg2mqpPS6JpJMTICaX8DvOijAL4bZdypjm03hlJgCNADODdYa01gM2HxdoLRGqm9Kbjv+usPw==
+Received: from GV1PR03MB10456.eurprd03.prod.outlook.com
+ (2603:10a6:150:16a::21) by PAXPR03MB7934.eurprd03.prod.outlook.com
+ (2603:10a6:102:219::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.54; Fri, 12 Apr
+ 2024 19:03:26 +0000
+Received: from GV1PR03MB10456.eurprd03.prod.outlook.com
+ ([fe80::74c9:2488:1dd7:b976]) by GV1PR03MB10456.eurprd03.prod.outlook.com
+ ([fe80::74c9:2488:1dd7:b976%3]) with mapi id 15.20.7409.053; Fri, 12 Apr 2024
+ 19:03:25 +0000
+From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
+To: "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>
+CC: Stephan Gerhold <stephan@gerhold.net>,
+        Volodymyr Babchuk
+	<Volodymyr_Babchuk@epam.com>,
+        "stable@vger.kernel.org"
+	<stable@vger.kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad
+ Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley
+	<conor+dt@kernel.org>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: [PATCH v3 1/2] arm64: dts: qcom: sa8155p-adp: fix SDHC2 CD pin
+ configuration
+Thread-Topic: [PATCH v3 1/2] arm64: dts: qcom: sa8155p-adp: fix SDHC2 CD pin
+ configuration
+Thread-Index: AQHajQwYOQ9To8w33EaflpLdE0ZqmQ==
+Date: Fri, 12 Apr 2024 19:03:25 +0000
+Message-ID: <20240412190310.1647893-1-volodymyr_babchuk@epam.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-mailer: git-send-email 2.44.0
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV1PR03MB10456:EE_|PAXPR03MB7934:EE_
+x-ms-office365-filtering-correlation-id: c3e3711f-1c08-4dfa-24fb-08dc5b233b52
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ tLpDiKot25bQ5fOA/mLZ5tEuv4yhQRk9KRmo/jIJLUji/FlQ5e3lxar5BEbScQqRqPHbOrO6DTsgRyTeHsqV2nysgUKaKo1WZ3YhFKv1iU0CPXAY1QiegwVyaPN/s9NV8XV9ELmZ11X1AzY7ACrW69tZyOg6VOTNfxwR7ciLHpSHi9EgzjF7ESJkEdrmHxsvq9hw0wRtgYGiXYJkjlw/GJtVQ5qdJ/QzgVFqbZtHcGMLhqkTyttb8q/1x9bhLWQRqc6Bj3uf3qMJnSHyB4vVrZ8x7pEtEH0ZrRJCEMKf58d4mfVBCpj90TtvrHuZB6e2xu2WFUsv6EOBeZC7wLOb9Xx4KXBi25NvvyzAhDxXGkOtViczi6fAxrapJ+BoOeontBwZsbSN8VMJf1WVFI86FNaBaxYhQoUK0XJ/eoqTwYIi14vxBGnwoVvlGubK1GSWeD216fwQh9OfiF54yx2ar76dTLy8HEDkIVgob8XBpfAY+Ka04hjb/wg5Wr7ooX8KHJVraxqb13Ciem62ADNFnUEGodRCkhi5tkQHlP9uL8BJOtI+Xq3rTzDynYoDLlgq+mOqB0WA7Hrs7eTkLEmbeXzlsCwiF4kVGraXguDFvvbAf1NjRInN+0Q4S/1kyeY+SOCC5scwrwM23YZzdECRnTHzQIwNab5KbKHEA6+e/TzeE+DsOeF+IuQSuLfm97Mn5hJhHKhaQ1qtCkZbsJSQjQ==
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR03MB10456.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(376005)(1800799015)(366007)(38070700009);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: 
+ =?iso-8859-1?Q?bILD0DFmUYl+HOfn4uk9rotdxpdMzuiSUDAIt4gnPnu/ciAHlavTCSmmTa?=
+ =?iso-8859-1?Q?Jx7zMNQIBEyeq4oRnONCVWTGDFXgPjC92sJ2eQSM74zpIH50Z5z/4IOsKU?=
+ =?iso-8859-1?Q?yCoQTVFr6y2BOqgnundNDd08wgc5ZL0cdXEcKebReXyPvcxhdI1lfJECSD?=
+ =?iso-8859-1?Q?jyuJNkFn/Oiox1JUVA5xysBuKEtfOTmKqRoD5Om1iEVbyLiMs6FlNRx8P8?=
+ =?iso-8859-1?Q?0P4IaLnsgncV+QHEhIbfQdQ84ygd95Vy12/7ugIMM9lIcHBqohha3VCNLI?=
+ =?iso-8859-1?Q?GLVPzLVisdsjbDhNmo748aLepCIokEF0fz0IDhB41zW9CskbgWZIc5WRPc?=
+ =?iso-8859-1?Q?l1hmVUJWfTqGKlubicbrLP+sWY9WhIYdx7oRylcg6FHzbQVuLWuCnGhhuA?=
+ =?iso-8859-1?Q?+eHAgluEL76NcCYnbTuGDJOIZl5ftuGrAVopBl7h01e+pCcNVGCXNFOo+I?=
+ =?iso-8859-1?Q?8lq6688999W7Au9GS9x6hab4sCy4czvAyHarcyttx51YR82J9HNJPOskAy?=
+ =?iso-8859-1?Q?/f94poqrpQRDibTBXdnvlVql/wvZ/2PeRronC4bRjU+Po7YxQNjfiNhceG?=
+ =?iso-8859-1?Q?Wc9un+U2lnDx1s6rVZrhgiqkglrqKNx9QETp/+fAINvUk2B4Z5oVmxFsnU?=
+ =?iso-8859-1?Q?W6gMZVjKKyArtoWr5G8+xpb5yql2HsW+c8mgqa9t+9JoE+Mwg9ixwPpGN3?=
+ =?iso-8859-1?Q?D5eKa3TiVlzO2jtgzVIs+qihfOr2Slr0Qn9Ye9+2oe0MM7TsuaKnANhCeL?=
+ =?iso-8859-1?Q?/tSkhzvJ578gPYaovbXc0AtsLyoqvlODsYdqW0G6vsCW/w9+2dm9n3kYw1?=
+ =?iso-8859-1?Q?voiRuduwE8+UWJVcHcqnxYLpqMBOUq7yKWzZYBlx58IwH1+Hk6lomPYa53?=
+ =?iso-8859-1?Q?ypkJJVZuxFTleU7X5j/Z5Y2c02ObiJYvtBOu3HXgEU1Eed3qnI5ON+1Y1X?=
+ =?iso-8859-1?Q?1+Omfgoe/CWagBNH2fIQ8DfCQBMDXtrEkX/pL2XgmWGtRvnFdlYnFerSp2?=
+ =?iso-8859-1?Q?qrs2Iiy0XeVGucW0WkCg7UJpkhlxshQBxmab49n6wZCvoK6Z04J3terfjg?=
+ =?iso-8859-1?Q?cDwo+gSTYLYEm2kCSzcHXHiV4K9k2g9RvK5SPi+nKdJ+La377bsnushMMI?=
+ =?iso-8859-1?Q?zO0alzGf6RVspJCU1Tx3+S6SiHlg1txjF6fdxSQ1ehuchNr/Qg5Sjcl56L?=
+ =?iso-8859-1?Q?p2HybWpMw23ucWoeZ/g3YBrA5PCmKjIkzpcf3oGCJDxckZLl4ENO25FlVA?=
+ =?iso-8859-1?Q?gmwDnynv+JoCPwwfZ46rmKD4xURJ8tNNhI0Z6/6JIQtReWA1s1GpWc3uOd?=
+ =?iso-8859-1?Q?D5l0QBz2N67sBh3RXg6gd6lvcAhCRJBnoW+7iCk4FjLnIvBtQI0tpodfdh?=
+ =?iso-8859-1?Q?l18roawGyVDHJj6e/gQwko2J6Uy2j04mpl4i1Ax8OWukb94lfznkU6eaed?=
+ =?iso-8859-1?Q?5NRMevKsEFc9q6ZfrB3k6idJc5NXQYHiq7mtCfjgwhtI91xrp/2+U+1+ub?=
+ =?iso-8859-1?Q?zjpOb38dkvG6UBbSGdVtvgF+5CjXCnnRVXGOTV3Mm1e4twRzO4VrttG0lD?=
+ =?iso-8859-1?Q?1UEqBcenLpRkUrxiZEqFrAdB/T7RjMX49t6HHKjNq50FMFksJIbSu29KhD?=
+ =?iso-8859-1?Q?XBNIFUbdGsMZx9TlP7IJtqsFwepxZHmrJrBndJsLxDh6wFpYi5AiwaxQ?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240411095407.982258070@linuxfoundation.org>
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 12 Apr 2024 23:54:54 +0530
-Message-ID: <CA+G9fYvGhW9dNHWiDwe1nCOtEMqbVuK7zC9kWQjvYPTb4hrHHA@mail.gmail.com>
-Subject: Re: [PATCH 5.15 00/57] 5.15.155-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: epam.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV1PR03MB10456.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3e3711f-1c08-4dfa-24fb-08dc5b233b52
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Apr 2024 19:03:25.6564
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b41b72d0-4e9f-4c26-8a69-f949f367c91d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 8H5QoYLZxSjkL2udwVudHeOcV0COy7xmNgX2bcvFBAQ6xC2PMO0VeJb87EbkpCQgpbQyD1SKSQe426FqCPaBIWSTBirRfQftkgdc0GrSF4Q=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR03MB7934
+X-Proofpoint-ORIG-GUID: HVhugvE8dnL-QWE9DmElssdcV1qdmlbV
+X-Proofpoint-GUID: HVhugvE8dnL-QWE9DmElssdcV1qdmlbV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-12_15,2024-04-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 phishscore=0
+ bulkscore=0 priorityscore=1501 mlxlogscore=999 adultscore=0 suspectscore=0
+ impostorscore=0 spamscore=0 lowpriorityscore=0 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
+ definitions=main-2404120138
 
-On Thu, 11 Apr 2024 at 16:20, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.15.155 release.
-> There are 57 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 13 Apr 2024 09:53:55 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.15.155-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+There are two issues with SDHC2 configuration for SA8155P-ADP,
+which prevent use of SDHC2 and causes issues with ethernet:
 
+- Card Detect pin for SHDC2 on SA8155P-ADP is connected to gpio4 of
+  PMM8155AU_1, not to SoC itself. SoC's gpio4 is used for DWMAC
+  TX. If sdhc driver probes after dwmac driver, it reconfigures
+  gpio4 and this breaks Ethernet MAC.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+- pinctrl configuration mentions gpio96 as CD pin. It seems it was
+  copied from some SM8150 example, because as mentioned above,
+  correct CD pin is gpio4 on PMM8155AU_1.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+This patch fixes both mentioned issues by providing correct pin handle
+and pinctrl configuration.
 
-NOTE:
-LKFT test setup using NFSv4 do not notice LTP syscalls fcntl17 test failure=
-s.
+Fixes: 0deb2624e2d0 ("arm64: dts: qcom: sa8155p-adp: Add support for uSD ca=
+rd")
+Cc: stable@vger.kernel.org
+Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
 
-## Build
-* kernel: 5.15.155-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-5.15.y
-* git commit: 857e7024b96feefc0c2ab59eb5e661df777e6a72
-* git describe: v5.15.154-58-g857e7024b96f
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
-.154-58-g857e7024b96f
+---
 
-## Test Regressions (compared to v5.15.154)
+In v3:
+ - Moved regulator changes to a separate patch
+ - Renamed pinctrl node
+ - Moved pinctrl node so it will appear in alphabetical order
+In v2:
+ - Added "Fixes:" tag
+ - CCed stable ML
+ - Fixed pinctrl configuration
+ - Extended voltage range for L13C voltage regulator
+---
+ arch/arm64/boot/dts/qcom/sa8155p-adp.dts | 30 ++++++++++--------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
 
-## Metric Regressions (compared to v5.15.154)
-
-## Test Fixes (compared to v5.15.154)
-
-## Metric Fixes (compared to v5.15.154)
-
-## Test result summary
-total: 93809, pass: 74866, fail: 2649, skip: 16230, xfail: 64
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 104 total, 104 passed, 0 failed
-* arm64: 31 total, 31 passed, 0 failed
-* i386: 25 total, 25 passed, 0 failed
-* mips: 22 total, 22 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 24 total, 24 passed, 0 failed
-* riscv: 8 total, 8 passed, 0 failed
-* s390: 9 total, 9 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 27 total, 27 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-smoketest
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+diff --git a/arch/arm64/boot/dts/qcom/sa8155p-adp.dts b/arch/arm64/boot/dts=
+/qcom/sa8155p-adp.dts
+index 5e4287f8c8cd1..b2cf2c988336c 100644
+--- a/arch/arm64/boot/dts/qcom/sa8155p-adp.dts
++++ b/arch/arm64/boot/dts/qcom/sa8155p-adp.dts
+@@ -367,6 +367,16 @@ queue0 {
+ 	};
+ };
+=20
++&pmm8155au_1_gpios {
++	pmm8155au_1_sdc2_cd: sdc2-cd-default-state {
++		pins =3D "gpio4";
++		function =3D "normal";
++		input-enable;
++		bias-pull-up;
++		power-source =3D <0>;
++	};
++};
++
+ &qupv3_id_1 {
+ 	status =3D "okay";
+ };
+@@ -384,10 +394,10 @@ &remoteproc_cdsp {
+ &sdhc_2 {
+ 	status =3D "okay";
+=20
+-	cd-gpios =3D <&tlmm 4 GPIO_ACTIVE_LOW>;
++	cd-gpios =3D <&pmm8155au_1_gpios 4 GPIO_ACTIVE_LOW>;
+ 	pinctrl-names =3D "default", "sleep";
+-	pinctrl-0 =3D <&sdc2_on>;
+-	pinctrl-1 =3D <&sdc2_off>;
++	pinctrl-0 =3D <&sdc2_on &pmm8155au_1_sdc2_cd>;
++	pinctrl-1 =3D <&sdc2_off &pmm8155au_1_sdc2_cd>;
+ 	vqmmc-supply =3D <&vreg_l13c_2p96>; /* IO line power */
+ 	vmmc-supply =3D <&vreg_l17a_2p96>;  /* Card power line */
+ 	bus-width =3D <4>;
+@@ -505,13 +515,6 @@ data-pins {
+ 			bias-pull-up;		/* pull up */
+ 			drive-strength =3D <16>;	/* 16 MA */
+ 		};
+-
+-		sd-cd-pins {
+-			pins =3D "gpio96";
+-			function =3D "gpio";
+-			bias-pull-up;		/* pull up */
+-			drive-strength =3D <2>;	/* 2 MA */
+-		};
+ 	};
+=20
+ 	sdc2_off: sdc2-off-state {
+@@ -532,13 +535,6 @@ data-pins {
+ 			bias-pull-up;		/* pull up */
+ 			drive-strength =3D <2>;	/* 2 MA */
+ 		};
+-
+-		sd-cd-pins {
+-			pins =3D "gpio96";
+-			function =3D "gpio";
+-			bias-pull-up;		/* pull up */
+-			drive-strength =3D <2>;	/* 2 MA */
+-		};
+ 	};
+=20
+ 	usb2phy_ac_en1_default: usb2phy-ac-en1-default-state {
+--=20
+2.44.0
 
