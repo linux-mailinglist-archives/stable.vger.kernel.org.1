@@ -1,317 +1,233 @@
-Return-Path: <stable+bounces-39298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC9B8A2C48
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 12:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 600458A2CE2
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 12:50:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7226D1C216CF
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 10:26:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FFDD1C2221C
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 10:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353FC537F0;
-	Fri, 12 Apr 2024 10:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F564436E;
+	Fri, 12 Apr 2024 10:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="CCOl4BeI";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="RDw3Nx8+"
-X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="baQvrPg4"
+X-Original-To: Stable@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7374CB2B;
-	Fri, 12 Apr 2024 10:26:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712917580; cv=fail; b=pD2cQPCRtyAFBnXLEmEHHlC4VtheAOjhDzS51S6iuIOHUzYN2PHpTubzoaFHaMuEVNRvFxh3QPrslgl44pSFFtOJkJrFbjnTPugJUQX+CyewDyqxSz5NK0D7FvNq+w0s+JdLTIIXY6mzCPdGY9BR/pppKgBeaOT9azJJwv0uM4k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712917580; c=relaxed/simple;
-	bh=sa46Gd3b8aVl9Jee0u8+fE/z4hhFaHLaFgt5VUXKxHw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=BESqYmvEadGAxN9vW6KpzK5v4wtjgbjd5GjFiWYFxcWZgml71C7VcC1E6PGfEGc+chKkjSXYeP6DLD0zUHSGwu+dHojEdE/Iw9CczWKQXXo7yW3eHI0/XHGmbSdK3BwTBqAWHwbVY5t6L0vJYDq8UPkNKKlw6pUClqln/SpML7c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=CCOl4BeI; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=RDw3Nx8+; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43C9447A015314;
-	Fri, 12 Apr 2024 10:25:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=zYvuyuE58REjWHdx3rA/xJTuODq8D6ChHcPgfWmwqLY=;
- b=CCOl4BeINidKUmIhv7ZSOhNowkOKtb7/ELAtn/HA5qnSDhnLgznTLfz8wyQRbuqUBIHS
- fiyeXnJf4cQSRlyx5BK+M7utM4SwvmE0ClG/gGCd31ru6vxEOWYzXBnlg/5vi6xOuzvV
- S9l/tZEnjPPRNeVnylrakVTlEt8JJUisi0ptjVwJz7fM7hzVXBed38k0Tg688RHBJ7s2
- PDsbGv2G02noGgt/t8K6Km7XP7Qa+N8NlObkgvO9BefRWJG6NBZQqmhRlbLAVzRONRe8
- HoNjSR6Ile9K8BRCyZv6KFkobUHrYe/G7RUlJxxjVXhU1eM21l89SJeHkKwH5FyfCxqm rA== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xavtfbcug-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 12 Apr 2024 10:25:49 +0000
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 43C9ImCv007835;
-	Fri, 12 Apr 2024 10:25:48 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2041.outbound.protection.outlook.com [104.47.66.41])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3xavuasydm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 12 Apr 2024 10:25:48 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jNl+pFFojyNpBCnwcp/jSeEaXRdhfb+GGnlFT3DIFDkiB+W1B5EAOcNPFl52znyuKGKOGgXXHqx+2nJdvgdojUnw1wLXAf1TlNUUhs96Sw+44dwhza1Z7FtgzBmtA/R4Ir0FIDkr+dJYaQGxbUi0e7BSuvcM9LofTwFOFowXSbFyOZxuJSMo/yKVBkIhoYh+g2Yr8D6cWuljTYrmBgwrkpP8CxJ0gr7RJPuH8mMP8FlKZuhZ6rNvyhKr66loxViq9gqPpFWJDJBgdoCfHFvFqDD/s+IJ1TFwJ85GmcCk+OzXKmWLC/r82bB0+S6wdAcSIXGwHyIK+Ozwrji9nxTJAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zYvuyuE58REjWHdx3rA/xJTuODq8D6ChHcPgfWmwqLY=;
- b=SiZ1WpUerljK6pJWEn4i1JST759ns4W8asbceKL2UsNBZy+M7r6VtCOR7e8pkA8HVCWw+wrNcP9IZAHU9DFQqBx/1phfODfdZDSZ6Uz6fjrjrIUiYOjs9NEWMlLpSJR+E93izE3Jtxzeu/C9lz7KUakyaKdq1Z5GHbtvPN1Tn0piHhZFLEQ4yOSEKvJenWQOPQYaJR2oHv/fd3F5Kf7/YzVYaPa2niMe2vnHZvoFWI/3bEuVougCth2XDn72KgrB4kTQGXVuslo2MXqu+85ToHLAxvJNY0TFcxlLajdwZEiX/NP0VHuSTTiKSmE2LjhPGK4tIJFCt/S82VfrcT34EQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zYvuyuE58REjWHdx3rA/xJTuODq8D6ChHcPgfWmwqLY=;
- b=RDw3Nx8+LZwbjtHr0JS/iPnZ6JUwhIIh2+/gYDn1ms5GjsmAnPiDzYQF2W0zffqZRVuecE6IvvY4j2ZUQUhT0IsPPRe1x/n23pcTtWVYgQ20nG9Aw43Som4LT/LzbrhWV3Ct4brIJpY3pg6PDKI5gUNDywG/xcyJet3pcaIMSt8=
-Received: from PH8PR10MB6290.namprd10.prod.outlook.com (2603:10b6:510:1c1::7)
- by PH0PR10MB4485.namprd10.prod.outlook.com (2603:10b6:510:41::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.55; Fri, 12 Apr
- 2024 10:25:46 +0000
-Received: from PH8PR10MB6290.namprd10.prod.outlook.com
- ([fe80::f5ee:d47b:69b8:2e89]) by PH8PR10MB6290.namprd10.prod.outlook.com
- ([fe80::f5ee:d47b:69b8:2e89%3]) with mapi id 15.20.7409.042; Fri, 12 Apr 2024
- 10:25:46 +0000
-Message-ID: <2c2362c7-ace7-4a79-861e-fa435e46ac85@oracle.com>
-Date: Fri, 12 Apr 2024 15:55:34 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 00/57] 5.15.155-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
-        broonie@kernel.org, Calum Mackay <calum.mackay@oracle.com>,
-        Chuck Lever III <chuck.lever@oracle.com>,
-        Vegard Nossum <vegard.nossum@oracle.com>,
-        Darren Kenny <darren.kenny@oracle.com>,
-        Ramanan Govindarajan <ramanan.govindarajan@oracle.com>,
-        Linux NFS Mailing List <linux-nfs@vger.kernel.org>
-References: <20240411095407.982258070@linuxfoundation.org>
-Content-Language: en-US
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TYAPR03CA0004.apcprd03.prod.outlook.com
- (2603:1096:404:14::16) To PH8PR10MB6290.namprd10.prod.outlook.com
- (2603:10b6:510:1c1::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C022B4437D;
+	Fri, 12 Apr 2024 10:50:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712919051; cv=none; b=agI63FN97bc6ZGSzyIGyg/YD1qjfqlIEipDHly9XTQk87NdRjRoxh4WhQmJPLGAxRhmSspruYssyrnbVqF1hk6srm9pi4yLeQsjLyrdVJVjj0GQ3kf110a21a794cRiepx13M6RnqB+Vi05RdASbLke/qCKM169q7kTL6kSrxds=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712919051; c=relaxed/simple;
+	bh=GohIU7PTUMgQBbmhyynUeHFzjmQmOHowzMSb+cbaCPE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NF7UHHQw6Gsc7ke9mov+JYCT7bHeBtE4tXMZaQRQXxgjmA70P/TVJ0AbpLVj86YSNPoenr2e4jgXq/j25daAZoN59djmXQWGBBz/PAKXIyxx0MZPQVVW+D85QL6sz42VYsd61HSnGIpY9YNylGI27JJ25pydXcyl4IkeBczZinE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=baQvrPg4; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712919050; x=1744455050;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=GohIU7PTUMgQBbmhyynUeHFzjmQmOHowzMSb+cbaCPE=;
+  b=baQvrPg4KUYBRUMt7GKG0EkLjG6Ixds7hMy8cBawFGUAGrTTz3lKZ+GA
+   EC76f6bdUu0OYSCRZjcMfHmVyWCG54SdG7vnM17E9Byna66Zx47OCnmP4
+   j0AhOxRBT1c4bn0ksWra3c2xKaRiOI3VnnqB/CuUpPZfMAONSJc+l45ML
+   AHFb+C7J2Lw9+Pm2UWLJoaMl0ltrD5L2XyB+13ovhkyj42d5cfdurkoSw
+   ML8yn+dqd2yjGatDJ+5nGCXN8MRyvSAsL9XfJKyJXal+FFEzElZ0sUyna
+   2LGmtwa2w/jZ9CRivsyaqUIS81O5akuEN8s222kfIQ5i5OEU3oRr35l66
+   g==;
+X-CSE-ConnectionGUID: AMj6cBckRVW0L3N/TegX7g==
+X-CSE-MsgGUID: UX1nFCoZTga6n7GmT40LZQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="19082267"
+X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; 
+   d="scan'208";a="19082267"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2024 03:50:49 -0700
+X-CSE-ConnectionGUID: Qv/+1vgsTmGU+jKOZFjuQg==
+X-CSE-MsgGUID: 06IKaASSQQWtqxu8/BEc1A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; 
+   d="scan'208";a="25853694"
+Received: from dev-qz.sh.intel.com (HELO localhost) ([10.239.147.89])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2024 03:50:46 -0700
+From: qiang4.zhang@linux.intel.com
+To: Masami Hiramatsu <mhiramat@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	Qiang Zhang <qiang4.zhang@intel.com>,
+	Stable@vger.kernel.org
+Subject: [PATCH v2] bootconfig: use memblock_free_late to free xbc memory to buddy
+Date: Fri, 12 Apr 2024 18:49:41 +0800
+Message-Id: <20240412104940.456257-1-qiang4.zhang@linux.intel.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR10MB6290:EE_|PH0PR10MB4485:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2ad67f6a-286e-459d-652b-08dc5adaea55
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	iPQtvqK4jXek82je2K4Rhm0/vTjmX+or0ozzWn9MMALrnYGdKuiinSLzHYZBwKAlClDP2Ufd0mzycL5I7lx9HgDMESTyxJWaksMhIC9q8J1PqW06lgzBPdlmmQJqmD6voySwbyaG4gE8lQO6pat/OtKEZJGZTjjU3D4HWQYTyE6NMShVkFvLvi+e2HqJPko6yDx1Gw1Msg21M8vzTNYDm/70mxMm2qyylcOVK/QJy3ohBADXpM6TzB4D1l892yPUnCvZ0BxzJhM2ZBIgC5cuEfZlj+MOHf3d8/47Tb3VQGdIn4eYlYVTA04HiWBwssG1DhmDFn6vgHpBPCJySSnFIocMExSk7t45ORk8CYMnyb8VqzHrR/S3GHStSMdeU10qvejAT9SiOzs5CjbEc8edJB1DUo0jzuOvRg5TeUlIHT8Yt0peuI/7/2JIe41tPXPc1uSIm7ipmJ6DyJEPgO0CFE9/ASQb/B4aE4ow7bAcey0eRGyBN6YT55jQsVH9i60nkq48C/VkO0MuYHzaafw9p4S7xX7CjKnlpnJsBTtUTzJwJUourveEajugojKuXZy/afGDcBeLasHUKwpugQWTIgqSzYy42A+V2DQrOZxvqIOKD+t3rWnKhRww+rlJyoyFNqgt/tWWRxSnnfTlQBa57DKLnDCGvtBYfjL3uE9afFA=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6290.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(7416005)(366007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?Ny9XcUlGRjk1dVBnRkVRbjRtY0Rubm54VUdWdk5kcXhYbkw3QW1XeDBlQm5R?=
- =?utf-8?B?Z0tsT2krLzBoMGFMYTAzVXkxTTJSclFIbktjQlRYUitZN1dLMldWVlhndEZF?=
- =?utf-8?B?ck1GOHlsKzBYRmFnWWRHN2VpODJEUlVpNGkyUE5SNUZCdndXdUdLdzVrZ3BI?=
- =?utf-8?B?cWhKMGRLWjRhU0lCV3Zha3FYdTQ3a1Y2YnVIckRNU3JGNFN0aVpob1VFU2cy?=
- =?utf-8?B?enNkT3ZoZnhPVlBObFovVXhrREdYbkEzS0FDUlZYUFFpS28rNjdLWndHNlFQ?=
- =?utf-8?B?Z3JMYTJ1aHluK0dLQ0tuUWN6YVloa0ptZXgzWGFXODFRVFcyck56NTNNS2ZT?=
- =?utf-8?B?eVNVcnlxYjR1djZFcmVBZWRERFZvOFlnb0M3MUFybTduRVZoWWdnZ2Jxa3Rh?=
- =?utf-8?B?TXFvblp1UEVEWFFEaHZ1QmJIU3RFMjNUazduU1FSYjVJY1NDYzdiMktQMTkr?=
- =?utf-8?B?TlRhWWdTUzJQbTJiMERIeE0rbXhpVit1dzVXYTRJcFNWa0VleXo1OUFEcHJW?=
- =?utf-8?B?clRjdXJlaVFYRU02NFArL0FpQUNJbDYvU0VpTWJmNTA3VVNkZ0E1S0x5Mzlr?=
- =?utf-8?B?V2JENjJibzFxc3dZLytCY3p2ZUZJK28xZWJMN29maE5Vcm1LY1graklGVnkv?=
- =?utf-8?B?dlNzRWswaHR2Y0tuNEJEQ3ZJeEpubG5EL21FUHRSR3ZoeGNIZ0o0TTNPNGNZ?=
- =?utf-8?B?UlArdXNhOWRaV21GeEUwcWNlSWtxa2o4TUloUlhBQmhmbnpkVWhadVpwek80?=
- =?utf-8?B?a0psdWRIMmNBWHNxbnNxMGVIc1h5VEJya2tVWnpFRHlvYWgwR0NxdDZiNC8r?=
- =?utf-8?B?ZnlXMitRY3JjdHY2TGpQVXdUa0xYSVJUcE1YNGo4cnlFYTY5MVdZaVk0aXRN?=
- =?utf-8?B?MVBaMk1vdm5GMFZ6YXFOa3BQMGlNMDM4VmI4c3ZVc3BJV3NvT2h2eDQyN0ln?=
- =?utf-8?B?eUt4M3RJcC9kbHhxMGtjdEVuYkE0a0FFbS9mMXJKMzMvWTJRa3hxNEw1Ym5x?=
- =?utf-8?B?bWJ2WkY2VU5BbGhXNUtPaEJqRThZSTR1RlhENzVGMU1GMHVwdjB2UjU2UUVF?=
- =?utf-8?B?dE5OMUNCSjhJRGYrUlowTERDNzBId2dmNW51UFRVdUNsc3pmaFFiRmJ1UGg1?=
- =?utf-8?B?bGxEK0VDb2t0NnkwVVBKdGwzWHNibzdtcmVKV1FMQ0c1QjEvVlhBbmRaeXJm?=
- =?utf-8?B?RXJuNGhXM3dOVEJ1MWFndHVsc3FwdFU4UGtvREhMZEJjNXRwV0MrdHV6MWRK?=
- =?utf-8?B?NUNHZVdMMHZXWDZqWXNxZ1RUbUhyRFVQWG90ZWZPa0lrMzhKa0FnRVU5OFox?=
- =?utf-8?B?ZHM5OWZrdmVFK2lkdWRyOVYzdnZkQXMzUVRBa2xtVHF1bHd4bEtHb09wZDVG?=
- =?utf-8?B?KzN0L3dXeExuOEhkYXdLMU5rLy9qZitrTVhLSmhVNGJGM3ZpQ3dnbk9VK3pT?=
- =?utf-8?B?c2FybXpRSEhaMHBMMmZuZkxnYjIyNXJKWENvb0dUL1RYNW1LWmVZL1hTUkNR?=
- =?utf-8?B?Y2Vvbzl6Y1NlNlkrMHBzaENCRGNuWVZ2WWRHcUZiaUhkcnVhRzZPdHVGVjU1?=
- =?utf-8?B?dkhKL0x0REdialFXR2RrSWo3aUNkNTRSNEI2WlpMV1ZDLzF6MUFuSHFRMjF5?=
- =?utf-8?B?T3NRTUF4Z05YOUVtUU1TNmVOaTdJd2ZvOXNhU2VEbldTb25LS05qZ2VLVFYr?=
- =?utf-8?B?UmRZNGpIdTFpejg2RGVjNGZxRW44WDNoeHE3YWxEUlJjY0xFRnJnR0VHeDNQ?=
- =?utf-8?B?bVZtRXY4bGo2ekxqeXJmUUdod1JlQWZ3WVdkZ2Znd3dKcWZOMFVsWk1PU3Bq?=
- =?utf-8?B?c1VMUVFEVG9SYi9pbzdRMXlUTDh0bUZiNjU3VEVhdURXMFFYenU4ZG8ydVF5?=
- =?utf-8?B?SFJtQVNMbVJJMEpwaW1MbWowSVBVNXRWSEd0aDRuZFc4RGZtTHN3MWw3aDF3?=
- =?utf-8?B?NWlhcFB1VUVRWDErQW93dWJ3VGM1LzI4OW1BcjBCL3l1cFR1K0RFRFdLbG1q?=
- =?utf-8?B?YzYrbXQwUDRZYjExcy84eFk5WGI5THVrQllKT0JOVUl2Sk1nK3Y0d3FrZnk3?=
- =?utf-8?B?RW5GbFdvV0U0MG5SM2dGditWS29UVk52cmNSSGEzeEEycFpydFUzMHlNMXkx?=
- =?utf-8?B?R091ckphYVVSdTJ6cnNic1JQRDkrTzIvdlNWUkhQWWVzWEZFMVB5OEd0dXVN?=
- =?utf-8?Q?awr3Ol3ti4YrDV88XXkmFtY=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	t97wf0OARh3h9+28ZaWLqn7N80P24le3x8xn/LcauOndENIL5YwVx0ui98NCuSnlbQgBcU0sdkp0Sv8UmJThOUHxQLXxEMf1CEhhCxXg7hiblRFlG5n8eiT3WupvycUL7pM2TGzn955l7Lm6QFgEmXKq88sN6SHtYfCRtaes7Cd5B9e5rHCHSPETXF8/h0gMpXtPC8VFa1FDimB9LnIThTiPttQUM83Ex4UoctP91sZVN9hxI5UggRIX36VZw5+GAWH0mjhrfQyxbu67ISkRNeF64pgVXaGt9HrBqoCC9T6Z8G3h205uc0ALU1RF2Kjx9fX+ZWVvzxq9BClkkqgfVg8L4SxXDFqGY82M0nkR2Kh9ndl/CivR6G0wMFNO5RMsyiZcW2m2HGI70/PpPp2aNWRU8f46nMI0KFpIYg5v+O+vhyf/IRu3vB905Phbd1wGPsetFOUJh87Z6gYjtELuyesbGiAICLX3UqITgpBJUBwZeGhkBYjKUIUaRYhfmIOz9xIG5LH1ij0R1zpdYfHc2LCIAEbjaEPs4eEved9dcH6Fo/63E1GyjEAR4AtgzZnW/3RA04Yxruzqh5RopkKProxuPfu7Wkkztc3bDM5ra8M=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2ad67f6a-286e-459d-652b-08dc5adaea55
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6290.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Apr 2024 10:25:46.2779
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QyADGPcVP7/6V0A4AoSi2HRiPe19RgqxTOF12yNoa9Hr6/Fh3aQkIA2++KwDV/j/nyOCw7liSh0pDfdyUUOlXtkfS52jQBnijAGmO6kq2tNvoQ03elY+ucRa4l1A84Ri
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4485
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-12_06,2024-04-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
- mlxscore=0 adultscore=0 phishscore=0 bulkscore=0 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2404120075
-X-Proofpoint-GUID: ZLkZf84YQVQSrp2XJEp9JnnoNjfxwnoj
-X-Proofpoint-ORIG-GUID: ZLkZf84YQVQSrp2XJEp9JnnoNjfxwnoj
+Content-Transfer-Encoding: 8bit
 
-Hi Greg,
+From: Qiang Zhang <qiang4.zhang@intel.com>
 
+On the time to free xbc memory in xbc_exit(), memblock may has handed
+over memory to buddy allocator. So it doesn't make sense to free memory
+back to memblock. memblock_free() called by xbc_exit() even causes UAF bugs
+on architectures with CONFIG_ARCH_KEEP_MEMBLOCK disabled like x86.
+Following KASAN logs shows this case.
 
-On 11/04/24 15:27, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.155 release.
-> There are 57 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 13 Apr 2024 09:53:55 +0000.
-> Anything received after that time might be too late.
-> 
+This patch fixes the xbc memory free problem by calling memblock_free()
+in early xbc init error rewind path and calling memblock_free_late() in
+xbc exit path to free memory to buddy allocator.
 
-I have noticed a regression in lts test case with nfsv4 and this was 
-overlooked in the previous cycle(5.15.154). So the regression is from 
-153-->154 update. And I think that is due to nfs backports we had in 
-5.15.154.
+[    9.410890] ==================================================================
+[    9.418962] BUG: KASAN: use-after-free in memblock_isolate_range+0x12d/0x260
+[    9.426850] Read of size 8 at addr ffff88845dd30000 by task swapper/0/1
 
-# ./runltp -d /tmpdir -s fcntl17
+[    9.435901] CPU: 9 PID: 1 Comm: swapper/0 Tainted: G     U             6.9.0-rc3-00208-g586b5dfb51b9 #5
+[    9.446403] Hardware name: Intel Corporation RPLP LP5 (CPU:RaptorLake)/RPLP LP5 (ID:13), BIOS IRPPN02.01.01.00.00.19.015.D-00000000 Dec 28 2023
+[    9.460789] Call Trace:
+[    9.463518]  <TASK>
+[    9.465859]  dump_stack_lvl+0x53/0x70
+[    9.469949]  print_report+0xce/0x610
+[    9.473944]  ? __virt_addr_valid+0xf5/0x1b0
+[    9.478619]  ? memblock_isolate_range+0x12d/0x260
+[    9.483877]  kasan_report+0xc6/0x100
+[    9.487870]  ? memblock_isolate_range+0x12d/0x260
+[    9.493125]  memblock_isolate_range+0x12d/0x260
+[    9.498187]  memblock_phys_free+0xb4/0x160
+[    9.502762]  ? __pfx_memblock_phys_free+0x10/0x10
+[    9.508021]  ? mutex_unlock+0x7e/0xd0
+[    9.512111]  ? __pfx_mutex_unlock+0x10/0x10
+[    9.516786]  ? kernel_init_freeable+0x2d4/0x430
+[    9.521850]  ? __pfx_kernel_init+0x10/0x10
+[    9.526426]  xbc_exit+0x17/0x70
+[    9.529935]  kernel_init+0x38/0x1e0
+[    9.533829]  ? _raw_spin_unlock_irq+0xd/0x30
+[    9.538601]  ret_from_fork+0x2c/0x50
+[    9.542596]  ? __pfx_kernel_init+0x10/0x10
+[    9.547170]  ret_from_fork_asm+0x1a/0x30
+[    9.551552]  </TASK>
 
-<<<test_start>>>
-tag=fcntl17 stime=1712915065
-cmdline="fcntl17"
-contacts=""
-analysis=exit
-<<<test_output>>>
-fcntl17     0  TINFO  :  Enter preparation phase
-fcntl17     0  TINFO  :  Exit preparation phase
-fcntl17     0  TINFO  :  Enter block 1
-fcntl17     0  TINFO  :  child 1 starting
-fcntl17     0  TINFO  :  child 1 pid 22904 locked
-fcntl17     0  TINFO  :  child 2 starting
-fcntl17     0  TINFO  :  child 2 pid 22905 locked
-fcntl17     0  TINFO  :  child 3 starting
-fcntl17     0  TINFO  :  child 3 pid 22906 locked
-fcntl17     0  TINFO  :  child 2 resuming
-fcntl17     0  TINFO  :  child 3 resuming
-fcntl17     0  TINFO  :  child 1 resuming
-fcntl17     0  TINFO  :  child 3 lockw err 35
-fcntl17     0  TINFO  :  child 3 exiting
-fcntl17     0  TINFO  :  child 1 unlocked
-fcntl17     0  TINFO  :  child 1 exiting
-fcntl17     1  TFAIL  :  fcntl17.c:429: Alarm expired, deadlock not detected
-fcntl17     0  TWARN  :  fcntl17.c:430: You may need to kill child 
-processes by hand
-fcntl17     2  TPASS  :  Block 1 PASSED
-fcntl17     0  TINFO  :  Exit block 1
-fcntl17     0  TWARN  :  tst_tmpdir.c:342: tst_rmdir: 
-rmobj(/tmpdir/ltp-jRFBtBQhhx/LTP_fcnp7lqPn) failed: 
-unlink(/tmpdir/ltp-jRFBtBQhhx/LTP_fcnp7lqPn) failed; errno=2: ENOENT
-<<<execution_status>>>
-initiation_status="ok"
-duration=10 termination_type=exited termination_id=5 corefile=no
-cutime=0 cstime=0
-<<<test_end>>>
-<<<test_start>>>
-tag=fcntl17_64 stime=1712915075
-cmdline="fcntl17_64"
-contacts=""
-analysis=exit
-<<<test_output>>>
-incrementing stop
-fcntl17     0  TINFO  :  Enter preparation phase
-fcntl17     0  TINFO  :  Exit preparation phase
-fcntl17     0  TINFO  :  Enter block 1
-fcntl17     0  TINFO  :  child 1 starting
-fcntl17     0  TINFO  :  child 1 pid 22909 locked
-fcntl17     0  TINFO  :  child 2 starting
-fcntl17     0  TINFO  :  child 2 pid 22910 locked
-fcntl17     0  TINFO  :  child 3 starting
-fcntl17     0  TINFO  :  child 3 pid 22911 locked
-fcntl17     0  TINFO  :  child 2 resuming
-fcntl17     0  TINFO  :  child 3 resuming
-fcntl17     0  TINFO  :  child 1 resuming
-fcntl17     0  TINFO  :  child 3 lockw err 35
-fcntl17     0  TINFO  :  child 3 exiting
-fcntl17     0  TINFO  :  child 1 unlocked
-fcntl17     0  TINFO  :  child 1 exiting
-fcntl17     1  TFAIL  :  fcntl17.c:429: Alarm expired, deadlock not detected
-fcntl17     0  TWARN  :  fcntl17.c:430: You may need to kill child 
-processes by hand
-fcntl17     2  TPASS  :  Block 1 PASSED
-fcntl17     0  TINFO  :  Exit block 1
-fcntl17     0  TWARN  :  tst_tmpdir.c:342: tst_rmdir: 
-rmobj(/tmpdir/ltp-jRFBtBQhhx/LTP_fcn9Xy4hM) failed: 
-unlink(/tmpdir/ltp-jRFBtBQhhx/LTP_fcn9Xy4hM) failed; errno=2: ENOENT
-<<<execution_status>>>
-initiation_status="ok"
-duration=10 termination_type=exited termination_id=5 corefile=no
-cutime=0 cstime=0
-<<<test_end>>>
-INFO: ltp-pan reported some tests FAIL
-LTP Version: 20240129-167-gb592cdd0d
+[    9.555649] The buggy address belongs to the physical page:
+[    9.561875] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1 pfn:0x45dd30
+[    9.570821] flags: 0x200000000000000(node=0|zone=2)
+[    9.576271] page_type: 0xffffffff()
+[    9.580167] raw: 0200000000000000 ffffea0011774c48 ffffea0012ba1848 0000000000000000
+[    9.588823] raw: 0000000000000001 0000000000000000 00000000ffffffff 0000000000000000
+[    9.597476] page dumped because: kasan: bad access detected
 
+[    9.605362] Memory state around the buggy address:
+[    9.610714]  ffff88845dd2ff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[    9.618786]  ffff88845dd2ff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[    9.626857] >ffff88845dd30000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[    9.634930]                    ^
+[    9.638534]  ffff88845dd30080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[    9.646605]  ffff88845dd30100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[    9.654675] ==================================================================
 
-Steps used after installing latest ltp:
+Cc: Stable@vger.kernel.org
+Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
+---
+v2:
+- add an early flag in xbc_free_mem() to free memory back to memblock in
+  xbc_init error path or put memory to buddy allocator in normal xbc_exit.
 
-$ mkdir /tmpdir
-$ yum install nfs-utils  -y
-$ echo "/media *(rw,no_root_squash,sync)" >/etc/exports
-$ systemctl start nfs-server.service
-$ mount -o rw,nfsvers=3 127.0.0.1:/media /tmpdir
-$ cd /opt/ltp
-$ ./runltp -d /tmpdir -s fcntl17
+---
+ include/linux/bootconfig.h |  7 ++++++-
+ lib/bootconfig.c           | 19 +++++++++++--------
+ 2 files changed, 17 insertions(+), 9 deletions(-)
 
+diff --git a/include/linux/bootconfig.h b/include/linux/bootconfig.h
+index e5ee2c694401..3f4b4ac527ca 100644
+--- a/include/linux/bootconfig.h
++++ b/include/linux/bootconfig.h
+@@ -288,7 +288,12 @@ int __init xbc_init(const char *buf, size_t size, const char **emsg, int *epos);
+ int __init xbc_get_info(int *node_size, size_t *data_size);
+ 
+ /* XBC cleanup data structures */
+-void __init xbc_exit(void);
++void __init _xbc_exit(bool early);
++
++static inline void xbc_exit(void)
++{
++	_xbc_exit(false);
++}
+ 
+ /* XBC embedded bootconfig data in kernel */
+ #ifdef CONFIG_BOOT_CONFIG_EMBED
+diff --git a/lib/bootconfig.c b/lib/bootconfig.c
+index c59d26068a64..f9a45adc6307 100644
+--- a/lib/bootconfig.c
++++ b/lib/bootconfig.c
+@@ -61,9 +61,12 @@ static inline void * __init xbc_alloc_mem(size_t size)
+ 	return memblock_alloc(size, SMP_CACHE_BYTES);
+ }
+ 
+-static inline void __init xbc_free_mem(void *addr, size_t size)
++static inline void __init xbc_free_mem(void *addr, size_t size, bool early)
+ {
+-	memblock_free(addr, size);
++	if (early)
++		memblock_free(addr, size);
++	else
++		memblock_free_late(__pa(addr), size);
+ }
+ 
+ #else /* !__KERNEL__ */
+@@ -73,7 +76,7 @@ static inline void *xbc_alloc_mem(size_t size)
+ 	return malloc(size);
+ }
+ 
+-static inline void xbc_free_mem(void *addr, size_t size)
++static inline void xbc_free_mem(void *addr, size_t size, bool early)
+ {
+ 	free(addr);
+ }
+@@ -904,13 +907,13 @@ static int __init xbc_parse_tree(void)
+  * If you need to reuse xbc_init() with new boot config, you can
+  * use this.
+  */
+-void __init xbc_exit(void)
++void __init _xbc_exit(bool early)
+ {
+-	xbc_free_mem(xbc_data, xbc_data_size);
++	xbc_free_mem(xbc_data, xbc_data_size, early);
+ 	xbc_data = NULL;
+ 	xbc_data_size = 0;
+ 	xbc_node_num = 0;
+-	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX);
++	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX, early);
+ 	xbc_nodes = NULL;
+ 	brace_index = 0;
+ }
+@@ -963,7 +966,7 @@ int __init xbc_init(const char *data, size_t size, const char **emsg, int *epos)
+ 	if (!xbc_nodes) {
+ 		if (emsg)
+ 			*emsg = "Failed to allocate bootconfig nodes";
+-		xbc_exit();
++		_xbc_exit(true);
+ 		return -ENOMEM;
+ 	}
+ 	memset(xbc_nodes, 0, sizeof(struct xbc_node) * XBC_NODE_MAX);
+@@ -977,7 +980,7 @@ int __init xbc_init(const char *data, size_t size, const char **emsg, int *epos)
+ 			*epos = xbc_err_pos;
+ 		if (emsg)
+ 			*emsg = xbc_err_msg;
+-		xbc_exit();
++		_xbc_exit(true);
+ 	} else
+ 		ret = xbc_node_num;
+ 
+-- 
+2.39.2
 
-
-This does not happen in 5.15.153 tag.
-
-Adding nfs people to the CC list
-
-
-
-Thanks,
-Harshit
-
-
-
-
-
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.155-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
 
