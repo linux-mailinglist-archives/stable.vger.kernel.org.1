@@ -1,149 +1,126 @@
-Return-Path: <stable+bounces-39306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73DC98A2DD4
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 13:55:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF858A2E0A
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 14:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EA54283EEB
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 11:55:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F0531F22BD1
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 12:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C7A5577C;
-	Fri, 12 Apr 2024 11:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20DEF56443;
+	Fri, 12 Apr 2024 12:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="Kr0DbUoZ"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Rx5iFdOy";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6rlityCd"
 X-Original-To: stable@vger.kernel.org
-Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D20D54BEA
-	for <stable@vger.kernel.org>; Fri, 12 Apr 2024 11:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F4B57303;
+	Fri, 12 Apr 2024 12:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712922928; cv=none; b=NNcZai/nXLUssd3f11hN9Nf+/zCnY+5a9GmdRHzIM6Ms9CIy63r50SeelzphPUg7u+uT71Ir2rQ+KxEnUGqtER547xtJXKOGGL8wHAcWlZMAKA8+HFklFflDHEvgWrejEUkZYbfJMeQQOxhQhz4ei4OQ6WZtgJJ1mRuQ7Z/4itc=
+	t=1712924131; cv=none; b=MpkSsi7B+IGtfi5vcZEyPL4+5b4zuxqSypfsgBOvRZ6EOh0p0VmLIMlBlHK6vbpS3pWM6VZiLq73yXhDpGQ4X2VMcXRMny+r195KJiNDqzuLw8LFyDCClAw9DVSsDbAtfKgc+QbbQfouort6YuVz22kh9djWRbXIs5qWr0IYW1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712922928; c=relaxed/simple;
-	bh=u7gLDEpN74BodkxT573YCXqP6AaVccZPhInfOFyvBjk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tu60YuKsLAQ5j9Rtec4XdKyJkHLaHUtQHT80jLIJMp4pOXG0dO2nny7XYorHbVm26GYLaFEvSvICNu5NfY0Al22LgS8Ocg/mK6J44ZtF424+dmQp9fsJkGZhKgpK87L6afQJYy2pFQQyyILUWm/ES376pUSgJVyd6pBqvMFxqcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=Kr0DbUoZ; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43C8TuIw027966;
-	Fri, 12 Apr 2024 13:55:04 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=selector1; bh=pZTglg/
-	HlM2BtGSZeEkt33ZkSaI8FMfC/perTKbCehE=; b=Kr0DbUoZeBcoCNWll8m1kYP
-	T7TmA0BUeHsMs+yfsRIfhe2VR5/mfHESRkQFvC6nVWB+vrA7ZuaW96BvN/9jONO+
-	JgqRNyL75kruypGI0HnLZD1BilVwxMzOQjYVRRyZNODX1p2cW6KEn7c5uUZYrWuf
-	VwS46mUpVwzCBE3+6QF44ZzxRJHgytMt4sN/4Tzrk+6Ryl58/u63wfMFTEZ6vF4K
-	vAtk9WsyuSo1inziUc22KuWGwJni5Q4/hFWf+C4nn+Swj2N2extEsfxAxpHpefRw
-	f5WQaaB02KxkV+Oy5lpc6cQ6P1UeuklJCrLSEykY+K7BpdmIIifPh/nuwY4rOxQ=
-	=
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3xbhbjf15h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Apr 2024 13:55:04 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 23FD840044;
-	Fri, 12 Apr 2024 13:55:00 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node3.st.com [10.75.129.71])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1CCC3214549;
-	Fri, 12 Apr 2024 13:54:30 +0200 (CEST)
-Received: from localhost (10.48.86.103) by SHFDAG1NODE3.st.com (10.75.129.71)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 12 Apr
- 2024 13:54:29 +0200
-From: Maxime MERE <maxime.mere@foss.st.com>
-To: Maxime MERE <maxime.mere@st.com>
-CC: Maxime <mere.maxime@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
-        Francis Laniel <flaniel@linux.microsoft.com>, <stable@vger.kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>, Song Liu <song@kernel.org>
-Subject: [PATCH 1/3] tracing/kprobes: Fix symbol counting logic by looking at modules as well
-Date: Fri, 12 Apr 2024 13:54:20 +0200
-Message-ID: <20240412115422.2693663-1-maxime.mere@foss.st.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1712924131; c=relaxed/simple;
+	bh=vOjOVmBk53GEykb+2BS8HFGeywIifeGxZfsHU6yYkaI=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=IAuCSia3vvRfEXbjbzHbQGKC06t+bQbHxh89FBmN74goMxoiqHbb/sYIFEPwoKeCyxXXfJSua3emBs5RTXH0PgttO7kUhoXIx9YYUFoCXe+Zw1FmbaCQJyev0OG4f22VmYb8yCuNBfnzvcsbMrYj21pdlHWXkDRSqpEpkg/6yuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Rx5iFdOy; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6rlityCd; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 12 Apr 2024 12:15:27 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1712924128;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g/zum35qSt/ctc/dbKC/QNKBR2ZJ2X2QpQ9OIixOzNM=;
+	b=Rx5iFdOyfy+qzqYr1KV0d9VhV7sRJsN9/99sPiOe/XLRiI16T7+5kHYo1nsULlmO73PlRH
+	asSOlLa6CGEc3uvqHvt/5alKqCHDqtoC7edsOxZaWVYvXZJ5SL9Id6ddSMJL5ZMacDCL9h
+	dlZt6lcCasfpAvaWAC/1QI1QpfLPVseJCttzq/vaNt11G85S5nf3/KfkFWdyiof1TFVAY/
+	SDYl/rebRiMsJfQlI79Pbs2TrYFpnTSB4MXnXqCOmcPJQW/jwDvi3RZbnY9SEOzH38ay1f
+	O7cs2ailBxkQNmPrBlEQ57phOoY6rM2jUshp4+m7M3qVsQ7TJVrTV2acH6kVtA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1712924128;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g/zum35qSt/ctc/dbKC/QNKBR2ZJ2X2QpQ9OIixOzNM=;
+	b=6rlityCdUzVupabo/5WeUifBVp0u1WOSsg/m6dSbqWELTdkIeLh6/FkvoGDf5QYV7WJ1EB
+	rK89AgS9MDWcffAA==
+From: "tip-bot2 for John Stultz" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/urgent] selftests: timers: Fix abs() warning in
+ posix_timers test
+Cc: John Stultz <jstultz@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240410232637.4135564-3-jstultz@google.com>
+References: <20240410232637.4135564-3-jstultz@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE3.st.com
- (10.75.129.71)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-12_08,2024-04-09_01,2023-05-22_02
+Message-ID: <171292412753.10875.7390048269032565457.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-From: Andrii Nakryiko <andrii@kernel.org>
+The following commit has been merged into the timers/urgent branch of tip:
 
-Recent changes to count number of matching symbols when creating
-a kprobe event failed to take into account kernel modules. As such, it
-breaks kprobes on kernel module symbols, by assuming there is no match.
+Commit-ID:     ed366de8ec89d4f960d66c85fc37d9de22f7bf6d
+Gitweb:        https://git.kernel.org/tip/ed366de8ec89d4f960d66c85fc37d9de22f7bf6d
+Author:        John Stultz <jstultz@google.com>
+AuthorDate:    Wed, 10 Apr 2024 16:26:30 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 12 Apr 2024 14:11:15 +02:00
 
-Fix this my calling module_kallsyms_on_each_symbol() in addition to
-kallsyms_on_each_match_symbol() to perform a proper counting.
+selftests: timers: Fix abs() warning in posix_timers test
 
-Link: https://lore.kernel.org/all/20231027233126.2073148-1-andrii@kernel.org/
+Building with clang results in the following warning:
 
-Cc: Francis Laniel <flaniel@linux.microsoft.com>
+  posix_timers.c:69:6: warning: absolute value function 'abs' given an
+      argument of type 'long long' but has parameter of type 'int' which may
+      cause truncation of value [-Wabsolute-value]
+        if (abs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
+            ^
+So switch to using llabs() instead.
+
+Fixes: 0bc4b0cf1570 ("selftests: add basic posix timers selftests")
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Song Liu <song@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/r/20240410232637.4135564-3-jstultz@google.com
+
 ---
- kernel/trace/trace_kprobe.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ tools/testing/selftests/timers/posix_timers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index 95c5b0668cb7..e834f149695b 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -714,14 +714,30 @@ static int count_symbols(void *data, unsigned long unused)
- 	return 0;
- }
+diff --git a/tools/testing/selftests/timers/posix_timers.c b/tools/testing/selftests/timers/posix_timers.c
+index 348f471..c001dd7 100644
+--- a/tools/testing/selftests/timers/posix_timers.c
++++ b/tools/testing/selftests/timers/posix_timers.c
+@@ -66,7 +66,7 @@ static int check_diff(struct timeval start, struct timeval end)
+ 	diff = end.tv_usec - start.tv_usec;
+ 	diff += (end.tv_sec - start.tv_sec) * USECS_PER_SEC;
  
-+struct sym_count_ctx {
-+	unsigned int count;
-+	const char *name;
-+};
-+
-+static int count_mod_symbols(void *data, const char *name, unsigned long unused)
-+{
-+	struct sym_count_ctx *ctx = data;
-+
-+	if (strcmp(name, ctx->name) == 0)
-+		ctx->count++;
-+
-+	return 0;
-+}
-+
- static unsigned int number_of_same_symbols(char *func_name)
- {
--	unsigned int count;
-+	struct sym_count_ctx ctx = { .count = 0, .name = func_name };
-+
-+	kallsyms_on_each_match_symbol(count_symbols, func_name, &ctx.count);
- 
--	count = 0;
--	kallsyms_on_each_match_symbol(count_symbols, func_name, &count);
-+	module_kallsyms_on_each_symbol(NULL, count_mod_symbols, &ctx);
- 
--	return count;
-+	return ctx.count;
- }
- 
- static int __trace_kprobe_create(int argc, const char *argv[])
--- 
-2.25.1
-
+-	if (abs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
++	if (llabs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
+ 		printf("Diff too high: %lld..", diff);
+ 		return -1;
+ 	}
 
