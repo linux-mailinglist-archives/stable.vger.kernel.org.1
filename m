@@ -1,131 +1,160 @@
-Return-Path: <stable+bounces-39270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B941C8A27FE
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 09:29:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 079CD8A2830
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 09:34:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E85201C22944
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 07:29:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 383BD1C226EF
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 07:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA914AEE3;
-	Fri, 12 Apr 2024 07:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14554AEEA;
+	Fri, 12 Apr 2024 07:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="BDiYz7Sg"
-X-Original-To: stable@vger.kernel.org
-Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t3u9mTxX"
+X-Original-To: Stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C69B10A24
-	for <stable@vger.kernel.org>; Fri, 12 Apr 2024 07:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782794AEDA;
+	Fri, 12 Apr 2024 07:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712906947; cv=none; b=syFiGDlbJ95eatA6A5sPs9LkZ+VhseYalwO1Wi2b7DmaIiYQ00Y57rX6OnIvjiB8ike7WE6a9BG0RmrKNwf3Ov0+Czv9qeGY9IUshaVKl3nJW/U8Tzinn2k+2h6YPBlJaFCt8ggmFwEbazMVWNxY4aDsSAC6ZGxCzN9Ncx+cPfg=
+	t=1712907292; cv=none; b=uHPMNUmyq1L9wafqFhxJJE3sT+9VpyqBkPJ3S+L+RPf3qIW6Lbmo4DsfNkef2qj6x94xP7Vy/4S3XAlhpOMoe0uNxoa3GH0Z2OMV49CpCl80VMGGakwTWZPVmNEmq+j5JZtAkcmQylgJYVQdjyfCUSYcX6x7UxEaRoukDTaO05k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712906947; c=relaxed/simple;
-	bh=uzcggq3bPd+3RCETDBjveHXqWyzHjC9KuIoQbL7oXgA=;
-	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
-	 MIME-Version:Content-Type; b=Qcg04fnUg2FFvaX/gjr+dcX4MxYHmg+CqCpKXJihaew29+w2wocS/4q4G4cxyUgtEI/zXeb0a/lNkkAduCpTvd9M0D+KSEFHHmoGB1CDnbQleVDRBeuHLwEoaarlz5dlW7Yyt3pWNnHNo6/Oi2KTBcHu5XIY6eZ58PMDGkcVVCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=BDiYz7Sg; arc=none smtp.client-ip=35.89.44.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5006a.ext.cloudfilter.net ([10.0.29.179])
-	by cmsmtp with ESMTPS
-	id v92Nr9yKZPM1hvBLMrT0Ce; Fri, 12 Apr 2024 07:29:04 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id vBLLrkWPPqaR9vBLMr0IiF; Fri, 12 Apr 2024 07:29:04 +0000
-X-Authority-Analysis: v=2.4 cv=MqZU6Xae c=1 sm=1 tr=0 ts=6618e2c0
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=raytVjVEu-sA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=iIpkR4LGDAw3iw8gTDEA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=qM1J/xum7Nk8e7ghP66aqhE2udMt7YLdiWs6QHw2XS8=; b=BDiYz7SgJGbXNnPEAq6anlV1vl
-	8752FD34m1oMUbIAQnpKjea4a0LHnQdUfC1fdlxK2PoYaAqL3UEk7la7ZFXdE2BwfNKFoFtyNl+Og
-	7VBpuLTfKfIY7yMxe3ThcfaKwPuDn5aTR0/8d0SCHdKBG2sGDjDwc7UPYn1wEVx57OBE6GQJTHaqq
-	E7vibU4QbEq77iBHMyE2ZYSY6/8yiD+Wk9paBGLILVFYdA1RBckvN6eLqzx5e7HKrsbHJVyx2KfS4
-	7zl4ypzAPjO6cFnVWVyP5j0O1Wjjm2au8mggQuNs7EXOYT8EM0XQDb9Jjg5mBrZfjZEnyNZKH2KcQ
-	4bnzXIZA==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:57268 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1rvBLJ-0024Gn-2u;
-	Fri, 12 Apr 2024 01:29:01 -0600
-Subject: Re: [PATCH 5.15 00/57] 5.15.155-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240411095407.982258070@linuxfoundation.org>
-In-Reply-To: <20240411095407.982258070@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <333f1778-6568-da30-b4f1-7accba6ce725@w6rz.net>
-Date: Fri, 12 Apr 2024 00:28:59 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1712907292; c=relaxed/simple;
+	bh=15F1o0wnaOSb0+2taQZ31Mu+Qemw7dCHw+75GzdsEBI=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=k7EtwuojKmquFdKWoJn5oxo+eVLwOfxSe2PM6v3uFMhGOHj5dyZ1J6Nn544RtZiCA0gtHmvHYWEsDGRDEjC5pjb8T1Y16iwCLCxbI4H+rJ6vVbTeHMkdfW4BzELBbzUI6EBeygjObQFPFPRA1EVr3a+kFDfEJEcsDb2YL7Ydyxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t3u9mTxX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220E9C3277B;
+	Fri, 12 Apr 2024 07:34:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712907292;
+	bh=15F1o0wnaOSb0+2taQZ31Mu+Qemw7dCHw+75GzdsEBI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=t3u9mTxXzMRTHlaYd2D8ZzlmBV1GnOxQiRLlt1A4T+o67d0193/pfAl0YVCWJnKQK
+	 NTcbO3oeoHpxL7HGvLZA6LEkqBPettPejSlCKLgyY6aGupa4Tt64djRsdlqtDMWpZM
+	 WzsXxFAtAZcDpBiu90lgE9U5zM/imohuw2C+RMX4e2yQSVSinrp2Vbxc39gYVMIn3s
+	 mhyyfJZZjrN/KCGL2pdOssJhBtSOZZYHGcdDx7pOMA3+S23jMsz7RvBNuVOSVJyfDw
+	 otdkbBPqM6lmJVssuD9cYtYnbanjWtQVjS2+nw8dmx7aQcpisV6jdjKfBJZ+3YKDrm
+	 9OSB0ZuyiKiEg==
+Date: Fri, 12 Apr 2024 16:34:48 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: qiang4.zhang@linux.intel.com
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, Qiang Zhang <qiang4.zhang@intel.com>,
+ Stable@vger.kernel.org
+Subject: Re: [PATCH RESEND] bootconfig: use memblock_free_late to free xbc
+ memory to buddy
+Message-Id: <20240412163448.98950acccc3baea1a3f07fed@kernel.org>
+In-Reply-To: <20240412024103.3078378-1-qiang4.zhang@linux.intel.com>
+References: <20240412024103.3078378-1-qiang4.zhang@linux.intel.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1rvBLJ-0024Gn-2u
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:57268
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 59
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfHtJSrcbM4kuASitSMslRp710d5akfboOYUuMuK+mUKVyGpU8wTTHpdvxcSn29dzDdJUXmfhuDVCtKIN46YycsdAeibhr5ulRAt535Q74gbA1bcIofLv
- RXtCp4NTk4fwZ9Ya8kqI1wthCtwR9ruL2GNLqVJfqNxUxJWcAuvohl60WlL+hHa6WAmpF5iXW0c88A==
 
-On 4/11/24 2:57 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.155 release.
-> There are 57 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 13 Apr 2024 09:53:55 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.155-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Fri, 12 Apr 2024 10:41:04 +0800
+qiang4.zhang@linux.intel.com wrote:
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+> From: Qiang Zhang <qiang4.zhang@intel.com>
+> 
+> On the time to free xbc memory, memblock has handed over memory to buddy
+> allocator. So it doesn't make sense to free memory back to memblock.
+> memblock_free() called by xbc_exit() even causes UAF bugs on architectures
+> with CONFIG_ARCH_KEEP_MEMBLOCK disabled like x86. Following KASAN logs
+> shows this case.
+> 
+> [    9.410890] ==================================================================
+> [    9.418962] BUG: KASAN: use-after-free in memblock_isolate_range+0x12d/0x260
+> [    9.426850] Read of size 8 at addr ffff88845dd30000 by task swapper/0/1
+> 
+> [    9.435901] CPU: 9 PID: 1 Comm: swapper/0 Tainted: G     U             6.9.0-rc3-00208-g586b5dfb51b9 #5
+> [    9.446403] Hardware name: Intel Corporation RPLP LP5 (CPU:RaptorLake)/RPLP LP5 (ID:13), BIOS IRPPN02.01.01.00.00.19.015.D-00000000 Dec 28 2023
+> [    9.460789] Call Trace:
+> [    9.463518]  <TASK>
+> [    9.465859]  dump_stack_lvl+0x53/0x70
+> [    9.469949]  print_report+0xce/0x610
+> [    9.473944]  ? __virt_addr_valid+0xf5/0x1b0
+> [    9.478619]  ? memblock_isolate_range+0x12d/0x260
+> [    9.483877]  kasan_report+0xc6/0x100
+> [    9.487870]  ? memblock_isolate_range+0x12d/0x260
+> [    9.493125]  memblock_isolate_range+0x12d/0x260
+> [    9.498187]  memblock_phys_free+0xb4/0x160
+> [    9.502762]  ? __pfx_memblock_phys_free+0x10/0x10
+> [    9.508021]  ? mutex_unlock+0x7e/0xd0
+> [    9.512111]  ? __pfx_mutex_unlock+0x10/0x10
+> [    9.516786]  ? kernel_init_freeable+0x2d4/0x430
+> [    9.521850]  ? __pfx_kernel_init+0x10/0x10
+> [    9.526426]  xbc_exit+0x17/0x70
+> [    9.529935]  kernel_init+0x38/0x1e0
+> [    9.533829]  ? _raw_spin_unlock_irq+0xd/0x30
+> [    9.538601]  ret_from_fork+0x2c/0x50
+> [    9.542596]  ? __pfx_kernel_init+0x10/0x10
+> [    9.547170]  ret_from_fork_asm+0x1a/0x30
+> [    9.551552]  </TASK>
+> 
+> [    9.555649] The buggy address belongs to the physical page:
+> [    9.561875] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1 pfn:0x45dd30
+> [    9.570821] flags: 0x200000000000000(node=0|zone=2)
+> [    9.576271] page_type: 0xffffffff()
+> [    9.580167] raw: 0200000000000000 ffffea0011774c48 ffffea0012ba1848 0000000000000000
+> [    9.588823] raw: 0000000000000001 0000000000000000 00000000ffffffff 0000000000000000
+> [    9.597476] page dumped because: kasan: bad access detected
+> 
+> [    9.605362] Memory state around the buggy address:
+> [    9.610714]  ffff88845dd2ff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [    9.618786]  ffff88845dd2ff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [    9.626857] >ffff88845dd30000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+> [    9.634930]                    ^
+> [    9.638534]  ffff88845dd30080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+> [    9.646605]  ffff88845dd30100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+> [    9.654675] ==================================================================
+> 
 
-Tested-by: Ron Economos <re@w6rz.net>
+Oops, good catch! Indeed, it is too late to use memblock_free().
 
+BTW, is it safe to call memblock_free_late() in early boot stage,
+because xbc_free_mem() will be called also from xbc_init().
+If not, we need a custom internal __xbc_exit() or xbc_cleanup()
+which is called from xbc_init() and uses memblock_free().
+
+Thank you,
+
+
+> Cc: Stable@vger.kernel.org
+> Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
+> ---
+>  lib/bootconfig.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/lib/bootconfig.c b/lib/bootconfig.c
+> index c59d26068a64..4524ee944df0 100644
+> --- a/lib/bootconfig.c
+> +++ b/lib/bootconfig.c
+> @@ -63,7 +63,7 @@ static inline void * __init xbc_alloc_mem(size_t size)
+>  
+>  static inline void __init xbc_free_mem(void *addr, size_t size)
+>  {
+> -	memblock_free(addr, size);
+> +	memblock_free_late(__pa(addr), size);
+>  }
+>  
+>  #else /* !__KERNEL__ */
+> -- 
+> 2.39.2
+> 
+> 
+
+
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
