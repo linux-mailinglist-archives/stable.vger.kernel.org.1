@@ -1,101 +1,133 @@
-Return-Path: <stable+bounces-39251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5CC8A2555
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 06:50:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3D18A25A9
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 07:21:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD994B21309
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 04:50:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C946B23014
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 05:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E87BA47;
-	Fri, 12 Apr 2024 04:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A35DDA9;
+	Fri, 12 Apr 2024 05:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="NzINVwSi";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="eWOJzqDe"
+	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="p89NrVKM"
 X-Original-To: stable@vger.kernel.org
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2E0205E34;
-	Fri, 12 Apr 2024 04:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E848C1B946
+	for <stable@vger.kernel.org>; Fri, 12 Apr 2024 05:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712897418; cv=none; b=VEEZOGFf9R9AqbGJDtlpQ6WJYnXD26Tvnw8hBibPwv3LCRsA98nFZO/MCucA5U7bQ/EClwF8su5nYOczZxDpCbn4I4oQuvTWtNMMZwv9uKDjNXI5l7OIAzOtMr6IDa+owwMb9atl/S2pCuEPN7C/RY80cCee4ONoas0S7u9tvO4=
+	t=1712899311; cv=none; b=Cy1B1tDhkWA15SZ01z+kmLzLVOspm/3GIHpjCCNqYexAkmQe2OsZcwIF9dgvtKCUdG2S+nn+novQWIF4nJMm5duu2oX2Vp5pqB7cCS2miRyckcuVnwLNRL90GcQZxtuVxvIp4iNsRYFsyMjIYOQMS+ao5bOf4sHIGPXnoaiNGAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712897418; c=relaxed/simple;
-	bh=4+42ynGEyHlCRHCEji9sviaHUyVVm5QGhCORJy3G0Ig=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cz+3O+j0A1uEjD5Wyavv3rLBOvVXIppJ/iT/V5LDgPPRkt6Z3KHYAzSi1GPwNU/swuSdQV3pSVQo/ak/bNATLa3L+kjV+LPKu/3ckmhP7DGRHNPIk3ffwCaXjdb6ITrL63RlPLouc/3oMSnMmUIS0Up8GnOWLoU+LDWlz3b3R8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=NzINVwSi; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=eWOJzqDe; arc=none smtp.client-ip=91.121.71.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: by nautica.notk.org (Postfix, from userid 108)
-	id 8CEF6C023; Fri, 12 Apr 2024 06:50:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1712897408; bh=7WSthEQYlk7/SIGKZLPpcaTfbc1Ib5Ox8uDcREcjIvE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NzINVwSiTpry9k+ceLei9+eUtRNrT6PxYBoRJKbGv8sADltvPBzDQ1Crw/ljWwsgC
-	 defCI62/tYCd6rkhC4WVRdFB+Xm/xuGjkp6wasfVB9bss1QeOGASJe5+VVEadmvnMK
-	 nO0ZaQPodfUtsO3ZmtkMBeFyPG9mNPaRWT4pdLO8icpTS4agzAMLYaPaf4vaM2RqSU
-	 bScm6LPdtegvqetIPtxcOT481OaKp1FCIX1v7q+r0sqMJTuZh4Gd+lbxM5Heg5gap1
-	 4UBnSCDvp4jhkYUEJpHuwe7uy74j2vqdhxrjzH9QkW4VBzY+DlWaO8Mlni5QDTe3Io
-	 /MN888BsLgBXA==
-X-Spam-Level: 
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id 14E9FC009;
-	Fri, 12 Apr 2024 06:50:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1712897407; bh=7WSthEQYlk7/SIGKZLPpcaTfbc1Ib5Ox8uDcREcjIvE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eWOJzqDexXHU4aJRlEzo734+unPKXb6PTP+216dp7SsTk8xyUCMECwIq+ePjvdK5I
-	 88KvyI7j2yxXmuoOxZLT4ozTnU5ewPQ4JsBggf/Sv5hBVdb1J6NdqEzCz4qGYBXnTK
-	 53gDcthgv/liMeSNc7Hb99Sqe+stv63ZmJHvxHGjT1934gU5Eho0gOUtw9P35AfEe5
-	 5gJmQIEWb+4WrOWDttq2Qt/+ux4qsB1Z6cOjOQ7qOVOL+mik23UVg0Xm/uhz2lZI3H
-	 BVtRLvTe+q+D7xNoTIJNwiN0NWCrf6QZK3ysYuRAKPMh/BakccpOOOlkdVKCKi3NxD
-	 BrDSOez73hK0w==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id f355fdc5;
-	Fri, 12 Apr 2024 04:49:57 +0000 (UTC)
-Date: Fri, 12 Apr 2024 13:49:42 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 5.10 000/294] 5.10.215-rc1 review
-Message-ID: <Zhi9Zs8oWVfNckdJ@codewreck.org>
-References: <20240411095435.633465671@linuxfoundation.org>
+	s=arc-20240116; t=1712899311; c=relaxed/simple;
+	bh=5WMVSRv/gut3ujfRkrERbG2BiKGjHQo8Nxhc3fkHHNk=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=oR+SjGV8S2PHQkK6hdsYGftagTKuRD3yQuuNIlfTztBuSecPJwRu+uRmGhxamNvCzEQ38kBO7Tf2GFzskMK4Opsgul6UFUaWnfjtCVo7p05lmckADKnOReaJiRQBae/M8i6M+eXIeHUdFLeo+ZOsU7G18vr9TXBaysOn4eaT9gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=p89NrVKM; arc=none smtp.client-ip=35.74.137.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=atmark-techno.com;
+	s=gw2_bookworm; t=1712899301;
+	bh=5WMVSRv/gut3ujfRkrERbG2BiKGjHQo8Nxhc3fkHHNk=;
+	h=From:To:Subject:Date:From;
+	b=p89NrVKMhU6JPd3Tmp95dSpcUNMfDqfndA4eXPdWBqxoWVjtAj0aoHtf1i85vWiKK
+	 6pnWMpHIGaxN0TPpfhEvJ5d75nBQkgncTcQhyqz74Nbuy0IqCS+GQJaCcApakp2XfS
+	 5hAXvqRVPrkzkHYfFF9PKaLpvoT8xqMDenpGEmvAYAdmA7fVwFtIAh09vxo+FzS1IL
+	 W4gY1EhOwf/7C+IrcPI1EwPC2q3PfTuDbvSNr0dDmVrs28NR9IL1mQ1kzWf11F/+vq
+	 Ipwjio1IhnxXZmGpGqhC4vyqJL5IpwT0gAr7awmTPVWeeBJfTRWupsukoVj4+p8Rwk
+	 f2xvGj7BTht+w==
+Received: from sv-prius.atmark-techno.com (sodcd-04p2-40.ppp11.odn.ad.jp [203.139.65.40])
+	by gw2.atmark-techno.com (Postfix) with ESMTPS id D4620B88
+	for <stable@vger.kernel.org>; Fri, 12 Apr 2024 14:21:41 +0900 (JST)
+Received: from PC-0139.atmark.tech (unknown [172.16.20.15])
+	by sv-prius.atmark-techno.com (Postfix) with ESMTP id 974F0DEDFB
+	for <stable@vger.kernel.org>; Fri, 12 Apr 2024 14:21:41 +0900 (JST)
+From: Daisuke Mizobuchi <mizo@atmark-techno.com>
+To: stable@vger.kernel.org
+Subject: [PATCH 5.10.y 1/1] mailbox: imx: fix suspend failue
+Date: Fri, 12 Apr 2024 14:21:33 +0900
+Message-Id: <20240412052133.1805029-1-mizo@atmark-techno.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240411095435.633465671@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
 
-Greg Kroah-Hartman wrote on Thu, Apr 11, 2024 at 11:52:43AM +0200:
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.215-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
+When an interrupt occurs, it always wakes up.
 
-Tested 244ca117cb3c ("Linux 5.10.215-rc1") on:
-- arm i.MX6ULL (Armadillo 640)
-- arm64 i.MX8MP (Armadillo G4)
+Suspend fails as follows:
+ armadillo:~# echo mem > /sys/power/state
+ [ 2614.602432] PM: suspend entry (deep)
+ [ 2614.610640] Filesystems sync: 0.004 seconds
+ [ 2614.618016] Freezing user space processes ... (elapsed 0.001 seconds) done.
+ [ 2614.626555] OOM killer disabled.
+ [ 2614.629792] Freezing remaining freezable tasks ... (elapsed 0.001 seconds) done.
+ [ 2614.638456] printk: Suspending console(s) (use no_console_suspend to debug)
+ [ 2614.649504] PM: Some devices failed to suspend, or early wake event detected
+ [ 2614.730103] PM: resume devices took 0.080 seconds
+ [ 2614.741924] OOM killer enabled.
+ [ 2614.745073] Restarting tasks ... done.
+ [ 2614.754532] PM: suspend exit
+ ash: write error: Resource busy
+ armadillo:~#
 
-No obvious regression in dmesg or basic tests:
-Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Upstream is correct, so it seems to be a mistake in cheery-pick.
 
+Cc: <stable@vger.kernel.org>
+Fixes: a16f5ae8ade1 ("mailbox: imx: fix wakeup failure from freeze mode")
+Signed-off-by: Daisuke Mizobuchi <mizo@atmark-techno.com>
+---
+ drivers/mailbox/imx-mailbox.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
+index c5663398c6b7..28f5450e4130 100644
+--- a/drivers/mailbox/imx-mailbox.c
++++ b/drivers/mailbox/imx-mailbox.c
+@@ -331,8 +331,6 @@ static int imx_mu_startup(struct mbox_chan *chan)
+ 		break;
+ 	}
+ 
+-	priv->suspend = true;
+-
+ 	return 0;
+ }
+ 
+@@ -550,8 +548,6 @@ static int imx_mu_probe(struct platform_device *pdev)
+ 
+ 	clk_disable_unprepare(priv->clk);
+ 
+-	priv->suspend = false;
+-
+ 	return 0;
+ 
+ disable_runtime_pm:
+@@ -614,6 +610,8 @@ static int __maybe_unused imx_mu_suspend_noirq(struct device *dev)
+ 	if (!priv->clk)
+ 		priv->xcr = imx_mu_read(priv, priv->dcfg->xCR);
+ 
++	priv->suspend = true;
++
+ 	return 0;
+ }
+ 
+@@ -632,6 +630,8 @@ static int __maybe_unused imx_mu_resume_noirq(struct device *dev)
+ 	if (!imx_mu_read(priv, priv->dcfg->xCR) && !priv->clk)
+ 		imx_mu_write(priv, priv->xcr, priv->dcfg->xCR);
+ 
++	priv->suspend = false;
++
+ 	return 0;
+ }
+ 
 -- 
-Dominique Martinet | Asmadeus
+2.30.2
+
 
