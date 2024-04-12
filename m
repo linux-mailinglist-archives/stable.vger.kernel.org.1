@@ -1,160 +1,170 @@
-Return-Path: <stable+bounces-39339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CDA8A378C
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 23:07:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF4C8A37E6
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 23:32:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBD911F233D8
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 21:07:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B892F281F39
+	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 21:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA59914E2E0;
-	Fri, 12 Apr 2024 21:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93ADE2F875;
+	Fri, 12 Apr 2024 21:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cjCtmVxl"
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Z1szMu8E"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825B622EE0;
-	Fri, 12 Apr 2024 21:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C888615099F
+	for <stable@vger.kernel.org>; Fri, 12 Apr 2024 21:32:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712956023; cv=none; b=nwSx6XLxSsJfvDDPVNebrR8cSrYptJo6WhCzMQpaRRNuaC4MmdeX7gHmevlk6Xq2ckajS0sbnFZcze17twaQ/PSli2Dd4xUSo/yUq9jRSmKM/UPyPHm4PbPfH+R12XsjqGI+Y/8ALScuzZ+4vm+lmLocH5SVPy6Ba+KnY+Zv3ZU=
+	t=1712957550; cv=none; b=OyQ4YbX7HZHVMYzGuEN6G4duzmVankvvuCUc9cqyRnlSnSrEkB8yhzcrLoXVPBMmRq1j/Bem1/jZsmTHVpWmcQH5/cyIN980jWtlcDr2a6Xv70VPFpjUidaADT8F0ZGfv2eMNqLYC2c/2sZxj2XSKe5AZb+WDcNZrfJ9n6+nx10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712956023; c=relaxed/simple;
-	bh=TrVRtQL5XvcfsmBWDYPf9U6S3WrO82Xflk08cB4VDXs=;
-	h=Date:To:From:Subject:Message-Id; b=QpT1zBo5jIkZ2Z6vVTVYg6N/22wr9zbEOwxINN9qHS8CcJw6uJFLbt7lEed8yzhZ1iak38BesHfpRs9LX0y3wjWeQfiBJbODH2fHa9knYpOySgIikgJh13jsOzR17b5PLoplpNZmk3ZHQjcTCZDzmRnws4nV01uEYLOteFI7bQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cjCtmVxl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D676EC113CC;
-	Fri, 12 Apr 2024 21:07:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1712956022;
-	bh=TrVRtQL5XvcfsmBWDYPf9U6S3WrO82Xflk08cB4VDXs=;
-	h=Date:To:From:Subject:From;
-	b=cjCtmVxl2ZnJ7Iq+OjqA0BnYrKLzeO1kHi/L2SgGrJNPgjP4C87Hk68Jwi2eImI6U
-	 eiltDsKMnLkkI89hPqtjsloEsTrBjaRTn5p7YQI/myvXkipgoKoecfHLu/+NqGqlz9
-	 LCvO8tXOKJNSkDlEq27klEyq2wkFZTTe3+dGAKc4=
-Date: Fri, 12 Apr 2024 14:07:02 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rppt@linux.ibm.com,mhiramat@kernel.org,qiang4.zhang@intel.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + bootconfig-use-memblock_free_late-to-free-xbc-memory-to-buddy.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240412210702.D676EC113CC@smtp.kernel.org>
+	s=arc-20240116; t=1712957550; c=relaxed/simple;
+	bh=Nn+jTGIj0nIplsV5dm+Sq4R9ISuvxoEsl7z7F0tJ+Y0=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=XsBiEGERyYyRnXIr/hvww2PMqJ9Adb57lNmUENE5hrGrnZgPNq9+spq8fM60ScARx17wucWQHP6jEjVKNyqs+Z6XiCjKDeaCbe8PY0XpWKMUjrI3Jd0ovB0RF2/QKFrBpT3MwFRTMmA8Nw8sYoAEcRehkDQYr/xHRFIitiHaQ3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Z1szMu8E; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-41821ef0a74so145015e9.2
+        for <stable@vger.kernel.org>; Fri, 12 Apr 2024 14:32:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1712957547; x=1713562347; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bztACAiJL0/kZwiUjTsd4k8hPz1fS9bIU8m1K2zoLUE=;
+        b=Z1szMu8EMO57R8kT+LLfVardpCpNEJS/+jXSI8S953VZAVxeAhrX4O15K0IDb1f7aD
+         oOnz0Bc74kG25Ai7C6NGpcHtNCj4Ymx9uh2IHbAtVh7oI6ituRIhFSRZcWRHJGEELVpM
+         XRQEzh2uu2jCV+GTMwGPA4BZzTGylamISwcl6OrpQSMPDi6eFoNmnt6dwgJVEe/VjDCR
+         jdfrR6Y6ppybP+r12vk3qusTTDHj5jYI/2MrDrvRzxhFh1Zuw/wuyWUT8RFfBJSNTH1o
+         3JNh9bNBeTfQFLOmeK621pQH219QBaiCaziqMUEyz/iu40a4Ijo5aOa8R+sEB1sbtjjI
+         QGMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712957547; x=1713562347;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bztACAiJL0/kZwiUjTsd4k8hPz1fS9bIU8m1K2zoLUE=;
+        b=ofZki17ikA9GxfNEd5lbyMzS3bjJ/n/1vGUhFPHZQXaz1WjA8OHvx5ev8h4ldAzxB3
+         aqnEPEVmCie9EdMwZwPyUvbFuNLIllCL2CR5Dec6WotK93i2a9vLkI4zeY3PlRs5Kw/O
+         GFKnxMf8tZ+3kwf52sRzufBeQGq9HylzXedbUcqGmquoig6MSl/qDVHnwE5MC8EXkixc
+         7TdS9aM7yCQMxpRgN9lO5xTHhBj+9You/yVLCIlHGao1U/Kf7bBXQUAu2lac/wGtlxs4
+         ja76auXbWk6KcQDD+Xwn1amkVZLk9CTUEcU8accTy8U7EhhEx4wkudsSVTkhvTZQ4cZF
+         kqlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVMd3s/ROqEETeCdEuYlKzWFKiVSHZEjeP3Z4pR+m8s2n4itz157HiQljjrOcjfCIVK7lcOeJvzQukIQKwoHOverMxVHXR9
+X-Gm-Message-State: AOJu0YyiIQZOSZyzw2ABAMnolPuFAJpwrtJgQSCVuuriVPEqGcf5KVtU
+	bne2hFiLqOasIz5V0CWitx4RSSHE8tcpCtmZ2Sqi1zcPzy4SLPYkAbkR/Mg/kas=
+X-Google-Smtp-Source: AGHT+IGpeVjYm+8qM4GooRX3ap2DbUBrGT2JjBwOQR0DrYMm7Z9/yviKXrTwYJf+wXNkLgsUHGJeoA==
+X-Received: by 2002:a05:600c:4687:b0:418:a24:d569 with SMTP id p7-20020a05600c468700b004180a24d569mr1526707wmo.33.1712957547116;
+        Fri, 12 Apr 2024 14:32:27 -0700 (PDT)
+Received: from smtpclient.apple ([104.28.224.67])
+        by smtp.gmail.com with ESMTPSA id jg25-20020a05600ca01900b004169836bf9asm9836689wmb.23.2024.04.12.14.32.25
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 12 Apr 2024 14:32:26 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
+Subject: Re: [PATCH 6.8 271/273] x86/sme: Move early SME kernel encryption
+ handling into .head.text
+From: Ignat Korchagin <ignat@cloudflare.com>
+In-Reply-To: <2024041047-upright-smudgy-c380@gregkh>
+Date: Fri, 12 Apr 2024 22:32:15 +0100
+Cc: Borislav Petkov <bp@alien8.de>,
+ Pascal Ernster <git@hardfalcon.net>,
+ stable@vger.kernel.org,
+ patches@lists.linux.dev,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ kernel-team@cloudflare.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <DB55FDF8-3405-4678-8BC1-2226950BC246@cloudflare.com>
+References: <20240408125309.280181634@linuxfoundation.org>
+ <20240408125317.917032769@linuxfoundation.org>
+ <76489f58-6b60-4afd-9585-9f56960f7759@hardfalcon.net>
+ <20240410053433.GAZhYk6Q8Ybk_DyGbi@fat_crate.local>
+ <2024041024-boney-sputter-6b71@gregkh>
+ <CAMj1kXHjwJnfjVgm=cOaJtJ=mF-mTLaoDM0wQyvvjL3ps9JEog@mail.gmail.com>
+ <2024041047-upright-smudgy-c380@gregkh>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ard Biesheuvel <ardb@kernel.org>
+X-Mailer: Apple Mail (2.3774.500.171.1.1)
 
 
-The patch titled
-     Subject: bootconfig: use memblock_free_late to free xbc memory to buddy
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     bootconfig-use-memblock_free_late-to-free-xbc-memory-to-buddy.patch
+> On 10 Apr 2024, at 15:11, Greg Kroah-Hartman =
+<gregkh@linuxfoundation.org> wrote:
+>=20
+> On Wed, Apr 10, 2024 at 08:43:24AM +0200, Ard Biesheuvel wrote:
+>> On Wed, 10 Apr 2024 at 07:46, Greg Kroah-Hartman
+>> <gregkh@linuxfoundation.org> wrote:
+>>>=20
+>>> On Wed, Apr 10, 2024 at 07:34:33AM +0200, Borislav Petkov wrote:
+>>>> On Tue, Apr 09, 2024 at 06:38:53PM +0200, Pascal Ernster wrote:
+>>>>> Just to make sure this doesn't get lost: This patch causes the =
+kernel to not
+>>>>> boot on several x86_64 VMs of mine (I haven't tested it on a bare =
+metal
+>>>>> machine). For details and a kernel config to reproduce the issue, =
+see =
+https://lore.kernel.org/stable/fd186a2b-0c62-4942-bed3-a27d72930310@hardfa=
+lcon.net/
+>>>>=20
+>>>> I see your .config there. How are you booting the VMs? qemu =
+cmdline?
+>>>>=20
+>>>> Ard, anything missing in the backport?
+>>>>=20
+>>>> I'm busy and won't be able to look in the next couple of days...
+>>>=20
+>>> As reverting seems to resolve this, I'll go do that after my morning
+>>> coffee kicks in...
+>>=20
+>> Fair enough. I'll look into this today, but I guess you're on a tight
+>> schedule with this release.
+>>=20
+>> Please drop the subsequent patch as well:
+>>=20
+>> x86/efistub: Remap kernel text read-only before dropping NX attribute
+>>=20
+>> as it assumes that all code reachable from the startup entrypoint is
+>> in .head.text and this will no longer be the case.
+>=20
+> Given this is the only report, and it seems to be with an "odd" =
+linker,
+> I'll leave it in for now to keep in sync with 6.9-rc.  If this is a
+> problem, we can revert the commits in a later release at any time.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/bootconfig-use-memblock_free_late-to-free-xbc-memory-to-buddy.patch
+We encountered this issue in our production machines and reproduced on a =
+simple QEMU in standard Debian Bookworm
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Steps:
+1. Download source
+2. $ make defconfig
+3. Enable CONFIG_AMD_MEM_ENCRYPT and CONFIG_GCC_PLUGIN_STACKLEAK through =
+make menuconfig
+4. Compile
+5. $ qemu-system-x86_64 -smp 2 -m 1G -enable-kvm -cpu host -kernel =
+arch/x86/boot/bzImage -nographic -append "console=3DttyS0=E2=80=9D
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+You will notice that the VM will go into reboot loop (same happens in =
+our bare metal production servers). Do note that you would need a =
+compiler with CONFIG_GCC_PLUGIN_STACKLEAK support (not the standard =
+Debian one - unless I don=E2=80=99t know how to install GCC plugins)
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Ignat
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Qiang Zhang <qiang4.zhang@intel.com>
-Subject: bootconfig: use memblock_free_late to free xbc memory to buddy
-Date: Fri, 12 Apr 2024 10:41:04 +0800
-
-At the time to free xbc memory, memblock has handed over memory to buddy
-allocator.  So it doesn't make sense to free memory back to memblock. 
-memblock_free() called by xbc_exit() even causes UAF bugs on architectures
-with CONFIG_ARCH_KEEP_MEMBLOCK disabled like x86.  Following KASAN logs
-shows this case.
-
-[    9.410890] ==================================================================
-[    9.418962] BUG: KASAN: use-after-free in memblock_isolate_range+0x12d/0x260
-[    9.426850] Read of size 8 at addr ffff88845dd30000 by task swapper/0/1
-
-[    9.435901] CPU: 9 PID: 1 Comm: swapper/0 Tainted: G     U             6.9.0-rc3-00208-g586b5dfb51b9 #5
-[    9.446403] Hardware name: Intel Corporation RPLP LP5 (CPU:RaptorLake)/RPLP LP5 (ID:13), BIOS IRPPN02.01.01.00.00.19.015.D-00000000 Dec 28 2023
-[    9.460789] Call Trace:
-[    9.463518]  <TASK>
-[    9.465859]  dump_stack_lvl+0x53/0x70
-[    9.469949]  print_report+0xce/0x610
-[    9.473944]  ? __virt_addr_valid+0xf5/0x1b0
-[    9.478619]  ? memblock_isolate_range+0x12d/0x260
-[    9.483877]  kasan_report+0xc6/0x100
-[    9.487870]  ? memblock_isolate_range+0x12d/0x260
-[    9.493125]  memblock_isolate_range+0x12d/0x260
-[    9.498187]  memblock_phys_free+0xb4/0x160
-[    9.502762]  ? __pfx_memblock_phys_free+0x10/0x10
-[    9.508021]  ? mutex_unlock+0x7e/0xd0
-[    9.512111]  ? __pfx_mutex_unlock+0x10/0x10
-[    9.516786]  ? kernel_init_freeable+0x2d4/0x430
-[    9.521850]  ? __pfx_kernel_init+0x10/0x10
-[    9.526426]  xbc_exit+0x17/0x70
-[    9.529935]  kernel_init+0x38/0x1e0
-[    9.533829]  ? _raw_spin_unlock_irq+0xd/0x30
-[    9.538601]  ret_from_fork+0x2c/0x50
-[    9.542596]  ? __pfx_kernel_init+0x10/0x10
-[    9.547170]  ret_from_fork_asm+0x1a/0x30
-[    9.551552]  </TASK>
-
-[    9.555649] The buggy address belongs to the physical page:
-[    9.561875] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1 pfn:0x45dd30
-[    9.570821] flags: 0x200000000000000(node=0|zone=2)
-[    9.576271] page_type: 0xffffffff()
-[    9.580167] raw: 0200000000000000 ffffea0011774c48 ffffea0012ba1848 0000000000000000
-[    9.588823] raw: 0000000000000001 0000000000000000 00000000ffffffff 0000000000000000
-[    9.597476] page dumped because: kasan: bad access detected
-
-[    9.605362] Memory state around the buggy address:
-[    9.610714]  ffff88845dd2ff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    9.618786]  ffff88845dd2ff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    9.626857] >ffff88845dd30000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-[    9.634930]                    ^
-[    9.638534]  ffff88845dd30080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-[    9.646605]  ffff88845dd30100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-[    9.654675] ==================================================================
-
-Link: https://lkml.kernel.org/r/20240412024103.3078378-1-qiang4.zhang@linux.intel.com
-Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mike Rapoport <rppt@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- lib/bootconfig.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/lib/bootconfig.c~bootconfig-use-memblock_free_late-to-free-xbc-memory-to-buddy
-+++ a/lib/bootconfig.c
-@@ -63,7 +63,7 @@ static inline void * __init xbc_alloc_me
- 
- static inline void __init xbc_free_mem(void *addr, size_t size)
- {
--	memblock_free(addr, size);
-+	memblock_free_late(__pa(addr), size);
- }
- 
- #else /* !__KERNEL__ */
-_
-
-Patches currently in -mm which might be from qiang4.zhang@intel.com are
-
-bootconfig-use-memblock_free_late-to-free-xbc-memory-to-buddy.patch
+> thanks,
+>=20
+> greg k-h
+>=20
 
 
