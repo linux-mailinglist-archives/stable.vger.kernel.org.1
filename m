@@ -1,325 +1,194 @@
-Return-Path: <stable+bounces-39367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4ABF8A3CB5
-	for <lists+stable@lfdr.de>; Sat, 13 Apr 2024 14:21:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F448A3CC6
+	for <lists+stable@lfdr.de>; Sat, 13 Apr 2024 15:08:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5D311C20BE2
-	for <lists+stable@lfdr.de>; Sat, 13 Apr 2024 12:21:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6CDF1C20D24
+	for <lists+stable@lfdr.de>; Sat, 13 Apr 2024 13:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99FAD405F9;
-	Sat, 13 Apr 2024 12:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026EE3E48E;
+	Sat, 13 Apr 2024 13:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GnZ+cu0i"
-X-Original-To: Stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="QPKBP7uY"
+X-Original-To: stable@vger.kernel.org
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazolkn19010000.outbound.protection.outlook.com [52.103.66.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509E6381B9;
-	Sat, 13 Apr 2024 12:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713010903; cv=none; b=hscY33e+uEsyfOd5rWZywMSKwf39GRxTwOfXYL/7MzfuWB13mcLKl58q7ttUXPIjnOaL63DfaFnL+a/b9S6XMOhz/WFc+tz9bVltwxUae8MldmSBZtsnmYM+zKY7QVYqd/U/sdQArizhPMDlF8dBiKdhGx1kDJpSzSUSzyXWhWY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713010903; c=relaxed/simple;
-	bh=bL4nvugP2H1H7zakqq3Xbnb5B+OOHtfZstKt8xMrFzs=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=aKnGHXkeLcevfoblPUorYUPBsEFa7WEV57XwHzM6BEP3s9rBJGNl+fzFbs9spVcO7J3ybZheHVCwLiggjNqGlVOubtNZEVml6P+JhxOQcRvmQkr38i1QgfHoVwj4S3P8J+RtdgOM8mMyvDkJIAfvkyu7IOBjZgaNuaPM54cIRwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GnZ+cu0i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE8AC2BBFC;
-	Sat, 13 Apr 2024 12:21:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713010902;
-	bh=bL4nvugP2H1H7zakqq3Xbnb5B+OOHtfZstKt8xMrFzs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GnZ+cu0ii0jJ199oVdQ/EYymanIrG71Ql4dU6NspYF/RTuwBEfmsvAqTPzY1m+mGM
-	 iOTH2TOO05GWgEaR/RhVX3OXHiRbe6r3Zpk/Ptqns9Mme8WRBdv7M047wLcSoPi9fD
-	 3JG2c7vhO/P4P3ueBZFbWLJ1hnDQ2QBQgiQxHEz8eqhNH8vWfFaRu0o6xKhOURe2kO
-	 molOhe37tnwZcGPxk78vQnjxZgQKjjkCll6qrSzB/P03oIJB1K1ENvfV/DAnE11PH+
-	 yrY/OflNLwUjHag8b746EdWCexYeroIIgdO5Q9rEkLH1Hswt7pUNwAN39ctNOqvRCs
-	 Mnv8MsgGhzScg==
-Date: Sat, 13 Apr 2024 21:21:38 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: qiang4.zhang@linux.intel.com, Andrew Morton <akpm@linux-foundation.org>,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, Qiang
- Zhang <qiang4.zhang@intel.com>, Stable@vger.kernel.org
-Subject: Re: [PATCH v2] bootconfig: use memblock_free_late to free xbc
- memory to buddy
-Message-Id: <20240413212138.26726485be53bec3009452d7@kernel.org>
-In-Reply-To: <20240412221820.852abeb57feceec893ca0dad@kernel.org>
-References: <20240412104940.456257-1-qiang4.zhang@linux.intel.com>
-	<20240412221820.852abeb57feceec893ca0dad@kernel.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203E8383AA;
+	Sat, 13 Apr 2024 13:08:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.66.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713013693; cv=fail; b=JoAr5ZUoiM4t969gJWHfDCKFSTeLf69jPStCo9PL750uIfOfeaXCorwZ16uufYVn6QGn/yf0yLBzvi882IeGkqY7E5RJJKvAjQweSp+UFhKij5bVuGDHsEg2Iql2ExM9pomRZhEJkan4Ou7tAPzksaMexCt+VhR9jY7GTvj8N80=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713013693; c=relaxed/simple;
+	bh=8F88CRpBpIG2rG310LnuwRJx1z4NVc6qPB8zsZ56rrc=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=PLxANDMq3XGSd5Zj0ZlFiRmTu1Avysxqc4yLrcLblitkQ65iLF0u1dwAN5/Q2qrZBhWAMuUViTU3WZ2aHCTpxz0w/D7hToBq2QL8RgGFftusXuevhL2pUlaa0T9gwYTL9LUZ3nc7z34NTSegSVt2XLb2S91TNahwhz+KODClckg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=QPKBP7uY; arc=fail smtp.client-ip=52.103.66.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=FayIaH4d0BxcX0I0D0s1G1okxVdRhVweix4/avPVRRAFvSoHDZusfHrM/dPST4L/0+anLxmeFE/ZGIwGvWT6YI1D7nh6DnUl5dyMVlBs3F4pA1DGeMsDrWde5F9FHHa+iMhFhiMillG2HuSzzT1hG0oMbyfsn7Kfy6vCUdSIr4JuAFUjP63LG9C54ZefWOndXxH7yiaodLjZV4tGP2rJdYnrWs8TYekZezw+yiWA42+0nyPI5cOt42viX0+10E1mSxA4GNUUExr1QI04L6Uf1xEba6oRcCfsh02stiU6qKQK/BkFoV8mVJQCLLlDY+ThZD96XClo1vwwjr9uBh5i9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hTM8PY7dyx3dKoUCEjXNYOvEJDZzx52EX7IRsxXtbQs=;
+ b=mRO+E/JD6MiZ1EQEIFgjufX7WhgGt1dBRx0bX+H0wUGEzEsSSMmbxJHzvZwQFPH1v4173IPY5+ajJjAGupNdYQlmy1ZfLEm4WoPZIl9lz9S25+SnMHOnFB8XkpRxCo8V8gighZkvkUamiDQd4qq63jOQ6dWGK52q6Ef9E1E30fDFU4HgK+5A8IUgZ1xQJEVdHGcCoGdDTh8dGa4Q0twmyoGLX4cM/WaHF5vHI2y2NPuKIOIrzVdLz/eWWJd4WsJLy6ahy7ehfpulc59Dm6IaEfDPLjsf1iwMWYJuDxcbfixoZxqGQObCmFMvKlzopRTQq4LwpVzeaLId9RTlkKASwg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hTM8PY7dyx3dKoUCEjXNYOvEJDZzx52EX7IRsxXtbQs=;
+ b=QPKBP7uYlm0Tm3yQ5XZCewAdAQSdTSFzeVG/Gj+9LFg9TgVyfsgJgffxHE7fTcuTnfh+3xfRpz2XaNAuyck5qJTNEzgiwbVlJQEKzDVuSsA42P4N0jYxQpOzMaG6W+k3hKUtIPlZWBJLxRdP2cX4q28X9BVGqvemqEF64cJff44pvcI9eXYN+C/n2qBjChGZ5RsBy07RJ0g75YeN9L2/hikImRvAaV9wJRz3WdFBz9U6Y65OPl9ilv17atlUJCpOx0DoWiGWCFMxQ2/y0Noq5IONDDf2xXXh9271j6ifue+IAYcCai6pxZZ3dcwlT91MKu4C0b4fnlPArcBUoNX7Ag==
+Received: from TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:209::11)
+ by OSZP286MB1797.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:1ba::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.43; Sat, 13 Apr
+ 2024 13:08:06 +0000
+Received: from TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::f2c3:e53f:2ea9:55c8]) by TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::f2c3:e53f:2ea9:55c8%4]) with mapi id 15.20.7409.053; Sat, 13 Apr 2024
+ 13:08:06 +0000
+From: ArcticLampyrid <ArcticLampyrid@outlook.com>
+To: james.schulman@cirrus.com,
+	david.rhodes@cirrus.com,
+	rf@opensource.cirrus.com
+Cc: patches@opensource.cirrus.com,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ArcticLampyrid <ArcticLampyrid@outlook.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ALSA: hda/realtek: Fix internal speakers for Legion Y9000X 2022 IAH7
+Date: Sat, 13 Apr 2024 21:07:55 +0800
+Message-ID:
+ <TYCP286MB25352F3E995FED9CCE90F1F6C40B2@TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.44.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [VPB2WDdPzJP7XoxMsZPzvytTXemr8Ed2fcOMMo3vu9jWTfTgVM0yaQ==]
+X-ClientProxiedBy: TY2PR02CA0047.apcprd02.prod.outlook.com
+ (2603:1096:404:a6::35) To TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:209::11)
+X-Microsoft-Original-Message-ID:
+ <20240413130755.57218-1-ArcticLampyrid@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCP286MB2535:EE_|OSZP286MB1797:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4fa911bb-756e-4136-7a26-08dc5bbac21b
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	zlgmQt56CYYyrVJVcFGrTpt5J09ebkl74RY9WlNg4p9ah2Um0tDMaIZqYgoPsHu66zhm/okT6hpPvyFprfyH/EV3thCzfrd8PW9VYr7SkYo4DJyTN+XQH9t8l1zTtzjr+kzW3h5GAS4KoqcmPu/8ErGh0rmbkGZuj7vTryGeS1wTs4yeQy9c6YwY0gmSz6GADWNBqC067j68adDMjEhY8abYcjivTis8SoqkCTTq5h1JLiMLRIQ7psgrU8mGTt6axr/9GK5IRsmcrgh4ITeaC4kNpfh1o4I5Ogw4EiNifkrM/wanYArEeUh9YK4KI/X90cnakGTtZCUCya6uml8OkJcbsDbluPW9x5KhyLb0/U4vg9o+oJvHdOSeA7vMe7Jin09Vd3vRU+hvT4/oLiPVj9eBMeRIs9a8MLX/s4qSnwVyIk5wABloOSdtfvKSnHkPh5abJz0eQgiVz310kQylMd99Jb1lM+FZ7EeJhFMbMeN5FR8tnpnOL8xIxzG0p/x5dNKW2cogD7nOGfHGIVvT2HaY7SQukclnCHrTmTbs6gZtcngibtlzM0ExUkMDW6OXZTjAzbW12pUHdjMtKzbL2YTO0yCIbjn5q6MampxKoIjI47nGAJ602B+wYsgbm7du
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?sb5ZwyMkc3S+WrPkYwK3DRfO587HCo3YajX0JPDJA2JQAGtNqLqjcCAYp/Ol?=
+ =?us-ascii?Q?o5a41xfOGq54fL6QGpPh/fk9EYkIiYIZAmimRKuLvhXyBco9deNRJqEJGWls?=
+ =?us-ascii?Q?EJSB9V3AfnHA4giiXDxpjfcaDmh5HuWi/Ay2kdLYBa+FkfJnaoaieDGgN2Ak?=
+ =?us-ascii?Q?Urr3b5u9u6UgI/hmjb2j7iJ/HEfG8orh/0YdyyUSEFVlZIdeYW4I6zkVWbiv?=
+ =?us-ascii?Q?RpPpAsOlFZnfjiuoH/1mJVtkqtwXRQBTvb2jE165O4YonyuE/llTwShLp4kf?=
+ =?us-ascii?Q?f96vcI+h1PAAML52tjuy9artVH8QRUgD1O8FiNCLBv+RhzUHHgmPsK28vlpt?=
+ =?us-ascii?Q?5xpvenCamTfBdpNa2tJn/T+qEwmlZRWaW+PLMfcc3blSZc7Lu/gKaK8KQeCj?=
+ =?us-ascii?Q?gvfNB0THZF4j1WSxeVYKdvbKH7muGCs7RY5q082Cmgx00ZJ25nPiFuHftN9Y?=
+ =?us-ascii?Q?lOJuP7Aa/y1gLLD9VQiUiH6w0Kh2Dm4rH3KoQXEkW/1uLjX0uVnOk3ilx0L2?=
+ =?us-ascii?Q?2vCHOSBOsOEfqvJfoTf589jheGBIC18HVcggQYYS+ZYFS073/1rZG+H0JmrW?=
+ =?us-ascii?Q?2tH04oXtHNBpU0RTzL31UAVEbP7yb5+DxjlU4fxm26Dygu7jFgr/OmxuOsrC?=
+ =?us-ascii?Q?hhQOd5ZBKiXpUeCjrDM5mi4QdeKaHOq/UA3m+6Xf2/DVpXmHl17hFJYOtiN6?=
+ =?us-ascii?Q?GCV+juW4PglPRdkGbAlra8UFoTYZMX6Hz5oNigfS1la0DgJLAV2D00e9F7iL?=
+ =?us-ascii?Q?QU6Vg1NXhvzdWm4wg2IV93kqevOrPG/d+Z7NrtWsilTaKVHHFmh9EbW15xDZ?=
+ =?us-ascii?Q?7sapZ1mg2SWFMZCFKtnZi2njAPj4ewz+38OBK+L4J5LCBsqUne1dCg3WwPKg?=
+ =?us-ascii?Q?SgU8+i4lACYjKqm93KafffGKvHSeSAFTAPt2eImHWAFgBDatiC5T2KFxznqL?=
+ =?us-ascii?Q?zM/0oi+sZk0+pMj2IeOOCDPK8+IcpDlAEnZxmuWcLhXSWhqudNxTsV0wmqUq?=
+ =?us-ascii?Q?YvPPNtCz4z9Sfc7bbCpOMovGMKXSY5wtFeKMZDASKENnCPnPD2E2vihPvAFa?=
+ =?us-ascii?Q?x69YoQ9xq/WOx4vF7TaqeZt4h6TkCq6CKnIXi5CwuUOwQ5zhfjuGOtLyzD/J?=
+ =?us-ascii?Q?CC7PVD63tL96Q7G4GjDsTLAKScdMd2c9Jq971zZ/zn7EhVPRCNCk3IeL2ez0?=
+ =?us-ascii?Q?p8oq3tuD0zDv8YJ2/NUL2rdxAugo4LRLc4MKR5/ILB2HjM5dj2ZrLBAw/Nvr?=
+ =?us-ascii?Q?JgYlUfv58JAHRD7ePrPl04NN1XKdO8GGDaijSafHTQ=3D=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4fa911bb-756e-4136-7a26-08dc5bbac21b
+X-MS-Exchange-CrossTenant-AuthSource: TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Apr 2024 13:08:06.2003
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSZP286MB1797
 
-Hi Qiang,
+This fixes the sound not working from internal speakers on
+Lenovo Legion Y9000X 2022 IAH7 models.
 
-I found xbc_free_mem() missed to check !addr. When I booted kernel without
-bootconfig data but with "bootconfig" cmdline, I got a kernel crash below;
+Signed-off-by: ArcticLampyrid <ArcticLampyrid@outlook.com>
+Cc: <stable@vger.kernel.org>
+---
+ sound/pci/hda/cs35l41_hda_property.c | 17 +++++++++++++++++
+ sound/pci/hda/patch_realtek.c        |  1 +
+ 2 files changed, 18 insertions(+)
 
-
-[    2.394904] ------------[ cut here ]------------
-[    2.396490] kernel BUG at arch/x86/mm/physaddr.c:28!
-[    2.398176] invalid opcode: 0000 [#1] PREEMPT SMP PTI
-[    2.399388] CPU: 7 PID: 1 Comm: swapper/0 Tainted: G                 N 6.9.0-rc3-00004-g121fbb463836 #10
-[    2.401579] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-[    2.403247] RIP: 0010:__phys_addr+0x40/0x60
-[    2.404196] Code: 48 2b 05 fb a4 3d 01 48 05 00 00 00 80 48 39 c7 72 17 0f b6 0d ee 9e c0 01 48 89 c2 48 d3 ea 48 85 d2 75 05 c3 cc cc cc cc 90 <0f> 0b 48 03 05 e7 e2 9d 01 48 81 ff ff ff ff 1f 76 e8 90 0f6
-[    2.407250] RSP: 0000:ffffc90000013f18 EFLAGS: 00010287
-[    2.407991] RAX: 0000778000000000 RBX: ffffffff81c17940 RCX: 000000000080000a
-[    2.408891] RDX: 000000000080000b RSI: ffff88800775f320 RDI: 0000000080000000
-[    2.409727] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-[    2.410555] R10: ffff888005028a60 R11: 000000000080000a R12: 0000000000000000
-[    2.411423] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-[    2.412155] FS:  0000000000000000(0000) GS:ffff88807d9c0000(0000) knlGS:0000000000000000
-[    2.412970] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    2.413550] CR2: 0000000000000000 CR3: 0000000002a48000 CR4: 00000000000006b0
-[    2.414264] Call Trace:
-[    2.414520]  <TASK>
-[    2.414755]  ? die+0x37/0x90
-[    2.415062]  ? do_trap+0xe3/0x110
-[    2.415451]  ? __phys_addr+0x40/0x60
-[    2.415822]  ? do_error_trap+0x9c/0x120
-[    2.416215]  ? __phys_addr+0x40/0x60
-[    2.416573]  ? __phys_addr+0x40/0x60
-[    2.416968]  ? exc_invalid_op+0x53/0x70
-[    2.417358]  ? __phys_addr+0x40/0x60
-[    2.417709]  ? asm_exc_invalid_op+0x1a/0x20
-[    2.418122]  ? __pfx_kernel_init+0x10/0x10
-[    2.418569]  ? __phys_addr+0x40/0x60
-[    2.418960]  _xbc_exit+0x74/0xc0
-[    2.419374]  kernel_init+0x3a/0x1c0
-[    2.419764]  ret_from_fork+0x34/0x50
-[    2.420132]  ? __pfx_kernel_init+0x10/0x10
-[    2.420578]  ret_from_fork_asm+0x1a/0x30
-[    2.420973]  </TASK>
-[    2.421200] Modules linked in:
-[    2.421598] ---[ end trace 0000000000000000 ]---
-[    2.422053] RIP: 0010:__phys_addr+0x40/0x60
-[    2.422484] Code: 48 2b 05 fb a4 3d 01 48 05 00 00 00 80 48 39 c7 72 17 0f b6 0d ee 9e c0 01 48 89 c2 48 d3 ea 48 85 d2 75 05 c3 cc cc cc cc 90 <0f> 0b 48 03 05 e7 e2 9d 01 48 81 ff ff ff ff 1f 76 e8 90 0f6
-[    2.424294] RSP: 0000:ffffc90000013f18 EFLAGS: 00010287
-[    2.424769] RAX: 0000778000000000 RBX: ffffffff81c17940 RCX: 000000000080000a
-[    2.425378] RDX: 000000000080000b RSI: ffff88800775f320 RDI: 0000000080000000
-[    2.425993] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-[    2.426589] R10: ffff888005028a60 R11: 000000000080000a R12: 0000000000000000
-[    2.427156] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-[    2.427746] FS:  0000000000000000(0000) GS:ffff88807d9c0000(0000) knlGS:0000000000000000
-[    2.428368] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    2.428820] CR2: 0000000000000000 CR3: 0000000002a48000 CR4: 00000000000006b0
-[    2.429373] Kernel panic - not syncing: Fatal exception
-[    2.429982] Kernel Offset: disabled
-[    2.430261] ---[ end Kernel panic - not syncing: Fatal exception ]---
-
-Adding below patch fixed it.
-
-diff --git a/lib/bootconfig.c b/lib/bootconfig.c
-index f9a45adc6307..8841554432d5 100644
---- a/lib/bootconfig.c
-+++ b/lib/bootconfig.c
-@@ -65,7 +65,7 @@ static inline void __init xbc_free_mem(void *addr, size_t size, bool early)
- {
- 	if (early)
- 		memblock_free(addr, size);
--	else
-+	else if (addr)
- 		memblock_free_late(__pa(addr), size);
+diff --git a/sound/pci/hda/cs35l41_hda_property.c b/sound/pci/hda/cs35l41_hda_property.c
+index 8fb688e41..244e41d51 100644
+--- a/sound/pci/hda/cs35l41_hda_property.c
++++ b/sound/pci/hda/cs35l41_hda_property.c
+@@ -109,6 +109,7 @@ static const struct cs35l41_config cs35l41_config_table[] = {
+ 	{ "10431F1F", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, -1, 0, 0, 0, 0 },
+ 	{ "10431F62", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 0, 0, 0 },
+ 	{ "10433A60", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 1000, 4500, 24 },
++	{ "17AA386E", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
+ 	{ "17AA386F", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, -1, -1, 0, 0, 0 },
+ 	{ "17AA3877", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
+ 	{ "17AA3878", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
+@@ -414,6 +415,21 @@ static int lenovo_legion_no_acpi(struct cs35l41_hda *cs35l41, struct device *phy
+ 	return 0;
  }
  
-Can you update with this fix?
-
-Thank you,
-
-
-On Fri, 12 Apr 2024 22:18:20 +0900
-Masami Hiramatsu (Google) <mhiramat@kernel.org> wrote:
-
-> On Fri, 12 Apr 2024 18:49:41 +0800
-> qiang4.zhang@linux.intel.com wrote:
-> 
-> > From: Qiang Zhang <qiang4.zhang@intel.com>
-> > 
-> > On the time to free xbc memory in xbc_exit(), memblock may has handed
-> > over memory to buddy allocator. So it doesn't make sense to free memory
-> > back to memblock. memblock_free() called by xbc_exit() even causes UAF bugs
-> > on architectures with CONFIG_ARCH_KEEP_MEMBLOCK disabled like x86.
-> > Following KASAN logs shows this case.
-> > 
-> > This patch fixes the xbc memory free problem by calling memblock_free()
-> > in early xbc init error rewind path and calling memblock_free_late() in
-> > xbc exit path to free memory to buddy allocator.
-> > 
-> > [    9.410890] ==================================================================
-> > [    9.418962] BUG: KASAN: use-after-free in memblock_isolate_range+0x12d/0x260
-> > [    9.426850] Read of size 8 at addr ffff88845dd30000 by task swapper/0/1
-> > 
-> > [    9.435901] CPU: 9 PID: 1 Comm: swapper/0 Tainted: G     U             6.9.0-rc3-00208-g586b5dfb51b9 #5
-> > [    9.446403] Hardware name: Intel Corporation RPLP LP5 (CPU:RaptorLake)/RPLP LP5 (ID:13), BIOS IRPPN02.01.01.00.00.19.015.D-00000000 Dec 28 2023
-> > [    9.460789] Call Trace:
-> > [    9.463518]  <TASK>
-> > [    9.465859]  dump_stack_lvl+0x53/0x70
-> > [    9.469949]  print_report+0xce/0x610
-> > [    9.473944]  ? __virt_addr_valid+0xf5/0x1b0
-> > [    9.478619]  ? memblock_isolate_range+0x12d/0x260
-> > [    9.483877]  kasan_report+0xc6/0x100
-> > [    9.487870]  ? memblock_isolate_range+0x12d/0x260
-> > [    9.493125]  memblock_isolate_range+0x12d/0x260
-> > [    9.498187]  memblock_phys_free+0xb4/0x160
-> > [    9.502762]  ? __pfx_memblock_phys_free+0x10/0x10
-> > [    9.508021]  ? mutex_unlock+0x7e/0xd0
-> > [    9.512111]  ? __pfx_mutex_unlock+0x10/0x10
-> > [    9.516786]  ? kernel_init_freeable+0x2d4/0x430
-> > [    9.521850]  ? __pfx_kernel_init+0x10/0x10
-> > [    9.526426]  xbc_exit+0x17/0x70
-> > [    9.529935]  kernel_init+0x38/0x1e0
-> > [    9.533829]  ? _raw_spin_unlock_irq+0xd/0x30
-> > [    9.538601]  ret_from_fork+0x2c/0x50
-> > [    9.542596]  ? __pfx_kernel_init+0x10/0x10
-> > [    9.547170]  ret_from_fork_asm+0x1a/0x30
-> > [    9.551552]  </TASK>
-> > 
-> > [    9.555649] The buggy address belongs to the physical page:
-> > [    9.561875] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1 pfn:0x45dd30
-> > [    9.570821] flags: 0x200000000000000(node=0|zone=2)
-> > [    9.576271] page_type: 0xffffffff()
-> > [    9.580167] raw: 0200000000000000 ffffea0011774c48 ffffea0012ba1848 0000000000000000
-> > [    9.588823] raw: 0000000000000001 0000000000000000 00000000ffffffff 0000000000000000
-> > [    9.597476] page dumped because: kasan: bad access detected
-> > 
-> > [    9.605362] Memory state around the buggy address:
-> > [    9.610714]  ffff88845dd2ff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> > [    9.618786]  ffff88845dd2ff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> > [    9.626857] >ffff88845dd30000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-> > [    9.634930]                    ^
-> > [    9.638534]  ffff88845dd30080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-> > [    9.646605]  ffff88845dd30100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-> > [    9.654675] ==================================================================
-> > 
-> > Cc: Stable@vger.kernel.org
-> > Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
-> 
-> Looks good to me.
-> 
-> Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> 
-> Also,
-> 
-> Fixes: 40caa127f3c7 ("init: bootconfig: Remove all bootconfig data when the init memory is removed")
-> 
-> Let me pick this for bootconfig/fixes.
-> 
-> Thanks!
-> 
-> > ---
-> > v2:
-> > - add an early flag in xbc_free_mem() to free memory back to memblock in
-> >   xbc_init error path or put memory to buddy allocator in normal xbc_exit.
-> > 
-> > ---
-> >  include/linux/bootconfig.h |  7 ++++++-
-> >  lib/bootconfig.c           | 19 +++++++++++--------
-> >  2 files changed, 17 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/include/linux/bootconfig.h b/include/linux/bootconfig.h
-> > index e5ee2c694401..3f4b4ac527ca 100644
-> > --- a/include/linux/bootconfig.h
-> > +++ b/include/linux/bootconfig.h
-> > @@ -288,7 +288,12 @@ int __init xbc_init(const char *buf, size_t size, const char **emsg, int *epos);
-> >  int __init xbc_get_info(int *node_size, size_t *data_size);
-> >  
-> >  /* XBC cleanup data structures */
-> > -void __init xbc_exit(void);
-> > +void __init _xbc_exit(bool early);
-> > +
-> > +static inline void xbc_exit(void)
-> > +{
-> > +	_xbc_exit(false);
-> > +}
-> >  
-> >  /* XBC embedded bootconfig data in kernel */
-> >  #ifdef CONFIG_BOOT_CONFIG_EMBED
-> > diff --git a/lib/bootconfig.c b/lib/bootconfig.c
-> > index c59d26068a64..f9a45adc6307 100644
-> > --- a/lib/bootconfig.c
-> > +++ b/lib/bootconfig.c
-> > @@ -61,9 +61,12 @@ static inline void * __init xbc_alloc_mem(size_t size)
-> >  	return memblock_alloc(size, SMP_CACHE_BYTES);
-> >  }
-> >  
-> > -static inline void __init xbc_free_mem(void *addr, size_t size)
-> > +static inline void __init xbc_free_mem(void *addr, size_t size, bool early)
-> >  {
-> > -	memblock_free(addr, size);
-> > +	if (early)
-> > +		memblock_free(addr, size);
-> > +	else
-> > +		memblock_free_late(__pa(addr), size);
-> >  }
-> >  
-> >  #else /* !__KERNEL__ */
-> > @@ -73,7 +76,7 @@ static inline void *xbc_alloc_mem(size_t size)
-> >  	return malloc(size);
-> >  }
-> >  
-> > -static inline void xbc_free_mem(void *addr, size_t size)
-> > +static inline void xbc_free_mem(void *addr, size_t size, bool early)
-> >  {
-> >  	free(addr);
-> >  }
-> > @@ -904,13 +907,13 @@ static int __init xbc_parse_tree(void)
-> >   * If you need to reuse xbc_init() with new boot config, you can
-> >   * use this.
-> >   */
-> > -void __init xbc_exit(void)
-> > +void __init _xbc_exit(bool early)
-> >  {
-> > -	xbc_free_mem(xbc_data, xbc_data_size);
-> > +	xbc_free_mem(xbc_data, xbc_data_size, early);
-> >  	xbc_data = NULL;
-> >  	xbc_data_size = 0;
-> >  	xbc_node_num = 0;
-> > -	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX);
-> > +	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX, early);
-> >  	xbc_nodes = NULL;
-> >  	brace_index = 0;
-> >  }
-> > @@ -963,7 +966,7 @@ int __init xbc_init(const char *data, size_t size, const char **emsg, int *epos)
-> >  	if (!xbc_nodes) {
-> >  		if (emsg)
-> >  			*emsg = "Failed to allocate bootconfig nodes";
-> > -		xbc_exit();
-> > +		_xbc_exit(true);
-> >  		return -ENOMEM;
-> >  	}
-> >  	memset(xbc_nodes, 0, sizeof(struct xbc_node) * XBC_NODE_MAX);
-> > @@ -977,7 +980,7 @@ int __init xbc_init(const char *data, size_t size, const char **emsg, int *epos)
-> >  			*epos = xbc_err_pos;
-> >  		if (emsg)
-> >  			*emsg = xbc_err_msg;
-> > -		xbc_exit();
-> > +		_xbc_exit(true);
-> >  	} else
-> >  		ret = xbc_node_num;
-> >  
-> > -- 
-> > 2.39.2
-> > 
-> 
-> 
-> -- 
-> Masami Hiramatsu (Google) <mhiramat@kernel.org>
-
-
++/*
++ * Some devices just have a single interrupt line for multiple amps, for which we
++ * should just register the interrupt for the first amp. Otherwise, we would meet EBUSY
++ * when registering the interrupt for the second amp.
++ */
++static int single_interrupt_dsd_config(struct cs35l41_hda *cs35l41, struct device *physdev, int id,
++			       const char *hid)
++{
++	generic_dsd_config(cs35l41, physdev, id, hid);
++	if (id != 0x40) {
++		cs35l41->hw_cfg.gpio2.func = CS35L41_NOT_USED;
++	}
++	return 0;
++}
++
+ struct cs35l41_prop_model {
+ 	const char *hid;
+ 	const char *ssid;
+@@ -500,6 +516,7 @@ static const struct cs35l41_prop_model cs35l41_prop_model_table[] = {
+ 	{ "CSC3551", "10431F1F", generic_dsd_config },
+ 	{ "CSC3551", "10431F62", generic_dsd_config },
+ 	{ "CSC3551", "10433A60", generic_dsd_config },
++	{ "CSC3551", "17AA386E", single_interrupt_dsd_config },
+ 	{ "CSC3551", "17AA386F", generic_dsd_config },
+ 	{ "CSC3551", "17AA3877", generic_dsd_config },
+ 	{ "CSC3551", "17AA3878", generic_dsd_config },
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index cdcb28aa9..ac729187f 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10382,6 +10382,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x3853, "Lenovo Yoga 7 15ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3855, "Legion 7 16ITHG6", ALC287_FIXUP_LEGION_16ITHG6),
+ 	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
++	SND_PCI_QUIRK(0x17aa, 0x386e, "Legion Y9000X 2022 IAH7", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x386f, "Legion 7i 16IAX7", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x3870, "Lenovo Yoga 7 14ARB7", ALC287_FIXUP_YOGA7_14ARB7_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x3877, "Lenovo Legion 7 Slim 16ARHA7", ALC287_FIXUP_CS35L41_I2C_2),
 -- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+2.44.0
+
 
