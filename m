@@ -1,138 +1,124 @@
-Return-Path: <stable+bounces-39349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24DDF8A39FE
-	for <lists+stable@lfdr.de>; Sat, 13 Apr 2024 03:03:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD068A3B22
+	for <lists+stable@lfdr.de>; Sat, 13 Apr 2024 07:33:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71D7FB214C9
-	for <lists+stable@lfdr.de>; Sat, 13 Apr 2024 01:03:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14FD7B22431
+	for <lists+stable@lfdr.de>; Sat, 13 Apr 2024 05:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9860B4A33;
-	Sat, 13 Apr 2024 00:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8B71C6AF;
+	Sat, 13 Apr 2024 05:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="b/DAJ9iO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pl8y/Jtw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1358F4C66
-	for <stable@vger.kernel.org>; Sat, 13 Apr 2024 00:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3961BDCD;
+	Sat, 13 Apr 2024 05:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712969844; cv=none; b=XrwGPLdRnAzPpPZC38R8BZq/XY4TAIkmHzjXKF4mkUJs77mfAWI9yD1NPJQBkcOeGL2LlWtkujN9eecJ56NdlncbqEujbp+/Cxv+Sv6w5g9Cc6+8UTq5HnBo3ottUFWh7hSBTdEDFEkkJbUgIuveC89P0WmPSpqB3qtfHhyJrEI=
+	t=1712986388; cv=none; b=Dr7SYkxBY7CiPQfqNOQlmiHSe+7Gu6Wm2zSKpK4jbmNLPMMd9Au8GYT2g6hbEtFKtUVQJxN+Y2Ylywd2D80vEMR8g2Li31HVQ7jC4pa6NjWD6IG2a7x2QGhvxSFB+f/CoJzIBkvi9nEdyIbTM2+wYXFsaKjbJYyQ2QTg4d2Dne4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712969844; c=relaxed/simple;
-	bh=bmzo1ooKzqufK+juDvo25PZMBaSl3V6Gz4q4MzinNGI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qx42cNFFaYYUFA9FWWpAv+RRuFGMy68CGtHtmPzAqiH6gn5li0TCjblrMPTf8Rs/pEkS63njcCZUoa9hJPZ7CVQntkKfehsuF5pOQfD9lk2TA/S6uyyFDFCapgm8yRUu8D4QOTWtLM3nOXQcCMnLPf1XOw0Xn7FtrsMC0hhFKTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=b/DAJ9iO; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-344047ac7e4so1457122f8f.0
-        for <stable@vger.kernel.org>; Fri, 12 Apr 2024 17:57:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1712969840; x=1713574640; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wc6szgZjNNFyh/LwTAWMUZNCmALq+FNR/Ebns3AOlpc=;
-        b=b/DAJ9iOSoS2kY4rEO8CA6EkYIjguKRyM8bp7s2L3qy4wA2vmVHRGWQRXEb/pKOT0R
-         zr90UeovvZ85AW//d4dVYXSEh9v2aabWhThaEt7wOmeDkr3JkJRKtx4NuT7OmEu5N3MG
-         +1A6+lDVRVwsvdBiHHcLsTkJfSSH9gIFMHyuHGF7zG+85rXu/z6dae9m2WLVmKnkBwtY
-         5OEn0Zp1KMsrAfAABOvmSv2AyP5M/F+pWOoG70VsTRXt6onjgfHwyxZc/PPBmPoi73LX
-         +zSOUpZA2AMtdssZrmTooes6WTw+ycKw/5suBo8QqVzW54yP29LN1zucxmy61b5lzb0X
-         osgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712969840; x=1713574640;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wc6szgZjNNFyh/LwTAWMUZNCmALq+FNR/Ebns3AOlpc=;
-        b=A/ImwSeLDi3jQ4ZO0UzDXQERjc44AFz4cxXqqU9Lc+eBJBmkugz1avkrCNT0b8JlHF
-         xpPRfeK3B80xku9UhJLYV4/KhfqI73MsSOLQ4eR1GqG5av0r2WWcQHG8MwqyH6gsKHX5
-         t0HspfqEL5sBXs/C/OqsEIOABXSLLCoH1ULFpxzqafx5qIGt1GsIALsj2T4wpKXIvQGs
-         hKNwREDu3VWoHibxeegvFU7YR+KP7QrahctIbq/min90wt83UQuc2AY+J0a+o8OI3gYH
-         XJTBbtQmupg3azsBOiJY7aUcEPpD89k2Dm9mdxYhG26ew9kbuFZ/5w7G7jb5h13H25rr
-         OxcA==
-X-Forwarded-Encrypted: i=1; AJvYcCXlTNQMhi3S9rhrwz2zyzm6zjCtlZ9Nee6WlVvQLuS+y278AItou7oVLOzVVuX4tmQqgxdwaSToWw9J4UNU/UbePsZwgTE6
-X-Gm-Message-State: AOJu0Yy/iQSjVdMkPvQ2UjMpyL5vdwLkfv8gBXj74rIIfJwr+BPaLf1I
-	+DtcVW2m8E6wSq8aUHDlJyhSkCxSZDOsCyzjZXwEMLjAcS4WmgQmadaCZat+YvDCvUO0jETIio6
-	G
-X-Google-Smtp-Source: AGHT+IG5KyNZ5UA78drYL10vGyqyFOO3ZKeVjROMtVCq0nW7TCGzkkBZy2nnAMrb7RUrG6yqAasTfA==
-X-Received: by 2002:adf:fc49:0:b0:345:6cec:4e02 with SMTP id e9-20020adffc49000000b003456cec4e02mr5032792wrs.12.1712969840341;
-        Fri, 12 Apr 2024 17:57:20 -0700 (PDT)
-Received: from ?IPV6:2001:559:57b:111::ffff:d600? ([2001:559:57b:111::ffff:d600])
-        by smtp.gmail.com with ESMTPSA id z5-20020ae9c105000000b0078ed33d55f2sm837987qki.121.2024.04.12.17.57.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Apr 2024 17:57:19 -0700 (PDT)
-Message-ID: <c55d8329-6d59-4821-89f2-6b50fa9dc6a7@suse.com>
-Date: Fri, 12 Apr 2024 20:57:18 -0400
+	s=arc-20240116; t=1712986388; c=relaxed/simple;
+	bh=0Fo4DOGbiEVoyUC14vYeQXNWKxP76fZ2K3xNhDzb6ic=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BJT4O+XKHp+y4khmSw9pFkxCxqEAaQpMroZSVtL1bVOl+lPnW76zm1flolrplX9pTxaoTz/FRKCqq3e4y4uBi1CHY1IOHl3VYTaeMKvZI3I+rCMD1NZmeNHSkqI4SRG6GWaZ6O6mBQC+e6g1jcXHZGbYierC2JLiEoxWF5wW9C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pl8y/Jtw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4ECC113CD;
+	Sat, 13 Apr 2024 05:33:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712986387;
+	bh=0Fo4DOGbiEVoyUC14vYeQXNWKxP76fZ2K3xNhDzb6ic=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pl8y/Jtwwp8Zs3VmxnkiETlT3ehrfUCySiI94Chkbo+hHhYrTIa9ZTnUG8XmqC0gu
+	 MTP+eHzW9dpIIVsXkdpLGSvlpVTazFIIA1aRin10BEW9REI8uiPb1bi8XrgwXcotHr
+	 JAdkOkspVW7ttfM/WwkF1Oiw99Bgr+iIavRt9Ruo=
+Date: Sat, 13 Apr 2024 07:33:01 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Ignat Korchagin <ignat@cloudflare.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Pascal Ernster <git@hardfalcon.net>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Tom Lendacky <thomas.lendacky@amd.com>,
+	kernel-team@cloudflare.com
+Subject: Re: [PATCH 6.8 271/273] x86/sme: Move early SME kernel encryption
+ handling into .head.text
+Message-ID: <2024041333-perpetual-garnish-8da0@gregkh>
+References: <20240408125309.280181634@linuxfoundation.org>
+ <20240408125317.917032769@linuxfoundation.org>
+ <76489f58-6b60-4afd-9585-9f56960f7759@hardfalcon.net>
+ <20240410053433.GAZhYk6Q8Ybk_DyGbi@fat_crate.local>
+ <2024041024-boney-sputter-6b71@gregkh>
+ <CAMj1kXHjwJnfjVgm=cOaJtJ=mF-mTLaoDM0wQyvvjL3ps9JEog@mail.gmail.com>
+ <2024041047-upright-smudgy-c380@gregkh>
+ <DB55FDF8-3405-4678-8BC1-2226950BC246@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/mst: Fix NULL pointer dereference in
- drm_dp_add_payload_part2 (again)
-To: Wayne Lin <Wayne.Lin@amd.com>, dri-devel@lists.freedesktop.org
-Cc: linux-kernel@vger.kernel.org, David Airlie <airlied@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>, stable@vger.kernel.org
-References: <20240413002252.30780-1-jeffm@suse.com>
-Content-Language: en-US
-From: Jeff Mahoney <jeffm@suse.com>
-In-Reply-To: <20240413002252.30780-1-jeffm@suse.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DB55FDF8-3405-4678-8BC1-2226950BC246@cloudflare.com>
 
-As a follow up, I read through the original thread before sending this 
-and my understanding is that this message probably shouldn't be getting 
-printed in the first place.  I've turned on KMS, ATOMIC, STATE, and DP 
-debugging to see what shakes out.  I have a KVM on my desk that I use to 
-switch between systems fairly frequently.  I'm speculating that the 
-connecting and disconnecting is related, so I'm hopeful I can trigger it 
-quickly.
+On Fri, Apr 12, 2024 at 10:32:15PM +0100, Ignat Korchagin wrote:
+> 
+> > On 10 Apr 2024, at 15:11, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> > 
+> > On Wed, Apr 10, 2024 at 08:43:24AM +0200, Ard Biesheuvel wrote:
+> >> On Wed, 10 Apr 2024 at 07:46, Greg Kroah-Hartman
+> >> <gregkh@linuxfoundation.org> wrote:
+> >>> 
+> >>> On Wed, Apr 10, 2024 at 07:34:33AM +0200, Borislav Petkov wrote:
+> >>>> On Tue, Apr 09, 2024 at 06:38:53PM +0200, Pascal Ernster wrote:
+> >>>>> Just to make sure this doesn't get lost: This patch causes the kernel to not
+> >>>>> boot on several x86_64 VMs of mine (I haven't tested it on a bare metal
+> >>>>> machine). For details and a kernel config to reproduce the issue, see https://lore.kernel.org/stable/fd186a2b-0c62-4942-bed3-a27d72930310@hardfalcon.net/
+> >>>> 
+> >>>> I see your .config there. How are you booting the VMs? qemu cmdline?
+> >>>> 
+> >>>> Ard, anything missing in the backport?
+> >>>> 
+> >>>> I'm busy and won't be able to look in the next couple of days...
+> >>> 
+> >>> As reverting seems to resolve this, I'll go do that after my morning
+> >>> coffee kicks in...
+> >> 
+> >> Fair enough. I'll look into this today, but I guess you're on a tight
+> >> schedule with this release.
+> >> 
+> >> Please drop the subsequent patch as well:
+> >> 
+> >> x86/efistub: Remap kernel text read-only before dropping NX attribute
+> >> 
+> >> as it assumes that all code reachable from the startup entrypoint is
+> >> in .head.text and this will no longer be the case.
+> > 
+> > Given this is the only report, and it seems to be with an "odd" linker,
+> > I'll leave it in for now to keep in sync with 6.9-rc.  If this is a
+> > problem, we can revert the commits in a later release at any time.
+> 
+> We encountered this issue in our production machines and reproduced on a simple QEMU in standard Debian Bookworm
+> 
+> Steps:
+> 1. Download source
+> 2. $ make defconfig
+> 3. Enable CONFIG_AMD_MEM_ENCRYPT and CONFIG_GCC_PLUGIN_STACKLEAK through make menuconfig
+> 4. Compile
+> 5. $ qemu-system-x86_64 -smp 2 -m 1G -enable-kvm -cpu host -kernel arch/x86/boot/bzImage -nographic -append "console=ttyS0”
+> 
+> You will notice that the VM will go into reboot loop (same happens in our bare metal production servers). Do note that you would need a compiler with CONFIG_GCC_PLUGIN_STACKLEAK support (not the standard Debian one - unless I don’t know how to install GCC plugins)
 
--Jeff
+Thanks for th ereport, we have a fix for this in the latest -rc testing
+kernel out for review and will be in the next release in a day or so.
 
-On 4/12/24 20:22, Jeff Mahoney wrote:
-> Commit 54d217406afe (drm: use mgr->dev in drm_dbg_kms in
-> drm_dp_add_payload_part2) appears to have been accidentially reverted as
-> part of commit 5aa1dfcdf0a42 (drm/mst: Refactor the flow for payload
-> allocation/removement).
-> 
-> I've been seeing NULL pointer dereferences in drm_dp_add_payload_part2
-> due to state->dev being NULL in the debug message printed if the payload
-> allocation has failed.
-> 
-> This commit restores mgr->dev to avoid the Oops.
-> 
-> Fixes: 5aa1dfcdf0a42 ("drm/mst: Refactor the flow for payload allocation/removement")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jeff Mahoney <jeffm@suse.com>
-> ---
->   drivers/gpu/drm/display/drm_dp_mst_topology.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> index 03d528209426..3dc966f25c0c 100644
-> --- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> +++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> @@ -3437,7 +3437,7 @@ int drm_dp_add_payload_part2(struct drm_dp_mst_topology_mgr *mgr,
->   
->   	/* Skip failed payloads */
->   	if (payload->payload_allocation_status != DRM_DP_MST_PAYLOAD_ALLOCATION_DFP) {
-> -		drm_dbg_kms(state->dev, "Part 1 of payload creation for %s failed, skipping part 2\n",
-> +		drm_dbg_kms(mgr->dev, "Part 1 of payload creation for %s failed, skipping part 2\n",
->   			    payload->port->connector->name);
->   		return -EIO;
->   	}
+thanks,
 
--- 
-Jeff Mahoney
-VP Engineering, Linux Systems
+greg k-h
 
