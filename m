@@ -1,115 +1,150 @@
-Return-Path: <stable+bounces-39347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132928A38DE
-	for <lists+stable@lfdr.de>; Sat, 13 Apr 2024 01:21:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F9B8A3960
+	for <lists+stable@lfdr.de>; Sat, 13 Apr 2024 02:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 998B3286701
-	for <lists+stable@lfdr.de>; Fri, 12 Apr 2024 23:21:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE313B234FA
+	for <lists+stable@lfdr.de>; Sat, 13 Apr 2024 00:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB6615251A;
-	Fri, 12 Apr 2024 23:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BA217FE;
+	Sat, 13 Apr 2024 00:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="uFL8KfTc"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="I8NcdD/e";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="I8NcdD/e"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964A727442;
-	Fri, 12 Apr 2024 23:21:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19C037E;
+	Sat, 13 Apr 2024 00:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712964082; cv=none; b=noXxRx3N7joEYCPp9nxHMMNwAPNHXMone57UHQBn9EjJL9q0pAUjt6QD569aJe73tmvjGEd3Xj72idWCJNDtfFG1bTGxNwXzOVLZFQ3U+M4WNtjrPkcSujrtCgww6O2hRizZKXOED392IohQ1EeSb4s3QYHSu+U9q7vepcrqOF0=
+	t=1712968380; cv=none; b=mTuQwrHETK3iNwA+3iShWdaAaJg/mN0xUYcKGKQhzQvvYBguEq+I8X+3wnEZrqdHqT3VR3hMnDhxHE8Noco17QZqLIDXAI8J2MTmhl7wgZ9QXabs/HsIPJjtn094g9DHEVNxSbULuuR+VdC4dGNl6+ULLIMjl8ZF14z50acfPBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712964082; c=relaxed/simple;
-	bh=sI0/OsZ2FQB7zuUSJnWG2iFUvueFTFQT6NbEiqw/lkA=;
-	h=Date:To:From:Subject:Message-Id; b=UyB8MiGDOL8RhWBJYVNGDBQqwhbhsN+bcTrLZGEZkuGwGlBFX8bfm6e3j3m/LgsUHJGLVWs31xjS4AjDVt11k7Toq8eb4+Vtjxja8PdaOg/efs2wiZmOVGYjnyWXF/iwcqkSJGmIoUWYxv3jp4am6eklczBYmDx+Qt3Ye0VhYGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=uFL8KfTc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132D3C113CC;
-	Fri, 12 Apr 2024 23:21:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1712964082;
-	bh=sI0/OsZ2FQB7zuUSJnWG2iFUvueFTFQT6NbEiqw/lkA=;
-	h=Date:To:From:Subject:From;
-	b=uFL8KfTceVDYrXOO/Z0ZCcLYkWSquI6q1AamcNnn5tFFiT0V0FTAApmSe5aEjteNP
-	 V/0hmdRkALbksiB6fLFBkohVUyGgvDoGGykjMqkV7S80gqTVeHEmRe43g7MSh0m8L8
-	 kyxzGZn0r3OdkkC3rTR2jiJvHYtvGuuyk2uJi4zE=
-Date: Fri, 12 Apr 2024 16:21:21 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,nao.horiguchi@gmail.com,linmiaohe@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-memory-failure-fix-deadlock-when-hugetlb_optimize_vmemmap-is-enabled-v2.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240412232122.132D3C113CC@smtp.kernel.org>
+	s=arc-20240116; t=1712968380; c=relaxed/simple;
+	bh=coyk5nt8YNwTSTgY3qFZSAF1qy56yQEwiyGek0JLb04=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gBaq8Ja/qsNL8xOC6HCFPz/HjpQyAY3PPQpHBULFuo/qVDD8hfaqylzApyGwaaaG9weH2aebFCDiExQUPE5W1zydMfKOrjxiuJGnh9YyuhGoU1fhC19H6v53PbeogRZdclWGS5X82ePKI8SUiDO2WRljoK05gHR0PhgEdgfn9f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=I8NcdD/e; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=I8NcdD/e; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DAC6022C4A;
+	Sat, 13 Apr 2024 00:32:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1712968375; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=Ga9BDy950sqrkymKo/DX0soSuDFkOI9AzOuH62JvhYw=;
+	b=I8NcdD/e1cLEL+nxIyxQnHqKpsUPCfjG7jRi48rRO496Fg9sqJd96AMINZ//aK1SXlaaBk
+	yx4TdpyriWgtaSgGl3g1WhSlTJSfzkL68Mk4dsPaxMgqIS5ivgz8XTOgNTqZPx+CdO/iOO
+	ZzXxGKsXCAQYTDO6ttOJiJVn4fGySh8=
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1712968375; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=Ga9BDy950sqrkymKo/DX0soSuDFkOI9AzOuH62JvhYw=;
+	b=I8NcdD/e1cLEL+nxIyxQnHqKpsUPCfjG7jRi48rRO496Fg9sqJd96AMINZ//aK1SXlaaBk
+	yx4TdpyriWgtaSgGl3g1WhSlTJSfzkL68Mk4dsPaxMgqIS5ivgz8XTOgNTqZPx+CdO/iOO
+	ZzXxGKsXCAQYTDO6ttOJiJVn4fGySh8=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AE3361368B;
+	Sat, 13 Apr 2024 00:32:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id /MuCKrfSGWZhGAAAD6G6ig
+	(envelope-from <jeffm@suse.com>); Sat, 13 Apr 2024 00:32:55 +0000
+Received: from localhost.localdomain (silencio.work.jeffm.io [192.168.111.21])
+	by mail.work.jeffm.io (Postfix) with ESMTPS id 52F881014592;
+	Fri, 12 Apr 2024 20:32:50 -0400 (EDT)
+Received: by localhost.localdomain (Postfix, from userid 1000)
+	id B6E721079455; Fri, 12 Apr 2024 20:22:54 -0400 (EDT)
+From: Jeff Mahoney <jeffm@suse.com>
+To: Wayne Lin <Wayne.Lin@amd.com>,
+	dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Jeff Mahoney <jeffm@suse.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/mst: Fix NULL pointer dereference in drm_dp_add_payload_part2 (again)
+Date: Fri, 12 Apr 2024 20:22:52 -0400
+Message-ID: <20240413002252.30780-1-jeffm@suse.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: 0.20
+X-Spam-Level: 
+X-Spamd-Result: default: False [0.20 / 50.00];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	BAYES_HAM(-0.00)[25.85%];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.com:email];
+	FROM_HAS_DN(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,ffwll.ch,suse.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
 
+Commit 54d217406afe (drm: use mgr->dev in drm_dbg_kms in
+drm_dp_add_payload_part2) appears to have been accidentially reverted as
+part of commit 5aa1dfcdf0a42 (drm/mst: Refactor the flow for payload
+allocation/removement).
 
-The patch titled
-     Subject: mm/memory-failure: fix deadlock when hugetlb_optimize_vmemmap is enabled
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-memory-failure-fix-deadlock-when-hugetlb_optimize_vmemmap-is-enabled-v2.patch
+I've been seeing NULL pointer dereferences in drm_dp_add_payload_part2
+due to state->dev being NULL in the debug message printed if the payload
+allocation has failed.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memory-failure-fix-deadlock-when-hugetlb_optimize_vmemmap-is-enabled-v2.patch
+This commit restores mgr->dev to avoid the Oops.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Miaohe Lin <linmiaohe@huawei.com>
-Subject: mm/memory-failure: fix deadlock when hugetlb_optimize_vmemmap is enabled
-Date: Fri, 12 Apr 2024 10:57:54 +0800
-
-extend comment per Oscar
-
-Link: https://lkml.kernel.org/r/20240412025754.1897615-1-linmiaohe@huawei.com
-Fixes: a6b40850c442 ("mm: hugetlb: replace hugetlb_free_vmemmap_enabled with a static_key")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 5aa1dfcdf0a42 ("drm/mst: Refactor the flow for payload allocation/removement")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeff Mahoney <jeffm@suse.com>
 ---
+ drivers/gpu/drm/display/drm_dp_mst_topology.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- mm/memory-failure.c |    4 ++++
- 1 file changed, 4 insertions(+)
-
---- a/mm/memory-failure.c~mm-memory-failure-fix-deadlock-when-hugetlb_optimize_vmemmap-is-enabled-v2
-+++ a/mm/memory-failure.c
-@@ -159,6 +159,10 @@ static int __page_handle_poison(struct p
- 	 * dissolve_free_huge_page() might hold cpu_hotplug_lock via static_key_slow_dec()
- 	 * when hugetlb vmemmap optimization is enabled. This will break current lock
- 	 * dependency chain and leads to deadlock.
-+	 * Disabling pcp before dissolving the page was a deterministic approach because
-+	 * we made sure that those pages cannot end up in any PCP list. Draining PCP lists
-+	 * expels those pages to the buddy system, but nothing guarantees that those pages
-+	 * do not get back to a PCP queue if we need to refill those.
- 	 */
- 	ret = dissolve_free_huge_page(page);
- 	if (!ret) {
-_
-
-Patches currently in -mm which might be from linmiaohe@huawei.com are
-
-mm-memory-failure-fix-deadlock-when-hugetlb_optimize_vmemmap-is-enabled.patch
-mm-memory-failure-fix-deadlock-when-hugetlb_optimize_vmemmap-is-enabled-v2.patch
-fork-defer-linking-file-vma-until-vma-is-fully-initialized.patch
+diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+index 03d528209426..3dc966f25c0c 100644
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -3437,7 +3437,7 @@ int drm_dp_add_payload_part2(struct drm_dp_mst_topology_mgr *mgr,
+ 
+ 	/* Skip failed payloads */
+ 	if (payload->payload_allocation_status != DRM_DP_MST_PAYLOAD_ALLOCATION_DFP) {
+-		drm_dbg_kms(state->dev, "Part 1 of payload creation for %s failed, skipping part 2\n",
++		drm_dbg_kms(mgr->dev, "Part 1 of payload creation for %s failed, skipping part 2\n",
+ 			    payload->port->connector->name);
+ 		return -EIO;
+ 	}
+-- 
+2.44.0
 
 
