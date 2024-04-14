@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-39382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F408A42A8
-	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 15:36:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A0E8A42A9
+	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 15:36:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33ADD1F212ED
-	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 13:36:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 814291F2125B
+	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 13:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9E942049;
-	Sun, 14 Apr 2024 13:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BEFB328DB;
+	Sun, 14 Apr 2024 13:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+3hqufG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEhhii0H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFDC1DFED
-	for <stable@vger.kernel.org>; Sun, 14 Apr 2024 13:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBB943AD1
+	for <stable@vger.kernel.org>; Sun, 14 Apr 2024 13:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713101776; cv=none; b=YchQC8NDjAIWJjV3FeLJHtZO7C2wxrJYXto/ECHgb1kaoGq5lQm4iCh0OG5QzbitTWZb0dfmtejdllqpgTc6Oi1IhIGUatSseGhKqqjv25+KcKwRwRk+/JN4xS/9tIxTNrAJrgFyj14E0r3BDsPbgmEFXnoqwuUZkqqX05+/cWU=
+	t=1713101785; cv=none; b=oWayHUCUR/rWJu92zFYywLRi2KdI87I4M3b7Q9YH21enXgccYiq2mkBrF0NE4d2gyVEKJTaS3ucq4qbrPMv9Ec1Q7wSOYKJkYZzvyPEiZ8mt/EudOul7+JhdgocyArRGJQoVTo3TJD2LHjRXaag6ACSuOsh+Sm5xRyQH1vz1kbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713101776; c=relaxed/simple;
-	bh=in8uX3LC5uat/Y3H7pWZEKxRsgeo4Edj1c660WoRhTE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CkETlw1icsUPEZLPH7lvH5dgy3/jjdY00fQUW7Tcjtzb+LujEsQvhKwCxoUfvnoq6lFyqSOfmXhr1DdXa0gdQEiEA4XDZ4Ze4KM06Wf6NgW73s1O1OlT79WDYWvu5/yHAgg21cTdsbtXH7EqO8UrTOCkA7hSfHz2H77eNpFetQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+3hqufG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B45C072AA;
-	Sun, 14 Apr 2024 13:36:15 +0000 (UTC)
+	s=arc-20240116; t=1713101785; c=relaxed/simple;
+	bh=SeVLaIXHt7Gct99lrWg4xxTbXV7IbAep785OQLA2jBQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=f6BAgjDqZ/C2oZGFCPWR7m+Gm/5VyzeNF362tpFPsbOURE85P8T6xEPk/TsbMeo9OGYvj3cRDgqUHAH1JN3pIym4IDX0+LUAhhpMxkGlSrOpONvxcsOMkojqhvEyVdWVGGNo5BCY/UjSniNYwLVt61tg0AUE2aDNUTAnhFcn3Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEhhii0H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC7FC072AA;
+	Sun, 14 Apr 2024 13:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713101775;
-	bh=in8uX3LC5uat/Y3H7pWZEKxRsgeo4Edj1c660WoRhTE=;
+	s=korg; t=1713101785;
+	bh=SeVLaIXHt7Gct99lrWg4xxTbXV7IbAep785OQLA2jBQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=q+3hqufGHfkq4HEQfMZtsbj4B8Nxr/DRiPHmZXJoSjeuytcoH5TwPwU49xKw37yDS
-	 Z0J4De46D8bOGHD+f/pfpe0pNBvhTncc5jYfniNu3zPEdXu1o620ssaG4nZRWLQgwa
-	 yTWMVpm+nnWYktpPOy10dltDLEe9IeGvzehqAryc=
-Subject: FAILED: patch "[PATCH] virtio_net: Do not send RSS key if it is not supported" failed to apply to 6.6-stable tree
+	b=wEhhii0H1aBguyDx8QgwUYli3LVWxpJDMkiSM+B6LhTBiJa9aUnz9LE0/g1D1zWlA
+	 ZEnOX3KHvjv9OCPPwdCFm1RtqSVHvPg+TSvDqEmizrwjbhMoMo1WKc1kUzSJ0/Y/yw
+	 9Iq/EbEII2/axvNtJPeiaDUXg+Dcu5fnw30vp+H4=
+Subject: FAILED: patch "[PATCH] virtio_net: Do not send RSS key if it is not supported" failed to apply to 6.1-stable tree
 To: leitao@debian.org,davem@davemloft.net,hengqi@linux.alibaba.com,xuanzhuo@linux.alibaba.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 14 Apr 2024 15:36:12 +0200
-Message-ID: <2024041412-subduing-brewing-cd04@gregkh>
+Date: Sun, 14 Apr 2024 15:36:14 +0200
+Message-ID: <2024041414-humming-alarm-eb41@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 059a49aa2e25c58f90b50151f109dd3c4cdb3a47
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024041412-subduing-brewing-cd04@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024041414-humming-alarm-eb41@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -84,6 +84,11 @@ ce1b75d0635c ("idpf: add ptypes and MAC filter support")
 4930fbf419a7 ("idpf: add core init and interrupt request")
 8077c727561a ("idpf: add controlq init and reset checks")
 e850efed5e15 ("idpf: add module register and probe functionality")
+b9335a757232 ("net/mlx5e: Make flow classification filters static")
+4cab498f33f7 ("hv_netvsc: Allocate rx indirection table size dynamically")
+4f3ed1293feb ("ixgbe: Allow flow hash to be set via ethtool")
+2b30f8291a30 ("net: ethtool: add support for MAC Merge layer")
+8580e16c28f3 ("net/ethtool: add netlink interface for the PLCA RS")
 
 thanks,
 
