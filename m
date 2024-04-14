@@ -1,235 +1,280 @@
-Return-Path: <stable+bounces-39376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 140FD8A4259
-	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 14:58:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E818A429C
+	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 15:34:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1537281723
-	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 12:58:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66F201F212CB
+	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 13:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516083E476;
-	Sun, 14 Apr 2024 12:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446D143AD1;
+	Sun, 14 Apr 2024 13:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GT/+E+jn"
-X-Original-To: Stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XfBNgFw"
+X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F07328DB;
-	Sun, 14 Apr 2024 12:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F8740BED
+	for <stable@vger.kernel.org>; Sun, 14 Apr 2024 13:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713099522; cv=none; b=J03Qa2fOD0vVTBiC/EvhQ7UfJb3UJiW0Dob3gaiADmh4h0KADqqvTU47Z4BlAzOUe5gTt7+/Y58OZg6g/2EdPn6Rjtx52Y6oVYSQfTvScZ0kzNnexN1n+SS0EzNtIFPMq2yhvaW8xnNc2jqODDew7lXp/FkPUwgPx4Lr4BliIQA=
+	t=1713101641; cv=none; b=qL4qYLCgNv0QMJ3Q9lhJtYHar5K5Zeax2godF3IKV6MCtV9m1YUBrvuoPiWIoJQcnvwd2sHCYv9Av0i95XLFaQlXxJwfncLOW3j3pH6ZKDreGDCvfzRhLaQvUtxz2tPqwWcEhDkuDA5YUbU6rO1lwvyNECi9C8ep/+DWkQFMO7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713099522; c=relaxed/simple;
-	bh=Dglaxi1KNrwFgr/1nxOZSoJL+0HYaCytdvsFrqk3eqg=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=swVX+qgX9nrXdpEwWuzTqVNnMYdgGKxtpe+cVBv5vEG//VOLygNc+CiyCUKkd8dL7sq96ckqAHElTTmdiojjuZ22d25pFNkrfq4zGP5ncZVpq4PJ3LVctS3udttWGIE2xNclbiPaw7A82Dye0Fbu3aQTImVSZKJFeclAkGbyh84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GT/+E+jn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA03C2BD11;
-	Sun, 14 Apr 2024 12:58:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713099521;
-	bh=Dglaxi1KNrwFgr/1nxOZSoJL+0HYaCytdvsFrqk3eqg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GT/+E+jn5fMakzrkvyugKEgqFdhwWOUO6N8lTXjnMsK6cZslpQF8ReP8qPLHyCYa0
-	 PmEyak9/lQTRED8zqgV2urPd7kQoaeuScTttsTicBoDFa3I3v22hiumlvOJrPOqVY0
-	 xR0rooCqecH5oCg/L4Vr3Cg+zYP8iGFj8sWARaCwo/P4V875Up0oAlLjF9Irptsevo
-	 rYYjuESDJPGGrWj0LqmNLdWBywEBJSQ8N9VHpsRm79S1QT0PhAA+V0fcTxicGrJsRD
-	 EkRffNs2umwKFUXtDt+b6BDX09gXPhAJXJiAk7NJGDVdVAjFkWgNSxa6Q3w9mfUS36
-	 HJQrzzyG0vy1w==
-Date: Sun, 14 Apr 2024 21:58:37 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: qiang4.zhang@linux.intel.com
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, Qiang Zhang <qiang4.zhang@intel.com>,
- Stable@vger.kernel.org
-Subject: Re: [PATCH v3] bootconfig: use memblock_free_late to free xbc
- memory to buddy
-Message-Id: <20240414215837.de2ce64370c2a2abaeafe46b@kernel.org>
-In-Reply-To: <20240414114944.1012359-1-qiang4.zhang@linux.intel.com>
-References: <20240414114944.1012359-1-qiang4.zhang@linux.intel.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1713101641; c=relaxed/simple;
+	bh=aTUW/tvZCMG60ryLC8lIA7KpB3y9bSjc0Zw9cAbMcNc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Zf/i5GgnLkMwY6zuUiM38gnso542YOFM0KDELReWp/RjjsL3WYPaHXT52i9Gjac7KEHW+KzTExnnwqucQ4/PKQyt8Uau26JMtUskpntlFYrmGYBvFGz2IoeJxuzxMhvuA2ZjWo3cca5MO3zHcmjxqjURqW4Z5gMQGRFB3pEsgL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XfBNgFw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D195C072AA;
+	Sun, 14 Apr 2024 13:33:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1713101640;
+	bh=aTUW/tvZCMG60ryLC8lIA7KpB3y9bSjc0Zw9cAbMcNc=;
+	h=Subject:To:Cc:From:Date:From;
+	b=1XfBNgFwRPSZTsjlXSizPsddSerPycazAJoJ0VnrA4R1c4hLSpyjg4vBXLxnc6D8l
+	 STLImv1yWN8hybZ6sZgWls/6FUKoLl6V5iBVhWUjqEJX7URcMKixoUOhyUVIwM6uCK
+	 lGCvtIdGnvgCC6qLMkw+V9GpYYmPpf4Xo2wPQ4zY=
+Subject: FAILED: patch "[PATCH] smb: client: instantiate when creating SFU files" failed to apply to 6.6-stable tree
+To: pc@manguebit.com,stfrench@microsoft.com,viro@zeniv.linux.org.uk
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sun, 14 Apr 2024 15:33:57 +0200
+Message-ID: <2024041457-sequester-eclipse-f130@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-
-On Sun, 14 Apr 2024 19:49:45 +0800
-qiang4.zhang@linux.intel.com wrote:
-
-> From: Qiang Zhang <qiang4.zhang@intel.com>
-> 
-> On the time to free xbc memory in xbc_exit(), memblock may has handed
-> over memory to buddy allocator. So it doesn't make sense to free memory
-> back to memblock. memblock_free() called by xbc_exit() even causes UAF bugs
-> on architectures with CONFIG_ARCH_KEEP_MEMBLOCK disabled like x86.
-> Following KASAN logs shows this case.
-> 
-> This patch fixes the xbc memory free problem by calling memblock_free()
-> in early xbc init error rewind path and calling memblock_free_late() in
-> xbc exit path to free memory to buddy allocator.
-> 
-> [    9.410890] ==================================================================
-> [    9.418962] BUG: KASAN: use-after-free in memblock_isolate_range+0x12d/0x260
-> [    9.426850] Read of size 8 at addr ffff88845dd30000 by task swapper/0/1
-> 
-> [    9.435901] CPU: 9 PID: 1 Comm: swapper/0 Tainted: G     U             6.9.0-rc3-00208-g586b5dfb51b9 #5
-> [    9.446403] Hardware name: Intel Corporation RPLP LP5 (CPU:RaptorLake)/RPLP LP5 (ID:13), BIOS IRPPN02.01.01.00.00.19.015.D-00000000 Dec 28 2023
-> [    9.460789] Call Trace:
-> [    9.463518]  <TASK>
-> [    9.465859]  dump_stack_lvl+0x53/0x70
-> [    9.469949]  print_report+0xce/0x610
-> [    9.473944]  ? __virt_addr_valid+0xf5/0x1b0
-> [    9.478619]  ? memblock_isolate_range+0x12d/0x260
-> [    9.483877]  kasan_report+0xc6/0x100
-> [    9.487870]  ? memblock_isolate_range+0x12d/0x260
-> [    9.493125]  memblock_isolate_range+0x12d/0x260
-> [    9.498187]  memblock_phys_free+0xb4/0x160
-> [    9.502762]  ? __pfx_memblock_phys_free+0x10/0x10
-> [    9.508021]  ? mutex_unlock+0x7e/0xd0
-> [    9.512111]  ? __pfx_mutex_unlock+0x10/0x10
-> [    9.516786]  ? kernel_init_freeable+0x2d4/0x430
-> [    9.521850]  ? __pfx_kernel_init+0x10/0x10
-> [    9.526426]  xbc_exit+0x17/0x70
-> [    9.529935]  kernel_init+0x38/0x1e0
-> [    9.533829]  ? _raw_spin_unlock_irq+0xd/0x30
-> [    9.538601]  ret_from_fork+0x2c/0x50
-> [    9.542596]  ? __pfx_kernel_init+0x10/0x10
-> [    9.547170]  ret_from_fork_asm+0x1a/0x30
-> [    9.551552]  </TASK>
-> 
-> [    9.555649] The buggy address belongs to the physical page:
-> [    9.561875] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1 pfn:0x45dd30
-> [    9.570821] flags: 0x200000000000000(node=0|zone=2)
-> [    9.576271] page_type: 0xffffffff()
-> [    9.580167] raw: 0200000000000000 ffffea0011774c48 ffffea0012ba1848 0000000000000000
-> [    9.588823] raw: 0000000000000001 0000000000000000 00000000ffffffff 0000000000000000
-> [    9.597476] page dumped because: kasan: bad access detected
-> 
-> [    9.605362] Memory state around the buggy address:
-> [    9.610714]  ffff88845dd2ff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> [    9.618786]  ffff88845dd2ff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> [    9.626857] >ffff88845dd30000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-> [    9.634930]                    ^
-> [    9.638534]  ffff88845dd30080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-> [    9.646605]  ffff88845dd30100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-> [    9.654675] ==================================================================
-> 
-> Cc: Stable@vger.kernel.org
-> Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
-
-Looks good to me.
-
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-
-Thanks!
-
-> ---
-> v3:
-> - add NULL pointer check in memblock_free_late() path.
-> 
-> v2:
-> - add an early flag in xbc_free_mem() to free memory back to memblock in
->   xbc_init error path or put memory to buddy allocator in normal xbc_exit.
-> ---
->  include/linux/bootconfig.h |  7 ++++++-
->  lib/bootconfig.c           | 19 +++++++++++--------
->  2 files changed, 17 insertions(+), 9 deletions(-)
-> 
-> diff --git a/include/linux/bootconfig.h b/include/linux/bootconfig.h
-> index e5ee2c694401..3f4b4ac527ca 100644
-> --- a/include/linux/bootconfig.h
-> +++ b/include/linux/bootconfig.h
-> @@ -288,7 +288,12 @@ int __init xbc_init(const char *buf, size_t size, const char **emsg, int *epos);
->  int __init xbc_get_info(int *node_size, size_t *data_size);
->  
->  /* XBC cleanup data structures */
-> -void __init xbc_exit(void);
-> +void __init _xbc_exit(bool early);
-> +
-> +static inline void xbc_exit(void)
-> +{
-> +	_xbc_exit(false);
-> +}
->  
->  /* XBC embedded bootconfig data in kernel */
->  #ifdef CONFIG_BOOT_CONFIG_EMBED
-> diff --git a/lib/bootconfig.c b/lib/bootconfig.c
-> index c59d26068a64..8841554432d5 100644
-> --- a/lib/bootconfig.c
-> +++ b/lib/bootconfig.c
-> @@ -61,9 +61,12 @@ static inline void * __init xbc_alloc_mem(size_t size)
->  	return memblock_alloc(size, SMP_CACHE_BYTES);
->  }
->  
-> -static inline void __init xbc_free_mem(void *addr, size_t size)
-> +static inline void __init xbc_free_mem(void *addr, size_t size, bool early)
->  {
-> -	memblock_free(addr, size);
-> +	if (early)
-> +		memblock_free(addr, size);
-> +	else if (addr)
-> +		memblock_free_late(__pa(addr), size);
->  }
->  
->  #else /* !__KERNEL__ */
-> @@ -73,7 +76,7 @@ static inline void *xbc_alloc_mem(size_t size)
->  	return malloc(size);
->  }
->  
-> -static inline void xbc_free_mem(void *addr, size_t size)
-> +static inline void xbc_free_mem(void *addr, size_t size, bool early)
->  {
->  	free(addr);
->  }
-> @@ -904,13 +907,13 @@ static int __init xbc_parse_tree(void)
->   * If you need to reuse xbc_init() with new boot config, you can
->   * use this.
->   */
-> -void __init xbc_exit(void)
-> +void __init _xbc_exit(bool early)
->  {
-> -	xbc_free_mem(xbc_data, xbc_data_size);
-> +	xbc_free_mem(xbc_data, xbc_data_size, early);
->  	xbc_data = NULL;
->  	xbc_data_size = 0;
->  	xbc_node_num = 0;
-> -	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX);
-> +	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX, early);
->  	xbc_nodes = NULL;
->  	brace_index = 0;
->  }
-> @@ -963,7 +966,7 @@ int __init xbc_init(const char *data, size_t size, const char **emsg, int *epos)
->  	if (!xbc_nodes) {
->  		if (emsg)
->  			*emsg = "Failed to allocate bootconfig nodes";
-> -		xbc_exit();
-> +		_xbc_exit(true);
->  		return -ENOMEM;
->  	}
->  	memset(xbc_nodes, 0, sizeof(struct xbc_node) * XBC_NODE_MAX);
-> @@ -977,7 +980,7 @@ int __init xbc_init(const char *data, size_t size, const char **emsg, int *epos)
->  			*epos = xbc_err_pos;
->  		if (emsg)
->  			*emsg = xbc_err_msg;
-> -		xbc_exit();
-> +		_xbc_exit(true);
->  	} else
->  		ret = xbc_node_num;
->  
-> -- 
-> 2.39.2
-> 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x c6ff459037b2e35450af2351037eac4c8aca1d6b
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024041457-sequester-eclipse-f130@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From c6ff459037b2e35450af2351037eac4c8aca1d6b Mon Sep 17 00:00:00 2001
+From: Paulo Alcantara <pc@manguebit.com>
+Date: Tue, 9 Apr 2024 11:28:59 -0300
+Subject: [PATCH] smb: client: instantiate when creating SFU files
+
+In cifs_sfu_make_node(), on success, instantiate rather than leave it
+with dentry unhashed negative to support callers that expect mknod(2)
+to always instantiate.
+
+This fixes the following test case:
+
+  mount.cifs //srv/share /mnt -o ...,sfu
+  mkfifo /mnt/fifo
+  ./xfstests/ltp/growfiles -b -W test -e 1 -u -i 0 -L 30 /mnt/fifo
+  ...
+  BUG: unable to handle page fault for address: 000000034cec4e58
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: 0000 1 PREEMPT SMP PTI
+  CPU: 0 PID: 138098 Comm: growfiles Kdump: loaded Not tainted
+  5.14.0-436.3987_1240945149.el9.x86_64 #1
+  Hardware name: Red Hat KVM, BIOS 0.5.1 01/01/2011
+  RIP: 0010:_raw_callee_save__kvm_vcpu_is_preempted+0x0/0x20
+  Code: e8 15 d9 61 00 e9 63 ff ff ff 41 bd ea ff ff ff e9 58 ff ff ff e8
+  d0 71 c0 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 <48> 8b 04
+  fd 60 2b c1 99 80 b8 90 50 03 00 00 0f 95 c0 c3 cc cc cc
+  RSP: 0018:ffffb6a143cf7cf8 EFLAGS: 00010206
+  RAX: ffff8a9bc30fb038 RBX: ffff8a9bc666a200 RCX: ffff8a9cc0260000
+  RDX: 00000000736f622e RSI: ffff8a9bc30fb038 RDI: 000000007665645f
+  RBP: ffffb6a143cf7d70 R08: 0000000000001000 R09: 0000000000000001
+  R10: 0000000000000001 R11: 0000000000000000 R12: ffff8a9bc666a200
+  R13: 0000559a302a12b0 R14: 0000000000001000 R15: 0000000000000000
+  FS: 00007fbed1dbb740(0000) GS:ffff8a9cf0000000(0000)
+  knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 000000034cec4e58 CR3: 0000000128ec6006 CR4: 0000000000770ef0
+  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  PKRU: 55555554
+  Call Trace:
+   <TASK>
+   ? show_trace_log_lvl+0x1c4/0x2df
+   ? show_trace_log_lvl+0x1c4/0x2df
+   ? __mutex_lock.constprop.0+0x5f7/0x6a0
+   ? __die_body.cold+0x8/0xd
+   ? page_fault_oops+0x134/0x170
+   ? exc_page_fault+0x62/0x150
+   ? asm_exc_page_fault+0x22/0x30
+   ? _pfx_raw_callee_save__kvm_vcpu_is_preempted+0x10/0x10
+   __mutex_lock.constprop.0+0x5f7/0x6a0
+   ? __mod_memcg_lruvec_state+0x84/0xd0
+   pipe_write+0x47/0x650
+   ? do_anonymous_page+0x258/0x410
+   ? inode_security+0x22/0x60
+   ? selinux_file_permission+0x108/0x150
+   vfs_write+0x2cb/0x410
+   ksys_write+0x5f/0xe0
+   do_syscall_64+0x5c/0xf0
+   ? syscall_exit_to_user_mode+0x22/0x40
+   ? do_syscall_64+0x6b/0xf0
+   ? sched_clock_cpu+0x9/0xc0
+   ? exc_page_fault+0x62/0x150
+   entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+Cc: stable@vger.kernel.org
+Fixes: 72bc63f5e23a ("smb3: fix creating FIFOs when mounting with "sfu" mount option")
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index b156eefa75d7..78c94d0350fe 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -4964,68 +4964,84 @@ static int smb2_next_header(struct TCP_Server_Info *server, char *buf,
+ 	return 0;
+ }
+ 
+-int cifs_sfu_make_node(unsigned int xid, struct inode *inode,
+-		       struct dentry *dentry, struct cifs_tcon *tcon,
+-		       const char *full_path, umode_t mode, dev_t dev)
++static int __cifs_sfu_make_node(unsigned int xid, struct inode *inode,
++				struct dentry *dentry, struct cifs_tcon *tcon,
++				const char *full_path, umode_t mode, dev_t dev)
+ {
+-	struct cifs_open_info_data buf = {};
+ 	struct TCP_Server_Info *server = tcon->ses->server;
+ 	struct cifs_open_parms oparms;
+ 	struct cifs_io_parms io_parms = {};
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
+ 	struct cifs_fid fid;
+ 	unsigned int bytes_written;
+-	struct win_dev *pdev;
++	struct win_dev pdev = {};
+ 	struct kvec iov[2];
+ 	__u32 oplock = server->oplocks ? REQ_OPLOCK : 0;
+ 	int rc;
+ 
+-	if (!S_ISCHR(mode) && !S_ISBLK(mode) && !S_ISFIFO(mode))
++	switch (mode & S_IFMT) {
++	case S_IFCHR:
++		strscpy(pdev.type, "IntxCHR");
++		pdev.major = cpu_to_le64(MAJOR(dev));
++		pdev.minor = cpu_to_le64(MINOR(dev));
++		break;
++	case S_IFBLK:
++		strscpy(pdev.type, "IntxBLK");
++		pdev.major = cpu_to_le64(MAJOR(dev));
++		pdev.minor = cpu_to_le64(MINOR(dev));
++		break;
++	case S_IFIFO:
++		strscpy(pdev.type, "LnxFIFO");
++		break;
++	default:
+ 		return -EPERM;
++	}
+ 
+-	oparms = (struct cifs_open_parms) {
+-		.tcon = tcon,
+-		.cifs_sb = cifs_sb,
+-		.desired_access = GENERIC_WRITE,
+-		.create_options = cifs_create_options(cifs_sb, CREATE_NOT_DIR |
+-						      CREATE_OPTION_SPECIAL),
+-		.disposition = FILE_CREATE,
+-		.path = full_path,
+-		.fid = &fid,
+-	};
++	oparms = CIFS_OPARMS(cifs_sb, tcon, full_path, GENERIC_WRITE,
++			     FILE_CREATE, CREATE_NOT_DIR |
++			     CREATE_OPTION_SPECIAL, ACL_NO_MODE);
++	oparms.fid = &fid;
+ 
+-	rc = server->ops->open(xid, &oparms, &oplock, &buf);
++	rc = server->ops->open(xid, &oparms, &oplock, NULL);
+ 	if (rc)
+ 		return rc;
+ 
+-	/*
+-	 * BB Do not bother to decode buf since no local inode yet to put
+-	 * timestamps in, but we can reuse it safely.
+-	 */
+-	pdev = (struct win_dev *)&buf.fi;
+ 	io_parms.pid = current->tgid;
+ 	io_parms.tcon = tcon;
+-	io_parms.length = sizeof(*pdev);
+-	iov[1].iov_base = pdev;
+-	iov[1].iov_len = sizeof(*pdev);
+-	if (S_ISCHR(mode)) {
+-		memcpy(pdev->type, "IntxCHR", 8);
+-		pdev->major = cpu_to_le64(MAJOR(dev));
+-		pdev->minor = cpu_to_le64(MINOR(dev));
+-	} else if (S_ISBLK(mode)) {
+-		memcpy(pdev->type, "IntxBLK", 8);
+-		pdev->major = cpu_to_le64(MAJOR(dev));
+-		pdev->minor = cpu_to_le64(MINOR(dev));
+-	} else if (S_ISFIFO(mode)) {
+-		memcpy(pdev->type, "LnxFIFO", 8);
+-	}
++	io_parms.length = sizeof(pdev);
++	iov[1].iov_base = &pdev;
++	iov[1].iov_len = sizeof(pdev);
+ 
+ 	rc = server->ops->sync_write(xid, &fid, &io_parms,
+ 				     &bytes_written, iov, 1);
+ 	server->ops->close(xid, tcon, &fid);
+-	d_drop(dentry);
+-	/* FIXME: add code here to set EAs */
+-	cifs_free_open_info(&buf);
++	return rc;
++}
++
++int cifs_sfu_make_node(unsigned int xid, struct inode *inode,
++		       struct dentry *dentry, struct cifs_tcon *tcon,
++		       const char *full_path, umode_t mode, dev_t dev)
++{
++	struct inode *new = NULL;
++	int rc;
++
++	rc = __cifs_sfu_make_node(xid, inode, dentry, tcon,
++				  full_path, mode, dev);
++	if (rc)
++		return rc;
++
++	if (tcon->posix_extensions) {
++		rc = smb311_posix_get_inode_info(&new, full_path, NULL,
++						 inode->i_sb, xid);
++	} else if (tcon->unix_ext) {
++		rc = cifs_get_inode_info_unix(&new, full_path,
++					      inode->i_sb, xid);
++	} else {
++		rc = cifs_get_inode_info(&new, full_path, NULL,
++					 inode->i_sb, xid, NULL);
++	}
++	if (!rc)
++		d_instantiate(dentry, new);
+ 	return rc;
+ }
+ 
+
 
