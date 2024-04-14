@@ -1,346 +1,235 @@
-Return-Path: <stable+bounces-39374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B97DA8A4214
-	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 13:45:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D33D8A4224
+	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 13:50:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAE861C20952
-	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 11:45:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCD8EB211F7
+	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 11:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896C6224DD;
-	Sun, 14 Apr 2024 11:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0735381B9;
+	Sun, 14 Apr 2024 11:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WuK7C6XT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lD4EGefg"
 X-Original-To: Stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A0E1F941;
-	Sun, 14 Apr 2024 11:45:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99CF2AD00;
+	Sun, 14 Apr 2024 11:50:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713095103; cv=none; b=lSqNBo/IpmOQe28keqWRR24RrjO8b5PsUzzlKw2OyIgw2T1iiRJat0Qc3WCKuc2pMSiXtWAXh6JofvOjDHoOE0PL2E46xOGLXFrbetO7Y4UW6UmwyhtJF470ChMANwIw4KiHJ7lZwnmNG3+Dz6EdfTpQJ15TuAYSOZI5HdTXzQI=
+	t=1713095423; cv=none; b=Hh5+GwYfwhBpAG4zdtiw2mIUxlxYmlb3eoQ1CTI8kMEYN5qek1hEP1nLCtunH33FnhG7rRqsMELYWgXbrZUK59tU327dorxonoOmCkPIAOsd9i1sGnY0Gn33qlEBH6xBr9j32yolREDbkvGcJTz08jtegfQwTVOew6lXvR7YwiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713095103; c=relaxed/simple;
-	bh=WjvkBUbahfC9bxfG1vmHtWfmzLOT8CFddXo88VB0ciA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sA3cTlXa4Op031Oxh91qieSPuvD8JO0ScNubpC+hMRQwG74Nwh3UNJZXh/Ly9hJQ83i+qh5fom/1iDEVghTn9HkXLg+5AYg46Zz/14SUELomesEXUz7UaGPEjjjkqufK2iGlaOrVVBWiIxp+D3drIb5azBRRWTaZAbC+x5pekF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WuK7C6XT; arc=none smtp.client-ip=198.175.65.17
+	s=arc-20240116; t=1713095423; c=relaxed/simple;
+	bh=/hD0PfSvSP4V9l90av6Gfjj2pT9er7uKIGoX4dcehd8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DrNo1LZED6KJbIMyfIag22yojw91mJP9I8Xtg8aYwzTONsv7sgxxJzWjIfc+dd9ig6VCdXgigac2beDw5CSe1UJRiRv4EE0M5pwvN0pcZy40zld6b/ZdzNCNHn4EISfkOZQmy2DL4HwUGD7yIcfU1uxr/rRAe43GpIy+FNhaJ9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lD4EGefg; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713095101; x=1744631101;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WjvkBUbahfC9bxfG1vmHtWfmzLOT8CFddXo88VB0ciA=;
-  b=WuK7C6XTy3nUcGy2gDPNNs5faQUgDLwaEjuYXuCHUE1GY7luWq5KysjR
-   Aq8uO9MHySjRFIzRU2RpmzBqLdDv9P0PA9K+vLb6Yy4/suXAQN76bhxcl
-   3Li9i+KkT2Rbyk5i9xcsZ8WQZLsbFkA+lZh+KbgPIkqnqIxLXHZ2+ugO2
-   xgYpfNOSgi986EeYC9YPeLL/vQ2jOFXsOFiEm1RwiQ254j+zevmlYgU3x
-   Oi3u9hMWTtqZrjQQSqZjNQsbVjHyoxXIbJUmHNFTktqrlr1wKV7zAyE3c
-   m8S4eKnUKYdicqEw+7gWNRG7X+Q4CwwSFHpHfO56utYMpn9e/X5wEFii9
-   g==;
-X-CSE-ConnectionGUID: fTK4boLTQNymucEGQULGQQ==
-X-CSE-MsgGUID: Sfq1dB0PQK+Tx4h0C8Ax0A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11043"; a="8599818"
+  t=1713095422; x=1744631422;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=/hD0PfSvSP4V9l90av6Gfjj2pT9er7uKIGoX4dcehd8=;
+  b=lD4EGefgaW4X8U7d2nYgoxPOqcMlFqOfyazpRodFUTgjmxMpY9uHb2o3
+   4WR3Vym49+xtT/JN09VPNlRNW2wdkfTiBt/V9Vcd961bhDk9Gtn1wkWEe
+   gspvWF6MewanW9aAXtbLN26Sb/NXrfEkX3RW0UINUYZ/5arl3Vtcu2rxL
+   mt4dc3PfpX7Ne0x/0s1tZH58zcFRgQ/Uztrskuq8EnXNNSoTraXPEvYbF
+   nucTfJbh9YhSwDTCWfTsvjy8kKi5Dwf1RWvTvu3cUrQaSoOdnHemghPyH
+   0Zjz4I9ycemKvU4KEQN+6yStAbzVqoOvEk8/1q56t8qt5CKRGvXHLqeIT
+   A==;
+X-CSE-ConnectionGUID: uKwQ0TApSCyFNXltpeTQmQ==
+X-CSE-MsgGUID: vCtaXAb5RcuYCzSRwo/eig==
+X-IronPort-AV: E=McAfee;i="6600,9927,11043"; a="25953660"
 X-IronPort-AV: E=Sophos;i="6.07,201,1708416000"; 
-   d="scan'208";a="8599818"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2024 04:45:00 -0700
-X-CSE-ConnectionGUID: IAJQZILDSfaCcJzV8p24rQ==
-X-CSE-MsgGUID: B7yeQvc3R+qA9WAQ5JmrDw==
+   d="scan'208";a="25953660"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2024 04:50:21 -0700
+X-CSE-ConnectionGUID: ICWDPAndQumu+rkhCmrRvg==
+X-CSE-MsgGUID: o5Ev1fgsQyGm/DyOlsgjdw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,201,1708416000"; 
-   d="scan'208";a="26192173"
+   d="scan'208";a="52844165"
 Received: from dev-qz.sh.intel.com (HELO localhost) ([10.239.147.89])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2024 04:44:58 -0700
-Date: Sun, 14 Apr 2024 19:45:12 +0800
-From: Qiang Zhang <qiang4.zhang@linux.intel.com>
-To: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2024 04:50:19 -0700
+From: qiang4.zhang@linux.intel.com
+To: Masami Hiramatsu <mhiramat@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
-	Qiang Zhang <qiang4.zhang@intel.com>, Stable@vger.kernel.org
-Subject: Re: [PATCH v2] bootconfig: use memblock_free_late to free xbc memory
- to buddy
-Message-ID: <ZhvByM7i03H8FiM6@dev-qz>
-References: <20240412104940.456257-1-qiang4.zhang@linux.intel.com>
- <20240412221820.852abeb57feceec893ca0dad@kernel.org>
- <20240413212138.26726485be53bec3009452d7@kernel.org>
+	Qiang Zhang <qiang4.zhang@intel.com>,
+	Stable@vger.kernel.org
+Subject: [PATCH v3] bootconfig: use memblock_free_late to free xbc memory to buddy
+Date: Sun, 14 Apr 2024 19:49:45 +0800
+Message-Id: <20240414114944.1012359-1-qiang4.zhang@linux.intel.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240413212138.26726485be53bec3009452d7@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Apr 13, 2024 at 09:21:38PM +0900, Masami Hiramatsu wrote:
->Hi Qiang,
->
->I found xbc_free_mem() missed to check !addr. When I booted kernel without
->bootconfig data but with "bootconfig" cmdline, I got a kernel crash below;
->
->
->[    2.394904] ------------[ cut here ]------------
->[    2.396490] kernel BUG at arch/x86/mm/physaddr.c:28!
->[    2.398176] invalid opcode: 0000 [#1] PREEMPT SMP PTI
->[    2.399388] CPU: 7 PID: 1 Comm: swapper/0 Tainted: G                 N 6.9.0-rc3-00004-g121fbb463836 #10
->[    2.401579] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
->[    2.403247] RIP: 0010:__phys_addr+0x40/0x60
->[    2.404196] Code: 48 2b 05 fb a4 3d 01 48 05 00 00 00 80 48 39 c7 72 17 0f b6 0d ee 9e c0 01 48 89 c2 48 d3 ea 48 85 d2 75 05 c3 cc cc cc cc 90 <0f> 0b 48 03 05 e7 e2 9d 01 48 81 ff ff ff ff 1f 76 e8 90 0f6
->[    2.407250] RSP: 0000:ffffc90000013f18 EFLAGS: 00010287
->[    2.407991] RAX: 0000778000000000 RBX: ffffffff81c17940 RCX: 000000000080000a
->[    2.408891] RDX: 000000000080000b RSI: ffff88800775f320 RDI: 0000000080000000
->[    2.409727] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
->[    2.410555] R10: ffff888005028a60 R11: 000000000080000a R12: 0000000000000000
->[    2.411423] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
->[    2.412155] FS:  0000000000000000(0000) GS:ffff88807d9c0000(0000) knlGS:0000000000000000
->[    2.412970] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->[    2.413550] CR2: 0000000000000000 CR3: 0000000002a48000 CR4: 00000000000006b0
->[    2.414264] Call Trace:
->[    2.414520]  <TASK>
->[    2.414755]  ? die+0x37/0x90
->[    2.415062]  ? do_trap+0xe3/0x110
->[    2.415451]  ? __phys_addr+0x40/0x60
->[    2.415822]  ? do_error_trap+0x9c/0x120
->[    2.416215]  ? __phys_addr+0x40/0x60
->[    2.416573]  ? __phys_addr+0x40/0x60
->[    2.416968]  ? exc_invalid_op+0x53/0x70
->[    2.417358]  ? __phys_addr+0x40/0x60
->[    2.417709]  ? asm_exc_invalid_op+0x1a/0x20
->[    2.418122]  ? __pfx_kernel_init+0x10/0x10
->[    2.418569]  ? __phys_addr+0x40/0x60
->[    2.418960]  _xbc_exit+0x74/0xc0
->[    2.419374]  kernel_init+0x3a/0x1c0
->[    2.419764]  ret_from_fork+0x34/0x50
->[    2.420132]  ? __pfx_kernel_init+0x10/0x10
->[    2.420578]  ret_from_fork_asm+0x1a/0x30
->[    2.420973]  </TASK>
->[    2.421200] Modules linked in:
->[    2.421598] ---[ end trace 0000000000000000 ]---
->[    2.422053] RIP: 0010:__phys_addr+0x40/0x60
->[    2.422484] Code: 48 2b 05 fb a4 3d 01 48 05 00 00 00 80 48 39 c7 72 17 0f b6 0d ee 9e c0 01 48 89 c2 48 d3 ea 48 85 d2 75 05 c3 cc cc cc cc 90 <0f> 0b 48 03 05 e7 e2 9d 01 48 81 ff ff ff ff 1f 76 e8 90 0f6
->[    2.424294] RSP: 0000:ffffc90000013f18 EFLAGS: 00010287
->[    2.424769] RAX: 0000778000000000 RBX: ffffffff81c17940 RCX: 000000000080000a
->[    2.425378] RDX: 000000000080000b RSI: ffff88800775f320 RDI: 0000000080000000
->[    2.425993] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
->[    2.426589] R10: ffff888005028a60 R11: 000000000080000a R12: 0000000000000000
->[    2.427156] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
->[    2.427746] FS:  0000000000000000(0000) GS:ffff88807d9c0000(0000) knlGS:0000000000000000
->[    2.428368] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->[    2.428820] CR2: 0000000000000000 CR3: 0000000002a48000 CR4: 00000000000006b0
->[    2.429373] Kernel panic - not syncing: Fatal exception
->[    2.429982] Kernel Offset: disabled
->[    2.430261] ---[ end Kernel panic - not syncing: Fatal exception ]---
->
->Adding below patch fixed it.
->
->diff --git a/lib/bootconfig.c b/lib/bootconfig.c
->index f9a45adc6307..8841554432d5 100644
->--- a/lib/bootconfig.c
->+++ b/lib/bootconfig.c
->@@ -65,7 +65,7 @@ static inline void __init xbc_free_mem(void *addr, size_t size, bool early)
-> {
-> 	if (early)
-> 		memblock_free(addr, size);
->-	else
->+	else if (addr)
-> 		memblock_free_late(__pa(addr), size);
-> }
-> 
->Can you update with this fix?
+From: Qiang Zhang <qiang4.zhang@intel.com>
 
-Sure.
+On the time to free xbc memory in xbc_exit(), memblock may has handed
+over memory to buddy allocator. So it doesn't make sense to free memory
+back to memblock. memblock_free() called by xbc_exit() even causes UAF bugs
+on architectures with CONFIG_ARCH_KEEP_MEMBLOCK disabled like x86.
+Following KASAN logs shows this case.
 
->
->Thank you,
->
->
->On Fri, 12 Apr 2024 22:18:20 +0900
->Masami Hiramatsu (Google) <mhiramat@kernel.org> wrote:
->
->> On Fri, 12 Apr 2024 18:49:41 +0800
->> qiang4.zhang@linux.intel.com wrote:
->> 
->> > From: Qiang Zhang <qiang4.zhang@intel.com>
->> > 
->> > On the time to free xbc memory in xbc_exit(), memblock may has handed
->> > over memory to buddy allocator. So it doesn't make sense to free memory
->> > back to memblock. memblock_free() called by xbc_exit() even causes UAF bugs
->> > on architectures with CONFIG_ARCH_KEEP_MEMBLOCK disabled like x86.
->> > Following KASAN logs shows this case.
->> > 
->> > This patch fixes the xbc memory free problem by calling memblock_free()
->> > in early xbc init error rewind path and calling memblock_free_late() in
->> > xbc exit path to free memory to buddy allocator.
->> > 
->> > [    9.410890] ==================================================================
->> > [    9.418962] BUG: KASAN: use-after-free in memblock_isolate_range+0x12d/0x260
->> > [    9.426850] Read of size 8 at addr ffff88845dd30000 by task swapper/0/1
->> > 
->> > [    9.435901] CPU: 9 PID: 1 Comm: swapper/0 Tainted: G     U             6.9.0-rc3-00208-g586b5dfb51b9 #5
->> > [    9.446403] Hardware name: Intel Corporation RPLP LP5 (CPU:RaptorLake)/RPLP LP5 (ID:13), BIOS IRPPN02.01.01.00.00.19.015.D-00000000 Dec 28 2023
->> > [    9.460789] Call Trace:
->> > [    9.463518]  <TASK>
->> > [    9.465859]  dump_stack_lvl+0x53/0x70
->> > [    9.469949]  print_report+0xce/0x610
->> > [    9.473944]  ? __virt_addr_valid+0xf5/0x1b0
->> > [    9.478619]  ? memblock_isolate_range+0x12d/0x260
->> > [    9.483877]  kasan_report+0xc6/0x100
->> > [    9.487870]  ? memblock_isolate_range+0x12d/0x260
->> > [    9.493125]  memblock_isolate_range+0x12d/0x260
->> > [    9.498187]  memblock_phys_free+0xb4/0x160
->> > [    9.502762]  ? __pfx_memblock_phys_free+0x10/0x10
->> > [    9.508021]  ? mutex_unlock+0x7e/0xd0
->> > [    9.512111]  ? __pfx_mutex_unlock+0x10/0x10
->> > [    9.516786]  ? kernel_init_freeable+0x2d4/0x430
->> > [    9.521850]  ? __pfx_kernel_init+0x10/0x10
->> > [    9.526426]  xbc_exit+0x17/0x70
->> > [    9.529935]  kernel_init+0x38/0x1e0
->> > [    9.533829]  ? _raw_spin_unlock_irq+0xd/0x30
->> > [    9.538601]  ret_from_fork+0x2c/0x50
->> > [    9.542596]  ? __pfx_kernel_init+0x10/0x10
->> > [    9.547170]  ret_from_fork_asm+0x1a/0x30
->> > [    9.551552]  </TASK>
->> > 
->> > [    9.555649] The buggy address belongs to the physical page:
->> > [    9.561875] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1 pfn:0x45dd30
->> > [    9.570821] flags: 0x200000000000000(node=0|zone=2)
->> > [    9.576271] page_type: 0xffffffff()
->> > [    9.580167] raw: 0200000000000000 ffffea0011774c48 ffffea0012ba1848 0000000000000000
->> > [    9.588823] raw: 0000000000000001 0000000000000000 00000000ffffffff 0000000000000000
->> > [    9.597476] page dumped because: kasan: bad access detected
->> > 
->> > [    9.605362] Memory state around the buggy address:
->> > [    9.610714]  ffff88845dd2ff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->> > [    9.618786]  ffff88845dd2ff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->> > [    9.626857] >ffff88845dd30000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
->> > [    9.634930]                    ^
->> > [    9.638534]  ffff88845dd30080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
->> > [    9.646605]  ffff88845dd30100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
->> > [    9.654675] ==================================================================
->> > 
->> > Cc: Stable@vger.kernel.org
->> > Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
->> 
->> Looks good to me.
->> 
->> Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
->> 
->> Also,
->> 
->> Fixes: 40caa127f3c7 ("init: bootconfig: Remove all bootconfig data when the init memory is removed")
->> 
->> Let me pick this for bootconfig/fixes.
->> 
->> Thanks!
->> 
->> > ---
->> > v2:
->> > - add an early flag in xbc_free_mem() to free memory back to memblock in
->> >   xbc_init error path or put memory to buddy allocator in normal xbc_exit.
->> > 
->> > ---
->> >  include/linux/bootconfig.h |  7 ++++++-
->> >  lib/bootconfig.c           | 19 +++++++++++--------
->> >  2 files changed, 17 insertions(+), 9 deletions(-)
->> > 
->> > diff --git a/include/linux/bootconfig.h b/include/linux/bootconfig.h
->> > index e5ee2c694401..3f4b4ac527ca 100644
->> > --- a/include/linux/bootconfig.h
->> > +++ b/include/linux/bootconfig.h
->> > @@ -288,7 +288,12 @@ int __init xbc_init(const char *buf, size_t size, const char **emsg, int *epos);
->> >  int __init xbc_get_info(int *node_size, size_t *data_size);
->> >  
->> >  /* XBC cleanup data structures */
->> > -void __init xbc_exit(void);
->> > +void __init _xbc_exit(bool early);
->> > +
->> > +static inline void xbc_exit(void)
->> > +{
->> > +	_xbc_exit(false);
->> > +}
->> >  
->> >  /* XBC embedded bootconfig data in kernel */
->> >  #ifdef CONFIG_BOOT_CONFIG_EMBED
->> > diff --git a/lib/bootconfig.c b/lib/bootconfig.c
->> > index c59d26068a64..f9a45adc6307 100644
->> > --- a/lib/bootconfig.c
->> > +++ b/lib/bootconfig.c
->> > @@ -61,9 +61,12 @@ static inline void * __init xbc_alloc_mem(size_t size)
->> >  	return memblock_alloc(size, SMP_CACHE_BYTES);
->> >  }
->> >  
->> > -static inline void __init xbc_free_mem(void *addr, size_t size)
->> > +static inline void __init xbc_free_mem(void *addr, size_t size, bool early)
->> >  {
->> > -	memblock_free(addr, size);
->> > +	if (early)
->> > +		memblock_free(addr, size);
->> > +	else
->> > +		memblock_free_late(__pa(addr), size);
->> >  }
->> >  
->> >  #else /* !__KERNEL__ */
->> > @@ -73,7 +76,7 @@ static inline void *xbc_alloc_mem(size_t size)
->> >  	return malloc(size);
->> >  }
->> >  
->> > -static inline void xbc_free_mem(void *addr, size_t size)
->> > +static inline void xbc_free_mem(void *addr, size_t size, bool early)
->> >  {
->> >  	free(addr);
->> >  }
->> > @@ -904,13 +907,13 @@ static int __init xbc_parse_tree(void)
->> >   * If you need to reuse xbc_init() with new boot config, you can
->> >   * use this.
->> >   */
->> > -void __init xbc_exit(void)
->> > +void __init _xbc_exit(bool early)
->> >  {
->> > -	xbc_free_mem(xbc_data, xbc_data_size);
->> > +	xbc_free_mem(xbc_data, xbc_data_size, early);
->> >  	xbc_data = NULL;
->> >  	xbc_data_size = 0;
->> >  	xbc_node_num = 0;
->> > -	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX);
->> > +	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX, early);
->> >  	xbc_nodes = NULL;
->> >  	brace_index = 0;
->> >  }
->> > @@ -963,7 +966,7 @@ int __init xbc_init(const char *data, size_t size, const char **emsg, int *epos)
->> >  	if (!xbc_nodes) {
->> >  		if (emsg)
->> >  			*emsg = "Failed to allocate bootconfig nodes";
->> > -		xbc_exit();
->> > +		_xbc_exit(true);
->> >  		return -ENOMEM;
->> >  	}
->> >  	memset(xbc_nodes, 0, sizeof(struct xbc_node) * XBC_NODE_MAX);
->> > @@ -977,7 +980,7 @@ int __init xbc_init(const char *data, size_t size, const char **emsg, int *epos)
->> >  			*epos = xbc_err_pos;
->> >  		if (emsg)
->> >  			*emsg = xbc_err_msg;
->> > -		xbc_exit();
->> > +		_xbc_exit(true);
->> >  	} else
->> >  		ret = xbc_node_num;
->> >  
->> > -- 
->> > 2.39.2
->> > 
->> 
->> 
->> -- 
->> Masami Hiramatsu (Google) <mhiramat@kernel.org>
->
->
->-- 
->Masami Hiramatsu (Google) <mhiramat@kernel.org>
+This patch fixes the xbc memory free problem by calling memblock_free()
+in early xbc init error rewind path and calling memblock_free_late() in
+xbc exit path to free memory to buddy allocator.
+
+[    9.410890] ==================================================================
+[    9.418962] BUG: KASAN: use-after-free in memblock_isolate_range+0x12d/0x260
+[    9.426850] Read of size 8 at addr ffff88845dd30000 by task swapper/0/1
+
+[    9.435901] CPU: 9 PID: 1 Comm: swapper/0 Tainted: G     U             6.9.0-rc3-00208-g586b5dfb51b9 #5
+[    9.446403] Hardware name: Intel Corporation RPLP LP5 (CPU:RaptorLake)/RPLP LP5 (ID:13), BIOS IRPPN02.01.01.00.00.19.015.D-00000000 Dec 28 2023
+[    9.460789] Call Trace:
+[    9.463518]  <TASK>
+[    9.465859]  dump_stack_lvl+0x53/0x70
+[    9.469949]  print_report+0xce/0x610
+[    9.473944]  ? __virt_addr_valid+0xf5/0x1b0
+[    9.478619]  ? memblock_isolate_range+0x12d/0x260
+[    9.483877]  kasan_report+0xc6/0x100
+[    9.487870]  ? memblock_isolate_range+0x12d/0x260
+[    9.493125]  memblock_isolate_range+0x12d/0x260
+[    9.498187]  memblock_phys_free+0xb4/0x160
+[    9.502762]  ? __pfx_memblock_phys_free+0x10/0x10
+[    9.508021]  ? mutex_unlock+0x7e/0xd0
+[    9.512111]  ? __pfx_mutex_unlock+0x10/0x10
+[    9.516786]  ? kernel_init_freeable+0x2d4/0x430
+[    9.521850]  ? __pfx_kernel_init+0x10/0x10
+[    9.526426]  xbc_exit+0x17/0x70
+[    9.529935]  kernel_init+0x38/0x1e0
+[    9.533829]  ? _raw_spin_unlock_irq+0xd/0x30
+[    9.538601]  ret_from_fork+0x2c/0x50
+[    9.542596]  ? __pfx_kernel_init+0x10/0x10
+[    9.547170]  ret_from_fork_asm+0x1a/0x30
+[    9.551552]  </TASK>
+
+[    9.555649] The buggy address belongs to the physical page:
+[    9.561875] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1 pfn:0x45dd30
+[    9.570821] flags: 0x200000000000000(node=0|zone=2)
+[    9.576271] page_type: 0xffffffff()
+[    9.580167] raw: 0200000000000000 ffffea0011774c48 ffffea0012ba1848 0000000000000000
+[    9.588823] raw: 0000000000000001 0000000000000000 00000000ffffffff 0000000000000000
+[    9.597476] page dumped because: kasan: bad access detected
+
+[    9.605362] Memory state around the buggy address:
+[    9.610714]  ffff88845dd2ff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[    9.618786]  ffff88845dd2ff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[    9.626857] >ffff88845dd30000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[    9.634930]                    ^
+[    9.638534]  ffff88845dd30080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[    9.646605]  ffff88845dd30100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[    9.654675] ==================================================================
+
+Cc: Stable@vger.kernel.org
+Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
+---
+v3:
+- add NULL pointer check in memblock_free_late() path.
+
+v2:
+- add an early flag in xbc_free_mem() to free memory back to memblock in
+  xbc_init error path or put memory to buddy allocator in normal xbc_exit.
+---
+ include/linux/bootconfig.h |  7 ++++++-
+ lib/bootconfig.c           | 19 +++++++++++--------
+ 2 files changed, 17 insertions(+), 9 deletions(-)
+
+diff --git a/include/linux/bootconfig.h b/include/linux/bootconfig.h
+index e5ee2c694401..3f4b4ac527ca 100644
+--- a/include/linux/bootconfig.h
++++ b/include/linux/bootconfig.h
+@@ -288,7 +288,12 @@ int __init xbc_init(const char *buf, size_t size, const char **emsg, int *epos);
+ int __init xbc_get_info(int *node_size, size_t *data_size);
+ 
+ /* XBC cleanup data structures */
+-void __init xbc_exit(void);
++void __init _xbc_exit(bool early);
++
++static inline void xbc_exit(void)
++{
++	_xbc_exit(false);
++}
+ 
+ /* XBC embedded bootconfig data in kernel */
+ #ifdef CONFIG_BOOT_CONFIG_EMBED
+diff --git a/lib/bootconfig.c b/lib/bootconfig.c
+index c59d26068a64..8841554432d5 100644
+--- a/lib/bootconfig.c
++++ b/lib/bootconfig.c
+@@ -61,9 +61,12 @@ static inline void * __init xbc_alloc_mem(size_t size)
+ 	return memblock_alloc(size, SMP_CACHE_BYTES);
+ }
+ 
+-static inline void __init xbc_free_mem(void *addr, size_t size)
++static inline void __init xbc_free_mem(void *addr, size_t size, bool early)
+ {
+-	memblock_free(addr, size);
++	if (early)
++		memblock_free(addr, size);
++	else if (addr)
++		memblock_free_late(__pa(addr), size);
+ }
+ 
+ #else /* !__KERNEL__ */
+@@ -73,7 +76,7 @@ static inline void *xbc_alloc_mem(size_t size)
+ 	return malloc(size);
+ }
+ 
+-static inline void xbc_free_mem(void *addr, size_t size)
++static inline void xbc_free_mem(void *addr, size_t size, bool early)
+ {
+ 	free(addr);
+ }
+@@ -904,13 +907,13 @@ static int __init xbc_parse_tree(void)
+  * If you need to reuse xbc_init() with new boot config, you can
+  * use this.
+  */
+-void __init xbc_exit(void)
++void __init _xbc_exit(bool early)
+ {
+-	xbc_free_mem(xbc_data, xbc_data_size);
++	xbc_free_mem(xbc_data, xbc_data_size, early);
+ 	xbc_data = NULL;
+ 	xbc_data_size = 0;
+ 	xbc_node_num = 0;
+-	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX);
++	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX, early);
+ 	xbc_nodes = NULL;
+ 	brace_index = 0;
+ }
+@@ -963,7 +966,7 @@ int __init xbc_init(const char *data, size_t size, const char **emsg, int *epos)
+ 	if (!xbc_nodes) {
+ 		if (emsg)
+ 			*emsg = "Failed to allocate bootconfig nodes";
+-		xbc_exit();
++		_xbc_exit(true);
+ 		return -ENOMEM;
+ 	}
+ 	memset(xbc_nodes, 0, sizeof(struct xbc_node) * XBC_NODE_MAX);
+@@ -977,7 +980,7 @@ int __init xbc_init(const char *data, size_t size, const char **emsg, int *epos)
+ 			*epos = xbc_err_pos;
+ 		if (emsg)
+ 			*emsg = xbc_err_msg;
+-		xbc_exit();
++		_xbc_exit(true);
+ 	} else
+ 		ret = xbc_node_num;
+ 
+-- 
+2.39.2
+
 
