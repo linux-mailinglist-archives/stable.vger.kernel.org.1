@@ -1,280 +1,156 @@
-Return-Path: <stable+bounces-39388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC2D08A42AE
-	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 15:45:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E06F98A458B
+	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 23:18:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5ED9A28198B
-	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 13:45:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 677121F21C02
+	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 21:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD7150296;
-	Sun, 14 Apr 2024 13:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF72136E2D;
+	Sun, 14 Apr 2024 21:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UGugUl7c"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z5KDiTXm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626004DA05
-	for <stable@vger.kernel.org>; Sun, 14 Apr 2024 13:45:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2968136E31;
+	Sun, 14 Apr 2024 21:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713102343; cv=none; b=r5jutU/hTFKLOmtddr3cXAup0pzpDC2SCnFzNNTn4YfIeKUHnebu0eczYY/lv3G4kzzpp3mZ6gkv6VWpnEuh+LJO9e5wECV17gzELcRU/qsXL0ebrbf7vsyErAFYtnAWoG9BxkMkBZV2UnsoNQ3pe7g+jq6ZHX9CNp35w6CH5OI=
+	t=1713129488; cv=none; b=ZOCzmZpwUTCFJz6+2SBC5L6x5bRQT6/971gIM0aUdk46nJ7pTBwlMJZHKMb/WWRR85ycwem03xDeARBkkBMuzEhRPlQnHk5/tp4PZ8li33dDUq5tNwkYvUbH6Bypin+BKiitJJLoJOJpq4FSg293s8BOvMZzyRkpzyKHaF16asE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713102343; c=relaxed/simple;
-	bh=kd8YsOb/iS8qgB+k8ker2KJyCCkcuJ8vwsxwZndiGWA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=V/0EIqyGl/gGxc/Rl6LGcFtKOFvHr/bgIEbWTudf0UeObww6HPf3eorilaf76UU7ED05dGBdrzGeik/TL/NHTBr0gqhInBKDcePM89GQZkNTpRbvL3rfX0t2oXsi2ce1ebML+LWpiXurRUuU0Z6QAEI/t3aHaKi0L3nRP/4ToF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGugUl7c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9D7C072AA;
-	Sun, 14 Apr 2024 13:45:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713102343;
-	bh=kd8YsOb/iS8qgB+k8ker2KJyCCkcuJ8vwsxwZndiGWA=;
-	h=Subject:To:Cc:From:Date:From;
-	b=UGugUl7cZ5rIBZsIR0vot+pHkY00cF1Zs/iky4I9v76TPtF03/nia1W1hjBVnS/8x
-	 7WFxnDF5NA5xij7UGQph6bHY9fw/gtOqUFMcu7HEXD7kMABh1uOaAjU1lmebC2b840
-	 z+HvqaVtamZv7ohDCneYTj80vLqdMshSWZIHvkHA=
-Subject: FAILED: patch "[PATCH] smb: client: instantiate when creating SFU files" failed to apply to 6.8-stable tree
-To: pc@manguebit.com,stfrench@microsoft.com,viro@zeniv.linux.org.uk
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 14 Apr 2024 15:44:48 +0200
-Message-ID: <2024041448-washcloth-flanked-1878@gregkh>
+	s=arc-20240116; t=1713129488; c=relaxed/simple;
+	bh=G4TuJqmhrfi+7PAxNMiM5MQgUdsKKap5UGFURvOLTXM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PkPMHcUhQG/LukiJUz370eBS7P1DTgeuQ0gQkZNIwNzZhRaJzkT06zUuhvzeo+hN7pi4+lfZCaMZYCvHkNCi17GrxIUpe51JTzfoTp7MicB7WPNBmcutlpZbh3MYJ01sDuGM7muuamVEC7AnW7oJoVsdVg7pcZoc+2We1KZam00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z5KDiTXm; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6ed3cafd766so1895890b3a.0;
+        Sun, 14 Apr 2024 14:18:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713129486; x=1713734286; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1ZHsaHa41oigrMjD4LKjbkplqhy4ZTYVhx/T8eHvHZw=;
+        b=Z5KDiTXmd+t0E6OTUeMfl3FMXo/O1InJTbkjwsTicb+zCVym0cT/+07po5b5q6q1UA
+         VBKiXiHXYc9q7SNr2FJ4i83LKArxUHenC1qT3f5m0vwRYcES1oo05HmMRZX2TTyNDaaw
+         EeRNRsdZN2Gw63k6+/HkWOSKrrRWmI991VeHqKgxKTarRzWRCyqmnzckVek1V9lFNZOZ
+         SSoWIS7k0byYdl/QIEm8ox1FrCdsS1OEgT5HZdT2uFFZbud+bZJOHB4SlxuYlpMzItoE
+         TX7aOwJapatnBjTHjGx5c/9fqVkK5uviBhEL/HYXJNjZ7qITxx9KO73irVvP1dHLVGPF
+         eVsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713129486; x=1713734286;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1ZHsaHa41oigrMjD4LKjbkplqhy4ZTYVhx/T8eHvHZw=;
+        b=MY58LwxhyvgNk9UODiGow2awoFHeaGQmNf97qGrdu0Kegrl0J1a/u0w4jkgRU4m/m4
+         9B/zA76y/JGdFrSG1jv+01ScSBnzsVXosxZ3/VH2Sb2l5YuyhXIVIj/uydb95Zv41ns3
+         jHVemMh5Q9NkGezkDv/Ms5ni4CXUGdJaFx0r6BcVgAHtQ2tPSN0xprrVNUASAGw0PwVz
+         02BW5f7oBLTsXSJSOwZmPD3dHfgOI2iyKON+suuRk1Lz6DmOLJ68wyDgBJPekNAQwstZ
+         DkSxmRygJODz85xzo9Dzy8O/kbSmh1tDZYtb/rbpSNwDCjg7/ZwdHJP7aiS2TCA12MAT
+         LfsA==
+X-Forwarded-Encrypted: i=1; AJvYcCXCQl9mLt9Y5hg+GD8muBE7gH5t85ANY4yz/2qCu1TP8wVU0yHGX4i1cEf7mt4kH8nfXYiF7q0fI+j7IrkGzm9CXZfP7GXaOPf2EGqp
+X-Gm-Message-State: AOJu0Ywey/lgdl7PwfLds88c3LfGw7xQ9q+vUETrGLh6umuRs7kgWjt1
+	gCrxsCqUpNFAHuRCnQwl1+x8eSL++XXaD/x2TjoOXjNcyQPTP9gZ
+X-Google-Smtp-Source: AGHT+IFTYF9O0qn/emzVcYUt15HD4pY5VqmLs2K6GAWKwrb3f+qHDW5ftkqPaEPm11vtJiCFfG4NiQ==
+X-Received: by 2002:a05:6a00:2308:b0:6e7:3223:4556 with SMTP id h8-20020a056a00230800b006e732234556mr8029025pfh.32.1713129486139;
+        Sun, 14 Apr 2024 14:18:06 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id y30-20020a056a00181e00b006e6854d45afsm6127641pfa.97.2024.04.14.14.18.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Apr 2024 14:18:05 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Sun, 14 Apr 2024 14:18:03 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, broonie@kernel.org, aleksandermj@google.com,
+	ejcaruso@google.com, oneukum@suse.com
+Subject: Re: [PATCH 5.10 000/294] 5.10.215-rc1 review
+Message-ID: <039f041e-ca03-4750-8d69-87aef0ad1752@roeck-us.net>
+References: <20240411095435.633465671@linuxfoundation.org>
+ <9ac4f94c-414e-4c12-bfe0-36aff3e318bc@roeck-us.net>
+ <2024041411-stencil-unscathed-bc65@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024041411-stencil-unscathed-bc65@gregkh>
 
+Hi Greg,
 
-The patch below does not apply to the 6.8-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On Sun, Apr 14, 2024 at 08:09:39AM +0200, Greg Kroah-Hartman wrote:
+> On Sat, Apr 13, 2024 at 07:11:57AM -0700, Guenter Roeck wrote:
+> > Hi,
+> > 
+> > On Thu, Apr 11, 2024 at 11:52:43AM +0200, Greg Kroah-Hartman wrote:
+> > > This is the start of the stable review cycle for the 5.10.215 release.
+> > > There are 294 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, please
+> > > let me know.
+> > > 
+> > > Responses should be made by Sat, 13 Apr 2024 09:53:55 +0000.
+> > > Anything received after that time might be too late.
+> > > 
+> > > The whole patch series can be found in one patch at:
+> > > 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.215-rc1.gz
+> > > or in the git tree and branch at:
+> > > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> > > and the diffstat can be found below.
+> > > 
+> > > thanks,
+> > > 
+> > > greg k-h
+> > > 
+> > > -------------
+> > [ ... ]
+> > > 
+> > > Oliver Neukum <oneukum@suse.com>
+> > >     usb: cdc-wdm: close race between read and workqueue
+> > > 
+> > 
+> > Just in case it has not been reported yet:
+> > 
+> > This patch is causing connection failures (timeouts) on all
+> > Chromebooks using the cdc-wdm driver for cellular modems, with
+> > all kernel branches where this patch has been applied.
+> > Reverting it fixes the problem.
+> > 
+> > I am copying some of the Google employees involved in identifying
+> > the regression in case additional feedback is needed.
+> 
+> Can you all respond to Oliver on the linux-usb list where this was
+> originally submitted to work it out?  This commit has been in the tree
+> for almost a month now with no reported problems that I can see.
+> 
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Who knows, maybe only a certain type of usb cellular modems using cdc-wdm
+is affected. Either case, the problem was found less than two days after
+the stable tree merges into ChromeOS, and it took only about a week from
+there to identify the offending patch. I think that was actually an amazing
+job, given the size of those merges and because the failure is not absolute
+but results in unreliable tests due to timeouts.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
-git checkout FETCH_HEAD
-git cherry-pick -x c6ff459037b2e35450af2351037eac4c8aca1d6b
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024041448-washcloth-flanked-1878@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
+Anyway, sure, we'll get in touch with Oliver. Other than that, please take
+this report as a heads-up in case anyone else reports similar problems.
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From c6ff459037b2e35450af2351037eac4c8aca1d6b Mon Sep 17 00:00:00 2001
-From: Paulo Alcantara <pc@manguebit.com>
-Date: Tue, 9 Apr 2024 11:28:59 -0300
-Subject: [PATCH] smb: client: instantiate when creating SFU files
-
-In cifs_sfu_make_node(), on success, instantiate rather than leave it
-with dentry unhashed negative to support callers that expect mknod(2)
-to always instantiate.
-
-This fixes the following test case:
-
-  mount.cifs //srv/share /mnt -o ...,sfu
-  mkfifo /mnt/fifo
-  ./xfstests/ltp/growfiles -b -W test -e 1 -u -i 0 -L 30 /mnt/fifo
-  ...
-  BUG: unable to handle page fault for address: 000000034cec4e58
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: 0000 1 PREEMPT SMP PTI
-  CPU: 0 PID: 138098 Comm: growfiles Kdump: loaded Not tainted
-  5.14.0-436.3987_1240945149.el9.x86_64 #1
-  Hardware name: Red Hat KVM, BIOS 0.5.1 01/01/2011
-  RIP: 0010:_raw_callee_save__kvm_vcpu_is_preempted+0x0/0x20
-  Code: e8 15 d9 61 00 e9 63 ff ff ff 41 bd ea ff ff ff e9 58 ff ff ff e8
-  d0 71 c0 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 <48> 8b 04
-  fd 60 2b c1 99 80 b8 90 50 03 00 00 0f 95 c0 c3 cc cc cc
-  RSP: 0018:ffffb6a143cf7cf8 EFLAGS: 00010206
-  RAX: ffff8a9bc30fb038 RBX: ffff8a9bc666a200 RCX: ffff8a9cc0260000
-  RDX: 00000000736f622e RSI: ffff8a9bc30fb038 RDI: 000000007665645f
-  RBP: ffffb6a143cf7d70 R08: 0000000000001000 R09: 0000000000000001
-  R10: 0000000000000001 R11: 0000000000000000 R12: ffff8a9bc666a200
-  R13: 0000559a302a12b0 R14: 0000000000001000 R15: 0000000000000000
-  FS: 00007fbed1dbb740(0000) GS:ffff8a9cf0000000(0000)
-  knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 000000034cec4e58 CR3: 0000000128ec6006 CR4: 0000000000770ef0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   ? show_trace_log_lvl+0x1c4/0x2df
-   ? show_trace_log_lvl+0x1c4/0x2df
-   ? __mutex_lock.constprop.0+0x5f7/0x6a0
-   ? __die_body.cold+0x8/0xd
-   ? page_fault_oops+0x134/0x170
-   ? exc_page_fault+0x62/0x150
-   ? asm_exc_page_fault+0x22/0x30
-   ? _pfx_raw_callee_save__kvm_vcpu_is_preempted+0x10/0x10
-   __mutex_lock.constprop.0+0x5f7/0x6a0
-   ? __mod_memcg_lruvec_state+0x84/0xd0
-   pipe_write+0x47/0x650
-   ? do_anonymous_page+0x258/0x410
-   ? inode_security+0x22/0x60
-   ? selinux_file_permission+0x108/0x150
-   vfs_write+0x2cb/0x410
-   ksys_write+0x5f/0xe0
-   do_syscall_64+0x5c/0xf0
-   ? syscall_exit_to_user_mode+0x22/0x40
-   ? do_syscall_64+0x6b/0xf0
-   ? sched_clock_cpu+0x9/0xc0
-   ? exc_page_fault+0x62/0x150
-   entry_SYSCALL_64_after_hwframe+0x6e/0x76
-
-Cc: stable@vger.kernel.org
-Fixes: 72bc63f5e23a ("smb3: fix creating FIFOs when mounting with "sfu" mount option")
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index b156eefa75d7..78c94d0350fe 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -4964,68 +4964,84 @@ static int smb2_next_header(struct TCP_Server_Info *server, char *buf,
- 	return 0;
- }
- 
--int cifs_sfu_make_node(unsigned int xid, struct inode *inode,
--		       struct dentry *dentry, struct cifs_tcon *tcon,
--		       const char *full_path, umode_t mode, dev_t dev)
-+static int __cifs_sfu_make_node(unsigned int xid, struct inode *inode,
-+				struct dentry *dentry, struct cifs_tcon *tcon,
-+				const char *full_path, umode_t mode, dev_t dev)
- {
--	struct cifs_open_info_data buf = {};
- 	struct TCP_Server_Info *server = tcon->ses->server;
- 	struct cifs_open_parms oparms;
- 	struct cifs_io_parms io_parms = {};
- 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
- 	struct cifs_fid fid;
- 	unsigned int bytes_written;
--	struct win_dev *pdev;
-+	struct win_dev pdev = {};
- 	struct kvec iov[2];
- 	__u32 oplock = server->oplocks ? REQ_OPLOCK : 0;
- 	int rc;
- 
--	if (!S_ISCHR(mode) && !S_ISBLK(mode) && !S_ISFIFO(mode))
-+	switch (mode & S_IFMT) {
-+	case S_IFCHR:
-+		strscpy(pdev.type, "IntxCHR");
-+		pdev.major = cpu_to_le64(MAJOR(dev));
-+		pdev.minor = cpu_to_le64(MINOR(dev));
-+		break;
-+	case S_IFBLK:
-+		strscpy(pdev.type, "IntxBLK");
-+		pdev.major = cpu_to_le64(MAJOR(dev));
-+		pdev.minor = cpu_to_le64(MINOR(dev));
-+		break;
-+	case S_IFIFO:
-+		strscpy(pdev.type, "LnxFIFO");
-+		break;
-+	default:
- 		return -EPERM;
-+	}
- 
--	oparms = (struct cifs_open_parms) {
--		.tcon = tcon,
--		.cifs_sb = cifs_sb,
--		.desired_access = GENERIC_WRITE,
--		.create_options = cifs_create_options(cifs_sb, CREATE_NOT_DIR |
--						      CREATE_OPTION_SPECIAL),
--		.disposition = FILE_CREATE,
--		.path = full_path,
--		.fid = &fid,
--	};
-+	oparms = CIFS_OPARMS(cifs_sb, tcon, full_path, GENERIC_WRITE,
-+			     FILE_CREATE, CREATE_NOT_DIR |
-+			     CREATE_OPTION_SPECIAL, ACL_NO_MODE);
-+	oparms.fid = &fid;
- 
--	rc = server->ops->open(xid, &oparms, &oplock, &buf);
-+	rc = server->ops->open(xid, &oparms, &oplock, NULL);
- 	if (rc)
- 		return rc;
- 
--	/*
--	 * BB Do not bother to decode buf since no local inode yet to put
--	 * timestamps in, but we can reuse it safely.
--	 */
--	pdev = (struct win_dev *)&buf.fi;
- 	io_parms.pid = current->tgid;
- 	io_parms.tcon = tcon;
--	io_parms.length = sizeof(*pdev);
--	iov[1].iov_base = pdev;
--	iov[1].iov_len = sizeof(*pdev);
--	if (S_ISCHR(mode)) {
--		memcpy(pdev->type, "IntxCHR", 8);
--		pdev->major = cpu_to_le64(MAJOR(dev));
--		pdev->minor = cpu_to_le64(MINOR(dev));
--	} else if (S_ISBLK(mode)) {
--		memcpy(pdev->type, "IntxBLK", 8);
--		pdev->major = cpu_to_le64(MAJOR(dev));
--		pdev->minor = cpu_to_le64(MINOR(dev));
--	} else if (S_ISFIFO(mode)) {
--		memcpy(pdev->type, "LnxFIFO", 8);
--	}
-+	io_parms.length = sizeof(pdev);
-+	iov[1].iov_base = &pdev;
-+	iov[1].iov_len = sizeof(pdev);
- 
- 	rc = server->ops->sync_write(xid, &fid, &io_parms,
- 				     &bytes_written, iov, 1);
- 	server->ops->close(xid, tcon, &fid);
--	d_drop(dentry);
--	/* FIXME: add code here to set EAs */
--	cifs_free_open_info(&buf);
-+	return rc;
-+}
-+
-+int cifs_sfu_make_node(unsigned int xid, struct inode *inode,
-+		       struct dentry *dentry, struct cifs_tcon *tcon,
-+		       const char *full_path, umode_t mode, dev_t dev)
-+{
-+	struct inode *new = NULL;
-+	int rc;
-+
-+	rc = __cifs_sfu_make_node(xid, inode, dentry, tcon,
-+				  full_path, mode, dev);
-+	if (rc)
-+		return rc;
-+
-+	if (tcon->posix_extensions) {
-+		rc = smb311_posix_get_inode_info(&new, full_path, NULL,
-+						 inode->i_sb, xid);
-+	} else if (tcon->unix_ext) {
-+		rc = cifs_get_inode_info_unix(&new, full_path,
-+					      inode->i_sb, xid);
-+	} else {
-+		rc = cifs_get_inode_info(&new, full_path, NULL,
-+					 inode->i_sb, xid, NULL);
-+	}
-+	if (!rc)
-+		d_instantiate(dentry, new);
- 	return rc;
- }
- 
-
+Thanks,
+Guenter
 
