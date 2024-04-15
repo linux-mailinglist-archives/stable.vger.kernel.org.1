@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-39624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C143E8A53C4
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:31:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2DDF8A5475
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:37:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFCEF1C21F38
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:31:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CBCB283129
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD868062E;
-	Mon, 15 Apr 2024 14:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B4B757E1;
+	Mon, 15 Apr 2024 14:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUKDaWYa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRxTGMYK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB48278C67;
-	Mon, 15 Apr 2024 14:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F44B36AE0;
+	Mon, 15 Apr 2024 14:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191322; cv=none; b=QBJRqJ7C0m959qVzs8iERVUPMuH8DFJbnVbgoTBvOARKF5ozt4SgI8cg4rRK3A7zbDT1mmr1YuKPJM7Q76Ia/JUdk3k+7GQS0ElXjcWmx/VYnxTSCJGG5sR2nurUqsokdUJuSIdgurRaGfKTxls1APR9hsbbWQ/xqpLLsdbbX78=
+	t=1713191658; cv=none; b=C1sXF9n+vvKBQ/v0ucKbv3vM1TtPzZZ071frvtcmga7mnO/NR8zL34j3YGc5wmARrw3AVommhNojknBKhlQV1FDCM65QG/ouZ7roIz/WeC/7Fz34PIRp0j+Quk0TkkVmvk82v5SWfWHZX2H0tQ2+ArHlYHVLjk5IdUgX6SUvfVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191322; c=relaxed/simple;
-	bh=O8CtBAbhdoavKLJ9NWUT6GT2ysazKQLqu6VrwRFfHXw=;
+	s=arc-20240116; t=1713191658; c=relaxed/simple;
+	bh=LH5+YijjafGfJpQ6TfMZuPe7hxzKl/B9pMq4TNwrRi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hzo3lAumSZ5kvvxD5QxR3aQ2DTCb0PerQTi+uDK7jDvRzFTXBUuJwwifAQ008pLpcravwA+UPl2UcUettHqMWfLzAZkpxnx8CZlNa4FxP1QWwTYHZP0CQSIHpjY4ri+EiBtc6117HmNTTfcG1BD/+x2if3idGyCcdRkFbQjsWOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUKDaWYa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D59C2BD10;
-	Mon, 15 Apr 2024 14:28:41 +0000 (UTC)
+	 MIME-Version; b=oxiZehRdi2zTlbiv+CokGXlTElGpKS7pMqRES/xbP1pbLNpzYvEBPnqTbphl1Zo26/sPii1T63i4xGIuZYJghQycx3MHRe55CLKDCEO744/WnJEWoltrIUP4vh+sX+pPHfFpwM+UoiFxwAzdmclBB0oFboQ8TZoLo+WxyneL7YA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRxTGMYK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A24C113CC;
+	Mon, 15 Apr 2024 14:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191321;
-	bh=O8CtBAbhdoavKLJ9NWUT6GT2ysazKQLqu6VrwRFfHXw=;
+	s=korg; t=1713191658;
+	bh=LH5+YijjafGfJpQ6TfMZuPe7hxzKl/B9pMq4TNwrRi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pUKDaWYa2bCrelpeAsTgtSPEDjwKamyctgtyi6bhrs9kdhz738SuKdDDrs80ho2L6
-	 1Q4di+GAEKqrTiDmIekOsZe5kYfp7dFLH0GJvp8ftK3mQOHPL3wbfobQ/uAEbe8u26
-	 HrRSUjf8GrcmaZdcp4RICoTiUafaz/Soub0ZFfyc=
+	b=GRxTGMYK5xfz+vKB6LERR/Qv54aXA8CXzuDw482nLa/ayLczSf+uMElpAFJTX3lp5
+	 M8STHEE1zP2prgbpZmCRaT7kEda/h5eizeb6DSU5rh2LnHQUL7MlAPr15RGXP0op6O
+	 LIPFNiiRpbPmXw488X0QgFW5SKQRMrTprLAmrVRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Pavel Begunkov <asml.silence@gmail.com>
-Subject: [PATCH 6.8 106/172] io_uring: refactor DEFER_TASKRUN multishot checks
-Date: Mon, 15 Apr 2024 16:20:05 +0200
-Message-ID: <20240415142003.612376810@linuxfoundation.org>
+	Marek Vasut <marex@denx.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 041/122] net: ks8851: Inline ks8851_rx_skb()
+Date: Mon, 15 Apr 2024 16:20:06 +0200
+Message-ID: <20240415141954.600079228@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Marek Vasut <marex@denx.de>
 
-Commit e0e4ab52d17096d96c21a6805ccd424b283c3c6d upstream.
+[ Upstream commit f96f700449b6d190e06272f1cf732ae8e45b73df ]
 
-We disallow DEFER_TASKRUN multishots from running by io-wq, which is
-checked by individual opcodes in the issue path. We can consolidate all
-it in io_wq_submit_work() at the same time moving the checks out of the
-hot path.
+Both ks8851_rx_skb_par() and ks8851_rx_skb_spi() call netif_rx(skb),
+inline the netif_rx(skb) call directly into ks8851_common.c and drop
+the .rx_skb callback and ks8851_rx_skb() wrapper. This removes one
+indirect call from the driver, no functional change otherwise.
 
-Suggested-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/e492f0f11588bb5aa11d7d24e6f53b7c7628afdb.1709905727.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Link: https://lore.kernel.org/r/20240405203204.82062-1-marex@denx.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: be0384bf599c ("net: ks8851: Handle softirqs at the end of IRQ thread to fix hang")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |   20 ++++++++++++++++++++
- io_uring/net.c      |   21 ---------------------
- io_uring/rw.c       |    2 --
- 3 files changed, 20 insertions(+), 23 deletions(-)
+ drivers/net/ethernet/micrel/ks8851.h        |  3 ---
+ drivers/net/ethernet/micrel/ks8851_common.c | 12 +-----------
+ drivers/net/ethernet/micrel/ks8851_par.c    | 11 -----------
+ drivers/net/ethernet/micrel/ks8851_spi.c    | 11 -----------
+ 4 files changed, 1 insertion(+), 36 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -949,6 +949,8 @@ bool io_fill_cqe_req_aux(struct io_kiocb
- 	u64 user_data = req->cqe.user_data;
- 	struct io_uring_cqe *cqe;
+diff --git a/drivers/net/ethernet/micrel/ks8851.h b/drivers/net/ethernet/micrel/ks8851.h
+index e5ec0a363aff8..31f75b4a67fd7 100644
+--- a/drivers/net/ethernet/micrel/ks8851.h
++++ b/drivers/net/ethernet/micrel/ks8851.h
+@@ -368,7 +368,6 @@ union ks8851_tx_hdr {
+  * @rdfifo: FIFO read callback
+  * @wrfifo: FIFO write callback
+  * @start_xmit: start_xmit() implementation callback
+- * @rx_skb: rx_skb() implementation callback
+  * @flush_tx_work: flush_tx_work() implementation callback
+  *
+  * The @statelock is used to protect information in the structure which may
+@@ -423,8 +422,6 @@ struct ks8851_net {
+ 					  struct sk_buff *txp, bool irq);
+ 	netdev_tx_t		(*start_xmit)(struct sk_buff *skb,
+ 					      struct net_device *dev);
+-	void			(*rx_skb)(struct ks8851_net *ks,
+-					  struct sk_buff *skb);
+ 	void			(*flush_tx_work)(struct ks8851_net *ks);
+ };
  
-+	lockdep_assert(!io_wq_current_is_worker());
-+
- 	if (!defer)
- 		return __io_post_aux_cqe(ctx, user_data, res, cflags, false);
+diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
+index 0bf13b38b8f5b..896d43bb8883d 100644
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -231,16 +231,6 @@ static void ks8851_dbg_dumpkkt(struct ks8851_net *ks, u8 *rxpkt)
+ 		   rxpkt[12], rxpkt[13], rxpkt[14], rxpkt[15]);
+ }
  
-@@ -1950,6 +1952,24 @@ fail:
- 		goto fail;
- 	}
- 
-+	/*
-+	 * If DEFER_TASKRUN is set, it's only allowed to post CQEs from the
-+	 * submitter task context. Final request completions are handed to the
-+	 * right context, however this is not the case of auxiliary CQEs,
-+	 * which is the main mean of operation for multishot requests.
-+	 * Don't allow any multishot execution from io-wq. It's more restrictive
-+	 * than necessary and also cleaner.
-+	 */
-+	if (req->flags & REQ_F_APOLL_MULTISHOT) {
-+		err = -EBADFD;
-+		if (!file_can_poll(req->file))
-+			goto fail;
-+		err = -ECANCELED;
-+		if (io_arm_poll_handler(req, issue_flags) != IO_APOLL_OK)
-+			goto fail;
-+		return;
-+	}
-+
- 	if (req->flags & REQ_F_FORCE_ASYNC) {
- 		bool opcode_poll = def->pollin || def->pollout;
- 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -78,19 +78,6 @@ struct io_sr_msg {
-  */
- #define MULTISHOT_MAX_RETRY	32
- 
--static inline bool io_check_multishot(struct io_kiocb *req,
--				      unsigned int issue_flags)
+-/**
+- * ks8851_rx_skb - receive skbuff
+- * @ks: The device state.
+- * @skb: The skbuff
+- */
+-static void ks8851_rx_skb(struct ks8851_net *ks, struct sk_buff *skb)
 -{
--	/*
--	 * When ->locked_cq is set we only allow to post CQEs from the original
--	 * task context. Usual request completions will be handled in other
--	 * generic paths but multipoll may decide to post extra cqes.
--	 */
--	return !(issue_flags & IO_URING_F_IOWQ) ||
--		!(req->flags & REQ_F_APOLL_MULTISHOT) ||
--		!req->ctx->task_complete;
+-	ks->rx_skb(ks, skb);
 -}
 -
- int io_shutdown_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ /**
+  * ks8851_rx_pkts - receive packets from the host
+  * @ks: The device information.
+@@ -309,7 +299,7 @@ static void ks8851_rx_pkts(struct ks8851_net *ks)
+ 					ks8851_dbg_dumpkkt(ks, rxpkt);
+ 
+ 				skb->protocol = eth_type_trans(skb, ks->netdev);
+-				ks8851_rx_skb(ks, skb);
++				netif_rx(skb);
+ 
+ 				ks->netdev->stats.rx_packets++;
+ 				ks->netdev->stats.rx_bytes += rxlen;
+diff --git a/drivers/net/ethernet/micrel/ks8851_par.c b/drivers/net/ethernet/micrel/ks8851_par.c
+index 7f49042484bdc..96fb0ffcedb90 100644
+--- a/drivers/net/ethernet/micrel/ks8851_par.c
++++ b/drivers/net/ethernet/micrel/ks8851_par.c
+@@ -210,16 +210,6 @@ static void ks8851_wrfifo_par(struct ks8851_net *ks, struct sk_buff *txp,
+ 	iowrite16_rep(ksp->hw_addr, txp->data, len / 2);
+ }
+ 
+-/**
+- * ks8851_rx_skb_par - receive skbuff
+- * @ks: The device state.
+- * @skb: The skbuff
+- */
+-static void ks8851_rx_skb_par(struct ks8851_net *ks, struct sk_buff *skb)
+-{
+-	netif_rx(skb);
+-}
+-
+ static unsigned int ks8851_rdreg16_par_txqcr(struct ks8851_net *ks)
  {
- 	struct io_shutdown *shutdown = io_kiocb_to_cmd(req, struct io_shutdown);
-@@ -837,9 +824,6 @@ int io_recvmsg(struct io_kiocb *req, uns
- 	    (sr->flags & IORING_RECVSEND_POLL_FIRST))
- 		return io_setup_async_msg(req, kmsg, issue_flags);
+ 	return ks8851_rdreg16_par(ks, KS_TXQCR);
+@@ -298,7 +288,6 @@ static int ks8851_probe_par(struct platform_device *pdev)
+ 	ks->rdfifo = ks8851_rdfifo_par;
+ 	ks->wrfifo = ks8851_wrfifo_par;
+ 	ks->start_xmit = ks8851_start_xmit_par;
+-	ks->rx_skb = ks8851_rx_skb_par;
  
--	if (!io_check_multishot(req, issue_flags))
--		return io_setup_async_msg(req, kmsg, issue_flags);
+ #define STD_IRQ (IRQ_LCI |	/* Link Change */	\
+ 		 IRQ_RXI |	/* RX done */		\
+diff --git a/drivers/net/ethernet/micrel/ks8851_spi.c b/drivers/net/ethernet/micrel/ks8851_spi.c
+index 88e26c120b483..4dcbff789b19d 100644
+--- a/drivers/net/ethernet/micrel/ks8851_spi.c
++++ b/drivers/net/ethernet/micrel/ks8851_spi.c
+@@ -298,16 +298,6 @@ static unsigned int calc_txlen(unsigned int len)
+ 	return ALIGN(len + 4, 4);
+ }
+ 
+-/**
+- * ks8851_rx_skb_spi - receive skbuff
+- * @ks: The device state
+- * @skb: The skbuff
+- */
+-static void ks8851_rx_skb_spi(struct ks8851_net *ks, struct sk_buff *skb)
+-{
+-	netif_rx(skb);
+-}
 -
- retry_multishot:
- 	if (io_do_buffer_select(req)) {
- 		void __user *buf;
-@@ -935,9 +919,6 @@ int io_recv(struct io_kiocb *req, unsign
- 	    (sr->flags & IORING_RECVSEND_POLL_FIRST))
- 		return -EAGAIN;
+ /**
+  * ks8851_tx_work - process tx packet(s)
+  * @work: The work strucutre what was scheduled.
+@@ -435,7 +425,6 @@ static int ks8851_probe_spi(struct spi_device *spi)
+ 	ks->rdfifo = ks8851_rdfifo_spi;
+ 	ks->wrfifo = ks8851_wrfifo_spi;
+ 	ks->start_xmit = ks8851_start_xmit_spi;
+-	ks->rx_skb = ks8851_rx_skb_spi;
+ 	ks->flush_tx_work = ks8851_flush_tx_work_spi;
  
--	if (!io_check_multishot(req, issue_flags))
--		return -EAGAIN;
--
- 	sock = sock_from_file(req->file);
- 	if (unlikely(!sock))
- 		return -ENOTSOCK;
-@@ -1386,8 +1367,6 @@ int io_accept(struct io_kiocb *req, unsi
- 	struct file *file;
- 	int ret, fd;
- 
--	if (!io_check_multishot(req, issue_flags))
--		return -EAGAIN;
- retry:
- 	if (!fixed) {
- 		fd = __get_unused_fd_flags(accept->flags, accept->nofile);
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -932,8 +932,6 @@ int io_read_mshot(struct io_kiocb *req,
- 	 */
- 	if (!file_can_poll(req->file))
- 		return -EBADFD;
--	if (issue_flags & IO_URING_F_IOWQ)
--		return -EAGAIN;
- 
- 	ret = __io_read(req, issue_flags);
- 
+ #define STD_IRQ (IRQ_LCI |	/* Link Change */	\
+-- 
+2.43.0
+
 
 
 
