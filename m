@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-39762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612088A549F
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:38:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B488A542E
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 009181F2236F
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:38:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 127C01F22A62
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480517EEE7;
-	Mon, 15 Apr 2024 14:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8B58120A;
+	Mon, 15 Apr 2024 14:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JumeifhJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2cpAkd5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C3F7E0F4;
-	Mon, 15 Apr 2024 14:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3928D7A705;
+	Mon, 15 Apr 2024 14:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191737; cv=none; b=qxukj3+Q5Gfb1is143L6QQ3ax/0g3K9/CQ/wotUCE7EA4yslC1JmwtxFjfoukZIaM7CApaW+PavM6hNHthKrTiG7VnGUU5UcSuSS/h8n25UQH5zoCTJ/ggMtgJWaUJCbft36kwd9nUDDGt4Xg0/OJQ+YO1kRVuPpjiK8lqxtDNg=
+	t=1713191498; cv=none; b=GfaRWwT+/v0vn+ie/ELk7loXStEjpXglRvCN0/l5F2naa/ADQLk0azAfETpP9znxMGsU0mn6dRK796IsnozmKh4SAOUPxXFvqOIMMBcs4UjnCuaKBOjWNe1ZM9/CBDwJT1yB5GQnmNYPxkZEf/kdUp+mkrHyoKb7S8KvNR+zebg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191737; c=relaxed/simple;
-	bh=eYhlLQ1n/kNHqOcBoBi3bWaWbv5DKjxip0wVADHOxeE=;
+	s=arc-20240116; t=1713191498; c=relaxed/simple;
+	bh=GiBz9udlZwzlGHCuOQsO+L3740Na3E2X3SF2079tCBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bfiOHD9CH2ozsG+f1oAzUU9J/28EIfLDbcWKs02Gw3+Xib2bQt6TouU/2U7kl+Q4/Umfl94NRtx5FNu3+jPj1A+JcMKZ03pWNgfV8/hcqPRmb3L7jBM21717dNbKUK1mnktEdGTZLRRfZIuotyKqvPLmGbP/qsLIiShZSoZb/Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JumeifhJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C63DC113CC;
-	Mon, 15 Apr 2024 14:35:36 +0000 (UTC)
+	 MIME-Version; b=FgZyzDlcpi6qbvK9PKXoTJcat5P98e5cWInzPQYIFZ7UchvUlGK07lDF5q9BwvrKwBxvcjBmm0Am+IYP7lqfU1gVW9qpFe1ib6QhStFCE3UlNZZqWHZvpmYaYA6Rbs4lMORZmf50Nf+hOkZs029EvTm5DBivxkJXCuqGjDhbZlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2cpAkd5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC83FC113CC;
+	Mon, 15 Apr 2024 14:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191736;
-	bh=eYhlLQ1n/kNHqOcBoBi3bWaWbv5DKjxip0wVADHOxeE=;
+	s=korg; t=1713191498;
+	bh=GiBz9udlZwzlGHCuOQsO+L3740Na3E2X3SF2079tCBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JumeifhJRoMmvJNiur8a9M8n2c53u0WgJ0hkTwKsJ6/t4aEjJtJeKN1WucmErda6v
-	 DKrSqjbhMBOQrv2SV6saQUJcV58Vk+6IG4z/EeyL/jyZee4Dwq+w6P0rbYYuQiNJmj
-	 e+qmmXuiH+XeLJS0CLHUvktQUHVLMKPVlc5PjxHk=
+	b=Q2cpAkd5DmqzHOPsxZrPhIuQOHRSkxSspGSuug0TjDZ5fxQkn+WGggPg+S0XTF8LC
+	 qQe1PSVoUQXZDFJqEbKTBQzGUZPqHjI6XRZCx3+/wybVa1SrsosbOA+1gCxrHToog3
+	 cdWtRnb1X7ZVJDDk8eWaJQW1A++Zt/RcOskrFCNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Bernstein <amitbern@amazon.com>,
-	David Arinzon <darinzon@amazon.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/122] net: ena: Wrong missing IO completions check order
+	Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.8 135/172] arm64: dts: imx8-ss-conn: fix usb lpcg indices
 Date: Mon, 15 Apr 2024 16:20:34 +0200
-Message-ID: <20240415141955.449711225@linuxfoundation.org>
+Message-ID: <20240415142004.477732740@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,113 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Arinzon <darinzon@amazon.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit f7e417180665234fdb7af2ebe33d89aaa434d16f ]
+commit 808e7716edcdb39d3498b9f567ef6017858b49aa upstream.
 
-Missing IO completions check is called every second (HZ jiffies).
-This commit fixes several issues with this check:
+usb2_lpcg: clock-controller@5b270000 {
+	...                                                    Col1  Col2
+	clocks = <&conn_ahb_clk>, <&conn_ipg_clk>;           // 0     6
+	clock-indices = <IMX_LPCG_CLK_6>, <IMX_LPCG_CLK_7>;  // 0     7
+        ...
+};
 
-1. Duplicate queues check:
-   Max of 4 queues are scanned on each check due to monitor budget.
-   Once reaching the budget, this check exits under the assumption that
-   the next check will continue to scan the remainder of the queues,
-   but in practice, next check will first scan the last already scanned
-   queue which is not necessary and may cause the full queue scan to
-   last a couple of seconds longer.
-   The fix is to start every check with the next queue to scan.
-   For example, on 8 IO queues:
-   Bug: [0,1,2,3], [3,4,5,6], [6,7]
-   Fix: [0,1,2,3], [4,5,6,7]
+Col1: index, which existing dts try to get.
+Col2: actual index in lpcg driver.
 
-2. Unbalanced queues check:
-   In case the number of active IO queues is not a multiple of budget,
-   there will be checks which don't utilize the full budget
-   because the full scan exits when reaching the last queue id.
-   The fix is to run every TX completion check with exact queue budget
-   regardless of the queue id.
-   For example, on 7 IO queues:
-   Bug: [0,1,2,3], [4,5,6], [0,1,2,3]
-   Fix: [0,1,2,3], [4,5,6,0], [1,2,3,4]
-   The budget may be lowered in case the number of IO queues is less
-   than the budget (4) to make sure there are no duplicate queues on
-   the same check.
-   For example, on 3 IO queues:
-   Bug: [0,1,2,0], [1,2,0,1]
-   Fix: [0,1,2], [0,1,2]
+usbotg1: usb@5b0d0000 {
+	...
+	clocks = <&usb2_lpcg 0>;
+			     ^^
+Should be:
+	clocks = <&usb2_lpcg IMX_LPCG_CLK_6>;
+};
 
-Fixes: 1738cd3ed342 ("net: ena: Add a driver for Amazon Elastic Network Adapters (ENA)")
-Signed-off-by: Amit Bernstein <amitbern@amazon.com>
-Signed-off-by: David Arinzon <darinzon@amazon.com>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+usbphy1: usbphy@5b100000 {
+	clocks = <&usb2_lpcg 1>;
+			     ^^
+SHould be:
+	clocks = <&usb2_lpcg IMX_LPCG_CLK_7>;
+};
+
+Arg0 is divided by 4 in lpcg driver. So lpcg will do dummy enable. Fix it
+by use correct clock indices.
+
+Cc: stable@vger.kernel.org
+Fixes: 8065fc937f0f ("arm64: dts: imx8dxl: add usb1 and usb2 support")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_netdev.c | 21 +++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-index cc39707a80598..5178eb089eabe 100644
---- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-@@ -3982,10 +3982,11 @@ static void check_for_missing_completions(struct ena_adapter *adapter)
- {
- 	struct ena_ring *tx_ring;
- 	struct ena_ring *rx_ring;
--	int i, budget, rc;
-+	int qid, budget, rc;
- 	int io_queue_count;
- 
- 	io_queue_count = adapter->xdp_num_queues + adapter->num_io_queues;
-+
- 	/* Make sure the driver doesn't turn the device in other process */
- 	smp_rmb();
- 
-@@ -3998,27 +3999,29 @@ static void check_for_missing_completions(struct ena_adapter *adapter)
- 	if (adapter->missing_tx_completion_to == ENA_HW_HINTS_NO_TIMEOUT)
- 		return;
- 
--	budget = ENA_MONITORED_TX_QUEUES;
-+	budget = min_t(u32, io_queue_count, ENA_MONITORED_TX_QUEUES);
- 
--	for (i = adapter->last_monitored_tx_qid; i < io_queue_count; i++) {
--		tx_ring = &adapter->tx_ring[i];
--		rx_ring = &adapter->rx_ring[i];
-+	qid = adapter->last_monitored_tx_qid;
-+
-+	while (budget) {
-+		qid = (qid + 1) % io_queue_count;
-+
-+		tx_ring = &adapter->tx_ring[qid];
-+		rx_ring = &adapter->rx_ring[qid];
- 
- 		rc = check_missing_comp_in_tx_queue(adapter, tx_ring);
- 		if (unlikely(rc))
- 			return;
- 
--		rc =  !ENA_IS_XDP_INDEX(adapter, i) ?
-+		rc =  !ENA_IS_XDP_INDEX(adapter, qid) ?
- 			check_for_rx_interrupt_queue(adapter, rx_ring) : 0;
- 		if (unlikely(rc))
- 			return;
- 
- 		budget--;
--		if (!budget)
--			break;
- 	}
- 
--	adapter->last_monitored_tx_qid = i % io_queue_count;
-+	adapter->last_monitored_tx_qid = qid;
- }
- 
- /* trigger napi schedule after 2 consecutive detections */
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
+@@ -41,7 +41,7 @@ conn_subsys: bus@5b000000 {
+ 		interrupts = <GIC_SPI 267 IRQ_TYPE_LEVEL_HIGH>;
+ 		fsl,usbphy = <&usbphy1>;
+ 		fsl,usbmisc = <&usbmisc1 0>;
+-		clocks = <&usb2_lpcg 0>;
++		clocks = <&usb2_lpcg IMX_LPCG_CLK_6>;
+ 		ahb-burst-config = <0x0>;
+ 		tx-burst-size-dword = <0x10>;
+ 		rx-burst-size-dword = <0x10>;
+@@ -58,7 +58,7 @@ conn_subsys: bus@5b000000 {
+ 	usbphy1: usbphy@5b100000 {
+ 		compatible = "fsl,imx7ulp-usbphy";
+ 		reg = <0x5b100000 0x1000>;
+-		clocks = <&usb2_lpcg 1>;
++		clocks = <&usb2_lpcg IMX_LPCG_CLK_7>;
+ 		power-domains = <&pd IMX_SC_R_USB_0_PHY>;
+ 		status = "disabled";
+ 	};
 
 
 
