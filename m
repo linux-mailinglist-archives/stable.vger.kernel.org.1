@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-39883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED598A552C
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C9A8A5531
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 516A31C21EAD
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 479CAB23C87
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC4574BE1;
-	Mon, 15 Apr 2024 14:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8870676F1B;
+	Mon, 15 Apr 2024 14:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOaPYWdt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxrzZkWN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA042119;
-	Mon, 15 Apr 2024 14:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F1B74E3A;
+	Mon, 15 Apr 2024 14:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192104; cv=none; b=q1QHXnbRMpTIePH9uCqFq2r+Ha1E29YnX5etRCv6sFtv0skq2ila+YvafCzkkCKbEY2F4xgZFF+brXr4wn9++nklmOEnHFz0NfEdD9IlW5fSx2fC387aMCwNl5zyqk+oDNbCvzBm71tu9uxnyOYAMQIU+TzJwIycp2mg6QKgRNU=
+	t=1713192113; cv=none; b=Z0cLsM7mmbmZKUlBotkR3hh0o1K6A09nGYY5SiCtLljMD+xjBSbZ3fDP0hMvzhbRuLI8emyP4RFLahkY67KBir3Wo4kCqbQF0NGZzbs1OwaMTfhkB5hUYlOteHCksh1nR9tV7gyug2s02GdLKtTlFgsb+j+t9+zL6k5mGbgwTyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192104; c=relaxed/simple;
-	bh=T8j79MWl4+W0kE3bbWox3wo2zAEOsIEiBU8TBJjKSgU=;
+	s=arc-20240116; t=1713192113; c=relaxed/simple;
+	bh=A3liOor6tpDowbyqT5LpjWE5KGJu4jq9V6R9Yae7oTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lys8cP+oKOYgCIbGeh4doss4mUsDmvCgwJl6N0F/8GrGck6Ife4xTTa55XCNxPTiy6iHtMMVnJspEpZfO8Xh4HqNHVAt0LdYFNpnVFF2Cmn9DGYK5BzkP8nTKWNVxrIhRB+8WxQspwg9CAuxKcokJ0sZo5ZX6CepwUx3EvLH0jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOaPYWdt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E42BFC3277B;
-	Mon, 15 Apr 2024 14:41:43 +0000 (UTC)
+	 MIME-Version; b=Cq2tJEu7W43+PLumBIlXedbFayNIZiLtCMEtqE0A2WFi1R0yMf2rr3v0weu8Caw1U6AjzT5DYk6sRJcUR8Usw9shD/pEJaozZUMQvmo4kcD2bwgj37BHQVn54Aib5HhHADec2eTlBk74PBRmU/n68d1+o19Mq4nsVMRyAnaoH8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxrzZkWN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0605C113CC;
+	Mon, 15 Apr 2024 14:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192104;
-	bh=T8j79MWl4+W0kE3bbWox3wo2zAEOsIEiBU8TBJjKSgU=;
+	s=korg; t=1713192113;
+	bh=A3liOor6tpDowbyqT5LpjWE5KGJu4jq9V6R9Yae7oTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DOaPYWdt1sdfuLiSIIigAF0/yL/ttGafujotRC1sM3TphHtxP4D42YLeBiPcZ3YpI
-	 Ja2+QvQEldJ2YyhvleNYgD+OLwqeY7AlJo4yQAiBo/AdC5vEoKrICWWF7fPjhaswDc
-	 aMRkmKZbR8Jv5+ZKP/gKzAfm17XWW7yHTZAFEBtE=
+	b=pxrzZkWN9c35VfSq9yuMZBKySi4BUe68lhkYF2BWUKIDD2OHnRQXyPZLgAxy2SseX
+	 T93kIbY/U+2tRdL14LL+OFD1Ir2jcg/eUrW7gFsG9SUcQA0QqxFchk+gIEsQa/gp8+
+	 g6ae04A7IBZx3tvOEYDiJ6v12ezwtRSmbG6V1KjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Michael S. Tsirkin" <mst@redhat.com>,
 	Stefano Garzarella <sgarzare@redhat.com>,
 	stable@kernel.org
-Subject: [PATCH 6.1 50/69] vhost: Add smp_rmb() in vhost_vq_avail_empty()
-Date: Mon, 15 Apr 2024 16:21:21 +0200
-Message-ID: <20240415141947.675101641@linuxfoundation.org>
+Subject: [PATCH 6.1 51/69] vhost: Add smp_rmb() in vhost_enable_notify()
+Date: Mon, 15 Apr 2024 16:21:22 +0200
+Message-ID: <20240415141947.706137466@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
 References: <20240415141946.165870434@linuxfoundation.org>
@@ -72,9 +72,9 @@ Content-Transfer-Encoding: 8bit
 
 From: Gavin Shan <gshan@redhat.com>
 
-commit 22e1992cf7b034db5325660e98c41ca5afa5f519 upstream.
+commit df9ace7647d4123209395bb9967e998d5758c645 upstream.
 
-A smp_rmb() has been missed in vhost_vq_avail_empty(), spotted by
+A smp_rmb() has been missed in vhost_enable_notify(), inspired by
 Will. Otherwise, it's not ensured the available ring entries pushed
 by guest can be observed by vhost in time, leading to stale available
 ring entries fetched by vhost in vhost_get_vq_desc(), as reported by
@@ -92,19 +92,19 @@ Yihuang Yu on NVidia's grace-hopper (ARM64) platform.
   guest# netperf -H 10.26.1.81 -l 60 -C -c -t UDP_STREAM
   virtio_net virtio0: output.0:id 100 is not a head!
 
-Add the missed smp_rmb() in vhost_vq_avail_empty(). When tx_can_batch()
-returns true, it means there's still pending tx buffers. Since it might
-read indices, so it still can bypass the smp_rmb() in vhost_get_vq_desc().
-Note that it should be safe until vq->avail_idx is changed by commit
-275bf960ac697 ("vhost: better detection of available buffers").
+Add the missed smp_rmb() in vhost_enable_notify(). When it returns true,
+it means there's still pending tx buffers. Since it might read indices,
+so it still can bypass the smp_rmb() in vhost_get_vq_desc(). Note that
+it should be safe until vq->avail_idx is changed by commit d3bb267bbdcb
+("vhost: cache avail index in vhost_enable_notify()").
 
-Fixes: 275bf960ac69 ("vhost: better detection of available buffers")
-Cc: <stable@kernel.org> # v4.11+
+Fixes: d3bb267bbdcb ("vhost: cache avail index in vhost_enable_notify()")
+Cc: <stable@kernel.org> # v5.18+
 Reported-by: Yihuang Yu <yihyu@redhat.com>
 Suggested-by: Will Deacon <will@kernel.org>
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 Acked-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20240328002149.1141302-2-gshan@redhat.com>
+Message-Id: <20240328002149.1141302-3-gshan@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -114,10 +114,10 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/vhost/vhost.c
 +++ b/drivers/vhost/vhost.c
-@@ -2523,9 +2523,19 @@ bool vhost_vq_avail_empty(struct vhost_d
- 	r = vhost_get_avail_idx(vq, &avail_idx);
- 	if (unlikely(r))
+@@ -2572,9 +2572,19 @@ bool vhost_enable_notify(struct vhost_de
+ 		       &vq->avail->idx, r);
  		return false;
+ 	}
 +
  	vq->avail_idx = vhost16_to_cpu(vq, avail_idx);
 +	if (vq->avail_idx != vq->last_avail_idx) {
@@ -127,13 +127,13 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +		 * the avail_idx read.
 +		 */
 +		smp_rmb();
-+		return false;
++		return true;
 +	}
  
--	return vq->avail_idx == vq->last_avail_idx;
-+	return true;
+-	return vq->avail_idx != vq->last_avail_idx;
++	return false;
  }
- EXPORT_SYMBOL_GPL(vhost_vq_avail_empty);
+ EXPORT_SYMBOL_GPL(vhost_enable_notify);
  
 
 
