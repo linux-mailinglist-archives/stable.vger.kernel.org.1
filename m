@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-39831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47FC28A54F2
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D1BA8A5441
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 793301C2219D
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F0611C21FAF
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CE07581F;
-	Mon, 15 Apr 2024 14:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C247D82484;
+	Mon, 15 Apr 2024 14:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8LzzJ9I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7ymBb2V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07454762FF;
-	Mon, 15 Apr 2024 14:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA2941C75;
+	Mon, 15 Apr 2024 14:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191945; cv=none; b=WbYS5s7Frr4cwkTXheW5G9ScwJOD/HhFSY3T6796zVKn7pyTXdIOyjH0LbOKrzNy05lI6AHA48/wcGt0dLNQ0SW/IRctfJFUnsQw26hic+gK1eJNJWDfPSASmC+oNdUUqHfTNmZauLuHz6P6RBizq3rXnGBbLdxmccO/lOHS4lI=
+	t=1713191545; cv=none; b=os3KltSIg5PfJlf2c5g4PzS2i/8wzxs/pJz9HPSZfxiHjpU3aHFjoVcC1r+jk1j7YZOKs+LRtAmXpQyMeL3bxrtQq0bThf8kvFUYC8HbAWL+XJwyusY2UfJxWQSCzX9DzJnYxWg1eNNUMd0mZ6myttXk46IeJA7Y8MzqegQg/k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191945; c=relaxed/simple;
-	bh=ZVjGXAZuSlV7nEKYVY40AbXz6wOACrqbnUkhggjDCH8=;
+	s=arc-20240116; t=1713191545; c=relaxed/simple;
+	bh=kQErcpES5NeUrv2hYw13VUYP/DW0oM2KosR4bnVd/K4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjgdmT9v82n5Pt2gMs2Jf8vkv8MX7ey3xSYGyvZyZRSMTOY6dYe3Ql/6pn6kwJDboK4ptN/bQExOYRalUb3fSl29fT8JggUZZBP7AxeUi6XRX63Po6AdOb9BgAQE5oSvdGnpCXrtgelwJv0pItS8LvgMB5wpWYIred5QMM2JRQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8LzzJ9I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86302C113CC;
-	Mon, 15 Apr 2024 14:39:04 +0000 (UTC)
+	 MIME-Version; b=Cu5s1U6tmK7F1q2lJThiYWiVsDLxB4xw13Q23VgHcofStbxkU5WntVRuiEIVedyECCO/FhMlXlM/ggZCAMYd9oKY6ARexro07k6HAb9HXezddprk/S8M6iNbpnW8WDQ3CiTjEOngDM8UUlfoETB3G4KqIJ3y0QeCY6oXot17GNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7ymBb2V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06BF7C113CC;
+	Mon, 15 Apr 2024 14:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191944;
-	bh=ZVjGXAZuSlV7nEKYVY40AbXz6wOACrqbnUkhggjDCH8=;
+	s=korg; t=1713191545;
+	bh=kQErcpES5NeUrv2hYw13VUYP/DW0oM2KosR4bnVd/K4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t8LzzJ9IYDvfUh8qhjaSEkrsdFRCsizEzeRSeQ8mYaB6N7kQDwr2skPbqtIElji4b
-	 trG+c42NWMnbaEbd2/hIqdxqvxuUrua1bk6VjPdJL4tjyk38y9iC0QTBlOLR7DEHyD
-	 2/JV+rdeKJnHgNKedmpi4JtGz5tMqA4qH1oE/H6I=
+	b=V7ymBb2VqjZIQ3d/kN17++x+zK5Laq9DgvAVLK9wVb3TkBIu9Z1xE3h0ueVw4nlAt
+	 IkH23n+0fRvR4XYc7XmHxFnKVwkFiVZGlEjXc45HStzZ1PJtSUywPU1WVXxtt30WeW
+	 aACLbDJ7UosEoaZz5U7IQDCNlPruCyqEJGG6+5GU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nini Song <nini.song@mediatek.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.1 08/69] media: cec: core: remove length check of Timer Status
+	Yihuang Yu <yihyu@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Gavin Shan <gshan@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	stable@kernel.org
+Subject: [PATCH 6.8 140/172] vhost: Add smp_rmb() in vhost_enable_notify()
 Date: Mon, 15 Apr 2024 16:20:39 +0200
-Message-ID: <20240415141946.422772193@linuxfoundation.org>
+Message-ID: <20240415142004.625744465@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +66,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nini Song <nini.song@mediatek.com>
+From: Gavin Shan <gshan@redhat.com>
 
-commit ce5d241c3ad4568c12842168288993234345c0eb upstream.
+commit df9ace7647d4123209395bb9967e998d5758c645 upstream.
 
-The valid_la is used to check the length requirements,
-including special cases of Timer Status. If the length is
-shorter than 5, that means no Duration Available is returned,
-the message will be forced to be invalid.
+A smp_rmb() has been missed in vhost_enable_notify(), inspired by
+Will. Otherwise, it's not ensured the available ring entries pushed
+by guest can be observed by vhost in time, leading to stale available
+ring entries fetched by vhost in vhost_get_vq_desc(), as reported by
+Yihuang Yu on NVidia's grace-hopper (ARM64) platform.
 
-However, the description of Duration Available in the spec
-is that this parameter may be returned when these cases, or
-that it can be optionally return when these cases. The key
-words in the spec description are flexible choices.
+  /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64      \
+  -accel kvm -machine virt,gic-version=host -cpu host          \
+  -smp maxcpus=1,cpus=1,sockets=1,clusters=1,cores=1,threads=1 \
+  -m 4096M,slots=16,maxmem=64G                                 \
+  -object memory-backend-ram,id=mem0,size=4096M                \
+   :                                                           \
+  -netdev tap,id=vnet0,vhost=true                              \
+  -device virtio-net-pci,bus=pcie.8,netdev=vnet0,mac=52:54:00:f1:26:b0
+   :
+  guest# netperf -H 10.26.1.81 -l 60 -C -c -t UDP_STREAM
+  virtio_net virtio0: output.0:id 100 is not a head!
 
-Remove the special length check of Timer Status to fit the
-spec which is not compulsory about that.
+Add the missed smp_rmb() in vhost_enable_notify(). When it returns true,
+it means there's still pending tx buffers. Since it might read indices,
+so it still can bypass the smp_rmb() in vhost_get_vq_desc(). Note that
+it should be safe until vq->avail_idx is changed by commit d3bb267bbdcb
+("vhost: cache avail index in vhost_enable_notify()").
 
-Signed-off-by: Nini Song <nini.song@mediatek.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: d3bb267bbdcb ("vhost: cache avail index in vhost_enable_notify()")
+Cc: <stable@kernel.org> # v5.18+
+Reported-by: Yihuang Yu <yihyu@redhat.com>
+Suggested-by: Will Deacon <will@kernel.org>
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20240328002149.1141302-3-gshan@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/cec/core/cec-adap.c |   14 --------------
- 1 file changed, 14 deletions(-)
+ drivers/vhost/vhost.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/media/cec/core/cec-adap.c
-+++ b/drivers/media/cec/core/cec-adap.c
-@@ -1121,20 +1121,6 @@ void cec_received_msg_ts(struct cec_adap
- 	if (valid_la && min_len) {
- 		/* These messages have special length requirements */
- 		switch (cmd) {
--		case CEC_MSG_TIMER_STATUS:
--			if (msg->msg[2] & 0x10) {
--				switch (msg->msg[2] & 0xf) {
--				case CEC_OP_PROG_INFO_NOT_ENOUGH_SPACE:
--				case CEC_OP_PROG_INFO_MIGHT_NOT_BE_ENOUGH_SPACE:
--					if (msg->len < 5)
--						valid_la = false;
--					break;
--				}
--			} else if ((msg->msg[2] & 0xf) == CEC_OP_PROG_ERROR_DUPLICATE) {
--				if (msg->len < 5)
--					valid_la = false;
--			}
--			break;
- 		case CEC_MSG_RECORD_ON:
- 			switch (msg->msg[2]) {
- 			case CEC_OP_RECORD_SRC_OWN:
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2848,9 +2848,19 @@ bool vhost_enable_notify(struct vhost_de
+ 		       &vq->avail->idx, r);
+ 		return false;
+ 	}
++
+ 	vq->avail_idx = vhost16_to_cpu(vq, avail_idx);
++	if (vq->avail_idx != vq->last_avail_idx) {
++		/* Since we have updated avail_idx, the following
++		 * call to vhost_get_vq_desc() will read available
++		 * ring entries. Make sure that read happens after
++		 * the avail_idx read.
++		 */
++		smp_rmb();
++		return true;
++	}
+ 
+-	return vq->avail_idx != vq->last_avail_idx;
++	return false;
+ }
+ EXPORT_SYMBOL_GPL(vhost_enable_notify);
+ 
 
 
 
