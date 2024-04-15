@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-39835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8827F8A54F6
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A4588A5417
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:34:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B4AE28147B
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEA871F20F93
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A3376F1B;
-	Mon, 15 Apr 2024 14:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72C982899;
+	Mon, 15 Apr 2024 14:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOdjkklE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XeS27Apy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88461D52B;
-	Mon, 15 Apr 2024 14:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3349757E1;
+	Mon, 15 Apr 2024 14:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191956; cv=none; b=q9JNC1YrewFO2zeN0SnvzoPtLMjwhck1b7fMuJe3ItjArWGGLaF1qSAZGAuLkaCLISZgyCLgiNqU+YyBIYXBqnUPD44WkPfyqWlJ9SnHJDUDnoKrO43XnkLdBQWftoo7RdCTkzyfczyZV18IaC93TEr9S3lmLza1Bl9mnEB0i5E=
+	t=1713191468; cv=none; b=FaD8lQr/HxAuqfYAO1sI1cIm1kY2Wjvq/4UHQklmwX5R0bhZ35pw29dXPbfd8giw49/4RtpGlo79i1j5bQxiGP81q87rBug+WUpydPSfmI/imwBYkNUE4HYRc597IIk+72YC72LUpsGzg5TZZg3oGYlZluTF3G9Bwv5V3DavX7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191956; c=relaxed/simple;
-	bh=xOFuATe8tJzhBgS+Ut8bB1Cl4f8hux+2aIklrUH7zVg=;
+	s=arc-20240116; t=1713191468; c=relaxed/simple;
+	bh=LrzwHHbyuWkZSJ55XYfNUcQaY/VONo6v1O+NplGW4xQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U39DkyCfbe1PVyx6NmhkbiFa3Y3KYaeCl8F57qnyrzmPmKvWIZt6ktOUTt66V9cJ+DeCG5wLYmnU1Tkv/63NgbviCDDxDuzoG2exL6r8fLRf0uGLoKjxYYV/6pNhRjFKZ9S9wY2RP8Uu2BWbpsfZ7LCNMU+mpcCHI+SMwddnU/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOdjkklE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7F6C113CC;
-	Mon, 15 Apr 2024 14:39:16 +0000 (UTC)
+	 MIME-Version; b=cG3UaI3ynW2q7e4Fn5C8vagIsAy57114bRBE4j3k6dILlxov7hDe4H1YsQRomKhCHbFPXkwCNJsjgL4zvr0SABaaAR80eKWwuq1HlHucGO8DeGPoz4sKORT1BRtYyIxfT635sDpYDMHQCRW2d4fiOFfgVVvKkCDisNSDdE6MSic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XeS27Apy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAED7C113CC;
+	Mon, 15 Apr 2024 14:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191956;
-	bh=xOFuATe8tJzhBgS+Ut8bB1Cl4f8hux+2aIklrUH7zVg=;
+	s=korg; t=1713191468;
+	bh=LrzwHHbyuWkZSJ55XYfNUcQaY/VONo6v1O+NplGW4xQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOdjkklEGpB6j/YarLKNhhU+XUvdBIyFVxHnm0M53Jfjxu8QMrrHikIZEd3yK5MO9
-	 WnFm6YDBeoV4LgpnwB7ku2UafgG6EaxkmPzRdTSCQFE9MpwRmZrRHxGhyh+Sfa26z0
-	 Mhl6Jody2KRqmeBlRFPaaztxOr9ph0gec9IrkbHU=
+	b=XeS27ApyGOVCIMkGsC+tPGxxemJqrOM0rajL4L4hzV7D50dtrDc1oToNzn6zGBNm/
+	 Ix0fRCii6QKDqbey5G4s1UX6yhuAy2joYymc3Kaq9g2BmPQ+t53pkPztQzx9K283y1
+	 wI31tn6Bitjc0pdpq+fQ5PgbWu+IbhUS/6/myrs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 20/69] net: ks8851: Handle softirqs at the end of IRQ thread to fix hang
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.8 152/172] x86/bugs: Fix BHI documentation
 Date: Mon, 15 Apr 2024 16:20:51 +0200
-Message-ID: <20240415141946.777837545@linuxfoundation.org>
+Message-ID: <20240415142004.982053061@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +64,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit be0384bf599cf1eb8d337517feeb732d71f75a6f ]
+commit dfe648903f42296866d79f10d03f8c85c9dfba30 upstream.
 
-The ks8851_irq() thread may call ks8851_rx_pkts() in case there are
-any packets in the MAC FIFO, which calls netif_rx(). This netif_rx()
-implementation is guarded by local_bh_disable() and local_bh_enable().
-The local_bh_enable() may call do_softirq() to run softirqs in case
-any are pending. One of the softirqs is net_rx_action, which ultimately
-reaches the driver .start_xmit callback. If that happens, the system
-hangs. The entire call chain is below:
+Fix up some inaccuracies in the BHI documentation.
 
-ks8851_start_xmit_par from netdev_start_xmit
-netdev_start_xmit from dev_hard_start_xmit
-dev_hard_start_xmit from sch_direct_xmit
-sch_direct_xmit from __dev_queue_xmit
-__dev_queue_xmit from __neigh_update
-__neigh_update from neigh_update
-neigh_update from arp_process.constprop.0
-arp_process.constprop.0 from __netif_receive_skb_one_core
-__netif_receive_skb_one_core from process_backlog
-process_backlog from __napi_poll.constprop.0
-__napi_poll.constprop.0 from net_rx_action
-net_rx_action from __do_softirq
-__do_softirq from call_with_stack
-call_with_stack from do_softirq
-do_softirq from __local_bh_enable_ip
-__local_bh_enable_ip from netif_rx
-netif_rx from ks8851_irq
-ks8851_irq from irq_thread_fn
-irq_thread_fn from irq_thread
-irq_thread from kthread
-kthread from ret_from_fork
-
-The hang happens because ks8851_irq() first locks a spinlock in
-ks8851_par.c ks8851_lock_par() spin_lock_irqsave(&ksp->lock, ...)
-and with that spinlock locked, calls netif_rx(). Once the execution
-reaches ks8851_start_xmit_par(), it calls ks8851_lock_par() again
-which attempts to claim the already locked spinlock again, and the
-hang happens.
-
-Move the do_softirq() call outside of the spinlock protected section
-of ks8851_irq() by disabling BHs around the entire spinlock protected
-section of ks8851_irq() handler. Place local_bh_enable() outside of
-the spinlock protected section, so that it can trigger do_softirq()
-without the ks8851_par.c ks8851_lock_par() spinlock being held, and
-safely call ks8851_start_xmit_par() without attempting to lock the
-already locked spinlock.
-
-Since ks8851_irq() is protected by local_bh_disable()/local_bh_enable()
-now, replace netif_rx() with __netif_rx() which is not duplicating the
-local_bh_disable()/local_bh_enable() calls.
-
-Fixes: 797047f875b5 ("net: ks8851: Implement Parallel bus operations")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Link: https://lore.kernel.org/r/20240405203204.82062-2-marex@denx.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/8c84f7451bfe0dd08543c6082a383f390d4aa7e2.1712813475.git.jpoimboe@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/micrel/ks8851_common.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/hw-vuln/spectre.rst   |   15 ++++++++-------
+ Documentation/admin-guide/kernel-parameters.txt |   12 +++++++-----
+ 2 files changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
-index 896d43bb8883d..d4cdf3d4f5525 100644
---- a/drivers/net/ethernet/micrel/ks8851_common.c
-+++ b/drivers/net/ethernet/micrel/ks8851_common.c
-@@ -299,7 +299,7 @@ static void ks8851_rx_pkts(struct ks8851_net *ks)
- 					ks8851_dbg_dumpkkt(ks, rxpkt);
+--- a/Documentation/admin-guide/hw-vuln/spectre.rst
++++ b/Documentation/admin-guide/hw-vuln/spectre.rst
+@@ -439,11 +439,11 @@ The possible values in this file are:
+    - System is protected by retpoline
+  * - BHI: BHI_DIS_S
+    - System is protected by BHI_DIS_S
+- * - BHI: SW loop; KVM SW loop
++ * - BHI: SW loop, KVM SW loop
+    - System is protected by software clearing sequence
+  * - BHI: Syscall hardening
+    - Syscalls are hardened against BHI
+- * - BHI: Syscall hardening; KVM: SW loop
++ * - BHI: Syscall hardening, KVM: SW loop
+    - System is protected from userspace attacks by syscall hardening; KVM is protected by software clearing sequence
  
- 				skb->protocol = eth_type_trans(skb, ks->netdev);
--				netif_rx(skb);
-+				__netif_rx(skb);
+ Full mitigation might require a microcode update from the CPU
+@@ -666,13 +666,14 @@ kernel command line.
+ 		of the HW BHI control and the SW BHB clearing sequence.
  
- 				ks->netdev->stats.rx_packets++;
- 				ks->netdev->stats.rx_bytes += rxlen;
-@@ -330,6 +330,8 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
- 	unsigned long flags;
- 	unsigned int status;
+ 		on
+-			unconditionally enable.
++			(default) Enable the HW or SW mitigation as
++			needed.
+ 		off
+-			unconditionally disable.
++			Disable the mitigation.
+ 		auto
+-			enable if hardware mitigation
+-			control(BHI_DIS_S) is available, otherwise
+-			enable alternate mitigation in KVM.
++			Enable the HW mitigation if needed, but
++			*don't* enable the SW mitigation except for KVM.
++			The system may be vulnerable.
  
-+	local_bh_disable();
-+
- 	ks8851_lock(ks, &flags);
+ For spectre_v2_user see Documentation/admin-guide/kernel-parameters.txt
  
- 	status = ks8851_rdreg16(ks, KS_ISR);
-@@ -406,6 +408,8 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
- 	if (status & IRQ_LCI)
- 		mii_check_link(&ks->mii);
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3419,6 +3419,7 @@
+ 					       reg_file_data_sampling=off [X86]
+ 					       retbleed=off [X86]
+ 					       spec_store_bypass_disable=off [X86,PPC]
++					       spectre_bhi=off [X86]
+ 					       spectre_v2_user=off [X86]
+ 					       srbds=off [X86,INTEL]
+ 					       ssbd=force-off [ARM64]
+@@ -6037,11 +6038,12 @@
+ 			deployment of the HW BHI control and the SW BHB
+ 			clearing sequence.
  
-+	local_bh_enable();
-+
- 	return IRQ_HANDLED;
- }
+-			on   - unconditionally enable.
+-			off  - unconditionally disable.
+-			auto - (default) enable hardware mitigation
+-			       (BHI_DIS_S) if available, otherwise enable
+-			       alternate mitigation in KVM.
++			on   - (default) Enable the HW or SW mitigation
++			       as needed.
++			off  - Disable the mitigation.
++			auto - Enable the HW mitigation if needed, but
++			       *don't* enable the SW mitigation except
++			       for KVM.  The system may be vulnerable.
  
--- 
-2.43.0
-
+ 	spectre_v2=	[X86] Control mitigation of Spectre variant 2
+ 			(indirect branch speculation) vulnerability.
 
 
 
