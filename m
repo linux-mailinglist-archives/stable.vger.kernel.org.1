@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-39493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198638A51BF
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 15:40:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA498A5261
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 15:54:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83EFC1F259F8
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 13:40:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC6971C2275B
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 13:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EF0745C2;
-	Mon, 15 Apr 2024 13:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630157317C;
+	Mon, 15 Apr 2024 13:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JmgFI/CC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5vGgudp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C9B745ED
-	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 13:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244C371730
+	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 13:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713188134; cv=none; b=s3wRYHPLv171Y7u8T3pibHdjQM3hO2jwE8aDKzWcv/a0RqeqZww7q1x1jT0Iqa/nGSJmgVEqghg18+3j3uH2pXya3EuU3ZkGW0OWHbba/r+Vm/NZgCZQgDMMCoVrxZLmO3wSIIPmJfR6cWsBkP5vAJHI/YK4uhobDivE+eVXF58=
+	t=1713189291; cv=none; b=sjXOzpuRsqPYwhLhzIMuZm7dt1nHx5hZPaXbKBCK9lGpqd+1DCXu8yyapD9UQPpGTgCbAu7KgB3+olIB98lPRkGoAxr4FbRkqcHgFLLLD4I18RL/84GNcf/+L777D/YLwbNOB0t4kySZYCb8vy80lZEfIAFmdR+vSu6PtMVPeRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713188134; c=relaxed/simple;
-	bh=SWI5wjd+U8p+iVhesRkK/ABn636k0chC/E3asKa/7ls=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=o6TLye386idcKRWpWQ20q/PxyNv2eLVou4O9VUSDBj6vLqbWh2nuTKTGyYVkXsbuh8z96BKZN6w1KiSpBbQmM5JqrVaGX6inTO+P5RIXKRKW6qAVZnA0D+0DL0ydQk7Mzj45oJ3xHmqzEY7+VIX2QMaZ6MR4ccCwlDriCVGHjTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JmgFI/CC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B9DC4AF09;
-	Mon, 15 Apr 2024 13:35:33 +0000 (UTC)
+	s=arc-20240116; t=1713189291; c=relaxed/simple;
+	bh=pEIA5rKs+EJjLTQqyUDH5w8cGgFDQON+vVxxjQF+9Dc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bppF9Y5KjWCuhHePDHJdLWPY3ZDx2FZYg8JcwVHHNtI41joOXIvZXsJd+szC5rE6RpB3MEHhzcecoPHtG49ia2kq+ev/ZNySZ+lC4oDE4lQs0qW10WcnhLhaPHmNMUz1snG8z+Mgn6GH3DCKmW6gHFNnA+yGKichViH2dJ1pHK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5vGgudp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DCC9C113CC;
+	Mon, 15 Apr 2024 13:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713188133;
-	bh=SWI5wjd+U8p+iVhesRkK/ABn636k0chC/E3asKa/7ls=;
+	s=korg; t=1713189290;
+	bh=pEIA5rKs+EJjLTQqyUDH5w8cGgFDQON+vVxxjQF+9Dc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=JmgFI/CChOowEkrDgp2Z+GiVtRuFnQynJcAU2YZh4gGm78NV/Ldo4VVwBzphXE+xT
-	 ZFzVbKNlZyreMaHSfiVeiRhXsK0Hc1/MoPE6BNemd57m6kAG94mWyRojxLGut9X10y
-	 m1nVT2Knj305ZUN8myj6TGgsDLONX+I4fHJ+IzXA=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Adjust dprefclk by down spread percentage." failed to apply to 6.6-stable tree
-To: zhongwei.zhang@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,nicholas.kazlauskas@amd.com
+	b=D5vGgudphjD1SnKpulF114E2HetMD2l9/azcO+P8DyWEzSFXsb6ODrp5WK92pcTYc
+	 r3Sxrx2JNmtI8yAhddA8ZEXGYLh46Hopeu9enifFqI6rZFqfr4xvcXRXfQph7/nRdj
+	 qtF+Yqp3oJpGb+sEvegu/gp6z9ndGUQdajhnyy58=
+Subject: FAILED: patch "[PATCH] drm/i915: Disable port sync when bigjoiner is used" failed to apply to 5.10-stable tree
+To: ville.syrjala@linux.intel.com,rodrigo.vivi@intel.com,vandita.kulkarni@intel.com,vidya.srinivas@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Apr 2024 15:35:20 +0200
-Message-ID: <2024041519-cosmetics-briar-7ebd@gregkh>
+Date: Mon, 15 Apr 2024 15:54:47 +0200
+Message-ID: <2024041547-freely-probable-b5c9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x e047dd448d2bc12b8c30d7e3e6e98cea1fc28a17
+git cherry-pick -x 0653d501409eeb9f1deb7e4c12e4d0d2c9f1cba1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024041519-cosmetics-briar-7ebd@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024041547-freely-probable-b5c9@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,139 +77,44 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e047dd448d2bc12b8c30d7e3e6e98cea1fc28a17 Mon Sep 17 00:00:00 2001
-From: Zhongwei <zhongwei.zhang@amd.com>
-Date: Wed, 27 Mar 2024 13:49:40 +0800
-Subject: [PATCH] drm/amd/display: Adjust dprefclk by down spread percentage.
+From 0653d501409eeb9f1deb7e4c12e4d0d2c9f1cba1 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
+Date: Fri, 5 Apr 2024 00:34:27 +0300
+Subject: [PATCH] drm/i915: Disable port sync when bigjoiner is used
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-[Why]
-OLED panels show no display for large vtotal timings.
+The current modeset sequence can't handle port sync and bigjoiner
+at the same time. Refuse port sync when bigjoiner is needed,
+at least until we fix the modeset sequence.
 
-[How]
-Check if ss is enabled and read from lut for spread spectrum percentage.
-Adjust dprefclk as required. DP_DTO adjustment is for edp only.
+v2: Add a FIXME (Vandite)
 
 Cc: stable@vger.kernel.org
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Zhongwei <zhongwei.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Tested-by: Vidya Srinivas <vidya.srinivas@intel.com>
+Reviewed-by: Vandita Kulkarni <vandita.kulkarni@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240404213441.17637-4-ville.syrjala@linux.intel.com
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+(cherry picked from commit b37e1347b991459c38c56ec2476087854a4f720b)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-index 101fe96287cb..d9c5692c86c2 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -73,6 +73,12 @@
- #define CLK1_CLK2_BYPASS_CNTL__CLK2_BYPASS_SEL_MASK		0x00000007L
- #define CLK1_CLK2_BYPASS_CNTL__CLK2_BYPASS_DIV_MASK		0x000F0000L
- 
-+#define regCLK5_0_CLK5_spll_field_8				0x464b
-+#define regCLK5_0_CLK5_spll_field_8_BASE_IDX	0
-+
-+#define CLK5_0_CLK5_spll_field_8__spll_ssc_en__SHIFT	0xd
-+#define CLK5_0_CLK5_spll_field_8__spll_ssc_en_MASK		0x00002000L
-+
- #define SMU_VER_THRESHOLD 0x5D4A00 //93.74.0
- 
- #define REG(reg_name) \
-@@ -411,6 +417,17 @@ static void dcn35_dump_clk_registers(struct clk_state_registers_and_bypass *regs
+diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
+index c587a8efeafc..c17462b4c2ac 100644
+--- a/drivers/gpu/drm/i915/display/intel_ddi.c
++++ b/drivers/gpu/drm/i915/display/intel_ddi.c
+@@ -4256,7 +4256,12 @@ static bool m_n_equal(const struct intel_link_m_n *m_n_1,
+ static bool crtcs_port_sync_compatible(const struct intel_crtc_state *crtc_state1,
+ 				       const struct intel_crtc_state *crtc_state2)
  {
- }
- 
-+static bool dcn35_is_spll_ssc_enabled(struct clk_mgr *clk_mgr_base)
-+{
-+	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
-+	struct dc_context *ctx = clk_mgr->base.ctx;
-+	uint32_t ssc_enable;
-+
-+	REG_GET(CLK5_0_CLK5_spll_field_8, spll_ssc_en, &ssc_enable);
-+
-+	return ssc_enable == 1;
-+}
-+
- static void init_clk_states(struct clk_mgr *clk_mgr)
- {
- 	struct clk_mgr_internal *clk_mgr_int = TO_CLK_MGR_INTERNAL(clk_mgr);
-@@ -428,7 +445,16 @@ static void init_clk_states(struct clk_mgr *clk_mgr)
- 
- void dcn35_init_clocks(struct clk_mgr *clk_mgr)
- {
-+	struct clk_mgr_internal *clk_mgr_int = TO_CLK_MGR_INTERNAL(clk_mgr);
- 	init_clk_states(clk_mgr);
-+
-+	// to adjust dp_dto reference clock if ssc is enable otherwise to apply dprefclk
-+	if (dcn35_is_spll_ssc_enabled(clk_mgr))
-+		clk_mgr->dp_dto_source_clock_in_khz =
-+			dce_adjust_dp_ref_freq_for_ss(clk_mgr_int, clk_mgr->dprefclk_khz);
-+	else
-+		clk_mgr->dp_dto_source_clock_in_khz = clk_mgr->dprefclk_khz;
-+
- }
- static struct clk_bw_params dcn35_bw_params = {
- 	.vram_type = Ddr4MemType,
-@@ -517,6 +543,28 @@ static DpmClocks_t_dcn35 dummy_clocks;
- 
- static struct dcn35_watermarks dummy_wms = { 0 };
- 
-+static struct dcn35_ss_info_table ss_info_table = {
-+	.ss_divider = 1000,
-+	.ss_percentage = {0, 0, 375, 375, 375}
-+};
-+
-+static void dcn35_read_ss_info_from_lut(struct clk_mgr_internal *clk_mgr)
-+{
-+	struct dc_context *ctx = clk_mgr->base.ctx;
-+	uint32_t clock_source;
-+
-+	REG_GET(CLK1_CLK2_BYPASS_CNTL, CLK2_BYPASS_SEL, &clock_source);
-+	// If it's DFS mode, clock_source is 0.
-+	if (dcn35_is_spll_ssc_enabled(&clk_mgr->base) && (clock_source < ARRAY_SIZE(ss_info_table.ss_percentage))) {
-+		clk_mgr->dprefclk_ss_percentage = ss_info_table.ss_percentage[clock_source];
-+
-+		if (clk_mgr->dprefclk_ss_percentage != 0) {
-+			clk_mgr->ss_on_dprefclk = true;
-+			clk_mgr->dprefclk_ss_divider = ss_info_table.ss_divider;
-+		}
-+	}
-+}
-+
- static void dcn35_build_watermark_ranges(struct clk_bw_params *bw_params, struct dcn35_watermarks *table)
- {
- 	int i, num_valid_sets;
-@@ -1061,6 +1109,8 @@ void dcn35_clk_mgr_construct(
- 	dce_clock_read_ss_info(&clk_mgr->base);
- 	/*when clk src is from FCH, it could have ss, same clock src as DPREF clk*/
- 
-+	dcn35_read_ss_info_from_lut(&clk_mgr->base);
-+
- 	clk_mgr->base.base.bw_params = &dcn35_bw_params;
- 
- 	if (clk_mgr->base.base.ctx->dc->debug.pstate_enabled) {
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c b/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c
-index 970644b695cd..b5e0289d2fe8 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c
-@@ -976,7 +976,10 @@ static bool dcn31_program_pix_clk(
- 	struct bp_pixel_clock_parameters bp_pc_params = {0};
- 	enum transmitter_color_depth bp_pc_colour_depth = TRANSMITTER_COLOR_DEPTH_24;
- 
--	if (clock_source->ctx->dc->clk_mgr->dp_dto_source_clock_in_khz != 0)
-+	// Apply ssed(spread spectrum) dpref clock for edp only.
-+	if (clock_source->ctx->dc->clk_mgr->dp_dto_source_clock_in_khz != 0
-+		&& pix_clk_params->signal_type == SIGNAL_TYPE_EDP
-+		&& encoding == DP_8b_10b_ENCODING)
- 		dp_dto_ref_khz = clock_source->ctx->dc->clk_mgr->dp_dto_source_clock_in_khz;
- 	// For these signal types Driver to program DP_DTO without calling VBIOS Command table
- 	if (dc_is_dp_signal(pix_clk_params->signal_type) || dc_is_virtual_signal(pix_clk_params->signal_type)) {
-@@ -1093,9 +1096,6 @@ static bool get_pixel_clk_frequency_100hz(
- 	unsigned int modulo_hz = 0;
- 	unsigned int dp_dto_ref_khz = clock_source->ctx->dc->clk_mgr->dprefclk_khz;
- 
--	if (clock_source->ctx->dc->clk_mgr->dp_dto_source_clock_in_khz != 0)
--		dp_dto_ref_khz = clock_source->ctx->dc->clk_mgr->dp_dto_source_clock_in_khz;
--
- 	if (clock_source->id == CLOCK_SOURCE_ID_DP_DTO) {
- 		clock_hz = REG_READ(PHASE[inst]);
- 
++	/*
++	 * FIXME the modeset sequence is currently wrong and
++	 * can't deal with bigjoiner + port sync at the same time.
++	 */
+ 	return crtc_state1->hw.active && crtc_state2->hw.active &&
++		!crtc_state1->bigjoiner_pipes && !crtc_state2->bigjoiner_pipes &&
+ 		crtc_state1->output_types == crtc_state2->output_types &&
+ 		crtc_state1->output_format == crtc_state2->output_format &&
+ 		crtc_state1->lane_count == crtc_state2->lane_count &&
 
 
