@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-39695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B038A543F
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C608A54EE
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7ECD28667C
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FDC61C21333
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F6282485;
-	Mon, 15 Apr 2024 14:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4A57581B;
+	Mon, 15 Apr 2024 14:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tti8sUFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HD5ctrGj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DA280BFE;
-	Mon, 15 Apr 2024 14:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6F571B32;
+	Mon, 15 Apr 2024 14:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191539; cv=none; b=SSxAn8HBcFYErXdr61buhDvou7wVSHguBri4yQcMYeNKyJNUis5dOHweC4jSejBN+kiIcGnfHqYQjs324V2h2ZqF3oIoCSSzHdPtwYH8Pew57OAR8mScTNG6GDA2egMr50jvoMFtx5Fs0ib5Osggtd1Lu574gIPWVVR8pmvH1vg=
+	t=1713191939; cv=none; b=fBylo14VW1MhBYmzTcic5CBSq0MPLJHvObvmyMJcXDpzapteRMf92Zkz3y+l21/NYlPl3jn0xEI6oflTu2PPATcdKj4ox4PhAQRjVptD1qDy9PrhhtrR/2nTj9/kKz9hN/QO5uU/yA1c/1xSigrD/Jn+krGbuGqHyedq98SZ4y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191539; c=relaxed/simple;
-	bh=Px7iyvek2R5hegyfRXVLm9B0mHrZCdwKYbRaKTy2Yww=;
+	s=arc-20240116; t=1713191939; c=relaxed/simple;
+	bh=wdh0cUHmnEqf9cJ48obaZsb42/XVGYidA1wA1T0W/Dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fBqRHpFTT0nqEFSBzfUuIi3oNoTF9XA35IlQQDz9UOxhFu2qihunynfzkrBDonYwSGDENuIXsOmggK1XDCkNZPeGXR/OPKBzGXQqITvgkOgs/+bQ2wctypnoPKlANiA7EOZ484JNavu1jvlERQCDgK01tHYn8iGEkbLgUPSLO3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tti8sUFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E729CC113CC;
-	Mon, 15 Apr 2024 14:32:18 +0000 (UTC)
+	 MIME-Version; b=QT9PiEczRwCw4rhdIyqQfKN6nGFkSihltgHb0U+8NDHpCDrXc8Lrwzfs/qlCl4rigxgANr+34gHkybn2Kz1TpOxGwQqG3f2kXjX69Zf//DmYZXRFLl1dpNhfNrViVPSXQRGKRBGNZwEl/SABEZt1vnEERyZowTj4EQF2cq5FsOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HD5ctrGj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 970DEC113CC;
+	Mon, 15 Apr 2024 14:38:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191539;
-	bh=Px7iyvek2R5hegyfRXVLm9B0mHrZCdwKYbRaKTy2Yww=;
+	s=korg; t=1713191939;
+	bh=wdh0cUHmnEqf9cJ48obaZsb42/XVGYidA1wA1T0W/Dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tti8sUFN6AReviJmv+Dyym2W9Udm0vMrqlT/zuzVJhB+04A2Dj6vkzNeJEcwPoMqX
-	 cKQcaGwxR1XiYiGgYVp6ln/1dbCJtHn3PH5AnpFh5qAAzeVH0mISryXbisFyN01a3x
-	 jr21zAP9SX2a0G9Yip67giUdnzxXhZBf7JGXH/Kw=
+	b=HD5ctrGjZ5592Ri0pfswW2mJWo8hZ/XpgUILM+01kP9lakHCraZhSz5Tz3yGoRP6Z
+	 xnypw0+vtc494GsuOqYe4W2k7hPefloB8w5AYo3Qbt9bhtmL9GT03FgLtf/3VfOXj9
+	 cKKf611AG8xQzM6OHLdN0AMHZndHZPFG7lBXwWzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.8 138/172] arm64: dts: imx8-ss-dma: fix spi lpcg indices
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <superm1@gmail.com>
+Subject: [PATCH 6.1 06/69] drm/amd/pm: fixes a random hang in S4 for SMU v13.0.4/11
 Date: Mon, 15 Apr 2024 16:20:37 +0200
-Message-ID: <20240415142004.565688097@linuxfoundation.org>
+Message-ID: <20240415141946.362521809@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-commit f72b544a514c07d34a0d9d5380f5905b3731e647 upstream.
+commit 31729e8c21ecfd671458e02b6511eb68c2225113 upstream.
 
-spi0_lpcg: clock-controller@5a400000 {
-	...                                                  Col0   Col1
-	clocks = <&clk IMX_SC_R_SPI_0 IMX_SC_PM_CLK_PER>,//   0      1
-		 <&dma_ipg_clk>;                         //   1      4
-	clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-};
+While doing multiple S4 stress tests, GC/RLC/PMFW get into
+an invalid state resulting into hard hangs.
 
-Col1: index, which existing dts try to get.
-Col2: actual index in lpcg driver.
+Adding a GFX reset as workaround just before sending the
+MP1_UNLOAD message avoids this failure.
 
-lpspi0: spi@5a000000 {
-	...
-	clocks = <&spi0_lpcg 0>, <&spi0_lpcg 1>;
-			     ^		     ^
-Should be:
-	clocks = <&spi0_lpcg IMX_LPCG_CLK_0>, <&spi0_lpcg IMX_LPCG_CLK_4>;
-};
-
-Arg0 is divided by 4 in lpcg driver. <&spi0_lpcg 0> and <&spi0_lpcg 1> are
-IMX_SC_PM_CLK_PER. Although code can work, code logic is wrong. It should
-use IMX_LPCG_CLK_0 and IMX_LPCG_CLK_4 for lpcg arg0.
-
-Cc: stable@vger.kernel.org
-Fixes: c4098885e790 ("arm64: dts: imx8dxl: add lpspi support")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Mario Limonciello <superm1@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-@@ -27,8 +27,8 @@ dma_subsys: bus@5a000000 {
- 		#size-cells = <0>;
- 		interrupts = <GIC_SPI 336 IRQ_TYPE_LEVEL_HIGH>;
- 		interrupt-parent = <&gic>;
--		clocks = <&spi0_lpcg 0>,
--			 <&spi0_lpcg 1>;
-+		clocks = <&spi0_lpcg IMX_LPCG_CLK_0>,
-+			 <&spi0_lpcg IMX_LPCG_CLK_4>;
- 		clock-names = "per", "ipg";
- 		assigned-clocks = <&clk IMX_SC_R_SPI_0 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <60000000>;
-@@ -43,8 +43,8 @@ dma_subsys: bus@5a000000 {
- 		#size-cells = <0>;
- 		interrupts = <GIC_SPI 337 IRQ_TYPE_LEVEL_HIGH>;
- 		interrupt-parent = <&gic>;
--		clocks = <&spi1_lpcg 0>,
--			 <&spi1_lpcg 1>;
-+		clocks = <&spi1_lpcg IMX_LPCG_CLK_0>,
-+			 <&spi1_lpcg IMX_LPCG_CLK_4>;
- 		clock-names = "per", "ipg";
- 		assigned-clocks = <&clk IMX_SC_R_SPI_1 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <60000000>;
-@@ -59,8 +59,8 @@ dma_subsys: bus@5a000000 {
- 		#size-cells = <0>;
- 		interrupts = <GIC_SPI 338 IRQ_TYPE_LEVEL_HIGH>;
- 		interrupt-parent = <&gic>;
--		clocks = <&spi2_lpcg 0>,
--			 <&spi2_lpcg 1>;
-+		clocks = <&spi2_lpcg IMX_LPCG_CLK_0>,
-+			 <&spi2_lpcg IMX_LPCG_CLK_4>;
- 		clock-names = "per", "ipg";
- 		assigned-clocks = <&clk IMX_SC_R_SPI_2 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <60000000>;
-@@ -75,8 +75,8 @@ dma_subsys: bus@5a000000 {
- 		#size-cells = <0>;
- 		interrupts = <GIC_SPI 339 IRQ_TYPE_LEVEL_HIGH>;
- 		interrupt-parent = <&gic>;
--		clocks = <&spi3_lpcg 0>,
--			 <&spi3_lpcg 1>;
-+		clocks = <&spi3_lpcg IMX_LPCG_CLK_0>,
-+			 <&spi3_lpcg IMX_LPCG_CLK_4>;
- 		clock-names = "per", "ipg";
- 		assigned-clocks = <&clk IMX_SC_R_SPI_3 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <60000000>;
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
+@@ -222,8 +222,18 @@ static int smu_v13_0_4_system_features_c
+ 	struct amdgpu_device *adev = smu->adev;
+ 	int ret = 0;
+ 
+-	if (!en && !adev->in_s0ix)
++	if (!en && !adev->in_s0ix) {
++		/* Adds a GFX reset as workaround just before sending the
++		 * MP1_UNLOAD message to prevent GC/RLC/PMFW from entering
++		 * an invalid state.
++		 */
++		ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_GfxDeviceDriverReset,
++						      SMU_RESET_MODE_2, NULL);
++		if (ret)
++			return ret;
++
+ 		ret = smu_cmn_send_smc_msg(smu, SMU_MSG_PrepareMp1ForUnload, NULL);
++	}
+ 
+ 	return ret;
+ }
 
 
 
