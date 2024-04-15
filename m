@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-39734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D0058A5473
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:37:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C143E8A53C4
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:31:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F2E21C21616
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:37:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFCEF1C21F38
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24AEA78C99;
-	Mon, 15 Apr 2024 14:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD868062E;
+	Mon, 15 Apr 2024 14:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vI73/IIf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUKDaWYa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BB98289B;
-	Mon, 15 Apr 2024 14:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB48278C67;
+	Mon, 15 Apr 2024 14:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191652; cv=none; b=lNJHid2Tux78kwnkdmKa5IFpRrQw1Alzdjv6lyXn58ykxkbHxYGrxEYdXV3KwOk1tyiJucGDluu/AOrrZmv+vR3Za6kg6HwhkFtq4jwzJWcJTbUox89r7NOluLDqadwQ12xaK8I2BGtcygNCrSvgzeXmU8aYc+EvxN+wPZBVrWA=
+	t=1713191322; cv=none; b=QBJRqJ7C0m959qVzs8iERVUPMuH8DFJbnVbgoTBvOARKF5ozt4SgI8cg4rRK3A7zbDT1mmr1YuKPJM7Q76Ia/JUdk3k+7GQS0ElXjcWmx/VYnxTSCJGG5sR2nurUqsokdUJuSIdgurRaGfKTxls1APR9hsbbWQ/xqpLLsdbbX78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191652; c=relaxed/simple;
-	bh=BWE1kzF+lBndbedPA1nhoLB0ttz2t/qtPEeZ80SlEFo=;
+	s=arc-20240116; t=1713191322; c=relaxed/simple;
+	bh=O8CtBAbhdoavKLJ9NWUT6GT2ysazKQLqu6VrwRFfHXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kOFDIgsLZXWIL88KMWjfQdh8pBpTeMaJ+A0z0PRDf57s8SsjwUYj7Hq5ak7/oE1Nhds46bNMDpwDFjq6lDOhOPDzgfQbx3CML0+eoobitWn9KLH3tAHgCp/zufwwe6+nBQhIeXzX7wSiT5XrI9Z4Hd0Nfv9w5eN+VBdk+ZVO+1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vI73/IIf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8B3C113CC;
-	Mon, 15 Apr 2024 14:34:11 +0000 (UTC)
+	 MIME-Version; b=Hzo3lAumSZ5kvvxD5QxR3aQ2DTCb0PerQTi+uDK7jDvRzFTXBUuJwwifAQ008pLpcravwA+UPl2UcUettHqMWfLzAZkpxnx8CZlNa4FxP1QWwTYHZP0CQSIHpjY4ri+EiBtc6117HmNTTfcG1BD/+x2if3idGyCcdRkFbQjsWOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUKDaWYa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D59C2BD10;
+	Mon, 15 Apr 2024 14:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191652;
-	bh=BWE1kzF+lBndbedPA1nhoLB0ttz2t/qtPEeZ80SlEFo=;
+	s=korg; t=1713191321;
+	bh=O8CtBAbhdoavKLJ9NWUT6GT2ysazKQLqu6VrwRFfHXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vI73/IIfztV1KHp8WMwmxAEZ3UJy9hE4ucdcQMT5OXDI1AU/srRRAClQLzRF34Ewg
-	 FhC7k/Ckz0dy7FHdlo5rGrVQSU4jAsSaOMeE6i/kH0LvR3vF34BgEkT3avKXiqh9VT
-	 K99PcK2BEUIjKDJCzoLjzIUsJTMDeHb2lZJjoAAE=
+	b=pUKDaWYa2bCrelpeAsTgtSPEDjwKamyctgtyi6bhrs9kdhz738SuKdDDrs80ho2L6
+	 1Q4di+GAEKqrTiDmIekOsZe5kYfp7dFLH0GJvp8ftK3mQOHPL3wbfobQ/uAEbe8u26
+	 HrRSUjf8GrcmaZdcp4RICoTiUafaz/Soub0ZFfyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/122] bnxt_en: Reset PTP tx_avail after possible firmware reset
+	Jens Axboe <axboe@kernel.dk>,
+	Pavel Begunkov <asml.silence@gmail.com>
+Subject: [PATCH 6.8 106/172] io_uring: refactor DEFER_TASKRUN multishot checks
 Date: Mon, 15 Apr 2024 16:20:05 +0200
-Message-ID: <20240415141954.570645670@linuxfoundation.org>
+Message-ID: <20240415142003.612376810@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +61,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit faa12ca245585379d612736a4b5e98e88481ea59 ]
+Commit e0e4ab52d17096d96c21a6805ccd424b283c3c6d upstream.
 
-It is possible that during error recovery and firmware reset,
-there is a pending TX PTP packet waiting for the timestamp.
-We need to reset this condition so that after recovery, the
-tx_avail count for PTP is reset back to the initial value.
-Otherwise, we may not accept any PTP TX timestamps after
-recovery.
+We disallow DEFER_TASKRUN multishots from running by io-wq, which is
+checked by individual opcodes in the issue path. We can consolidate all
+it in io_wq_submit_work() at the same time moving the checks out of the
+hot path.
 
-Fixes: 118612d519d8 ("bnxt_en: Add PTP clock APIs, ioctls, and ethtool methods")
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/e492f0f11588bb5aa11d7d24e6f53b7c7628afdb.1709905727.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ io_uring/io_uring.c |   20 ++++++++++++++++++++
+ io_uring/net.c      |   21 ---------------------
+ io_uring/rw.c       |    2 --
+ 3 files changed, 20 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index dac4f9510c173..38e3b2225ff1c 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -10549,6 +10549,8 @@ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
- 	/* VF-reps may need to be re-opened after the PF is re-opened */
- 	if (BNXT_PF(bp))
- 		bnxt_vf_reps_open(bp);
-+	if (bp->ptp_cfg)
-+		atomic_set(&bp->ptp_cfg->tx_avail, BNXT_MAX_TX_TS);
- 	bnxt_ptp_init_rtc(bp, true);
- 	bnxt_ptp_cfg_tstamp_filters(bp);
- 	return 0;
--- 
-2.43.0
-
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -949,6 +949,8 @@ bool io_fill_cqe_req_aux(struct io_kiocb
+ 	u64 user_data = req->cqe.user_data;
+ 	struct io_uring_cqe *cqe;
+ 
++	lockdep_assert(!io_wq_current_is_worker());
++
+ 	if (!defer)
+ 		return __io_post_aux_cqe(ctx, user_data, res, cflags, false);
+ 
+@@ -1950,6 +1952,24 @@ fail:
+ 		goto fail;
+ 	}
+ 
++	/*
++	 * If DEFER_TASKRUN is set, it's only allowed to post CQEs from the
++	 * submitter task context. Final request completions are handed to the
++	 * right context, however this is not the case of auxiliary CQEs,
++	 * which is the main mean of operation for multishot requests.
++	 * Don't allow any multishot execution from io-wq. It's more restrictive
++	 * than necessary and also cleaner.
++	 */
++	if (req->flags & REQ_F_APOLL_MULTISHOT) {
++		err = -EBADFD;
++		if (!file_can_poll(req->file))
++			goto fail;
++		err = -ECANCELED;
++		if (io_arm_poll_handler(req, issue_flags) != IO_APOLL_OK)
++			goto fail;
++		return;
++	}
++
+ 	if (req->flags & REQ_F_FORCE_ASYNC) {
+ 		bool opcode_poll = def->pollin || def->pollout;
+ 
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -78,19 +78,6 @@ struct io_sr_msg {
+  */
+ #define MULTISHOT_MAX_RETRY	32
+ 
+-static inline bool io_check_multishot(struct io_kiocb *req,
+-				      unsigned int issue_flags)
+-{
+-	/*
+-	 * When ->locked_cq is set we only allow to post CQEs from the original
+-	 * task context. Usual request completions will be handled in other
+-	 * generic paths but multipoll may decide to post extra cqes.
+-	 */
+-	return !(issue_flags & IO_URING_F_IOWQ) ||
+-		!(req->flags & REQ_F_APOLL_MULTISHOT) ||
+-		!req->ctx->task_complete;
+-}
+-
+ int io_shutdown_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ {
+ 	struct io_shutdown *shutdown = io_kiocb_to_cmd(req, struct io_shutdown);
+@@ -837,9 +824,6 @@ int io_recvmsg(struct io_kiocb *req, uns
+ 	    (sr->flags & IORING_RECVSEND_POLL_FIRST))
+ 		return io_setup_async_msg(req, kmsg, issue_flags);
+ 
+-	if (!io_check_multishot(req, issue_flags))
+-		return io_setup_async_msg(req, kmsg, issue_flags);
+-
+ retry_multishot:
+ 	if (io_do_buffer_select(req)) {
+ 		void __user *buf;
+@@ -935,9 +919,6 @@ int io_recv(struct io_kiocb *req, unsign
+ 	    (sr->flags & IORING_RECVSEND_POLL_FIRST))
+ 		return -EAGAIN;
+ 
+-	if (!io_check_multishot(req, issue_flags))
+-		return -EAGAIN;
+-
+ 	sock = sock_from_file(req->file);
+ 	if (unlikely(!sock))
+ 		return -ENOTSOCK;
+@@ -1386,8 +1367,6 @@ int io_accept(struct io_kiocb *req, unsi
+ 	struct file *file;
+ 	int ret, fd;
+ 
+-	if (!io_check_multishot(req, issue_flags))
+-		return -EAGAIN;
+ retry:
+ 	if (!fixed) {
+ 		fd = __get_unused_fd_flags(accept->flags, accept->nofile);
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -932,8 +932,6 @@ int io_read_mshot(struct io_kiocb *req,
+ 	 */
+ 	if (!file_can_poll(req->file))
+ 		return -EBADFD;
+-	if (issue_flags & IO_URING_F_IOWQ)
+-		return -EAGAIN;
+ 
+ 	ret = __io_read(req, issue_flags);
+ 
 
 
 
