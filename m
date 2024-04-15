@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-39714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56D748A5455
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:36:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C86B8A53A7
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:29:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D77FFB23DA7
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08F58285A19
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED16271B51;
-	Mon, 15 Apr 2024 14:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B9976F1B;
+	Mon, 15 Apr 2024 14:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epUnGrB1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04XLSCoU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFB41EEE3;
-	Mon, 15 Apr 2024 14:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930A0762FF;
+	Mon, 15 Apr 2024 14:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191592; cv=none; b=ezBgTC4PgvzB/xZv4cQz1gPU96lF5l59r8YsfOhT4S1e4xV4Am+5Wr+sk0a68WZ2J6LpohiFaI6G9TDP26jS3TgPlzH7laYlQ7QTIQYg4V73NaecFhwobKchVRsyFUjdsRHah7TNcpViH8y9h7DAGGZlkiOoYXELVpnAn99N4gY=
+	t=1713191273; cv=none; b=O9P1FYO+PfE6HLTV3lEdx2YgcVueinpa6+/Jgla1jJf0KZJ1z2CFx8YsLp3MPBvLqjSK0vkhCe90euV17Ak5In1P2gLiIBgwlwAM2AcppAwfJAG1PNXKpxG0MQ1nYmJ3EnKfHEpbAMstNrSDn5LjSrYhfZD3TI12EmtTJMx6N9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191592; c=relaxed/simple;
-	bh=Xh87xGGtUpW5AofdfKZB7SOmQ8aEaiJ02Vwm+RK8jMI=;
+	s=arc-20240116; t=1713191273; c=relaxed/simple;
+	bh=BKl2ZEOlGxl7nwTSB9ithrM/jJXdbm3DgjIbjtLrwsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqlx83j0ByxoqpqmEEhQYRxb0fQ0Oorj28Ibf6UujW2Npwb0nq9v7howRXyj9JGPqd1IA67CKV9E3uqPuaZ0e9UEjiXMkwD0H07PUKFlXAQqETgZm13vw/m9itXCUqypenRorQK5X7bzt/rYJ8nkek38u4r7BQuw3PQ4E2LvFJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epUnGrB1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A45BC113CC;
-	Mon, 15 Apr 2024 14:33:11 +0000 (UTC)
+	 MIME-Version; b=s0dzt4vNx4I9eSNC7iwWPlFI9E/Q2DGS0XHF4cADa4+/IJTUy+zETr/VaQaKmwYdcPSwDQCYoaYNOYd2Yr/azpRM9EFp93+olpWThWKLySj1X05GqO2TIjFvX0atoEP008Rnxc1FZkLYz4/yWrNRzjXcdq1Zoj1j4EbACvplajU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04XLSCoU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5ACC113CC;
+	Mon, 15 Apr 2024 14:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191592;
-	bh=Xh87xGGtUpW5AofdfKZB7SOmQ8aEaiJ02Vwm+RK8jMI=;
+	s=korg; t=1713191273;
+	bh=BKl2ZEOlGxl7nwTSB9ithrM/jJXdbm3DgjIbjtLrwsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=epUnGrB1xxJQYhXxVP8D1inj7s5zGJ5mF4aYkeQHZ5GLD9BEubAG1uO0x9r4y7wkE
-	 MQBWCl0I9afYBu2M2Q79V9x5Mg84jBQ3HEzhqgMMV8uZvbaymLqJ1Y59/qV0ugIt2U
-	 tjcNulSXSNOAMQlLtAJRK3B1G6kGsshcL2bfi69U=
+	b=04XLSCoUf55Z1X/JOXoBCmi30RXlJbgNCLWKZjrM+Y8zWosGKNzuBk38isPsMRyba
+	 enQNTo13qANYO7D1BMKRGj5Rwnx2ijddkzWgBBhukVjaBRqayK70TJhL1aPZP4/49x
+	 +tjiPblswczw+RVtzS8syRMmXFusUfGWcKWzdpd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/122] firmware: arm_scmi: Make raw debugfs entries non-seekable
-Date: Mon, 15 Apr 2024 16:19:46 +0200
-Message-ID: <20240415141954.012099858@linuxfoundation.org>
+Subject: [PATCH 6.8 088/172] net/mlx5e: Fix mlx5e_priv_init() cleanup flow
+Date: Mon, 15 Apr 2024 16:19:47 +0200
+Message-ID: <20240415142003.073296444@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +65,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit b70c7996d4ffb2e02895132e8a79a37cee66504f ]
+[ Upstream commit ecb829459a841198e142f72fadab56424ae96519 ]
 
-SCMI raw debugfs entries are used to inject and snoop messages out of the
-SCMI core and, as such, the underlying virtual files have no reason to
-support seeking.
+When mlx5e_priv_init() fails, the cleanup flow calls mlx5e_selq_cleanup which
+calls mlx5e_selq_apply() that assures that the `priv->state_lock` is held using
+lockdep_is_held().
 
-Modify the related file_operations descriptors to be non-seekable.
+Acquire the state_lock in mlx5e_selq_cleanup().
 
-Fixes: 3c3d818a9317 ("firmware: arm_scmi: Add core raw transmission support")
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Link: https://lore.kernel.org/r/20240315140324.231830-1-cristian.marussi@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Kernel log:
+=============================
+WARNING: suspicious RCU usage
+6.8.0-rc3_net_next_841a9b5 #1 Not tainted
+-----------------------------
+drivers/net/ethernet/mellanox/mlx5/core/en/selq.c:124 suspicious rcu_dereference_protected() usage!
+
+other info that might help us debug this:
+
+rcu_scheduler_active = 2, debug_locks = 1
+2 locks held by systemd-modules/293:
+ #0: ffffffffa05067b0 (devices_rwsem){++++}-{3:3}, at: ib_register_client+0x109/0x1b0 [ib_core]
+ #1: ffff8881096c65c0 (&device->client_data_rwsem){++++}-{3:3}, at: add_client_context+0x104/0x1c0 [ib_core]
+
+stack backtrace:
+CPU: 4 PID: 293 Comm: systemd-modules Not tainted 6.8.0-rc3_net_next_841a9b5 #1
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x8a/0xa0
+ lockdep_rcu_suspicious+0x154/0x1a0
+ mlx5e_selq_apply+0x94/0xa0 [mlx5_core]
+ mlx5e_selq_cleanup+0x3a/0x60 [mlx5_core]
+ mlx5e_priv_init+0x2be/0x2f0 [mlx5_core]
+ mlx5_rdma_setup_rn+0x7c/0x1a0 [mlx5_core]
+ rdma_init_netdev+0x4e/0x80 [ib_core]
+ ? mlx5_rdma_netdev_free+0x70/0x70 [mlx5_core]
+ ipoib_intf_init+0x64/0x550 [ib_ipoib]
+ ipoib_intf_alloc+0x4e/0xc0 [ib_ipoib]
+ ipoib_add_one+0xb0/0x360 [ib_ipoib]
+ add_client_context+0x112/0x1c0 [ib_core]
+ ib_register_client+0x166/0x1b0 [ib_core]
+ ? 0xffffffffa0573000
+ ipoib_init_module+0xeb/0x1a0 [ib_ipoib]
+ do_one_initcall+0x61/0x250
+ do_init_module+0x8a/0x270
+ init_module_from_file+0x8b/0xd0
+ idempotent_init_module+0x17d/0x230
+ __x64_sys_finit_module+0x61/0xb0
+ do_syscall_64+0x71/0x140
+ entry_SYSCALL_64_after_hwframe+0x46/0x4e
+ </TASK>
+
+Fixes: 8bf30be75069 ("net/mlx5e: Introduce select queue parameters")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240409190820.227554-8-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/raw_mode.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/selq.c | 2 ++
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/arm_scmi/raw_mode.c b/drivers/firmware/arm_scmi/raw_mode.c
-index 3505735185033..130d13e9cd6be 100644
---- a/drivers/firmware/arm_scmi/raw_mode.c
-+++ b/drivers/firmware/arm_scmi/raw_mode.c
-@@ -921,7 +921,7 @@ static int scmi_dbg_raw_mode_open(struct inode *inode, struct file *filp)
- 	rd->raw = raw;
- 	filp->private_data = rd;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/selq.c b/drivers/net/ethernet/mellanox/mlx5/core/en/selq.c
+index f675b1926340f..f66bbc8464645 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/selq.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/selq.c
+@@ -57,6 +57,7 @@ int mlx5e_selq_init(struct mlx5e_selq *selq, struct mutex *state_lock)
  
--	return 0;
-+	return nonseekable_open(inode, filp);
+ void mlx5e_selq_cleanup(struct mlx5e_selq *selq)
+ {
++	mutex_lock(selq->state_lock);
+ 	WARN_ON_ONCE(selq->is_prepared);
+ 
+ 	kvfree(selq->standby);
+@@ -67,6 +68,7 @@ void mlx5e_selq_cleanup(struct mlx5e_selq *selq)
+ 
+ 	kvfree(selq->standby);
+ 	selq->standby = NULL;
++	mutex_unlock(selq->state_lock);
  }
  
- static int scmi_dbg_raw_mode_release(struct inode *inode, struct file *filp)
-@@ -950,6 +950,7 @@ static const struct file_operations scmi_dbg_raw_mode_reset_fops = {
- 	.open = scmi_dbg_raw_mode_open,
- 	.release = scmi_dbg_raw_mode_release,
- 	.write = scmi_dbg_raw_mode_reset_write,
-+	.llseek = no_llseek,
- 	.owner = THIS_MODULE,
- };
+ void mlx5e_selq_prepare_params(struct mlx5e_selq *selq, struct mlx5e_params *params)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index c8e8f512803ef..952f1f98138cc 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -5695,9 +5695,7 @@ void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
+ 	kfree(priv->tx_rates);
+ 	kfree(priv->txq2sq);
+ 	destroy_workqueue(priv->wq);
+-	mutex_lock(&priv->state_lock);
+ 	mlx5e_selq_cleanup(&priv->selq);
+-	mutex_unlock(&priv->state_lock);
+ 	free_cpumask_var(priv->scratchpad.cpumask);
  
-@@ -959,6 +960,7 @@ static const struct file_operations scmi_dbg_raw_mode_message_fops = {
- 	.read = scmi_dbg_raw_mode_message_read,
- 	.write = scmi_dbg_raw_mode_message_write,
- 	.poll = scmi_dbg_raw_mode_message_poll,
-+	.llseek = no_llseek,
- 	.owner = THIS_MODULE,
- };
- 
-@@ -975,6 +977,7 @@ static const struct file_operations scmi_dbg_raw_mode_message_async_fops = {
- 	.read = scmi_dbg_raw_mode_message_read,
- 	.write = scmi_dbg_raw_mode_message_async_write,
- 	.poll = scmi_dbg_raw_mode_message_poll,
-+	.llseek = no_llseek,
- 	.owner = THIS_MODULE,
- };
- 
-@@ -998,6 +1001,7 @@ static const struct file_operations scmi_dbg_raw_mode_notification_fops = {
- 	.release = scmi_dbg_raw_mode_release,
- 	.read = scmi_test_dbg_raw_mode_notif_read,
- 	.poll = scmi_test_dbg_raw_mode_notif_poll,
-+	.llseek = no_llseek,
- 	.owner = THIS_MODULE,
- };
- 
-@@ -1021,6 +1025,7 @@ static const struct file_operations scmi_dbg_raw_mode_errors_fops = {
- 	.release = scmi_dbg_raw_mode_release,
- 	.read = scmi_test_dbg_raw_mode_errors_read,
- 	.poll = scmi_test_dbg_raw_mode_errors_poll,
-+	.llseek = no_llseek,
- 	.owner = THIS_MODULE,
- };
- 
+ 	for (i = 0; i < priv->htb_max_qos_sqs; i++)
 -- 
 2.43.0
 
