@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-39589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062D28A5379
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:28:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 467EF8A5461
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:36:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C35AB21AFC
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:28:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAE241F21280
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C347F7F5;
-	Mon, 15 Apr 2024 14:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 660C87F7D3;
+	Mon, 15 Apr 2024 14:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mL9qH/28"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFOG3SE9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A287F7EF;
-	Mon, 15 Apr 2024 14:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F4D74E25;
+	Mon, 15 Apr 2024 14:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191215; cv=none; b=K/kafKyMOgpPfU5/twL0yWm8mBtaU6BcpbW9GPVGpJYJgI84VfJmU8vZhx1Lg3lddYIHm13oQvagJuqKPq8/Szv4h79Qez8xuzE46T60zscaaWtiVf0Prqfg+imEDSYWxHcatvXUsOPc358OXx7pKJ9o46fhbCjDAFkepvTk4QE=
+	t=1713191622; cv=none; b=gGHGsB6CXJoFAu4dXNxk9It3Q+7kizm+Ij944hDcVcdq5lT2fWU5WbY6ugcC1Xfs/TGzC6Y5ZEm9eYMXcKPDVGS4hFj8u3eKm5nGOUC/z3/codYB5AvUBEQ8x0YspbPYPNxFFJvVSc5ypSi2dBj8ESFNk8RaTajCgnuhpoq2eV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191215; c=relaxed/simple;
-	bh=g//tdNvOBVsv6iHkNxWofXTX5dXDuOYvWYM387YWgZY=;
+	s=arc-20240116; t=1713191622; c=relaxed/simple;
+	bh=9l1M6leeRvZU3GmmMZ8JOY9pSJuXMZnreK0mzq/tEEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rM4wU/dGLcFqJlvmpUUhwEpdLtgK13aa4Z4/HMd5zlC4KiDjVnvNwB8wM7K0Ihmk0OPrAMvQ5FTH4Qy8G5CRav0rlVjzI+k83p3ePRZa823jpSATnNVguhxVUCJN/ZBcD4R0JtUfpuoXKk3+Rnyhoy1mcYFEcOE9IZ09ZgFVrnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mL9qH/28; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E14C4AF07;
-	Mon, 15 Apr 2024 14:26:54 +0000 (UTC)
+	 MIME-Version; b=LC5TgWY+IqJSskLN374/m7MSHLPqhkW9kUAFgoEa0jm1afUne0GDol4Z7lRxeJ2Un/NiXwOUYfsYizFBfmtHAcSV82dM2Sf88xIBFboEQ+dxs9DofaB0EcYHZMErUpL6B7lK9Ex9MFbceHDKgnLOg0ZBGp2E+HT1ieTm9rIHhVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFOG3SE9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E686C113CC;
+	Mon, 15 Apr 2024 14:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191215;
-	bh=g//tdNvOBVsv6iHkNxWofXTX5dXDuOYvWYM387YWgZY=;
+	s=korg; t=1713191622;
+	bh=9l1M6leeRvZU3GmmMZ8JOY9pSJuXMZnreK0mzq/tEEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mL9qH/28uMPPL+9JwePAefG/pfS6YjkAb4y4ovKBp+23trqJ3GIkC7t4LttemBsVS
-	 E/xAchYSqvjVOsXt9pbshh+UCPWoGK3ZOih2QTJsEaYME1gCXUth00vm0V/hKtMPhr
-	 FKE4bNKvpPiZLAbPvfMIs0w9II75QxlgkEECDclA=
+	b=WFOG3SE937GkYhjj0yoqW11jrjOPVu52B9er4GmtoWd7EmlCmISUJvvTf6lddu993
+	 UxWIg1uho3gAWSa50UKb70oOeZg9MEfr3d7jvrOpqzMRV4Te+e8M58PT2eFzAOqb3Z
+	 N7/bZfRze6DtZZVR3Q85DuATDYZ2TRNuZXOThXzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 070/172] pds_core: Fix pdsc_check_pci_health function to use work thread
+	syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 6.6 004/122] batman-adv: Avoid infinite loop trying to resize local TT
 Date: Mon, 15 Apr 2024 16:19:29 +0200
-Message-ID: <20240415142002.535640928@linuxfoundation.org>
+Message-ID: <20240415141953.501311659@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,152 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Creeley <brett.creeley@amd.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 81665adf25d28a00a986533f1d3a5df76b79cad9 ]
+commit b1f532a3b1e6d2e5559c7ace49322922637a28aa upstream.
 
-When the driver notices fw_status == 0xff it tries to perform a PCI
-reset on itself via pci_reset_function() in the context of the driver's
-health thread. However, pdsc_reset_prepare calls
-pdsc_stop_health_thread(), which attempts to stop/flush the health
-thread. This results in a deadlock because the stop/flush will never
-complete since the driver called pci_reset_function() from the health
-thread context. Fix by changing the pdsc_check_pci_health_function()
-to queue a newly introduced pdsc_pci_reset_thread() on the pdsc's
-work queue.
+If the MTU of one of an attached interface becomes too small to transmit
+the local translation table then it must be resized to fit inside all
+fragments (when enabled) or a single packet.
 
-Unloading the driver in the fw_down/dead state uncovered another issue,
-which can be seen in the following trace:
+But if the MTU becomes too low to transmit even the header + the VLAN
+specific part then the resizing of the local TT will never succeed. This
+can for example happen when the usable space is 110 bytes and 11 VLANs are
+on top of batman-adv. In this case, at least 116 byte would be needed.
+There will just be an endless spam of
 
-WARNING: CPU: 51 PID: 6914 at kernel/workqueue.c:1450 __queue_work+0x358/0x440
-[...]
-RIP: 0010:__queue_work+0x358/0x440
-[...]
-Call Trace:
- <TASK>
- ? __warn+0x85/0x140
- ? __queue_work+0x358/0x440
- ? report_bug+0xfc/0x1e0
- ? handle_bug+0x3f/0x70
- ? exc_invalid_op+0x17/0x70
- ? asm_exc_invalid_op+0x1a/0x20
- ? __queue_work+0x358/0x440
- queue_work_on+0x28/0x30
- pdsc_devcmd_locked+0x96/0xe0 [pds_core]
- pdsc_devcmd_reset+0x71/0xb0 [pds_core]
- pdsc_teardown+0x51/0xe0 [pds_core]
- pdsc_remove+0x106/0x200 [pds_core]
- pci_device_remove+0x37/0xc0
- device_release_driver_internal+0xae/0x140
- driver_detach+0x48/0x90
- bus_remove_driver+0x6d/0xf0
- pci_unregister_driver+0x2e/0xa0
- pdsc_cleanup_module+0x10/0x780 [pds_core]
- __x64_sys_delete_module+0x142/0x2b0
- ? syscall_trace_enter.isra.18+0x126/0x1a0
- do_syscall_64+0x3b/0x90
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-RIP: 0033:0x7fbd9d03a14b
-[...]
+   batman_adv: batadv0: Forced to purge local tt entries to fit new maximum fragment MTU (110)
 
-Fix this by preventing the devcmd reset if the FW is not running.
+in the log but the function will never finish. Problem here is that the
+timeout will be halved all the time and will then stagnate at 0 and
+therefore never be able to reduce the table even more.
 
-Fixes: d9407ff11809 ("pds_core: Prevent health thread from running during reset/remove")
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+There are other scenarios possible with a similar result. The number of
+BATADV_TT_CLIENT_NOPURGE entries in the local TT can for example be too
+high to fit inside a packet. Such a scenario can therefore happen also with
+only a single VLAN + 7 non-purgable addresses - requiring at least 120
+bytes.
+
+While this should be handled proactively when:
+
+* interface with too low MTU is added
+* VLAN is added
+* non-purgeable local mac is added
+* MTU of an attached interface is reduced
+* fragmentation setting gets disabled (which most likely requires dropping
+  attached interfaces)
+
+not all of these scenarios can be prevented because batman-adv is only
+consuming events without the the possibility to prevent these actions
+(non-purgable MAC address added, MTU of an attached interface is reduced).
+It is therefore necessary to also make sure that the code is able to handle
+also the situations when there were already incompatible system
+configuration are present.
+
+Cc: stable@vger.kernel.org
+Fixes: a19d3d85e1b8 ("batman-adv: limit local translation table max size")
+Reported-by: syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/pds_core/core.c | 13 ++++++++++++-
- drivers/net/ethernet/amd/pds_core/core.h |  2 ++
- drivers/net/ethernet/amd/pds_core/dev.c  |  3 +++
- drivers/net/ethernet/amd/pds_core/main.c |  1 +
- 4 files changed, 18 insertions(+), 1 deletion(-)
+ net/batman-adv/translation-table.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
-index 0d148795a8d09..dd4f0965bbe64 100644
---- a/drivers/net/ethernet/amd/pds_core/core.c
-+++ b/drivers/net/ethernet/amd/pds_core/core.c
-@@ -595,6 +595,16 @@ void pdsc_fw_up(struct pdsc *pdsc)
- 	pdsc_teardown(pdsc, PDSC_TEARDOWN_RECOVERY);
- }
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -3948,7 +3948,7 @@ void batadv_tt_local_resize_to_mtu(struc
  
-+void pdsc_pci_reset_thread(struct work_struct *work)
-+{
-+	struct pdsc *pdsc = container_of(work, struct pdsc, pci_reset_work);
-+	struct pci_dev *pdev = pdsc->pdev;
-+
-+	pci_dev_get(pdev);
-+	pci_reset_function(pdev);
-+	pci_dev_put(pdev);
-+}
-+
- static void pdsc_check_pci_health(struct pdsc *pdsc)
- {
- 	u8 fw_status;
-@@ -609,7 +619,8 @@ static void pdsc_check_pci_health(struct pdsc *pdsc)
- 	if (fw_status != PDS_RC_BAD_PCI)
- 		return;
+ 	spin_lock_bh(&bat_priv->tt.commit_lock);
  
--	pci_reset_function(pdsc->pdev);
-+	/* prevent deadlock between pdsc_reset_prepare and pdsc_health_thread */
-+	queue_work(pdsc->wq, &pdsc->pci_reset_work);
- }
- 
- void pdsc_health_thread(struct work_struct *work)
-diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
-index f410f7d132056..401ff56eba0dc 100644
---- a/drivers/net/ethernet/amd/pds_core/core.h
-+++ b/drivers/net/ethernet/amd/pds_core/core.h
-@@ -197,6 +197,7 @@ struct pdsc {
- 	struct pdsc_qcq notifyqcq;
- 	u64 last_eid;
- 	struct pdsc_viftype *viftype_status;
-+	struct work_struct pci_reset_work;
- };
- 
- /** enum pds_core_dbell_bits - bitwise composition of dbell values.
-@@ -312,5 +313,6 @@ int pdsc_firmware_update(struct pdsc *pdsc, const struct firmware *fw,
- 
- void pdsc_fw_down(struct pdsc *pdsc);
- void pdsc_fw_up(struct pdsc *pdsc);
-+void pdsc_pci_reset_thread(struct work_struct *work);
- 
- #endif /* _PDSC_H_ */
-diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
-index e65a1632df505..bfb79c5aac391 100644
---- a/drivers/net/ethernet/amd/pds_core/dev.c
-+++ b/drivers/net/ethernet/amd/pds_core/dev.c
-@@ -229,6 +229,9 @@ int pdsc_devcmd_reset(struct pdsc *pdsc)
- 		.reset.opcode = PDS_CORE_CMD_RESET,
- 	};
- 
-+	if (!pdsc_is_fw_running(pdsc))
-+		return 0;
-+
- 	return pdsc_devcmd(pdsc, &cmd, &comp, pdsc->devcmd_timeout);
- }
- 
-diff --git a/drivers/net/ethernet/amd/pds_core/main.c b/drivers/net/ethernet/amd/pds_core/main.c
-index 345b16127fe8b..a375d612d2875 100644
---- a/drivers/net/ethernet/amd/pds_core/main.c
-+++ b/drivers/net/ethernet/amd/pds_core/main.c
-@@ -238,6 +238,7 @@ static int pdsc_init_pf(struct pdsc *pdsc)
- 	snprintf(wq_name, sizeof(wq_name), "%s.%d", PDS_CORE_DRV_NAME, pdsc->uid);
- 	pdsc->wq = create_singlethread_workqueue(wq_name);
- 	INIT_WORK(&pdsc->health_work, pdsc_health_thread);
-+	INIT_WORK(&pdsc->pci_reset_work, pdsc_pci_reset_thread);
- 	timer_setup(&pdsc->wdtimer, pdsc_wdtimer_cb, 0);
- 	pdsc->wdtimer_period = PDSC_WATCHDOG_SECS * HZ;
- 
--- 
-2.43.0
-
+-	while (true) {
++	while (timeout) {
+ 		table_size = batadv_tt_local_table_transmit_size(bat_priv);
+ 		if (packet_size_max >= table_size)
+ 			break;
 
 
 
