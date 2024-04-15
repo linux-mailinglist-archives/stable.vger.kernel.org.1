@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-39629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F6F8A53D0
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:31:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B946A8A5492
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:38:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB2561C21D2B
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:31:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAC3E1C21DC8
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AEB78C75;
-	Mon, 15 Apr 2024 14:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D8E84FD3;
+	Mon, 15 Apr 2024 14:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OqX3cRgI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwjVk7fx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92DD839E0;
-	Mon, 15 Apr 2024 14:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B171F823AC;
+	Mon, 15 Apr 2024 14:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191336; cv=none; b=b5qAKxAIqFb0tA6EHvTYebAZFko60XijOiYnQQrBL8WVuKaSx4Tz29tSzNrkRffaTcMIPXE/iWQEp8qlZIwf8NG7ABsyFnXo+Nf0cCqDWFChoEDp0IkPARlRlKSerVXqMfXhfVLeaU0HF6kTSvbnG5ZiPBJYP6k9vvDAqriWOP8=
+	t=1713191713; cv=none; b=CvJRTrM22TRFTCNyjT/8oQdf5LNOTjZwetIifzDO9DhoL+tb0RqYIgfVQ9Yx4WvxMAIl61ngrz5Yl/Czdi0vUSgMtE7ErtwshL/1YLYx61X1JoTGoKc5DsyVsLuGbZXNJONbaFozjzdBtU1WxRRGj+fc5o7kfy/FyQIQsu6NVOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191336; c=relaxed/simple;
-	bh=NjdZACyeje+lhfCjXsFW9eFFrIANBuKSbezrdksuKPg=;
+	s=arc-20240116; t=1713191713; c=relaxed/simple;
+	bh=lAMnPoBlEO0LROpXncPkuu0MDSo/8nB20MsSfDKBZ5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJqMPLnfuI48ZXKGMNm8PkGwXq3EUx/KLm4Jfw+dI0w99XdHL1hXicqZcs60Z38kDQ9XEHEfjzQojPrVOM3sQerWwtMuNjk6OOGu9J0JWRgAWI7wUuLXTCLtScL3AvD3XtpB4l5VDZenWzC3FZ7sqFGgikwGjubpHaTUN98qReI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OqX3cRgI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 583E2C113CC;
-	Mon, 15 Apr 2024 14:28:56 +0000 (UTC)
+	 MIME-Version; b=hiai0aJrfxG9yqMTBbDHJgR3daeBJ4hhJt4f0TYemcb4A2nsaEBiW8eHJg9siEJ1EwCaXg6wz8A8Oa4nnF7T7d/YpARnm9I/cZwpeAh6JdagEgTZzHpJkAvCN1bQrYc1oMD6IeURZqzVAPEosoHG63IMiTGJnnfeJhSV9BMMHls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwjVk7fx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5C9C4AF07;
+	Mon, 15 Apr 2024 14:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191336;
-	bh=NjdZACyeje+lhfCjXsFW9eFFrIANBuKSbezrdksuKPg=;
+	s=korg; t=1713191713;
+	bh=lAMnPoBlEO0LROpXncPkuu0MDSo/8nB20MsSfDKBZ5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OqX3cRgI44Rgbdq2CIymXoGAMwt3GkVDvuGdrMURQDYUJHQ146NxMAuCoDby87a1u
-	 RJsgyL9Im1zhjRQEEMuNHbnioVro9ECDuZ1WmT4kmbwbxIIX7HpCNQVBqHcxiqYl5y
-	 2fjB0pxH0rLEze3+IaXWhCXUC7efa2Xu6mZwii5g=
+	b=MwjVk7fxRKEWk7b/WcuHMXzZR3kt1P73KfcEZKPhZgtd226iYIAbY19WirtcUdcvu
+	 ozcw5E9866due/+vPi6zeDREDq96FWI4OGUyd9URvC8uldnkVVfTxDIqSR4D510s2J
+	 hIkR8ehAn2WXTqEeM+7Nf8FQT7YYTNBGaSOk2TOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.8 110/172] btrfs: record delayed inode root in transaction
+	Geetha sowjanya <gakula@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 044/122] octeontx2-af: Fix NIX SQ mode and BP config
 Date: Mon, 15 Apr 2024 16:20:09 +0200
-Message-ID: <20240415142003.738674996@linuxfoundation.org>
+Message-ID: <20240415141954.688185552@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Geetha sowjanya <gakula@marvell.com>
 
-commit 71537e35c324ea6fbd68377a4f26bb93a831ae35 upstream.
+[ Upstream commit faf23006185e777db18912685922c5ddb2df383f ]
 
-When running delayed inode updates, we do not record the inode's root in
-the transaction, but we do allocate PREALLOC and thus converted PERTRANS
-space for it. To be sure we free that PERTRANS meta rsv, we must ensure
-that we record the root in the transaction.
+NIX SQ mode and link backpressure configuration is required for
+all platforms. But in current driver this code is wrongly placed
+under specific platform check. This patch fixes the issue by
+moving the code out of platform check.
 
-Fixes: 4f5427ccce5d ("btrfs: delayed-inode: Use new qgroup meta rsv for delayed inode and item")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5d9b976d4480 ("octeontx2-af: Support fixed transmit scheduler topology")
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Link: https://lore.kernel.org/r/20240408063643.26288-1-gakula@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/delayed-inode.c |    3 +++
- 1 file changed, 3 insertions(+)
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 20 +++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/fs/btrfs/delayed-inode.c
-+++ b/fs/btrfs/delayed-inode.c
-@@ -1128,6 +1128,9 @@ __btrfs_commit_inode_delayed_items(struc
- 	if (ret)
- 		return ret;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index 58744313f0eb6..f6f6d7c04e8bf 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -4465,18 +4465,18 @@ static int rvu_nix_block_init(struct rvu *rvu, struct nix_hw *nix_hw)
+ 		 */
+ 		rvu_write64(rvu, blkaddr, NIX_AF_CFG,
+ 			    rvu_read64(rvu, blkaddr, NIX_AF_CFG) | 0x40ULL);
++	}
  
-+	ret = btrfs_record_root_in_trans(trans, node->root);
-+	if (ret)
-+		return ret;
- 	ret = btrfs_update_delayed_inode(trans, node->root, path, node);
- 	return ret;
- }
+-		/* Set chan/link to backpressure TL3 instead of TL2 */
+-		rvu_write64(rvu, blkaddr, NIX_AF_PSE_CHANNEL_LEVEL, 0x01);
++	/* Set chan/link to backpressure TL3 instead of TL2 */
++	rvu_write64(rvu, blkaddr, NIX_AF_PSE_CHANNEL_LEVEL, 0x01);
+ 
+-		/* Disable SQ manager's sticky mode operation (set TM6 = 0)
+-		 * This sticky mode is known to cause SQ stalls when multiple
+-		 * SQs are mapped to same SMQ and transmitting pkts at a time.
+-		 */
+-		cfg = rvu_read64(rvu, blkaddr, NIX_AF_SQM_DBG_CTL_STATUS);
+-		cfg &= ~BIT_ULL(15);
+-		rvu_write64(rvu, blkaddr, NIX_AF_SQM_DBG_CTL_STATUS, cfg);
+-	}
++	/* Disable SQ manager's sticky mode operation (set TM6 = 0)
++	 * This sticky mode is known to cause SQ stalls when multiple
++	 * SQs are mapped to same SMQ and transmitting pkts at a time.
++	 */
++	cfg = rvu_read64(rvu, blkaddr, NIX_AF_SQM_DBG_CTL_STATUS);
++	cfg &= ~BIT_ULL(15);
++	rvu_write64(rvu, blkaddr, NIX_AF_SQM_DBG_CTL_STATUS, cfg);
+ 
+ 	ltdefs = rvu->kpu.lt_def;
+ 	/* Calibrate X2P bus to check if CGX/LBK links are fine */
+-- 
+2.43.0
+
 
 
 
