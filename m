@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-39907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D4AB8A554C
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 551418A5522
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB820281B80
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10CF02830F9
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FCF2762C9;
-	Mon, 15 Apr 2024 14:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9C671B51;
+	Mon, 15 Apr 2024 14:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avli8Bz2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAwVmbor"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9F3433C9;
-	Mon, 15 Apr 2024 14:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8E41EEE3;
+	Mon, 15 Apr 2024 14:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192175; cv=none; b=K7yoiUxEnVF0IYjnMusNDTBOXNeDFbfNjkLiWLBRNJ9jLuPOgeLYTQqFU9EBdEfLWfLegX/kliIpyWQn7yHNHG87tn++HnbaALPehlEvsSGpHbr33SXuNgFL7f73BnAS47Ju0M+6aBrWqJz88dEVoWbqmKhoUHEaiOWkf/4qZwU=
+	t=1713192077; cv=none; b=Z/ZEICmreBCEPq/FiX2PQ+FlnBwIE9HOiwTZr+7A9bp/tZeORAqskUNUWuFaJlejgdlUe2l455qAUP9HLorwarhNB3dp8w6yNi/JfMc71Studm/Ms9qamZ8ZLb96CAT1k0akvCvcUqIAAjaLg3vdDzvzr5+SaGmFURKHUhLtOVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192175; c=relaxed/simple;
-	bh=bEWKNfdZfOz9X3qaGEkF1VUxUAQwuA4O5HUgk+FJhzY=;
+	s=arc-20240116; t=1713192077; c=relaxed/simple;
+	bh=mCb5ua99mlPPwtBfsbxXO/3Qd+FW152Z5JkRs7RTtCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JBrY7upDCRCrIQ48w4gqb8GRGnMMQdB0aHzbOxq2PUrEfKaDFu6V7JEhIcIaBadY/HKwA7hJnnOMed9/nNQ5sr6l5Wt7GqJsHyI1s/Hv9Fpt61nkriNK2wZV8g75V5/ZE7mq9jivwE59mdFdYzvMHUtYHugQb9c8cJGOGOrqOUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avli8Bz2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3B7C2BD10;
-	Mon, 15 Apr 2024 14:42:54 +0000 (UTC)
+	 MIME-Version; b=LaiW4hSwgwjuLaX1fDGuE7tlbMsU0qzG8WB1BUllL8Wkfh3pxNAewGaPZhoohn1Czs6Y/jotPzMfG4H9CmpJHpMN6QADyHBOv27yOeKhGbZiDcor64rd8tFo7V/n9p0lTnY9CyEDVdff3XFAnBgyH2mguouycNHKkogJzp8sruI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAwVmbor; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110EFC113CC;
+	Mon, 15 Apr 2024 14:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192175;
-	bh=bEWKNfdZfOz9X3qaGEkF1VUxUAQwuA4O5HUgk+FJhzY=;
+	s=korg; t=1713192077;
+	bh=mCb5ua99mlPPwtBfsbxXO/3Qd+FW152Z5JkRs7RTtCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=avli8Bz22bNVnISOIKQaQn7bvKqlV7zcIBJM+Rj5kK3UBrevNb60rMwNYHEIa9ptl
-	 TAiw3sac+Dl4nCqviXKZnhjKwTd/u+/h+WSAvfiNFAizqxgF+WsUGTFd6rk6VqlwQR
-	 lfQIBRS+Up1i3rBUlRxeg2komzFzVpcoMCN6orYU=
+	b=hAwVmborv1E/6u+U8oq452p9vgLthVZ90WgEsG7bglRDtwGB1SL+Ut43roLrvCh9v
+	 x5+jaAPxLZjgHc8l1OoZ2fL5rsjgqwWH3goa44E7pnjAe/KRBOu2Ru4y4GtuD+uVj2
+	 PLkFFWn8Ug+AscT2HK5KL5iQls8Szibt/xi87rps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 22/45] af_unix: Do not use atomic ops for unix_sk(sk)->inflight.
-Date: Mon, 15 Apr 2024 16:21:29 +0200
-Message-ID: <20240415141942.909311011@linuxfoundation.org>
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 59/69] x86/bugs: Cache the value of MSR_IA32_ARCH_CAPABILITIES
+Date: Mon, 15 Apr 2024 16:21:30 +0200
+Message-ID: <20240415141947.945926730@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
-References: <20240415141942.235939111@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,152 +64,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 97af84a6bba2ab2b9c704c08e67de3b5ea551bb2 ]
+commit cb2db5bb04d7f778fbc1a1ea2507aab436f1bff3 upstream.
 
-When touching unix_sk(sk)->inflight, we are always under
-spin_lock(&unix_gc_lock).
+There's no need to keep reading MSR_IA32_ARCH_CAPABILITIES over and
+over.  It's even read in the BHI sysfs function which is a big no-no.
+Just read it once and cache it.
 
-Let's convert unix_sk(sk)->inflight to the normal unsigned long.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240123170856.41348-3-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 47d8ac011fe1 ("af_unix: Fix garbage collector racing against connect()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/9592a18a814368e75f8f4b9d74d3883aa4fd1eaf.1712813475.git.jpoimboe@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/af_unix.h |  2 +-
- net/unix/af_unix.c    |  4 ++--
- net/unix/garbage.c    | 17 ++++++++---------
- net/unix/scm.c        |  8 +++++---
- 4 files changed, 16 insertions(+), 15 deletions(-)
+ arch/x86/kernel/cpu/bugs.c |   22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/include/net/af_unix.h b/include/net/af_unix.h
-index 32d21983c6968..094afdf7dea10 100644
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -56,7 +56,7 @@ struct unix_sock {
- 	struct mutex		iolock, bindlock;
- 	struct sock		*peer;
- 	struct list_head	link;
--	atomic_long_t		inflight;
-+	unsigned long		inflight;
- 	spinlock_t		lock;
- 	unsigned long		gc_flags;
- #define UNIX_GC_CANDIDATE	0
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 27a88a738793f..628d97c195a7e 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -877,11 +877,11 @@ static struct sock *unix_create1(struct net *net, struct socket *sock, int kern,
- 	sk->sk_write_space	= unix_write_space;
- 	sk->sk_max_ack_backlog	= net->unx.sysctl_max_dgram_qlen;
- 	sk->sk_destruct		= unix_sock_destructor;
--	u	  = unix_sk(sk);
-+	u = unix_sk(sk);
-+	u->inflight = 0;
- 	u->path.dentry = NULL;
- 	u->path.mnt = NULL;
- 	spin_lock_init(&u->lock);
--	atomic_long_set(&u->inflight, 0);
- 	INIT_LIST_HEAD(&u->link);
- 	mutex_init(&u->iolock); /* single task reading lock */
- 	mutex_init(&u->bindlock); /* single task binding lock */
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index 9bfffe2a7f020..7b326582d97da 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -166,17 +166,18 @@ static void scan_children(struct sock *x, void (*func)(struct unix_sock *),
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -60,6 +60,8 @@ EXPORT_SYMBOL_GPL(x86_spec_ctrl_current)
+ u64 x86_pred_cmd __ro_after_init = PRED_CMD_IBPB;
+ EXPORT_SYMBOL_GPL(x86_pred_cmd);
  
- static void dec_inflight(struct unix_sock *usk)
- {
--	atomic_long_dec(&usk->inflight);
-+	usk->inflight--;
- }
- 
- static void inc_inflight(struct unix_sock *usk)
- {
--	atomic_long_inc(&usk->inflight);
-+	usk->inflight++;
- }
- 
- static void inc_inflight_move_tail(struct unix_sock *u)
- {
--	atomic_long_inc(&u->inflight);
-+	u->inflight++;
++static u64 __ro_after_init ia32_cap;
 +
- 	/* If this still might be part of a cycle, move it to the end
- 	 * of the list, so that it's checked even if it was already
- 	 * passed over
-@@ -237,14 +238,12 @@ void unix_gc(void)
- 	 */
- 	list_for_each_entry_safe(u, next, &gc_inflight_list, link) {
- 		long total_refs;
--		long inflight_refs;
+ static DEFINE_MUTEX(spec_ctrl_mutex);
  
- 		total_refs = file_count(u->sk.sk_socket->file);
--		inflight_refs = atomic_long_read(&u->inflight);
- 
--		BUG_ON(inflight_refs < 1);
--		BUG_ON(total_refs < inflight_refs);
--		if (total_refs == inflight_refs) {
-+		BUG_ON(!u->inflight);
-+		BUG_ON(total_refs < u->inflight);
-+		if (total_refs == u->inflight) {
- 			list_move_tail(&u->link, &gc_candidates);
- 			__set_bit(UNIX_GC_CANDIDATE, &u->gc_flags);
- 			__set_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
-@@ -271,7 +270,7 @@ void unix_gc(void)
- 		/* Move cursor to after the current position. */
- 		list_move(&cursor, &u->link);
- 
--		if (atomic_long_read(&u->inflight) > 0) {
-+		if (u->inflight) {
- 			list_move_tail(&u->link, &not_cycle_list);
- 			__clear_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
- 			scan_children(&u->sk, inc_inflight_move_tail, NULL);
-diff --git a/net/unix/scm.c b/net/unix/scm.c
-index d1048b4c2baaf..4eff7da9f6f96 100644
---- a/net/unix/scm.c
-+++ b/net/unix/scm.c
-@@ -52,12 +52,13 @@ void unix_inflight(struct user_struct *user, struct file *fp)
- 	if (s) {
- 		struct unix_sock *u = unix_sk(s);
- 
--		if (atomic_long_inc_return(&u->inflight) == 1) {
-+		if (!u->inflight) {
- 			BUG_ON(!list_empty(&u->link));
- 			list_add_tail(&u->link, &gc_inflight_list);
- 		} else {
- 			BUG_ON(list_empty(&u->link));
- 		}
-+		u->inflight++;
- 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
- 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight + 1);
+ void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
+@@ -143,6 +145,8 @@ void __init cpu_select_mitigations(void)
+ 		x86_spec_ctrl_base &= ~SPEC_CTRL_MITIGATIONS_MASK;
  	}
-@@ -74,10 +75,11 @@ void unix_notinflight(struct user_struct *user, struct file *fp)
- 	if (s) {
- 		struct unix_sock *u = unix_sk(s);
  
--		BUG_ON(!atomic_long_read(&u->inflight));
-+		BUG_ON(!u->inflight);
- 		BUG_ON(list_empty(&u->link));
++	ia32_cap = x86_read_arch_cap_msr();
++
+ 	/* Select the proper CPU mitigations before patching alternatives: */
+ 	spectre_v1_select_mitigation();
+ 	spectre_v2_select_mitigation();
+@@ -300,8 +304,6 @@ static const char * const taa_strings[]
  
--		if (atomic_long_dec_and_test(&u->inflight))
-+		u->inflight--;
-+		if (!u->inflight)
- 			list_del_init(&u->link);
- 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
- 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - 1);
--- 
-2.43.0
-
+ static void __init taa_select_mitigation(void)
+ {
+-	u64 ia32_cap;
+-
+ 	if (!boot_cpu_has_bug(X86_BUG_TAA)) {
+ 		taa_mitigation = TAA_MITIGATION_OFF;
+ 		return;
+@@ -340,7 +342,6 @@ static void __init taa_select_mitigation
+ 	 * On MDS_NO=1 CPUs if ARCH_CAP_TSX_CTRL_MSR is not set, microcode
+ 	 * update is required.
+ 	 */
+-	ia32_cap = x86_read_arch_cap_msr();
+ 	if ( (ia32_cap & ARCH_CAP_MDS_NO) &&
+ 	    !(ia32_cap & ARCH_CAP_TSX_CTRL_MSR))
+ 		taa_mitigation = TAA_MITIGATION_UCODE_NEEDED;
+@@ -400,8 +401,6 @@ static const char * const mmio_strings[]
+ 
+ static void __init mmio_select_mitigation(void)
+ {
+-	u64 ia32_cap;
+-
+ 	if (!boot_cpu_has_bug(X86_BUG_MMIO_STALE_DATA) ||
+ 	     boot_cpu_has_bug(X86_BUG_MMIO_UNKNOWN) ||
+ 	     cpu_mitigations_off()) {
+@@ -412,8 +411,6 @@ static void __init mmio_select_mitigatio
+ 	if (mmio_mitigation == MMIO_MITIGATION_OFF)
+ 		return;
+ 
+-	ia32_cap = x86_read_arch_cap_msr();
+-
+ 	/*
+ 	 * Enable CPU buffer clear mitigation for host and VMM, if also affected
+ 	 * by MDS or TAA. Otherwise, enable mitigation for VMM only.
+@@ -507,7 +504,7 @@ static void __init rfds_select_mitigatio
+ 	if (rfds_mitigation == RFDS_MITIGATION_OFF)
+ 		return;
+ 
+-	if (x86_read_arch_cap_msr() & ARCH_CAP_RFDS_CLEAR)
++	if (ia32_cap & ARCH_CAP_RFDS_CLEAR)
+ 		setup_force_cpu_cap(X86_FEATURE_CLEAR_CPU_BUF);
+ 	else
+ 		rfds_mitigation = RFDS_MITIGATION_UCODE_NEEDED;
+@@ -658,8 +655,6 @@ void update_srbds_msr(void)
+ 
+ static void __init srbds_select_mitigation(void)
+ {
+-	u64 ia32_cap;
+-
+ 	if (!boot_cpu_has_bug(X86_BUG_SRBDS))
+ 		return;
+ 
+@@ -668,7 +663,6 @@ static void __init srbds_select_mitigati
+ 	 * are only exposed to SRBDS when TSX is enabled or when CPU is affected
+ 	 * by Processor MMIO Stale Data vulnerability.
+ 	 */
+-	ia32_cap = x86_read_arch_cap_msr();
+ 	if ((ia32_cap & ARCH_CAP_MDS_NO) && !boot_cpu_has(X86_FEATURE_RTM) &&
+ 	    !boot_cpu_has_bug(X86_BUG_MMIO_STALE_DATA))
+ 		srbds_mitigation = SRBDS_MITIGATION_TSX_OFF;
+@@ -812,7 +806,7 @@ static void __init gds_select_mitigation
+ 	/* Will verify below that mitigation _can_ be disabled */
+ 
+ 	/* No microcode */
+-	if (!(x86_read_arch_cap_msr() & ARCH_CAP_GDS_CTRL)) {
++	if (!(ia32_cap & ARCH_CAP_GDS_CTRL)) {
+ 		if (gds_mitigation == GDS_MITIGATION_FORCE) {
+ 			/*
+ 			 * This only needs to be done on the boot CPU so do it
+@@ -1884,8 +1878,6 @@ static void update_indir_branch_cond(voi
+ /* Update the static key controlling the MDS CPU buffer clear in idle */
+ static void update_mds_branch_idle(void)
+ {
+-	u64 ia32_cap = x86_read_arch_cap_msr();
+-
+ 	/*
+ 	 * Enable the idle clearing if SMT is active on CPUs which are
+ 	 * affected only by MSBDS and not any other MDS variant.
+@@ -2797,7 +2789,7 @@ static const char *spectre_bhi_state(voi
+ 	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP))
+ 		return "; BHI: SW loop, KVM: SW loop";
+ 	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
+-		 !(x86_read_arch_cap_msr() & ARCH_CAP_RRSBA))
++		 !(ia32_cap & ARCH_CAP_RRSBA))
+ 		return "; BHI: Retpoline";
+ 	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT))
+ 		return "; BHI: Syscall hardening, KVM: SW loop";
 
 
 
