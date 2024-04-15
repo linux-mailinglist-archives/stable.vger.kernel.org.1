@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-39890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C558A5533
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC4E8A5548
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D49A31C22376
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2736E2826C2
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4441374E3A;
-	Mon, 15 Apr 2024 14:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FCF1757EA;
+	Mon, 15 Apr 2024 14:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3vRhKpL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmjR0OBM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007172119;
-	Mon, 15 Apr 2024 14:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C016433C9;
+	Mon, 15 Apr 2024 14:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192125; cv=none; b=KhwVz/xxQhE4aTvO3QwuUHLkqHgF+IAh+v3NuvTFjbnY6VgO2ytK8ULqp026RPqH4TkuZrZoMezhC3D2LrI8y141vCXzlwbI9wC60MWpFVOCW1ABLmqmpvmKHlguG/8XrJUDNYYy8w/WiWGcdeCk3OaPCT4tIHAkKSPfsG2JSIg=
+	t=1713192169; cv=none; b=tJE0fMAvFgEdiiN4mW7qKz9GY1UatMWcXnlA5c84o0HT1ncXFdO71QxhXuuKl53rimCqQsvVjUjIBhFR1sV1vF62CixdKh0EhA2UW8071oSqceFf7X15EVtUoQD+1M5UGX2iZjg9rrheBzyMCc93Cf29DtNC0XiyGs74bJs+eUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192125; c=relaxed/simple;
-	bh=y3LSgdbHZTgf4Al0A70bPQIXd6pO7LZC6gEr80LQNF0=;
+	s=arc-20240116; t=1713192169; c=relaxed/simple;
+	bh=iH9I60N35w5GSf/e/iFBjKZkasK8y7dyWYWt6AZzTgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EdUHrXwBTCMkpCNIQCsrfiGdaU/zbBRR/ZmgAj2l8EuI/vlSBF6Cuze92lpZHuvrbusyM/3DG0Ua2McTU7kARijtVTVh7Guxn1MP5ASepL/cwYSpttA74HjcYe5UtNxgRyVsWr6MM14ISIQInesRZSvW/ysXk0HyKB5AZh0OU4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3vRhKpL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D679C113CC;
-	Mon, 15 Apr 2024 14:42:04 +0000 (UTC)
+	 MIME-Version; b=YcO4YC0/VZrN/C7yS5PVxQ/BAAIVpy2QPB7QtLyFhOeL8vpML8uFOSTpUfUh3bVG0gnajS2KKhUn0S/SPYEFh4+DqP6nJXoVVpfeg7rutUoDjJCm6C5A4hM0sf0DSuyur2Pfw6qgGcoGZ/SKcrhS7kD0k7M76vmvd1l/8EmuGWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmjR0OBM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A50C3277B;
+	Mon, 15 Apr 2024 14:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192124;
-	bh=y3LSgdbHZTgf4Al0A70bPQIXd6pO7LZC6gEr80LQNF0=;
+	s=korg; t=1713192169;
+	bh=iH9I60N35w5GSf/e/iFBjKZkasK8y7dyWYWt6AZzTgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h3vRhKpLt4DO/iWd4s4vDXisMQKrO64BQVsT3/iZ6rCbeV0LK3gwZC6cxodB1zjxP
-	 WGVUnflTOaxc4BeVOIsDG/ETPGyR2y3ZA8ySvs5F+w+hUBFN7k8eTDNFLyrW1nhSGz
-	 rOOd9B1Y2YE1zpfnHW01H5N42BYPb/dMypjLF/I4=
+	b=kmjR0OBMqj1BohU2KbZsj6IbfMEvzMwaj2aivICRc2V7w2qx7CKp/U92mOb//bQVG
+	 2MqIWyF1TxQtR8CgrSGAOJTfVx/Gw44G2L3Qiw4onGvVSlq3JTzuWwXp4IpIZ2TOtY
+	 hDGnUAlzhhIg8nd5gKdvSEZ82KA/Y4w5FTbvKcCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Dunlap <acdunlap@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Kevin Loughlin <kevinloughlin@google.com>
-Subject: [PATCH 6.1 55/69] x86/apic: Force native_apic_mem_read() to use the MOV instruction
-Date: Mon, 15 Apr 2024 16:21:26 +0200
-Message-ID: <20240415141947.826068077@linuxfoundation.org>
+	Daniel Machon <daniel.machon@microchip.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 20/45] net: sparx5: fix wrong config being used when reconfiguring PCS
+Date: Mon, 15 Apr 2024 16:21:27 +0200
+Message-ID: <20240415141942.850649885@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
+References: <20240415141942.235939111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Dunlap <acdunlap@google.com>
+From: Daniel Machon <daniel.machon@microchip.com>
 
-commit 5ce344beaca688f4cdea07045e0b8f03dc537e74 upstream.
+[ Upstream commit 33623113a48ea906f1955cbf71094f6aa4462e8f ]
 
-When done from a virtual machine, instructions that touch APIC memory
-must be emulated. By convention, MMIO accesses are typically performed
-via io.h helpers such as readl() or writeq() to simplify instruction
-emulation/decoding (ex: in KVM hosts and SEV guests) [0].
+The wrong port config is being used if the PCS is reconfigured. Fix this
+by correctly using the new config instead of the old one.
 
-Currently, native_apic_mem_read() does not follow this convention,
-allowing the compiler to emit instructions other than the MOV
-instruction generated by readl(). In particular, when the kernel is
-compiled with clang and run as a SEV-ES or SEV-SNP guest, the compiler
-would emit a TESTL instruction which is not supported by the SEV-ES
-emulator, causing a boot failure in that environment. It is likely the
-same problem would happen in a TDX guest as that uses the same
-instruction emulator as SEV-ES.
-
-To make sure all emulators can emulate APIC memory reads via MOV, use
-the readl() function in native_apic_mem_read(). It is expected that any
-emulator would support MOV in any addressing mode as it is the most
-generic and is what is usually emitted currently.
-
-The TESTL instruction is emitted when native_apic_mem_read() is inlined
-into apic_mem_wait_icr_idle(). The emulator comes from
-insn_decode_mmio() in arch/x86/lib/insn-eval.c. It's not worth it to
-extend insn_decode_mmio() to support more instructions since, in theory,
-the compiler could choose to output nearly any instruction for such
-reads which would bloat the emulator beyond reason.
-
-  [0] https://lore.kernel.org/all/20220405232939.73860-12-kirill.shutemov@linux.intel.com/
-
-  [ bp: Massage commit message, fix typos. ]
-
-Signed-off-by: Adam Dunlap <acdunlap@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Tested-by: Kevin Loughlin <kevinloughlin@google.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240318230927.2191933-1-acdunlap@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 946e7fd5053a ("net: sparx5: add port module support")
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20240409-link-mode-reconfiguration-fix-v2-1-db6a507f3627@microchip.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/apic.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/microchip/sparx5/sparx5_port.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -12,6 +12,7 @@
- #include <asm/mpspec.h>
- #include <asm/msr.h>
- #include <asm/hardirq.h>
-+#include <asm/io.h>
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
+index 189a6a0a2e08a..8561a7bf53e19 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
+@@ -730,7 +730,7 @@ static int sparx5_port_pcs_low_set(struct sparx5 *sparx5,
+ 	bool sgmii = false, inband_aneg = false;
+ 	int err;
  
- #define ARCH_APICTIMER_STOPS_ON_C3	1
+-	if (port->conf.inband) {
++	if (conf->inband) {
+ 		if (conf->portmode == PHY_INTERFACE_MODE_SGMII ||
+ 		    conf->portmode == PHY_INTERFACE_MODE_QSGMII)
+ 			inband_aneg = true; /* Cisco-SGMII in-band-aneg */
+@@ -947,7 +947,7 @@ int sparx5_port_pcs_set(struct sparx5 *sparx5,
+ 	if (err)
+ 		return -EINVAL;
  
-@@ -109,7 +110,7 @@ static inline void native_apic_mem_write
- 
- static inline u32 native_apic_mem_read(u32 reg)
- {
--	return *((volatile u32 *)(APIC_BASE + reg));
-+	return readl((void __iomem *)(APIC_BASE + reg));
- }
- 
- extern void native_apic_wait_icr_idle(void);
+-	if (port->conf.inband) {
++	if (conf->inband) {
+ 		/* Enable/disable 1G counters in ASM */
+ 		spx5_rmw(ASM_PORT_CFG_CSC_STAT_DIS_SET(high_speed_dev),
+ 			 ASM_PORT_CFG_CSC_STAT_DIS,
+-- 
+2.43.0
+
 
 
 
