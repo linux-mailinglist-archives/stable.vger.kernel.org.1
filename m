@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-39905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC4E8A5548
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC1A48A5534
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2736E2826C2
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE3A71C21623
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FCF1757EA;
-	Mon, 15 Apr 2024 14:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1C969D05;
+	Mon, 15 Apr 2024 14:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmjR0OBM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0XiWjvi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C016433C9;
-	Mon, 15 Apr 2024 14:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E6B1E4B1;
+	Mon, 15 Apr 2024 14:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192169; cv=none; b=tJE0fMAvFgEdiiN4mW7qKz9GY1UatMWcXnlA5c84o0HT1ncXFdO71QxhXuuKl53rimCqQsvVjUjIBhFR1sV1vF62CixdKh0EhA2UW8071oSqceFf7X15EVtUoQD+1M5UGX2iZjg9rrheBzyMCc93Cf29DtNC0XiyGs74bJs+eUA=
+	t=1713192128; cv=none; b=uuEvQGvJ9BfvQZo8y4CZxhaAUqKlx/jA5dcltIXBdrHxcTdiNH+ndqyMH592mAFzixsg9abGQZFltMqh6sCQ/8FEX1bmK1EpcqL62381n+3w2ZpmJWsXetrCsW1ofX0S3Ia8M3U/StYLtY8pb4+z9tSBKNI5hZpE7UzZLBILfXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192169; c=relaxed/simple;
-	bh=iH9I60N35w5GSf/e/iFBjKZkasK8y7dyWYWt6AZzTgg=;
+	s=arc-20240116; t=1713192128; c=relaxed/simple;
+	bh=VvGlRyWUYjUyH1MhARQ4QU1d8NCqBinMpq8lByMO/0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YcO4YC0/VZrN/C7yS5PVxQ/BAAIVpy2QPB7QtLyFhOeL8vpML8uFOSTpUfUh3bVG0gnajS2KKhUn0S/SPYEFh4+DqP6nJXoVVpfeg7rutUoDjJCm6C5A4hM0sf0DSuyur2Pfw6qgGcoGZ/SKcrhS7kD0k7M76vmvd1l/8EmuGWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmjR0OBM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A50C3277B;
-	Mon, 15 Apr 2024 14:42:48 +0000 (UTC)
+	 MIME-Version; b=j3kdtxu5O1GXMx0Ni7zZ8rvF8/7c05AURKAvzKtDTz8XWfILgAIUx+2IgZYvymL/vqcmnvlc7QQdJz67OoSSru1/llWqU+l+TTqU93mSPiZyqOfDGlMijC+nJuED8AiN7BEn9yDcDGUNHPLgwKEBsDBJ/dAC0vINSsGqqcbHcRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0XiWjvi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA47C113CC;
+	Mon, 15 Apr 2024 14:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192169;
-	bh=iH9I60N35w5GSf/e/iFBjKZkasK8y7dyWYWt6AZzTgg=;
+	s=korg; t=1713192127;
+	bh=VvGlRyWUYjUyH1MhARQ4QU1d8NCqBinMpq8lByMO/0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kmjR0OBMqj1BohU2KbZsj6IbfMEvzMwaj2aivICRc2V7w2qx7CKp/U92mOb//bQVG
-	 2MqIWyF1TxQtR8CgrSGAOJTfVx/Gw44G2L3Qiw4onGvVSlq3JTzuWwXp4IpIZ2TOtY
-	 hDGnUAlzhhIg8nd5gKdvSEZ82KA/Y4w5FTbvKcCw=
+	b=K0XiWjviVOF2wFRqh+4+yDknrpucY/61xtv9zuDs2y7YXhsnsZYWM3KolRxw/Ifa6
+	 VWY8dBdxNgHBMoTDu5LFzeLSvDUsJJe/ZoUzHUMs/pt1LqlQ2y+m833H0yHodfJYNM
+	 gsLg/hgmGwIBqGGixBywloNl7se8r3U50dHZkBP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 20/45] net: sparx5: fix wrong config being used when reconfiguring PCS
+	kernel test robot <lkp@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 6.1 56/69] irqflags: Explicitly ignore lockdep_hrtimer_exit() argument
 Date: Mon, 15 Apr 2024 16:21:27 +0200
-Message-ID: <20240415141942.850649885@linuxfoundation.org>
+Message-ID: <20240415141947.856384537@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
-References: <20240415141942.235939111@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Machon <daniel.machon@microchip.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 33623113a48ea906f1955cbf71094f6aa4462e8f ]
+commit c1d11fc2c8320871b40730991071dd0a0b405bc8 upstream.
 
-The wrong port config is being used if the PCS is reconfigured. Fix this
-by correctly using the new config instead of the old one.
+When building with 'make W=1' but CONFIG_TRACE_IRQFLAGS=n, the
+unused argument to lockdep_hrtimer_exit() causes a warning:
 
-Fixes: 946e7fd5053a ("net: sparx5: add port module support")
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20240409-link-mode-reconfiguration-fix-v2-1-db6a507f3627@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+kernel/time/hrtimer.c:1655:14: error: variable 'expires_in_hardirq' set but not used [-Werror=unused-but-set-variable]
+
+This is intentional behavior, so add a cast to void to shut up the warning.
+
+Fixes: 73d20564e0dc ("hrtimer: Don't dereference the hrtimer pointer after the callback")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240408074609.3170807-1-arnd@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202311191229.55QXHVc6-lkp@intel.com/
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_port.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/irqflags.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-index 189a6a0a2e08a..8561a7bf53e19 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-@@ -730,7 +730,7 @@ static int sparx5_port_pcs_low_set(struct sparx5 *sparx5,
- 	bool sgmii = false, inband_aneg = false;
- 	int err;
- 
--	if (port->conf.inband) {
-+	if (conf->inband) {
- 		if (conf->portmode == PHY_INTERFACE_MODE_SGMII ||
- 		    conf->portmode == PHY_INTERFACE_MODE_QSGMII)
- 			inband_aneg = true; /* Cisco-SGMII in-band-aneg */
-@@ -947,7 +947,7 @@ int sparx5_port_pcs_set(struct sparx5 *sparx5,
- 	if (err)
- 		return -EINVAL;
- 
--	if (port->conf.inband) {
-+	if (conf->inband) {
- 		/* Enable/disable 1G counters in ASM */
- 		spx5_rmw(ASM_PORT_CFG_CSC_STAT_DIS_SET(high_speed_dev),
- 			 ASM_PORT_CFG_CSC_STAT_DIS,
--- 
-2.43.0
-
+--- a/include/linux/irqflags.h
++++ b/include/linux/irqflags.h
+@@ -126,7 +126,7 @@ do {						\
+ # define lockdep_softirq_enter()		do { } while (0)
+ # define lockdep_softirq_exit()			do { } while (0)
+ # define lockdep_hrtimer_enter(__hrtimer)	false
+-# define lockdep_hrtimer_exit(__context)	do { } while (0)
++# define lockdep_hrtimer_exit(__context)	do { (void)(__context); } while (0)
+ # define lockdep_posixtimer_enter()		do { } while (0)
+ # define lockdep_posixtimer_exit()		do { } while (0)
+ # define lockdep_irq_work_enter(__work)		do { } while (0)
 
 
 
