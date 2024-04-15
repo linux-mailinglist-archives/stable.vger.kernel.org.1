@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-39749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DAD8A5483
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:37:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A6D98A53EC
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:32:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 391FB1F2258A
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:37:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E0B51F215BB
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2A980C14;
-	Mon, 15 Apr 2024 14:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2697279DD5;
+	Mon, 15 Apr 2024 14:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SwWHRlIi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LB1g7H6D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8E4762D0;
-	Mon, 15 Apr 2024 14:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75FC7580D;
+	Mon, 15 Apr 2024 14:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191698; cv=none; b=B9FvdkISFLxYIRWRexOVSeCGKLvtB+mHrBKYIWlWv1UDeTxZqWMVGysZ6LiBW/hfeiNZtXHhJ5RYn+V20hgYqgRV48/1QJ0TmKL3jHrOShkJHngFOdAQIMoYRCH9PPGiEI9lghZTLqwe5n0xVVZXH70vLfMAIPhaErcxlMtNMHw=
+	t=1713191383; cv=none; b=t4XrKIWPqhFD8Ji15nRdXaoncLegDrTKCMsHH3LZO2gp+JNCLQMDNQGLI6oVSyFZlZDZQ1zWry5fl7t8k/bEsiwttXR/JJFadqXTnWmKE7gK8OuBvJQt17AHo2AW/9SIqxu8pyGh8ylrIJyJs/GtHPNRGR6MzNPBYRPeHGAc7WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191698; c=relaxed/simple;
-	bh=BbISdmm+DuOVYG5q+VVyeWK7DRkzvQj3b1E6o6LjAwk=;
+	s=arc-20240116; t=1713191383; c=relaxed/simple;
+	bh=pZRLvPp4IcUnaNponfMJhHIoY6n4giFqelSQITcj/gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DzP4AP/0J1z4L521Z0B5zc2/aCKwLUP8+iHXIZmDx3PAyeLYY5AgPKp4dld1tV/7kM0M64lZSTbGyF4S5Am4kHw+hrxUatqN6tLY5E77nNfS7hPtA2FaUACDpiT7HB2awCVMXDDldG/Gfri+zsIQvtKRKIYW7twMgbxHa3DncFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SwWHRlIi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2816C3277B;
-	Mon, 15 Apr 2024 14:34:57 +0000 (UTC)
+	 MIME-Version; b=C9Qd13UnQ+xtRUc53/cshjIcaAkK1NNx+rkJFbtOEQTbrz01G2EBbQkqjywKr48I16iQusxmDWILZo9VHsaFib4geoo+5/2WE9r4fg1hZdNyDdylVnNO7TWpTYYf8h3qJEshDOOOHXF/50GnrePmS7WIE8u9CwWBduoDmxdrPAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LB1g7H6D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560A1C113CC;
+	Mon, 15 Apr 2024 14:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191698;
-	bh=BbISdmm+DuOVYG5q+VVyeWK7DRkzvQj3b1E6o6LjAwk=;
+	s=korg; t=1713191383;
+	bh=pZRLvPp4IcUnaNponfMJhHIoY6n4giFqelSQITcj/gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SwWHRlIiFcwlhCPwBC2cr1sa31b3VRTzJoq8TD1GrNyzbJhMM8hNGEnEiLMO4j0A2
-	 fFj2o8QPmriK3kmnM88gmb4FLPswS07WibDu45uHOOnMt7KSXuaw/gMmXqyHj1/OIO
-	 K0JDR26/3ptlHAcre9plElhDno8xdqM81GlgEvS4=
+	b=LB1g7H6D4rFgDhISYE5tacfOP6zEcBSkzepOIOOGV31xugoflfQj30gUbx1DrkekT
+	 7vQh9bBbx/b1IY/hL6xI2Uo4rjZlaHNgroj8K0j2VSjA3fEXGmbAj1/D5Ls0oRFyQ9
+	 9hQTVlCJtfWdvohiq8GoQy/ESNfpOmGf+dI5CaCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohamed Khalfella <mkhalfella@purestorage.com>,
-	Yuanyuan Zhong <yzhong@purestorage.com>,
-	Michael Liang <mliang@purestorage.com>,
-	Shay Drory <shayd@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/122] net/mlx5: offset comp irq index in name by one
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Ye Li <ye.li@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	Martin Krastev <martin.krastev@broadcom.com>
+Subject: [PATCH 6.8 123/172] drm/vmwgfx: Enable DMA mappings with SEV
 Date: Mon, 15 Apr 2024 16:20:22 +0200
-Message-ID: <20240415141955.078893059@linuxfoundation.org>
+Message-ID: <20240415142004.126450114@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,67 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Liang <mliang@purestorage.com>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-[ Upstream commit 9f7e8fbb91f8fa29548e2f6ab50c03b628c67ede ]
+commit 4c08f01934ab67d1d283d5cbaa52b923abcfe4cd upstream.
 
-The mlx5 comp irq name scheme is changed a little bit between
-commit 3663ad34bc70 ("net/mlx5: Shift control IRQ to the last index")
-and commit 3354822cde5a ("net/mlx5: Use dynamic msix vectors allocation").
-The index in the comp irq name used to start from 0 but now it starts
-from 1. There is nothing critical here, but it's harmless to change
-back to the old behavior, a.k.a starting from 0.
+Enable DMA mappings in vmwgfx after TTM has been fixed in commit
+3bf3710e3718 ("drm/ttm: Add a generic TTM memcpy move for page-based iomem")
 
-Fixes: 3354822cde5a ("net/mlx5: Use dynamic msix vectors allocation")
-Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-Reviewed-by: Yuanyuan Zhong <yzhong@purestorage.com>
-Signed-off-by: Michael Liang <mliang@purestorage.com>
-Reviewed-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240409190820.227554-4-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This enables full guest-backed memory support and in particular allows
+usage of screen targets as the presentation mechanism.
+
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Reported-by: Ye Li <ye.li@broadcom.com>
+Tested-by: Ye Li <ye.li@broadcom.com>
+Fixes: 3b0d6458c705 ("drm/vmwgfx: Refuse DMA operation when SEV encryption is active")
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.6+
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240408022802.358641-1-zack.rusin@broadcom.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-index 4dcf995cb1a20..6bac8ad70ba60 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-@@ -19,6 +19,7 @@
- #define MLX5_IRQ_CTRL_SF_MAX 8
- /* min num of vectors for SFs to be enabled */
- #define MLX5_IRQ_VEC_COMP_BASE_SF 2
-+#define MLX5_IRQ_VEC_COMP_BASE 1
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+@@ -666,11 +666,12 @@ static int vmw_dma_select_mode(struct vm
+ 		[vmw_dma_map_populate] = "Caching DMA mappings.",
+ 		[vmw_dma_map_bind] = "Giving up DMA mappings early."};
  
- #define MLX5_EQ_SHARE_IRQ_MAX_COMP (8)
- #define MLX5_EQ_SHARE_IRQ_MAX_CTRL (UINT_MAX)
-@@ -246,6 +247,7 @@ static void irq_set_name(struct mlx5_irq_pool *pool, char *name, int vecidx)
- 		return;
- 	}
- 
-+	vecidx -= MLX5_IRQ_VEC_COMP_BASE;
- 	snprintf(name, MLX5_MAX_IRQ_NAME, "mlx5_comp%d", vecidx);
- }
- 
-@@ -585,7 +587,7 @@ struct mlx5_irq *mlx5_irq_request_vector(struct mlx5_core_dev *dev, u16 cpu,
- 	struct mlx5_irq_table *table = mlx5_irq_table_get(dev);
- 	struct mlx5_irq_pool *pool = table->pcif_pool;
- 	struct irq_affinity_desc af_desc;
--	int offset = 1;
-+	int offset = MLX5_IRQ_VEC_COMP_BASE;
- 
- 	if (!pool->xa_num_irqs.max)
- 		offset = 0;
--- 
-2.43.0
-
+-	/* TTM currently doesn't fully support SEV encryption. */
+-	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+-		return -EINVAL;
+-
+-	if (vmw_force_coherent)
++	/*
++	 * When running with SEV we always want dma mappings, because
++	 * otherwise ttm tt pool pages will bounce through swiotlb running
++	 * out of available space.
++	 */
++	if (vmw_force_coherent || cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+ 		dev_priv->map_mode = vmw_dma_alloc_coherent;
+ 	else if (vmw_restrict_iommu)
+ 		dev_priv->map_mode = vmw_dma_map_bind;
 
 
 
