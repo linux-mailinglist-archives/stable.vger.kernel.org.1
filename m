@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-39885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 353F98A552E
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D9228A555A
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6766E1C217B1
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 548CE1F21C45
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B56757FD;
-	Mon, 15 Apr 2024 14:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002E374422;
+	Mon, 15 Apr 2024 14:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkpnTZwh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BMmaiBva"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506DE2119;
-	Mon, 15 Apr 2024 14:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02F52119;
+	Mon, 15 Apr 2024 14:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192110; cv=none; b=Dn1oj+0gFlbRBsnM9VWq3WNlESy+d+8Us+XWrrhJFPsKQC105i61+wfD3lOUIyWjAslAkpUFUvyIPgN95DlBM6jgpQAIxto0E7pS+wOBL+IJBIrh1E2tqVlb6mvbvK5wTNtwfcE+N1j8k3seLl6zy9R9GjTUN23c6OcZ+Ka4oPk=
+	t=1713192214; cv=none; b=OWXEDuCDpdy7TsDWpzOzNOOjqrYLIY5YvgjlDkYyseQaGS2fkIIZxt9xOfHCfjW4UwBLVh4eEr+X71w1XKaXg1iuuYY0I8zwTFqKtMEaOj+LFKmUY9ebr/tiUbxF19X3YmyhfOPVOraTamgo0yxJU3ps+A24H0szv93r3u7TmjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192110; c=relaxed/simple;
-	bh=m/Pkv0zgVHxi+YUhAj5gls7HrkpLTcyToc9I9HL7Tvw=;
+	s=arc-20240116; t=1713192214; c=relaxed/simple;
+	bh=gG3XQT8ykXI8am7jOPEEOEexErW8Tl+uUlLozEwCaS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxDMz3HI+ZqhUVqEHalMORESglhws+CefeGT3tFt6N1mNrwkchK3ZBQz8q6CcB3mN0CAllm1Lo2XRYUC7FiYJP+xZQ8faQ4qWPYtvj2vOwMRR6iQk6shdVm6P9pi+7xDF4vlLRk0+fOZR+frbzsSuyIyQML1oQ0etcxZv+FOtQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkpnTZwh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA09EC113CC;
-	Mon, 15 Apr 2024 14:41:49 +0000 (UTC)
+	 MIME-Version; b=u8SG+LY6zwiAMRtKDcLBK7utxX1607dvBZkEP5Bkxe870r0RNLKEAuSiJV8Ev6ghdyVv5KRROXYK5VMUYe9b/4r9KGJ5QRiZZYFi8IkCqjKDwQ0yXYIGKx9J4HsZ8CAZVMkVxM574DiJjCNYOMHgI04EsnO9hPWOdxUKNpfFP4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BMmaiBva; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E1FC113CC;
+	Mon, 15 Apr 2024 14:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192110;
-	bh=m/Pkv0zgVHxi+YUhAj5gls7HrkpLTcyToc9I9HL7Tvw=;
+	s=korg; t=1713192214;
+	bh=gG3XQT8ykXI8am7jOPEEOEexErW8Tl+uUlLozEwCaS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EkpnTZwhaQ4BiqEFeZ/UexmsCQyu+JGU2mTEWKNdwRp87BgKdFKPueoZQuQaFwV2Z
-	 NzMtMy6wD9ywBBl20BdHdR29O/N52CmbVt0mnu8qHx+Ojok5uQOiwuugGnsVwiL88R
-	 GU40Dc4T1wB/h3akCX2kEopFWLlSo4yL9nE2mba4=
+	b=BMmaiBvaQmILANrBolwX+JWoZC6En2e0PfOCReixNIlrV24co7WiySbcclsXhCOiA
+	 k4TTPClgyEJuMrkjAUdkTK8Bt3EPJFrdqlfe9mBizaURaHTrizD4yLhvzoA/T5WI13
+	 iAKBRfqXDq7RJ7tivpbM7thwrzoCfurVcZ6QKNWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Fudongwang <fudong.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 69/69] drm/amd/display: fix disable otg wa logic in DCN316
-Date: Mon, 15 Apr 2024 16:21:40 +0200
-Message-ID: <20240415141948.248193251@linuxfoundation.org>
+	John Stultz <jstultz@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.15 34/45] selftests: timers: Fix abs() warning in posix_timers test
+Date: Mon, 15 Apr 2024 16:21:41 +0200
+Message-ID: <20240415141943.269568979@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
+References: <20240415141942.235939111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fudongwang <fudong.wang@amd.com>
+From: John Stultz <jstultz@google.com>
 
-commit cf79814cb0bf5749b9f0db53ca231aa540c02768 upstream.
+commit ed366de8ec89d4f960d66c85fc37d9de22f7bf6d upstream.
 
-[Why]
-Wrong logic cause screen corruption.
+Building with clang results in the following warning:
 
-[How]
-Port logic from DCN35/314.
+  posix_timers.c:69:6: warning: absolute value function 'abs' given an
+      argument of type 'long long' but has parameter of type 'int' which may
+      cause truncation of value [-Wabsolute-value]
+        if (abs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
+            ^
+So switch to using llabs() instead.
 
+Fixes: 0bc4b0cf1570 ("selftests: add basic posix timers selftests")
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Fudongwang <fudong.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/r/20240410232637.4135564-3-jstultz@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c |   19 ++++++----
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ tools/testing/selftests/timers/posix_timers.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
-@@ -112,20 +112,25 @@ static int dcn316_get_active_display_cnt
- 	return display_count;
- }
+--- a/tools/testing/selftests/timers/posix_timers.c
++++ b/tools/testing/selftests/timers/posix_timers.c
+@@ -66,7 +66,7 @@ static int check_diff(struct timeval sta
+ 	diff = end.tv_usec - start.tv_usec;
+ 	diff += (end.tv_sec - start.tv_sec) * USECS_PER_SEC;
  
--static void dcn316_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *context, bool disable)
-+static void dcn316_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *context,
-+		bool safe_to_lower, bool disable)
- {
- 	struct dc *dc = clk_mgr_base->ctx->dc;
- 	int i;
- 
- 	for (i = 0; i < dc->res_pool->pipe_count; ++i) {
--		struct pipe_ctx *pipe = &dc->current_state->res_ctx.pipe_ctx[i];
-+		struct pipe_ctx *pipe = safe_to_lower
-+			? &context->res_ctx.pipe_ctx[i]
-+			: &dc->current_state->res_ctx.pipe_ctx[i];
- 
- 		if (pipe->top_pipe || pipe->prev_odm_pipe)
- 			continue;
--		if (pipe->stream && (pipe->stream->dpms_off || pipe->plane_state == NULL ||
--				     dc_is_virtual_signal(pipe->stream->signal))) {
-+		if (pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal) ||
-+				     !pipe->stream->link_enc)) {
- 			if (disable) {
--				pipe->stream_res.tg->funcs->immediate_disable_crtc(pipe->stream_res.tg);
-+				if (pipe->stream_res.tg && pipe->stream_res.tg->funcs->immediate_disable_crtc)
-+					pipe->stream_res.tg->funcs->immediate_disable_crtc(pipe->stream_res.tg);
-+
- 				reset_sync_context_for_pipe(dc, context, i);
- 			} else
- 				pipe->stream_res.tg->funcs->enable_crtc(pipe->stream_res.tg);
-@@ -222,11 +227,11 @@ static void dcn316_update_clocks(struct
- 	}
- 
- 	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz)) {
--		dcn316_disable_otg_wa(clk_mgr_base, context, true);
-+		dcn316_disable_otg_wa(clk_mgr_base, context, safe_to_lower, true);
- 
- 		clk_mgr_base->clks.dispclk_khz = new_clocks->dispclk_khz;
- 		dcn316_smu_set_dispclk(clk_mgr, clk_mgr_base->clks.dispclk_khz);
--		dcn316_disable_otg_wa(clk_mgr_base, context, false);
-+		dcn316_disable_otg_wa(clk_mgr_base, context, safe_to_lower, false);
- 
- 		update_dispclk = true;
+-	if (abs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
++	if (llabs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
+ 		printf("Diff too high: %lld..", diff);
+ 		return -1;
  	}
 
 
