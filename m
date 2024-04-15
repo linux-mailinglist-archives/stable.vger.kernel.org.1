@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-39682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48DCE8A542F
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A8D78A54BF
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 037CF2860C8
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5BC61F22863
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4B481AA7;
-	Mon, 15 Apr 2024 14:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A4C82492;
+	Mon, 15 Apr 2024 14:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrK/UZQw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0XVFIawT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B72180BFF;
-	Mon, 15 Apr 2024 14:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5801274439;
+	Mon, 15 Apr 2024 14:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191501; cv=none; b=a4CQv3O8CpBy2PHJZD6OOLkGXmLjIoaCOR72AWuiYuBAllC+EJzinG5TUbDHKKcFGxhHLf1h9hszrZ5ZsxWDCWu8XDtwpl65cFE4Ef0e2l9pNAFwb9xKlB/qE/GSjTMb9gMmBiikIDSXidR8zWSbeaTHxZpOjsdTtrtw6LvKoYA=
+	t=1713191815; cv=none; b=pSG2GYmbpq2QptV+sr+Ryiuw8zxf15cR+0i+UH6tiI/82/w7dHika63cYa8PEF/6YBgpeU3w80NNPW7g90Vl6h2e7yPKc/28qMZPSPMa1PJo7O1NO3Yy+WnmKZPEPDS8bSqKKrMHFuS6wbKZ3Hs7NJuevG0Yz1aoT5RhL1F6ZVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191501; c=relaxed/simple;
-	bh=//VueV5QYHGq3JYncIb+kNnNNPcYoq+L67/2D11gj90=;
+	s=arc-20240116; t=1713191815; c=relaxed/simple;
+	bh=lt3TGb4S32lq0i/98tJzlbW5cKhLJQRJ6FDMap3Kp/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Aa3LmpDoBLgeooCsq+Pl3f3EhDTo3W2N2ekHk71VsQXp7zO1zysS4Z/gmJ10IqcVhSGWVGIxmYCCU6QA53FWEHmDZUQX7YZroFc9uiKuoYij4VZ5I9wWJIcHDblpy2OWQPqkEAlE2nARr3VpZpWtk4+xcLOgCWCXaBKbBQzAck0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrK/UZQw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D6BC113CC;
-	Mon, 15 Apr 2024 14:31:40 +0000 (UTC)
+	 MIME-Version; b=b5FcF0IgwpA/kbAd2hqyNa6dtbpcpy7ykH8WmypJa3W0I7X0JzGS1li5tr8M/7lK4D9jnP5qWX1fXVZwSK/L85xUeArdpE9b40A+TxXzIZvdnvnFEZ3xFVZay53OESUBAswXBhVgnJHbS00WeGeVHcPthLOUoarWbBar4mDGPCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0XVFIawT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDECC113CC;
+	Mon, 15 Apr 2024 14:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191501;
-	bh=//VueV5QYHGq3JYncIb+kNnNNPcYoq+L67/2D11gj90=;
+	s=korg; t=1713191815;
+	bh=lt3TGb4S32lq0i/98tJzlbW5cKhLJQRJ6FDMap3Kp/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nrK/UZQw5JOilQXcrpJfvA/A6mruDg6aiVA8UTXO6HgNi8rxwDKUzsUtV0TmAUtdl
-	 odqtzYxjEOU9DOOPkoLX1Z+g6eO9hl3xJ/DP78JowQmqpyMeZd7FOSDuuuXMhzyKwa
-	 WSjnpk7Tl0QdNR+ig8PauGThNl4nRXRFgSyvpSUU=
+	b=0XVFIawT3sOPzsM+fZPxgOr03rxARuedEs5ck1nJR3i1qKnaxZfk1XE1YE+1pKqi6
+	 XXa5FzkyZYrBSlfqM6ictccPjb737gTpPcrEuQfmhxuA22LGOgIzj/NrjDZ894Dfvz
+	 /mXWO9WvQt8IW2xmR2KzmwbYlyaDttDlnE1SeVhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Srinivas <vidya.srinivas@intel.com>,
-	Arun R Murthy <arun.r.murthy@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.8 162/172] drm/i915: Disable live M/N updates when using bigjoiner
+	Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.6 096/122] arm64: dts: imx8-ss-dma: fix adc lpcg indices
 Date: Mon, 15 Apr 2024 16:21:01 +0200
-Message-ID: <20240415142005.275555921@linuxfoundation.org>
+Message-ID: <20240415141956.253949420@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +59,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 4a36e46df7aa781c756f09727d37dc2783f1ee75 upstream.
+commit 81975080f14167610976e968e8016e92d836266f upstream.
 
-All joined pipes share the same transcoder/timing generator.
-Currently we just do the commits per-pipe, which doesn't really
-work if we need to change the timings at the same time. For
-now just disable live M/N updates when bigjoiner is needed.
+adc0_lpcg: clock-controller@5ac80000 {
+	...						    Col1   Col2
+	clocks = <&clk IMX_SC_R_ADC_0 IMX_SC_PM_CLK_PER>, // 0      0
+		 <&dma_ipg_clk>;			  // 1      4
+	clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+};
+
+Col1: index, which existing dts try to get.
+Col2: actual index in lpcg driver.
+
+adc0: adc@5a880000 {
+	clocks = <&adc0_lpcg 0>, <&adc0_lpcg 1>;
+			     ^^              ^^
+	clocks = <&adc0_lpcg IMX_LPCG_CLK_0>, <&adc0_lpcg IMX_LPCG_CLK_4>;
+
+Arg0 is divided by 4 in lpcg driver. So adc get IMX_SC_PM_CLK_PER by
+<&adc0_lpcg 0>, <&adc0_lpcg 1>. Although function can work, code logic is
+wrong. Fix it by using correct indices.
 
 Cc: stable@vger.kernel.org
-Tested-by: Vidya Srinivas <vidya.srinivas@intel.com>
-Reviewed-by: Arun R Murthy <arun.r.murthy@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240404213441.17637-5-ville.syrjala@linux.intel.com
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-(cherry picked from commit ef79820db723a2a7c229a7251c12859e7e25a247)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 1db044b25d2e ("arm64: dts: imx8dxl: add adc0 support")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -2756,7 +2756,11 @@ intel_dp_drrs_compute_config(struct inte
- 		intel_panel_downclock_mode(connector, &pipe_config->hw.adjusted_mode);
- 	int pixel_clock;
- 
--	if (has_seamless_m_n(connector))
-+	/*
-+	 * FIXME all joined pipes share the same transcoder.
-+	 * Need to account for that when updating M/N live.
-+	 */
-+	if (has_seamless_m_n(connector) && !pipe_config->bigjoiner_pipes)
- 		pipe_config->update_m_n = true;
- 
- 	if (!can_enable_drrs(connector, pipe_config, downclock_mode)) {
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+@@ -282,8 +282,8 @@ dma_subsys: bus@5a000000 {
+ 		reg = <0x5a880000 0x10000>;
+ 		interrupts = <GIC_SPI 240 IRQ_TYPE_LEVEL_HIGH>;
+ 		interrupt-parent = <&gic>;
+-		clocks = <&adc0_lpcg 0>,
+-			 <&adc0_lpcg 1>;
++		clocks = <&adc0_lpcg IMX_LPCG_CLK_0>,
++			 <&adc0_lpcg IMX_LPCG_CLK_4>;
+ 		clock-names = "per", "ipg";
+ 		assigned-clocks = <&clk IMX_SC_R_ADC_0 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <24000000>;
+@@ -297,8 +297,8 @@ dma_subsys: bus@5a000000 {
+ 		reg = <0x5a890000 0x10000>;
+ 		interrupts = <GIC_SPI 241 IRQ_TYPE_LEVEL_HIGH>;
+ 		interrupt-parent = <&gic>;
+-		clocks = <&adc1_lpcg 0>,
+-			 <&adc1_lpcg 1>;
++		clocks = <&adc1_lpcg IMX_LPCG_CLK_0>,
++			 <&adc1_lpcg IMX_LPCG_CLK_4>;
+ 		clock-names = "per", "ipg";
+ 		assigned-clocks = <&clk IMX_SC_R_ADC_1 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <24000000>;
 
 
 
