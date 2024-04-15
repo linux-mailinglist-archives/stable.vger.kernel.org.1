@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-39664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1239A8A540F
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33BFA8A551B
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 359501C2140D
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:33:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 643EF1C21E36
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC3C78C85;
-	Mon, 15 Apr 2024 14:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2DA78C83;
+	Mon, 15 Apr 2024 14:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kO+V4QT6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOP0NeMt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8933A74BE1;
-	Mon, 15 Apr 2024 14:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8926974C02;
+	Mon, 15 Apr 2024 14:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191447; cv=none; b=A2o/FnJv3NfT5s2N97+joI2qXAvwKT/CezTL9KHB7JIGrj4AB4uWA0QZ8e4iMHzxlJOnw5qBp3hVW8OEd38jO1HYpM9WyL+GBpYKB4JjS6OCwGKLvY4ZtmqlpGC4fs6iltXJyWP/5v780+RCecZ+CJzctGLWwNyGr4Q9xHVWWLg=
+	t=1713192059; cv=none; b=Rz1xdREHu+Db3DQG6YKJQsyS9MBP3xFh9h3neUPAfyA+4nH/yKDjm12kNfgJtQkD8w+aEvt0/vCtQueEZUlKj0+SheDT43+JAAeCSElKadBGHIKYTEjBx13FkewiV/21bBHm+8KYfXspnGIQbb7NrXdRg3UaYpFa4ajkhR/DeVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191447; c=relaxed/simple;
-	bh=2MZAz3L1cdQ9p9wl6rpJObJ6LfUqOvHEDcKPS5dYwmE=;
+	s=arc-20240116; t=1713192059; c=relaxed/simple;
+	bh=RA2kS7ynZBlfZgu/7EMbaHrDGwkwK4M47KjZtDQnCOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8ZjST5Q7kNADK0oZn8UOmp0IyXoVu9vV0YOPjlQ/jej2qO5+vaACr2noHa7U/KpbNPRAkBLSI5rEH/RK7foMRtGXw0B2qWtINm0JVKMt4FT5KUQLqJUfJuNIQai/J+FOnXvPzWr7m53G44bh+i85JCjF++VD+UTwS1Mgd5xdvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kO+V4QT6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA837C113CC;
-	Mon, 15 Apr 2024 14:30:46 +0000 (UTC)
+	 MIME-Version; b=dfez49Im5At+dsYApmwJ/eEqQlthMjjLMIpt1Wdr12l5lJFhyg0e4jT/4ismoJi9Pjwa431owIQAXUyoq/FepU2haGsd4lfFEA3/pU5IfQRjGRByrpUSXaFXZ0imxoEFQjp0RlNDPYdFuan7vrCZWmXdNDJxBdMWxzb7NmDdqSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOP0NeMt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9D1C113CC;
+	Mon, 15 Apr 2024 14:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191447;
-	bh=2MZAz3L1cdQ9p9wl6rpJObJ6LfUqOvHEDcKPS5dYwmE=;
+	s=korg; t=1713192059;
+	bh=RA2kS7ynZBlfZgu/7EMbaHrDGwkwK4M47KjZtDQnCOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kO+V4QT6qRHTNFL7onV+SCWJf7l0ygCkR1oMhkq04D0B+b4h0FxC0VrQgd2wGhtNA
-	 55IrHjpdkyOfJc7t8RgP9fVYbEgdfekTOZd+qLW+F7wZ+Jr18R0k1qZRYqtpMcM67w
-	 6regFhF8cfpbC7zHyIilGTs9TGk0Z33WVHSGICSc=
+	b=iOP0NeMtkMcJe3jLVZMC1nyn2ncvRM/4Q6WxHoPEzcbqYdWXD2Tqib3vrm93biiMc
+	 WvuckiUVX+5sGSwlwdGzS1m53TBXW3Awj38iqauC8e79M89qTuXNwhz/jMzujmEiWR
+	 cEtWENZdcp2f8kUINFcv+6+f83xDxvOD7NXv3FJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Stultz <jstultz@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 6.8 146/172] selftests: kselftest: Mark functions that unconditionally call exit() as __noreturn
+	Ilya Maximets <i.maximets@ovn.org>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 14/69] net: openvswitch: fix unwanted error log on timeout policy probing
 Date: Mon, 15 Apr 2024 16:20:45 +0200
-Message-ID: <20240415142004.806721020@linuxfoundation.org>
+Message-ID: <20240415141946.600795105@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-commit f7d5bcd35d427daac7e206b1073ca14f5db85c27 upstream.
+[ Upstream commit 4539f91f2a801c0c028c252bffae56030cfb2cae ]
 
-After commit 6d029c25b71f ("selftests/timers/posix_timers: Reimplement
-check_timer_distribution()"), clang warns:
+On startup, ovs-vswitchd probes different datapath features including
+support for timeout policies.  While probing, it tries to execute
+certain operations with OVS_PACKET_ATTR_PROBE or OVS_FLOW_ATTR_PROBE
+attributes set.  These attributes tell the openvswitch module to not
+log any errors when they occur as it is expected that some of the
+probes will fail.
 
-  tools/testing/selftests/timers/../kselftest.h:398:6: warning: variable 'major' is used uninitialized whenever '||' condition is true [-Wsometimes-uninitialized]
-    398 |         if (uname(&info) || sscanf(info.release, "%u.%u.", &major, &minor) != 2)
-        |             ^~~~~~~~~~~~
-  tools/testing/selftests/timers/../kselftest.h:401:9: note: uninitialized use occurs here
-    401 |         return major > min_major || (major == min_major && minor >= min_minor);
-        |                ^~~~~
-  tools/testing/selftests/timers/../kselftest.h:398:6: note: remove the '||' if its condition is always false
-    398 |         if (uname(&info) || sscanf(info.release, "%u.%u.", &major, &minor) != 2)
-        |             ^~~~~~~~~~~~~~~
-  tools/testing/selftests/timers/../kselftest.h:395:20: note: initialize the variable 'major' to silence this warning
-    395 |         unsigned int major, minor;
-        |                           ^
-        |                            = 0
+For some reason, setting the timeout policy ignores the PROBE attribute
+and logs a failure anyway.  This is causing the following kernel log
+on each re-start of ovs-vswitchd:
 
-This is a false positive because if uname() fails, ksft_exit_fail_msg()
-will be called, which unconditionally calls exit(), a noreturn function.
-However, clang does not know that ksft_exit_fail_msg() will call exit() at
-the point in the pipeline that the warning is emitted because inlining has
-not occurred, so it assumes control flow will resume normally after
-ksft_exit_fail_msg() is called.
+  kernel: Failed to associated timeout policy `ovs_test_tp'
 
-Make it clear to clang that all of the functions that call exit()
-unconditionally in kselftest.h are noreturn transitively by marking them
-explicitly with '__attribute__((__noreturn__))', which clears up the
-warning above and any future warnings that may appear for the same reason.
+Fix that by using the same logging macro that all other messages are
+using.  The message will still be printed at info level when needed
+and will be rate limited, but with a net rate limiter instead of
+generic printk one.
 
-Fixes: 6d029c25b71f ("selftests/timers/posix_timers: Reimplement check_timer_distribution()")
-Reported-by: John Stultz <jstultz@google.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240411-mark-kselftest-exit-funcs-noreturn-v1-1-b027c948f586@kernel.org
-Closes: https://lore.kernel.org/all/20240410232637.4135564-2-jstultz@google.com/
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The nf_ct_set_timeout() itself will still print some info messages,
+but at least this change makes logging in openvswitch module more
+consistent.
+
+Fixes: 06bd2bdf19d2 ("openvswitch: Add timeout support to ct action")
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Link: https://lore.kernel.org/r/20240403203803.2137962-1-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kselftest.h |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ net/openvswitch/conntrack.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/kselftest.h
-+++ b/tools/testing/selftests/kselftest.h
-@@ -79,6 +79,9 @@
- #define KSFT_XPASS 3
- #define KSFT_SKIP  4
- 
-+#ifndef __noreturn
-+#define __noreturn       __attribute__((__noreturn__))
-+#endif
- #define __printf(a, b)   __attribute__((format(printf, a, b)))
- 
- /* counters */
-@@ -255,13 +258,13 @@ static inline __printf(1, 2) void ksft_t
- 	va_end(args);
- }
- 
--static inline int ksft_exit_pass(void)
-+static inline __noreturn int ksft_exit_pass(void)
- {
- 	ksft_print_cnts();
- 	exit(KSFT_PASS);
- }
- 
--static inline int ksft_exit_fail(void)
-+static inline __noreturn int ksft_exit_fail(void)
- {
- 	ksft_print_cnts();
- 	exit(KSFT_FAIL);
-@@ -288,7 +291,7 @@ static inline int ksft_exit_fail(void)
- 		  ksft_cnt.ksft_xfail +	\
- 		  ksft_cnt.ksft_xskip)
- 
--static inline __printf(1, 2) int ksft_exit_fail_msg(const char *msg, ...)
-+static inline __noreturn __printf(1, 2) int ksft_exit_fail_msg(const char *msg, ...)
- {
- 	int saved_errno = errno;
- 	va_list args;
-@@ -303,19 +306,19 @@ static inline __printf(1, 2) int ksft_ex
- 	exit(KSFT_FAIL);
- }
- 
--static inline int ksft_exit_xfail(void)
-+static inline __noreturn int ksft_exit_xfail(void)
- {
- 	ksft_print_cnts();
- 	exit(KSFT_XFAIL);
- }
- 
--static inline int ksft_exit_xpass(void)
-+static inline __noreturn int ksft_exit_xpass(void)
- {
- 	ksft_print_cnts();
- 	exit(KSFT_XPASS);
- }
- 
--static inline __printf(1, 2) int ksft_exit_skip(const char *msg, ...)
-+static inline __noreturn __printf(1, 2) int ksft_exit_skip(const char *msg, ...)
- {
- 	int saved_errno = errno;
- 	va_list args;
+diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+index 0591cfb289d50..e4ba86b84b9b1 100644
+--- a/net/openvswitch/conntrack.c
++++ b/net/openvswitch/conntrack.c
+@@ -1711,8 +1711,9 @@ int ovs_ct_copy_action(struct net *net, const struct nlattr *attr,
+ 	if (ct_info.timeout[0]) {
+ 		if (nf_ct_set_timeout(net, ct_info.ct, family, key->ip.proto,
+ 				      ct_info.timeout))
+-			pr_info_ratelimited("Failed to associated timeout "
+-					    "policy `%s'\n", ct_info.timeout);
++			OVS_NLERR(log,
++				  "Failed to associated timeout policy '%s'",
++				  ct_info.timeout);
+ 		else
+ 			ct_info.nf_ct_timeout = rcu_dereference(
+ 				nf_ct_timeout_find(ct_info.ct)->timeout);
+-- 
+2.43.0
+
 
 
 
