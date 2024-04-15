@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-39669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A5698A5418
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:34:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE0D8A54F5
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A7A4B2368F
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:34:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 310F01F22467
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B1678C7A;
-	Mon, 15 Apr 2024 14:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B535762EF;
+	Mon, 15 Apr 2024 14:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMRpD+VG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ew5Gm9Kk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F59F3BBE1;
-	Mon, 15 Apr 2024 14:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDEB1D52B;
+	Mon, 15 Apr 2024 14:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191462; cv=none; b=pGJNnHyDQEqBdCKYkvcZSWm4aCBw82ZCDPG2qRO2nGOKmVZY/V7RgkwahodksODFZEnksTRSTcaqdTXL/ZWeOsms2iHIGx7bxcuPvyg0IbqtTYpG7C9WfjPW2MuMAhkE8q9u53Z9+TTDVo5Tpkg3wqbZpcxqsAkMQxLD3iwqiSc=
+	t=1713191954; cv=none; b=aHpFtBSXjjqLtrxO4pk4TKEh04pVZtB/hY6NofhxKOVTh12LhLAL6Bo7WAYzf44c9pTFdU7wWs5MfS2VBUqHwo/E0KDDCc6aQCUdI3JIb/+1VXzP6AUjufMKlsf6+V4zxKDQOqb/M8HXvaq1DDa/wXQ8bIRx1ZFb7Zn/ZDHMoBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191462; c=relaxed/simple;
-	bh=61fwaJMaJgiYKl18xYkm5yDvJQom9aUBGT+qTVErqEc=;
+	s=arc-20240116; t=1713191954; c=relaxed/simple;
+	bh=pQHd7MiIkTJ+4dzovt0Qce7RnnhO9HEgxMa147YZXeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k1ilBd/6wJFBy1y1IYkMZhiIm0QMozCMTJQuoEsrhst9YJ20cl5IW8QI3jMaMsb0tHYdkFaf7FWd/ESmBWBEq3SK7W+iQqqHPQg5kUH8XJ+LfgjE6K6iLGvk03Jc9BOdkjguxbKW8vlB7TXSL84LPmee6p8tUkQqAW0Bqd+CsPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMRpD+VG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92207C2BD11;
-	Mon, 15 Apr 2024 14:31:01 +0000 (UTC)
+	 MIME-Version; b=kuZqDMxTQXh3mRCAwO1o2j8qmHT11PdIiEu3qXChRF+aNny5qT7zVEqYL3RjcyDNFdJAY47QJrlA5R4N++Bd0Ed74ycLbUCJYpH+U/BulC3O9n12wCoSRGFqrq8x6KVj/P3nGisuNs/gVjiHK5kVmUqua5ITyzWlKRezaY3wdS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ew5Gm9Kk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FAEC2BD10;
+	Mon, 15 Apr 2024 14:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191462;
-	bh=61fwaJMaJgiYKl18xYkm5yDvJQom9aUBGT+qTVErqEc=;
+	s=korg; t=1713191953;
+	bh=pQHd7MiIkTJ+4dzovt0Qce7RnnhO9HEgxMa147YZXeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EMRpD+VG4eF9wxUEhD3z6Eun0kiijxEK/q64V0SztN1eOoThE8rJ7OduCJpLeSBvl
-	 LikqxHvWQ7w1bAzITo5RBS+2g+D7+EkslsGwxsf4E/jBXkRLlMDd1UPEZN/oPLaFvP
-	 LlMurzqGRzAC1XPoFpCrJxUJUX+FISl2atNqa8EE=
+	b=Ew5Gm9Kk37MYnDrmFxf8Ho0kxqdPKskcyqy/jfz1tGMOzON0ee6OwlCTKqK6OES6R
+	 1AnnDbaSWsM9uUOqanBPzgGa34VEG0+gTScmYeUwII/q4WZCZXoxQS7yc+feg5Z3pZ
+	 7vJbILQ5TBa5cqEI58kOu9cBTwgO22x6oLMCiG3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.8 151/172] x86/bugs: Fix return type of spectre_bhi_state()
+	Marek Vasut <marex@denx.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 19/69] net: ks8851: Inline ks8851_rx_skb()
 Date: Mon, 15 Apr 2024 16:20:50 +0200
-Message-ID: <20240415142004.953421915@linuxfoundation.org>
+Message-ID: <20240415141946.748565536@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+From: Marek Vasut <marex@denx.de>
 
-commit 04f4230e2f86a4e961ea5466eda3db8c1762004d upstream.
+[ Upstream commit f96f700449b6d190e06272f1cf732ae8e45b73df ]
 
-The definition of spectre_bhi_state() incorrectly returns a const char
-* const. This causes the a compiler warning when building with W=1:
+Both ks8851_rx_skb_par() and ks8851_rx_skb_spi() call netif_rx(skb),
+inline the netif_rx(skb) call directly into ks8851_common.c and drop
+the .rx_skb callback and ks8851_rx_skb() wrapper. This removes one
+indirect call from the driver, no functional change otherwise.
 
- warning: type qualifiers ignored on function return type [-Wignored-qualifiers]
- 2812 | static const char * const spectre_bhi_state(void)
-
-Remove the const qualifier from the pointer.
-
-Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
-Reported-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240409230806.1545822-1-daniel.sneddon@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Link: https://lore.kernel.org/r/20240405203204.82062-1-marex@denx.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: be0384bf599c ("net: ks8851: Handle softirqs at the end of IRQ thread to fix hang")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/micrel/ks8851.h        |  3 ---
+ drivers/net/ethernet/micrel/ks8851_common.c | 12 +-----------
+ drivers/net/ethernet/micrel/ks8851_par.c    | 11 -----------
+ drivers/net/ethernet/micrel/ks8851_spi.c    | 11 -----------
+ 4 files changed, 1 insertion(+), 36 deletions(-)
 
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2808,7 +2808,7 @@ static char *pbrsb_eibrs_state(void)
- 	}
+diff --git a/drivers/net/ethernet/micrel/ks8851.h b/drivers/net/ethernet/micrel/ks8851.h
+index e5ec0a363aff8..31f75b4a67fd7 100644
+--- a/drivers/net/ethernet/micrel/ks8851.h
++++ b/drivers/net/ethernet/micrel/ks8851.h
+@@ -368,7 +368,6 @@ union ks8851_tx_hdr {
+  * @rdfifo: FIFO read callback
+  * @wrfifo: FIFO write callback
+  * @start_xmit: start_xmit() implementation callback
+- * @rx_skb: rx_skb() implementation callback
+  * @flush_tx_work: flush_tx_work() implementation callback
+  *
+  * The @statelock is used to protect information in the structure which may
+@@ -423,8 +422,6 @@ struct ks8851_net {
+ 					  struct sk_buff *txp, bool irq);
+ 	netdev_tx_t		(*start_xmit)(struct sk_buff *skb,
+ 					      struct net_device *dev);
+-	void			(*rx_skb)(struct ks8851_net *ks,
+-					  struct sk_buff *skb);
+ 	void			(*flush_tx_work)(struct ks8851_net *ks);
+ };
+ 
+diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
+index 0bf13b38b8f5b..896d43bb8883d 100644
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -231,16 +231,6 @@ static void ks8851_dbg_dumpkkt(struct ks8851_net *ks, u8 *rxpkt)
+ 		   rxpkt[12], rxpkt[13], rxpkt[14], rxpkt[15]);
  }
  
--static const char * const spectre_bhi_state(void)
-+static const char *spectre_bhi_state(void)
+-/**
+- * ks8851_rx_skb - receive skbuff
+- * @ks: The device state.
+- * @skb: The skbuff
+- */
+-static void ks8851_rx_skb(struct ks8851_net *ks, struct sk_buff *skb)
+-{
+-	ks->rx_skb(ks, skb);
+-}
+-
+ /**
+  * ks8851_rx_pkts - receive packets from the host
+  * @ks: The device information.
+@@ -309,7 +299,7 @@ static void ks8851_rx_pkts(struct ks8851_net *ks)
+ 					ks8851_dbg_dumpkkt(ks, rxpkt);
+ 
+ 				skb->protocol = eth_type_trans(skb, ks->netdev);
+-				ks8851_rx_skb(ks, skb);
++				netif_rx(skb);
+ 
+ 				ks->netdev->stats.rx_packets++;
+ 				ks->netdev->stats.rx_bytes += rxlen;
+diff --git a/drivers/net/ethernet/micrel/ks8851_par.c b/drivers/net/ethernet/micrel/ks8851_par.c
+index 7f49042484bdc..96fb0ffcedb90 100644
+--- a/drivers/net/ethernet/micrel/ks8851_par.c
++++ b/drivers/net/ethernet/micrel/ks8851_par.c
+@@ -210,16 +210,6 @@ static void ks8851_wrfifo_par(struct ks8851_net *ks, struct sk_buff *txp,
+ 	iowrite16_rep(ksp->hw_addr, txp->data, len / 2);
+ }
+ 
+-/**
+- * ks8851_rx_skb_par - receive skbuff
+- * @ks: The device state.
+- * @skb: The skbuff
+- */
+-static void ks8851_rx_skb_par(struct ks8851_net *ks, struct sk_buff *skb)
+-{
+-	netif_rx(skb);
+-}
+-
+ static unsigned int ks8851_rdreg16_par_txqcr(struct ks8851_net *ks)
  {
- 	if (!boot_cpu_has_bug(X86_BUG_BHI))
- 		return "; BHI: Not affected";
+ 	return ks8851_rdreg16_par(ks, KS_TXQCR);
+@@ -298,7 +288,6 @@ static int ks8851_probe_par(struct platform_device *pdev)
+ 	ks->rdfifo = ks8851_rdfifo_par;
+ 	ks->wrfifo = ks8851_wrfifo_par;
+ 	ks->start_xmit = ks8851_start_xmit_par;
+-	ks->rx_skb = ks8851_rx_skb_par;
+ 
+ #define STD_IRQ (IRQ_LCI |	/* Link Change */	\
+ 		 IRQ_RXI |	/* RX done */		\
+diff --git a/drivers/net/ethernet/micrel/ks8851_spi.c b/drivers/net/ethernet/micrel/ks8851_spi.c
+index 88e26c120b483..4dcbff789b19d 100644
+--- a/drivers/net/ethernet/micrel/ks8851_spi.c
++++ b/drivers/net/ethernet/micrel/ks8851_spi.c
+@@ -298,16 +298,6 @@ static unsigned int calc_txlen(unsigned int len)
+ 	return ALIGN(len + 4, 4);
+ }
+ 
+-/**
+- * ks8851_rx_skb_spi - receive skbuff
+- * @ks: The device state
+- * @skb: The skbuff
+- */
+-static void ks8851_rx_skb_spi(struct ks8851_net *ks, struct sk_buff *skb)
+-{
+-	netif_rx(skb);
+-}
+-
+ /**
+  * ks8851_tx_work - process tx packet(s)
+  * @work: The work strucutre what was scheduled.
+@@ -435,7 +425,6 @@ static int ks8851_probe_spi(struct spi_device *spi)
+ 	ks->rdfifo = ks8851_rdfifo_spi;
+ 	ks->wrfifo = ks8851_wrfifo_spi;
+ 	ks->start_xmit = ks8851_start_xmit_spi;
+-	ks->rx_skb = ks8851_rx_skb_spi;
+ 	ks->flush_tx_work = ks8851_flush_tx_work_spi;
+ 
+ #define STD_IRQ (IRQ_LCI |	/* Link Change */	\
+-- 
+2.43.0
+
 
 
 
