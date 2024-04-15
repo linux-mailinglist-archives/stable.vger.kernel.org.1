@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-39728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877B18A5468
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:36:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FB708A53B7
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:30:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B78D71C21F41
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86F2BB23713
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 279DE83CCC;
-	Mon, 15 Apr 2024 14:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02FAB78274;
+	Mon, 15 Apr 2024 14:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVHeUY2l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NltpyBqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7BC883CBE;
-	Mon, 15 Apr 2024 14:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43C87581A;
+	Mon, 15 Apr 2024 14:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191634; cv=none; b=KKqOtN49RI9M8+3N2ZAn6BKUg8nTKUR6/aTXIe6FVgj2sO/GnVRKdgKT7FOuIQtba3glPzeJF6ranCjGuYTJHp9yApL/vz/JX1bognPVME03ORSZw4BtzvcIqDoC4GblBxGVz+VJ5PrWawzbC7BGIc9OT7z6TAU3Fce1c+cSrbA=
+	t=1713191303; cv=none; b=BYDfWdvMb/NUbg8HusV6obkV1dXmx8dBPTcD6/7SHzdedkEoItqgHkPddDWhT4FvlGzq+EFIv4h+q0Yyvth5AaGv9vEg41jqX2kq3ZjEu8p3+L1q9GV3kDugo5dD/37/MdSxip1PC9Wtw7WjgjKLQF5NYC4JP/Q92zhMX4QHF2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191634; c=relaxed/simple;
-	bh=2MvIhG0WJyCk3oobbK4xxYI6Hc3BSwn5+exV8G8dV3U=;
+	s=arc-20240116; t=1713191303; c=relaxed/simple;
+	bh=2+87QiyfkOPrOEZucXxXMKMiX183VQ9or0wWx3x0+c4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OSrqdm1b79FXYJ7zc2ksmK5n/UvIqgRa8CNDOrUwl1ICJkaLodyx/3gonafuU9Rolf5j98j5wZITHjqrfoWCS7Kphh/5ftUvRScO/qLRr5Z9kiu0qHQ3oJFCyusrAOEZ65651dZbKA/PQBjjSBK5i8Y1OdJjHsn3h/YB6sNd7Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVHeUY2l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BDD4C2BD10;
-	Mon, 15 Apr 2024 14:33:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PcMJ98J9ZuSpMInlN/VsOuiiNYLGR9faU6V/H7DrkrUwnBLmqvBTtnsHu9QhgUI52nekOoIoYgZi/x7YhMRdOdXLGUtBluEYRyK41ukaKiJHm1HS1KfE/qF80/D4KGV5uyUJt+BNWMsdmZt7n3EKPiIDwfjZr7BoAnA57reqruQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NltpyBqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F78C113CC;
+	Mon, 15 Apr 2024 14:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191634;
-	bh=2MvIhG0WJyCk3oobbK4xxYI6Hc3BSwn5+exV8G8dV3U=;
+	s=korg; t=1713191303;
+	bh=2+87QiyfkOPrOEZucXxXMKMiX183VQ9or0wWx3x0+c4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LVHeUY2lmAxBY9li7CbjknR6sTaOF0AkcRLkLxRTIbbO0V9EMD44dwpYRdiNk9B86
-	 ybBqL2Jb5dluRccAxI4J/c8su42QtnDVcyI5IA8S3yazPg1Qc1BQ4YGGgKbZ2meqF+
-	 s3MAUMrfIvIkpyiDmzFVWbIhTu5Q567/TXe0lOow=
+	b=NltpyBqKeked0rz1Tn32E7CU9SIneyugtrwVF9DwL7k01rRRRQuRa9JwDzqntU5TI
+	 X88ZphnoOM2ee9Xn6A0JhneSebUE3oDet2ouvZYs+6Jj//ijXJUaCs6fHQ96MVr1LN
+	 OT6gIoRo0KtYZqR1YuQzwQlzJmdO8+dYYZxCBTHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Arun R Murthy <arun.r.murthy@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 034/122] octeontx2-pf: Fix transmit scheduler resource leak
+Subject: [PATCH 6.8 100/172] drm/xe/display: Fix double mutex initialization
 Date: Mon, 15 Apr 2024 16:19:59 +0200
-Message-ID: <20240415141954.394560340@linuxfoundation.org>
+Message-ID: <20240415142003.435373194@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-[ Upstream commit bccb798e07f8bb8b91212fe8ed1e421685449076 ]
+[ Upstream commit 50a9b7fc151e67b9e642232d32e8c5a5ac13e64a ]
 
-Inorder to support shaping and scheduling, Upon class creation
-Netdev driver allocates trasmit schedulers.
+All of these mutexes are already initialized by the display side since
+commit 3fef3e6ff86a ("drm/i915: move display mutex inits to display
+code"), so the xe shouldn´t initialize them.
 
-The previous patch which added support for Round robin scheduling has
-a bug due to which driver is not freeing transmit schedulers post
-class deletion.
-
-This patch fixes the same.
-
-Fixes: 47a9656f168a ("octeontx2-pf: htb offload support for Round Robin scheduling")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Arun R Murthy <arun.r.murthy@intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240405200711.2041428-1-lucas.demarchi@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 117de185edf2c5767f03575219bf7a43b161ff0d)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/qos.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/xe/xe_display.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-index 1e77bbf5d22a1..1723e9912ae07 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-@@ -382,6 +382,7 @@ static void otx2_qos_read_txschq_cfg_tl(struct otx2_qos_node *parent,
- 		otx2_qos_read_txschq_cfg_tl(node, cfg);
- 		cnt = cfg->static_node_pos[node->level];
- 		cfg->schq_contig_list[node->level][cnt] = node->schq;
-+		cfg->schq_index_used[node->level][cnt] = true;
- 		cfg->schq_contig[node->level]++;
- 		cfg->static_node_pos[node->level]++;
- 		otx2_qos_read_txschq_cfg_schq(node, cfg);
+diff --git a/drivers/gpu/drm/xe/xe_display.c b/drivers/gpu/drm/xe/xe_display.c
+index e4db069f0db3f..6ec375c1c4b6c 100644
+--- a/drivers/gpu/drm/xe/xe_display.c
++++ b/drivers/gpu/drm/xe/xe_display.c
+@@ -108,11 +108,6 @@ int xe_display_create(struct xe_device *xe)
+ 	xe->display.hotplug.dp_wq = alloc_ordered_workqueue("xe-dp", 0);
+ 
+ 	drmm_mutex_init(&xe->drm, &xe->sb_lock);
+-	drmm_mutex_init(&xe->drm, &xe->display.backlight.lock);
+-	drmm_mutex_init(&xe->drm, &xe->display.audio.mutex);
+-	drmm_mutex_init(&xe->drm, &xe->display.wm.wm_mutex);
+-	drmm_mutex_init(&xe->drm, &xe->display.pps.mutex);
+-	drmm_mutex_init(&xe->drm, &xe->display.hdcp.hdcp_mutex);
+ 	xe->enabled_irq_mask = ~0;
+ 
+ 	err = drmm_add_action_or_reset(&xe->drm, display_destroy, NULL);
 -- 
 2.43.0
 
