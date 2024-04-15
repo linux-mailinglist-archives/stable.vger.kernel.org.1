@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-39658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E63748A5408
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 715AB8A5458
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:36:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EFA9281511
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:33:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DF062845F7
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3711D8002A;
-	Mon, 15 Apr 2024 14:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11BC1E52C;
+	Mon, 15 Apr 2024 14:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fD+FzLsE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtRxYWy2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75A11E4AB;
-	Mon, 15 Apr 2024 14:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBB9EAC5;
+	Mon, 15 Apr 2024 14:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191430; cv=none; b=FX62MvUMdzncsjBHHpFX8G/jbZWj7dTF1eBIj6PdR/5d7RmjwsPvIssVJbhsjOxRQPsJgu2PlFdPeOul4/gqxV6+yRWlZmX/7IqgPhHFFB2GqnusV0md+zFcg42hGii2t2VgB6KBXMhK7L7AyHgClURlytWZruy33qKm/YPsSL4=
+	t=1713191604; cv=none; b=SEhh8vT2580vN+PKRvyzqbcKe6DLx3ryJNwXvPDOfF5XHvQPGK0Rsf7LvvJd9x5V5JgqH1XxAcjlHWU4D4IjiEQwhYQrbwM/SDRRHgHX/u87OcVDryUyGDiiBjXmmQ1VxREd78AqMMG3BYE+yRB+SeohBDZKwQn1DS1r5u/tA8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191430; c=relaxed/simple;
-	bh=5M5GyywrFy0G3YDUcF4JcjjUgKOgneqLb8djC9oVqxc=;
+	s=arc-20240116; t=1713191604; c=relaxed/simple;
+	bh=lPdlOqn1JuCfbRvC+ho4L3mNZKXZYy8oBZLz5rhGapw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f1QaJLIsX2/weL3iYY22FC2mKo/Tnj+lMAUPfoSJO6UFDmVg3R0GDyZSDu6HFgFdeiImfp3xZYMeZsUwJ4KrdfWqO+5a6moQoIwfONJuqtRERKqJKHSUE6xQNZ1/maevDacNi18Sx2Dccn4qecZSLx5f06GdK17zNjO/0YpSB0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fD+FzLsE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 138A8C113CC;
-	Mon, 15 Apr 2024 14:30:28 +0000 (UTC)
+	 MIME-Version; b=PpFDFflIv6pBKvYTvVSclMQL+RJSGRO+NpoMGlln+UJyUI+hWpTh9Kergth72QxklIzGFMuGhAWAW/VsiutlkeyOOsZTFLcAh5ZLshA8M25E0eGscVfpzNrgIKUXUJ63SOvCcR+O5FKM53FqqabR6DQZ1afAls2Q2KrAkrGJIkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtRxYWy2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F8DC113CC;
+	Mon, 15 Apr 2024 14:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191429;
-	bh=5M5GyywrFy0G3YDUcF4JcjjUgKOgneqLb8djC9oVqxc=;
+	s=korg; t=1713191604;
+	bh=lPdlOqn1JuCfbRvC+ho4L3mNZKXZYy8oBZLz5rhGapw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fD+FzLsEoda7FbiUNXmEAdwiZXuvYp41gUeLY/34V/bAr2Iqgbn0HeK0UR/uGruuT
-	 jIesypBpXKZxWI92F2KwWnb0hyguFxe/rAiMl/W4vFxuKWzC2D7zJc6QAqGx//jOpt
-	 CqsG3JcwOKSnV3BqyOyxvBNiG/e8ZlBmJBta8ivI=
+	b=HtRxYWy2kHv/JGJvtqmiPcOsP8vLD92ahKmYqcGx+hYk60wWSRM/Z7D8LXROb6Cei
+	 6ws9ijoONwaz5x+nZa8Xer3x+FHfN3n4xOerW9es9yFXwb9FLtpFUpNontdjYYMewC
+	 kcB6bHFMi9QjTp9ygDr/kDrCZU8RvFdQe3KJPx2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 090/172] net/mlx5e: Do not produce metadata freelist entries in Tx port ts WQE xmit
-Date: Mon, 15 Apr 2024 16:19:49 +0200
-Message-ID: <20240415142003.130724722@linuxfoundation.org>
+Subject: [PATCH 6.6 025/122] arm64: dts: imx8-ss-conn: fix usdhc wrong lpcg clock order
+Date: Mon, 15 Apr 2024 16:19:50 +0200
+Message-ID: <20240415141954.129329042@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 86b0ca5b118d3a0bae5e5645a13e66f8a4f6c525 ]
+[ Upstream commit c6ddd6e7b166532a0816825442ff60f70aed9647 ]
 
-Free Tx port timestamping metadata entries in the NAPI poll context and
-consume metadata enties in the WQE xmit path. Do not free a Tx port
-timestamping metadata entry in the WQE xmit path even in the error path to
-avoid a race between two metadata entry producers.
+The actual clock show wrong frequency:
 
-Fixes: 3178308ad4ca ("net/mlx5e: Make tx_port_ts logic resilient to out-of-order CQEs")
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240409190820.227554-10-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+   echo on >/sys/devices/platform/bus\@5b000000/5b010000.mmc/power/control
+   cat /sys/kernel/debug/mmc0/ios
+
+   clock:          200000000 Hz
+   actual clock:   166000000 Hz
+                   ^^^^^^^^^
+   .....
+
+According to
+
+sdhc0_lpcg: clock-controller@5b200000 {
+                compatible = "fsl,imx8qxp-lpcg";
+                reg = <0x5b200000 0x10000>;
+                #clock-cells = <1>;
+                clocks = <&clk IMX_SC_R_SDHC_0 IMX_SC_PM_CLK_PER>,
+                         <&conn_ipg_clk>, <&conn_axi_clk>;
+                clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>,
+                                <IMX_LPCG_CLK_5>;
+                clock-output-names = "sdhc0_lpcg_per_clk",
+                                     "sdhc0_lpcg_ipg_clk",
+                                     "sdhc0_lpcg_ahb_clk";
+                power-domains = <&pd IMX_SC_R_SDHC_0>;
+        }
+
+"per_clk" should be IMX_LPCG_CLK_0 instead of IMX_LPCG_CLK_5.
+
+After correct clocks order:
+
+   echo on >/sys/devices/platform/bus\@5b000000/5b010000.mmc/power/control
+   cat /sys/kernel/debug/mmc0/ios
+
+   clock:          200000000 Hz
+   actual clock:   198000000 Hz
+                   ^^^^^^^^
+   ...
+
+Fixes: 16c4ea7501b1 ("arm64: dts: imx8: switch to new lpcg clock binding")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/ptp.h | 8 +++++++-
- drivers/net/ethernet/mellanox/mlx5/core/en_tx.c  | 7 +++----
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.h b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.h
-index 86f1854698b4e..883c044852f1d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.h
-@@ -95,9 +95,15 @@ static inline void mlx5e_ptp_metadata_fifo_push(struct mlx5e_ptp_metadata_fifo *
- }
- 
- static inline u8
-+mlx5e_ptp_metadata_fifo_peek(struct mlx5e_ptp_metadata_fifo *fifo)
-+{
-+	return fifo->data[fifo->mask & fifo->cc];
-+}
-+
-+static inline void
- mlx5e_ptp_metadata_fifo_pop(struct mlx5e_ptp_metadata_fifo *fifo)
- {
--	return fifo->data[fifo->mask & fifo->cc++];
-+	fifo->cc++;
- }
- 
- static inline void
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-index 2fa076b23fbea..e21a3b4128ce8 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-@@ -398,6 +398,8 @@ mlx5e_txwqe_complete(struct mlx5e_txqsq *sq, struct sk_buff *skb,
- 		     (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP))) {
- 		u8 metadata_index = be32_to_cpu(eseg->flow_table_metadata);
- 
-+		mlx5e_ptp_metadata_fifo_pop(&sq->ptpsq->metadata_freelist);
-+
- 		mlx5e_skb_cb_hwtstamp_init(skb);
- 		mlx5e_ptp_metadata_map_put(&sq->ptpsq->metadata_map, skb,
- 					   metadata_index);
-@@ -496,9 +498,6 @@ mlx5e_sq_xmit_wqe(struct mlx5e_txqsq *sq, struct sk_buff *skb,
- 
- err_drop:
- 	stats->dropped++;
--	if (unlikely(sq->ptpsq && (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP)))
--		mlx5e_ptp_metadata_fifo_push(&sq->ptpsq->metadata_freelist,
--					     be32_to_cpu(eseg->flow_table_metadata));
- 	dev_kfree_skb_any(skb);
- 	mlx5e_tx_flush(sq);
- }
-@@ -657,7 +656,7 @@ static void mlx5e_cqe_ts_id_eseg(struct mlx5e_ptpsq *ptpsq, struct sk_buff *skb,
- {
- 	if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP))
- 		eseg->flow_table_metadata =
--			cpu_to_be32(mlx5e_ptp_metadata_fifo_pop(&ptpsq->metadata_freelist));
-+			cpu_to_be32(mlx5e_ptp_metadata_fifo_peek(&ptpsq->metadata_freelist));
- }
- 
- static void mlx5e_txwqe_build_eseg(struct mlx5e_priv *priv, struct mlx5e_txqsq *sq,
+diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
+index fc1a5d34382b7..5f151ae78586e 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
+@@ -67,8 +67,8 @@ usdhc1: mmc@5b010000 {
+ 		interrupts = <GIC_SPI 232 IRQ_TYPE_LEVEL_HIGH>;
+ 		reg = <0x5b010000 0x10000>;
+ 		clocks = <&sdhc0_lpcg IMX_LPCG_CLK_4>,
+-			 <&sdhc0_lpcg IMX_LPCG_CLK_0>,
+-			 <&sdhc0_lpcg IMX_LPCG_CLK_5>;
++			 <&sdhc0_lpcg IMX_LPCG_CLK_5>,
++			 <&sdhc0_lpcg IMX_LPCG_CLK_0>;
+ 		clock-names = "ipg", "ahb", "per";
+ 		power-domains = <&pd IMX_SC_R_SDHC_0>;
+ 		status = "disabled";
+@@ -78,8 +78,8 @@ usdhc2: mmc@5b020000 {
+ 		interrupts = <GIC_SPI 233 IRQ_TYPE_LEVEL_HIGH>;
+ 		reg = <0x5b020000 0x10000>;
+ 		clocks = <&sdhc1_lpcg IMX_LPCG_CLK_4>,
+-			 <&sdhc1_lpcg IMX_LPCG_CLK_0>,
+-			 <&sdhc1_lpcg IMX_LPCG_CLK_5>;
++			 <&sdhc1_lpcg IMX_LPCG_CLK_5>,
++			 <&sdhc1_lpcg IMX_LPCG_CLK_0>;
+ 		clock-names = "ipg", "ahb", "per";
+ 		power-domains = <&pd IMX_SC_R_SDHC_1>;
+ 		fsl,tuning-start-tap = <20>;
+@@ -91,8 +91,8 @@ usdhc3: mmc@5b030000 {
+ 		interrupts = <GIC_SPI 234 IRQ_TYPE_LEVEL_HIGH>;
+ 		reg = <0x5b030000 0x10000>;
+ 		clocks = <&sdhc2_lpcg IMX_LPCG_CLK_4>,
+-			 <&sdhc2_lpcg IMX_LPCG_CLK_0>,
+-			 <&sdhc2_lpcg IMX_LPCG_CLK_5>;
++			 <&sdhc2_lpcg IMX_LPCG_CLK_5>,
++			 <&sdhc2_lpcg IMX_LPCG_CLK_0>;
+ 		clock-names = "ipg", "ahb", "per";
+ 		power-domains = <&pd IMX_SC_R_SDHC_2>;
+ 		status = "disabled";
 -- 
 2.43.0
 
