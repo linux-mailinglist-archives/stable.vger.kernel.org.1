@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-39683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB178A5430
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 748E78A5505
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F8431C2202E
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 015A8B22E54
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702DF811FE;
-	Mon, 15 Apr 2024 14:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4675A78C7B;
+	Mon, 15 Apr 2024 14:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXDr3e7a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPmejLBQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B779757FB;
-	Mon, 15 Apr 2024 14:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AEF74BE1;
+	Mon, 15 Apr 2024 14:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191504; cv=none; b=OylW2u6oqmDM5tefj37BvNNLaponIhTjT28lM89T1OLgdLkQ6HHDxWBEFvDZ4L0bk5hpIIPoEAnJS8C45RtP4mVAG2YG1ciqcllHYrhuPVDpkzoQlLYlVXUeKFGv2TKUOCnEqxA7J3PWQUrpywEl80tSNVKrWJISqdgy7eHeWis=
+	t=1713191993; cv=none; b=rTV/4JyPjXiqEHvME/7GCeq/P87yBpegL+04yXVO12+o5iShijkFLxmzle79VfeIbcAHD5pmOHooXl7/TUO558dPlmdpD4b9ZnAN61jV3q/8bEcSfyEg/byymPwCow0ZyrPVxExOxAK/G/6y+echGtDzpv2u5OlZv+AfDUHFK8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191504; c=relaxed/simple;
-	bh=7fl9qsbCDgyU55H96DJ4tAIRgSLCH8GC7iQP6wLhBE4=;
+	s=arc-20240116; t=1713191993; c=relaxed/simple;
+	bh=D5JdW7jG3SrPq3epWQ0WEJUyxliGPauVA6IoUIjN5WM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LBpWYNi8l2nQKd9p9SLlq05YOuQTS73QC/iA5Dzf4jr8sucwYpHRCt8jrAzu9I9yPqn7SLokyyQLu6SoKRJPaC601OR7px1CQHe/hv7hSeFE/jhhmhrIHd8mRUw36+sEi3rMQQ7L6fvlcsMv9cWHuBKfPKdI5xymQPgCa8aT9YQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NXDr3e7a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8291C113CC;
-	Mon, 15 Apr 2024 14:31:43 +0000 (UTC)
+	 MIME-Version; b=M5QtjY7x4SMfkFAMdFi4d11NECnJyBr2TvDTwDp/1xDNiMGAQV2cOh0XdTdLiI+TCNCC1eHn76fNsdtpUo9R1YvtDj7E6ape1WwS7YSeM//hlopb8ilK1T9vmXrG5EnJJvPnkXRtmLzuwY6hZGb5FWXbWmJGZerohMysVVER/ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPmejLBQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B90AC113CC;
+	Mon, 15 Apr 2024 14:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191504;
-	bh=7fl9qsbCDgyU55H96DJ4tAIRgSLCH8GC7iQP6wLhBE4=;
+	s=korg; t=1713191992;
+	bh=D5JdW7jG3SrPq3epWQ0WEJUyxliGPauVA6IoUIjN5WM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NXDr3e7aAPhThROfowIa1d80dRxHhPt5pdWCtedD8KisPSScSXyEt6nHr+WycwD2o
-	 Lbb9A+jemEekG8tbhbsJiuG2699Q+c1bqV+efTAjE9rHKD6Ke05HXCAV8Fm3/60xay
-	 UQGyPIVSZkAvb3udtMQhTLZ1KIBbrMycTwiPaWF0=
+	b=pPmejLBQWouFCGxyTMGRLNxFofBo8vgQZv03YSKZGyVMfU6UL4x8ceP0Kyd/AJrHb
+	 2jY+T6ncZ2HiM/zzBNT1YIRNuC9K7s+svkQ7x0k9Bv7m1/ILXfX1nBrAQr2iZaIFFJ
+	 EVvxOAIJWzcfMflPzeAjQzfQhTdTxD/h5uAilXAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>
-Subject: [PATCH 6.8 163/172] drm/amdgpu: Reset dGPU if suspend got aborted
+	Carolina Jubran <cjubran@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 31/69] net/mlx5e: HTB, Fix inconsistencies with QoS SQs number
 Date: Mon, 15 Apr 2024 16:21:02 +0200
-Message-ID: <20240415142005.304398474@linuxfoundation.org>
+Message-ID: <20240415141947.102662666@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +65,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-commit 8b2be55f4d6c1099d7f629b0ed7535a5be788c83 upstream.
+[ Upstream commit 2f436f1869771d46e1a9f85738d5a1a7c5653a4e ]
 
-For SOC21 ASICs, there is an issue in re-enabling PM features if a
-suspend got aborted. In such cases, reset the device during resume
-phase. This is a workaround till a proper solution is finalized.
+When creating a new HTB class while the interface is down,
+the variable that follows the number of QoS SQs (htb_max_qos_sqs)
+may not be consistent with the number of HTB classes.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Previously, we compared these two values to ensure that
+the node_qid is lower than the number of QoS SQs, and we
+allocated stats for that SQ when they are equal.
+
+Change the check to compare the node_qid with the current
+number of leaf nodes and fix the checking conditions to
+ensure allocation of stats_list and stats for each node.
+
+Fixes: 214baf22870c ("net/mlx5e: Support HTB offload")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240409190820.227554-9-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/soc21.c |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ .../net/ethernet/mellanox/mlx5/core/en/qos.c  | 33 ++++++++++---------
+ 1 file changed, 17 insertions(+), 16 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/soc21.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc21.c
-@@ -832,10 +832,35 @@ static int soc21_common_suspend(void *ha
- 	return soc21_common_hw_fini(adev);
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
+index 2842195ee548a..1e887d640cffc 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
+@@ -82,24 +82,25 @@ int mlx5e_open_qos_sq(struct mlx5e_priv *priv, struct mlx5e_channels *chs,
  
-+static bool soc21_need_reset_on_resume(struct amdgpu_device *adev)
-+{
-+	u32 sol_reg1, sol_reg2;
+ 	txq_ix = mlx5e_qid_from_qos(chs, node_qid);
+ 
+-	WARN_ON(node_qid > priv->htb_max_qos_sqs);
+-	if (node_qid == priv->htb_max_qos_sqs) {
+-		struct mlx5e_sq_stats *stats, **stats_list = NULL;
+-
+-		if (priv->htb_max_qos_sqs == 0) {
+-			stats_list = kvcalloc(mlx5e_qos_max_leaf_nodes(priv->mdev),
+-					      sizeof(*stats_list),
+-					      GFP_KERNEL);
+-			if (!stats_list)
+-				return -ENOMEM;
+-		}
++	WARN_ON(node_qid >= mlx5e_htb_cur_leaf_nodes(priv->htb));
++	if (!priv->htb_qos_sq_stats) {
++		struct mlx5e_sq_stats **stats_list;
 +
-+	/* Will reset for the following suspend abort cases.
-+	 * 1) Only reset dGPU side.
-+	 * 2) S3 suspend got aborted and TOS is active.
-+	 */
-+	if (!(adev->flags & AMD_IS_APU) && adev->in_s3 &&
-+	    !adev->suspend_complete) {
-+		sol_reg1 = RREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_81);
-+		msleep(100);
-+		sol_reg2 = RREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_81);
++		stats_list = kvcalloc(mlx5e_qos_max_leaf_nodes(priv->mdev),
++				      sizeof(*stats_list), GFP_KERNEL);
++		if (!stats_list)
++			return -ENOMEM;
 +
-+		return (sol_reg1 != sol_reg2);
++		WRITE_ONCE(priv->htb_qos_sq_stats, stats_list);
 +	}
 +
-+	return false;
-+}
++	if (!priv->htb_qos_sq_stats[node_qid]) {
++		struct mlx5e_sq_stats *stats;
 +
- static int soc21_common_resume(void *handle)
- {
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
- 
-+	if (soc21_need_reset_on_resume(adev)) {
-+		dev_info(adev->dev, "S3 suspend aborted, resetting...");
-+		soc21_asic_reset(adev);
-+	}
+ 		stats = kzalloc(sizeof(*stats), GFP_KERNEL);
+-		if (!stats) {
+-			kvfree(stats_list);
++		if (!stats)
+ 			return -ENOMEM;
+-		}
+-		if (stats_list)
+-			WRITE_ONCE(priv->htb_qos_sq_stats, stats_list);
 +
- 	return soc21_common_hw_init(adev);
- }
- 
+ 		WRITE_ONCE(priv->htb_qos_sq_stats[node_qid], stats);
+ 		/* Order htb_max_qos_sqs increment after writing the array pointer.
+ 		 * Pairs with smp_load_acquire in en_stats.c.
+-- 
+2.43.0
+
 
 
 
