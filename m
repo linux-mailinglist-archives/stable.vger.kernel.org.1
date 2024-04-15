@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-39675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C0CD8A5423
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:34:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC9E8A54FA
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D5421C22014
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:34:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CA3C1F21380
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B1280C1F;
-	Mon, 15 Apr 2024 14:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8A82A8D3;
+	Mon, 15 Apr 2024 14:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BqmMVfiP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vp69olBO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C0D8063C;
-	Mon, 15 Apr 2024 14:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C047868B;
+	Mon, 15 Apr 2024 14:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191480; cv=none; b=HsZTZogGiG1/YuMrbHN/43y+Abf+LgqNWymWxGxLmvyL5ERXyMyFY917vuyclEc/ZzDZrHZ7sXz9T3fTh+q8glRA4V/xKdxh5OJ9NUgIQ5kSvUL1go3UNwxUjCzb2Mh0So5aNTC+kshOmmobkEXQrsGkshkNaeF7CIE5rI3Vvdc=
+	t=1713191969; cv=none; b=Gyss+HI6ijht+SeDiB6ZRgQV//I/faGV2E72rst5SyChBzwZ1UznUaCUImEi36y+B8SuWrXJaE8THM108t4SC1v6yStJbnIoeslW7AjtZy4BX0EMOYIjr20IvMDa2u31PuUd5LUJR6Hqfrm2xxeZRjPsNGCmd+L8+LEXv6h6q5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191480; c=relaxed/simple;
-	bh=fK4RCBwzo6KveOmXXBgAsT49r7X52YEFv2DevTXTjG8=;
+	s=arc-20240116; t=1713191969; c=relaxed/simple;
+	bh=RgkkVbWeoP+PuhWDUrLhgWkm6JbmEuzaYiqw5ufeV14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EM5qhfynEd0BbVhcTFQP0j1WTkxIn1T95xdFQjoLDKlf4iY7zPi43e7aCpbdLmr0NmfLvpYqer/Rc34bfUFd78xYjraVkL9s81qbciYAf50Pv1z0LvGZpL8AWMAogs4QjyOWRZTjcaTCgZ83+RU3UK6hpbXE202sQkWZXyJ3SXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BqmMVfiP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DECC113CC;
-	Mon, 15 Apr 2024 14:31:19 +0000 (UTC)
+	 MIME-Version; b=nX3lbu3UZJLCW2VOKMFNMgtYyOatmgEezSWKQfJFow6u6cSwl0+MdUZIBIG2kGMcBSvNYSJDFeKQqYXv4mt+BQTWDTF1QoPIc8T3utTuQ9RToALLLkbg+vrRk9+jxm2lZZQub/O2O6wnDU1h44xOang7ICZequLEmJs7gXkrTes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vp69olBO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A387C2BD10;
+	Mon, 15 Apr 2024 14:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191480;
-	bh=fK4RCBwzo6KveOmXXBgAsT49r7X52YEFv2DevTXTjG8=;
+	s=korg; t=1713191968;
+	bh=RgkkVbWeoP+PuhWDUrLhgWkm6JbmEuzaYiqw5ufeV14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BqmMVfiPEVnT9tfWDci05sKyppEgbHMKOkoVudyabzhXkSY6GDR5NI+sNqNy352yL
-	 jFVvfNIV+XuDxuW+fIS9rMQJ23X7UXfEV6ePNbs4fV2CBy8i45CLle1aTK4BJcmDZl
-	 E5751kqMAKXS0TtrJrSydaR1ruAYXQJY1NIfBFOA=
+	b=Vp69olBOmA7KrDCb9n7EwocLAzZgZEG+TKTKdSAs9oJDUVlJj+PwxX8smBUyH5hft
+	 bQTP6/AkG+aXz90AyTPQEPTkNF6ll+9NmDkogzETQNxvlFoicdlfGJGA71hjfveklj
+	 ym6BLLT/4CgoprXK0uxOZ7dRJltfeLYsF6EokZxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.8 156/172] x86/bugs: Clarify that syscall hardening isnt a BHI mitigation
+	David Ahern <dsahern@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 24/69] ipv4/route: avoid unused-but-set-variable warning
 Date: Mon, 15 Apr 2024 16:20:55 +0200
-Message-ID: <20240415142005.098954900@linuxfoundation.org>
+Message-ID: <20240415141946.896506056@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 5f882f3b0a8bf0788d5a0ee44b1191de5319bb8a upstream.
+[ Upstream commit cf1b7201df59fb936f40f4a807433fe3f2ce310a ]
 
-While syscall hardening helps prevent some BHI attacks, there's still
-other low-hanging fruit remaining.  Don't classify it as a mitigation
-and make it clear that the system may still be vulnerable if it doesn't
-have a HW or SW mitigation enabled.
+The log_martians variable is only used in an #ifdef, causing a 'make W=1'
+warning with gcc:
 
-Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/b5951dae3fdee7f1520d5136a27be3bdfe95f88b.1712813475.git.jpoimboe@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+net/ipv4/route.c: In function 'ip_rt_send_redirect':
+net/ipv4/route.c:880:13: error: variable 'log_martians' set but not used [-Werror=unused-but-set-variable]
+
+Change the #ifdef to an equivalent IS_ENABLED() to let the compiler
+see where the variable is used.
+
+Fixes: 30038fc61adf ("net: ip_rt_send_redirect() optimization")
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240408074219.3030256-2-arnd@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/hw-vuln/spectre.rst   |   11 +++++------
- Documentation/admin-guide/kernel-parameters.txt |    3 +--
- arch/x86/kernel/cpu/bugs.c                      |    6 +++---
- 3 files changed, 9 insertions(+), 11 deletions(-)
+ net/ipv4/route.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/Documentation/admin-guide/hw-vuln/spectre.rst
-+++ b/Documentation/admin-guide/hw-vuln/spectre.rst
-@@ -441,10 +441,10 @@ The possible values in this file are:
-    - System is protected by BHI_DIS_S
-  * - BHI: SW loop, KVM SW loop
-    - System is protected by software clearing sequence
-- * - BHI: Syscall hardening
--   - Syscalls are hardened against BHI
-- * - BHI: Syscall hardening, KVM: SW loop
--   - System is protected from userspace attacks by syscall hardening; KVM is protected by software clearing sequence
-+ * - BHI: Vulnerable
-+   - System is vulnerable to BHI
-+ * - BHI: Vulnerable, KVM: SW loop
-+   - System is vulnerable; KVM is protected by software clearing sequence
- 
- Full mitigation might require a microcode update from the CPU
- vendor. When the necessary microcode is not available, the kernel will
-@@ -661,8 +661,7 @@ kernel command line.
- 	spectre_bhi=
- 
- 		[X86] Control mitigation of Branch History Injection
--		(BHI) vulnerability. Syscalls are hardened against BHI
--		regardless of this setting. This setting affects the deployment
-+		(BHI) vulnerability.  This setting affects the deployment
- 		of the HW BHI control and the SW BHB clearing sequence.
- 
- 		on
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -6033,8 +6033,7 @@
- 			See Documentation/admin-guide/laptops/sonypi.rst
- 
- 	spectre_bhi=	[X86] Control mitigation of Branch History Injection
--			(BHI) vulnerability. Syscalls are hardened against BHI
--			reglardless of this setting. This setting affects the
-+			(BHI) vulnerability.  This setting affects the
- 			deployment of the HW BHI control and the SW BHB
- 			clearing sequence.
- 
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2817,10 +2817,10 @@ static const char *spectre_bhi_state(voi
- 		return "; BHI: SW loop, KVM: SW loop";
- 	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) && rrsba_disabled)
- 		return "; BHI: Retpoline";
--	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT))
--		return "; BHI: Syscall hardening, KVM: SW loop";
-+	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT))
-+		return "; BHI: Vulnerable, KVM: SW loop";
- 
--	return "; BHI: Vulnerable (Syscall hardening enabled)";
-+	return "; BHI: Vulnerable";
- }
- 
- static ssize_t spectre_v2_show_state(char *buf)
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 474f391fab35d..a0c687ff25987 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -926,13 +926,11 @@ void ip_rt_send_redirect(struct sk_buff *skb)
+ 		icmp_send(skb, ICMP_REDIRECT, ICMP_REDIR_HOST, gw);
+ 		peer->rate_last = jiffies;
+ 		++peer->n_redirects;
+-#ifdef CONFIG_IP_ROUTE_VERBOSE
+-		if (log_martians &&
++		if (IS_ENABLED(CONFIG_IP_ROUTE_VERBOSE) && log_martians &&
+ 		    peer->n_redirects == ip_rt_redirect_number)
+ 			net_warn_ratelimited("host %pI4/if%d ignores redirects for %pI4 to %pI4\n",
+ 					     &ip_hdr(skb)->saddr, inet_iif(skb),
+ 					     &ip_hdr(skb)->daddr, &gw);
+-#endif
+ 	}
+ out_put_peer:
+ 	inet_putpeer(peer);
+-- 
+2.43.0
+
 
 
 
