@@ -1,103 +1,97 @@
-Return-Path: <stable+bounces-39398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD3528A4869
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 08:53:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16BE68A48F8
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 09:26:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE4651C2169D
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 06:53:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAD1F1F23EC6
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 07:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10F61EB5E;
-	Mon, 15 Apr 2024 06:53:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VTubb2UE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB76422EF8;
+	Mon, 15 Apr 2024 07:26:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.itouring.de (mail.itouring.de [85.10.202.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8311EB36;
-	Mon, 15 Apr 2024 06:53:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF6B22612;
+	Mon, 15 Apr 2024 07:26:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.202.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713164029; cv=none; b=jY+rIjk9LPs7liDwulkBFxVc59L/tDjlDlaqJhaokED2qV5lI0o3to4tSBxtFzAjtESbyXaNyylnqZ79+1Vr40fwMoj8vhfpCy1q6i2C08Xn/XztRaCtmFDLRzBJU2Y6X3bEdLo9iDYcbrF06vx0hy0pS+ozGl8jhZX5qqcF99c=
+	t=1713165970; cv=none; b=jhzLP64oIgW2ru1qoFAb8gZMNT8CoXaflKrl/uBkqHtnLVZkQVwsfGk3wVAHv3s9FaBSiVtLrq+X5KL+MOZ6Yq1lg/cyN1wCe6kFMdTxql6WuBQgI0EKWyGjAsu37lwI/u7uk8uZwsfAkB3y+sYwLSDuj3udFT3StRws7Up/pZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713164029; c=relaxed/simple;
-	bh=gJH7c72oR+IyKtC4jk+rhP58fP5HmbqZlgRE4iVaT30=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GI77oQDbwhNYRrLkhV4lRMRHWpswTiv6IelgRg95R+kGF0MPMDvA08nBDz2VroLySAbIefh8QG5V7IdwxULk+852kJoqo44d9Na3r4huqSfq7a8RV2ijKQje3eXUwHsdqIka3JKXUllYa7XM9STLlWbGw4aAZiJEHp7IZqE8yd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VTubb2UE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD8AC113CC;
-	Mon, 15 Apr 2024 06:53:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713164029;
-	bh=gJH7c72oR+IyKtC4jk+rhP58fP5HmbqZlgRE4iVaT30=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VTubb2UEi5QBv6chWiaakROMh8HPOuQX2NjlfikKnBSbg2c7DTRyGDttg2MwdIe/L
-	 WUKIFocwmpjpX1XCdsUBX79bBtwLSLxS24DwbJKcunnphjfH/U+xfWHO/Woi3++dEw
-	 Sl3ggHvRqV0q9LDrUpPxbtW/DTnJfa/dzwTJq/YFw46AsYYOIiD+t8NJVQtj0D6g+G
-	 atQd5289hiHNngOepmi8lWna+qB69CrgVKvkLjzcuETBUgj30OslMJDHSD1PKwoS1F
-	 nNNjFYrRWFF9mjarb6OEB2u56o4robySvz/zxt8S32Xrh0WUFGXor4ZqjT/noJQLrv
-	 e4mbmoWEqDTlg==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rwGDq-000000004lA-2Jo9;
-	Mon, 15 Apr 2024 08:53:46 +0200
-Date: Mon, 15 Apr 2024 08:53:46 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Lars Melin <larsm17@gmail.com>, Coia Prant <coiaprant@gmail.com>
-Cc: linux-usb@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] USB: serial: option: add Lonsung U8300/U9300 product
- Update the USB serial option driver to support Longsung U8300/U9300.
-Message-ID: <ZhzO-re7GMmI5fbP@hovoldconsulting.com>
-References: <20240402073451.1751984-1-coiaprant@gmail.com>
- <64053ff1-c447-45c5-ba87-e85307143dd4@gmail.com>
+	s=arc-20240116; t=1713165970; c=relaxed/simple;
+	bh=UHRabD4J37CzG2OAN2G/qgBWL6PoomL+Ho/mMLyFhoQ=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=pmN39vHGeJSVF5d8gSIxNBtLTGLWKdcwxkeV4AAkPEe0TqcB7svSAgGQb5jUtIyLPc5vYfFLjViY1v77s79YyHDsQP6RIRKnfdJe98478L6zLz0ZJuT5ejpoxIV+UT4bnNO/RrzbGBRpRu0VLu3KSwEDS+qUpelSCI9uVj0yG8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com; spf=pass smtp.mailfrom=applied-asynchrony.com; arc=none smtp.client-ip=85.10.202.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=applied-asynchrony.com
+Received: from tux.applied-asynchrony.com (p5ddd7672.dip0.t-ipconnect.de [93.221.118.114])
+	by mail.itouring.de (Postfix) with ESMTPSA id B930310376E;
+	Mon, 15 Apr 2024 09:25:58 +0200 (CEST)
+Received: from [192.168.100.221] (hho.applied-asynchrony.com [192.168.100.221])
+	by tux.applied-asynchrony.com (Postfix) with ESMTP id 6305DF01605;
+	Mon, 15 Apr 2024 09:25:58 +0200 (CEST)
+Subject: Re: btrfs: sanity tests fails on 6.8.3
+To: Naohiro Aota <Naohiro.Aota@wdc.com>,
+ Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: David Sterba <dsterba@suse.com>, Qu Wenruo <wqu@suse.com>,
+ "linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
+ Hiroshi Takekawa <sian@big.or.jp>, Chris Mason <clm@fb.com>,
+ Josef Bacik <josef@toxicpanda.com>, LKML <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20240415.125625.2060132070860882181.sian@big.or.jp>
+ <bd8492f4-a12e-48ae-8ea6-a9d4596a6f72@leemhuis.info>
+ <igqfzsnyclopilimyy27ualcf2g5g44x3ru5v3tkjpb3ukgabs@2yuc57sxoxvv>
+From: =?UTF-8?Q?Holger_Hoffst=c3=a4tte?= <holger@applied-asynchrony.com>
+Organization: Applied Asynchrony, Inc.
+Message-ID: <3b2d9a1c-37d2-47f4-b0b4-a9d6c34d2c7d@applied-asynchrony.com>
+Date: Mon, 15 Apr 2024 09:25:58 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <64053ff1-c447-45c5-ba87-e85307143dd4@gmail.com>
+In-Reply-To: <igqfzsnyclopilimyy27ualcf2g5g44x3ru5v3tkjpb3ukgabs@2yuc57sxoxvv>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 02, 2024 at 03:09:12PM +0700, Lars Melin wrote:
-> On 2024-04-02 14:34, Coia Prant wrote:
-
-You're Subject is missing two newline characters to separate the commit
-summary from the commit message.
-
-> > ID 1c9e:9b05 OMEGA TECHNOLOGY (U8300)
-> > ID 1c9e:9b3c OMEGA TECHNOLOGY (U9300)
-> > 
-> > U8300
-> >   /: Bus
-> >      |__ Port 1: Dev 3, If 0, Class=Vendor Specific Class, Driver=option, 480M (Debug)
-> >          ID 1c9e:9b05 OMEGA TECHNOLOGY
-> >      |__ Port 1: Dev 3, If 1, Class=Vendor Specific Class, Driver=option, 480M (Modem / AT)
-> >          ID 1c9e:9b05 OMEGA TECHNOLOGY
-> >      |__ Port 1: Dev 3, If 2, Class=Vendor Specific Class, Driver=option, 480M (AT)
-> >          ID 1c9e:9b05 OMEGA TECHNOLOGY
-> >      |__ Port 1: Dev 3, If 3, Class=Vendor Specific Class, Driver=option, 480M (AT / Pipe / PPP)
-> >          ID 1c9e:9b05 OMEGA TECHNOLOGY
-> >      |__ Port 1: Dev 3, If 4, Class=Vendor Specific Class, Driver=qmi_wwan, 480M (NDIS / GobiNet / QMI WWAN)
-> >          ID 1c9e:9b05 OMEGA TECHNOLOGY
-> >      |__ Port 1: Dev 3, If 5, Class=Vendor Specific Class, Driver=, 480M (ADB)
-> >          ID 1c9e:9b05 OMEGA TECHNOLOGY
-
-Could please use the more condensed output of the usb-devices command
-(for both devices) which is better suited for a commit message?
-
-> Reviewed-by Lars Melin (larsm17@gmail.com
+On 2024-04-15 07:24, Naohiro Aota wrote:
+> On Mon, Apr 15, 2024 at 07:11:15AM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
+>> [adding the authors of the two commits mentioned as well as the Btrfs
+>> maintainers and the regressions & stable list to the list of recipients]
+>>
+>> On 15.04.24 05:56, Hiroshi Takekawa wrote:
+>>>
+>>> Module loading fails with CONFIG_BTRFS_FS_RUN_SANITY_TESTS enabled on
+>>> 6.8.3-6.8.6.
+>>>
+>>> Bisected:
+>>> Reverting these commits, then module loading succeeds.
+>>> 70f49f7b9aa3dfa70e7a2e3163ab4cae7c9a457a
+>>
+>> FWIW, that is a linux-stable commit-id for 41044b41ad2c8c ("btrfs: add
+>> helper to get fs_info from struct inode pointer") [v6.9-rc1, v6.8.3
+>> (70f49f7b9aa3df)]
+>>
+>>> 86211eea8ae1676cc819d2b4fdc8d995394be07d
 > 
-> added the maintainer to the recipient list
+> It looks like the stable tree lacks this commit, which is necessary for the
+> commit above.
+> 
+> b2136cc288fc ("btrfs: tests: allocate dummy fs_info and root in test_find_delalloc()")
+> 
 
-Thanks for reviewing, Lars.
+This was previously reported during the last stable cycle, and the missing
+patch is already queued up. You can see the queue here:
 
-Coia, you can include Lars's Reviewed-by tag when you send a v2.
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.8
 
-Johan
+cheers
+Holger
 
