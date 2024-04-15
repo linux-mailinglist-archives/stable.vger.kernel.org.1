@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-39937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC238A5575
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:44:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED598A552C
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD52C28163B
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:44:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 516A31C21EAD
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0B674E3A;
-	Mon, 15 Apr 2024 14:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC4574BE1;
+	Mon, 15 Apr 2024 14:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRWR3wqj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOaPYWdt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1167D2119;
-	Mon, 15 Apr 2024 14:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA042119;
+	Mon, 15 Apr 2024 14:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192266; cv=none; b=Q977soVpTLskpYTITd2nTNPO9zmmvuto5rNHyzDJyw8GEs2yL3mSg/HSKKyqomOBDSOMOHHJatdPtJtniB9bOc7mf7h6dlcJ7DBGFq7l08XaY+La46ndhJ+DP2ci+C3cUIWRgR2aOcdVTLS7JvGwO4XVI0KZbOpW5tE+GhDiKBQ=
+	t=1713192104; cv=none; b=q1QHXnbRMpTIePH9uCqFq2r+Ha1E29YnX5etRCv6sFtv0skq2ila+YvafCzkkCKbEY2F4xgZFF+brXr4wn9++nklmOEnHFz0NfEdD9IlW5fSx2fC387aMCwNl5zyqk+oDNbCvzBm71tu9uxnyOYAMQIU+TzJwIycp2mg6QKgRNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192266; c=relaxed/simple;
-	bh=pdLEyCoCScGeAyToH6gUs1Bw6MK6Be6x0ImtGeAbNKE=;
+	s=arc-20240116; t=1713192104; c=relaxed/simple;
+	bh=T8j79MWl4+W0kE3bbWox3wo2zAEOsIEiBU8TBJjKSgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fygjQqTMTtoE4CI2yxd5YcFq6kcvEZxX9sSEiUGyc5pbOxSxR34zqVREM/zcId1sMDhlSHxkpC8h1bfu+0pSloWlgGgcUWw3zHZ0Gpe27QcAbFEZGA5AV9kzE1A/37QptC/KoRWwL81JwoomHm9jQzMMOdQYboKlABGhKVTygqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRWR3wqj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8419FC113CC;
-	Mon, 15 Apr 2024 14:44:25 +0000 (UTC)
+	 MIME-Version; b=lys8cP+oKOYgCIbGeh4doss4mUsDmvCgwJl6N0F/8GrGck6Ife4xTTa55XCNxPTiy6iHtMMVnJspEpZfO8Xh4HqNHVAt0LdYFNpnVFF2Cmn9DGYK5BzkP8nTKWNVxrIhRB+8WxQspwg9CAuxKcokJ0sZo5ZX6CepwUx3EvLH0jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOaPYWdt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E42BFC3277B;
+	Mon, 15 Apr 2024 14:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192265;
-	bh=pdLEyCoCScGeAyToH6gUs1Bw6MK6Be6x0ImtGeAbNKE=;
+	s=korg; t=1713192104;
+	bh=T8j79MWl4+W0kE3bbWox3wo2zAEOsIEiBU8TBJjKSgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PRWR3wqjzsxXqxnspGc8iR+rJ/BNxUUYKtIoo3rLu3TdrETMfdApQvMYQWhe8ztwI
-	 Z/5xA9Uf0tt772lvcUd5XMOAWMciqo35Iz5Ay+JDc/9rPeFXAUjc1WV5DC2vBsK5u5
-	 L4licw2lJVcjSU56n3TtQ+16faV/+YuLZRpSR/w8=
+	b=DOaPYWdt1sdfuLiSIIigAF0/yL/ttGafujotRC1sM3TphHtxP4D42YLeBiPcZ3YpI
+	 Ja2+QvQEldJ2YyhvleNYgD+OLwqeY7AlJo4yQAiBo/AdC5vEoKrICWWF7fPjhaswDc
+	 aMRkmKZbR8Jv5+ZKP/gKzAfm17XWW7yHTZAFEBtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geetha sowjanya <gakula@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 14/45] octeontx2-af: Fix NIX SQ mode and BP config
+	Yihuang Yu <yihyu@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Gavin Shan <gshan@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	stable@kernel.org
+Subject: [PATCH 6.1 50/69] vhost: Add smp_rmb() in vhost_vq_avail_empty()
 Date: Mon, 15 Apr 2024 16:21:21 +0200
-Message-ID: <20240415141942.670242923@linuxfoundation.org>
+Message-ID: <20240415141947.675101641@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
-References: <20240415141942.235939111@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +66,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Gavin Shan <gshan@redhat.com>
 
-[ Upstream commit faf23006185e777db18912685922c5ddb2df383f ]
+commit 22e1992cf7b034db5325660e98c41ca5afa5f519 upstream.
 
-NIX SQ mode and link backpressure configuration is required for
-all platforms. But in current driver this code is wrongly placed
-under specific platform check. This patch fixes the issue by
-moving the code out of platform check.
+A smp_rmb() has been missed in vhost_vq_avail_empty(), spotted by
+Will. Otherwise, it's not ensured the available ring entries pushed
+by guest can be observed by vhost in time, leading to stale available
+ring entries fetched by vhost in vhost_get_vq_desc(), as reported by
+Yihuang Yu on NVidia's grace-hopper (ARM64) platform.
 
-Fixes: 5d9b976d4480 ("octeontx2-af: Support fixed transmit scheduler topology")
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Link: https://lore.kernel.org/r/20240408063643.26288-1-gakula@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64      \
+  -accel kvm -machine virt,gic-version=host -cpu host          \
+  -smp maxcpus=1,cpus=1,sockets=1,clusters=1,cores=1,threads=1 \
+  -m 4096M,slots=16,maxmem=64G                                 \
+  -object memory-backend-ram,id=mem0,size=4096M                \
+   :                                                           \
+  -netdev tap,id=vnet0,vhost=true                              \
+  -device virtio-net-pci,bus=pcie.8,netdev=vnet0,mac=52:54:00:f1:26:b0
+   :
+  guest# netperf -H 10.26.1.81 -l 60 -C -c -t UDP_STREAM
+  virtio_net virtio0: output.0:id 100 is not a head!
+
+Add the missed smp_rmb() in vhost_vq_avail_empty(). When tx_can_batch()
+returns true, it means there's still pending tx buffers. Since it might
+read indices, so it still can bypass the smp_rmb() in vhost_get_vq_desc().
+Note that it should be safe until vq->avail_idx is changed by commit
+275bf960ac697 ("vhost: better detection of available buffers").
+
+Fixes: 275bf960ac69 ("vhost: better detection of available buffers")
+Cc: <stable@kernel.org> # v4.11+
+Reported-by: Yihuang Yu <yihyu@redhat.com>
+Suggested-by: Will Deacon <will@kernel.org>
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20240328002149.1141302-2-gshan@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 20 +++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/vhost/vhost.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index bda93e550b08a..34a9a9164f3c6 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -4184,18 +4184,18 @@ static int rvu_nix_block_init(struct rvu *rvu, struct nix_hw *nix_hw)
- 		 */
- 		rvu_write64(rvu, blkaddr, NIX_AF_CFG,
- 			    rvu_read64(rvu, blkaddr, NIX_AF_CFG) | 0x40ULL);
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2523,9 +2523,19 @@ bool vhost_vq_avail_empty(struct vhost_d
+ 	r = vhost_get_avail_idx(vq, &avail_idx);
+ 	if (unlikely(r))
+ 		return false;
++
+ 	vq->avail_idx = vhost16_to_cpu(vq, avail_idx);
++	if (vq->avail_idx != vq->last_avail_idx) {
++		/* Since we have updated avail_idx, the following
++		 * call to vhost_get_vq_desc() will read available
++		 * ring entries. Make sure that read happens after
++		 * the avail_idx read.
++		 */
++		smp_rmb();
++		return false;
 +	}
  
--		/* Set chan/link to backpressure TL3 instead of TL2 */
--		rvu_write64(rvu, blkaddr, NIX_AF_PSE_CHANNEL_LEVEL, 0x01);
-+	/* Set chan/link to backpressure TL3 instead of TL2 */
-+	rvu_write64(rvu, blkaddr, NIX_AF_PSE_CHANNEL_LEVEL, 0x01);
+-	return vq->avail_idx == vq->last_avail_idx;
++	return true;
+ }
+ EXPORT_SYMBOL_GPL(vhost_vq_avail_empty);
  
--		/* Disable SQ manager's sticky mode operation (set TM6 = 0)
--		 * This sticky mode is known to cause SQ stalls when multiple
--		 * SQs are mapped to same SMQ and transmitting pkts at a time.
--		 */
--		cfg = rvu_read64(rvu, blkaddr, NIX_AF_SQM_DBG_CTL_STATUS);
--		cfg &= ~BIT_ULL(15);
--		rvu_write64(rvu, blkaddr, NIX_AF_SQM_DBG_CTL_STATUS, cfg);
--	}
-+	/* Disable SQ manager's sticky mode operation (set TM6 = 0)
-+	 * This sticky mode is known to cause SQ stalls when multiple
-+	 * SQs are mapped to same SMQ and transmitting pkts at a time.
-+	 */
-+	cfg = rvu_read64(rvu, blkaddr, NIX_AF_SQM_DBG_CTL_STATUS);
-+	cfg &= ~BIT_ULL(15);
-+	rvu_write64(rvu, blkaddr, NIX_AF_SQM_DBG_CTL_STATUS, cfg);
- 
- 	ltdefs = rvu->kpu.lt_def;
- 	/* Calibrate X2P bus to check if CGX/LBK links are fine */
--- 
-2.43.0
-
 
 
 
