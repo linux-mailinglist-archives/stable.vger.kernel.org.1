@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-39636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FB388A53DE
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:31:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81BF28A54BA
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 956CCB22FC1
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:31:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DD26B219A4
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D97383CAE;
-	Mon, 15 Apr 2024 14:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED33E7FBC6;
+	Mon, 15 Apr 2024 14:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4h7TUQX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z22gqSv9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1B276044;
-	Mon, 15 Apr 2024 14:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACF67F7FD;
+	Mon, 15 Apr 2024 14:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191363; cv=none; b=RaXLpZtCKuqcZYkghtQ85md82oafq8YfYI4mpDR0s+7dp0lPLMKCQeC5sKGTnZz9wOcdKGQfmMW095PD5yhgpVMgn2JIDyaQUGt3/xJbxCQutWLT823j5l3EURzq0zjF52nC9ZYDf/STHk/0Kuca+VKEOeBYjCtnURFygBteM18=
+	t=1713191797; cv=none; b=tFLFhJt0oT2uYw36dZjgSqnKSjLh+Ub8gVklPn0domePg89QCyPDMfTm/CsYXku2YM3U0GiLLRQOfA3AmmrbiXIrGsO9hAJssE2pkZNuKkfDjcPn4VYPQwKQNvYxmleIz+nrzfe3IX0/0E09JxjKRECWFSmWGd6vGoJnHJARRiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191363; c=relaxed/simple;
-	bh=k5sSX5AYmY4P/eglqQMAWd3OR0haZ5A1WjJiZJQl0M4=;
+	s=arc-20240116; t=1713191797; c=relaxed/simple;
+	bh=FkW1tf3bfH4Fe1etZSgeCJtjiF4lAAGYiIr7kq7LPpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b5aDxIcccGysAT/VF2f9tv2VPvs4YH6hqdNIkcv02shbJLbhwgc6hntYkgooUGFnIvGWc77nkrVRsX6MDiQXnFI8zq1/rg5ugn2o1X7eWE04MJmtnLJYENFMPXDl65VRKCA9KwyN9B/nBW2gu3hFr5QofKp9EF1ez55kIRxhR9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4h7TUQX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3BDC113CC;
-	Mon, 15 Apr 2024 14:29:21 +0000 (UTC)
+	 MIME-Version; b=F8HeHQjlJG4znZYAj6V68kWnxM5ovx4g+9gf6cp80hJmQY3GSxYk69dUgbSeGtgrb20vGIzSD9H71dv0knLhaUWzj2fqP0ap4ERrTd0xCsqlTOf4c7vZQWObXqqaUOryjZuBC7grrIa68Nvt6iY4PRO2zle9uOYhYFibzeYqagM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z22gqSv9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4700C2BD10;
+	Mon, 15 Apr 2024 14:36:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191362;
-	bh=k5sSX5AYmY4P/eglqQMAWd3OR0haZ5A1WjJiZJQl0M4=;
+	s=korg; t=1713191797;
+	bh=FkW1tf3bfH4Fe1etZSgeCJtjiF4lAAGYiIr7kq7LPpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4h7TUQXoDzwy/F57vMWMBoQ0KWTLi3YXOaze1MeQrRU733vQywQBQoEGw+U1mWPr
-	 RLeZH/7LSvBOzlP515nECFysculEIyknfCngyhwJoE3ty/Rno0Fl4Sp0m/IdfhenS0
-	 y0fF3PvbFZ176LG+0voClESbzKb+r63fHNCpu+kI=
+	b=z22gqSv94DgFwn5awyQg5+BNL3AblPRqc2kdq/RRiDaauiZV/rLh+zsx+upyyjx7A
+	 +pEaTlGm6C2dJD0f1AyrJkZeId2cQi5WMMMFewN3cSmK5i+i2rHDNrnwleSfs4Kuyt
+	 60dPdsZus28k93CKi984N4tFdVNH+ovoH47x6AJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	Sachin Sant <sachinp@linux.ibm.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.8 117/172] scsi: sg: Avoid race in error handling & drop bogus warn
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 051/122] Bluetooth: hci_sync: Fix using the same interval and window for Coded PHY
 Date: Mon, 15 Apr 2024 16:20:16 +0200
-Message-ID: <20240415142003.944199918@linuxfoundation.org>
+Message-ID: <20240415141954.903019357@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit d4e655c49f474deffaf5ed7e65034b8167ee39c8 upstream.
+[ Upstream commit 53cb4197e63ab2363aa28c3029061e4d516e7626 ]
 
-Commit 27f58c04a8f4 ("scsi: sg: Avoid sg device teardown race") introduced
-an incorrect WARN_ON_ONCE() and missed a sequence where sg_device_destroy()
-was used after scsi_device_put().
+Coded PHY recommended intervals are 3 time bigger than the 1M PHY so
+this aligns with that by multiplying by 3 the values given to 1M PHY
+since the code already used recommended values for that.
 
-sg_device_destroy() is accessing the parent scsi_device request_queue which
-will already be set to NULL when the preceding call to scsi_device_put()
-removed the last reference to the parent scsi_device.
-
-Drop the incorrect WARN_ON_ONCE() - allowing more than one concurrent
-access to the sg device - and make sure sg_device_destroy() is not used
-after scsi_device_put() in the error handling.
-
-Link: https://lore.kernel.org/all/5375B275-D137-4D5F-BE25-6AF8ACAE41EF@linux.ibm.com
-Fixes: 27f58c04a8f4 ("scsi: sg: Avoid sg device teardown race")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Link: https://lore.kernel.org/r/20240401191038.18359-1-Alexander@wetzel-home.de
-Tested-by: Sachin Sant <sachinp@linux.ibm.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 288c90224eec ("Bluetooth: Enable all supported LE PHY by default")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sg.c |   18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ net/bluetooth/hci_sync.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -285,6 +285,7 @@ sg_open(struct inode *inode, struct file
- 	int dev = iminor(inode);
- 	int flags = filp->f_flags;
- 	struct request_queue *q;
-+	struct scsi_device *device;
- 	Sg_device *sdp;
- 	Sg_fd *sfp;
- 	int retval;
-@@ -301,11 +302,12 @@ sg_open(struct inode *inode, struct file
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index f462e3fb5af05..1bc58b324b73e 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -2732,8 +2732,8 @@ static int hci_le_set_ext_scan_param_sync(struct hci_dev *hdev, u8 type,
+ 				if (qos->bcast.in.phy & BT_ISO_PHY_CODED) {
+ 					cp->scanning_phys |= LE_SCAN_PHY_CODED;
+ 					hci_le_scan_phy_params(phy, type,
+-							       interval,
+-							       window);
++							       interval * 3,
++							       window * 3);
+ 					num_phy++;
+ 					phy++;
+ 				}
+@@ -2753,7 +2753,7 @@ static int hci_le_set_ext_scan_param_sync(struct hci_dev *hdev, u8 type,
  
- 	/* This driver's module count bumped by fops_get in <linux/fs.h> */
- 	/* Prevent the device driver from vanishing while we sleep */
--	retval = scsi_device_get(sdp->device);
-+	device = sdp->device;
-+	retval = scsi_device_get(device);
- 	if (retval)
- 		goto sg_put;
- 
--	retval = scsi_autopm_get_device(sdp->device);
-+	retval = scsi_autopm_get_device(device);
- 	if (retval)
- 		goto sdp_put;
- 
-@@ -313,7 +315,7 @@ sg_open(struct inode *inode, struct file
- 	 * check if O_NONBLOCK. Permits SCSI commands to be issued
- 	 * during error recovery. Tread carefully. */
- 	if (!((flags & O_NONBLOCK) ||
--	      scsi_block_when_processing_errors(sdp->device))) {
-+	      scsi_block_when_processing_errors(device))) {
- 		retval = -ENXIO;
- 		/* we are in error recovery for this device */
- 		goto error_out;
-@@ -344,7 +346,7 @@ sg_open(struct inode *inode, struct file
- 
- 	if (sdp->open_cnt < 1) {  /* no existing opens */
- 		sdp->sgdebug = 0;
--		q = sdp->device->request_queue;
-+		q = device->request_queue;
- 		sdp->sg_tablesize = queue_max_segments(q);
+ 	if (scan_coded(hdev)) {
+ 		cp->scanning_phys |= LE_SCAN_PHY_CODED;
+-		hci_le_scan_phy_params(phy, type, interval, window);
++		hci_le_scan_phy_params(phy, type, interval * 3, window * 3);
+ 		num_phy++;
+ 		phy++;
  	}
- 	sfp = sg_add_sfp(sdp);
-@@ -370,10 +372,11 @@ out_undo:
- error_mutex_locked:
- 	mutex_unlock(&sdp->open_rel_lock);
- error_out:
--	scsi_autopm_put_device(sdp->device);
-+	scsi_autopm_put_device(device);
- sdp_put:
--	scsi_device_put(sdp->device);
--	goto sg_put;
-+	kref_put(&sdp->d_ref, sg_device_destroy);
-+	scsi_device_put(device);
-+	return retval;
- }
- 
- /* Release resources associated with a successful sg_open()
-@@ -2233,7 +2236,6 @@ sg_remove_sfp_usercontext(struct work_st
- 			"sg_remove_sfp: sfp=0x%p\n", sfp));
- 	kfree(sfp);
- 
--	WARN_ON_ONCE(kref_read(&sdp->d_ref) != 1);
- 	kref_put(&sdp->d_ref, sg_device_destroy);
- 	scsi_device_put(device);
- 	module_put(THIS_MODULE);
+-- 
+2.43.0
+
 
 
 
