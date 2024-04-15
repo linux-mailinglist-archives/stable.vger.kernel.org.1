@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-39690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BCDA8A5436
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5838D8A550D
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD9B81C220A1
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 149142813A6
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7B3823B0;
-	Mon, 15 Apr 2024 14:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444727C085;
+	Mon, 15 Apr 2024 14:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzqd9LOL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8yah4Ya"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF80176044;
-	Mon, 15 Apr 2024 14:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EE079B99;
+	Mon, 15 Apr 2024 14:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191524; cv=none; b=pP80mHC3Zj/vMF1qa5xQjBZA9gfSHr4OkNCc5wh96c+LBxy1aSX2zq0mpTekvWf8YUuyFWxNqg7HgPzvJrG+TgzhcBmp9xufYvJZYkQqkxNm2EF6EhztgcFtp0xbz+ZB19AHBo8Jq+ldDccv6ww1NqHck3ABZ42JPIx/lj3xzZA=
+	t=1713192018; cv=none; b=KNQNppSVzaWW6wnrNKr9/xDvlhXwNmU2i+qOKxpB7To7TpdP7C2ACt/76GZChhKvwtMgn3vIeFTgXMbVT3y/Sfv4MfrTIK1OZq+fxIYCOuvkwgcXL14uK+s9/gITapNATg9j0g/QHP4GRiwCMTTDiWPZ4lj909YOUPY9KTXxD3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191524; c=relaxed/simple;
-	bh=TbzevsoIUl+25r9puLhnvc2HPgelLJ9Ja6x5JQirO88=;
+	s=arc-20240116; t=1713192018; c=relaxed/simple;
+	bh=NX5f6waOtJHipKDz6VLdi5Fp54HL0JMLzSgqdjSRBo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mDjwucINJ5HI+ialzLbEJ/MmYBy5kDD5SRJXnVia9A7BfTqVefYvbIy9hhSDDcv9lDR5qHUIohTM7vNUkgSBA2SxIN9G3kNYZYHG9DgkCOyZEAkzpMgf8lm5gS7MrvP8LDVn8iqO95+pmQFg7r2Yb5ccIfIfE/7F+GDQ1klXAEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzqd9LOL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57518C113CC;
-	Mon, 15 Apr 2024 14:32:04 +0000 (UTC)
+	 MIME-Version; b=Q2Ci9LwN3wpr3+B1y1cYjqUbrUEi0WqYVPuvMSMuoEYPB6KRNcHr/hIMrXUmal7d8ausVrhOxH6BIQ7z5rapKTiUkMvxpgwdpAQFWELf36ffIzjbUuoyZv75j3bcNKbedecBiAAcOv5447XFgsnH/bDMdFnBll/HxO2BiXR4Mt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8yah4Ya; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CF5C113CC;
+	Mon, 15 Apr 2024 14:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191524;
-	bh=TbzevsoIUl+25r9puLhnvc2HPgelLJ9Ja6x5JQirO88=;
+	s=korg; t=1713192017;
+	bh=NX5f6waOtJHipKDz6VLdi5Fp54HL0JMLzSgqdjSRBo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yzqd9LOLcYCWsas82t7UD+OTvmkI8OnU8wCqvFXIutlo1szMMUPn6LeNflNjSTh7j
-	 5/MSZEEvBXCsRLfQ/OjtDORJW+37ndrXoaFm1pw0LpSiop4Fr4A/8V7WUjQNLZAWJS
-	 0/8TSqkuZsV7TjVILey9Sw6++xQvPEANOkXonR7o=
+	b=W8yah4Ya5VypU7rOSGbB/Ut4vNDick6+LEAWukm0bsE25P4XOMwaoviErdyhR90C/
+	 XpCCK/1Jp0ey1CXCHmQh4Kwe5rK4qJpSvDqPH2SENgRsrysvdysSBZJZ6b0Fw+ommV
+	 g1VH3ZRu5E59VZgmKrMrn5kLmsyYzWRJoFTU9XGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.8 170/172] drm/amd/display: Return max resolution supported by DWB
+	Shay Agroskin <shayagr@amazon.com>,
+	David Arinzon <darinzon@amazon.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 38/69] net: ena: Fix incorrect descriptor free behavior
 Date: Mon, 15 Apr 2024 16:21:09 +0200
-Message-ID: <20240415142005.509804518@linuxfoundation.org>
+Message-ID: <20240415141947.311396916@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: David Arinzon <darinzon@amazon.com>
 
-commit 2cc69a10d83180f3de9f5afe3a98e972b1453d4c upstream.
+[ Upstream commit bf02d9fe00632d22fa91d34749c7aacf397b6cde ]
 
-mode_config's max width x height is 4096x2160 and is higher than DWB's
-max resolution 3840x2160 which is returned instead.
+ENA has two types of TX queues:
+- queues which only process TX packets arriving from the network stack
+- queues which only process TX packets forwarded to it by XDP_REDIRECT
+  or XDP_TX instructions
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The ena_free_tx_bufs() cycles through all descriptors in a TX queue
+and unmaps + frees every descriptor that hasn't been acknowledged yet
+by the device (uncompleted TX transactions).
+The function assumes that the processed TX queue is necessarily from
+the first category listed above and ends up using napi_consume_skb()
+for descriptors belonging to an XDP specific queue.
+
+This patch solves a bug in which, in case of a VF reset, the
+descriptors aren't freed correctly, leading to crashes.
+
+Fixes: 548c4940b9f1 ("net: ena: Implement XDP_TX action")
+Signed-off-by: Shay Agroskin <shayagr@amazon.com>
+Signed-off-by: David Arinzon <darinzon@amazon.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_wb.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/amazon/ena/ena_netdev.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_wb.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_wb.c
-@@ -76,10 +76,8 @@ static int amdgpu_dm_wb_encoder_atomic_c
- 
- static int amdgpu_dm_wb_connector_get_modes(struct drm_connector *connector)
+diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+index b2eb6e1958f04..5e37b18ac3adf 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
++++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+@@ -1203,8 +1203,11 @@ static void ena_unmap_tx_buff(struct ena_ring *tx_ring,
+ static void ena_free_tx_bufs(struct ena_ring *tx_ring)
  {
--	struct drm_device *dev = connector->dev;
--
--	return drm_add_modes_noedid(connector, dev->mode_config.max_width,
--				    dev->mode_config.max_height);
-+	/* Maximum resolution supported by DWB */
-+	return drm_add_modes_noedid(connector, 3840, 2160);
+ 	bool print_once = true;
++	bool is_xdp_ring;
+ 	u32 i;
+ 
++	is_xdp_ring = ENA_IS_XDP_INDEX(tx_ring->adapter, tx_ring->qid);
++
+ 	for (i = 0; i < tx_ring->ring_size; i++) {
+ 		struct ena_tx_buffer *tx_info = &tx_ring->tx_buffer_info[i];
+ 
+@@ -1224,10 +1227,15 @@ static void ena_free_tx_bufs(struct ena_ring *tx_ring)
+ 
+ 		ena_unmap_tx_buff(tx_ring, tx_info);
+ 
+-		dev_kfree_skb_any(tx_info->skb);
++		if (is_xdp_ring)
++			xdp_return_frame(tx_info->xdpf);
++		else
++			dev_kfree_skb_any(tx_info->skb);
+ 	}
+-	netdev_tx_reset_queue(netdev_get_tx_queue(tx_ring->netdev,
+-						  tx_ring->qid));
++
++	if (!is_xdp_ring)
++		netdev_tx_reset_queue(netdev_get_tx_queue(tx_ring->netdev,
++							  tx_ring->qid));
  }
  
- static int amdgpu_dm_wb_prepare_job(struct drm_writeback_connector *wb_connector,
+ static void ena_free_all_tx_bufs(struct ena_adapter *adapter)
+-- 
+2.43.0
+
 
 
 
