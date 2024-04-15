@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-39821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906368A54E7
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56FCA8A5424
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:34:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49D6B2813D4
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EC2A284767
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07ECB7EEFF;
-	Mon, 15 Apr 2024 14:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0C7811F1;
+	Mon, 15 Apr 2024 14:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUl1AsO1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwskhDNK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB19A762E0;
-	Mon, 15 Apr 2024 14:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBFE80C15;
+	Mon, 15 Apr 2024 14:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191914; cv=none; b=A7JfeuHTCcVhTmZPqvmiLokFA9UmmXLJ7HFbt77gK2/mIObE04euQqzXlJOUa9ivr2NgUXbL0IyXQlLko5L8ZKPPzV9Fk0ruBVzRcos1v+KsN4NRTCGx5tllXOPUGKvNncio79tEQKT4b3AGaoR7bBwC6ZHAnDpK5iaSHRUZNdE=
+	t=1713191483; cv=none; b=Iubolo7JMgaB/bTBcifSq/nC9hlxiJKHk25eNemPZZqGJjA9f1gaHPGQ1mU4jdDGRgLrfuma4VQLu0lFUoHHQmdjKGdXHrjERtfTv4E1oOnjWabssjZV5LfnHL+yLt1i7KuxW8Q4eAmIKo6ipz/2kNMrxZ0oQDH/ut6YLNARCF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191914; c=relaxed/simple;
-	bh=I6oJYm0hR08TOpTU4NHwTel8Bht/BaFzQS/ybBX9lRI=;
+	s=arc-20240116; t=1713191483; c=relaxed/simple;
+	bh=4+XtAJlrtLPajuC+LOeWSvOVjcM9S06jP5aAHjKghDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jDLbQg2Mi8e/DNpa8FDRmZEVkEha8e/hqbDZO+wNX5WnUn/qBrbYRQousInRQ6aE8evVNlcbyJ7vA5RuC5T+XZoki8+QbtNckki70hJZ403Bm1Sef6Pq6QRJ9khQfxYDAldB0/HO/Q1j7oHxo+TolfVPIXYGxCu4J7+YSukH2u4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUl1AsO1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C7EC4AF0A;
-	Mon, 15 Apr 2024 14:38:34 +0000 (UTC)
+	 MIME-Version; b=PFUnKTUPWUktZFBRzzDi6vQyeB+YrQkqz1z5PDVwnhdvK/Gty3oN0uB1tX7Sob+DuWddf0E4j/I1z/IP73pYVTVBKXgV7Nx6DoI0W9/3GlOtC3Hp0knSXGoBJndCs32M0NJV04acNbkxSqPcn/pMgIeT7F8sxYdMFR6JSWtinf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwskhDNK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EABBAC113CC;
+	Mon, 15 Apr 2024 14:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191914;
-	bh=I6oJYm0hR08TOpTU4NHwTel8Bht/BaFzQS/ybBX9lRI=;
+	s=korg; t=1713191483;
+	bh=4+XtAJlrtLPajuC+LOeWSvOVjcM9S06jP5aAHjKghDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EUl1AsO1iGgmino4k7sNUGnwlakmIyHx5CNi8THdP1rnuUUy1DMrhN4JY2Q61OoN9
-	 Vz4sAPknuxZhx2jASkS3qLReAC/ERygjr8iXzwnzWoE7bLrioznVPbBS4L1SKC0v7Q
-	 5ITwFY4h5s+dZECM337/ZMewQ+ydyAcTRzYjEfDg=
+	b=IwskhDNKuVYZKAxrGnrcLx/hGPCTowL6nVkJuVEW3Q/2LBOP4KnlOspvUKYLeJZ1E
+	 SL0MWQWn/HZuP3N2SbmxulAjRPzpbBGG+8uQwt00epsFZp6TmTyX9po6nvECwUfml0
+	 hAgjZWeZp12Tb9RdvWCwv0ocz3yDeHnnr+wGnLU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jammy Huang <jammy_huang@aspeedtech.com>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	KuoHsiang Chou <kuohsiang_chou@aspeedtech.com>,
-	Dave Airlie <airlied@redhat.com>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.6 091/122] drm/ast: Fix soft lockup
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.8 157/172] x86/bugs: Remove CONFIG_BHI_MITIGATION_AUTO and spectre_bhi=auto
 Date: Mon, 15 Apr 2024 16:20:56 +0200
-Message-ID: <20240415141956.105593520@linuxfoundation.org>
+Message-ID: <20240415142005.128368779@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +64,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jammy Huang <jammy_huang@aspeedtech.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit bc004f5038220b1891ef4107134ccae44be55109 upstream.
+commit 36d4fe147c870f6d3f6602befd7ef44393a1c87a upstream.
 
-There is a while-loop in ast_dp_set_on_off() that could lead to
-infinite-loop. This is because the register, VGACRI-Dx, checked in
-this API is a scratch register actually controlled by a MCU, named
-DPMCU, in BMC.
+Unlike most other mitigations' "auto" options, spectre_bhi=auto only
+mitigates newer systems, which is confusing and not particularly useful.
 
-These scratch registers are protected by scu-lock. If suc-lock is not
-off, DPMCU can not update these registers and then host will have soft
-lockup due to never updated status.
+Remove it.
 
-DPMCU is used to control DP and relative registers to handshake with
-host's VGA driver. Even the most time-consuming task, DP's link
-training, is less than 100ms. 200ms should be enough.
-
-Signed-off-by: Jammy Huang <jammy_huang@aspeedtech.com>
-Fixes: 594e9c04b586 ("drm/ast: Create the driver for ASPEED proprietory Display-Port")
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: KuoHsiang Chou <kuohsiang_chou@aspeedtech.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.19+
-Link: https://patchwork.freedesktop.org/patch/msgid/20240403090246.1495487-1-jammy_huang@aspeedtech.com
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/412e9dc87971b622bbbaf64740ebc1f140bff343.1712813475.git.jpoimboe@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ast/ast_dp.c |    3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/admin-guide/hw-vuln/spectre.rst   |    4 ----
+ Documentation/admin-guide/kernel-parameters.txt |    3 ---
+ arch/x86/Kconfig                                |    4 ----
+ arch/x86/kernel/cpu/bugs.c                      |   10 +---------
+ 4 files changed, 1 insertion(+), 20 deletions(-)
 
---- a/drivers/gpu/drm/ast/ast_dp.c
-+++ b/drivers/gpu/drm/ast/ast_dp.c
-@@ -180,6 +180,7 @@ void ast_dp_set_on_off(struct drm_device
- {
- 	struct ast_device *ast = to_ast_device(dev);
- 	u8 video_on_off = on;
-+	u32 i = 0;
+--- a/Documentation/admin-guide/hw-vuln/spectre.rst
++++ b/Documentation/admin-guide/hw-vuln/spectre.rst
+@@ -669,10 +669,6 @@ kernel command line.
+ 			needed.
+ 		off
+ 			Disable the mitigation.
+-		auto
+-			Enable the HW mitigation if needed, but
+-			*don't* enable the SW mitigation except for KVM.
+-			The system may be vulnerable.
  
- 	// Video On/Off
- 	ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xE3, (u8) ~AST_DP_VIDEO_ENABLE, on);
-@@ -192,6 +193,8 @@ void ast_dp_set_on_off(struct drm_device
- 						ASTDP_MIRROR_VIDEO_ENABLE) != video_on_off) {
- 			// wait 1 ms
- 			mdelay(1);
-+			if (++i > 200)
-+				break;
- 		}
- 	}
- }
+ For spectre_v2_user see Documentation/admin-guide/kernel-parameters.txt
+ 
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -6040,9 +6040,6 @@
+ 			on   - (default) Enable the HW or SW mitigation
+ 			       as needed.
+ 			off  - Disable the mitigation.
+-			auto - Enable the HW mitigation if needed, but
+-			       *don't* enable the SW mitigation except
+-			       for KVM.  The system may be vulnerable.
+ 
+ 	spectre_v2=	[X86] Control mitigation of Spectre variant 2
+ 			(indirect branch speculation) vulnerability.
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2630,10 +2630,6 @@ config SPECTRE_BHI_OFF
+ 	bool "off"
+ 	help
+ 	  Equivalent to setting spectre_bhi=off command line parameter.
+-config SPECTRE_BHI_AUTO
+-	bool "auto"
+-	help
+-	  Equivalent to setting spectre_bhi=auto command line parameter.
+ 
+ endchoice
+ 
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1624,13 +1624,10 @@ static bool __init spec_ctrl_bhi_dis(voi
+ enum bhi_mitigations {
+ 	BHI_MITIGATION_OFF,
+ 	BHI_MITIGATION_ON,
+-	BHI_MITIGATION_AUTO,
+ };
+ 
+ static enum bhi_mitigations bhi_mitigation __ro_after_init =
+-	IS_ENABLED(CONFIG_SPECTRE_BHI_ON)  ? BHI_MITIGATION_ON  :
+-	IS_ENABLED(CONFIG_SPECTRE_BHI_OFF) ? BHI_MITIGATION_OFF :
+-					     BHI_MITIGATION_AUTO;
++	IS_ENABLED(CONFIG_SPECTRE_BHI_ON) ? BHI_MITIGATION_ON : BHI_MITIGATION_OFF;
+ 
+ static int __init spectre_bhi_parse_cmdline(char *str)
+ {
+@@ -1641,8 +1638,6 @@ static int __init spectre_bhi_parse_cmdl
+ 		bhi_mitigation = BHI_MITIGATION_OFF;
+ 	else if (!strcmp(str, "on"))
+ 		bhi_mitigation = BHI_MITIGATION_ON;
+-	else if (!strcmp(str, "auto"))
+-		bhi_mitigation = BHI_MITIGATION_AUTO;
+ 	else
+ 		pr_err("Ignoring unknown spectre_bhi option (%s)", str);
+ 
+@@ -1672,9 +1667,6 @@ static void __init bhi_select_mitigation
+ 	setup_force_cpu_cap(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT);
+ 	pr_info("Spectre BHI mitigation: SW BHB clearing on vm exit\n");
+ 
+-	if (bhi_mitigation == BHI_MITIGATION_AUTO)
+-		return;
+-
+ 	/* Mitigate syscalls when the mitigation is forced =on */
+ 	setup_force_cpu_cap(X86_FEATURE_CLEAR_BHB_LOOP);
+ 	pr_info("Spectre BHI mitigation: SW BHB clearing on syscall\n");
 
 
 
