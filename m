@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-39852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A975E8A5508
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 486E18A553D
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA5A31C21D62
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A78A4283927
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38AF478C6D;
-	Mon, 15 Apr 2024 14:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56BA1446AF;
+	Mon, 15 Apr 2024 14:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmOYIne6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cC96im8O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AB076025;
-	Mon, 15 Apr 2024 14:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B772119;
+	Mon, 15 Apr 2024 14:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192009; cv=none; b=uzxqYykScElgC12c6IhKQwLCG4stdpwNXMcJot7wTwXEWQWnUc2LJlnDvTGyiS6zIbW1jSzYTA4yb3pc5gIEas0wJ5HQ5U5rPYIXrG9AbHIfEoCQrHO4k1ptm+sYZGaLyw3ACMpOO5cI82OxeTkIMWgQJlsbYnctTaIVPWAdBKw=
+	t=1713192137; cv=none; b=TMYTcTd33hpy+GZUucZH5luRDYXUY48LSYLg7WjL9pvRXAuVJUfThMd3OGuDnCAkVO2tYbP0Ur9CFHNKc2nCrTH2RQWHq5QBxCh93CQhiwiCj33bCY4BLeyjWH4iS2MUuTV603n6KDdWenbFR+jlmkgof+Fm+x7VA4yfF1nU/Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192009; c=relaxed/simple;
-	bh=BLfD3HFDxEOJQh8hPdR/YmarcHY8281QjPR5QyBP9kc=;
+	s=arc-20240116; t=1713192137; c=relaxed/simple;
+	bh=D7QYrbwdogRU4RtyibQeGVlD6nxzROFUyTnuImN9PSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CO4zDnGkm5EtZ5tEa+XH6G9YAUk6hN16Y7AK77SetG5Ueqs6ri8AbrAKLVN2uAbtBHxqgxlJmbPEb69KCjoqU+3whbmEPnogAYHtWpaZEQHLnDIVLy8faM0ttTVJsWOdTEywrdWAnlvYp1eSl/vErpU6jwxq/wEcYoXPcRe5yk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmOYIne6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B637C113CC;
-	Mon, 15 Apr 2024 14:40:08 +0000 (UTC)
+	 MIME-Version; b=ck66790WVN6Wb+SLav6nfP9PIZ/NedYlXM+7NMMkku9+sIZw8ZUaP4KA6r6OugFs9pQ7i4GF25+owr2HaWcFDvsaIU6s/iBL0Nr6EpUXl+rxmHOID9reMv1gK7WAOZO814gZrZDFVnbYttZdMS35RCSF9d5osa6uQ85XuldkKqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cC96im8O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929ABC4AF07;
+	Mon, 15 Apr 2024 14:42:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192008;
-	bh=BLfD3HFDxEOJQh8hPdR/YmarcHY8281QjPR5QyBP9kc=;
+	s=korg; t=1713192137;
+	bh=D7QYrbwdogRU4RtyibQeGVlD6nxzROFUyTnuImN9PSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XmOYIne6a9GZu5MA11faRNyDOfG1hjGDP+GXZSidcLAyExykkgqScAgjStfwLjGOG
-	 qvUOMKwvnse3DvyzQJwdkw6bVFMdf3zXjjpmrIrymvDR8idm6Ap2YzSC161a2odJYF
-	 PCwt/p0MV0Ca/ZQi5rraHrRSHcgSE0+xM8PzmxLE=
+	b=cC96im8O7GWogdUBZBcub1qgp/qe6Z5Snx/6KJfzxPE2J73a6gGGbou22pGEdNbSe
+	 eg2jySVAmHrbHpw/soOryI9JmyEFFUpOl3XZ4fbwigh1OKbXzDd9QE5fauNjC+xrHy
+	 PmDvn/I/BdFiH4rd2a/vOmLbfH3S0I916KkjGS+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arthur Kiyanovski <akiyano@amazon.com>,
-	David Arinzon <darinzon@amazon.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 36/69] net: ena: Fix potential sign extension issue
-Date: Mon, 15 Apr 2024 16:21:07 +0200
-Message-ID: <20240415141947.250561028@linuxfoundation.org>
+	syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.15 01/45] batman-adv: Avoid infinite loop trying to resize local TT
+Date: Mon, 15 Apr 2024 16:21:08 +0200
+Message-ID: <20240415141942.282701211@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
+References: <20240415141942.235939111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Arinzon <darinzon@amazon.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 713a85195aad25d8a26786a37b674e3e5ec09e3c ]
+commit b1f532a3b1e6d2e5559c7ace49322922637a28aa upstream.
 
-Small unsigned types are promoted to larger signed types in
-the case of multiplication, the result of which may overflow.
-In case the result of such a multiplication has its MSB
-turned on, it will be sign extended with '1's.
-This changes the multiplication result.
+If the MTU of one of an attached interface becomes too small to transmit
+the local translation table then it must be resized to fit inside all
+fragments (when enabled) or a single packet.
 
-Code example of the phenomenon:
--------------------------------
-u16 x, y;
-size_t z1, z2;
+But if the MTU becomes too low to transmit even the header + the VLAN
+specific part then the resizing of the local TT will never succeed. This
+can for example happen when the usable space is 110 bytes and 11 VLANs are
+on top of batman-adv. In this case, at least 116 byte would be needed.
+There will just be an endless spam of
 
-x = y = 0xffff;
-printk("x=%x y=%x\n",x,y);
+   batman_adv: batadv0: Forced to purge local tt entries to fit new maximum fragment MTU (110)
 
-z1 = x*y;
-z2 = (size_t)x*y;
+in the log but the function will never finish. Problem here is that the
+timeout will be halved all the time and will then stagnate at 0 and
+therefore never be able to reduce the table even more.
 
-printk("z1=%lx z2=%lx\n", z1, z2);
+There are other scenarios possible with a similar result. The number of
+BATADV_TT_CLIENT_NOPURGE entries in the local TT can for example be too
+high to fit inside a packet. Such a scenario can therefore happen also with
+only a single VLAN + 7 non-purgable addresses - requiring at least 120
+bytes.
 
-Output:
--------
-x=ffff y=ffff
-z1=fffffffffffe0001 z2=fffe0001
+While this should be handled proactively when:
 
-The expected result of ffff*ffff is fffe0001, and without the
-explicit casting to avoid the unwanted sign extension we got
-fffffffffffe0001.
+* interface with too low MTU is added
+* VLAN is added
+* non-purgeable local mac is added
+* MTU of an attached interface is reduced
+* fragmentation setting gets disabled (which most likely requires dropping
+  attached interfaces)
 
-This commit adds an explicit casting to avoid the sign extension
-issue.
+not all of these scenarios can be prevented because batman-adv is only
+consuming events without the the possibility to prevent these actions
+(non-purgable MAC address added, MTU of an attached interface is reduced).
+It is therefore necessary to also make sure that the code is able to handle
+also the situations when there were already incompatible system
+configuration are present.
 
-Fixes: 689b2bdaaa14 ("net: ena: add functions for handling Low Latency Queues in ena_com")
-Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
-Signed-off-by: David Arinzon <darinzon@amazon.com>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: a19d3d85e1b8 ("batman-adv: limit local translation table max size")
+Reported-by: syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_com.c | 2 +-
+ net/batman-adv/translation-table.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_com.c b/drivers/net/ethernet/amazon/ena/ena_com.c
-index 633b321d7fdd9..4db689372980e 100644
---- a/drivers/net/ethernet/amazon/ena/ena_com.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_com.c
-@@ -362,7 +362,7 @@ static int ena_com_init_io_sq(struct ena_com_dev *ena_dev,
- 			ENA_COM_BOUNCE_BUFFER_CNTRL_CNT;
- 		io_sq->bounce_buf_ctrl.next_to_use = 0;
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -3948,7 +3948,7 @@ void batadv_tt_local_resize_to_mtu(struc
  
--		size = io_sq->bounce_buf_ctrl.buffer_size *
-+		size = (size_t)io_sq->bounce_buf_ctrl.buffer_size *
- 			io_sq->bounce_buf_ctrl.buffers_num;
+ 	spin_lock_bh(&bat_priv->tt.commit_lock);
  
- 		dev_node = dev_to_node(ena_dev->dmadev);
--- 
-2.43.0
-
+-	while (true) {
++	while (timeout) {
+ 		table_size = batadv_tt_local_table_transmit_size(bat_priv);
+ 		if (packet_size_max >= table_size)
+ 			break;
 
 
 
