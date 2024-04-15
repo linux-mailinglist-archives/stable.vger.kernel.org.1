@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-39635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7679A8A53D7
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:31:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63DE98A54B6
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14C3F1F215F3
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:31:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 035011F22643
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0012B82482;
-	Mon, 15 Apr 2024 14:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169EC7D3FE;
+	Mon, 15 Apr 2024 14:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I33KvoXN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXbFvAh7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D7B80C1D;
-	Mon, 15 Apr 2024 14:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77D37AE43;
+	Mon, 15 Apr 2024 14:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191359; cv=none; b=lJNM4kI6/uAxhTRx0IUlQE97I9Ep8YHIBdhZc0WUXmNmotNZm+EHGJHOkS4InI/88X3Z/dla60wnwxry0lDmNQEV9MUPHqkfwatHZco5lQ7JbfaaaGRUO/3pLiMbNgFEED68ePDL1lc1uWBYw33kPJF+WwdwYDaaaTB0q38xj/8=
+	t=1713191794; cv=none; b=I+WKp8Bh4W1xHiQOsoU6frD8k0x2S8bUmi1e7o+1SvU8+Vth/ctNg7Rtjn63rGTEM3giof7ZZCbx3GH522bUJJV1jmZQ/l+RWSMr7HW+RdiQnVjBOFmuUBnDPy1l35livr0hVeRD81dVpKd6F0PfDTuvQ4dZl/YaRbPAxHeFiXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191359; c=relaxed/simple;
-	bh=R5kZ3J2h2q5M9lqUHJGgWWJAbOAMABD4kbCbpfOiwEw=;
+	s=arc-20240116; t=1713191794; c=relaxed/simple;
+	bh=lzRfgOpWHSyavQZNJZKZwbT0Mv0nKh8YlBUEBNIH4qc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a7K6QSWR/gG323CDz5jkiBNeeFAoLYqK9YIt1qZBDid2EmKucbJot5s8lNzU7dNv7bdX9bbVVlCERATryxkNjvvdRD3VJy6tZsj8aygCmW6Q26o1D9nLdBPLx4LdBvaAzZPbvkfwpBRVm4cR8I1B4zkBDXt2S8NJElVJ+KbmBxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I33KvoXN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C73C113CC;
-	Mon, 15 Apr 2024 14:29:19 +0000 (UTC)
+	 MIME-Version; b=dUIZKSA//BeULLsX3O5QhCYrWXJsbD6wxH+EF3Bom2jX8K8+hh+xcSwDO7b69UCLoCmUBFAtXe8GQ0K+a+v1VuuIpJiqVofPC/aWVt5LS8tC1n/MTPhl40mo364RDutUfhkD+T6OnhG573XT12m7lDklMYO3D1yafZtLvDiLiJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TXbFvAh7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4576C113CC;
+	Mon, 15 Apr 2024 14:36:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191359;
-	bh=R5kZ3J2h2q5M9lqUHJGgWWJAbOAMABD4kbCbpfOiwEw=;
+	s=korg; t=1713191794;
+	bh=lzRfgOpWHSyavQZNJZKZwbT0Mv0nKh8YlBUEBNIH4qc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I33KvoXN00h6SzfOVaF1mXDE7ru1ymzgAy7cd/QuzmjTrGDJz5uTcqEXLtm6e/4T9
-	 Wn0IInZ9cyuuWQAmiLbYrKQgtPzLmjJBm1VePq4oB3Y8uNcdVboft2hI87d7A3yLfg
-	 DN3A/Mo0Poa6z158PDoZ4+dJaNQsQpSgo+0Ipgkg=
+	b=TXbFvAh7hM5mlGCdGAXyTDqnb9MJc3+GLxV2fTvrgT8miak10xGotOmGFyT58dkni
+	 1CSHN9ok7kc+yTEMVD2SnPFR5eS2aOdetbo5DtlGNmTgB5xhg0DnOPfbpAWVT7roMp
+	 ZTtgbHl7X+/heRsy+lWV9G1AyEDTO67nbehF8uwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.8 116/172] scsi: sg: Avoid sg device teardown race
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 050/122] Bluetooth: hci_sync: Use QoS to determine which PHY to scan
 Date: Mon, 15 Apr 2024 16:20:15 +0200
-Message-ID: <20240415142003.914821460@linuxfoundation.org>
+Message-ID: <20240415141954.874385823@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 27f58c04a8f438078583041468ec60597841284d upstream.
+[ Upstream commit 22cbf4f84c00da64196eb15034feee868e63eef0 ]
 
-sg_remove_sfp_usercontext() must not use sg_device_destroy() after calling
-scsi_device_put().
+This used the hci_conn QoS to determine which PHY to scan when creating
+a PA Sync.
 
-sg_device_destroy() is accessing the parent scsi_device request_queue which
-will already be set to NULL when the preceding call to scsi_device_put()
-removed the last reference to the parent scsi_device.
-
-The resulting NULL pointer exception will then crash the kernel.
-
-Link: https://lore.kernel.org/r/20240305150509.23896-1-Alexander@wetzel-home.de
-Fixes: db59133e9279 ("scsi: sg: fix blktrace debugfs entries leakage")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Link: https://lore.kernel.org/r/20240320213032.18221-1-Alexander@wetzel-home.de
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: 53cb4197e63a ("Bluetooth: hci_sync: Fix using the same interval and window for Coded PHY")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sg.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_sync.c | 66 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 55 insertions(+), 11 deletions(-)
 
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -2207,6 +2207,7 @@ sg_remove_sfp_usercontext(struct work_st
- {
- 	struct sg_fd *sfp = container_of(work, struct sg_fd, ew.work);
- 	struct sg_device *sdp = sfp->parentdp;
-+	struct scsi_device *device = sdp->device;
- 	Sg_request *srp;
- 	unsigned long iflags;
- 
-@@ -2232,8 +2233,9 @@ sg_remove_sfp_usercontext(struct work_st
- 			"sg_remove_sfp: sfp=0x%p\n", sfp));
- 	kfree(sfp);
- 
--	scsi_device_put(sdp->device);
-+	WARN_ON_ONCE(kref_read(&sdp->d_ref) != 1);
- 	kref_put(&sdp->d_ref, sg_device_destroy);
-+	scsi_device_put(device);
- 	module_put(THIS_MODULE);
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index d6c0633bfe5bf..f462e3fb5af05 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -2679,6 +2679,14 @@ static u8 hci_update_accept_list_sync(struct hci_dev *hdev)
+ 	return filter_policy;
  }
  
++static void hci_le_scan_phy_params(struct hci_cp_le_scan_phy_params *cp,
++				   u8 type, u16 interval, u16 window)
++{
++	cp->type = type;
++	cp->interval = cpu_to_le16(interval);
++	cp->window = cpu_to_le16(window);
++}
++
+ static int hci_le_set_ext_scan_param_sync(struct hci_dev *hdev, u8 type,
+ 					  u16 interval, u16 window,
+ 					  u8 own_addr_type, u8 filter_policy)
+@@ -2686,7 +2694,7 @@ static int hci_le_set_ext_scan_param_sync(struct hci_dev *hdev, u8 type,
+ 	struct hci_cp_le_set_ext_scan_params *cp;
+ 	struct hci_cp_le_scan_phy_params *phy;
+ 	u8 data[sizeof(*cp) + sizeof(*phy) * 2];
+-	u8 num_phy = 0;
++	u8 num_phy = 0x00;
+ 
+ 	cp = (void *)data;
+ 	phy = (void *)cp->data;
+@@ -2696,28 +2704,64 @@ static int hci_le_set_ext_scan_param_sync(struct hci_dev *hdev, u8 type,
+ 	cp->own_addr_type = own_addr_type;
+ 	cp->filter_policy = filter_policy;
+ 
++	/* Check if PA Sync is in progress then select the PHY based on the
++	 * hci_conn.iso_qos.
++	 */
++	if (hci_dev_test_flag(hdev, HCI_PA_SYNC)) {
++		struct hci_cp_le_add_to_accept_list *sent;
++
++		sent = hci_sent_cmd_data(hdev, HCI_OP_LE_ADD_TO_ACCEPT_LIST);
++		if (sent) {
++			struct hci_conn *conn;
++
++			conn = hci_conn_hash_lookup_ba(hdev, ISO_LINK,
++						       &sent->bdaddr);
++			if (conn) {
++				struct bt_iso_qos *qos = &conn->iso_qos;
++
++				if (qos->bcast.in.phy & BT_ISO_PHY_1M ||
++				    qos->bcast.in.phy & BT_ISO_PHY_2M) {
++					cp->scanning_phys |= LE_SCAN_PHY_1M;
++					hci_le_scan_phy_params(phy, type,
++							       interval,
++							       window);
++					num_phy++;
++					phy++;
++				}
++
++				if (qos->bcast.in.phy & BT_ISO_PHY_CODED) {
++					cp->scanning_phys |= LE_SCAN_PHY_CODED;
++					hci_le_scan_phy_params(phy, type,
++							       interval,
++							       window);
++					num_phy++;
++					phy++;
++				}
++
++				if (num_phy)
++					goto done;
++			}
++		}
++	}
++
+ 	if (scan_1m(hdev) || scan_2m(hdev)) {
+ 		cp->scanning_phys |= LE_SCAN_PHY_1M;
+-
+-		phy->type = type;
+-		phy->interval = cpu_to_le16(interval);
+-		phy->window = cpu_to_le16(window);
+-
++		hci_le_scan_phy_params(phy, type, interval, window);
+ 		num_phy++;
+ 		phy++;
+ 	}
+ 
+ 	if (scan_coded(hdev)) {
+ 		cp->scanning_phys |= LE_SCAN_PHY_CODED;
+-
+-		phy->type = type;
+-		phy->interval = cpu_to_le16(interval);
+-		phy->window = cpu_to_le16(window);
+-
++		hci_le_scan_phy_params(phy, type, interval, window);
+ 		num_phy++;
+ 		phy++;
+ 	}
+ 
++done:
++	if (!num_phy)
++		return -EINVAL;
++
+ 	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_SCAN_PARAMS,
+ 				     sizeof(*cp) + sizeof(*phy) * num_phy,
+ 				     data, HCI_CMD_TIMEOUT);
+-- 
+2.43.0
+
 
 
 
