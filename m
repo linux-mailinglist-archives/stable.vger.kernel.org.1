@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-39593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74A18A5384
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:28:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E20C88A5477
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:37:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E89C71C21D8D
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:28:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FF081C208D1
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:37:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11AF778B50;
-	Mon, 15 Apr 2024 14:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A88082D83;
+	Mon, 15 Apr 2024 14:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDwbCzG7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwBfcqTV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D36757EA;
-	Mon, 15 Apr 2024 14:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98FE36AE0;
+	Mon, 15 Apr 2024 14:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191227; cv=none; b=OEVPfPMZmm2z/M8jmQIElJMLiLwpvya5K4zo5RcZQgaJfDhwpa5eQ8IPlGPzXSJ0VW9CZweXOeIjMjT2AADUwzXT2Yk1IovinSs2Qq6TdexDpEPZ5J/i5KtGWZRhhOrRQsI321ITZp8Sm8wf+CPTJtPTgkD4XEBmKgsYXuvf5Vo=
+	t=1713191667; cv=none; b=CUqF8HUJynpFW+3RZA84tyEV23HdtSp5e3fLb0pp0wUtBRlfi2q1Xp89EFXrCbeG0N5ukz2Bq90JSKEKc7a3fVeBV5j9dsA0dNHAKR/HVKDfZ8TLVV4s+04dNk671+d2vzABBmJ3GVoq2h+fs5W0wtdBBMiPXaKQHrjkdsNF3Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191227; c=relaxed/simple;
-	bh=jJSQToY6eMG2VeDxsbiOGmV8eLNaTHbC365rqFwJhDw=;
+	s=arc-20240116; t=1713191667; c=relaxed/simple;
+	bh=ola6rwMPm3y8qLlDmhCNtT1nyjw4B0aP+hCuJYsZJSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBSwQugXIKryOFAzfr9zosVhGsqrxM8CFPjsPNUTD5CLXB7czAu3jO0rdNuA+Eor1pCDjmIO/xj/RmpSM5we9MnlmvA1tdK8VarUsW3jwXPmz6zdi6KsPyeqXkY/aKQQGGav+39Ln+CBGXEQbbcR+z+aSOdTy9urK+AU1Sv1/Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDwbCzG7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FD2C3277B;
-	Mon, 15 Apr 2024 14:27:06 +0000 (UTC)
+	 MIME-Version; b=UYFh3dbtzuRrqWfkUr8rRtnz+8ao8cvKvnWXbZjID6uejU1pdT6cCeDAUq128nQzhOoxT2cPef0yD3MZOrNAfnc0gaELmEZIcN4xB6iYmxe5K+8wumbSmMsY77vnV3FG4Qo/9eW7CBscM7HYKX6Bs9M1ok2LGcCnWMzSn8EHqV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwBfcqTV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C1EC2BD10;
+	Mon, 15 Apr 2024 14:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191227;
-	bh=jJSQToY6eMG2VeDxsbiOGmV8eLNaTHbC365rqFwJhDw=;
+	s=korg; t=1713191667;
+	bh=ola6rwMPm3y8qLlDmhCNtT1nyjw4B0aP+hCuJYsZJSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iDwbCzG7g+NSzPv2TGXPsi2UngZk2VOfVKgmQECNJqPt00PuR8APoYzPxpFYuNSU7
-	 7NbXEy9pFTZeSklqVJzDEarHwvaBBN7bU5dvTjuURHtAmTmga9Y4Mj+41wCYRU9wLL
-	 U8CsQ/MHNJpaJW21ltySodEPSFp3P6poQwjhg0FA=
+	b=KwBfcqTVQ4SbIjf1l5LmOGOzOaLNw9HD/BEPy7w+bSKeXdyVUgYoj6VjJPRvrjlmv
+	 4msGxafozN9j8E4LliRtzHXt6khEbnVddS5dEHlgngI5eryBnrhuZV9tCAqb5QnZU6
+	 EtUeF3nxMrb2aOUneK7kRFaVGClWOJLTGt4W4GhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 074/172] Bluetooth: hci_sync: Fix using the same interval and window for Coded PHY
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 008/122] ring-buffer: Only update pages_touched when a new page is touched
 Date: Mon, 15 Apr 2024 16:19:33 +0200
-Message-ID: <20240415142002.651683433@linuxfoundation.org>
+Message-ID: <20240415141953.626926938@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 53cb4197e63ab2363aa28c3029061e4d516e7626 ]
+commit ffe3986fece696cf65e0ef99e74c75f848be8e30 upstream.
 
-Coded PHY recommended intervals are 3 time bigger than the 1M PHY so
-this aligns with that by multiplying by 3 the values given to 1M PHY
-since the code already used recommended values for that.
+The "buffer_percent" logic that is used by the ring buffer splice code to
+only wake up the tasks when there's no data after the buffer is filled to
+the percentage of the "buffer_percent" file is dependent on three
+variables that determine the amount of data that is in the ring buffer:
 
-Fixes: 288c90224eec ("Bluetooth: Enable all supported LE PHY by default")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ 1) pages_read - incremented whenever a new sub-buffer is consumed
+ 2) pages_lost - incremented every time a writer overwrites a sub-buffer
+ 3) pages_touched - incremented when a write goes to a new sub-buffer
+
+The percentage is the calculation of:
+
+  (pages_touched - (pages_lost + pages_read)) / nr_pages
+
+Basically, the amount of data is the total number of sub-bufs that have been
+touched, minus the number of sub-bufs lost and sub-bufs consumed. This is
+divided by the total count to give the buffer percentage. When the
+percentage is greater than the value in the "buffer_percent" file, it
+wakes up splice readers waiting for that amount.
+
+It was observed that over time, the amount read from the splice was
+constantly decreasing the longer the trace was running. That is, if one
+asked for 60%, it would read over 60% when it first starts tracing, but
+then it would be woken up at under 60% and would slowly decrease the
+amount of data read after being woken up, where the amount becomes much
+less than the buffer percent.
+
+This was due to an accounting of the pages_touched incrementation. This
+value is incremented whenever a writer transfers to a new sub-buffer. But
+the place where it was incremented was incorrect. If a writer overflowed
+the current sub-buffer it would go to the next one. If it gets preempted
+by an interrupt at that time, and the interrupt performs a trace, it too
+will end up going to the next sub-buffer. But only one should increment
+the counter. Unfortunately, that was not the case.
+
+Change the cmpxchg() that does the real switch of the tail-page into a
+try_cmpxchg(), and on success, perform the increment of pages_touched. This
+will only increment the counter once for when the writer moves to a new
+sub-buffer, and not when there's a race and is incremented for when a
+writer and its preempting writer both move to the same new sub-buffer.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240409151309.0d0e5056@gandalf.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: 2c2b0a78b3739 ("ring-buffer: Add percentage of ring buffer full to wake up reader")
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_sync.c | 6 +++---
+ kernel/trace/ring_buffer.c |    6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 89bd1c1a3e0e8..e1050d7d21a59 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -2664,8 +2664,8 @@ static int hci_le_set_ext_scan_param_sync(struct hci_dev *hdev, u8 type,
- 				if (qos->bcast.in.phy & BT_ISO_PHY_CODED) {
- 					cp->scanning_phys |= LE_SCAN_PHY_CODED;
- 					hci_le_scan_phy_params(phy, type,
--							       interval,
--							       window);
-+							       interval * 3,
-+							       window * 3);
- 					num_phy++;
- 					phy++;
- 				}
-@@ -2685,7 +2685,7 @@ static int hci_le_set_ext_scan_param_sync(struct hci_dev *hdev, u8 type,
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1536,7 +1536,6 @@ static void rb_tail_page_update(struct r
+ 	old_write = local_add_return(RB_WRITE_INTCNT, &next_page->write);
+ 	old_entries = local_add_return(RB_WRITE_INTCNT, &next_page->entries);
  
- 	if (scan_coded(hdev)) {
- 		cp->scanning_phys |= LE_SCAN_PHY_CODED;
--		hci_le_scan_phy_params(phy, type, interval, window);
-+		hci_le_scan_phy_params(phy, type, interval * 3, window * 3);
- 		num_phy++;
- 		phy++;
+-	local_inc(&cpu_buffer->pages_touched);
+ 	/*
+ 	 * Just make sure we have seen our old_write and synchronize
+ 	 * with any interrupts that come in.
+@@ -1573,8 +1572,9 @@ static void rb_tail_page_update(struct r
+ 		 */
+ 		local_set(&next_page->page->commit, 0);
+ 
+-		/* Again, either we update tail_page or an interrupt does */
+-		(void)cmpxchg(&cpu_buffer->tail_page, tail_page, next_page);
++		/* Either we update tail_page or an interrupt does */
++		if (try_cmpxchg(&cpu_buffer->tail_page, &tail_page, next_page))
++			local_inc(&cpu_buffer->pages_touched);
  	}
--- 
-2.43.0
-
+ }
+ 
 
 
 
