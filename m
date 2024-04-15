@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-39712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD9468A5452
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C244B8A53A5
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:29:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 888B92844FA
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8010E2871C5
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B3B7F476;
-	Mon, 15 Apr 2024 14:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0D98286A;
+	Mon, 15 Apr 2024 14:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDGlZzJn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtxZnFAu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85DF74E37;
-	Mon, 15 Apr 2024 14:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A925782862;
+	Mon, 15 Apr 2024 14:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191586; cv=none; b=B1v6lCMXaYuAsVoLpYNXQ5X2aYgoHFMYHbWQimw3SZlIv/2e3//+TaAuIlWSFh7DJDqtjaG7aGTq6XHgAhuGUEx1Mikxe+Zq8rn1eJUJ6GpLByiURHgzQTctl/7n0iGg2XD6W9kb3xHe+gyUPH45C9QUtw7q+GxnYzjoyPxMcdk=
+	t=1713191267; cv=none; b=XRnMqbehMcmHnWD9Lb3TkDph8VPMcJ7Fm7EDpxP/e5Pt333dxeAMGZU15d3Tzgc+KDa/89aZ4MV+uZ8fstGEWxPxRuffVbKGghBQvim88CM3unzjjczHPcBT/B1bWFX9j53+jlazu8vnLySNQi/5rElv/iq2tFDJIbrKJEx8bJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191586; c=relaxed/simple;
-	bh=7a+a/hJf3p1qi3r4rJiBnoTlfbvjZnpFrQdMA20pf/M=;
+	s=arc-20240116; t=1713191267; c=relaxed/simple;
+	bh=91nVF60XfuASMTmO5Cnl9LzpoAlhQcuYLaZ7HmeTdCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XImkgg1XSGnHcOKQo1v8Ionxk5GbxK+hFlfxZfrytPEegzyVTnrUc0HKCmSa8BVr8I7OpiPGja8TdNs3PeFIh+VDtV2DYbI6FTh6bnyfTGB/yS3N9sbCENUuS2uJReVUsKL0uO1JKIO9cPghAUVLRqVpWWNF6GV52vS2LrUARzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDGlZzJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C815C113CC;
-	Mon, 15 Apr 2024 14:33:06 +0000 (UTC)
+	 MIME-Version; b=IlbvMVslTk6Ho+LAn2HHn3r71jKqD0kAwkr99faGt0A1APEn1S78gvAPcW9Tk1PZvxesF5YdDctPuXKs/meXTl/OKQdSg0WTWucK7mJieML2r5hR6Rit+oNgit+n66t6hmZ33fWAbewhzEdV3xLQNhZ+l5HRWLbpxQzu1WLNsgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtxZnFAu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31073C113CC;
+	Mon, 15 Apr 2024 14:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191586;
-	bh=7a+a/hJf3p1qi3r4rJiBnoTlfbvjZnpFrQdMA20pf/M=;
+	s=korg; t=1713191267;
+	bh=91nVF60XfuASMTmO5Cnl9LzpoAlhQcuYLaZ7HmeTdCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QDGlZzJnimB/KWQ7IQ22Pouq7QkP6DuaSErR3H7Q2ylcH87wEI/5myXRcRSrF5WML
-	 V1EJMqw+4TXRF3DaUhDrVoTVPLTQjy2Ye9qy6lji8XmreBKKzQTcEYyIBAxI3D18ro
-	 rCjQwNOpgpKiKVVMFlZEpfBVbD923JQz2i+j9sks=
+	b=VtxZnFAu/PPRceL1MFJU+yBk89bq0MaTVCjw4IdI8x9jRQ9M7AAIDIGQHRwiCLNHz
+	 KiWASL5wJ1MuG61M9l7so6P/U03PFHdC+vcdkrMtNtj6KclU8bA3nbazQV8cZmd248
+	 zLSFGkxQjoiYaNFXJ9MycOKJJVmnIDrpdoi+kzxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Tony Lindgren <tony@atomide.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/122] ARM: OMAP2+: fix USB regression on Nokia N8x0
+Subject: [PATCH 6.8 086/172] net/mlx5: Correctly compare pkt reformat ids
 Date: Mon, 15 Apr 2024 16:19:45 +0200
-Message-ID: <20240415141953.981124271@linuxfoundation.org>
+Message-ID: <20240415142003.015215032@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +65,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit 4421405e3634a3189b541cf1e34598e44260720d ]
+[ Upstream commit 9eca93f4d5ab03905516a68683674d9c50ff95bd ]
 
-GPIO chip labels are wrong for OMAP2, so the USB does not work. Fix.
+struct mlx5_pkt_reformat contains a naked union of a u32 id and a
+dr_action pointer which is used when the action is SW-managed (when
+pkt_reformat.owner is set to MLX5_FLOW_RESOURCE_OWNER_SW). Using id
+directly in that case is incorrect, as it maps to the least significant
+32 bits of the 64-bit pointer in mlx5_fs_dr_action and not to the pkt
+reformat id allocated in firmware.
 
-Fixes: 8e0285ab95a9 ("ARM/musb: omap2: Remove global GPIO numbers from TUSB6010")
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Message-ID: <20240223181656.1099845-1-aaro.koskinen@iki.fi>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+For the purpose of comparing whether two rules are identical,
+interpreting the least significant 32 bits of the mlx5_fs_dr_action
+pointer as an id mostly works... until it breaks horribly and produces
+the outcome described in [1].
+
+This patch fixes mlx5_flow_dests_cmp to correctly compare ids using
+mlx5_fs_dr_action_get_pkt_reformat_id for the SW-managed rules.
+
+Link: https://lore.kernel.org/netdev/ea5264d6-6b55-4449-a602-214c6f509c1e@163.com/T/#u [1]
+
+Fixes: 6a48faeeca10 ("net/mlx5: Add direct rule fs_cmd implementation")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240409190820.227554-6-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap2/board-n8x0.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/board-n8x0.c b/arch/arm/mach-omap2/board-n8x0.c
-index c5b2e1e79698d..b45a3879eb344 100644
---- a/arch/arm/mach-omap2/board-n8x0.c
-+++ b/arch/arm/mach-omap2/board-n8x0.c
-@@ -79,10 +79,8 @@ static struct musb_hdrc_platform_data tusb_data = {
- static struct gpiod_lookup_table tusb_gpio_table = {
- 	.dev_id = "musb-tusb",
- 	.table = {
--		GPIO_LOOKUP("gpio-0-15", 0, "enable",
--			    GPIO_ACTIVE_HIGH),
--		GPIO_LOOKUP("gpio-48-63", 10, "int",
--			    GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("gpio-0-31", 0, "enable", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("gpio-32-63", 26, "int", GPIO_ACTIVE_HIGH),
- 		{ }
- 	},
- };
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+index 2a9421342a503..cf085a478e3e4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -1664,6 +1664,16 @@ static int create_auto_flow_group(struct mlx5_flow_table *ft,
+ 	return err;
+ }
+ 
++static bool mlx5_pkt_reformat_cmp(struct mlx5_pkt_reformat *p1,
++				  struct mlx5_pkt_reformat *p2)
++{
++	return p1->owner == p2->owner &&
++		(p1->owner == MLX5_FLOW_RESOURCE_OWNER_FW ?
++		 p1->id == p2->id :
++		 mlx5_fs_dr_action_get_pkt_reformat_id(p1) ==
++		 mlx5_fs_dr_action_get_pkt_reformat_id(p2));
++}
++
+ static bool mlx5_flow_dests_cmp(struct mlx5_flow_destination *d1,
+ 				struct mlx5_flow_destination *d2)
+ {
+@@ -1675,8 +1685,8 @@ static bool mlx5_flow_dests_cmp(struct mlx5_flow_destination *d1,
+ 		     ((d1->vport.flags & MLX5_FLOW_DEST_VPORT_VHCA_ID) ?
+ 		      (d1->vport.vhca_id == d2->vport.vhca_id) : true) &&
+ 		     ((d1->vport.flags & MLX5_FLOW_DEST_VPORT_REFORMAT_ID) ?
+-		      (d1->vport.pkt_reformat->id ==
+-		       d2->vport.pkt_reformat->id) : true)) ||
++		      mlx5_pkt_reformat_cmp(d1->vport.pkt_reformat,
++					    d2->vport.pkt_reformat) : true)) ||
+ 		    (d1->type == MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE &&
+ 		     d1->ft == d2->ft) ||
+ 		    (d1->type == MLX5_FLOW_DESTINATION_TYPE_TIR &&
 -- 
 2.43.0
 
