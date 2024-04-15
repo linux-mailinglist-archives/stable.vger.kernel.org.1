@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-39631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D6C08A53D2
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:31:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF05E8A54B1
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27A5F1F21B4C
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:31:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94DA61F227AC
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3645D7A705;
-	Mon, 15 Apr 2024 14:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47AD78C77;
+	Mon, 15 Apr 2024 14:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZZ3WZxS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CiUT++fO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEE174C02;
-	Mon, 15 Apr 2024 14:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B512A8D3;
+	Mon, 15 Apr 2024 14:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191348; cv=none; b=UQeK3TXXhoR+UtA4vSS4TCWmEjwyLTYMuUX+1C4mDRhQkG9kCGlOysePLj6LsEVb1vgFo1voKocZStnjtKTtW+QowIJkgZdNiJcT/KgeJuZg7ICGupk9ZnPRKAwgumwhuQZgm18B7iZzRnwiB2bd2kgGAqkQpPgSwgAJ75mUqM0=
+	t=1713191779; cv=none; b=bG/q/nJzwo1Xg/xKZmNx4+SiTMSa81OFyjEbAW1r6KnaO+zwb7NNIJLe8hB3cWIUQBHyp4ZOLwIZgLn2qFaEtMFcRZoeAAsqbCmiIEFFDSd31SV0byuVcJv3yj7zbCTZ6KJRvYGnWf/silnQIPF9W0XHZO6Bo5ZSH2ObKThRzbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191348; c=relaxed/simple;
-	bh=xYTcnyW/pxUxWh2ETTAhBp6Six7iKFS2ubLFXIfhPhM=;
+	s=arc-20240116; t=1713191779; c=relaxed/simple;
+	bh=QHUVOjXnxH1IoczCq5jyOvc6npmKxNQ+yhvzQ9njmlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LJeZrLelX+efxHLz5xCPrrFbV6a8IwccKekscX0LSECgj5N5ugHMFulf8ZtHajBB6fzVpagEOI10l1nqxl1GgyWkT2wqw98V0nBOPI+jlTfvoQGzo9e3ZFVnOH+lQvFqlPiNi6I4SWK0l71LP+K3jp6PXB7pL9jKGvx6YuSyMqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZZ3WZxS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6074BC113CC;
-	Mon, 15 Apr 2024 14:29:07 +0000 (UTC)
+	 MIME-Version; b=DQat0zEfIT3cydKUbPZhtxhuMFyiLayvgX9am6VYBOcoh48zgA+I4c5DL7hyfM8cPkhhWN557sLemz5VjVyl3cpRf0zIcbnsrowKtmAtVYWuhdOxH+rVxSAD1hpK6i6VdbRlObLjYG7uOJ97w9Y7lOyXIiRjT5NjyReAJWj/+t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CiUT++fO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C314AC113CC;
+	Mon, 15 Apr 2024 14:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191347;
-	bh=xYTcnyW/pxUxWh2ETTAhBp6Six7iKFS2ubLFXIfhPhM=;
+	s=korg; t=1713191779;
+	bh=QHUVOjXnxH1IoczCq5jyOvc6npmKxNQ+yhvzQ9njmlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZZ3WZxSUMAEao38OadvpUlZAwyD91K+cD7GH2pbmAR4Gipi7rmxzHKRlwKy3Fnsa
-	 urHsokWCbn1pCPGaI/vSlrOP8XxR9RJ3TFJCBt2z5yTIfRwQK2Zguf0lYBRUFZXpKo
-	 oVieYcbmRB6C9uts+3fjdrH46kLYKjcqctY4a+Z0=
+	b=CiUT++fOR1YaV4Nz174An4bQ+mBgZMTumUNmjr/KljPc/DqxLR/RgLZSknUpTiyov
+	 fAzS6MujAPloV6oNpFiR9UoPbrU9QbYkG318GqFKnXFbor6FYlKAkUR4tOEmieZleY
+	 HOEcBZLvEDHA00eeheZmDzkEtR/cQ/6/q77p1Iwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.8 112/172] io_uring/net: restore msg_control on sendzc retry
+	David Ahern <dsahern@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 046/122] ipv4/route: avoid unused-but-set-variable warning
 Date: Mon, 15 Apr 2024 16:20:11 +0200
-Message-ID: <20240415142003.797515373@linuxfoundation.org>
+Message-ID: <20240415141954.747195786@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 4fe82aedeb8a8cb09bfa60f55ab57b5c10a74ac4 upstream.
+[ Upstream commit cf1b7201df59fb936f40f4a807433fe3f2ce310a ]
 
-cac9e4418f4cb ("io_uring/net: save msghdr->msg_control for retries")
-reinstatiates msg_control before every __sys_sendmsg_sock(), since the
-function can overwrite the value in msghdr. We need to do same for
-zerocopy sendmsg.
+The log_martians variable is only used in an #ifdef, causing a 'make W=1'
+warning with gcc:
 
-Cc: stable@vger.kernel.org
-Fixes: 493108d95f146 ("io_uring/net: zerocopy sendmsg")
-Link: https://github.com/axboe/liburing/issues/1067
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/cc1d5d9df0576fa66ddad4420d240a98a020b267.1712596179.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+net/ipv4/route.c: In function 'ip_rt_send_redirect':
+net/ipv4/route.c:880:13: error: variable 'log_martians' set but not used [-Werror=unused-but-set-variable]
+
+Change the #ifdef to an equivalent IS_ENABLED() to let the compiler
+see where the variable is used.
+
+Fixes: 30038fc61adf ("net: ip_rt_send_redirect() optimization")
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240408074219.3030256-2-arnd@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/route.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -1255,6 +1255,7 @@ int io_sendmsg_zc(struct io_kiocb *req,
- 
- 	if (req_has_async_data(req)) {
- 		kmsg = req->async_data;
-+		kmsg->msg.msg_control_user = sr->msg_control;
- 	} else {
- 		ret = io_sendmsg_copy_hdr(req, &iomsg);
- 		if (ret)
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 3bad9aa066db3..e1e30c09a1753 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -926,13 +926,11 @@ void ip_rt_send_redirect(struct sk_buff *skb)
+ 		icmp_send(skb, ICMP_REDIRECT, ICMP_REDIR_HOST, gw);
+ 		peer->rate_last = jiffies;
+ 		++peer->n_redirects;
+-#ifdef CONFIG_IP_ROUTE_VERBOSE
+-		if (log_martians &&
++		if (IS_ENABLED(CONFIG_IP_ROUTE_VERBOSE) && log_martians &&
+ 		    peer->n_redirects == ip_rt_redirect_number)
+ 			net_warn_ratelimited("host %pI4/if%d ignores redirects for %pI4 to %pI4\n",
+ 					     &ip_hdr(skb)->saddr, inet_iif(skb),
+ 					     &ip_hdr(skb)->daddr, &gw);
+-#endif
+ 	}
+ out_put_peer:
+ 	inet_putpeer(peer);
+-- 
+2.43.0
+
 
 
 
