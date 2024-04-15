@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-39846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD09F8A5501
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48DCE8A542F
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF0D11C223B2
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 037CF2860C8
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445F37F465;
-	Mon, 15 Apr 2024 14:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4B481AA7;
+	Mon, 15 Apr 2024 14:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09lmRctQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrK/UZQw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015F87C085;
-	Mon, 15 Apr 2024 14:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B72180BFF;
+	Mon, 15 Apr 2024 14:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191990; cv=none; b=VUTwJ5FZiyhKnsa3D1/msITeINoPcejnvDUANE2odVbCi2FURxuu39EVqmhXIKi1azQE5DzoRaJZEvSqRXjWFRFcBEhCRtd6gnWjpClZO63LU9zb+r67DO769TuTGCOo/m402rFm3GHDWKfN/0bWBaJs1J1NlhHsoJ9uhZ/eRwE=
+	t=1713191501; cv=none; b=a4CQv3O8CpBy2PHJZD6OOLkGXmLjIoaCOR72AWuiYuBAllC+EJzinG5TUbDHKKcFGxhHLf1h9hszrZ5ZsxWDCWu8XDtwpl65cFE4Ef0e2l9pNAFwb9xKlB/qE/GSjTMb9gMmBiikIDSXidR8zWSbeaTHxZpOjsdTtrtw6LvKoYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191990; c=relaxed/simple;
-	bh=So87gzzdfYV1a0Gdntd7WT/5KX0bdc+Xy2QRacjONI4=;
+	s=arc-20240116; t=1713191501; c=relaxed/simple;
+	bh=//VueV5QYHGq3JYncIb+kNnNNPcYoq+L67/2D11gj90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UFT+cwP/FKJZyVIJBZujdbeevbisXhzP8JSAm15UnMo0MIdB7QwJsIJXNnY+s1Z3t1xmvHVoE/2o60nOMxOifjiKGMayp+0LO2QjFIrZ+K1dgk5RJoWn49yTNjlW9PF/ut0dGyQAIEopLLa/KhCPzv0XjwVDTuXp4cfBYBWR+IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09lmRctQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B00C113CC;
-	Mon, 15 Apr 2024 14:39:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Aa3LmpDoBLgeooCsq+Pl3f3EhDTo3W2N2ekHk71VsQXp7zO1zysS4Z/gmJ10IqcVhSGWVGIxmYCCU6QA53FWEHmDZUQX7YZroFc9uiKuoYij4VZ5I9wWJIcHDblpy2OWQPqkEAlE2nARr3VpZpWtk4+xcLOgCWCXaBKbBQzAck0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrK/UZQw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D6BC113CC;
+	Mon, 15 Apr 2024 14:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191989;
-	bh=So87gzzdfYV1a0Gdntd7WT/5KX0bdc+Xy2QRacjONI4=;
+	s=korg; t=1713191501;
+	bh=//VueV5QYHGq3JYncIb+kNnNNPcYoq+L67/2D11gj90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=09lmRctQT9dDC4DUVw4GBCbi6h7yyaE+fnSghn+KLqR17cYEwQ9yn23DLrd32Z2zX
-	 RzeePpWElvuHsqYuVlSL6XQsIYM5m1uRIzVwwwDeo7WmT7E0+qHR3kbMPZM5audKLA
-	 r/S9ezQeGRBO9ImAMp7NYgyGIJFv9gAZlkeWMBwA=
+	b=nrK/UZQw5JOilQXcrpJfvA/A6mruDg6aiVA8UTXO6HgNi8rxwDKUzsUtV0TmAUtdl
+	 odqtzYxjEOU9DOOPkoLX1Z+g6eO9hl3xJ/DP78JowQmqpyMeZd7FOSDuuuXMhzyKwa
+	 WSjnpk7Tl0QdNR+ig8PauGThNl4nRXRFgSyvpSUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 30/69] net/mlx5e: Fix mlx5e_priv_init() cleanup flow
+	Vidya Srinivas <vidya.srinivas@intel.com>,
+	Arun R Murthy <arun.r.murthy@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.8 162/172] drm/i915: Disable live M/N updates when using bigjoiner
 Date: Mon, 15 Apr 2024 16:21:01 +0200
-Message-ID: <20240415141947.073764975@linuxfoundation.org>
+Message-ID: <20240415142005.275555921@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit ecb829459a841198e142f72fadab56424ae96519 ]
+commit 4a36e46df7aa781c756f09727d37dc2783f1ee75 upstream.
 
-When mlx5e_priv_init() fails, the cleanup flow calls mlx5e_selq_cleanup which
-calls mlx5e_selq_apply() that assures that the `priv->state_lock` is held using
-lockdep_is_held().
+All joined pipes share the same transcoder/timing generator.
+Currently we just do the commits per-pipe, which doesn't really
+work if we need to change the timings at the same time. For
+now just disable live M/N updates when bigjoiner is needed.
 
-Acquire the state_lock in mlx5e_selq_cleanup().
-
-Kernel log:
-=============================
-WARNING: suspicious RCU usage
-6.8.0-rc3_net_next_841a9b5 #1 Not tainted
------------------------------
-drivers/net/ethernet/mellanox/mlx5/core/en/selq.c:124 suspicious rcu_dereference_protected() usage!
-
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-2 locks held by systemd-modules/293:
- #0: ffffffffa05067b0 (devices_rwsem){++++}-{3:3}, at: ib_register_client+0x109/0x1b0 [ib_core]
- #1: ffff8881096c65c0 (&device->client_data_rwsem){++++}-{3:3}, at: add_client_context+0x104/0x1c0 [ib_core]
-
-stack backtrace:
-CPU: 4 PID: 293 Comm: systemd-modules Not tainted 6.8.0-rc3_net_next_841a9b5 #1
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x8a/0xa0
- lockdep_rcu_suspicious+0x154/0x1a0
- mlx5e_selq_apply+0x94/0xa0 [mlx5_core]
- mlx5e_selq_cleanup+0x3a/0x60 [mlx5_core]
- mlx5e_priv_init+0x2be/0x2f0 [mlx5_core]
- mlx5_rdma_setup_rn+0x7c/0x1a0 [mlx5_core]
- rdma_init_netdev+0x4e/0x80 [ib_core]
- ? mlx5_rdma_netdev_free+0x70/0x70 [mlx5_core]
- ipoib_intf_init+0x64/0x550 [ib_ipoib]
- ipoib_intf_alloc+0x4e/0xc0 [ib_ipoib]
- ipoib_add_one+0xb0/0x360 [ib_ipoib]
- add_client_context+0x112/0x1c0 [ib_core]
- ib_register_client+0x166/0x1b0 [ib_core]
- ? 0xffffffffa0573000
- ipoib_init_module+0xeb/0x1a0 [ib_ipoib]
- do_one_initcall+0x61/0x250
- do_init_module+0x8a/0x270
- init_module_from_file+0x8b/0xd0
- idempotent_init_module+0x17d/0x230
- __x64_sys_finit_module+0x61/0xb0
- do_syscall_64+0x71/0x140
- entry_SYSCALL_64_after_hwframe+0x46/0x4e
- </TASK>
-
-Fixes: 8bf30be75069 ("net/mlx5e: Introduce select queue parameters")
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240409190820.227554-8-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Tested-by: Vidya Srinivas <vidya.srinivas@intel.com>
+Reviewed-by: Arun R Murthy <arun.r.murthy@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240404213441.17637-5-ville.syrjala@linux.intel.com
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+(cherry picked from commit ef79820db723a2a7c229a7251c12859e7e25a247)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/selq.c | 2 ++
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 --
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/selq.c b/drivers/net/ethernet/mellanox/mlx5/core/en/selq.c
-index f675b1926340f..f66bbc8464645 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/selq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/selq.c
-@@ -57,6 +57,7 @@ int mlx5e_selq_init(struct mlx5e_selq *selq, struct mutex *state_lock)
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -2756,7 +2756,11 @@ intel_dp_drrs_compute_config(struct inte
+ 		intel_panel_downclock_mode(connector, &pipe_config->hw.adjusted_mode);
+ 	int pixel_clock;
  
- void mlx5e_selq_cleanup(struct mlx5e_selq *selq)
- {
-+	mutex_lock(selq->state_lock);
- 	WARN_ON_ONCE(selq->is_prepared);
+-	if (has_seamless_m_n(connector))
++	/*
++	 * FIXME all joined pipes share the same transcoder.
++	 * Need to account for that when updating M/N live.
++	 */
++	if (has_seamless_m_n(connector) && !pipe_config->bigjoiner_pipes)
+ 		pipe_config->update_m_n = true;
  
- 	kvfree(selq->standby);
-@@ -67,6 +68,7 @@ void mlx5e_selq_cleanup(struct mlx5e_selq *selq)
- 
- 	kvfree(selq->standby);
- 	selq->standby = NULL;
-+	mutex_unlock(selq->state_lock);
- }
- 
- void mlx5e_selq_prepare_params(struct mlx5e_selq *selq, struct mlx5e_params *params)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 9910a0480f589..e7d396434da36 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -5578,9 +5578,7 @@ void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
- 	kfree(priv->tx_rates);
- 	kfree(priv->txq2sq);
- 	destroy_workqueue(priv->wq);
--	mutex_lock(&priv->state_lock);
- 	mlx5e_selq_cleanup(&priv->selq);
--	mutex_unlock(&priv->state_lock);
- 	free_cpumask_var(priv->scratchpad.cpumask);
- 
- 	for (i = 0; i < priv->htb_max_qos_sqs; i++)
--- 
-2.43.0
-
+ 	if (!can_enable_drrs(connector, pipe_config, downclock_mode)) {
 
 
 
