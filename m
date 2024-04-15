@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-39627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410C38A53C8
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:31:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1FDD8A547E
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:37:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62DAA1C21D8D
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:31:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C647B21FF2
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F7879B99;
-	Mon, 15 Apr 2024 14:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5468839E4;
+	Mon, 15 Apr 2024 14:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XD9ZR3UK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MIfA/3L7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2907757E1;
-	Mon, 15 Apr 2024 14:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3F080BF0;
+	Mon, 15 Apr 2024 14:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191330; cv=none; b=NgVOmJpBKf+HeV53FRYgxAqT1JPI0cAVKFO6Zlv36ilRY68q3ui2+zeMy+7/ZUfAeFbx4YzQI+TDDLqxmbvQRcapLPE+2T9ItotvEMpLud6MwAERL1tv2j+YpMdytyPINvOn7Or5vDEepHguqE4LZ2cNsgwYooraAnwy/GQou4s=
+	t=1713191679; cv=none; b=lU1ZcygLkKQuQgzYrTVgruMuhg3M4D4HU/rGWcIlKjE+x0o24lWmk600WlSphseJHZuF41pB8vU4bP0leZBGNmGkqetH0culAQb7sKlQHv1n2x1hnI1KWz2HvBJ+cur5EtiHS55mbmDwuL6IQlhE1JWfD+ULDNRd6C6gXgP4sh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191330; c=relaxed/simple;
-	bh=1PIhoEIy8idNmrec8fup7+QgU8Q42JxLbMCEjBErsSo=;
+	s=arc-20240116; t=1713191679; c=relaxed/simple;
+	bh=8+qWHD1af2MUK8hq0PiHbQtOnwSTjJSNCPrlTW+K+SU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rQ2A/KovB8PT0Q1CrOKCFvcGp3ZxJzrPwL01c62IAOm3Iy7H1flnC0OmR5aeKD3CP2p185pbKBPy1I9G7pv8r+2BUE6wsp+6Qbcg7HjnE522fTi9UJIMD0NJ0nqBxzkmCxthRLP5/jkKgsp409qI3dCW7PXb4OwZkLQzC9W/csM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XD9ZR3UK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58293C113CC;
-	Mon, 15 Apr 2024 14:28:50 +0000 (UTC)
+	 MIME-Version; b=A09crvoK9KgT8alN2JygmqklHQu1pCYSWknD+WTE2IITf1L019k7YlHiwVddlLcQuZ2o9D4Dk+8IXqWigqUVNRgsfoySkUpD9cpBMp3StciK8MhtHtanDrfSXmQJS6glP7tMH4S1bocGPEt5IhfH7uTX8yQbMRLzL0Na7g29rXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MIfA/3L7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 948B9C113CC;
+	Mon, 15 Apr 2024 14:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191330;
-	bh=1PIhoEIy8idNmrec8fup7+QgU8Q42JxLbMCEjBErsSo=;
+	s=korg; t=1713191679;
+	bh=8+qWHD1af2MUK8hq0PiHbQtOnwSTjJSNCPrlTW+K+SU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XD9ZR3UKr+UuF96wFtQpAZdJq9odPKItma0KpeyX6BGdw44Eu83OLCR/RK7zOSwD4
-	 caQ5Dy8kb4a5Gz7yKfa2BI38oXF/tv3xWlBR3v7/ZtkAoJwVj5TJrWMjYB+l7eN96Z
-	 j6bcYVozlOOYmqNwymgjgIHY1+wexARR9unWJ3EQ=
+	b=MIfA/3L7i1s49ph1o8VEGXyNIOyiRfnIW3H9LUnqxxbPWRq68nLxwE5SJpFKMiqyj
+	 NDKABbDqbPkJwfBoJ1AiLvKtGs8KhBS79D6fcvZ3qdFloxyqR6u1OIvZu++aiZkCLq
+	 8Qh6dX6Oy6WfFhsXFFo38oIyy1C9OupCzSoDOj9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.8 109/172] btrfs: qgroup: fix qgroup prealloc rsv leak in subvolume operations
+	syzbot+7f7f201cc2668a8fd169@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 043/122] af_unix: Clear stale u->oob_skb.
 Date: Mon, 15 Apr 2024 16:20:08 +0200
-Message-ID: <20240415142003.708318556@linuxfoundation.org>
+Message-ID: <20240415141954.659206081@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,231 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 74e97958121aa1f5854da6effba70143f051b0cd upstream.
+[ Upstream commit b46f4eaa4f0ec38909fb0072eea3aeddb32f954e ]
 
-Create subvolume, create snapshot and delete subvolume all use
-btrfs_subvolume_reserve_metadata() to reserve metadata for the changes
-done to the parent subvolume's fs tree, which cannot be mediated in the
-normal way via start_transaction. When quota groups (squota or qgroups)
-are enabled, this reserves qgroup metadata of type PREALLOC. Once the
-operation is associated to a transaction, we convert PREALLOC to
-PERTRANS, which gets cleared in bulk at the end of the transaction.
+syzkaller started to report deadlock of unix_gc_lock after commit
+4090fa373f0e ("af_unix: Replace garbage collection algorithm."), but
+it just uncovers the bug that has been there since commit 314001f0bf92
+("af_unix: Add OOB support").
 
-However, the error paths of these three operations were not implementing
-this lifecycle correctly. They unconditionally converted the PREALLOC to
-PERTRANS in a generic cleanup step regardless of errors or whether the
-operation was fully associated to a transaction or not. This resulted in
-error paths occasionally converting this rsv to PERTRANS without calling
-record_root_in_trans successfully, which meant that unless that root got
-recorded in the transaction by some other thread, the end of the
-transaction would not free that root's PERTRANS, leaking it. Ultimately,
-this resulted in hitting a WARN in CONFIG_BTRFS_DEBUG builds at unmount
-for the leaked reservation.
+The repro basically does the following.
 
-The fix is to ensure that every qgroup PREALLOC reservation observes the
-following properties:
+  from socket import *
+  from array import array
 
-1. any failure before record_root_in_trans is called successfully
-   results in freeing the PREALLOC reservation.
-2. after record_root_in_trans, we convert to PERTRANS, and now the
-   transaction owns freeing the reservation.
+  c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+  c1.sendmsg([b'a'], [(SOL_SOCKET, SCM_RIGHTS, array("i", [c2.fileno()]))], MSG_OOB)
+  c2.recv(1)  # blocked as no normal data in recv queue
 
-This patch enforces those properties on the three operations. Without
-it, generic/269 with squotas enabled at mkfs time would fail in ~5-10
-runs on my system. With this patch, it ran successfully 1000 times in a
-row.
+  c2.close()  # done async and unblock recv()
+  c1.close()  # done async and trigger GC
 
-Fixes: e85fde5162bf ("btrfs: qgroup: fix qgroup meta rsv leak for subvolume operations")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A socket sends its file descriptor to itself as OOB data and tries to
+receive normal data, but finally recv() fails due to async close().
+
+The problem here is wrong handling of OOB skb in manage_oob().  When
+recvmsg() is called without MSG_OOB, manage_oob() is called to check
+if the peeked skb is OOB skb.  In such a case, manage_oob() pops it
+out of the receive queue but does not clear unix_sock(sk)->oob_skb.
+This is wrong in terms of uAPI.
+
+Let's say we send "hello" with MSG_OOB, and "world" without MSG_OOB.
+The 'o' is handled as OOB data.  When recv() is called twice without
+MSG_OOB, the OOB data should be lost.
+
+  >>> from socket import *
+  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM, 0)
+  >>> c1.send(b'hello', MSG_OOB)  # 'o' is OOB data
+  5
+  >>> c1.send(b'world')
+  5
+  >>> c2.recv(5)  # OOB data is not received
+  b'hell'
+  >>> c2.recv(5)  # OOB date is skipped
+  b'world'
+  >>> c2.recv(5, MSG_OOB)  # This should return an error
+  b'o'
+
+In the same situation, TCP actually returns -EINVAL for the last
+recv().
+
+Also, if we do not clear unix_sk(sk)->oob_skb, unix_poll() always set
+EPOLLPRI even though the data has passed through by previous recv().
+
+To avoid these issues, we must clear unix_sk(sk)->oob_skb when dequeuing
+it from recv queue.
+
+The reason why the old GC did not trigger the deadlock is because the
+old GC relied on the receive queue to detect the loop.
+
+When it is triggered, the socket with OOB data is marked as GC candidate
+because file refcount == inflight count (1).  However, after traversing
+all inflight sockets, the socket still has a positive inflight count (1),
+thus the socket is excluded from candidates.  Then, the old GC lose the
+chance to garbage-collect the socket.
+
+With the old GC, the repro continues to create true garbage that will
+never be freed nor detected by kmemleak as it's linked to the global
+inflight list.  That's why we couldn't even notice the issue.
+
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Reported-by: syzbot+7f7f201cc2668a8fd169@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7f7f201cc2668a8fd169
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240405221057.2406-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c     |   13 ++++++++++++-
- fs/btrfs/ioctl.c     |   37 ++++++++++++++++++++++++++++---------
- fs/btrfs/root-tree.c |   10 ----------
- fs/btrfs/root-tree.h |    2 --
- 4 files changed, 40 insertions(+), 22 deletions(-)
+ net/unix/af_unix.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4476,6 +4476,7 @@ int btrfs_delete_subvolume(struct btrfs_
- 	struct btrfs_trans_handle *trans;
- 	struct btrfs_block_rsv block_rsv;
- 	u64 root_flags;
-+	u64 qgroup_reserved = 0;
- 	int ret;
- 
- 	down_write(&fs_info->subvol_sem);
-@@ -4520,12 +4521,20 @@ int btrfs_delete_subvolume(struct btrfs_
- 	ret = btrfs_subvolume_reserve_metadata(root, &block_rsv, 5, true);
- 	if (ret)
- 		goto out_undead;
-+	qgroup_reserved = block_rsv.qgroup_rsv_reserved;
- 
- 	trans = btrfs_start_transaction(root, 0);
- 	if (IS_ERR(trans)) {
- 		ret = PTR_ERR(trans);
- 		goto out_release;
- 	}
-+	ret = btrfs_record_root_in_trans(trans, root);
-+	if (ret) {
-+		btrfs_abort_transaction(trans, ret);
-+		goto out_end_trans;
-+	}
-+	btrfs_qgroup_convert_reserved_meta(root, qgroup_reserved);
-+	qgroup_reserved = 0;
- 	trans->block_rsv = &block_rsv;
- 	trans->bytes_reserved = block_rsv.size;
- 
-@@ -4584,7 +4593,9 @@ out_end_trans:
- 	ret = btrfs_end_transaction(trans);
- 	inode->i_flags |= S_DEAD;
- out_release:
--	btrfs_subvolume_release_metadata(root, &block_rsv);
-+	btrfs_block_rsv_release(fs_info, &block_rsv, (u64)-1, NULL);
-+	if (qgroup_reserved)
-+		btrfs_qgroup_free_meta_prealloc(root, qgroup_reserved);
- out_undead:
- 	if (ret) {
- 		spin_lock(&dest->root_item_lock);
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -603,6 +603,7 @@ static noinline int create_subvol(struct
- 	int ret;
- 	dev_t anon_dev;
- 	u64 objectid;
-+	u64 qgroup_reserved = 0;
- 
- 	root_item = kzalloc(sizeof(*root_item), GFP_KERNEL);
- 	if (!root_item)
-@@ -640,13 +641,18 @@ static noinline int create_subvol(struct
- 					       trans_num_items, false);
- 	if (ret)
- 		goto out_new_inode_args;
-+	qgroup_reserved = block_rsv.qgroup_rsv_reserved;
- 
- 	trans = btrfs_start_transaction(root, 0);
- 	if (IS_ERR(trans)) {
- 		ret = PTR_ERR(trans);
--		btrfs_subvolume_release_metadata(root, &block_rsv);
--		goto out_new_inode_args;
-+		goto out_release_rsv;
- 	}
-+	ret = btrfs_record_root_in_trans(trans, BTRFS_I(dir)->root);
-+	if (ret)
-+		goto out;
-+	btrfs_qgroup_convert_reserved_meta(root, qgroup_reserved);
-+	qgroup_reserved = 0;
- 	trans->block_rsv = &block_rsv;
- 	trans->bytes_reserved = block_rsv.size;
- 	/* Tree log can't currently deal with an inode which is a new root. */
-@@ -757,9 +763,11 @@ static noinline int create_subvol(struct
- out:
- 	trans->block_rsv = NULL;
- 	trans->bytes_reserved = 0;
--	btrfs_subvolume_release_metadata(root, &block_rsv);
--
- 	btrfs_end_transaction(trans);
-+out_release_rsv:
-+	btrfs_block_rsv_release(fs_info, &block_rsv, (u64)-1, NULL);
-+	if (qgroup_reserved)
-+		btrfs_qgroup_free_meta_prealloc(root, qgroup_reserved);
- out_new_inode_args:
- 	btrfs_new_inode_args_destroy(&new_inode_args);
- out_inode:
-@@ -781,6 +789,8 @@ static int create_snapshot(struct btrfs_
- 	struct btrfs_pending_snapshot *pending_snapshot;
- 	unsigned int trans_num_items;
- 	struct btrfs_trans_handle *trans;
-+	struct btrfs_block_rsv *block_rsv;
-+	u64 qgroup_reserved = 0;
- 	int ret;
- 
- 	/* We do not support snapshotting right now. */
-@@ -817,19 +827,19 @@ static int create_snapshot(struct btrfs_
- 		goto free_pending;
- 	}
- 
--	btrfs_init_block_rsv(&pending_snapshot->block_rsv,
--			     BTRFS_BLOCK_RSV_TEMP);
-+	block_rsv = &pending_snapshot->block_rsv;
-+	btrfs_init_block_rsv(block_rsv, BTRFS_BLOCK_RSV_TEMP);
- 	/*
- 	 * 1 to add dir item
- 	 * 1 to add dir index
- 	 * 1 to update parent inode item
- 	 */
- 	trans_num_items = create_subvol_num_items(inherit) + 3;
--	ret = btrfs_subvolume_reserve_metadata(BTRFS_I(dir)->root,
--					       &pending_snapshot->block_rsv,
-+	ret = btrfs_subvolume_reserve_metadata(BTRFS_I(dir)->root, block_rsv,
- 					       trans_num_items, false);
- 	if (ret)
- 		goto free_pending;
-+	qgroup_reserved = block_rsv->qgroup_rsv_reserved;
- 
- 	pending_snapshot->dentry = dentry;
- 	pending_snapshot->root = root;
-@@ -842,6 +852,13 @@ static int create_snapshot(struct btrfs_
- 		ret = PTR_ERR(trans);
- 		goto fail;
- 	}
-+	ret = btrfs_record_root_in_trans(trans, BTRFS_I(dir)->root);
-+	if (ret) {
-+		btrfs_end_transaction(trans);
-+		goto fail;
-+	}
-+	btrfs_qgroup_convert_reserved_meta(root, qgroup_reserved);
-+	qgroup_reserved = 0;
- 
- 	trans->pending_snapshot = pending_snapshot;
- 
-@@ -871,7 +888,9 @@ fail:
- 	if (ret && pending_snapshot->snap)
- 		pending_snapshot->snap->anon_dev = 0;
- 	btrfs_put_root(pending_snapshot->snap);
--	btrfs_subvolume_release_metadata(root, &pending_snapshot->block_rsv);
-+	btrfs_block_rsv_release(fs_info, block_rsv, (u64)-1, NULL);
-+	if (qgroup_reserved)
-+		btrfs_qgroup_free_meta_prealloc(root, qgroup_reserved);
- free_pending:
- 	if (pending_snapshot->anon_dev)
- 		free_anon_bdev(pending_snapshot->anon_dev);
---- a/fs/btrfs/root-tree.c
-+++ b/fs/btrfs/root-tree.c
-@@ -539,13 +539,3 @@ int btrfs_subvolume_reserve_metadata(str
- 	}
- 	return ret;
- }
--
--void btrfs_subvolume_release_metadata(struct btrfs_root *root,
--				      struct btrfs_block_rsv *rsv)
--{
--	struct btrfs_fs_info *fs_info = root->fs_info;
--	u64 qgroup_to_release;
--
--	btrfs_block_rsv_release(fs_info, rsv, (u64)-1, &qgroup_to_release);
--	btrfs_qgroup_convert_reserved_meta(root, qgroup_to_release);
--}
---- a/fs/btrfs/root-tree.h
-+++ b/fs/btrfs/root-tree.h
-@@ -8,8 +8,6 @@ struct fscrypt_str;
- int btrfs_subvolume_reserve_metadata(struct btrfs_root *root,
- 				     struct btrfs_block_rsv *rsv,
- 				     int nitems, bool use_global_rsv);
--void btrfs_subvolume_release_metadata(struct btrfs_root *root,
--				      struct btrfs_block_rsv *rsv);
- int btrfs_add_root_ref(struct btrfs_trans_handle *trans, u64 root_id,
- 		       u64 ref_id, u64 dirid, u64 sequence,
- 		       const struct fscrypt_str *name);
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 510b1d6758db7..ac3d4b540c100 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2589,7 +2589,9 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
+ 				}
+ 			} else if (!(flags & MSG_PEEK)) {
+ 				skb_unlink(skb, &sk->sk_receive_queue);
+-				consume_skb(skb);
++				WRITE_ONCE(u->oob_skb, NULL);
++				if (!WARN_ON_ONCE(skb_unref(skb)))
++					kfree_skb(skb);
+ 				skb = skb_peek(&sk->sk_receive_queue);
+ 			}
+ 		}
+-- 
+2.43.0
+
 
 
 
