@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-39694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0747D8A543D
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0E818A54F0
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B720E28589D
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0815DB20BE0
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDED382489;
-	Mon, 15 Apr 2024 14:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6469B7E0F4;
+	Mon, 15 Apr 2024 14:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kiILADv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBw8PVvB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872C480BFE;
-	Mon, 15 Apr 2024 14:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2091178C72;
+	Mon, 15 Apr 2024 14:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191536; cv=none; b=Lx5GuI2htN30DOH4p3UhYmAd0KyNfnx5IxugX6zCBg5ZQYdhpt4c9CVZXPj7CRn6umsS0ywOzkcgCvuPd477XQjYPaJj71yW66DqpU8z+cOrZZ10baTMhohOsdOrCMmQjmjt1VWsHv42eQgVPWHK72JXSe5Qom7xl8+vKmgm3xE=
+	t=1713191936; cv=none; b=BSeiKv64kG7xk3xQqO2yeXHHbGzM80M9RXTBo5Marqw/lSr+4d4yy/zPZPfQfP+5MyrLtB+l5cbmBbYm2aWfT+671QsOhZpMH3EukQV+OZ0RTr/CJt6fE6VNQIjXTkzCcOfALFlYbKvD21+hUA3DbR7JyqdP3uxpK9u+9oEAgq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191536; c=relaxed/simple;
-	bh=LUd5/0+JreaGis0BdfeTlIBmlF/qQ7sIWgR67JwdrU0=;
+	s=arc-20240116; t=1713191936; c=relaxed/simple;
+	bh=zw/+FUF+E71i9AE9AcA6pUzAh+yX1LIDdngXq4ZGJes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cKJjwd8OuS/9NJmg19I3/Wy6FLx1Conf201CsloTlZeNsZiAP/+kSztuVksgDkIKreWfqgLlaox+3VkQdI+UI8WL0HygvAy3miCAEjaVKq+cKbzA/v+qN0LPsqFiJUygU/DjtQbeMMP34JuKb49pUYwmr06N0bqGF7frWKwm7iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kiILADv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D7BEC113CC;
-	Mon, 15 Apr 2024 14:32:15 +0000 (UTC)
+	 MIME-Version; b=TJXxlgVUrDq9tA+qFubZPAotsdqVRFLoU1atLQQynrn7Oo0IMPdiH3W7cxPMbqtcF1FtsWf0QaUlDiq+lkjrZF1wVW91k9EcOj+5E6tjzMcRloGmp/jSbBcKy9popFOUTUT4JFoex5mwsPmS1pdafTDBy66+sneSBwD7vIv85yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBw8PVvB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A8E8C113CC;
+	Mon, 15 Apr 2024 14:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191536;
-	bh=LUd5/0+JreaGis0BdfeTlIBmlF/qQ7sIWgR67JwdrU0=;
+	s=korg; t=1713191936;
+	bh=zw/+FUF+E71i9AE9AcA6pUzAh+yX1LIDdngXq4ZGJes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0kiILADv+wqTvPcXLk+0zsA9skndwHy9bPz5NxhOgvg5jnr7Ie5Jtcp1eD60UAAle
-	 G+EsQ3bcpDo0Uzkm/S7SykpyO1Dd9Blkod4JOv9vSPgYODZOcKj3D3F6HBbEJN1c7E
-	 x7OsGekcLTLfWVdlNlVdKe/WnZj1wkkCnOFguiY4=
+	b=kBw8PVvBhCkj/qgut8u1qw0EtEgC7Ibu+MkpqFGZRy7+sgcfK8CqVIBLCv1um+DJi
+	 jKAJpjdMT390oVRyCsqpGWQHDyfL/U+ZpspUl5mMelpDFohnx+zEOg2uC1WHkVK8qc
+	 Z6qzkS/D6wJC/3BNNjsh8wffK3niqQgFQtok7UVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.8 137/172] arm64: dts: imx8-ss-lsio: fix pwm lpcg indices
+	syzbot+39ec16ff6cc18b1d066d@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 05/69] Bluetooth: Fix memory leak in hci_req_sync_complete()
 Date: Mon, 15 Apr 2024 16:20:36 +0200
-Message-ID: <20240415142004.536555376@linuxfoundation.org>
+Message-ID: <20240415141946.332428548@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit 1d86c2b3946e69d6b0b93568d312aae6247847c0 upstream.
+commit 45d355a926ab40f3ae7bc0b0a00cb0e3e8a5a810 upstream.
 
-lpcg's arg0 should use clock indices instead of index.
+In 'hci_req_sync_complete()', always free the previous sync
+request state before assigning reference to a new one.
 
-pwm0_lpcg: clock-controller@5d400000 {
-	...                                                // Col1  Col2
-	clocks = <&clk IMX_SC_R_PWM_0 IMX_SC_PM_CLK_PER>,  // 0     0
-		 <&clk IMX_SC_R_PWM_0 IMX_SC_PM_CLK_PER>,  // 1     1
-		 <&clk IMX_SC_R_PWM_0 IMX_SC_PM_CLK_PER>,  // 2     4
-		 <&lsio_bus_clk>,                          // 3     5
-		 <&clk IMX_SC_R_PWM_0 IMX_SC_PM_CLK_PER>;  // 4     6
-	clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_1>,
-			<IMX_LPCG_CLK_4>, <IMX_LPCG_CLK_5>,
-			<IMX_LPCG_CLK_6>;
-};
-
-Col1: index, which existing dts try to get.
-Col2: actual index in lpcg driver.
-
-pwm1 {
-	....
-	clocks = <&pwm1_lpcg 4>, <&pwm1_lpcg 1>;
-                             ^^              ^^
-should be:
-
-	clocks = <&pwm1_lpcg IMX_LPCG_CLK_6>, <&pwm1_lpcg IMX_LPCG_CLK_1>;
-};
-
-Arg0 is divided by 4 in lpcg driver, so index 0 and 1 will be get by pwm
-driver, which are same as IMX_LPCG_CLK_6 and IMX_LPCG_CLK_1. Even it can
-work, but code logic is wrong. Fixed it by use correct indices.
-
+Reported-by: syzbot+39ec16ff6cc18b1d066d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=39ec16ff6cc18b1d066d
 Cc: stable@vger.kernel.org
-Fixes: 23fa99b205ea ("arm64: dts: freescale: imx8-ss-lsio: add support for lsio_pwm0-3")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: f60cb30579d3 ("Bluetooth: Convert hci_req_sync family of function to new request API")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8-ss-lsio.dtsi |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ net/bluetooth/hci_request.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8-ss-lsio.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-lsio.dtsi
-@@ -25,8 +25,8 @@ lsio_subsys: bus@5d000000 {
- 		compatible = "fsl,imx27-pwm";
- 		reg = <0x5d000000 0x10000>;
- 		clock-names = "ipg", "per";
--		clocks = <&pwm0_lpcg 4>,
--			 <&pwm0_lpcg 1>;
-+		clocks = <&pwm0_lpcg IMX_LPCG_CLK_6>,
-+			 <&pwm0_lpcg IMX_LPCG_CLK_1>;
- 		assigned-clocks = <&clk IMX_SC_R_PWM_0 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <24000000>;
- 		#pwm-cells = <3>;
-@@ -38,8 +38,8 @@ lsio_subsys: bus@5d000000 {
- 		compatible = "fsl,imx27-pwm";
- 		reg = <0x5d010000 0x10000>;
- 		clock-names = "ipg", "per";
--		clocks = <&pwm1_lpcg 4>,
--			 <&pwm1_lpcg 1>;
-+		clocks = <&pwm1_lpcg IMX_LPCG_CLK_6>,
-+			 <&pwm1_lpcg IMX_LPCG_CLK_1>;
- 		assigned-clocks = <&clk IMX_SC_R_PWM_1 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <24000000>;
- 		#pwm-cells = <3>;
-@@ -51,8 +51,8 @@ lsio_subsys: bus@5d000000 {
- 		compatible = "fsl,imx27-pwm";
- 		reg = <0x5d020000 0x10000>;
- 		clock-names = "ipg", "per";
--		clocks = <&pwm2_lpcg 4>,
--			 <&pwm2_lpcg 1>;
-+		clocks = <&pwm2_lpcg IMX_LPCG_CLK_6>,
-+			 <&pwm2_lpcg IMX_LPCG_CLK_1>;
- 		assigned-clocks = <&clk IMX_SC_R_PWM_2 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <24000000>;
- 		#pwm-cells = <3>;
-@@ -64,8 +64,8 @@ lsio_subsys: bus@5d000000 {
- 		compatible = "fsl,imx27-pwm";
- 		reg = <0x5d030000 0x10000>;
- 		clock-names = "ipg", "per";
--		clocks = <&pwm3_lpcg 4>,
--			 <&pwm3_lpcg 1>;
-+		clocks = <&pwm3_lpcg IMX_LPCG_CLK_6>,
-+			 <&pwm3_lpcg IMX_LPCG_CLK_1>;
- 		assigned-clocks = <&clk IMX_SC_R_PWM_3 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <24000000>;
- 		#pwm-cells = <3>;
+--- a/net/bluetooth/hci_request.c
++++ b/net/bluetooth/hci_request.c
+@@ -105,8 +105,10 @@ void hci_req_sync_complete(struct hci_de
+ 	if (hdev->req_status == HCI_REQ_PEND) {
+ 		hdev->req_result = result;
+ 		hdev->req_status = HCI_REQ_DONE;
+-		if (skb)
++		if (skb) {
++			kfree_skb(hdev->req_skb);
+ 			hdev->req_skb = skb_get(skb);
++		}
+ 		wake_up_interruptible(&hdev->req_wait_q);
+ 	}
+ }
 
 
 
