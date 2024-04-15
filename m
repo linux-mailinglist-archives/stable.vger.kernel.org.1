@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-39670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FFB8A5416
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:34:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 586F88A54EC
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C39A21C2144E
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:34:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE8D8B22BAC
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B32B8289B;
-	Mon, 15 Apr 2024 14:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC501823BF;
+	Mon, 15 Apr 2024 14:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvEuvVGA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmPIyPks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF8E78C76;
-	Mon, 15 Apr 2024 14:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF60762E0;
+	Mon, 15 Apr 2024 14:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191465; cv=none; b=C98IC+2AAbCxu/DTna7ssUu9WtkY12M1riHXkl5weSs/Rd6y+1RdQXuMRMGq6dZxpwcImh3kI8Hu4M5X5ILDJ0XNB6ugyhCovgCchvZUnWcUdbre5rXbiXCsRiPd+nulmiXNSiC/nbK/K+BgOFPpk5dCAzF/CwgkHh1LTUcIlOs=
+	t=1713191926; cv=none; b=qg6kH93ja8fqwv6HchkEVJDX5dyUl09tMO/CWCsVq+/heso48bzI9EGImSvwRnBTynOXOBhxuRcCDdj1GdPZaNDmzlmfEW77CTDaKi4owX3gmwfKnnpeLzh8RpoM962tQN5ZYF3HA/1u9/NhOFlcji1w77cwzBXRlFPlVpuGSeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191465; c=relaxed/simple;
-	bh=h+vGp156q2RtwoputzFVL7FRuGWWZY3HQs1FEkZgB0c=;
+	s=arc-20240116; t=1713191926; c=relaxed/simple;
+	bh=6FoFArPLSuLafYOgRc7yhRjNiQbkWkWPFyVV7ou2KYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cBsDusfznwZZpACEbPMLmJF7XmQH/MRDKNjjNILnC/WhpDVrcJiTrP8Pj3x8nk6l6Wg9eYLfqoef1RoMDwmPF0KOnClwl4/nJjl+YZrZHq8K+HVYF+xRJ10iP15A3pSJcrcRew+kMyY2nZE2m+d8jy6BE8iJbHdmXumT82guoIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvEuvVGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5C5C113CC;
-	Mon, 15 Apr 2024 14:31:04 +0000 (UTC)
+	 MIME-Version; b=isqfWt9bie/5NpTL8CAu1ECpeEenC83oSK4TX2/kxKxM+VVHHgJ7Ekerw7nuG5bIIsLgv0Pe1D0WLfyeUYHXAea8qlrVuQZDrlsng090TGsmgJn9J9zNWrSyuaLz96jELYpVgHMPD4lO0moUudCfMD+dNHYHbJlYrXyEGqlG0z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmPIyPks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27510C113CC;
+	Mon, 15 Apr 2024 14:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191465;
-	bh=h+vGp156q2RtwoputzFVL7FRuGWWZY3HQs1FEkZgB0c=;
+	s=korg; t=1713191926;
+	bh=6FoFArPLSuLafYOgRc7yhRjNiQbkWkWPFyVV7ou2KYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uvEuvVGA/Uhb/u8ayApM4WA5RFpKzgMU4aryJBFN1rXgdWt2H75T2tG+LPNMm2XPZ
-	 +pP9Gth430SKaQ8qVCn5E9Xk1kVIceZRoIz7EDqCxHqNnsTxLhvPjGASPB4Jm3hR3k
-	 rXyzMLXcgXMh/TeTGlENRLkCmY6kOW6Dgf3tk1Tw=
+	b=wmPIyPksDPnG28/g+oY4uZMBVEjKMxfjWqW/CeXtkHJEay6uduaiJL0W1pk1YvYp1
+	 g3m0zU7l7uyHNXzH0X5wK1DILS4cF0mCO+xkVx4+S2sr3VGwVG40LkNg09Ej9e46WS
+	 1xOfQQCEZfF9uit8wEWChto3ABrVXDGLbhh+rhdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.8 134/172] arm64: dts: imx8-ss-dma: fix adc lpcg indices
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.1 02/69] ata: libata-scsi: Fix ata_scsi_dev_rescan() error path
 Date: Mon, 15 Apr 2024 16:20:33 +0200
-Message-ID: <20240415142004.447964613@linuxfoundation.org>
+Message-ID: <20240415141946.242468089@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 81975080f14167610976e968e8016e92d836266f upstream.
+commit 79336504781e7fee5ddaf046dcc186c8dfdf60b1 upstream.
 
-adc0_lpcg: clock-controller@5ac80000 {
-	...						    Col1   Col2
-	clocks = <&clk IMX_SC_R_ADC_0 IMX_SC_PM_CLK_PER>, // 0      0
-		 <&dma_ipg_clk>;			  // 1      4
-	clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-};
+Commit 0c76106cb975 ("scsi: sd: Fix TCG OPAL unlock on system resume")
+incorrectly handles failures of scsi_resume_device() in
+ata_scsi_dev_rescan(), leading to a double call to
+spin_unlock_irqrestore() to unlock a device port. Fix this by redefining
+the goto labels used in case of errors and only unlock the port
+scsi_scan_mutex when scsi_resume_device() fails.
 
-Col1: index, which existing dts try to get.
-Col2: actual index in lpcg driver.
+Bug found with the Smatch static checker warning:
 
-adc0: adc@5a880000 {
-	clocks = <&adc0_lpcg 0>, <&adc0_lpcg 1>;
-			     ^^              ^^
-	clocks = <&adc0_lpcg IMX_LPCG_CLK_0>, <&adc0_lpcg IMX_LPCG_CLK_4>;
+	drivers/ata/libata-scsi.c:4774 ata_scsi_dev_rescan()
+	error: double unlocked 'ap->lock' (orig line 4757)
 
-Arg0 is divided by 4 in lpcg driver. So adc get IMX_SC_PM_CLK_PER by
-<&adc0_lpcg 0>, <&adc0_lpcg 1>. Although function can work, code logic is
-wrong. Fix it by using correct indices.
-
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: 0c76106cb975 ("scsi: sd: Fix TCG OPAL unlock on system resume")
 Cc: stable@vger.kernel.org
-Fixes: 1db044b25d2e ("arm64: dts: imx8dxl: add adc0 support")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/ata/libata-scsi.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-@@ -377,8 +377,8 @@ dma_subsys: bus@5a000000 {
- 		reg = <0x5a880000 0x10000>;
- 		interrupts = <GIC_SPI 240 IRQ_TYPE_LEVEL_HIGH>;
- 		interrupt-parent = <&gic>;
--		clocks = <&adc0_lpcg 0>,
--			 <&adc0_lpcg 1>;
-+		clocks = <&adc0_lpcg IMX_LPCG_CLK_0>,
-+			 <&adc0_lpcg IMX_LPCG_CLK_4>;
- 		clock-names = "per", "ipg";
- 		assigned-clocks = <&clk IMX_SC_R_ADC_0 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <24000000>;
-@@ -392,8 +392,8 @@ dma_subsys: bus@5a000000 {
- 		reg = <0x5a890000 0x10000>;
- 		interrupts = <GIC_SPI 241 IRQ_TYPE_LEVEL_HIGH>;
- 		interrupt-parent = <&gic>;
--		clocks = <&adc1_lpcg 0>,
--			 <&adc1_lpcg 1>;
-+		clocks = <&adc1_lpcg IMX_LPCG_CLK_0>,
-+			 <&adc1_lpcg IMX_LPCG_CLK_4>;
- 		clock-names = "per", "ipg";
- 		assigned-clocks = <&clk IMX_SC_R_ADC_1 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <24000000>;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -4667,7 +4667,7 @@ void ata_scsi_dev_rescan(struct work_str
+ 			 * bail out.
+ 			 */
+ 			if (ap->pflags & ATA_PFLAG_SUSPENDED)
+-				goto unlock;
++				goto unlock_ap;
+ 
+ 			if (!sdev)
+ 				continue;
+@@ -4680,7 +4680,7 @@ void ata_scsi_dev_rescan(struct work_str
+ 			if (do_resume) {
+ 				ret = scsi_resume_device(sdev);
+ 				if (ret == -EWOULDBLOCK)
+-					goto unlock;
++					goto unlock_scan;
+ 				dev->flags &= ~ATA_DFLAG_RESUMING;
+ 			}
+ 			ret = scsi_rescan_device(sdev);
+@@ -4688,12 +4688,13 @@ void ata_scsi_dev_rescan(struct work_str
+ 			spin_lock_irqsave(ap->lock, flags);
+ 
+ 			if (ret)
+-				goto unlock;
++				goto unlock_ap;
+ 		}
+ 	}
+ 
+-unlock:
++unlock_ap:
+ 	spin_unlock_irqrestore(ap->lock, flags);
++unlock_scan:
+ 	mutex_unlock(&ap->scsi_scan_mutex);
+ 
+ 	/* Reschedule with a delay if scsi_rescan_device() returned an error */
 
 
 
