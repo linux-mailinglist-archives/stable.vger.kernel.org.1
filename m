@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-39800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F448A54CD
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E5A8A5510
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5E251F22CF1
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F5CE280C77
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FC42119;
-	Mon, 15 Apr 2024 14:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2482276025;
+	Mon, 15 Apr 2024 14:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2COpcpiB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmvfTLKr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72995745ED;
-	Mon, 15 Apr 2024 14:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38AC73163;
+	Mon, 15 Apr 2024 14:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191852; cv=none; b=F7wK0VwVLFuQBI7QBna3mNKh/6sLqnxt8Ui+Sski49BevihEZ5K4jSV1o7/OwWUkDZgTTZZjWJHmYwrfP2P2baozNkZ/rfjxV8oN7wOgZNcaFKO4aaB2FROv06F/zuQG5j3Oew5G+c4X8m9yXoQcARgzorsrgbexqeizlwY3ZzM=
+	t=1713192027; cv=none; b=c85qpmN0Cvn3FTCu5GVTZQailkqQmvi5apB9PK5v5F0fIFmfe2XvhS5J3GSlKpEM+5eP4jLmdUGjOg0SCcDVJ3imxQbxp+k7qs0CEghHYGZ6QCMVtY7IciGFEH0RZvM46YXvNfE8tOFfdLzZ9vNueU6959rDeKt7tBftb39eFXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191852; c=relaxed/simple;
-	bh=nibfTLhRzxlYERJlpfQu9o54hQF3+C4mqLlkjZjr4Gs=;
+	s=arc-20240116; t=1713192027; c=relaxed/simple;
+	bh=3QNJ/z2sbP7j99rKtdh9/Z914LS4sfp6y0uXA55mm0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GlKLLbFUrICy3ISy4/dWf6WPfiRiRrCGvSScq/rGwUAbd0aCLcqtXZmIz1djtxnNCSLSF8SFQO2qeNqkaLqfOKvXvrbTEcEQS37TsQOj6vg8M85FIhpuIXpIQtNYPwLH+//sSFyQg/1EUgpA9bK2Wtl/mSSAiaifmPVkl2EC/1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2COpcpiB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2642C2BD10;
-	Mon, 15 Apr 2024 14:37:31 +0000 (UTC)
+	 MIME-Version; b=tjslMVW5wwwNlyPC6CIcBV3uh/OcgVmDvjVhaRZzOie8ag9meuufTuSiiLGLKK5wzlXr76Sek/NRB5EXMS2/FoEayRebEIIvc2eWDNyJTx0zAJoAPkQvkRk1EjMDREZtOp+z2G2vaqeXmB7QAsefNNlvzsxrlQr6s7W+Rh9iBV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmvfTLKr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568B8C113CC;
+	Mon, 15 Apr 2024 14:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191852;
-	bh=nibfTLhRzxlYERJlpfQu9o54hQF3+C4mqLlkjZjr4Gs=;
+	s=korg; t=1713192027;
+	bh=3QNJ/z2sbP7j99rKtdh9/Z914LS4sfp6y0uXA55mm0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2COpcpiBVTDO8b2BH5IfXbhF1a0DKrhEPeR5wj1iKOuLHaSynZLR4j3R0bY39oUYN
-	 gpew4XJGU1JFD91gMrfz2/KKj39Sc0GB9fs6k3TBxP2+iES1CRIpPNdkxupbuBeKZQ
-	 MJvxJXHnSr348jcFWpPGjVpc0fXT6CYFNM8yvbMQ=
+	b=kmvfTLKr7soOMWWcvwqJ7xcB1SkAnE0pBQ7yOrzVcTNb/OF1bYZwuIS7KH7lIl02q
+	 2JR8XhDCW+Kg5SmOPWkKxroLbv5joftkefvPttZy3A2ZpZF7oLN48qCKVP8tgAtTqX
+	 DakNNYB5RN3YSADeRSmNvKlITs+5o0INvwONYfNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.6 107/122] x86/bugs: Fix return type of spectre_bhi_state()
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 41/69] btrfs: qgroup: correctly model root qgroup rsv in convert
 Date: Mon, 15 Apr 2024 16:21:12 +0200
-Message-ID: <20240415141956.584327135@linuxfoundation.org>
+Message-ID: <20240415141947.401983820@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+From: Boris Burkov <boris@bur.io>
 
-commit 04f4230e2f86a4e961ea5466eda3db8c1762004d upstream.
+commit 141fb8cd206ace23c02cd2791c6da52c1d77d42a upstream.
 
-The definition of spectre_bhi_state() incorrectly returns a const char
-* const. This causes the a compiler warning when building with W=1:
+We use add_root_meta_rsv and sub_root_meta_rsv to track prealloc and
+pertrans reservations for subvolumes when quotas are enabled. The
+convert function does not properly increment pertrans after decrementing
+prealloc, so the count is not accurate.
 
- warning: type qualifiers ignored on function return type [-Wignored-qualifiers]
- 2812 | static const char * const spectre_bhi_state(void)
+Note: we check that the fs is not read-only to mirror the logic in
+qgroup_convert_meta, which checks that before adding to the pertrans rsv.
 
-Remove the const qualifier from the pointer.
-
-Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
-Reported-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240409230806.1545822-1-daniel.sneddon@linux.intel.com
+Fixes: 8287475a2055 ("btrfs: qgroup: Use root::qgroup_meta_rsv_* to record qgroup meta reserved space")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/bugs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/qgroup.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2808,7 +2808,7 @@ static char *pbrsb_eibrs_state(void)
- 	}
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -4154,6 +4154,8 @@ void btrfs_qgroup_convert_reserved_meta(
+ 				      BTRFS_QGROUP_RSV_META_PREALLOC);
+ 	trace_qgroup_meta_convert(root, num_bytes);
+ 	qgroup_convert_meta(fs_info, root->root_key.objectid, num_bytes);
++	if (!sb_rdonly(fs_info->sb))
++		add_root_meta_rsv(root, num_bytes, BTRFS_QGROUP_RSV_META_PERTRANS);
  }
  
--static const char * const spectre_bhi_state(void)
-+static const char *spectre_bhi_state(void)
- {
- 	if (!boot_cpu_has_bug(X86_BUG_BHI))
- 		return "; BHI: Not affected";
+ /*
 
 
 
