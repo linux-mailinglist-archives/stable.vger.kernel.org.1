@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-39866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88DB58A5519
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7164F8A5410
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:33:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 289191F21AA5
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0DC6B22A2D
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA307A705;
-	Mon, 15 Apr 2024 14:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1396378676;
+	Mon, 15 Apr 2024 14:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PN40ykR9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PTKA5iIl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DDF3BBE1;
-	Mon, 15 Apr 2024 14:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51191D524;
+	Mon, 15 Apr 2024 14:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192053; cv=none; b=se/EO4Zj8nBdCT3FntZhvlQ9Oy/iYdfNMJS3npLddk2NXjVAM235Awi5tg/dzNDNJCgeHi9fGMD/wXGlT0FdWfc778FXFsllnP4ZWVUl/eohVSGTAkBrgFURInrpANZu/XIewJ2vV8duJwrH/6QQXzXlG9Ho5BuSo/ZoYmYoDjE=
+	t=1713191441; cv=none; b=K+3YsTS0BMcTmXmQPuvDEJtXo27C/4FXx7/xybbLK/v3LviDVfDDlKqxwavhfT5uw9GvNuQC0faNWuLXTa1FHqirDwi9x0xQ5p4X5+zSsgz1zC2UYC/xhe2H2FzKNxX8Evn+4cGhMCDi1PAF0l0q6Cp5owqj4lecKDxHHh3c+4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192053; c=relaxed/simple;
-	bh=wCRCMwRUSC4Fw91ywbooTmiXIL2cmn2xyCltNsDGbAg=;
+	s=arc-20240116; t=1713191441; c=relaxed/simple;
+	bh=KKCFRsDUnNtcOruXsV923Mul7fROEWhVbcCA80yUF+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hPGBU16BuMHeHO4OSl+jmuAF2k0hSo16ZYOgkNv7ic1/2S7kx2rLJVCkGG7/mO7eRNLR019h2XjDTDiAfuhKLjlzQUhoib2nYvO79o9+DVK0++durYplV/wl1xR8aGYwTceCYVjB7gh1mHIQ6HYSEz1tpiSJlkwOq2bKheDrz+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PN40ykR9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4287C2BD11;
-	Mon, 15 Apr 2024 14:40:52 +0000 (UTC)
+	 MIME-Version; b=k6vrXhIhBt4gwqJ7WgfhgZFw2MmC55J5rEgkWwED/BarHCQk2WY9pi91QMTCC/vw375psUm1U+Lu9UtmpX6Z0KdVKKU9hb9Y+LpdJ6iVqG7UhTzIN4IEmMccT+U7LLxwqWqOSnSfiQcEX3ImvQTFs5qRNZ08MvnEBFaGpJMow7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PTKA5iIl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55F4C113CC;
+	Mon, 15 Apr 2024 14:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192053;
-	bh=wCRCMwRUSC4Fw91ywbooTmiXIL2cmn2xyCltNsDGbAg=;
+	s=korg; t=1713191441;
+	bh=KKCFRsDUnNtcOruXsV923Mul7fROEWhVbcCA80yUF+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PN40ykR9JAL0eHFY0miZuij7OdZpfzoMO9whJynIWX6Mrjw73vIKZR7xIWDSE7YXk
-	 LHqV+OTGA+pgirAL5iXQ1LP8s31nE+BkImT0dkBUzQ1JQfMCPP4vER/m7RHvMyL2U2
-	 njNg9MJgIU1nvY1xa6yCOtqhfNGDIfoYSHpFN2eU=
+	b=PTKA5iIliMsKHPB+hN7AmauVwG3WnynvZI2MLB606uYNgLx5uu0rUx8cJpWCqRzzm
+	 /KWczaaSPQSvai+d1HDDeOpQ4bjSmaCd4oEhg4QQ+uuy/XXbfgZQUNJGBlJHv1epXi
+	 XAO5SbXCk70UM/BCGQT9I0IP5J54InDfX51KqRkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xiabing <xiabing12@h-partners.com>,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 12/69] scsi: hisi_sas: Modify the deadline for ata_wait_after_reset()
+	John Stultz <jstultz@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Justin Stitt <justinstitt@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.8 144/172] selftests: timers: Fix posix_timers ksft_print_msg() warning
 Date: Mon, 15 Apr 2024 16:20:43 +0200
-Message-ID: <20240415141946.541277375@linuxfoundation.org>
+Message-ID: <20240415142004.747513906@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Chen <chenxiang66@hisilicon.com>
+From: John Stultz <jstultz@google.com>
 
-[ Upstream commit 0098c55e0881f0b32591f2110410d5c8b7f9bd5a ]
+commit e4a6bceac98eba3c00e874892736b34ea5fdaca3 upstream.
 
-We found that the second parameter of function ata_wait_after_reset() is
-incorrectly used. We call smp_ata_check_ready_type() to poll the device
-type until the 30s timeout, so the correct deadline should be (jiffies +
-30000).
+After commit 6d029c25b71f ("selftests/timers/posix_timers: Reimplement
+check_timer_distribution()") the following warning occurs when building
+with an older gcc:
 
-Fixes: 3c2673a09cf1 ("scsi: hisi_sas: Fix SATA devices missing issue during I_T nexus reset")
-Co-developed-by: xiabing <xiabing12@h-partners.com>
-Signed-off-by: xiabing <xiabing12@h-partners.com>
-Co-developed-by: Yihang Li <liyihang9@huawei.com>
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-Link: https://lore.kernel.org/r/20240402035513.2024241-3-chenxiang66@hisilicon.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+posix_timers.c:250:2: warning: format not a string literal and no format arguments [-Wformat-security]
+  250 |  ksft_print_msg(errmsg);
+      |  ^~~~~~~~~~~~~~
+
+Fix this up by changing it to ksft_print_msg("%s", errmsg)
+
+Fixes: 6d029c25b71f ("selftests/timers/posix_timers: Reimplement check_timer_distribution()")
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Justin Stitt <justinstitt@google.com>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240410232637.4135564-1-jstultz@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c | 2 +-
+ tools/testing/selftests/timers/posix_timers.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index 450a8578157cb..2116f5ee36e20 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -1715,7 +1715,7 @@ static int hisi_sas_debug_I_T_nexus_reset(struct domain_device *device)
- 	if (dev_is_sata(device)) {
- 		struct ata_link *link = &device->sata_dev.ap->link;
+diff --git a/tools/testing/selftests/timers/posix_timers.c b/tools/testing/selftests/timers/posix_timers.c
+index d86a0e00711e..348f47176e0a 100644
+--- a/tools/testing/selftests/timers/posix_timers.c
++++ b/tools/testing/selftests/timers/posix_timers.c
+@@ -247,7 +247,7 @@ static int check_timer_distribution(void)
+ 		ksft_test_result_skip("check signal distribution (old kernel)\n");
+ 	return 0;
+ err:
+-	ksft_print_msg(errmsg);
++	ksft_print_msg("%s", errmsg);
+ 	return -1;
+ }
  
--		rc = ata_wait_after_reset(link, HISI_SAS_WAIT_PHYUP_TIMEOUT,
-+		rc = ata_wait_after_reset(link, jiffies + HISI_SAS_WAIT_PHYUP_TIMEOUT,
- 					  smp_ata_check_ready_type);
- 	} else {
- 		msleep(2000);
 -- 
-2.43.0
+2.44.0
 
 
 
