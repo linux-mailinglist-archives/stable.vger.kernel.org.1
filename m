@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-39497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC078A51DB
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 15:42:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7D7E8A51DC
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 15:42:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83DD1284CC9
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 13:42:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72BAA284CC9
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 13:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D89757FB;
-	Mon, 15 Apr 2024 13:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE1E763E2;
+	Mon, 15 Apr 2024 13:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kvkwA1bE"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dQn2Flny"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8328F73500
-	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 13:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF36C745CB
+	for <Stable@vger.kernel.org>; Mon, 15 Apr 2024 13:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713188299; cv=none; b=PpKmEvwpjkxQKnX+Ac7v9lufLXbv1kGtFNwyGg91hQQALrn1i/xqvzsspVXpJT371G/UR7bq6Sg4npgd1MRFDDyIyV2JOLgL2W1Ktf+SbimbG6OtzJ8I/IP3Gt/xEC0xwZ7s0IsCz9CNNvnOngBg8do6AD+XHWglaWaV2Rj/U+k=
+	t=1713188300; cv=none; b=K9ssa9uA8fb3BCUCSY+RbTYYPQbVuR66MU2CkJCQuQpjRyykr0P1awJoXL+fAGTzuIgnWc4R4Z3VFQy2ijp/TAY1j7tgMOoe44LFAhpE32nQ9Gh8d4idvK8CDfKKXrAEnaq95pAScEQTqSkf3FrQb6jspuiAwjCowmdGR8WX9ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713188299; c=relaxed/simple;
-	bh=lvCjzgnykqyNnw5Vrwmo08lX30HbVWMQg86MwppAylM=;
+	s=arc-20240116; t=1713188300; c=relaxed/simple;
+	bh=7JrfUTYcqm9Xvf7blg07cY+fegnlG3iFRCl46b6ywwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSGT09lovDQyqMnjxzTHsx/h8PorDYCWAIvDKk/paBljKrsoTNtayoTMGlpmIf9HYP9ePH2RfHynnctNo97tdimvkSG3sNk49N3UnYVUCq5ENK/VZ0r28RN4jHuKbG9xNQk0ruTEpPi6cGyO6AyZaqdNgla+TU75n+kB0qfkdSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kvkwA1bE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFA3C113CC;
-	Mon, 15 Apr 2024 13:38:16 +0000 (UTC)
+	 MIME-Version; b=G+XSIVlh86fEbp8zV28aMmR7zPi/Mb3EgdByU2PH5j2us/yC5YUrw/SzaKc+CVOoXHf6ZR5dXD28AecHBVCPgbxtZXRLgEuV1MSJrSXZsh5U9PR94hX4jWZ5lJEHVlZnibq1ktqsCIgVzaIbGZHLrb8PAXJKji8mZL95bG6Bldg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dQn2Flny; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C543C2BD10;
+	Mon, 15 Apr 2024 13:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713188299;
-	bh=lvCjzgnykqyNnw5Vrwmo08lX30HbVWMQg86MwppAylM=;
+	s=k20201202; t=1713188300;
+	bh=7JrfUTYcqm9Xvf7blg07cY+fegnlG3iFRCl46b6ywwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kvkwA1bE2x3jDXNNfuCGOPl1XXKgZjFhv6cJH8W3E7tVXbCbjKi3OZubmi9p3JECP
-	 wfzEWQmTrerZN5uaXNmVypXHHhyrDoqU0HBK4BwApcDtRKFkvyX70EJn51hsMUCafv
-	 dRPzByQW0/OaTYPnEyx96F949lJ024eL20D1b48HXiOKSN/daNrgXFx0pgZH9LfKPB
-	 +2o3FLYJJb4BlpYFwgDwxUlZLAuQrP3UF723Rh3NoO8kTJB2aDP348v4aepH3/FCo/
-	 N4/U/VuHVPvzR+tZCOQZAi0N2rnm+EWmvyiuIZYd2I/uWn5J2FXp8GwjUebv2u/bLy
-	 pUjGAkHM+z7Jg==
+	b=dQn2FlnyVobp2YWFeavJMgMC3q4w37D/Dq/URRuT75Rm1jBLubtLwl9PwwZFbkAiu
+	 AkMCEbrP8JGJZ7lqsUc4AK5qYiNou5kh95bsyBCElAuX/MCeDYJzejysgz5x+bxkGY
+	 CMAUcUigav13s9aCqnZDAe7rxIVffufJegOzj6sPbDXNNBsE6B680WTXnHLoFD3lSn
+	 Jh74eRtzQcem8VaKwvveE1QdffSe2bN5gVAaKm3r+hmmtpLE/91AWiiA59jOuz2jeH
+	 48GKvzydunz9wKrP6hcZXaaD9y5b3wpwLd4Fj2RGpYPgaDsxmdOykhoFsrorwJxeap
+	 mJRuc+Pis6oeg==
 From: Sasha Levin <sashal@kernel.org>
 To: kernel-lts@openela.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Stable <stable@vger.kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	linux-um@lists.infradead.org,
-	Mimi Zohar <zohar@linux.ibm.com>,
+Cc: William Breathitt Gray <william.gray@linaro.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14-openela 007/190] IMA: allow/fix UML builds
-Date: Mon, 15 Apr 2024 06:48:57 -0400
-Message-ID: <20240415105208.3137874-8-sashal@kernel.org>
+Subject: [PATCH 4.14-openela 008/190] iio: addac: stx104: Fix race condition for stx104_write_raw()
+Date: Mon, 15 Apr 2024 06:48:58 -0400
+Message-ID: <20240415105208.3137874-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240415105208.3137874-1-sashal@kernel.org>
 References: <20240415105208.3137874-1-sashal@kernel.org>
@@ -66,54 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: William Breathitt Gray <william.gray@linaro.org>
 
-[ Upstream commit 644f17412f5acf01a19af9d04a921937a2bc86c6 ]
+[ Upstream commit 9740827468cea80c42db29e7171a50e99acf7328 ]
 
-UML supports HAS_IOMEM since 0bbadafdc49d (um: allow disabling
-NO_IOMEM).
+The priv->chan_out_states array and actual DAC value can become
+mismatched if stx104_write_raw() is called concurrently. Prevent such a
+race condition by utilizing a mutex.
 
-Current IMA build on UML fails on allmodconfig (with TCG_TPM=m):
-
-ld: security/integrity/ima/ima_queue.o: in function `ima_add_template_entry':
-ima_queue.c:(.text+0x2d9): undefined reference to `tpm_pcr_extend'
-ld: security/integrity/ima/ima_init.o: in function `ima_init':
-ima_init.c:(.init.text+0x43f): undefined reference to `tpm_default_chip'
-ld: security/integrity/ima/ima_crypto.o: in function `ima_calc_boot_aggregate_tfm':
-ima_crypto.c:(.text+0x1044): undefined reference to `tpm_pcr_read'
-ld: ima_crypto.c:(.text+0x10d8): undefined reference to `tpm_pcr_read'
-
-Modify the IMA Kconfig entry so that it selects TCG_TPM if HAS_IOMEM
-is set, regardless of the UML Kconfig setting.
-This updates TCG_TPM from =m to =y and fixes the linker errors.
-
-Fixes: f4a0391dfa91 ("ima: fix Kconfig dependencies")
-Cc: Stable <stable@vger.kernel.org> # v5.14+
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-um@lists.infradead.org
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Fixes: 97a445dad37a ("iio: Add IIO support for the DAC on the Apex Embedded Systems STX104")
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+Link: https://lore.kernel.org/r/c95c9a77fcef36b2a052282146950f23bbc1ebdc.1680790580.git.william.gray@linaro.org
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/stx104.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
-index 6a8f67714c831..a8bf67557eb54 100644
---- a/security/integrity/ima/Kconfig
-+++ b/security/integrity/ima/Kconfig
-@@ -8,7 +8,7 @@ config IMA
- 	select CRYPTO_MD5
- 	select CRYPTO_SHA1
- 	select CRYPTO_HASH_INFO
--	select TCG_TPM if HAS_IOMEM && !UML
-+	select TCG_TPM if HAS_IOMEM
- 	select TCG_TIS if TCG_TPM && X86
- 	select TCG_CRB if TCG_TPM && ACPI
- 	select TCG_IBMVTPM if TCG_TPM && PPC_PSERIES
+diff --git a/drivers/iio/adc/stx104.c b/drivers/iio/adc/stx104.c
+index 2da741d27540f..edc3b29eed621 100644
+--- a/drivers/iio/adc/stx104.c
++++ b/drivers/iio/adc/stx104.c
+@@ -23,6 +23,7 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/moduleparam.h>
++#include <linux/mutex.h>
+ #include <linux/spinlock.h>
+ 
+ #define STX104_OUT_CHAN(chan) {				\
+@@ -54,10 +55,12 @@ MODULE_PARM_DESC(base, "Apex Embedded Systems STX104 base addresses");
+ 
+ /**
+  * struct stx104_iio - IIO device private data structure
++ * @lock: synchronization lock to prevent I/O race conditions
+  * @chan_out_states:	channels' output states
+  * @base:		base port address of the IIO device
+  */
+ struct stx104_iio {
++	struct mutex lock;
+ 	unsigned int chan_out_states[STX104_NUM_OUT_CHAN];
+ 	unsigned int base;
+ };
+@@ -160,9 +163,12 @@ static int stx104_write_raw(struct iio_dev *indio_dev,
+ 			if ((unsigned int)val > 65535)
+ 				return -EINVAL;
+ 
++			mutex_lock(&priv->lock);
++
+ 			priv->chan_out_states[chan->channel] = val;
+ 			outw(val, priv->base + 4 + 2 * chan->channel);
+ 
++			mutex_unlock(&priv->lock);
+ 			return 0;
+ 		}
+ 		return -EINVAL;
+@@ -323,6 +329,8 @@ static int stx104_probe(struct device *dev, unsigned int id)
+ 	priv = iio_priv(indio_dev);
+ 	priv->base = base[id];
+ 
++	mutex_init(&priv->lock);
++
+ 	/* configure device for software trigger operation */
+ 	outb(0, base[id] + 9);
+ 
 -- 
 2.43.0
 
