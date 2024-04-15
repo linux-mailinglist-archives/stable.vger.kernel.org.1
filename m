@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-39617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1798A53B5
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:30:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E575C8A545B
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:36:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BAB31F223AC
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:30:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A14BC2810F8
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9344F78297;
-	Mon, 15 Apr 2024 14:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F1278C8F;
+	Mon, 15 Apr 2024 14:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKhestEB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DYs6ZApa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5043A78281;
-	Mon, 15 Apr 2024 14:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8773838DFB;
+	Mon, 15 Apr 2024 14:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191300; cv=none; b=VXWyP+3NdG9uX4YNh+1ve9CBM0VKIC46rDMi5ebxIY/rhnASiZ7uEy7T2L+5oBzJGhIAQPH5PX3bx+BsVP3voZnDTok8bKOuR79zxdD9RSD9lrAzqElAlUMLRnANszYyMwApBlkRLae7qTxpMAEglHkL/PHqnGM6SNVoNrRlryQ=
+	t=1713191607; cv=none; b=g8kFMBCKfGLTVN1g1jFGiBDVSQGMcGSWCzBRYIa4kIRyrmPMegr/XIsZt/fNlwgw5Iyl4064oXdT3c/htHUw/J8W2qz4CD5a3vBf4/WkTal/c05kPxO6YoRdKoXsgymPDQklSvK2lQHGwMwlwoXALQTMPbC/iNqECEBmf07h0PE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191300; c=relaxed/simple;
-	bh=U+T+sWtXVsb5St6FP4wMnjJ5KD+FrS2jadcBbTvzQq8=;
+	s=arc-20240116; t=1713191607; c=relaxed/simple;
+	bh=a+79QvTPsqSgIokgl2/e2KSkNkWE+uK6J4k31ZUQmjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=brRuRcUMaQaC2oDtmHOAKh70gCY6S8jO3b0x0RaODVTOBmi66aWyt64bZrVZHW5aAtNmDHkqLZyWMk5Tnr/7P2kQG7ldPXCrIpD1jR5w0FfC6ywN3sZ1bhPUC8b012BWnaCDfyDpd7qLff1Le2xEKyF+ZgKHpAB/Rou3xaq5pCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKhestEB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D8DC113CC;
-	Mon, 15 Apr 2024 14:28:19 +0000 (UTC)
+	 MIME-Version; b=cyo5j1AEW2VoTIv64fNs+S0onS/DDFEV287mezeu/9hp+usamxnY3TBfY6B42dAcwB0I7HTvTjKx1SJjX4x3G5c4R5ImtnKdqDBhG3x9GynEhKEHaod1/NHFzApE3xCUetMK1jvjzCEJTlsffj9g9p5rHV+skQTh0BuSJwTYQk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYs6ZApa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B80C113CC;
+	Mon, 15 Apr 2024 14:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191300;
-	bh=U+T+sWtXVsb5St6FP4wMnjJ5KD+FrS2jadcBbTvzQq8=;
+	s=korg; t=1713191607;
+	bh=a+79QvTPsqSgIokgl2/e2KSkNkWE+uK6J4k31ZUQmjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jKhestEBVtOYOpP/MXWfpDXzNLm7fsH1sKgmLPv2FSaosEhXkoEOB5iv02sENiE8W
-	 yva824Rk3dUGamRL1D6QL9Ftywk9Uc8HyLf1Z+0pVE0nVa4ejTGEy0pug6ZFt5qDqk
-	 RnMN0UY18ij3/wLJMQuyYxZu7EvDM6pYbRyBNWUA=
+	b=DYs6ZApasB3uCfIz03eBLIFJIoImZsN7dNK7wOyMV7O0sFmax9lwZnAWv5UCfIDgE
+	 gICKQAIBd1QIGZT2yttcPuxM4YOOkXCPCLPXBTYFhulQDY5o0FPngHZ8PpHNvH0ttD
+	 IBwcYQteQ8MrBq47OVjY0tWWukB+qcPt4+E6RqGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Kwangjin Ko <kwangjin.ko@sk.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 091/172] net: sparx5: fix wrong config being used when reconfiguring PCS
-Date: Mon, 15 Apr 2024 16:19:50 +0200
-Message-ID: <20240415142003.159350716@linuxfoundation.org>
+Subject: [PATCH 6.6 026/122] cxl/core: Fix initialization of mbox_cmd.size_out in get event
+Date: Mon, 15 Apr 2024 16:19:51 +0200
+Message-ID: <20240415141954.158408073@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Machon <daniel.machon@microchip.com>
+From: Kwangjin Ko <kwangjin.ko@sk.com>
 
-[ Upstream commit 33623113a48ea906f1955cbf71094f6aa4462e8f ]
+[ Upstream commit f7c52345ccc96343c0a05bdea3121c8ac7b67d5f ]
 
-The wrong port config is being used if the PCS is reconfigured. Fix this
-by correctly using the new config instead of the old one.
+Since mbox_cmd.size_out is overwritten with the actual output size in
+the function below, it needs to be initialized every time.
 
-Fixes: 946e7fd5053a ("net: sparx5: add port module support")
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20240409-link-mode-reconfiguration-fix-v2-1-db6a507f3627@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+cxl_internal_send_cmd -> __cxl_pci_mbox_send_cmd
+
+Problem scenario:
+
+1) The size_out variable is initially set to the size of the mailbox.
+2) Read an event.
+   - size_out is set to 160 bytes(header 32B + one event 128B).
+   - Two event are created while reading.
+3) Read the new *two* events.
+   - size_out is still set to 160 bytes.
+   - Although the value of out_len is 288 bytes, only 160 bytes are
+     copied from the mailbox register to the local variable.
+   - record_count is set to 2.
+   - Accessing records[1] will result in reading incorrect data.
+
+Fixes: 6ebe28f9ec72 ("cxl/mem: Read, trace, and clear events on driver load")
+Tested-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Kwangjin Ko <kwangjin.ko@sk.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_port.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/cxl/core/mbox.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-index 3a1b1a1f5a195..60dd2fd603a85 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-@@ -731,7 +731,7 @@ static int sparx5_port_pcs_low_set(struct sparx5 *sparx5,
- 	bool sgmii = false, inband_aneg = false;
- 	int err;
+diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+index e5f3592e54191..4b4c15e943380 100644
+--- a/drivers/cxl/core/mbox.c
++++ b/drivers/cxl/core/mbox.c
+@@ -971,13 +971,14 @@ static void cxl_mem_get_records_log(struct cxl_memdev_state *mds,
+ 		.payload_in = &log_type,
+ 		.size_in = sizeof(log_type),
+ 		.payload_out = payload,
+-		.size_out = mds->payload_size,
+ 		.min_out = struct_size(payload, records, 0),
+ 	};
  
--	if (port->conf.inband) {
-+	if (conf->inband) {
- 		if (conf->portmode == PHY_INTERFACE_MODE_SGMII ||
- 		    conf->portmode == PHY_INTERFACE_MODE_QSGMII)
- 			inband_aneg = true; /* Cisco-SGMII in-band-aneg */
-@@ -948,7 +948,7 @@ int sparx5_port_pcs_set(struct sparx5 *sparx5,
- 	if (err)
- 		return -EINVAL;
+ 	do {
+ 		int rc, i;
  
--	if (port->conf.inband) {
-+	if (conf->inband) {
- 		/* Enable/disable 1G counters in ASM */
- 		spx5_rmw(ASM_PORT_CFG_CSC_STAT_DIS_SET(high_speed_dev),
- 			 ASM_PORT_CFG_CSC_STAT_DIS,
++		mbox_cmd.size_out = mds->payload_size;
++
+ 		rc = cxl_internal_send_cmd(mds, &mbox_cmd);
+ 		if (rc) {
+ 			dev_err_ratelimited(dev,
 -- 
 2.43.0
 
