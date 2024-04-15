@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-39825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 586F88A54EC
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612088A549F
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:38:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE8D8B22BAC
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 009181F2236F
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC501823BF;
-	Mon, 15 Apr 2024 14:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480517EEE7;
+	Mon, 15 Apr 2024 14:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmPIyPks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JumeifhJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF60762E0;
-	Mon, 15 Apr 2024 14:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C3F7E0F4;
+	Mon, 15 Apr 2024 14:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191926; cv=none; b=qg6kH93ja8fqwv6HchkEVJDX5dyUl09tMO/CWCsVq+/heso48bzI9EGImSvwRnBTynOXOBhxuRcCDdj1GdPZaNDmzlmfEW77CTDaKi4owX3gmwfKnnpeLzh8RpoM962tQN5ZYF3HA/1u9/NhOFlcji1w77cwzBXRlFPlVpuGSeg=
+	t=1713191737; cv=none; b=qxukj3+Q5Gfb1is143L6QQ3ax/0g3K9/CQ/wotUCE7EA4yslC1JmwtxFjfoukZIaM7CApaW+PavM6hNHthKrTiG7VnGUU5UcSuSS/h8n25UQH5zoCTJ/ggMtgJWaUJCbft36kwd9nUDDGt4Xg0/OJQ+YO1kRVuPpjiK8lqxtDNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191926; c=relaxed/simple;
-	bh=6FoFArPLSuLafYOgRc7yhRjNiQbkWkWPFyVV7ou2KYg=;
+	s=arc-20240116; t=1713191737; c=relaxed/simple;
+	bh=eYhlLQ1n/kNHqOcBoBi3bWaWbv5DKjxip0wVADHOxeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=isqfWt9bie/5NpTL8CAu1ECpeEenC83oSK4TX2/kxKxM+VVHHgJ7Ekerw7nuG5bIIsLgv0Pe1D0WLfyeUYHXAea8qlrVuQZDrlsng090TGsmgJn9J9zNWrSyuaLz96jELYpVgHMPD4lO0moUudCfMD+dNHYHbJlYrXyEGqlG0z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmPIyPks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27510C113CC;
-	Mon, 15 Apr 2024 14:38:45 +0000 (UTC)
+	 MIME-Version; b=bfiOHD9CH2ozsG+f1oAzUU9J/28EIfLDbcWKs02Gw3+Xib2bQt6TouU/2U7kl+Q4/Umfl94NRtx5FNu3+jPj1A+JcMKZ03pWNgfV8/hcqPRmb3L7jBM21717dNbKUK1mnktEdGTZLRRfZIuotyKqvPLmGbP/qsLIiShZSoZb/Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JumeifhJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C63DC113CC;
+	Mon, 15 Apr 2024 14:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191926;
-	bh=6FoFArPLSuLafYOgRc7yhRjNiQbkWkWPFyVV7ou2KYg=;
+	s=korg; t=1713191736;
+	bh=eYhlLQ1n/kNHqOcBoBi3bWaWbv5DKjxip0wVADHOxeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wmPIyPksDPnG28/g+oY4uZMBVEjKMxfjWqW/CeXtkHJEay6uduaiJL0W1pk1YvYp1
-	 g3m0zU7l7uyHNXzH0X5wK1DILS4cF0mCO+xkVx4+S2sr3VGwVG40LkNg09Ej9e46WS
-	 1xOfQQCEZfF9uit8wEWChto3ABrVXDGLbhh+rhdk=
+	b=JumeifhJRoMmvJNiur8a9M8n2c53u0WgJ0hkTwKsJ6/t4aEjJtJeKN1WucmErda6v
+	 DKrSqjbhMBOQrv2SV6saQUJcV58Vk+6IG4z/EeyL/jyZee4Dwq+w6P0rbYYuQiNJmj
+	 e+qmmXuiH+XeLJS0CLHUvktQUHVLMKPVlc5PjxHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.1 02/69] ata: libata-scsi: Fix ata_scsi_dev_rescan() error path
-Date: Mon, 15 Apr 2024 16:20:33 +0200
-Message-ID: <20240415141946.242468089@linuxfoundation.org>
+	Amit Bernstein <amitbern@amazon.com>,
+	David Arinzon <darinzon@amazon.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 069/122] net: ena: Wrong missing IO completions check order
+Date: Mon, 15 Apr 2024 16:20:34 +0200
+Message-ID: <20240415141955.449711225@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +64,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: David Arinzon <darinzon@amazon.com>
 
-commit 79336504781e7fee5ddaf046dcc186c8dfdf60b1 upstream.
+[ Upstream commit f7e417180665234fdb7af2ebe33d89aaa434d16f ]
 
-Commit 0c76106cb975 ("scsi: sd: Fix TCG OPAL unlock on system resume")
-incorrectly handles failures of scsi_resume_device() in
-ata_scsi_dev_rescan(), leading to a double call to
-spin_unlock_irqrestore() to unlock a device port. Fix this by redefining
-the goto labels used in case of errors and only unlock the port
-scsi_scan_mutex when scsi_resume_device() fails.
+Missing IO completions check is called every second (HZ jiffies).
+This commit fixes several issues with this check:
 
-Bug found with the Smatch static checker warning:
+1. Duplicate queues check:
+   Max of 4 queues are scanned on each check due to monitor budget.
+   Once reaching the budget, this check exits under the assumption that
+   the next check will continue to scan the remainder of the queues,
+   but in practice, next check will first scan the last already scanned
+   queue which is not necessary and may cause the full queue scan to
+   last a couple of seconds longer.
+   The fix is to start every check with the next queue to scan.
+   For example, on 8 IO queues:
+   Bug: [0,1,2,3], [3,4,5,6], [6,7]
+   Fix: [0,1,2,3], [4,5,6,7]
 
-	drivers/ata/libata-scsi.c:4774 ata_scsi_dev_rescan()
-	error: double unlocked 'ap->lock' (orig line 4757)
+2. Unbalanced queues check:
+   In case the number of active IO queues is not a multiple of budget,
+   there will be checks which don't utilize the full budget
+   because the full scan exits when reaching the last queue id.
+   The fix is to run every TX completion check with exact queue budget
+   regardless of the queue id.
+   For example, on 7 IO queues:
+   Bug: [0,1,2,3], [4,5,6], [0,1,2,3]
+   Fix: [0,1,2,3], [4,5,6,0], [1,2,3,4]
+   The budget may be lowered in case the number of IO queues is less
+   than the budget (4) to make sure there are no duplicate queues on
+   the same check.
+   For example, on 3 IO queues:
+   Bug: [0,1,2,0], [1,2,0,1]
+   Fix: [0,1,2], [0,1,2]
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: 0c76106cb975 ("scsi: sd: Fix TCG OPAL unlock on system resume")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1738cd3ed342 ("net: ena: Add a driver for Amazon Elastic Network Adapters (ENA)")
+Signed-off-by: Amit Bernstein <amitbern@amazon.com>
+Signed-off-by: David Arinzon <darinzon@amazon.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/amazon/ena/ena_netdev.c | 21 +++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -4667,7 +4667,7 @@ void ata_scsi_dev_rescan(struct work_str
- 			 * bail out.
- 			 */
- 			if (ap->pflags & ATA_PFLAG_SUSPENDED)
--				goto unlock;
-+				goto unlock_ap;
+diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+index cc39707a80598..5178eb089eabe 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
++++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+@@ -3982,10 +3982,11 @@ static void check_for_missing_completions(struct ena_adapter *adapter)
+ {
+ 	struct ena_ring *tx_ring;
+ 	struct ena_ring *rx_ring;
+-	int i, budget, rc;
++	int qid, budget, rc;
+ 	int io_queue_count;
  
- 			if (!sdev)
- 				continue;
-@@ -4680,7 +4680,7 @@ void ata_scsi_dev_rescan(struct work_str
- 			if (do_resume) {
- 				ret = scsi_resume_device(sdev);
- 				if (ret == -EWOULDBLOCK)
--					goto unlock;
-+					goto unlock_scan;
- 				dev->flags &= ~ATA_DFLAG_RESUMING;
- 			}
- 			ret = scsi_rescan_device(sdev);
-@@ -4688,12 +4688,13 @@ void ata_scsi_dev_rescan(struct work_str
- 			spin_lock_irqsave(ap->lock, flags);
+ 	io_queue_count = adapter->xdp_num_queues + adapter->num_io_queues;
++
+ 	/* Make sure the driver doesn't turn the device in other process */
+ 	smp_rmb();
  
- 			if (ret)
--				goto unlock;
-+				goto unlock_ap;
- 		}
+@@ -3998,27 +3999,29 @@ static void check_for_missing_completions(struct ena_adapter *adapter)
+ 	if (adapter->missing_tx_completion_to == ENA_HW_HINTS_NO_TIMEOUT)
+ 		return;
+ 
+-	budget = ENA_MONITORED_TX_QUEUES;
++	budget = min_t(u32, io_queue_count, ENA_MONITORED_TX_QUEUES);
+ 
+-	for (i = adapter->last_monitored_tx_qid; i < io_queue_count; i++) {
+-		tx_ring = &adapter->tx_ring[i];
+-		rx_ring = &adapter->rx_ring[i];
++	qid = adapter->last_monitored_tx_qid;
++
++	while (budget) {
++		qid = (qid + 1) % io_queue_count;
++
++		tx_ring = &adapter->tx_ring[qid];
++		rx_ring = &adapter->rx_ring[qid];
+ 
+ 		rc = check_missing_comp_in_tx_queue(adapter, tx_ring);
+ 		if (unlikely(rc))
+ 			return;
+ 
+-		rc =  !ENA_IS_XDP_INDEX(adapter, i) ?
++		rc =  !ENA_IS_XDP_INDEX(adapter, qid) ?
+ 			check_for_rx_interrupt_queue(adapter, rx_ring) : 0;
+ 		if (unlikely(rc))
+ 			return;
+ 
+ 		budget--;
+-		if (!budget)
+-			break;
  	}
  
--unlock:
-+unlock_ap:
- 	spin_unlock_irqrestore(ap->lock, flags);
-+unlock_scan:
- 	mutex_unlock(&ap->scsi_scan_mutex);
+-	adapter->last_monitored_tx_qid = i % io_queue_count;
++	adapter->last_monitored_tx_qid = qid;
+ }
  
- 	/* Reschedule with a delay if scsi_rescan_device() returned an error */
+ /* trigger napi schedule after 2 consecutive detections */
+-- 
+2.43.0
+
 
 
 
