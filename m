@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-39723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E748A5460
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:36:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C947C8A5407
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:33:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7CF21F22B41
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84ED32853A7
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4237FBBE;
-	Mon, 15 Apr 2024 14:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1BB184E11;
+	Mon, 15 Apr 2024 14:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trrFDeXg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyGdTM+2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C90F1E4B1;
-	Mon, 15 Apr 2024 14:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED7A84FB7;
+	Mon, 15 Apr 2024 14:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191619; cv=none; b=EL2SCCFDuMFUsWShPxOru/ciB0KYB7ogj+l4h55Ff63YaNB6xm1RiIrFyZoVEQqPXcMz2Jo+v7UWtbUl6tC1R23h9hoyIEgG8EeUnQQomO9mEWjZHif/tUv3Ux+9PqRC2/JEFlNe77osRzSXKBOLhf2AaMIBC3k8/qX4t0AAnDM=
+	t=1713191420; cv=none; b=NijHVuyefzPKaUpnEpxWw1AfYsCIUzXwdPyoE1YiQxZ0+qQuVoqjRu7XpJPoswxdhs8cMaRYgpPtGOry2yt/q8q/tDvIKbm2YPy3ZSmPA0fSFeA/capEEXxrzfGVxHraWhgiVknD8o2SvJwNZRPqh8H/UZ5ULfjFg5Zjcx7bqws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191619; c=relaxed/simple;
-	bh=wnnavf1Dh4LIRKurvG5rdC/3gRZN/3vKT1SHeogszO8=;
+	s=arc-20240116; t=1713191420; c=relaxed/simple;
+	bh=UFjW0flBCnfPcWS1hBfpSHP+UUpV0d+ZQezKwqCesQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=av4doBvKdJyHcTS+7OxcCuo11P2jK1YVeyl+wpP8M4NlG1efd9rFtO0j8qK678up0yg39SRW3xX1iRcBtnv5x3z+qdTtqNVDk/dHDEtlKQKyAOdDkiBrw18AqsWZrsESQDqJ/a0EWasf3FI59NEI/mWXBxsaHx7YV34afPd1Dno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trrFDeXg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8394C113CC;
-	Mon, 15 Apr 2024 14:33:38 +0000 (UTC)
+	 MIME-Version; b=QHsxnnTqb2rFJPQwgwaEhRA67Dn81B1zlXgtULvqKejvHOr1ildKdIY7TyoQIiyjZnfvMonT0J4bq7ZpgcTHRSfDKHlmBffuU7vsWjcNP7UNwwi7fqUf1N21KOieIhjOqCe8nrAwMZvLW/H5ZLwrDpkL1g0J8svfDCy+6nGE99U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyGdTM+2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145EFC113CC;
+	Mon, 15 Apr 2024 14:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191619;
-	bh=wnnavf1Dh4LIRKurvG5rdC/3gRZN/3vKT1SHeogszO8=;
+	s=korg; t=1713191420;
+	bh=UFjW0flBCnfPcWS1hBfpSHP+UUpV0d+ZQezKwqCesQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=trrFDeXgHrF64BJDdULFrsm5bAl5HNM1RYVwIhvLPhAA15BBN1AU1jTkh0Pu+3wad
-	 HDfuFyo+2MZM4WSAZ7YXZq4jt8NU9mYfMRIpamWVTlqJihzP3uNMRFJpbpCZDLvELJ
-	 d0Iya2kMeDqXuxSefQdadXr337wuO3Mt5ecqYq9k=
+	b=VyGdTM+2Utef5nETy3KmBktCoXIFOh3o/WQZdiXJyeerzB4H8OvE/OhDAXE7KPdsh
+	 /oyIu7UAF2EvDybVrIcNtI9e8Nkpake41RyFjVcHIeUQAcY8JzS1MsAH4L6hw/kZhj
+	 m2D38nJeq2GEgcv1UNsQeuehKXN6wqz20h6rsecc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Amit Bernstein <amitbern@amazon.com>,
+	David Arinzon <darinzon@amazon.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/122] scsi: qla2xxx: Fix off by one in qla_edif_app_getstats()
-Date: Mon, 15 Apr 2024 16:19:55 +0200
-Message-ID: <20240415141954.275241941@linuxfoundation.org>
+Subject: [PATCH 6.8 097/172] net: ena: Wrong missing IO completions check order
+Date: Mon, 15 Apr 2024 16:19:56 +0200
+Message-ID: <20240415142003.342387716@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: David Arinzon <darinzon@amazon.com>
 
-[ Upstream commit 4406e4176f47177f5e51b4cc7e6a7a2ff3dbfbbd ]
+[ Upstream commit f7e417180665234fdb7af2ebe33d89aaa434d16f ]
 
-The app_reply->elem[] array is allocated earlier in this function and it
-has app_req.num_ports elements.  Thus this > comparison needs to be >= to
-prevent memory corruption.
+Missing IO completions check is called every second (HZ jiffies).
+This commit fixes several issues with this check:
 
-Fixes: 7878f22a2e03 ("scsi: qla2xxx: edif: Add getfcinfo and statistic bsgs")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/5c125b2f-92dd-412b-9b6f-fc3a3207bd60@moroto.mountain
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+1. Duplicate queues check:
+   Max of 4 queues are scanned on each check due to monitor budget.
+   Once reaching the budget, this check exits under the assumption that
+   the next check will continue to scan the remainder of the queues,
+   but in practice, next check will first scan the last already scanned
+   queue which is not necessary and may cause the full queue scan to
+   last a couple of seconds longer.
+   The fix is to start every check with the next queue to scan.
+   For example, on 8 IO queues:
+   Bug: [0,1,2,3], [3,4,5,6], [6,7]
+   Fix: [0,1,2,3], [4,5,6,7]
+
+2. Unbalanced queues check:
+   In case the number of active IO queues is not a multiple of budget,
+   there will be checks which don't utilize the full budget
+   because the full scan exits when reaching the last queue id.
+   The fix is to run every TX completion check with exact queue budget
+   regardless of the queue id.
+   For example, on 7 IO queues:
+   Bug: [0,1,2,3], [4,5,6], [0,1,2,3]
+   Fix: [0,1,2,3], [4,5,6,0], [1,2,3,4]
+   The budget may be lowered in case the number of IO queues is less
+   than the budget (4) to make sure there are no duplicate queues on
+   the same check.
+   For example, on 3 IO queues:
+   Bug: [0,1,2,0], [1,2,0,1]
+   Fix: [0,1,2], [0,1,2]
+
+Fixes: 1738cd3ed342 ("net: ena: Add a driver for Amazon Elastic Network Adapters (ENA)")
+Signed-off-by: Amit Bernstein <amitbern@amazon.com>
+Signed-off-by: David Arinzon <darinzon@amazon.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_edif.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/amazon/ena/ena_netdev.c | 21 +++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_edif.c b/drivers/scsi/qla2xxx/qla_edif.c
-index 26e6b3e3af431..dcde55c8ee5de 100644
---- a/drivers/scsi/qla2xxx/qla_edif.c
-+++ b/drivers/scsi/qla2xxx/qla_edif.c
-@@ -1100,7 +1100,7 @@ qla_edif_app_getstats(scsi_qla_host_t *vha, struct bsg_job *bsg_job)
+diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+index 5482015411f2f..1835581cd7230 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
++++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+@@ -3421,10 +3421,11 @@ static void check_for_missing_completions(struct ena_adapter *adapter)
+ {
+ 	struct ena_ring *tx_ring;
+ 	struct ena_ring *rx_ring;
+-	int i, budget, rc;
++	int qid, budget, rc;
+ 	int io_queue_count;
  
- 		list_for_each_entry_safe(fcport, tf, &vha->vp_fcports, list) {
- 			if (fcport->edif.enable) {
--				if (pcnt > app_req.num_ports)
-+				if (pcnt >= app_req.num_ports)
- 					break;
+ 	io_queue_count = adapter->xdp_num_queues + adapter->num_io_queues;
++
+ 	/* Make sure the driver doesn't turn the device in other process */
+ 	smp_rmb();
  
- 				app_reply->elem[pcnt].rekey_count =
+@@ -3437,27 +3438,29 @@ static void check_for_missing_completions(struct ena_adapter *adapter)
+ 	if (adapter->missing_tx_completion_to == ENA_HW_HINTS_NO_TIMEOUT)
+ 		return;
+ 
+-	budget = ENA_MONITORED_TX_QUEUES;
++	budget = min_t(u32, io_queue_count, ENA_MONITORED_TX_QUEUES);
+ 
+-	for (i = adapter->last_monitored_tx_qid; i < io_queue_count; i++) {
+-		tx_ring = &adapter->tx_ring[i];
+-		rx_ring = &adapter->rx_ring[i];
++	qid = adapter->last_monitored_tx_qid;
++
++	while (budget) {
++		qid = (qid + 1) % io_queue_count;
++
++		tx_ring = &adapter->tx_ring[qid];
++		rx_ring = &adapter->rx_ring[qid];
+ 
+ 		rc = check_missing_comp_in_tx_queue(adapter, tx_ring);
+ 		if (unlikely(rc))
+ 			return;
+ 
+-		rc =  !ENA_IS_XDP_INDEX(adapter, i) ?
++		rc =  !ENA_IS_XDP_INDEX(adapter, qid) ?
+ 			check_for_rx_interrupt_queue(adapter, rx_ring) : 0;
+ 		if (unlikely(rc))
+ 			return;
+ 
+ 		budget--;
+-		if (!budget)
+-			break;
+ 	}
+ 
+-	adapter->last_monitored_tx_qid = i % io_queue_count;
++	adapter->last_monitored_tx_qid = qid;
+ }
+ 
+ /* trigger napi schedule after 2 consecutive detections */
 -- 
 2.43.0
 
