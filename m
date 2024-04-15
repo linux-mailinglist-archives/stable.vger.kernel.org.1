@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-39566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD508A5341
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:26:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 296308A5344
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:26:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68530288D40
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:26:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 861FAB22035
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE80763F0;
-	Mon, 15 Apr 2024 14:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD56976025;
+	Mon, 15 Apr 2024 14:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QtrvrHdn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkhAvgpx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D70B762FF;
-	Mon, 15 Apr 2024 14:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679DC7602A;
+	Mon, 15 Apr 2024 14:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191151; cv=none; b=OvoYRVdvxYeqAH8rrQqQf6A4dw3qC3GwKUeHA+Go/0m/xLmO4/FWOQI3sUlRIWOrlVbKNL2yzPgi8QoDxSSgOfx8vcolM5TYK3qJVfB0uU6PQic/bOodba3W2AiIj7vcpsx6I0RRIZq4KjXLlpZiqdRVkG1mA1DmQ41Ui3hm5UE=
+	t=1713191157; cv=none; b=jQ1pU16XmKXx0ETKqG97xhS/Nc+tN7O5tXXyRuBFytQvZf70a+LrCDcYqz2krXss8OsWijLnhJ0ZRyPyJKZdgZ3KYAosA1ywsAs+GPtyPf7vPZ3uxYH795tQArsgCZOFC8x+rrAS78mKcqnDFZoBSmGbt3j60s8AuCTmH2nCqtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191151; c=relaxed/simple;
-	bh=Oml7gJrANrzCixQ1VKOyNsBj3D9/lLmKcL2mU93p79M=;
+	s=arc-20240116; t=1713191157; c=relaxed/simple;
+	bh=X3/U8WnYVT/W/Aaf3BuQAxV4T/TGfJyxoYeSCVeFivc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XwavJh9DhZijyARJv7K1BbBEQU/QAlYnwDFW6vgSTP7wwQwyr0dPU1A2nUv+vIWDKa1YBMi4spK1o0E3Plma7vV/eKo1cRW5Yohzc/J5wtEudRwp1EbPje3eDICThmbywpbsd2wNHIyDcDqPffZJXCG1dlLMFbdjxcqMujddWxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QtrvrHdn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05EA3C113CC;
-	Mon, 15 Apr 2024 14:25:50 +0000 (UTC)
+	 MIME-Version; b=IobsfgEA0/5Zo5WgPp/DA7ieTwxeJYcWwtVvYeT6UUohQpMXlwJ3ixeItqNLGBEG3f2CorbWcq5UrP+39fPLLuGKPBoe72JmOpUz10jgkvcQlw8l/uWbhxpfKLSCGGVEpeQaaxMD+hZdk8Az+rgndE5xCLlEm6m4+vcimkWiKi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkhAvgpx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5684C2BD10;
+	Mon, 15 Apr 2024 14:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191151;
-	bh=Oml7gJrANrzCixQ1VKOyNsBj3D9/lLmKcL2mU93p79M=;
+	s=korg; t=1713191157;
+	bh=X3/U8WnYVT/W/Aaf3BuQAxV4T/TGfJyxoYeSCVeFivc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QtrvrHdnPxWa7/s3N7V5ZR9WkQ6iqjs4sqWcyiTcyWw0rOoXG8kTp3+3MNTpdIpNl
-	 0gQFa797NYWj511XdZU09+fS2pLPmQFG/6Jw2gGuKCdDLiUjmtnW2zqUxHxvYUsRu5
-	 GACbWSFKS6S67e0Yl7gEZbyYs3UNusl3iTuEkXRE=
+	b=nkhAvgpx1Eq7r6oeLSuXOEHgRNEWPWUSBIEKaNxmwJDkNk+NM9pMVgzzgjcZilQIm
+	 I7QwH1lkw2h8/oJ+v6wxFnor8UerFV9fhegdMycEcaM6xG8Nk7txZJNAeVAAQcIjtx
+	 AJBQrAZ5rMcnoJAfv6W/2IKjXTild7amNsKAiVNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.8 012/172] ring-buffer: Only update pages_touched when a new page is touched
-Date: Mon, 15 Apr 2024 16:18:31 +0200
-Message-ID: <20240415142000.355876236@linuxfoundation.org>
+	syzbot+39ec16ff6cc18b1d066d@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.8 013/172] Bluetooth: Fix memory leak in hci_req_sync_complete()
+Date: Mon, 15 Apr 2024 16:18:32 +0200
+Message-ID: <20240415142000.386307276@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
 References: <20240415141959.976094777@linuxfoundation.org>
@@ -66,84 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit ffe3986fece696cf65e0ef99e74c75f848be8e30 upstream.
+commit 45d355a926ab40f3ae7bc0b0a00cb0e3e8a5a810 upstream.
 
-The "buffer_percent" logic that is used by the ring buffer splice code to
-only wake up the tasks when there's no data after the buffer is filled to
-the percentage of the "buffer_percent" file is dependent on three
-variables that determine the amount of data that is in the ring buffer:
+In 'hci_req_sync_complete()', always free the previous sync
+request state before assigning reference to a new one.
 
- 1) pages_read - incremented whenever a new sub-buffer is consumed
- 2) pages_lost - incremented every time a writer overwrites a sub-buffer
- 3) pages_touched - incremented when a write goes to a new sub-buffer
-
-The percentage is the calculation of:
-
-  (pages_touched - (pages_lost + pages_read)) / nr_pages
-
-Basically, the amount of data is the total number of sub-bufs that have been
-touched, minus the number of sub-bufs lost and sub-bufs consumed. This is
-divided by the total count to give the buffer percentage. When the
-percentage is greater than the value in the "buffer_percent" file, it
-wakes up splice readers waiting for that amount.
-
-It was observed that over time, the amount read from the splice was
-constantly decreasing the longer the trace was running. That is, if one
-asked for 60%, it would read over 60% when it first starts tracing, but
-then it would be woken up at under 60% and would slowly decrease the
-amount of data read after being woken up, where the amount becomes much
-less than the buffer percent.
-
-This was due to an accounting of the pages_touched incrementation. This
-value is incremented whenever a writer transfers to a new sub-buffer. But
-the place where it was incremented was incorrect. If a writer overflowed
-the current sub-buffer it would go to the next one. If it gets preempted
-by an interrupt at that time, and the interrupt performs a trace, it too
-will end up going to the next sub-buffer. But only one should increment
-the counter. Unfortunately, that was not the case.
-
-Change the cmpxchg() that does the real switch of the tail-page into a
-try_cmpxchg(), and on success, perform the increment of pages_touched. This
-will only increment the counter once for when the writer moves to a new
-sub-buffer, and not when there's a race and is incremented for when a
-writer and its preempting writer both move to the same new sub-buffer.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240409151309.0d0e5056@gandalf.local.home
-
+Reported-by: syzbot+39ec16ff6cc18b1d066d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=39ec16ff6cc18b1d066d
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 2c2b0a78b3739 ("ring-buffer: Add percentage of ring buffer full to wake up reader")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: f60cb30579d3 ("Bluetooth: Convert hci_req_sync family of function to new request API")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/bluetooth/hci_request.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -1400,7 +1400,6 @@ static void rb_tail_page_update(struct r
- 	old_write = local_add_return(RB_WRITE_INTCNT, &next_page->write);
- 	old_entries = local_add_return(RB_WRITE_INTCNT, &next_page->entries);
- 
--	local_inc(&cpu_buffer->pages_touched);
- 	/*
- 	 * Just make sure we have seen our old_write and synchronize
- 	 * with any interrupts that come in.
-@@ -1437,8 +1436,9 @@ static void rb_tail_page_update(struct r
- 		 */
- 		local_set(&next_page->page->commit, 0);
- 
--		/* Again, either we update tail_page or an interrupt does */
--		(void)cmpxchg(&cpu_buffer->tail_page, tail_page, next_page);
-+		/* Either we update tail_page or an interrupt does */
-+		if (try_cmpxchg(&cpu_buffer->tail_page, &tail_page, next_page))
-+			local_inc(&cpu_buffer->pages_touched);
+--- a/net/bluetooth/hci_request.c
++++ b/net/bluetooth/hci_request.c
+@@ -105,8 +105,10 @@ void hci_req_sync_complete(struct hci_de
+ 	if (hdev->req_status == HCI_REQ_PEND) {
+ 		hdev->req_result = result;
+ 		hdev->req_status = HCI_REQ_DONE;
+-		if (skb)
++		if (skb) {
++			kfree_skb(hdev->req_skb);
+ 			hdev->req_skb = skb_get(skb);
++		}
+ 		wake_up_interruptible(&hdev->req_wait_q);
  	}
  }
- 
 
 
 
