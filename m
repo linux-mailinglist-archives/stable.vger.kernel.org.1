@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-39741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 377408A547A
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:37:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A4F8A5386
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:28:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4D64282A84
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:37:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3F8F1C21387
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0424478C92;
-	Mon, 15 Apr 2024 14:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EB478C6F;
+	Mon, 15 Apr 2024 14:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yRk5Rui"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEHlJJ/p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2018289B;
-	Mon, 15 Apr 2024 14:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8090B757EA;
+	Mon, 15 Apr 2024 14:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191673; cv=none; b=OqaMYEcS2fzuJgKLAjxVADKhELi1MFjpfxT+tTX0UwEbZltHFQUqXql9CWdvO8xlfbjktJvkAE8qIe3HiACuPXJSXujr2Prin9JProQmM3Rqqf6RuYHrST7h4PH7nXyTWw8i/oYgBm0hdIv906TbSsopqRfXBBqfZweNYEz9hbs=
+	t=1713191234; cv=none; b=rAcGPEa7Xn5GqBDZbce5q88zP8hgefLHuSnDverfL+mx13yU1S4Y4DB9yspT+yFBZ0iTOakYC0/bm6egINS2/pjWbDa0RSAzIgLQ7zStRoGLWgAOxccvQFinXWtXLxeb7Zfg0kpweo31a2Yp76RAwBNKLCG5AoQ76NP+C69QSJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191673; c=relaxed/simple;
-	bh=rmT3vhrAPhyrFT+YZt4IVBmHy+nQ+IsNVAPfcX1UanE=;
+	s=arc-20240116; t=1713191234; c=relaxed/simple;
+	bh=IpFjPMuV+3c31F0KqUoHzDvNBJkJij2JhGpd7oYireo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eYrtKZ/xz1kMoTCHr8nlkPqmVWOzrK0TFTgz8fQSYi0GwoaotZh3D2vLRCwTMA2kBZQv7+8AJWw83KMXsWpz+Oi4raX5svDJI/1ZOevT/nygyYsEtbSn/525CH2lOCh4ysvYo3nceLxvARkExtwCANxdsW4l0G4JigBAop1SEuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yRk5Rui; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6293C113CC;
-	Mon, 15 Apr 2024 14:34:32 +0000 (UTC)
+	 MIME-Version; b=Qz6YeRYfhSc2ooMTKUMrGsXbP1PuxCRdY2OAKMZl0sgiKpAy4hkJxlm2Mo0oj9OOi96qbLICr3c2nrcDKM3eLbHZ3KuUN0/QiB35nNhZPSzVIZzmU/T24ZRAMfWux9NyehfjDTR4OfTp97VTxOGaAYikTFYl92fWaxrojHdedJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEHlJJ/p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DC8C113CC;
+	Mon, 15 Apr 2024 14:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191673;
-	bh=rmT3vhrAPhyrFT+YZt4IVBmHy+nQ+IsNVAPfcX1UanE=;
+	s=korg; t=1713191234;
+	bh=IpFjPMuV+3c31F0KqUoHzDvNBJkJij2JhGpd7oYireo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0yRk5RuisMAMIIm3vsXBWmaygMs+xMx1D2lwt+Jm7pjKa2pUXR5ljPgi8NSDiLDDt
-	 pIFnFYXiAfi6N14rn+6v09b951EwyYyV1/kcc5PU0aJuSzQDkdUM90mT8KNHa/zInM
-	 fau2Rz5B/o4gh7AosuBufrW9uTJ8Cy04bhXR4Mjc=
+	b=bEHlJJ/prabIIhJ9YoEoATnu1jJVrY4ZaQPyoK+Pc6KS98B2tLviIsRVZDnig50g9
+	 P0VizzvR/BPDCvXi2uv/IRugmaeHFr//PC2rpAKENFUsXe8Oiico20+f0VPSshiL2Q
+	 mpWPTOIbWVlMQOLGTC/Qmvql9GRzAbd2wfa0d+hA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <superm1@gmail.com>
-Subject: [PATCH 6.6 010/122] drm/amd/pm: fixes a random hang in S4 for SMU v13.0.4/11
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 076/172] Bluetooth: RFCOMM: Fix not validating setsockopt user input
 Date: Mon, 15 Apr 2024 16:19:35 +0200
-Message-ID: <20240415141953.685951632@linuxfoundation.org>
+Message-ID: <20240415142002.715284073@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 31729e8c21ecfd671458e02b6511eb68c2225113 upstream.
+[ Upstream commit a97de7bff13b1cc825c1b1344eaed8d6c2d3e695 ]
 
-While doing multiple S4 stress tests, GC/RLC/PMFW get into
-an invalid state resulting into hard hangs.
+syzbot reported rfcomm_sock_setsockopt_old() is copying data without
+checking user input length.
 
-Adding a GFX reset as workaround just before sending the
-MP1_UNLOAD message avoids this failure.
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset
+include/linux/sockptr.h:49 [inline]
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr
+include/linux/sockptr.h:55 [inline]
+BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt_old
+net/bluetooth/rfcomm/sock.c:632 [inline]
+BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt+0x893/0xa70
+net/bluetooth/rfcomm/sock.c:673
+Read of size 4 at addr ffff8880209a8bc3 by task syz-executor632/5064
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Mario Limonciello <superm1@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9f2c8a03fbb3 ("Bluetooth: Replace RFCOMM link mode with security level")
+Fixes: bb23c0ab8246 ("Bluetooth: Add support for deferring RFCOMM connection setup")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ net/bluetooth/rfcomm/sock.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
-@@ -226,8 +226,18 @@ static int smu_v13_0_4_system_features_c
- 	struct amdgpu_device *adev = smu->adev;
- 	int ret = 0;
+diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
+index b54e8a530f55a..29aa07e9db9d7 100644
+--- a/net/bluetooth/rfcomm/sock.c
++++ b/net/bluetooth/rfcomm/sock.c
+@@ -629,7 +629,7 @@ static int rfcomm_sock_setsockopt_old(struct socket *sock, int optname,
  
--	if (!en && !adev->in_s0ix)
-+	if (!en && !adev->in_s0ix) {
-+		/* Adds a GFX reset as workaround just before sending the
-+		 * MP1_UNLOAD message to prevent GC/RLC/PMFW from entering
-+		 * an invalid state.
-+		 */
-+		ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_GfxDeviceDriverReset,
-+						      SMU_RESET_MODE_2, NULL);
-+		if (ret)
-+			return ret;
-+
- 		ret = smu_cmn_send_smc_msg(smu, SMU_MSG_PrepareMp1ForUnload, NULL);
-+	}
+ 	switch (optname) {
+ 	case RFCOMM_LM:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
++		if (bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen)) {
+ 			err = -EFAULT;
+ 			break;
+ 		}
+@@ -664,7 +664,6 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
+ 	struct sock *sk = sock->sk;
+ 	struct bt_security sec;
+ 	int err = 0;
+-	size_t len;
+ 	u32 opt;
  
- 	return ret;
- }
+ 	BT_DBG("sk %p", sk);
+@@ -686,11 +685,9 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
+ 
+ 		sec.level = BT_SECURITY_LOW;
+ 
+-		len = min_t(unsigned int, sizeof(sec), optlen);
+-		if (copy_from_sockptr(&sec, optval, len)) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&sec, sizeof(sec), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (sec.level > BT_SECURITY_HIGH) {
+ 			err = -EINVAL;
+@@ -706,10 +703,9 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
+ 		}
+ 
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt)
+ 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
+-- 
+2.43.0
+
 
 
 
