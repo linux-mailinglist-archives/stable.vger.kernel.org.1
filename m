@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-39855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5838D8A550D
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 636E18A5540
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 149142813A6
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4C2FB247C3
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444727C085;
-	Mon, 15 Apr 2024 14:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4859878C9E;
+	Mon, 15 Apr 2024 14:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8yah4Ya"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWnEjBPr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EE079B99;
-	Mon, 15 Apr 2024 14:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0624A2119;
+	Mon, 15 Apr 2024 14:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192018; cv=none; b=KNQNppSVzaWW6wnrNKr9/xDvlhXwNmU2i+qOKxpB7To7TpdP7C2ACt/76GZChhKvwtMgn3vIeFTgXMbVT3y/Sfv4MfrTIK1OZq+fxIYCOuvkwgcXL14uK+s9/gITapNATg9j0g/QHP4GRiwCMTTDiWPZ4lj909YOUPY9KTXxD3Q=
+	t=1713192140; cv=none; b=myNo/xTMalmYi5X4Acop+GaI61k0jzmFxGGbBDu209cNvl4+xavTyA5OpzxnDf63W5CFvQBUxVCgNASsZW58WQss+WOeYlQnRC/6JImfDh72u0HEXUe7iqkbJQSGzNyfajfbDnSWS6LdVgdMuspb+5SP9J2tu8STRBScYxfhIkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192018; c=relaxed/simple;
-	bh=NX5f6waOtJHipKDz6VLdi5Fp54HL0JMLzSgqdjSRBo0=;
+	s=arc-20240116; t=1713192140; c=relaxed/simple;
+	bh=Hqch7t3AGWNOijQmwKHwgy+EtlDb+f4mOEwFAzQ/T1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q2Ci9LwN3wpr3+B1y1cYjqUbrUEi0WqYVPuvMSMuoEYPB6KRNcHr/hIMrXUmal7d8ausVrhOxH6BIQ7z5rapKTiUkMvxpgwdpAQFWELf36ffIzjbUuoyZv75j3bcNKbedecBiAAcOv5447XFgsnH/bDMdFnBll/HxO2BiXR4Mt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8yah4Ya; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CF5C113CC;
-	Mon, 15 Apr 2024 14:40:17 +0000 (UTC)
+	 MIME-Version; b=iCjx1ZA8ik5GI29dcXcSYMQNkGJNdALwYV45mozIWSkQHQUvxnNgYxlTT5hQtnHy9jMF3Z2YjGgA+syDW7V1sLCBKLzN5HEuArldU1emb18KfKi9v92NSwXiLpCt2Jg6kKHRI057mIfZ5OhmNfBMaIl780EZEkkG70a5sNXTgxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWnEjBPr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84390C113CC;
+	Mon, 15 Apr 2024 14:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192017;
-	bh=NX5f6waOtJHipKDz6VLdi5Fp54HL0JMLzSgqdjSRBo0=;
+	s=korg; t=1713192139;
+	bh=Hqch7t3AGWNOijQmwKHwgy+EtlDb+f4mOEwFAzQ/T1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W8yah4Ya5VypU7rOSGbB/Ut4vNDick6+LEAWukm0bsE25P4XOMwaoviErdyhR90C/
-	 XpCCK/1Jp0ey1CXCHmQh4Kwe5rK4qJpSvDqPH2SENgRsrysvdysSBZJZ6b0Fw+ommV
-	 g1VH3ZRu5E59VZgmKrMrn5kLmsyYzWRJoFTU9XGY=
+	b=VWnEjBPrIajagm2kd1vStXf1kBGXhUhLRQZ41uTYX5x7BV8ogk06BX1gVHu7FmKnH
+	 a6KLF+1n62dn7fwHSp87dySH502fJ7HXMRZq5jtvheE2VIDg0p5CRAejVfUqwylVZe
+	 d0kYL5ANbPJImmvtMSmLw56Ed2J/iLHO3sUaqLwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Agroskin <shayagr@amazon.com>,
-	David Arinzon <darinzon@amazon.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 38/69] net: ena: Fix incorrect descriptor free behavior
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 02/45] ring-buffer: Only update pages_touched when a new page is touched
 Date: Mon, 15 Apr 2024 16:21:09 +0200
-Message-ID: <20240415141947.311396916@linuxfoundation.org>
+Message-ID: <20240415141942.313051761@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
+References: <20240415141942.235939111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Arinzon <darinzon@amazon.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit bf02d9fe00632d22fa91d34749c7aacf397b6cde ]
+commit ffe3986fece696cf65e0ef99e74c75f848be8e30 upstream.
 
-ENA has two types of TX queues:
-- queues which only process TX packets arriving from the network stack
-- queues which only process TX packets forwarded to it by XDP_REDIRECT
-  or XDP_TX instructions
+The "buffer_percent" logic that is used by the ring buffer splice code to
+only wake up the tasks when there's no data after the buffer is filled to
+the percentage of the "buffer_percent" file is dependent on three
+variables that determine the amount of data that is in the ring buffer:
 
-The ena_free_tx_bufs() cycles through all descriptors in a TX queue
-and unmaps + frees every descriptor that hasn't been acknowledged yet
-by the device (uncompleted TX transactions).
-The function assumes that the processed TX queue is necessarily from
-the first category listed above and ends up using napi_consume_skb()
-for descriptors belonging to an XDP specific queue.
+ 1) pages_read - incremented whenever a new sub-buffer is consumed
+ 2) pages_lost - incremented every time a writer overwrites a sub-buffer
+ 3) pages_touched - incremented when a write goes to a new sub-buffer
 
-This patch solves a bug in which, in case of a VF reset, the
-descriptors aren't freed correctly, leading to crashes.
+The percentage is the calculation of:
 
-Fixes: 548c4940b9f1 ("net: ena: Implement XDP_TX action")
-Signed-off-by: Shay Agroskin <shayagr@amazon.com>
-Signed-off-by: David Arinzon <darinzon@amazon.com>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  (pages_touched - (pages_lost + pages_read)) / nr_pages
+
+Basically, the amount of data is the total number of sub-bufs that have been
+touched, minus the number of sub-bufs lost and sub-bufs consumed. This is
+divided by the total count to give the buffer percentage. When the
+percentage is greater than the value in the "buffer_percent" file, it
+wakes up splice readers waiting for that amount.
+
+It was observed that over time, the amount read from the splice was
+constantly decreasing the longer the trace was running. That is, if one
+asked for 60%, it would read over 60% when it first starts tracing, but
+then it would be woken up at under 60% and would slowly decrease the
+amount of data read after being woken up, where the amount becomes much
+less than the buffer percent.
+
+This was due to an accounting of the pages_touched incrementation. This
+value is incremented whenever a writer transfers to a new sub-buffer. But
+the place where it was incremented was incorrect. If a writer overflowed
+the current sub-buffer it would go to the next one. If it gets preempted
+by an interrupt at that time, and the interrupt performs a trace, it too
+will end up going to the next sub-buffer. But only one should increment
+the counter. Unfortunately, that was not the case.
+
+Change the cmpxchg() that does the real switch of the tail-page into a
+try_cmpxchg(), and on success, perform the increment of pages_touched. This
+will only increment the counter once for when the writer moves to a new
+sub-buffer, and not when there's a race and is incremented for when a
+writer and its preempting writer both move to the same new sub-buffer.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240409151309.0d0e5056@gandalf.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: 2c2b0a78b3739 ("ring-buffer: Add percentage of ring buffer full to wake up reader")
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_netdev.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ kernel/trace/ring_buffer.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-index b2eb6e1958f04..5e37b18ac3adf 100644
---- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-@@ -1203,8 +1203,11 @@ static void ena_unmap_tx_buff(struct ena_ring *tx_ring,
- static void ena_free_tx_bufs(struct ena_ring *tx_ring)
- {
- 	bool print_once = true;
-+	bool is_xdp_ring;
- 	u32 i;
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1509,7 +1509,6 @@ static void rb_tail_page_update(struct r
+ 	old_write = local_add_return(RB_WRITE_INTCNT, &next_page->write);
+ 	old_entries = local_add_return(RB_WRITE_INTCNT, &next_page->entries);
  
-+	is_xdp_ring = ENA_IS_XDP_INDEX(tx_ring->adapter, tx_ring->qid);
-+
- 	for (i = 0; i < tx_ring->ring_size; i++) {
- 		struct ena_tx_buffer *tx_info = &tx_ring->tx_buffer_info[i];
+-	local_inc(&cpu_buffer->pages_touched);
+ 	/*
+ 	 * Just make sure we have seen our old_write and synchronize
+ 	 * with any interrupts that come in.
+@@ -1546,8 +1545,9 @@ static void rb_tail_page_update(struct r
+ 		 */
+ 		local_set(&next_page->page->commit, 0);
  
-@@ -1224,10 +1227,15 @@ static void ena_free_tx_bufs(struct ena_ring *tx_ring)
- 
- 		ena_unmap_tx_buff(tx_ring, tx_info);
- 
--		dev_kfree_skb_any(tx_info->skb);
-+		if (is_xdp_ring)
-+			xdp_return_frame(tx_info->xdpf);
-+		else
-+			dev_kfree_skb_any(tx_info->skb);
+-		/* Again, either we update tail_page or an interrupt does */
+-		(void)cmpxchg(&cpu_buffer->tail_page, tail_page, next_page);
++		/* Either we update tail_page or an interrupt does */
++		if (try_cmpxchg(&cpu_buffer->tail_page, &tail_page, next_page))
++			local_inc(&cpu_buffer->pages_touched);
  	}
--	netdev_tx_reset_queue(netdev_get_tx_queue(tx_ring->netdev,
--						  tx_ring->qid));
-+
-+	if (!is_xdp_ring)
-+		netdev_tx_reset_queue(netdev_get_tx_queue(tx_ring->netdev,
-+							  tx_ring->qid));
  }
  
- static void ena_free_all_tx_bufs(struct ena_adapter *adapter)
--- 
-2.43.0
-
 
 
 
