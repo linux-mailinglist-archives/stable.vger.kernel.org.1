@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-39815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35D08A54E0
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70CE98A5546
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 119981C2222F
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 246651F22B34
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3762E81AB5;
-	Mon, 15 Apr 2024 14:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E7371B32;
+	Mon, 15 Apr 2024 14:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6H12YUU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0JI+pmq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E188174F;
-	Mon, 15 Apr 2024 14:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA4671B4F;
+	Mon, 15 Apr 2024 14:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191897; cv=none; b=E8jGa0VhCcQevbwTlIBbG9fCqApSB6dSq/v3qVilT7gWedDGaC0ikQb5fp3H2fw839vV9C8PtTzu7YFHtmeBwkWLYGDMZ16OqcnUMor2elwby8g/mui9t2pVTCUXmqJWLpBmMdfKDcm5/GWfmlJkPPuKLcxwZFyEyc/L5kGZ4Vo=
+	t=1713192166; cv=none; b=TBMO7+oLKdzVGprfjfh79fMHUxbMvwNWPlHbeyDk3NWkomT1douTKnnwrWwvy0JibNULKMvukk0l84eRWueBCQMj9ial3pbk7qC86oJo2flZHXYiRcTVYzgxbsmYOFGkAJcCxuzswBFxGINumsoUkxqxRQ+7I7KaI+ro58Sufso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191897; c=relaxed/simple;
-	bh=hbYQfDp9P6hJw3Sad6q0sXHSHKLin2fG52nZZC8XPSE=;
+	s=arc-20240116; t=1713192166; c=relaxed/simple;
+	bh=46uUsaXfogsRfvF4zJ+QXgtLyuYoOHSOLbPospNRNOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jKL3wqLqFCX6wWayD3kq9msh2GNqJAqqRvh23jzuEEd9UpblrhR4u//ehsYUAmPxIa4bsSredZrztYakNqXw07AlZnPuO3tNhRAGom1hydABFnAJdb+BR8VLEXvuONbwq4H4ZbcMbfwBzWp+Yqyayx+UjUhdFuKZMhNN2rTkqM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6H12YUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE6DC113CC;
-	Mon, 15 Apr 2024 14:38:16 +0000 (UTC)
+	 MIME-Version; b=XU7y4wMAV0ZRCv/axExZeziRMfr6r+0itvnOCvj3/ZscN9qiuBOZ2kYpRG247httmxb9FtE15eXojzjxWHO2Oh2oVZOSD2SvgJDuG9xH5j+iaMZEDqLl3LQsx2DFB6wTOp3RRTq37uiXyA9n39sTuc1xCV9zi0+yTurZpsYx4Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0JI+pmq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD548C113CC;
+	Mon, 15 Apr 2024 14:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191896;
-	bh=hbYQfDp9P6hJw3Sad6q0sXHSHKLin2fG52nZZC8XPSE=;
+	s=korg; t=1713192166;
+	bh=46uUsaXfogsRfvF4zJ+QXgtLyuYoOHSOLbPospNRNOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b6H12YUUbABDZaUmTRg+UB9WEWLBTaW052EZLw41mrsSn4nQFIo0bexnURR7JAiSM
-	 d2mc3K3sZZmk2ZFNRdlsgiEG70pHSfxLhbHtj8EmbUazA9/XEnkd5u2M/6zLyfLneu
-	 9XDq0NXNJ296iFwfaKj3Zgpzh4uE7cpWedF1gpms=
+	b=q0JI+pmqJc9+ZA2yf3hvmAbXTugxkSxcb7yxRiOHr8Roax5E96L77ABb92BpfWfMf
+	 iIRCQqu+OAQJYgbRBXSAsv+3auEUcSpp6lseqD4LzMiUj/Y6LWDSiGVdh65rEBR+SU
+	 0Zhe4enGCUtIQsQLCiiHXGc59D8XX3+0GoQP18t0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Agustin Gutierrez <agustin.gutierrez@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 121/122] drm/amd/display: Set VSC SDP Colorimetry same way for MST and SST
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 19/45] net/mlx5: Properly link new fs rules into the tree
 Date: Mon, 15 Apr 2024 16:21:26 +0200
-Message-ID: <20240415141956.999203893@linuxfoundation.org>
+Message-ID: <20240415141942.821394486@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
+References: <20240415141942.235939111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-commit c3e2a5f2da904a18661335e8be2b961738574998 upstream.
+[ Upstream commit 7c6782ad4911cbee874e85630226ed389ff2e453 ]
 
-The previous check for the is_vsc_sdp_colorimetry_supported flag
-for MST sink signals did nothing. Simplify the code and use the
-same check for MST and SST.
+Previously, add_rule_fg would only add newly created rules from the
+handle into the tree when they had a refcount of 1. On the other hand,
+create_flow_handle tries hard to find and reference already existing
+identical rules instead of creating new ones.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Agustin Gutierrez <agustin.gutierrez@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+These two behaviors can result in a situation where create_flow_handle
+1) creates a new rule and references it, then
+2) in a subsequent step during the same handle creation references it
+   again,
+resulting in a rule with a refcount of 2 that is not linked into the
+tree, will have a NULL parent and root and will result in a crash when
+the flow group is deleted because del_sw_hw_rule, invoked on rule
+deletion, assumes node->parent is != NULL.
+
+This happened in the wild, due to another bug related to incorrect
+handling of duplicate pkt_reformat ids, which lead to the code in
+create_flow_handle incorrectly referencing a just-added rule in the same
+flow handle, resulting in the problem described above. Full details are
+at [1].
+
+This patch changes add_rule_fg to add new rules without parents into
+the tree, properly initializing them and avoiding the crash. This makes
+it more consistent with how rules are added to an FTE in
+create_flow_handle.
+
+Fixes: 74491de93712 ("net/mlx5: Add multi dest support")
+Link: https://lore.kernel.org/netdev/ea5264d6-6b55-4449-a602-214c6f509c1e@163.com/T/#u [1]
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240409190820.227554-5-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6129,15 +6129,9 @@ create_stream_for_sink(struct amdgpu_dm_
- 		// should decide stream support vsc sdp colorimetry capability
- 		// before building vsc info packet
- 		//
--		stream->use_vsc_sdp_for_colorimetry = false;
--		if (aconnector->dc_sink->sink_signal == SIGNAL_TYPE_DISPLAY_PORT_MST) {
--			stream->use_vsc_sdp_for_colorimetry =
--				aconnector->dc_sink->is_vsc_sdp_colorimetry_supported;
--		} else {
--			if (stream->link->dpcd_caps.dpcd_rev.raw >= 0x14 &&
--			    stream->link->dpcd_caps.dprx_feature.bits.VSC_SDP_COLORIMETRY_SUPPORTED)
--				stream->use_vsc_sdp_for_colorimetry = true;
--		}
-+		stream->use_vsc_sdp_for_colorimetry = stream->link->dpcd_caps.dpcd_rev.raw >= 0x14 &&
-+						      stream->link->dpcd_caps.dprx_feature.bits.VSC_SDP_COLORIMETRY_SUPPORTED;
-+
- 		if (stream->out_transfer_func->tf == TRANSFER_FUNCTION_GAMMA22)
- 			tf = TRANSFER_FUNC_GAMMA_22;
- 		mod_build_vsc_infopacket(stream, &stream->vsc_infopacket, stream->output_color_space, tf);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+index 161ad2ae40196..a55cacb988ac2 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -1682,8 +1682,9 @@ static struct mlx5_flow_handle *add_rule_fg(struct mlx5_flow_group *fg,
+ 	}
+ 	trace_mlx5_fs_set_fte(fte, false);
+ 
++	/* Link newly added rules into the tree. */
+ 	for (i = 0; i < handle->num_rules; i++) {
+-		if (refcount_read(&handle->rule[i]->node.refcount) == 1) {
++		if (!handle->rule[i]->node.parent) {
+ 			tree_add_node(&handle->rule[i]->node, &fte->node);
+ 			trace_mlx5_fs_add_rule(handle->rule[i]);
+ 		}
+-- 
+2.43.0
+
 
 
 
