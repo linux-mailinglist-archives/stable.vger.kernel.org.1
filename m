@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-39792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034BD8A54C4
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8FC8A5433
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57A4AB224DF
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B6A61C21FBD
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ADFA71B3B;
-	Mon, 15 Apr 2024 14:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44CBF3D0C5;
+	Mon, 15 Apr 2024 14:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4sBk3Qs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZ0/4zt9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258168BF8;
-	Mon, 15 Apr 2024 14:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041A5762E0;
+	Mon, 15 Apr 2024 14:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191827; cv=none; b=k3liQ6AEzIRBFPakKfR11NDf4hjoVdpJaRQ6LAYQehpvt2FNgm3842PTYkqwHrxn+gZTMnpVh+Ns3xTgiPu5E6DitgaPpF0FMbpFboBHT4kusbPP5KLWoPVP3Pafw+ulEgx1SW5urDwSTeX4XF1eXtXxhKx0JP1JJ/IyDM9dgLM=
+	t=1713191513; cv=none; b=OlG9b/Q4MUEggde/TrDKhvcItNnxFdwtNx7G44GVmGelZPdUQjUe4fHnt3puEt9K9Aczo3SJ2n9o+KSnvAC+LCxhUk/c2oGjkIL6gQ4+s+O1ip457OhPf30cexu93sIjNXGc507+5FFq4yw8VUSK7JMQSVnOXQJq/J2VAXM+KMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191827; c=relaxed/simple;
-	bh=xxks4pLNfsngS6S7SYkanYCEpsAzI9yfNrC2W72614c=;
+	s=arc-20240116; t=1713191513; c=relaxed/simple;
+	bh=ou1ophFy+LpeSI1Y/jkopvmZCuxyrvIXq0q5JLbcIpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rISx0rXYjL7hX75ItqMTV7M6X8XnHbYQp61CKXBCfa+xWOLWh55R83MNZrcViD0vqUaaSEvGUVPs+jLG74PsH67Schnv3kdYD1VgMIAbYsF8xn/07jOEk+GNpsNdVRJQV6rBu3DXE/7oYxlscYPJt2EUrWHEb+uF0PtSYx/nMQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4sBk3Qs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1665C113CC;
-	Mon, 15 Apr 2024 14:37:06 +0000 (UTC)
+	 MIME-Version; b=JKIYshyAGhw0cM0V5+1WQb7rR2Y1VZtqDAjF69jGqdqcdjZNDAsEV9xbwq6AbujSBExRIGr5aDqtR+1hqbcc+SkfesBD4+vJ12hQEale7icyzFi2HiiE/bUuqhzzH5FPDco6x6YSPL7+pwYehWL+XFYw+cV+Fcr55i6RxzXrRcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZ0/4zt9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D93CC113CC;
+	Mon, 15 Apr 2024 14:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191827;
-	bh=xxks4pLNfsngS6S7SYkanYCEpsAzI9yfNrC2W72614c=;
+	s=korg; t=1713191512;
+	bh=ou1ophFy+LpeSI1Y/jkopvmZCuxyrvIXq0q5JLbcIpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W4sBk3QsXztdL264EFOdrhXdOXXO59Crtms5qLpYcrvPXC0uGWiLft44m+46997pc
-	 OjgwXRZCXEjTyTuF3FovMWaQ0guQN3wlRmLfJrP6QX/7M4Wb34vdDykOojExdwUgf6
-	 lkykVFGgn56iyxMsr1D9Eb8mz5HIwggrJXLaN/jw=
+	b=MZ0/4zt9o7SWUIXCXaf8a3lb2soFMnDbFVHbpqjBdC68/6+f7d/HoaffLOCkSdJ+1
+	 JthmGRRmcTIxjw1HshIcDF9XE6Mv1n7PjUpvVCK9l9lZaM98CujzFMMTqNl8WUes5J
+	 bV7b6Xnffvbre1XE8ZEUzM19maCQYaxETwFn1mdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihuang Yu <yihyu@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Gavin Shan <gshan@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	stable@kernel.org
-Subject: [PATCH 6.6 100/122] vhost: Add smp_rmb() in vhost_vq_avail_empty()
+	Yifan Zhang <yifan1.zhang@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.8 166/172] drm/amdgpu: differentiate external rev id for gfx 11.5.0
 Date: Mon, 15 Apr 2024 16:21:05 +0200
-Message-ID: <20240415141956.374715688@linuxfoundation.org>
+Message-ID: <20240415142005.391667578@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,75 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavin Shan <gshan@redhat.com>
+From: Yifan Zhang <yifan1.zhang@amd.com>
 
-commit 22e1992cf7b034db5325660e98c41ca5afa5f519 upstream.
+commit 6dba20d23e85034901ccb765a7ca71199bcca4df upstream.
 
-A smp_rmb() has been missed in vhost_vq_avail_empty(), spotted by
-Will. Otherwise, it's not ensured the available ring entries pushed
-by guest can be observed by vhost in time, leading to stale available
-ring entries fetched by vhost in vhost_get_vq_desc(), as reported by
-Yihuang Yu on NVidia's grace-hopper (ARM64) platform.
+This patch to differentiate external rev id for gfx 11.5.0.
 
-  /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64      \
-  -accel kvm -machine virt,gic-version=host -cpu host          \
-  -smp maxcpus=1,cpus=1,sockets=1,clusters=1,cores=1,threads=1 \
-  -m 4096M,slots=16,maxmem=64G                                 \
-  -object memory-backend-ram,id=mem0,size=4096M                \
-   :                                                           \
-  -netdev tap,id=vnet0,vhost=true                              \
-  -device virtio-net-pci,bus=pcie.8,netdev=vnet0,mac=52:54:00:f1:26:b0
-   :
-  guest# netperf -H 10.26.1.81 -l 60 -C -c -t UDP_STREAM
-  virtio_net virtio0: output.0:id 100 is not a head!
-
-Add the missed smp_rmb() in vhost_vq_avail_empty(). When tx_can_batch()
-returns true, it means there's still pending tx buffers. Since it might
-read indices, so it still can bypass the smp_rmb() in vhost_get_vq_desc().
-Note that it should be safe until vq->avail_idx is changed by commit
-275bf960ac697 ("vhost: better detection of available buffers").
-
-Fixes: 275bf960ac69 ("vhost: better detection of available buffers")
-Cc: <stable@kernel.org> # v4.11+
-Reported-by: Yihuang Yu <yihyu@redhat.com>
-Suggested-by: Will Deacon <will@kernel.org>
-Signed-off-by: Gavin Shan <gshan@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20240328002149.1141302-2-gshan@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vhost/vhost.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/soc21.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -2799,9 +2799,19 @@ bool vhost_vq_avail_empty(struct vhost_d
- 	r = vhost_get_avail_idx(vq, &avail_idx);
- 	if (unlikely(r))
- 		return false;
-+
- 	vq->avail_idx = vhost16_to_cpu(vq, avail_idx);
-+	if (vq->avail_idx != vq->last_avail_idx) {
-+		/* Since we have updated avail_idx, the following
-+		 * call to vhost_get_vq_desc() will read available
-+		 * ring entries. Make sure that read happens after
-+		 * the avail_idx read.
-+		 */
-+		smp_rmb();
-+		return false;
-+	}
- 
--	return vq->avail_idx == vq->last_avail_idx;
-+	return true;
- }
- EXPORT_SYMBOL_GPL(vhost_vq_avail_empty);
- 
+--- a/drivers/gpu/drm/amd/amdgpu/soc21.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc21.c
+@@ -712,7 +712,10 @@ static int soc21_common_early_init(void
+ 			AMD_PG_SUPPORT_VCN |
+ 			AMD_PG_SUPPORT_JPEG |
+ 			AMD_PG_SUPPORT_GFX_PG;
+-		adev->external_rev_id = adev->rev_id + 0x1;
++		if (adev->rev_id == 0)
++			adev->external_rev_id = 0x1;
++		else
++			adev->external_rev_id = adev->rev_id + 0x10;
+ 		break;
+ 	default:
+ 		/* FIXME: not supported yet */
 
 
 
