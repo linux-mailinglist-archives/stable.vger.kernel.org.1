@@ -1,99 +1,132 @@
-Return-Path: <stable+bounces-39958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4638A5BAE
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 21:54:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3C38A5BC4
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 21:56:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16F5028663E
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 19:54:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 675E2285FF6
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 19:56:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9951715FD16;
-	Mon, 15 Apr 2024 19:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A0D15688A;
+	Mon, 15 Apr 2024 19:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="Mfh9fpZu"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CFE15FCF1;
-	Mon, 15 Apr 2024 19:47:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931D715625E
+	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 19:49:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713210448; cv=none; b=eyVWl5rS0iIVAGUviZ+ahcihGCXKbsjXwoXPOjbtkBrxQTPluCAMBSnnKM568gBQ3I6gVgXRBdq/+A8zd06jQNHjqVTVvf9aCIsyFagFbEFCniv/y1Yjbk9aaxsSUspa1eHvFPGtkocN8YfHSG1S/WGilAEoErUlKvu3MZtbKwI=
+	t=1713210572; cv=none; b=qXewKZL2xriWbVMIgXItkMgJcgkZu1u9rrnipuoKz2PQicJr8CAmPKqmxYl91uXLAzpee5MLbC9qFwY2lFK8YEcvcb7f/ykRcRnBPOP3zRkrL/363bymanOE5wKi1+o2z4+bk6cSEYtsNkyjg7SIag1n1wbyr3z6xM2x5r9XzIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713210448; c=relaxed/simple;
-	bh=Z7URJ1t0qMuPn6d7VXFWku4XI3zKAESJQIWRDdzW2Ao=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mu1R581RPdMeQ7BAdI3TsQnwJoI7VltMAVkNoSRA5yTikiA7/2XNTJi3YHhg0J9gGOw9A+tcFR5abV8Sv/IuzCOQVm4XSxw4HW9aOhiHchusWp149eICeSGtK24uveDVxmJyxMer/lOuYnVdnSWdwa/cYevvxDdgSYesImFN4dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id EFA6B1C0080; Mon, 15 Apr 2024 21:47:18 +0200 (CEST)
-Date: Mon, 15 Apr 2024 21:47:17 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.1 00/69] 6.1.87-rc1 review
-Message-ID: <Zh2ERQX46MbcTpPO@duo.ucw.cz>
-References: <20240415141946.165870434@linuxfoundation.org>
+	s=arc-20240116; t=1713210572; c=relaxed/simple;
+	bh=NFbCstpZ5RRgQEDVh+ETz0L+LNvbESu1uz/39Ycxj8k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k4lIWUeylQY30gRQUh+JqjX3nC/5w9h/MgJ8s6WMv259lY9Knk4D6BjzzGZyNPgG4khRxGPOclxAQ+1I6FBjUeAVXW8b43d+vxDhYOkLD0g8qIUz1Gd9j6oOkgaweG80tVKCTo3pBxhUjo+5WU1q19kVzfDdDs/IuuB+4b1GwtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=Mfh9fpZu; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4VJHn606g5z6Cnk8t;
+	Mon, 15 Apr 2024 19:49:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:from:from:received:received; s=mr01; t=
+	1713210565; x=1715802566; bh=zl8tqsLft0ikguPVXC2WkShAIfWKvvycaTJ
+	nEdM0E30=; b=Mfh9fpZuOT95cXW3XOhoZVTxPa2QcW1WtWNFgOx5UBlxETZNPBr
+	bbANgKamnaELAK6yk9fpMwYcukKy0V2kns/3HWORFlm91iht4Hfhi57cY4dn8e8q
+	O4SUtHGCMDw05CUOjpWhU1tJ7HrmiPur2KgWIvJnIe7c2S39VHFiA7+whCRSHrVg
+	yoo5kMnv354dKzJIdKLjeA4icqRx/UH6+GTz7cVcjCD0EqgC4ttgmmdGuu7+6iQC
+	TFEahrMxIMoj6O+rslu/2Hb+Yo13cljYzNddDealebFY2MCFE2sceP6M2i2o1w/C
+	lPJ4zRdxF8NFDUx4LHgNKgH25zU8wCdL73Q==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id Kg_uBXSKOTAy; Mon, 15 Apr 2024 19:49:25 +0000 (UTC)
+Received: from bvanassche.mtv.corp.google.com (unknown [104.132.0.90])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4VJHn05PZqz6Cnk8m;
+	Mon, 15 Apr 2024 19:49:24 +0000 (UTC)
+From: Bart Van Assche <bvanassche@acm.org>
+To: Mike Snitzer <snitzer@redhat.com>
+Cc: dm-devel@lists.linux.dev,
+	Bart Van Assche <bvanassche@acm.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Daniel Lee <chullee@google.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] dm: Change the default value of rq_affinity from 0 into 1
+Date: Mon, 15 Apr 2024 12:49:21 -0700
+Message-ID: <20240415194921.6404-1-bvanassche@acm.org>
+X-Mailer: git-send-email 2.44.0.683.g7961c838ac-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="WwslkCFLxcagl3Fi"
-Content-Disposition: inline
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-
-
---WwslkCFLxcagl3Fi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi!
+The following behavior is inconsistent:
+* For request-based dm queues the default value of rq_affinity is 1.
+* For bio-based dm queues the default value of rq_affinity is 0.
 
-> This is the start of the stable review cycle for the 6.1.87 release.
-> There are 69 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+The default value for request-based dm queues is 1 because of the followi=
+ng
+code in blk_mq_init_allocated_queue():
 
-CIP testing did not find any problems here:
+    q->queue_flags |=3D QUEUE_FLAG_MQ_DEFAULT;
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.1.y
+From <linux/blkdev.h>:
 
-No problems detected in Linux 5.15.156-rc1 (8d83652ef6bf), Linux
-6.6.28-rc1 (a4e5ff353287), Linux 6.8.7-rc1 (367141eaada2), either.
+    #define QUEUE_FLAG_MQ_DEFAULT ((1UL << QUEUE_FLAG_IO_STAT) |	\
+				   (1UL << QUEUE_FLAG_SAME_COMP) |	\
+				   (1UL << QUEUE_FLAG_NOWAIT))
 
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
+The default value of rq_affinity for bio-based dm queues is 0 because the
+dm alloc_dev() function does not set any of the QUEUE_FLAG_SAME_* flags. =
+I
+think the different default values are the result of an oversight when
+blk-mq support was added in the device mapper code. Hence this patch that
+changes the default value of rq_affinity from 0 to 1 for bio-based dm
+queues.
 
-Best regards,
-                                                                Pavel
+This patch reduces the boot time from 12.23 to 12.20 seconds on my test
+setup, a Pixel 2023 development board. The storage controller on that tes=
+t
+setup supports a single completion interrupt and hence benefits from
+redirecting I/O completions to a CPU core that is closer to the submitter=
+.
 
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Cc: Mikulas Patocka <mpatocka@redhat.com>
+Cc: Eric Biggers <ebiggers@kernel.org>
+Cc: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: Daniel Lee <chullee@google.com>
+Cc: stable@vger.kernel.org
+Fixes: bfebd1cdb497 ("dm: add full blk-mq support to request-based DM")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+---
+ drivers/md/dm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---WwslkCFLxcagl3Fi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZh2ERQAKCRAw5/Bqldv6
-8m0iAJwJ/dkZ3f8DoCVwuSDyPH8YHnBxSgCgjoVCkPi8HMD7gp+rn7ONKDv+h4k=
-=F1K+
------END PGP SIGNATURE-----
-
---WwslkCFLxcagl3Fi--
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index 56aa2a8b9d71..9af216c11cf7 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -2106,6 +2106,7 @@ static struct mapped_device *alloc_dev(int minor)
+ 	if (IS_ERR(md->disk))
+ 		goto bad;
+ 	md->queue =3D md->disk->queue;
++	blk_queue_flag_set(QUEUE_FLAG_SAME_COMP, md->queue);
+=20
+ 	init_waitqueue_head(&md->wait);
+ 	INIT_WORK(&md->work, dm_wq_work);
 
