@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-39730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8A38A546D
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:36:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B278A53BB
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FD6F281DAB
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1362B22D83
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8FD84A39;
-	Mon, 15 Apr 2024 14:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402D678C6F;
+	Mon, 15 Apr 2024 14:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3EGBIR7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLYVELkA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DDC1D524;
-	Mon, 15 Apr 2024 14:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19CE78C66;
+	Mon, 15 Apr 2024 14:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191641; cv=none; b=EwRjr2ORsuqZ1SGHUtNgJMRryfiEQpoV4WZk+bk69eGlUFH/glrpKZPxATNs/eXcrTKRFc3THAaA2xOlA/Znr22oKZB+XBFR3fFqYLnMvKpatiF1SMCJy2B219GFGIpVdj6HemYVkLO2II/fQx7Kg3WaFZjQYMd7XNicz+lZ2hU=
+	t=1713191313; cv=none; b=OGZxo9L+Tx3NVmAoVcWFKxPSj4JdCUuscy4AaJqvsYFC3LrJCYj4MMrZC6RxYQRkGQTZUP1lsGepgXxxk9yWLoVQgiLCr02Ntsf5PGnamak0iUYv5851kcV148qexwX8hR+JyIHfodkYGTEHG+7yoZdn5FdqzRt7prfY+cNQ5/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191641; c=relaxed/simple;
-	bh=d/dMx5G0lXiLdkU5dsRtz78hYKCpjN2uCqUQKH0/o/M=;
+	s=arc-20240116; t=1713191313; c=relaxed/simple;
+	bh=XbUZkZ0E8H6DTxG/NhaNUWhuXjmms/KMW5ShQjPzp3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mC/aPAOl+NPcP6bXgx0fyzeDvjKzaeQm+XAY9N2sjr3tkkXe0fHVUTabIrq7zVXIxNkKH/AUUranursuTKX53DONfRZNKJ4xQLpwdI2t2Bp/Xq5BsrLm5eOnedSlgRLM7c8CKkfn3GTX71AAV4IgUfyL2sicIdz3B/kkg2W+AkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3EGBIR7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327A0C113CC;
-	Mon, 15 Apr 2024 14:34:00 +0000 (UTC)
+	 MIME-Version; b=hdc094SeXobb9Fv4+8PWovk4paBNTvFe8whiqU/Q0+a4PQLKfW3E0a77T2R3sEiv8HeMEQcirraibv2izeeINnb4jCY3xzC8uPWloM6mYm38bqRrJ6qWaYl3LXvCjE6ho846Tqupej4/wFeCm/bUh2C6GN3+7Q48XQsCBMv/ibc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WLYVELkA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7D2C113CC;
+	Mon, 15 Apr 2024 14:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191640;
-	bh=d/dMx5G0lXiLdkU5dsRtz78hYKCpjN2uCqUQKH0/o/M=;
+	s=korg; t=1713191312;
+	bh=XbUZkZ0E8H6DTxG/NhaNUWhuXjmms/KMW5ShQjPzp3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z3EGBIR7pL9wPod1zVqoTEO5lSWaxSWqmR1YSxc4beSJ/tMqgEPKHYYhY39RN7R4H
-	 YwRFg2326Re108n3azwKnks1nv+l9AmYBcnWqv+cwNPUSp3MZ9+C0prL71pcKbUWMo
-	 FiuByM83TgfFeLWYCUe9ucvIZrv1/9q4WsqTNIec=
+	b=WLYVELkAIeGVf6Yw4pizQeyTnh8/6USRb5YdmnYAbxyuQNFF2YLcqh+omfbmNKn4z
+	 6A12MNWAH9NjupaUCfM06DPav9qH1bf/4noahAvWaJoyhEWfgP0AkX10jBVCPlS4MZ
+	 f8g75TzvJJ+E5L6h6Wl998jDz3tce4DECHqLMhSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9ee20ec1de7b3168db09@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Phillip Potter <phil@philpotter.co.uk>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	"David S. Miller" <davem@davemloft.net>,
+	Xuchun Shang <xuchun.shang@linux.alibaba.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/122] geneve: fix header validation in geneve[6]_xmit_skb
-Date: Mon, 15 Apr 2024 16:20:01 +0200
-Message-ID: <20240415141954.453254636@linuxfoundation.org>
+Subject: [PATCH 6.8 103/172] iommu/vt-d: Fix wrong use of pasid config
+Date: Mon, 15 Apr 2024 16:20:02 +0200
+Message-ID: <20240415142003.524032086@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,168 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Xuchun Shang <xuchun.shang@linux.alibaba.com>
 
-[ Upstream commit d8a6213d70accb403b82924a1c229e733433a5ef ]
+[ Upstream commit 5b3625a4f6422e8982f90f0c11b5546149c962b8 ]
 
-syzbot is able to trigger an uninit-value in geneve_xmit() [1]
+The commit "iommu/vt-d: Add IOMMU perfmon support" introduce IOMMU
+PMU feature, but use the wrong config when set pasid filter.
 
-Problem : While most ip tunnel helpers (like ip_tunnel_get_dsfield())
-uses skb_protocol(skb, true), pskb_inet_may_pull() is only using
-skb->protocol.
-
-If anything else than ETH_P_IPV6 or ETH_P_IP is found in skb->protocol,
-pskb_inet_may_pull() does nothing at all.
-
-If a vlan tag was provided by the caller (af_packet in the syzbot case),
-the network header might not point to the correct location, and skb
-linear part could be smaller than expected.
-
-Add skb_vlan_inet_prepare() to perform a complete mac validation.
-
-Use this in geneve for the moment, I suspect we need to adopt this
-more broadly.
-
-v4 - Jakub reported v3 broke l2_tos_ttl_inherit.sh selftest
-   - Only call __vlan_get_protocol() for vlan types.
-Link: https://lore.kernel.org/netdev/20240404100035.3270a7d5@kernel.org/
-
-v2,v3 - Addressed Sabrina comments on v1 and v2
-Link: https://lore.kernel.org/netdev/Zg1l9L2BNoZWZDZG@hog/
-
-[1]
-
-BUG: KMSAN: uninit-value in geneve_xmit_skb drivers/net/geneve.c:910 [inline]
- BUG: KMSAN: uninit-value in geneve_xmit+0x302d/0x5420 drivers/net/geneve.c:1030
-  geneve_xmit_skb drivers/net/geneve.c:910 [inline]
-  geneve_xmit+0x302d/0x5420 drivers/net/geneve.c:1030
-  __netdev_start_xmit include/linux/netdevice.h:4903 [inline]
-  netdev_start_xmit include/linux/netdevice.h:4917 [inline]
-  xmit_one net/core/dev.c:3531 [inline]
-  dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3547
-  __dev_queue_xmit+0x348d/0x52c0 net/core/dev.c:4335
-  dev_queue_xmit include/linux/netdevice.h:3091 [inline]
-  packet_xmit+0x9c/0x6c0 net/packet/af_packet.c:276
-  packet_snd net/packet/af_packet.c:3081 [inline]
-  packet_sendmsg+0x8bb0/0x9ef0 net/packet/af_packet.c:3113
-  sock_sendmsg_nosec net/socket.c:730 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:745
-  __sys_sendto+0x685/0x830 net/socket.c:2191
-  __do_sys_sendto net/socket.c:2203 [inline]
-  __se_sys_sendto net/socket.c:2199 [inline]
-  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2199
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-Uninit was created at:
-  slab_post_alloc_hook mm/slub.c:3804 [inline]
-  slab_alloc_node mm/slub.c:3845 [inline]
-  kmem_cache_alloc_node+0x613/0xc50 mm/slub.c:3888
-  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:577
-  __alloc_skb+0x35b/0x7a0 net/core/skbuff.c:668
-  alloc_skb include/linux/skbuff.h:1318 [inline]
-  alloc_skb_with_frags+0xc8/0xbf0 net/core/skbuff.c:6504
-  sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2795
-  packet_alloc_skb net/packet/af_packet.c:2930 [inline]
-  packet_snd net/packet/af_packet.c:3024 [inline]
-  packet_sendmsg+0x722d/0x9ef0 net/packet/af_packet.c:3113
-  sock_sendmsg_nosec net/socket.c:730 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:745
-  __sys_sendto+0x685/0x830 net/socket.c:2191
-  __do_sys_sendto net/socket.c:2203 [inline]
-  __se_sys_sendto net/socket.c:2199 [inline]
-  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2199
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-CPU: 0 PID: 5033 Comm: syz-executor346 Not tainted 6.9.0-rc1-syzkaller-00005-g928a87efa423 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/29/2024
-
-Fixes: d13f048dd40e ("net: geneve: modify IP header check in geneve6_xmit_skb and geneve_xmit_skb")
-Reported-by: syzbot+9ee20ec1de7b3168db09@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/000000000000d19c3a06152f9ee4@google.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Phillip Potter <phil@philpotter.co.uk>
-Cc: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Phillip Potter <phil@philpotter.co.uk>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 7232ab8b89e9 ("iommu/vt-d: Add IOMMU perfmon support")
+Signed-off-by: Xuchun Shang <xuchun.shang@linux.alibaba.com>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Link: https://lore.kernel.org/r/20240401060753.3321318-1-xuchun.shang@linux.alibaba.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/geneve.c     |  4 ++--
- include/net/ip_tunnels.h | 33 +++++++++++++++++++++++++++++++++
- 2 files changed, 35 insertions(+), 2 deletions(-)
+ drivers/iommu/intel/perfmon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-index 0204ac92b05ab..0a18b67d0d669 100644
---- a/drivers/net/geneve.c
-+++ b/drivers/net/geneve.c
-@@ -926,7 +926,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 	__be16 sport;
- 	int err;
- 
--	if (!pskb_inet_may_pull(skb))
-+	if (!skb_vlan_inet_prepare(skb))
- 		return -EINVAL;
- 
- 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
-@@ -1024,7 +1024,7 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 	__be16 sport;
- 	int err;
- 
--	if (!pskb_inet_may_pull(skb))
-+	if (!skb_vlan_inet_prepare(skb))
- 		return -EINVAL;
- 
- 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index f346b4efbc307..822f0fad39623 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -360,6 +360,39 @@ static inline bool pskb_inet_may_pull(struct sk_buff *skb)
- 	return pskb_network_may_pull(skb, nhlen);
- }
- 
-+/* Variant of pskb_inet_may_pull().
-+ */
-+static inline bool skb_vlan_inet_prepare(struct sk_buff *skb)
-+{
-+	int nhlen = 0, maclen = ETH_HLEN;
-+	__be16 type = skb->protocol;
-+
-+	/* Essentially this is skb_protocol(skb, true)
-+	 * And we get MAC len.
-+	 */
-+	if (eth_type_vlan(type))
-+		type = __vlan_get_protocol(skb, type, &maclen);
-+
-+	switch (type) {
-+#if IS_ENABLED(CONFIG_IPV6)
-+	case htons(ETH_P_IPV6):
-+		nhlen = sizeof(struct ipv6hdr);
-+		break;
-+#endif
-+	case htons(ETH_P_IP):
-+		nhlen = sizeof(struct iphdr);
-+		break;
-+	}
-+	/* For ETH_P_IPV6/ETH_P_IP we make sure to pull
-+	 * a base network header in skb->head.
-+	 */
-+	if (!pskb_may_pull(skb, maclen + nhlen))
-+		return false;
-+
-+	skb_set_network_header(skb, maclen);
-+	return true;
-+}
-+
- static inline int ip_encap_hlen(struct ip_tunnel_encap *e)
- {
- 	const struct ip_tunnel_encap_ops *ops;
+diff --git a/drivers/iommu/intel/perfmon.c b/drivers/iommu/intel/perfmon.c
+index cf43e798eca49..44083d01852db 100644
+--- a/drivers/iommu/intel/perfmon.c
++++ b/drivers/iommu/intel/perfmon.c
+@@ -438,7 +438,7 @@ static int iommu_pmu_assign_event(struct iommu_pmu *iommu_pmu,
+ 	iommu_pmu_set_filter(domain, event->attr.config1,
+ 			     IOMMU_PMU_FILTER_DOMAIN, idx,
+ 			     event->attr.config1);
+-	iommu_pmu_set_filter(pasid, event->attr.config1,
++	iommu_pmu_set_filter(pasid, event->attr.config2,
+ 			     IOMMU_PMU_FILTER_PASID, idx,
+ 			     event->attr.config1);
+ 	iommu_pmu_set_filter(ats, event->attr.config2,
 -- 
 2.43.0
 
