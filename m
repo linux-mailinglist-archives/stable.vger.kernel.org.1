@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-39913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FC18A5554
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E0AE8A5528
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9EA41C21A3C
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C31771F2266B
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7B24C618;
-	Mon, 15 Apr 2024 14:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8EF2A8D3;
+	Mon, 15 Apr 2024 14:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7uTZAMA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJCz1+L7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C535D9445;
-	Mon, 15 Apr 2024 14:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B309445;
+	Mon, 15 Apr 2024 14:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192193; cv=none; b=Valz7YVBmEcWf7yNISNJOPdxqHDdSSjSsEI3VmOG/sKxzeS4H1KGIl1wHFOzK9f2o9c8x3BNLbdhmX/ptuql63btyFyRQbrdcpqFLgHu2zQ6GkXOi/ywmWthF/yvIjWN9C0h0usySEY2flEC2zHiUc6HL1wOyr0eLc5PtJEZSv8=
+	t=1713192092; cv=none; b=pXTTcrCKAdat+hJRu0JFnQBTeIw9CXr4qZBn6R5P0mlR/ZgvBQT+hhdGvhSCLKr9Bs6azGwST5JZXQhQGKVjijfXu/TywkXjJsn6NcZULK+rns4gNII3gKS2TXvK4ayx9vBNh+BDX9PXCDg7xruOjsOo4T8I8l4O6OIYzl0AVQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192193; c=relaxed/simple;
-	bh=xxNshNwqs5iNJlAQa4Axc6/qfr1kW5bQOqIePCe4bH4=;
+	s=arc-20240116; t=1713192092; c=relaxed/simple;
+	bh=3xEyy4uTl+wBQg6N0I4zrHD0+TL4I/+RcY/fKKOpAw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O9VCY2aekvf3Rq0seVkNmEHt9waDnDk0/PTuvCdN3bK7s3x1Q0GenG0GSpmZhT3R+9finaFk9SxmMpZ+8lQdzsPtyR/816SO9qp1xsgZ1GeXywJ7V/GXTKs8GyXRSC6ljOEZ7P42J7mHRyGsHWrtwVs65tMDaiT4NsHCPhCVaSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7uTZAMA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21632C113CC;
-	Mon, 15 Apr 2024 14:43:13 +0000 (UTC)
+	 MIME-Version; b=Ehne3F9LPlT0k5p8oijsttUtE10LnVNJT/Hc7g5SUY8fIq20YFLa2MiIkpnpbAP/EKdCO9/2XRdWWRTJTGDS2emEXGLMKLbF7d9INpi/aBrQe4LViuKe/h0xfSnUjSyRmHdSzrNbiH76JUTwu64CTVk/7MCV3ZU42TICIuKjbXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJCz1+L7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46AFC2BD11;
+	Mon, 15 Apr 2024 14:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192193;
-	bh=xxNshNwqs5iNJlAQa4Axc6/qfr1kW5bQOqIePCe4bH4=;
+	s=korg; t=1713192092;
+	bh=3xEyy4uTl+wBQg6N0I4zrHD0+TL4I/+RcY/fKKOpAw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i7uTZAMAT2ckna0nT4/e1UA3OEU63dQUHN8+5jfCkPsFjsoqyJWrhFCMUrdU4EbAb
-	 0q7vClE+QETsp/mC7oR1boBM3zvLeLozbIQZevlmTLibrXVBLwmiz3Z22jJBOHObQu
-	 sFnn12/ZWXLGsIPLSZZrbUX8P5NczrWFttDfITs8=
+	b=vJCz1+L7WoBc4MO1QGoz54rX9th4LqSGqrWnfc/QrDadtUzTfHoIN4qLB5L5t2RWt
+	 FuFxUidGxJrvSrk6KyqXvK38FviZzr5qqf1sKmMMhOu9nkSrZVqReK9OLKIm1kaSkk
+	 UxzcvrIWJUE/iI2f5ef77o7pOLqJ531CtXfIL1jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Kees Cook <keescook@chromium.org>,
-	Ajay Kaher <akaher@vmware.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Tzvetomir Stoyanov (VMware)" <tz.stoyanov@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 27/45] tracing: hide unused ftrace_event_id_fops
-Date: Mon, 15 Apr 2024 16:21:34 +0200
-Message-ID: <20240415141943.057461278@linuxfoundation.org>
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Nikolay Borisov <nik.borisov@suse.com>
+Subject: [PATCH 6.1 64/69] x86/bugs: Replace CONFIG_SPECTRE_BHI_{ON,OFF} with CONFIG_MITIGATION_SPECTRE_BHI
+Date: Mon, 15 Apr 2024 16:21:35 +0200
+Message-ID: <20240415141948.096683138@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
-References: <20240415141942.235939111@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,81 +62,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 5281ec83454d70d98b71f1836fb16512566c01cd ]
+commit 4f511739c54b549061993b53fc0380f48dfca23b upstream.
 
-When CONFIG_PERF_EVENTS, a 'make W=1' build produces a warning about the
-unused ftrace_event_id_fops variable:
+For consistency with the other CONFIG_MITIGATION_* options, replace the
+CONFIG_SPECTRE_BHI_{ON,OFF} options with a single
+CONFIG_MITIGATION_SPECTRE_BHI option.
 
-kernel/trace/trace_events.c:2155:37: error: 'ftrace_event_id_fops' defined but not used [-Werror=unused-const-variable=]
- 2155 | static const struct file_operations ftrace_event_id_fops = {
+[ mingo: Fix ]
 
-Hide this in the same #ifdef as the reference to it.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240403080702.3509288-7-arnd@kernel.org
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Ajay Kaher <akaher@vmware.com>
-Cc: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: Clément Léger <cleger@rivosinc.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: "Tzvetomir Stoyanov (VMware)" <tz.stoyanov@gmail.com>
-Fixes: 620a30e97feb ("tracing: Don't pass file_operations array to event_create_dir()")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Nikolay Borisov <nik.borisov@suse.com>
+Link: https://lore.kernel.org/r/3833812ea63e7fdbe36bf8b932e63f70d18e2a2a.1712813475.git.jpoimboe@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/Kconfig           |   17 +++--------------
+ arch/x86/kernel/cpu/bugs.c |    2 +-
+ 2 files changed, 4 insertions(+), 15 deletions(-)
 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 0a7348b90ba50..1f4f3096b9ac4 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -1645,6 +1645,7 @@ static int trace_format_open(struct inode *inode, struct file *file)
- 	return 0;
- }
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2563,27 +2563,16 @@ config MITIGATION_RFDS
+ 	  stored in floating point, vector and integer registers.
+ 	  See also <file:Documentation/admin-guide/hw-vuln/reg-file-data-sampling.rst>
  
-+#ifdef CONFIG_PERF_EVENTS
- static ssize_t
- event_id_read(struct file *filp, char __user *ubuf, size_t cnt, loff_t *ppos)
+-choice
+-	prompt "Clear branch history"
++config MITIGATION_SPECTRE_BHI
++	bool "Mitigate Spectre-BHB (Branch History Injection)"
+ 	depends on CPU_SUP_INTEL
+-	default SPECTRE_BHI_ON
++	default y
+ 	help
+ 	  Enable BHI mitigations. BHI attacks are a form of Spectre V2 attacks
+ 	  where the branch history buffer is poisoned to speculatively steer
+ 	  indirect branches.
+ 	  See <file:Documentation/admin-guide/hw-vuln/spectre.rst>
+ 
+-config SPECTRE_BHI_ON
+-	bool "on"
+-	help
+-	  Equivalent to setting spectre_bhi=on command line parameter.
+-config SPECTRE_BHI_OFF
+-	bool "off"
+-	help
+-	  Equivalent to setting spectre_bhi=off command line parameter.
+-
+-endchoice
+-
+ endif
+ 
+ config ARCH_HAS_ADD_PAGES
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1605,7 +1605,7 @@ enum bhi_mitigations {
+ };
+ 
+ static enum bhi_mitigations bhi_mitigation __ro_after_init =
+-	IS_ENABLED(CONFIG_SPECTRE_BHI_ON) ? BHI_MITIGATION_ON : BHI_MITIGATION_OFF;
++	IS_ENABLED(CONFIG_MITIGATION_SPECTRE_BHI) ? BHI_MITIGATION_ON : BHI_MITIGATION_OFF;
+ 
+ static int __init spectre_bhi_parse_cmdline(char *str)
  {
-@@ -1659,6 +1660,7 @@ event_id_read(struct file *filp, char __user *ubuf, size_t cnt, loff_t *ppos)
- 
- 	return simple_read_from_buffer(ubuf, cnt, ppos, buf, len);
- }
-+#endif
- 
- static ssize_t
- event_filter_read(struct file *filp, char __user *ubuf, size_t cnt,
-@@ -2104,10 +2106,12 @@ static const struct file_operations ftrace_event_format_fops = {
- 	.release = seq_release,
- };
- 
-+#ifdef CONFIG_PERF_EVENTS
- static const struct file_operations ftrace_event_id_fops = {
- 	.read = event_id_read,
- 	.llseek = default_llseek,
- };
-+#endif
- 
- static const struct file_operations ftrace_event_filter_fops = {
- 	.open = tracing_open_file_tr,
--- 
-2.43.0
-
 
 
 
