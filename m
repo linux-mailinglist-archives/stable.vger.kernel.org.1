@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-39590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD5CE8A537A
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:28:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D7808A5476
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:37:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 005A31C21230
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:28:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB20F1F22437
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61007FBA3;
-	Mon, 15 Apr 2024 14:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20E479952;
+	Mon, 15 Apr 2024 14:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyPeehht"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B5M9g5kB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9427B7602A;
-	Mon, 15 Apr 2024 14:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B9236AE0;
+	Mon, 15 Apr 2024 14:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191218; cv=none; b=jjJdpfXmgOLaeIuF5L0ogPR9cqd8yJ439JjiWOgvLexUA+XOO46Wk8Zr3RwDkhHUh80xvc17Bp3K3GfcRIoVRnn7DjxDQuM6ltSuyKF3izB8O7QUdPc9kCoHiR5Qyy18DHq1re9lHP4x3lpjzc4SUXKJkA2irGKCLpc2nGO/XYQ=
+	t=1713191661; cv=none; b=W5RrQIcp/ASGNNuzlBFkfURnQ0jeNI6ieTixVhBIGYon9iMQa2osvtccOW78JyIwys2nI6XNbkdAebH8NJC1tOXyGOYfFCzXzHK1qYDRdUYOFPI9P8kDCl9d2cWtCvqHc7DSL0lrjBwrjDUfBKvdwmNLnIeXDjHdoS+QfKxjmHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191218; c=relaxed/simple;
-	bh=dcP/buCKKPsOz+jzh2/aM9/5bysm1epOjnNi14E5or0=;
+	s=arc-20240116; t=1713191661; c=relaxed/simple;
+	bh=VZ+0TqftzDbTXeR2dIxPzj1coQSsn2PWdYlAFBTgJlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lHEi93W/N3E/1ozwVVeMH2WZi8zCDjFEqscBh7Bu/GB7NOPn6C+B0ei6t7B/Lh0gXT5MWOqWnP9pXVW7sIcr32UdmSuAjIRr6nnM4863qkUvm3GeWJr4LurcY7vDtvDGO1yZJMYBe7AU9xJ/dJZCbOgrxpvJOGoe397RkvnFGAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyPeehht; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4890C113CC;
-	Mon, 15 Apr 2024 14:26:57 +0000 (UTC)
+	 MIME-Version; b=UMoghd3dBYPe6kXQeeVPz8kIRQqa/Bpc38SG0jXMi5D31VgCFk/29C4Ot59FI6sybzOYC9N00iOgJQ0QeF2BJUAXnWcNuFYaJppuAJz22WgnNNOxIG1p/cevDq/Sx/9Hu8VG5EGTrqyKYF8NPXwi16Y7mpWffwO8VMt4JLgU6iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B5M9g5kB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73BFC113CC;
+	Mon, 15 Apr 2024 14:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191218;
-	bh=dcP/buCKKPsOz+jzh2/aM9/5bysm1epOjnNi14E5or0=;
+	s=korg; t=1713191661;
+	bh=VZ+0TqftzDbTXeR2dIxPzj1coQSsn2PWdYlAFBTgJlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZyPeehhtO3My6g+OlkyWgRxbLAdF++dWUEky84jG6V8TJMaEesGVTHZ4j21PXHRUv
-	 1sYJrXRfyyONyRgOPfZheUWkQgeDPS7UxhEPziA2uNjvqJ+vNNB26y4s7RtBOj/LNx
-	 +hkQ45nXV2Lx7y63Hrhlskfls1rmHoBRW7WJzT8c=
+	b=B5M9g5kBARXwjMZVPtddtVGByNC4XCkUy8eauAt+M/CJ4zjsF5sJHgBLxaGc78HyM
+	 29OfXZ3HlNE4m7v24jY/Q7sa+BAa/Smwioig5ieZbY/0WtiF7qCIXvY3nxwv+IF7q3
+	 9/bIOCwrUXko1ZF9ZCcv470SWO/pPECJV8fa3TM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 071/172] Bluetooth: ISO: Align broadcast sync_timeout with connection timeout
-Date: Mon, 15 Apr 2024 16:19:30 +0200
-Message-ID: <20240415142002.564244492@linuxfoundation.org>
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.6 006/122] ARM: dts: imx7s-warp: Pass OV2680 link-frequencies
+Date: Mon, 15 Apr 2024 16:19:31 +0200
+Message-ID: <20240415141953.566107097@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 42ed95de82c01184a88945d3ca274be6a7ea607d ]
+commit 135f218255b28c5bbf71e9e32a49e5c734cabbe5 upstream.
 
-This aligns broadcast sync_timeout with existing connection timeouts
-which are 20 seconds long.
+Since commit 63b0cd30b78e ("media: ov2680: Add bus-cfg / endpoint
+property verification") the ov2680 no longer probes on a imx7s-warp7:
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: b37cab587aa3 ("Bluetooth: ISO: Don't reject BT_ISO_QOS if parameters are unset")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ov2680 1-0036: error -EINVAL: supported link freq 330000000 not found
+ov2680 1-0036: probe with driver ov2680 failed with error -22
+
+Fix it by passing the required 'link-frequencies' property as
+recommended by:
+
+https://www.kernel.org/doc/html/v6.9-rc1/driver-api/media/camera-sensor.html#handling-clocks
+
+Cc: stable@vger.kernel.org
+Fixes: 63b0cd30b78e ("media: ov2680: Add bus-cfg / endpoint property verification")
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/bluetooth.h | 2 ++
- net/bluetooth/iso.c               | 4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx7s-warp.dts |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
-index 7ffa8c192c3f2..9fe95a22abeb7 100644
---- a/include/net/bluetooth/bluetooth.h
-+++ b/include/net/bluetooth/bluetooth.h
-@@ -164,6 +164,8 @@ struct bt_voice {
- #define BT_ISO_QOS_BIG_UNSET	0xff
- #define BT_ISO_QOS_BIS_UNSET	0xff
- 
-+#define BT_ISO_SYNC_TIMEOUT	0x07d0 /* 20 secs */
-+
- struct bt_iso_io_qos {
- 	__u32 interval;
- 	__u16 latency;
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 04f6572d35f17..4fa1f3b779a71 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -837,10 +837,10 @@ static struct bt_iso_qos default_qos = {
- 		.bcode			= {0x00},
- 		.options		= 0x00,
- 		.skip			= 0x0000,
--		.sync_timeout		= 0x4000,
-+		.sync_timeout		= BT_ISO_SYNC_TIMEOUT,
- 		.sync_cte_type		= 0x00,
- 		.mse			= 0x00,
--		.timeout		= 0x4000,
-+		.timeout		= BT_ISO_SYNC_TIMEOUT,
- 	},
- };
- 
--- 
-2.43.0
-
+--- a/arch/arm/boot/dts/nxp/imx/imx7s-warp.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx7s-warp.dts
+@@ -210,6 +210,7 @@
+ 				remote-endpoint = <&mipi_from_sensor>;
+ 				clock-lanes = <0>;
+ 				data-lanes = <1>;
++				link-frequencies = /bits/ 64 <330000000>;
+ 			};
+ 		};
+ 	};
 
 
 
