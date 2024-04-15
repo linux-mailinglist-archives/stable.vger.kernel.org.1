@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-39595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A4F8A5386
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:28:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24DF98A5447
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3F8F1C21387
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:28:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11CCD1C22072
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EB478C6F;
-	Mon, 15 Apr 2024 14:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB7C824B7;
+	Mon, 15 Apr 2024 14:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEHlJJ/p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3mk7hxa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8090B757EA;
-	Mon, 15 Apr 2024 14:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7E382491;
+	Mon, 15 Apr 2024 14:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191234; cv=none; b=rAcGPEa7Xn5GqBDZbce5q88zP8hgefLHuSnDverfL+mx13yU1S4Y4DB9yspT+yFBZ0iTOakYC0/bm6egINS2/pjWbDa0RSAzIgLQ7zStRoGLWgAOxccvQFinXWtXLxeb7Zfg0kpweo31a2Yp76RAwBNKLCG5AoQ76NP+C69QSJU=
+	t=1713191560; cv=none; b=EpqlKiyHpKTzpKzoqlKUJvdZN10MBni/CZmQvQe2dqAJwd7lQsIMFR34AzHr/0TtN1Ryb4AlozpXVzlBFapjvLg7QVe18bagvwZAcp8HSb+zxmaBFGTG0cF2feEOMsJEAWPknLXlS41r8LXlkr5Sw+glu5XaWVmkE1oOxmQTQ1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191234; c=relaxed/simple;
-	bh=IpFjPMuV+3c31F0KqUoHzDvNBJkJij2JhGpd7oYireo=;
+	s=arc-20240116; t=1713191560; c=relaxed/simple;
+	bh=9xnMLxmiD8ureke3S1BS3fXGvuPigHnzJ6zW3wPmZc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qz6YeRYfhSc2ooMTKUMrGsXbP1PuxCRdY2OAKMZl0sgiKpAy4hkJxlm2Mo0oj9OOi96qbLICr3c2nrcDKM3eLbHZ3KuUN0/QiB35nNhZPSzVIZzmU/T24ZRAMfWux9NyehfjDTR4OfTp97VTxOGaAYikTFYl92fWaxrojHdedJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEHlJJ/p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DC8C113CC;
-	Mon, 15 Apr 2024 14:27:13 +0000 (UTC)
+	 MIME-Version; b=Ivb9pJ54LhvvOrTBGzwHMyHPX5SG0HGaZ5YW/qHAZ8XRi+c+2BFQULddtckhFCIlhvYKHLG9FeTGy9hdcLsAJ4e8lLUlejMP6uc6bWl4eg0UKdeRo+rAiXwehMlGrVpo+VUuwnShgmRCJ9wwSnDdX7Mc1oCoS3jxaEsRycWC9F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3mk7hxa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8319C113CC;
+	Mon, 15 Apr 2024 14:32:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191234;
-	bh=IpFjPMuV+3c31F0KqUoHzDvNBJkJij2JhGpd7oYireo=;
+	s=korg; t=1713191560;
+	bh=9xnMLxmiD8ureke3S1BS3fXGvuPigHnzJ6zW3wPmZc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bEHlJJ/prabIIhJ9YoEoATnu1jJVrY4ZaQPyoK+Pc6KS98B2tLviIsRVZDnig50g9
-	 P0VizzvR/BPDCvXi2uv/IRugmaeHFr//PC2rpAKENFUsXe8Oiico20+f0VPSshiL2Q
-	 mpWPTOIbWVlMQOLGTC/Qmvql9GRzAbd2wfa0d+hA=
+	b=a3mk7hxagZxn5S8TAO/jGiIY/45XcIf++4kvTDcODD29slpsNTAynP3PFR5dJ7sWR
+	 luXBVy7jvS27hMrEtaBYmOrWbBr74p/o8NA38JqjGjE5pxhcs3uXb7jjRqo0IQ1g/s
+	 mtgandCmVisnjhXquVTN5IYYC/O9kn+Q2m03W9yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 076/172] Bluetooth: RFCOMM: Fix not validating setsockopt user input
-Date: Mon, 15 Apr 2024 16:19:35 +0200
-Message-ID: <20240415142002.715284073@linuxfoundation.org>
+	Noah Loomans <noah@noahloomans.com>,
+	Guenter Roeck <groeck@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>
+Subject: [PATCH 6.6 011/122] platform/chrome: cros_ec_uart: properly fix race condition
+Date: Mon, 15 Apr 2024 16:19:36 +0200
+Message-ID: <20240415141953.715350609@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Noah Loomans <noah@noahloomans.com>
 
-[ Upstream commit a97de7bff13b1cc825c1b1344eaed8d6c2d3e695 ]
+commit 5e700b384ec13f5bcac9855cb28fcc674f1d3593 upstream.
 
-syzbot reported rfcomm_sock_setsockopt_old() is copying data without
-checking user input length.
+The cros_ec_uart_probe() function calls devm_serdev_device_open() before
+it calls serdev_device_set_client_ops(). This can trigger a NULL pointer
+dereference:
 
-BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset
-include/linux/sockptr.h:49 [inline]
-BUG: KASAN: slab-out-of-bounds in copy_from_sockptr
-include/linux/sockptr.h:55 [inline]
-BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt_old
-net/bluetooth/rfcomm/sock.c:632 [inline]
-BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt+0x893/0xa70
-net/bluetooth/rfcomm/sock.c:673
-Read of size 4 at addr ffff8880209a8bc3 by task syz-executor632/5064
+    BUG: kernel NULL pointer dereference, address: 0000000000000000
+    ...
+    Call Trace:
+     <TASK>
+     ...
+     ? ttyport_receive_buf
 
-Fixes: 9f2c8a03fbb3 ("Bluetooth: Replace RFCOMM link mode with security level")
-Fixes: bb23c0ab8246 ("Bluetooth: Add support for deferring RFCOMM connection setup")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A simplified version of crashing code is as follows:
+
+    static inline size_t serdev_controller_receive_buf(struct serdev_controller *ctrl,
+                                                      const u8 *data,
+                                                      size_t count)
+    {
+            struct serdev_device *serdev = ctrl->serdev;
+
+            if (!serdev || !serdev->ops->receive_buf) // CRASH!
+                return 0;
+
+            return serdev->ops->receive_buf(serdev, data, count);
+    }
+
+It assumes that if SERPORT_ACTIVE is set and serdev exists, serdev->ops
+will also exist. This conflicts with the existing cros_ec_uart_probe()
+logic, as it first calls devm_serdev_device_open() (which sets
+SERPORT_ACTIVE), and only later sets serdev->ops via
+serdev_device_set_client_ops().
+
+Commit 01f95d42b8f4 ("platform/chrome: cros_ec_uart: fix race
+condition") attempted to fix a similar race condition, but while doing
+so, made the window of error for this race condition to happen much
+wider.
+
+Attempt to fix the race condition again, making sure we fully setup
+before calling devm_serdev_device_open().
+
+Fixes: 01f95d42b8f4 ("platform/chrome: cros_ec_uart: fix race condition")
+Cc: stable@vger.kernel.org
+Signed-off-by: Noah Loomans <noah@noahloomans.com>
+Reviewed-by: Guenter Roeck <groeck@chromium.org>
+Link: https://lore.kernel.org/r/20240410182618.169042-2-noah@noahloomans.com
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/rfcomm/sock.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/platform/chrome/cros_ec_uart.c |   28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
-index b54e8a530f55a..29aa07e9db9d7 100644
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -629,7 +629,7 @@ static int rfcomm_sock_setsockopt_old(struct socket *sock, int optname,
+--- a/drivers/platform/chrome/cros_ec_uart.c
++++ b/drivers/platform/chrome/cros_ec_uart.c
+@@ -264,12 +264,6 @@ static int cros_ec_uart_probe(struct ser
+ 	if (!ec_dev)
+ 		return -ENOMEM;
  
- 	switch (optname) {
- 	case RFCOMM_LM:
--		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
-+		if (bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen)) {
- 			err = -EFAULT;
- 			break;
- 		}
-@@ -664,7 +664,6 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
- 	struct sock *sk = sock->sk;
- 	struct bt_security sec;
- 	int err = 0;
--	size_t len;
- 	u32 opt;
+-	ret = devm_serdev_device_open(dev, serdev);
+-	if (ret) {
+-		dev_err(dev, "Unable to open UART device");
+-		return ret;
+-	}
+-
+ 	serdev_device_set_drvdata(serdev, ec_dev);
+ 	init_waitqueue_head(&ec_uart->response.wait_queue);
  
- 	BT_DBG("sk %p", sk);
-@@ -686,11 +685,9 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
+@@ -281,14 +275,6 @@ static int cros_ec_uart_probe(struct ser
+ 		return ret;
+ 	}
  
- 		sec.level = BT_SECURITY_LOW;
+-	ret = serdev_device_set_baudrate(serdev, ec_uart->baudrate);
+-	if (ret < 0) {
+-		dev_err(dev, "Failed to set up host baud rate (%d)", ret);
+-		return ret;
+-	}
+-
+-	serdev_device_set_flow_control(serdev, ec_uart->flowcontrol);
+-
+ 	/* Initialize ec_dev for cros_ec  */
+ 	ec_dev->phys_name = dev_name(dev);
+ 	ec_dev->dev = dev;
+@@ -302,6 +288,20 @@ static int cros_ec_uart_probe(struct ser
  
--		len = min_t(unsigned int, sizeof(sec), optlen);
--		if (copy_from_sockptr(&sec, optval, len)) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&sec, sizeof(sec), optval, optlen);
-+		if (err)
- 			break;
--		}
+ 	serdev_device_set_client_ops(serdev, &cros_ec_uart_client_ops);
  
- 		if (sec.level > BT_SECURITY_HIGH) {
- 			err = -EINVAL;
-@@ -706,10 +703,9 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
++	ret = devm_serdev_device_open(dev, serdev);
++	if (ret) {
++		dev_err(dev, "Unable to open UART device");
++		return ret;
++	}
++
++	ret = serdev_device_set_baudrate(serdev, ec_uart->baudrate);
++	if (ret < 0) {
++		dev_err(dev, "Failed to set up host baud rate (%d)", ret);
++		return ret;
++	}
++
++	serdev_device_set_flow_control(serdev, ec_uart->flowcontrol);
++
+ 	return cros_ec_register(ec_dev);
+ }
  
--		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		if (opt)
- 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
--- 
-2.43.0
-
 
 
 
