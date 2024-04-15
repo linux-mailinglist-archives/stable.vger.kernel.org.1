@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-39824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CC038A54EA
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0F878A540A
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:33:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEA941C221CD
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 096AA1C21EF0
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65A383A15;
-	Mon, 15 Apr 2024 14:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D168080026;
+	Mon, 15 Apr 2024 14:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fd4fWKip"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kr0Zpqf+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A529C762E0;
-	Mon, 15 Apr 2024 14:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBE27F7F2;
+	Mon, 15 Apr 2024 14:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191923; cv=none; b=FHFRWjoSeQCy63+ax6eEksh6YeW5EsjmNNHeKJtERBXSWOosrI9mN003LSiVguzr+XycOJ6yJYeO/p2MBlpE/4OLbrJm3doUaOzTq5d9b1Cu4qljgEYCuKDZZjbJ+2782p1629mnFpMhaSowa6WySd6zQUy9Fb45q9J64CQqS2g=
+	t=1713191432; cv=none; b=SpuYqygf4KISCMYMLuAA0TGndM4JkOrTG2sGA/fNAOalH5nZRobFFiJaYf04V7rZIbiNkpn/RlmuWsIqUNSaF/jSOAl2CMroOUWOlpvRQCQPxy+JI4UR9/+5IJZR7UAcWGOs24xUiZjymqd5CpcAgSafknjYRz+N+Gc0BHpi0Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191923; c=relaxed/simple;
-	bh=nFRrqAdVTnU/cbMtGGVJOOVqCbbJwiwr+gapwQJnLq0=;
+	s=arc-20240116; t=1713191432; c=relaxed/simple;
+	bh=YkCc4IKa9RoLxQdiGwfcLagOxOa5ybHo9lHalGbhNKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zcah6QOmriggN0Plg54YdlcmWX/s1+V+h9wNfu4g/cA3xjk35lmRhDC6px5er9mIvGF3GAMWRw4Cv0a36FBumUTpUQcG4VDKmSYnTwV/kEHdFUcMmndZwv1MeKkZNoOPOLVBTyWVc1aBQZol4SJVv+b00acFlKO1HY7Aa68qlmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fd4fWKip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B156C113CC;
-	Mon, 15 Apr 2024 14:38:42 +0000 (UTC)
+	 MIME-Version; b=qNPPAVumeRQCJD9XUh1yABoiwuYX9Irl7lm7YuptquRXnLDhtK5QcFsrf7ERLp2AWsnX9cH8RG7DxYeU5PG2v3QHzjBMc82CrTYpbjWG/FOBwo/TISYVwR+TeZHaLwxMFjW9yOowbaOEG29ew7N1duA7p9WHds4eL26TXaoSy4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kr0Zpqf+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD23C113CC;
+	Mon, 15 Apr 2024 14:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191923;
-	bh=nFRrqAdVTnU/cbMtGGVJOOVqCbbJwiwr+gapwQJnLq0=;
+	s=korg; t=1713191432;
+	bh=YkCc4IKa9RoLxQdiGwfcLagOxOa5ybHo9lHalGbhNKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fd4fWKipt46agNboYOJ+8cpxrvmgT1mbl6l0ZPtpod6mp8MoIP9EQLe23pOSgI74R
-	 9LY7VBuOWfnn4h0bOuios3EdypFsBjaRqN5RAbzgVzeFctvq61dvme6bPoSSZUVKLl
-	 inoh2uwNn382tyQBx65Ld9B3wgTX+lx4Ojk8Mfcg=
+	b=kr0Zpqf+vuXTcyQBs1Y7SubmxJPMdoG0BR3GRj7nq3KJc8lPjdH5ITW9hQO2ySYOs
+	 /pjsTBKOp36+CwOB/zN+eeFs7Ds6PQm/8UvVXbf2XrI2QgfYKSL154udEVzeMFq50e
+	 gn+/UWZypvpzFE2uRrlavFWO9XO2vHhq7FTC+5Bk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharath SM <bharathsm@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 01/69] smb3: fix Open files on server counter going negative
+	Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.8 133/172] arm64: dts: imx8-ss-dma: fix can lpcg indices
 Date: Mon, 15 Apr 2024 16:20:32 +0200
-Message-ID: <20240415141946.212492625@linuxfoundation.org>
+Message-ID: <20240415142004.419154491@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 28e0947651ce6a2200b9a7eceb93282e97d7e51a upstream.
+commit 0893392334b5dffdf616a53679c6a2942c46391b upstream.
 
-We were decrementing the count of open files on server twice
-for the case where we were closing cached directories.
+can0_lpcg: clock-controller@5acd0000 {
+	...						   Col1  Col2
+	clocks = <&clk IMX_SC_R_CAN_0 IMX_SC_PM_CLK_PER>, // 0    0
+		 <&dma_ipg_clk>,			  // 1    4
+		 <&dma_ipg_clk>;			  // 2    5
+        clock-indices = <IMX_LPCG_CLK_0>,
+			<IMX_LPCG_CLK_4>,
+			<IMX_LPCG_CLK_5>;
+}
 
-Fixes: 8e843bf38f7b ("cifs: return a single-use cfid if we did not get a lease")
+Col1: index, which existing dts try to get.
+Col2: actual index in lpcg driver.
+
+flexcan1: can@5a8d0000 {
+	clocks = <&can0_lpcg 1>, <&can0_lpcg 0>;
+			     ^^		     ^^
+Should be:
+	clocks = <&can0_lpcg IMX_LPCG_CLK_4>, <&can0_lpcg IMX_LPCG_CLK_0>;
+};
+
+Arg0 is divided by 4 in lpcg driver. flexcan driver get IMX_SC_PM_CLK_PER
+by <&can0_lpcg 1> and <&can0_lpcg 0>. Although function can work, code
+logic is wrong. Fix it by using correct clock indices.
+
 Cc: stable@vger.kernel.org
-Acked-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 5e7d5b023e03 ("arm64: dts: imx8qxp: add flexcan in adma")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cached_dir.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -386,8 +386,8 @@ smb2_close_cached_fid(struct kref *ref)
- 	if (cfid->is_open) {
- 		rc = SMB2_close(0, cfid->tcon, cfid->fid.persistent_fid,
- 			   cfid->fid.volatile_fid);
--		if (rc != -EBUSY && rc != -EAGAIN)
--			atomic_dec(&cfid->tcon->num_remote_opens);
-+		if (rc) /* should we retry on -EBUSY or -EAGAIN? */
-+			cifs_dbg(VFS, "close cached dir rc %d\n", rc);
- 	}
- 
- 	free_cached_dir(cfid);
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+@@ -406,8 +406,8 @@ dma_subsys: bus@5a000000 {
+ 		reg = <0x5a8d0000 0x10000>;
+ 		interrupts = <GIC_SPI 235 IRQ_TYPE_LEVEL_HIGH>;
+ 		interrupt-parent = <&gic>;
+-		clocks = <&can0_lpcg 1>,
+-			 <&can0_lpcg 0>;
++		clocks = <&can0_lpcg IMX_LPCG_CLK_4>,
++			 <&can0_lpcg IMX_LPCG_CLK_0>;
+ 		clock-names = "ipg", "per";
+ 		assigned-clocks = <&clk IMX_SC_R_CAN_0 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <40000000>;
+@@ -427,8 +427,8 @@ dma_subsys: bus@5a000000 {
+ 		 * CAN1 shares CAN0's clock and to enable CAN0's clock it
+ 		 * has to be powered on.
+ 		 */
+-		clocks = <&can0_lpcg 1>,
+-			 <&can0_lpcg 0>;
++		clocks = <&can0_lpcg IMX_LPCG_CLK_4>,
++			 <&can0_lpcg IMX_LPCG_CLK_0>;
+ 		clock-names = "ipg", "per";
+ 		assigned-clocks = <&clk IMX_SC_R_CAN_0 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <40000000>;
+@@ -448,8 +448,8 @@ dma_subsys: bus@5a000000 {
+ 		 * CAN2 shares CAN0's clock and to enable CAN0's clock it
+ 		 * has to be powered on.
+ 		 */
+-		clocks = <&can0_lpcg 1>,
+-			 <&can0_lpcg 0>;
++		clocks = <&can0_lpcg IMX_LPCG_CLK_4>,
++			 <&can0_lpcg IMX_LPCG_CLK_0>;
+ 		clock-names = "ipg", "per";
+ 		assigned-clocks = <&clk IMX_SC_R_CAN_0 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <40000000>;
 
 
 
