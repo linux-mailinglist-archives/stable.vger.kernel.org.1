@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-39888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C048A5530
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D61778A54DF
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A86571C21FDE
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92203281222
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B721757FB;
-	Mon, 15 Apr 2024 14:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523988120A;
+	Mon, 15 Apr 2024 14:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYJJuR7p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R54L6jIx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F011E4B1;
-	Mon, 15 Apr 2024 14:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCF07A705;
+	Mon, 15 Apr 2024 14:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192119; cv=none; b=oeAqaORbGGKxhhqBZmTc/uBP4cAc/IvloxP1Bo7AlaUNmUvyxBI9UbWe3ekb7Xw9/b2kSJ+Him6Ql4Qz0LN94gAoS1MEDF/I6Y+DzCqDn6qdafXWCWO9rY7VClkXiDMP3xsdDGh3qK0U1DtURvRrZjD54pipnbk7DoynHN7/kkY=
+	t=1713191891; cv=none; b=HNQ7mlyZtCuuN8Y1iAX1l3BfpXQ2RrQV7Ep6kCsY0Z/DX+yTTijm2SMRxlQ0XJSBG1TYyj88G8juagDkm3nY0zQbbQQ2PgG+Bx+8H/r+LIIjxUmX2bISghPnmEgUtCO37q7M6tceL9a8qYyC1FDH9S30D3RBLTG0IvoaZWv/YqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192119; c=relaxed/simple;
-	bh=6iucqrJJL0scwhY8+4RE2uRj/g2IyXEB4O4bWyTB9I8=;
+	s=arc-20240116; t=1713191891; c=relaxed/simple;
+	bh=1eiGAwvXGsEe8YL/J1mL4TQEiq+/lGC5aDGJxdpVPwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EGA7UEiAThK85r5E9we0kGz3h1syHIpa6z0Dv3A6Uz5aIYOR+tLUlm6GXZ3kdOB0xUS41M+cXrx1M27ooybw6pXchoGK3q8Do51FsM24JC0Crt4s83xSGN6Yx6wayVlvuz0fsTMOId+uq5/G+8WZfngLOKBI/u1xWA6sN83dCtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KYJJuR7p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3719C113CC;
-	Mon, 15 Apr 2024 14:41:58 +0000 (UTC)
+	 MIME-Version; b=falE+5NMX4qyvDJielxw3qA655GThAvuKT9ZMpJuyN1e6PGzK5VUX4d2t7jWipuF3O2R5l7pDeujKcA+yTOe27BsnPqrkpCKD2ZHojOzZXK7axLyW2ygB2QAQ81w0HMmsYsIpdDvetU/GOsz0nYMYUZfzcHm6ZQk+jyVIoWaNsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R54L6jIx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870A7C113CC;
+	Mon, 15 Apr 2024 14:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192119;
-	bh=6iucqrJJL0scwhY8+4RE2uRj/g2IyXEB4O4bWyTB9I8=;
+	s=korg; t=1713191890;
+	bh=1eiGAwvXGsEe8YL/J1mL4TQEiq+/lGC5aDGJxdpVPwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KYJJuR7pJrsfXGFvW/9zPJdSN3EG8RmpnE8kJ+MqrQl75cKMgwl2R7N4mT8oya6F5
-	 ZLuvRtuDEdqfZsCW24Bm4hxuFRgV2+9Prgl+iTE9xYyZuKonGiheIv5Nz5k5AI2NFu
-	 rrjA7ll6jmIRfQ/A3HgPO3PPGw845ighOYaTG06I=
+	b=R54L6jIx99tOk4Yha0samr7T/TU0wH2p5u2icVmlFgO32uk9+VYUEXsTryYqm/i8+
+	 MMFgughyPacBfzhLBfsRR35MTJq7JgE1qYwHMUpbOF8ejHBF4TcZZPzR9pILbnCGG9
+	 kcSIlVKIbD7jYPW4JkwmPOisp/5bbD0bW13rJSRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.1 53/69] x86/cpu: Actually turn off mitigations by default for SPECULATION_MITIGATIONS=n
+	Tim Huang <Tim.Huang@amd.com>,
+	Yifan Zhang <yifan1.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 119/122] drm/amdgpu: fix incorrect number of active RBs for gfx11
 Date: Mon, 15 Apr 2024 16:21:24 +0200
-Message-ID: <20240415141947.766678667@linuxfoundation.org>
+Message-ID: <20240415141956.940231208@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +60,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-commit f337a6a21e2fd67eadea471e93d05dd37baaa9be upstream.
+commit bbca7f414ae9a12ea231cdbafd79c607e3337ea8 upstream.
 
-Initialize cpu_mitigations to CPU_MITIGATIONS_OFF if the kernel is built
-with CONFIG_SPECULATION_MITIGATIONS=n, as the help text quite clearly
-states that disabling SPECULATION_MITIGATIONS is supposed to turn off all
-mitigations by default.
+The RB bitmap should be global active RB bitmap &
+active RB bitmap based on active SA.
 
-  │ If you say N, all mitigations will be disabled. You really
-  │ should know what you are doing to say so.
-
-As is, the kernel still defaults to CPU_MITIGATIONS_AUTO, which results in
-some mitigations being enabled in spite of SPECULATION_MITIGATIONS=n.
-
-Fixes: f43b9876e857 ("x86/retbleed: Add fine grained Kconfig knobs")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240409175108.1512861-2-seanjc@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cpu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -2788,7 +2788,8 @@ enum cpu_mitigations {
- };
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -1616,7 +1616,7 @@ static void gfx_v11_0_setup_rb(struct am
+ 			active_rb_bitmap |= (0x3 << (i * rb_bitmap_width_per_sa));
+ 	}
  
- static enum cpu_mitigations cpu_mitigations __ro_after_init =
--	CPU_MITIGATIONS_AUTO;
-+	IS_ENABLED(CONFIG_SPECULATION_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
-+						     CPU_MITIGATIONS_OFF;
- 
- static int __init mitigations_parse_cmdline(char *arg)
- {
+-	active_rb_bitmap |= global_active_rb_bitmap;
++	active_rb_bitmap &= global_active_rb_bitmap;
+ 	adev->gfx.config.backend_enable_mask = active_rb_bitmap;
+ 	adev->gfx.config.num_rbs = hweight32(active_rb_bitmap);
+ }
 
 
 
