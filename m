@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-39869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 440888A551C
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BBBC8A5411
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:33:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75AC41C21623
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BACD1F228F1
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A5876044;
-	Mon, 15 Apr 2024 14:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BED482890;
+	Mon, 15 Apr 2024 14:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nX+ve/O8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQ/3hGYM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7370C3BBE1;
-	Mon, 15 Apr 2024 14:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EC5763F8;
+	Mon, 15 Apr 2024 14:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192062; cv=none; b=ANOPw8y0bB3sDPyLblKMd88bDiQ6CmMKXkw1tMvKD+yhYx66MQ70z3l5O5VXjwRphTQLoR696kRIrqsiZINjBiy+/n/69/miihkDz8WUHRknF1yMThLjvvLVhiqTeL0kT1FMaPoPT+zET/R/tfBJMpzG1FBuYaQ3B6+QsbxTxCA=
+	t=1713191450; cv=none; b=o0HX9t2hlQ0nKUZitdLba1Fy8uB+ssN2aTSrxLP592+3V9+k91/nSFloz7+ncaOtkRiu4wlV7Qy/j8q+vdbKAmF17EjjTwG9MlFRwHbFtdHs0WW2lnhYyVIv6Hq0Tu7w0U6D+qhqQfKkIZHdtPsQkmAvZnCONPbcZS0KU2CplPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192062; c=relaxed/simple;
-	bh=tQn8snFk165neIsk+g7fMS1P6KjPIIEgsMlyHcIaReQ=;
+	s=arc-20240116; t=1713191450; c=relaxed/simple;
+	bh=TLgI7gPCEyMm5ObZA87XEj3lPb0luimMqFm9+I5TLHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d3U0Xkwz/+TWCVw4On9Q53cYADxz9amW5qrnUFBCGXuGhQ2n9n0MQu9yIGjQkdR7aS8kMee3areURZIwgWChd3kMk64n7dMwiUMGhhvzmnfHiOBb4a1D4SPTIfTrwNqKvKtFziFKLODIdFArL+NzbDwD29r6+3LKIYiPMhXwKtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nX+ve/O8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED000C113CC;
-	Mon, 15 Apr 2024 14:41:01 +0000 (UTC)
+	 MIME-Version; b=JT0ZfUsSLW69xk1mGKRyx78VXvRP5aaUp8Nv7P8itZMzlAbGEW9kPlqD9kv/052vmnwf026IMewiKJpnoyQrvAn2dnAYU8tp/RpYuuxj227+seuR4BwHK5bJCn4tZpZSvXbFywX6JnSytm3oZdECkeWUGyDlKaZlMJBgnje9PcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQ/3hGYM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A146AC113CC;
+	Mon, 15 Apr 2024 14:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192062;
-	bh=tQn8snFk165neIsk+g7fMS1P6KjPIIEgsMlyHcIaReQ=;
+	s=korg; t=1713191450;
+	bh=TLgI7gPCEyMm5ObZA87XEj3lPb0luimMqFm9+I5TLHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nX+ve/O8ZtjqskRwWKCudOf7iYIac3t47qRD6/LRWUZbNBzIUNZTmv97msLky/r2t
-	 0e3F9cK+I4vgZrmJysUQP587tI9hArSWdDqaKqUI/Yegv+fLOjL1A0IccxxhhDVlKh
-	 sJJGwmujGk8r0ZBCbIrIcw0PsoSnwY/MJjM0O+Kc=
+	b=kQ/3hGYMY0bNnvzdnZgVE/9U+AhqyUzUXLcOLnJxWQ5u8qp3W2FO94GcR9l5PxzYs
+	 KdC8azRCHbENpIIkXyBLe9WyvZOjQnqeWVbgv4ObcdZVkBocSlswgB6S2XlQyEZp12
+	 eIwMe7ZFV7j3FsRwzhhwwXhfjXMOSQc0hxueHoBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Tesarik <petr@tesarici.cz>,
-	Simon Horman <horms@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 15/69] u64_stats: fix u64_stats_init() for lockdep when used repeatedly in one file
+	Adam Dunlap <acdunlap@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Kevin Loughlin <kevinloughlin@google.com>
+Subject: [PATCH 6.8 147/172] x86/apic: Force native_apic_mem_read() to use the MOV instruction
 Date: Mon, 15 Apr 2024 16:20:46 +0200
-Message-ID: <20240415141946.630784598@linuxfoundation.org>
+Message-ID: <20240415142004.836866843@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Tesarik <petr@tesarici.cz>
+From: Adam Dunlap <acdunlap@google.com>
 
-[ Upstream commit 38a15d0a50e0a43778561a5861403851f0b0194c ]
+commit 5ce344beaca688f4cdea07045e0b8f03dc537e74 upstream.
 
-Fix bogus lockdep warnings if multiple u64_stats_sync variables are
-initialized in the same file.
+When done from a virtual machine, instructions that touch APIC memory
+must be emulated. By convention, MMIO accesses are typically performed
+via io.h helpers such as readl() or writeq() to simplify instruction
+emulation/decoding (ex: in KVM hosts and SEV guests) [0].
 
-With CONFIG_LOCKDEP, seqcount_init() is a macro which declares:
+Currently, native_apic_mem_read() does not follow this convention,
+allowing the compiler to emit instructions other than the MOV
+instruction generated by readl(). In particular, when the kernel is
+compiled with clang and run as a SEV-ES or SEV-SNP guest, the compiler
+would emit a TESTL instruction which is not supported by the SEV-ES
+emulator, causing a boot failure in that environment. It is likely the
+same problem would happen in a TDX guest as that uses the same
+instruction emulator as SEV-ES.
 
-	static struct lock_class_key __key;
+To make sure all emulators can emulate APIC memory reads via MOV, use
+the readl() function in native_apic_mem_read(). It is expected that any
+emulator would support MOV in any addressing mode as it is the most
+generic and is what is usually emitted currently.
 
-Since u64_stats_init() is a function (albeit an inline one), all calls
-within the same file end up using the same instance, effectively treating
-them all as a single lock-class.
+The TESTL instruction is emitted when native_apic_mem_read() is inlined
+into apic_mem_wait_icr_idle(). The emulator comes from
+insn_decode_mmio() in arch/x86/lib/insn-eval.c. It's not worth it to
+extend insn_decode_mmio() to support more instructions since, in theory,
+the compiler could choose to output nearly any instruction for such
+reads which would bloat the emulator beyond reason.
 
-Fixes: 9464ca650008 ("net: make u64_stats_init() a function")
-Closes: https://lore.kernel.org/netdev/ea1567d9-ce66-45e6-8168-ac40a47d1821@roeck-us.net/
-Signed-off-by: Petr Tesarik <petr@tesarici.cz>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240404075740.30682-1-petr@tesarici.cz
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  [0] https://lore.kernel.org/all/20220405232939.73860-12-kirill.shutemov@linux.intel.com/
+
+  [ bp: Massage commit message, fix typos. ]
+
+Signed-off-by: Adam Dunlap <acdunlap@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Tested-by: Kevin Loughlin <kevinloughlin@google.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240318230927.2191933-1-acdunlap@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/u64_stats_sync.h | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/apic.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/u64_stats_sync.h b/include/linux/u64_stats_sync.h
-index 46040d66334a8..79c3bbaa7e13e 100644
---- a/include/linux/u64_stats_sync.h
-+++ b/include/linux/u64_stats_sync.h
-@@ -135,10 +135,11 @@ static inline void u64_stats_inc(u64_stats_t *p)
- 	p->v++;
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -13,6 +13,7 @@
+ #include <asm/mpspec.h>
+ #include <asm/msr.h>
+ #include <asm/hardirq.h>
++#include <asm/io.h>
+ 
+ #define ARCH_APICTIMER_STOPS_ON_C3	1
+ 
+@@ -96,7 +97,7 @@ static inline void native_apic_mem_write
+ 
+ static inline u32 native_apic_mem_read(u32 reg)
+ {
+-	return *((volatile u32 *)(APIC_BASE + reg));
++	return readl((void __iomem *)(APIC_BASE + reg));
  }
  
--static inline void u64_stats_init(struct u64_stats_sync *syncp)
--{
--	seqcount_init(&syncp->seq);
--}
-+#define u64_stats_init(syncp)				\
-+	do {						\
-+		struct u64_stats_sync *__s = (syncp);	\
-+		seqcount_init(&__s->seq);		\
-+	} while (0)
- 
- static inline void __u64_stats_update_begin(struct u64_stats_sync *syncp)
- {
--- 
-2.43.0
-
+ static inline void native_apic_mem_eoi(void)
 
 
 
