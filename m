@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-39663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD318A5412
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:33:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24C6F8A551A
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09BF0B2360D
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:33:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56B311C21E93
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FDE1D524;
-	Mon, 15 Apr 2024 14:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60A978C8B;
+	Mon, 15 Apr 2024 14:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdVWTUuu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qViqT3yQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539D578C85;
-	Mon, 15 Apr 2024 14:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947A63BBE1;
+	Mon, 15 Apr 2024 14:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191444; cv=none; b=hEki302IrgZ9iadHWX1jS72X2RrJp5W7qnexhTZEEzrfLeBxn0NIst7ZzKwGppSjwb1APNg6Uck/fMihS2eLGdJRz33dPqxeeYd16SqF2RnsJ+9/NHTRjcwOy+mwtlfENxeJWoIVe/skHuEABGGQUYiEsg96ydClwPMuNcTjJa8=
+	t=1713192056; cv=none; b=Pb1jwBSnUPJBr30NS/BmGM87xNo3ewz+LMc8oPKNF3rs5UkmzDPJk3tX8UmdVyLGLYqKd1oFcRuG2vFUdOJRJxKe8SNdBWluG+GB0cKtxkcfbMgT3mh9JCiknV5zOY1PANMVZzn5+bgyzllOXV6he0VGckeYt4qPhtIQo1WkmZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191444; c=relaxed/simple;
-	bh=DU0vrrNE9HtSkOHWkLz5lYigaF4kloVnQsNKePWOcbw=;
+	s=arc-20240116; t=1713192056; c=relaxed/simple;
+	bh=+9IqYnNH+gOpMZECLRIZkXsZ7/FCaDKeADGJIoGrITQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EHcT+tNdxUwcq79dMCjBfXSaEgHX6c2gRB3/O2lomEJtvVySeZX0R6HqNk1vWPaTzGH2UEDQhepqptAcQuoA+YTUzCaytv9ID4WjL9CSN8GQFXHxxgRgHyJoRD7KyOWLRB7WWn3irFHkRMsfarbL5pYcWEFJGkNm/GJqZaWPWd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zdVWTUuu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFDB2C113CC;
-	Mon, 15 Apr 2024 14:30:43 +0000 (UTC)
+	 MIME-Version; b=ZIxFFXMx/4otIojRCEUNDKQRwjrGW5bSD0angd9zYol0lDK847K27YFuH0ewXAskSOSZ1qG9wRzZ4Vve2QO2aDdtHn/m8YSffHsRAGUFrJoFjD/56+YTpvcNWDD4AHgIR6T+QnLM94uvalGtM/VQ+N7PEypc9kmx52+rAY/lbvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qViqT3yQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 182C0C113CC;
+	Mon, 15 Apr 2024 14:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191444;
-	bh=DU0vrrNE9HtSkOHWkLz5lYigaF4kloVnQsNKePWOcbw=;
+	s=korg; t=1713192056;
+	bh=+9IqYnNH+gOpMZECLRIZkXsZ7/FCaDKeADGJIoGrITQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zdVWTUuudCaNAMZa+4RkE/QSEXmjG0X5QjIBhrlnpprSoWIJei0ixQXM/znOZEFDU
-	 AyyDgFi1kONgJozrGUmfzq9nd8c92E8GtQQ7UCRMk/hmfCzTYY/c5ySYJ5M2FYbrFr
-	 PgAf3PMqZUFt+7lncYY7Ocx4Nf4Wdc20wYfot3zI=
+	b=qViqT3yQ5IvTCk5EsVz9aCEFuhCuPCtOHRGOtkHN9XRx9O7jqvGZNXvGos4F42blT
+	 vfuOfVJtg4dhOVativ4U3eXakxdkr9xokIcHzRTMYw8RmP/3SXUv68R6ENpu1flc1k
+	 AUIgYqGrNkRtkuuyvZQZ1mcYL0bsV5Lf318dT66w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Stultz <jstultz@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.8 145/172] selftests: timers: Fix abs() warning in posix_timers test
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 13/69] scsi: qla2xxx: Fix off by one in qla_edif_app_getstats()
 Date: Mon, 15 Apr 2024 16:20:44 +0200
-Message-ID: <20240415142004.776941374@linuxfoundation.org>
+Message-ID: <20240415141946.571190629@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Stultz <jstultz@google.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit ed366de8ec89d4f960d66c85fc37d9de22f7bf6d upstream.
+[ Upstream commit 4406e4176f47177f5e51b4cc7e6a7a2ff3dbfbbd ]
 
-Building with clang results in the following warning:
+The app_reply->elem[] array is allocated earlier in this function and it
+has app_req.num_ports elements.  Thus this > comparison needs to be >= to
+prevent memory corruption.
 
-  posix_timers.c:69:6: warning: absolute value function 'abs' given an
-      argument of type 'long long' but has parameter of type 'int' which may
-      cause truncation of value [-Wabsolute-value]
-        if (abs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
-            ^
-So switch to using llabs() instead.
-
-Fixes: 0bc4b0cf1570 ("selftests: add basic posix timers selftests")
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240410232637.4135564-3-jstultz@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7878f22a2e03 ("scsi: qla2xxx: edif: Add getfcinfo and statistic bsgs")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/5c125b2f-92dd-412b-9b6f-fc3a3207bd60@moroto.mountain
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/timers/posix_timers.c |    2 +-
+ drivers/scsi/qla2xxx/qla_edif.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/timers/posix_timers.c
-+++ b/tools/testing/selftests/timers/posix_timers.c
-@@ -66,7 +66,7 @@ static int check_diff(struct timeval sta
- 	diff = end.tv_usec - start.tv_usec;
- 	diff += (end.tv_sec - start.tv_sec) * USECS_PER_SEC;
+diff --git a/drivers/scsi/qla2xxx/qla_edif.c b/drivers/scsi/qla2xxx/qla_edif.c
+index 7aee4d093969a..969008071decd 100644
+--- a/drivers/scsi/qla2xxx/qla_edif.c
++++ b/drivers/scsi/qla2xxx/qla_edif.c
+@@ -1058,7 +1058,7 @@ qla_edif_app_getstats(scsi_qla_host_t *vha, struct bsg_job *bsg_job)
  
--	if (abs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
-+	if (llabs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
- 		printf("Diff too high: %lld..", diff);
- 		return -1;
- 	}
+ 		list_for_each_entry_safe(fcport, tf, &vha->vp_fcports, list) {
+ 			if (fcport->edif.enable) {
+-				if (pcnt > app_req.num_ports)
++				if (pcnt >= app_req.num_ports)
+ 					break;
+ 
+ 				app_reply->elem[pcnt].rekey_count =
+-- 
+2.43.0
+
 
 
 
