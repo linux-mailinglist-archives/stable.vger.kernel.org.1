@@ -1,199 +1,124 @@
-Return-Path: <stable+bounces-39964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 604498A5CE5
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 23:25:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D388A5D3B
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 23:52:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 843B21C21716
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 21:25:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0DD22830B5
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 21:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DAE156969;
-	Mon, 15 Apr 2024 21:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A1A157491;
+	Mon, 15 Apr 2024 21:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O2Du+09d"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D1UQX5Vl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E41156236;
-	Mon, 15 Apr 2024 21:25:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628091EF1A;
+	Mon, 15 Apr 2024 21:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713216341; cv=none; b=g+kit+MfDcDj1AWxxjI+L0WEqCn6nkA77gZvnJDq1aKKFFLn9lSmgMg7CFTyCIaI3iSfSAbUPKMwinPrNCPbvUwTm0SGgeXFBlECrydKgfVttnpoh3ho1hjzgWlid7wSCatr2TAWLgo49CJn4zxMdj7uTmlKkRzXpp9v8MSaomY=
+	t=1713217943; cv=none; b=beL6lKDJdJZmVBMkQPPk718T43jkmmRt/iAXhV7p0LWnC1HmShdNlFzQ6Q64Wn1KQUO02TZXgOp1gnbn/M8CPLy8NrBEcEiaXLzR+sTIDaGDaJy7th8BXdL27Upt4MlsKlK5SFoGVHVeQZTbLR4+4h/SQQJU7L+J6XpRZDPKthU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713216341; c=relaxed/simple;
-	bh=m2bnyXoPve6kFs+KbC7IXQMTZpUcBMgtxbv/xYm98h0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gb+UcK/AUrLJ9y9KVmd2a2L6c1WHaWyI1IFOprPPNUPQeVti96weX8SdCQLnbi5KgTnsQTmu2hpi1Ka8KdMk3KKb09BkJXWW9cdr0UwZZUfQai823ZSwIYC4ZzKLBq9Vb1Fg2ZGz6IukOsoMEUuG0ddJa0pHNWoyq0ztnrhZ1C8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O2Du+09d; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-343c891bca5so2412173f8f.2;
-        Mon, 15 Apr 2024 14:25:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713216338; x=1713821138; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I6Ar2yG1hipbO/wSAi/ZjpkXRjk4zWz8MUQpTTF6vT8=;
-        b=O2Du+09dXNpJsUWjh3iFtMzAWPX5ne7+7MnCYAm9z7C1u5vfUzD3TVChhT80wEDBMn
-         JAQCWBPEg9B7Fqjz/oG4qidmafIzXRmaT4OmGgRE7UQtzC3/Xpwh5s9pxHea3p1nQO4D
-         /ZCHS13XxGc2OWlHKCL9vdOgAI3sxTLb5QspirwJtLEFi3SISwAJp5Yc8g9bS6K8y31E
-         kKV7oiZhdVVFPLxLwSgNvyCR5mecW9mCATQ0IMDz/Bb05AzrFXL+ogRIIfhsCCVExBPF
-         cpbrcJevZrrJAyoiop9k8ZavvFay9E2nMi9EjrwqVxc1W+4WBpW6cDMq6jFCdFrvXfPd
-         vvMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713216338; x=1713821138;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I6Ar2yG1hipbO/wSAi/ZjpkXRjk4zWz8MUQpTTF6vT8=;
-        b=jsySIBO+/Z2+eDyw+LFerltOa2kQW8Gs7mML2M/hTUlo48/aQWOzxLeS27MI3lBqJ6
-         aGT3bF3l58kXazvIQQdFDFtsQ6MAshPp9W0A0BT+iHF3XVBPVyhrE5JhWAjoabJ/3Cl+
-         larJh47W9NFA9UR2I58Ww4dJuprQ+SE6EfnXotGh4L8V477fuQ0SwOSKVMRAD8e1lHeb
-         UtP5mRxgQSKKqaxlGmu1r0j/gQxb05jsG/I905BOI5FKp3M8Mxyi4dzBC7oHERizDec4
-         kfsGYVr6/IQUDRbTJ4/btWdP0C9S1J+pLHavZpS0+ogBOB9WlRq3+/YiKVMZFS+mHf03
-         +RdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVT1M1n33fBMqsRRQE3+1BosXL1n4fqHJe3B6ka31YDZxSlYrrpNLLRHq78ZlaDE7MA1UGzHu4K7X3+zsUfJzOT5Fmt8i4Q9oW4ebSiVd07cUohM0J0N893vQp/JquL11n7RlfLnDS92KfeXxHLNJPexTYcMc9ZgVLRhFtT5DyTN+tNYAlPPXHMTCYEOC7xCieh0XdtXUZroZ+ntg==
-X-Gm-Message-State: AOJu0Yz6z1JTf25aKq7NcPmTzkQkr2bDlaTHhLifgnau7MmKod4dEBAL
-	3MKA/D/JWxgjvfjDfCTEIJLvDLMEin4AR0/I6T6VM8Fy3xmje6b8
-X-Google-Smtp-Source: AGHT+IHVDq4wHkTRDLnml3w8/vY76YStJGi0lNRDZ+kQK8Q3T8+RWX2Nxrxp2FGdXz1LeKjvjVxvOA==
-X-Received: by 2002:adf:cc89:0:b0:348:b435:273e with SMTP id p9-20020adfcc89000000b00348b435273emr161943wrj.48.1713216337895;
-        Mon, 15 Apr 2024 14:25:37 -0700 (PDT)
-Received: from jernej-laptop.localnet (86-58-6-171.dynamic.telemach.net. [86.58.6.171])
-        by smtp.gmail.com with ESMTPSA id e3-20020a5d5943000000b00346c169362esm12606521wri.23.2024.04.15.14.25.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Apr 2024 14:25:37 -0700 (PDT)
-From: Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
-To: Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
- Samuel Holland <samuel@sholland.org>, Maxime Ripard <mripard@kernel.org>,
- Frank Oltmanns <frank@oltmanns.dev>
-Cc: Guido =?ISO-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>,
- Purism Kernel Team <kernel@puri.sm>, Ondrej Jirman <megi@xff.cz>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-clk@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, stable@vger.kernel.org,
- Diego Roversi <diegor@tiscali.it>, Erico Nunes <nunes.erico@gmail.com>
-Subject:
- Re: [PATCH v4 0/5] Pinephone video out fixes (flipping between two frames)
-Date: Mon, 15 Apr 2024 23:25:35 +0200
-Message-ID: <3799968.kQq0lBPeGt@jernej-laptop>
-In-Reply-To: <87frw2a2e4.fsf@oltmanns.dev>
-References:
- <20240310-pinephone-pll-fixes-v4-0-46fc80c83637@oltmanns.dev>
- <87frw2a2e4.fsf@oltmanns.dev>
+	s=arc-20240116; t=1713217943; c=relaxed/simple;
+	bh=KJ52F3vvXnDFFDYcpRHY11CkLnLJ7fh/q+VR/api2QU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VMi9sfxOTCbMKcs44WCY9+WiXI+i/dtullqxutML3T/ZTRC3YedTQ3Zkh+nB1rpsWCK86t13G1M4VnaNQiLguJkHWJ/nG/09AYsHZugUAkz9UzZL/PnDf4oe7gyU15WqVZkBx01YzGNdYzU5unSXEcCqaT3poZxljXnfvTfyQ2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D1UQX5Vl; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713217942; x=1744753942;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=KJ52F3vvXnDFFDYcpRHY11CkLnLJ7fh/q+VR/api2QU=;
+  b=D1UQX5VlXRNaXGres5M51FohKdsvh3DR/FKz59xZVgFVCwgJIS6OCyL6
+   JZHaTRoUYkiyFpFsuyIxGbShG9ChLjXk5xHfahP6S2lnwOXcJ55y5TPS6
+   rIpUqSokF3OAI/6Casy+s8CIb8MUZSAgGEpU8Es+Qv+xLFBuSSEFLPE5n
+   MwQwzeuQfmlPskPPGeshdgvC0vXCGIoIcmkC/hrqSjhQx2dkbO4wgw8t8
+   p/A/12FD4vFc1e7hBPsm7x8+uMXXjo30n7HRPIGYCU/t1YOtW2TheUDL2
+   yiiTUyCnLx5/WbhGrsRwoWGmQTSL3oR1QgiIzrPHZKumW7WsJXYHqXJAq
+   w==;
+X-CSE-ConnectionGUID: U0IP5gVbTp2uQ/GXq8PtaA==
+X-CSE-MsgGUID: VWW6hZ1BQ2a8sCMeQd7Faw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="12420708"
+X-IronPort-AV: E=Sophos;i="6.07,204,1708416000"; 
+   d="scan'208";a="12420708"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 14:52:21 -0700
+X-CSE-ConnectionGUID: UWZ5JvWRQcuqI0TvjinHSQ==
+X-CSE-MsgGUID: 5GauRyGPRGCHQv12s/w8Zg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,204,1708416000"; 
+   d="scan'208";a="26845113"
+Received: from spandruv-desk.jf.intel.com ([10.54.75.14])
+  by orviesa005.jf.intel.com with ESMTP; 15 Apr 2024 14:52:21 -0700
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To: hdegoede@redhat.com,
+	ilpo.jarvinen@linux.intel.com
+Cc: platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] platform/x86/intel-uncore-freq: Don't present root domain on error
+Date: Mon, 15 Apr 2024 14:52:10 -0700
+Message-Id: <20240415215210.2824868-1-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-Dne sreda, 3. april 2024 ob 17:31:47 GMT +2 je Frank Oltmanns napisal(a):
-> Dear clk and sunxi-ng maintainers,
-> 
-> Patches 1-4 have been reviewed and there are no pending issues. If there
-> is something else you need me to do to get this applied, please let me
-> know.
+If none of the clusters are added because of some error, fail to load
+driver without presenting root domain. In this case root domain will
+present invalid data.
 
-Sorry for late patch merge. Patch 1-2 are applied as a fix to 6.9, the rest
-will go to 6.10.
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Fixes: 01c10f88c9b7 ("platform/x86/intel-uncore-freq: tpmi: Provide cluster level control")
+Cc: <stable@vger.kernel.org> # 6.5+
+---
+This error can be reproduced in the pre production hardware only.
+So can go through regular cycle and they apply to stable.
 
-Best regards,
-Jernej
+ .../x86/intel/uncore-frequency/uncore-frequency-tpmi.c     | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-> 
-> Thanks,
->   Frank
-> 
-> On 2024-03-10 at 14:21:10 +0100, Frank Oltmanns <frank@oltmanns.dev> wrote:
-> > On some pinephones the video output sometimes freezes (flips between two
-> > frames) [1]. It seems to be that the reason for this behaviour is that
-> > PLL-MIPI is outside its limits, and the GPU is not running at a fixed
-> > rate.
-> >
-> > In this patch series I propose the following changes:
-> >   1. sunxi-ng: Adhere to the following constraints given in the
-> >      Allwinner A64 Manual regarding PLL-MIPI:
-> >       * M/N <= 3
-> >       * (PLL_VIDEO0)/M >= 24MHz
-> >       * 500MHz <= clockrate <= 1400MHz
-> >
-> >   2. Remove two operating points from the A64 DTS OPPs, so that the GPU
-> >      runs at a fixed rate of 432 MHz.
-> >
-> > Note, that when pinning the GPU to 432 MHz the issue [1] completely
-> > disappears for me. I've searched the BSP and could not find any
-> > indication that supports the idea of having the three OPPs. The only
-> > frequency I found in the BPSs for A64 is 432 MHz, which has also proven
-> > stable for me.
-> >
-> > I very much appreciate your feedback!
-> >
-> > [1] https://gitlab.com/postmarketOS/pmaports/-/issues/805
-> >
-> > Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
-> > ---
-> > Changes in v4:
-> > - sunxi-ng: common: Address review comments.
-> > - Link to v3: https://lore.kernel.org/r/20240304-pinephone-pll-fixes-v3-0-94ab828f269a@oltmanns.dev
-> >
-> > Changes in v3:
-> > - dts: Pin GPU to 432 MHz.
-> > - nkm and a64: Move minimum and maximum rate handling to the common part
-> >   of the sunxi-ng driver.
-> > - Removed st7703 patch from series.
-> > - Link to v2: https://lore.kernel.org/r/20240205-pinephone-pll-fixes-v2-0-96a46a2d8c9b@oltmanns.dev
-> >
-> > Changes in v2:
-> > - dts: Increase minimum GPU frequency to 192 MHz.
-> > - nkm and a64: Add minimum and maximum rate for PLL-MIPI.
-> > - nkm: Use the same approach for skipping invalid rates in
-> >   ccu_nkm_find_best() as in ccu_nkm_find_best_with_parent_adj().
-> > - nkm: Improve names for ratio struct members and hence get rid of
-> >   describing comments.
-> > - nkm and a64: Correct description in the commit messages: M/N <= 3
-> > - Remove patches for nm as they were not needed.
-> > - st7703: Rework the commit message to cover more background for the
-> >   change.
-> > - Link to v1: https://lore.kernel.org/r/20231218-pinephone-pll-fixes-v1-0-e238b6ed6dc1@oltmanns.dev
-> >
-> > ---
-> > Frank Oltmanns (5):
-> >       clk: sunxi-ng: common: Support minimum and maximum rate
-> >       clk: sunxi-ng: a64: Set minimum and maximum rate for PLL-MIPI
-> >       clk: sunxi-ng: nkm: Support constraints on m/n ratio and parent rate
-> >       clk: sunxi-ng: a64: Add constraints on PLL-MIPI's n/m ratio and parent rate
-> >       arm64: dts: allwinner: a64: Run GPU at 432 MHz
-> >
-> >  arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi |  8 --------
-> >  drivers/clk/sunxi-ng/ccu-sun50i-a64.c         | 14 +++++++++-----
-> >  drivers/clk/sunxi-ng/ccu_common.c             | 19 +++++++++++++++++++
-> >  drivers/clk/sunxi-ng/ccu_common.h             |  3 +++
-> >  drivers/clk/sunxi-ng/ccu_nkm.c                | 21 +++++++++++++++++++++
-> >  drivers/clk/sunxi-ng/ccu_nkm.h                |  2 ++
-> >  6 files changed, 54 insertions(+), 13 deletions(-)
-> > ---
-> > base-commit: dcb6c8ee6acc6c347caec1e73fb900c0f4ff9806
-> > change-id: 20231218-pinephone-pll-fixes-0ccdfde273e4
-> >
-> > Best regards,
-> 
-
-
-
+diff --git a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
+index bd75d61ff8a6..587437211d72 100644
+--- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
++++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
+@@ -240,6 +240,7 @@ static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_
+ 	bool read_blocked = 0, write_blocked = 0;
+ 	struct intel_tpmi_plat_info *plat_info;
+ 	struct tpmi_uncore_struct *tpmi_uncore;
++	bool uncore_sysfs_added = false;
+ 	int ret, i, pkg = 0;
+ 	int num_resources;
+ 
+@@ -384,9 +385,15 @@ static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_
+ 			}
+ 			/* Point to next cluster offset */
+ 			cluster_offset >>= UNCORE_MAX_CLUSTER_PER_DOMAIN;
++			uncore_sysfs_added = true;
+ 		}
+ 	}
+ 
++	if (!uncore_sysfs_added) {
++		ret = -ENODEV;
++		goto remove_clusters;
++	}
++
+ 	auxiliary_set_drvdata(auxdev, tpmi_uncore);
+ 
+ 	tpmi_uncore->root_cluster.root_domain = true;
+-- 
+2.40.1
 
 
