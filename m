@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-39735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0A2A8A5474
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:37:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD5CE8A537A
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:28:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7558D1F2176C
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:37:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 005A31C21230
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C4A82C8E;
-	Mon, 15 Apr 2024 14:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61007FBA3;
+	Mon, 15 Apr 2024 14:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9m6Uz5O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyPeehht"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9D482899;
-	Mon, 15 Apr 2024 14:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9427B7602A;
+	Mon, 15 Apr 2024 14:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191655; cv=none; b=ut9HUsLL7ybZEGN0LzYkcxFH3qQ7iYDESK5OGu8pAih1lvTVjD1ToxABbW2BJ0U8OcVcfVCIF3dTT4L89InF0X+dGbneI7sKaEu4UegjzDU/QZPa8nsXOtmB5l2EYHZQoehT/s25LPGu5mdrBcwv2jnG04m2h9pw0l275l0KbWs=
+	t=1713191218; cv=none; b=jjJdpfXmgOLaeIuF5L0ogPR9cqd8yJ439JjiWOgvLexUA+XOO46Wk8Zr3RwDkhHUh80xvc17Bp3K3GfcRIoVRnn7DjxDQuM6ltSuyKF3izB8O7QUdPc9kCoHiR5Qyy18DHq1re9lHP4x3lpjzc4SUXKJkA2irGKCLpc2nGO/XYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191655; c=relaxed/simple;
-	bh=7oeo8BP0uqea6ifi6ay2Da9cZhdMRwVZx+r2ZcUfvfw=;
+	s=arc-20240116; t=1713191218; c=relaxed/simple;
+	bh=dcP/buCKKPsOz+jzh2/aM9/5bysm1epOjnNi14E5or0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qcm0m2lFmYqHUqiSI4/n6Z28huPBdDbAJHn7BgqAICd95lp3ixVgzFi29mIeooFVYQD6CNMnQta1ikZMP86Bp29N/XdGI1yh6ByN0eIG0ocSWY7elOigbwZoUfTB+8CXjmrbotZ8o9WRgLe3Uxton3UPnWuWtAKPAkgeXyfGkT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9m6Uz5O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2CAC113CC;
-	Mon, 15 Apr 2024 14:34:14 +0000 (UTC)
+	 MIME-Version; b=lHEi93W/N3E/1ozwVVeMH2WZi8zCDjFEqscBh7Bu/GB7NOPn6C+B0ei6t7B/Lh0gXT5MWOqWnP9pXVW7sIcr32UdmSuAjIRr6nnM4863qkUvm3GeWJr4LurcY7vDtvDGO1yZJMYBe7AU9xJ/dJZCbOgrxpvJOGoe397RkvnFGAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyPeehht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4890C113CC;
+	Mon, 15 Apr 2024 14:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191655;
-	bh=7oeo8BP0uqea6ifi6ay2Da9cZhdMRwVZx+r2ZcUfvfw=;
+	s=korg; t=1713191218;
+	bh=dcP/buCKKPsOz+jzh2/aM9/5bysm1epOjnNi14E5or0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T9m6Uz5ObarhKyYcCWIMKcGyDP54GrrTlco6mNUQZZk+eVgdoFG1xY0NZ/IAHdLVY
-	 pu/ZV1AGSx7VwCEfSjX8bMVraDMwv+gp5bKeR85nqGfEx0wkGhyP1Mg6eDhn10+EuM
-	 /FMCO3VaBc/r0ukxT9BPQuVO/d3udJhKCoASdjnA=
+	b=ZyPeehhtO3My6g+OlkyWgRxbLAdF++dWUEky84jG6V8TJMaEesGVTHZ4j21PXHRUv
+	 1sYJrXRfyyONyRgOPfZheUWkQgeDPS7UxhEPziA2uNjvqJ+vNNB26y4s7RtBOj/LNx
+	 +hkQ45nXV2Lx7y63Hrhlskfls1rmHoBRW7WJzT8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihuang Yu <yihyu@redhat.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Gavin Shan <gshan@redhat.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Shaoqin Huang <shahuang@redhat.com>,
-	stable@kernel.org
-Subject: [PATCH 6.6 005/122] arm64: tlb: Fix TLBI RANGE operand
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 071/172] Bluetooth: ISO: Align broadcast sync_timeout with connection timeout
 Date: Mon, 15 Apr 2024 16:19:30 +0200
-Message-ID: <20240415141953.535856536@linuxfoundation.org>
+Message-ID: <20240415142002.564244492@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,96 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavin Shan <gshan@redhat.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit e3ba51ab24fddef79fc212f9840de54db8fd1685 upstream.
+[ Upstream commit 42ed95de82c01184a88945d3ca274be6a7ea607d ]
 
-KVM/arm64 relies on TLBI RANGE feature to flush TLBs when the dirty
-pages are collected by VMM and the page table entries become write
-protected during live migration. Unfortunately, the operand passed
-to the TLBI RANGE instruction isn't correctly sorted out due to the
-commit 117940aa6e5f ("KVM: arm64: Define kvm_tlb_flush_vmid_range()").
-It leads to crash on the destination VM after live migration because
-TLBs aren't flushed completely and some of the dirty pages are missed.
+This aligns broadcast sync_timeout with existing connection timeouts
+which are 20 seconds long.
 
-For example, I have a VM where 8GB memory is assigned, starting from
-0x40000000 (1GB). Note that the host has 4KB as the base page size.
-In the middile of migration, kvm_tlb_flush_vmid_range() is executed
-to flush TLBs. It passes MAX_TLBI_RANGE_PAGES as the argument to
-__kvm_tlb_flush_vmid_range() and __flush_s2_tlb_range_op(). SCALE#3
-and NUM#31, corresponding to MAX_TLBI_RANGE_PAGES, isn't supported
-by __TLBI_RANGE_NUM(). In this specific case, -1 has been returned
-from __TLBI_RANGE_NUM() for SCALE#3/2/1/0 and rejected by the loop
-in the __flush_tlb_range_op() until the variable @scale underflows
-and becomes -9, 0xffff708000040000 is set as the operand. The operand
-is wrong since it's sorted out by __TLBI_VADDR_RANGE() according to
-invalid @scale and @num.
-
-Fix it by extending __TLBI_RANGE_NUM() to support the combination of
-SCALE#3 and NUM#31. With the changes, [-1 31] instead of [-1 30] can
-be returned from the macro, meaning the TLBs for 0x200000 pages in the
-above example can be flushed in one shoot with SCALE#3 and NUM#31. The
-macro TLBI_RANGE_MASK is dropped since no one uses it any more. The
-comments are also adjusted accordingly.
-
-Fixes: 117940aa6e5f ("KVM: arm64: Define kvm_tlb_flush_vmid_range()")
-Cc: stable@kernel.org # v6.6+
-Reported-by: Yihuang Yu <yihyu@redhat.com>
-Suggested-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Gavin Shan <gshan@redhat.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
-Link: https://lore.kernel.org/r/20240405035852.1532010-2-gshan@redhat.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: b37cab587aa3 ("Bluetooth: ISO: Don't reject BT_ISO_QOS if parameters are unset")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/tlbflush.h |   22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ include/net/bluetooth/bluetooth.h | 2 ++
+ net/bluetooth/iso.c               | 4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/include/asm/tlbflush.h
-+++ b/arch/arm64/include/asm/tlbflush.h
-@@ -152,12 +152,18 @@ static inline unsigned long get_trans_gr
- #define MAX_TLBI_RANGE_PAGES		__TLBI_RANGE_PAGES(31, 3)
+diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
+index 7ffa8c192c3f2..9fe95a22abeb7 100644
+--- a/include/net/bluetooth/bluetooth.h
++++ b/include/net/bluetooth/bluetooth.h
+@@ -164,6 +164,8 @@ struct bt_voice {
+ #define BT_ISO_QOS_BIG_UNSET	0xff
+ #define BT_ISO_QOS_BIS_UNSET	0xff
  
- /*
-- * Generate 'num' values from -1 to 30 with -1 rejected by the
-- * __flush_tlb_range() loop below.
-- */
--#define TLBI_RANGE_MASK			GENMASK_ULL(4, 0)
--#define __TLBI_RANGE_NUM(pages, scale)	\
--	((((pages) >> (5 * (scale) + 1)) & TLBI_RANGE_MASK) - 1)
-+ * Generate 'num' values from -1 to 31 with -1 rejected by the
-+ * __flush_tlb_range() loop below. Its return value is only
-+ * significant for a maximum of MAX_TLBI_RANGE_PAGES pages. If
-+ * 'pages' is more than that, you must iterate over the overall
-+ * range.
-+ */
-+#define __TLBI_RANGE_NUM(pages, scale)					\
-+	({								\
-+		int __pages = min((pages),				\
-+				  __TLBI_RANGE_PAGES(31, (scale)));	\
-+		(__pages >> (5 * (scale) + 1)) - 1;			\
-+	})
++#define BT_ISO_SYNC_TIMEOUT	0x07d0 /* 20 secs */
++
+ struct bt_iso_io_qos {
+ 	__u32 interval;
+ 	__u16 latency;
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 04f6572d35f17..4fa1f3b779a71 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -837,10 +837,10 @@ static struct bt_iso_qos default_qos = {
+ 		.bcode			= {0x00},
+ 		.options		= 0x00,
+ 		.skip			= 0x0000,
+-		.sync_timeout		= 0x4000,
++		.sync_timeout		= BT_ISO_SYNC_TIMEOUT,
+ 		.sync_cte_type		= 0x00,
+ 		.mse			= 0x00,
+-		.timeout		= 0x4000,
++		.timeout		= BT_ISO_SYNC_TIMEOUT,
+ 	},
+ };
  
- /*
-  *	TLB Invalidation
-@@ -359,10 +365,6 @@ static inline void arch_tlbbatch_flush(s
-  *    Start from scale = 0, flush the corresponding number of pages
-  *    ((num+1)*2^(5*scale+1) starting from 'addr'), then increase it
-  *    until no pages left.
-- *
-- * Note that certain ranges can be represented by either num = 31 and
-- * scale or num = 0 and scale + 1. The loop below favours the latter
-- * since num is limited to 30 by the __TLBI_RANGE_NUM() macro.
-  */
- #define __flush_tlb_range_op(op, start, pages, stride,			\
- 				asid, tlb_level, tlbi_user)		\
+-- 
+2.43.0
+
 
 
 
