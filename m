@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-39529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F8168A530E
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:24:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7C68A5353
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:26:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40C6B1F21CAA
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:24:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1F34B22885
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5EB4757F8;
-	Mon, 15 Apr 2024 14:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0957580D;
+	Mon, 15 Apr 2024 14:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2MWVGy2z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nU9Zczi7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690AF74E25;
-	Mon, 15 Apr 2024 14:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DB174C0C;
+	Mon, 15 Apr 2024 14:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191046; cv=none; b=hxtyJIRvVshu4A4/APHFuF2k0A1SBKfc9WdXgt9Cj2zv1P8yr+HkEYcd2banghVUrNIMUnRKQvwTJDJkR0o1LnRgt/zl9ohwBPyp9+ieAJhKMQRTB0bM+dN8GJLD+B3AGUhXEeZj2Biajmi6x6BRjXfNc7HiJLdaQ4f1Nixy5GM=
+	t=1713191172; cv=none; b=nAfuUxyMwwOzP5Nyxlj1+lF1z+O6d1sCvNWqkXEMCaXAGk2SWDWOrehoeuYidKD1cK9Ss7nZZaVh9NyLIPVmuJxhihLdKrepLpXtCu3H0VIIlRafWoEf7aBC0w3m4BhcNWUmBnJyNMpWdVWFiX6dhVNsWrN1kIrHi4uvq2LYHjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191046; c=relaxed/simple;
-	bh=D5t778jukwcKPL9djdHbgU5voSnYICvSNJ0/tQUxj54=;
+	s=arc-20240116; t=1713191172; c=relaxed/simple;
+	bh=ljaw1E3qFIqt2x4A+U9bPaVD6pkQHPufn25O4pnueYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FX/Yc/dUWeoP8pB8LzSpqFrKH2VK5rJ3WuXTSrHiEL1HhTNbiX8Cwd9utQdcXNv3Pd498jYjHyhwrMWeb7mDNm1qlqR+D5ea9grwuvxBTRw9B4qWSiH2nHUapLKZsWd9zljQ3YdGr44s7puIigxl6LS2MKW8Dpqb8SwZ2O7Lg3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2MWVGy2z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D7DC2BD10;
-	Mon, 15 Apr 2024 14:24:05 +0000 (UTC)
+	 MIME-Version; b=ksw2CXYwxLm0W+7p7M0jyI1X+oCw2uVFmMx48DXctWV/504UH70AgFt1HrcI7TW0XWDbfOWFc/lJhJKwCNtf2/9FmuNL152s000RGDCY5PEZSnHn1ZQnUXWB1SNsKPEGw1BUn7+RIFYXdYDX1lLajimSQDuV32DlfEkR8OVQ6S8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nU9Zczi7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8EBC113CC;
+	Mon, 15 Apr 2024 14:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191046;
-	bh=D5t778jukwcKPL9djdHbgU5voSnYICvSNJ0/tQUxj54=;
+	s=korg; t=1713191172;
+	bh=ljaw1E3qFIqt2x4A+U9bPaVD6pkQHPufn25O4pnueYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2MWVGy2zIQfUOpXE1hENYKQpD7K5UMPAgv+tjlP1BC5yCKYxfg4iMLIajsghM678j
-	 +HqZStjVT3AokLEf8bhgHnjEptBhR0Kfwlh06go9wUV+auajZfB/MGxQbCM1o6AeAk
-	 KQvNuj8nRqsYbTo4kRf4b5WbXFwAjHQwwI0UrUgE=
+	b=nU9Zczi7FTOEfjZlClZUiYn0FcpoGgKphKbYwoIAQv8iYgpJJ/aX9MLQ0gqnWjgbZ
+	 WMoP0rvFRZHHVwmmLWvXfRuw8gU808XaXuD8MeQJEABoYXxUibHXLJRhRfixZ5m86g
+	 KL4r7zIbshUq24B9mjzSxOwkoBz3yYA6ILGMYKpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Ruhmann <ruhmann@luis.uni-hannover.de>,
-	Xiubo Li <xiubli@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.8 007/172] ceph: switch to use cap_delay_lock for the unlink delay list
-Date: Mon, 15 Apr 2024 16:18:26 +0200
-Message-ID: <20240415142000.197682942@linuxfoundation.org>
+	qemu-devel@nongnu.org,
+	Breno Leitao <leitao@debian.org>,
+	Heng Qi <hengqi@linux.alibaba.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.8 008/172] virtio_net: Do not send RSS key if it is not supported
+Date: Mon, 15 Apr 2024 16:18:27 +0200
+Message-ID: <20240415142000.227047251@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
 References: <20240415141959.976094777@linuxfoundation.org>
@@ -66,97 +68,131 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Breno Leitao <leitao@debian.org>
 
-commit 17f8dc2db52185460f212052f3a692c1fdc167ba upstream.
+commit 059a49aa2e25c58f90b50151f109dd3c4cdb3a47 upstream.
 
-The same list item will be used in both cap_delay_list and
-cap_unlink_delay_list, so it's buggy to use two different locks
-to protect them.
+There is a bug when setting the RSS options in virtio_net that can break
+the whole machine, getting the kernel into an infinite loop.
 
+Running the following command in any QEMU virtual machine with virtionet
+will reproduce this problem:
+
+    # ethtool -X eth0  hfunc toeplitz
+
+This is how the problem happens:
+
+1) ethtool_set_rxfh() calls virtnet_set_rxfh()
+
+2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
+
+3) virtnet_commit_rss_command() populates 4 entries for the rss
+scatter-gather
+
+4) Since the command above does not have a key, then the last
+scatter-gatter entry will be zeroed, since rss_key_size == 0.
+sg_buf_size = vi->rss_key_size;
+
+5) This buffer is passed to qemu, but qemu is not happy with a buffer
+with zero length, and do the following in virtqueue_map_desc() (QEMU
+function):
+
+  if (!sz) {
+      virtio_error(vdev, "virtio: zero sized buffers are not allowed");
+
+6) virtio_error() (also QEMU function) set the device as broken
+
+    vdev->broken = true;
+
+7) Qemu bails out, and do not repond this crazy kernel.
+
+8) The kernel is waiting for the response to come back (function
+virtnet_send_command())
+
+9) The kernel is waiting doing the following :
+
+      while (!virtqueue_get_buf(vi->cvq, &tmp) &&
+	     !virtqueue_is_broken(vi->cvq))
+	      cpu_relax();
+
+10) None of the following functions above is true, thus, the kernel
+loops here forever. Keeping in mind that virtqueue_is_broken() does
+not look at the qemu `vdev->broken`, so, it never realizes that the
+vitio is broken at QEMU side.
+
+Fix it by not sending RSS commands if the feature is not available in
+the device.
+
+Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
 Cc: stable@vger.kernel.org
-Fixes: dbc347ef7f0c ("ceph: add ceph_cap_unlink_work to fire check_caps() immediately")
-Link: https://lists.ceph.io/hyperkitty/list/ceph-users@ceph.io/thread/AODC76VXRAMXKLFDCTK4TKFDDPWUSCN5
-Reported-by: Marc Ruhmann <ruhmann@luis.uni-hannover.de>
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Tested-by: Marc Ruhmann <ruhmann@luis.uni-hannover.de>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Cc: qemu-devel@nongnu.org
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/caps.c       |    4 ++--
- fs/ceph/mds_client.c |    9 ++++-----
- fs/ceph/mds_client.h |    3 +--
- 3 files changed, 7 insertions(+), 9 deletions(-)
+ drivers/net/virtio_net.c |   26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
---- a/fs/ceph/caps.c
-+++ b/fs/ceph/caps.c
-@@ -4775,13 +4775,13 @@ int ceph_drop_caps_for_unlink(struct ino
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3768,6 +3768,7 @@ static int virtnet_set_rxfh(struct net_d
+ 			    struct netlink_ext_ack *extack)
+ {
+ 	struct virtnet_info *vi = netdev_priv(dev);
++	bool update = false;
+ 	int i;
  
- 			doutc(mdsc->fsc->client, "%p %llx.%llx\n", inode,
- 			      ceph_vinop(inode));
--			spin_lock(&mdsc->cap_unlink_delay_lock);
-+			spin_lock(&mdsc->cap_delay_lock);
- 			ci->i_ceph_flags |= CEPH_I_FLUSH;
- 			if (!list_empty(&ci->i_cap_delay_list))
- 				list_del_init(&ci->i_cap_delay_list);
- 			list_add_tail(&ci->i_cap_delay_list,
- 				      &mdsc->cap_unlink_delay_list);
--			spin_unlock(&mdsc->cap_unlink_delay_lock);
-+			spin_unlock(&mdsc->cap_delay_lock);
+ 	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
+@@ -3775,13 +3776,28 @@ static int virtnet_set_rxfh(struct net_d
+ 		return -EOPNOTSUPP;
  
- 			/*
- 			 * Fire the work immediately, because the MDS maybe
---- a/fs/ceph/mds_client.c
-+++ b/fs/ceph/mds_client.c
-@@ -2504,7 +2504,7 @@ static void ceph_cap_unlink_work(struct
- 	struct ceph_client *cl = mdsc->fsc->client;
- 
- 	doutc(cl, "begin\n");
--	spin_lock(&mdsc->cap_unlink_delay_lock);
-+	spin_lock(&mdsc->cap_delay_lock);
- 	while (!list_empty(&mdsc->cap_unlink_delay_list)) {
- 		struct ceph_inode_info *ci;
- 		struct inode *inode;
-@@ -2516,15 +2516,15 @@ static void ceph_cap_unlink_work(struct
- 
- 		inode = igrab(&ci->netfs.inode);
- 		if (inode) {
--			spin_unlock(&mdsc->cap_unlink_delay_lock);
-+			spin_unlock(&mdsc->cap_delay_lock);
- 			doutc(cl, "on %p %llx.%llx\n", inode,
- 			      ceph_vinop(inode));
- 			ceph_check_caps(ci, CHECK_CAPS_FLUSH);
- 			iput(inode);
--			spin_lock(&mdsc->cap_unlink_delay_lock);
-+			spin_lock(&mdsc->cap_delay_lock);
- 		}
+ 	if (rxfh->indir) {
++		if (!vi->has_rss)
++			return -EOPNOTSUPP;
++
+ 		for (i = 0; i < vi->rss_indir_table_size; ++i)
+ 			vi->ctrl->rss.indirection_table[i] = rxfh->indir[i];
++		update = true;
  	}
--	spin_unlock(&mdsc->cap_unlink_delay_lock);
-+	spin_unlock(&mdsc->cap_delay_lock);
- 	doutc(cl, "done\n");
- }
+-	if (rxfh->key)
++
++	if (rxfh->key) {
++		/* If either _F_HASH_REPORT or _F_RSS are negotiated, the
++		 * device provides hash calculation capabilities, that is,
++		 * hash_key is configured.
++		 */
++		if (!vi->has_rss && !vi->has_rss_hash_report)
++			return -EOPNOTSUPP;
++
+ 		memcpy(vi->ctrl->rss.key, rxfh->key, vi->rss_key_size);
++		update = true;
++	}
  
-@@ -5404,7 +5404,6 @@ int ceph_mdsc_init(struct ceph_fs_client
- 	INIT_LIST_HEAD(&mdsc->cap_wait_list);
- 	spin_lock_init(&mdsc->cap_delay_lock);
- 	INIT_LIST_HEAD(&mdsc->cap_unlink_delay_list);
--	spin_lock_init(&mdsc->cap_unlink_delay_lock);
- 	INIT_LIST_HEAD(&mdsc->snap_flush_list);
- 	spin_lock_init(&mdsc->snap_flush_lock);
- 	mdsc->last_cap_flush_tid = 1;
---- a/fs/ceph/mds_client.h
-+++ b/fs/ceph/mds_client.h
-@@ -461,9 +461,8 @@ struct ceph_mds_client {
- 	struct delayed_work    delayed_work;  /* delayed work */
- 	unsigned long    last_renew_caps;  /* last time we renewed our caps */
- 	struct list_head cap_delay_list;   /* caps with delayed release */
--	spinlock_t       cap_delay_lock;   /* protects cap_delay_list */
- 	struct list_head cap_unlink_delay_list;  /* caps with delayed release for unlink */
--	spinlock_t       cap_unlink_delay_lock;  /* protects cap_unlink_delay_list */
-+	spinlock_t       cap_delay_lock;   /* protects cap_delay_list and cap_unlink_delay_list */
- 	struct list_head snap_flush_list;  /* cap_snaps ready to flush */
- 	spinlock_t       snap_flush_lock;
+-	virtnet_commit_rss_command(vi);
++	if (update)
++		virtnet_commit_rss_command(vi);
+ 
+ 	return 0;
+ }
+@@ -4686,13 +4702,15 @@ static int virtnet_probe(struct virtio_d
+ 	if (virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT))
+ 		vi->has_rss_hash_report = true;
+ 
+-	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS))
++	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS)) {
+ 		vi->has_rss = true;
+ 
+-	if (vi->has_rss || vi->has_rss_hash_report) {
+ 		vi->rss_indir_table_size =
+ 			virtio_cread16(vdev, offsetof(struct virtio_net_config,
+ 				rss_max_indirection_table_length));
++	}
++
++	if (vi->has_rss || vi->has_rss_hash_report) {
+ 		vi->rss_key_size =
+ 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
  
 
 
