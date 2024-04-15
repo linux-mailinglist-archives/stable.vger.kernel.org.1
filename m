@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-39826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8928A54ED
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E5D38A54A0
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:38:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAE4DB22CA2
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F79F1C22105
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA23F762DC;
-	Mon, 15 Apr 2024 14:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F29D69D05;
+	Mon, 15 Apr 2024 14:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVnQIr4p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/7yxyH+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8820676025;
-	Mon, 15 Apr 2024 14:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCB5757FB;
+	Mon, 15 Apr 2024 14:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191929; cv=none; b=agm9VHvlf/7/9Yn/5WCFPLyklxwfQXiNoRyGeDrsBidhOCJt4AsBXR5GLCgxwI8jWxmn6mmyHy1ENr/Psg17Iz2LFeKiOYX/7tEnZ4zY/U6wFzHaQV3RTQqoRyMkoqMYw0ABZoUsmKRxES+Bsq0XnL2HkgNzYFyjXCZqSFa2suA=
+	t=1713191740; cv=none; b=dpDc0zUnlPxAFbKxuwTxY7PEEGWkR/Dfjbv4Lcm99k8/Vyia+Z7hq8kw1512ABnCNGjQivF3LCvrTDA9Da1zV2q0+YfWuQ/+dD3EHHfVD6T5ZyH+KrlK0tv8iO01GQzza4RfmcgvaoluNx+2W2drDUW2GQmTzskgX9CbaWkNnH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191929; c=relaxed/simple;
-	bh=6m/UdAMcvm/dEjEuz3cyv/QCw7JLN/ltaTZSiPbIcns=;
+	s=arc-20240116; t=1713191740; c=relaxed/simple;
+	bh=pcqRow4y7iMnFX1UbeZdLJ7N1tH75/q+KQL4yBka4zc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IPnlT7ysPcTdD+8RBtFowAeN1hKtFEIbsFyf3QV4/et7KpDi4nl2uNG+hDVyB1AF+OVcDjrRGO9oTi272hgnI6D7XaWa2Bg/vo+7rDvilVykGQ3b4dd8XFg8bMCAtNO8Mj+FgIzqxQ7B588sQFB25XeNoQ8rEtbsLLHriz9V8ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVnQIr4p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E8FC113CC;
-	Mon, 15 Apr 2024 14:38:48 +0000 (UTC)
+	 MIME-Version; b=SRhGVQjtaEPKTnURUenap96P3cNqPiiyKmmcyqei2cfwVb3vvuYiMmJSScqVjlv3Ssz7uWtEfOf2XZY8Wh1ftmAuTiqvs7sRWsaAQflTE/glcnOSvI21Lvy7L9sfvFW7ogXxgEKg58jbmGiHO2FcTV6dvjt1YO3by8XAGxuwCwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/7yxyH+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65209C113CC;
+	Mon, 15 Apr 2024 14:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191929;
-	bh=6m/UdAMcvm/dEjEuz3cyv/QCw7JLN/ltaTZSiPbIcns=;
+	s=korg; t=1713191740;
+	bh=pcqRow4y7iMnFX1UbeZdLJ7N1tH75/q+KQL4yBka4zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SVnQIr4p+iuAcNtkSIXDQPKQ5mrxrM5CQGVy72T6vB+ZoZ1tJ9eOi0pu/LAq32rai
-	 RbWxlGlOmVZBBke+uIJLXEOBndfnAIDUbyXdKAt68e3g38fbGL/GFpnPiGoMMU/olq
-	 DjL4XRmbWLO+DlptK9KeeP9d46tTwLCK6pW+yf44=
+	b=0/7yxyH+9Ec7LMkOmlUmT9LveVotsDlwt9EcBSbnqeLmUCtFO+gXjrSF3JG1wdTQH
+	 QoTowKNhQqZ4CvSK7dhmPuIFgrLB9yIMZo9v0wET5IvMz/+meUrG6K4xstBlFhMnEc
+	 FRITPS6bWQLgxfuwfg4R86Cn/Ggsg7QcoKpTxA64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.1 03/69] batman-adv: Avoid infinite loop trying to resize local TT
-Date: Mon, 15 Apr 2024 16:20:34 +0200
-Message-ID: <20240415141946.271253711@linuxfoundation.org>
+	Shay Agroskin <shayagr@amazon.com>,
+	David Arinzon <darinzon@amazon.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 070/122] net: ena: Fix incorrect descriptor free behavior
+Date: Mon, 15 Apr 2024 16:20:35 +0200
+Message-ID: <20240415141955.479384450@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: David Arinzon <darinzon@amazon.com>
 
-commit b1f532a3b1e6d2e5559c7ace49322922637a28aa upstream.
+[ Upstream commit bf02d9fe00632d22fa91d34749c7aacf397b6cde ]
 
-If the MTU of one of an attached interface becomes too small to transmit
-the local translation table then it must be resized to fit inside all
-fragments (when enabled) or a single packet.
+ENA has two types of TX queues:
+- queues which only process TX packets arriving from the network stack
+- queues which only process TX packets forwarded to it by XDP_REDIRECT
+  or XDP_TX instructions
 
-But if the MTU becomes too low to transmit even the header + the VLAN
-specific part then the resizing of the local TT will never succeed. This
-can for example happen when the usable space is 110 bytes and 11 VLANs are
-on top of batman-adv. In this case, at least 116 byte would be needed.
-There will just be an endless spam of
+The ena_free_tx_bufs() cycles through all descriptors in a TX queue
+and unmaps + frees every descriptor that hasn't been acknowledged yet
+by the device (uncompleted TX transactions).
+The function assumes that the processed TX queue is necessarily from
+the first category listed above and ends up using napi_consume_skb()
+for descriptors belonging to an XDP specific queue.
 
-   batman_adv: batadv0: Forced to purge local tt entries to fit new maximum fragment MTU (110)
+This patch solves a bug in which, in case of a VF reset, the
+descriptors aren't freed correctly, leading to crashes.
 
-in the log but the function will never finish. Problem here is that the
-timeout will be halved all the time and will then stagnate at 0 and
-therefore never be able to reduce the table even more.
-
-There are other scenarios possible with a similar result. The number of
-BATADV_TT_CLIENT_NOPURGE entries in the local TT can for example be too
-high to fit inside a packet. Such a scenario can therefore happen also with
-only a single VLAN + 7 non-purgable addresses - requiring at least 120
-bytes.
-
-While this should be handled proactively when:
-
-* interface with too low MTU is added
-* VLAN is added
-* non-purgeable local mac is added
-* MTU of an attached interface is reduced
-* fragmentation setting gets disabled (which most likely requires dropping
-  attached interfaces)
-
-not all of these scenarios can be prevented because batman-adv is only
-consuming events without the the possibility to prevent these actions
-(non-purgable MAC address added, MTU of an attached interface is reduced).
-It is therefore necessary to also make sure that the code is able to handle
-also the situations when there were already incompatible system
-configuration are present.
-
-Cc: stable@vger.kernel.org
-Fixes: a19d3d85e1b8 ("batman-adv: limit local translation table max size")
-Reported-by: syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 548c4940b9f1 ("net: ena: Implement XDP_TX action")
+Signed-off-by: Shay Agroskin <shayagr@amazon.com>
+Signed-off-by: David Arinzon <darinzon@amazon.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/translation-table.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/amazon/ena/ena_netdev.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -3948,7 +3948,7 @@ void batadv_tt_local_resize_to_mtu(struc
+diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+index 5178eb089eabe..fd34f01a60b5c 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
++++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+@@ -1205,8 +1205,11 @@ static void ena_unmap_tx_buff(struct ena_ring *tx_ring,
+ static void ena_free_tx_bufs(struct ena_ring *tx_ring)
+ {
+ 	bool print_once = true;
++	bool is_xdp_ring;
+ 	u32 i;
  
- 	spin_lock_bh(&bat_priv->tt.commit_lock);
++	is_xdp_ring = ENA_IS_XDP_INDEX(tx_ring->adapter, tx_ring->qid);
++
+ 	for (i = 0; i < tx_ring->ring_size; i++) {
+ 		struct ena_tx_buffer *tx_info = &tx_ring->tx_buffer_info[i];
  
--	while (true) {
-+	while (timeout) {
- 		table_size = batadv_tt_local_table_transmit_size(bat_priv);
- 		if (packet_size_max >= table_size)
- 			break;
+@@ -1226,10 +1229,15 @@ static void ena_free_tx_bufs(struct ena_ring *tx_ring)
+ 
+ 		ena_unmap_tx_buff(tx_ring, tx_info);
+ 
+-		dev_kfree_skb_any(tx_info->skb);
++		if (is_xdp_ring)
++			xdp_return_frame(tx_info->xdpf);
++		else
++			dev_kfree_skb_any(tx_info->skb);
+ 	}
+-	netdev_tx_reset_queue(netdev_get_tx_queue(tx_ring->netdev,
+-						  tx_ring->qid));
++
++	if (!is_xdp_ring)
++		netdev_tx_reset_queue(netdev_get_tx_queue(tx_ring->netdev,
++							  tx_ring->qid));
+ }
+ 
+ static void ena_free_all_tx_bufs(struct ena_adapter *adapter)
+-- 
+2.43.0
+
 
 
 
