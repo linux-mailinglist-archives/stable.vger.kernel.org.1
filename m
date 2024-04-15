@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-39780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A288A54B5
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E0C8A53D6
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:31:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 007CB1F2190E
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D23AB2843C0
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A4278C79;
-	Mon, 15 Apr 2024 14:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2868174F;
+	Mon, 15 Apr 2024 14:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tAWyvVIA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TK1W4YEd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759541E4B1;
-	Mon, 15 Apr 2024 14:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7857BAF9;
+	Mon, 15 Apr 2024 14:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191791; cv=none; b=SS8s+3Z3hhXZygQIyK+vcOdhc1Tk7PIA1CVE4o9IIXlOJm/RKfq363z4XSSw9bVEQn+m3mQtO+3Q+X+91flYUlaIECcrUM71OOT1ZV8b9iQH6dZinr0PLtZRZeLc/d4uksuwv83CC7gEDcK0hlubohn2bSZi9d0XiHRa3cs0qJo=
+	t=1713191356; cv=none; b=dtBhgTVpK31vsrHKv1FQ+U+KORjjG4Wa19q6duUeSXPDvdy271MRXpawLXzqRSI2thUp+olpZ518nyJzl2r8LeP3VlYRlJnGFsN9nkoGQRR9il63Yk2za3TRluF/rwA8/NQYwu9KggQkA0QTV70+vhdxY5zXWiV54V3Ykwli+lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191791; c=relaxed/simple;
-	bh=LQj7z7i/PDxDsOBdcJs5Xayy7eWgu6qEcOKfavqY1gU=;
+	s=arc-20240116; t=1713191356; c=relaxed/simple;
+	bh=EckqB4RaE3Huc5/l3CV/lxsyi1i58RIdhjQEW9sx8JU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r8zgJir28wbOiEs+GeMAFoCpMayNu207KYzI2QIbXhQ7WEAAPTx1D1jng4908qC+eSk/JLWgfjzC8O+u2kpmiou//CjS6IkmJkQQODwiGRpnyEsKxITQ1+G9Fr9L/UDTU/AhZaDQVnUeAHSMb0EtfjjcPdLwLojMJmTw+vRV9SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tAWyvVIA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFEDCC113CC;
-	Mon, 15 Apr 2024 14:36:30 +0000 (UTC)
+	 MIME-Version; b=KldRScB+trjk32HMiRqzFPr3UZV2H1rKz8z5jUbjHi318DB1Y855EAa3MNr/u9LnMWvRRSv5/MgE4TyvvsTroM4ZlwKz2XjZFO4/f+wk+3mLVtaayXaMCe2doCtSqxtN8qu9AxeDfZ8LjNs5Qsi67hXpa02Bg3eZztpq8LeEpw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TK1W4YEd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40016C113CC;
+	Mon, 15 Apr 2024 14:29:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191791;
-	bh=LQj7z7i/PDxDsOBdcJs5Xayy7eWgu6qEcOKfavqY1gU=;
+	s=korg; t=1713191356;
+	bh=EckqB4RaE3Huc5/l3CV/lxsyi1i58RIdhjQEW9sx8JU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tAWyvVIA/gVO1sAlCJKnRpz7B5e6+a6kQKtB4rfEWfQIlFXoeeQceId++AS73/Dbt
-	 dGr4WMPjn9PCC4QQHOX7z5sduQrN0Autu+SIVJgEbeZ9+FKlaaRTwImsyXXovPQnoI
-	 gfDeS4u6EZELSCdsD/Fu9LrAl/6YUut9gGFC/x7g=
+	b=TK1W4YEdBdjG/jV+NbROSOf1ZTTQQTV2g4I6STqa47qhy1/QuLh/wXxqkww3iQZPr
+	 /IxJw6IKbRiN9jvb+vla98TUvJ8D6RCFFo7s8SSpoYU2Vv6HEKAJquG96sPpEK2nty
+	 r8QdK5LeCF7lecJFvr2+Bmfe6MZuIOJcMCVlGjuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/122] Bluetooth: ISO: Dont reject BT_ISO_QOS if parameters are unset
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>
+Subject: [PATCH 6.8 115/172] fs/proc: Skip bootloader comment if no embedded kernel parameters
 Date: Mon, 15 Apr 2024 16:20:14 +0200
-Message-ID: <20240415141954.845594190@linuxfoundation.org>
+Message-ID: <20240415142003.885448821@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Masami Hiramatsu <mhiramat@kernel.org>
 
-[ Upstream commit b37cab587aa3c9ab29c6b10aa55627dad713011f ]
+commit c722cea208789d9e2660992bcd05fb9fac3adb56 upstream.
 
-Consider certain values (0x00) as unset and load proper default if
-an application has not set them properly.
+If the "bootconfig" kernel command-line argument was specified or if
+the kernel was built with CONFIG_BOOT_CONFIG_FORCE, but if there are
+no embedded kernel parameter, omit the "# Parameters from bootloader:"
+comment from the /proc/bootconfig file.  This will cause automation
+to fall back to the /proc/cmdline file, which will be identical to the
+comment in this no-embedded-kernel-parameters case.
 
-Fixes: 0fe8c8d07134 ("Bluetooth: Split bt_iso_qos into dedicated structures")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/all/20240409044358.1156477-2-paulmck@kernel.org/
+
+Fixes: 8b8ce6c75430 ("fs/proc: remove redundant comments from /proc/bootconfig")
+Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Cc: stable@vger.kernel.org
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/iso.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ fs/proc/bootconfig.c       |    2 +-
+ include/linux/bootconfig.h |    1 +
+ init/main.c                |    5 +++++
+ 3 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 698d0b67c7ed4..2f63ea9e62ecd 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -1301,8 +1301,8 @@ static bool check_ucast_qos(struct bt_iso_qos *qos)
+--- a/fs/proc/bootconfig.c
++++ b/fs/proc/bootconfig.c
+@@ -63,7 +63,7 @@ static int __init copy_xbc_key_value_lis
+ 			dst += ret;
+ 		}
+ 	}
+-	if (ret >= 0 && boot_command_line[0]) {
++	if (cmdline_has_extra_options() && ret >= 0 && boot_command_line[0]) {
+ 		ret = snprintf(dst, rest(dst, end), "# Parameters from bootloader:\n# %s\n",
+ 			       boot_command_line);
+ 		if (ret > 0)
+--- a/include/linux/bootconfig.h
++++ b/include/linux/bootconfig.h
+@@ -10,6 +10,7 @@
+ #ifdef __KERNEL__
+ #include <linux/kernel.h>
+ #include <linux/types.h>
++bool __init cmdline_has_extra_options(void);
+ #else /* !__KERNEL__ */
+ /*
+  * NOTE: This is only for tools/bootconfig, because tools/bootconfig will
+--- a/init/main.c
++++ b/init/main.c
+@@ -485,6 +485,11 @@ static int __init warn_bootconfig(char *
  
- static bool check_bcast_qos(struct bt_iso_qos *qos)
+ early_param("bootconfig", warn_bootconfig);
+ 
++bool __init cmdline_has_extra_options(void)
++{
++	return extra_command_line || extra_init_args;
++}
++
+ /* Change NUL term back to "=", to make "param" the whole string. */
+ static void __init repair_env_string(char *param, char *val)
  {
--	if (qos->bcast.sync_factor == 0x00)
--		return false;
-+	if (!qos->bcast.sync_factor)
-+		qos->bcast.sync_factor = 0x01;
- 
- 	if (qos->bcast.packing > 0x01)
- 		return false;
-@@ -1325,6 +1325,9 @@ static bool check_bcast_qos(struct bt_iso_qos *qos)
- 	if (qos->bcast.skip > 0x01f3)
- 		return false;
- 
-+	if (!qos->bcast.sync_timeout)
-+		qos->bcast.sync_timeout = BT_ISO_SYNC_TIMEOUT;
-+
- 	if (qos->bcast.sync_timeout < 0x000a || qos->bcast.sync_timeout > 0x4000)
- 		return false;
- 
-@@ -1334,6 +1337,9 @@ static bool check_bcast_qos(struct bt_iso_qos *qos)
- 	if (qos->bcast.mse > 0x1f)
- 		return false;
- 
-+	if (!qos->bcast.timeout)
-+		qos->bcast.sync_timeout = BT_ISO_SYNC_TIMEOUT;
-+
- 	if (qos->bcast.timeout < 0x000a || qos->bcast.timeout > 0x4000)
- 		return false;
- 
--- 
-2.43.0
-
 
 
 
