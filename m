@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-39922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE3D8A555D
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F10A98A54D3
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FCAA1F22ABD
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D6951C21FFE
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C86757EA;
-	Mon, 15 Apr 2024 14:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81CFE73199;
+	Mon, 15 Apr 2024 14:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZmx54Ur"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2KfMvcS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB43374C4;
-	Mon, 15 Apr 2024 14:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2B881203;
+	Mon, 15 Apr 2024 14:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192220; cv=none; b=fygoICmnCVtN1UwsKB9NW8EnU2TCR+vP4Pxi3aWSwvGYt420IXW5M6z7tje7kaFWUYfKvjbAyghqOrBUKKGBfg4I1gHWL2btPEu0D0Ksy4POLGW0j5xDiLqO99fsleQr4iQyxD7QkW2h3uSM/dFwplaA76W5HlGZiY4g7qIpcK0=
+	t=1713191864; cv=none; b=mvTWqVcm+AIym+OZoCIJhw7LUeQKq0JHMlS5JzJb0PdUsdHPQsyK71vcECqGsvXy+m/QbcdS1v3sttp0lL6zUdo/Blxr5fJ+j5ctou/hLN0D4v1kAUUhENHt35kVL1ImoGCJVE/EHx6YZuIo/C6AxpLPVm+kR64BBXz8m7o+O1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192220; c=relaxed/simple;
-	bh=YsZG3eqERYf9xIi6wLGYU59LbPRzCq/EpAsvhPx+eJA=;
+	s=arc-20240116; t=1713191864; c=relaxed/simple;
+	bh=nv5C9R2/MmS2uPkhNXkEQ4Pmh4rKEoYzl9h7tlnrTO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=irWn3/J122IaQXj9Teq1Puv7Mpje9BUQ3REINyjBdDk7DVl+fX7WW53qgfcJ08OzIaPoJvIKCKd3y6Hp0QXW57bvMMCvXPp27POc4TfuZQiqwdz7oEm4R7tOtYyxV1iZMdWD/QX0tHdsmK2qRCUNcfMUyQlTqjioZCIAxM2URLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZmx54Ur; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FB6C113CC;
-	Mon, 15 Apr 2024 14:43:39 +0000 (UTC)
+	 MIME-Version; b=jyyEoO6i32k40uvsw62cvaPh+M4j2EJd5G0keBkVdJdst85+EZge4nWegYhkGTdfxkxNMt3BChIuneHKQvlqWcIl+XAjxSqlsemqAPpOfb9zeHMqBcenrBLCoCNYARwmZ9cV1L0wuFylD2KyH7YsbKKV7UlcIwt+AC4STCMY6f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2KfMvcS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B49C113CC;
+	Mon, 15 Apr 2024 14:37:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192220;
-	bh=YsZG3eqERYf9xIi6wLGYU59LbPRzCq/EpAsvhPx+eJA=;
+	s=korg; t=1713191864;
+	bh=nv5C9R2/MmS2uPkhNXkEQ4Pmh4rKEoYzl9h7tlnrTO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WZmx54UrztoCGz1irBAL/zdSEWQn5wkJmtfnSa34nwnEQmUTtAy8/cxIEkD9a0mMm
-	 gL9S9D8Dnpm6oFPbG+qzgDGmOkiXaU8Bjxm8KSswujVVe2734AYlXQtdtvYnx0IKJo
-	 lNTQevAuZiCIj6WIyzrgNQtr7IkFl5H2UKiAAHMQ=
+	b=V2KfMvcS2akY0s+gJ04vjwKdzk5NrUx91W7pRUiYGQuL8ZtKLQ9QUDKQgWqJw/oin
+	 uXOTZKLffrzNTxO+FLrYw70GCuudFFGEUDXx0TeMk0NF+E/klNnRgpYSm0Db3YBvlS
+	 JI0hdYTTbSvJpopOB+hUNkdnXVX/qgnvezi7WTOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 09/45] net: openvswitch: fix unwanted error log on timeout policy probing
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 111/122] x86/bugs: Fix BHI handling of RRSBA
 Date: Mon, 15 Apr 2024 16:21:16 +0200
-Message-ID: <20240415141942.521769639@linuxfoundation.org>
+Message-ID: <20240415141956.702970399@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
-References: <20240415141942.235939111@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 4539f91f2a801c0c028c252bffae56030cfb2cae ]
+commit 1cea8a280dfd1016148a3820676f2f03e3f5b898 upstream.
 
-On startup, ovs-vswitchd probes different datapath features including
-support for timeout policies.  While probing, it tries to execute
-certain operations with OVS_PACKET_ATTR_PROBE or OVS_FLOW_ATTR_PROBE
-attributes set.  These attributes tell the openvswitch module to not
-log any errors when they occur as it is expected that some of the
-probes will fail.
+The ARCH_CAP_RRSBA check isn't correct: RRSBA may have already been
+disabled by the Spectre v2 mitigation (or can otherwise be disabled by
+the BHI mitigation itself if needed).  In that case retpolines are fine.
 
-For some reason, setting the timeout policy ignores the PROBE attribute
-and logs a failure anyway.  This is causing the following kernel log
-on each re-start of ovs-vswitchd:
-
-  kernel: Failed to associated timeout policy `ovs_test_tp'
-
-Fix that by using the same logging macro that all other messages are
-using.  The message will still be printed at info level when needed
-and will be rate limited, but with a net rate limiter instead of
-generic printk one.
-
-The nf_ct_set_timeout() itself will still print some info messages,
-but at least this change makes logging in openvswitch module more
-consistent.
-
-Fixes: 06bd2bdf19d2 ("openvswitch: Add timeout support to ct action")
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Link: https://lore.kernel.org/r/20240403203803.2137962-1-i.maximets@ovn.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/6f56f13da34a0834b69163467449be7f58f253dc.1712813475.git.jpoimboe@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/openvswitch/conntrack.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/bugs.c |   30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
-index 7106ce231a2dd..60dd6f32d520e 100644
---- a/net/openvswitch/conntrack.c
-+++ b/net/openvswitch/conntrack.c
-@@ -1704,8 +1704,9 @@ int ovs_ct_copy_action(struct net *net, const struct nlattr *attr,
- 	if (ct_info.timeout[0]) {
- 		if (nf_ct_set_timeout(net, ct_info.ct, family, key->ip.proto,
- 				      ct_info.timeout))
--			pr_info_ratelimited("Failed to associated timeout "
--					    "policy `%s'\n", ct_info.timeout);
-+			OVS_NLERR(log,
-+				  "Failed to associated timeout policy '%s'",
-+				  ct_info.timeout);
- 		else
- 			ct_info.nf_ct_timeout = rcu_dereference(
- 				nf_ct_timeout_find(ct_info.ct)->timeout);
--- 
-2.43.0
-
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1537,20 +1537,25 @@ static enum spectre_v2_mitigation __init
+ 	return SPECTRE_V2_RETPOLINE;
+ }
+ 
++static bool __ro_after_init rrsba_disabled;
++
+ /* Disable in-kernel use of non-RSB RET predictors */
+ static void __init spec_ctrl_disable_kernel_rrsba(void)
+ {
+-	u64 x86_arch_cap_msr;
++	if (rrsba_disabled)
++		return;
+ 
+-	if (!boot_cpu_has(X86_FEATURE_RRSBA_CTRL))
++	if (!(x86_arch_cap_msr & ARCH_CAP_RRSBA)) {
++		rrsba_disabled = true;
+ 		return;
++	}
+ 
+-	x86_arch_cap_msr = x86_read_arch_cap_msr();
++	if (!boot_cpu_has(X86_FEATURE_RRSBA_CTRL))
++		return;
+ 
+-	if (x86_arch_cap_msr & ARCH_CAP_RRSBA) {
+-		x86_spec_ctrl_base |= SPEC_CTRL_RRSBA_DIS_S;
+-		update_spec_ctrl(x86_spec_ctrl_base);
+-	}
++	x86_spec_ctrl_base |= SPEC_CTRL_RRSBA_DIS_S;
++	update_spec_ctrl(x86_spec_ctrl_base);
++	rrsba_disabled = true;
+ }
+ 
+ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_mitigation mode)
+@@ -1651,9 +1656,11 @@ static void __init bhi_select_mitigation
+ 		return;
+ 
+ 	/* Retpoline mitigates against BHI unless the CPU has RRSBA behavior */
+-	if (cpu_feature_enabled(X86_FEATURE_RETPOLINE) &&
+-	    !(x86_read_arch_cap_msr() & ARCH_CAP_RRSBA))
+-		return;
++	if (cpu_feature_enabled(X86_FEATURE_RETPOLINE)) {
++		spec_ctrl_disable_kernel_rrsba();
++		if (rrsba_disabled)
++			return;
++	}
+ 
+ 	if (spec_ctrl_bhi_dis())
+ 		return;
+@@ -2808,8 +2815,7 @@ static const char *spectre_bhi_state(voi
+ 		return "; BHI: BHI_DIS_S";
+ 	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP))
+ 		return "; BHI: SW loop, KVM: SW loop";
+-	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
+-		 !(x86_arch_cap_msr & ARCH_CAP_RRSBA))
++	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) && rrsba_disabled)
+ 		return "; BHI: Retpoline";
+ 	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT))
+ 		return "; BHI: Syscall hardening, KVM: SW loop";
 
 
 
