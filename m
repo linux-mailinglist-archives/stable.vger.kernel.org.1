@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-39919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 721928A5559
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 353F98A552E
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F8562811F9
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6766E1C217B1
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08889433AD;
-	Mon, 15 Apr 2024 14:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B56757FD;
+	Mon, 15 Apr 2024 14:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15WQchdQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkpnTZwh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F192119;
-	Mon, 15 Apr 2024 14:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506DE2119;
+	Mon, 15 Apr 2024 14:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192211; cv=none; b=U6zyHAT5+Ih5/Dj39bb8X7whRfkGXXAly9uptN9340XaOn2c3d83LrC/TsdhWRJq9lqfBQP+NBMcwkv8KpKE8/4++XgbsPqRbNVqvtpoCMmYbClKfhOA8hnMe3H3xJ7oTNZnJdA34iCI6umfQ6zvQakd5PKlFoDS15w142JIc3M=
+	t=1713192110; cv=none; b=Dn1oj+0gFlbRBsnM9VWq3WNlESy+d+8Us+XWrrhJFPsKQC105i61+wfD3lOUIyWjAslAkpUFUvyIPgN95DlBM6jgpQAIxto0E7pS+wOBL+IJBIrh1E2tqVlb6mvbvK5wTNtwfcE+N1j8k3seLl6zy9R9GjTUN23c6OcZ+Ka4oPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192211; c=relaxed/simple;
-	bh=x1xRxH91AhvcSCQOiFORVTP81xM8kygqSpCz4fMc/bE=;
+	s=arc-20240116; t=1713192110; c=relaxed/simple;
+	bh=m/Pkv0zgVHxi+YUhAj5gls7HrkpLTcyToc9I9HL7Tvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DS+N2fUHF+uSk5nuG0oEHuZ7+e2TZvfqF1pPy/xc9hAD1W6CqGvXFq5MSos4vlGw7yey0/QlNUIajBuyhMOpPsPnjzmpyJAU0A0tEcOb0RhWxCSJROFLOCJG5I2po4AwH2FXJFtBStCIY18H5p7fIZaXTisoMOgOL59prMaNduI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15WQchdQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C27C113CC;
-	Mon, 15 Apr 2024 14:43:30 +0000 (UTC)
+	 MIME-Version; b=QxDMz3HI+ZqhUVqEHalMORESglhws+CefeGT3tFt6N1mNrwkchK3ZBQz8q6CcB3mN0CAllm1Lo2XRYUC7FiYJP+xZQ8faQ4qWPYtvj2vOwMRR6iQk6shdVm6P9pi+7xDF4vlLRk0+fOZR+frbzsSuyIyQML1oQ0etcxZv+FOtQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkpnTZwh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA09EC113CC;
+	Mon, 15 Apr 2024 14:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192211;
-	bh=x1xRxH91AhvcSCQOiFORVTP81xM8kygqSpCz4fMc/bE=;
+	s=korg; t=1713192110;
+	bh=m/Pkv0zgVHxi+YUhAj5gls7HrkpLTcyToc9I9HL7Tvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15WQchdQnyFN9DDflZITaCL8zf16fBGFhVuPFXdp9Wg3BF4qpqEa3+da8zyw3rClE
-	 2Ed7xHZx32wFCf6HYdGdUNdwd1+RlRnGcDjSomxflnl+meqrNsfBXEPWgffIAJT+qU
-	 FP8/DHpScvI5P1xf1lt9u0wBH1/oiyAmvRTsJEC8=
+	b=EkpnTZwhaQ4BiqEFeZ/UexmsCQyu+JGU2mTEWKNdwRp87BgKdFKPueoZQuQaFwV2Z
+	 NzMtMy6wD9ywBBl20BdHdR29O/N52CmbVt0mnu8qHx+Ojok5uQOiwuugGnsVwiL88R
+	 GU40Dc4T1wB/h3akCX2kEopFWLlSo4yL9nE2mba4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.15 33/45] x86/cpu: Actually turn off mitigations by default for SPECULATION_MITIGATIONS=n
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Fudongwang <fudong.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 69/69] drm/amd/display: fix disable otg wa logic in DCN316
 Date: Mon, 15 Apr 2024 16:21:40 +0200
-Message-ID: <20240415141943.239655056@linuxfoundation.org>
+Message-ID: <20240415141948.248193251@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
-References: <20240415141942.235939111@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Fudongwang <fudong.wang@amd.com>
 
-commit f337a6a21e2fd67eadea471e93d05dd37baaa9be upstream.
+commit cf79814cb0bf5749b9f0db53ca231aa540c02768 upstream.
 
-Initialize cpu_mitigations to CPU_MITIGATIONS_OFF if the kernel is built
-with CONFIG_SPECULATION_MITIGATIONS=n, as the help text quite clearly
-states that disabling SPECULATION_MITIGATIONS is supposed to turn off all
-mitigations by default.
+[Why]
+Wrong logic cause screen corruption.
 
-  │ If you say N, all mitigations will be disabled. You really
-  │ should know what you are doing to say so.
+[How]
+Port logic from DCN35/314.
 
-As is, the kernel still defaults to CPU_MITIGATIONS_AUTO, which results in
-some mitigations being enabled in spite of SPECULATION_MITIGATIONS=n.
-
-Fixes: f43b9876e857 ("x86/retbleed: Add fine grained Kconfig knobs")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
 Cc: stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240409175108.1512861-2-seanjc@google.com
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Fudongwang <fudong.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cpu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c |   19 ++++++----
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -2722,7 +2722,8 @@ enum cpu_mitigations {
- };
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
+@@ -112,20 +112,25 @@ static int dcn316_get_active_display_cnt
+ 	return display_count;
+ }
  
- static enum cpu_mitigations cpu_mitigations __ro_after_init =
--	CPU_MITIGATIONS_AUTO;
-+	IS_ENABLED(CONFIG_SPECULATION_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
-+						     CPU_MITIGATIONS_OFF;
- 
- static int __init mitigations_parse_cmdline(char *arg)
+-static void dcn316_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *context, bool disable)
++static void dcn316_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *context,
++		bool safe_to_lower, bool disable)
  {
+ 	struct dc *dc = clk_mgr_base->ctx->dc;
+ 	int i;
+ 
+ 	for (i = 0; i < dc->res_pool->pipe_count; ++i) {
+-		struct pipe_ctx *pipe = &dc->current_state->res_ctx.pipe_ctx[i];
++		struct pipe_ctx *pipe = safe_to_lower
++			? &context->res_ctx.pipe_ctx[i]
++			: &dc->current_state->res_ctx.pipe_ctx[i];
+ 
+ 		if (pipe->top_pipe || pipe->prev_odm_pipe)
+ 			continue;
+-		if (pipe->stream && (pipe->stream->dpms_off || pipe->plane_state == NULL ||
+-				     dc_is_virtual_signal(pipe->stream->signal))) {
++		if (pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal) ||
++				     !pipe->stream->link_enc)) {
+ 			if (disable) {
+-				pipe->stream_res.tg->funcs->immediate_disable_crtc(pipe->stream_res.tg);
++				if (pipe->stream_res.tg && pipe->stream_res.tg->funcs->immediate_disable_crtc)
++					pipe->stream_res.tg->funcs->immediate_disable_crtc(pipe->stream_res.tg);
++
+ 				reset_sync_context_for_pipe(dc, context, i);
+ 			} else
+ 				pipe->stream_res.tg->funcs->enable_crtc(pipe->stream_res.tg);
+@@ -222,11 +227,11 @@ static void dcn316_update_clocks(struct
+ 	}
+ 
+ 	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz)) {
+-		dcn316_disable_otg_wa(clk_mgr_base, context, true);
++		dcn316_disable_otg_wa(clk_mgr_base, context, safe_to_lower, true);
+ 
+ 		clk_mgr_base->clks.dispclk_khz = new_clocks->dispclk_khz;
+ 		dcn316_smu_set_dispclk(clk_mgr, clk_mgr_base->clks.dispclk_khz);
+-		dcn316_disable_otg_wa(clk_mgr_base, context, false);
++		dcn316_disable_otg_wa(clk_mgr_base, context, safe_to_lower, false);
+ 
+ 		update_dispclk = true;
+ 	}
 
 
 
