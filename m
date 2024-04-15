@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-39860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12368A5513
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7CCD8A5551
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71B631F216EC
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5701F1F21138
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DFB47F7DA;
-	Mon, 15 Apr 2024 14:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D3C676046;
+	Mon, 15 Apr 2024 14:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atMl37UQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euXPff8o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4B2381B9;
-	Mon, 15 Apr 2024 14:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E103A76033;
+	Mon, 15 Apr 2024 14:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192034; cv=none; b=YknwGX4NL07JkraEd52JiOiBnPE6yewESG2j3QyrRBQ3lECba5BPzFnxMDQ5SIISRnQM/15a6S2D7A1Pk7op9iejjywYxLRJ2BvBuVCSMXaFXIfntFrtaJ8U57ADPCghqSdhsvxOHiKG2G7cRU+ema9n1YdWS1n70L+AaumX6tE=
+	t=1713192188; cv=none; b=g6jKoEdnj+nHiEC04vJACOpSA8WJxsfs5OmqVolZZYXkPuT6pZM1R8AhTkWCcWs5ywrPGi60xC5u6QK+2PAcLyqu5qzeDIYy83E6aIwK3O6i+sjMlKZEMEnpO6GU7eukv+6Nh5g5ESmqa8kRxe4OxsTrbu2FHvf3aXae63VJdoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192034; c=relaxed/simple;
-	bh=abgiGBxj3maymcVir2JJtaWyyV8X46jqiqjrjj9cF2Q=;
+	s=arc-20240116; t=1713192188; c=relaxed/simple;
+	bh=0rkNGPE7i1zbvU5PaiiuPkcEnpGEfZkfMa9A9QBS7Fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNYiDTAu68aAu/53kCbJf+Jxp4XQ8ZvrmUhAwLD70fTJ77xSfKeOpGKYCpRRfgzs7Ev90AQQiEaeJCNq16mwgU+ywWcIjZ2VAstdckIjc6bZCud3ezrmrGinAECMpiD5gZXZyQQWUuQ6+5/Ezl8tE1KrGi/VQRrPR9Jc/MFMQ7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atMl37UQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E522C113CC;
-	Mon, 15 Apr 2024 14:40:33 +0000 (UTC)
+	 MIME-Version; b=pplvZSSk+LABOBrtChpB0/wrWJRHiJNCSd45jM8pZVBcA3xBS/knHWOufYtIkrrKQMIAMJxHebK80nreHcrMUpmbkxZJqpuGc5Tlal7xwjeerdCj4RJlY/L3PDlqNRrgXfq0+OxpSj+3+0nE6ObApBKIAiDNqgqrvgHWS7gifpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euXPff8o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A6B4C113CC;
+	Mon, 15 Apr 2024 14:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192034;
-	bh=abgiGBxj3maymcVir2JJtaWyyV8X46jqiqjrjj9cF2Q=;
+	s=korg; t=1713192187;
+	bh=0rkNGPE7i1zbvU5PaiiuPkcEnpGEfZkfMa9A9QBS7Fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=atMl37UQLGKIaRggkkidZpj7qIuJLbEB3bmBZx3yR4Uk6MNdPAcItrlQsOHCCx5EP
-	 GppEPir+y8jITvjSPUe5rP1G7pJERKaqWd0OnE5UTf3BakatinQzOlZOUvCd8wmasn
-	 hQ9QnDEZxGyKm1LPMP5QpCIYjdfWU107Zl4aFwBI=
+	b=euXPff8oiAk+iPl/1Kz36orekIBfnwTbI3d4OLytj608lW6GmdPJpBVqn/Q6o+yWQ
+	 63RuOlVZvG/0q3/G6RefaMQQIHUCmQ+2kDp6oO/o7lQgThdgQy84YjvgxOJgHYGdT0
+	 Z3vIcMchIC4uQG7qSpBOI49JLGb5pdgrksQQs9sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 43/69] btrfs: qgroup: convert PREALLOC to PERTRANS after record_root_in_trans
-Date: Mon, 15 Apr 2024 16:21:14 +0200
-Message-ID: <20240415141947.462543702@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 08/45] scsi: qla2xxx: Fix off by one in qla_edif_app_getstats()
+Date: Mon, 15 Apr 2024 16:21:15 +0200
+Message-ID: <20240415141942.491923184@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
+References: <20240415141942.235939111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 211de93367304ab395357f8cb12568a4d1e20701 upstream.
+[ Upstream commit 4406e4176f47177f5e51b4cc7e6a7a2ff3dbfbbd ]
 
-The transaction is only able to free PERTRANS reservations for a root
-once that root has been recorded with the TRANS tag on the roots radix
-tree. Therefore, until we are sure that this root will get tagged, it
-isn't safe to convert. Generally, this is not an issue as *some*
-transaction will likely tag the root before long and this reservation
-will get freed in that transaction, but technically it could stick
-around until unmount and result in a warning about leaked metadata
-reservation space.
+The app_reply->elem[] array is allocated earlier in this function and it
+has app_req.num_ports elements.  Thus this > comparison needs to be >= to
+prevent memory corruption.
 
-This path is most exercised by running the generic/269 fstest with
-CONFIG_BTRFS_DEBUG.
-
-Fixes: a6496849671a ("btrfs: fix start transaction qgroup rsv double free")
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7878f22a2e03 ("scsi: qla2xxx: edif: Add getfcinfo and statistic bsgs")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/5c125b2f-92dd-412b-9b6f-fc3a3207bd60@moroto.mountain
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/transaction.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ drivers/scsi/qla2xxx/qla_edif.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -700,14 +700,6 @@ again:
- 		h->reloc_reserved = reloc_reserved;
- 	}
+diff --git a/drivers/scsi/qla2xxx/qla_edif.c b/drivers/scsi/qla2xxx/qla_edif.c
+index 40a03f9c2d21f..ac702f74dd984 100644
+--- a/drivers/scsi/qla2xxx/qla_edif.c
++++ b/drivers/scsi/qla2xxx/qla_edif.c
+@@ -1012,7 +1012,7 @@ qla_edif_app_getstats(scsi_qla_host_t *vha, struct bsg_job *bsg_job)
  
--	/*
--	 * Now that we have found a transaction to be a part of, convert the
--	 * qgroup reservation from prealloc to pertrans. A different transaction
--	 * can't race in and free our pertrans out from under us.
--	 */
--	if (qgroup_reserved)
--		btrfs_qgroup_convert_reserved_meta(root, qgroup_reserved);
--
- got_it:
- 	if (!current->journal_info)
- 		current->journal_info = h;
-@@ -741,8 +733,15 @@ got_it:
- 		 * not just freed.
- 		 */
- 		btrfs_end_transaction(h);
--		return ERR_PTR(ret);
-+		goto reserve_fail;
- 	}
-+	/*
-+	 * Now that we have found a transaction to be a part of, convert the
-+	 * qgroup reservation from prealloc to pertrans. A different transaction
-+	 * can't race in and free our pertrans out from under us.
-+	 */
-+	if (qgroup_reserved)
-+		btrfs_qgroup_convert_reserved_meta(root, qgroup_reserved);
+ 		list_for_each_entry_safe(fcport, tf, &vha->vp_fcports, list) {
+ 			if (fcport->edif.enable) {
+-				if (pcnt > app_req.num_ports)
++				if (pcnt >= app_req.num_ports)
+ 					break;
  
- 	return h;
- 
+ 				app_reply->elem[pcnt].rekey_count =
+-- 
+2.43.0
+
 
 
 
