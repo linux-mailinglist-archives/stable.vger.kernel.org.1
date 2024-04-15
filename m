@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-39878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15CBF8A5527
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97FC18A5554
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA8FA1F218EB
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9EA41C21A3C
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CECB74E25;
-	Mon, 15 Apr 2024 14:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7B24C618;
+	Mon, 15 Apr 2024 14:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u06nVZBn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7uTZAMA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592809445;
-	Mon, 15 Apr 2024 14:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C535D9445;
+	Mon, 15 Apr 2024 14:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192089; cv=none; b=pg1JCoJT64O6Yh62S1NqnFQa2O1dpG/niyqp/fCsiXtLEB/TqrPZU/2w9Bz/OYfyyvUEcTq3BgM9yvjX24tvk1hlhb8ZUqmbMuIoTygvXBa1/WM+WUDFv/NV6Vovmy6kvzRHkdvOnb0fVfv7ywju/jDpG4Q2o1Q7ySxlXxA23Ag=
+	t=1713192193; cv=none; b=Valz7YVBmEcWf7yNISNJOPdxqHDdSSjSsEI3VmOG/sKxzeS4H1KGIl1wHFOzK9f2o9c8x3BNLbdhmX/ptuql63btyFyRQbrdcpqFLgHu2zQ6GkXOi/ywmWthF/yvIjWN9C0h0usySEY2flEC2zHiUc6HL1wOyr0eLc5PtJEZSv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192089; c=relaxed/simple;
-	bh=WyMKLCBgYL91PSpakeLQ739r93ax3ZEhc4jPdEouOpY=;
+	s=arc-20240116; t=1713192193; c=relaxed/simple;
+	bh=xxNshNwqs5iNJlAQa4Axc6/qfr1kW5bQOqIePCe4bH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eObQR+Cv92r8V6yhZXF6e6m06kBCCtstAw7ecZctG4lV6NbnvrrgtgzhMpGso4D7uz6vktXfBhnzZ0jopN1A0ofyhDilXDvQevAIDXJ0onX5Rk5RHpNlaNC9syMURajt5gp4GEemcmsDJyERdPBzPFB9gdTc4cES9E98dWZB1dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u06nVZBn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5033C113CC;
-	Mon, 15 Apr 2024 14:41:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O9VCY2aekvf3Rq0seVkNmEHt9waDnDk0/PTuvCdN3bK7s3x1Q0GenG0GSpmZhT3R+9finaFk9SxmMpZ+8lQdzsPtyR/816SO9qp1xsgZ1GeXywJ7V/GXTKs8GyXRSC6ljOEZ7P42J7mHRyGsHWrtwVs65tMDaiT4NsHCPhCVaSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7uTZAMA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21632C113CC;
+	Mon, 15 Apr 2024 14:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192089;
-	bh=WyMKLCBgYL91PSpakeLQ739r93ax3ZEhc4jPdEouOpY=;
+	s=korg; t=1713192193;
+	bh=xxNshNwqs5iNJlAQa4Axc6/qfr1kW5bQOqIePCe4bH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u06nVZBn8FHn+vCNxoVUPZSngY1SwGGDCdMPG4tD+jl4QIwpQ0XZzosayn2K4bPi1
-	 o8fAeU3gviA/xoIRP3i3r70jO/CSK5qIz5cNKpKtTwHIpxrcTu9Sl/0Oe3uM+rx5n/
-	 t9b8VYA6jmseIdXHiSWHHi9XULU1MNHZaVFh8BtM=
+	b=i7uTZAMAT2ckna0nT4/e1UA3OEU63dQUHN8+5jfCkPsFjsoqyJWrhFCMUrdU4EbAb
+	 0q7vClE+QETsp/mC7oR1boBM3zvLeLozbIQZevlmTLibrXVBLwmiz3Z22jJBOHObQu
+	 sFnn12/ZWXLGsIPLSZZrbUX8P5NczrWFttDfITs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.1 63/69] x86/bugs: Remove CONFIG_BHI_MITIGATION_AUTO and spectre_bhi=auto
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Kees Cook <keescook@chromium.org>,
+	Ajay Kaher <akaher@vmware.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Tzvetomir Stoyanov (VMware)" <tz.stoyanov@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 27/45] tracing: hide unused ftrace_event_id_fops
 Date: Mon, 15 Apr 2024 16:21:34 +0200
-Message-ID: <20240415141948.065926281@linuxfoundation.org>
+Message-ID: <20240415141943.057461278@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
+References: <20240415141942.235939111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +70,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 36d4fe147c870f6d3f6602befd7ef44393a1c87a upstream.
+[ Upstream commit 5281ec83454d70d98b71f1836fb16512566c01cd ]
 
-Unlike most other mitigations' "auto" options, spectre_bhi=auto only
-mitigates newer systems, which is confusing and not particularly useful.
+When CONFIG_PERF_EVENTS, a 'make W=1' build produces a warning about the
+unused ftrace_event_id_fops variable:
 
-Remove it.
+kernel/trace/trace_events.c:2155:37: error: 'ftrace_event_id_fops' defined but not used [-Werror=unused-const-variable=]
+ 2155 | static const struct file_operations ftrace_event_id_fops = {
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/412e9dc87971b622bbbaf64740ebc1f140bff343.1712813475.git.jpoimboe@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Hide this in the same #ifdef as the reference to it.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240403080702.3509288-7-arnd@kernel.org
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Ajay Kaher <akaher@vmware.com>
+Cc: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: Clément Léger <cleger@rivosinc.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: "Tzvetomir Stoyanov (VMware)" <tz.stoyanov@gmail.com>
+Fixes: 620a30e97feb ("tracing: Don't pass file_operations array to event_create_dir()")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/hw-vuln/spectre.rst   |    4 ----
- Documentation/admin-guide/kernel-parameters.txt |    3 ---
- arch/x86/Kconfig                                |    4 ----
- arch/x86/kernel/cpu/bugs.c                      |   10 +---------
- 4 files changed, 1 insertion(+), 20 deletions(-)
+ kernel/trace/trace_events.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/Documentation/admin-guide/hw-vuln/spectre.rst
-+++ b/Documentation/admin-guide/hw-vuln/spectre.rst
-@@ -669,10 +669,6 @@ kernel command line.
- 			needed.
- 		off
- 			Disable the mitigation.
--		auto
--			Enable the HW mitigation if needed, but
--			*don't* enable the SW mitigation except for KVM.
--			The system may be vulnerable.
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index 0a7348b90ba50..1f4f3096b9ac4 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -1645,6 +1645,7 @@ static int trace_format_open(struct inode *inode, struct file *file)
+ 	return 0;
+ }
  
- For spectre_v2_user see Documentation/admin-guide/kernel-parameters.txt
++#ifdef CONFIG_PERF_EVENTS
+ static ssize_t
+ event_id_read(struct file *filp, char __user *ubuf, size_t cnt, loff_t *ppos)
+ {
+@@ -1659,6 +1660,7 @@ event_id_read(struct file *filp, char __user *ubuf, size_t cnt, loff_t *ppos)
  
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5742,9 +5742,6 @@
- 			on   - (default) Enable the HW or SW mitigation
- 			       as needed.
- 			off  - Disable the mitigation.
--			auto - Enable the HW mitigation if needed, but
--			       *don't* enable the SW mitigation except
--			       for KVM.  The system may be vulnerable.
+ 	return simple_read_from_buffer(ubuf, cnt, ppos, buf, len);
+ }
++#endif
  
- 	spectre_v2=	[X86] Control mitigation of Spectre variant 2
- 			(indirect branch speculation) vulnerability.
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2581,10 +2581,6 @@ config SPECTRE_BHI_OFF
- 	bool "off"
- 	help
- 	  Equivalent to setting spectre_bhi=off command line parameter.
--config SPECTRE_BHI_AUTO
--	bool "auto"
--	help
--	  Equivalent to setting spectre_bhi=auto command line parameter.
- 
- endchoice
- 
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1602,13 +1602,10 @@ static bool __init spec_ctrl_bhi_dis(voi
- enum bhi_mitigations {
- 	BHI_MITIGATION_OFF,
- 	BHI_MITIGATION_ON,
--	BHI_MITIGATION_AUTO,
+ static ssize_t
+ event_filter_read(struct file *filp, char __user *ubuf, size_t cnt,
+@@ -2104,10 +2106,12 @@ static const struct file_operations ftrace_event_format_fops = {
+ 	.release = seq_release,
  };
  
- static enum bhi_mitigations bhi_mitigation __ro_after_init =
--	IS_ENABLED(CONFIG_SPECTRE_BHI_ON)  ? BHI_MITIGATION_ON  :
--	IS_ENABLED(CONFIG_SPECTRE_BHI_OFF) ? BHI_MITIGATION_OFF :
--					     BHI_MITIGATION_AUTO;
-+	IS_ENABLED(CONFIG_SPECTRE_BHI_ON) ? BHI_MITIGATION_ON : BHI_MITIGATION_OFF;
++#ifdef CONFIG_PERF_EVENTS
+ static const struct file_operations ftrace_event_id_fops = {
+ 	.read = event_id_read,
+ 	.llseek = default_llseek,
+ };
++#endif
  
- static int __init spectre_bhi_parse_cmdline(char *str)
- {
-@@ -1619,8 +1616,6 @@ static int __init spectre_bhi_parse_cmdl
- 		bhi_mitigation = BHI_MITIGATION_OFF;
- 	else if (!strcmp(str, "on"))
- 		bhi_mitigation = BHI_MITIGATION_ON;
--	else if (!strcmp(str, "auto"))
--		bhi_mitigation = BHI_MITIGATION_AUTO;
- 	else
- 		pr_err("Ignoring unknown spectre_bhi option (%s)", str);
- 
-@@ -1650,9 +1645,6 @@ static void __init bhi_select_mitigation
- 	setup_force_cpu_cap(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT);
- 	pr_info("Spectre BHI mitigation: SW BHB clearing on vm exit\n");
- 
--	if (bhi_mitigation == BHI_MITIGATION_AUTO)
--		return;
--
- 	/* Mitigate syscalls when the mitigation is forced =on */
- 	setup_force_cpu_cap(X86_FEATURE_CLEAR_BHB_LOOP);
- 	pr_info("Spectre BHI mitigation: SW BHB clearing on syscall\n");
+ static const struct file_operations ftrace_event_filter_fops = {
+ 	.open = tracing_open_file_tr,
+-- 
+2.43.0
+
 
 
 
