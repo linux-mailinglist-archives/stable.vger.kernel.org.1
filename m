@@ -1,398 +1,214 @@
-Return-Path: <stable+bounces-39830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC87D8A54EF
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE8F68A549C
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:38:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDDD71C22255
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A54B21F2168F
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:38:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6749269D05;
-	Mon, 15 Apr 2024 14:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9DE82489;
+	Mon, 15 Apr 2024 14:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYeBxfsU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ff430+L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225CA1E52C;
-	Mon, 15 Apr 2024 14:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEED82480;
+	Mon, 15 Apr 2024 14:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191942; cv=none; b=F7HsLQCK6Fj8yCs5LjaBxmtZ13fCfDvNK5rhptS+C/dpNU7EM/b7BTaL9toxrSPyX+Vik5uEGICj6eC0dXkepLHsXJd/WZY4undKzeQP0puW3QReC9tcHnwNFdBvQKjjUxpoLjIN5dk6o8qjbpj/ssHyxISN7Ui3LyOyFh9SmM0=
+	t=1713191728; cv=none; b=HrTRUNzcHPw2Vw8foZxi+VIhiGPxa8QYEhv8O+duUrGHZgNIj2wfZagSO8Sl0BIqeDKVcNJWB5TmW7Ez72IWnWcmMF9l6i1CQlIcmFF8c8r7lCW+gTW7f2vJ1+06S2cfwLN3uyOVHIR1mp2OcvXYMIXiZpmgjhP8rBRsqOxIe0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191942; c=relaxed/simple;
-	bh=fDq3QR6D4tYxCrL0immEbiKSPnX7ynkWZKVP8qfpdSY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cLcIGWR9+DHOUdKpYPwGd+AZ0wtC86xgI39DrhXL5sZLP9I7n6Qt/cIVpV4wmuqw+MF4C/DYPBJCaetp8WEc9Vm17/pc/cDXDZZ0U4exferH69fVn1zOAeowaC6jtoT2c1fxiwvJFns1ETFjZkA9G4jSt9yb6BBfQqGNIOdH4QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYeBxfsU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6979CC113CC;
-	Mon, 15 Apr 2024 14:39:01 +0000 (UTC)
+	s=arc-20240116; t=1713191728; c=relaxed/simple;
+	bh=R/C0gfGtiJEF1C891uNpb+TNCdWspdQ27/2iDmHf+cE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jaQ7PGXrTt6ImC3u7ax0er3Zr2kPL+KelSBMwqHbpqZLESj5ejRU4Y1Hz2vadvs8Ansks4Lr7CEMksMDCBMtrkSbjR2lwRGYKA8RMVXEpP9EiV4g0RPpk0EN2mcuko+ojOOryPliv3LDzTkTba/2W1nOEwmYto0re6G7buE7yfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ff430+L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04A8C113CC;
+	Mon, 15 Apr 2024 14:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191942;
-	bh=fDq3QR6D4tYxCrL0immEbiKSPnX7ynkWZKVP8qfpdSY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=MYeBxfsUc7M4SRGu8//2vPprq0QoQmKubfeyRFAq5AnfG+g3GcDXubgT7xUTNBYRX
-	 unxu3BKshr91vTN7rx1izJmkHd9votinv2nTZ2dtE15ml5pd4PjiZyWsyGjrzfx1l0
-	 salsQIeCmaC/HSUCivv5gK7T5muDzT+NmdJNpFFk=
+	s=korg; t=1713191728;
+	bh=R/C0gfGtiJEF1C891uNpb+TNCdWspdQ27/2iDmHf+cE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=0ff430+LzDvp9TO+qJypo/+3jbuMxLTUZNNViAD0hpANpbQZL9slnGyeHD63mYUsf
+	 0YbsUdtnI+Z1qDnfCgOAbaYPlwEpDOHlO8NSAlXqoOzdTJHt+jKl7qDOoBMY8Curjd
+	 nTvjHg6YADwHM5TRNcctH3up9KZpMcM5TBXGKcz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	broonie@kernel.org
-Subject: [PATCH 6.1 00/69] 6.1.87-rc1 review
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 066/122] af_unix: Do not use atomic ops for unix_sk(sk)->inflight.
 Date: Mon, 15 Apr 2024 16:20:31 +0200
-Message-ID: <20240415141946.165870434@linuxfoundation.org>
+Message-ID: <20240415141955.360632077@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.87-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.1.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.1.87-rc1
-X-KernelTest-Deadline: 2024-04-17T14:19+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.1.87 release.
-There are 69 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+
+[ Upstream commit 97af84a6bba2ab2b9c704c08e67de3b5ea551bb2 ]
+
+When touching unix_sk(sk)->inflight, we are always under
+spin_lock(&unix_gc_lock).
+
+Let's convert unix_sk(sk)->inflight to the normal unsigned long.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240123170856.41348-3-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 47d8ac011fe1 ("af_unix: Fix garbage collector racing against connect()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/net/af_unix.h |  2 +-
+ net/unix/af_unix.c    |  4 ++--
+ net/unix/garbage.c    | 17 ++++++++---------
+ net/unix/scm.c        |  8 +++++---
+ 4 files changed, 16 insertions(+), 15 deletions(-)
+
+diff --git a/include/net/af_unix.h b/include/net/af_unix.h
+index afd40dce40f3d..d1b07ddbe677e 100644
+--- a/include/net/af_unix.h
++++ b/include/net/af_unix.h
+@@ -55,7 +55,7 @@ struct unix_sock {
+ 	struct mutex		iolock, bindlock;
+ 	struct sock		*peer;
+ 	struct list_head	link;
+-	atomic_long_t		inflight;
++	unsigned long		inflight;
+ 	spinlock_t		lock;
+ 	unsigned long		gc_flags;
+ #define UNIX_GC_CANDIDATE	0
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index ac3d4b540c100..918724844231e 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -992,11 +992,11 @@ static struct sock *unix_create1(struct net *net, struct socket *sock, int kern,
+ 	sk->sk_write_space	= unix_write_space;
+ 	sk->sk_max_ack_backlog	= net->unx.sysctl_max_dgram_qlen;
+ 	sk->sk_destruct		= unix_sock_destructor;
+-	u	  = unix_sk(sk);
++	u = unix_sk(sk);
++	u->inflight = 0;
+ 	u->path.dentry = NULL;
+ 	u->path.mnt = NULL;
+ 	spin_lock_init(&u->lock);
+-	atomic_long_set(&u->inflight, 0);
+ 	INIT_LIST_HEAD(&u->link);
+ 	mutex_init(&u->iolock); /* single task reading lock */
+ 	mutex_init(&u->bindlock); /* single task binding lock */
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index 027c86e804f8a..aea222796dfdc 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -166,17 +166,18 @@ static void scan_children(struct sock *x, void (*func)(struct unix_sock *),
+ 
+ static void dec_inflight(struct unix_sock *usk)
+ {
+-	atomic_long_dec(&usk->inflight);
++	usk->inflight--;
+ }
+ 
+ static void inc_inflight(struct unix_sock *usk)
+ {
+-	atomic_long_inc(&usk->inflight);
++	usk->inflight++;
+ }
+ 
+ static void inc_inflight_move_tail(struct unix_sock *u)
+ {
+-	atomic_long_inc(&u->inflight);
++	u->inflight++;
++
+ 	/* If this still might be part of a cycle, move it to the end
+ 	 * of the list, so that it's checked even if it was already
+ 	 * passed over
+@@ -237,14 +238,12 @@ void unix_gc(void)
+ 	 */
+ 	list_for_each_entry_safe(u, next, &gc_inflight_list, link) {
+ 		long total_refs;
+-		long inflight_refs;
+ 
+ 		total_refs = file_count(u->sk.sk_socket->file);
+-		inflight_refs = atomic_long_read(&u->inflight);
+ 
+-		BUG_ON(inflight_refs < 1);
+-		BUG_ON(total_refs < inflight_refs);
+-		if (total_refs == inflight_refs) {
++		BUG_ON(!u->inflight);
++		BUG_ON(total_refs < u->inflight);
++		if (total_refs == u->inflight) {
+ 			list_move_tail(&u->link, &gc_candidates);
+ 			__set_bit(UNIX_GC_CANDIDATE, &u->gc_flags);
+ 			__set_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
+@@ -271,7 +270,7 @@ void unix_gc(void)
+ 		/* Move cursor to after the current position. */
+ 		list_move(&cursor, &u->link);
+ 
+-		if (atomic_long_read(&u->inflight) > 0) {
++		if (u->inflight) {
+ 			list_move_tail(&u->link, &not_cycle_list);
+ 			__clear_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
+ 			scan_children(&u->sk, inc_inflight_move_tail, NULL);
+diff --git a/net/unix/scm.c b/net/unix/scm.c
+index 822ce0d0d7915..e92f2fad64105 100644
+--- a/net/unix/scm.c
++++ b/net/unix/scm.c
+@@ -53,12 +53,13 @@ void unix_inflight(struct user_struct *user, struct file *fp)
+ 	if (s) {
+ 		struct unix_sock *u = unix_sk(s);
+ 
+-		if (atomic_long_inc_return(&u->inflight) == 1) {
++		if (!u->inflight) {
+ 			BUG_ON(!list_empty(&u->link));
+ 			list_add_tail(&u->link, &gc_inflight_list);
+ 		} else {
+ 			BUG_ON(list_empty(&u->link));
+ 		}
++		u->inflight++;
+ 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
+ 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight + 1);
+ 	}
+@@ -75,10 +76,11 @@ void unix_notinflight(struct user_struct *user, struct file *fp)
+ 	if (s) {
+ 		struct unix_sock *u = unix_sk(s);
+ 
+-		BUG_ON(!atomic_long_read(&u->inflight));
++		BUG_ON(!u->inflight);
+ 		BUG_ON(list_empty(&u->link));
+ 
+-		if (atomic_long_dec_and_test(&u->inflight))
++		u->inflight--;
++		if (!u->inflight)
+ 			list_del_init(&u->link);
+ 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
+ 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - 1);
+-- 
+2.43.0
 
-Responses should be made by Wed, 17 Apr 2024 14:19:30 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.87-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.1.87-rc1
-
-Fudongwang <fudong.wang@amd.com>
-    drm/amd/display: fix disable otg wa logic in DCN316
-
-Alex Deucher <alexander.deucher@amd.com>
-    drm/amdgpu: always force full reset for SOC21
-
-Lijo Lazar <lijo.lazar@amd.com>
-    drm/amdgpu: Reset dGPU if suspend got aborted
-
-Ville Syrjälä <ville.syrjala@linux.intel.com>
-    drm/i915: Disable port sync when bigjoiner is used
-
-Ville Syrjälä <ville.syrjala@linux.intel.com>
-    drm/i915/cdclk: Fix CDCLK programming order when pipes are active
-
-Josh Poimboeuf <jpoimboe@kernel.org>
-    x86/bugs: Replace CONFIG_SPECTRE_BHI_{ON,OFF} with CONFIG_MITIGATION_SPECTRE_BHI
-
-Josh Poimboeuf <jpoimboe@kernel.org>
-    x86/bugs: Remove CONFIG_BHI_MITIGATION_AUTO and spectre_bhi=auto
-
-Josh Poimboeuf <jpoimboe@kernel.org>
-    x86/bugs: Clarify that syscall hardening isn't a BHI mitigation
-
-Josh Poimboeuf <jpoimboe@kernel.org>
-    x86/bugs: Fix BHI handling of RRSBA
-
-Ingo Molnar <mingo@kernel.org>
-    x86/bugs: Rename various 'ia32_cap' variables to 'x86_arch_cap_msr'
-
-Josh Poimboeuf <jpoimboe@kernel.org>
-    x86/bugs: Cache the value of MSR_IA32_ARCH_CAPABILITIES
-
-Josh Poimboeuf <jpoimboe@kernel.org>
-    x86/bugs: Fix BHI documentation
-
-Daniel Sneddon <daniel.sneddon@linux.intel.com>
-    x86/bugs: Fix return type of spectre_bhi_state()
-
-Arnd Bergmann <arnd@arndb.de>
-    irqflags: Explicitly ignore lockdep_hrtimer_exit() argument
-
-Adam Dunlap <acdunlap@google.com>
-    x86/apic: Force native_apic_mem_read() to use the MOV instruction
-
-John Stultz <jstultz@google.com>
-    selftests: timers: Fix abs() warning in posix_timers test
-
-Sean Christopherson <seanjc@google.com>
-    x86/cpu: Actually turn off mitigations by default for SPECULATION_MITIGATIONS=n
-
-Namhyung Kim <namhyung@kernel.org>
-    perf/x86: Fix out of range data
-
-Gavin Shan <gshan@redhat.com>
-    vhost: Add smp_rmb() in vhost_enable_notify()
-
-Gavin Shan <gshan@redhat.com>
-    vhost: Add smp_rmb() in vhost_vq_avail_empty()
-
-Ville Syrjälä <ville.syrjala@linux.intel.com>
-    drm/client: Fully protect modes[] with dev->mode_config.mutex
-
-Jammy Huang <jammy_huang@aspeedtech.com>
-    drm/ast: Fix soft lockup
-
-Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-    drm/amdkfd: Reset GPU on queue preemption failure
-
-Ville Syrjälä <ville.syrjala@linux.intel.com>
-    drm/i915/vrr: Disable VRR when using bigjoiner
-
-Zheng Yejian <zhengyejian1@huawei.com>
-    kprobes: Fix possible use-after-free issue on kprobe registration
-
-Pavel Begunkov <asml.silence@gmail.com>
-    io_uring/net: restore msg_control on sendzc retry
-
-Boris Burkov <boris@bur.io>
-    btrfs: qgroup: convert PREALLOC to PERTRANS after record_root_in_trans
-
-Boris Burkov <boris@bur.io>
-    btrfs: record delayed inode root in transaction
-
-Boris Burkov <boris@bur.io>
-    btrfs: qgroup: correctly model root qgroup rsv in convert
-
-Jacob Pan <jacob.jun.pan@linux.intel.com>
-    iommu/vt-d: Allocate local memory for page request queue
-
-Arnd Bergmann <arnd@arndb.de>
-    tracing: hide unused ftrace_event_id_fops
-
-David Arinzon <darinzon@amazon.com>
-    net: ena: Fix incorrect descriptor free behavior
-
-David Arinzon <darinzon@amazon.com>
-    net: ena: Wrong missing IO completions check order
-
-David Arinzon <darinzon@amazon.com>
-    net: ena: Fix potential sign extension issue
-
-Michal Luczaj <mhal@rbox.co>
-    af_unix: Fix garbage collector racing against connect()
-
-Kuniyuki Iwashima <kuniyu@amazon.com>
-    af_unix: Do not use atomic ops for unix_sk(sk)->inflight.
-
-Arınç ÜNAL <arinc.unal@arinc9.com>
-    net: dsa: mt7530: trap link-local frames regardless of ST Port State
-
-Daniel Machon <daniel.machon@microchip.com>
-    net: sparx5: fix wrong config being used when reconfiguring PCS
-
-Carolina Jubran <cjubran@nvidia.com>
-    net/mlx5e: HTB, Fix inconsistencies with QoS SQs number
-
-Carolina Jubran <cjubran@nvidia.com>
-    net/mlx5e: Fix mlx5e_priv_init() cleanup flow
-
-Cosmin Ratiu <cratiu@nvidia.com>
-    net/mlx5: Properly link new fs rules into the tree
-
-Eric Dumazet <edumazet@google.com>
-    netfilter: complete validation of user input
-
-Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-    Bluetooth: L2CAP: Fix not validating setsockopt user input
-
-Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-    Bluetooth: SCO: Fix not validating setsockopt user input
-
-Jiri Benc <jbenc@redhat.com>
-    ipv6: fix race condition between ipv6_get_ifaddr and ipv6_del_addr
-
-Arnd Bergmann <arnd@arndb.de>
-    ipv4/route: avoid unused-but-set-variable warning
-
-Arnd Bergmann <arnd@arndb.de>
-    ipv6: fib: hide unused 'pn' variable
-
-Geetha sowjanya <gakula@marvell.com>
-    octeontx2-af: Fix NIX SQ mode and BP config
-
-Kuniyuki Iwashima <kuniyu@amazon.com>
-    af_unix: Clear stale u->oob_skb.
-
-Marek Vasut <marex@denx.de>
-    net: ks8851: Handle softirqs at the end of IRQ thread to fix hang
-
-Marek Vasut <marex@denx.de>
-    net: ks8851: Inline ks8851_rx_skb()
-
-Pavan Chebbi <pavan.chebbi@broadcom.com>
-    bnxt_en: Reset PTP tx_avail after possible firmware reset
-
-Eric Dumazet <edumazet@google.com>
-    geneve: fix header validation in geneve[6]_xmit_skb
-
-Eric Dumazet <edumazet@google.com>
-    xsk: validate user input for XDP_{UMEM|COMPLETION}_FILL_RING
-
-Petr Tesarik <petr@tesarici.cz>
-    u64_stats: fix u64_stats_init() for lockdep when used repeatedly in one file
-
-Ilya Maximets <i.maximets@ovn.org>
-    net: openvswitch: fix unwanted error log on timeout policy probing
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    scsi: qla2xxx: Fix off by one in qla_edif_app_getstats()
-
-Xiang Chen <chenxiang66@hisilicon.com>
-    scsi: hisi_sas: Modify the deadline for ata_wait_after_reset()
-
-Arnd Bergmann <arnd@arndb.de>
-    nouveau: fix function cast warning
-
-Alex Constantino <dreaming.about.electric.sheep@gmail.com>
-    Revert "drm/qxl: simplify qxl_fence_wait"
-
-Frank Li <Frank.Li@nxp.com>
-    arm64: dts: imx8-ss-conn: fix usdhc wrong lpcg clock order
-
-Nini Song <nini.song@mediatek.com>
-    media: cec: core: remove length check of Timer Status
-
-Anna-Maria Behnsen <anna-maria@linutronix.de>
-    PM: s2idle: Make sure CPUs will wakeup directly on resume
-
-Tim Huang <Tim.Huang@amd.com>
-    drm/amd/pm: fixes a random hang in S4 for SMU v13.0.4/11
-
-Dmitry Antipov <dmantipov@yandex.ru>
-    Bluetooth: Fix memory leak in hci_req_sync_complete()
-
-Steven Rostedt (Google) <rostedt@goodmis.org>
-    ring-buffer: Only update pages_touched when a new page is touched
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: Avoid infinite loop trying to resize local TT
-
-Damien Le Moal <dlemoal@kernel.org>
-    ata: libata-scsi: Fix ata_scsi_dev_rescan() error path
-
-Steve French <stfrench@microsoft.com>
-    smb3: fix Open files on server counter going negative
-
-
--------------
-
-Diffstat:
-
- Documentation/admin-guide/hw-vuln/spectre.rst      |  22 +-
- Documentation/admin-guide/kernel-parameters.txt    |  12 +-
- Makefile                                           |   4 +-
- arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi    |  12 +-
- arch/x86/Kconfig                                   |  21 +-
- arch/x86/events/core.c                             |   1 +
- arch/x86/include/asm/apic.h                        |   3 +-
- arch/x86/kernel/apic/apic.c                        |   6 +-
- arch/x86/kernel/cpu/bugs.c                         |  82 ++++----
- arch/x86/kernel/cpu/common.c                       |  48 ++---
- drivers/ata/libata-scsi.c                          |   9 +-
- drivers/gpu/drm/amd/amdgpu/soc21.c                 |  27 ++-
- .../gpu/drm/amd/amdkfd/kfd_device_queue_manager.c  |   1 +
- .../amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c |  19 +-
- .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c   |  12 +-
- drivers/gpu/drm/ast/ast_dp.c                       |   3 +
- drivers/gpu/drm/drm_client_modeset.c               |   3 +-
- drivers/gpu/drm/i915/display/intel_cdclk.c         |   7 +-
- drivers/gpu/drm/i915/display/intel_cdclk.h         |   3 +
- drivers/gpu/drm/i915/display/intel_ddi.c           |   5 +
- drivers/gpu/drm/i915/display/intel_vrr.c           |   7 +
- .../gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c    |   7 +-
- drivers/gpu/drm/qxl/qxl_release.c                  |  50 ++++-
- drivers/iommu/intel/svm.c                          |   2 +-
- drivers/media/cec/core/cec-adap.c                  |  14 --
- drivers/net/dsa/mt7530.c                           | 229 ++++++++++++++++++---
- drivers/net/dsa/mt7530.h                           |   5 +
- drivers/net/ethernet/amazon/ena/ena_com.c          |   2 +-
- drivers/net/ethernet/amazon/ena/ena_netdev.c       |  35 ++--
- drivers/net/ethernet/broadcom/bnxt/bnxt.c          |   2 +
- .../net/ethernet/marvell/octeontx2/af/rvu_nix.c    |  22 +-
- drivers/net/ethernet/mellanox/mlx5/core/en/qos.c   |  33 +--
- drivers/net/ethernet/mellanox/mlx5/core/en/selq.c  |   2 +
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c  |   2 -
- drivers/net/ethernet/mellanox/mlx5/core/fs_core.c  |   3 +-
- drivers/net/ethernet/micrel/ks8851.h               |   3 -
- drivers/net/ethernet/micrel/ks8851_common.c        |  16 +-
- drivers/net/ethernet/micrel/ks8851_par.c           |  11 -
- drivers/net/ethernet/micrel/ks8851_spi.c           |  11 -
- .../net/ethernet/microchip/sparx5/sparx5_port.c    |   4 +-
- drivers/net/geneve.c                               |   4 +-
- drivers/scsi/hisi_sas/hisi_sas_main.c              |   2 +-
- drivers/scsi/qla2xxx/qla_edif.c                    |   2 +-
- drivers/vhost/vhost.c                              |  28 ++-
- fs/btrfs/delayed-inode.c                           |   3 +
- fs/btrfs/qgroup.c                                  |   2 +
- fs/btrfs/transaction.c                             |  17 +-
- fs/smb/client/cached_dir.c                         |   4 +-
- include/linux/dma-fence.h                          |   7 +
- include/linux/irqflags.h                           |   2 +-
- include/linux/u64_stats_sync.h                     |   9 +-
- include/net/addrconf.h                             |   4 +
- include/net/af_unix.h                              |   2 +-
- include/net/bluetooth/bluetooth.h                  |   9 +
- include/net/ip_tunnels.h                           |  33 +++
- io_uring/net.c                                     |   1 +
- kernel/cpu.c                                       |   3 +-
- kernel/kprobes.c                                   |  18 +-
- kernel/power/suspend.c                             |   6 +
- kernel/trace/ring_buffer.c                         |   6 +-
- kernel/trace/trace_events.c                        |   4 +
- net/batman-adv/translation-table.c                 |   2 +-
- net/bluetooth/hci_request.c                        |   4 +-
- net/bluetooth/l2cap_sock.c                         |  52 ++---
- net/bluetooth/sco.c                                |  23 +--
- net/ipv4/netfilter/arp_tables.c                    |   4 +
- net/ipv4/netfilter/ip_tables.c                     |   4 +
- net/ipv4/route.c                                   |   4 +-
- net/ipv6/addrconf.c                                |   7 +-
- net/ipv6/ip6_fib.c                                 |   7 +-
- net/ipv6/netfilter/ip6_tables.c                    |   4 +
- net/openvswitch/conntrack.c                        |   5 +-
- net/unix/af_unix.c                                 |   8 +-
- net/unix/garbage.c                                 |  35 +++-
- net/unix/scm.c                                     |   8 +-
- net/xdp/xsk.c                                      |   2 +
- tools/testing/selftests/timers/posix_timers.c      |   2 +-
- 77 files changed, 715 insertions(+), 382 deletions(-)
 
 
 
