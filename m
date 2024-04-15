@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-39718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 715AB8A5458
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:36:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1798A53B5
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:30:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DF062845F7
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BAB31F223AC
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11BC1E52C;
-	Mon, 15 Apr 2024 14:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9344F78297;
+	Mon, 15 Apr 2024 14:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtRxYWy2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKhestEB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBB9EAC5;
-	Mon, 15 Apr 2024 14:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5043A78281;
+	Mon, 15 Apr 2024 14:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191604; cv=none; b=SEhh8vT2580vN+PKRvyzqbcKe6DLx3ryJNwXvPDOfF5XHvQPGK0Rsf7LvvJd9x5V5JgqH1XxAcjlHWU4D4IjiEQwhYQrbwM/SDRRHgHX/u87OcVDryUyGDiiBjXmmQ1VxREd78AqMMG3BYE+yRB+SeohBDZKwQn1DS1r5u/tA8Y=
+	t=1713191300; cv=none; b=VXWyP+3NdG9uX4YNh+1ve9CBM0VKIC46rDMi5ebxIY/rhnASiZ7uEy7T2L+5oBzJGhIAQPH5PX3bx+BsVP3voZnDTok8bKOuR79zxdD9RSD9lrAzqElAlUMLRnANszYyMwApBlkRLae7qTxpMAEglHkL/PHqnGM6SNVoNrRlryQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191604; c=relaxed/simple;
-	bh=lPdlOqn1JuCfbRvC+ho4L3mNZKXZYy8oBZLz5rhGapw=;
+	s=arc-20240116; t=1713191300; c=relaxed/simple;
+	bh=U+T+sWtXVsb5St6FP4wMnjJ5KD+FrS2jadcBbTvzQq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PpFDFflIv6pBKvYTvVSclMQL+RJSGRO+NpoMGlln+UJyUI+hWpTh9Kergth72QxklIzGFMuGhAWAW/VsiutlkeyOOsZTFLcAh5ZLshA8M25E0eGscVfpzNrgIKUXUJ63SOvCcR+O5FKM53FqqabR6DQZ1afAls2Q2KrAkrGJIkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtRxYWy2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F8DC113CC;
-	Mon, 15 Apr 2024 14:33:23 +0000 (UTC)
+	 MIME-Version; b=brRuRcUMaQaC2oDtmHOAKh70gCY6S8jO3b0x0RaODVTOBmi66aWyt64bZrVZHW5aAtNmDHkqLZyWMk5Tnr/7P2kQG7ldPXCrIpD1jR5w0FfC6ywN3sZ1bhPUC8b012BWnaCDfyDpd7qLff1Le2xEKyF+ZgKHpAB/Rou3xaq5pCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKhestEB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D8DC113CC;
+	Mon, 15 Apr 2024 14:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191604;
-	bh=lPdlOqn1JuCfbRvC+ho4L3mNZKXZYy8oBZLz5rhGapw=;
+	s=korg; t=1713191300;
+	bh=U+T+sWtXVsb5St6FP4wMnjJ5KD+FrS2jadcBbTvzQq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HtRxYWy2kHv/JGJvtqmiPcOsP8vLD92ahKmYqcGx+hYk60wWSRM/Z7D8LXROb6Cei
-	 6ws9ijoONwaz5x+nZa8Xer3x+FHfN3n4xOerW9es9yFXwb9FLtpFUpNontdjYYMewC
-	 kcB6bHFMi9QjTp9ygDr/kDrCZU8RvFdQe3KJPx2w=
+	b=jKhestEBVtOYOpP/MXWfpDXzNLm7fsH1sKgmLPv2FSaosEhXkoEOB5iv02sENiE8W
+	 yva824Rk3dUGamRL1D6QL9Ftywk9Uc8HyLf1Z+0pVE0nVa4ejTGEy0pug6ZFt5qDqk
+	 RnMN0UY18ij3/wLJMQuyYxZu7EvDM6pYbRyBNWUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/122] arm64: dts: imx8-ss-conn: fix usdhc wrong lpcg clock order
+Subject: [PATCH 6.8 091/172] net: sparx5: fix wrong config being used when reconfiguring PCS
 Date: Mon, 15 Apr 2024 16:19:50 +0200
-Message-ID: <20240415141954.129329042@linuxfoundation.org>
+Message-ID: <20240415142003.159350716@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Daniel Machon <daniel.machon@microchip.com>
 
-[ Upstream commit c6ddd6e7b166532a0816825442ff60f70aed9647 ]
+[ Upstream commit 33623113a48ea906f1955cbf71094f6aa4462e8f ]
 
-The actual clock show wrong frequency:
+The wrong port config is being used if the PCS is reconfigured. Fix this
+by correctly using the new config instead of the old one.
 
-   echo on >/sys/devices/platform/bus\@5b000000/5b010000.mmc/power/control
-   cat /sys/kernel/debug/mmc0/ios
-
-   clock:          200000000 Hz
-   actual clock:   166000000 Hz
-                   ^^^^^^^^^
-   .....
-
-According to
-
-sdhc0_lpcg: clock-controller@5b200000 {
-                compatible = "fsl,imx8qxp-lpcg";
-                reg = <0x5b200000 0x10000>;
-                #clock-cells = <1>;
-                clocks = <&clk IMX_SC_R_SDHC_0 IMX_SC_PM_CLK_PER>,
-                         <&conn_ipg_clk>, <&conn_axi_clk>;
-                clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>,
-                                <IMX_LPCG_CLK_5>;
-                clock-output-names = "sdhc0_lpcg_per_clk",
-                                     "sdhc0_lpcg_ipg_clk",
-                                     "sdhc0_lpcg_ahb_clk";
-                power-domains = <&pd IMX_SC_R_SDHC_0>;
-        }
-
-"per_clk" should be IMX_LPCG_CLK_0 instead of IMX_LPCG_CLK_5.
-
-After correct clocks order:
-
-   echo on >/sys/devices/platform/bus\@5b000000/5b010000.mmc/power/control
-   cat /sys/kernel/debug/mmc0/ios
-
-   clock:          200000000 Hz
-   actual clock:   198000000 Hz
-                   ^^^^^^^^
-   ...
-
-Fixes: 16c4ea7501b1 ("arm64: dts: imx8: switch to new lpcg clock binding")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 946e7fd5053a ("net: sparx5: add port module support")
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20240409-link-mode-reconfiguration-fix-v2-1-db6a507f3627@microchip.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/microchip/sparx5/sparx5_port.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
-index fc1a5d34382b7..5f151ae78586e 100644
---- a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
-@@ -67,8 +67,8 @@ usdhc1: mmc@5b010000 {
- 		interrupts = <GIC_SPI 232 IRQ_TYPE_LEVEL_HIGH>;
- 		reg = <0x5b010000 0x10000>;
- 		clocks = <&sdhc0_lpcg IMX_LPCG_CLK_4>,
--			 <&sdhc0_lpcg IMX_LPCG_CLK_0>,
--			 <&sdhc0_lpcg IMX_LPCG_CLK_5>;
-+			 <&sdhc0_lpcg IMX_LPCG_CLK_5>,
-+			 <&sdhc0_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "ahb", "per";
- 		power-domains = <&pd IMX_SC_R_SDHC_0>;
- 		status = "disabled";
-@@ -78,8 +78,8 @@ usdhc2: mmc@5b020000 {
- 		interrupts = <GIC_SPI 233 IRQ_TYPE_LEVEL_HIGH>;
- 		reg = <0x5b020000 0x10000>;
- 		clocks = <&sdhc1_lpcg IMX_LPCG_CLK_4>,
--			 <&sdhc1_lpcg IMX_LPCG_CLK_0>,
--			 <&sdhc1_lpcg IMX_LPCG_CLK_5>;
-+			 <&sdhc1_lpcg IMX_LPCG_CLK_5>,
-+			 <&sdhc1_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "ahb", "per";
- 		power-domains = <&pd IMX_SC_R_SDHC_1>;
- 		fsl,tuning-start-tap = <20>;
-@@ -91,8 +91,8 @@ usdhc3: mmc@5b030000 {
- 		interrupts = <GIC_SPI 234 IRQ_TYPE_LEVEL_HIGH>;
- 		reg = <0x5b030000 0x10000>;
- 		clocks = <&sdhc2_lpcg IMX_LPCG_CLK_4>,
--			 <&sdhc2_lpcg IMX_LPCG_CLK_0>,
--			 <&sdhc2_lpcg IMX_LPCG_CLK_5>;
-+			 <&sdhc2_lpcg IMX_LPCG_CLK_5>,
-+			 <&sdhc2_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "ahb", "per";
- 		power-domains = <&pd IMX_SC_R_SDHC_2>;
- 		status = "disabled";
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
+index 3a1b1a1f5a195..60dd2fd603a85 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
+@@ -731,7 +731,7 @@ static int sparx5_port_pcs_low_set(struct sparx5 *sparx5,
+ 	bool sgmii = false, inband_aneg = false;
+ 	int err;
+ 
+-	if (port->conf.inband) {
++	if (conf->inband) {
+ 		if (conf->portmode == PHY_INTERFACE_MODE_SGMII ||
+ 		    conf->portmode == PHY_INTERFACE_MODE_QSGMII)
+ 			inband_aneg = true; /* Cisco-SGMII in-band-aneg */
+@@ -948,7 +948,7 @@ int sparx5_port_pcs_set(struct sparx5 *sparx5,
+ 	if (err)
+ 		return -EINVAL;
+ 
+-	if (port->conf.inband) {
++	if (conf->inband) {
+ 		/* Enable/disable 1G counters in ASM */
+ 		spx5_rmw(ASM_PORT_CFG_CSC_STAT_DIS_SET(high_speed_dev),
+ 			 ASM_PORT_CFG_CSC_STAT_DIS,
 -- 
 2.43.0
 
