@@ -1,236 +1,272 @@
-Return-Path: <stable+bounces-39943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B458A563E
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 17:21:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE4F8A5699
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 17:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BB9D1C226FF
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 15:21:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E0211C2140A
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 15:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AFAF78C83;
-	Mon, 15 Apr 2024 15:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540822837D;
+	Mon, 15 Apr 2024 15:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b="YIpnWYr3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QboeZ6Z8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout.efficios.com (smtpout.efficios.com [167.114.26.122])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E081860EF9;
-	Mon, 15 Apr 2024 15:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.114.26.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D841D52B
+	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 15:38:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713194488; cv=none; b=EEg40nsbpQwFR1xkLw7nklkMGxmrBJTk5Vcq7bPR5CCicHbI73o8gn3ZYNtLnyFs6wo03EhW2Vbosz7MINTiykgqpSQQOOWKKElxMERYtB5nko4ToaxzuGmqXamJi53qrz/qTxAkG20JvCK+u+dP5KwwL0ARxgySaM4nBt7iECs=
+	t=1713195527; cv=none; b=GtrCfsuPSW1Ek9bN96NKHXVQzDpOLLip1k+fHJ90vS6eRANs3yzXa5/oxjOiYWtKCzsjsIf8XFr59DDu/w4/iINSpqM4Ql1LJn6MAnX5VCzAT6WhI2PbAMgKr392pTQC1PEk7NhlhwGn/LOVYzeO5w+KC5KsmurHbStpkbrVs5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713194488; c=relaxed/simple;
-	bh=osgSadJZvQn1wrb//TYw1z/uIXekqzai4TYartnsTww=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZCiwJMpkdMrl4kSo0Pq/WTw8k3KwtnRxZNo2lXySPg+jvKyNdz5/Yy9HhpVZwBvavNQur/MjcKWfjzFUsn2DDwEphQdkXI6bUvlU7Xvnq3+EOOqKIb6rFfCx5vBOvmy3w6cVDHO94+31/vTrTtOQ/Y4efPUDGf59Qb/7wxYpgP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com; spf=pass smtp.mailfrom=efficios.com; dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b=YIpnWYr3; arc=none smtp.client-ip=167.114.26.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=efficios.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
-	s=smtpout1; t=1713194478;
-	bh=osgSadJZvQn1wrb//TYw1z/uIXekqzai4TYartnsTww=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIpnWYr3OBNaVcOtObbIoF+WFBDFoEQ/+FXjlJGb5vZB+HrgGpmxY8qVUM3yt7rbK
-	 pqGEs1MaSgpWZeTEHe7l9yu17qAlGcj5gxBTDhZZ4LLh/htXEt0TMDTv+04thWG6KA
-	 e/rZHM8+gRKKta041QgyUJBZ6PCTJyuRk0rI3Kscx8JaOGTMnlVyCCYLAEcsjbY+8Z
-	 PXJtu1qOkAqYXDYv+HAUIA+d+DjAeGzD+fSsD6slc5Lqnsq+fP0NRGuMC6qvhllBEx
-	 kFI0glyI2mjasoAdAkLHJ5EbBqgqvHT3QtrW/rDNII+MhcDO03FlLwq8JNwPDHaFpp
-	 K1ISv5JuAFfPg==
-Received: from thinkos.internal.efficios.com (192-222-143-198.qc.cable.ebox.net [192.222.143.198])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4VJ9qf0ksTzvSD;
-	Mon, 15 Apr 2024 11:21:18 -0400 (EDT)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Cc: linux-kernel@vger.kernel.org,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Daniel Bristot de Oliveira <bristot@redhat.com>,
-	Valentin Schneider <vschneid@redhat.com>,
-	"levi . yun" <yeoreum.yun@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Aaron Lu <aaron.lu@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	x86@kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] sched: Add missing memory barrier in switch_mm_cid
-Date: Mon, 15 Apr 2024 11:21:13 -0400
-Message-Id: <20240415152114.59122-2-mathieu.desnoyers@efficios.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240415152114.59122-1-mathieu.desnoyers@efficios.com>
-References: <20240415152114.59122-1-mathieu.desnoyers@efficios.com>
+	s=arc-20240116; t=1713195527; c=relaxed/simple;
+	bh=q/4NDixpCEBXCWRWjFErXXeUJ48qVAdJwfCgcUh2Dls=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ifgJT5ERE5zX61eJFRkKlei+GDFEdjYA9MRj2t/zH7rLYlpRGQXoZB7QmQ3ZsDdZp+qbxtEmaDuO2HEwbRQZtFB/C3ykWGoPtvEWtWWv1n++YMS+Pzpc6ZC4o5y19Q+wReXAjGf4yr+cK4oOwBHxgBC/H7LwqBjIaB/+bO35kSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QboeZ6Z8; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713195525; x=1744731525;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=q/4NDixpCEBXCWRWjFErXXeUJ48qVAdJwfCgcUh2Dls=;
+  b=QboeZ6Z8tr+Ac/1kpPfS7ghS+tdZF0EySUGl5rS5QhwlzmreG/sUgAuo
+   pjeM5YcwQLC4/NqKH5NJSV1UaSdBOfMMXoFSVsOvVWnURqiBUVXseqXy3
+   1rcp6oYQZ4dgmsE9acgvf+LadtN1SJjj9dyezSRh34CVVJ25+GRJenG7/
+   RtFsC/cuZ/wNL1W/ML4U44qcNKhTJMQ/9uF3LYcAP2B1362D+MkHzAm+t
+   woP5rAw5V6feOC3n6+M/YMhHEk00NgvpDtKJ/35ryVcow0M804rL3t9cj
+   KEsidxiYDYDE34VgvgBQ8aWWQfBGVUZO0fmtI/RtAumKMq6OiJXl0lHpM
+   Q==;
+X-CSE-ConnectionGUID: 1/YmgaG+SZaRmw4SJRDfwQ==
+X-CSE-MsgGUID: +xaEqjeQT62HAfJya1icrw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="33977984"
+X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
+   d="scan'208";a="33977984"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 08:38:45 -0700
+X-CSE-ConnectionGUID: 7aJvdKF/S/CxsZuxAqGqVg==
+X-CSE-MsgGUID: C7PbmdVKRmu2Ub+LxlhkjQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
+   d="scan'208";a="26363070"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO jkrzyszt-mobl2.intranet) ([10.213.20.116])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 08:38:42 -0700
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH 6.6.y v2] drm/i915/vma: Fix UAF on destroy against retire race
+Date: Mon, 15 Apr 2024 17:37:45 +0200
+Message-ID: <20240415153817.117143-2-janusz.krzysztofik@linux.intel.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <2024033042-audio-pacemaker-1b50@gregkh>
+References: <2024033042-audio-pacemaker-1b50@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Many architectures' switch_mm() (e.g. arm64) do not have an smp_mb()
-which the core scheduler code has depended upon since commit:
+Object debugging tools were sporadically reporting illegal attempts to
+free a still active i915 VMA object when parking a GT believed to be idle.
 
-    commit 223baf9d17f25 ("sched: Fix performance regression introduced by mm_cid")
+[161.359441] ODEBUG: free active (active state 0) object: ffff88811643b958 object type: i915_active hint: __i915_vma_active+0x0/0x50 [i915]
+[161.360082] WARNING: CPU: 5 PID: 276 at lib/debugobjects.c:514 debug_print_object+0x80/0xb0
+...
+[161.360304] CPU: 5 PID: 276 Comm: kworker/5:2 Not tainted 6.5.0-rc1-CI_DRM_13375-g003f860e5577+ #1
+[161.360314] Hardware name: Intel Corporation Rocket Lake Client Platform/RocketLake S UDIMM 6L RVP, BIOS RKLSFWI1.R00.3173.A03.2204210138 04/21/2022
+[161.360322] Workqueue: i915-unordered __intel_wakeref_put_work [i915]
+[161.360592] RIP: 0010:debug_print_object+0x80/0xb0
+...
+[161.361347] debug_object_free+0xeb/0x110
+[161.361362] i915_active_fini+0x14/0x130 [i915]
+[161.361866] release_references+0xfe/0x1f0 [i915]
+[161.362543] i915_vma_parked+0x1db/0x380 [i915]
+[161.363129] __gt_park+0x121/0x230 [i915]
+[161.363515] ____intel_wakeref_put_last+0x1f/0x70 [i915]
 
-If switch_mm() doesn't call smp_mb(), sched_mm_cid_remote_clear() can
-unset the actively used cid when it fails to observe active task after it
-sets lazy_put.
+That has been tracked down to be happening when another thread is
+deactivating the VMA inside __active_retire() helper, after the VMA's
+active counter has been already decremented to 0, but before deactivation
+of the VMA's object is reported to the object debugging tool.
 
-There *is* a memory barrier between storing to rq->curr and _return to
-userspace_ (as required by membarrier), but the rseq mm_cid has stricter
-requirements: the barrier needs to be issued between store to rq->curr
-and switch_mm_cid(), which happens earlier than:
+We could prevent from that race by serializing i915_active_fini() with
+__active_retire() via ref->tree_lock, but that wouldn't stop the VMA from
+being used, e.g. from __i915_vma_retire() called at the end of
+__active_retire(), after that VMA has been already freed by a concurrent
+i915_vma_destroy() on return from the i915_active_fini().  Then, we should
+rather fix the issue at the VMA level, not in i915_active.
 
-- spin_unlock(),
-- switch_to().
+Since __i915_vma_parked() is called from __gt_park() on last put of the
+GT's wakeref, the issue could be addressed by holding the GT wakeref long
+enough for __active_retire() to complete before that wakeref is released
+and the GT parked.
 
-So it's fine when the architecture switch_mm() happens to have that
-barrier already, but less so when the architecture only provides the
-full barrier in switch_to() or spin_unlock().
+I believe the issue was introduced by commit d93939730347 ("drm/i915:
+Remove the vma refcount") which moved a call to i915_active_fini() from
+a dropped i915_vma_release(), called on last put of the removed VMA kref,
+to i915_vma_parked() processing path called on last put of a GT wakeref.
+However, its visibility to the object debugging tool was suppressed by a
+bug in i915_active that was fixed two weeks later with commit e92eb246feb9
+("drm/i915/active: Fix missing debug object activation").
 
-It is a bug in the rseq switch_mm_cid() implementation. All architectures
-that don't have memory barriers in switch_mm(), but rather have the full
-barrier either in finish_lock_switch() or switch_to() have them too late
-for the needs of switch_mm_cid().
+A VMA associated with a request doesn't acquire a GT wakeref by itself.
+Instead, it depends on a wakeref held directly by the request's active
+intel_context for a GT associated with its VM, and indirectly on that
+intel_context's engine wakeref if the engine belongs to the same GT as the
+VMA's VM.  Those wakerefs are released asynchronously to VMA deactivation.
 
-Introduce a new smp_mb__after_switch_mm(), defined as smp_mb() in the
-generic barrier.h header, and use it in switch_mm_cid() for scheduler
-transitions where switch_mm() is expected to provide a memory barrier.
+Fix the issue by getting a wakeref for the VMA's GT when activating it,
+and putting that wakeref only after the VMA is deactivated.  However,
+exclude global GTT from that processing path, otherwise the GPU never goes
+idle.  Since __i915_vma_retire() may be called from atomic contexts, use
+async variant of wakeref put.  Also, to avoid circular locking dependency,
+take care of acquiring the wakeref before VM mutex when both are needed.
 
-Architectures can override smp_mb__after_switch_mm() if their
-switch_mm() implementation provides an implicit memory barrier.
-Override it with a no-op on x86 which implicitly provide this memory
-barrier by writing to CR3.
+v7: Add inline comments with justifications for:
+    - using untracked variants of intel_gt_pm_get/put() (Nirmoy),
+    - using async variant of _put(),
+    - not getting the wakeref in case of a global GTT,
+    - always getting the first wakeref outside vm->mutex.
+v6: Since __i915_vma_active/retire() callbacks are not serialized, storing
+    a wakeref tracking handle inside struct i915_vma is not safe, and
+    there is no other good place for that.  Use untracked variants of
+    intel_gt_pm_get/put_async().
+v5: Replace "tile" with "GT" across commit description (Rodrigo),
+  - avoid mentioning multi-GT case in commit description (Rodrigo),
+  - explain why we need to take a temporary wakeref unconditionally inside
+    i915_vma_pin_ww() (Rodrigo).
+v4: Refresh on top of commit 5e4e06e4087e ("drm/i915: Track gt pm
+    wakerefs") (Andi),
+  - for more easy backporting, split out removal of former insufficient
+    workarounds and move them to separate patches (Nirmoy).
+  - clean up commit message and description a bit.
+v3: Identify root cause more precisely, and a commit to blame,
+  - identify and drop former workarounds,
+  - update commit message and description.
+v2: Get the wakeref before VM mutex to avoid circular locking dependency,
+  - drop questionable Fixes: tag.
 
-Link: https://lore.kernel.org/lkml/20240305145335.2696125-1-yeoreum.yun@arm.com/
-Reported-by: levi.yun <yeoreum.yun@arm.com>
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com> # for arm64
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com> # for x86
-Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
-Cc: <stable@vger.kernel.org> # 6.4.x
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Ben Segall <bsegall@google.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Cc: levi.yun <yeoreum.yun@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Aaron Lu <aaron.lu@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-arch@vger.kernel.org
-Cc: linux-mm@kvack.org
-Cc: x86@kernel.org
+v6.6 backport: Downgrade to non-tracked version of GT PM wakeref API.
+
+Fixes: d93939730347 ("drm/i915: Remove the vma refcount")
+Closes: https://gitlab.freedesktop.org/drm/intel/issues/8875
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: stable@vger.kernel.org # v5.19+
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240305143747.335367-6-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit f3c71b2ded5c4367144a810ef25f998fd1d6c381)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit 0e45882ca829b26b915162e8e86dbb1095768e9e)
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- arch/x86/include/asm/barrier.h |  3 +++
- include/asm-generic/barrier.h  |  8 ++++++++
- kernel/sched/sched.h           | 20 ++++++++++++++------
- 3 files changed, 25 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/i915/i915_vma.c | 42 +++++++++++++++++++++++++++------
+ 1 file changed, 35 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/include/asm/barrier.h b/arch/x86/include/asm/barrier.h
-index fe1e7e3cc844..63bdc6b85219 100644
---- a/arch/x86/include/asm/barrier.h
-+++ b/arch/x86/include/asm/barrier.h
-@@ -79,6 +79,9 @@ do {									\
- #define __smp_mb__before_atomic()	do { } while (0)
- #define __smp_mb__after_atomic()	do { } while (0)
+diff --git a/drivers/gpu/drm/i915/i915_vma.c b/drivers/gpu/drm/i915/i915_vma.c
+index 6f180ee138531..46e4a45e3c72a 100644
+--- a/drivers/gpu/drm/i915/i915_vma.c
++++ b/drivers/gpu/drm/i915/i915_vma.c
+@@ -33,6 +33,7 @@
+ #include "gt/intel_engine.h"
+ #include "gt/intel_engine_heartbeat.h"
+ #include "gt/intel_gt.h"
++#include "gt/intel_gt_pm.h"
+ #include "gt/intel_gt_requests.h"
+ #include "gt/intel_tlb.h"
  
-+/* Writing to CR3 provides a full memory barrier in switch_mm(). */
-+#define smp_mb__after_switch_mm()	do { } while (0)
+@@ -102,12 +103,34 @@ static inline struct i915_vma *active_to_vma(struct i915_active *ref)
+ 
+ static int __i915_vma_active(struct i915_active *ref)
+ {
+-	return i915_vma_tryget(active_to_vma(ref)) ? 0 : -ENOENT;
++	struct i915_vma *vma = active_to_vma(ref);
 +
- #include <asm-generic/barrier.h>
- 
- #endif /* _ASM_X86_BARRIER_H */
-diff --git a/include/asm-generic/barrier.h b/include/asm-generic/barrier.h
-index 0c0695763bea..dc32b96140c1 100644
---- a/include/asm-generic/barrier.h
-+++ b/include/asm-generic/barrier.h
-@@ -294,5 +294,13 @@ do {									\
- #define io_stop_wc() do { } while (0)
- #endif
- 
-+/*
-+ * Architectures that guarantee an implicit smp_mb() in switch_mm()
-+ * can override smp_mb__after_switch_mm.
-+ */
-+#ifndef smp_mb__after_switch_mm
-+#define smp_mb__after_switch_mm()	smp_mb()
-+#endif
++	if (!i915_vma_tryget(vma))
++		return -ENOENT;
 +
- #endif /* !__ASSEMBLY__ */
- #endif /* __ASM_GENERIC_BARRIER_H */
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index d2242679239e..d2895d264196 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -79,6 +79,8 @@
- # include <asm/paravirt_api_clock.h>
- #endif
- 
-+#include <asm/barrier.h>
++	/*
++	 * Exclude global GTT VMA from holding a GT wakeref
++	 * while active, otherwise GPU never goes idle.
++	 */
++	if (!i915_vma_is_ggtt(vma))
++		intel_gt_pm_get(vma->vm->gt);
 +
- #include "cpupri.h"
- #include "cpudeadline.h"
++	return 0;
+ }
  
-@@ -3445,13 +3447,19 @@ static inline void switch_mm_cid(struct rq *rq,
- 		 * between rq->curr store and load of {prev,next}->mm->pcpu_cid[cpu].
- 		 * Provide it here.
- 		 */
--		if (!prev->mm)                          // from kernel
-+		if (!prev->mm) {                        // from kernel
- 			smp_mb();
--		/*
--		 * user -> user transition guarantees a memory barrier through
--		 * switch_mm() when current->mm changes. If current->mm is
--		 * unchanged, no barrier is needed.
--		 */
-+		} else {				// from user
-+			/*
-+			 * user -> user transition relies on an implicit
-+			 * memory barrier in switch_mm() when
-+			 * current->mm changes. If the architecture
-+			 * switch_mm() does not have an implicit memory
-+			 * barrier, it is emitted here.  If current->mm
-+			 * is unchanged, no barrier is needed.
-+			 */
-+			smp_mb__after_switch_mm();
-+		}
- 	}
- 	if (prev->mm_cid_active) {
- 		mm_cid_snapshot_time(rq, prev->mm);
+ static void __i915_vma_retire(struct i915_active *ref)
+ {
+-	i915_vma_put(active_to_vma(ref));
++	struct i915_vma *vma = active_to_vma(ref);
++
++	if (!i915_vma_is_ggtt(vma)) {
++		/*
++		 * Since we can be called from atomic contexts,
++		 * use an async variant of intel_gt_pm_put().
++		 */
++		intel_gt_pm_put_async(vma->vm->gt);
++	}
++
++	i915_vma_put(vma);
+ }
+ 
+ static struct i915_vma *
+@@ -1403,7 +1426,7 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
+ 	struct i915_vma_work *work = NULL;
+ 	struct dma_fence *moving = NULL;
+ 	struct i915_vma_resource *vma_res = NULL;
+-	intel_wakeref_t wakeref = 0;
++	intel_wakeref_t wakeref;
+ 	unsigned int bound;
+ 	int err;
+ 
+@@ -1423,8 +1446,14 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
+ 	if (err)
+ 		return err;
+ 
+-	if (flags & PIN_GLOBAL)
+-		wakeref = intel_runtime_pm_get(&vma->vm->i915->runtime_pm);
++	/*
++	 * In case of a global GTT, we must hold a runtime-pm wakeref
++	 * while global PTEs are updated.  In other cases, we hold
++	 * the rpm reference while the VMA is active.  Since runtime
++	 * resume may require allocations, which are forbidden inside
++	 * vm->mutex, get the first rpm wakeref outside of the mutex.
++	 */
++	wakeref = intel_runtime_pm_get(&vma->vm->i915->runtime_pm);
+ 
+ 	if (flags & vma->vm->bind_async_flags) {
+ 		/* lock VM */
+@@ -1560,8 +1589,7 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
+ 	if (work)
+ 		dma_fence_work_commit_imm(&work->base);
+ err_rpm:
+-	if (wakeref)
+-		intel_runtime_pm_put(&vma->vm->i915->runtime_pm, wakeref);
++	intel_runtime_pm_put(&vma->vm->i915->runtime_pm, wakeref);
+ 
+ 	if (moving)
+ 		dma_fence_put(moving);
 -- 
-2.39.2
+2.44.0
 
 
