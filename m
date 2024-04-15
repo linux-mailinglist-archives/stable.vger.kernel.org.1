@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-39765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 857218A54A2
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:38:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6C08A53D2
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:31:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B70D31C22184
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:38:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27A5F1F21B4C
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC387F46B;
-	Mon, 15 Apr 2024 14:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3645D7A705;
+	Mon, 15 Apr 2024 14:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpAyyfNS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZZ3WZxS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A25C7EF09;
-	Mon, 15 Apr 2024 14:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEE174C02;
+	Mon, 15 Apr 2024 14:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191746; cv=none; b=EUgN5W5CTllk6KV7sn8cKkPqwnSfSQXP+RhdBrszxvDwouvkAPVBPBe0iXLoty88LoiBSRWHVqvK43yqs09uI6KzINT0uF4UUXK8f8W8gck30WrV0kQ7VXXPxX6K8iGk50L+UQW72+nwTl3dggXXGfp/f/1fEgZ6CL18ZBf/q9Q=
+	t=1713191348; cv=none; b=UQeK3TXXhoR+UtA4vSS4TCWmEjwyLTYMuUX+1C4mDRhQkG9kCGlOysePLj6LsEVb1vgFo1voKocZStnjtKTtW+QowIJkgZdNiJcT/KgeJuZg7ICGupk9ZnPRKAwgumwhuQZgm18B7iZzRnwiB2bd2kgGAqkQpPgSwgAJ75mUqM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191746; c=relaxed/simple;
-	bh=OOExtlWosFgu+Cqz9+yXwg7XTwj1Uju3mlHO9jcFm6g=;
+	s=arc-20240116; t=1713191348; c=relaxed/simple;
+	bh=xYTcnyW/pxUxWh2ETTAhBp6Six7iKFS2ubLFXIfhPhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RCsGKJcWwbgWx2tT0dXBOSAGzlb4iK1dcbvUt/8DD/kq0OpJmjf371Ae8WQc5qHesK61BfJqno8i61roHRjM9fpLUD/ZLp1qmRZQ2icPiSm5Z2ZJ8BdmpFWSsVXQPgFVNZI/R08nAni2wIuz4G85+jf6U6jALfqqywMjDumP3hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpAyyfNS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9B7C113CC;
-	Mon, 15 Apr 2024 14:35:45 +0000 (UTC)
+	 MIME-Version; b=LJeZrLelX+efxHLz5xCPrrFbV6a8IwccKekscX0LSECgj5N5ugHMFulf8ZtHajBB6fzVpagEOI10l1nqxl1GgyWkT2wqw98V0nBOPI+jlTfvoQGzo9e3ZFVnOH+lQvFqlPiNi6I4SWK0l71LP+K3jp6PXB7pL9jKGvx6YuSyMqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZZ3WZxS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6074BC113CC;
+	Mon, 15 Apr 2024 14:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191746;
-	bh=OOExtlWosFgu+Cqz9+yXwg7XTwj1Uju3mlHO9jcFm6g=;
+	s=korg; t=1713191347;
+	bh=xYTcnyW/pxUxWh2ETTAhBp6Six7iKFS2ubLFXIfhPhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lpAyyfNS23fRFROWXs12eKpciFaydb1oOEixvb1QNF3GY6uEZ83ZjnuRvrUNWpaT3
-	 OaskL2583ds4xXKt7JDFhBFGGh4AjVJOhK1Rgx4pp9gOQWCFxnj7tTEE6EsqBarlOe
-	 A7JPiVT/0dSjOUrS2hccgPJXxyWamsBjIJS9632c=
+	b=VZZ3WZxSUMAEao38OadvpUlZAwyD91K+cD7GH2pbmAR4Gipi7rmxzHKRlwKy3Fnsa
+	 urHsokWCbn1pCPGaI/vSlrOP8XxR9RJ3TFJCBt2z5yTIfRwQK2Zguf0lYBRUFZXpKo
+	 oVieYcbmRB6C9uts+3fjdrH46kLYKjcqctY4a+Z0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/122] ipv6: fib: hide unused pn variable
-Date: Mon, 15 Apr 2024 16:20:10 +0200
-Message-ID: <20240415141954.717886277@linuxfoundation.org>
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.8 112/172] io_uring/net: restore msg_control on sendzc retry
+Date: Mon, 15 Apr 2024 16:20:11 +0200
+Message-ID: <20240415142003.797515373@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 74043489fcb5e5ca4074133582b5b8011b67f9e7 ]
+commit 4fe82aedeb8a8cb09bfa60f55ab57b5c10a74ac4 upstream.
 
-When CONFIG_IPV6_SUBTREES is disabled, the only user is hidden, causing
-a 'make W=1' warning:
+cac9e4418f4cb ("io_uring/net: save msghdr->msg_control for retries")
+reinstatiates msg_control before every __sys_sendmsg_sock(), since the
+function can overwrite the value in msghdr. We need to do same for
+zerocopy sendmsg.
 
-net/ipv6/ip6_fib.c: In function 'fib6_add':
-net/ipv6/ip6_fib.c:1388:32: error: variable 'pn' set but not used [-Werror=unused-but-set-variable]
-
-Add another #ifdef around the variable declaration, matching the other
-uses in this file.
-
-Fixes: 66729e18df08 ("[IPV6] ROUTE: Make sure we have fn->leaf when adding a node on subtree.")
-Link: https://lore.kernel.org/netdev/20240322131746.904943-1-arnd@kernel.org/
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240408074219.3030256-1-arnd@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 493108d95f146 ("io_uring/net: zerocopy sendmsg")
+Link: https://github.com/axboe/liburing/issues/1067
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/cc1d5d9df0576fa66ddad4420d240a98a020b267.1712596179.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_fib.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ io_uring/net.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index 54294f6a8ec51..8184076a3924e 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -1375,7 +1375,10 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
- 	     struct nl_info *info, struct netlink_ext_ack *extack)
- {
- 	struct fib6_table *table = rt->fib6_table;
--	struct fib6_node *fn, *pn = NULL;
-+	struct fib6_node *fn;
-+#ifdef CONFIG_IPV6_SUBTREES
-+	struct fib6_node *pn = NULL;
-+#endif
- 	int err = -ENOMEM;
- 	int allow_create = 1;
- 	int replace_required = 0;
-@@ -1399,9 +1402,9 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
- 		goto out;
- 	}
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1255,6 +1255,7 @@ int io_sendmsg_zc(struct io_kiocb *req,
  
-+#ifdef CONFIG_IPV6_SUBTREES
- 	pn = fn;
- 
--#ifdef CONFIG_IPV6_SUBTREES
- 	if (rt->fib6_src.plen) {
- 		struct fib6_node *sn;
- 
--- 
-2.43.0
-
+ 	if (req_has_async_data(req)) {
+ 		kmsg = req->async_data;
++		kmsg->msg.msg_control_user = sr->msg_control;
+ 	} else {
+ 		ret = io_sendmsg_copy_hdr(req, &iomsg);
+ 		if (ret)
 
 
 
