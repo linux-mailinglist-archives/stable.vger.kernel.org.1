@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-39810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891C28A54DB
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC238A5575
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:44:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43A6A282715
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD52C28163B
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53B381AA7;
-	Mon, 15 Apr 2024 14:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0B674E3A;
+	Mon, 15 Apr 2024 14:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXrLeC5r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRWR3wqj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839B881205;
-	Mon, 15 Apr 2024 14:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1167D2119;
+	Mon, 15 Apr 2024 14:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191882; cv=none; b=swzgxWSbWSntPFtm3S/8A3mfDtxybT6nN4RfWQMmmGsjM6Rq3QU69rkNTS/KOoEKj+rlVuJszgyz1TygaiPxJ3GbRhHcJGyKcFXu9P1b1Xx6BDCcV8/pEQ3FH8o7BlW7q91tKitK/jOYNN/YDQrdDi/9nFU26Pw7FS41p1Qxe80=
+	t=1713192266; cv=none; b=Q977soVpTLskpYTITd2nTNPO9zmmvuto5rNHyzDJyw8GEs2yL3mSg/HSKKyqomOBDSOMOHHJatdPtJtniB9bOc7mf7h6dlcJ7DBGFq7l08XaY+La46ndhJ+DP2ci+C3cUIWRgR2aOcdVTLS7JvGwO4XVI0KZbOpW5tE+GhDiKBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191882; c=relaxed/simple;
-	bh=QsswlKDAJaHHMCmIewTtP6mHWc1k7lTJJ2kWft2i3JI=;
+	s=arc-20240116; t=1713192266; c=relaxed/simple;
+	bh=pdLEyCoCScGeAyToH6gUs1Bw6MK6Be6x0ImtGeAbNKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fiVuDOyufW4XuS7cT6AfD1uZ93/xUNetXv9g14Dqsjh8ypnUkdWGO+lv/+0sMefaDo/Bh5GSstUhg8RzhDvlzIdzAbvDR4krwqfIsBYvNT11p9r10eh7xdjtVBS+cL2+4ykLnsTg/Ss/MVt/JJjaYbzJrpBZaTZLioHMm1c/FVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXrLeC5r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E5BC113CC;
-	Mon, 15 Apr 2024 14:38:01 +0000 (UTC)
+	 MIME-Version; b=fygjQqTMTtoE4CI2yxd5YcFq6kcvEZxX9sSEiUGyc5pbOxSxR34zqVREM/zcId1sMDhlSHxkpC8h1bfu+0pSloWlgGgcUWw3zHZ0Gpe27QcAbFEZGA5AV9kzE1A/37QptC/KoRWwL81JwoomHm9jQzMMOdQYboKlABGhKVTygqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRWR3wqj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8419FC113CC;
+	Mon, 15 Apr 2024 14:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191882;
-	bh=QsswlKDAJaHHMCmIewTtP6mHWc1k7lTJJ2kWft2i3JI=;
+	s=korg; t=1713192265;
+	bh=pdLEyCoCScGeAyToH6gUs1Bw6MK6Be6x0ImtGeAbNKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXrLeC5rQtx/KpPuXFgrN34WpNqZ0irjqmw9N+26pQ3QY/q+28Mbtx5G2nzMok+rq
-	 bHMwrd5I7CX4jHWc3MOCsIqg1bqRdBOoiiYoflQPhbGlUw8CfYM5xT5C6HYZUlWpYW
-	 fcMJ7k2eMdtBU4x6iLIzBFO3i9tE1rbJh5AiOJhk=
+	b=PRWR3wqjzsxXqxnspGc8iR+rJ/BNxUUYKtIoo3rLu3TdrETMfdApQvMYQWhe8ztwI
+	 Z/5xA9Uf0tt772lvcUd5XMOAWMciqo35Iz5Ay+JDc/9rPeFXAUjc1WV5DC2vBsK5u5
+	 L4licw2lJVcjSU56n3TtQ+16faV/+YuLZRpSR/w8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Srinivas <vidya.srinivas@intel.com>,
-	Vandita Kulkarni <vandita.kulkarni@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.6 116/122] drm/i915: Disable port sync when bigjoiner is used
+	Geetha sowjanya <gakula@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 14/45] octeontx2-af: Fix NIX SQ mode and BP config
 Date: Mon, 15 Apr 2024 16:21:21 +0200
-Message-ID: <20240415141956.851212531@linuxfoundation.org>
+Message-ID: <20240415141942.670242923@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
+References: <20240415141942.235939111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Geetha sowjanya <gakula@marvell.com>
 
-commit 0653d501409eeb9f1deb7e4c12e4d0d2c9f1cba1 upstream.
+[ Upstream commit faf23006185e777db18912685922c5ddb2df383f ]
 
-The current modeset sequence can't handle port sync and bigjoiner
-at the same time. Refuse port sync when bigjoiner is needed,
-at least until we fix the modeset sequence.
+NIX SQ mode and link backpressure configuration is required for
+all platforms. But in current driver this code is wrongly placed
+under specific platform check. This patch fixes the issue by
+moving the code out of platform check.
 
-v2: Add a FIXME (Vandite)
-
-Cc: stable@vger.kernel.org
-Tested-by: Vidya Srinivas <vidya.srinivas@intel.com>
-Reviewed-by: Vandita Kulkarni <vandita.kulkarni@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240404213441.17637-4-ville.syrjala@linux.intel.com
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-(cherry picked from commit b37e1347b991459c38c56ec2476087854a4f720b)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5d9b976d4480 ("octeontx2-af: Support fixed transmit scheduler topology")
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Link: https://lore.kernel.org/r/20240408063643.26288-1-gakula@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_ddi.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 20 +++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_ddi.c
-+++ b/drivers/gpu/drm/i915/display/intel_ddi.c
-@@ -4111,7 +4111,12 @@ static bool m_n_equal(const struct intel
- static bool crtcs_port_sync_compatible(const struct intel_crtc_state *crtc_state1,
- 				       const struct intel_crtc_state *crtc_state2)
- {
-+	/*
-+	 * FIXME the modeset sequence is currently wrong and
-+	 * can't deal with bigjoiner + port sync at the same time.
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index bda93e550b08a..34a9a9164f3c6 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -4184,18 +4184,18 @@ static int rvu_nix_block_init(struct rvu *rvu, struct nix_hw *nix_hw)
+ 		 */
+ 		rvu_write64(rvu, blkaddr, NIX_AF_CFG,
+ 			    rvu_read64(rvu, blkaddr, NIX_AF_CFG) | 0x40ULL);
++	}
+ 
+-		/* Set chan/link to backpressure TL3 instead of TL2 */
+-		rvu_write64(rvu, blkaddr, NIX_AF_PSE_CHANNEL_LEVEL, 0x01);
++	/* Set chan/link to backpressure TL3 instead of TL2 */
++	rvu_write64(rvu, blkaddr, NIX_AF_PSE_CHANNEL_LEVEL, 0x01);
+ 
+-		/* Disable SQ manager's sticky mode operation (set TM6 = 0)
+-		 * This sticky mode is known to cause SQ stalls when multiple
+-		 * SQs are mapped to same SMQ and transmitting pkts at a time.
+-		 */
+-		cfg = rvu_read64(rvu, blkaddr, NIX_AF_SQM_DBG_CTL_STATUS);
+-		cfg &= ~BIT_ULL(15);
+-		rvu_write64(rvu, blkaddr, NIX_AF_SQM_DBG_CTL_STATUS, cfg);
+-	}
++	/* Disable SQ manager's sticky mode operation (set TM6 = 0)
++	 * This sticky mode is known to cause SQ stalls when multiple
++	 * SQs are mapped to same SMQ and transmitting pkts at a time.
 +	 */
- 	return crtc_state1->hw.active && crtc_state2->hw.active &&
-+		!crtc_state1->bigjoiner_pipes && !crtc_state2->bigjoiner_pipes &&
- 		crtc_state1->output_types == crtc_state2->output_types &&
- 		crtc_state1->output_format == crtc_state2->output_format &&
- 		crtc_state1->lane_count == crtc_state2->lane_count &&
++	cfg = rvu_read64(rvu, blkaddr, NIX_AF_SQM_DBG_CTL_STATUS);
++	cfg &= ~BIT_ULL(15);
++	rvu_write64(rvu, blkaddr, NIX_AF_SQM_DBG_CTL_STATUS, cfg);
+ 
+ 	ltdefs = rvu->kpu.lt_def;
+ 	/* Calibrate X2P bus to check if CGX/LBK links are fine */
+-- 
+2.43.0
+
 
 
 
