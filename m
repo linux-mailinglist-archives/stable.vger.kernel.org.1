@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-39761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B478A549E
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:38:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91FFB8A5416
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:34:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 051E01C21EA8
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:38:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C39A21C2144E
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8117A724;
-	Mon, 15 Apr 2024 14:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B32B8289B;
+	Mon, 15 Apr 2024 14:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4FlCZah"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvEuvVGA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA217581B;
-	Mon, 15 Apr 2024 14:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF8E78C76;
+	Mon, 15 Apr 2024 14:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191734; cv=none; b=areNmYHgyYkzkU+pE9wkvMEEG222OHrEM/MbGwve5fHrVsn/O783cXKhGpkeMhpw3FKw2R9JqYc56JnuMvOvMCuaJK56d4yzAHvyawIuyuJTzffVQueRfDBMEBs3e0SXB1Up/6ScyG83tX06qYraySlc3JQFwd0L354IaKXN8qY=
+	t=1713191465; cv=none; b=C98IC+2AAbCxu/DTna7ssUu9WtkY12M1riHXkl5weSs/Rd6y+1RdQXuMRMGq6dZxpwcImh3kI8Hu4M5X5ILDJ0XNB6ugyhCovgCchvZUnWcUdbre5rXbiXCsRiPd+nulmiXNSiC/nbK/K+BgOFPpk5dCAzF/CwgkHh1LTUcIlOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191734; c=relaxed/simple;
-	bh=SPK31REBAgv5VJGfMsruwgbTQ3egwx+J08SobjRaY0I=;
+	s=arc-20240116; t=1713191465; c=relaxed/simple;
+	bh=h+vGp156q2RtwoputzFVL7FRuGWWZY3HQs1FEkZgB0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNk0sAdJOh8/imZkib7de6/CBFziTwHfriPziEoRcKaI1Qgcob70foZVFlcd8OPs8pGjDC3yxAgNdAfOFDNFnBJafRAcXpUJzIxTzz2fk3xkslkz/im8/PrFUyW9zoNzejbgBY15IgoxExo1gAiVprTIt7HbncyoVe8TS57+TE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4FlCZah; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898E3C113CC;
-	Mon, 15 Apr 2024 14:35:33 +0000 (UTC)
+	 MIME-Version; b=cBsDusfznwZZpACEbPMLmJF7XmQH/MRDKNjjNILnC/WhpDVrcJiTrP8Pj3x8nk6l6Wg9eYLfqoef1RoMDwmPF0KOnClwl4/nJjl+YZrZHq8K+HVYF+xRJ10iP15A3pSJcrcRew+kMyY2nZE2m+d8jy6BE8iJbHdmXumT82guoIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvEuvVGA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5C5C113CC;
+	Mon, 15 Apr 2024 14:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191733;
-	bh=SPK31REBAgv5VJGfMsruwgbTQ3egwx+J08SobjRaY0I=;
+	s=korg; t=1713191465;
+	bh=h+vGp156q2RtwoputzFVL7FRuGWWZY3HQs1FEkZgB0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4FlCZah4c+b7ubhMvdVS2MfP0UCOQQCea1owlgsozDTcqO0VMgEXmjF/3SQVuOxQ
-	 1wy3soRBEd+K7ysmzRvk/wt89QrA8ejhmeIxJQjy8M4B1SuPiVcJZy1aWDf1/pERN1
-	 5dPV2b01SKqKYOYsQObWBg4NQCLt37UXfHauOzAs=
+	b=uvEuvVGA/Uhb/u8ayApM4WA5RFpKzgMU4aryJBFN1rXgdWt2H75T2tG+LPNMm2XPZ
+	 +pP9Gth430SKaQ8qVCn5E9Xk1kVIceZRoIz7EDqCxHqNnsTxLhvPjGASPB4Jm3hR3k
+	 rXyzMLXcgXMh/TeTGlENRLkCmY6kOW6Dgf3tk1Tw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arthur Kiyanovski <akiyano@amazon.com>,
-	David Arinzon <darinzon@amazon.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/122] net: ena: Fix potential sign extension issue
+	Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.8 134/172] arm64: dts: imx8-ss-dma: fix adc lpcg indices
 Date: Mon, 15 Apr 2024 16:20:33 +0200
-Message-ID: <20240415141955.420177717@linuxfoundation.org>
+Message-ID: <20240415142004.447964613@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Arinzon <darinzon@amazon.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 713a85195aad25d8a26786a37b674e3e5ec09e3c ]
+commit 81975080f14167610976e968e8016e92d836266f upstream.
 
-Small unsigned types are promoted to larger signed types in
-the case of multiplication, the result of which may overflow.
-In case the result of such a multiplication has its MSB
-turned on, it will be sign extended with '1's.
-This changes the multiplication result.
+adc0_lpcg: clock-controller@5ac80000 {
+	...						    Col1   Col2
+	clocks = <&clk IMX_SC_R_ADC_0 IMX_SC_PM_CLK_PER>, // 0      0
+		 <&dma_ipg_clk>;			  // 1      4
+	clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+};
 
-Code example of the phenomenon:
--------------------------------
-u16 x, y;
-size_t z1, z2;
+Col1: index, which existing dts try to get.
+Col2: actual index in lpcg driver.
 
-x = y = 0xffff;
-printk("x=%x y=%x\n",x,y);
+adc0: adc@5a880000 {
+	clocks = <&adc0_lpcg 0>, <&adc0_lpcg 1>;
+			     ^^              ^^
+	clocks = <&adc0_lpcg IMX_LPCG_CLK_0>, <&adc0_lpcg IMX_LPCG_CLK_4>;
 
-z1 = x*y;
-z2 = (size_t)x*y;
+Arg0 is divided by 4 in lpcg driver. So adc get IMX_SC_PM_CLK_PER by
+<&adc0_lpcg 0>, <&adc0_lpcg 1>. Although function can work, code logic is
+wrong. Fix it by using correct indices.
 
-printk("z1=%lx z2=%lx\n", z1, z2);
-
-Output:
--------
-x=ffff y=ffff
-z1=fffffffffffe0001 z2=fffe0001
-
-The expected result of ffff*ffff is fffe0001, and without the
-explicit casting to avoid the unwanted sign extension we got
-fffffffffffe0001.
-
-This commit adds an explicit casting to avoid the sign extension
-issue.
-
-Fixes: 689b2bdaaa14 ("net: ena: add functions for handling Low Latency Queues in ena_com")
-Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
-Signed-off-by: David Arinzon <darinzon@amazon.com>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 1db044b25d2e ("arm64: dts: imx8dxl: add adc0 support")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_com.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_com.c b/drivers/net/ethernet/amazon/ena/ena_com.c
-index 633b321d7fdd9..4db689372980e 100644
---- a/drivers/net/ethernet/amazon/ena/ena_com.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_com.c
-@@ -362,7 +362,7 @@ static int ena_com_init_io_sq(struct ena_com_dev *ena_dev,
- 			ENA_COM_BOUNCE_BUFFER_CNTRL_CNT;
- 		io_sq->bounce_buf_ctrl.next_to_use = 0;
- 
--		size = io_sq->bounce_buf_ctrl.buffer_size *
-+		size = (size_t)io_sq->bounce_buf_ctrl.buffer_size *
- 			io_sq->bounce_buf_ctrl.buffers_num;
- 
- 		dev_node = dev_to_node(ena_dev->dmadev);
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+@@ -377,8 +377,8 @@ dma_subsys: bus@5a000000 {
+ 		reg = <0x5a880000 0x10000>;
+ 		interrupts = <GIC_SPI 240 IRQ_TYPE_LEVEL_HIGH>;
+ 		interrupt-parent = <&gic>;
+-		clocks = <&adc0_lpcg 0>,
+-			 <&adc0_lpcg 1>;
++		clocks = <&adc0_lpcg IMX_LPCG_CLK_0>,
++			 <&adc0_lpcg IMX_LPCG_CLK_4>;
+ 		clock-names = "per", "ipg";
+ 		assigned-clocks = <&clk IMX_SC_R_ADC_0 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <24000000>;
+@@ -392,8 +392,8 @@ dma_subsys: bus@5a000000 {
+ 		reg = <0x5a890000 0x10000>;
+ 		interrupts = <GIC_SPI 241 IRQ_TYPE_LEVEL_HIGH>;
+ 		interrupt-parent = <&gic>;
+-		clocks = <&adc1_lpcg 0>,
+-			 <&adc1_lpcg 1>;
++		clocks = <&adc1_lpcg IMX_LPCG_CLK_0>,
++			 <&adc1_lpcg IMX_LPCG_CLK_4>;
+ 		clock-names = "per", "ipg";
+ 		assigned-clocks = <&clk IMX_SC_R_ADC_1 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <24000000>;
 
 
 
