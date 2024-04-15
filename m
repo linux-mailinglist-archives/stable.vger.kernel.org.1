@@ -1,131 +1,75 @@
-Return-Path: <stable+bounces-39395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D948A47B4
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 07:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4E48A4848
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 08:43:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F08E28309F
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 05:53:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0671F281CCE
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 06:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC936139;
-	Mon, 15 Apr 2024 05:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21F51EB3E;
+	Mon, 15 Apr 2024 06:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziDb84Nt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="grJH5ukb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060B35234;
-	Mon, 15 Apr 2024 05:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E711DA32;
+	Mon, 15 Apr 2024 06:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713160391; cv=none; b=X5sBkfVn+LJI/6JjHqHNmnj+2u/rJCBLSHPUEYZ/pU5WDmM7NLvTbCN3/E97wHDnxZ3j/2SIpO/ywVkjndE2Wjl3QFJJTEgkhBphFfnGy9E8Lr/KBG8NXAQYu0lwMHj3oEfeWrRinZrg3bH7MtQsJEnWsriqybFZlXpAsUvT7BA=
+	t=1713163424; cv=none; b=svpXc588tyOY0XGdVm6X8F/k4SPrDUtK0Q6InRzts12XtSY3K6vjQZLiaR6WMigfROXajh+2Fm+PCMVEB6TE3eCsC32wSXE2M/SLOXU7SMPJTEn9G49NVSRkMxxsVSnyr4f3hd43+UPXrcT7J5f+Q8v7I0ebgvj2FwmELi2duPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713160391; c=relaxed/simple;
-	bh=GPG1/kd4ZB9qwFI4gdErArU3/kBu8MPbHNQ9e6xNK0g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kdEDVaCU+P7pBQAEZT5amEiAG/tC93nDwyBKmi+S0mV41FAGZkGkRayxhwfThN4qwhCj+mC9BQUQeEqiqyeCx/gkArol48akR0BuzlQ4pdyN4MS21Ij2JczgRraL4VczzrfFF4XYQd1KavYGaF8AjoYm/qfGERYq5AFHxlGiros=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziDb84Nt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE54C113CC;
-	Mon, 15 Apr 2024 05:53:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713160389;
-	bh=GPG1/kd4ZB9qwFI4gdErArU3/kBu8MPbHNQ9e6xNK0g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ziDb84Nte5ZeFl7xxXB1eJ9NDEBYvtdqzpCm7BFed9Rip2rCXNVNHs86e9sF+xPh8
-	 5CUGJqNJZ+fEXEF+ML2IWjdxQBBVVbKvEKV7GbX5E7L8aZAKgiQ3yfzenlFn6OKobZ
-	 ZTWLDT6O80MX3ovDIQrE4pmUGVAz9J9u/BwXX+S8=
-Date: Mon, 15 Apr 2024 07:53:05 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org, aleksandermj@google.com,
-	ejcaruso@google.com, oneukum@suse.com
-Subject: Re: [PATCH 5.10 000/294] 5.10.215-rc1 review
-Message-ID: <2024041507-landmine-cattle-c911@gregkh>
-References: <20240411095435.633465671@linuxfoundation.org>
- <9ac4f94c-414e-4c12-bfe0-36aff3e318bc@roeck-us.net>
- <2024041411-stencil-unscathed-bc65@gregkh>
- <039f041e-ca03-4750-8d69-87aef0ad1752@roeck-us.net>
+	s=arc-20240116; t=1713163424; c=relaxed/simple;
+	bh=DNNTj+ykDgM/JD4IQplT3/fMLpZxUwGg0a/sfofypEA=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=ZCCgibunc6qrM6l4PKvxq6O6a3v8jnEIE94JC5fmV9hRmEao6MlaMwHLu/Lheg2KHBstMDUHts/Xqd141DKWXfBIbw4yxkUGT8KZQt0sqJyxDF2IQzR1X2ue+3acY+3HFHw0ozccJ9VvbN1yYFeRHujKIY/wdcBPSTj5ekUP7LQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=grJH5ukb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2321C3277B;
+	Mon, 15 Apr 2024 06:43:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713163424;
+	bh=DNNTj+ykDgM/JD4IQplT3/fMLpZxUwGg0a/sfofypEA=;
+	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
+	b=grJH5ukbJiygA1ARCF3SJlQpcu7vxzkD7XPDygzVcrACtm6Szv3GGaQrXSobFRN+I
+	 Y+oYQKWHJCSt2JIbappiAkmsXTwOUhR2133qqVLZasThzLBoVJcHVJbvMdkqXQTV3X
+	 jMjfep2N3bgFTN38PXBJvBZagZELuCrinl7zA0g0g6W62xF+erU9VZRFyuNMsyy0ZW
+	 8h3E2ryxXET7ISmwUOTyS6LfJGvJ5Wkch2fUvlZbNBUqe/N7ST0ooKwdI/u7vvSlcy
+	 2cXi7wxJdQX8QgduyJGXMm5r94cWapN8vWhC4+ZC17VD/PPyZe8F3y6+PmK+iT+/iv
+	 Ux0CxPLeK4qAQ==
+Message-ID: <5843f81d9ca77b26aeb25504f9c8a4f6@kernel.org>
+Date: Mon, 15 Apr 2024 06:43:41 +0000
+From: "Maxime Ripard" <mripard@kernel.org>
+To: "Thomas Zimmermann" <tzimmermann@suse.de>
+Subject: Re: [PATCH v2 01/43] drm/fbdev-generic: Do not set physical
+ framebuffer address
+In-Reply-To: <20240410130557.31572-2-tzimmermann@suse.de>
+References: <20240410130557.31572-2-tzimmermann@suse.de>
+Cc: airlied@gmail.com, daniel@ffwll.ch, deller@gmx.de, dri-devel@lists.freedesktop.org, javierm@redhat.com, linux-fbdev@vger.kernel.org, stable@vger.kernel.org, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>, "Sui
+ Jingfeng" <sui.jingfeng@linux.dev>, "Zack Rusin" <zack.rusin@broadcom.com>, "Zack
+ Rusin" <zackr@vmware.com>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <039f041e-ca03-4750-8d69-87aef0ad1752@roeck-us.net>
 
-On Sun, Apr 14, 2024 at 02:18:03PM -0700, Guenter Roeck wrote:
-> Hi Greg,
+On Wed, 10 Apr 2024 15:01:57 +0200, Thomas Zimmermann wrote:
+> Framebuffer memory is allocated via vzalloc() from non-contiguous
+> physical pages. The physical framebuffer start address is therefore
+> meaningless. Do not set it.
 > 
-> On Sun, Apr 14, 2024 at 08:09:39AM +0200, Greg Kroah-Hartman wrote:
-> > On Sat, Apr 13, 2024 at 07:11:57AM -0700, Guenter Roeck wrote:
-> > > Hi,
-> > > 
-> > > On Thu, Apr 11, 2024 at 11:52:43AM +0200, Greg Kroah-Hartman wrote:
-> > > > This is the start of the stable review cycle for the 5.10.215 release.
-> > > > There are 294 patches in this series, all will be posted as a response
-> > > > to this one.  If anyone has any issues with these being applied, please
-> > > > let me know.
-> > > > 
-> > > > Responses should be made by Sat, 13 Apr 2024 09:53:55 +0000.
-> > > > Anything received after that time might be too late.
-> > > > 
-> > > > The whole patch series can be found in one patch at:
-> > > > 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.215-rc1.gz
-> > > > or in the git tree and branch at:
-> > > > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> > > > and the diffstat can be found below.
-> > > > 
-> > > > thanks,
-> > > > 
-> > > > greg k-h
-> > > > 
-> > > > -------------
-> > > [ ... ]
-> > > > 
-> > > > Oliver Neukum <oneukum@suse.com>
-> > > >     usb: cdc-wdm: close race between read and workqueue
-> > > > 
-> > > 
-> > > Just in case it has not been reported yet:
-> > > 
-> > > This patch is causing connection failures (timeouts) on all
-> > > Chromebooks using the cdc-wdm driver for cellular modems, with
-> > > all kernel branches where this patch has been applied.
-> > > Reverting it fixes the problem.
-> > > 
-> > > I am copying some of the Google employees involved in identifying
-> > > the regression in case additional feedback is needed.
-> > 
-> > Can you all respond to Oliver on the linux-usb list where this was
-> > originally submitted to work it out?  This commit has been in the tree
-> > for almost a month now with no reported problems that I can see.
-> > 
+> The value is not used within the kernel and only exported to userspace
 > 
-> Who knows, maybe only a certain type of usb cellular modems using cdc-wdm
-> is affected. Either case, the problem was found less than two days after
-> the stable tree merges into ChromeOS, and it took only about a week from
-> there to identify the offending patch. I think that was actually an amazing
-> job, given the size of those merges and because the failure is not absolute
-> but results in unreliable tests due to timeouts.
+> [ ... ]
 
-It is an amazing job, and I wasn't trying to be snarky, I was trying to
-say that "that's odd, normally usb problems are found very quickly by
-lots of people and you should let the author know about this as there's
-nothing I can do about it through this stable report".
+Acked-by: Maxime Ripard <mripard@kernel.org>
 
-I see the post on linux-usb now, thanks.
-
-greg k-h
+Thanks!
+Maxime
 
