@@ -1,53 +1,58 @@
-Return-Path: <stable+bounces-39724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 467EF8A5461
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:36:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A2A8A5474
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:37:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAE241F21280
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7558D1F2176C
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 660C87F7D3;
-	Mon, 15 Apr 2024 14:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C4A82C8E;
+	Mon, 15 Apr 2024 14:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFOG3SE9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9m6Uz5O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F4D74E25;
-	Mon, 15 Apr 2024 14:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9D482899;
+	Mon, 15 Apr 2024 14:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191622; cv=none; b=gGHGsB6CXJoFAu4dXNxk9It3Q+7kizm+Ij944hDcVcdq5lT2fWU5WbY6ugcC1Xfs/TGzC6Y5ZEm9eYMXcKPDVGS4hFj8u3eKm5nGOUC/z3/codYB5AvUBEQ8x0YspbPYPNxFFJvVSc5ypSi2dBj8ESFNk8RaTajCgnuhpoq2eV8=
+	t=1713191655; cv=none; b=ut9HUsLL7ybZEGN0LzYkcxFH3qQ7iYDESK5OGu8pAih1lvTVjD1ToxABbW2BJ0U8OcVcfVCIF3dTT4L89InF0X+dGbneI7sKaEu4UegjzDU/QZPa8nsXOtmB5l2EYHZQoehT/s25LPGu5mdrBcwv2jnG04m2h9pw0l275l0KbWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191622; c=relaxed/simple;
-	bh=9l1M6leeRvZU3GmmMZ8JOY9pSJuXMZnreK0mzq/tEEQ=;
+	s=arc-20240116; t=1713191655; c=relaxed/simple;
+	bh=7oeo8BP0uqea6ifi6ay2Da9cZhdMRwVZx+r2ZcUfvfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LC5TgWY+IqJSskLN374/m7MSHLPqhkW9kUAFgoEa0jm1afUne0GDol4Z7lRxeJ2Un/NiXwOUYfsYizFBfmtHAcSV82dM2Sf88xIBFboEQ+dxs9DofaB0EcYHZMErUpL6B7lK9Ex9MFbceHDKgnLOg0ZBGp2E+HT1ieTm9rIHhVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFOG3SE9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E686C113CC;
-	Mon, 15 Apr 2024 14:33:41 +0000 (UTC)
+	 MIME-Version; b=Qcm0m2lFmYqHUqiSI4/n6Z28huPBdDbAJHn7BgqAICd95lp3ixVgzFi29mIeooFVYQD6CNMnQta1ikZMP86Bp29N/XdGI1yh6ByN0eIG0ocSWY7elOigbwZoUfTB+8CXjmrbotZ8o9WRgLe3Uxton3UPnWuWtAKPAkgeXyfGkT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9m6Uz5O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2CAC113CC;
+	Mon, 15 Apr 2024 14:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191622;
-	bh=9l1M6leeRvZU3GmmMZ8JOY9pSJuXMZnreK0mzq/tEEQ=;
+	s=korg; t=1713191655;
+	bh=7oeo8BP0uqea6ifi6ay2Da9cZhdMRwVZx+r2ZcUfvfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WFOG3SE937GkYhjj0yoqW11jrjOPVu52B9er4GmtoWd7EmlCmISUJvvTf6lddu993
-	 UxWIg1uho3gAWSa50UKb70oOeZg9MEfr3d7jvrOpqzMRV4Te+e8M58PT2eFzAOqb3Z
-	 N7/bZfRze6DtZZVR3Q85DuATDYZ2TRNuZXOThXzg=
+	b=T9m6Uz5ObarhKyYcCWIMKcGyDP54GrrTlco6mNUQZZk+eVgdoFG1xY0NZ/IAHdLVY
+	 pu/ZV1AGSx7VwCEfSjX8bMVraDMwv+gp5bKeR85nqGfEx0wkGhyP1Mg6eDhn10+EuM
+	 /FMCO3VaBc/r0ukxT9BPQuVO/d3udJhKCoASdjnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.6 004/122] batman-adv: Avoid infinite loop trying to resize local TT
-Date: Mon, 15 Apr 2024 16:19:29 +0200
-Message-ID: <20240415141953.501311659@linuxfoundation.org>
+	Yihuang Yu <yihyu@redhat.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Gavin Shan <gshan@redhat.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Shaoqin Huang <shahuang@redhat.com>,
+	stable@kernel.org
+Subject: [PATCH 6.6 005/122] arm64: tlb: Fix TLBI RANGE operand
+Date: Mon, 15 Apr 2024 16:19:30 +0200
+Message-ID: <20240415141953.535856536@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
 References: <20240415141953.365222063@linuxfoundation.org>
@@ -66,69 +71,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Gavin Shan <gshan@redhat.com>
 
-commit b1f532a3b1e6d2e5559c7ace49322922637a28aa upstream.
+commit e3ba51ab24fddef79fc212f9840de54db8fd1685 upstream.
 
-If the MTU of one of an attached interface becomes too small to transmit
-the local translation table then it must be resized to fit inside all
-fragments (when enabled) or a single packet.
+KVM/arm64 relies on TLBI RANGE feature to flush TLBs when the dirty
+pages are collected by VMM and the page table entries become write
+protected during live migration. Unfortunately, the operand passed
+to the TLBI RANGE instruction isn't correctly sorted out due to the
+commit 117940aa6e5f ("KVM: arm64: Define kvm_tlb_flush_vmid_range()").
+It leads to crash on the destination VM after live migration because
+TLBs aren't flushed completely and some of the dirty pages are missed.
 
-But if the MTU becomes too low to transmit even the header + the VLAN
-specific part then the resizing of the local TT will never succeed. This
-can for example happen when the usable space is 110 bytes and 11 VLANs are
-on top of batman-adv. In this case, at least 116 byte would be needed.
-There will just be an endless spam of
+For example, I have a VM where 8GB memory is assigned, starting from
+0x40000000 (1GB). Note that the host has 4KB as the base page size.
+In the middile of migration, kvm_tlb_flush_vmid_range() is executed
+to flush TLBs. It passes MAX_TLBI_RANGE_PAGES as the argument to
+__kvm_tlb_flush_vmid_range() and __flush_s2_tlb_range_op(). SCALE#3
+and NUM#31, corresponding to MAX_TLBI_RANGE_PAGES, isn't supported
+by __TLBI_RANGE_NUM(). In this specific case, -1 has been returned
+from __TLBI_RANGE_NUM() for SCALE#3/2/1/0 and rejected by the loop
+in the __flush_tlb_range_op() until the variable @scale underflows
+and becomes -9, 0xffff708000040000 is set as the operand. The operand
+is wrong since it's sorted out by __TLBI_VADDR_RANGE() according to
+invalid @scale and @num.
 
-   batman_adv: batadv0: Forced to purge local tt entries to fit new maximum fragment MTU (110)
+Fix it by extending __TLBI_RANGE_NUM() to support the combination of
+SCALE#3 and NUM#31. With the changes, [-1 31] instead of [-1 30] can
+be returned from the macro, meaning the TLBs for 0x200000 pages in the
+above example can be flushed in one shoot with SCALE#3 and NUM#31. The
+macro TLBI_RANGE_MASK is dropped since no one uses it any more. The
+comments are also adjusted accordingly.
 
-in the log but the function will never finish. Problem here is that the
-timeout will be halved all the time and will then stagnate at 0 and
-therefore never be able to reduce the table even more.
-
-There are other scenarios possible with a similar result. The number of
-BATADV_TT_CLIENT_NOPURGE entries in the local TT can for example be too
-high to fit inside a packet. Such a scenario can therefore happen also with
-only a single VLAN + 7 non-purgable addresses - requiring at least 120
-bytes.
-
-While this should be handled proactively when:
-
-* interface with too low MTU is added
-* VLAN is added
-* non-purgeable local mac is added
-* MTU of an attached interface is reduced
-* fragmentation setting gets disabled (which most likely requires dropping
-  attached interfaces)
-
-not all of these scenarios can be prevented because batman-adv is only
-consuming events without the the possibility to prevent these actions
-(non-purgable MAC address added, MTU of an attached interface is reduced).
-It is therefore necessary to also make sure that the code is able to handle
-also the situations when there were already incompatible system
-configuration are present.
-
-Cc: stable@vger.kernel.org
-Fixes: a19d3d85e1b8 ("batman-adv: limit local translation table max size")
-Reported-by: syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Fixes: 117940aa6e5f ("KVM: arm64: Define kvm_tlb_flush_vmid_range()")
+Cc: stable@kernel.org # v6.6+
+Reported-by: Yihuang Yu <yihyu@redhat.com>
+Suggested-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
+Link: https://lore.kernel.org/r/20240405035852.1532010-2-gshan@redhat.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/translation-table.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/tlbflush.h |   22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -3948,7 +3948,7 @@ void batadv_tt_local_resize_to_mtu(struc
+--- a/arch/arm64/include/asm/tlbflush.h
++++ b/arch/arm64/include/asm/tlbflush.h
+@@ -152,12 +152,18 @@ static inline unsigned long get_trans_gr
+ #define MAX_TLBI_RANGE_PAGES		__TLBI_RANGE_PAGES(31, 3)
  
- 	spin_lock_bh(&bat_priv->tt.commit_lock);
+ /*
+- * Generate 'num' values from -1 to 30 with -1 rejected by the
+- * __flush_tlb_range() loop below.
+- */
+-#define TLBI_RANGE_MASK			GENMASK_ULL(4, 0)
+-#define __TLBI_RANGE_NUM(pages, scale)	\
+-	((((pages) >> (5 * (scale) + 1)) & TLBI_RANGE_MASK) - 1)
++ * Generate 'num' values from -1 to 31 with -1 rejected by the
++ * __flush_tlb_range() loop below. Its return value is only
++ * significant for a maximum of MAX_TLBI_RANGE_PAGES pages. If
++ * 'pages' is more than that, you must iterate over the overall
++ * range.
++ */
++#define __TLBI_RANGE_NUM(pages, scale)					\
++	({								\
++		int __pages = min((pages),				\
++				  __TLBI_RANGE_PAGES(31, (scale)));	\
++		(__pages >> (5 * (scale) + 1)) - 1;			\
++	})
  
--	while (true) {
-+	while (timeout) {
- 		table_size = batadv_tt_local_table_transmit_size(bat_priv);
- 		if (packet_size_max >= table_size)
- 			break;
+ /*
+  *	TLB Invalidation
+@@ -359,10 +365,6 @@ static inline void arch_tlbbatch_flush(s
+  *    Start from scale = 0, flush the corresponding number of pages
+  *    ((num+1)*2^(5*scale+1) starting from 'addr'), then increase it
+  *    until no pages left.
+- *
+- * Note that certain ranges can be represented by either num = 31 and
+- * scale or num = 0 and scale + 1. The loop below favours the latter
+- * since num is limited to 30 by the __TLBI_RANGE_NUM() macro.
+  */
+ #define __flush_tlb_range_op(op, start, pages, stride,			\
+ 				asid, tlb_level, tlbi_user)		\
 
 
 
