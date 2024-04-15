@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-39751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C0278A548B
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:38:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7A228A53F2
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:32:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9AF02842DF
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:37:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 146691C21F1F
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0409D84FC9;
-	Mon, 15 Apr 2024 14:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0911F84A5C;
+	Mon, 15 Apr 2024 14:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbQLj/ky"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxpYRVzn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60D974E11;
-	Mon, 15 Apr 2024 14:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A837F47B;
+	Mon, 15 Apr 2024 14:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191704; cv=none; b=MLxJfCbkzw4yow8CQjwfjbhp20mdGWn51ZrAsObch38rhcdFhFe+eAfqunQ2hnSPhhsZXeRhEQ9cTy/4+uI1WCBgcwXMgsp9sG0boNq/7zEN9oRlwjY7BYr99uL1GilylgoDoMxs4M5phN6vF2uQKVF0h47fa+P8ypQyta44CGw=
+	t=1713191389; cv=none; b=t8Ft7FnQYp6D6VL4PfrjJa5u/zJ+L4LnwLy9O/Qj3euqAq0g1RvmDHzxQWNE6WoHJjjvCg4vF7S2HXUIc9YKy2eKGrXdiBMPM510vxl86fZKzJ3ZVy0bkPygh2HL4iaMqpGtUX7/r4JVLJLymYH/pei/XvEYJkJMRawECx0Cguk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191704; c=relaxed/simple;
-	bh=ed9PTbnGRVa5/MRw+5FmBJfChhgG2H0dCUy4trAhesE=;
+	s=arc-20240116; t=1713191389; c=relaxed/simple;
+	bh=CqclnSIylVtN7eH2/1sSJeo2y/fcI9aeuawohaL4BSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lw6Jem0I5B7SHsdjhZBe84I2RYaewOaygqF9T0NIZPkDPW+lTI7GsgPPMJmu8HXiCVW++m7WqyxPG7woMmrhEcECdS+dlKs8RSEfZsxxXAvv/vB477Tk3WtDy4MlEbkXpbjF6qNOrwYID1FeG9ajksnJXbVLJQZJdMlvnz3urMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbQLj/ky; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2BAC113CC;
-	Mon, 15 Apr 2024 14:35:03 +0000 (UTC)
+	 MIME-Version; b=W1VEJKWzIZd59JqDnQO78k/Ka9jbjXUpvVcGB4Hn61HV5pJqNHr8/ToJTrlIbEdB6Kyit22rMCKLwyl26E/bnY4sExBuqViiZj3tlZ0mrtCi05hnwuDZjEoC+dE69rngLy+7UODfg5C+hKK6ckKXwSt9SRvKBRUGlylkzIlWEsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxpYRVzn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 406BBC113CC;
+	Mon, 15 Apr 2024 14:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191704;
-	bh=ed9PTbnGRVa5/MRw+5FmBJfChhgG2H0dCUy4trAhesE=;
+	s=korg; t=1713191389;
+	bh=CqclnSIylVtN7eH2/1sSJeo2y/fcI9aeuawohaL4BSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fbQLj/ky70hLLcdnXJytTugxED+w8vj1KDfz/tpDjszb9/A39G4wbJlpuGOS5XFPx
-	 daeu5U+6FNBvV3cNIWw9HRFYYYTcrnV/8i6r0JJ6wujzGZN7P7Zyr2DHfNOStPatqC
-	 b5GCychWVkiWi6gtHmGq5FLzNxk3SKA/G7c0lNO0=
+	b=KxpYRVznaOnCJAo1lIbZ8JdISkMipHYgZfwO8ECr4GQgF7OP+ZMvA0TTGS+Nao1Ue
+	 I5qBzZpQcpFKacme+Qy2YRhSXGIv/Wr1NJINt3gQRxfqsSGaRgKr2KArUrm9cCEzP6
+	 JXBDczSBJbZQZ67VDEY1LAb2Kc/qKYYYrCHDuMCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/122] net/mlx5: Correctly compare pkt reformat ids
+	Alex Deucher <alexander.deucher@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Mukul Joshi <mukul.joshi@amd.com>
+Subject: [PATCH 6.8 125/172] drm/amdkfd: Reset GPU on queue preemption failure
 Date: Mon, 15 Apr 2024 16:20:24 +0200
-Message-ID: <20240415141955.137824845@linuxfoundation.org>
+Message-ID: <20240415142004.184854854@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
 
-[ Upstream commit 9eca93f4d5ab03905516a68683674d9c50ff95bd ]
+commit 8bdfb4ea95ca738d33ef71376c21eba20130f2eb upstream.
 
-struct mlx5_pkt_reformat contains a naked union of a u32 id and a
-dr_action pointer which is used when the action is SW-managed (when
-pkt_reformat.owner is set to MLX5_FLOW_RESOURCE_OWNER_SW). Using id
-directly in that case is incorrect, as it maps to the least significant
-32 bits of the 64-bit pointer in mlx5_fs_dr_action and not to the pkt
-reformat id allocated in firmware.
+Currently, with F32 HWS GPU reset is only when unmap queue fails.
 
-For the purpose of comparing whether two rules are identical,
-interpreting the least significant 32 bits of the mlx5_fs_dr_action
-pointer as an id mostly works... until it breaks horribly and produces
-the outcome described in [1].
+However, if compute queue doesn't repond to preemption request in time
+unmap will return without any error. In this case, only preemption error
+is logged and Reset is not triggered. Call GPU reset in this case also.
 
-This patch fixes mlx5_flow_dests_cmp to correctly compare ids using
-mlx5_fs_dr_action_get_pkt_reformat_id for the SW-managed rules.
-
-Link: https://lore.kernel.org/netdev/ea5264d6-6b55-4449-a602-214c6f509c1e@163.com/T/#u [1]
-
-Fixes: 6a48faeeca10 ("net/mlx5: Add direct rule fs_cmd implementation")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240409190820.227554-6-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Reviewed-by: Mukul Joshi <mukul.joshi@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-index 54f535d5d250f..e2f7cecce6f1a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-@@ -1664,6 +1664,16 @@ static int create_auto_flow_group(struct mlx5_flow_table *ft,
- 	return err;
- }
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+@@ -1997,6 +1997,7 @@ static int unmap_queues_cpsch(struct dev
+ 		dev_err(dev, "HIQ MQD's queue_doorbell_id0 is not 0, Queue preemption time out\n");
+ 		while (halt_if_hws_hang)
+ 			schedule();
++		kfd_hws_hang(dqm);
+ 		return -ETIME;
+ 	}
  
-+static bool mlx5_pkt_reformat_cmp(struct mlx5_pkt_reformat *p1,
-+				  struct mlx5_pkt_reformat *p2)
-+{
-+	return p1->owner == p2->owner &&
-+		(p1->owner == MLX5_FLOW_RESOURCE_OWNER_FW ?
-+		 p1->id == p2->id :
-+		 mlx5_fs_dr_action_get_pkt_reformat_id(p1) ==
-+		 mlx5_fs_dr_action_get_pkt_reformat_id(p2));
-+}
-+
- static bool mlx5_flow_dests_cmp(struct mlx5_flow_destination *d1,
- 				struct mlx5_flow_destination *d2)
- {
-@@ -1675,8 +1685,8 @@ static bool mlx5_flow_dests_cmp(struct mlx5_flow_destination *d1,
- 		     ((d1->vport.flags & MLX5_FLOW_DEST_VPORT_VHCA_ID) ?
- 		      (d1->vport.vhca_id == d2->vport.vhca_id) : true) &&
- 		     ((d1->vport.flags & MLX5_FLOW_DEST_VPORT_REFORMAT_ID) ?
--		      (d1->vport.pkt_reformat->id ==
--		       d2->vport.pkt_reformat->id) : true)) ||
-+		      mlx5_pkt_reformat_cmp(d1->vport.pkt_reformat,
-+					    d2->vport.pkt_reformat) : true)) ||
- 		    (d1->type == MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE &&
- 		     d1->ft == d2->ft) ||
- 		    (d1->type == MLX5_FLOW_DESTINATION_TYPE_TIR &&
--- 
-2.43.0
-
 
 
 
