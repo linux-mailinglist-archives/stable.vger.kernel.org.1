@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-39795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8565D8A54C6
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF05E8A54D9
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6B6C1C221AB
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C90BB238CE
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80419757E1;
-	Mon, 15 Apr 2024 14:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80452839E0;
+	Mon, 15 Apr 2024 14:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtXItRx/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpgDLg1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8722119;
-	Mon, 15 Apr 2024 14:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2D882D89;
+	Mon, 15 Apr 2024 14:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191836; cv=none; b=YT5EsNWfC/bige8p8O848TqxvnEHI0XZhZkaXgEw4hUMpA+yGuD9nz6+K9D+C8SsHTqLgFIQx6shPxQSWgFTYViY6Ot/HuJTxq8VtI3OiNblxgSOlAXgWGjjVlDWc651WDI7YlbOAX9HmHFTNTusMTtJMuezAjsSfdjTXFaSDh4=
+	t=1713191870; cv=none; b=sLCWS37fgGwmzi9im8stxjoNWxZpnzJ6ryyPVuKL4WHY/1maMRJlDpEgde+Z9vuCvLSeTxw6xVB4cfLrduyKJUFzkkcjYf9Q4LVJOVqISA0jJ/eqx7QKRhJT0XOdbmwbtTfImeDcS8fFC1kDRKwyuy9QDKltydL7jde3xcYvcao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191836; c=relaxed/simple;
-	bh=Sod/+TmoCvGok3nwSYxxrJ2duYj3BhJamXfJU8OmIJY=;
+	s=arc-20240116; t=1713191870; c=relaxed/simple;
+	bh=71h40Ec7lN/hannH8ydydlfmZ+rCei8ivNKypI02d4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gs8l4D0FTX/36W/+hQt6ElreXxCQ7dBNGfmZm3fUOUSSH6etfm2H9MzxjQLih2pFcBJTrJ/98/wYM+8O6/epI0oHKn5STkBEclJaONhYhoNC6z3+gx7DW6goa1wyixwS0K5bUIIF8RSxab5LBK8dfIHjbyyHgwMhEM9hBJzk5o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtXItRx/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D03C113CC;
-	Mon, 15 Apr 2024 14:37:15 +0000 (UTC)
+	 MIME-Version; b=eybNoLfVOlCFM2FoIxkrzzMQ6hyteltjzTL9FVqkAYb2fgCDJ+RmTlTPxO++9ks4EMEjk6wwCwMi9R9tlWn/Fa2oXPBD6f9+KDGAQEVJlPHgEWJSO06/JVhMyhK6udvWeeyR2kyDCdBRcYyGovABCUY/Q1zugrZtTqAKeMmhMW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpgDLg1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8F4C113CC;
+	Mon, 15 Apr 2024 14:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191836;
-	bh=Sod/+TmoCvGok3nwSYxxrJ2duYj3BhJamXfJU8OmIJY=;
+	s=korg; t=1713191870;
+	bh=71h40Ec7lN/hannH8ydydlfmZ+rCei8ivNKypI02d4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtXItRx/RMF1jiliRvPVVAILqt/yR6wVgDqZoyeIxEN5/sY1PuV47tTq7K5xb1Jei
-	 FRhZ+P6L5qnGTlW+gSggQHBXk3zeobA8heRe5zJHIRI7+yK7hlDwBB9/0E/D9QgUif
-	 bFYkkbhP09cuBEef7A2Ul0UbFWt+wFeNpeS2b3+Q=
+	b=CpgDLg1F8jbyklNDUkh4Ow0r20tb28A2ZpTGvVroNLf/Q/+PuUDLW22tbt4g03TuH
+	 SeFWP4Ws4TG25O4IfIGzVmk/0bNNydeORFqQQJKrOjTQ0YXtfvOGHTADYjmif7CZdR
+	 htcEsWmFIB8an7CIzMHG8r3leFdeN/SOEViqwWqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Alexander Wetzel <Alexander@wetzel-home.de>,
+	Sachin Sant <sachinp@linux.ibm.com>,
 	Bart Van Assche <bvanassche@acm.org>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 085/122] scsi: sg: Avoid sg device teardown race
-Date: Mon, 15 Apr 2024 16:20:50 +0200
-Message-ID: <20240415141955.927421106@linuxfoundation.org>
+Subject: [PATCH 6.6 086/122] scsi: sg: Avoid race in error handling & drop bogus warn
+Date: Mon, 15 Apr 2024 16:20:51 +0200
+Message-ID: <20240415141955.956875443@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
 References: <20240415141953.365222063@linuxfoundation.org>
@@ -68,50 +69,99 @@ Content-Transfer-Encoding: 8bit
 
 From: Alexander Wetzel <Alexander@wetzel-home.de>
 
-commit 27f58c04a8f438078583041468ec60597841284d upstream.
+commit d4e655c49f474deffaf5ed7e65034b8167ee39c8 upstream.
 
-sg_remove_sfp_usercontext() must not use sg_device_destroy() after calling
-scsi_device_put().
+Commit 27f58c04a8f4 ("scsi: sg: Avoid sg device teardown race") introduced
+an incorrect WARN_ON_ONCE() and missed a sequence where sg_device_destroy()
+was used after scsi_device_put().
 
 sg_device_destroy() is accessing the parent scsi_device request_queue which
 will already be set to NULL when the preceding call to scsi_device_put()
 removed the last reference to the parent scsi_device.
 
-The resulting NULL pointer exception will then crash the kernel.
+Drop the incorrect WARN_ON_ONCE() - allowing more than one concurrent
+access to the sg device - and make sure sg_device_destroy() is not used
+after scsi_device_put() in the error handling.
 
-Link: https://lore.kernel.org/r/20240305150509.23896-1-Alexander@wetzel-home.de
-Fixes: db59133e9279 ("scsi: sg: fix blktrace debugfs entries leakage")
+Link: https://lore.kernel.org/all/5375B275-D137-4D5F-BE25-6AF8ACAE41EF@linux.ibm.com
+Fixes: 27f58c04a8f4 ("scsi: sg: Avoid sg device teardown race")
 Cc: stable@vger.kernel.org
 Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Link: https://lore.kernel.org/r/20240320213032.18221-1-Alexander@wetzel-home.de
+Link: https://lore.kernel.org/r/20240401191038.18359-1-Alexander@wetzel-home.de
+Tested-by: Sachin Sant <sachinp@linux.ibm.com>
 Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sg.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/sg.c |   18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
 --- a/drivers/scsi/sg.c
 +++ b/drivers/scsi/sg.c
-@@ -2208,6 +2208,7 @@ sg_remove_sfp_usercontext(struct work_st
- {
- 	struct sg_fd *sfp = container_of(work, struct sg_fd, ew.work);
- 	struct sg_device *sdp = sfp->parentdp;
-+	struct scsi_device *device = sdp->device;
- 	Sg_request *srp;
- 	unsigned long iflags;
+@@ -285,6 +285,7 @@ sg_open(struct inode *inode, struct file
+ 	int dev = iminor(inode);
+ 	int flags = filp->f_flags;
+ 	struct request_queue *q;
++	struct scsi_device *device;
+ 	Sg_device *sdp;
+ 	Sg_fd *sfp;
+ 	int retval;
+@@ -301,11 +302,12 @@ sg_open(struct inode *inode, struct file
  
-@@ -2233,8 +2234,9 @@ sg_remove_sfp_usercontext(struct work_st
+ 	/* This driver's module count bumped by fops_get in <linux/fs.h> */
+ 	/* Prevent the device driver from vanishing while we sleep */
+-	retval = scsi_device_get(sdp->device);
++	device = sdp->device;
++	retval = scsi_device_get(device);
+ 	if (retval)
+ 		goto sg_put;
+ 
+-	retval = scsi_autopm_get_device(sdp->device);
++	retval = scsi_autopm_get_device(device);
+ 	if (retval)
+ 		goto sdp_put;
+ 
+@@ -313,7 +315,7 @@ sg_open(struct inode *inode, struct file
+ 	 * check if O_NONBLOCK. Permits SCSI commands to be issued
+ 	 * during error recovery. Tread carefully. */
+ 	if (!((flags & O_NONBLOCK) ||
+-	      scsi_block_when_processing_errors(sdp->device))) {
++	      scsi_block_when_processing_errors(device))) {
+ 		retval = -ENXIO;
+ 		/* we are in error recovery for this device */
+ 		goto error_out;
+@@ -344,7 +346,7 @@ sg_open(struct inode *inode, struct file
+ 
+ 	if (sdp->open_cnt < 1) {  /* no existing opens */
+ 		sdp->sgdebug = 0;
+-		q = sdp->device->request_queue;
++		q = device->request_queue;
+ 		sdp->sg_tablesize = queue_max_segments(q);
+ 	}
+ 	sfp = sg_add_sfp(sdp);
+@@ -370,10 +372,11 @@ out_undo:
+ error_mutex_locked:
+ 	mutex_unlock(&sdp->open_rel_lock);
+ error_out:
+-	scsi_autopm_put_device(sdp->device);
++	scsi_autopm_put_device(device);
+ sdp_put:
+-	scsi_device_put(sdp->device);
+-	goto sg_put;
++	kref_put(&sdp->d_ref, sg_device_destroy);
++	scsi_device_put(device);
++	return retval;
+ }
+ 
+ /* Release resources associated with a successful sg_open()
+@@ -2234,7 +2237,6 @@ sg_remove_sfp_usercontext(struct work_st
  			"sg_remove_sfp: sfp=0x%p\n", sfp));
  	kfree(sfp);
  
--	scsi_device_put(sdp->device);
-+	WARN_ON_ONCE(kref_read(&sdp->d_ref) != 1);
+-	WARN_ON_ONCE(kref_read(&sdp->d_ref) != 1);
  	kref_put(&sdp->d_ref, sg_device_destroy);
-+	scsi_device_put(device);
+ 	scsi_device_put(device);
  	module_put(THIS_MODULE);
- }
- 
 
 
 
