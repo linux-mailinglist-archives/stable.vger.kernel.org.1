@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-39784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E915F8A54BD
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF42F8A5414
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:34:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72232B24402
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E2521F226CB
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A9F7C090;
-	Mon, 15 Apr 2024 14:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467B582897;
+	Mon, 15 Apr 2024 14:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/IlgENr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v343Bk45"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550F280049;
-	Mon, 15 Apr 2024 14:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048F43BBE1;
+	Mon, 15 Apr 2024 14:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191803; cv=none; b=qtH4d5NhYoY5yWsqmkyDV4Za3E/oW4KeG1jK/KQYvedMeMXq28sH3CNPXTXrGmFYQ2UXZ3HV4ymmq5yJKX3+xfCCUhv7KLlz+CbcN18xZOfQs0CEvCEuVAUVpyExAc6VdJ68hsqOIGPBLeUdQ0jfghdMpXcF5EOq/wcMeD+0a9g=
+	t=1713191459; cv=none; b=g1L8Lkae/V11r6z3uDoKeD5T7w9SSLSpdB3JXETKMhtrbZ6TG3SN6WvHZkpnYGWFB/Bb7TCcuyUWFrUtnlFt4gcQ9pbmYoXe8xspmj69IACkHI/4pHuMZ/n+y4xLPyZP6sQQQTdrEP1G/o2hA3UU0K1tZ92mP3esPxCRayg2tXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191803; c=relaxed/simple;
-	bh=51LfCQq6MQFoTopwWRpgrVlBAq89i3ugg3e1b31Effk=;
+	s=arc-20240116; t=1713191459; c=relaxed/simple;
+	bh=MeGEpVLi6a1JRMu4Q2ytxS3rHEiQjcu9+N7TaSzuUxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aJrNGNA3GLsStT4X5UTj0NTqNJihSeU4WKzMTNVQwhahepDfd2zV7muPdj2hD5icdWrcCLBU7uRPnvjuHz9clUw6jhMJlCb62B6mFg38Xj15l0agAJz0zoPHSjdMNnbkj7FYXtdEL3e7x5ktcwCJ4QPrsfFRh/NNg+3mPV0P6kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/IlgENr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEEA6C113CC;
-	Mon, 15 Apr 2024 14:36:42 +0000 (UTC)
+	 MIME-Version; b=MEBv+HMNCYg2Xxo1N/m+t1CubJGu7IGEFekOiLU3BthPfqLQ1rovy7xWvw6aMyF2DnU6b3mQHjggk9OjWR7ZN0TKs8JPnPe5P0siHYPguZPD3iVt3XZADq5qEu6D9icWrQp2fZqeZqUX79rJ3MiZYxPZdwQKGkEIWidMJw2aSYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v343Bk45; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EFA3C113CC;
+	Mon, 15 Apr 2024 14:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191803;
-	bh=51LfCQq6MQFoTopwWRpgrVlBAq89i3ugg3e1b31Effk=;
+	s=korg; t=1713191458;
+	bh=MeGEpVLi6a1JRMu4Q2ytxS3rHEiQjcu9+N7TaSzuUxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o/IlgENrGAxulRBI+6MYebXrlqSdN1BOGJSv3IfQmGS6FoJ8qMC34Dr1a6a8gu7ac
-	 gV/GL1Tu227TIbc2Jr7NZkYPspQZkZFuKAoVOOXokWzcuY6Y9mDK0NDZDmKReirLfR
-	 PkgEtuJgIPaec+OSSXn5qGFIHOLaSTejM2OV0CY8=
+	b=v343Bk45sJ6SLRbTGduAp3x2i508rlK7VnmfyX+vIjJBbr7pyt+r3EoSnlt2lSPl+
+	 M+iWrwUo6It3t+apwQyNBPCCYerIr2dq0SOwjvOefhyz6OkAMktfp+vRB1OaWgGnhT
+	 Iu7aJ7w1ioStC/h+aT9m5hYBBbvVQ0eEmzBLCMx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.6 084/122] kprobes: Fix possible use-after-free issue on kprobe registration
+	syzbot+9a5b0ced8b1bfb238b56@syzkaller.appspotmail.com,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Amir Goldstein <amir73il@gmail.com>
+Subject: [PATCH 6.8 150/172] kernfs: annotate different lockdep class for of->mutex of writable files
 Date: Mon, 15 Apr 2024 16:20:49 +0200
-Message-ID: <20240415141955.897520572@linuxfoundation.org>
+Message-ID: <20240415142004.923773939@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-commit 325f3fb551f8cd672dbbfc4cf58b14f9ee3fc9e8 upstream.
+commit 16b52bbee4823b01ab7fe3919373c981a38f3797 upstream.
 
-When unloading a module, its state is changing MODULE_STATE_LIVE ->
- MODULE_STATE_GOING -> MODULE_STATE_UNFORMED. Each change will take
-a time. `is_module_text_address()` and `__module_text_address()`
-works with MODULE_STATE_LIVE and MODULE_STATE_GOING.
-If we use `is_module_text_address()` and `__module_text_address()`
-separately, there is a chance that the first one is succeeded but the
-next one is failed because module->state becomes MODULE_STATE_UNFORMED
-between those operations.
+The writable file /sys/power/resume may call vfs lookup helpers for
+arbitrary paths and readonly files can be read by overlayfs from vfs
+helpers when sysfs is a lower layer of overalyfs.
 
-In `check_kprobe_address_safe()`, if the second `__module_text_address()`
-is failed, that is ignored because it expected a kernel_text address.
-But it may have failed simply because module->state has been changed
-to MODULE_STATE_UNFORMED. In this case, arm_kprobe() will try to modify
-non-exist module text address (use-after-free).
+To avoid a lockdep warning of circular dependency between overlayfs
+inode lock and kernfs of->mutex, use a different lockdep class for
+writable and readonly kernfs files.
 
-To fix this problem, we should not use separated `is_module_text_address()`
-and `__module_text_address()`, but use only `__module_text_address()`
-once and do `try_module_get(module)` which is only available with
-MODULE_STATE_LIVE.
-
-Link: https://lore.kernel.org/all/20240410015802.265220-1-zhengyejian1@huawei.com/
-
-Fixes: 28f6c37a2910 ("kprobes: Forbid probing on trampoline and BPF code areas")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reported-by: syzbot+9a5b0ced8b1bfb238b56@syzkaller.appspotmail.com
+Fixes: 0fedefd4c4e3 ("kernfs: sysfs: support custom llseek method for sysfs entries")
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/kprobes.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ fs/kernfs/file.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1567,10 +1567,17 @@ static int check_kprobe_address_safe(str
- 	jump_label_lock();
- 	preempt_disable();
+--- a/fs/kernfs/file.c
++++ b/fs/kernfs/file.c
+@@ -634,11 +634,18 @@ static int kernfs_fop_open(struct inode
+ 	 * each file a separate locking class.  Let's differentiate on
+ 	 * whether the file has mmap or not for now.
+ 	 *
+-	 * Both paths of the branch look the same.  They're supposed to
++	 * For similar reasons, writable and readonly files are given different
++	 * lockdep key, because the writable file /sys/power/resume may call vfs
++	 * lookup helpers for arbitrary paths and readonly files can be read by
++	 * overlayfs from vfs helpers when sysfs is a lower layer of overalyfs.
++	 *
++	 * All three cases look the same.  They're supposed to
+ 	 * look that way and give @of->mutex different static lockdep keys.
+ 	 */
+ 	if (has_mmap)
+ 		mutex_init(&of->mutex);
++	else if (file->f_mode & FMODE_WRITE)
++		mutex_init(&of->mutex);
+ 	else
+ 		mutex_init(&of->mutex);
  
--	/* Ensure it is not in reserved area nor out of text */
--	if (!(core_kernel_text((unsigned long) p->addr) ||
--	    is_module_text_address((unsigned long) p->addr)) ||
--	    in_gate_area_no_mm((unsigned long) p->addr) ||
-+	/* Ensure the address is in a text area, and find a module if exists. */
-+	*probed_mod = NULL;
-+	if (!core_kernel_text((unsigned long) p->addr)) {
-+		*probed_mod = __module_text_address((unsigned long) p->addr);
-+		if (!(*probed_mod)) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+	}
-+	/* Ensure it is not in reserved area. */
-+	if (in_gate_area_no_mm((unsigned long) p->addr) ||
- 	    within_kprobe_blacklist((unsigned long) p->addr) ||
- 	    jump_label_text_reserved(p->addr, p->addr) ||
- 	    static_call_text_reserved(p->addr, p->addr) ||
-@@ -1580,8 +1587,7 @@ static int check_kprobe_address_safe(str
- 		goto out;
- 	}
- 
--	/* Check if 'p' is probing a module. */
--	*probed_mod = __module_text_address((unsigned long) p->addr);
-+	/* Get module refcount and reject __init functions for loaded modules. */
- 	if (*probed_mod) {
- 		/*
- 		 * We must hold a refcount of the probed module while updating
 
 
 
