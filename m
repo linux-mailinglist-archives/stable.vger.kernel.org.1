@@ -1,107 +1,272 @@
-Return-Path: <stable+bounces-39940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79CD8A557C
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:47:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A5988A55E5
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 17:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DB1DB21201
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:47:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5FE5281724
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 15:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B828376E7;
-	Mon, 15 Apr 2024 14:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833FE74E11;
+	Mon, 15 Apr 2024 15:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cM11Mufs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fZEcPpSr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C002119;
-	Mon, 15 Apr 2024 14:47:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7BC74E25
+	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 15:03:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192426; cv=none; b=U7IDVQ3iBe0vi5GZ+1TyurtLxVVAtcACvp5TGN33pneuWlY47dNFOLUSkANIjVpInpjrEfFgWYmTGCHUw6PIWQnAZtO7G9HcRz/188K7uO76zovK2zvNCBVDrNLiPXim8gtXOAPKWIEYgWcZn7PzUAANC7VD/JoC5rxwhRO39y8=
+	t=1713193436; cv=none; b=snmaOT07/hwubsIJWCccQ21RIBxmSz5k2upLc/FWbI7RADEnX99ibRozUKzH2s70hc3kvUo9l3POrYVyfV4WWDK78ei5GVGv/Yii/7zCrGcN3+Wb8xSefdbI3IgUMdWM82LEEM2UB6h6rBdjuBHdZ9euVqWeDLja1da9rG3hJKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192426; c=relaxed/simple;
-	bh=LQnlQplIIBRFAb0IYpzcEDhNW33rDEzU1FwDYMkl/BA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i+qFd1LD9GGZoby5BrgQjY751z8HobfTZhFI9kupJXtMPbNDEbWE6MsufyQVR4ybIoGGzD3k73HSP/h7elIf3y3W3WJdKUnVIE9UmcqakmNsSzQ/+PWk/hkAXJfWlmsdtPeY46D+84YZ+fotYZfCYhACj4ly8pauwwtNvqI6mUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cM11Mufs; arc=none smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-6153d85053aso25502197b3.0;
-        Mon, 15 Apr 2024 07:47:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713192424; x=1713797224; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LQnlQplIIBRFAb0IYpzcEDhNW33rDEzU1FwDYMkl/BA=;
-        b=cM11MufsfW7HxQkJRpYXF7vMnpbK7pxcHv+SPiK/GHW9Os1OJWLlNAofSGUETJMALh
-         aG1OeOWNiAMXGMsKWif/WnfVwT01pRSdry0w5zZfElENDa9aJ7oXeWMYXXV4Kbhez6+Z
-         HTBofnQKP8hBTi/MqhlZHSKCvfkYK4HbI/CU4p/Jta+01eBtWPobUhsLltrrYTG+xcJA
-         dKIP2vh3kJCrY7Qf290QO4IsxzIE19zJ8TXAgSn6HC7YSKBl2MYEmUIZ47XyVcDo/Dha
-         NmG3eTYww/AexEKZHFMI4mCSNt38Ukayq89Td4QuVUEjQnoo9f/1/VEXtmbtYAGrC0kS
-         lH9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713192424; x=1713797224;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LQnlQplIIBRFAb0IYpzcEDhNW33rDEzU1FwDYMkl/BA=;
-        b=sER7CbeW5vb0ByF3J/Oo6BWUKlez5HeojUhOEiF7+zm2eTkIeH3YL+kYZKZfj8tjQP
-         qMnu2r4emTCmLe2KeJtXhe8ndgmWS8Mwd1++0T6rOrjPxgLWm2gtR+7+XVhWWXnBuAMw
-         SzGYJO4vB6TH2Sj5H+EwwHDIC1h8BupCs/S9IJ8aql+ONt9gB4XgcJ9nhaBYQoDeheMm
-         kqphjgMvKrHBjBh42O/E12AmSMxb7/YhmxQiJkPJ27NEk+Sa9PrZP2Glhw5XHda9o465
-         uHG1ngBEnyQU7qcx56YZsdRfYKTnMDB5xCi7cVoxIYvp3As3WQAkOF8ggGA7h9g5jEMw
-         J3qw==
-X-Forwarded-Encrypted: i=1; AJvYcCUBIGPcLpE/YynWyDnir7Bx7Vh+Rpm9JVqQhKfkwz9VXd1XLvFTcoDDMVJcsxvbps2sIPVk+kvo9Fdxvo3ljMHMi+biVY5/8PzQfHBO0B7Vie+WeSAGazOJ3/iFDCUlrncOQoK0KrbZXGmRH0SLMh/gTArn8dI1lqahhfylQsVY
-X-Gm-Message-State: AOJu0YyRauFEIP2JaG44veU5NlFm9DID8AirDrYGjYk5elhVVBU1ax2C
-	QI6bv8D054nZ8GeieZc3vW9I6xlcg0HdLq7Ju1mc30yZX1B+eFbm1ZIhlC74zxJ/mIDoJyRLhuh
-	jYo/JrTX++jxpEFOU66Kakv2JUB0=
-X-Google-Smtp-Source: AGHT+IEpvLnj2DUE80Kfafaw7YdWuVb0xXdSf+ODoqEdIXs15rBq/iDZit7+SzDXZI1cdRv7j77yTlC7Hco/5gX03q8=
-X-Received: by 2002:a0d:f2c1:0:b0:61a:d02e:8aa with SMTP id
- b184-20020a0df2c1000000b0061ad02e08aamr2481865ywf.34.1713192424058; Mon, 15
- Apr 2024 07:47:04 -0700 (PDT)
+	s=arc-20240116; t=1713193436; c=relaxed/simple;
+	bh=IuKUdbMZgT331pCVFMMT96uODGAgqqB3115iZ19qJ0M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gi2F7trfkVyGa0AsRbLOfCCJU0hh9h6XqamzzgVc5cWVpwSGXvNEYpCdqSYU/UVt5TW04eFt8DyfiVbwHhA84mqiB8rYH34CqD3wHtzFq21bvAyvVYOG3j0jC5sLEsUn9G8QHJ+5Fzi9dTFulSYn6G0JgBlO1T4JnjIB9KqZKOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fZEcPpSr; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713193431; x=1744729431;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=IuKUdbMZgT331pCVFMMT96uODGAgqqB3115iZ19qJ0M=;
+  b=fZEcPpSr0XpZ3PI4dTyKfZomt9COWKNHqc6o8lRbSOBTUVO2zHZg9If+
+   bD6NkoOzBWekt46XBoTn6QgzU0MxydozJ9rbwR8KDs38hgbkjcSRwArsj
+   P70xKImMnvKinpqWUvCQZDQEdz/Hq2KV5WbmBAB/7ZET6seWwX37y8PFl
+   ITsxlQHN9TuZW+LoURLBjfRgW63vbIjNelREIM5OV3LlYZJWRhgSpLOnM
+   3ftuAsJXczQ44N+sf6j/yybc8SvEqUZnhWxBtYnzLsScgQd1gxftxsyte
+   WAE4WJwVfW25cbkOsRjJXr1mvMgIhb63heAeEEN6szKO9cDwlzIeKljwD
+   A==;
+X-CSE-ConnectionGUID: kbfrvfK9RQCQ1z/KUZuqFA==
+X-CSE-MsgGUID: XZAcxNFrQEmBQy7lJFXdyA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="12383436"
+X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
+   d="scan'208";a="12383436"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 08:03:51 -0700
+X-CSE-ConnectionGUID: eKV3vwNORw23cPCzjZ9byg==
+X-CSE-MsgGUID: /jJAq5FAR42zBTTFx71PqA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
+   d="scan'208";a="59388909"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO jkrzyszt-mobl2.intranet) ([10.213.20.116])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 08:03:50 -0700
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: Nirmoy Das <nirmoy.das@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH 6.1.y v2] drm/i915/vma: Fix UAF on destroy against retire race
+Date: Mon, 15 Apr 2024 17:03:06 +0200
+Message-ID: <20240415150324.79701-2-janusz.krzysztofik@linux.intel.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <2024033053-lyrically-excluding-f09f@gregkh>
+References: <2024033053-lyrically-excluding-f09f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240312062913.12723-1-gch981213@gmail.com> <ZhzNM_zouHPLdvBz@hovoldconsulting.com>
-In-Reply-To: <ZhzNM_zouHPLdvBz@hovoldconsulting.com>
-From: Chuanhong Guo <gch981213@gmail.com>
-Date: Mon, 15 Apr 2024 22:46:52 +0800
-Message-ID: <CAJsYDVK+Qy-w_Aa9_ns4zZutBJx1HTxm0467chHh0XkLb-4_tg@mail.gmail.com>
-Subject: Re: [PATCH] USB: serial: option: add support for Fibocom FM650/FG650
-To: Johan Hovold <johan@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hello!
+Object debugging tools were sporadically reporting illegal attempts to
+free a still active i915 VMA object when parking a GT believed to be idle.
 
-On Mon, Apr 15, 2024 at 2:46=E2=80=AFPM Johan Hovold <johan@kernel.org> wro=
-te:
->
-> On Tue, Mar 12, 2024 at 02:29:12PM +0800, Chuanhong Guo wrote:
-> > Fibocom FM650/FG650 are 5G modems with ECM/NCM/RNDIS/MBIM modes.
+[161.359441] ODEBUG: free active (active state 0) object: ffff88811643b958 object type: i915_active hint: __i915_vma_active+0x0/0x50 [i915]
+[161.360082] WARNING: CPU: 5 PID: 276 at lib/debugobjects.c:514 debug_print_object+0x80/0xb0
+...
+[161.360304] CPU: 5 PID: 276 Comm: kworker/5:2 Not tainted 6.5.0-rc1-CI_DRM_13375-g003f860e5577+ #1
+[161.360314] Hardware name: Intel Corporation Rocket Lake Client Platform/RocketLake S UDIMM 6L RVP, BIOS RKLSFWI1.R00.3173.A03.2204210138 04/21/2022
+[161.360322] Workqueue: i915-unordered __intel_wakeref_put_work [i915]
+[161.360592] RIP: 0010:debug_print_object+0x80/0xb0
+...
+[161.361347] debug_object_free+0xeb/0x110
+[161.361362] i915_active_fini+0x14/0x130 [i915]
+[161.361866] release_references+0xfe/0x1f0 [i915]
+[161.362543] i915_vma_parked+0x1db/0x380 [i915]
+[161.363129] __gt_park+0x121/0x230 [i915]
+[161.363515] ____intel_wakeref_put_last+0x1f/0x70 [i915]
 
-In all 4 modes, the first serial port is the AT console while the other 3
-appear to be diagnostic interfaces for dumping modem logs.
+That has been tracked down to be happening when another thread is
+deactivating the VMA inside __active_retire() helper, after the VMA's
+active counter has been already decremented to 0, but before deactivation
+of the VMA's object is reported to the object debugging tool.
 
-> > This patch adds support to all 4 modes.
->
-> Can you please say something here about what each port (in each mode) is
-> used for?
+We could prevent from that race by serializing i915_active_fini() with
+__active_retire() via ref->tree_lock, but that wouldn't stop the VMA from
+being used, e.g. from __i915_vma_retire() called at the end of
+__active_retire(), after that VMA has been already freed by a concurrent
+i915_vma_destroy() on return from the i915_active_fini().  Then, we should
+rather fix the issue at the VMA level, not in i915_active.
 
-Do I need to send a v2 for this?
+Since __i915_vma_parked() is called from __gt_park() on last put of the
+GT's wakeref, the issue could be addressed by holding the GT wakeref long
+enough for __active_retire() to complete before that wakeref is released
+and the GT parked.
 
---=20
-Regards,
-Chuanhong Guo
+I believe the issue was introduced by commit d93939730347 ("drm/i915:
+Remove the vma refcount") which moved a call to i915_active_fini() from
+a dropped i915_vma_release(), called on last put of the removed VMA kref,
+to i915_vma_parked() processing path called on last put of a GT wakeref.
+However, its visibility to the object debugging tool was suppressed by a
+bug in i915_active that was fixed two weeks later with commit e92eb246feb9
+("drm/i915/active: Fix missing debug object activation").
+
+A VMA associated with a request doesn't acquire a GT wakeref by itself.
+Instead, it depends on a wakeref held directly by the request's active
+intel_context for a GT associated with its VM, and indirectly on that
+intel_context's engine wakeref if the engine belongs to the same GT as the
+VMA's VM.  Those wakerefs are released asynchronously to VMA deactivation.
+
+Fix the issue by getting a wakeref for the VMA's GT when activating it,
+and putting that wakeref only after the VMA is deactivated.  However,
+exclude global GTT from that processing path, otherwise the GPU never goes
+idle.  Since __i915_vma_retire() may be called from atomic contexts, use
+async variant of wakeref put.  Also, to avoid circular locking dependency,
+take care of acquiring the wakeref before VM mutex when both are needed.
+
+v7: Add inline comments with justifications for:
+    - using untracked variants of intel_gt_pm_get/put() (Nirmoy),
+    - using async variant of _put(),
+    - not getting the wakeref in case of a global GTT,
+    - always getting the first wakeref outside vm->mutex.
+v6: Since __i915_vma_active/retire() callbacks are not serialized, storing
+    a wakeref tracking handle inside struct i915_vma is not safe, and
+    there is no other good place for that.  Use untracked variants of
+    intel_gt_pm_get/put_async().
+v5: Replace "tile" with "GT" across commit description (Rodrigo),
+  - avoid mentioning multi-GT case in commit description (Rodrigo),
+  - explain why we need to take a temporary wakeref unconditionally inside
+    i915_vma_pin_ww() (Rodrigo).
+v4: Refresh on top of commit 5e4e06e4087e ("drm/i915: Track gt pm
+    wakerefs") (Andi),
+  - for more easy backporting, split out removal of former insufficient
+    workarounds and move them to separate patches (Nirmoy).
+  - clean up commit message and description a bit.
+v3: Identify root cause more precisely, and a commit to blame,
+  - identify and drop former workarounds,
+  - update commit message and description.
+v2: Get the wakeref before VM mutex to avoid circular locking dependency,
+  - drop questionable Fixes: tag.
+
+v6.1 backport: Downgrade to non-tracked version of GT PM wakeref API.
+
+Fixes: d93939730347 ("drm/i915: Remove the vma refcount")
+Closes: https://gitlab.freedesktop.org/drm/intel/issues/8875
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: stable@vger.kernel.org # v5.19+
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240305143747.335367-6-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit f3c71b2ded5c4367144a810ef25f998fd1d6c381)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit 0e45882ca829b26b915162e8e86dbb1095768e9e)
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ drivers/gpu/drm/i915/i915_vma.c | 42 +++++++++++++++++++++++++++------
+ 1 file changed, 35 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/i915_vma.c b/drivers/gpu/drm/i915/i915_vma.c
+index c8ad8f37e5cfe..58a03da16a10f 100644
+--- a/drivers/gpu/drm/i915/i915_vma.c
++++ b/drivers/gpu/drm/i915/i915_vma.c
+@@ -32,6 +32,7 @@
+ #include "gt/intel_engine.h"
+ #include "gt/intel_engine_heartbeat.h"
+ #include "gt/intel_gt.h"
++#include "gt/intel_gt_pm.h"
+ #include "gt/intel_gt_requests.h"
+ 
+ #include "i915_drv.h"
+@@ -98,12 +99,34 @@ static inline struct i915_vma *active_to_vma(struct i915_active *ref)
+ 
+ static int __i915_vma_active(struct i915_active *ref)
+ {
+-	return i915_vma_tryget(active_to_vma(ref)) ? 0 : -ENOENT;
++	struct i915_vma *vma = active_to_vma(ref);
++
++	if (!i915_vma_tryget(vma))
++		return -ENOENT;
++
++	/*
++	 * Exclude global GTT VMA from holding a GT wakeref
++	 * while active, otherwise GPU never goes idle.
++	 */
++	if (!i915_vma_is_ggtt(vma))
++		intel_gt_pm_get(vma->vm->gt);
++
++	return 0;
+ }
+ 
+ static void __i915_vma_retire(struct i915_active *ref)
+ {
+-	i915_vma_put(active_to_vma(ref));
++	struct i915_vma *vma = active_to_vma(ref);
++
++	if (!i915_vma_is_ggtt(vma)) {
++		/*
++		 * Since we can be called from atomic contexts,
++		 * use an async variant of intel_gt_pm_put().
++		 */
++		intel_gt_pm_put_async(vma->vm->gt);
++	}
++
++	i915_vma_put(vma);
+ }
+ 
+ static struct i915_vma *
+@@ -1365,7 +1388,7 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
+ 	struct i915_vma_work *work = NULL;
+ 	struct dma_fence *moving = NULL;
+ 	struct i915_vma_resource *vma_res = NULL;
+-	intel_wakeref_t wakeref = 0;
++	intel_wakeref_t wakeref;
+ 	unsigned int bound;
+ 	int err;
+ 
+@@ -1385,8 +1408,14 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
+ 	if (err)
+ 		return err;
+ 
+-	if (flags & PIN_GLOBAL)
+-		wakeref = intel_runtime_pm_get(&vma->vm->i915->runtime_pm);
++	/*
++	 * In case of a global GTT, we must hold a runtime-pm wakeref
++	 * while global PTEs are updated.  In other cases, we hold
++	 * the rpm reference while the VMA is active.  Since runtime
++	 * resume may require allocations, which are forbidden inside
++	 * vm->mutex, get the first rpm wakeref outside of the mutex.
++	 */
++	wakeref = intel_runtime_pm_get(&vma->vm->i915->runtime_pm);
+ 
+ 	if (flags & vma->vm->bind_async_flags) {
+ 		/* lock VM */
+@@ -1522,8 +1551,7 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
+ 	if (work)
+ 		dma_fence_work_commit_imm(&work->base);
+ err_rpm:
+-	if (wakeref)
+-		intel_runtime_pm_put(&vma->vm->i915->runtime_pm, wakeref);
++	intel_runtime_pm_put(&vma->vm->i915->runtime_pm, wakeref);
+ 
+ 	if (moving)
+ 		dma_fence_put(moving);
+-- 
+2.44.0
+
 
