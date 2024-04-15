@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-39592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D0988A5382
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:28:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B75D8A5479
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:37:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4E5CB230EE
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:28:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC093B21673
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B179D8002A;
-	Mon, 15 Apr 2024 14:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E5574400;
+	Mon, 15 Apr 2024 14:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulZOs6l/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdXCa8DY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFBB7FBB2;
-	Mon, 15 Apr 2024 14:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E9479DDB;
+	Mon, 15 Apr 2024 14:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191224; cv=none; b=vAjaU7n8d3owBnADZimg2tWiLCCDZoVdtimpzygU0fj11VCNagsOlYPYJxaaT7O9BOs2BtwYM0ieGhzhcfa+jMW4VJ9Re/vg6awxChhj9UuYBN1720uUOnWhWndlAHHAlut6xGubX3U32++MhlTwH0PTXwxviGZj6qEkn8mH+vc=
+	t=1713191664; cv=none; b=nlj5ZcUqD0r3PXXhRzOOKFicqhc/6oZayTQAAa3r9fBLfP+QHAH6ZEp9Ied+kN9xFIuODbyO55124j/TW8zCPXt3FDWA+JGdBN60lJiAdDQU+rfeqOuzvkMfDgVkzVIqISKRR375OeNijZtzjJ6BpcuytJ0ZDiLvwJS1AN+0grY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191224; c=relaxed/simple;
-	bh=l6ub+yZ8ukEHARdDLa7qhaLZLdmfsR6W00sPecuDHfM=;
+	s=arc-20240116; t=1713191664; c=relaxed/simple;
+	bh=7eJDZDXFVzVyq2gPO3cGBdkm0B+9nwelg6LUaDNRYck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V8ZmTASn87wbVfru+fH05c7kzDhJst3uVtlufYq75f8Op4NoNO5/f+uPtB4XEnmzVwS5Mo+LgKaWG1h+5eg7kixd2lN5RnJA+XDqYpsgEkRnUy9W5eA4mXO5ATn06HK18adpBeIs1qRgmZo7SE+usC9SlW1iLaPHS+0F9Ux4vm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulZOs6l/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FBFC113CC;
-	Mon, 15 Apr 2024 14:27:03 +0000 (UTC)
+	 MIME-Version; b=REA4aousmEgKIoC9dgudL92+e8fMi58J2Jbct8o9JmpUfI2wltJkKqZm/xUly2Q5H28czei6O6vYlKxstYcCxa5FL5tGZmyY4ZFjg4ACtCdl5nuZVkQoW478i8034cWp3pSHN2yjSHmn/chVTiGZrZkEjtpq0wOCLFNXj9sulDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdXCa8DY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35A3C113CC;
+	Mon, 15 Apr 2024 14:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191224;
-	bh=l6ub+yZ8ukEHARdDLa7qhaLZLdmfsR6W00sPecuDHfM=;
+	s=korg; t=1713191664;
+	bh=7eJDZDXFVzVyq2gPO3cGBdkm0B+9nwelg6LUaDNRYck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ulZOs6l/NJK61al8HocjIZm/bVJIt7UQ9mIRNyo5C0MG5xZy/uyHofYk2f/r18NbE
-	 zydFh1zfIs/XgEs7GR5cih/ak2svsIC618/pbK6k+v4mXG7Q+hJfGF7s7vhwBAtzLK
-	 3iiFjSNIIsQ5q+2TkhIXQlRXuF4NwtiwtGMkGzXM=
+	b=PdXCa8DYEmdnnQlLh3WtSZ2TLRbBJl2gidt62S9sS4aidgxeH0ithZPX69Sbws3KP
+	 3ooy/N5FD6Cwci2Quxsr0SLOJqQvpuLJosRbbYIoLrJd4bLQ7X1FMb5Ep7Wh5pKx6m
+	 Zq5f0w3yH/QdwZeQlWSdoAw9a7xY1h3acPUigs4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 073/172] Bluetooth: hci_sync: Use QoS to determine which PHY to scan
+	Coly Li <colyli@suse.de>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>
+Subject: [PATCH 6.6 007/122] raid1: fix use-after-free for original bio in raid1_write_request()
 Date: Mon, 15 Apr 2024 16:19:32 +0200
-Message-ID: <20240415142002.622421284@linuxfoundation.org>
+Message-ID: <20240415141953.596019201@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,130 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 22cbf4f84c00da64196eb15034feee868e63eef0 ]
+commit fcf3f7e2fc8a53a6140beee46ec782a4c88e4744 upstream.
 
-This used the hci_conn QoS to determine which PHY to scan when creating
-a PA Sync.
+r1_bio->bios[] is used to record new bios that will be issued to
+underlying disks, however, in raid1_write_request(), r1_bio->bios[]
+will set to the original bio temporarily. Meanwhile, if blocked rdev
+is set, free_r1bio() will be called causing that all r1_bio->bios[]
+to be freed:
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 53cb4197e63a ("Bluetooth: hci_sync: Fix using the same interval and window for Coded PHY")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+raid1_write_request()
+ r1_bio = alloc_r1bio(mddev, bio); -> r1_bio->bios[] is NULL
+ for (i = 0;  i < disks; i++) -> for each rdev in conf
+  // first rdev is normal
+  r1_bio->bios[0] = bio; -> set to original bio
+  // second rdev is blocked
+  if (test_bit(Blocked, &rdev->flags))
+   break
+
+ if (blocked_rdev)
+  free_r1bio()
+   put_all_bios()
+    bio_put(r1_bio->bios[0]) -> original bio is freed
+
+Test scripts:
+
+mdadm -CR /dev/md0 -l1 -n4 /dev/sd[abcd] --assume-clean
+fio -filename=/dev/md0 -ioengine=libaio -rw=write -bs=4k -numjobs=1 \
+    -iodepth=128 -name=test -direct=1
+echo blocked > /sys/block/md0/md/rd2/state
+
+Test result:
+
+BUG bio-264 (Not tainted): Object already free
+-----------------------------------------------------------------------------
+
+Allocated in mempool_alloc_slab+0x24/0x50 age=1 cpu=1 pid=869
+ kmem_cache_alloc+0x324/0x480
+ mempool_alloc_slab+0x24/0x50
+ mempool_alloc+0x6e/0x220
+ bio_alloc_bioset+0x1af/0x4d0
+ blkdev_direct_IO+0x164/0x8a0
+ blkdev_write_iter+0x309/0x440
+ aio_write+0x139/0x2f0
+ io_submit_one+0x5ca/0xb70
+ __do_sys_io_submit+0x86/0x270
+ __x64_sys_io_submit+0x22/0x30
+ do_syscall_64+0xb1/0x210
+ entry_SYSCALL_64_after_hwframe+0x6c/0x74
+Freed in mempool_free_slab+0x1f/0x30 age=1 cpu=1 pid=869
+ kmem_cache_free+0x28c/0x550
+ mempool_free_slab+0x1f/0x30
+ mempool_free+0x40/0x100
+ bio_free+0x59/0x80
+ bio_put+0xf0/0x220
+ free_r1bio+0x74/0xb0
+ raid1_make_request+0xadf/0x1150
+ md_handle_request+0xc7/0x3b0
+ md_submit_bio+0x76/0x130
+ __submit_bio+0xd8/0x1d0
+ submit_bio_noacct_nocheck+0x1eb/0x5c0
+ submit_bio_noacct+0x169/0xd40
+ submit_bio+0xee/0x1d0
+ blkdev_direct_IO+0x322/0x8a0
+ blkdev_write_iter+0x309/0x440
+ aio_write+0x139/0x2f0
+
+Since that bios for underlying disks are not allocated yet, fix this
+problem by using mempool_free() directly to free the r1_bio.
+
+Fixes: 992db13a4aee ("md/raid1: free the r1bio before waiting for blocked rdev")
+Cc: stable@vger.kernel.org # v6.6+
+Reported-by: Coly Li <colyli@suse.de>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Tested-by: Coly Li <colyli@suse.de>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240308093726.1047420-1-yukuai1@huaweicloud.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_sync.c | 66 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 55 insertions(+), 11 deletions(-)
+ drivers/md/raid1.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 824ce03bb361b..89bd1c1a3e0e8 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -2611,6 +2611,14 @@ static u8 hci_update_accept_list_sync(struct hci_dev *hdev)
- 	return filter_policy;
- }
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -1473,7 +1473,7 @@ static void raid1_write_request(struct m
+ 		for (j = 0; j < i; j++)
+ 			if (r1_bio->bios[j])
+ 				rdev_dec_pending(conf->mirrors[j].rdev, mddev);
+-		free_r1bio(r1_bio);
++		mempool_free(r1_bio, &conf->r1bio_pool);
+ 		allow_barrier(conf, bio->bi_iter.bi_sector);
  
-+static void hci_le_scan_phy_params(struct hci_cp_le_scan_phy_params *cp,
-+				   u8 type, u16 interval, u16 window)
-+{
-+	cp->type = type;
-+	cp->interval = cpu_to_le16(interval);
-+	cp->window = cpu_to_le16(window);
-+}
-+
- static int hci_le_set_ext_scan_param_sync(struct hci_dev *hdev, u8 type,
- 					  u16 interval, u16 window,
- 					  u8 own_addr_type, u8 filter_policy)
-@@ -2618,7 +2626,7 @@ static int hci_le_set_ext_scan_param_sync(struct hci_dev *hdev, u8 type,
- 	struct hci_cp_le_set_ext_scan_params *cp;
- 	struct hci_cp_le_scan_phy_params *phy;
- 	u8 data[sizeof(*cp) + sizeof(*phy) * 2];
--	u8 num_phy = 0;
-+	u8 num_phy = 0x00;
- 
- 	cp = (void *)data;
- 	phy = (void *)cp->data;
-@@ -2628,28 +2636,64 @@ static int hci_le_set_ext_scan_param_sync(struct hci_dev *hdev, u8 type,
- 	cp->own_addr_type = own_addr_type;
- 	cp->filter_policy = filter_policy;
- 
-+	/* Check if PA Sync is in progress then select the PHY based on the
-+	 * hci_conn.iso_qos.
-+	 */
-+	if (hci_dev_test_flag(hdev, HCI_PA_SYNC)) {
-+		struct hci_cp_le_add_to_accept_list *sent;
-+
-+		sent = hci_sent_cmd_data(hdev, HCI_OP_LE_ADD_TO_ACCEPT_LIST);
-+		if (sent) {
-+			struct hci_conn *conn;
-+
-+			conn = hci_conn_hash_lookup_ba(hdev, ISO_LINK,
-+						       &sent->bdaddr);
-+			if (conn) {
-+				struct bt_iso_qos *qos = &conn->iso_qos;
-+
-+				if (qos->bcast.in.phy & BT_ISO_PHY_1M ||
-+				    qos->bcast.in.phy & BT_ISO_PHY_2M) {
-+					cp->scanning_phys |= LE_SCAN_PHY_1M;
-+					hci_le_scan_phy_params(phy, type,
-+							       interval,
-+							       window);
-+					num_phy++;
-+					phy++;
-+				}
-+
-+				if (qos->bcast.in.phy & BT_ISO_PHY_CODED) {
-+					cp->scanning_phys |= LE_SCAN_PHY_CODED;
-+					hci_le_scan_phy_params(phy, type,
-+							       interval,
-+							       window);
-+					num_phy++;
-+					phy++;
-+				}
-+
-+				if (num_phy)
-+					goto done;
-+			}
-+		}
-+	}
-+
- 	if (scan_1m(hdev) || scan_2m(hdev)) {
- 		cp->scanning_phys |= LE_SCAN_PHY_1M;
--
--		phy->type = type;
--		phy->interval = cpu_to_le16(interval);
--		phy->window = cpu_to_le16(window);
--
-+		hci_le_scan_phy_params(phy, type, interval, window);
- 		num_phy++;
- 		phy++;
- 	}
- 
- 	if (scan_coded(hdev)) {
- 		cp->scanning_phys |= LE_SCAN_PHY_CODED;
--
--		phy->type = type;
--		phy->interval = cpu_to_le16(interval);
--		phy->window = cpu_to_le16(window);
--
-+		hci_le_scan_phy_params(phy, type, interval, window);
- 		num_phy++;
- 		phy++;
- 	}
- 
-+done:
-+	if (!num_phy)
-+		return -EINVAL;
-+
- 	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_SCAN_PARAMS,
- 				     sizeof(*cp) + sizeof(*phy) * num_phy,
- 				     data, HCI_CMD_TIMEOUT);
--- 
-2.43.0
-
+ 		if (bio->bi_opf & REQ_NOWAIT) {
 
 
 
