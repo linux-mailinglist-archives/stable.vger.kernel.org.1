@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-39939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 150F58A5577
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:44:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB3238A54D0
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4370C1C22420
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:44:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECC7D1C20B31
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC0D1EEE3;
-	Mon, 15 Apr 2024 14:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864E6824BF;
+	Mon, 15 Apr 2024 14:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FAiYB9tK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGULawWm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C13B1D52B;
-	Mon, 15 Apr 2024 14:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45363824B3;
+	Mon, 15 Apr 2024 14:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192272; cv=none; b=QFwSHYHw/cbiQexVAJkoMWQKJ5DE6dkZ+NRajwdIDPPQotVGuCxUEwEfQdt3NPZZiR45StxmnuTGbYTd+wFLpmaEKS0g3SYvnRxMXUtkdNsGY22GUjCd14jgsVKCD087aGLgvGZDKL5Za+FZGjK1WFo0t3AfOvtAVeeAq2mRT+w=
+	t=1713191855; cv=none; b=fyVwwFnwO2ome20HYYcmrSD68/DifOnfyAdNbnx4xj5C8Fkw1qvmqQY6n6tIr+PAi8ncEx4qy28WClySKvbPavv5vfpIPh7X9q8raqhuJL4/Xlee6YDetK71JeMZTz7eUd9+ZFXuV1Zc81mZK5MxvmZwqdfaDi/Pi4+HferqHUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192272; c=relaxed/simple;
-	bh=CNbuw7OT1TH2i21cq6nPeoGx6i5lbK6dY5v+cgRdZNw=;
+	s=arc-20240116; t=1713191855; c=relaxed/simple;
+	bh=bHkLUvy2IdHI6zsjHnJ/vwD3NqeqWwxTSAlKedgSwN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kBgdiFY0hepBB2Dt3J1DL2EzDzKdcPePrE44fJAq9FQY09L+rc86HCQYUsee8XDF9qhEAJKnlXC6RpL3Pxu+LkqNsAK0Fm5pAwvV7Secdc8kXFeCrXvIOQIGagvXLeleYsNeGOUzI4+xs44goD1EODKa1DFZexrsawo1LZoyZbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FAiYB9tK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A67FC2BD10;
-	Mon, 15 Apr 2024 14:44:31 +0000 (UTC)
+	 MIME-Version; b=u8pTROkVq4c73TNWqxor/z7yAtQ1qSkslJQgXdyBXvmyTqk8tiXlIkDg5GeEBrvDbK95YqxysRXeA878WDpUK5EDXsH/Es2QxU06Od+HNc5p/QfRlfkTA48CTqnpfTc/3IPojBue0GIRPWs8Zjnk1Mn2vl8dP33V4rKO6MHXrzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGULawWm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B25C113CC;
+	Mon, 15 Apr 2024 14:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192272;
-	bh=CNbuw7OT1TH2i21cq6nPeoGx6i5lbK6dY5v+cgRdZNw=;
+	s=korg; t=1713191855;
+	bh=bHkLUvy2IdHI6zsjHnJ/vwD3NqeqWwxTSAlKedgSwN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FAiYB9tKjQj4lKHzZDI0eqDEZST/adXSRz8hf0Qn2iFAc0Ds0Z6BNVQIOpxM6TGAu
-	 QzBD1xoJ8p3WpBw76AbNV8ELAV7vh2sMZ5pycJnw3zdk5N6KONHBzsvwi5NeO5nZ4T
-	 qhKBWBc8Hq4HLYOe/o3DzrdTUOaKCTU6u1ZjIr2w=
+	b=zGULawWm7XloL4W3QzgdmwulaSxKm58Hp1C2Q6GC6AyBamoeWmaKc1DOo7bBbJrQS
+	 TfcZG0kBSMK2c85HTdihl4QiMQNzmU38j8Lm4Am6Ztg9nSCusiagwIRSBS614TFvyK
+	 44lEIfJAsD/J+w6eDsuuegDxNVt9GpJmA1kyv/34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Timo Lindfors <timo.lindfors@iki.fi>,
-	Alex Constantino <dreaming.about.electric.sheep@gmail.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 06/45] Revert "drm/qxl: simplify qxl_fence_wait"
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 108/122] x86/bugs: Fix BHI documentation
 Date: Mon, 15 Apr 2024 16:21:13 +0200
-Message-ID: <20240415141942.432718374@linuxfoundation.org>
+Message-ID: <20240415141956.614101730@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
-References: <20240415141942.235939111@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +64,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Constantino <dreaming.about.electric.sheep@gmail.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 07ed11afb68d94eadd4ffc082b97c2331307c5ea ]
+commit dfe648903f42296866d79f10d03f8c85c9dfba30 upstream.
 
-This reverts commit 5a838e5d5825c85556011478abde708251cc0776.
+Fix up some inaccuracies in the BHI documentation.
 
-Changes from commit 5a838e5d5825 ("drm/qxl: simplify qxl_fence_wait") would
-result in a '[TTM] Buffer eviction failed' exception whenever it reached a
-timeout.
-Due to a dependency to DMA_FENCE_WARN this also restores some code deleted
-by commit d72277b6c37d ("dma-buf: nuke DMA_FENCE_TRACE macros v2").
-
-Fixes: 5a838e5d5825 ("drm/qxl: simplify qxl_fence_wait")
-Link: https://lore.kernel.org/regressions/ZTgydqRlK6WX_b29@eldamar.lan/
-Reported-by: Timo Lindfors <timo.lindfors@iki.fi>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1054514
-Signed-off-by: Alex Constantino <dreaming.about.electric.sheep@gmail.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240404181448.1643-2-dreaming.about.electric.sheep@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/8c84f7451bfe0dd08543c6082a383f390d4aa7e2.1712813475.git.jpoimboe@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/qxl/qxl_release.c | 50 +++++++++++++++++++++++++++----
- include/linux/dma-fence.h         |  7 +++++
- 2 files changed, 52 insertions(+), 5 deletions(-)
+ Documentation/admin-guide/hw-vuln/spectre.rst   |   15 ++++++++-------
+ Documentation/admin-guide/kernel-parameters.txt |   12 +++++++-----
+ 2 files changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/qxl/qxl_release.c b/drivers/gpu/drm/qxl/qxl_release.c
-index b19f2f00b2158..d4f26075383da 100644
---- a/drivers/gpu/drm/qxl/qxl_release.c
-+++ b/drivers/gpu/drm/qxl/qxl_release.c
-@@ -58,16 +58,56 @@ static long qxl_fence_wait(struct dma_fence *fence, bool intr,
- 			   signed long timeout)
- {
- 	struct qxl_device *qdev;
-+	struct qxl_release *release;
-+	int count = 0, sc = 0;
-+	bool have_drawable_releases;
- 	unsigned long cur, end = jiffies + timeout;
+--- a/Documentation/admin-guide/hw-vuln/spectre.rst
++++ b/Documentation/admin-guide/hw-vuln/spectre.rst
+@@ -439,11 +439,11 @@ The possible values in this file are:
+    - System is protected by retpoline
+  * - BHI: BHI_DIS_S
+    - System is protected by BHI_DIS_S
+- * - BHI: SW loop; KVM SW loop
++ * - BHI: SW loop, KVM SW loop
+    - System is protected by software clearing sequence
+  * - BHI: Syscall hardening
+    - Syscalls are hardened against BHI
+- * - BHI: Syscall hardening; KVM: SW loop
++ * - BHI: Syscall hardening, KVM: SW loop
+    - System is protected from userspace attacks by syscall hardening; KVM is protected by software clearing sequence
  
- 	qdev = container_of(fence->lock, struct qxl_device, release_lock);
-+	release = container_of(fence, struct qxl_release, base);
-+	have_drawable_releases = release->type == QXL_RELEASE_DRAWABLE;
+ Full mitigation might require a microcode update from the CPU
+@@ -666,13 +666,14 @@ kernel command line.
+ 		of the HW BHI control and the SW BHB clearing sequence.
  
--	if (!wait_event_timeout(qdev->release_event,
--				(dma_fence_is_signaled(fence) ||
--				 (qxl_io_notify_oom(qdev), 0)),
--				timeout))
--		return 0;
-+retry:
-+	sc++;
-+
-+	if (dma_fence_is_signaled(fence))
-+		goto signaled;
-+
-+	qxl_io_notify_oom(qdev);
-+
-+	for (count = 0; count < 11; count++) {
-+		if (!qxl_queue_garbage_collect(qdev, true))
-+			break;
-+
-+		if (dma_fence_is_signaled(fence))
-+			goto signaled;
-+	}
-+
-+	if (dma_fence_is_signaled(fence))
-+		goto signaled;
-+
-+	if (have_drawable_releases || sc < 4) {
-+		if (sc > 2)
-+			/* back off */
-+			usleep_range(500, 1000);
-+
-+		if (time_after(jiffies, end))
-+			return 0;
-+
-+		if (have_drawable_releases && sc > 300) {
-+			DMA_FENCE_WARN(fence,
-+				       "failed to wait on release %llu after spincount %d\n",
-+				       fence->context & ~0xf0000000, sc);
-+			goto signaled;
-+		}
-+		goto retry;
-+	}
-+	/*
-+	 * yeah, original sync_obj_wait gave up after 3 spins when
-+	 * have_drawable_releases is not set.
-+	 */
+ 		on
+-			unconditionally enable.
++			(default) Enable the HW or SW mitigation as
++			needed.
+ 		off
+-			unconditionally disable.
++			Disable the mitigation.
+ 		auto
+-			enable if hardware mitigation
+-			control(BHI_DIS_S) is available, otherwise
+-			enable alternate mitigation in KVM.
++			Enable the HW mitigation if needed, but
++			*don't* enable the SW mitigation except for KVM.
++			The system may be vulnerable.
  
-+signaled:
- 	cur = jiffies;
- 	if (time_after(cur, end))
- 		return 0;
-diff --git a/include/linux/dma-fence.h b/include/linux/dma-fence.h
-index 9d276655cc25a..6659d0369ec5c 100644
---- a/include/linux/dma-fence.h
-+++ b/include/linux/dma-fence.h
-@@ -631,4 +631,11 @@ u64 dma_fence_context_alloc(unsigned num);
- 			##args);					\
- 	} while (0)
+ For spectre_v2_user see Documentation/admin-guide/kernel-parameters.txt
  
-+#define DMA_FENCE_WARN(f, fmt, args...) \
-+	do {								\
-+		struct dma_fence *__ff = (f);				\
-+		pr_warn("f %llu#%llu: " fmt, __ff->context, __ff->seqno,\
-+			 ##args);					\
-+	} while (0)
-+
- #endif /* __LINUX_DMA_FENCE_H */
--- 
-2.43.0
-
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3343,6 +3343,7 @@
+ 					       reg_file_data_sampling=off [X86]
+ 					       retbleed=off [X86]
+ 					       spec_store_bypass_disable=off [X86,PPC]
++					       spectre_bhi=off [X86]
+ 					       spectre_v2_user=off [X86]
+ 					       srbds=off [X86,INTEL]
+ 					       ssbd=force-off [ARM64]
+@@ -5926,11 +5927,12 @@
+ 			deployment of the HW BHI control and the SW BHB
+ 			clearing sequence.
+ 
+-			on   - unconditionally enable.
+-			off  - unconditionally disable.
+-			auto - (default) enable hardware mitigation
+-			       (BHI_DIS_S) if available, otherwise enable
+-			       alternate mitigation in KVM.
++			on   - (default) Enable the HW or SW mitigation
++			       as needed.
++			off  - Disable the mitigation.
++			auto - Enable the HW mitigation if needed, but
++			       *don't* enable the SW mitigation except
++			       for KVM.  The system may be vulnerable.
+ 
+ 	spectre_v2=	[X86] Control mitigation of Spectre variant 2
+ 			(indirect branch speculation) vulnerability.
 
 
 
