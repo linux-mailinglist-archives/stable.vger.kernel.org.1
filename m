@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-39502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5CE8A51E3
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 15:42:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A13D8A51E4
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 15:42:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77EC4285420
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 13:42:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCA501C22645
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 13:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57DA576033;
-	Mon, 15 Apr 2024 13:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3651F74BE2;
+	Mon, 15 Apr 2024 13:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sMz9AXXP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ipJ31KkC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180FC1C69D
-	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 13:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EA476044
+	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 13:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713188319; cv=none; b=tUiY7Usw+lgeq/ZLCpMjhpnKmyHIdNSGsD/pj8m7jkWPxvJwHaVQLVqjFOXtad1pYBSs/T3bZs7jOWu8RH/5yEBA2n1pjDS1vR4BO1uOxR29HGjNt6JmHnr4Pki1NnzgbxZvw7dA7w+G8dt3VH3wXgQX0wiiZez4XcI8+Gi2deI=
+	t=1713188321; cv=none; b=OFUtqJmqXqiZBha/TrUlQA4qB5HtjZWsxD/oBcELm/OhVJoAGM4iK/P5pu3/HqrdAg8Y/bBkqlL0VD9abHm9EMAVzESpHhJKRbTT9+7mLoWVLoylz15eMdDDPcHxbwo1kiSsSY2AA2FdOWJBMp+5QXOXMsU9X9I1P+7dhyqoKR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713188319; c=relaxed/simple;
-	bh=GiEjcePh12cU+sOL3/Sz2lJ/zz/7uOW09gBcjy8GUgo=;
+	s=arc-20240116; t=1713188321; c=relaxed/simple;
+	bh=H+ZQ6uKxbKtFPR1ybo2MEY5KeVPcwaSarNm9OpRdx7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L0yd1yzx4fjTCb0krojUkqYUYS7vLDwBgrsfY4DGoRGzpyJHaWTT3IKE3EuLAYXiJAS8mxSMN9x4/AiyWQ/JqTzaPzKRIDnxcmglTspeLtew8qt51Vf48yyZjA1UpN1rBRGKY2x/EMn6Th2jGOyxLf0QCMGaHBDbGUVAyvFChs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sMz9AXXP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD73C3277B;
-	Mon, 15 Apr 2024 13:38:36 +0000 (UTC)
+	 MIME-Version; b=sYeNnJlKeUVviOFT6PH2B70fVi2cu0M4J+z5Wr3aNHwhz6Rd03VobJeq2dE0NoCM1nrCqJQ4/1VMKosNLwXXA9WsM2MMC5A0IKa4puOi+SOEmSbtNv4RUdfkCKsrDeuUWTZvCEpBygU27VwynBkWeJGl4qIsQD8MQcr/t9i1uXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ipJ31KkC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1286C2BD10;
+	Mon, 15 Apr 2024 13:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713188318;
-	bh=GiEjcePh12cU+sOL3/Sz2lJ/zz/7uOW09gBcjy8GUgo=;
+	s=k20201202; t=1713188320;
+	bh=H+ZQ6uKxbKtFPR1ybo2MEY5KeVPcwaSarNm9OpRdx7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sMz9AXXP+TVUd3KPlKzMhNrKU360Gw/8EdpppPlttt2wwLjn11jjiooJUC6m6b7Tm
-	 gBd59jUViYnSc9z723XMpNePO/6cxhKMVO3mIXTF5GsQjgBC4O0RAaFJShhA4ee1oa
-	 ypzH5ludpaeIyrpSbBLQhM6kxgbeQeP8BmXFe+BQ23v0hVKV9R3IhpBHku6VMotByy
-	 i1Qyj4Nz/F3WqZRgolOkdN/Fl3Zl4HMM+jM28flQF3Z1Vk5Z8RYwEOpJiamdnoUyRY
-	 RKgp3hMjU3urHVsdW131y5LYHPo1dlotCb/UP7psCP0nJncjrPq1cUJEyRGZlI8FXV
-	 0DqVyf4SYoEBA==
+	b=ipJ31KkCjEKXX8gx48O5eAgfXQD2HI40Yvvwo6eItYsNzZuGZLgYEEWhASPFJlZCZ
+	 xqSEWNVK4Y7LC2i/OplOH1qHiu3mJSXrR+V5zX0iceNnuF5cbK1IvDJXpCK7+ZkMyk
+	 KBkb1jRNS5tHshIxRaqBHHLNkO7sizAespoDPuJDX16SeUfPouACOmODOphdvb351I
+	 eLQ/xUj7jV6qt+2tLskCjtHUME7bLoTfTOOXDmDtoF7NejHHU6p7EtMMgflswW+h60
+	 eH8Jlr2YgsKvZ2G5Ud0F9B53NrPtBMYBiIr4vRaYCEtZVET+t4B/0qaLyeHYzs5eDO
+	 eDfMz780GmUTA==
 From: Sasha Levin <sashal@kernel.org>
 To: kernel-lts@openela.org
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
+Cc: Steve French <stfrench@microsoft.com>,
+	David Howells <dhowells@redhat.com>,
+	Micah Veilleux <micah.veilleux@iba-group.com>,
 	stable@vger.kernel.org,
-	kernel test robot <lkp@intel.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14-openela 021/190] MIPS: KVM: Fix a build warning about variable set but not used
-Date: Mon, 15 Apr 2024 06:49:11 -0400
-Message-ID: <20240415105208.3137874-22-sashal@kernel.org>
+Subject: [PATCH 4.14-openela 022/190] smb3: fix touch -h of symlink
+Date: Mon, 15 Apr 2024 06:49:12 -0400
+Message-ID: <20240415105208.3137874-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240415105208.3137874-1-sashal@kernel.org>
 References: <20240415105208.3137874-1-sashal@kernel.org>
@@ -61,55 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit 83767a67e7b6a0291cde5681ec7e3708f3f8f877 ]
+[ Upstream commit 475efd9808a3094944a56240b2711349e433fb66 ]
 
-After commit 411740f5422a ("KVM: MIPS/MMU: Implement KVM_CAP_SYNC_MMU")
-old_pte is no longer used in kvm_mips_map_page(). So remove it to fix a
-build warning about variable set but not used:
+For example:
+      touch -h -t 02011200 testfile
+where testfile is a symlink would not change the timestamp, but
+      touch -t 02011200 testfile
+does work to change the timestamp of the target
 
-   arch/mips/kvm/mmu.c: In function 'kvm_mips_map_page':
->> arch/mips/kvm/mmu.c:701:29: warning: variable 'old_pte' set but not used [-Wunused-but-set-variable]
-     701 |         pte_t *ptep, entry, old_pte;
-         |                             ^~~~~~~
-
+Suggested-by: David Howells <dhowells@redhat.com>
+Reported-by: Micah Veilleux <micah.veilleux@iba-group.com>
+Closes: https://bugzilla.samba.org/show_bug.cgi?id=14476
 Cc: stable@vger.kernel.org
-Fixes: 411740f5422a960 ("KVM: MIPS/MMU: Implement KVM_CAP_SYNC_MMU")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310070530.aARZCSfh-lkp@intel.com/
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kvm/mmu.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/cifs/cifsfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
-index ee64db0327933..0ed17805dfe4c 100644
---- a/arch/mips/kvm/mmu.c
-+++ b/arch/mips/kvm/mmu.c
-@@ -701,7 +701,7 @@ static int kvm_mips_map_page(struct kvm_vcpu *vcpu, unsigned long gpa,
- 	gfn_t gfn = gpa >> PAGE_SHIFT;
- 	int srcu_idx, err;
- 	kvm_pfn_t pfn;
--	pte_t *ptep, entry, old_pte;
-+	pte_t *ptep, entry;
- 	bool writeable;
- 	unsigned long prot_bits;
- 	unsigned long mmu_seq;
-@@ -774,7 +774,6 @@ static int kvm_mips_map_page(struct kvm_vcpu *vcpu, unsigned long gpa,
- 	entry = pfn_pte(pfn, __pgprot(prot_bits));
+diff --git a/fs/cifs/cifsfs.c b/fs/cifs/cifsfs.c
+index 1d3f98572068f..c676d916b4b6d 100644
+--- a/fs/cifs/cifsfs.c
++++ b/fs/cifs/cifsfs.c
+@@ -924,6 +924,7 @@ const struct inode_operations cifs_file_inode_ops = {
  
- 	/* Write the PTE */
--	old_pte = *ptep;
- 	set_pte(ptep, entry);
- 
- 	err = 0;
+ const struct inode_operations cifs_symlink_inode_ops = {
+ 	.get_link = cifs_get_link,
++	.setattr = cifs_setattr,
+ 	.permission = cifs_permission,
+ 	.listxattr = cifs_listxattr,
+ };
 -- 
 2.43.0
 
