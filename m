@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-39886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C9A8A5531
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C4138A5576
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 479CAB23C87
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAD6B2815F8
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8870676F1B;
-	Mon, 15 Apr 2024 14:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E50374C4;
+	Mon, 15 Apr 2024 14:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxrzZkWN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UtFwXKKt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F1B74E3A;
-	Mon, 15 Apr 2024 14:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288751E501;
+	Mon, 15 Apr 2024 14:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192113; cv=none; b=Z0cLsM7mmbmZKUlBotkR3hh0o1K6A09nGYY5SiCtLljMD+xjBSbZ3fDP0hMvzhbRuLI8emyP4RFLahkY67KBir3Wo4kCqbQF0NGZzbs1OwaMTfhkB5hUYlOteHCksh1nR9tV7gyug2s02GdLKtTlFgsb+j+t9+zL6k5mGbgwTyQ=
+	t=1713192269; cv=none; b=atT4Bd5kqYC4ndjhB4PGwxzptGaOxi8feXOad2yyLRnzAo6nCSCMtU+vUkTzePuxNOKR2AsJ4fjtEP4zIqLP4SyIdjZhief8B6EJ6cFfGTPipEkamPQbQGNrjbRRVtHFHJZeMHSHXTtGAVwZK3KKyoCSSmotW1zfW/BSRCOoWOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192113; c=relaxed/simple;
-	bh=A3liOor6tpDowbyqT5LpjWE5KGJu4jq9V6R9Yae7oTU=;
+	s=arc-20240116; t=1713192269; c=relaxed/simple;
+	bh=cMb9DXhV50etmzlVCUmijpJ+PHhEocX40ixTfp+0gG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cq2tJEu7W43+PLumBIlXedbFayNIZiLtCMEtqE0A2WFi1R0yMf2rr3v0weu8Caw1U6AjzT5DYk6sRJcUR8Usw9shD/pEJaozZUMQvmo4kcD2bwgj37BHQVn54Aib5HhHADec2eTlBk74PBRmU/n68d1+o19Mq4nsVMRyAnaoH8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxrzZkWN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0605C113CC;
-	Mon, 15 Apr 2024 14:41:52 +0000 (UTC)
+	 MIME-Version; b=I/D9iL1pJ1iSMGb5TtEb/dsycvsE64ojOnwhN9WJfSO2k2qM+4ckDjyUhzwHcHCdhZZ6d14BZL4885WVDH7h0Kzv3EgRXDqrblsW25EzYKLw8I3p84UOlVcbzwE0xYodk3IL1H6FQF8ialSFAm8My0C52XpaEaQcuHanza2IdMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UtFwXKKt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7864DC113CC;
+	Mon, 15 Apr 2024 14:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192113;
-	bh=A3liOor6tpDowbyqT5LpjWE5KGJu4jq9V6R9Yae7oTU=;
+	s=korg; t=1713192269;
+	bh=cMb9DXhV50etmzlVCUmijpJ+PHhEocX40ixTfp+0gG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pxrzZkWN9c35VfSq9yuMZBKySi4BUe68lhkYF2BWUKIDD2OHnRQXyPZLgAxy2SseX
-	 T93kIbY/U+2tRdL14LL+OFD1Ir2jcg/eUrW7gFsG9SUcQA0QqxFchk+gIEsQa/gp8+
-	 g6ae04A7IBZx3tvOEYDiJ6v12ezwtRSmbG6V1KjY=
+	b=UtFwXKKtIoT5B3bgD8JjiFZxXMlXR9hr9ECGSlAmMtPEA67NROVNn9BArull8mj3D
+	 GioQVurLsQhbjrc1GLpWYCgqCro/BDtbKEQXFYSTXg0d63jBJ6WlafojHWGFMEGNYj
+	 Mm9j4g8LoR61I7vK3X/PPEOTc8+SW7ROUAZlc7wA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihuang Yu <yihyu@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Gavin Shan <gshan@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	stable@kernel.org
-Subject: [PATCH 6.1 51/69] vhost: Add smp_rmb() in vhost_enable_notify()
+	David Ahern <dsahern@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 15/45] ipv6: fib: hide unused pn variable
 Date: Mon, 15 Apr 2024 16:21:22 +0200
-Message-ID: <20240415141947.706137466@linuxfoundation.org>
+Message-ID: <20240415141942.699346833@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
+References: <20240415141942.235939111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,75 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavin Shan <gshan@redhat.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit df9ace7647d4123209395bb9967e998d5758c645 upstream.
+[ Upstream commit 74043489fcb5e5ca4074133582b5b8011b67f9e7 ]
 
-A smp_rmb() has been missed in vhost_enable_notify(), inspired by
-Will. Otherwise, it's not ensured the available ring entries pushed
-by guest can be observed by vhost in time, leading to stale available
-ring entries fetched by vhost in vhost_get_vq_desc(), as reported by
-Yihuang Yu on NVidia's grace-hopper (ARM64) platform.
+When CONFIG_IPV6_SUBTREES is disabled, the only user is hidden, causing
+a 'make W=1' warning:
 
-  /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64      \
-  -accel kvm -machine virt,gic-version=host -cpu host          \
-  -smp maxcpus=1,cpus=1,sockets=1,clusters=1,cores=1,threads=1 \
-  -m 4096M,slots=16,maxmem=64G                                 \
-  -object memory-backend-ram,id=mem0,size=4096M                \
-   :                                                           \
-  -netdev tap,id=vnet0,vhost=true                              \
-  -device virtio-net-pci,bus=pcie.8,netdev=vnet0,mac=52:54:00:f1:26:b0
-   :
-  guest# netperf -H 10.26.1.81 -l 60 -C -c -t UDP_STREAM
-  virtio_net virtio0: output.0:id 100 is not a head!
+net/ipv6/ip6_fib.c: In function 'fib6_add':
+net/ipv6/ip6_fib.c:1388:32: error: variable 'pn' set but not used [-Werror=unused-but-set-variable]
 
-Add the missed smp_rmb() in vhost_enable_notify(). When it returns true,
-it means there's still pending tx buffers. Since it might read indices,
-so it still can bypass the smp_rmb() in vhost_get_vq_desc(). Note that
-it should be safe until vq->avail_idx is changed by commit d3bb267bbdcb
-("vhost: cache avail index in vhost_enable_notify()").
+Add another #ifdef around the variable declaration, matching the other
+uses in this file.
 
-Fixes: d3bb267bbdcb ("vhost: cache avail index in vhost_enable_notify()")
-Cc: <stable@kernel.org> # v5.18+
-Reported-by: Yihuang Yu <yihyu@redhat.com>
-Suggested-by: Will Deacon <will@kernel.org>
-Signed-off-by: Gavin Shan <gshan@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20240328002149.1141302-3-gshan@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 66729e18df08 ("[IPV6] ROUTE: Make sure we have fn->leaf when adding a node on subtree.")
+Link: https://lore.kernel.org/netdev/20240322131746.904943-1-arnd@kernel.org/
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240408074219.3030256-1-arnd@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vhost.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ net/ipv6/ip6_fib.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -2572,9 +2572,19 @@ bool vhost_enable_notify(struct vhost_de
- 		       &vq->avail->idx, r);
- 		return false;
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index bbb9ed6d1ae6f..c0ff5ee490e7b 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -1375,7 +1375,10 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
+ 	     struct nl_info *info, struct netlink_ext_ack *extack)
+ {
+ 	struct fib6_table *table = rt->fib6_table;
+-	struct fib6_node *fn, *pn = NULL;
++	struct fib6_node *fn;
++#ifdef CONFIG_IPV6_SUBTREES
++	struct fib6_node *pn = NULL;
++#endif
+ 	int err = -ENOMEM;
+ 	int allow_create = 1;
+ 	int replace_required = 0;
+@@ -1399,9 +1402,9 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
+ 		goto out;
  	}
-+
- 	vq->avail_idx = vhost16_to_cpu(vq, avail_idx);
-+	if (vq->avail_idx != vq->last_avail_idx) {
-+		/* Since we have updated avail_idx, the following
-+		 * call to vhost_get_vq_desc() will read available
-+		 * ring entries. Make sure that read happens after
-+		 * the avail_idx read.
-+		 */
-+		smp_rmb();
-+		return true;
-+	}
  
--	return vq->avail_idx != vq->last_avail_idx;
-+	return false;
- }
- EXPORT_SYMBOL_GPL(vhost_enable_notify);
++#ifdef CONFIG_IPV6_SUBTREES
+ 	pn = fn;
  
+-#ifdef CONFIG_IPV6_SUBTREES
+ 	if (rt->fib6_src.plen) {
+ 		struct fib6_node *sn;
+ 
+-- 
+2.43.0
+
 
 
 
