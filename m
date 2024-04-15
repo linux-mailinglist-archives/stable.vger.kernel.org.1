@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-39850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627058A5506
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 034BD8A54C4
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F95528122B
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57A4AB224DF
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620E42119;
-	Mon, 15 Apr 2024 14:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ADFA71B3B;
+	Mon, 15 Apr 2024 14:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlgEQzj0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4sBk3Qs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1B914265;
-	Mon, 15 Apr 2024 14:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258168BF8;
+	Mon, 15 Apr 2024 14:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192002; cv=none; b=V/zDD7WJZgs0+LTvQeSLdcGcp/Li+CpOb03sHiICdV6BDVOCVP8kYjYberxSN8So5UbGZeK9GGSjZDYMgKXx10dx3fJGXysN6S54EaMTZsbc/eaRxtFYdCO1ikB7bh4KKk4wodtadHJbADtm3JMp42TRWM/xm+7J1KYX190D394=
+	t=1713191827; cv=none; b=k3liQ6AEzIRBFPakKfR11NDf4hjoVdpJaRQ6LAYQehpvt2FNgm3842PTYkqwHrxn+gZTMnpVh+Ns3xTgiPu5E6DitgaPpF0FMbpFboBHT4kusbPP5KLWoPVP3Pafw+ulEgx1SW5urDwSTeX4XF1eXtXxhKx0JP1JJ/IyDM9dgLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192002; c=relaxed/simple;
-	bh=jSdR74UiCszaOJO2WjIIneRGQmMOE/pMQxMdDrIkEtQ=;
+	s=arc-20240116; t=1713191827; c=relaxed/simple;
+	bh=xxks4pLNfsngS6S7SYkanYCEpsAzI9yfNrC2W72614c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4bxhYWLosvuazWpixvx1QlAbCuG3StqaWpQOgjEM4+iaC49fKJ8Eh6J5853iGk0J7LsPSSp380Mm0uPBCTG8PLsVKEM845SgXyTplNDotDnz3+7OVCsVS6LRypEub92h7MyAhXY4kAn9g2UMGgTHnAV04WHcCggBiawvZBui30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlgEQzj0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3C2C113CC;
-	Mon, 15 Apr 2024 14:40:01 +0000 (UTC)
+	 MIME-Version; b=rISx0rXYjL7hX75ItqMTV7M6X8XnHbYQp61CKXBCfa+xWOLWh55R83MNZrcViD0vqUaaSEvGUVPs+jLG74PsH67Schnv3kdYD1VgMIAbYsF8xn/07jOEk+GNpsNdVRJQV6rBu3DXE/7oYxlscYPJt2EUrWHEb+uF0PtSYx/nMQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4sBk3Qs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1665C113CC;
+	Mon, 15 Apr 2024 14:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192002;
-	bh=jSdR74UiCszaOJO2WjIIneRGQmMOE/pMQxMdDrIkEtQ=;
+	s=korg; t=1713191827;
+	bh=xxks4pLNfsngS6S7SYkanYCEpsAzI9yfNrC2W72614c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FlgEQzj0mO5As82VY7ZwDScgVFwm7bMM+w3GqvRsxgE972f0YL/dSrd1V1xdt6WMO
-	 ILKaLWnkzkAXuClYVFHhLQDup472q8A0bIpy2G16mfVIJBIxXs/uPZiJqtO0zqXcOv
-	 bJGeNhwQ2j7xIkMFhjWmKxurWnejirmXqBXN4mJY=
+	b=W4sBk3QsXztdL264EFOdrhXdOXXO59Crtms5qLpYcrvPXC0uGWiLft44m+46997pc
+	 OjgwXRZCXEjTyTuF3FovMWaQ0guQN3wlRmLfJrP6QX/7M4Wb34vdDykOojExdwUgf6
+	 lkykVFGgn56iyxMsr1D9Eb8mz5HIwggrJXLaN/jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 34/69] af_unix: Do not use atomic ops for unix_sk(sk)->inflight.
+	Yihuang Yu <yihyu@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Gavin Shan <gshan@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	stable@kernel.org
+Subject: [PATCH 6.6 100/122] vhost: Add smp_rmb() in vhost_vq_avail_empty()
 Date: Mon, 15 Apr 2024 16:21:05 +0200
-Message-ID: <20240415141947.191718572@linuxfoundation.org>
+Message-ID: <20240415141956.374715688@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,152 +66,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Gavin Shan <gshan@redhat.com>
 
-[ Upstream commit 97af84a6bba2ab2b9c704c08e67de3b5ea551bb2 ]
+commit 22e1992cf7b034db5325660e98c41ca5afa5f519 upstream.
 
-When touching unix_sk(sk)->inflight, we are always under
-spin_lock(&unix_gc_lock).
+A smp_rmb() has been missed in vhost_vq_avail_empty(), spotted by
+Will. Otherwise, it's not ensured the available ring entries pushed
+by guest can be observed by vhost in time, leading to stale available
+ring entries fetched by vhost in vhost_get_vq_desc(), as reported by
+Yihuang Yu on NVidia's grace-hopper (ARM64) platform.
 
-Let's convert unix_sk(sk)->inflight to the normal unsigned long.
+  /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64      \
+  -accel kvm -machine virt,gic-version=host -cpu host          \
+  -smp maxcpus=1,cpus=1,sockets=1,clusters=1,cores=1,threads=1 \
+  -m 4096M,slots=16,maxmem=64G                                 \
+  -object memory-backend-ram,id=mem0,size=4096M                \
+   :                                                           \
+  -netdev tap,id=vnet0,vhost=true                              \
+  -device virtio-net-pci,bus=pcie.8,netdev=vnet0,mac=52:54:00:f1:26:b0
+   :
+  guest# netperf -H 10.26.1.81 -l 60 -C -c -t UDP_STREAM
+  virtio_net virtio0: output.0:id 100 is not a head!
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240123170856.41348-3-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 47d8ac011fe1 ("af_unix: Fix garbage collector racing against connect()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the missed smp_rmb() in vhost_vq_avail_empty(). When tx_can_batch()
+returns true, it means there's still pending tx buffers. Since it might
+read indices, so it still can bypass the smp_rmb() in vhost_get_vq_desc().
+Note that it should be safe until vq->avail_idx is changed by commit
+275bf960ac697 ("vhost: better detection of available buffers").
+
+Fixes: 275bf960ac69 ("vhost: better detection of available buffers")
+Cc: <stable@kernel.org> # v4.11+
+Reported-by: Yihuang Yu <yihyu@redhat.com>
+Suggested-by: Will Deacon <will@kernel.org>
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20240328002149.1141302-2-gshan@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/af_unix.h |  2 +-
- net/unix/af_unix.c    |  4 ++--
- net/unix/garbage.c    | 17 ++++++++---------
- net/unix/scm.c        |  8 +++++---
- 4 files changed, 16 insertions(+), 15 deletions(-)
+ drivers/vhost/vhost.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/af_unix.h b/include/net/af_unix.h
-index 0920b669b9b31..16d6936baa2fb 100644
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -54,7 +54,7 @@ struct unix_sock {
- 	struct mutex		iolock, bindlock;
- 	struct sock		*peer;
- 	struct list_head	link;
--	atomic_long_t		inflight;
-+	unsigned long		inflight;
- 	spinlock_t		lock;
- 	unsigned long		gc_flags;
- #define UNIX_GC_CANDIDATE	0
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 373530303ad19..0a75d76535f75 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -968,11 +968,11 @@ static struct sock *unix_create1(struct net *net, struct socket *sock, int kern,
- 	sk->sk_write_space	= unix_write_space;
- 	sk->sk_max_ack_backlog	= net->unx.sysctl_max_dgram_qlen;
- 	sk->sk_destruct		= unix_sock_destructor;
--	u	  = unix_sk(sk);
-+	u = unix_sk(sk);
-+	u->inflight = 0;
- 	u->path.dentry = NULL;
- 	u->path.mnt = NULL;
- 	spin_lock_init(&u->lock);
--	atomic_long_set(&u->inflight, 0);
- 	INIT_LIST_HEAD(&u->link);
- 	mutex_init(&u->iolock); /* single task reading lock */
- 	mutex_init(&u->bindlock); /* single task binding lock */
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index 9bfffe2a7f020..7b326582d97da 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -166,17 +166,18 @@ static void scan_children(struct sock *x, void (*func)(struct unix_sock *),
- 
- static void dec_inflight(struct unix_sock *usk)
- {
--	atomic_long_dec(&usk->inflight);
-+	usk->inflight--;
- }
- 
- static void inc_inflight(struct unix_sock *usk)
- {
--	atomic_long_inc(&usk->inflight);
-+	usk->inflight++;
- }
- 
- static void inc_inflight_move_tail(struct unix_sock *u)
- {
--	atomic_long_inc(&u->inflight);
-+	u->inflight++;
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2799,9 +2799,19 @@ bool vhost_vq_avail_empty(struct vhost_d
+ 	r = vhost_get_avail_idx(vq, &avail_idx);
+ 	if (unlikely(r))
+ 		return false;
 +
- 	/* If this still might be part of a cycle, move it to the end
- 	 * of the list, so that it's checked even if it was already
- 	 * passed over
-@@ -237,14 +238,12 @@ void unix_gc(void)
- 	 */
- 	list_for_each_entry_safe(u, next, &gc_inflight_list, link) {
- 		long total_refs;
--		long inflight_refs;
+ 	vq->avail_idx = vhost16_to_cpu(vq, avail_idx);
++	if (vq->avail_idx != vq->last_avail_idx) {
++		/* Since we have updated avail_idx, the following
++		 * call to vhost_get_vq_desc() will read available
++		 * ring entries. Make sure that read happens after
++		 * the avail_idx read.
++		 */
++		smp_rmb();
++		return false;
++	}
  
- 		total_refs = file_count(u->sk.sk_socket->file);
--		inflight_refs = atomic_long_read(&u->inflight);
+-	return vq->avail_idx == vq->last_avail_idx;
++	return true;
+ }
+ EXPORT_SYMBOL_GPL(vhost_vq_avail_empty);
  
--		BUG_ON(inflight_refs < 1);
--		BUG_ON(total_refs < inflight_refs);
--		if (total_refs == inflight_refs) {
-+		BUG_ON(!u->inflight);
-+		BUG_ON(total_refs < u->inflight);
-+		if (total_refs == u->inflight) {
- 			list_move_tail(&u->link, &gc_candidates);
- 			__set_bit(UNIX_GC_CANDIDATE, &u->gc_flags);
- 			__set_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
-@@ -271,7 +270,7 @@ void unix_gc(void)
- 		/* Move cursor to after the current position. */
- 		list_move(&cursor, &u->link);
- 
--		if (atomic_long_read(&u->inflight) > 0) {
-+		if (u->inflight) {
- 			list_move_tail(&u->link, &not_cycle_list);
- 			__clear_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
- 			scan_children(&u->sk, inc_inflight_move_tail, NULL);
-diff --git a/net/unix/scm.c b/net/unix/scm.c
-index d1048b4c2baaf..4eff7da9f6f96 100644
---- a/net/unix/scm.c
-+++ b/net/unix/scm.c
-@@ -52,12 +52,13 @@ void unix_inflight(struct user_struct *user, struct file *fp)
- 	if (s) {
- 		struct unix_sock *u = unix_sk(s);
- 
--		if (atomic_long_inc_return(&u->inflight) == 1) {
-+		if (!u->inflight) {
- 			BUG_ON(!list_empty(&u->link));
- 			list_add_tail(&u->link, &gc_inflight_list);
- 		} else {
- 			BUG_ON(list_empty(&u->link));
- 		}
-+		u->inflight++;
- 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
- 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight + 1);
- 	}
-@@ -74,10 +75,11 @@ void unix_notinflight(struct user_struct *user, struct file *fp)
- 	if (s) {
- 		struct unix_sock *u = unix_sk(s);
- 
--		BUG_ON(!atomic_long_read(&u->inflight));
-+		BUG_ON(!u->inflight);
- 		BUG_ON(list_empty(&u->link));
- 
--		if (atomic_long_dec_and_test(&u->inflight))
-+		u->inflight--;
-+		if (!u->inflight)
- 			list_del_init(&u->link);
- 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
- 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - 1);
--- 
-2.43.0
-
 
 
 
