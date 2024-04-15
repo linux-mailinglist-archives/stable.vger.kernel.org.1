@@ -1,149 +1,148 @@
-Return-Path: <stable+bounces-39481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E4A68A505E
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 15:07:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D16108A51D2
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 15:41:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F7C91C22B04
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 13:07:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C955B242A3
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 13:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0BC413848E;
-	Mon, 15 Apr 2024 12:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A738E7174D;
+	Mon, 15 Apr 2024 13:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ufMqb1Uw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fTN2A08n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE952137C5F;
-	Mon, 15 Apr 2024 12:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671247317D
+	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 13:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713185481; cv=none; b=CmJ2nFFt99UzBjOhZdP1uQmSjy53t9iI6oW3EYv+rJ2KB3B2W/lB5VRTJ+HRaERLMUoeXrliVTYPzepjEHx6C0WqsBh+ny3KY+dzcUYpxu2brsb/PnFMK9AO8tHcaW3FwFcMcrUQTqkNY7Oxn1E8MzbAYWLJ7UiCpIbSytKZvsA=
+	t=1713188293; cv=none; b=oDjDfpvqDs0knjAkY+roLDGEi60W4gRXlTMEFGAGO7ZDFnlszP3dDcwRa2BxpDFhvs7Roa5wx3LuYL3LQcSJCJ+EGGZNSZHr5H6l65hWWcoM6UPSv2IGEZ3VpF4fGZ9ORmKo4wXwT5qUx2nqIAtL7Zk8b72IZCKsOjflcSRNcY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713185481; c=relaxed/simple;
-	bh=8X2R5O/GFd4ytGluhks2ZfMyhi5lmo/xAi/dGG6/gkI=;
+	s=arc-20240116; t=1713188293; c=relaxed/simple;
+	bh=Qa9sri7w5J6FhjUeW1+6YBibGuu3bKOl86W4ElzHXqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ej8/cmg2f2G/MWj+Q//X57LI0RYtMsBUSnMl52SbfcCfiJZY/JEKFmL4yYri6fjJjXb+YrBq/FZ4bvBkQvWToPJsadI2rOZBxeu0En6WK9U82huBaDT9anqb+3Pbf8pXQt9H9Jj2DnFCdkXWUtS2diok1bc/KYIwlZIYL7mNG6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ufMqb1Uw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB60DC2BD11;
-	Mon, 15 Apr 2024 12:51:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SAAit5qbTY0VC1+eF1mWXq8V3Zp3Xam9oGm0aJRDKa2+hTsA1eCjZlqgzV24osHmO2AjdCFoL/lbSpJx7+bdrpznisKbj6JB+CykPwo87Ks1XMsdZvu1hyOz5anasr9siI2IFIgaVk37oh3JqQw7PMeoqTk+caZE0fKkxSSNm3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fTN2A08n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2219EC4AF07;
+	Mon, 15 Apr 2024 13:38:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713185481;
-	bh=8X2R5O/GFd4ytGluhks2ZfMyhi5lmo/xAi/dGG6/gkI=;
+	s=k20201202; t=1713188292;
+	bh=Qa9sri7w5J6FhjUeW1+6YBibGuu3bKOl86W4ElzHXqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ufMqb1Uw9ge6WRN58UgoIUYFHi+gkNcAjmrEaooWsoUaI1zCrd0XuaewGepSSTfWC
-	 OZwQsVKlSh+a0jKaKlL5J61WBoAaXYN/8fHlzkmPdmVisLZUEvN9z+vWXkbcL5W8JO
-	 j1tx+aekrxDEIEze1wJOH1KFNd9Brb5yihoTheTmoiMHUpNNNamEU+e/v7mYBq+iBo
-	 WjmZl7QN2D60jTgXAQXo2dVsssE55ndzd5qhLxrJRiQJpyoFgKXEK7NuluoRByAuzv
-	 lYwHYk5DmfpZVpY7R/7SgjfjGUGAYr6oJFYhbpj++qkvEDzJ7iWHhIp1zlZUldjo8v
-	 oVJoyXPNvxLSw==
+	b=fTN2A08n/GxCYMSQVdwgUs4fcblEGR2D7RPmiPHZK4W1aXctdV1HgKC92V+XbEo02
+	 6bZ9dmWdEJeLHwcRT99AVCD/KP5HXZupJdnsIVYW3BSkYhJRQj5oFp+MIqxdmF5wW7
+	 L1j7MtRlQBCg3wKWz7nsbP5nv1Wnvf25iNGsy5jL848vVcUhn8y3e20VkCEXd9sf2K
+	 012B/f/PuF7bTZhANe+4pupv0k7OaZQ9v65KhKzcla0fD2atKqnykWLSoHMoeNktmh
+	 VAz5niJuXkA09yNnnp5W+vTIGYRpYp2neI0UXhlo0Q1m/40KRzE0Cfak+LkBkOHfWF
+	 PQKtQzIrW/0oQ==
 From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Adam Goldman <adamg@pobox.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Sasha Levin <sashal@kernel.org>,
-	linux1394-devel@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 4.19 4/4] firewire: ohci: mask bus reset interrupts between ISR and bottom half
-Date: Mon, 15 Apr 2024 06:05:17 -0400
-Message-ID: <20240415100520.3127870-4-sashal@kernel.org>
+To: kernel-lts@openela.org
+Cc: Takashi Iwai <tiwai@suse.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14-openela 003/190] ALSA: jack: Fix mutex call in snd_jack_report()
+Date: Mon, 15 Apr 2024 06:48:53 -0400
+Message-ID: <20240415105208.3137874-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240415100520.3127870-1-sashal@kernel.org>
-References: <20240415100520.3127870-1-sashal@kernel.org>
+In-Reply-To: <20240415105208.3137874-1-sashal@kernel.org>
+References: <20240415105208.3137874-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.312
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Adam Goldman <adamg@pobox.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 752e3c53de0fa3b7d817a83050b6699b8e9c6ec9 ]
+[ Upstream commit 89dbb335cb6a627a4067bc42caa09c8bc3326d40 ]
 
-In the FireWire OHCI interrupt handler, if a bus reset interrupt has
-occurred, mask bus reset interrupts until bus_reset_work has serviced and
-cleared the interrupt.
+snd_jack_report() is supposed to be callable from an IRQ context, too,
+and it's indeed used in that way from virtsnd driver.  The fix for
+input_dev race in commit 1b6a6fc5280e ("ALSA: jack: Access input_dev
+under mutex"), however, introduced a mutex lock in snd_jack_report(),
+and this resulted in a potential sleep-in-atomic.
 
-Normally, we always leave bus reset interrupts masked. We infer the bus
-reset from the self-ID interrupt that happens shortly thereafter. A
-scenario where we unmask bus reset interrupts was introduced in 2008 in
-a007bb857e0b26f5d8b73c2ff90782d9c0972620: If
-OHCI_PARAM_DEBUG_BUSRESETS (8) is set in the debug parameter bitmask, we
-will unmask bus reset interrupts so we can log them.
+For addressing that problem, this patch changes the relevant code to
+use the object get/put and removes the mutex usage.  That is,
+snd_jack_report(), it takes input_get_device() and leaves with
+input_put_device() for assuring the input_dev being assigned.
 
-irq_handler logs the bus reset interrupt. However, we can't clear the bus
-reset event flag in irq_handler, because we won't service the event until
-later. irq_handler exits with the event flag still set. If the
-corresponding interrupt is still unmasked, the first bus reset will
-usually freeze the system due to irq_handler being called again each
-time it exits. This freeze can be reproduced by loading firewire_ohci
-with "modprobe firewire_ohci debug=-1" (to enable all debugging output).
-Apparently there are also some cases where bus_reset_work will get called
-soon enough to clear the event, and operation will continue normally.
+Although the whole mutex could be reduced, we keep it because it can
+be still a protection for potential races between creation and
+deletion.
 
-This freeze was first reported a few months after a007bb85 was committed,
-but until now it was never fixed. The debug level could safely be set
-to -1 through sysfs after the module was loaded, but this would be
-ineffectual in logging bus reset interrupts since they were only
-unmasked during initialization.
-
-irq_handler will now leave the event flag set but mask bus reset
-interrupts, so irq_handler won't be called again and there will be no
-freeze. If OHCI_PARAM_DEBUG_BUSRESETS is enabled, bus_reset_work will
-unmask the interrupt after servicing the event, so future interrupts
-will be caught as desired.
-
-As a side effect to this change, OHCI_PARAM_DEBUG_BUSRESETS can now be
-enabled through sysfs in addition to during initial module loading.
-However, when enabled through sysfs, logging of bus reset interrupts will
-be effective only starting with the second bus reset, after
-bus_reset_work has executed.
-
-Signed-off-by: Adam Goldman <adamg@pobox.com>
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Fixes: 1b6a6fc5280e ("ALSA: jack: Access input_dev under mutex")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/cf95f7fe-a748-4990-8378-000491b40329@moroto.mountain
+Tested-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230706155357.3470-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/ohci.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/core/jack.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/firewire/ohci.c b/drivers/firewire/ohci.c
-index 9807a885e698c..a4912650544fa 100644
---- a/drivers/firewire/ohci.c
-+++ b/drivers/firewire/ohci.c
-@@ -2066,6 +2066,8 @@ static void bus_reset_work(struct work_struct *work)
+diff --git a/sound/core/jack.c b/sound/core/jack.c
+index d2f9a92453f2f..6340de60f26ef 100644
+--- a/sound/core/jack.c
++++ b/sound/core/jack.c
+@@ -378,6 +378,7 @@ void snd_jack_report(struct snd_jack *jack, int status)
+ {
+ 	struct snd_jack_kctl *jack_kctl;
+ #ifdef CONFIG_SND_JACK_INPUT_DEV
++	struct input_dev *idev;
+ 	int i;
+ #endif
  
- 	ohci->generation = generation;
- 	reg_write(ohci, OHCI1394_IntEventClear, OHCI1394_busReset);
-+	if (param_debug & OHCI_PARAM_DEBUG_BUSRESETS)
-+		reg_write(ohci, OHCI1394_IntMaskSet, OHCI1394_busReset);
+@@ -389,30 +390,28 @@ void snd_jack_report(struct snd_jack *jack, int status)
+ 					    status & jack_kctl->mask_bits);
  
- 	if (ohci->quirks & QUIRK_RESET_PACKET)
- 		ohci->request_generation = generation;
-@@ -2132,12 +2134,14 @@ static irqreturn_t irq_handler(int irq, void *data)
- 		return IRQ_NONE;
+ #ifdef CONFIG_SND_JACK_INPUT_DEV
+-	mutex_lock(&jack->input_dev_lock);
+-	if (!jack->input_dev) {
+-		mutex_unlock(&jack->input_dev_lock);
++	idev = input_get_device(jack->input_dev);
++	if (!idev)
+ 		return;
+-	}
  
- 	/*
--	 * busReset and postedWriteErr must not be cleared yet
-+	 * busReset and postedWriteErr events must not be cleared yet
- 	 * (OHCI 1.1 clauses 7.2.3.2 and 13.2.8.1)
- 	 */
- 	reg_write(ohci, OHCI1394_IntEventClear,
- 		  event & ~(OHCI1394_busReset | OHCI1394_postedWriteErr));
- 	log_irqs(ohci, event);
-+	if (event & OHCI1394_busReset)
-+		reg_write(ohci, OHCI1394_IntMaskClear, OHCI1394_busReset);
+ 	for (i = 0; i < ARRAY_SIZE(jack->key); i++) {
+ 		int testbit = SND_JACK_BTN_0 >> i;
  
- 	if (event & OHCI1394_selfIDComplete)
- 		queue_work(selfid_workqueue, &ohci->bus_reset_work);
+ 		if (jack->type & testbit)
+-			input_report_key(jack->input_dev, jack->key[i],
++			input_report_key(idev, jack->key[i],
+ 					 status & testbit);
+ 	}
+ 
+ 	for (i = 0; i < ARRAY_SIZE(jack_switch_types); i++) {
+ 		int testbit = 1 << i;
+ 		if (jack->type & testbit)
+-			input_report_switch(jack->input_dev,
++			input_report_switch(idev,
+ 					    jack_switch_types[i],
+ 					    status & testbit);
+ 	}
+ 
+-	input_sync(jack->input_dev);
+-	mutex_unlock(&jack->input_dev_lock);
++	input_sync(idev);
++	input_put_device(idev);
+ #endif /* CONFIG_SND_JACK_INPUT_DEV */
+ }
+ EXPORT_SYMBOL(snd_jack_report);
 -- 
 2.43.0
 
