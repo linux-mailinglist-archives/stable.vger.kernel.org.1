@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-39805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD218A54D5
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43BDA8A5516
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B34D1F20F64
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D83F81F20EFD
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFC282860;
-	Mon, 15 Apr 2024 14:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C21762D0;
+	Mon, 15 Apr 2024 14:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lR8GUVAN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWNTWizp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE97811F1;
-	Mon, 15 Apr 2024 14:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004F88004D;
+	Mon, 15 Apr 2024 14:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191867; cv=none; b=dXDBN5Ir8W5KTqYwK0ulnJgdP7kQP8IE37CidcoebLsvWAi/KFkRANtMWUTBTh5xPcy4JAx+6b+NpoBJRiT4yDAhho5sCyoVTYEPZO74LN6ZmQ2wHEZohfOjL1/kUOXjy0E3wYOajW5gK70ADsy93BoEwJ4dkyKENMfvqlaST6E=
+	t=1713192043; cv=none; b=mNVRAcjP9CkMZJTnIu4i00gA3UsmGqXKyVGuUVQjRbDUjS0Ss7WbY3Da5UHMTMT7g9gHHNYiEdyKXUTyxOOv4bkynh1zNvN9PpL0wsqkJe2zZhXERTtZe/LMigDc0Kh5pUuXCmAlVHtZMXxXxtg6yicj7cQLI7f9EyOGDUnhQUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191867; c=relaxed/simple;
-	bh=1g9w57xAoCvjWZxjtDRV4ZRd9d/+/jWuVg8JiYF7Tp8=;
+	s=arc-20240116; t=1713192043; c=relaxed/simple;
+	bh=mdO3yihjxKbGhmF/J5kcIU76JrvujoGBzJqRX8M5ick=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIdjo/8+GvAkoVHF0FYMZUfw+0BP8r/D8n2yBqq2oDvJ+PBzBO43CfsEPP5Nhz0zYnhrhDj3WC+NFb61NmFn56OI1slSBjYDnHpZ9fRyYFrKPPWOt+vXFK8s4hGltUjTaxeLSKbHqlfj3UQ4HNmrIN8GrOiPgoqFZupvkXReb7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lR8GUVAN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B284AC113CC;
-	Mon, 15 Apr 2024 14:37:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GpbVpkIAaImBsypiQN5or2h3Jm34q+CAs0rJfotqN80bvVA48BVezdcUAwIYKhGEB6umTFYrUCcJe+GJ8QYZ+nUbAkncqjWahsI/ElQJlwigThCdRq39c9aliLgLP7thRcbYDBppKsM/effm7WjzciftUkFRFxD2MpsAH3gnRSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWNTWizp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C4CC113CC;
+	Mon, 15 Apr 2024 14:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191867;
-	bh=1g9w57xAoCvjWZxjtDRV4ZRd9d/+/jWuVg8JiYF7Tp8=;
+	s=korg; t=1713192042;
+	bh=mdO3yihjxKbGhmF/J5kcIU76JrvujoGBzJqRX8M5ick=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lR8GUVANKBk8pxoVQ6SZhvjsjbzcefs+WvzxFoRUl5mM5qPZSSrtwudp9m/xxbL6L
-	 j7KIPfCNI9wLnPuh4lWoDmU9SM+LfhaybSoULmfWV/cykqlP4xwEOZ9H/Cd7gVaVNE
-	 tKMvzzD+aE1LXtUyHzIloOvwwEahUP9OppcaInbM=
+	b=QWNTWizpdncCl1nvgTuXxM/D3LdAf6Kq80AvTlSbkmwL7spsXQ0f5RgZIDolVIM9B
+	 i6DoTnAM70+UPgpP/ryHbiIlfwVcc2eeGEXAAQEszwS36AOf/rA4k9nS3Jc+74kUSN
+	 /1+86N0Rz9uEIb4MkvFMvVNIWcWS1bGF5W6FZQlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 112/122] x86/bugs: Clarify that syscall hardening isnt a BHI mitigation
+	Vidya Srinivas <vidya.srinivas@intel.com>,
+	Vandita Kulkarni <vandita.kulkarni@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.1 46/69] drm/i915/vrr: Disable VRR when using bigjoiner
 Date: Mon, 15 Apr 2024 16:21:17 +0200
-Message-ID: <20240415141956.733630097@linuxfoundation.org>
+Message-ID: <20240415141947.555054601@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 5f882f3b0a8bf0788d5a0ee44b1191de5319bb8a upstream.
+commit dcd8992e47f13afb5c11a61e8d9c141c35e23751 upstream.
 
-While syscall hardening helps prevent some BHI attacks, there's still
-other low-hanging fruit remaining.  Don't classify it as a mitigation
-and make it clear that the system may still be vulnerable if it doesn't
-have a HW or SW mitigation enabled.
+All joined pipes share the same transcoder/timing generator.
+Currently we just do the commits per-pipe, which doesn't really
+work if we need to change switch between non-VRR and VRR timings
+generators on the fly, or even when sending the push to the
+transcoder. For now just disable VRR when bigjoiner is needed.
 
-Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/b5951dae3fdee7f1520d5136a27be3bdfe95f88b.1712813475.git.jpoimboe@kernel.org
+Cc: stable@vger.kernel.org
+Tested-by: Vidya Srinivas <vidya.srinivas@intel.com>
+Reviewed-by: Vandita Kulkarni <vandita.kulkarni@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240404213441.17637-6-ville.syrjala@linux.intel.com
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+(cherry picked from commit f9d5e51db65652dbd8a2102fd7619440e3599fd2)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/hw-vuln/spectre.rst   |   11 +++++------
- Documentation/admin-guide/kernel-parameters.txt |    3 +--
- arch/x86/kernel/cpu/bugs.c                      |    6 +++---
- 3 files changed, 9 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/i915/display/intel_vrr.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/Documentation/admin-guide/hw-vuln/spectre.rst
-+++ b/Documentation/admin-guide/hw-vuln/spectre.rst
-@@ -441,10 +441,10 @@ The possible values in this file are:
-    - System is protected by BHI_DIS_S
-  * - BHI: SW loop, KVM SW loop
-    - System is protected by software clearing sequence
-- * - BHI: Syscall hardening
--   - Syscalls are hardened against BHI
-- * - BHI: Syscall hardening, KVM: SW loop
--   - System is protected from userspace attacks by syscall hardening; KVM is protected by software clearing sequence
-+ * - BHI: Vulnerable
-+   - System is vulnerable to BHI
-+ * - BHI: Vulnerable, KVM: SW loop
-+   - System is vulnerable; KVM is protected by software clearing sequence
+--- a/drivers/gpu/drm/i915/display/intel_vrr.c
++++ b/drivers/gpu/drm/i915/display/intel_vrr.c
+@@ -110,6 +110,13 @@ intel_vrr_compute_config(struct intel_cr
+ 	if (!intel_vrr_is_capable(connector))
+ 		return;
  
- Full mitigation might require a microcode update from the CPU
- vendor. When the necessary microcode is not available, the kernel will
-@@ -661,8 +661,7 @@ kernel command line.
- 	spectre_bhi=
++	/*
++	 * FIXME all joined pipes share the same transcoder.
++	 * Need to account for that during VRR toggle/push/etc.
++	 */
++	if (crtc_state->bigjoiner_pipes)
++		return;
++
+ 	if (adjusted_mode->flags & DRM_MODE_FLAG_INTERLACE)
+ 		return;
  
- 		[X86] Control mitigation of Branch History Injection
--		(BHI) vulnerability. Syscalls are hardened against BHI
--		regardless of this setting. This setting affects the deployment
-+		(BHI) vulnerability.  This setting affects the deployment
- 		of the HW BHI control and the SW BHB clearing sequence.
- 
- 		on
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5922,8 +5922,7 @@
- 			See Documentation/admin-guide/laptops/sonypi.rst
- 
- 	spectre_bhi=	[X86] Control mitigation of Branch History Injection
--			(BHI) vulnerability. Syscalls are hardened against BHI
--			reglardless of this setting. This setting affects the
-+			(BHI) vulnerability.  This setting affects the
- 			deployment of the HW BHI control and the SW BHB
- 			clearing sequence.
- 
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2817,10 +2817,10 @@ static const char *spectre_bhi_state(voi
- 		return "; BHI: SW loop, KVM: SW loop";
- 	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) && rrsba_disabled)
- 		return "; BHI: Retpoline";
--	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT))
--		return "; BHI: Syscall hardening, KVM: SW loop";
-+	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT))
-+		return "; BHI: Vulnerable, KVM: SW loop";
- 
--	return "; BHI: Vulnerable (Syscall hardening enabled)";
-+	return "; BHI: Vulnerable";
- }
- 
- static ssize_t spectre_v2_show_state(char *buf)
 
 
 
