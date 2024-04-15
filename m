@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-39801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB3238A54D0
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A908A5544
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECC7D1C20B31
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F11CB282BD3
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864E6824BF;
-	Mon, 15 Apr 2024 14:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34D778C83;
+	Mon, 15 Apr 2024 14:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGULawWm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tum+rVIo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45363824B3;
-	Mon, 15 Apr 2024 14:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6BC76919;
+	Mon, 15 Apr 2024 14:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191855; cv=none; b=fyVwwFnwO2ome20HYYcmrSD68/DifOnfyAdNbnx4xj5C8Fkw1qvmqQY6n6tIr+PAi8ncEx4qy28WClySKvbPavv5vfpIPh7X9q8raqhuJL4/Xlee6YDetK71JeMZTz7eUd9+ZFXuV1Zc81mZK5MxvmZwqdfaDi/Pi4+HferqHUI=
+	t=1713192154; cv=none; b=u+NO96OmvEeX+fdWZLiavAQPbL89Mf11GwHIWLM+xlTiKPLJdysoLbiGKojU8/eQaDx2T1UuKT2uqiCjytAgd/1DADljU+Km33Xs8koxMfObEXuJGETySiZ3QkEAWSthXDRZGiOzxyZmRVqEQnHIIZceHj+xVXjZ1oIehJkNAcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191855; c=relaxed/simple;
-	bh=bHkLUvy2IdHI6zsjHnJ/vwD3NqeqWwxTSAlKedgSwN0=;
+	s=arc-20240116; t=1713192154; c=relaxed/simple;
+	bh=pZlL/VEdyiu8iMnyaFeUf54zgHI4FM6OI9AQW1aYQWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u8pTROkVq4c73TNWqxor/z7yAtQ1qSkslJQgXdyBXvmyTqk8tiXlIkDg5GeEBrvDbK95YqxysRXeA878WDpUK5EDXsH/Es2QxU06Od+HNc5p/QfRlfkTA48CTqnpfTc/3IPojBue0GIRPWs8Zjnk1Mn2vl8dP33V4rKO6MHXrzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGULawWm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B25C113CC;
-	Mon, 15 Apr 2024 14:37:34 +0000 (UTC)
+	 MIME-Version; b=L4XlUVl4BlhxHjc7Rw+Ex+l1hURE0/Bh6ICypoO+fgHk4BC/WUxIfMX0W4FN80JOIL/9Kn7C+KvFqDVuJ/L0cCBrKGJQUduvkH2em7/zsk6ZBbhpGuDmmXGLTRJnI3YS9o2o/MV4sPoNJsty8IidItPWAf0+pQq9DAmtCJFTfHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tum+rVIo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E25C3277B;
+	Mon, 15 Apr 2024 14:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191855;
-	bh=bHkLUvy2IdHI6zsjHnJ/vwD3NqeqWwxTSAlKedgSwN0=;
+	s=korg; t=1713192154;
+	bh=pZlL/VEdyiu8iMnyaFeUf54zgHI4FM6OI9AQW1aYQWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zGULawWm7XloL4W3QzgdmwulaSxKm58Hp1C2Q6GC6AyBamoeWmaKc1DOo7bBbJrQS
-	 TfcZG0kBSMK2c85HTdihl4QiMQNzmU38j8Lm4Am6Ztg9nSCusiagwIRSBS614TFvyK
-	 44lEIfJAsD/J+w6eDsuuegDxNVt9GpJmA1kyv/34=
+	b=Tum+rVIowuGDUP8NIhYb6Njqa+IIw225r0H0EEi3tMfJR2AUU4VvXWT2I0XEU863r
+	 PN8pNeEI/PvYHUWi1hD/EkzZGu0WpokfTyCVH9cWGf5nXEU/f9zXmE2E2vDFycCQog
+	 lKgquXMUMQELgoY30V4iBn5o6kzZkIcb9a1EA5eM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 108/122] x86/bugs: Fix BHI documentation
-Date: Mon, 15 Apr 2024 16:21:13 +0200
-Message-ID: <20240415141956.614101730@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 07/45] nouveau: fix function cast warning
+Date: Mon, 15 Apr 2024 16:21:14 +0200
+Message-ID: <20240415141942.462885455@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
+References: <20240415141942.235939111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit dfe648903f42296866d79f10d03f8c85c9dfba30 upstream.
+[ Upstream commit 185fdb4697cc9684a02f2fab0530ecdd0c2f15d4 ]
 
-Fix up some inaccuracies in the BHI documentation.
+Calling a function through an incompatible pointer type causes breaks
+kcfi, so clang warns about the assignment:
 
-Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/8c84f7451bfe0dd08543c6082a383f390d4aa7e2.1712813475.git.jpoimboe@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c:73:10: error: cast from 'void (*)(const void *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+   73 |         .fini = (void(*)(void *))kfree,
+
+Avoid this with a trivial wrapper.
+
+Fixes: c39f472e9f14 ("drm/nouveau: remove symlinks, move core/ to nvkm/ (no code changes)")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240404160234.2923554-1-arnd@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/hw-vuln/spectre.rst   |   15 ++++++++-------
- Documentation/admin-guide/kernel-parameters.txt |   12 +++++++-----
- 2 files changed, 15 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/Documentation/admin-guide/hw-vuln/spectre.rst
-+++ b/Documentation/admin-guide/hw-vuln/spectre.rst
-@@ -439,11 +439,11 @@ The possible values in this file are:
-    - System is protected by retpoline
-  * - BHI: BHI_DIS_S
-    - System is protected by BHI_DIS_S
-- * - BHI: SW loop; KVM SW loop
-+ * - BHI: SW loop, KVM SW loop
-    - System is protected by software clearing sequence
-  * - BHI: Syscall hardening
-    - Syscalls are hardened against BHI
-- * - BHI: Syscall hardening; KVM: SW loop
-+ * - BHI: Syscall hardening, KVM: SW loop
-    - System is protected from userspace attacks by syscall hardening; KVM is protected by software clearing sequence
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c
+index 4bf486b571013..cb05f7f48a98b 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c
+@@ -66,11 +66,16 @@ of_init(struct nvkm_bios *bios, const char *name)
+ 	return ERR_PTR(-EINVAL);
+ }
  
- Full mitigation might require a microcode update from the CPU
-@@ -666,13 +666,14 @@ kernel command line.
- 		of the HW BHI control and the SW BHB clearing sequence.
- 
- 		on
--			unconditionally enable.
-+			(default) Enable the HW or SW mitigation as
-+			needed.
- 		off
--			unconditionally disable.
-+			Disable the mitigation.
- 		auto
--			enable if hardware mitigation
--			control(BHI_DIS_S) is available, otherwise
--			enable alternate mitigation in KVM.
-+			Enable the HW mitigation if needed, but
-+			*don't* enable the SW mitigation except for KVM.
-+			The system may be vulnerable.
- 
- For spectre_v2_user see Documentation/admin-guide/kernel-parameters.txt
- 
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3343,6 +3343,7 @@
- 					       reg_file_data_sampling=off [X86]
- 					       retbleed=off [X86]
- 					       spec_store_bypass_disable=off [X86,PPC]
-+					       spectre_bhi=off [X86]
- 					       spectre_v2_user=off [X86]
- 					       srbds=off [X86,INTEL]
- 					       ssbd=force-off [ARM64]
-@@ -5926,11 +5927,12 @@
- 			deployment of the HW BHI control and the SW BHB
- 			clearing sequence.
- 
--			on   - unconditionally enable.
--			off  - unconditionally disable.
--			auto - (default) enable hardware mitigation
--			       (BHI_DIS_S) if available, otherwise enable
--			       alternate mitigation in KVM.
-+			on   - (default) Enable the HW or SW mitigation
-+			       as needed.
-+			off  - Disable the mitigation.
-+			auto - Enable the HW mitigation if needed, but
-+			       *don't* enable the SW mitigation except
-+			       for KVM.  The system may be vulnerable.
- 
- 	spectre_v2=	[X86] Control mitigation of Spectre variant 2
- 			(indirect branch speculation) vulnerability.
++static void of_fini(void *p)
++{
++	kfree(p);
++}
++
+ const struct nvbios_source
+ nvbios_of = {
+ 	.name = "OpenFirmware",
+ 	.init = of_init,
+-	.fini = (void(*)(void *))kfree,
++	.fini = of_fini,
+ 	.read = of_read,
+ 	.size = of_size,
+ 	.rw = false,
+-- 
+2.43.0
+
 
 
 
