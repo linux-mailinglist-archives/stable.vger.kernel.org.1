@@ -1,75 +1,74 @@
-Return-Path: <stable+bounces-39396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4E48A4848
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 08:43:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9991D8A4852
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 08:46:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0671F281CCE
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 06:43:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38B521F224BB
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 06:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21F51EB3E;
-	Mon, 15 Apr 2024 06:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F191DA22;
+	Mon, 15 Apr 2024 06:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="grJH5ukb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bmTPhJVd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E711DA32;
-	Mon, 15 Apr 2024 06:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE77D200DE;
+	Mon, 15 Apr 2024 06:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713163424; cv=none; b=svpXc588tyOY0XGdVm6X8F/k4SPrDUtK0Q6InRzts12XtSY3K6vjQZLiaR6WMigfROXajh+2Fm+PCMVEB6TE3eCsC32wSXE2M/SLOXU7SMPJTEn9G49NVSRkMxxsVSnyr4f3hd43+UPXrcT7J5f+Q8v7I0ebgvj2FwmELi2duPk=
+	t=1713163574; cv=none; b=r1LWcXUvC9WeLPXHSQ1Tu61G42SSOjHC0cNBuxGLZbIE+cXCBJq/APN7qxNzPvTnjLCcrjSvLGG1z0BjjO4VwMRhYGeHndZs3QY5dgW0OwZzw7rvOwaCHEE7YPMqiSbLA+sIEbi2bFhfAkQ/YxGEynhEifbG5uaaZSSjK60Ma4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713163424; c=relaxed/simple;
-	bh=DNNTj+ykDgM/JD4IQplT3/fMLpZxUwGg0a/sfofypEA=;
-	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=ZCCgibunc6qrM6l4PKvxq6O6a3v8jnEIE94JC5fmV9hRmEao6MlaMwHLu/Lheg2KHBstMDUHts/Xqd141DKWXfBIbw4yxkUGT8KZQt0sqJyxDF2IQzR1X2ue+3acY+3HFHw0ozccJ9VvbN1yYFeRHujKIY/wdcBPSTj5ekUP7LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=grJH5ukb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2321C3277B;
-	Mon, 15 Apr 2024 06:43:43 +0000 (UTC)
+	s=arc-20240116; t=1713163574; c=relaxed/simple;
+	bh=M3E5v9WIUoK8ZPJWrgQ5BaTLENMbot55qcTTTIDrCOQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NwA5L7GvHoQ7ZxwQrqgXFnTLHNTY57o0mUKnv01lqIWX2mMaftrLI9Ud1Sml2tERRXMgOK/b4bHLsLRGxrDkSantP9POufaZxAkdMyZnJrqfGFnjgKJWpHqQfkTOUDsDgtbnzv6qCTyJUiFV2pmS8awCeOodkQ78uSuvU+DdY4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bmTPhJVd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694CEC113CC;
+	Mon, 15 Apr 2024 06:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713163424;
-	bh=DNNTj+ykDgM/JD4IQplT3/fMLpZxUwGg0a/sfofypEA=;
-	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
-	b=grJH5ukbJiygA1ARCF3SJlQpcu7vxzkD7XPDygzVcrACtm6Szv3GGaQrXSobFRN+I
-	 Y+oYQKWHJCSt2JIbappiAkmsXTwOUhR2133qqVLZasThzLBoVJcHVJbvMdkqXQTV3X
-	 jMjfep2N3bgFTN38PXBJvBZagZELuCrinl7zA0g0g6W62xF+erU9VZRFyuNMsyy0ZW
-	 8h3E2ryxXET7ISmwUOTyS6LfJGvJ5Wkch2fUvlZbNBUqe/N7ST0ooKwdI/u7vvSlcy
-	 2cXi7wxJdQX8QgduyJGXMm5r94cWapN8vWhC4+ZC17VD/PPyZe8F3y6+PmK+iT+/iv
-	 Ux0CxPLeK4qAQ==
-Message-ID: <5843f81d9ca77b26aeb25504f9c8a4f6@kernel.org>
-Date: Mon, 15 Apr 2024 06:43:41 +0000
-From: "Maxime Ripard" <mripard@kernel.org>
-To: "Thomas Zimmermann" <tzimmermann@suse.de>
-Subject: Re: [PATCH v2 01/43] drm/fbdev-generic: Do not set physical
- framebuffer address
-In-Reply-To: <20240410130557.31572-2-tzimmermann@suse.de>
-References: <20240410130557.31572-2-tzimmermann@suse.de>
-Cc: airlied@gmail.com, daniel@ffwll.ch, deller@gmx.de, dri-devel@lists.freedesktop.org, javierm@redhat.com, linux-fbdev@vger.kernel.org, stable@vger.kernel.org, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>, "Sui
- Jingfeng" <sui.jingfeng@linux.dev>, "Zack Rusin" <zack.rusin@broadcom.com>, "Zack
- Rusin" <zackr@vmware.com>
-Content-Transfer-Encoding: 7bit
+	s=k20201202; t=1713163574;
+	bh=M3E5v9WIUoK8ZPJWrgQ5BaTLENMbot55qcTTTIDrCOQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bmTPhJVdPaJsXIsEAlxGSSn5tY8tggYoQnpA9Jsr6n6hVeOLdqW8/HiMObdriwyG+
+	 0R0MCOPz1CZ7nY4gpQsFY2Ay62MOJRUeHC/XgBAzPJFFJ45ZacHWJ0VJPUIrE1Wjt9
+	 D6Zt/wxaMefOwY0QJPnvkaWgZkkAcxNDrrz4827kfyumERAOelQGL7NBnnVesap4s2
+	 aAok9xfs5ac4k1TSibuXtS18AQn38hMtTEIcOKcXRiOSzgBodT8BO/D7syj7P2UWPI
+	 cp5T5H8dbTXXthsJXq8cydXx7ZvQEiMYuNxGoU6grIDEX62MxTcCdKOTKNY6RuTKPF
+	 1nQkkLXZoIm1A==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1rwG6V-000000004dk-481f;
+	Mon, 15 Apr 2024 08:46:12 +0200
+Date: Mon, 15 Apr 2024 08:46:11 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Chuanhong Guo <gch981213@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] USB: serial: option: add support for Fibocom FM650/FG650
+Message-ID: <ZhzNM_zouHPLdvBz@hovoldconsulting.com>
+References: <20240312062913.12723-1-gch981213@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240312062913.12723-1-gch981213@gmail.com>
 
-On Wed, 10 Apr 2024 15:01:57 +0200, Thomas Zimmermann wrote:
-> Framebuffer memory is allocated via vzalloc() from non-contiguous
-> physical pages. The physical framebuffer start address is therefore
-> meaningless. Do not set it.
-> 
-> The value is not used within the kernel and only exported to userspace
-> 
-> [ ... ]
+On Tue, Mar 12, 2024 at 02:29:12PM +0800, Chuanhong Guo wrote:
+> Fibocom FM650/FG650 are 5G modems with ECM/NCM/RNDIS/MBIM modes.
+> This patch adds support to all 4 modes.
 
-Acked-by: Maxime Ripard <mripard@kernel.org>
+Can you please say something here about what each port (in each mode) is
+used for?
 
-Thanks!
-Maxime
+Johan
 
