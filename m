@@ -1,85 +1,98 @@
-Return-Path: <stable+bounces-39413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0ABB8A4D82
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 13:20:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BEF28A4E43
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:00:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93A541F22B3D
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 11:20:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDE8FB20FC2
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 12:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52CBB5DF05;
-	Mon, 15 Apr 2024 11:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA434679FE;
+	Mon, 15 Apr 2024 12:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cZwKCYjm"
+	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="ar85pjeZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0.infotecs.ru (mx0.infotecs.ru [91.244.183.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9E41E896;
-	Mon, 15 Apr 2024 11:20:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED6266B5E;
+	Mon, 15 Apr 2024 12:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.244.183.115
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713180040; cv=none; b=Te8JxHcQtE3tjQHIXYq0UDNFVwnnEmTcYFFwtJDBeiP9LmRBhKkEvrl+GCjhTRjpRHY54B7jwjMtHajBzeUj79o0vL+lwW8ER+mJSh7VqKaVoVhuUfFqutMDJvla228MDilyN/ENch5MRGmbEcuV/fOMnzMkTGL4887oudE+lyI=
+	t=1713182415; cv=none; b=bXMYqQyEiBblBdcmt+iJtqUaJFMlV9QYNkSr8NCucmIyZxk3f5UHlnZ53uHQf97QJ0n0on1dsIVppIM49UCWY4ECe0aqv3O3lLjSGhGIljpHBgHTlne2iZwaS0q8ux6T5le+ldz5XJ5OreS+vu4DxRHT74w8CW2FckW1SBMyvI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713180040; c=relaxed/simple;
-	bh=JMkJX+sGRihrij1cC4kSPG1zD7tukGxRvQoNWXYOLUk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FSgD1woj0GAU75U1hI19dsjuWU1yKHJmeXCNxbe4pA77c7VyMHW1l2QrhBOyenmUWxQj4DnCRuLvWe9g3JwEwhbRcYSN5jCEio7fPW3KqPD/yMK6zHb75tai/TRb+45OVIOe2GnkNxiwgaaSm4M1dFCBCiF5OnDAg/cIlaTXT7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cZwKCYjm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A22CC113CC;
-	Mon, 15 Apr 2024 11:20:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713180039;
-	bh=JMkJX+sGRihrij1cC4kSPG1zD7tukGxRvQoNWXYOLUk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cZwKCYjmv+cQCQ+ilhSYhU9weBxAa/QDvjY25cLGIrNmzN9somBBy2IZB3Fkx9SQx
-	 gl5WZdPrhx+fwxhD+2x++moIeKvyPYx3iaofYWBRhDyFAVPg4mX7CnIygOYovHZvId
-	 FbQai/u8rdVsYas1JOH56CTqp7Rde+/ald8joSo4Bc8H2J20rwJVeYiM+y2vBAEvZ5
-	 u9MH56o1S6rjTmkbb0x6nEHUa53K17g/zRAL6Xzrci1P0PjRfrQWrEVjc4mZnwa6j2
-	 8qj4183ZlaJKP4DlMxtAdZijuICE9wqzrUz0wxAOruNpMaEfBkCFfxHHeKJxFawcis
-	 fQtmHEuF8XSHw==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rwKO4-000000006Nl-0ZtL;
-	Mon, 15 Apr 2024 13:20:36 +0200
-Date: Mon, 15 Apr 2024 13:20:36 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Cc: Johan Hovold <johan+linaro@kernel.org>, luiz.dentz@gmail.com,
-	marcel@holtmann.org, linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	quic_mohamull@quicinc.com, quic_hbandi@quicinc.com
-Subject: Re: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode
- exists in DT"
-Message-ID: <Zh0NhA4GBxIAM-ZI@hovoldconsulting.com>
-References: <20240314084412.1127-1-johan+linaro@kernel.org>
- <171146704035.9961.13096206001570615153.git-patchwork-notify@kernel.org>
- <124a7d54-5a18-4be7-9a76-a12017f6cce5@quicinc.com>
- <ZgWLeo5KSLurLDhK@hovoldconsulting.com>
- <c03abbbd-faa5-4fdc-b7c3-5554a90c3419@quicinc.com>
- <Zg1KmcFQ3bAJa8qJ@hovoldconsulting.com>
- <b7d5c2ac-2278-4ccc-be2a-7c7d9936581a@quicinc.com>
- <f72d83fd-9576-4017-bcf9-c50ce94d85ec@quicinc.com>
+	s=arc-20240116; t=1713182415; c=relaxed/simple;
+	bh=ZZUy1xI7pLJyHVR8GyZICsFTKD+f1gi5zCnPFjtGcvU=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=YyMpDR31Q69K/6+a1L4Yr98cbKXDvSzb22tQFrnAVbCe3VTlqU8QoayO5BTekk1n0N7Xf4sra7Q+eS6c/BHt8nb7movpfcaX87NJYNl2SwaTFXgqt0c2erggaxwjngT+3IpiG4gmhm7oaIxDVGbydmA39U8eyDKnXG44RsK5UWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=ar85pjeZ; arc=none smtp.client-ip=91.244.183.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infotecs.ru
+Received: from mx0.infotecs-nt (localhost [127.0.0.1])
+	by mx0.infotecs.ru (Postfix) with ESMTP id 3A53610064FA;
+	Mon, 15 Apr 2024 14:50:19 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru 3A53610064FA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infotecs.ru; s=mx;
+	t=1713181819; bh=1JzukUDnPECi4/20s24sBuSFQzc/kxxeFzOxjMJdXG0=;
+	h=From:To:CC:Subject:Date:From;
+	b=ar85pjeZnGsrOwfMK049cSm+nZP5pwId99u45lPAkdVGAAyRNcG7itd0QclXlZJ8Q
+	 o8RRTzy7k/Nvw+ExGZmBG0Ey/hMf2cZor6CwQVdBnHQPknItQukuip5CSDg1Oy24IQ
+	 aGZsrs8f6x+dsT99AeuhDldtslCPZX2HI7pcYjb4=
+Received: from msk-exch-02.infotecs-nt (msk-exch-02.infotecs-nt [10.0.7.192])
+	by mx0.infotecs-nt (Postfix) with ESMTP id 36C553025FD4;
+	Mon, 15 Apr 2024 14:50:19 +0300 (MSK)
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>
+CC: Michal Ostrowski <mostrows@earthlink.net>, Guillaume Nault
+	<gnault@redhat.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
+Subject: [PATCH 5.15/5.10/5.4/4.19 0/1] pppoe: Fix memory leak in
+ pppoe_sendmsg()
+Thread-Topic: [PATCH 5.15/5.10/5.4/4.19 0/1] pppoe: Fix memory leak in
+ pppoe_sendmsg()
+Thread-Index: AQHajysWljFSLnmM8Ee7tNlnszP9Ew==
+Date: Mon, 15 Apr 2024 11:50:18 +0000
+Message-ID: <20240415115015.3913760-1-Ilia.Gavrilov@infotecs.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-exclaimer-md-config: 208ac3cd-1ed4-4982-a353-bdefac89ac0a
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f72d83fd-9576-4017-bcf9-c50ce94d85ec@quicinc.com>
+X-KLMS-Rule-ID: 5
+X-KLMS-Message-Action: clean
+X-KLMS-AntiSpam-Status: not scanned, disabled by settings
+X-KLMS-AntiSpam-Interceptor-Info: not scanned
+X-KLMS-AntiPhishing: Clean, bases: 2024/04/15 08:48:00
+X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, bases: 2024/04/15 09:42:00 #24801259
+X-KLMS-AntiVirus-Status: Clean, skipped
 
-On Mon, Apr 15, 2024 at 04:22:51PM +0530, Janaki Ramaiah Thota wrote:
+syzbot reports a memory leak in pppoe_sendmsg in 5.15, 5.10, 5.4 and 4.19
+stable releases. The problem has been fixed by the following patch which
+can be cleanly applied to the 5.15, 5.10, 5.4 and 4.19 branches.
 
-> Are you planing to merge your below patch ?
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with Syzkaller
 
-Yes, sorry about the delay. Was busy with other things last week.
+Gavrilov Ilia (1):
+  pppoe: Fix memory leak in pppoe_sendmsg()
 
-I'll revisit and post it shortly.
+ drivers/net/ppp/pppoe.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
-Johan
+--=20
+2.39.2
 
