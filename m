@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-39818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B95AC8A54E6
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA8B8A54F9
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47796B229F5
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DDD51F217F7
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA4281AC4;
-	Mon, 15 Apr 2024 14:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C7178C6B;
+	Mon, 15 Apr 2024 14:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hT/5PiRM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+I3ZBhA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA87A762E0;
-	Mon, 15 Apr 2024 14:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9BB2A8D3;
+	Mon, 15 Apr 2024 14:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191905; cv=none; b=VtJo9ooUbpJFqelgPlhyqr2ThpOpTaMIF1ew+P95ox5nWVu9BMgY8zsAc8v4VMQZts+aDLi6j41u9zucBF0O3jSrhIlza4RfMhEoUmG+h5cExY2m/2053TjRfeDYsdkeOSL7YwShmbfhxpV4KDHLPOwFY5Yriior2B/76PCnSAI=
+	t=1713191965; cv=none; b=scYHifhODkk3Qbmf2Y6wVazxrfNJeWUtS66JmtWv/359GXY2Duq1IVAnZExPTzThtltD4jTW/LbDOCd8j2Nd8XdGMyvNr3d9+7mMB3xLyS78zliWgxC3+g4n5ZrIkldyHPD2C2rc/z7p9OFm3fc8n/uwgH2DyGGk3fS/sQ7Tmdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191905; c=relaxed/simple;
-	bh=AhCfNdMw87Mr1ILh7jMds39k9jYP5leHJVch8rRBCl0=;
+	s=arc-20240116; t=1713191965; c=relaxed/simple;
+	bh=43LERzgou9E8W1xTJxzTDOkTBTJ58G1d2OtLTxOzJC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Db2k6WPqxt4r8V1YeJpq5Ma1w7tdJPIOl8VG69OKvovAMTd/UQjbfmIcbtikCW6AQXvvaXCTAkPQLe/GodpsJFSDzVfALO24VXVr+TPa4lLFP8KA2TpU9L5T+RHF5krw9jZTn7CA0egAuaB9k5RbaEi4yT52YD91sp06HbE3N4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hT/5PiRM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C52C113CC;
-	Mon, 15 Apr 2024 14:38:25 +0000 (UTC)
+	 MIME-Version; b=u77vjqmTk+4G+ItxN9bDiGNttZEveo1LD3PpfR71T9N4Vy4qPp78p3RvLvfRXepmqcrS8aFEY59/T0ILJV5IuIkr+csngzYgod42WU9ea2h4TXvxwMYROYagaE2GPemcCsl2ZlIbHzxrLJO1NJYm6hrw2nbMn1FRk/bAERDQsiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+I3ZBhA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2715CC113CC;
+	Mon, 15 Apr 2024 14:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191905;
-	bh=AhCfNdMw87Mr1ILh7jMds39k9jYP5leHJVch8rRBCl0=;
+	s=korg; t=1713191965;
+	bh=43LERzgou9E8W1xTJxzTDOkTBTJ58G1d2OtLTxOzJC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hT/5PiRMaTwU4Cryg6b28xb6dbE1H8V972z7TLwyAwMceceMTYiBV/TKhLIKexF5t
-	 ngGa/6g0mMZYtXxlcWWVNZRuwmzzyqGqyxg5o/89flJd+KArRzk12vEF04chFWiGkE
-	 aZLV1Zc8KzFGDyt4se1dDZJEcAMgyOwYrye6vHhQ=
+	b=w+I3ZBhAM1E8IpKAQdp0CI3acnl6xbmHyzXWCfx6wxU48DTtMhVDII82TF83nmsNs
+	 gA42u0uEn1jpFDRKGbZhL2UIjsnNmoFX5A9Ig3vH0CBYVQkyWVa9NGVy4tVEtwpIsy
+	 PjJzBsvl1N3jRqgiKpKs98heB9ctD++BFlDnjIFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Ye Li <ye.li@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	dri-devel@lists.freedesktop.org,
-	Martin Krastev <martin.krastev@broadcom.com>
-Subject: [PATCH 6.6 088/122] drm/vmwgfx: Enable DMA mappings with SEV
-Date: Mon, 15 Apr 2024 16:20:53 +0200
-Message-ID: <20240415141956.016235585@linuxfoundation.org>
+	David Ahern <dsahern@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 23/69] ipv6: fib: hide unused pn variable
+Date: Mon, 15 Apr 2024 16:20:54 +0200
+Message-ID: <20240415141946.867174699@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 4c08f01934ab67d1d283d5cbaa52b923abcfe4cd upstream.
+[ Upstream commit 74043489fcb5e5ca4074133582b5b8011b67f9e7 ]
 
-Enable DMA mappings in vmwgfx after TTM has been fixed in commit
-3bf3710e3718 ("drm/ttm: Add a generic TTM memcpy move for page-based iomem")
+When CONFIG_IPV6_SUBTREES is disabled, the only user is hidden, causing
+a 'make W=1' warning:
 
-This enables full guest-backed memory support and in particular allows
-usage of screen targets as the presentation mechanism.
+net/ipv6/ip6_fib.c: In function 'fib6_add':
+net/ipv6/ip6_fib.c:1388:32: error: variable 'pn' set but not used [-Werror=unused-but-set-variable]
 
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Reported-by: Ye Li <ye.li@broadcom.com>
-Tested-by: Ye Li <ye.li@broadcom.com>
-Fixes: 3b0d6458c705 ("drm/vmwgfx: Refuse DMA operation when SEV encryption is active")
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.6+
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240408022802.358641-1-zack.rusin@broadcom.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add another #ifdef around the variable declaration, matching the other
+uses in this file.
+
+Fixes: 66729e18df08 ("[IPV6] ROUTE: Make sure we have fn->leaf when adding a node on subtree.")
+Link: https://lore.kernel.org/netdev/20240322131746.904943-1-arnd@kernel.org/
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240408074219.3030256-1-arnd@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_drv.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ net/ipv6/ip6_fib.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-@@ -666,11 +666,12 @@ static int vmw_dma_select_mode(struct vm
- 		[vmw_dma_map_populate] = "Caching DMA mappings.",
- 		[vmw_dma_map_bind] = "Giving up DMA mappings early."};
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index e606374854ce5..8213626434b91 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -1376,7 +1376,10 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
+ 	     struct nl_info *info, struct netlink_ext_ack *extack)
+ {
+ 	struct fib6_table *table = rt->fib6_table;
+-	struct fib6_node *fn, *pn = NULL;
++	struct fib6_node *fn;
++#ifdef CONFIG_IPV6_SUBTREES
++	struct fib6_node *pn = NULL;
++#endif
+ 	int err = -ENOMEM;
+ 	int allow_create = 1;
+ 	int replace_required = 0;
+@@ -1400,9 +1403,9 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
+ 		goto out;
+ 	}
  
--	/* TTM currently doesn't fully support SEV encryption. */
--	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
--		return -EINVAL;
--
--	if (vmw_force_coherent)
-+	/*
-+	 * When running with SEV we always want dma mappings, because
-+	 * otherwise ttm tt pool pages will bounce through swiotlb running
-+	 * out of available space.
-+	 */
-+	if (vmw_force_coherent || cc_platform_has(CC_ATTR_MEM_ENCRYPT))
- 		dev_priv->map_mode = vmw_dma_alloc_coherent;
- 	else if (vmw_restrict_iommu)
- 		dev_priv->map_mode = vmw_dma_map_bind;
++#ifdef CONFIG_IPV6_SUBTREES
+ 	pn = fn;
+ 
+-#ifdef CONFIG_IPV6_SUBTREES
+ 	if (rt->fib6_src.plen) {
+ 		struct fib6_node *sn;
+ 
+-- 
+2.43.0
+
 
 
 
