@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-39880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A078A5529
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B2B8A5558
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D92301F21B9C
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE49AB24C8F
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8170D762FF;
-	Mon, 15 Apr 2024 14:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED07674439;
+	Mon, 15 Apr 2024 14:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jABNCqAn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inO63tX9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA767602A;
-	Mon, 15 Apr 2024 14:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F371E501;
+	Mon, 15 Apr 2024 14:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192095; cv=none; b=HJaGFfj1tZxUEtopiKFVFqnwJCaAHKUstIB5nO3M8SKxBAwhW5QTpT9SZK2R/iiSyWEu7VsiO+QOJZW4Mo7cvfHlpH5kivtcgZbQeqdp0hmF3ZdUhTprOnFyFYo6prM3Tk0FIpOgRsKAH1KpNblt+TA22nxtl3daofDgnc1TavI=
+	t=1713192202; cv=none; b=g9TDk11dtsh80LA4RApaT5lpz7wLkR/iAmG/cYlPQLGA/X3R8op5yurgJTFXgbxl4nODM0mYm6wfCIiVMe+feiYoe4eDvT6Z84tCsXML5Vq2wY6/6vU5v2e3d+89x3KBMMjKMo2RPiaW8nsXeX4mzH5cgqTs6qjVyUe7YRkbB1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192095; c=relaxed/simple;
-	bh=Z7gmBT6XI4gSUpeVDj5c9idbV2GoNQp6a557ToM9gZs=;
+	s=arc-20240116; t=1713192202; c=relaxed/simple;
+	bh=6cS9xaLap0THNn+I6r41lyfxsl5v1ExZqXceRROdclc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cGMmSj+XrUHZ9eIc7SiC+WgFKhIBtg7Fw07Hckn6D/NQvB67RPGJQz7oiRRKXw+/sd71JYYR7l7khjKu5jpDHgmQVStU3nc78hWgNLD9dh64Wcuk8mWJMVHXfEq6p6l9VHT7bf0cC5k+8o4wIz01ItjJvczSl8p7lDbD5RcPVIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jABNCqAn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B9DC113CC;
-	Mon, 15 Apr 2024 14:41:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D93RxBaUieCEBNjCAiu3FDl0v1RAIY7hknXUniqCBPgcLvnMcv6UM2cNtXvPxNGdT8nySwNFpx/M3xqa2jVFUSxOervNw3q62lw1w4umrBYgrvfchP88+X0CnbkcYwYAQiH1GxDOQ1oOGS3carGnVxsTuRKXPtR+3YHgJXAK9ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inO63tX9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3056BC113CC;
+	Mon, 15 Apr 2024 14:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192095;
-	bh=Z7gmBT6XI4gSUpeVDj5c9idbV2GoNQp6a557ToM9gZs=;
+	s=korg; t=1713192202;
+	bh=6cS9xaLap0THNn+I6r41lyfxsl5v1ExZqXceRROdclc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jABNCqAnIa/2pcO0RNwnJGkqlyNtZKwckPxx521mFCcMPYJ51PuS3RRFeeQMcQtt6
-	 txMdv+WXzmx8yeXaKPBo5TQC/+Zm6Ab5d7b9Nw+hK9w6vb5YRJnSqLjNcYnJk/SPIB
-	 hZFisM83GZfTCvCtNImnNkQwkh76k079Di75XP28=
+	b=inO63tX9TMmJNjLBgxYHRcWU7UB8Bh/vEP3j8lNBLAf4lK6U8Bjun5Vcv/EQiwDNs
+	 JfkMsUFnteRUZ+neAdmgacmD5FIsevE6XlsIVituoCkriYV+XbOf8KC48iKFYHrBL8
+	 szaLdFWE/ePWJkaAn+kkmyj9FHDzHATw/LVrqpCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uma Shankar <uma.shankar@intel.com>,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
 	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.1 65/69] drm/i915/cdclk: Fix CDCLK programming order when pipes are active
-Date: Mon, 15 Apr 2024 16:21:36 +0200
-Message-ID: <20240415141948.127938011@linuxfoundation.org>
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 5.15 30/45] drm/client: Fully protect modes[] with dev->mode_config.mutex
+Date: Mon, 15 Apr 2024 16:21:37 +0200
+Message-ID: <20240415141943.148333129@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
+References: <20240415141942.235939111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +64,58 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 7b1f6b5aaec0f849e19c3e99d4eea75876853cdd upstream.
+commit 3eadd887dbac1df8f25f701e5d404d1b90fd0fea upstream.
 
-Currently we always reprogram CDCLK from the
-intel_set_cdclk_pre_plane_update() when using squash/crawl.
-The code only works correctly for the cd2x update or full
-modeset cases, and it was simply never updated to deal with
-squash/crawl.
-
-If the CDCLK frequency is increasing we must reprogram it
-before we do anything else that might depend on the new
-higher frequency, and conversely we must not decrease
-the frequency until everything that might still depend
-on the old higher frequency has been dealt with.
-
-Since cdclk_state->pipe is only relevant when doing a cd2x
-update we can't use it to determine the correct sequence
-during squash/crawl. To that end introduce cdclk_state->disable_pipes
-which simply indicates that we must perform the update
-while the pipes are disable (ie. during
-intel_set_cdclk_pre_plane_update()). Otherwise we use the
-same old vs. new CDCLK frequency comparsiong as for cd2x
-updates.
-
-The only remaining problem case is when the voltage_level
-needs to increase due to a DDI port, but the CDCLK frequency
-is decreasing (and not all pipes are being disabled). The
-current approach will not bump the voltage level up until
-after the port has already been enabled, which is too late.
-But we'll take care of that case separately.
-
-v2: Don't break the "must disable pipes case"
-v3: Keep the on stack 'pipe' for future use
+The modes[] array contains pointers to modes on the connectors'
+mode lists, which are protected by dev->mode_config.mutex.
+Thus we need to extend modes[] the same protection or by the
+time we use it the elements may already be pointing to
+freed/reused memory.
 
 Cc: stable@vger.kernel.org
-Fixes: d62686ba3b54 ("drm/i915/adl_p: CDCLK crawl support for ADL")
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10583
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240402155016.13733-2-ville.syrjala@linux.intel.com
-(cherry picked from commit 3aecee90ac12a351905f12dda7643d5b0676d6ca)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240404203336.10454-2-ville.syrjala@linux.intel.com
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_cdclk.c |    7 +++++--
- drivers/gpu/drm/i915/display/intel_cdclk.h |    3 +++
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_client_modeset.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_cdclk.c
-+++ b/drivers/gpu/drm/i915/display/intel_cdclk.c
-@@ -2152,7 +2152,7 @@ intel_set_cdclk_pre_plane_update(struct
- 				 &new_cdclk_state->actual))
- 		return;
- 
--	if (pipe == INVALID_PIPE ||
-+	if (new_cdclk_state->disable_pipes ||
- 	    old_cdclk_state->actual.cdclk <= new_cdclk_state->actual.cdclk) {
- 		drm_WARN_ON(&dev_priv->drm, !new_cdclk_state->base.changed);
- 
-@@ -2181,7 +2181,7 @@ intel_set_cdclk_post_plane_update(struct
- 				 &new_cdclk_state->actual))
- 		return;
- 
--	if (pipe != INVALID_PIPE &&
-+	if (!new_cdclk_state->disable_pipes &&
- 	    old_cdclk_state->actual.cdclk > new_cdclk_state->actual.cdclk) {
- 		drm_WARN_ON(&dev_priv->drm, !new_cdclk_state->base.changed);
- 
-@@ -2634,6 +2634,7 @@ static struct intel_global_state *intel_
- 		return NULL;
- 
- 	cdclk_state->pipe = INVALID_PIPE;
-+	cdclk_state->disable_pipes = false;
- 
- 	return &cdclk_state->base;
- }
-@@ -2793,6 +2794,8 @@ int intel_modeset_calc_cdclk(struct inte
- 		if (ret)
- 			return ret;
- 
-+		new_cdclk_state->disable_pipes = true;
-+
- 		drm_dbg_kms(&dev_priv->drm,
- 			    "Modeset required for cdclk change\n");
+--- a/drivers/gpu/drm/drm_client_modeset.c
++++ b/drivers/gpu/drm/drm_client_modeset.c
+@@ -775,6 +775,7 @@ int drm_client_modeset_probe(struct drm_
+ 	unsigned int total_modes_count = 0;
+ 	struct drm_client_offset *offsets;
+ 	unsigned int connector_count = 0;
++	/* points to modes protected by mode_config.mutex */
+ 	struct drm_display_mode **modes;
+ 	struct drm_crtc **crtcs;
+ 	int i, ret = 0;
+@@ -843,7 +844,6 @@ int drm_client_modeset_probe(struct drm_
+ 		drm_client_pick_crtcs(client, connectors, connector_count,
+ 				      crtcs, modes, 0, width, height);
  	}
---- a/drivers/gpu/drm/i915/display/intel_cdclk.h
-+++ b/drivers/gpu/drm/i915/display/intel_cdclk.h
-@@ -51,6 +51,9 @@ struct intel_cdclk_state {
+-	mutex_unlock(&dev->mode_config.mutex);
  
- 	/* bitmask of active pipes */
- 	u8 active_pipes;
-+
-+	/* update cdclk with pipes disabled */
-+	bool disable_pipes;
- };
+ 	drm_client_modeset_release(client);
  
- int intel_crtc_compute_min_cdclk(const struct intel_crtc_state *crtc_state);
+@@ -873,6 +873,7 @@ int drm_client_modeset_probe(struct drm_
+ 			modeset->y = offset->y;
+ 		}
+ 	}
++	mutex_unlock(&dev->mode_config.mutex);
+ 
+ 	mutex_unlock(&client->modeset_mutex);
+ out:
 
 
 
