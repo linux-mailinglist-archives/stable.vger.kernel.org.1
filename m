@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-39798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267808A54CA
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5BC8A5512
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D66AF281019
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B011B22F30
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA4D78C7A;
-	Mon, 15 Apr 2024 14:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD937C090;
+	Mon, 15 Apr 2024 14:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxLfQzYh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6TlLHBx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088742119;
-	Mon, 15 Apr 2024 14:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11EA74422;
+	Mon, 15 Apr 2024 14:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191846; cv=none; b=Vur+TIT5jqGPbrAmUtZHaniqqFjXjNfbIXOwlhX+4tbaf8wBLWnzDNGS/Zh/flF48vfguiuZ4S1N/2mBj1xXypHYfyvX4Exq6AbKKFURrJ8v7RgQv6ctiI4GLJrvaY9ITDUucpkeu1VQe57Jed96r4y/+vB3HLWA/HeYSBc7zpg=
+	t=1713192023; cv=none; b=LFzIizgruekIbqOGhdNXBtBIKND7zbeVYz1ru2RH73/2ahW8sRImXSAZy6luNc3SupXiMq7oahZMgUX3fFNDgk2L1zIesboUgmYxeCqiuzhvQyeIKpjOa7JpruKhV8NB5D2hK6wnDQYc6Kschy0dlOmV7StGttRGuCywNUhhT3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191846; c=relaxed/simple;
-	bh=JCNbdeaMRIX95xiPOAP0b/Ig9gfiNWTU8xrO/RcsTXs=;
+	s=arc-20240116; t=1713192023; c=relaxed/simple;
+	bh=KE9feLmLFJ06EUkklTQgKDa+dk4/OsSk3zSCRSRAx8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDIM8r4s4T2nLNlaY/K1xeWR8qYAgPlOZGS/Om4PrQ66qAFTE5FqlkZz5S6kpaRB3c/cArXmNMV9SFlBQ2HrRGJR+eVQfHiNDSeBQJNvXeTyharWW62S4R0Bnm0nfqeG8fwTvRepGctMGUI2Mp/VeCjihsKEvZ9EOj7LqQgc+Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxLfQzYh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8383FC113CC;
-	Mon, 15 Apr 2024 14:37:25 +0000 (UTC)
+	 MIME-Version; b=XhSZswgJppwnB+IpV/AV2YFj5WFO/2WrkZ18Z45Xw7LNRKZghdtC1i6cE17kTBYNRQhwqxVaa0WXXqJ3EzeAdDBZ4ApJDyok7yhb/kUs1apL+uywLrS5x75SzO569VzKUJ8zjRzmPY+OfwXVccP9CxPl1cO48awn3tZYwLx8FuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6TlLHBx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5446EC113CC;
+	Mon, 15 Apr 2024 14:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191845;
-	bh=JCNbdeaMRIX95xiPOAP0b/Ig9gfiNWTU8xrO/RcsTXs=;
+	s=korg; t=1713192023;
+	bh=KE9feLmLFJ06EUkklTQgKDa+dk4/OsSk3zSCRSRAx8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxLfQzYhvkZUMIcuReqUJGOc0Nn7024s12dEMW0vbQXLuVRXUsosp1Vcj1focDRr9
-	 9fEaFl7wvr4ZBqqlmCqzFuV6tddtQMyp62PgJZ1qAUkpYWZXUY/h2HXbPahnGmsMtk
-	 Rn+XQRh8zYfAxJl4xePY/T4E8ZJJCMnFCBgNc0gs=
+	b=B6TlLHBxpB0lIyG2W+Gq8eBOidQs7bXqOUcLQuVJkDjPNzL23rfFWuSOlo2mygbXB
+	 /sJzma/XMF/Wfvwv6yAdKeTPbFCggM+HclS7AkhGnLVDXzdKzLgkHWK3SDOISoTj8C
+	 xrAk2z8svC0vXhHYHnatVT3LFFp0/vWwbzDlKAlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Dunlap <acdunlap@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Kevin Loughlin <kevinloughlin@google.com>
-Subject: [PATCH 6.6 105/122] x86/apic: Force native_apic_mem_read() to use the MOV instruction
-Date: Mon, 15 Apr 2024 16:21:10 +0200
-Message-ID: <20240415141956.524755104@linuxfoundation.org>
+	Jacob Pan <jacob.jun.pan@linux.intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 40/69] iommu/vt-d: Allocate local memory for page request queue
+Date: Mon, 15 Apr 2024 16:21:11 +0200
+Message-ID: <20240415141947.371324692@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Dunlap <acdunlap@google.com>
+From: Jacob Pan <jacob.jun.pan@linux.intel.com>
 
-commit 5ce344beaca688f4cdea07045e0b8f03dc537e74 upstream.
+[ Upstream commit a34f3e20ddff02c4f12df2c0635367394e64c63d ]
 
-When done from a virtual machine, instructions that touch APIC memory
-must be emulated. By convention, MMIO accesses are typically performed
-via io.h helpers such as readl() or writeq() to simplify instruction
-emulation/decoding (ex: in KVM hosts and SEV guests) [0].
+The page request queue is per IOMMU, its allocation should be made
+NUMA-aware for performance reasons.
 
-Currently, native_apic_mem_read() does not follow this convention,
-allowing the compiler to emit instructions other than the MOV
-instruction generated by readl(). In particular, when the kernel is
-compiled with clang and run as a SEV-ES or SEV-SNP guest, the compiler
-would emit a TESTL instruction which is not supported by the SEV-ES
-emulator, causing a boot failure in that environment. It is likely the
-same problem would happen in a TDX guest as that uses the same
-instruction emulator as SEV-ES.
-
-To make sure all emulators can emulate APIC memory reads via MOV, use
-the readl() function in native_apic_mem_read(). It is expected that any
-emulator would support MOV in any addressing mode as it is the most
-generic and is what is usually emitted currently.
-
-The TESTL instruction is emitted when native_apic_mem_read() is inlined
-into apic_mem_wait_icr_idle(). The emulator comes from
-insn_decode_mmio() in arch/x86/lib/insn-eval.c. It's not worth it to
-extend insn_decode_mmio() to support more instructions since, in theory,
-the compiler could choose to output nearly any instruction for such
-reads which would bloat the emulator beyond reason.
-
-  [0] https://lore.kernel.org/all/20220405232939.73860-12-kirill.shutemov@linux.intel.com/
-
-  [ bp: Massage commit message, fix typos. ]
-
-Signed-off-by: Adam Dunlap <acdunlap@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Tested-by: Kevin Loughlin <kevinloughlin@google.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240318230927.2191933-1-acdunlap@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a222a7f0bb6c ("iommu/vt-d: Implement page request handling")
+Signed-off-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20240403214007.985600-1-jacob.jun.pan@linux.intel.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/apic.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iommu/intel/svm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -13,6 +13,7 @@
- #include <asm/mpspec.h>
- #include <asm/msr.h>
- #include <asm/hardirq.h>
-+#include <asm/io.h>
+diff --git a/drivers/iommu/intel/svm.c b/drivers/iommu/intel/svm.c
+index 03b25358946c4..cb862ab96873e 100644
+--- a/drivers/iommu/intel/svm.c
++++ b/drivers/iommu/intel/svm.c
+@@ -71,7 +71,7 @@ int intel_svm_enable_prq(struct intel_iommu *iommu)
+ 	struct page *pages;
+ 	int irq, ret;
  
- #define ARCH_APICTIMER_STOPS_ON_C3	1
- 
-@@ -96,7 +97,7 @@ static inline void native_apic_mem_write
- 
- static inline u32 native_apic_mem_read(u32 reg)
- {
--	return *((volatile u32 *)(APIC_BASE + reg));
-+	return readl((void __iomem *)(APIC_BASE + reg));
- }
- 
- static inline void native_apic_mem_eoi(void)
+-	pages = alloc_pages(GFP_KERNEL | __GFP_ZERO, PRQ_ORDER);
++	pages = alloc_pages_node(iommu->node, GFP_KERNEL | __GFP_ZERO, PRQ_ORDER);
+ 	if (!pages) {
+ 		pr_warn("IOMMU: %s: Failed to allocate page request queue\n",
+ 			iommu->name);
+-- 
+2.43.0
+
 
 
 
