@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-39844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3523B8A5502
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23C518A542D
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95A39B236AE
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2850285F53
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6DD7F464;
-	Mon, 15 Apr 2024 14:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739DA83CA2;
+	Mon, 15 Apr 2024 14:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixygggXO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HFbwEqHj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071C27C090;
-	Mon, 15 Apr 2024 14:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307FF8120A;
+	Mon, 15 Apr 2024 14:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191984; cv=none; b=oytG2cWeCXn8koZe4Bo4wfOBnobPHezyZNZc0UQUo3/L/uAJglIXq4FU5e7OK+IZsSW/sdHZwbNDr/XVz4KGXettvSlhyGcayn1ThQgw9E78zmnNzw97h2Cw/RSVwyeuzHpiZCSIskQZ+YcecS04CRw1/VvhUDlP2tUzZ+Tou8U=
+	t=1713191495; cv=none; b=IgUQlzu8f0bJ3RrPk0daM+UMdziLnCaDB4t6fxL6/ohjEOT8l8qY46nF0m6bdayPQjJJPOVSflwDHEwEfvDvpPmwzMjWXks04VqRP0Zb9NXF/zMjyd4cz/QjC26whgCbha0L5xoXYvYJWHLfXDwMoXw3Y0NftBlnubcIQnlDPls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191984; c=relaxed/simple;
-	bh=YWpBBDRT+nFAn1w06uc2R6Ks/Vo3m1qLoG+x1RWlMLM=;
+	s=arc-20240116; t=1713191495; c=relaxed/simple;
+	bh=4QEfsxyfxiiC0q4eEZUDi2BJsQW7UcznjM9Z4FEPmNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eeow9TbilyjAZ/0Op02ZpR2iHicpqhiF5/u1JKnuUovMVfBgdloYb2gN5zJiVNg2vEMfUtCbD23QtVWnssuWVRDh5M9n5nnDnSXjxdlD3MbjGucf+lXrfpto57I+uuS+ptPMX26FlQBmtiwWZjrkIZMvbCr3PVRMqN64FwwUtKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixygggXO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F71AC113CC;
-	Mon, 15 Apr 2024 14:39:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZRvlsvM4OzihM1BLLYBLwBdoYaqp3vqchDWj1p0TFBbFBKEpluXriWKlhX9uoFAKT26tHn71MRCei6HQhfN+o0AyKGVY+sqiZZeSip+HSmJ9QGn5fgnpxWFayEVZhOBSJJ3Lp/7e7CnOCrmu8cIKCJKNSgi+4zfg0xy6XqCg3+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HFbwEqHj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF1FC113CC;
+	Mon, 15 Apr 2024 14:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191983;
-	bh=YWpBBDRT+nFAn1w06uc2R6Ks/Vo3m1qLoG+x1RWlMLM=;
+	s=korg; t=1713191495;
+	bh=4QEfsxyfxiiC0q4eEZUDi2BJsQW7UcznjM9Z4FEPmNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ixygggXOosKe6RswNAya2VN6FgqBe1XQzhLxM0PzdW6gMFNVTst7dnUhOQtuQAfSh
-	 CG0jA+ZV7BD5FFEs5D7GvcxN+ZBVjPEFuHSJ0Y0WUzuuDvaRjlLXWyDlyyeKANjkLw
-	 934vN0E38w3Z5wmcZVGAKquvMKTT287cN1mP0k0A=
+	b=HFbwEqHj+Ss6bA1FHxfvbCoxvjTcYxpwQPIIjI8EmK2RPpLikebAjEjc6yn2rzGCd
+	 zHgTP9SejnM9ptAjeJVifCFon0UU2MOvsCrbsBV793FA+k0+gzV2TnkfNV3cJKhFYO
+	 OckpfSiM4g8MtW8eMlNI9iRL1I6JAxMZ1KD5b8Aw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 28/69] netfilter: complete validation of user input
-Date: Mon, 15 Apr 2024 16:20:59 +0200
-Message-ID: <20240415141947.014693952@linuxfoundation.org>
+	Vidya Srinivas <vidya.srinivas@intel.com>,
+	Vandita Kulkarni <vandita.kulkarni@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.8 161/172] drm/i915: Disable port sync when bigjoiner is used
+Date: Mon, 15 Apr 2024 16:21:00 +0200
+Message-ID: <20240415142005.246334691@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 65acf6e0501ac8880a4f73980d01b5d27648b956 ]
+commit 0653d501409eeb9f1deb7e4c12e4d0d2c9f1cba1 upstream.
 
-In my recent commit, I missed that do_replace() handlers
-use copy_from_sockptr() (which I fixed), followed
-by unsafe copy_from_sockptr_offset() calls.
+The current modeset sequence can't handle port sync and bigjoiner
+at the same time. Refuse port sync when bigjoiner is needed,
+at least until we fix the modeset sequence.
 
-In all functions, we can perform the @optlen validation
-before even calling xt_alloc_table_info() with the following
-check:
+v2: Add a FIXME (Vandite)
 
-if ((u64)optlen < (u64)tmp.size + sizeof(tmp))
-        return -EINVAL;
-
-Fixes: 0c83842df40f ("netfilter: validate user input for expected length")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Link: https://lore.kernel.org/r/20240409120741.3538135-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Tested-by: Vidya Srinivas <vidya.srinivas@intel.com>
+Reviewed-by: Vandita Kulkarni <vandita.kulkarni@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240404213441.17637-4-ville.syrjala@linux.intel.com
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+(cherry picked from commit b37e1347b991459c38c56ec2476087854a4f720b)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/netfilter/arp_tables.c | 4 ++++
- net/ipv4/netfilter/ip_tables.c  | 4 ++++
- net/ipv6/netfilter/ip6_tables.c | 4 ++++
- 3 files changed, 12 insertions(+)
+ drivers/gpu/drm/i915/display/intel_ddi.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
-index b150c9929b12e..14365b20f1c5c 100644
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -966,6 +966,8 @@ static int do_replace(struct net *net, sockptr_t arg, unsigned int len)
- 		return -ENOMEM;
- 	if (tmp.num_counters == 0)
- 		return -EINVAL;
-+	if ((u64)len < (u64)tmp.size + sizeof(tmp))
-+		return -EINVAL;
- 
- 	tmp.name[sizeof(tmp.name)-1] = 0;
- 
-@@ -1266,6 +1268,8 @@ static int compat_do_replace(struct net *net, sockptr_t arg, unsigned int len)
- 		return -ENOMEM;
- 	if (tmp.num_counters == 0)
- 		return -EINVAL;
-+	if ((u64)len < (u64)tmp.size + sizeof(tmp))
-+		return -EINVAL;
- 
- 	tmp.name[sizeof(tmp.name)-1] = 0;
- 
-diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
-index 1f365e28e316c..a6208efcfccfc 100644
---- a/net/ipv4/netfilter/ip_tables.c
-+++ b/net/ipv4/netfilter/ip_tables.c
-@@ -1120,6 +1120,8 @@ do_replace(struct net *net, sockptr_t arg, unsigned int len)
- 		return -ENOMEM;
- 	if (tmp.num_counters == 0)
- 		return -EINVAL;
-+	if ((u64)len < (u64)tmp.size + sizeof(tmp))
-+		return -EINVAL;
- 
- 	tmp.name[sizeof(tmp.name)-1] = 0;
- 
-@@ -1506,6 +1508,8 @@ compat_do_replace(struct net *net, sockptr_t arg, unsigned int len)
- 		return -ENOMEM;
- 	if (tmp.num_counters == 0)
- 		return -EINVAL;
-+	if ((u64)len < (u64)tmp.size + sizeof(tmp))
-+		return -EINVAL;
- 
- 	tmp.name[sizeof(tmp.name)-1] = 0;
- 
-diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
-index 37a2b3301e423..b844e519da1b4 100644
---- a/net/ipv6/netfilter/ip6_tables.c
-+++ b/net/ipv6/netfilter/ip6_tables.c
-@@ -1137,6 +1137,8 @@ do_replace(struct net *net, sockptr_t arg, unsigned int len)
- 		return -ENOMEM;
- 	if (tmp.num_counters == 0)
- 		return -EINVAL;
-+	if ((u64)len < (u64)tmp.size + sizeof(tmp))
-+		return -EINVAL;
- 
- 	tmp.name[sizeof(tmp.name)-1] = 0;
- 
-@@ -1515,6 +1517,8 @@ compat_do_replace(struct net *net, sockptr_t arg, unsigned int len)
- 		return -ENOMEM;
- 	if (tmp.num_counters == 0)
- 		return -EINVAL;
-+	if ((u64)len < (u64)tmp.size + sizeof(tmp))
-+		return -EINVAL;
- 
- 	tmp.name[sizeof(tmp.name)-1] = 0;
- 
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/i915/display/intel_ddi.c
++++ b/drivers/gpu/drm/i915/display/intel_ddi.c
+@@ -4229,7 +4229,12 @@ static bool m_n_equal(const struct intel
+ static bool crtcs_port_sync_compatible(const struct intel_crtc_state *crtc_state1,
+ 				       const struct intel_crtc_state *crtc_state2)
+ {
++	/*
++	 * FIXME the modeset sequence is currently wrong and
++	 * can't deal with bigjoiner + port sync at the same time.
++	 */
+ 	return crtc_state1->hw.active && crtc_state2->hw.active &&
++		!crtc_state1->bigjoiner_pipes && !crtc_state2->bigjoiner_pipes &&
+ 		crtc_state1->output_types == crtc_state2->output_types &&
+ 		crtc_state1->output_format == crtc_state2->output_format &&
+ 		crtc_state1->lane_count == crtc_state2->lane_count &&
 
 
 
