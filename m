@@ -1,272 +1,145 @@
-Return-Path: <stable+bounces-39941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A5988A55E5
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 17:04:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5488A55F3
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 17:05:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5FE5281724
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 15:04:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB5D8282945
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 15:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833FE74E11;
-	Mon, 15 Apr 2024 15:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BBAF78C7A;
+	Mon, 15 Apr 2024 15:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fZEcPpSr"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FgPaRP8U"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7BC74E25
-	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 15:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B0F78C7B
+	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 15:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713193436; cv=none; b=snmaOT07/hwubsIJWCccQ21RIBxmSz5k2upLc/FWbI7RADEnX99ibRozUKzH2s70hc3kvUo9l3POrYVyfV4WWDK78ei5GVGv/Yii/7zCrGcN3+Wb8xSefdbI3IgUMdWM82LEEM2UB6h6rBdjuBHdZ9euVqWeDLja1da9rG3hJKM=
+	t=1713193502; cv=none; b=CmZZvuxqAW5OUV8jTIOQpDNzEEnIh2Xowa8CDqEtoIeu5CjgZ4HYR+bOaHqOv/1DU7ITQay7nvN/NoDxt/cYLxwcIJLfiMxb8YEx30FRqIoP8SnPMwaNoS1wB39+0yECJnXeHgsSvTu5z6i5SRRY3u6F++Q3u0LYGObFEZR+h9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713193436; c=relaxed/simple;
-	bh=IuKUdbMZgT331pCVFMMT96uODGAgqqB3115iZ19qJ0M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gi2F7trfkVyGa0AsRbLOfCCJU0hh9h6XqamzzgVc5cWVpwSGXvNEYpCdqSYU/UVt5TW04eFt8DyfiVbwHhA84mqiB8rYH34CqD3wHtzFq21bvAyvVYOG3j0jC5sLEsUn9G8QHJ+5Fzi9dTFulSYn6G0JgBlO1T4JnjIB9KqZKOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fZEcPpSr; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713193431; x=1744729431;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=IuKUdbMZgT331pCVFMMT96uODGAgqqB3115iZ19qJ0M=;
-  b=fZEcPpSr0XpZ3PI4dTyKfZomt9COWKNHqc6o8lRbSOBTUVO2zHZg9If+
-   bD6NkoOzBWekt46XBoTn6QgzU0MxydozJ9rbwR8KDs38hgbkjcSRwArsj
-   P70xKImMnvKinpqWUvCQZDQEdz/Hq2KV5WbmBAB/7ZET6seWwX37y8PFl
-   ITsxlQHN9TuZW+LoURLBjfRgW63vbIjNelREIM5OV3LlYZJWRhgSpLOnM
-   3ftuAsJXczQ44N+sf6j/yybc8SvEqUZnhWxBtYnzLsScgQd1gxftxsyte
-   WAE4WJwVfW25cbkOsRjJXr1mvMgIhb63heAeEEN6szKO9cDwlzIeKljwD
-   A==;
-X-CSE-ConnectionGUID: kbfrvfK9RQCQ1z/KUZuqFA==
-X-CSE-MsgGUID: XZAcxNFrQEmBQy7lJFXdyA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="12383436"
-X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
-   d="scan'208";a="12383436"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 08:03:51 -0700
-X-CSE-ConnectionGUID: eKV3vwNORw23cPCzjZ9byg==
-X-CSE-MsgGUID: /jJAq5FAR42zBTTFx71PqA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
-   d="scan'208";a="59388909"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO jkrzyszt-mobl2.intranet) ([10.213.20.116])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 08:03:50 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: Nirmoy Das <nirmoy.das@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.1.y v2] drm/i915/vma: Fix UAF on destroy against retire race
-Date: Mon, 15 Apr 2024 17:03:06 +0200
-Message-ID: <20240415150324.79701-2-janusz.krzysztofik@linux.intel.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <2024033053-lyrically-excluding-f09f@gregkh>
-References: <2024033053-lyrically-excluding-f09f@gregkh>
+	s=arc-20240116; t=1713193502; c=relaxed/simple;
+	bh=d5cmappnFJ0/wDvwY88Um505JFlXsV8IcwfFnmq2FlY=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=VKPWLGkAljpc8BfbtmpftcEYke70APEDA0pzRXu1a9gPIVwcDI+bMlHAwFFR4IHlle1Wp33+O33gcZWHXNIn0NYrED4XmAP1PUzJyfIXsBNkXseqD0+ijVTI7a/3TIFEEOkyCjxaUjDLaeW2lZBOEjSXqQeVSRdNhAEKV4gxbMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FgPaRP8U; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1713193499;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z8xnurLSraf68tR7a2NWQu+yYrcYokZdoz7hggE/R38=;
+	b=FgPaRP8UaeRc/+XP/CJCtnsQ09umNak/5Tk7oEN/gNIsw3qqarz1VLct1nozbGi1eQrLWW
+	35+zI6HSqs8k7F8MXNZ8ZY8TB/8O7axYraxKZCbgAtkg/VtCD7MFNiVHcOyuRBkWdnio1V
+	LhLvwzr5OGKrt7RJj+d97iRniLf1cVw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-316-cJDC2KeyNx6oY9pwZQnFzA-1; Mon, 15 Apr 2024 11:04:54 -0400
+X-MC-Unique: cJDC2KeyNx6oY9pwZQnFzA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A7F96188ACA5;
+	Mon, 15 Apr 2024 15:04:53 +0000 (UTC)
+Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 11FD340C6DAE;
+	Mon, 15 Apr 2024 15:04:53 +0000 (UTC)
+Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
+	id E9A8C30C72AD; Mon, 15 Apr 2024 15:04:52 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+	by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id E51CE3FD7A;
+	Mon, 15 Apr 2024 17:04:52 +0200 (CEST)
+Date: Mon, 15 Apr 2024 17:04:52 +0200 (CEST)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: Li Lingfeng <lilingfeng3@huawei.com>
+cc: stable@vger.kernel.org, gregkh@linuxfoundation.org, 
+    torvalds@linux-foundation.org, tglx@linutronix.de, 
+    linux-kernel@vger.kernel.org, dm-devel@lists.linux.dev, 
+    msnitzer@redhat.com, ignat@cloudflare.com, damien.lemoal@wdc.com, 
+    houtao1@huawei.com, nhuck@google.com, peterz@infradead.org, 
+    yukuai3@huawei.com, yangerkun@huawei.com, yi.zhang@huawei.com, 
+    lilingfeng@huaweicloud.com
+Subject: Re: [PATCH 6.6] Revert "dm-crypt, dm-verity: disable tasklets"
+In-Reply-To: <4e5e4634-a2d0-ce35-3884-829d385c0879@huawei.com>
+Message-ID: <3bc637b9-f7b4-aef6-74a8-5066d0d646f3@redhat.com>
+References: <20240411091539.361470-1-lilingfeng3@huawei.com> <7c17f31a-2cc3-1597-e2b5-832355de7647@redhat.com> <4e5e4634-a2d0-ce35-3884-829d385c0879@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; BOUNDARY="185210117-1508192850-1713191327=:1973731"
+Content-ID: <57482597-77c8-9c50-5cee-a88780511284@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 
-Object debugging tools were sporadically reporting illegal attempts to
-free a still active i915 VMA object when parking a GT believed to be idle.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-[161.359441] ODEBUG: free active (active state 0) object: ffff88811643b958 object type: i915_active hint: __i915_vma_active+0x0/0x50 [i915]
-[161.360082] WARNING: CPU: 5 PID: 276 at lib/debugobjects.c:514 debug_print_object+0x80/0xb0
-...
-[161.360304] CPU: 5 PID: 276 Comm: kworker/5:2 Not tainted 6.5.0-rc1-CI_DRM_13375-g003f860e5577+ #1
-[161.360314] Hardware name: Intel Corporation Rocket Lake Client Platform/RocketLake S UDIMM 6L RVP, BIOS RKLSFWI1.R00.3173.A03.2204210138 04/21/2022
-[161.360322] Workqueue: i915-unordered __intel_wakeref_put_work [i915]
-[161.360592] RIP: 0010:debug_print_object+0x80/0xb0
-...
-[161.361347] debug_object_free+0xeb/0x110
-[161.361362] i915_active_fini+0x14/0x130 [i915]
-[161.361866] release_references+0xfe/0x1f0 [i915]
-[161.362543] i915_vma_parked+0x1db/0x380 [i915]
-[161.363129] __gt_park+0x121/0x230 [i915]
-[161.363515] ____intel_wakeref_put_last+0x1f/0x70 [i915]
+--185210117-1508192850-1713191327=:1973731
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: 8BIT
+Content-ID: <d4f484f-7d14-ecbc-5c9f-5e4cc90bd23@redhat.com>
 
-That has been tracked down to be happening when another thread is
-deactivating the VMA inside __active_retire() helper, after the VMA's
-active counter has been already decremented to 0, but before deactivation
-of the VMA's object is reported to the object debugging tool.
 
-We could prevent from that race by serializing i915_active_fini() with
-__active_retire() via ref->tree_lock, but that wouldn't stop the VMA from
-being used, e.g. from __i915_vma_retire() called at the end of
-__active_retire(), after that VMA has been already freed by a concurrent
-i915_vma_destroy() on return from the i915_active_fini().  Then, we should
-rather fix the issue at the VMA level, not in i915_active.
 
-Since __i915_vma_parked() is called from __gt_park() on last put of the
-GT's wakeref, the issue could be addressed by holding the GT wakeref long
-enough for __active_retire() to complete before that wakeref is released
-and the GT parked.
+On Fri, 12 Apr 2024, Li Lingfeng wrote:
 
-I believe the issue was introduced by commit d93939730347 ("drm/i915:
-Remove the vma refcount") which moved a call to i915_active_fini() from
-a dropped i915_vma_release(), called on last put of the removed VMA kref,
-to i915_vma_parked() processing path called on last put of a GT wakeref.
-However, its visibility to the object debugging tool was suppressed by a
-bug in i915_active that was fixed two weeks later with commit e92eb246feb9
-("drm/i915/active: Fix missing debug object activation").
+> Hi
+> 
+> I'm having difficulty understanding "Workqueues and ksoftirqd may be scheduled
+> arbitrarily".
+> This is my understanding:
+> kcryptd_queue_crypt
+> †tasklet_schedule
+> † __tasklet_schedule
+> †† __tasklet_schedule_common
+> ††† raise_softirq_irqoff
+> †††† wakeup_softirqd
+> ††††† wake_up_process // ksoftirqd
+> 
+> run_ksoftirqd
+> †__do_softirq
+> † softirq_handle_begin
+> †† __local_bh_disable_ip // Turn off preemption
+> <---------- [1] ---------->
+> † tasklet_action // h->action
+> †† tasklet_action_common
+> ††† tasklet_trylock
+> †††† kcryptd_crypt_tasklet // t->func(t->data)
+> †††† ...
+> ††††† queue_work(cc->io_queue, &io->work)
+> <---------- [2] ---------->
+> ††† tasklet_unlock
+> 
+> // workqueue process
+> kcryptd_io_bio_endio
+> †...
+> †// free tasklet_struct
+> 
+> Since preemption has been turned off at [1], I'm confused about how the CPU
+> can be scheduled out to do work first at [2].
+> Would you mind explaining it to me?
+> 
+> Thanks
 
-A VMA associated with a request doesn't acquire a GT wakeref by itself.
-Instead, it depends on a wakeref held directly by the request's active
-intel_context for a GT associated with its VM, and indirectly on that
-intel_context's engine wakeref if the engine belongs to the same GT as the
-VMA's VM.  Those wakerefs are released asynchronously to VMA deactivation.
+Yes, you are right that scheduling is disabled when ksoftirqd processes a 
+softirq task.
 
-Fix the issue by getting a wakeref for the VMA's GT when activating it,
-and putting that wakeref only after the VMA is deactivated.  However,
-exclude global GTT from that processing path, otherwise the GPU never goes
-idle.  Since __i915_vma_retire() may be called from atomic contexts, use
-async variant of wakeref put.  Also, to avoid circular locking dependency,
-take care of acquiring the wakeref before VM mutex when both are needed.
+But the upstream kernel switched to bh workqueues anyway, so there is no 
+need to submit a different solution to the stable kernels.
 
-v7: Add inline comments with justifications for:
-    - using untracked variants of intel_gt_pm_get/put() (Nirmoy),
-    - using async variant of _put(),
-    - not getting the wakeref in case of a global GTT,
-    - always getting the first wakeref outside vm->mutex.
-v6: Since __i915_vma_active/retire() callbacks are not serialized, storing
-    a wakeref tracking handle inside struct i915_vma is not safe, and
-    there is no other good place for that.  Use untracked variants of
-    intel_gt_pm_get/put_async().
-v5: Replace "tile" with "GT" across commit description (Rodrigo),
-  - avoid mentioning multi-GT case in commit description (Rodrigo),
-  - explain why we need to take a temporary wakeref unconditionally inside
-    i915_vma_pin_ww() (Rodrigo).
-v4: Refresh on top of commit 5e4e06e4087e ("drm/i915: Track gt pm
-    wakerefs") (Andi),
-  - for more easy backporting, split out removal of former insufficient
-    workarounds and move them to separate patches (Nirmoy).
-  - clean up commit message and description a bit.
-v3: Identify root cause more precisely, and a commit to blame,
-  - identify and drop former workarounds,
-  - update commit message and description.
-v2: Get the wakeref before VM mutex to avoid circular locking dependency,
-  - drop questionable Fixes: tag.
-
-v6.1 backport: Downgrade to non-tracked version of GT PM wakeref API.
-
-Fixes: d93939730347 ("drm/i915: Remove the vma refcount")
-Closes: https://gitlab.freedesktop.org/drm/intel/issues/8875
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: Thomas Hellstr√∂m <thomas.hellstrom@linux.intel.com>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: stable@vger.kernel.org # v5.19+
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240305143747.335367-6-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit f3c71b2ded5c4367144a810ef25f998fd1d6c381)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit 0e45882ca829b26b915162e8e86dbb1095768e9e)
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- drivers/gpu/drm/i915/i915_vma.c | 42 +++++++++++++++++++++++++++------
- 1 file changed, 35 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/gpu/drm/i915/i915_vma.c b/drivers/gpu/drm/i915/i915_vma.c
-index c8ad8f37e5cfe..58a03da16a10f 100644
---- a/drivers/gpu/drm/i915/i915_vma.c
-+++ b/drivers/gpu/drm/i915/i915_vma.c
-@@ -32,6 +32,7 @@
- #include "gt/intel_engine.h"
- #include "gt/intel_engine_heartbeat.h"
- #include "gt/intel_gt.h"
-+#include "gt/intel_gt_pm.h"
- #include "gt/intel_gt_requests.h"
- 
- #include "i915_drv.h"
-@@ -98,12 +99,34 @@ static inline struct i915_vma *active_to_vma(struct i915_active *ref)
- 
- static int __i915_vma_active(struct i915_active *ref)
- {
--	return i915_vma_tryget(active_to_vma(ref)) ? 0 : -ENOENT;
-+	struct i915_vma *vma = active_to_vma(ref);
-+
-+	if (!i915_vma_tryget(vma))
-+		return -ENOENT;
-+
-+	/*
-+	 * Exclude global GTT VMA from holding a GT wakeref
-+	 * while active, otherwise GPU never goes idle.
-+	 */
-+	if (!i915_vma_is_ggtt(vma))
-+		intel_gt_pm_get(vma->vm->gt);
-+
-+	return 0;
- }
- 
- static void __i915_vma_retire(struct i915_active *ref)
- {
--	i915_vma_put(active_to_vma(ref));
-+	struct i915_vma *vma = active_to_vma(ref);
-+
-+	if (!i915_vma_is_ggtt(vma)) {
-+		/*
-+		 * Since we can be called from atomic contexts,
-+		 * use an async variant of intel_gt_pm_put().
-+		 */
-+		intel_gt_pm_put_async(vma->vm->gt);
-+	}
-+
-+	i915_vma_put(vma);
- }
- 
- static struct i915_vma *
-@@ -1365,7 +1388,7 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
- 	struct i915_vma_work *work = NULL;
- 	struct dma_fence *moving = NULL;
- 	struct i915_vma_resource *vma_res = NULL;
--	intel_wakeref_t wakeref = 0;
-+	intel_wakeref_t wakeref;
- 	unsigned int bound;
- 	int err;
- 
-@@ -1385,8 +1408,14 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
- 	if (err)
- 		return err;
- 
--	if (flags & PIN_GLOBAL)
--		wakeref = intel_runtime_pm_get(&vma->vm->i915->runtime_pm);
-+	/*
-+	 * In case of a global GTT, we must hold a runtime-pm wakeref
-+	 * while global PTEs are updated.  In other cases, we hold
-+	 * the rpm reference while the VMA is active.  Since runtime
-+	 * resume may require allocations, which are forbidden inside
-+	 * vm->mutex, get the first rpm wakeref outside of the mutex.
-+	 */
-+	wakeref = intel_runtime_pm_get(&vma->vm->i915->runtime_pm);
- 
- 	if (flags & vma->vm->bind_async_flags) {
- 		/* lock VM */
-@@ -1522,8 +1551,7 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
- 	if (work)
- 		dma_fence_work_commit_imm(&work->base);
- err_rpm:
--	if (wakeref)
--		intel_runtime_pm_put(&vma->vm->i915->runtime_pm, wakeref);
-+	intel_runtime_pm_put(&vma->vm->i915->runtime_pm, wakeref);
- 
- 	if (moving)
- 		dma_fence_put(moving);
--- 
-2.44.0
+Mikulas
+--185210117-1508192850-1713191327=:1973731--
 
 
