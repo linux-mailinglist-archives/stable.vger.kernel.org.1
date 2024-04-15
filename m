@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-39701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D8A8A5446
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DB088A5377
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:27:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D4ECB23A49
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 495E6284B9C
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D1782498;
-	Mon, 15 Apr 2024 14:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18E17F7D1;
+	Mon, 15 Apr 2024 14:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYNPag2U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1abj66C6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1FF82495;
-	Mon, 15 Apr 2024 14:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54998745C9;
+	Mon, 15 Apr 2024 14:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191557; cv=none; b=rCppevdOBVChDeFULJ7l5N15A2Px9H4a1qgaVQz6/SqYHBjUh+wHt2uw47CeH/oVS+5MqQmEc9WyD2dYekXoYYWQm/XcTgxVALXb9xxpy+KyCIhes0z7PXicZIYHaiIr5tH/CemMBAJVUZWZh3zqtR3bdjS2vXC7KcF7FLeY89s=
+	t=1713191212; cv=none; b=aH6t2T1EKZh3NhTg8gFCUusVIWCnJfcgp6LVJqqRl+TJCGtHmM2i6ZUH5tJ8cVyX8stH5sPFGx3xszkKd4JYJVQCD7qjIp3xmfAeLFkBeAdVYbrCdo790O8gSf9ERFpizc4ipzf1laILbLV3YsPWh9ikZvIqwNK+Vgos78T5GxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191557; c=relaxed/simple;
-	bh=qtlUSvimGm0p8SlJslNcdNKvc4DgWUNEEC+HV7/hDVA=;
+	s=arc-20240116; t=1713191212; c=relaxed/simple;
+	bh=a5vNeoqtBKarquzda8Dcat+M/9eyNOgUsKLg1bmYQ7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DPgUcHHapncpfftG7gUlZtI4NG2W9mrvOxxlqrPuF0wfzuz3viY6rghZD0iyQ0BCKQoS8MUI7fshoMaWKcS9yoD4MbbIGKLQl9tDicQNbOdhs5qNNMIQ/lyKDa/JbYoX7UBKu+TDbR3PwVh7F2E3g+/oE7PH7D45aupeOXS/vUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYNPag2U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1FEC113CC;
-	Mon, 15 Apr 2024 14:32:36 +0000 (UTC)
+	 MIME-Version; b=TyBtBuFEhbBUuy2jtLm9q36ssPzXCtLIEF4yfhWGvlEg46ULM7vzATe/+fHjV1GVYkQqdk8YCc364viIM0/u3D8D3hl5drA4wdO6j+WuxkYvOJQmewB+AjdUXpjqTZMdJeK9mY5lfn+YJSIVPAdfDyMP2cuxfZbkL2F+gaTjug0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1abj66C6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0894C2BD10;
+	Mon, 15 Apr 2024 14:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191557;
-	bh=qtlUSvimGm0p8SlJslNcdNKvc4DgWUNEEC+HV7/hDVA=;
+	s=korg; t=1713191212;
+	bh=a5vNeoqtBKarquzda8Dcat+M/9eyNOgUsKLg1bmYQ7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rYNPag2UP+eRrUM7SlBTnBm3EdnCQ/l9d5iKusA2EhWOKwFtM4+5pM4oF0zhhKQOn
-	 xoOVVVykAxhBoXN5x4zah6Qon/iZicEp8uQw+aUb8IgOP0/VnsepYAoKQr3evVMe8D
-	 pm/v/hg3Z4Dvr0qKRc4OfUFMPO9b+Qma61i5KhTY=
+	b=1abj66C6VoktP02ISQg4liX2lpQ20LaUOkA18pOOzGXMydzeWACsJ86eBx9t4DOnU
+	 ls6rIYVp0zCoszDq2ojl7CIlZ31tNlujZ6BaN2ni6YMuYDaEvVIQfsE2nSxyxCBvQ6
+	 58AQPDmM+9VDJ2NwwyuQ4gW93ylNVIlmlhcflkts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.6 002/122] ata: libata-core: Allow command duration limits detection for ACS-4 drives
-Date: Mon, 15 Apr 2024 16:19:27 +0200
-Message-ID: <20240415141953.442111826@linuxfoundation.org>
+	Brett Creeley <brett.creeley@amd.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 069/172] pds_core: use pci_reset_function for health reset
+Date: Mon, 15 Apr 2024 16:19:28 +0200
+Message-ID: <20240415142002.505805722@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-commit c0297e7dd50795d559f3534887a6de1756b35d0f upstream.
+[ Upstream commit 2cbab3c296f1addd73b40549a2271b30f960df8b ]
 
-Even though the command duration limits (CDL) feature was first added
-in ACS-5 (major version 12), there are some ACS-4 (major version 11)
-drives that implement CDL as well.
+We get the benefit of all the PCI reset locking and recovery if
+we use the existing pci_reset_function() that will call our
+local reset handlers.
 
-IDENTIFY_DEVICE, SUPPORTED_CAPABILITIES, and CURRENT_SETTINGS log pages
-are mandatory in the ACS-4 standard so it should be safe to read these
-log pages on older drives implementing the ACS-4 standard.
-
-Fixes: 62e4a60e0cdb ("scsi: ata: libata: Detect support for command duration limits")
-Cc: stable@vger.kernel.org
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 81665adf25d2 ("pds_core: Fix pdsc_check_pci_health function to use work thread")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/amd/pds_core/core.c | 3 +--
+ drivers/net/ethernet/amd/pds_core/core.h | 3 ---
+ drivers/net/ethernet/amd/pds_core/main.c | 7 ++++---
+ 3 files changed, 5 insertions(+), 8 deletions(-)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -2493,7 +2493,7 @@ static void ata_dev_config_cdl(struct at
- 	bool cdl_enabled;
- 	u64 val;
+diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
+index 7658a72867675..0d148795a8d09 100644
+--- a/drivers/net/ethernet/amd/pds_core/core.c
++++ b/drivers/net/ethernet/amd/pds_core/core.c
+@@ -609,8 +609,7 @@ static void pdsc_check_pci_health(struct pdsc *pdsc)
+ 	if (fw_status != PDS_RC_BAD_PCI)
+ 		return;
  
--	if (ata_id_major_version(dev->id) < 12)
-+	if (ata_id_major_version(dev->id) < 11)
- 		goto not_supported;
+-	pdsc_reset_prepare(pdsc->pdev);
+-	pdsc_reset_done(pdsc->pdev);
++	pci_reset_function(pdsc->pdev);
+ }
  
- 	if (!ata_log_supported(dev, ATA_LOG_IDENTIFY_DEVICE) ||
+ void pdsc_health_thread(struct work_struct *work)
+diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
+index 110c4b826b22d..f410f7d132056 100644
+--- a/drivers/net/ethernet/amd/pds_core/core.h
++++ b/drivers/net/ethernet/amd/pds_core/core.h
+@@ -283,9 +283,6 @@ int pdsc_devcmd_init(struct pdsc *pdsc);
+ int pdsc_devcmd_reset(struct pdsc *pdsc);
+ int pdsc_dev_init(struct pdsc *pdsc);
+ 
+-void pdsc_reset_prepare(struct pci_dev *pdev);
+-void pdsc_reset_done(struct pci_dev *pdev);
+-
+ int pdsc_intr_alloc(struct pdsc *pdsc, char *name,
+ 		    irq_handler_t handler, void *data);
+ void pdsc_intr_free(struct pdsc *pdsc, int index);
+diff --git a/drivers/net/ethernet/amd/pds_core/main.c b/drivers/net/ethernet/amd/pds_core/main.c
+index 0050c5894563b..345b16127fe8b 100644
+--- a/drivers/net/ethernet/amd/pds_core/main.c
++++ b/drivers/net/ethernet/amd/pds_core/main.c
+@@ -468,7 +468,7 @@ static void pdsc_restart_health_thread(struct pdsc *pdsc)
+ 	mod_timer(&pdsc->wdtimer, jiffies + 1);
+ }
+ 
+-void pdsc_reset_prepare(struct pci_dev *pdev)
++static void pdsc_reset_prepare(struct pci_dev *pdev)
+ {
+ 	struct pdsc *pdsc = pci_get_drvdata(pdev);
+ 
+@@ -477,10 +477,11 @@ void pdsc_reset_prepare(struct pci_dev *pdev)
+ 
+ 	pdsc_unmap_bars(pdsc);
+ 	pci_release_regions(pdev);
+-	pci_disable_device(pdev);
++	if (pci_is_enabled(pdev))
++		pci_disable_device(pdev);
+ }
+ 
+-void pdsc_reset_done(struct pci_dev *pdev)
++static void pdsc_reset_done(struct pci_dev *pdev)
+ {
+ 	struct pdsc *pdsc = pci_get_drvdata(pdev);
+ 	struct device *dev = pdsc->dev;
+-- 
+2.43.0
+
 
 
 
