@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-39649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C0A88A53F9
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:33:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D14498A549A
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:38:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1804128491B
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:32:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 709791F21AA7
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CADF82862;
-	Mon, 15 Apr 2024 14:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AACD82482;
+	Mon, 15 Apr 2024 14:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkSmUrXc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SyFdct5K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0BC7F7D1;
-	Mon, 15 Apr 2024 14:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496EA762D2;
+	Mon, 15 Apr 2024 14:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191403; cv=none; b=eMt/EYK/rQDed6cut7KhSzib7F/aujs63h/NUsmuP7TucPlxlQV/+wv5A2jt8kUpGFkU8JxxlA9pH7Jh0TYCzRI3M/ex4EQGsInmT/xJoRbfvTPQxvChsZ6xPgnYwQ+4y+IYBVCPPuvetP6mrwAo5Y7weyX75Guhc8AxXMTodQc=
+	t=1713191722; cv=none; b=e9knHQHEDqGnKcH+QrihIkniudVe+wOluBKwiJDXdBdI0yPHnjIP/K5bqaQ+7Vxr7x8jbIFu2PjtZ6HeiwJR2NOzvNKuSlnWhWwz6P+NeOPWdbdduBK3i2VPWkUpls4/bbJA5s/FKS78KGhHrZruTXhZ/14Pjyt5lS8Qc60VxHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191403; c=relaxed/simple;
-	bh=o0gUuRM4EjdAzkkjC9AXUE7Q5rWgMOC/P0Tx3/J5Mw8=;
+	s=arc-20240116; t=1713191722; c=relaxed/simple;
+	bh=WBoFh24SDIMZqyS85byot9cpHgEnXfxyx/oLRuIQ61Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pe+6Jgl5GE74+EYw+OeEtSl26WdcmPNS34IE2a2eQkALeQLsn/lfIPnBMXleuKRboO/wmTqiHh2dw5xcelwEhxIyVKvLeiMsqGJ04waXozhSK6bs/xY5SVOyhkU2E83u4C7kwu6znU2Y131B8vgbSRt6Aat2zRX/UvctOeGuIKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkSmUrXc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37760C2BD10;
-	Mon, 15 Apr 2024 14:30:02 +0000 (UTC)
+	 MIME-Version; b=cBiSV1BYf77uP7bJokn7BG9GPyiavc1CFLGipOkwL19GrlM1seAcaSG3P+PiRPkEY326rEt+p2qiGNPe/drRP3MtTBb2visJYJqyAB1tfh3Eq/nldIwQS8qL4dN9eIoa6F9FvqAIckML1Vd0N4MGfTwnutd8Ntu6FmMuy6L3IAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SyFdct5K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6657C4AF0A;
+	Mon, 15 Apr 2024 14:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191402;
-	bh=o0gUuRM4EjdAzkkjC9AXUE7Q5rWgMOC/P0Tx3/J5Mw8=;
+	s=korg; t=1713191722;
+	bh=WBoFh24SDIMZqyS85byot9cpHgEnXfxyx/oLRuIQ61Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nkSmUrXcaepdYLC08goDGK0uhKBgw3r6Y5MwEeBFgPFt/4aJSZbEnJl2GFuKqBqqo
-	 LyLS2FmRPBhGoHO6OI8Z73BF+N/AvJZSWQXSBthvKrJK2pHlcP6qM+mhOVyvh2NaL1
-	 7/kl42kfB80vJemtbTlEfvrpSshoCJj/5Sbizoxo=
+	b=SyFdct5Key9NKx7LYdkGWdi3TbBBAamNv1kwqmAiK0KriNVcF2OHzIO8LFv2Nf/2n
+	 YpvkyEFCVnNb182HNbA5amLNj2s2nfPG7iPKSBp1m6DkEcvmlZSgBFTwmkO0a2raxW
+	 8rfImIa9z/t7gALTkc4QxB/ZY/m4crxixVmyzwMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuogee Hsieh <quic_khsieh@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>
-Subject: [PATCH 6.8 129/172] drm/msm/dp: fix runtime PM leak on disconnect
-Date: Mon, 15 Apr 2024 16:20:28 +0200
-Message-ID: <20240415142004.300860482@linuxfoundation.org>
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 064/122] Revert "s390/ism: fix receive message buffer allocation"
+Date: Mon, 15 Apr 2024 16:20:29 +0200
+Message-ID: <20240415141955.296070857@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Gerd Bayer <gbayer@linux.ibm.com>
 
-commit 0640f47b742667fca6aac174f7cd62b6c2c7532c upstream.
+[ Upstream commit d51dc8dd6ab6f93a894ff8b38d3b8d02c98eb9fb ]
 
-Make sure to put the runtime PM usage count (and suspend) also when
-receiving a disconnect event while in the ST_MAINLINK_READY state.
+This reverts commit 58effa3476536215530c9ec4910ffc981613b413.
+Review was not finished on this patch. So it's not ready for
+upstreaming.
 
-This specifically avoids leaking a runtime PM usage count on every
-disconnect with display servers that do not automatically enable
-external displays when receiving a hotplug notification.
-
-Fixes: 5814b8bf086a ("drm/msm/dp: incorporate pm_runtime framework into DP driver")
-Cc: stable@vger.kernel.org      # 6.8
-Cc: Kuogee Hsieh <quic_khsieh@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/582744/
-Link: https://lore.kernel.org/r/20240313164306.23133-2-johan+linaro@kernel.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240409113753.2181368-1-gbayer@linux.ibm.com
+Fixes: 58effa347653 ("s390/ism: fix receive message buffer allocation")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_display.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/s390/net/ism_drv.c | 38 +++++++++-----------------------------
+ 1 file changed, 9 insertions(+), 29 deletions(-)
 
---- a/drivers/gpu/drm/msm/dp/dp_display.c
-+++ b/drivers/gpu/drm/msm/dp/dp_display.c
-@@ -655,6 +655,7 @@ static int dp_hpd_unplug_handle(struct d
- 		dp_display_host_phy_exit(dp);
- 		dp->hpd_state = ST_DISCONNECTED;
- 		dp_display_notify_disconnect(&dp->dp_display.pdev->dev);
-+		pm_runtime_put_sync(&pdev->dev);
- 		mutex_unlock(&dp->event_mutex);
- 		return 0;
- 	}
+diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
+index 477d7b003c3f0..81aabbfbbe2ca 100644
+--- a/drivers/s390/net/ism_drv.c
++++ b/drivers/s390/net/ism_drv.c
+@@ -14,8 +14,6 @@
+ #include <linux/err.h>
+ #include <linux/ctype.h>
+ #include <linux/processor.h>
+-#include <linux/dma-mapping.h>
+-#include <linux/mm.h>
+ 
+ #include "ism.h"
+ 
+@@ -293,15 +291,13 @@ static int ism_read_local_gid(struct ism_dev *ism)
+ static void ism_free_dmb(struct ism_dev *ism, struct ism_dmb *dmb)
+ {
+ 	clear_bit(dmb->sba_idx, ism->sba_bitmap);
+-	dma_unmap_page(&ism->pdev->dev, dmb->dma_addr, dmb->dmb_len,
+-		       DMA_FROM_DEVICE);
+-	folio_put(virt_to_folio(dmb->cpu_addr));
++	dma_free_coherent(&ism->pdev->dev, dmb->dmb_len,
++			  dmb->cpu_addr, dmb->dma_addr);
+ }
+ 
+ static int ism_alloc_dmb(struct ism_dev *ism, struct ism_dmb *dmb)
+ {
+ 	unsigned long bit;
+-	int rc;
+ 
+ 	if (PAGE_ALIGN(dmb->dmb_len) > dma_get_max_seg_size(&ism->pdev->dev))
+ 		return -EINVAL;
+@@ -318,30 +314,14 @@ static int ism_alloc_dmb(struct ism_dev *ism, struct ism_dmb *dmb)
+ 	    test_and_set_bit(dmb->sba_idx, ism->sba_bitmap))
+ 		return -EINVAL;
+ 
+-	dmb->cpu_addr =
+-		folio_address(folio_alloc(GFP_KERNEL | __GFP_NOWARN |
+-					  __GFP_NOMEMALLOC | __GFP_NORETRY,
+-					  get_order(dmb->dmb_len)));
++	dmb->cpu_addr = dma_alloc_coherent(&ism->pdev->dev, dmb->dmb_len,
++					   &dmb->dma_addr,
++					   GFP_KERNEL | __GFP_NOWARN |
++					   __GFP_NOMEMALLOC | __GFP_NORETRY);
++	if (!dmb->cpu_addr)
++		clear_bit(dmb->sba_idx, ism->sba_bitmap);
+ 
+-	if (!dmb->cpu_addr) {
+-		rc = -ENOMEM;
+-		goto out_bit;
+-	}
+-	dmb->dma_addr = dma_map_page(&ism->pdev->dev,
+-				     virt_to_page(dmb->cpu_addr), 0,
+-				     dmb->dmb_len, DMA_FROM_DEVICE);
+-	if (dma_mapping_error(&ism->pdev->dev, dmb->dma_addr)) {
+-		rc = -ENOMEM;
+-		goto out_free;
+-	}
+-
+-	return 0;
+-
+-out_free:
+-	kfree(dmb->cpu_addr);
+-out_bit:
+-	clear_bit(dmb->sba_idx, ism->sba_bitmap);
+-	return rc;
++	return dmb->cpu_addr ? 0 : -ENOMEM;
+ }
+ 
+ int ism_register_dmb(struct ism_dev *ism, struct ism_dmb *dmb,
+-- 
+2.43.0
+
 
 
 
