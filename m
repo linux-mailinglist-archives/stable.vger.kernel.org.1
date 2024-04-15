@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-39637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD6E8A53DF
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:32:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C158A547C
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:37:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 715911F21DF8
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:32:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 796961C22095
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E788083CD1;
-	Mon, 15 Apr 2024 14:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F6E839FD;
+	Mon, 15 Apr 2024 14:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QH2+MZws"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PewHqzYC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DFB83CC8;
-	Mon, 15 Apr 2024 14:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C19182D86;
+	Mon, 15 Apr 2024 14:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191365; cv=none; b=OoLJ6z6pqzs66X58cPoxAPmTKhAXC9YzNaxNuI0COpi12fgek2b0F8ooJQ8fOA4DmQxywb4xHodgKfLT2JiFPNi26nRHDbzKPOSNSXQhqvlUeQL9jpWWxcRjtXEWSaB855co+91Dmt8mEd3CNb/HNk+u0z28nEVZ1Umj212bDJE=
+	t=1713191682; cv=none; b=csJFYYlwy1Z7dSJHJi4texoYt25UbCkplomv081GeJxmet9V9o8wTT7IFanihzsdh562goKs7e7vlxyNnqYR/4k9Ve6I2lpg8TCfoQu9v45Epgg1a7hutsejLoGohhAMNx54BB8VzSHdL9J/kfFcnuXnUgrJCEL2kfxJ567L3Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191365; c=relaxed/simple;
-	bh=2X1IcXgWpxWfIuNAV23iwtE1RCKtm9c+pwhoYfYP7dk=;
+	s=arc-20240116; t=1713191682; c=relaxed/simple;
+	bh=UBgVwf1eJSbrPykllpN2W4Rp7OEpgdNqxI3WQ2QWz/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z4dJXIdsOfuLHk7VsOOHhc1Dao7DltH00Y2x1vtGohfA/OiS5eESs6AIfOISbiNuVCHjpJTKbib6r3CpUTNeWN7WxPYWNKL96Tryf17I+2dSFLtR3zWfSMVAh6jm5rkld/fFRjzHLa7Ew2zMsKkeEVGJy1omGq572HfyeueJ1L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QH2+MZws; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 206A2C113CC;
-	Mon, 15 Apr 2024 14:29:24 +0000 (UTC)
+	 MIME-Version; b=r1kgcZ0sLBz6xDOTV2PlEKaYib82LQIJD8470Db18hr9JdF5cziznO8x1GJnmK89+Z2LNPaPVIv2UR4oTYlp4FVeiQgzXTl299GACQxA6ZbbpW0rMGMJQwUUV7MKVjlSnwKuiF1IaDHk5zFyYRzncLqB0+IDKt4IDp0PRJMR3qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PewHqzYC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87599C113CC;
+	Mon, 15 Apr 2024 14:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191365;
-	bh=2X1IcXgWpxWfIuNAV23iwtE1RCKtm9c+pwhoYfYP7dk=;
+	s=korg; t=1713191681;
+	bh=UBgVwf1eJSbrPykllpN2W4Rp7OEpgdNqxI3WQ2QWz/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QH2+MZwsaBNLEAh2UaDGNlsaJSXqDWExXXbOFPAvV+0jYEec+h1H+a2CqMzi7BbTd
-	 WYjSNuE5feejk+/pthKBhAzrqfPnLTU7YVFtLDCicMuvo030i6Vgm+G+xzKpPOxwo3
-	 1htXHDoXzrFrFNWulaD0Gyc4aOzhzxM3oq9cDhgE=
+	b=PewHqzYCphpA0QVDk9v8DdtgIIuMTq/mE3oxMx0pX5OVGXDiTdvjjNQR4wgmEtvhl
+	 acNz9gfa6DmzFhputKBCK4s7Y/xqK+w762VJHHGeGmBXbTLE4OPeCcAzb6xUIqM1jY
+	 nOWIEvPKlLScR0OmGCua4knvuik86w8qeug4BBaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Wachowski, Karol" <karol.wachowski@intel.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>, Wachowski@web.codeaurora.org
-Subject: [PATCH 6.8 118/172] accel/ivpu: Check return code of ipc->lock init
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 052/122] Bluetooth: SCO: Fix not validating setsockopt user input
 Date: Mon, 15 Apr 2024 16:20:17 +0200
-Message-ID: <20240415142003.972789833@linuxfoundation.org>
+Message-ID: <20240415141954.931900709@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wachowski, Karol <karol.wachowski@intel.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit f0cf7ffcd02953c72fed5995378805883d16203e upstream.
+[ Upstream commit 51eda36d33e43201e7a4fd35232e069b2c850b01 ]
 
-Return value of drmm_mutex_init(ipc->lock) was unchecked.
+syzbot reported sco_sock_setsockopt() is copying data without
+checking user input length.
 
-Fixes: 5d7422cfb498 ("accel/ivpu: Add IPC driver and JSM messages")
-Cc: <stable@vger.kernel.org> # v6.3+
-Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240402104929.941186-2-jacek.lawrynowicz@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset
+include/linux/sockptr.h:49 [inline]
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr
+include/linux/sockptr.h:55 [inline]
+BUG: KASAN: slab-out-of-bounds in sco_sock_setsockopt+0xc0b/0xf90
+net/bluetooth/sco.c:893
+Read of size 4 at addr ffff88805f7b15a3 by task syz-executor.5/12578
+
+Fixes: ad10b1a48754 ("Bluetooth: Add Bluetooth socket voice option")
+Fixes: b96e9c671b05 ("Bluetooth: Add BT_DEFER_SETUP option to sco socket")
+Fixes: 00398e1d5183 ("Bluetooth: Add support for BT_PKT_STATUS CMSG data for SCO connections")
+Fixes: f6873401a608 ("Bluetooth: Allow setting of codec for HFP offload use case")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_ipc.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ include/net/bluetooth/bluetooth.h |  9 +++++++++
+ net/bluetooth/sco.c               | 23 ++++++++++-------------
+ 2 files changed, 19 insertions(+), 13 deletions(-)
 
---- a/drivers/accel/ivpu/ivpu_ipc.c
-+++ b/drivers/accel/ivpu/ivpu_ipc.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * Copyright (C) 2020-2023 Intel Corporation
-+ * Copyright (C) 2020-2024 Intel Corporation
-  */
+diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
+index 28e32c9a6cc99..e4a6831133f81 100644
+--- a/include/net/bluetooth/bluetooth.h
++++ b/include/net/bluetooth/bluetooth.h
+@@ -585,6 +585,15 @@ static inline struct sk_buff *bt_skb_sendmmsg(struct sock *sk,
+ 	return skb;
+ }
  
- #include <linux/genalloc.h>
-@@ -501,7 +501,11 @@ int ivpu_ipc_init(struct ivpu_device *vd
- 	spin_lock_init(&ipc->cons_lock);
- 	INIT_LIST_HEAD(&ipc->cons_list);
- 	INIT_LIST_HEAD(&ipc->cb_msg_list);
--	drmm_mutex_init(&vdev->drm, &ipc->lock);
-+	ret = drmm_mutex_init(&vdev->drm, &ipc->lock);
-+	if (ret) {
-+		ivpu_err(vdev, "Failed to initialize ipc->lock, ret %d\n", ret);
-+		goto err_free_rx;
-+	}
- 	ivpu_ipc_reset(vdev);
- 	return 0;
++static inline int bt_copy_from_sockptr(void *dst, size_t dst_size,
++				       sockptr_t src, size_t src_size)
++{
++	if (dst_size > src_size)
++		return -EINVAL;
++
++	return copy_from_sockptr(dst, src, dst_size);
++}
++
+ int bt_to_errno(u16 code);
+ __u8 bt_status(int err);
  
+diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
+index c736186aba26b..8e4f39b8601cb 100644
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -823,7 +823,7 @@ static int sco_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			       sockptr_t optval, unsigned int optlen)
+ {
+ 	struct sock *sk = sock->sk;
+-	int len, err = 0;
++	int err = 0;
+ 	struct bt_voice voice;
+ 	u32 opt;
+ 	struct bt_codecs *codecs;
+@@ -842,10 +842,9 @@ static int sco_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
+ 		}
+ 
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt)
+ 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
+@@ -862,11 +861,10 @@ static int sco_sock_setsockopt(struct socket *sock, int level, int optname,
+ 
+ 		voice.setting = sco_pi(sk)->setting;
+ 
+-		len = min_t(unsigned int, sizeof(voice), optlen);
+-		if (copy_from_sockptr(&voice, optval, len)) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&voice, sizeof(voice), optval,
++					   optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		/* Explicitly check for these values */
+ 		if (voice.setting != BT_VOICE_TRANSPARENT &&
+@@ -889,10 +887,9 @@ static int sco_sock_setsockopt(struct socket *sock, int level, int optname,
+ 		break;
+ 
+ 	case BT_PKT_STATUS:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt)
+ 			set_bit(BT_SK_PKT_STATUS, &bt_sk(sk)->flags);
+@@ -933,9 +930,9 @@ static int sco_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
+ 		}
+ 
+-		if (copy_from_sockptr(buffer, optval, optlen)) {
++		err = bt_copy_from_sockptr(buffer, optlen, optval, optlen);
++		if (err) {
+ 			hci_dev_put(hdev);
+-			err = -EFAULT;
+ 			break;
+ 		}
+ 
+-- 
+2.43.0
+
 
 
 
