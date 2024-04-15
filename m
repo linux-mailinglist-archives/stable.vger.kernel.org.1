@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-39609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 097188A53AB
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:29:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49CB88A53AF
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:30:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EDFF1C21DAA
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:29:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A89ECB2363E
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E12576046;
-	Mon, 15 Apr 2024 14:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50927E785;
+	Mon, 15 Apr 2024 14:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0T25Jte"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NlbEyPh7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16F97E785;
-	Mon, 15 Apr 2024 14:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F1E745C9;
+	Mon, 15 Apr 2024 14:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191276; cv=none; b=TWE4hcKap6bBqO2gWx6j96AB/cGYiCd17WnNv5r9QxT1cBYLtI0T2ldqk2B6NbCIX12eVOxv3FjESE0POadXZBuVBqhXk8M4ksgCu9RaiQOhUauS/7gj7BUUYksAmvSyx+jmKF/zjfRr8olG4ObY6obGlXKg0WGtfTZ9CO6/7V4=
+	t=1713191282; cv=none; b=F0EwKkVCWcq80d6q1tiNzB4ImfMMGr/QOsjMP/psSA5lk/Nr3PAGkU6XCsrsTSIF7GWVNSJt6p5Vf2Lw9ehB4tHzxxfZ3wAS65nM1sL29l0O0L9aVHvA0aihB3ZsaIuewX6IgnccvD3YSrWWCEPcUnoX5GP1IDpj1ns8sVF3Ze4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191276; c=relaxed/simple;
-	bh=jkor9aPgHXElctM4toAgIVbUJvCMtZ3uMduIgeMBG/8=;
+	s=arc-20240116; t=1713191282; c=relaxed/simple;
+	bh=IW6gzuO5YI5bs8mY2RDDGNKTKeJAR5iu9IPpEmHNE8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a7HGvishxQQUrAgKz6gQrFBiG+QwjZEC+JVRyWSQgz5AyGIQqxKfPHylEWG5MV961mAz8L+jxNY9caYJeRSrhxHNaIibifKvwCrtG7VbL7Tnl4+5zi3rFdxXc6Xb7PL7ZSpQKm08le3fE6J66aP3LRGo0V+Pdo/ukxJ755gLeQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0T25Jte; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0868CC113CC;
-	Mon, 15 Apr 2024 14:27:55 +0000 (UTC)
+	 MIME-Version; b=BXJRFImc0u8h6ws9TJgJmiifi8526Pe+uoV7vNMZTY4KyPaZ7yaq55T8jCwrAxd1hnpXKDIMok+CWI922QWl+8rBwPUyY3TIrpUqFDhGeOpIKJS3bow5I2sTU8dyt/buA3CmdQ7W/P3xRZdfTrHq0VuhVgI64Q2DqSSTXk3coIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NlbEyPh7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE549C113CC;
+	Mon, 15 Apr 2024 14:28:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191276;
-	bh=jkor9aPgHXElctM4toAgIVbUJvCMtZ3uMduIgeMBG/8=;
+	s=korg; t=1713191282;
+	bh=IW6gzuO5YI5bs8mY2RDDGNKTKeJAR5iu9IPpEmHNE8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T0T25JtecJPiYINJpnsexLSLrsRBu3AeWNeKmTEgTmwKTg+5woPuehCZPupkHkJo9
-	 Ifv2nLBCECV9rmi17BA4NTsQAGIfBSL0tlho5j0z7MM61BrlLqwC8atpd84Ui0cob9
-	 uMuCAj0H7Scu5OeP6AFgnZNWLhO2KrqqPtwrHWpI=
+	b=NlbEyPh7DhobjnPeu/jHJSjnVthiwtLo0myGTqWDlgiyprfBBVA3s/7xYJC5DXQ6E
+	 DWIO5jD72hLw0yGRHMkwrYQYWD271jMrSl+WdV8F075o3pFj8pyBn+oScgTnN2a8PK
+	 pdBNxK2aV10sJ3DyG5Yldnc0+PF8SsZ4Tl+TItm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Raag Jadav <raag.jadav@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 053/172] bnxt_en: Reset PTP tx_avail after possible firmware reset
-Date: Mon, 15 Apr 2024 16:19:12 +0200
-Message-ID: <20240415142002.025097257@linuxfoundation.org>
+Subject: [PATCH 6.8 054/172] ACPI: bus: allow _UID matching for integer zero
+Date: Mon, 15 Apr 2024 16:19:13 +0200
+Message-ID: <20240415142002.068165159@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
 References: <20240415141959.976094777@linuxfoundation.org>
@@ -68,40 +66,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+From: Raag Jadav <raag.jadav@intel.com>
 
-[ Upstream commit faa12ca245585379d612736a4b5e98e88481ea59 ]
+[ Upstream commit aca1a5287ea328fd1f7e2bfa6806646486d86a70 ]
 
-It is possible that during error recovery and firmware reset,
-there is a pending TX PTP packet waiting for the timestamp.
-We need to reset this condition so that after recovery, the
-tx_avail count for PTP is reset back to the initial value.
-Otherwise, we may not accept any PTP TX timestamps after
-recovery.
+Commit b2b32a173881 ("ACPI: bus: update acpi_dev_hid_uid_match() to
+support multiple types") added _UID matching support for both integer
+and string types, which satisfies NULL @uid2 argument for string types
+using inversion, but this logic prevents _UID comparision in case the
+argument is integer 0, which may result in false positives.
 
-Fixes: 118612d519d8 ("bnxt_en: Add PTP clock APIs, ioctls, and ethtool methods")
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fix this using _Generic(), which will allow NULL @uid2 argument for
+string types as well as _UID matching for all possible integer values.
+
+Fixes: b2b32a173881 ("ACPI: bus: update acpi_dev_hid_uid_match() to support multiple types")
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+[ rjw: Comment adjustment ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/acpi/acpi_bus.h | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 39845d556bafc..5e6e32d708e24 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -11526,6 +11526,8 @@ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
- 	/* VF-reps may need to be re-opened after the PF is re-opened */
- 	if (BNXT_PF(bp))
- 		bnxt_vf_reps_open(bp);
-+	if (bp->ptp_cfg)
-+		atomic_set(&bp->ptp_cfg->tx_avail, BNXT_MAX_TX_TS);
- 	bnxt_ptp_init_rtc(bp, true);
- 	bnxt_ptp_cfg_tstamp_filters(bp);
- 	return 0;
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index 446225aada50d..8b45b82cd5edc 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -911,17 +911,19 @@ static inline bool acpi_int_uid_match(struct acpi_device *adev, u64 uid2)
+  * acpi_dev_hid_uid_match - Match device by supplied HID and UID
+  * @adev: ACPI device to match.
+  * @hid2: Hardware ID of the device.
+- * @uid2: Unique ID of the device, pass 0 or NULL to not check _UID.
++ * @uid2: Unique ID of the device, pass NULL to not check _UID.
+  *
+  * Matches HID and UID in @adev with given @hid2 and @uid2. Absence of @uid2
+  * will be treated as a match. If user wants to validate @uid2, it should be
+  * done before calling this function.
+  *
+- * Returns: %true if matches or @uid2 is 0 or NULL, %false otherwise.
++ * Returns: %true if matches or @uid2 is NULL, %false otherwise.
+  */
+ #define acpi_dev_hid_uid_match(adev, hid2, uid2)			\
+ 	(acpi_dev_hid_match(adev, hid2) &&				\
+-		(!(uid2) || acpi_dev_uid_match(adev, uid2)))
++		/* Distinguish integer 0 from NULL @uid2 */		\
++		(_Generic(uid2,	ACPI_STR_TYPES(!(uid2)), default: 0) ||	\
++		acpi_dev_uid_match(adev, uid2)))
+ 
+ void acpi_dev_clear_dependencies(struct acpi_device *supplier);
+ bool acpi_dev_ready_for_enumeration(const struct acpi_device *device);
 -- 
 2.43.0
 
