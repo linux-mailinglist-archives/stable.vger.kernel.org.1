@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-39610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4D58A53AC
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:29:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FBE78A5457
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:36:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 338852859E1
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:29:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3096C1F211F3
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB2B7F7DA;
-	Mon, 15 Apr 2024 14:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A412D74E37;
+	Mon, 15 Apr 2024 14:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ra/kn6rS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcmDxylz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D9D7F476;
-	Mon, 15 Apr 2024 14:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CC338DFB;
+	Mon, 15 Apr 2024 14:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191279; cv=none; b=X+YZDKhGE4JeM5GiPnb38fvuIKuGGxL41+sWZZ8Jn6lbHv6phFdfZAq6xzZonb7sY8MejZYH/kblhepmt0c0NR4aK9JqU35VliBXBbkFr8bSJe/CWbe+sQosIskrZFkcZcF5Yaxdj4Spd8LbBRCXPhkAu03ks3pzJMp2E9zNEqY=
+	t=1713191601; cv=none; b=L0XruIbI45MN6faPDddEV7WuMLnpdJyEM8E0wq51GSwwdRGpBze01xNkh/zlxR+MB5H14JeRGwPYR0icJ1z4m3tvAdKpBo17WsQPTSwchGooompIKGhxV3MZStTCCxr6KLCeH8ugglDed0wfTx+Pyzgn4Nuk66h4pOAOq/wqhJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191279; c=relaxed/simple;
-	bh=L4RbYFj2bMTsHPA+msIYx88UQYGBNc/1PqP1EmFi2Ec=;
+	s=arc-20240116; t=1713191601; c=relaxed/simple;
+	bh=DwnKOiO43NFVHFM6Zwwu0odOSFEo2rww9QJDTLK+t+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSoFmI/d+LlA9E84xQQHxzAAti6BqpxMo0a6JE8ie0XWd6HWS1S/adBLpxxN1dq87NOUp47vrwuEgCSbjYyPeWPtNTA9SWm5pguVYDorbs5zKdHIqWvgtempLvgnHPngWvMUWvM7OIHPerWe8MhfvrUEaJAMaGibB1D42yxvto4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ra/kn6rS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27E8C113CC;
-	Mon, 15 Apr 2024 14:27:58 +0000 (UTC)
+	 MIME-Version; b=bNxVdrL+CwN/v/BlkL/DMWPL9vTmHVelRmW1xOq2/qXHiHD8m0tftFfv50VVZ6Mi45og0aZv3xASVcXJUvSDTOHlnfBAxKBRH9KWy5TycOOFOwA5kuu0wcPYA3xCwASFz1EFwjV6CEwMBfmUsreKYs5nMKaxAFg2sWpgKQ9El5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcmDxylz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1DAEC113CC;
+	Mon, 15 Apr 2024 14:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191279;
-	bh=L4RbYFj2bMTsHPA+msIYx88UQYGBNc/1PqP1EmFi2Ec=;
+	s=korg; t=1713191601;
+	bh=DwnKOiO43NFVHFM6Zwwu0odOSFEo2rww9QJDTLK+t+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ra/kn6rSw+rM5jM7IEr+JMTPldRaHLRKCvUnBPmaJ0WpPfmFGlgJVRx/dtDpT+BDT
-	 unFAUnnIShHUbXLWX7b0mu73BzItGzDK6hAecLErY0xbfVImSrzUA/QV9Sx9yI537r
-	 JPXNMZGGeU3+VEIvW4FYTflJIpq1tWWQlasLxhqs=
+	b=JcmDxylzopHobH37pbIP8nvQXes8v04Z9r1VsTdPS6fkjynVePh0fC5VyFOrwQBan
+	 6ZVO0EUuaWvFOXrsVEFC2sjBtJtvFIm2x9mU4dWl+9+nxONzwVYO4upFScb7iRoB/o
+	 xDYA8k1oZy+FPdD+tWqSVWUm2XdPdYSD94p5D8cM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 089/172] net/mlx5e: HTB, Fix inconsistencies with QoS SQs number
-Date: Mon, 15 Apr 2024 16:19:48 +0200
-Message-ID: <20240415142003.101638721@linuxfoundation.org>
+Subject: [PATCH 6.6 024/122] drm/msm/dpu: dont allow overriding data from catalog
+Date: Mon, 15 Apr 2024 16:19:49 +0200
+Message-ID: <20240415141954.099553408@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 2f436f1869771d46e1a9f85738d5a1a7c5653a4e ]
+[ Upstream commit 4f3b77ae5ff5b5ba9d99c5d5450db388dbee5107 ]
 
-When creating a new HTB class while the interface is down,
-the variable that follows the number of QoS SQs (htb_max_qos_sqs)
-may not be consistent with the number of HTB classes.
+The data from catalog is marked as const, so it is a part of the RO
+segment. Allowing userspace to write to it through debugfs can cause
+protection faults. Set debugfs file mode to read-only for debug entries
+corresponding to perf_cfg coming from catalog.
 
-Previously, we compared these two values to ensure that
-the node_qid is lower than the number of QoS SQs, and we
-allocated stats for that SQ when they are equal.
-
-Change the check to compare the node_qid with the current
-number of leaf nodes and fix the checking conditions to
-ensure allocation of stats_list and stats for each node.
-
-Fixes: 214baf22870c ("net/mlx5e: Support HTB offload")
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240409190820.227554-9-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: abda0d925f9c ("drm/msm/dpu: Mark various data tables as const")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/582844/
+Link: https://lore.kernel.org/r/20240314-dpu-perf-rework-v3-1-79fa4e065574@linaro.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en/qos.c  | 33 ++++++++++---------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
-index 34adf8c3f81a0..922bc5b7c10e3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
-@@ -83,24 +83,25 @@ int mlx5e_open_qos_sq(struct mlx5e_priv *priv, struct mlx5e_channels *chs,
- 
- 	txq_ix = mlx5e_qid_from_qos(chs, node_qid);
- 
--	WARN_ON(node_qid > priv->htb_max_qos_sqs);
--	if (node_qid == priv->htb_max_qos_sqs) {
--		struct mlx5e_sq_stats *stats, **stats_list = NULL;
--
--		if (priv->htb_max_qos_sqs == 0) {
--			stats_list = kvcalloc(mlx5e_qos_max_leaf_nodes(priv->mdev),
--					      sizeof(*stats_list),
--					      GFP_KERNEL);
--			if (!stats_list)
--				return -ENOMEM;
--		}
-+	WARN_ON(node_qid >= mlx5e_htb_cur_leaf_nodes(priv->htb));
-+	if (!priv->htb_qos_sq_stats) {
-+		struct mlx5e_sq_stats **stats_list;
-+
-+		stats_list = kvcalloc(mlx5e_qos_max_leaf_nodes(priv->mdev),
-+				      sizeof(*stats_list), GFP_KERNEL);
-+		if (!stats_list)
-+			return -ENOMEM;
-+
-+		WRITE_ONCE(priv->htb_qos_sq_stats, stats_list);
-+	}
-+
-+	if (!priv->htb_qos_sq_stats[node_qid]) {
-+		struct mlx5e_sq_stats *stats;
-+
- 		stats = kzalloc(sizeof(*stats), GFP_KERNEL);
--		if (!stats) {
--			kvfree(stats_list);
-+		if (!stats)
- 			return -ENOMEM;
--		}
--		if (stats_list)
--			WRITE_ONCE(priv->htb_qos_sq_stats, stats_list);
-+
- 		WRITE_ONCE(priv->htb_qos_sq_stats[node_qid], stats);
- 		/* Order htb_max_qos_sqs increment after writing the array pointer.
- 		 * Pairs with smp_load_acquire in en_stats.c.
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
+index ef871239adb2a..68fae048a9a83 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
+@@ -459,15 +459,15 @@ int dpu_core_perf_debugfs_init(struct dpu_kms *dpu_kms, struct dentry *parent)
+ 			&perf->core_clk_rate);
+ 	debugfs_create_u32("enable_bw_release", 0600, entry,
+ 			(u32 *)&perf->enable_bw_release);
+-	debugfs_create_u32("threshold_low", 0600, entry,
++	debugfs_create_u32("threshold_low", 0400, entry,
+ 			(u32 *)&perf->perf_cfg->max_bw_low);
+-	debugfs_create_u32("threshold_high", 0600, entry,
++	debugfs_create_u32("threshold_high", 0400, entry,
+ 			(u32 *)&perf->perf_cfg->max_bw_high);
+-	debugfs_create_u32("min_core_ib", 0600, entry,
++	debugfs_create_u32("min_core_ib", 0400, entry,
+ 			(u32 *)&perf->perf_cfg->min_core_ib);
+-	debugfs_create_u32("min_llcc_ib", 0600, entry,
++	debugfs_create_u32("min_llcc_ib", 0400, entry,
+ 			(u32 *)&perf->perf_cfg->min_llcc_ib);
+-	debugfs_create_u32("min_dram_ib", 0600, entry,
++	debugfs_create_u32("min_dram_ib", 0400, entry,
+ 			(u32 *)&perf->perf_cfg->min_dram_ib);
+ 	debugfs_create_file("perf_mode", 0600, entry,
+ 			(u32 *)perf, &dpu_core_perf_mode_fops);
 -- 
 2.43.0
 
