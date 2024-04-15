@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-39732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 431478A5471
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:37:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 550DF8A53C1
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:30:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74E0B1C21DFB
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:37:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DBFD281AAE
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CFB78C97;
-	Mon, 15 Apr 2024 14:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6678382897;
+	Mon, 15 Apr 2024 14:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSYCWnKz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TipV9D3a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA181D53C;
-	Mon, 15 Apr 2024 14:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2342182877;
+	Mon, 15 Apr 2024 14:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191647; cv=none; b=WVUpwOgprQ2XrAISn0JblD9MWkm85S/2CkffE4M+gZSHYt8xI0PTB/Ka/GfATo63tDvUwPcYdMO6fgAgeVErvJzfdQMqsqyruiECDZXZ1B+eOJYAHxK6fnOncFTufhtcIQKyCyuWzLXGstT5zo1+TkfIJrSDkaECNv3g5AOfizc=
+	t=1713191316; cv=none; b=Exuqul24BiPP5LKnJbuefcdyB+WD6JyqHfZQu1fIBu4PATsx74x3/uJHqrQKbu1zTvdbMWDxLnshbs+MHfNwsm3sb3H9sGvGl/y9MQkydAb/cOlC9xhe9ih+z/psyUeAa3CE/hzl8gnLIWYtSh+2DUczitaK0qBCBdVjYHRgALI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191647; c=relaxed/simple;
-	bh=ScwUlPNlr3kN+LyoLSTkFE0ZuoJACTQqwA6DQriBgNA=;
+	s=arc-20240116; t=1713191316; c=relaxed/simple;
+	bh=CTe2lPgO3PkHs4ZGkiNRzuTRUwT+ocjUFPD8VmfC0MQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kralc6d7b1+FMMQ638/4TubBRMR8l2SVsiDqlUdl6pS1huUGDwilW+bDbY6ZuPBL5aCU0niv/0G568t29SzzFaWfygQXCob8mK6dlxHiW0hES9/bEtdSNZ0N7LYy6QqK5P752MgqDoo5LuDUcixmLusqCTuvCHQrzTX298bcTys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSYCWnKz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A992C113CC;
-	Mon, 15 Apr 2024 14:34:05 +0000 (UTC)
+	 MIME-Version; b=NciwZcfKSVU1b32/OSevhe0mr8xNztqFUNFdHSN6nvUbe1LFtci4f88dg3eCHrdC3N/8CHhXLMb+x1DddSz1XpFDfEECo5gBAE0OcTpBkgeomMKTBN1dNoSRZ9aZORopMG5+UoCxMkb66L96tKyIRJy35+1qMPruRPwnjVANnQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TipV9D3a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5AFC113CC;
+	Mon, 15 Apr 2024 14:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191646;
-	bh=ScwUlPNlr3kN+LyoLSTkFE0ZuoJACTQqwA6DQriBgNA=;
+	s=korg; t=1713191316;
+	bh=CTe2lPgO3PkHs4ZGkiNRzuTRUwT+ocjUFPD8VmfC0MQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wSYCWnKzi5ouNBVe8vR2rVsWeQwzngk6LExHSSipCt6TleveGC6Q2uqa4vV/xeZ05
-	 gImqJ0ET7cfJBDiFpge9O73ZHAKiY1FbQx+Du8ZkpBXKpcFJufsp6YLY7Kwv7ibuOV
-	 PdDE1tAOsPhCr9OWqcFgu3kMAWVIvjSU+XZLklCs=
+	b=TipV9D3ajAfyXpmu3+jwwzQYlfxo+9pasDECBrzrSsPDGdkrMhayn5zjjGUYu/50U
+	 YWmIAPo7aPcphZa7gdZTD4dTxqZbl1qPYmMT0d1L2JZ8YcWvSl0puIU+SvdNIBFdZh
+	 Xe8eL2aHevEAeFp1WkuR6fgfySLQFCRQTNWtRiVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	Vikas Gupta <vikas.gupta@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jacob Pan <jacob.jun.pan@linux.intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/122] bnxt_en: Fix possible memory leak in bnxt_rdma_aux_device_init()
+Subject: [PATCH 6.8 104/172] iommu/vt-d: Allocate local memory for page request queue
 Date: Mon, 15 Apr 2024 16:20:03 +0200
-Message-ID: <20240415141954.512047362@linuxfoundation.org>
+Message-ID: <20240415142003.553143076@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikas Gupta <vikas.gupta@broadcom.com>
+From: Jacob Pan <jacob.jun.pan@linux.intel.com>
 
-[ Upstream commit 7ac10c7d728d75bc9daaa8fade3c7a3273b9a9ff ]
+[ Upstream commit a34f3e20ddff02c4f12df2c0635367394e64c63d ]
 
-If ulp = kzalloc() fails, the allocated edev will leak because it is
-not properly assigned and the cleanup path will not be able to free it.
-Fix it by assigning it properly immediately after allocation.
+The page request queue is per IOMMU, its allocation should be made
+NUMA-aware for performance reasons.
 
-Fixes: 303432211324 ("bnxt_en: Remove runtime interrupt vector allocation")
-Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: a222a7f0bb6c ("iommu/vt-d: Implement page request handling")
+Signed-off-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20240403214007.985600-1-jacob.jun.pan@linux.intel.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iommu/intel/svm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
-index 6ba2b93986333..7188ea81401de 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
-@@ -394,12 +394,13 @@ void bnxt_rdma_aux_device_init(struct bnxt *bp)
- 	if (!edev)
- 		goto aux_dev_uninit;
+diff --git a/drivers/iommu/intel/svm.c b/drivers/iommu/intel/svm.c
+index ec47ec81f0ecd..4d269df0082fb 100644
+--- a/drivers/iommu/intel/svm.c
++++ b/drivers/iommu/intel/svm.c
+@@ -67,7 +67,7 @@ int intel_svm_enable_prq(struct intel_iommu *iommu)
+ 	struct page *pages;
+ 	int irq, ret;
  
-+	aux_priv->edev = edev;
-+
- 	ulp = kzalloc(sizeof(*ulp), GFP_KERNEL);
- 	if (!ulp)
- 		goto aux_dev_uninit;
- 
- 	edev->ulp_tbl = ulp;
--	aux_priv->edev = edev;
- 	bp->edev = edev;
- 	bnxt_set_edev_info(edev, bp);
- 
+-	pages = alloc_pages(GFP_KERNEL | __GFP_ZERO, PRQ_ORDER);
++	pages = alloc_pages_node(iommu->node, GFP_KERNEL | __GFP_ZERO, PRQ_ORDER);
+ 	if (!pages) {
+ 		pr_warn("IOMMU: %s: Failed to allocate page request queue\n",
+ 			iommu->name);
 -- 
 2.43.0
 
