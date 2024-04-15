@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-39847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 748E78A5505
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B32BF8A54C3
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 015A8B22E54
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EFC5B225B2
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4675A78C7B;
-	Mon, 15 Apr 2024 14:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7E082498;
+	Mon, 15 Apr 2024 14:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPmejLBQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPzX3Mu/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AEF74BE1;
-	Mon, 15 Apr 2024 14:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC6E81AC6;
+	Mon, 15 Apr 2024 14:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191993; cv=none; b=rTV/4JyPjXiqEHvME/7GCeq/P87yBpegL+04yXVO12+o5iShijkFLxmzle79VfeIbcAHD5pmOHooXl7/TUO558dPlmdpD4b9ZnAN61jV3q/8bEcSfyEg/byymPwCow0ZyrPVxExOxAK/G/6y+echGtDzpv2u5OlZv+AfDUHFK8k=
+	t=1713191818; cv=none; b=Z4DyiKnqPB6gDXVMJqon1ctSSZS1WnDUWaxL8NfYb7b4oYvzAFzMZWfuFYZH0wUBY/gub80TWULaqCmeTWGyJSlXmlQcOYg+k9JKu12PWwBU5tOOj9oVJoEfB/KqlmeFwotnMsFTH/quhYmFQKmrvc6HJ5odxPSu3k43HFPVZ9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191993; c=relaxed/simple;
-	bh=D5JdW7jG3SrPq3epWQ0WEJUyxliGPauVA6IoUIjN5WM=;
+	s=arc-20240116; t=1713191818; c=relaxed/simple;
+	bh=nYIZLm6qv+SWigRHuJA/n9VpgUswnDbQCtvJZG7rsZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M5QtjY7x4SMfkFAMdFi4d11NECnJyBr2TvDTwDp/1xDNiMGAQV2cOh0XdTdLiI+TCNCC1eHn76fNsdtpUo9R1YvtDj7E6ape1WwS7YSeM//hlopb8ilK1T9vmXrG5EnJJvPnkXRtmLzuwY6hZGb5FWXbWmJGZerohMysVVER/ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPmejLBQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B90AC113CC;
-	Mon, 15 Apr 2024 14:39:52 +0000 (UTC)
+	 MIME-Version; b=u0Y53VGKSwPIXMeTdyNHLxZSJ2FysD9jo/pjUBpCzwh6wHKrEWPMOrC0gmDAGIQ/gXztY8lkSNGv1//t+N79kRRJvIMOb3PcyefIVKsdbmOd4gTjTzbcswqyXbuzqTSTNrloBK5Ieg8ej8r9Y6WAJNMEVOPIk9h75WAa1SXA/Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPzX3Mu/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C901DC113CC;
+	Mon, 15 Apr 2024 14:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191992;
-	bh=D5JdW7jG3SrPq3epWQ0WEJUyxliGPauVA6IoUIjN5WM=;
+	s=korg; t=1713191818;
+	bh=nYIZLm6qv+SWigRHuJA/n9VpgUswnDbQCtvJZG7rsZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pPmejLBQWouFCGxyTMGRLNxFofBo8vgQZv03YSKZGyVMfU6UL4x8ceP0Kyd/AJrHb
-	 2jY+T6ncZ2HiM/zzBNT1YIRNuC9K7s+svkQ7x0k9Bv7m1/ILXfX1nBrAQr2iZaIFFJ
-	 EVvxOAIJWzcfMflPzeAjQzfQhTdTxD/h5uAilXAU=
+	b=WPzX3Mu/KoTjdPiualN+JwiV2ytjigNHwZpkVYPkKS9YsVHbhev/eauAlAFDP8PRz
+	 0t3b5UHFstyCmof9a1uKeipX3WsHspie7VCEJ1F2iwNvxusV4zCeMlgYVEohmoBDyX
+	 OpVi1K6uPlrswBi+Kgsy0MRVI3e2FGel+Y3kxQhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 31/69] net/mlx5e: HTB, Fix inconsistencies with QoS SQs number
+	Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.6 097/122] arm64: dts: imx8-ss-conn: fix usb lpcg indices
 Date: Mon, 15 Apr 2024 16:21:02 +0200
-Message-ID: <20240415141947.102662666@linuxfoundation.org>
+Message-ID: <20240415141956.282504415@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 2f436f1869771d46e1a9f85738d5a1a7c5653a4e ]
+commit 808e7716edcdb39d3498b9f567ef6017858b49aa upstream.
 
-When creating a new HTB class while the interface is down,
-the variable that follows the number of QoS SQs (htb_max_qos_sqs)
-may not be consistent with the number of HTB classes.
+usb2_lpcg: clock-controller@5b270000 {
+	...                                                    Col1  Col2
+	clocks = <&conn_ahb_clk>, <&conn_ipg_clk>;           // 0     6
+	clock-indices = <IMX_LPCG_CLK_6>, <IMX_LPCG_CLK_7>;  // 0     7
+        ...
+};
 
-Previously, we compared these two values to ensure that
-the node_qid is lower than the number of QoS SQs, and we
-allocated stats for that SQ when they are equal.
+Col1: index, which existing dts try to get.
+Col2: actual index in lpcg driver.
 
-Change the check to compare the node_qid with the current
-number of leaf nodes and fix the checking conditions to
-ensure allocation of stats_list and stats for each node.
+usbotg1: usb@5b0d0000 {
+	...
+	clocks = <&usb2_lpcg 0>;
+			     ^^
+Should be:
+	clocks = <&usb2_lpcg IMX_LPCG_CLK_6>;
+};
 
-Fixes: 214baf22870c ("net/mlx5e: Support HTB offload")
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240409190820.227554-9-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+usbphy1: usbphy@5b100000 {
+	clocks = <&usb2_lpcg 1>;
+			     ^^
+SHould be:
+	clocks = <&usb2_lpcg IMX_LPCG_CLK_7>;
+};
+
+Arg0 is divided by 4 in lpcg driver. So lpcg will do dummy enable. Fix it
+by use correct clock indices.
+
+Cc: stable@vger.kernel.org
+Fixes: 8065fc937f0f ("arm64: dts: imx8dxl: add usb1 and usb2 support")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en/qos.c  | 33 ++++++++++---------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
-index 2842195ee548a..1e887d640cffc 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
-@@ -82,24 +82,25 @@ int mlx5e_open_qos_sq(struct mlx5e_priv *priv, struct mlx5e_channels *chs,
- 
- 	txq_ix = mlx5e_qid_from_qos(chs, node_qid);
- 
--	WARN_ON(node_qid > priv->htb_max_qos_sqs);
--	if (node_qid == priv->htb_max_qos_sqs) {
--		struct mlx5e_sq_stats *stats, **stats_list = NULL;
--
--		if (priv->htb_max_qos_sqs == 0) {
--			stats_list = kvcalloc(mlx5e_qos_max_leaf_nodes(priv->mdev),
--					      sizeof(*stats_list),
--					      GFP_KERNEL);
--			if (!stats_list)
--				return -ENOMEM;
--		}
-+	WARN_ON(node_qid >= mlx5e_htb_cur_leaf_nodes(priv->htb));
-+	if (!priv->htb_qos_sq_stats) {
-+		struct mlx5e_sq_stats **stats_list;
-+
-+		stats_list = kvcalloc(mlx5e_qos_max_leaf_nodes(priv->mdev),
-+				      sizeof(*stats_list), GFP_KERNEL);
-+		if (!stats_list)
-+			return -ENOMEM;
-+
-+		WRITE_ONCE(priv->htb_qos_sq_stats, stats_list);
-+	}
-+
-+	if (!priv->htb_qos_sq_stats[node_qid]) {
-+		struct mlx5e_sq_stats *stats;
-+
- 		stats = kzalloc(sizeof(*stats), GFP_KERNEL);
--		if (!stats) {
--			kvfree(stats_list);
-+		if (!stats)
- 			return -ENOMEM;
--		}
--		if (stats_list)
--			WRITE_ONCE(priv->htb_qos_sq_stats, stats_list);
-+
- 		WRITE_ONCE(priv->htb_qos_sq_stats[node_qid], stats);
- 		/* Order htb_max_qos_sqs increment after writing the array pointer.
- 		 * Pairs with smp_load_acquire in en_stats.c.
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
+@@ -41,7 +41,7 @@ conn_subsys: bus@5b000000 {
+ 		interrupts = <GIC_SPI 267 IRQ_TYPE_LEVEL_HIGH>;
+ 		fsl,usbphy = <&usbphy1>;
+ 		fsl,usbmisc = <&usbmisc1 0>;
+-		clocks = <&usb2_lpcg 0>;
++		clocks = <&usb2_lpcg IMX_LPCG_CLK_6>;
+ 		ahb-burst-config = <0x0>;
+ 		tx-burst-size-dword = <0x10>;
+ 		rx-burst-size-dword = <0x10>;
+@@ -58,7 +58,7 @@ conn_subsys: bus@5b000000 {
+ 	usbphy1: usbphy@5b100000 {
+ 		compatible = "fsl,imx7ulp-usbphy";
+ 		reg = <0x5b100000 0x1000>;
+-		clocks = <&usb2_lpcg 1>;
++		clocks = <&usb2_lpcg IMX_LPCG_CLK_7>;
+ 		power-domains = <&pd IMX_SC_R_USB_0_PHY>;
+ 		status = "disabled";
+ 	};
 
 
 
