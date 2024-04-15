@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-39607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 532B78A53A6
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:29:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D748A5455
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8F5B1F220BC
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:29:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D77FFB23DA7
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2701D76036;
-	Mon, 15 Apr 2024 14:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED16271B51;
+	Mon, 15 Apr 2024 14:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+lsgbs6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epUnGrB1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99AB763EC;
-	Mon, 15 Apr 2024 14:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFB41EEE3;
+	Mon, 15 Apr 2024 14:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191270; cv=none; b=jRTTEHwEG7HbTc97mgHFc18SzCp/fcPC/qU5XM3vZG0waGfCagEAEzO70YHiR4AAmzXQodg7Kq3pSuS/60QegrMqpeHCyNyfpHFdAaYJiHMpZ3vkBPds6kOWZo6HIEvnyh2auG+0bN0KGVgy7awPy/Fk0Lg13hpaguXKxI6HTew=
+	t=1713191592; cv=none; b=ezBgTC4PgvzB/xZv4cQz1gPU96lF5l59r8YsfOhT4S1e4xV4Am+5Wr+sk0a68WZ2J6LpohiFaI6G9TDP26jS3TgPlzH7laYlQ7QTIQYg4V73NaecFhwobKchVRsyFUjdsRHah7TNcpViH8y9h7DAGGZlkiOoYXELVpnAn99N4gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191270; c=relaxed/simple;
-	bh=jcNuu2K9KiiXkXUhlrDtDJnkmREDnICQ6c98W/TezWQ=;
+	s=arc-20240116; t=1713191592; c=relaxed/simple;
+	bh=Xh87xGGtUpW5AofdfKZB7SOmQ8aEaiJ02Vwm+RK8jMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tpeaPeGWQ20iWPYVqzyO9mw1ni47ksyEKCBTKihGrfCgtcVJ8MoOSxVKV4s6y4O1pWS4YykNMFV6rjNdDGBKyj0ugo2QAp3KbVVGP84NgT1SvkDq3HKjGeLuBUBKZTm1DZEw2xtJ4fqNlaMI+7/gLheVjLDr9WVNj4XAQlD/ywk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+lsgbs6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23895C113CC;
-	Mon, 15 Apr 2024 14:27:49 +0000 (UTC)
+	 MIME-Version; b=kqlx83j0ByxoqpqmEEhQYRxb0fQ0Oorj28Ibf6UujW2Npwb0nq9v7howRXyj9JGPqd1IA67CKV9E3uqPuaZ0e9UEjiXMkwD0H07PUKFlXAQqETgZm13vw/m9itXCUqypenRorQK5X7bzt/rYJ8nkek38u4r7BQuw3PQ4E2LvFJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epUnGrB1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A45BC113CC;
+	Mon, 15 Apr 2024 14:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191270;
-	bh=jcNuu2K9KiiXkXUhlrDtDJnkmREDnICQ6c98W/TezWQ=;
+	s=korg; t=1713191592;
+	bh=Xh87xGGtUpW5AofdfKZB7SOmQ8aEaiJ02Vwm+RK8jMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i+lsgbs6dlROWyQKgU1s+SEmX6xzX0CZSh+bp17SWDsi5MM8ELy8wGP2Jw1NLjAHY
-	 TAGbEnRv+DxIp7ifD0Wbg9EF5x5lIcwyrMoywZcE9AacOs/wdlgQKdlLIo+4UHQbpp
-	 oWXz4QdXkjLz8z90q2iwPzqKjs65LhGbASKdsLec=
+	b=epUnGrB1xxJQYhXxVP8D1inj7s5zGJ5mF4aYkeQHZ5GLD9BEubAG1uO0x9r4y7wkE
+	 MQBWCl0I9afYBu2M2Q79V9x5Mg84jBQ3HEzhqgMMV8uZvbaymLqJ1Y59/qV0ugIt2U
+	 tjcNulSXSNOAMQlLtAJRK3B1G6kGsshcL2bfi69U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 087/172] net/mlx5e: RSS, Block changing channels number when RXFH is configured
+Subject: [PATCH 6.6 021/122] firmware: arm_scmi: Make raw debugfs entries non-seekable
 Date: Mon, 15 Apr 2024 16:19:46 +0200
-Message-ID: <20240415142003.043761606@linuxfoundation.org>
+Message-ID: <20240415141954.012099858@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-[ Upstream commit ee3572409f74a838154af74ce1e56e62c17786a8 ]
+[ Upstream commit b70c7996d4ffb2e02895132e8a79a37cee66504f ]
 
-Changing the channels number after configuring the receive flow hash
-indirection table may affect the RSS table size. The previous
-configuration may no longer be compatible with the new receive flow
-hash indirection table.
+SCMI raw debugfs entries are used to inject and snoop messages out of the
+SCMI core and, as such, the underlying virtual files have no reason to
+support seeking.
 
-Block changing the channels number when RXFH is configured and changing
-the channels number requires resizing the RSS table size.
+Modify the related file_operations descriptors to be non-seekable.
 
-Fixes: 74a8dadac17e ("net/mlx5e: Preparations for supporting larger number of channels")
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240409190820.227554-7-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3c3d818a9317 ("firmware: arm_scmi: Add core raw transmission support")
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Link: https://lore.kernel.org/r/20240315140324.231830-1-cristian.marussi@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlx5/core/en_ethtool.c    | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/firmware/arm_scmi/raw_mode.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index cc51ce16df14a..93461b0c5703b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -451,6 +451,23 @@ int mlx5e_ethtool_set_channels(struct mlx5e_priv *priv,
+diff --git a/drivers/firmware/arm_scmi/raw_mode.c b/drivers/firmware/arm_scmi/raw_mode.c
+index 3505735185033..130d13e9cd6be 100644
+--- a/drivers/firmware/arm_scmi/raw_mode.c
++++ b/drivers/firmware/arm_scmi/raw_mode.c
+@@ -921,7 +921,7 @@ static int scmi_dbg_raw_mode_open(struct inode *inode, struct file *filp)
+ 	rd->raw = raw;
+ 	filp->private_data = rd;
  
- 	mutex_lock(&priv->state_lock);
+-	return 0;
++	return nonseekable_open(inode, filp);
+ }
  
-+	/* If RXFH is configured, changing the channels number is allowed only if
-+	 * it does not require resizing the RSS table. This is because the previous
-+	 * configuration may no longer be compatible with the new RSS table.
-+	 */
-+	if (netif_is_rxfh_configured(priv->netdev)) {
-+		int cur_rqt_size = mlx5e_rqt_size(priv->mdev, cur_params->num_channels);
-+		int new_rqt_size = mlx5e_rqt_size(priv->mdev, count);
-+
-+		if (new_rqt_size != cur_rqt_size) {
-+			err = -EINVAL;
-+			netdev_err(priv->netdev,
-+				   "%s: RXFH is configured, block changing channels number that affects RSS table size (new: %d, current: %d)\n",
-+				   __func__, new_rqt_size, cur_rqt_size);
-+			goto out;
-+		}
-+	}
-+
- 	/* Don't allow changing the number of channels if HTB offload is active,
- 	 * because the numeration of the QoS SQs will change, while per-queue
- 	 * qdiscs are attached.
+ static int scmi_dbg_raw_mode_release(struct inode *inode, struct file *filp)
+@@ -950,6 +950,7 @@ static const struct file_operations scmi_dbg_raw_mode_reset_fops = {
+ 	.open = scmi_dbg_raw_mode_open,
+ 	.release = scmi_dbg_raw_mode_release,
+ 	.write = scmi_dbg_raw_mode_reset_write,
++	.llseek = no_llseek,
+ 	.owner = THIS_MODULE,
+ };
+ 
+@@ -959,6 +960,7 @@ static const struct file_operations scmi_dbg_raw_mode_message_fops = {
+ 	.read = scmi_dbg_raw_mode_message_read,
+ 	.write = scmi_dbg_raw_mode_message_write,
+ 	.poll = scmi_dbg_raw_mode_message_poll,
++	.llseek = no_llseek,
+ 	.owner = THIS_MODULE,
+ };
+ 
+@@ -975,6 +977,7 @@ static const struct file_operations scmi_dbg_raw_mode_message_async_fops = {
+ 	.read = scmi_dbg_raw_mode_message_read,
+ 	.write = scmi_dbg_raw_mode_message_async_write,
+ 	.poll = scmi_dbg_raw_mode_message_poll,
++	.llseek = no_llseek,
+ 	.owner = THIS_MODULE,
+ };
+ 
+@@ -998,6 +1001,7 @@ static const struct file_operations scmi_dbg_raw_mode_notification_fops = {
+ 	.release = scmi_dbg_raw_mode_release,
+ 	.read = scmi_test_dbg_raw_mode_notif_read,
+ 	.poll = scmi_test_dbg_raw_mode_notif_poll,
++	.llseek = no_llseek,
+ 	.owner = THIS_MODULE,
+ };
+ 
+@@ -1021,6 +1025,7 @@ static const struct file_operations scmi_dbg_raw_mode_errors_fops = {
+ 	.release = scmi_dbg_raw_mode_release,
+ 	.read = scmi_test_dbg_raw_mode_errors_read,
+ 	.poll = scmi_test_dbg_raw_mode_errors_poll,
++	.llseek = no_llseek,
+ 	.owner = THIS_MODULE,
+ };
+ 
 -- 
 2.43.0
 
