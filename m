@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-39787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623C78A54C0
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E098A54FF
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0D75B24418
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0A1F1F21BF8
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7196582485;
-	Mon, 15 Apr 2024 14:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404C478C88;
+	Mon, 15 Apr 2024 14:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgrNGQr5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNyvALOh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E88A78676;
-	Mon, 15 Apr 2024 14:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB9E7604F;
+	Mon, 15 Apr 2024 14:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191812; cv=none; b=CWxhuSI9r5d3cE/CQ1e1chW4FxArZ1DKbgSxjEgsMmI9swUGSz3iPQ+d/BMp7KBGz0YiEzsiRjzGeNGJlx3OvTmR9sEfoGxBh4RZk0sLHZXZIQxOdgaQMmt4DJjhRaSYMNUv6bjcI3B4t6xMSi5ipIMzOyow60fuQc7JFJreCJ8=
+	t=1713191987; cv=none; b=HgIvVfGfrzP00H0dde4ck5nGlieGvisTs/nhq4/QuC5zGsl1hfKMGZXfgYLsJN0nZ32xktph69sEArIJFPZ/WoZHFrF22sVpB0T2SV7Q9r8Ol9eGlPpvt4XhZKg/XHgre42dgXDbn4li+xiYnf6Fk4EVG1+RuCfWmG8iwsquiv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191812; c=relaxed/simple;
-	bh=u+vkjYjAudQ7w4GfP6pfIhbkmBlj9dQdqaDOK2KxMS0=;
+	s=arc-20240116; t=1713191987; c=relaxed/simple;
+	bh=inlciG6qzlJNlvon0VXSQbvYlCEezAwe0qENA+yPvxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fl9I/vSuuLHFgpMCpeN85AcGeWD1cGRVMcCTp/a1FFHnXdoskAy9UfE1Uqf2OSB/Kn2v4ev7cg/Yb5qoPzhxLKgIG8up5QFxxThWlT87JmzuRCemAgAscuJLP2RTFskv4Htem9koBP3b3NHoIyLzIzpz4+mDxrITqhleq9pRRD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgrNGQr5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCD5C113CC;
-	Mon, 15 Apr 2024 14:36:51 +0000 (UTC)
+	 MIME-Version; b=B5EMtNZPt+SFOIdw9eMCXAv78oWvtWcUiBsseJK0TWoUc00Pri8b4U7tZX+aDdXR1eK2xN/2rPyfoNK3XaLLaEUi54neN8DwVAcQW3BrnVmdoKfihexmZUKuOcaUBJbx4WQOZkU0OAFp9mCbNS4etuqFT9j7UUTqL1sVspyRzFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNyvALOh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73890C113CC;
+	Mon, 15 Apr 2024 14:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191812;
-	bh=u+vkjYjAudQ7w4GfP6pfIhbkmBlj9dQdqaDOK2KxMS0=;
+	s=korg; t=1713191986;
+	bh=inlciG6qzlJNlvon0VXSQbvYlCEezAwe0qENA+yPvxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RgrNGQr5CAIENNkJuymuUE4SSgiF7kMScUq+a4Jrthtk2RnK/j/hwAclNuIwwtues
-	 1JGZZX7XE/2bwVEEmZeyA3h+RnU0WmHnDcdTjw/V8I0kt3mg8CY8qkl/Iwg9/k7EHX
-	 WYl8mr8h0qNkXoB7PZo1TaV+G2mz1fahoxK/5KVA=
+	b=eNyvALOhV1bracQEOleCTqO6VFB1Q+sC0rxBUhkGktNRHVpc93jPBDjkyQs+OX2ic
+	 RI8DhrwlVF99cIFeb9ARFgptq54DcQqygbnSM6DP7EDHfP1ToyxHZpz6ilSfv17cuz
+	 Jm+Kz9XW5ytNQfT6FahzjMuIhFgkKxcI7X0lgGxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.6 095/122] arm64: dts: imx8-ss-dma: fix can lpcg indices
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 29/69] net/mlx5: Properly link new fs rules into the tree
 Date: Mon, 15 Apr 2024 16:21:00 +0200
-Message-ID: <20240415141956.224250345@linuxfoundation.org>
+Message-ID: <20240415141947.044095889@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-commit 0893392334b5dffdf616a53679c6a2942c46391b upstream.
+[ Upstream commit 7c6782ad4911cbee874e85630226ed389ff2e453 ]
 
-can0_lpcg: clock-controller@5acd0000 {
-	...						   Col1  Col2
-	clocks = <&clk IMX_SC_R_CAN_0 IMX_SC_PM_CLK_PER>, // 0    0
-		 <&dma_ipg_clk>,			  // 1    4
-		 <&dma_ipg_clk>;			  // 2    5
-        clock-indices = <IMX_LPCG_CLK_0>,
-			<IMX_LPCG_CLK_4>,
-			<IMX_LPCG_CLK_5>;
-}
+Previously, add_rule_fg would only add newly created rules from the
+handle into the tree when they had a refcount of 1. On the other hand,
+create_flow_handle tries hard to find and reference already existing
+identical rules instead of creating new ones.
 
-Col1: index, which existing dts try to get.
-Col2: actual index in lpcg driver.
+These two behaviors can result in a situation where create_flow_handle
+1) creates a new rule and references it, then
+2) in a subsequent step during the same handle creation references it
+   again,
+resulting in a rule with a refcount of 2 that is not linked into the
+tree, will have a NULL parent and root and will result in a crash when
+the flow group is deleted because del_sw_hw_rule, invoked on rule
+deletion, assumes node->parent is != NULL.
 
-flexcan1: can@5a8d0000 {
-	clocks = <&can0_lpcg 1>, <&can0_lpcg 0>;
-			     ^^		     ^^
-Should be:
-	clocks = <&can0_lpcg IMX_LPCG_CLK_4>, <&can0_lpcg IMX_LPCG_CLK_0>;
-};
+This happened in the wild, due to another bug related to incorrect
+handling of duplicate pkt_reformat ids, which lead to the code in
+create_flow_handle incorrectly referencing a just-added rule in the same
+flow handle, resulting in the problem described above. Full details are
+at [1].
 
-Arg0 is divided by 4 in lpcg driver. flexcan driver get IMX_SC_PM_CLK_PER
-by <&can0_lpcg 1> and <&can0_lpcg 0>. Although function can work, code
-logic is wrong. Fix it by using correct clock indices.
+This patch changes add_rule_fg to add new rules without parents into
+the tree, properly initializing them and avoiding the crash. This makes
+it more consistent with how rules are added to an FTE in
+create_flow_handle.
 
-Cc: stable@vger.kernel.org
-Fixes: 5e7d5b023e03 ("arm64: dts: imx8qxp: add flexcan in adma")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 74491de93712 ("net/mlx5: Add multi dest support")
+Link: https://lore.kernel.org/netdev/ea5264d6-6b55-4449-a602-214c6f509c1e@163.com/T/#u [1]
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240409190820.227554-5-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-@@ -311,8 +311,8 @@ dma_subsys: bus@5a000000 {
- 		reg = <0x5a8d0000 0x10000>;
- 		interrupts = <GIC_SPI 235 IRQ_TYPE_LEVEL_HIGH>;
- 		interrupt-parent = <&gic>;
--		clocks = <&can0_lpcg 1>,
--			 <&can0_lpcg 0>;
-+		clocks = <&can0_lpcg IMX_LPCG_CLK_4>,
-+			 <&can0_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "per";
- 		assigned-clocks = <&clk IMX_SC_R_CAN_0 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <40000000>;
-@@ -332,8 +332,8 @@ dma_subsys: bus@5a000000 {
- 		 * CAN1 shares CAN0's clock and to enable CAN0's clock it
- 		 * has to be powered on.
- 		 */
--		clocks = <&can0_lpcg 1>,
--			 <&can0_lpcg 0>;
-+		clocks = <&can0_lpcg IMX_LPCG_CLK_4>,
-+			 <&can0_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "per";
- 		assigned-clocks = <&clk IMX_SC_R_CAN_0 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <40000000>;
-@@ -353,8 +353,8 @@ dma_subsys: bus@5a000000 {
- 		 * CAN2 shares CAN0's clock and to enable CAN0's clock it
- 		 * has to be powered on.
- 		 */
--		clocks = <&can0_lpcg 1>,
--			 <&can0_lpcg 0>;
-+		clocks = <&can0_lpcg IMX_LPCG_CLK_4>,
-+			 <&can0_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "per";
- 		assigned-clocks = <&clk IMX_SC_R_CAN_0 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <40000000>;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+index e6674118bc428..164e10b5f9b7f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -1752,8 +1752,9 @@ static struct mlx5_flow_handle *add_rule_fg(struct mlx5_flow_group *fg,
+ 	}
+ 	trace_mlx5_fs_set_fte(fte, false);
+ 
++	/* Link newly added rules into the tree. */
+ 	for (i = 0; i < handle->num_rules; i++) {
+-		if (refcount_read(&handle->rule[i]->node.refcount) == 1) {
++		if (!handle->rule[i]->node.parent) {
+ 			tree_add_node(&handle->rule[i]->node, &fte->node);
+ 			trace_mlx5_fs_add_rule(handle->rule[i]);
+ 		}
+-- 
+2.43.0
+
 
 
 
