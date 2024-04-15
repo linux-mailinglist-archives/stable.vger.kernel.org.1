@@ -1,56 +1,66 @@
-Return-Path: <stable+bounces-39896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4838A553E
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B43CC8A550F
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11FA01F21BF8
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40E9BB23971
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6A576036;
-	Mon, 15 Apr 2024 14:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2854D7F490;
+	Mon, 15 Apr 2024 14:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDn3cYtf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NVKrNvTZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1472119;
-	Mon, 15 Apr 2024 14:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F0976025;
+	Mon, 15 Apr 2024 14:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192143; cv=none; b=jRqAQhXq2I7wvS2Rg7nNGTNm4wc23MWUvobBsND/6OwxD3JS+Fuq4jm1NVfQahKxT8iFfyNzdDnxYEtUBcFgdtE6EJgXeDecH4Ly8Nk9dAc/AleqQZQpsj+KFi40wFV+6itAueJ33okUKi4PAFpurac0kO6u/vRSWLRbMj8kv28=
+	t=1713192020; cv=none; b=WEbVGW6U0IJYvFqSeIHG1OxStCJRWBYybHra/Ad+lnNqaITQ9YRQ5XMCnkVRQIVxLGugvog82QUuhvirPn5v4OgJwC3EjIa0uhcgNZw0Im92sRP+DtnPzfNA3qkg4pTLV0sVbWj6VDfn7Z8N2VHBC9YANvZ8iXR8rfkEy4irdkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192143; c=relaxed/simple;
-	bh=53rIqixae2dzsRzoBkNoELCNG5qOJQ8QG+9X47xg1VU=;
+	s=arc-20240116; t=1713192020; c=relaxed/simple;
+	bh=aJ69eu6PzsGbqcLdmjMxVL7SdVR4hbkmbjF8OEe2uzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n28S67WOUkdUUVa5R5ia5oy2gqIV/g2DppRo09DFXqWli7yV9YhDMOE5kjBiyTRIX54Xc8pzmmdIP187jEBA4KmCJpPfQfMxEeY+NGNeaXq80IPnf4ODD650IlmXl3rF2olQ0swD2B4UpNdtqx7+DBWv92sk3eFBqNEeb7GQ9r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDn3cYtf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A1DC113CC;
-	Mon, 15 Apr 2024 14:42:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sJn/C7ovSslaDzhjabSpLvYUd/IZ4StYKokDhmlbDMUkzYS4OaWeK6WwbVnUsvG7+++ILbL3E5NDmDTsRWhU8mBH9mt+9Q+gl7PAHdBPpTALD8wQcHrgEYin4rOVNKKqi5ditepKia1YK7RxJkym6cUi5mmxLyl1n5ADdxoheGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NVKrNvTZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F76C113CC;
+	Mon, 15 Apr 2024 14:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192142;
-	bh=53rIqixae2dzsRzoBkNoELCNG5qOJQ8QG+9X47xg1VU=;
+	s=korg; t=1713192020;
+	bh=aJ69eu6PzsGbqcLdmjMxVL7SdVR4hbkmbjF8OEe2uzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZDn3cYtfxwunZlptdvmqhc3QpcPGqyvDEEw2wWXRXiH0P1wINF+5lmIrph7uw2FAr
-	 VMwtvhRZar2VVpAY9e2k3uLQ6iJmbGMP+UiyP114oTUd8CiQ40aa30LAXq9/cI/Ezo
-	 REc10vR+kDNEaUQwXwaSPfbokGMIJ6HfOclMPC7A=
+	b=NVKrNvTZhl8KXMWih+RU2FWHp/tw3LKyiun88j9hsbOsivcQO2sORafjdTyRoWnpn
+	 9gK010+KyRdAYq1Au2fPmqbJsRWi4hkxDpNwRd1WEwY2pBvgJZS3cH+mv1ogOFymJ0
+	 B3z3RDQzjXov8DRs83kebGrMd7jMmit7bpig/OZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+39ec16ff6cc18b1d066d@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.15 03/45] Bluetooth: Fix memory leak in hci_req_sync_complete()
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Kees Cook <keescook@chromium.org>,
+	Ajay Kaher <akaher@vmware.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Tzvetomir Stoyanov (VMware)" <tz.stoyanov@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 39/69] tracing: hide unused ftrace_event_id_fops
 Date: Mon, 15 Apr 2024 16:21:10 +0200
-Message-ID: <20240415141942.344193355@linuxfoundation.org>
+Message-ID: <20240415141947.340776504@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
-References: <20240415141942.235939111@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +70,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 45d355a926ab40f3ae7bc0b0a00cb0e3e8a5a810 upstream.
+[ Upstream commit 5281ec83454d70d98b71f1836fb16512566c01cd ]
 
-In 'hci_req_sync_complete()', always free the previous sync
-request state before assigning reference to a new one.
+When CONFIG_PERF_EVENTS, a 'make W=1' build produces a warning about the
+unused ftrace_event_id_fops variable:
 
-Reported-by: syzbot+39ec16ff6cc18b1d066d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=39ec16ff6cc18b1d066d
-Cc: stable@vger.kernel.org
-Fixes: f60cb30579d3 ("Bluetooth: Convert hci_req_sync family of function to new request API")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+kernel/trace/trace_events.c:2155:37: error: 'ftrace_event_id_fops' defined but not used [-Werror=unused-const-variable=]
+ 2155 | static const struct file_operations ftrace_event_id_fops = {
+
+Hide this in the same #ifdef as the reference to it.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240403080702.3509288-7-arnd@kernel.org
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Ajay Kaher <akaher@vmware.com>
+Cc: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: Clément Léger <cleger@rivosinc.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: "Tzvetomir Stoyanov (VMware)" <tz.stoyanov@gmail.com>
+Fixes: 620a30e97feb ("tracing: Don't pass file_operations array to event_create_dir()")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_request.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/trace/trace_events.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/net/bluetooth/hci_request.c
-+++ b/net/bluetooth/hci_request.c
-@@ -108,8 +108,10 @@ static void hci_req_sync_complete(struct
- 	if (hdev->req_status == HCI_REQ_PEND) {
- 		hdev->req_result = result;
- 		hdev->req_status = HCI_REQ_DONE;
--		if (skb)
-+		if (skb) {
-+			kfree_skb(hdev->req_skb);
- 			hdev->req_skb = skb_get(skb);
-+		}
- 		wake_up_interruptible(&hdev->req_wait_q);
- 	}
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index a6d2f99f847d3..24859d9645050 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -1669,6 +1669,7 @@ static int trace_format_open(struct inode *inode, struct file *file)
+ 	return 0;
  }
+ 
++#ifdef CONFIG_PERF_EVENTS
+ static ssize_t
+ event_id_read(struct file *filp, char __user *ubuf, size_t cnt, loff_t *ppos)
+ {
+@@ -1683,6 +1684,7 @@ event_id_read(struct file *filp, char __user *ubuf, size_t cnt, loff_t *ppos)
+ 
+ 	return simple_read_from_buffer(ubuf, cnt, ppos, buf, len);
+ }
++#endif
+ 
+ static ssize_t
+ event_filter_read(struct file *filp, char __user *ubuf, size_t cnt,
+@@ -2127,10 +2129,12 @@ static const struct file_operations ftrace_event_format_fops = {
+ 	.release = seq_release,
+ };
+ 
++#ifdef CONFIG_PERF_EVENTS
+ static const struct file_operations ftrace_event_id_fops = {
+ 	.read = event_id_read,
+ 	.llseek = default_llseek,
+ };
++#endif
+ 
+ static const struct file_operations ftrace_event_filter_fops = {
+ 	.open = tracing_open_file_tr,
+-- 
+2.43.0
+
 
 
 
