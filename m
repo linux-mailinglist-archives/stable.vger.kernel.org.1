@@ -1,85 +1,154 @@
-Return-Path: <stable+bounces-39960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89EEF8A5BC9
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 21:56:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2BDE8A5BDA
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 21:58:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 392671F26750
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 19:56:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CCFDB23466
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 19:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9C313AA31;
-	Mon, 15 Apr 2024 19:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D905915575F;
+	Mon, 15 Apr 2024 19:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="NQLHdeH7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aJuWdSE9"
 X-Original-To: stable@vger.kernel.org
-Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73216156240
-	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 19:52:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C9C1E536
+	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 19:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713210735; cv=none; b=uDc03Cs4ppbGNFdfklTYnF5p46NNceRA9t1ft6D8qelQ/dbeslKoXgYDwaVdo1VgwUkcHtFZu5bO6U8S/FDQEYaxtHS1Lg/bbfRuMhm82D2cGlsdf9FE2BYNRWISlULF1+sOu1trm1/Cw6HV837knSoyikfRMevoSBN7/YVqiXg=
+	t=1713211001; cv=none; b=pL8FuHaxKqwhQCwE9bXTHX0FtYbiwVoFTdefBOtIyjK6mk1G9Fv1PTTrMNaSc26JR3FOJocrFwJhpB5SLBguT562zcAAinQy0W7xIEUScf+YBTQI3M9gcCcz9y1bUijsw9ZxvsnfwkkV09KO1xPE/AXdwa1Ex2aI2gpb47E/rLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713210735; c=relaxed/simple;
-	bh=nPwkIw6EfhV0ArpberI8YyPI1zvME5g5rbrwFaH+s3Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ek68lASEgyuujhtTzrBvs81aka6lb/l8Fidf4NesVTmr0UlcA7bEPJsK6CSNEUyn8ftJFSKEv8UDKhjEE1yCPk+BIc9camiV+1DL5+093xdO4AuSYbI0jd/S9NJfyt2XOSb+uTRa22xF5hTWODKfNrCJAfWSTSukRPkiHs6prXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=NQLHdeH7; arc=none smtp.client-ip=199.89.1.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 009.lax.mailroute.net (Postfix) with ESMTP id 4VJHrC4qlRzlgTHp;
-	Mon, 15 Apr 2024 19:52:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1713210730; x=1715802731; bh=nPwkIw6EfhV0ArpberI8YyPI
-	1zvME5g5rbrwFaH+s3Q=; b=NQLHdeH7EQubmGpcT6lo84H+f2I3KEO08IwjTCiY
-	FdhokodUpWzN6H50YPpxocu4hwFFyJJMeW8HwHgG37qx9vDlWQWZ41mcJr+Fvw/x
-	QIz/sB/KJqrpjIy0w8dlrxhh7N7a45iuXCaWpaqmZwg+FqKFXAFyr39OsAwjW0ZE
-	myZnmBDx5WksZSlZSXNDVMCNRV50i178zo25gYIh67kqabHoa/lTvQmBk5JmDC3T
-	OdBkGQaqlM3S8hDJBdGYcFujy4tLjTBUJWTGwcZzBx/XpLY+d/1AwAOHNlV3v0sJ
-	B9ljPnhoBlef1qnrhn5/tc6dpJ4ZUF56bmA166s+yBR/Yg==
-X-Virus-Scanned: by MailRoute
-Received: from 009.lax.mailroute.net ([127.0.0.1])
- by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id tyQEht_SQKRH; Mon, 15 Apr 2024 19:52:10 +0000 (UTC)
-Received: from [100.96.154.26] (unknown [104.132.0.90])
+	s=arc-20240116; t=1713211001; c=relaxed/simple;
+	bh=dC4s91t5qBKCHyNN5rKv1IPrdoB6zaDEwfafoSCR91k=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=GF4iXKupjW2VDLc/1n9s1Cf9/t4hSkHO9+O46D2PFnfXUNpbXbxphMnCI0GFNldRsuUJiIiMvrUIyvfYkHViYcpl6c3e2MLAlxpiyyNglToVAhQDPvocH7MxVbOlpnIBwWBi3etFI8SlELZ83j4g9otWydh6r7R0nx5l6R/t05M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aJuWdSE9; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1713210997;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bG35vuPs2gV03R4SJtXJmpy8yBrYHYtZhZ+cuQSMSRM=;
+	b=aJuWdSE9aFGy20ITAUtWEzgy2VTWO1DfO9WLeEv2wY/JkefOJq25myEAsIJhng4G0Eqrv4
+	uxJlTS8lb2oFGUJFVESkqaerB7mkMRIsShpA0Z7X90jNnyx/kyyqbEGJFXdp0ThIn670/F
+	E9cY4Fwg93S3J7d61APGEu+g2SzYKtU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-341-j4tBiozYMmCGmqNKkxZLYA-1; Mon, 15 Apr 2024 15:56:34 -0400
+X-MC-Unique: j4tBiozYMmCGmqNKkxZLYA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4VJHr92yFxzlgTsK;
-	Mon, 15 Apr 2024 19:52:09 +0000 (UTC)
-Message-ID: <7a32a48b-65fd-4452-8b86-0c29ded9a014@acm.org>
-Date: Mon, 15 Apr 2024 12:52:08 -0700
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2BCF6104D509;
+	Mon, 15 Apr 2024 19:56:34 +0000 (UTC)
+Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id DC159492BD4;
+	Mon, 15 Apr 2024 19:56:33 +0000 (UTC)
+Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
+	id C53D230BFED5; Mon, 15 Apr 2024 19:56:33 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+	by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id C08373FB54;
+	Mon, 15 Apr 2024 21:56:33 +0200 (CEST)
+Date: Mon, 15 Apr 2024 21:56:33 +0200 (CEST)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: Bart Van Assche <bvanassche@acm.org>
+cc: Mike Snitzer <snitzer@redhat.com>, dm-devel@lists.linux.dev, 
+    Eric Biggers <ebiggers@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>, 
+    Daniel Lee <chullee@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] dm: Change the default value of rq_affinity from 0 into
+ 1
+In-Reply-To: <20240415194921.6404-1-bvanassche@acm.org>
+Message-ID: <20cf8b38-6c5b-9a10-6a7b-5d587a19eed@redhat.com>
+References: <20240415194921.6404-1-bvanassche@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dm: Change the default value of rq_affinity from 0 into 1
-To: Mike Snitzer <snitzer@redhat.com>
-Cc: dm-devel@redhat.com, Mikulas Patocka <mpatocka@redhat.com>,
- Eric Biggers <ebiggers@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
- Daniel Lee <chullee@google.com>, stable@vger.kernel.org
-References: <20240415193448.4193512-1-bvanassche@acm.org>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20240415193448.4193512-1-bvanassche@acm.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 
-Please ignore this message because the mailing list address is wrong.
 
-Thanks,
 
-Bart.
+On Mon, 15 Apr 2024, Bart Van Assche wrote:
+
+> The following behavior is inconsistent:
+> * For request-based dm queues the default value of rq_affinity is 1.
+> * For bio-based dm queues the default value of rq_affinity is 0.
+> 
+> The default value for request-based dm queues is 1 because of the following
+> code in blk_mq_init_allocated_queue():
+> 
+>     q->queue_flags |= QUEUE_FLAG_MQ_DEFAULT;
+> 
+> >From <linux/blkdev.h>:
+> 
+>     #define QUEUE_FLAG_MQ_DEFAULT ((1UL << QUEUE_FLAG_IO_STAT) |	\
+> 				   (1UL << QUEUE_FLAG_SAME_COMP) |	\
+> 				   (1UL << QUEUE_FLAG_NOWAIT))
+> 
+> The default value of rq_affinity for bio-based dm queues is 0 because the
+> dm alloc_dev() function does not set any of the QUEUE_FLAG_SAME_* flags. I
+> think the different default values are the result of an oversight when
+> blk-mq support was added in the device mapper code. Hence this patch that
+> changes the default value of rq_affinity from 0 to 1 for bio-based dm
+> queues.
+> 
+> This patch reduces the boot time from 12.23 to 12.20 seconds on my test
+
+Are you sure that this is not jitter?
+
+I am wondering how should QUEUE_FLAG_SAME_COMP work for bio-based
+devices.
+
+I grepped the kernel for QUEUE_FLAG_SAME_COMP and it is tested in 
+block/blk-mq.c in blk_mq_complete_need_ipi (this code path is taken only 
+for request-based devices) and in block/blk-sysfs.c in 
+queue_rq_affinity_show (this just displays the value in sysfs). There are 
+no other places where QUEUE_FLAG_SAME_COMP is tested, so I don't see what 
+effect is it supposed to have.
+
+Mikulas
+
+
+> setup, a Pixel 2023 development board. The storage controller on that test
+> setup supports a single completion interrupt and hence benefits from
+> redirecting I/O completions to a CPU core that is closer to the submitter.
+> 
+> Cc: Mikulas Patocka <mpatocka@redhat.com>
+> Cc: Eric Biggers <ebiggers@kernel.org>
+> Cc: Jaegeuk Kim <jaegeuk@kernel.org>
+> Cc: Daniel Lee <chullee@google.com>
+> Cc: stable@vger.kernel.org
+> Fixes: bfebd1cdb497 ("dm: add full blk-mq support to request-based DM")
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> ---
+>  drivers/md/dm.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+> index 56aa2a8b9d71..9af216c11cf7 100644
+> --- a/drivers/md/dm.c
+> +++ b/drivers/md/dm.c
+> @@ -2106,6 +2106,7 @@ static struct mapped_device *alloc_dev(int minor)
+>  	if (IS_ERR(md->disk))
+>  		goto bad;
+>  	md->queue = md->disk->queue;
+> +	blk_queue_flag_set(QUEUE_FLAG_SAME_COMP, md->queue);
+>  
+>  	init_waitqueue_head(&md->wait);
+>  	INIT_WORK(&md->work, dm_wq_work);
+> 
+
 
