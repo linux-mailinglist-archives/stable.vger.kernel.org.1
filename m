@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-39838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA8B8A54F9
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B908A54E4
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DDD51F217F7
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F0271F22CC9
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C7178C6B;
-	Mon, 15 Apr 2024 14:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BB080BFF;
+	Mon, 15 Apr 2024 14:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+I3ZBhA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kbron5Ru"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9BB2A8D3;
-	Mon, 15 Apr 2024 14:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47B8762E0;
+	Mon, 15 Apr 2024 14:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191965; cv=none; b=scYHifhODkk3Qbmf2Y6wVazxrfNJeWUtS66JmtWv/359GXY2Duq1IVAnZExPTzThtltD4jTW/LbDOCd8j2Nd8XdGMyvNr3d9+7mMB3xLyS78zliWgxC3+g4n5ZrIkldyHPD2C2rc/z7p9OFm3fc8n/uwgH2DyGGk3fS/sQ7Tmdk=
+	t=1713191909; cv=none; b=hR+6402L/WqCLopKrrrxmjwL5CBl1w/9rtEqQext6eNnCTlgym+bxuEwc/eK9pEgZSlzEx4P/4MeTBQm50IQsvrW79qcs1nI3iM/GaPEJosKLTKXNPxe7AmH4dRXLrj7kM3U0MQJws5V9KDcUGYHqX1e7WRZqs5H+4FhVF9fenI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191965; c=relaxed/simple;
-	bh=43LERzgou9E8W1xTJxzTDOkTBTJ58G1d2OtLTxOzJC0=;
+	s=arc-20240116; t=1713191909; c=relaxed/simple;
+	bh=ccKHxljBDzcXdDbhz2r2CJ6lFjG5jofGyolN9cSOVc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u77vjqmTk+4G+ItxN9bDiGNttZEveo1LD3PpfR71T9N4Vy4qPp78p3RvLvfRXepmqcrS8aFEY59/T0ILJV5IuIkr+csngzYgod42WU9ea2h4TXvxwMYROYagaE2GPemcCsl2ZlIbHzxrLJO1NJYm6hrw2nbMn1FRk/bAERDQsiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+I3ZBhA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2715CC113CC;
-	Mon, 15 Apr 2024 14:39:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=liIvl2ERs6s7ABhkRQurAHRjJsJfarI5psQbK2d6hrMZQbNhPnkvlOYtPzvsTiYCQ9I0aPn5KyRT7m/AVUUlYjyDkN9KFSP9fUTx10+tcOL9rdJdEYpmXLJARr5noDjYEK+6q89b16nZ7HdgyyQjiQBsKKCt8rAMK2b+A5eTqLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kbron5Ru; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE04C113CC;
+	Mon, 15 Apr 2024 14:38:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191965;
-	bh=43LERzgou9E8W1xTJxzTDOkTBTJ58G1d2OtLTxOzJC0=;
+	s=korg; t=1713191908;
+	bh=ccKHxljBDzcXdDbhz2r2CJ6lFjG5jofGyolN9cSOVc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w+I3ZBhAM1E8IpKAQdp0CI3acnl6xbmHyzXWCfx6wxU48DTtMhVDII82TF83nmsNs
-	 gA42u0uEn1jpFDRKGbZhL2UIjsnNmoFX5A9Ig3vH0CBYVQkyWVa9NGVy4tVEtwpIsy
-	 PjJzBsvl1N3jRqgiKpKs98heB9ctD++BFlDnjIFE=
+	b=kbron5Ru9+YZL9ABIhVRWlXAKSlO13zQu5XMNxD+W+0Xbv0uTc3kJnti0jHXaa+0j
+	 2Xn6tV8zeoC+6ljyF4+yN9g9XqmWkcNyr3zhpe6+UEh+givivtaj8z74vIVzx21UdG
+	 FnNbCNEfLEqMwheEFsHVBUyn6uiFtlZyKX6OfLro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 23/69] ipv6: fib: hide unused pn variable
+	Vidya Srinivas <vidya.srinivas@intel.com>,
+	Vandita Kulkarni <vandita.kulkarni@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.6 089/122] drm/i915/vrr: Disable VRR when using bigjoiner
 Date: Mon, 15 Apr 2024 16:20:54 +0200
-Message-ID: <20240415141946.867174699@linuxfoundation.org>
+Message-ID: <20240415141956.046637186@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 74043489fcb5e5ca4074133582b5b8011b67f9e7 ]
+commit dcd8992e47f13afb5c11a61e8d9c141c35e23751 upstream.
 
-When CONFIG_IPV6_SUBTREES is disabled, the only user is hidden, causing
-a 'make W=1' warning:
+All joined pipes share the same transcoder/timing generator.
+Currently we just do the commits per-pipe, which doesn't really
+work if we need to change switch between non-VRR and VRR timings
+generators on the fly, or even when sending the push to the
+transcoder. For now just disable VRR when bigjoiner is needed.
 
-net/ipv6/ip6_fib.c: In function 'fib6_add':
-net/ipv6/ip6_fib.c:1388:32: error: variable 'pn' set but not used [-Werror=unused-but-set-variable]
-
-Add another #ifdef around the variable declaration, matching the other
-uses in this file.
-
-Fixes: 66729e18df08 ("[IPV6] ROUTE: Make sure we have fn->leaf when adding a node on subtree.")
-Link: https://lore.kernel.org/netdev/20240322131746.904943-1-arnd@kernel.org/
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240408074219.3030256-1-arnd@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Tested-by: Vidya Srinivas <vidya.srinivas@intel.com>
+Reviewed-by: Vandita Kulkarni <vandita.kulkarni@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240404213441.17637-6-ville.syrjala@linux.intel.com
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+(cherry picked from commit f9d5e51db65652dbd8a2102fd7619440e3599fd2)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_fib.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_vrr.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index e606374854ce5..8213626434b91 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -1376,7 +1376,10 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
- 	     struct nl_info *info, struct netlink_ext_ack *extack)
- {
- 	struct fib6_table *table = rt->fib6_table;
--	struct fib6_node *fn, *pn = NULL;
-+	struct fib6_node *fn;
-+#ifdef CONFIG_IPV6_SUBTREES
-+	struct fib6_node *pn = NULL;
-+#endif
- 	int err = -ENOMEM;
- 	int allow_create = 1;
- 	int replace_required = 0;
-@@ -1400,9 +1403,9 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
- 		goto out;
- 	}
+--- a/drivers/gpu/drm/i915/display/intel_vrr.c
++++ b/drivers/gpu/drm/i915/display/intel_vrr.c
+@@ -111,6 +111,13 @@ intel_vrr_compute_config(struct intel_cr
+ 	if (!intel_vrr_is_capable(connector))
+ 		return;
  
-+#ifdef CONFIG_IPV6_SUBTREES
- 	pn = fn;
++	/*
++	 * FIXME all joined pipes share the same transcoder.
++	 * Need to account for that during VRR toggle/push/etc.
++	 */
++	if (crtc_state->bigjoiner_pipes)
++		return;
++
+ 	if (adjusted_mode->flags & DRM_MODE_FLAG_INTERLACE)
+ 		return;
  
--#ifdef CONFIG_IPV6_SUBTREES
- 	if (rt->fib6_src.plen) {
- 		struct fib6_node *sn;
- 
--- 
-2.43.0
-
 
 
 
