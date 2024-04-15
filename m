@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-39808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCB748A54DC
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D124B8A5574
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:44:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59F38B22A62
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EA6B281B68
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:44:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E1483A01;
-	Mon, 15 Apr 2024 14:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD1374E11;
+	Mon, 15 Apr 2024 14:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEagbGAj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMfioUGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE74839FD;
-	Mon, 15 Apr 2024 14:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA691D52B;
+	Mon, 15 Apr 2024 14:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191876; cv=none; b=nd55yNy+k1hKeat3r6Le+HMsiiw2FgOt8rWl/LqeRqGi7cKBpeduVBhwuWKt+PpTRXT1MU3AmTYQdxxTn26Z1AWjV8uuRKhiefjE9EQo0fh5Da1GSagBns4kKbT4vjIo8uq7ZL5YuDe/+wJsg6U6FgCj8F0tc6Zh+eeFEq+8fcQ=
+	t=1713192263; cv=none; b=kBnnMlvFZ4jGefu5QN9+aCDpOSgdWzBd9jqsKs7UFw5UibDdAJoXTxhkjOVLrhW+ZCyGbRMan6gMm9k/8QahxgElZP7w9OQpl78nFWwvRFTLdSfUV26S8QdU+KIW8t/W1io7lFyoOsVp5Z83Mxjnfe1+urJa4l3zW06sNjq93EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191876; c=relaxed/simple;
-	bh=ddnAxzzu7qGKiHjYcWFGUzgK6FCltf9i9rwZ1KJhksc=;
+	s=arc-20240116; t=1713192263; c=relaxed/simple;
+	bh=oQyH2OUG3zCpg5aP9ovha8r5OwqFI68xiVCx9oAVziI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tjefdC4KgdhYobDnzfsWrx3sZ3lQZNbHC/jCv8YFWc+qggGbPt4W63QaUbQ5f7bVJKfEWmxropJpUoODOPmu3QGR+hLL5GCceCB8y40wD4hLoZ51KP42xx4kJIm8eIvvwjWWjSQG2b7PwLazZ/W7KtonSEJWz5pHeoGEoiHyvNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEagbGAj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B732EC113CC;
-	Mon, 15 Apr 2024 14:37:55 +0000 (UTC)
+	 MIME-Version; b=JWDAywhtHKLaalnEILJ9OayBd0blhcnohP9aDG4uhlo7Q8G+XnKdUPIVFlfjnTHfaziKN+LXIlx0wkKJ4Dx+yXwn5rGxncVQzc9tgaCutMwQrUmRyDPcqUCljhh5yysUz3gYpcqKJxXK7shU2Le68BMPasXzv/8jbyKEQizmeXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMfioUGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96217C113CC;
+	Mon, 15 Apr 2024 14:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191876;
-	bh=ddnAxzzu7qGKiHjYcWFGUzgK6FCltf9i9rwZ1KJhksc=;
+	s=korg; t=1713192263;
+	bh=oQyH2OUG3zCpg5aP9ovha8r5OwqFI68xiVCx9oAVziI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mEagbGAjSEAgV6qpVlV1NamQH4MJAVyD5LSIBB3r7Wz9domRKR1wtJSj+1GSUIjz+
-	 njX/cyelTvVapIdPy2mxcU+iUUJbgheuV+XkQQvgIVvBO4ay7u1Qd1hvFnY/o7dHcP
-	 NsO70m6fpUag0kW5dUcwSUvMBawEmqafBRTPYR2E=
+	b=PMfioUGTL13aEEwyqKTK14lo/laoMb3sz6sGTioYnccYsSLlZDyxxxO1n0pZXssXr
+	 uJLKqpGFJTvcvetnd+iSI2FwORXNJ6BPPaBue4GFxlWl6vnnhibyImd4312++vSb3+
+	 N4NPUmOC4jh7dQ/00xqR8aZRlrCURsTi8y6pzCnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Nikolay Borisov <nik.borisov@suse.com>
-Subject: [PATCH 6.6 114/122] x86/bugs: Replace CONFIG_SPECTRE_BHI_{ON,OFF} with CONFIG_MITIGATION_SPECTRE_BHI
-Date: Mon, 15 Apr 2024 16:21:19 +0200
-Message-ID: <20240415141956.792029367@linuxfoundation.org>
+	syzbot+7f7f201cc2668a8fd169@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 13/45] af_unix: Clear stale u->oob_skb.
+Date: Mon, 15 Apr 2024 16:21:20 +0200
+Message-ID: <20240415141942.640243981@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
+References: <20240415141942.235939111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 4f511739c54b549061993b53fc0380f48dfca23b upstream.
+[ Upstream commit b46f4eaa4f0ec38909fb0072eea3aeddb32f954e ]
 
-For consistency with the other CONFIG_MITIGATION_* options, replace the
-CONFIG_SPECTRE_BHI_{ON,OFF} options with a single
-CONFIG_MITIGATION_SPECTRE_BHI option.
+syzkaller started to report deadlock of unix_gc_lock after commit
+4090fa373f0e ("af_unix: Replace garbage collection algorithm."), but
+it just uncovers the bug that has been there since commit 314001f0bf92
+("af_unix: Add OOB support").
 
-[ mingo: Fix ]
+The repro basically does the following.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Nikolay Borisov <nik.borisov@suse.com>
-Link: https://lore.kernel.org/r/3833812ea63e7fdbe36bf8b932e63f70d18e2a2a.1712813475.git.jpoimboe@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  from socket import *
+  from array import array
+
+  c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+  c1.sendmsg([b'a'], [(SOL_SOCKET, SCM_RIGHTS, array("i", [c2.fileno()]))], MSG_OOB)
+  c2.recv(1)  # blocked as no normal data in recv queue
+
+  c2.close()  # done async and unblock recv()
+  c1.close()  # done async and trigger GC
+
+A socket sends its file descriptor to itself as OOB data and tries to
+receive normal data, but finally recv() fails due to async close().
+
+The problem here is wrong handling of OOB skb in manage_oob().  When
+recvmsg() is called without MSG_OOB, manage_oob() is called to check
+if the peeked skb is OOB skb.  In such a case, manage_oob() pops it
+out of the receive queue but does not clear unix_sock(sk)->oob_skb.
+This is wrong in terms of uAPI.
+
+Let's say we send "hello" with MSG_OOB, and "world" without MSG_OOB.
+The 'o' is handled as OOB data.  When recv() is called twice without
+MSG_OOB, the OOB data should be lost.
+
+  >>> from socket import *
+  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM, 0)
+  >>> c1.send(b'hello', MSG_OOB)  # 'o' is OOB data
+  5
+  >>> c1.send(b'world')
+  5
+  >>> c2.recv(5)  # OOB data is not received
+  b'hell'
+  >>> c2.recv(5)  # OOB date is skipped
+  b'world'
+  >>> c2.recv(5, MSG_OOB)  # This should return an error
+  b'o'
+
+In the same situation, TCP actually returns -EINVAL for the last
+recv().
+
+Also, if we do not clear unix_sk(sk)->oob_skb, unix_poll() always set
+EPOLLPRI even though the data has passed through by previous recv().
+
+To avoid these issues, we must clear unix_sk(sk)->oob_skb when dequeuing
+it from recv queue.
+
+The reason why the old GC did not trigger the deadlock is because the
+old GC relied on the receive queue to detect the loop.
+
+When it is triggered, the socket with OOB data is marked as GC candidate
+because file refcount == inflight count (1).  However, after traversing
+all inflight sockets, the socket still has a positive inflight count (1),
+thus the socket is excluded from candidates.  Then, the old GC lose the
+chance to garbage-collect the socket.
+
+With the old GC, the repro continues to create true garbage that will
+never be freed nor detected by kmemleak as it's linked to the global
+inflight list.  That's why we couldn't even notice the issue.
+
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Reported-by: syzbot+7f7f201cc2668a8fd169@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7f7f201cc2668a8fd169
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240405221057.2406-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Kconfig           |   17 +++--------------
- arch/x86/kernel/cpu/bugs.c |    2 +-
- 2 files changed, 4 insertions(+), 15 deletions(-)
+ net/unix/af_unix.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2566,27 +2566,16 @@ config MITIGATION_RFDS
- 	  stored in floating point, vector and integer registers.
- 	  See also <file:Documentation/admin-guide/hw-vuln/reg-file-data-sampling.rst>
- 
--choice
--	prompt "Clear branch history"
-+config MITIGATION_SPECTRE_BHI
-+	bool "Mitigate Spectre-BHB (Branch History Injection)"
- 	depends on CPU_SUP_INTEL
--	default SPECTRE_BHI_ON
-+	default y
- 	help
- 	  Enable BHI mitigations. BHI attacks are a form of Spectre V2 attacks
- 	  where the branch history buffer is poisoned to speculatively steer
- 	  indirect branches.
- 	  See <file:Documentation/admin-guide/hw-vuln/spectre.rst>
- 
--config SPECTRE_BHI_ON
--	bool "on"
--	help
--	  Equivalent to setting spectre_bhi=on command line parameter.
--config SPECTRE_BHI_OFF
--	bool "off"
--	help
--	  Equivalent to setting spectre_bhi=off command line parameter.
--
--endchoice
--
- endif
- 
- config ARCH_HAS_ADD_PAGES
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1627,7 +1627,7 @@ enum bhi_mitigations {
- };
- 
- static enum bhi_mitigations bhi_mitigation __ro_after_init =
--	IS_ENABLED(CONFIG_SPECTRE_BHI_ON) ? BHI_MITIGATION_ON : BHI_MITIGATION_OFF;
-+	IS_ENABLED(CONFIG_MITIGATION_SPECTRE_BHI) ? BHI_MITIGATION_ON : BHI_MITIGATION_OFF;
- 
- static int __init spectre_bhi_parse_cmdline(char *str)
- {
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 265dc665c92a2..27a88a738793f 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2567,7 +2567,9 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
+ 				}
+ 			} else if (!(flags & MSG_PEEK)) {
+ 				skb_unlink(skb, &sk->sk_receive_queue);
+-				consume_skb(skb);
++				WRITE_ONCE(u->oob_skb, NULL);
++				if (!WARN_ON_ONCE(skb_unref(skb)))
++					kfree_skb(skb);
+ 				skb = skb_peek(&sk->sk_receive_queue);
+ 			}
+ 		}
+-- 
+2.43.0
+
 
 
 
