@@ -1,292 +1,259 @@
-Return-Path: <stable+bounces-39391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36218A4722
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 04:55:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9A18A477D
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 07:11:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3013D1F21BCD
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 02:55:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84116B222F8
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 05:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B0F17BAA;
-	Mon, 15 Apr 2024 02:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FF946AF;
+	Mon, 15 Apr 2024 05:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ZlyF/6qM"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="oM1PUpRz"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2052.outbound.protection.outlook.com [40.107.94.52])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1111717556
-	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 02:55:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713149727; cv=fail; b=k8HivY1oDe+JM98td+6hAK+XUU4RGg7IJMbSZc1rv9t1ePXVb/g7RH9+04BAa2KnRL1X4f85pT3Q1Ie0e+8qoiQZO7CkEgb6OpxCXWI4KZtoA8Y/ogxy9f1F1Rf0TLTBvzeidk5w7OimEk3GAkP75GVc5J6LqClxRv0WwFEkOHQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713149727; c=relaxed/simple;
-	bh=4xlSS8Fhd1GduCaKV34U3Fnfu8qGcq/89Ptb0zVaMlg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=PEGDwGL0zWhCzqgCW2DIA6SAeE87zkP2lFRWGIOCdUKAeLuZIDvyRQ0WpPsBGSf7n2Xw6PCqf7q2wHwRNy6muIgP4XzMPU8NqcErOJmh1QI5fbXoLnodW3M3dghnHpzForFnmpusEBRZCFBLYZS0xXHXeGVsxJ9CJjDW9Tw1cSo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ZlyF/6qM; arc=fail smtp.client-ip=40.107.94.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Du2QOoM7ZupXW46t6dlIdTI8lTH3IZl9PQjuShfekOS53+FBc0dFg+mn/egpHHzwhtopyPCdNTs+ByYMj/KBsyb4ZZUs+0pgG8dFSEZKbFgv3s9LFqC5zFH5ATmsZ3Ihqnw0W6Co+1tXAHiFyc57KcNqDuUcDbPNVEsXT1z0miV2fb6Sqrk+R3okYp2tYNuIX2LIB9JKbDtMa1c2AYcpd3t0Iui6FDWVx6t2NPYSm+cMOAtcEzfsnt7F7bAYvgZjpArDA2hQBWOhaf25HDoKFThsi7qjBWg5X7UGZAo0IVcQz6v4h86wqapYtiyi7EO9+3JYhqNCH25iLtlq8rYTlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7s/HltqpHS/Qkje3eHew2tML4hxTS8b72M4Y8XswspY=;
- b=nY4PpfsmGvCSh3ijkxdGZRUcjBO/OSGwU5S/8sOO5VlFaiCObps6L3cPcU8IDhtiVIMUunC+gPRyLZ27l6abnGpH3v5N48Yu38Qos60FF3meZuYF3KhwkX4MvMZMBGsYffF04ziLKvILymExSTFIE0YxL6CuYlFVxg32k97tCDxg73uKGORw9j6ecEQRkI2VYe9QWDOMCdK5kzkWgx/P3mnryOsbWLWUIhzGl2odnNi35zCVtfgl0Qm/z5lP5I/oVH1Y5gCCxmhs2M8G+9hU8aYv3v7cTgeeuh+JdNrJ6tuLyqWB9HxCiog1g0f/qhNYsZyW+c8ME9m8dFtpQPVBCw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7s/HltqpHS/Qkje3eHew2tML4hxTS8b72M4Y8XswspY=;
- b=ZlyF/6qMmeOm2aV14Q9AGHM8krVaGQtOJJAB393UIiMjvtkNjUQNjVJ+9JHH64bhOk3/I1/esLF8LZCI55NoD6TZAhzTOqP7Y9EJGneCx3jw65/dc9Zozz8zrF28q04EHjtU/2bZDcVpjK9QKKtf3Inb4JrgrL5rGoVnHiOCslY=
-Received: from CO6PR12MB5489.namprd12.prod.outlook.com (2603:10b6:303:139::18)
- by CH3PR12MB7692.namprd12.prod.outlook.com (2603:10b6:610:145::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.43; Mon, 15 Apr
- 2024 02:55:22 +0000
-Received: from CO6PR12MB5489.namprd12.prod.outlook.com
- ([fe80::5f4:a2a9:3d28:3282]) by CO6PR12MB5489.namprd12.prod.outlook.com
- ([fe80::5f4:a2a9:3d28:3282%4]) with mapi id 15.20.7452.049; Mon, 15 Apr 2024
- 02:55:22 +0000
-From: "Lin, Wayne" <Wayne.Lin@amd.com>
-To: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
-CC: "lyude@redhat.com" <lyude@redhat.com>, "Wentland, Harry"
-	<Harry.Wentland@amd.com>, "imre.deak@intel.com" <imre.deak@intel.com>,
-	=?iso-8859-1?Q?Leon_Wei=DF?= <leon.weiss@ruhr-uni-bochum.de>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>, "jeffm@suse.com"
-	<jeffm@suse.com>
-Subject: Re: [PATCH] drm/mst: Fix NULL pointer dereference at
- drm_dp_add_payload_part2
-Thread-Topic: [PATCH] drm/mst: Fix NULL pointer dereference at
- drm_dp_add_payload_part2
-Thread-Index: AQHacFj2giCMd8JLWkW3Q37cghjqLbFo35Af
-Date: Mon, 15 Apr 2024 02:55:22 +0000
-Message-ID:
- <CO6PR12MB5489CA20D64BF9E38FE6CC5FFC092@CO6PR12MB5489.namprd12.prod.outlook.com>
-References: <20240307062957.2323620-1-Wayne.Lin@amd.com>
-In-Reply-To: <20240307062957.2323620-1-Wayne.Lin@amd.com>
-Accept-Language: en-US, zh-TW
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Enabled=True;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SetDate=2024-04-15T02:55:21.151Z;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Name=Public;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ContentBits=0;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Method=Privileged;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CO6PR12MB5489:EE_|CH3PR12MB7692:EE_
-x-ms-office365-filtering-correlation-id: 14ddaacb-be0f-4df0-048b-08dc5cf77e0d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- lOkatgVjWG0TDArACfUeFyqWjytl7SGpfddbSQLmVaREvFgxnYLxRv/vbmIWL+QptV3wAFT70n9x1LvBDQrzJCHk4fA2qZDXPvRjqI2qMNxIHiR/rmoaGZFOl0vfkKaFHG/VlRE/NwsbvPji6ggLXXI9Pwwsmz+bT9ko9Svpo7RvSThy15y9nXh9uP4e2T88Xqmtk7YnUIz+krfOJOOfdplaMmbK1Ojpm3EJk+l1cqExXLTsHXktsI7gv3BBzD4iXZl/QpWpbolbasl6jnKh1Ns6TzYEpDZxJDlQJKKFf+Suyx74CgoSaY8/VYDGqA2YM19o7sGQIoUy/aDCbmT9cKavgvffcxmDfhKqhFilpnWYDgUgNaF67uTmvy3ZXQd0WzfSHXT9twXuLKjnVCGxlieOY6/7kid9p1M2497ELoox+sL5cimHDH0FkRwWz3c0zrmomfmoGGjfatmcvCq45m0XBmy+fMFGpsevX9hrbR+pMEonQwpUmYrPDhHoCsz31Nt3zI58abdMLDxNpqTlW0I+onxeaeV4eL8dGwooP3OQazz/RjFBD0662gAVX8oalEeui/UQwlNe5rw6S7kE7Gd2P/crBWYQkTkYWvjOxnFucEVMzbVB5jBQX3P9cYcxpYSlXN99fLfLLxIj7pvl0uX/AltwWxlfcfokaCLjjITkKNzddQi7ZxHtLEs01zRuMHzT75o5rqdzbV6/0cpoK2IfzgVq1jw0ItJkrRQlcX4=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5489.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(366007)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?5Q01Q5Bab/EXyuO4wug5omcw2g+UvezrEAX9hNyf/A5lqZtgt10oJ3HPKz?=
- =?iso-8859-1?Q?lO+i7pvQZxeQKBnAa/vCBQP235Jw3jvgxWCMbKNXZl+6WB4UZVe9Dthy1Q?=
- =?iso-8859-1?Q?xvcjxOJ8Hxuq5cv5AwT0+LUUSaGpcSHKAsQyUn9oBlDnWX7sURqkfXlAbH?=
- =?iso-8859-1?Q?ienb3VoWo87lbshmjHkf5eJKOsErEIy3C8amcWfN7q3rMgJKLDvZ9gHhpn?=
- =?iso-8859-1?Q?bEReltFBvKwtfsg9GXimh+JRPtUWNUD3+A8frSgVG8x8JOXFE6+esBSUtK?=
- =?iso-8859-1?Q?N3wsIYXvyd13AggxCFl1TVaxmnl7pkJSS7a63kskNF8gzYR0MzF53es+sB?=
- =?iso-8859-1?Q?0DorjrplHZvOm8D9WsZCRZqE4kWsmm/L7WiWKpoD/kMdQMDT6Iz57SWmMw?=
- =?iso-8859-1?Q?eRt/Knh4LH/qu9Y+rwKv2pbkkXOg1Uck0SJT3oEwQdU4VTqxdqjttAkj8K?=
- =?iso-8859-1?Q?4vt0lnWQewmYnZuVSfSUm4Uoa9JEORkg2MrPCEs4ahl0JsrjPuPC+QL/rU?=
- =?iso-8859-1?Q?g3/Lx5Xo3KHtA437nR28fpqRBas4jzmoXJYWD4AjOfTR/GBRLwwq00HjNr?=
- =?iso-8859-1?Q?3bUbHN6QWNIs9lZsqm908skKnCVawfGx4B97nNJKYR3AjwS3T/L8SbvKIe?=
- =?iso-8859-1?Q?re8N9dFX6iQZg12ZP7qeqG2z2WpEd7rW7WpYEQfj08LGD7p989Gvc4p+a7?=
- =?iso-8859-1?Q?J+Xez0u10Y0il+/OAH+wshVxf3OzrMC3RigEZ2SQSMvBlEmFpAqdWKdmfn?=
- =?iso-8859-1?Q?Q0e02XPoSWMGmbkBJnhxUUxjT8c+yht2PmQAVtKrUsYK4jYS2YAbH23suZ?=
- =?iso-8859-1?Q?ROoA7+yHdSr2aGKX9HB5arHLfda2lH49kiuk4YdsMpXWQM30ah71BGou14?=
- =?iso-8859-1?Q?BJNSbLp5NhIU33z+c40NNUcw+wXXiCJG4ZtF7/0UAC6yFRlNkx8PW3gj+2?=
- =?iso-8859-1?Q?YM2G9Gzo9VqX+Vvt9j3niAh9Fndjo6XWauTTuGeTQPssJ5RRz5mMB9xWhI?=
- =?iso-8859-1?Q?a0O2rcRmPqW2Z5Aefyq2Pe7I+r/5TCRmW95zhHt2pPP0lws6sZNWqsPTkT?=
- =?iso-8859-1?Q?jZ3DnJAa2U0yrd7+GH8z/vz1HMpMvU+TcX2fZseAWspKto++2NRXvDMkEE?=
- =?iso-8859-1?Q?6jqeNAzwJM1uimtwOA+txQ5/oQQsjvG9ayOfPBrfcbvbdE6q4oOt7vPGxp?=
- =?iso-8859-1?Q?O80CJxDLqycBjblUpXQycKUXVQzgqBDKnpEKRL/71YMlYYFkeAf4CCN4cN?=
- =?iso-8859-1?Q?Vvw1sDA5xb6sCiN0CzlmYLUxKF3BNYJODGC13VXCjOmywVQvMZ/3OIwntd?=
- =?iso-8859-1?Q?ip4XEVaX3FaE0qZdpBLKdpYlemooqFIk79+V4Pd87aS4+7Ue1ztvleHzlI?=
- =?iso-8859-1?Q?jUBg/F6UtYe4EKNAKws8qDekA4Ltup8VyZhc8IRcHF6mIUfJwio+jo7Cgv?=
- =?iso-8859-1?Q?SU9JZErxRau2B7YGJFFYnoa9xFB5dO3y0r7Et4BW4CpovW3cKu2mxndFT3?=
- =?iso-8859-1?Q?ROx/yIvoeDeWZJvQ4XiOBpUCzRJfL1Q/drEGSarI6uHXRffKTqwHr8WXWZ?=
- =?iso-8859-1?Q?2xlfpKHRVTYHSmMJGgrnO5gY2HQck0wpIwTg9A3LvHDKDgwCrGUmfujECc?=
- =?iso-8859-1?Q?vrXn+Uom1b6ow=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0055C138;
+	Mon, 15 Apr 2024 05:11:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713157884; cv=none; b=N8SI60MU3RyJNJ1dhNmEZxnrzznVL4HsuZ+CxN5rX4PDUhqTTmsbjvuuQwnogZt0pdjNNDGrl6hIRdRkRsqb+sNq5Bt4OfZXvt6jcD5JZykqmFlDpw75sC2DdKyJSUsWOoK5cI5swIUE9YaVNUwqgbVtXqmTthNBj/l4VNOxvic=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713157884; c=relaxed/simple;
+	bh=3yDZ/kwgaUxbofN0+kugke1sHkJsx+ANt7RBqra3GbY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
+	 In-Reply-To:Content-Type; b=IbsEaDX3z67wieD0wx9efC+W6H3h8kBrfova0FBfP4ApwyqpNHp37mVLmnMohp7jvhPhnUlJJBTjFwH1bfcG/9ZZkEftvP2wnmJDKKBC6O5FLyvAzJ/1aPyYOjgiajAvvgd3aCuW8S9frNRkCGOBoJloYWW3syud1k77ovsGYSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=oM1PUpRz; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Cc:Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=2RqVnNiHEZsQRUo3wtchR55KSJHjRHKxoWBHB8I16dc=;
+	t=1713157882; x=1713589882; b=oM1PUpRzVOb3QTJBQqIzLSPyAILeKEpT3ZtggNk2CXITzSn
+	o/r+3CGcLaqJeqRPWOooyi4RKI0KNvVvs3C1gq3NN/F0r4xEVKZtWX/YZpqUcZWwn0Kmkg40mA5kp
+	Gs7LddEQWh/UyeB+zRP5MpsmZaVGDgP4W1cA+f4M74E5InX5Yk7whKYc1t/DhWgdAsrbxHi6gmbBF
+	M0gZ6SHT8M3k5UXSdo07TguC5PDubzqmz8sEMpSbLk19nFXF6VYkj8UtCKuQ/nBBUdxsQNBrXxNYN
+	rPs+m4p419XBMv7hVOJwf3F9CUb7Bi8wQNHF2zrFbi8drd8a+Nj3GJY3PHnWDP8A==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rwEce-00048c-Bu; Mon, 15 Apr 2024 07:11:16 +0200
+Message-ID: <bd8492f4-a12e-48ae-8ea6-a9d4596a6f72@leemhuis.info>
+Date: Mon, 15 Apr 2024 07:11:15 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5489.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14ddaacb-be0f-4df0-048b-08dc5cf77e0d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Apr 2024 02:55:22.0902
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: lZLfBKVOcSaeCAUzhQIsHpCMVLfoVXYH54BWlGqkkcBF+E2DAV5f2BUt0GhY2emHAXrhw/XgQc9Eyk5KHknjXg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7692
+User-Agent: Mozilla Thunderbird
+Subject: Re: btrfs: sanity tests fails on 6.8.3
+To: David Sterba <dsterba@suse.com>, Qu Wenruo <wqu@suse.com>
+References: <20240415.125625.2060132070860882181.sian@big.or.jp>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Content-Language: en-US, de-DE
+Cc: linux-btrfs@vger.kernel.org, Hiroshi Takekawa <sian@big.or.jp>,
+ Linux kernel regressions list <regressions@lists.linux.dev>,
+ Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+ LKML <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+In-Reply-To: <20240415.125625.2060132070860882181.sian@big.or.jp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1713157882;7cc21886;
+X-HE-SMSGID: 1rwEce-00048c-Bu
 
-[Public]
+[adding the authors of the two commits mentioned as well as the Btrfs
+maintainers and the regressions & stable list to the list of recipients]
 
-Ping for code review. Thanks!
+On 15.04.24 05:56, Hiroshi Takekawa wrote:
+>=20
+> Module loading fails with CONFIG_BTRFS_FS_RUN_SANITY_TESTS enabled on
+> 6.8.3-6.8.6.
+>=20
+> Bisected:
+> Reverting these commits, then module loading succeeds.
+> 70f49f7b9aa3dfa70e7a2e3163ab4cae7c9a457a
 
-Regards,
-Wayne
+FWIW, that is a linux-stable commit-id for 41044b41ad2c8c ("btrfs: add
+helper to get fs_info from struct inode pointer") [v6.9-rc1, v6.8.3
+(70f49f7b9aa3df)]
 
-________________________________________
-From: Wayne Lin <Wayne.Lin@amd.com>
-Sent: Thursday, March 7, 2024 14:29
-To: dri-devel@lists.freedesktop.org; amd-gfx@lists.freedesktop.org; intel-g=
-fx@lists.freedesktop.org
-Cc: lyude@redhat.com; Wentland, Harry; imre.deak@intel.com; Lin, Wayne; Leo=
-n Wei=DF; stable@vger.kernel.org; regressions@lists.linux.dev
-Subject: [PATCH] drm/mst: Fix NULL pointer dereference at drm_dp_add_payloa=
-d_part2
+> 86211eea8ae1676cc819d2b4fdc8d995394be07d
 
-[Why]
-Commit:
-- commit 5aa1dfcdf0a4 ("drm/mst: Refactor the flow for payload allocation/r=
-emovement")
-accidently overwrite the commit
-- commit 54d217406afe ("drm: use mgr->dev in drm_dbg_kms in drm_dp_add_payl=
-oad_part2")
-which cause regression.
+FWIW, that was a mainline commit-id for 86211eea8ae167 ("btrfs: qgroup:
+validate btrfs_qgroup_inherit parameter") [v6.9-rc1, v6.8.3
+(f19dad4f440af4)]
 
-[How]
-Recover the original NULL fix and remove the unnecessary input parameter 's=
-tate' for
-drm_dp_add_payload_part2().
+Also:
 
-Fixes: 5aa1dfcdf0a4 ("drm/mst: Refactor the flow for payload allocation/rem=
-ovement")
-Reported-by: Leon Wei=DF <leon.weiss@ruhr-uni-bochum.de>
-Link: https://lore.kernel.org/r/38c253ea42072cc825dc969ac4e6b9b600371cc8.ca=
-mel@ruhr-uni-bochum.de/
-Cc: lyude@redhat.com
-Cc: imre.deak@intel.com
-Cc: stable@vger.kernel.org
-Cc: regressions@lists.linux.dev
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
----
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c | 2 +-
- drivers/gpu/drm/display/drm_dp_mst_topology.c             | 4 +---
- drivers/gpu/drm/i915/display/intel_dp_mst.c               | 2 +-
- drivers/gpu/drm/nouveau/dispnv50/disp.c                   | 2 +-
- include/drm/display/drm_dp_mst_helper.h                   | 1 -
- 5 files changed, 4 insertions(+), 7 deletions(-)
+There is a report that to me looks a lot like it's about the same
+problem: https://bugzilla.kernel.org/show_bug.cgi?id=3D218720
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c b/dr=
-ivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-index c27063305a13..2c36f3d00ca2 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-@@ -363,7 +363,7 @@ void dm_helpers_dp_mst_send_payload_allocation(
-        mst_state =3D to_drm_dp_mst_topology_state(mst_mgr->base.state);
-        new_payload =3D drm_atomic_get_mst_payload_state(mst_state, aconnec=
-tor->mst_output_port);
+Ciao, Thorsten
 
--       ret =3D drm_dp_add_payload_part2(mst_mgr, mst_state->base.state, ne=
-w_payload);
-+       ret =3D drm_dp_add_payload_part2(mst_mgr, new_payload);
+> Backtrace:
+> [   69.030943] xor: automatically using best checksumming function   av=
+x      =20
+> [   69.031940] raid6: skipped pq benchmark and selected avx2x4
+> [   69.031942] raid6: using avx2x2 recovery algorithm
+> [   69.074954] Btrfs loaded, zoned=3Dno, fsverity=3Dno
+> [   69.074973] BTRFS: selftest: sectorsize: 4096  nodesize: 4096
+> [   69.074974] BTRFS: selftest: running btrfs free space cache tests
+> [   69.074979] BTRFS: selftest: running extent only tests
+> [   69.074981] BTRFS: selftest: running bitmap only tests
+> [   69.074986] BTRFS: selftest: running bitmap and extent tests
+> [   69.074989] BTRFS: selftest: running space stealing from bitmap to e=
+xtent tests
+> [   69.075128] BTRFS: selftest: running bytes index tests
+> [   69.075134] BTRFS: selftest: running extent buffer operation tests
+> [   69.075135] BTRFS: selftest: running btrfs_split_item tests
+> [   69.075140] BTRFS: selftest: running extent I/O tests
+> [   69.075141] BTRFS: selftest: running find delalloc tests
+> [   69.098156] BUG: kernel NULL pointer dereference, address: 000000000=
+0000208
+> [   69.098169] #PF: supervisor read access in kernel mode
+> [   69.098174] #PF: error_code(0x0000) - not-present page
+> [   69.098179] PGD 0 P4D 0=20
+> [   69.098182] Oops: 0000 [#1] PREEMPT SMP NOPTI
+> [   69.098187] CPU: 16 PID: 9701 Comm: modprobe Tainted: P           OE=
+      6.8.4 #1
+> [   69.098194] Hardware name: ASUS System Product Name/PRIME Z490-A, BI=
+OS 2801 10/27/2023
+> [   69.098200] RIP: 0010:find_lock_delalloc_range+0x30/0x260 [btrfs]
+> [   69.098239] Code: 57 41 56 41 55 41 54 53 48 83 ec 40 49 89 d6 49 89=
+ f7 49 89 fc 65 48 8b 04 25 28 00 00 00 48 89 44 24 38 48 8b 87 40 fe ff =
+ff <48> 8b 80 08 02 00 00 48 85 c0 74 09 48 8b a8 a0 0c 00 00 eb 05 bd
+> [   69.098252] RSP: 0018:ffffa2c087cfb8a8 EFLAGS: 00010282
+> [   69.098256] RAX: 0000000000000000 RBX: 0000000000000fff RCX: ffffa2c=
+087cfb938
+> [   69.098262] RDX: ffffa2c087cfb940 RSI: ffffdf1544fbac80 RDI: ffffa08=
+5c86b05f0
+> [   69.098266] RBP: 0000000000000000 R08: 0000000000000010 R09: 0000000=
+000000000
+> [   69.098271] R10: ffffa0852f8e8a20 R11: ffffffffbb22eb70 R12: ffffa08=
+5c86b05f0
+> [   69.098276] R13: ffffdf1544fbac80 R14: ffffa2c087cfb940 R15: ffffdf1=
+544fbac80
+> [   69.098280] FS:  00007f6447289740(0000) GS:ffffa0a3edc00000(0000) kn=
+lGS:0000000000000000
+> [   69.098286] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   69.098290] CR2: 0000000000000208 CR3: 0000000176cec006 CR4: 0000000=
+0007706f0
+> [   69.098295] PKRU: 55555554
+> [   69.098297] Call Trace:
+> [   69.098300]  <TASK>
+> [   69.098302]  ? __die_body+0x5f/0xb0
+> [   69.098307]  ? page_fault_oops+0x294/0x3c0
+> [   69.098311]  ? exc_page_fault+0x4b/0x70
+> [   69.098316]  ? asm_exc_page_fault+0x26/0x30
+> [   69.098319]  ? __pfx_workingset_update_node+0x10/0x10
+> [   69.098325]  ? find_lock_delalloc_range+0x30/0x260 [btrfs]
+> [   69.098355]  btrfs_test_extent_io+0x185/0x1210 [btrfs]
+> [   69.098378]  btrfs_run_sanity_tests+0x7c/0x120 [btrfs]
+> [   69.098400]  ? __pfx_init_module+0x10/0x10 [btrfs]
+> [   69.098421]  init_module+0x1b/0x90 [btrfs]
+> [   69.098441]  ? __pfx_init_module+0x10/0x10 [btrfs]
+> [   69.098462]  do_one_initcall+0x115/0x340
+> [   69.098598]  ? idr_alloc_cyclic+0x139/0x1d0
+> [   69.098728]  ? __kernfs_new_node+0xc7/0x230
+> [   69.098855]  ? sysvec_apic_timer_interrupt+0x15/0x80
+> [   69.098984]  ? asm_sysvec_apic_timer_interrupt+0x1a/0x20
+> [   69.099111]  ? __slab_free+0x74/0x270
+> [   69.099239]  ? __slab_free+0x74/0x270
+> [   69.099364]  ? vfree+0x16c/0x200
+> [   69.099488]  ? kfree+0x14e/0x200
+> [   69.099611]  ? vfree+0x16c/0x200
+> [   69.099733]  ? load_module+0x104e/0x11c0
+> [   69.099856]  ? kmalloc_trace+0x11e/0x240
+> [   69.099980]  do_init_module+0x7d/0x240
+> [   69.100102]  __x64_sys_finit_module+0x293/0x380
+> [   69.100226]  do_syscall_64+0x89/0x110
+> [   69.100347]  ? syscall_exit_work+0xaf/0xd0
+> [   69.100466]  ? syscall_exit_to_user_mode+0x74/0x80
+> [   69.100585]  ? do_syscall_64+0x98/0x110
+> [   69.100703]  ? syscall_exit_work+0xaf/0xd0
+> [   69.100820]  ? syscall_exit_to_user_mode+0x74/0x80
+> [   69.100937]  ? do_syscall_64+0x98/0x110
+> [   69.101050]  ? do_syscall_64+0x98/0x110
+> [   69.101160]  ? do_syscall_64+0x98/0x110
+> [   69.101263]  entry_SYSCALL_64_after_hwframe+0x73/0x7b
+> [   69.101361] RIP: 0033:0x7f6446b1e3ed
+> [   69.101457] Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa=
+ 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f =
+05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d fb 29 0d 00 f7 d8 64 89 01 48
+> [   69.101667] RSP: 002b:00007fff472969b8 EFLAGS: 00000246 ORIG_RAX: 00=
+00000000000139
+> [   69.101774] RAX: ffffffffffffffda RBX: 000056091ee62c00 RCX: 00007f6=
+446b1e3ed
+> [   69.101881] RDX: 0000000000000000 RSI: 000056091da20585 RDI: 0000000=
+000000009
+> [   69.101987] RBP: 000056091da20585 R08: 00007f6446bf1d00 R09: 0000000=
+000000000
+> [   69.102092] R10: 0000000000000050 R11: 0000000000000246 R12: 0000000=
+000040000
+> [   69.102196] R13: 000056091ee6a5d0 R14: 00007f64472970a8 R15: 0000560=
+91ee625d0
+> [   69.102299]  </TASK>
+> [   69.102399] Modules linked in: btrfs(+) raid6_pq xor zstd_compress l=
+zo_decompress lzo_compress efivarfs loop nvidia_drm(POE) nvidia_modeset(P=
+OE) nvidia(POE) virtiofs virtio fuse virtio_ring ipt_REJECT nf_reject_ipv=
+4 ip6table_mangle ip6table_nat ip6table_filter ip6_tables iptable_mangle =
+vhost_vsock vmw_vsock_virtio_transport_common vsock vhost_net vhost vhost=
+_iotlb tun xt_conntrack xt_MASQUERADE nf_conntrack_netlink xfrm_user xfrm=
+_algo iptable_nat nf_nat xt_addrtype iptable_filter ip_tables br_netfilte=
+r bridge stp llc overlay sr_mod cdrom snd_pcm_oss snd_mixer_oss vmw_vmci =
+nct6775 hwmon_vid nct6775_core nf_log_syslog nft_log nft_ct nf_tables lib=
+crc32c nfnetlink joydev ipv6 mei_me ee1004 mei pl2303 usbserial usb_stora=
+ge coretemp hwmon intel_tcc_cooling x86_pkg_temp_thermal intel_powerclamp=
+ snd_hda_codec_realtek snd_hda_codec_generic kvm_intel led_class snd_hda_=
+codec_hdmi kvm irqbypass crc32c_intel sha512_ssse3 sha256_ssse3 snd_hda_i=
+ntel sha1_ssse3 snd_intel_dspcfg aesni_intel snd_hda_codec crypto_simd sn=
+d_hda_core
+> [   69.102430]  cryptd snd_pcm rapl snd_timer i2c_i801 intel_cstate wmi=
+_bmof intel_wmi_thunderbolt intel_uncore i2c_smbus rtc_cmos snd sd_mod so=
+undcore thermal fan wmi acpi_pad button [last unloaded: nvidia(POE)]
+> [   69.103752] CR2: 0000000000000208
+> [   69.103902] ---[ end trace 0000000000000000 ]---
+> [   69.259181] RIP: 0010:find_lock_delalloc_range+0x30/0x260 [btrfs]
+> [   69.259364] Code: 57 41 56 41 55 41 54 53 48 83 ec 40 49 89 d6 49 89=
+ f7 49 89 fc 65 48 8b 04 25 28 00 00 00 48 89 44 24 38 48 8b 87 40 fe ff =
+ff <48> 8b 80 08 02 00 00 48 85 c0 74 09 48 8b a8 a0 0c 00 00 eb 05 bd
+> [   69.259691] RSP: 0018:ffffa2c087cfb8a8 EFLAGS: 00010282
+> [   69.259856] RAX: 0000000000000000 RBX: 0000000000000fff RCX: ffffa2c=
+087cfb938
+> [   69.260023] RDX: ffffa2c087cfb940 RSI: ffffdf1544fbac80 RDI: ffffa08=
+5c86b05f0
+> [   69.260191] RBP: 0000000000000000 R08: 0000000000000010 R09: 0000000=
+000000000
+> [   69.260360] R10: ffffa0852f8e8a20 R11: ffffffffbb22eb70 R12: ffffa08=
+5c86b05f0
+> [   69.260531] R13: ffffdf1544fbac80 R14: ffffa2c087cfb940 R15: ffffdf1=
+544fbac80
+> [   69.260704] FS:  00007f6447289740(0000) GS:ffffa0a3edc00000(0000) kn=
+lGS:0000000000000000
+> [   69.260882] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   69.261061] CR2: 0000000000000208 CR3: 0000000176cec006 CR4: 0000000=
+0007706f0
+> [   69.261242] PKRU: 55555554
+> [   69.261423] note: modprobe[9701] exited with irqs disabled
+>=20
+> --
+> Hiroshi Takekawa <sian@big.or.jp>
 
-        if (ret) {
-                amdgpu_dm_set_mst_status(&aconnector->mst_status,
-diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/dr=
-m/display/drm_dp_mst_topology.c
-index 03d528209426..95fd18f24e94 100644
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -3421,7 +3421,6 @@ EXPORT_SYMBOL(drm_dp_remove_payload_part2);
- /**
-  * drm_dp_add_payload_part2() - Execute payload update part 2
-  * @mgr: Manager to use.
-- * @state: The global atomic state
-  * @payload: The payload to update
-  *
-  * If @payload was successfully assigned a starting time slot by drm_dp_ad=
-d_payload_part1(), this
-@@ -3430,14 +3429,13 @@ EXPORT_SYMBOL(drm_dp_remove_payload_part2);
-  * Returns: 0 on success, negative error code on failure.
-  */
- int drm_dp_add_payload_part2(struct drm_dp_mst_topology_mgr *mgr,
--                            struct drm_atomic_state *state,
-                             struct drm_dp_mst_atomic_payload *payload)
- {
-        int ret =3D 0;
+P.S.:
 
-        /* Skip failed payloads */
-        if (payload->payload_allocation_status !=3D DRM_DP_MST_PAYLOAD_ALLO=
-CATION_DFP) {
--               drm_dbg_kms(state->dev, "Part 1 of payload creation for %s =
-failed, skipping part 2\n",
-+               drm_dbg_kms(mgr->dev, "Part 1 of payload creation for %s fa=
-iled, skipping part 2\n",
-                            payload->port->connector->name);
-                return -EIO;
-        }
-diff --git a/drivers/gpu/drm/i915/display/intel_dp_mst.c b/drivers/gpu/drm/=
-i915/display/intel_dp_mst.c
-index 53aec023ce92..2fba66aec038 100644
---- a/drivers/gpu/drm/i915/display/intel_dp_mst.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp_mst.c
-@@ -1160,7 +1160,7 @@ static void intel_mst_enable_dp(struct intel_atomic_s=
-tate *state,
-        if (first_mst_stream)
-                intel_ddi_wait_for_fec_status(encoder, pipe_config, true);
-
--       drm_dp_add_payload_part2(&intel_dp->mst_mgr, &state->base,
-+       drm_dp_add_payload_part2(&intel_dp->mst_mgr,
-                                 drm_atomic_get_mst_payload_state(mst_state=
-, connector->port));
-
-        if (DISPLAY_VER(dev_priv) >=3D 12)
-diff --git a/drivers/gpu/drm/nouveau/dispnv50/disp.c b/drivers/gpu/drm/nouv=
-eau/dispnv50/disp.c
-index 0c3d88ad0b0e..88728a0b2c25 100644
---- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
-+++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
-@@ -915,7 +915,7 @@ nv50_msto_cleanup(struct drm_atomic_state *state,
-                msto->disabled =3D false;
-                drm_dp_remove_payload_part2(mgr, new_mst_state, old_payload=
-, new_payload);
-        } else if (msto->enabled) {
--               drm_dp_add_payload_part2(mgr, state, new_payload);
-+               drm_dp_add_payload_part2(mgr, new_payload);
-                msto->enabled =3D false;
-        }
- }
-diff --git a/include/drm/display/drm_dp_mst_helper.h b/include/drm/display/=
-drm_dp_mst_helper.h
-index 9b19d8bd520a..6c9145abc7e2 100644
---- a/include/drm/display/drm_dp_mst_helper.h
-+++ b/include/drm/display/drm_dp_mst_helper.h
-@@ -851,7 +851,6 @@ int drm_dp_add_payload_part1(struct drm_dp_mst_topology=
-_mgr *mgr,
-                             struct drm_dp_mst_topology_state *mst_state,
-                             struct drm_dp_mst_atomic_payload *payload);
- int drm_dp_add_payload_part2(struct drm_dp_mst_topology_mgr *mgr,
--                            struct drm_atomic_state *state,
-                             struct drm_dp_mst_atomic_payload *payload);
- void drm_dp_remove_payload_part1(struct drm_dp_mst_topology_mgr *mgr,
-                                 struct drm_dp_mst_topology_state *mst_stat=
-e,
---
-2.37.3
-
+#regzbot ^introduced 70f49f7b9aa3df
+#regzbot duplicate: https://bugzilla.kernel.org/show_bug.cgi?id=3D218720
+#regzbot title: btrfs: sanity tests fails and causes Oops
+#regzbot ignore-activity
 
