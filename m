@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-39811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE6278A54DD
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A55338A552F
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AE0028273A
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60ADE284197
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727F0811EB;
-	Mon, 15 Apr 2024 14:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE2177F08;
+	Mon, 15 Apr 2024 14:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJbDcWV+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijInsYgw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307207A705;
-	Mon, 15 Apr 2024 14:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB587602A;
+	Mon, 15 Apr 2024 14:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191885; cv=none; b=LQkvrgD92PlXhTFD+87tEh4nBr1dBhxXT8R3S7NxNljjdgWzoc4vjN1Le3USs47Feju9iWrusfVtuHyp2azdVneJb3RTCTTCiccmQSkZlVQcIFJjAqNfi77NRl6vZUSi3ZcpejZyTHzDlTxRvwkevb1jNPcxr5w/1+SkGQVLvvU=
+	t=1713192116; cv=none; b=NY3R19BaUNxvHy2LuOftKWqrJyT721YscqRaaJR5Y3ngVC2UDxOOPqDMtcb+moL8O7TwQn3Edjt2lEQaXCCK4csaAt+XMgFEk8HPhuCrZL4e34GlZk9JP4DzMSLP4ymHol4KVKpZyI6uDFLW1/J35qIwXaf7ZwRGeLYxX49FREI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191885; c=relaxed/simple;
-	bh=i2eErfuDS5RyHLjf8RFIp1vxGMFcFcOBlbfwwS5S7zI=;
+	s=arc-20240116; t=1713192116; c=relaxed/simple;
+	bh=kVfgXzsp5C7HQLFY7NE775fTQbXxNe0OPaMskbKQqk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X2FHNOajxlz1G+xZaUKoNHQDSWLdhTrF3ASPOIbz1sChepEjqzZaQheDJe52l6sDT6NzrTAqHMM8kp2+01Y9VTyAkrq5WcwGlkzYaZQbuB88uhba8HFvK6rC9zoK62uTkqRaZHlfXaZDxiRX5JsPoHNHSA4GGyDWNRzOr0DQs7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJbDcWV+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC88C113CC;
-	Mon, 15 Apr 2024 14:38:04 +0000 (UTC)
+	 MIME-Version; b=Pt3hA+agcM2dHuhq5U8sc1aDeYpy8QGjb/F9/h+fG0Yq7T0Gqp9m2CUaXxWUcbyzPzegRD5X2RT2sCWTt4uM2xAMp41f6xVe8mPpvTpskawuxc6wQ8h/kRs+GS2VwQswmY4MZ3D9YckwNr5HNUW54JLVzjzKuNtn56IKlP8H/wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijInsYgw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BBEC113CC;
+	Mon, 15 Apr 2024 14:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191885;
-	bh=i2eErfuDS5RyHLjf8RFIp1vxGMFcFcOBlbfwwS5S7zI=;
+	s=korg; t=1713192116;
+	bh=kVfgXzsp5C7HQLFY7NE775fTQbXxNe0OPaMskbKQqk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJbDcWV+mdACEq3k9ySKAANdELt2GIC/9uv1MRkzUyviGUeB34r8QADVeNJ+N3+OK
-	 ZpGciUV6hktewi34eaDv9aEatR60ZjBgmPytTHHpSpwkUs5udJ2bMhBMhS2dwVwNAB
-	 4FOQB+ZnrETg8Xn4NK1+xcGRNgmiwYp5YIVpXqOE=
+	b=ijInsYgwCaOp45mD/qrxJUej/yWJ7xjmrx+9jQxkgZm48MCl/1kYdi6idrFQgkYHw
+	 Pq+1xBmIOZZalOrXxsWeCoGf27d46qDaZUZvViihhc/CS5pPTEXnd7qWXCzW6OQGVN
+	 CuQSQxd4WSpdwfje4E1/mra5qRTA0Bh/G3PgOmuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>
-Subject: [PATCH 6.6 117/122] drm/amdgpu: Reset dGPU if suspend got aborted
-Date: Mon, 15 Apr 2024 16:21:22 +0200
-Message-ID: <20240415141956.880442939@linuxfoundation.org>
+	Namhyung Kim <namhyung@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>
+Subject: [PATCH 6.1 52/69] perf/x86: Fix out of range data
+Date: Mon, 15 Apr 2024 16:21:23 +0200
+Message-ID: <20240415141947.737159360@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit 8b2be55f4d6c1099d7f629b0ed7535a5be788c83 upstream.
+commit dec8ced871e17eea46f097542dd074d022be4bd1 upstream.
 
-For SOC21 ASICs, there is an issue in re-enabling PM features if a
-suspend got aborted. In such cases, reset the device during resume
-phase. This is a workaround till a proper solution is finalized.
+On x86 each struct cpu_hw_events maintains a table for counter assignment but
+it missed to update one for the deleted event in x86_pmu_del().  This
+can make perf_clear_dirty_counters() reset used counter if it's called
+before event scheduling or enabling.  Then it would return out of range
+data which doesn't make sense.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The following code can reproduce the problem.
+
+  $ cat repro.c
+  #include <pthread.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <unistd.h>
+  #include <linux/perf_event.h>
+  #include <sys/ioctl.h>
+  #include <sys/mman.h>
+  #include <sys/syscall.h>
+
+  struct perf_event_attr attr = {
+  	.type = PERF_TYPE_HARDWARE,
+  	.config = PERF_COUNT_HW_CPU_CYCLES,
+  	.disabled = 1,
+  };
+
+  void *worker(void *arg)
+  {
+  	int cpu = (long)arg;
+  	int fd1 = syscall(SYS_perf_event_open, &attr, -1, cpu, -1, 0);
+  	int fd2 = syscall(SYS_perf_event_open, &attr, -1, cpu, -1, 0);
+  	void *p;
+
+  	do {
+  		ioctl(fd1, PERF_EVENT_IOC_ENABLE, 0);
+  		p = mmap(NULL, 4096, PROT_READ, MAP_SHARED, fd1, 0);
+  		ioctl(fd2, PERF_EVENT_IOC_ENABLE, 0);
+
+  		ioctl(fd2, PERF_EVENT_IOC_DISABLE, 0);
+  		munmap(p, 4096);
+  		ioctl(fd1, PERF_EVENT_IOC_DISABLE, 0);
+  	} while (1);
+
+  	return NULL;
+  }
+
+  int main(void)
+  {
+  	int i;
+  	int n = sysconf(_SC_NPROCESSORS_ONLN);
+  	pthread_t *th = calloc(n, sizeof(*th));
+
+  	for (i = 0; i < n; i++)
+  		pthread_create(&th[i], NULL, worker, (void *)(long)i);
+  	for (i = 0; i < n; i++)
+  		pthread_join(th[i], NULL);
+
+  	free(th);
+  	return 0;
+  }
+
+And you can see the out of range data using perf stat like this.
+Probably it'd be easier to see on a large machine.
+
+  $ gcc -o repro repro.c -pthread
+  $ ./repro &
+  $ sudo perf stat -A -I 1000 2>&1 | awk '{ if (length($3) > 15) print }'
+       1.001028462 CPU6   196,719,295,683,763      cycles                           # 194290.996 GHz                       (71.54%)
+       1.001028462 CPU3   396,077,485,787,730      branch-misses                    # 15804359784.80% of all branches      (71.07%)
+       1.001028462 CPU17  197,608,350,727,877      branch-misses                    # 14594186554.56% of all branches      (71.22%)
+       2.020064073 CPU4   198,372,472,612,140      cycles                           # 194681.113 GHz                       (70.95%)
+       2.020064073 CPU6   199,419,277,896,696      cycles                           # 195720.007 GHz                       (70.57%)
+       2.020064073 CPU20  198,147,174,025,639      cycles                           # 194474.654 GHz                       (71.03%)
+       2.020064073 CPU20  198,421,240,580,145      stalled-cycles-frontend          #  100.14% frontend cycles idle        (70.93%)
+       3.037443155 CPU4   197,382,689,923,416      cycles                           # 194043.065 GHz                       (71.30%)
+       3.037443155 CPU20  196,324,797,879,414      cycles                           # 193003.773 GHz                       (71.69%)
+       3.037443155 CPU5   197,679,956,608,205      stalled-cycles-backend           # 1315606428.66% backend cycles idle   (71.19%)
+       3.037443155 CPU5   198,571,860,474,851      instructions                     # 13215422.58  insn per cycle
+
+It should move the contents in the cpuc->assign as well.
+
+Fixes: 5471eea5d3bf ("perf/x86: Reset the dirty counter to prevent the leak for an RDPMC task")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240306061003.1894224-1-namhyung@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/soc21.c |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ arch/x86/events/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/soc21.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc21.c
-@@ -804,10 +804,35 @@ static int soc21_common_suspend(void *ha
- 	return soc21_common_hw_fini(adev);
- }
- 
-+static bool soc21_need_reset_on_resume(struct amdgpu_device *adev)
-+{
-+	u32 sol_reg1, sol_reg2;
-+
-+	/* Will reset for the following suspend abort cases.
-+	 * 1) Only reset dGPU side.
-+	 * 2) S3 suspend got aborted and TOS is active.
-+	 */
-+	if (!(adev->flags & AMD_IS_APU) && adev->in_s3 &&
-+	    !adev->suspend_complete) {
-+		sol_reg1 = RREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_81);
-+		msleep(100);
-+		sol_reg2 = RREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_81);
-+
-+		return (sol_reg1 != sol_reg2);
-+	}
-+
-+	return false;
-+}
-+
- static int soc21_common_resume(void *handle)
- {
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
- 
-+	if (soc21_need_reset_on_resume(adev)) {
-+		dev_info(adev->dev, "S3 suspend aborted, resetting...");
-+		soc21_asic_reset(adev);
-+	}
-+
- 	return soc21_common_hw_init(adev);
- }
- 
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -1644,6 +1644,7 @@ static void x86_pmu_del(struct perf_even
+ 	while (++i < cpuc->n_events) {
+ 		cpuc->event_list[i-1] = cpuc->event_list[i];
+ 		cpuc->event_constraint[i-1] = cpuc->event_constraint[i];
++		cpuc->assign[i-1] = cpuc->assign[i];
+ 	}
+ 	cpuc->event_constraint[i-1] = NULL;
+ 	--cpuc->n_events;
 
 
 
