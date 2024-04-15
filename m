@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-39573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F7C68A5353
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:26:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 086448A5311
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:24:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1F34B22885
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:26:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39FC11C21153
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0957580D;
-	Mon, 15 Apr 2024 14:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E9E7604D;
+	Mon, 15 Apr 2024 14:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nU9Zczi7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S08Yv2SZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DB174C0C;
-	Mon, 15 Apr 2024 14:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8255D7603F;
+	Mon, 15 Apr 2024 14:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191172; cv=none; b=nAfuUxyMwwOzP5Nyxlj1+lF1z+O6d1sCvNWqkXEMCaXAGk2SWDWOrehoeuYidKD1cK9Ss7nZZaVh9NyLIPVmuJxhihLdKrepLpXtCu3H0VIIlRafWoEf7aBC0w3m4BhcNWUmBnJyNMpWdVWFiX6dhVNsWrN1kIrHi4uvq2LYHjo=
+	t=1713191052; cv=none; b=H/JGDHHfXhsL1dG8ABvge7kyVKgG74tUUR5Jq0NypLVTzBs3u83YrgHGgPM1W5Fyqguz8u/I582xw/uCYbq4AG28Xcrg5ln5sq9Rpf4X0rHbYHLKTzUR9ap99XSi8pdNYXwo4kMvyzNNKMT9erNeYHPnq2vws3XM+LP5hFno21I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191172; c=relaxed/simple;
-	bh=ljaw1E3qFIqt2x4A+U9bPaVD6pkQHPufn25O4pnueYk=;
+	s=arc-20240116; t=1713191052; c=relaxed/simple;
+	bh=948NeArI2lV3y23NS54Dr7OurpN9ANVbH/cVuxHROmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ksw2CXYwxLm0W+7p7M0jyI1X+oCw2uVFmMx48DXctWV/504UH70AgFt1HrcI7TW0XWDbfOWFc/lJhJKwCNtf2/9FmuNL152s000RGDCY5PEZSnHn1ZQnUXWB1SNsKPEGw1BUn7+RIFYXdYDX1lLajimSQDuV32DlfEkR8OVQ6S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nU9Zczi7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8EBC113CC;
-	Mon, 15 Apr 2024 14:26:11 +0000 (UTC)
+	 MIME-Version; b=M+0biE2gJ96jiyD5nq05rN8gF0U5jNWLJLzOd+FBhtw2+VlH5XCgp/sWBbGxsvwX5cF2TI4r35CfiVKUiMBRU+OJT07gYV8Y18wUeq2CHpPm/q5iYixccQY1j25xvtOKKgB4zO7Krtze5M3Tq2lktxksvejp0ZYlDQS1KiWgMsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S08Yv2SZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05827C113CC;
+	Mon, 15 Apr 2024 14:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191172;
-	bh=ljaw1E3qFIqt2x4A+U9bPaVD6pkQHPufn25O4pnueYk=;
+	s=korg; t=1713191052;
+	bh=948NeArI2lV3y23NS54Dr7OurpN9ANVbH/cVuxHROmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nU9Zczi7FTOEfjZlClZUiYn0FcpoGgKphKbYwoIAQv8iYgpJJ/aX9MLQ0gqnWjgbZ
-	 WMoP0rvFRZHHVwmmLWvXfRuw8gU808XaXuD8MeQJEABoYXxUibHXLJRhRfixZ5m86g
-	 KL4r7zIbshUq24B9mjzSxOwkoBz3yYA6ILGMYKpU=
+	b=S08Yv2SZBcm8V2W3UZxk4uOgZnn4nMeTct3OJLmpJwfW29LZLysL7CS+rJwSnHEYU
+	 4U4XgW3zvT2lFK31xCUw2+bllMwfPK8f3N43zRizPWrSk4I6jDPYNiFUrY4wM2D5Jk
+	 n8KqJRnstyT9McvMERMbXi0qWWaH4eV+2P1VHFio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	qemu-devel@nongnu.org,
-	Breno Leitao <leitao@debian.org>,
-	Heng Qi <hengqi@linux.alibaba.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.8 008/172] virtio_net: Do not send RSS key if it is not supported
-Date: Mon, 15 Apr 2024 16:18:27 +0200
-Message-ID: <20240415142000.227047251@linuxfoundation.org>
+	Yihuang Yu <yihyu@redhat.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Gavin Shan <gshan@redhat.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Shaoqin Huang <shahuang@redhat.com>,
+	stable@kernel.org
+Subject: [PATCH 6.8 009/172] arm64: tlb: Fix TLBI RANGE operand
+Date: Mon, 15 Apr 2024 16:18:28 +0200
+Message-ID: <20240415142000.265909144@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
 References: <20240415141959.976094777@linuxfoundation.org>
@@ -68,132 +71,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Gavin Shan <gshan@redhat.com>
 
-commit 059a49aa2e25c58f90b50151f109dd3c4cdb3a47 upstream.
+commit e3ba51ab24fddef79fc212f9840de54db8fd1685 upstream.
 
-There is a bug when setting the RSS options in virtio_net that can break
-the whole machine, getting the kernel into an infinite loop.
+KVM/arm64 relies on TLBI RANGE feature to flush TLBs when the dirty
+pages are collected by VMM and the page table entries become write
+protected during live migration. Unfortunately, the operand passed
+to the TLBI RANGE instruction isn't correctly sorted out due to the
+commit 117940aa6e5f ("KVM: arm64: Define kvm_tlb_flush_vmid_range()").
+It leads to crash on the destination VM after live migration because
+TLBs aren't flushed completely and some of the dirty pages are missed.
 
-Running the following command in any QEMU virtual machine with virtionet
-will reproduce this problem:
+For example, I have a VM where 8GB memory is assigned, starting from
+0x40000000 (1GB). Note that the host has 4KB as the base page size.
+In the middile of migration, kvm_tlb_flush_vmid_range() is executed
+to flush TLBs. It passes MAX_TLBI_RANGE_PAGES as the argument to
+__kvm_tlb_flush_vmid_range() and __flush_s2_tlb_range_op(). SCALE#3
+and NUM#31, corresponding to MAX_TLBI_RANGE_PAGES, isn't supported
+by __TLBI_RANGE_NUM(). In this specific case, -1 has been returned
+from __TLBI_RANGE_NUM() for SCALE#3/2/1/0 and rejected by the loop
+in the __flush_tlb_range_op() until the variable @scale underflows
+and becomes -9, 0xffff708000040000 is set as the operand. The operand
+is wrong since it's sorted out by __TLBI_VADDR_RANGE() according to
+invalid @scale and @num.
 
-    # ethtool -X eth0  hfunc toeplitz
+Fix it by extending __TLBI_RANGE_NUM() to support the combination of
+SCALE#3 and NUM#31. With the changes, [-1 31] instead of [-1 30] can
+be returned from the macro, meaning the TLBs for 0x200000 pages in the
+above example can be flushed in one shoot with SCALE#3 and NUM#31. The
+macro TLBI_RANGE_MASK is dropped since no one uses it any more. The
+comments are also adjusted accordingly.
 
-This is how the problem happens:
-
-1) ethtool_set_rxfh() calls virtnet_set_rxfh()
-
-2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
-
-3) virtnet_commit_rss_command() populates 4 entries for the rss
-scatter-gather
-
-4) Since the command above does not have a key, then the last
-scatter-gatter entry will be zeroed, since rss_key_size == 0.
-sg_buf_size = vi->rss_key_size;
-
-5) This buffer is passed to qemu, but qemu is not happy with a buffer
-with zero length, and do the following in virtqueue_map_desc() (QEMU
-function):
-
-  if (!sz) {
-      virtio_error(vdev, "virtio: zero sized buffers are not allowed");
-
-6) virtio_error() (also QEMU function) set the device as broken
-
-    vdev->broken = true;
-
-7) Qemu bails out, and do not repond this crazy kernel.
-
-8) The kernel is waiting for the response to come back (function
-virtnet_send_command())
-
-9) The kernel is waiting doing the following :
-
-      while (!virtqueue_get_buf(vi->cvq, &tmp) &&
-	     !virtqueue_is_broken(vi->cvq))
-	      cpu_relax();
-
-10) None of the following functions above is true, thus, the kernel
-loops here forever. Keeping in mind that virtqueue_is_broken() does
-not look at the qemu `vdev->broken`, so, it never realizes that the
-vitio is broken at QEMU side.
-
-Fix it by not sending RSS commands if the feature is not available in
-the device.
-
-Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
-Cc: stable@vger.kernel.org
-Cc: qemu-devel@nongnu.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 117940aa6e5f ("KVM: arm64: Define kvm_tlb_flush_vmid_range()")
+Cc: stable@kernel.org # v6.6+
+Reported-by: Yihuang Yu <yihyu@redhat.com>
+Suggested-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
+Link: https://lore.kernel.org/r/20240405035852.1532010-2-gshan@redhat.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c |   26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+ arch/arm64/include/asm/tlbflush.h |   22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3768,6 +3768,7 @@ static int virtnet_set_rxfh(struct net_d
- 			    struct netlink_ext_ack *extack)
- {
- 	struct virtnet_info *vi = netdev_priv(dev);
-+	bool update = false;
- 	int i;
+--- a/arch/arm64/include/asm/tlbflush.h
++++ b/arch/arm64/include/asm/tlbflush.h
+@@ -161,12 +161,18 @@ static inline unsigned long get_trans_gr
+ #define MAX_TLBI_RANGE_PAGES		__TLBI_RANGE_PAGES(31, 3)
  
- 	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
-@@ -3775,13 +3776,28 @@ static int virtnet_set_rxfh(struct net_d
- 		return -EOPNOTSUPP;
+ /*
+- * Generate 'num' values from -1 to 30 with -1 rejected by the
+- * __flush_tlb_range() loop below.
+- */
+-#define TLBI_RANGE_MASK			GENMASK_ULL(4, 0)
+-#define __TLBI_RANGE_NUM(pages, scale)	\
+-	((((pages) >> (5 * (scale) + 1)) & TLBI_RANGE_MASK) - 1)
++ * Generate 'num' values from -1 to 31 with -1 rejected by the
++ * __flush_tlb_range() loop below. Its return value is only
++ * significant for a maximum of MAX_TLBI_RANGE_PAGES pages. If
++ * 'pages' is more than that, you must iterate over the overall
++ * range.
++ */
++#define __TLBI_RANGE_NUM(pages, scale)					\
++	({								\
++		int __pages = min((pages),				\
++				  __TLBI_RANGE_PAGES(31, (scale)));	\
++		(__pages >> (5 * (scale) + 1)) - 1;			\
++	})
  
- 	if (rxfh->indir) {
-+		if (!vi->has_rss)
-+			return -EOPNOTSUPP;
-+
- 		for (i = 0; i < vi->rss_indir_table_size; ++i)
- 			vi->ctrl->rss.indirection_table[i] = rxfh->indir[i];
-+		update = true;
- 	}
--	if (rxfh->key)
-+
-+	if (rxfh->key) {
-+		/* If either _F_HASH_REPORT or _F_RSS are negotiated, the
-+		 * device provides hash calculation capabilities, that is,
-+		 * hash_key is configured.
-+		 */
-+		if (!vi->has_rss && !vi->has_rss_hash_report)
-+			return -EOPNOTSUPP;
-+
- 		memcpy(vi->ctrl->rss.key, rxfh->key, vi->rss_key_size);
-+		update = true;
-+	}
- 
--	virtnet_commit_rss_command(vi);
-+	if (update)
-+		virtnet_commit_rss_command(vi);
- 
- 	return 0;
- }
-@@ -4686,13 +4702,15 @@ static int virtnet_probe(struct virtio_d
- 	if (virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT))
- 		vi->has_rss_hash_report = true;
- 
--	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS))
-+	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS)) {
- 		vi->has_rss = true;
- 
--	if (vi->has_rss || vi->has_rss_hash_report) {
- 		vi->rss_indir_table_size =
- 			virtio_cread16(vdev, offsetof(struct virtio_net_config,
- 				rss_max_indirection_table_length));
-+	}
-+
-+	if (vi->has_rss || vi->has_rss_hash_report) {
- 		vi->rss_key_size =
- 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
- 
+ /*
+  *	TLB Invalidation
+@@ -379,10 +385,6 @@ static inline void arch_tlbbatch_flush(s
+  * 3. If there is 1 page remaining, flush it through non-range operations. Range
+  *    operations can only span an even number of pages. We save this for last to
+  *    ensure 64KB start alignment is maintained for the LPA2 case.
+- *
+- * Note that certain ranges can be represented by either num = 31 and
+- * scale or num = 0 and scale + 1. The loop below favours the latter
+- * since num is limited to 30 by the __TLBI_RANGE_NUM() macro.
+  */
+ #define __flush_tlb_range_op(op, start, pages, stride,			\
+ 				asid, tlb_level, tlbi_user, lpa2)	\
 
 
 
