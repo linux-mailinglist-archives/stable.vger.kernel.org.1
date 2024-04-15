@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-39726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 587918A5464
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:36:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EF668A5409
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:33:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFFABB23E29
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5156B228A6
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A688974E25;
-	Mon, 15 Apr 2024 14:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C5584FC9;
+	Mon, 15 Apr 2024 14:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8l6CgMT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TeAsXFXF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6574A8BF8;
-	Mon, 15 Apr 2024 14:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2E385280;
+	Mon, 15 Apr 2024 14:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191628; cv=none; b=nqkVhVyVDN20CeXeR4sSOj0p39Rf7z2FkMMI6oZqaQaT9bre/C77GvsEGLHl2JxtbQf0sNWz97JLz9nwUoBHH+yaX2VFERY5IbiKbZzYUlNEKovVq3MVoLYRybVT/5StY58roXILskmYMzPF5KU9wvwy8SvMcMxHr0KwdCeYxGY=
+	t=1713191423; cv=none; b=UtF/BcQyhL6tjts8fIwDvYA2SxLjGNn8411+RZK49a4zji4IOnKlQ/Z7GPFMvNINSprhcgR7T21xXnhDVV4olXh6Ji5rIyCy7oQdYUZfew/xx3hSv2+2rsqWzHoclCGQUlgRiWjGWP9lwwzcPz6aB3hr/b0Slin8TOSKJmN9jls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191628; c=relaxed/simple;
-	bh=iRMlFMXvmlzcmAbME2y2UwtpY2SyG1cX1p5KhqS++RY=;
+	s=arc-20240116; t=1713191423; c=relaxed/simple;
+	bh=F3lL/v7BzaUIlTDkc3koyAeAmUv1hQM2dVxmZrAUJDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gkAUCG9rOlgHe4ppchfZTuGOGV4o73nKJIC6AqLRLC0LZzjPs1xzpWtC9PwjbnBv/97BaJaCW877qBduy/etdiS0c5lyvqq9WjtX/t++oUq6i2VberUbFCsCmilCCFLttDz3PVasyjNE1fcQghQbK5DVifdXCqwt7Nx4e5pal9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8l6CgMT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E4FC113CC;
-	Mon, 15 Apr 2024 14:33:47 +0000 (UTC)
+	 MIME-Version; b=Ac5nB6Z5CFLguH9j1Nqu5axpSorEcsCtob0/xZT1gB1EYc6HQeWsrT2QUX5uJt0PMub4ZhC4D8JWjWTR5UZwvlScu1y5JP3ZEh9kgS7QQfWV8wXxYc0zCGgj0FqxNqdurbdCkG4mKD1HNSN5qjqpYxp2xAKjLBElawgvCzVC9cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TeAsXFXF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9CAC113CC;
+	Mon, 15 Apr 2024 14:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191628;
-	bh=iRMlFMXvmlzcmAbME2y2UwtpY2SyG1cX1p5KhqS++RY=;
+	s=korg; t=1713191423;
+	bh=F3lL/v7BzaUIlTDkc3koyAeAmUv1hQM2dVxmZrAUJDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D8l6CgMTjLtUwYLMvv4o8sDpANtk23VwkEIwMaQcXNfG5yW9HvJQhlumrXYCvdUwr
-	 TM6tl1zzYxwhXelTc9NqkfH3gl7WLSgXtXwuOlNwUo7VyAsk32ae+O81ycsY3sqCbg
-	 rGJ5Nbafy4f0dkkTfGSfwQcIPt1gjJMlRisxgu8Q=
+	b=TeAsXFXFM/UEbd6iiFbXIu9rSmmu9DDhocn9InV/KajdLKlVWkl/3i+EuGFL5v+eC
+	 lCiTCjh3XM7kc5wl5T+X5gPM62gJkqKamfcr6Qcs3v7kPIE/8hpNwVob4bXldIslNF
+	 TFpZ2z5/qusmuq1jztfHVK4yDKQ9bumDnYC9AnkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Tesarik <petr@tesarici.cz>,
-	Simon Horman <horms@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shay Agroskin <shayagr@amazon.com>,
+	David Arinzon <darinzon@amazon.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/122] u64_stats: fix u64_stats_init() for lockdep when used repeatedly in one file
+Subject: [PATCH 6.8 098/172] net: ena: Fix incorrect descriptor free behavior
 Date: Mon, 15 Apr 2024 16:19:57 +0200
-Message-ID: <20240415141954.333608150@linuxfoundation.org>
+Message-ID: <20240415142003.371268179@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Tesarik <petr@tesarici.cz>
+From: David Arinzon <darinzon@amazon.com>
 
-[ Upstream commit 38a15d0a50e0a43778561a5861403851f0b0194c ]
+[ Upstream commit bf02d9fe00632d22fa91d34749c7aacf397b6cde ]
 
-Fix bogus lockdep warnings if multiple u64_stats_sync variables are
-initialized in the same file.
+ENA has two types of TX queues:
+- queues which only process TX packets arriving from the network stack
+- queues which only process TX packets forwarded to it by XDP_REDIRECT
+  or XDP_TX instructions
 
-With CONFIG_LOCKDEP, seqcount_init() is a macro which declares:
+The ena_free_tx_bufs() cycles through all descriptors in a TX queue
+and unmaps + frees every descriptor that hasn't been acknowledged yet
+by the device (uncompleted TX transactions).
+The function assumes that the processed TX queue is necessarily from
+the first category listed above and ends up using napi_consume_skb()
+for descriptors belonging to an XDP specific queue.
 
-	static struct lock_class_key __key;
+This patch solves a bug in which, in case of a VF reset, the
+descriptors aren't freed correctly, leading to crashes.
 
-Since u64_stats_init() is a function (albeit an inline one), all calls
-within the same file end up using the same instance, effectively treating
-them all as a single lock-class.
-
-Fixes: 9464ca650008 ("net: make u64_stats_init() a function")
-Closes: https://lore.kernel.org/netdev/ea1567d9-ce66-45e6-8168-ac40a47d1821@roeck-us.net/
-Signed-off-by: Petr Tesarik <petr@tesarici.cz>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240404075740.30682-1-petr@tesarici.cz
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 548c4940b9f1 ("net: ena: Implement XDP_TX action")
+Signed-off-by: Shay Agroskin <shayagr@amazon.com>
+Signed-off-by: David Arinzon <darinzon@amazon.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/u64_stats_sync.h | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/amazon/ena/ena_netdev.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/u64_stats_sync.h b/include/linux/u64_stats_sync.h
-index ffe48e69b3f3a..457879938fc19 100644
---- a/include/linux/u64_stats_sync.h
-+++ b/include/linux/u64_stats_sync.h
-@@ -135,10 +135,11 @@ static inline void u64_stats_inc(u64_stats_t *p)
- 	p->v++;
+diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+index 1835581cd7230..95ed32542edfe 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
++++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+@@ -696,8 +696,11 @@ void ena_unmap_tx_buff(struct ena_ring *tx_ring,
+ static void ena_free_tx_bufs(struct ena_ring *tx_ring)
+ {
+ 	bool print_once = true;
++	bool is_xdp_ring;
+ 	u32 i;
+ 
++	is_xdp_ring = ENA_IS_XDP_INDEX(tx_ring->adapter, tx_ring->qid);
++
+ 	for (i = 0; i < tx_ring->ring_size; i++) {
+ 		struct ena_tx_buffer *tx_info = &tx_ring->tx_buffer_info[i];
+ 
+@@ -717,10 +720,15 @@ static void ena_free_tx_bufs(struct ena_ring *tx_ring)
+ 
+ 		ena_unmap_tx_buff(tx_ring, tx_info);
+ 
+-		dev_kfree_skb_any(tx_info->skb);
++		if (is_xdp_ring)
++			xdp_return_frame(tx_info->xdpf);
++		else
++			dev_kfree_skb_any(tx_info->skb);
+ 	}
+-	netdev_tx_reset_queue(netdev_get_tx_queue(tx_ring->netdev,
+-						  tx_ring->qid));
++
++	if (!is_xdp_ring)
++		netdev_tx_reset_queue(netdev_get_tx_queue(tx_ring->netdev,
++							  tx_ring->qid));
  }
  
--static inline void u64_stats_init(struct u64_stats_sync *syncp)
--{
--	seqcount_init(&syncp->seq);
--}
-+#define u64_stats_init(syncp)				\
-+	do {						\
-+		struct u64_stats_sync *__s = (syncp);	\
-+		seqcount_init(&__s->seq);		\
-+	} while (0)
- 
- static inline void __u64_stats_update_begin(struct u64_stats_sync *syncp)
- {
+ static void ena_free_all_tx_bufs(struct ena_adapter *adapter)
 -- 
 2.43.0
 
