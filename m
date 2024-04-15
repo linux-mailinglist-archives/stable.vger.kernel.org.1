@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-39862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24F78A5515
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE3D8A555D
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E36201C21ABC
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FCAA1F22ABD
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9308002A;
-	Mon, 15 Apr 2024 14:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C86757EA;
+	Mon, 15 Apr 2024 14:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQBvNDLb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZmx54Ur"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5387F7FA;
-	Mon, 15 Apr 2024 14:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB43374C4;
+	Mon, 15 Apr 2024 14:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192040; cv=none; b=jmgyPkayhjyL1yWYjyA/7XZxD80erDnCuUlGJljVnxOLjMfJIeFPSa3FcNxUruvtpWx15KiDU2tmc0XH7zGL9nkpp2hDrSwfdnA1gzai3BPWLBwOIA0qgPCjK12G6XfVTYcP34XBwiR2XsYoIRPuIDZr/e8bOTtSMTOH2uVPLMc=
+	t=1713192220; cv=none; b=fygoICmnCVtN1UwsKB9NW8EnU2TCR+vP4Pxi3aWSwvGYt420IXW5M6z7tje7kaFWUYfKvjbAyghqOrBUKKGBfg4I1gHWL2btPEu0D0Ksy4POLGW0j5xDiLqO99fsleQr4iQyxD7QkW2h3uSM/dFwplaA76W5HlGZiY4g7qIpcK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192040; c=relaxed/simple;
-	bh=ZVqycs2bEoa7717KPIuTRc6oaAyQ/fEsav2eFV09r8w=;
+	s=arc-20240116; t=1713192220; c=relaxed/simple;
+	bh=YsZG3eqERYf9xIi6wLGYU59LbPRzCq/EpAsvhPx+eJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOqoHh2IshlenrdVnWOgoFnK73S+ZBC2UjkiNtZ+CEiRAcjahD262+fPKC4KO//E71393PZ2RadAdX29GsmG7O8Pyn7dKyhcGRJKutEezPCufaaVOy9KdDBdshM29M8fpaqLLDBNjBdz6iGKtjmDoxJ9iePPHmbzFFCMjBom1GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQBvNDLb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86AA4C113CC;
-	Mon, 15 Apr 2024 14:40:39 +0000 (UTC)
+	 MIME-Version; b=irWn3/J122IaQXj9Teq1Puv7Mpje9BUQ3REINyjBdDk7DVl+fX7WW53qgfcJ08OzIaPoJvIKCKd3y6Hp0QXW57bvMMCvXPp27POc4TfuZQiqwdz7oEm4R7tOtYyxV1iZMdWD/QX0tHdsmK2qRCUNcfMUyQlTqjioZCIAxM2URLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZmx54Ur; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FB6C113CC;
+	Mon, 15 Apr 2024 14:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192039;
-	bh=ZVqycs2bEoa7717KPIuTRc6oaAyQ/fEsav2eFV09r8w=;
+	s=korg; t=1713192220;
+	bh=YsZG3eqERYf9xIi6wLGYU59LbPRzCq/EpAsvhPx+eJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WQBvNDLbV6jDTE7/TxXR8sWdBUfA/d3FRr00WIadB2GUcm3uHLZ4UqjXQy521r2zL
-	 cnB3tMA9KolUYpAMUv4PLBq3dj2N/vF9QP6i8n241DvXcuRt5BUWCcOfdux9JJJsWE
-	 zIfZDrjyVVdzVUJfMjuj0urFLv81lTCs5GvVrCFQ=
+	b=WZmx54UrztoCGz1irBAL/zdSEWQn5wkJmtfnSa34nwnEQmUTtAy8/cxIEkD9a0mMm
+	 gL9S9D8Dnpm6oFPbG+qzgDGmOkiXaU8Bjxm8KSswujVVe2734AYlXQtdtvYnx0IKJo
+	 lNTQevAuZiCIj6WIyzrgNQtr7IkFl5H2UKiAAHMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.1 45/69] kprobes: Fix possible use-after-free issue on kprobe registration
+	Ilya Maximets <i.maximets@ovn.org>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 09/45] net: openvswitch: fix unwanted error log on timeout policy probing
 Date: Mon, 15 Apr 2024 16:21:16 +0200
-Message-ID: <20240415141947.525188106@linuxfoundation.org>
+Message-ID: <20240415141942.521769639@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
+References: <20240415141942.235939111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-commit 325f3fb551f8cd672dbbfc4cf58b14f9ee3fc9e8 upstream.
+[ Upstream commit 4539f91f2a801c0c028c252bffae56030cfb2cae ]
 
-When unloading a module, its state is changing MODULE_STATE_LIVE ->
- MODULE_STATE_GOING -> MODULE_STATE_UNFORMED. Each change will take
-a time. `is_module_text_address()` and `__module_text_address()`
-works with MODULE_STATE_LIVE and MODULE_STATE_GOING.
-If we use `is_module_text_address()` and `__module_text_address()`
-separately, there is a chance that the first one is succeeded but the
-next one is failed because module->state becomes MODULE_STATE_UNFORMED
-between those operations.
+On startup, ovs-vswitchd probes different datapath features including
+support for timeout policies.  While probing, it tries to execute
+certain operations with OVS_PACKET_ATTR_PROBE or OVS_FLOW_ATTR_PROBE
+attributes set.  These attributes tell the openvswitch module to not
+log any errors when they occur as it is expected that some of the
+probes will fail.
 
-In `check_kprobe_address_safe()`, if the second `__module_text_address()`
-is failed, that is ignored because it expected a kernel_text address.
-But it may have failed simply because module->state has been changed
-to MODULE_STATE_UNFORMED. In this case, arm_kprobe() will try to modify
-non-exist module text address (use-after-free).
+For some reason, setting the timeout policy ignores the PROBE attribute
+and logs a failure anyway.  This is causing the following kernel log
+on each re-start of ovs-vswitchd:
 
-To fix this problem, we should not use separated `is_module_text_address()`
-and `__module_text_address()`, but use only `__module_text_address()`
-once and do `try_module_get(module)` which is only available with
-MODULE_STATE_LIVE.
+  kernel: Failed to associated timeout policy `ovs_test_tp'
 
-Link: https://lore.kernel.org/all/20240410015802.265220-1-zhengyejian1@huawei.com/
+Fix that by using the same logging macro that all other messages are
+using.  The message will still be printed at info level when needed
+and will be rate limited, but with a net rate limiter instead of
+generic printk one.
 
-Fixes: 28f6c37a2910 ("kprobes: Forbid probing on trampoline and BPF code areas")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The nf_ct_set_timeout() itself will still print some info messages,
+but at least this change makes logging in openvswitch module more
+consistent.
+
+Fixes: 06bd2bdf19d2 ("openvswitch: Add timeout support to ct action")
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Link: https://lore.kernel.org/r/20240403203803.2137962-1-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kprobes.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ net/openvswitch/conntrack.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1567,10 +1567,17 @@ static int check_kprobe_address_safe(str
- 	jump_label_lock();
- 	preempt_disable();
- 
--	/* Ensure it is not in reserved area nor out of text */
--	if (!(core_kernel_text((unsigned long) p->addr) ||
--	    is_module_text_address((unsigned long) p->addr)) ||
--	    in_gate_area_no_mm((unsigned long) p->addr) ||
-+	/* Ensure the address is in a text area, and find a module if exists. */
-+	*probed_mod = NULL;
-+	if (!core_kernel_text((unsigned long) p->addr)) {
-+		*probed_mod = __module_text_address((unsigned long) p->addr);
-+		if (!(*probed_mod)) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+	}
-+	/* Ensure it is not in reserved area. */
-+	if (in_gate_area_no_mm((unsigned long) p->addr) ||
- 	    within_kprobe_blacklist((unsigned long) p->addr) ||
- 	    jump_label_text_reserved(p->addr, p->addr) ||
- 	    static_call_text_reserved(p->addr, p->addr) ||
-@@ -1580,8 +1587,7 @@ static int check_kprobe_address_safe(str
- 		goto out;
- 	}
- 
--	/* Check if 'p' is probing a module. */
--	*probed_mod = __module_text_address((unsigned long) p->addr);
-+	/* Get module refcount and reject __init functions for loaded modules. */
- 	if (*probed_mod) {
- 		/*
- 		 * We must hold a refcount of the probed module while updating
+diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+index 7106ce231a2dd..60dd6f32d520e 100644
+--- a/net/openvswitch/conntrack.c
++++ b/net/openvswitch/conntrack.c
+@@ -1704,8 +1704,9 @@ int ovs_ct_copy_action(struct net *net, const struct nlattr *attr,
+ 	if (ct_info.timeout[0]) {
+ 		if (nf_ct_set_timeout(net, ct_info.ct, family, key->ip.proto,
+ 				      ct_info.timeout))
+-			pr_info_ratelimited("Failed to associated timeout "
+-					    "policy `%s'\n", ct_info.timeout);
++			OVS_NLERR(log,
++				  "Failed to associated timeout policy '%s'",
++				  ct_info.timeout);
+ 		else
+ 			ct_info.nf_ct_timeout = rcu_dereference(
+ 				nf_ct_timeout_find(ct_info.ct)->timeout);
+-- 
+2.43.0
+
 
 
 
