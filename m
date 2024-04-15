@@ -1,156 +1,215 @@
-Return-Path: <stable+bounces-39389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E06F98A458B
-	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 23:18:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C4D8A4720
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 04:53:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 677121F21C02
-	for <lists+stable@lfdr.de>; Sun, 14 Apr 2024 21:18:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B319281198
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 02:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF72136E2D;
-	Sun, 14 Apr 2024 21:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A602A179AE;
+	Mon, 15 Apr 2024 02:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z5KDiTXm"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="rLaIgVX5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2069.outbound.protection.outlook.com [40.107.94.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2968136E31;
-	Sun, 14 Apr 2024 21:18:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713129488; cv=none; b=ZOCzmZpwUTCFJz6+2SBC5L6x5bRQT6/971gIM0aUdk46nJ7pTBwlMJZHKMb/WWRR85ycwem03xDeARBkkBMuzEhRPlQnHk5/tp4PZ8li33dDUq5tNwkYvUbH6Bypin+BKiitJJLoJOJpq4FSg293s8BOvMZzyRkpzyKHaF16asE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713129488; c=relaxed/simple;
-	bh=G4TuJqmhrfi+7PAxNMiM5MQgUdsKKap5UGFURvOLTXM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PkPMHcUhQG/LukiJUz370eBS7P1DTgeuQ0gQkZNIwNzZhRaJzkT06zUuhvzeo+hN7pi4+lfZCaMZYCvHkNCi17GrxIUpe51JTzfoTp7MicB7WPNBmcutlpZbh3MYJ01sDuGM7muuamVEC7AnW7oJoVsdVg7pcZoc+2We1KZam00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z5KDiTXm; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6ed3cafd766so1895890b3a.0;
-        Sun, 14 Apr 2024 14:18:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713129486; x=1713734286; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1ZHsaHa41oigrMjD4LKjbkplqhy4ZTYVhx/T8eHvHZw=;
-        b=Z5KDiTXmd+t0E6OTUeMfl3FMXo/O1InJTbkjwsTicb+zCVym0cT/+07po5b5q6q1UA
-         VBKiXiHXYc9q7SNr2FJ4i83LKArxUHenC1qT3f5m0vwRYcES1oo05HmMRZX2TTyNDaaw
-         EeRNRsdZN2Gw63k6+/HkWOSKrrRWmI991VeHqKgxKTarRzWRCyqmnzckVek1V9lFNZOZ
-         SSoWIS7k0byYdl/QIEm8ox1FrCdsS1OEgT5HZdT2uFFZbud+bZJOHB4SlxuYlpMzItoE
-         TX7aOwJapatnBjTHjGx5c/9fqVkK5uviBhEL/HYXJNjZ7qITxx9KO73irVvP1dHLVGPF
-         eVsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713129486; x=1713734286;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1ZHsaHa41oigrMjD4LKjbkplqhy4ZTYVhx/T8eHvHZw=;
-        b=MY58LwxhyvgNk9UODiGow2awoFHeaGQmNf97qGrdu0Kegrl0J1a/u0w4jkgRU4m/m4
-         9B/zA76y/JGdFrSG1jv+01ScSBnzsVXosxZ3/VH2Sb2l5YuyhXIVIj/uydb95Zv41ns3
-         jHVemMh5Q9NkGezkDv/Ms5ni4CXUGdJaFx0r6BcVgAHtQ2tPSN0xprrVNUASAGw0PwVz
-         02BW5f7oBLTsXSJSOwZmPD3dHfgOI2iyKON+suuRk1Lz6DmOLJ68wyDgBJPekNAQwstZ
-         DkSxmRygJODz85xzo9Dzy8O/kbSmh1tDZYtb/rbpSNwDCjg7/ZwdHJP7aiS2TCA12MAT
-         LfsA==
-X-Forwarded-Encrypted: i=1; AJvYcCXCQl9mLt9Y5hg+GD8muBE7gH5t85ANY4yz/2qCu1TP8wVU0yHGX4i1cEf7mt4kH8nfXYiF7q0fI+j7IrkGzm9CXZfP7GXaOPf2EGqp
-X-Gm-Message-State: AOJu0Ywey/lgdl7PwfLds88c3LfGw7xQ9q+vUETrGLh6umuRs7kgWjt1
-	gCrxsCqUpNFAHuRCnQwl1+x8eSL++XXaD/x2TjoOXjNcyQPTP9gZ
-X-Google-Smtp-Source: AGHT+IFTYF9O0qn/emzVcYUt15HD4pY5VqmLs2K6GAWKwrb3f+qHDW5ftkqPaEPm11vtJiCFfG4NiQ==
-X-Received: by 2002:a05:6a00:2308:b0:6e7:3223:4556 with SMTP id h8-20020a056a00230800b006e732234556mr8029025pfh.32.1713129486139;
-        Sun, 14 Apr 2024 14:18:06 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id y30-20020a056a00181e00b006e6854d45afsm6127641pfa.97.2024.04.14.14.18.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Apr 2024 14:18:05 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Sun, 14 Apr 2024 14:18:03 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org, aleksandermj@google.com,
-	ejcaruso@google.com, oneukum@suse.com
-Subject: Re: [PATCH 5.10 000/294] 5.10.215-rc1 review
-Message-ID: <039f041e-ca03-4750-8d69-87aef0ad1752@roeck-us.net>
-References: <20240411095435.633465671@linuxfoundation.org>
- <9ac4f94c-414e-4c12-bfe0-36aff3e318bc@roeck-us.net>
- <2024041411-stencil-unscathed-bc65@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8056214F6C;
+	Mon, 15 Apr 2024 02:53:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713149608; cv=fail; b=M13ZWQ3fJsEGyBN98tZpEgyrc+AZHIx74ThehtQKa7oovhnAYpfhqv6hlNRpN9dnDfc71WXZgW7Lu6ySQW/+ZGeAiMhbdzjNjg757O9afYUGqKeSsnbs63sjLJadTTIvWvJLTepiCDrkENDs5yyvBPyq/II4c4tB44WoyQqYwmQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713149608; c=relaxed/simple;
+	bh=EK12v9fWIoNBggwn1B1OIoyj6xgqIBtOuNKNSaK15K8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XImy26t8nlDGrUCvtpmE+mfR51+qE/Vmc6C5dABg++AbGLO/4SRTQahHQTpvDYpvpM0BE0yrmc+LM6z7r+K16Rm7+AC/hcE3UTDhTGm1iQrJFeB1YhrRkmJMGu/ypQZiKSODwxn20BJy2iEgTC/JQpQ1eIkWFNHABlhbBxmlsDY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=rLaIgVX5; arc=fail smtp.client-ip=40.107.94.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dfg+L6UULEyfiPvHpC019PXyqMzE3+I9xqkcXfEDbWbeZABtHMRV8OC5qLIIIZl5S6g00bU+3zrkijxLgBRHaUekgGVwLT+AqL18OkIxDPrdPRMTnlEjDO9Ictq2oKggZMkeCl4FkHGaWwG4NHt3AmlZmO4bAzrXwfwa0eWVOpNNj0hmozs5ZUa54rJiqYdxnNNLgpVAA6wrboIyLVqp7HURgMBA8okX6/3bo+ja4yDae2cGjs2qS2KSwW2CaCziiKTiNul48LWB0OR2gCLJUReIBnRSCgBirxckAq9o3Xh1BBJZ//ThKcGaKjawZvu68rBsTzvKrq7hb/vmrMDWUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I7Ga2StHzT7WBG8qZLiEy3hqjb2+q+1StvHJOtGBKrw=;
+ b=FhGrxgRC55M/3sFGU3PpzK95znGYV1xO/S/Tce3RIB3nQqhT90IfpBoGupYpDRGXbcDoC3so+g0KcprAv2E6r1cHCnjDOD3dk6WowPt3EKNp+mitA4tq9aSTtu3EZclOprkbmoL3SjjfW7hvjR+wv16Pz/4S12+dh8t0DrcAgxKjYtcso7jrNPIaHWRv3ADr5n1V6fZuHZuYIsL1G/yPjasZiGDDGC+h6RdKFb04fwrgoYMJvHxh9lJ7D65dNpL2meGitLlSPFald2f0XKTHgVk0+QWCnBaRlW3haMtDUqILBisUPunQrkHNT0AIZZxKMZHAUh77m7YoezmPAScNSQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I7Ga2StHzT7WBG8qZLiEy3hqjb2+q+1StvHJOtGBKrw=;
+ b=rLaIgVX50eshLwDmYWmKH9y5zA/i/JEiQiC7gzLvaitRPTgX/JXeT4D4DS5FWKa7MDDLKaNotImjlSjmxwgZGQnBW/6j5R0BbG92F8FyBxy3YG0DX3XJgZMxyb+bd0FHRq+jZsA6ZpGZ/yYHF6Dwj6u6MlkiYU5UJggiCYe4CT4=
+Received: from CO6PR12MB5489.namprd12.prod.outlook.com (2603:10b6:303:139::18)
+ by CH3PR12MB7692.namprd12.prod.outlook.com (2603:10b6:610:145::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.43; Mon, 15 Apr
+ 2024 02:53:24 +0000
+Received: from CO6PR12MB5489.namprd12.prod.outlook.com
+ ([fe80::5f4:a2a9:3d28:3282]) by CO6PR12MB5489.namprd12.prod.outlook.com
+ ([fe80::5f4:a2a9:3d28:3282%4]) with mapi id 15.20.7452.049; Mon, 15 Apr 2024
+ 02:53:24 +0000
+From: "Lin, Wayne" <Wayne.Lin@amd.com>
+To: Jeff Mahoney <jeffm@suse.com>, "dri-devel@lists.freedesktop.org"
+	<dri-devel@lists.freedesktop.org>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, David
+ Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] drm/mst: Fix NULL pointer dereference in
+ drm_dp_add_payload_part2 (again)
+Thread-Topic: [PATCH] drm/mst: Fix NULL pointer dereference in
+ drm_dp_add_payload_part2 (again)
+Thread-Index: AQHajToj/A4qJVKMkk+X0nDH4FXk6rFlYJwAgANEBBY=
+Date: Mon, 15 Apr 2024 02:53:24 +0000
+Message-ID:
+ <CO6PR12MB5489C2D62025CDFDC71C3C21FC092@CO6PR12MB5489.namprd12.prod.outlook.com>
+References: <20240413002252.30780-1-jeffm@suse.com>
+ <c55d8329-6d59-4821-89f2-6b50fa9dc6a7@suse.com>
+In-Reply-To: <c55d8329-6d59-4821-89f2-6b50fa9dc6a7@suse.com>
+Accept-Language: en-US, zh-TW
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Enabled=True;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SetDate=2024-04-15T02:53:23.170Z;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Name=Public;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ContentBits=0;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Method=Privileged;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CO6PR12MB5489:EE_|CH3PR12MB7692:EE_
+x-ms-office365-filtering-correlation-id: 8aff853e-9ca5-4e5e-4898-08dc5cf737b9
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ sSyjJmvAt1BIChb/rjl8pzT8XazPCc3A2VNJZZFoEljOMShU5R+oBt9QuNOoIltrmSHjy0Rrj+9K9xQVGH8mK0HEyI+9Smwn6DPY3dSmsW/R8MvYO0UMAT+HZ+kARy5EPgg0/JKHayVORioSnNM95xYzvYRpS7jxClhTPS1LSQKMiX+QJIDCcHZd4bIrMyHTXlcRqotEi+S8+3E006BHgj5reWNH+ZEwGQ/9n3FppFj2Q6kUhq1VcdjsDeN/uVdR/rFfbeH/EA5WVV/ZYPLXVbskEIzcoqoIL5YarUij7krn8dXweKUKa00CDDcEqDoIieBCYQ2Ec3ysYurY/9aKH316+FZD+AZMKyZF0rak5DwTTkLt3anpdP9EpaDcUA6TfwrV2I+pC4KzFuuRMiLirYeO5VOVwl7+g5NnqadoYWq5S/KS3bAZS6Cofriyow0uaKPVy0Uv33YB7TbPeOlkxYvTxA/aoKfUbBdhuA5iJuJ49L78Q7mMMuXcc8iQuujprG0ZkuoxetY/kDJVq9H9/ZuBFuZ9OarP0ZnkyF0kiItgpefYKOgQqZfNnwFuFWiBb//KIdVjB6J5QtlAMLyzWR5Tn9vVjvrGNMHHbc+dM3kAcTGJmwINMkaCR8SR9lg1d/H4PEeJSIa+/qU8leer5jFswaC1j4A+Lnn9lEcByAI=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5489.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(366007)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?rWa7IyP6VoDmw1KwyP4UpZgPM5+tpOEtKA6B1hic1SyfbQ8hG5sKVPJh5y+o?=
+ =?us-ascii?Q?LleKW3Ci9dfOUPKhMY3ACyrcQ5TGG1zMAajPsfDb1OrMpu1nUVQ7vQrq8H6Y?=
+ =?us-ascii?Q?Tmem+op9fZ3os3NbBlYpthdX5Q7EnkOpERhBE3kWoy1Od5FTKEkDZjiEg4Xy?=
+ =?us-ascii?Q?E9crc+6KlbG8zRCNtETuU9ffDUAL1L2GVRXmQ8eKB3XXTXW/3wLORPKNqNoN?=
+ =?us-ascii?Q?0N0+yMWUHTpmz2mvZ/q/+/2uTQ8xchYnVGpACeZvmM7qimsIXV00K0noRIWi?=
+ =?us-ascii?Q?IY2sDfVjGh/KgcLayWyfBm587aSIMT2AG9Rg5uS5O8uTQAR83zpGJPqnpqhK?=
+ =?us-ascii?Q?62m6ni6O9LJoz7Ng0DxtzRFDI8Op4oiRBdO8OAVrdqhv6xHLmKDP89ANvxDu?=
+ =?us-ascii?Q?SV0kGGLIjgzZ+2osOQe58ueGSxgAMAZLFrrNOrNnLMTpmt4GHUGoWPc94Ggf?=
+ =?us-ascii?Q?9IcprPW9YSVK/TRTVw831HGMRqyKxu2mwFyd+5B6pqjjtDsQqdZ+ianYw5LI?=
+ =?us-ascii?Q?rHIpj8wKPWIMVa0Ajn0/jyYwPxRc2TwZaXaWLXBtLdN3xQqyxEsv1vnKwjE0?=
+ =?us-ascii?Q?WyrUIoNbSFPFcavwlRltkGIy4rTJfiPNuDvmbPmPRLkQnyC5/V6Um9Xz3xp6?=
+ =?us-ascii?Q?eKJG3n6BZBZABQAReEcCUtF8k4dAoomWjQZPJAX8OlHa9CB07KbW9aVD7oai?=
+ =?us-ascii?Q?GMEc9FU2lYIq1HSmV108Xb4bRX+uaWIiLueNEXUW64iuGSjKRC2UAnP/YGhB?=
+ =?us-ascii?Q?4n1ktibZJfyjR0pUtsOZk5C/U99vxT9XT9YURy3+gBazS+c6yhhI/srJElIF?=
+ =?us-ascii?Q?AA0VhgPCjAr8VfgGQFmjzsPasHESvuR6BY8r0wbVBRLvf+UAoJTJS3ZoDIjz?=
+ =?us-ascii?Q?5rkUOPlsYGKWA4UUiBTJgSQvgohZJv7LiM8/G/Xcy9R79cMntI0YBIUJ9HH+?=
+ =?us-ascii?Q?2StsjRvfOldctA83SC4U/xvRx1LMqnQA+OybZ5Bz2ycC806ShKAkQ/ijg9z1?=
+ =?us-ascii?Q?IA3nU8yhEmaaMfo95/F8Ha4/tr1HutWy52sVqjiTuJtwcS5UtNGSxlDseQ01?=
+ =?us-ascii?Q?6/2xi/qdZH1X9NLfBw5KXAYl2uf+IWaZM9qXj5Iz+xzlAfwMWk88BNw2R97E?=
+ =?us-ascii?Q?02dumA2VFzVmVe4TuWqT52YGF++evKWNI/Gv66QPYjNXR5jlg2G5d7sTSiyn?=
+ =?us-ascii?Q?thOmNIG9sGUMvp5Lny2l3v4whQ+hBHswFqu3nqf7oXuQxKivVL5+hkLn9qI/?=
+ =?us-ascii?Q?0prHKJrtZtMDNPOzjlbmMehLE8PraEnBA4gpNz8IcsUWXfLa9CqYA6MQNdgg?=
+ =?us-ascii?Q?ayygxsJhCbpmZTSxPheY3ukicDoJKhkXShC5DOCITXZgSEkvOOEwC24OCnYh?=
+ =?us-ascii?Q?lwjXzzI+JiwbFf+c8vSCQAF1PuyamLdVIgKrUWiz+pBTmy+DT5inTGZ/x4ea?=
+ =?us-ascii?Q?GLmUMDomC8Z96bXQXmNC8QbZIUG+GpPbNhsWkvTQodMKjkinFqG88Ai2sKci?=
+ =?us-ascii?Q?YPdjBbi037wT2mjKyk4oMVATeRvXtJ7cWKY0SjjJ1Jsq8InLSmGgmyhEKXIy?=
+ =?us-ascii?Q?7pQ2ar65Ndhv2W8efaM=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024041411-stencil-unscathed-bc65@gregkh>
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5489.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8aff853e-9ca5-4e5e-4898-08dc5cf737b9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Apr 2024 02:53:24.1232
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: N+ma3X1Ll/anI2PAHGfu0Sb0/SIPRr5B03KJ6rY3EuKvUivk0NLnAO0HFS8OBBUyafgRM6z+67HSZvSAOFJkzA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7692
 
-Hi Greg,
+[Public]
 
-On Sun, Apr 14, 2024 at 08:09:39AM +0200, Greg Kroah-Hartman wrote:
-> On Sat, Apr 13, 2024 at 07:11:57AM -0700, Guenter Roeck wrote:
-> > Hi,
-> > 
-> > On Thu, Apr 11, 2024 at 11:52:43AM +0200, Greg Kroah-Hartman wrote:
-> > > This is the start of the stable review cycle for the 5.10.215 release.
-> > > There are 294 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > > 
-> > > Responses should be made by Sat, 13 Apr 2024 09:53:55 +0000.
-> > > Anything received after that time might be too late.
-> > > 
-> > > The whole patch series can be found in one patch at:
-> > > 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.215-rc1.gz
-> > > or in the git tree and branch at:
-> > > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> > > and the diffstat can be found below.
-> > > 
-> > > thanks,
-> > > 
-> > > greg k-h
-> > > 
-> > > -------------
-> > [ ... ]
-> > > 
-> > > Oliver Neukum <oneukum@suse.com>
-> > >     usb: cdc-wdm: close race between read and workqueue
-> > > 
-> > 
-> > Just in case it has not been reported yet:
-> > 
-> > This patch is causing connection failures (timeouts) on all
-> > Chromebooks using the cdc-wdm driver for cellular modems, with
-> > all kernel branches where this patch has been applied.
-> > Reverting it fixes the problem.
-> > 
-> > I am copying some of the Google employees involved in identifying
-> > the regression in case additional feedback is needed.
-> 
-> Can you all respond to Oliver on the linux-usb list where this was
-> originally submitted to work it out?  This commit has been in the tree
-> for almost a month now with no reported problems that I can see.
-> 
+Hi Jeff,
 
-Who knows, maybe only a certain type of usb cellular modems using cdc-wdm
-is affected. Either case, the problem was found less than two days after
-the stable tree merges into ChromeOS, and it took only about a week from
-there to identify the offending patch. I think that was actually an amazing
-job, given the size of those merges and because the failure is not absolute
-but results in unreliable tests due to timeouts.
+I have a patch sent for this before but not yet get reviewed. Will ping aga=
+in.
+https://patchwork.freedesktop.org/series/130852/
 
-Anyway, sure, we'll get in touch with Oliver. Other than that, please take
-this report as a heads-up in case anyone else reports similar problems.
+Thanks!
 
-Thanks,
-Guenter
+Regards,
+Wayne
+
+________________________________________
+From: Jeff Mahoney <jeffm@suse.com>
+Sent: Saturday, April 13, 2024 08:57
+To: Lin, Wayne; dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org; David Airlie; Daniel Vetter; stable@vger.=
+kernel.org
+Subject: Re: [PATCH] drm/mst: Fix NULL pointer dereference in drm_dp_add_pa=
+yload_part2 (again)
+
+As a follow up, I read through the original thread before sending this
+and my understanding is that this message probably shouldn't be getting
+printed in the first place.  I've turned on KMS, ATOMIC, STATE, and DP
+debugging to see what shakes out.  I have a KVM on my desk that I use to
+switch between systems fairly frequently.  I'm speculating that the
+connecting and disconnecting is related, so I'm hopeful I can trigger it
+quickly.
+
+-Jeff
+
+On 4/12/24 20:22, Jeff Mahoney wrote:
+> Commit 54d217406afe (drm: use mgr->dev in drm_dbg_kms in
+> drm_dp_add_payload_part2) appears to have been accidentially reverted as
+> part of commit 5aa1dfcdf0a42 (drm/mst: Refactor the flow for payload
+> allocation/removement).
+>
+> I've been seeing NULL pointer dereferences in drm_dp_add_payload_part2
+> due to state->dev being NULL in the debug message printed if the payload
+> allocation has failed.
+>
+> This commit restores mgr->dev to avoid the Oops.
+>
+> Fixes: 5aa1dfcdf0a42 ("drm/mst: Refactor the flow for payload allocation/=
+removement")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jeff Mahoney <jeffm@suse.com>
+> ---
+>   drivers/gpu/drm/display/drm_dp_mst_topology.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/=
+drm/display/drm_dp_mst_topology.c
+> index 03d528209426..3dc966f25c0c 100644
+> --- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> +++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> @@ -3437,7 +3437,7 @@ int drm_dp_add_payload_part2(struct drm_dp_mst_topo=
+logy_mgr *mgr,
+>
+>       /* Skip failed payloads */
+>       if (payload->payload_allocation_status !=3D DRM_DP_MST_PAYLOAD_ALLO=
+CATION_DFP) {
+> -             drm_dbg_kms(state->dev, "Part 1 of payload creation for %s =
+failed, skipping part 2\n",
+> +             drm_dbg_kms(mgr->dev, "Part 1 of payload creation for %s fa=
+iled, skipping part 2\n",
+>                           payload->port->connector->name);
+>               return -EIO;
+>       }
+
+--
+Jeff Mahoney
+VP Engineering, Linux Systems
 
