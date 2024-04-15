@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-39703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF4C18A5449
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB60E8A538C
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A553283F1F
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BE351F21ADE
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF407F482;
-	Mon, 15 Apr 2024 14:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC7D80635;
+	Mon, 15 Apr 2024 14:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdNTuzZL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KV4R6WZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B98D762CD;
-	Mon, 15 Apr 2024 14:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E6B8062D;
+	Mon, 15 Apr 2024 14:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191563; cv=none; b=rK6XAFerkn3RtfnHDqH50mMJnUEftOi2qxrz1VvMcwXoxyOtbzb1c9A+9wIwAvSw4rDce4YJfP7SKVPJ1mr2LMilEexZtoegsOMmoAEnFvoB/cHLNhaLHX9S1ES4RHnM6tC4LPPRybuNiC7AiKgsygTV5nrzOvFJuDT9h0gq39A=
+	t=1713191240; cv=none; b=C1qv+ppBQnFyzqkMY9pGLZqNAkmfyW7kEZZiRNUzx2Cw76S8UAioOqTtBdm8sZ9XBtZfD+tQRzdsafUzyeFqXceEWaPNq0VAISAfGNiBdUyJIAhWr7/xqqv/jqxqryULngluH9zjxXcyne8hVAqk52PXiLj2q8Ob+f0RJ5uacVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191563; c=relaxed/simple;
-	bh=jj2hZ22JH3m0fc8crCvCkSm+oaDJy4i77Wx8Tq7kjEs=;
+	s=arc-20240116; t=1713191240; c=relaxed/simple;
+	bh=03ROZtrvHIgFV+8msOfZsQ3JIHVbKnawMwvASWGDTKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aa3ONNWkxuaePLnCXaiAvJYfyZkwn0RlldGHaTpQGIu2QPhRKJ0VFNe2ZN5H/ey4R5Wk+m5QjmdcGacxskmJgCzKud1+cXePdWDHki0jCb0rJbowYjr4m4c2U2R9m3f1siKPKfgk5VwNx5mCW0PK9mOM4Utfb1fZDzAh868W3+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdNTuzZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6CCBC113CC;
-	Mon, 15 Apr 2024 14:32:42 +0000 (UTC)
+	 MIME-Version; b=uFaGlQcekTiQXP90gnn1t3RebsfpKqDHw5HVzFt/P5c9ODUQdF+4Alvwv5whuh7BQU05z+98gQRKwmKLpALPxjrsr0dl5L+HKoTUy8Vhmt5GHL5BbuK15scLtkpYvd6dQ3hEWHyXzAhy/AZO+/LlZRZcGJ0W2Com8zpWrmhDZxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KV4R6WZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E609C2BD11;
+	Mon, 15 Apr 2024 14:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191563;
-	bh=jj2hZ22JH3m0fc8crCvCkSm+oaDJy4i77Wx8Tq7kjEs=;
+	s=korg; t=1713191240;
+	bh=03ROZtrvHIgFV+8msOfZsQ3JIHVbKnawMwvASWGDTKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qdNTuzZLZt0ps9WeMkClUdDlLbD7PZOTXpLZKtA8H6vIXf4DKkclqbaXTJkY9H173
-	 b5iQ2o78TO9AV9S4Um0BZHYec1v42F7Od/Bg1HeitY7/D/xeKS3Viso9QBmbQemaI2
-	 WqeBSCgHN2y7cNyHNi3vRCbX12m9kO96HnOkyIA4=
+	b=2KV4R6WZ+LDohf29jxc6qI71LTqOBZMj9ticLLJT10e+4suFVcd8wJJkBofxHILF+
+	 vP0X0p0N/cZU+C8uqwhmBPo9U/Nr2//wrwxKt6u9c3DHP00htcPvcqAxmsAWNCnPUa
+	 v4Y7nH7tI582GOwZ4DT7lLu8klRctd7MSZBVWoqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 012/122] ACPI: scan: Do not increase dep_unmet for already met dependencies
+	Eric Dumazet <edumazet@google.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 078/172] Bluetooth: ISO: Fix not validating setsockopt user input
 Date: Mon, 15 Apr 2024 16:19:37 +0200
-Message-ID: <20240415141953.745097765@linuxfoundation.org>
+Message-ID: <20240415142002.772796180@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit d730192ff0246356a2d7e63ff5bd501060670eec upstream.
+[ Upstream commit 9e8742cdfc4b0e65266bb4a901a19462bda9285e ]
 
-On the Toshiba Encore WT10-A tablet the BATC battery ACPI device depends
-on 3 other devices:
+Check user input length before copying data.
 
-            Name (_DEP, Package (0x03)  // _DEP: Dependencies
-            {
-                I2C1,
-                GPO2,
-                GPO0
-            })
-
-acpi_scan_check_dep() adds all 3 of these to the acpi_dep_list and then
-before an acpi_device is created for the BATC handle (and thus before
-acpi_scan_dep_init() runs) acpi_scan_clear_dep() gets called for both
-GPIO depenencies, with free_when_met not set for the dependencies.
-
-Since there is no adev for BATC yet, there also is no dep_unmet to
-decrement. The only result of acpi_scan_clear_dep() in this case is
-dep->met getting set.
-
-Soon after acpi_scan_clear_dep() has been called for the GPIO dependencies
-the acpi_device gets created for the BATC handle and acpi_scan_dep_init()
-runs, this sees 3 dependencies on the acpi_dep_list and initializes
-unmet_dep to 3. Later when the dependency for I2C1 is met unmet_dep
-becomes 2, but since the 2 GPIO deps where already met it never becomes 0
-causing battery monitoring to not work.
-
-Fix this by modifying acpi_scan_dep_init() to not increase dep_met for
-dependencies which have already been marked as being met.
-
-Fixes: 3ba12d8de3fa ("ACPI: scan: Reduce overhead related to devices with dependencies")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Cc: 6.5+ <stable@vger.kernel.org> # 6.5+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
+Fixes: 0731c5ab4d51 ("Bluetooth: ISO: Add support for BT_PKT_STATUS")
+Fixes: f764a6c2c1e4 ("Bluetooth: ISO: Add broadcast support")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/scan.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/bluetooth/iso.c | 36 ++++++++++++------------------------
+ 1 file changed, 12 insertions(+), 24 deletions(-)
 
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -1798,7 +1798,8 @@ static void acpi_scan_dep_init(struct ac
- 			if (dep->honor_dep)
- 				adev->flags.honor_deps = 1;
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 3681e3673654a..a8b05baa8e5a9 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -1479,7 +1479,7 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			       sockptr_t optval, unsigned int optlen)
+ {
+ 	struct sock *sk = sock->sk;
+-	int len, err = 0;
++	int err = 0;
+ 	struct bt_iso_qos qos = default_qos;
+ 	u32 opt;
  
--			adev->dep_unmet++;
-+			if (!dep->met)
-+				adev->dep_unmet++;
+@@ -1494,10 +1494,9 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
  		}
- 	}
- }
+ 
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt)
+ 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
+@@ -1506,10 +1505,9 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
+ 		break;
+ 
+ 	case BT_PKT_STATUS:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt)
+ 			set_bit(BT_SK_PKT_STATUS, &bt_sk(sk)->flags);
+@@ -1524,17 +1522,9 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
+ 		}
+ 
+-		len = min_t(unsigned int, sizeof(qos), optlen);
+-
+-		if (copy_from_sockptr(&qos, optval, len)) {
+-			err = -EFAULT;
+-			break;
+-		}
+-
+-		if (len == sizeof(qos.ucast) && !check_ucast_qos(&qos)) {
+-			err = -EINVAL;
++		err = bt_copy_from_sockptr(&qos, sizeof(qos), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		iso_pi(sk)->qos = qos;
+ 		iso_pi(sk)->qos_user_set = true;
+@@ -1549,18 +1539,16 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
+ 		}
+ 
+ 		if (optlen > sizeof(iso_pi(sk)->base)) {
+-			err = -EOVERFLOW;
++			err = -EINVAL;
+ 			break;
+ 		}
+ 
+-		len = min_t(unsigned int, sizeof(iso_pi(sk)->base), optlen);
+-
+-		if (copy_from_sockptr(iso_pi(sk)->base, optval, len)) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(iso_pi(sk)->base, optlen, optval,
++					   optlen);
++		if (err)
+ 			break;
+-		}
+ 
+-		iso_pi(sk)->base_len = len;
++		iso_pi(sk)->base_len = optlen;
+ 
+ 		break;
+ 
+-- 
+2.43.0
+
 
 
 
