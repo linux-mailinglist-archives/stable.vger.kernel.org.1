@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-39820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B1228A54E5
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C0CD8A5423
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:34:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4755C282266
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D5421C22014
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:34:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A627768EE;
-	Mon, 15 Apr 2024 14:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B1280C1F;
+	Mon, 15 Apr 2024 14:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmCBiyUH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BqmMVfiP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB6378685;
-	Mon, 15 Apr 2024 14:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C0D8063C;
+	Mon, 15 Apr 2024 14:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191912; cv=none; b=PjAzz4TA3SVl+mVGvY/QUKrj7km3k38nW0rQS+QPuZ5bZwfiiLsU3T14tBY7hBm4BneQ0cr1AGMbIqGu95aTR0RXW8UW/myPNaSuGvzZL5h8Jr4gwaQNoMvWHu3IM5BLu/QLENziLroUaaCKoOH0eqtMSDvZ3kgXerdjXbV69zw=
+	t=1713191480; cv=none; b=HsZTZogGiG1/YuMrbHN/43y+Abf+LgqNWymWxGxLmvyL5ERXyMyFY917vuyclEc/ZzDZrHZ7sXz9T3fTh+q8glRA4V/xKdxh5OJ9NUgIQ5kSvUL1go3UNwxUjCzb2Mh0So5aNTC+kshOmmobkEXQrsGkshkNaeF7CIE5rI3Vvdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191912; c=relaxed/simple;
-	bh=d5M6rfrRhvUaHwBxEu3ERiV1+LvGQNsbtfVESlKLTi8=;
+	s=arc-20240116; t=1713191480; c=relaxed/simple;
+	bh=fK4RCBwzo6KveOmXXBgAsT49r7X52YEFv2DevTXTjG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FPextSpq3gOBil7UYJ72y5OOKHID2XnQB/2RvzuzEwf3sG+7EwlMIwMkM4h82ytgSnQjip4pyelgt8bWQUS5vXVFoEfQt46o5vAuOGzHPqpqrcrg06Sf+pluIzShJq6f84hNcicRjsVNnCrV4N1Bx+Y6pSjBeNLm1n8sAJc45Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmCBiyUH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564B0C2BD11;
-	Mon, 15 Apr 2024 14:38:31 +0000 (UTC)
+	 MIME-Version; b=EM5qhfynEd0BbVhcTFQP0j1WTkxIn1T95xdFQjoLDKlf4iY7zPi43e7aCpbdLmr0NmfLvpYqer/Rc34bfUFd78xYjraVkL9s81qbciYAf50Pv1z0LvGZpL8AWMAogs4QjyOWRZTjcaTCgZ83+RU3UK6hpbXE202sQkWZXyJ3SXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BqmMVfiP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DECC113CC;
+	Mon, 15 Apr 2024 14:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191911;
-	bh=d5M6rfrRhvUaHwBxEu3ERiV1+LvGQNsbtfVESlKLTi8=;
+	s=korg; t=1713191480;
+	bh=fK4RCBwzo6KveOmXXBgAsT49r7X52YEFv2DevTXTjG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kmCBiyUH7JYeNMDX13l4aO+pST0a5x9/GOM1C3RIx6PnLwo0Kg62PDg063dXGRzYy
-	 SWoZFhubhcPlmt8k/f9ife4Rq/aifS9X+wcoarFDQW4+mW1oC0WJHquGOHF9fPx2eI
-	 ymNWgS6uXBWPuNT8F5/QoU0TZSqvTV5bTzRrRymE=
+	b=BqmMVfiPEVnT9tfWDci05sKyppEgbHMKOkoVudyabzhXkSY6GDR5NI+sNqNy352yL
+	 jFVvfNIV+XuDxuW+fIS9rMQJ23X7UXfEV6ePNbs4fV2CBy8i45CLle1aTK4BJcmDZl
+	 E5751kqMAKXS0TtrJrSydaR1ruAYXQJY1NIfBFOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	Mukul Joshi <mukul.joshi@amd.com>
-Subject: [PATCH 6.6 090/122] drm/amdkfd: Reset GPU on queue preemption failure
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.8 156/172] x86/bugs: Clarify that syscall hardening isnt a BHI mitigation
 Date: Mon, 15 Apr 2024 16:20:55 +0200
-Message-ID: <20240415141956.076198252@linuxfoundation.org>
+Message-ID: <20240415142005.098954900@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit 8bdfb4ea95ca738d33ef71376c21eba20130f2eb upstream.
+commit 5f882f3b0a8bf0788d5a0ee44b1191de5319bb8a upstream.
 
-Currently, with F32 HWS GPU reset is only when unmap queue fails.
+While syscall hardening helps prevent some BHI attacks, there's still
+other low-hanging fruit remaining.  Don't classify it as a mitigation
+and make it clear that the system may still be vulnerable if it doesn't
+have a HW or SW mitigation enabled.
 
-However, if compute queue doesn't repond to preemption request in time
-unmap will return without any error. In this case, only preemption error
-is logged and Reset is not triggered. Call GPU reset in this case also.
-
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Reviewed-by: Mukul Joshi <mukul.joshi@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/b5951dae3fdee7f1520d5136a27be3bdfe95f88b.1712813475.git.jpoimboe@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c |    1 +
- 1 file changed, 1 insertion(+)
+ Documentation/admin-guide/hw-vuln/spectre.rst   |   11 +++++------
+ Documentation/admin-guide/kernel-parameters.txt |    3 +--
+ arch/x86/kernel/cpu/bugs.c                      |    6 +++---
+ 3 files changed, 9 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-@@ -1980,6 +1980,7 @@ static int unmap_queues_cpsch(struct dev
- 		pr_err("HIQ MQD's queue_doorbell_id0 is not 0, Queue preemption time out\n");
- 		while (halt_if_hws_hang)
- 			schedule();
-+		kfd_hws_hang(dqm);
- 		return -ETIME;
- 	}
+--- a/Documentation/admin-guide/hw-vuln/spectre.rst
++++ b/Documentation/admin-guide/hw-vuln/spectre.rst
+@@ -441,10 +441,10 @@ The possible values in this file are:
+    - System is protected by BHI_DIS_S
+  * - BHI: SW loop, KVM SW loop
+    - System is protected by software clearing sequence
+- * - BHI: Syscall hardening
+-   - Syscalls are hardened against BHI
+- * - BHI: Syscall hardening, KVM: SW loop
+-   - System is protected from userspace attacks by syscall hardening; KVM is protected by software clearing sequence
++ * - BHI: Vulnerable
++   - System is vulnerable to BHI
++ * - BHI: Vulnerable, KVM: SW loop
++   - System is vulnerable; KVM is protected by software clearing sequence
  
+ Full mitigation might require a microcode update from the CPU
+ vendor. When the necessary microcode is not available, the kernel will
+@@ -661,8 +661,7 @@ kernel command line.
+ 	spectre_bhi=
+ 
+ 		[X86] Control mitigation of Branch History Injection
+-		(BHI) vulnerability. Syscalls are hardened against BHI
+-		regardless of this setting. This setting affects the deployment
++		(BHI) vulnerability.  This setting affects the deployment
+ 		of the HW BHI control and the SW BHB clearing sequence.
+ 
+ 		on
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -6033,8 +6033,7 @@
+ 			See Documentation/admin-guide/laptops/sonypi.rst
+ 
+ 	spectre_bhi=	[X86] Control mitigation of Branch History Injection
+-			(BHI) vulnerability. Syscalls are hardened against BHI
+-			reglardless of this setting. This setting affects the
++			(BHI) vulnerability.  This setting affects the
+ 			deployment of the HW BHI control and the SW BHB
+ 			clearing sequence.
+ 
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -2817,10 +2817,10 @@ static const char *spectre_bhi_state(voi
+ 		return "; BHI: SW loop, KVM: SW loop";
+ 	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) && rrsba_disabled)
+ 		return "; BHI: Retpoline";
+-	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT))
+-		return "; BHI: Syscall hardening, KVM: SW loop";
++	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT))
++		return "; BHI: Vulnerable, KVM: SW loop";
+ 
+-	return "; BHI: Vulnerable (Syscall hardening enabled)";
++	return "; BHI: Vulnerable";
+ }
+ 
+ static ssize_t spectre_v2_show_state(char *buf)
 
 
 
