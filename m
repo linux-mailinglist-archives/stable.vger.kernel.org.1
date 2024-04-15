@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-39633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD1DA8A53D4
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:31:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 126968A54B3
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEDD01C21DA8
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:31:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C35C4283BAC
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203D2811FE;
-	Mon, 15 Apr 2024 14:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4F378C73;
+	Mon, 15 Apr 2024 14:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dd7ZzrxX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNLKHKbd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F8F80C1D;
-	Mon, 15 Apr 2024 14:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EBF381B9;
+	Mon, 15 Apr 2024 14:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191353; cv=none; b=q4vR2aixvmncfI3vsQ2rk+MnkleUa5ozWClosPHwulJyML3SiK/jcJ6XteAFG/Mj8G+K5Boidm+YFlITk+ll22NB75qzZi/HdCwECaUH7xR0jXB2dhPtenkSt+o5DOvZytWQmdEfbZexIWHnGyeZROX27VUMjqw3nhbC9BB5LUc=
+	t=1713191788; cv=none; b=NTqCpM78BXnQhmoNTtGg4fOHDLwso5ZbQzGsW+p8svXfPXpwABdaPdIawtgpMD9jSH6QN9Xr+Z8o5B5SC/IDAyXxKMAMfSv70YhW5VybW6dnS6u+gZsVbH/my9zJwL67gR+dw3HgsAlnvOse/82GJ7wPWeLjucnxNYSQbOT2zNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191353; c=relaxed/simple;
-	bh=8sb7TK+lrIcWs9R2APPbPPRQpoTDuiDeqYNL9OCdmAk=;
+	s=arc-20240116; t=1713191788; c=relaxed/simple;
+	bh=hntgf/5BO5Y0uzXqUb8aDXota+EdHLHCJnwna20P2+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pcqkvLg54qK6Wvn2CUGIBS7XIVorWEwd6V0sfYlk//HcZH3SWR2tsdHtENC6KvtB152xY7g4YSU5x/lGEF+vySgWJAYINnsWyOlplKL6yxwJiskkdoJlVsfhgazzMNlB0e8i1HOnk2+BvZcYxktTxB3n8yMwnNPtvkKUJmFWhyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dd7ZzrxX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D9C9C113CC;
-	Mon, 15 Apr 2024 14:29:13 +0000 (UTC)
+	 MIME-Version; b=kbsCmTgsD7V8plDxqzRD3swm/arbWaqBZAOZIxuGf9nyFBgpi0ONHdMkeI0szTx9ek7yFN52hdakkzAGYhiMf66Y0JRH7MX2dH4MGReRYOLGJe7PoaBnXtvr5ZXNbInKVyL563H56chzgpLpRUkF3/DPR67hLLmbk7Yz6t5CY74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNLKHKbd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB98C2BD11;
+	Mon, 15 Apr 2024 14:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191353;
-	bh=8sb7TK+lrIcWs9R2APPbPPRQpoTDuiDeqYNL9OCdmAk=;
+	s=korg; t=1713191788;
+	bh=hntgf/5BO5Y0uzXqUb8aDXota+EdHLHCJnwna20P2+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dd7ZzrxXKXPK17FXtJLFUpwaFw/PljDKeZc/4rr0VW1dY5zAM809z8obMdEbkijMf
-	 /NlfDYpNSGN12Iplc+7c2peC5M5ldGKmiP9n0cnMpLUqmXa1nsSCQj7hAI8pRogz10
-	 3ZJrV9bF0QOft80l0Qc+6G5Sw6QOlXmShlDVLpas=
+	b=TNLKHKbdRRTW7E1RWwm3mCySXFDui3TiQN2POgd8AEEvFw3V/bC+NYaDbOrSqJPyK
+	 o55mTAvJjblqUF3bASC/XAfKrMfdj0Ass8BhON6PCnlPc2ChaBttqoqyz39OIkeBUs
+	 lHasj0wfRKbBMmE3fSUWbOBIsVzifLZGSZrZdRsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	linux-trace-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.8 114/172] fs/proc: remove redundant comments from /proc/bootconfig
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 048/122] Bluetooth: ISO: Align broadcast sync_timeout with connection timeout
 Date: Mon, 15 Apr 2024 16:20:13 +0200
-Message-ID: <20240415142003.855718755@linuxfoundation.org>
+Message-ID: <20240415141954.816068653@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit fbbdc255fbee59b4207a5398fdb4f04590681a79 upstream.
+[ Upstream commit 42ed95de82c01184a88945d3ca274be6a7ea607d ]
 
-commit 717c7c894d4b ("fs/proc: Add boot loader arguments as comment to
-/proc/bootconfig") adds bootloader argument comments into /proc/bootconfig.
+This aligns broadcast sync_timeout with existing connection timeouts
+which are 20 seconds long.
 
-/proc/bootconfig shows boot_command_line[] multiple times following
-every xbc key value pair, that's duplicated and not necessary.
-Remove redundant ones.
-
-Output before and after the fix is like:
-key1 = value1
-*bootloader argument comments*
-key2 = value2
-*bootloader argument comments*
-key3 = value3
-*bootloader argument comments*
-...
-
-key1 = value1
-key2 = value2
-key3 = value3
-*bootloader argument comments*
-...
-
-Link: https://lore.kernel.org/all/20240409044358.1156477-1-paulmck@kernel.org/
-
-Fixes: 717c7c894d4b ("fs/proc: Add boot loader arguments as comment to /proc/bootconfig")
-Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Cc: <linux-trace-kernel@vger.kernel.org>
-Cc: <linux-fsdevel@vger.kernel.org>
-Cc: stable@vger.kernel.org
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: b37cab587aa3 ("Bluetooth: ISO: Don't reject BT_ISO_QOS if parameters are unset")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/bootconfig.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/net/bluetooth/bluetooth.h | 2 ++
+ net/bluetooth/iso.c               | 4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/proc/bootconfig.c b/fs/proc/bootconfig.c
-index 902b326e1e56..e5635a6b127b 100644
---- a/fs/proc/bootconfig.c
-+++ b/fs/proc/bootconfig.c
-@@ -62,12 +62,12 @@ static int __init copy_xbc_key_value_list(char *dst, size_t size)
- 				break;
- 			dst += ret;
- 		}
--		if (ret >= 0 && boot_command_line[0]) {
--			ret = snprintf(dst, rest(dst, end), "# Parameters from bootloader:\n# %s\n",
--				       boot_command_line);
--			if (ret > 0)
--				dst += ret;
--		}
-+	}
-+	if (ret >= 0 && boot_command_line[0]) {
-+		ret = snprintf(dst, rest(dst, end), "# Parameters from bootloader:\n# %s\n",
-+			       boot_command_line);
-+		if (ret > 0)
-+			dst += ret;
- 	}
- out:
- 	kfree(key);
+diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
+index aa90adc3b2a4d..28e32c9a6cc99 100644
+--- a/include/net/bluetooth/bluetooth.h
++++ b/include/net/bluetooth/bluetooth.h
+@@ -164,6 +164,8 @@ struct bt_voice {
+ #define BT_ISO_QOS_BIG_UNSET	0xff
+ #define BT_ISO_QOS_BIS_UNSET	0xff
+ 
++#define BT_ISO_SYNC_TIMEOUT	0x07d0 /* 20 secs */
++
+ struct bt_iso_io_qos {
+ 	__u32 interval;
+ 	__u16 latency;
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 0eeec64801390..698d0b67c7ed4 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -764,10 +764,10 @@ static struct bt_iso_qos default_qos = {
+ 		.bcode			= {0x00},
+ 		.options		= 0x00,
+ 		.skip			= 0x0000,
+-		.sync_timeout		= 0x4000,
++		.sync_timeout		= BT_ISO_SYNC_TIMEOUT,
+ 		.sync_cte_type		= 0x00,
+ 		.mse			= 0x00,
+-		.timeout		= 0x4000,
++		.timeout		= BT_ISO_SYNC_TIMEOUT,
+ 	},
+ };
+ 
 -- 
-2.44.0
+2.43.0
 
 
 
