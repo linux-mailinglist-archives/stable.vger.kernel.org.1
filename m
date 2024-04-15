@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-39756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A11E8A5499
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:38:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C0A88A53F9
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:33:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BFCF1C20C84
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:38:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1804128491B
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D4F823DC;
-	Mon, 15 Apr 2024 14:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CADF82862;
+	Mon, 15 Apr 2024 14:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVeed/zH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkSmUrXc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636FA762D2;
-	Mon, 15 Apr 2024 14:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0BC7F7D1;
+	Mon, 15 Apr 2024 14:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191719; cv=none; b=YxckqO51pmrsk61zkJkoVTno6VYZJdJ9/5zVi9INqwTrQnSr9ne9G2oc8a0q1Tc3TfMqYeeilTdJD9jZz5NPqXQIPnoh926amEVSX3ZQ33WbtdJBOagKKe/f2CfkwdemF95XfGBVQV80eP0ge45G1c49XSQALY8lMqVG054hx5g=
+	t=1713191403; cv=none; b=eMt/EYK/rQDed6cut7KhSzib7F/aujs63h/NUsmuP7TucPlxlQV/+wv5A2jt8kUpGFkU8JxxlA9pH7Jh0TYCzRI3M/ex4EQGsInmT/xJoRbfvTPQxvChsZ6xPgnYwQ+4y+IYBVCPPuvetP6mrwAo5Y7weyX75Guhc8AxXMTodQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191719; c=relaxed/simple;
-	bh=+mJZ+WoQYKpKZkGfG+KLpKTWeKzIyORh03LIjD9UN78=;
+	s=arc-20240116; t=1713191403; c=relaxed/simple;
+	bh=o0gUuRM4EjdAzkkjC9AXUE7Q5rWgMOC/P0Tx3/J5Mw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nphg/Flm21rWPnOQIAOvzTi3qfAxSyka9nJ0bd6x3K8D3FjH4C5ZNHI8pXqdBskZWL3K9TAevytBNRI+vmaXEeLsY/EwLDFVQg9nIgXlxDQ8ZDTOqZkQkjh7UU09eJumZyClBWb92APoXmXsTmTtIde91dw/2Heo3gVRzwPenRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVeed/zH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7D4C2BD11;
-	Mon, 15 Apr 2024 14:35:18 +0000 (UTC)
+	 MIME-Version; b=Pe+6Jgl5GE74+EYw+OeEtSl26WdcmPNS34IE2a2eQkALeQLsn/lfIPnBMXleuKRboO/wmTqiHh2dw5xcelwEhxIyVKvLeiMsqGJ04waXozhSK6bs/xY5SVOyhkU2E83u4C7kwu6znU2Y131B8vgbSRt6Aat2zRX/UvctOeGuIKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkSmUrXc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37760C2BD10;
+	Mon, 15 Apr 2024 14:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191719;
-	bh=+mJZ+WoQYKpKZkGfG+KLpKTWeKzIyORh03LIjD9UN78=;
+	s=korg; t=1713191402;
+	bh=o0gUuRM4EjdAzkkjC9AXUE7Q5rWgMOC/P0Tx3/J5Mw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dVeed/zHyccXfIUZ0oMzNT+UlyvuxMnul2jtb9+c6kTMHqWTERCL7HOvIaMDLXt75
-	 +EgCe0UnfnHvFzZOh9rVXyDytENUaoZznb2Q29UHArT1MG2wLkbJMVQm3z4gwwP3II
-	 aHpQ2MZegAyojIaxTYHzGwh3fv2iCX3v/+hGfhdA=
+	b=nkSmUrXcaepdYLC08goDGK0uhKBgw3r6Y5MwEeBFgPFt/4aJSZbEnJl2GFuKqBqqo
+	 LyLS2FmRPBhGoHO6OI8Z73BF+N/AvJZSWQXSBthvKrJK2pHlcP6qM+mhOVyvh2NaL1
+	 7/kl42kfB80vJemtbTlEfvrpSshoCJj/5Sbizoxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 063/122] net: sparx5: fix wrong config being used when reconfiguring PCS
+	Kuogee Hsieh <quic_khsieh@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>
+Subject: [PATCH 6.8 129/172] drm/msm/dp: fix runtime PM leak on disconnect
 Date: Mon, 15 Apr 2024 16:20:28 +0200
-Message-ID: <20240415141955.266426010@linuxfoundation.org>
+Message-ID: <20240415142004.300860482@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Machon <daniel.machon@microchip.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 33623113a48ea906f1955cbf71094f6aa4462e8f ]
+commit 0640f47b742667fca6aac174f7cd62b6c2c7532c upstream.
 
-The wrong port config is being used if the PCS is reconfigured. Fix this
-by correctly using the new config instead of the old one.
+Make sure to put the runtime PM usage count (and suspend) also when
+receiving a disconnect event while in the ST_MAINLINK_READY state.
 
-Fixes: 946e7fd5053a ("net: sparx5: add port module support")
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20240409-link-mode-reconfiguration-fix-v2-1-db6a507f3627@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This specifically avoids leaking a runtime PM usage count on every
+disconnect with display servers that do not automatically enable
+external displays when receiving a hotplug notification.
+
+Fixes: 5814b8bf086a ("drm/msm/dp: incorporate pm_runtime framework into DP driver")
+Cc: stable@vger.kernel.org      # 6.8
+Cc: Kuogee Hsieh <quic_khsieh@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/582744/
+Link: https://lore.kernel.org/r/20240313164306.23133-2-johan+linaro@kernel.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_port.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/dp/dp_display.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-index 3a1b1a1f5a195..60dd2fd603a85 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-@@ -731,7 +731,7 @@ static int sparx5_port_pcs_low_set(struct sparx5 *sparx5,
- 	bool sgmii = false, inband_aneg = false;
- 	int err;
- 
--	if (port->conf.inband) {
-+	if (conf->inband) {
- 		if (conf->portmode == PHY_INTERFACE_MODE_SGMII ||
- 		    conf->portmode == PHY_INTERFACE_MODE_QSGMII)
- 			inband_aneg = true; /* Cisco-SGMII in-band-aneg */
-@@ -948,7 +948,7 @@ int sparx5_port_pcs_set(struct sparx5 *sparx5,
- 	if (err)
- 		return -EINVAL;
- 
--	if (port->conf.inband) {
-+	if (conf->inband) {
- 		/* Enable/disable 1G counters in ASM */
- 		spx5_rmw(ASM_PORT_CFG_CSC_STAT_DIS_SET(high_speed_dev),
- 			 ASM_PORT_CFG_CSC_STAT_DIS,
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/msm/dp/dp_display.c
++++ b/drivers/gpu/drm/msm/dp/dp_display.c
+@@ -655,6 +655,7 @@ static int dp_hpd_unplug_handle(struct d
+ 		dp_display_host_phy_exit(dp);
+ 		dp->hpd_state = ST_DISCONNECTED;
+ 		dp_display_notify_disconnect(&dp->dp_display.pdev->dev);
++		pm_runtime_put_sync(&pdev->dev);
+ 		mutex_unlock(&dp->event_mutex);
+ 		return 0;
+ 	}
 
 
 
