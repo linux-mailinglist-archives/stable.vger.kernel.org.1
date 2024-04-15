@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-39672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 779AD8A541D
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:34:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53BAF8A54F7
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E645282EBF
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:34:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 856201C221C7
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963F274400;
-	Mon, 15 Apr 2024 14:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C35F77F22;
+	Mon, 15 Apr 2024 14:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zim0YPTs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQ214/ey"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D3B82D93;
-	Mon, 15 Apr 2024 14:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF31F2A8D3;
+	Mon, 15 Apr 2024 14:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191471; cv=none; b=JzuAkiptj+dR4PlRkpFbR1u1ZCl8KfzRw1M/NveDpkUwue4XCAXmrVDNxSPbA3Eq6aIRx4+8dcT4FxJrbdtpuXlBp6uWyRlhJe+Vx+8/n1sQG0XprGSkpWRK4W72YcwGe2/mV3jA83doOro3vh5RdRipdYurxQouxWzaCHvnBYY=
+	t=1713191959; cv=none; b=cKICjwZ0PgjB9pJ0V60qVz2E+Xcm90ibuJ3G5IXdqxSJDl1YI+uQt4GKYzieNYVi5PhW8iuZ7DPclTOsSxoyQo5Nfm0nfMVh9MDEBHo4pY9lme9QXxLpJVXvlNISRYNdFLpU+JRuAARccCeLVJtZ9pk3KnQXTJqeFUsh/hMXDkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191471; c=relaxed/simple;
-	bh=xjCdVoz2euOdQOHxWpb6nedk+v+ATv5ePeRyXaVIjPw=;
+	s=arc-20240116; t=1713191959; c=relaxed/simple;
+	bh=92bHlwYCiLCskqllLRcy8wv8RwVNGvtnYOgZ0Eb0OlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lsru3d5n36ZiQe/mTRG7tZ8WENSb8wJYunT8JWT25t0AO4l2BQqTgnAKIEZHcQnU/B4AVFXz2d5iTynkNuapswMbzsGwlKmPPRgJUraWtvLgHVesBao0sI419MHyHK7opQIAKf/C+dRnGWIgzCz0j75+IjPJQNUNvjkZdhWp/pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zim0YPTs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FEEC3277B;
-	Mon, 15 Apr 2024 14:31:10 +0000 (UTC)
+	 MIME-Version; b=ffmlX2m77vHKrctdjo3mpzIgPPJZp69WGcXk0qHH1DBt4/SbOK32lA2D0Mar3aFYMupOKNq3tvK/5UCWNlI3fkguXu4/NArCR69ssFJ9achdwWkmn/OgJks3JWHc8kQPx2nOQr4fLZkOvWoCfTUxA5T0mxpyPQakThNe9Gbx5cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQ214/ey; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53BF9C113CC;
+	Mon, 15 Apr 2024 14:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191471;
-	bh=xjCdVoz2euOdQOHxWpb6nedk+v+ATv5ePeRyXaVIjPw=;
+	s=korg; t=1713191959;
+	bh=92bHlwYCiLCskqllLRcy8wv8RwVNGvtnYOgZ0Eb0OlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zim0YPTsxOWJ9C562kxpk1U4xqLfcKs8U94hPN07xxu5r0+461Mqvs4earN0otA1r
-	 lAEc+6D+GSOv6iNm5J37e14McFCCKf2SGKiBeNqyyNP98C6l1WMaccbA5ZUiCTAzIV
-	 ZcAt6B8qsZPTFz6IPyLnpXwzRoISGF+sL3fTEIb0=
+	b=TQ214/ey8+IOa77C4WrEe0VZuIcIN4L1xviQdj2FEAiJSF4W/Lp78HUiqLxdBA0Lq
+	 wR5uXt7oiiMwyHlx9Mry2HW4yMDqcB1uJUPy5hX44VdGHKuuAJping91lpt72QRtaf
+	 1XnBVDhrqlupwvMtie2Pdtj1qms5Fv0G71ofvbtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.8 153/172] x86/bugs: Cache the value of MSR_IA32_ARCH_CAPABILITIES
+	syzbot+7f7f201cc2668a8fd169@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 21/69] af_unix: Clear stale u->oob_skb.
 Date: Mon, 15 Apr 2024 16:20:52 +0200
-Message-ID: <20240415142005.011081422@linuxfoundation.org>
+Message-ID: <20240415141946.807128853@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,138 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit cb2db5bb04d7f778fbc1a1ea2507aab436f1bff3 upstream.
+[ Upstream commit b46f4eaa4f0ec38909fb0072eea3aeddb32f954e ]
 
-There's no need to keep reading MSR_IA32_ARCH_CAPABILITIES over and
-over.  It's even read in the BHI sysfs function which is a big no-no.
-Just read it once and cache it.
+syzkaller started to report deadlock of unix_gc_lock after commit
+4090fa373f0e ("af_unix: Replace garbage collection algorithm."), but
+it just uncovers the bug that has been there since commit 314001f0bf92
+("af_unix: Add OOB support").
 
-Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/9592a18a814368e75f8f4b9d74d3883aa4fd1eaf.1712813475.git.jpoimboe@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The repro basically does the following.
+
+  from socket import *
+  from array import array
+
+  c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+  c1.sendmsg([b'a'], [(SOL_SOCKET, SCM_RIGHTS, array("i", [c2.fileno()]))], MSG_OOB)
+  c2.recv(1)  # blocked as no normal data in recv queue
+
+  c2.close()  # done async and unblock recv()
+  c1.close()  # done async and trigger GC
+
+A socket sends its file descriptor to itself as OOB data and tries to
+receive normal data, but finally recv() fails due to async close().
+
+The problem here is wrong handling of OOB skb in manage_oob().  When
+recvmsg() is called without MSG_OOB, manage_oob() is called to check
+if the peeked skb is OOB skb.  In such a case, manage_oob() pops it
+out of the receive queue but does not clear unix_sock(sk)->oob_skb.
+This is wrong in terms of uAPI.
+
+Let's say we send "hello" with MSG_OOB, and "world" without MSG_OOB.
+The 'o' is handled as OOB data.  When recv() is called twice without
+MSG_OOB, the OOB data should be lost.
+
+  >>> from socket import *
+  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM, 0)
+  >>> c1.send(b'hello', MSG_OOB)  # 'o' is OOB data
+  5
+  >>> c1.send(b'world')
+  5
+  >>> c2.recv(5)  # OOB data is not received
+  b'hell'
+  >>> c2.recv(5)  # OOB date is skipped
+  b'world'
+  >>> c2.recv(5, MSG_OOB)  # This should return an error
+  b'o'
+
+In the same situation, TCP actually returns -EINVAL for the last
+recv().
+
+Also, if we do not clear unix_sk(sk)->oob_skb, unix_poll() always set
+EPOLLPRI even though the data has passed through by previous recv().
+
+To avoid these issues, we must clear unix_sk(sk)->oob_skb when dequeuing
+it from recv queue.
+
+The reason why the old GC did not trigger the deadlock is because the
+old GC relied on the receive queue to detect the loop.
+
+When it is triggered, the socket with OOB data is marked as GC candidate
+because file refcount == inflight count (1).  However, after traversing
+all inflight sockets, the socket still has a positive inflight count (1),
+thus the socket is excluded from candidates.  Then, the old GC lose the
+chance to garbage-collect the socket.
+
+With the old GC, the repro continues to create true garbage that will
+never be freed nor detected by kmemleak as it's linked to the global
+inflight list.  That's why we couldn't even notice the issue.
+
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Reported-by: syzbot+7f7f201cc2668a8fd169@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7f7f201cc2668a8fd169
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240405221057.2406-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c |   22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+ net/unix/af_unix.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -61,6 +61,8 @@ EXPORT_SYMBOL_GPL(x86_spec_ctrl_current)
- u64 x86_pred_cmd __ro_after_init = PRED_CMD_IBPB;
- EXPORT_SYMBOL_GPL(x86_pred_cmd);
- 
-+static u64 __ro_after_init ia32_cap;
-+
- static DEFINE_MUTEX(spec_ctrl_mutex);
- 
- void (*x86_return_thunk)(void) __ro_after_init = __x86_return_thunk;
-@@ -144,6 +146,8 @@ void __init cpu_select_mitigations(void)
- 		x86_spec_ctrl_base &= ~SPEC_CTRL_MITIGATIONS_MASK;
- 	}
- 
-+	ia32_cap = x86_read_arch_cap_msr();
-+
- 	/* Select the proper CPU mitigations before patching alternatives: */
- 	spectre_v1_select_mitigation();
- 	spectre_v2_select_mitigation();
-@@ -301,8 +305,6 @@ static const char * const taa_strings[]
- 
- static void __init taa_select_mitigation(void)
- {
--	u64 ia32_cap;
--
- 	if (!boot_cpu_has_bug(X86_BUG_TAA)) {
- 		taa_mitigation = TAA_MITIGATION_OFF;
- 		return;
-@@ -341,7 +343,6 @@ static void __init taa_select_mitigation
- 	 * On MDS_NO=1 CPUs if ARCH_CAP_TSX_CTRL_MSR is not set, microcode
- 	 * update is required.
- 	 */
--	ia32_cap = x86_read_arch_cap_msr();
- 	if ( (ia32_cap & ARCH_CAP_MDS_NO) &&
- 	    !(ia32_cap & ARCH_CAP_TSX_CTRL_MSR))
- 		taa_mitigation = TAA_MITIGATION_UCODE_NEEDED;
-@@ -401,8 +402,6 @@ static const char * const mmio_strings[]
- 
- static void __init mmio_select_mitigation(void)
- {
--	u64 ia32_cap;
--
- 	if (!boot_cpu_has_bug(X86_BUG_MMIO_STALE_DATA) ||
- 	     boot_cpu_has_bug(X86_BUG_MMIO_UNKNOWN) ||
- 	     cpu_mitigations_off()) {
-@@ -413,8 +412,6 @@ static void __init mmio_select_mitigatio
- 	if (mmio_mitigation == MMIO_MITIGATION_OFF)
- 		return;
- 
--	ia32_cap = x86_read_arch_cap_msr();
--
- 	/*
- 	 * Enable CPU buffer clear mitigation for host and VMM, if also affected
- 	 * by MDS or TAA. Otherwise, enable mitigation for VMM only.
-@@ -508,7 +505,7 @@ static void __init rfds_select_mitigatio
- 	if (rfds_mitigation == RFDS_MITIGATION_OFF)
- 		return;
- 
--	if (x86_read_arch_cap_msr() & ARCH_CAP_RFDS_CLEAR)
-+	if (ia32_cap & ARCH_CAP_RFDS_CLEAR)
- 		setup_force_cpu_cap(X86_FEATURE_CLEAR_CPU_BUF);
- 	else
- 		rfds_mitigation = RFDS_MITIGATION_UCODE_NEEDED;
-@@ -659,8 +656,6 @@ void update_srbds_msr(void)
- 
- static void __init srbds_select_mitigation(void)
- {
--	u64 ia32_cap;
--
- 	if (!boot_cpu_has_bug(X86_BUG_SRBDS))
- 		return;
- 
-@@ -669,7 +664,6 @@ static void __init srbds_select_mitigati
- 	 * are only exposed to SRBDS when TSX is enabled or when CPU is affected
- 	 * by Processor MMIO Stale Data vulnerability.
- 	 */
--	ia32_cap = x86_read_arch_cap_msr();
- 	if ((ia32_cap & ARCH_CAP_MDS_NO) && !boot_cpu_has(X86_FEATURE_RTM) &&
- 	    !boot_cpu_has_bug(X86_BUG_MMIO_STALE_DATA))
- 		srbds_mitigation = SRBDS_MITIGATION_TSX_OFF;
-@@ -813,7 +807,7 @@ static void __init gds_select_mitigation
- 	/* Will verify below that mitigation _can_ be disabled */
- 
- 	/* No microcode */
--	if (!(x86_read_arch_cap_msr() & ARCH_CAP_GDS_CTRL)) {
-+	if (!(ia32_cap & ARCH_CAP_GDS_CTRL)) {
- 		if (gds_mitigation == GDS_MITIGATION_FORCE) {
- 			/*
- 			 * This only needs to be done on the boot CPU so do it
-@@ -1907,8 +1901,6 @@ static void update_indir_branch_cond(voi
- /* Update the static key controlling the MDS CPU buffer clear in idle */
- static void update_mds_branch_idle(void)
- {
--	u64 ia32_cap = x86_read_arch_cap_msr();
--
- 	/*
- 	 * Enable the idle clearing if SMT is active on CPUs which are
- 	 * affected only by MSBDS and not any other MDS variant.
-@@ -2817,7 +2809,7 @@ static const char *spectre_bhi_state(voi
- 	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP))
- 		return "; BHI: SW loop, KVM: SW loop";
- 	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
--		 !(x86_read_arch_cap_msr() & ARCH_CAP_RRSBA))
-+		 !(ia32_cap & ARCH_CAP_RRSBA))
- 		return "; BHI: Retpoline";
- 	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT))
- 		return "; BHI: Syscall hardening, KVM: SW loop";
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index e1af94393789f..373530303ad19 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2677,7 +2677,9 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
+ 				}
+ 			} else if (!(flags & MSG_PEEK)) {
+ 				skb_unlink(skb, &sk->sk_receive_queue);
+-				consume_skb(skb);
++				WRITE_ONCE(u->oob_skb, NULL);
++				if (!WARN_ON_ONCE(skb_unref(skb)))
++					kfree_skb(skb);
+ 				skb = skb_peek(&sk->sk_receive_queue);
+ 			}
+ 		}
+-- 
+2.43.0
+
 
 
 
