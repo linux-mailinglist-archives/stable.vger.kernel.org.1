@@ -1,288 +1,357 @@
-Return-Path: <stable+bounces-39431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40CFD8A4F5E
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:44:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A848A4F6C
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:47:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1D291F218F3
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 12:44:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D6E3B21691
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 12:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25A66F524;
-	Mon, 15 Apr 2024 12:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0159670CA8;
+	Mon, 15 Apr 2024 12:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zi7OuxjP"
+	dkim=pass (1024-bit key) header.d=mail.big.or.jp header.i=@mail.big.or.jp header.b="Vm9emoVL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.big.or.jp (mail.big.or.jp [210.197.72.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925F56F534
-	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 12:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530006FE3D;
+	Mon, 15 Apr 2024 12:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.197.72.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713184992; cv=none; b=Ay0Gilufcs7hlMdHaS6A3BPvLNu4fTFIwi+4Ld9O6YtldK3bdsizjNmmdEXeObv/+l+6kvr09i47UPL0pEkFZ80RiPYjN5arblWxIWUf8MUx31SoeGCA1HB37YR7vapYWU4VTZAnxmwyRntlGjGWaPzavtg62D4OWIGwgHf8cwA=
+	t=1713185236; cv=none; b=Olgh7OBdrVWdk2soaDC8Gqr+j5PVmulue3WKh9wpuvCDtqOzCfJBfAY+OorXSJgyXlSNtDWp8JaOUTrawz+U4S4ZkMuO+KULLvFzr1jl8ciOc85eAOzx/d5RUSw35ds5DoDFofv+INenHt19O1EAIHwE6KLvYPrrpk/4wGHmucM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713184992; c=relaxed/simple;
-	bh=NZ/tJ1Yvwp8vDVWbw5nBIDYIBWx+mXlUaThMjle+MMo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=carexK/mGY+7Z4M5laCRMmPCmA4cdypR3kRVQtgwxMeEDU+OS96qW9AFs5Cx4gJG3DKq3vA/vSpdH+jJkU9nnFFpclXAt8uMRFrdqp67nYdxFCd8Q/hOq1aAjCas4/cu2sVq4OrEHklXfiimRiGHjIRCs8D7z+6bYPm+cPcTGF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zi7OuxjP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B4AC113CC;
-	Mon, 15 Apr 2024 12:43:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713184992;
-	bh=NZ/tJ1Yvwp8vDVWbw5nBIDYIBWx+mXlUaThMjle+MMo=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Zi7OuxjPoLQARi82c8xsIT+MbGxNgoyQ9nhSUrld9ZxIC4JtJ3Sc7OHXfk2AgFoIz
-	 Zsn1IZefG9OKNsGp4gZauMRs9LnXkU7aIDFygoU9bF+pF2kZ5ohtwjvL1nEB8Ef6WU
-	 IE+/GpAOMEnhd0Aru6rzt+BJukfHPh8WmXSOqDvU=
-Subject: FAILED: patch "[PATCH] selftests/timers/posix_timers: Reimplement" failed to apply to 6.6-stable tree
-To: oleg@redhat.com,tglx@linutronix.de
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Apr 2024 14:43:09 +0200
-Message-ID: <2024041509-triangle-parlor-1783@gregkh>
+	s=arc-20240116; t=1713185236; c=relaxed/simple;
+	bh=nOvavCeBcTWwyTpYhiRfhLBO3noy5XdlXFWcJAaTGec=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=H3U8DRCHxKm/rJQ2W9jWE54s9PzfIXIrh0SF/lWbzqC0mhnv2TCYfmvs/nYqVBlihpkFhEi1bE1mRVE7lFG/otDzYuaHvT6l7df6EvXKEfjQsEJ229V9ThFD+cM5+Ao4+UZB8wYa5yEI0/GDOdLewYkfmfG6Lac6zscvG1SbpDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=big.or.jp; spf=pass smtp.mailfrom=big.or.jp; dkim=pass (1024-bit key) header.d=mail.big.or.jp header.i=@mail.big.or.jp header.b=Vm9emoVL; arc=none smtp.client-ip=210.197.72.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=big.or.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=big.or.jp
+Received: from localhost (unknown [IPv6:2409:250:40:1a00:d65d:64ff:fef1:3a80])
+	by mail.big.or.jp (Postfix) with ESMTPA id 3B8BD16044B;
+	Mon, 15 Apr 2024 21:47:09 +0900 (JST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mail.big.or.jp;
+	s=_dkimselector; t=1713185229;
+	bh=iqvE17BmHxvMsfeYKvlGITccJalVleSlR/Y3VWC4ZBA=;
+	h=Date:To:Cc:Subject:From:In-Reply-To:References;
+	b=Vm9emoVLmE0lAJ6dHuaRWzJ1Ib9m8urTsTE1qJA2fDFk8eYZvEw9kgkbOtNcSUQqK
+	 QaukQWIAZG/qRKT9/m2lczEMXiHyA4kbDVc/N++4gJLaAhL3uPC6WGbWMuEZXpK9Rz
+	 YXNI8ZemDrFExofwWHc3LzgIn5YEZLw6AIv06o30=
+Date: Mon, 15 Apr 2024 21:47:04 +0900 (JST)
+Message-Id: <20240415.214704.2195618259755902678.sian@big.or.jp>
+To: greg@kroah.com
+Cc: holger@applied-asynchrony.com, Naohiro.Aota@wdc.com,
+ regressions@lists.linux.dev, dsterba@suse.com, wqu@suse.com,
+ linux-btrfs@vger.kernel.org, clm@fb.com, josef@toxicpanda.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: btrfs: sanity tests fails on 6.8.3
+From: Hiroshi Takekawa <sian@big.or.jp>
+In-Reply-To: <2024041508-refocus-cycling-09e8@gregkh>
+References: <igqfzsnyclopilimyy27ualcf2g5g44x3ru5v3tkjpb3ukgabs@2yuc57sxoxvv>
+	<3b2d9a1c-37d2-47f4-b0b4-a9d6c34d2c7d@applied-asynchrony.com>
+	<2024041508-refocus-cycling-09e8@gregkh>
+X-Mailer: Mew version 6.8 on Emacs 29.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+Thank you for all your replies.
+I cherry-picked b2136cc288fc and the ssanity tests work well.
 
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+From: Greg KH <greg@kroah.com>
+Subject: Re: btrfs: sanity tests fails on 6.8.3
+Date: Mon, 15 Apr 2024 09:33:27 +0200
 
-To reproduce the conflict and resubmit, you may use the following commands:
+> On Mon, Apr 15, 2024 at 09:25:58AM +0200, Holger Hoffst=E4tte wrote:
+>> On 2024-04-15 07:24, Naohiro Aota wrote:
+>> > On Mon, Apr 15, 2024 at 07:11:15AM +0200, Linux regression trackin=
+g (Thorsten Leemhuis) wrote:
+>> > > [adding the authors of the two commits mentioned as well as the =
+Btrfs
+>> > > maintainers and the regressions & stable list to the list of rec=
+ipients]
+>> > > =
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 6d029c25b71f2de2838a6f093ce0fa0e69336154
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024041509-triangle-parlor-1783@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+>> > > On 15.04.24 05:56, Hiroshi Takekawa wrote:
+>> > > > =
 
-Possible dependencies:
+>> > > > Module loading fails with CONFIG_BTRFS_FS_RUN_SANITY_TESTS ena=
+bled on
+>> > > > 6.8.3-6.8.6.
+>> > > > =
 
+>> > > > Bisected:
+>> > > > Reverting these commits, then module loading succeeds.
+>> > > > 70f49f7b9aa3dfa70e7a2e3163ab4cae7c9a457a
+>> > > =
 
+>> > > FWIW, that is a linux-stable commit-id for 41044b41ad2c8c ("btrf=
+s: add
+>> > > helper to get fs_info from struct inode pointer") [v6.9-rc1, v6.=
+8.3
+>> > > (70f49f7b9aa3df)]
+>> > > =
 
-thanks,
+>> > > > 86211eea8ae1676cc819d2b4fdc8d995394be07d
+>> > =
 
-greg k-h
+>> > It looks like the stable tree lacks this commit, which is necessar=
+y for the
+>> > commit above.
+>> > =
 
------------------- original commit in Linus's tree ------------------
+>> > b2136cc288fc ("btrfs: tests: allocate dummy fs_info and root in te=
+st_find_delalloc()")
+>> > =
 
-From 6d029c25b71f2de2838a6f093ce0fa0e69336154 Mon Sep 17 00:00:00 2001
-From: Oleg Nesterov <oleg@redhat.com>
-Date: Tue, 9 Apr 2024 15:38:03 +0200
-Subject: [PATCH] selftests/timers/posix_timers: Reimplement
- check_timer_distribution()
+>> =
 
-check_timer_distribution() runs ten threads in a busy loop and tries to
-test that the kernel distributes a process posix CPU timer signal to every
-thread over time.
+>> This was previously reported during the last stable cycle, and the m=
+issing
+>> patch is already queued up. You can see the queue here:
+>> =
 
-There is not guarantee that this is true even after commit bcb7ee79029d
-("posix-timers: Prefer delivery of signals to the current thread") because
-that commit only avoids waking up the sleeping process leader thread, but
-that has nothing to do with the actual signal delivery.
+>> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.=
+git/tree/queue-6.8
+> =
 
-As the signal is process wide the first thread which observes sigpending
-and wins the race to lock sighand will deliver the signal. Testing shows
-that this hangs on a regular base because some threads never win the race.
+> Thanks for confirming this, the next 6.8 release should resolve this
+> issue.
+> =
 
-The comment "This primarily tests that the kernel does not favour any one."
-is wrong. The kernel does favour a thread which hits the timer interrupt
-when CLOCK_PROCESS_CPUTIME_ID expires.
+> greg k-h
+> =
 
-Rewrite the test so it only checks that the group leader sleeping in join()
-never receives SIGALRM and the thread which burns CPU cycles receives all
-signals.
+>
 
-In older kernels which do not have commit bcb7ee79029d ("posix-timers:
-Prefer delivery of signals to the current thread") the test-case fails
-immediately, the very 1st tick wakes the leader up. Otherwise it quickly
-succeeds after 100 ticks.
+cherry-picked on top of 6.8.6
 
-CI testing wants to use newer selftest versions on stable kernels. In this
-case the test is guaranteed to fail.
+$ git log -2
+commit 12d79cec1083658f23f4566fcea40463549c5a54 (HEAD -> refs/heads/lin=
+ux-6.8.6-btrfs-selftest-fix)
+Author: David Sterba <dsterba@suse.com>
+Date:   Mon Jan 29 19:04:33 2024 +0100
 
-So check in the failure case whether the kernel version is less than v6.3
-and skip the test result in that case.
+    btrfs: tests: allocate dummy fs_info and root in test_find_delalloc=
+()
+    =
 
-[ tglx: Massaged change log, renamed the version check helper ]
+    Allocate fs_info and root to have a valid fs_info pointer in case i=
+t's
+    dereferenced by a helper outside of tests, like find_lock_delalloc_=
+range().
+    =
 
-Fixes: e797203fb3ba ("selftests/timers/posix_timers: Test delivery of signals across threads")
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240409133802.GD29396@redhat.com
+    Signed-off-by: David Sterba <dsterba@suse.com>
 
-diff --git a/tools/testing/selftests/kselftest.h b/tools/testing/selftests/kselftest.h
-index 541bf192e30e..973b18e156b2 100644
---- a/tools/testing/selftests/kselftest.h
-+++ b/tools/testing/selftests/kselftest.h
-@@ -51,6 +51,7 @@
- #include <stdarg.h>
- #include <string.h>
- #include <stdio.h>
-+#include <sys/utsname.h>
- #endif
- 
- #ifndef ARRAY_SIZE
-@@ -388,4 +389,16 @@ static inline __printf(1, 2) int ksft_exit_skip(const char *msg, ...)
- 	exit(KSFT_SKIP);
- }
- 
-+static inline int ksft_min_kernel_version(unsigned int min_major,
-+					  unsigned int min_minor)
-+{
-+	unsigned int major, minor;
-+	struct utsname info;
-+
-+	if (uname(&info) || sscanf(info.release, "%u.%u.", &major, &minor) != 2)
-+		ksft_exit_fail_msg("Can't parse kernel version\n");
-+
-+	return major > min_major || (major == min_major && minor >= min_minor);
-+}
-+
- #endif /* __KSELFTEST_H */
-diff --git a/tools/testing/selftests/timers/posix_timers.c b/tools/testing/selftests/timers/posix_timers.c
-index d49dd3ffd0d9..d86a0e00711e 100644
---- a/tools/testing/selftests/timers/posix_timers.c
-+++ b/tools/testing/selftests/timers/posix_timers.c
-@@ -184,80 +184,71 @@ static int check_timer_create(int which)
- 	return 0;
- }
- 
--int remain;
--__thread int got_signal;
-+static pthread_t ctd_thread;
-+static volatile int ctd_count, ctd_failed;
- 
--static void *distribution_thread(void *arg)
-+static void ctd_sighandler(int sig)
- {
--	while (__atomic_load_n(&remain, __ATOMIC_RELAXED));
--	return NULL;
-+	if (pthread_self() != ctd_thread)
-+		ctd_failed = 1;
-+	ctd_count--;
- }
- 
--static void distribution_handler(int nr)
-+static void *ctd_thread_func(void *arg)
- {
--	if (!__atomic_exchange_n(&got_signal, 1, __ATOMIC_RELAXED))
--		__atomic_fetch_sub(&remain, 1, __ATOMIC_RELAXED);
--}
--
--/*
-- * Test that all running threads _eventually_ receive CLOCK_PROCESS_CPUTIME_ID
-- * timer signals. This primarily tests that the kernel does not favour any one.
-- */
--static int check_timer_distribution(void)
--{
--	int err, i;
--	timer_t id;
--	const int nthreads = 10;
--	pthread_t threads[nthreads];
- 	struct itimerspec val = {
- 		.it_value.tv_sec = 0,
- 		.it_value.tv_nsec = 1000 * 1000,
- 		.it_interval.tv_sec = 0,
- 		.it_interval.tv_nsec = 1000 * 1000,
- 	};
-+	timer_t id;
- 
--	remain = nthreads + 1;  /* worker threads + this thread */
--	signal(SIGALRM, distribution_handler);
--	err = timer_create(CLOCK_PROCESS_CPUTIME_ID, NULL, &id);
--	if (err < 0) {
--		ksft_perror("Can't create timer");
--		return -1;
--	}
--	err = timer_settime(id, 0, &val, NULL);
--	if (err < 0) {
--		ksft_perror("Can't set timer");
--		return -1;
--	}
-+	/* 1/10 seconds to ensure the leader sleeps */
-+	usleep(10000);
- 
--	for (i = 0; i < nthreads; i++) {
--		err = pthread_create(&threads[i], NULL, distribution_thread,
--				     NULL);
--		if (err) {
--			ksft_print_msg("Can't create thread: %s (%d)\n",
--				       strerror(errno), errno);
--			return -1;
--		}
--	}
-+	ctd_count = 100;
-+	if (timer_create(CLOCK_PROCESS_CPUTIME_ID, NULL, &id))
-+		return "Can't create timer\n";
-+	if (timer_settime(id, 0, &val, NULL))
-+		return "Can't set timer\n";
- 
--	/* Wait for all threads to receive the signal. */
--	while (__atomic_load_n(&remain, __ATOMIC_RELAXED));
-+	while (ctd_count > 0 && !ctd_failed)
-+		;
- 
--	for (i = 0; i < nthreads; i++) {
--		err = pthread_join(threads[i], NULL);
--		if (err) {
--			ksft_print_msg("Can't join thread: %s (%d)\n",
--				       strerror(errno), errno);
--			return -1;
--		}
--	}
-+	if (timer_delete(id))
-+		return "Can't delete timer\n";
- 
--	if (timer_delete(id)) {
--		ksft_perror("Can't delete timer");
--		return -1;
--	}
-+	return NULL;
-+}
- 
--	ksft_test_result_pass("check_timer_distribution\n");
-+/*
-+ * Test that only the running thread receives the timer signal.
-+ */
-+static int check_timer_distribution(void)
-+{
-+	const char *errmsg;
-+
-+	signal(SIGALRM, ctd_sighandler);
-+
-+	errmsg = "Can't create thread\n";
-+	if (pthread_create(&ctd_thread, NULL, ctd_thread_func, NULL))
-+		goto err;
-+
-+	errmsg = "Can't join thread\n";
-+	if (pthread_join(ctd_thread, (void **)&errmsg) || errmsg)
-+		goto err;
-+
-+	if (!ctd_failed)
-+		ksft_test_result_pass("check signal distribution\n");
-+	else if (ksft_min_kernel_version(6, 3))
-+		ksft_test_result_fail("check signal distribution\n");
-+	else
-+		ksft_test_result_skip("check signal distribution (old kernel)\n");
- 	return 0;
-+err:
-+	ksft_print_msg(errmsg);
-+	return -1;
- }
- 
- int main(int argc, char **argv)
+commit 1f7d392571dfec1c47b306a32bbe60be05a51160 (tag: refs/tags/v6.8.6,=
+ refs/remotes/origin/linux-6.8.y, refs/heads/linux-6.8.y)
+Author: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Date:   Sat Apr 13 13:10:12 2024 +0200
 
+    Linux 6.8.6
+    =
+
+    Link: https://lore.kernel.org/r/20240411095420.903937140@linuxfound=
+ation.org
+    Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+    Tested-by: SeongJae Park <sj@kernel.org>
+    Tested-by: Ronald Warsow <rwarsow@gmx.de>
+    Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+    Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+    Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+    Tested-by: Ron Economos <re@w6rz.net>
+    Tested-by: Jon Hunter <jonathanh@nvidia.com>
+    Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+$ cat /proc/version =
+
+Linux version 6.8.6+ (user@host) (clang version 18.1.3, LLD 18.1.3) #1 =
+SMP PREEMPT Mon Apr 15 21:31:32 JST 2024
+
+sanity tests are enabled:
+$ zgrep BTRFS_FS_RUN /proc/config.gz =
+
+CONFIG_BTRFS_FS_RUN_SANITY_TESTS=3Dy
+
+dmesg, which indicates the success.
+[  105.926765] xor: automatically using best checksumming function   av=
+x       =
+
+[  105.928174] raid6: skipped pq benchmark and selected avx2x4
+[  105.928175] raid6: using avx2x2 recovery algorithm
+[  106.017111] Btrfs loaded, zoned=3Dno, fsverity=3Dno
+[  106.017125] BTRFS: selftest: sectorsize: 4096  nodesize: 4096
+[  106.017126] BTRFS: selftest: running btrfs free space cache tests
+[  106.017131] BTRFS: selftest: running extent only tests
+[  106.017133] BTRFS: selftest: running bitmap only tests
+[  106.017136] BTRFS: selftest: running bitmap and extent tests
+[  106.017139] BTRFS: selftest: running space stealing from bitmap to e=
+xtent tests
+[  106.017278] BTRFS: selftest: running bytes index tests
+[  106.017283] BTRFS: selftest: running extent buffer operation tests
+[  106.017283] BTRFS: selftest: running btrfs_split_item tests
+[  106.017287] BTRFS: selftest: running extent I/O tests
+[  106.017288] BTRFS: selftest: running find delalloc tests
+[  106.051988] BTRFS: selftest: running find_first_clear_extent_bit tes=
+t
+[  106.051991] BTRFS: selftest: running extent buffer bitmap tests
+[  106.058653] BTRFS: selftest: running extent buffer memory operation =
+tests
+[  106.058664] BTRFS: selftest: running inode tests
+[  106.058665] BTRFS: selftest: running btrfs_get_extent tests
+[  106.058680] BTRFS: selftest: running hole first btrfs_get_extent tes=
+t
+[  106.058685] BTRFS: selftest: running outstanding_extents tests
+[  106.058693] BTRFS: selftest: running qgroup tests
+[  106.058694] BTRFS: selftest: running qgroup add/remove tests
+[  106.058701] BTRFS: selftest: running qgroup multiple refs test
+[  106.058709] BTRFS: selftest: running free space tree tests
+[  106.065024] BTRFS: selftest: sectorsize: 4096  nodesize: 8192
+[  106.065025] BTRFS: selftest: running btrfs free space cache tests
+[  106.065027] BTRFS: selftest: running extent only tests
+[  106.065029] BTRFS: selftest: running bitmap only tests
+[  106.065032] BTRFS: selftest: running bitmap and extent tests
+[  106.065035] BTRFS: selftest: running space stealing from bitmap to e=
+xtent tests
+[  106.065174] BTRFS: selftest: running bytes index tests
+[  106.065179] BTRFS: selftest: running extent buffer operation tests
+[  106.065180] BTRFS: selftest: running btrfs_split_item tests
+[  106.065183] BTRFS: selftest: running extent I/O tests
+[  106.065183] BTRFS: selftest: running find delalloc tests
+[  106.099325] BTRFS: selftest: running find_first_clear_extent_bit tes=
+t
+[  106.099327] BTRFS: selftest: running extent buffer bitmap tests
+[  106.116359] BTRFS: selftest: running extent buffer memory operation =
+tests
+[  106.116380] BTRFS: selftest: running inode tests
+[  106.116381] BTRFS: selftest: running btrfs_get_extent tests
+[  106.116395] BTRFS: selftest: running hole first btrfs_get_extent tes=
+t
+[  106.116398] BTRFS: selftest: running outstanding_extents tests
+[  106.116405] BTRFS: selftest: running qgroup tests
+[  106.116406] BTRFS: selftest: running qgroup add/remove tests
+[  106.116413] BTRFS: selftest: running qgroup multiple refs test
+[  106.116420] BTRFS: selftest: running free space tree tests
+[  106.122685] BTRFS: selftest: sectorsize: 4096  nodesize: 16384
+[  106.122686] BTRFS: selftest: running btrfs free space cache tests
+[  106.122688] BTRFS: selftest: running extent only tests
+[  106.122690] BTRFS: selftest: running bitmap only tests
+[  106.122693] BTRFS: selftest: running bitmap and extent tests
+[  106.122697] BTRFS: selftest: running space stealing from bitmap to e=
+xtent tests
+[  106.122837] BTRFS: selftest: running bytes index tests
+[  106.122842] BTRFS: selftest: running extent buffer operation tests
+[  106.122843] BTRFS: selftest: running btrfs_split_item tests
+[  106.122847] BTRFS: selftest: running extent I/O tests
+[  106.122847] BTRFS: selftest: running find delalloc tests
+[  106.156175] BTRFS: selftest: running find_first_clear_extent_bit tes=
+t
+[  106.156177] BTRFS: selftest: running extent buffer bitmap tests
+[  106.190038] BTRFS: selftest: running extent buffer memory operation =
+tests
+[  106.190076] BTRFS: selftest: running inode tests
+[  106.190076] BTRFS: selftest: running btrfs_get_extent tests
+[  106.190091] BTRFS: selftest: running hole first btrfs_get_extent tes=
+t
+[  106.190095] BTRFS: selftest: running outstanding_extents tests
+[  106.190102] BTRFS: selftest: running qgroup tests
+[  106.190102] BTRFS: selftest: running qgroup add/remove tests
+[  106.190110] BTRFS: selftest: running qgroup multiple refs test
+[  106.190117] BTRFS: selftest: running free space tree tests
+[  106.196389] BTRFS: selftest: sectorsize: 4096  nodesize: 32768
+[  106.196390] BTRFS: selftest: running btrfs free space cache tests
+[  106.196391] BTRFS: selftest: running extent only tests
+[  106.196394] BTRFS: selftest: running bitmap only tests
+[  106.196397] BTRFS: selftest: running bitmap and extent tests
+[  106.196400] BTRFS: selftest: running space stealing from bitmap to e=
+xtent tests
+[  106.196539] BTRFS: selftest: running bytes index tests
+[  106.196544] BTRFS: selftest: running extent buffer operation tests
+[  106.196544] BTRFS: selftest: running btrfs_split_item tests
+[  106.196549] BTRFS: selftest: running extent I/O tests
+[  106.196549] BTRFS: selftest: running find delalloc tests
+[  106.230530] BTRFS: selftest: running find_first_clear_extent_bit tes=
+t
+[  106.230534] BTRFS: selftest: running extent buffer bitmap tests
+[  106.297904] BTRFS: selftest: running extent buffer memory operation =
+tests
+[  106.297981] BTRFS: selftest: running inode tests
+[  106.297982] BTRFS: selftest: running btrfs_get_extent tests
+[  106.297997] BTRFS: selftest: running hole first btrfs_get_extent tes=
+t
+[  106.298001] BTRFS: selftest: running outstanding_extents tests
+[  106.298008] BTRFS: selftest: running qgroup tests
+[  106.298009] BTRFS: selftest: running qgroup add/remove tests
+[  106.298016] BTRFS: selftest: running qgroup multiple refs test
+[  106.298023] BTRFS: selftest: running free space tree tests
+[  106.304312] BTRFS: selftest: sectorsize: 4096  nodesize: 65536
+[  106.304313] BTRFS: selftest: running btrfs free space cache tests
+[  106.304315] BTRFS: selftest: running extent only tests
+[  106.304317] BTRFS: selftest: running bitmap only tests
+[  106.304320] BTRFS: selftest: running bitmap and extent tests
+[  106.304324] BTRFS: selftest: running space stealing from bitmap to e=
+xtent tests
+[  106.304462] BTRFS: selftest: running bytes index tests
+[  106.304468] BTRFS: selftest: running extent buffer operation tests
+[  106.304468] BTRFS: selftest: running btrfs_split_item tests
+[  106.304473] BTRFS: selftest: running extent I/O tests
+[  106.304473] BTRFS: selftest: running find delalloc tests
+[  106.338587] BTRFS: selftest: running find_first_clear_extent_bit tes=
+t
+[  106.338589] BTRFS: selftest: running extent buffer bitmap tests
+[  106.472975] BTRFS: selftest: running extent buffer memory operation =
+tests
+[  106.473127] BTRFS: selftest: running inode tests
+[  106.473127] BTRFS: selftest: running btrfs_get_extent tests
+[  106.473143] BTRFS: selftest: running hole first btrfs_get_extent tes=
+t
+[  106.473148] BTRFS: selftest: running outstanding_extents tests
+[  106.473155] BTRFS: selftest: running qgroup tests
+[  106.473156] BTRFS: selftest: running qgroup add/remove tests
+[  106.473164] BTRFS: selftest: running qgroup multiple refs test
+[  106.473172] BTRFS: selftest: running free space tree tests
+[  106.479514] BTRFS: selftest: running extent_map tests
+[  106.479517] BTRFS: selftest: Running btrfs_drop_extent_map_range tes=
+ts
+[  106.479520] BTRFS: selftest: Running btrfs_drop_extent_cache with pi=
+nned
+[  106.479521] BTRFS: selftest: running rmap tests
+[  126.436989] modprobe: FATAL: Module ikconfig not found in directory =
+/lib/modules/6.8.6+
+[  170.100869] udevd[9881]: conflicting device node '/dev/mapper/data-e=
+ncrypted' found, link to '/dev/dm-0' will not be created
+[  170.861020] EXT4-fs (dm-0): mounted filesystem 22071832-a730-492a-a1=
+1f-2bc502437c08 r/w with ordered data mode. Quota mode: disabled.
+[  176.037983] udevd[9902]: conflicting device node '/dev/mapper/pool-e=
+ncrypted' found, link to '/dev/dm-1' will not be created
+[  177.780518] BTRFS: device label pool devid 1 transid 16145 /dev/mapp=
+er/pool-encrypted scanned by mount (9904)
+[  177.780955] BTRFS info (device dm-1): first mount of filesystem 2548=
+bfee-1ac9-4894-bd68-47e128d7af9b
+[  177.780963] BTRFS info (device dm-1): using crc32c (crc32c-intel) ch=
+ecksum algorithm
+[  177.780965] BTRFS info (device dm-1): disk space caching is enabled
+[  177.865416] BTRFS warning (device dm-1): devid 1 physical 0 len 4194=
+304 inside the reserved space
+[  183.347633] udevd[10073]: conflicting device node '/dev/mapper/backu=
+p-encrypted' found, link to '/dev/dm-2' will not be created
+
+Best regards,
+
+--
+Hiroshi Takekawa <sian@big.or.jp>
 
