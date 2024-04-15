@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-39428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FCF78A4F2C
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D110D8A4F34
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:38:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3A5FB21037
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 12:36:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D962283CF8
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 12:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4EA6F07D;
-	Mon, 15 Apr 2024 12:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57A36BB44;
+	Mon, 15 Apr 2024 12:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0IXetHM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibKa0N57"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE466F513
-	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 12:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631255CDD9
+	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 12:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713184596; cv=none; b=VIok1L2/tn4JuxIxHipT1n96DeWNdTpD+mtqGcW8o/J3/EVXNoVf5MWluBahKpR41dXf2nU9PSAor+SSP2Cgul2fyuMTgdUPVmetwcWh80V3lPaH7l6/W50mBqX/eQjrsdajF9zBodGBBsjEfJ1X/FjbPEX8lJ8QyMMSefoULn4=
+	t=1713184679; cv=none; b=SPFfSHn4Q3vZMyM/SJ0Lbwd0+SpDjbggxK/73jQddr8GpZhC+qu374YIY/0Sa17RI+B2UU7tO2cnvwreeVcYOpY/bN2F4g2sVzvr0C9lGnricmIJmMA9JTQfzek5hWV81QT1cJLBMOmo1oC9VLa2pveZEXgKFB8VxyTRfIUiPmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713184596; c=relaxed/simple;
-	bh=W9MvkYHkX0Vdpk669AXGr+RX0PV3StwqoXF1QjG9UY4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=G02HnXDVGqXHU91X1FvpShBHheUN9pMJoTVhcZxi69YA3B6AqeENpVVlft3Tr9hWmGqDVIVx+K2hwr625nrcBqvO2hVXsm3N2S4rPIcFSxtMgc5HRuhAxqckvtOM2Bnh6oDZaTbJLGXP8I0j/pSe3yjPbn/X+4ROCYdkpb9v7HY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0IXetHM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96093C2BD10;
-	Mon, 15 Apr 2024 12:36:35 +0000 (UTC)
+	s=arc-20240116; t=1713184679; c=relaxed/simple;
+	bh=BPqdPa7lm/dHSQ0poYEn08l4eu6bquS+Alp4YsE3tsM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=M3QYje+wE7PkuppVjdP5gqHbnJY7a3482xvfYkaq6uLj/OhQi8DE34BPq/5l0UbxBojED1oUTneGuncWBG0QCPp5bQ11q75+vCvwiauWwU7VIV8OI+ssrYn1pC0ow081ptcQccNz88eYwOvd/DIseFmwSZQklPkxLoxHYbC6MVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibKa0N57; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1E0C113CC;
+	Mon, 15 Apr 2024 12:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713184596;
-	bh=W9MvkYHkX0Vdpk669AXGr+RX0PV3StwqoXF1QjG9UY4=;
+	s=korg; t=1713184678;
+	bh=BPqdPa7lm/dHSQ0poYEn08l4eu6bquS+Alp4YsE3tsM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=z0IXetHMi0wlXzbFBVf9YsagV1mBx3A9KMugbBm00Mfsx8P3OEoliy6BRP0aCqc/p
-	 pveQNsC8sG6Mqs8Xugr5vCWv4qFxAvubkxJBWw/6p0BY7NeNuQLpMTHssP4Z41mjui
-	 YxhnHiyatFbRnqhxZ76ggi6z+2xhD4y7vUIOQkzw=
-Subject: FAILED: patch "[PATCH] kprobes: Fix possible use-after-free issue on kprobe" failed to apply to 4.19-stable tree
-To: zhengyejian1@huawei.com,mhiramat@kernel.org
+	b=ibKa0N5752xVcjjakMQ7lQlHbmTq2f26XPh6gCsDIzp9+53Em/Lwv5lB4Bo6bGwmV
+	 +7HxLruO+Sp5Bv9J6Ve0/otIR9v2n0oB1Rd52fksH1/MPyUlac8KsAjV8o/LFBQBfl
+	 FnioNDNpr5BwzTIHhhh6lf5mzidp6lsuYZiM0nCg=
+Subject: FAILED: patch "[PATCH] accel/ivpu: Check return code of ipc->lock init" failed to apply to 6.6-stable tree
+To: karol.wachowski@intel.com,jacek.lawrynowicz@linux.intel.com,quic_jhugo@quicinc.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Apr 2024 14:36:27 +0200
-Message-ID: <2024041526-whisking-flyover-825a@gregkh>
+Date: Mon, 15 Apr 2024 14:37:55 +0200
+Message-ID: <2024041555-provable-follicle-38d5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,29 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 325f3fb551f8cd672dbbfc4cf58b14f9ee3fc9e8
+git cherry-pick -x f0cf7ffcd02953c72fed5995378805883d16203e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024041526-whisking-flyover-825a@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024041555-provable-follicle-38d5@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-325f3fb551f8 ("kprobes: Fix possible use-after-free issue on kprobe registration")
-1efda38d6f9b ("kprobes: Prohibit probes in gate area")
-28f6c37a2910 ("kprobes: Forbid probing on trampoline and BPF code areas")
-223a76b268c9 ("kprobes: Fix coding style issues")
-9c89bb8e3272 ("kprobes: treewide: Cleanup the error messages for kprobes")
-02afb8d6048d ("kprobe: Simplify prepare_kprobe() by dropping redundant version")
-9840cfcb97fc ("Merge tag 'arm64-upstream' of git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux")
+
 
 thanks,
 
@@ -83,74 +77,44 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 325f3fb551f8cd672dbbfc4cf58b14f9ee3fc9e8 Mon Sep 17 00:00:00 2001
-From: Zheng Yejian <zhengyejian1@huawei.com>
-Date: Wed, 10 Apr 2024 09:58:02 +0800
-Subject: [PATCH] kprobes: Fix possible use-after-free issue on kprobe
- registration
+From f0cf7ffcd02953c72fed5995378805883d16203e Mon Sep 17 00:00:00 2001
+From: "Wachowski, Karol" <karol.wachowski@intel.com>
+Date: Tue, 2 Apr 2024 12:49:22 +0200
+Subject: [PATCH] accel/ivpu: Check return code of ipc->lock init
 
-When unloading a module, its state is changing MODULE_STATE_LIVE ->
- MODULE_STATE_GOING -> MODULE_STATE_UNFORMED. Each change will take
-a time. `is_module_text_address()` and `__module_text_address()`
-works with MODULE_STATE_LIVE and MODULE_STATE_GOING.
-If we use `is_module_text_address()` and `__module_text_address()`
-separately, there is a chance that the first one is succeeded but the
-next one is failed because module->state becomes MODULE_STATE_UNFORMED
-between those operations.
+Return value of drmm_mutex_init(ipc->lock) was unchecked.
 
-In `check_kprobe_address_safe()`, if the second `__module_text_address()`
-is failed, that is ignored because it expected a kernel_text address.
-But it may have failed simply because module->state has been changed
-to MODULE_STATE_UNFORMED. In this case, arm_kprobe() will try to modify
-non-exist module text address (use-after-free).
+Fixes: 5d7422cfb498 ("accel/ivpu: Add IPC driver and JSM messages")
+Cc: <stable@vger.kernel.org> # v6.3+
+Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240402104929.941186-2-jacek.lawrynowicz@linux.intel.com
 
-To fix this problem, we should not use separated `is_module_text_address()`
-and `__module_text_address()`, but use only `__module_text_address()`
-once and do `try_module_get(module)` which is only available with
-MODULE_STATE_LIVE.
-
-Link: https://lore.kernel.org/all/20240410015802.265220-1-zhengyejian1@huawei.com/
-
-Fixes: 28f6c37a2910 ("kprobes: Forbid probing on trampoline and BPF code areas")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index 9d9095e81792..65adc815fc6e 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1567,10 +1567,17 @@ static int check_kprobe_address_safe(struct kprobe *p,
- 	jump_label_lock();
- 	preempt_disable();
+diff --git a/drivers/accel/ivpu/ivpu_ipc.c b/drivers/accel/ivpu/ivpu_ipc.c
+index 04ac4b9840fb..56ff067f63e2 100644
+--- a/drivers/accel/ivpu/ivpu_ipc.c
++++ b/drivers/accel/ivpu/ivpu_ipc.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * Copyright (C) 2020-2023 Intel Corporation
++ * Copyright (C) 2020-2024 Intel Corporation
+  */
  
--	/* Ensure it is not in reserved area nor out of text */
--	if (!(core_kernel_text((unsigned long) p->addr) ||
--	    is_module_text_address((unsigned long) p->addr)) ||
--	    in_gate_area_no_mm((unsigned long) p->addr) ||
-+	/* Ensure the address is in a text area, and find a module if exists. */
-+	*probed_mod = NULL;
-+	if (!core_kernel_text((unsigned long) p->addr)) {
-+		*probed_mod = __module_text_address((unsigned long) p->addr);
-+		if (!(*probed_mod)) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
+ #include <linux/genalloc.h>
+@@ -501,7 +501,11 @@ int ivpu_ipc_init(struct ivpu_device *vdev)
+ 	spin_lock_init(&ipc->cons_lock);
+ 	INIT_LIST_HEAD(&ipc->cons_list);
+ 	INIT_LIST_HEAD(&ipc->cb_msg_list);
+-	drmm_mutex_init(&vdev->drm, &ipc->lock);
++	ret = drmm_mutex_init(&vdev->drm, &ipc->lock);
++	if (ret) {
++		ivpu_err(vdev, "Failed to initialize ipc->lock, ret %d\n", ret);
++		goto err_free_rx;
 +	}
-+	/* Ensure it is not in reserved area. */
-+	if (in_gate_area_no_mm((unsigned long) p->addr) ||
- 	    within_kprobe_blacklist((unsigned long) p->addr) ||
- 	    jump_label_text_reserved(p->addr, p->addr) ||
- 	    static_call_text_reserved(p->addr, p->addr) ||
-@@ -1580,8 +1587,7 @@ static int check_kprobe_address_safe(struct kprobe *p,
- 		goto out;
- 	}
+ 	ivpu_ipc_reset(vdev);
+ 	return 0;
  
--	/* Check if 'p' is probing a module. */
--	*probed_mod = __module_text_address((unsigned long) p->addr);
-+	/* Get module refcount and reject __init functions for loaded modules. */
- 	if (*probed_mod) {
- 		/*
- 		 * We must hold a refcount of the probed module while updating
 
 
