@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-39641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A658A53EA
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:32:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20658A5482
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3D611C21EAD
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:32:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 284D51F21CB1
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366B77E58C;
-	Mon, 15 Apr 2024 14:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6BC839FC;
+	Mon, 15 Apr 2024 14:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0WnCKeX9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2+YP2vd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63847581F;
-	Mon, 15 Apr 2024 14:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8DE839F5;
+	Mon, 15 Apr 2024 14:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191378; cv=none; b=GzXFD9IiP3iHpZs/ofXlJrpO/Aw+Ne6gjddhn90wIL+IMfYJSZZOiZMJOd16qY92+WOhZnxSe9SfYwkejV5Wj0fL3g6cgnUsWyOh8qjJBsKHLT49FHqLbCfDy+9ubTE5kxbBbAOfY8KXU453lRmGEUBMJMKxZGAYX2mo238tZQk=
+	t=1713191695; cv=none; b=QUTeCXZA0WcHvkhpe8lq3Q18xMer0hZRgQLMtTM984CD7ttlW3TDM2aHWWjFG/wrmWt0RbHDxzxIIbmlWcjbRmFncRLX5KGbE0Fls7Tqhql4WUUXY7lR4AOkd+iAM6W/za8YcoAoRtputwe5DqCP598KNLfMoQyy6HPjNdLOKKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191378; c=relaxed/simple;
-	bh=TxYxhmum9tt0h7g4sqLIdVuCZdORGrapgb1IIqqHNJ8=;
+	s=arc-20240116; t=1713191695; c=relaxed/simple;
+	bh=6++u7goddXZwhgiVGUTuzRBrCck1w8SmFrMmUNzaGs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OghvjB8bxGu4rXiEv9RxwUFsJzUkEp3fwFxUpdbLaOvAD8ioT7UxdqUOl4HRfj+LfZDstmYtWIhYVdXGGeS7NNDAYBi25LqcV/gZEfDKRFSbEXecHjUTSxaT0JcAioR5YQnRdT0DH/g9gjKEHPR2gcf8dxGLQVQEdAdjzUjirSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0WnCKeX9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA68C3277B;
-	Mon, 15 Apr 2024 14:29:37 +0000 (UTC)
+	 MIME-Version; b=hn2WC1+tEC9XLtt972TIcBtmtxG87g2qmTOvVgRFw3pthvKxI0sgKQfbFJ5yfqZPbkBH7xmPpO7TVLukrJY6ju18+uIpyjmZJsFSaSjPuWyHINnmA5ArTUSmwMP7dQlqgVwDRDYkwFhRaUXfL7bvVHCgfD5b65G4aVp31h+f/ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2+YP2vd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1067DC113CC;
+	Mon, 15 Apr 2024 14:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191377;
-	bh=TxYxhmum9tt0h7g4sqLIdVuCZdORGrapgb1IIqqHNJ8=;
+	s=korg; t=1713191695;
+	bh=6++u7goddXZwhgiVGUTuzRBrCck1w8SmFrMmUNzaGs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0WnCKeX9ZgzD/iy51EUK47b5Aid/Xpdii8vhjtg8qzmrfnPkgNIJb3AvkPnEM6NGq
-	 vzj+Z6u73XmLFpiGGbI0wdGybgHm1yTBT40K1lr1picJAb9Px57waDFHtdP55Ay23o
-	 mxhCfK8kw+mK+Okx0rDnC8/oCOhV6EQHTiRhXv0M=
+	b=w2+YP2vdpceqRm6p+xnpC2HLl5bbj7P/8SnE33FqpyAoXyhp825CzhUFspSD2AliP
+	 ynfF3sWrQUGycNQihBESb28QXRrqXfpuXOGxJxXVLugsuzFu9QDu3yc4dHHLjbYqUz
+	 84lssPwTufSlLrNPt1953sZEEd2+LLPtjuQN0Ndo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>
-Subject: [PATCH 6.8 121/172] accel/ivpu: Return max freq for DRM_IVPU_PARAM_CORE_CLOCK_RATE
-Date: Mon, 15 Apr 2024 16:20:20 +0200
-Message-ID: <20240415142004.062812555@linuxfoundation.org>
+	Shay Drory <shayd@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 056/122] net/mlx5: Register devlink first under devlink lock
+Date: Mon, 15 Apr 2024 16:20:21 +0200
+Message-ID: <20240415141955.048913896@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,144 +65,185 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+From: Shay Drory <shayd@nvidia.com>
 
-commit c52c35e5b404b95a5bcff39af9be1b9293be3434 upstream.
+[ Upstream commit c6e77aa9dd82bc18a89bf49418f8f7e961cfccc8 ]
 
-DRM_IVPU_PARAM_CORE_CLOCK_RATE returns current NPU frequency which
-could be 0 if device was sleeping. This value isn't really useful to
-the user space, so return max freq instead which can be used to estimate
-NPU performance.
+In case device is having a non fatal FW error during probe, the
+driver will report the error to user via devlink. This will trigger
+a WARN_ON, since mlx5 is calling devlink_register() last.
+In order to avoid the WARN_ON[1], change mlx5 to invoke devl_register()
+first under devlink lock.
 
-Fixes: c39dc15191c4 ("accel/ivpu: Read clock rate only if device is up")
-Cc: <stable@vger.kernel.org> # v6.7
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240402104929.941186-7-jacek.lawrynowicz@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1]
+WARNING: CPU: 5 PID: 227 at net/devlink/health.c:483 devlink_recover_notify.constprop.0+0xb8/0xc0
+CPU: 5 PID: 227 Comm: kworker/u16:3 Not tainted 6.4.0-rc5_for_upstream_min_debug_2023_06_12_12_38 #1
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+Workqueue: mlx5_health0000:08:00.0 mlx5_fw_reporter_err_work [mlx5_core]
+RIP: 0010:devlink_recover_notify.constprop.0+0xb8/0xc0
+Call Trace:
+ <TASK>
+ ? __warn+0x79/0x120
+ ? devlink_recover_notify.constprop.0+0xb8/0xc0
+ ? report_bug+0x17c/0x190
+ ? handle_bug+0x3c/0x60
+ ? exc_invalid_op+0x14/0x70
+ ? asm_exc_invalid_op+0x16/0x20
+ ? devlink_recover_notify.constprop.0+0xb8/0xc0
+ devlink_health_report+0x4a/0x1c0
+ mlx5_fw_reporter_err_work+0xa4/0xd0 [mlx5_core]
+ process_one_work+0x1bb/0x3c0
+ ? process_one_work+0x3c0/0x3c0
+ worker_thread+0x4d/0x3c0
+ ? process_one_work+0x3c0/0x3c0
+ kthread+0xc6/0xf0
+ ? kthread_complete_and_exit+0x20/0x20
+ ret_from_fork+0x1f/0x30
+ </TASK>
+
+Fixes: cf530217408e ("devlink: Notify users when objects are accessible")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240409190820.227554-3-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_drv.c     |   18 +-----------------
- drivers/accel/ivpu/ivpu_hw.h      |    6 ++++++
- drivers/accel/ivpu/ivpu_hw_37xx.c |    7 ++++---
- drivers/accel/ivpu/ivpu_hw_40xx.c |    6 ++++++
- 4 files changed, 17 insertions(+), 20 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/main.c    | 37 ++++++++++---------
+ .../mellanox/mlx5/core/sf/dev/driver.c        |  1 -
+ 2 files changed, 20 insertions(+), 18 deletions(-)
 
---- a/drivers/accel/ivpu/ivpu_drv.c
-+++ b/drivers/accel/ivpu/ivpu_drv.c
-@@ -131,22 +131,6 @@ static int ivpu_get_capabilities(struct
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 6ca91c0e8a6a5..9710ddac1f1a8 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1469,6 +1469,14 @@ int mlx5_init_one_devl_locked(struct mlx5_core_dev *dev)
+ 	if (err)
+ 		goto err_register;
+ 
++	err = mlx5_crdump_enable(dev);
++	if (err)
++		mlx5_core_err(dev, "mlx5_crdump_enable failed with error code %d\n", err);
++
++	err = mlx5_hwmon_dev_register(dev);
++	if (err)
++		mlx5_core_err(dev, "mlx5_hwmon_dev_register failed with error code %d\n", err);
++
+ 	mutex_unlock(&dev->intf_state_mutex);
  	return 0;
+ 
+@@ -1494,7 +1502,10 @@ int mlx5_init_one(struct mlx5_core_dev *dev)
+ 	int err;
+ 
+ 	devl_lock(devlink);
++	devl_register(devlink);
+ 	err = mlx5_init_one_devl_locked(dev);
++	if (err)
++		devl_unregister(devlink);
+ 	devl_unlock(devlink);
+ 	return err;
+ }
+@@ -1506,6 +1517,8 @@ void mlx5_uninit_one(struct mlx5_core_dev *dev)
+ 	devl_lock(devlink);
+ 	mutex_lock(&dev->intf_state_mutex);
+ 
++	mlx5_hwmon_dev_unregister(dev);
++	mlx5_crdump_disable(dev);
+ 	mlx5_unregister_device(dev);
+ 
+ 	if (!test_bit(MLX5_INTERFACE_STATE_UP, &dev->intf_state)) {
+@@ -1523,6 +1536,7 @@ void mlx5_uninit_one(struct mlx5_core_dev *dev)
+ 	mlx5_function_teardown(dev, true);
+ out:
+ 	mutex_unlock(&dev->intf_state_mutex);
++	devl_unregister(devlink);
+ 	devl_unlock(devlink);
  }
  
--static int ivpu_get_core_clock_rate(struct ivpu_device *vdev, u64 *clk_rate)
--{
--	int ret;
--
--	ret = ivpu_rpm_get_if_active(vdev);
--	if (ret < 0)
--		return ret;
--
--	*clk_rate = ret ? ivpu_hw_reg_pll_freq_get(vdev) : 0;
--
--	if (ret)
--		ivpu_rpm_put(vdev);
--
--	return 0;
--}
--
- static int ivpu_get_param_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
- {
- 	struct ivpu_file_priv *file_priv = file->driver_priv;
-@@ -170,7 +154,7 @@ static int ivpu_get_param_ioctl(struct d
- 		args->value = vdev->platform;
- 		break;
- 	case DRM_IVPU_PARAM_CORE_CLOCK_RATE:
--		ret = ivpu_get_core_clock_rate(vdev, &args->value);
-+		args->value = ivpu_hw_ratio_to_freq(vdev, vdev->hw->pll.max_ratio);
- 		break;
- 	case DRM_IVPU_PARAM_NUM_CONTEXTS:
- 		args->value = ivpu_get_context_count(vdev);
---- a/drivers/accel/ivpu/ivpu_hw.h
-+++ b/drivers/accel/ivpu/ivpu_hw.h
-@@ -21,6 +21,7 @@ struct ivpu_hw_ops {
- 	u32 (*profiling_freq_get)(struct ivpu_device *vdev);
- 	void (*profiling_freq_drive)(struct ivpu_device *vdev, bool enable);
- 	u32 (*reg_pll_freq_get)(struct ivpu_device *vdev);
-+	u32 (*ratio_to_freq)(struct ivpu_device *vdev, u32 ratio);
- 	u32 (*reg_telemetry_offset_get)(struct ivpu_device *vdev);
- 	u32 (*reg_telemetry_size_get)(struct ivpu_device *vdev);
- 	u32 (*reg_telemetry_enable_get)(struct ivpu_device *vdev);
-@@ -130,6 +131,11 @@ static inline u32 ivpu_hw_reg_pll_freq_g
- 	return vdev->hw->ops->reg_pll_freq_get(vdev);
- };
+@@ -1669,16 +1683,20 @@ int mlx5_init_one_light(struct mlx5_core_dev *dev)
+ 	}
  
-+static inline u32 ivpu_hw_ratio_to_freq(struct ivpu_device *vdev, u32 ratio)
-+{
-+	return vdev->hw->ops->ratio_to_freq(vdev, ratio);
-+}
+ 	devl_lock(devlink);
++	devl_register(devlink);
 +
- static inline u32 ivpu_hw_reg_telemetry_offset_get(struct ivpu_device *vdev)
- {
- 	return vdev->hw->ops->reg_telemetry_offset_get(vdev);
---- a/drivers/accel/ivpu/ivpu_hw_37xx.c
-+++ b/drivers/accel/ivpu/ivpu_hw_37xx.c
-@@ -805,12 +805,12 @@ static void ivpu_hw_37xx_profiling_freq_
- 	/* Profiling freq - is a debug feature. Unavailable on VPU 37XX. */
- }
+ 	err = mlx5_devlink_params_register(priv_to_devlink(dev));
+-	devl_unlock(devlink);
+ 	if (err) {
+ 		mlx5_core_warn(dev, "mlx5_devlink_param_reg err = %d\n", err);
+ 		goto query_hca_caps_err;
+ 	}
  
--static u32 ivpu_hw_37xx_pll_to_freq(u32 ratio, u32 config)
-+static u32 ivpu_hw_37xx_ratio_to_freq(struct ivpu_device *vdev, u32 ratio)
- {
- 	u32 pll_clock = PLL_REF_CLK_FREQ * ratio;
- 	u32 cpu_clock;
++	devl_unlock(devlink);
+ 	return 0;
  
--	if ((config & 0xff) == PLL_RATIO_4_3)
-+	if ((vdev->hw->config & 0xff) == PLL_RATIO_4_3)
- 		cpu_clock = pll_clock * 2 / 4;
+ query_hca_caps_err:
++	devl_unregister(devlink);
++	devl_unlock(devlink);
+ 	mlx5_function_disable(dev, true);
+ out:
+ 	dev->state = MLX5_DEVICE_STATE_INTERNAL_ERROR;
+@@ -1691,6 +1709,7 @@ void mlx5_uninit_one_light(struct mlx5_core_dev *dev)
+ 
+ 	devl_lock(devlink);
+ 	mlx5_devlink_params_unregister(priv_to_devlink(dev));
++	devl_unregister(devlink);
+ 	devl_unlock(devlink);
+ 	if (dev->state != MLX5_DEVICE_STATE_UP)
+ 		return;
+@@ -1932,16 +1951,7 @@ static int probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		goto err_init_one;
+ 	}
+ 
+-	err = mlx5_crdump_enable(dev);
+-	if (err)
+-		dev_err(&pdev->dev, "mlx5_crdump_enable failed with error code %d\n", err);
+-
+-	err = mlx5_hwmon_dev_register(dev);
+-	if (err)
+-		mlx5_core_err(dev, "mlx5_hwmon_dev_register failed with error code %d\n", err);
+-
+ 	pci_save_state(pdev);
+-	devlink_register(devlink);
+ 	return 0;
+ 
+ err_init_one:
+@@ -1962,16 +1972,9 @@ static void remove_one(struct pci_dev *pdev)
+ 	struct devlink *devlink = priv_to_devlink(dev);
+ 
+ 	set_bit(MLX5_BREAK_FW_WAIT, &dev->intf_state);
+-	/* mlx5_drain_fw_reset() and mlx5_drain_health_wq() are using
+-	 * devlink notify APIs.
+-	 * Hence, we must drain them before unregistering the devlink.
+-	 */
+ 	mlx5_drain_fw_reset(dev);
+ 	mlx5_drain_health_wq(dev);
+-	devlink_unregister(devlink);
+ 	mlx5_sriov_disable(pdev, false);
+-	mlx5_hwmon_dev_unregister(dev);
+-	mlx5_crdump_disable(dev);
+ 	mlx5_uninit_one(dev);
+ 	mlx5_pci_close(dev);
+ 	mlx5_mdev_uninit(dev);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+index 69e270b5aa82d..30218f37d5285 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+@@ -75,7 +75,6 @@ static void mlx5_sf_dev_remove(struct auxiliary_device *adev)
+ 	devlink = priv_to_devlink(mdev);
+ 	set_bit(MLX5_BREAK_FW_WAIT, &mdev->intf_state);
+ 	mlx5_drain_health_wq(mdev);
+-	devlink_unregister(devlink);
+ 	if (mlx5_dev_is_lightweight(mdev))
+ 		mlx5_uninit_one_light(mdev);
  	else
- 		cpu_clock = pll_clock * 2 / 5;
-@@ -829,7 +829,7 @@ static u32 ivpu_hw_37xx_reg_pll_freq_get
- 	if (!ivpu_is_silicon(vdev))
- 		return PLL_SIMULATION_FREQ;
- 
--	return ivpu_hw_37xx_pll_to_freq(pll_curr_ratio, vdev->hw->config);
-+	return ivpu_hw_37xx_ratio_to_freq(vdev, pll_curr_ratio);
- }
- 
- static u32 ivpu_hw_37xx_reg_telemetry_offset_get(struct ivpu_device *vdev)
-@@ -1052,6 +1052,7 @@ const struct ivpu_hw_ops ivpu_hw_37xx_op
- 	.profiling_freq_get = ivpu_hw_37xx_profiling_freq_get,
- 	.profiling_freq_drive = ivpu_hw_37xx_profiling_freq_drive,
- 	.reg_pll_freq_get = ivpu_hw_37xx_reg_pll_freq_get,
-+	.ratio_to_freq = ivpu_hw_37xx_ratio_to_freq,
- 	.reg_telemetry_offset_get = ivpu_hw_37xx_reg_telemetry_offset_get,
- 	.reg_telemetry_size_get = ivpu_hw_37xx_reg_telemetry_size_get,
- 	.reg_telemetry_enable_get = ivpu_hw_37xx_reg_telemetry_enable_get,
---- a/drivers/accel/ivpu/ivpu_hw_40xx.c
-+++ b/drivers/accel/ivpu/ivpu_hw_40xx.c
-@@ -980,6 +980,11 @@ static u32 ivpu_hw_40xx_reg_pll_freq_get
- 	return PLL_RATIO_TO_FREQ(pll_curr_ratio);
- }
- 
-+static u32 ivpu_hw_40xx_ratio_to_freq(struct ivpu_device *vdev, u32 ratio)
-+{
-+	return PLL_RATIO_TO_FREQ(ratio);
-+}
-+
- static u32 ivpu_hw_40xx_reg_telemetry_offset_get(struct ivpu_device *vdev)
- {
- 	return REGB_RD32(VPU_40XX_BUTTRESS_VPU_TELEMETRY_OFFSET);
-@@ -1230,6 +1235,7 @@ const struct ivpu_hw_ops ivpu_hw_40xx_op
- 	.profiling_freq_get = ivpu_hw_40xx_profiling_freq_get,
- 	.profiling_freq_drive = ivpu_hw_40xx_profiling_freq_drive,
- 	.reg_pll_freq_get = ivpu_hw_40xx_reg_pll_freq_get,
-+	.ratio_to_freq = ivpu_hw_40xx_ratio_to_freq,
- 	.reg_telemetry_offset_get = ivpu_hw_40xx_reg_telemetry_offset_get,
- 	.reg_telemetry_size_get = ivpu_hw_40xx_reg_telemetry_size_get,
- 	.reg_telemetry_enable_get = ivpu_hw_40xx_reg_telemetry_enable_get,
+-- 
+2.43.0
+
 
 
 
