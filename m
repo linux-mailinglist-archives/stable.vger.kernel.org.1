@@ -1,124 +1,82 @@
-Return-Path: <stable+bounces-39965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D388A5D3B
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 23:52:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C2D38A5EDF
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 01:53:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0DD22830B5
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 21:52:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EBED1C20CA3
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 23:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A1A157491;
-	Mon, 15 Apr 2024 21:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BAF8159208;
+	Mon, 15 Apr 2024 23:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D1UQX5Vl"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="HH5ZCBWU"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628091EF1A;
-	Mon, 15 Apr 2024 21:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E3F157A61;
+	Mon, 15 Apr 2024 23:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713217943; cv=none; b=beL6lKDJdJZmVBMkQPPk718T43jkmmRt/iAXhV7p0LWnC1HmShdNlFzQ6Q64Wn1KQUO02TZXgOp1gnbn/M8CPLy8NrBEcEiaXLzR+sTIDaGDaJy7th8BXdL27Upt4MlsKlK5SFoGVHVeQZTbLR4+4h/SQQJU7L+J6XpRZDPKthU=
+	t=1713225175; cv=none; b=nN3MiSOAeKdikFgDWkr0wIzKJJGwLF8zIDxzgbIJBQutjs04bBVYUdma2uyxOFBnMBbf4T3/Je0bpCHRHaVD8WGZPytpEmhM0DD78TMEpiUs4gLlV3VKx1pWwbAvNvMBu8TNHah0ZLn4h2LI9VoXldcQfp5e4rMbIBwwAGX22PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713217943; c=relaxed/simple;
-	bh=KJ52F3vvXnDFFDYcpRHY11CkLnLJ7fh/q+VR/api2QU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VMi9sfxOTCbMKcs44WCY9+WiXI+i/dtullqxutML3T/ZTRC3YedTQ3Zkh+nB1rpsWCK86t13G1M4VnaNQiLguJkHWJ/nG/09AYsHZugUAkz9UzZL/PnDf4oe7gyU15WqVZkBx01YzGNdYzU5unSXEcCqaT3poZxljXnfvTfyQ2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D1UQX5Vl; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713217942; x=1744753942;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=KJ52F3vvXnDFFDYcpRHY11CkLnLJ7fh/q+VR/api2QU=;
-  b=D1UQX5VlXRNaXGres5M51FohKdsvh3DR/FKz59xZVgFVCwgJIS6OCyL6
-   JZHaTRoUYkiyFpFsuyIxGbShG9ChLjXk5xHfahP6S2lnwOXcJ55y5TPS6
-   rIpUqSokF3OAI/6Casy+s8CIb8MUZSAgGEpU8Es+Qv+xLFBuSSEFLPE5n
-   MwQwzeuQfmlPskPPGeshdgvC0vXCGIoIcmkC/hrqSjhQx2dkbO4wgw8t8
-   p/A/12FD4vFc1e7hBPsm7x8+uMXXjo30n7HRPIGYCU/t1YOtW2TheUDL2
-   yiiTUyCnLx5/WbhGrsRwoWGmQTSL3oR1QgiIzrPHZKumW7WsJXYHqXJAq
-   w==;
-X-CSE-ConnectionGUID: U0IP5gVbTp2uQ/GXq8PtaA==
-X-CSE-MsgGUID: VWW6hZ1BQ2a8sCMeQd7Faw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="12420708"
-X-IronPort-AV: E=Sophos;i="6.07,204,1708416000"; 
-   d="scan'208";a="12420708"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 14:52:21 -0700
-X-CSE-ConnectionGUID: UWZ5JvWRQcuqI0TvjinHSQ==
-X-CSE-MsgGUID: 5GauRyGPRGCHQv12s/w8Zg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,204,1708416000"; 
-   d="scan'208";a="26845113"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.14])
-  by orviesa005.jf.intel.com with ESMTP; 15 Apr 2024 14:52:21 -0700
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To: hdegoede@redhat.com,
-	ilpo.jarvinen@linux.intel.com
-Cc: platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] platform/x86/intel-uncore-freq: Don't present root domain on error
-Date: Mon, 15 Apr 2024 14:52:10 -0700
-Message-Id: <20240415215210.2824868-1-srinivas.pandruvada@linux.intel.com>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1713225175; c=relaxed/simple;
+	bh=JnPe0iuKGgHgoZfYjUEL6sXQANy5Qmi5etDqJfl4Igw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RJbPrDaBvg65kMA005TxuzakGf3fvoAC/QDlgsF/tYzn/sPwUcDDuXXHV6+attt+y9NRKcz7ajhFRg5yzRaJ8gRaNHfKHh8W72Gj1Q5z1WIYq3bWp9wBoeEUeQcrebqHcoy2j/uVK0u+7/EXafx1u8wlOvHZLQ5leiQOW2JQ4gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=HH5ZCBWU; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1131)
+	id B425720FCF9D; Mon, 15 Apr 2024 16:52:53 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B425720FCF9D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1713225173;
+	bh=02dP7LHW+8c1XbtLEvrs6vdVDK3XxcXgImREnnEmroE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HH5ZCBWU7LDRpzC0impALnokS7d0Ip52isSSYuwGYqeWlQli/zpQvuoIZXGv4yp/A
+	 QtvZVnDU8R27i34QALKPKyE82qPX3RnmMovIcK4PEfM5ldSTRIoaaDiZPbWOF/RSp1
+	 gw/8T70nYhdB9ctscJ9rY3N0hrxtTVWCRenCBzSk=
+Date: Mon, 15 Apr 2024 16:52:53 -0700
+From: Kelsey Steele <kelseysteele@linux.microsoft.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.6 000/122] 6.6.28-rc1 review
+Message-ID: <20240415235253.GA11121@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20240415141953.365222063@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-If none of the clusters are added because of some error, fail to load
-driver without presenting root domain. In this case root domain will
-present invalid data.
+On Mon, Apr 15, 2024 at 04:19:25PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.28 release.
+> There are 122 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 17 Apr 2024 14:19:30 +0000.
+> Anything received after that time might be too late.
+> 
+No regressions found on WSL (x86 and arm64).
 
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Fixes: 01c10f88c9b7 ("platform/x86/intel-uncore-freq: tpmi: Provide cluster level control")
-Cc: <stable@vger.kernel.org> # 6.5+
----
-This error can be reproduced in the pre production hardware only.
-So can go through regular cycle and they apply to stable.
+Built, booted, and reviewed dmesg.
 
- .../x86/intel/uncore-frequency/uncore-frequency-tpmi.c     | 7 +++++++
- 1 file changed, 7 insertions(+)
+Thank you. :)
 
-diff --git a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-index bd75d61ff8a6..587437211d72 100644
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-@@ -240,6 +240,7 @@ static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_
- 	bool read_blocked = 0, write_blocked = 0;
- 	struct intel_tpmi_plat_info *plat_info;
- 	struct tpmi_uncore_struct *tpmi_uncore;
-+	bool uncore_sysfs_added = false;
- 	int ret, i, pkg = 0;
- 	int num_resources;
- 
-@@ -384,9 +385,15 @@ static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_
- 			}
- 			/* Point to next cluster offset */
- 			cluster_offset >>= UNCORE_MAX_CLUSTER_PER_DOMAIN;
-+			uncore_sysfs_added = true;
- 		}
- 	}
- 
-+	if (!uncore_sysfs_added) {
-+		ret = -ENODEV;
-+		goto remove_clusters;
-+	}
-+
- 	auxiliary_set_drvdata(auxdev, tpmi_uncore);
- 
- 	tpmi_uncore->root_cluster.root_domain = true;
--- 
-2.40.1
-
+Tested-by: Kelsey Steele <kelseysteele@linux.microsoft.com> 
 
