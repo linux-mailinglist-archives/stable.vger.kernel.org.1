@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-39785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42DD98A54BE
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7258A5500
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A331CB237D3
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FC63B22933
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E638180049;
-	Mon, 15 Apr 2024 14:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D567D3FE;
+	Mon, 15 Apr 2024 14:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fl0xpRMA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqbssgJ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A326274BEB;
-	Mon, 15 Apr 2024 14:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5031A762C9;
+	Mon, 15 Apr 2024 14:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191806; cv=none; b=GXipneDtnxw6/fSNRhP79FoPo1clzAGGGpGv73w84Er4TwuDwoFBZqf30z91se9RFE4t9795lDhLLV6iMk5X/KxXjGcpAS+AJvIsRnOeCDeps3e8Xs0qQbSnoF3IiNTjM2d8OAZRuhsQMBtT7tqK9kymn0bXzJ7nlWb2MzYiy1g=
+	t=1713191982; cv=none; b=rSLS1RdYpDu80BExz9t2ZnDuP4lHOH4iHEXh9BYKVRFjtgCHKn8vvdpIeKQu6Jjv73cWpCUnFUOrZviRDomA/NVr4V80YIU3UqdR9uuXstDDVQYWmQd9M7V6aYf9xcmOC6mRP0+hpEnVzbOhAAjhrGOLonj9IMbPEnmNT0u7nFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191806; c=relaxed/simple;
-	bh=ppNuccjMyxW+6P5ugVGnt1xh9EzRDTpW+RvgcbWEBh4=;
+	s=arc-20240116; t=1713191982; c=relaxed/simple;
+	bh=5qIbok063h/yC7qm0MDjdnaQl8w6/ab1DtI4h8Ctp3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hubLNkwCFnD/4Oc09aZcDWqwCHMFuQZ6sX5E2uLgTI5GkNmQc4LVSdm38XfNVZmCOWXUeeiZj7biSalN4Avxp9dsJQSeb5rLqrV9F6Eg9+l5WVhjlj5AbUII95oat554A/9tJXDgFEs/A98PoC49NRxaJ0Xk1Mtpx2rph8nZkc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fl0xpRMA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1DBEC113CC;
-	Mon, 15 Apr 2024 14:36:45 +0000 (UTC)
+	 MIME-Version; b=G0JZ28zoTGs/pHA7NFiYKHv/vVbQp2vanwUQB/07nckiSxRog6hysNTfMcDg4S7wO5LBIrGlhRcI+Yqtk7ggr6Uz2syJ01Xp+8VjkvlP8LM0zbBFnr8+r107981BHoljWJAP97EwWrrHvuwHJTUWAh/i/HP6gOd2UmnBXKZhimw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqbssgJ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BB8C113CC;
+	Mon, 15 Apr 2024 14:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191806;
-	bh=ppNuccjMyxW+6P5ugVGnt1xh9EzRDTpW+RvgcbWEBh4=;
+	s=korg; t=1713191980;
+	bh=5qIbok063h/yC7qm0MDjdnaQl8w6/ab1DtI4h8Ctp3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fl0xpRMAV2WPh33hm0Ei5bDwEie+W/h1N13BIfY059/FMaORyLwyj9jkl+DKObiFi
-	 Javl8EAFh4AjPmi1emtDRQ1Z2gSFg6XXT7MrH2g90oLlSXTDhATEu8BpRtz/wyURrK
-	 vDlBNS9RZ3hWXy3Gkyu2QCZ5FleeTOx108ai93F8=
+	b=xqbssgJ0ojfgMdRkFXcEMfweEQQJtbaBBXsO3FtE53s0Tbat/rqytqJKKaMqnrobU
+	 sAiA6fMQTDWEYFMuG0WOFu4izw3pHKRISPF/I4UesIaf9RoHAjIuVy1ePQIfXWpjU1
+	 bjjIHVDiWu01FWnlwmEt0NTZ63RYZDlCWVzJ/Eoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 6.6 093/122] drm/client: Fully protect modes[] with dev->mode_config.mutex
+	Eric Dumazet <edumazet@google.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 27/69] Bluetooth: L2CAP: Fix not validating setsockopt user input
 Date: Mon, 15 Apr 2024 16:20:58 +0200
-Message-ID: <20240415141956.165192491@linuxfoundation.org>
+Message-ID: <20240415141946.985183405@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,172 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 3eadd887dbac1df8f25f701e5d404d1b90fd0fea upstream.
+[ Upstream commit 4f3951242ace5efc7131932e2e01e6ac6baed846 ]
 
-The modes[] array contains pointers to modes on the connectors'
-mode lists, which are protected by dev->mode_config.mutex.
-Thus we need to extend modes[] the same protection or by the
-time we use it the elements may already be pointing to
-freed/reused memory.
+Check user input length before copying data.
 
-Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10583
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240404203336.10454-2-ville.syrjala@linux.intel.com
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 33575df7be67 ("Bluetooth: move l2cap_sock_setsockopt() to l2cap_sock.c")
+Fixes: 3ee7b7cd8390 ("Bluetooth: Add BT_MODE socket option")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_client_modeset.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/bluetooth/l2cap_sock.c | 52 +++++++++++++++-----------------------
+ 1 file changed, 20 insertions(+), 32 deletions(-)
 
---- a/drivers/gpu/drm/drm_client_modeset.c
-+++ b/drivers/gpu/drm/drm_client_modeset.c
-@@ -777,6 +777,7 @@ int drm_client_modeset_probe(struct drm_
- 	unsigned int total_modes_count = 0;
- 	struct drm_client_offset *offsets;
- 	unsigned int connector_count = 0;
-+	/* points to modes protected by mode_config.mutex */
- 	struct drm_display_mode **modes;
- 	struct drm_crtc **crtcs;
- 	int i, ret = 0;
-@@ -845,7 +846,6 @@ int drm_client_modeset_probe(struct drm_
- 		drm_client_pick_crtcs(client, connectors, connector_count,
- 				      crtcs, modes, 0, width, height);
- 	}
--	mutex_unlock(&dev->mode_config.mutex);
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index 947ca580bb9a2..4198ca66fbe10 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -745,7 +745,7 @@ static int l2cap_sock_setsockopt_old(struct socket *sock, int optname,
+ 	struct sock *sk = sock->sk;
+ 	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
+ 	struct l2cap_options opts;
+-	int len, err = 0;
++	int err = 0;
+ 	u32 opt;
  
- 	drm_client_modeset_release(client);
+ 	BT_DBG("sk %p", sk);
+@@ -772,11 +772,9 @@ static int l2cap_sock_setsockopt_old(struct socket *sock, int optname,
+ 		opts.max_tx   = chan->max_tx;
+ 		opts.txwin_size = chan->tx_win;
  
-@@ -875,6 +875,7 @@ int drm_client_modeset_probe(struct drm_
- 			modeset->y = offset->y;
+-		len = min_t(unsigned int, sizeof(opts), optlen);
+-		if (copy_from_sockptr(&opts, optval, len)) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opts, sizeof(opts), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opts.txwin_size > L2CAP_DEFAULT_EXT_WINDOW) {
+ 			err = -EINVAL;
+@@ -819,10 +817,9 @@ static int l2cap_sock_setsockopt_old(struct socket *sock, int optname,
+ 		break;
+ 
+ 	case L2CAP_LM:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt & L2CAP_LM_FIPS) {
+ 			err = -EINVAL;
+@@ -903,7 +900,7 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 	struct bt_security sec;
+ 	struct bt_power pwr;
+ 	struct l2cap_conn *conn;
+-	int len, err = 0;
++	int err = 0;
+ 	u32 opt;
+ 	u16 mtu;
+ 	u8 mode;
+@@ -929,11 +926,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 
+ 		sec.level = BT_SECURITY_LOW;
+ 
+-		len = min_t(unsigned int, sizeof(sec), optlen);
+-		if (copy_from_sockptr(&sec, optval, len)) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&sec, sizeof(sec), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (sec.level < BT_SECURITY_LOW ||
+ 		    sec.level > BT_SECURITY_FIPS) {
+@@ -978,10 +973,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
  		}
- 	}
-+	mutex_unlock(&dev->mode_config.mutex);
  
- 	mutex_unlock(&client->modeset_mutex);
- out:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt) {
+ 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
+@@ -993,10 +987,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 		break;
+ 
+ 	case BT_FLUSHABLE:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt > BT_FLUSHABLE_ON) {
+ 			err = -EINVAL;
+@@ -1028,11 +1021,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 
+ 		pwr.force_active = BT_POWER_FORCE_ACTIVE_ON;
+ 
+-		len = min_t(unsigned int, sizeof(pwr), optlen);
+-		if (copy_from_sockptr(&pwr, optval, len)) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&pwr, sizeof(pwr), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (pwr.force_active)
+ 			set_bit(FLAG_FORCE_ACTIVE, &chan->flags);
+@@ -1041,10 +1032,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 		break;
+ 
+ 	case BT_CHANNEL_POLICY:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt > BT_CHANNEL_POLICY_AMP_PREFERRED) {
+ 			err = -EINVAL;
+@@ -1089,10 +1079,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
+ 		}
+ 
+-		if (copy_from_sockptr(&mtu, optval, sizeof(u16))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&mtu, sizeof(mtu), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (chan->mode == L2CAP_MODE_EXT_FLOWCTL &&
+ 		    sk->sk_state == BT_CONNECTED)
+@@ -1120,10 +1109,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
+ 		}
+ 
+-		if (copy_from_sockptr(&mode, optval, sizeof(u8))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&mode, sizeof(mode), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		BT_DBG("mode %u", mode);
+ 
+-- 
+2.43.0
+
 
 
 
