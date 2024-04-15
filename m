@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-39903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C4C78A5549
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC208A54E2
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19DDDB24A7D
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8C8AB228C2
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A104474C02;
-	Mon, 15 Apr 2024 14:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0C97F477;
+	Mon, 15 Apr 2024 14:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JiVHSNEJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbJG6+dx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B290381B9;
-	Mon, 15 Apr 2024 14:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC27B7A702;
+	Mon, 15 Apr 2024 14:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192163; cv=none; b=Sro57lTCHRz7+pZlEOUwiRA4hf68O5y0xQYLZq1sKDatcYG3ydakkTeclBiB5xT4MZK0vhTDf5xSz8B0+8IyERYWnhYqJjBxfHVIRKbc48d0wdrxFAx4oA5DPKmY6F9R7SI5gZRIAySeNDGKKXWiI2IWiNc0Oj1973ODVbzepOs=
+	t=1713191894; cv=none; b=p1L/BQLfNyWTJD9eqOIIllLl/8OMUH3D1zRkiVXMx8nyPsgIe3rlLedCZj7UuAJe+6byhnIdKwBFXUps+g8vBGLpr/o1dnQ1GxSaDiU5vQiEMjD7PpZ52n75b7H2aVKMWarV7vw1HSAD8H+ZlWH7h3KfiRpi7uE6jzIUPHcT22k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192163; c=relaxed/simple;
-	bh=CU2H4J4ToVfeqU9Bgj/QQf0vsdaAwIFV1xcjjWkwIiE=;
+	s=arc-20240116; t=1713191894; c=relaxed/simple;
+	bh=9Ufen1hkqM33oP6seiMqCVW6WKIp6snVb7/DKS8cJHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mSO4/3LQTV6T00vRm+L8ugsbItGLIGFzaVKo9O2dY6S5c9Y9vpzomV3T2HcSCE4KDvu2+7L5Ekuylg9OtSt5lk8+jNYvxVjVhxQzwG6h5o9GQ7u01zGX7ii3P35DwZtKNHq2kT0VxtRbW7aqdR5OHkaP5yD9M1EEbzNW00w4OGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JiVHSNEJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D868FC113CC;
-	Mon, 15 Apr 2024 14:42:42 +0000 (UTC)
+	 MIME-Version; b=WaKpIMnlZZy9ZvDjBXCUjglsHFz8+bA4tw1Ej35lpXVbrbLmxb2bn2TmSGz+673m8NtxnZXOctQMDxgyfO35ahO1zGbR95WffyGR4DJXvga8rehx73oKIfWftu5lr0L1sH0jkEAswFwRvNbOjI8cTiPRZpEDNIVHyGT4mC9DjCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbJG6+dx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F17C113CC;
+	Mon, 15 Apr 2024 14:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192163;
-	bh=CU2H4J4ToVfeqU9Bgj/QQf0vsdaAwIFV1xcjjWkwIiE=;
+	s=korg; t=1713191893;
+	bh=9Ufen1hkqM33oP6seiMqCVW6WKIp6snVb7/DKS8cJHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JiVHSNEJI5D+qahzxjl4auMzwjPM/7xokRJM3Vsuqq/Q5EUnr3XvIXyoMsbDCAEMr
-	 epaANc7LMY+S+J/c7i/EpXQ5aviG8iJaXWUI2achJ2FPbPHbPuxK0A3/NQCXT/4Rb2
-	 wqNEde64/4IdesAOhlkRWovPSHplcwsqb2zwN9cs=
+	b=UbJG6+dx+UzGgYwELs20pLV4SZiAnJaehrXVRveM81jYKfp5xPut7MFLm5NszmbD6
+	 bFlIYXGVyxXHLF4z3eJQAyyVKG2pucNh95w8GHZT2jSa/R4mW9FuiTRscoIFA6Em5D
+	 2GiG+IckYSLasCOAN2pD03HIyYLYnONkKDbGjE7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 18/45] netfilter: complete validation of user input
+	Joshua Ashton <joshua@froggi.es>,
+	Xaver Hugl <xaver.hugl@gmail.com>,
+	Melissa Wen <mwen@igalia.com>,
+	Agustin Gutierrez <Agustin.Gutierrez@amd.com>,
+	Agustin Gutierrez <agustin.gutierrez@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 120/122] drm/amd/display: Program VSC SDP colorimetry for all DP sinks >= 1.4
 Date: Mon, 15 Apr 2024 16:21:25 +0200
-Message-ID: <20240415141942.792039769@linuxfoundation.org>
+Message-ID: <20240415141956.969716616@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
-References: <20240415141942.235939111@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,107 +67,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Harry Wentland <harry.wentland@amd.com>
 
-[ Upstream commit 65acf6e0501ac8880a4f73980d01b5d27648b956 ]
+commit 9e61ef8d219877202d4ee51d0d2ad9072c99a262 upstream.
 
-In my recent commit, I missed that do_replace() handlers
-use copy_from_sockptr() (which I fixed), followed
-by unsafe copy_from_sockptr_offset() calls.
+In order for display colorimetry to work correctly on DP displays
+we need to send the VSC SDP packet. We should only do so for
+panels with DPCD revision greater or equal to 1.4 as older
+receivers might have problems with it.
 
-In all functions, we can perform the @optlen validation
-before even calling xt_alloc_table_info() with the following
-check:
-
-if ((u64)optlen < (u64)tmp.size + sizeof(tmp))
-        return -EINVAL;
-
-Fixes: 0c83842df40f ("netfilter: validate user input for expected length")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Link: https://lore.kernel.org/r/20240409120741.3538135-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Joshua Ashton <joshua@froggi.es>
+Cc: Xaver Hugl <xaver.hugl@gmail.com>
+Cc: Melissa Wen <mwen@igalia.com>
+Cc: Agustin Gutierrez <Agustin.Gutierrez@amd.com>
+Reviewed-by: Agustin Gutierrez <agustin.gutierrez@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/netfilter/arp_tables.c | 4 ++++
- net/ipv4/netfilter/ip_tables.c  | 4 ++++
- net/ipv6/netfilter/ip6_tables.c | 4 ++++
- 3 files changed, 12 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
-index 07ecb16231cd0..a9d5a1973224a 100644
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -965,6 +965,8 @@ static int do_replace(struct net *net, sockptr_t arg, unsigned int len)
- 		return -ENOMEM;
- 	if (tmp.num_counters == 0)
- 		return -EINVAL;
-+	if ((u64)len < (u64)tmp.size + sizeof(tmp))
-+		return -EINVAL;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6122,7 +6122,9 @@ create_stream_for_sink(struct amdgpu_dm_
+ 	if (stream->signal == SIGNAL_TYPE_HDMI_TYPE_A)
+ 		mod_build_hf_vsif_infopacket(stream, &stream->vsp_infopacket);
  
- 	tmp.name[sizeof(tmp.name)-1] = 0;
- 
-@@ -1265,6 +1267,8 @@ static int compat_do_replace(struct net *net, sockptr_t arg, unsigned int len)
- 		return -ENOMEM;
- 	if (tmp.num_counters == 0)
- 		return -EINVAL;
-+	if ((u64)len < (u64)tmp.size + sizeof(tmp))
-+		return -EINVAL;
- 
- 	tmp.name[sizeof(tmp.name)-1] = 0;
- 
-diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
-index 1e1e7488d6bf1..aee7cd584c926 100644
---- a/net/ipv4/netfilter/ip_tables.c
-+++ b/net/ipv4/netfilter/ip_tables.c
-@@ -1119,6 +1119,8 @@ do_replace(struct net *net, sockptr_t arg, unsigned int len)
- 		return -ENOMEM;
- 	if (tmp.num_counters == 0)
- 		return -EINVAL;
-+	if ((u64)len < (u64)tmp.size + sizeof(tmp))
-+		return -EINVAL;
- 
- 	tmp.name[sizeof(tmp.name)-1] = 0;
- 
-@@ -1505,6 +1507,8 @@ compat_do_replace(struct net *net, sockptr_t arg, unsigned int len)
- 		return -ENOMEM;
- 	if (tmp.num_counters == 0)
- 		return -EINVAL;
-+	if ((u64)len < (u64)tmp.size + sizeof(tmp))
-+		return -EINVAL;
- 
- 	tmp.name[sizeof(tmp.name)-1] = 0;
- 
-diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
-index b17990d514ee9..afd22ea9f555b 100644
---- a/net/ipv6/netfilter/ip6_tables.c
-+++ b/net/ipv6/netfilter/ip6_tables.c
-@@ -1137,6 +1137,8 @@ do_replace(struct net *net, sockptr_t arg, unsigned int len)
- 		return -ENOMEM;
- 	if (tmp.num_counters == 0)
- 		return -EINVAL;
-+	if ((u64)len < (u64)tmp.size + sizeof(tmp))
-+		return -EINVAL;
- 
- 	tmp.name[sizeof(tmp.name)-1] = 0;
- 
-@@ -1515,6 +1517,8 @@ compat_do_replace(struct net *net, sockptr_t arg, unsigned int len)
- 		return -ENOMEM;
- 	if (tmp.num_counters == 0)
- 		return -EINVAL;
-+	if ((u64)len < (u64)tmp.size + sizeof(tmp))
-+		return -EINVAL;
- 
- 	tmp.name[sizeof(tmp.name)-1] = 0;
- 
--- 
-2.43.0
-
+-	if (stream->link->psr_settings.psr_feature_enabled || stream->link->replay_settings.replay_feature_enabled) {
++	if (stream->signal == SIGNAL_TYPE_DISPLAY_PORT ||
++	    stream->signal == SIGNAL_TYPE_DISPLAY_PORT_MST ||
++	    stream->signal == SIGNAL_TYPE_EDP) {
+ 		//
+ 		// should decide stream support vsc sdp colorimetry capability
+ 		// before building vsc info packet
+@@ -6132,7 +6134,8 @@ create_stream_for_sink(struct amdgpu_dm_
+ 			stream->use_vsc_sdp_for_colorimetry =
+ 				aconnector->dc_sink->is_vsc_sdp_colorimetry_supported;
+ 		} else {
+-			if (stream->link->dpcd_caps.dprx_feature.bits.VSC_SDP_COLORIMETRY_SUPPORTED)
++			if (stream->link->dpcd_caps.dpcd_rev.raw >= 0x14 &&
++			    stream->link->dpcd_caps.dprx_feature.bits.VSC_SDP_COLORIMETRY_SUPPORTED)
+ 				stream->use_vsc_sdp_for_colorimetry = true;
+ 		}
+ 		if (stream->out_transfer_func->tf == TRANSFER_FUNCTION_GAMMA22)
 
 
 
