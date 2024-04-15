@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-39587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EAE28A5371
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:27:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD388A538D
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:28:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52B6E1C2170E
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:27:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7386C1F214A1
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50977F48E;
-	Mon, 15 Apr 2024 14:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A5D80BFA;
+	Mon, 15 Apr 2024 14:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gnCBnLlF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AnInY+uQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614DD76410;
-	Mon, 15 Apr 2024 14:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400ED757E1;
+	Mon, 15 Apr 2024 14:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191209; cv=none; b=FK1bxJFpuR+wHWAChnWdDn7DHsRmMTudgX8BvOKX2MA5lbG5xPhmwxmbPDWoMMl76AhlZhL2Dr6LO8S5CnxMz0YWgHkMAiOfX0jeQLhvRyyse/GPehgSdHxdiaWKKrPiVdoWut4h8GYOQscOcvvlV52BaTXw3mAQ46op/lieavU=
+	t=1713191244; cv=none; b=B3dBSJcHgGN8RVnAqjxj8pm1XZewUWMBoy8sldbFDwPI5vYR7+V+q1blc1Indf4Ml0NwrelU3/SsMAU22zYvNHLlnPmJM8AjcYIp+J7/Ko6AsXO9/S0MDgdu2Epk9vyszA4pNJUzLmYq1wF4yRScWyS2E3eSToWT7LeEdubYcjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191209; c=relaxed/simple;
-	bh=uDULF38K2NcNGh2Bcs8tgCs+YnFfkvsWB/hNqo3egSM=;
+	s=arc-20240116; t=1713191244; c=relaxed/simple;
+	bh=MElXmEepG5obOE3cp8QqeSi87hbsFQsXolyWrZhT0lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACd3xE6WpjFSfYcRKIVLmoGDgYVKSTSOwPYo677IP+5Lvl8sXGH79RmI3AeBD1qwsnN/kc471UJ+837z+Lm2DCRrlF6DkAw/QkgpYn7tLpedEvKBa6pID7dwPQ9Q1civzeEPCf7jEIkVOni5MhG6JPtstIQrp/bkOyZhehLLEh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gnCBnLlF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04AEC113CC;
-	Mon, 15 Apr 2024 14:26:48 +0000 (UTC)
+	 MIME-Version; b=fyegVCa7KL92fDYSB9UNkoxS1Yrxyfbw3qA/RXFNNN6gGkMhZCOQzvXa+kXd6Te4IYB7OkrktHLKv97S1LvIQ2iRS/iQr+2MlDR7/SRvGe51RD33+fpaV6Fj5eCO1OT6Yf1lPK2EQr9Lqvp2xQDJlEvBNhorFF32VPwAulbbJqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AnInY+uQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3888C113CC;
+	Mon, 15 Apr 2024 14:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191209;
-	bh=uDULF38K2NcNGh2Bcs8tgCs+YnFfkvsWB/hNqo3egSM=;
+	s=korg; t=1713191243;
+	bh=MElXmEepG5obOE3cp8QqeSi87hbsFQsXolyWrZhT0lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gnCBnLlFvNlGN/g8f2b3NZJDweVUsLjVS++w1/kwC6I+WHW28G5IJGfQ5pRDtV/Md
-	 EgePc79i4eKUU6rqsKRGvLNG+QwkkADY41nSSluRx2LENqAYepngtDuGMVbtPao6Aq
-	 AVRolFHHPw1xG1SJz8szrvFtMusXiuoyIwbNV94U=
+	b=AnInY+uQiCCW+zfYeHAeP7vUV5crHZDWK4mgGEG3VlZ0G4B+bV4LsNN16ERLIzmi4
+	 X1OwSMdGX5SR4Wz0XJ7vVGiOfD4uv9JWhCYevEvfufjCAnr05spVdOfWQ1UVhd229Y
+	 2iwLzZtUmpj3fMI11ncepiA6ibeWCRnfVnx7gzOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Michael Chan <michael.chan@broadcom.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 051/172] bnxt_en: Fix possible memory leak in bnxt_rdma_aux_device_init()
-Date: Mon, 15 Apr 2024 16:19:10 +0200
-Message-ID: <20240415142001.966831916@linuxfoundation.org>
+Subject: [PATCH 6.8 052/172] bnxt_en: Fix error recovery for RoCE ulp client
+Date: Mon, 15 Apr 2024 16:19:11 +0200
+Message-ID: <20240415142001.995771148@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
 References: <20240415141959.976094777@linuxfoundation.org>
@@ -70,11 +70,12 @@ Content-Transfer-Encoding: 8bit
 
 From: Vikas Gupta <vikas.gupta@broadcom.com>
 
-[ Upstream commit 7ac10c7d728d75bc9daaa8fade3c7a3273b9a9ff ]
+[ Upstream commit b5ea7d33ba2a42b95b4298d08d2af9cdeeaf0090 ]
 
-If ulp = kzalloc() fails, the allocated edev will leak because it is
-not properly assigned and the cleanup path will not be able to free it.
-Fix it by assigning it properly immediately after allocation.
+Since runtime MSIXs vector allocation/free has been removed,
+the L2 driver needs to repopulate the MSIX entries for the
+ulp client as the irq table may change during the recovery
+process.
 
 Fixes: 303432211324 ("bnxt_en: Remove runtime interrupt vector allocation")
 Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
@@ -83,27 +84,22 @@ Signed-off-by: Michael Chan <michael.chan@broadcom.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
-index 93f9bd55020f2..a5f9c9090a6b0 100644
+index a5f9c9090a6b0..195c02dc06830 100644
 --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
 +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
-@@ -392,12 +392,13 @@ void bnxt_rdma_aux_device_init(struct bnxt *bp)
- 	if (!edev)
- 		goto aux_dev_uninit;
+@@ -210,6 +210,9 @@ void bnxt_ulp_start(struct bnxt *bp, int err)
+ 	if (err)
+ 		return;
  
-+	aux_priv->edev = edev;
++	if (edev->ulp_tbl->msix_requested)
++		bnxt_fill_msix_vecs(bp, edev->msix_entries);
 +
- 	ulp = kzalloc(sizeof(*ulp), GFP_KERNEL);
- 	if (!ulp)
- 		goto aux_dev_uninit;
- 
- 	edev->ulp_tbl = ulp;
--	aux_priv->edev = edev;
- 	bp->edev = edev;
- 	bnxt_set_edev_info(edev, bp);
+ 	if (aux_priv) {
+ 		struct auxiliary_device *adev;
  
 -- 
 2.43.0
