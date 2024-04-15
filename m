@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-39500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC198A51E1
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 15:42:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E82A48A51E2
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 15:42:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFE521C21E6F
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 13:42:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DB391F236D8
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 13:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFBDD762C9;
-	Mon, 15 Apr 2024 13:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB8976046;
+	Mon, 15 Apr 2024 13:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jfniNqDV"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LtFMQuaR"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D99C76045
-	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 13:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6681C69D
+	for <Stable@vger.kernel.org>; Mon, 15 Apr 2024 13:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713188305; cv=none; b=ZE1XBXXfXJQM6Bqc38ecgiG5k96G1GjpGGXHrH0kukfQsdT/b4Obsny50d6ZnI7QZ0UDOljMforiltMYGMkIBKhXQlTE5sMxtjnXkr2fumt87UykGOIgs0ma8y67fdX6qmdUhLqjIRUCGgeF9pHDuVUvM1T1d1t4e2VLxeZ7R+k=
+	t=1713188306; cv=none; b=lESt9EPmQBiST9LuEtYnp2VDd+meBQOTdMLdifqdCksLO5D05S9IeX/5OTYS789855N8zOWfeY/7AO/MAImRcbVD76ZtXng9I/vb2Otp84yS4AqdaZn2ArAmIVGv+mE4ZJ/xAsNc+Dqe2UFx3Yb73qkAwoQ32M1W4OpXBiLdtus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713188305; c=relaxed/simple;
-	bh=AL/7Cgx5mPufdRMLUwLyNmFQTZyzBDZ07VR1MqLd9Kk=;
+	s=arc-20240116; t=1713188306; c=relaxed/simple;
+	bh=sSj9MAjjhhMmWYRNQdBoR0gOMWN8jAQ2xrau7skEub0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rKndYBCMB1RB+qvcvQZuDkIxX1e2HSyxtWEBfK9NlTcJ8Fn3Z1q+y5G2PHeLyxfCS+ANPUNmI8RKXfiU6N9sfBNFBAxlfsd5vcX5jNWzNKTltlfDYZqJ3qGD3ePZliZAHzqwxO23t1tbNLEZLLOqevYDn8wyfc70HBFvSoPKL9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jfniNqDV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18421C4AF07;
-	Mon, 15 Apr 2024 13:38:23 +0000 (UTC)
+	 MIME-Version; b=tl30AS1g7B/ji8ZL+mFmpL5ffrR8xnLK6DvtMFYXPsB0M/ejclMt21LAyB76rEZXmEkDpYnChVKmd7aqO2SyqGjpfvWsG3IzPLNrMX4bQVX6GCv7EFsy9HhVnjqSDBanjl9Yoa3kIHwtC1bR4bUi6qJ2Ogfbhq3e2namKHq1AKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LtFMQuaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FA9C2BD11;
+	Mon, 15 Apr 2024 13:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713188305;
-	bh=AL/7Cgx5mPufdRMLUwLyNmFQTZyzBDZ07VR1MqLd9Kk=;
+	s=k20201202; t=1713188306;
+	bh=sSj9MAjjhhMmWYRNQdBoR0gOMWN8jAQ2xrau7skEub0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jfniNqDV/NaBBqUcY3FcVQmPeQbadE/Y7a+CVt4Zb4yWO+9wuKDU0nUSyEjC5eYiD
-	 oEi79ntaR0vSYUSJmtVYUdf9Aogi/bmivBy359+4WpYV1hW7X359D3WAnP7FKJ8d/8
-	 RDR8Tj0E6Vh/xluUbRTqAnIWry5ShW9i2FUJKHjG/YRJckFehOUdb35XfNkITkavKo
-	 GrtsVlRTrHpLFMC780Y0KMNVW4dxEsY/Q/ptzZ0sbNWYvVD/LZJ03Wx8d3CCntpFbl
-	 KoTrv750XpLd/NaJBShlQZDzr3JyPvbn3XUTqVMMc3n8gTicxINT8Yhhc2D60Ud0aY
-	 gcBlYJtecTLMA==
+	b=LtFMQuaRNB7e/bKKaISs8ljOc5V11uz5ygjoN/EBaV9TXQ80XOt6FldVQzVwsAC31
+	 gp6k1SFGXpN9+eEJrMWVc74YMQJvLkey5TsyD3lcijuC/ku+q8ULryScXgiEG6TTp+
+	 q/Nj+Yem74C381Cm7R/MfHoD9rkEbseFvFvkHhDfHhfWFvUsoUBhgBZQuKxPArV+ZQ
+	 XJtffKeJrLZ/HmFltG4jBN+z94gle02eONZEzxbIZqghAMaVkZ+7OvfTjB/SnJk/Xy
+	 dhEynvTlv1heeYJTEHPzlLjBmnLqYb3DkIRFAk0AIbsYAfjioE4/gm5LiZcFGvQ7rU
+	 zcedRXTyNdf6A==
 From: Sasha Levin <sashal@kernel.org>
 To: kernel-lts@openela.org
-Cc: Francis Laniel <flaniel@linux.microsoft.com>,
-	stable@vger.kernel.org,
-	Masami Hiramatsu <mhiramat@kernel.org>,
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14-openela 012/190] selftests/ftrace: Add new test case which checks non unique symbol
-Date: Mon, 15 Apr 2024 06:49:02 -0400
-Message-ID: <20240415105208.3137874-13-sashal@kernel.org>
+Subject: [PATCH 4.14-openela 013/190] iio: exynos-adc: request second interupt only when touchscreen mode is used
+Date: Mon, 15 Apr 2024 06:49:03 -0400
+Message-ID: <20240415105208.3137874-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240415105208.3137874-1-sashal@kernel.org>
 References: <20240415105208.3137874-1-sashal@kernel.org>
@@ -61,45 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Francis Laniel <flaniel@linux.microsoft.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 03b80ff8023adae6780e491f66e932df8165e3a0 ]
+[ Upstream commit 865b080e3229102f160889328ce2e8e97aa65ea0 ]
 
-If name_show() is non unique, this test will try to install a kprobe on this
-function which should fail returning EADDRNOTAVAIL.
-On kernel where name_show() is not unique, this test is skipped.
+Second interrupt is needed only when touchscreen mode is used, so don't
+request it unconditionally. This removes the following annoying warning
+during boot:
 
-Link: https://lore.kernel.org/all/20231020104250.9537-3-flaniel@linux.microsoft.com/
+exynos-adc 14d10000.adc: error -ENXIO: IRQ index 1 not found
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 2bb8ad9b44c5 ("iio: exynos-adc: add experimental touchscreen support")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20231009101412.916922-1-m.szyprowski@samsung.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc  | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
- create mode 100644 tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
+ drivers/iio/adc/exynos_adc.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
-new file mode 100644
-index 0000000000000..bc9514428dbaf
---- /dev/null
-+++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
-@@ -0,0 +1,13 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0
-+# description: Test failure of registering kprobe on non unique symbol
-+# requires: kprobe_events
+diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
+index 019153882e700..f8324261e74d4 100644
+--- a/drivers/iio/adc/exynos_adc.c
++++ b/drivers/iio/adc/exynos_adc.c
+@@ -787,6 +787,12 @@ static int exynos_adc_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
++	/* leave out any TS related code if unreachable */
++	if (IS_REACHABLE(CONFIG_INPUT)) {
++		has_ts = of_property_read_bool(pdev->dev.of_node,
++					       "has-touchscreen") || pdata;
++	}
 +
-+SYMBOL='name_show'
-+
-+# We skip this test on kernel where SYMBOL is unique or does not exist.
-+if [ "$(grep -c -E "[[:alnum:]]+ t ${SYMBOL}" /proc/kallsyms)" -le '1' ]; then
-+	exit_unsupported
-+fi
-+
-+! echo "p:test_non_unique ${SYMBOL}" > kprobe_events
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+ 		dev_err(&pdev->dev, "no irq resource?\n");
+@@ -794,11 +800,15 @@ static int exynos_adc_probe(struct platform_device *pdev)
+ 	}
+ 	info->irq = irq;
+ 
+-	irq = platform_get_irq(pdev, 1);
+-	if (irq == -EPROBE_DEFER)
+-		return irq;
++	if (has_ts) {
++		irq = platform_get_irq(pdev, 1);
++		if (irq == -EPROBE_DEFER)
++			return irq;
+ 
+-	info->tsirq = irq;
++		info->tsirq = irq;
++	} else {
++		info->tsirq = -1;
++	}
+ 
+ 	info->dev = &pdev->dev;
+ 
+@@ -865,12 +875,6 @@ static int exynos_adc_probe(struct platform_device *pdev)
+ 	if (info->data->init_hw)
+ 		info->data->init_hw(info);
+ 
+-	/* leave out any TS related code if unreachable */
+-	if (IS_REACHABLE(CONFIG_INPUT)) {
+-		has_ts = of_property_read_bool(pdev->dev.of_node,
+-					       "has-touchscreen") || pdata;
+-	}
+-
+ 	if (pdata)
+ 		info->delay = pdata->delay;
+ 	else
 -- 
 2.43.0
 
