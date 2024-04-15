@@ -1,195 +1,113 @@
-Return-Path: <stable+bounces-39585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00AC08A536E
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:27:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 529788A544D
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 801401F207C2
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:27:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83FBD1C20DA5
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F4A7EEFF;
-	Mon, 15 Apr 2024 14:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427917C085;
+	Mon, 15 Apr 2024 14:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VDMGhHjD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lwbVMlu6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f68.google.com (mail-oa1-f68.google.com [209.85.160.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7867E576;
-	Mon, 15 Apr 2024 14:26:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A5F763EC
+	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 14:32:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191205; cv=none; b=soe/HuLFa7JjbOvkspPZEC578S1Xfd36cYQEMK9y7/VyfcasVcOcXdlaFXfRrdWZ60qbFw70ayYg8V87uaqK6eSFuLNNv1PGSmvFOrtXzz02fpdkhwlzKAo2tG+mIbXjphv+Czvzc3lfF0m1cg2NPbFVtIzBf2R6cPkG7tfBLj0=
+	t=1713191574; cv=none; b=kDULClf9X+c/x/wIZEO+eLGJvjZEqtERxKqsjkN6Y3MwGq35Cg8lpNig0wG5UoLHTX47SAc8jqRetQcUQhK7bH78nnBzU18/OypV8UnOBBWZUH+EzNAoLo8dkCpBXZFQbpWT0+zm+lfsMH/8DeDXIjA1G0kFao1eDKGqPoIKiHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191205; c=relaxed/simple;
-	bh=r3eeg0tRuPV/h8aAd6D4ldP3XRPreq4TA3tAEs4iVdU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UUoGeTi/CjoZm2kq4mIlBJAAcyn9v88t9MI6Uxlp8wmKRjkCEhI3QvRI9t3tE6Hj0jJhWef3LoQtZtLTiAC0tRWIb3H2XzBu/cqSVULXQN/WtrtfcAR17yfrXfx3680lqHl6v8p4HnnDeW9yk2p5W2uz2IOD9qA4XXLUkT3fmZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VDMGhHjD; arc=none smtp.client-ip=209.85.160.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f68.google.com with SMTP id 586e51a60fabf-23335730db1so1982601fac.2;
-        Mon, 15 Apr 2024 07:26:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713191203; x=1713796003; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qHlOC6Ow5eV/sTYTAeVpjV+5HwS0SfY4RsP3nOtgDzs=;
-        b=VDMGhHjDGFyWPrbAddan1MiEoJjTk6/52EMRIMIRm8YONPNnDrxKtoe5/DME9HWzG6
-         8KX0O2n+8a+4ly/MaFvjRk+/jpMmiewgSae5GsN0CJsTSgJJc5CNZhXzY8u3CXWPXoFd
-         7pqagucqgEnNpj1kqOhF1Xj5iq7GTNiOQPV6HwEzOoQWYmgFSyJ6fzZH1PQe/Aofz7os
-         uqpETgSwQs992Xo21iZthzgrK99+vrUIzDatOmfIeBX/5ImD6cnz+ojRh6aNHt7UykpV
-         mThIzZ1K40VcMEo81QDZKkgHxKhpl1mkngprx8AKrDahxdVj3f8tuLAFYba+CwoZg3JV
-         j+dA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713191203; x=1713796003;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qHlOC6Ow5eV/sTYTAeVpjV+5HwS0SfY4RsP3nOtgDzs=;
-        b=mMA35IUVPFoSRa5EjWrmLf8drV8h3Xl7oFkpK/XwOstvVayGAh5lnHpSNgxf+/cE4U
-         gZkLNpMOr1Cxk9JxV0nqi1FWdLS/kchsniqjM0yZy7e0KDV3e77+8UyF7QU6VrMEViGI
-         SZ0o8klQrge255xgTMViGyqKjEUzlNLW+srvocy4KKNbkuzITFSzy3XitYxOPk+rkc6L
-         2Qqdh9CY7lQzWw5H+oJhs7uiq4azRzpwK7kD5uzb4JIxY+hxEPv3tZD8G74dDk9Mu0N/
-         6XtVE+VG2pGwwnIhryQx/R2Yvcy+bcmmSBOAvckTtroMpbqcNZCthF9IB3z14y5cYXH0
-         J4bA==
-X-Forwarded-Encrypted: i=1; AJvYcCWdFfqvHyJq+ZQRAZ8qZ7ojwqXBeXCA3Lgb7/jEVeO8CQ+7a1xdKNzZG2SPD68ZmReMK8Oqz4P4Y0WdOSXxOabSv4Jsac7F4VToi+fh6XG7n73xaIekf9CexHvJRoXVuxG/
-X-Gm-Message-State: AOJu0Yxjn7pwPg+91bBYDPmIEIwK4LEkUy4RbQDqozcqjgYTHR0JUajJ
-	/nK7IHjTEWYPZkP3UyNdhu1kHKr4G0vAxTTYFGtXgM6O7ovvVFFprS/o/R+KjEjP6g==
-X-Google-Smtp-Source: AGHT+IHw33scVYOySwVtnSvcdDIXpD6BlOFtpnrf0VXfn1mQpOqnS7Zrq9lXN02SmCfO9dAZnkEkwA==
-X-Received: by 2002:a05:6870:d606:b0:22e:ce2e:4506 with SMTP id a6-20020a056870d60600b0022ece2e4506mr11880218oaq.37.1713191202668;
-        Mon, 15 Apr 2024 07:26:42 -0700 (PDT)
-Received: from localhost.localdomain ([2604:abc0:1234:22::2])
-        by smtp.gmail.com with ESMTPSA id we2-20020a056871a60200b0022e0804def3sm2271091oab.22.2024.04.15.07.26.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Apr 2024 07:26:42 -0700 (PDT)
-From: Coia Prant <coiaprant@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Coia Prant <coiaprant@gmail.com>,
-	stable@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Subject: [PATCH 2/2 v3] net: usb: qmi_wwan: add Lonsung U8300/U9300 product
-Date: Mon, 15 Apr 2024 07:26:38 -0700
-Message-Id: <20240415142638.1756966-1-coiaprant@gmail.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1713191574; c=relaxed/simple;
+	bh=kHJY2Uq2jF7R4G4MyJRdk9/tqdpX1bx3qo6G8B8h2A8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VIaXWuuIcyr8Cd/N4IN6RQbHQQzc82eW0n34y8bE8wSF1adQbecIXn4bH3PN/+waq1OQiKLspB3iQuKRQjv/K9naoFtTrq5eg5eFoBDF7POJTvXJJPY2UxrMPbjxWyJdSUP0o/Tzk0blsnAJZl06FAUw5a5+WZXO366KD014Iaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lwbVMlu6; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713191573; x=1744727573;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=kHJY2Uq2jF7R4G4MyJRdk9/tqdpX1bx3qo6G8B8h2A8=;
+  b=lwbVMlu6CHEa22PS3ZyLWT2bD8IMJB/Pej3QILcYiY9A3uUyhpI18lnV
+   QoeVEmv5KXXk15iAjRx2vJ47HmvWigg71+okkueKg5oA24FZDQ+nfdHOp
+   HxYyslkbYECfBkxq0AB+h+XdH4/2VMPxTPDvDl3Hd7+ATwBEwok9I7mza
+   OvnIAExxmiGjpiHS+d04vStPJAD1aP+72wpDfDMxCaITf0KyPaYpcz7Mv
+   NmgNkKqjBJW5gCejdD1/OEBrVxVRJPTbJWlyP6Axjf/N+k2VXqcrKOUAG
+   llj86igmUkdU3Q6sh/esEkCGBXDPby5RVhp5hVECP31OhX89wqITgCwxl
+   w==;
+X-CSE-ConnectionGUID: vH5SjeruR7iMMMJnmkOFLA==
+X-CSE-MsgGUID: Og6OjMamS2mIB59wyLB67g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="26041392"
+X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
+   d="scan'208";a="26041392"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 07:32:53 -0700
+X-CSE-ConnectionGUID: 3VBzBj/4QOqcUsRE3vuTOA==
+X-CSE-MsgGUID: bALrC1s1QNS9qgTw1M1cvQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
+   d="scan'208";a="22030914"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.20.116])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 07:32:50 -0700
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Nirmoy Das <nirmoy.das@intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject:
+ Re: [PATCH 6.1.y] drm/i915/vma: Fix UAF on destroy against retire race
+Date: Mon, 15 Apr 2024 16:32:48 +0200
+Message-ID: <6034005.lOV4Wx5bFT@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <2024041507-helpless-stimulus-df3e@gregkh>
+References:
+ <2024033053-lyrically-excluding-f09f@gregkh>
+ <2024041521-diploma-duckling-af2e@gregkh>
+ <2024041507-helpless-stimulus-df3e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-Update the net usb qmi_wwan driver to support Longsung U8300/U9300.
-Enabling DTR on this modem was necessary to ensure stable operation.
+On Monday, 15 April 2024 14:23:22 CEST Greg KH wrote:
+> On Mon, Apr 15, 2024 at 12:50:32PM +0200, Greg KH wrote:
+> > On Fri, Apr 12, 2024 at 08:55:45AM +0200, Janusz Krzysztofik wrote:
+> > > Object debugging tools were sporadically reporting illegal attempts to
+> > > free a still active i915 VMA object when parking a GT believed to be idle.
+> > 
+> > <snip>
+> > 
+> > both backports now queued up, thanks.
+> 
+> And both backports break the build.  Did you test these?
 
-For U8300
+I'm sorry, apparently I didn't test them.  Let me fix that and resubmit.
 
-Interface 4 is used by for QMI interface in stock firmware of U8300, the
-router which uses U8300 modem. Free the interface up, to rebind it to
-qmi_wwan driver.
-Interface 5 is used by for ADB interface in stock firmware of U8300, the
-router which uses U8300 modem. Free the interface up.
-The proper configuration is:
+Janusz
 
-Interface mapping is:
-0: unknown (Debug), 1: AT (Modem), 2: AT, 3: PPP (NDIS / Pipe), 4: QMI, 5: ADB
+> 
+> Now dropped.
+> 
+> greg k-h
+> 
 
-T:  Bus=05 Lev=01 Prnt=03 Port=02 Cnt=01 Dev#=  4 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1c9e ProdID=9b05 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=Android
-C:  #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-For U9300
 
-Interface 1 is used by for ADB interface in stock firmware of U9300, the
-router which uses U9300 modem. Free the interface up.
-Interface 4 is used by for QMI interface in stock firmware of U9300, the
-router which uses U9300 modem. Free the interface up, to rebind it to
-qmi_wwan driver.
-The proper configuration is:
-
-Interface mapping is:
-0: ADB, 1: AT (Modem), 2: AT, 3: PPP (NDIS / Pipe), 4: QMI
-
-Note: Interface 3 of some models of the U9300 series can send AT commands.
-
-T:  Bus=05 Lev=01 Prnt=05 Port=04 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1c9e ProdID=9b3c Rev=03.18
-S:  Manufacturer=Android
-S:  Product=Android
-C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-
-Tested successfully using Modem Manager on U9300.
-Tested successfully using qmicli on U9300.
-
-Signed-off-by: Coia Prant <coiaprant@gmail.com>
-Cc: stable@vger.kernel.org
-Cc: linux-usb@vger.kernel.org
----
- drivers/net/usb/qmi_wwan.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index e2e181378f41..3dd8a2e24837 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1380,6 +1380,8 @@ static const struct usb_device_id products[] = {
- 	{QMI_FIXED_INTF(0x1c9e, 0x9801, 3)},	/* Telewell TW-3G HSPA+ */
- 	{QMI_FIXED_INTF(0x1c9e, 0x9803, 4)},	/* Telewell TW-3G HSPA+ */
- 	{QMI_FIXED_INTF(0x1c9e, 0x9b01, 3)},	/* XS Stick W100-2 from 4G Systems */
-+	{QMI_QUIRK_SET_DTR(0x1c9e, 0x9b05, 4)},	/* Longsung U8300 */
-+	{QMI_QUIRK_SET_DTR(0x1c9e, 0x9b3c, 4)},	/* Longsung U9300 */
- 	{QMI_FIXED_INTF(0x0b3c, 0xc000, 4)},	/* Olivetti Olicard 100 */
- 	{QMI_FIXED_INTF(0x0b3c, 0xc001, 4)},	/* Olivetti Olicard 120 */
- 	{QMI_FIXED_INTF(0x0b3c, 0xc002, 4)},	/* Olivetti Olicard 140 */
--- 
-2.39.2
 
 
