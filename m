@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-39397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9991D8A4852
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 08:46:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3528A4869
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 08:53:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38B521F224BB
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 06:46:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE4651C2169D
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 06:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F191DA22;
-	Mon, 15 Apr 2024 06:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10F61EB5E;
+	Mon, 15 Apr 2024 06:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bmTPhJVd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VTubb2UE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE77D200DE;
-	Mon, 15 Apr 2024 06:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8311EB36;
+	Mon, 15 Apr 2024 06:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713163574; cv=none; b=r1LWcXUvC9WeLPXHSQ1Tu61G42SSOjHC0cNBuxGLZbIE+cXCBJq/APN7qxNzPvTnjLCcrjSvLGG1z0BjjO4VwMRhYGeHndZs3QY5dgW0OwZzw7rvOwaCHEE7YPMqiSbLA+sIEbi2bFhfAkQ/YxGEynhEifbG5uaaZSSjK60Ma4I=
+	t=1713164029; cv=none; b=jY+rIjk9LPs7liDwulkBFxVc59L/tDjlDlaqJhaokED2qV5lI0o3to4tSBxtFzAjtESbyXaNyylnqZ79+1Vr40fwMoj8vhfpCy1q6i2C08Xn/XztRaCtmFDLRzBJU2Y6X3bEdLo9iDYcbrF06vx0hy0pS+ozGl8jhZX5qqcF99c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713163574; c=relaxed/simple;
-	bh=M3E5v9WIUoK8ZPJWrgQ5BaTLENMbot55qcTTTIDrCOQ=;
+	s=arc-20240116; t=1713164029; c=relaxed/simple;
+	bh=gJH7c72oR+IyKtC4jk+rhP58fP5HmbqZlgRE4iVaT30=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NwA5L7GvHoQ7ZxwQrqgXFnTLHNTY57o0mUKnv01lqIWX2mMaftrLI9Ud1Sml2tERRXMgOK/b4bHLsLRGxrDkSantP9POufaZxAkdMyZnJrqfGFnjgKJWpHqQfkTOUDsDgtbnzv6qCTyJUiFV2pmS8awCeOodkQ78uSuvU+DdY4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bmTPhJVd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694CEC113CC;
-	Mon, 15 Apr 2024 06:46:14 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=GI77oQDbwhNYRrLkhV4lRMRHWpswTiv6IelgRg95R+kGF0MPMDvA08nBDz2VroLySAbIefh8QG5V7IdwxULk+852kJoqo44d9Na3r4huqSfq7a8RV2ijKQje3eXUwHsdqIka3JKXUllYa7XM9STLlWbGw4aAZiJEHp7IZqE8yd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VTubb2UE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD8AC113CC;
+	Mon, 15 Apr 2024 06:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713163574;
-	bh=M3E5v9WIUoK8ZPJWrgQ5BaTLENMbot55qcTTTIDrCOQ=;
+	s=k20201202; t=1713164029;
+	bh=gJH7c72oR+IyKtC4jk+rhP58fP5HmbqZlgRE4iVaT30=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bmTPhJVdPaJsXIsEAlxGSSn5tY8tggYoQnpA9Jsr6n6hVeOLdqW8/HiMObdriwyG+
-	 0R0MCOPz1CZ7nY4gpQsFY2Ay62MOJRUeHC/XgBAzPJFFJ45ZacHWJ0VJPUIrE1Wjt9
-	 D6Zt/wxaMefOwY0QJPnvkaWgZkkAcxNDrrz4827kfyumERAOelQGL7NBnnVesap4s2
-	 aAok9xfs5ac4k1TSibuXtS18AQn38hMtTEIcOKcXRiOSzgBodT8BO/D7syj7P2UWPI
-	 cp5T5H8dbTXXthsJXq8cydXx7ZvQEiMYuNxGoU6grIDEX62MxTcCdKOTKNY6RuTKPF
-	 1nQkkLXZoIm1A==
+	b=VTubb2UEi5QBv6chWiaakROMh8HPOuQX2NjlfikKnBSbg2c7DTRyGDttg2MwdIe/L
+	 WUKIFocwmpjpX1XCdsUBX79bBtwLSLxS24DwbJKcunnphjfH/U+xfWHO/Woi3++dEw
+	 Sl3ggHvRqV0q9LDrUpPxbtW/DTnJfa/dzwTJq/YFw46AsYYOIiD+t8NJVQtj0D6g+G
+	 atQd5289hiHNngOepmi8lWna+qB69CrgVKvkLjzcuETBUgj30OslMJDHSD1PKwoS1F
+	 nNNjFYrRWFF9mjarb6OEB2u56o4robySvz/zxt8S32Xrh0WUFGXor4ZqjT/noJQLrv
+	 e4mbmoWEqDTlg==
 Received: from johan by xi.lan with local (Exim 4.97.1)
 	(envelope-from <johan@kernel.org>)
-	id 1rwG6V-000000004dk-481f;
-	Mon, 15 Apr 2024 08:46:12 +0200
-Date: Mon, 15 Apr 2024 08:46:11 +0200
+	id 1rwGDq-000000004lA-2Jo9;
+	Mon, 15 Apr 2024 08:53:46 +0200
+Date: Mon, 15 Apr 2024 08:53:46 +0200
 From: Johan Hovold <johan@kernel.org>
-To: Chuanhong Guo <gch981213@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] USB: serial: option: add support for Fibocom FM650/FG650
-Message-ID: <ZhzNM_zouHPLdvBz@hovoldconsulting.com>
-References: <20240312062913.12723-1-gch981213@gmail.com>
+To: Lars Melin <larsm17@gmail.com>, Coia Prant <coiaprant@gmail.com>
+Cc: linux-usb@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] USB: serial: option: add Lonsung U8300/U9300 product
+ Update the USB serial option driver to support Longsung U8300/U9300.
+Message-ID: <ZhzO-re7GMmI5fbP@hovoldconsulting.com>
+References: <20240402073451.1751984-1-coiaprant@gmail.com>
+ <64053ff1-c447-45c5-ba87-e85307143dd4@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,14 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240312062913.12723-1-gch981213@gmail.com>
+In-Reply-To: <64053ff1-c447-45c5-ba87-e85307143dd4@gmail.com>
 
-On Tue, Mar 12, 2024 at 02:29:12PM +0800, Chuanhong Guo wrote:
-> Fibocom FM650/FG650 are 5G modems with ECM/NCM/RNDIS/MBIM modes.
-> This patch adds support to all 4 modes.
+On Tue, Apr 02, 2024 at 03:09:12PM +0700, Lars Melin wrote:
+> On 2024-04-02 14:34, Coia Prant wrote:
 
-Can you please say something here about what each port (in each mode) is
-used for?
+You're Subject is missing two newline characters to separate the commit
+summary from the commit message.
+
+> > ID 1c9e:9b05 OMEGA TECHNOLOGY (U8300)
+> > ID 1c9e:9b3c OMEGA TECHNOLOGY (U9300)
+> > 
+> > U8300
+> >   /: Bus
+> >      |__ Port 1: Dev 3, If 0, Class=Vendor Specific Class, Driver=option, 480M (Debug)
+> >          ID 1c9e:9b05 OMEGA TECHNOLOGY
+> >      |__ Port 1: Dev 3, If 1, Class=Vendor Specific Class, Driver=option, 480M (Modem / AT)
+> >          ID 1c9e:9b05 OMEGA TECHNOLOGY
+> >      |__ Port 1: Dev 3, If 2, Class=Vendor Specific Class, Driver=option, 480M (AT)
+> >          ID 1c9e:9b05 OMEGA TECHNOLOGY
+> >      |__ Port 1: Dev 3, If 3, Class=Vendor Specific Class, Driver=option, 480M (AT / Pipe / PPP)
+> >          ID 1c9e:9b05 OMEGA TECHNOLOGY
+> >      |__ Port 1: Dev 3, If 4, Class=Vendor Specific Class, Driver=qmi_wwan, 480M (NDIS / GobiNet / QMI WWAN)
+> >          ID 1c9e:9b05 OMEGA TECHNOLOGY
+> >      |__ Port 1: Dev 3, If 5, Class=Vendor Specific Class, Driver=, 480M (ADB)
+> >          ID 1c9e:9b05 OMEGA TECHNOLOGY
+
+Could please use the more condensed output of the usb-devices command
+(for both devices) which is better suited for a commit message?
+
+> Reviewed-by Lars Melin (larsm17@gmail.com
+> 
+> added the maintainer to the recipient list
+
+Thanks for reviewing, Lars.
+
+Coia, you can include Lars's Reviewed-by tag when you send a v2.
 
 Johan
 
