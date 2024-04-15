@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-39894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486E18A553D
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5CBC8A54C8
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A78A4283927
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D761E1C21E94
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56BA1446AF;
-	Mon, 15 Apr 2024 14:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52CDB757FB;
+	Mon, 15 Apr 2024 14:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cC96im8O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kllv8Q03"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B772119;
-	Mon, 15 Apr 2024 14:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1053F8BF8;
+	Mon, 15 Apr 2024 14:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192137; cv=none; b=TMYTcTd33hpy+GZUucZH5luRDYXUY48LSYLg7WjL9pvRXAuVJUfThMd3OGuDnCAkVO2tYbP0Ur9CFHNKc2nCrTH2RQWHq5QBxCh93CQhiwiCj33bCY4BLeyjWH4iS2MUuTV603n6KDdWenbFR+jlmkgof+Fm+x7VA4yfF1nU/Qg=
+	t=1713191840; cv=none; b=jpQygfR0mMmrFxfzgrzUM8o+b2zwL6Q97P1nc+89ZyMz9LXdn+byq5Cx2M3UgMuCY5DHK8iws3g0jg7Cv0A/l8cMRhr/7GtehOMR7mUJrtVljh7y3BCNYnqidzld9MiviE6jc1SR1dDyHNSNgGHf0IG/wvFfWcE1pbsmWUzr9vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192137; c=relaxed/simple;
-	bh=D7QYrbwdogRU4RtyibQeGVlD6nxzROFUyTnuImN9PSM=;
+	s=arc-20240116; t=1713191840; c=relaxed/simple;
+	bh=Guzk44SbpmVWNhIE33TH/VFEcoOE6vktIHuSp5Nk3pU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ck66790WVN6Wb+SLav6nfP9PIZ/NedYlXM+7NMMkku9+sIZw8ZUaP4KA6r6OugFs9pQ7i4GF25+owr2HaWcFDvsaIU6s/iBL0Nr6EpUXl+rxmHOID9reMv1gK7WAOZO814gZrZDFVnbYttZdMS35RCSF9d5osa6uQ85XuldkKqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cC96im8O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929ABC4AF07;
-	Mon, 15 Apr 2024 14:42:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NSfPnunELRzxzh61QG3D3nwj1fDZHAfOcll0sjr0ck7LRQ7tq53qWiZnOJBP6eMIFB4Lg2ouOsglJ9TOLCZ/v+Bb6gqfm+tvdPPEH99ITBt49FIlrg+ndTHQFyMnga80KZJ0+Yy7yHDFRk/GH9sjPbxYNaIBXkEeIWAIQW3Ybss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kllv8Q03; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A311C113CC;
+	Mon, 15 Apr 2024 14:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192137;
-	bh=D7QYrbwdogRU4RtyibQeGVlD6nxzROFUyTnuImN9PSM=;
+	s=korg; t=1713191839;
+	bh=Guzk44SbpmVWNhIE33TH/VFEcoOE6vktIHuSp5Nk3pU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cC96im8O7GWogdUBZBcub1qgp/qe6Z5Snx/6KJfzxPE2J73a6gGGbou22pGEdNbSe
-	 eg2jySVAmHrbHpw/soOryI9JmyEFFUpOl3XZ4fbwigh1OKbXzDd9QE5fauNjC+xrHy
-	 PmDvn/I/BdFiH4rd2a/vOmLbfH3S0I916KkjGS+Y=
+	b=Kllv8Q03sji5nUVuMeXD9udxL4/Jmzj9UTnHXtYhvTFBtuwtUEn9gw9+jSE59Wabp
+	 n8XK1lN7cIfHQG21MMzgipnbfwfwKE8SzRQdJhf4dpE97rj8Hx1B3HUkwrCuWA7vqd
+	 cb+qEFLcIhy1FWXdaxRF1GHRM8Klr55P5vOE2wKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 5.15 01/45] batman-adv: Avoid infinite loop trying to resize local TT
+	Sean Christopherson <seanjc@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.6 103/122] x86/cpu: Actually turn off mitigations by default for SPECULATION_MITIGATIONS=n
 Date: Mon, 15 Apr 2024 16:21:08 +0200
-Message-ID: <20240415141942.282701211@linuxfoundation.org>
+Message-ID: <20240415141956.465253424@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
-References: <20240415141942.235939111@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit b1f532a3b1e6d2e5559c7ace49322922637a28aa upstream.
+commit f337a6a21e2fd67eadea471e93d05dd37baaa9be upstream.
 
-If the MTU of one of an attached interface becomes too small to transmit
-the local translation table then it must be resized to fit inside all
-fragments (when enabled) or a single packet.
+Initialize cpu_mitigations to CPU_MITIGATIONS_OFF if the kernel is built
+with CONFIG_SPECULATION_MITIGATIONS=n, as the help text quite clearly
+states that disabling SPECULATION_MITIGATIONS is supposed to turn off all
+mitigations by default.
 
-But if the MTU becomes too low to transmit even the header + the VLAN
-specific part then the resizing of the local TT will never succeed. This
-can for example happen when the usable space is 110 bytes and 11 VLANs are
-on top of batman-adv. In this case, at least 116 byte would be needed.
-There will just be an endless spam of
+  │ If you say N, all mitigations will be disabled. You really
+  │ should know what you are doing to say so.
 
-   batman_adv: batadv0: Forced to purge local tt entries to fit new maximum fragment MTU (110)
+As is, the kernel still defaults to CPU_MITIGATIONS_AUTO, which results in
+some mitigations being enabled in spite of SPECULATION_MITIGATIONS=n.
 
-in the log but the function will never finish. Problem here is that the
-timeout will be halved all the time and will then stagnate at 0 and
-therefore never be able to reduce the table even more.
-
-There are other scenarios possible with a similar result. The number of
-BATADV_TT_CLIENT_NOPURGE entries in the local TT can for example be too
-high to fit inside a packet. Such a scenario can therefore happen also with
-only a single VLAN + 7 non-purgable addresses - requiring at least 120
-bytes.
-
-While this should be handled proactively when:
-
-* interface with too low MTU is added
-* VLAN is added
-* non-purgeable local mac is added
-* MTU of an attached interface is reduced
-* fragmentation setting gets disabled (which most likely requires dropping
-  attached interfaces)
-
-not all of these scenarios can be prevented because batman-adv is only
-consuming events without the the possibility to prevent these actions
-(non-purgable MAC address added, MTU of an attached interface is reduced).
-It is therefore necessary to also make sure that the code is able to handle
-also the situations when there were already incompatible system
-configuration are present.
-
+Fixes: f43b9876e857 ("x86/retbleed: Add fine grained Kconfig knobs")
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
 Cc: stable@vger.kernel.org
-Fixes: a19d3d85e1b8 ("batman-adv: limit local translation table max size")
-Reported-by: syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20240409175108.1512861-2-seanjc@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/translation-table.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/cpu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -3948,7 +3948,7 @@ void batadv_tt_local_resize_to_mtu(struc
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -3208,7 +3208,8 @@ enum cpu_mitigations {
+ };
  
- 	spin_lock_bh(&bat_priv->tt.commit_lock);
+ static enum cpu_mitigations cpu_mitigations __ro_after_init =
+-	CPU_MITIGATIONS_AUTO;
++	IS_ENABLED(CONFIG_SPECULATION_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
++						     CPU_MITIGATIONS_OFF;
  
--	while (true) {
-+	while (timeout) {
- 		table_size = batadv_tt_local_table_transmit_size(bat_priv);
- 		if (packet_size_max >= table_size)
- 			break;
+ static int __init mitigations_parse_cmdline(char *arg)
+ {
 
 
 
