@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-39813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61778A54DF
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5038A5532
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92203281222
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87B36284256
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523988120A;
-	Mon, 15 Apr 2024 14:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6288173163;
+	Mon, 15 Apr 2024 14:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R54L6jIx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbmZT2ek"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCF07A705;
-	Mon, 15 Apr 2024 14:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD3B2119;
+	Mon, 15 Apr 2024 14:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191891; cv=none; b=HNQ7mlyZtCuuN8Y1iAX1l3BfpXQ2RrQV7Ep6kCsY0Z/DX+yTTijm2SMRxlQ0XJSBG1TYyj88G8juagDkm3nY0zQbbQQ2PgG+Bx+8H/r+LIIjxUmX2bISghPnmEgUtCO37q7M6tceL9a8qYyC1FDH9S30D3RBLTG0IvoaZWv/YqM=
+	t=1713192122; cv=none; b=N0Z0nbcc0u7evv/Al9DUWi9qGt0WOtbRhMGZKnpD+ggokndg+jW0R03K2eklFgAntggqHwrI/VytfCsliCxVgb+++38+YEK8ZAxT7/4JelUuFDrG26gXxEtaJWHV61EiO7I+A3IeRD0tPUD+Qrxwu9bcloXRw2vWEKtNoXTczX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191891; c=relaxed/simple;
-	bh=1eiGAwvXGsEe8YL/J1mL4TQEiq+/lGC5aDGJxdpVPwI=;
+	s=arc-20240116; t=1713192122; c=relaxed/simple;
+	bh=josSVi1K8kY3IUDVUrBu2ANnj1lrr72nAFvGgX/r5eI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=falE+5NMX4qyvDJielxw3qA655GThAvuKT9ZMpJuyN1e6PGzK5VUX4d2t7jWipuF3O2R5l7pDeujKcA+yTOe27BsnPqrkpCKD2ZHojOzZXK7axLyW2ygB2QAQ81w0HMmsYsIpdDvetU/GOsz0nYMYUZfzcHm6ZQk+jyVIoWaNsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R54L6jIx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870A7C113CC;
-	Mon, 15 Apr 2024 14:38:10 +0000 (UTC)
+	 MIME-Version; b=tPipk6rxe7u30qABI/Z7OJ0oHUUCburQZ5Dmxsz+KA0FdQLaNTl46fxXlxQli+K1QRkkOs8nieqR14UyhhqSv7xQHL00kIhTy/ygBmC4GW8sObuMBOx31SIK+Qe2gcpdWh8lfakVXJ/0THRgaeQ+E65fM54d90CqCzVS98bzDXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbmZT2ek; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95577C113CC;
+	Mon, 15 Apr 2024 14:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191890;
-	bh=1eiGAwvXGsEe8YL/J1mL4TQEiq+/lGC5aDGJxdpVPwI=;
+	s=korg; t=1713192122;
+	bh=josSVi1K8kY3IUDVUrBu2ANnj1lrr72nAFvGgX/r5eI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R54L6jIx99tOk4Yha0samr7T/TU0wH2p5u2icVmlFgO32uk9+VYUEXsTryYqm/i8+
-	 MMFgughyPacBfzhLBfsRR35MTJq7JgE1qYwHMUpbOF8ejHBF4TcZZPzR9pILbnCGG9
-	 kcSIlVKIbD7jYPW4JkwmPOisp/5bbD0bW13rJSRo=
+	b=wbmZT2ekLLn3dEX+TLeq1noRxErhZFzbfmLHXsRejV1qQr1N7tps+7fWmC+6iQcNG
+	 6OBzGs28G6S0SjZ9ZvVD2JTjsCzkiPxP2/IqxzII9tiD5bTNlapXyQaAzW4dWCB2gw
+	 EzuSG/rrEXfjkqpzdRzORf43wQsChLQo09kQAzv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 119/122] drm/amdgpu: fix incorrect number of active RBs for gfx11
-Date: Mon, 15 Apr 2024 16:21:24 +0200
-Message-ID: <20240415141956.940231208@linuxfoundation.org>
+	John Stultz <jstultz@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.1 54/69] selftests: timers: Fix abs() warning in posix_timers test
+Date: Mon, 15 Apr 2024 16:21:25 +0200
+Message-ID: <20240415141947.796631590@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: John Stultz <jstultz@google.com>
 
-commit bbca7f414ae9a12ea231cdbafd79c607e3337ea8 upstream.
+commit ed366de8ec89d4f960d66c85fc37d9de22f7bf6d upstream.
 
-The RB bitmap should be global active RB bitmap &
-active RB bitmap based on active SA.
+Building with clang results in the following warning:
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+  posix_timers.c:69:6: warning: absolute value function 'abs' given an
+      argument of type 'long long' but has parameter of type 'int' which may
+      cause truncation of value [-Wabsolute-value]
+        if (abs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
+            ^
+So switch to using llabs() instead.
+
+Fixes: 0bc4b0cf1570 ("selftests: add basic posix timers selftests")
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240410232637.4135564-3-jstultz@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c |    2 +-
+ tools/testing/selftests/timers/posix_timers.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -1616,7 +1616,7 @@ static void gfx_v11_0_setup_rb(struct am
- 			active_rb_bitmap |= (0x3 << (i * rb_bitmap_width_per_sa));
- 	}
+--- a/tools/testing/selftests/timers/posix_timers.c
++++ b/tools/testing/selftests/timers/posix_timers.c
+@@ -66,7 +66,7 @@ static int check_diff(struct timeval sta
+ 	diff = end.tv_usec - start.tv_usec;
+ 	diff += (end.tv_sec - start.tv_sec) * USECS_PER_SEC;
  
--	active_rb_bitmap |= global_active_rb_bitmap;
-+	active_rb_bitmap &= global_active_rb_bitmap;
- 	adev->gfx.config.backend_enable_mask = active_rb_bitmap;
- 	adev->gfx.config.num_rbs = hweight32(active_rb_bitmap);
- }
+-	if (abs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
++	if (llabs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
+ 		printf("Diff too high: %lld..", diff);
+ 		return -1;
+ 	}
 
 
 
