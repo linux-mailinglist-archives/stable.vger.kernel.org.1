@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-39938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C4138A5576
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:44:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE6278A54DD
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAD6B2815F8
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:44:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AE0028273A
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E50374C4;
-	Mon, 15 Apr 2024 14:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727F0811EB;
+	Mon, 15 Apr 2024 14:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UtFwXKKt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJbDcWV+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288751E501;
-	Mon, 15 Apr 2024 14:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307207A705;
+	Mon, 15 Apr 2024 14:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192269; cv=none; b=atT4Bd5kqYC4ndjhB4PGwxzptGaOxi8feXOad2yyLRnzAo6nCSCMtU+vUkTzePuxNOKR2AsJ4fjtEP4zIqLP4SyIdjZhief8B6EJ6cFfGTPipEkamPQbQGNrjbRRVtHFHJZeMHSHXTtGAVwZK3KKyoCSSmotW1zfW/BSRCOoWOY=
+	t=1713191885; cv=none; b=LQkvrgD92PlXhTFD+87tEh4nBr1dBhxXT8R3S7NxNljjdgWzoc4vjN1Le3USs47Feju9iWrusfVtuHyp2azdVneJb3RTCTTCiccmQSkZlVQcIFJjAqNfi77NRl6vZUSi3ZcpejZyTHzDlTxRvwkevb1jNPcxr5w/1+SkGQVLvvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192269; c=relaxed/simple;
-	bh=cMb9DXhV50etmzlVCUmijpJ+PHhEocX40ixTfp+0gG0=;
+	s=arc-20240116; t=1713191885; c=relaxed/simple;
+	bh=i2eErfuDS5RyHLjf8RFIp1vxGMFcFcOBlbfwwS5S7zI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/D9iL1pJ1iSMGb5TtEb/dsycvsE64ojOnwhN9WJfSO2k2qM+4ckDjyUhzwHcHCdhZZ6d14BZL4885WVDH7h0Kzv3EgRXDqrblsW25EzYKLw8I3p84UOlVcbzwE0xYodk3IL1H6FQF8ialSFAm8My0C52XpaEaQcuHanza2IdMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UtFwXKKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7864DC113CC;
-	Mon, 15 Apr 2024 14:44:28 +0000 (UTC)
+	 MIME-Version; b=X2FHNOajxlz1G+xZaUKoNHQDSWLdhTrF3ASPOIbz1sChepEjqzZaQheDJe52l6sDT6NzrTAqHMM8kp2+01Y9VTyAkrq5WcwGlkzYaZQbuB88uhba8HFvK6rC9zoK62uTkqRaZHlfXaZDxiRX5JsPoHNHSA4GGyDWNRzOr0DQs7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJbDcWV+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC88C113CC;
+	Mon, 15 Apr 2024 14:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192269;
-	bh=cMb9DXhV50etmzlVCUmijpJ+PHhEocX40ixTfp+0gG0=;
+	s=korg; t=1713191885;
+	bh=i2eErfuDS5RyHLjf8RFIp1vxGMFcFcOBlbfwwS5S7zI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UtFwXKKtIoT5B3bgD8JjiFZxXMlXR9hr9ECGSlAmMtPEA67NROVNn9BArull8mj3D
-	 GioQVurLsQhbjrc1GLpWYCgqCro/BDtbKEQXFYSTXg0d63jBJ6WlafojHWGFMEGNYj
-	 Mm9j4g8LoR61I7vK3X/PPEOTc8+SW7ROUAZlc7wA=
+	b=rJbDcWV+mdACEq3k9ySKAANdELt2GIC/9uv1MRkzUyviGUeB34r8QADVeNJ+N3+OK
+	 ZpGciUV6hktewi34eaDv9aEatR60ZjBgmPytTHHpSpwkUs5udJ2bMhBMhS2dwVwNAB
+	 4FOQB+ZnrETg8Xn4NK1+xcGRNgmiwYp5YIVpXqOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 15/45] ipv6: fib: hide unused pn variable
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>
+Subject: [PATCH 6.6 117/122] drm/amdgpu: Reset dGPU if suspend got aborted
 Date: Mon, 15 Apr 2024 16:21:22 +0200
-Message-ID: <20240415141942.699346833@linuxfoundation.org>
+Message-ID: <20240415141956.880442939@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
-References: <20240415141942.235939111@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 74043489fcb5e5ca4074133582b5b8011b67f9e7 ]
+commit 8b2be55f4d6c1099d7f629b0ed7535a5be788c83 upstream.
 
-When CONFIG_IPV6_SUBTREES is disabled, the only user is hidden, causing
-a 'make W=1' warning:
+For SOC21 ASICs, there is an issue in re-enabling PM features if a
+suspend got aborted. In such cases, reset the device during resume
+phase. This is a workaround till a proper solution is finalized.
 
-net/ipv6/ip6_fib.c: In function 'fib6_add':
-net/ipv6/ip6_fib.c:1388:32: error: variable 'pn' set but not used [-Werror=unused-but-set-variable]
-
-Add another #ifdef around the variable declaration, matching the other
-uses in this file.
-
-Fixes: 66729e18df08 ("[IPV6] ROUTE: Make sure we have fn->leaf when adding a node on subtree.")
-Link: https://lore.kernel.org/netdev/20240322131746.904943-1-arnd@kernel.org/
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240408074219.3030256-1-arnd@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_fib.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/soc21.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index bbb9ed6d1ae6f..c0ff5ee490e7b 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -1375,7 +1375,10 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
- 	     struct nl_info *info, struct netlink_ext_ack *extack)
+--- a/drivers/gpu/drm/amd/amdgpu/soc21.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc21.c
+@@ -804,10 +804,35 @@ static int soc21_common_suspend(void *ha
+ 	return soc21_common_hw_fini(adev);
+ }
+ 
++static bool soc21_need_reset_on_resume(struct amdgpu_device *adev)
++{
++	u32 sol_reg1, sol_reg2;
++
++	/* Will reset for the following suspend abort cases.
++	 * 1) Only reset dGPU side.
++	 * 2) S3 suspend got aborted and TOS is active.
++	 */
++	if (!(adev->flags & AMD_IS_APU) && adev->in_s3 &&
++	    !adev->suspend_complete) {
++		sol_reg1 = RREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_81);
++		msleep(100);
++		sol_reg2 = RREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_81);
++
++		return (sol_reg1 != sol_reg2);
++	}
++
++	return false;
++}
++
+ static int soc21_common_resume(void *handle)
  {
- 	struct fib6_table *table = rt->fib6_table;
--	struct fib6_node *fn, *pn = NULL;
-+	struct fib6_node *fn;
-+#ifdef CONFIG_IPV6_SUBTREES
-+	struct fib6_node *pn = NULL;
-+#endif
- 	int err = -ENOMEM;
- 	int allow_create = 1;
- 	int replace_required = 0;
-@@ -1399,9 +1402,9 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
- 		goto out;
- 	}
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
  
-+#ifdef CONFIG_IPV6_SUBTREES
- 	pn = fn;
++	if (soc21_need_reset_on_resume(adev)) {
++		dev_info(adev->dev, "S3 suspend aborted, resetting...");
++		soc21_asic_reset(adev);
++	}
++
+ 	return soc21_common_hw_init(adev);
+ }
  
--#ifdef CONFIG_IPV6_SUBTREES
- 	if (rt->fib6_src.plen) {
- 		struct fib6_node *sn;
- 
--- 
-2.43.0
-
 
 
 
