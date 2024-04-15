@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-39891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC1A48A5534
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 128938A54E1
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE3A71C21623
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C397028275D
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1C969D05;
-	Mon, 15 Apr 2024 14:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211798174F;
+	Mon, 15 Apr 2024 14:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0XiWjvi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4kwZi2X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E6B1E4B1;
-	Mon, 15 Apr 2024 14:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D386278685;
+	Mon, 15 Apr 2024 14:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192128; cv=none; b=uuEvQGvJ9BfvQZo8y4CZxhaAUqKlx/jA5dcltIXBdrHxcTdiNH+ndqyMH592mAFzixsg9abGQZFltMqh6sCQ/8FEX1bmK1EpcqL62381n+3w2ZpmJWsXetrCsW1ofX0S3Ia8M3U/StYLtY8pb4+z9tSBKNI5hZpE7UzZLBILfXM=
+	t=1713191899; cv=none; b=PEpSuSY/WCisV8RvTTCIV3efLjo9k0RrHD5x/aTNpSuvvo8ad33vApNq6lW0aKnJfQxM7xudfzblViFpm9xm4GyqaHBK6Dv11U9XqZkWtyCvBZ2i4OFeVhItKyq0wwijdiyzyzpLUirRA40RKqPrX6iuHXvbHtCy7MmKAsMZGtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192128; c=relaxed/simple;
-	bh=VvGlRyWUYjUyH1MhARQ4QU1d8NCqBinMpq8lByMO/0Y=;
+	s=arc-20240116; t=1713191899; c=relaxed/simple;
+	bh=QFzD9EftAAVficFMv+b3k7Z5qYGYOXuTbwJ9//ppx+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3kdtxu5O1GXMx0Ni7zZ8rvF8/7c05AURKAvzKtDTz8XWfILgAIUx+2IgZYvymL/vqcmnvlc7QQdJz67OoSSru1/llWqU+l+TTqU93mSPiZyqOfDGlMijC+nJuED8AiN7BEn9yDcDGUNHPLgwKEBsDBJ/dAC0vINSsGqqcbHcRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0XiWjvi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA47C113CC;
-	Mon, 15 Apr 2024 14:42:07 +0000 (UTC)
+	 MIME-Version; b=Iw+IabRMOQjsHD206T5tFWcHgVeCHVGLufWhuHUDdVxUDlozYUZfybPTfZF2v6BeltuCtw0FC2CX1aMMBKAXeRYwgVssh2R/JtT+oxga3nmaC13BLJKOOMTjBjF5rh1eGSSaGMRqe+74mWCBoOwrXxXeqrW92TrhzgEClNsVeMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4kwZi2X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2DFC113CC;
+	Mon, 15 Apr 2024 14:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192127;
-	bh=VvGlRyWUYjUyH1MhARQ4QU1d8NCqBinMpq8lByMO/0Y=;
+	s=korg; t=1713191899;
+	bh=QFzD9EftAAVficFMv+b3k7Z5qYGYOXuTbwJ9//ppx+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0XiWjviVOF2wFRqh+4+yDknrpucY/61xtv9zuDs2y7YXhsnsZYWM3KolRxw/Ifa6
-	 VWY8dBdxNgHBMoTDu5LFzeLSvDUsJJe/ZoUzHUMs/pt1LqlQ2y+m833H0yHodfJYNM
-	 gsLg/hgmGwIBqGGixBywloNl7se8r3U50dHZkBP8=
+	b=V4kwZi2X8ooKaWrDDQuzJur2sMT5ueFYonRAo5wt+E9kfKrTh6Z0YvuPzMX4oy4G/
+	 4xaTC+tBayx3MeiUGiZeqQrFlZOW+agoOXbkAvBqR4aVe7WTNNSj3GmvXhyLLcq3Wg
+	 6NAXHbrxG3mxRSeZQRu5sa3AixnFf/K60QB8jUrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 6.1 56/69] irqflags: Explicitly ignore lockdep_hrtimer_exit() argument
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Fudongwang <fudong.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 122/122] drm/amd/display: fix disable otg wa logic in DCN316
 Date: Mon, 15 Apr 2024 16:21:27 +0200
-Message-ID: <20240415141947.856384537@linuxfoundation.org>
+Message-ID: <20240415141957.029397225@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Fudongwang <fudong.wang@amd.com>
 
-commit c1d11fc2c8320871b40730991071dd0a0b405bc8 upstream.
+commit cf79814cb0bf5749b9f0db53ca231aa540c02768 upstream.
 
-When building with 'make W=1' but CONFIG_TRACE_IRQFLAGS=n, the
-unused argument to lockdep_hrtimer_exit() causes a warning:
+[Why]
+Wrong logic cause screen corruption.
 
-kernel/time/hrtimer.c:1655:14: error: variable 'expires_in_hardirq' set but not used [-Werror=unused-but-set-variable]
+[How]
+Port logic from DCN35/314.
 
-This is intentional behavior, so add a cast to void to shut up the warning.
-
-Fixes: 73d20564e0dc ("hrtimer: Don't dereference the hrtimer pointer after the callback")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240408074609.3170807-1-arnd@kernel.org
-Closes: https://lore.kernel.org/oe-kbuild-all/202311191229.55QXHVc6-lkp@intel.com/
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Fudongwang <fudong.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/irqflags.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c |   19 ++++++----
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/include/linux/irqflags.h
-+++ b/include/linux/irqflags.h
-@@ -126,7 +126,7 @@ do {						\
- # define lockdep_softirq_enter()		do { } while (0)
- # define lockdep_softirq_exit()			do { } while (0)
- # define lockdep_hrtimer_enter(__hrtimer)	false
--# define lockdep_hrtimer_exit(__context)	do { } while (0)
-+# define lockdep_hrtimer_exit(__context)	do { (void)(__context); } while (0)
- # define lockdep_posixtimer_enter()		do { } while (0)
- # define lockdep_posixtimer_exit()		do { } while (0)
- # define lockdep_irq_work_enter(__work)		do { } while (0)
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
+@@ -99,20 +99,25 @@ static int dcn316_get_active_display_cnt
+ 	return display_count;
+ }
+ 
+-static void dcn316_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *context, bool disable)
++static void dcn316_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *context,
++		bool safe_to_lower, bool disable)
+ {
+ 	struct dc *dc = clk_mgr_base->ctx->dc;
+ 	int i;
+ 
+ 	for (i = 0; i < dc->res_pool->pipe_count; ++i) {
+-		struct pipe_ctx *pipe = &dc->current_state->res_ctx.pipe_ctx[i];
++		struct pipe_ctx *pipe = safe_to_lower
++			? &context->res_ctx.pipe_ctx[i]
++			: &dc->current_state->res_ctx.pipe_ctx[i];
+ 
+ 		if (pipe->top_pipe || pipe->prev_odm_pipe)
+ 			continue;
+-		if (pipe->stream && (pipe->stream->dpms_off || pipe->plane_state == NULL ||
+-				     dc_is_virtual_signal(pipe->stream->signal))) {
++		if (pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal) ||
++				     !pipe->stream->link_enc)) {
+ 			if (disable) {
+-				pipe->stream_res.tg->funcs->immediate_disable_crtc(pipe->stream_res.tg);
++				if (pipe->stream_res.tg && pipe->stream_res.tg->funcs->immediate_disable_crtc)
++					pipe->stream_res.tg->funcs->immediate_disable_crtc(pipe->stream_res.tg);
++
+ 				reset_sync_context_for_pipe(dc, context, i);
+ 			} else
+ 				pipe->stream_res.tg->funcs->enable_crtc(pipe->stream_res.tg);
+@@ -207,11 +212,11 @@ static void dcn316_update_clocks(struct
+ 	}
+ 
+ 	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz)) {
+-		dcn316_disable_otg_wa(clk_mgr_base, context, true);
++		dcn316_disable_otg_wa(clk_mgr_base, context, safe_to_lower, true);
+ 
+ 		clk_mgr_base->clks.dispclk_khz = new_clocks->dispclk_khz;
+ 		dcn316_smu_set_dispclk(clk_mgr, clk_mgr_base->clks.dispclk_khz);
+-		dcn316_disable_otg_wa(clk_mgr_base, context, false);
++		dcn316_disable_otg_wa(clk_mgr_base, context, safe_to_lower, false);
+ 
+ 		update_dispclk = true;
+ 	}
 
 
 
