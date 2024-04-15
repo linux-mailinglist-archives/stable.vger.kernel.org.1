@@ -1,112 +1,148 @@
-Return-Path: <stable+bounces-39400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04BB68A48FE
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 09:27:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 770FD8A4916
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 09:33:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACD401F22546
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 07:27:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 164C21F21868
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 07:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0515E22F08;
-	Mon, 15 Apr 2024 07:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E982421A;
+	Mon, 15 Apr 2024 07:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JzyoWwH3"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="aUlfS3jX";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NDS7hlDD"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from flow1-smtp.messagingengine.com (flow1-smtp.messagingengine.com [103.168.172.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE6522EEF
-	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 07:27:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0F123754;
+	Mon, 15 Apr 2024 07:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713166071; cv=none; b=sntOAvz02HA3fEuw1r1AiTJ4Xc91WyB7oE3kCnKb8JBAjROpWNztdMARFaCuLVIxEXEf9yd/lcq6wn/Ul2318CkMgxL4NkLtAoymlEJ+1uEioWmc/eU62X+d6VBbZIcSAMleR4XJa361ydBC/+XXXjDmYLLEkFogchfGc8FL48U=
+	t=1713166413; cv=none; b=g9aoifCB5IRC2XDZ0c2cnFEAH7hiylDAbbSF3cN9b+9wCc81ztydiOBpPI/PIL0owQzfvuHbnrlV2MWWMkN8NME38rS2t84HdcAc1PvrXBxuxftfi+IbpBXeuWpNdIEnRadxbe9kmxiZtDR9/yKqw+4JgXbtPSfl6yTjTWvp2QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713166071; c=relaxed/simple;
-	bh=aNQz4mCjHtrXUXO74xyfpEhYZO1GtYeXSNV3tBQzasU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UWy3sCAZCaj9tbjLfojn+L9JpxFDFBDlAwqs5lngAzB2hCWb6j2mzGEsIBaNkvaRx9W1TqotX1wT3mY3hohpQKGo3YjAx3mqiZfnaE1U8Y2WIKIar5JiPeut1DYs6JvxwMCH5fi9JVjyjyFERjHymAmMv2lXVpjSZClhOreHCL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JzyoWwH3; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713166069;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ATaTVK2Bc9kZGN8uLFOIs0vLM4TcjoyL+OI4o5U8z4w=;
-	b=JzyoWwH3/Zu6KaQmlJvHIJRWQeGi2Qk1D1rcSgAcbK0q4hCtabgfqmu8GfkF6MwCjKG3ch
-	ku+WwMJM/GU6mNX8fzn13uoOlpPn7Cba+tvZdc2ZpPULS0SrRSe3qJFl0S5zeH6BSueE3g
-	blTrF/zJJiRcrUwZRFE0l6ITKEHP9U8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-392-oLd4vwNWNdqW5PqaF6oagA-1; Mon, 15 Apr 2024 03:27:43 -0400
-X-MC-Unique: oLd4vwNWNdqW5PqaF6oagA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 001A980B518;
-	Mon, 15 Apr 2024 07:27:43 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.39.192.232])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 832742166B34;
-	Mon, 15 Apr 2024 07:27:40 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: kuba@kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	jarkko.palviainen@gmail.com,
-	jtornosm@redhat.com,
-	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: usb: ax88179_178a: avoid writing the mac address before first reading
-Date: Mon, 15 Apr 2024 09:27:32 +0200
-Message-ID: <20240415072735.6135-1-jtornosm@redhat.com>
-In-Reply-To: <20240411195129.69ff2bac@kernel.org>
-References: <20240411195129.69ff2bac@kernel.org>
+	s=arc-20240116; t=1713166413; c=relaxed/simple;
+	bh=HFJ4vvEzbNqRr809u1FK3Rn0pDUpQ5BHXzm67FweeC0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lAtjjWRQHiB1L7I1rdC+RZsQHdjvYyk/5sg4Ct5dh1AVmThi6EGnf7l7xzhRr6Nfo3nSo58hsMWxvE8dsX495Ou0UfDqHQhdwlROgh2G1HCN5JxqT7DAO9b8AaVnuc+vpXL/FKD9E48N1ZO/tCGJqmMaxXvO3HjEqq/F3onGgxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=aUlfS3jX; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NDS7hlDD; arc=none smtp.client-ip=103.168.172.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailflow.nyi.internal (Postfix) with ESMTP id 79CA9200281;
+	Mon, 15 Apr 2024 03:33:29 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Mon, 15 Apr 2024 03:33:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1713166409;
+	 x=1713173609; bh=zYaCb18rpM3siz4kg0tVUybMP3zre6Na/S02x87GIZw=; b=
+	aUlfS3jXxHteh27LQC7faHfDYW58H+GwdHLiE2BEyeJRAhfCe/fJtnwU8kGZAPOz
+	q31Te52fiZ0GO45wjLb165B/6g6pmP2LFuUkXBMcnQQ1yiUO6beKRcwZhZYCUxX0
+	W2aShuCbPOIkMXKbkdPhlWlNX06bh5u6CUQQYAnDTYSVXiVRub2V9vmEWZCaYjVP
+	Vv71wZkY3hWTXtNBux9gHaOTgItl54HXUwudac5Aas++CCHRhKx3uPIoZc2b9lG5
+	x70uIi9i4iOItJmt2G+lRnt7+2gCtbZH4kY2KB8NzgiOuLYXNYOmu23zXQCm/wC0
+	gSfgiG7wqU5XVNnxuZblpw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1713166409; x=
+	1713173609; bh=zYaCb18rpM3siz4kg0tVUybMP3zre6Na/S02x87GIZw=; b=N
+	DS7hlDD1oo5DX2A3TP3ubreqBie2GnHP+B95uwV087hqwvTfud+q41nhzqm6NEWB
+	fqMiO/qCvO5Ci5w9TZr4dboK0a9N3F7PnL6WEhAbaskuD+Ww1sW9+8kA9+XidF7d
+	DCLZlPDHZMITedhP2BjrgnbRHr6N5eeI1SQuipckLnBexQJjwjIhTmULkpdjic3R
+	gcyZ+2HH97EjkGHGD8DOO1T65Zw3Az3z7dBvZ+uhWH0/h1V62uK6K+mepnGotpi4
+	1ZLjBkiN0zIJYPzsqJcznMtJJ/JwJeJLUYikOup2e6qt2ftvOWr3WQ1bF7N/RrSY
+	I5bKJehUq3yTQ/1paDmaQ==
+X-ME-Sender: <xms:SNgcZsqbRyeWANBDPD2jcuatT4oFRrQivl_cpsHaRLC3srV97r4Njw>
+    <xme:SNgcZirtoiHooXMaCbQAAIxXVry-ycMB-9yL3EwBwLM-ndm7Mjhsbn4YmT1hRntI1
+    F8Dw5v9tBezhA>
+X-ME-Received: <xmr:SNgcZhMPi7kzWfDrZWm8wOg-IvDiHD5zKVSZEk1WGurkzDLrFRjFfCYEXT94oa7qvcfocJZ8aGwop0ghGMsWA52K07QOAbgSrs8_gg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudejuddgieelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefirhgv
+    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeegve
+    evtefgveejffffveeluefhjeefgeeuveeftedujedufeduteejtddtheeuffenucffohhm
+    rghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:SdgcZj7pJ5QDiXCAeIrihnXK-SkLqOI5nHIEu7fQo5C0ictAXGDsjA>
+    <xmx:SdgcZr7H9_XwOWfD1YcAVvx_XOoSbFrhmUJowJu9ha8lFxRHg6x5ag>
+    <xmx:SdgcZjhcA8CX4zGnYoJ1nPykgRswlcm4he_8yXebGP3Y9hD5kyZuTA>
+    <xmx:SdgcZl4lhszvV_i-nFsej8HTe4k3vXgTqJDIx3o13C3-aA5clUYQlw>
+    <xmx:SdgcZltlBSMZgdniTgLFrbr4163cdzb-qdaIKbzdZc960rIwu6uQfGHs>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 15 Apr 2024 03:33:28 -0400 (EDT)
+Date: Mon, 15 Apr 2024 09:33:27 +0200
+From: Greg KH <greg@kroah.com>
+To: Holger =?iso-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>
+Cc: Naohiro Aota <Naohiro.Aota@wdc.com>,
+	Linux regressions mailing list <regressions@lists.linux.dev>,
+	David Sterba <dsterba@suse.com>, Qu Wenruo <wqu@suse.com>,
+	"linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
+	Hiroshi Takekawa <sian@big.or.jp>, Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: btrfs: sanity tests fails on 6.8.3
+Message-ID: <2024041508-refocus-cycling-09e8@gregkh>
+References: <20240415.125625.2060132070860882181.sian@big.or.jp>
+ <bd8492f4-a12e-48ae-8ea6-a9d4596a6f72@leemhuis.info>
+ <igqfzsnyclopilimyy27ualcf2g5g44x3ru5v3tkjpb3ukgabs@2yuc57sxoxvv>
+ <3b2d9a1c-37d2-47f4-b0b4-a9d6c34d2c7d@applied-asynchrony.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+In-Reply-To: <3b2d9a1c-37d2-47f4-b0b4-a9d6c34d2c7d@applied-asynchrony.com>
 
-Hello Jakub,
+On Mon, Apr 15, 2024 at 09:25:58AM +0200, Holger Hoffst‰tte wrote:
+> On 2024-04-15 07:24, Naohiro Aota wrote:
+> > On Mon, Apr 15, 2024 at 07:11:15AM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
+> > > [adding the authors of the two commits mentioned as well as the Btrfs
+> > > maintainers and the regressions & stable list to the list of recipients]
+> > > 
+> > > On 15.04.24 05:56, Hiroshi Takekawa wrote:
+> > > > 
+> > > > Module loading fails with CONFIG_BTRFS_FS_RUN_SANITY_TESTS enabled on
+> > > > 6.8.3-6.8.6.
+> > > > 
+> > > > Bisected:
+> > > > Reverting these commits, then module loading succeeds.
+> > > > 70f49f7b9aa3dfa70e7a2e3163ab4cae7c9a457a
+> > > 
+> > > FWIW, that is a linux-stable commit-id for 41044b41ad2c8c ("btrfs: add
+> > > helper to get fs_info from struct inode pointer") [v6.9-rc1, v6.8.3
+> > > (70f49f7b9aa3df)]
+> > > 
+> > > > 86211eea8ae1676cc819d2b4fdc8d995394be07d
+> > 
+> > It looks like the stable tree lacks this commit, which is necessary for the
+> > commit above.
+> > 
+> > b2136cc288fc ("btrfs: tests: allocate dummy fs_info and root in test_find_delalloc()")
+> > 
+> 
+> This was previously reported during the last stable cycle, and the missing
+> patch is already queued up. You can see the queue here:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.8
 
-I have been trying to use netif_device_detach() and netif_device_attach()
-as conditions, but maybe I am misunderstanding you, becasue I think the
-detected problem is not related to suspend/resume process.
+Thanks for confirming this, the next 6.8 release should resolve this
+issue.
 
-Let me try to explain better (if considered, I can complete the patch
-explanation later):
-
-The issue happened at the initialization stage. At that moment, during
-normal rtnl_setlink call, the mac address is set and written in the device
-registers, but since the reset was not commanded previously, the mac
-address is not read from the device and without that, it always has the
-random address that is pre-generated just in case. 
-After this, during open operation, the reset is commanded and the mac
-address is read, but as the device registers were modified, it reads the
-pregenerated random mac address and not the default mac address for the
-device.
-
-To fix,  I am trying to protect this situtation, not allowing to write if
-the reset and the default mac address for the device is not previously
-read. I think it is easier in the driver because of the device condition.
-
-Thank you 
-
-Best regards
-Jos√© Ignacio
-
+greg k-h
 
