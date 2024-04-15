@@ -1,130 +1,132 @@
-Return-Path: <stable+bounces-39956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE3B8A5A60
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 21:08:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BAFD8A5B4C
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 21:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B670B223FF
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 19:08:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA9F6B256CA
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 19:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389F415575B;
-	Mon, 15 Apr 2024 19:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9AE115686D;
+	Mon, 15 Apr 2024 19:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="qOFAGav2"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="EF1Yavu5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDBC219EA;
-	Mon, 15 Apr 2024 19:08:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D80415667D
+	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 19:35:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713208123; cv=none; b=gYWsHFAKtYtLfRFscEVDc38TysVI7Tm3yXJcWGgUbUZeXxEAztLUDZcOMkVkCjkOhiDa9U5WxsRN2NZRs5ZDaw3jL++GnAcxPAejlZVYZBACbfMPTuIlkQlWvmkAzLElVJoCO/mCJgu8ODnR3vcPHs+Wd1RCJ+zAeCPKJo+DCAQ=
+	t=1713209724; cv=none; b=R4r1gak7uc6h9Jbb6isAcAyvFkzPh8bpZ0aEO9T0HAp1dJzFTq2F9GJcwfIJBVo1Cwl/0FMBjHM6eE9mnf1MgTxi9obuPYKcWU5KDK2MhwD/fn1Ih3KAwOExWIdlxZeI1pLxlEtQF/WS74KO+Xvo+28uesZIfpMXXyY6ZbamgMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713208123; c=relaxed/simple;
-	bh=Omfyss0oSwl9blvF1ZPl+9UFJvBZWozOwVcDPAMj4Qs=;
-	h=Date:To:From:Subject:Message-Id; b=urRT770Jhop15VxAKKljESRl4rjw7sVyo/UCVdGsNk/tDv8q7myDOIIe7fucG7exlUouGJHJzL4kFdFkKrcFBLE5MxTUGB4lQCcaPn2XhdjvNj9lK9EIcLhdQZ/BIK7Xqc3IuNxRmE6nJWkt6ssFxD3C1b0dqCjNdjrREOfqZ4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=qOFAGav2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A2DC113CC;
-	Mon, 15 Apr 2024 19:08:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1713208122;
-	bh=Omfyss0oSwl9blvF1ZPl+9UFJvBZWozOwVcDPAMj4Qs=;
-	h=Date:To:From:Subject:From;
-	b=qOFAGav2EGnl1z5XUqDv1XBtAOuPayWp11iJMPouNx3N0LCMgsHZurZGgfWlcQcG7
-	 2oOi0QDx9YhxW8fPXkSLqJ+KfFOGXFhhrZrWGSX36qRnevMNHIEtOdsExQSRZAqfbc
-	 6K1t0BkshYFkqfLREzovILEWoyZgXV0Wpn4/zgQM=
-Date: Mon, 15 Apr 2024 12:08:41 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,aha310510@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + nilfs2-fix-oob-in-nilfs_set_de_type.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240415190842.63A2DC113CC@smtp.kernel.org>
+	s=arc-20240116; t=1713209724; c=relaxed/simple;
+	bh=NFbCstpZ5RRgQEDVh+ETz0L+LNvbESu1uz/39Ycxj8k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mvVQn5Q/X+3Mb6YJm+O8mG9oQXJir9YzLgfTtqfXU26acloCQMlAVgqA02TghZqeLEXmXCopPwFkYwUqy54AzUNZS9gTeChn9WKd9QLFvNacqlg6QsNBQNGOmQjxvm4atMsBg3XQ7wtdErDNIyfXXnC/litSk9ldfWtPXJXmCyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=EF1Yavu5; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4VJHSn6VTfz6Cnk8t;
+	Mon, 15 Apr 2024 19:35:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:from:from:received:received; s=mr01; t=
+	1713209717; x=1715801718; bh=zl8tqsLft0ikguPVXC2WkShAIfWKvvycaTJ
+	nEdM0E30=; b=EF1Yavu57B/TraQ2XjXI5/elXDQnQShqh75r08v+zvJlVEz9Y/e
+	7Kfm78H4guRWqU0Uw7YbMbtWBAYSbtK1Ek2K/xTit/HjhhxqJhV/KVnuFoYAgeME
+	+Q5iBb6+OG4ZNwldicp+wUZ2yzCjfQ5kiz5DID9ncXw6jKcOoaISXKP7MKd+ugTj
+	VGerRZ9WU2KHjFvOAZvhZ3CH/3jGi0xi/Iv++SdI4+EU2tMJkp2mg6bRqOqhUyaO
+	K/exUOxkDkSfB+/uGI1XycryvKRU+1Lh1/xtvaYp+fa5zOK2D4471X/CPSB2TSHP
+	LT1HdQj/EHUPIB0GKo4L+iDJh2g22iX8RTQ==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id PciwkBaa4_gF; Mon, 15 Apr 2024 19:35:17 +0000 (UTC)
+Received: from bvanassche.mtv.corp.google.com (unknown [104.132.0.90])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4VJHSh0kv0z6Cnk8m;
+	Mon, 15 Apr 2024 19:35:15 +0000 (UTC)
+From: Bart Van Assche <bvanassche@acm.org>
+To: Mike Snitzer <snitzer@redhat.com>
+Cc: dm-devel@redhat.com,
+	Bart Van Assche <bvanassche@acm.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Daniel Lee <chullee@google.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] dm: Change the default value of rq_affinity from 0 into 1
+Date: Mon, 15 Apr 2024 12:34:48 -0700
+Message-ID: <20240415193448.4193512-1-bvanassche@acm.org>
+X-Mailer: git-send-email 2.44.0.683.g7961c838ac-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 
+The following behavior is inconsistent:
+* For request-based dm queues the default value of rq_affinity is 1.
+* For bio-based dm queues the default value of rq_affinity is 0.
 
-The patch titled
-     Subject: nilfs2: fix OOB in nilfs_set_de_type
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     nilfs2-fix-oob-in-nilfs_set_de_type.patch
+The default value for request-based dm queues is 1 because of the followi=
+ng
+code in blk_mq_init_allocated_queue():
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-fix-oob-in-nilfs_set_de_type.patch
+    q->queue_flags |=3D QUEUE_FLAG_MQ_DEFAULT;
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+From <linux/blkdev.h>:
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+    #define QUEUE_FLAG_MQ_DEFAULT ((1UL << QUEUE_FLAG_IO_STAT) |	\
+				   (1UL << QUEUE_FLAG_SAME_COMP) |	\
+				   (1UL << QUEUE_FLAG_NOWAIT))
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+The default value of rq_affinity for bio-based dm queues is 0 because the
+dm alloc_dev() function does not set any of the QUEUE_FLAG_SAME_* flags. =
+I
+think the different default values are the result of an oversight when
+blk-mq support was added in the device mapper code. Hence this patch that
+changes the default value of rq_affinity from 0 to 1 for bio-based dm
+queues.
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+This patch reduces the boot time from 12.23 to 12.20 seconds on my test
+setup, a Pixel 2023 development board. The storage controller on that tes=
+t
+setup supports a single completion interrupt and hence benefits from
+redirecting I/O completions to a CPU core that is closer to the submitter=
+.
 
-------------------------------------------------------
-From: Jeongjun Park <aha310510@gmail.com>
-Subject: nilfs2: fix OOB in nilfs_set_de_type
-Date: Tue, 16 Apr 2024 03:20:48 +0900
-
-The size of the nilfs_type_by_mode array in the fs/nilfs2/dir.c file is
-defined as "S_IFMT >> S_SHIFT", but the nilfs_set_de_type() function,
-which uses this array, specifies the index to read from the array in the
-same way as "(mode & S_IFMT) >> S_SHIFT".
-
-static void nilfs_set_de_type(struct nilfs_dir_entry *de, struct inode
- *inode)
-{
-	umode_t mode = inode->i_mode;
-
-	de->file_type = nilfs_type_by_mode[(mode & S_IFMT)>>S_SHIFT]; // oob
-}
-
-However, when the index is determined this way, an out-of-bounds (OOB)
-error occurs by referring to an index that is 1 larger than the array size
-when the condition "mode & S_IFMT == S_IFMT" is satisfied.  Therefore, a
-patch to resize the nilfs_type_by_mode array should be applied to prevent
-OOB errors.
-
-Link: https://lkml.kernel.org/r/20240415182048.7144-1-konishi.ryusuke@gmail.com
-Reported-by: syzbot+2e22057de05b9f3b30d8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2e22057de05b9f3b30d8
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mikulas Patocka <mpatocka@redhat.com>
+Cc: Eric Biggers <ebiggers@kernel.org>
+Cc: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: Daniel Lee <chullee@google.com>
+Cc: stable@vger.kernel.org
+Fixes: bfebd1cdb497 ("dm: add full blk-mq support to request-based DM")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
 ---
+ drivers/md/dm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- fs/nilfs2/dir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/fs/nilfs2/dir.c~nilfs2-fix-oob-in-nilfs_set_de_type
-+++ a/fs/nilfs2/dir.c
-@@ -240,7 +240,7 @@ nilfs_filetype_table[NILFS_FT_MAX] = {
- 
- #define S_SHIFT 12
- static unsigned char
--nilfs_type_by_mode[S_IFMT >> S_SHIFT] = {
-+nilfs_type_by_mode[(S_IFMT >> S_SHIFT) + 1] = {
- 	[S_IFREG >> S_SHIFT]	= NILFS_FT_REG_FILE,
- 	[S_IFDIR >> S_SHIFT]	= NILFS_FT_DIR,
- 	[S_IFCHR >> S_SHIFT]	= NILFS_FT_CHRDEV,
-_
-
-Patches currently in -mm which might be from aha310510@gmail.com are
-
-nilfs2-fix-oob-in-nilfs_set_de_type.patch
-
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index 56aa2a8b9d71..9af216c11cf7 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -2106,6 +2106,7 @@ static struct mapped_device *alloc_dev(int minor)
+ 	if (IS_ERR(md->disk))
+ 		goto bad;
+ 	md->queue =3D md->disk->queue;
++	blk_queue_flag_set(QUEUE_FLAG_SAME_COMP, md->queue);
+=20
+ 	init_waitqueue_head(&md->wait);
+ 	INIT_WORK(&md->work, dm_wq_work);
 
