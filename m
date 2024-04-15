@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-39771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C496F8A54A8
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88DB58A5519
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 645DD1F22AA9
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 289191F21AA5
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACD5446AF;
-	Mon, 15 Apr 2024 14:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA307A705;
+	Mon, 15 Apr 2024 14:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0PfS/Q5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PN40ykR9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1967D1D556;
-	Mon, 15 Apr 2024 14:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DDF3BBE1;
+	Mon, 15 Apr 2024 14:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191764; cv=none; b=DVgdfT8uK2PdWTz2pzz7G/1ywtjBO75R25zFZRbU7GCl8Gj5MvIo3xsCc9jTLbIHcfbOcIyws7e0cpfSoeO2P6KXoR1+IJ9nvCzYlCirXOn2TCZJwPRCP3Abbgmta9ZeQHJbSInf7Zkg0k3dF2ROecX0BXqUCFuWOyrjdZeRSr4=
+	t=1713192053; cv=none; b=se/EO4Zj8nBdCT3FntZhvlQ9Oy/iYdfNMJS3npLddk2NXjVAM235Awi5tg/dzNDNJCgeHi9fGMD/wXGlT0FdWfc778FXFsllnP4ZWVUl/eohVSGTAkBrgFURInrpANZu/XIewJ2vV8duJwrH/6QQXzXlG9Ho5BuSo/ZoYmYoDjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191764; c=relaxed/simple;
-	bh=yWLN8KV2/F82m4BAbnURnt/hijY9kyOdlgpYUAS8Yxc=;
+	s=arc-20240116; t=1713192053; c=relaxed/simple;
+	bh=wCRCMwRUSC4Fw91ywbooTmiXIL2cmn2xyCltNsDGbAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ku1DNMdEzXlvwYru6s7LlWSGblzZ9xxNQrlH2Ve41kEvYQBLPSquq2OVtRUakzI2Xpofnv71EF49VOJ3vnUQoXzkrErKLtDuhtUX+4iZWF2hFX2cX/GlRiyaooH+BPOKWBk+vUu5jU2lH6lQJyxoAh70o06a6ykhDRbLNIe0Tuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O0PfS/Q5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832E6C2BD11;
-	Mon, 15 Apr 2024 14:36:03 +0000 (UTC)
+	 MIME-Version; b=hPGBU16BuMHeHO4OSl+jmuAF2k0hSo16ZYOgkNv7ic1/2S7kx2rLJVCkGG7/mO7eRNLR019h2XjDTDiAfuhKLjlzQUhoib2nYvO79o9+DVK0++durYplV/wl1xR8aGYwTceCYVjB7gh1mHIQ6HYSEz1tpiSJlkwOq2bKheDrz+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PN40ykR9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4287C2BD11;
+	Mon, 15 Apr 2024 14:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191764;
-	bh=yWLN8KV2/F82m4BAbnURnt/hijY9kyOdlgpYUAS8Yxc=;
+	s=korg; t=1713192053;
+	bh=wCRCMwRUSC4Fw91ywbooTmiXIL2cmn2xyCltNsDGbAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O0PfS/Q5gleScPTYva6filalX2YlyZf/kylhGsvMDlU9YhzFES1ctjbPRC0knEjCP
-	 dZs1svocq9bv+sT+0ZnOhn9gCcFR1cWGG7ClsaYBkkGMek5LKPmMkGflTEGLRuFmYY
-	 zhE+x8eicZn+Z5SS6BHLGJpr1tqAXPSqjhhrbxKw=
+	b=PN40ykR9JAL0eHFY0miZuij7OdZpfzoMO9whJynIWX6Mrjw73vIKZR7xIWDSE7YXk
+	 LHqV+OTGA+pgirAL5iXQ1LP8s31nE+BkImT0dkBUzQ1JQfMCPP4vER/m7RHvMyL2U2
+	 njNg9MJgIU1nvY1xa6yCOtqhfNGDIfoYSHpFN2eU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Pan <jacob.jun.pan@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	xiabing <xiabing12@h-partners.com>,
+	Yihang Li <liyihang9@huawei.com>,
+	Xiang Chen <chenxiang66@hisilicon.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/122] iommu/vt-d: Allocate local memory for page request queue
-Date: Mon, 15 Apr 2024 16:20:42 +0200
-Message-ID: <20240415141955.687483509@linuxfoundation.org>
+Subject: [PATCH 6.1 12/69] scsi: hisi_sas: Modify the deadline for ata_wait_after_reset()
+Date: Mon, 15 Apr 2024 16:20:43 +0200
+Message-ID: <20240415141946.541277375@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Pan <jacob.jun.pan@linux.intel.com>
+From: Xiang Chen <chenxiang66@hisilicon.com>
 
-[ Upstream commit a34f3e20ddff02c4f12df2c0635367394e64c63d ]
+[ Upstream commit 0098c55e0881f0b32591f2110410d5c8b7f9bd5a ]
 
-The page request queue is per IOMMU, its allocation should be made
-NUMA-aware for performance reasons.
+We found that the second parameter of function ata_wait_after_reset() is
+incorrectly used. We call smp_ata_check_ready_type() to poll the device
+type until the 30s timeout, so the correct deadline should be (jiffies +
+30000).
 
-Fixes: a222a7f0bb6c ("iommu/vt-d: Implement page request handling")
-Signed-off-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20240403214007.985600-1-jacob.jun.pan@linux.intel.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 3c2673a09cf1 ("scsi: hisi_sas: Fix SATA devices missing issue during I_T nexus reset")
+Co-developed-by: xiabing <xiabing12@h-partners.com>
+Signed-off-by: xiabing <xiabing12@h-partners.com>
+Co-developed-by: Yihang Li <liyihang9@huawei.com>
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+Link: https://lore.kernel.org/r/20240402035513.2024241-3-chenxiang66@hisilicon.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/svm.c | 2 +-
+ drivers/scsi/hisi_sas/hisi_sas_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/intel/svm.c b/drivers/iommu/intel/svm.c
-index ac12f76c1212a..6010b93c514c5 100644
---- a/drivers/iommu/intel/svm.c
-+++ b/drivers/iommu/intel/svm.c
-@@ -67,7 +67,7 @@ int intel_svm_enable_prq(struct intel_iommu *iommu)
- 	struct page *pages;
- 	int irq, ret;
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
+index 450a8578157cb..2116f5ee36e20 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_main.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
+@@ -1715,7 +1715,7 @@ static int hisi_sas_debug_I_T_nexus_reset(struct domain_device *device)
+ 	if (dev_is_sata(device)) {
+ 		struct ata_link *link = &device->sata_dev.ap->link;
  
--	pages = alloc_pages(GFP_KERNEL | __GFP_ZERO, PRQ_ORDER);
-+	pages = alloc_pages_node(iommu->node, GFP_KERNEL | __GFP_ZERO, PRQ_ORDER);
- 	if (!pages) {
- 		pr_warn("IOMMU: %s: Failed to allocate page request queue\n",
- 			iommu->name);
+-		rc = ata_wait_after_reset(link, HISI_SAS_WAIT_PHYUP_TIMEOUT,
++		rc = ata_wait_after_reset(link, jiffies + HISI_SAS_WAIT_PHYUP_TIMEOUT,
+ 					  smp_ata_check_ready_type);
+ 	} else {
+ 		msleep(2000);
 -- 
 2.43.0
 
