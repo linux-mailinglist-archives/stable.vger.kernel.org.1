@@ -1,113 +1,107 @@
-Return-Path: <stable+bounces-39707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 529788A544D
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D79CD8A557C
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83FBD1C20DA5
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DB1DB21201
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427917C085;
-	Mon, 15 Apr 2024 14:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B828376E7;
+	Mon, 15 Apr 2024 14:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lwbVMlu6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cM11Mufs"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A5F763EC
-	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 14:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C002119;
+	Mon, 15 Apr 2024 14:47:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191574; cv=none; b=kDULClf9X+c/x/wIZEO+eLGJvjZEqtERxKqsjkN6Y3MwGq35Cg8lpNig0wG5UoLHTX47SAc8jqRetQcUQhK7bH78nnBzU18/OypV8UnOBBWZUH+EzNAoLo8dkCpBXZFQbpWT0+zm+lfsMH/8DeDXIjA1G0kFao1eDKGqPoIKiHw=
+	t=1713192426; cv=none; b=U7IDVQ3iBe0vi5GZ+1TyurtLxVVAtcACvp5TGN33pneuWlY47dNFOLUSkANIjVpInpjrEfFgWYmTGCHUw6PIWQnAZtO7G9HcRz/188K7uO76zovK2zvNCBVDrNLiPXim8gtXOAPKWIEYgWcZn7PzUAANC7VD/JoC5rxwhRO39y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191574; c=relaxed/simple;
-	bh=kHJY2Uq2jF7R4G4MyJRdk9/tqdpX1bx3qo6G8B8h2A8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VIaXWuuIcyr8Cd/N4IN6RQbHQQzc82eW0n34y8bE8wSF1adQbecIXn4bH3PN/+waq1OQiKLspB3iQuKRQjv/K9naoFtTrq5eg5eFoBDF7POJTvXJJPY2UxrMPbjxWyJdSUP0o/Tzk0blsnAJZl06FAUw5a5+WZXO366KD014Iaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lwbVMlu6; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713191573; x=1744727573;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=kHJY2Uq2jF7R4G4MyJRdk9/tqdpX1bx3qo6G8B8h2A8=;
-  b=lwbVMlu6CHEa22PS3ZyLWT2bD8IMJB/Pej3QILcYiY9A3uUyhpI18lnV
-   QoeVEmv5KXXk15iAjRx2vJ47HmvWigg71+okkueKg5oA24FZDQ+nfdHOp
-   HxYyslkbYECfBkxq0AB+h+XdH4/2VMPxTPDvDl3Hd7+ATwBEwok9I7mza
-   OvnIAExxmiGjpiHS+d04vStPJAD1aP+72wpDfDMxCaITf0KyPaYpcz7Mv
-   NmgNkKqjBJW5gCejdD1/OEBrVxVRJPTbJWlyP6Axjf/N+k2VXqcrKOUAG
-   llj86igmUkdU3Q6sh/esEkCGBXDPby5RVhp5hVECP31OhX89wqITgCwxl
-   w==;
-X-CSE-ConnectionGUID: vH5SjeruR7iMMMJnmkOFLA==
-X-CSE-MsgGUID: Og6OjMamS2mIB59wyLB67g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="26041392"
-X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
-   d="scan'208";a="26041392"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 07:32:53 -0700
-X-CSE-ConnectionGUID: 3VBzBj/4QOqcUsRE3vuTOA==
-X-CSE-MsgGUID: bALrC1s1QNS9qgTw1M1cvQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
-   d="scan'208";a="22030914"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.20.116])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 07:32:50 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Nirmoy Das <nirmoy.das@intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject:
- Re: [PATCH 6.1.y] drm/i915/vma: Fix UAF on destroy against retire race
-Date: Mon, 15 Apr 2024 16:32:48 +0200
-Message-ID: <6034005.lOV4Wx5bFT@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <2024041507-helpless-stimulus-df3e@gregkh>
-References:
- <2024033053-lyrically-excluding-f09f@gregkh>
- <2024041521-diploma-duckling-af2e@gregkh>
- <2024041507-helpless-stimulus-df3e@gregkh>
+	s=arc-20240116; t=1713192426; c=relaxed/simple;
+	bh=LQnlQplIIBRFAb0IYpzcEDhNW33rDEzU1FwDYMkl/BA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=i+qFd1LD9GGZoby5BrgQjY751z8HobfTZhFI9kupJXtMPbNDEbWE6MsufyQVR4ybIoGGzD3k73HSP/h7elIf3y3W3WJdKUnVIE9UmcqakmNsSzQ/+PWk/hkAXJfWlmsdtPeY46D+84YZ+fotYZfCYhACj4ly8pauwwtNvqI6mUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cM11Mufs; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-6153d85053aso25502197b3.0;
+        Mon, 15 Apr 2024 07:47:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713192424; x=1713797224; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LQnlQplIIBRFAb0IYpzcEDhNW33rDEzU1FwDYMkl/BA=;
+        b=cM11MufsfW7HxQkJRpYXF7vMnpbK7pxcHv+SPiK/GHW9Os1OJWLlNAofSGUETJMALh
+         aG1OeOWNiAMXGMsKWif/WnfVwT01pRSdry0w5zZfElENDa9aJ7oXeWMYXXV4Kbhez6+Z
+         HTBofnQKP8hBTi/MqhlZHSKCvfkYK4HbI/CU4p/Jta+01eBtWPobUhsLltrrYTG+xcJA
+         dKIP2vh3kJCrY7Qf290QO4IsxzIE19zJ8TXAgSn6HC7YSKBl2MYEmUIZ47XyVcDo/Dha
+         NmG3eTYww/AexEKZHFMI4mCSNt38Ukayq89Td4QuVUEjQnoo9f/1/VEXtmbtYAGrC0kS
+         lH9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713192424; x=1713797224;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LQnlQplIIBRFAb0IYpzcEDhNW33rDEzU1FwDYMkl/BA=;
+        b=sER7CbeW5vb0ByF3J/Oo6BWUKlez5HeojUhOEiF7+zm2eTkIeH3YL+kYZKZfj8tjQP
+         qMnu2r4emTCmLe2KeJtXhe8ndgmWS8Mwd1++0T6rOrjPxgLWm2gtR+7+XVhWWXnBuAMw
+         SzGYJO4vB6TH2Sj5H+EwwHDIC1h8BupCs/S9IJ8aql+ONt9gB4XgcJ9nhaBYQoDeheMm
+         kqphjgMvKrHBjBh42O/E12AmSMxb7/YhmxQiJkPJ27NEk+Sa9PrZP2Glhw5XHda9o465
+         uHG1ngBEnyQU7qcx56YZsdRfYKTnMDB5xCi7cVoxIYvp3As3WQAkOF8ggGA7h9g5jEMw
+         J3qw==
+X-Forwarded-Encrypted: i=1; AJvYcCUBIGPcLpE/YynWyDnir7Bx7Vh+Rpm9JVqQhKfkwz9VXd1XLvFTcoDDMVJcsxvbps2sIPVk+kvo9Fdxvo3ljMHMi+biVY5/8PzQfHBO0B7Vie+WeSAGazOJ3/iFDCUlrncOQoK0KrbZXGmRH0SLMh/gTArn8dI1lqahhfylQsVY
+X-Gm-Message-State: AOJu0YyRauFEIP2JaG44veU5NlFm9DID8AirDrYGjYk5elhVVBU1ax2C
+	QI6bv8D054nZ8GeieZc3vW9I6xlcg0HdLq7Ju1mc30yZX1B+eFbm1ZIhlC74zxJ/mIDoJyRLhuh
+	jYo/JrTX++jxpEFOU66Kakv2JUB0=
+X-Google-Smtp-Source: AGHT+IEpvLnj2DUE80Kfafaw7YdWuVb0xXdSf+ODoqEdIXs15rBq/iDZit7+SzDXZI1cdRv7j77yTlC7Hco/5gX03q8=
+X-Received: by 2002:a0d:f2c1:0:b0:61a:d02e:8aa with SMTP id
+ b184-20020a0df2c1000000b0061ad02e08aamr2481865ywf.34.1713192424058; Mon, 15
+ Apr 2024 07:47:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+References: <20240312062913.12723-1-gch981213@gmail.com> <ZhzNM_zouHPLdvBz@hovoldconsulting.com>
+In-Reply-To: <ZhzNM_zouHPLdvBz@hovoldconsulting.com>
+From: Chuanhong Guo <gch981213@gmail.com>
+Date: Mon, 15 Apr 2024 22:46:52 +0800
+Message-ID: <CAJsYDVK+Qy-w_Aa9_ns4zZutBJx1HTxm0467chHh0XkLb-4_tg@mail.gmail.com>
+Subject: Re: [PATCH] USB: serial: option: add support for Fibocom FM650/FG650
+To: Johan Hovold <johan@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Monday, 15 April 2024 14:23:22 CEST Greg KH wrote:
-> On Mon, Apr 15, 2024 at 12:50:32PM +0200, Greg KH wrote:
-> > On Fri, Apr 12, 2024 at 08:55:45AM +0200, Janusz Krzysztofik wrote:
-> > > Object debugging tools were sporadically reporting illegal attempts to
-> > > free a still active i915 VMA object when parking a GT believed to be idle.
-> > 
-> > <snip>
-> > 
-> > both backports now queued up, thanks.
-> 
-> And both backports break the build.  Did you test these?
+Hello!
 
-I'm sorry, apparently I didn't test them.  Let me fix that and resubmit.
+On Mon, Apr 15, 2024 at 2:46=E2=80=AFPM Johan Hovold <johan@kernel.org> wro=
+te:
+>
+> On Tue, Mar 12, 2024 at 02:29:12PM +0800, Chuanhong Guo wrote:
+> > Fibocom FM650/FG650 are 5G modems with ECM/NCM/RNDIS/MBIM modes.
 
-Janusz
+In all 4 modes, the first serial port is the AT console while the other 3
+appear to be diagnostic interfaces for dumping modem logs.
 
-> 
-> Now dropped.
-> 
-> greg k-h
-> 
+> > This patch adds support to all 4 modes.
+>
+> Can you please say something here about what each port (in each mode) is
+> used for?
 
+Do I need to send a v2 for this?
 
-
-
+--=20
+Regards,
+Chuanhong Guo
 
