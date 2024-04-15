@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-39681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72B488A542E
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A8928A54ED
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 127C01F22A62
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAE4DB22CA2
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8B58120A;
-	Mon, 15 Apr 2024 14:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA23F762DC;
+	Mon, 15 Apr 2024 14:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2cpAkd5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVnQIr4p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3928D7A705;
-	Mon, 15 Apr 2024 14:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8820676025;
+	Mon, 15 Apr 2024 14:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191498; cv=none; b=GfaRWwT+/v0vn+ie/ELk7loXStEjpXglRvCN0/l5F2naa/ADQLk0azAfETpP9znxMGsU0mn6dRK796IsnozmKh4SAOUPxXFvqOIMMBcs4UjnCuaKBOjWNe1ZM9/CBDwJT1yB5GQnmNYPxkZEf/kdUp+mkrHyoKb7S8KvNR+zebg=
+	t=1713191929; cv=none; b=agm9VHvlf/7/9Yn/5WCFPLyklxwfQXiNoRyGeDrsBidhOCJt4AsBXR5GLCgxwI8jWxmn6mmyHy1ENr/Psg17Iz2LFeKiOYX/7tEnZ4zY/U6wFzHaQV3RTQqoRyMkoqMYw0ABZoUsmKRxES+Bsq0XnL2HkgNzYFyjXCZqSFa2suA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191498; c=relaxed/simple;
-	bh=GiBz9udlZwzlGHCuOQsO+L3740Na3E2X3SF2079tCBw=;
+	s=arc-20240116; t=1713191929; c=relaxed/simple;
+	bh=6m/UdAMcvm/dEjEuz3cyv/QCw7JLN/ltaTZSiPbIcns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FgZyzDlcpi6qbvK9PKXoTJcat5P98e5cWInzPQYIFZ7UchvUlGK07lDF5q9BwvrKwBxvcjBmm0Am+IYP7lqfU1gVW9qpFe1ib6QhStFCE3UlNZZqWHZvpmYaYA6Rbs4lMORZmf50Nf+hOkZs029EvTm5DBivxkJXCuqGjDhbZlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2cpAkd5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC83FC113CC;
-	Mon, 15 Apr 2024 14:31:37 +0000 (UTC)
+	 MIME-Version; b=IPnlT7ysPcTdD+8RBtFowAeN1hKtFEIbsFyf3QV4/et7KpDi4nl2uNG+hDVyB1AF+OVcDjrRGO9oTi272hgnI6D7XaWa2Bg/vo+7rDvilVykGQ3b4dd8XFg8bMCAtNO8Mj+FgIzqxQ7B588sQFB25XeNoQ8rEtbsLLHriz9V8ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVnQIr4p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E8FC113CC;
+	Mon, 15 Apr 2024 14:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191498;
-	bh=GiBz9udlZwzlGHCuOQsO+L3740Na3E2X3SF2079tCBw=;
+	s=korg; t=1713191929;
+	bh=6m/UdAMcvm/dEjEuz3cyv/QCw7JLN/ltaTZSiPbIcns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q2cpAkd5DmqzHOPsxZrPhIuQOHRSkxSspGSuug0TjDZ5fxQkn+WGggPg+S0XTF8LC
-	 qQe1PSVoUQXZDFJqEbKTBQzGUZPqHjI6XRZCx3+/wybVa1SrsosbOA+1gCxrHToog3
-	 cdWtRnb1X7ZVJDDk8eWaJQW1A++Zt/RcOskrFCNo=
+	b=SVnQIr4p+iuAcNtkSIXDQPKQ5mrxrM5CQGVy72T6vB+ZoZ1tJ9eOi0pu/LAq32rai
+	 RbWxlGlOmVZBBke+uIJLXEOBndfnAIDUbyXdKAt68e3g38fbGL/GFpnPiGoMMU/olq
+	 DjL4XRmbWLO+DlptK9KeeP9d46tTwLCK6pW+yf44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.8 135/172] arm64: dts: imx8-ss-conn: fix usb lpcg indices
+	syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 6.1 03/69] batman-adv: Avoid infinite loop trying to resize local TT
 Date: Mon, 15 Apr 2024 16:20:34 +0200
-Message-ID: <20240415142004.477732740@linuxfoundation.org>
+Message-ID: <20240415141946.271253711@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 808e7716edcdb39d3498b9f567ef6017858b49aa upstream.
+commit b1f532a3b1e6d2e5559c7ace49322922637a28aa upstream.
 
-usb2_lpcg: clock-controller@5b270000 {
-	...                                                    Col1  Col2
-	clocks = <&conn_ahb_clk>, <&conn_ipg_clk>;           // 0     6
-	clock-indices = <IMX_LPCG_CLK_6>, <IMX_LPCG_CLK_7>;  // 0     7
-        ...
-};
+If the MTU of one of an attached interface becomes too small to transmit
+the local translation table then it must be resized to fit inside all
+fragments (when enabled) or a single packet.
 
-Col1: index, which existing dts try to get.
-Col2: actual index in lpcg driver.
+But if the MTU becomes too low to transmit even the header + the VLAN
+specific part then the resizing of the local TT will never succeed. This
+can for example happen when the usable space is 110 bytes and 11 VLANs are
+on top of batman-adv. In this case, at least 116 byte would be needed.
+There will just be an endless spam of
 
-usbotg1: usb@5b0d0000 {
-	...
-	clocks = <&usb2_lpcg 0>;
-			     ^^
-Should be:
-	clocks = <&usb2_lpcg IMX_LPCG_CLK_6>;
-};
+   batman_adv: batadv0: Forced to purge local tt entries to fit new maximum fragment MTU (110)
 
-usbphy1: usbphy@5b100000 {
-	clocks = <&usb2_lpcg 1>;
-			     ^^
-SHould be:
-	clocks = <&usb2_lpcg IMX_LPCG_CLK_7>;
-};
+in the log but the function will never finish. Problem here is that the
+timeout will be halved all the time and will then stagnate at 0 and
+therefore never be able to reduce the table even more.
 
-Arg0 is divided by 4 in lpcg driver. So lpcg will do dummy enable. Fix it
-by use correct clock indices.
+There are other scenarios possible with a similar result. The number of
+BATADV_TT_CLIENT_NOPURGE entries in the local TT can for example be too
+high to fit inside a packet. Such a scenario can therefore happen also with
+only a single VLAN + 7 non-purgable addresses - requiring at least 120
+bytes.
+
+While this should be handled proactively when:
+
+* interface with too low MTU is added
+* VLAN is added
+* non-purgeable local mac is added
+* MTU of an attached interface is reduced
+* fragmentation setting gets disabled (which most likely requires dropping
+  attached interfaces)
+
+not all of these scenarios can be prevented because batman-adv is only
+consuming events without the the possibility to prevent these actions
+(non-purgable MAC address added, MTU of an attached interface is reduced).
+It is therefore necessary to also make sure that the code is able to handle
+also the situations when there were already incompatible system
+configuration are present.
 
 Cc: stable@vger.kernel.org
-Fixes: 8065fc937f0f ("arm64: dts: imx8dxl: add usb1 and usb2 support")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: a19d3d85e1b8 ("batman-adv: limit local translation table max size")
+Reported-by: syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/batman-adv/translation-table.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
-@@ -41,7 +41,7 @@ conn_subsys: bus@5b000000 {
- 		interrupts = <GIC_SPI 267 IRQ_TYPE_LEVEL_HIGH>;
- 		fsl,usbphy = <&usbphy1>;
- 		fsl,usbmisc = <&usbmisc1 0>;
--		clocks = <&usb2_lpcg 0>;
-+		clocks = <&usb2_lpcg IMX_LPCG_CLK_6>;
- 		ahb-burst-config = <0x0>;
- 		tx-burst-size-dword = <0x10>;
- 		rx-burst-size-dword = <0x10>;
-@@ -58,7 +58,7 @@ conn_subsys: bus@5b000000 {
- 	usbphy1: usbphy@5b100000 {
- 		compatible = "fsl,imx7ulp-usbphy";
- 		reg = <0x5b100000 0x1000>;
--		clocks = <&usb2_lpcg 1>;
-+		clocks = <&usb2_lpcg IMX_LPCG_CLK_7>;
- 		power-domains = <&pd IMX_SC_R_USB_0_PHY>;
- 		status = "disabled";
- 	};
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -3948,7 +3948,7 @@ void batadv_tt_local_resize_to_mtu(struc
+ 
+ 	spin_lock_bh(&bat_priv->tt.commit_lock);
+ 
+-	while (true) {
++	while (timeout) {
+ 		table_size = batadv_tt_local_table_transmit_size(bat_priv);
+ 		if (packet_size_max >= table_size)
+ 			break;
 
 
 
