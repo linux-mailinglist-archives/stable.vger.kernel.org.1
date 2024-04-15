@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-39554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 375278A5331
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:25:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7A78A5330
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:25:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABEF3B22081
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:25:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 896562889CB
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0EA6768FD;
-	Mon, 15 Apr 2024 14:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7513BBE1;
+	Mon, 15 Apr 2024 14:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VceUb2r+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gw95HeLd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE7674E11;
-	Mon, 15 Apr 2024 14:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A0176C76;
+	Mon, 15 Apr 2024 14:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191115; cv=none; b=pux0AM2b3FU/iwzzEvh9WeK+NWY/Sqfr7JeZQJbDN95u3WtkFWAFhDC98i23O8XuRH5AkVIhtbfJXZ7rlbVyUdPuEBOoizlk+GBf5SFF1c4B0j6xGbBdOU6EGRLyQDmzmkoCvkQzANkEEmZbaea35MfbpdH87W+GChcvlAWmMc0=
+	t=1713191121; cv=none; b=SkqSna+W3GZWAyXZ4dv3M9cojoNakxEjIBHv97gS4LRVz/VtIw4EuCdy9PcmXIM5liDiy+mn9mlMQD61mfFh2AVF7oPrTN9rOncCTt028fwggRPGlfw/EzS6WPSQv/TZx6Vey5oo8c3XzQhasCeMCcxAqs7/wIz+EuIMBSBLl18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191115; c=relaxed/simple;
-	bh=04ytzuFq2IskGxiA+UPJyyfUee3BpOfpM8HnslCo2jY=;
+	s=arc-20240116; t=1713191121; c=relaxed/simple;
+	bh=GLdem4eXaOPLpxOvtpjKsEOfjbME3Q/G46krdYzHKek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gf9eeJU3PndJvDCm0bAYQF9DC8rvIz14Bz24hxmYswdfC5EILeD/lDLjHMRema8xfKhlEVw+PNpezVM8TxugJbL6ApONzXNoFY3eMp7oCLsLEy5Fq4cU+9viCts0z1IIh0vpSP/dcti+GY9gSX63ywk7Ylpjz0EzcJsHfkN8HhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VceUb2r+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A89C2BD10;
-	Mon, 15 Apr 2024 14:25:14 +0000 (UTC)
+	 MIME-Version; b=ldWykkLDiexv30dOOZE9J/0wd3NdoU+iDgzC0a0N1yHwFY6DCIxH7bqDoLKXJ/SK9zch2jzkGNI1Kj90oWyUEGadSRm+tcAxBsQItSsn2ITF2g3jly4IKK4fObfOvR3U0vQcFv8IULiLIGkd9pVaj4u35zEErqTVnXQhwIpzLDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gw95HeLd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD4BC113CC;
+	Mon, 15 Apr 2024 14:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191115;
-	bh=04ytzuFq2IskGxiA+UPJyyfUee3BpOfpM8HnslCo2jY=;
+	s=korg; t=1713191121;
+	bh=GLdem4eXaOPLpxOvtpjKsEOfjbME3Q/G46krdYzHKek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VceUb2r+yf57U3HWy4nCmblGmpsMSQyjEvvdU94iP7zhNm+OArDUyw5JJ/l/BG9w9
-	 VHlCrJZv4H7dwpYbT/0Cq+QoGKLu0g296Y3fHjYUPr+hAPdVTv7lPMnCQe86qiuKME
-	 Gw2NFqN+KqwCf3j0UJNPnTBMxan4s5lrKqQ2FwMc=
+	b=Gw95HeLdFLHrC8RNxVwFsKBBO2LhL547WnbyZ9uS9imLxIEIIDxviiJ+1wHJE8zdS
+	 GAS90zXrxSF4dnNn2DOKICUXzBSNJWJ3yvbg5qQV0NS3VXgH+Sz1FAaBXGFPJb+Jc5
+	 UfmA65D7fWKO/Stba/eQKP63kRyc20j36vp6BTj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ira Weiny <ira.weiny@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Kwangjin Ko <kwangjin.ko@sk.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Timo Lindfors <timo.lindfors@iki.fi>,
+	Alex Constantino <dreaming.about.electric.sheep@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 037/172] cxl/core: Fix initialization of mbox_cmd.size_out in get event
-Date: Mon, 15 Apr 2024 16:18:56 +0200
-Message-ID: <20240415142001.554756211@linuxfoundation.org>
+Subject: [PATCH 6.8 038/172] Revert "drm/qxl: simplify qxl_fence_wait"
+Date: Mon, 15 Apr 2024 16:18:57 +0200
+Message-ID: <20240415142001.583923202@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
 References: <20240415141959.976094777@linuxfoundation.org>
@@ -68,59 +67,113 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kwangjin Ko <kwangjin.ko@sk.com>
+From: Alex Constantino <dreaming.about.electric.sheep@gmail.com>
 
-[ Upstream commit f7c52345ccc96343c0a05bdea3121c8ac7b67d5f ]
+[ Upstream commit 07ed11afb68d94eadd4ffc082b97c2331307c5ea ]
 
-Since mbox_cmd.size_out is overwritten with the actual output size in
-the function below, it needs to be initialized every time.
+This reverts commit 5a838e5d5825c85556011478abde708251cc0776.
 
-cxl_internal_send_cmd -> __cxl_pci_mbox_send_cmd
+Changes from commit 5a838e5d5825 ("drm/qxl: simplify qxl_fence_wait") would
+result in a '[TTM] Buffer eviction failed' exception whenever it reached a
+timeout.
+Due to a dependency to DMA_FENCE_WARN this also restores some code deleted
+by commit d72277b6c37d ("dma-buf: nuke DMA_FENCE_TRACE macros v2").
 
-Problem scenario:
-
-1) The size_out variable is initially set to the size of the mailbox.
-2) Read an event.
-   - size_out is set to 160 bytes(header 32B + one event 128B).
-   - Two event are created while reading.
-3) Read the new *two* events.
-   - size_out is still set to 160 bytes.
-   - Although the value of out_len is 288 bytes, only 160 bytes are
-     copied from the mailbox register to the local variable.
-   - record_count is set to 2.
-   - Accessing records[1] will result in reading incorrect data.
-
-Fixes: 6ebe28f9ec72 ("cxl/mem: Read, trace, and clear events on driver load")
-Tested-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Kwangjin Ko <kwangjin.ko@sk.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Fixes: 5a838e5d5825 ("drm/qxl: simplify qxl_fence_wait")
+Link: https://lore.kernel.org/regressions/ZTgydqRlK6WX_b29@eldamar.lan/
+Reported-by: Timo Lindfors <timo.lindfors@iki.fi>
+Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1054514
+Signed-off-by: Alex Constantino <dreaming.about.electric.sheep@gmail.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240404181448.1643-2-dreaming.about.electric.sheep@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/mbox.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/qxl/qxl_release.c | 50 +++++++++++++++++++++++++++----
+ include/linux/dma-fence.h         |  7 +++++
+ 2 files changed, 52 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-index 50146161887d5..f0f54aeccc872 100644
---- a/drivers/cxl/core/mbox.c
-+++ b/drivers/cxl/core/mbox.c
-@@ -958,13 +958,14 @@ static void cxl_mem_get_records_log(struct cxl_memdev_state *mds,
- 		.payload_in = &log_type,
- 		.size_in = sizeof(log_type),
- 		.payload_out = payload,
--		.size_out = mds->payload_size,
- 		.min_out = struct_size(payload, records, 0),
- 	};
+diff --git a/drivers/gpu/drm/qxl/qxl_release.c b/drivers/gpu/drm/qxl/qxl_release.c
+index 368d26da0d6a2..9febc8b73f09e 100644
+--- a/drivers/gpu/drm/qxl/qxl_release.c
++++ b/drivers/gpu/drm/qxl/qxl_release.c
+@@ -58,16 +58,56 @@ static long qxl_fence_wait(struct dma_fence *fence, bool intr,
+ 			   signed long timeout)
+ {
+ 	struct qxl_device *qdev;
++	struct qxl_release *release;
++	int count = 0, sc = 0;
++	bool have_drawable_releases;
+ 	unsigned long cur, end = jiffies + timeout;
  
- 	do {
- 		int rc, i;
+ 	qdev = container_of(fence->lock, struct qxl_device, release_lock);
++	release = container_of(fence, struct qxl_release, base);
++	have_drawable_releases = release->type == QXL_RELEASE_DRAWABLE;
  
-+		mbox_cmd.size_out = mds->payload_size;
+-	if (!wait_event_timeout(qdev->release_event,
+-				(dma_fence_is_signaled(fence) ||
+-				 (qxl_io_notify_oom(qdev), 0)),
+-				timeout))
+-		return 0;
++retry:
++	sc++;
 +
- 		rc = cxl_internal_send_cmd(mds, &mbox_cmd);
- 		if (rc) {
- 			dev_err_ratelimited(dev,
++	if (dma_fence_is_signaled(fence))
++		goto signaled;
++
++	qxl_io_notify_oom(qdev);
++
++	for (count = 0; count < 11; count++) {
++		if (!qxl_queue_garbage_collect(qdev, true))
++			break;
++
++		if (dma_fence_is_signaled(fence))
++			goto signaled;
++	}
++
++	if (dma_fence_is_signaled(fence))
++		goto signaled;
++
++	if (have_drawable_releases || sc < 4) {
++		if (sc > 2)
++			/* back off */
++			usleep_range(500, 1000);
++
++		if (time_after(jiffies, end))
++			return 0;
++
++		if (have_drawable_releases && sc > 300) {
++			DMA_FENCE_WARN(fence,
++				       "failed to wait on release %llu after spincount %d\n",
++				       fence->context & ~0xf0000000, sc);
++			goto signaled;
++		}
++		goto retry;
++	}
++	/*
++	 * yeah, original sync_obj_wait gave up after 3 spins when
++	 * have_drawable_releases is not set.
++	 */
+ 
++signaled:
+ 	cur = jiffies;
+ 	if (time_after(cur, end))
+ 		return 0;
+diff --git a/include/linux/dma-fence.h b/include/linux/dma-fence.h
+index e06bad467f55e..c3f9bb6602ba2 100644
+--- a/include/linux/dma-fence.h
++++ b/include/linux/dma-fence.h
+@@ -682,4 +682,11 @@ static inline bool dma_fence_is_container(struct dma_fence *fence)
+ 	return dma_fence_is_array(fence) || dma_fence_is_chain(fence);
+ }
+ 
++#define DMA_FENCE_WARN(f, fmt, args...) \
++	do {								\
++		struct dma_fence *__ff = (f);				\
++		pr_warn("f %llu#%llu: " fmt, __ff->context, __ff->seqno,\
++			 ##args);					\
++	} while (0)
++
+ #endif /* __LINUX_DMA_FENCE_H */
 -- 
 2.43.0
 
