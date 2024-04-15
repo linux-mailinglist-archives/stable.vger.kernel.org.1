@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-39743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1FDD8A547E
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:37:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F6F8A53D0
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:31:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C647B21FF2
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:37:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB2561C21D2B
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5468839E4;
-	Mon, 15 Apr 2024 14:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AEB78C75;
+	Mon, 15 Apr 2024 14:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MIfA/3L7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OqX3cRgI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3F080BF0;
-	Mon, 15 Apr 2024 14:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92DD839E0;
+	Mon, 15 Apr 2024 14:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191679; cv=none; b=lU1ZcygLkKQuQgzYrTVgruMuhg3M4D4HU/rGWcIlKjE+x0o24lWmk600WlSphseJHZuF41pB8vU4bP0leZBGNmGkqetH0culAQb7sKlQHv1n2x1hnI1KWz2HvBJ+cur5EtiHS55mbmDwuL6IQlhE1JWfD+ULDNRd6C6gXgP4sh8=
+	t=1713191336; cv=none; b=b5qAKxAIqFb0tA6EHvTYebAZFko60XijOiYnQQrBL8WVuKaSx4Tz29tSzNrkRffaTcMIPXE/iWQEp8qlZIwf8NG7ABsyFnXo+Nf0cCqDWFChoEDp0IkPARlRlKSerVXqMfXhfVLeaU0HF6kTSvbnG5ZiPBJYP6k9vvDAqriWOP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191679; c=relaxed/simple;
-	bh=8+qWHD1af2MUK8hq0PiHbQtOnwSTjJSNCPrlTW+K+SU=;
+	s=arc-20240116; t=1713191336; c=relaxed/simple;
+	bh=NjdZACyeje+lhfCjXsFW9eFFrIANBuKSbezrdksuKPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A09crvoK9KgT8alN2JygmqklHQu1pCYSWknD+WTE2IITf1L019k7YlHiwVddlLcQuZ2o9D4Dk+8IXqWigqUVNRgsfoySkUpD9cpBMp3StciK8MhtHtanDrfSXmQJS6glP7tMH4S1bocGPEt5IhfH7uTX8yQbMRLzL0Na7g29rXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MIfA/3L7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 948B9C113CC;
-	Mon, 15 Apr 2024 14:34:38 +0000 (UTC)
+	 MIME-Version; b=oJqMPLnfuI48ZXKGMNm8PkGwXq3EUx/KLm4Jfw+dI0w99XdHL1hXicqZcs60Z38kDQ9XEHEfjzQojPrVOM3sQerWwtMuNjk6OOGu9J0JWRgAWI7wUuLXTCLtScL3AvD3XtpB4l5VDZenWzC3FZ7sqFGgikwGjubpHaTUN98qReI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OqX3cRgI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 583E2C113CC;
+	Mon, 15 Apr 2024 14:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191679;
-	bh=8+qWHD1af2MUK8hq0PiHbQtOnwSTjJSNCPrlTW+K+SU=;
+	s=korg; t=1713191336;
+	bh=NjdZACyeje+lhfCjXsFW9eFFrIANBuKSbezrdksuKPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MIfA/3L7i1s49ph1o8VEGXyNIOyiRfnIW3H9LUnqxxbPWRq68nLxwE5SJpFKMiqyj
-	 NDKABbDqbPkJwfBoJ1AiLvKtGs8KhBS79D6fcvZ3qdFloxyqR6u1OIvZu++aiZkCLq
-	 8Qh6dX6Oy6WfFhsXFFo38oIyy1C9OupCzSoDOj9E=
+	b=OqX3cRgI44Rgbdq2CIymXoGAMwt3GkVDvuGdrMURQDYUJHQ146NxMAuCoDby87a1u
+	 RJsgyL9Im1zhjRQEEMuNHbnioVro9ECDuZ1WmT4kmbwbxIIX7HpCNQVBqHcxiqYl5y
+	 2fjB0pxH0rLEze3+IaXWhCXUC7efa2Xu6mZwii5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7f7f201cc2668a8fd169@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/122] af_unix: Clear stale u->oob_skb.
-Date: Mon, 15 Apr 2024 16:20:08 +0200
-Message-ID: <20240415141954.659206081@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.8 110/172] btrfs: record delayed inode root in transaction
+Date: Mon, 15 Apr 2024 16:20:09 +0200
+Message-ID: <20240415142003.738674996@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit b46f4eaa4f0ec38909fb0072eea3aeddb32f954e ]
+commit 71537e35c324ea6fbd68377a4f26bb93a831ae35 upstream.
 
-syzkaller started to report deadlock of unix_gc_lock after commit
-4090fa373f0e ("af_unix: Replace garbage collection algorithm."), but
-it just uncovers the bug that has been there since commit 314001f0bf92
-("af_unix: Add OOB support").
+When running delayed inode updates, we do not record the inode's root in
+the transaction, but we do allocate PREALLOC and thus converted PERTRANS
+space for it. To be sure we free that PERTRANS meta rsv, we must ensure
+that we record the root in the transaction.
 
-The repro basically does the following.
-
-  from socket import *
-  from array import array
-
-  c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
-  c1.sendmsg([b'a'], [(SOL_SOCKET, SCM_RIGHTS, array("i", [c2.fileno()]))], MSG_OOB)
-  c2.recv(1)  # blocked as no normal data in recv queue
-
-  c2.close()  # done async and unblock recv()
-  c1.close()  # done async and trigger GC
-
-A socket sends its file descriptor to itself as OOB data and tries to
-receive normal data, but finally recv() fails due to async close().
-
-The problem here is wrong handling of OOB skb in manage_oob().  When
-recvmsg() is called without MSG_OOB, manage_oob() is called to check
-if the peeked skb is OOB skb.  In such a case, manage_oob() pops it
-out of the receive queue but does not clear unix_sock(sk)->oob_skb.
-This is wrong in terms of uAPI.
-
-Let's say we send "hello" with MSG_OOB, and "world" without MSG_OOB.
-The 'o' is handled as OOB data.  When recv() is called twice without
-MSG_OOB, the OOB data should be lost.
-
-  >>> from socket import *
-  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM, 0)
-  >>> c1.send(b'hello', MSG_OOB)  # 'o' is OOB data
-  5
-  >>> c1.send(b'world')
-  5
-  >>> c2.recv(5)  # OOB data is not received
-  b'hell'
-  >>> c2.recv(5)  # OOB date is skipped
-  b'world'
-  >>> c2.recv(5, MSG_OOB)  # This should return an error
-  b'o'
-
-In the same situation, TCP actually returns -EINVAL for the last
-recv().
-
-Also, if we do not clear unix_sk(sk)->oob_skb, unix_poll() always set
-EPOLLPRI even though the data has passed through by previous recv().
-
-To avoid these issues, we must clear unix_sk(sk)->oob_skb when dequeuing
-it from recv queue.
-
-The reason why the old GC did not trigger the deadlock is because the
-old GC relied on the receive queue to detect the loop.
-
-When it is triggered, the socket with OOB data is marked as GC candidate
-because file refcount == inflight count (1).  However, after traversing
-all inflight sockets, the socket still has a positive inflight count (1),
-thus the socket is excluded from candidates.  Then, the old GC lose the
-chance to garbage-collect the socket.
-
-With the old GC, the repro continues to create true garbage that will
-never be freed nor detected by kmemleak as it's linked to the global
-inflight list.  That's why we couldn't even notice the issue.
-
-Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-Reported-by: syzbot+7f7f201cc2668a8fd169@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7f7f201cc2668a8fd169
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240405221057.2406-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4f5427ccce5d ("btrfs: delayed-inode: Use new qgroup meta rsv for delayed inode and item")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/btrfs/delayed-inode.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 510b1d6758db7..ac3d4b540c100 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2589,7 +2589,9 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
- 				}
- 			} else if (!(flags & MSG_PEEK)) {
- 				skb_unlink(skb, &sk->sk_receive_queue);
--				consume_skb(skb);
-+				WRITE_ONCE(u->oob_skb, NULL);
-+				if (!WARN_ON_ONCE(skb_unref(skb)))
-+					kfree_skb(skb);
- 				skb = skb_peek(&sk->sk_receive_queue);
- 			}
- 		}
--- 
-2.43.0
-
+--- a/fs/btrfs/delayed-inode.c
++++ b/fs/btrfs/delayed-inode.c
+@@ -1128,6 +1128,9 @@ __btrfs_commit_inode_delayed_items(struc
+ 	if (ret)
+ 		return ret;
+ 
++	ret = btrfs_record_root_in_trans(trans, node->root);
++	if (ret)
++		return ret;
+ 	ret = btrfs_update_delayed_inode(trans, node->root, path, node);
+ 	return ret;
+ }
 
 
 
