@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-39874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 551418A5522
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:42:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDC58A554F
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:43:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10CF02830F9
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:42:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5094E1C22075
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9C671B51;
-	Mon, 15 Apr 2024 14:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DC3768EE;
+	Mon, 15 Apr 2024 14:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAwVmbor"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tr/QEJua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8E41EEE3;
-	Mon, 15 Apr 2024 14:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849221E4B1;
+	Mon, 15 Apr 2024 14:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192077; cv=none; b=Z/ZEICmreBCEPq/FiX2PQ+FlnBwIE9HOiwTZr+7A9bp/tZeORAqskUNUWuFaJlejgdlUe2l455qAUP9HLorwarhNB3dp8w6yNi/JfMc71Studm/Ms9qamZ8ZLb96CAT1k0akvCvcUqIAAjaLg3vdDzvzr5+SaGmFURKHUhLtOVY=
+	t=1713192178; cv=none; b=TlxnPz+oua7WB7+nMPnGx86tlV4yg6+/+4Nfmnnjhmd8YxMWxnD7N/ECiz3hyrDP7H2VKXpdeblXPTxtwf5uy40IeIX2196Tg8U8nnzS9UvH2GdpxN49/jJKuYdRFKh8AWdNkQz2V7LVK9UeFkFTIDwS6SpfIWHr8Re9i10iPms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192077; c=relaxed/simple;
-	bh=mCb5ua99mlPPwtBfsbxXO/3Qd+FW152Z5JkRs7RTtCE=;
+	s=arc-20240116; t=1713192178; c=relaxed/simple;
+	bh=NDjnmXCefkiS1pKsJx6GKeq2JGbhcH6NFsHoPGrN9f4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LaiW4hSwgwjuLaX1fDGuE7tlbMsU0qzG8WB1BUllL8Wkfh3pxNAewGaPZhoohn1Czs6Y/jotPzMfG4H9CmpJHpMN6QADyHBOv27yOeKhGbZiDcor64rd8tFo7V/n9p0lTnY9CyEDVdff3XFAnBgyH2mguouycNHKkogJzp8sruI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAwVmbor; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110EFC113CC;
-	Mon, 15 Apr 2024 14:41:16 +0000 (UTC)
+	 MIME-Version; b=DEaxVS2ep8rcedwrcD8jEtoT1AHnfJbDL1gQS3dgK9ctrKqwAOKKndf2JmMTrihQpy3h//fSdoGl2OM+ERloDeTS25MnSIGcf4rOhFAduYfV1w4TaDs3SQicpxRm9cWc28YP9vhyAAEChIVFVVMriLX1/nzLsHpGxVp6kMJrrdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tr/QEJua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C7EAC113CC;
+	Mon, 15 Apr 2024 14:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713192077;
-	bh=mCb5ua99mlPPwtBfsbxXO/3Qd+FW152Z5JkRs7RTtCE=;
+	s=korg; t=1713192178;
+	bh=NDjnmXCefkiS1pKsJx6GKeq2JGbhcH6NFsHoPGrN9f4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hAwVmborv1E/6u+U8oq452p9vgLthVZ90WgEsG7bglRDtwGB1SL+Ut43roLrvCh9v
-	 x5+jaAPxLZjgHc8l1OoZ2fL5rsjgqwWH3goa44E7pnjAe/KRBOu2Ru4y4GtuD+uVj2
-	 PLkFFWn8Ug+AscT2HK5KL5iQls8Szibt/xi87rps=
+	b=tr/QEJuaSN0fUc67RyqGdadnF0AHB/Zxo5T/NHuV4JNftcg+TrDYCEvvADw1VNDks
+	 dsZjqr7pMqv2S2pBKXZqq3OUYz49t2LohZnW9VPYhg2jFFp/u7sHdCdZVhBQOS1Ylm
+	 qpi1KcEF0BPICpl3gNk6yS9Prp/A8n38F8KnJsHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 59/69] x86/bugs: Cache the value of MSR_IA32_ARCH_CAPABILITIES
+	Michal Luczaj <mhal@rbox.co>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 23/45] af_unix: Fix garbage collector racing against connect()
 Date: Mon, 15 Apr 2024 16:21:30 +0200
-Message-ID: <20240415141947.945926730@linuxfoundation.org>
+Message-ID: <20240415141942.939063445@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-References: <20240415141946.165870434@linuxfoundation.org>
+In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
+References: <20240415141942.235939111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,138 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Michal Luczaj <mhal@rbox.co>
 
-commit cb2db5bb04d7f778fbc1a1ea2507aab436f1bff3 upstream.
+[ Upstream commit 47d8ac011fe1c9251070e1bd64cb10b48193ec51 ]
 
-There's no need to keep reading MSR_IA32_ARCH_CAPABILITIES over and
-over.  It's even read in the BHI sysfs function which is a big no-no.
-Just read it once and cache it.
+Garbage collector does not take into account the risk of embryo getting
+enqueued during the garbage collection. If such embryo has a peer that
+carries SCM_RIGHTS, two consecutive passes of scan_children() may see a
+different set of children. Leading to an incorrectly elevated inflight
+count, and then a dangling pointer within the gc_inflight_list.
 
-Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/9592a18a814368e75f8f4b9d74d3883aa4fd1eaf.1712813475.git.jpoimboe@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+sockets are AF_UNIX/SOCK_STREAM
+S is an unconnected socket
+L is a listening in-flight socket bound to addr, not in fdtable
+V's fd will be passed via sendmsg(), gets inflight count bumped
+
+connect(S, addr)	sendmsg(S, [V]); close(V)	__unix_gc()
+----------------	-------------------------	-----------
+
+NS = unix_create1()
+skb1 = sock_wmalloc(NS)
+L = unix_find_other(addr)
+unix_state_lock(L)
+unix_peer(S) = NS
+			// V count=1 inflight=0
+
+ 			NS = unix_peer(S)
+ 			skb2 = sock_alloc()
+			skb_queue_tail(NS, skb2[V])
+
+			// V became in-flight
+			// V count=2 inflight=1
+
+			close(V)
+
+			// V count=1 inflight=1
+			// GC candidate condition met
+
+						for u in gc_inflight_list:
+						  if (total_refs == inflight_refs)
+						    add u to gc_candidates
+
+						// gc_candidates={L, V}
+
+						for u in gc_candidates:
+						  scan_children(u, dec_inflight)
+
+						// embryo (skb1) was not
+						// reachable from L yet, so V's
+						// inflight remains unchanged
+__skb_queue_tail(L, skb1)
+unix_state_unlock(L)
+						for u in gc_candidates:
+						  if (u.inflight)
+						    scan_children(u, inc_inflight_move_tail)
+
+						// V count=1 inflight=2 (!)
+
+If there is a GC-candidate listening socket, lock/unlock its state. This
+makes GC wait until the end of any ongoing connect() to that socket. After
+flipping the lock, a possibly SCM-laden embryo is already enqueued. And if
+there is another embryo coming, it can not possibly carry SCM_RIGHTS. At
+this point, unix_inflight() can not happen because unix_gc_lock is already
+taken. Inflight graph remains unaffected.
+
+Fixes: 1fd05ba5a2f2 ("[AF_UNIX]: Rewrite garbage collector, fixes race.")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240409201047.1032217-1-mhal@rbox.co
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c |   22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+ net/unix/garbage.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -60,6 +60,8 @@ EXPORT_SYMBOL_GPL(x86_spec_ctrl_current)
- u64 x86_pred_cmd __ro_after_init = PRED_CMD_IBPB;
- EXPORT_SYMBOL_GPL(x86_pred_cmd);
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index 7b326582d97da..85c6f05c0fa3c 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -235,11 +235,22 @@ void unix_gc(void)
+ 	 * receive queues.  Other, non candidate sockets _can_ be
+ 	 * added to queue, so we must make sure only to touch
+ 	 * candidates.
++	 *
++	 * Embryos, though never candidates themselves, affect which
++	 * candidates are reachable by the garbage collector.  Before
++	 * being added to a listener's queue, an embryo may already
++	 * receive data carrying SCM_RIGHTS, potentially making the
++	 * passed socket a candidate that is not yet reachable by the
++	 * collector.  It becomes reachable once the embryo is
++	 * enqueued.  Therefore, we must ensure that no SCM-laden
++	 * embryo appears in a (candidate) listener's queue between
++	 * consecutive scan_children() calls.
+ 	 */
+ 	list_for_each_entry_safe(u, next, &gc_inflight_list, link) {
++		struct sock *sk = &u->sk;
+ 		long total_refs;
  
-+static u64 __ro_after_init ia32_cap;
+-		total_refs = file_count(u->sk.sk_socket->file);
++		total_refs = file_count(sk->sk_socket->file);
+ 
+ 		BUG_ON(!u->inflight);
+ 		BUG_ON(total_refs < u->inflight);
+@@ -247,6 +258,11 @@ void unix_gc(void)
+ 			list_move_tail(&u->link, &gc_candidates);
+ 			__set_bit(UNIX_GC_CANDIDATE, &u->gc_flags);
+ 			__set_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
 +
- static DEFINE_MUTEX(spec_ctrl_mutex);
- 
- void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
-@@ -143,6 +145,8 @@ void __init cpu_select_mitigations(void)
- 		x86_spec_ctrl_base &= ~SPEC_CTRL_MITIGATIONS_MASK;
++			if (sk->sk_state == TCP_LISTEN) {
++				unix_state_lock(sk);
++				unix_state_unlock(sk);
++			}
+ 		}
  	}
  
-+	ia32_cap = x86_read_arch_cap_msr();
-+
- 	/* Select the proper CPU mitigations before patching alternatives: */
- 	spectre_v1_select_mitigation();
- 	spectre_v2_select_mitigation();
-@@ -300,8 +304,6 @@ static const char * const taa_strings[]
- 
- static void __init taa_select_mitigation(void)
- {
--	u64 ia32_cap;
--
- 	if (!boot_cpu_has_bug(X86_BUG_TAA)) {
- 		taa_mitigation = TAA_MITIGATION_OFF;
- 		return;
-@@ -340,7 +342,6 @@ static void __init taa_select_mitigation
- 	 * On MDS_NO=1 CPUs if ARCH_CAP_TSX_CTRL_MSR is not set, microcode
- 	 * update is required.
- 	 */
--	ia32_cap = x86_read_arch_cap_msr();
- 	if ( (ia32_cap & ARCH_CAP_MDS_NO) &&
- 	    !(ia32_cap & ARCH_CAP_TSX_CTRL_MSR))
- 		taa_mitigation = TAA_MITIGATION_UCODE_NEEDED;
-@@ -400,8 +401,6 @@ static const char * const mmio_strings[]
- 
- static void __init mmio_select_mitigation(void)
- {
--	u64 ia32_cap;
--
- 	if (!boot_cpu_has_bug(X86_BUG_MMIO_STALE_DATA) ||
- 	     boot_cpu_has_bug(X86_BUG_MMIO_UNKNOWN) ||
- 	     cpu_mitigations_off()) {
-@@ -412,8 +411,6 @@ static void __init mmio_select_mitigatio
- 	if (mmio_mitigation == MMIO_MITIGATION_OFF)
- 		return;
- 
--	ia32_cap = x86_read_arch_cap_msr();
--
- 	/*
- 	 * Enable CPU buffer clear mitigation for host and VMM, if also affected
- 	 * by MDS or TAA. Otherwise, enable mitigation for VMM only.
-@@ -507,7 +504,7 @@ static void __init rfds_select_mitigatio
- 	if (rfds_mitigation == RFDS_MITIGATION_OFF)
- 		return;
- 
--	if (x86_read_arch_cap_msr() & ARCH_CAP_RFDS_CLEAR)
-+	if (ia32_cap & ARCH_CAP_RFDS_CLEAR)
- 		setup_force_cpu_cap(X86_FEATURE_CLEAR_CPU_BUF);
- 	else
- 		rfds_mitigation = RFDS_MITIGATION_UCODE_NEEDED;
-@@ -658,8 +655,6 @@ void update_srbds_msr(void)
- 
- static void __init srbds_select_mitigation(void)
- {
--	u64 ia32_cap;
--
- 	if (!boot_cpu_has_bug(X86_BUG_SRBDS))
- 		return;
- 
-@@ -668,7 +663,6 @@ static void __init srbds_select_mitigati
- 	 * are only exposed to SRBDS when TSX is enabled or when CPU is affected
- 	 * by Processor MMIO Stale Data vulnerability.
- 	 */
--	ia32_cap = x86_read_arch_cap_msr();
- 	if ((ia32_cap & ARCH_CAP_MDS_NO) && !boot_cpu_has(X86_FEATURE_RTM) &&
- 	    !boot_cpu_has_bug(X86_BUG_MMIO_STALE_DATA))
- 		srbds_mitigation = SRBDS_MITIGATION_TSX_OFF;
-@@ -812,7 +806,7 @@ static void __init gds_select_mitigation
- 	/* Will verify below that mitigation _can_ be disabled */
- 
- 	/* No microcode */
--	if (!(x86_read_arch_cap_msr() & ARCH_CAP_GDS_CTRL)) {
-+	if (!(ia32_cap & ARCH_CAP_GDS_CTRL)) {
- 		if (gds_mitigation == GDS_MITIGATION_FORCE) {
- 			/*
- 			 * This only needs to be done on the boot CPU so do it
-@@ -1884,8 +1878,6 @@ static void update_indir_branch_cond(voi
- /* Update the static key controlling the MDS CPU buffer clear in idle */
- static void update_mds_branch_idle(void)
- {
--	u64 ia32_cap = x86_read_arch_cap_msr();
--
- 	/*
- 	 * Enable the idle clearing if SMT is active on CPUs which are
- 	 * affected only by MSBDS and not any other MDS variant.
-@@ -2797,7 +2789,7 @@ static const char *spectre_bhi_state(voi
- 	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP))
- 		return "; BHI: SW loop, KVM: SW loop";
- 	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
--		 !(x86_read_arch_cap_msr() & ARCH_CAP_RRSBA))
-+		 !(ia32_cap & ARCH_CAP_RRSBA))
- 		return "; BHI: Retpoline";
- 	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT))
- 		return "; BHI: Syscall hardening, KVM: SW loop";
+-- 
+2.43.0
+
 
 
 
