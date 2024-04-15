@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-39620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B8A18A53BA
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:30:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8A38A546D
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:36:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2EE6B236BF
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:30:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FD6F281DAB
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D5580031;
-	Mon, 15 Apr 2024 14:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8FD84A39;
+	Mon, 15 Apr 2024 14:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOy5VteQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3EGBIR7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218BB7FBBE;
-	Mon, 15 Apr 2024 14:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DDC1D524;
+	Mon, 15 Apr 2024 14:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191310; cv=none; b=QBYvPZPUtoDvzoqyW+NmM/5lenBKVvPEhbzn8b1C0rhLnnnr/aBK4vgHLMPwa6uTKtTVPlp+UBCz1LtdAurW3QoQv6sUyUd9hE/F7s4Ii//4b+wC1fQgPYld5fbry7HIMyMHFBWfoIl/KvpLwvG2ihPYGnYs7WCN+HrG4DnO3nQ=
+	t=1713191641; cv=none; b=EwRjr2ORsuqZ1SGHUtNgJMRryfiEQpoV4WZk+bk69eGlUFH/glrpKZPxATNs/eXcrTKRFc3THAaA2xOlA/Znr22oKZB+XBFR3fFqYLnMvKpatiF1SMCJy2B219GFGIpVdj6HemYVkLO2II/fQx7Kg3WaFZjQYMd7XNicz+lZ2hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191310; c=relaxed/simple;
-	bh=zt8KqiFeNGkHq0/SSiM8phbujEgveeF94hV+lzKrV3I=;
+	s=arc-20240116; t=1713191641; c=relaxed/simple;
+	bh=d/dMx5G0lXiLdkU5dsRtz78hYKCpjN2uCqUQKH0/o/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I81sUaQDlsDt+00gOCJzIYY5uf6USiZaD/yOSB2hK/vmaLRc/PQzqsfjnxrcTeNodBRDaYNsgBrNesAEnVdpFfz9zfY+827GQck4p9Nf0dlaYkWKR+cy5Q5QJQOaha2hgKQwhh2vYHrJ3Ux8mc/impjEQJW3tgVRr+aOch5dxhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOy5VteQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EFBC32783;
-	Mon, 15 Apr 2024 14:28:29 +0000 (UTC)
+	 MIME-Version; b=mC/aPAOl+NPcP6bXgx0fyzeDvjKzaeQm+XAY9N2sjr3tkkXe0fHVUTabIrq7zVXIxNkKH/AUUranursuTKX53DONfRZNKJ4xQLpwdI2t2Bp/Xq5BsrLm5eOnedSlgRLM7c8CKkfn3GTX71AAV4IgUfyL2sicIdz3B/kkg2W+AkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3EGBIR7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327A0C113CC;
+	Mon, 15 Apr 2024 14:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191310;
-	bh=zt8KqiFeNGkHq0/SSiM8phbujEgveeF94hV+lzKrV3I=;
+	s=korg; t=1713191640;
+	bh=d/dMx5G0lXiLdkU5dsRtz78hYKCpjN2uCqUQKH0/o/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOy5VteQ5mib0+LkN4b2pcNgiHW0l8iD09Rz+l4hs77cSFHwNyLhzgVHrv7VGvKxa
-	 ChgfEXO1X5SmTKv4Tb+sxl2AWSM5WFZ6ZA2ncdcFfSrhSILcwWCsCSNqh9/qiZxLk2
-	 acDKJ8wcM/LQPVj+j50c+6nRAmXHAr3Pot5Qqrpw=
+	b=z3EGBIR7pL9wPod1zVqoTEO5lSWaxSWqmR1YSxc4beSJ/tMqgEPKHYYhY39RN7R4H
+	 YwRFg2326Re108n3azwKnks1nv+l9AmYBcnWqv+cwNPUSp3MZ9+C0prL71pcKbUWMo
+	 FiuByM83TgfFeLWYCUe9ucvIZrv1/9q4WsqTNIec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Kees Cook <keescook@chromium.org>,
-	Ajay Kaher <akaher@vmware.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Tzvetomir Stoyanov (VMware)" <tz.stoyanov@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	syzbot+9ee20ec1de7b3168db09@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Phillip Potter <phil@philpotter.co.uk>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 102/172] tracing: hide unused ftrace_event_id_fops
+Subject: [PATCH 6.6 036/122] geneve: fix header validation in geneve[6]_xmit_skb
 Date: Mon, 15 Apr 2024 16:20:01 +0200
-Message-ID: <20240415142003.494518428@linuxfoundation.org>
+Message-ID: <20240415141954.453254636@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,78 +63,170 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 5281ec83454d70d98b71f1836fb16512566c01cd ]
+[ Upstream commit d8a6213d70accb403b82924a1c229e733433a5ef ]
 
-When CONFIG_PERF_EVENTS, a 'make W=1' build produces a warning about the
-unused ftrace_event_id_fops variable:
+syzbot is able to trigger an uninit-value in geneve_xmit() [1]
 
-kernel/trace/trace_events.c:2155:37: error: 'ftrace_event_id_fops' defined but not used [-Werror=unused-const-variable=]
- 2155 | static const struct file_operations ftrace_event_id_fops = {
+Problem : While most ip tunnel helpers (like ip_tunnel_get_dsfield())
+uses skb_protocol(skb, true), pskb_inet_may_pull() is only using
+skb->protocol.
 
-Hide this in the same #ifdef as the reference to it.
+If anything else than ETH_P_IPV6 or ETH_P_IP is found in skb->protocol,
+pskb_inet_may_pull() does nothing at all.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240403080702.3509288-7-arnd@kernel.org
+If a vlan tag was provided by the caller (af_packet in the syzbot case),
+the network header might not point to the correct location, and skb
+linear part could be smaller than expected.
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Ajay Kaher <akaher@vmware.com>
-Cc: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: Clément Léger <cleger@rivosinc.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: "Tzvetomir Stoyanov (VMware)" <tz.stoyanov@gmail.com>
-Fixes: 620a30e97feb ("tracing: Don't pass file_operations array to event_create_dir()")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Add skb_vlan_inet_prepare() to perform a complete mac validation.
+
+Use this in geneve for the moment, I suspect we need to adopt this
+more broadly.
+
+v4 - Jakub reported v3 broke l2_tos_ttl_inherit.sh selftest
+   - Only call __vlan_get_protocol() for vlan types.
+Link: https://lore.kernel.org/netdev/20240404100035.3270a7d5@kernel.org/
+
+v2,v3 - Addressed Sabrina comments on v1 and v2
+Link: https://lore.kernel.org/netdev/Zg1l9L2BNoZWZDZG@hog/
+
+[1]
+
+BUG: KMSAN: uninit-value in geneve_xmit_skb drivers/net/geneve.c:910 [inline]
+ BUG: KMSAN: uninit-value in geneve_xmit+0x302d/0x5420 drivers/net/geneve.c:1030
+  geneve_xmit_skb drivers/net/geneve.c:910 [inline]
+  geneve_xmit+0x302d/0x5420 drivers/net/geneve.c:1030
+  __netdev_start_xmit include/linux/netdevice.h:4903 [inline]
+  netdev_start_xmit include/linux/netdevice.h:4917 [inline]
+  xmit_one net/core/dev.c:3531 [inline]
+  dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3547
+  __dev_queue_xmit+0x348d/0x52c0 net/core/dev.c:4335
+  dev_queue_xmit include/linux/netdevice.h:3091 [inline]
+  packet_xmit+0x9c/0x6c0 net/packet/af_packet.c:276
+  packet_snd net/packet/af_packet.c:3081 [inline]
+  packet_sendmsg+0x8bb0/0x9ef0 net/packet/af_packet.c:3113
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:745
+  __sys_sendto+0x685/0x830 net/socket.c:2191
+  __do_sys_sendto net/socket.c:2203 [inline]
+  __se_sys_sendto net/socket.c:2199 [inline]
+  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2199
+ do_syscall_64+0xd5/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
+
+Uninit was created at:
+  slab_post_alloc_hook mm/slub.c:3804 [inline]
+  slab_alloc_node mm/slub.c:3845 [inline]
+  kmem_cache_alloc_node+0x613/0xc50 mm/slub.c:3888
+  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:577
+  __alloc_skb+0x35b/0x7a0 net/core/skbuff.c:668
+  alloc_skb include/linux/skbuff.h:1318 [inline]
+  alloc_skb_with_frags+0xc8/0xbf0 net/core/skbuff.c:6504
+  sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2795
+  packet_alloc_skb net/packet/af_packet.c:2930 [inline]
+  packet_snd net/packet/af_packet.c:3024 [inline]
+  packet_sendmsg+0x722d/0x9ef0 net/packet/af_packet.c:3113
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:745
+  __sys_sendto+0x685/0x830 net/socket.c:2191
+  __do_sys_sendto net/socket.c:2203 [inline]
+  __se_sys_sendto net/socket.c:2199 [inline]
+  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2199
+ do_syscall_64+0xd5/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
+
+CPU: 0 PID: 5033 Comm: syz-executor346 Not tainted 6.9.0-rc1-syzkaller-00005-g928a87efa423 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/29/2024
+
+Fixes: d13f048dd40e ("net: geneve: modify IP header check in geneve6_xmit_skb and geneve_xmit_skb")
+Reported-by: syzbot+9ee20ec1de7b3168db09@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/000000000000d19c3a06152f9ee4@google.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Phillip Potter <phil@philpotter.co.uk>
+Cc: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Phillip Potter <phil@philpotter.co.uk>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/geneve.c     |  4 ++--
+ include/net/ip_tunnels.h | 33 +++++++++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 7c364b87352ee..52f75c36bbca4 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -1670,6 +1670,7 @@ static int trace_format_open(struct inode *inode, struct file *file)
- 	return 0;
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index 0204ac92b05ab..0a18b67d0d669 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -926,7 +926,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 	__be16 sport;
+ 	int err;
+ 
+-	if (!pskb_inet_may_pull(skb))
++	if (!skb_vlan_inet_prepare(skb))
+ 		return -EINVAL;
+ 
+ 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
+@@ -1024,7 +1024,7 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 	__be16 sport;
+ 	int err;
+ 
+-	if (!pskb_inet_may_pull(skb))
++	if (!skb_vlan_inet_prepare(skb))
+ 		return -EINVAL;
+ 
+ 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index f346b4efbc307..822f0fad39623 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -360,6 +360,39 @@ static inline bool pskb_inet_may_pull(struct sk_buff *skb)
+ 	return pskb_network_may_pull(skb, nhlen);
  }
  
-+#ifdef CONFIG_PERF_EVENTS
- static ssize_t
- event_id_read(struct file *filp, char __user *ubuf, size_t cnt, loff_t *ppos)
++/* Variant of pskb_inet_may_pull().
++ */
++static inline bool skb_vlan_inet_prepare(struct sk_buff *skb)
++{
++	int nhlen = 0, maclen = ETH_HLEN;
++	__be16 type = skb->protocol;
++
++	/* Essentially this is skb_protocol(skb, true)
++	 * And we get MAC len.
++	 */
++	if (eth_type_vlan(type))
++		type = __vlan_get_protocol(skb, type, &maclen);
++
++	switch (type) {
++#if IS_ENABLED(CONFIG_IPV6)
++	case htons(ETH_P_IPV6):
++		nhlen = sizeof(struct ipv6hdr);
++		break;
++#endif
++	case htons(ETH_P_IP):
++		nhlen = sizeof(struct iphdr);
++		break;
++	}
++	/* For ETH_P_IPV6/ETH_P_IP we make sure to pull
++	 * a base network header in skb->head.
++	 */
++	if (!pskb_may_pull(skb, maclen + nhlen))
++		return false;
++
++	skb_set_network_header(skb, maclen);
++	return true;
++}
++
+ static inline int ip_encap_hlen(struct ip_tunnel_encap *e)
  {
-@@ -1684,6 +1685,7 @@ event_id_read(struct file *filp, char __user *ubuf, size_t cnt, loff_t *ppos)
- 
- 	return simple_read_from_buffer(ubuf, cnt, ppos, buf, len);
- }
-+#endif
- 
- static ssize_t
- event_filter_read(struct file *filp, char __user *ubuf, size_t cnt,
-@@ -2152,10 +2154,12 @@ static const struct file_operations ftrace_event_format_fops = {
- 	.release = seq_release,
- };
- 
-+#ifdef CONFIG_PERF_EVENTS
- static const struct file_operations ftrace_event_id_fops = {
- 	.read = event_id_read,
- 	.llseek = default_llseek,
- };
-+#endif
- 
- static const struct file_operations ftrace_event_filter_fops = {
- 	.open = tracing_open_file_tr,
+ 	const struct ip_tunnel_encap_ops *ops;
 -- 
 2.43.0
 
