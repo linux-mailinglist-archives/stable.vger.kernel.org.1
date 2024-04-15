@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-39788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A8D78A54BF
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB178A5430
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5BC61F22863
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F8431C2202E
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A4C82492;
-	Mon, 15 Apr 2024 14:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702DF811FE;
+	Mon, 15 Apr 2024 14:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0XVFIawT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXDr3e7a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5801274439;
-	Mon, 15 Apr 2024 14:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B779757FB;
+	Mon, 15 Apr 2024 14:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191815; cv=none; b=pSG2GYmbpq2QptV+sr+Ryiuw8zxf15cR+0i+UH6tiI/82/w7dHika63cYa8PEF/6YBgpeU3w80NNPW7g90Vl6h2e7yPKc/28qMZPSPMa1PJo7O1NO3Yy+WnmKZPEPDS8bSqKKrMHFuS6wbKZ3Hs7NJuevG0Yz1aoT5RhL1F6ZVs=
+	t=1713191504; cv=none; b=OylW2u6oqmDM5tefj37BvNNLaponIhTjT28lM89T1OLgdLkQ6HHDxWBEFvDZ4L0bk5hpIIPoEAnJS8C45RtP4mVAG2YG1ciqcllHYrhuPVDpkzoQlLYlVXUeKFGv2TKUOCnEqxA7J3PWQUrpywEl80tSNVKrWJISqdgy7eHeWis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191815; c=relaxed/simple;
-	bh=lt3TGb4S32lq0i/98tJzlbW5cKhLJQRJ6FDMap3Kp/0=;
+	s=arc-20240116; t=1713191504; c=relaxed/simple;
+	bh=7fl9qsbCDgyU55H96DJ4tAIRgSLCH8GC7iQP6wLhBE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b5FcF0IgwpA/kbAd2hqyNa6dtbpcpy7ykH8WmypJa3W0I7X0JzGS1li5tr8M/7lK4D9jnP5qWX1fXVZwSK/L85xUeArdpE9b40A+TxXzIZvdnvnFEZ3xFVZay53OESUBAswXBhVgnJHbS00WeGeVHcPthLOUoarWbBar4mDGPCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0XVFIawT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDECC113CC;
-	Mon, 15 Apr 2024 14:36:54 +0000 (UTC)
+	 MIME-Version; b=LBpWYNi8l2nQKd9p9SLlq05YOuQTS73QC/iA5Dzf4jr8sucwYpHRCt8jrAzu9I9yPqn7SLokyyQLu6SoKRJPaC601OR7px1CQHe/hv7hSeFE/jhhmhrIHd8mRUw36+sEi3rMQQ7L6fvlcsMv9cWHuBKfPKdI5xymQPgCa8aT9YQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NXDr3e7a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8291C113CC;
+	Mon, 15 Apr 2024 14:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191815;
-	bh=lt3TGb4S32lq0i/98tJzlbW5cKhLJQRJ6FDMap3Kp/0=;
+	s=korg; t=1713191504;
+	bh=7fl9qsbCDgyU55H96DJ4tAIRgSLCH8GC7iQP6wLhBE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0XVFIawT3sOPzsM+fZPxgOr03rxARuedEs5ck1nJR3i1qKnaxZfk1XE1YE+1pKqi6
-	 XXa5FzkyZYrBSlfqM6ictccPjb737gTpPcrEuQfmhxuA22LGOgIzj/NrjDZ894Dfvz
-	 /mXWO9WvQt8IW2xmR2KzmwbYlyaDttDlnE1SeVhk=
+	b=NXDr3e7aAPhThROfowIa1d80dRxHhPt5pdWCtedD8KisPSScSXyEt6nHr+WycwD2o
+	 Lbb9A+jemEekG8tbhbsJiuG2699Q+c1bqV+efTAjE9rHKD6Ke05HXCAV8Fm3/60xay
+	 UQGyPIVSZkAvb3udtMQhTLZ1KIBbrMycTwiPaWF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.6 096/122] arm64: dts: imx8-ss-dma: fix adc lpcg indices
-Date: Mon, 15 Apr 2024 16:21:01 +0200
-Message-ID: <20240415141956.253949420@linuxfoundation.org>
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>
+Subject: [PATCH 6.8 163/172] drm/amdgpu: Reset dGPU if suspend got aborted
+Date: Mon, 15 Apr 2024 16:21:02 +0200
+Message-ID: <20240415142005.304398474@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-commit 81975080f14167610976e968e8016e92d836266f upstream.
+commit 8b2be55f4d6c1099d7f629b0ed7535a5be788c83 upstream.
 
-adc0_lpcg: clock-controller@5ac80000 {
-	...						    Col1   Col2
-	clocks = <&clk IMX_SC_R_ADC_0 IMX_SC_PM_CLK_PER>, // 0      0
-		 <&dma_ipg_clk>;			  // 1      4
-	clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-};
+For SOC21 ASICs, there is an issue in re-enabling PM features if a
+suspend got aborted. In such cases, reset the device during resume
+phase. This is a workaround till a proper solution is finalized.
 
-Col1: index, which existing dts try to get.
-Col2: actual index in lpcg driver.
-
-adc0: adc@5a880000 {
-	clocks = <&adc0_lpcg 0>, <&adc0_lpcg 1>;
-			     ^^              ^^
-	clocks = <&adc0_lpcg IMX_LPCG_CLK_0>, <&adc0_lpcg IMX_LPCG_CLK_4>;
-
-Arg0 is divided by 4 in lpcg driver. So adc get IMX_SC_PM_CLK_PER by
-<&adc0_lpcg 0>, <&adc0_lpcg 1>. Although function can work, code logic is
-wrong. Fix it by using correct indices.
-
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 1db044b25d2e ("arm64: dts: imx8dxl: add adc0 support")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/soc21.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
---- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-@@ -282,8 +282,8 @@ dma_subsys: bus@5a000000 {
- 		reg = <0x5a880000 0x10000>;
- 		interrupts = <GIC_SPI 240 IRQ_TYPE_LEVEL_HIGH>;
- 		interrupt-parent = <&gic>;
--		clocks = <&adc0_lpcg 0>,
--			 <&adc0_lpcg 1>;
-+		clocks = <&adc0_lpcg IMX_LPCG_CLK_0>,
-+			 <&adc0_lpcg IMX_LPCG_CLK_4>;
- 		clock-names = "per", "ipg";
- 		assigned-clocks = <&clk IMX_SC_R_ADC_0 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <24000000>;
-@@ -297,8 +297,8 @@ dma_subsys: bus@5a000000 {
- 		reg = <0x5a890000 0x10000>;
- 		interrupts = <GIC_SPI 241 IRQ_TYPE_LEVEL_HIGH>;
- 		interrupt-parent = <&gic>;
--		clocks = <&adc1_lpcg 0>,
--			 <&adc1_lpcg 1>;
-+		clocks = <&adc1_lpcg IMX_LPCG_CLK_0>,
-+			 <&adc1_lpcg IMX_LPCG_CLK_4>;
- 		clock-names = "per", "ipg";
- 		assigned-clocks = <&clk IMX_SC_R_ADC_1 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <24000000>;
+--- a/drivers/gpu/drm/amd/amdgpu/soc21.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc21.c
+@@ -832,10 +832,35 @@ static int soc21_common_suspend(void *ha
+ 	return soc21_common_hw_fini(adev);
+ }
+ 
++static bool soc21_need_reset_on_resume(struct amdgpu_device *adev)
++{
++	u32 sol_reg1, sol_reg2;
++
++	/* Will reset for the following suspend abort cases.
++	 * 1) Only reset dGPU side.
++	 * 2) S3 suspend got aborted and TOS is active.
++	 */
++	if (!(adev->flags & AMD_IS_APU) && adev->in_s3 &&
++	    !adev->suspend_complete) {
++		sol_reg1 = RREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_81);
++		msleep(100);
++		sol_reg2 = RREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_81);
++
++		return (sol_reg1 != sol_reg2);
++	}
++
++	return false;
++}
++
+ static int soc21_common_resume(void *handle)
+ {
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 
++	if (soc21_need_reset_on_resume(adev)) {
++		dev_info(adev->dev, "S3 suspend aborted, resetting...");
++		soc21_asic_reset(adev);
++	}
++
+ 	return soc21_common_hw_init(adev);
+ }
+ 
 
 
 
