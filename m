@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-39710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B025C8A5450
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FBAC8A539A
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:29:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A9C428427A
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E062F284E1E
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4F57F492;
-	Mon, 15 Apr 2024 14:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5897EF09;
+	Mon, 15 Apr 2024 14:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zl3/VadR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCwma8N+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD12E7C090;
-	Mon, 15 Apr 2024 14:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372E03BBE1;
+	Mon, 15 Apr 2024 14:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191580; cv=none; b=tOnu6fbxkcxmvtiCVMYiaVXluEm1msS5uIrSvJmjl4Vru9TKJxqGILNgIX3OoKMYz7iRSki2Gj7ni6h+EJsQCsqhscvL8NJd7qwkaFEEum6mpgFUIWZNyVTXDXrCXWLuCAAvOyJcIonY4H1JYJdMy3xD6L1Ba1DYaW+2A2iPq+E=
+	t=1713191262; cv=none; b=husIV2dMZ9ar+Fw3TfEZa6SY5DlQYsBQez82HfVcrS/5EwMW/UHbSJulvFnj5IczDREZ+h2UeaXmBqXqYswh96w6M80FjNMVP7m+udFhqIg+9QWDsaitRy1fXI02FlmjEcc4/vjEpBcFh2EK/m03S+Rv3xhBIFOTeXQvl7p4SrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191580; c=relaxed/simple;
-	bh=Ofc+4T01ljAuWJJhPNtncMQokBRVkp4vABoAzS+H9hE=;
+	s=arc-20240116; t=1713191262; c=relaxed/simple;
+	bh=Z4WEK9oKEYfrMUW7NVacfeQMehStx4WAaj+AbwqQ77Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I3/a7jtjzjwhDw0vwJgw+LG2RAmXGPRUrvKVnTOCskWlY/e7qDnSrU9Eb8TCNAeQoND0iFdjSasCzwPoYBRw22FFDghcHgWO8UJ3blz91iLeApFSkbOwmQlWUHlgPuaiGDaObkomr1rBnadCmTxc7RYP3kV/x/kH4toLhOzHLxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zl3/VadR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC4BC113CC;
-	Mon, 15 Apr 2024 14:33:00 +0000 (UTC)
+	 MIME-Version; b=tHdSgXmfpF7WGILKJgu43EFkDFHCAHObiBrftWmqVgizNQYld3HVTrSe/44/yVY37dXTFQhUfxYLBTAOgjopiID4/fTxi52i64oBM870B8X86tG6A/vScB812ZWFaydMDV0G08b8l9tRGvL64++4gT6xFrc75mr0m+lGT33b5SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCwma8N+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BF5C113CC;
+	Mon, 15 Apr 2024 14:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191580;
-	bh=Ofc+4T01ljAuWJJhPNtncMQokBRVkp4vABoAzS+H9hE=;
+	s=korg; t=1713191261;
+	bh=Z4WEK9oKEYfrMUW7NVacfeQMehStx4WAaj+AbwqQ77Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zl3/VadRbKiboPEZIDf2fnUk+uzrXvFCM1Bej/+8PakVJiiGAqOQwQi/rm5w2kk76
-	 iLoLvFimYqXXm1ydQZyknr1RcrIBgiEojPsr9KLedkMjUe+7fF5WVEf9j0/ylIqmyh
-	 FZjHu0+MzrzNPK7M3R5VMrLFTysq0JSvEe0Jgcvg=
+	b=mCwma8N+sn5RaNA/QVkpIzeG522qZ1yMxwd+R+HwVEcMJurcjhdg+6r2P6Wq3bK7C
+	 ZrCksrbmwnmMyTdXqg7k4PEDSDlYKRIoryjXGDiiC5GWTT08nq314XfTm4RyQ+8o0d
+	 VQaP3h+9V4JpKY6bnqKDt52agESdAfLmFVqayz3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Tony Lindgren <tony@atomide.com>,
+	Mohamed Khalfella <mkhalfella@purestorage.com>,
+	Yuanyuan Zhong <yzhong@purestorage.com>,
+	Michael Liang <mliang@purestorage.com>,
+	Shay Drory <shayd@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/122] mmc: omap: fix deferred probe
+Subject: [PATCH 6.8 084/172] net/mlx5: offset comp irq index in name by one
 Date: Mon, 15 Apr 2024 16:19:43 +0200
-Message-ID: <20240415141953.921862439@linuxfoundation.org>
+Message-ID: <20240415142002.947798322@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +67,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+From: Michael Liang <mliang@purestorage.com>
 
-[ Upstream commit f6862c7f156d04f81c38467e1c304b7e9517e810 ]
+[ Upstream commit 9f7e8fbb91f8fa29548e2f6ab50c03b628c67ede ]
 
-After a deferred probe, GPIO descriptor lookup will fail with EBUSY. Fix by
-using managed descriptors.
+The mlx5 comp irq name scheme is changed a little bit between
+commit 3663ad34bc70 ("net/mlx5: Shift control IRQ to the last index")
+and commit 3354822cde5a ("net/mlx5: Use dynamic msix vectors allocation").
+The index in the comp irq name used to start from 0 but now it starts
+from 1. There is nothing critical here, but it's harmless to change
+back to the old behavior, a.k.a starting from 0.
 
-Fixes: e519f0bb64ef ("ARM/mmc: Convert old mmci-omap to GPIO descriptors")
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Message-ID: <20240223181439.1099750-5-aaro.koskinen@iki.fi>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Fixes: 3354822cde5a ("net/mlx5: Use dynamic msix vectors allocation")
+Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Reviewed-by: Yuanyuan Zhong <yzhong@purestorage.com>
+Signed-off-by: Michael Liang <mliang@purestorage.com>
+Reviewed-by: Shay Drory <shayd@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240409190820.227554-4-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/omap.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/omap.c b/drivers/mmc/host/omap.c
-index aa40e1a9dc29e..50408771ae01c 100644
---- a/drivers/mmc/host/omap.c
-+++ b/drivers/mmc/host/omap.c
-@@ -1259,18 +1259,18 @@ static int mmc_omap_new_slot(struct mmc_omap_host *host, int id)
- 	slot->pdata = &host->pdata->slots[id];
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+index 4dcf995cb1a20..6bac8ad70ba60 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+@@ -19,6 +19,7 @@
+ #define MLX5_IRQ_CTRL_SF_MAX 8
+ /* min num of vectors for SFs to be enabled */
+ #define MLX5_IRQ_VEC_COMP_BASE_SF 2
++#define MLX5_IRQ_VEC_COMP_BASE 1
  
- 	/* Check for some optional GPIO controls */
--	slot->vsd = gpiod_get_index_optional(host->dev, "vsd",
--					     id, GPIOD_OUT_LOW);
-+	slot->vsd = devm_gpiod_get_index_optional(host->dev, "vsd",
-+						  id, GPIOD_OUT_LOW);
- 	if (IS_ERR(slot->vsd))
- 		return dev_err_probe(host->dev, PTR_ERR(slot->vsd),
- 				     "error looking up VSD GPIO\n");
--	slot->vio = gpiod_get_index_optional(host->dev, "vio",
--					     id, GPIOD_OUT_LOW);
-+	slot->vio = devm_gpiod_get_index_optional(host->dev, "vio",
-+						  id, GPIOD_OUT_LOW);
- 	if (IS_ERR(slot->vio))
- 		return dev_err_probe(host->dev, PTR_ERR(slot->vio),
- 				     "error looking up VIO GPIO\n");
--	slot->cover = gpiod_get_index_optional(host->dev, "cover",
--						id, GPIOD_IN);
-+	slot->cover = devm_gpiod_get_index_optional(host->dev, "cover",
-+						    id, GPIOD_IN);
- 	if (IS_ERR(slot->cover))
- 		return dev_err_probe(host->dev, PTR_ERR(slot->cover),
- 				     "error looking up cover switch GPIO\n");
-@@ -1402,8 +1402,8 @@ static int mmc_omap_probe(struct platform_device *pdev)
- 	host->dev = &pdev->dev;
- 	platform_set_drvdata(pdev, host);
+ #define MLX5_EQ_SHARE_IRQ_MAX_COMP (8)
+ #define MLX5_EQ_SHARE_IRQ_MAX_CTRL (UINT_MAX)
+@@ -246,6 +247,7 @@ static void irq_set_name(struct mlx5_irq_pool *pool, char *name, int vecidx)
+ 		return;
+ 	}
  
--	host->slot_switch = gpiod_get_optional(host->dev, "switch",
--					       GPIOD_OUT_LOW);
-+	host->slot_switch = devm_gpiod_get_optional(host->dev, "switch",
-+						    GPIOD_OUT_LOW);
- 	if (IS_ERR(host->slot_switch))
- 		return dev_err_probe(host->dev, PTR_ERR(host->slot_switch),
- 				     "error looking up slot switch GPIO\n");
++	vecidx -= MLX5_IRQ_VEC_COMP_BASE;
+ 	snprintf(name, MLX5_MAX_IRQ_NAME, "mlx5_comp%d", vecidx);
+ }
+ 
+@@ -585,7 +587,7 @@ struct mlx5_irq *mlx5_irq_request_vector(struct mlx5_core_dev *dev, u16 cpu,
+ 	struct mlx5_irq_table *table = mlx5_irq_table_get(dev);
+ 	struct mlx5_irq_pool *pool = table->pcif_pool;
+ 	struct irq_affinity_desc af_desc;
+-	int offset = 1;
++	int offset = MLX5_IRQ_VEC_COMP_BASE;
+ 
+ 	if (!pool->xa_num_irqs.max)
+ 		offset = 0;
 -- 
 2.43.0
 
