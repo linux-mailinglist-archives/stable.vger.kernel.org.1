@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-39705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5758A544B
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 018A58A5398
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:29:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FCB51F22AAE
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFBC1286E07
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606A383CA6;
-	Mon, 15 Apr 2024 14:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D227823BF;
+	Mon, 15 Apr 2024 14:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPFYcWp+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSIkMJJr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2687581F;
-	Mon, 15 Apr 2024 14:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EE4757EB;
+	Mon, 15 Apr 2024 14:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191569; cv=none; b=lgJvf7CdFp1CwCX0lsBL7jvGCJ+PIeLzDpV67laJ47DG7QbliY06Qplorp56BNaLcH6gMDoTRXhl3T8ZmP2tID+nGZ4NRnJpumUpwPLfJDXK0urTLkC44gwgf2nVTLt6jkc9utVLmorqJGWyWMARNiK+hwdpyC/fSo4pZQ1JOWY=
+	t=1713191250; cv=none; b=aQDfkM9AkePxJz6LjXQ6Db0ulocM+BJzONce5y9uCnxQIRjiwbH0NoCmGR8CmzjCoRxUOCdHqNBNx+5N9nCAMSmg/5J5ot7pwXlu1gnDy4NcPc1r+ql3lJVj4O6u4DtubdWIJhsuTRkmWobrqL6RcQqFxFlmhC4+/1CiI8as+zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191569; c=relaxed/simple;
-	bh=mZf/B91FzxATR2bO7l9S9TvgmuDYQNl4gE/5G8DdnLM=;
+	s=arc-20240116; t=1713191250; c=relaxed/simple;
+	bh=mwcaxuPyyuoV9k7Xky+3sHheFnNr9a/9n217b3Ig4Ug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aE7/dMseua5nnenkyOMA3uIvkqgAYEY3mnFI4XAqiqvKzaD9o+zo6L6PklzHL9VAGxdvcDa9EgMIHA93vqJqrHr3PVAw7H0Rlt+l3HUwLjOw7VoVtlr8pJbWD8MDuvUcgsivz/xbTBGamFJEySX0nk1XMaEGy9vUxm6MTvHoOkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPFYcWp+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C8A2C2BD10;
-	Mon, 15 Apr 2024 14:32:48 +0000 (UTC)
+	 MIME-Version; b=PqgVC6P/Qpyz8xj+ytpydRyhwSUeuENtZt4ZeEBXpfifkgLdd0igbNMwA7IsmTjU2/MU/QzY0fQyRCsDhi+LHkBywuoDybrHUN07q7jxpl+9+N/mlIReJDx1Kne0u6wV1WMe9tbPnUyfGC83jvGRbVJvXQ5ZJQzknMdqfo8nzGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSIkMJJr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D2AC2BD11;
+	Mon, 15 Apr 2024 14:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191569;
-	bh=mZf/B91FzxATR2bO7l9S9TvgmuDYQNl4gE/5G8DdnLM=;
+	s=korg; t=1713191250;
+	bh=mwcaxuPyyuoV9k7Xky+3sHheFnNr9a/9n217b3Ig4Ug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VPFYcWp+870Qxde4KPWEqI9Z2Zf2qaKc6XHOwj1fdym11UcDyiB/7QCLGMxAY4VU3
-	 BEIY0MN0iNL3WGDac6j2I1Puf1zjR1U+SE4ptM3l6wWOwdV7/yUmVn8eeGnLpuDlv4
-	 hG4dSTM/j3rI3iPBG94Xn5PYj/5i4Ba/wzzSHVX0=
+	b=DSIkMJJrIOGwh1RQ4ZqWUq6S8jDSpRN5wbDwnDQD13LQY4nvOKrXFndDkfvWfP6Sk
+	 TWuaJY6/2yyf/hNC7E0SIf+ELviouETzI0HDfIqGbIGA1oGhhbev6jQnCnhG4RT5Jd
+	 5j6wa6XJQQr3ZcxfDER3yoRzQyzhqJCJl3K5kCvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nini Song <nini.song@mediatek.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.6 014/122] media: cec: core: remove length check of Timer Status
+	Archie Pusaka <apusaka@chromium.org>,
+	Manish Mandlik <mmandlik@chromium.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 080/172] Bluetooth: l2cap: Dont double set the HCI_CONN_MGMT_CONNECTED bit
 Date: Mon, 15 Apr 2024 16:19:39 +0200
-Message-ID: <20240415141953.806109213@linuxfoundation.org>
+Message-ID: <20240415142002.830898582@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
-References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nini Song <nini.song@mediatek.com>
+From: Archie Pusaka <apusaka@chromium.org>
 
-commit ce5d241c3ad4568c12842168288993234345c0eb upstream.
+[ Upstream commit 600b0bbe73d3a9a264694da0e4c2c0800309141e ]
 
-The valid_la is used to check the length requirements,
-including special cases of Timer Status. If the length is
-shorter than 5, that means no Duration Available is returned,
-the message will be forced to be invalid.
+The bit is set and tested inside mgmt_device_connected(), therefore we
+must not set it just outside the function.
 
-However, the description of Duration Available in the spec
-is that this parameter may be returned when these cases, or
-that it can be optionally return when these cases. The key
-words in the spec description are flexible choices.
-
-Remove the special length check of Timer Status to fit the
-spec which is not compulsory about that.
-
-Signed-off-by: Nini Song <nini.song@mediatek.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eeda1bf97bb5 ("Bluetooth: hci_event: Fix not indicating new connection for BIG Sync")
+Signed-off-by: Archie Pusaka <apusaka@chromium.org>
+Reviewed-by: Manish Mandlik <mmandlik@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/core/cec-adap.c |   14 --------------
- 1 file changed, 14 deletions(-)
+ net/bluetooth/l2cap_core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/media/cec/core/cec-adap.c
-+++ b/drivers/media/cec/core/cec-adap.c
-@@ -1124,20 +1124,6 @@ void cec_received_msg_ts(struct cec_adap
- 	if (valid_la && min_len) {
- 		/* These messages have special length requirements */
- 		switch (cmd) {
--		case CEC_MSG_TIMER_STATUS:
--			if (msg->msg[2] & 0x10) {
--				switch (msg->msg[2] & 0xf) {
--				case CEC_OP_PROG_INFO_NOT_ENOUGH_SPACE:
--				case CEC_OP_PROG_INFO_MIGHT_NOT_BE_ENOUGH_SPACE:
--					if (msg->len < 5)
--						valid_la = false;
--					break;
--				}
--			} else if ((msg->msg[2] & 0xf) == CEC_OP_PROG_ERROR_DUPLICATE) {
--				if (msg->len < 5)
--					valid_la = false;
--			}
--			break;
- 		case CEC_MSG_RECORD_ON:
- 			switch (msg->msg[2]) {
- 			case CEC_OP_RECORD_SRC_OWN:
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index ab5a9d42fae71..706d2478ddb33 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -4054,8 +4054,7 @@ static int l2cap_connect_req(struct l2cap_conn *conn,
+ 		return -EPROTO;
+ 
+ 	hci_dev_lock(hdev);
+-	if (hci_dev_test_flag(hdev, HCI_MGMT) &&
+-	    !test_and_set_bit(HCI_CONN_MGMT_CONNECTED, &hcon->flags))
++	if (hci_dev_test_flag(hdev, HCI_MGMT))
+ 		mgmt_device_connected(hdev, hcon, NULL, 0);
+ 	hci_dev_unlock(hdev);
+ 
+-- 
+2.43.0
+
 
 
 
