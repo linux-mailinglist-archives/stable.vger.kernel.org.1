@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-39588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB088A5377
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:27:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 224D08A5453
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:36:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 495E6284B9C
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:27:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4B201F22B19
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18E17F7D1;
-	Mon, 15 Apr 2024 14:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03330374C4;
+	Mon, 15 Apr 2024 14:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1abj66C6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUyCMKXR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54998745C9;
-	Mon, 15 Apr 2024 14:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69108BF8;
+	Mon, 15 Apr 2024 14:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191212; cv=none; b=aH6t2T1EKZh3NhTg8gFCUusVIWCnJfcgp6LVJqqRl+TJCGtHmM2i6ZUH5tJ8cVyX8stH5sPFGx3xszkKd4JYJVQCD7qjIp3xmfAeLFkBeAdVYbrCdo790O8gSf9ERFpizc4ipzf1laILbLV3YsPWh9ikZvIqwNK+Vgos78T5GxU=
+	t=1713191589; cv=none; b=OlSKX0Ns9ED84/g+rwJZlcTFCRc+3WhYPdczj57Z//AFA4FD/dEsMQOOjgpLc4+tOj/33YpB6KeJpZViU/bhiUf3xs0J8eNb/RhNN7cD2cDiu4gH6vVHhv9/3Xj/SkUnJnx8U98rSGrJA9mVmrf5+PRRdzoaMcDZsYBhjunhyCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191212; c=relaxed/simple;
-	bh=a5vNeoqtBKarquzda8Dcat+M/9eyNOgUsKLg1bmYQ7o=;
+	s=arc-20240116; t=1713191589; c=relaxed/simple;
+	bh=UjYAjyeRXtXqZKCFkPE+QWVCyE8hcPvw3L/ecbzWKps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TyBtBuFEhbBUuy2jtLm9q36ssPzXCtLIEF4yfhWGvlEg46ULM7vzATe/+fHjV1GVYkQqdk8YCc364viIM0/u3D8D3hl5drA4wdO6j+WuxkYvOJQmewB+AjdUXpjqTZMdJeK9mY5lfn+YJSIVPAdfDyMP2cuxfZbkL2F+gaTjug0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1abj66C6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0894C2BD10;
-	Mon, 15 Apr 2024 14:26:51 +0000 (UTC)
+	 MIME-Version; b=bYGW7uJ8BOHCrcgV8N8tcTQxdqHtVZBKYCd++lC48bJftCJlcRSbsRW4HKdOVgn82+BH/fzXRxALOZtuvIOHPEnkeaUOE5Y6nwaQpCNxbqEmvktXy4yeMduDIuST+oBY+R4t98YTkD/N4qUzqTQfCxVF99w4Cd+GDgypjuIeqIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUyCMKXR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33DD0C113CC;
+	Mon, 15 Apr 2024 14:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191212;
-	bh=a5vNeoqtBKarquzda8Dcat+M/9eyNOgUsKLg1bmYQ7o=;
+	s=korg; t=1713191589;
+	bh=UjYAjyeRXtXqZKCFkPE+QWVCyE8hcPvw3L/ecbzWKps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1abj66C6VoktP02ISQg4liX2lpQ20LaUOkA18pOOzGXMydzeWACsJ86eBx9t4DOnU
-	 ls6rIYVp0zCoszDq2ojl7CIlZ31tNlujZ6BaN2ni6YMuYDaEvVIQfsE2nSxyxCBvQ6
-	 58AQPDmM+9VDJ2NwwyuQ4gW93ylNVIlmlhcflkts=
+	b=VUyCMKXRR15z9CJibXa4mfHEqp7arjSIjq+JDhL4CGwfzp3zjqHxxHIn1PMNaUPpa
+	 fENrl+Uu8rRLDpZwYkiQKS9i1obpJPJeebKWXYZPEzdIPqqtBBQZg838CSUiSja+Pp
+	 QBe5Pn3BEIfHO3kz9938h5vcNz5pvlVhq0cOJcak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Creeley <brett.creeley@amd.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 069/172] pds_core: use pci_reset_function for health reset
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.6 003/122] ata: libata-scsi: Fix ata_scsi_dev_rescan() error path
 Date: Mon, 15 Apr 2024 16:19:28 +0200
-Message-ID: <20240415142002.505805722@linuxfoundation.org>
+Message-ID: <20240415141953.471519955@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 2cbab3c296f1addd73b40549a2271b30f960df8b ]
+commit 79336504781e7fee5ddaf046dcc186c8dfdf60b1 upstream.
 
-We get the benefit of all the PCI reset locking and recovery if
-we use the existing pci_reset_function() that will call our
-local reset handlers.
+Commit 0c76106cb975 ("scsi: sd: Fix TCG OPAL unlock on system resume")
+incorrectly handles failures of scsi_resume_device() in
+ata_scsi_dev_rescan(), leading to a double call to
+spin_unlock_irqrestore() to unlock a device port. Fix this by redefining
+the goto labels used in case of errors and only unlock the port
+scsi_scan_mutex when scsi_resume_device() fails.
 
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 81665adf25d2 ("pds_core: Fix pdsc_check_pci_health function to use work thread")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Bug found with the Smatch static checker warning:
+
+	drivers/ata/libata-scsi.c:4774 ata_scsi_dev_rescan()
+	error: double unlocked 'ap->lock' (orig line 4757)
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: 0c76106cb975 ("scsi: sd: Fix TCG OPAL unlock on system resume")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/pds_core/core.c | 3 +--
- drivers/net/ethernet/amd/pds_core/core.h | 3 ---
- drivers/net/ethernet/amd/pds_core/main.c | 7 ++++---
- 3 files changed, 5 insertions(+), 8 deletions(-)
+ drivers/ata/libata-scsi.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
-index 7658a72867675..0d148795a8d09 100644
---- a/drivers/net/ethernet/amd/pds_core/core.c
-+++ b/drivers/net/ethernet/amd/pds_core/core.c
-@@ -609,8 +609,7 @@ static void pdsc_check_pci_health(struct pdsc *pdsc)
- 	if (fw_status != PDS_RC_BAD_PCI)
- 		return;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -4780,7 +4780,7 @@ void ata_scsi_dev_rescan(struct work_str
+ 			 * bail out.
+ 			 */
+ 			if (ap->pflags & ATA_PFLAG_SUSPENDED)
+-				goto unlock;
++				goto unlock_ap;
  
--	pdsc_reset_prepare(pdsc->pdev);
--	pdsc_reset_done(pdsc->pdev);
-+	pci_reset_function(pdsc->pdev);
- }
+ 			if (!sdev)
+ 				continue;
+@@ -4793,7 +4793,7 @@ void ata_scsi_dev_rescan(struct work_str
+ 			if (do_resume) {
+ 				ret = scsi_resume_device(sdev);
+ 				if (ret == -EWOULDBLOCK)
+-					goto unlock;
++					goto unlock_scan;
+ 				dev->flags &= ~ATA_DFLAG_RESUMING;
+ 			}
+ 			ret = scsi_rescan_device(sdev);
+@@ -4801,12 +4801,13 @@ void ata_scsi_dev_rescan(struct work_str
+ 			spin_lock_irqsave(ap->lock, flags);
  
- void pdsc_health_thread(struct work_struct *work)
-diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
-index 110c4b826b22d..f410f7d132056 100644
---- a/drivers/net/ethernet/amd/pds_core/core.h
-+++ b/drivers/net/ethernet/amd/pds_core/core.h
-@@ -283,9 +283,6 @@ int pdsc_devcmd_init(struct pdsc *pdsc);
- int pdsc_devcmd_reset(struct pdsc *pdsc);
- int pdsc_dev_init(struct pdsc *pdsc);
+ 			if (ret)
+-				goto unlock;
++				goto unlock_ap;
+ 		}
+ 	}
  
--void pdsc_reset_prepare(struct pci_dev *pdev);
--void pdsc_reset_done(struct pci_dev *pdev);
--
- int pdsc_intr_alloc(struct pdsc *pdsc, char *name,
- 		    irq_handler_t handler, void *data);
- void pdsc_intr_free(struct pdsc *pdsc, int index);
-diff --git a/drivers/net/ethernet/amd/pds_core/main.c b/drivers/net/ethernet/amd/pds_core/main.c
-index 0050c5894563b..345b16127fe8b 100644
---- a/drivers/net/ethernet/amd/pds_core/main.c
-+++ b/drivers/net/ethernet/amd/pds_core/main.c
-@@ -468,7 +468,7 @@ static void pdsc_restart_health_thread(struct pdsc *pdsc)
- 	mod_timer(&pdsc->wdtimer, jiffies + 1);
- }
+-unlock:
++unlock_ap:
+ 	spin_unlock_irqrestore(ap->lock, flags);
++unlock_scan:
+ 	mutex_unlock(&ap->scsi_scan_mutex);
  
--void pdsc_reset_prepare(struct pci_dev *pdev)
-+static void pdsc_reset_prepare(struct pci_dev *pdev)
- {
- 	struct pdsc *pdsc = pci_get_drvdata(pdev);
- 
-@@ -477,10 +477,11 @@ void pdsc_reset_prepare(struct pci_dev *pdev)
- 
- 	pdsc_unmap_bars(pdsc);
- 	pci_release_regions(pdev);
--	pci_disable_device(pdev);
-+	if (pci_is_enabled(pdev))
-+		pci_disable_device(pdev);
- }
- 
--void pdsc_reset_done(struct pci_dev *pdev)
-+static void pdsc_reset_done(struct pci_dev *pdev)
- {
- 	struct pdsc *pdsc = pci_get_drvdata(pdev);
- 	struct device *dev = pdsc->dev;
--- 
-2.43.0
-
+ 	/* Reschedule with a delay if scsi_rescan_device() returned an error */
 
 
 
