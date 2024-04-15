@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-39625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 222818A53C5
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:31:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0659D8A54BB
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:39:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D37B8282C84
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:31:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CC4D1C22284
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3021B79945;
-	Mon, 15 Apr 2024 14:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A000F82490;
+	Mon, 15 Apr 2024 14:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPnzXXMa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oEoQOf3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E132B78C8A;
-	Mon, 15 Apr 2024 14:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B65782486;
+	Mon, 15 Apr 2024 14:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191325; cv=none; b=J2r1WxXE1GwiIB8iZ1ooHulZY6Rl+HkFYs67/52+GRRdcGqvIexOlFbDOv4VH8znlnxCq0bTOBKxus0RPTeO6mqqhoiHU3luqcrk0/RqvYxMJD/zKDoEJ9Pymnuy5qdOSxkrtQwdlkY/hvEd/upzUXwg7lf1N6YZZ+hPmVGCZxQ=
+	t=1713191800; cv=none; b=enJvc5kv3yKpI/hn6PuAc6djjuT3psnUZqfgKDzxLE+lroS0C/9qcjAEWBu+lLRqJYLuxRISBYi64xclJHd5z6u7DURVibm5T4phBYJj7ZdT2Ttny4Rym81wFnl+E6J5M9OewE68UYbZLJSTV23IxitCA4NfAqz3ki0SyRoyVRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191325; c=relaxed/simple;
-	bh=TpzbVa7Kc76PoL/fqTn/K3hvYAL98e2ef/jyWbYuw9I=;
+	s=arc-20240116; t=1713191800; c=relaxed/simple;
+	bh=jpyLELkIGDBD6zEoW2ddiuz8KtVK9mG5FACzjkjD5bI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPgNpmYOWOSUa+ea7xg7UgPlvVnzeLbar9X35UBDIah65cK/Dp8p9uagAy11iR4THZa8cgq6vVQih+Vze1XxuiFoGADPaRFBYBDCAq3do89iXqARktJSlGWNIB7owtyzeqSu6Z2q6oROgy6CvNNLX1y86BIuRhLPF8wvRJXK7rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPnzXXMa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B7ECC2BD11;
-	Mon, 15 Apr 2024 14:28:44 +0000 (UTC)
+	 MIME-Version; b=qj6mHcdxwR7P42CETP6FPeftXUbvoOxtd9AR01kiDNtL+YU2c9WB6qTvS44dKz83hZp7b2DK6fauZHFEhJB/Io3j12csbB8WQqsYNkSTCfjXugCVgOQr1BrpM8vewlQA7Qs/45gEgKjS4QS342CFEfxVVwqVWsnCMJv0VQw/Vv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oEoQOf3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5866C113CC;
+	Mon, 15 Apr 2024 14:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191324;
-	bh=TpzbVa7Kc76PoL/fqTn/K3hvYAL98e2ef/jyWbYuw9I=;
+	s=korg; t=1713191800;
+	bh=jpyLELkIGDBD6zEoW2ddiuz8KtVK9mG5FACzjkjD5bI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPnzXXMac7b6xfk531Jmi9qzG7kZqC9cZK00s5M8E+DrqnTZ+cSDfg3dntMXW4/I6
-	 +jHl7TJHCIxWRE+q6O8FeNbl51/WGObA6OM1aJphCwQezza8NnVYpVBg1FOB2k9zfI
-	 0FK3YTjA7/Yllk3/SIevqrheOioiW0QRWx+5WAHM=
+	b=1oEoQOf3GyrtcG8eqJUjq/klmLS2Gnswy/cyA08M3/lFkNesYc6YSSKsHlyQrIfLE
+	 G0sXP8SfeDZn//7ePBsw01ZToDDHCXDzArlPBBMzugGNqlG1qICl5uafQG/XPQK1Al
+	 Yo62HCYc3DpmaqbVJntis8kdVJstQa+unT8p1mtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.8 107/172] io_uring: disable io-wq execution of multishot NOWAIT requests
-Date: Mon, 15 Apr 2024 16:20:06 +0200
-Message-ID: <20240415142003.641189253@linuxfoundation.org>
+	Marek Vasut <marex@denx.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 042/122] net: ks8851: Handle softirqs at the end of IRQ thread to fix hang
+Date: Mon, 15 Apr 2024 16:20:07 +0200
+Message-ID: <20240415141954.629177358@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Marek Vasut <marex@denx.de>
 
-Commit bee1d5becdf5bf23d4ca0cd9c6b60bdf3c61d72b upstream.
+[ Upstream commit be0384bf599cf1eb8d337517feeb732d71f75a6f ]
 
-Do the same check for direct io-wq execution for multishot requests that
-commit 2a975d426c82 did for the inline execution, and disable multishot
-mode (and revert to single shot) if the file type doesn't support NOWAIT,
-and isn't opened in O_NONBLOCK mode. For multishot to work properly, it's
-a requirement that nonblocking read attempts can be done.
+The ks8851_irq() thread may call ks8851_rx_pkts() in case there are
+any packets in the MAC FIFO, which calls netif_rx(). This netif_rx()
+implementation is guarded by local_bh_disable() and local_bh_enable().
+The local_bh_enable() may call do_softirq() to run softirqs in case
+any are pending. One of the softirqs is net_rx_action, which ultimately
+reaches the driver .start_xmit callback. If that happens, the system
+hangs. The entire call chain is below:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ks8851_start_xmit_par from netdev_start_xmit
+netdev_start_xmit from dev_hard_start_xmit
+dev_hard_start_xmit from sch_direct_xmit
+sch_direct_xmit from __dev_queue_xmit
+__dev_queue_xmit from __neigh_update
+__neigh_update from neigh_update
+neigh_update from arp_process.constprop.0
+arp_process.constprop.0 from __netif_receive_skb_one_core
+__netif_receive_skb_one_core from process_backlog
+process_backlog from __napi_poll.constprop.0
+__napi_poll.constprop.0 from net_rx_action
+net_rx_action from __do_softirq
+__do_softirq from call_with_stack
+call_with_stack from do_softirq
+do_softirq from __local_bh_enable_ip
+__local_bh_enable_ip from netif_rx
+netif_rx from ks8851_irq
+ks8851_irq from irq_thread_fn
+irq_thread_fn from irq_thread
+irq_thread from kthread
+kthread from ret_from_fork
+
+The hang happens because ks8851_irq() first locks a spinlock in
+ks8851_par.c ks8851_lock_par() spin_lock_irqsave(&ksp->lock, ...)
+and with that spinlock locked, calls netif_rx(). Once the execution
+reaches ks8851_start_xmit_par(), it calls ks8851_lock_par() again
+which attempts to claim the already locked spinlock again, and the
+hang happens.
+
+Move the do_softirq() call outside of the spinlock protected section
+of ks8851_irq() by disabling BHs around the entire spinlock protected
+section of ks8851_irq() handler. Place local_bh_enable() outside of
+the spinlock protected section, so that it can trigger do_softirq()
+without the ks8851_par.c ks8851_lock_par() spinlock being held, and
+safely call ks8851_start_xmit_par() without attempting to lock the
+already locked spinlock.
+
+Since ks8851_irq() is protected by local_bh_disable()/local_bh_enable()
+now, replace netif_rx() with __netif_rx() which is not duplicating the
+local_bh_disable()/local_bh_enable() calls.
+
+Fixes: 797047f875b5 ("net: ks8851: Implement Parallel bus operations")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Link: https://lore.kernel.org/r/20240405203204.82062-2-marex@denx.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/micrel/ks8851_common.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1964,10 +1964,15 @@ fail:
- 		err = -EBADFD;
- 		if (!file_can_poll(req->file))
- 			goto fail;
--		err = -ECANCELED;
--		if (io_arm_poll_handler(req, issue_flags) != IO_APOLL_OK)
--			goto fail;
--		return;
-+		if (req->file->f_flags & O_NONBLOCK ||
-+		    req->file->f_mode & FMODE_NOWAIT) {
-+			err = -ECANCELED;
-+			if (io_arm_poll_handler(req, issue_flags) != IO_APOLL_OK)
-+				goto fail;
-+			return;
-+		} else {
-+			req->flags &= ~REQ_F_APOLL_MULTISHOT;
-+		}
- 	}
+diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
+index 896d43bb8883d..d4cdf3d4f5525 100644
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -299,7 +299,7 @@ static void ks8851_rx_pkts(struct ks8851_net *ks)
+ 					ks8851_dbg_dumpkkt(ks, rxpkt);
  
- 	if (req->flags & REQ_F_FORCE_ASYNC) {
+ 				skb->protocol = eth_type_trans(skb, ks->netdev);
+-				netif_rx(skb);
++				__netif_rx(skb);
+ 
+ 				ks->netdev->stats.rx_packets++;
+ 				ks->netdev->stats.rx_bytes += rxlen;
+@@ -330,6 +330,8 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
+ 	unsigned long flags;
+ 	unsigned int status;
+ 
++	local_bh_disable();
++
+ 	ks8851_lock(ks, &flags);
+ 
+ 	status = ks8851_rdreg16(ks, KS_ISR);
+@@ -406,6 +408,8 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
+ 	if (status & IRQ_LCI)
+ 		mii_check_link(&ks->mii);
+ 
++	local_bh_enable();
++
+ 	return IRQ_HANDLED;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
