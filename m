@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-39565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE48E8A533A
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:25:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF9758A5343
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:26:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D7F4288B8E
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:25:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB81B288546
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E22B775810;
-	Mon, 15 Apr 2024 14:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C845476919;
+	Mon, 15 Apr 2024 14:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1RK5l2P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uAwyQFa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9A374C0C;
-	Mon, 15 Apr 2024 14:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8413976023;
+	Mon, 15 Apr 2024 14:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191148; cv=none; b=TlYa5QuGEjlsj5Ea5oZLhzmckunIIkTbdCLOS/+kTmXhDqedSC88R7aPyQDWtStikQ/H5ism25qQQ8Igvp9mWVfgVv8tchlrKZWZK/OKVCHaweWZK2lrVSchpzLGkW18kXxjETltPVosSmTfecWkINRemVdXftdS5atTk51nFD8=
+	t=1713191154; cv=none; b=iwhTAlsrM82jyfx/CsaCiD4h3nRajppTQb2xzN21ppqeF4iFYD2CEyNtPJKQXg5RrEgDiAb+vJDyylvMtUgtSkyYQq4yOMxgq4OBUFi024V4YoX3jlbqX8H+6mO8Rp+84rY1awA4AIgIsxzfD1f5NPIH0jHRUPLoK2xnjAd6QOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191148; c=relaxed/simple;
-	bh=qropjtm1ZEGxoMkWPLsK/KhzNVpJlzfeY8fMMnV+zjY=;
+	s=arc-20240116; t=1713191154; c=relaxed/simple;
+	bh=Vy+t/Q7YGB+UuQOGBIH+Pdioc4BAVhiBJmiURe4fsCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UkxOCP5m8wqUsuXoUHJD22gNwjk25WZCkuJqLh+HYoJI/QfHcEsDKD3xNbMAEoIdCrYsL9ASOxycHvuBGqvJmf8zi2+pmD5zrV7k0aX0yUCEA6eGhBolCQgvDaTxFXEXgQomhaAaOmwxlNOzlpX4ZYtIm9Bsen4npY8mYMqa8Xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1RK5l2P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24ABDC2BD10;
-	Mon, 15 Apr 2024 14:25:47 +0000 (UTC)
+	 MIME-Version; b=LZWvgC9DlKYXSXfS+amMnROvG3cxhrchYa4hh9SCuAceQCTiGSLEPDYrpKz2kCaQJPppvqb8lkN7lh6otgzSLUywyRXZagzmxj18s2u/CWe4eIerBW7zESHO4faJ9uOuEIMeH4qPONObC+RCHKkWVwV0fjSej1wu/8FyXBiAwow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1uAwyQFa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41F3C2BD10;
+	Mon, 15 Apr 2024 14:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191148;
-	bh=qropjtm1ZEGxoMkWPLsK/KhzNVpJlzfeY8fMMnV+zjY=;
+	s=korg; t=1713191154;
+	bh=Vy+t/Q7YGB+UuQOGBIH+Pdioc4BAVhiBJmiURe4fsCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D1RK5l2PMnvPNirsdjlVGWSNSCAC2HdQL3wphzZ+POnsfxvXRNYkhVsivy8t7RtSe
-	 lGBzHmH1uRkhyobpt5awHePmhNpCNSreazj0r+vh7dJpQLqEJrKnDMkxyiHn7Sj/oH
-	 YGqDN1+SuCDaiaeaCsDm7cK0QxvbV+E7bsfni2Vc=
+	b=1uAwyQFaQxNZsfe7jsAb0XBI0375v7a5uKA2IX10Vjasym0/8Ci4/6AsYLfq45Get
+	 j7uPYkLI9Q3DVkcxsRahjhnDHQZLoq/1OYcHSSLShJ+LbquPWS4DJRz5nb5zxNwpTT
+	 dtksCqM/yB5Sk/uBuhlgzTeB7RBa37TJJmC2H/gk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Tejun Heo <tj@kernel.org>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 047/172] block: fix q->blkg_list corruption during disk rebind
-Date: Mon, 15 Apr 2024 16:19:06 +0200
-Message-ID: <20240415142001.847109919@linuxfoundation.org>
+Subject: [PATCH 6.8 048/172] lib: checksum: hide unused expected_csum_ipv6_magic[]
+Date: Mon, 15 Apr 2024 16:19:07 +0200
+Message-ID: <20240415142001.876740925@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
 References: <20240415141959.976094777@linuxfoundation.org>
@@ -68,98 +70,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 8b8ace080319a866f5dfe9da8e665ae51d971c54 ]
+[ Upstream commit e9d47b7b31563a6524b9f64ea70ed0289cc4d9c4 ]
 
-Multiple gendisk instances can allocated/added for single request queue
-in case of disk rebind. blkg may still stay in q->blkg_list when calling
-blkcg_init_disk() for rebind, then q->blkg_list becomes corrupted.
+When CONFIG_NET is disabled, an extra warning shows up for this
+unused variable:
 
-Fix the list corruption issue by:
+lib/checksum_kunit.c:218:18: error: 'expected_csum_ipv6_magic' defined but not used [-Werror=unused-const-variable=]
 
-- add blkg_init_queue() to initialize q->blkg_list & q->blkcg_mutex only
-- move calling blkg_init_queue() into blk_alloc_queue()
+Replace the #ifdef with an IS_ENABLED() check that makes the compiler's
+dead-code-elimination take care of the link failure.
 
-The list corruption should be started since commit f1c006f1c685 ("blk-cgroup:
-synchronize pd_free_fn() from blkg_free_workfn() and blkcg_deactivate_policy()")
-which delays removing blkg from q->blkg_list into blkg_free_workfn().
-
-Fixes: f1c006f1c685 ("blk-cgroup: synchronize pd_free_fn() from blkg_free_workfn() and blkcg_deactivate_policy()")
-Fixes: 1059699f87eb ("block: move blkcg initialization/destroy into disk allocation/release handler")
-Cc: Yu Kuai <yukuai3@huawei.com>
-Cc: Tejun Heo <tj@kernel.org>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240407125910.4053377-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: f24a70106dc1 ("lib: checksum: Fix build with CONFIG_NET=n")
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-cgroup.c | 9 ++++++---
- block/blk-cgroup.h | 2 ++
- block/blk-core.c   | 2 ++
- 3 files changed, 10 insertions(+), 3 deletions(-)
+ lib/checksum_kunit.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index ff93c385ba5af..4529122e0cbdb 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -1409,6 +1409,12 @@ static int blkcg_css_online(struct cgroup_subsys_state *css)
- 	return 0;
+diff --git a/lib/checksum_kunit.c b/lib/checksum_kunit.c
+index bf70850035c76..404dba36bae38 100644
+--- a/lib/checksum_kunit.c
++++ b/lib/checksum_kunit.c
+@@ -594,13 +594,15 @@ static void test_ip_fast_csum(struct kunit *test)
+ 
+ static void test_csum_ipv6_magic(struct kunit *test)
+ {
+-#if defined(CONFIG_NET)
+ 	const struct in6_addr *saddr;
+ 	const struct in6_addr *daddr;
+ 	unsigned int len;
+ 	unsigned char proto;
+ 	__wsum csum;
+ 
++	if (!IS_ENABLED(CONFIG_NET))
++		return;
++
+ 	const int daddr_offset = sizeof(struct in6_addr);
+ 	const int len_offset = sizeof(struct in6_addr) + sizeof(struct in6_addr);
+ 	const int proto_offset = sizeof(struct in6_addr) + sizeof(struct in6_addr) +
+@@ -618,7 +620,6 @@ static void test_csum_ipv6_magic(struct kunit *test)
+ 		CHECK_EQ(to_sum16(expected_csum_ipv6_magic[i]),
+ 			 csum_ipv6_magic(saddr, daddr, len, proto, csum));
+ 	}
+-#endif /* !CONFIG_NET */
  }
  
-+void blkg_init_queue(struct request_queue *q)
-+{
-+	INIT_LIST_HEAD(&q->blkg_list);
-+	mutex_init(&q->blkcg_mutex);
-+}
-+
- int blkcg_init_disk(struct gendisk *disk)
- {
- 	struct request_queue *q = disk->queue;
-@@ -1416,9 +1422,6 @@ int blkcg_init_disk(struct gendisk *disk)
- 	bool preloaded;
- 	int ret;
- 
--	INIT_LIST_HEAD(&q->blkg_list);
--	mutex_init(&q->blkcg_mutex);
--
- 	new_blkg = blkg_alloc(&blkcg_root, disk, GFP_KERNEL);
- 	if (!new_blkg)
- 		return -ENOMEM;
-diff --git a/block/blk-cgroup.h b/block/blk-cgroup.h
-index b927a4a0ad030..5b0bdc268ade9 100644
---- a/block/blk-cgroup.h
-+++ b/block/blk-cgroup.h
-@@ -188,6 +188,7 @@ struct blkcg_policy {
- extern struct blkcg blkcg_root;
- extern bool blkcg_debug_stats;
- 
-+void blkg_init_queue(struct request_queue *q);
- int blkcg_init_disk(struct gendisk *disk);
- void blkcg_exit_disk(struct gendisk *disk);
- 
-@@ -481,6 +482,7 @@ struct blkcg {
- };
- 
- static inline struct blkcg_gq *blkg_lookup(struct blkcg *blkcg, void *key) { return NULL; }
-+static inline void blkg_init_queue(struct request_queue *q) { }
- static inline int blkcg_init_disk(struct gendisk *disk) { return 0; }
- static inline void blkcg_exit_disk(struct gendisk *disk) { }
- static inline int blkcg_policy_register(struct blkcg_policy *pol) { return 0; }
-diff --git a/block/blk-core.c b/block/blk-core.c
-index de771093b5268..99d684085719d 100644
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -431,6 +431,8 @@ struct request_queue *blk_alloc_queue(int node_id)
- 	init_waitqueue_head(&q->mq_freeze_wq);
- 	mutex_init(&q->mq_freeze_lock);
- 
-+	blkg_init_queue(q);
-+
- 	/*
- 	 * Init percpu_ref in atomic mode so that it's faster to shutdown.
- 	 * See blk_register_queue() for details.
+ static struct kunit_case __refdata checksum_test_cases[] = {
 -- 
 2.43.0
 
