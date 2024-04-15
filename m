@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-39659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F878A540A
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:33:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F9C8A549D
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:38:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 096AA1C21EF0
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:33:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9ABC1F227AC
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:38:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D168080026;
-	Mon, 15 Apr 2024 14:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23F4762D2;
+	Mon, 15 Apr 2024 14:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kr0Zpqf+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZor+rBw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBE27F7F2;
-	Mon, 15 Apr 2024 14:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638877580D;
+	Mon, 15 Apr 2024 14:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191432; cv=none; b=SpuYqygf4KISCMYMLuAA0TGndM4JkOrTG2sGA/fNAOalH5nZRobFFiJaYf04V7rZIbiNkpn/RlmuWsIqUNSaF/jSOAl2CMroOUWOlpvRQCQPxy+JI4UR9/+5IJZR7UAcWGOs24xUiZjymqd5CpcAgSafknjYRz+N+Gc0BHpi0Rg=
+	t=1713191731; cv=none; b=B24T8/smGB3bw+ENUvky8tWyPDwlrDwy1yUxMAFENWnzHB77W5gE+uPQER+vm+pRAZ5E7aTpcUfueqapKoDRLtgeEyTNz1Bil7SlzMMZ/okcaBM8PolfOJZr51tcUR86Ue2HrGCWrv48Byy78+1dJ4vj+LeCc+rzZ+UE+C9EkGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191432; c=relaxed/simple;
-	bh=YkCc4IKa9RoLxQdiGwfcLagOxOa5ybHo9lHalGbhNKA=;
+	s=arc-20240116; t=1713191731; c=relaxed/simple;
+	bh=4bb1UGjBlD1Mqk1JNGW1yMrvAd1qDMkYjZr2NpzOjic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qNPPAVumeRQCJD9XUh1yABoiwuYX9Irl7lm7YuptquRXnLDhtK5QcFsrf7ERLp2AWsnX9cH8RG7DxYeU5PG2v3QHzjBMc82CrTYpbjWG/FOBwo/TISYVwR+TeZHaLwxMFjW9yOowbaOEG29ew7N1duA7p9WHds4eL26TXaoSy4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kr0Zpqf+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD23C113CC;
-	Mon, 15 Apr 2024 14:30:31 +0000 (UTC)
+	 MIME-Version; b=qG6H5s3a+uieMP8jt+EygzKy5ZOp3rHPDmU2WKiyt5MGkk++J9ulsTrGXqLzeAgGX38Wr1lX+QVdqWU99dqxXTYYBFJGTZ178pDX0DAT4NgSzSTS9hFeBYbH/28LFrxDnDcV2S6NhlTXXp4yJiokovTpbieTaxSmBPvfE6FYQLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZor+rBw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A431C113CC;
+	Mon, 15 Apr 2024 14:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191432;
-	bh=YkCc4IKa9RoLxQdiGwfcLagOxOa5ybHo9lHalGbhNKA=;
+	s=korg; t=1713191731;
+	bh=4bb1UGjBlD1Mqk1JNGW1yMrvAd1qDMkYjZr2NpzOjic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kr0Zpqf+vuXTcyQBs1Y7SubmxJPMdoG0BR3GRj7nq3KJc8lPjdH5ITW9hQO2ySYOs
-	 /pjsTBKOp36+CwOB/zN+eeFs7Ds6PQm/8UvVXbf2XrI2QgfYKSL154udEVzeMFq50e
-	 gn+/UWZypvpzFE2uRrlavFWO9XO2vHhq7FTC+5Bk=
+	b=KZor+rBwLLzB/5yldO0gqq9lHs/OT+aLWocab8Rbh4Nek9lGzgYLC2cMiQv/WZqjr
+	 AXUjSUXG+RyiQD/jicpKU1edIrDbVFQiwR+rpUsUZ3IWPBEYRaspzzq4Zfa+xrZv9t
+	 tJyxo+/q49rrEEj8okIAyNdxg8PFBMHdJxguC7bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.8 133/172] arm64: dts: imx8-ss-dma: fix can lpcg indices
+	Michal Luczaj <mhal@rbox.co>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 067/122] af_unix: Fix garbage collector racing against connect()
 Date: Mon, 15 Apr 2024 16:20:32 +0200
-Message-ID: <20240415142004.419154491@linuxfoundation.org>
+Message-ID: <20240415141955.390888218@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+References: <20240415141953.365222063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-commit 0893392334b5dffdf616a53679c6a2942c46391b upstream.
+[ Upstream commit 47d8ac011fe1c9251070e1bd64cb10b48193ec51 ]
 
-can0_lpcg: clock-controller@5acd0000 {
-	...						   Col1  Col2
-	clocks = <&clk IMX_SC_R_CAN_0 IMX_SC_PM_CLK_PER>, // 0    0
-		 <&dma_ipg_clk>,			  // 1    4
-		 <&dma_ipg_clk>;			  // 2    5
-        clock-indices = <IMX_LPCG_CLK_0>,
-			<IMX_LPCG_CLK_4>,
-			<IMX_LPCG_CLK_5>;
-}
+Garbage collector does not take into account the risk of embryo getting
+enqueued during the garbage collection. If such embryo has a peer that
+carries SCM_RIGHTS, two consecutive passes of scan_children() may see a
+different set of children. Leading to an incorrectly elevated inflight
+count, and then a dangling pointer within the gc_inflight_list.
 
-Col1: index, which existing dts try to get.
-Col2: actual index in lpcg driver.
+sockets are AF_UNIX/SOCK_STREAM
+S is an unconnected socket
+L is a listening in-flight socket bound to addr, not in fdtable
+V's fd will be passed via sendmsg(), gets inflight count bumped
 
-flexcan1: can@5a8d0000 {
-	clocks = <&can0_lpcg 1>, <&can0_lpcg 0>;
-			     ^^		     ^^
-Should be:
-	clocks = <&can0_lpcg IMX_LPCG_CLK_4>, <&can0_lpcg IMX_LPCG_CLK_0>;
-};
+connect(S, addr)	sendmsg(S, [V]); close(V)	__unix_gc()
+----------------	-------------------------	-----------
 
-Arg0 is divided by 4 in lpcg driver. flexcan driver get IMX_SC_PM_CLK_PER
-by <&can0_lpcg 1> and <&can0_lpcg 0>. Although function can work, code
-logic is wrong. Fix it by using correct clock indices.
+NS = unix_create1()
+skb1 = sock_wmalloc(NS)
+L = unix_find_other(addr)
+unix_state_lock(L)
+unix_peer(S) = NS
+			// V count=1 inflight=0
 
-Cc: stable@vger.kernel.org
-Fixes: 5e7d5b023e03 ("arm64: dts: imx8qxp: add flexcan in adma")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ 			NS = unix_peer(S)
+ 			skb2 = sock_alloc()
+			skb_queue_tail(NS, skb2[V])
+
+			// V became in-flight
+			// V count=2 inflight=1
+
+			close(V)
+
+			// V count=1 inflight=1
+			// GC candidate condition met
+
+						for u in gc_inflight_list:
+						  if (total_refs == inflight_refs)
+						    add u to gc_candidates
+
+						// gc_candidates={L, V}
+
+						for u in gc_candidates:
+						  scan_children(u, dec_inflight)
+
+						// embryo (skb1) was not
+						// reachable from L yet, so V's
+						// inflight remains unchanged
+__skb_queue_tail(L, skb1)
+unix_state_unlock(L)
+						for u in gc_candidates:
+						  if (u.inflight)
+						    scan_children(u, inc_inflight_move_tail)
+
+						// V count=1 inflight=2 (!)
+
+If there is a GC-candidate listening socket, lock/unlock its state. This
+makes GC wait until the end of any ongoing connect() to that socket. After
+flipping the lock, a possibly SCM-laden embryo is already enqueued. And if
+there is another embryo coming, it can not possibly carry SCM_RIGHTS. At
+this point, unix_inflight() can not happen because unix_gc_lock is already
+taken. Inflight graph remains unaffected.
+
+Fixes: 1fd05ba5a2f2 ("[AF_UNIX]: Rewrite garbage collector, fixes race.")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240409201047.1032217-1-mhal@rbox.co
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/unix/garbage.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-@@ -406,8 +406,8 @@ dma_subsys: bus@5a000000 {
- 		reg = <0x5a8d0000 0x10000>;
- 		interrupts = <GIC_SPI 235 IRQ_TYPE_LEVEL_HIGH>;
- 		interrupt-parent = <&gic>;
--		clocks = <&can0_lpcg 1>,
--			 <&can0_lpcg 0>;
-+		clocks = <&can0_lpcg IMX_LPCG_CLK_4>,
-+			 <&can0_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "per";
- 		assigned-clocks = <&clk IMX_SC_R_CAN_0 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <40000000>;
-@@ -427,8 +427,8 @@ dma_subsys: bus@5a000000 {
- 		 * CAN1 shares CAN0's clock and to enable CAN0's clock it
- 		 * has to be powered on.
- 		 */
--		clocks = <&can0_lpcg 1>,
--			 <&can0_lpcg 0>;
-+		clocks = <&can0_lpcg IMX_LPCG_CLK_4>,
-+			 <&can0_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "per";
- 		assigned-clocks = <&clk IMX_SC_R_CAN_0 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <40000000>;
-@@ -448,8 +448,8 @@ dma_subsys: bus@5a000000 {
- 		 * CAN2 shares CAN0's clock and to enable CAN0's clock it
- 		 * has to be powered on.
- 		 */
--		clocks = <&can0_lpcg 1>,
--			 <&can0_lpcg 0>;
-+		clocks = <&can0_lpcg IMX_LPCG_CLK_4>,
-+			 <&can0_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "per";
- 		assigned-clocks = <&clk IMX_SC_R_CAN_0 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <40000000>;
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index aea222796dfdc..8734c0c1fc197 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -235,11 +235,22 @@ void unix_gc(void)
+ 	 * receive queues.  Other, non candidate sockets _can_ be
+ 	 * added to queue, so we must make sure only to touch
+ 	 * candidates.
++	 *
++	 * Embryos, though never candidates themselves, affect which
++	 * candidates are reachable by the garbage collector.  Before
++	 * being added to a listener's queue, an embryo may already
++	 * receive data carrying SCM_RIGHTS, potentially making the
++	 * passed socket a candidate that is not yet reachable by the
++	 * collector.  It becomes reachable once the embryo is
++	 * enqueued.  Therefore, we must ensure that no SCM-laden
++	 * embryo appears in a (candidate) listener's queue between
++	 * consecutive scan_children() calls.
+ 	 */
+ 	list_for_each_entry_safe(u, next, &gc_inflight_list, link) {
++		struct sock *sk = &u->sk;
+ 		long total_refs;
+ 
+-		total_refs = file_count(u->sk.sk_socket->file);
++		total_refs = file_count(sk->sk_socket->file);
+ 
+ 		BUG_ON(!u->inflight);
+ 		BUG_ON(total_refs < u->inflight);
+@@ -247,6 +258,11 @@ void unix_gc(void)
+ 			list_move_tail(&u->link, &gc_candidates);
+ 			__set_bit(UNIX_GC_CANDIDATE, &u->gc_flags);
+ 			__set_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
++
++			if (sk->sk_state == TCP_LISTEN) {
++				unix_state_lock(sk);
++				unix_state_unlock(sk);
++			}
+ 		}
+ 	}
+ 
+-- 
+2.43.0
+
 
 
 
