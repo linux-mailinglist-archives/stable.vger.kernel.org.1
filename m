@@ -1,54 +1,68 @@
-Return-Path: <stable+bounces-39412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5991E8A4D80
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 13:18:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0ABB8A4D82
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 13:20:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 880DB1C21352
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 11:18:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93A541F22B3D
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 11:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14365D74E;
-	Mon, 15 Apr 2024 11:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52CBB5DF05;
+	Mon, 15 Apr 2024 11:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsZFawOv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cZwKCYjm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AE55C90F
-	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 11:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9E41E896;
+	Mon, 15 Apr 2024 11:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713179919; cv=none; b=FYksA0IBpnBG0fhKkFDczR/9iqCLMF6Z02uc8H1+bxt9keU4jDYwKZKrp/VwgHwQYANrat3vQa9Eq+lzQ1Kvfjp+aZvJ+ve5RqACCV4kkSQ6TSZgNNaziar/pRI8LF5rmQI+dWvB5w8qO7vYKgciIqZaIqtRIz5cssFuvegFzOU=
+	t=1713180040; cv=none; b=Te8JxHcQtE3tjQHIXYq0UDNFVwnnEmTcYFFwtJDBeiP9LmRBhKkEvrl+GCjhTRjpRHY54B7jwjMtHajBzeUj79o0vL+lwW8ER+mJSh7VqKaVoVhuUfFqutMDJvla228MDilyN/ENch5MRGmbEcuV/fOMnzMkTGL4887oudE+lyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713179919; c=relaxed/simple;
-	bh=RhtzfOjTWtprf6ipq2m0z/TR+9nGxsV9hJoFABwMEF8=;
+	s=arc-20240116; t=1713180040; c=relaxed/simple;
+	bh=JMkJX+sGRihrij1cC4kSPG1zD7tukGxRvQoNWXYOLUk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=byURmg8DIFMOm2gPgRKuNBaJlwbPELnPs4kki1sACQOqsjCTXwnVfrIWAXiAJooRgxXkZjuEtBTwXlOPVBAR3Lu+Wb/naMF2oHMjHhnRWcgELx6aKYIBgipWAHryXvq1TrVFEDBg9T62pMs3KaT8P5MoNvqJ9miA8IrjfEWlqb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsZFawOv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2160C113CC;
-	Mon, 15 Apr 2024 11:18:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713179919;
-	bh=RhtzfOjTWtprf6ipq2m0z/TR+9nGxsV9hJoFABwMEF8=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=FSgD1woj0GAU75U1hI19dsjuWU1yKHJmeXCNxbe4pA77c7VyMHW1l2QrhBOyenmUWxQj4DnCRuLvWe9g3JwEwhbRcYSN5jCEio7fPW3KqPD/yMK6zHb75tai/TRb+45OVIOe2GnkNxiwgaaSm4M1dFCBCiF5OnDAg/cIlaTXT7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cZwKCYjm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A22CC113CC;
+	Mon, 15 Apr 2024 11:20:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713180039;
+	bh=JMkJX+sGRihrij1cC4kSPG1zD7tukGxRvQoNWXYOLUk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XsZFawOv0TYX+R35qBmvnPV/vB1RO/bZR3P9+nbwqWPt542UPkkBt03ScngqKI+Te
-	 fo3SRgnPKZAwm+VlkA8JlHygmDb4GvTzAv03Ebowrg/eKkYguzCd8isxGnpRMFsVOi
-	 WSuiorqjVHXNAxSuXbKX+ZYygeiiXQD+yZc8bQ/A=
-Date: Mon, 15 Apr 2024 13:18:36 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Dominique MARTINET <dominique.martinet@atmark-techno.com>
-Cc: Daisuke Mizobuchi <mizo@atmark-techno.com>, stable@vger.kernel.org,
-	Jacky Bai <ping.bai@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	Robin Gong <yibin.gong@nxp.com>,
-	Jassi Brar <jaswinder.singh@linaro.org>
-Subject: Re: [PATCH 5.10.y 1/1] mailbox: imx: fix suspend failue
-Message-ID: <2024041523-fiscally-unending-4c47@gregkh>
-References: <20240412052133.1805029-1-mizo@atmark-techno.com>
- <ZhjK-nJQKVr5RcgZ@atmark-techno.com>
+	b=cZwKCYjmv+cQCQ+ilhSYhU9weBxAa/QDvjY25cLGIrNmzN9somBBy2IZB3Fkx9SQx
+	 gl5WZdPrhx+fwxhD+2x++moIeKvyPYx3iaofYWBRhDyFAVPg4mX7CnIygOYovHZvId
+	 FbQai/u8rdVsYas1JOH56CTqp7Rde+/ald8joSo4Bc8H2J20rwJVeYiM+y2vBAEvZ5
+	 u9MH56o1S6rjTmkbb0x6nEHUa53K17g/zRAL6Xzrci1P0PjRfrQWrEVjc4mZnwa6j2
+	 8qj4183ZlaJKP4DlMxtAdZijuICE9wqzrUz0wxAOruNpMaEfBkCFfxHHeKJxFawcis
+	 fQtmHEuF8XSHw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1rwKO4-000000006Nl-0ZtL;
+	Mon, 15 Apr 2024 13:20:36 +0200
+Date: Mon, 15 Apr 2024 13:20:36 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Cc: Johan Hovold <johan+linaro@kernel.org>, luiz.dentz@gmail.com,
+	marcel@holtmann.org, linux-bluetooth@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	quic_mohamull@quicinc.com, quic_hbandi@quicinc.com
+Subject: Re: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode
+ exists in DT"
+Message-ID: <Zh0NhA4GBxIAM-ZI@hovoldconsulting.com>
+References: <20240314084412.1127-1-johan+linaro@kernel.org>
+ <171146704035.9961.13096206001570615153.git-patchwork-notify@kernel.org>
+ <124a7d54-5a18-4be7-9a76-a12017f6cce5@quicinc.com>
+ <ZgWLeo5KSLurLDhK@hovoldconsulting.com>
+ <c03abbbd-faa5-4fdc-b7c3-5554a90c3419@quicinc.com>
+ <Zg1KmcFQ3bAJa8qJ@hovoldconsulting.com>
+ <b7d5c2ac-2278-4ccc-be2a-7c7d9936581a@quicinc.com>
+ <f72d83fd-9576-4017-bcf9-c50ce94d85ec@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,60 +71,15 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZhjK-nJQKVr5RcgZ@atmark-techno.com>
+In-Reply-To: <f72d83fd-9576-4017-bcf9-c50ce94d85ec@quicinc.com>
 
-On Fri, Apr 12, 2024 at 02:47:38PM +0900, Dominique MARTINET wrote:
-> Added in Cc everyone concerned by the patch as per the broken backport:
-> https://lore.kernel.org/stable/20220405070315.416940927@linuxfoundation.org/
-> 
-> Daisuke Mizobuchi wrote on Fri, Apr 12, 2024 at 02:21:33PM +0900:
-> >Subject: Re: [PATCH 5.10.y 1/1] mailbox: imx: fix suspend failue
-> 
-> failue -> failure
-> 
-> >
-> > When an interrupt occurs, it always wakes up.
-> 
-> (nitpick: this isn't really clear: "imx_mu_isr() always calls
-> pm_system_wakeup() even when it should not, making the system unable to
-> enter sleep" ?)
-> 
-> > Suspend fails as follows:
-> >  armadillo:~# echo mem > /sys/power/state
-> >  [ 2614.602432] PM: suspend entry (deep)
-> >  [ 2614.610640] Filesystems sync: 0.004 seconds
-> >  [ 2614.618016] Freezing user space processes ... (elapsed 0.001 seconds) done.
-> >  [ 2614.626555] OOM killer disabled.
-> >  [ 2614.629792] Freezing remaining freezable tasks ... (elapsed 0.001 seconds) done.
-> >  [ 2614.638456] printk: Suspending console(s) (use no_console_suspend to debug)
-> >  [ 2614.649504] PM: Some devices failed to suspend, or early wake event detected
-> >  [ 2614.730103] PM: resume devices took 0.080 seconds
-> >  [ 2614.741924] OOM killer enabled.
-> >  [ 2614.745073] Restarting tasks ... done.
-> >  [ 2614.754532] PM: suspend exit
-> >  ash: write error: Resource busy
-> >  armadillo:~#
-> > 
-> > Upstream is correct, so it seems to be a mistake in cheery-pick.
-> 
-> cheery-pick -> cherry-pick
-> 
-> (This is a trivial lookup away but might as well name upstream's commit
-> e.g. "Upstream commit 892cb524ae8a is correct, so this seems to be a
-> mistake during cherry-pick")
-> 
-> > Cc: <stable@vger.kernel.org>
-> > Fixes: a16f5ae8ade1 ("mailbox: imx: fix wakeup failure from freeze mode")
-> > Signed-off-by: Daisuke Mizobuchi <mizo@atmark-techno.com>
-> 
-> These typos aside I've confirmed the resulting code matches' upstream's:
-> Reviewed-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-> 
-> The backport in 5.15 also seems correct and does not need this, and
-> there does not seem to be any older backport either that need fixing, so
-> 5.10 is the only branch that requires fixing.
+On Mon, Apr 15, 2024 at 04:22:51PM +0530, Janaki Ramaiah Thota wrote:
 
-Thanks for the review, now queued up.
+> Are you planing to merge your below patch ?
 
-greg k-h
+Yes, sorry about the delay. Was busy with other things last week.
+
+I'll revisit and post it shortly.
+
+Johan
 
