@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-39543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91D38A5324
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:25:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E961E8A5326
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:25:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DFFA288824
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:25:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3DDF288859
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D87478C7B;
-	Mon, 15 Apr 2024 14:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9039A74E25;
+	Mon, 15 Apr 2024 14:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rq9eKAn2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="me/KKj/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3577764E;
-	Mon, 15 Apr 2024 14:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4F577658;
+	Mon, 15 Apr 2024 14:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191083; cv=none; b=K4u+IMJafFj0ieA5URObTEdMkILFdno9fHtZj86Vq49d9e39j4Gnm5HdJ3tp+xKb6R6oufReVcgz58z6/xGB5cW6ug5xTtrORDo0YGSiayEZp628jTTcCK82haGyFQoICRcUwQ0coPRl8JQEJgFaXqFT4c0lFjFySutmyLqId3U=
+	t=1713191089; cv=none; b=WVLsMMuYjtJoX0r5Xueb+UgY8iymkOqLxme8+Pz5Ql4B+h3oyD3D4rw9eSfLcNwGrbBDcda/zjTMVarY9G8zBSzTrmeeUOfb5XcwCu9mq14wSL1gIS1TnNJJU5qmFP4gu31SgbxTL2FKxuxRitySl+hprZwTjNed/lqbpByDgbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191083; c=relaxed/simple;
-	bh=31OkMvRHlzM2LaLACPPOggOD+x8RC/10o+jlKyCq64w=;
+	s=arc-20240116; t=1713191089; c=relaxed/simple;
+	bh=c+/xEKMENRKbEFDOiVze9Wmt3fI/D3M8d8h3Nbd5Gl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3RTYA+w0vo/17xtmmPfGvNnuDqbBhGOOEsNfxQj1YiwUWSXgZC19ItJLBSSVbGgLD6v5LdbtkHRs7bNATaa/Bd47RzacPB+xg6FqXkxsitIc3eSF2qNXPW5XFiv4G9u1Q+uqv0V1DCV+0LSSjtJslxE4DCzkE0dWK/lSXI+GbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rq9eKAn2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB8DC113CC;
-	Mon, 15 Apr 2024 14:24:42 +0000 (UTC)
+	 MIME-Version; b=AeF5tSdTZyXXufPup5aZ6yaXxrFrqw5HZsmKKfTzV2FGy6knWsO94hSPTrQu2yZHRoFESow1vmO/N6oafda0LpAwqsf8OUMUGKqpvVwF3Kd8mQ9+n922GE5BIlvZFuPp8JMc0iOM+FAg67A2MEIfUgSTs6vDWO1DW+dgRkslb54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=me/KKj/7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2B8C113CC;
+	Mon, 15 Apr 2024 14:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191082;
-	bh=31OkMvRHlzM2LaLACPPOggOD+x8RC/10o+jlKyCq64w=;
+	s=korg; t=1713191088;
+	bh=c+/xEKMENRKbEFDOiVze9Wmt3fI/D3M8d8h3Nbd5Gl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rq9eKAn2T5JNacapt7po4NPQGIwZxEw1/mZ7fXA0z1h78IZOAI7COhsjYG9XmfT/d
-	 OV9LqaOOHXHhSMB8CgVFdgyP+81aeHud/evLN1MsHPuzA9xEEtmx9so8KIsyu6zw6a
-	 NqKm+/gGy+dpn8E93SNmrAk4F5R6gqUcDnQbx6rw=
+	b=me/KKj/7hfUFAeMvgW6uWaKyOnp+jYH9330VYTINabyONNl8Te2vBKBR+x879ogVj
+	 Y7dDnT9C2TrXZPZ12Hz7+GS2ZTV0mOrDP9F9pUn7pyk3CNtmNEtoasxVQe8S4OFLDZ
+	 DDSuLpTKEWC6GoB8zPFakRZ+3xOuvQ+rZPkKsgQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Yuquan Wang <wangyuquan1236@phytium.com.cn>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Fan Ni <fan.ni@samsung.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 027/172] firmware: arm_scmi: Make raw debugfs entries non-seekable
-Date: Mon, 15 Apr 2024 16:18:46 +0200
-Message-ID: <20240415142001.172900890@linuxfoundation.org>
+Subject: [PATCH 6.8 028/172] cxl/mem: Fix for the index of Clear Event Record Handle
+Date: Mon, 15 Apr 2024 16:18:47 +0200
+Message-ID: <20240415142001.201790112@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
 References: <20240415141959.976094777@linuxfoundation.org>
@@ -66,78 +69,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
 
-[ Upstream commit b70c7996d4ffb2e02895132e8a79a37cee66504f ]
+[ Upstream commit b7c59b038c656214f56432867056997c2e0fc268 ]
 
-SCMI raw debugfs entries are used to inject and snoop messages out of the
-SCMI core and, as such, the underlying virtual files have no reason to
-support seeking.
+The dev_dbg info for Clear Event Records mailbox command would report
+the handle of the next record to clear not the current one.
 
-Modify the related file_operations descriptors to be non-seekable.
+This was because the index 'i' had incremented before printing the
+current handle value.
 
-Fixes: 3c3d818a9317 ("firmware: arm_scmi: Add core raw transmission support")
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Link: https://lore.kernel.org/r/20240315140324.231830-1-cristian.marussi@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: 6ebe28f9ec72 ("cxl/mem: Read, trace, and clear events on driver load")
+Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/raw_mode.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/cxl/core/mbox.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_scmi/raw_mode.c b/drivers/firmware/arm_scmi/raw_mode.c
-index 3505735185033..130d13e9cd6be 100644
---- a/drivers/firmware/arm_scmi/raw_mode.c
-+++ b/drivers/firmware/arm_scmi/raw_mode.c
-@@ -921,7 +921,7 @@ static int scmi_dbg_raw_mode_open(struct inode *inode, struct file *filp)
- 	rd->raw = raw;
- 	filp->private_data = rd;
+diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+index 9adda4795eb78..50146161887d5 100644
+--- a/drivers/cxl/core/mbox.c
++++ b/drivers/cxl/core/mbox.c
+@@ -915,7 +915,7 @@ static int cxl_clear_event_record(struct cxl_memdev_state *mds,
  
--	return 0;
-+	return nonseekable_open(inode, filp);
- }
+ 		payload->handles[i++] = gen->hdr.handle;
+ 		dev_dbg(mds->cxlds.dev, "Event log '%d': Clearing %u\n", log,
+-			le16_to_cpu(payload->handles[i]));
++			le16_to_cpu(payload->handles[i - 1]));
  
- static int scmi_dbg_raw_mode_release(struct inode *inode, struct file *filp)
-@@ -950,6 +950,7 @@ static const struct file_operations scmi_dbg_raw_mode_reset_fops = {
- 	.open = scmi_dbg_raw_mode_open,
- 	.release = scmi_dbg_raw_mode_release,
- 	.write = scmi_dbg_raw_mode_reset_write,
-+	.llseek = no_llseek,
- 	.owner = THIS_MODULE,
- };
- 
-@@ -959,6 +960,7 @@ static const struct file_operations scmi_dbg_raw_mode_message_fops = {
- 	.read = scmi_dbg_raw_mode_message_read,
- 	.write = scmi_dbg_raw_mode_message_write,
- 	.poll = scmi_dbg_raw_mode_message_poll,
-+	.llseek = no_llseek,
- 	.owner = THIS_MODULE,
- };
- 
-@@ -975,6 +977,7 @@ static const struct file_operations scmi_dbg_raw_mode_message_async_fops = {
- 	.read = scmi_dbg_raw_mode_message_read,
- 	.write = scmi_dbg_raw_mode_message_async_write,
- 	.poll = scmi_dbg_raw_mode_message_poll,
-+	.llseek = no_llseek,
- 	.owner = THIS_MODULE,
- };
- 
-@@ -998,6 +1001,7 @@ static const struct file_operations scmi_dbg_raw_mode_notification_fops = {
- 	.release = scmi_dbg_raw_mode_release,
- 	.read = scmi_test_dbg_raw_mode_notif_read,
- 	.poll = scmi_test_dbg_raw_mode_notif_poll,
-+	.llseek = no_llseek,
- 	.owner = THIS_MODULE,
- };
- 
-@@ -1021,6 +1025,7 @@ static const struct file_operations scmi_dbg_raw_mode_errors_fops = {
- 	.release = scmi_dbg_raw_mode_release,
- 	.read = scmi_test_dbg_raw_mode_errors_read,
- 	.poll = scmi_test_dbg_raw_mode_errors_poll,
-+	.llseek = no_llseek,
- 	.owner = THIS_MODULE,
- };
- 
+ 		if (i == max_handles) {
+ 			payload->nr_recs = i;
 -- 
 2.43.0
 
