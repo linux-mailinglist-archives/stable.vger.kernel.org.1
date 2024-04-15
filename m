@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-39425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9421B8A4F27
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E3008A4F26
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:36:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 161CFB20F40
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FD701C211A5
 	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 12:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9396D6EB5B;
-	Mon, 15 Apr 2024 12:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20A26F074;
+	Mon, 15 Apr 2024 12:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYrKeVdA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qzA0+ms"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529A96F076
-	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 12:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600FD6F06A
+	for <stable@vger.kernel.org>; Mon, 15 Apr 2024 12:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713184587; cv=none; b=oifJdXBgJm4ij4HTnf4qR7jg3BLHadIPkLT8TLM8jjwDRfkr2rzEdJ2lYj0OcZ5aMFdif/QbGo/Fa0GECvpPJWINm2P8DNttT7yQpIqdtHABGc7UhhF+OuFNwXtngqAds1EOHiyZEc70WTO9rRoRTNza8lHqwhqJTYbyCJvJ8JQ=
+	t=1713184590; cv=none; b=TuJuXvvF1qkTH6bJut2ZFJ8hWXHx8qDfqm9Cqk2Q9EtqZEj5Kv4qALEUNfVIMWya43V1BF2+0DCncfqp8VPeI3fzkmfkUkDghqxlRkElqlK/iw4t+D/qtLEjaBMZsreIlrUJJUyCwwWNiQZNTW+iTy56jFvl3EANUCKadRrXZ8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713184587; c=relaxed/simple;
-	bh=KzfXrrv2tmpyu+VJ8eApN0ThXYxAIpoiWcwIfbE/J3s=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Gj5K1mYRqrhPbuFfzyazH4o6kcpGiXvFdP6gCSJvBbU256ErPQcAZYHyO9NuDfRJFBcYBDybwT9Ijl8r9mGn9UXgcu/FvIUFw+Bmo6lU5Eboh6Z3msifwNp7LP9BchkYCTjeVvL5UJHMwDlYyBpAKIuQH50asj5ZvQslfiA/my4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYrKeVdA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86110C113CC;
-	Mon, 15 Apr 2024 12:36:26 +0000 (UTC)
+	s=arc-20240116; t=1713184590; c=relaxed/simple;
+	bh=XP0mbPn8V2fel9iEngq7KsrQZK8Pj2iy1eytYeqajg0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=B05ObAsf43oBzzP9AkgLAljwa3VQVuyKG2mqt1sdiwmqtnuv6LWKl8H+0UloEeLwkUDbwmhI+8dMkqQElbvAUXreVd6Kz/2WwT75f+JQZ6wiZw1JCRscUoGOpC71VRAU5D4vjQ0uBD43eK6R8mmdF9ZSL9LrG/E6NrtUuUQD1p4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qzA0+ms; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F39AC113CC;
+	Mon, 15 Apr 2024 12:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713184586;
-	bh=KzfXrrv2tmpyu+VJ8eApN0ThXYxAIpoiWcwIfbE/J3s=;
+	s=korg; t=1713184589;
+	bh=XP0mbPn8V2fel9iEngq7KsrQZK8Pj2iy1eytYeqajg0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=sYrKeVdAW3EzoMNg800brp0Q8CAPD7NlMjAmp4f7bc1m6I8kav5oEGfSP/Ar89oA5
-	 fLy5SKz+tNCYrkNU+n16zY1pWgSeRiqLSPBSgL3nNkAkL8iIt6hNmmO0dyXXARnx83
-	 JmEL4Tixjp7Ru+6wmyOOxV57NIuGjFQYqUqZpmGw=
-Subject: FAILED: patch "[PATCH] kprobes: Fix possible use-after-free issue on kprobe" failed to apply to 5.15-stable tree
+	b=2qzA0+msMylpgTicc13VPTElDFAapoC5mD6UL374/Kpzf8eCqIXVtXbOEmibo8W6Q
+	 ltc6palcbcDtVj/W0RjJ3GFptYeyh2PzAKR56kZdABhbgYyWu1azsd+hsNw1C+aih+
+	 JXVVbC9THramrEpFPznBZ6BEUe3ka5w6rbGq8XM4=
+Subject: FAILED: patch "[PATCH] kprobes: Fix possible use-after-free issue on kprobe" failed to apply to 5.10-stable tree
 To: zhengyejian1@huawei.com,mhiramat@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Apr 2024 14:36:24 +0200
-Message-ID: <2024041524-monoxide-kilobyte-1c44@gregkh>
+Date: Mon, 15 Apr 2024 14:36:25 +0200
+Message-ID: <2024041524-unlovely-blemish-8954@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 325f3fb551f8cd672dbbfc4cf58b14f9ee3fc9e8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024041524-monoxide-kilobyte-1c44@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024041524-unlovely-blemish-8954@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,7 @@ Possible dependencies:
 223a76b268c9 ("kprobes: Fix coding style issues")
 9c89bb8e3272 ("kprobes: treewide: Cleanup the error messages for kprobes")
 02afb8d6048d ("kprobe: Simplify prepare_kprobe() by dropping redundant version")
+9840cfcb97fc ("Merge tag 'arm64-upstream' of git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux")
 
 thanks,
 
