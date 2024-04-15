@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-39692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA318A5438
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:35:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 140458A54EB
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 16:41:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E050D1C22059
-	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:35:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDE70280F85
+	for <lists+stable@lfdr.de>; Mon, 15 Apr 2024 14:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F03D78C8B;
-	Mon, 15 Apr 2024 14:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F3279DD5;
+	Mon, 15 Apr 2024 14:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Brv+F3eV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjqH16iw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D90762D2;
-	Mon, 15 Apr 2024 14:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F779762E0;
+	Mon, 15 Apr 2024 14:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713191531; cv=none; b=uhn0LZi8YFypNDJOhhWVpdOxHugPjTAeRAUD7CCZzJdf6+43niBCLM2Z40h/ZanA72JtHLmbJIwYw1FRYFWfwjw8JjVP5NQePIUKUPnJ2B+xrVTBMSn85ARsTWLbs7c2HETlfErVy9n7SzXEOVXEPRUKu4M67270Jvfw31rpxzQ=
+	t=1713191932; cv=none; b=TyLrG1sdPE1NZdYkwWC6wPbyb1j2IAnuc4Jm8K9jx5oDdFleCwi3tole/Nzixru351VEtx1oEPuYownTFPekbsdXqRcRQTVq/0GRGhDDBQ+b4xBjWxSQ7TdNjRasx+U9C2IkjpKIjtfZt4xS/g1aPN4B4HsMEllL1/YdXJB59fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713191531; c=relaxed/simple;
-	bh=4yZe8dlVhPdPzip/k/+q1PWHwpFHgK3noJ22XqsSXQ0=;
+	s=arc-20240116; t=1713191932; c=relaxed/simple;
+	bh=/IHoWG57fGZEof5p8N45vaR/vrx2+Hb+e5yEwuQTicI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y23tusnpnW3oTkxYdQ5gQ3s9LfWAlcWcv8xYbzZshrE96eDsB6nnfJJ2cV/ecyaQUNruCeEFLtWMU2h3efWogHQm6W0mLCcAf4gKH4DzEe9l0CGienYer9msRLWiaTI/EEr0jrJhW3w+W9QynfsfVEAf847oG+RQgBLYZsPDYBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Brv+F3eV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D46CC113CC;
-	Mon, 15 Apr 2024 14:32:09 +0000 (UTC)
+	 MIME-Version; b=hzdyUH6C0s2AGZJu11e/H8t3a24WJvxoipYUiBI6HqreWwn3APOgWFtPkYw3SOyBW6aHO/rWTMBaFaFretsUFmuMzcAqbPP1jBGinZAa3H/n32tyggQkmX0yk2ctQuGQNSkF+Of2/9Bjnq3oKBtZggYTYUKkmOvCdgEAFPZJXMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjqH16iw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17F2C113CC;
+	Mon, 15 Apr 2024 14:38:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713191530;
-	bh=4yZe8dlVhPdPzip/k/+q1PWHwpFHgK3noJ22XqsSXQ0=;
+	s=korg; t=1713191932;
+	bh=/IHoWG57fGZEof5p8N45vaR/vrx2+Hb+e5yEwuQTicI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Brv+F3eVGt5S9pGw4PMIqZsdeDUx3CjjF7q9/EtP0M+O/WpfaWK81l0yu1N+dFNzF
-	 3Kf4NchnLVyqgdJmJxaL3m79s188fStt/DvzLVo1VZAomq8xL3eLIw6LLYRhf5uhiC
-	 G9FI9OohRTlrn+AQQUG5c5EYA70+4jiKe+W/Rgdc=
+	b=JjqH16iw/+VaX/AHlqwehE6bkWq7BcCfDDENEfcBOHkajsebnldIcHMwcxjXnWGTu
+	 kqa+9uvcTOYuDTJojul7DCcK4GexrtnjOhE50Bs+zqW4k9II8uEU1qH4cg83gmj+Cb
+	 r4ijApqPXe+ECm5M2BHvvKNZTgKYOpv6TTxbcztA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.8 136/172] arm64: dts: imx8-ss-dma: fix pwm lpcg indices
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 04/69] ring-buffer: Only update pages_touched when a new page is touched
 Date: Mon, 15 Apr 2024 16:20:35 +0200
-Message-ID: <20240415142004.507145908@linuxfoundation.org>
+Message-ID: <20240415141946.301568362@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
-References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
+References: <20240415141946.165870434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 9055d87bce7276234173fa90e9702af31b3f5353 upstream.
+commit ffe3986fece696cf65e0ef99e74c75f848be8e30 upstream.
 
-adma_pwm_lpcg: clock-controller@5a590000 {
-	...							 col1 col2
-	clocks = <&clk IMX_SC_R_LCD_0_PWM_0 IMX_SC_PM_CLK_PER>,// 0   0
-		 <&dma_ipg_clk>;                               // 1   4
-	clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-        ...
-};
+The "buffer_percent" logic that is used by the ring buffer splice code to
+only wake up the tasks when there's no data after the buffer is filled to
+the percentage of the "buffer_percent" file is dependent on three
+variables that determine the amount of data that is in the ring buffer:
 
-Col1: index, which existing dts try to get.
-Col2: actual index in lpcg driver.
+ 1) pages_read - incremented whenever a new sub-buffer is consumed
+ 2) pages_lost - incremented every time a writer overwrites a sub-buffer
+ 3) pages_touched - incremented when a write goes to a new sub-buffer
 
-adma_pwm: pwm@5a190000 {
-	...
-	clocks = <&adma_pwm_lpcg 1>, <&adma_pwm_lpcg 0>;
-				 ^^		     ^^
-Should be
-	clocks = <&adma_pwm_lpcg IMX_LPCG_CLK_4>,
-		 <&adma_pwm_lpcg IMX_LPCG_CLK_0>;
-};
+The percentage is the calculation of:
 
-Arg0 will be divided by 4 in lcpg driver, so pwm will get IMX_SC_PM_CLK_PER
-by <&adma_pwm_lpcg 1>, <&adma_pwm_lpcg 0>. Although function can work, code
-logic is wrong. Fix it by use correct indices.
+  (pages_touched - (pages_lost + pages_read)) / nr_pages
+
+Basically, the amount of data is the total number of sub-bufs that have been
+touched, minus the number of sub-bufs lost and sub-bufs consumed. This is
+divided by the total count to give the buffer percentage. When the
+percentage is greater than the value in the "buffer_percent" file, it
+wakes up splice readers waiting for that amount.
+
+It was observed that over time, the amount read from the splice was
+constantly decreasing the longer the trace was running. That is, if one
+asked for 60%, it would read over 60% when it first starts tracing, but
+then it would be woken up at under 60% and would slowly decrease the
+amount of data read after being woken up, where the amount becomes much
+less than the buffer percent.
+
+This was due to an accounting of the pages_touched incrementation. This
+value is incremented whenever a writer transfers to a new sub-buffer. But
+the place where it was incremented was incorrect. If a writer overflowed
+the current sub-buffer it would go to the next one. If it gets preempted
+by an interrupt at that time, and the interrupt performs a trace, it too
+will end up going to the next sub-buffer. But only one should increment
+the counter. Unfortunately, that was not the case.
+
+Change the cmpxchg() that does the real switch of the tail-page into a
+try_cmpxchg(), and on success, perform the increment of pages_touched. This
+will only increment the counter once for when the writer moves to a new
+sub-buffer, and not when there's a race and is incremented for when a
+writer and its preempting writer both move to the same new sub-buffer.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240409151309.0d0e5056@gandalf.local.home
 
 Cc: stable@vger.kernel.org
-Fixes: f1d6a6b991ef ("arm64: dts: imx8qxp: add adma_pwm in adma")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: 2c2b0a78b3739 ("ring-buffer: Add percentage of ring buffer full to wake up reader")
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/ring_buffer.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-@@ -144,8 +144,8 @@ dma_subsys: bus@5a000000 {
- 		compatible = "fsl,imx8qxp-pwm", "fsl,imx27-pwm";
- 		reg = <0x5a190000 0x1000>;
- 		interrupts = <GIC_SPI 127 IRQ_TYPE_LEVEL_HIGH>;
--		clocks = <&adma_pwm_lpcg 1>,
--			 <&adma_pwm_lpcg 0>;
-+		clocks = <&adma_pwm_lpcg IMX_LPCG_CLK_4>,
-+			 <&adma_pwm_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "per";
- 		assigned-clocks = <&clk IMX_SC_R_LCD_0_PWM_0 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <24000000>;
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1543,7 +1543,6 @@ static void rb_tail_page_update(struct r
+ 	old_write = local_add_return(RB_WRITE_INTCNT, &next_page->write);
+ 	old_entries = local_add_return(RB_WRITE_INTCNT, &next_page->entries);
+ 
+-	local_inc(&cpu_buffer->pages_touched);
+ 	/*
+ 	 * Just make sure we have seen our old_write and synchronize
+ 	 * with any interrupts that come in.
+@@ -1580,8 +1579,9 @@ static void rb_tail_page_update(struct r
+ 		 */
+ 		local_set(&next_page->page->commit, 0);
+ 
+-		/* Again, either we update tail_page or an interrupt does */
+-		(void)cmpxchg(&cpu_buffer->tail_page, tail_page, next_page);
++		/* Either we update tail_page or an interrupt does */
++		if (try_cmpxchg(&cpu_buffer->tail_page, &tail_page, next_page))
++			local_inc(&cpu_buffer->pages_touched);
+ 	}
+ }
+ 
 
 
 
