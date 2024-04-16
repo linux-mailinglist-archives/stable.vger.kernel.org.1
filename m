@@ -1,245 +1,121 @@
-Return-Path: <stable+bounces-40010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7466C8A6915
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 12:53:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7661F8A6953
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 13:04:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D5CE2840CD
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 10:53:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32F6F282310
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 11:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEA212837E;
-	Tue, 16 Apr 2024 10:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39FA128805;
+	Tue, 16 Apr 2024 11:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JLxQCpcW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TwHQpbmm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB157127E32;
-	Tue, 16 Apr 2024 10:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACAEE12838A;
+	Tue, 16 Apr 2024 11:04:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713264813; cv=none; b=k5v4UjQc+dlgJRlQcUP8DsANjKWdwwwVds7fyZ4RX/gde2Pz0IuIntquzW+q3iJ1z5achOef3bx/XfU4p+7GQ8KqZSgEBq+FaGoMPO8o9Q/I8m8u+wFTdFd/vHrYI2RLAYxRuoS82GqhtgewV07vKzn6f3zKl2GZ948GwGmK0PQ=
+	t=1713265474; cv=none; b=d7K0ikE4mcfunI/9E8i9PlQzcQugcw0LzIDsYNl2DQtOP2Lvx26Hpqs4uKdC/AzxDywDlNy3gqtigL6QIJlNdqe0A/xpel2KsT4tzIJ35jhEXIHKLv6y0jegpGKQs+ouoAzo0v/J4910LHg6c5bKuxXwvFdxXgbxhdS2Fzvszn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713264813; c=relaxed/simple;
-	bh=jtWDtkzCMWJkFCa5MxE8iceW5QpVbO75j7cOqW9Nvgo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=u8ZNTBVi5pHzyMjXPPByeXpWtaIDFsmat2cHNIlJf5tJjVFdamJv98BWyWH4E9RZI9liJu1Frrr8tHy9gZjtKUWnLj7IDV9hfkcgNfk8CZMOxNqB9qXYk/wKB7muA2AnuhSZJLibYF70FAP0GFJBJo5pOsJYGXB97VDRjSavdO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JLxQCpcW; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2dae975d0dcso3052371fa.1;
-        Tue, 16 Apr 2024 03:53:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713264810; x=1713869610; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Zm8hUl4A4Cjijs+dM9CjArMkvrH+8PJgQST3vTyO9ro=;
-        b=JLxQCpcW9Chi/BVIMzGsELJW9XUbmPNXF6YJyOqXdLpuLuitCfAS0o7PFoLY6+UDud
-         dUX2og4YyI8iDvKiHxLsR95K5wdIaFPBJ9kvne6+XS1aRZI6Pa0bH1b6gEtHgRNr+6lF
-         +uF6EgaXM+jHXyEIkJzkDOASe0YFvRT87PPtTMndCZNhoi2HXz0398lmc8djIg0f7myd
-         DrrzlL7f0XNbC4Ii8EVh63Flc03V0DhyspkIPwt7R2T2FnL/N59PskTndlJh8eDLqM99
-         /G0vBTwKVV/oDRlpwS2hCOTRVjwqRKZ1Qa3uku5vo4vHiZG+Mt5SfVoV6y9eEHi+Qt9C
-         uBUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713264810; x=1713869610;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Zm8hUl4A4Cjijs+dM9CjArMkvrH+8PJgQST3vTyO9ro=;
-        b=hMVf/UvcsY2qMLF901N6Ma+YlqDg9eNZoXcUoXsriVMEIYDAMnFmKOrorhuL8F8Zsk
-         X7tkswdGuV56tYIjEXXcYAyRFB9Dw638ppwM5LdmVPtKoQMgIU13kefukWTHRZqXy6cL
-         UwvDlzVhIa4nfBuYmWyUyvEimMAlrVqL92Y3t6+nFQ6S9EHaMDtRHe23KLw/yxPnVThM
-         z9U/u7DyHNQZRusFQb4QCWYyI3uEN7rxBsrb1VCpee/ATKXvxcv26PHyobRWIR3GEaci
-         uJzisIik1Dvt76DAAcF3+NiQNw8e+KZKJhpm9RXOelqJ7L1OXIFXlAOtPVgOJwuQVFLM
-         r7xw==
-X-Forwarded-Encrypted: i=1; AJvYcCWTnRR6nwWRRgvjqzVfjI5dNGuOHn3cmEpyFesuUbE3aL/2KnjJcGMMwcew21Lkc333DhvhbO77Lh/y1BeQBppk53tCYDCcqnDzDpK9FBKN3jYNrJlFozfIogHWVvAAt+m8A55+XZVYgO4PyoxRurghyDcdevCet/FQt8KAZbIx0A==
-X-Gm-Message-State: AOJu0YyIYVpIxfho5yW05oofpZJFw0ThxSq3tkDmeYna8WX02hAllrCV
-	AoDpzVHz3fQciC4OEergLQcALY4PGVOo0Fuh1+KzXMFSiKRYVbUg
-X-Google-Smtp-Source: AGHT+IG1iJoGjPDJ4imF8qZcuHLYYvbel182S43/J10hP1dvRLvswmx977CJlc4KOlTyLvqTPU+m9A==
-X-Received: by 2002:a2e:9590:0:b0:2da:daa9:8060 with SMTP id w16-20020a2e9590000000b002dadaa98060mr497005ljh.14.1713264809644;
-        Tue, 16 Apr 2024 03:53:29 -0700 (PDT)
-Received: from ?IPv6:2001:8a0:e622:f700:a0:8eb2:ecf5:17e0? ([2001:8a0:e622:f700:a0:8eb2:ecf5:17e0])
-        by smtp.gmail.com with ESMTPSA id e1-20020a2e9301000000b002d70a040f21sm1532062ljh.91.2024.04.16.03.53.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Apr 2024 03:53:29 -0700 (PDT)
-Message-ID: <564fa534b32f4a6e96da6752f531fc7447ec633d.camel@gmail.com>
-Subject: Re: [PATCH v1] arm64: dts: imx8mm: fix missing pgc_vpu_* power
- domain parent
-From: Vitor Soares <ivitro@gmail.com>
-To: Lucas Stach <l.stach@pengutronix.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
-Cc: Vitor Soares <vitor.soares@toradex.com>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Tue, 16 Apr 2024 11:53:26 +0100
-In-Reply-To: <c76d98a300a9d65d236d334da62916a7d658ef27.camel@gmail.com>
-References: <20240409085802.290439-1-ivitro@gmail.com>
-	 <9ce35b9bb5a15891f6bd01bd54b7dc84b3ba4021.camel@pengutronix.de>
-	 <e1552a3008a30ef7ed9097b4b80cda23ccb9e840.camel@gmail.com>
-	 <fcd6acc268b8642371cf289149b2b1c3e90c7f45.camel@pengutronix.de>
-	 <bd4d7198e58bd89b46a4c721546f6975b287a5fc.camel@gmail.com>
-	 <c76d98a300a9d65d236d334da62916a7d658ef27.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	s=arc-20240116; t=1713265474; c=relaxed/simple;
+	bh=KcfsyDFtDwm+76QLCm2uHrf37SSxIwm1ldEOf6zXOHU=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=D8vlnghzEz5R9meoWIJcMCPnG/03a2Et6uhxqu/vwQLYORPSfPrcWvqBnkDulc+H3mKKtPyZKCLgwGhz8T7whFjhfp4cNnTPs37iiO/CrDi3w8ZCNWWOIyuKb+M3JqpNZADd4ahUTSp/XmQ4DLHYJD9oSDReX5WiVahVzgHppdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TwHQpbmm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310ECC113CE;
+	Tue, 16 Apr 2024 11:04:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713265474;
+	bh=KcfsyDFtDwm+76QLCm2uHrf37SSxIwm1ldEOf6zXOHU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=TwHQpbmmRNXOXD52PKCYvuEI4g00n8M2qsSgUuLt+wyQuy+3mg12vdzpd3ed3VMs8
+	 Yy2A/G1DP2pntFvBFyZWbAfURgQZ2GnN0jcV0K9f7XXn5DEJyVrBvfFk3nRbm9Slu9
+	 jxD2zRqpHe2wRcGzQlwiBogAGbRYqi5aFaVd/cQiixKCgZYYJarY5NQZxSMNNhqipI
+	 Ra1ZigmTMIHWmiEVIlDFmzQyA91TM2P3aZBfAFcMTtbrR/EmT4QysCwlobKIy6KzmR
+	 v3SARv1j4CLY/18tP4JFtkmAvlGy1yTNkB7BDHH42j0na6JrUeR82R1KSEfHdiMp8Z
+	 0S/T5bJaXAdtA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1rwgc3-004zM6-8H;
+	Tue, 16 Apr 2024 12:04:31 +0100
+Date: Tue, 16 Apr 2024 12:04:29 +0100
+Message-ID: <8634rlsh4y.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	Yihuang Yu <yihyu@redhat.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Shaoqin Huang <shahuang@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 6.6 000/122] 6.6.28-rc1 review
+In-Reply-To: <Zh5UJh31PlBkpZWd@finisterre.sirena.org.uk>
+References: <20240415141953.365222063@linuxfoundation.org>
+	<Zh5UJh31PlBkpZWd@finisterre.sirena.org.uk>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: broonie@kernel.org, gregkh@linuxfoundation.org, stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, yihyu@redhat.com, gshan@redhat.com, catalin.marinas@arm.com, ryan.roberts@arm.com, anshuman.khandual@arm.com, shahuang@redhat.com, will@kernel.org, linux-arm-kernel@lists.infradead.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-++ Peng Fan <peng.fan@nxp.com>
+On Tue, 16 Apr 2024 11:34:14 +0100,
+Mark Brown <broonie@kernel.org> wrote:
+> 
+> On Mon, Apr 15, 2024 at 04:19:25PM +0200, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.6.28 release.
+> > There are 122 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> 
+> The bisect of the boot issue that's affecting the FVP in v6.6 (only)
+> landed on c9ad150ed8dd988 (arm64: tlb: Fix TLBI RANGE operand),
+> e3ba51ab24fdd in mainline, as being the first bad commit - it's also in
+> the -rc for v6.8 but that seems fine.  I've done no investigation beyond
+> the bisect and looking at the commit log to pull out people to CC and
+> note that the fix was explicitly targeted at v6.6.
 
-Greetings,
+What are the configurations of the kernel and the FVP?
 
+	M.
 
-On Wed, 2024-04-10 at 12:01 +0100, Vitor Soares wrote:
-> Hi Lucas,
->=20
-> On Tue, 2024-04-09 at 17:44 +0100, Vitor Soares wrote:
-> > On Tue, 2024-04-09 at 16:36 +0200, Lucas Stach wrote:
-> > > Am Dienstag, dem 09.04.2024 um 14:22 +0100 schrieb Vitor Soares:
-> > > > Hi Lucas,
-> > > >=20
-> > > > Thanks for your feedback.
-> > > >=20
-> > > > On Tue, 2024-04-09 at 11:13 +0200, Lucas Stach wrote:
-> > > > > Hi Vitor,
-> > > > >=20
-> > > > > Am Dienstag, dem 09.04.2024 um 09:58 +0100 schrieb Vitor
-> > > > > Soares:
-> > > > > > From: Vitor Soares <vitor.soares@toradex.com>
-> > > > > >=20
-> > > > > > The pgc_vpu_* nodes miss the reference to the power domain
-> > > > > > parent,
-> > > > > > leading the system to hang during the resume.
-> > > > > >=20
-> > > > > This change is not correct. The vpumix domain is controlled
-> > > > > through
-> > > > > the
-> > > > > imx8mm-vpu-blk-ctrl and must not be directly triggered by the
-> > > > > child
-> > > > > domains in order to guarantee proper power sequencing.
-> > > > >=20
-> > > > > If the sequencing is incorrect for resume, it needs to be
-> > > > > fixed
-> > > > > in
-> > > > > the
-> > > > > blk-ctrl driver. I'll happily assist if you have any
-> > > > > questions
-> > > > > about
-> > > > > this intricate mix between GPC and blk-ctrl hardware/drivers.
-> > > > =C2=A0
-> > > > I'm new into the topic, so I tried to follow same approach as
-> > > > in
-> > > > imx8mp
-> > > > DT.
-> > > >=20
-> > > That's a good hint, the 8MP VPU GPC node additions missed my
-> > > radar.
-> > > The
-> > > direct dependency there between the GPC domains is equally wrong.
-> > >=20
-> > > > I also checked the imx8mq DT and it only have one domain for
-> > > > the
-> > > > VPU in the GPC. It seem blk-ctrl also dependes on pgc_vpu_* to
-> > > > work
-> > > > properly.
-> > > >=20
-> > > > The blk-ctrl driver hangs on imx8m_blk_ctrl_power_on() when
-> > > > access
-> > > > the
-> > > > ip registers for the soft reset. I tried to power-up the before
-> > > > the
-> > > > soft reset, but it didn't work.
-> > > >=20
-> > > The runtime_pm_get_sync() at the start of that function should
-> > > ensure
-> > > that bus GPC domain aka vpumix is powered up. Can you check if
-> > > that
-> > > is
-> > > happening?
-> >=20
-> > I checked bc->bus_power_dev->power.runtime_status and it is
-> > RPM_ACTIVE.
-> >=20
-> > Am I looking to on the right thing? It is RPM_ACTIVE event before
-> > runtime_pm_get_sync().
->=20
-> During the probe I can see that
-> bus_power_dev->power.runtime_status =3D RPM_SUSPENDED and then vpumix
-> is
-> powered up on GPC driver.
->=20
-> On resume routine I can't see this flow. bus_power_dev-
-> > power.runtime_status =3D RPM_ACTIVE and vpumix end up not being
-> > powered-
-> up.
->=20
-> I checked the suspend flow and the GPC tries to poweroff vpumix.
->=20
->=20
-
-My understanding is that when resuming the 38310000.video-codec, the
-vpumix isn't powered up. It happens because runtime_status and
-runtime_last_status =3D RPM_ACTIVE.=20
-
-I tried to change blk-ctrl suspend routine to force the runtime_status
-=3D RPM_SUSPENDED, but the system ended up hanging on another device.
-
-From the comment in blk-ctrl suspend, we rely on PM_SLEEP code that
-iterates over dpm_list for suspend/resume.
-I did look at the dpm_list, and it changes the order on every boot.=20
-
-With all the tests, I also found that the system randomly hangs on
-dispblk-lcdif suspend. I have confirmed this device is in a different
-place in the dpm_list (not sure if it is the root cause).=20
-I haven't understood how blk-ctrl ensures the correct order there yet.=20
-
-Taking the following dpm_list excerpt:
-idx - device
-------------------------------
-...                                                                  =20
-191 - imx-pgc-domain.7                                               =20
-192 - imx-pgc-domain.8                                               =20
-193 - imx-pgc-domain.9                                               =20
-194 - 38330000.blk-ctrl                                              =20
-195 - 38310000.video-codec                                           =20
-196 - 38300000.video-codec                                           =20
-...
-205 - genpd:0:38330000.blk-ctrl
-206 - genpd:1:38330000.blk-ctrl
-207 - genpd:2:38330000.blk-ctrl
-208 - genpd:3:38330000.blk-ctrl
-------------------------------
-
-Shouldn't genpd devices be before 38330000.blk-ctrl?
-As their power domain is GPC and the blk-ctrl power domain is genpd.
-
-Best regards,
-Vitor Soares
-
->=20
-> >=20
-> >=20
-> > >=20
-> > > Regards,
-> > > Lucas
-> > >=20
-> > > > Do you have an idea how we can address this within blk-ctrl?
-> > > >=20
-> > > > Best regards,
-> > > > Vitor
-> >=20
->=20
-
+-- 
+Without deviation from the norm, progress is not possible.
 
