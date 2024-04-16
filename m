@@ -1,205 +1,245 @@
-Return-Path: <stable+bounces-40009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BDFF8A68F3
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 12:47:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7466C8A6915
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 12:53:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B573FB232B7
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 10:47:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D5CE2840CD
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 10:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A55128377;
-	Tue, 16 Apr 2024 10:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEA212837E;
+	Tue, 16 Apr 2024 10:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="TfWdOIyb";
-	dkim=pass (1024-bit key) header.d=sharedspace.onmicrosoft.com header.i=@sharedspace.onmicrosoft.com header.b="vYt+Djtr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JLxQCpcW"
 X-Original-To: stable@vger.kernel.org
-Received: from esa1.hgst.iphmx.com (esa1.hgst.iphmx.com [68.232.141.245])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B658F128376;
-	Tue, 16 Apr 2024 10:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=68.232.141.245
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713264406; cv=fail; b=q4Q2VCMn+iJqXx+0bUU4X89RFHEm6BQt5EhqxQLCNpwXw0C6cVSo4VF8JeZfSar/Hp/SsVkAY8cZXEOQVGf66m/4BdJLR0c1QpFQzmTfBmkIN2Jfi2zo3UH7KM4SzV4y4nbx7mpPXnQL6wuzSwZUvzE+SycLA1CR89TU1wWeaao=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713264406; c=relaxed/simple;
-	bh=NePuvX4OH3vXaAuxHoT5YSxBVlxsni9QbZlHAPS/77M=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=AbMfFrsFEY8ngiNOXqZzKex9vWTDQAWtF8WrO1CxqKooTO7OLfL5qOl7elLtneHtf5zKMbcYVePYXMR+LVgePlXBaYhtdyhjg0x+9ZkIDa40B0F1xprbikcn3vtV6uXmnEPyjEtV/HTkIukdqX7bK1E9/j14nszf3DJASzaJ4q4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com; spf=pass smtp.mailfrom=wdc.com; dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b=TfWdOIyb; dkim=pass (1024-bit key) header.d=sharedspace.onmicrosoft.com header.i=@sharedspace.onmicrosoft.com header.b=vYt+Djtr; arc=fail smtp.client-ip=68.232.141.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1713264404; x=1744800404;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=NePuvX4OH3vXaAuxHoT5YSxBVlxsni9QbZlHAPS/77M=;
-  b=TfWdOIybdfifXkYV8FWPIiFvJzgz1q7Ez7Mgp3M7HdY/o0K+5H7EfoXl
-   ZLwpi8HDOsUxlf/EkZHtYmhpblhK4ZR56RUo1ER6c+mnRmldi7k26Osmu
-   5bLnGFYeWPfCwLRPClXAlyALTdJguoWKaEjQeMuSYDZ5slBYNREVTpyQD
-   QRywpAcxOHm9cenD4w3D2UGrIb6PIwZ5xUQPMd80LiPKTryXEcPhAEKNz
-   KamTAAmQgqLj17NtPMBgny81VJqf60wlX0hAXCxzqYvZ0aMW+k9IHbolT
-   BWN0FufcmOowCRakfmaXZFnjiMsmcdHJq2b6UD9+AhtgQdfDv20GfM8cZ
-   Q==;
-X-CSE-ConnectionGUID: RI2LnEA6TeCPPchdVTZnsA==
-X-CSE-MsgGUID: rqKiV968RH6aFC0tW6G/bA==
-X-IronPort-AV: E=Sophos;i="6.07,205,1708358400"; 
-   d="scan'208";a="14323638"
-Received: from mail-dm6nam12lp2168.outbound.protection.outlook.com (HELO NAM12-DM6-obe.outbound.protection.outlook.com) ([104.47.59.168])
-  by ob1.hgst.iphmx.com with ESMTP; 16 Apr 2024 18:46:43 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WBl1AqymBI3LlH8+uW3+G0USV22wHR/SL77bcQiunaE/YhZlHUBR0FfPlyJtXAXrkIfApoPg1v4GVfqkBoP6m1mFGjDocUXpOVu0ceavMdoxzwU42ic/u8xzIJ62EXe0bu9R4njHdqUFOMD9sdrSE7vD0UWyaw6McQIjslsnHtnXKBR2hGBy4s0hXYB8487kZHfxsDNX/PPw7ek0DNX9mB56EU40k+Dwz3xGOmHmxVIURIV/R6FlISs+NAVi3uv8G+icA1L5jV7E6eDQ7GnKRJZbYAgA3jeg8WLtD7OVBw2W8vHYf1MVBI/uL4ROJVwPhgklUvvHQiMXVMWYvE4YdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NePuvX4OH3vXaAuxHoT5YSxBVlxsni9QbZlHAPS/77M=;
- b=UbAuULx6z9xiBqrx8l5//aCehaay16keXt6WD61tPfNZ0o6WTQGXSoi1oo8pUVuZI+vynW7wzlkvZiFsTovwuIT2KLTFT9BBmHmEIRaGeb3w5SGiX9rH7TL6dGji/iSlp/X4V/lBqRaESgWAveMLE/exuuXWHzrvzSVrDPVsZNn1wDHS0GWlbJld60IhprwjZxOAW9VOjolE22UqyrdYNLEult+D67sfyzTNMOPpraWfClb1Y2thaiWnNgeaSJMKYtkn91LvOJCdT3CKu6KyB4NrmzVK24L5+vVz1+SRwIJYIzYjwLb1rTPxTunkuDxGx9skbrbCRmyGBu7YKu25Uw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
- header.d=wdc.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB157127E32;
+	Tue, 16 Apr 2024 10:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713264813; cv=none; b=k5v4UjQc+dlgJRlQcUP8DsANjKWdwwwVds7fyZ4RX/gde2Pz0IuIntquzW+q3iJ1z5achOef3bx/XfU4p+7GQ8KqZSgEBq+FaGoMPO8o9Q/I8m8u+wFTdFd/vHrYI2RLAYxRuoS82GqhtgewV07vKzn6f3zKl2GZ948GwGmK0PQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713264813; c=relaxed/simple;
+	bh=jtWDtkzCMWJkFCa5MxE8iceW5QpVbO75j7cOqW9Nvgo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=u8ZNTBVi5pHzyMjXPPByeXpWtaIDFsmat2cHNIlJf5tJjVFdamJv98BWyWH4E9RZI9liJu1Frrr8tHy9gZjtKUWnLj7IDV9hfkcgNfk8CZMOxNqB9qXYk/wKB7muA2AnuhSZJLibYF70FAP0GFJBJo5pOsJYGXB97VDRjSavdO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JLxQCpcW; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2dae975d0dcso3052371fa.1;
+        Tue, 16 Apr 2024 03:53:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NePuvX4OH3vXaAuxHoT5YSxBVlxsni9QbZlHAPS/77M=;
- b=vYt+DjtrsVbB898qfifDWdko8jaMexJJy1L1wY0YP8nDKUcPocyo5CNVdQ/nhNznbwN4gbJeqrCzZtXMwAcxJvUJVz4etkm5rjBlpHLEs3snTHNTOOqtL+igrFViXcuIjf/pR1pX38jzjDgP8NgZb3nKaHnj3yRzAo7Jq8kjiKI=
-Received: from DM8PR04MB8037.namprd04.prod.outlook.com (2603:10b6:8:f::6) by
- SA0PR04MB7465.namprd04.prod.outlook.com (2603:10b6:806:da::10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7452.50; Tue, 16 Apr 2024 10:46:41 +0000
-Received: from DM8PR04MB8037.namprd04.prod.outlook.com
- ([fe80::c75d:c682:da15:14f]) by DM8PR04MB8037.namprd04.prod.outlook.com
- ([fe80::c75d:c682:da15:14f%3]) with mapi id 15.20.7452.049; Tue, 16 Apr 2024
- 10:46:41 +0000
-From: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-To: Chaitanya Kulkarni <chaitanyak@nvidia.com>
-CC: "hch@lst.de" <hch@lst.de>, Saranya Muruganandam <saranyamohan@google.com>,
-	"axboe@kernel.dk" <axboe@kernel.dk>, "linux-block@vger.kernel.org"
-	<linux-block@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "tj@kernel.org" <tj@kernel.org>,
-	"yukuai1@huaweicloud.com" <yukuai1@huaweicloud.com>
-Subject: Re: [PATCH] block: Fix BLKRRPART regression
-Thread-Topic: [PATCH] block: Fix BLKRRPART regression
-Thread-Index: AQHaiwSINB8WBnJl30qPCQCcaD9o87FiKqMAgAIQ7ICABmorAIAAGvYA
-Date: Tue, 16 Apr 2024 10:46:41 +0000
-Message-ID: <f6n67pnc6xfqo6onmmimeebmr5vqez6s3vff7siugifr4xyrh7@jc5nalawfpxw>
-References: <tnqg4la2bhbhfbty3aa74uorkfhz76v5sntd3md44lfctjhjb7@7qbx5z2o7hzm>
- <20240410233932.256871-1-saranyamohan@google.com>
- <zvmwp3n3yx55ogzb5gtfe2xdmsg53y3umgnezcwd4weq5vloru@w6qi7lfvezls>
- <cbcf7378-e889-489a-92d2-1feb112cff58@nvidia.com>
-In-Reply-To: <cbcf7378-e889-489a-92d2-1feb112cff58@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=wdc.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM8PR04MB8037:EE_|SA0PR04MB7465:EE_
-x-ms-office365-filtering-correlation-id: 68cb4ee6-93a9-4001-854e-08dc5e02801e
-wdcipoutbound: EOP-TRUE
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- 9nm7rg06osYJW8H0wFm953bHwh7GHYhlhOszwNFTsw5PURHdmA1jPuJI569RZEpfjiiUJVeL3kXLYZbsg5yHcUibsuOuQDJE8NCMgxPHKX5n5IORDlln/MK5EX/GPBUqKY22e8yjc6pc1r5JaEOUyj2eoR+uO7qs2NCkSVgiEGfkrMLIT2L87Mb7Aa10VT2zJYnwJYTxzGuLwyPbD3j3tsvmnRVq4hZIE4QFpkQHvOiKqZ0RLPO45lzojEBiYTKA0INLSY5elJ4y5+xSHQZNMR5gW9QZ4QkEHWz4n3CK+jj9DM1KO6OLAI/cOluauH8KK4fQ8u80vREf+WKCkSxdCiWzCfB7dVOzBHzKiOE+KAqJB4UtMWczV1DkExd+bm0FBq3y+0NQvTzt3vLZZcFt3V7iK8nKMD+ZCpiLnzm+Q4RnpU0nr6c9GoWe+IhqqQB8smBdEwnAthEbR8XmcI4sTFJBcOaRjmweeYOlXHgw7k0iyjsFdzmAP9ZepBLrNCF8eghqUcFf5Bynw2LaeblIknqkD9WFMk1+T9slrCI5okGUx8uga7SZHtryJ6L7y0wQ7o7c3bWuaygPgmaUWsgDaql60jX6QBJilHZAVwkrlq6XHA0BqJvqueWBiVciLjrmKYzX9RpRHYetW9G6I7tnuNDvN/WVl+KgIg2mjg3pGXTw3TTzNuOwZw0sdfoEV7EAkuGQp/vuzoZfOk6RSz0P44GXF3mQatUJyZ32xwzW+0s=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM8PR04MB8037.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(366007)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?ckhSQVlCOWRqbW93TmpUWWZ6dTlnVkhGeFprMXJ0TVFNc2VtdFZoQ2ZDUlNC?=
- =?utf-8?B?a3p5ZWYrdGNNT0FjUE1ITURCRng5d2x3WDBJQW5BSHozQ29DYXZ2NmROL3k1?=
- =?utf-8?B?Wm5Hb3JQdEwxZlRnekJCTGZFeitoamNBRHVaaldiSlZzZXNQeURKSStleU43?=
- =?utf-8?B?TTFPVHZyN1NFMWNxc0JoY1VYSzZmYnNkbWMzT2pVQm9BOENmaVJmWkVRTFVa?=
- =?utf-8?B?UEhSVkZVc0psc2cySVU5bUtoNFFiL1kyN2xqOXVISkdlUjZHRHBFTDB5NUpv?=
- =?utf-8?B?cmszcE4vcEswTUhQYzE0MGZVRnU4T0pGcUpoSmdxc0RTNjhYT3V4RnByWVEz?=
- =?utf-8?B?VGl1WmpGaGgyQnpHUjZBTGdjak5yMTArN09MaWxndHZWZWFUaFV3WHBzQXdS?=
- =?utf-8?B?WkJhcHN2cGxjUW5DdG9DRmdmaXYxUlZDMnFwNk5yeVRadFd3d0p3RXMxTHRB?=
- =?utf-8?B?N1lFMU1BYzhnMG9wU29VS3kwV0szcVVWcEk1YWZQdGRtTTFxMmFrUnJTK2hM?=
- =?utf-8?B?c2FENlZUNE5XWUh4ZlBHV2ZiN3hvbEh6a3dPZXF6cFoweDVQcVF3K0ROdzZC?=
- =?utf-8?B?T29RclkraE1Ob0pLbWZCZFR6eGZCcjJpUEVyRjBJZ1JiM09qbWtrUTNjRzVJ?=
- =?utf-8?B?WlQvV2VQOUlueVZKUXlSRC9QVTVON3JIVGFQMGI0Snl2eVRHUHRuWkVFOE0v?=
- =?utf-8?B?VTRxRDIvNzMzZmNHSS9Jbk9zdVdLQU5QN0Z6ZFZRNjV6dXMyR2dKNmo1azVO?=
- =?utf-8?B?U3VUcUdKcDZRd21PanpDSTBaWHZTZGQ4ckkzTHpsdWpKTWxpNWhsREkzcGJr?=
- =?utf-8?B?ZHFybjg3QWk4S3NBaHViSkdMZ1pPU3k3aDVtWlluR0ZscUExQ2ZBY1U0ZzFN?=
- =?utf-8?B?UVg2Nmhia0h5S2lIWTcvQlE5ZlpzT2hFTEtKUmsrOVF5cVRFa0tORVNWeXQ4?=
- =?utf-8?B?VGJsUU9ibDZGWGZ4MjRGYmVPMHFKUUhUZkh6bTRHQ1VqLzNrV0RFaGg5NGw0?=
- =?utf-8?B?L0N3N21XNGZTQlMybXhxU0IzYlIzOXI5amVuR3g4T1VOcWlvV090OW9kSTlD?=
- =?utf-8?B?SGZRYnBJclZ4WXhWd1VUUW9qMG8vM1dKazJwMDhTOVNjUkxla3ZZSHhBUE0w?=
- =?utf-8?B?eUJVSW5jMlNhV0dlTG5oWnlYVVBoV3JvTmp4SzF4UUVDR0ZUbmdkYTJLZk5i?=
- =?utf-8?B?T0FDVm9mbnR0dkFJdnU2WUJteEpFV0R1Y2VSWmxxUGFoTHlFK0dvVFF3eGpS?=
- =?utf-8?B?SEdleGdlcis0Ujk1elgvbkh4dTNBRktyYlV6eUVtUjNrRDBxQ0pkWk8zVnNo?=
- =?utf-8?B?NUxkK28xWXlNeENvclVuUDg4ZEpUVHlvcUJmNUJIZlJpTXdJWkFCMlo3ejhz?=
- =?utf-8?B?aWlKOTNHczZYWk5lWjZYN0k2ZGlZYk55azVYMUpqR2drZXgzdzhnOWw0cmFI?=
- =?utf-8?B?RWpUeldqT2c3M2Y0czdiUnVrSFNXR01VbnorSUw4bmxhVERSTlMwQUhSeE1H?=
- =?utf-8?B?L01EZDUyNitmazRkd1ZWbzdTRWtlYkV4WWVxa3lGQkFKN2RhNXBXZ2xUZGFx?=
- =?utf-8?B?UWJjSGQ4MHVwbzhnQ1pXWDVPNlFESE52cEVIbEdXRlpQUE1wTTFya1FGbjl6?=
- =?utf-8?B?Tlg2TEg2N0czMzRQRTY4REQ1OFpvYklCSjBoZS9MWmVhakc0SjJkNmlrZVBW?=
- =?utf-8?B?dzVOdHcxQkVJVjU2bVlEaDFRQUkvcUN4bkxiRDgzcm5yTEVaU0tFWVBJaTEy?=
- =?utf-8?B?Yjc4cFhDV3BaaWJ3QUxqZmpubU1CSzlWY2QxejZodGxqUTQ2dGdtdGJSMzBq?=
- =?utf-8?B?ZzFhUGFEZktqS3JaR2VjbjM1cEZEM3diM2ZxMDQyTmtjUDVSL3JQbmFrb01E?=
- =?utf-8?B?MVlPbUxJbGo5RkVURER4djl6UklWYmR3ODlVdWRneDFJZWlnQVd4RFhlSFV6?=
- =?utf-8?B?M1gzOVNkaWttMjA5cjN3VGpWT1d2N1dDK2RUTGw3cUdyYTdsWVV0Wm9qQWk3?=
- =?utf-8?B?NzVMRWoycFlQcWtuZXQwWFBOQVk2UnBUemZsRXduWEZIVG5VY09UclJ4Smgz?=
- =?utf-8?B?a1FwOWtqMy9EQVlYRDNJM2VPYmZZbmZ2VThhV2JtZmhpdnlPcWtQWFlUZHRn?=
- =?utf-8?B?cVV2TDBQaC9YVkxnOW0rVHlpazh2N3hxM29ONFpQSlNQdnZ4V0tkTUdUOVpT?=
- =?utf-8?Q?iNnUUrm02b/X/ju9AgQKRVE=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <00362F44DF43014E9EA672B6FBDA5C5D@namprd04.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        d=gmail.com; s=20230601; t=1713264810; x=1713869610; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Zm8hUl4A4Cjijs+dM9CjArMkvrH+8PJgQST3vTyO9ro=;
+        b=JLxQCpcW9Chi/BVIMzGsELJW9XUbmPNXF6YJyOqXdLpuLuitCfAS0o7PFoLY6+UDud
+         dUX2og4YyI8iDvKiHxLsR95K5wdIaFPBJ9kvne6+XS1aRZI6Pa0bH1b6gEtHgRNr+6lF
+         +uF6EgaXM+jHXyEIkJzkDOASe0YFvRT87PPtTMndCZNhoi2HXz0398lmc8djIg0f7myd
+         DrrzlL7f0XNbC4Ii8EVh63Flc03V0DhyspkIPwt7R2T2FnL/N59PskTndlJh8eDLqM99
+         /G0vBTwKVV/oDRlpwS2hCOTRVjwqRKZ1Qa3uku5vo4vHiZG+Mt5SfVoV6y9eEHi+Qt9C
+         uBUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713264810; x=1713869610;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Zm8hUl4A4Cjijs+dM9CjArMkvrH+8PJgQST3vTyO9ro=;
+        b=hMVf/UvcsY2qMLF901N6Ma+YlqDg9eNZoXcUoXsriVMEIYDAMnFmKOrorhuL8F8Zsk
+         X7tkswdGuV56tYIjEXXcYAyRFB9Dw638ppwM5LdmVPtKoQMgIU13kefukWTHRZqXy6cL
+         UwvDlzVhIa4nfBuYmWyUyvEimMAlrVqL92Y3t6+nFQ6S9EHaMDtRHe23KLw/yxPnVThM
+         z9U/u7DyHNQZRusFQb4QCWYyI3uEN7rxBsrb1VCpee/ATKXvxcv26PHyobRWIR3GEaci
+         uJzisIik1Dvt76DAAcF3+NiQNw8e+KZKJhpm9RXOelqJ7L1OXIFXlAOtPVgOJwuQVFLM
+         r7xw==
+X-Forwarded-Encrypted: i=1; AJvYcCWTnRR6nwWRRgvjqzVfjI5dNGuOHn3cmEpyFesuUbE3aL/2KnjJcGMMwcew21Lkc333DhvhbO77Lh/y1BeQBppk53tCYDCcqnDzDpK9FBKN3jYNrJlFozfIogHWVvAAt+m8A55+XZVYgO4PyoxRurghyDcdevCet/FQt8KAZbIx0A==
+X-Gm-Message-State: AOJu0YyIYVpIxfho5yW05oofpZJFw0ThxSq3tkDmeYna8WX02hAllrCV
+	AoDpzVHz3fQciC4OEergLQcALY4PGVOo0Fuh1+KzXMFSiKRYVbUg
+X-Google-Smtp-Source: AGHT+IG1iJoGjPDJ4imF8qZcuHLYYvbel182S43/J10hP1dvRLvswmx977CJlc4KOlTyLvqTPU+m9A==
+X-Received: by 2002:a2e:9590:0:b0:2da:daa9:8060 with SMTP id w16-20020a2e9590000000b002dadaa98060mr497005ljh.14.1713264809644;
+        Tue, 16 Apr 2024 03:53:29 -0700 (PDT)
+Received: from ?IPv6:2001:8a0:e622:f700:a0:8eb2:ecf5:17e0? ([2001:8a0:e622:f700:a0:8eb2:ecf5:17e0])
+        by smtp.gmail.com with ESMTPSA id e1-20020a2e9301000000b002d70a040f21sm1532062ljh.91.2024.04.16.03.53.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Apr 2024 03:53:29 -0700 (PDT)
+Message-ID: <564fa534b32f4a6e96da6752f531fc7447ec633d.camel@gmail.com>
+Subject: Re: [PATCH v1] arm64: dts: imx8mm: fix missing pgc_vpu_* power
+ domain parent
+From: Vitor Soares <ivitro@gmail.com>
+To: Lucas Stach <l.stach@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
+Cc: Vitor Soares <vitor.soares@toradex.com>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Tue, 16 Apr 2024 11:53:26 +0100
+In-Reply-To: <c76d98a300a9d65d236d334da62916a7d658ef27.camel@gmail.com>
+References: <20240409085802.290439-1-ivitro@gmail.com>
+	 <9ce35b9bb5a15891f6bd01bd54b7dc84b3ba4021.camel@pengutronix.de>
+	 <e1552a3008a30ef7ed9097b4b80cda23ccb9e840.camel@gmail.com>
+	 <fcd6acc268b8642371cf289149b2b1c3e90c7f45.camel@pengutronix.de>
+	 <bd4d7198e58bd89b46a4c721546f6975b287a5fc.camel@gmail.com>
+	 <c76d98a300a9d65d236d334da62916a7d658ef27.camel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	glWa5kTNCU+vMYwJkyc6gV1eXxrALxqeTslm1ND3ci5TYzKmAWikaE9JSqqfoZvk4057IkqB6t/0WQIpjRVxS1pqxxUpxuIJxZ+GnF/7Ik1+CS09yV9wAm1PlByJ5fN3hTHdanrycpcffLGviuFo6l/17NV+hip7ppeVF2brdDARzD3N7nIU0y/KMbMB4reaQmeT08fYnLd0Dm0UJtPwSAYbd0/jnspPW+YVAbwsvK/wnlrdg/uoX7z5BwsTL3KtngrXO4THJPmkT9q553NMDFSorF6AFLy2d0vBagAfSEFG+tjG8Zc3sEyArKJAg/1Phzbht8PY6VDRba4qQi1VAqVLlztAG+jU3b8I/0svGvkkX/FoFB7iRIC6H3bIZkT/cgWyMkZMjGyN0Sg/69pHSTQhcWGawzi/VmRHLARNjcd9uPgVG0Azaq3fvDEnvGvmdKKPsF96Cy9JS82wdG7+j6rjqspGtftsARWt+Co98cG5/W4hfwJfmN8vXHFU6gSGTpvtlOQvD1pnvBr2KIZfNHJ6tqDU5BjeEBhaIPN2OzeLEERLXUr+scX2sutIcT9PozIE9LHxI3g95oBJgYa3CSa5HLzfJAbF6GxBiJieTXqNcBf4RsPIzW20DwPS8Kr2
-X-OriginatorOrg: wdc.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM8PR04MB8037.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 68cb4ee6-93a9-4001-854e-08dc5e02801e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Apr 2024 10:46:41.2085
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 8QdxVL7dl+ZpLC5aVw8jyKG90psOCTVLRR/gG38aLpMOh2J+wrJ0WMBG037nNY9si8ZMSzWRg5f1MfvTtQLtjIwPOnxBmCrfJCT5kLHMy40=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR04MB7465
 
-T24gQXByIDE2LCAyMDI0IC8gMDk6MTAsIENoYWl0YW55YSBLdWxrYXJuaSB3cm90ZToNCj4gT24g
-NC8xMi8yMDI0IDEyOjEyIEFNLCBTaGluaWNoaXJvIEthd2FzYWtpIHdyb3RlOg0KPiA+IE9uIEFw
-ciAxMCwgMjAyNCAvIDIzOjM5LCBTYXJhbnlhIE11cnVnYW5hbmRhbSB3cm90ZToNCj4gPj4gVGhl
-IEJMS1JSUEFSVCBpb2N0bCB1c2VkIHRvIHJlcG9ydCBlcnJvcnMgc3VjaCBhcyBFSU8gYmVmb3Jl
-IHdlIGNoYW5nZWQNCj4gPj4gdGhlIGJsa2Rldl9yZXJlYWRfcGFydCgpIGxvZ2ljLg0KPiA+Pg0K
-PiA+PiBBZGQgYSBmbGFnIGFuZCBjYXB0dXJlIHRoZSBlcnJvcnMgcmV0dXJuZWQgYnkgYmRldl9k
-aXNrX2NoYW5nZWQoKQ0KPiA+PiB3aGVuIHRoZSBmbGFnIGlzIHNldC4gU2V0IHRoaXMgZmxhZyBm
-b3IgdGhlIEJMS1JSUEFSVCBwYXRoIHdoZW4gd2UNCj4gPj4gd2FudCB0aGUgZXJyb3JzIHRvIGJl
-IHJlcG9ydGVkIHdoZW4gcmVyZWFkaW5nIHBhcnRpdGlvbnMgb24gdGhlIGRpc2suDQo+ID4+DQo+
-ID4+IExpbms6IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC8yMDI0MDMyMDAxNTEzNC5HQTE0
-MjY3QGxzdC5kZS8NCj4gPj4gU3VnZ2VzdGVkLWJ5OiBDaHJpc3RvcGggSGVsbHdpZyA8aGNoQGxz
-dC5kZT4NCj4gPj4gVGVzdGVkOiBUZXN0ZWQgYnkgc2ltdWxhdGluZyBmYWlsdXJlIHRvIHRoZSBi
-bG9jayBkZXZpY2UgYW5kIHdpbGwNCj4gPj4gcHJvcG9zZSBhIG5ldyB0ZXN0IHRvIGJsa3Rlc3Rz
-Lg0KPiA+PiBGaXhlczogNDYwMWI0YjEzMGRlICgiYmxvY2s6IHJlb3BlbiB0aGUgZGV2aWNlIGlu
-IGJsa2Rldl9yZXJlYWRfcGFydCIpDQo+ID4+IFJlcG9ydGVkLWJ5OiBTYXJhbnlhIE11cnVnYW5h
-bmRhbSA8c2FyYW55YW1vaGFuQGdvb2dsZS5jb20+DQo+ID4+IFNpZ25lZC1vZmYtYnk6IFNhcmFu
-eWEgTXVydWdhbmFuZGFtIDxzYXJhbnlhbW9oYW5AZ29vZ2xlLmNvbT4NCj4gPiANCj4gPiBUaGUg
-Y2hhbmdlIGxvb2tzIGdvb2QgdG8gbWUuIEkgYWxzbyBjb25maXJtZWQgdGhlIGZpeCB3aXRoIHRo
-ZSBuZXcsDQo+ID4gY29ycmVzcG9uZGluZyBibGt0ZXN0cyB0ZXN0IGNhc2UuDQo+ID4gDQo+ID4g
-UmV2aWV3ZWQtYnk6IFNoaW4naWNoaXJvIEthd2FzYWtpIDxzaGluaWNoaXJvLmthd2FzYWtpQHdk
-Yy5jb20+DQo+ID4gVGVzdGVkLWJ5OiBTaGluJ2ljaGlybyBLYXdhc2FraSA8c2hpbmljaGlyby5r
-YXdhc2FraUB3ZGMuY29tPg0KPiANCj4gd2hpY2ggcGF0Y2ggaXMgdGhlIGZpbmFsIG9uZSA/IElz
-IGl0IHRoaXMgb25lIG9yIHRoZSBvbmUgcG9zdGVkIHdpdGgNCj4gdGl0bGUgOi0NCj4gDQo+ICJi
-bG9jazogcHJvcGFnYXRlIHBhcnRpdGlvbiBzY2FubmluZyBlcnJvcnMgdG8gdGhlIEJMS1JSUEFS
-VCBpb2N0bOKAiyIgPw0KPiANCj4gUGxlYXNlIGNsYXJpZnkgc28gSSBjYW4gbWFrZSBzdXJlIHRv
-IHJ1biBzb21lIHRlc3RzIGF0IG15IGVuZC4NCg0KVGhlIHBhdGNoIEkgcmV2aWV3ZWQgYW5kIHRl
-c3RlZCBpcyB0aGUgb25lIHRoYXQgU2FyYW55YSByZWZsZWN0ZWQgbXkgY29tbWVudC4NCkl0IGlz
-IGZvdW5kIGhlcmU6DQoNCiAgICBodHRwczovL2xvcmUua2VybmVsLm9yZy9saW51eC1ibG9jay8y
-MDI0MDQxMDIzMzkzMi4yNTY4NzEtMS1zYXJhbnlhbW9oYW5AZ29vZ2xlLmNvbS8NCg0K
+++ Peng Fan <peng.fan@nxp.com>
+
+Greetings,
+
+
+On Wed, 2024-04-10 at 12:01 +0100, Vitor Soares wrote:
+> Hi Lucas,
+>=20
+> On Tue, 2024-04-09 at 17:44 +0100, Vitor Soares wrote:
+> > On Tue, 2024-04-09 at 16:36 +0200, Lucas Stach wrote:
+> > > Am Dienstag, dem 09.04.2024 um 14:22 +0100 schrieb Vitor Soares:
+> > > > Hi Lucas,
+> > > >=20
+> > > > Thanks for your feedback.
+> > > >=20
+> > > > On Tue, 2024-04-09 at 11:13 +0200, Lucas Stach wrote:
+> > > > > Hi Vitor,
+> > > > >=20
+> > > > > Am Dienstag, dem 09.04.2024 um 09:58 +0100 schrieb Vitor
+> > > > > Soares:
+> > > > > > From: Vitor Soares <vitor.soares@toradex.com>
+> > > > > >=20
+> > > > > > The pgc_vpu_* nodes miss the reference to the power domain
+> > > > > > parent,
+> > > > > > leading the system to hang during the resume.
+> > > > > >=20
+> > > > > This change is not correct. The vpumix domain is controlled
+> > > > > through
+> > > > > the
+> > > > > imx8mm-vpu-blk-ctrl and must not be directly triggered by the
+> > > > > child
+> > > > > domains in order to guarantee proper power sequencing.
+> > > > >=20
+> > > > > If the sequencing is incorrect for resume, it needs to be
+> > > > > fixed
+> > > > > in
+> > > > > the
+> > > > > blk-ctrl driver. I'll happily assist if you have any
+> > > > > questions
+> > > > > about
+> > > > > this intricate mix between GPC and blk-ctrl hardware/drivers.
+> > > > =C2=A0
+> > > > I'm new into the topic, so I tried to follow same approach as
+> > > > in
+> > > > imx8mp
+> > > > DT.
+> > > >=20
+> > > That's a good hint, the 8MP VPU GPC node additions missed my
+> > > radar.
+> > > The
+> > > direct dependency there between the GPC domains is equally wrong.
+> > >=20
+> > > > I also checked the imx8mq DT and it only have one domain for
+> > > > the
+> > > > VPU in the GPC. It seem blk-ctrl also dependes on pgc_vpu_* to
+> > > > work
+> > > > properly.
+> > > >=20
+> > > > The blk-ctrl driver hangs on imx8m_blk_ctrl_power_on() when
+> > > > access
+> > > > the
+> > > > ip registers for the soft reset. I tried to power-up the before
+> > > > the
+> > > > soft reset, but it didn't work.
+> > > >=20
+> > > The runtime_pm_get_sync() at the start of that function should
+> > > ensure
+> > > that bus GPC domain aka vpumix is powered up. Can you check if
+> > > that
+> > > is
+> > > happening?
+> >=20
+> > I checked bc->bus_power_dev->power.runtime_status and it is
+> > RPM_ACTIVE.
+> >=20
+> > Am I looking to on the right thing? It is RPM_ACTIVE event before
+> > runtime_pm_get_sync().
+>=20
+> During the probe I can see that
+> bus_power_dev->power.runtime_status =3D RPM_SUSPENDED and then vpumix
+> is
+> powered up on GPC driver.
+>=20
+> On resume routine I can't see this flow. bus_power_dev-
+> > power.runtime_status =3D RPM_ACTIVE and vpumix end up not being
+> > powered-
+> up.
+>=20
+> I checked the suspend flow and the GPC tries to poweroff vpumix.
+>=20
+>=20
+
+My understanding is that when resuming the 38310000.video-codec, the
+vpumix isn't powered up. It happens because runtime_status and
+runtime_last_status =3D RPM_ACTIVE.=20
+
+I tried to change blk-ctrl suspend routine to force the runtime_status
+=3D RPM_SUSPENDED, but the system ended up hanging on another device.
+
+From the comment in blk-ctrl suspend, we rely on PM_SLEEP code that
+iterates over dpm_list for suspend/resume.
+I did look at the dpm_list, and it changes the order on every boot.=20
+
+With all the tests, I also found that the system randomly hangs on
+dispblk-lcdif suspend. I have confirmed this device is in a different
+place in the dpm_list (not sure if it is the root cause).=20
+I haven't understood how blk-ctrl ensures the correct order there yet.=20
+
+Taking the following dpm_list excerpt:
+idx - device
+------------------------------
+...                                                                  =20
+191 - imx-pgc-domain.7                                               =20
+192 - imx-pgc-domain.8                                               =20
+193 - imx-pgc-domain.9                                               =20
+194 - 38330000.blk-ctrl                                              =20
+195 - 38310000.video-codec                                           =20
+196 - 38300000.video-codec                                           =20
+...
+205 - genpd:0:38330000.blk-ctrl
+206 - genpd:1:38330000.blk-ctrl
+207 - genpd:2:38330000.blk-ctrl
+208 - genpd:3:38330000.blk-ctrl
+------------------------------
+
+Shouldn't genpd devices be before 38330000.blk-ctrl?
+As their power domain is GPC and the blk-ctrl power domain is genpd.
+
+Best regards,
+Vitor Soares
+
+>=20
+> >=20
+> >=20
+> > >=20
+> > > Regards,
+> > > Lucas
+> > >=20
+> > > > Do you have an idea how we can address this within blk-ctrl?
+> > > >=20
+> > > > Best regards,
+> > > > Vitor
+> >=20
+>=20
+
 
