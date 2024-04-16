@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-40049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8808A77E1
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 00:40:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18AB48A77E2
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 00:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AFF72848F7
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 22:40:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACCC91F2329B
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 22:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A1213958F;
-	Tue, 16 Apr 2024 22:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36A613A248;
+	Tue, 16 Apr 2024 22:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="KjOmauOY"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="kXGR7Q5G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFB91E511;
-	Tue, 16 Apr 2024 22:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825501E511;
+	Tue, 16 Apr 2024 22:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713307230; cv=none; b=K9Bstu/pAMz4F4PcF9Mh66r8fe08wFe5QwYiBrACR3RSZ9NMc+zOGHiWGofuYFb7j4bf9XrX1u4Q0NxslEfurn15YlvZNDkNzdoQO7+8nf2+jZQBTRv2g04LoDABpE4eQIulb2w4WS5ivpVKZOY4svtM5w2O1welTEUevANt2zw=
+	t=1713307232; cv=none; b=iFGd0XHPvfZ6STCyr35q0C4On6g13TBU3lJaVvjRTb7+ZhoW8Cq8Gw2+b7AKIBabmHRlXe0PanNd9ND9x7DtA0EEgDS9BnrDEzIBgZ17vzcRPkR+gkCQbd2NWOV0pofLlqeGC+3t7mDj7mDyLZqqsQrbwTZ5FpQ17mKuVMiGQHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713307230; c=relaxed/simple;
-	bh=t+jMpNmECFKlhD0J7TS0k+ybKzz7fE8W0bhykhgU75Y=;
-	h=Date:To:From:Subject:Message-Id; b=T47P7HMPtge1jTsketvajtDuJ666pYNe4e31B15Uqjp2//mxgr/IZ075aIELVIDxz3sJso/wX3qtZieneH0/USdPLDO9LgCNr8zSLwzUPy/BrmCEkfYZuAqWtFwGuLnPaoTIINIoPrNaEc+7SwqmjSkV/ZNAuCNGviDbhhMnMe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=KjOmauOY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D816C113CE;
-	Tue, 16 Apr 2024 22:40:29 +0000 (UTC)
+	s=arc-20240116; t=1713307232; c=relaxed/simple;
+	bh=VtQaT92+h5NU00NbXIcDDTIGbVFXs+hkLJGgyKuQ7vo=;
+	h=Date:To:From:Subject:Message-Id; b=jf+udVzj9OLBa24oHuFckEFTyKwbWpmrLIhLl2z1SPObwwdjpqGIreciFWMHveSSl/J5bROjt3K4mX6aeGlLQEfjBuVJmcSNQs7/r7V4VSDPu/93Qnbppeburux/vYYM2MokbX1kouPss2hNG1r4ovO1aV4G5/C7H6Rg6iSpXFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=kXGR7Q5G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A228C113CE;
+	Tue, 16 Apr 2024 22:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1713307229;
-	bh=t+jMpNmECFKlhD0J7TS0k+ybKzz7fE8W0bhykhgU75Y=;
+	s=korg; t=1713307232;
+	bh=VtQaT92+h5NU00NbXIcDDTIGbVFXs+hkLJGgyKuQ7vo=;
 	h=Date:To:From:Subject:From;
-	b=KjOmauOYp+h7l5SbzaoRv38pHDtZAFbW6NcWgMVYEJoa38dOx5mAVOFMB0hbqzg48
-	 DweSHY8I2aZ8PeEatVMtHkXJICAp1j42wGExuGqro+LDuTTAZX1yB0Zd0G1mpnrrZ3
-	 pLjh3hNpDqvcxI4J8v/1c3Z26ZLNq8kq6L/rFh9A=
-Date: Tue, 16 Apr 2024 15:40:28 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,bugreport@ubisectech.com,brauner@kernel.org,phillip@squashfs.org.uk,akpm@linux-foundation.org
+	b=kXGR7Q5GA3YJePsHAS8SzneAYX5X9xiW3Nu756/e5mTokLWOOTYr9OLIvthtHGLox
+	 FJwYKmFaDHsulhKLRra7Y55443IiKccOooesjO1Amerd+8tVc2jutWYMYcCWq6IOJd
+	 dlelYDiVcap8yW++AS2lNxCcsYjy2GX/+CkGyKQ8=
+Date: Tue, 16 Apr 2024 15:40:31 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,iii@linux.ibm.com,hughd@google.com,hca@linux.ibm.com,gor@linux.ibm.com,david@redhat.com,agordeev@linux.ibm.com,sumanthk@linux.ibm.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] squashfs-check-the-inode-number-is-not-the-invalid-value-of-zero.patch removed from -mm tree
-Message-Id: <20240416224029.5D816C113CE@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-shmem-inline-shmem_is_huge-for-disabled-transparent-hugepages.patch removed from -mm tree
+Message-Id: <20240416224032.3A228C113CE@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,80 +50,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: Squashfs: check the inode number is not the invalid value of zero
+     Subject: mm/shmem: inline shmem_is_huge() for disabled transparent hugepages
 has been removed from the -mm tree.  Its filename was
-     squashfs-check-the-inode-number-is-not-the-invalid-value-of-zero.patch
+     mm-shmem-inline-shmem_is_huge-for-disabled-transparent-hugepages.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Phillip Lougher <phillip@squashfs.org.uk>
-Subject: Squashfs: check the inode number is not the invalid value of zero
-Date: Mon, 8 Apr 2024 23:02:06 +0100
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Subject: mm/shmem: inline shmem_is_huge() for disabled transparent hugepages
+Date: Tue, 9 Apr 2024 17:54:07 +0200
 
-Syskiller has produced an out of bounds access in fill_meta_index().
+In order to  minimize code size (CONFIG_CC_OPTIMIZE_FOR_SIZE=y),
+compiler might choose to make a regular function call (out-of-line) for
+shmem_is_huge() instead of inlining it. When transparent hugepages are
+disabled (CONFIG_TRANSPARENT_HUGEPAGE=n), it can cause compilation
+error.
 
-That out of bounds access is ultimately caused because the inode
-has an inode number with the invalid value of zero, which was not checked.
+mm/shmem.c: In function `shmem_getattr':
+./include/linux/huge_mm.h:383:27: note: in expansion of macro `BUILD_BUG'
+  383 | #define HPAGE_PMD_SIZE ({ BUILD_BUG(); 0; })
+      |                           ^~~~~~~~~
+mm/shmem.c:1148:33: note: in expansion of macro `HPAGE_PMD_SIZE'
+ 1148 |                 stat->blksize = HPAGE_PMD_SIZE;
 
-The reason this causes the out of bounds access is due to following
-sequence of events:
+To prevent the possible error, always inline shmem_is_huge() when
+transparent hugepages are disabled.
 
-1. Fill_meta_index() is called to allocate (via empty_meta_index())
-   and fill a metadata index.  It however suffers a data read error
-   and aborts, invalidating the newly returned empty metadata index.
-   It does this by setting the inode number of the index to zero,
-   which means unused (zero is not a valid inode number).
-
-2. When fill_meta_index() is subsequently called again on another
-   read operation, locate_meta_index() returns the previous index
-   because it matches the inode number of 0.  Because this index
-   has been returned it is expected to have been filled, and because
-   it hasn't been, an out of bounds access is performed.
-
-This patch adds a sanity check which checks that the inode number
-is not zero when the inode is created and returns -EINVAL if it is.
-
-[phillip@squashfs.org.uk: whitespace fix]
-  Link: https://lkml.kernel.org/r/20240409204723.446925-1-phillip@squashfs.org.uk
-Link: https://lkml.kernel.org/r/20240408220206.435788-1-phillip@squashfs.org.uk
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Reported-by: "Ubisectech Sirius" <bugreport@ubisectech.com>
-Closes: https://lore.kernel.org/lkml/87f5c007-b8a5-41ae-8b57-431e924c5915.bugreport@ubisectech.com/
-Cc: Christian Brauner <brauner@kernel.org>
+Link: https://lkml.kernel.org/r/20240409155407.2322714-1-sumanthk@linux.ibm.com
+Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/squashfs/inode.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/shmem_fs.h |    9 +++++++++
+ mm/shmem.c               |    6 ------
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
---- a/fs/squashfs/inode.c~squashfs-check-the-inode-number-is-not-the-invalid-value-of-zero
-+++ a/fs/squashfs/inode.c
-@@ -48,6 +48,10 @@ static int squashfs_new_inode(struct sup
- 	gid_t i_gid;
- 	int err;
+--- a/include/linux/shmem_fs.h~mm-shmem-inline-shmem_is_huge-for-disabled-transparent-hugepages
++++ a/include/linux/shmem_fs.h
+@@ -110,8 +110,17 @@ extern struct page *shmem_read_mapping_p
+ extern void shmem_truncate_range(struct inode *inode, loff_t start, loff_t end);
+ int shmem_unuse(unsigned int type);
  
-+	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
-+	if (inode->i_ino == 0)
-+		return -EINVAL;
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ extern bool shmem_is_huge(struct inode *inode, pgoff_t index, bool shmem_huge_force,
+ 			  struct mm_struct *mm, unsigned long vm_flags);
++#else
++static __always_inline bool shmem_is_huge(struct inode *inode, pgoff_t index, bool shmem_huge_force,
++					  struct mm_struct *mm, unsigned long vm_flags)
++{
++	return false;
++}
++#endif
 +
- 	err = squashfs_get_id(sb, le16_to_cpu(sqsh_ino->uid), &i_uid);
- 	if (err)
- 		return err;
-@@ -58,7 +62,6 @@ static int squashfs_new_inode(struct sup
+ #ifdef CONFIG_SHMEM
+ extern unsigned long shmem_swap_usage(struct vm_area_struct *vma);
+ #else
+--- a/mm/shmem.c~mm-shmem-inline-shmem_is_huge-for-disabled-transparent-hugepages
++++ a/mm/shmem.c
+@@ -748,12 +748,6 @@ static long shmem_unused_huge_count(stru
  
- 	i_uid_write(inode, i_uid);
- 	i_gid_write(inode, i_gid);
--	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
- 	inode_set_mtime(inode, le32_to_cpu(sqsh_ino->mtime), 0);
- 	inode_set_atime(inode, inode_get_mtime_sec(inode), 0);
- 	inode_set_ctime(inode, inode_get_mtime_sec(inode), 0);
+ #define shmem_huge SHMEM_HUGE_DENY
+ 
+-bool shmem_is_huge(struct inode *inode, pgoff_t index, bool shmem_huge_force,
+-		   struct mm_struct *mm, unsigned long vm_flags)
+-{
+-	return false;
+-}
+-
+ static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
+ 		struct shrink_control *sc, unsigned long nr_to_split)
+ {
 _
 
-Patches currently in -mm which might be from phillip@squashfs.org.uk are
+Patches currently in -mm which might be from sumanthk@linux.ibm.com are
 
-squashfs-remove-deprecated-strncpy-by-not-copying-the-string.patch
 
 
