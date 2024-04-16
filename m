@@ -1,171 +1,192 @@
-Return-Path: <stable+bounces-40039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319898A7584
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 22:25:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 199398A7578
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 22:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54FEE1C210B5
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 20:25:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 981612820D2
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 20:23:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F00C139D17;
-	Tue, 16 Apr 2024 20:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398EF13A3F5;
+	Tue, 16 Apr 2024 20:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="SgS0ZQSD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i1Qqaeyk"
 X-Original-To: stable@vger.kernel.org
-Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.145])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF548139D04
-	for <stable@vger.kernel.org>; Tue, 16 Apr 2024 20:25:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FC813A3EF;
+	Tue, 16 Apr 2024 20:20:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713299108; cv=none; b=n2QSEIWTSm+ZcH/nQnDeuuTFYvaEo/vFb2SG0OXZoJNuhBL+B6HXterHvDWEdBqb5BJKJq7Sav6/kpdjfHIX8+Huz6+l3LhtcaKhqcgaYv5s8ZHDjw30mrVKEv/kjPv/eBAwnbuLqh6L0B0JqdA/Ey5VSQlM7wsEryA1kFQcUzw=
+	t=1713298811; cv=none; b=ALDjBCisbEgAgfOt/gkMH+7tgC2Y2mlDmJJEjZnBEgkSc0PaaThzqjFNwVNPvK1BlfEjnrZswfmKIdEl7+O6dittonmfjeaX2+knbJ13ymfvVH62gE385xHISbr2gFBjVsKPd9U2BGLK6bWDIVmN6Nsc6Z6OgWiRRawCKtQZ5Y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713299108; c=relaxed/simple;
-	bh=nzFHgVPzykLSptwKDuARKkb3HpbWw3boByhWSDoAatc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YnPmGRI/PMgej2LL9FeSfHmk7MipPG39st2pYL0qAe0aJ9pp3V0eFYPNQO46i7Vhj89KLqkJWl0FpOKfN/XKwLL0G1rYYQHwiyVkXrpPHwCsPNE5Fg/PJyaVcA5Xm49YctngQNLlkscDN/0TeTzkk9ST69BzmTE/9b/ZS2Lx77A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=SgS0ZQSD; arc=none smtp.client-ip=193.222.135.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
-Received: (wp-smtpd smtp.tlen.pl 43115 invoked from network); 16 Apr 2024 22:18:22 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
-          t=1713298702; bh=wSj9XLr8+Kmpdue7DrSdLjBZBA4QhsSx4rePaPURYqM=;
-          h=Subject:To:Cc:From;
-          b=SgS0ZQSDUFL14GG3H2PqAqBMRH4pigHrat4EE0MPnXoJmkeSq/I3EHVIz+VZQwflJ
-           bfrE3Gc1b0CJaV5gbxkTNpw+xRHBoaRsAK9Rbw6SiSt34CNrdygLt619wqzNo8Ngqm
-           5WVyGwhDATVaBAo1Z09GELUygSh84nhHkz5AFg1w=
-Received: from aaez16.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.129.16])
-          (envelope-sender <mat.jonczyk@o2.pl>)
-          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <gregkh@linuxfoundation.org>; 16 Apr 2024 22:18:22 +0200
-Message-ID: <119fab3d-c623-4734-b7f2-ae483c12dd6d@o2.pl>
-Date: Tue, 16 Apr 2024 22:18:17 +0200
+	s=arc-20240116; t=1713298811; c=relaxed/simple;
+	bh=vUhVeWXJmiQxPeOjQ5ffuRN4z/tn2RK2d3lS/O0alko=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G1/gaLRUNByjEYU+tkrUbP5ocilQ/Z3pfC8pXsgAlf9CstdCJlerFUAbvJWEzxU5eIDoh4co3lR0aLIsREkOsrTMzS0GK/q/25weEEZhoR08PrApjmwq2lkkb5QYLF1iWUzC5HHOKOXD5d8LQbhWxMTDK71UgOesTX05Q824Ieg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i1Qqaeyk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3563C113CE;
+	Tue, 16 Apr 2024 20:20:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713298809;
+	bh=vUhVeWXJmiQxPeOjQ5ffuRN4z/tn2RK2d3lS/O0alko=;
+	h=From:To:Cc:Subject:Date:From;
+	b=i1QqaeykDlZdTI9/rKfETnYtZea42ZqcM6b/oJ33Oom+uzwyOW9KHZZeVOK67zYdW
+	 52fhST/nK1BC+wtaCurtctIobxYND584RB99Y3eSQ5KsnsmIA2lESri5hHKMdpReN+
+	 jUceVk7U5O+SS/355Cii6QUPgVQBZToQM0yv59YvrIqiLOXNnxAZuT1KDYLXBxrxRF
+	 FcFW80k+KBbdiRPZswigoY3VitQ0gBW+Po5FG6zOLPA22IrCgVGYY/7sZZduPFBjNG
+	 aJJrRj3/n3Kl6ELDhIsbQkPJXDbPRfDMA+T1WuQGND0Uv+9vRu+NcbhYhNqxZd3lqg
+	 Tx/xMfVuAzJpg==
+From: cel@kernel.org
+To: <stable@vger.kernel.org>
+Cc: <linux-nfs@vger.kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH] Revert 2267b2e84593bd3d61a1188e68fba06307fa9dab
+Date: Tue, 16 Apr 2024 16:20:06 -0400
+Message-ID: <20240416202006.10194-1-cel@kernel.org>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 00/69] 6.1.87-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240415141946.165870434@linuxfoundation.org>
-Content-Language: en-GB
-From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
-Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
- 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
- TANkZ3QqXNX2
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-WP-MailID: 807899802595dfc1da9a39eda7c4f712
-X-WP-AV: skaner antywirusowy Poczty o2
-X-WP-SPAM: NO 0000000 [cQOk]                               
 
-W dniu 15.04.2024 o 16:20, Greg Kroah-Hartman pisze:
-> This is the start of the stable review cycle for the 6.1.87 release.
-> There are 69 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 17 Apr 2024 14:19:30 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.87-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Chuck Lever <chuck.lever@oracle.com>
 
-Hello,
+ltp test fcntl17 fails on v5.15.154. This was bisected to commit
+2267b2e84593 ("lockd: introduce safe async lock op").
 
-Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+---
+ Documentation/filesystems/nfs/exporting.rst |  7 -------
+ fs/lockd/svclock.c                          |  4 +++-
+ fs/nfsd/nfs4state.c                         | 10 +++-------
+ include/linux/exportfs.h                    | 14 --------------
+ 4 files changed, 6 insertions(+), 29 deletions(-)
 
-Tested on a HP 17-by0001nw laptop with an Intel Kaby Lake CPU and Ubuntu 20.04.
-
-Stack:
-- amd64,
-- ext4 on top of LVM on top of LUKS on top of mdraid on top of
-  NVMe and SATA drives (the SATA drive in the write-mostly mode).
-
-Tested (lightly):
-- suspend to RAM,
-- suspend to disk,
-- virtual machines in QEMU (both i386 and amd64 guests),
-
-- GPU (Intel HD Graphics 620, with 2 Unigine benchmarks)
-- WiFi (Realtek RTL8822BE),
-- Bluetooth (Realtek RTL8822BE),
-
-- PCI soundcard (Intel HD Audio),
-- webcam.
-
-Filesystems tested very lightly (mounting, listing and opening files):
-- NFS,
-- exFAT
-- NTFS via FUSE
-
-Nitpicks:
-    - sound output does not automatically switch from HDMI to speakers (also present on other kernels),
-    - sound issues in the Unigine tropics benchmark (no sound after switching of the sound output, program restart was necessary).
-    - problems with sending Bluetooth files from mobile phone, likely caused by previous BT experiments.
-
-Greetings,
-
-Mateusz
+diff --git a/Documentation/filesystems/nfs/exporting.rst b/Documentation/filesystems/nfs/exporting.rst
+index 6a1cbd7de38d..6f59a364f84c 100644
+--- a/Documentation/filesystems/nfs/exporting.rst
++++ b/Documentation/filesystems/nfs/exporting.rst
+@@ -241,10 +241,3 @@ following flags are defined:
+     all of an inode's dirty data on last close. Exports that behave this
+     way should set EXPORT_OP_FLUSH_ON_CLOSE so that NFSD knows to skip
+     waiting for writeback when closing such files.
+-
+-  EXPORT_OP_ASYNC_LOCK - Indicates a capable filesystem to do async lock
+-    requests from lockd. Only set EXPORT_OP_ASYNC_LOCK if the filesystem has
+-    it's own ->lock() functionality as core posix_lock_file() implementation
+-    has no async lock request handling yet. For more information about how to
+-    indicate an async lock request from a ->lock() file_operations struct, see
+-    fs/locks.c and comment for the function vfs_lock_file().
+diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
+index 55c0a0331188..4e30f3c50970 100644
+--- a/fs/lockd/svclock.c
++++ b/fs/lockd/svclock.c
+@@ -470,7 +470,9 @@ nlmsvc_lock(struct svc_rqst *rqstp, struct nlm_file *file,
+ 	    struct nlm_host *host, struct nlm_lock *lock, int wait,
+ 	    struct nlm_cookie *cookie, int reclaim)
+ {
++#if IS_ENABLED(CONFIG_SUNRPC_DEBUG)
+ 	struct inode		*inode = nlmsvc_file_inode(file);
++#endif
+ 	struct nlm_block	*block = NULL;
+ 	int			error;
+ 	int			mode;
+@@ -484,7 +486,7 @@ nlmsvc_lock(struct svc_rqst *rqstp, struct nlm_file *file,
+ 				(long long)lock->fl.fl_end,
+ 				wait);
+ 
+-	if (!exportfs_lock_op_is_async(inode->i_sb->s_export_op)) {
++	if (nlmsvc_file_file(file)->f_op->lock) {
+ 		async_block = wait;
+ 		wait = 0;
+ 	}
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 40b5b226e504..d07176eee935 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -7420,7 +7420,6 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	struct nfsd4_blocked_lock *nbl = NULL;
+ 	struct file_lock *file_lock = NULL;
+ 	struct file_lock *conflock = NULL;
+-	struct super_block *sb;
+ 	__be32 status = 0;
+ 	int lkflg;
+ 	int err;
+@@ -7442,7 +7441,6 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 		dprintk("NFSD: nfsd4_lock: permission denied!\n");
+ 		return status;
+ 	}
+-	sb = cstate->current_fh.fh_dentry->d_sb;
+ 
+ 	if (lock->lk_is_new) {
+ 		if (nfsd4_has_session(cstate))
+@@ -7494,8 +7492,7 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	fp = lock_stp->st_stid.sc_file;
+ 	switch (lock->lk_type) {
+ 		case NFS4_READW_LT:
+-			if (nfsd4_has_session(cstate) ||
+-			    exportfs_lock_op_is_async(sb->s_export_op))
++			if (nfsd4_has_session(cstate))
+ 				fl_flags |= FL_SLEEP;
+ 			fallthrough;
+ 		case NFS4_READ_LT:
+@@ -7507,8 +7504,7 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 			fl_type = F_RDLCK;
+ 			break;
+ 		case NFS4_WRITEW_LT:
+-			if (nfsd4_has_session(cstate) ||
+-			    exportfs_lock_op_is_async(sb->s_export_op))
++			if (nfsd4_has_session(cstate))
+ 				fl_flags |= FL_SLEEP;
+ 			fallthrough;
+ 		case NFS4_WRITE_LT:
+@@ -7536,7 +7532,7 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	 * for file locks), so don't attempt blocking lock notifications
+ 	 * on those filesystems:
+ 	 */
+-	if (!exportfs_lock_op_is_async(sb->s_export_op))
++	if (nf->nf_file->f_op->lock)
+ 		fl_flags &= ~FL_SLEEP;
+ 
+ 	nbl = find_or_allocate_block(lock_sop, &fp->fi_fhandle, nn);
+diff --git a/include/linux/exportfs.h b/include/linux/exportfs.h
+index 6525f4b7eb97..218fc5c54e90 100644
+--- a/include/linux/exportfs.h
++++ b/include/linux/exportfs.h
+@@ -222,23 +222,9 @@ struct export_operations {
+ 						  atomic attribute updates
+ 						*/
+ #define EXPORT_OP_FLUSH_ON_CLOSE	(0x20) /* fs flushes file data on close */
+-#define EXPORT_OP_ASYNC_LOCK		(0x40) /* fs can do async lock request */
+ 	unsigned long	flags;
+ };
+ 
+-/**
+- * exportfs_lock_op_is_async() - export op supports async lock operation
+- * @export_ops:	the nfs export operations to check
+- *
+- * Returns true if the nfs export_operations structure has
+- * EXPORT_OP_ASYNC_LOCK in their flags set
+- */
+-static inline bool
+-exportfs_lock_op_is_async(const struct export_operations *export_ops)
+-{
+-	return export_ops->flags & EXPORT_OP_ASYNC_LOCK;
+-}
+-
+ extern int exportfs_encode_inode_fh(struct inode *inode, struct fid *fid,
+ 				    int *max_len, struct inode *parent);
+ extern int exportfs_encode_fh(struct dentry *dentry, struct fid *fid,
+-- 
+2.44.0
 
 
