@@ -1,225 +1,108 @@
-Return-Path: <stable+bounces-40029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890C98A71E9
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 19:07:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A84B58A722E
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 19:24:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 010A11F24161
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 17:07:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A1EC283E6F
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 17:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB13131737;
-	Tue, 16 Apr 2024 17:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF54113343F;
+	Tue, 16 Apr 2024 17:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dPTXOQq9"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="N+VVVFIh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A6012E1E8;
-	Tue, 16 Apr 2024 17:07:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66BE91332A7;
+	Tue, 16 Apr 2024 17:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713287267; cv=none; b=NOmnJ7MMZfSwVXrtifAIWyOo6ky7ewrMDAtvCOi9k+6m9mGVIGJGBzQfPYt2eO/SkX1YsvhOq9/KHtxhwg/UnhYRlL58ceo/ejjgiqIZqd/7MRx6xcweBuL2LXeY5G2lxlCTWSrdNpiEDqa8GkfrMalfSpcc83qUXmSDnexqYW0=
+	t=1713288276; cv=none; b=iwHlkIJOfFmhwG2QuaEp2mSaRu2pmRtS3kOWXVv+6kWIESr7msfP1/qaSOXSZ/1TlibDTM5fdykGzzWf8FlpcnIi6NIkzkw4v/EeOzcd2yIR7A9/aisKmQJhM4UaMsa4yks/DbJq13YjX75u7Lg4qe4D9mb2XcNbblMCjHdPZvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713287267; c=relaxed/simple;
-	bh=f/fnrdxNCDGyBxu0Cw8TMeUPmrR90+CCa02nHl4h05Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f7zWmGL+stjEsph69KqxOK/zx+Deh7xHX5A+GzdrqxyMswnSAScBSoYcm+JnkXKU48E7cbNPQRQEunkHHhsoNtsr26UAYPPXF3wkxU3D9APdN5ydCE6wJk+Rb4gDPukJibij/7udRZ5qs2pVxb33aY6yX+l+bdLYrzaktFcmLqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dPTXOQq9; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-434d12e9662so21108881cf.2;
-        Tue, 16 Apr 2024 10:07:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713287265; x=1713892065; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ORGQ4FpFUr8CNMJ8nGMv1TvXQGc9fladS7kaSrCMW9A=;
-        b=dPTXOQq9kXN8Ntvs4v9lI4U1T2+EFtP6Q1/mgZNYooHD975V/e8AqZkGexMMf5dB20
-         zjVY0HLXDMUpCqDnwVm1etmuZnvxP3nrnFJtFcTodHrIPLZHzkRNcVIxAcJBKN/mDfni
-         AsX785qwK9/6e8k1SyEOlxkEDciZJ9PFsoHl3VoE0qaZYntPA4un+Ua9nBZzuW7LGYKH
-         Z2BYGLSJMKqhsP7eXCl2iFUxiDCKfEsO1z2DuqGRJBtmiOgv8Ry2ka1ZLHoSRng/roTJ
-         7xYFHsHo1OeJdMAk+ol/mEvGfg00uBlOKGHE52kII7OccI+XF/dx/uESwGxXFwcW67dQ
-         SlPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713287265; x=1713892065;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ORGQ4FpFUr8CNMJ8nGMv1TvXQGc9fladS7kaSrCMW9A=;
-        b=ma6JSDxOJ9PoPvpZzaSymz7Q5TgFaproGLymfmviSzvyuwD+scEQ2KgVPUHqnE5Yum
-         RKdDa5r/k2QK/ohZ4QdWzx5N3SGiqT7kssNSbM0HFbybXFDArucx9SBhL9cBACedwKnu
-         ktiC0vlmBDJiVIPrpXHNPAGpIXC+I5eVIQtHA0A7gmzzHbaPTu+5QSwM7qHDUn4eYKdK
-         rS6HSand7+azxyE2LXEgbZVURZkpupuDxZNrlV57BpQhW2jEdKeZZUXXAP5ciG22bkGd
-         Me3SVBZGeRoqPI3hHUCRFmj+dmXWkmlmgPDiw2P76HI+5ZAmkPzAZ7cKqx8CRrI8sb/V
-         LT2A==
-X-Forwarded-Encrypted: i=1; AJvYcCVrrrwwuMKRRSyXpvhKR/ec2CHPcWp3C0y/RiyD0+0DYdiirUSFSewdsFW+Xlff566eYw0yRyA57d5CAGlMLvggekfHk68sjWzlqULFZFShfJPSJAB3c+YrpPj5z7g/b85vNCBjwMITmsEIC0h6tdH6D7H0KbYhuGpRX/YZ7VvhBxWgcUs=
-X-Gm-Message-State: AOJu0Yzq1oh4VfH9HbBU2rjG3fi/gJASRvPIiwS4ShVkxBcxYNEuYZ4X
-	53NHvZWcZJZuc8xJWRGUWHc0grhOoYsV+ETZ2E6rIO0+UIHNq1J5
-X-Google-Smtp-Source: AGHT+IH4K1C8oUNKr5v3XEp6bWsc4NZ9GBMoBMOkM/9G+fGLZvPAXtNsSr4sY5xa7gudhKIFSR3AKQ==
-X-Received: by 2002:ac8:58d0:0:b0:436:73ac:8129 with SMTP id u16-20020ac858d0000000b0043673ac8129mr19448010qta.61.1713287265180;
-        Tue, 16 Apr 2024 10:07:45 -0700 (PDT)
-Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id i9-20020ac860c9000000b004343d542598sm7328319qtm.62.2024.04.16.10.07.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Apr 2024 10:07:44 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 3D4501200066;
-	Tue, 16 Apr 2024 13:07:43 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Tue, 16 Apr 2024 13:07:43 -0400
-X-ME-Sender: <xms:X7AeZmCDxp6AsgYautBwC_DXlCFkgQ6Laxu_AgglfwplvhVCWyFq_g>
-    <xme:X7AeZghMBJm5BuId6WpUW6HbhBYegfnFfSkdWcc4bn0NUbxrTGUmp-ola0a5mtepr
-    mRIrdod-NhGu6iMww>
-X-ME-Received: <xmr:X7AeZpnn4wG--Ad9jQMfXtylQ6mYGnNyoJLKYHT8Ow3EVzJEAfDbQG3WgQDOUQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudejiedggeejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepffdvudegieehffdvtdeivefhgfehgedtffdugfekffeuheevheffieek
-    tedujeejnecuffhomhgrihhnpehgihhthhhusgdrtghomhdpiihulhhiphgthhgrthdrtg
-    homhdpihguvghnthhifhhivghrshdrshgrfhgvthihnecuvehluhhsthgvrhfuihiivgep
-    tdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhph
-    gvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdr
-    fhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:X7AeZkx-DATjGs_MOBhrBCqZdjQ26sAwl-rTbPKI9W65iPbVL3cdrA>
-    <xmx:X7AeZrTSHYW5YWZX_8VfqPJfQd86OPJAueRQ7ejTGTLamq8AhHJxNg>
-    <xmx:X7AeZvYK1096IPo8NfsO6GWVkXFJuUbsOuBwlRUnjc-fjHtxUcvy6A>
-    <xmx:X7AeZkRAzhO8GWG4vo-h7Sjy9pqnw5fzr1vM49LuuPuE2-HgqJlyYg>
-    <xmx:X7AeZtBB7_viBL6XxlqnEdeO_9_XamuixjGZLymcXKVetYwNELi2Z79p>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 16 Apr 2024 13:07:42 -0400 (EDT)
-Date: Tue, 16 Apr 2024 10:07:24 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Asahi Lina <lina@asahilina.net>,
-	Sumera Priyadarsini <sylphrenadin@gmail.com>,
-	Neal Gompa <neal@gompa.dev>,
-	Thomas Bertschinger <tahbertschinger@gmail.com>,
-	Andrea Righi <andrea.righi@canonical.com>,
-	Matthew Bakhtiari <dev@mtbk.me>,
-	Adam Bratschi-Kaye <ark.email@gmail.com>, stable@vger.kernel.org,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@google.com>,
-	Finn Behrens <me@kloenk.dev>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: macros: fix soundness issue in `module!` macro
-Message-ID: <Zh6wTDoMgvjJZ7T9@boqun-archlinux>
-References: <20240401185222.12015-1-benno.lossin@proton.me>
- <CANiq72=M0L+RG6v701ThedXgYj4SUgotx-BcVoWbMxOcKY5--w@mail.gmail.com>
+	s=arc-20240116; t=1713288276; c=relaxed/simple;
+	bh=XzlHoWbCewhBMWvTfN59eZpOMbP92r+tEx3PdmU5CvI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FPLXFh/pVuuN06ZGeMLNO/FqtpnsHhxuTTaJl1Oh78aYivRGlbcrd+OfFYgrKfA0JfLoMAACdKOt7BCzmV+kbOlpt7IpEyEaq+H9uDz/SLmRjhWpKaMmSKIJcuhkwtA5IpAYJs0dXKgf0RW6mABk6ZZdzKloCTF2CLJ0wgQqXPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=N+VVVFIh; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.192.9.210] (unknown [167.220.77.82])
+	by linux.microsoft.com (Postfix) with ESMTPSA id AB92420FD413;
+	Tue, 16 Apr 2024 10:24:28 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com AB92420FD413
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1713288268;
+	bh=ls55kzA4NgbPtH5yXF9qjPYhHDVyOeLEqJj+MKe3bqM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=N+VVVFIhkTvl4mLN4zwmv18TFMdC9JISjm+SBtgcqQ/5V1d08QI196QyOuqKmgLgK
+	 gCwBJDk+xncjm55NHbewVDIppAYbhxBgHvN1AqDBceTG6SQy0aGsRDxg/7cxLCwjzZ
+	 kr5pbQVz9AIpAz7G1LQvGNTz83oE7ALyIynw3QIs=
+Message-ID: <cc48b26a-f67e-43bc-a29f-2e9f36cecc45@linux.microsoft.com>
+Date: Tue, 16 Apr 2024 10:24:27 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=M0L+RG6v701ThedXgYj4SUgotx-BcVoWbMxOcKY5--w@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: CPPC: Fix bit_offset shift in MASK_VAL macro
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Easwar Hariharan <eahariha@linux.microsoft.com>,
+ "open list:ACPI" <linux-acpi@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>
+Cc: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
+ stable@vger.kernel.org
+References: <20240409052310.3162495-1-jarredwhite@linux.microsoft.com>
+Content-Language: en-CA
+From: Jarred White <jarredwhite@linux.microsoft.com>
+In-Reply-To: <20240409052310.3162495-1-jarredwhite@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, Apr 07, 2024 at 10:02:35PM +0200, Miguel Ojeda wrote:
-> On Mon, Apr 1, 2024 at 8:53 PM Benno Lossin <benno.lossin@proton.me> wrote:
-> >
-> > The `module!` macro creates glue code that are called by C to initialize
-> > the Rust modules using the `Module::init` function. Part of this glue
-> > code are the local functions `__init` and `__exit` that are used to
-> > initialize/destroy the Rust module.
-> > These functions are safe and also visible to the Rust mod in which the
-> > `module!` macro is invoked. This means that they can be called by other
-> > safe Rust code. But since they contain `unsafe` blocks that rely on only
-> > being called at the right time, this is a soundness issue.
-> >
-> > Wrap these generated functions inside of two private modules, this
-> > guarantees that the public functions cannot be called from the outside.
-> > Make the safe functions `unsafe` and add SAFETY comments.
-> >
-> > Cc: stable@vger.kernel.org
-> > Closes: https://github.com/Rust-for-Linux/linux/issues/629
-> > Fixes: 1fbde52bde73 ("rust: add `macros` crate")
-> > Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+On 4/8/2024 10:23 PM, Jarred White wrote:
+> Commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for
+> system memory accesses") neglected to properly wrap the bit_offset shift
+> when it comes to applying the mask. This may cause incorrect values to be
+> read and may cause the cpufreq module not be loaded.
 > 
-> [ Capitalized comments, avoided newline in non-list SAFETY comments
->   and reworded to add Reported-by and newline. ]
+> [   11.059751] cpu_capacity: CPU0 missing/invalid highest performance.
+> [   11.066005] cpu_capacity: partial information: fallback to 1024 for all CPUs
 > 
-> Applied to `rust-fixes` -- thanks everyone!
+> Also, corrected the bitmask generation in GENMASK (extra bit being added).
 > 
+> Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
+> Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
+> CC: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+> CC: stable@vger.kernel.org #5.15+
+> ---
+>   drivers/acpi/cppc_acpi.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 4bfbe55553f4..00a30ca35e78 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -170,8 +170,8 @@ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
+>   #define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
+>   
+>   /* Shift and apply the mask for CPC reads/writes */
+> -#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset & 			\
+> -					GENMASK(((reg)->bit_width), 0)))
+> +#define MASK_VAL(reg, val) (((val) >> (reg)->bit_offset) & 			\
+> +					GENMASK(((reg)->bit_width) - 1, 0))
+>   
+>   static ssize_t show_feedback_ctrs(struct kobject *kobj,
+>   		struct kobj_attribute *attr, char *buf)
 
-As reported by Dirk Behme:
+Hi Vanshi,
 
-	https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/topic/How.20to.20use.20THIS_MODULE.20with.20.22.20rust.3A.20macros.3A.20fix.20soundness.20.2E.22/near/433512583
+Could you review please?
 
-The following is needed to allow modules using `THIS_MODULE` as a static
-variable. That being said, maybe we can merge this patch as it is, since
-it doesn't break mainline, and the following change can be done in a
-separate patch.
 
-Regards,
-Boqun
-
------------------------------>8
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 293beca0a583..0664b957a70a 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -199,6 +199,17 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-             /// Used by the printing macros, e.g. [`info!`].
-             const __LOG_PREFIX: &[u8] = b\"{name}\\0\";
- 
-+            // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
-+            // freed until the module is unloaded.
-+            #[cfg(MODULE)]
-+            static THIS_MODULE: kernel::ThisModule = unsafe {{
-+                kernel::ThisModule::from_ptr(&kernel::bindings::__this_module as *const _ as *mut _)
-+            }};
-+            #[cfg(not(MODULE))]
-+            static THIS_MODULE: kernel::ThisModule = unsafe {{
-+                kernel::ThisModule::from_ptr(core::ptr::null_mut())
-+            }};
-+
-             // Double nested modules, since then nobody can access the public items inside.
-             mod __module_init {{
-                 mod __module_init {{
-@@ -215,17 +226,6 @@ mod __module_init {{
- 
-                     static mut __MOD: Option<{type_}> = None;
- 
--                    // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
--                    // freed until the module is unloaded.
--                    #[cfg(MODULE)]
--                    static THIS_MODULE: kernel::ThisModule = unsafe {{
--                        kernel::ThisModule::from_ptr(&kernel::bindings::__this_module as *const _ as *mut _)
--                    }};
--                    #[cfg(not(MODULE))]
--                    static THIS_MODULE: kernel::ThisModule = unsafe {{
--                        kernel::ThisModule::from_ptr(core::ptr::null_mut())
--                    }};
--
-                     // Loadable modules need to export the `{{init,cleanup}}_module` identifiers.
-                     /// # Safety
-                     ///
-@@ -301,7 +301,7 @@ mod __module_init {{
-                     ///
-                     /// This function must only be called once.
-                     unsafe fn __init() -> core::ffi::c_int {{
--                        match <{type_} as kernel::Module>::init(&THIS_MODULE) {{
-+                        match <{type_} as kernel::Module>::init(&super::super::THIS_MODULE) {{
-                             Ok(m) => {{
-                                 // SAFETY:
-                                 // no data race, since `__MOD` can only be accessed by this module and
+Thanks,
+Jarred
 
