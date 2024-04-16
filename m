@@ -1,114 +1,107 @@
-Return-Path: <stable+bounces-40052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C2D18A77E4
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 00:40:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B01B8A7850
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 01:04:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0E981F2317F
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 22:40:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D398B21C28
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 23:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D94213A25F;
-	Tue, 16 Apr 2024 22:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6DE113A24D;
+	Tue, 16 Apr 2024 23:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XGTSRmQT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dIfA/bfa"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3AF1384AD;
-	Tue, 16 Apr 2024 22:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B14D13A3EF;
+	Tue, 16 Apr 2024 23:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713307236; cv=none; b=tZ+B2a2oOoeVJRKDydf6sNo0YjXztK8nmP8u//gddWrI2yJkU2vctuNPOWdFH5i7b8mDYl5XT3YWWVD9RobJuzptNTD44vZef3RAQ07JryPBIfKnKZW0lxTDvrt9k0hl55blF95JwoEYGhObg3Mnf5CRzJLQ3FJ/MX7yoywYaTM=
+	t=1713308646; cv=none; b=CTOVOuRq0gqtnB/9fVGbKFQEk+AQ8qGqQW190ZTOtC+i83Daiovyddtk8cSTV8H9qxigTkqR3L2+HKoR/annVDqzm556S6zImnenD9Jr0ppgV7oM94TesJ/WL623XECTE1wCBkoBGMldSM1His2scUXzPJvAppeV7MJ7doctiG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713307236; c=relaxed/simple;
-	bh=gQV0H/+4hMv3qKKvIgPuZe8r0gEnMx7SC9eIfguRW3c=;
-	h=Date:To:From:Subject:Message-Id; b=ChikK6T8F8CoNYaB9tvqQ5gfQNKFLH+CdIpkJxRBkg90OAIZG8x5D1ihUWAAz+QWGPff8Kq6qfHZOxzAnc3iyVFFXLnrfYiFYyDEVgJfnxSrb8Jv7EzxbnugoIxmXXgi6JzBFPhVU+7lKRSZTqmrrF3SWcM3wIotn6sl/4pX8MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XGTSRmQT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F28DC113CE;
-	Tue, 16 Apr 2024 22:40:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1713307236;
-	bh=gQV0H/+4hMv3qKKvIgPuZe8r0gEnMx7SC9eIfguRW3c=;
-	h=Date:To:From:Subject:From;
-	b=XGTSRmQTyHsaoyAw9bmTPBuZuEuow9H6qW+QbPIsaWtky5akfLxCsweHi7sfp59bP
-	 4LEkbMS73cCx4yrXSFRhzF5WiDUNav3i73o+IgN70beYlXpUGRNgDOuNs5+EDwAXkb
-	 7c/yQbka42862Rvw5LvdWYKVAoou1ilo6HX9i7Zw=
-Date: Tue, 16 Apr 2024 15:40:36 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,aha310510@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] nilfs2-fix-oob-in-nilfs_set_de_type.patch removed from -mm tree
-Message-Id: <20240416224036.8F28DC113CE@smtp.kernel.org>
+	s=arc-20240116; t=1713308646; c=relaxed/simple;
+	bh=krN7TDVY8gsasYGH21Hk8s3B3pWnfrUYQtqBSfSjSD0=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=SAFD0SSQhQ1RRd6zb1kUSPF2bRfBCfSdyK6/wBIm4zxtUrxh4I+83tVTjREXmNmly4mwZtfh6E3KD33tZvEeXllBoZmjASI6mFtInQjiwbHNGJvnXUdssJQ1k3lpNxeHvDysQGGa4t4okVWInR2O02in+n5Be1wq6LMXA0pWkgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dIfA/bfa; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-78d555254b7so22221785a.1;
+        Tue, 16 Apr 2024 16:04:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713308644; x=1713913444; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=73xcy9UhpOQbwGv1P/rFuD3j5Fn9C/d34aHsmJnVy1o=;
+        b=dIfA/bfaGk3+xspAaZCaK50Y+w2pTwe3a+GjFwgAW1c3S1xZV66ZD/luXzz4E+Z44N
+         5LJeyvmbG2DJtyC0hbxl7REjC9DWHnyJ2Cm5mG/AApJ8LAYA+FHS4CEOYdBhqa689TN2
+         cu78b1wx7mttEp8btoZquL4ljLHg37dzNVoTgxIJz14bXK0IVTyNUEiHItxnPddwM0cZ
+         +V5P0m4GFy+TLhpaoBdSxhTOEapf5O1ahuJAwq0ziyel5NO25F4/Vmky8UPVS8eQSTqT
+         NY//G3lFThA+MMJ8QgoiQDnvYMyQMTpqyneZK956JsI8NMhTtWQGjy7xzR5mpE4/z9pO
+         TMxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713308644; x=1713913444;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=73xcy9UhpOQbwGv1P/rFuD3j5Fn9C/d34aHsmJnVy1o=;
+        b=iYicWeE8xZMI8/hEkN25MRFgAINaJuCLZsRPvxIZt+Fat56mLl+j84LV2GPldjbHBr
+         ccuyas+WlB/7Lt0JNECBR5G9eSzxrcK5SHPTXK2nBx6m4FTXhOfZsCzA7qsNUhURme7f
+         IWDFDi6HkSowSTqOta8HejlCw9QzNG1lXb6SLoPQX76gIwVipPSM5HEIE30edZiunF5o
+         itcwE0nX6dKS3DZew6bIlYSRFVB+veb+2jMBu58r6F+20pxRIQZS4AtkSjK8AAB4dymq
+         WLDoEAWm+lGKicFoxAj7CxFhgyFK7k2CrdGOavAi3jXzWCJjaR9fWvw2UIw9Y09d6QGc
+         WF3g==
+X-Forwarded-Encrypted: i=1; AJvYcCU/Ag0MoG4uM1U/pxV0WxkHzHI6KPdHFTCbqIHHne9OuPeEFCttQwCdheSyup36ykbuS50FPSkgbxXnut7onzZo0vGuobFzcDntOTLcdN4Js7zlcGms6bIVfGSIcKOQB/BRoPR5
+X-Gm-Message-State: AOJu0YyUzoTbfQrjRxFHdzE3lo7G0d0ylaXSUuj9/ns4pqnrG0oFchgR
+	75F5jvwk0efcxZGQApO6M5Zk0sYE/F29EzooayWwVztOjQfT1Roi
+X-Google-Smtp-Source: AGHT+IGcA13vL6c4ugk9PYxrjjpvIYxyA48/0OOUcyt6i/21n3ZP7grwU8ardiss45AZicduxRu41w==
+X-Received: by 2002:a05:620a:851:b0:78e:c032:ec3d with SMTP id u17-20020a05620a085100b0078ec032ec3dmr5733432qku.17.1713308644166;
+        Tue, 16 Apr 2024 16:04:04 -0700 (PDT)
+Received: from localhost (73.84.86.34.bc.googleusercontent.com. [34.86.84.73])
+        by smtp.gmail.com with ESMTPSA id a19-20020a05620a439300b0078d6ef5fd07sm7844991qkp.50.2024.04.16.16.04.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Apr 2024 16:04:03 -0700 (PDT)
+Date: Tue, 16 Apr 2024 19:04:03 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Yick Xie <yick.xie@gmail.com>, 
+ willemdebruijn.kernel@gmail.com, 
+ willemb@google.com
+Cc: netdev@vger.kernel.org, 
+ davem@davemloft.net, 
+ dsahern@kernel.org, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+Message-ID: <661f03e3ad386_7a39f2942c@willemb.c.googlers.com.notmuch>
+In-Reply-To: <20240416190330.492972-1-yick.xie@gmail.com>
+References: <20240416190330.492972-1-yick.xie@gmail.com>
+Subject: Re: [PATCH net v2] udp: don't be set unconnected if only UDP cmsg
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
+Yick Xie wrote:
+> If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
+> "connected" should not be set to 0. Otherwise it stops
+> the connected socket from using the cached route.
+> 
+> Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
+> Signed-off-by: Yick Xie <yick.xie@gmail.com>
+> Cc: stable@vger.kernel.org
 
-The quilt patch titled
-     Subject: nilfs2: fix OOB in nilfs_set_de_type
-has been removed from the -mm tree.  Its filename was
-     nilfs2-fix-oob-in-nilfs_set_de_type.patch
-
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Jeongjun Park <aha310510@gmail.com>
-Subject: nilfs2: fix OOB in nilfs_set_de_type
-Date: Tue, 16 Apr 2024 03:20:48 +0900
-
-The size of the nilfs_type_by_mode array in the fs/nilfs2/dir.c file is
-defined as "S_IFMT >> S_SHIFT", but the nilfs_set_de_type() function,
-which uses this array, specifies the index to read from the array in the
-same way as "(mode & S_IFMT) >> S_SHIFT".
-
-static void nilfs_set_de_type(struct nilfs_dir_entry *de, struct inode
- *inode)
-{
-	umode_t mode = inode->i_mode;
-
-	de->file_type = nilfs_type_by_mode[(mode & S_IFMT)>>S_SHIFT]; // oob
-}
-
-However, when the index is determined this way, an out-of-bounds (OOB)
-error occurs by referring to an index that is 1 larger than the array size
-when the condition "mode & S_IFMT == S_IFMT" is satisfied.  Therefore, a
-patch to resize the nilfs_type_by_mode array should be applied to prevent
-OOB errors.
-
-Link: https://lkml.kernel.org/r/20240415182048.7144-1-konishi.ryusuke@gmail.com
-Reported-by: syzbot+2e22057de05b9f3b30d8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2e22057de05b9f3b30d8
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/nilfs2/dir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/fs/nilfs2/dir.c~nilfs2-fix-oob-in-nilfs_set_de_type
-+++ a/fs/nilfs2/dir.c
-@@ -240,7 +240,7 @@ nilfs_filetype_table[NILFS_FT_MAX] = {
- 
- #define S_SHIFT 12
- static unsigned char
--nilfs_type_by_mode[S_IFMT >> S_SHIFT] = {
-+nilfs_type_by_mode[(S_IFMT >> S_SHIFT) + 1] = {
- 	[S_IFREG >> S_SHIFT]	= NILFS_FT_REG_FILE,
- 	[S_IFDIR >> S_SHIFT]	= NILFS_FT_DIR,
- 	[S_IFCHR >> S_SHIFT]	= NILFS_FT_CHRDEV,
-_
-
-Patches currently in -mm which might be from aha310510@gmail.com are
-
-
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 
